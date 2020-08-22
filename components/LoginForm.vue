@@ -7,14 +7,6 @@
       @submit.prevent="userLogin"
     >
       <v-text-field
-        v-model="serverUrl"
-        outlined
-        :label="$t('serverAddress')"
-        type="url"
-        :rules="rules.serverUrlTest"
-        required
-      ></v-text-field>
-      <v-text-field
         v-model="login.username"
         outlined
         :label="$t('username')"
@@ -30,6 +22,11 @@
         @click:append="() => (showPassword = !showPassword)"
       ></v-text-field>
       <v-row align="center" no-gutters>
+        <v-col class="mr-2">
+          <v-btn to="/selectServer" block large
+            >{{ $t('changeServer') }}
+          </v-btn>
+        </v-col>
         <v-col class="mr-2">
           <v-btn
             :disabled="!validInputs"
@@ -56,21 +53,13 @@ import { mapActions } from 'vuex';
 export default Vue.extend({
   data() {
     return {
-      serverUrl: '',
       login: {
         username: '',
         password: ''
       },
       showPassword: false,
       validInputs: false,
-      loading: false,
-      rules: {
-        serverUrlTest: [
-          (v: string) => !!v || this.$t('serverAddressRequired'),
-          (v: string) =>
-            /^https?:\/\/.+/.test(v) || this.$t('serverAddressMustBeUrl')
-        ]
-      }
+      loading: false
     };
   },
   methods: {
@@ -80,7 +69,6 @@ export default Vue.extend({
     userLogin() {
       this.loading = true;
       this.setDeviceProfile();
-      this.$axios.setBaseURL(this.serverUrl);
       this.$auth.loginWith('jellyfin', this.login);
       this.loading = false;
     }

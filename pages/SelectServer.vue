@@ -2,8 +2,8 @@
   <v-container fill-height>
     <v-row align="center" justify="center">
       <v-col md="4">
-        <h1 class="text-h4 mb-6 text-center">{{ $t('login') }}</h1>
-        <login-form />
+        <h1 class="text-h4 mb-6 text-center">{{ $t('selectServer') }}</h1>
+        <add-server-form />
       </v-col>
     </v-row>
   </v-container>
@@ -15,16 +15,14 @@ import { mapActions } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
+  auth: false,
   head() {
     return {
       title: this.$store.state.page.title
     };
   },
   created() {
-    this.setPageTitle({ title: this.$t('login') });
-    if (!this.$axios.defaults.baseURL) {
-      this.$router.push('/selectServer');
-    }
+    this.setPageTitle({ title: this.$t('selectServer') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])
