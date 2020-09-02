@@ -9,9 +9,15 @@ module.exports = {
     'prettier',
     'prettier/vue',
     'plugin:prettier/recommended',
+    'plugin:promise/recommended',
     'plugin:nuxt/recommended'
   ],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'promise'],
   // add your custom rules here
-  rules: {}
+  rules: {
+    'promise/no-nesting': 'error',
+    'promise/no-return-in-finally': 'error',
+    'promise/prefer-await-to-callbacks': 'error',
+    'promise/prefer-await-to-then': 'error'
+  }
 };
