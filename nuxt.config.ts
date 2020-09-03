@@ -32,7 +32,7 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@mdi/font/css/materialdesignicons.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -132,6 +132,7 @@ const config: NuxtConfig = {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    defaultAssets: false,
     theme: {
       dark: true
     }
