@@ -31,6 +31,7 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
       <v-container>
@@ -41,7 +42,12 @@
 </template>
 
 <script lang="ts">
+import UserButton from '../components/UserButton.vue';
+
 export default {
+  components: {
+    'user-button': UserButton
+  },
   data() {
     return {
       clipped: true,
