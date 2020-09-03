@@ -75,6 +75,7 @@ export default {
           );
 
           this.$auth.setUser(response.data.User);
+          this.$router.push('/');
         } catch (error) {
           console.error('Failed to login:', error);
 
