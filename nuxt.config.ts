@@ -134,7 +134,15 @@ const config: NuxtConfig = {
     customVariables: ['~/assets/variables.scss'],
     defaultAssets: false,
     theme: {
-      dark: true
+      dark: true,
+      themes: {
+        dark: {
+          primary: '#00A4DC'
+        }
+      },
+      options: {
+        customProperties: true
+      }
     }
   },
   /*
