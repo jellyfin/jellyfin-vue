@@ -1,16 +1,20 @@
 <template>
   <div>
-    <v-form @submit.prevent="userLogin">
+    <v-form ref="form" v-model="validInputs" @submit.prevent="userLogin">
       <v-text-field
         v-model="serverUrl"
         outlined
         label="Server Address"
         type="url"
+        :rules="[(v) => !!v || 'Server address is required']"
+        required
       ></v-text-field>
       <v-text-field
         v-model="login.username"
         outlined
         label="Username"
+        :rules="[(v) => !!v || 'Username is required']"
+        required
       ></v-text-field>
       <v-text-field
         v-model="login.pw"
@@ -20,7 +24,9 @@
         :type="showPassword ? 'text' : 'password'"
         @click:append="() => (showPassword = !showPassword)"
       ></v-text-field>
-      <v-btn block large color="primary" type="submit">submit</v-btn>
+      <v-btn :disabled="!validInputs" block large color="primary" type="submit"
+        >submit</v-btn
+      >
     </v-form>
     <v-alert v-if="errorMessage" class="mt-5" outlined type="error"
       >{{ errorMessage }}
@@ -32,13 +38,14 @@
 export default {
   data() {
     return {
-      serverUrl: 'http://localhost:8096',
+      serverUrl: '',
       login: {
         username: '',
         password: ''
       },
       showPassword: false,
-      errorMessage: ''
+      errorMessage: '',
+      validInputs: false
     };
   },
   methods: {
