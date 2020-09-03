@@ -2,7 +2,8 @@
   <v-menu offset-y>
     <template v-slot:activator="{ on, attrs }">
       <v-avatar color="grey darken-2" size="36" v-bind="attrs" v-on="on">
-        <v-icon dark>mdi-account</v-icon>
+        <v-img v-if="userImage" :src="userImage" :alt="$auth.user.name"></v-img>
+        <v-icon v-else dark>mdi-account</v-icon>
       </v-avatar>
     </template>
     <v-list>
@@ -21,7 +22,6 @@
 export default {
   data() {
     return {
-      userAvatar: false,
       menuItems: [
         {
           title: 'Logout',
@@ -31,6 +31,17 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    userImage: {
+      get() {
+        if (this.$auth.user?.PrimaryImageTag) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
+        } else {
+          return '';
+        }
+      }
+    }
   }
 };
 </script>
