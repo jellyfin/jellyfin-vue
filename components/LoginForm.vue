@@ -6,7 +6,7 @@
         outlined
         label="Server Address"
         type="url"
-        :rules="[(v) => !!v || 'Server address is required']"
+        :rules="rules.serverUrlTest"
         required
       ></v-text-field>
       <v-text-field
@@ -45,47 +45,47 @@ export default {
       },
       showPassword: false,
       errorMessage: '',
-      validInputs: false
+      validInputs: false,
+      rules: {
+        serverUrlTest: [
+          (v: string) => !!v || 'Server address is required',
+          (v: string) =>
+            /^https?:\/\//.test(v) || 'Server address must be a valid URL'
+        ]
+      }
     };
   },
   methods: {
     async userLogin() {
-      const testHttp = /^https?:\/\//;
+      try {
+        this.$axios.setBaseURL(this.serverUrl);
 
-      if (!testHttp.test(this.serverUrl)) {
-        this.errorMessage =
-          'Error: Server Address requires http:// or https://';
-      } else {
-        try {
-          this.$axios.setBaseURL(this.serverUrl);
+        const response = await this.$auth.loginWith('local', {
+          data: this.login
+        });
 
-          const response = await this.$auth.loginWith('local', {
-            data: this.login
-          });
+        this.$auth.setUserToken(
+          // TODO: Generate the token properly
+          `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`
+        );
 
-          this.$auth.setUserToken(
-            // TODO: Generate the token properly
-            `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`
-          );
+        this.$axios.setToken(
+          // TODO: Generate the token properly
+          `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`,
+          'X-Emby-Authorization'
+        );
 
-          this.$axios.setToken(
-            // TODO: Generate the token properly
-            `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`,
-            'X-Emby-Authorization'
-          );
+        this.$auth.setUser(response.data.User);
+        this.$router.push('/');
+      } catch (error) {
+        console.error('Failed to login:', error);
 
-          this.$auth.setUser(response.data.User);
-          this.$router.push('/');
-        } catch (error) {
-          console.error('Failed to login:', error);
-
-          if (!error.response) {
-            this.errorMessage = 'Server Not Found';
-          } else if (error.response.status === 500) {
-            this.errorMessage = 'Incorrect Password';
-          } else if (error.response.status === 400) {
-            this.errorMessage = 'Bad Request. Try Again';
-          }
+        if (!error.response) {
+          this.errorMessage = 'Server Not Found';
+        } else if (error.response.status === 500) {
+          this.errorMessage = 'Incorrect Password';
+        } else if (error.response.status === 400) {
+          this.errorMessage = 'Bad Request. Try Again';
         }
       }
     }
