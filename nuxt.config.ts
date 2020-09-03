@@ -77,8 +77,15 @@ const config: NuxtConfig = {
    ** See https://auth.nuxtjs.org/schemes/local.html#options
    */
   auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: false,
+      home: '/'
+    },
     strategies: {
       local: {
+        scheme: 'local',
         endpoints: {
           login: {
             url: '/Users/authenticatebyname',
@@ -91,12 +98,31 @@ const config: NuxtConfig = {
                 'MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0"'
             }
           },
-          logout: { url: '/api/auth/logout', method: 'post' },
+          logout: {
+            url: '/Sessions/Logout',
+            method: 'post',
+            propertyName: false,
+            headers: {
+              Accept: 'application/json;profile="CamelCase"',
+              'Content-Type': 'application/json'
+            }
+          },
           user: false
         },
+        // TODO: Figure out which token settings are REALLY needed
+        // FIXME: Duplicate authorization header: "Authorization" and "X-Emby-Authorization"
         tokenName: 'X-Emby-Authorization',
+        tokenType: '',
+        tokenRequired: true,
+        globalToken: true,
         changeOrigin: true,
-        autoFetchUser: false
+        autoFetchUser: false,
+        token: {
+          type: false
+        },
+        refreshToken: {
+          type: false
+        }
       }
     }
   },
