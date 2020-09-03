@@ -23,6 +23,40 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-divider></v-divider>
+      <v-list>
+        <v-list-item
+          v-for="(library, i) in libraries"
+          :key="i"
+          :to="library.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ library.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="library.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-divider></v-divider>
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in configItems"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -42,16 +76,22 @@
 </template>
 
 <script lang="ts">
+import { BaseItemDto } from '../api/api';
 import UserButton from '../components/UserButton.vue';
+import { getLibraryIcon } from '../utils/items';
+
+interface NavigationDrawerItem {
+  icon: string | undefined | null;
+  title: string | undefined | null;
+  to: string;
+}
 
 export default {
   components: {
-    'user-button': UserButton
+    UserButton
   },
   data() {
     return {
-      clipped: true,
-      drawer: true,
       items: [
         {
           icon: 'mdi-home',
@@ -59,9 +99,36 @@ export default {
           to: '/'
         }
       ],
-      miniVariant: true,
+      configItems: [
+        {
+          icon: 'mdi-cog',
+          title: 'Settings',
+          to: '/settings'
+        }
+      ],
+      clipped: true,
+      drawer: true,
+      libraries: {},
+      miniVariant: false,
       title: 'Jellyfin'
     };
+  },
+  async beforeMount() {
+    const userViewsRequest = await this.$userViewsApi.getUserViews(
+      this.$auth.user.Id
+    );
+
+    const userViews = userViewsRequest.data.Items.map(
+      (view: BaseItemDto): NavigationDrawerItem => {
+        return {
+          icon: getLibraryIcon(view.CollectionType),
+          title: view.Name,
+          to: `/library/${view.Id}`
+        };
+      }
+    );
+
+    this.libraries = userViews;
   }
 };
 </script>
