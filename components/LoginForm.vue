@@ -50,34 +50,41 @@ export default {
   },
   methods: {
     async userLogin() {
-      try {
-        this.$axios.setBaseURL(this.serverUrl);
+      const testHttp = /^https?:\/\//;
 
-        const response = await this.$auth.loginWith('local', {
-          data: this.login
-        });
+      if (!testHttp.test(this.serverUrl)) {
+        this.errorMessage =
+          'Error: Server Address requires http:// or https://';
+      } else {
+        try {
+          this.$axios.setBaseURL(this.serverUrl);
 
-        this.$auth.setUserToken(
-          // TODO: Generate the token properly
-          `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`
-        );
+          const response = await this.$auth.loginWith('local', {
+            data: this.login
+          });
 
-        this.$axios.setToken(
-          // TODO: Generate the token properly
-          `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`,
-          'X-Emby-Authorization'
-        );
+          this.$auth.setUserToken(
+            // TODO: Generate the token properly
+            `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`
+          );
 
-        this.$auth.setUser(response.data.User);
-      } catch (error) {
-        console.error('Failed to login:', error);
+          this.$axios.setToken(
+            // TODO: Generate the token properly
+            `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`,
+            'X-Emby-Authorization'
+          );
 
-        if (!error.response) {
-          this.errorMessage = 'Server Not Found';
-        } else if (error.response.status === 500) {
-          this.errorMessage = 'Incorrect Password';
-        } else if (error.response.status === 400) {
-          this.errorMessage = 'Bad Request. Try Again';
+          this.$auth.setUser(response.data.User);
+        } catch (error) {
+          console.error('Failed to login:', error);
+
+          if (!error.response) {
+            this.errorMessage = 'Server Not Found';
+          } else if (error.response.status === 500) {
+            this.errorMessage = 'Incorrect Password';
+          } else if (error.response.status === 400) {
+            this.errorMessage = 'Bad Request. Try Again';
+          }
         }
       }
     }
