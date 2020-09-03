@@ -58,13 +58,48 @@ const config: NuxtConfig = {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
     '@nuxtjs/pwa'
   ],
+  /*
+   ** Router configuration
+   */
+  router: {
+    middleware: ['auth']
+  },
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  /*
+   ** Axios-based Authentication
+   ** See https://auth.nuxtjs.org/schemes/local.html#options
+   */
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/Users/authenticatebyname',
+            method: 'post',
+            propertyName: false,
+            headers: {
+              Accept: 'application/json;profile="CamelCase"',
+              'Content-Type': 'application/json',
+              'X-Emby-Authorization':
+                'MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0"'
+            }
+          },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: false
+        },
+        tokenName: 'X-Emby-Authorization',
+        changeOrigin: true,
+        autoFetchUser: false
+      }
+    }
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
