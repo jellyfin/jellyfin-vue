@@ -10,12 +10,13 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import LoginForm from '../components/LoginForm.vue';
 
-export default {
+export default Vue.extend({
   layout: 'fullpage',
   components: {
-    'login-form': LoginForm
+    LoginForm
   }
-};
+});
 </script>

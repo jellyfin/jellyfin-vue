@@ -32,7 +32,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   data() {
     return {
       serverUrl: '',
@@ -66,8 +68,8 @@ export default {
         );
         this.$auth.setUser(response.data.User);
       } catch (error) {
-        console.error('Failed to login:', error);
         let errorMessage = 'Unexpected Error';
+
         if (!error.response) {
           errorMessage = 'Server Not Found';
         } else if (error.response.status === 500) {
@@ -75,11 +77,12 @@ export default {
         } else if (error.response.status === 400) {
           errorMessage = 'Bad Request. Try Again';
         }
+
         this.$snackbar(errorMessage, 'error');
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>
