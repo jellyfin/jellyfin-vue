@@ -40,7 +40,8 @@ const config: NuxtConfig = {
   plugins: [
     'plugins/userViewsApi.ts',
     'plugins/itemsApi.ts',
-    'plugins/imageApi.ts'
+    'plugins/imageApi.ts',
+    'plugins/snackbar.ts'
   ],
   /*
    ** Auto import components
