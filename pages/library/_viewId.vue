@@ -1,22 +1,22 @@
 <template>
   <div>
     <h1>{{ Name }}</h1>
-    <v-list>
-      <v-list-item
+    <div class="cardsContainer">
+      <v-card
         v-for="item in Items"
         :key="item.Id"
         :to="`../itemdetails/${item.Id}`"
+        class="card mt-5"
       >
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ item.Name }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ item.ProductionYear }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+        <v-img class="cardImage" :src="imageLink(item.Id)" />
+        <v-card-title>
+          {{ item.Name }}
+        </v-card-title>
+        <v-card-subtitle>
+          {{ item.ProductionYear }}
+        </v-card-subtitle>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -30,7 +30,6 @@ export default Vue.extend({
       Items: {}
     };
   },
-
   async beforeMount() {
     const collectionInfo = await this.$itemsApi.getItems({
       uId: this.$auth.user.Id,
@@ -48,7 +47,14 @@ export default Vue.extend({
         sortBy: 'SortName',
         sortOrder: 'Ascending'
       });
+
       this.Items = itemsResponse.data.Items;
+    }
+  },
+  methods: {
+    imageLink(id: string) {
+      const url = `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
+      return url;
     }
   }
 });
