@@ -153,7 +153,14 @@ const config: NuxtConfig = {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {}
+  build: {},
+
+  /**
+   * Host set to 0.0.0.0 in order to access the dev server on the LAN
+   */
+  server: {
+    host: '0.0.0.0'
+  }
 };
 
 export default config;
