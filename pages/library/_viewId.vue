@@ -43,7 +43,9 @@ export default Vue.extend({
       const itemsResponse = await this.$itemsApi.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        parentId: this.$route.params.viewId
+        parentId: this.$route.params.viewId,
+        sortBy: 'SortName',
+        sortOrder: 'Ascending'
       });
 
       console.log(itemsResponse);
