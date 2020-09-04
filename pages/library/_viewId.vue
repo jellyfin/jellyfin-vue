@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+
 export default Vue.extend({
   data() {
     return {
@@ -47,9 +48,6 @@ export default Vue.extend({
         sortBy: 'SortName',
         sortOrder: 'Ascending'
       });
-
-      console.log(itemsResponse);
-
       this.Items = itemsResponse.data.Items;
     }
   }
