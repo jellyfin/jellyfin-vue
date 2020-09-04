@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import Snackbar from '../components/Snackbar.vue';
+import Snackbar from '~/components/Snackbar.vue';
 
 export default {
   components: { Snackbar }
