@@ -37,7 +37,11 @@ const config: NuxtConfig = {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['plugins/userViewsApi.ts', 'plugins/itemsApi.ts'],
+  plugins: [
+    'plugins/userViewsApi.ts',
+    'plugins/itemsApi.ts',
+    'plugins/imageApi.ts'
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
