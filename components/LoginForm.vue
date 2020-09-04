@@ -28,9 +28,9 @@
         >submit</v-btn
       >
     </v-form>
-    <v-alert v-if="errorMessage" class="mt-5" outlined type="error"
-      >{{ errorMessage }}
-    </v-alert>
+    <v-snackbar color="red" bottom left v-model="errorMessageSnackbar">
+      {{ errorMessage }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -44,6 +44,7 @@ export default {
         pw: ''
       },
       showPassword: false,
+      errorMessageSnackbar: false,
       errorMessage: '',
       validInputs: false,
       rules: {
@@ -71,16 +72,24 @@ export default {
         this.$auth.setUser(response.data.User);
       } catch (error) {
         console.error('Failed to login:', error);
-
         if (!error.response) {
           this.errorMessage = 'Server Not Found';
         } else if (error.response.status === 500) {
           this.errorMessage = 'Incorrect Password';
         } else if (error.response.status === 400) {
           this.errorMessage = 'Bad Request. Try Again';
+        } else {
+          this.errorMessage = 'Unexpected Error';
         }
+        this.errorMessageSnackbar = true;
       }
     }
   }
 };
 </script>
+
+<style scoped>
+div.v-snack:not(.v-snack--absolute) {
+  height: 100%;
+}
+</style>
