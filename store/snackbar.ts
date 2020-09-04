@@ -15,6 +15,6 @@ interface MutationPayload {
 export const mutations: MutationTree<SnackbarState> = {
   display(state: SnackbarState, payload: MutationPayload) {
     state.message = payload.message;
-    state.color = !payload.color ? <string>payload.color : '';
+    state.color = payload.color ? <string>payload.color : '';
   }
 };
