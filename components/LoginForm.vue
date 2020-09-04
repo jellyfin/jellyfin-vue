@@ -75,7 +75,7 @@ export default {
         } else if (error.response.status === 400) {
           errorMessage = 'Bad Request. Try Again';
         }
-        this.$snackbar(errorMessage, 'red');
+        this.$snackbar(errorMessage, 'error');
       }
     }
   }

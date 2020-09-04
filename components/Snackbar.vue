@@ -1,11 +1,12 @@
 <template>
-  <v-snackbar v-model="model" :color="color" bottom left>
+  <v-snackbar app v-model="model" :color="color" bottom left>
     {{ message }}
   </v-snackbar>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+
 export default Vue.extend({
   data() {
     return {

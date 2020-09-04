@@ -72,7 +72,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <Snackbar></Snackbar>
+    <snackbar />
   </v-app>
 </template>
 
