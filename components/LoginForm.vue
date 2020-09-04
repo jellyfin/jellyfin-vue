@@ -50,7 +50,7 @@ export default {
         serverUrlTest: [
           (v: string) => !!v || 'Server address is required',
           (v: string) =>
-            /^https?:\/\//.test(v) || 'Server address must be a valid URL'
+            /^https?:\/\/.+/.test(v) || 'Server address must be a valid URL'
         ]
       }
     };
