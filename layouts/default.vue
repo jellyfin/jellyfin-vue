@@ -115,7 +115,7 @@ export default {
   },
   async beforeMount() {
     const userViewsRequest = await this.$userViewsApi.getUserViews({
-      id: this.$auth.user.Id
+      userId: this.$auth.user.Id
     });
 
     const userViews = userViewsRequest.data.Items.map(
