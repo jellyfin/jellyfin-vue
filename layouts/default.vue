@@ -114,9 +114,9 @@ export default {
     };
   },
   async beforeMount() {
-    const userViewsRequest = await this.$userViewsApi.getUserViews(
-      this.$auth.user.Id
-    );
+    const userViewsRequest = await this.$userViewsApi.getUserViews({
+      id: this.$auth.user.Id
+    });
 
     const userViews = userViewsRequest.data.Items.map(
       (view: BaseItemDto): NavigationDrawerItem => {
