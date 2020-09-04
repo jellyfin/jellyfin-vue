@@ -72,6 +72,7 @@
         <nuxt />
       </v-container>
     </v-main>
+    <snackbar />
   </v-app>
 </template>
 
@@ -79,6 +80,7 @@
 import Vue from 'vue';
 import { BaseItemDto } from '../api/api';
 import UserButton from '../components/UserButton.vue';
+import Snackbar from '../components/Snackbar.vue';
 import { getLibraryIcon } from '../utils/items';
 
 interface NavigationDrawerItem {
@@ -89,7 +91,8 @@ interface NavigationDrawerItem {
 
 export default Vue.extend({
   components: {
-    UserButton
+    UserButton,
+    Snackbar
   },
   data() {
     return {
