@@ -59,3 +59,16 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  width: 12em;
+}
+</style>
