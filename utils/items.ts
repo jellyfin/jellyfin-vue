@@ -1,4 +1,4 @@
-export function getLibraryIcon(libraryType: string | undefined | null) {
+export function getLibraryIcon(libraryType: string | undefined | null): string {
   switch (libraryType) {
     case 'movies':
       return 'mdi-movie';

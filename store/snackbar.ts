@@ -1,11 +1,14 @@
 import { MutationTree } from 'vuex';
 
-export const state = () => ({
+export interface SnackbarState {
+  message: string;
+  color: string;
+}
+
+export const state = (): SnackbarState => ({
   message: '',
   color: ''
 });
-
-export type SnackbarState = ReturnType<typeof state>;
 
 interface MutationPayload {
   message: string;

@@ -1,4 +1,5 @@
 import { Context } from '@nuxt/types';
+import { PluginInjection } from '~/types/utils';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -22,7 +23,7 @@ declare module 'vuex/types/index' {
   }
 }
 
-export default (context: Context, inject: Function) => {
+export default (context: Context, inject: PluginInjection): void => {
   inject('snackbar', (message: string, color: string | undefined | null) => {
     context.store.commit('snackbar/display', { message, color });
   });

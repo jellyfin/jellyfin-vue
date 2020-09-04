@@ -3,7 +3,7 @@
     <h1>{{ Name }}</h1>
     <v-list>
       <v-list-item
-        v-for="item in Items"
+        v-for="item in items"
         :key="item.Id"
         :to="`../itemdetails/${item.Id}`"
       >
@@ -26,8 +26,8 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      Name: '',
-      Items: {}
+      name: '',
+      items: {}
     };
   },
 
@@ -38,8 +38,11 @@ export default Vue.extend({
       ids: this.$route.params.viewId
     });
 
-    if (collectionInfo.data.Items[0].Type === 'CollectionFolder') {
-      this.Name = collectionInfo.data.Items[0].Name;
+    if (
+      collectionInfo.data.Items &&
+      collectionInfo.data.Items[0].Type === 'CollectionFolder'
+    ) {
+      this.name = collectionInfo.data.Items[0].Name || '';
 
       const itemsResponse = await this.$itemsApi.getItems({
         uId: this.$auth.user.Id,
@@ -48,7 +51,8 @@ export default Vue.extend({
         sortBy: 'SortName',
         sortOrder: 'Ascending'
       });
-      this.Items = itemsResponse.data.Items;
+
+      this.items = itemsResponse.data.Items || [];
     }
   }
 });
