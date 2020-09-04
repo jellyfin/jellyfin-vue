@@ -76,6 +76,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { BaseItemDto } from '../api/api';
 import UserButton from '../components/UserButton.vue';
 import { getLibraryIcon } from '../utils/items';
@@ -86,7 +87,7 @@ interface NavigationDrawerItem {
   to: string;
 }
 
-export default {
+export default Vue.extend({
   components: {
     UserButton
   },
@@ -118,17 +119,21 @@ export default {
       userId: this.$auth.user.Id
     });
 
-    const userViews = userViewsRequest.data.Items.map(
-      (view: BaseItemDto): NavigationDrawerItem => {
-        return {
-          icon: getLibraryIcon(view.CollectionType),
-          title: view.Name,
-          to: `/library/${view.Id}`
-        };
-      }
-    );
+    let userViews: Array<NavigationDrawerItem> = [];
+
+    if (userViewsRequest.data.Items) {
+      userViews = userViewsRequest.data.Items.map(
+        (view: BaseItemDto): NavigationDrawerItem => {
+          return {
+            icon: getLibraryIcon(view.CollectionType),
+            title: view.Name,
+            to: `/library/${view.Id}`
+          };
+        }
+      );
+    }
 
     this.libraries = userViews;
   }
-};
+});
 </script>

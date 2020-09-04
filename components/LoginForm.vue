@@ -28,14 +28,16 @@
         >submit</v-btn
       >
     </v-form>
-    <v-snackbar color="red" bottom left v-model="errorMessageSnackbar">
+    <v-snackbar v-model="errorMessageSnackbar" color="red" bottom left>
       {{ errorMessage }}
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   data() {
     return {
       serverUrl: '',
@@ -71,7 +73,6 @@ export default {
         );
         this.$auth.setUser(response.data.User);
       } catch (error) {
-        console.error('Failed to login:', error);
         if (!error.response) {
           this.errorMessage = 'Server Not Found';
         } else if (error.response.status === 500) {
@@ -85,7 +86,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>
