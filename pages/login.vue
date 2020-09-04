@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import LoginForm from '../components/LoginForm.vue';
+import LoginForm from '~/components/LoginForm.vue';
 
 export default Vue.extend({
   layout: 'fullpage',
