@@ -11,7 +11,7 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
     case 'tvshows':
       return 'mdi-television-classic';
     case 'homevideos':
-      return 'mdi-photos';
+      return 'mdi-image-multiple';
     case 'musicvideos':
       return 'mdi-music-box';
     case 'books':
