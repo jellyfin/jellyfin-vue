@@ -62,11 +62,14 @@ export default Vue.extend({
           data: this.login
         });
 
+        const accessToken = `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`;
+
         this.$auth.setUserToken(
           // TODO: Generate the token properly
-          `MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0", Token="${response.data.AccessToken}"`
+          accessToken
         );
         this.$auth.setUser(response.data.User);
+        this.$user.set(response.data.User.Id, this.serverUrl, accessToken);
       } catch (error) {
         let errorMessage = 'Unexpected Error';
 
