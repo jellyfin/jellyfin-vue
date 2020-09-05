@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col align="center" justify="center" md="4" no-gutters>
+      <v-col align="center" justify="center" md="4">
         <h1 class="text-h4 mb-6">Login</h1>
         <login-form />
       </v-col>
