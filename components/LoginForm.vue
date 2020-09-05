@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-form ref="form" v-model="validInputs" @submit.prevent="userLogin">
+    <v-form
+      ref="form"
+      v-model="validInputs"
+      @submit.prevent="userLogin"
+      :disabled="loginIn"
+    >
       <v-text-field
         v-model="serverUrl"
         outlined
@@ -24,7 +29,13 @@
         :type="showPassword ? 'text' : 'password'"
         @click:append="() => (showPassword = !showPassword)"
       ></v-text-field>
-      <v-btn :disabled="!validInputs" block large color="primary" type="submit"
+      <v-btn
+        :disabled="!validInputs"
+        :loading="loginIn"
+        block
+        large
+        color="primary"
+        type="submit"
         >submit</v-btn
       >
     </v-form>
@@ -44,6 +55,7 @@ export default Vue.extend({
       },
       showPassword: false,
       validInputs: false,
+      loginIn: false,
       rules: {
         serverUrlTest: [
           (v: string) => !!v || 'Server address is required',
@@ -55,6 +67,7 @@ export default Vue.extend({
   },
   methods: {
     async userLogin() {
+      this.loginIn = true;
       try {
         this.$axios.setBaseURL(this.serverUrl);
 
@@ -81,6 +94,7 @@ export default Vue.extend({
           errorMessage = 'Bad Request. Try Again';
         }
 
+        this.loginIn = false;
         this.$snackbar(errorMessage, 'error');
       }
     }
