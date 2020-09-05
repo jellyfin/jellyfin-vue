@@ -18,7 +18,11 @@ export default Vue.extend({
     item: {
       type: Object,
       required: true,
-      default: () => {}
+      default: () => {
+        return {
+          Name: 'Missing Name'
+        };
+      }
     }
   },
   methods: {
