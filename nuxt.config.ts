@@ -64,13 +64,14 @@ const config: NuxtConfig = {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://axios.nuxtjs.org/usage
+    'nuxt-i18n',
     [
       'nuxt-vuex-localstorage',
       {
         localStorage: ['user']
       }
     ],
+    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/pwa'
@@ -140,6 +141,15 @@ const config: NuxtConfig = {
       }
     },
     plugins: ['plugins/userInit.ts']
+  },
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
+      { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' }
+    ],
+    lazy: true,
+    langDir: 'locales/',
+    strategy: 'no_prefix'
   },
   /*
    ** vuetify module configuration

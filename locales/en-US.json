@@ -1,0 +1,13 @@
+{
+  "badRequest": "Bad Request. Try Again",
+  "home": "Home",
+  "incorrectPassword": "Incorrect Password",
+  "logout": "Logout",
+  "more": "More",
+  "play": "Play",
+  "serverAddressMustBeUrl": "Server address must be a valid URL",
+  "serverAddressRequired": "Server address is required",
+  "serverNotFound": "Server Not Found",
+  "settings": "Settings",
+  "unexpectedError": "Unexpected Error"
+}

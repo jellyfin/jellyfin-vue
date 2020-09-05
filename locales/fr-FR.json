@@ -1,0 +1,13 @@
+{
+  "badRequest": "Mauvaise requête. Réessayez",
+  "home": "Accueil",
+  "incorrectPassword": "Mot de passe incorrect",
+  "logout": "Se déconnecter",
+  "more": "Plus",
+  "play": "Lire",
+  "serverAddressMustBeUrl": "L'adresse du serveur doit être une URL valide",
+  "serverAddressRequired": "L'adresse du serveur est requise",
+  "serverNotFound": "Serveur introuvable",
+  "settings": "Paramètres",
+  "unexpectedError": "Erreur inattendue"
+}

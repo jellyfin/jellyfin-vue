@@ -26,7 +26,7 @@ export default Vue.extend({
     return {
       menuItems: [
         {
-          title: 'Logout',
+          title: this.$t('logout'),
           action: () => {
             this.$auth.logout();
             this.$user.clear();
