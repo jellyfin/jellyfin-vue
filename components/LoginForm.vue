@@ -3,8 +3,8 @@
     <v-form
       ref="form"
       v-model="validInputs"
-      @submit.prevent="userLogin"
       :disabled="loginIn"
+      @submit.prevent="userLogin"
     >
       <v-text-field
         v-model="serverUrl"
