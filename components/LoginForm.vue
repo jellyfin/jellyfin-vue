@@ -18,7 +18,7 @@
         v-model="login.username"
         outlined
         label="Username"
-        :rules="[(v) => !!v || 'Username is required']"
+        :rules="[(v) => !!v || $t('usernameRequired')]"
         required
       ></v-text-field>
       <v-text-field
@@ -89,7 +89,7 @@ export default Vue.extend({
         if (!error.response) {
           errorMessage = this.$t('serverNotFound');
         } else if (error.response.status === 500) {
-          errorMessage = this.$t('incorrectPassword');
+          errorMessage = this.$t('incorrectUsernameOrPassword');
         } else if (error.response.status === 400) {
           errorMessage = this.$t('badRequest');
         }

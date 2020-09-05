@@ -1,13 +1,15 @@
 {
-  "badRequest": "Bad Request. Try Again",
+  "badRequest": "Bad request. Try again",
   "home": "Home",
-  "incorrectPassword": "Incorrect Password",
+  "incorrectUsernameOrPassword": "Incorrect username or password",
+  "login": "Login",
   "logout": "Logout",
   "more": "More",
   "play": "Play",
   "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
-  "serverNotFound": "Server Not Found",
+  "serverNotFound": "Server not found",
   "settings": "Settings",
-  "unexpectedError": "Unexpected Error"
+  "unexpectedError": "Unexpected error",
+  "usernameRequired": "Username is required"
 }
