@@ -25,7 +25,14 @@ module.exports = {
     'promise/no-nesting': 'error',
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
-    'promise/prefer-await-to-then': 'error'
+    'promise/prefer-await-to-then': 'error',
+    'vue/component-name-in-template-casing': [
+      'error',
+      'kebab-case',
+      {
+        ignores: []
+      }
+    ]
   },
   settings: {
     'import/resolver': {
