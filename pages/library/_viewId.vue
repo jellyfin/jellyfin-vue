@@ -17,12 +17,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Card from '~/components/Card';
 
 export default Vue.extend({
-  components: {
-    Card
-  },
   data() {
     return {
       name: '',
