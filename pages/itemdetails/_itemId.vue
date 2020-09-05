@@ -3,7 +3,7 @@
     <v-img :src="imageLink(Item.Id, 'backdrop')"></v-img>
     <h1>{{ Item.Name }}</h1>
     <p>{{ Item.Overview }}</p>
-    <v-btn color="primary">Play {{ Item.Type }} </v-btn>
+    <v-btn color="primary">Play {{ Item.Type }}</v-btn>
     <v-btn>More</v-btn>
   </div>
 </template>
