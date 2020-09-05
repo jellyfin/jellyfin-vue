@@ -38,13 +38,15 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    'plugins/userViewsApi.ts',
-    'plugins/itemsApi.ts',
+    'plugins/displayPreferenceApi.ts',
     'plugins/imageApi.ts',
-    'plugins/tvShowsApi.ts',
-    'plugins/userApi.ts',
+    'plugins/itemsApi.ts',
     'plugins/snackbar.ts',
-    'plugins/user.ts'
+    'plugins/tvShowsApi.ts',
+    'plugins/user.ts',
+    'plugins/userApi.ts',
+    'plugins/userApi.ts',
+    'plugins/userViewsApi.ts'
   ],
   /*
    ** Auto import components
