@@ -7,7 +7,6 @@
       <card
         v-for="item in items"
         :key="item.Id"
-        :to="`../item/${item.Id}`"
         class="card mt-5"
         :item="item"
       />
