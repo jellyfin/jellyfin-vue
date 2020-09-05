@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :to="`../item/${item.Id}`">
     <v-img class="cardImage" :src="imageLink(item.Id)" />
     <v-card-title>
       <span>{{ item.Name }}</span>
