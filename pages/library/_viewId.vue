@@ -4,28 +4,25 @@
       <span>{{ Name }}</span>
     </h1>
     <div class="cardsContainer">
-      <v-card
+      <CardBuilder
         v-for="item in Items"
         :key="item.Id"
         :to="`../itemdetails/${item.Id}`"
         class="card mt-5"
-      >
-        <v-img class="cardImage" :src="imageLink(item.Id)" />
-        <v-card-title>
-          <span>{{ item.Name }}</span>
-        </v-card-title>
-        <v-card-subtitle>
-          <span>{{ item.ProductionYear }}</span>
-        </v-card-subtitle>
-      </v-card>
+        :item="item"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import CardBuilder from '~/components/cardBuilder';
 
 export default Vue.extend({
+  components: {
+    CardBuilder
+  },
   data() {
     return {
       Name: '',
@@ -67,9 +64,5 @@ export default Vue.extend({
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-}
-
-.card {
-  width: 12em;
 }
 </style>
