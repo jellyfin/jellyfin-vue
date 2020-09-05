@@ -4,15 +4,11 @@
       <span>{{ section.name }}</span>
     </h1>
 
-    <div class="d-flex flex-wrap">
-      <card
-        v-for="item in items"
-        :key="item.Id"
-        :to="`/item/${item.Id}`"
-        class="card mt-5"
-        :item="item"
-      />
-    </div>
+    <v-slide-group>
+      <v-slide-item v-for="item in items" :key="item.Id">
+        <card :to="`/item/${item.Id}`" class="card mt-5" :item="item" />
+      </v-slide-item>
+    </v-slide-group>
   </v-col>
 </template>
 
