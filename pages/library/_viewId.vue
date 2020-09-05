@@ -1,22 +1,17 @@
 <template>
   <div>
-    <h1>{{ Name }}</h1>
-    <v-list>
-      <v-list-item
+    <h1>
+      <span>{{ name }}</span>
+    </h1>
+    <div class="d-flex flex-wrap justify-space-around">
+      <card
         v-for="item in items"
         :key="item.Id"
-        :to="`../itemdetails/${item.Id}`"
-      >
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ item.Name }}
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ item.ProductionYear }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+        :to="`../item/${item.Id}`"
+        class="card mt-5"
+        :item="item"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,7 +25,6 @@ export default Vue.extend({
       items: {}
     };
   },
-
   async beforeMount() {
     const collectionInfo = await this.$itemsApi.getItems({
       uId: this.$auth.user.Id,
