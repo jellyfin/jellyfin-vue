@@ -1,4 +1,5 @@
 import { Context } from '@nuxt/types';
+import { AxiosInstance } from 'axios';
 import { DisplayPreferencesApi } from '~/api/api';
 import { Configuration } from '~/api/configuration';
 import { PluginInjection } from '~/types/utils';
@@ -25,7 +26,7 @@ export default (context: Context, inject: PluginInjection): void => {
   const displayPreferencesApi = new DisplayPreferencesApi(
     config,
     '',
-    context.$axios
+    context.$axios as AxiosInstance
   );
   inject('displayPreferencesApi', displayPreferencesApi);
 };
