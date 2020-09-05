@@ -28,6 +28,7 @@
     "@nuxtjs/axios": "^5.12.0",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "nuxt": "^2.14.0",
+    "nuxt-i18n": "^6.13.12",
     "nuxt-vuex-localstorage": "^1.2.7"
   },
   "devDependencies": {

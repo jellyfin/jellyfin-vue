@@ -1,17 +1,25 @@
 <template>
-  <div>
-    <h1>
-      <span>{{ name }}</span>
-    </h1>
-    <div class="d-flex flex-wrap justify-space-around">
-      <card
-        v-for="item in items"
-        :key="item.Id"
-        class="card mt-5"
-        :item="item"
-      />
-    </div>
-  </div>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <h1>
+          <span>{{ name }}</span>
+        </h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <div class="d-flex flex-wrap">
+          <card
+            v-for="item in items"
+            :key="item.Id"
+            class="card mt-5"
+            :item="item"
+          />
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

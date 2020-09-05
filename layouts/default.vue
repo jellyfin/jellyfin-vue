@@ -65,6 +65,7 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <locale-switcher />
       <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
@@ -93,14 +94,14 @@ export default Vue.extend({
       items: [
         {
           icon: 'mdi-home',
-          title: 'Home',
+          title: this.$t('home'),
           to: '/'
         }
       ],
       configItems: [
         {
           icon: 'mdi-cog',
-          title: 'Settings',
+          title: this.$t('settings'),
           to: '/settings'
         }
       ],

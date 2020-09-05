@@ -18,7 +18,7 @@
         v-model="login.username"
         outlined
         label="Username"
-        :rules="[(v) => !!v || 'Username is required']"
+        :rules="[(v) => !!v || $t('usernameRequired')]"
         required
       ></v-text-field>
       <v-text-field
@@ -58,9 +58,9 @@ export default Vue.extend({
       loginIn: false,
       rules: {
         serverUrlTest: [
-          (v: string) => !!v || 'Server address is required',
+          (v: string) => !!v || this.$t('serverAddressRequired'),
           (v: string) =>
-            /^https?:\/\/.+/.test(v) || 'Server address must be a valid URL'
+            /^https?:\/\/.+/.test(v) || this.$t('serverAddressMustBeUrl')
         ]
       }
     };
@@ -84,18 +84,18 @@ export default Vue.extend({
         this.$auth.setUser(response.data.User);
         this.$user.set(response.data.User.Id, this.serverUrl, accessToken);
       } catch (error) {
-        let errorMessage = 'Unexpected Error';
+        let errorMessage = this.$t('unexpectedError');
 
         if (!error.response) {
-          errorMessage = 'Server Not Found';
+          errorMessage = this.$t('serverNotFound');
         } else if (error.response.status === 500) {
-          errorMessage = 'Incorrect Password';
+          errorMessage = this.$t('incorrectUsernameOrPassword');
         } else if (error.response.status === 400) {
-          errorMessage = 'Bad Request. Try Again';
+          errorMessage = this.$t('badRequest');
         }
 
         this.loginIn = false;
-        this.$snackbar(errorMessage, 'error');
+        this.$snackbar(errorMessage as string, 'error');
       }
     }
   }
@@ -103,6 +103,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+/* HACK: Snackbar positioning -- See: https://github.com/vuetifyjs/vuetify/issues/11781#issuecomment-655689025 */
 div.v-snack:not(.v-snack--absolute) {
   height: 100%;
 }

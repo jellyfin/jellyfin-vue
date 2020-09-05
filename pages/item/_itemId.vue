@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <v-img :src="getImageLink(item.Id, 'backdrop')"></v-img>
-    <h1>{{ item.Name }}</h1>
-    <p>{{ item.Overview }}</p>
-    <v-btn color="primary">Play {{ item.Type }}</v-btn>
-    <v-btn>More</v-btn>
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="4">
+        <v-img :src="getImageLink(item.Id, 'primary')"></v-img>
+      </v-col>
+      <v-col cols="8">
+        <h1>{{ item.Name }}</h1>
+        <p>{{ item.Overview }}</p>
+        <v-btn color="primary">{{ $t('play') }}</v-btn>
+        <v-btn>{{ $t('more') }}</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
