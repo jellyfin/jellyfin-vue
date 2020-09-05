@@ -29,6 +29,7 @@ export default Vue.extend({
           title: 'Logout',
           action: () => {
             this.$auth.logout();
+            this.$user.clear();
           }
         }
       ]
