@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>
-      <span>{{ Name }}</span>
+      <span>{{ name }}</span>
     </h1>
-    <div class="cardsContainer">
-      <CardBuilder
+    <div class="d-flex flex-wrap justify-space-around">
+      <card
         v-for="item in items"
         :key="item.Id"
-        :to="`../itemdetails/${item.Id}`"
+        :to="`../item/${item.Id}`"
         class="card mt-5"
         :item="item"
       />
@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CardBuilder from '~/components/cardBuilder';
+import Card from '~/components/Card';
 
 export default Vue.extend({
   components: {
-    CardBuilder
+    Card
   },
   data() {
     return {
@@ -52,20 +52,6 @@ export default Vue.extend({
 
       this.items = itemsResponse.data.Items || [];
     }
-  },
-  methods: {
-    imageLink(id: string) {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
-    }
   }
 });
 </script>
-
-<style scoped>
-.cardsContainer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-</style>
