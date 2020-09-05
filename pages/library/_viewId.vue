@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>{{ Name }}</h1>
+    <h1>
+      <span>{{ Name }}</span>
+    </h1>
     <div class="cardsContainer">
       <v-card
         v-for="item in Items"
@@ -10,10 +12,10 @@
       >
         <v-img class="cardImage" :src="imageLink(item.Id)" />
         <v-card-title>
-          {{ item.Name }}
+          <span>{{ item.Name }}</span>
         </v-card-title>
         <v-card-subtitle>
-          {{ item.ProductionYear }}
+          <span>{{ item.ProductionYear }}</span>
         </v-card-subtitle>
       </v-card>
     </div>
@@ -53,8 +55,7 @@ export default Vue.extend({
   },
   methods: {
     imageLink(id: string) {
-      const url = `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
-      return url;
+      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
     }
   }
 });
