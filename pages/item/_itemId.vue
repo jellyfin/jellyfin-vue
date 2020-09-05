@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-img :src="imageLink(item.Id, 'backdrop')"></v-img>
+    <v-img :src="getImageLink(item.Id, 'backdrop')"></v-img>
     <h1>{{ item.Name }}</h1>
     <p>{{ item.Overview }}</p>
     <v-btn color="primary">Play {{ item.Type }}</v-btn>
@@ -10,8 +10,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
+  mixins: [imageHelper],
   data() {
     return {
       item: {}
@@ -27,12 +29,6 @@ export default Vue.extend({
     });
 
     this.item = Item.data.Items[0];
-  },
-  methods: {
-    imageLink(id: string, type: string) {
-      const url = `${this.$axios.defaults.baseURL}/Items/${id}/Images/${type}`;
-      return url;
-    }
   }
 });
 </script>
