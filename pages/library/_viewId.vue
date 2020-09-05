@@ -25,27 +25,32 @@ export default Vue.extend({
     };
   },
   async beforeMount() {
-    const collectionInfo = await this.$itemsApi.getItems({
-      uId: this.$auth.user.Id,
-      userId: this.$auth.user.Id,
-      ids: this.$route.params.viewId
-    });
-
-    if (
-      collectionInfo.data.Items &&
-      collectionInfo.data.Items[0].Type === 'CollectionFolder'
-    ) {
-      this.name = collectionInfo.data.Items[0].Name || '';
-
-      const itemsResponse = await this.$itemsApi.getItems({
+    try {
+      const collectionInfo = await this.$itemsApi.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        parentId: this.$route.params.viewId,
-        sortBy: 'SortName',
-        sortOrder: 'Ascending'
+        ids: this.$route.params.viewId
       });
 
-      this.items = itemsResponse.data.Items || [];
+      if (
+        collectionInfo.data.Items &&
+        collectionInfo.data.Items[0].Type === 'CollectionFolder'
+      ) {
+        this.name = collectionInfo.data.Items[0].Name || '';
+
+        const itemsResponse = await this.$itemsApi.getItems({
+          uId: this.$auth.user.Id,
+          userId: this.$auth.user.Id,
+          parentId: this.$route.params.viewId,
+          sortBy: 'SortName',
+          sortOrder: 'Ascending'
+        });
+
+        this.items = itemsResponse.data.Items || [];
+      }
+    } catch (error) {
+      // Can't get given library ID
+      this.$nuxt.error({ statusCode: 404, message: 'Library not found' });
     }
   }
 });
