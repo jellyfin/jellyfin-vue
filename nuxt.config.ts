@@ -41,6 +41,7 @@ const config: NuxtConfig = {
     'plugins/userViewsApi.ts',
     'plugins/itemsApi.ts',
     'plugins/imageApi.ts',
+    'plugins/tvShowsApi.ts',
     'plugins/userApi.ts',
     'plugins/snackbar.ts',
     'plugins/user.ts'
