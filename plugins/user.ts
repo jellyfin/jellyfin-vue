@@ -30,8 +30,17 @@ declare module 'vuex/types/index' {
 
 export default (context: Context, inject: PluginInjection): void => {
   const user = {
-    set: (id: string, serverUrl: string, accessToken: string) => {
-      context.store.commit('user/set', { id, serverUrl, accessToken });
+    set: async (id: string, serverUrl: string, accessToken: string) => {
+      const response = await context.$displayPreferencesApi.getDisplayPreferences(
+        { displayPreferencesId: 'usersettings', userId: id, client: 'emby' }
+      );
+
+      context.store.commit('user/set', {
+        id,
+        serverUrl,
+        accessToken,
+        displayPreferences: response.data.CustomPrefs
+      });
     },
     clear: () => {
       context.store.commit('user/clear');

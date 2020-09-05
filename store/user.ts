@@ -4,18 +4,21 @@ export interface UserState {
   id: string;
   serverUrl: string;
   accessToken: string;
+  displayPreferences: { [key: string]: string };
 }
 
 export const state = (): UserState => ({
   id: '',
   serverUrl: '',
-  accessToken: ''
+  accessToken: '',
+  displayPreferences: {}
 });
 
 interface MutationPayload {
   id: string;
   serverUrl: string;
   accessToken: string;
+  displayPreferences: { [key: string]: string };
 }
 
 export const mutations: MutationTree<UserState> = {
@@ -23,10 +26,12 @@ export const mutations: MutationTree<UserState> = {
     state.id = payload.id;
     state.serverUrl = payload.serverUrl;
     state.accessToken = payload.accessToken;
+    state.displayPreferences = payload.displayPreferences;
   },
   clear(state: UserState) {
     state.serverUrl = '';
     state.serverUrl = '';
     state.accessToken = '';
+    state.displayPreferences = {};
   }
 };

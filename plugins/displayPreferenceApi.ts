@@ -1,32 +1,32 @@
 import { Context } from '@nuxt/types';
 import { AxiosInstance } from 'axios';
-import { TvShowsApi } from '~/api/api';
+import { DisplayPreferencesApi } from '~/api/api';
 import { Configuration } from '~/api/configuration';
 import { PluginInjection } from '~/types/utils';
 
 declare module '@nuxt/types' {
   interface Context {
-    $tvShowsApi: TvShowsApi;
+    $displayPreferencesApi: DisplayPreferencesApi;
   }
 
   interface NuxtAppOptions {
-    $tvShowsApi: TvShowsApi;
+    $displayPreferencesApi: DisplayPreferencesApi;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $tvShowsApi: TvShowsApi;
+    $displayPreferencesApi: DisplayPreferencesApi;
   }
 }
 
 export default (context: Context, inject: PluginInjection): void => {
   const config = new Configuration();
 
-  const tvShowsApi = new TvShowsApi(
+  const displayPreferencesApi = new DisplayPreferencesApi(
     config,
     '',
     context.$axios as AxiosInstance
   );
-  inject('tvShowsApi', tvShowsApi);
+  inject('displayPreferencesApi', displayPreferencesApi);
 };

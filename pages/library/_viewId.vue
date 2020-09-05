@@ -24,12 +24,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { BaseItemDto } from '../../api';
 
 export default Vue.extend({
   data() {
     return {
       name: '',
-      items: {}
+      items: [] as BaseItemDto[]
     };
   },
   async beforeMount() {
