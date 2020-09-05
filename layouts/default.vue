@@ -78,10 +78,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '../api/api';
-import UserButton from '../components/UserButton.vue';
-import Snackbar from '../components/Snackbar.vue';
-import { getLibraryIcon } from '../utils/items';
+import { BaseItemDto } from '~/api/api';
+import UserButton from '~/components/UserButton.vue';
+import Snackbar from '~/components/Snackbar.vue';
+import { getLibraryIcon } from '~/utils/items';
 
 interface NavigationDrawerItem {
   icon: string | undefined | null;

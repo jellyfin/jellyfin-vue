@@ -5,7 +5,7 @@
     </h1>
     <div class="cardsContainer">
       <CardBuilder
-        v-for="item in Items"
+        v-for="item in items"
         :key="item.Id"
         :to="`../itemdetails/${item.Id}`"
         class="card mt-5"
@@ -25,8 +25,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      Name: '',
-      Items: {}
+      name: '',
+      items: {}
     };
   },
   async beforeMount() {
@@ -36,8 +36,11 @@ export default Vue.extend({
       ids: this.$route.params.viewId
     });
 
-    if (collectionInfo.data.Items[0].Type === 'CollectionFolder') {
-      this.Name = collectionInfo.data.Items[0].Name;
+    if (
+      collectionInfo.data.Items &&
+      collectionInfo.data.Items[0].Type === 'CollectionFolder'
+    ) {
+      this.name = collectionInfo.data.Items[0].Name || '';
 
       const itemsResponse = await this.$itemsApi.getItems({
         uId: this.$auth.user.Id,
@@ -47,7 +50,7 @@ export default Vue.extend({
         sortOrder: 'Ascending'
       });
 
-      this.Items = itemsResponse.data.Items;
+      this.items = itemsResponse.data.Items || [];
     }
   },
   methods: {

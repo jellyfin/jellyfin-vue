@@ -41,7 +41,9 @@ const config: NuxtConfig = {
     'plugins/userViewsApi.ts',
     'plugins/itemsApi.ts',
     'plugins/imageApi.ts',
-    'plugins/snackbar.ts'
+    'plugins/userApi.ts',
+    'plugins/snackbar.ts',
+    'plugins/user.ts'
   ],
   /*
    ** Auto import components
@@ -62,6 +64,12 @@ const config: NuxtConfig = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    [
+      'nuxt-vuex-localstorage',
+      {
+        localStorage: ['user']
+      }
+    ],
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/pwa'
@@ -129,7 +137,8 @@ const config: NuxtConfig = {
           type: false
         }
       }
-    }
+    },
+    plugins: ['plugins/userInit.ts']
   },
   /*
    ** vuetify module configuration
