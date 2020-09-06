@@ -97,7 +97,7 @@ export default Vue.extend({
         }
       ],
       clipped: true,
-      drawer: true,
+      drawer: !this.$vuetify.breakpoint.mobile,
       libraries: {},
       title: 'Jellyfin'
     };
