@@ -1,8 +1,5 @@
 <template>
-  <nuxt-link
-    :to="`/item/${item.Id}`"
-    style="text-decoration: none; color: inherit"
-  >
+  <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
     <div class="card-box">
       <div :class="cardType">
         <button
@@ -54,6 +51,15 @@ export default Vue.extend({
     }
   },
   computed: {
+    itemLink: {
+      get() {
+        if (this.item.Type === 'Folder') {
+          return `/library/${this.item.Id}`;
+        } else {
+          return `/item/${this.item.Id}`;
+        }
+      }
+    },
     cardType: {
       get() {
         // If the shape is forced externally, use that instead
@@ -74,6 +80,7 @@ export default Vue.extend({
           case 'MusicAlbum':
           case 'PhotoAlbum':
           case 'Playlist':
+          case 'Video':
             return 'square-card';
           default:
             return '';
