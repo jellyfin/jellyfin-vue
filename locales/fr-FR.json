@@ -19,5 +19,6 @@
   "password": "Mot de passe",
   "signIn": "Se connecter",
   "upNext": "À suivre",
-  "usernameRequired": "Nom d'utilisateur requis"
+  "libraryNotFound": "Médiathèque introuvable",
+  "itemNotFound": "Élément introuvable"
 }

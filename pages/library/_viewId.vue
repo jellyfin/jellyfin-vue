@@ -52,7 +52,10 @@ export default Vue.extend({
       }
     } catch (error) {
       // Can't get given library ID
-      this.$nuxt.error({ statusCode: 404, message: 'Library not found' });
+      this.$nuxt.error({
+        statusCode: 404,
+        message: this.$t('libraryNotFound') as string
+      });
     }
   }
 });
