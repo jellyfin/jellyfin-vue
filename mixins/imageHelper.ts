@@ -9,9 +9,10 @@ const imageHelper = Vue.extend({
   methods: {
     /**
      * Get the URL of an item's image
-     * @param id itemId to get image for
-     * @param type type of image (primary/backdrop)
-     * @returns URL of the link to the image
+     *
+     * @param {string} id - itemId to get image for
+     * @param {string} type - type of image (primary/backdrop)
+     * @returns {string} URL of the link to the image
      */
     getImageLink(id: string, type: string): string {
       return `${this.$axios.defaults.baseURL}/Items/${id}/Images/${type}`;
