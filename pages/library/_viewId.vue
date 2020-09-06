@@ -8,7 +8,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col v-for="item in items" :key="item.Id" cols="2">
+      <v-col v-for="item in items" :key="item.Id" cols="6" sm="4" md="3" lg="2">
         <card :item="item" />
       </v-col>
     </v-row>
