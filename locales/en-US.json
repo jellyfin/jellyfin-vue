@@ -1,5 +1,7 @@
 {
   "badRequest": "Bad request. Try again",
+  "continueListening": "Continue listening",
+  "continueWatching": "Continue watching",
   "home": "Home",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "login": "Login",
@@ -15,5 +17,7 @@
   "serverAddress": "Server address",
   "username": "Username",
   "password": "Password",
-  "signIn": "Sign in"
+  "signIn": "Sign in",
+  "upNext": "Up next",
+  "usernameRequired": "Username is required"
 }

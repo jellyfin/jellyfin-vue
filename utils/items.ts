@@ -24,3 +24,22 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
       return 'mdi-folder';
   }
 }
+
+export function getShapeFromCollectionType(
+  collectionType: string | null | undefined
+): string {
+  switch (collectionType) {
+    case 'boxsets':
+    case 'movies':
+    case 'tvshows':
+    case 'books':
+      return 'portrait-card';
+    case 'livetv':
+      return 'thumb-card';
+    case 'folders':
+    case 'playlists':
+    case 'music':
+    default:
+      return 'square-card';
+  }
+}

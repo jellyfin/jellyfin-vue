@@ -29,15 +29,22 @@
         :type="showPassword ? 'text' : 'password'"
         @click:append="() => (showPassword = !showPassword)"
       ></v-text-field>
-      <v-btn
-        :disabled="!validInputs"
-        :loading="loginIn"
-        block
-        large
-        color="primary"
-        type="submit"
-        >{{ $t('signIn') }}</v-btn
-      >
+      <v-row align="center" no-gutters>
+        <v-col class="mr-2">
+          <v-btn
+            :disabled="!validInputs"
+            :loading="loginIn"
+            block
+            large
+            color="primary"
+            type="submit"
+            >{{ $t('signIn') }}</v-btn
+          >
+        </v-col>
+        <v-col cols="auto">
+          <locale-switcher />
+        </v-col>
+      </v-row>
     </v-form>
   </div>
 </template>
