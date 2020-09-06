@@ -23,4 +23,4 @@ jobs:
         condition: ne(variables.CACHE_RESTORED, 'true')
 
       - script: 'yarn build'
-        displayName: 'Building'
+        displayName: 'Build'
