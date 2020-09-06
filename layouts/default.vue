@@ -23,7 +23,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-divider></v-divider>
+      <v-divider v-if="libraries.length > 0"></v-divider>
       <v-list>
         <v-list-item
           v-for="(library, i) in libraries"
