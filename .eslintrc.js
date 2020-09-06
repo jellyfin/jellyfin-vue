@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:jsdoc/recommended',
     'plugin:@typescript-eslint/recommended',
     '@nuxtjs/eslint-config-typescript',
     'prettier',
@@ -17,7 +18,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript'
   ],
-  plugins: ['prettier', 'promise', 'import'],
+  plugins: ['prettier', 'promise', 'import', 'jsdoc'],
   // add your custom rules here
   rules: {
     'import/newline-after-import': 'error',
