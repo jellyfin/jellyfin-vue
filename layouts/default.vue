@@ -1,12 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -23,7 +17,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-divider></v-divider>
+      <v-divider v-if="libraries.length > 0"></v-divider>
       <v-list>
         <v-list-item
           v-for="(library, i) in libraries"
@@ -60,9 +54,6 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <locale-switcher />
@@ -106,9 +97,8 @@ export default Vue.extend({
         }
       ],
       clipped: true,
-      drawer: true,
+      drawer: !this.$vuetify.breakpoint.mobile,
       libraries: {},
-      miniVariant: false,
       title: 'Jellyfin'
     };
   },
