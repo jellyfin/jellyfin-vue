@@ -1,10 +1,16 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on, attrs }">
-      <v-avatar color="grey darken-2" size="36" v-bind="attrs" v-on="on">
-        <v-img v-if="userImage" :src="userImage" :alt="$auth.user.name"></v-img>
-        <v-icon v-else dark>mdi-account</v-icon>
-      </v-avatar>
+      <v-btn icon v-bind="attrs" v-on="on">
+        <v-avatar>
+          <v-img
+            v-if="userImage"
+            :src="userImage"
+            :alt="$auth.user.name"
+          ></v-img>
+          <v-icon v-else dark>mdi-account</v-icon>
+        </v-avatar>
+      </v-btn>
     </template>
     <v-list>
       <v-list-item
