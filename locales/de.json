@@ -18,5 +18,7 @@
     "signIn": "Anmelden",
     "password": "Passwort",
     "username": "Benutzername",
-    "serverAddress": "Server-Adresse"
+    "serverAddress": "Server-Adresse",
+    "itemNotFound": "Element nicht gefunden",
+    "libraryNotFound": "Bibliothek nicht gefunden"
 }
