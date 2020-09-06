@@ -14,5 +14,11 @@
     "settings": "Instellingen",
     "unexpectedError": "Onverwachte fout",
     "upNext": "Volgende",
-    "usernameRequired": "Gebruikersnaam is verplicht"
+    "usernameRequired": "Gebruikersnaam is verplicht",
+    "itemNotFound": "Item niet gevonden",
+    "libraryNotFound": "Bibliotheek niet gevonden",
+    "signIn": "Inloggen",
+    "password": "Wachtwoord",
+    "username": "Gebruikersnaam",
+    "serverAddress": "Server adres"
 }
