@@ -38,12 +38,16 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    // Components
+    'plugins/components/vueperSlides.ts',
+    // Utility
+    'plugins/snackbar.ts',
+    'plugins/user.ts',
+    // API
     'plugins/displayPreferenceApi.ts',
     'plugins/imageApi.ts',
     'plugins/itemsApi.ts',
-    'plugins/snackbar.ts',
     'plugins/tvShowsApi.ts',
-    'plugins/user.ts',
     'plugins/userApi.ts',
     'plugins/userLibraryApi.ts',
     'plugins/userViewsApi.ts'

@@ -8,15 +8,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
-        <div class="d-flex flex-wrap">
-          <card
-            v-for="item in items"
-            :key="item.Id"
-            class="card mt-5"
-            :item="item"
-          />
-        </div>
+      <v-col v-for="item in items" :key="item.Id" cols="2">
+        <card :item="item" />
       </v-col>
     </v-row>
   </v-container>
