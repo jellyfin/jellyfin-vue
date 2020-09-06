@@ -12,7 +12,7 @@
       </v-col>
     </v-row>
     <div v-if="item.Type === 'Series'">
-      <v-tabs v-model="seasonTabs">
+      <v-tabs v-model="seasonTabs" class="mb-3">
         <v-tab v-for="season in allEpisodes" :key="season.Id">
           {{ season.Name }}
         </v-tab>
@@ -20,17 +20,28 @@
 
       <v-tabs-items v-model="seasonTabs">
         <v-tab-item v-for="season in allEpisodes" :key="season.Id">
-          <v-slide-group show-arrows="mobile">
-            <v-slide-item v-for="episode in season.Episodes" :key="episode.Id">
-              <v-card class="ma-5">
-                <v-img :src="getImageLink(episode.Id, 'primary')"></v-img>
-                <v-card-subtitle>
-                  <span>Episode {{ episode.IndexNumber }}</span>
-                </v-card-subtitle>
-                <v-card-title>{{ episode.Name }}</v-card-title>
-              </v-card>
-            </v-slide-item>
-          </v-slide-group>
+          <vueper-slides
+            :visible-slides="3"
+            :arrows-outside="false"
+            slide-multiple
+            :gap="2"
+            :infinite="false"
+            :disable-arrows-on-edges="true"
+            :bullets="false"
+            :dragging-distance="200"
+          >
+            <vueper-slide v-for="episode in season.Episodes" :key="episode.Id">
+              <template v-slot:content>
+                <v-card>
+                  <v-img :src="getImageLink(episode.Id, 'primary')"></v-img>
+                  <v-card-subtitle>
+                    <span>Episode {{ episode.IndexNumber }}</span>
+                  </v-card-subtitle>
+                  <v-card-title>{{ episode.Name }}</v-card-title>
+                </v-card>
+              </template>
+            </vueper-slide>
+          </vueper-slides>
         </v-tab-item>
       </v-tabs-items>
     </div>
@@ -93,7 +104,6 @@ export default Vue.extend({
           Episodes: episodes
         });
       }
-      console.log(this.allEpisodes);
     }
   }
 });
