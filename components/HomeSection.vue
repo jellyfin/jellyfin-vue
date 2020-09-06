@@ -139,6 +139,12 @@ h1 {
   position: relative;
   cursor: default !important;
 }
+
+@media (hover: none) {
+  .home-section .vueperslides__arrows {
+    display: none !important;
+  }
+}
 .home-section .vueperslides__arrows {
   display: flex;
   position: absolute;
