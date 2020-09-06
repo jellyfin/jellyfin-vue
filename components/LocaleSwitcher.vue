@@ -7,8 +7,9 @@
     </template>
     <v-list>
       <v-list-item
-        v-for="(item, index) in menuItems"
+        v-for="(item, index) in $i18n.locales"
         :key="index"
+        :input-value="item.code === $i18n.locale"
         @click="$i18n.setLocale(item.code)"
       >
         <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -16,17 +17,3 @@
     </v-list>
   </v-menu>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({
-  computed: {
-    menuItems: {
-      get() {
-        return this.$i18n.locales;
-      }
-    }
-  }
-});
-</script>

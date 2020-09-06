@@ -82,25 +82,32 @@ interface NavigationDrawerItem {
 export default Vue.extend({
   data() {
     return {
-      items: [
+      clipped: true,
+      drawer: true,
+      libraries: {},
+      miniVariant: false,
+      title: 'Jellyfin'
+    };
+  },
+  computed: {
+    items() {
+      return [
         {
           icon: 'mdi-home',
           title: this.$t('home'),
           to: '/'
         }
-      ],
-      configItems: [
+      ];
+    },
+    configItems() {
+      return [
         {
           icon: 'mdi-cog',
           title: this.$t('settings'),
           to: '/settings'
         }
-      ],
-      clipped: true,
-      drawer: !this.$vuetify.breakpoint.mobile,
-      libraries: {},
-      title: 'Jellyfin'
-    };
+      ];
+    }
   },
   async beforeMount() {
     const userViewsRequest = await this.$userViewsApi.getUserViews({
