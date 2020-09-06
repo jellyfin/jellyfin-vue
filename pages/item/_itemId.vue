@@ -11,6 +11,29 @@
         <v-btn>{{ $t('more') }}</v-btn>
       </v-col>
     </v-row>
+    <div v-if="item.Type === 'Series'">
+      <v-tabs v-model="seasonTabs">
+        <v-tab v-for="season in allEpisodes" :key="season.Id">
+          {{ season.Name }}
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="seasonTabs">
+        <v-tab-item v-for="season in allEpisodes" :key="season.Id">
+          <v-slide-group show-arrows="mobile">
+            <v-slide-item v-for="episode in season.Episodes" :key="episode.Id">
+              <v-card class="ma-5">
+                <v-img :src="getImageLink(episode.Id, 'primary')"></v-img>
+                <v-card-subtitle>
+                  <span>Episode {{ episode.IndexNumber }}</span>
+                </v-card-subtitle>
+                <v-card-title>{{ episode.Name }}</v-card-title>
+              </v-card>
+            </v-slide-item>
+          </v-slide-group>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </v-container>
 </template>
 
@@ -19,11 +42,18 @@ import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
+interface allEpisodes extends Array<{ Name: string; Episodes: BaseItemDto[] }> {
+  [index: number]: { Name: string; Episodes: BaseItemDto[] };
+}
+
 export default Vue.extend({
   mixins: [imageHelper],
   data() {
     return {
-      item: {} as BaseItemDto
+      item: {} as BaseItemDto,
+      seasons: [] as BaseItemDto[],
+      allEpisodes: [] as allEpisodes,
+      seasonTabs: null
     };
   },
 
@@ -38,6 +68,33 @@ export default Vue.extend({
     ).data.Items as BaseItemDto[];
 
     this.item = Item[0];
+
+    if (this.item.Type === 'Series') {
+      const seasons = (
+        await this.$tvShowsApi.getSeasons({
+          userId: this.$auth.user.Id,
+          seriesId: this.item.Id || ''
+        })
+      ).data.Items as BaseItemDto[];
+
+      this.seasons = seasons;
+
+      for (const season of this.seasons) {
+        const episodes = (
+          await this.$itemsApi.getItems({
+            uId: this.$auth.user.Id,
+            userId: this.$auth.user.Id,
+            parentId: season.Id
+          })
+        ).data.Items as BaseItemDto[];
+
+        this.allEpisodes.push({
+          Name: season.Name || 'Missing Season Name',
+          Episodes: episodes
+        });
+      }
+      console.log(this.allEpisodes);
+    }
   }
 });
 </script>
