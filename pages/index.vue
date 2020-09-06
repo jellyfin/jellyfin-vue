@@ -12,24 +12,28 @@
 <script lang="ts">
 import Vue from 'vue';
 import { pickBy } from 'lodash';
+import { getShapeFromCollectionType } from '~/utils/items';
 
 export default Vue.extend({
   data() {
     return {
       homeSections: [
         {
-          name: 'Continue Watching',
+          name: this.$t('continueWatching'),
           libraryId: '',
+          shape: 'thumb-card',
           type: 'resume'
         },
         {
-          name: 'Continue Listening',
+          name: this.$t('continueListening'),
           libraryId: '',
+          shape: 'square-card',
           type: 'resumeaudio'
         },
         {
-          name: 'Next Up',
+          name: this.$t('upNext'),
           libraryId: '',
+          shape: 'thumb-card',
           type: 'nextup'
         }
       ]
@@ -83,6 +87,7 @@ export default Vue.extend({
                 latestMediaSections.push({
                   name: `Latest ${userView.Name}`,
                   libraryId: userView.Id || '',
+                  shape: getShapeFromCollectionType(userView.CollectionType),
                   type: 'latestmedia'
                 });
               }
@@ -95,6 +100,7 @@ export default Vue.extend({
             homeSections.push({
               name: 'Continue Watching',
               libraryId: '',
+              shape: 'thumb-card',
               type: 'resume'
             });
             break;
@@ -102,6 +108,7 @@ export default Vue.extend({
             homeSections.push({
               name: 'Continue Listening',
               libraryId: '',
+              shape: 'square-card',
               type: 'resumeaudio'
             });
             break;
@@ -109,6 +116,7 @@ export default Vue.extend({
             homeSections.push({
               name: 'Next Up',
               libraryId: '',
+              shape: 'thumb-card',
               type: 'nextup'
             });
             break;

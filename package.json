@@ -31,7 +31,8 @@
     "lodash": "^4.17.20",
     "nuxt": "^2.14.0",
     "nuxt-i18n": "^6.13.12",
-    "nuxt-vuex-localstorage": "^1.2.7"
+    "nuxt-vuex-localstorage": "^1.2.7",
+    "vueperslides": "^2.10.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",

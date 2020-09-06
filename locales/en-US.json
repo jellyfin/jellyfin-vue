@@ -1,15 +1,19 @@
 {
   "badRequest": "Bad request. Try again",
+  "continueListening": "Continue listening",
+  "continueWatching": "Continue watching",
   "home": "Home",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "login": "Login",
   "logout": "Logout",
   "more": "More",
+  "nextUp": "",
   "play": "Play",
   "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
   "serverNotFound": "Server not found",
   "settings": "Settings",
   "unexpectedError": "Unexpected error",
+  "upNext": "Up next",
   "usernameRequired": "Username is required"
 }

@@ -69,7 +69,7 @@
       <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container fluid>
         <nuxt />
       </v-container>
     </v-main>
