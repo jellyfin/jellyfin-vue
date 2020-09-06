@@ -173,8 +173,10 @@ export default Vue.extend({
   bottom: 0;
   opacity: 0;
 }
-.card-box:hover .card-overlay {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .card-box:hover .card-overlay {
+    opacity: 1;
+  }
 }
 .card-text {
   text-align: center;
