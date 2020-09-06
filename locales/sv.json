@@ -1,0 +1,22 @@
+{
+    "badRequest": "",
+    "continueListening": "",
+    "continueWatching": "",
+    "home": "",
+    "incorrectUsernameOrPassword": "",
+    "login": "",
+    "logout": "",
+    "more": "",
+    "play": "",
+    "serverAddressMustBeUrl": "",
+    "serverAddressRequired": "",
+    "serverNotFound": "",
+    "settings": "",
+    "unexpectedError": "",
+    "usernameRequired": "",
+    "serverAddress": "",
+    "username": "",
+    "password": "",
+    "signIn": "",
+    "upNext": ""
+}
