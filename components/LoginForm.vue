@@ -9,7 +9,7 @@
       <v-text-field
         v-model="serverUrl"
         outlined
-        label="Server Address"
+        :label="$t('serverAddress')"
         type="url"
         :rules="rules.serverUrlTest"
         required
@@ -17,14 +17,14 @@
       <v-text-field
         v-model="login.username"
         outlined
-        label="Username"
+        :label="$t('username')"
         :rules="[(v) => !!v || $t('usernameRequired')]"
         required
       ></v-text-field>
       <v-text-field
         v-model="login.pw"
         outlined
-        label="Password"
+        :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
         :type="showPassword ? 'text' : 'password'"
         @click:append="() => (showPassword = !showPassword)"
@@ -38,7 +38,7 @@
             large
             color="primary"
             type="submit"
-            >submit</v-btn
+            >{{ $t('signIn') }}</v-btn
           >
         </v-col>
         <v-col cols="auto">

@@ -13,6 +13,11 @@
   "serverNotFound": "Serveur introuvable",
   "settings": "Paramètres",
   "unexpectedError": "Erreur inattendue",
+  "usernameRequired": "Nom d'utilisateur requis",
+  "serverAddress": "Adresse du serveur",
+  "username": "Nom d'utilisateur",
+  "password": "Mot de passe",
+  "signIn": "Se connecter",
   "upNext": "À suivre",
   "usernameRequired": "Nom d'utilisateur requis"
 }
