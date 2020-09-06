@@ -46,7 +46,7 @@ export default Vue.extend({
       }
     },
     shape: {
-      type: String,
+      type: [String, Boolean],
       required: false,
       default: () => {
         return false;
