@@ -19,5 +19,6 @@
   "password": "Password",
   "signIn": "Sign in",
   "upNext": "Up next",
-  "usernameRequired": "Username is required"
+  "libraryNotFound": "Library not found",
+  "itemNotFound": "Item not found"
 }
