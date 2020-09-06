@@ -113,7 +113,7 @@ const config: NuxtConfig = {
             method: 'post',
             propertyName: false,
             headers: {
-              Accept: 'application/json;profile="CamelCase"',
+              Accept: 'application/json',
               'Content-Type': 'application/json',
               'X-Emby-Authorization':
                 'MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0"'
@@ -124,7 +124,7 @@ const config: NuxtConfig = {
             method: 'post',
             propertyName: false,
             headers: {
-              Accept: 'application/json;profile="CamelCase"',
+              Accept: 'application/json',
               'Content-Type': 'application/json'
             }
           },
