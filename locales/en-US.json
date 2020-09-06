@@ -7,7 +7,6 @@
   "login": "Login",
   "logout": "Logout",
   "more": "More",
-  "nextUp": "",
   "play": "Play",
   "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",

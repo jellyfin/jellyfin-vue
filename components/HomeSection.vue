@@ -94,7 +94,7 @@ export default Vue.extend({
         this.items = resumeItems.data.Items as BaseItemDto[];
         break;
       }
-      case 'nextup': {
+      case 'upnext': {
         const latestItems = await this.$tvShowsApi.getNextUp({
           userId: this.$auth.user.Id,
           limit: 12,

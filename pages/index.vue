@@ -34,13 +34,13 @@ export default Vue.extend({
           name: this.$t('upNext'),
           libraryId: '',
           shape: 'thumb-card',
-          type: 'nextup'
+          type: 'upnext'
         }
       ]
     };
   },
   async created() {
-    const validSections = ['resume', 'resumeaudio', 'nextup', 'latestmedia'];
+    const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
     let homeSectionsArray = pickBy(
@@ -112,12 +112,12 @@ export default Vue.extend({
               type: 'resumeaudio'
             });
             break;
-          case 'nextup':
+          case 'upnext':
             homeSections.push({
               name: 'Next Up',
               libraryId: '',
               shape: 'thumb-card',
-              type: 'nextup'
+              type: 'upnext'
             });
             break;
           default:
