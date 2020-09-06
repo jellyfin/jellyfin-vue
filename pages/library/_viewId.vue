@@ -34,9 +34,12 @@ export default Vue.extend({
         ids: this.$route.params.viewId
       });
 
+      console.dir(collectionInfo.data.Items);
+
       if (
         collectionInfo.data.Items &&
-        collectionInfo.data.Items[0].Type === 'CollectionFolder'
+        (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
+          collectionInfo.data.Items[0].Type === 'Folder')
       ) {
         this.name = collectionInfo.data.Items[0].Name || '';
 
