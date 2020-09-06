@@ -1,9 +1,9 @@
 {
     "badRequest": "",
-    "continueListening": "",
-    "continueWatching": "",
-    "home": "",
-    "incorrectUsernameOrPassword": "",
+    "continueListening": "Fortsätt lyssna",
+    "continueWatching": "Fortsätt titta",
+    "home": "Hem",
+    "incorrectUsernameOrPassword": "Fel användarnamn eller lösenord",
     "login": "",
     "logout": "",
     "more": "",
