@@ -16,25 +16,28 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
   mixins: [imageHelper],
   data() {
     return {
-      item: {}
+      item: {} as BaseItemDto
     };
   },
 
   async beforeMount() {
-    const Item = await this.$itemsApi.getItems({
-      uId: this.$auth.user.Id,
-      userId: this.$auth.user.Id,
-      ids: this.$route.params.itemId,
-      fields: 'Overview'
-    });
+    const Item = (
+      await this.$itemsApi.getItems({
+        uId: this.$auth.user.Id,
+        userId: this.$auth.user.Id,
+        ids: this.$route.params.itemId,
+        fields: 'Overview'
+      })
+    ).data.Items as BaseItemDto[];
 
-    this.item = Item.data.Items[0];
+    this.item = Item[0];
   }
 });
 </script>

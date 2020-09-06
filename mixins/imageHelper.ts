@@ -1,7 +1,14 @@
-const imageHelper = {
+/**
+ * Helper for image manipulation and image-related utility functions
+ *
+ * @mixin
+ */
+import Vue from 'vue';
+
+const imageHelper = Vue.extend({
   methods: {
     /**
-     * returns a URL with the link to the image
+     * Get the URL of an item's image
      * @param id itemId to get image for
      * @param type type of image (primary/backdrop)
      * @returns URL of the link to the image
@@ -10,6 +17,6 @@ const imageHelper = {
       return `${this.$axios.defaults.baseURL}/Items/${id}/Images/${type}`;
     }
   }
-};
+});
 
 export default imageHelper;
