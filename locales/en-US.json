@@ -11,5 +11,9 @@
   "serverNotFound": "Server not found",
   "settings": "Settings",
   "unexpectedError": "Unexpected error",
-  "usernameRequired": "Username is required"
+  "usernameRequired": "Username is required",
+  "serverAddress": "Server address",
+  "username": "Username",
+  "password": "Password",
+  "signIn": "Sign in"
 }
