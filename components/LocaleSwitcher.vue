@@ -9,6 +9,7 @@
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="index"
+        :input-value="item.code === $i18n.locale"
         @click="$i18n.setLocale(item.code)"
       >
         <v-list-item-title>{{ item.name }}</v-list-item-title>
