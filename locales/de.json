@@ -1,5 +1,5 @@
 {
-    "badRequest": "Fehlerhafte Anfrage. Versuch es noch einmal",
+    "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
     "continueListening": "Weiter zuhören",
     "continueWatching": "Weiter anschauen",
     "home": "Startseite",
@@ -8,9 +8,9 @@
     "logout": "Abmelden",
     "more": "Mehr",
     "play": "Abspielen",
-    "serverAddressMustBeUrl": "Server-Adresse muss eine gültige URL sein",
-    "serverAddressRequired": "Server-Adresse ist erforderlich",
-    "serverNotFound": "Server wurde nicht gefunden",
+    "serverAddressMustBeUrl": "Serveradresse muss eine gültige URL sein",
+    "serverAddressRequired": "Serveradresse ist erforderlich",
+    "serverNotFound": "Server nicht gefunden",
     "settings": "Einstellungen",
     "unexpectedError": "Unerwarteter Fehler",
     "upNext": "Als nächstes",
@@ -18,7 +18,7 @@
     "signIn": "Anmelden",
     "password": "Passwort",
     "username": "Benutzername",
-    "serverAddress": "Server-Adresse",
+    "serverAddress": "Serveradresse",
     "itemNotFound": "Element nicht gefunden",
     "libraryNotFound": "Bibliothek nicht gefunden"
 }
