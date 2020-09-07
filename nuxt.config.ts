@@ -151,7 +151,13 @@ const config: NuxtConfig = {
   i18n: {
     locales: [
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
-      { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' }
+      { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
+      { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
+      { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
+      { code: 'ro', iso: 'ro-RO', name: 'Română', file: 'ro.json' },
+      { code: 'sl', iso: 'sl-SI', name: 'Slovenščina', file: 'sl.json' },
+      { code: 'sv', iso: 'sv-SE', name: 'Svenska', file: 'sv.json' },
+      { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' }
     ],
     lazy: true,
     langDir: 'locales/',
