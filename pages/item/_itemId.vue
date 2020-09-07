@@ -11,7 +11,7 @@
         <v-btn>{{ $t('more') }}</v-btn>
       </v-col>
     </v-row>
-    <TvShows v-if="item.Type === 'Series'" :item="item"></TvShows>
+    <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
   </v-container>
 </template>
 

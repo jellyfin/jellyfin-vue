@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-tabs v-model="seasonTabs" class="mb-3">
-      <v-tab v-for="season in allEpisodes" :key="season.Id">
+      <v-tab v-for="season in seasons" :key="season.Id">
         {{ season.Name }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="seasonTabs">
-      <v-tab-item v-for="season in allEpisodes" :key="season.Id">
+      <v-tab-item v-for="season in seasons" :key="season.Id">
         <vueper-slides
           :visible-slides="3"
           :arrows-outside="false"
@@ -22,7 +22,9 @@
               <v-card>
                 <v-img :src="getImageLink(episode.Id, 'primary')"></v-img>
                 <v-card-subtitle>
-                  {{ episodeNumber(episode.IndexNumber) }}
+                  {{
+                    $t('episodeNumber', { episodeNumber: episode.IndexNumber })
+                  }}
                 </v-card-subtitle>
                 <v-card-title>{{ episode.Name }}</v-card-title>
               </v-card>
@@ -39,8 +41,8 @@ import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
-interface allEpisodes extends Array<{ Name: string; Episodes: BaseItemDto[] }> {
-  [index: number]: { Name: string; Episodes: BaseItemDto[] };
+interface Seasons extends BaseItemDto {
+  Episodes?: Array<BaseItemDto>;
 }
 
 export default Vue.extend({
@@ -48,18 +50,12 @@ export default Vue.extend({
   props: {
     item: {
       type: Object,
-      required: true,
-      default: () => {
-        return {
-          Name: 'Missing Name'
-        };
-      }
+      required: true
     }
   },
   data() {
     return {
-      seasons: [] as BaseItemDto[],
-      allEpisodes: [] as allEpisodes,
+      seasons: [] as Seasons[],
       seasonTabs: null
     };
   },
@@ -82,15 +78,7 @@ export default Vue.extend({
         })
       ).data.Items as BaseItemDto[];
 
-      this.allEpisodes.push({
-        Name: season.Name || 'Missing Season Name',
-        Episodes: episodes
-      });
-    }
-  },
-  methods: {
-    episodeNumber(episodeNumber: string) {
-      return `${this.$t('episode')} ${episodeNumber}`;
+      season.Episodes = episodes;
     }
   }
 });
