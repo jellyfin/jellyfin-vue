@@ -41,6 +41,7 @@ const config: NuxtConfig = {
     // Components
     'plugins/components/vueperSlides.ts',
     // Utility
+    'plugins/deviceProfile.ts',
     'plugins/snackbar.ts',
     'plugins/user.ts',
     // API
