@@ -18,5 +18,6 @@
     "username": "Uporabniško ime",
     "password": "Geslo",
     "signIn": "Prijavite se",
-    "upNext": "Naslednje"
+    "upNext": "Naslednje",
+    "libraryNotFound": "Knjižnice ni najdena"
 }
