@@ -12,7 +12,9 @@
         <h1>{{ item.Name }}</h1>
         <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
         <p>{{ item.Overview }}</p>
-        <v-btn color="primary">{{ $t('play') }}</v-btn>
+        <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
+          $t('play')
+        }}</v-btn>
         <v-btn>{{ $t('more') }}</v-btn>
       </v-col>
     </v-row>
