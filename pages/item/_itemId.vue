@@ -11,6 +11,7 @@
         <v-btn>{{ $t('more') }}</v-btn>
       </v-col>
     </v-row>
+    <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
   </v-container>
 </template>
 
