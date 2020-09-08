@@ -1,14 +1,11 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col cols="4">
-        <v-img
-          :src="getItemBackdrop(item.Id)"
-          class="d-flex align-end backdropImage"
-          max-width="100%"
-        ></v-img>
-      </v-col>
-      <v-col cols="8">
+    <v-img
+      :src="getItemBackdrop(item.Id)"
+      class="d-flex align-end backdropImage"
+      max-width="100%"
+    >
+      <div class="itemDetailsContainer">
         <h1>{{ item.Name }}</h1>
         <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
         <p>{{ item.Overview }}</p>
@@ -16,8 +13,8 @@
           $t('play')
         }}</v-btn>
         <v-btn>{{ $t('more') }}</v-btn>
-      </v-col>
-    </v-row>
+      </div>
+    </v-img>
     <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
   </v-container>
 </template>
@@ -84,6 +81,11 @@ export default Vue.extend({
 .backdropImage {
   max-width: 95em;
   margin: auto;
+}
+
+.itemDetailsContainer {
+  background: linear-gradient(0deg, #0c0c0c, transparent);
+  padding: 1em;
 }
 
 .itemSubHeading {
