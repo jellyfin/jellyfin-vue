@@ -1,11 +1,11 @@
 {
-    "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்",
+    "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்யவும்",
     "continueListening": "தொடர்ந்து கேளுங்கள்",
     "continueWatching": "தொடர்ந்து பார்த்துக் கொள்ளுங்கள்",
     "home": "முகப்பு",
     "incorrectUsernameOrPassword": "தவறான பயனர்பெயர் அல்லது கடவுச்சொல்",
     "login": "புகுபதிகை",
-    "logout": "விடு பதிகை",
+    "logout": "விடுபதிகை",
     "more": "மேலும்",
     "play": "இயக்கு",
     "serverAddressMustBeUrl": "சேவையக முகவரி சரியான URL ஆக இருக்க வேண்டும்",
@@ -20,5 +20,6 @@
     "signIn": "உள்நுழைக",
     "upNext": "அடுத்தது",
     "libraryNotFound": "நூலகம் கிடைக்கவில்லை",
-    "itemNotFound": "பொருள் கிடைக்கவில்லை"
+    "itemNotFound": "பொருள் கிடைக்கவில்லை",
+    "episodeNumber": "அத்தியாயம் {episodeNumber}"
 }
