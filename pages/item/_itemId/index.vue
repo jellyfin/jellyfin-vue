@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="8">
         <h1>{{ item.Name }}</h1>
-        <p>{{ ticksToTime(item.RunTimeTicks) }}</p>
+        <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
         <p>{{ item.Overview }}</p>
         <v-btn color="primary">{{ $t('play') }}</v-btn>
         <v-btn>{{ $t('more') }}</v-btn>
@@ -35,7 +35,7 @@ export default Vue.extend({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         ids: this.$route.params.itemId,
-        fields: 'Overview'
+        fields: 'Overview,Genres'
       })
     ).data.Items as BaseItemDto[];
 
@@ -49,7 +49,28 @@ export default Vue.extend({
       } else {
         return `${Math.floor(ms % 60)} min`;
       }
+    },
+    renderItemSubHeading() {
+      const response = [];
+      if (this.item.Genres) {
+        response.push(this.item.Genres[0]);
+      }
+      if (this.item.RunTimeTicks) {
+        response.push(this.ticksToTime(this.item.RunTimeTicks));
+      }
+      if (this.item.ProductionYear) {
+        response.push(this.item.ProductionYear);
+      }
+      return response.join(' ');
     }
   }
 });
 </script>
+
+<style scoped>
+.itemSubHeading {
+  color: #b9b9b9;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+</style>
