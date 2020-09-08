@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid class="pa-0 itemContainer">
     <v-img
       :src="getItemBackdrop(item.Id)"
       class="d-flex align-end backdropImage"
@@ -16,7 +16,7 @@
           ></v-img>
           <h1 v-else>{{ item.Name }}</h1>
           <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
-          <p>{{ item.Overview }}</p>
+          <p class="itemOverview">{{ item.Overview }}</p>
         </div>
         <div class="itemDetailsRight">
           <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
@@ -92,6 +92,11 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.itemContainer {
+  margin: auto;
+  max-width: calc(85vh * 16 / 9);
+}
+
 .backdropImage {
   max-width: 95em;
   margin: auto;
@@ -106,5 +111,14 @@ export default Vue.extend({
   color: #b9b9b9;
   font-size: 0.8rem;
   width: fit-content;
+}
+
+@media screen and (max-width: 30em) {
+  .itemOverview {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 90vw;
+  }
 }
 </style>
