@@ -5,14 +5,25 @@
       class="d-flex align-end backdropImage"
       max-width="100%"
     >
-      <div class="itemDetailsContainer">
-        <h1>{{ item.Name }}</h1>
-        <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
-        <p>{{ item.Overview }}</p>
-        <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
-          $t('play')
-        }}</v-btn>
-        <v-btn>{{ $t('more') }}</v-btn>
+      <div class="d-flex flex-wrap itemDetailsContainer">
+        <div class="itemDetailsLeft">
+          <v-img
+            v-if="item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1"
+            :src="getImageLink(item.Id, 'Logo')"
+            contain:alt="item.Name"
+            max-width="50%"
+            class="mb-4"
+          ></v-img>
+          <h1 v-else>{{ item.Name }}</h1>
+          <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
+          <p>{{ item.Overview }}</p>
+        </div>
+        <div class="itemDetailsRight">
+          <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
+            $t('play')
+          }}</v-btn>
+          <v-btn>{{ $t('more') }}</v-btn>
+        </div>
       </div>
     </v-img>
     <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
@@ -45,6 +56,9 @@ export default Vue.extend({
     this.item = Item[0];
   },
   methods: {
+    getAspectRatio() {
+      return window.innerWidth / window.innerHeight;
+    },
     getItemBackdrop(id: string) {
       if (window.innerWidth < window.innerHeight) {
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
