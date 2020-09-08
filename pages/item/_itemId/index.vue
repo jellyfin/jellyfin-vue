@@ -2,7 +2,11 @@
   <v-container fluid>
     <v-row>
       <v-col cols="4">
-        <v-img :src="getImageLink(item.Id, 'primary')"></v-img>
+        <v-img
+          :src="getItemBackdrop(item.Id)"
+          class="d-flex align-end backdropImage"
+          max-width="100%"
+        ></v-img>
       </v-col>
       <v-col cols="8">
         <h1>{{ item.Name }}</h1>
@@ -42,6 +46,13 @@ export default Vue.extend({
     this.item = Item[0];
   },
   methods: {
+    getItemBackdrop(id: string) {
+      if (window.innerWidth < window.innerHeight) {
+        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
+      } else if (window.innerHeight < window.innerWidth) {
+        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
+      }
+    },
     ticksToTime(ticks: number) {
       const ms = ticks / 600000000;
       if (Math.floor(ms / 60)) {
@@ -68,6 +79,11 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.backdropImage {
+  max-width: 95em;
+  margin: auto;
+}
+
 .itemSubHeading {
   color: #b9b9b9;
   font-size: 0.8rem;
