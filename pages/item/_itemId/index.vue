@@ -20,7 +20,7 @@
         </div>
         <div class="itemDetailsRight">
           <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
-            $t('play')
+            $t('playType', { playType: item.Type })
           }}</v-btn>
           <v-btn>{{ $t('more') }}</v-btn>
         </div>
