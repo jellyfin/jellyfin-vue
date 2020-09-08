@@ -20,5 +20,6 @@
     "signIn": "Autentificare",
     "upNext": "Urmează",
     "libraryNotFound": "Biblioteca nu a fost găsită",
-    "itemNotFound": "Articolul nu a fost găsit"
+    "itemNotFound": "Articolul nu a fost găsit",
+    "episodeNumber": "Episod {episodeNumber}"
 }
