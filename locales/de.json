@@ -20,5 +20,6 @@
     "username": "Benutzername",
     "serverAddress": "Serveradresse",
     "itemNotFound": "Element nicht gefunden",
-    "libraryNotFound": "Bibliothek nicht gefunden"
+    "libraryNotFound": "Bibliothek nicht gefunden",
+    "episodeNumber": "Episode {episodeNumber}"
 }
