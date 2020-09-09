@@ -6,24 +6,31 @@
       class="d-flex align-end backdropImage"
       max-width="100%"
     >
-      <div class="d-flex flex-wrap itemDetailsContainer">
-        <div class="itemDetailsLeft">
-          <v-img
-            v-if="item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1"
-            :src="getImageLink(item.Id, 'Logo')"
-            contain:alt="item.Name"
-            max-width="50%"
-            class="mb-4"
-          ></v-img>
-          <h1 v-else>{{ item.Name }}</h1>
-          <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
-          <p class="itemOverview">{{ item.Overview }}</p>
-        </div>
-        <div class="itemDetailsRight">
-          <v-btn class="playButton" color="primary" :to="`./${item.Id}/play`">{{
-            $t('playType', { playType: item.Type })
-          }}</v-btn>
-          <v-btn>{{ $t('more') }}</v-btn>
+      <div class="d-flex align-end gradientContainer">
+        <div class="d-flex flex-wrap itemDetailsContainer">
+          <div class="itemDetailsLeft">
+            <v-img
+              v-if="
+                item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1
+              "
+              :src="getImageLink(item.Id, 'Logo')"
+              contain:alt="item.Name"
+              max-width="50%"
+              class="mb-4"
+            ></v-img>
+            <h1 v-else>{{ item.Name }}</h1>
+            <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
+            <p class="itemOverview">{{ item.Overview }}</p>
+          </div>
+          <div class="itemDetailsRight">
+            <v-btn
+              class="playButton"
+              color="primary"
+              :to="`./${item.Id}/play`"
+              >{{ $t('playType', { playType: item.Type }) }}</v-btn
+            >
+            <v-btn>{{ $t('more') }}</v-btn>
+          </div>
         </div>
       </div>
     </v-img>
@@ -112,12 +119,15 @@ export default Vue.extend({
 }
 
 .itemDetailsContainer {
-  background: linear-gradient(0deg, #0c0c0c, transparent);
   padding: 1em;
 }
 
+.gradientContainer {
+  background: linear-gradient(0deg, #0c0c0c, transparent);
+  height: 30vh;
+}
+
 .itemSubHeading {
-  color: #b9b9b9;
   font-size: 0.8rem;
   width: fit-content;
 }
