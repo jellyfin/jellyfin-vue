@@ -1,7 +1,8 @@
 <template>
   <v-container fluid class="pa-0 itemContainer">
     <v-img
-      :src="getItemBackdrop(item.Id)"
+      v-resize="updateBackdropImage"
+      :src="backdropImageSource"
       class="d-flex align-end backdropImage"
       max-width="100%"
     >
@@ -39,7 +40,8 @@ export default Vue.extend({
   mixins: [imageHelper],
   data() {
     return {
-      item: {} as BaseItemDto
+      item: {} as BaseItemDto,
+      backdropImageSource: ''
     };
   },
 
@@ -54,16 +56,20 @@ export default Vue.extend({
     ).data.Items as BaseItemDto[];
 
     this.item = Item[0];
+
+    this.updateBackdropImage();
   },
   methods: {
     getAspectRatio() {
       return window.innerWidth / window.innerHeight;
     },
-    getItemBackdrop(id: string) {
+    getItemBackdrop(id: string): string {
       if (window.innerWidth < window.innerHeight) {
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
       } else if (window.innerHeight < window.innerWidth) {
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
+      } else {
+        return '';
       }
     },
     ticksToTime(ticks: number) {
@@ -86,6 +92,9 @@ export default Vue.extend({
         response.push(this.item.ProductionYear);
       }
       return response.join(' ');
+    },
+    updateBackdropImage() {
+      this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
     }
   }
 });
