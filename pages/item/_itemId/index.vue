@@ -98,7 +98,7 @@ export default Vue.extend({
       if (this.item.ProductionYear) {
         response.push(this.item.ProductionYear);
       }
-      return response.join(' ');
+      return response.join(' • ');
     },
     updateBackdropImage() {
       this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
