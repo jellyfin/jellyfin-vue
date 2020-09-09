@@ -20,5 +20,6 @@
     "signIn": "Inloggen",
     "password": "Wachtwoord",
     "username": "Gebruikersnaam",
-    "serverAddress": "Server adres"
+    "serverAddress": "Server adres",
+    "episodeNumber": "Aflevering {episodeNumber}"
 }
