@@ -160,4 +160,10 @@ h1 {
 .home-section .vueperslides__arrow--prev {
   margin-right: 0.75em;
 }
+.vueperslides:not(.no-shadow):not(.vueperslides--3d)
+  .vueperslides__parallax-wrapper::after,
+.vueperslides:not(.no-shadow):not(.vueperslides--3d)
+  .vueperslides__parallax-wrapper::before {
+  box-shadow: none;
+}
 </style>
