@@ -54,6 +54,14 @@ export default Vue.extend({
       }
     );
 
+    if (!Object.keys(homeSectionsArray).length) {
+      homeSectionsArray = {
+        homeSection0: 'upnext',
+        homeSection1: 'resume',
+        homeSection2: 'latestmedia'
+      };
+    }
+
     if (homeSectionsArray) {
       // Convert to an array
       homeSectionsArray = Object.values(homeSectionsArray);
