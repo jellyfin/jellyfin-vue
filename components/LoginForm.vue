@@ -95,7 +95,10 @@ export default Vue.extend({
 
         if (!error.response) {
           errorMessage = this.$t('serverNotFound');
-        } else if (error.response.status === 500) {
+        } else if (
+          error.response.status === 500 ||
+          error.response.status === 401
+        ) {
           errorMessage = this.$t('incorrectUsernameOrPassword');
         } else if (error.response.status === 400) {
           errorMessage = this.$t('badRequest');
