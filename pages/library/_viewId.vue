@@ -43,13 +43,25 @@ export default Vue.extend({
       ) {
         this.name = collectionInfo.data.Items[0].Name || '';
 
-        const itemsResponse = await this.$itemsApi.getItems({
+        const options = {
           uId: this.$auth.user.Id,
           userId: this.$auth.user.Id,
           parentId: this.$route.params.viewId,
+          includeItemTypes: '',
+          recursive: true,
           sortBy: 'SortName',
           sortOrder: 'Ascending'
-        });
+        };
+
+        if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
+          options.includeItemTypes = 'Series';
+        } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
+          options.includeItemTypes = 'Movie';
+        } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
+          options.includeItemTypes = 'Book';
+        }
+
+        const itemsResponse = await this.$itemsApi.getItems(options);
 
         this.items = itemsResponse.data.Items || [];
       }
