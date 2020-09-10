@@ -18,6 +18,7 @@
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
             <v-icon size="36">mdi-play</v-icon>
           </v-btn>
+          <item-menu />
         </div>
       </div>
       <div class="card-text">
