@@ -18,7 +18,7 @@
   "serverAddress": "Server address",
   "username": "Username",
   "password": "Password",
-  "playType": "Play {playType}",
+  "playType": "Play {mediaType}",
   "signIn": "Sign in",
   "upNext": "Up next",
   "libraryNotFound": "Library not found",
