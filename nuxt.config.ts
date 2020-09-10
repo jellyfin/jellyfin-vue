@@ -176,6 +176,9 @@ const config: NuxtConfig = {
       themes: {
         dark: {
           primary: '#00A4DC'
+        },
+        light: {
+          primary: '#00A4DC'
         }
       },
       options: {

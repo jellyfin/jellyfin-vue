@@ -13,6 +13,11 @@
       </v-btn>
     </template>
     <v-list>
+      <v-list-item @click="switchColodScheme">
+        <v-switch>
+          <template #label>Toggle dark mode</template>
+        </v-switch>
+      </v-list-item>
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="index"
@@ -51,6 +56,11 @@ export default Vue.extend({
           return '';
         }
       }
+    }
+  },
+  methods: {
+    switchColodScheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   }
 });
