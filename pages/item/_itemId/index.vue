@@ -1,30 +1,31 @@
 <template>
-  <v-container fluid class="pa-0 itemContainer">
+  <v-container fluid class="pa-0 item-container">
     <v-img
       v-resize="updateBackdropImage"
       :src="backdropImageSource"
-      class="d-flex align-end backdropImage"
+      class="d-flex align-end backdrop-image"
       max-width="100%"
     >
-      <div class="d-flex align-end gradientContainer">
-        <div class="d-flex flex-wrap itemDetailsContainer">
+      <div class="d-flex align-end gradient-container">
+        <div class="d-flex flex-wrap item-details-container">
           <div class="itemDetailsLeft">
             <v-img
               v-if="
                 item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1
               "
               :src="getImageLink(item.Id, 'Logo')"
-              contain:alt="item.Name"
+              contain
+              :alt="item.Name"
               max-width="50%"
               class="mb-4"
             ></v-img>
             <h1 v-else>{{ item.Name }}</h1>
-            <div class="itemSubHeading">{{ renderItemSubHeading() }}</div>
-            <p class="itemOverview">{{ item.Overview }}</p>
+            <div class="item-sub-heading">{{ renderItemSubHeading() }}</div>
+            <p class="item-overview">{{ item.Overview }}</p>
           </div>
-          <div class="itemDetailsRight">
+          <div class="item-details-right">
             <v-btn
-              class="playButton"
+              class="play-button"
               color="primary"
               :to="`./${item.Id}/play`"
               >{{ $t('playType', { playType: item.Type }) }}</v-btn
@@ -108,32 +109,32 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.itemContainer {
+.item-container {
   margin: auto;
   max-width: calc(85vh * 16 / 9);
 }
 
-.backdropImage {
+.backdrop-image {
   max-width: 95em;
   margin: auto;
 }
 
-.itemDetailsContainer {
+.item-details-container {
   padding: 1em;
 }
 
-.gradientContainer {
+.gradient-container {
   background: linear-gradient(0deg, #0c0c0c, transparent);
   height: 30vh;
 }
 
-.itemSubHeading {
+.item-sub-heading {
   font-size: 0.8rem;
   width: fit-content;
 }
 
 @media screen and (max-width: 30em) {
-  .itemOverview {
+  .item-overview {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
