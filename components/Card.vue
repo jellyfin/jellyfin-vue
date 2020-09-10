@@ -167,6 +167,7 @@ export default Vue.extend({
   -webkit-tap-highlight-color: transparent;
 }
 .card-overlay {
+  border-radius: 0.3em;
   position: absolute;
   background: radial-gradient(
     farthest-corner at 50% 50%,
