@@ -28,7 +28,7 @@
               class="play-button"
               color="primary"
               :to="`./${item.Id}/play`"
-              >{{ $t('playType', { playType: item.Type }) }}</v-btn
+              >{{ $t('playType', { mediaType: item.Type }) }}</v-btn
             >
             <v-btn>{{ $t('more') }}</v-btn>
           </div>
