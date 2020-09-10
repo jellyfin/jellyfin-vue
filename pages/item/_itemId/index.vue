@@ -74,10 +74,8 @@ export default Vue.extend({
     getItemBackdrop(id: string): string {
       if (window.innerWidth < window.innerHeight) {
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
-      } else if (window.innerHeight < window.innerWidth) {
-        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
       } else {
-        return '';
+        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
       }
     },
     ticksToTime(ticks: number) {
