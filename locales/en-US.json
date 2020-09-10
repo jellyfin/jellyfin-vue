@@ -56,6 +56,11 @@
     "readTheDocumentation": "Read the documentation",
     "reportAnIssue": "Report an issue with the Vue client"
   },
+  "editMetadata": "Edit metadata",
+  "home": "Home",
+  "incorrectUsernameOrPassword": "Incorrect username or password",
+  "itemNotFound": "Item not found",
+  "libraryNotFound": "Library not found",
   "login": "Login",
   "loginAs": "Login as {name}",
   "logout": "Logout",
@@ -87,6 +92,10 @@
   "server": "Server",
   "serverAddress": "Server address",
   "serverAddressMustBeUrl": "Server address must be a valid address",
+  "password": "Password",
+  "play": "Play",
+  "serverAddress": "Server address",
+  "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
   "serverDashboard": "Server dashboard",
   "serverNotFound": "Server not found",
@@ -197,4 +206,9 @@
   "vueClientVersion": "Vue client version",
   "years": "Years",
   "youMayAlsoLike": "You may also like"
+  "signIn": "Sign in",
+  "unexpectedError": "Unexpected error",
+  "upNext": "Up next",
+  "username": "Username",
+  "usernameRequired": "Username is required"
 }
