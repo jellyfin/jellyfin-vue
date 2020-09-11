@@ -5023,6 +5023,11 @@ elliptic@^6.5.3:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
+eme-encryption-scheme-polyfill@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.0.1.tgz#b080b01bffd74c75c9cf8044c1cabedf3b83954f"
+  integrity sha512-Wz+Ro1c0/2Wsx2RLFvTOO0m4LvYn+7cSnq3XOvRvLLBq8jbvUACH/zpU9s0/5+mQa5oaelkU69x+q0z/iWYrFA==
+
 emittery@^0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.7.1.tgz#c02375a927a40948c0345cc903072597f5270451"
@@ -8683,6 +8688,11 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
+mux.js@^5.6.4:
+  version "5.6.4"
+  resolved "https://registry.yarnpkg.com/mux.js/-/mux.js-5.6.4.tgz#0975fb4f2641884d127d912f08eb629171a4b423"
+  integrity sha512-k7UUafOn1axLqcnx0oF3xbTrVMXHd54ytwFHW30v+SRbZED63QjK7al+q9KMlF+NQOkydd+46xPqHk+ELZxL+g==
+
 nan@^2.12.1:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.1.tgz#d7be34dfa3105b91494c3147089315eff8874b01"
@@ -11201,6 +11211,13 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+shaka-player@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-3.0.4.tgz#241245f4019b3550ef58d6f83b8fc75c66ab8816"
+  integrity sha512-sjmArz8ukKNx5SU2O99kdJr1Z3TyDRn/p11ivUm/67jptCgYuIGI8swfvkJO5KD7MBJSaBP6z32D38dBx5AAxA==
+  dependencies:
+    eme-encryption-scheme-polyfill "^2.0.1"
 
 shallow-clone@^3.0.0:
   version "3.0.1"
