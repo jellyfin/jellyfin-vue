@@ -1,19 +1,21 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function getSupportedWebMAudioCodecs() {
+export function getSupportedWebMAudioCodecs(
+  videoTestElement: HTMLVideoElement
+): string[] {
   const codecs = [];
 
   codecs.push('vorbis');
 
   if (
     !browserDetector.isWebOS() &&
-    document
-      .createElement('audio')
-      .canPlayType('audio/ogg; codecs="opus"')
-      .replace(/no/, '')
+    videoTestElement.canPlayType('audio/ogg; codecs="opus"').replace(/no/, '')
   ) {
     codecs.push('opus');
   }

@@ -1,9 +1,13 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param format
+ *
+ *
+ *
+ * @param {string} format
+ * @returns
  */
-export function getSupportedAudioCodecs(format: string) {
+export function getSupportedAudioCodecs(format: string): boolean {
   let typeString;
 
   if (format === 'flac') {

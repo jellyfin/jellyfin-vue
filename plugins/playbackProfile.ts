@@ -28,7 +28,9 @@ const physicalAudioChannels = browserDetector.isTv() ? 6 : 2;
 const videoTestElement = document.createElement('video');
 
 /**
+ * Returns a valid DirectPlayProfile for the current platform.
  *
+ * @returns {Array<DirectPlayProfile>} An array of direct play profiles for the current platform.
  */
 function getDirectPlayProfiles(): Array<DirectPlayProfile> {
   const DirectPlayProfiles = [];
@@ -36,7 +38,7 @@ function getDirectPlayProfiles(): Array<DirectPlayProfile> {
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
   const vpxVideoCodecs = getSupportedVPXVideoCodecs(videoTestElement);
-  const webmAudioCodecs = getSupportedWebMAudioCodecs();
+  const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
   DirectPlayProfiles.push({
     Container: 'webm',
@@ -100,7 +102,9 @@ function getDirectPlayProfiles(): Array<DirectPlayProfile> {
 }
 
 /**
+ * Returns a valid TranscodingProfile for the current platform.
  *
+ * @returns {Array<TranscodingProfile>} An array of transcoding profiles for the current platform.
  */
 function getTranscodingProfiles(): Array<TranscodingProfile> {
   const TranscodingProfiles = [];
@@ -108,13 +112,16 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
   const hlsBreakOnNonKeyFrames = !!(
     browserDetector.isApple() ||
     browserDetector.isEdge() ||
-    !canPlayNativeHls()
+    !canPlayNativeHls(videoTestElement)
   );
 
-  if (canPlayNativeHls() || browserDetector.supportsMediaSource()) {
+  if (
+    canPlayNativeHls(videoTestElement) ||
+    browserDetector.supportsMediaSource()
+  ) {
     TranscodingProfiles.push({
       Container:
-        !canPlayNativeHls() ||
+        !canPlayNativeHls(videoTestElement) ||
         browserDetector.isEdge() ||
         browserDetector.isAndroid()
           ? 'ts'
@@ -160,7 +167,7 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
   const hlsVideoAudioCodecs = getHlsAudioCodecs(videoTestElement);
 
   if (
-    canPlayNativeHls() ||
+    canPlayNativeHls(videoTestElement) ||
     (browserDetector.supportsMediaSource() && hlsVideoAudioCodecs.length)
   ) {
     TranscodingProfiles.push({
@@ -194,7 +201,9 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
 }
 
 /**
+ * Returns a valid SubtitleProfile for the current platform.
  *
+ * @returns {Array<SubtitleProfile>} An array of subtitle profiles for the current platform.
  */
 function getSubtitleProfiles(): Array<SubtitleProfile> {
   const SubtitleProfiles = [];
@@ -208,7 +217,9 @@ function getSubtitleProfiles(): Array<SubtitleProfile> {
 }
 
 /**
+ * Returns a valid ResponseProfile for the current platform.
  *
+ * @returns {Array<ResponseProfile>} An array of subtitle profiles for the current platform.
  */
 function getResponseProfiles(): Array<ResponseProfile> {
   const ResponseProfiles = [];
@@ -225,7 +236,6 @@ function getResponseProfiles(): Array<ResponseProfile> {
 /**
  * Creates a device profile containing supported codecs for the active Cast device.
  *
- * @param {object} [options=Object]
  * @returns {object} Device profile.
  */
 function getDeviceProfile(): DeviceProfile {

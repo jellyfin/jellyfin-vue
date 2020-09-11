@@ -31,7 +31,10 @@ function createProfileCondition(
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns {Array<CodecProfile>}
  */
 export function getCodecProfiles(
   videoTestElement: HTMLVideoElement

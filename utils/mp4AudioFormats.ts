@@ -3,36 +3,45 @@ import { getSupportedAudioCodecs } from './audioFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-function hasAc3Support(videoTestElement: HTMLVideoElement) {
+function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {
     return true;
   }
 
-  return videoTestElement
+  return !!videoTestElement
     .canPlayType('audio/mp4; codecs="ac-3"')
     .replace(/no/, '');
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasEac3Support(videoTestElement: HTMLVideoElement) {
+export function hasEac3Support(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {
     return true;
   }
 
-  return videoTestElement
+  return !!videoTestElement
     .canPlayType('audio/mp4; codecs="ec-3"')
     .replace(/no/, '');
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasMp3Support(videoTestElement: HTMLVideoElement) {
-  return (
+export function hasMp3Support(videoTestElement: HTMLVideoElement): boolean {
+  return !!(
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.640029, mp4a.69"')
       .replace(/no/, '') ||
@@ -46,23 +55,31 @@ export function hasMp3Support(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasAacSupport(videoTestElement: HTMLVideoElement) {
-  return videoTestElement
+export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
+  return !!videoTestElement
     .canPlayType('video/mp4; codecs="avc1.640029, mp4a.40.2"')
     .replace(/no/, '');
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @returns
  */
 function hasMp2AudioSupport() {
   return browserDetector.isTv();
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
 function hasDtsSupport(videoTestElement: HTMLVideoElement) {
   // DTS audio not supported in 2018 models (Tizen 4.0)
@@ -84,9 +101,14 @@ function hasDtsSupport(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function getSupportedMP4AudioCodecs(videoTestElement: HTMLVideoElement) {
+export function getSupportedMP4AudioCodecs(
+  videoTestElement: HTMLVideoElement
+): string[] {
   const codecs = [];
 
   if (hasAc3Support(videoTestElement)) {

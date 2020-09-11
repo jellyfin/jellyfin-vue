@@ -8,7 +8,10 @@ import { getSupportedAudioCodecs } from './audioFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
 function supportsAc3InHls(videoTestElement: HTMLVideoElement) {
   if (browserDetector.isTv()) {
@@ -32,7 +35,11 @@ function supportsAc3InHls(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @export
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns {string[]}
  */
 export function getHlsVideoCodecs(
   videoTestElement: HTMLVideoElement
@@ -52,7 +59,11 @@ export function getHlsVideoCodecs(
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @export
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns {string[]}
  */
 export function getHlsAudioCodecs(
   videoTestElement: HTMLVideoElement

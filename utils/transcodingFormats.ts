@@ -2,16 +2,20 @@ import { browserDetector } from '~/plugins/browserDetection';
 
 /**
  *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns {boolean}
  */
-export function canPlayNativeHls(): boolean {
+export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTizen()) {
     return true;
   }
 
-  const media = document.createElement('video');
   if (
-    media.canPlayType('application/x-mpegURL').replace(/no/, '') ||
-    media.canPlayType('application/vnd.apple.mpegURL').replace(/no/, '')
+    videoTestElement.canPlayType('application/x-mpegURL').replace(/no/, '') ||
+    videoTestElement
+      .canPlayType('application/vnd.apple.mpegURL')
+      .replace(/no/, '')
   ) {
     return true;
   }
@@ -20,9 +24,12 @@ export function canPlayNativeHls(): boolean {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasMkvSupport(videoTestElement: HTMLVideoElement) {
+export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {
     return true;
   }

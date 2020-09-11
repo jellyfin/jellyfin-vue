@@ -1,10 +1,13 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasH264Support(videoTestElement: HTMLVideoElement) {
-  return (
+export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
+  return !!(
     videoTestElement.canPlayType &&
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
@@ -13,14 +16,17 @@ export function hasH264Support(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasH265Support(videoTestElement: HTMLVideoElement) {
+export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {
     return true;
   }
 
-  return (
+  return !!(
     videoTestElement.canPlayType &&
     (videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.L120"')
@@ -38,16 +44,19 @@ export function hasH265Support(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasAv1Support(videoTestElement: HTMLVideoElement) {
+export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTizen && browserDetector.isTizen55()) {
     return true;
   } else if (browserDetector.isWebOS5() && window.outerHeight >= 2160) {
     return true;
   }
 
-  return (
+  return !!(
     videoTestElement.canPlayType &&
     videoTestElement
       .canPlayType('video/webm; codecs="av01.0.15M.10"')
@@ -56,30 +65,39 @@ export function hasAv1Support(videoTestElement: HTMLVideoElement) {
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-function hasVc1Support(videoTestElement: HTMLVideoElement) {
-  return (
+function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
+  return !!(
     browserDetector.isTv() ||
     videoTestElement.canPlayType('video/mp4; codecs="vc-1"').replace(/no/, '')
   );
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasVp8Support(videoTestElement: HTMLVideoElement) {
-  return (
+export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
+  return !!(
     videoTestElement.canPlayType &&
     videoTestElement.canPlayType('video/webm; codecs="vp8"').replace(/no/, '')
   );
 }
 
 /**
- * @param videoTestElement
+ *
+ *
+ * @param {HTMLVideoElement} videoTestElement
+ * @returns
  */
-export function hasVp9Support(videoTestElement: HTMLVideoElement) {
-  return (
+export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
+  return !!(
     videoTestElement.canPlayType &&
     videoTestElement.canPlayType('video/webm; codecs="vp9"').replace(/no/, '')
   );
