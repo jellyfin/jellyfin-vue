@@ -8,7 +8,7 @@
     >
       <div class="d-flex align-end gradient-container">
         <div class="d-flex flex-wrap item-details-container">
-          <div class="itemDetailsLeft">
+          <div class="white--text">
             <v-img
               v-if="
                 item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1
