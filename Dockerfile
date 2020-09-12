@@ -19,7 +19,7 @@ ADD . .
 RUN yarn generate
 
 # Deploy to nginx
-FROM nginx:latest
+FROM nginx:alpine
 
 # Copy built static site to deployment
 COPY --from=build /app/dist/ /usr/share/nginx/html/
