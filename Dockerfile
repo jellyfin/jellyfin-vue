@@ -1,6 +1,6 @@
 FROM node:13-alpine AS build
 
-# Install git for cloning dependencies
+# Install build dependencies for node modules
 RUN apk add git python make g++
 
 # Set workdir
@@ -18,8 +18,6 @@ ADD . .
 # Build static site
 RUN yarn generate
 
-# Deploy to nginx
+# Deploy built distribution to nginx
 FROM nginx:alpine
-
-# Copy built static site to deployment
 COPY --from=build /app/dist/ /usr/share/nginx/html/
