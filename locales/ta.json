@@ -21,5 +21,6 @@
     "upNext": "அடுத்தது",
     "libraryNotFound": "நூலகம் கிடைக்கவில்லை",
     "itemNotFound": "பொருள் கிடைக்கவில்லை",
-    "episodeNumber": "அத்தியாயம் {episodeNumber}"
+    "episodeNumber": "அத்தியாயம் {episodeNumber}",
+    "playType": "{mediaType} ஐ இயக்கு"
 }
