@@ -21,5 +21,6 @@
     "upNext": "À suivre",
     "libraryNotFound": "Médiathèque introuvable",
     "itemNotFound": "Élément introuvable",
-    "episodeNumber": "Épisode {episodeNumber}"
+    "episodeNumber": "Épisode {episodeNumber}",
+    "playType": "Lire {mediaType}"
 }
