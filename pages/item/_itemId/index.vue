@@ -78,24 +78,39 @@ export default Vue.extend({
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
       }
     },
+    getEndsAtTime(ticks: number): string {
+      const ms = ticks / 10000;
+      const endTimeLong = new Date(Date.now() + ms);
+      const endTimeShort = endTimeLong.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric'
+      });
+
+      return `${this.$t('endsAt')}: ${endTimeShort}`;
+    },
     ticksToTime(ticks: number) {
       const ms = ticks / 600000000;
-      if (Math.floor(ms / 60)) {
+      if (Math.floor(ms / 60) && Math.floor(ms % 60)) {
         return `${Math.floor(ms / 60)} hrs ${Math.floor(ms % 60)} min`;
+      } else if (Math.floor(ms / 60)) {
+        return `${Math.floor(ms / 60)} hrs`;
       } else {
         return `${Math.floor(ms % 60)} min`;
       }
     },
     renderItemSubHeading() {
       const response = [];
+      if (this.item.ProductionYear) {
+        response.push(this.item.ProductionYear);
+      }
       if (this.item.Genres) {
         response.push(this.item.Genres[0]);
       }
       if (this.item.RunTimeTicks) {
         response.push(this.ticksToTime(this.item.RunTimeTicks));
       }
-      if (this.item.ProductionYear) {
-        response.push(this.item.ProductionYear);
+      if (this.item.RunTimeTicks) {
+        response.push(this.getEndsAtTime(this.item.RunTimeTicks));
       }
       return response.join(' • ');
     },
