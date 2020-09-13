@@ -56,7 +56,7 @@ export default Vue.extend({
   data() {
     return {
       seasons: [] as Seasons[],
-      seasonTabs: null
+      seasonTabs: 1
     };
   },
   async beforeMount() {
@@ -80,6 +80,8 @@ export default Vue.extend({
 
       season.Episodes = episodes;
     }
+
+    this.seasonTabs = 0;
   }
 });
 </script>
