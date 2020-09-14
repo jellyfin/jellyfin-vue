@@ -24,6 +24,16 @@ declare module 'vue/types/vue' {
  * @class BrowserDetector
  */
 class BrowserDetector {
+  supportsMediaSource() {
+    // Browsers that lack a media source implementation will have no reference
+    // to |window.MediaSource|.
+    if (!window.MediaSource) {
+      return false;
+    }
+
+    return true;
+  }
+
   /**
    * Check if the user agent of the navigator contains a key.
    *
@@ -221,6 +231,10 @@ class BrowserDetector {
 
   /* Platform Utilities */
 
+  isAndroid() {
+    return this.userAgentContains('Android');
+  }
+
   /**
    * Guesses if the platform is a mobile one (iOS or Android).
    *
@@ -256,7 +270,7 @@ class BrowserDetector {
    * @memberof BrowserDetector
    */
   isTv() {
-    return this.isTizen || this.isWebOS;
+    return this.isTizen() || this.isWebOS();
   }
 }
 

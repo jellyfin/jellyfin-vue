@@ -43,6 +43,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/deviceProfile.ts',
+    'plugins/playbackProfile.ts',
     'plugins/snackbar.ts',
     'plugins/user.ts',
     // API
