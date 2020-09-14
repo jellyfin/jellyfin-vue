@@ -36,6 +36,7 @@
       </div>
     </v-img>
     <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
+    <related-items :id="$route.params.itemId" />
   </v-container>
 </template>
 
