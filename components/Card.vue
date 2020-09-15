@@ -136,6 +136,9 @@ export default Vue.extend({
         const endYear = new Date(this.item.EndDate).toLocaleString('en-us', {
           year: 'numeric'
         });
+        if (this.item.ProductionYear.toString() === endYear) {
+          return this.item.ProductionYear;
+        }
         return `${this.item.ProductionYear} - ${endYear}`;
       } else {
         return '';
