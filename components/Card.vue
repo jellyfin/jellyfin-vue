@@ -22,7 +22,7 @@
       </div>
       <div class="card-text">
         <div class="card-title mt-1">{{ item.Name }}</div>
-        <div class="card-subtitle grey--text">{{ item.ProductionYear }}</div>
+        <div class="card-subtitle grey--text">{{ cardSubtitle() }}</div>
       </div>
     </div>
   </nuxt-link>
@@ -120,6 +120,26 @@ export default Vue.extend({
   methods: {
     imageLink(id: string) {
       return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
+    },
+    /**
+     * @returns {string} Empty sting || item Production year || item Production year - Present || item Production Year - item End Year
+     */
+    cardSubtitle(): string {
+      if (this.item.Type !== 'Series' && this.item.ProductionYear) {
+        return this.item.ProductionYear;
+      } else if (
+        this.item.Status === 'Continuing' &&
+        this.item.ProductionYear
+      ) {
+        return `${this.item.ProductionYear} - ${this.$t('present')}`;
+      } else if (this.item.ProductionYear && this.item.EndDate) {
+        const endYear = new Date(this.item.EndDate).toLocaleString('en-us', {
+          year: 'numeric'
+        });
+        return `${this.item.ProductionYear} - ${endYear}`;
+      } else {
+        return '';
+      }
     }
   }
 });
