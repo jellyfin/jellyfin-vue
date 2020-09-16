@@ -31,7 +31,7 @@
     "@types/uuid": "^8.3.0",
     "lodash": "^4.17.20",
     "nuxt": "^2.14.0",
-    "nuxt-i18n": "^6.13.12",
+    "nuxt-i18n": "^6.15.1",
     "nuxt-vuex-localstorage": "^1.2.7",
     "uuid": "^8.3.0",
     "vueperslides": "^2.10.7"
