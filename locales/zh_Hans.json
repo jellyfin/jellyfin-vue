@@ -21,5 +21,6 @@
     "signIn": "登陆",
     "upNext": "下一个",
     "libraryNotFound": "未找到媒体库",
-    "itemNotFound": "未找到项目"
+    "itemNotFound": "未找到项目",
+    "playType": "播放 {mediaType}"
 }
