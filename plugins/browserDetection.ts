@@ -1,5 +1,4 @@
-import { Context } from '@nuxt/types';
-import { PluginInjection } from '~/types/utils';
+import { Plugin } from '@nuxt/types';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -276,6 +275,8 @@ class BrowserDetector {
 
 export const browserDetector = new BrowserDetector();
 
-export default (_context: Context, inject: PluginInjection): void => {
+const browserDetectorPlugin: Plugin = (_context, inject) => {
   inject('browser', browserDetector);
 };
+
+export default browserDetectorPlugin;

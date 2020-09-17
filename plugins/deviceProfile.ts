@@ -1,6 +1,5 @@
-import { Context } from '@nuxt/types';
+import { Plugin } from '@nuxt/types';
 import { v4 as uuidv4 } from 'uuid';
-import { PluginInjection } from '~/types/utils';
 
 interface DeviceProfile {
   set: () => void;
@@ -86,7 +85,7 @@ function getClientName(): string {
   return 'Jellyfin Web (Vue)';
 }
 
-export default (context: Context, inject: PluginInjection): void => {
+const deviceProfilePlugin: Plugin = (context, inject) => {
   const deviceProfile = {
     set: () => {
       context.store.commit('deviceProfile/set', {
@@ -103,3 +102,5 @@ export default (context: Context, inject: PluginInjection): void => {
 
   inject('deviceProfile', deviceProfile);
 };
+
+export default deviceProfilePlugin;
