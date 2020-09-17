@@ -12,6 +12,11 @@ const config: NuxtConfig = {
    */
   target: 'server',
   /*
+   ** Module loading mode
+   ** See https://nuxtjs.org/api/configuration-modern
+   */
+  modern: 'client',
+  /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
    */
