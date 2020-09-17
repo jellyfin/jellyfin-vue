@@ -1,8 +1,7 @@
-import { Context } from '@nuxt/types';
+import { Plugin } from '@nuxt/types';
 import { AxiosInstance } from 'axios';
 import { TvShowsApi } from '~/api/api';
 import { Configuration } from '~/api/configuration';
-import { PluginInjection } from '~/types/utils';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -20,7 +19,7 @@ declare module 'vue/types/vue' {
   }
 }
 
-export default (context: Context, inject: PluginInjection): void => {
+const tvShowsApiPlugin: Plugin = (context, inject) => {
   const config = new Configuration();
 
   const tvShowsApi = new TvShowsApi(
@@ -30,3 +29,5 @@ export default (context: Context, inject: PluginInjection): void => {
   );
   inject('tvShowsApi', tvShowsApi);
 };
+
+export default tvShowsApiPlugin;

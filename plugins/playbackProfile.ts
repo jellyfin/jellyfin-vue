@@ -1,4 +1,4 @@
-import { Context } from '@nuxt/types/app';
+import { Plugin } from '@nuxt/types/app';
 import { browserDetector } from './browserDetection';
 import {
   getSupportedMP4VideoCodecs,
@@ -21,7 +21,6 @@ import {
   SubtitleDeliveryMethod,
   ResponseProfile
 } from '~/api';
-import { PluginInjection } from '~/types/utils';
 
 const physicalAudioChannels = browserDetector.isTv() ? 6 : 2;
 
@@ -269,6 +268,8 @@ declare module 'vue/types/vue' {
   }
 }
 
-export default (_context: Context, inject: PluginInjection): void => {
+const playbackProfilePlugin: Plugin = (_context, inject) => {
   inject('playbackProfile', getDeviceProfile());
 };
+
+export default playbackProfilePlugin;

@@ -4,7 +4,11 @@
       <div :class="cardType">
         <button
           class="card-content card-content-button d-flex justify-center align-center"
-          :style="{ backgroundImage: `url('${imageLink(item.Id)}')` }"
+          :style="[
+            item.ImageTags.Primary
+              ? { backgroundImage: `url('${imageLink(item.Id)}')` }
+              : {}
+          ]"
         >
           <v-icon
             v-if="!item.ImageTags.Primary"

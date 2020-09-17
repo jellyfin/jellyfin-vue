@@ -1,5 +1,4 @@
-import { Context } from '@nuxt/types';
-import { PluginInjection } from '~/types/utils';
+import { Plugin } from '@nuxt/types';
 
 interface UserStore {
   set: (id: string, serverUrl: string, accessToken: string) => void;
@@ -28,7 +27,7 @@ declare module 'vuex/types/index' {
   }
 }
 
-export default (context: Context, inject: PluginInjection): void => {
+const userPlugin: Plugin = (context, inject) => {
   const user = {
     set: async (id: string, serverUrl: string, accessToken: string) => {
       const response = await context.$displayPreferencesApi.getDisplayPreferences(
@@ -49,3 +48,5 @@ export default (context: Context, inject: PluginInjection): void => {
 
   inject('user', user);
 };
+
+export default userPlugin;

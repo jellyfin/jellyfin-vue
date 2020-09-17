@@ -1,6 +1,6 @@
-import { Context } from '@nuxt/types';
+import { Plugin } from '@nuxt/types';
 
-export default async (context: Context): Promise<void> => {
+const userInitPlugin: Plugin = async (context) => {
   if (
     context.store.state.user.id &&
     context.store.state.user.serverUrl &&
@@ -17,3 +17,5 @@ export default async (context: Context): Promise<void> => {
     context.$auth.setUser(response.data);
   }
 };
+
+export default userInitPlugin;
