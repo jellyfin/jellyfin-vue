@@ -39,7 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^9.1.2",
-    "@mdi/font": "^5.5.55",
+    "@mdi/font": "^5.6.55",
     "@nuxt/types": "^2.14.0",
     "@nuxt/typescript-build": "^2.0.2",
     "@nuxtjs/eslint-config": "^3.1.0",
