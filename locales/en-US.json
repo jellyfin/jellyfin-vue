@@ -9,6 +9,7 @@
   "logout": "Logout",
   "more": "More",
   "play": "Play",
+  "present": "Present",
   "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
   "serverNotFound": "Server not found",
