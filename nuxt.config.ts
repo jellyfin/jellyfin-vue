@@ -197,7 +197,21 @@ const config: NuxtConfig = {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    babel: {
+      // envName: server, client, modern
+      presets() {
+        return [
+          [
+            '@nuxt/babel-preset-app',
+            {
+              corejs: { version: 3 }
+            }
+          ]
+        ];
+      }
+    }
+  },
 
   /**
    * Host set to 0.0.0.0 in order to access the dev server on the LAN
