@@ -22,7 +22,7 @@
       </div>
       <div class="card-text">
         <div class="card-title mt-1">{{ item.Name }}</div>
-        <div class="card-subtitle grey--text">{{ cardSubtitle() }}</div>
+        <div class="card-subtitle grey--text">{{ cardSubtitle }}</div>
       </div>
     </div>
   </nuxt-link>
@@ -115,14 +115,9 @@ export default Vue.extend({
             return '';
         }
       }
-    }
-  },
-  methods: {
-    imageLink(id: string) {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
     },
     /**
-     * @returns {string} Empty sting || item Production year || item Production year - Present || item Production Year - item End Year
+     * @returns {string} Either an empty string, or a string representing the production year(s) for the current item.
      */
     cardSubtitle(): string {
       if (this.item.Type !== 'Series' && this.item.ProductionYear) {
@@ -143,6 +138,11 @@ export default Vue.extend({
       } else {
         return '';
       }
+    }
+  },
+  methods: {
+    imageLink(id: string) {
+      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
     }
   }
 });
