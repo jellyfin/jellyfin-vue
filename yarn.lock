@@ -12624,10 +12624,10 @@ vue@^2.6.12:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
 
-vueperslides@^2.10.7:
-  version "2.10.7"
-  resolved "https://registry.yarnpkg.com/vueperslides/-/vueperslides-2.10.7.tgz#56f5f139cbf044afada541cf1bfbcb845db22c34"
-  integrity sha512-CS4W1s45qraNCM6vdIFbAe6SAPEIAXpk7YdcJWheRpD+bU6HLwfMieK9cRELJBxemHoZND0TbaRQWxp3t1MEZA==
+vueperslides@^2.10.8:
+  version "2.10.8"
+  resolved "https://registry.yarnpkg.com/vueperslides/-/vueperslides-2.10.8.tgz#7ceae734252320e74e5f112cdcd6ba45e0e8d438"
+  integrity sha512-hMNO3zeG8AuK/yp+DKgeCbjqTLLePOm+PlCBjoVk0vtEWuxKRTcptEdNxF7J4qncefLpZHEGj1v7t/Or7TSPbw==
 
 vuetify-loader@^1.4.3:
   version "1.6.0"

@@ -34,7 +34,7 @@
     "nuxt-i18n": "^6.15.1",
     "nuxt-vuex-localstorage": "^1.2.7",
     "uuid": "^8.3.0",
-    "vueperslides": "^2.10.7"
+    "vueperslides": "^2.10.8"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
