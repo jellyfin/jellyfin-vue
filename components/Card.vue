@@ -3,12 +3,8 @@
     <div class="card-box">
       <div :class="cardType">
         <button
+          ref="cardButton"
           class="card-content card-content-button d-flex justify-center align-center"
-          :style="[
-            item.ImageTags.Primary
-              ? { backgroundImage: `url('${imageLink(item.Id)}')` }
-              : {}
-          ]"
         >
           <v-chip
             v-if="item.UserData.Played"
@@ -166,9 +162,15 @@ export default Vue.extend({
       }
     }
   },
-  methods: {
-    imageLink(id: string) {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
+  mounted() {
+    if (this.item.ImageTags.Primary) {
+      this.$refs.cardButton.style.backgroundImage = `url("${
+        this.$axios.defaults.baseURL
+      }/Items/${this.item.Id}/Images/Primary?maxHeight=${Math.trunc(
+        this.$refs.cardButton.clientHeight
+      )}&maxWidth=${Math.trunc(this.$refs.cardButton.clientWidth)}&tag=${
+        this.item.ImageTags.Primary
+      }&quality=90")`;
     }
   }
 });
