@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
     <div class="card-box">
-      <div :class="cardType">
+      <div :class="shape || cardType">
         <button
           ref="cardButton"
           class="card-content card-content-button d-flex justify-center align-center"
@@ -74,7 +74,7 @@ export default Vue.extend({
   },
   computed: {
     itemLink: {
-      get() {
+      get(): string {
         if (this.item.Type === 'Folder') {
           return `/library/${this.item.Id}`;
         } else {
@@ -83,20 +83,9 @@ export default Vue.extend({
       }
     },
     cardType: {
-      get() {
-        // If the shape is forced externally, use that instead
-        if (this.shape) {
-          return this.shape;
-        }
+      get(): string {
         // Otherwise, figure out the shape based on the type of the item
         switch (this.item.Type) {
-          case 'Book':
-          case 'BoxSet':
-          case 'Movie':
-          case 'MusicArtist':
-          case 'Person':
-          case 'Series':
-            return 'portrait-card';
           case 'Audio':
           case 'Folder':
           case 'MusicAlbum':
@@ -104,13 +93,19 @@ export default Vue.extend({
           case 'Playlist':
           case 'Video':
             return 'square-card';
+          case 'Book':
+          case 'BoxSet':
+          case 'Movie':
+          case 'MusicArtist':
+          case 'Person':
+          case 'Series':
           default:
-            return '';
+            return 'portrait-card';
         }
       }
     },
     itemIcon: {
-      get() {
+      get(): string {
         switch (this.item.Type) {
           case 'Audio':
             return 'mdi-music-note';
@@ -162,15 +157,10 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
+  mounted(): void {
     if (this.item.ImageTags.Primary) {
-      this.$refs.cardButton.style.backgroundImage = `url("${
-        this.$axios.defaults.baseURL
-      }/Items/${this.item.Id}/Images/Primary?maxHeight=${Math.trunc(
-        this.$refs.cardButton.clientHeight
-      )}&maxWidth=${Math.trunc(this.$refs.cardButton.clientWidth)}&tag=${
-        this.item.ImageTags.Primary
-      }&quality=90")`;
+      const button = this.$refs.cardButton as HTMLElement;
+      button.style.backgroundImage = `url(${this.$axios.defaults.baseURL}/Items/${this.item.Id}/Images/Primary?maxHeight=${button.clientHeight}&maxWidth=${button.clientWidth}&tag=${this.item.ImageTags.Primary}&quality=90)`;
     }
   }
 });
