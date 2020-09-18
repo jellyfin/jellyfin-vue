@@ -52,8 +52,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import imageHelper from '~/mixins/imageHelper';
+import { ImageType } from '~/api';
 
 export default Vue.extend({
+  mixins: [imageHelper],
   props: {
     item: {
       type: Object,
@@ -160,7 +163,11 @@ export default Vue.extend({
   mounted(): void {
     if (this.item.ImageTags.Primary) {
       const button = this.$refs.cardButton as HTMLElement;
-      button.style.backgroundImage = `url(${this.$axios.defaults.baseURL}/Items/${this.item.Id}/Images/Primary?maxHeight=${button.clientHeight}&maxWidth=${button.clientWidth}&tag=${this.item.ImageTags.Primary}&quality=90)`;
+      button.style.backgroundImage = `url(${this.getImageUrlForElement(
+        button,
+        this.item,
+        ImageType.Primary
+      )})`;
     }
   }
 });

@@ -13,7 +13,7 @@
               v-if="
                 item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1
               "
-              :src="getImageLink(item.Id, 'Logo')"
+              :src="getImageUrl(item.Id, 'Logo')"
               contain
               :alt="item.Name"
               max-width="50%"
