@@ -4,7 +4,7 @@
       <div :class="shape || cardType">
         <button
           ref="cardButton"
-          class="card-content card-content-button d-flex justify-center align-center"
+          class="card-content card-content-button d-flex justify-center align-center primary darken-4"
         >
           <v-chip
             v-if="item.UserData.Played"
@@ -25,7 +25,7 @@
           <v-icon
             v-if="!item.ImageTags.Primary"
             size="96"
-            color="grey lighten-3"
+            color="primary darken-2"
           >
             {{ itemIcon }}
           </v-icon>
@@ -166,7 +166,9 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .card-box {
   cursor: pointer;
   padding: 0;
@@ -200,7 +202,6 @@ export default Vue.extend({
   width: 100%;
   contain: strict;
   border-radius: 0.3em;
-  background-color: #00455c;
   background-size: cover;
   background-repeat: no-repeat;
   background-clip: content-box;
