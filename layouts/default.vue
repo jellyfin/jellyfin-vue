@@ -54,6 +54,9 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn v-if="$route.name !== 'index'" icon @click="$router.back()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <locale-switcher />
