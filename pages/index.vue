@@ -14,10 +14,17 @@ import Vue from 'vue';
 import { pickBy } from 'lodash';
 import { getShapeFromCollectionType } from '~/utils/items';
 
+interface HomeSection {
+  name: string;
+  libraryId: string;
+  shape: string;
+  type: string;
+}
+
 export default Vue.extend({
   data() {
     return {
-      homeSections: []
+      homeSections: [] as HomeSection[]
     };
   },
   async created() {
