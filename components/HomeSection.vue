@@ -95,6 +95,7 @@ export default Vue.extend({
         break;
       }
       case 'upnext': {
+        console.error('We getting here');
         const latestItems = await this.$tvShowsApi.getNextUp({
           userId: this.$auth.user.Id,
           limit: 12,
