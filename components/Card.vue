@@ -17,6 +17,12 @@
           >
             {{ itemIcon }}
           </v-icon>
+          <v-progress-linear
+            v-if="item.UserData.PlayedPercentage > 0"
+            v-model="item.UserData.PlayedPercentage"
+            color="primary accent-4"
+            class="align-self-end"
+          />
         </button>
         <div class="card-overlay d-flex justify-center align-center">
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
