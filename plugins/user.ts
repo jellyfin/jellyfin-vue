@@ -31,7 +31,7 @@ const userPlugin: Plugin = (context, inject) => {
   const user = {
     set: async (id: string, serverUrl: string, accessToken: string) => {
       const response = await context.$displayPreferencesApi.getDisplayPreferences(
-        { displayPreferencesId: 'usersettings', userId: id, client: 'emby' }
+        { displayPreferencesId: 'usersettings', userId: id, client: 'vue' }
       );
 
       context.store.commit('user/set', {

@@ -52,8 +52,18 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar
+      :clipped-left="clipped"
+      :hide-on-scroll="$vuetify.breakpoint.mobile"
+      :color="$vuetify.theme.dark ? '#202020' : undefined"
+      fixed
+      flat
+      app
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn v-if="$route.name !== 'index'" icon @click="$router.back()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <locale-switcher />
@@ -85,11 +95,13 @@ export default Vue.extend({
       clipped: true,
       drawer: true,
       libraries: {},
-      miniVariant: false,
-      title: 'Jellyfin'
+      miniVariant: false
     };
   },
   computed: {
+    title() {
+      return this.$store.state.page.title;
+    },
     items() {
       return [
         {

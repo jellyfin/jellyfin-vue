@@ -10,6 +10,22 @@
               : {}
           ]"
         >
+          <v-chip
+            v-if="item.UserData.Played"
+            color="green"
+            class="card-chip"
+            small
+          >
+            <v-icon>mdi-check</v-icon>
+          </v-chip>
+          <v-chip
+            v-if="item.UserData.UnplayedItemCount"
+            color="primary"
+            class="card-chip"
+            small
+          >
+            {{ item.UserData.UnplayedItemCount }}
+          </v-chip>
           <v-icon
             v-if="!item.ImageTags.Primary"
             size="96"
@@ -17,6 +33,12 @@
           >
             {{ itemIcon }}
           </v-icon>
+          <v-progress-linear
+            v-if="item.UserData.PlayedPercentage > 0"
+            v-model="item.UserData.PlayedPercentage"
+            color="primary accent-4"
+            class="align-self-end"
+          />
         </button>
         <div class="card-overlay d-flex justify-center align-center">
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
@@ -192,6 +214,11 @@ export default Vue.extend({
   background-clip: content-box;
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
+}
+.card-chip {
+  position: absolute;
+  top: 1em;
+  right: 1em;
 }
 .card-overlay {
   border-radius: 0.3em;

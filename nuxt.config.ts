@@ -5,7 +5,7 @@ const config: NuxtConfig = {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'spa',
+  ssr: false,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -21,8 +21,8 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - Jellyfin',
+    title: 'Jellyfin',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -48,6 +48,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/deviceProfile.ts',
+    'plugins/page.ts',
     'plugins/playbackProfile.ts',
     'plugins/snackbar.ts',
     'plugins/user.ts',

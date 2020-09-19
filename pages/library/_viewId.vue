@@ -1,13 +1,6 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <h1>
-          <span>{{ name }}</span>
-        </h1>
-      </v-col>
-    </v-row>
-    <v-row>
       <v-col v-for="item in items" :key="item.Id" cols="6" sm="4" md="3" lg="2">
         <card :item="item" />
       </v-col>
@@ -22,7 +15,6 @@ import { BaseItemDto } from '../../api';
 export default Vue.extend({
   data() {
     return {
-      name: '',
       items: [] as BaseItemDto[]
     };
   },
@@ -41,7 +33,9 @@ export default Vue.extend({
         (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
           collectionInfo.data.Items[0].Type === 'Folder')
       ) {
-        this.name = collectionInfo.data.Items[0].Name || '';
+        if (collectionInfo.data.Items[0].Name) {
+          this.$page.setTitle(collectionInfo.data.Items[0].Name);
+        }
 
         const options = {
           uId: this.$auth.user.Id,
@@ -72,6 +66,11 @@ export default Vue.extend({
         message: this.$t('libraryNotFound') as string
       });
     }
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
   }
 });
 </script>
