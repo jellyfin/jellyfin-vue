@@ -17,8 +17,8 @@
     </template>
     <v-list dense>
       <v-list-item
-        v-for="(item, index) in menuItems"
-        :key="index"
+        v-for="(item, index) in bottomMenuItems"
+        :key="`bottomMenuItems-${index}`"
         @click="item.action"
       >
         <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -35,7 +35,7 @@ export default Vue.extend({
   data() {
     return {
       avatarSize: 48,
-      menuItems: [
+      bottomMenuItems: [
         {
           title: this.$t('logout'),
           action: () => {
@@ -48,11 +48,36 @@ export default Vue.extend({
     };
   },
   computed: {
-    userImage(): string {
-      if (this.$auth.user?.PrimaryImageTag) {
-        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
-      } else {
-        return '';
+    menuItems: {
+      get() {
+        const items = [
+          {
+            title: this.$t('accountSettings'),
+            action: () => {
+              this.$router.push('/user/account');
+            }
+          }
+        ];
+
+        if (this.$auth.user.Policy.IsAdministrator) {
+          items.push({
+            title: this.$t('serverDashboard'),
+            action: () => {
+              this.$router.push('/admin');
+            }
+          });
+        }
+
+        return items;
+      }
+    },
+    userImage: {
+      get() {
+        if (this.$auth.user?.PrimaryImageTag) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
+        } else {
+          return '';
+        }
       }
     }
   },

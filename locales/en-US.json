@@ -73,6 +73,7 @@
   "serverAddress": "Server address",
   "serverAddressMustBeUrl": "Server address must be a valid address",
   "serverAddressRequired": "Server address is required",
+  "serverDashboard": "Server dashboard",
   "serverNotFound": "Server not found",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
