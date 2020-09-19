@@ -40,6 +40,8 @@ export default Vue.extend({
     };
   },
   async created() {
+    this.$page.setTitle('Home');
+
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
@@ -135,6 +137,11 @@ export default Vue.extend({
 
       this.homeSections = homeSections;
     }
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
   }
 });
 </script>

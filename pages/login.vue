@@ -13,6 +13,14 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  layout: 'fullpage'
+  layout: 'fullpage',
+  created() {
+    this.$page.setTitle('Login');
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  }
 });
 </script>

@@ -85,11 +85,13 @@ export default Vue.extend({
       clipped: true,
       drawer: true,
       libraries: {},
-      miniVariant: false,
-      title: 'Jellyfin'
+      miniVariant: false
     };
   },
   computed: {
+    title() {
+      return this.$store.state.page.title;
+    },
     items() {
       return [
         {
