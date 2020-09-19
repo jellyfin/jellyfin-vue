@@ -158,11 +158,13 @@ const config: NuxtConfig = {
   },
   i18n: {
     locales: [
+      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' },
+      { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
+      { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
       { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
-      { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
-      { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
       { code: 'nb', iso: 'nb-NO', name: 'Bokmål', file: 'nb_NO.json' },
+      { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
       { code: 'pl', iso: 'pl-PL', name: 'Polski', file: 'pl.json' },
       { code: 'ro', iso: 'ro-RO', name: 'Română', file: 'ro.json' },
       { code: 'sk', iso: 'sk-SK', name: 'Slovenčina', file: 'sk.json' },
@@ -170,7 +172,7 @@ const config: NuxtConfig = {
       { code: 'sv', iso: 'sv-SE', name: 'Svenska', file: 'sv.json' },
       { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' },
       { code: 'tr', iso: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
-      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' }
+      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' }
     ],
     lazy: true,
     langDir: 'locales/',
