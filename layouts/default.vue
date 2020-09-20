@@ -1,5 +1,6 @@
 <template>
-  <v-app dark>
+  <v-app ref="app">
+    <backdrop />
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list>
         <v-list-item
