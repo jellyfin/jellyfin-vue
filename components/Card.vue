@@ -73,6 +73,13 @@ export default Vue.extend({
       default: () => {
         return false;
       }
+    },
+    episode: {
+      type: Boolean,
+      required: false,
+      default: () => {
+        return false;
+      }
     }
   },
   computed: {
@@ -96,6 +103,8 @@ export default Vue.extend({
           case 'Playlist':
           case 'Video':
             return 'square-card';
+          case 'Episode':
+            return 'thumb-card';
           case 'Book':
           case 'BoxSet':
           case 'Movie':
@@ -137,10 +146,16 @@ export default Vue.extend({
       }
     },
     /**
-     * @returns {string} Either an empty string, or a string representing the production year(s) for the current item.
+     * @returns {string} Either an empty string, or a string representing the production year(s) for the current item or the relevant episode number of the item.
      */
     cardSubtitle(): string {
-      if (this.item.Type !== 'Series' && this.item.ProductionYear) {
+      if (this.episode) {
+        if (this.item.IndexNumber) {
+          return this.$t('episodeNumber', {
+            episodeNumber: this.item.IndexNumber
+          }).toString();
+        }
+      } else if (this.item.Type !== 'Series' && this.item.ProductionYear) {
         return this.item.ProductionYear;
       } else if (
         this.item.Status === 'Continuing' &&
@@ -155,9 +170,8 @@ export default Vue.extend({
           return this.item.ProductionYear;
         }
         return `${this.item.ProductionYear} - ${endYear}`;
-      } else {
-        return '';
       }
+      return '';
     }
   },
   mounted(): void {

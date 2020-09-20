@@ -15,19 +15,12 @@
           :infinite="false"
           :disable-arrows-on-edges="true"
           :bullets="false"
+          :breakpoints="breakpoints"
           :dragging-distance="200"
         >
           <vueper-slide v-for="episode in season.Episodes" :key="episode.Id">
             <template v-slot:content>
-              <v-card>
-                <v-img :src="getImageUrl(episode.Id, 'primary')"></v-img>
-                <v-card-subtitle>
-                  {{
-                    $t('episodeNumber', { episodeNumber: episode.IndexNumber })
-                  }}
-                </v-card-subtitle>
-                <v-card-title>{{ episode.Name }}</v-card-title>
-              </v-card>
+              <card :item="episode" episode />
             </template>
           </vueper-slide>
         </vueper-slides>
@@ -39,14 +32,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '~/api';
-import imageHelper from '~/mixins/imageHelper';
 
 interface Season extends BaseItemDto {
   Episodes?: Array<BaseItemDto>;
 }
 
 export default Vue.extend({
-  mixins: [imageHelper],
   props: {
     item: {
       type: Object,
@@ -56,7 +47,21 @@ export default Vue.extend({
   data() {
     return {
       seasons: [] as Season[],
-      seasonTabs: 1
+      seasonTabs: 1,
+      breakpoints: {
+        600: {
+          visibleSlides: 2
+        },
+        960: {
+          visibleSlides: 3
+        },
+        1264: {
+          visibleSlides: 4
+        },
+        1904: {
+          visibleSlides: 5
+        }
+      }
     };
   },
   async beforeMount() {
