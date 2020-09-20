@@ -2,12 +2,16 @@
   <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
     <div class="card-box">
       <div :class="shape || cardType">
-        <button
-          ref="cardButton"
+        <div
           class="card-content card-content-button d-flex justify-center align-center primary darken-4"
         >
+          <blurhash-image
+            v-if="item.ImageTags && item.ImageTags.Primary"
+            :item="item"
+            class="card-image"
+          />
           <v-chip
-            v-if="item.UserData.Played"
+            v-if="item.UserData && item.UserData.Played"
             color="green"
             class="card-chip"
             small
@@ -15,7 +19,7 @@
             <v-icon>mdi-check</v-icon>
           </v-chip>
           <v-chip
-            v-if="item.UserData.UnplayedItemCount"
+            v-if="item.UserData && item.UserData.UnplayedItemCount"
             color="primary"
             class="card-chip"
             small
@@ -23,19 +27,25 @@
             {{ item.UserData.UnplayedItemCount }}
           </v-chip>
           <v-icon
-            v-if="!item.ImageTags.Primary"
+            v-if="
+              !item.ImageTags || (item.ImageTags && !item.ImageTags.Primary)
+            "
             size="96"
             color="primary darken-2"
           >
             {{ itemIcon }}
           </v-icon>
           <v-progress-linear
-            v-if="item.UserData.PlayedPercentage > 0"
+            v-if="
+              item.UserData &&
+              item.UserData.PlayedPercentage &&
+              item.UserData.PlayedPercentage > 0
+            "
             v-model="item.UserData.PlayedPercentage"
             color="primary accent-4"
             class="align-self-end"
           />
-        </button>
+        </div>
         <div class="card-overlay d-flex justify-center align-center">
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
             <v-icon size="36">mdi-play</v-icon>
@@ -53,19 +63,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import imageHelper from '~/mixins/imageHelper';
-import { ImageType } from '~/api';
+import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   mixins: [imageHelper],
   props: {
     item: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {
-          Name: 'Missing Name'
-        };
-      }
+      type: Object as () => BaseItemDto,
+      required: true
     },
     shape: {
       type: [String, Boolean],
@@ -156,7 +161,7 @@ export default Vue.extend({
           }).toString();
         }
       } else if (this.item.Type !== 'Series' && this.item.ProductionYear) {
-        return this.item.ProductionYear;
+        return this.item.ProductionYear.toString();
       } else if (
         this.item.Status === 'Continuing' &&
         this.item.ProductionYear
@@ -167,21 +172,11 @@ export default Vue.extend({
           year: 'numeric'
         });
         if (this.item.ProductionYear.toString() === endYear) {
-          return this.item.ProductionYear;
+          return this.item.ProductionYear.toString();
         }
         return `${this.item.ProductionYear} - ${endYear}`;
       }
       return '';
-    }
-  },
-  mounted(): void {
-    if (this.item.ImageTags.Primary) {
-      const button = this.$refs.cardButton as HTMLElement;
-      button.style.backgroundImage = `url(${this.getImageUrlForElement(
-        button,
-        this.item,
-        ImageType.Primary
-      )})`;
     }
   }
 });
@@ -189,7 +184,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-
 .card-box {
   cursor: pointer;
   padding: 0;
@@ -228,6 +222,19 @@ export default Vue.extend({
   background-clip: content-box;
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
+}
+.card-image {
+  width: 100%;
+  height: 100%;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  & canvas {
+    width: 100%;
+    height: 100%;
+  }
 }
 .card-chip {
   position: absolute;
