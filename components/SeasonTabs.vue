@@ -20,7 +20,7 @@
           <vueper-slide v-for="episode in season.Episodes" :key="episode.Id">
             <template v-slot:content>
               <v-card>
-                <v-img :src="getImageLink(episode.Id, 'primary')"></v-img>
+                <v-img :src="getImageUrl(episode.Id, 'primary')"></v-img>
                 <v-card-subtitle>
                   {{
                     $t('episodeNumber', { episodeNumber: episode.IndexNumber })
@@ -41,7 +41,7 @@ import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
-interface Seasons extends BaseItemDto {
+interface Season extends BaseItemDto {
   Episodes?: Array<BaseItemDto>;
 }
 
@@ -55,7 +55,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      seasons: [] as Seasons[],
+      seasons: [] as Season[],
       seasonTabs: 1
     };
   },

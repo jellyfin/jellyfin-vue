@@ -70,9 +70,7 @@
       <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
-      <v-container fluid class="pa-0">
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-main>
     <snackbar />
   </v-app>

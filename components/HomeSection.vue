@@ -8,7 +8,7 @@
       :bullets="false"
       :bullets-outside="false"
       :arrows-outside="false"
-      :visible-slides="8"
+      :visible-slides="section.shape === 'thumb-card' ? 4 : 8"
       :slide-multiple="true"
       :breakpoints="breakpoints"
       fixed-height="true"
@@ -50,16 +50,16 @@ export default Vue.extend({
       items: [] as BaseItemDto[],
       breakpoints: {
         600: {
-          visibleSlides: 3
+          visibleSlides: this.section.shape === 'thumb-card' ? 2 : 3
         },
         960: {
-          visibleSlides: 4
+          visibleSlides: this.section.shape === 'thumb-card' ? 3 : 4
         },
         1264: {
-          visibleSlides: 6
+          visibleSlides: this.section.shape === 'thumb-card' ? 3 : 6
         },
         1904: {
-          visibleSlides: 8
+          visibleSlides: this.section.shape === 'thumb-card' ? 4 : 8
         }
       }
     };
