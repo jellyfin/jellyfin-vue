@@ -23,5 +23,6 @@
     "signIn": "Přihlásit se",
     "upNext": "Následující",
     "libraryNotFound": "Knihovna nebyla nalezena",
-    "itemNotFound": "Položka nebyla nalezena"
+    "itemNotFound": "Položka nebyla nalezena",
+    "endsAt": "Končí v {time}"
 }
