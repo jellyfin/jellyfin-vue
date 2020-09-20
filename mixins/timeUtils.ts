@@ -5,6 +5,25 @@
  */
 import Vue from 'vue';
 
+declare module '@nuxt/types' {
+  interface Context {
+    ticksToMs: (ticks: number) => number;
+    msToTicks: (ms: number) => number;
+  }
+
+  interface NuxtAppOptions {
+    ticksToMs: (ticks: number) => number;
+    msToTicks: (ms: number) => number;
+  }
+}
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    ticksToMs: (ticks: number) => number;
+    msToTicks: (ms: number) => number;
+  }
+}
+
 const timeUtils = Vue.extend({
   methods: {
     /**
