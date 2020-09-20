@@ -32,14 +32,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '~/api';
-import imageHelper from '~/mixins/imageHelper';
 
 interface Season extends BaseItemDto {
   Episodes?: Array<BaseItemDto>;
 }
 
 export default Vue.extend({
-  mixins: [imageHelper],
   props: {
     item: {
       type: Object,
