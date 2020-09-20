@@ -86,10 +86,8 @@ export default Vue.extend({
       ).data.Items as BaseItemDto[];
 
       this.relatedItems = RelatedItems;
-
-      console.log(this.relatedItems);
     } catch (error) {
-      console.error(`Unable to get related items: ${error}`);
+      console.error('Unable to get related items:', error);
     }
   }
 });
