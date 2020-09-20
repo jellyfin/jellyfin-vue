@@ -43,9 +43,10 @@
 import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
+import timeUtils from '~/mixins/timeUtils.ts';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, timeUtils],
   data() {
     return {
       item: {} as BaseItemDto,
@@ -78,24 +79,43 @@ export default Vue.extend({
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
       }
     },
+    getEndsAtTime(ticks: number): string {
+      const ms = this.ticksToMs(ticks);
+      const endTimeLong = new Date(Date.now() + ms);
+      // TODO: Respect user locale when rendering time
+      const endTimeShort = endTimeLong.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric'
+      });
+
+      // TODO: Use a Date object
+      return this.$t('endsAt', {
+        time: endTimeShort
+      }).toString();
+    },
     ticksToTime(ticks: number) {
-      const ms = ticks / 600000000;
-      if (Math.floor(ms / 60)) {
-        return `${Math.floor(ms / 60)} hrs ${Math.floor(ms % 60)} min`;
+      const min = this.ticksToMs(ticks) / 60;
+      if (Math.floor(min / 60) && Math.floor(min % 60)) {
+        return `${Math.floor(min / 60)} hrs ${Math.floor(min % 60)} min`;
+      } else if (Math.floor(min / 60)) {
+        return `${Math.floor(min / 60)} hrs`;
       } else {
-        return `${Math.floor(ms % 60)} min`;
+        return `${Math.floor(min % 60)} min`;
       }
     },
     renderItemSubHeading() {
       const response = [];
+      if (this.item.ProductionYear) {
+        response.push(this.item.ProductionYear);
+      }
       if (this.item.Genres) {
         response.push(this.item.Genres[0]);
       }
       if (this.item.RunTimeTicks) {
         response.push(this.ticksToTime(this.item.RunTimeTicks));
       }
-      if (this.item.ProductionYear) {
-        response.push(this.item.ProductionYear);
+      if (this.item.RunTimeTicks) {
+        response.push(this.getEndsAtTime(this.item.RunTimeTicks));
       }
       return response.join(' • ');
     },

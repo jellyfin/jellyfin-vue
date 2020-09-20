@@ -3,6 +3,7 @@
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
   "episodeNumber": "Episode {episodeNumber}",
+  "endsAt": "Ends at {time}",
   "home": "Home",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "login": "Login",
