@@ -5,7 +5,7 @@ const config: NuxtConfig = {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'spa',
+  ssr: false,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -21,8 +21,8 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - Jellyfin',
+    title: 'Jellyfin',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -48,6 +48,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/deviceProfile.ts',
+    'plugins/page.ts',
     'plugins/playbackProfile.ts',
     'plugins/snackbar.ts',
     'plugins/user.ts',
@@ -158,11 +159,13 @@ const config: NuxtConfig = {
   },
   i18n: {
     locales: [
+      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' },
+      { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
+      { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
       { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
-      { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
-      { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
       { code: 'nb', iso: 'nb-NO', name: 'Bokmål', file: 'nb_NO.json' },
+      { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
       { code: 'pl', iso: 'pl-PL', name: 'Polski', file: 'pl.json' },
       { code: 'ro', iso: 'ro-RO', name: 'Română', file: 'ro.json' },
       { code: 'sk', iso: 'sk-SK', name: 'Slovenčina', file: 'sk.json' },
@@ -170,7 +173,7 @@ const config: NuxtConfig = {
       { code: 'sv', iso: 'sv-SE', name: 'Svenska', file: 'sv.json' },
       { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' },
       { code: 'tr', iso: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
-      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' }
+      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' }
     ],
     lazy: true,
     langDir: 'locales/',

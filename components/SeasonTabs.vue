@@ -34,7 +34,7 @@ import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
-interface Seasons extends BaseItemDto {
+interface Season extends BaseItemDto {
   Episodes?: Array<BaseItemDto>;
 }
 
@@ -48,8 +48,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      seasons: [] as Seasons[],
-      seasonTabs: null,
+      seasons: [] as Season[],
+      seasonTabs: 1,
       breakpoints: {
         600: {
           visibleSlides: 2
@@ -87,6 +87,8 @@ export default Vue.extend({
 
       season.Episodes = episodes;
     }
+
+    this.seasonTabs = 0;
   }
 });
 </script>

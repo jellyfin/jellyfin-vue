@@ -1,22 +1,40 @@
 <template>
   <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
     <div class="card-box">
-      <div :class="cardType">
+      <div :class="shape || cardType">
         <button
-          class="card-content card-content-button d-flex justify-center align-center"
-          :style="[
-            item.ImageTags.Primary
-              ? { backgroundImage: `url('${imageLink(item.Id)}')` }
-              : {}
-          ]"
+          ref="cardButton"
+          class="card-content card-content-button d-flex justify-center align-center primary darken-4"
         >
+          <v-chip
+            v-if="item.UserData.Played"
+            color="green"
+            class="card-chip"
+            small
+          >
+            <v-icon>mdi-check</v-icon>
+          </v-chip>
+          <v-chip
+            v-if="item.UserData.UnplayedItemCount"
+            color="primary"
+            class="card-chip"
+            small
+          >
+            {{ item.UserData.UnplayedItemCount }}
+          </v-chip>
           <v-icon
             v-if="!item.ImageTags.Primary"
             size="96"
-            color="grey lighten-3"
+            color="primary darken-2"
           >
             {{ itemIcon }}
           </v-icon>
+          <v-progress-linear
+            v-if="item.UserData.PlayedPercentage > 0"
+            v-model="item.UserData.PlayedPercentage"
+            color="primary accent-4"
+            class="align-self-end"
+          />
         </button>
         <div class="card-overlay d-flex justify-center align-center">
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
@@ -34,8 +52,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import imageHelper from '~/mixins/imageHelper';
+import { ImageType } from '~/api';
 
 export default Vue.extend({
+  mixins: [imageHelper],
   props: {
     item: {
       type: Object,
@@ -63,7 +84,7 @@ export default Vue.extend({
   },
   computed: {
     itemLink: {
-      get() {
+      get(): string {
         if (this.item.Type === 'Folder') {
           return `/library/${this.item.Id}`;
         } else {
@@ -72,20 +93,9 @@ export default Vue.extend({
       }
     },
     cardType: {
-      get() {
-        // If the shape is forced externally, use that instead
-        if (this.shape) {
-          return this.shape;
-        }
+      get(): string {
         // Otherwise, figure out the shape based on the type of the item
         switch (this.item.Type) {
-          case 'Book':
-          case 'BoxSet':
-          case 'Movie':
-          case 'MusicArtist':
-          case 'Person':
-          case 'Series':
-            return 'portrait-card';
           case 'Audio':
           case 'Folder':
           case 'MusicAlbum':
@@ -95,13 +105,19 @@ export default Vue.extend({
             return 'square-card';
           case 'Episode':
             return 'thumb-card';
+          case 'Book':
+          case 'BoxSet':
+          case 'Movie':
+          case 'MusicArtist':
+          case 'Person':
+          case 'Series':
           default:
-            return '';
+            return 'portrait-card';
         }
       }
     },
     itemIcon: {
-      get() {
+      get(): string {
         switch (this.item.Type) {
           case 'Audio':
             return 'mdi-music-note';
@@ -158,15 +174,22 @@ export default Vue.extend({
       return '';
     }
   },
-  methods: {
-    imageLink(id: string) {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
+  mounted(): void {
+    if (this.item.ImageTags.Primary) {
+      const button = this.$refs.cardButton as HTMLElement;
+      button.style.backgroundImage = `url(${this.getImageUrlForElement(
+        button,
+        this.item,
+        ImageType.Primary
+      )})`;
     }
   }
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .card-box {
   cursor: pointer;
   padding: 0;
@@ -200,12 +223,16 @@ export default Vue.extend({
   width: 100%;
   contain: strict;
   border-radius: 0.3em;
-  background-color: #00455c;
   background-size: cover;
   background-repeat: no-repeat;
   background-clip: content-box;
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
+}
+.card-chip {
+  position: absolute;
+  top: 1em;
+  right: 1em;
 }
 .card-overlay {
   border-radius: 0.3em;

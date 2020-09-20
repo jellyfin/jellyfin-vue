@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row
-      v-for="(homeSection, homeSectionIndex) in homeSections"
-      :key="homeSectionIndex"
+      v-for="(homeSection, index) in homeSections"
+      :key="`homeSection-${index}`"
     >
       <home-section :section="homeSection" />
     </v-row>
@@ -14,32 +14,22 @@ import Vue from 'vue';
 import { pickBy } from 'lodash';
 import { getShapeFromCollectionType } from '~/utils/items';
 
+interface HomeSection {
+  name: string;
+  libraryId: string;
+  shape: string;
+  type: string;
+}
+
 export default Vue.extend({
   data() {
     return {
-      homeSections: [
-        {
-          name: this.$t('continueWatching'),
-          libraryId: '',
-          shape: 'thumb-card',
-          type: 'resume'
-        },
-        {
-          name: this.$t('continueListening'),
-          libraryId: '',
-          shape: 'square-card',
-          type: 'resumeaudio'
-        },
-        {
-          name: this.$t('upNext'),
-          libraryId: '',
-          shape: 'thumb-card',
-          type: 'upnext'
-        }
-      ]
+      homeSections: [] as HomeSection[]
     };
   },
   async created() {
+    this.$page.setTitle(this.$t('home'));
+
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
@@ -56,9 +46,10 @@ export default Vue.extend({
 
     if (!Object.keys(homeSectionsArray).length) {
       homeSectionsArray = {
-        homeSection0: 'upnext',
-        homeSection1: 'resume',
-        homeSection2: 'latestmedia'
+        homeSection0: 'resume',
+        homeSection1: 'resumeaudio',
+        homeSection2: 'upnext',
+        homeSection3: 'latestmedia'
       };
     }
 
@@ -135,6 +126,11 @@ export default Vue.extend({
 
       this.homeSections = homeSections;
     }
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
   }
 });
 </script>

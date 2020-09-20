@@ -1,15 +1,8 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12">
-        <h1>
-          <span>{{ name }}</span>
-        </h1>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-for="item in items" :key="item.Id" cols="6" sm="4" md="3" lg="2">
-        <card :item="item" />
+      <v-col cols="12" class="card-grid-container">
+        <card v-for="item in items" :key="item.Id" :item="item" />
       </v-col>
     </v-row>
   </v-container>
@@ -22,7 +15,6 @@ import { BaseItemDto } from '../../api';
 export default Vue.extend({
   data() {
     return {
-      name: '',
       items: [] as BaseItemDto[]
     };
   },
@@ -41,7 +33,9 @@ export default Vue.extend({
         (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
           collectionInfo.data.Items[0].Type === 'Folder')
       ) {
-        this.name = collectionInfo.data.Items[0].Name || '';
+        if (collectionInfo.data.Items[0].Name) {
+          this.$page.setTitle(collectionInfo.data.Items[0].Name);
+        }
 
         const options = {
           uId: this.$auth.user.Id,
@@ -72,6 +66,42 @@ export default Vue.extend({
         message: this.$t('libraryNotFound') as string
       });
     }
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
   }
 });
 </script>
+
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+.card-grid-container {
+  display: grid;
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .card-grid-container {
+    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'xl-only')} {
+  .card-grid-container {
+    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+  }
+}
+</style>
