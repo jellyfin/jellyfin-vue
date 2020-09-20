@@ -43,7 +43,7 @@
 import Vue from 'vue';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
-import timeUtils from '~/mixins/timeUtils.ts';
+import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
