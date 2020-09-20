@@ -21,5 +21,7 @@
     "upNext": "Następnie",
     "libraryNotFound": "Biblioteka nie została znaleziona",
     "itemNotFound": "Nie znaleziono",
-    "episodeNumber": "Odcinek {episodeNumber}"
+    "episodeNumber": "Odcinek {episodeNumber}",
+    "playType": "Odtwarzaj {mediaType}",
+    "present": "Teraz"
 }
