@@ -1,17 +1,17 @@
 <template>
   <v-container>
+    <v-row v-if="!loaded">
+      <v-col cols="12" class="card-grid-container">
+        <skeleton-card v-for="n in 20" :key="n" />
+      </v-col>
+    </v-row>
     <v-row v-if="items.length">
       <v-col cols="12" class="card-grid-container">
         <card v-for="item in items" :key="item.Id" :item="item" />
       </v-col>
     </v-row>
-<<<<<<< HEAD
-    <v-row v-else justify="center">
-      <h1 class="text-h4 text-center">{{ $t('noItemsFound') }}</h1>
-=======
     <v-row v-else-if="loaded" justify="center">
       <h1 class="text-h4 text-center">{{ $t('libraryEmpty') }}</h1>
->>>>>>> 0a15136... fix(library view): change no items to This library is empty
     </v-row>
   </v-container>
 </template>
@@ -23,7 +23,8 @@ import { BaseItemDto } from '../../api';
 export default Vue.extend({
   data() {
     return {
-      items: [] as BaseItemDto[]
+      items: [] as BaseItemDto[],
+      loaded: false
     };
   },
   async beforeMount() {
@@ -64,6 +65,10 @@ export default Vue.extend({
         }
 
         const itemsResponse = await this.$itemsApi.getItems(options);
+
+        if (itemsResponse.data) {
+          this.loaded = true;
+        }
 
         this.items = itemsResponse.data.Items || [];
       }
