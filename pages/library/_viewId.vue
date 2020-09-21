@@ -1,9 +1,17 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="items.length">
       <v-col cols="12" class="card-grid-container">
         <card v-for="item in items" :key="item.Id" :item="item" />
       </v-col>
+    </v-row>
+<<<<<<< HEAD
+    <v-row v-else justify="center">
+      <h1 class="text-h4 text-center">{{ $t('noItemsFound') }}</h1>
+=======
+    <v-row v-else-if="loaded" justify="center">
+      <h1 class="text-h4 text-center">{{ $t('libraryEmpty') }}</h1>
+>>>>>>> 0a15136... fix(library view): change no items to This library is empty
     </v-row>
   </v-container>
 </template>
