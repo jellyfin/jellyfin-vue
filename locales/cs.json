@@ -24,5 +24,6 @@
     "upNext": "Následující",
     "libraryNotFound": "Knihovna nebyla nalezena",
     "itemNotFound": "Položka nebyla nalezena",
-    "endsAt": "Končí v {time}"
+    "endsAt": "Končí v {time}",
+    "moreLikeThis": "Podobné"
 }
