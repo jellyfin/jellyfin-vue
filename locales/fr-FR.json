@@ -22,5 +22,7 @@
     "libraryNotFound": "Médiathèque introuvable",
     "itemNotFound": "Élément introuvable",
     "episodeNumber": "Épisode {episodeNumber}",
-    "playType": "Lire {mediaType}"
+    "playType": "Lire {mediaType}",
+    "present": "Maintenant",
+    "endsAt": "Se termine à {time}"
 }
