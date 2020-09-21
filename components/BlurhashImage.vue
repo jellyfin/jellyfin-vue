@@ -1,18 +1,6 @@
 <template>
-  <div ref="card">
-    <transition-group
-      mode="in-out"
-      name="fade"
-      style="
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      "
-    >
+  <div ref="card" class="absolute">
+    <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
         v-if="
           item.ImageBlurHashes &&
@@ -25,28 +13,12 @@
         :width="width"
         :height="height"
         :punch="punch"
-        style="
-          height: 100%;
-          width: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        "
+        class="absolute"
       />
       <v-img
         v-if="item.ImageTags && item.ImageTags.Primary"
         key="image"
-        style="
-          height: 100%;
-          width: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        "
+        class="absolute"
         :src="image"
         v-bind="$attrs"
       />
@@ -96,3 +68,15 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style>
+.absolute {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+</style>
