@@ -9,6 +9,7 @@
   "login": "Login",
   "logout": "Logout",
   "more": "More",
+  "moreLikeThis": "More like this",
   "play": "Play",
   "present": "Present",
   "serverAddressMustBeUrl": "Server address must be a valid URL",
