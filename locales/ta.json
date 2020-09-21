@@ -23,5 +23,7 @@
     "itemNotFound": "பொருள் கிடைக்கவில்லை",
     "episodeNumber": "அத்தியாயம் {episodeNumber}",
     "playType": "{mediaType} ஐ இயக்கு",
-    "present": "தற்போது"
+    "present": "தற்போது",
+    "moreLikeThis": "மேலும் இது போன்றது",
+    "endsAt": "{time} இல் முடிகிறது"
 }
