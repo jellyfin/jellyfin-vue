@@ -24,5 +24,6 @@
     "episodeNumber": "Épisode {episodeNumber}",
     "playType": "Lire {mediaType}",
     "present": "Maintenant",
-    "endsAt": "Se termine à {time}"
+    "endsAt": "Se termine à {time}",
+    "moreLikeThis": "Similaires"
 }
