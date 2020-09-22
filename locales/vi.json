@@ -23,5 +23,7 @@
     "signIn": "Đăng nhập",
     "upNext": "Tiếp theo",
     "libraryNotFound": "Không tìm thấy thư viện",
-    "itemNotFound": "Không tìm thấy mục"
+    "itemNotFound": "Không tìm thấy mục",
+    "moreLikeThis": "Thêm tương tự như thế này",
+    "endsAt": "Kết thúc lúc {time}"
 }
