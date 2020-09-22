@@ -28,7 +28,7 @@
               class="play-button"
               color="primary"
               :to="`./${item.Id}/play`"
-              >{{ $t('playType', { mediaType: item.Type }) }}</v-btn
+              >{{ renderPlayButton() }}</v-btn
             >
             <v-btn>{{ $t('more') }}</v-btn>
           </div>
@@ -51,6 +51,7 @@ export default Vue.extend({
   data() {
     return {
       item: {} as BaseItemDto,
+      nextUp: [] as BaseItemDto[],
       backdropImageSource: ''
     };
   },
@@ -66,6 +67,15 @@ export default Vue.extend({
     ).data.Items as BaseItemDto[];
 
     this.item = Item[0];
+
+    if (this.item.Type && this.item.Type.toLowerCase() === 'series') {
+      this.nextUp = (
+        await this.$tvShowsApi.getNextUp({
+          userId: this.$auth.user.Id,
+          seriesId: this.item.Id
+        })
+      ).data.Items as BaseItemDto[];
+    }
 
     this.updateBackdropImage();
   },
@@ -119,6 +129,31 @@ export default Vue.extend({
         response.push(this.getEndsAtTime(this.item.RunTimeTicks));
       }
       return response.join(' • ');
+    },
+    renderPlayButton(): string {
+      if (this.item.Type === 'Series' && this.nextUp) {
+        if (this.nextUp[0] && this.nextUp[0].IndexNumber) {
+          if (
+            this.nextUp[0].UserData &&
+            this.nextUp[0].UserData.PlayedPercentage
+          ) {
+            return this.$t('resumeEpsode', {
+              episodeNumber: this.nextUp[0].IndexNumber.toString()
+            }).toString();
+          } else {
+            return this.$t('playEpsode', {
+              episodeNumber: this.nextUp[0].IndexNumber.toString()
+            }).toString();
+          }
+        }
+      } else if (this.item.Type === 'Movie') {
+        if (this.item.UserData && this.item.UserData.PlayedPercentage) {
+          return this.$t('resumeMovie').toString();
+        } else {
+          return this.$t('playMovie').toString();
+        }
+      }
+      return this.$t('play').toString();
     },
     updateBackdropImage() {
       this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
