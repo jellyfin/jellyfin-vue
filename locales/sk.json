@@ -22,5 +22,8 @@
     "signIn": "Prihlásiť sa",
     "upNext": "Nasleduje",
     "libraryNotFound": "Knižnica nebola nájdená",
-    "itemNotFound": "Položka nebola nájdená"
+    "itemNotFound": "Položka nebola nájdená",
+    "present": "Prezentovať",
+    "moreLikeThis": "Podobné",
+    "endsAt": "Končí o {time}"
 }
