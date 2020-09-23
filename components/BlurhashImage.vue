@@ -69,7 +69,7 @@ export default Vue.extend({
 });
 </script>
 
-<style>
+<style scoped>
 .absolute {
   height: 100%;
   width: 100%;
