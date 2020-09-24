@@ -2,7 +2,7 @@
   <v-container>
     <v-row v-if="!loaded">
       <v-col cols="12" class="card-grid-container">
-        <skeleton-card v-for="n in 20" :key="n" />
+        <skeleton-card v-for="n in 24" :key="n" />
       </v-col>
     </v-row>
     <v-row v-if="items.length">
