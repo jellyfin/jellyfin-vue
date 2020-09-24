@@ -189,12 +189,26 @@ const config: NuxtConfig = {
     defaultAssets: false,
     theme: {
       dark: true,
+      default: 'dark',
+      disable: false,
       themes: {
         dark: {
-          primary: '#00A4DC'
+          primary: '#00A4DC',
+          secondary: '#424242',
+          accent: '#FF4081',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
+          success: '#4CAF50'
         },
         light: {
-          primary: '#00A4DC'
+          primary: '#00A4DC',
+          secondary: '#424242',
+          accent: '#FF4081',
+          info: '#2196F3',
+          warning: '#FB8C00',
+          error: '#FF5252',
+          success: '#4CAF50'
         }
       },
       options: {

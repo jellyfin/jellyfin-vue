@@ -25,5 +25,6 @@
   "signIn": "Sign in",
   "upNext": "Up next",
   "libraryNotFound": "Library not found",
-  "itemNotFound": "Item not found"
+  "itemNotFound": "Item not found",
+  "libraryEmpty": "This library is empty"
 }
