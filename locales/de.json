@@ -22,5 +22,8 @@
     "itemNotFound": "Element nicht gefunden",
     "libraryNotFound": "Bibliothek nicht gefunden",
     "episodeNumber": "Episode {episodeNumber}",
-    "playType": "{mediaType} abspielen"
+    "playType": "{mediaType} abspielen",
+    "moreLikeThis": "Ähnliches",
+    "present": "Jetzt",
+    "endsAt": "Endet um {time}"
 }
