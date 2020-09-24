@@ -5,17 +5,17 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .skeleton-card {
   margin: 0.6em;
 }
 
-.skeleton-card .v-skeleton-loader .v-skeleton-loader__image {
+.skeleton-card >>> .v-skeleton-loader .v-skeleton-loader__image {
   padding-bottom: 150%;
   border-radius: 0.3em;
 }
 
-.skeleton-card .v-skeleton-loader .v-skeleton-loader__heading {
+.skeleton-card >>> .v-skeleton-loader .v-skeleton-loader__heading {
   width: 75%;
   margin: auto;
 }
