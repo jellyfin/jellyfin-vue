@@ -22,5 +22,8 @@
     "username": "Gebruikersnaam",
     "serverAddress": "Server adres",
     "episodeNumber": "Aflevering {episodeNumber}",
-    "playType": "Speel {mediaType}"
+    "playType": "Speel {mediaType}",
+    "present": "Huidig",
+    "moreLikeThis": "Meer zoals dit",
+    "endsAt": "Eindigt om {time}"
 }
