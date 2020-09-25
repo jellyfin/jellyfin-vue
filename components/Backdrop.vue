@@ -1,12 +1,7 @@
 <template>
-  <div class="backdrop">
+  <div v-if="blurhash" class="backdrop">
     <v-fade-transition>
-      <blurhash-canvas
-        v-if="blurhash"
-        :hash="blurhash"
-        :width="32"
-        :height="18"
-      />
+      <blurhash-canvas :hash="blurhash" :width="32" :height="18" />
     </v-fade-transition>
   </div>
 </template>
@@ -44,7 +39,8 @@ export default Vue.extend({
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: var(--v-background-base);
+    opacity: 0.75;
   }
 }
 </style>

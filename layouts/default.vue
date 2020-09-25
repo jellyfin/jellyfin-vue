@@ -143,3 +143,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.v-application {
+  background-color: var(--v-background-base) !important;
+}
+</style>

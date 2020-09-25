@@ -199,7 +199,8 @@ const config: NuxtConfig = {
           info: '#2196F3',
           warning: '#FB8C00',
           error: '#FF5252',
-          success: '#4CAF50'
+          success: '#4CAF50',
+          background: '#101010'
         },
         light: {
           primary: '#00A4DC',
@@ -208,7 +209,8 @@ const config: NuxtConfig = {
           info: '#2196F3',
           warning: '#FB8C00',
           error: '#FF5252',
-          success: '#4CAF50'
+          success: '#4CAF50',
+          background: '#f2f2f2'
         }
       },
       options: {
