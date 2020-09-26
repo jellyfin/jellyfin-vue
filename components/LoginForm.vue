@@ -82,7 +82,7 @@ export default Vue.extend({
           data: this.login
         });
 
-        this.$deviceProfile.set();
+        this.$store.dispatch('browserProfile/set');
 
         const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
 
