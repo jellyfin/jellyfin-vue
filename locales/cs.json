@@ -25,5 +25,6 @@
     "libraryNotFound": "Knihovna nebyla nalezena",
     "itemNotFound": "Položka nebyla nalezena",
     "endsAt": "Končí v {time}",
-    "moreLikeThis": "Podobné"
+    "moreLikeThis": "Podobné",
+    "libraryEmpty": "Knihovna je prázdná"
 }
