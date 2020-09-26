@@ -41,7 +41,7 @@ export default Vue.extend({
           action: () => {
             this.$auth.logout();
             this.$deviceProfile.clear();
-            this.$user.clear();
+            this.$store.dispatch('user/clear');
           }
         }
       ]

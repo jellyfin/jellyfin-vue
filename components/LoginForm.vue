@@ -89,7 +89,11 @@ export default Vue.extend({
         this.$auth.setUserToken(accessToken);
 
         this.$auth.setUser(response.data.User);
-        this.$user.set(response.data.User.Id, this.serverUrl, accessToken);
+        this.$store.dispatch('user/set', {
+          id: response.data.User.Id,
+          serverUrl: this.serverUrl,
+          accessToken
+        });
       } catch (error) {
         let errorMessage = this.$t('unexpectedError');
 
