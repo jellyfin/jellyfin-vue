@@ -105,7 +105,7 @@ export default Vue.extend({
         }
 
         this.loginIn = false;
-        this.$snackbar(errorMessage as string, 'error');
+        this.$snackbar(errorMessage.toString(), 'error');
       }
     }
   }
