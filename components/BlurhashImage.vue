@@ -21,6 +21,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
+        :alt="item.Name || ''"
       />
     </transition-group>
   </div>
