@@ -10,7 +10,7 @@
       class="scroller"
       :items="itemsChunks"
       :min-item-size="350"
-      :buffer="600"
+      :buffer="$vuetify.breakpoint.height * 1.5"
       page-mode
     >
       <template v-slot="{ item, index, active }">
