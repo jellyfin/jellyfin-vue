@@ -79,4 +79,7 @@ export default Vue.extend({
   right: 0;
   bottom: 0;
 }
+img {
+  object-fit: cover;
+}
 </style>

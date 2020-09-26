@@ -228,15 +228,6 @@ export default Vue.extend({
 .card-image {
   width: 100%;
   height: 100%;
-  & img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  & canvas {
-    width: 100%;
-    height: 100%;
-  }
 }
 .card-chip {
   position: absolute;
