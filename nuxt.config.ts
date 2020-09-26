@@ -50,7 +50,6 @@ const config: NuxtConfig = {
     'plugins/deviceProfile.ts',
     'plugins/page.ts',
     'plugins/playbackProfile.ts',
-    'plugins/snackbar.ts',
     'plugins/user.ts',
     // API
     'plugins/displayPreferenceApi.ts',

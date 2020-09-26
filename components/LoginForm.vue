@@ -105,7 +105,10 @@ export default Vue.extend({
         }
 
         this.loginIn = false;
-        this.$snackbar(errorMessage.toString(), 'error');
+        this.$store.dispatch('snackbar/display', {
+          message: errorMessage.toString(),
+          color: 'error'
+        });
       }
     }
   }

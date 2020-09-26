@@ -17,7 +17,7 @@ export default Vue.extend({
   },
   created() {
     this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'snackbar/display') {
+      if (mutation.type === 'snackbar/SET_SNACKBAR_MESSAGE') {
         this.message = state.snackbar.message;
         this.color = state.snackbar.color;
         this.model = true;
