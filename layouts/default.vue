@@ -1,5 +1,6 @@
 <template>
-  <v-app dark>
+  <v-app ref="app">
+    <backdrop />
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list>
         <v-list-item
@@ -142,3 +143,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.v-application {
+  background-color: var(--v-background-base) !important;
+}
+</style>
