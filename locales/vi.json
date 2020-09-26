@@ -25,5 +25,6 @@
     "libraryNotFound": "Không tìm thấy thư viện",
     "itemNotFound": "Không tìm thấy mục",
     "moreLikeThis": "Thêm tương tự như thế này",
-    "endsAt": "Kết thúc lúc {time}"
+    "endsAt": "Kết thúc lúc {time}",
+    "libraryEmpty": "Thư viện này trống"
 }
