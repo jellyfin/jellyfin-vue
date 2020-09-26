@@ -25,5 +25,6 @@
     "playType": "{mediaType} ஐ இயக்கு",
     "present": "தற்போது",
     "moreLikeThis": "மேலும் இது போன்றது",
-    "endsAt": "{time} இல் முடிகிறது"
+    "endsAt": "{time} இல் முடிகிறது",
+    "libraryEmpty": "இந்த நூலகம் காலியாக உள்ளது"
 }
