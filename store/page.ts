@@ -1,4 +1,4 @@
-import { MutationTree } from 'vuex';
+import { ActionTree, MutationTree } from 'vuex';
 
 export interface PageState {
   title: string;
@@ -13,7 +13,13 @@ interface MutationPayload {
 }
 
 export const mutations: MutationTree<PageState> = {
-  setTitle(state: PageState, payload: MutationPayload) {
-    state.title = payload.title;
+  SET_PAGE_TITLE(state: PageState, { title }: MutationPayload) {
+    state.title = title;
+  }
+};
+
+export const actions: ActionTree<PageState, PageState> = {
+  setTitle({ commit }, { title }: MutationPayload) {
+    commit('SET_PAGE_TITLE', { title });
   }
 };

@@ -15,7 +15,7 @@ import Vue from 'vue';
 export default Vue.extend({
   layout: 'fullpage',
   created() {
-    this.$page.setTitle('Login');
+    this.$store.dispatch('page/setTitle', { title: this.$t('login') });
   },
   head() {
     return {
