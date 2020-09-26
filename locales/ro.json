@@ -21,5 +21,10 @@
     "upNext": "Urmează",
     "libraryNotFound": "Biblioteca nu a fost găsită",
     "itemNotFound": "Articolul nu a fost găsit",
-    "episodeNumber": "Episod {episodeNumber}"
+    "episodeNumber": "Episod {episodeNumber}",
+    "libraryEmpty": "Această bibliotecă este goală",
+    "playType": "Redă {mediaType}",
+    "present": "Acum",
+    "moreLikeThis": "Similare",
+    "endsAt": "Se termină la {time}"
 }
