@@ -15,7 +15,7 @@
         :punch="punch"
         class="absolute"
       />
-      <v-img
+      <img
         v-if="item.ImageTags && item.ImageTags.Primary"
         key="image"
         class="absolute"
