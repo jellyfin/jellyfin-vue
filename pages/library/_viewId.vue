@@ -10,6 +10,7 @@
       class="scroller"
       :items="itemsChunks"
       :min-item-size="350"
+      :buffer="600"
       page-mode
     >
       <template v-slot="{ item, index, active }">
@@ -44,7 +45,23 @@ export default Vue.extend({
   computed: {
     itemsChunks: {
       get() {
-        const chunks = chunk(this.$data.items, 8);
+        let cardsPerLine = 8;
+
+        if (this.$vuetify.breakpoint.smAndDown) {
+          cardsPerLine = 3;
+        } else if (
+          this.$vuetify.breakpoint.smAndUp &&
+          !this.$vuetify.breakpoint.lgAndUp
+        ) {
+          cardsPerLine = 4;
+        } else if (
+          this.$vuetify.breakpoint.lgAndUp &&
+          !this.$vuetify.breakpoint.xlOnly
+        ) {
+          cardsPerLine = 6;
+        }
+
+        const chunks = chunk(this.$data.items, cardsPerLine);
 
         const keyedChunks = chunks.map((itemChunk, index) => {
           return {
