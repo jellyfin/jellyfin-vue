@@ -25,5 +25,6 @@
     "playType": "Lire {mediaType}",
     "present": "Maintenant",
     "endsAt": "Se termine à {time}",
-    "moreLikeThis": "Similaires"
+    "moreLikeThis": "Similaires",
+    "libraryEmpty": "Cette médiathèque est vide"
 }
