@@ -28,7 +28,7 @@ export default Vue.extend({
     };
   },
   async created() {
-    this.$page.setTitle(this.$t('home'));
+    this.$store.dispatch('page/setTitle', { title: this.$t('home') });
 
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 

@@ -43,7 +43,9 @@ export default Vue.extend({
           collectionInfo.data.Items[0].Type === 'Folder')
       ) {
         if (collectionInfo.data.Items[0].Name) {
-          this.$page.setTitle(collectionInfo.data.Items[0].Name);
+          this.$store.dispatch('page/setTitle', {
+            title: collectionInfo.data.Items[0].Name
+          });
         }
 
         const options = {

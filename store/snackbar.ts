@@ -1,4 +1,4 @@
-import { MutationTree } from 'vuex';
+import { ActionTree, MutationTree } from 'vuex';
 
 export interface SnackbarState {
   message: string;
@@ -16,8 +16,17 @@ interface MutationPayload {
 }
 
 export const mutations: MutationTree<SnackbarState> = {
-  display(state: SnackbarState, payload: MutationPayload) {
-    state.message = payload.message;
-    state.color = payload.color ? <string>payload.color : '';
+  SET_SNACKBAR_MESSAGE(
+    state: SnackbarState,
+    { message, color }: MutationPayload
+  ) {
+    state.message = message;
+    state.color = color || '';
+  }
+};
+
+export const actions: ActionTree<SnackbarState, SnackbarState> = {
+  display({ commit }, { message, color }: MutationPayload) {
+    commit('SET_SNACKBAR_MESSAGE', { message, color });
   }
 };

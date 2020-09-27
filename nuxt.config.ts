@@ -47,11 +47,7 @@ const config: NuxtConfig = {
     'plugins/components/vueperSlides.ts',
     // Utility
     'plugins/browserDetection.ts',
-    'plugins/deviceProfile.ts',
-    'plugins/page.ts',
     'plugins/playbackProfile.ts',
-    'plugins/snackbar.ts',
-    'plugins/user.ts',
     // API
     'plugins/displayPreferenceApi.ts',
     'plugins/imageApi.ts',

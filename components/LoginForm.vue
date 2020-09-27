@@ -82,14 +82,18 @@ export default Vue.extend({
           data: this.login
         });
 
-        this.$deviceProfile.set();
+        this.$store.dispatch('browserProfile/set');
 
         const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
 
         this.$auth.setUserToken(accessToken);
 
         this.$auth.setUser(response.data.User);
-        this.$user.set(response.data.User.Id, this.serverUrl, accessToken);
+        this.$store.dispatch('user/set', {
+          id: response.data.User.Id,
+          serverUrl: this.serverUrl,
+          accessToken
+        });
       } catch (error) {
         let errorMessage = this.$t('unexpectedError');
 
@@ -105,7 +109,10 @@ export default Vue.extend({
         }
 
         this.loginIn = false;
-        this.$snackbar(errorMessage as string, 'error');
+        this.$store.dispatch('snackbar/display', {
+          message: errorMessage.toString(),
+          color: 'error'
+        });
       }
     }
   }
