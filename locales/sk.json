@@ -25,5 +25,6 @@
     "itemNotFound": "Položka nebola nájdená",
     "present": "Prezentovať",
     "moreLikeThis": "Podobné",
-    "endsAt": "Končí o {time}"
+    "endsAt": "Končí o {time}",
+    "libraryEmpty": "Knižnica je prázdna"
 }
