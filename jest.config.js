@@ -15,5 +15,6 @@ module.exports = {
     '<rootDir>/pages/**/*.vue'
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
-  setupFiles: ['jest-canvas-mock']
+  setupFiles: ['jest-canvas-mock'],
+  coverageReporters: ['text', 'cobertura']
 };
