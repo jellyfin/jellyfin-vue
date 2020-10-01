@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
     <div class="card-box">
-      <div :class="shape || cardType">
+      <div :class="shape || cardType" class="elevation-3">
         <div
           class="card-content card-content-button d-flex justify-center align-center primary darken-4"
         >
@@ -194,16 +194,19 @@ export default Vue.extend({
   position: relative;
   padding-bottom: 150%;
   contain: strict;
+  border-radius: 0.3em;
 }
 .thumb-card {
   position: relative;
   padding-bottom: 56.25%;
   contain: strict;
+  border-radius: 0.3em;
 }
 .square-card {
   position: relative;
   padding-bottom: 100%;
   contain: strict;
+  border-radius: 0.3em;
 }
 .card-content {
   overflow: hidden;
@@ -216,7 +219,6 @@ export default Vue.extend({
   height: 100%;
   width: 100%;
   contain: strict;
-  border-radius: 0.3em;
   background-size: cover;
   background-repeat: no-repeat;
   background-clip: content-box;
@@ -226,15 +228,6 @@ export default Vue.extend({
 .card-image {
   width: 100%;
   height: 100%;
-  & img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  & canvas {
-    width: 100%;
-    height: 100%;
-  }
 }
 .card-chip {
   position: absolute;

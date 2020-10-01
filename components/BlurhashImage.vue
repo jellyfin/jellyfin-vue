@@ -15,7 +15,7 @@
         :punch="punch"
         class="absolute"
       />
-      <v-img
+      <img
         v-if="item.ImageTags && item.ImageTags.Primary"
         key="image"
         class="absolute"
@@ -78,5 +78,8 @@ export default Vue.extend({
   left: 0;
   right: 0;
   bottom: 0;
+}
+img {
+  object-fit: cover;
 }
 </style>

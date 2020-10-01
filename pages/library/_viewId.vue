@@ -5,11 +5,25 @@
         <skeleton-card v-for="n in 24" :key="n" />
       </v-col>
     </v-row>
-    <v-row v-if="items.length">
-      <v-col cols="12" class="card-grid-container">
-        <card v-for="item in items" :key="item.Id" :item="item" />
-      </v-col>
-    </v-row>
+    <dynamic-scroller
+      v-if="items.length"
+      class="scroller"
+      :items="itemsChunks"
+      :min-item-size="350"
+      :buffer="$vuetify.breakpoint.height * 1.5"
+      page-mode
+    >
+      <template v-slot="{ item, index, active }">
+        <dynamic-scroller-item
+          :item="item"
+          :active="active"
+          :data-index="index"
+          class="card-grid-container"
+        >
+          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
+        </dynamic-scroller-item>
+      </template>
+    </dynamic-scroller>
     <v-row v-else-if="loaded" justify="center">
       <h1 class="text-h4 text-center">{{ $t('libraryEmpty') }}</h1>
     </v-row>
@@ -18,6 +32,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { chunk } from 'lodash';
 import { BaseItemDto } from '../../api';
 
 export default Vue.extend({
@@ -27,6 +42,38 @@ export default Vue.extend({
       loaded: false
     };
   },
+  computed: {
+    itemsChunks: {
+      get() {
+        let cardsPerLine = 8;
+
+        if (this.$vuetify.breakpoint.smAndDown) {
+          cardsPerLine = 3;
+        } else if (
+          this.$vuetify.breakpoint.smAndUp &&
+          !this.$vuetify.breakpoint.lgAndUp
+        ) {
+          cardsPerLine = 4;
+        } else if (
+          this.$vuetify.breakpoint.lgAndUp &&
+          !this.$vuetify.breakpoint.xlOnly
+        ) {
+          cardsPerLine = 6;
+        }
+
+        const chunks = chunk(this.$data.items, cardsPerLine);
+
+        const keyedChunks = chunks.map((itemChunk, index) => {
+          return {
+            id: index,
+            chunk: itemChunk
+          };
+        });
+
+        return keyedChunks;
+      }
+    }
+  },
   async beforeMount() {
     try {
       const collectionInfo = await this.$itemsApi.getItems({
@@ -34,8 +81,6 @@ export default Vue.extend({
         userId: this.$auth.user.Id,
         ids: this.$route.params.viewId
       });
-
-      console.dir(collectionInfo.data.Items);
 
       if (
         collectionInfo.data.Items &&
@@ -91,6 +136,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.scroller {
+  max-height: 100%;
+}
+
 @import '~vuetify/src/styles/styles.sass';
 .card-grid-container {
   display: grid;

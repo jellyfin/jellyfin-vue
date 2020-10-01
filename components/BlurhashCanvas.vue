@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { decode } from 'blurhash';
+import { decode } from 'blurhash-wasm/blurhash_wasm';
 
 export default Vue.extend({
   props: {
@@ -37,12 +37,14 @@ export default Vue.extend({
   },
   methods: {
     draw() {
-      const pixels = decode(this.hash, this.width, this.height, this.punch);
-      const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-      const imageData = ctx?.createImageData(this.width, this.height);
-      if (imageData) {
-        imageData.data.set(pixels);
-        ctx?.putImageData(imageData, 0, 0);
+      const pixels = decode(this.hash, this.width, this.height);
+      if (pixels) {
+        const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+        const imageData = ctx?.createImageData(this.width, this.height);
+        if (imageData) {
+          imageData.data.set(pixels);
+          ctx?.putImageData(imageData, 0, 0);
+        }
       }
     }
   }
