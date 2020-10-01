@@ -56,6 +56,7 @@ describe('BlurhashCanvas', () => {
 
   test('has a default width and height', () => {
     expect(wrapper.props().width).toBe(32);
+    expect(wrapper.props().height).toBe(32);
   });
 
   test('has a default punch', () => {
