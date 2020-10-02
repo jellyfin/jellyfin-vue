@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { decode } from 'blurhash-wasm/blurhash_wasm';
+import { decode } from 'blurhash';
 
 export default Vue.extend({
   props: {
