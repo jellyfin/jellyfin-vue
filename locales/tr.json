@@ -21,5 +21,7 @@
     "signIn": "Giriş yap",
     "upNext": "Sonraki",
     "libraryNotFound": "Kütüphane bulunamadı",
-    "itemNotFound": "Öğe bulunamadı"
+    "itemNotFound": "Öğe bulunamadı",
+    "libraryEmpty": "Bu kütüphane boş",
+    "moreLikeThis": "Buna Benzer Daha Fazla"
 }
