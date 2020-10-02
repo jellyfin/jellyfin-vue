@@ -21,7 +21,8 @@
       "@nuxtjs/axios",
       "@nuxtjs/auth-next",
       "@nuxtjs/vuetify",
-      "nuxt-i18n"
+      "nuxt-i18n",
+      "jest"
     ]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
