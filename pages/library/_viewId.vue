@@ -32,7 +32,6 @@
         <h1 class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
-        <p></p>
       </div>
     </v-row>
   </v-container>
