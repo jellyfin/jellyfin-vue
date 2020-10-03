@@ -23,7 +23,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <edit-metadata :dialog="dialog" />
+    <edit-metadata-dialog :dialog="dialog" />
   </div>
 </template>
 

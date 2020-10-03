@@ -1,3 +1,13 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-20 16:22:36
+ * @LastEditTime: 2020-10-03 11:39:32
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /jellyfin-vue/utils/items.ts
+ */
+import { BaseItemPerson } from '~/api';
+
 /**
  * Get the Material Design Icon name associated with a type of library
  *
@@ -54,4 +64,21 @@ export function getShapeFromCollectionType(
     default:
       return 'square-card';
   }
+}
+/**
+ * Get the image url
+ *
+ * @param  {BaseItemPerson} person
+ * @param  {{width:number;height:number;quality:number}} options
+ * @returns string
+ */
+export function getPersonImage(
+  person: BaseItemPerson,
+  options: { width: number; height: number; quality: number }
+): string {
+  return `${window.location.origin}/Items/${
+    person.Id
+  }/Images/Primary?maxWidth=${options.width || 750}&tag=${
+    person.PrimaryImageTag
+  }&quality=${options.quality || 90}`;
 }
