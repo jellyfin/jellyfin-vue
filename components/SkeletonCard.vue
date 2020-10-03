@@ -1,9 +1,22 @@
 <template>
   <div class="skeleton-card">
-    <v-skeleton-loader type="image" />
-    <v-skeleton-loader type="heading" class="mt-1" />
+    <v-skeleton-loader type="image" :boilerplate="boilerplate" />
+    <v-skeleton-loader type="heading" class="mt-1" :boilerplate="boilerplate" />
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  props: {
+    boilerplate: {
+      type: Boolean,
+      default: false
+    }
+  }
+});
+</script>
 
 <style scoped>
 .skeleton-card {

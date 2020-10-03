@@ -25,7 +25,14 @@
       </template>
     </dynamic-scroller>
     <v-row v-else-if="loaded" justify="center">
-      <h1 class="text-h4 text-center">{{ $t('libraryEmpty') }}</h1>
+      <v-col cols="12" class="card-grid-container empty-card-container">
+        <skeleton-card v-for="n in 24" :key="n" boilerplate />
+      </v-col>
+      <div class="empty-message text-center">
+        <h1 class="text-h5">
+          {{ $t('libraryEmpty') }}
+        </h1>
+      </div>
     </v-row>
   </v-container>
 </template>
@@ -138,6 +145,19 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .scroller {
   max-height: 100%;
+}
+
+.empty-card-container {
+  max-height: 90vh;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+
+.empty-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @import '~vuetify/src/styles/styles.sass';
