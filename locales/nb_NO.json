@@ -22,5 +22,9 @@
     "libraryNotFound": "Bibliotek ikke funnet",
     "itemNotFound": "Gjenstand ikke funnet",
     "episodeNumber": "Episode {episodeNumber}",
-    "playType": "Spill av {mediaType}"
+    "playType": "Spill av {mediaType}",
+    "libraryEmpty": "Dette biblioteket er tomt",
+    "present": "Tilstede",
+    "moreLikeThis": "Mer som dette",
+    "endsAt": "Slutter {Time}"
 }
