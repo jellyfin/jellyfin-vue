@@ -23,5 +23,8 @@
     "upNext": "Siguiente",
     "libraryNotFound": "Librería no encontrada",
     "itemNotFound": "Item no encontrado",
-    "present": "Presente"
+    "present": "Presente",
+    "libraryEmpty": "La biblioteca está vacía",
+    "moreLikeThis": "Más como esto",
+    "endsAt": "Termina {time}"
 }
