@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title class="headline">{{ $t('editMetadata') }}</v-card-title>
     <v-card-text>
-      <v-form ref="form" :disabled="saved" @submit.prevent="saveMetadata">
+      <v-form ref="form" :disabled="saved">
         <v-tabs vertical>
           <v-tab>{{ $t('general') }}</v-tab>
           <v-tab>{{ $t('details') }}</v-tab>
@@ -82,42 +82,44 @@
               outlined
               :label="$t('labelCustomRating')"
             ></v-text-field>
-            <!-- <v-text-field
-              v-model="metadata"
-              outlined
-              :label="$t('labelOriginalAspectRatio')"
-            ></v-text-field>
-            <v-text-field
-              v-model="metadata"
-              outlined
-              :label="$t('label3DFormat')"
-            ></v-text-field> -->
           </v-tab-item>
           <v-tab-item>
             <v-list subheader two-line>
-              <v-subheader>{{ $t('people') }}</v-subheader>
-              <v-list-item v-for="person in metadata.People" :key="person.Id">
-                <v-list-item-avatar
-                  ><v-icon class="person-icon"
-                    >mdi-account</v-icon
-                  ></v-list-item-avatar
-                >
-                <v-list-item-content>{{ person.Name }}</v-list-item-content>
-                <v-list-item-action
-                  ><v-icon>mdi-delete</v-icon></v-list-item-action
-                ></v-list-item
-              ></v-list
-            ></v-tab-item
-          >
+              <v-subheader
+                >{{ $t('people') }}
+                <v-icon class="ml-2" @click="(e) => handlePersonEdit()"
+                  >mdi-plus-circle</v-icon
+                ></v-subheader
+              >
+              <v-list-item
+                v-for="(item, i) in metadata.People"
+                :key="i"
+                @click="handlePersonEdit(item)"
+              >
+                <v-list-item-avatar>
+                  <v-icon class="person-icon">mdi-account</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>{{ item.Name }}</v-list-item-content>
+                <v-list-item-action @click.stop="handlePersonDel(i)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-tab-item>
         </v-tabs>
       </v-form>
     </v-card-text>
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn depressed> Cancel </v-btn>
-      <v-btn depressed color="primary" @click="saveMetadata"> Save </v-btn>
+      <v-btn depressed>Cancel</v-btn>
+      <v-btn depressed color="primary" @click="saveMetadata">Save</v-btn>
     </v-card-actions>
+    <person-editor
+      :person="person"
+      :dialog.sync="dialog"
+      @update:person="handlePersonUpdate"
+    ></person-editor>
   </v-card>
 </template>
 
@@ -125,7 +127,7 @@
 import Vue from 'vue';
 import { format, formatISO } from 'date-fns';
 import { pick } from 'lodash';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto, BaseItemPerson } from '~/api';
 
 export default Vue.extend({
   props: {
@@ -139,7 +141,9 @@ export default Vue.extend({
     return {
       metadata: {} as BaseItemDto,
       saved: false,
-      menu: false
+      menu: false,
+      dialog: false,
+      person: null as BaseItemPerson | null
     };
   },
   computed: {
@@ -239,6 +243,28 @@ export default Vue.extend({
       this.metadata = Object.assign({}, this.metadata, {
         [key]: formatISO(new Date(date))
       });
+    },
+    handlePersonEdit(item: BaseItemPerson | null = null) {
+      this.person = item;
+      this.dialog = true;
+    },
+    handlePersonUpdate(item: BaseItemPerson) {
+      if (!this.metadata.People) {
+        this.metadata.People = [];
+      }
+      const { Id } = item;
+      const target = this.metadata.People?.find((person) => person.Id === Id);
+      console.log(JSON.stringify(target, null, 4));
+      if (target) {
+        Object.assign(target, item);
+      } else {
+        this.metadata.People.push(item);
+      }
+      console.log(this.metadata.People, target, item);
+    },
+    handlePersonDel(index: number) {
+      (this.metadata.People as BaseItemPerson[]).splice(index, 1);
+      console.log(this.metadata.People);
     }
   }
 });

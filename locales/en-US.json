@@ -216,6 +216,7 @@
   "libraryEmpty": "This library is empty",
   "editMetadata": "Edit metadata",
   "metadata": "Metadata",
+  "edit": "Edit",
   "general": "General",
   "details": "Details",
   "castAndCrew": "Cast & Crew",
@@ -239,5 +240,8 @@
   "genres": "Genres",
   "people": "People",
   "studios": "Studios",
-  "tags": "Tags"
+  "tags": "Tags",
+  "name": "Name",
+  "type": "Type",
+  "role": "Role"
 }
