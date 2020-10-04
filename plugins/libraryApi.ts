@@ -19,6 +19,12 @@ declare module 'vue/types/vue' {
   }
 }
 
+declare module 'vuex/types/index' {
+  interface Store<S> {
+    $libraryApi: LibraryApi;
+  }
+}
+
 const libraryApiPlugin: Plugin = (context, inject) => {
   const config = new Configuration();
 

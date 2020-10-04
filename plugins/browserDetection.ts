@@ -16,6 +16,12 @@ declare module 'vue/types/vue' {
   }
 }
 
+declare module 'vuex/types/index' {
+  interface Store<S> {
+    $browser: BrowserDetector;
+  }
+}
+
 /**
  * Utilities to detect the browser and get information on the current environment
  * Based on https://github.com/google/shaka-player/blob/master/lib/util/platform.js
