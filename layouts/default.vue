@@ -79,21 +79,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '~/api/api';
-import { getLibraryIcon } from '~/utils/items';
-
-interface NavigationDrawerItem {
-  icon: string | undefined | null;
-  title: string | undefined | null;
-  to: string;
-}
 
 export default Vue.extend({
   data() {
     return {
       clipped: true,
       drawer: true,
-      libraries: {},
       miniVariant: false
     };
   },
@@ -110,6 +101,9 @@ export default Vue.extend({
         }
       ];
     },
+    libraries() {
+      return this.$store.getters['userViews/getNavigationDrawerItems'];
+    },
     configItems() {
       return [
         {
@@ -120,26 +114,8 @@ export default Vue.extend({
       ];
     }
   },
-  async beforeMount() {
-    const userViewsRequest = await this.$userViewsApi.getUserViews({
-      userId: this.$auth.user.Id
-    });
-
-    let userViews: Array<NavigationDrawerItem> = [];
-
-    if (userViewsRequest.data.Items) {
-      userViews = userViewsRequest.data.Items.map(
-        (view: BaseItemDto): NavigationDrawerItem => {
-          return {
-            icon: getLibraryIcon(view.CollectionType),
-            title: view.Name,
-            to: `/library/${view.Id}`
-          };
-        }
-      );
-    }
-
-    this.libraries = userViews;
+  beforeMount() {
+    this.$store.dispatch('userViews/refresh');
   }
 });
 </script>
