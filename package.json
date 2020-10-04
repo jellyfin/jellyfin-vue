@@ -36,7 +36,7 @@
     "nuxt-i18n": "^6.15.1",
     "nuxt-vuex-localstorage": "^1.2.7",
     "qs": "^6.9.4",
-    "uuid": "^8.3.0",
+    "uuid": "^8.3.1",
     "vue-virtual-scroller": "^1.0.10",
     "vueperslides": "^2.10.8"
   },
