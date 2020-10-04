@@ -5,22 +5,20 @@
         :items="items"
         :load-children="fetchItems"
         activatable
-        color="warning"
         transition
-        @update:active="fetchItemInfo"
+        @update:active="handleAction"
       >
       </v-treeview>
     </v-col>
 
-    <v-col v-if="showEdit" cols="8"
-      ><edit-metadata :metadata="metadata"></edit-metadata
+    <v-col v-if="itemId" cols="8"
+      ><metadata-editor :item-id="itemId"></metadata-editor
     ></v-col>
   </v-row>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { isEmpty } from 'lodash';
 
 import { BaseItemDto } from '~/api';
 
@@ -33,14 +31,10 @@ export default Vue.extend({
   data() {
     return {
       items: [] as ITreeNode[],
-      metadata: {}
+      itemId: ''
     };
   },
-  computed: {
-    showEdit() {
-      return !isEmpty(this.$data.metadata);
-    }
-  },
+  computed: {},
   async created() {
     const floders = (await this.$libraryApi.getMediaFolders()).data
       .Items as BaseItemDto[];
@@ -80,15 +74,8 @@ export default Vue.extend({
         })
       );
     },
-    async fetchItemInfo(ids: string[]) {
-      const userId = this.$auth.user.Id;
-      const itemInfo = (
-        await this.$userLibraryApi.getItem({
-          userId,
-          itemId: ids[0]
-        })
-      ).data;
-      this.metadata = itemInfo;
+    handleAction(ids: string[]) {
+      this.$data.itemId = ids[0];
     }
   }
 });

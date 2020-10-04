@@ -163,7 +163,7 @@ const config: NuxtConfig = {
       { code: 'sv', iso: 'sv-SE', name: 'Svenska', file: 'sv.json' },
       { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' },
       { code: 'tr', iso: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
-      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' }
+      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' },
       { code: 'zh', iso: 'zh_Hans', name: '简体中文', file: 'zh_Hans.json' }
     ],
     lazy: true,

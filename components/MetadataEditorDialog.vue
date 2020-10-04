@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="dialog" max-width="290">
-    <edit-metadata></edit-metadata>
+  <v-dialog v-model="dialog" max-width="60%">
+    <metadata-editor :item-id="itemId"></metadata-editor>
   </v-dialog>
 </template>
 
@@ -14,9 +14,9 @@ export default Vue.extend({
       required: true,
       default: false
     },
-    metadata: {
-      type: Object,
-      default: () => ({})
+    itemId: {
+      type: String,
+      default: ''
     }
   }
 });

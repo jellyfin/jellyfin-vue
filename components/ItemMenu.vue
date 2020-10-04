@@ -23,7 +23,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <edit-metadata-dialog :dialog="dialog" />
+    <metadata-editor-dialog :dialog="dialog" :item-id="itemId" />
   </div>
 </template>
 
@@ -31,6 +31,9 @@
 import Vue from 'vue';
 
 export default Vue.extend({
+  props: {
+    itemId: { type: String, default: '' }
+  },
   data() {
     return {
       dialog: false

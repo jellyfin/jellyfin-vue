@@ -1,14 +1,8 @@
 <template>
   <v-card>
     <v-card-title class="headline">{{ $t('editMetadata') }}</v-card-title>
-
     <v-card-text>
-      <v-form
-        ref="form"
-        v-model="validInputs"
-        :disabled="saved"
-        @submit.prevent="saveMetadata"
-      >
+      <v-form ref="form" :disabled="saved" @submit.prevent="saveMetadata">
         <v-tabs vertical>
           <v-tab>{{ $t('general') }}</v-tab>
           <v-tab>{{ $t('details') }}</v-tab>
@@ -16,29 +10,29 @@
           <v-tab>{{ $t('images') }}</v-tab>
           <v-tab-item>
             <v-text-field
-              v-model="editState.Path"
+              v-model="metadata.Path"
               outlined
               :label="$t('headerPaths')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.Name"
+              v-model="metadata.Name"
               outlined
               :label="$t('labelTitle')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.OriginalTitle"
+              v-model="metadata.OriginalTitle"
               outlined
               :label="$t('labelOriginalTitle')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.SortName"
+              v-model="metadata.ForcedSortName"
               outlined
               :label="$t('labelSortTitle')"
             ></v-text-field>
           </v-tab-item>
           <v-tab-item>
             <!-- <v-text-field
-              v-model="editState.DateCreated"
+              v-model="metadata.DateCreated"
               outlined
               :label="$t('labelDateAdded')"
             ></v-text-field> -->
@@ -48,22 +42,22 @@
               @update:date="(value) => saveDate('DateCreated', value)"
             ></date-input>
             <v-text-field
-              v-model="editState.CommunityRating"
+              v-model="metadata.CommunityRating"
               outlined
               :label="$t('labelCommunityRating')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.CriticRating"
+              v-model="metadata.CriticRating"
               outlined
               :label="$t('labelCriticRating')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.Taglines"
+              v-model="metadata.Taglines"
               outlined
               :label="$t('labelTagline')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.Overview"
+              v-model="metadata.Overview"
               outlined
               :label="$t('labelOverview')"
             ></v-text-field>
@@ -74,27 +68,27 @@
               @update:date="(value) => saveDate('PremiereDate', value)"
             ></date-input>
             <v-text-field
-              v-model="editState.ProductionYear"
+              v-model="metadata.ProductionYear"
               outlined
               :label="$t('labelYear')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.OfficialRating"
+              v-model="metadata.OfficialRating"
               outlined
               :label="$t('labelParentalRating')"
             ></v-text-field>
             <v-text-field
-              v-model="editState.CustomRating"
+              v-model="metadata.CustomRating"
               outlined
               :label="$t('labelCustomRating')"
             ></v-text-field>
             <!-- <v-text-field
-              v-model="editState"
+              v-model="metadata"
               outlined
               :label="$t('labelOriginalAspectRatio')"
             ></v-text-field>
             <v-text-field
-              v-model="editState"
+              v-model="metadata"
               outlined
               :label="$t('label3DFormat')"
             ></v-text-field> -->
@@ -102,7 +96,7 @@
           <v-tab-item>
             <v-list subheader two-line>
               <v-subheader>{{ $t('people') }}</v-subheader>
-              <v-list-item v-for="person in editState.People" :key="person.Id">
+              <v-list-item v-for="person in metadata.People" :key="person.Id">
                 <v-list-item-avatar
                   ><v-icon class="person-icon"
                     >mdi-account</v-icon
@@ -121,10 +115,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="green darken-1" text @click="dialog = false"> Save </v-btn>
-      <v-btn color="green darken-1" text @click="dialog = false">
-        Cancel
-      </v-btn>
+      <v-btn depressed> Cancel </v-btn>
+      <v-btn depressed color="primary" @click="saveMetadata"> Save </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -132,30 +124,30 @@
 <script lang="ts">
 import Vue from 'vue';
 import { format, formatISO } from 'date-fns';
+import { pick } from 'lodash';
 import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   props: {
-    metadata: {
-      type: Object,
-      default: () => ({})
+    itemId: {
+      type: String,
+      default: ''
     }
   },
 
   data() {
     return {
-      editState: {} as BaseItemDto,
+      metadata: {} as BaseItemDto,
       saved: false,
-      validInputs: true,
       menu: false
     };
   },
   computed: {
     premiereDate: {
       get() {
-        if (!this.editState.PremiereDate) return '';
+        if (!this.metadata.PremiereDate) return '';
         const dateStr = format(
-          new Date(this.editState.PremiereDate),
+          new Date(this.metadata.PremiereDate),
           'yyyy-MM-dd'
         );
         return dateStr;
@@ -163,9 +155,9 @@ export default Vue.extend({
     },
     dateCreated: {
       get() {
-        if (!this.editState.DateCreated) return '';
+        if (!this.metadata.DateCreated) return '';
         const dateStr = format(
-          new Date(this.editState.DateCreated),
+          new Date(this.metadata.DateCreated),
           'yyyy-MM-dd'
         );
         return dateStr;
@@ -173,17 +165,78 @@ export default Vue.extend({
     }
   },
   watch: {
-    metadata(value) {
-      this.editState = value;
+    itemId() {
+      this.fetchItemInfo();
     }
   },
+  created() {
+    this.fetchItemInfo();
+  },
   methods: {
-    saveMetadata() {
-      console.log(this.editState);
+    async fetchItemInfo() {
+      const userId = this.$auth.user.Id;
+      const itemInfo = (
+        await this.$userLibraryApi.getItem({
+          userId,
+          itemId: this.itemId
+        })
+      ).data;
+      this.$data.metadata = itemInfo;
+    },
+    async saveMetadata() {
+      const item = pick(this.metadata, [
+        'Id',
+        'Name',
+        'OriginalTitle',
+        'ForcedSortName',
+        'CommunityRating',
+        'CriticRating',
+        'IndexNumber',
+        'AirsBeforeSeasonNumber',
+        'AirsAfterSeasonNumber',
+        'AirsBeforeEpisodeNumber',
+        'ParentIndexNumber',
+        'DisplayOrder',
+        'Album',
+        'AlbumArtists',
+        'ArtistItems',
+        'Overview',
+        'Status',
+        'AirDays',
+        'AirTime',
+        'Genres',
+        'Tags',
+        'Studios',
+        'PremiereDate',
+        'DateCreated',
+        'EndDate',
+        'ProductionYear',
+        'AspectRatio',
+        'Video3DFormat',
+        'OfficialRating',
+        'CustomRating',
+        'People',
+        'LockData',
+        'LockedFields',
+        'ProviderIds',
+        'PreferredMetadataLanguage',
+        'PreferredMetadataCountryCode',
+        'Taglines'
+      ]);
+      try {
+        await this.$itemUpdateApi.updateItem({
+          itemId: this.metadata.Id as string,
+          baseItemDto: item
+        });
+        // TODO: show success toast
+        console.log('saved');
+      } catch (err) {
+        console.log(err);
+      }
     },
     saveDate(key: string, date: string) {
       this.menu = false;
-      this.editState = Object.assign({}, this.editState, {
+      this.metadata = Object.assign({}, this.metadata, {
         [key]: formatISO(new Date(date))
       });
     }
