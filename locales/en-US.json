@@ -1,4 +1,8 @@
 {
+  "alphabetically": "Alphabetically",
+  "releaseDate": "Release date",
+  "endDate": "End date",
+  "rating": "Rating",
   "badRequest": "Bad request. Try again",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",

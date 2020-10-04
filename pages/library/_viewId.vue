@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-row class="align-center">
+      <v-select
+        v-model="orderMethod"
+        class="ma-2"
+        :items="sortChoices"
+        @change="sortItems"
+      ></v-select>
+      <v-btn class="ma-2" @click="changeSortDirection"
+        ><v-icon :class="{ flipped: sortDirection }"
+          >mdi-arrow-up</v-icon
+        ></v-btn
+      >
+    </v-row>
     <v-row v-if="!loaded">
       <v-col cols="12" class="card-grid-container">
         <skeleton-card v-for="n in 24" :key="n" />
@@ -40,13 +53,21 @@
 <script lang="ts">
 import Vue from 'vue';
 import { chunk } from 'lodash';
-import { BaseItemDto } from '../../api';
+import { BaseItemDto } from '~/api/api';
 
 export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
-      loaded: false
+      loaded: false,
+      sortChoices: [
+        { text: this.$t('alphabetically'), value: 'SortName' },
+        { text: this.$t('rating'), value: 'CommunityRating' },
+        { text: this.$t('releaseDate'), value: 'PremiereDate' },
+        { text: this.$t('endDate'), value: 'EndDate' }
+      ],
+      orderMethod: 'SortName',
+      sortDirection: true
     };
   },
   computed: {
@@ -107,7 +128,8 @@ export default Vue.extend({
           includeItemTypes: '',
           recursive: true,
           sortBy: 'SortName',
-          sortOrder: 'Ascending'
+          sortOrder: 'Ascending',
+          fields: 'SortName'
         };
 
         if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
@@ -132,6 +154,29 @@ export default Vue.extend({
         statusCode: 404,
         message: this.$t('libraryNotFound') as string
       });
+    }
+  },
+  methods: {
+    sortItems() {
+      if (this.sortDirection) {
+        this.items.sort((a, b) =>
+          (a[this.orderMethod as keyof BaseItemDto] || '') >
+          (b[this.orderMethod as keyof BaseItemDto] || '')
+            ? 1
+            : -1
+        );
+      } else {
+        this.items.sort((a, b) =>
+          (a[this.orderMethod as keyof BaseItemDto] || '') <
+          (b[this.orderMethod as keyof BaseItemDto] || '')
+            ? 1
+            : -1
+        );
+      }
+    },
+    changeSortDirection() {
+      this.sortDirection = !this.sortDirection;
+      this.sortItems();
     }
   },
   head() {
@@ -187,5 +232,9 @@ export default Vue.extend({
   .card-grid-container {
     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
   }
+}
+
+.flipped {
+  transform: rotateZ(180deg);
 }
 </style>
