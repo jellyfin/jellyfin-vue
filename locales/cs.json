@@ -26,5 +26,9 @@
     "itemNotFound": "Položka nebyla nalezena",
     "endsAt": "Končí v {time}",
     "moreLikeThis": "Podobné",
-    "libraryEmpty": "Knihovna je prázdná"
+    "libraryEmpty": "Knihovna je prázdná",
+    "rating": "Hodnocení",
+    "endDate": "Datum skončení",
+    "releaseDate": "Datum vydání",
+    "alphabetically": "Abecedně"
 }
