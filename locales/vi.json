@@ -26,5 +26,9 @@
     "itemNotFound": "Không tìm thấy mục",
     "moreLikeThis": "Thêm tương tự như thế này",
     "endsAt": "Kết thúc lúc {time}",
-    "libraryEmpty": "Thư viện này trống"
+    "libraryEmpty": "Thư viện này trống",
+    "rating": "Xếp hạng",
+    "endDate": "Ngày kết thúc",
+    "releaseDate": "Ngày phát hành",
+    "alphabetically": "Theo bảng chữ cái"
 }
