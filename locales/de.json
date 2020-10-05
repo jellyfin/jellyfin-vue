@@ -26,5 +26,9 @@
     "moreLikeThis": "Ähnliches",
     "present": "Jetzt",
     "endsAt": "Endet um {time}",
-    "libraryEmpty": "Diese Bibliothek ist leer"
+    "libraryEmpty": "Diese Bibliothek ist leer",
+    "rating": "Bewertung",
+    "endDate": "Enddatum",
+    "releaseDate": "Erscheinungsdatum",
+    "alphabetically": "Alphabetisch"
 }
