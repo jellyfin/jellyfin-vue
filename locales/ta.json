@@ -26,5 +26,9 @@
     "present": "தற்போது",
     "moreLikeThis": "மேலும் இது போன்றது",
     "endsAt": "{time} இல் முடிகிறது",
-    "libraryEmpty": "இந்த நூலகம் காலியாக உள்ளது"
+    "libraryEmpty": "இந்த நூலகம் காலியாக உள்ளது",
+    "rating": "மதிப்பீடு",
+    "endDate": "கடைசி தேதி",
+    "releaseDate": "வெளிவரும் தேதி",
+    "alphabetically": "அகர வரிசைப்படி"
 }
