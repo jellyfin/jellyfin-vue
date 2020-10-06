@@ -26,5 +26,9 @@
     "upNext": "Toliau",
     "libraryNotFound": "Mediateka nerasta",
     "itemNotFound": "Elementas nerastas",
-    "libraryEmpty": "Tuščia mediateka"
+    "libraryEmpty": "Tuščia mediateka",
+    "alphabetically": "Paraidžiui",
+    "releaseDate": "Išleidimo data",
+    "endDate": "Pabaigos data",
+    "rating": "Įvertinimas"
 }
