@@ -23,7 +23,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <metadata-editor-dialog :dialog="dialog" :item-id="itemId" />
+    <metadata-editor-dialog :dialog.sync="dialog" :item-id="itemId" />
   </div>
 </template>
 
@@ -46,6 +46,8 @@ export default Vue.extend({
           {
             title: this.$t('editMetadata'),
             action: () => {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               this.dialog = true;
             }
           }

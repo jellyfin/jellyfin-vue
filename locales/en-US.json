@@ -243,5 +243,17 @@
   "tags": "Tags",
   "name": "Name",
   "type": "Type",
-  "role": "Role"
+  "role": "Role",
+  "primary": "Primary",
+  "art": "Art",
+  "backdrop": "Backdrop",
+  "banner": "Banner",
+  "box": "Box",
+  "boxRear": "Box (rear)",
+  "disc": "Disc",
+  "logo": "Logo",
+  "menu": "Menu",
+  "screenshot": "Screenshot",
+  "thumb": "Thumb",
+  "search": "Search"
 }

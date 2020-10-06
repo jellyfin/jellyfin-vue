@@ -1,6 +1,10 @@
 <template>
   <v-dialog v-model="dialog" max-width="60%">
-    <metadata-editor :item-id="itemId"></metadata-editor>
+    <metadata-editor
+      :item-id="itemId"
+      @cancel="close"
+      @save="close"
+    ></metadata-editor>
   </v-dialog>
 </template>
 
@@ -17,6 +21,11 @@ export default Vue.extend({
     itemId: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    close() {
+      this.$emit('update:dialog', false);
     }
   }
 });

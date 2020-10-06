@@ -85,12 +85,12 @@
           </v-tab-item>
           <v-tab-item>
             <v-list subheader two-line>
-              <v-subheader
-                >{{ $t('people') }}
-                <v-icon class="ml-2" @click="(e) => handlePersonEdit()"
-                  >mdi-plus-circle</v-icon
-                ></v-subheader
-              >
+              <v-subheader>
+                {{ $t('people') }}
+                <v-icon class="ml-2" @click="(e) => handlePersonEdit()">
+                  mdi-plus-circle
+                </v-icon>
+              </v-subheader>
               <v-list-item
                 v-for="(item, i) in metadata.People"
                 :key="i"
@@ -99,12 +99,22 @@
                 <v-list-item-avatar>
                   <v-icon class="person-icon">mdi-account</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-content>{{ item.Name }}</v-list-item-content>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.Name }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="mt-1">
+                    {{ item.Role || item.Type }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
                 <v-list-item-action @click.stop="handlePersonDel(i)">
                   <v-icon>mdi-delete</v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
+          </v-tab-item>
+          <v-tab-item>
+            <image-editor :metadata="metadata"></image-editor>
           </v-tab-item>
         </v-tabs>
       </v-form>
@@ -112,7 +122,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn depressed>Cancel</v-btn>
+      <v-btn depressed @click="$emit('cancel')">Cancel</v-btn>
       <v-btn depressed color="primary" @click="saveMetadata">Save</v-btn>
     </v-card-actions>
     <person-editor
@@ -234,6 +244,7 @@ export default Vue.extend({
         });
         // TODO: show success toast
         console.log('saved');
+        this.$emit('save');
       } catch (err) {
         console.log(err);
       }
@@ -254,17 +265,14 @@ export default Vue.extend({
       }
       const { Id } = item;
       const target = this.metadata.People?.find((person) => person.Id === Id);
-      console.log(JSON.stringify(target, null, 4));
       if (target) {
         Object.assign(target, item);
       } else {
         this.metadata.People.push(item);
       }
-      console.log(this.metadata.People, target, item);
     },
     handlePersonDel(index: number) {
       (this.metadata.People as BaseItemPerson[]).splice(index, 1);
-      console.log(this.metadata.People);
     }
   }
 });
