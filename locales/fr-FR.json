@@ -26,5 +26,9 @@
     "present": "Maintenant",
     "endsAt": "Se termine à {time}",
     "moreLikeThis": "Similaires",
-    "libraryEmpty": "Cette médiathèque est vide"
+    "libraryEmpty": "Cette médiathèque est vide",
+    "rating": "Critique",
+    "endDate": "Date de fin",
+    "releaseDate": "Date de sortie",
+    "alphabetically": "Alphabétique"
 }
