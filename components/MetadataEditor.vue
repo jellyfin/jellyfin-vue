@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card min-height="100%">
     <v-card-title class="headline">{{ $t('editMetadata') }}</v-card-title>
     <v-card-text>
       <v-form ref="form" :disabled="saved">
@@ -120,10 +120,9 @@
       </v-form>
     </v-card-text>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn depressed @click="$emit('cancel')">Cancel</v-btn>
-      <v-btn depressed color="primary" @click="saveMetadata">Save</v-btn>
+    <v-card-actions class="d-flex justify-center align-center">
+      <v-btn @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn color="primary" @click="saveMetadata">Save</v-btn>
     </v-card-actions>
     <person-editor
       :person="person"

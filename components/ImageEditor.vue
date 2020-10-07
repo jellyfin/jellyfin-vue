@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list min-height="100%">
     <v-list-item>
       <v-list-item-content>
         <v-card>
@@ -19,14 +19,14 @@
                 height="162"
               ></v-img>
               <div class="text-center subtitle-1">{{ item.ImageType }}</div>
-              <div class="text-center body-2">
+              <div class="text-center body-2 grey--text text--darken-2">
                 {{ item.Width }} x {{ item.Height }}
               </div>
               <v-card-actions class="justify-center">
-                <v-btn fab x-small @click="handleSearch">
+                <v-btn icon @click="handleSearch">
                   <v-icon>mdi-magnify</v-icon>
                 </v-btn>
-                <v-btn fab x-small class="ml-3" @click="handleDelete">
+                <v-btn icon class="ml-3" @click="handleDelete">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -54,14 +54,14 @@
                 height="162"
               ></v-img>
               <div class="text-center subtitle-1">{{ item.ImageType }}</div>
-              <div class="text-center body-2">
+              <div class="text-center body-2 grey--text text--darken-2">
                 {{ item.Width }} x {{ item.Height }}
               </div>
               <v-card-actions class="justify-center">
-                <v-btn fab x-small @click="handleSearch">
+                <v-btn icon @click="handleSearch">
                   <v-icon>mdi-magnify</v-icon>
                 </v-btn>
-                <v-btn fab x-small class="ml-3" @click="handleDelete">
+                <v-btn icon class="ml-3" @click="handleDelete">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -70,7 +70,11 @@
         </v-card>
       </v-list-item-content>
     </v-list-item>
-    <image-search :dialog.sync="dialog" :metadata="metadata"></image-search>
+    <image-search
+      :dialog.sync="dialog"
+      :metadata="metadata"
+      @download-success="getItemImageInfos"
+    ></image-search>
   </v-list>
 </template>
 

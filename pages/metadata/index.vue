@@ -1,19 +1,18 @@
 <template>
   <v-row class="pa-4">
-    <v-col cols="4" class="tree-view-container">
+    <v-col cols="3" class="tree-view-container">
       <v-treeview
         :items="items"
         :load-children="fetchItems"
         activatable
         transition
         @update:active="handleAction"
-      >
-      </v-treeview>
+      ></v-treeview>
     </v-col>
 
-    <v-col v-if="itemId" cols="8"
-      ><metadata-editor :item-id="itemId"></metadata-editor
-    ></v-col>
+    <v-col v-if="itemId" cols="9">
+      <metadata-editor :item-id="itemId"></metadata-editor>
+    </v-col>
   </v-row>
 </template>
 

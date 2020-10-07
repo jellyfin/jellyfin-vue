@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" max-width="60%">
+  <v-dialog
+    :value="dialog"
+    max-width="60%"
+    @click:outside="$emit('update:dialog', false)"
+  >
     <metadata-editor
       :item-id="itemId"
       @cancel="close"
