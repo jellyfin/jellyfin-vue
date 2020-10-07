@@ -83,22 +83,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/playbackProfile.ts',
-<<<<<<< HEAD
     'plugins/apiPlugin.ts'
-=======
-    // API
-    'plugins/displayPreferenceApi.ts',
-    'plugins/imageApi.ts',
-    'plugins/itemsApi.ts',
-    'plugins/libraryApi.ts',
-    'plugins/tvShowsApi.ts',
-    'plugins/userApi.ts',
-    'plugins/userLibraryApi.ts',
-    'plugins/userViewsApi.ts',
-    'plugins/libraryApi.ts',
-    'plugins/itemUpdateApi.ts',
-    'plugins/remoteImageApi.ts'
->>>>>>> 636220c (feat(metadata): image editor)
   ],
   /*
    ** Auto import components
