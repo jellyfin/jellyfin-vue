@@ -22,6 +22,28 @@ import {
   ResponseProfile
 } from '~/api';
 
+declare module '@nuxt/types' {
+  interface Context {
+    $playbackProfile: DeviceProfile;
+  }
+
+  interface NuxtAppOptions {
+    $playbackProfile: DeviceProfile;
+  }
+}
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $playbackProfile: DeviceProfile;
+  }
+}
+
+declare module 'vuex/types/index' {
+  interface Store<S> {
+    $playbackProfile: DeviceProfile;
+  }
+}
+
 const physicalAudioChannels = browserDetector.isTv() ? 6 : 2;
 
 const videoTestElement = document.createElement('video');
@@ -250,22 +272,6 @@ function getDeviceProfile(): DeviceProfile {
     SubtitleProfiles: getSubtitleProfiles(),
     ResponseProfiles: getResponseProfiles()
   };
-}
-
-declare module '@nuxt/types' {
-  interface Context {
-    $playbackProfile: DeviceProfile;
-  }
-
-  interface NuxtAppOptions {
-    $playbackProfile: DeviceProfile;
-  }
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $playbackProfile: DeviceProfile;
-  }
 }
 
 const playbackProfilePlugin: Plugin = (_context, inject) => {
