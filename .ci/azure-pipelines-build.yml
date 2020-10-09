@@ -24,3 +24,62 @@ jobs:
 
       - script: 'yarn build'
         displayName: 'Build'
+
+  - job: BuildDocker
+    displayName: 'Build Docker'
+
+    strategy:
+      matrix:
+        amd64:
+          BuildConfiguration: amd64
+        arm64:
+          BuildConfiguration: arm64
+        armhf:
+          BuildConfiguration: armhf
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      - name: Version
+        value: 0.0.0
+
+    steps:
+      - script: echo "##vso[task.setvariable variable=Version]$( awk -F '/' '{ print $NF }' <<<'$(Build.SourceBranch)' | sed 's/^v//' )"
+        displayName: Set release version (stable)
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+
+    steps:
+      - task: Docker@2
+        displayName: 'Push Unstable Image'
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+        inputs:
+          repository: 'jellyfin/jellyfin-vue'
+          command: buildAndPush
+          buildContext: '.'
+          Dockerfile: 'Dockerfile'
+          containerRegistry: Docker Hub
+          tags: |
+            unstable-$(Build.BuildNumber)-$(BuildConfiguration)
+            unstable-$(BuildConfiguration)
+
+      - task: Docker@2
+        displayName: 'Push Stable Image'
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+        inputs:
+          repository: 'jellyfin/jellyfin-vue'
+          command: buildAndPush
+          buildContext: '.'
+          Dockerfile: 'Dockerfile'
+          containerRegistry: Docker Hub
+          tags: |
+            stable-$(Build.BuildNumber)-$(BuildConfiguration)
+            $(Version)-$(BuildConfiguration)
+
+  - job: CollectArtifacts
+    timeoutInMinutes: 20
+    displayName: 'Collect Artifacts'
+    continueOnError: true
+    dependsOn:
+      - BuildDocker
+    condition: and(succeeded('Build), succeeded('BuildDocker'))
