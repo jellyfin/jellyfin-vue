@@ -78,7 +78,7 @@ export default Vue.extend({
   async beforeMount() {
     try {
       const RelatedItems = (
-        await this.$libraryApi.getSimilarItems({
+        await this.$api.library.getSimilarItems({
           itemId: this.id,
           userId: this.$auth.user.Id,
           limit: 16

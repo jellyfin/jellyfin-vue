@@ -104,7 +104,7 @@ export default Vue.extend({
   },
   async beforeMount() {
     try {
-      const collectionInfo = await this.$itemsApi.getItems({
+      const collectionInfo = await this.$api.items.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         ids: this.$route.params.viewId
@@ -140,7 +140,7 @@ export default Vue.extend({
           options.includeItemTypes = 'Book';
         }
 
-        const itemsResponse = await this.$itemsApi.getItems(options);
+        const itemsResponse = await this.$api.items.getItems(options);
 
         if (itemsResponse.data) {
           this.loaded = true;

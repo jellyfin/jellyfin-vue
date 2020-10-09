@@ -66,7 +66,7 @@ export default Vue.extend({
   },
   async beforeMount() {
     const seasons = (
-      await this.$tvShowsApi.getSeasons({
+      await this.$api.tvShows.getSeasons({
         userId: this.$auth.user.Id,
         seriesId: this.item.Id || ''
       })
@@ -76,7 +76,7 @@ export default Vue.extend({
 
     for (const season of this.seasons) {
       const episodes = (
-        await this.$itemsApi.getItems({
+        await this.$api.items.getItems({
           uId: this.$auth.user.Id,
           userId: this.$auth.user.Id,
           parentId: season.Id
