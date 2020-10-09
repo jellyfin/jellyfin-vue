@@ -58,7 +58,7 @@
     "babel-jest": "^26.5.2",
     "core-js": "^3.6.5",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-import-resolver-nuxt": "^1.0.1",
     "eslint-plugin-import": "^2.22.1",
