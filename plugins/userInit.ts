@@ -10,7 +10,7 @@ const userInitPlugin: Plugin = async (context) => {
 
     context.$auth.setUserToken(context.store.state.user.accessToken);
 
-    const response = await context.$userApi.getUserById({
+    const response = await context.$api.user.getUserById({
       userId: context.store.state.user.id
     });
 

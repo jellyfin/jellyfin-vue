@@ -56,7 +56,7 @@ export default Vue.extend({
   },
   async beforeMount() {
     const items = (
-      await this.$itemsApi.getItems({
+      await this.$api.items.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         ids: this.$route.params.itemId,

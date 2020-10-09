@@ -48,7 +48,7 @@ export const actions: ActionTree<UserState, UserState> = {
       accessToken
     }: { id: string; serverUrl: string; accessToken: string }
   ) {
-    const response = await this.$displayPreferencesApi.getDisplayPreferences({
+    const response = await this.$api.displayPreferences.getDisplayPreferences({
       displayPreferencesId: 'usersettings',
       userId: id,
       client: 'vue'

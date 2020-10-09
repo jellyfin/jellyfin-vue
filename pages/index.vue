@@ -64,7 +64,7 @@ export default Vue.extend({
           case 'latestmedia': {
             const latestMediaSections = [];
 
-            const userViewsRequest = await this.$userViewsApi.getUserViews({
+            const userViewsRequest = await this.$api.userViews.getUserViews({
               userId: this.$auth.user.Id
             });
 

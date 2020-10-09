@@ -49,15 +49,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/playbackProfile.ts',
-    // API
-    'plugins/displayPreferenceApi.ts',
-    'plugins/imageApi.ts',
-    'plugins/itemsApi.ts',
-    'plugins/libraryApi.ts',
-    'plugins/tvShowsApi.ts',
-    'plugins/userApi.ts',
-    'plugins/userLibraryApi.ts',
-    'plugins/userViewsApi.ts'
+    'plugins/apiPlugin.ts'
   ],
   /*
    ** Auto import components

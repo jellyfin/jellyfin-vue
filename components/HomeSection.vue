@@ -67,7 +67,7 @@ export default Vue.extend({
   async created() {
     switch (this.section.type) {
       case 'resume': {
-        const resumeItems = await this.$itemsApi.getResumeItems({
+        const resumeItems = await this.$api.items.getResumeItems({
           userId: this.$auth.user.Id,
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
@@ -81,7 +81,7 @@ export default Vue.extend({
         break;
       }
       case 'resumeaudio': {
-        const resumeItems = await this.$itemsApi.getResumeItems({
+        const resumeItems = await this.$api.items.getResumeItems({
           userId: this.$auth.user.Id,
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
@@ -95,7 +95,7 @@ export default Vue.extend({
         break;
       }
       case 'upnext': {
-        const latestItems = await this.$tvShowsApi.getNextUp({
+        const latestItems = await this.$api.tvShows.getNextUp({
           userId: this.$auth.user.Id,
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
@@ -108,7 +108,7 @@ export default Vue.extend({
         break;
       }
       case 'latestmedia': {
-        const latestItems = await this.$userLibraryApi.getLatestMedia({
+        const latestItems = await this.$api.userLibrary.getLatestMedia({
           userId: this.$auth.user.Id,
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
