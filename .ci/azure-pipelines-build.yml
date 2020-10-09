@@ -74,11 +74,3 @@ jobs:
           tags: |
             stable-$(Build.BuildNumber)-$(BuildConfiguration)
             $(Version)-$(BuildConfiguration)
-
-  - job: CollectArtifacts
-    timeoutInMinutes: 20
-    displayName: 'Collect Artifacts'
-    continueOnError: true
-    dependsOn:
-      - BuildDocker
-    condition: and(succeeded('Build), succeeded('BuildDocker'))
