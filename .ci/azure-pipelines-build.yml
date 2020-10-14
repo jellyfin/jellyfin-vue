@@ -7,26 +7,26 @@ jobs:
 
     steps:
       - task: NodeTool@0
-        displayName: 'Install Node'
+        displayName: 'Install node'
         inputs:
           versionSpec: '12.x'
 
       - task: Cache@2
-        displayName: 'Check Cache'
+        displayName: 'Check cache'
         inputs:
           key: 'yarn | yarn.lock'
           path: 'node_modules'
           cacheHitVar: CACHE_RESTORED
 
       - script: 'yarn install --frozen-lockfile'
-        displayName: 'Install Dependencies'
+        displayName: 'Install dependencies'
         condition: ne(variables.CACHE_RESTORED, 'true')
 
       - script: 'yarn build'
         displayName: 'Build'
 
   - job: BuildDocker
-    displayName: 'Build Docker'
+    displayName: 'Build docker images'
 
     strategy:
       matrix:
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - task: Docker@2
-        displayName: 'Push Unstable Image'
+        displayName: 'Build and push unstable docker image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
@@ -59,7 +59,7 @@ jobs:
             unstable-$(BuildConfiguration)
 
       - task: Docker@2
-        displayName: 'Push Stable Image'
+        displayName: 'Build and push stable docker images'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
@@ -70,3 +70,48 @@ jobs:
           tags: |
             stable-$(Build.BuildNumber)-$(BuildConfiguration)
             $(Version)-$(BuildConfiguration)
+
+  - job: PushManifests
+    displayName: 'Build and publish docker manifests'
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      DOCKER_CLI_EXPERIMENTAL: enabled
+
+    steps:
+      - script: |
+          # sudo sed -i '$s/}/,\n"experimental": true\n}/' /etc/docker/daemon.json
+          echo '{"experimental": true}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker
+          docker version
+        displayName: 'Enable experimental features in Docker server'
+
+      - script: |
+          docker manifest create \
+          jellyfin/jellyfin-vue:unstable \
+          --amend jellyfin/jellyfin-vue:unstable-armhf \
+          --amend jellyfin/jellyfin-vue:unstable-amd64 \
+          --amend jellyfin/jellyfin-vue:unstable-arm64
+        displayName: Build unstable manifest
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+
+      - script: |
+          docker manifest push jellyfin/jellyfin-vue:unstable
+        displayName: Push unstable manifest
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+
+      - script: |
+          docker manifest create \
+          jellyfin/jellyfin-vue:$(Version) \
+          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
+          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
+          --amend jellyfin/jellyfin-vue:$(Version)-arm64
+        displayName: Build stable manifest
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
+
+      - script: |
+          docker manifest push jellyfin/jellyfin-vue:$(Version)
+        displayName: Push stable manifest
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
