@@ -26,5 +26,9 @@
     "present": "Presente",
     "libraryEmpty": "La biblioteca está vacía",
     "moreLikeThis": "Más como esto",
-    "endsAt": "Termina {time}"
+    "endsAt": "Termina {time}",
+    "rating": "Calificación",
+    "endDate": "Fecha de finalización",
+    "releaseDate": "Fecha de estreno",
+    "alphabetically": "Alfabéticamente"
 }
