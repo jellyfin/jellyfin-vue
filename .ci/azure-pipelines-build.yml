@@ -24,3 +24,49 @@ jobs:
 
       - script: 'yarn build'
         displayName: 'Build'
+
+  - job: BuildDocker
+    displayName: 'Build Docker'
+
+    strategy:
+      matrix:
+        amd64:
+          BuildConfiguration: amd64
+        arm64:
+          BuildConfiguration: arm64
+        armhf:
+          BuildConfiguration: armhf
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      - name: Version
+        value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
+
+    steps:
+      - task: Docker@2
+        displayName: 'Push Unstable Image'
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+        inputs:
+          repository: 'jellyfin/jellyfin-vue'
+          command: buildAndPush
+          buildContext: '.'
+          Dockerfile: 'Dockerfile'
+          containerRegistry: Docker Hub
+          tags: |
+            unstable-$(Build.BuildNumber)-$(BuildConfiguration)
+            unstable-$(BuildConfiguration)
+
+      - task: Docker@2
+        displayName: 'Push Stable Image'
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+        inputs:
+          repository: 'jellyfin/jellyfin-vue'
+          command: buildAndPush
+          buildContext: '.'
+          Dockerfile: 'Dockerfile'
+          containerRegistry: Docker Hub
+          tags: |
+            stable-$(Build.BuildNumber)-$(BuildConfiguration)
+            $(Version)-$(BuildConfiguration)
