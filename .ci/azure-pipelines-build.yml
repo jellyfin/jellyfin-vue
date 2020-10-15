@@ -59,18 +59,6 @@ jobs:
             unstable-$(BuildConfiguration)
 
       - task: Docker@2
-        displayName: 'Build and push PR Docker images'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
-        inputs:
-          repository: 'jellyfin/jellyfin-vue'
-          command: buildAndPush
-          buildContext: '.'
-          Dockerfile: 'Dockerfile'
-          containerRegistry: Docker Hub
-          tags: |
-            pr-$(System.PullRequest.PullRequestId)-$(BuildConfiguration)
-
-      - task: Docker@2
         displayName: 'Build and push stable Docker images'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
@@ -116,28 +104,25 @@ jobs:
 
       - script: |
           docker manifest create \
-          jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId) \
-          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-armhf \
-          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-amd64 \
-          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-arm64
-        displayName: 'Build PR manifest'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
-
-      - script: |
-          docker manifest push jellyfin/jellyfin-vue:$(Version)
-        displayName: 'Push PR manifest'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
-
-      - script: |
-          docker manifest create \
           jellyfin/jellyfin-vue:$(Version) \
           --amend jellyfin/jellyfin-vue:$(Version)-armhf \
           --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
           --amend jellyfin/jellyfin-vue:$(Version)-arm64
-        displayName: 'Build stable manifest'
+          docker manifest create \
+          jellyfin/jellyfin-vue:stable \
+          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
+          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
+          --amend jellyfin/jellyfin-vue:$(Version)-arm64
+          jellyfin/jellyfin-vue:latest \
+          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
+          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
+          --amend jellyfin/jellyfin-vue:$(Version)-arm64
+        displayName: 'Build stable manifests'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
 
       - script: |
           docker manifest push jellyfin/jellyfin-vue:$(Version)
-        displayName: 'Push stable manifest'
+          docker manifest push jellyfin/jellyfin-vue:stable
+          docker manifest push jellyfin/jellyfin-vue:latest
+        displayName: 'Push stable manifests'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
