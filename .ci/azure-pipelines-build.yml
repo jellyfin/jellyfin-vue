@@ -47,6 +47,15 @@ jobs:
             docker buildx use builder
 
       - task: CmdLine@2
+        displayName: 'Build PR Docker Image'
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
+        inputs:
+          script: |
+            docker buildx build --no-cache \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag pr-$(System.PullRequest.PullRequestId)
+
+      - task: CmdLine@2
         displayName: 'Build and Push Unstable Docker Image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
