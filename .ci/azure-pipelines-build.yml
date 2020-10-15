@@ -26,7 +26,7 @@ jobs:
         displayName: 'Build'
 
   - job: BuildDocker
-    displayName: 'Build docker image'
+    displayName: 'Build Docker image'
 
     strategy:
       matrix:
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - task: Docker@2
-        displayName: 'Build and push unstable docker image'
+        displayName: 'Build and push unstable Docker image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
@@ -59,7 +59,7 @@ jobs:
             unstable-$(BuildConfiguration)
 
       - task: Docker@2
-        displayName: 'Build and push PR docker images'
+        displayName: 'Build and push PR Docker images'
         condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
@@ -71,7 +71,7 @@ jobs:
             pr-$(System.PullRequest.PullRequestId)-$(BuildConfiguration)
 
       - task: Docker@2
-        displayName: 'Build and push stable docker images'
+        displayName: 'Build and push stable Docker images'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
@@ -84,7 +84,7 @@ jobs:
             $(Version)-$(BuildConfiguration)
 
   - job: PushManifests
-    displayName: 'Build and publish docker manifests'
+    displayName: 'Build and publish Docker manifests'
 
     pool:
       vmImage: 'ubuntu-latest'
@@ -106,12 +106,12 @@ jobs:
           --amend jellyfin/jellyfin-vue:unstable-armhf \
           --amend jellyfin/jellyfin-vue:unstable-amd64 \
           --amend jellyfin/jellyfin-vue:unstable-arm64
-        displayName: Build unstable manifest
+        displayName: 'Build unstable manifest'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
 
       - script: |
           docker manifest push jellyfin/jellyfin-vue:unstable
-        displayName: Push unstable manifest
+        displayName: 'Push unstable manifest'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
 
       - script: |
@@ -120,13 +120,13 @@ jobs:
           --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-armhf \
           --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-amd64 \
           --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-arm64
-      displayName: Build PR manifest
-      condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
+        displayName: 'Build PR manifest'
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
 
       - script: |
-        docker manifest push jellyfin/jellyfin-vue:$(Version)
-      displayName: Push PR manifest
-      condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
+          docker manifest push jellyfin/jellyfin-vue:$(Version)
+        displayName: 'Push PR manifest'
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
 
       - script: |
           docker manifest create \
@@ -134,10 +134,10 @@ jobs:
           --amend jellyfin/jellyfin-vue:$(Version)-armhf \
           --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
           --amend jellyfin/jellyfin-vue:$(Version)-arm64
-        displayName: Build stable manifest
+        displayName: 'Build stable manifest'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
 
       - script: |
           docker manifest push jellyfin/jellyfin-vue:$(Version)
-        displayName: Push stable manifest
+        displayName: 'Push stable manifest'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
