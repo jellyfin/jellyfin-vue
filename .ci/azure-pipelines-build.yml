@@ -25,8 +25,16 @@ jobs:
       - script: 'yarn build'
         displayName: 'Build'
 
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Generated Static Pages as Artifact'
+        inputs:
+          targetPath: $(System.DefaultWorkingDirectory)/dist
+          artifactName: dist
+
   - job: BuildDocker
     displayName: 'Build Docker Images'
+    dependsOn: Build
+    condition: succeeded()
 
     pool:
       vmImage: 'ubuntu-latest'
@@ -34,24 +42,31 @@ jobs:
     variables:
       - name: DOCKER_CLI_EXPERIMENTAL
         value: 'enabled'
+
       - name: Version
         value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
 
     steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download Artifact from Build Job'
+        inputs:
+          source: current
+          artifact: dist
+          path: $(System.DefaultWorkingDirectory)/dist
+
       - task: CmdLine@2
         displayName: 'Register Qemu Binfmt and Docker Buildx Builder'
         inputs:
           script: |
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-            docker buildx create --name builder
-            docker buildx use builder
+            docker buildx create --use
 
       - task: CmdLine@2
         displayName: 'Build PR Docker Image'
         condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
         inputs:
           script: |
-            docker buildx build --no-cache \
+            docker buildx build --file ./Dockerfile.dev --no-cache \
               --platform linux/arm,linux/arm64,linux/amd64 \
               --tag pr-$(System.PullRequest.PullRequestId) .
 
@@ -60,7 +75,7 @@ jobs:
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           script: |
-            docker buildx build --no-cache --push \
+            docker buildx build --file ./Dockerfile.dev --no-cache --push \
               --platform linux/arm,linux/arm64,linux/amd64 \
               --tag jellyfin/jellyfin-vue:unstable-$(Build.BuildNumber) \
               --tag jellyfin/jellyfin-vue:unstable .
@@ -70,7 +85,7 @@ jobs:
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
           script: |
-            docker buildx build --no-cache --push \
+            docker buildx build --file ./Dockerfile.dev --no-cache --push \
               --platform linux/arm,linux/arm64,linux/amd64 \
               --tag jellyfin/jellyfin-vue:$(Version) \
               --tag jellyfin/jellyfin-vue:stable \

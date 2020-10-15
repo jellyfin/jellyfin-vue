@@ -1,4 +1,4 @@
-FROM node:13-alpine AS build
+FROM node:12-alpine AS build
 
 # Install build dependencies for node modules
 RUN apk add git python make g++
