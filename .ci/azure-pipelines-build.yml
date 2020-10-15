@@ -115,11 +115,11 @@ jobs:
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
 
       - script: |
-        docker manifest create \
-        jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId) \
-        --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-armhf \
-        --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-amd64 \
-        --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-arm64
+          docker manifest create \
+          jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId) \
+          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-armhf \
+          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-amd64 \
+          --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-arm64
       displayName: Build PR manifest
       condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
 
