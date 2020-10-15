@@ -82,13 +82,6 @@ jobs:
 
     steps:
       - script: |
-          # sudo sed -i '$s/}/,\n"experimental": true\n}/' /etc/docker/daemon.json
-          echo '{"experimental": true}' | sudo tee /etc/docker/daemon.json
-          sudo systemctl restart docker
-          docker version
-        displayName: 'Enable Experimental Features in Docker Server'
-
-      - script: |
           docker manifest create \
           jellyfin/jellyfin-vue:unstable \
           --amend jellyfin/jellyfin-vue:unstable-armhf \
