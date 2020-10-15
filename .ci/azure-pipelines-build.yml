@@ -32,7 +32,7 @@ jobs:
       vmImage: 'ubuntu-latest'
 
     variables:
-      - name: DOCKER_CLI_EXPERIMENTAL:
+      - name: DOCKER_CLI_EXPERIMENTAL
         value: 'enabled'
       - name: Version
         value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
