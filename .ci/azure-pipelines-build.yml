@@ -60,7 +60,7 @@ jobs:
 
       - task: Docker@2
         displayName: 'Build and push PR Docker images'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
         inputs:
           repository: 'jellyfin/jellyfin-vue'
           command: buildAndPush
@@ -121,12 +121,12 @@ jobs:
           --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-amd64 \
           --amend jellyfin/jellyfin-vue:pr-$(System.PullRequest.PullRequestId)-arm64
         displayName: 'Build PR manifest'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
 
       - script: |
           docker manifest push jellyfin/jellyfin-vue:$(Version)
         displayName: 'Push PR manifest'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'refs/heads/master')
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
 
       - script: |
           docker manifest create \
