@@ -53,7 +53,7 @@ jobs:
           script: |
             docker buildx build --no-cache \
               --platform linux/arm,linux/arm64,linux/amd64 \
-              --tag pr-$(System.PullRequest.PullRequestId)
+              --tag pr-$(System.PullRequest.PullRequestId) .
 
       - task: CmdLine@2
         displayName: 'Build and Push Unstable Docker Image'
@@ -63,7 +63,7 @@ jobs:
             docker buildx build --no-cache --push \
               --platform linux/arm,linux/arm64,linux/amd64 \
               --tag jellyfin/jellyfin-vue:unstable-$(Build.BuildNumber) \
-              --tag jellyfin/jellyfin-vue:unstable
+              --tag jellyfin/jellyfin-vue:unstable .
 
       - task: CmdLine@2
         displayName: 'Build and Push Stable Docker Image'
@@ -74,4 +74,4 @@ jobs:
               --platform linux/arm,linux/arm64,linux/amd64 \
               --tag jellyfin/jellyfin-vue:$(Version) \
               --tag jellyfin/jellyfin-vue:stable \
-              --tag jellyfin/jellyfin-vue:latest
+              --tag jellyfin/jellyfin-vue:latest .
