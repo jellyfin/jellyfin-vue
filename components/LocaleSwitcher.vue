@@ -5,7 +5,7 @@
         <v-icon>mdi-web</v-icon>
       </v-btn>
     </template>
-    <v-list>
+    <v-list class="overflow-y-auto">
       <v-list-item
         v-for="(item, index) in $i18n.locales"
         :key="index"
@@ -17,3 +17,8 @@
     </v-list>
   </v-menu>
 </template>
+<style scoped>
+.v-list {
+  max-height: 31em;
+}
+</style>
