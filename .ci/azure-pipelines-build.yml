@@ -26,96 +26,42 @@ jobs:
         displayName: 'Build'
 
   - job: BuildDocker
-    displayName: 'Build Docker Image'
-
-    strategy:
-      matrix:
-        amd64:
-          BuildConfiguration: amd64
-        arm64:
-          BuildConfiguration: arm64
-        armhf:
-          BuildConfiguration: armhf
+    displayName: 'Build Docker Images'
 
     pool:
       vmImage: 'ubuntu-latest'
 
     variables:
+      - DOCKER_CLI_EXPERIMENTAL: enabled
       - name: Version
         value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
 
     steps:
-      - task: Docker@2
+      - task: CmdLine@2
+        displayName: 'Register Qemu Binfmt and Docker Buildx Builder'
+        inputs:
+          script: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker buildx create --name builder
+            docker buildx use builder
+
+      - task: CmdLine@2
         displayName: 'Build and Push Unstable Docker Image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
-          repository: 'jellyfin/jellyfin-vue'
-          command: buildAndPush
-          buildContext: '.'
-          Dockerfile: 'Dockerfile'
-          containerRegistry: Docker Hub
-          tags: |
-            unstable-$(Build.BuildNumber)-$(BuildConfiguration)
-            unstable-$(BuildConfiguration)
+          script: |
+            docker buildx build --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag jellyfin/jellyfin-vue:unstable-$(Build.BuildNumber) \
+              --tag jellyfin/jellyfin-vue:unstable
 
-      - task: Docker@2
+      - task: CmdLine@2
         displayName: 'Build and Push Stable Docker Image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
-          repository: 'jellyfin/jellyfin-vue'
-          command: buildAndPush
-          buildContext: '.'
-          Dockerfile: 'Dockerfile'
-          containerRegistry: Docker Hub
-          tags: |
-            stable-$(Build.BuildNumber)-$(BuildConfiguration)
-            $(Version)-$(BuildConfiguration)
-
-  - job: PushManifests
-    displayName: 'Build and Publish Docker Manifests'
-
-    pool:
-      vmImage: 'ubuntu-latest'
-
-    variables:
-      DOCKER_CLI_EXPERIMENTAL: enabled
-
-    steps:
-      - script: |
-          docker manifest create \
-          jellyfin/jellyfin-vue:unstable \
-          --amend jellyfin/jellyfin-vue:unstable-armhf \
-          --amend jellyfin/jellyfin-vue:unstable-amd64 \
-          --amend jellyfin/jellyfin-vue:unstable-arm64
-        displayName: 'Build Unstable Manifest'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
-
-      - script: |
-          docker manifest push jellyfin/jellyfin-vue:unstable
-        displayName: 'Push Unstable Manifest'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
-
-      - script: |
-          docker manifest create \
-          jellyfin/jellyfin-vue:$(Version) \
-          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
-          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
-          --amend jellyfin/jellyfin-vue:$(Version)-arm64
-          docker manifest create \
-          jellyfin/jellyfin-vue:stable \
-          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
-          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
-          --amend jellyfin/jellyfin-vue:$(Version)-arm64
-          jellyfin/jellyfin-vue:latest \
-          --amend jellyfin/jellyfin-vue:$(Version)-armhf \
-          --amend jellyfin/jellyfin-vue:$(Version)-amd64 \
-          --amend jellyfin/jellyfin-vue:$(Version)-arm64
-        displayName: 'Build Stable Manifests'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
-
-      - script: |
-          docker manifest push jellyfin/jellyfin-vue:$(Version)
-          docker manifest push jellyfin/jellyfin-vue:stable
-          docker manifest push jellyfin/jellyfin-vue:latest
-        displayName: 'Push Stable Manifests'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/tags/v')
+          script: |
+            docker buildx build --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag jellyfin/jellyfin-vue:$(Version) \
+              --tag jellyfin/jellyfin-vue:stable \
+              --tag jellyfin/jellyfin-vue:latest
