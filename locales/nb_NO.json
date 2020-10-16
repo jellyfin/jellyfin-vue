@@ -26,5 +26,9 @@
     "libraryEmpty": "Dette biblioteket er tomt",
     "present": "Tilstede",
     "moreLikeThis": "Mer som dette",
-    "endsAt": "Slutter {Time}"
+    "endsAt": "Slutter {Time}",
+    "rating": "Vurdering",
+    "endDate": "Sluttdato",
+    "releaseDate": "Slippdato",
+    "alphabetically": "Alfabetisk"
 }
