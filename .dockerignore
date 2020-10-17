@@ -1,5 +1,6 @@
 # Dockerfile
 Dockerfile
+Dockerfile.dev
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
@@ -70,9 +71,6 @@ typings/
 
 # nuxt.js build output
 .nuxt
-
-# Nuxt generate
-dist
 
 # vuepress build output
 .vuepress/dist

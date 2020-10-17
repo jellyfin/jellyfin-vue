@@ -25,48 +25,68 @@ jobs:
       - script: 'yarn build'
         displayName: 'Build'
 
-  - job: BuildDocker
-    displayName: 'Build Docker'
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Generated Static Pages as Artifact'
+        inputs:
+          targetPath: $(System.DefaultWorkingDirectory)/dist
+          artifactName: dist
 
-    strategy:
-      matrix:
-        amd64:
-          BuildConfiguration: amd64
-        arm64:
-          BuildConfiguration: arm64
-        armhf:
-          BuildConfiguration: armhf
+  - job: BuildDocker
+    displayName: 'Build Docker Images'
+    dependsOn: Build
+    condition: succeeded()
 
     pool:
       vmImage: 'ubuntu-latest'
 
     variables:
+      - name: DOCKER_CLI_EXPERIMENTAL
+        value: 'enabled'
+
       - name: Version
         value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
 
     steps:
-      - task: Docker@2
-        displayName: 'Push Unstable Image'
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download Artifact from Build Job'
+        inputs:
+          source: current
+          artifact: dist
+          path: $(System.DefaultWorkingDirectory)/dist
+
+      - task: CmdLine@2
+        displayName: 'Register Qemu Binfmt and Docker Buildx Builder'
+        inputs:
+          script: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker buildx create --use
+
+      - task: CmdLine@2
+        displayName: 'Build PR Docker Image'
+        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
+        inputs:
+          script: |
+            docker buildx build --file ./Dockerfile.dev --no-cache \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag pr-$(System.PullRequest.PullRequestId) .
+
+      - task: CmdLine@2
+        displayName: 'Build and Push Unstable Docker Image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
-          repository: 'jellyfin/jellyfin-vue'
-          command: buildAndPush
-          buildContext: '.'
-          Dockerfile: 'Dockerfile'
-          containerRegistry: Docker Hub
-          tags: |
-            unstable-$(Build.BuildNumber)-$(BuildConfiguration)
-            unstable-$(BuildConfiguration)
+          script: |
+            docker buildx build --file ./Dockerfile.dev --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag jellyfin/jellyfin-vue:unstable-$(Build.BuildNumber) \
+              --tag jellyfin/jellyfin-vue:unstable .
 
-      - task: Docker@2
-        displayName: 'Push Stable Image'
+      - task: CmdLine@2
+        displayName: 'Build and Push Stable Docker Image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
-          repository: 'jellyfin/jellyfin-vue'
-          command: buildAndPush
-          buildContext: '.'
-          Dockerfile: 'Dockerfile'
-          containerRegistry: Docker Hub
-          tags: |
-            stable-$(Build.BuildNumber)-$(BuildConfiguration)
-            $(Version)-$(BuildConfiguration)
+          script: |
+            docker buildx build --file ./Dockerfile.dev --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag jellyfin/jellyfin-vue:$(Version) \
+              --tag jellyfin/jellyfin-vue:stable \
+              --tag jellyfin/jellyfin-vue:latest .

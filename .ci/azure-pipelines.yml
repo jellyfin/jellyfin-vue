@@ -1,14 +1,14 @@
 trigger:
   branches:
     include:
-      - "*"
+      - '*'
   tags:
     include:
-      - "*"
+      - '*'
 pr:
   branches:
     include:
-      - "*"
+      - '*'
 jobs:
   - template: azure-pipelines-lint.yml
   - template: azure-pipelines-test.yml
