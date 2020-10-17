@@ -61,9 +61,16 @@ jobs:
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             docker buildx create --use
 
+      - task: Docker@2
+        displayName: 'Login to Docker Hub'
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+        inputs:
+          command: login
+          containerRegistry: 'Docker Hub'
+
       - task: CmdLine@2
         displayName: 'Build PR Docker Image'
-        condition: startsWith(variables['System.PullRequest.TargetBranch'], 'master')
+        condition: eq(variables['System.PullRequest.TargetBranch'], 'master')
         inputs:
           script: |
             docker buildx build --file ./Dockerfile.dev --no-cache \
@@ -72,7 +79,7 @@ jobs:
 
       - task: CmdLine@2
         displayName: 'Build and Push Unstable Docker Image'
-        condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/master')
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           script: |
             docker buildx build --file ./Dockerfile.dev --no-cache --push \
@@ -90,3 +97,10 @@ jobs:
               --tag jellyfin/jellyfin-vue:$(Version) \
               --tag jellyfin/jellyfin-vue:stable \
               --tag jellyfin/jellyfin-vue:latest .
+
+      - task: Docker@2
+        displayName: 'Logout from Docker Hub'
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+        inputs:
+          command: logout
+          containerRegistry: 'Docker Hub'
