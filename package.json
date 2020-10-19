@@ -76,7 +76,8 @@
     "stylelint-config-standard": "^20.0.0",
     "ts-jest": "^26.4.1",
     "ts-loader": "^8.0.5",
-    "vue-jest": "^3.0.7"
+    "vue-jest": "^3.0.7",
+    "worker-loader": "^3.0.5"
   },
   "config": {
     "commitizen": {

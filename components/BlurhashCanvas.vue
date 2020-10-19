@@ -4,7 +4,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { decode } from 'blurhash';
+import Worker from 'worker-loader!./blurhash.worker';
+const worker = new Worker();
 
 export default Vue.extend({
   props: {
@@ -37,15 +38,23 @@ export default Vue.extend({
   },
   methods: {
     draw() {
-      const pixels = decode(this.hash, this.width, this.height);
-      if (pixels) {
-        const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-        const imageData = ctx?.createImageData(this.width, this.height);
-        if (imageData) {
-          imageData.data.set(pixels);
-          ctx?.putImageData(imageData, 0, 0);
+      const bhash_data = {
+        hash: this.hash,
+        width: this.width,
+        height: this.height
+      };
+      worker.postMessage(bhash_data);
+      worker.onmessage = ({ data }) => {
+        const pixels = data;
+        if (pixels) {
+          const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+          const imageData = ctx?.createImageData(this.width, this.height);
+          if (imageData) {
+            imageData.data.set(pixels);
+            ctx?.putImageData(imageData, 0, 0);
+          }
         }
-      }
+      };
     }
   }
 });
