@@ -44,15 +44,13 @@ export default Vue.extend({
         height: this.height
       };
       worker.postMessage(bhash_data);
+      const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+      const imageData = ctx?.createImageData(this.width, this.height);
       worker.onmessage = ({ data }) => {
         const pixels = data;
-        if (pixels) {
-          const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-          const imageData = ctx?.createImageData(this.width, this.height);
-          if (imageData) {
-            imageData.data.set(pixels);
-            ctx?.putImageData(imageData, 0, 0);
-          }
+        if (pixels && imageData) {
+          imageData.data.set(pixels);
+          ctx?.putImageData(imageData, 0, 0);
         }
       };
     }

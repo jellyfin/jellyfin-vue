@@ -1,8 +1,12 @@
-import { decode } from 'blurhash';
+import { decode, isBlurhashValid } from 'blurhash';
 
 const ctx: Worker = self as any;
 ctx.addEventListener('message', event => {
     const data = event.data;
-    const pixels = decode(data.hash, data.width, data.height);
-    ctx.postMessage({ pixels });
+    if (isBlurhashValid(data.hash)) {
+        const pixels = decode(data.hash, data.width, data.height);
+        ctx.postMessage({ pixels });
+    } else {
+        throw TypeError('Blurhash is not valid');
+    }
 });
