@@ -145,7 +145,7 @@ export default Vue.extend({
         {
           icon: 'mdi-pencil-outline',
           title: this.$t('metadata'),
-          to: '/metadata?hideNav=1'
+          to: '/metadata'
         },
         {
           icon: 'mdi-cog',

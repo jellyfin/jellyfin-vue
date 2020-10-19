@@ -1,7 +1,8 @@
 <template>
   <v-dialog
+    content-class="metadata-dialog"
     :value="dialog"
-    max-width="80%"
+    max-width="70%"
     @click:outside="$emit('update:dialog', false)"
   >
     <metadata-editor
@@ -34,3 +35,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style>
+.metadata-dialog {
+  height: 90%;
+}
+</style>

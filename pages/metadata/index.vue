@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-4">
+  <v-row class="pa-4 metadata">
     <v-col cols="3" class="tree-view-container">
       <v-treeview
         :items="items"
@@ -10,7 +10,7 @@
       ></v-treeview>
     </v-col>
 
-    <v-col v-if="itemId" cols="9">
+    <v-col v-if="itemId" cols="9" class="metadata-card">
       <metadata-editor :item-id="itemId"></metadata-editor>
     </v-col>
   </v-row>
@@ -79,7 +79,16 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
+.metadata {
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
 .tree-view-container {
   border-right: 1px solid var(--v-secondary-lighten1);
+  height: 100%;
+  overflow: auto;
+}
+.metadata-card {
+  height: 100%;
 }
 </style>
