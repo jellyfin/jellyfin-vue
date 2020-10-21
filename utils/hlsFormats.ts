@@ -1,9 +1,5 @@
 import { hasH264Support, hasH265Support } from './mp4VideoFormats';
-import {
-  hasEac3Support,
-  hasMp3Support,
-  hasAacSupport
-} from './mp4AudioFormats';
+import { hasEac3Support, hasAacSupport } from './mp4AudioFormats';
 import { getSupportedAudioCodecs } from './audioFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
@@ -76,10 +72,6 @@ export function getHlsAudioCodecs(
     if (hasEac3Support(videoTestElement)) {
       hlsVideoAudioCodecs.push('eac3');
     }
-  }
-
-  if (hasMp3Support(videoTestElement)) {
-    hlsVideoAudioCodecs.push('mp3');
   }
 
   if (hasAacSupport(videoTestElement)) {

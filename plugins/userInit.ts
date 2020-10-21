@@ -8,7 +8,8 @@ const userInitPlugin: Plugin = async (context) => {
   ) {
     context.$axios.setBaseURL(context.store.state.user.serverUrl);
 
-    context.$auth.setUserToken(context.store.state.user.accessToken);
+    const accessToken = `MediaBrowser Client="${context.store.state.deviceProfile.clientName}", Device="${context.store.state.deviceProfile.deviceName}", DeviceId="${context.store.state.deviceProfile.deviceId}", Version="${context.store.state.deviceProfile.clientVersion}", Token="${context.store.state.user.accessToken}"`;
+    context.$auth.setUserToken(accessToken);
 
     const response = await context.$api.user.getUserById({
       userId: context.store.state.user.id
