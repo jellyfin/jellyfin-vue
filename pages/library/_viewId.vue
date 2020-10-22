@@ -103,6 +103,9 @@ export default Vue.extend({
     }
   },
   async beforeMount() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
     try {
       const collectionInfo = await this.$api.items.getItems({
         uId: this.$auth.user.Id,
@@ -144,6 +147,7 @@ export default Vue.extend({
 
         if (itemsResponse.data) {
           this.loaded = true;
+          this.$nuxt.$loading.finish();
         }
 
         this.items = itemsResponse.data.Items || [];

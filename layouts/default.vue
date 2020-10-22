@@ -105,6 +105,7 @@
       <v-spacer />
       <locale-switcher class="mr-2" />
       <user-button v-if="$auth.loggedIn" />
+      <loading-bar></loading-bar>
     </v-app-bar>
     <v-main>
       <nuxt />
