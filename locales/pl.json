@@ -15,6 +15,7 @@
   "logout": "Wyloguj",
   "more": "Więcej",
   "moreLikeThis": "",
+  "movies": "",
   "password": "Hasło",
   "play": "Odtwarzaj",
   "playType": "Odtwarzaj {mediaType}",
@@ -30,5 +31,6 @@
   "unexpectedError": "Niespodziewany błąd",
   "upNext": "Następnie",
   "username": "Nazwa użytkownika",
-  "usernameRequired": "Nazwa użytkownika jest wymagana"
+  "usernameRequired": "Nazwa użytkownika jest wymagana",
+  "youMayAlsoLike": ""
 }

@@ -63,7 +63,8 @@ const config: NuxtConfig = {
     '@nuxt/typescript-build',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/date-fns'
   ],
   /*
    ** Nuxt.js modules
@@ -176,6 +177,7 @@ const config: NuxtConfig = {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     defaultAssets: false,
     theme: {
       dark: true,

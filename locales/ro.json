@@ -15,6 +15,7 @@
   "logout": "Deconectare",
   "more": "Mai mult",
   "moreLikeThis": "Similare",
+  "movies": "",
   "password": "Parolă",
   "play": "Rulează",
   "playType": "Redă {mediaType}",
@@ -30,5 +31,6 @@
   "unexpectedError": "Eroare neașteptată",
   "upNext": "Urmează",
   "username": "Utilizator",
-  "usernameRequired": "Numele de utilizator este necesar"
+  "usernameRequired": "Numele de utilizator este necesar",
+  "youMayAlsoLike": ""
 }

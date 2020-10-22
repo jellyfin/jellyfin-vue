@@ -1733,6 +1733,13 @@
     consola "^2.15.0"
     defu "^3.1.0"
 
+"@nuxtjs/date-fns@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/date-fns/-/date-fns-1.4.0.tgz#7cb0a03938e95bced9b089820c32982a9e0638c7"
+  integrity sha512-YuAKM9Y1Ig3u5ZPlW466taL4S7llE5oxgM4Vnth3pEqpRtnAF3jlxlQ3MYv5HcdOnhWBx2pgrbRTSQmCqKF/4w==
+  dependencies:
+    date-fns "^2.16.1"
+
 "@nuxtjs/eslint-config-typescript@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/eslint-config-typescript/-/eslint-config-typescript-4.0.0.tgz#0873aab4ac74cb2b9d7f7b0f8bc9449a0f57a6a5"
@@ -4627,6 +4634,11 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
+date-fns@^2.16.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
+
 de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/de-indent/-/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
@@ -5944,6 +5956,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.10.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
+
+fontsource-noto-sans@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/fontsource-noto-sans/-/fontsource-noto-sans-3.0.10.tgz#1fffa82a748b91c2a4c0b2d97bbd5bd7245eed8b"
+  integrity sha512-Gn8ucYOSk2p2Fzj9x4K6DMoX+bhk6nfwVD7h59QFr5uJL8ha2B5i3It9ZIy3AV1+qbgIY3kCmyx9pSWnpB85SQ==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -7927,6 +7944,11 @@ known-css-properties@^0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/known-css-properties/-/known-css-properties-0.19.0.tgz#5d92b7fa16c72d971bda9b7fe295bdf61836ee5b"
   integrity sha512-eYboRV94Vco725nKMlpkn3nV2+96p9c3gKXRsYqAJSswSENvBhN7n5L+uDhY58xQa0UukWsDMTGELzmD8Q+wTA==
+
+langs@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/langs/-/langs-2.0.0.tgz#00c32ce48152a49a614450b9ba2632ab58a0a364"
+  integrity sha1-AMMs5IFSpJphRFC5uiYyq1igo2Q=
 
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"

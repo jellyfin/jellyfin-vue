@@ -15,6 +15,7 @@
   "logout": "Çıkış",
   "more": "Dahası",
   "moreLikeThis": "Buna Benzer Daha Fazla",
+  "movies": "",
   "password": "Şifre",
   "play": "Oynat",
   "playType": "",
@@ -30,5 +31,6 @@
   "unexpectedError": "Beklenmedik hata",
   "upNext": "Sonraki",
   "username": "Kullanıcı Adı",
-  "usernameRequired": "Kullanıcı adı gerekli"
+  "usernameRequired": "Kullanıcı adı gerekli",
+  "youMayAlsoLike": ""
 }

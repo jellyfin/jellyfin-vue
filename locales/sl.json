@@ -15,6 +15,7 @@
   "logout": "Odjava",
   "more": "Več",
   "moreLikeThis": "",
+  "movies": "",
   "password": "Geslo",
   "play": "Predvajaj",
   "playType": "",
@@ -30,5 +31,6 @@
   "unexpectedError": "Nepričakovana napaka",
   "upNext": "Naslednje",
   "username": "Uporabniško ime",
-  "usernameRequired": "Uporabniško ime je zahtevano"
+  "usernameRequired": "Uporabniško ime je zahtevano",
+  "youMayAlsoLike": ""
 }

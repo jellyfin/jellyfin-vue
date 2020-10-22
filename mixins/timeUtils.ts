@@ -19,7 +19,7 @@ declare module '@nuxt/types' {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    ticksToMs: (ticks: number) => number;
+    ticksToMs: (ticks: number | null | undefined) => number;
     msToTicks: (ms: number) => number;
   }
 }
@@ -32,7 +32,10 @@ const timeUtils = Vue.extend({
      * @param {string} ticks number of ticks to convert from
      * @returns {number} Correct number of ms
      */
-    ticksToMs(ticks: number): number {
+    ticksToMs(ticks: number | null | undefined): number {
+      if (!ticks) {
+        ticks = 0;
+      }
       return ticks / 10000;
     },
     /**
