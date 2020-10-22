@@ -21,6 +21,7 @@
       "@nuxtjs/axios",
       "@nuxtjs/auth-next",
       "@nuxtjs/vuetify",
+      "@nuxtjs/date-fns",
       "nuxt-i18n",
       "jest"
     ]

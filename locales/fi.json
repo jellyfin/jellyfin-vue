@@ -15,6 +15,7 @@
   "logout": "Kirjaudu ulos",
   "more": "Lisää",
   "moreLikeThis": "Lisää samanlaisia",
+  "movies": "",
   "password": "Salasana",
   "play": "Toista",
   "playType": "Toista {mediaType}",
@@ -30,5 +31,6 @@
   "unexpectedError": "Odottamaton virhe",
   "upNext": "Seuraava",
   "username": "Käyttäjätunnus",
-  "usernameRequired": "Käyttäjänimi vaaditaan"
+  "usernameRequired": "Käyttäjänimi vaaditaan",
+  "youMayAlsoLike": ""
 }

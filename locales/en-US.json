@@ -16,6 +16,7 @@
   "logout": "Logout",
   "more": "More",
   "moreLikeThis": "More like this",
+  "movies": "Movies",
   "password": "Password",
   "play": "Play",
   "playType": "Play {mediaType}",
@@ -27,9 +28,11 @@
   "serverAddressRequired": "Server address is required",
   "serverNotFound": "Server not found",
   "settings": "Settings",
+  "shows": "Shows",
   "signIn": "Sign in",
   "unexpectedError": "Unexpected error",
   "upNext": "Up next",
   "username": "Username",
-  "usernameRequired": "Username is required"
+  "usernameRequired": "Username is required",
+  "youMayAlsoLike": "You may also like"
 }

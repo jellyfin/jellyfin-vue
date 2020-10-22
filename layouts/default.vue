@@ -1,7 +1,26 @@
 <template>
   <v-app ref="app">
     <backdrop />
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :temporary="$vuetify.breakpoint.mobile"
+      app
+    >
+      <template v-slot:prepend>
+        <div class="d-flex align-center full-width pa-6">
+          <v-avatar size="48" color="primary" class="mr-4">
+            <img
+              v-if="$auth.user.PrimaryImageTag"
+              :src="`${$axios.defaults.baseURL}/Users/${$auth.user.Id}/Images/Primary/?tag=${$auth.user.PrimaryImageTag}&maxWidth=64`"
+            />
+            <span class="white--text">{{ $auth.user.Name.charAt(0) }}</span>
+          </v-avatar>
+          <h1 class="font-weight-light">
+            {{ $auth.user.Name }}
+          </h1>
+        </div>
+        <v-divider></v-divider>
+      </template>
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -54,20 +73,37 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
-      :clipped-left="clipped"
-      :hide-on-scroll="$vuetify.breakpoint.mobile"
-      :color="$vuetify.theme.dark ? '#202020' : undefined"
-      fixed
+      :clipped-left="$vuetify.breakpoint.mobile"
+      class="pl-2 pr-2"
       flat
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn v-if="$route.name !== 'index'" icon @click="$router.back()">
+      <v-app-bar-nav-icon
+        v-if="$vuetify.breakpoint.mobile"
+        @click.stop="drawer = !drawer"
+      />
+      <v-btn
+        v-if="$route.name !== 'index'"
+        class="mr-2"
+        icon
+        @click="$router.back()"
+      >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-text-field
+        class="search-input"
+        prepend-inner-icon="mdi-magnify"
+        placeholder="Search"
+        max-width="15em"
+        dense
+        outlined
+        filled
+        flat
+        hide-details
+        single-line
+      />
       <v-spacer />
-      <locale-switcher />
+      <locale-switcher class="mr-2" />
       <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
@@ -83,15 +119,11 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      clipped: true,
       drawer: true,
-      miniVariant: false
+      opacity: 0
     };
   },
   computed: {
-    title() {
-      return this.$store.state.page.title;
-    },
     items() {
       return [
         {
@@ -123,5 +155,19 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .v-application {
   background-color: var(--v-background-base) !important;
+}
+
+.v-app-bar:not(.v-app-bar--is-scrolled) {
+  background-color: transparent !important;
+}
+
+.v-app-bar .v-app-bar--is-scrolled {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: rgba(32, 32, 32, 1) !important;
+}
+
+.search-input {
+  max-width: 15em;
 }
 </style>

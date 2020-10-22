@@ -15,6 +15,7 @@
   "logout": "Uitloggen",
   "more": "Meer",
   "moreLikeThis": "Meer zoals dit",
+  "movies": "",
   "password": "Wachtwoord",
   "play": "Afspelen",
   "playType": "Speel {mediaType}",
@@ -30,5 +31,6 @@
   "unexpectedError": "Onverwachte fout",
   "upNext": "Volgende",
   "username": "Gebruikersnaam",
-  "usernameRequired": "Gebruikersnaam is verplicht"
+  "usernameRequired": "Gebruikersnaam is verplicht",
+  "youMayAlsoLike": ""
 }

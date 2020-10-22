@@ -1,6 +1,6 @@
 <template>
   <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
-    <div class="card-box">
+    <div class="card-box" :class="{ 'card-margin': !noMargin }">
       <div :class="shape || cardType" class="elevation-3">
         <div
           class="card-content card-content-button d-flex justify-center align-center primary darken-4"
@@ -46,15 +46,18 @@
             class="align-self-end"
           />
         </div>
-        <div class="card-overlay d-flex justify-center align-center">
+        <div
+          v-if="overlay"
+          class="card-overlay d-flex justify-center align-center"
+        >
           <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
             <v-icon size="36">mdi-play</v-icon>
           </v-btn>
         </div>
       </div>
-      <div class="card-text">
+      <div v-if="!noText" class="card-text">
         <div class="card-title mt-1">{{ item.Name }}</div>
-        <div class="card-subtitle grey--text">{{ cardSubtitle }}</div>
+        <div class="card-subtitle text--secondary">{{ cardSubtitle }}</div>
       </div>
     </div>
   </nuxt-link>
@@ -74,14 +77,30 @@ export default Vue.extend({
     },
     shape: {
       type: [String, Boolean],
-      required: false,
       default: () => {
         return false;
       }
     },
     episode: {
       type: Boolean,
-      required: false,
+      default: () => {
+        return false;
+      }
+    },
+    overlay: {
+      type: Boolean,
+      default: () => {
+        return true;
+      }
+    },
+    noText: {
+      type: Boolean,
+      default: () => {
+        return false;
+      }
+    },
+    noMargin: {
+      type: Boolean,
       default: () => {
         return false;
       }
@@ -187,8 +206,9 @@ export default Vue.extend({
 .card-box {
   cursor: pointer;
   padding: 0;
+}
+.card-margin {
   margin: 0.6em;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .portrait-card {
   position: relative;
@@ -235,7 +255,6 @@ export default Vue.extend({
   right: 1em;
 }
 .card-overlay {
-  border-radius: 0.3em;
   position: absolute;
   background: radial-gradient(
     farthest-corner at 50% 50%,

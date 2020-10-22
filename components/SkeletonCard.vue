@@ -1,7 +1,12 @@
 <template>
   <div class="skeleton-card">
     <v-skeleton-loader type="image" :boilerplate="boilerplate" />
-    <v-skeleton-loader type="heading" class="mt-1" :boilerplate="boilerplate" />
+    <v-skeleton-loader
+      v-if="!noText"
+      type="heading"
+      class="mt-1"
+      :boilerplate="boilerplate"
+    />
   </div>
 </template>
 
@@ -11,6 +16,10 @@ import Vue from 'vue';
 export default Vue.extend({
   props: {
     boilerplate: {
+      type: Boolean,
+      default: false
+    },
+    noText: {
       type: Boolean,
       default: false
     }

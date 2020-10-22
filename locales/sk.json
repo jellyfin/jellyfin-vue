@@ -15,6 +15,7 @@
   "logout": "Odhlásenie",
   "more": "Viac",
   "moreLikeThis": "Podobné",
+  "movies": "",
   "password": "Heslo",
   "play": "Prehrať",
   "playType": "Prehrať {mediaType}",
@@ -30,5 +31,6 @@
   "unexpectedError": "Neočakávaná chyba",
   "upNext": "Nasleduje",
   "username": "Používateľské meno",
-  "usernameRequired": "Používateľské meno je požadované"
+  "usernameRequired": "Používateľské meno je požadované",
+  "youMayAlsoLike": ""
 }

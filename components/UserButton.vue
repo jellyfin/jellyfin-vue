@@ -6,7 +6,7 @@
           <v-img
             v-if="userImage"
             :src="userImage"
-            :alt="$auth.user.name"
+            :alt="$auth.user.Name"
           ></v-img>
           <v-icon v-else dark>mdi-account</v-icon>
         </v-avatar>
