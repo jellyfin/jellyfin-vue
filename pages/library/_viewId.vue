@@ -1,5 +1,12 @@
 <template>
   <v-container>
+    <v-progress-linear
+      v-if="!loaded"
+      :indeterminate="true"
+      :top="true"
+      :rounded="true"
+      :absolute="true"
+    ></v-progress-linear>
     <v-row class="align-center">
       <v-select
         v-model="orderMethod"
