@@ -19,29 +19,7 @@
       </v-col>
 
       <v-col>
-        <v-menu
-          :offset-y="true"
-          :close-on-content-click="false"
-          max-width="250px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn class="ma-2" icon v-on="on" @click="getFilters">
-              <v-icon>mdi-filter-variant</v-icon>
-            </v-btn>
-          </template>
-          <v-expansion-panels accordion>
-            <v-expansion-panel v-for="item in filters" :key="item.header">
-              <v-expansion-panel-header>{{
-                item.header
-              }}</v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-form v-for="(filter, index) in item.items" :key="index">
-                  <v-checkbox class="my-0" :label="filter"> </v-checkbox>
-                </v-form>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-menu>
+        <filter-button v-model="selectedFilters" @input="filterSearch()" />
       </v-col>
     </v-row>
     <v-row v-if="!loaded">
@@ -99,45 +77,7 @@ export default Vue.extend({
       ],
       orderMethod: 'SortName',
       sortDirection: true,
-      filters: {
-        filters: {
-          header: 'Filters',
-          items: [
-            'Played',
-            'Unplayed',
-            'Resumable',
-            'Favorite',
-            'Likes',
-            'Dislikes'
-          ]
-        },
-        features: {
-          header: 'Features',
-          items: [
-            'Subtitles',
-            'Trailer',
-            'Special Features',
-            'Theme Song',
-            'Theme Video'
-          ]
-        },
-        genres: {
-          header: 'Genres',
-          items: []
-        },
-        officialRatings: {
-          header: 'Parental Ratings',
-          items: []
-        },
-        videoTypes: {
-          header: 'Video Types',
-          items: ['Blu-Ray', 'DVD', 'HD', '4K', 'SD', '3D']
-        },
-        years: {
-          header: 'Years',
-          items: []
-        }
-      }
+      selectedFilters: {}
     };
   },
   computed: {
@@ -227,38 +167,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    async getFilters() {
-      // TODO: try catch
-      const collectionInfo = await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
-        userId: this.$auth.user.Id,
-        ids: this.$route.params.viewId
-      });
-
-      const options = {
-        userId: this.$auth.user.Id,
-        parentId: this.$route.params.viewId,
-        includeItemTypes: ''
-      };
-
-      // TODO: Investigate if this could be stored in data instead
-      if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-        options.includeItemTypes = 'Series';
-      } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-        options.includeItemTypes = 'Movie';
-      } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-        options.includeItemTypes = 'Book';
-      }
-
-      // TODO: try catch
-      const result = await this.$api.filter.getQueryFiltersLegacy(options);
-      this.filters.genres.items = result.data.Genres;
-      this.filters.officialRatings.items = result.data.OfficialRatings;
-      this.filters.years.items = result.data.Years.map((x: number) =>
-        x.toString()
-      );
-      // TODO: Continue here.
-      // Actually filter based on the filters selected
+    filterSearch() {
+      console.log(this.selectedFilters);
     },
     sortItems() {
       if (this.sortDirection) {

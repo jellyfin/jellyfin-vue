@@ -20,6 +20,7 @@
   "signIn": "Logg inn",
   "upNext": "Neste",
   "libraryNotFound": "Bibliotek ikke funnet",
+  "filtersNotFound": "Kan ikke laste filtere",
   "itemNotFound": "Gjenstand ikke funnet",
   "episodeNumber": "Episode {episodeNumber}",
   "playType": "Spill av {mediaType}",
