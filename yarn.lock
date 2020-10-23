@@ -1733,10 +1733,10 @@
     consola "^2.15.0"
     defu "^3.1.0"
 
-"@nuxtjs/date-fns@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/date-fns/-/date-fns-1.4.0.tgz#7cb0a03938e95bced9b089820c32982a9e0638c7"
-  integrity sha512-YuAKM9Y1Ig3u5ZPlW466taL4S7llE5oxgM4Vnth3pEqpRtnAF3jlxlQ3MYv5HcdOnhWBx2pgrbRTSQmCqKF/4w==
+"@nuxtjs/date-fns@^1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/date-fns/-/date-fns-1.4.1.tgz#0b46b079b2d2014f38dba452d3b4a696fd4bc7a1"
+  integrity sha512-lZrWxcaiew+IYvTdCt5UrXJwHQ6ODFaC1gE5zhq3PS6kbV128J6YSGNEJFtI7OJEo4NgHohbuZLsij7GLnRnug==
   dependencies:
     date-fns "^2.16.1"
 
