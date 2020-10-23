@@ -20,7 +20,7 @@ const config: NuxtConfig = {
    ** Progress bar between routes
    ** See https://nuxtjs.org/api/configuration-loading
    */
-  loading: '~/components/LoadingBar.vue',
+  loading: '~/components/loading/LoadingBar.vue',
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
