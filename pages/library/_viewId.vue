@@ -19,29 +19,7 @@
       </v-col>
 
       <v-col>
-        <v-menu
-          :offset-y="true"
-          :close-on-content-click="false"
-          max-width="250px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn class="ma-2" icon v-on="on" @click="getFilters">
-              <v-icon>mdi-filter-variant</v-icon>
-            </v-btn>
-          </template>
-          <v-expansion-panels accordion>
-            <v-expansion-panel v-for="item in filters" :key="item.header">
-              <v-expansion-panel-header>{{
-                item.header
-              }}</v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-form v-for="(filter, index) in item.items" :key="index">
-                  <v-checkbox class="my-0" :label="filter"> </v-checkbox>
-                </v-form>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-menu>
+        <filter-button v-model="allFilters" @input="filterMedia()" />
       </v-col>
     </v-row>
     <v-row v-if="!loaded">
@@ -86,6 +64,12 @@ import Vue from 'vue';
 import { chunk } from 'lodash';
 import { BaseItemDto } from '~/api/api';
 
+interface FilterItem {
+  label: string;
+  value: string;
+  selected: boolean;
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -99,46 +83,33 @@ export default Vue.extend({
       ],
       orderMethod: 'SortName',
       sortDirection: true,
-      collectionInfoItem: {},
-      filters: {
+      allFilters: {
         filters: {
-          header: 'Filters',
-          items: [
-            'Played',
-            'Unplayed',
-            'Resumable',
-            'Favorite',
-            'Likes',
-            'Dislikes'
-          ]
+          header: '',
+          items: [] as FilterItem[]
         },
         features: {
-          header: 'Features',
-          items: [
-            'Subtitles',
-            'Trailer',
-            'Special Features',
-            'Theme Song',
-            'Theme Video'
-          ]
+          header: '',
+          items: [] as FilterItem[]
         },
         genres: {
-          header: 'Genres',
-          items: []
+          header: '',
+          items: [] as FilterItem[]
         },
         officialRatings: {
-          header: 'Parental Ratings',
-          items: []
+          header: '',
+          items: [] as FilterItem[]
         },
         videoTypes: {
-          header: 'Video Types',
-          items: ['Blu-Ray', 'DVD', 'HD', '4K', 'SD', '3D']
+          header: '',
+          items: [] as FilterItem[]
         },
         years: {
-          header: 'Years',
-          items: []
+          header: '',
+          items: [] as FilterItem[]
         }
-      }
+      },
+      collectionInfoItem: {}
     };
   },
   computed: {
@@ -230,59 +201,127 @@ export default Vue.extend({
     }
   },
   methods: {
-    async filterMedia(options: any) {
+    async filterMedia() {
       try {
-        options.sortBy = this.orderMethod;
-        options.sortOrder = this.sortDirection;
-        options.fields = this.orderMethod;
+        const collectionInfo = await this.$api.items.getItems({
+          uId: this.$auth.user.Id,
+          userId: this.$auth.user.Id,
+          ids: this.$route.params.viewId
+        });
 
-        const itemsResponse = await this.$api.items.getItems(options);
+        if (
+          collectionInfo.data.Items &&
+          (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
+            collectionInfo.data.Items[0].Type === 'Folder')
+        ) {
+          const options: any = {
+            uId: this.$auth.user.Id,
+            userId: this.$auth.user.Id,
+            parentId: this.$route.params.viewId,
+            includeItemTypes: '',
+            recursive: true,
+            sortBy: this.orderMethod,
+            sortOrder: this.sortDirection,
+            fields: this.orderMethod
+          };
 
-        if (itemsResponse.data) {
-          this.loaded = true;
+          if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
+            options.includeItemTypes = 'Series';
+          } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
+            options.includeItemTypes = 'Movie';
+          } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
+            options.includeItemTypes = 'Book';
+          }
+
+          const filterString = this.makeFilterString(
+            this.allFilters.filters.items,
+            ','
+          );
+          options.filters = filterString;
+
+          for (let i = 0; i < this.allFilters.features.items.length; i++) {
+            const feature = this.allFilters.features.items[i];
+            if (!feature.selected) {
+              continue;
+            }
+
+            options[feature.value] = true;
+          }
+
+          const genreString = this.makeFilterString(
+            this.allFilters.genres.items,
+            '|'
+          );
+          options.genres = genreString;
+
+          const ratingString = this.makeFilterString(
+            this.allFilters.officialRatings.items,
+            '|'
+          );
+          options.officialRatings = ratingString;
+
+          let videoTypeString = '';
+          for (let i = 0; i < this.allFilters.videoTypes.items.length; i++) {
+            const videoType = this.allFilters.videoTypes.items[i];
+            if (!videoType.selected) {
+              continue;
+            }
+            if (videoType.label === 'SD') {
+              options.isHd = false;
+              continue;
+            }
+            if (videoType.label === 'HD') {
+              options.isHd = true;
+              continue;
+            }
+            if (videoType.label === '4K' || videoType.label === '3D') {
+              options[videoType.value] = true;
+            } else {
+              if (videoTypeString.length > 0) {
+                videoTypeString += ',';
+              }
+              videoTypeString += videoType.value;
+            }
+          }
+          options.videoTypes = videoTypeString;
+
+          const yearString = this.makeFilterString(
+            this.allFilters.years.items,
+            ','
+          );
+          options.years = yearString;
+
+          const itemsResponse = await this.$api.items.getItems(options);
+
+          if (itemsResponse.data) {
+            this.loaded = true;
+          }
+
+          this.items = itemsResponse.data.Items || [];
         }
-
-        this.items = itemsResponse.data.Items || [];
       } catch (error) {
         // Can't get given library ID
         this.$nuxt.error({
           statusCode: 404,
           message: this.$t('libraryNotFound') as string
         });
-      }},
-    async getFilters() {
-      // TODO: try catch
-      const collectionInfo = await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
-        userId: this.$auth.user.Id,
-        ids: this.$route.params.viewId
-      });
-
-      const options = {
-        userId: this.$auth.user.Id,
-        parentId: this.$route.params.viewId,
-        includeItemTypes: ''
-      };
-
-      // TODO: Investigate if this could be stored in data instead
-      if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-        options.includeItemTypes = 'Series';
-      } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-        options.includeItemTypes = 'Movie';
-      } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-        options.includeItemTypes = 'Book';
       }
-
-      // TODO: try catch
-      const result = await this.$api.filter.getQueryFiltersLegacy(options);
-      this.filters.genres.items = result.data.Genres;
-      this.filters.officialRatings.items = result.data.OfficialRatings;
-      this.filters.years.items = result.data.Years.map((x: number) =>
-        x.toString()
-      );
-      // TODO: Continue here.
-      // Actually filter based on the filters selected
     },
+    makeFilterString(filterList: FilterItem[], seperator: string) {
+      let filterString = '';
+      for (let i = 0; i < filterList.length; i++) {
+        const filter = filterList[i];
+        if (!filter.selected) {
+          continue;
+        }
+        if (filterString.length > 0) {
+          filterString += seperator;
+        }
+        filterString += filter.value;
+      }
+      return filterString;
+    },
+
     sortItems() {
       if (this.sortDirection) {
         this.items.sort((a, b) =>

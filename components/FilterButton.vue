@@ -30,6 +30,12 @@
 <script lang="ts">
 import Vue from 'vue';
 
+interface FilterItem {
+  label: string;
+  value: string;
+  selected: boolean;
+}
+
 export default Vue.extend({
   props: {
     value: {
@@ -54,56 +60,56 @@ export default Vue.extend({
             { label: 'Favorite', value: 'IsFavorite', selected: false },
             { label: 'Likes', value: 'Likes', selected: false },
             { label: 'Dislikes', value: 'Dislikes', selected: false }
-          ]
+          ] as FilterItem[]
         },
         features: {
           header: 'Features',
           items: [
             {
               label: 'Subtitles',
-              value: 'HasSubtitles',
+              value: 'hasSubtitles',
               selected: false
             },
-            { label: 'Trailer', value: 'HasTrailer', selected: false },
+            { label: 'Trailer', value: 'hasTrailer', selected: false },
             {
               label: 'Special Features',
-              value: 'HasSpecialFeature',
+              value: 'hasSpecialFeature',
               selected: false
             },
             {
               label: 'Theme Song',
-              value: 'HasThemeSong',
+              value: 'hasThemeSong',
               selected: false
             },
             {
               label: 'Theme Video',
-              value: 'HasThemeVideo',
+              value: 'hasThemeVideo',
               selected: false
             }
-          ]
+          ] as FilterItem[]
         },
         genres: {
           header: 'Genres',
-          items: []
+          items: [] as FilterItem[]
         },
         officialRatings: {
           header: 'Parental Ratings',
-          items: []
+          items: [] as FilterItem[]
         },
         videoTypes: {
           header: 'Video Types',
           items: [
-            { label: 'Blu-Ray', value: '', selected: false },
-            { label: 'DVD', value: '', selected: false },
-            { label: 'HD', value: '', selected: false },
-            { label: '4K', value: '', selected: false },
-            { label: 'SD', value: '', selected: false },
-            { label: '3D', value: '', selected: false }
-          ]
+            { label: 'Blu-Ray', value: 'Bluray', selected: false },
+            { label: 'DVD', value: 'Dvd', selected: false },
+            { label: 'SD', value: 'isHD', selected: false },
+            { label: 'HD', value: 'isHD', selected: false },
+            { label: '4K', value: 'is4K', selected: false },
+            { label: '3D', value: 'is3D', selected: false }
+          ] as FilterItem[]
         },
         years: {
           header: 'Years',
-          items: []
+          items: [] as FilterItem[]
         }
       }
     };
@@ -123,6 +129,12 @@ export default Vue.extend({
           includeItemTypes: ''
         };
 
+        if (!collectionInfo.data.Items) {
+          return;
+        }
+        if (collectionInfo.data.Items) {
+          options.includeItemTypes = 'sike';
+        }
         if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
           options.includeItemTypes = 'Series';
         } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
@@ -132,11 +144,19 @@ export default Vue.extend({
         }
 
         const result = await this.$api.filter.getQueryFiltersLegacy(options);
+        if (!result.data.Genres) {
+          return;
+        }
+
         this.filters.genres.items = result.data.Genres.map((x) => ({
           label: x,
           value: x,
           selected: false
         }));
+
+        if (!result.data.OfficialRatings) {
+          return;
+        }
         this.filters.officialRatings.items = result.data.OfficialRatings.map(
           (x) => ({
             label: x,
@@ -144,9 +164,13 @@ export default Vue.extend({
             selected: false
           })
         );
+
+        if (!result.data.Years) {
+          return;
+        }
         this.filters.years.items = result.data.Years.map((x) => ({
           label: x.toString(),
-          value: x,
+          value: x.toString(),
           selected: false
         }));
       } catch (error) {
