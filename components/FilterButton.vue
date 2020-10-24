@@ -48,56 +48,64 @@ export default Vue.extend({
       selectedFilters: this.value,
       filters: {
         filters: {
-          header: 'Filters',
+          header: this.$t('filters'),
           items: [
-            { label: 'Played', value: 'IsPlayed', selected: false },
-            { label: 'Unplayed', value: 'IsUnPlayed', selected: false },
+            { label: this.$t('played'), value: 'IsPlayed', selected: false },
             {
-              label: 'Resumable',
+              label: this.$t('unplayed'),
+              value: 'IsUnPlayed',
+              selected: false
+            },
+            {
+              label: this.$t('resumable'),
               value: 'IsResumable',
               selected: false
             },
-            { label: 'Favorite', value: 'IsFavorite', selected: false },
-            { label: 'Likes', value: 'Likes', selected: false },
-            { label: 'Dislikes', value: 'Dislikes', selected: false }
+            {
+              label: this.$t('favorite'),
+              value: 'IsFavorite',
+              selected: false
+            },
+            { label: this.$t('likes'), value: 'Likes', selected: false },
+            { label: this.$t('dislikes'), value: 'Dislikes', selected: false }
           ] as FilterItem[]
         },
         features: {
-          header: 'Features',
+          header: this.$t('features'),
           items: [
             {
-              label: 'Subtitles',
+              label: this.$t('subtitles'),
               value: 'hasSubtitles',
               selected: false
             },
-            { label: 'Trailer', value: 'hasTrailer', selected: false },
+            { label: this.$t('trailer'), value: 'hasTrailer', selected: false },
             {
-              label: 'Special Features',
+              label: this.$t('specialFeatures'),
               value: 'hasSpecialFeature',
               selected: false
             },
             {
-              label: 'Theme Song',
+              label: this.$t('themeSong'),
               value: 'hasThemeSong',
               selected: false
             },
             {
-              label: 'Theme Video',
+              label: this.$t('themeVideo'),
               value: 'hasThemeVideo',
               selected: false
             }
           ] as FilterItem[]
         },
         genres: {
-          header: 'Genres',
+          header: this.$t('genres'),
           items: [] as FilterItem[]
         },
         officialRatings: {
-          header: 'Parental Ratings',
+          header: this.$t('parentalRatings'),
           items: [] as FilterItem[]
         },
         videoTypes: {
-          header: 'Video Types',
+          header: this.$t('videoTypes'),
           items: [
             { label: 'Blu-Ray', value: 'Bluray', selected: false },
             { label: 'DVD', value: 'Dvd', selected: false },
@@ -108,7 +116,7 @@ export default Vue.extend({
           ] as FilterItem[]
         },
         years: {
-          header: 'Years',
+          header: this.$t('years'),
           items: [] as FilterItem[]
         }
       }

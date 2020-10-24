@@ -35,5 +35,22 @@
   "username": "Username",
   "usernameRequired": "Username is required",
   "youMayAlsoLike": "You may also like",
-  "filtersNotFound": "Unable to load filters"
+  "filtersNotFound": "Unable to load filters",
+  "filters": "Filters",
+  "played": "Played",
+  "unplayed": "Unplayed",
+  "resumable": "Resumable",
+  "favorite": "Favorite",
+  "likes": "Likes",
+  "dislikes": "Dislikes",
+  "features": "Features",
+  "subtitles": "Subtitles",
+  "trailer": "Trailer",
+  "specialFeatures": "Special Features",
+  "themeSong": "Theme Song",
+  "themeVideo": "Theme Video",
+  "genres": "Genres",
+  "parentalRatings": "Parental Ratings",
+  "videoTypes": "Video Types",
+  "years": "Years"
 }

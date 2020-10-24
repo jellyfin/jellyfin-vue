@@ -31,5 +31,22 @@
   "rating": "Vurdering",
   "endDate": "Sluttdato",
   "releaseDate": "Slippdato",
-  "alphabetically": "Alfabetisk"
+  "alphabetically": "Alfabetisk",
+  "filters": "Filtere",
+  "played": "Avspilt",
+  "unplayed": "Uspilt",
+  "resumable": "Gjenopptakbar",
+  "favorite": "Favoritt",
+  "likes": "Liker",
+  "dislikes": "Liker ikke",
+  "features": "Innhold",
+  "subtitles": "Undertekster",
+  "trailer": "Trailer",
+  "specialFeatures": "Spesial Innhold",
+  "themeSong": "Kjenningsmelodi",
+  "themeVideo": "Kjenningsvideo",
+  "genres": "Sjangere",
+  "parentalRatings": "Aldersgrense",
+  "videoTypes": "Videoformat",
+  "years": "År"
 }
