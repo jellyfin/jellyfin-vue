@@ -41,12 +41,8 @@
           </v-col>
         </v-row>
         <v-row>
-          <div class="d-flex flex-wrap pl-4" style="width: 100%">
-            <v-card
-              v-for="(item, i) in images"
-              :key="i"
-              class="pr-4 pb-4 img-card"
-            >
+          <div class="pl-4 img-container" style="width: 100%">
+            <v-card v-for="(item, i) in images" :key="i" class="img-card">
               <v-img
                 :src="imageFormat(item.Url)"
                 :aspect-ratio="ratio"
@@ -57,21 +53,23 @@
                 {{ item.ProviderName }}
               </div>
               <div
-                v-if="item.Width && item.Height"
-                class="text-center body-2 grey--text text--darken-2"
+                class="text-center body-2 grey--text text--darken-2 info-box"
               >
-                {{ item.Width }} &times; {{ item.Height }}
-                <template v-if="item.Language">
-                  &middot; {{ item.Language }}
+                <template v-if="item.Width && item.Height">
+                  {{ item.Width }} &times; {{ item.Height }}
+                  <template v-if="item.Language">
+                    &middot; {{ item.Language }}
+                  </template>
                 </template>
               </div>
               <div
-                v-if="item.CommunityRating"
-                class="text-center body-2 grey--text text--darken-2"
+                class="text-center body-2 grey--text text--darken-2 info-box"
               >
-                {{ item.CommunityRating | fixed }} &middot;
-                <template v-if="item.VoteCount">
-                  {{ item.VoteCount }} votes
+                <template v-if="item.CommunityRating">
+                  {{ item.CommunityRating | fixed }}
+                  <template v-if="item.VoteCount">
+                    &middot; {{ item.VoteCount }} votes
+                  </template>
                 </template>
               </div>
               <v-card-actions class="justify-center">
@@ -228,6 +226,7 @@ export default Vue.extend({
           includeAllLanguages: this.allLanguage.length > 0
         })
       ).data.Images as RemoteImageInfo[];
+
       this.loading = false;
     },
     imageFormat(url: string) {
@@ -265,23 +264,12 @@ export default Vue.extend({
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.img-card {
-  width: 14.285714286%;
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px 20px;
 }
-
-/* @media (min-width: 50em) {
-  .img-card {
-    width: 20%;
-  }
+.info-box {
+  min-height: 20px;
 }
-@media (min-width: 43.75em) {
-  .img-card {
-    width: 25%;
-  }
-}
-@media (min-width: 31.25em) {
-  .img-card {
-    width: 33.333333333333336%;
-  }
-} */
 </style>

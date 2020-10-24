@@ -195,6 +195,10 @@ export default Vue.extend({
     itemId: {
       type: String,
       default: ''
+    },
+    forceRefresh: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -235,6 +239,10 @@ export default Vue.extend({
   watch: {
     itemId() {
       this.getData();
+    },
+    forceRefresh() {
+      this.getData();
+      this.$emit('update:forceRefresh', false);
     }
   },
   created() {
@@ -385,8 +393,8 @@ export default Vue.extend({
 }
 .scroll-ban {
   overflow: hidden;
-  height: calc(100% - 59px);
-  padding: 20px 24px 0;
+  height: calc(100% - 64px);
+  padding: 20px 24px;
 }
 .scroll-row {
   height: 100%;

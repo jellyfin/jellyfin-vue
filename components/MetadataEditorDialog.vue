@@ -7,6 +7,7 @@
   >
     <metadata-editor
       :item-id="itemId"
+      :force-refresh.sync="forceRefresh"
       @cancel="close"
       @save="close"
     ></metadata-editor>
@@ -28,8 +29,14 @@ export default Vue.extend({
       default: ''
     }
   },
+  data() {
+    return {
+      forceRefresh: false
+    };
+  },
   methods: {
     close() {
+      this.forceRefresh = true;
       this.$emit('update:dialog', false);
     }
   }
