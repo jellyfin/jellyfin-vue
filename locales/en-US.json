@@ -254,5 +254,11 @@
   "menu": "Menu",
   "screenshot": "Screenshot",
   "thumb": "Thumb",
-  "search": "Search"
+  "search": "Search",
+  "actor": "Actor",
+  "composer": "Composer",
+  "director": "Director",
+  "guestStar": "Guest Star",
+  "producer": "Producer",
+  "writer": "Writer"
 }

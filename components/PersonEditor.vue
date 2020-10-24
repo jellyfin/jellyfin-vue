@@ -55,12 +55,12 @@ export default Vue.extend({
     return {
       editState: {} as BaseItemPerson,
       options: [
-        'Actor',
-        'Composer',
-        'Director',
-        { text: 'Guest star', value: 'GuestStar' },
-        'Producer',
-        'Writer'
+        { text: this.$t('actor'), value: 'Actor' },
+        { text: this.$t('composer'), value: 'Composer' },
+        { text: this.$t('director'), value: 'Director' },
+        { text: this.$t('guestStar'), value: 'GuestStar' },
+        { text: this.$t('producer'), value: 'Producer' },
+        { text: this.$t('writer'), value: 'Writer' }
       ]
     };
   },
