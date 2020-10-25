@@ -147,15 +147,11 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start();
-    });
+    this.$nuxt.$loading.start();
     this.$store.dispatch('userViews/refresh');
   },
   mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.finish();
-    });
+    this.$nuxt.$loading.finish();
   }
 });
 </script>
