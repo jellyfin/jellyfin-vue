@@ -79,7 +79,7 @@
     "stylelint": "^13.7.2",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
-    "ts-jest": "^26.4.2",
+    "ts-jest": "^26.4.3",
     "ts-loader": "^8.0.7",
     "vue-jest": "^3.0.7"
   },
