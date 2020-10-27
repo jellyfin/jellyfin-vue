@@ -8,7 +8,7 @@
     <v-expansion-panels accordion>
       <v-expansion-panel v-for="item in filters" :key="item.header">
         <v-expansion-panel-header>{{ item.header }}</v-expansion-panel-header>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content class="filter-content">
           <v-form v-for="(filter, index) in item.items" :key="index">
             <v-checkbox
               v-model="filter.selected"
@@ -191,3 +191,9 @@ export default Vue.extend({
   }
 });
 </script>
+<style scoped>
+.filter-content {
+  max-height: 15rem;
+  overflow: scroll;
+}
+</style>
