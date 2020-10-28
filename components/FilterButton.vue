@@ -8,7 +8,7 @@
     <v-expansion-panels accordion>
       <v-expansion-panel v-for="item in filters" :key="item.header">
         <v-expansion-panel-header>{{ item.header }}</v-expansion-panel-header>
-        <v-expansion-panel-content class="filter-content">
+        <v-expansion-panel-content>
           <v-form v-for="(filter, index) in item.items" :key="index">
             <v-checkbox
               v-model="filter.selected"
@@ -30,12 +30,6 @@
 <script lang="ts">
 import Vue from 'vue';
 
-interface FilterItem {
-  label: string;
-  value: string;
-  selected: boolean;
-}
-
 export default Vue.extend({
   props: {
     value: {
@@ -48,76 +42,68 @@ export default Vue.extend({
       selectedFilters: this.value,
       filters: {
         filters: {
-          header: this.$t('filters'),
+          header: 'Filters',
           items: [
-            { label: this.$t('played'), value: 'IsPlayed', selected: false },
+            { label: 'Played', value: 'IsPlayed', selected: false },
+            { label: 'Unplayed', value: 'IsUnPlayed', selected: false },
             {
-              label: this.$t('unplayed'),
-              value: 'IsUnPlayed',
-              selected: false
-            },
-            {
-              label: this.$t('resumable'),
+              label: 'Resumable',
               value: 'IsResumable',
               selected: false
             },
-            {
-              label: this.$t('favorite'),
-              value: 'IsFavorite',
-              selected: false
-            },
-            { label: this.$t('likes'), value: 'Likes', selected: false },
-            { label: this.$t('dislikes'), value: 'Dislikes', selected: false }
-          ] as FilterItem[]
+            { label: 'Favorite', value: 'IsFavorite', selected: false },
+            { label: 'Likes', value: 'Likes', selected: false },
+            { label: 'Dislikes', value: 'Dislikes', selected: false }
+          ]
         },
         features: {
-          header: this.$t('features'),
+          header: 'Features',
           items: [
             {
-              label: this.$t('subtitles'),
-              value: 'hasSubtitles',
+              label: 'Subtitles',
+              value: 'HasSubtitles',
               selected: false
             },
-            { label: this.$t('trailer'), value: 'hasTrailer', selected: false },
+            { label: 'Trailer', value: 'HasTrailer', selected: false },
             {
-              label: this.$t('specialFeatures'),
-              value: 'hasSpecialFeature',
-              selected: false
-            },
-            {
-              label: this.$t('themeSong'),
-              value: 'hasThemeSong',
+              label: 'Special Features',
+              value: 'HasSpecialFeature',
               selected: false
             },
             {
-              label: this.$t('themeVideo'),
-              value: 'hasThemeVideo',
+              label: 'Theme Song',
+              value: 'HasThemeSong',
+              selected: false
+            },
+            {
+              label: 'Theme Video',
+              value: 'HasThemeVideo',
               selected: false
             }
-          ] as FilterItem[]
+          ]
         },
         genres: {
-          header: this.$t('genres'),
-          items: [] as FilterItem[]
+          header: 'Genres',
+          items: []
         },
         officialRatings: {
-          header: this.$t('parentalRatings'),
-          items: [] as FilterItem[]
+          header: 'Parental Ratings',
+          items: []
         },
         videoTypes: {
-          header: this.$t('videoTypes'),
+          header: 'Video Types',
           items: [
-            { label: 'Blu-Ray', value: 'Bluray', selected: false },
-            { label: 'DVD', value: 'Dvd', selected: false },
-            { label: 'SD', value: 'isHD', selected: false },
-            { label: 'HD', value: 'isHD', selected: false },
-            { label: '4K', value: 'is4K', selected: false },
-            { label: '3D', value: 'is3D', selected: false }
-          ] as FilterItem[]
+            { label: 'Blu-Ray', value: '', selected: false },
+            { label: 'DVD', value: '', selected: false },
+            { label: 'HD', value: '', selected: false },
+            { label: '4K', value: '', selected: false },
+            { label: 'SD', value: '', selected: false },
+            { label: '3D', value: '', selected: false }
+          ]
         },
         years: {
-          header: this.$t('years'),
-          items: [] as FilterItem[]
+          header: 'Years',
+          items: []
         }
       }
     };
@@ -137,12 +123,6 @@ export default Vue.extend({
           includeItemTypes: ''
         };
 
-        if (!collectionInfo.data.Items) {
-          return;
-        }
-        if (collectionInfo.data.Items) {
-          options.includeItemTypes = 'sike';
-        }
         if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
           options.includeItemTypes = 'Series';
         } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
@@ -152,19 +132,11 @@ export default Vue.extend({
         }
 
         const result = await this.$api.filter.getQueryFiltersLegacy(options);
-        if (!result.data.Genres) {
-          return;
-        }
-
         this.filters.genres.items = result.data.Genres.map((x) => ({
           label: x,
           value: x,
           selected: false
         }));
-
-        if (!result.data.OfficialRatings) {
-          return;
-        }
         this.filters.officialRatings.items = result.data.OfficialRatings.map(
           (x) => ({
             label: x,
@@ -172,13 +144,9 @@ export default Vue.extend({
             selected: false
           })
         );
-
-        if (!result.data.Years) {
-          return;
-        }
         this.filters.years.items = result.data.Years.map((x) => ({
           label: x.toString(),
-          value: x.toString(),
+          value: x,
           selected: false
         }));
       } catch (error) {
@@ -191,9 +159,3 @@ export default Vue.extend({
   }
 });
 </script>
-<style scoped>
-.filter-content {
-  max-height: 15rem;
-  overflow: scroll;
-}
-</style>
