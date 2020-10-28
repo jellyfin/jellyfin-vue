@@ -117,6 +117,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -149,7 +150,10 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.$store.dispatch('userViews/refresh');
+    this.refreshUserViews();
+  },
+  methods: {
+    ...mapActions('userViews', ['refreshUserViews'])
   }
 });
 </script>

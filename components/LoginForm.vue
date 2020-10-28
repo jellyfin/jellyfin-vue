@@ -51,6 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -73,6 +74,9 @@ export default Vue.extend({
     };
   },
   methods: {
+    ...mapActions('user', ['setUser', 'setUser']),
+    ...mapActions('deviceProfile', ['setDeviceProfile']),
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin() {
       this.loginIn = true;
       try {
@@ -82,14 +86,14 @@ export default Vue.extend({
           data: this.login
         });
 
-        this.$store.dispatch('browserProfile/set');
+        this.setDeviceProfile();
 
         const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
 
         this.$auth.setUserToken(accessToken);
 
         this.$auth.setUser(response.data.User);
-        this.$store.dispatch('user/set', {
+        this.setUser({
           id: response.data.User.Id,
           serverUrl: this.serverUrl,
           accessToken
@@ -109,7 +113,7 @@ export default Vue.extend({
         }
 
         this.loginIn = false;
-        this.$store.dispatch('snackbar/display', {
+        this.pushSnackbarMessage({
           message: errorMessage.toString(),
           color: 'error'
         });
