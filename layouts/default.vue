@@ -109,6 +109,8 @@
     <v-main>
       <nuxt />
     </v-main>
+    <!-- Utilities and global systems -->
+    <connection-monitor />
     <snackbar />
   </v-app>
 </template>
