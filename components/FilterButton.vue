@@ -17,8 +17,9 @@
               :value="filter.value"
               :true-value="true"
               :false-value="false"
-              @change="$emit('input', filters)"
+              @change="emitFiltersOptions"
             >
+              <!-- @change="$emit('change', filters)" -->
             </v-checkbox>
           </v-form>
         </v-expansion-panel-content>
@@ -38,17 +39,16 @@ interface FilterItem {
 
 export default Vue.extend({
   props: {
-    value: {
+    collectionInfoItem: {
       type: Object,
       required: true
     }
   },
   data() {
     return {
-      selectedFilters: this.value,
       filters: {
-        filters: {
-          header: this.$t('filters'),
+        status: {
+          header: this.$t('status'),
           items: [
             { label: this.$t('played'), value: 'IsPlayed', selected: false },
             {
@@ -119,74 +119,151 @@ export default Vue.extend({
           header: this.$t('years'),
           items: [] as FilterItem[]
         }
-      }
+      },
+      selectedFilters: {}
     };
+  },
+  computed: {
+    itemType() {
+      if (this.collectionInfoItem.CollectionType === 'tvshows') {
+        return 'Series';
+      } else if (this.collectionInfoItem.CollectionType === 'movies') {
+        return 'Movie';
+      } else if (this.collectionInfoItem.CollectionType === 'books') {
+        return 'Book';
+      }
+      return '';
+    }
   },
   methods: {
     async getFilters() {
       try {
-        const collectionInfo = await this.$api.items.getItems({
-          uId: this.$auth.user.Id,
-          userId: this.$auth.user.Id,
-          ids: this.$route.params.viewId
-        });
-
-        const options = {
-          userId: this.$auth.user.Id,
-          parentId: this.$route.params.viewId,
-          includeItemTypes: ''
-        };
-
-        if (!collectionInfo.data.Items) {
-          return;
-        }
-        if (collectionInfo.data.Items) {
-          options.includeItemTypes = 'sike';
-        }
-        if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-          options.includeItemTypes = 'Series';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-          options.includeItemTypes = 'Movie';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-          options.includeItemTypes = 'Book';
-        }
-
-        const result = await this.$api.filter.getQueryFiltersLegacy(options);
-        if (!result.data.Genres) {
+        if (this.itemType === '') {
           return;
         }
 
-        this.filters.genres.items = result.data.Genres.map((x) => ({
-          label: x,
-          value: x,
-          selected: false
-        }));
+        const response = (
+          await this.$api.filter.getQueryFiltersLegacy({
+            userId: this.$auth.user.Id,
+            parentId: this.$route.params.viewId,
+            includeItemTypes: this.itemType
+          })
+        ).data;
 
-        if (!result.data.OfficialRatings) {
-          return;
-        }
-        this.filters.officialRatings.items = result.data.OfficialRatings.map(
-          (x) => ({
+        if (response.Genres) {
+          this.filters.genres.items = response.Genres.map((x) => ({
             label: x,
             value: x,
             selected: false
-          })
-        );
-
-        if (!result.data.Years) {
-          return;
+          }));
         }
-        this.filters.years.items = result.data.Years.map((x) => ({
-          label: x.toString(),
-          value: x.toString(),
-          selected: false
-        }));
+
+        if (response.OfficialRatings) {
+          this.filters.officialRatings.items = response.OfficialRatings.map(
+            (x) => ({
+              label: x,
+              value: x,
+              selected: false
+            })
+          );
+        }
+
+        if (response.Years) {
+          this.filters.years.items = response.Years.map((x) => ({
+            label: x.toString(),
+            value: x.toString(),
+            selected: false
+          }));
+        }
       } catch (error) {
         this.$nuxt.error({
           statusCode: 404,
           message: this.$t('filtersNotFound') as string
         });
       }
+    },
+    emitFiltersOptions() {
+      try {
+        if (
+          this.collectionInfoItem !== {} &&
+          (this.collectionInfoItem.Type === 'CollectionFolder' ||
+            this.collectionInfoItem.Type === 'Folder')
+        ) {
+          const options: any = {
+            uId: this.$auth.user.Id,
+            userId: this.$auth.user.Id,
+            parentId: this.$route.params.viewId,
+            includeItemTypes: this.itemType,
+            recursive: true
+          };
+
+          options.filters = this.makeFilterString(
+            this.filters.status.items,
+            ','
+          );
+
+          for (const feature of this.filters.features.items) {
+            if (!feature.selected) {
+              continue;
+            }
+
+            options[feature.value] = true;
+          }
+
+          options.genres = this.makeFilterString(
+            this.filters.genres.items,
+            '|'
+          );
+
+          options.officialRatings = this.makeFilterString(
+            this.filters.officialRatings.items,
+            '|'
+          );
+
+          let videoTypeString = '';
+          for (const videoType of this.filters.videoTypes.items) {
+            if (!videoType.selected) {
+              continue;
+            }
+            if (videoType.label === 'SD') {
+              options.isHd = false;
+              continue;
+            }
+            if (videoType.label === 'HD') {
+              options.isHd = true;
+              continue;
+            }
+            if (videoType.label === '4K' || videoType.label === '3D') {
+              options[videoType.value] = true;
+            } else {
+              if (videoTypeString.length > 0) {
+                videoTypeString += ',';
+              }
+              videoTypeString += videoType.value;
+            }
+          }
+          options.videoTypes = videoTypeString;
+
+          options.years = this.makeFilterString(this.filters.years.items, ',');
+
+          this.$emit('change', options);
+        }
+      } catch (error) {
+        this.$emit('change', error);
+      }
+    },
+    makeFilterString(filterList: FilterItem[], seperator: string) {
+      let filterString = '';
+      for (const filter of filterList) {
+        if (!filter.selected) {
+          continue;
+        }
+        if (filterString.length > 0) {
+          filterString += seperator;
+        }
+        filterString += filter.value;
+      }
+      return filterString;
     }
   }
 });

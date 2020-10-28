@@ -19,7 +19,10 @@
       </v-col>
 
       <v-col>
-        <filter-button v-model="allFilters" @input="filterMedia()" />
+        <filter-button
+          :collection-info-item="collectionInfoItem"
+          @change="filterMedia"
+        />
       </v-col>
     </v-row>
     <v-row v-if="!loaded">
@@ -64,12 +67,6 @@ import Vue from 'vue';
 import { chunk } from 'lodash';
 import { BaseItemDto } from '~/api/api';
 
-interface FilterItem {
-  label: string;
-  value: string;
-  selected: boolean;
-}
-
 export default Vue.extend({
   data() {
     return {
@@ -83,32 +80,6 @@ export default Vue.extend({
       ],
       orderMethod: 'SortName',
       sortDirection: true,
-      allFilters: {
-        filters: {
-          header: '',
-          items: [] as FilterItem[]
-        },
-        features: {
-          header: '',
-          items: [] as FilterItem[]
-        },
-        genres: {
-          header: '',
-          items: [] as FilterItem[]
-        },
-        officialRatings: {
-          header: '',
-          items: [] as FilterItem[]
-        },
-        videoTypes: {
-          header: '',
-          items: [] as FilterItem[]
-        },
-        years: {
-          header: '',
-          items: [] as FilterItem[]
-        }
-      },
       collectionInfoItem: {}
     };
   },
@@ -201,104 +172,19 @@ export default Vue.extend({
     }
   },
   methods: {
-    async filterMedia() {
+    async filterMedia(options: any) {
       try {
-        const collectionInfo = await this.$api.items.getItems({
-          uId: this.$auth.user.Id,
-          userId: this.$auth.user.Id,
-          ids: this.$route.params.viewId
-        });
+        options.sortBy = this.orderMethod;
+        options.sortOrder = this.sortDirection;
+        options.fields = this.orderMethod;
 
-        if (
-          collectionInfo.data.Items &&
-          (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
-            collectionInfo.data.Items[0].Type === 'Folder')
-        ) {
-          const options: any = {
-            uId: this.$auth.user.Id,
-            userId: this.$auth.user.Id,
-            parentId: this.$route.params.viewId,
-            includeItemTypes: '',
-            recursive: true,
-            sortBy: this.orderMethod,
-            sortOrder: this.sortDirection,
-            fields: this.orderMethod
-          };
+        const itemsResponse = await this.$api.items.getItems(options);
 
-          if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-            options.includeItemTypes = 'Series';
-          } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-            options.includeItemTypes = 'Movie';
-          } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-            options.includeItemTypes = 'Book';
-          }
-
-          const filterString = this.makeFilterString(
-            this.allFilters.filters.items,
-            ','
-          );
-          options.filters = filterString;
-
-          for (let i = 0; i < this.allFilters.features.items.length; i++) {
-            const feature = this.allFilters.features.items[i];
-            if (!feature.selected) {
-              continue;
-            }
-
-            options[feature.value] = true;
-          }
-
-          const genreString = this.makeFilterString(
-            this.allFilters.genres.items,
-            '|'
-          );
-          options.genres = genreString;
-
-          const ratingString = this.makeFilterString(
-            this.allFilters.officialRatings.items,
-            '|'
-          );
-          options.officialRatings = ratingString;
-
-          let videoTypeString = '';
-          for (let i = 0; i < this.allFilters.videoTypes.items.length; i++) {
-            const videoType = this.allFilters.videoTypes.items[i];
-            if (!videoType.selected) {
-              continue;
-            }
-            if (videoType.label === 'SD') {
-              options.isHd = false;
-              continue;
-            }
-            if (videoType.label === 'HD') {
-              options.isHd = true;
-              continue;
-            }
-            if (videoType.label === '4K' || videoType.label === '3D') {
-              options[videoType.value] = true;
-            } else {
-              if (videoTypeString.length > 0) {
-                videoTypeString += ',';
-              }
-              videoTypeString += videoType.value;
-            }
-          }
-          options.videoTypes = videoTypeString;
-
-          const yearString = this.makeFilterString(
-            this.allFilters.years.items,
-            ','
-          );
-          options.years = yearString;
-
-          const itemsResponse = await this.$api.items.getItems(options);
-
-          if (itemsResponse.data) {
-            this.loaded = true;
-          }
-
-          this.items = itemsResponse.data.Items || [];
+        if (itemsResponse.data) {
+          this.loaded = true;
         }
+
+        this.items = itemsResponse.data.Items || [];
       } catch (error) {
         // Can't get given library ID
         this.$nuxt.error({
@@ -307,21 +193,6 @@ export default Vue.extend({
         });
       }
     },
-    makeFilterString(filterList: FilterItem[], seperator: string) {
-      let filterString = '';
-      for (let i = 0; i < filterList.length; i++) {
-        const filter = filterList[i];
-        if (!filter.selected) {
-          continue;
-        }
-        if (filterString.length > 0) {
-          filterString += seperator;
-        }
-        filterString += filter.value;
-      }
-      return filterString;
-    },
-
     sortItems() {
       if (this.sortDirection) {
         this.items.sort((a, b) =>

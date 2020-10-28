@@ -33,7 +33,7 @@
   "unexpectedError": "Unexpected error",
   "upNext": "Up next",
   "filtersNotFound": "Unable to load filters",
-  "filters": "Filters",
+  "status": "Status",
   "played": "Played",
   "unplayed": "Unplayed",
   "resumable": "Resumable",

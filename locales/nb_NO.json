@@ -32,7 +32,7 @@
   "endDate": "Sluttdato",
   "releaseDate": "Slippdato",
   "alphabetically": "Alfabetisk",
-  "filters": "Filtere",
+  "status": "Status",
   "played": "Avspilt",
   "unplayed": "Uspilt",
   "resumable": "Gjenopptakbar",
