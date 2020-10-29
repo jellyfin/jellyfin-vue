@@ -9,7 +9,7 @@
   "home": "Home",
   "incorrectUsernameOrPassword": "Onjuiste gebruikersnaam en/of wachtwoord",
   "itemNotFound": "Item niet gevonden",
-  "libraryEmpty": "",
+  "libraryEmpty": "Deze bibliotheek is leeg",
   "libraryNotFound": "Bibliotheek niet gevonden",
   "login": "Inloggen",
   "logout": "Uitloggen",
