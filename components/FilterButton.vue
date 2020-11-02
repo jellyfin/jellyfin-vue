@@ -29,6 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { ItemsApiGetItemsRequest } from '~/api';
 
 interface FilterItem {
   label: string;
@@ -188,52 +189,46 @@ export default Vue.extend({
           (this.collectionInfoItem.Type === 'CollectionFolder' ||
             this.collectionInfoItem.Type === 'Folder')
         ) {
-          const options: any = {
-            uId: this.$auth.user.Id,
-            userId: this.$auth.user.Id,
-            parentId: this.$route.params.viewId,
-            includeItemTypes: this.itemType,
-            recursive: true
-          };
-
-          options.filters = this.makeFilterString(
+          const statusString = this.makeFilterString(
             this.filters.status.items,
             ','
           );
 
+          const features: { [key: string]: boolean } = {};
           for (const feature of this.filters.features.items) {
             if (!feature.selected) {
               continue;
             }
 
-            options[feature.value] = true;
+            features[feature.value] = true;
           }
 
-          options.genres = this.makeFilterString(
+          const genreString = this.makeFilterString(
             this.filters.genres.items,
             '|'
           );
 
-          options.officialRatings = this.makeFilterString(
+          const ratingString = this.makeFilterString(
             this.filters.officialRatings.items,
             '|'
           );
 
           let videoTypeString = '';
+          const videoTypesObject: { [key: string]: boolean } = {};
           for (const videoType of this.filters.videoTypes.items) {
             if (!videoType.selected) {
               continue;
             }
             if (videoType.label === 'SD') {
-              options.isHd = false;
+              videoTypesObject.isHd = false;
               continue;
             }
             if (videoType.label === 'HD') {
-              options.isHd = true;
+              videoTypesObject.isHd = true;
               continue;
             }
             if (videoType.label === '4K' || videoType.label === '3D') {
-              options[videoType.value] = true;
+              videoTypesObject[videoType.value] = true;
             } else {
               if (videoTypeString.length > 0) {
                 videoTypeString += ',';
@@ -241,9 +236,26 @@ export default Vue.extend({
               videoTypeString += videoType.value;
             }
           }
-          options.videoTypes = videoTypeString;
 
-          options.years = this.makeFilterString(this.filters.years.items, ',');
+          const yearString = this.makeFilterString(
+            this.filters.years.items,
+            ','
+          );
+
+          const options: ItemsApiGetItemsRequest = {
+            uId: this.$auth.user.Id,
+            userId: this.$auth.user.Id,
+            parentId: this.$route.params.viewId,
+            includeItemTypes: this.itemType,
+            recursive: true,
+            filters: statusString,
+            genres: genreString,
+            officialRatings: ratingString,
+            videoTypes: videoTypeString,
+            years: yearString
+          };
+          Object.assign(options, features);
+          Object.assign(options, videoTypesObject);
 
           this.$emit('change', options);
         }

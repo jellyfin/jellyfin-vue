@@ -65,7 +65,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { chunk } from 'lodash';
-import { BaseItemDto } from '~/api/api';
+import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api/api';
 
 export default Vue.extend({
   data() {
@@ -172,11 +172,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    async filterMedia(options: any) {
+    async filterMedia(options: ItemsApiGetItemsRequest) {
       try {
-        options.sortBy = this.orderMethod;
-        options.sortOrder = this.sortDirection;
-        options.fields = this.orderMethod;
+        const sortObject: any = {};
+        sortObject.sortBy = this.orderMethod;
+        sortObject.sortOrder = this.sortDirection;
+        sortObject.fields = this.orderMethod;
+
+        Object.assign(options, sortObject);
 
         const itemsResponse = await this.$api.items.getItems(options);
 
