@@ -19,7 +19,6 @@
               :false-value="false"
               @change="emitFiltersOptions"
             >
-              <!-- @change="$emit('change', filters)" -->
             </v-checkbox>
           </v-form>
         </v-expansion-panel-content>
