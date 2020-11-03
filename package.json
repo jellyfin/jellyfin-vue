@@ -42,7 +42,7 @@
     "shaka-player": "^3.0.5",
     "uuid": "^8.3.1",
     "vue-virtual-scroller": "^1.0.10",
-    "vueperslides": "^2.10.9"
+    "vueperslides": "^2.11.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
