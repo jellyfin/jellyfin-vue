@@ -28,6 +28,7 @@
   "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
   "serverNotFound": "Server not found",
+  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
   "shows": "Shows",
   "signIn": "Sign in",

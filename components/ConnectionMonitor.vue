@@ -1,20 +1,12 @@
 <template>
-  <v-overlay z-index="100" opacity="0.75" :value="isDisconnected">
-    <div class="d-flex flex-column">
-      <v-icon size="128">mdi-network-off-outline</v-icon>
-      <h2 class="mt-3">{{ $t('noNetworkConnection') }}</h2>
-    </div>
-  </v-overlay>
+  <div v-if="!$nuxt.isOnline">
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-icon size="32" v-bind="attrs" v-on="on">
+          mdi-network-off-outline
+        </v-icon>
+      </template>
+      <span>{{ $t('noNetworkConnection') }}</span>
+    </v-tooltip>
+  </div>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({
-  computed: {
-    isDisconnected() {
-      return !this.$nuxt.isOnline;
-    }
-  }
-});
-</script>
