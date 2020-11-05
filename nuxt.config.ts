@@ -37,7 +37,7 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['@mdi/font/css/materialdesignicons.css'],
+  css: ['~/assets/global.scss', '@mdi/font/css/materialdesignicons.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -192,7 +192,9 @@ const config: NuxtConfig = {
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
-          background: '#101010'
+          background: '#101010',
+          track: '#272727',
+          thumb: '#303030'
         },
         light: {
           primary: '#00A4DC',
@@ -202,7 +204,9 @@ const config: NuxtConfig = {
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
-          background: '#f2f2f2'
+          background: '#f2f2f2',
+          track: '#FFFFFF',
+          thumb: '#000000'
         }
       },
       options: {
