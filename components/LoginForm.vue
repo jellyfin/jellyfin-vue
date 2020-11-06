@@ -51,6 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { getFullServerUrl } from '../utils/config';
 
 export default Vue.extend({
   data() {
@@ -71,6 +72,11 @@ export default Vue.extend({
         ]
       }
     };
+  },
+  mounted() {
+    if (!this.serverUrl) {
+      this.serverUrl = getFullServerUrl();
+    }
   },
   methods: {
     async userLogin() {
