@@ -75,7 +75,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('user', ['setUser', 'setUser']),
+    ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin() {
