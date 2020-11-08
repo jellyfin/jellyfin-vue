@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '../api';
+import { BaseItemDto, ImageType } from '../api';
 
 export default Vue.extend({
   props: {
@@ -72,7 +72,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           enableTotalRecordCount: false,
           mediaTypes: 'Video'
         });
@@ -86,7 +90,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           enableTotalRecordCount: false,
           mediaTypes: 'Audio'
         });
@@ -100,7 +108,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           parentId: this.section.libraryId
         });
 
@@ -113,7 +125,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           parentId: this.section.libraryId
         });
 

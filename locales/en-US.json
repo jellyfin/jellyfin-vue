@@ -33,6 +33,7 @@
   "shows": "Shows",
   "signIn": "Sign in",
   "unexpectedError": "Unexpected error",
+  "unhandledException": "Unhandled exception",
   "upNext": "Up next",
   "username": "Username",
   "usernameRequired": "Username is required",

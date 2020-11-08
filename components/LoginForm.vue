@@ -3,7 +3,7 @@
     <v-form
       ref="form"
       v-model="validInputs"
-      :disabled="loginIn"
+      :disabled="loading"
       @submit.prevent="userLogin"
     >
       <v-text-field
@@ -22,7 +22,7 @@
         required
       ></v-text-field>
       <v-text-field
-        v-model="login.pw"
+        v-model="login.password"
         outlined
         :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -33,7 +33,7 @@
         <v-col class="mr-2">
           <v-btn
             :disabled="!validInputs"
-            :loading="loginIn"
+            :loading="loading"
             block
             large
             color="primary"
@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import compareVersions from 'compare-versions';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
@@ -60,11 +59,11 @@ export default Vue.extend({
       serverUrl: '',
       login: {
         username: '',
-        pw: ''
+        password: ''
       },
       showPassword: false,
       validInputs: false,
-      loginIn: false,
+      loading: false,
       rules: {
         serverUrlTest: [
           (v: string) => !!v || this.$t('serverAddressRequired'),
@@ -78,57 +77,12 @@ export default Vue.extend({
     ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async userLogin() {
-      this.loginIn = true;
-      try {
-        this.$axios.setBaseURL(this.serverUrl);
-
-        const serverInfo = (await this.$api.system.getPublicSystemInfo()).data;
-
-        if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
-          const response = await this.$auth.loginWith('local', {
-            data: this.login
-          });
-
-          this.setDeviceProfile();
-
-          const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
-
-          this.$auth.setUserToken(accessToken);
-
-          this.$auth.setUser(response.data.User);
-          this.setUser({
-            id: response.data.User.Id,
-            serverUrl: this.serverUrl,
-            accessToken
-          });
-        } else {
-          this.loginIn = false;
-          this.pushSnackbarMessage({
-            message: this.$t('serverVersionTooLow'),
-            color: 'error'
-          });
-        }
-      } catch (error) {
-        let errorMessage = this.$t('unexpectedError');
-
-        if (!error.response) {
-          errorMessage = this.$t('serverNotFound');
-        } else if (
-          error.response.status === 500 ||
-          error.response.status === 401
-        ) {
-          errorMessage = this.$t('incorrectUsernameOrPassword');
-        } else if (error.response.status === 400) {
-          errorMessage = this.$t('badRequest');
-        }
-
-        this.loginIn = false;
-        this.pushSnackbarMessage({
-          message: errorMessage.toString(),
-          color: 'error'
-        });
-      }
+    userLogin() {
+      this.loading = true;
+      this.setDeviceProfile();
+      this.$axios.setBaseURL(this.serverUrl);
+      this.$auth.loginWith('jellyfin', this.login);
+      this.loading = false;
     }
   }
 });
