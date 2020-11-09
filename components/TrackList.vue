@@ -2,10 +2,12 @@
   <v-simple-table dense class="track-table no-select">
     <thead>
       <tr>
-        <th style="width: 4em" class="pr-0" scope="col">#</th>
+        <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
         <th style="width: 3em" class="pr-0 pl-0" scope="col"></th>
         <th scope="col">Title</th>
-        <th class="col-1" scope="col"><v-icon>mdi-timer-outline</v-icon></th>
+        <th style="width: 6.5em" class="text-center" scope="col">
+          <v-icon class="text--primary" size="16">mdi-clock-outline</v-icon>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -26,8 +28,10 @@
           :to="`/item/${track.Id}/play`"
           tag="tr"
         >
-          <td style="width: 4em" class="pr-0">{{ track.IndexNumber }}</td>
-          <td style="width: 3em" class="pr-0 pl-0">
+          <td style="width: 4em" class="pr-0 text-center">
+            {{ track.IndexNumber }}
+          </td>
+          <td style="width: 3em" class="pr-0 pl-0 text-center">
             <v-btn icon>
               <v-icon>mdi-heart-outline</v-icon>
             </v-btn>
@@ -40,7 +44,7 @@
               </v-btn>
             </div>
           </td>
-          <td>{{ getRuntime(track.RunTimeTicks) }}</td>
+          <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
         </nuxt-link>
       </template>
     </tbody>
