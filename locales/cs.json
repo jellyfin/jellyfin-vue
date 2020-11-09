@@ -35,5 +35,7 @@
     "youMightLike": "",
     "shows": "Seriály",
     "moreLikeThis": "Podobné",
-    "browserNotSupported": "Přehrávání tohoto souboru ve vašem prohlížeči není podporováno."
+    "browserNotSupported": "Přehrávání tohoto souboru ve vašem prohlížeči není podporováno.",
+    "serverVersionTooLow": "Verze serveru musí být 10.7.0 nebo novější",
+    "noNetworkConnection": "Žádné připojení k síti"
 }
