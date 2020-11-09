@@ -22,7 +22,7 @@ export const mutations: MutationTree<BackdropState> = {
 };
 
 export const actions: ActionTree<BackdropState, BackdropState> = {
-  set({ commit }, { item }) {
+  setBackdrop({ commit }, { item }) {
     let hash: string;
 
     if (item.ImageBlurHashes.Backdrop && item.BackdropImageTags) {
@@ -33,7 +33,7 @@ export const actions: ActionTree<BackdropState, BackdropState> = {
 
     commit('SET_CURRENT_BACKDROP', hash);
   },
-  clear({ commit }) {
+  clearBackdrop({ commit }) {
     commit('CLEAR_CURRENT_BACKDROP');
   }
 };

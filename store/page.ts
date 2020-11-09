@@ -19,7 +19,7 @@ export const mutations: MutationTree<PageState> = {
 };
 
 export const actions: ActionTree<PageState, PageState> = {
-  setTitle({ commit }, { title }: MutationPayload) {
+  setPageTitle({ commit }, { title }: MutationPayload) {
     commit('SET_PAGE_TITLE', { title });
   }
 };

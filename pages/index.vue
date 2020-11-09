@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { pickBy } from 'lodash';
 import { getShapeFromCollectionType } from '~/utils/items';
 
@@ -28,7 +29,7 @@ export default Vue.extend({
     };
   },
   async created() {
-    this.$store.dispatch('page/setTitle', { title: this.$t('home') });
+    this.setPageTitle({ title: this.$t('home') });
 
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
@@ -126,6 +127,9 @@ export default Vue.extend({
 
       this.homeSections = homeSections;
     }
+  },
+  methods: {
+    ...mapActions('page', ['setPageTitle'])
   },
   head() {
     return {

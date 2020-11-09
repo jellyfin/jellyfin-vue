@@ -246,6 +246,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Temporary module while waiting for fixes to language names on the server
 // @ts-ignore
 import langs from 'langs';
@@ -317,7 +318,7 @@ export default Vue.extend({
     ).data;
 
     if (item) {
-      this.$store.dispatch('backdrop/set', { item });
+      this.setBackdrop({ item });
 
       if (item.MediaSources) {
         this.currentSource = item.MediaSources[0];
@@ -370,9 +371,10 @@ export default Vue.extend({
     this.updateBackdropImage();
   },
   destroyed() {
-    this.$store.dispatch('backdrop/clear');
+    this.clearBackdrop();
   },
   methods: {
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code: string) {
       return langs.where('2B', code).name;
     },

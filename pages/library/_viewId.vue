@@ -64,6 +64,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
 import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api/api';
 
@@ -131,7 +132,7 @@ export default Vue.extend({
         this.collectionInfoItem = collectionInfo.data.Items[0];
 
         if (collectionInfo.data.Items[0].Name) {
-          this.$store.dispatch('page/setTitle', {
+          this.setPageTitle({
             title: collectionInfo.data.Items[0].Name
           });
         }
@@ -172,6 +173,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('page', ['setPageTitle']),
     async filterMedia(options: ItemsApiGetItemsRequest) {
       try {
         const sortObject: any = {};
