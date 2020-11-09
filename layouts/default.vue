@@ -13,11 +13,14 @@
               v-if="$auth.user.PrimaryImageTag"
               :src="`${$axios.defaults.baseURL}/Users/${$auth.user.Id}/Images/Primary/?tag=${$auth.user.PrimaryImageTag}&maxWidth=64`"
             />
-            <span class="white--text">{{ $auth.user.Name.charAt(0) }}</span>
+            <span v-else class="white--text">
+              {{ $auth.user.Name.charAt(0) }}
+            </span>
           </v-avatar>
           <h1 class="font-weight-light">
             {{ $auth.user.Name }}
           </h1>
+          <connection-monitor class="ml-auto" />
         </div>
         <v-divider></v-divider>
       </template>
@@ -109,12 +112,14 @@
     <v-main>
       <nuxt />
     </v-main>
+    <!-- Utilities and global systems -->
     <snackbar />
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -147,7 +152,10 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.$store.dispatch('userViews/refresh');
+    this.refreshUserViews();
+  },
+  methods: {
+    ...mapActions('userViews', ['refreshUserViews'])
   }
 });
 </script>

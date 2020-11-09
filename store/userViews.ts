@@ -33,7 +33,7 @@ export const mutations: MutationTree<UserViewsState> = {
 };
 
 export const actions: ActionTree<UserViewsState, UserViewsState> = {
-  async refresh({ commit }) {
+  async refreshUserViews({ commit }) {
     const userViewsResponse = await this.$api.userViews.getUserViews({
       userId: this.$auth.user.Id
     });

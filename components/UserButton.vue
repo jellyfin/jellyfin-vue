@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -39,9 +40,9 @@ export default Vue.extend({
         {
           title: this.$t('logout'),
           action: () => {
-            this.$auth.logout();
-            this.$store.dispatch('deviceProfile/clear');
-            this.$store.dispatch('user/clear');
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
+            // @ts-ignore
+            this.logoutUser();
           }
         }
       ]
@@ -59,8 +60,15 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('deviceProfile', ['clearDeviceProfile']),
     switchColodScheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
+    logoutUser() {
+      this.$auth.logout();
+      this.clearDeviceProfile();
+      this.clearUser();
     }
   }
 });

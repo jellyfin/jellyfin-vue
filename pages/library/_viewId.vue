@@ -52,6 +52,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
 import { BaseItemDto } from '~/api/api';
 
@@ -116,7 +117,7 @@ export default Vue.extend({
           collectionInfo.data.Items[0].Type === 'Folder')
       ) {
         if (collectionInfo.data.Items[0].Name) {
-          this.$store.dispatch('page/setTitle', {
+          this.setPageTitle({
             title: collectionInfo.data.Items[0].Name
           });
         }
@@ -157,6 +158,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('page', ['setPageTitle']),
     sortItems() {
       if (this.sortDirection) {
         this.items.sort((a, b) =>

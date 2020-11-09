@@ -51,6 +51,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import compareVersions from 'compare-versions';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -73,27 +75,40 @@ export default Vue.extend({
     };
   },
   methods: {
+    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('deviceProfile', ['setDeviceProfile']),
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin() {
       this.loginIn = true;
       try {
         this.$axios.setBaseURL(this.serverUrl);
 
-        const response = await this.$auth.loginWith('local', {
-          data: this.login
-        });
+        const serverInfo = (await this.$api.system.getPublicSystemInfo()).data;
 
-        this.$store.dispatch('browserProfile/set');
+        if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
+          const response = await this.$auth.loginWith('local', {
+            data: this.login
+          });
 
-        const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
+          this.setDeviceProfile();
 
-        this.$auth.setUserToken(accessToken);
+          const accessToken = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}", Token="${response.data.AccessToken}"`;
 
-        this.$auth.setUser(response.data.User);
-        this.$store.dispatch('user/set', {
-          id: response.data.User.Id,
-          serverUrl: this.serverUrl,
-          accessToken
-        });
+          this.$auth.setUserToken(accessToken);
+
+          this.$auth.setUser(response.data.User);
+          this.setUser({
+            id: response.data.User.Id,
+            serverUrl: this.serverUrl,
+            accessToken
+          });
+        } else {
+          this.loginIn = false;
+          this.pushSnackbarMessage({
+            message: this.$t('serverVersionTooLow'),
+            color: 'error'
+          });
+        }
       } catch (error) {
         let errorMessage = this.$t('unexpectedError');
 
@@ -109,7 +124,7 @@ export default Vue.extend({
         }
 
         this.loginIn = false;
-        this.$store.dispatch('snackbar/display', {
+        this.pushSnackbarMessage({
           message: errorMessage.toString(),
           color: 'error'
         });
