@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { formatDuration, intervalToDuration } from 'date-fns';
+import { intervalToDuration } from 'date-fns';
 import { BaseItemDto } from '~/api';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -49,9 +49,12 @@ export default Vue.extend({
     runtimeValue: {
       get() {
         const seconds = this.ticksToMs(this.item.RunTimeTicks);
-        return formatDuration(intervalToDuration({ start: 0, end: seconds }), {
-          format: ['hours', 'minutes']
-        });
+        return this.$dateFns.formatDuration(
+          intervalToDuration({ start: 0, end: seconds }),
+          {
+            format: ['hours', 'minutes']
+          }
+        );
       }
     },
     endsAtValue: {

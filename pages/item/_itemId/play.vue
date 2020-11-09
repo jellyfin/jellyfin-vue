@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid class="pa-0">
     <video-player
-      v-if="item.MediaType === 'Video'"
+      v-if="item.MediaType === 'Video' || item.MediaType === 'Audio'"
       :item="item"
       :poster="poster"
     />

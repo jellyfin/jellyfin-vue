@@ -23,7 +23,23 @@
             >
               {{ item.OriginalTitle }}
             </h2>
-            <v-skeleton-loader v-else type="heading" width="25em" />
+            <h2
+              v-if="loaded && item.AlbumArtist"
+              class="text-subtitle-1 text-truncate"
+            >
+              {{ $t('byArtist') }}
+              <nuxt-link
+                tag="span"
+                class="link"
+                :to="`/artist/${item.AlbumArtists[0].Id}`"
+                >{{ item.AlbumArtist }}</nuxt-link
+              >
+            </h2>
+            <v-skeleton-loader
+              v-else-if="!loaded"
+              type="heading"
+              width="25em"
+            />
             <div class="text-caption text-h4 font-weight-medium">
               <media-info
                 v-if="loaded"
@@ -54,12 +70,29 @@
             </div>
             <v-col class="mt-2" cols="10">
               <v-row
-                v-if="loaded && item && item.Genres && item.Genres.length > 1"
+                v-if="
+                  loaded &&
+                  item &&
+                  item.GenreItems &&
+                  item.GenreItems.length > 0
+                "
               >
                 <v-col cols="2" class="d-flex align-center pa-0">
                   <label class="text--secondary">Genres</label>
                 </v-col>
-                <v-col cols="7">{{ item.Genres.join(', ') }}</v-col>
+                <v-col cols="7">
+                  <v-chip
+                    v-for="genre in item.GenreItems"
+                    :key="genre"
+                    class="ma-2"
+                    small
+                    link
+                    nuxt
+                    :to="`/genre/${genre.Id}?type=${item.Type}`"
+                  >
+                    {{ genre.Name }}
+                  </v-chip>
+                </v-col>
               </v-row>
               <div
                 v-if="
@@ -220,6 +253,10 @@
               v-if="item.Type === 'Series'"
               :item="item"
             ></season-tabs>
+            <track-list
+              v-if="item.Type === 'MusicAlbum'"
+              :item="item"
+            ></track-list>
           </v-col>
         </v-row>
       </v-col>
@@ -235,8 +272,8 @@
           <person-list :items="actors" :skeleton-length="5" />
         </div>
         <related-items
-          v-if="item.Type === 'Series'"
-          :id="$route.params.itemId"
+          v-if="['Series', 'MusicAlbum'].includes(item.Type)"
+          :item="item"
           vertical
         />
       </v-col>
@@ -264,6 +301,7 @@ export default Vue.extend({
     return {
       loaded: false,
       item: {} as BaseItemDto,
+      parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
       videoTracks: [] as MediaStream[],
@@ -310,18 +348,18 @@ export default Vue.extend({
     }
   },
   async beforeMount() {
-    const item = (
+    this.item = (
       await this.$api.userLibrary.getItem({
         userId: this.$auth.user.Id,
         itemId: this.$route.params.itemId
       })
     ).data;
 
-    if (item) {
-      this.setBackdrop({ item });
+    if (this.item) {
+      this.setBackdrop({ item: this.item });
 
-      if (item.MediaSources) {
-        this.currentSource = item.MediaSources[0];
+      if (this.item.MediaSources) {
+        this.currentSource = this.item.MediaSources[0];
 
         // Filter the streams to get each type of track
         if (this.currentSource.MediaStreams) {
@@ -364,11 +402,8 @@ export default Vue.extend({
         }
       }
 
-      this.item = item;
       this.loaded = true;
     }
-
-    this.updateBackdropImage();
   },
   destroyed() {
     this.clearBackdrop();
@@ -391,17 +426,16 @@ export default Vue.extend({
         default:
           return 'mdi-surround-sound';
       }
-    },
-    getItemBackdrop(id: string): string {
-      if (window.innerWidth < window.innerHeight) {
-        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
-      } else {
-        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
-      }
-    },
-    updateBackdropImage() {
-      this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.link {
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+</style>

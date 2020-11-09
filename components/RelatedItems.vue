@@ -80,8 +80,8 @@ export default Vue.extend({
     /**
      * itemId To be used to get related items
      */
-    id: {
-      type: String,
+    item: {
+      type: Object,
       required: true
     },
     vertical: {
@@ -121,15 +121,23 @@ export default Vue.extend({
    */
   async beforeMount() {
     try {
-      const RelatedItems = (
-        await this.$api.library.getSimilarItems({
-          itemId: this.id,
-          userId: this.$auth.user.Id,
-          limit: this.vertical ? 5 : 12
-        })
-      ).data.Items as BaseItemDto[];
-
-      this.relatedItems = RelatedItems;
+      if (this.item.Type === 'MusicAlbum') {
+        this.relatedItems = (
+          await this.$api.albums.getSimilarAlbums({
+            albumId: this.item.Id,
+            userId: this.$auth.user.Id,
+            limit: this.vertical ? 5 : 12
+          })
+        ).data.Items as BaseItemDto[];
+      } else {
+        this.relatedItems = (
+          await this.$api.library.getSimilarItems({
+            itemId: this.item.Id,
+            userId: this.$auth.user.Id,
+            limit: this.vertical ? 5 : 12
+          })
+        ).data.Items as BaseItemDto[];
+      }
     } catch (error) {
       console.error('Unable to get related items:', error);
     }
