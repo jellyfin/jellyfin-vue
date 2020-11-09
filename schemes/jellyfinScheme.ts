@@ -44,7 +44,7 @@ export default class JellyfinScheme {
 
       // Set the empty header needed for Jellyfin to not yell at us
       const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token=""`;
-      this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', token);
+      this._setToken(token);
 
       // Check the version info and implicitly check for the manifest
       const serverInfo = (
