@@ -125,6 +125,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -206,7 +207,7 @@ export default Vue.extend({
     ).data;
 
     if (item) {
-      this.$store.dispatch('backdrop/set', { item });
+      this.setBackdrop({ item });
       this.item = item;
     }
 
@@ -225,7 +226,10 @@ export default Vue.extend({
     }
   },
   destroyed() {
-    this.$store.dispatch('backdrop/clear');
+    this.clearBackdrop();
+  },
+  methods: {
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
   }
 });
 </script>

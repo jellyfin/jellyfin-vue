@@ -26,7 +26,7 @@ export const mutations: MutationTree<SnackbarState> = {
 };
 
 export const actions: ActionTree<SnackbarState, SnackbarState> = {
-  display({ commit }, { message, color }: MutationPayload) {
+  pushSnackbarMessage({ commit }, { message, color }: MutationPayload) {
     commit('SET_SNACKBAR_MESSAGE', { message, color });
   }
 };

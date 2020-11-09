@@ -40,7 +40,7 @@ export const mutations: MutationTree<UserState> = {
 };
 
 export const actions: ActionTree<UserState, UserState> = {
-  async set(
+  async setUser(
     { commit },
     {
       id,
@@ -61,7 +61,7 @@ export const actions: ActionTree<UserState, UserState> = {
       displayPreferences: response.data.CustomPrefs
     });
   },
-  clear({ commit }) {
+  clearUser({ commit }) {
     commit('CLEAR_USER');
   }
 };
