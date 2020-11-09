@@ -44,7 +44,7 @@ const config: NuxtConfig = {
    */
   plugins: [
     // General
-    'plugins/appInit.ts',
+    'plugins/appInitPlugin.ts',
     // Components
     'plugins/components/vueperSlides.ts',
     'plugins/components/vueVirtualScroller.ts',

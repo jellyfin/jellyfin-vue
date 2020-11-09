@@ -2,7 +2,7 @@ import { Context } from '@nuxt/types';
 import { Auth } from '@nuxtjs/auth';
 import compareVersions from 'compare-versions';
 
-interface auth extends Auth {
+interface NuxtAuth extends Auth {
   // Fix the wonky DefinitelyTyped definition
   ctx: {
     app: Context;
@@ -10,11 +10,11 @@ interface auth extends Auth {
 }
 
 export default class JellyfinScheme {
-  $auth: auth;
+  $auth: NuxtAuth;
   name = 'jellyfin';
   options: Record<string, any>;
 
-  constructor(auth: auth, options: Record<string, any>) {
+  constructor(auth: NuxtAuth, options: Record<string, any>) {
     this.$auth = auth;
 
     this.options = Object.assign({}, {}, options);
@@ -88,12 +88,10 @@ export default class JellyfinScheme {
         errorMessage = 'incorrectUsernameOrPassword';
       } else if (error.response.status === 400) {
         errorMessage = 'badRequest';
-      } else {
-        errorMessage = error.message;
       }
 
       this.$auth.ctx.app.store.dispatch('snackbar/pushSnackbarMessage', {
-        message: errorMessage.toString(),
+        message: errorMessage,
         color: 'error'
       });
     }
