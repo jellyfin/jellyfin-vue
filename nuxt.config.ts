@@ -7,9 +7,9 @@ const config: NuxtConfig = {
    */
   ssr: false,
   /*
-    ** Disables telemetry prompt while installing dependencies
-    ** See https://github.com/nuxt/telemetry
-    */
+   ** Disables telemetry prompt while installing dependencies
+   ** See https://github.com/nuxt/telemetry
+   */
   telemetry: false,
   /*
    ** Nuxt target
