@@ -22,30 +22,36 @@
             {{ $t('disc', { discNumber }) }}
           </td>
         </tr>
-        <nuxt-link
+        <v-hover
           v-for="track in tracksOnDisc"
+          v-slot="{ hover }"
           :key="track.Id"
-          :to="`/item/${track.Id}/play`"
-          tag="tr"
         >
-          <td style="width: 4em" class="pr-0 text-center">
-            {{ track.IndexNumber }}
-          </td>
-          <td style="width: 3em" class="pr-0 pl-0 text-center">
-            <v-btn icon>
-              <v-icon>mdi-heart-outline</v-icon>
-            </v-btn>
-          </td>
-          <td>
-            <div class="d-flex align-center">
-              <span>{{ track.Name }}</span>
-              <v-btn icon class="ml-auto">
-                <v-icon>mdi-dots-horizontal</v-icon>
+          <nuxt-link :to="`/item/${track.Id}/play`" tag="tr" event="dblclick">
+            <td style="width: 4em" class="pr-0 text-center">
+              <span v-if="hover">
+                <v-btn icon nuxt :to="`/item/${track.Id}/play`">
+                  <v-icon>mdi-play-circle-outline</v-icon>
+                </v-btn>
+              </span>
+              <span v-else>{{ track.IndexNumber }}</span>
+            </td>
+            <td style="width: 3em" class="pr-0 pl-0 text-center">
+              <v-btn icon>
+                <v-icon>mdi-heart-outline</v-icon>
               </v-btn>
-            </div>
-          </td>
-          <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
-        </nuxt-link>
+            </td>
+            <td>
+              <div class="d-flex align-center">
+                <span>{{ track.Name }}</span>
+                <v-btn v-if="hover" icon class="ml-auto">
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-btn>
+              </div>
+            </td>
+            <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
+          </nuxt-link>
+        </v-hover>
       </template>
     </tbody>
   </v-simple-table>
