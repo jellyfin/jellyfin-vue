@@ -115,7 +115,9 @@ export default Vue.extend({
           userId: this.$auth.user.Id,
           genreIds: this.$route.params.itemId,
           includeItemTypes: type,
-          recursive: true
+          recursive: true,
+          sortBy: 'SortName',
+          sortOrder: 'Ascending'
         })
       ).data.Items as BaseItemDto[];
 
@@ -150,7 +152,7 @@ export default Vue.extend({
 }
 
 .second-toolbar-follow {
-  padding-top: 128px;
+  padding-top: 140px;
 }
 
 .genre-toolbar {
