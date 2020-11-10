@@ -1,26 +1,206 @@
 <template>
   <v-menu :offset-y="true" :close-on-content-click="false" max-width="250px">
-    <template #activator="{ on }">
-      <v-btn class="ma-2" icon v-on="on" @click="getFilters">
+    <template #activator="{ on, attrs }">
+      <v-btn
+        v-if="!$vuetify.breakpoint.smAndDown"
+        class="ma-2"
+        text
+        rounded
+        v-bind="attrs"
+        v-on="on"
+      >
+        {{ $t('filter') }}
+        <v-icon right> mdi-menu-down </v-icon>
+      </v-btn>
+      <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
         <v-icon>mdi-filter-variant</v-icon>
       </v-btn>
     </template>
-    <v-expansion-panels accordion>
-      <v-expansion-panel v-for="item in filters" :key="item.header">
-        <v-expansion-panel-header>{{ item.header }}</v-expansion-panel-header>
+    <v-expansion-panels accordion flat focusable>
+      <v-expansion-panel>
+        <v-expansion-panel-header>{{ $t('status') }}</v-expansion-panel-header>
         <v-expansion-panel-content class="filter-content">
-          <v-form v-for="(filter, index) in item.items" :key="index">
-            <v-checkbox
-              v-model="filter.selected"
-              class="my-0"
-              :label="filter.label"
-              :value="filter.value"
-              :true-value="true"
-              :false-value="false"
-              @change="emitFiltersOptions"
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedStatusFilters"
+              multiple
+              @change="emitFilterChange"
             >
-            </v-checkbox>
-          </v-form>
+              <template v-for="(status, statusIndex) in statusFilters">
+                <v-list-item
+                  :key="`status-${statusIndex}`"
+                  :value="status.name"
+                >
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="status.label"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel
+        v-if="
+          collectionInfo.CollectionType === 'movies' ||
+          collectionInfo.CollectionType === 'tvshows'
+        "
+      >
+        <v-expansion-panel-header>
+          {{ $t('features') }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="filter-content">
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedFeatureFilters"
+              multiple
+              @change="emitFilterChange"
+            >
+              <template v-for="(feature, featureIndex) in featureFilters">
+                <v-list-item
+                  :key="`feature-${featureIndex}`"
+                  :value="feature.name"
+                >
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="feature.label"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel v-if="genreFilters.length > 0">
+        <v-expansion-panel-header>{{ $t('genres') }}</v-expansion-panel-header>
+        <v-expansion-panel-content class="filter-content">
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedGenreFilters"
+              multiple
+              @change="emitFilterChange"
+            >
+              <template v-for="(genre, genreIndex) in genreFilters">
+                <v-list-item :key="`genre-${genreIndex}`" :value="genre">
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title v-text="genre"></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel v-if="ratingFilters.length > 0">
+        <v-expansion-panel-header>
+          {{ $t('parentalRatings') }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="filter-content">
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedRatingFilters"
+              multiple
+              @change="emitFilterChange"
+            >
+              <template v-for="(rating, ratingIndex) in ratingFilters">
+                <v-list-item :key="`rating-${ratingIndex}`" :value="rating">
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title v-text="rating"></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel
+        v-if="
+          collectionInfo.CollectionType === 'movies' ||
+          collectionInfo.CollectionType === 'tvshows'
+        "
+      >
+        <v-expansion-panel-header>
+          {{ $t('videoTypes') }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="filter-content">
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedTypeFilters"
+              multiple
+              @change="emitFilterChange"
+            >
+              <template v-for="(type, typeIndex) in typeFilters">
+                <v-list-item :key="`type-${typeIndex}`" :value="type.name">
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="type.label"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel v-if="yearFilters.length > 0">
+        <v-expansion-panel-header>
+          {{ $t('years') }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="filter-content">
+          <v-list dense>
+            <v-list-item-group
+              v-model="selectedYearFilters"
+              multiple
+              @change="emitFilterChange"
+            >
+              <template v-for="(year, yearIndex) in yearFilters">
+                <v-list-item :key="`year-${yearIndex}`" :value="year">
+                  <template #default="{ active }">
+                    <v-list-item-content>
+                      <v-list-item-title v-text="year"></v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-list-item-action>
+                      <v-checkbox :input-value="active"></v-checkbox>
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list-item-group>
+          </v-list>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -29,270 +209,124 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ItemFilter, ItemsApiGetItemsRequest } from '~/api';
-
-interface FilterItem {
-  label: string;
-  value: string;
-  selected: boolean;
-}
-
-interface FilterItemEnum {
-  label: string;
-  value: ItemFilter;
-  selected: boolean;
-}
+import { BaseItemDto, ItemFilter } from '~/api';
 
 export default Vue.extend({
   props: {
-    collectionInfoItem: {
-      type: Object,
+    collectionInfo: {
+      type: Object as () => BaseItemDto,
+      required: true
+    },
+    itemsType: {
+      type: String,
       required: true
     }
   },
   data() {
     return {
-      filters: {
-        status: {
-          header: this.$t('status'),
-          items: [
-            { label: this.$t('played'), value: 'IsPlayed', selected: false },
-            {
-              label: this.$t('unplayed'),
-              value: ItemFilter.IsUnplayed,
-              selected: false
-            },
-            {
-              label: this.$t('resumable'),
-              value: ItemFilter.IsResumable,
-              selected: false
-            },
-            {
-              label: this.$t('favorite'),
-              value: ItemFilter.IsFavorite,
-              selected: false
-            },
-            {
-              label: this.$t('likes'),
-              value: ItemFilter.Likes,
-              selected: false
-            },
-            {
-              label: this.$t('dislikes'),
-              value: ItemFilter.Dislikes,
-              selected: false
-            }
-          ] as FilterItemEnum[]
+      statusFilters: [
+        {
+          label: this.$t('played'),
+          name: ItemFilter.IsPlayed
         },
-        features: {
-          header: this.$t('features'),
-          items: [
-            {
-              label: this.$t('subtitles'),
-              value: 'hasSubtitles',
-              selected: false
-            },
-            { label: this.$t('trailer'), value: 'hasTrailer', selected: false },
-            {
-              label: this.$t('specialFeatures'),
-              value: 'hasSpecialFeature',
-              selected: false
-            },
-            {
-              label: this.$t('themeSong'),
-              value: 'hasThemeSong',
-              selected: false
-            },
-            {
-              label: this.$t('themeVideo'),
-              value: 'hasThemeVideo',
-              selected: false
-            }
-          ] as FilterItem[]
+        {
+          label: this.$t('unplayed'),
+          name: ItemFilter.IsUnplayed
         },
-        genres: {
-          header: this.$t('genres'),
-          items: [] as FilterItem[]
+        {
+          label: this.$t('resumable'),
+          name: ItemFilter.IsResumable
         },
-        officialRatings: {
-          header: this.$t('parentalRatings'),
-          items: [] as FilterItem[]
+        {
+          label: this.$t('favorite'),
+          name: ItemFilter.IsFavorite
         },
-        videoTypes: {
-          header: this.$t('videoTypes'),
-          items: [
-            { label: 'Blu-Ray', value: 'Bluray', selected: false },
-            { label: 'DVD', value: 'Dvd', selected: false },
-            { label: 'SD', value: 'isHD', selected: false },
-            { label: 'HD', value: 'isHD', selected: false },
-            { label: '4K', value: 'is4K', selected: false },
-            { label: '3D', value: 'is3D', selected: false }
-          ] as FilterItem[]
+        { label: this.$t('liked'), name: ItemFilter.Likes },
+        { label: this.$t('unliked'), name: ItemFilter.Dislikes }
+      ],
+      selectedStatusFilters: [],
+      featureFilters: [
+        {
+          label: this.$t('subtitles'),
+          name: 'HasSubtitles'
         },
-        years: {
-          header: this.$t('years'),
-          items: [] as FilterItem[]
+        { label: this.$t('trailer'), value: 'hasTrailer' },
+        {
+          label: this.$t('specialFeatures'),
+          name: 'HasSpecialFeature'
+        },
+        {
+          label: this.$t('themeSong'),
+          name: 'HasThemeSong'
+        },
+        {
+          label: this.$t('themeVideo'),
+          name: 'HasThemeVideo'
         }
-      },
-      selectedFilters: {}
+      ],
+      selectedFeatureFilters: [],
+      genreFilters: [] as string[],
+      selectedGenreFilters: [],
+      ratingFilters: [] as string[],
+      selectedRatingFilters: [],
+      typeFilters: [
+        { label: 'Blu-Ray', name: 'Bluray' },
+        { label: 'DVD', name: 'Dvd' },
+        { label: 'HD', name: 'isHD' },
+        { label: '4K', name: 'is4K' },
+        { label: '3D', name: 'is3D' }
+      ],
+      selectedTypeFilters: [],
+      yearFilters: [] as number[],
+      selectedYearFilters: []
     };
   },
-  computed: {
-    itemType() {
-      if (this.collectionInfoItem.CollectionType === 'tvshows') {
-        return 'Series';
-      } else if (this.collectionInfoItem.CollectionType === 'movies') {
-        return 'Movie';
-      } else if (this.collectionInfoItem.CollectionType === 'books') {
-        return 'Book';
-      }
-      return '';
+  watch: {
+    itemsType() {
+      this.refreshItems();
     }
   },
   methods: {
-    async getFilters() {
+    async refreshItems() {
       try {
-        if (this.itemType === '') {
-          return;
-        }
-
         const response = (
           await this.$api.filter.getQueryFiltersLegacy({
             userId: this.$auth.user.Id,
             parentId: this.$route.params.viewId,
-            includeItemTypes: this.itemType
+            includeItemTypes: this.itemsType
           })
         ).data;
 
         if (response.Genres) {
-          this.filters.genres.items = response.Genres.map((x) => ({
-            label: x,
-            value: x,
-            selected: false
-          }));
+          this.genreFilters = response.Genres;
         }
 
         if (response.OfficialRatings) {
-          this.filters.officialRatings.items = response.OfficialRatings.map(
-            (x) => ({
-              label: x,
-              value: x,
-              selected: false
-            })
-          );
+          this.ratingFilters = response.OfficialRatings;
         }
 
         if (response.Years) {
-          this.filters.years.items = response.Years.map((x) => ({
-            label: x.toString(),
-            value: x.toString(),
-            selected: false
-          }));
+          this.yearFilters = response.Years;
         }
       } catch (error) {
-        this.$nuxt.error({
-          statusCode: 404,
-          message: this.$t('filtersNotFound') as string
-        });
+        console.error('Unable to retrieve filters:', error);
       }
     },
-    emitFiltersOptions() {
-      try {
-        if (
-          this.collectionInfoItem !== {} &&
-          (this.collectionInfoItem.Type === 'CollectionFolder' ||
-            this.collectionInfoItem.Type === 'Folder')
-        ) {
-          const statusString = this.filters.status.items.map(
-            (item) => item.value
-          );
-
-          const features: { [key: string]: boolean } = {};
-          for (const feature of this.filters.features.items) {
-            if (!feature.selected) {
-              continue;
-            }
-
-            features[feature.value] = true;
-          }
-
-          const genreString = this.makeFilterString(
-            this.filters.genres.items,
-            '|'
-          );
-
-          const ratingString = this.makeFilterString(
-            this.filters.officialRatings.items,
-            '|'
-          );
-
-          let videoTypeString = '';
-          const videoTypesObject: { [key: string]: boolean } = {};
-          for (const videoType of this.filters.videoTypes.items) {
-            if (!videoType.selected) {
-              continue;
-            }
-            if (videoType.label === 'SD') {
-              videoTypesObject.isHd = false;
-              continue;
-            }
-            if (videoType.label === 'HD') {
-              videoTypesObject.isHd = true;
-              continue;
-            }
-            if (videoType.label === '4K' || videoType.label === '3D') {
-              videoTypesObject[videoType.value] = true;
-            } else {
-              if (videoTypeString.length > 0) {
-                videoTypeString += ',';
-              }
-              videoTypeString += videoType.value;
-            }
-          }
-
-          const yearString = this.makeFilterString(
-            this.filters.years.items,
-            ','
-          );
-
-          const options: ItemsApiGetItemsRequest = {
-            uId: this.$auth.user.Id,
-            userId: this.$auth.user.Id,
-            parentId: this.$route.params.viewId,
-            includeItemTypes: this.itemType,
-            recursive: true,
-            filters: statusString,
-            genres: genreString,
-            officialRatings: ratingString,
-            videoTypes: videoTypeString,
-            years: yearString
-          };
-          Object.assign(options, features);
-          Object.assign(options, videoTypesObject);
-
-          this.$emit('change', options);
-        }
-      } catch (error) {
-        this.$emit('change', error);
-      }
-    },
-    makeFilterString(filterList: FilterItem[], seperator: string) {
-      let filterString = '';
-      for (const filter of filterList) {
-        if (!filter.selected) {
-          continue;
-        }
-        if (filterString.length > 0) {
-          filterString += seperator;
-        }
-        filterString += filter.value;
-      }
-      return filterString;
+    emitFilterChange() {
+      this.$emit('change', {
+        status: this.selectedStatusFilters,
+        features: this.selectedFeatureFilters,
+        genres: this.selectedGenreFilters,
+        ratings: this.selectedRatingFilters,
+        types: this.selectedTypeFilters,
+        years: this.selectedYearFilters
+      });
     }
   }
 });
 </script>
-<style scoped>
+
+<style lang="scss" scoped>
 .filter-content {
   max-height: 15rem;
   overflow: scroll;

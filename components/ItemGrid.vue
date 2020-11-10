@@ -1,25 +1,46 @@
 <template>
-  <dynamic-scroller
-    class="scroller"
-    :items="items"
-    :min-item-size="350"
-    :buffer="$vuetify.breakpoint.height * 1.5"
-    page-mode
-  >
-    <template #default="{ item, index, active }">
-      <dynamic-scroller-item
-        :item="item"
-        :active="active"
-        :data-index="index"
-        :class="narrow ? 'narrow-card-grid-container' : 'card-grid-container'"
-      >
-        <card v-for="card of item.chunk" :key="card.Id" :item="card" />
-      </dynamic-scroller-item>
-    </template>
-  </dynamic-scroller>
+  <div>
+    <v-row v-if="loading">
+      <v-col cols="12" class="card-grid-container">
+        <skeleton-card v-for="n in 24" :key="n" />
+      </v-col>
+    </v-row>
+    <dynamic-scroller
+      v-if="items.length"
+      class="scroller"
+      :items="itemsChunks"
+      :min-item-size="350"
+      :buffer="$vuetify.breakpoint.height * 1.5"
+      page-mode
+    >
+      <template #default="{ item, index, active }">
+        <dynamic-scroller-item
+          :item="item"
+          :active="active"
+          :data-index="index"
+          class="card-grid-container"
+        >
+          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
+        </dynamic-scroller-item>
+      </template>
+    </dynamic-scroller>
+    <v-row v-else-if="!loading" justify="center">
+      <v-col cols="12" class="card-grid-container empty-card-container">
+        <skeleton-card v-for="n in 24" :key="n" boilerplate />
+      </v-col>
+      <div class="empty-message text-center">
+        <slot>
+          <h1 class="text-h5">
+            {{ $t('noResultsFound') }}
+          </h1>
+        </slot>
+      </div>
+    </v-row>
+  </div>
 </template>
 
 <script lang="ts">
+import { chunk } from 'lodash';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -31,18 +52,63 @@ export default Vue.extend({
         return [];
       }
     },
-    narrow: {
+    loading: {
       type: Boolean,
-      default: false
+      required: true
+    }
+  },
+  computed: {
+    itemsChunks: {
+      get() {
+        let cardsPerLine = 8;
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        if (this.$vuetify.breakpoint.smAndDown) {
+          cardsPerLine = 3;
+        } else if (
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          this.$vuetify.breakpoint.smAndUp &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          !this.$vuetify.breakpoint.lgAndUp
+        ) {
+          cardsPerLine = 4;
+        } else if (
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          this.$vuetify.breakpoint.lgAndUp &&
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          !this.$vuetify.breakpoint.xlOnly
+        ) {
+          cardsPerLine = 6;
+        }
+
+        const chunks = chunk(this.items, cardsPerLine);
+
+        const keyedChunks = chunks.map((itemChunk, index) => {
+          return {
+            id: index,
+            chunk: itemChunk
+          };
+        });
+
+        return keyedChunks;
+      }
     }
   }
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.scroller {
+  max-height: 100%;
+}
+
 @import '~vuetify/src/styles/styles.sass';
-.card-grid-container,
-.narrow-card-grid-container {
+.card-grid-container {
   display: grid;
 }
 
@@ -50,17 +116,11 @@ export default Vue.extend({
   .card-grid-container {
     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
   }
-  .narrow-card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 2), 1fr));
-  }
 }
 
 @media #{map-get($display-breakpoints, 'sm-and-up')} {
   .card-grid-container {
     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-  }
-  .narrow-card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
   }
 }
 
@@ -68,17 +128,11 @@ export default Vue.extend({
   .card-grid-container {
     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
   }
-  .narrow-card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 4), 1fr));
-  }
 }
 
 @media #{map-get($display-breakpoints, 'xl-only')} {
   .card-grid-container {
     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-  }
-  .narrow-card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 6), 1fr));
   }
 }
 </style>
