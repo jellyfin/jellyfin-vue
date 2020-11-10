@@ -9,7 +9,7 @@ export interface UserState {
 
 export const state = (): UserState => ({
   id: '',
-  serverUrl: 'http://127.0.0.1:8096',
+  serverUrl: '',
   accessToken: '',
   displayPreferences: {}
 });
@@ -33,7 +33,6 @@ export const mutations: MutationTree<UserState> = {
   },
   CLEAR_USER(state: UserState) {
     state.serverUrl = '';
-    state.serverUrl = 'http://127.0.0.1:8096';
     state.accessToken = '';
     state.displayPreferences = {};
   }
