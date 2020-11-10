@@ -35,7 +35,7 @@ function getDeviceId(): string {
  *
  * @returns {string} deviceName returns the device's name
  */
-function getDeviceName() {
+function getDeviceName(): string {
   let deviceName = 'Unknown';
 
   // TODO: Replace with pattern matching once TC39 adopts the proposal
@@ -95,7 +95,7 @@ export const mutations: MutationTree<DeviceState> = {
 };
 
 export const actions: ActionTree<DeviceState, DeviceState> = {
-  set({ commit }) {
+  setDeviceProfile({ commit }) {
     commit('SET_PROFILE', {
       deviceId: getDeviceId(),
       deviceName: getDeviceName(),
@@ -103,7 +103,7 @@ export const actions: ActionTree<DeviceState, DeviceState> = {
       clientName: getClientName()
     });
   },
-  clear({ commit }) {
+  clearDeviceProfile({ commit }) {
     commit('CLEAR_PROFILE');
   }
 };

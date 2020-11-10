@@ -33,6 +33,7 @@
   "shows": "Shows",
   "signIn": "Sign in",
   "unexpectedError": "Unexpected error",
+  "unhandledException": "Unhandled exception",
   "upNext": "Up next",
   "filtersNotFound": "Unable to load filters",
   "status": "Status",

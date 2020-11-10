@@ -53,6 +53,8 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    // General
+    'plugins/appInitPlugin.ts',
     // Components
     'plugins/components/vueperSlides.ts',
     'plugins/components/vueVirtualScroller.ts',
@@ -89,7 +91,7 @@ const config: NuxtConfig = {
     ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
   /*
@@ -117,48 +119,10 @@ const config: NuxtConfig = {
       home: '/'
     },
     strategies: {
-      local: {
-        scheme: 'local',
-        endpoints: {
-          login: {
-            url: '/Users/authenticatebyname',
-            method: 'post',
-            propertyName: false,
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'X-Emby-Authorization':
-                'MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0"'
-            }
-          },
-          logout: {
-            url: '/Sessions/Logout',
-            method: 'post',
-            propertyName: false,
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            }
-          },
-          user: false
-        },
-        // TODO: Figure out which token settings are REALLY needed
-        // FIXME: Duplicate authorization header: "Authorization" and "X-Emby-Authorization"
-        tokenName: 'X-Emby-Authorization',
-        tokenType: '',
-        tokenRequired: true,
-        globalToken: true,
-        changeOrigin: true,
-        autoFetchUser: false,
-        token: {
-          type: false
-        },
-        refreshToken: {
-          type: false
-        }
+      jellyfin: {
+        _scheme: '~/schemes/jellyfinScheme'
       }
-    },
-    plugins: ['plugins/userInit.ts']
+    }
   },
   i18n: {
     locales: [
@@ -243,7 +207,8 @@ const config: NuxtConfig = {
           ]
         ];
       }
-    }
+    },
+    transpile: ['@nuxtjs/auth']
   },
 
   /**

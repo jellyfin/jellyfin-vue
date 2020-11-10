@@ -33,7 +33,6 @@ export const mutations: MutationTree<UserState> = {
   },
   CLEAR_USER(state: UserState) {
     state.serverUrl = '';
-    state.serverUrl = '';
     state.accessToken = '';
     state.displayPreferences = {};
   }
