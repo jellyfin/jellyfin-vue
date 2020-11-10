@@ -1,14 +1,11 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div class="d-flex align-center" v-bind="attrs" v-on="on">
-        <v-avatar :size="avatarSize" color="primary" class="mr-4">
-          <v-img :src="userImage" :alt="$auth.user.Name">
-            <template #placeholder>
-              <v-icon dark>mdi-account</v-icon>
-            </template>
-          </v-img>
-        </v-avatar>
+      <div class="d-flex align-center space-evenly" v-bind="attrs" v-on="on">
+        <user-image v-if="userHasImage" />
+        <template v-else>
+          <v-icon dark>mdi-account</v-icon>
+        </template>
         <h1 class="font-weight-light pb-1">
           {{ $auth.user.Name }}
           <v-icon>mdi-chevron-down</v-icon>
@@ -48,11 +45,9 @@ export default Vue.extend({
     };
   },
   computed: {
-    userImage(): string {
-      if (this.$auth.user?.PrimaryImageTag) {
-        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
-      } else {
-        return '';
+    userHasImage: {
+      get(): boolean {
+        return this.$auth.user?.PrimaryImageTag;
       }
     }
   },
@@ -67,3 +62,10 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.space-evenly {
+  flex: 1 !important;
+  justify-content: space-evenly !important;
+}
+</style>
