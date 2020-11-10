@@ -7,16 +7,10 @@
       app
     >
       <template v-slot:prepend>
-        <div class="d-flex align-center full-width pa-6">
-          <v-avatar size="48" color="primary" class="mr-4">
-            <img
-              v-if="$auth.user.PrimaryImageTag"
-              :src="`${$axios.defaults.baseURL}/Users/${$auth.user.Id}/Images/Primary/?tag=${$auth.user.PrimaryImageTag}&maxWidth=64`"
-            />
-            <span v-else class="white--text">
-              {{ $auth.user.Name.charAt(0) }}
-            </span>
-          </v-avatar>
+        <div
+          class="d-flex align-center justify-content-space-evenly full-width pa-6"
+        >
+          <UserImage />
           <h1 class="font-weight-light">
             {{ $auth.user.Name }}
           </h1>
@@ -177,5 +171,10 @@ export default Vue.extend({
 
 .search-input {
   max-width: 15em;
+}
+</style>
+<style lang="scss">
+.justify-content-space-evenly {
+  justify-content: space-evenly;
 }
 </style>

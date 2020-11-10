@@ -2,18 +2,11 @@
   <v-menu offset-y>
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon v-bind="attrs" v-on="on">
-        <v-avatar>
-          <v-img
-            v-if="userImage"
-            :src="userImage"
-            :alt="$auth.user.Name"
-          ></v-img>
-          <v-icon v-else dark>mdi-account</v-icon>
-        </v-avatar>
+        <UserImage />
       </v-btn>
     </template>
     <v-list>
-      <v-list-item @click="switchColodScheme">
+      <v-list-item @click="switchColorScheme">
         <v-switch>
           <template #label>Toggle dark mode</template>
         </v-switch>
@@ -48,21 +41,10 @@ export default Vue.extend({
       ]
     };
   },
-  computed: {
-    userImage: {
-      get() {
-        if (this.$auth.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
-        } else {
-          return '';
-        }
-      }
-    }
-  },
   methods: {
     ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    switchColodScheme() {
+    switchColorScheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     logoutUser() {
