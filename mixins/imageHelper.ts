@@ -83,9 +83,9 @@ const imageHelper = Vue.extend({
         quality: 90
       };
       if (limitByWidth) {
-        params.maxWidth = element.clientWidth.toString();
+        params.maxWidth = Math.round(element.clientWidth * 1.7);
       } else {
-        params.maxHeight = element.clientHeight.toString();
+        params.maxHeight = Math.round(element.clientHeight * 1.7);
       }
       url.search = stringify(params);
 
