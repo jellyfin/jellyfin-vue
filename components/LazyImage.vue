@@ -5,68 +5,80 @@
 <script lang="ts">
 import Vue from 'vue';
 
-let observerInterface: IntersectionObserver;
+/**
+ * Swaps a data-src attribute with a div's "background-image: url()" style property.
+ *
+ * @param {HTMLElement} elem - DOM node of the target div element
+ * @param {string} url - url of the image
+ *
+ */
+function fillImageElement(elem: HTMLElement, url: string): void {
+  const preloaderImg = new Image();
+  preloaderImg.src = url;
+
+  preloaderImg.addEventListener('load', () => {
+    requestAnimationFrame(() => {
+      elem.style.backgroundImage = "url('" + url + "')";
+      elem.removeAttribute('data-src');
+      elem.classList.remove('lazy-hidden');
+      elem.classList.add('lazy-image-fadein');
+    });
+  });
+}
+
+/**
+ * Swaps a div's "background-image: url()" style property with a data-src attribute.
+ *
+ * @param {HTMLElement} elem - DOM node of the target div element
+ *
+ */
+function emptyImageElement(elem: HTMLElement): void {
+  const url = elem.style.backgroundImage.slice(4, -1).replace(/"/g, '');
+  elem.style.backgroundImage = 'none';
+  elem.setAttribute('data-src', url);
+  elem.classList.remove('lazy-image-fadein');
+  elem.classList.add('lazy-hidden');
+}
+
+/**
+ * Global callback function for all the observed lazy loaded images
+ *
+ * @param {IntersectionObserverEntry} entry - entry of the intersected element.
+ */
+function onIntersect(entry: IntersectionObserverEntry): void {
+  const target = entry.target as HTMLElement;
+  const isIntersecting = entry.isIntersecting;
+
+  if (target) {
+    const source = target.getAttribute('data-src');
+    if (!isIntersecting && !source) {
+      requestAnimationFrame(() => {
+        emptyImageElement(target);
+      });
+    } else if (source && isIntersecting) {
+      fillImageElement(target, source);
+    }
+  }
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    onIntersect(entry);
+  });
+});
 
 export default Vue.extend({
   props: {
     src: {
       type: String,
-      default: ''
+      required: true
     }
-  },
-  data() {
-    return {
-      observer: observerInterface,
-      intersected: false
-    };
   },
   mounted() {
-    this.observer = new IntersectionObserver(this.onIntersect, {
-      rootMargin: '25%'
-    });
-    this.observer.observe(this.$el);
+    observer.observe(this.$el);
   },
   destroyed() {
-    this.observer.disconnect();
-  },
-  methods: {
-    fillImageElement(elem: HTMLElement, url: string) {
-      const preloaderImg = new Image();
-      preloaderImg.src = url;
-
-      preloaderImg.addEventListener('load', () => {
-        requestAnimationFrame(() => {
-          elem.style.backgroundImage = "url('" + url + "')";
-          elem.removeAttribute('data-src');
-          elem.classList.remove('lazy-hidden');
-          elem.classList.add('lazy-image-fadein');
-        });
-      });
-    },
-    emptyImageElement(elem: HTMLElement) {
-      const url = elem.style.backgroundImage.slice(4, -1).replace(/"/g, '');
-      elem.style.backgroundImage = 'none';
-      elem.setAttribute('data-src', url);
-      elem.classList.remove('lazy-image-fadein');
-      elem.classList.add('lazy-hidden');
-    },
-    onIntersect(entryArray: Array<IntersectionObserverEntry>) {
-      for (const entry of entryArray) {
-        const target = entry.target as HTMLElement;
-        const isIntersecting = entry.isIntersecting;
-
-        if (target) {
-          const source = target.getAttribute('data-src');
-          if (!isIntersecting && !source) {
-            requestAnimationFrame(() => {
-              this.emptyImageElement(target);
-            });
-          } else if (source && isIntersecting) {
-            this.fillImageElement(target, source);
-          }
-        }
-      }
-    }
+    observer.unobserve(this.$el);
   }
 });
 </script>
