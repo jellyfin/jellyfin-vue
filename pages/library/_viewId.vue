@@ -30,25 +30,11 @@
         <skeleton-card v-for="n in 24" :key="n" />
       </v-col>
     </v-row>
-    <dynamic-scroller
-      v-if="items.length"
-      class="scroller"
-      :items="itemsChunks"
-      :min-item-size="350"
-      :buffer="$vuetify.breakpoint.height * 1.5"
-      page-mode
-    >
-      <template v-slot="{ item, index, active }">
-        <dynamic-scroller-item
-          :item="item"
-          :active="active"
-          :data-index="index"
-          class="card-grid-container"
-        >
-          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
-        </dynamic-scroller-item>
-      </template>
-    </dynamic-scroller>
+    <v-row v-if="items.length">
+      <v-col cols="12" class="card-grid-container">
+        <card v-for="item in items" :key="item.Id" :item="item" />
+      </v-col>
+    </v-row>
     <v-row v-else-if="loaded" justify="center">
       <v-col cols="12" class="card-grid-container empty-card-container">
         <skeleton-card v-for="n in 24" :key="n" boilerplate />
