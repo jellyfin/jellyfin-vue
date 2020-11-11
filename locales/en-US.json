@@ -3,6 +3,7 @@
   "alphabetically": "Alphabetically",
   "artist": "Artist",
   "badRequest": "Bad request. Try again",
+  "biography": "Biography",
   "browserNotSupported": "Your browser is not supported for playing this file.",
   "changeServer": "Change server",
   "connect": "Connect",
@@ -21,6 +22,7 @@
   "login": "Login",
   "logout": "Logout",
   "more": "More",
+  "moreLikeArtist": "More like {artist}",
   "moreLikeThis": "More like this",
   "movies": "Movies",
   "noNetworkConnection": "No network connection",
@@ -37,7 +39,7 @@
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
   "shows": "Shows",
-  "shuffleAll": "Shuffe all",
+  "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
@@ -62,5 +64,6 @@
   "genres": "Genres",
   "parentalRatings": "Parental Ratings",
   "videoTypes": "Video Types",
-  "years": "Years"
+  "years": "Years",
+  "youMayAlsoLike": "You may also like"
 }

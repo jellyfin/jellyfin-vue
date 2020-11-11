@@ -3,92 +3,102 @@
     <v-row>
       <v-col cols="9">
         <v-row>
-          <v-col cols="2">
+          <v-col cols="9" class="d-flex flex-row">
             <v-img
+              v-if="item.ImageTags && item.ImageTags.Primary"
               class="person-image elevation-2 ml-2"
               cover
               aspect-ratio="1"
               :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
             />
-          </v-col>
-          <v-col cols="7">
-            <div
-              class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
-            >
-              {{ $t('artist') }}
+            <div class="ml-4 d-flex flex-column">
+              <div
+                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+              >
+                {{ $t('artist') }}
+              </div>
+              <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
             </div>
-            <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
-            <v-col cols="9" class="pl-0 pr-0">
-              <p class="item-overview" v-html="overview" />
-            </v-col>
-          </v-col>
-          <v-col cols="3">
-            <v-row v-if="birthDate">
-              <v-col cols="3" class="text--secondary">Birth</v-col>
-              <v-col cols="9">
-                {{ birthDate }}
-              </v-col>
-            </v-row>
-            <v-row v-if="deathDate">
-              <v-col cols="3" class="text--secondary">Death</v-col>
-              <v-col cols="9">
-                {{ deathDate }}
-              </v-col>
-            </v-row>
-            <v-row v-if="birthPlace">
-              <v-col cols="3" class="text--secondary">Birthplace</v-col>
-              <v-col cols="9">
-                {{ birthPlace }}
-              </v-col>
-            </v-row>
-            <v-row v-if="ProductionLocations && ProductionLocations.length > 0">
-              <v-col cols="3" class="text--secondary">Birth place</v-col>
-              <v-col cols="9">
-                {{ item.ProductionLocations[0] }}
-              </v-col>
-            </v-row>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <h1 class="text-h5 mb-2 ml-2 header">
-              <span>{{ $t('albums') }}</span>
-            </h1>
-            <v-row v-for="appearance in appearances" :key="appearance.Id">
-              <v-container>
+            <v-tabs background-color="transparent" v-model="activeTab">
+              <v-tab v-for="(tab, index) in tabs" :key="index">{{ tab }}</v-tab>
+            </v-tabs>
+            <v-tabs-items v-model="activeTab" class="transparent">
+              <v-tab-item :key="0">
                 <v-row>
-                  <v-col cols="1">
-                    <card :item="appearance" no-text no-margin />
-                  </v-col>
-                  <v-col>
-                    <div
-                      class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+                  <v-col cols="12" class="mx-3">
+                    <h2 class="text-h6">
+                      <span>{{ $t('albums') }}</span>
+                    </h2>
+                    <v-row
+                      v-for="appearance in appearances"
+                      :key="appearance.Id"
                     >
-                      {{ appearance.ProductionYear }}
-                    </div>
-                    <nuxt-link
-                      class="link"
-                      tag="h2"
-                      :to="`/item/${appearance.Id}/`"
-                      >{{ appearance.Name }}</nuxt-link
-                    >
+                      <v-col cols="12">
+                        <div class="d-flex flex-column">
+                          <v-row>
+                            <v-col cols="1">
+                              <card :item="appearance" no-text no-margin />
+                            </v-col>
+                            <v-col>
+                              <div
+                                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+                              >
+                                {{ appearance.ProductionYear }}
+                              </div>
+                              <nuxt-link
+                                class="link"
+                                tag="h2"
+                                :to="`/item/${appearance.Id}/`"
+                                >{{ appearance.Name }}</nuxt-link
+                              >
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col>
+                              <track-list
+                                v-if="appearance.Type === 'MusicAlbum'"
+                                :item="appearance"
+                              ></track-list>
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
-                <v-row>
-                  <v-col>
-                    <track-list
-                      v-if="appearance.Type === 'MusicAlbum'"
-                      :item="appearance"
-                    ></track-list>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-row>
+              </v-tab-item>
+              <v-tab-item :key="1">
+                <v-container>
+                  <v-row>
+                    <v-col>
+                      <v-img
+                        cover
+                        :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`"
+                      />
+                      <div v-if="item.Overview">
+                        <h2 class="text-h6 mt-2">
+                          <span>{{ $t('biography') }}</span>
+                        </h2>
+                        <v-col cols="9" class="pl-0 pr-0">
+                          <p class="item-overview" v-html="overview" />
+                        </v-col>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-tab-item>
+            </v-tabs-items>
           </v-col>
         </v-row>
       </v-col>
       <v-col cols="3">
-        <related-items :item="item" vertical />
+        <related-items :item="item" vertical>
+          {{ $t('moreLikeArtist', { artist: item.Name }) }}
+        </related-items>
       </v-col>
     </v-row>
   </v-container>
@@ -106,6 +116,8 @@ export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils],
   data() {
     return {
+      activeTab: 0,
+      tabs: ['Overview', 'About'],
       item: {} as BaseItemDto,
       appearances: [] as BaseItemDto[]
     };
@@ -155,6 +167,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .person-image {
+  max-width: 8em;
   border-radius: 50%;
 }
 .header span {

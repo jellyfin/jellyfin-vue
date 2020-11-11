@@ -246,7 +246,7 @@
         <v-row>
           <v-col cols="12">
             <related-items
-              v-if="item.Type !== 'Series'"
+              v-if="item.Type === 'Movie'"
               :id="$route.params.itemId"
             />
             <season-tabs

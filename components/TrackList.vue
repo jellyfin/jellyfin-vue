@@ -2,7 +2,7 @@
   <v-simple-table dense class="track-table no-select">
     <thead>
       <tr>
-        <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
+        <th style="width: 6em" class="pr-0 text-center" scope="col">#</th>
         <th style="width: 3em" class="pr-0 pl-0" scope="col"></th>
         <th scope="col">Title</th>
         <th style="width: 6.5em" class="text-center" scope="col">
@@ -28,7 +28,7 @@
           :key="track.Id"
         >
           <nuxt-link :to="`/item/${track.Id}/play`" tag="tr" event="dblclick">
-            <td style="width: 4em" class="pr-0 text-center">
+            <td style="width: 6em" class="pr-0 text-center">
               <span v-if="hover">
                 <v-btn icon nuxt :to="`/item/${track.Id}/play`">
                   <v-icon>mdi-play-circle-outline</v-icon>
@@ -88,8 +88,7 @@ export default Vue.extend({
       await this.$api.items.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        parentId: this.item.Id,
-        fields: 'Overview'
+        parentId: this.item.Id
       })
     ).data;
 

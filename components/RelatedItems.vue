@@ -1,9 +1,11 @@
 <template>
-  <div v-if="relatedItems.length > 0">
+  <div>
     <div v-if="!vertical" class="related-items">
-      <h1 class="text-h5 mb-2 ml-2 header">
-        <span>{{ $t('youMayAlsoLike') }}</span>
-      </h1>
+      <slot>
+        <h1 class="text-h5 mb-2 ml-2 header">
+          <span>{{ $t('youMayAlsoLike') }}</span>
+        </h1>
+      </slot>
       <vueper-slides
         :bullets="false"
         :bullets-outside="false"
@@ -33,10 +35,14 @@
       </vueper-slides>
     </div>
     <div v-if="vertical">
-      <h2 v-if="relatedItems.length > 0">{{ $t('youMayAlsoLike') }}</h2>
+      <h2 v-if="!loading && relatedItems.length > 0">
+        <slot>
+          {{ $t('youMayAlsoLike') }}
+        </slot>
+      </h2>
       <v-skeleton-loader v-else type="heading" />
       <v-list color="transparent" two-line>
-        <div v-if="relatedItems.length > 0">
+        <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
@@ -58,6 +64,7 @@
         </div>
         <div
           v-for="index in skeletonLength"
+          v-else
           :key="index"
           class="d-flex align-center mt-5 mb-5"
         >
@@ -95,7 +102,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      relatedItems: [] as BaseItemDto[],
+      relatedItems: [] as BaseItemDto[] | null | undefined,
+      loading: true,
       /**
        * Stores Breakpoints for number of visible slides
        * on different screen sizes
@@ -119,27 +127,33 @@ export default Vue.extend({
   /**
    * Gets related items to be rendered
    */
-  async beforeMount() {
+  beforeMount() {
     try {
-      if (this.item.Type === 'MusicAlbum') {
-        this.relatedItems = (
-          await this.$api.albums.getSimilarAlbums({
-            albumId: this.item.Id,
-            userId: this.$auth.user.Id,
-            limit: this.vertical ? 5 : 12
-          })
-        ).data.Items as BaseItemDto[];
-      } else {
-        this.relatedItems = (
-          await this.$api.library.getSimilarItems({
-            itemId: this.item.Id,
-            userId: this.$auth.user.Id,
-            limit: this.vertical ? 5 : 12
-          })
-        ).data.Items as BaseItemDto[];
-      }
+      this.refreshItems();
     } catch (error) {
       console.error('Unable to get related items:', error);
+    }
+  },
+  methods: {
+    async refreshItems() {
+      this.loading = true;
+
+      if (this.item.Id) {
+        const response = await this.$api.library.getSimilarItems({
+          itemId: this.item.Id,
+          userId: this.$auth.user.Id,
+          limit: this.vertical ? 5 : 12
+        });
+
+        this.relatedItems = response.data.Items;
+      }
+
+      this.loading = false;
+    },
+    watch: {
+      item() {
+        this.refreshItems();
+      }
     }
   }
 });

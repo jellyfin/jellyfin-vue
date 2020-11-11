@@ -27,8 +27,7 @@ export default Vue.extend({
       const response = await this.$api.items.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        ids: this.$route.params.itemId,
-        fields: [ItemFields.Overview, ItemFields.Genres]
+        ids: this.$route.params.itemId
       });
 
       if (response?.data?.Items && response.data.Items.length > 0) {
