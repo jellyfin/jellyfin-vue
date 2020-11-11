@@ -19,7 +19,7 @@
             </div>
             <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
             <v-col cols="9" class="pl-0 pr-0">
-              <p class="item-overview">{{ item.Overview }}</p>
+              <p class="item-overview" v-html="overview" />
             </v-col>
           </v-col>
           <v-col cols="3">
@@ -98,16 +98,26 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '~/api';
+import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
-  mixins: [imageHelper, timeUtils],
+  mixins: [htmlHelper, imageHelper, timeUtils],
   data() {
     return {
       item: {} as BaseItemDto,
       appearances: [] as BaseItemDto[]
     };
+  },
+  computed: {
+    overview() {
+      if (this.$data.item.Overview) {
+        return this.sanitizeHtml(this.$data.item.Overview);
+      } else {
+        return '';
+      }
+    }
   },
   async beforeMount() {
     const item = (
