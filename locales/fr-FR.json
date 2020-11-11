@@ -55,5 +55,6 @@
     "status": "État",
     "filtersNotFound": "Impossible de charger les filtres",
     "serverVersionTooLow": "La version du serveur doit être 10.7.0 ou plus haut",
-    "noNetworkConnection": "Aucune connexion réseau"
+    "noNetworkConnection": "Aucune connexion réseau",
+    "unhandledException": "Exception non-gérée"
 }
