@@ -55,5 +55,6 @@
     "unplayed": "Nepřehráno",
     "played": "Přehráno",
     "status": "Stav",
-    "filtersNotFound": "Nelze načíst filtry"
+    "filtersNotFound": "Nelze načíst filtry",
+    "unhandledException": "Nezachycená výjimka"
 }
