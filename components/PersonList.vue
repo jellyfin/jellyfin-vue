@@ -8,7 +8,7 @@
         :to="`/person/${item.Id}`"
       >
         <v-list-item-avatar>
-          <v-img
+          <LazyImage
             v-if="item.PrimaryImageTag"
             :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
           />

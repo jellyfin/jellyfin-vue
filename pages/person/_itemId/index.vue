@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="2">
-            <v-img
+            <LazyImage
               class="person-image elevation-2 ml-2"
               cover
               aspect-ratio="1"
