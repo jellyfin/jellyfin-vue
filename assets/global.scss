@@ -23,3 +23,16 @@
   /* Override the color with the dynamic color from Vuetify */
   background-color: var(--v-primary-base);
 }
+
+.page-enter-active,
+.page-leave-active,
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.25s;
+}
+.page-enter,
+.page-leave-to,
+.layout-enter,
+.layout-leave-to {
+  opacity: 0;
+}
