@@ -51,7 +51,7 @@
     "@mdi/font": "^5.8.55",
     "@nuxt/types": "^2.14.7",
     "@nuxt/typescript-build": "^2.0.2",
-    "@nuxtjs/date-fns": "^1.4.2",
+    "@nuxtjs/date-fns": "^1.4.3",
     "@nuxtjs/eslint-config": "^4.0.0",
     "@nuxtjs/eslint-config-typescript": "^4.0.0",
     "@nuxtjs/eslint-module": "^3.0.0",
