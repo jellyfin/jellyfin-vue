@@ -44,6 +44,20 @@
             <td>
               <div class="d-flex align-center">
                 <span>{{ track.Name }}</span>
+                <div
+                  v-if="!track.Artists.includes(track.AlbumArtist)"
+                  class="ml-3"
+                >
+                  <nuxt-link
+                    v-for="artist of track.ArtistItems"
+                    :key="artist.Id"
+                    tag="span"
+                    class="link text--secondary"
+                    :to="`/artist/${artist.Id}`"
+                  >
+                    {{ artist.Name }}
+                  </nuxt-link>
+                </div>
                 <v-btn v-if="hover" icon class="ml-auto">
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
@@ -109,6 +123,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.link {
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
 .v-data-table.track-table {
   background-color: transparent;
 }

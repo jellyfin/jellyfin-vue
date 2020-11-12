@@ -32,8 +32,9 @@
                 tag="span"
                 class="link"
                 :to="`/artist/${item.AlbumArtists[0].Id}`"
-                >{{ item.AlbumArtist }}</nuxt-link
               >
+                {{ item.AlbumArtist }}
+              </nuxt-link>
             </h2>
             <v-skeleton-loader
               v-else-if="!loaded"
