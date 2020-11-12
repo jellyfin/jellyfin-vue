@@ -5,6 +5,12 @@
 <script lang="ts">
 import Vue from 'vue';
 
+declare global {
+  interface Window {
+    isScrollingFast: boolean;
+  }
+}
+
 /**
  * Swaps a data-src attribute with a div's "background-image: url()" style property.
  *
@@ -48,7 +54,6 @@ function emptyImageElement(elem: HTMLElement): void {
 function onIntersect(entry: IntersectionObserverEntry): void {
   const target = entry.target as HTMLElement;
   const isIntersecting = entry.isIntersecting;
-
   if (target) {
     const source = target.getAttribute('data-src');
     if (!isIntersecting && !source) {
@@ -56,16 +61,87 @@ function onIntersect(entry: IntersectionObserverEntry): void {
         emptyImageElement(target);
       });
     } else if (source && isIntersecting) {
-      fillImageElement(target, source);
+      requestAnimationFrame(() => {
+        fillImageElement(target, source);
+      });
     }
   }
 }
 
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    onIntersect(entry);
-  });
+  entries.forEach(
+    (entry) => {
+      onIntersect(entry);
+    },
+    { rootMargin: '25%' }
+  );
 });
+
+function disconnectObserverOnFastScroll(obs: IntersectionObserver): void {
+  obs.disconnect();
+}
+
+function reconnectObserverOnSlowScroll(
+  obs: IntersectionObserver,
+  elems: Array<Element>
+): void {
+  obs.disconnect();
+  elems.forEach((elem) => obs.observe(elem));
+}
+
+let lastScrollY = 0;
+let scrollMeasureTimeout: number;
+let directionTop: boolean;
+const latestScrollMeasures: Array<boolean> = [false, false, false, false];
+const observedTargets: Array<Element> = [];
+
+/**
+ * Measure the scroll speed based on the delta between scroll positions.
+ */
+function measureScrollSpeed(): void {
+  const scrollY = window.scrollY;
+  const previousDirection = directionTop;
+  requestAnimationFrame(() => {
+    if (window.pageYOffset < lastScrollY) {
+      directionTop = true;
+    } else {
+      directionTop = false;
+    }
+
+    if (directionTop !== previousDirection) {
+      lastScrollY = scrollY;
+      window.clearTimeout(scrollMeasureTimeout);
+      latestScrollMeasures.push(false);
+    } else {
+      const scrollDelta = Math.abs(scrollY - lastScrollY);
+      if (scrollDelta >= 200 && lastScrollY !== 0) {
+        latestScrollMeasures.push(true);
+      } else {
+        latestScrollMeasures.push(false);
+      }
+    }
+    latestScrollMeasures.shift();
+
+    const allTrue = (bool: boolean) => bool === true;
+    if (latestScrollMeasures.every(allTrue)) {
+      window.isScrollingFast = true;
+      disconnectObserverOnFastScroll(observer);
+    } else {
+      window.isScrollingFast = false;
+      reconnectObserverOnSlowScroll(observer, observedTargets);
+    }
+
+    lastScrollY = scrollY;
+    window.clearTimeout(scrollMeasureTimeout);
+    scrollMeasureTimeout = window.setTimeout(() => {
+      if (lastScrollY === window.scrollY) {
+        window.isScrollingFast = false;
+        reconnectObserverOnSlowScroll(observer, observedTargets);
+      }
+    }, 500);
+  });
+}
+window.addEventListener('scroll', measureScrollSpeed);
 
 export default Vue.extend({
   props: {
@@ -76,9 +152,11 @@ export default Vue.extend({
   },
   mounted() {
     observer.observe(this.$el);
+    observedTargets.push(this.$el);
   },
   destroyed() {
     observer.unobserve(this.$el);
+    observedTargets.splice(observedTargets.indexOf(this.$el), 1);
   }
 });
 </script>
