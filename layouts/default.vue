@@ -163,7 +163,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .v-application {
   background-color: var(--v-background-base) !important;
-  margin-top: -4px;
 }
 
 .v-app-bar:not(.v-app-bar--is-scrolled) {
