@@ -32,7 +32,7 @@
     </v-row>
     <v-row v-if="items.length">
       <v-col cols="12" class="card-grid-container">
-        <card v-for="item in items" :key="item.Id" :item="item" />
+        <lazy-cards v-for="item in items" :key="item.Id" :item="item" />
       </v-col>
     </v-row>
     <v-row v-else-if="loaded" justify="center">

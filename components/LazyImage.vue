@@ -11,6 +11,8 @@ declare global {
   }
 }
 
+window.isScrollingFast = false;
+
 /**
  * Swaps a data-src attribute with a div's "background-image: url()" style property.
  *
@@ -27,7 +29,7 @@ function fillImageElement(elem: HTMLElement, url: string): void {
       elem.style.backgroundImage = "url('" + url + "')";
       elem.removeAttribute('data-src');
       elem.classList.remove('lazy-hidden');
-      elem.classList.add('lazy-image-fadein');
+      elem.classList.add('lazy-fadein');
     });
   });
 }
@@ -42,7 +44,7 @@ function emptyImageElement(elem: HTMLElement): void {
   const url = elem.style.backgroundImage.slice(4, -1).replace(/"/g, '');
   elem.style.backgroundImage = 'none';
   elem.setAttribute('data-src', url);
-  elem.classList.remove('lazy-image-fadein');
+  elem.classList.remove('lazy-fadein');
   elem.classList.add('lazy-hidden');
 }
 
@@ -89,6 +91,28 @@ function reconnectObserverOnSlowScroll(
   elems.forEach((elem) => obs.observe(elem));
 }
 
+function hideFastScrollElements(): void {
+  requestAnimationFrame(() => {
+    const targets: Element[] = Array.from(
+      document.getElementsByClassName('lazyScroll')
+    );
+    targets.forEach((target) => {
+      target.classList.add('lazy-hidden', 'lazy-fadein');
+    });
+  });
+}
+
+function showFastScrollElements(): void {
+  requestAnimationFrame(() => {
+    const targets: Element[] = Array.from(
+      document.getElementsByClassName('lazyScroll')
+    );
+    targets.forEach((target) => {
+      target.classList.remove('lazy-hidden');
+    });
+  });
+}
+
 let lastScrollY = 0;
 let scrollMeasureTimeout: number;
 let directionTop: boolean;
@@ -126,9 +150,11 @@ function measureScrollSpeed(): void {
     if (latestScrollMeasures.every(allTrue)) {
       window.isScrollingFast = true;
       disconnectObserverOnFastScroll(observer);
+      hideFastScrollElements();
     } else {
       window.isScrollingFast = false;
       reconnectObserverOnSlowScroll(observer, observedTargets);
+      showFastScrollElements();
     }
 
     lastScrollY = scrollY;
@@ -137,6 +163,7 @@ function measureScrollSpeed(): void {
       if (lastScrollY === window.scrollY) {
         window.isScrollingFast = false;
         reconnectObserverOnSlowScroll(observer, observedTargets);
+        showFastScrollElements();
       }
     }, 500);
   });
@@ -161,37 +188,20 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-.absolute {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-.lazy-image {
+<style lang="scss">
+.lazyImage {
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 1;
 }
 
-.lazy-image-fadein {
+.lazy-fadein {
   opacity: 1;
   transition: opacity 0.15s;
 }
 
 .lazy-hidden {
   opacity: 0;
-}
-
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 </style>
