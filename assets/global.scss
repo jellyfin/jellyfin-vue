@@ -18,3 +18,8 @@
   border-radius: 20px;
   border: 3px solid var(--v-track-base);
 }
+
+.nuxt-progress {
+  /* Override the color with the dynamic color from Vuetify */
+  background-color: var(--v-primary-base);
+}
