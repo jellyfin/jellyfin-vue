@@ -19,7 +19,6 @@ module.exports = {
     'plugin:import/typescript'
   ],
   plugins: ['prettier', 'promise', 'import', 'jsdoc'],
-  // add your custom rules here
   rules: {
     'import/newline-after-import': 'error',
     'import/order': 'error',
@@ -27,13 +26,19 @@ module.exports = {
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
     'promise/prefer-await-to-then': 'error',
+    // Force some component order stuff, formatting and such, for consistency
     'vue/component-name-in-template-casing': [
       'error',
       'kebab-case',
       {
         ignores: []
       }
-    ]
+    ],
+    'vue/order-in-components': 'error',
+    'vue/v-bind-style': 'error',
+    'vue/v-on-style': 'error',
+    'vue/v-slot-style': 'error',
+    'vue/attributes-order': 'error'
   },
   settings: {
     'import/resolver': {

@@ -64,18 +64,18 @@
               fixed-height="true"
             >
               <vueper-slide v-for="movie in movies" :key="movie.Id">
-                <template v-slot:content>
+                <template #content>
                   <card :item="movie" />
                 </template>
               </vueper-slide>
 
-              <template v-slot:arrow-left>
+              <template #arrow-left>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
               </template>
 
-              <template v-slot:arrow-right>
+              <template #arrow-right>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-right</v-icon>
                 </v-btn>
@@ -99,18 +99,18 @@
               fixed-height="true"
             >
               <vueper-slide v-for="show in shows" :key="show.Id">
-                <template v-slot:content>
+                <template #content>
                   <card :item="show" />
                 </template>
               </vueper-slide>
 
-              <template v-slot:arrow-left>
+              <template #arrow-left>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
               </template>
 
-              <template v-slot:arrow-right>
+              <template #arrow-right>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-right</v-icon>
                 </v-btn>

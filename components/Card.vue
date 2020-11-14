@@ -41,7 +41,7 @@
               item.UserData.PlayedPercentage &&
               item.UserData.PlayedPercentage > 0
             "
-            v-model="item.UserData.PlayedPercentage"
+            v-model="progress"
             color="primary accent-4"
             class="align-self-end"
           />
@@ -196,6 +196,11 @@ export default Vue.extend({
         return `${this.item.ProductionYear} - ${endYear}`;
       }
       return '';
+    },
+    progress: {
+      get(): number | false {
+        return this.item.UserData?.PlayedPercentage || false;
+      }
     }
   }
 });

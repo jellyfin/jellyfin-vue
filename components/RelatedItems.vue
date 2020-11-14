@@ -14,18 +14,18 @@
         fixed-height="true"
       >
         <vueper-slide v-for="item in relatedItems" :key="item.Id">
-          <template v-slot:content>
+          <template #content>
             <card :item="item" />
           </template>
         </vueper-slide>
 
-        <template v-slot:arrow-left>
+        <template #arrow-left>
           <v-btn icon large>
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
         </template>
 
-        <template v-slot:arrow-right>
+        <template #arrow-right>
           <v-btn icon large>
             <v-icon>mdi-arrow-right</v-icon>
           </v-btn>

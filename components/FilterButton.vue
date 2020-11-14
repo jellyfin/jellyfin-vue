@@ -1,6 +1,6 @@
 <template>
   <v-menu :offset-y="true" :close-on-content-click="false" max-width="250px">
-    <template v-slot:activator="{ on }">
+    <template #activator="{ on }">
       <v-btn class="ma-2" icon v-on="on" @click="getFilters">
         <v-icon>mdi-filter-variant</v-icon>
       </v-btn>
