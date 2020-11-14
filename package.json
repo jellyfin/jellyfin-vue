@@ -53,7 +53,7 @@
     "@nuxt/typescript-build": "^2.0.2",
     "@nuxtjs/date-fns": "^1.4.3",
     "@nuxtjs/eslint-config": "^5.0.0",
-    "@nuxtjs/eslint-config-typescript": "^4.0.0",
+    "@nuxtjs/eslint-config-typescript": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.1",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
