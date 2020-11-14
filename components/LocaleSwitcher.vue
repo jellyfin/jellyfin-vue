@@ -1,6 +1,6 @@
 <template>
   <v-menu offset-y>
-    <template v-slot:activator="{ on, attrs }">
+    <template #activator="{ on, attrs }">
       <v-btn icon size="36" v-bind="attrs" v-on="on">
         <v-icon>mdi-web</v-icon>
       </v-btn>

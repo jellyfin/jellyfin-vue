@@ -15,16 +15,16 @@ import { mapActions } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
   created() {
     this.setPageTitle({ title: this.$t('login') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
   }
 });
 </script>

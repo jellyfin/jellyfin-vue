@@ -38,7 +38,7 @@
       :buffer="$vuetify.breakpoint.height * 1.5"
       page-mode
     >
-      <template v-slot="{ item, index, active }">
+      <template #default="{ item, index, active }">
         <dynamic-scroller-item
           :item="item"
           :active="active"
@@ -82,6 +82,11 @@ export default Vue.extend({
       orderMethod: 'SortName',
       sortDirection: true,
       collectionInfoItem: {}
+    };
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
     };
   },
   computed: {
@@ -223,11 +228,6 @@ export default Vue.extend({
       this.sortDirection = !this.sortDirection;
       this.sortItems();
     }
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
   }
 });
 </script>

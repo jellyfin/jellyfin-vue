@@ -14,8 +14,8 @@ import { BaseItemDto } from '~/api/api';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
-  layout: 'fullpage',
   mixins: [imageHelper],
+  layout: 'fullpage',
   data() {
     return {
       poster: '',

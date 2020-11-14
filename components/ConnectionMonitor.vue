@@ -1,7 +1,7 @@
 <template>
   <div v-if="!$nuxt.isOnline">
     <v-tooltip bottom>
-      <template v-slot:activator="{ on, attrs }">
+      <template #activator="{ on, attrs }">
         <v-icon size="32" v-bind="attrs" v-on="on">
           mdi-network-off-outline
         </v-icon>

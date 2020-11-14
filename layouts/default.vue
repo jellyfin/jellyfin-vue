@@ -6,7 +6,7 @@
       :temporary="$vuetify.breakpoint.mobile"
       app
     >
-      <template v-slot:prepend>
+      <template #prepend>
         <div class="d-flex align-center full-width pa-6">
           <v-avatar size="48" color="primary" class="mr-4">
             <img

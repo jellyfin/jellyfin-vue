@@ -28,6 +28,11 @@ export default Vue.extend({
       homeSections: [] as HomeSection[]
     };
   },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
   async created() {
     this.setPageTitle({ title: this.$t('home') });
 
@@ -130,11 +135,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
   }
 });
 </script>
