@@ -1,5 +1,5 @@
 <template>
-  <div ref="card" class="absolute">
+  <div ref="card" class="cover-parent">
     <blurhash-canvas
       v-if="
         item.ImageBlurHashes &&
@@ -12,9 +12,9 @@
       :width="width"
       :height="height"
       :punch="punch"
-      class="absolute"
+      class="cover-parent"
     />
-    <lazy-image key="image" class="absolute blurhashImage" :src="image" />
+    <lazy-image key="image" class="cover-parent blurhashImage" :src="image" />
   </div>
 </template>
 
@@ -62,15 +62,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.absolute {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
 .blurhashImage {
   background-position: center;
   background-size: cover;

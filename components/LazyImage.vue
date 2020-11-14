@@ -1,5 +1,5 @@
 <template>
-  <div :data-src="src" class="absolute lazyImage lazy-hidden" />
+  <div :data-src="src" class="cover-parent lazy-image lazy-hidden" />
 </template>
 
 <script lang="ts">
@@ -188,8 +188,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-.lazyImage {
+<style lang="scss" scoped>
+.lazy-image {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
