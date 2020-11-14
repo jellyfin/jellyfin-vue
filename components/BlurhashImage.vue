@@ -14,7 +14,7 @@
       :punch="punch"
       class="absolute"
     />
-    <LazyImage key="image" class="absolute blurhashImage" :src="image" />
+    <lazy-image key="image" class="absolute blurhashImage" :src="image" />
   </div>
 </template>
 

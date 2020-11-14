@@ -1,6 +1,6 @@
 <template>
   <v-avatar>
-    <LazyImage v-if="userImage" :src="userImage" />
+    <lazy-image v-if="userImage" :src="userImage" />
     <v-icon v-else dark>mdi-account</v-icon>
   </v-avatar>
 </template>

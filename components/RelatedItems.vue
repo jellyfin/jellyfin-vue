@@ -44,7 +44,7 @@
             :to="`/item/${relatedItem.Id}`"
           >
             <v-list-item-avatar>
-              <LazyImage
+              <lazy-image
                 :src="`${$axios.defaults.baseURL}/Items/${relatedItem.Id}/Images/Primary`"
               />
             </v-list-item-avatar>
