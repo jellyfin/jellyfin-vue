@@ -45,7 +45,8 @@ export default Vue.extend({
       unsubscribe(): void {},
       audioContext: null as AudioContext | null,
       audioSource: null as MediaElementAudioSourceNode | null,
-      gainNode: null as GainNode | null
+      gainNode: null as GainNode | null,
+      mediaDuration: 0
     };
   },
   computed: {
@@ -60,7 +61,8 @@ export default Vue.extend({
       'currentMediaSource',
       'currentVideoStreamIndex',
       'currentAudioStreamIndex',
-      'currentSubtitleStreamIndex'
+      'currentSubtitleStreamIndex',
+      'isMinimized'
     ]),
     ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
@@ -96,6 +98,9 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    // Convert to seconds
+    this.mediaDuration =
+      this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
     try {
       // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
       window.muxjs = muxjs;
