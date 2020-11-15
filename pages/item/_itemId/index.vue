@@ -1,82 +1,396 @@
 <template>
-  <v-container fluid class="pa-0 item-container">
-    <v-img
-      v-resize="updateBackdropImage"
-      :src="backdropImageSource"
-      class="d-flex align-end backdrop-image"
-      max-width="100%"
-    >
-      <div class="d-flex align-end gradient-container">
-        <div class="d-flex flex-wrap item-details-container">
-          <div class="white--text">
-            <v-img
-              v-if="
-                item.ImageTags && item.ImageTags.Logo && getAspectRatio() > 1
-              "
-              :src="getImageUrl(item.Id, 'Logo')"
-              contain
-              :alt="item.Name"
-              max-width="50%"
-              class="mb-4"
-            ></v-img>
-            <h1 v-else>{{ item.Name }}</h1>
-            <div class="item-sub-heading">{{ renderItemSubHeading() }}</div>
-            <p class="item-overview">{{ item.Overview }}</p>
-          </div>
-          <div class="item-details-right">
-            <v-btn
-              class="play-button"
-              color="primary"
-              :to="`./${item.Id}/play`"
-              >{{ $t('playType', { mediaType: item.Type }) }}</v-btn
+  <v-container class="ml-3 mr-3">
+    <v-row>
+      <v-col cols="9">
+        <v-row>
+          <v-col cols="3">
+            <card v-if="loaded" :item="item" no-text no-margin />
+            <skeleton-card v-else no-text />
+          </v-col>
+          <v-col cols="9">
+            <h1 v-if="loaded" class="text-h4 font-weight-light text-truncate">
+              {{ item.Name }}
+            </h1>
+            <v-skeleton-loader
+              v-else
+              class="mt-3 mb-2"
+              type="heading"
+              width="50em"
+            />
+            <h2
+              v-if="loaded && item.OriginalTitle"
+              class="text-subtitle-1 text-truncate"
             >
-            <v-btn>{{ $t('more') }}</v-btn>
-          </div>
+              {{ item.OriginalTitle }}
+            </h2>
+            <v-skeleton-loader v-else type="heading" width="25em" />
+            <div class="text-caption text-h4 font-weight-medium">
+              <media-info
+                v-if="loaded"
+                :item="item"
+                year
+                runtime
+                rating
+                ends-at
+              />
+              <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
+            </div>
+            <div class="mt-3 mb-2">
+              <v-btn
+                v-if="loaded"
+                class="play-button mr-2"
+                color="primary"
+                min-width="8em"
+                :disabled="isPlayable"
+                depressed
+                rounded
+                :to="`./${item.Id}/play`"
+                >{{ $t('play') }}</v-btn
+              >
+              <v-skeleton-loader v-else type="button" />
+              <v-btn v-if="loaded" outlined icon>
+                <v-icon>mdi-dots-horizontal</v-icon>
+              </v-btn>
+            </div>
+            <v-col class="mt-2" cols="10">
+              <v-row
+                v-if="loaded && item && item.Genres && item.Genres.length > 1"
+              >
+                <v-col cols="2" class="d-flex align-center pa-0">
+                  <label class="text--secondary">Genres</label>
+                </v-col>
+                <v-col cols="7">{{ item.Genres.join(', ') }}</v-col>
+              </v-row>
+              <div
+                v-if="
+                  loaded &&
+                  item &&
+                  ((item.MediaSources && item.MediaSources.length > 1) ||
+                    videoTracks.length > 0 ||
+                    audioTracks.length > 0 ||
+                    subtitleTracks.length > 0)
+                "
+                class="mt-2"
+              >
+                <v-row v-if="item.MediaSources.length > 1">
+                  <v-col cols="2" class="d-flex align-center pa-0">
+                    <label class="text--secondary">Video</label>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-select
+                      v-model="currentSource"
+                      :items="item.MediaSources"
+                      outlined
+                      filled
+                      flat
+                      dense
+                      single-line
+                      hide-details
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.DisplayTitle }}
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="videoTracks.length > 0">
+                  <v-col cols="2" class="d-flex align-center pa-0">
+                    <label class="text--secondary">Video</label>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-select
+                      v-model="currentVideoTrack"
+                      :items="videoTracks"
+                      :disabled="videoTracks.length <= 1"
+                      outlined
+                      filled
+                      flat
+                      dense
+                      single-line
+                      hide-details
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.DisplayTitle }}
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="audioTracks.length > 0">
+                  <v-col cols="2" class="d-flex align-center pa-0">
+                    <label class="text--secondary">Audio</label>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-select
+                      v-if="audioTracks.length > 1"
+                      v-model="currentAudioTrack"
+                      :items="audioTracks"
+                      :disabled="audioTracks.length <= 1"
+                      outlined
+                      filled
+                      flat
+                      dense
+                      single-line
+                      hide-details
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.DisplayTitle }}
+                      </template>
+                      <template slot="item" slot-scope="{ item, on, attrs }">
+                        <v-list-item v-bind="attrs" two-line v-on="on">
+                          <v-list-item-avatar>
+                            <v-icon
+                              v-text="getSurroundIcon(item.ChannelLayout)"
+                            ></v-icon>
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>{{
+                              item.Title
+                            }}</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ getLanguageName(item.Language) }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+                <v-row v-if="subtitleTracks.length > 0">
+                  <v-col cols="2" class="d-flex align-center pa-0">
+                    <label class="text--secondary">Subtitles</label>
+                  </v-col>
+                  <v-col cols="7">
+                    <v-select
+                      v-if="subtitleTracks.length > 0"
+                      v-model="currentSubtitleTrack"
+                      :items="subtitleTracks"
+                      outlined
+                      filled
+                      flat
+                      dense
+                      single-line
+                      hide-details
+                    >
+                      <template slot="selection" slot-scope="{ item }">
+                        {{ item.DisplayTitle }}
+                      </template>
+                      <template slot="item" slot-scope="{ item, on, attrs }">
+                        <v-list-item v-bind="attrs" two-line v-on="on">
+                          <v-list-item-content>
+                            <v-list-item-title>{{
+                              item.Title
+                            }}</v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ getLanguageName(item.Language) }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+            <div>
+              <p
+                v-if="loaded && item.Taglines"
+                class="text-subtitle-1 text-truncate"
+              >
+                {{ item.Taglines[0] }}
+              </p>
+              <v-skeleton-loader v-else type="text" width="25em" class="mb-4" />
+              <p v-if="loaded" class="item-overview">{{ item.Overview }}</p>
+              <div v-else>
+                <v-skeleton-loader
+                  v-for="index in 2"
+                  :key="index"
+                  type="sentences"
+                />
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <related-items
+              v-if="item.Type !== 'Series'"
+              :id="$route.params.itemId"
+            />
+            <season-tabs
+              v-if="item.Type === 'Series'"
+              :item="item"
+            ></season-tabs>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="3">
+        <div v-if="crew.length > 0">
+          <h2 v-if="loaded">Crew</h2>
+          <v-skeleton-loader v-else type="heading" />
+          <person-list :items="crew" :skeleton-length="3" />
         </div>
-      </div>
-    </v-img>
-    <season-tabs v-if="item.Type === 'Series'" :item="item"></season-tabs>
-    <related-items :id="$route.params.itemId" />
+        <div v-if="actors.length > 0">
+          <h2 v-if="loaded">Cast</h2>
+          <v-skeleton-loader v-else type="heading" />
+          <person-list :items="actors" :skeleton-length="5" />
+        </div>
+        <related-items
+          v-if="item.Type === 'Series'"
+          :id="$route.params.itemId"
+          vertical
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '~/api';
+import { mapActions } from 'vuex';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Temporary module while waiting for fixes to language names on the server
+// @ts-ignore
+import langs from 'langs';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  MediaSourceInfo,
+  MediaStream
+} from '~/api';
 import imageHelper from '~/mixins/imageHelper';
-import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
-  mixins: [imageHelper, timeUtils],
+  mixins: [imageHelper],
   data() {
     return {
+      loaded: false,
       item: {} as BaseItemDto,
-      backdropImageSource: ''
+      backdropImageSource: '',
+      currentSource: {} as MediaSourceInfo,
+      videoTracks: [] as MediaStream[],
+      currentVideoTrack: {} as MediaStream,
+      audioTracks: [] as MediaStream[],
+      currentAudioTrack: {} as MediaStream,
+      subtitleTracks: [] as MediaStream[],
+      currentSubtitleTrack: {} as MediaStream
     };
   },
+  computed: {
+    isPlayable: {
+      get() {
+        // TODO: Move this to a mixin
+        if (['Movie'].includes(this.$data.item.Type)) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    crew: {
+      get() {
+        if (this.$data.item.People) {
+          // TODO: Figure out how common it is to have more than one director
+          return this.$data.item.People.filter((person: BaseItemPerson) => {
+            return ['Director', 'Writer'].includes(person.Type || '');
+          });
+        } else {
+          return [];
+        }
+      }
+    },
+    actors: {
+      get() {
+        if (this.$data.item.People) {
+          return this.$data.item.People.filter((person: BaseItemPerson) => {
+            return person.Type === 'Actor';
+          }).slice(0, 10);
+        } else {
+          return [];
+        }
+      }
+    }
+  },
   async beforeMount() {
-    const items = (
-      await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
+    const item = (
+      await this.$api.userLibrary.getItem({
         userId: this.$auth.user.Id,
-        ids: this.$route.params.itemId,
-        fields: 'Overview,Genres'
+        itemId: this.$route.params.itemId
       })
-    ).data.Items;
+    ).data;
 
-    if (items) {
-      this.$store.dispatch('backdrop/set', { item: items[0] });
-      this.item = items[0];
+    if (item) {
+      this.setBackdrop({ item });
+
+      if (item.MediaSources) {
+        this.currentSource = item.MediaSources[0];
+
+        // Filter the streams to get each type of track
+        if (this.currentSource.MediaStreams) {
+          this.videoTracks = this.currentSource.MediaStreams.filter(
+            (stream: MediaStream) => {
+              return stream.Type === 'Video';
+            }
+          );
+          this.audioTracks = this.currentSource.MediaStreams.filter(
+            (stream: MediaStream) => {
+              return stream.Type === 'Audio';
+            }
+          );
+          this.subtitleTracks = this.currentSource.MediaStreams.filter(
+            (stream: MediaStream) => {
+              return stream.Type === 'Subtitle';
+            }
+          );
+
+          // Set default tracks
+          if (this.videoTracks.length > 0) {
+            this.currentVideoTrack = this.videoTracks[0];
+          }
+          if (
+            this.audioTracks.length > 0 &&
+            this.currentSource.DefaultAudioStreamIndex
+          ) {
+            this.currentAudioTrack = this.audioTracks[
+              this.currentSource.DefaultAudioStreamIndex
+            ];
+          }
+          if (
+            this.subtitleTracks.length > 0 &&
+            this.currentSource.DefaultSubtitleStreamIndex
+          ) {
+            this.currentSubtitleTrack = this.subtitleTracks[
+              this.currentSource.DefaultSubtitleStreamIndex
+            ];
+          }
+        }
+      }
+
+      this.item = item;
+      this.loaded = true;
     }
 
     this.updateBackdropImage();
   },
   destroyed() {
-    this.$store.dispatch('backdrop/clear');
+    this.clearBackdrop();
   },
   methods: {
-    getAspectRatio() {
-      return window.innerWidth / window.innerHeight;
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    getLanguageName(code: string) {
+      return langs.where('2B', code).name;
+    },
+    getSurroundIcon(layout: string) {
+      switch (layout) {
+        case '2.0':
+          return 'mdi-surround-sound-2-0';
+        case '3.1':
+          return 'mdi-surround-sound-3-1';
+        case '5.1':
+          return 'mdi-surround-sound-5-1';
+        case '7.1':
+          return 'mdi-surround-sound-7-1';
+        default:
+          return 'mdi-surround-sound';
+      }
     },
     getItemBackdrop(id: string): string {
       if (window.innerWidth < window.innerHeight) {
@@ -85,84 +399,9 @@ export default Vue.extend({
         return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
       }
     },
-    getEndsAtTime(ticks: number): string {
-      const ms = this.ticksToMs(ticks);
-      const endTimeLong = new Date(Date.now() + ms);
-      // TODO: Respect user locale when rendering time
-      const endTimeShort = endTimeLong.toLocaleString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric'
-      });
-
-      // TODO: Use a Date object
-      return this.$t('endsAt', {
-        time: endTimeShort
-      }).toString();
-    },
-    ticksToTime(ticks: number) {
-      const min = this.ticksToMs(ticks) / 60;
-      if (Math.floor(min / 60) && Math.floor(min % 60)) {
-        return `${Math.floor(min / 60)} hrs ${Math.floor(min % 60)} min`;
-      } else if (Math.floor(min / 60)) {
-        return `${Math.floor(min / 60)} hrs`;
-      } else {
-        return `${Math.floor(min % 60)} min`;
-      }
-    },
-    renderItemSubHeading() {
-      const response = [];
-      if (this.item.ProductionYear) {
-        response.push(this.item.ProductionYear);
-      }
-      if (this.item.Genres) {
-        response.push(this.item.Genres[0]);
-      }
-      if (this.item.RunTimeTicks) {
-        response.push(this.ticksToTime(this.item.RunTimeTicks));
-      }
-      if (this.item.RunTimeTicks) {
-        response.push(this.getEndsAtTime(this.item.RunTimeTicks));
-      }
-      return response.join(' • ');
-    },
     updateBackdropImage() {
       this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
     }
   }
 });
 </script>
-
-<style scoped>
-.item-container {
-  margin: auto;
-  max-width: calc(85vh * 16 / 9);
-}
-
-.backdrop-image {
-  max-width: 95em;
-  margin: auto;
-}
-
-.item-details-container {
-  padding: 1em;
-}
-
-.gradient-container {
-  background: linear-gradient(0deg, #0c0c0c, transparent);
-  height: 30vh;
-}
-
-.item-sub-heading {
-  font-size: 0.8rem;
-  width: fit-content;
-}
-
-@media screen and (max-width: 30em) {
-  .item-overview {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 90vw;
-  }
-}
-</style>

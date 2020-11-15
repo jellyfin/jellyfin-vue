@@ -13,6 +13,9 @@
 <a href="https://github.com/jellyfin/jellyfin-vue/releases">
 <img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-vue.svg"/>
 </a>
+<a href="http://commitizen.github.io/cz-cli/">
+<img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" />
+</a>
 <br/>
 <a href="https://opencollective.com/jellyfin">
 <img alt="Donate" src="https://img.shields.io/opencollective/all/jellyfin.svg?label=backers"/>
@@ -32,6 +35,20 @@
 </p>
 
 This is an experimental web client for Jellyfin based on Vue.js. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start.
+
+## Requirements
+
+This project uses [Yarn](https://yarnpkg.com/getting-started/install) as a package manager.
+
+## Contributing
+
+We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers) to help you setup your environment.
+
+The project also contains recommended extensions for [Visual Studio Code](https://code.visualstudio.com/), which will help you with syntax style and development.
+
+Finally, we provide useful pre-commit hooks via [Husky](https://typicode.github.io/husky/#/), as well as [Comitizen](https://github.com/commitizen/cz-cli) integration, in order to help you respect the style and naming conventions used throughout this project.
+
+For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
 
 ## Build Process
 

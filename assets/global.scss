@@ -1,0 +1,25 @@
+/* W3C standard (Firefox-only for now) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--v-thumb-base) var(--v-track-base);
+}
+
+/* Reproduce something similar on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--v-track-base);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--v-thumb-base);
+  border-radius: 20px;
+  border: 3px solid var(--v-track-base);
+}
+
+.nuxt-progress {
+  /* Override the color with the dynamic color from Vuetify */
+  background-color: var(--v-primary-base);
+}

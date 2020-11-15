@@ -1,17 +1,29 @@
 <template>
   <v-container>
     <v-row class="align-center">
-      <v-select
-        v-model="orderMethod"
-        class="ma-2"
-        :items="sortChoices"
-        @change="sortItems"
-      ></v-select>
-      <v-btn class="ma-2" @click="changeSortDirection"
-        ><v-icon :class="{ flipped: sortDirection }"
-          >mdi-arrow-up</v-icon
-        ></v-btn
-      >
+      <v-col cols="9">
+        <v-select
+          v-model="orderMethod"
+          class="ma-2"
+          :items="sortChoices"
+          autowidth
+          @change="sortItems"
+        ></v-select>
+      </v-col>
+      <v-col>
+        <v-btn class="ma-2" @click="changeSortDirection"
+          ><v-icon :class="{ flipped: sortDirection }"
+            >mdi-arrow-up</v-icon
+          ></v-btn
+        >
+      </v-col>
+
+      <v-col>
+        <filter-button
+          :collection-info-item="collectionInfoItem"
+          @change="filterMedia"
+        />
+      </v-col>
     </v-row>
     <v-row v-if="!loaded">
       <v-col cols="12" class="card-grid-container">
@@ -26,7 +38,7 @@
       :buffer="$vuetify.breakpoint.height * 1.5"
       page-mode
     >
-      <template v-slot="{ item, index, active }">
+      <template #default="{ item, index, active }">
         <dynamic-scroller-item
           :item="item"
           :active="active"
@@ -52,8 +64,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
-import { BaseItemDto } from '~/api/api';
+import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api/api';
 
 export default Vue.extend({
   data() {
@@ -67,7 +80,13 @@ export default Vue.extend({
         { text: this.$t('endDate'), value: 'EndDate' }
       ],
       orderMethod: 'SortName',
-      sortDirection: true
+      sortDirection: true,
+      collectionInfoItem: {}
+    };
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
     };
   },
   computed: {
@@ -103,6 +122,9 @@ export default Vue.extend({
     }
   },
   async beforeMount() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
     try {
       const collectionInfo = await this.$api.items.getItems({
         uId: this.$auth.user.Id,
@@ -115,8 +137,10 @@ export default Vue.extend({
         (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
           collectionInfo.data.Items[0].Type === 'Folder')
       ) {
+        this.collectionInfoItem = collectionInfo.data.Items[0];
+
         if (collectionInfo.data.Items[0].Name) {
-          this.$store.dispatch('page/setTitle', {
+          this.setPageTitle({
             title: collectionInfo.data.Items[0].Name
           });
         }
@@ -144,6 +168,7 @@ export default Vue.extend({
 
         if (itemsResponse.data) {
           this.loaded = true;
+          this.$nuxt.$loading.finish();
         }
 
         this.items = itemsResponse.data.Items || [];
@@ -157,6 +182,31 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('page', ['setPageTitle']),
+    async filterMedia(options: ItemsApiGetItemsRequest) {
+      try {
+        const sortObject: any = {};
+        sortObject.sortBy = this.orderMethod;
+        sortObject.sortOrder = this.sortDirection;
+        sortObject.fields = this.orderMethod;
+
+        Object.assign(options, sortObject);
+
+        const itemsResponse = await this.$api.items.getItems(options);
+
+        if (itemsResponse.data) {
+          this.loaded = true;
+        }
+
+        this.items = itemsResponse.data.Items || [];
+      } catch (error) {
+        // Can't get given library ID
+        this.$nuxt.error({
+          statusCode: 404,
+          message: this.$t('libraryNotFound') as string
+        });
+      }
+    },
     sortItems() {
       if (this.sortDirection) {
         this.items.sort((a, b) =>
@@ -178,11 +228,6 @@ export default Vue.extend({
       this.sortDirection = !this.sortDirection;
       this.sortItems();
     }
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
   }
 });
 </script>

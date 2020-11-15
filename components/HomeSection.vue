@@ -1,6 +1,6 @@
 <template>
   <v-col v-show="items.length > 0" class="home-section">
-    <h1 class="text-h5">
+    <h1 class="text-h5 font-weight-light header">
       <span>{{ section.name }}</span>
     </h1>
 
@@ -14,18 +14,18 @@
       fixed-height="true"
     >
       <vueper-slide v-for="item in items" :key="item.Id">
-        <template v-slot:content>
+        <template #content>
           <card :shape="section.shape" :item="item" />
         </template>
       </vueper-slide>
 
-      <template v-slot:arrow-left>
+      <template #arrow-left>
         <v-btn icon large>
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
       </template>
 
-      <template v-slot:arrow-right>
+      <template #arrow-right>
         <v-btn icon large>
           <v-icon>mdi-arrow-right</v-icon>
         </v-btn>
@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '../api';
+import { BaseItemDto, ImageType } from '../api';
 
 export default Vue.extend({
   props: {
@@ -72,7 +72,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           enableTotalRecordCount: false,
           mediaTypes: 'Video'
         });
@@ -86,7 +90,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           enableTotalRecordCount: false,
           mediaTypes: 'Audio'
         });
@@ -100,7 +108,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           parentId: this.section.libraryId
         });
 
@@ -113,7 +125,11 @@ export default Vue.extend({
           limit: 12,
           fields: 'PrimaryImageAspectRatio',
           imageTypeLimit: 1,
-          enableImageTypes: 'Primary,Backdrop,Thumb',
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Thumb
+          ],
           parentId: this.section.libraryId
         });
 
@@ -131,6 +147,20 @@ export default Vue.extend({
 h1 {
   margin-left: 0.4em;
   margin-bottom: 0.25em;
+}
+
+.home-section .header span {
+  padding-left: 0.25em;
+}
+.home-section .header::before {
+  background-color: white;
+  content: '';
+  position: relative;
+  display: inline-block;
+  height: 1px;
+  bottom: 0.3em;
+  left: 0;
+  width: 1.25em;
 }
 </style>
 

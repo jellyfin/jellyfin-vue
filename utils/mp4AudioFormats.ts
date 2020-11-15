@@ -40,26 +40,6 @@ export function hasEac3Support(videoTestElement: HTMLVideoElement): boolean {
  * @param {HTMLVideoElement} videoTestElement
  * @returns
  */
-export function hasMp3Support(videoTestElement: HTMLVideoElement): boolean {
-  return !!(
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.640029, mp4a.69"')
-      .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.640029, mp4a.6B"')
-      .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.640029, mp3"')
-      .replace(/no/, '')
-  );
-}
-
-/**
- *
- *
- * @param {HTMLVideoElement} videoTestElement
- * @returns
- */
 export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
   return !!videoTestElement
     .canPlayType('video/mp4; codecs="avc1.640029, mp4a.40.2"')
@@ -117,10 +97,6 @@ export function getSupportedMP4AudioCodecs(
 
   if (hasEac3Support(videoTestElement)) {
     codecs.push('eac3');
-  }
-
-  if (hasMp3Support(videoTestElement)) {
-    codecs.push('mp3');
   }
 
   if (hasAacSupport(videoTestElement)) {

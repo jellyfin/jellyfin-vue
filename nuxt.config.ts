@@ -7,6 +7,11 @@ const config: NuxtConfig = {
    */
   ssr: false,
   /*
+   ** Disables telemetry prompt while installing dependencies
+   ** See https://github.com/nuxt/telemetry
+   */
+  telemetry: false,
+  /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
@@ -16,6 +21,15 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-modern
    */
   modern: 'client',
+  /*
+   ** Progress bar between routes
+   ** See https://nuxtjs.org/api/configuration-loading
+   */
+  loading: {
+    color: '#00A4DC',
+    failedColor: '#FF5252',
+    height: '4px'
+  },
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -37,12 +51,14 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['@mdi/font/css/materialdesignicons.css'],
+  css: ['~/assets/global.scss', '@mdi/font/css/materialdesignicons.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    // General
+    'plugins/appInitPlugin.ts',
     // Components
     'plugins/components/vueperSlides.ts',
     'plugins/components/vueVirtualScroller.ts',
@@ -63,7 +79,8 @@ const config: NuxtConfig = {
     '@nuxt/typescript-build',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/date-fns'
   ],
   /*
    ** Nuxt.js modules
@@ -73,12 +90,12 @@ const config: NuxtConfig = {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['user']
+        localStorage: ['user', 'deviceProfile']
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
   /*
@@ -104,48 +121,10 @@ const config: NuxtConfig = {
       home: '/'
     },
     strategies: {
-      local: {
-        scheme: 'local',
-        endpoints: {
-          login: {
-            url: '/Users/authenticatebyname',
-            method: 'post',
-            propertyName: false,
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'X-Emby-Authorization':
-                'MediaBrowser Client="Jellyfin Web", Device="Firefox", DeviceId="TW96aWxsYS81LjAgKFgxMTsgTGludXggeDg2XzY0OyBydjo3Ny4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94Lzc3LjB8MTU5NTQ1MTYzMzE4OQ11", Version="10.7.0"'
-            }
-          },
-          logout: {
-            url: '/Sessions/Logout',
-            method: 'post',
-            propertyName: false,
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            }
-          },
-          user: false
-        },
-        // TODO: Figure out which token settings are REALLY needed
-        // FIXME: Duplicate authorization header: "Authorization" and "X-Emby-Authorization"
-        tokenName: 'X-Emby-Authorization',
-        tokenType: '',
-        tokenRequired: true,
-        globalToken: true,
-        changeOrigin: true,
-        autoFetchUser: false,
-        token: {
-          type: false
-        },
-        refreshToken: {
-          type: false
-        }
+      jellyfin: {
+        _scheme: '~/schemes/jellyfinScheme'
       }
-    },
-    plugins: ['plugins/userInit.ts']
+    }
   },
   i18n: {
     locales: [
@@ -153,6 +132,7 @@ const config: NuxtConfig = {
       { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
       { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
+      { code: 'es', iso: 'es-ES', name: 'Español (España)', file: 'es.json' },
       { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
       { code: 'nb', iso: 'nb-NO', name: 'Bokmål', file: 'nb_NO.json' },
       { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
@@ -175,6 +155,7 @@ const config: NuxtConfig = {
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     defaultAssets: false,
     theme: {
       dark: true,
@@ -189,7 +170,9 @@ const config: NuxtConfig = {
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
-          background: '#101010'
+          background: '#101010',
+          track: '#272727',
+          thumb: '#303030'
         },
         light: {
           primary: '#00A4DC',
@@ -199,7 +182,9 @@ const config: NuxtConfig = {
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
-          background: '#f2f2f2'
+          background: '#f2f2f2',
+          track: '#FFFFFF',
+          thumb: '#000000'
         }
       },
       options: {
@@ -234,7 +219,8 @@ const config: NuxtConfig = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    transpile: ['@nuxtjs/auth']
   },
 
   /**

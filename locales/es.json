@@ -3,7 +3,7 @@
     "releaseDate": "Fecha de lanzamiento",
     "endDate": "Fecha de finalización",
     "rating": "Valoración",
-    "badRequest": "Solicitud incorrecta. Intente denuevo",
+    "badRequest": "Solicitud incorrecta. Intente de nuevo",
     "continueListening": "Seguir escuchando",
     "continueWatching": "Seguir viendo",
     "episodeNumber": "Episodio {episodeNumber}",
@@ -30,5 +30,11 @@
     "upNext": "A continuación",
     "libraryNotFound": "Librería no encontrada",
     "itemNotFound": "Articulo no encontrado",
-    "libraryEmpty": "Esta librería esta vacía"
+    "libraryEmpty": "Esta librería está vacía",
+    "youMayAlsoLike": "También te puede gustar",
+    "shows": "Series",
+    "serverVersionTooLow": "La versión del servidor tiene que ser superior a 10.7.0",
+    "noNetworkConnection": "No hay conexión a la red",
+    "movies": "Películas",
+    "browserNotSupported": "Tu navegador no está soportado para reproducir este archivo."
 }

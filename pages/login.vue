@@ -11,16 +11,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
-  created() {
-    this.$store.dispatch('page/setTitle', { title: this.$t('login') });
-  },
   head() {
     return {
       title: this.$store.state.page.title
     };
+  },
+  created() {
+    this.setPageTitle({ title: this.$t('login') });
+  },
+  methods: {
+    ...mapActions('page', ['setPageTitle'])
   }
 });
 </script>
