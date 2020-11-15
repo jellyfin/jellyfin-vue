@@ -29,11 +29,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ItemsApiGetItemsRequest } from '~/api';
+import { ItemFilter, ItemsApiGetItemsRequest } from '~/api';
 
 interface FilterItem {
   label: string;
   value: string;
+  selected: boolean;
+}
+
+interface FilterItemEnum {
+  label: string;
+  value: ItemFilter;
   selected: boolean;
 }
 
@@ -53,22 +59,30 @@ export default Vue.extend({
             { label: this.$t('played'), value: 'IsPlayed', selected: false },
             {
               label: this.$t('unplayed'),
-              value: 'IsUnPlayed',
+              value: ItemFilter.IsUnplayed,
               selected: false
             },
             {
               label: this.$t('resumable'),
-              value: 'IsResumable',
+              value: ItemFilter.IsResumable,
               selected: false
             },
             {
               label: this.$t('favorite'),
-              value: 'IsFavorite',
+              value: ItemFilter.IsFavorite,
               selected: false
             },
-            { label: this.$t('likes'), value: 'Likes', selected: false },
-            { label: this.$t('dislikes'), value: 'Dislikes', selected: false }
-          ] as FilterItem[]
+            {
+              label: this.$t('likes'),
+              value: ItemFilter.Likes,
+              selected: false
+            },
+            {
+              label: this.$t('dislikes'),
+              value: ItemFilter.Dislikes,
+              selected: false
+            }
+          ] as FilterItemEnum[]
         },
         features: {
           header: this.$t('features'),
@@ -189,9 +203,8 @@ export default Vue.extend({
           (this.collectionInfoItem.Type === 'CollectionFolder' ||
             this.collectionInfoItem.Type === 'Folder')
         ) {
-          const statusString = this.makeFilterString(
-            this.filters.status.items,
-            ','
+          const statusString = this.filters.status.items.map(
+            (item) => item.value
           );
 
           const features: { [key: string]: boolean } = {};

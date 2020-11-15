@@ -66,7 +66,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
-import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api/api';
+import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api';
 
 export default Vue.extend({
   data() {

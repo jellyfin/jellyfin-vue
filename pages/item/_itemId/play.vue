@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '~/api/api';
+import { BaseItemDto, ItemFields } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -28,7 +28,7 @@ export default Vue.extend({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         ids: this.$route.params.itemId,
-        fields: 'Overview,Genres'
+        fields: [ItemFields.Overview, ItemFields.Genres]
       });
 
       if (response?.data?.Items && response.data.Items.length > 0) {

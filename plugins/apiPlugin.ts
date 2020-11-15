@@ -1,8 +1,8 @@
 import { Plugin } from '@nuxt/types';
 import { AxiosInstance } from 'axios';
+import { AlbumsApi } from '~/api/api/albums-api';
 import {
   ActivityLogApi,
-  AlbumsApi,
   ApiKeyApi,
   ArtistsApi,
   AudioApi,
@@ -62,7 +62,7 @@ import {
   VideoHlsApi,
   VideosApi,
   YearsApi
-} from '~/api/api';
+} from '~/api';
 import { Configuration } from '~/api/configuration';
 
 interface ApiPlugin {
