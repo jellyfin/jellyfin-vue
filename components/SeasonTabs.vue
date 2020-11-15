@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto, ItemFields } from '~/api';
 
 export default Vue.extend({
   props: {
@@ -82,7 +82,7 @@ export default Vue.extend({
           uId: this.$auth.user.Id,
           userId: this.$auth.user.Id,
           parentId: season.Id,
-          fields: 'Overview'
+          fields: [ItemFields.Overview]
         })
       ).data.Items as BaseItemDto[];
 
