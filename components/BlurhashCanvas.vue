@@ -4,10 +4,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/default
 import Worker from 'worker-loader!~/plugins/workers/blurhash.worker';
+
 const worker = new Worker();
-let pending_canvas: { [id: string]: HTMLCanvasElement } = {};
-let computed_hashes: { [id: string]: Uint8ClampedArray } = {};
+const pendingCanvas: { [id: string]: HTMLCanvasElement } = {};
+const computedHashes: { [id: string]: Uint8ClampedArray } = {};
 
 export default Vue.extend({
   props: {
@@ -29,22 +31,22 @@ export default Vue.extend({
     }
   },
   mounted() {
-    if (!(this.hash in pending_canvas) && !(this.hash in computed_hashes)) {
-      pending_canvas[this.hash] = this.$refs.canvas as HTMLCanvasElement;
+    if (!(this.hash in pendingCanvas) && !(this.hash in computedHashes)) {
+      pendingCanvas[this.hash] = this.$refs.canvas as HTMLCanvasElement;
       worker.postMessage({
         hash: this.hash,
         width: this.width,
         height: this.height
       });
       worker.onmessage = ({ data }) => {
-        this.draw(pending_canvas[data.hash], data.pixels);
-        computed_hashes[data.hash] = data.pixels;
-        delete pending_canvas[data.hash];
+        this.draw(pendingCanvas[data.hash], data.pixels);
+        computedHashes[data.hash] = data.pixels;
+        delete pendingCanvas[data.hash];
       };
     } else {
       this.draw(
         this.$refs.canvas as HTMLCanvasElement,
-        computed_hashes[this.hash]
+        computedHashes[this.hash]
       );
     }
   },
