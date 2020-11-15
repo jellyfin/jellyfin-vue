@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum SyncPlayAccess.
+ * @export
+ * @enum {string}
+ */
+export enum SyncPlayAccess {
+    CreateAndJoinGroups = 'CreateAndJoinGroups',
+    JoinGroups = 'JoinGroups',
+    None = 'None'
+}
+
+
+

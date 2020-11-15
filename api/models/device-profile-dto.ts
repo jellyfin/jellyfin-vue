@@ -13,6 +13,20 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+import { DeviceProfile } from './device-profile';
+
+/**
+ * Device profile dto.
+ * @export
+ * @interface DeviceProfileDto
+ */
+export interface DeviceProfileDto {
+    /**
+     * 
+     * @type {DeviceProfile}
+     * @memberof DeviceProfileDto
+     */
+    DeviceProfile?: DeviceProfile;
+}
+
+

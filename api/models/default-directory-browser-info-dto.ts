@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Default directory browser info.
+ * @export
+ * @interface DefaultDirectoryBrowserInfoDto
+ */
+export interface DefaultDirectoryBrowserInfoDto {
+    /**
+     * Gets or sets the path.
+     * @type {string}
+     * @memberof DefaultDirectoryBrowserInfoDto
+     */
+    Path?: string | null;
+}
+
+

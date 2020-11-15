@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface MediaPathInfo
+ */
+export interface MediaPathInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaPathInfo
+     */
+    Path?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaPathInfo
+     */
+    NetworkPath?: string | null;
+}
+
+

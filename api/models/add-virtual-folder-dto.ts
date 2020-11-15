@@ -13,6 +13,20 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+import { LibraryOptions } from './library-options';
+
+/**
+ * Add virtual folder dto.
+ * @export
+ * @interface AddVirtualFolderDto
+ */
+export interface AddVirtualFolderDto {
+    /**
+     * 
+     * @type {LibraryOptions}
+     * @memberof AddVirtualFolderDto
+     */
+    LibraryOptions?: LibraryOptions;
+}
+
+

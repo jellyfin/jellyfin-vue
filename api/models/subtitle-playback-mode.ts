@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * An enum representing a subtitle playback mode.
+ * @export
+ * @enum {string}
+ */
+export enum SubtitlePlaybackMode {
+    Default = 'Default',
+    Always = 'Always',
+    OnlyForced = 'OnlyForced',
+    None = 'None',
+    Smart = 'Smart'
+}
+
+
+

@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum KeepUntil {
+    UntilDeleted = 'UntilDeleted',
+    UntilSpaceNeeded = 'UntilSpaceNeeded',
+    UntilWatched = 'UntilWatched',
+    UntilDate = 'UntilDate'
+}
+
+
+

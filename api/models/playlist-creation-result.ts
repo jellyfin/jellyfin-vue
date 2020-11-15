@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface PlaylistCreationResult
+ */
+export interface PlaylistCreationResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof PlaylistCreationResult
+     */
+    Id?: string | null;
+}
+
+

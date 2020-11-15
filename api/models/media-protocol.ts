@@ -13,6 +13,21 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum MediaProtocol {
+    File = 'File',
+    Http = 'Http',
+    Rtmp = 'Rtmp',
+    Rtsp = 'Rtsp',
+    Udp = 'Udp',
+    Rtp = 'Rtp',
+    Ftp = 'Ftp'
+}
+
+
+

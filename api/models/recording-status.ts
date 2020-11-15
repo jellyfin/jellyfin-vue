@@ -13,6 +13,21 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum RecordingStatus {
+    New = 'New',
+    InProgress = 'InProgress',
+    Completed = 'Completed',
+    Cancelled = 'Cancelled',
+    ConflictedOk = 'ConflictedOk',
+    ConflictedNotOk = 'ConflictedNotOk',
+    Error = 'Error'
+}
+
+
+

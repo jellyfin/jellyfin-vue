@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Class ParentalRating.
+ * @export
+ * @interface ParentalRating
+ */
+export interface ParentalRating {
+    /**
+     * Gets or sets the name.
+     * @type {string}
+     * @memberof ParentalRating
+     */
+    Name?: string | null;
+    /**
+     * Gets or sets the value.
+     * @type {number}
+     * @memberof ParentalRating
+     */
+    Value?: number;
+}
+
+

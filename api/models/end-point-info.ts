@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface EndPointInfo
+ */
+export interface EndPointInfo {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EndPointInfo
+     */
+    IsLocal?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof EndPointInfo
+     */
+    IsInNetwork?: boolean;
+}
+
+

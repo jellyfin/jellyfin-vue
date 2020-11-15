@@ -13,6 +13,22 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ChannelMediaContentType {
+    Clip = 'Clip',
+    Podcast = 'Podcast',
+    Trailer = 'Trailer',
+    Movie = 'Movie',
+    Episode = 'Episode',
+    Song = 'Song',
+    MovieExtra = 'MovieExtra',
+    TvExtra = 'TvExtra'
+}
+
+
+

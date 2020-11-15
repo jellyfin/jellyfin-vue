@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface CollectionCreationResult
+ */
+export interface CollectionCreationResult {
+    /**
+     * 
+     * @type {string}
+     * @memberof CollectionCreationResult
+     */
+    Id?: string;
+}
+
+

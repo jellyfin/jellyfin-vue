@@ -13,6 +13,21 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ChannelItemSortField {
+    Name = 'Name',
+    CommunityRating = 'CommunityRating',
+    PremiereDate = 'PremiereDate',
+    DateCreated = 'DateCreated',
+    Runtime = 'Runtime',
+    PlayCount = 'PlayCount',
+    CommunityPlayCount = 'CommunityPlayCount'
+}
+
+
+

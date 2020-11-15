@@ -13,6 +13,21 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum LogLevel {
+    Trace = 'Trace',
+    Debug = 'Debug',
+    Information = 'Information',
+    Warning = 'Warning',
+    Error = 'Error',
+    Critical = 'Critical',
+    None = 'None'
+}
+
+
+

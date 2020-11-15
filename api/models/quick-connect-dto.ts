@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * The quick connect request body.
+ * @export
+ * @interface QuickConnectDto
+ */
+export interface QuickConnectDto {
+    /**
+     * Gets or sets the quick connect token.
+     * @type {string}
+     * @memberof QuickConnectDto
+     */
+    Token: string;
+}
+
+

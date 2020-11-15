@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * The startup user DTO.
+ * @export
+ * @interface StartupUserDto
+ */
+export interface StartupUserDto {
+    /**
+     * Gets or sets the username.
+     * @type {string}
+     * @memberof StartupUserDto
+     */
+    Name?: string | null;
+    /**
+     * Gets or sets the user\'s password.
+     * @type {string}
+     * @memberof StartupUserDto
+     */
+    Password?: string | null;
+}
+
+

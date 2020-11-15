@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum Video3DFormat {
+    HalfSideBySide = 'HalfSideBySide',
+    FullSideBySide = 'FullSideBySide',
+    FullTopAndBottom = 'FullTopAndBottom',
+    HalfTopAndBottom = 'HalfTopAndBottom',
+    MVC = 'MVC'
+}
+
+
+

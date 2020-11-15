@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface BrandingOptions
+ */
+export interface BrandingOptions {
+    /**
+     * Gets or sets the login disclaimer.
+     * @type {string}
+     * @memberof BrandingOptions
+     */
+    LoginDisclaimer?: string | null;
+    /**
+     * Gets or sets the custom CSS.
+     * @type {string}
+     * @memberof BrandingOptions
+     */
+    CustomCss?: string | null;
+}
+
+

@@ -13,6 +13,20 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ProgramAudio {
+    Mono = 'Mono',
+    Stereo = 'Stereo',
+    Dolby = 'Dolby',
+    DolbyDigital = 'DolbyDigital',
+    Thx = 'Thx',
+    Atmos = 'Atmos'
+}
+
+
+

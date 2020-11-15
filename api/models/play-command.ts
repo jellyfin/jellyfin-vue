@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum PlayCommand.
+ * @export
+ * @enum {string}
+ */
+export enum PlayCommand {
+    PlayNow = 'PlayNow',
+    PlayNext = 'PlayNext',
+    PlayLast = 'PlayLast',
+    PlayInstantMix = 'PlayInstantMix',
+    PlayShuffle = 'PlayShuffle'
+}
+
+
+

@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum LocationType.
+ * @export
+ * @enum {string}
+ */
+export enum LocationType {
+    FileSystem = 'FileSystem',
+    Remote = 'Remote',
+    Virtual = 'Virtual',
+    Offline = 'Offline'
+}
+
+
+

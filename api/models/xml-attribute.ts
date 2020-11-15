@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface XmlAttribute
+ */
+export interface XmlAttribute {
+    /**
+     * 
+     * @type {string}
+     * @memberof XmlAttribute
+     */
+    Name?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof XmlAttribute
+     */
+    Value?: string | null;
+}
+
+

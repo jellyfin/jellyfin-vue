@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum ImageOutputFormat.
+ * @export
+ * @enum {string}
+ */
+export enum ImageFormat {
+    Bmp = 'Bmp',
+    Gif = 'Gif',
+    Jpg = 'Jpg',
+    Png = 'Png',
+    Webp = 'Webp'
+}
+
+
+

@@ -13,6 +13,16 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum ConfigurationPageType.
+ * @export
+ * @enum {string}
+ */
+export enum ConfigurationPageType {
+    PluginConfiguration = 'PluginConfiguration',
+    None = 'None'
+}
+
+
+

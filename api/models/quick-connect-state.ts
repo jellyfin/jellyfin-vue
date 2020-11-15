@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Quick connect state.
+ * @export
+ * @enum {string}
+ */
+export enum QuickConnectState {
+    Unavailable = 'Unavailable',
+    Available = 'Available',
+    Active = 'Active'
+}
+
+
+

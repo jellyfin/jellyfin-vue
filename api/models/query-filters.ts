@@ -13,6 +13,26 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+import { NameGuidPair } from './name-guid-pair';
+
+/**
+ * 
+ * @export
+ * @interface QueryFilters
+ */
+export interface QueryFilters {
+    /**
+     * 
+     * @type {Array<NameGuidPair>}
+     * @memberof QueryFilters
+     */
+    Genres?: Array<NameGuidPair> | null;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof QueryFilters
+     */
+    Tags?: Array<string> | null;
+}
+
+

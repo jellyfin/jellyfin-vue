@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface LocalizationOption
+ */
+export interface LocalizationOption {
+    /**
+     * 
+     * @type {string}
+     * @memberof LocalizationOption
+     */
+    Name?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LocalizationOption
+     */
+    Value?: string | null;
+}
+
+

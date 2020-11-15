@@ -13,6 +13,19 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface BaseItemPersonImageBlurHashesPrimary
+ */
+export interface BaseItemPersonImageBlurHashesPrimary {
+    /**
+     * 
+     * @type {string}
+     * @memberof BaseItemPersonImageBlurHashesPrimary
+     */
+    string?: string;
+}
+
+

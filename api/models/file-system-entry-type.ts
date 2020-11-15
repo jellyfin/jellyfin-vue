@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum FileSystemEntryType.
+ * @export
+ * @enum {string}
+ */
+export enum FileSystemEntryType {
+    File = 'File',
+    Directory = 'Directory',
+    NetworkComputer = 'NetworkComputer',
+    NetworkShare = 'NetworkShare'
+}
+
+
+

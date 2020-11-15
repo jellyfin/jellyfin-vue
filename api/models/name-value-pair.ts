@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface NameValuePair
+ */
+export interface NameValuePair {
+    /**
+     * Gets or sets the name.
+     * @type {string}
+     * @memberof NameValuePair
+     */
+    Name?: string | null;
+    /**
+     * Gets or sets the value.
+     * @type {string}
+     * @memberof NameValuePair
+     */
+    Value?: string | null;
+}
+
+

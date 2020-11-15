@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface NameGuidPair
+ */
+export interface NameGuidPair {
+    /**
+     * 
+     * @type {string}
+     * @memberof NameGuidPair
+     */
+    Name?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof NameGuidPair
+     */
+    Id?: string;
+}
+
+

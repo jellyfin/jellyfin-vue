@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ChannelMediaType {
+    Audio = 'Audio',
+    Video = 'Video',
+    Photo = 'Photo'
+}
+
+
+

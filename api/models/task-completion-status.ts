@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum TaskCompletionStatus.
+ * @export
+ * @enum {string}
+ */
+export enum TaskCompletionStatus {
+    Completed = 'Completed',
+    Failed = 'Failed',
+    Cancelled = 'Cancelled',
+    Aborted = 'Aborted'
+}
+
+
+

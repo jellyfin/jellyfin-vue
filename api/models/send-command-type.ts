@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum SendCommandType.
+ * @export
+ * @enum {string}
+ */
+export enum SendCommandType {
+    Play = 'Play',
+    Pause = 'Pause',
+    Seek = 'Seek'
+}
+
+
+

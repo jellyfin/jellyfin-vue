@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Class RepositoryInfo.
+ * @export
+ * @interface RepositoryInfo
+ */
+export interface RepositoryInfo {
+    /**
+     * Gets or sets the name.
+     * @type {string}
+     * @memberof RepositoryInfo
+     */
+    Name?: string | null;
+    /**
+     * Gets or sets the URL.
+     * @type {string}
+     * @memberof RepositoryInfo
+     */
+    Url?: string | null;
+}
+
+

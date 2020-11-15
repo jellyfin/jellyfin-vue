@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum TaskState.
+ * @export
+ * @enum {string}
+ */
+export enum TaskState {
+    Idle = 'Idle',
+    Cancelling = 'Cancelling',
+    Running = 'Running'
+}
+
+
+

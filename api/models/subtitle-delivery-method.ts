@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum SubtitleDeliveryMethod {
+    Encode = 'Encode',
+    Embed = 'Embed',
+    External = 'External',
+    Hls = 'Hls'
+}
+
+
+

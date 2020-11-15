@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface PathSubstitution
+ */
+export interface PathSubstitution {
+    /**
+     * 
+     * @type {string}
+     * @memberof PathSubstitution
+     */
+    From?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PathSubstitution
+     */
+    To?: string | null;
+}
+
+

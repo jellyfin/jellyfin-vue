@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum VideoType.
+ * @export
+ * @enum {string}
+ */
+export enum VideoType {
+    VideoFile = 'VideoFile',
+    Iso = 'Iso',
+    Dvd = 'Dvd',
+    BluRay = 'BluRay'
+}
+
+
+

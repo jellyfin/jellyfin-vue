@@ -13,6 +13,16 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum IsoType.
+ * @export
+ * @enum {string}
+ */
+export enum IsoType {
+    Dvd = 'Dvd',
+    BluRay = 'BluRay'
+}
+
+
+

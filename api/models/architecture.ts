@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum Architecture {
+    X86 = 'X86',
+    X64 = 'X64',
+    Arm = 'Arm',
+    Arm64 = 'Arm64'
+}
+
+
+

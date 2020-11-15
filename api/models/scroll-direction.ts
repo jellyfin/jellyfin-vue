@@ -13,6 +13,16 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * An enum representing the axis that should be scrolled.
+ * @export
+ * @enum {string}
+ */
+export enum ScrollDirection {
+    Horizontal = 'Horizontal',
+    Vertical = 'Vertical'
+}
+
+
+

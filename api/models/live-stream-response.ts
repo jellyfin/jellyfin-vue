@@ -13,6 +13,20 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+import { MediaSourceInfo } from './media-source-info';
+
+/**
+ * 
+ * @export
+ * @interface LiveStreamResponse
+ */
+export interface LiveStreamResponse {
+    /**
+     * 
+     * @type {MediaSourceInfo}
+     * @memberof LiveStreamResponse
+     */
+    MediaSource?: MediaSourceInfo;
+}
+
+

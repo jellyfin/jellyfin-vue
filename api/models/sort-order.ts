@@ -13,6 +13,16 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * An enum representing the sorting order.
+ * @export
+ * @enum {string}
+ */
+export enum SortOrder {
+    Ascending = 'Ascending',
+    Descending = 'Descending'
+}
+
+
+

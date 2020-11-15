@@ -13,6 +13,25 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @interface TimerEventInfo
+ */
+export interface TimerEventInfo {
+    /**
+     * 
+     * @type {string}
+     * @memberof TimerEventInfo
+     */
+    Id?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof TimerEventInfo
+     */
+    ProgramId?: string | null;
+}
+
+

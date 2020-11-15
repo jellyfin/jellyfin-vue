@@ -13,6 +13,16 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum ChannelType.
+ * @export
+ * @enum {string}
+ */
+export enum ChannelType {
+    TV = 'TV',
+    Radio = 'Radio'
+}
+
+
+

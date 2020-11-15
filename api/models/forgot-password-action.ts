@@ -13,6 +13,17 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ForgotPasswordAction {
+    ContactAdmin = 'ContactAdmin',
+    PinCode = 'PinCode',
+    InNetworkRequired = 'InNetworkRequired'
+}
+
+
+

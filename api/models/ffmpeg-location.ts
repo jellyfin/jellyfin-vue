@@ -13,6 +13,18 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
-export * from "./models";
+
+/**
+ * Enum describing the location of the FFmpeg tool.
+ * @export
+ * @enum {string}
+ */
+export enum FFmpegLocation {
+    NotFound = 'NotFound',
+    SetByArgument = 'SetByArgument',
+    Custom = 'Custom',
+    System = 'System'
+}
+
+
+
