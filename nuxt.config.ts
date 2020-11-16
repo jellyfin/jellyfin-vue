@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
@@ -197,6 +198,14 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    // @ts-ignore -- Undocumented options
+    loadingScreen: {
+      image: 'icon.png',
+      colors: {
+        client: '#00A4DC',
+        modern: '#424242'
+      }
+    },
     babel: {
       // envName: server, client, modern
       presets() {
