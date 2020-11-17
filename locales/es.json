@@ -36,5 +36,17 @@
     "serverVersionTooLow": "La versión del servidor tiene que ser superior a 10.7.0",
     "noNetworkConnection": "No hay conexión a la red",
     "movies": "Películas",
-    "browserNotSupported": "Tu navegador no está soportado para reproducir este archivo."
+    "browserNotSupported": "Tu navegador no está soportado para reproducir este archivo.",
+    "years": "Años",
+    "videoTypes": "Tipos de Vídeo",
+    "parentalRatings": "Clasificaiones Parentales",
+    "genres": "Géneros",
+    "specialFeatures": "Contenido Adicional",
+    "trailer": "Trailer",
+    "subtitles": "Subtítulos",
+    "features": "Características",
+    "favorite": "Favorito",
+    "played": "Reproducido",
+    "status": "Estado",
+    "filtersNotFound": "Imposible cargar filtros"
 }
