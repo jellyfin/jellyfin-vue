@@ -1,99 +1,38 @@
 import { ActionTree, MutationTree } from 'vuex';
+import { PublicSystemInfo } from '~/api';
 
-export interface ServerState {
-  Id: string;
-  LocalAddress: string;
-  ServerAddress: string;
-  OperatingSystem: string;
-  ProductName: string;
-  ServerName: string;
-  StartupWizardCompleted: boolean;
-  Version: string;
+export interface ServerInfo {
+  address: string;
+  publicInfo: PublicSystemInfo;
+}
+
+interface ServerState {
+  serverList: ServerInfo[];
 }
 
 export const state = (): ServerState => ({
-  Id: '',
-  LocalAddress: '',
-  ServerAddress: '',
-  OperatingSystem: '',
-  ProductName: '',
-  ServerName: '',
-  StartupWizardCompleted: true,
-  Version: ''
+  serverList: []
 });
 
-interface MutationPayload {
-  Id: string;
-  LocalAddress: string;
-  ServerAddress: string;
-  OperatingSystem: string;
-  ProductName: string;
-  ServerName: string;
-  StartupWizardCompleted: boolean;
-  Version: string;
-}
-
 export const mutations: MutationTree<ServerState> = {
-  SET_SERVER(
-    state: ServerState,
-    {
-      Id,
-      LocalAddress,
-      ServerAddress,
-      OperatingSystem,
-      ProductName,
-      ServerName,
-      StartupWizardCompleted,
-      Version
-    }: MutationPayload
-  ) {
-    state.Id = Id;
-    state.LocalAddress = LocalAddress;
-    state.ServerAddress = ServerAddress;
-    state.OperatingSystem = OperatingSystem;
-    state.ProductName = ProductName;
-    state.ServerName = ServerName;
-    state.StartupWizardCompleted = StartupWizardCompleted;
-    state.Version = Version;
+  ADD_SERVER(state: ServerState, SToadd: ServerInfo) {
+    state.serverList = [...state.serverList, SToadd];
   },
-  CLEAR_SERVER(state: ServerState) {
-    state.Id = '';
-    state.LocalAddress = '';
-    state.ServerAddress = '';
-    state.OperatingSystem = '';
-    state.ProductName = '';
-    state.ServerName = '';
-    state.StartupWizardCompleted = false;
-    state.Version = '';
+  REMOVE_SERVER(state: ServerState, serverId: string) {
+    state.serverList = state.serverList.filter(
+      (item) => item.publicInfo.Id !== serverId
+    );
   }
 };
 
 export const actions: ActionTree<ServerState, ServerState> = {
-  setServer(
-    { commit },
-    {
-      Id,
-      LocalAddress,
-      ServerAddress,
-      OperatingSystem,
-      ProductName,
-      ServerName,
-      StartupWizardCompleted,
-      Version
-    }: MutationPayload
-  ) {
-    commit('SET_SERVER', {
-      Id,
-      LocalAddress,
-      ServerAddress,
-      OperatingSystem,
-      ProductName,
-      ServerName,
-      StartupWizardCompleted,
-      Version
+  addServer({ commit }, { address, publicInfo }: ServerInfo) {
+    commit('ADD_SERVER', {
+      address,
+      publicInfo
     });
   },
-  clearServer({ commit }) {
-    commit('CLEAR_SERVER');
+  removeServer({ commit }, serverInfo) {
+    commit('REMOVE_SERVER', serverInfo.publicInfo.Id);
   }
 };
