@@ -48,5 +48,12 @@
     "favorite": "Favorito",
     "played": "Reproducido",
     "status": "Estado",
-    "filtersNotFound": "Imposible cargar filtros"
+    "filtersNotFound": "Imposible cargar filtros",
+    "themeVideo": "Vídeo temático",
+    "dislikes": "No me gusta",
+    "likes": "Me gusta",
+    "unhandledException": "Excepción no controlada",
+    "themeSong": "Tema Musical",
+    "resumable": "Se puede continuar",
+    "unplayed": "No reproducido"
 }
