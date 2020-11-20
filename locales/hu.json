@@ -42,14 +42,15 @@
     "favorite": "Kedvenc",
     "likes": "Kedvelések",
     "dislikes": "Nem tetszések",
-    "features": "",
+    "features": "Funkciók",
     "subtitles": "Feliratok",
     "trailer": "Előzetes",
-    "specialFeatures": "",
+    "specialFeatures": "Speciális funkciók",
     "themeSong": "Főcímdal",
     "themeVideo": "Főcím",
     "genres": "Műfaj",
     "parentalRatings": "Szülői besorolás",
     "videoTypes": "Videó típusok",
-    "years": "Évek"
+    "years": "Évek",
+    "unhandledException": "Kezeletlen kivétel"
 }
