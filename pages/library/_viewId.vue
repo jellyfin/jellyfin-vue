@@ -196,82 +196,88 @@ export default Vue.extend({
       this.refreshItems();
     },
     async refreshItems() {
-      let itemsResponse;
-      switch (this.viewType) {
-        case 'MusicArtist':
-          itemsResponse = (
-            await this.$api.artists.getAlbumArtists({
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId
-            })
-          ).data;
-          break;
-        case 'Actor':
-          itemsResponse = (
-            await this.$api.persons.getPersons({
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId,
-              personTypes: 'Actor'
-            })
-          ).data;
-          break;
-        case 'Genre':
-          itemsResponse = (
-            await this.$api.genres.getGenres({
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId
-            })
-          ).data;
-          break;
-        case 'MusicGenre':
-          itemsResponse = (
-            await this.$api.musicGenres.getMusicGenres({
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId
-            })
-          ).data;
-          break;
-        case 'Studio':
-          itemsResponse = (
-            await this.$api.studios.getStudios({
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId
-            })
-          ).data;
-          break;
-        default:
-          itemsResponse = (
-            await this.$api.items.getItems({
-              uId: this.$auth.user.Id,
-              userId: this.$auth.user.Id,
-              parentId: this.$route.params.viewId,
-              includeItemTypes: this.viewType,
-              recursive: true,
-              sortBy: this.sortBy,
-              sortOrder: 'Ascending',
-              filters: this.statusFilter ? this.statusFilter : undefined,
-              genres: this.genresFilter ? this.genresFilter : undefined,
-              years: this.yearsFilter ? this.yearsFilter : undefined,
-              officialRatings: this.ratingsFilter
-                ? this.ratingsFilter
-                : undefined,
-              hasSubtitles: this.filterHasSubtitles ? true : undefined,
-              hasTrailer: this.filterHasTrailer ? true : undefined,
-              hasSpecialFeature: this.filterHasSpecialFeature
-                ? true
-                : undefined,
-              hasThemeSong: this.filterHasThemeSong ? true : undefined,
-              hasThemeVideo: this.filterHasThemeVideo ? true : undefined,
-              isHd: this.filterIsHd ? true : undefined,
-              is4K: this.filterIs4k ? true : undefined,
-              is3D: this.filterIs3d ? true : undefined
-            })
-          ).data;
-          break;
-      }
+      try {
+        let itemsResponse;
+        switch (this.viewType) {
+          case 'MusicArtist':
+            itemsResponse = (
+              await this.$api.artists.getAlbumArtists({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'Actor':
+            itemsResponse = (
+              await this.$api.persons.getPersons({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId,
+                personTypes: 'Actor'
+              })
+            ).data;
+            break;
+          case 'Genre':
+            itemsResponse = (
+              await this.$api.genres.getGenres({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'MusicGenre':
+            itemsResponse = (
+              await this.$api.musicGenres.getMusicGenres({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'Studio':
+            itemsResponse = (
+              await this.$api.studios.getStudios({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          default:
+            itemsResponse = (
+              await this.$api.items.getItems({
+                uId: this.$auth.user.Id,
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId,
+                includeItemTypes: this.viewType,
+                recursive: true,
+                sortBy: this.sortBy,
+                sortOrder: 'Ascending',
+                filters: this.statusFilter ? this.statusFilter : undefined,
+                genres: this.genresFilter ? this.genresFilter : undefined,
+                years: this.yearsFilter ? this.yearsFilter : undefined,
+                officialRatings: this.ratingsFilter
+                  ? this.ratingsFilter
+                  : undefined,
+                hasSubtitles: this.filterHasSubtitles ? true : undefined,
+                hasTrailer: this.filterHasTrailer ? true : undefined,
+                hasSpecialFeature: this.filterHasSpecialFeature
+                  ? true
+                  : undefined,
+                hasThemeSong: this.filterHasThemeSong ? true : undefined,
+                hasThemeVideo: this.filterHasThemeVideo ? true : undefined,
+                isHd: this.filterIsHd ? true : undefined,
+                is4K: this.filterIs4k ? true : undefined,
+                is3D: this.filterIs3d ? true : undefined
+              })
+            ).data;
+            break;
+        }
 
-      this.items = itemsResponse.Items;
-      this.itemsCount = itemsResponse.TotalRecordCount;
+        this.items = itemsResponse.Items;
+        this.itemsCount = itemsResponse.TotalRecordCount;
+      } catch (error) {
+        console.error('Unable to refresh items:', error);
+        this.items = [];
+        this.itemsCount = 0;
+      }
 
       this.loading = false;
     }
