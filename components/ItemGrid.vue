@@ -42,6 +42,7 @@
 <script lang="ts">
 import { chunk } from 'lodash';
 import Vue from 'vue';
+import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   props: {
@@ -58,45 +59,43 @@ export default Vue.extend({
     }
   },
   computed: {
-    itemsChunks: {
-      get() {
-        let cardsPerLine = 8;
+    itemsChunks(): Array<{ [id: number]: BaseItemDto }> {
+      let cardsPerLine = 8;
 
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (this.$vuetify.breakpoint.smAndDown) {
+        cardsPerLine = 3;
+      } else if (
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        if (this.$vuetify.breakpoint.smAndDown) {
-          cardsPerLine = 3;
-        } else if (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this.$vuetify.breakpoint.smAndUp &&
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          !this.$vuetify.breakpoint.lgAndUp
-        ) {
-          cardsPerLine = 4;
-        } else if (
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this.$vuetify.breakpoint.lgAndUp &&
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          !this.$vuetify.breakpoint.xlOnly
-        ) {
-          cardsPerLine = 6;
-        }
-
-        const chunks = chunk(this.items, cardsPerLine);
-
-        const keyedChunks = chunks.map((itemChunk, index) => {
-          return {
-            id: index,
-            chunk: itemChunk
-          };
-        });
-
-        return keyedChunks;
+        this.$vuetify.breakpoint.smAndUp &&
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        !this.$vuetify.breakpoint.lgAndUp
+      ) {
+        cardsPerLine = 4;
+      } else if (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.$vuetify.breakpoint.lgAndUp &&
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        !this.$vuetify.breakpoint.xlOnly
+      ) {
+        cardsPerLine = 6;
       }
+
+      const chunks = chunk(this.items, cardsPerLine);
+
+      const keyedChunks = chunks.map((itemChunk, index) => {
+        return {
+          id: index,
+          chunk: itemChunk
+        };
+      });
+
+      return keyedChunks;
     }
   }
 });
