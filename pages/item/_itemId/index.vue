@@ -84,7 +84,7 @@
                 <v-col cols="7">
                   <v-chip
                     v-for="genre in item.GenreItems"
-                    :key="genre"
+                    :key="genre.Id"
                     class="ma-2"
                     small
                     link

@@ -124,9 +124,11 @@ export default Vue.extend({
       }
     };
   },
-  /**
-   * Gets related items to be rendered
-   */
+  watch: {
+    item() {
+      this.refreshItems();
+    }
+  },
   beforeMount() {
     try {
       this.refreshItems();
@@ -149,11 +151,6 @@ export default Vue.extend({
       }
 
       this.loading = false;
-    },
-    watch: {
-      item() {
-        this.refreshItems();
-      }
     }
   }
 });
