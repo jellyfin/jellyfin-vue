@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ItemFields } from '~/api';
+import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({

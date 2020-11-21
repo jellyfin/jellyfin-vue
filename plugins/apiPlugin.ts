@@ -67,6 +67,7 @@ import { Configuration } from '~/api/configuration';
 
 interface ApiPlugin {
   activityLog: ActivityLogApi;
+  albums: AlbumsApi;
   apiKey: ApiKeyApi;
   artists: ArtistsApi;
   audio: AudioApi;
@@ -157,6 +158,7 @@ const apiPlugin: Plugin = (context, inject) => {
 
   const api: ApiPlugin = {
     activityLog: new ActivityLogApi(config, '', contextAxios),
+    albums: new AlbumsApi(config, '', contextAxios),
     apiKey: new ApiKeyApi(config, '', contextAxios),
     artists: new ArtistsApi(config, '', contextAxios),
     audio: new AudioApi(config, '', contextAxios),

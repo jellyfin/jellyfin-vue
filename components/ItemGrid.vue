@@ -6,7 +6,7 @@
     :buffer="$vuetify.breakpoint.height * 1.5"
     page-mode
   >
-    <template v-slot="{ item, index, active }">
+    <template #default="{ item, index, active }">
       <dynamic-scroller-item
         :item="item"
         :active="active"

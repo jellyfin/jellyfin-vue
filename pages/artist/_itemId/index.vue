@@ -23,7 +23,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-tabs background-color="transparent" v-model="activeTab">
+            <v-tabs v-model="activeTab" background-color="transparent">
               <v-tab v-for="(tab, index) in tabs" :key="index">{{ tab }}</v-tab>
             </v-tabs>
             <v-tabs-items v-model="activeTab" class="transparent">

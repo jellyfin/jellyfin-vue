@@ -51,7 +51,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
-import { BaseItemDto } from '~/api/api';
+import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   data() {
@@ -59,6 +59,11 @@ export default Vue.extend({
       genre: [] as BaseItemDto,
       items: [] as BaseItemDto[],
       loaded: false
+    };
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
     };
   },
   computed: {
@@ -136,11 +141,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
   }
 });
 </script>
