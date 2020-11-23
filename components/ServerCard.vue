@@ -2,14 +2,14 @@
   <v-card :loading="loading" class="mb-3">
     <v-row>
       <div class="ml-2">
-        <v-card-title>{{ serverInfo.ServerName }}</v-card-title>
-        <v-card-subtitle>{{ serverInfo.ServerAddress }}</v-card-subtitle>
+        <v-card-title>{{ serverInfo.publicInfo.ServerName }}</v-card-title>
+        <v-card-subtitle>{{ serverInfo.address }}</v-card-subtitle>
       </div>
       <v-card-actions class="ml-auto mr-2">
         <v-btn icon>
           <v-icon>mdi-information-outline</v-icon>
         </v-btn>
-        <v-btn icon @click="removeServer">
+        <v-btn icon @click="removeServerFromStore">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn icon :disabled="loading" @click="setServer">
@@ -24,18 +24,14 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import compareVersions from 'compare-versions';
+import { PublicSystemInfo } from '~/api';
 
 export default Vue.extend({
   props: {
     serverInfo: {
       type: Object as () => {
-        Id: string;
-        ServerAddress: string;
-        OperatingSystem: string;
-        ProductName: string;
-        ServerName: string;
-        StartUpWizardCompleted: boolean;
-        Version: string;
+        address: string;
+        publicInfo: PublicSystemInfo;
       },
       required: true
     }
@@ -47,10 +43,10 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    ...mapActions('servers', ['setServer', 'clearServer']),
+    ...mapActions('servers', ['setServer', 'removeServer']),
     async setServer() {
       this.loading = true;
-      this.$axios.setBaseURL(this.serverInfo.ServerAddress);
+      this.$axios.setBaseURL(this.serverInfo.address);
       try {
         const publicInfo = await this.$api.system.getPublicSystemInfo();
         if (
@@ -75,9 +71,8 @@ export default Vue.extend({
       }
       this.loading = false;
     },
-    removeServer() {
-      this.clearServer();
-      console.log(this.$store.state);
+    removeServerFromStore() {
+      this.removeServer(this.serverInfo);
     }
   }
 });

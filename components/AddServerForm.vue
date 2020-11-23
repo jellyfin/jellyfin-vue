@@ -55,7 +55,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('servers', ['setServer', 'clearServer']),
+    ...mapActions('servers', ['addServer', 'clearServer']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async connectServer() {
       this.loading = true;
@@ -68,9 +68,9 @@ export default Vue.extend({
           if (!publicInfo.data.StartupWizardCompleted) {
             // Redirect To Startup Wizard
           } else {
-            this.setServer({
-              ...publicInfo.data,
-              ServerAddress: this.serverUrl
+            this.addServer({
+              publicInfo: publicInfo.data,
+              address: this.serverUrl
             });
             this.$router.push('/login');
           }
