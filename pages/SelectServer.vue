@@ -2,8 +2,15 @@
   <v-container fill-height>
     <v-row align="center" justify="center">
       <v-col md="4">
-        <h1 class="text-h4 mb-6 text-center">{{ $t('login') }}</h1>
-        <login-form />
+        <h1 class="text-h4 mb-6 text-center">{{ $t('selectServer') }}</h1>
+        <div v-if="$store.state.servers.serverList">
+          <server-card
+            v-for="server in $store.state.servers.serverList"
+            :key="server.publicInfo.Id"
+            :server-info="server"
+          ></server-card>
+        </div>
+        <add-server-form />
       </v-col>
     </v-row>
   </v-container>
@@ -15,6 +22,7 @@ import { mapActions } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
+  auth: false,
   middleware: 'serverMiddleware',
   head() {
     return {
@@ -22,7 +30,7 @@ export default Vue.extend({
     };
   },
   created() {
-    this.setPageTitle({ title: this.$t('login') });
+    this.setPageTitle({ title: this.$t('selectServer') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])

@@ -91,7 +91,7 @@ const config: NuxtConfig = {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['user', 'deviceProfile']
+        localStorage: ['user', 'deviceProfile', 'servers']
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage
@@ -208,7 +208,7 @@ const config: NuxtConfig = {
     },
     babel: {
       // envName: server, client, modern
-      presets() {
+      presets(): any {
         return [
           [
             '@nuxt/babel-preset-app',
