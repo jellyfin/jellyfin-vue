@@ -91,10 +91,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-/* HACK: Snackbar positioning -- See: https://github.com/vuetifyjs/vuetify/issues/11781#issuecomment-655689025 */
-div.v-snack:not(.v-snack--absolute) {
-  height: 100%;
-}
-</style>

@@ -48,11 +48,9 @@ export default Vue.extend({
       this.loading = true;
       this.$axios.setBaseURL(this.serverInfo.address);
       try {
-        const publicInfo = await this.$api.system.getPublicSystemInfo();
-        if (
-          compareVersions.compare(publicInfo.data.Version || '', '10.7.0', '>=')
-        ) {
-          if (!publicInfo.data.StartupWizardCompleted) {
+        const publicInfo = (await this.$api.system.getPublicSystemInfo()).data;
+        if (compareVersions.compare(publicInfo.Version || '', '10.7.0', '>=')) {
+          if (!publicInfo.StartupWizardCompleted) {
             // Redirect To Startup Wizard
           } else {
             this.$router.push('/login');
@@ -64,6 +62,7 @@ export default Vue.extend({
           });
         }
       } catch (error) {
+        this.$axios.setBaseURL('');
         this.pushSnackbarMessage({
           message: this.$t('serverNotFound'),
           color: 'error'
@@ -77,10 +76,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-/* HACK: Snackbar positioning -- See: https://github.com/vuetifyjs/vuetify/issues/11781#issuecomment-655689025 */
-div.v-snack:not(.v-snack--absolute) {
-  height: 100%;
-}
-</style>

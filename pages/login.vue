@@ -15,6 +15,7 @@ import { mapActions } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
+  middleware: 'serverMiddleware',
   head() {
     return {
       title: this.$store.state.page.title
@@ -22,9 +23,6 @@ export default Vue.extend({
   },
   created() {
     this.setPageTitle({ title: this.$t('login') });
-    if (!this.$axios.defaults.baseURL) {
-      this.$router.push('/selectServer');
-    }
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])
