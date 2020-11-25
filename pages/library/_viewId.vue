@@ -21,7 +21,7 @@
       />
     </v-app-bar>
     <v-container class="after-second-toolbar">
-      <item-grid v-if="items.length" :loading="loading" :items="items">
+      <item-grid :loading="loading" :items="items">
         <h1 class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
@@ -154,6 +154,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     onChangeType(type: string) {
       this.viewType = type;
     },
@@ -277,6 +278,10 @@ export default Vue.extend({
         console.error('Unable to refresh items:', error);
         this.items = [];
         this.itemsCount = 0;
+        this.pushSnackbarMessage({
+          message: this.$t('failedToRefreshItems'),
+          color: 'error'
+        });
       }
 
       this.loading = false;
