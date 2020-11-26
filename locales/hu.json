@@ -1,5 +1,5 @@
 {
-    "alphabetically": "Ábécé sorrend",
+    "alphabetically": "Abc sorrend",
     "badRequest": "Hibás lekérdezés. Próbáld újra",
     "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
     "continueListening": "Hallgatás folytatása",
@@ -52,5 +52,10 @@
     "parentalRatings": "Szülői besorolás",
     "videoTypes": "Videó típusok",
     "years": "Évek",
-    "unhandledException": "Kezeletlen kivétel"
+    "unhandledException": "Kezeletlen kivétel",
+    "selectServer": "Szerver kiválasztása",
+    "usernameRequired": "Felhasználónév megadása szükséges",
+    "username": "Felhasználónév",
+    "connect": "Kapcsolódás",
+    "changeServer": "Szerver váltás"
 }
