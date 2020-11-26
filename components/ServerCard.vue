@@ -44,6 +44,7 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer() {
+      // TODO: Merge with the identical method in AddServerForm
       this.loading = true;
       await this.connectServer(this.serverInfo.address);
       this.loading = false;

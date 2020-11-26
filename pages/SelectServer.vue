@@ -23,7 +23,6 @@ import { mapActions } from 'vuex';
 export default Vue.extend({
   layout: 'fullpage',
   auth: false,
-  middleware: 'serverMiddleware',
   head() {
     return {
       title: this.$store.state.page.title

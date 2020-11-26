@@ -109,7 +109,9 @@ const config: NuxtConfig = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: ''
+  },
   /*
    ** Axios-based Authentication
    ** See https://auth.nuxtjs.org/schemes/local.html#options
