@@ -56,5 +56,8 @@
     "filtersNotFound": "Không thể tải bộ lọc",
     "unhandledException": "Tình huống ngoại lệ không thể xử lí được",
     "serverVersionTooLow": "Phiên bản máy chủ phải từ 10.7.0 trở lên",
-    "noNetworkConnection": "Không có kết nối mạng"
+    "noNetworkConnection": "Không có kết nối mạng",
+    "selectServer": "Chọn máy chủ",
+    "connect": "Kết nối",
+    "changeServer": "Đổi máy chủ"
 }
