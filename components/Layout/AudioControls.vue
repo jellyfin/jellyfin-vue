@@ -59,33 +59,7 @@
               <v-icon>mdi-repeat-off</v-icon>
             </v-btn>
           </div>
-          <v-slider
-            :value="sliderValue"
-            hide-details
-            :max="runtime"
-            validate-on-blur
-            thumb-label
-            :step="0"
-            @end="onPositionChange"
-            @change="onPositionChange"
-            @mousedown="onClick"
-            @mouseup="onClick"
-            @input="onInputChange"
-          >
-            <template #prepend>
-              <span class="mt-1">
-                {{ getRuntime(realPosition) }}
-              </span>
-            </template>
-            <template #thumb-label>
-              {{ getRuntime(sliderValue) }}
-            </template>
-            <template #append>
-              <span class="mt-1">
-                {{ getRuntime(runtime) }}
-              </span>
-            </template>
-          </v-slider>
+          <time-slider />
         </div>
       </v-col>
       <v-col cols="3" class="d-none d-md-flex align-center justify-end">
@@ -131,12 +105,6 @@ import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
-  data() {
-    return {
-      clicked: false,
-      currentInput: 0
-    };
-  },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     runtime(): number {
@@ -144,19 +112,6 @@ export default Vue.extend({
     },
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
-    },
-    sliderValue: {
-      get(): number {
-        if (!this.clicked) {
-          return this.$store.state.playbackManager.currentTime;
-        }
-        return this.currentInput;
-      }
-    },
-    realPosition: {
-      get(): number {
-        return this.$store.state.playbackManager.currentTime;
-      }
     }
   },
   methods: {
@@ -175,35 +130,6 @@ export default Vue.extend({
         itemId,
         element
       });
-    },
-    getRuntime(seconds: number): string {
-      const minutes = Math.floor(seconds / 60);
-      seconds = Math.floor(seconds - minutes * 60);
-
-      /**
-       * Formats the second number
-       * E.g. 7 -> 07
-       *
-       * @param {string} seconds - Number to format
-       * @returns {string} Formatted seconds number
-       */
-      function formatSeconds(seconds: string): string {
-        return ('0' + seconds).slice(-2);
-      }
-
-      return `${minutes}:${formatSeconds(seconds.toString())}`;
-    },
-    onPositionChange(value: number): void {
-      if (!this.clicked) {
-        this.changeCurrentTime({ time: value });
-      }
-    },
-    onInputChange(value: number): void {
-      this.currentInput = value;
-    },
-    onClick(): void {
-      this.currentInput = this.realPosition;
-      this.clicked = !this.clicked;
     },
     stopPlayback(): void {
       this.setLastItemIndex();
