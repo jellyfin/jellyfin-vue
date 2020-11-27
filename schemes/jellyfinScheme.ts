@@ -80,7 +80,7 @@ export default class JellyfinScheme {
       let errorMessage = 'unexpectedError';
 
       if (!error.response) {
-        errorMessage = 'serverNotFound';
+        errorMessage = error.message || 'serverNotFound';
       } else if (
         error.response.status === 500 ||
         error.response.status === 401
