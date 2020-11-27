@@ -35,7 +35,7 @@
     "youMightLike": "",
     "shows": "Émissions",
     "moreLikeThis": "Similaires",
-    "browserNotSupported": "Votre navigateur n'est pas supporté pour lire ce fichier.",
+    "browserNotSupported": "Votre navigateur n'est pas pris en charge pour la lecture de ce fichier.",
     "genres": "Genres",
     "years": "Années",
     "videoTypes": "Types de vidéo",
@@ -56,5 +56,6 @@
     "filtersNotFound": "Impossible de charger les filtres",
     "serverVersionTooLow": "La version du serveur doit être 10.7.0 ou plus haut",
     "noNetworkConnection": "Aucune connexion réseau",
-    "unhandledException": "Exception non gérée"
+    "unhandledException": "Exception non gérée",
+    "selectServer": "Sélectionner le serveur"
 }
