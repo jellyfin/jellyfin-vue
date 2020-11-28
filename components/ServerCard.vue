@@ -23,7 +23,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import compareVersions from 'compare-versions';
 import { PublicSystemInfo } from '~/api';
 
 export default Vue.extend({
@@ -43,31 +42,10 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    ...mapActions('servers', ['setServer', 'removeServer']),
+    ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer() {
       this.loading = true;
-      this.$axios.setBaseURL(this.serverInfo.address);
-      try {
-        const publicInfo = (await this.$api.system.getPublicSystemInfo()).data;
-        if (compareVersions.compare(publicInfo.Version || '', '10.7.0', '>=')) {
-          if (!publicInfo.StartupWizardCompleted) {
-            // Redirect To Startup Wizard
-          } else {
-            this.$router.push('/login');
-          }
-        } else {
-          this.pushSnackbarMessage({
-            message: this.$t('serverVersionTooLow'),
-            color: 'error'
-          });
-        }
-      } catch (error) {
-        this.$axios.setBaseURL('');
-        this.pushSnackbarMessage({
-          message: this.$t('serverNotFound'),
-          color: 'error'
-        });
-      }
+      await this.connectServer(this.serverInfo.address);
       this.loading = false;
     },
     removeServerFromStore() {

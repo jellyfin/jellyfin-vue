@@ -4,7 +4,7 @@
       ref="form"
       v-model="validInputs"
       :disabled="loading"
-      @submit.prevent="connectServer"
+      @submit.prevent="connectToServer"
     >
       <v-text-field
         v-model="serverUrl"
@@ -37,7 +37,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import compareVersions from 'compare-versions';
 
 export default Vue.extend({
   data() {
@@ -55,37 +54,10 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('servers', ['addServer', 'clearServer']),
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async connectServer() {
+    ...mapActions('servers', ['connectServer']),
+    connectToServer() {
       this.loading = true;
-      this.$axios.setBaseURL(this.serverUrl);
-      try {
-        const publicInfo = await this.$api.system.getPublicSystemInfo();
-        if (
-          compareVersions.compare(publicInfo.data.Version || '', '10.7.0', '>=')
-        ) {
-          if (!publicInfo.data.StartupWizardCompleted) {
-            // Redirect To Startup Wizard
-          } else {
-            this.addServer({
-              publicInfo: publicInfo.data,
-              address: this.serverUrl
-            });
-            this.$router.push('/login');
-          }
-        } else {
-          this.pushSnackbarMessage({
-            message: this.$t('serverVersionTooLow'),
-            color: 'error'
-          });
-        }
-      } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('serverNotFound'),
-          color: 'error'
-        });
-      }
+      this.connectServer(this.serverUrl);
       this.loading = false;
     }
   }
