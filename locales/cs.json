@@ -59,5 +59,12 @@
     "unhandledException": "Nezachycená výjimka",
     "selectServer": "Vybrat server",
     "connect": "Připojit",
-    "changeServer": "Změnit server"
+    "changeServer": "Změnit server",
+    "shuffleAll": "Náhodně vše",
+    "moreLikeArtist": "Podobné jako {artist}",
+    "disc": "Disk {discNumber}",
+    "byArtist": "od",
+    "biography": "Biografie",
+    "artist": "Interpret",
+    "albums": "Alba"
 }
