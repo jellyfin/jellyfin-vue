@@ -108,19 +108,27 @@ export default Vue.extend({
     this.tracks = tracks;
   },
   methods: {
+    /**
+     * @param {number} ticks The number of ticks to convert to track length
+     * @returns {string} Returns the length of the track in the format XX:XX
+     */
     getRuntime(ticks: number) {
-      /**
-       * @param string
-       * @param pad
-       * @param length
-       */
-      function padLeft(string: string, pad: string, length: number): string {
-        return (new Array(length + 1).join(pad) + string).slice(-length);
-      }
       let seconds = this.ticksToMs(ticks) / 1000;
       const minutes = Math.floor(seconds / 60);
       seconds = Math.floor(seconds - minutes * 60);
-      return `${minutes}:${padLeft(seconds.toString(), '0', 2)}`;
+
+      /**
+       * Formats the second number
+       * E.g. 7 -> 07
+       *
+       * @param {string} seconds Number to format
+       * @returns {string} Formatted seconds number
+       */
+      function formatSeconds(seconds: string): string {
+        return ('0' + seconds).slice(-2);
+      }
+
+      return `${minutes}:${formatSeconds(seconds.toString())}`;
     }
   }
 });
