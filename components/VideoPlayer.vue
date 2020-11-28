@@ -15,6 +15,7 @@ import shaka from 'shaka-player/dist/shaka-player.ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import muxjs from 'mux.js';
+import { mapActions } from 'vuex';
 import 'shaka-player/dist/controls.css';
 
 declare global {
@@ -38,7 +39,9 @@ export default Vue.extend({
   data() {
     return {
       source: '',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player: null as any,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ui: null as any
     };
   },
@@ -48,7 +51,12 @@ export default Vue.extend({
         try {
           await this.player.load(newSource);
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error('Error code', e.code, 'object', e);
+          this.pushSnackbarMessage({
+            message: this.$t('unexpectedError'),
+            error: 'error'
+          });
         }
       }
     }
@@ -69,7 +77,10 @@ export default Vue.extend({
       }
 
       if (mediaSource.SupportsDirectStream) {
-        const directOptions: Record<string, any> = {
+        const directOptions: Record<
+          string,
+          string | boolean | undefined | null
+        > = {
           Static: true,
           mediaSourceId: mediaSource.Id,
           deviceId: this.$store.state.deviceProfile.deviceId,
@@ -120,6 +131,9 @@ export default Vue.extend({
       this.player.unload();
       this.player.destroy();
     }
+  },
+  methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage'])
   }
 });
 </script>
