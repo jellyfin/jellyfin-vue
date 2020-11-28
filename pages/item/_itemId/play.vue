@@ -29,7 +29,7 @@ export default Vue.extend({
         ids: [this.$route.params.itemId]
       });
 
-      if (response?.data?.Items && response.data.Items.length > 0) {
+      if (response?.data?.Items?.[0]) {
         this.item = response.data.Items[0];
       } else {
         throw new Error('Item not found');
