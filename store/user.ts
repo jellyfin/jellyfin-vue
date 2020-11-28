@@ -9,7 +9,7 @@ export interface UserState {
 
 export const state = (): UserState => ({
   id: '',
-  serverUrl: '',
+  serverUrl: 'http://127.0.0.1:8096',
   accessToken: '',
   displayPreferences: {}
 });

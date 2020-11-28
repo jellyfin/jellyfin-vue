@@ -30,25 +30,7 @@
         <skeleton-card v-for="n in 24" :key="n" />
       </v-col>
     </v-row>
-    <dynamic-scroller
-      v-if="items.length"
-      class="scroller"
-      :items="itemsChunks"
-      :min-item-size="350"
-      :buffer="$vuetify.breakpoint.height * 1.5"
-      page-mode
-    >
-      <template #default="{ item, index, active }">
-        <dynamic-scroller-item
-          :item="item"
-          :active="active"
-          :data-index="index"
-          class="card-grid-container"
-        >
-          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
-        </dynamic-scroller-item>
-      </template>
-    </dynamic-scroller>
+    <item-grid v-if="items.length" :items="itemsChunks" />
     <v-row v-else-if="loaded" justify="center">
       <v-col cols="12" class="card-grid-container empty-card-container">
         <skeleton-card v-for="n in 24" :key="n" boilerplate />
@@ -66,11 +48,16 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { chunk } from 'lodash';
-import { BaseItemDto, ItemsApiGetItemsRequest } from '~/api';
+import {
+  BaseItemDto,
+  ItemsApiGetItemsRequest,
+  BaseItemDtoQueryResult
+} from '~/api';
 
 export default Vue.extend({
   data() {
     return {
+      collectionInfo: [] as BaseItemDtoQueryResult,
       items: [] as BaseItemDto[],
       loaded: false,
       sortChoices: [
@@ -126,22 +113,23 @@ export default Vue.extend({
       this.$nuxt.$loading.start();
     });
     try {
-      const collectionInfo = await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
-        userId: this.$auth.user.Id,
-        ids: this.$route.params.viewId
-      });
+      const collectionInfo = (
+        await this.$api.items.getItems({
+          uId: this.$auth.user.Id,
+          userId: this.$auth.user.Id,
+          ids: this.$route.params.viewId
+        })
+      ).data;
+
+      this.collectionInfo = collectionInfo;
 
       if (
-        collectionInfo.data.Items &&
-        (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
-          collectionInfo.data.Items[0].Type === 'Folder')
+        this.collectionInfo.Items &&
+        ['CollectionFolder', 'Folder'].includes(collectionInfo.Items[0].Type)
       ) {
-        this.collectionInfoItem = collectionInfo.data.Items[0];
-
-        if (collectionInfo.data.Items[0].Name) {
+        if (collectionInfo.Items[0].Name) {
           this.setPageTitle({
-            title: collectionInfo.data.Items[0].Name
+            title: collectionInfo.Items[0].Name
           });
         }
 
@@ -156,12 +144,21 @@ export default Vue.extend({
           fields: 'SortName'
         };
 
-        if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-          options.includeItemTypes = 'Series';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-          options.includeItemTypes = 'Movie';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-          options.includeItemTypes = 'Book';
+        switch (this.collectionInfo.Items[0].CollectionType) {
+          case 'tvshows':
+            options.includeItemTypes = 'Series';
+            break;
+          case 'movies':
+            options.includeItemTypes = 'Movie';
+            break;
+          case 'books':
+            options.includeItemTypes = 'Book';
+            break;
+          case 'music':
+            options.includeItemTypes = 'MusicAlbum';
+            break;
+          default:
+            break;
         }
 
         const itemsResponse = await this.$api.items.getItems(options);

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height fluid class="pa-0">
     <video-player
-      v-if="item.MediaType === 'Video'"
+      v-if="item.MediaType === 'Video' || item.MediaType === 'Audio'"
       :item="item"
       :poster="poster"
     />
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ItemFields } from '~/api';
+import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -27,8 +27,7 @@ export default Vue.extend({
       const response = await this.$api.items.getItems({
         uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        ids: this.$route.params.itemId,
-        fields: [ItemFields.Overview, ItemFields.Genres]
+        ids: this.$route.params.itemId
       });
 
       if (response?.data?.Items && response.data.Items.length > 0) {
