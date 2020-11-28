@@ -15,9 +15,9 @@
         :breakpoints="breakpoints"
         fixed-height="true"
       >
-        <vueper-slide v-for="item in relatedItems" :key="item.Id">
+        <vueper-slide v-for="relatedItem in relatedItems" :key="relatedItem.Id">
           <template #content>
-            <card :item="item" />
+            <card :item="relatedItem" />
           </template>
         </vueper-slide>
 
