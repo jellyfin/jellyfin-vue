@@ -59,5 +59,12 @@
     "noNetworkConnection": "Không có kết nối mạng",
     "selectServer": "Chọn máy chủ",
     "connect": "Kết nối",
-    "changeServer": "Đổi máy chủ"
+    "changeServer": "Đổi máy chủ",
+    "artist": "Nghệ sĩ",
+    "shuffleAll": "Trộn tất cả",
+    "moreLikeArtist": "Xem Thêm Tương Tự {artist}",
+    "disc": "Đĩa {discNumber}",
+    "byArtist": "Bởi",
+    "biography": "Tiểu sử",
+    "albums": "Albums"
 }
