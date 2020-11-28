@@ -62,25 +62,15 @@ export default Vue.extend({
     itemsChunks(): Array<{ [id: number]: BaseItemDto }> {
       let cardsPerLine = 8;
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       if (this.$vuetify.breakpoint.smAndDown) {
         cardsPerLine = 3;
       } else if (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         this.$vuetify.breakpoint.smAndUp &&
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         !this.$vuetify.breakpoint.lgAndUp
       ) {
         cardsPerLine = 4;
       } else if (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         this.$vuetify.breakpoint.lgAndUp &&
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         !this.$vuetify.breakpoint.xlOnly
       ) {
         cardsPerLine = 6;
