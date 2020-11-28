@@ -78,6 +78,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -133,10 +134,14 @@ export default Vue.extend({
     try {
       this.refreshItems();
     } catch (error) {
-      console.error('Unable to get related items:', error);
+      this.pushSnackbarMessage({
+        message: this.$t('unableGetRelated'),
+        color: 'error'
+      });
     }
   },
   methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems() {
       this.loading = true;
 
