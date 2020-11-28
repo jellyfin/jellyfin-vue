@@ -46,7 +46,7 @@ class BrowserDetector {
    * @private
    * @static
    * @param {string} key - Key for which to perform a check.
-   * @returns {boolean}
+   * @returns {boolean} Determines if user agent of navigator contains a key
    * @memberof BrowserDetector
    */
   private userAgentContains(key: string) {
@@ -59,7 +59,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Mozilla Firefox.
    *
-   * @returns
+   * @returns {boolean} Determines if browser is Mozilla Firefox
    * @memberof BrowserDetector
    */
   isFirefox() {
@@ -70,7 +70,7 @@ class BrowserDetector {
    * Check if the current platform is Microsoft Edge.
    *
    * @static
-   * @returns {boolean}
+   * @returns {boolean} Determines if browser is Microsoft Edge
    * @memberof BrowserDetector
    */
   isEdge() {
@@ -80,7 +80,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Google Chrome.
    *
-   * @returns
+   * @returns {boolean} Determines if browser is Google Chrome
    * @memberof BrowserDetector
    */
   isChrome() {
@@ -97,7 +97,7 @@ class BrowserDetector {
    * Returns false for non-Safari browsers on macOS, which are independent of
    * Apple.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is from Apple
    * @memberof BrowserDetector
    */
   isApple() {
@@ -109,10 +109,10 @@ class BrowserDetector {
   /**
    * Returns a major version number for Safari, or Safari-based iOS browsers.
    *
-   * @returns
+   * @returns {number | null} The major version number for Safari
    * @memberof BrowserDetector
    */
-  safariVersion() {
+  safariVersion(): number | null {
     // All iOS browsers and desktop Safari will return true for isApple().
     if (!this.isApple()) {
       return null;
@@ -140,7 +140,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen
    * @memberof BrowserDetector
    */
   isTizen() {
@@ -150,7 +150,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen 2
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen 2
    * @memberof BrowserDetector
    */
   isTizen2() {
@@ -160,7 +160,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen 3
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen 3
    * @memberof BrowserDetector
    */
   isTizen3() {
@@ -170,7 +170,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen 4.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen 4
    * @memberof BrowserDetector
    */
   isTizen4() {
@@ -180,7 +180,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen 5.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen 5
    * @memberof BrowserDetector
    */
   isTizen5() {
@@ -190,7 +190,7 @@ class BrowserDetector {
   /**
    * Check if the current platform is Tizen 5.5.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is Tizen 5.5
    * @memberof BrowserDetector
    */
   isTizen55() {
@@ -200,14 +200,17 @@ class BrowserDetector {
   /**
    * Check if the current platform is WebOS.
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is WebOS
    * @memberof BrowserDetector
    */
   isWebOS() {
-    return this.userAgentContains('Web0S');
+    return this.userAgentContains('WebOS');
   }
 
-  isWebOS1() {
+  /**
+   * @returns {boolean} Determines if current platform is WebOS1
+   */
+  isWebOS1(): boolean {
     return (
       this.isWebOS &&
       this.userAgentContains('AppleWebKit/537') &&
@@ -215,7 +218,10 @@ class BrowserDetector {
     );
   }
 
-  isWebOS2() {
+  /**
+   * @returns {boolean} Determines if current platform is WebOS1
+   */
+  isWebOS2(): boolean {
     return (
       this.isWebOS &&
       this.userAgentContains('AppleWebKit/538') &&
@@ -223,28 +229,40 @@ class BrowserDetector {
     );
   }
 
-  isWebOS3() {
+  /**
+   * @returns {boolean} Determines if current platform is WebOS3
+   */
+  isWebOS3(): boolean {
     return this.isWebOS && this.userAgentContains('Chrome/38');
   }
 
-  isWebOS4() {
+  /**
+   * @returns {boolean} Determines if current platform is WebOS4
+   */
+  isWebOS4(): boolean {
     return this.isWebOS && this.userAgentContains('Chrome/53');
   }
 
-  isWebOS5() {
+  /**
+   * @returns {boolean} Determines if current platform is WebOS5
+   */
+  isWebOS5(): boolean {
     return this.isWebOS && this.userAgentContains('Chrome/68');
   }
 
   /* Platform Utilities */
 
-  isAndroid() {
+  /**
+   * @returns {boolean} Determines if current platform is Android
+   */
+  isAndroid(): boolean {
     return this.userAgentContains('Android');
   }
 
   /**
    * Guesses if the platform is a mobile one (iOS or Android).
    *
-   * @returns
+   * @returns {boolean} Determines if current platform is mobile (Guess)
    * @memberof BrowserDetector
    */
   isMobile() {
@@ -272,10 +290,10 @@ class BrowserDetector {
   /**
    * Guesses if the platform is a Smart TV (Tizen or WebOS).
    *
-   * @returns
+   * @returns {boolean} Determines if platform is a Smart TV
    * @memberof BrowserDetector
    */
-  isTv() {
+  isTv(): boolean {
     return this.isTizen() || this.isWebOS();
   }
 }
