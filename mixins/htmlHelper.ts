@@ -31,7 +31,6 @@ const htmlHelper = Vue.extend({
      * @returns {string} a cleaned up string
      */
     sanitizeHtml(input: string): string {
-      console.warn(input);
       // Some providers have newlines, replace them with the proper tag.
       let cleanString = input.replace(/(?:\r\n|\r|\n)/g, '<br>');
       cleanString = DOMPurify.sanitize(cleanString);
