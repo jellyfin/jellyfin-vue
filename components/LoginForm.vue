@@ -63,13 +63,13 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('user', ['setUser', 'clearUser', 'loginRequest']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    userLogin() {
+    async userLogin() {
       this.loading = true;
       this.setDeviceProfile();
-      this.$auth.loginWith('jellyfin', this.login);
+      await this.loginRequest(this.login);
       this.loading = false;
     }
   }

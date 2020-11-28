@@ -1,9 +1,11 @@
 import { Plugin } from '@nuxt/types';
 
 const appInitPlugin: Plugin = (context) => {
+  // eslint-disable-next-line no-console
   console.error('setting base url');
-  if (context.store.state.user.serverUrl) {
-    context.$axios.setBaseURL(context.store.state.user.serverUrl);
+  const { serverUsed } = context.store.state.servers;
+  if (serverUsed) {
+    context.$axios.setBaseURL(serverUsed.address);
   }
 };
 

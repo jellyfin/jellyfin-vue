@@ -110,6 +110,11 @@ export default Vue.extend({
   },
   methods: {
     getRuntime(ticks: number) {
+      /**
+       * @param string
+       * @param pad
+       * @param length
+       */
       function padLeft(string: string, pad: string, length: number): string {
         return (new Array(length + 1).join(pad) + string).slice(-length);
       }
