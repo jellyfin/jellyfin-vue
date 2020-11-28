@@ -56,5 +56,8 @@
     "filtersNotFound": "Filter können nicht geladen werden",
     "serverVersionTooLow": "Server-Version muss 10.7.0 oder höher sein",
     "noNetworkConnection": "Keine Netzwerkverbindung",
-    "unhandledException": "Unbehandelte Ausnahme"
+    "unhandledException": "Unbehandelte Ausnahme",
+    "selectServer": "Server auswählen",
+    "connect": "Verbinden",
+    "changeServer": "Server wechseln"
 }
