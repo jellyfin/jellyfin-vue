@@ -27,13 +27,11 @@ export const actions: ActionTree<BackdropState, BackdropState> = {
 
     if (item.ImageBlurHashes.Backdrop && item.BackdropImageTags.length > 0) {
       hash = item.ImageBlurHashes?.Backdrop[item.BackdropImageTags[0]];
-      console.error(hash);
     } else if (
       item.ImageBlurHashes.Backdrop &&
       item.ParentBackdropImageTags.length > 0
     ) {
       hash = item.ImageBlurHashes?.Backdrop[item.ParentBackdropImageTags[0]];
-      console.error(hash);
     } else {
       hash = '';
     }
