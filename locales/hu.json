@@ -57,5 +57,13 @@
     "usernameRequired": "Felhasználónév megadása szükséges",
     "username": "Felhasználónév",
     "connect": "Kapcsolódás",
-    "changeServer": "Szerver váltás"
+    "changeServer": "Szerver váltás",
+    "youMayAlsoLike": "Tetszhet ez is",
+    "shuffleAll": "Véletlenszerű",
+    "moreLikeArtist": "Hozzá hasonlóak {artist}",
+    "disc": "{DiscNumber} lemez",
+    "byArtist": "Tőle",
+    "biography": "Életrajz",
+    "artist": "Előadók",
+    "albums": "Albumok"
 }
