@@ -57,5 +57,13 @@
     "serverVersionTooLow": "La version du serveur doit être 10.7.0 ou plus haut",
     "noNetworkConnection": "Aucune connexion réseau",
     "unhandledException": "Exception non gérée",
-    "selectServer": "Sélectionner le serveur"
+    "selectServer": "Sélectionner le serveur",
+    "moreLikeArtist": "Similaires à {artist}",
+    "disc": "Disque {discNumber}",
+    "byArtist": "Par",
+    "connect": "Se connecter",
+    "changeServer": "Changer de serveur",
+    "biography": "Biographie",
+    "albums": "Albums",
+    "artist": "Artiste"
 }
