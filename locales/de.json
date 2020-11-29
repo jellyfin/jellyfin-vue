@@ -59,5 +59,9 @@
     "unhandledException": "Unbehandelte Ausnahme",
     "selectServer": "Server auswählen",
     "connect": "Verbinden",
-    "changeServer": "Server wechseln"
+    "changeServer": "Server wechseln",
+    "byArtist": "von",
+    "biography": "Biografie",
+    "artist": "Künstler",
+    "albums": "Alben"
 }
