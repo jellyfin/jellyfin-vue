@@ -57,7 +57,9 @@
       </div>
       <div v-if="!noText" class="card-text">
         <div class="card-title mt-1 text-truncate">{{ item.Name }}</div>
-        <div class="card-subtitle text--secondary">{{ cardSubtitle }}</div>
+        <div class="card-subtitle text--secondary text-truncate">
+          {{ cardSubtitle }}
+        </div>
       </div>
     </div>
   </nuxt-link>
@@ -182,12 +184,8 @@ export default Vue.extend({
      * @returns {string} Either an empty string, or a string representing the production year(s) for the current item or the relevant episode number of the item.
      */
     cardSubtitle(): string {
-      if (this.episode) {
-        if (this.item.IndexNumber) {
-          return this.$t('episodeNumber', {
-            episodeNumber: this.item.IndexNumber
-          }).toString();
-        }
+      if (this.item.Type === 'MusicAlbum') {
+        return `${this.item.AlbumArtist}`;
       } else if (this.item.Type !== 'Series' && this.item.ProductionYear) {
         return this.item.ProductionYear.toString();
       } else if (
