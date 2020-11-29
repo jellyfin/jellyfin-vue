@@ -8,18 +8,7 @@
     >
       <template #prepend>
         <div class="d-flex align-center full-width pa-6">
-          <v-avatar size="48" color="primary" class="mr-4">
-            <img
-              v-if="$auth.user.PrimaryImageTag"
-              :src="`${$axios.defaults.baseURL}/Users/${$auth.user.Id}/Images/Primary/?tag=${$auth.user.PrimaryImageTag}&maxWidth=64`"
-            />
-            <span v-else class="white--text">
-              {{ $auth.user.Name.charAt(0) }}
-            </span>
-          </v-avatar>
-          <h1 class="font-weight-light">
-            {{ $auth.user.Name }}
-          </h1>
+          <user-button />
           <connection-monitor class="ml-auto" />
         </div>
         <v-divider></v-divider>
@@ -39,9 +28,7 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-      </v-list>
-      <v-divider v-if="libraries.length > 0"></v-divider>
-      <v-list>
+        <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
           v-for="(library, i) in libraries"
           :key="i"
@@ -57,23 +44,29 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-divider></v-divider>
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in configItems"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <template #append>
+        <v-list>
+          <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+            <v-switch>
+              <template #label>Toggle dark mode</template>
+            </v-switch>
+          </v-list-item>
+          <v-list-item
+            v-for="(item, i) in configItems"
+            :key="i"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.mobile"
@@ -108,7 +101,6 @@
       />
       <v-spacer />
       <locale-switcher class="mr-2" />
-      <user-button v-if="$auth.loggedIn" />
     </v-app-bar>
     <v-main>
       <nuxt />

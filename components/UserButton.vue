@@ -1,23 +1,26 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <v-btn icon v-bind="attrs" v-on="on">
-        <v-avatar>
-          <v-img
-            v-if="userImage"
-            :src="userImage"
-            :alt="$auth.user.Name"
-          ></v-img>
-          <v-icon v-else dark>mdi-account</v-icon>
-        </v-avatar>
-      </v-btn>
+      <div class="d-flex" v-bind="attrs" v-on="on">
+        <div class="mr-4">
+          <v-btn icon>
+            <v-avatar>
+              <v-img
+                v-if="userImage"
+                :src="userImage"
+                :alt="$auth.user.Name"
+              ></v-img>
+              <v-icon v-else dark>mdi-account</v-icon>
+            </v-avatar>
+          </v-btn>
+        </div>
+        <h1 class="font-weight-light">
+          {{ $auth.user.Name }}
+          <v-icon>mdi-chevron-down</v-icon>
+        </h1>
+      </div>
     </template>
-    <v-list>
-      <v-list-item @click="switchColodScheme">
-        <v-switch>
-          <template #label>Toggle dark mode</template>
-        </v-switch>
-      </v-list-item>
+    <v-list dense>
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="index"
@@ -62,9 +65,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    switchColodScheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-    },
     logoutUser() {
       this.$auth.logout();
       this.clearDeviceProfile();
