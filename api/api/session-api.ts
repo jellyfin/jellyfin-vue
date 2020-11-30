@@ -19,7 +19,7 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { ClientCapabilities } from '../models';
+import { ClientCapabilitiesDto } from '../models';
 // @ts-ignore
 import { GeneralCommand } from '../models';
 // @ts-ignore
@@ -323,12 +323,12 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Instructs a session to play an item.
          * @param {string} sessionId The session id.
          * @param {PlayCommand} playCommand The type of play command to issue (PlayNow, PlayNext, PlayLast). Clients who have not yet implemented play next and play last may play now.
-         * @param {string} itemIds The ids of the items to play, comma delimited.
+         * @param {Array<string>} itemIds The ids of the items to play, comma delimited.
          * @param {number} [startPositionTicks] The starting position of the first item.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        play: async (sessionId: string, playCommand: PlayCommand, itemIds: string, startPositionTicks?: number, options: any = {}): Promise<RequestArgs> => {
+        play: async (sessionId: string, playCommand: PlayCommand, itemIds: Array<string>, startPositionTicks?: number, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'sessionId' is not null or undefined
             if (sessionId === null || sessionId === undefined) {
                 throw new RequiredError('sessionId','Required parameter sessionId was null or undefined when calling play.');
@@ -365,7 +365,7 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['playCommand'] = playCommand;
             }
 
-            if (itemIds !== undefined) {
+            if (itemIds) {
                 localVarQueryParameter['itemIds'] = itemIds;
             }
 
@@ -395,7 +395,7 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Updates capabilities for a device.
          * @param {string} [id] The session id.
-         * @param {string} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
+         * @param {Array<string>} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
          * @param {Array<GeneralCommandType>} [supportedCommands] A list of supported remote control commands, comma delimited.
          * @param {boolean} [supportsMediaControl] Determines whether media can be played remotely..
          * @param {boolean} [supportsSync] Determines whether sync is supported.
@@ -403,7 +403,7 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCapabilities: async (id?: string, playableMediaTypes?: string, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options: any = {}): Promise<RequestArgs> => {
+        postCapabilities: async (id?: string, playableMediaTypes?: Array<string>, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Sessions/Capabilities`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -427,7 +427,7 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['id'] = id;
             }
 
-            if (playableMediaTypes !== undefined) {
+            if (playableMediaTypes) {
                 localVarQueryParameter['playableMediaTypes'] = playableMediaTypes;
             }
 
@@ -468,15 +468,15 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Updates capabilities for a device.
-         * @param {ClientCapabilities} clientCapabilities The MediaBrowser.Model.Session.ClientCapabilities.
+         * @param {ClientCapabilitiesDto} clientCapabilitiesDto The MediaBrowser.Model.Session.ClientCapabilities.
          * @param {string} [id] The session id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postFullCapabilities: async (clientCapabilities: ClientCapabilities, id?: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'clientCapabilities' is not null or undefined
-            if (clientCapabilities === null || clientCapabilities === undefined) {
-                throw new RequiredError('clientCapabilities','Required parameter clientCapabilities was null or undefined when calling postFullCapabilities.');
+        postFullCapabilities: async (clientCapabilitiesDto: ClientCapabilitiesDto, id?: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'clientCapabilitiesDto' is not null or undefined
+            if (clientCapabilitiesDto === null || clientCapabilitiesDto === undefined) {
+                throw new RequiredError('clientCapabilitiesDto','Required parameter clientCapabilitiesDto was null or undefined when calling postFullCapabilities.');
             }
             const localVarPath = `/Sessions/Capabilities/Full`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -515,8 +515,8 @@ export const SessionApiAxiosParamCreator = function (configuration?: Configurati
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof clientCapabilities !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(clientCapabilities !== undefined ? clientCapabilities : {}) : (clientCapabilities || "");
+            const needsSerialization = (typeof clientCapabilitiesDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(clientCapabilitiesDto !== undefined ? clientCapabilitiesDto : {}) : (clientCapabilitiesDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -1075,12 +1075,12 @@ export const SessionApiFp = function(configuration?: Configuration) {
          * @summary Instructs a session to play an item.
          * @param {string} sessionId The session id.
          * @param {PlayCommand} playCommand The type of play command to issue (PlayNow, PlayNext, PlayLast). Clients who have not yet implemented play next and play last may play now.
-         * @param {string} itemIds The ids of the items to play, comma delimited.
+         * @param {Array<string>} itemIds The ids of the items to play, comma delimited.
          * @param {number} [startPositionTicks] The starting position of the first item.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async play(sessionId: string, playCommand: PlayCommand, itemIds: string, startPositionTicks?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async play(sessionId: string, playCommand: PlayCommand, itemIds: Array<string>, startPositionTicks?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await SessionApiAxiosParamCreator(configuration).play(sessionId, playCommand, itemIds, startPositionTicks, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1091,7 +1091,7 @@ export const SessionApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates capabilities for a device.
          * @param {string} [id] The session id.
-         * @param {string} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
+         * @param {Array<string>} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
          * @param {Array<GeneralCommandType>} [supportedCommands] A list of supported remote control commands, comma delimited.
          * @param {boolean} [supportsMediaControl] Determines whether media can be played remotely..
          * @param {boolean} [supportsSync] Determines whether sync is supported.
@@ -1099,7 +1099,7 @@ export const SessionApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postCapabilities(id?: string, playableMediaTypes?: string, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async postCapabilities(id?: string, playableMediaTypes?: Array<string>, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await SessionApiAxiosParamCreator(configuration).postCapabilities(id, playableMediaTypes, supportedCommands, supportsMediaControl, supportsSync, supportsPersistentIdentifier, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1109,13 +1109,13 @@ export const SessionApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Updates capabilities for a device.
-         * @param {ClientCapabilities} clientCapabilities The MediaBrowser.Model.Session.ClientCapabilities.
+         * @param {ClientCapabilitiesDto} clientCapabilitiesDto The MediaBrowser.Model.Session.ClientCapabilities.
          * @param {string} [id] The session id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postFullCapabilities(clientCapabilities: ClientCapabilities, id?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SessionApiAxiosParamCreator(configuration).postFullCapabilities(clientCapabilities, id, options);
+        async postFullCapabilities(clientCapabilitiesDto: ClientCapabilitiesDto, id?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SessionApiAxiosParamCreator(configuration).postFullCapabilities(clientCapabilitiesDto, id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1311,19 +1311,19 @@ export const SessionApiFactory = function (configuration?: Configuration, basePa
          * @summary Instructs a session to play an item.
          * @param {string} sessionId The session id.
          * @param {PlayCommand} playCommand The type of play command to issue (PlayNow, PlayNext, PlayLast). Clients who have not yet implemented play next and play last may play now.
-         * @param {string} itemIds The ids of the items to play, comma delimited.
+         * @param {Array<string>} itemIds The ids of the items to play, comma delimited.
          * @param {number} [startPositionTicks] The starting position of the first item.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        play(sessionId: string, playCommand: PlayCommand, itemIds: string, startPositionTicks?: number, options?: any): AxiosPromise<void> {
+        play(sessionId: string, playCommand: PlayCommand, itemIds: Array<string>, startPositionTicks?: number, options?: any): AxiosPromise<void> {
             return SessionApiFp(configuration).play(sessionId, playCommand, itemIds, startPositionTicks, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates capabilities for a device.
          * @param {string} [id] The session id.
-         * @param {string} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
+         * @param {Array<string>} [playableMediaTypes] A list of playable media types, comma delimited. Audio, Video, Book, Photo.
          * @param {Array<GeneralCommandType>} [supportedCommands] A list of supported remote control commands, comma delimited.
          * @param {boolean} [supportsMediaControl] Determines whether media can be played remotely..
          * @param {boolean} [supportsSync] Determines whether sync is supported.
@@ -1331,19 +1331,19 @@ export const SessionApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postCapabilities(id?: string, playableMediaTypes?: string, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options?: any): AxiosPromise<void> {
+        postCapabilities(id?: string, playableMediaTypes?: Array<string>, supportedCommands?: Array<GeneralCommandType>, supportsMediaControl?: boolean, supportsSync?: boolean, supportsPersistentIdentifier?: boolean, options?: any): AxiosPromise<void> {
             return SessionApiFp(configuration).postCapabilities(id, playableMediaTypes, supportedCommands, supportsMediaControl, supportsSync, supportsPersistentIdentifier, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates capabilities for a device.
-         * @param {ClientCapabilities} clientCapabilities The MediaBrowser.Model.Session.ClientCapabilities.
+         * @param {ClientCapabilitiesDto} clientCapabilitiesDto The MediaBrowser.Model.Session.ClientCapabilities.
          * @param {string} [id] The session id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postFullCapabilities(clientCapabilities: ClientCapabilities, id?: string, options?: any): AxiosPromise<void> {
-            return SessionApiFp(configuration).postFullCapabilities(clientCapabilities, id, options).then((request) => request(axios, basePath));
+        postFullCapabilities(clientCapabilitiesDto: ClientCapabilitiesDto, id?: string, options?: any): AxiosPromise<void> {
+            return SessionApiFp(configuration).postFullCapabilities(clientCapabilitiesDto, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1544,10 +1544,10 @@ export interface SessionApiPlayRequest {
 
     /**
      * The ids of the items to play, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof SessionApiPlay
      */
-    readonly itemIds: string
+    readonly itemIds: Array<string>
 
     /**
      * The starting position of the first item.
@@ -1572,10 +1572,10 @@ export interface SessionApiPostCapabilitiesRequest {
 
     /**
      * A list of playable media types, comma delimited. Audio, Video, Book, Photo.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof SessionApiPostCapabilities
      */
-    readonly playableMediaTypes?: string
+    readonly playableMediaTypes?: Array<string>
 
     /**
      * A list of supported remote control commands, comma delimited.
@@ -1614,10 +1614,10 @@ export interface SessionApiPostCapabilitiesRequest {
 export interface SessionApiPostFullCapabilitiesRequest {
     /**
      * The MediaBrowser.Model.Session.ClientCapabilities.
-     * @type {ClientCapabilities}
+     * @type {ClientCapabilitiesDto}
      * @memberof SessionApiPostFullCapabilities
      */
-    readonly clientCapabilities: ClientCapabilities
+    readonly clientCapabilitiesDto: ClientCapabilitiesDto
 
     /**
      * The session id.
@@ -1900,7 +1900,7 @@ export class SessionApi extends BaseAPI {
      * @memberof SessionApi
      */
     public postFullCapabilities(requestParameters: SessionApiPostFullCapabilitiesRequest, options?: any) {
-        return SessionApiFp(this.configuration).postFullCapabilities(requestParameters.clientCapabilities, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+        return SessionApiFp(this.configuration).postFullCapabilities(requestParameters.clientCapabilitiesDto, requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

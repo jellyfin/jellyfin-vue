@@ -85,12 +85,12 @@ export const UserViewsApiAxiosParamCreator = function (configuration?: Configura
          * @summary Get user views.
          * @param {string} userId User id.
          * @param {boolean} [includeExternalContent] Whether or not to include external views such as channels or live tv.
-         * @param {string} [presetViews] Preset views.
+         * @param {Array<string>} [presetViews] Preset views.
          * @param {boolean} [includeHidden] Whether or not to include hidden content.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserViews: async (userId: string, includeExternalContent?: boolean, presetViews?: string, includeHidden?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getUserViews: async (userId: string, includeExternalContent?: boolean, presetViews?: Array<string>, includeHidden?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getUserViews.');
@@ -119,7 +119,7 @@ export const UserViewsApiAxiosParamCreator = function (configuration?: Configura
                 localVarQueryParameter['includeExternalContent'] = includeExternalContent;
             }
 
-            if (presetViews !== undefined) {
+            if (presetViews) {
                 localVarQueryParameter['presetViews'] = presetViews;
             }
 
@@ -173,12 +173,12 @@ export const UserViewsApiFp = function(configuration?: Configuration) {
          * @summary Get user views.
          * @param {string} userId User id.
          * @param {boolean} [includeExternalContent] Whether or not to include external views such as channels or live tv.
-         * @param {string} [presetViews] Preset views.
+         * @param {Array<string>} [presetViews] Preset views.
          * @param {boolean} [includeHidden] Whether or not to include hidden content.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserViews(userId: string, includeExternalContent?: boolean, presetViews?: string, includeHidden?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getUserViews(userId: string, includeExternalContent?: boolean, presetViews?: Array<string>, includeHidden?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await UserViewsApiAxiosParamCreator(configuration).getUserViews(userId, includeExternalContent, presetViews, includeHidden, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -209,12 +209,12 @@ export const UserViewsApiFactory = function (configuration?: Configuration, base
          * @summary Get user views.
          * @param {string} userId User id.
          * @param {boolean} [includeExternalContent] Whether or not to include external views such as channels or live tv.
-         * @param {string} [presetViews] Preset views.
+         * @param {Array<string>} [presetViews] Preset views.
          * @param {boolean} [includeHidden] Whether or not to include hidden content.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserViews(userId: string, includeExternalContent?: boolean, presetViews?: string, includeHidden?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getUserViews(userId: string, includeExternalContent?: boolean, presetViews?: Array<string>, includeHidden?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return UserViewsApiFp(configuration).getUserViews(userId, includeExternalContent, presetViews, includeHidden, options).then((request) => request(axios, basePath));
         },
     };
@@ -256,10 +256,10 @@ export interface UserViewsApiGetUserViewsRequest {
 
     /**
      * Preset views.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof UserViewsApiGetUserViews
      */
-    readonly presetViews?: string
+    readonly presetViews?: Array<string>
 
     /**
      * Whether or not to include hidden content.

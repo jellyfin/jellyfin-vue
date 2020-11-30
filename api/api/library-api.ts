@@ -95,11 +95,11 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Deletes items from the library and filesystem.
-         * @param {string} [ids] The item ids.
+         * @param {Array<string>} [ids] The item ids.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteItems: async (ids?: string, options: any = {}): Promise<RequestArgs> => {
+        deleteItems: async (ids?: Array<string>, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Items`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -119,7 +119,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (ids !== undefined) {
+            if (ids) {
                 localVarQueryParameter['ids'] = ids;
             }
 
@@ -551,14 +551,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarAlbums: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarAlbums: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarAlbums.');
@@ -583,7 +583,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -621,14 +621,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarArtists: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarArtists: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarArtists.');
@@ -653,7 +653,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -691,14 +691,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarItems: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarItems: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarItems.');
@@ -723,7 +723,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -761,14 +761,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarMovies: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarMovies: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarMovies.');
@@ -793,7 +793,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -831,14 +831,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarShows: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarShows: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarShows.');
@@ -863,7 +863,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -901,14 +901,14 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarTrailers: async (itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
+        getSimilarTrailers: async (itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSimilarTrailers.');
@@ -933,7 +933,7 @@ export const LibraryApiAxiosParamCreator = function (configuration?: Configurati
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (excludeArtistIds !== undefined) {
+            if (excludeArtistIds) {
                 localVarQueryParameter['excludeArtistIds'] = excludeArtistIds;
             }
 
@@ -1476,11 +1476,11 @@ export const LibraryApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Deletes items from the library and filesystem.
-         * @param {string} [ids] The item ids.
+         * @param {Array<string>} [ids] The item ids.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteItems(ids?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async deleteItems(ids?: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).deleteItems(ids, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1605,14 +1605,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarAlbums(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarAlbums(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarAlbums(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1623,14 +1623,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarArtists(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarArtists(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarArtists(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1641,14 +1641,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarItems(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarItems(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1659,14 +1659,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarMovies(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarMovies(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarMovies(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1677,14 +1677,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarShows(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarShows(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarShows(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1695,14 +1695,14 @@ export const LibraryApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSimilarTrailers(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSimilarTrailers(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LibraryApiAxiosParamCreator(configuration).getSimilarTrailers(itemId, excludeArtistIds, userId, limit, fields, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1864,11 +1864,11 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary Deletes items from the library and filesystem.
-         * @param {string} [ids] The item ids.
+         * @param {Array<string>} [ids] The item ids.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteItems(ids?: string, options?: any): AxiosPromise<void> {
+        deleteItems(ids?: Array<string>, options?: any): AxiosPromise<void> {
             return LibraryApiFp(configuration).deleteItems(ids, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1957,84 +1957,84 @@ export const LibraryApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarAlbums(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarAlbums(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarAlbums(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarArtists(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarArtists(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarArtists(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarItems(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarItems(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarItems(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarMovies(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarMovies(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarMovies(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarShows(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarShows(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarShows(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets similar items.
          * @param {string} itemId The item id.
-         * @param {string} [excludeArtistIds] Exclude artist ids.
+         * @param {Array<string>} [excludeArtistIds] Exclude artist ids.
          * @param {string} [userId] Optional. Filter by user id, and attach user data.
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSimilarTrailers(itemId: string, excludeArtistIds?: string, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSimilarTrailers(itemId: string, excludeArtistIds?: Array<string>, userId?: string, limit?: number, fields?: Array<ItemFields>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LibraryApiFp(configuration).getSimilarTrailers(itemId, excludeArtistIds, userId, limit, fields, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2159,10 +2159,10 @@ export interface LibraryApiDeleteItemRequest {
 export interface LibraryApiDeleteItemsRequest {
     /**
      * The item ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiDeleteItems
      */
-    readonly ids?: string
+    readonly ids?: Array<string>
 }
 
 /**
@@ -2299,10 +2299,10 @@ export interface LibraryApiGetSimilarAlbumsRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarAlbums
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.
@@ -2341,10 +2341,10 @@ export interface LibraryApiGetSimilarArtistsRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarArtists
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.
@@ -2383,10 +2383,10 @@ export interface LibraryApiGetSimilarItemsRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarItems
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.
@@ -2425,10 +2425,10 @@ export interface LibraryApiGetSimilarMoviesRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarMovies
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.
@@ -2467,10 +2467,10 @@ export interface LibraryApiGetSimilarShowsRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarShows
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.
@@ -2509,10 +2509,10 @@ export interface LibraryApiGetSimilarTrailersRequest {
 
     /**
      * Exclude artist ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LibraryApiGetSimilarTrailers
      */
-    readonly excludeArtistIds?: string
+    readonly excludeArtistIds?: Array<string>
 
     /**
      * Optional. Filter by user id, and attach user data.

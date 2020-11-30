@@ -531,6 +531,55 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @throws {RequiredError}
          */
         discoverTuners: async (newDevicesOnly?: boolean, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/LiveTv/Tuners/Discover`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+            if (newDevicesOnly !== undefined) {
+                localVarQueryParameter['newDevicesOnly'] = newDevicesOnly;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Discover tuners.
+         * @param {boolean} [newDevicesOnly] Only discover new tuners.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discvoverTuners: async (newDevicesOnly?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Tuners/Discvover`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -1003,14 +1052,14 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Key to sort by.
+         * @param {Array<string>} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
          * @param {boolean} [enableFavoriteSorting] Optional. Incorporate favorite and like status into channel sorting.
          * @param {boolean} [addCurrentProgram] Optional. Adds current program info to each channel.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvChannels: async (type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLiveTvChannels: async (type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: Array<string>, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -1098,7 +1147,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['enableUserData'] = enableUserData;
             }
 
-            if (sortBy !== undefined) {
+            if (sortBy) {
                 localVarQueryParameter['sortBy'] = sortBy;
             }
 
@@ -1179,7 +1228,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary Gets available live tv epgs.
-         * @param {string} [channelIds] The channels to return guide information for.
+         * @param {Array<string>} [channelIds] The channels to return guide information for.
          * @param {string} [userId] Optional. Filter by user id.
          * @param {string} [minStartDate] Optional. The minimum premiere start date.
          * @param {boolean} [hasAired] Optional. Filter by programs that have completed airing, or not.
@@ -1196,8 +1245,8 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Name, StartDate.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
-         * @param {string} [genres] The genres to return guide information for.
-         * @param {string} [genreIds] The genre ids to return guide information for.
+         * @param {Array<string>} [genres] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genre ids to return guide information for.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -1209,7 +1258,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvPrograms: async (channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLiveTvPrograms: async (channelIds?: Array<string>, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: Array<string>, genreIds?: Array<string>, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Programs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -1229,7 +1278,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (channelIds !== undefined) {
+            if (channelIds) {
                 localVarQueryParameter['channelIds'] = channelIds;
             }
 
@@ -1305,11 +1354,11 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['sortOrder'] = sortOrder;
             }
 
-            if (genres !== undefined) {
+            if (genres) {
                 localVarQueryParameter['genres'] = genres;
             }
 
-            if (genreIds !== undefined) {
+            if (genreIds) {
                 localVarQueryParameter['genreIds'] = genreIds;
             }
 
@@ -1482,14 +1531,14 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [genreIds] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genres to return guide information for.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecommendedPrograms: async (userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getRecommendedPrograms: async (userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: Array<string>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/LiveTv/Programs/Recommended`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -1557,7 +1606,7 @@ export const LiveTvApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (genreIds !== undefined) {
+            if (genreIds) {
                 localVarQueryParameter['genreIds'] = genreIds;
             }
 
@@ -2726,6 +2775,20 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Discover tuners.
+         * @param {boolean} [newDevicesOnly] Only discover new tuners.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discvoverTuners(newDevicesOnly?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TunerHostInfo>>> {
+            const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).discvoverTuners(newDevicesOnly, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary Gets a live tv channel.
          * @param {string} channelId Channel id.
          * @param {string} [userId] Optional. Attach user data.
@@ -2859,14 +2922,14 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Key to sort by.
+         * @param {Array<string>} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
          * @param {boolean} [enableFavoriteSorting] Optional. Incorporate favorite and like status into channel sorting.
          * @param {boolean} [addCurrentProgram] Optional. Adds current program info to each channel.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: Array<string>, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getLiveTvChannels(type, userId, startIndex, isMovie, isSeries, isNews, isKids, isSports, limit, isFavorite, isLiked, isDisliked, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, sortBy, sortOrder, enableFavoriteSorting, addCurrentProgram, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2889,7 +2952,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Gets available live tv epgs.
-         * @param {string} [channelIds] The channels to return guide information for.
+         * @param {Array<string>} [channelIds] The channels to return guide information for.
          * @param {string} [userId] Optional. Filter by user id.
          * @param {string} [minStartDate] Optional. The minimum premiere start date.
          * @param {boolean} [hasAired] Optional. Filter by programs that have completed airing, or not.
@@ -2906,8 +2969,8 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Name, StartDate.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
-         * @param {string} [genres] The genres to return guide information for.
-         * @param {string} [genreIds] The genre ids to return guide information for.
+         * @param {Array<string>} [genres] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genre ids to return guide information for.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -2919,7 +2982,7 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLiveTvPrograms(channelIds?: Array<string>, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: Array<string>, genreIds?: Array<string>, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getLiveTvPrograms(channelIds, userId, minStartDate, hasAired, isAiring, maxStartDate, minEndDate, maxEndDate, isMovie, isSeries, isNews, isKids, isSports, startIndex, limit, sortBy, sortOrder, genres, genreIds, enableImages, imageTypeLimit, enableImageTypes, enableUserData, seriesTimerId, librarySeriesId, fields, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2970,14 +3033,14 @@ export const LiveTvApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [genreIds] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genres to return guide information for.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: Array<string>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await LiveTvApiAxiosParamCreator(configuration).getRecommendedPrograms(userId, limit, isAiring, hasAired, isSeries, isMovie, isNews, isKids, isSports, enableImages, imageTypeLimit, enableImageTypes, genreIds, fields, enableUserData, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -3360,6 +3423,16 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
         },
         /**
          * 
+         * @summary Discover tuners.
+         * @param {boolean} [newDevicesOnly] Only discover new tuners.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discvoverTuners(newDevicesOnly?: boolean, options?: any): AxiosPromise<Array<TunerHostInfo>> {
+            return LiveTvApiFp(configuration).discvoverTuners(newDevicesOnly, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Gets a live tv channel.
          * @param {string} channelId Channel id.
          * @param {string} [userId] Optional. Attach user data.
@@ -3461,14 +3534,14 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {Array<ImageType>} [enableImageTypes] \&quot;Optional. The image types to include in the output.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Key to sort by.
+         * @param {Array<string>} [sortBy] Optional. Key to sort by.
          * @param {SortOrder} [sortOrder] Optional. Sort order.
          * @param {boolean} [enableFavoriteSorting] Optional. Incorporate favorite and like status into channel sorting.
          * @param {boolean} [addCurrentProgram] Optional. Adds current program info to each channel.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: string, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLiveTvChannels(type?: ChannelType, userId?: string, startIndex?: number, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, limit?: number, isFavorite?: boolean, isLiked?: boolean, isDisliked?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, fields?: Array<ItemFields>, enableUserData?: boolean, sortBy?: Array<string>, sortOrder?: SortOrder, enableFavoriteSorting?: boolean, addCurrentProgram?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getLiveTvChannels(type, userId, startIndex, isMovie, isSeries, isNews, isKids, isSports, limit, isFavorite, isLiked, isDisliked, enableImages, imageTypeLimit, enableImageTypes, fields, enableUserData, sortBy, sortOrder, enableFavoriteSorting, addCurrentProgram, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3483,7 +3556,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary Gets available live tv epgs.
-         * @param {string} [channelIds] The channels to return guide information for.
+         * @param {Array<string>} [channelIds] The channels to return guide information for.
          * @param {string} [userId] Optional. Filter by user id.
          * @param {string} [minStartDate] Optional. The minimum premiere start date.
          * @param {boolean} [hasAired] Optional. Filter by programs that have completed airing, or not.
@@ -3500,8 +3573,8 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Name, StartDate.
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
-         * @param {string} [genres] The genres to return guide information for.
-         * @param {string} [genreIds] The genre ids to return guide information for.
+         * @param {Array<string>} [genres] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genre ids to return guide information for.
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -3513,7 +3586,7 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveTvPrograms(channelIds?: string, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: string, genreIds?: string, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLiveTvPrograms(channelIds?: Array<string>, userId?: string, minStartDate?: string, hasAired?: boolean, isAiring?: boolean, maxStartDate?: string, minEndDate?: string, maxEndDate?: string, isMovie?: boolean, isSeries?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, startIndex?: number, limit?: number, sortBy?: string, sortOrder?: string, genres?: Array<string>, genreIds?: Array<string>, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, seriesTimerId?: string, librarySeriesId?: string, fields?: Array<ItemFields>, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getLiveTvPrograms(channelIds, userId, minStartDate, hasAired, isAiring, maxStartDate, minEndDate, maxEndDate, isMovie, isSeries, isNews, isKids, isSports, startIndex, limit, sortBy, sortOrder, genres, genreIds, enableImages, imageTypeLimit, enableImageTypes, enableUserData, seriesTimerId, librarySeriesId, fields, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3552,14 +3625,14 @@ export const LiveTvApiFactory = function (configuration?: Configuration, basePat
          * @param {boolean} [enableImages] Optional. Include image information in output.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [genreIds] The genres to return guide information for.
+         * @param {Array<string>} [genreIds] The genres to return guide information for.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
          * @param {boolean} [enableUserData] Optional. include user data.
          * @param {boolean} [enableTotalRecordCount] Retrieve total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: string, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getRecommendedPrograms(userId?: string, limit?: number, isAiring?: boolean, hasAired?: boolean, isSeries?: boolean, isMovie?: boolean, isNews?: boolean, isKids?: boolean, isSports?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, genreIds?: Array<string>, fields?: Array<ItemFields>, enableUserData?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return LiveTvApiFp(configuration).getRecommendedPrograms(userId, limit, isAiring, hasAired, isSeries, isMovie, isNews, isKids, isSports, enableImages, imageTypeLimit, enableImageTypes, genreIds, fields, enableUserData, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -3925,6 +3998,20 @@ export interface LiveTvApiDiscoverTunersRequest {
 }
 
 /**
+ * Request parameters for discvoverTuners operation in LiveTvApi.
+ * @export
+ * @interface LiveTvApiDiscvoverTunersRequest
+ */
+export interface LiveTvApiDiscvoverTunersRequest {
+    /**
+     * Only discover new tuners.
+     * @type {boolean}
+     * @memberof LiveTvApiDiscvoverTuners
+     */
+    readonly newDevicesOnly?: boolean
+}
+
+/**
  * Request parameters for getChannel operation in LiveTvApi.
  * @export
  * @interface LiveTvApiGetChannelRequest
@@ -4170,10 +4257,10 @@ export interface LiveTvApiGetLiveTvChannelsRequest {
 
     /**
      * Optional. Key to sort by.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LiveTvApiGetLiveTvChannels
      */
-    readonly sortBy?: string
+    readonly sortBy?: Array<string>
 
     /**
      * Optional. Sort order.
@@ -4205,10 +4292,10 @@ export interface LiveTvApiGetLiveTvChannelsRequest {
 export interface LiveTvApiGetLiveTvProgramsRequest {
     /**
      * The channels to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LiveTvApiGetLiveTvPrograms
      */
-    readonly channelIds?: string
+    readonly channelIds?: Array<string>
 
     /**
      * Optional. Filter by user id.
@@ -4324,17 +4411,17 @@ export interface LiveTvApiGetLiveTvProgramsRequest {
 
     /**
      * The genres to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LiveTvApiGetLiveTvPrograms
      */
-    readonly genres?: string
+    readonly genres?: Array<string>
 
     /**
      * The genre ids to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LiveTvApiGetLiveTvPrograms
      */
-    readonly genreIds?: string
+    readonly genreIds?: Array<string>
 
     /**
      * Optional. Include image information in output.
@@ -4520,10 +4607,10 @@ export interface LiveTvApiGetRecommendedProgramsRequest {
 
     /**
      * The genres to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof LiveTvApiGetRecommendedPrograms
      */
-    readonly genreIds?: string
+    readonly genreIds?: Array<string>
 
     /**
      * Optional. Specify additional fields of information to return in the output.
@@ -5148,6 +5235,18 @@ export class LiveTvApi extends BaseAPI {
      */
     public discoverTuners(requestParameters: LiveTvApiDiscoverTunersRequest = {}, options?: any) {
         return LiveTvApiFp(this.configuration).discoverTuners(requestParameters.newDevicesOnly, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Discover tuners.
+     * @param {LiveTvApiDiscvoverTunersRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LiveTvApi
+     */
+    public discvoverTuners(requestParameters: LiveTvApiDiscvoverTunersRequest = {}, options?: any) {
+        return LiveTvApiFp(this.configuration).discvoverTuners(requestParameters.newDevicesOnly, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

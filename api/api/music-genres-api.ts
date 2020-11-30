@@ -95,8 +95,8 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -109,7 +109,7 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMusicGenres: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getMusicGenres: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/MusicGenres`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -149,11 +149,11 @@ export const MusicGenresApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (excludeItemTypes !== undefined) {
+            if (excludeItemTypes) {
                 localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
@@ -243,8 +243,8 @@ export const MusicGenresApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -257,7 +257,7 @@ export const MusicGenresApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await MusicGenresApiAxiosParamCreator(configuration).getMusicGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -292,8 +292,8 @@ export const MusicGenresApiFactory = function (configuration?: Configuration, ba
          * @param {string} [searchTerm] The search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
@@ -306,7 +306,7 @@ export const MusicGenresApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getMusicGenres(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return MusicGenresApiFp(configuration).getMusicGenres(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
@@ -376,17 +376,17 @@ export interface MusicGenresApiGetMusicGenresRequest {
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof MusicGenresApiGetMusicGenres
      */
-    readonly excludeItemTypes?: string
+    readonly excludeItemTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered in based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof MusicGenresApiGetMusicGenres
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Optional filter by items that are marked as favorite, or not.

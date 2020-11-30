@@ -13,6 +13,7 @@
  */
 
 
+import { Version } from './version';
 
 /**
  * Class PackageVersionInfo.
@@ -26,6 +27,12 @@ export interface VersionInfo {
      * @memberof VersionInfo
      */
     version?: string | null;
+    /**
+     * 
+     * @type {Version}
+     * @memberof VersionInfo
+     */
+    VersionNumber?: Version;
     /**
      * Gets or sets the changelog for this version.
      * @type {string}
@@ -56,6 +63,18 @@ export interface VersionInfo {
      * @memberof VersionInfo
      */
     timestamp?: string | null;
+    /**
+     * Gets or sets the repository name.
+     * @type {string}
+     * @memberof VersionInfo
+     */
+    repositoryName?: string | null;
+    /**
+     * Gets or sets the repository url.
+     * @type {string}
+     * @memberof VersionInfo
+     */
+    repositoryUrl?: string | null;
 }
 
 

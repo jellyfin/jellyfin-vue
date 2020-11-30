@@ -208,7 +208,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
          * @param {number} [imageTypeLimit] Optional. the max number of images to return, per image type.
@@ -219,7 +219,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestMedia: async (userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLatestMedia: async (userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: Array<string>, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getLatestMedia.');
@@ -252,7 +252,7 @@ export const UserLibraryApiAxiosParamCreator = function (configuration?: Configu
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
@@ -697,7 +697,7 @@ export const UserLibraryApiFp = function(configuration?: Configuration) {
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
          * @param {number} [imageTypeLimit] Optional. the max number of images to return, per image type.
@@ -708,7 +708,7 @@ export const UserLibraryApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseItemDto>>> {
+        async getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: Array<string>, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<BaseItemDto>>> {
             const localVarAxiosArgs = await UserLibraryApiAxiosParamCreator(configuration).getLatestMedia(userId, parentId, fields, includeItemTypes, isPlayed, enableImages, imageTypeLimit, enableImageTypes, enableUserData, limit, groupItems, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -853,7 +853,7 @@ export const UserLibraryApiFactory = function (configuration?: Configuration, ba
          * @param {string} userId User id.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isPlayed] Filter by items that are played, or not.
          * @param {boolean} [enableImages] Optional. include image information in output.
          * @param {number} [imageTypeLimit] Optional. the max number of images to return, per image type.
@@ -864,7 +864,7 @@ export const UserLibraryApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: string, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): AxiosPromise<Array<BaseItemDto>> {
+        getLatestMedia(userId: string, parentId?: string, fields?: Array<ItemFields>, includeItemTypes?: Array<string>, isPlayed?: boolean, enableImages?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, enableUserData?: boolean, limit?: number, groupItems?: boolean, options?: any): AxiosPromise<Array<BaseItemDto>> {
             return UserLibraryApiFp(configuration).getLatestMedia(userId, parentId, fields, includeItemTypes, isPlayed, enableImages, imageTypeLimit, enableImageTypes, enableUserData, limit, groupItems, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1027,11 +1027,11 @@ export interface UserLibraryApiGetLatestMediaRequest {
     readonly fields?: Array<ItemFields>
 
     /**
-     * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimeted.
-     * @type {string}
+     * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+     * @type {Array<string>}
      * @memberof UserLibraryApiGetLatestMedia
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Filter by items that are played, or not.

@@ -28,10 +28,10 @@ export interface CreatePlaylistDto {
     Name?: string | null;
     /**
      * Gets or sets item ids to add to the playlist.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof CreatePlaylistDto
      */
-    Ids?: string | null;
+    Ids?: Array<string> | null;
     /**
      * Gets or sets the user id.
      * @type {string}

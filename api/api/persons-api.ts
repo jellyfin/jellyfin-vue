@@ -102,15 +102,15 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
-         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
          * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
          * @param {boolean} [enableImages] Optional, include image information in output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPersons: async (limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getPersons: async (limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: Array<string>, personTypes?: Array<string>, appearsInItemId?: string, userId?: string, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Persons`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -162,11 +162,11 @@ export const PersonsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['enableImageTypes'] = enableImageTypes;
             }
 
-            if (excludePersonTypes !== undefined) {
+            if (excludePersonTypes) {
                 localVarQueryParameter['excludePersonTypes'] = excludePersonTypes;
             }
 
-            if (personTypes !== undefined) {
+            if (personTypes) {
                 localVarQueryParameter['personTypes'] = personTypes;
             }
 
@@ -235,15 +235,15 @@ export const PersonsApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
-         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
          * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
          * @param {boolean} [enableImages] Optional, include image information in output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: Array<string>, personTypes?: Array<string>, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await PersonsApiAxiosParamCreator(configuration).getPersons(limit, searchTerm, fields, filters, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, excludePersonTypes, personTypes, appearsInItemId, userId, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -281,15 +281,15 @@ export const PersonsApiFactory = function (configuration?: Configuration, basePa
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
-         * @param {string} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
-         * @param {string} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [excludePersonTypes] Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [personTypes] Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
          * @param {string} [appearsInItemId] Optional. If specified, person results will be filtered on items related to said persons.
          * @param {string} [userId] User id.
          * @param {boolean} [enableImages] Optional, include image information in output.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: string, personTypes?: string, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getPersons(limit?: number, searchTerm?: string, fields?: Array<ItemFields>, filters?: Array<ItemFilter>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, excludePersonTypes?: Array<string>, personTypes?: Array<string>, appearsInItemId?: string, userId?: string, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return PersonsApiFp(configuration).getPersons(limit, searchTerm, fields, filters, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, excludePersonTypes, personTypes, appearsInItemId, userId, enableImages, options).then((request) => request(axios, basePath));
         },
     };
@@ -380,17 +380,17 @@ export interface PersonsApiGetPersonsRequest {
 
     /**
      * Optional. If specified results will be filtered to exclude those containing the specified PersonType. Allows multiple, comma-delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PersonsApiGetPersons
      */
-    readonly excludePersonTypes?: string
+    readonly excludePersonTypes?: Array<string>
 
     /**
      * Optional. If specified results will be filtered to include only those containing the specified PersonType. Allows multiple, comma-delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PersonsApiGetPersons
      */
-    readonly personTypes?: string
+    readonly personTypes?: Array<string>
 
     /**
      * Optional. If specified, person results will be filtered on items related to said persons.

@@ -68,14 +68,14 @@ export const VideoHlsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {number} [maxVideoBitDepth] Optional. The maximum video bit depth.
          * @param {boolean} [requireAvc] Optional. Whether to require avc.
          * @param {boolean} [deInterlace] Optional. Whether to deinterlace the video.
-         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamporphic stream.
+         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamorphic stream.
          * @param {number} [transcodingMaxAudioChannels] Optional. The maximum number of audio channels to transcode.
          * @param {number} [cpuCoreLimit] Optional. The limit of how many cpu cores to use.
          * @param {string} [liveStreamId] The live stream id.
          * @param {boolean} [enableMpegtsM2TsMode] Optional. Whether to enable the MpegtsM2Ts mode.
          * @param {string} [videoCodec] Optional. Specify a video codec to encode to, e.g. h264. If omitted the server will auto-select using the url\&#39;s extension. Options: h265, h264, mpeg4, theora, vpx, wmv.
          * @param {string} [subtitleCodec] Optional. Specify a subtitle codec to encode to.
-         * @param {string} [transcodingReasons] Optional. The transcoding reason.
+         * @param {string} [transcodeReasons] Optional. The transcoding reason.
          * @param {number} [audioStreamIndex] Optional. The index of the audio stream to use. If omitted the first audio stream will be used.
          * @param {number} [videoStreamIndex] Optional. The index of the video stream to use. If omitted the first video stream will be used.
          * @param {EncodingContext} [context] Optional. The MediaBrowser.Model.Dlna.EncodingContext.
@@ -86,7 +86,7 @@ export const VideoHlsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveHlsStream: async (itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodingReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getLiveHlsStream: async (itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodeReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getLiveHlsStream.');
@@ -283,8 +283,8 @@ export const VideoHlsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['subtitleCodec'] = subtitleCodec;
             }
 
-            if (transcodingReasons !== undefined) {
-                localVarQueryParameter['transcodingReasons'] = transcodingReasons;
+            if (transcodeReasons !== undefined) {
+                localVarQueryParameter['transcodeReasons'] = transcodeReasons;
             }
 
             if (audioStreamIndex !== undefined) {
@@ -382,14 +382,14 @@ export const VideoHlsApiFp = function(configuration?: Configuration) {
          * @param {number} [maxVideoBitDepth] Optional. The maximum video bit depth.
          * @param {boolean} [requireAvc] Optional. Whether to require avc.
          * @param {boolean} [deInterlace] Optional. Whether to deinterlace the video.
-         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamporphic stream.
+         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamorphic stream.
          * @param {number} [transcodingMaxAudioChannels] Optional. The maximum number of audio channels to transcode.
          * @param {number} [cpuCoreLimit] Optional. The limit of how many cpu cores to use.
          * @param {string} [liveStreamId] The live stream id.
          * @param {boolean} [enableMpegtsM2TsMode] Optional. Whether to enable the MpegtsM2Ts mode.
          * @param {string} [videoCodec] Optional. Specify a video codec to encode to, e.g. h264. If omitted the server will auto-select using the url\&#39;s extension. Options: h265, h264, mpeg4, theora, vpx, wmv.
          * @param {string} [subtitleCodec] Optional. Specify a subtitle codec to encode to.
-         * @param {string} [transcodingReasons] Optional. The transcoding reason.
+         * @param {string} [transcodeReasons] Optional. The transcoding reason.
          * @param {number} [audioStreamIndex] Optional. The index of the audio stream to use. If omitted the first audio stream will be used.
          * @param {number} [videoStreamIndex] Optional. The index of the video stream to use. If omitted the first video stream will be used.
          * @param {EncodingContext} [context] Optional. The MediaBrowser.Model.Dlna.EncodingContext.
@@ -400,8 +400,8 @@ export const VideoHlsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLiveHlsStream(itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodingReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await VideoHlsApiAxiosParamCreator(configuration).getLiveHlsStream(itemId, container, _static, params, tag, deviceProfileId, playSessionId, segmentContainer, segmentLength, minSegments, mediaSourceId, deviceId, audioCodec, enableAutoStreamCopy, allowVideoStreamCopy, allowAudioStreamCopy, breakOnNonKeyFrames, audioSampleRate, maxAudioBitDepth, audioBitRate, audioChannels, maxAudioChannels, profile, level, framerate, maxFramerate, copyTimestamps, startTimeTicks, width, height, videoBitRate, subtitleStreamIndex, subtitleMethod, maxRefFrames, maxVideoBitDepth, requireAvc, deInterlace, requireNonAnamorphic, transcodingMaxAudioChannels, cpuCoreLimit, liveStreamId, enableMpegtsM2TsMode, videoCodec, subtitleCodec, transcodingReasons, audioStreamIndex, videoStreamIndex, context, streamOptions, maxWidth, maxHeight, enableSubtitlesInManifest, options);
+        async getLiveHlsStream(itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodeReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await VideoHlsApiAxiosParamCreator(configuration).getLiveHlsStream(itemId, container, _static, params, tag, deviceProfileId, playSessionId, segmentContainer, segmentLength, minSegments, mediaSourceId, deviceId, audioCodec, enableAutoStreamCopy, allowVideoStreamCopy, allowAudioStreamCopy, breakOnNonKeyFrames, audioSampleRate, maxAudioBitDepth, audioBitRate, audioChannels, maxAudioChannels, profile, level, framerate, maxFramerate, copyTimestamps, startTimeTicks, width, height, videoBitRate, subtitleStreamIndex, subtitleMethod, maxRefFrames, maxVideoBitDepth, requireAvc, deInterlace, requireNonAnamorphic, transcodingMaxAudioChannels, cpuCoreLimit, liveStreamId, enableMpegtsM2TsMode, videoCodec, subtitleCodec, transcodeReasons, audioStreamIndex, videoStreamIndex, context, streamOptions, maxWidth, maxHeight, enableSubtitlesInManifest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -456,14 +456,14 @@ export const VideoHlsApiFactory = function (configuration?: Configuration, baseP
          * @param {number} [maxVideoBitDepth] Optional. The maximum video bit depth.
          * @param {boolean} [requireAvc] Optional. Whether to require avc.
          * @param {boolean} [deInterlace] Optional. Whether to deinterlace the video.
-         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamporphic stream.
+         * @param {boolean} [requireNonAnamorphic] Optional. Whether to require a non anamorphic stream.
          * @param {number} [transcodingMaxAudioChannels] Optional. The maximum number of audio channels to transcode.
          * @param {number} [cpuCoreLimit] Optional. The limit of how many cpu cores to use.
          * @param {string} [liveStreamId] The live stream id.
          * @param {boolean} [enableMpegtsM2TsMode] Optional. Whether to enable the MpegtsM2Ts mode.
          * @param {string} [videoCodec] Optional. Specify a video codec to encode to, e.g. h264. If omitted the server will auto-select using the url\&#39;s extension. Options: h265, h264, mpeg4, theora, vpx, wmv.
          * @param {string} [subtitleCodec] Optional. Specify a subtitle codec to encode to.
-         * @param {string} [transcodingReasons] Optional. The transcoding reason.
+         * @param {string} [transcodeReasons] Optional. The transcoding reason.
          * @param {number} [audioStreamIndex] Optional. The index of the audio stream to use. If omitted the first audio stream will be used.
          * @param {number} [videoStreamIndex] Optional. The index of the video stream to use. If omitted the first video stream will be used.
          * @param {EncodingContext} [context] Optional. The MediaBrowser.Model.Dlna.EncodingContext.
@@ -474,8 +474,8 @@ export const VideoHlsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLiveHlsStream(itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodingReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options?: any): AxiosPromise<any> {
-            return VideoHlsApiFp(configuration).getLiveHlsStream(itemId, container, _static, params, tag, deviceProfileId, playSessionId, segmentContainer, segmentLength, minSegments, mediaSourceId, deviceId, audioCodec, enableAutoStreamCopy, allowVideoStreamCopy, allowAudioStreamCopy, breakOnNonKeyFrames, audioSampleRate, maxAudioBitDepth, audioBitRate, audioChannels, maxAudioChannels, profile, level, framerate, maxFramerate, copyTimestamps, startTimeTicks, width, height, videoBitRate, subtitleStreamIndex, subtitleMethod, maxRefFrames, maxVideoBitDepth, requireAvc, deInterlace, requireNonAnamorphic, transcodingMaxAudioChannels, cpuCoreLimit, liveStreamId, enableMpegtsM2TsMode, videoCodec, subtitleCodec, transcodingReasons, audioStreamIndex, videoStreamIndex, context, streamOptions, maxWidth, maxHeight, enableSubtitlesInManifest, options).then((request) => request(axios, basePath));
+        getLiveHlsStream(itemId: string, container?: string, _static?: boolean, params?: string, tag?: string, deviceProfileId?: string, playSessionId?: string, segmentContainer?: string, segmentLength?: number, minSegments?: number, mediaSourceId?: string, deviceId?: string, audioCodec?: string, enableAutoStreamCopy?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, breakOnNonKeyFrames?: boolean, audioSampleRate?: number, maxAudioBitDepth?: number, audioBitRate?: number, audioChannels?: number, maxAudioChannels?: number, profile?: string, level?: string, framerate?: number, maxFramerate?: number, copyTimestamps?: boolean, startTimeTicks?: number, width?: number, height?: number, videoBitRate?: number, subtitleStreamIndex?: number, subtitleMethod?: SubtitleDeliveryMethod, maxRefFrames?: number, maxVideoBitDepth?: number, requireAvc?: boolean, deInterlace?: boolean, requireNonAnamorphic?: boolean, transcodingMaxAudioChannels?: number, cpuCoreLimit?: number, liveStreamId?: string, enableMpegtsM2TsMode?: boolean, videoCodec?: string, subtitleCodec?: string, transcodeReasons?: string, audioStreamIndex?: number, videoStreamIndex?: number, context?: EncodingContext, streamOptions?: { [key: string]: string; }, maxWidth?: number, maxHeight?: number, enableSubtitlesInManifest?: boolean, options?: any): AxiosPromise<any> {
+            return VideoHlsApiFp(configuration).getLiveHlsStream(itemId, container, _static, params, tag, deviceProfileId, playSessionId, segmentContainer, segmentLength, minSegments, mediaSourceId, deviceId, audioCodec, enableAutoStreamCopy, allowVideoStreamCopy, allowAudioStreamCopy, breakOnNonKeyFrames, audioSampleRate, maxAudioBitDepth, audioBitRate, audioChannels, maxAudioChannels, profile, level, framerate, maxFramerate, copyTimestamps, startTimeTicks, width, height, videoBitRate, subtitleStreamIndex, subtitleMethod, maxRefFrames, maxVideoBitDepth, requireAvc, deInterlace, requireNonAnamorphic, transcodingMaxAudioChannels, cpuCoreLimit, liveStreamId, enableMpegtsM2TsMode, videoCodec, subtitleCodec, transcodeReasons, audioStreamIndex, videoStreamIndex, context, streamOptions, maxWidth, maxHeight, enableSubtitlesInManifest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -746,7 +746,7 @@ export interface VideoHlsApiGetLiveHlsStreamRequest {
     readonly deInterlace?: boolean
 
     /**
-     * Optional. Whether to require a non anamporphic stream.
+     * Optional. Whether to require a non anamorphic stream.
      * @type {boolean}
      * @memberof VideoHlsApiGetLiveHlsStream
      */
@@ -799,7 +799,7 @@ export interface VideoHlsApiGetLiveHlsStreamRequest {
      * @type {string}
      * @memberof VideoHlsApiGetLiveHlsStream
      */
-    readonly transcodingReasons?: string
+    readonly transcodeReasons?: string
 
     /**
      * Optional. The index of the audio stream to use. If omitted the first audio stream will be used.
@@ -867,6 +867,6 @@ export class VideoHlsApi extends BaseAPI {
      * @memberof VideoHlsApi
      */
     public getLiveHlsStream(requestParameters: VideoHlsApiGetLiveHlsStreamRequest, options?: any) {
-        return VideoHlsApiFp(this.configuration).getLiveHlsStream(requestParameters.itemId, requestParameters.container, requestParameters._static, requestParameters.params, requestParameters.tag, requestParameters.deviceProfileId, requestParameters.playSessionId, requestParameters.segmentContainer, requestParameters.segmentLength, requestParameters.minSegments, requestParameters.mediaSourceId, requestParameters.deviceId, requestParameters.audioCodec, requestParameters.enableAutoStreamCopy, requestParameters.allowVideoStreamCopy, requestParameters.allowAudioStreamCopy, requestParameters.breakOnNonKeyFrames, requestParameters.audioSampleRate, requestParameters.maxAudioBitDepth, requestParameters.audioBitRate, requestParameters.audioChannels, requestParameters.maxAudioChannels, requestParameters.profile, requestParameters.level, requestParameters.framerate, requestParameters.maxFramerate, requestParameters.copyTimestamps, requestParameters.startTimeTicks, requestParameters.width, requestParameters.height, requestParameters.videoBitRate, requestParameters.subtitleStreamIndex, requestParameters.subtitleMethod, requestParameters.maxRefFrames, requestParameters.maxVideoBitDepth, requestParameters.requireAvc, requestParameters.deInterlace, requestParameters.requireNonAnamorphic, requestParameters.transcodingMaxAudioChannels, requestParameters.cpuCoreLimit, requestParameters.liveStreamId, requestParameters.enableMpegtsM2TsMode, requestParameters.videoCodec, requestParameters.subtitleCodec, requestParameters.transcodingReasons, requestParameters.audioStreamIndex, requestParameters.videoStreamIndex, requestParameters.context, requestParameters.streamOptions, requestParameters.maxWidth, requestParameters.maxHeight, requestParameters.enableSubtitlesInManifest, options).then((request) => request(this.axios, this.basePath));
+        return VideoHlsApiFp(this.configuration).getLiveHlsStream(requestParameters.itemId, requestParameters.container, requestParameters._static, requestParameters.params, requestParameters.tag, requestParameters.deviceProfileId, requestParameters.playSessionId, requestParameters.segmentContainer, requestParameters.segmentLength, requestParameters.minSegments, requestParameters.mediaSourceId, requestParameters.deviceId, requestParameters.audioCodec, requestParameters.enableAutoStreamCopy, requestParameters.allowVideoStreamCopy, requestParameters.allowAudioStreamCopy, requestParameters.breakOnNonKeyFrames, requestParameters.audioSampleRate, requestParameters.maxAudioBitDepth, requestParameters.audioBitRate, requestParameters.audioChannels, requestParameters.maxAudioChannels, requestParameters.profile, requestParameters.level, requestParameters.framerate, requestParameters.maxFramerate, requestParameters.copyTimestamps, requestParameters.startTimeTicks, requestParameters.width, requestParameters.height, requestParameters.videoBitRate, requestParameters.subtitleStreamIndex, requestParameters.subtitleMethod, requestParameters.maxRefFrames, requestParameters.maxVideoBitDepth, requestParameters.requireAvc, requestParameters.deInterlace, requestParameters.requireNonAnamorphic, requestParameters.transcodingMaxAudioChannels, requestParameters.cpuCoreLimit, requestParameters.liveStreamId, requestParameters.enableMpegtsM2TsMode, requestParameters.videoCodec, requestParameters.subtitleCodec, requestParameters.transcodeReasons, requestParameters.audioStreamIndex, requestParameters.videoStreamIndex, requestParameters.context, requestParameters.streamOptions, requestParameters.maxWidth, requestParameters.maxHeight, requestParameters.enableSubtitlesInManifest, options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -30,11 +30,11 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Adds items to a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addToCollection: async (collectionId: string, ids: string, options: any = {}): Promise<RequestArgs> => {
+        addToCollection: async (collectionId: string, ids: Array<string>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'collectionId' is not null or undefined
             if (collectionId === null || collectionId === undefined) {
                 throw new RequiredError('collectionId','Required parameter collectionId was null or undefined when calling addToCollection.');
@@ -63,7 +63,7 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (ids !== undefined) {
+            if (ids) {
                 localVarQueryParameter['ids'] = ids;
             }
 
@@ -89,13 +89,13 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Creates a new collection.
          * @param {string} [name] The name of the collection.
-         * @param {string} [ids] Item Ids to add to the collection.
+         * @param {Array<string>} [ids] Item Ids to add to the collection.
          * @param {string} [parentId] Optional. Create the collection within a specific folder.
          * @param {boolean} [isLocked] Whether or not to lock the new collection.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCollection: async (name?: string, ids?: string, parentId?: string, isLocked?: boolean, options: any = {}): Promise<RequestArgs> => {
+        createCollection: async (name?: string, ids?: Array<string>, parentId?: string, isLocked?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Collections`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -119,7 +119,7 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 localVarQueryParameter['name'] = name;
             }
 
-            if (ids !== undefined) {
+            if (ids) {
                 localVarQueryParameter['ids'] = ids;
             }
 
@@ -153,11 +153,11 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
          * 
          * @summary Removes items from a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeFromCollection: async (collectionId: string, ids: string, options: any = {}): Promise<RequestArgs> => {
+        removeFromCollection: async (collectionId: string, ids: Array<string>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'collectionId' is not null or undefined
             if (collectionId === null || collectionId === undefined) {
                 throw new RequiredError('collectionId','Required parameter collectionId was null or undefined when calling removeFromCollection.');
@@ -186,7 +186,7 @@ export const CollectionApiAxiosParamCreator = function (configuration?: Configur
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (ids !== undefined) {
+            if (ids) {
                 localVarQueryParameter['ids'] = ids;
             }
 
@@ -221,11 +221,11 @@ export const CollectionApiFp = function(configuration?: Configuration) {
          * 
          * @summary Adds items to a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addToCollection(collectionId: string, ids: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async addToCollection(collectionId: string, ids: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await CollectionApiAxiosParamCreator(configuration).addToCollection(collectionId, ids, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -236,13 +236,13 @@ export const CollectionApiFp = function(configuration?: Configuration) {
          * 
          * @summary Creates a new collection.
          * @param {string} [name] The name of the collection.
-         * @param {string} [ids] Item Ids to add to the collection.
+         * @param {Array<string>} [ids] Item Ids to add to the collection.
          * @param {string} [parentId] Optional. Create the collection within a specific folder.
          * @param {boolean} [isLocked] Whether or not to lock the new collection.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createCollection(name?: string, ids?: string, parentId?: string, isLocked?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionCreationResult>> {
+        async createCollection(name?: string, ids?: Array<string>, parentId?: string, isLocked?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CollectionCreationResult>> {
             const localVarAxiosArgs = await CollectionApiAxiosParamCreator(configuration).createCollection(name, ids, parentId, isLocked, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -253,11 +253,11 @@ export const CollectionApiFp = function(configuration?: Configuration) {
          * 
          * @summary Removes items from a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeFromCollection(collectionId: string, ids: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async removeFromCollection(collectionId: string, ids: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await CollectionApiAxiosParamCreator(configuration).removeFromCollection(collectionId, ids, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -277,35 +277,35 @@ export const CollectionApiFactory = function (configuration?: Configuration, bas
          * 
          * @summary Adds items to a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addToCollection(collectionId: string, ids: string, options?: any): AxiosPromise<void> {
+        addToCollection(collectionId: string, ids: Array<string>, options?: any): AxiosPromise<void> {
             return CollectionApiFp(configuration).addToCollection(collectionId, ids, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Creates a new collection.
          * @param {string} [name] The name of the collection.
-         * @param {string} [ids] Item Ids to add to the collection.
+         * @param {Array<string>} [ids] Item Ids to add to the collection.
          * @param {string} [parentId] Optional. Create the collection within a specific folder.
          * @param {boolean} [isLocked] Whether or not to lock the new collection.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createCollection(name?: string, ids?: string, parentId?: string, isLocked?: boolean, options?: any): AxiosPromise<CollectionCreationResult> {
+        createCollection(name?: string, ids?: Array<string>, parentId?: string, isLocked?: boolean, options?: any): AxiosPromise<CollectionCreationResult> {
             return CollectionApiFp(configuration).createCollection(name, ids, parentId, isLocked, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Removes items from a collection.
          * @param {string} collectionId The collection id.
-         * @param {string} ids Item ids, comma delimited.
+         * @param {Array<string>} ids Item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeFromCollection(collectionId: string, ids: string, options?: any): AxiosPromise<void> {
+        removeFromCollection(collectionId: string, ids: Array<string>, options?: any): AxiosPromise<void> {
             return CollectionApiFp(configuration).removeFromCollection(collectionId, ids, options).then((request) => request(axios, basePath));
         },
     };
@@ -326,10 +326,10 @@ export interface CollectionApiAddToCollectionRequest {
 
     /**
      * Item ids, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof CollectionApiAddToCollection
      */
-    readonly ids: string
+    readonly ids: Array<string>
 }
 
 /**
@@ -347,10 +347,10 @@ export interface CollectionApiCreateCollectionRequest {
 
     /**
      * Item Ids to add to the collection.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof CollectionApiCreateCollection
      */
-    readonly ids?: string
+    readonly ids?: Array<string>
 
     /**
      * Optional. Create the collection within a specific folder.
@@ -382,10 +382,10 @@ export interface CollectionApiRemoveFromCollectionRequest {
 
     /**
      * Item ids, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof CollectionApiRemoveFromCollection
      */
-    readonly ids: string
+    readonly ids: Array<string>
 }
 
 /**

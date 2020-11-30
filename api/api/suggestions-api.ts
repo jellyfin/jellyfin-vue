@@ -30,15 +30,15 @@ export const SuggestionsApiAxiosParamCreator = function (configuration?: Configu
          * 
          * @summary Gets suggestions.
          * @param {string} userId The user id.
-         * @param {string} [mediaType] The media types.
-         * @param {string} [type] The type.
+         * @param {Array<string>} [mediaType] The media types.
+         * @param {Array<string>} [type] The type.
          * @param {number} [startIndex] Optional. The start index.
          * @param {number} [limit] Optional. The limit.
          * @param {boolean} [enableTotalRecordCount] Whether to enable the total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSuggestions: async (userId: string, mediaType?: string, type?: string, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getSuggestions: async (userId: string, mediaType?: Array<string>, type?: Array<string>, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling getSuggestions.');
@@ -63,11 +63,11 @@ export const SuggestionsApiAxiosParamCreator = function (configuration?: Configu
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (mediaType !== undefined) {
+            if (mediaType) {
                 localVarQueryParameter['mediaType'] = mediaType;
             }
 
-            if (type !== undefined) {
+            if (type) {
                 localVarQueryParameter['type'] = type;
             }
 
@@ -114,15 +114,15 @@ export const SuggestionsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Gets suggestions.
          * @param {string} userId The user id.
-         * @param {string} [mediaType] The media types.
-         * @param {string} [type] The type.
+         * @param {Array<string>} [mediaType] The media types.
+         * @param {Array<string>} [type] The type.
          * @param {number} [startIndex] Optional. The start index.
          * @param {number} [limit] Optional. The limit.
          * @param {boolean} [enableTotalRecordCount] Whether to enable the total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSuggestions(userId: string, mediaType?: string, type?: string, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getSuggestions(userId: string, mediaType?: Array<string>, type?: Array<string>, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await SuggestionsApiAxiosParamCreator(configuration).getSuggestions(userId, mediaType, type, startIndex, limit, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -142,15 +142,15 @@ export const SuggestionsApiFactory = function (configuration?: Configuration, ba
          * 
          * @summary Gets suggestions.
          * @param {string} userId The user id.
-         * @param {string} [mediaType] The media types.
-         * @param {string} [type] The type.
+         * @param {Array<string>} [mediaType] The media types.
+         * @param {Array<string>} [type] The type.
          * @param {number} [startIndex] Optional. The start index.
          * @param {number} [limit] Optional. The limit.
          * @param {boolean} [enableTotalRecordCount] Whether to enable the total record count.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSuggestions(userId: string, mediaType?: string, type?: string, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getSuggestions(userId: string, mediaType?: Array<string>, type?: Array<string>, startIndex?: number, limit?: number, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return SuggestionsApiFp(configuration).getSuggestions(userId, mediaType, type, startIndex, limit, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
@@ -171,17 +171,17 @@ export interface SuggestionsApiGetSuggestionsRequest {
 
     /**
      * The media types.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof SuggestionsApiGetSuggestions
      */
-    readonly mediaType?: string
+    readonly mediaType?: Array<string>
 
     /**
      * The type.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof SuggestionsApiGetSuggestions
      */
-    readonly type?: string
+    readonly type?: Array<string>
 
     /**
      * Optional. The start index.

@@ -13,7 +13,6 @@
  */
 
 
-import { BaseItemDtoImageTags } from './base-item-dto-image-tags';
 import { DayOfWeek } from './day-of-week';
 import { DayPattern } from './day-pattern';
 import { KeepUntil } from './keep-until';
@@ -205,11 +204,11 @@ export interface SeriesTimerInfoDto {
      */
     DayPattern?: DayPattern;
     /**
-     * 
-     * @type {BaseItemDtoImageTags}
+     * Gets or sets the image tags.
+     * @type {{ [key: string]: string; }}
      * @memberof SeriesTimerInfoDto
      */
-    ImageTags?: BaseItemDtoImageTags | null;
+    ImageTags?: { [key: string]: string; } | null;
     /**
      * Gets or sets the parent thumb item id.
      * @type {string}

@@ -24,10 +24,10 @@ import { ItemFields } from './item-fields';
 export interface GetProgramsDto {
     /**
      * Gets or sets the channels to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof GetProgramsDto
      */
-    ChannelIds?: string | null;
+    ChannelIds?: Array<string> | null;
     /**
      * Gets or sets optional. Filter by user id.
      * @type {string}
@@ -126,16 +126,16 @@ export interface GetProgramsDto {
     SortOrder?: string | null;
     /**
      * Gets or sets the genres to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof GetProgramsDto
      */
-    Genres?: string | null;
+    Genres?: Array<string> | null;
     /**
      * Gets or sets the genre ids to return guide information for.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof GetProgramsDto
      */
-    GenreIds?: string | null;
+    GenreIds?: Array<string> | null;
     /**
      * Gets or sets include image information in output.  Optional.
      * @type {boolean}

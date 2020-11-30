@@ -106,7 +106,7 @@ export const VideoAttachmentsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAttachment(videoId: string, mediaSourceId: string, index: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getAttachment(videoId: string, mediaSourceId: string, index: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await VideoAttachmentsApiAxiosParamCreator(configuration).getAttachment(videoId, mediaSourceId, index, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -131,7 +131,7 @@ export const VideoAttachmentsApiFactory = function (configuration?: Configuratio
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAttachment(videoId: string, mediaSourceId: string, index: number, options?: any): AxiosPromise<void> {
+        getAttachment(videoId: string, mediaSourceId: string, index: number, options?: any): AxiosPromise<any> {
             return VideoAttachmentsApiFp(configuration).getAttachment(videoId, mediaSourceId, index, options).then((request) => request(axios, basePath));
         },
     };
