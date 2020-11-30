@@ -79,7 +79,6 @@ export default Vue.extend({
     for (const season of this.seasons) {
       const episodes = (
         await this.$api.items.getItems({
-          uId: this.$auth.user.Id,
           userId: this.$auth.user.Id,
           parentId: season.Id,
           fields: [ItemFields.Overview]

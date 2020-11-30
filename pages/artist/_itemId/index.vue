@@ -146,7 +146,6 @@ export default Vue.extend({
 
     const appearances = (
       await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         parentId: this.$route.params.itemId,
         sortBy: 'PremiereDate',

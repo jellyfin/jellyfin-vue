@@ -213,9 +213,8 @@ export default Vue.extend({
 
     const appearances = (
       await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        personIds: this.$route.params.itemId,
+        personIds: [this.$route.params.itemId],
         recursive: true,
         collapseBoxSetItems: false
       })

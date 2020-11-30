@@ -100,7 +100,6 @@ export default Vue.extend({
   async beforeMount() {
     const tracks = (
       await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
         parentId: this.item.Id
       })
