@@ -25,9 +25,8 @@ export default Vue.extend({
   async beforeMount() {
     try {
       const response = await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        ids: this.$route.params.itemId
+        ids: [this.$route.params.itemId]
       });
 
       if (response?.data?.Items && response.data.Items.length > 0) {

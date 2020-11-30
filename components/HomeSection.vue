@@ -78,7 +78,7 @@ export default Vue.extend({
             ImageType.Thumb
           ],
           enableTotalRecordCount: false,
-          mediaTypes: 'Video'
+          mediaTypes: ['Video']
         });
 
         this.items = resumeItems.data.Items as BaseItemDto[];
@@ -96,7 +96,7 @@ export default Vue.extend({
             ImageType.Thumb
           ],
           enableTotalRecordCount: false,
-          mediaTypes: 'Audio'
+          mediaTypes: ['Audio']
         });
 
         this.items = resumeItems.data.Items as BaseItemDto[];

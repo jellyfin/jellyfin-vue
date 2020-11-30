@@ -58,9 +58,7 @@ export default Vue.extend({
       const response = await this.$api.mediaInfo.getPostedPlaybackInfo({
         itemId: this.$route.params.itemId,
         userId: this.$auth.user.Id,
-        deviceProfileDto: {
-          DeviceProfile: this.$playbackProfile
-        }
+        ...this.$playbackProfile
       });
 
       let mediaSource;
