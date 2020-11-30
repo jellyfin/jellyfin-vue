@@ -57,5 +57,13 @@
     "genres": "Жанры",
     "parentalRatings": "Возрастные категории",
     "videoTypes": "Типы видео",
-    "years": "Годы"
+    "years": "Годы",
+    "youMayAlsoLike": "Вам также может понравиться",
+    "shuffleAll": "Перемешать все",
+    "moreLikeArtist": "Ещё подобные {artist}",
+    "disc": "Диск {discNumber}",
+    "byArtist": "-",
+    "biography": "Биография",
+    "artist": "Исполнитель",
+    "albums": "Альбомы"
 }
