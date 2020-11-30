@@ -37,7 +37,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -49,7 +49,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
+         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -256,7 +256,7 @@ export const TvShowsApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -449,7 +449,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -461,7 +461,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
+         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -501,7 +501,7 @@ export const TvShowsApiFp = function(configuration?: Configuration) {
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -555,7 +555,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @summary Gets episodes for a tv season.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {number} [season] Optional filter by season number.
          * @param {string} [seasonId] Optional. Filter by season id.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
@@ -567,7 +567,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {boolean} [enableUserData] Optional. Include user data.
-         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
+         * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -599,7 +599,7 @@ export const TvShowsApiFactory = function (configuration?: Configuration, basePa
          * @summary Gets seasons for a tv series.
          * @param {string} seriesId The series id.
          * @param {string} [userId] The user id.
-         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+         * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
          * @param {boolean} [isSpecialSeason] Optional. Filter by special season.
          * @param {boolean} [isMissing] Optional. Filter by items that are missing episodes or not.
          * @param {string} [adjacentTo] Optional. Return items that are siblings of a supplied item.
@@ -655,7 +655,7 @@ export interface TvShowsApiGetEpisodesRequest {
     readonly userId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
      * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetEpisodes
      */
@@ -739,7 +739,7 @@ export interface TvShowsApiGetEpisodesRequest {
     readonly enableUserData?: boolean
 
     /**
-     * Optional. Specify one or more sort orders, comma delimeted. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
+     * Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
      * @type {string}
      * @memberof TvShowsApiGetEpisodes
      */
@@ -851,7 +851,7 @@ export interface TvShowsApiGetSeasonsRequest {
     readonly userId?: string
 
     /**
-     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimeted. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
+     * Optional. Specify additional fields of information to return in the output. This allows multiple, comma delimited. Options: Budget, Chapters, DateCreated, Genres, HomePageUrl, IndexOptions, MediaStreams, Overview, ParentId, Path, People, ProviderIds, PrimaryImageAspectRatio, Revenue, SortName, Studios, Taglines, TrailerUrls.
      * @type {Array<ItemFields>}
      * @memberof TvShowsApiGetSeasons
      */

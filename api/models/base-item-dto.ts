@@ -14,7 +14,6 @@
 
 
 import { BaseItemDtoImageBlurHashes } from './base-item-dto-image-blur-hashes';
-import { BaseItemDtoImageTags } from './base-item-dto-image-tags';
 import { BaseItemPerson } from './base-item-person';
 import { ChannelType } from './channel-type';
 import { ChapterInfo } from './chapter-info';
@@ -581,11 +580,11 @@ export interface BaseItemDto {
      */
     MediaSourceCount?: number | null;
     /**
-     * 
-     * @type {BaseItemDtoImageTags}
+     * Gets or sets the image tags.
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDto
      */
-    ImageTags?: BaseItemDtoImageTags | null;
+    ImageTags?: { [key: string]: string; } | null;
     /**
      * Gets or sets the backdrop image tags.
      * @type {Array<string>}

@@ -15,23 +15,14 @@
 
 
 /**
- * Defines the MediaBrowser.Model.Dlna.XmlAttribute.
+ * Enum SeriesStatus.
  * @export
- * @interface XmlAttribute
+ * @enum {string}
  */
-export interface XmlAttribute {
-    /**
-     * Gets or sets the name of the attribute.
-     * @type {string}
-     * @memberof XmlAttribute
-     */
-    Name?: string | null;
-    /**
-     * Gets or sets the value of the attribute.
-     * @type {string}
-     * @memberof XmlAttribute
-     */
-    Value?: string | null;
+export enum SeriesStatus {
+    Continuing = 'Continuing',
+    Ended = 'Ended'
 }
+
 
 

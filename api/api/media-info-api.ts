@@ -19,11 +19,11 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { DeviceProfileDto } from '../models';
-// @ts-ignore
 import { LiveStreamResponse } from '../models';
 // @ts-ignore
 import { OpenLiveStreamDto } from '../models';
+// @ts-ignore
+import { PlaybackInfoDto } from '../models';
 // @ts-ignore
 import { PlaybackInfoResponse } from '../models';
 // @ts-ignore
@@ -196,7 +196,7 @@ export const MediaInfoApiAxiosParamCreator = function (configuration?: Configura
             };
         },
         /**
-         * 
+         * For backwards compatibility parameters can be sent via Query or Body, with Query having higher precedence.
          * @summary Gets live playback media info for an item.
          * @param {string} itemId The item id.
          * @param {string} [userId] The user id.
@@ -213,11 +213,11 @@ export const MediaInfoApiAxiosParamCreator = function (configuration?: Configura
          * @param {boolean} [enableTranscoding] Whether to enable transcoding. Default: true.
          * @param {boolean} [allowVideoStreamCopy] Whether to allow to copy the video stream. Default: true.
          * @param {boolean} [allowAudioStreamCopy] Whether to allow to copy the audio stream. Default: true.
-         * @param {DeviceProfileDto} [deviceProfileDto] The device profile.
+         * @param {PlaybackInfoDto} [playbackInfoDto] The playback info.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostedPlaybackInfo: async (itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, deviceProfileDto?: DeviceProfileDto, options: any = {}): Promise<RequestArgs> => {
+        getPostedPlaybackInfo: async (itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, playbackInfoDto?: PlaybackInfoDto, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getPostedPlaybackInfo.');
@@ -312,8 +312,8 @@ export const MediaInfoApiAxiosParamCreator = function (configuration?: Configura
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof deviceProfileDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(deviceProfileDto !== undefined ? deviceProfileDto : {}) : (deviceProfileDto || "");
+            const needsSerialization = (typeof playbackInfoDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(playbackInfoDto !== undefined ? playbackInfoDto : {}) : (playbackInfoDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -477,7 +477,7 @@ export const MediaInfoApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * 
+         * For backwards compatibility parameters can be sent via Query or Body, with Query having higher precedence.
          * @summary Gets live playback media info for an item.
          * @param {string} itemId The item id.
          * @param {string} [userId] The user id.
@@ -494,12 +494,12 @@ export const MediaInfoApiFp = function(configuration?: Configuration) {
          * @param {boolean} [enableTranscoding] Whether to enable transcoding. Default: true.
          * @param {boolean} [allowVideoStreamCopy] Whether to allow to copy the video stream. Default: true.
          * @param {boolean} [allowAudioStreamCopy] Whether to allow to copy the audio stream. Default: true.
-         * @param {DeviceProfileDto} [deviceProfileDto] The device profile.
+         * @param {PlaybackInfoDto} [playbackInfoDto] The playback info.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPostedPlaybackInfo(itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, deviceProfileDto?: DeviceProfileDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlaybackInfoResponse>> {
-            const localVarAxiosArgs = await MediaInfoApiAxiosParamCreator(configuration).getPostedPlaybackInfo(itemId, userId, maxStreamingBitrate, startTimeTicks, audioStreamIndex, subtitleStreamIndex, maxAudioChannels, mediaSourceId, liveStreamId, autoOpenLiveStream, enableDirectPlay, enableDirectStream, enableTranscoding, allowVideoStreamCopy, allowAudioStreamCopy, deviceProfileDto, options);
+        async getPostedPlaybackInfo(itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, playbackInfoDto?: PlaybackInfoDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlaybackInfoResponse>> {
+            const localVarAxiosArgs = await MediaInfoApiAxiosParamCreator(configuration).getPostedPlaybackInfo(itemId, userId, maxStreamingBitrate, startTimeTicks, audioStreamIndex, subtitleStreamIndex, maxAudioChannels, mediaSourceId, liveStreamId, autoOpenLiveStream, enableDirectPlay, enableDirectStream, enableTranscoding, allowVideoStreamCopy, allowAudioStreamCopy, playbackInfoDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -571,7 +571,7 @@ export const MediaInfoApiFactory = function (configuration?: Configuration, base
             return MediaInfoApiFp(configuration).getPlaybackInfo(itemId, userId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * For backwards compatibility parameters can be sent via Query or Body, with Query having higher precedence.
          * @summary Gets live playback media info for an item.
          * @param {string} itemId The item id.
          * @param {string} [userId] The user id.
@@ -588,12 +588,12 @@ export const MediaInfoApiFactory = function (configuration?: Configuration, base
          * @param {boolean} [enableTranscoding] Whether to enable transcoding. Default: true.
          * @param {boolean} [allowVideoStreamCopy] Whether to allow to copy the video stream. Default: true.
          * @param {boolean} [allowAudioStreamCopy] Whether to allow to copy the audio stream. Default: true.
-         * @param {DeviceProfileDto} [deviceProfileDto] The device profile.
+         * @param {PlaybackInfoDto} [playbackInfoDto] The playback info.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPostedPlaybackInfo(itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, deviceProfileDto?: DeviceProfileDto, options?: any): AxiosPromise<PlaybackInfoResponse> {
-            return MediaInfoApiFp(configuration).getPostedPlaybackInfo(itemId, userId, maxStreamingBitrate, startTimeTicks, audioStreamIndex, subtitleStreamIndex, maxAudioChannels, mediaSourceId, liveStreamId, autoOpenLiveStream, enableDirectPlay, enableDirectStream, enableTranscoding, allowVideoStreamCopy, allowAudioStreamCopy, deviceProfileDto, options).then((request) => request(axios, basePath));
+        getPostedPlaybackInfo(itemId: string, userId?: string, maxStreamingBitrate?: number, startTimeTicks?: number, audioStreamIndex?: number, subtitleStreamIndex?: number, maxAudioChannels?: number, mediaSourceId?: string, liveStreamId?: string, autoOpenLiveStream?: boolean, enableDirectPlay?: boolean, enableDirectStream?: boolean, enableTranscoding?: boolean, allowVideoStreamCopy?: boolean, allowAudioStreamCopy?: boolean, playbackInfoDto?: PlaybackInfoDto, options?: any): AxiosPromise<PlaybackInfoResponse> {
+            return MediaInfoApiFp(configuration).getPostedPlaybackInfo(itemId, userId, maxStreamingBitrate, startTimeTicks, audioStreamIndex, subtitleStreamIndex, maxAudioChannels, mediaSourceId, liveStreamId, autoOpenLiveStream, enableDirectPlay, enableDirectStream, enableTranscoding, allowVideoStreamCopy, allowAudioStreamCopy, playbackInfoDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -780,11 +780,11 @@ export interface MediaInfoApiGetPostedPlaybackInfoRequest {
     readonly allowAudioStreamCopy?: boolean
 
     /**
-     * The device profile.
-     * @type {DeviceProfileDto}
+     * The playback info.
+     * @type {PlaybackInfoDto}
      * @memberof MediaInfoApiGetPostedPlaybackInfo
      */
-    readonly deviceProfileDto?: DeviceProfileDto
+    readonly playbackInfoDto?: PlaybackInfoDto
 }
 
 /**
@@ -922,7 +922,7 @@ export class MediaInfoApi extends BaseAPI {
     }
 
     /**
-     * 
+     * For backwards compatibility parameters can be sent via Query or Body, with Query having higher precedence.
      * @summary Gets live playback media info for an item.
      * @param {MediaInfoApiGetPostedPlaybackInfoRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
@@ -930,7 +930,7 @@ export class MediaInfoApi extends BaseAPI {
      * @memberof MediaInfoApi
      */
     public getPostedPlaybackInfo(requestParameters: MediaInfoApiGetPostedPlaybackInfoRequest, options?: any) {
-        return MediaInfoApiFp(this.configuration).getPostedPlaybackInfo(requestParameters.itemId, requestParameters.userId, requestParameters.maxStreamingBitrate, requestParameters.startTimeTicks, requestParameters.audioStreamIndex, requestParameters.subtitleStreamIndex, requestParameters.maxAudioChannels, requestParameters.mediaSourceId, requestParameters.liveStreamId, requestParameters.autoOpenLiveStream, requestParameters.enableDirectPlay, requestParameters.enableDirectStream, requestParameters.enableTranscoding, requestParameters.allowVideoStreamCopy, requestParameters.allowAudioStreamCopy, requestParameters.deviceProfileDto, options).then((request) => request(this.axios, this.basePath));
+        return MediaInfoApiFp(this.configuration).getPostedPlaybackInfo(requestParameters.itemId, requestParameters.userId, requestParameters.maxStreamingBitrate, requestParameters.startTimeTicks, requestParameters.audioStreamIndex, requestParameters.subtitleStreamIndex, requestParameters.maxAudioChannels, requestParameters.mediaSourceId, requestParameters.liveStreamId, requestParameters.autoOpenLiveStream, requestParameters.enableDirectPlay, requestParameters.enableDirectStream, requestParameters.enableTranscoding, requestParameters.allowVideoStreamCopy, requestParameters.allowAudioStreamCopy, requestParameters.playbackInfoDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

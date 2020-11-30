@@ -80,10 +80,8 @@ models/authentication-info-query-result.ts
 models/authentication-info.ts
 models/authentication-result.ts
 models/base-item-dto-image-blur-hashes.ts
-models/base-item-dto-image-tags.ts
 models/base-item-dto-query-result.ts
 models/base-item-dto.ts
-models/base-item-person-image-blur-hashes-primary.ts
 models/base-item-person-image-blur-hashes.ts
 models/base-item-person.ts
 models/base-item.ts
@@ -99,6 +97,7 @@ models/channel-media-content-type.ts
 models/channel-media-type.ts
 models/channel-type.ts
 models/chapter-info.ts
+models/client-capabilities-dto.ts
 models/client-capabilities.ts
 models/codec-profile.ts
 models/codec-type.ts
@@ -118,7 +117,6 @@ models/device-identification.ts
 models/device-info-query-result.ts
 models/device-info.ts
 models/device-options.ts
-models/device-profile-dto.ts
 models/device-profile-info.ts
 models/device-profile-type.ts
 models/device-profile.ts
@@ -217,6 +215,7 @@ models/play-command.ts
 models/play-method.ts
 models/play-request.ts
 models/playback-error-code.ts
+models/playback-info-dto.ts
 models/playback-info-response.ts
 models/playback-progress-info.ts
 models/playback-start-info.ts
@@ -257,6 +256,7 @@ models/send-command-type.ts
 models/send-command.ts
 models/series-info-remote-search-query.ts
 models/series-info.ts
+models/series-status.ts
 models/series-timer-info-dto-query-result.ts
 models/series-timer-info-dto.ts
 models/server-configuration.ts

@@ -75,6 +75,108 @@ export interface ServerConfiguration {
      */
     PublicPort?: number;
     /**
+     * Gets or sets a value indicating whether the http port should be mapped as part of UPnP automatic port forwarding.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    UPnPCreateHttpPortMap?: boolean;
+    /**
+     * Gets or sets client udp port range.
+     * @type {string}
+     * @memberof ServerConfiguration
+     */
+    UDPPortRange?: string | null;
+    /**
+     * Gets or sets a value indicating whether IPV6 capability is enabled.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    EnableIPV6?: boolean;
+    /**
+     * Gets or sets a value indicating whether IPV4 capability is enabled.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    EnableIPV4?: boolean;
+    /**
+     * Gets or sets a value indicating whether detailed ssdp logs are sent to the console/log.  \"Emby.Dlna\": \"Debug\" must be set in logging.default.json for this property to work.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    EnableSSDPTracing?: boolean;
+    /**
+     * Gets or sets a value indicating whether an IP address is to be used to filter the detailed ssdp logs that are being sent to the console/log.  If the setting \"Emby.Dlna\": \"Debug\" msut be set in logging.default.json for this property to work.
+     * @type {string}
+     * @memberof ServerConfiguration
+     */
+    SSDPTracingFilter?: string | null;
+    /**
+     * Gets or sets the number of times SSDP UDP messages are sent.
+     * @type {number}
+     * @memberof ServerConfiguration
+     */
+    UDPSendCount?: number;
+    /**
+     * Gets or sets the delay between each groups of SSDP messages (in ms).
+     * @type {number}
+     * @memberof ServerConfiguration
+     */
+    UDPSendDelay?: number;
+    /**
+     * Gets or sets a value indicating whether address names that match MediaBrowser.Model.Configuration.ServerConfiguration.VirtualInterfaceNames should be Ignore for the purposes of binding.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    IgnoreVirtualInterfaces?: boolean;
+    /**
+     * Gets or sets a value indicating the interfaces that should be ignored. The list can be comma separated. <seealso cref=\"P:MediaBrowser.Model.Configuration.ServerConfiguration.IgnoreVirtualInterfaces\" />.
+     * @type {string}
+     * @memberof ServerConfiguration
+     */
+    VirtualInterfaceNames?: string | null;
+    /**
+     * Gets or sets the time (in seconds) between the pings of SSDP gateway monitor.
+     * @type {number}
+     * @memberof ServerConfiguration
+     */
+    GatewayMonitorPeriod?: number;
+    /**
+     * Gets a value indicating whether multi-socket binding is available.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    EnableMultiSocketBinding?: boolean;
+    /**
+     * Gets or sets a value indicating whether all IPv6 interfaces should be treated as on the internal network.  Depending on the address range implemented ULA ranges might not be used.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    TrustAllIP6Interfaces?: boolean;
+    /**
+     * Gets or sets the ports that HDHomerun uses.
+     * @type {string}
+     * @memberof ServerConfiguration
+     */
+    HDHomerunPortRange?: string | null;
+    /**
+     * Gets or sets PublishedServerUri to advertise for specific subnets.
+     * @type {Array<string>}
+     * @memberof ServerConfiguration
+     */
+    PublishedServerUriBySubnet?: Array<string> | null;
+    /**
+     * Gets or sets a value indicating whether Autodiscovery tracing is enabled.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    AutoDiscoveryTracing?: boolean;
+    /**
+     * Gets or sets a value indicating whether Autodiscovery is enabled.
+     * @type {boolean}
+     * @memberof ServerConfiguration
+     */
+    AutoDiscovery?: boolean;
+    /**
      * Gets or sets the public HTTPS port.
      * @type {number}
      * @memberof ServerConfiguration
@@ -123,13 +225,13 @@ export interface ServerConfiguration {
      */
     IsPortAuthorized?: boolean;
     /**
-     * Gets or sets if quick connect is available for use on this server.
+     * Gets or sets a value indicating whether quick connect is available for use on this server.
      * @type {boolean}
      * @memberof ServerConfiguration
      */
     QuickConnectAvailable?: boolean;
     /**
-     * 
+     * Gets or sets a value indicating whether access outside of the LAN is permitted.
      * @type {boolean}
      * @memberof ServerConfiguration
      */
@@ -171,19 +273,19 @@ export interface ServerConfiguration {
      */
     MetadataCountryCode?: string | null;
     /**
-     * Characters to be replaced with a \' \' in strings to create a sort name.
+     * Gets or sets characters to be replaced with a \' \' in strings to create a sort name.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
     SortReplaceCharacters?: Array<string> | null;
     /**
-     * Characters to be removed from strings to create a sort name.
+     * Gets or sets characters to be removed from strings to create a sort name.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
     SortRemoveCharacters?: Array<string> | null;
     /**
-     * Words to be removed from strings to create a sort name.
+     * Gets or sets words to be removed from strings to create a sort name.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
@@ -207,7 +309,7 @@ export interface ServerConfiguration {
      */
     MinResumeDurationSeconds?: number;
     /**
-     * The delay in seconds that we will wait after a file system change to try and discover what has been added/removed  Some delay is necessary with some items because their creation is not atomic.  It involves the creation of several  different directories and files.
+     * Gets or sets the delay in seconds that we will wait after a file system change to try and discover what has been added/removed  Some delay is necessary with some items because their creation is not atomic.  It involves the creation of several  different directories and files.
      * @type {number}
      * @memberof ServerConfiguration
      */
@@ -291,13 +393,13 @@ export interface ServerConfiguration {
      */
     DisplaySpecialsWithinSeasons?: boolean;
     /**
-     * 
+     * Gets or sets the subnets that are deemed to make up the LAN.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
     LocalNetworkSubnets?: Array<string> | null;
     /**
-     * 
+     * Gets or sets the interface addresses which Jellyfin will bind to. If empty, all interfaces will be used.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
@@ -319,12 +421,6 @@ export interface ServerConfiguration {
      * @type {boolean}
      * @memberof ServerConfiguration
      */
-    IgnoreVirtualInterfaces?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ServerConfiguration
-     */
     EnableExternalContentInSuggestions?: boolean;
     /**
      * Gets or sets a value indicating whether the server should force connections over HTTPS.
@@ -339,13 +435,13 @@ export interface ServerConfiguration {
      */
     EnableNewOmdbSupport?: boolean;
     /**
-     * 
+     * Gets or sets the filter for remote IP connectivity. Used in conjuntion with <seealso cref=\"P:MediaBrowser.Model.Configuration.ServerConfiguration.IsRemoteIPFilterBlacklist\" />.
      * @type {Array<string>}
      * @memberof ServerConfiguration
      */
     RemoteIPFilter?: Array<string> | null;
     /**
-     * 
+     * Gets or sets a value indicating whether <seealso cref=\"P:MediaBrowser.Model.Configuration.ServerConfiguration.RemoteIPFilter\" /> contains a blacklist or a whitelist. Default is a whitelist.
      * @type {boolean}
      * @memberof ServerConfiguration
      */

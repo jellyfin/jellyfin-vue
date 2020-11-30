@@ -295,14 +295,14 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} mediaSourceId The media source id.
          * @param {number} index The subtitle stream index.
          * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
          * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
          * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
          * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {number} [startPositionTicks] Optional. The start position of the subtitle in ticks.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSubtitle: async (itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getSubtitle: async (itemId: string, mediaSourceId: string, index: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, startPositionTicks?: number, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             if (itemId === null || itemId === undefined) {
                 throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSubtitle.');
@@ -319,16 +319,11 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
             if (format === null || format === undefined) {
                 throw new RequiredError('format','Required parameter format was null or undefined when calling getSubtitle.');
             }
-            // verify required parameter 'startPositionTicks' is not null or undefined
-            if (startPositionTicks === null || startPositionTicks === undefined) {
-                throw new RequiredError('startPositionTicks','Required parameter startPositionTicks was null or undefined when calling getSubtitle.');
-            }
             const localVarPath = `/Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/Stream.{format}`
                 .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
                 .replace(`{${"mediaSourceId"}}`, encodeURIComponent(String(mediaSourceId)))
                 .replace(`{${"index"}}`, encodeURIComponent(String(index)))
-                .replace(`{${"format"}}`, encodeURIComponent(String(format)))
-                .replace(`{${"startPositionTicks"}}`, encodeURIComponent(String(startPositionTicks)));
+                .replace(`{${"format"}}`, encodeURIComponent(String(format)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -359,93 +354,8 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['addVttTimeMap'] = addVttTimeMap;
             }
 
-
-    
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.query) {
-                query.set(key, options.query[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Gets subtitles in a specified format.
-         * @param {string} itemId The item id.
-         * @param {string} mediaSourceId The media source id.
-         * @param {number} index The subtitle stream index.
-         * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
-         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
-         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
-         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSubtitle2: async (itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'itemId' is not null or undefined
-            if (itemId === null || itemId === undefined) {
-                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSubtitle2.');
-            }
-            // verify required parameter 'mediaSourceId' is not null or undefined
-            if (mediaSourceId === null || mediaSourceId === undefined) {
-                throw new RequiredError('mediaSourceId','Required parameter mediaSourceId was null or undefined when calling getSubtitle2.');
-            }
-            // verify required parameter 'index' is not null or undefined
-            if (index === null || index === undefined) {
-                throw new RequiredError('index','Required parameter index was null or undefined when calling getSubtitle2.');
-            }
-            // verify required parameter 'format' is not null or undefined
-            if (format === null || format === undefined) {
-                throw new RequiredError('format','Required parameter format was null or undefined when calling getSubtitle2.');
-            }
-            // verify required parameter 'startPositionTicks' is not null or undefined
-            if (startPositionTicks === null || startPositionTicks === undefined) {
-                throw new RequiredError('startPositionTicks','Required parameter startPositionTicks was null or undefined when calling getSubtitle2.');
-            }
-            const localVarPath = `/Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/{startPositionTicks}/Stream.{format}`
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
-                .replace(`{${"mediaSourceId"}}`, encodeURIComponent(String(mediaSourceId)))
-                .replace(`{${"index"}}`, encodeURIComponent(String(index)))
-                .replace(`{${"format"}}`, encodeURIComponent(String(format)))
-                .replace(`{${"startPositionTicks"}}`, encodeURIComponent(String(startPositionTicks)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
-            if (endPositionTicks !== undefined) {
-                localVarQueryParameter['endPositionTicks'] = endPositionTicks;
-            }
-
-            if (copyTimestamps !== undefined) {
-                localVarQueryParameter['copyTimestamps'] = copyTimestamps;
-            }
-
-            if (addVttTimeMap !== undefined) {
-                localVarQueryParameter['addVttTimeMap'] = addVttTimeMap;
+            if (startPositionTicks !== undefined) {
+                localVarQueryParameter['startPositionTicks'] = startPositionTicks;
             }
 
 
@@ -517,6 +427,95 @@ export const SubtitleApiAxiosParamCreator = function (configuration?: Configurat
 
             if (segmentLength !== undefined) {
                 localVarQueryParameter['segmentLength'] = segmentLength;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Gets subtitles in a specified format.
+         * @param {string} itemId The item id.
+         * @param {string} mediaSourceId The media source id.
+         * @param {number} index The subtitle stream index.
+         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
+         * @param {string} format The format of the returned subtitle.
+         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
+         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
+         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSubtitleWithTicks: async (itemId: string, mediaSourceId: string, index: number, startPositionTicks: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'itemId' is not null or undefined
+            if (itemId === null || itemId === undefined) {
+                throw new RequiredError('itemId','Required parameter itemId was null or undefined when calling getSubtitleWithTicks.');
+            }
+            // verify required parameter 'mediaSourceId' is not null or undefined
+            if (mediaSourceId === null || mediaSourceId === undefined) {
+                throw new RequiredError('mediaSourceId','Required parameter mediaSourceId was null or undefined when calling getSubtitleWithTicks.');
+            }
+            // verify required parameter 'index' is not null or undefined
+            if (index === null || index === undefined) {
+                throw new RequiredError('index','Required parameter index was null or undefined when calling getSubtitleWithTicks.');
+            }
+            // verify required parameter 'startPositionTicks' is not null or undefined
+            if (startPositionTicks === null || startPositionTicks === undefined) {
+                throw new RequiredError('startPositionTicks','Required parameter startPositionTicks was null or undefined when calling getSubtitleWithTicks.');
+            }
+            // verify required parameter 'format' is not null or undefined
+            if (format === null || format === undefined) {
+                throw new RequiredError('format','Required parameter format was null or undefined when calling getSubtitleWithTicks.');
+            }
+            const localVarPath = `/Videos/{itemId}/{mediaSourceId}/Subtitles/{index}/{startPositionTicks}/Stream.{format}`
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
+                .replace(`{${"mediaSourceId"}}`, encodeURIComponent(String(mediaSourceId)))
+                .replace(`{${"index"}}`, encodeURIComponent(String(index)))
+                .replace(`{${"startPositionTicks"}}`, encodeURIComponent(String(startPositionTicks)))
+                .replace(`{${"format"}}`, encodeURIComponent(String(format)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+            if (endPositionTicks !== undefined) {
+                localVarQueryParameter['endPositionTicks'] = endPositionTicks;
+            }
+
+            if (copyTimestamps !== undefined) {
+                localVarQueryParameter['copyTimestamps'] = copyTimestamps;
+            }
+
+            if (addVttTimeMap !== undefined) {
+                localVarQueryParameter['addVttTimeMap'] = addVttTimeMap;
             }
 
 
@@ -703,7 +702,7 @@ export const SubtitleApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFallbackFont(name: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async getFallbackFont(name: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getFallbackFont(name, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -744,36 +743,15 @@ export const SubtitleApiFp = function(configuration?: Configuration) {
          * @param {string} mediaSourceId The media source id.
          * @param {number} index The subtitle stream index.
          * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
          * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
          * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
          * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {number} [startPositionTicks] Optional. The start position of the subtitle in ticks.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSubtitle(itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getSubtitle(itemId, mediaSourceId, index, format, startPositionTicks, endPositionTicks, copyTimestamps, addVttTimeMap, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @summary Gets subtitles in a specified format.
-         * @param {string} itemId The item id.
-         * @param {string} mediaSourceId The media source id.
-         * @param {number} index The subtitle stream index.
-         * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
-         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
-         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
-         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getSubtitle2(itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
-            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getSubtitle2(itemId, mediaSourceId, index, format, startPositionTicks, endPositionTicks, copyTimestamps, addVttTimeMap, options);
+        async getSubtitle(itemId: string, mediaSourceId: string, index: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, startPositionTicks?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getSubtitle(itemId, mediaSourceId, index, format, endPositionTicks, copyTimestamps, addVttTimeMap, startPositionTicks, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -791,6 +769,27 @@ export const SubtitleApiFp = function(configuration?: Configuration) {
          */
         async getSubtitlePlaylist(itemId: string, index: number, mediaSourceId: string, segmentLength: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
             const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getSubtitlePlaylist(itemId, index, mediaSourceId, segmentLength, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Gets subtitles in a specified format.
+         * @param {string} itemId The item id.
+         * @param {string} mediaSourceId The media source id.
+         * @param {number} index The subtitle stream index.
+         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
+         * @param {string} format The format of the returned subtitle.
+         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
+         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
+         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSubtitleWithTicks(itemId: string, mediaSourceId: string, index: number, startPositionTicks: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await SubtitleApiAxiosParamCreator(configuration).getSubtitleWithTicks(itemId, mediaSourceId, index, startPositionTicks, format, endPositionTicks, copyTimestamps, addVttTimeMap, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -865,7 +864,7 @@ export const SubtitleApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFallbackFont(name: string, options?: any): AxiosPromise<void> {
+        getFallbackFont(name: string, options?: any): AxiosPromise<any> {
             return SubtitleApiFp(configuration).getFallbackFont(name, options).then((request) => request(axios, basePath));
         },
         /**
@@ -894,32 +893,15 @@ export const SubtitleApiFactory = function (configuration?: Configuration, baseP
          * @param {string} mediaSourceId The media source id.
          * @param {number} index The subtitle stream index.
          * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
          * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
          * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
          * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {number} [startPositionTicks] Optional. The start position of the subtitle in ticks.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSubtitle(itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): AxiosPromise<any> {
-            return SubtitleApiFp(configuration).getSubtitle(itemId, mediaSourceId, index, format, startPositionTicks, endPositionTicks, copyTimestamps, addVttTimeMap, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Gets subtitles in a specified format.
-         * @param {string} itemId The item id.
-         * @param {string} mediaSourceId The media source id.
-         * @param {number} index The subtitle stream index.
-         * @param {string} format The format of the returned subtitle.
-         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
-         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
-         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
-         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSubtitle2(itemId: string, mediaSourceId: string, index: number, format: string, startPositionTicks: number, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): AxiosPromise<any> {
-            return SubtitleApiFp(configuration).getSubtitle2(itemId, mediaSourceId, index, format, startPositionTicks, endPositionTicks, copyTimestamps, addVttTimeMap, options).then((request) => request(axios, basePath));
+        getSubtitle(itemId: string, mediaSourceId: string, index: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, startPositionTicks?: number, options?: any): AxiosPromise<any> {
+            return SubtitleApiFp(configuration).getSubtitle(itemId, mediaSourceId, index, format, endPositionTicks, copyTimestamps, addVttTimeMap, startPositionTicks, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -933,6 +915,23 @@ export const SubtitleApiFactory = function (configuration?: Configuration, baseP
          */
         getSubtitlePlaylist(itemId: string, index: number, mediaSourceId: string, segmentLength: number, options?: any): AxiosPromise<any> {
             return SubtitleApiFp(configuration).getSubtitlePlaylist(itemId, index, mediaSourceId, segmentLength, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Gets subtitles in a specified format.
+         * @param {string} itemId The item id.
+         * @param {string} mediaSourceId The media source id.
+         * @param {number} index The subtitle stream index.
+         * @param {number} startPositionTicks Optional. The start position of the subtitle in ticks.
+         * @param {string} format The format of the returned subtitle.
+         * @param {number} [endPositionTicks] Optional. The end position of the subtitle in ticks.
+         * @param {boolean} [copyTimestamps] Optional. Whether to copy the timestamps.
+         * @param {boolean} [addVttTimeMap] Optional. Whether to add a VTT time map.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSubtitleWithTicks(itemId: string, mediaSourceId: string, index: number, startPositionTicks: number, format: string, endPositionTicks?: number, copyTimestamps?: boolean, addVttTimeMap?: boolean, options?: any): AxiosPromise<any> {
+            return SubtitleApiFp(configuration).getSubtitleWithTicks(itemId, mediaSourceId, index, startPositionTicks, format, endPositionTicks, copyTimestamps, addVttTimeMap, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1065,13 +1064,6 @@ export interface SubtitleApiGetSubtitleRequest {
     readonly format: string
 
     /**
-     * Optional. The start position of the subtitle in ticks.
-     * @type {number}
-     * @memberof SubtitleApiGetSubtitle
-     */
-    readonly startPositionTicks: number
-
-    /**
      * Optional. The end position of the subtitle in ticks.
      * @type {number}
      * @memberof SubtitleApiGetSubtitle
@@ -1091,69 +1083,13 @@ export interface SubtitleApiGetSubtitleRequest {
      * @memberof SubtitleApiGetSubtitle
      */
     readonly addVttTimeMap?: boolean
-}
-
-/**
- * Request parameters for getSubtitle2 operation in SubtitleApi.
- * @export
- * @interface SubtitleApiGetSubtitle2Request
- */
-export interface SubtitleApiGetSubtitle2Request {
-    /**
-     * The item id.
-     * @type {string}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly itemId: string
-
-    /**
-     * The media source id.
-     * @type {string}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly mediaSourceId: string
-
-    /**
-     * The subtitle stream index.
-     * @type {number}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly index: number
-
-    /**
-     * The format of the returned subtitle.
-     * @type {string}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly format: string
 
     /**
      * Optional. The start position of the subtitle in ticks.
      * @type {number}
-     * @memberof SubtitleApiGetSubtitle2
+     * @memberof SubtitleApiGetSubtitle
      */
-    readonly startPositionTicks: number
-
-    /**
-     * Optional. The end position of the subtitle in ticks.
-     * @type {number}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly endPositionTicks?: number
-
-    /**
-     * Optional. Whether to copy the timestamps.
-     * @type {boolean}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly copyTimestamps?: boolean
-
-    /**
-     * Optional. Whether to add a VTT time map.
-     * @type {boolean}
-     * @memberof SubtitleApiGetSubtitle2
-     */
-    readonly addVttTimeMap?: boolean
+    readonly startPositionTicks?: number
 }
 
 /**
@@ -1189,6 +1125,69 @@ export interface SubtitleApiGetSubtitlePlaylistRequest {
      * @memberof SubtitleApiGetSubtitlePlaylist
      */
     readonly segmentLength: number
+}
+
+/**
+ * Request parameters for getSubtitleWithTicks operation in SubtitleApi.
+ * @export
+ * @interface SubtitleApiGetSubtitleWithTicksRequest
+ */
+export interface SubtitleApiGetSubtitleWithTicksRequest {
+    /**
+     * The item id.
+     * @type {string}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly itemId: string
+
+    /**
+     * The media source id.
+     * @type {string}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly mediaSourceId: string
+
+    /**
+     * The subtitle stream index.
+     * @type {number}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly index: number
+
+    /**
+     * Optional. The start position of the subtitle in ticks.
+     * @type {number}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly startPositionTicks: number
+
+    /**
+     * The format of the returned subtitle.
+     * @type {string}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly format: string
+
+    /**
+     * Optional. The end position of the subtitle in ticks.
+     * @type {number}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly endPositionTicks?: number
+
+    /**
+     * Optional. Whether to copy the timestamps.
+     * @type {boolean}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly copyTimestamps?: boolean
+
+    /**
+     * Optional. Whether to add a VTT time map.
+     * @type {boolean}
+     * @memberof SubtitleApiGetSubtitleWithTicks
+     */
+    readonly addVttTimeMap?: boolean
 }
 
 /**
@@ -1315,19 +1314,7 @@ export class SubtitleApi extends BaseAPI {
      * @memberof SubtitleApi
      */
     public getSubtitle(requestParameters: SubtitleApiGetSubtitleRequest, options?: any) {
-        return SubtitleApiFp(this.configuration).getSubtitle(requestParameters.itemId, requestParameters.mediaSourceId, requestParameters.index, requestParameters.format, requestParameters.startPositionTicks, requestParameters.endPositionTicks, requestParameters.copyTimestamps, requestParameters.addVttTimeMap, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Gets subtitles in a specified format.
-     * @param {SubtitleApiGetSubtitle2Request} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SubtitleApi
-     */
-    public getSubtitle2(requestParameters: SubtitleApiGetSubtitle2Request, options?: any) {
-        return SubtitleApiFp(this.configuration).getSubtitle2(requestParameters.itemId, requestParameters.mediaSourceId, requestParameters.index, requestParameters.format, requestParameters.startPositionTicks, requestParameters.endPositionTicks, requestParameters.copyTimestamps, requestParameters.addVttTimeMap, options).then((request) => request(this.axios, this.basePath));
+        return SubtitleApiFp(this.configuration).getSubtitle(requestParameters.itemId, requestParameters.mediaSourceId, requestParameters.index, requestParameters.format, requestParameters.endPositionTicks, requestParameters.copyTimestamps, requestParameters.addVttTimeMap, requestParameters.startPositionTicks, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1340,6 +1327,18 @@ export class SubtitleApi extends BaseAPI {
      */
     public getSubtitlePlaylist(requestParameters: SubtitleApiGetSubtitlePlaylistRequest, options?: any) {
         return SubtitleApiFp(this.configuration).getSubtitlePlaylist(requestParameters.itemId, requestParameters.index, requestParameters.mediaSourceId, requestParameters.segmentLength, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Gets subtitles in a specified format.
+     * @param {SubtitleApiGetSubtitleWithTicksRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SubtitleApi
+     */
+    public getSubtitleWithTicks(requestParameters: SubtitleApiGetSubtitleWithTicksRequest, options?: any) {
+        return SubtitleApiFp(this.configuration).getSubtitleWithTicks(requestParameters.itemId, requestParameters.mediaSourceId, requestParameters.index, requestParameters.startPositionTicks, requestParameters.format, requestParameters.endPositionTicks, requestParameters.copyTimestamps, requestParameters.addVttTimeMap, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

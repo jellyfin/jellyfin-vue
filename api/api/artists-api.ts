@@ -43,24 +43,24 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -70,7 +70,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAlbumArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getAlbumArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Artists/AlbumArtists`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -114,11 +114,11 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (excludeItemTypes !== undefined) {
+            if (excludeItemTypes) {
                 localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
@@ -130,27 +130,27 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['isFavorite'] = isFavorite;
             }
 
-            if (mediaTypes !== undefined) {
+            if (mediaTypes) {
                 localVarQueryParameter['mediaTypes'] = mediaTypes;
             }
 
-            if (genres !== undefined) {
+            if (genres) {
                 localVarQueryParameter['genres'] = genres;
             }
 
-            if (genreIds !== undefined) {
+            if (genreIds) {
                 localVarQueryParameter['genreIds'] = genreIds;
             }
 
-            if (officialRatings !== undefined) {
+            if (officialRatings) {
                 localVarQueryParameter['officialRatings'] = officialRatings;
             }
 
-            if (tags !== undefined) {
+            if (tags) {
                 localVarQueryParameter['tags'] = tags;
             }
 
-            if (years !== undefined) {
+            if (years) {
                 localVarQueryParameter['years'] = years;
             }
 
@@ -170,19 +170,19 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['person'] = person;
             }
 
-            if (personIds !== undefined) {
+            if (personIds) {
                 localVarQueryParameter['personIds'] = personIds;
             }
 
-            if (personTypes !== undefined) {
+            if (personTypes) {
                 localVarQueryParameter['personTypes'] = personTypes;
             }
 
-            if (studios !== undefined) {
+            if (studios) {
                 localVarQueryParameter['studios'] = studios;
             }
 
-            if (studioIds !== undefined) {
+            if (studioIds) {
                 localVarQueryParameter['studioIds'] = studioIds;
             }
 
@@ -292,24 +292,24 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -319,7 +319,7 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getArtists: async (minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Artists`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -363,11 +363,11 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (excludeItemTypes !== undefined) {
+            if (excludeItemTypes) {
                 localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
@@ -379,27 +379,27 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['isFavorite'] = isFavorite;
             }
 
-            if (mediaTypes !== undefined) {
+            if (mediaTypes) {
                 localVarQueryParameter['mediaTypes'] = mediaTypes;
             }
 
-            if (genres !== undefined) {
+            if (genres) {
                 localVarQueryParameter['genres'] = genres;
             }
 
-            if (genreIds !== undefined) {
+            if (genreIds) {
                 localVarQueryParameter['genreIds'] = genreIds;
             }
 
-            if (officialRatings !== undefined) {
+            if (officialRatings) {
                 localVarQueryParameter['officialRatings'] = officialRatings;
             }
 
-            if (tags !== undefined) {
+            if (tags) {
                 localVarQueryParameter['tags'] = tags;
             }
 
-            if (years !== undefined) {
+            if (years) {
                 localVarQueryParameter['years'] = years;
             }
 
@@ -419,19 +419,19 @@ export const ArtistsApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['person'] = person;
             }
 
-            if (personIds !== undefined) {
+            if (personIds) {
                 localVarQueryParameter['personIds'] = personIds;
             }
 
-            if (personTypes !== undefined) {
+            if (personTypes) {
                 localVarQueryParameter['personTypes'] = personTypes;
             }
 
-            if (studios !== undefined) {
+            if (studios) {
                 localVarQueryParameter['studios'] = studios;
             }
 
-            if (studioIds !== undefined) {
+            if (studioIds) {
                 localVarQueryParameter['studioIds'] = studioIds;
             }
 
@@ -495,24 +495,24 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -522,7 +522,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ArtistsApiAxiosParamCreator(configuration).getAlbumArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -553,24 +553,24 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -580,7 +580,7 @@ export const ArtistsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ArtistsApiAxiosParamCreator(configuration).getArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -605,24 +605,24 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -632,7 +632,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getAlbumArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ArtistsApiFp(configuration).getAlbumArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
         /**
@@ -655,24 +655,24 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
-         * @param {string} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
-         * @param {string} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-         * @param {string} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-         * @param {string} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-         * @param {string} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-         * @param {string} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [genres] Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
+         * @param {Array<string>} [genreIds] Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [officialRatings] Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
+         * @param {Array<string>} [tags] Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
+         * @param {Array<number>} [years] Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
          * @param {Array<ImageType>} [enableImageTypes] Optional. The image types to include in the output.
          * @param {string} [person] Optional. If specified, results will be filtered to include only those containing the specified person.
-         * @param {string} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
-         * @param {string} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-         * @param {string} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-         * @param {string} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
+         * @param {Array<string>} [personIds] Optional. If specified, results will be filtered to include only those containing the specified person ids.
+         * @param {Array<string>} [personTypes] Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
+         * @param {Array<string>} [studios] Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
+         * @param {Array<string>} [studioIds] Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
          * @param {string} [userId] User id.
          * @param {string} [nameStartsWithOrGreater] Optional filter by items whose name is sorted equally or greater than a given input string.
          * @param {string} [nameStartsWith] Optional filter by items whose name is sorted equally than a given input string.
@@ -682,7 +682,7 @@ export const ArtistsApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: string, genres?: string, genreIds?: string, officialRatings?: string, tags?: string, years?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: string, personTypes?: string, studios?: string, studioIds?: string, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getArtists(minCommunityRating?: number, startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, filters?: Array<ItemFilter>, isFavorite?: boolean, mediaTypes?: Array<string>, genres?: Array<string>, genreIds?: Array<string>, officialRatings?: Array<string>, tags?: Array<string>, years?: Array<number>, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, person?: string, personIds?: Array<string>, personTypes?: Array<string>, studios?: Array<string>, studioIds?: Array<string>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ArtistsApiFp(configuration).getArtists(minCommunityRating, startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, filters, isFavorite, mediaTypes, genres, genreIds, officialRatings, tags, years, enableUserData, imageTypeLimit, enableImageTypes, person, personIds, personTypes, studios, studioIds, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
@@ -738,17 +738,17 @@ export interface ArtistsApiGetAlbumArtistsRequest {
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly excludeItemTypes?: string
+    readonly excludeItemTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Optional. Specify additional filters to apply.
@@ -766,45 +766,45 @@ export interface ArtistsApiGetAlbumArtistsRequest {
 
     /**
      * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly mediaTypes?: string
+    readonly mediaTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly genres?: string
+    readonly genres?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly genreIds?: string
+    readonly genreIds?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly officialRatings?: string
+    readonly officialRatings?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly tags?: string
+    readonly tags?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<number>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly years?: string
+    readonly years?: Array<number>
 
     /**
      * Optional, include user data.
@@ -836,31 +836,31 @@ export interface ArtistsApiGetAlbumArtistsRequest {
 
     /**
      * Optional. If specified, results will be filtered to include only those containing the specified person ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly personIds?: string
+    readonly personIds?: Array<string>
 
     /**
      * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly personTypes?: string
+    readonly personTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly studios?: string
+    readonly studios?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetAlbumArtists
      */
-    readonly studioIds?: string
+    readonly studioIds?: Array<string>
 
     /**
      * User id.
@@ -976,17 +976,17 @@ export interface ArtistsApiGetArtistsRequest {
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly excludeItemTypes?: string
+    readonly excludeItemTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Optional. Specify additional filters to apply.
@@ -1004,45 +1004,45 @@ export interface ArtistsApiGetArtistsRequest {
 
     /**
      * Optional filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly mediaTypes?: string
+    readonly mediaTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on genre. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly genres?: string
+    readonly genres?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on genre id. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly genreIds?: string
+    readonly genreIds?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on OfficialRating. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly officialRatings?: string
+    readonly officialRatings?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on tag. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly tags?: string
+    readonly tags?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on production year. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<number>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly years?: string
+    readonly years?: Array<number>
 
     /**
      * Optional, include user data.
@@ -1074,31 +1074,31 @@ export interface ArtistsApiGetArtistsRequest {
 
     /**
      * Optional. If specified, results will be filtered to include only those containing the specified person ids.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly personIds?: string
+    readonly personIds?: Array<string>
 
     /**
      * Optional. If specified, along with Person, results will be filtered to include only those containing the specified person and PersonType. Allows multiple, comma-delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly personTypes?: string
+    readonly personTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on studio. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly studios?: string
+    readonly studios?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on studio id. This allows multiple, pipe delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ArtistsApiGetArtists
      */
-    readonly studioIds?: string
+    readonly studioIds?: Array<string>
 
     /**
      * User id.

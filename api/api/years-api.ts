@@ -97,9 +97,9 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
-         * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -110,7 +110,7 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getYears: async (startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getYears: async (startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, mediaTypes?: Array<string>, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Years`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -150,15 +150,15 @@ export const YearsApiAxiosParamCreator = function (configuration?: Configuration
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (excludeItemTypes !== undefined) {
+            if (excludeItemTypes) {
                 localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
-            if (mediaTypes !== undefined) {
+            if (mediaTypes) {
                 localVarQueryParameter['mediaTypes'] = mediaTypes;
             }
 
@@ -240,9 +240,9 @@ export const YearsApiFp = function(configuration?: Configuration) {
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
-         * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -253,7 +253,7 @@ export const YearsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, mediaTypes?: Array<string>, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await YearsApiAxiosParamCreator(configuration).getYears(startIndex, limit, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, mediaTypes, sortBy, enableUserData, imageTypeLimit, enableImageTypes, userId, recursive, enableImages, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -288,9 +288,9 @@ export const YearsApiFactory = function (configuration?: Configuration, basePath
          * @param {string} [sortOrder] Sort Order - Ascending,Descending.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
-         * @param {string} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [mediaTypes] Optional. Filter by MediaType. Allows multiple, comma delimited.
          * @param {string} [sortBy] Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.
          * @param {boolean} [enableUserData] Optional. Include user data.
          * @param {number} [imageTypeLimit] Optional. The max number of images to return, per image type.
@@ -301,7 +301,7 @@ export const YearsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, mediaTypes?: string, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getYears(startIndex?: number, limit?: number, sortOrder?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, mediaTypes?: Array<string>, sortBy?: string, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, recursive?: boolean, enableImages?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return YearsApiFp(configuration).getYears(startIndex, limit, sortOrder, parentId, fields, excludeItemTypes, includeItemTypes, mediaTypes, sortBy, enableUserData, imageTypeLimit, enableImageTypes, userId, recursive, enableImages, options).then((request) => request(axios, basePath));
         },
     };
@@ -371,24 +371,24 @@ export interface YearsApiGetYearsRequest {
 
     /**
      * Optional. If specified, results will be excluded based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof YearsApiGetYears
      */
-    readonly excludeItemTypes?: string
+    readonly excludeItemTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be included based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof YearsApiGetYears
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Optional. Filter by MediaType. Allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof YearsApiGetYears
      */
-    readonly mediaTypes?: string
+    readonly mediaTypes?: Array<string>
 
     /**
      * Optional. Specify one or more sort orders, comma delimited. Options: Album, AlbumArtist, Artist, Budget, CommunityRating, CriticRating, DateCreated, DatePlayed, PlayCount, PremiereDate, ProductionYear, SortName, Random, Revenue, Runtime.

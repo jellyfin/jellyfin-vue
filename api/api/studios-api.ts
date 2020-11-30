@@ -95,8 +95,8 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
@@ -110,7 +110,7 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStudios: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
+        getStudios: async (startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Studios`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -150,11 +150,11 @@ export const StudiosApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (excludeItemTypes !== undefined) {
+            if (excludeItemTypes) {
                 localVarQueryParameter['excludeItemTypes'] = excludeItemTypes;
             }
 
-            if (includeItemTypes !== undefined) {
+            if (includeItemTypes) {
                 localVarQueryParameter['includeItemTypes'] = includeItemTypes;
             }
 
@@ -248,8 +248,8 @@ export const StudiosApiFp = function(configuration?: Configuration) {
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
@@ -263,7 +263,7 @@ export const StudiosApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await StudiosApiAxiosParamCreator(configuration).getStudios(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -298,8 +298,8 @@ export const StudiosApiFactory = function (configuration?: Configuration, basePa
          * @param {string} [searchTerm] Optional. Search term.
          * @param {string} [parentId] Specify this to localize the search to a specific item or folder. Omit to use the root.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-         * @param {string} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [excludeItemTypes] Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
+         * @param {Array<string>} [includeItemTypes] Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
          * @param {boolean} [isFavorite] Optional filter by items that are marked as favorite, or not.
          * @param {boolean} [enableUserData] Optional, include user data.
          * @param {number} [imageTypeLimit] Optional, the max number of images to return, per image type.
@@ -313,7 +313,7 @@ export const StudiosApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: string, includeItemTypes?: string, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getStudios(startIndex?: number, limit?: number, searchTerm?: string, parentId?: string, fields?: Array<ItemFields>, excludeItemTypes?: Array<string>, includeItemTypes?: Array<string>, isFavorite?: boolean, enableUserData?: boolean, imageTypeLimit?: number, enableImageTypes?: Array<ImageType>, userId?: string, nameStartsWithOrGreater?: string, nameStartsWith?: string, nameLessThan?: string, enableImages?: boolean, enableTotalRecordCount?: boolean, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return StudiosApiFp(configuration).getStudios(startIndex, limit, searchTerm, parentId, fields, excludeItemTypes, includeItemTypes, isFavorite, enableUserData, imageTypeLimit, enableImageTypes, userId, nameStartsWithOrGreater, nameStartsWith, nameLessThan, enableImages, enableTotalRecordCount, options).then((request) => request(axios, basePath));
         },
     };
@@ -383,17 +383,17 @@ export interface StudiosApiGetStudiosRequest {
 
     /**
      * Optional. If specified, results will be filtered out based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof StudiosApiGetStudios
      */
-    readonly excludeItemTypes?: string
+    readonly excludeItemTypes?: Array<string>
 
     /**
      * Optional. If specified, results will be filtered based on item type. This allows multiple, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof StudiosApiGetStudios
      */
-    readonly includeItemTypes?: string
+    readonly includeItemTypes?: Array<string>
 
     /**
      * Optional filter by items that are marked as favorite, or not.

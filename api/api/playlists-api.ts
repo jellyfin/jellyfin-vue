@@ -38,12 +38,12 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
          * 
          * @summary Adds items to a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [ids] Item id, comma delimited.
+         * @param {Array<string>} [ids] Item id, comma delimited.
          * @param {string} [userId] The userId.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addToPlaylist: async (playlistId: string, ids?: string, userId?: string, options: any = {}): Promise<RequestArgs> => {
+        addToPlaylist: async (playlistId: string, ids?: Array<string>, userId?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'playlistId' is not null or undefined
             if (playlistId === null || playlistId === undefined) {
                 throw new RequiredError('playlistId','Required parameter playlistId was null or undefined when calling addToPlaylist.');
@@ -68,7 +68,7 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (ids !== undefined) {
+            if (ids) {
                 localVarQueryParameter['ids'] = ids;
             }
 
@@ -307,11 +307,11 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
          * 
          * @summary Removes items from a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [entryIds] The item ids, comma delimited.
+         * @param {Array<string>} [entryIds] The item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeFromPlaylist: async (playlistId: string, entryIds?: string, options: any = {}): Promise<RequestArgs> => {
+        removeFromPlaylist: async (playlistId: string, entryIds?: Array<string>, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'playlistId' is not null or undefined
             if (playlistId === null || playlistId === undefined) {
                 throw new RequiredError('playlistId','Required parameter playlistId was null or undefined when calling removeFromPlaylist.');
@@ -336,7 +336,7 @@ export const PlaylistsApiAxiosParamCreator = function (configuration?: Configura
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (entryIds !== undefined) {
+            if (entryIds) {
                 localVarQueryParameter['entryIds'] = entryIds;
             }
 
@@ -371,12 +371,12 @@ export const PlaylistsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Adds items to a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [ids] Item id, comma delimited.
+         * @param {Array<string>} [ids] Item id, comma delimited.
          * @param {string} [userId] The userId.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addToPlaylist(playlistId: string, ids?: string, userId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async addToPlaylist(playlistId: string, ids?: Array<string>, userId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await PlaylistsApiAxiosParamCreator(configuration).addToPlaylist(playlistId, ids, userId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -439,11 +439,11 @@ export const PlaylistsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Removes items from a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [entryIds] The item ids, comma delimited.
+         * @param {Array<string>} [entryIds] The item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async removeFromPlaylist(playlistId: string, entryIds?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async removeFromPlaylist(playlistId: string, entryIds?: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await PlaylistsApiAxiosParamCreator(configuration).removeFromPlaylist(playlistId, entryIds, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -463,12 +463,12 @@ export const PlaylistsApiFactory = function (configuration?: Configuration, base
          * 
          * @summary Adds items to a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [ids] Item id, comma delimited.
+         * @param {Array<string>} [ids] Item id, comma delimited.
          * @param {string} [userId] The userId.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addToPlaylist(playlistId: string, ids?: string, userId?: string, options?: any): AxiosPromise<void> {
+        addToPlaylist(playlistId: string, ids?: Array<string>, userId?: string, options?: any): AxiosPromise<void> {
             return PlaylistsApiFp(configuration).addToPlaylist(playlistId, ids, userId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -515,11 +515,11 @@ export const PlaylistsApiFactory = function (configuration?: Configuration, base
          * 
          * @summary Removes items from a playlist.
          * @param {string} playlistId The playlist id.
-         * @param {string} [entryIds] The item ids, comma delimited.
+         * @param {Array<string>} [entryIds] The item ids, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        removeFromPlaylist(playlistId: string, entryIds?: string, options?: any): AxiosPromise<void> {
+        removeFromPlaylist(playlistId: string, entryIds?: Array<string>, options?: any): AxiosPromise<void> {
             return PlaylistsApiFp(configuration).removeFromPlaylist(playlistId, entryIds, options).then((request) => request(axios, basePath));
         },
     };
@@ -540,10 +540,10 @@ export interface PlaylistsApiAddToPlaylistRequest {
 
     /**
      * Item id, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PlaylistsApiAddToPlaylist
      */
-    readonly ids?: string
+    readonly ids?: Array<string>
 
     /**
      * The userId.
@@ -680,10 +680,10 @@ export interface PlaylistsApiRemoveFromPlaylistRequest {
 
     /**
      * The item ids, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof PlaylistsApiRemoveFromPlaylist
      */
-    readonly entryIds?: string
+    readonly entryIds?: Array<string>
 }
 
 /**

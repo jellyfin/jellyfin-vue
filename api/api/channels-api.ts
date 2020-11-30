@@ -298,11 +298,11 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
+         * @param {Array<string>} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestChannelItems: async (userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options: any = {}): Promise<RequestArgs> => {
+        getLatestChannelItems: async (userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: Array<string>, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/Channels/Items/Latest`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -342,7 +342,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['fields'] = fields;
             }
 
-            if (channelIds !== undefined) {
+            if (channelIds) {
                 localVarQueryParameter['channelIds'] = channelIds;
             }
 
@@ -449,11 +449,11 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
+         * @param {Array<string>} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
+        async getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BaseItemDtoQueryResult>> {
             const localVarAxiosArgs = await ChannelsApiAxiosParamCreator(configuration).getLatestChannelItems(userId, startIndex, limit, filters, fields, channelIds, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -529,11 +529,11 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {number} [limit] Optional. The maximum number of records to return.
          * @param {Array<ItemFilter>} [filters] Optional. Specify additional filters to apply.
          * @param {Array<ItemFields>} [fields] Optional. Specify additional fields of information to return in the output.
-         * @param {string} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
+         * @param {Array<string>} [channelIds] Optional. Specify one or more channel id\&#39;s, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: string, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
+        getLatestChannelItems(userId?: string, startIndex?: number, limit?: number, filters?: Array<ItemFilter>, fields?: Array<ItemFields>, channelIds?: Array<string>, options?: any): AxiosPromise<BaseItemDtoQueryResult> {
             return ChannelsApiFp(configuration).getLatestChannelItems(userId, startIndex, limit, filters, fields, channelIds, options).then((request) => request(axios, basePath));
         },
     };
@@ -715,10 +715,10 @@ export interface ChannelsApiGetLatestChannelItemsRequest {
 
     /**
      * Optional. Specify one or more channel id\&#39;s, comma delimited.
-     * @type {string}
+     * @type {Array<string>}
      * @memberof ChannelsApiGetLatestChannelItems
      */
-    readonly channelIds?: string
+    readonly channelIds?: Array<string>
 }
 
 /**

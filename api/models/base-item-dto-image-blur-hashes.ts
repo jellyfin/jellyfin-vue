@@ -13,7 +13,6 @@
  */
 
 
-import { BaseItemPersonImageBlurHashesPrimary } from './base-item-person-image-blur-hashes-primary';
 
 /**
  * Gets or sets the blurhashes for the image tags.  Maps image type to dictionary mapping image tag to blurhash value.
@@ -23,82 +22,82 @@ import { BaseItemPersonImageBlurHashesPrimary } from './base-item-person-image-b
 export interface BaseItemDtoImageBlurHashes {
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Primary?: BaseItemPersonImageBlurHashesPrimary;
+    Primary?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Art?: BaseItemPersonImageBlurHashesPrimary;
+    Art?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Backdrop?: BaseItemPersonImageBlurHashesPrimary;
+    Backdrop?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Banner?: BaseItemPersonImageBlurHashesPrimary;
+    Banner?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Logo?: BaseItemPersonImageBlurHashesPrimary;
+    Logo?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Thumb?: BaseItemPersonImageBlurHashesPrimary;
+    Thumb?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Disc?: BaseItemPersonImageBlurHashesPrimary;
+    Disc?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Box?: BaseItemPersonImageBlurHashesPrimary;
+    Box?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Screenshot?: BaseItemPersonImageBlurHashesPrimary;
+    Screenshot?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Menu?: BaseItemPersonImageBlurHashesPrimary;
+    Menu?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Chapter?: BaseItemPersonImageBlurHashesPrimary;
+    Chapter?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    BoxRear?: BaseItemPersonImageBlurHashesPrimary;
+    BoxRear?: { [key: string]: string; };
     /**
      * 
-     * @type {BaseItemPersonImageBlurHashesPrimary}
+     * @type {{ [key: string]: string; }}
      * @memberof BaseItemDtoImageBlurHashes
      */
-    Profile?: BaseItemPersonImageBlurHashesPrimary;
+    Profile?: { [key: string]: string; };
 }
 
 

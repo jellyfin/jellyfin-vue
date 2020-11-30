@@ -63,18 +63,6 @@ export interface PackageInfo {
      * @memberof PackageInfo
      */
     versions?: Array<VersionInfo> | null;
-    /**
-     * Gets or sets the repository name.
-     * @type {string}
-     * @memberof PackageInfo
-     */
-    repositoryName?: string | null;
-    /**
-     * Gets or sets the repository url.
-     * @type {string}
-     * @memberof PackageInfo
-     */
-    repositoryUrl?: string | null;
 }
 
 

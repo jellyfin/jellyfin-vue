@@ -134,7 +134,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromArtists.');
             }
-            const localVarPath = `/Artists/InstantMix`
+            const localVarPath = `/Artists/{id}/InstantMix`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -389,7 +389,7 @@ export const InstantMixApiAxiosParamCreator = function (configuration?: Configur
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling getInstantMixFromMusicGenres.');
             }
-            const localVarPath = `/MusicGenres/InstantMix`
+            const localVarPath = `/MusicGenres/{id}/InstantMix`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
