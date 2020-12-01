@@ -26,7 +26,7 @@
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.3",
-    "@nuxtjs/pwa": "^3.3.1",
+    "@nuxtjs/pwa": "^3.3.2",
     "@types/dompurify": "^2.0.4",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.165",
