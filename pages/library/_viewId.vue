@@ -28,9 +28,6 @@
         <h1 v-if="isDefaultView" class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
-        <h1 v-else class="text-h5">
-          {{ $t('noResultsFound') }}
-        </h1>
       </item-grid>
     </v-container>
   </div>
