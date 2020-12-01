@@ -66,5 +66,18 @@
     "disc": "Đĩa {discNumber}",
     "byArtist": "Bởi",
     "biography": "Tiểu sử",
-    "albums": "Albums"
+    "albums": "Albums",
+    "unliked": "Không thích",
+    "studios": "Hãng Phim",
+    "sortByType": "Theo {type}",
+    "series": "Loạt Phim",
+    "noResultsFound": "Không có kết quả",
+    "networks": "Mạng",
+    "name": "Tên",
+    "liked": "Đã thích",
+    "filter": "Bộ lọc",
+    "failedToRefreshItems": "Không thể làm mới các mục",
+    "collections": "Bộ sưu tập",
+    "artists": "Nghệ sĩ",
+    "actors": "Diễn viên"
 }
