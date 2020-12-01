@@ -249,6 +249,7 @@
             <related-items
               v-if="item.Type === 'Movie'"
               :id="$route.params.itemId"
+              :item="item"
             />
             <season-tabs
               v-if="item.Type === 'Series'"
