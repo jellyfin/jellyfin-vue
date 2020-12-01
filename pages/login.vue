@@ -21,7 +21,7 @@
           </v-col>
         </v-row>
         <v-row align="center" justify="center" no-gutters>
-          <v-col md="4" class="d-flex flex-row">
+          <v-col md="4" class="d-flex flex-row mt-7">
             <v-btn class="flex-grow-1 mr-2" large @click="loginAsOther = true">
               {{ $t('manualLogin') }}
             </v-btn>
