@@ -34,7 +34,7 @@
         </template>
       </vueper-slides>
     </div>
-    <div v-if="vertical">
+    <div v-else>
       <h2 v-if="!loading && relatedItems.length > 0">
         <slot>
           {{ $t('youMayAlsoLike') }}
@@ -85,7 +85,7 @@ export default Vue.extend({
   mixins: [imageHelper],
   props: {
     /**
-     * itemId To be used to get related items
+     * item.Id To be used to get related items
      */
     item: {
       type: Object,
@@ -102,7 +102,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      relatedItems: [] as BaseItemDto[] | null | undefined,
+      relatedItems: [] as BaseItemDto[],
       loading: true,
       /**
        * Stores Breakpoints for number of visible slides
@@ -147,7 +147,7 @@ export default Vue.extend({
           limit: this.vertical ? 5 : 12
         });
 
-        this.relatedItems = response.data.Items;
+        if (response.data.Items) this.relatedItems = response.data.Items;
       }
 
       this.loading = false;
