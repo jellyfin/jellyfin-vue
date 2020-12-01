@@ -1,46 +1,32 @@
 <template>
-  <div class="portrait-card">
-    <div class="card-content">
-      <v-card
-        class="mx-auto d-flex flex-column"
-        height="100%"
-        max-height="325px"
-        max-width="200px"
-      >
-        <div class="user-image primary darken-4">
-          <v-responsive :aspect-ratio="1 / 1">
-            <v-img
-              v-if="user.PrimaryImageTag"
-              :src="`${$axios.defaults.baseURL}/Users/${user.Id}/Images/Primary?tag=${user.PrimaryImageTag}&quality=90`"
-            />
-            <div
-              v-if="!user.PrimaryImageTag"
-              class="empty-picture d-flex align-center justify-center"
-            >
-              <v-icon size="96"> mdi-account </v-icon>
-            </div>
-          </v-responsive>
+  <v-card class="mx-auto d-flex flex-column">
+    <div class="user-image primary darken-4">
+      <v-responsive :aspect-ratio="1 / 1">
+        <v-img
+          v-if="user.PrimaryImageTag"
+          :src="`${$axios.defaults.baseURL}/Users/${user.Id}/Images/Primary?tag=${user.PrimaryImageTag}&quality=90`"
+        />
+        <div
+          v-if="!user.PrimaryImageTag"
+          class="empty-picture d-flex align-center justify-center"
+        >
+          <v-icon size="96"> mdi-account </v-icon>
         </div>
-        <v-card-title>
-          {{ user.Name }}
-        </v-card-title>
-        <v-card-subtitle class="pb-0 text-capitalize-first-letter">
-          {{ formatDistance(user.LastActivityDate) }}
-        </v-card-subtitle>
-        <v-spacer />
-        <v-card-actions>
-          <v-btn
-            text
-            color="primary"
-            width="100%"
-            @click="$emit('connect', user)"
-          >
-            {{ $t('connect') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      </v-responsive>
     </div>
-  </div>
+    <v-card-title>
+      {{ user.Name }}
+    </v-card-title>
+    <v-card-subtitle class="pb-0 text-capitalize-first-letter">
+      {{ formatDistance(user.LastActivityDate) }}
+    </v-card-subtitle>
+    <v-spacer />
+    <v-card-actions>
+      <v-btn text block color="primary" @click="$emit('connect', user)">
+        {{ $t('connect') }}
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -63,7 +49,7 @@ export default Vue.extend({
           addSuffix: true
         });
       } else {
-        return '';
+        return this.$t('never');
       }
     }
   }
@@ -72,13 +58,9 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .portrait-card {
-  display: inline-block;
-  width: 200px;
-  height: 325px;
+  display: block;
   position: relative;
   contain: strict;
-  border-radius: 0.3em;
-  margin: 0.6em;
 }
 
 .card-content {
