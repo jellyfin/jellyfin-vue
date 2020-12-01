@@ -78,14 +78,12 @@ export default Vue.extend({
 
       const chunks = chunk(this.items, cardsPerLine);
 
-      const keyedChunks = chunks.map((itemChunk, index) => {
+      return chunks.map((itemChunk, index) => {
         return {
           id: index,
           chunk: itemChunk
         };
       });
-
-      return keyedChunks;
     }
   }
 });
