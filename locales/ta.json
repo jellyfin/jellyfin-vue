@@ -66,5 +66,18 @@
     "byArtist": "வழங்கியவர்",
     "biography": "சுயசரிதை",
     "artist": "கலைஞர்",
-    "albums": "ஆல்பங்கள்"
+    "albums": "ஆல்பங்கள்",
+    "unliked": "பிடிக்கவில்லை",
+    "studios": "ஸ்டுடியோஸ்",
+    "sortByType": "{type}",
+    "series": "தொடர்",
+    "noResultsFound": "முடிவுகள் எதுவும் இல்லை",
+    "networks": "வலைப்பின்னல்",
+    "name": "பெயர்",
+    "liked": "பிடித்திருந்தது",
+    "filter": "வடிகட்டி",
+    "failedToRefreshItems": "உருப்படிகளைப் புதுப்பிப்பதில் தோல்வி",
+    "collections": "தொகுப்புகள்",
+    "artists": "கலைஞர்கள்",
+    "actors": "நடிகர்கள்"
 }
