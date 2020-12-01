@@ -25,8 +25,11 @@
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
-        <h1 class="text-h5">
+        <h1 v-if="isDefaultView" class="text-h5">
           {{ $t('libraryEmpty') }}
+        </h1>
+        <h1 v-else class="text-h5">
+          {{ $t('noResultsFound') }}
         </h1>
       </item-grid>
     </v-container>
@@ -83,6 +86,32 @@ export default Vue.extend({
         return true;
       } else {
         return false;
+      }
+    },
+    isDefaultView() {
+      const defaultViews = ['Series', 'Movies', 'Book', 'MusicAlbum'];
+
+      // Only purpose right now is to show proper text if filtering holds no results
+      // This could reside in onChangeFilter and onChangeType, but would require the same checks,
+      // better to have all of them in the same function I suppose
+      if (
+        this.statusFilter.length ||
+        this.genresFilter.length ||
+        this.yearsFilter.length ||
+        this.ratingsFilter.length ||
+        this.filterHasSubtitles ||
+        this.filterHasTrailer ||
+        this.filterHasSpecialFeature ||
+        this.filterHasThemeSong ||
+        this.filterHasThemeVideo ||
+        this.filterIsHd ||
+        this.filterIs4k ||
+        this.filterIs3d ||
+        !defaultViews.includes(this.viewType)
+      ) {
+        return false;
+      } else {
+        return true;
       }
     }
   },
@@ -197,6 +226,7 @@ export default Vue.extend({
         this.filterIs3d = undefined;
       }
 
+      // If the end view is not the default one, change isLibraryView to false
       this.refreshItems();
     },
     async refreshItems() {
