@@ -55,5 +55,14 @@
     "unhandledException": "Excepción no controlada",
     "themeSong": "Tema Musical",
     "resumable": "Se puede continuar",
-    "unplayed": "No reproducido"
+    "unplayed": "No reproducido",
+    "selectServer": "Seleccionar servidor",
+    "moreLikeArtist": "Más como {artist}",
+    "disc": "Disco {discNumber}",
+    "byArtist": "Por",
+    "connect": "Conectar",
+    "changeServer": "Cambiar servidor",
+    "biography": "Biografía",
+    "artist": "Artista",
+    "albums": "Álbumes"
 }
