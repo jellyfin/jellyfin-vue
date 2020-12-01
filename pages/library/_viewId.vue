@@ -89,7 +89,7 @@ export default Vue.extend({
       }
     },
     isDefaultView() {
-      const defaultViews = ['Series', 'Movies', 'Book', 'MusicAlbum'];
+      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
 
       // Only purpose right now is to show proper text if filtering holds no results
       // This could reside in onChangeFilter and onChangeType, but would require the same checks,
