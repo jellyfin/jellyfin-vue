@@ -226,7 +226,6 @@ export default Vue.extend({
         this.filterIs3d = undefined;
       }
 
-      // If the end view is not the default one, change isLibraryView to false
       this.refreshItems();
     },
     async refreshItems() {
