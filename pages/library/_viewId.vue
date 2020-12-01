@@ -4,7 +4,9 @@
       <span class="text-h6 hidden-sm-and-down">
         {{ collectionInfo.Name }}
       </span>
-      <v-chip small class="ma-2 hidden-sm-and-down">{{ itemsCount }}</v-chip>
+      <v-chip v-if="!loading" small class="ma-2 hidden-sm-and-down">
+        {{ itemsCount }}
+      </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button
         v-if="collectionInfo.CollectionType"
