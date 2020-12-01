@@ -64,5 +64,16 @@
     "changeServer": "Cambiar servidor",
     "biography": "Biografía",
     "artist": "Artista",
-    "albums": "Álbumes"
+    "albums": "Álbumes",
+    "studios": "Estudios",
+    "sortByType": "Por {type}",
+    "series": "Series",
+    "noResultsFound": "No se han encontrado resultados",
+    "networks": "Redes",
+    "name": "Nombre",
+    "filter": "Filtrar",
+    "failedToRefreshItems": "Fallo al refrescar los artículos",
+    "collections": "Colecciones",
+    "artists": "Artistas",
+    "actors": "Actores"
 }
