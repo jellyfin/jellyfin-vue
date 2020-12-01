@@ -1,18 +1,23 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length">
+      <v-col
+        v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length"
+        xl="8"
+      >
         <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>
         <v-row align="center" justify="center">
-          <v-col md="10">
-            <div class="d-flex align-center justify-center">
-              <user-card
-                v-for="publicUser in publicUsers"
-                :key="publicUser.Id"
-                :user="publicUser"
-                @connect="setCurrentUser"
-              />
-            </div>
+          <v-col
+            v-for="publicUser in publicUsers"
+            :key="publicUser.Id"
+            xl="2"
+            lg="2"
+            md="3"
+            sm="4"
+            xs="4"
+            cols="6"
+          >
+            <user-card :user="publicUser" @connect="setCurrentUser" />
           </v-col>
         </v-row>
         <v-row align="center" justify="center" no-gutters>
@@ -79,7 +84,6 @@ export default Vue.extend({
       return isEmpty(value);
     },
     setCurrentUser(user: UserDto) {
-      console.dir(user);
       if (!user.HasPassword) {
         // If the user doesn't have a password, avoid showing the password form
         this.setDeviceProfile();
