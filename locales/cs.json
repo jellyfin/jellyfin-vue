@@ -66,5 +66,15 @@
     "byArtist": "od",
     "biography": "Biografie",
     "artist": "Interpret",
-    "albums": "Alba"
+    "albums": "Alba",
+    "noResultsFound": "Nebyly nalezeny žádné výsledky",
+    "sortByType": "Podle {type}",
+    "actors": "Herci",
+    "networks": "Stanice",
+    "name": "Název",
+    "filter": "Filtr",
+    "collections": "Kolekce",
+    "artists": "Umělci",
+    "studios": "Studia",
+    "series": "Seriály"
 }
