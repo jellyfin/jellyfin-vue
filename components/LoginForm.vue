@@ -24,7 +24,7 @@
       ></v-text-field>
       <v-row align="center" no-gutters>
         <v-col class="mr-2">
-          <v-btn v-if="!user" to="/selectServer" nuxt block large>
+          <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
             {{ $t('changeServer') }}
           </v-btn>
           <v-btn v-else block large @click="$emit('change')">
