@@ -6,6 +6,58 @@
   </v-row>
 </template>
 
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  props: {
+    viewType: {
+      type: String,
+      default: () => 'Movie'
+    }
+  },
+  data() {
+    return {
+      skeletonCardShape: 'portrait-card'
+    };
+  },
+  watch: {
+    viewType() {
+      this.setCardShape();
+    }
+  },
+  created() {
+    this.setCardShape();
+  },
+  methods: {
+    setCardShape() {
+      switch (this.viewType) {
+        case 'Audio':
+        case 'Folder':
+        case 'MusicAlbum':
+        case 'MusicArtist':
+        case 'MusicGenre':
+        case 'PhotoAlbum':
+        case 'Playlist':
+        case 'Video':
+          return 'square-card';
+        case 'Episode':
+        case 'Studio':
+          return 'thumb-card';
+        case 'Book':
+        case 'BoxSet':
+        case 'Genre':
+        case 'Movie':
+        case 'Person':
+        case 'Series':
+        default:
+          return 'portrait-card';
+      }
+    }
+  }
+});
+</script>
+
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
 .card-grid-container {
