@@ -65,5 +65,22 @@
     "byArtist": "-",
     "biography": "Биография",
     "artist": "Исполнитель",
-    "albums": "Альбомы"
+    "albums": "Альбомы",
+    "unliked": "Не нравится",
+    "studios": "Студии",
+    "sortByType": "По {type}",
+    "selectUser": "Выбрать пользователя",
+    "series": "Сериал",
+    "noResultsFound": "Результатов не найдено",
+    "networks": "Телесети",
+    "name": "Имя",
+    "manualLogin": "Войти вручную",
+    "loginAs": "Войти как {name}",
+    "liked": "Нравится",
+    "filter": "Фильтр",
+    "failedToRefreshItems": "Не удалось обновить элементы",
+    "collections": "Коллекции",
+    "changeUser": "Сменить пользователя",
+    "artists": "Исполнители",
+    "actors": "Актёры"
 }
