@@ -25,7 +25,7 @@
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
-        <h1 v-if="isDefaultView" class="text-h5">
+        <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
       </item-grid>
@@ -46,6 +46,8 @@ export default Vue.extend({
       loading: false,
       viewType: '',
       sortBy: 'SortName',
+      hasFilters: false,
+      isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
       statusFilter: [],
       genresFilter: [],
       yearsFilter: [],
@@ -83,32 +85,6 @@ export default Vue.extend({
         return true;
       } else {
         return false;
-      }
-    },
-    isDefaultView() {
-      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
-
-      // Only purpose right now is to show proper text if filtering holds no results
-      // This could reside in onChangeFilter and onChangeType, but would require the same checks,
-      // better to have all of them in the same function I suppose
-      if (
-        this.statusFilter.length ||
-        this.genresFilter.length ||
-        this.yearsFilter.length ||
-        this.ratingsFilter.length ||
-        this.filterHasSubtitles ||
-        this.filterHasTrailer ||
-        this.filterHasSpecialFeature ||
-        this.filterHasThemeSong ||
-        this.filterHasThemeVideo ||
-        this.filterIsHd ||
-        this.filterIs4k ||
-        this.filterIs3d ||
-        !defaultViews.includes(this.viewType)
-      ) {
-        return false;
-      } else {
-        return true;
       }
     }
   },
@@ -185,12 +161,21 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     onChangeType(type: string) {
+      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
+
       this.viewType = type;
+      this.isDefaultView = defaultViews.includes(this.viewType);
     },
     onChangeSort(sort: string) {
       this.sortBy = sort;
     },
     onChangeFilter(filter: Record<string, any>) {
+      this.hasFilters = Object.values(filter).every((value) => {
+        return value.length > 0 || value !== false;
+      });
+
+      if (!this.hasFilters) return;
+
       this.genresFilter = filter.genres;
       this.statusFilter = filter.status;
       this.yearsFilter = filter.years;
