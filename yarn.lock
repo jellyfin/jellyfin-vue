@@ -8832,10 +8832,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mux.js@^5.6.7:
-  version "5.6.7"
-  resolved "https://registry.yarnpkg.com/mux.js/-/mux.js-5.6.7.tgz#d39fc85cded5a1257de9f6eeb5cf1578c4a63eb8"
-  integrity sha512-YSr6B8MUgE4S18MptbY2XM+JKGbw9JDkgs7YkuE/T2fpDKjOhZfb/nD6vmsVxvLYOExWNaQn1UGBp6PGsnTtew==
+mux.js@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/mux.js/-/mux.js-5.7.0.tgz#0d49ea653d25dcb256080c21c1bac4ef85e82605"
+  integrity sha512-SINb/qE0iN7YdpbGHtcj8JoHAJWXITUcN9ZCmakThZ8pVGvWukBMCDfJbEVmY2+GqmmrUkLkwUN9Ec2YLUSbuA==
 
 nan@^2.12.1:
   version "2.14.1"
