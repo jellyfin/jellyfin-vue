@@ -58,7 +58,7 @@
   "series": "Series",
   "selectUser": "Select a user",
   "serverAddress": "Server address",
-  "serverAddressMustBeUrl": "Server address must be a valid URL",
+  "serverAddressMustBeUrl": "Server address must be a valid address",
   "serverAddressRequired": "Server address is required",
   "serverNotFound": "Server not found",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
@@ -82,6 +82,10 @@
   "upNext": "Up next",
   "username": "Username",
   "usernameRequired": "Username is required",
+  "validation": {
+    "required": "This field is required",
+    "mustBeUrl": "This field must be a valid URL"
+  },
   "videoTypes": "Video Types",
   "years": "Years",
   "youMayAlsoLike": "You may also like"

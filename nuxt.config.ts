@@ -60,6 +60,7 @@ const config: NuxtConfig = {
   plugins: [
     // General
     'plugins/appInitPlugin.ts',
+    'plugins/veeValidate.ts',
     // Components
     'plugins/components/vueperSlides.ts',
     'plugins/components/vueVirtualScroller.ts',
@@ -225,7 +226,7 @@ const config: NuxtConfig = {
         ];
       }
     },
-    transpile: ['@nuxtjs/auth']
+    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
   },
 
   /**
