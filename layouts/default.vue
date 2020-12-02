@@ -46,8 +46,8 @@
       </v-list>
       <template #append>
         <v-list>
-          <v-list-item @click="$vuetify.theme.dark = !$vuetify.theme.dark">
-            <v-switch>
+          <v-list-item>
+            <v-switch v-model="$vuetify.theme.dark">
               <template #label>Toggle dark mode</template>
             </v-switch>
           </v-list-item>
