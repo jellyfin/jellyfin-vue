@@ -35,7 +35,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
+import { mapState, mapActions } from 'vuex';
+import { AppState } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -47,8 +48,6 @@ export default Vue.extend({
   data() {
     return {
       currentTab: 0,
-      seasons: [] as BaseItemDto[],
-      seasonEpisodes: [] as Array<BaseItemDto[]>,
       breakpoints: {
         600: {
           visibleSlides: 2
@@ -65,28 +64,19 @@ export default Vue.extend({
       }
     };
   },
+  computed: mapState<AppState>({
+    seasons: (state: AppState) => state.tvShows.seasons,
+    seasonEpisodes: (state: AppState) => state.tvShows.seasonEpisodes
+  }),
   async beforeMount() {
-    const seasons = (
-      await this.$api.tvShows.getSeasons({
-        userId: this.$auth.user.Id,
-        seriesId: this.item.Id || ''
-      })
-    ).data.Items as BaseItemDto[];
-
-    this.seasons = seasons;
-
-    // TODO: Lazy load season episodes when clicking on a tab
-    for (const season of this.seasons) {
-      const episodes = (
-        await this.$api.items.getItems({
-          userId: this.$auth.user.Id,
-          parentId: season.Id,
-          fields: [ItemFields.Overview]
-        })
-      ).data.Items as BaseItemDto[];
-
-      this.seasonEpisodes.push(episodes);
-    }
+    await this.getTvShows({
+      item: this.item
+    });
+  },
+  methods: {
+    ...mapActions('tvShows', {
+      getTvShows: 'getTvShows'
+    })
   }
 });
 </script>
