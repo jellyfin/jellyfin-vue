@@ -6,14 +6,26 @@
       :disabled="loading"
       @submit.prevent="userLogin"
     >
-      <v-text-field
-        v-if="isEmpty(user)"
+      <validation-provider
+        v-slot="{ errors }"
+        name="login.username"
+        :rules="rules.username"
+      >
+        <v-text-field
+          v-if="isEmpty(user)"
+          v-model="login.username"
+          outlined
+          :label="$t('username')"
+          :error-messages="errors"
+        ></v-text-field>
+      </validation-provider>
+      <!-- <v-text-field
         v-model="login.username"
         outlined
         :label="$t('username')"
         :rules="[(v) => !!v || $t('usernameRequired')]"
         required
-      ></v-text-field>
+      ></v-text-field> -->
       <v-text-field
         v-model="login.password"
         outlined
@@ -54,9 +66,13 @@
 import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
+import { ValidationProvider } from 'vee-validate';
 import { UserDto } from '~/api';
 
 export default Vue.extend({
+  components: {
+    ValidationProvider
+  },
   props: {
     user: {
       type: Object as () => UserDto,
@@ -73,7 +89,12 @@ export default Vue.extend({
       },
       showPassword: false,
       validInputs: false,
-      loading: false
+      loading: false,
+      rules: {
+        username: {
+          required: true
+        }
+      }
     };
   },
   methods: {
@@ -85,6 +106,7 @@ export default Vue.extend({
         // If we have a user from the public user selector, set it as login
         this.login.username = this.user.Name || '';
       }
+
       this.loading = true;
       this.setDeviceProfile();
       await this.loginRequest(this.login);
