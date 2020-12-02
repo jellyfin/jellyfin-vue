@@ -83,5 +83,6 @@
     "selectUser": "Chọn một người dùng",
     "manualLogin": "Đăng nhập thủ công",
     "loginAs": "Đăng nhập dưới tên {name}",
-    "changeUser": "Thay đổi người sử dụng"
+    "changeUser": "Thay đổi người sử dụng",
+    "unableGetRelated": "Không lấy dữ liệu các mục liên quan"
 }
