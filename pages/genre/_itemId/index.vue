@@ -32,7 +32,7 @@
           <skeleton-card v-for="n in 24" :key="n" />
         </v-col>
       </v-row>
-      <item-grid v-if="items.length" :items="itemsChunks" />
+      <item-grid v-if="items.length" :items="items" />
       <v-row v-else-if="loaded" justify="center">
         <v-col cols="12" class="card-grid-container empty-card-container">
           <skeleton-card v-for="n in 24" :key="n" boilerplate />
@@ -50,7 +50,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { chunk } from 'lodash';
 import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
@@ -65,38 +64,6 @@ export default Vue.extend({
     return {
       title: this.$store.state.page.title
     };
-  },
-  computed: {
-    itemsChunks: {
-      get() {
-        let cardsPerLine = 8;
-
-        if (this.$vuetify.breakpoint.smAndDown) {
-          cardsPerLine = 3;
-        } else if (
-          this.$vuetify.breakpoint.smAndUp &&
-          !this.$vuetify.breakpoint.lgAndUp
-        ) {
-          cardsPerLine = 4;
-        } else if (
-          this.$vuetify.breakpoint.lgAndUp &&
-          !this.$vuetify.breakpoint.xlOnly
-        ) {
-          cardsPerLine = 6;
-        }
-
-        const chunks = chunk(this.$data.items, cardsPerLine);
-
-        const keyedChunks = chunks.map((itemChunk, index) => {
-          return {
-            id: index,
-            chunk: itemChunk
-          };
-        });
-
-        return keyedChunks;
-      }
-    }
   },
   async beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
