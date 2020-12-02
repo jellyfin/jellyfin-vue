@@ -1,10 +1,8 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- *
- *
- * @param {HTMLVideoElement} videoTestElement
- * @returns {boolean}
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {boolean} Determines if the browser can play native Hls
  */
 export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTizen()) {
@@ -24,10 +22,8 @@ export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- *
- *
- * @param {HTMLVideoElement} videoTestElement
- * @returns
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {boolean} Determines if the browser can play Mkvs
  */
 export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {

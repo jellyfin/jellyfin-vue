@@ -1,9 +1,11 @@
 <template>
-  <div v-if="relatedItems.length > 0">
+  <div>
     <div v-if="!vertical" class="related-items">
-      <h1 class="text-h5 mb-2 ml-2 header">
-        <span>{{ $t('youMayAlsoLike') }}</span>
-      </h1>
+      <slot>
+        <h1 class="text-h5 mb-2 ml-2 header">
+          <span>{{ $t('youMayAlsoLike') }}</span>
+        </h1>
+      </slot>
       <vueper-slides
         :bullets="false"
         :bullets-outside="false"
@@ -13,9 +15,9 @@
         :breakpoints="breakpoints"
         fixed-height="true"
       >
-        <vueper-slide v-for="item in relatedItems" :key="item.Id">
+        <vueper-slide v-for="relatedItem in relatedItems" :key="relatedItem.Id">
           <template #content>
-            <card :item="item" />
+            <card :item="relatedItem" />
           </template>
         </vueper-slide>
 
@@ -32,11 +34,15 @@
         </template>
       </vueper-slides>
     </div>
-    <div v-if="vertical">
-      <h2 v-if="relatedItems.length > 0">{{ $t('youMayAlsoLike') }}</h2>
+    <div v-else>
+      <h2 v-if="!loading && relatedItems.length > 0">
+        <slot>
+          {{ $t('youMayAlsoLike') }}
+        </slot>
+      </h2>
       <v-skeleton-loader v-else type="heading" />
       <v-list color="transparent" two-line>
-        <div v-if="relatedItems.length > 0">
+        <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
@@ -58,6 +64,7 @@
         </div>
         <div
           v-for="index in skeletonLength"
+          v-else
           :key="index"
           class="d-flex align-center mt-5 mb-5"
         >
@@ -71,6 +78,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { BaseItemDto } from '~/api';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -78,10 +86,10 @@ export default Vue.extend({
   mixins: [imageHelper],
   props: {
     /**
-     * itemId To be used to get related items
+     * item.Id To be used to get related items
      */
-    id: {
-      type: String,
+    item: {
+      type: Object,
       required: true
     },
     vertical: {
@@ -96,6 +104,7 @@ export default Vue.extend({
   data() {
     return {
       relatedItems: [] as BaseItemDto[],
+      loading: true,
       /**
        * Stores Breakpoints for number of visible slides
        * on different screen sizes
@@ -116,22 +125,37 @@ export default Vue.extend({
       }
     };
   },
-  /**
-   * Gets related items to be rendered
-   */
-  async beforeMount() {
+  watch: {
+    item() {
+      this.refreshItems();
+    }
+  },
+  beforeMount() {
     try {
-      const RelatedItems = (
-        await this.$api.library.getSimilarItems({
-          itemId: this.id,
+      this.refreshItems();
+    } catch (error) {
+      this.pushSnackbarMessage({
+        message: this.$t('unableGetRelated'),
+        color: 'error'
+      });
+    }
+  },
+  methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    async refreshItems() {
+      this.loading = true;
+
+      if (this.item.Id) {
+        const response = await this.$api.library.getSimilarItems({
+          itemId: this.item.Id,
           userId: this.$auth.user.Id,
           limit: this.vertical ? 5 : 12
-        })
-      ).data.Items as BaseItemDto[];
+        });
 
-      this.relatedItems = RelatedItems;
-    } catch (error) {
-      console.error('Unable to get related items:', error);
+        if (response.data.Items) this.relatedItems = response.data.Items;
+      }
+
+      this.loading = false;
     }
   }
 });

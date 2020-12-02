@@ -56,8 +56,10 @@
         </div>
       </div>
       <div v-if="!noText" class="card-text">
-        <div class="card-title mt-1">{{ item.Name }}</div>
-        <div class="card-subtitle text--secondary">{{ cardSubtitle }}</div>
+        <div class="card-title mt-1 text-truncate">{{ item.Name }}</div>
+        <div class="card-subtitle text--secondary text-truncate">
+          {{ cardSubtitle }}
+        </div>
       </div>
     </div>
   </nuxt-link>
@@ -111,6 +113,12 @@ export default Vue.extend({
       get(): string {
         if (this.item.Type === 'Folder') {
           return `/library/${this.item.Id}`;
+        } else if (this.item.Type === 'Person') {
+          return `/person/${this.item.Id}`;
+        } else if (this.item.Type === 'MusicArtist') {
+          return `/artist/${this.item.Id}`;
+        } else if (this.item.Type === 'Genre') {
+          return `/genre/${this.item.Id}`;
         } else {
           return `/item/${this.item.Id}`;
         }
@@ -123,16 +131,19 @@ export default Vue.extend({
           case 'Audio':
           case 'Folder':
           case 'MusicAlbum':
+          case 'MusicArtist':
+          case 'MusicGenre':
           case 'PhotoAlbum':
           case 'Playlist':
           case 'Video':
             return 'square-card';
           case 'Episode':
+          case 'Studio':
             return 'thumb-card';
           case 'Book':
           case 'BoxSet':
+          case 'Genre':
           case 'Movie':
-          case 'MusicArtist':
           case 'Person':
           case 'Series':
           default:
@@ -173,12 +184,8 @@ export default Vue.extend({
      * @returns {string} Either an empty string, or a string representing the production year(s) for the current item or the relevant episode number of the item.
      */
     cardSubtitle(): string {
-      if (this.episode) {
-        if (this.item.IndexNumber) {
-          return this.$t('episodeNumber', {
-            episodeNumber: this.item.IndexNumber
-          }).toString();
-        }
+      if (this.item.Type === 'MusicAlbum') {
+        return `${this.item.AlbumArtist}`;
       } else if (this.item.Type !== 'Series' && this.item.ProductionYear) {
         return this.item.ProductionYear.toString();
       } else if (

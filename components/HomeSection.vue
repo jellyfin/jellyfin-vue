@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '../api';
+import { BaseItemDto, ImageType, ItemFields } from '../api';
 
 export default Vue.extend({
   props: {
@@ -70,7 +70,7 @@ export default Vue.extend({
         const resumeItems = await this.$api.items.getResumeItems({
           userId: this.$auth.user.Id,
           limit: 12,
-          fields: 'PrimaryImageAspectRatio',
+          fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -78,7 +78,7 @@ export default Vue.extend({
             ImageType.Thumb
           ],
           enableTotalRecordCount: false,
-          mediaTypes: 'Video'
+          mediaTypes: ['Video']
         });
 
         this.items = resumeItems.data.Items as BaseItemDto[];
@@ -88,7 +88,7 @@ export default Vue.extend({
         const resumeItems = await this.$api.items.getResumeItems({
           userId: this.$auth.user.Id,
           limit: 12,
-          fields: 'PrimaryImageAspectRatio',
+          fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -96,7 +96,7 @@ export default Vue.extend({
             ImageType.Thumb
           ],
           enableTotalRecordCount: false,
-          mediaTypes: 'Audio'
+          mediaTypes: ['Audio']
         });
 
         this.items = resumeItems.data.Items as BaseItemDto[];
@@ -106,7 +106,7 @@ export default Vue.extend({
         const latestItems = await this.$api.tvShows.getNextUp({
           userId: this.$auth.user.Id,
           limit: 12,
-          fields: 'PrimaryImageAspectRatio',
+          fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -123,7 +123,7 @@ export default Vue.extend({
         const latestItems = await this.$api.userLibrary.getLatestMedia({
           userId: this.$auth.user.Id,
           limit: 12,
-          fields: 'PrimaryImageAspectRatio',
+          fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,

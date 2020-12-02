@@ -1,7 +1,7 @@
 /* W3C standard (Firefox-only for now) */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--v-thumb-base) var(--v-track-base);
+  scrollbar-color: var(--v-thumb-lighten5) var(--v-track-base);
 }
 
 /* Reproduce something similar on Chrome/Edge/Safari */
@@ -14,7 +14,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--v-thumb-base);
+  background-color: var(--v-thumb-lighten5);
   border-radius: 20px;
   border: 3px solid var(--v-track-base);
 }

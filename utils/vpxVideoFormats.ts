@@ -3,8 +3,8 @@ import { hasVp8Support, hasVp9Support, hasAv1Support } from './mp4VideoFormats';
 /**
  *
  *
- * @param {HTMLVideoElement} videoTestElement
- * @returns {string[]}
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {string[]} Returns an array of supported codecs
  */
 export function getSupportedVPXVideoCodecs(
   videoTestElement: HTMLVideoElement

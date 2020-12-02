@@ -1,6 +1,8 @@
+import compareVersions from 'compare-versions';
 import { Context } from '@nuxt/types';
 import { Auth } from '@nuxtjs/auth';
-import compareVersions from 'compare-versions';
+import { AxiosResponse } from 'axios';
+import { AuthenticationResult } from '~/api';
 
 interface NuxtAuth extends Auth {
   // Fix the wonky DefinitelyTyped definition
@@ -12,9 +14,9 @@ interface NuxtAuth extends Auth {
 export default class JellyfinScheme {
   $auth: NuxtAuth;
   name = 'jellyfin';
-  options: Record<string, any>;
+  options: Record<string, unknown>;
 
-  constructor(auth: NuxtAuth, options: Record<string, any>) {
+  constructor(auth: NuxtAuth, options: Record<string, unknown>) {
     this.$auth = auth;
 
     this.options = Object.assign({}, {}, options);
@@ -37,63 +39,48 @@ export default class JellyfinScheme {
     return this.$auth.fetchUserOnce();
   }
 
-  async login({ username, password }: { username: string; password: string }) {
-    try {
-      // Ditch any leftover local tokens before attempting to log in
-      await this.$auth.reset();
+  async login({
+    username,
+    password
+  }: {
+    username: string;
+    password: string;
+  }): Promise<AxiosResponse<AuthenticationResult> | void> {
+    // Ditch any leftover local tokens before attempting to log in
+    await this.$auth.reset();
 
-      // Set the empty header needed for Jellyfin to not yell at us
-      const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token=""`;
-      this._setToken(token);
+    // Set the empty header needed for Jellyfin to not yell at us
+    const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token=""`;
+    this._setToken(token);
 
-      // Check the version info and implicitly check for the manifest
-      const serverInfo = (
-        await this.$auth.ctx.app.$api.system.getPublicSystemInfo()
-      ).data;
+    // Check the version info and implicitly check for the manifest
+    const serverInfo = (
+      await this.$auth.ctx.app.$api.system.getPublicSystemInfo()
+    ).data;
 
-      // We need a version > 10.7.0 due to the use of /Users/Me
-      if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
-        // Login using the Axios client
-        const authenticateResponse = await this.$auth.ctx.app.$api.user.authenticateUserByName(
-          {
-            authenticateUserByName: {
-              Username: username,
-              Pw: password
-            }
+    // We need a version > 10.7.0 due to the use of /Users/Me
+    if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
+      // Login using the Axios client
+      const authenticateResponse = await this.$auth.ctx.app.$api.user.authenticateUserByName(
+        {
+          authenticateUserByName: {
+            Username: username,
+            Pw: password
           }
-        );
+        }
+      );
 
-        // Set the user's token
-        const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
-        this.$auth.setToken(this.name, userToken);
-        this._setToken(userToken);
+      // Set the user's token
+      const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
+      this.$auth.setToken(this.name, userToken);
+      this._setToken(userToken);
 
-        // Fetch the user data
-        await this.fetchUser();
+      // Fetch the user data
+      await this.fetchUser();
 
-        return authenticateResponse;
-      } else {
-        throw new Error('serverVersionTooLow');
-      }
-    } catch (error) {
-      // TODO: This is all a bit whack, clean it up later
-      let errorMessage = 'unexpectedError';
-
-      if (!error.response) {
-        errorMessage = 'serverNotFound';
-      } else if (
-        error.response.status === 500 ||
-        error.response.status === 401
-      ) {
-        errorMessage = 'incorrectUsernameOrPassword';
-      } else if (error.response.status === 400) {
-        errorMessage = 'badRequest';
-      }
-
-      this.$auth.ctx.app.store.dispatch('snackbar/pushSnackbarMessage', {
-        message: errorMessage,
-        color: 'error'
-      });
+      return authenticateResponse;
+    } else {
+      throw new Error('serverVersionTooLow');
     }
   }
 

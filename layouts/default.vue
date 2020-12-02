@@ -80,6 +80,7 @@
       class="pl-2 pr-2"
       flat
       app
+      :class="{ opaque: opaqueAppBar }"
     >
       <v-app-bar-nav-icon
         v-if="$vuetify.breakpoint.mobile"
@@ -119,7 +120,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -129,6 +130,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapState('page', ['opaqueAppBar']),
     items() {
       return [
         {
@@ -165,11 +167,11 @@ export default Vue.extend({
   background-color: var(--v-background-base) !important;
 }
 
-.v-app-bar:not(.v-app-bar--is-scrolled) {
+.v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }
 
-.v-app-bar .v-app-bar--is-scrolled {
+.v-app-bar .v-app-bar--is-scrolled:not(.opaque) {
   padding-top: 0;
   padding-bottom: 0;
   background-color: rgba(32, 32, 32, 1) !important;

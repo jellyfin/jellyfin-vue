@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
@@ -90,7 +91,7 @@ const config: NuxtConfig = {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['user', 'deviceProfile']
+        localStorage: ['user', 'deviceProfile', 'servers']
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage
@@ -108,7 +109,9 @@ const config: NuxtConfig = {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: ''
+  },
   /*
    ** Axios-based Authentication
    ** See https://auth.nuxtjs.org/schemes/local.html#options
@@ -147,7 +150,11 @@ const config: NuxtConfig = {
     ],
     lazy: true,
     langDir: 'locales/',
-    strategy: 'no_prefix'
+    strategy: 'no_prefix',
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en'
+    }
   },
   /*
    ** vuetify module configuration
@@ -197,9 +204,17 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    // @ts-ignore -- Undocumented options
+    loadingScreen: {
+      image: 'icon.png',
+      colors: {
+        client: '#00A4DC',
+        modern: '#424242'
+      }
+    },
     babel: {
       // envName: server, client, modern
-      presets() {
+      presets(): any {
         return [
           [
             '@nuxt/babel-preset-app',

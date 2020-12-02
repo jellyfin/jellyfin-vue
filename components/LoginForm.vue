@@ -7,14 +7,7 @@
       @submit.prevent="userLogin"
     >
       <v-text-field
-        v-model="serverUrl"
-        outlined
-        :label="$t('serverAddress')"
-        type="url"
-        :rules="rules.serverUrlTest"
-        required
-      ></v-text-field>
-      <v-text-field
+        v-if="isEmpty(user)"
         v-model="login.username"
         outlined
         :label="$t('username')"
@@ -30,6 +23,14 @@
         @click:append="() => (showPassword = !showPassword)"
       ></v-text-field>
       <v-row align="center" no-gutters>
+        <v-col class="mr-2">
+          <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
+            {{ $t('changeServer') }}
+          </v-btn>
+          <v-btn v-else block large @click="$emit('change')">
+            {{ $t('changeUser') }}
+          </v-btn>
+        </v-col>
         <v-col class="mr-2">
           <v-btn
             :disabled="!validInputs"
@@ -50,39 +51,47 @@
 </template>
 
 <script lang="ts">
+import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
+import { UserDto } from '~/api';
 
 export default Vue.extend({
+  props: {
+    user: {
+      type: Object as () => UserDto,
+      default() {
+        return {};
+      }
+    }
+  },
   data() {
     return {
-      serverUrl: '',
       login: {
         username: '',
         password: ''
       },
       showPassword: false,
       validInputs: false,
-      loading: false,
-      rules: {
-        serverUrlTest: [
-          (v: string) => !!v || this.$t('serverAddressRequired'),
-          (v: string) =>
-            /^https?:\/\/.+/.test(v) || this.$t('serverAddressMustBeUrl')
-        ]
-      }
+      loading: false
     };
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('user', ['setUser', 'clearUser', 'loginRequest']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    userLogin() {
+    async userLogin() {
+      if (!isEmpty(this.user)) {
+        // If we have a user from the public user selector, set it as login
+        this.login.username = this.user.Name || '';
+      }
       this.loading = true;
       this.setDeviceProfile();
-      this.$axios.setBaseURL(this.serverUrl);
-      this.$auth.loginWith('jellyfin', this.login);
+      await this.loginRequest(this.login);
       this.loading = false;
+    },
+    isEmpty(value: Record<any, any>) {
+      return isEmpty(value);
     }
   }
 });
