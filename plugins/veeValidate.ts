@@ -3,28 +3,20 @@ import { configure, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 
 extend('required', {
-  ...required,
-  message: 'staticmsg - This field is required [vee-validate]'
+  ...required
 });
 
 extend('mustBeUrl', (value: string): boolean => {
   return /^https?:\/\/.+/.test(value);
 });
 
-export default function ({ app }): any {
+const veeValidate: Plugin = ({ app }) => {
   configure({
+    // FIXME: Ts doesn't like the returned value to defaultMessage
     defaultMessage: (field, values) => {
       values._field_ = app.i18n.t(`fields.${field}`);
       return app.i18n.t(`validation.${values._rule_}`, values);
     }
   });
-}
-// const veeValidate: Plugin = ({ app }) => {
-//   configure({
-//     defaultMessage: (field, values) => {
-//       values._field_ = app.i18n.t(`fields.${field}`);
-//       return app.i18n.t(`validation.${values._rule_}`, values);
-//     }
-//   });
-// };
-// export default veeValidate;
+};
+export default veeValidate;
