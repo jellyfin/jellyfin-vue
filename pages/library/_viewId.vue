@@ -23,6 +23,7 @@
       />
     </v-app-bar>
     <v-container class="after-second-toolbar">
+      <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
         <h1 class="text-h5">
           {{ $t('libraryEmpty') }}
@@ -277,7 +278,6 @@ export default Vue.extend({
         this.items = itemsResponse.Items;
         this.itemsCount = itemsResponse.TotalRecordCount;
       } catch (error) {
-        console.error('Unable to refresh items:', error);
         this.items = [];
         this.itemsCount = 0;
         this.pushSnackbarMessage({
