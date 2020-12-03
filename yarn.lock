@@ -1657,10 +1657,10 @@
     rc9 "^1.0.0"
     std-env "^2.2.1"
 
-"@nuxt/types@^2.14.8":
-  version "2.14.8"
-  resolved "https://registry.yarnpkg.com/@nuxt/types/-/types-2.14.8.tgz#b647e34e1e5151211eef7606c2e1508e6ed9950f"
-  integrity sha512-y+XeQ9ZWaDgrlgNYjDKmSW2+gNjEoGjmpExy78/dCEsWXoY/w7p8tqQvrGO5zyy9fjrzYw+BrkHpuz1XTm59Qw==
+"@nuxt/types@^2.14.9":
+  version "2.14.9"
+  resolved "https://registry.yarnpkg.com/@nuxt/types/-/types-2.14.9.tgz#fdfcb3f4f9eae64441e4026dac9d37a3a9afa71f"
+  integrity sha512-NXj25UrzeZmeJnfUyDH1qOwQoWC7UyUwli92QbczIzbeHbJSnrLKzG4lmHwMrB5Uvb56DxTdrTCrpaBlHMf3ew==
   dependencies:
     "@types/autoprefixer" "^9.7.2"
     "@types/babel__core" "^7.1.12"
