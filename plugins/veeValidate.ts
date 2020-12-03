@@ -14,7 +14,7 @@ const veeValidate: Plugin = ({ app }) => {
     // FIXME: Ts doesn't like the returned value to defaultMessage
     defaultMessage: (_field, values) => {
       // values._field_ = app.i18n.t(`fields.${field}`);
-      return app.i18n.t(`validation.${values._rule_}`, values);
+      return app.i18n.t(`validation.${values._rule_}`, values).toString();
     }
   });
 };
