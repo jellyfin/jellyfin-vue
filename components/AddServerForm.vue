@@ -40,13 +40,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default Vue.extend({
-  components: {
-    ValidationObserver,
-    ValidationProvider
-  },
   data() {
     return {
       serverUrl: '',

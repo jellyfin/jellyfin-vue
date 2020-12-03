@@ -56,14 +56,9 @@
 import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import { UserDto } from '~/api';
 
 export default Vue.extend({
-  components: {
-    ValidationObserver,
-    ValidationProvider
-  },
   props: {
     user: {
       type: Object as () => UserDto,
