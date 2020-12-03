@@ -43,7 +43,9 @@
     "nuxt-vuex-localstorage": "^1.2.7",
     "qs": "^6.9.4",
     "shaka-player": "^3.0.6",
+    "swiper": "5.x",
     "uuid": "^8.3.1",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-virtual-scroller": "^1.0.10",
     "vueperslides": "^2.12.1"
   },

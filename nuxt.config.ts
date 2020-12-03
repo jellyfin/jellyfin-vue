@@ -61,6 +61,7 @@ const config: NuxtConfig = {
     // General
     'plugins/appInitPlugin.ts',
     // Components
+    'plugins/components/swiper.ts',
     'plugins/components/vueperSlides.ts',
     'plugins/components/vueVirtualScroller.ts',
     // Utility
