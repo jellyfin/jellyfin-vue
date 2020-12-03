@@ -83,5 +83,6 @@
     "loginAs": "Přihlásit jako {name}",
     "liked": "Oblíbené",
     "failedToRefreshItems": "Obnovení položek se nezdařilo",
-    "changeUser": "Změnit uživatele"
+    "changeUser": "Změnit uživatele",
+    "unableGetRelated": "Načtení souvisejicích položek se nezdařilo"
 }
