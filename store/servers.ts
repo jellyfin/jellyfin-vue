@@ -34,8 +34,20 @@ export const mutations: MutationTree<ServerState> = {
   }
 };
 
+interface ConnectServerInterface {
+  serverUrl: string;
+  silent?: boolean;
+}
+
 export const actions: ActionTree<ServerState, ServerState> = {
-  async connectServer({ dispatch, commit, state }, serverUrl: string) {
+  /**
+   * @param {string} serverUrl The server Url to test
+   * @param {boolean} [silent = false] Whether to display snack bar messages on failure
+   */
+  async connectServer(
+    { dispatch, commit, state },
+    { serverUrl, silent }: ConnectServerInterface
+  ) {
     try {
       this.$axios.setBaseURL(serverUrl);
 
@@ -56,16 +68,15 @@ export const actions: ActionTree<ServerState, ServerState> = {
               address: serverUrl
             });
           }
-
-          this.$router.push('/login');
+          if (!silent) this.$router.push('/login');
         }
-      } else {
+      } else if (!silent) {
         dispatch('notifyServerVersionIsLow');
       }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err); // in case something inside the try rather than a request failure
-      dispatch('notifyServerCantBeFound');
+      if (!silent) dispatch('notifyServerCantBeFound');
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {

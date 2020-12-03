@@ -30,9 +30,11 @@ export default Vue.extend({
   },
   created() {
     this.setPageTitle({ title: this.$t('selectServer') });
+    this.connectServer({ serverUrl: 'http://127.0.0.1:8096', silent: true });
   },
   methods: {
-    ...mapActions('page', ['setPageTitle'])
+    ...mapActions('page', ['setPageTitle']),
+    ...mapActions('servers', ['connectServer'])
   }
 });
 </script>
