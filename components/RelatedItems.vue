@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="!vertical" class="related-items">
+    <div
+      v-if="!vertical && !loading && relatedItems.length > 0"
+      class="related-items"
+    >
       <slot>
         <h1 class="text-h5 mb-2 ml-2 header">
           <span>{{ $t('youMayAlsoLike') }}</span>
@@ -34,7 +37,7 @@
         </template>
       </vueper-slides>
     </div>
-    <div v-else>
+    <div v-else-if="vertical">
       <h2 v-if="!loading && relatedItems.length > 0">
         <slot>
           {{ $t('youMayAlsoLike') }}
