@@ -58,5 +58,22 @@
     "noNetworkConnection": "Geen netwerk verbinding",
     "connect": "Verbinden",
     "changeServer": "Verander van server",
-    "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen."
+    "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
+    "studios": "Studios",
+    "series": "Series",
+    "selectUser": "Selecteer een gebruiker",
+    "noResultsFound": "Er is hier niets",
+    "networks": "Netwerken",
+    "name": "Naam",
+    "moreLikeArtist": "Meer zoals {artiest}",
+    "manualLogin": "Manuele login",
+    "loginAs": "Inloggen als {naam}",
+    "filter": "Filter",
+    "collections": "Collecties",
+    "changeUser": "Verander gebruiker",
+    "biography": "Biografie",
+    "artists": "Artiesten",
+    "artist": "Artiest",
+    "albums": "Albums",
+    "actors": "Acteurs"
 }
