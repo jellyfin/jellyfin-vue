@@ -40,7 +40,7 @@
           {{ $t('youMayAlsoLike') }}
         </slot>
       </h2>
-      <v-skeleton-loader v-else type="heading" />
+      <v-skeleton-loader v-else-if="loading" type="heading" />
       <v-list color="transparent" two-line>
         <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
@@ -64,7 +64,7 @@
         </div>
         <div
           v-for="index in skeletonLength"
-          v-else
+          v-else-if="loading"
           :key="index"
           class="d-flex align-center mt-5 mb-5"
         >
