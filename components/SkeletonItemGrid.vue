@@ -40,10 +40,12 @@ export default Vue.extend({
         case 'PhotoAlbum':
         case 'Playlist':
         case 'Video':
-          return 'square-card';
+          this.skeletonCardShape = 'square-card';
+          return;
         case 'Episode':
         case 'Studio':
-          return 'thumb-card';
+          this.skeletonCardShape = 'thumb-card';
+          return;
         case 'Book':
         case 'BoxSet':
         case 'Genre':
@@ -51,7 +53,7 @@ export default Vue.extend({
         case 'Person':
         case 'Series':
         default:
-          return 'portrait-card';
+          this.skeletonCardShape = 'portrait-card';
       }
     }
   }
