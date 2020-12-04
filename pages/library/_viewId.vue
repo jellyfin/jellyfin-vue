@@ -174,8 +174,6 @@ export default Vue.extend({
         return value.length > 0 || value !== false;
       });
 
-      if (!this.hasFilters) return;
-
       this.genresFilter = filter.genres;
       this.statusFilter = filter.status;
       this.yearsFilter = filter.years;
