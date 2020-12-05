@@ -1,5 +1,5 @@
 <template>
-  <div class="home-header-margin">
+  <div>
     <home-header />
     <v-container class="sections-after-header">
       <v-row
@@ -156,9 +156,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-.home-header-margin {
-  margin-top: -56px;
-}
 
 @media #{map-get($display-breakpoints, 'md-and-up')} {
   .home-header-margin {

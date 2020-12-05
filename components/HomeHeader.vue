@@ -1,5 +1,9 @@
 <template>
-  <swiper v-show="items.length > 0" class="swiper" :options="swiperOptions">
+  <swiper
+    v-if="items.length > 0 && !$vuetify.breakpoint.mobile"
+    class="swiper"
+    :options="swiperOptions"
+  >
     <swiper-slide v-for="item in items" :key="item.Id">
       <div
         class="slide-backdrop"
@@ -150,6 +154,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .swiper {
+  margin-top: -64px;
   margin-bottom: -128px !important;
 }
 
