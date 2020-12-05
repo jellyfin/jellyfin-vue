@@ -21,6 +21,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
+        @error="$emit('error')"
       />
     </transition-group>
   </div>
