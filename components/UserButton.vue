@@ -1,20 +1,16 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div class="d-flex" v-bind="attrs" v-on="on">
-        <div class="mr-4">
-          <v-btn icon>
-            <v-avatar>
-              <v-img
-                v-if="userImage"
-                :src="userImage"
-                :alt="$auth.user.Name"
-              ></v-img>
-              <v-icon v-else dark>mdi-account</v-icon>
-            </v-avatar>
-          </v-btn>
-        </div>
-        <h1 class="font-weight-light">
+      <div class="d-flex align-center" v-bind="attrs" v-on="on">
+        <v-avatar size="48" color="primary" class="mr-4">
+          <v-img
+            v-if="userImage"
+            :src="userImage"
+            :alt="$auth.user.Name"
+          ></v-img>
+          <v-icon v-else dark>mdi-account</v-icon>
+        </v-avatar>
+        <h1 class="font-weight-light pb-1">
           {{ $auth.user.Name }}
           <v-icon>mdi-chevron-down</v-icon>
         </h1>
