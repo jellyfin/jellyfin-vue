@@ -173,7 +173,6 @@ export default Vue.extend({
   mask-composite: subtract;
   -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
   z-index: 1;
-  animation: backdrop-fadein 800ms ease-in normal both;
 }
 
 .slide-backdrop-overlay {
