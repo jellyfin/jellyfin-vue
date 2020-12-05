@@ -22,7 +22,7 @@
     "rating": "மதிப்பீடு",
     "releaseDate": "வெளிவரும் தேதி",
     "serverAddress": "சேவையக முகவரி",
-    "serverAddressMustBeUrl": "சேவையக முகவரி சரியான URL ஆக இருக்க வேண்டும்",
+    "serverAddressMustBeUrl": "சேவையக முகவரி சரியான முகவரியாக இருக்க வேண்டும்",
     "serverAddressRequired": "சேவையக முகவரி தேவை",
     "serverNotFound": "சேவையகம் கிடைக்கவில்லை",
     "settings": "அமைப்புகள்",
@@ -71,7 +71,7 @@
     "studios": "ஸ்டுடியோஸ்",
     "sortByType": "{type}",
     "series": "தொடர்",
-    "noResultsFound": "முடிவுகள் எதுவும் இல்லை",
+    "noResultsFound": "இங்கே எதுவும் இல்லை",
     "networks": "வலைப்பின்னல்",
     "name": "பெயர்",
     "liked": "பிடித்திருந்தது",
@@ -84,5 +84,9 @@
     "selectUser": "ஒரு பயனரைத் தேர்ந்தெடுக்கவும்",
     "manualLogin": "கையேடு உள்நுழைவு",
     "loginAs": "{name} என உள்நுழைக",
-    "changeUser": "பயனரை மாற்றவும்"
+    "changeUser": "பயனரை மாற்றவும்",
+    "validation": {
+        "mustBeUrl": "இந்த புலம் சரியான URL ஆக இருக்க வேண்டும்",
+        "required": "இந்த புலம் தேவை"
+    }
 }
