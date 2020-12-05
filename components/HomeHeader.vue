@@ -166,6 +166,7 @@ export default Vue.extend({
     ),
     linear-gradient(90deg, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0) 70%);
   mask-composite: subtract;
+  -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
   z-index: 1;
   animation: backdrop-fadein 800ms ease-in normal both;
 }
