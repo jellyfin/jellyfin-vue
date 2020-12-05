@@ -70,6 +70,14 @@ export default Vue.extend({
   },
   async created() {
     switch (this.section.type) {
+      case 'libraries': {
+        const userViewsItems = await this.$api.userViews.getUserViews({
+          userId: this.$auth.user.Id
+        });
+
+        this.items = userViewsItems.data.Items as BaseItemDto[];
+        break;
+      }
       case 'resume': {
         const resumeItems = await this.$api.items.getResumeItems({
           userId: this.$auth.user.Id,
