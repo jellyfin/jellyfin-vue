@@ -13,10 +13,11 @@
       </v-btn>
     </template>
     <v-list>
-      <v-list-item @click="switchColodScheme">
-        <v-switch>
-          <template #label>{{ $t('darkModeToggle') }}</template>
-        </v-switch>
+      <v-list-item>
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          :label="$t('darkModeToggle')"
+        ></v-switch>
       </v-list-item>
       <v-list-item
         v-for="(item, index) in menuItems"
@@ -62,9 +63,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    switchColodScheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-    },
     logoutUser() {
       this.$auth.logout();
       this.clearDeviceProfile();
