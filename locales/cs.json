@@ -22,7 +22,7 @@
     "rating": "Hodnocení",
     "releaseDate": "Datum vydání",
     "serverAddress": "Adresa serveru",
-    "serverAddressMustBeUrl": "Adresa serveru musí být platné URL",
+    "serverAddressMustBeUrl": "Adresa serveru musí být platná adresa",
     "serverAddressRequired": "Adresa serveru je povinná",
     "serverNotFound": "Server nebyl nalezen",
     "settings": "Nastavení",
@@ -84,5 +84,9 @@
     "liked": "Oblíbené",
     "failedToRefreshItems": "Obnovení položek se nezdařilo",
     "changeUser": "Změnit uživatele",
-    "unableGetRelated": "Načtení souvisejicích položek se nezdařilo"
+    "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
+    "validation": {
+        "mustBeUrl": "Toto pole musí být platná adresa URL",
+        "required": "Toto pole je povinné"
+    }
 }
