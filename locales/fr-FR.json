@@ -22,7 +22,7 @@
     "rating": "Critique",
     "releaseDate": "Date de sortie",
     "serverAddress": "Adresse du serveur",
-    "serverAddressMustBeUrl": "L'adresse du serveur doit être une URL valide",
+    "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse valide",
     "serverAddressRequired": "L'adresse du serveur est requise",
     "serverNotFound": "Serveur introuvable",
     "settings": "Paramètres",
@@ -74,7 +74,7 @@
     "shuffleAll": "Mélanger tout",
     "selectUser": "Sélectionner un utilisateur",
     "series": "Séries",
-    "noResultsFound": "Aucun résultat n'a été trouvé",
+    "noResultsFound": "Il n'y a rien ici",
     "networks": "Réseaux",
     "name": "Nom",
     "manualLogin": "Connexion manuelle",
@@ -84,5 +84,9 @@
     "failedToRefreshItems": "Échec du rafraîchissement des éléments",
     "changeUser": "Changer d'utilisateur",
     "artists": "Artistes",
-    "actors": "Acteurs"
+    "actors": "Acteurs",
+    "validation": {
+        "mustBeUrl": "Ce champ n'est pas une URL valide",
+        "required": "Ce champ est requis"
+    }
 }
