@@ -84,5 +84,10 @@
     "manualLogin": "Đăng nhập thủ công",
     "loginAs": "Đăng nhập dưới tên {name}",
     "changeUser": "Thay đổi người sử dụng",
-    "unableGetRelated": "Không lấy dữ liệu các mục liên quan"
+    "unableGetRelated": "Không lấy dữ liệu các mục liên quan",
+    "validation": {
+        "mustBeUrl": "Trường này phải là một URL hợp lệ",
+        "required": "Trường này là bắt buộc"
+    },
+    "libraries": "Thư viện"
 }
