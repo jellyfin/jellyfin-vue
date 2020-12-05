@@ -47,9 +47,10 @@
       <template #append>
         <v-list>
           <v-list-item>
-            <v-switch v-model="$vuetify.theme.dark">
-              <template #label>Toggle dark mode</template>
-            </v-switch>
+            <v-switch
+              v-model="$vuetify.theme.dark"
+              :label="$t('darkModeToggle')"
+            ></v-switch>
           </v-list-item>
           <v-list-item
             v-for="(item, i) in configItems"
