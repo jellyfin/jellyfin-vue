@@ -119,7 +119,10 @@ export default Vue.extend({
   computed: {
     itemLink: {
       get(): string {
-        if (this.item.Type === 'Folder') {
+        if (
+          this.item.Type === 'Folder' ||
+          this.item.Type === 'CollectionFolder'
+        ) {
           return `/library/${this.item.Id}`;
         } else if (this.item.Type === 'Person') {
           return `/person/${this.item.Id}`;
@@ -169,6 +172,7 @@ export default Vue.extend({
           case 'BoxSet':
             return 'mdi-folder-multiple';
           case 'Folder':
+          case 'CollectionFolder':
             return 'mdi-folder';
           case 'Movie':
             return 'mdi-filmstrip';
