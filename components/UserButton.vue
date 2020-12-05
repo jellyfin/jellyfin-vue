@@ -15,7 +15,7 @@
     <v-list>
       <v-list-item @click="switchColodScheme">
         <v-switch>
-          <template #label>Toggle dark mode</template>
+          <template #label>{{ $t('darkModeToggle') }}</template>
         </v-switch>
       </v-list-item>
       <v-list-item
