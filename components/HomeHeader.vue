@@ -102,7 +102,7 @@ export default Vue.extend({
         autoplay: {
           delay: 20000
         },
-        initialSlide: 1, // For some reason, slide 0 is the last slide, when loop is enabled
+        initialSlide: 0,
         loop: true,
         effect: 'slide',
         pagination: {
