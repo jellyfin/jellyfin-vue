@@ -15,8 +15,8 @@
       </template>
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
+          v-for="item in items"
+          :key="item.Id"
           :to="item.to"
           router
           exact
@@ -30,8 +30,8 @@
         </v-list-item>
         <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
-          v-for="(library, i) in libraries"
-          :key="i"
+          v-for="library in libraries"
+          :key="library.Id"
           :to="library.to"
           router
           exact
