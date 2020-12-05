@@ -71,7 +71,7 @@
     "studios": "Hãng Phim",
     "sortByType": "Theo {type}",
     "series": "Loạt Phim",
-    "noResultsFound": "Không có kết quả",
+    "noResultsFound": "Không có gì ở đây",
     "networks": "Mạng",
     "name": "Tên",
     "liked": "Đã thích",
@@ -79,5 +79,10 @@
     "failedToRefreshItems": "Không thể làm mới các mục",
     "collections": "Bộ sưu tập",
     "artists": "Nghệ sĩ",
-    "actors": "Diễn viên"
+    "actors": "Diễn viên",
+    "selectUser": "Chọn một người dùng",
+    "manualLogin": "Đăng nhập thủ công",
+    "loginAs": "Đăng nhập dưới tên {name}",
+    "changeUser": "Thay đổi người sử dụng",
+    "unableGetRelated": "Không lấy dữ liệu các mục liên quan"
 }

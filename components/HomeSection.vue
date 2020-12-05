@@ -1,37 +1,40 @@
 <template>
-  <v-col v-show="items.length > 0" class="home-section">
-    <h1 class="text-h5 font-weight-light header">
-      <span>{{ section.name }}</span>
-    </h1>
+  <div style="width: 100%">
+    <skeleton-home-section v-if="loading" :card-shape="section.shape" />
+    <v-col v-show="items.length > 0" class="home-section">
+      <h1 class="text-h5 font-weight-light header">
+        <span>{{ section.name }}</span>
+      </h1>
 
-    <vueper-slides
-      :bullets="false"
-      :bullets-outside="false"
-      :arrows-outside="false"
-      :visible-slides="section.shape === 'thumb-card' ? 4 : 8"
-      :slide-multiple="true"
-      :breakpoints="breakpoints"
-      fixed-height="true"
-    >
-      <vueper-slide v-for="item in items" :key="item.Id">
-        <template #content>
-          <card :shape="section.shape" :item="item" />
+      <vueper-slides
+        :bullets="false"
+        :bullets-outside="false"
+        :arrows-outside="false"
+        :visible-slides="section.shape === 'thumb-card' ? 4 : 8"
+        :slide-multiple="true"
+        :breakpoints="breakpoints"
+        fixed-height="true"
+      >
+        <vueper-slide v-for="item in items" :key="item.Id">
+          <template #content>
+            <card :shape="section.shape" :item="item" />
+          </template>
+        </vueper-slide>
+
+        <template #arrow-left>
+          <v-btn icon large>
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
         </template>
-      </vueper-slide>
 
-      <template #arrow-left>
-        <v-btn icon large>
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </template>
-
-      <template #arrow-right>
-        <v-btn icon large>
-          <v-icon>mdi-arrow-right</v-icon>
-        </v-btn>
-      </template>
-    </vueper-slides>
-  </v-col>
+        <template #arrow-right>
+          <v-btn icon large>
+            <v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </template>
+      </vueper-slides>
+    </v-col>
+  </div>
 </template>
 
 <script lang="ts">
@@ -61,7 +64,8 @@ export default Vue.extend({
         1904: {
           visibleSlides: this.section.shape === 'thumb-card' ? 4 : 8
         }
-      }
+      },
+      loading: true
     };
   },
   async created() {
@@ -147,6 +151,7 @@ export default Vue.extend({
       default:
         break;
     }
+    this.loading = false;
   }
 });
 </script>

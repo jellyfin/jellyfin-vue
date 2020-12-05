@@ -22,7 +22,7 @@
     "rating": "Hodnocení",
     "releaseDate": "Datum vydání",
     "serverAddress": "Adresa serveru",
-    "serverAddressMustBeUrl": "Adresa serveru musí být platné URL",
+    "serverAddressMustBeUrl": "Adresa serveru musí být platná adresa",
     "serverAddressRequired": "Adresa serveru je povinná",
     "serverNotFound": "Server nebyl nalezen",
     "settings": "Nastavení",
@@ -67,7 +67,7 @@
     "biography": "Biografie",
     "artist": "Interpret",
     "albums": "Alba",
-    "noResultsFound": "Nebyly nalezeny žádné výsledky",
+    "noResultsFound": "Nic nebylo nalezeno",
     "sortByType": "Podle {type}",
     "actors": "Herci",
     "networks": "Stanice",
@@ -76,5 +76,17 @@
     "collections": "Kolekce",
     "artists": "Umělci",
     "studios": "Studia",
-    "series": "Seriály"
+    "series": "Seriály",
+    "unliked": "Zrušeno oblíbené",
+    "selectUser": "Vybrat uživatele",
+    "manualLogin": "Ruční přihlášení",
+    "loginAs": "Přihlásit jako {name}",
+    "liked": "Oblíbené",
+    "failedToRefreshItems": "Obnovení položek se nezdařilo",
+    "changeUser": "Změnit uživatele",
+    "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
+    "validation": {
+        "mustBeUrl": "Toto pole musí být platná adresa URL",
+        "required": "Toto pole je povinné"
+    }
 }

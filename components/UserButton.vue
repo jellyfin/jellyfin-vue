@@ -1,8 +1,8 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <v-btn icon v-bind="attrs" v-on="on">
-        <v-avatar>
+      <div class="d-flex align-center" v-bind="attrs" v-on="on">
+        <v-avatar size="48" color="primary" class="mr-4">
           <v-img
             v-if="userImage"
             :src="userImage"
@@ -10,14 +10,13 @@
           ></v-img>
           <v-icon v-else dark>mdi-account</v-icon>
         </v-avatar>
-      </v-btn>
+        <h1 class="font-weight-light pb-1">
+          {{ $auth.user.Name }}
+          <v-icon>mdi-chevron-down</v-icon>
+        </h1>
+      </div>
     </template>
-    <v-list>
-      <v-list-item @click="switchColodScheme">
-        <v-switch>
-          <template #label>Toggle dark mode</template>
-        </v-switch>
-      </v-list-item>
+    <v-list dense>
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="index"
@@ -62,9 +61,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('user', ['setUser', 'clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    switchColodScheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-    },
     logoutUser() {
       this.$auth.logout();
       this.clearDeviceProfile();

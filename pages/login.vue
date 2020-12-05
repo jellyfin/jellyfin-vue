@@ -2,7 +2,7 @@
   <v-container fill-height>
     <v-row align="center" justify="center">
       <v-col
-        v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length"
+        v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
         xl="8"
       >
         <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>

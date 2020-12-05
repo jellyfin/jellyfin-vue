@@ -75,5 +75,9 @@
     "failedToRefreshItems": "Fallo al refrescar los artículos",
     "collections": "Colecciones",
     "artists": "Artistas",
-    "actors": "Actores"
+    "actors": "Actores",
+    "selectUser": "Seleccionar un usuario",
+    "manualLogin": "Inicio de sesión manual",
+    "loginAs": "Iniciar sesión como {name}",
+    "changeUser": "Cambiar usuario"
 }

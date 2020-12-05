@@ -2,56 +2,41 @@ import { ActionTree, MutationTree } from 'vuex';
 
 export interface UserState {
   id: string;
-  serverUrl: string;
   accessToken: string;
   displayPreferences: { [key: string]: string };
 }
 
 export const state = (): UserState => ({
   id: '',
-  serverUrl: 'http://127.0.0.1:8096',
   accessToken: '',
   displayPreferences: {}
 });
 
 interface MutationPayload {
   id: string;
-  serverUrl: string;
   accessToken: string;
   displayPreferences: { [key: string]: string };
 }
 
 export const mutations: MutationTree<UserState> = {
-  SET_SERVER_URL(state: UserState, serverUrl) {
-    state.serverUrl = serverUrl;
-  },
   SET_USER(
     state: UserState,
-    { id, serverUrl, accessToken, displayPreferences }: MutationPayload
+    { id, accessToken, displayPreferences }: MutationPayload
   ) {
     state.id = id;
-    state.serverUrl = serverUrl;
     state.accessToken = accessToken;
     state.displayPreferences = displayPreferences;
   },
   CLEAR_USER(state: UserState) {
-    state.serverUrl = '';
     state.accessToken = '';
     state.displayPreferences = {};
   }
 };
 
 export const actions: ActionTree<UserState, UserState> = {
-  setServerUrl({ commit }, serverUrl) {
-    commit('SET_SERVER_URL', serverUrl);
-  },
   async setUser(
     { commit },
-    {
-      id,
-      serverUrl,
-      accessToken
-    }: { id: string; serverUrl: string; accessToken: string }
+    { id, accessToken }: { id: string; accessToken: string }
   ) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore -- $api exists on here, the issue seems random. Not sure how to fix
@@ -63,7 +48,6 @@ export const actions: ActionTree<UserState, UserState> = {
 
     commit('SET_USER', {
       id,
-      serverUrl,
       accessToken,
       displayPreferences: response.data.CustomPrefs
     });
@@ -83,7 +67,6 @@ export const actions: ActionTree<UserState, UserState> = {
   loginRequestSuccess({ dispatch }, response) {
     dispatch('setUser', {
       id: response.User.Id,
-      serverUrl: this.$axios.defaults.baseURL,
       accessToken: response.AccessToken
     });
   },

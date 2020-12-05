@@ -6,9 +6,10 @@
           class="card-content card-content-button d-flex justify-center align-center primary darken-4"
         >
           <blurhash-image
-            v-if="item.ImageTags && item.ImageTags.Primary"
+            v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
             :item="item"
             class="card-image"
+            @error="imageLoadError = true"
           />
           <v-chip
             v-if="item.UserData && item.UserData.Played"
@@ -28,7 +29,9 @@
           </v-chip>
           <v-icon
             v-if="
-              !item.ImageTags || (item.ImageTags && !item.ImageTags.Primary)
+              imageLoadError ||
+              !item.ImageTags ||
+              (item.ImageTags && !item.ImageTags.Primary)
             "
             size="96"
             color="primary darken-2"
@@ -107,6 +110,11 @@ export default Vue.extend({
         return false;
       }
     }
+  },
+  data() {
+    return {
+      imageLoadError: false
+    };
   },
   computed: {
     itemLink: {
