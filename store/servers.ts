@@ -7,7 +7,7 @@ export interface ServerInfo {
   publicInfo: PublicSystemInfo;
 }
 
-interface ServerState {
+export interface ServerState {
   serverUsed: ServerInfo | undefined;
   serverList: ServerInfo[];
 }
