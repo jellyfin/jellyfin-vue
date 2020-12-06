@@ -51,27 +51,24 @@ export default Vue.extend({
         try {
           await this.player.load(newSource);
         } catch (e) {
-          // eslint-disable-next-line no-console
-          console.error('Error code', e.code, 'object', e);
-          this.pushSnackbarMessage({
-            message: this.$t('unexpectedError'),
-            error: 'error'
-          });
+          // No need to actually process the error here, the error handler will do this for us
         }
       }
     }
   },
   async mounted() {
     try {
-      const response = await this.$api.mediaInfo.getPostedPlaybackInfo({
-        itemId: this.$route.params.itemId,
-        userId: this.$auth.user.Id,
-        ...this.$playbackProfile
-      });
+      const playbackInfo = (
+        await this.$api.mediaInfo.getPostedPlaybackInfo({
+          itemId: this.$route.params.itemId,
+          userId: this.$auth.user.Id,
+          ...this.$playbackProfile
+        })
+      ).data;
 
       let mediaSource;
-      if (response?.data?.MediaSources) {
-        mediaSource = response.data.MediaSources[0];
+      if (playbackInfo?.MediaSources) {
+        mediaSource = playbackInfo.MediaSources[0];
       } else {
         throw new Error("This item can't be played.");
       }
@@ -113,6 +110,8 @@ export default Vue.extend({
           this.$refs.videoContainer,
           this.$refs.videoPlayer
         );
+        // Register player events
+        this.player.addEventListener('error', this.handlePlayerError);
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported') as string
@@ -133,7 +132,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage'])
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    handlePlayerError(event: Event) {
+      this.$emit('error', event);
+    }
   }
 });
 </script>
