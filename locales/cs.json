@@ -5,7 +5,7 @@
     "continueWatching": "Pokračovat ve sledování",
     "endDate": "Datum skončení",
     "endsAt": "Končí v {time}",
-    "episodeNumber": "Epizoda {čísloEpizody}",
+    "episodeNumber": "Epizoda {episodeNumber}",
     "home": "Domů",
     "incorrectUsernameOrPassword": "Nesprávné uživatelské jméno nebo heslo",
     "itemNotFound": "Položka nebyla nalezena",
