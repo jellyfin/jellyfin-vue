@@ -97,7 +97,7 @@
                 </p>
               </v-col>
               <v-col cols="3" class="d-flex justify-end">
-                <img src="~/static/icon.png" />
+                <img src="~/static/icon.png" :alt="$t('jellyfinLogo')" />
               </v-col>
             </v-row>
           </v-card-text>
