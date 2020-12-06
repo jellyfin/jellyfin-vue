@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "i18n-ally.keystyle": "flat",
+  "i18n-ally.keystyle": "nested",
   "i18n-ally.localesPaths": "locales",
   "i18n-ally.sortKeys": true,
   "vetur.format.defaultFormatter.html": "prettier",

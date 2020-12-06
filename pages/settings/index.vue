@@ -11,7 +11,7 @@
               <v-col>
                 <v-row>
                   <v-col cols="5" class="pt-0 pb-0">
-                    <span>Server</span>
+                    <span>{{ $t('server') }}</span>
                   </v-col>
                   <v-col class="pt-0 pb-0">
                     <span>{{ systemInfo.ServerName }}</span>
@@ -19,7 +19,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="5" class="pt-0 pb-0">
-                    <span>Version</span>
+                    <span>{{ $t('version') }}</span>
                   </v-col>
                   <v-col class="pt-0 pb-0">
                     <span>{{ systemInfo.Version }}</span>
@@ -27,7 +27,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="5" class="pt-0 pb-0">
-                    <span>Operating system</span>
+                    <span>{{ $t('operatingSystem') }}</span>
                   </v-col>
                   <v-col class="pt-0 pb-0">
                     <span>{{ systemInfo.OperatingSystemDisplayName }}</span>
@@ -35,7 +35,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="5" class="pt-0 pb-0">
-                    <span>Architecture</span>
+                    <span>{{ $t('architecture') }}</span>
                   </v-col>
                   <v-col class="pt-0 pb-0">
                     <span>{{ systemInfo.SystemArchitecture }}</span>
@@ -55,22 +55,45 @@
             <v-row>
               <v-col>
                 <p class="mb-0">
-                  This server is powered by
-                  <a href="https://jellyfin.org/">Jellyfin</a>
+                  <span
+                    v-html="
+                      sanitizeHtml(
+                        $t('links.poweredByJellyfinLink', {
+                          link: jellyfinLink
+                        })
+                      )
+                    "
+                  />
                   <br />
-                  Read the
-                  <a href="https://jellyfin.org/docs/">documentation</a>
+                  <span
+                    v-html="
+                      sanitizeHtml(
+                        $t('links.readTheDocumentationLink', {
+                          link: documentationLink
+                        })
+                      )
+                    "
+                  />
                   <br />
-                  Help
-                  <a href="https://translate.jellyfin.org"
-                    >translate Jellyfin</a
-                  >
-                  in your language
+                  <span
+                    v-html="
+                      sanitizeHtml(
+                        $t('links.helpTranslateLink', {
+                          link: translateLink
+                        })
+                      )
+                    "
+                  />
                   <br />
-                  <a href="https://github.com/jellyfin/jellyfin-vue/issues/new">
-                    Report an issue
-                  </a>
-                  with the Vue client
+                  <span
+                    v-html="
+                      sanitizeHtml(
+                        $t('links.reportAnIssueLink', {
+                          link: bugLink
+                        })
+                      )
+                    "
+                  />
                 </p>
               </v-col>
               <v-col cols="3" class="d-flex justify-end">
@@ -89,7 +112,11 @@
         <!-- User settings -->
         <v-list two-line class="mb-4">
           <v-list-item-group>
-            <v-list-item v-for="userItem in userItems" :key="userItem.name">
+            <v-list-item
+              v-for="userItem in userItems"
+              :key="userItem.name"
+              disabled
+            >
               <v-list-item-avatar>
                 <v-icon v-text="userItem.icon" />
               </v-list-item-avatar>
@@ -104,7 +131,12 @@
           </v-list-item-group>
         </v-list>
         <!-- Administrator settings -->
-        <v-list v-if="$auth.user.Policy.IsAdministrator" two-line class="mb-4">
+        <v-list
+          v-if="$auth.user.Policy.IsAdministrator"
+          two-line
+          class="mb-4"
+          disabled
+        >
           <v-list-item-group>
             <v-list-item v-for="adminItem in adminItems" :key="adminItem.name">
               <v-list-item-avatar>
@@ -150,127 +182,132 @@ import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { SystemInfo } from '~/api';
+import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
+  mixins: [htmlHelper],
   data() {
     return {
+      jellyfinLink: 'https://jellyfin.org/',
+      documentationLink: 'https://jellyfin.org/docs/',
+      translateLink: 'https://translate.jellyfin.org',
+      bugLink: 'https://github.com/jellyfin/jellyfin-vue/issues/new',
       systemInfo: {} as SystemInfo,
       userItems: [
         {
           icon: 'mdi-account',
-          name: 'Account',
-          description: "Edit your user's information"
+          name: this.$t('settingsSections.account.name'),
+          description: this.$t('settingsSections.account.description')
         },
         {
           icon: 'mdi-home',
-          name: 'Home screen',
-          description: 'Configure your home sections and home screen layout'
+          name: this.$t('settingsSections.home.name'),
+          description: this.$t('settingsSections.home.description')
         },
         {
           icon: 'mdi-play-pause',
-          name: 'Playback',
-          description: 'Edit your playback preferences for this device'
+          name: this.$t('settingsSections.playback.name'),
+          description: this.$t('settingsSections.playback.description')
         },
         {
           icon: 'mdi-disc-player',
-          name: 'Media players',
-          description: 'Configure how the media players behave for this device'
+          name: this.$t('settingsSections.mediaPlayers.name'),
+          description: this.$t('settingsSections.mediaPlayers.description')
         },
         {
           icon: 'mdi-subtitles',
-          name: 'Subtitles',
-          description: 'Control how subtitles are displayed on this device'
+          name: this.$t('settingsSections.subtitles.name'),
+          description: this.$t('settingsSections.subtitles.description')
         }
       ],
       adminItems: [
         {
           icon: 'mdi-server',
-          name: 'Server',
-          description: "Configure your server's language and branding"
+          name: this.$t('settingsSections.server.name'),
+          description: this.$t('settingsSections.server.description')
         },
         {
           icon: 'mdi-devices',
-          name: 'Devices',
-          description: 'See and manage the devices connected to your server'
+          name: this.$t('settingsSections.devices.name'),
+          description: this.$t('settingsSections.devices.description')
         },
         {
           icon: 'mdi-account-multiple',
-          name: 'Users',
-          description: 'Manage your users and their permissions'
+          name: this.$t('settingsSections.users.name'),
+          description: this.$t('settingsSections.users.description')
         },
         {
           icon: 'mdi-library-shelves',
-          name: 'Libraries',
-          description: 'Manage your libraries and their metadata'
+          name: this.$t('settingsSections.libraries.name'),
+          description: this.$t('settingsSections.libraries.description')
         },
         {
           icon: 'mdi-play-network',
-          name: 'Transcoding & streaming',
-          description:
-            'Manage how your server handles transcoding and streaming to clients'
+          name: this.$t('settingsSections.transcodingAndStreaming.name'),
+          description: this.$t(
+            'settingsSections.transcodingAndStreaming.description'
+          )
         },
         {
           icon: 'mdi-dlna',
-          name: 'DLNA',
-          description: 'Configure DLNA settings and profiles'
+          name: this.$t('settingsSections.dlna.name'),
+          description: this.$t('settingsSections.dlna.description')
         },
         {
           icon: 'mdi-television-classic',
-          name: 'Live TV & DVR',
-          description:
-            'Manage your TV tuners, guide data providers and DVR settings'
+          name: this.$t('settingsSections.liveTvAndDvr.name'),
+          description: this.$t('settingsSections.liveTvAndDvr.description')
         },
         {
           icon: 'mdi-network',
-          name: 'Networking',
-          description: 'Manage the network settings of your server'
+          name: this.$t('settingsSections.networking.name'),
+          description: this.$t('settingsSections.networking.description')
         },
         {
           icon: 'mdi-puzzle',
-          name: 'Plugins',
-          description: 'Add and configure new features for your server'
+          name: this.$t('settingsSections.plugins.name'),
+          description: this.$t('settingsSections.plugins.description')
         },
         {
           icon: 'mdi-key-chain',
-          name: 'API keys',
-          description:
-            'Add and revoke API keys for external access to your server'
+          name: this.$t('settingsSections.apiKeys.name'),
+          description: this.$t('settingsSections.apiKeys.description')
         },
         {
           icon: 'mdi-calendar-clock',
-          name: 'Scheduled tasks',
-          description: 'Manage scheduled tasks running on your server'
+          name: this.$t('settingsSections.scheduledTasks.name'),
+          description: this.$t('settingsSections.scheduledTasks.description')
         },
         {
           icon: 'mdi-bell',
-          name: 'Notifications',
-          description: 'Manage and configure notification sent by your server'
+          name: this.$t('settingsSections.notifications.name'),
+          description: this.$t('settingsSections.notifications.description')
         },
         {
           icon: 'mdi-text-box',
-          name: 'Logs',
-          description: 'Read and search server logs'
+          name: this.$t('settingsSections.logs.name'),
+          description: this.$t('settingsSections.logs.description')
         }
       ],
       linkItems: [
         {
           icon: 'mdi-rocket-launch',
-          name: 'This server is powered by Jellyfin',
+          name: this.$t('links.poweredByJellyfin'),
           link: 'https://jellyfin.org/'
         },
         {
           icon: 'mdi-book',
-          name: 'Read the documentation',
+          name: this.$t('links.readTheDocumentation'),
           link: 'https://jellyfin.org/docs/'
         },
         {
           icon: 'mdi-translate',
-          name: 'Help translate Jellyfin in your language',
+          name: this.$t('links.helpTranslate'),
           link: 'https://translate.jellyfin.org'
         },
         {
           icon: 'mdi-bug',
-          name: 'Report an issue with the Vue client',
+          name: this.$t('links.reportAnIssue'),
           link: 'https://github.com/jellyfin/jellyfin-vue/issues/new'
         }
       ]
