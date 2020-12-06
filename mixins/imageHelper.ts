@@ -9,48 +9,37 @@ import { BaseItemDto, ImageType } from '~/api';
 
 declare module '@nuxt/types' {
   interface Context {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
       item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      element?: HTMLElement,
+      limitByWidth?: boolean
     ) => string;
   }
 
   interface NuxtAppOptions {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
       item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      element?: HTMLElement,
+      limitByWidth?: boolean
     ) => string;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
       item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      element?: HTMLElement,
+      limitByWidth?: boolean
     ) => string;
   }
 }
 
 const imageHelper = Vue.extend({
   methods: {
-    // TODO: Merge getImageUrl and getImageUrlForElement
-    /**
-     * Returns the URL of an item's image without any options
-     *
-     * @param {string} id - itemId to get image for
-     * @param {string} type - type of image (primary/backdrop)
-     * @returns {string} URL of the link to the image
-     */
-    getImageUrl(id: string, type: string): string {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/${type}`;
-    },
     /**
      * Returns the URL of an item's image at a specific size.
      *
@@ -61,32 +50,60 @@ const imageHelper = Vue.extend({
      * @returns {string} The URL for the image, with the base URL set and the options provided.
      */
     getImageUrlForElement(
-      element: HTMLElement,
       item: BaseItemDto,
       type: ImageType,
+      element?: HTMLElement,
       limitByWidth = false
     ): string {
       // TODO: Refactor this with an options object
       if (!item) {
         throw new TypeError('item must not be null or undefined');
       }
-      if (!item.ImageTags) {
-        throw new TypeError('item.ImageTags must not be null or undefined');
+
+      let itemId;
+      if (item.Type === 'Episode' && type === ImageType.Thumb) {
+        itemId = item.SeriesId;
+        if (item.SeriesThumbImageTag) {
+          type = ImageType.Thumb;
+        } else {
+          type = ImageType.Backdrop;
+        }
+      } else if (item.Type === 'Episode' && type === ImageType.Backdrop) {
+        itemId = item.SeriesId;
+      } else if (item.Type === 'Audio' && type === ImageType.Backdrop) {
+        itemId = item.AlbumArtists?.[0].Id;
+      } else {
+        itemId = item.Id;
       }
 
       const url = new URL(
-        `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/${type}`
+        `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${type}`
       );
 
+      let imageTag;
+      if (item.Type === 'Episode' && type === ImageType.Thumb) {
+        if (item.SeriesThumbImageTag) {
+          imageTag = item.SeriesThumbImageTag;
+        } else {
+          imageTag = item.ParentBackdropImageTags?.[0];
+        }
+      } else if (item.Type === 'Episode' && type === ImageType.Backdrop) {
+        imageTag = item.ParentBackdropImageTags?.[0];
+      } else {
+        imageTag = item.ImageTags?.[type];
+      }
+
       const params: { [k: string]: string | number | undefined } = {
-        tag: item.ImageTags[type],
+        tag: imageTag,
         quality: 90
       };
-      if (limitByWidth) {
+
+      if (element && limitByWidth) {
         params.maxWidth = element.clientWidth.toString();
-      } else {
+      } else if (element) {
         params.maxHeight = element.clientHeight.toString();
       }
+
       url.search = stringify(params);
 
       return url.toString();

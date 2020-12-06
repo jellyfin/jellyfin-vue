@@ -36,7 +36,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Route } from 'vue-router';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto, ImageType } from '~/api';
 import modalHelper from '~/mixins/modalHelper';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -65,7 +65,7 @@ export default Vue.extend({
         throw new Error('Item not found');
       }
 
-      this.poster = this.getImageUrl(this.$route.params.itemId, 'backdrop');
+      this.poster = this.getImageUrlForElement(this.item, ImageType.Backdrop);
     } catch (error) {
       this.$nuxt.error({
         statusCode: 404,
@@ -75,7 +75,6 @@ export default Vue.extend({
   },
   methods: {
     handleShakaPlayerError(error: any) {
-      console.dir(error);
       if (error?.detail?.severity === 1) {
         // This error is recoverable, ignore for now
       } else {
