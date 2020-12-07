@@ -88,5 +88,10 @@
     "validation": {
         "mustBeUrl": "Ce champ n'est pas une URL valide",
         "required": "Ce champ est requis"
-    }
+    },
+    "viewDetails": "Afficher les détails",
+    "numberTracks": "{number} pistes",
+    "nextUp": "À suivre",
+    "libraries": "Médiathèques",
+    "latestLibrary": "Derniers {libraryName}"
 }
