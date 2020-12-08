@@ -65,7 +65,7 @@
     "selectUser": "选择一个用户",
     "series": "系列",
     "selectServer": "选择服务器",
-    "noResultsFound": "未找到结果",
+    "noResultsFound": "这里空空如也",
     "networks": "网络",
     "name": "名称",
     "moreLikeArtist": "更多相似的 {artist}",
@@ -84,5 +84,15 @@
     "artists": "艺术家",
     "actors": "演员",
     "artist": "艺术家",
-    "albums": "专辑"
+    "albums": "专辑",
+    "numberTracks": "{number} 轨道",
+    "viewDetails": "查看详情",
+    "validation": {
+        "required": "这是必填栏",
+        "mustBeUrl": "该字段必须是有效的 URL"
+    },
+    "nextUp": "下一步",
+    "libraries": "媒体库",
+    "latestLibrary": "最新的 {libraryName}",
+    "darkModeToggle": "切换深色模式"
 }
