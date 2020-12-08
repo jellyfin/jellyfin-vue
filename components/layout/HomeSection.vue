@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType, ItemFields } from '../api';
+import { BaseItemDto, ImageType, ItemFields } from '~/api';
 
 export default Vue.extend({
   props: {
