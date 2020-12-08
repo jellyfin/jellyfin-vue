@@ -2,7 +2,10 @@
   <div style="width: 100%">
     <skeleton-home-section v-if="loading" :card-shape="section.shape" />
     <v-col v-show="items.length > 0" class="home-section">
-      <h1 class="text-h5 font-weight-light header">
+      <h1
+        class="text-h5 font-weight-light header"
+        :class="{ 'header-white-mode': !$vuetify.theme.dark }"
+      >
         <span>{{ section.name }}</span>
       </h1>
 
@@ -156,7 +159,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 h1 {
   margin-left: 0.4em;
   margin-bottom: 0.25em;
@@ -165,8 +168,10 @@ h1 {
 .home-section .header span {
   padding-left: 0.25em;
 }
+
+@import '~vuetify/src/styles/styles.sass';
 .home-section .header::before {
-  background-color: white;
+  background-color: #{map-get($material-dark, 'text-color')};
   content: '';
   position: relative;
   display: inline-block;
@@ -174,6 +179,9 @@ h1 {
   bottom: 0.3em;
   left: 0;
   width: 1.25em;
+}
+.home-section .header-white-mode::before {
+  background-color: #{map-get($material-light, 'text-color')};
 }
 </style>
 
