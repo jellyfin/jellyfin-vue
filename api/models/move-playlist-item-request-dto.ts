@@ -13,20 +13,25 @@
  */
 
 
-import { DeviceProfile } from './device-profile';
 
 /**
- * Device profile dto.
+ * Class MovePlaylistItemRequestDto.
  * @export
- * @interface DeviceProfileDto
+ * @interface MovePlaylistItemRequestDto
  */
-export interface DeviceProfileDto {
+export interface MovePlaylistItemRequestDto {
     /**
-     * 
-     * @type {DeviceProfile}
-     * @memberof DeviceProfileDto
+     * Gets or sets the playlist identifier of the item.
+     * @type {string}
+     * @memberof MovePlaylistItemRequestDto
      */
-    DeviceProfile?: DeviceProfile;
+    PlaylistItemId?: string;
+    /**
+     * Gets or sets the new position.
+     * @type {number}
+     * @memberof MovePlaylistItemRequestDto
+     */
+    NewIndex?: number;
 }
 
 

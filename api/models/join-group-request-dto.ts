@@ -15,16 +15,17 @@
 
 
 /**
- * Enum SendCommandType.
+ * Class JoinGroupRequestDto.
  * @export
- * @enum {string}
+ * @interface JoinGroupRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface JoinGroupRequestDto {
+    /**
+     * Gets or sets the group identifier.
+     * @type {string}
+     * @memberof JoinGroupRequestDto
+     */
+    GroupId?: string;
 }
-
 
 

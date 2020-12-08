@@ -50,14 +50,6 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (enableInMainMenu !== undefined) {
                 localVarQueryParameter['enableInMainMenu'] = enableInMainMenu;
             }
@@ -102,14 +94,6 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (name !== undefined) {
                 localVarQueryParameter['name'] = name;

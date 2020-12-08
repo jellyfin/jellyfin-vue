@@ -328,14 +328,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -454,14 +446,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -591,14 +575,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -717,14 +693,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (maxWidth !== undefined) {
                 localVarQueryParameter['maxWidth'] = maxWidth;
@@ -884,14 +852,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (width !== undefined) {
                 localVarQueryParameter['width'] = width;
             }
@@ -991,14 +951,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (maxWidth !== undefined) {
                 localVarQueryParameter['maxWidth'] = maxWidth;
@@ -1169,14 +1121,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -1305,14 +1249,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -1431,14 +1367,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -1568,14 +1496,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -1694,14 +1614,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -1831,14 +1743,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -1957,14 +1861,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -2094,14 +1990,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -2226,14 +2114,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -2352,14 +2232,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -2489,14 +2361,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -2615,14 +2479,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (maxWidth !== undefined) {
                 localVarQueryParameter['maxWidth'] = maxWidth;
@@ -2782,14 +2638,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (width !== undefined) {
                 localVarQueryParameter['width'] = width;
             }
@@ -2889,14 +2737,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (maxWidth !== undefined) {
                 localVarQueryParameter['maxWidth'] = maxWidth;
@@ -3016,14 +2856,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -3153,14 +2985,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -3279,14 +3103,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -3416,14 +3232,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -3542,14 +3350,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -3679,14 +3479,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
             }
@@ -3805,14 +3597,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;
@@ -3941,14 +3725,6 @@ export const ImageApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (tag !== undefined) {
                 localVarQueryParameter['tag'] = tag;

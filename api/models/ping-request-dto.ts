@@ -15,16 +15,17 @@
 
 
 /**
- * Enum SendCommandType.
+ * Class PingRequestDto.
  * @export
- * @enum {string}
+ * @interface PingRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface PingRequestDto {
+    /**
+     * Gets or sets the ping time.
+     * @type {number}
+     * @memberof PingRequestDto
+     */
+    Ping?: number;
 }
-
 
 

@@ -21,17 +21,17 @@
  */
 export interface UtcTimeResponse {
     /**
-     * Gets or sets the UTC time when request has been received.
+     * Gets the UTC time when request has been received.
      * @type {string}
      * @memberof UtcTimeResponse
      */
-    RequestReceptionTime?: string | null;
+    RequestReceptionTime?: string;
     /**
-     * Gets or sets the UTC time when response has been sent.
+     * Gets the UTC time when response has been sent.
      * @type {string}
      * @memberof UtcTimeResponse
      */
-    ResponseTransmissionTime?: string | null;
+    ResponseTransmissionTime?: string;
 }
 
 

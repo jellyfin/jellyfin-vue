@@ -13,18 +13,26 @@
  */
 
 
+import { GroupQueueMode } from './group-queue-mode';
 
 /**
- * Enum SendCommandType.
+ * Class QueueRequestDto.
  * @export
- * @enum {string}
+ * @interface QueueRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface QueueRequestDto {
+    /**
+     * Gets or sets the items to enqueue.
+     * @type {Array<string>}
+     * @memberof QueueRequestDto
+     */
+    ItemIds?: Array<string> | null;
+    /**
+     * 
+     * @type {GroupQueueMode}
+     * @memberof QueueRequestDto
+     */
+    Mode?: GroupQueueMode;
 }
-
 
 

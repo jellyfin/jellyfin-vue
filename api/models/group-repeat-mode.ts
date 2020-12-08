@@ -15,15 +15,14 @@
 
 
 /**
- * Enum SendCommandType.
+ * Enum GroupRepeatMode.
  * @export
  * @enum {string}
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export enum GroupRepeatMode {
+    RepeatOne = 'RepeatOne',
+    RepeatAll = 'RepeatAll',
+    RepeatNone = 'RepeatNone'
 }
 
 

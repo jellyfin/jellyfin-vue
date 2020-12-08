@@ -19,7 +19,39 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { GroupInfoView } from '../models';
+import { BufferRequestDto } from '../models';
+// @ts-ignore
+import { GroupInfoDto } from '../models';
+// @ts-ignore
+import { IgnoreWaitRequestDto } from '../models';
+// @ts-ignore
+import { JoinGroupRequestDto } from '../models';
+// @ts-ignore
+import { MovePlaylistItemRequestDto } from '../models';
+// @ts-ignore
+import { NewGroupRequestDto } from '../models';
+// @ts-ignore
+import { NextItemRequestDto } from '../models';
+// @ts-ignore
+import { PingRequestDto } from '../models';
+// @ts-ignore
+import { PlayRequestDto } from '../models';
+// @ts-ignore
+import { PreviousItemRequestDto } from '../models';
+// @ts-ignore
+import { QueueRequestDto } from '../models';
+// @ts-ignore
+import { ReadyRequestDto } from '../models';
+// @ts-ignore
+import { RemoveFromPlaylistRequestDto } from '../models';
+// @ts-ignore
+import { SeekRequestDto } from '../models';
+// @ts-ignore
+import { SetPlaylistItemRequestDto } from '../models';
+// @ts-ignore
+import { SetRepeatModeRequestDto } from '../models';
+// @ts-ignore
+import { SetShuffleModeRequestDto } from '../models';
 /**
  * SyncPlayApi - axios parameter creator
  * @export
@@ -28,14 +60,16 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
     return {
         /**
          * 
-         * @summary Request group wait in SyncPlay group while buffering.
-         * @param {string} [when] When the request has been made by the client.
-         * @param {number} [positionTicks] The playback position in ticks.
-         * @param {boolean} [bufferingDone] Whether the buffering is done.
+         * @summary Notify SyncPlay group that member is buffering.
+         * @param {BufferRequestDto} bufferRequestDto The player status.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayBuffering: async (when?: string, positionTicks?: number, bufferingDone?: boolean, options: any = {}): Promise<RequestArgs> => {
+        syncPlayBuffering: async (bufferRequestDto: BufferRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'bufferRequestDto' is not null or undefined
+            if (bufferRequestDto === null || bufferRequestDto === undefined) {
+                throw new RequiredError('bufferRequestDto','Required parameter bufferRequestDto was null or undefined when calling syncPlayBuffering.');
+            }
             const localVarPath = `/SyncPlay/Buffering`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -55,22 +89,10 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (when !== undefined) {
-                localVarQueryParameter['when'] = (when as any instanceof Date) ?
-                    (when as any).toISOString() :
-                    when;
-            }
-
-            if (positionTicks !== undefined) {
-                localVarQueryParameter['positionTicks'] = positionTicks;
-            }
-
-            if (bufferingDone !== undefined) {
-                localVarQueryParameter['bufferingDone'] = bufferingDone;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -81,6 +103,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof bufferRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(bufferRequestDto !== undefined ? bufferRequestDto : {}) : (bufferRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -90,10 +114,15 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Create a new SyncPlay group.
+         * @param {NewGroupRequestDto} newGroupRequestDto The settings of the new group.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayCreateGroup: async (options: any = {}): Promise<RequestArgs> => {
+        syncPlayCreateGroup: async (newGroupRequestDto: NewGroupRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'newGroupRequestDto' is not null or undefined
+            if (newGroupRequestDto === null || newGroupRequestDto === undefined) {
+                throw new RequiredError('newGroupRequestDto','Required parameter newGroupRequestDto was null or undefined when calling syncPlayCreateGroup.');
+            }
             const localVarPath = `/SyncPlay/New`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -115,6 +144,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -125,6 +156,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof newGroupRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(newGroupRequestDto !== undefined ? newGroupRequestDto : {}) : (newGroupRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -134,11 +167,10 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Gets all SyncPlay groups.
-         * @param {string} [filterItemId] Optional. Filter by item id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayGetGroups: async (filterItemId?: string, options: any = {}): Promise<RequestArgs> => {
+        syncPlayGetGroups: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/SyncPlay/List`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -156,10 +188,6 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
                     ? await configuration.apiKey("X-Emby-Authorization")
                     : await configuration.apiKey;
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
-            if (filterItemId !== undefined) {
-                localVarQueryParameter['filterItemId'] = filterItemId;
             }
 
 
@@ -183,14 +211,14 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Join an existing SyncPlay group.
-         * @param {string} groupId The sync play group id.
+         * @param {JoinGroupRequestDto} joinGroupRequestDto The group to join.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayJoinGroup: async (groupId: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'groupId' is not null or undefined
-            if (groupId === null || groupId === undefined) {
-                throw new RequiredError('groupId','Required parameter groupId was null or undefined when calling syncPlayJoinGroup.');
+        syncPlayJoinGroup: async (joinGroupRequestDto: JoinGroupRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'joinGroupRequestDto' is not null or undefined
+            if (joinGroupRequestDto === null || joinGroupRequestDto === undefined) {
+                throw new RequiredError('joinGroupRequestDto','Required parameter joinGroupRequestDto was null or undefined when calling syncPlayJoinGroup.');
             }
             const localVarPath = `/SyncPlay/Join`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -211,12 +239,10 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (groupId !== undefined) {
-                localVarQueryParameter['groupId'] = groupId;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -227,6 +253,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof joinGroupRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(joinGroupRequestDto !== undefined ? joinGroupRequestDto : {}) : (joinGroupRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -271,6 +299,112 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to move an item in the playlist in SyncPlay group.
+         * @param {MovePlaylistItemRequestDto} movePlaylistItemRequestDto The new position for the item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayMovePlaylistItem: async (movePlaylistItemRequestDto: MovePlaylistItemRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'movePlaylistItemRequestDto' is not null or undefined
+            if (movePlaylistItemRequestDto === null || movePlaylistItemRequestDto === undefined) {
+                throw new RequiredError('movePlaylistItemRequestDto','Required parameter movePlaylistItemRequestDto was null or undefined when calling syncPlayMovePlaylistItem.');
+            }
+            const localVarPath = `/SyncPlay/MovePlaylistItem`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof movePlaylistItemRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(movePlaylistItemRequestDto !== undefined ? movePlaylistItemRequestDto : {}) : (movePlaylistItemRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request next item in SyncPlay group.
+         * @param {NextItemRequestDto} nextItemRequestDto The current item information.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayNextItem: async (nextItemRequestDto: NextItemRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'nextItemRequestDto' is not null or undefined
+            if (nextItemRequestDto === null || nextItemRequestDto === undefined) {
+                throw new RequiredError('nextItemRequestDto','Required parameter nextItemRequestDto was null or undefined when calling syncPlayNextItem.');
+            }
+            const localVarPath = `/SyncPlay/NextItem`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof nextItemRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(nextItemRequestDto !== undefined ? nextItemRequestDto : {}) : (nextItemRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -324,11 +458,15 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Update session ping.
-         * @param {number} [ping] The ping.
+         * @param {PingRequestDto} pingRequestDto The new ping.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayPing: async (ping?: number, options: any = {}): Promise<RequestArgs> => {
+        syncPlayPing: async (pingRequestDto: PingRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pingRequestDto' is not null or undefined
+            if (pingRequestDto === null || pingRequestDto === undefined) {
+                throw new RequiredError('pingRequestDto','Required parameter pingRequestDto was null or undefined when calling syncPlayPing.');
+            }
             const localVarPath = `/SyncPlay/Ping`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -348,12 +486,10 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (ping !== undefined) {
-                localVarQueryParameter['ping'] = ping;
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -364,6 +500,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof pingRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(pingRequestDto !== undefined ? pingRequestDto : {}) : (pingRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -372,12 +510,17 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary Request play in SyncPlay group.
+         * @summary Request previous item in SyncPlay group.
+         * @param {PreviousItemRequestDto} previousItemRequestDto The current item information.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayPlay: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/SyncPlay/Play`;
+        syncPlayPreviousItem: async (previousItemRequestDto: PreviousItemRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'previousItemRequestDto' is not null or undefined
+            if (previousItemRequestDto === null || previousItemRequestDto === undefined) {
+                throw new RequiredError('previousItemRequestDto','Required parameter previousItemRequestDto was null or undefined when calling syncPlayPreviousItem.');
+            }
+            const localVarPath = `/SyncPlay/PreviousItem`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -398,6 +541,8 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -408,6 +553,167 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof previousItemRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(previousItemRequestDto !== undefined ? previousItemRequestDto : {}) : (previousItemRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to queue items to the playlist of a SyncPlay group.
+         * @param {QueueRequestDto} queueRequestDto The items to add.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayQueue: async (queueRequestDto: QueueRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'queueRequestDto' is not null or undefined
+            if (queueRequestDto === null || queueRequestDto === undefined) {
+                throw new RequiredError('queueRequestDto','Required parameter queueRequestDto was null or undefined when calling syncPlayQueue.');
+            }
+            const localVarPath = `/SyncPlay/Queue`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof queueRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(queueRequestDto !== undefined ? queueRequestDto : {}) : (queueRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Notify SyncPlay group that member is ready for playback.
+         * @param {ReadyRequestDto} readyRequestDto The player status.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayReady: async (readyRequestDto: ReadyRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'readyRequestDto' is not null or undefined
+            if (readyRequestDto === null || readyRequestDto === undefined) {
+                throw new RequiredError('readyRequestDto','Required parameter readyRequestDto was null or undefined when calling syncPlayReady.');
+            }
+            const localVarPath = `/SyncPlay/Ready`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof readyRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(readyRequestDto !== undefined ? readyRequestDto : {}) : (readyRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to remove items from the playlist in SyncPlay group.
+         * @param {RemoveFromPlaylistRequestDto} removeFromPlaylistRequestDto The items to remove.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayRemoveFromPlaylist: async (removeFromPlaylistRequestDto: RemoveFromPlaylistRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'removeFromPlaylistRequestDto' is not null or undefined
+            if (removeFromPlaylistRequestDto === null || removeFromPlaylistRequestDto === undefined) {
+                throw new RequiredError('removeFromPlaylistRequestDto','Required parameter removeFromPlaylistRequestDto was null or undefined when calling syncPlayRemoveFromPlaylist.');
+            }
+            const localVarPath = `/SyncPlay/RemoveFromPlaylist`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof removeFromPlaylistRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(removeFromPlaylistRequestDto !== undefined ? removeFromPlaylistRequestDto : {}) : (removeFromPlaylistRequestDto || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -417,11 +723,15 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * 
          * @summary Request seek in SyncPlay group.
-         * @param {number} [positionTicks] The playback position in ticks.
+         * @param {SeekRequestDto} seekRequestDto The new playback position.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlaySeek: async (positionTicks?: number, options: any = {}): Promise<RequestArgs> => {
+        syncPlaySeek: async (seekRequestDto: SeekRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'seekRequestDto' is not null or undefined
+            if (seekRequestDto === null || seekRequestDto === undefined) {
+                throw new RequiredError('seekRequestDto','Required parameter seekRequestDto was null or undefined when calling syncPlaySeek.');
+            }
             const localVarPath = `/SyncPlay/Seek`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -441,8 +751,361 @@ export const SyncPlayApiAxiosParamCreator = function (configuration?: Configurat
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (positionTicks !== undefined) {
-                localVarQueryParameter['positionTicks'] = positionTicks;
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof seekRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(seekRequestDto !== undefined ? seekRequestDto : {}) : (seekRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request SyncPlay group to ignore member during group-wait.
+         * @param {IgnoreWaitRequestDto} ignoreWaitRequestDto The settings to set.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetIgnoreWait: async (ignoreWaitRequestDto: IgnoreWaitRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ignoreWaitRequestDto' is not null or undefined
+            if (ignoreWaitRequestDto === null || ignoreWaitRequestDto === undefined) {
+                throw new RequiredError('ignoreWaitRequestDto','Required parameter ignoreWaitRequestDto was null or undefined when calling syncPlaySetIgnoreWait.');
+            }
+            const localVarPath = `/SyncPlay/SetIgnoreWait`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof ignoreWaitRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(ignoreWaitRequestDto !== undefined ? ignoreWaitRequestDto : {}) : (ignoreWaitRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to set new playlist in SyncPlay group.
+         * @param {PlayRequestDto} playRequestDto The new playlist to play in the group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetNewQueue: async (playRequestDto: PlayRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'playRequestDto' is not null or undefined
+            if (playRequestDto === null || playRequestDto === undefined) {
+                throw new RequiredError('playRequestDto','Required parameter playRequestDto was null or undefined when calling syncPlaySetNewQueue.');
+            }
+            const localVarPath = `/SyncPlay/SetNewQueue`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof playRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(playRequestDto !== undefined ? playRequestDto : {}) : (playRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to change playlist item in SyncPlay group.
+         * @param {SetPlaylistItemRequestDto} setPlaylistItemRequestDto The new item to play.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetPlaylistItem: async (setPlaylistItemRequestDto: SetPlaylistItemRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'setPlaylistItemRequestDto' is not null or undefined
+            if (setPlaylistItemRequestDto === null || setPlaylistItemRequestDto === undefined) {
+                throw new RequiredError('setPlaylistItemRequestDto','Required parameter setPlaylistItemRequestDto was null or undefined when calling syncPlaySetPlaylistItem.');
+            }
+            const localVarPath = `/SyncPlay/SetPlaylistItem`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof setPlaylistItemRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(setPlaylistItemRequestDto !== undefined ? setPlaylistItemRequestDto : {}) : (setPlaylistItemRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to set repeat mode in SyncPlay group.
+         * @param {SetRepeatModeRequestDto} setRepeatModeRequestDto The new repeat mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetRepeatMode: async (setRepeatModeRequestDto: SetRepeatModeRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'setRepeatModeRequestDto' is not null or undefined
+            if (setRepeatModeRequestDto === null || setRepeatModeRequestDto === undefined) {
+                throw new RequiredError('setRepeatModeRequestDto','Required parameter setRepeatModeRequestDto was null or undefined when calling syncPlaySetRepeatMode.');
+            }
+            const localVarPath = `/SyncPlay/SetRepeatMode`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof setRepeatModeRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(setRepeatModeRequestDto !== undefined ? setRepeatModeRequestDto : {}) : (setRepeatModeRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request to set shuffle mode in SyncPlay group.
+         * @param {SetShuffleModeRequestDto} setShuffleModeRequestDto The new shuffle mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetShuffleMode: async (setShuffleModeRequestDto: SetShuffleModeRequestDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'setShuffleModeRequestDto' is not null or undefined
+            if (setShuffleModeRequestDto === null || setShuffleModeRequestDto === undefined) {
+                throw new RequiredError('setShuffleModeRequestDto','Required parameter setShuffleModeRequestDto was null or undefined when calling syncPlaySetShuffleMode.');
+            }
+            const localVarPath = `/SyncPlay/SetShuffleMode`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof setShuffleModeRequestDto !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(setShuffleModeRequestDto !== undefined ? setShuffleModeRequestDto : {}) : (setShuffleModeRequestDto || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request stop in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayStop: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SyncPlay/Stop`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Request unpause in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayUnpause: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SyncPlay/Unpause`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication CustomAuthentication required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("X-Emby-Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
 
@@ -474,15 +1137,13 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Request group wait in SyncPlay group while buffering.
-         * @param {string} [when] When the request has been made by the client.
-         * @param {number} [positionTicks] The playback position in ticks.
-         * @param {boolean} [bufferingDone] Whether the buffering is done.
+         * @summary Notify SyncPlay group that member is buffering.
+         * @param {BufferRequestDto} bufferRequestDto The player status.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayBuffering(when?: string, positionTicks?: number, bufferingDone?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayBuffering(when, positionTicks, bufferingDone, options);
+        async syncPlayBuffering(bufferRequestDto: BufferRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayBuffering(bufferRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -491,11 +1152,12 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Create a new SyncPlay group.
+         * @param {NewGroupRequestDto} newGroupRequestDto The settings of the new group.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayCreateGroup(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayCreateGroup(options);
+        async syncPlayCreateGroup(newGroupRequestDto: NewGroupRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayCreateGroup(newGroupRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -504,12 +1166,11 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Gets all SyncPlay groups.
-         * @param {string} [filterItemId] Optional. Filter by item id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayGetGroups(filterItemId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GroupInfoView>>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayGetGroups(filterItemId, options);
+        async syncPlayGetGroups(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GroupInfoDto>>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayGetGroups(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -518,12 +1179,12 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Join an existing SyncPlay group.
-         * @param {string} groupId The sync play group id.
+         * @param {JoinGroupRequestDto} joinGroupRequestDto The group to join.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayJoinGroup(groupId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayJoinGroup(groupId, options);
+        async syncPlayJoinGroup(joinGroupRequestDto: JoinGroupRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayJoinGroup(joinGroupRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -537,6 +1198,34 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
          */
         async syncPlayLeaveGroup(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayLeaveGroup(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to move an item in the playlist in SyncPlay group.
+         * @param {MovePlaylistItemRequestDto} movePlaylistItemRequestDto The new position for the item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayMovePlaylistItem(movePlaylistItemRequestDto: MovePlaylistItemRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayMovePlaylistItem(movePlaylistItemRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request next item in SyncPlay group.
+         * @param {NextItemRequestDto} nextItemRequestDto The current item information.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayNextItem(nextItemRequestDto: NextItemRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayNextItem(nextItemRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -558,12 +1247,12 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Update session ping.
-         * @param {number} [ping] The ping.
+         * @param {PingRequestDto} pingRequestDto The new ping.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayPing(ping?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayPing(ping, options);
+        async syncPlayPing(pingRequestDto: PingRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayPing(pingRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -571,12 +1260,55 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Request play in SyncPlay group.
+         * @summary Request previous item in SyncPlay group.
+         * @param {PreviousItemRequestDto} previousItemRequestDto The current item information.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlayPlay(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayPlay(options);
+        async syncPlayPreviousItem(previousItemRequestDto: PreviousItemRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayPreviousItem(previousItemRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to queue items to the playlist of a SyncPlay group.
+         * @param {QueueRequestDto} queueRequestDto The items to add.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayQueue(queueRequestDto: QueueRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayQueue(queueRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Notify SyncPlay group that member is ready for playback.
+         * @param {ReadyRequestDto} readyRequestDto The player status.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayReady(readyRequestDto: ReadyRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayReady(readyRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to remove items from the playlist in SyncPlay group.
+         * @param {RemoveFromPlaylistRequestDto} removeFromPlaylistRequestDto The items to remove.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayRemoveFromPlaylist(removeFromPlaylistRequestDto: RemoveFromPlaylistRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayRemoveFromPlaylist(removeFromPlaylistRequestDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -585,12 +1317,108 @@ export const SyncPlayApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Request seek in SyncPlay group.
-         * @param {number} [positionTicks] The playback position in ticks.
+         * @param {SeekRequestDto} seekRequestDto The new playback position.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncPlaySeek(positionTicks?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySeek(positionTicks, options);
+        async syncPlaySeek(seekRequestDto: SeekRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySeek(seekRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request SyncPlay group to ignore member during group-wait.
+         * @param {IgnoreWaitRequestDto} ignoreWaitRequestDto The settings to set.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlaySetIgnoreWait(ignoreWaitRequestDto: IgnoreWaitRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySetIgnoreWait(ignoreWaitRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to set new playlist in SyncPlay group.
+         * @param {PlayRequestDto} playRequestDto The new playlist to play in the group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlaySetNewQueue(playRequestDto: PlayRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySetNewQueue(playRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to change playlist item in SyncPlay group.
+         * @param {SetPlaylistItemRequestDto} setPlaylistItemRequestDto The new item to play.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlaySetPlaylistItem(setPlaylistItemRequestDto: SetPlaylistItemRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySetPlaylistItem(setPlaylistItemRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to set repeat mode in SyncPlay group.
+         * @param {SetRepeatModeRequestDto} setRepeatModeRequestDto The new repeat mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlaySetRepeatMode(setRepeatModeRequestDto: SetRepeatModeRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySetRepeatMode(setRepeatModeRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request to set shuffle mode in SyncPlay group.
+         * @param {SetShuffleModeRequestDto} setShuffleModeRequestDto The new shuffle mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlaySetShuffleMode(setShuffleModeRequestDto: SetShuffleModeRequestDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlaySetShuffleMode(setShuffleModeRequestDto, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request stop in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayStop(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayStop(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @summary Request unpause in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async syncPlayUnpause(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await SyncPlayApiAxiosParamCreator(configuration).syncPlayUnpause(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -607,44 +1435,42 @@ export const SyncPlayApiFactory = function (configuration?: Configuration, baseP
     return {
         /**
          * 
-         * @summary Request group wait in SyncPlay group while buffering.
-         * @param {string} [when] When the request has been made by the client.
-         * @param {number} [positionTicks] The playback position in ticks.
-         * @param {boolean} [bufferingDone] Whether the buffering is done.
+         * @summary Notify SyncPlay group that member is buffering.
+         * @param {BufferRequestDto} bufferRequestDto The player status.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayBuffering(when?: string, positionTicks?: number, bufferingDone?: boolean, options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlayBuffering(when, positionTicks, bufferingDone, options).then((request) => request(axios, basePath));
+        syncPlayBuffering(bufferRequestDto: BufferRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayBuffering(bufferRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Create a new SyncPlay group.
+         * @param {NewGroupRequestDto} newGroupRequestDto The settings of the new group.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayCreateGroup(options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlayCreateGroup(options).then((request) => request(axios, basePath));
+        syncPlayCreateGroup(newGroupRequestDto: NewGroupRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayCreateGroup(newGroupRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Gets all SyncPlay groups.
-         * @param {string} [filterItemId] Optional. Filter by item id.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayGetGroups(filterItemId?: string, options?: any): AxiosPromise<Array<GroupInfoView>> {
-            return SyncPlayApiFp(configuration).syncPlayGetGroups(filterItemId, options).then((request) => request(axios, basePath));
+        syncPlayGetGroups(options?: any): AxiosPromise<Array<GroupInfoDto>> {
+            return SyncPlayApiFp(configuration).syncPlayGetGroups(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Join an existing SyncPlay group.
-         * @param {string} groupId The sync play group id.
+         * @param {JoinGroupRequestDto} joinGroupRequestDto The group to join.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayJoinGroup(groupId: string, options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlayJoinGroup(groupId, options).then((request) => request(axios, basePath));
+        syncPlayJoinGroup(joinGroupRequestDto: JoinGroupRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayJoinGroup(joinGroupRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -654,6 +1480,26 @@ export const SyncPlayApiFactory = function (configuration?: Configuration, baseP
          */
         syncPlayLeaveGroup(options?: any): AxiosPromise<void> {
             return SyncPlayApiFp(configuration).syncPlayLeaveGroup(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to move an item in the playlist in SyncPlay group.
+         * @param {MovePlaylistItemRequestDto} movePlaylistItemRequestDto The new position for the item.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayMovePlaylistItem(movePlaylistItemRequestDto: MovePlaylistItemRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayMovePlaylistItem(movePlaylistItemRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request next item in SyncPlay group.
+         * @param {NextItemRequestDto} nextItemRequestDto The current item information.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayNextItem(nextItemRequestDto: NextItemRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayNextItem(nextItemRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -667,31 +1513,130 @@ export const SyncPlayApiFactory = function (configuration?: Configuration, baseP
         /**
          * 
          * @summary Update session ping.
-         * @param {number} [ping] The ping.
+         * @param {PingRequestDto} pingRequestDto The new ping.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayPing(ping?: number, options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlayPing(ping, options).then((request) => request(axios, basePath));
+        syncPlayPing(pingRequestDto: PingRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayPing(pingRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Request play in SyncPlay group.
+         * @summary Request previous item in SyncPlay group.
+         * @param {PreviousItemRequestDto} previousItemRequestDto The current item information.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlayPlay(options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlayPlay(options).then((request) => request(axios, basePath));
+        syncPlayPreviousItem(previousItemRequestDto: PreviousItemRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayPreviousItem(previousItemRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to queue items to the playlist of a SyncPlay group.
+         * @param {QueueRequestDto} queueRequestDto The items to add.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayQueue(queueRequestDto: QueueRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayQueue(queueRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Notify SyncPlay group that member is ready for playback.
+         * @param {ReadyRequestDto} readyRequestDto The player status.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayReady(readyRequestDto: ReadyRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayReady(readyRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to remove items from the playlist in SyncPlay group.
+         * @param {RemoveFromPlaylistRequestDto} removeFromPlaylistRequestDto The items to remove.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayRemoveFromPlaylist(removeFromPlaylistRequestDto: RemoveFromPlaylistRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayRemoveFromPlaylist(removeFromPlaylistRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Request seek in SyncPlay group.
-         * @param {number} [positionTicks] The playback position in ticks.
+         * @param {SeekRequestDto} seekRequestDto The new playback position.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncPlaySeek(positionTicks?: number, options?: any): AxiosPromise<void> {
-            return SyncPlayApiFp(configuration).syncPlaySeek(positionTicks, options).then((request) => request(axios, basePath));
+        syncPlaySeek(seekRequestDto: SeekRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySeek(seekRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request SyncPlay group to ignore member during group-wait.
+         * @param {IgnoreWaitRequestDto} ignoreWaitRequestDto The settings to set.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetIgnoreWait(ignoreWaitRequestDto: IgnoreWaitRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySetIgnoreWait(ignoreWaitRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to set new playlist in SyncPlay group.
+         * @param {PlayRequestDto} playRequestDto The new playlist to play in the group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetNewQueue(playRequestDto: PlayRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySetNewQueue(playRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to change playlist item in SyncPlay group.
+         * @param {SetPlaylistItemRequestDto} setPlaylistItemRequestDto The new item to play.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetPlaylistItem(setPlaylistItemRequestDto: SetPlaylistItemRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySetPlaylistItem(setPlaylistItemRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to set repeat mode in SyncPlay group.
+         * @param {SetRepeatModeRequestDto} setRepeatModeRequestDto The new repeat mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetRepeatMode(setRepeatModeRequestDto: SetRepeatModeRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySetRepeatMode(setRepeatModeRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request to set shuffle mode in SyncPlay group.
+         * @param {SetShuffleModeRequestDto} setShuffleModeRequestDto The new shuffle mode.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlaySetShuffleMode(setShuffleModeRequestDto: SetShuffleModeRequestDto, options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlaySetShuffleMode(setShuffleModeRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request stop in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayStop(options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayStop(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Request unpause in SyncPlay group.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        syncPlayUnpause(options?: any): AxiosPromise<void> {
+            return SyncPlayApiFp(configuration).syncPlayUnpause(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -703,39 +1648,25 @@ export const SyncPlayApiFactory = function (configuration?: Configuration, baseP
  */
 export interface SyncPlayApiSyncPlayBufferingRequest {
     /**
-     * When the request has been made by the client.
-     * @type {string}
+     * The player status.
+     * @type {BufferRequestDto}
      * @memberof SyncPlayApiSyncPlayBuffering
      */
-    readonly when?: string
-
-    /**
-     * The playback position in ticks.
-     * @type {number}
-     * @memberof SyncPlayApiSyncPlayBuffering
-     */
-    readonly positionTicks?: number
-
-    /**
-     * Whether the buffering is done.
-     * @type {boolean}
-     * @memberof SyncPlayApiSyncPlayBuffering
-     */
-    readonly bufferingDone?: boolean
+    readonly bufferRequestDto: BufferRequestDto
 }
 
 /**
- * Request parameters for syncPlayGetGroups operation in SyncPlayApi.
+ * Request parameters for syncPlayCreateGroup operation in SyncPlayApi.
  * @export
- * @interface SyncPlayApiSyncPlayGetGroupsRequest
+ * @interface SyncPlayApiSyncPlayCreateGroupRequest
  */
-export interface SyncPlayApiSyncPlayGetGroupsRequest {
+export interface SyncPlayApiSyncPlayCreateGroupRequest {
     /**
-     * Optional. Filter by item id.
-     * @type {string}
-     * @memberof SyncPlayApiSyncPlayGetGroups
+     * The settings of the new group.
+     * @type {NewGroupRequestDto}
+     * @memberof SyncPlayApiSyncPlayCreateGroup
      */
-    readonly filterItemId?: string
+    readonly newGroupRequestDto: NewGroupRequestDto
 }
 
 /**
@@ -745,11 +1676,39 @@ export interface SyncPlayApiSyncPlayGetGroupsRequest {
  */
 export interface SyncPlayApiSyncPlayJoinGroupRequest {
     /**
-     * The sync play group id.
-     * @type {string}
+     * The group to join.
+     * @type {JoinGroupRequestDto}
      * @memberof SyncPlayApiSyncPlayJoinGroup
      */
-    readonly groupId: string
+    readonly joinGroupRequestDto: JoinGroupRequestDto
+}
+
+/**
+ * Request parameters for syncPlayMovePlaylistItem operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayMovePlaylistItemRequest
+ */
+export interface SyncPlayApiSyncPlayMovePlaylistItemRequest {
+    /**
+     * The new position for the item.
+     * @type {MovePlaylistItemRequestDto}
+     * @memberof SyncPlayApiSyncPlayMovePlaylistItem
+     */
+    readonly movePlaylistItemRequestDto: MovePlaylistItemRequestDto
+}
+
+/**
+ * Request parameters for syncPlayNextItem operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayNextItemRequest
+ */
+export interface SyncPlayApiSyncPlayNextItemRequest {
+    /**
+     * The current item information.
+     * @type {NextItemRequestDto}
+     * @memberof SyncPlayApiSyncPlayNextItem
+     */
+    readonly nextItemRequestDto: NextItemRequestDto
 }
 
 /**
@@ -759,11 +1718,67 @@ export interface SyncPlayApiSyncPlayJoinGroupRequest {
  */
 export interface SyncPlayApiSyncPlayPingRequest {
     /**
-     * The ping.
-     * @type {number}
+     * The new ping.
+     * @type {PingRequestDto}
      * @memberof SyncPlayApiSyncPlayPing
      */
-    readonly ping?: number
+    readonly pingRequestDto: PingRequestDto
+}
+
+/**
+ * Request parameters for syncPlayPreviousItem operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayPreviousItemRequest
+ */
+export interface SyncPlayApiSyncPlayPreviousItemRequest {
+    /**
+     * The current item information.
+     * @type {PreviousItemRequestDto}
+     * @memberof SyncPlayApiSyncPlayPreviousItem
+     */
+    readonly previousItemRequestDto: PreviousItemRequestDto
+}
+
+/**
+ * Request parameters for syncPlayQueue operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayQueueRequest
+ */
+export interface SyncPlayApiSyncPlayQueueRequest {
+    /**
+     * The items to add.
+     * @type {QueueRequestDto}
+     * @memberof SyncPlayApiSyncPlayQueue
+     */
+    readonly queueRequestDto: QueueRequestDto
+}
+
+/**
+ * Request parameters for syncPlayReady operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayReadyRequest
+ */
+export interface SyncPlayApiSyncPlayReadyRequest {
+    /**
+     * The player status.
+     * @type {ReadyRequestDto}
+     * @memberof SyncPlayApiSyncPlayReady
+     */
+    readonly readyRequestDto: ReadyRequestDto
+}
+
+/**
+ * Request parameters for syncPlayRemoveFromPlaylist operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlayRemoveFromPlaylistRequest
+ */
+export interface SyncPlayApiSyncPlayRemoveFromPlaylistRequest {
+    /**
+     * The items to remove.
+     * @type {RemoveFromPlaylistRequestDto}
+     * @memberof SyncPlayApiSyncPlayRemoveFromPlaylist
+     */
+    readonly removeFromPlaylistRequestDto: RemoveFromPlaylistRequestDto
 }
 
 /**
@@ -773,11 +1788,81 @@ export interface SyncPlayApiSyncPlayPingRequest {
  */
 export interface SyncPlayApiSyncPlaySeekRequest {
     /**
-     * The playback position in ticks.
-     * @type {number}
+     * The new playback position.
+     * @type {SeekRequestDto}
      * @memberof SyncPlayApiSyncPlaySeek
      */
-    readonly positionTicks?: number
+    readonly seekRequestDto: SeekRequestDto
+}
+
+/**
+ * Request parameters for syncPlaySetIgnoreWait operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlaySetIgnoreWaitRequest
+ */
+export interface SyncPlayApiSyncPlaySetIgnoreWaitRequest {
+    /**
+     * The settings to set.
+     * @type {IgnoreWaitRequestDto}
+     * @memberof SyncPlayApiSyncPlaySetIgnoreWait
+     */
+    readonly ignoreWaitRequestDto: IgnoreWaitRequestDto
+}
+
+/**
+ * Request parameters for syncPlaySetNewQueue operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlaySetNewQueueRequest
+ */
+export interface SyncPlayApiSyncPlaySetNewQueueRequest {
+    /**
+     * The new playlist to play in the group.
+     * @type {PlayRequestDto}
+     * @memberof SyncPlayApiSyncPlaySetNewQueue
+     */
+    readonly playRequestDto: PlayRequestDto
+}
+
+/**
+ * Request parameters for syncPlaySetPlaylistItem operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlaySetPlaylistItemRequest
+ */
+export interface SyncPlayApiSyncPlaySetPlaylistItemRequest {
+    /**
+     * The new item to play.
+     * @type {SetPlaylistItemRequestDto}
+     * @memberof SyncPlayApiSyncPlaySetPlaylistItem
+     */
+    readonly setPlaylistItemRequestDto: SetPlaylistItemRequestDto
+}
+
+/**
+ * Request parameters for syncPlaySetRepeatMode operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlaySetRepeatModeRequest
+ */
+export interface SyncPlayApiSyncPlaySetRepeatModeRequest {
+    /**
+     * The new repeat mode.
+     * @type {SetRepeatModeRequestDto}
+     * @memberof SyncPlayApiSyncPlaySetRepeatMode
+     */
+    readonly setRepeatModeRequestDto: SetRepeatModeRequestDto
+}
+
+/**
+ * Request parameters for syncPlaySetShuffleMode operation in SyncPlayApi.
+ * @export
+ * @interface SyncPlayApiSyncPlaySetShuffleModeRequest
+ */
+export interface SyncPlayApiSyncPlaySetShuffleModeRequest {
+    /**
+     * The new shuffle mode.
+     * @type {SetShuffleModeRequestDto}
+     * @memberof SyncPlayApiSyncPlaySetShuffleMode
+     */
+    readonly setShuffleModeRequestDto: SetShuffleModeRequestDto
 }
 
 /**
@@ -789,37 +1874,37 @@ export interface SyncPlayApiSyncPlaySeekRequest {
 export class SyncPlayApi extends BaseAPI {
     /**
      * 
-     * @summary Request group wait in SyncPlay group while buffering.
+     * @summary Notify SyncPlay group that member is buffering.
      * @param {SyncPlayApiSyncPlayBufferingRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlayBuffering(requestParameters: SyncPlayApiSyncPlayBufferingRequest = {}, options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayBuffering(requestParameters.when, requestParameters.positionTicks, requestParameters.bufferingDone, options).then((request) => request(this.axios, this.basePath));
+    public syncPlayBuffering(requestParameters: SyncPlayApiSyncPlayBufferingRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayBuffering(requestParameters.bufferRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Create a new SyncPlay group.
+     * @param {SyncPlayApiSyncPlayCreateGroupRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlayCreateGroup(options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayCreateGroup(options).then((request) => request(this.axios, this.basePath));
+    public syncPlayCreateGroup(requestParameters: SyncPlayApiSyncPlayCreateGroupRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayCreateGroup(requestParameters.newGroupRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Gets all SyncPlay groups.
-     * @param {SyncPlayApiSyncPlayGetGroupsRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlayGetGroups(requestParameters: SyncPlayApiSyncPlayGetGroupsRequest = {}, options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayGetGroups(requestParameters.filterItemId, options).then((request) => request(this.axios, this.basePath));
+    public syncPlayGetGroups(options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayGetGroups(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -831,7 +1916,7 @@ export class SyncPlayApi extends BaseAPI {
      * @memberof SyncPlayApi
      */
     public syncPlayJoinGroup(requestParameters: SyncPlayApiSyncPlayJoinGroupRequest, options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayJoinGroup(requestParameters.groupId, options).then((request) => request(this.axios, this.basePath));
+        return SyncPlayApiFp(this.configuration).syncPlayJoinGroup(requestParameters.joinGroupRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -843,6 +1928,30 @@ export class SyncPlayApi extends BaseAPI {
      */
     public syncPlayLeaveGroup(options?: any) {
         return SyncPlayApiFp(this.configuration).syncPlayLeaveGroup(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to move an item in the playlist in SyncPlay group.
+     * @param {SyncPlayApiSyncPlayMovePlaylistItemRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayMovePlaylistItem(requestParameters: SyncPlayApiSyncPlayMovePlaylistItemRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayMovePlaylistItem(requestParameters.movePlaylistItemRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request next item in SyncPlay group.
+     * @param {SyncPlayApiSyncPlayNextItemRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayNextItem(requestParameters: SyncPlayApiSyncPlayNextItemRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayNextItem(requestParameters.nextItemRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -864,19 +1973,56 @@ export class SyncPlayApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlayPing(requestParameters: SyncPlayApiSyncPlayPingRequest = {}, options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayPing(requestParameters.ping, options).then((request) => request(this.axios, this.basePath));
+    public syncPlayPing(requestParameters: SyncPlayApiSyncPlayPingRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayPing(requestParameters.pingRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Request play in SyncPlay group.
+     * @summary Request previous item in SyncPlay group.
+     * @param {SyncPlayApiSyncPlayPreviousItemRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlayPlay(options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlayPlay(options).then((request) => request(this.axios, this.basePath));
+    public syncPlayPreviousItem(requestParameters: SyncPlayApiSyncPlayPreviousItemRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayPreviousItem(requestParameters.previousItemRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to queue items to the playlist of a SyncPlay group.
+     * @param {SyncPlayApiSyncPlayQueueRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayQueue(requestParameters: SyncPlayApiSyncPlayQueueRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayQueue(requestParameters.queueRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Notify SyncPlay group that member is ready for playback.
+     * @param {SyncPlayApiSyncPlayReadyRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayReady(requestParameters: SyncPlayApiSyncPlayReadyRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayReady(requestParameters.readyRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to remove items from the playlist in SyncPlay group.
+     * @param {SyncPlayApiSyncPlayRemoveFromPlaylistRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayRemoveFromPlaylist(requestParameters: SyncPlayApiSyncPlayRemoveFromPlaylistRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayRemoveFromPlaylist(requestParameters.removeFromPlaylistRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -887,7 +2033,89 @@ export class SyncPlayApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof SyncPlayApi
      */
-    public syncPlaySeek(requestParameters: SyncPlayApiSyncPlaySeekRequest = {}, options?: any) {
-        return SyncPlayApiFp(this.configuration).syncPlaySeek(requestParameters.positionTicks, options).then((request) => request(this.axios, this.basePath));
+    public syncPlaySeek(requestParameters: SyncPlayApiSyncPlaySeekRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySeek(requestParameters.seekRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request SyncPlay group to ignore member during group-wait.
+     * @param {SyncPlayApiSyncPlaySetIgnoreWaitRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlaySetIgnoreWait(requestParameters: SyncPlayApiSyncPlaySetIgnoreWaitRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySetIgnoreWait(requestParameters.ignoreWaitRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to set new playlist in SyncPlay group.
+     * @param {SyncPlayApiSyncPlaySetNewQueueRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlaySetNewQueue(requestParameters: SyncPlayApiSyncPlaySetNewQueueRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySetNewQueue(requestParameters.playRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to change playlist item in SyncPlay group.
+     * @param {SyncPlayApiSyncPlaySetPlaylistItemRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlaySetPlaylistItem(requestParameters: SyncPlayApiSyncPlaySetPlaylistItemRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySetPlaylistItem(requestParameters.setPlaylistItemRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to set repeat mode in SyncPlay group.
+     * @param {SyncPlayApiSyncPlaySetRepeatModeRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlaySetRepeatMode(requestParameters: SyncPlayApiSyncPlaySetRepeatModeRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySetRepeatMode(requestParameters.setRepeatModeRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request to set shuffle mode in SyncPlay group.
+     * @param {SyncPlayApiSyncPlaySetShuffleModeRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlaySetShuffleMode(requestParameters: SyncPlayApiSyncPlaySetShuffleModeRequest, options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlaySetShuffleMode(requestParameters.setShuffleModeRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request stop in SyncPlay group.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayStop(options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayStop(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Request unpause in SyncPlay group.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SyncPlayApi
+     */
+    public syncPlayUnpause(options?: any) {
+        return SyncPlayApiFp(this.configuration).syncPlayUnpause(options).then((request) => request(this.axios, this.basePath));
     }
 }

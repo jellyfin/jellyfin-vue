@@ -15,16 +15,17 @@
 
 
 /**
- * Enum SendCommandType.
+ * Class IgnoreWaitRequestDto.
  * @export
- * @enum {string}
+ * @interface IgnoreWaitRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface IgnoreWaitRequestDto {
+    /**
+     * Gets or sets a value indicating whether the client should be ignored.
+     * @type {boolean}
+     * @memberof IgnoreWaitRequestDto
+     */
+    IgnoreWait?: boolean;
 }
-
 
 

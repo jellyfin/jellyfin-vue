@@ -22,19 +22,25 @@ import { SendCommandType } from './send-command-type';
  */
 export interface SendCommand {
     /**
-     * Gets or sets the group identifier.
+     * Gets the group identifier.
      * @type {string}
      * @memberof SendCommand
      */
-    GroupId?: string | null;
+    GroupId?: string;
+    /**
+     * Gets the playlist identifier of the playing item.
+     * @type {string}
+     * @memberof SendCommand
+     */
+    PlaylistItemId?: string;
     /**
      * Gets or sets the UTC time when to execute the command.
      * @type {string}
      * @memberof SendCommand
      */
-    When?: string | null;
+    When?: string;
     /**
-     * Gets or sets the position ticks.
+     * Gets the position ticks.
      * @type {number}
      * @memberof SendCommand
      */
@@ -46,11 +52,11 @@ export interface SendCommand {
      */
     Command?: SendCommandType;
     /**
-     * Gets or sets the UTC time when this command has been emitted.
+     * Gets the UTC time when this command has been emitted.
      * @type {string}
      * @memberof SendCommand
      */
-    EmittedAt?: string | null;
+    EmittedAt?: string;
 }
 
 

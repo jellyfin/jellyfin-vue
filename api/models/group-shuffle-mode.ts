@@ -15,15 +15,13 @@
 
 
 /**
- * Enum SendCommandType.
+ * Enum GroupShuffleMode.
  * @export
  * @enum {string}
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export enum GroupShuffleMode {
+    Sorted = 'Sorted',
+    Shuffle = 'Shuffle'
 }
 
 

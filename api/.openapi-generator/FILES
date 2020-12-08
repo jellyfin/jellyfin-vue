@@ -1,5 +1,6 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 api.ts
 api/activity-log-api.ts
 api/api-key-api.ts
@@ -90,6 +91,7 @@ models/book-info.ts
 models/box-set-info-remote-search-query.ts
 models/box-set-info.ts
 models/branding-options.ts
+models/buffer-request-dto.ts
 models/channel-features.ts
 models/channel-item-sort-field.ts
 models/channel-mapping-options-dto.ts
@@ -139,11 +141,16 @@ models/forgot-password-result.ts
 models/general-command-type.ts
 models/general-command.ts
 models/get-programs-dto.ts
-models/group-info-view.ts
+models/group-info-dto.ts
+models/group-queue-mode.ts
+models/group-repeat-mode.ts
+models/group-shuffle-mode.ts
+models/group-state-type.ts
 models/group-update-type.ts
 models/guide-info.ts
 models/header-match-type.ts
 models/http-header-info.ts
+models/ignore-wait-request-dto.ts
 models/image-by-name-info.ts
 models/image-format.ts
 models/image-info.ts
@@ -159,6 +166,7 @@ models/iso-type.ts
 models/item-counts.ts
 models/item-fields.ts
 models/item-filter.ts
+models/join-group-request-dto.ts
 models/keep-until.ts
 models/library-option-info-dto.ts
 models/library-options-result-dto.ts
@@ -190,6 +198,7 @@ models/metadata-editor-info.ts
 models/metadata-field.ts
 models/metadata-options.ts
 models/metadata-refresh-mode.ts
+models/move-playlist-item-request-dto.ts
 models/movie-info-remote-search-query.ts
 models/movie-info.ts
 models/music-video-info-remote-search-query.ts
@@ -197,6 +206,8 @@ models/music-video-info.ts
 models/name-guid-pair.ts
 models/name-id-pair.ts
 models/name-value-pair.ts
+models/new-group-request-dto.ts
+models/next-item-request-dto.ts
 models/notification-dto.ts
 models/notification-level.ts
 models/notification-result-dto.ts
@@ -210,9 +221,11 @@ models/path-substitution.ts
 models/person-lookup-info-remote-search-query.ts
 models/person-lookup-info.ts
 models/pin-redeem-result.ts
+models/ping-request-dto.ts
 models/play-access.ts
 models/play-command.ts
 models/play-method.ts
+models/play-request-dto.ts
 models/play-request.ts
 models/playback-error-code.ts
 models/playback-info-dto.ts
@@ -226,6 +239,7 @@ models/playstate-command.ts
 models/playstate-request.ts
 models/plugin-info.ts
 models/plugin-security-info.ts
+models/previous-item-request-dto.ts
 models/problem-details.ts
 models/profile-condition-type.ts
 models/profile-condition-value.ts
@@ -235,10 +249,12 @@ models/public-system-info.ts
 models/query-filters-legacy.ts
 models/query-filters.ts
 models/queue-item.ts
+models/queue-request-dto.ts
 models/quick-connect-dto.ts
 models/quick-connect-result.ts
 models/quick-connect-state.ts
 models/rating-type.ts
+models/ready-request-dto.ts
 models/recommendation-dto.ts
 models/recommendation-type.ts
 models/recording-status.ts
@@ -246,12 +262,14 @@ models/remote-image-info.ts
 models/remote-image-result.ts
 models/remote-search-result.ts
 models/remote-subtitle-info.ts
+models/remove-from-playlist-request-dto.ts
 models/repeat-mode.ts
 models/repository-info.ts
 models/response-profile.ts
 models/scroll-direction.ts
 models/search-hint-result.ts
 models/search-hint.ts
+models/seek-request-dto.ts
 models/send-command-type.ts
 models/send-command.ts
 models/series-info-remote-search-query.ts
@@ -262,6 +280,9 @@ models/series-timer-info-dto.ts
 models/server-configuration.ts
 models/session-info.ts
 models/session-user-info.ts
+models/set-playlist-item-request-dto.ts
+models/set-repeat-mode-request-dto.ts
+models/set-shuffle-mode-request-dto.ts
 models/song-info.ts
 models/sort-order.ts
 models/special-view-option-dto.ts

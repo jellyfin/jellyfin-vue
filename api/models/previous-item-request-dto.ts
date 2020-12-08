@@ -15,16 +15,17 @@
 
 
 /**
- * Enum SendCommandType.
+ * Class PreviousItemRequestDto.
  * @export
- * @enum {string}
+ * @interface PreviousItemRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface PreviousItemRequestDto {
+    /**
+     * Gets or sets the playing item identifier.
+     * @type {string}
+     * @memberof PreviousItemRequestDto
+     */
+    PlaylistItemId?: string;
 }
-
 
 

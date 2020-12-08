@@ -13,18 +13,20 @@
  */
 
 
+import { GroupShuffleMode } from './group-shuffle-mode';
 
 /**
- * Enum SendCommandType.
+ * Class SetShuffleModeRequestDto.
  * @export
- * @enum {string}
+ * @interface SetShuffleModeRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface SetShuffleModeRequestDto {
+    /**
+     * 
+     * @type {GroupShuffleMode}
+     * @memberof SetShuffleModeRequestDto
+     */
+    Mode?: GroupShuffleMode;
 }
-
 
 

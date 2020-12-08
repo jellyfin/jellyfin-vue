@@ -15,17 +15,17 @@
 
 
 /**
- * 
+ * Class RemoveFromPlaylistRequestDto.
  * @export
- * @interface BaseItemPersonImageBlurHashesPrimary
+ * @interface RemoveFromPlaylistRequestDto
  */
-export interface BaseItemPersonImageBlurHashesPrimary {
+export interface RemoveFromPlaylistRequestDto {
     /**
-     * 
-     * @type {string}
-     * @memberof BaseItemPersonImageBlurHashesPrimary
+     * Gets or sets the playlist identifiers ot the items.
+     * @type {Array<string>}
+     * @memberof RemoveFromPlaylistRequestDto
      */
-    string?: string;
+    PlaylistItemIds?: Array<string> | null;
 }
 
 

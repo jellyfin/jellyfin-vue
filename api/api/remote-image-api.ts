@@ -119,14 +119,6 @@ export const RemoteImageApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (imageUrl !== undefined) {
                 localVarQueryParameter['imageUrl'] = imageUrl;
             }

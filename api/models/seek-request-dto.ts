@@ -15,16 +15,17 @@
 
 
 /**
- * Enum SendCommandType.
+ * Class SeekRequestDto.
  * @export
- * @enum {string}
+ * @interface SeekRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface SeekRequestDto {
+    /**
+     * Gets or sets the position ticks.
+     * @type {number}
+     * @memberof SeekRequestDto
+     */
+    PositionTicks?: number;
 }
-
 
 

@@ -80,14 +80,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (pw !== undefined) {
                 localVarQueryParameter['pw'] = pw;
             }
@@ -137,14 +129,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -190,14 +174,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -223,11 +199,15 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @summary Creates a user.
-         * @param {CreateUserByName} [createUserByName] The create user by name request body.
+         * @param {CreateUserByName} createUserByName The create user by name request body.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUserByName: async (createUserByName?: CreateUserByName, options: any = {}): Promise<RequestArgs> => {
+        createUserByName: async (createUserByName: CreateUserByName, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createUserByName' is not null or undefined
+            if (createUserByName === null || createUserByName === undefined) {
+                throw new RequiredError('createUserByName','Required parameter createUserByName was null or undefined when calling createUserByName.');
+            }
             const localVarPath = `/Users/New`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -342,14 +322,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
 
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -390,14 +362,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
 
     
@@ -482,14 +446,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
 
     
@@ -617,14 +573,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Updates a user.
          * @param {string} userId The user id.
-         * @param {UserDto} [userDto] The updated user model.
+         * @param {UserDto} userDto The updated user model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser: async (userId: string, userDto?: UserDto, options: any = {}): Promise<RequestArgs> => {
+        updateUser: async (userId: string, userDto: UserDto, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUser.');
+            }
+            // verify required parameter 'userDto' is not null or undefined
+            if (userDto === null || userDto === undefined) {
+                throw new RequiredError('userDto','Required parameter userDto was null or undefined when calling updateUser.');
             }
             const localVarPath = `/Users/{userId}`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
@@ -672,14 +632,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Updates a user configuration.
          * @param {string} userId The user id.
-         * @param {UserConfiguration} [userConfiguration] The new user configuration.
+         * @param {UserConfiguration} userConfiguration The new user configuration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserConfiguration: async (userId: string, userConfiguration?: UserConfiguration, options: any = {}): Promise<RequestArgs> => {
+        updateUserConfiguration: async (userId: string, userConfiguration: UserConfiguration, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUserConfiguration.');
+            }
+            // verify required parameter 'userConfiguration' is not null or undefined
+            if (userConfiguration === null || userConfiguration === undefined) {
+                throw new RequiredError('userConfiguration','Required parameter userConfiguration was null or undefined when calling updateUserConfiguration.');
             }
             const localVarPath = `/Users/{userId}/Configuration`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
@@ -727,14 +691,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Updates a user\'s easy password.
          * @param {string} userId The user id.
-         * @param {UpdateUserEasyPassword} [updateUserEasyPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
+         * @param {UpdateUserEasyPassword} updateUserEasyPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserEasyPassword: async (userId: string, updateUserEasyPassword?: UpdateUserEasyPassword, options: any = {}): Promise<RequestArgs> => {
+        updateUserEasyPassword: async (userId: string, updateUserEasyPassword: UpdateUserEasyPassword, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUserEasyPassword.');
+            }
+            // verify required parameter 'updateUserEasyPassword' is not null or undefined
+            if (updateUserEasyPassword === null || updateUserEasyPassword === undefined) {
+                throw new RequiredError('updateUserEasyPassword','Required parameter updateUserEasyPassword was null or undefined when calling updateUserEasyPassword.');
             }
             const localVarPath = `/Users/{userId}/EasyPassword`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
@@ -782,14 +750,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Updates a user\'s password.
          * @param {string} userId The user id.
-         * @param {UpdateUserPassword} [updateUserPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
+         * @param {UpdateUserPassword} updateUserPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserPassword: async (userId: string, updateUserPassword?: UpdateUserPassword, options: any = {}): Promise<RequestArgs> => {
+        updateUserPassword: async (userId: string, updateUserPassword: UpdateUserPassword, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUserPassword.');
+            }
+            // verify required parameter 'updateUserPassword' is not null or undefined
+            if (updateUserPassword === null || updateUserPassword === undefined) {
+                throw new RequiredError('updateUserPassword','Required parameter updateUserPassword was null or undefined when calling updateUserPassword.');
             }
             const localVarPath = `/Users/{userId}/Password`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
@@ -837,14 +809,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Updates a user policy.
          * @param {string} userId The user id.
-         * @param {UserPolicy} [userPolicy] The new user policy.
+         * @param {UserPolicy} userPolicy The new user policy.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserPolicy: async (userId: string, userPolicy?: UserPolicy, options: any = {}): Promise<RequestArgs> => {
+        updateUserPolicy: async (userId: string, userPolicy: UserPolicy, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             if (userId === null || userId === undefined) {
                 throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUserPolicy.');
+            }
+            // verify required parameter 'userPolicy' is not null or undefined
+            if (userPolicy === null || userPolicy === undefined) {
+                throw new RequiredError('userPolicy','Required parameter userPolicy was null or undefined when calling updateUserPolicy.');
             }
             const localVarPath = `/Users/{userId}/Policy`
                 .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
@@ -944,11 +920,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Creates a user.
-         * @param {CreateUserByName} [createUserByName] The create user by name request body.
+         * @param {CreateUserByName} createUserByName The create user by name request body.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createUserByName(createUserByName?: CreateUserByName, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
+        async createUserByName(createUserByName: CreateUserByName, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).createUserByName(createUserByName, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1056,11 +1032,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates a user.
          * @param {string} userId The user id.
-         * @param {UserDto} [userDto] The updated user model.
+         * @param {UserDto} userDto The updated user model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUser(userId: string, userDto?: UserDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateUser(userId: string, userDto: UserDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUser(userId, userDto, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1071,11 +1047,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates a user configuration.
          * @param {string} userId The user id.
-         * @param {UserConfiguration} [userConfiguration] The new user configuration.
+         * @param {UserConfiguration} userConfiguration The new user configuration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUserConfiguration(userId: string, userConfiguration?: UserConfiguration, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateUserConfiguration(userId: string, userConfiguration: UserConfiguration, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUserConfiguration(userId, userConfiguration, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1086,11 +1062,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates a user\'s easy password.
          * @param {string} userId The user id.
-         * @param {UpdateUserEasyPassword} [updateUserEasyPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
+         * @param {UpdateUserEasyPassword} updateUserEasyPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUserEasyPassword(userId: string, updateUserEasyPassword?: UpdateUserEasyPassword, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateUserEasyPassword(userId: string, updateUserEasyPassword: UpdateUserEasyPassword, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUserEasyPassword(userId, updateUserEasyPassword, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1101,11 +1077,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates a user\'s password.
          * @param {string} userId The user id.
-         * @param {UpdateUserPassword} [updateUserPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
+         * @param {UpdateUserPassword} updateUserPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUserPassword(userId: string, updateUserPassword?: UpdateUserPassword, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateUserPassword(userId: string, updateUserPassword: UpdateUserPassword, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUserPassword(userId, updateUserPassword, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1116,11 +1092,11 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @summary Updates a user policy.
          * @param {string} userId The user id.
-         * @param {UserPolicy} [userPolicy] The new user policy.
+         * @param {UserPolicy} userPolicy The new user policy.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateUserPolicy(userId: string, userPolicy?: UserPolicy, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async updateUserPolicy(userId: string, userPolicy: UserPolicy, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateUserPolicy(userId, userPolicy, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1171,11 +1147,11 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         /**
          * 
          * @summary Creates a user.
-         * @param {CreateUserByName} [createUserByName] The create user by name request body.
+         * @param {CreateUserByName} createUserByName The create user by name request body.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createUserByName(createUserByName?: CreateUserByName, options?: any): AxiosPromise<UserDto> {
+        createUserByName(createUserByName: CreateUserByName, options?: any): AxiosPromise<UserDto> {
             return UserApiFp(configuration).createUserByName(createUserByName, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1251,55 +1227,55 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * 
          * @summary Updates a user.
          * @param {string} userId The user id.
-         * @param {UserDto} [userDto] The updated user model.
+         * @param {UserDto} userDto The updated user model.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUser(userId: string, userDto?: UserDto, options?: any): AxiosPromise<void> {
+        updateUser(userId: string, userDto: UserDto, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).updateUser(userId, userDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates a user configuration.
          * @param {string} userId The user id.
-         * @param {UserConfiguration} [userConfiguration] The new user configuration.
+         * @param {UserConfiguration} userConfiguration The new user configuration.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserConfiguration(userId: string, userConfiguration?: UserConfiguration, options?: any): AxiosPromise<void> {
+        updateUserConfiguration(userId: string, userConfiguration: UserConfiguration, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).updateUserConfiguration(userId, userConfiguration, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates a user\'s easy password.
          * @param {string} userId The user id.
-         * @param {UpdateUserEasyPassword} [updateUserEasyPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
+         * @param {UpdateUserEasyPassword} updateUserEasyPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserEasyPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserEasyPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserEasyPassword(userId: string, updateUserEasyPassword?: UpdateUserEasyPassword, options?: any): AxiosPromise<void> {
+        updateUserEasyPassword(userId: string, updateUserEasyPassword: UpdateUserEasyPassword, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).updateUserEasyPassword(userId, updateUserEasyPassword, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates a user\'s password.
          * @param {string} userId The user id.
-         * @param {UpdateUserPassword} [updateUserPassword] The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
+         * @param {UpdateUserPassword} updateUserPassword The M:Jellyfin.Api.Controllers.UserController.UpdateUserPassword(System.Guid,Jellyfin.Api.Models.UserDtos.UpdateUserPassword) request.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserPassword(userId: string, updateUserPassword?: UpdateUserPassword, options?: any): AxiosPromise<void> {
+        updateUserPassword(userId: string, updateUserPassword: UpdateUserPassword, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).updateUserPassword(userId, updateUserPassword, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Updates a user policy.
          * @param {string} userId The user id.
-         * @param {UserPolicy} [userPolicy] The new user policy.
+         * @param {UserPolicy} userPolicy The new user policy.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateUserPolicy(userId: string, userPolicy?: UserPolicy, options?: any): AxiosPromise<void> {
+        updateUserPolicy(userId: string, userPolicy: UserPolicy, options?: any): AxiosPromise<void> {
             return UserApiFp(configuration).updateUserPolicy(userId, userPolicy, options).then((request) => request(axios, basePath));
         },
     };
@@ -1372,7 +1348,7 @@ export interface UserApiCreateUserByNameRequest {
      * @type {CreateUserByName}
      * @memberof UserApiCreateUserByName
      */
-    readonly createUserByName?: CreateUserByName
+    readonly createUserByName: CreateUserByName
 }
 
 /**
@@ -1470,7 +1446,7 @@ export interface UserApiUpdateUserRequest {
      * @type {UserDto}
      * @memberof UserApiUpdateUser
      */
-    readonly userDto?: UserDto
+    readonly userDto: UserDto
 }
 
 /**
@@ -1491,7 +1467,7 @@ export interface UserApiUpdateUserConfigurationRequest {
      * @type {UserConfiguration}
      * @memberof UserApiUpdateUserConfiguration
      */
-    readonly userConfiguration?: UserConfiguration
+    readonly userConfiguration: UserConfiguration
 }
 
 /**
@@ -1512,7 +1488,7 @@ export interface UserApiUpdateUserEasyPasswordRequest {
      * @type {UpdateUserEasyPassword}
      * @memberof UserApiUpdateUserEasyPassword
      */
-    readonly updateUserEasyPassword?: UpdateUserEasyPassword
+    readonly updateUserEasyPassword: UpdateUserEasyPassword
 }
 
 /**
@@ -1533,7 +1509,7 @@ export interface UserApiUpdateUserPasswordRequest {
      * @type {UpdateUserPassword}
      * @memberof UserApiUpdateUserPassword
      */
-    readonly updateUserPassword?: UpdateUserPassword
+    readonly updateUserPassword: UpdateUserPassword
 }
 
 /**
@@ -1554,7 +1530,7 @@ export interface UserApiUpdateUserPolicyRequest {
      * @type {UserPolicy}
      * @memberof UserApiUpdateUserPolicy
      */
-    readonly userPolicy?: UserPolicy
+    readonly userPolicy: UserPolicy
 }
 
 /**
@@ -1608,7 +1584,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public createUserByName(requestParameters: UserApiCreateUserByNameRequest = {}, options?: any) {
+    public createUserByName(requestParameters: UserApiCreateUserByNameRequest, options?: any) {
         return UserApiFp(this.configuration).createUserByName(requestParameters.createUserByName, options).then((request) => request(this.axios, this.basePath));
     }
 

@@ -15,15 +15,13 @@
 
 
 /**
- * Enum SendCommandType.
+ * Enum GroupQueueMode.
  * @export
  * @enum {string}
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export enum GroupQueueMode {
+    Queue = 'Queue',
+    QueueNext = 'QueueNext'
 }
 
 

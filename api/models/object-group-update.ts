@@ -22,11 +22,11 @@ import { GroupUpdateType } from './group-update-type';
  */
 export interface ObjectGroupUpdate {
     /**
-     * Gets or sets the group identifier.
+     * Gets the group identifier.
      * @type {string}
      * @memberof ObjectGroupUpdate
      */
-    GroupId?: string | null;
+    GroupId?: string;
     /**
      * 
      * @type {GroupUpdateType}
@@ -34,7 +34,7 @@ export interface ObjectGroupUpdate {
      */
     Type?: GroupUpdateType;
     /**
-     * Gets or sets the data.
+     * Gets the update data.
      * @type {any}
      * @memberof ObjectGroupUpdate
      */

@@ -13,18 +13,20 @@
  */
 
 
+import { GroupRepeatMode } from './group-repeat-mode';
 
 /**
- * Enum SendCommandType.
+ * Class SetRepeatModeRequestDto.
  * @export
- * @enum {string}
+ * @interface SetRepeatModeRequestDto
  */
-export enum SendCommandType {
-    Unpause = 'Unpause',
-    Pause = 'Pause',
-    Stop = 'Stop',
-    Seek = 'Seek'
+export interface SetRepeatModeRequestDto {
+    /**
+     * 
+     * @type {GroupRepeatMode}
+     * @memberof SetRepeatModeRequestDto
+     */
+    Mode?: GroupRepeatMode;
 }
-
 
 

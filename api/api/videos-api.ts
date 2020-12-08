@@ -209,14 +209,6 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (container !== undefined) {
                 localVarQueryParameter['container'] = container;
             }
@@ -510,14 +502,6 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (_static !== undefined) {
                 localVarQueryParameter['static'] = _static;
             }
@@ -795,14 +779,6 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'HEAD', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
 
             if (container !== undefined) {
                 localVarQueryParameter['container'] = container;
@@ -1097,14 +1073,6 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
-            // authentication CustomAuthentication required
-            if (configuration && configuration.apiKey) {
-                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
-                    ? await configuration.apiKey("X-Emby-Authorization")
-                    : await configuration.apiKey;
-                localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
-            }
-
             if (_static !== undefined) {
                 localVarQueryParameter['static'] = _static;
             }
@@ -1314,14 +1282,14 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * 
          * @summary Merges videos into a single record.
-         * @param {Array<string>} itemIds Item id list. This allows multiple, comma delimited.
+         * @param {Array<string>} ids Item id list. This allows multiple, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeVersions: async (itemIds: Array<string>, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'itemIds' is not null or undefined
-            if (itemIds === null || itemIds === undefined) {
-                throw new RequiredError('itemIds','Required parameter itemIds was null or undefined when calling mergeVersions.');
+        mergeVersions: async (ids: Array<string>, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ids' is not null or undefined
+            if (ids === null || ids === undefined) {
+                throw new RequiredError('ids','Required parameter ids was null or undefined when calling mergeVersions.');
             }
             const localVarPath = `/Videos/MergeVersions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1342,8 +1310,8 @@ export const VideosApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarHeaderParameter["X-Emby-Authorization"] = localVarApiKeyValue;
             }
 
-            if (itemIds) {
-                localVarQueryParameter['itemIds'] = itemIds;
+            if (ids) {
+                localVarQueryParameter['ids'] = ids;
             }
 
 
@@ -1655,12 +1623,12 @@ export const VideosApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Merges videos into a single record.
-         * @param {Array<string>} itemIds Item id list. This allows multiple, comma delimited.
+         * @param {Array<string>} ids Item id list. This allows multiple, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mergeVersions(itemIds: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await VideosApiAxiosParamCreator(configuration).mergeVersions(itemIds, options);
+        async mergeVersions(ids: Array<string>, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await VideosApiAxiosParamCreator(configuration).mergeVersions(ids, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1933,12 +1901,12 @@ export const VideosApiFactory = function (configuration?: Configuration, basePat
         /**
          * 
          * @summary Merges videos into a single record.
-         * @param {Array<string>} itemIds Item id list. This allows multiple, comma delimited.
+         * @param {Array<string>} ids Item id list. This allows multiple, comma delimited.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mergeVersions(itemIds: Array<string>, options?: any): AxiosPromise<void> {
-            return VideosApiFp(configuration).mergeVersions(itemIds, options).then((request) => request(axios, basePath));
+        mergeVersions(ids: Array<string>, options?: any): AxiosPromise<void> {
+            return VideosApiFp(configuration).mergeVersions(ids, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3403,7 +3371,7 @@ export interface VideosApiMergeVersionsRequest {
      * @type {Array<string>}
      * @memberof VideosApiMergeVersions
      */
-    readonly itemIds: Array<string>
+    readonly ids: Array<string>
 }
 
 /**
@@ -3494,6 +3462,6 @@ export class VideosApi extends BaseAPI {
      * @memberof VideosApi
      */
     public mergeVersions(requestParameters: VideosApiMergeVersionsRequest, options?: any) {
-        return VideosApiFp(this.configuration).mergeVersions(requestParameters.itemIds, options).then((request) => request(this.axios, this.basePath));
+        return VideosApiFp(this.configuration).mergeVersions(requestParameters.ids, options).then((request) => request(this.axios, this.basePath));
     }
 }

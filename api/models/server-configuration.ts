@@ -500,6 +500,18 @@ export interface ServerConfiguration {
      * @memberof ServerConfiguration
      */
     ActivityLogRetentionDays?: number | null;
+    /**
+     * Gets or sets the how the library scan fans out.
+     * @type {number}
+     * @memberof ServerConfiguration
+     */
+    LibraryScanFanoutConcurrency?: number;
+    /**
+     * Gets or sets the how many metadata refreshes can run concurrently.
+     * @type {number}
+     * @memberof ServerConfiguration
+     */
+    LibraryMetadataRefreshConcurrency?: number;
 }
 
 
