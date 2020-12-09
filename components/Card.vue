@@ -53,7 +53,7 @@
           v-if="overlay"
           class="card-overlay d-flex justify-center align-center"
         >
-          <v-btn fab color="primary" :to="`/item/${item.Id}/play`">
+          <v-btn fab color="primary" nuxt :to="`/item/${item.Id}/play`">
             <v-icon size="36">mdi-play</v-icon>
           </v-btn>
         </div>
