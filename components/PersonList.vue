@@ -2,8 +2,8 @@
   <v-list color="transparent" two-line>
     <div v-if="items.length > 0">
       <v-list-item
-        v-for="item in items"
-        :key="item.Id"
+        v-for="(item, index) in items"
+        :key="`${item.Id}-${index}`"
         nuxt
         :to="`/person/${item.Id}`"
       >
