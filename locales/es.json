@@ -16,7 +16,7 @@
     "moreLikeThis": "Similar a esto",
     "play": "Reproducir",
     "present": "Actualidad",
-    "serverAddressMustBeUrl": "La dirección del servidor debe ser una URL válida",
+    "serverAddressMustBeUrl": "La dirección del servidor debe ser una dirección válida",
     "serverAddressRequired": "Se requiere dirección del servidor",
     "serverNotFound": "No se ha podido encontrar el servidor",
     "settings": "Ajustes",
@@ -68,12 +68,21 @@
     "studios": "Estudios",
     "sortByType": "Por {type}",
     "series": "Series",
-    "noResultsFound": "No se han encontrado resultados",
+    "noResultsFound": "No hay nada aquí",
     "networks": "Redes",
     "name": "Nombre",
     "filter": "Filtrar",
     "failedToRefreshItems": "Fallo al refrescar los artículos",
     "collections": "Colecciones",
     "artists": "Artistas",
-    "actors": "Actores"
+    "actors": "Actores",
+    "selectUser": "Seleccionar un usuario",
+    "manualLogin": "Inicio de sesión manual",
+    "loginAs": "Iniciar sesión como {name}",
+    "changeUser": "Cambiar usuario",
+    "validation": {
+        "required": "Este campo es obligatorio"
+    },
+    "shuffleAll": "Mezclar todo",
+    "libraries": "Bibliotecas"
 }

@@ -129,19 +129,6 @@ export default Vue.extend({
   max-height: 100%;
 }
 
-.empty-card-container {
-  max-height: 90vh;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-}
-
-.empty-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 @import '~vuetify/src/styles/styles.sass';
 .card-grid-container {
   display: grid;

@@ -1,52 +1,54 @@
 <template>
   <div>
-    <v-form
-      ref="form"
-      v-model="validInputs"
-      :disabled="loading"
-      @submit.prevent="userLogin"
-    >
-      <v-text-field
-        v-if="isEmpty(user)"
-        v-model="login.username"
-        outlined
-        :label="$t('username')"
-        :rules="[(v) => !!v || $t('usernameRequired')]"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="login.password"
-        outlined
-        :label="$t('password')"
-        :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-        :type="showPassword ? 'text' : 'password'"
-        @click:append="() => (showPassword = !showPassword)"
-      ></v-text-field>
-      <v-row align="center" no-gutters>
-        <v-col class="mr-2">
-          <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
-            {{ $t('changeServer') }}
-          </v-btn>
-          <v-btn v-else block large @click="$emit('change')">
-            {{ $t('changeUser') }}
-          </v-btn>
-        </v-col>
-        <v-col class="mr-2">
-          <v-btn
-            :disabled="!validInputs"
-            :loading="loading"
-            block
-            large
-            color="primary"
-            type="submit"
-            >{{ $t('signIn') }}</v-btn
-          >
-        </v-col>
-        <v-col cols="auto">
-          <locale-switcher />
-        </v-col>
-      </v-row>
-    </v-form>
+    <validation-observer v-slot="{ invalid }">
+      <v-form ref="form" :disabled="loading" @submit.prevent="userLogin">
+        <validation-provider
+          v-slot="{ errors }"
+          name="username"
+          :rules="rules.username"
+        >
+          <v-text-field
+            v-if="isEmpty(user)"
+            v-model="login.username"
+            outlined
+            :label="$t('username')"
+            :error-messages="errors"
+          ></v-text-field>
+        </validation-provider>
+        <v-text-field
+          v-model="login.password"
+          outlined
+          :label="$t('password')"
+          :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="showPassword ? 'text' : 'password'"
+          @click:append="() => (showPassword = !showPassword)"
+        ></v-text-field>
+        <v-row align="center" no-gutters>
+          <v-col class="mr-2">
+            <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
+              {{ $t('changeServer') }}
+            </v-btn>
+            <v-btn v-else block large @click="$emit('change')">
+              {{ $t('changeUser') }}
+            </v-btn>
+          </v-col>
+          <v-col class="mr-2">
+            <v-btn
+              :disabled="invalid"
+              :loading="loading"
+              block
+              large
+              color="primary"
+              type="submit"
+              >{{ $t('signIn') }}</v-btn
+            >
+          </v-col>
+          <v-col cols="auto">
+            <locale-switcher />
+          </v-col>
+        </v-row>
+      </v-form>
+    </validation-observer>
   </div>
 </template>
 
@@ -72,8 +74,12 @@ export default Vue.extend({
         password: ''
       },
       showPassword: false,
-      validInputs: false,
-      loading: false
+      loading: false,
+      rules: {
+        username: {
+          required: true
+        }
+      }
     };
   },
   methods: {
@@ -85,6 +91,7 @@ export default Vue.extend({
         // If we have a user from the public user selector, set it as login
         this.login.username = this.user.Name || '';
       }
+
       this.loading = true;
       this.setDeviceProfile();
       await this.loginRequest(this.login);

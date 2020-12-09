@@ -6,7 +6,8 @@
           item.ImageBlurHashes &&
           item.ImageBlurHashes.Primary &&
           item.ImageTags &&
-          item.ImageTags.Primary
+          item.ImageTags.Primary &&
+          item.ImageBlurHashes.Primary[item.ImageTags.Primary]
         "
         key="canvas"
         :hash="item.ImageBlurHashes.Primary[item.ImageTags.Primary]"
@@ -21,6 +22,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
+        @error="$emit('error')"
       />
     </transition-group>
   </div>

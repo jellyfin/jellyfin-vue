@@ -1,12 +1,15 @@
 <template>
-  <v-container>
-    <v-row
-      v-for="(homeSection, index) in homeSections"
-      :key="`homeSection-${index}`"
-    >
-      <home-section :section="homeSection" />
-    </v-row>
-  </v-container>
+  <div>
+    <home-header />
+    <v-container class="sections-after-header">
+      <v-row
+        v-for="(homeSection, index) in homeSections"
+        :key="`homeSection-${index}`"
+      >
+        <home-section :section="homeSection" />
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,10 +55,11 @@ export default Vue.extend({
 
     if (!Object.keys(homeSectionsArray).length) {
       homeSectionsArray = {
-        homeSection0: 'resume',
-        homeSection1: 'resumeaudio',
-        homeSection2: 'upnext',
-        homeSection3: 'latestmedia'
+        homeSection0: 'librarytiles',
+        homeSection1: 'resume',
+        homeSection2: 'resumeaudio',
+        homeSection3: 'upnext',
+        homeSection4: 'latestmedia'
       };
     }
 
@@ -67,6 +71,15 @@ export default Vue.extend({
 
       for (const homeSection of homeSectionsArray as Array<string>) {
         switch (homeSection) {
+          case 'librarytiles': {
+            homeSections.push({
+              name: this.$t('libraries'),
+              libraryId: '',
+              shape: 'thumb-card',
+              type: 'libraries'
+            });
+            break;
+          }
           case 'latestmedia': {
             const latestMediaSections = [];
 
@@ -90,7 +103,9 @@ export default Vue.extend({
                 }
 
                 latestMediaSections.push({
-                  name: `Latest ${userView.Name}`,
+                  name: this.$t('latestLibrary', {
+                    libraryName: userView.Name
+                  }),
                   libraryId: userView.Id || '',
                   shape: getShapeFromCollectionType(userView.CollectionType),
                   type: 'latestmedia'
@@ -103,7 +118,7 @@ export default Vue.extend({
           }
           case 'resume':
             homeSections.push({
-              name: 'Continue Watching',
+              name: this.$t('continueWatching'),
               libraryId: '',
               shape: 'thumb-card',
               type: 'resume'
@@ -111,7 +126,7 @@ export default Vue.extend({
             break;
           case 'resumeaudio':
             homeSections.push({
-              name: 'Continue Listening',
+              name: this.$t('continueListening'),
               libraryId: '',
               shape: 'square-card',
               type: 'resumeaudio'
@@ -119,7 +134,7 @@ export default Vue.extend({
             break;
           case 'upnext':
             homeSections.push({
-              name: 'Next Up',
+              name: this.$t('nextUp'),
               libraryId: '',
               shape: 'thumb-card',
               type: 'upnext'
@@ -138,3 +153,18 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .home-header-margin {
+    margin-top: -64px;
+  }
+}
+
+.sections-after-header {
+  position: relative;
+  z-index: 4;
+}
+</style>

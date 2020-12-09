@@ -6,6 +6,9 @@
       ><v-icon class="rating-icon" size="16">mdi-star</v-icon>
       {{ item.CommunityRating }}</span
     >
+    <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
+      {{ $t('numberTracks', { number: item.ChildCount }) }}
+    </span>
     <span v-if="item.RunTimeTicks && runtime">{{ runtimeValue }}</span>
     <span v-if="item.RunTimeTicks && endsAt">{{
       $t('endsAt', {
@@ -29,16 +32,16 @@ export default Vue.extend({
       required: true
     },
     year: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     rating: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     runtime: {
-      type: Boolean,
-      default: false
+      type: Boolean
+    },
+    tracks: {
+      type: Boolean
     },
     endsAt: {
       type: Boolean,

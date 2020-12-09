@@ -71,7 +71,7 @@
     "studios": "Hãng Phim",
     "sortByType": "Theo {type}",
     "series": "Loạt Phim",
-    "noResultsFound": "Không có kết quả",
+    "noResultsFound": "Không có gì ở đây",
     "networks": "Mạng",
     "name": "Tên",
     "liked": "Đã thích",
@@ -83,5 +83,16 @@
     "selectUser": "Chọn một người dùng",
     "manualLogin": "Đăng nhập thủ công",
     "loginAs": "Đăng nhập dưới tên {name}",
-    "changeUser": "Thay đổi người sử dụng"
+    "changeUser": "Thay đổi người sử dụng",
+    "unableGetRelated": "Không lấy dữ liệu các mục liên quan",
+    "validation": {
+        "mustBeUrl": "Trường này phải là một URL hợp lệ",
+        "required": "Trường này là bắt buộc"
+    },
+    "libraries": "Thư viện",
+    "viewDetails": "Xem chi tiết",
+    "numberTracks": "{number} kênh",
+    "nextUp": "Kếp tiếp",
+    "latestLibrary": "Gần nhất {libraryName}",
+    "darkModeToggle": "Chuyển đổi chế độ tối"
 }

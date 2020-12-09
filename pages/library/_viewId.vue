@@ -23,8 +23,9 @@
       />
     </v-app-bar>
     <v-container class="after-second-toolbar">
+      <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
-        <h1 class="text-h5">
+        <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
       </item-grid>
@@ -45,6 +46,8 @@ export default Vue.extend({
       loading: false,
       viewType: '',
       sortBy: 'SortName',
+      hasFilters: false,
+      isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
       statusFilter: [],
       genresFilter: [],
       yearsFilter: [],
@@ -158,12 +161,19 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     onChangeType(type: string) {
+      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
+
       this.viewType = type;
+      this.isDefaultView = defaultViews.includes(this.viewType);
     },
     onChangeSort(sort: string) {
       this.sortBy = sort;
     },
     onChangeFilter(filter: Record<string, any>) {
+      this.hasFilters = Object.values(filter).every((value) => {
+        return value.length > 0 || value !== false;
+      });
+
       this.genresFilter = filter.genres;
       this.statusFilter = filter.status;
       this.yearsFilter = filter.years;
@@ -277,7 +287,6 @@ export default Vue.extend({
         this.items = itemsResponse.Items;
         this.itemsCount = itemsResponse.TotalRecordCount;
       } catch (error) {
-        console.error('Unable to refresh items:', error);
         this.items = [];
         this.itemsCount = 0;
         this.pushSnackbarMessage({

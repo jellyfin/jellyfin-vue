@@ -27,7 +27,7 @@
     "rating": "Оценка",
     "releaseDate": "Дата выпуска",
     "serverAddress": "Адрес сервера",
-    "serverAddressMustBeUrl": "Адрес сервера должен быть действительным URL",
+    "serverAddressMustBeUrl": "Адрес сервера должен быть действительным",
     "serverAddressRequired": "Требуется адрес сервера",
     "serverNotFound": "Сервер не найден",
     "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше",
@@ -71,7 +71,7 @@
     "sortByType": "По {type}",
     "selectUser": "Выбрать пользователя",
     "series": "Сериал",
-    "noResultsFound": "Результатов не найдено",
+    "noResultsFound": "Здесь ничего нет",
     "networks": "Телесети",
     "name": "Имя",
     "manualLogin": "Войти вручную",
@@ -82,5 +82,16 @@
     "collections": "Коллекции",
     "changeUser": "Сменить пользователя",
     "artists": "Исполнители",
-    "actors": "Актёры"
+    "actors": "Актёры",
+    "unableGetRelated": "Невозможно получить связанные элементы",
+    "viewDetails": "Подробности",
+    "validation": {
+        "required": "Это поле обязательное",
+        "mustBeUrl": "В этом поле должен быть действующий URL"
+    },
+    "numberTracks": "{number} дорож[ка/ки/ек]",
+    "nextUp": "Очередное",
+    "libraries": "Медиатеки",
+    "latestLibrary": "Новейшее {libraryName}",
+    "darkModeToggle": "Переключиться на тёмный режим"
 }
