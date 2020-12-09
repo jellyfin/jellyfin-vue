@@ -12,7 +12,7 @@
             v-if="item.PrimaryImageTag"
             :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
           />
-          <v-icon class="grey darken-3">mdi-account</v-icon>
+          <v-icon v-else class="grey darken-3">mdi-account</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ item.Name }}</v-list-item-title>
