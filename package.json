@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@jellyfin/client-axios": "^10.7.0",
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.3",
@@ -46,8 +47,8 @@
     "shaka-player": "^3.0.6",
     "swiper": "5.x",
     "uuid": "^8.3.2",
-    "vue-awesome-swiper": "^4.1.1",
     "vee-validate": "^3.4.5",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-virtual-scroller": "^1.0.10",
     "vueperslides": "^2.12.1"
   },
