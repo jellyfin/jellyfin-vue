@@ -226,13 +226,19 @@ const config: NuxtConfig = {
       }
     },
     extend(config, { isDev, isClient }) {
-      // Web Worker support
       if (isClient) {
+        // Web Worker support
         config.module.rules.push({
-          test: /\.worker\.js$/,
-          use: { loader: 'worker-loader' },
-          exclude: /(node_modules)/
-        })
+          test: /\.worker\.(js|ts)$/i,
+          use: [
+            {
+              loader: 'comlink-loader',
+              options: {
+                singleton: true
+              }
+            }
+          ]
+        });
       }
     },
     transpile: ['@nuxtjs/auth']

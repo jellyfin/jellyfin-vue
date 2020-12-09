@@ -4,12 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-// eslint-disable-next-line import/no-webpack-loader-syntax, import/default
-import Worker from 'worker-loader!~/plugins/workers/blurhash.worker';
-
-const worker = new Worker();
-const pendingCanvas: { [id: string]: HTMLCanvasElement } = {};
-const computedHashes: { [id: string]: Uint8ClampedArray } = {};
+import getPixels from '~/plugins/workers/blurhash.worker';
 
 export default Vue.extend({
   props: {
@@ -30,25 +25,9 @@ export default Vue.extend({
       default: 1
     }
   },
-  mounted() {
-    if (!(this.hash in pendingCanvas) && !(this.hash in computedHashes)) {
-      pendingCanvas[this.hash] = this.$refs.canvas as HTMLCanvasElement;
-      worker.postMessage({
-        hash: this.hash,
-        width: this.width,
-        height: this.height
-      });
-      worker.onmessage = ({ data }) => {
-        this.draw(pendingCanvas[data.hash], data.pixels);
-        computedHashes[data.hash] = data.pixels;
-        delete pendingCanvas[data.hash];
-      };
-    } else {
-      this.draw(
-        this.$refs.canvas as HTMLCanvasElement,
-        computedHashes[this.hash]
-      );
-    }
+  async mounted() {
+    const pixels = await getPixels(this.hash, this.width, this.height);
+    this.draw(this.$refs.canvas as HTMLCanvasElement, pixels);
   },
   methods: {
     draw(canvas: HTMLCanvasElement, pixels: Uint8ClampedArray) {
