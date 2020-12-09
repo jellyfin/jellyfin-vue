@@ -28,7 +28,7 @@
     "@nuxtjs/axios": "^5.12.3",
     "@nuxtjs/pwa": "^3.3.2",
     "@types/dompurify": "^2.0.4",
-    "@types/jest": "^26.0.16",
+    "@types/jest": "^26.0.18",
     "@types/lodash": "^4.14.165",
     "@types/swiper": "^5.4.1",
     "@types/uuid": "^8.3.0",
