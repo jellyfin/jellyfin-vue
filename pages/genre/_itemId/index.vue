@@ -11,6 +11,7 @@
           :disabled="isPlayable"
           depressed
           rounded
+          nuxt
           :to="`./${genre.Id}/play`"
           >{{ $t('play') }}</v-btn
         >
@@ -21,6 +22,7 @@
           :disabled="isPlayable"
           outlined
           rounded
+          nuxt
           :to="`./${genre.Id}/shuffle`"
           >{{ $t('shuffleAll') }}</v-btn
         >

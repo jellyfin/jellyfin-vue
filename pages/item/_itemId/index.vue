@@ -61,6 +61,7 @@
                 :disabled="isPlayable"
                 depressed
                 rounded
+                nuxt
                 :to="`./${item.Id}/play`"
                 >{{ $t('play') }}</v-btn
               >

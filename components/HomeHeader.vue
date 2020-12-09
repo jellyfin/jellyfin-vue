@@ -67,6 +67,7 @@
                 min-width="8em"
                 depressed
                 rounded
+                nuxt
                 :to="`item/${item.Id}/play`"
                 >{{ $t('play') }}</v-btn
               >
@@ -74,6 +75,7 @@
                 min-width="12em"
                 outlined
                 rounded
+                nuxt
                 :to="`item/${item.Id}`"
                 >{{ $t('viewDetails') }}</v-btn
               >
