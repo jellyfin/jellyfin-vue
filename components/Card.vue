@@ -70,8 +70,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
-import { BaseItemDto } from '~/api';
 
 export default Vue.extend({
   mixins: [imageHelper],

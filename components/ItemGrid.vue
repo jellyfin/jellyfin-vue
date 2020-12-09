@@ -42,7 +42,7 @@
 <script lang="ts">
 import { chunk } from 'lodash';
 import Vue from 'vue';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType, ItemFields } from '../api';
+import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
