@@ -294,7 +294,7 @@ import {
   BaseItemPerson,
   MediaSourceInfo,
   MediaStream
-} from '~/api';
+} from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({

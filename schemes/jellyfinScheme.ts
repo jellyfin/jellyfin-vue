@@ -2,7 +2,7 @@ import compareVersions from 'compare-versions';
 import { Context } from '@nuxt/types';
 import { Auth } from '@nuxtjs/auth';
 import { AxiosResponse } from 'axios';
-import { AuthenticationResult } from '~/api';
+import { AuthenticationResult } from '@jellyfin/client-axios';
 
 interface NuxtAuth extends Auth {
   // Fix the wonky DefinitelyTyped definition

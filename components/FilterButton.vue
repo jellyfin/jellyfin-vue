@@ -209,7 +209,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ItemFilter } from '~/api';
+import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
