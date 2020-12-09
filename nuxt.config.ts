@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
+import webpack from 'webpack';
 
 const config: NuxtConfig = {
   /*
@@ -228,10 +229,13 @@ const config: NuxtConfig = {
         ];
       }
     },
-    extend(config, { isDev, isClient }) {
+    extend(
+      config: webpack.Configuration,
+      { isClient }: { isClient: boolean }
+    ): void {
       if (isClient) {
         // Web Worker support
-        config.module.rules.push({
+        config.module?.rules.push({
           test: /\.worker\.(js|ts)$/i,
           use: [
             {

@@ -6,17 +6,16 @@ import { decode } from 'blurhash';
  * @param {string} hash - Hash to decode.
  * @param {number} width - Width of the decoded pixel array
  * @param {height} height - Height of the decoded pixel array
- * @returns {Promise} Returns the decoded pixels in the proxied response by Comlink
+ * @returns {Uint8ClampedArray} - Returns the decoded pixels in the proxied response by Comlink
  */
-export default async function getPixels(
+export default function getPixels(
   hash: string,
   width: number,
   height: number
-): Promise<Uint8ClampedArray> {
+): Uint8ClampedArray {
   try {
-    const pixels = await decode(hash, width, height);
-    return pixels;
+    return decode(hash, width, height);
   } catch {
-    throw new TypeError('Blurhash' + hash + ' is not valid');
+    throw new TypeError(`Blurhash ${hash} is not valid`);
   }
 }

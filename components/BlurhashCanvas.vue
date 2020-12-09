@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvas" :width="width" :height="height" />
+  <canvas v-if="validHash" ref="canvas" :width="width" :height="height" />
 </template>
 
 <script lang="ts">
@@ -25,19 +25,33 @@ export default Vue.extend({
       default: 1
     }
   },
-  async mounted() {
-    const pixels = await getPixels(this.hash, this.width, this.height);
-    this.draw(this.$refs.canvas as HTMLCanvasElement, pixels);
+  data() {
+    return {
+      validHash: true
+    };
+  },
+  watch: {
+    hash() {
+      this.$nextTick(() => {
+        this.draw();
+      });
+    }
+  },
+  mounted() {
+    this.draw();
   },
   methods: {
-    draw(canvas: HTMLCanvasElement, pixels: Uint8ClampedArray) {
-      if (pixels) {
-        const ctx = canvas.getContext('2d');
-        const imageData = ctx?.createImageData(this.width, this.height);
+    async draw() {
+      const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+      const imageData = ctx?.createImageData(this.width, this.height);
+      try {
+        const pixels = await getPixels(this.hash, this.width, this.height);
         if (imageData) {
           imageData.data.set(pixels);
           ctx?.putImageData(imageData, 0, 0);
         }
+      } catch {
+        this.validHash = false;
       }
     }
   }
