@@ -1250,6 +1250,13 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
+"@jellyfin/client-axios@^10.7.0":
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/@jellyfin/client-axios/-/client-axios-10.7.0.tgz#7028cdfb6fbbb08a9d89da4691baabb52778a859"
+  integrity sha512-XS/77cY3MJ/ITFf/BppGTtrncB3Bsf+fQq4MsVgwlMo98rTfLm0sXJXxIgZHDd1P2Cb/iSOVsqPGuYr+OSW/qA==
+  dependencies:
+    axios "^0.19.2"
+
 "@jest/console@^26.6.2":
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-26.6.2.tgz#4e04bc464014358b03ab4937805ee36a0aeb98f2"
