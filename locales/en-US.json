@@ -121,8 +121,8 @@
       "name": "Live TV & DVR"
     },
     "logs": {
-      "description": "Read and search server logs",
-      "name": "Logs"
+      "description": "Read and search server logs and user activity",
+      "name": "Logs & activity"
     },
     "mediaPlayers": {
       "description": "Configure how the media players behave for this device",
@@ -191,6 +191,7 @@
   "version": "Version",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
+  "vueClientVersion": "Vue client version",
   "years": "Years",
   "youMayAlsoLike": "You may also like"
 }

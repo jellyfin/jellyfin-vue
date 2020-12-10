@@ -24,7 +24,6 @@
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
       "nuxt-i18n",
-      "@nuxtjs/date-fns",
       "jest"
     ]
   },

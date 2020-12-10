@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" offset-md="1" md="4" class="pt-0 pb-4">
+      <v-col cols="12" offset-lg="1" md="5" lg="4" class="pt-0 pb-4">
         <v-card
           v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator"
           :class="{ 'mb-4': !$vuetify.breakpoint.mobile }"
@@ -41,6 +41,14 @@
                     <span>{{ systemInfo.SystemArchitecture }}</span>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="5" class="py-0">
+                    <span>{{ $t('vueClientVersion') }}</span>
+                  </v-col>
+                  <v-col class="py-0">
+                    <span>{{ vueVersion }}</span>
+                  </v-col>
+                </v-row>
               </v-col>
               <v-col cols="3" class="d-flex justify-end">
                 <v-avatar tile size="96" color="grey">
@@ -59,7 +67,7 @@
                     v-html="
                       sanitizeHtml(
                         $t('links.poweredByJellyfinLink', {
-                          link: jellyfinLink
+                          link: linkItems[0].link
                         })
                       )
                     "
@@ -69,7 +77,7 @@
                     v-html="
                       sanitizeHtml(
                         $t('links.readTheDocumentationLink', {
-                          link: documentationLink
+                          link: linkItems[1].link
                         })
                       )
                     "
@@ -79,7 +87,7 @@
                     v-html="
                       sanitizeHtml(
                         $t('links.helpTranslateLink', {
-                          link: translateLink
+                          link: linkItems[1].link
                         })
                       )
                     "
@@ -89,7 +97,7 @@
                     v-html="
                       sanitizeHtml(
                         $t('links.reportAnIssueLink', {
-                          link: bugLink
+                          link: linkItems[2].link
                         })
                       )
                     "
@@ -97,18 +105,13 @@
                 </p>
               </v-col>
               <v-col cols="3" class="d-flex justify-end">
-                <img src="~/static/icon.png" :alt="$t('jellyfinLogo')" />
+                <v-img src="/icon.png" width="100%" :alt="$t('jellyfinLogo')" />
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col
-        cols="12"
-        :offset-md="isEmpty(systemInfo) ? 5 : 0"
-        md="5"
-        class="pt-0 pb-4"
-      >
+      <v-col cols="12" md="6" lg="5" class="pt-0 pb-4">
         <!-- User settings -->
         <v-list two-line class="mb-4">
           <v-list-item-group>
@@ -159,6 +162,7 @@
               v-for="linkItem in linkItems"
               :key="linkItem.name"
               :href="linkItem.link"
+              target="_blank"
             >
               <v-list-item-avatar>
                 <v-icon v-text="linkItem.icon" />
@@ -167,7 +171,7 @@
                 <v-list-item-title v-text="linkItem.name" />
               </v-list-item-content>
               <v-list-item-action>
-                <v-icon>mdi-chevron-right</v-icon>
+                <v-icon>mdi-open-in-new</v-icon>
               </v-list-item-action>
             </v-list-item>
           </v-list-item-group>
@@ -178,21 +182,19 @@
 </template>
 
 <script lang="ts">
-import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { SystemInfo } from '~/api';
+import { isEmpty } from 'lodash';
+import { SystemInfo } from '@jellyfin/client-axios';
+import { version } from '~/package.json';
 import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
   mixins: [htmlHelper],
   data() {
     return {
-      jellyfinLink: 'https://jellyfin.org/',
-      documentationLink: 'https://jellyfin.org/docs/',
-      translateLink: 'https://translate.jellyfin.org',
-      bugLink: 'https://github.com/jellyfin/jellyfin-vue/issues/new',
       systemInfo: {} as SystemInfo,
+      vueVersion: version,
       userItems: [
         {
           icon: 'mdi-account',
@@ -293,12 +295,12 @@ export default Vue.extend({
         {
           icon: 'mdi-rocket-launch',
           name: this.$t('links.poweredByJellyfin'),
-          link: 'https://jellyfin.org/'
+          link: 'https://jellyfin.org'
         },
         {
           icon: 'mdi-book',
           name: this.$t('links.readTheDocumentation'),
-          link: 'https://jellyfin.org/docs/'
+          link: 'https://docs.jellyfin.org'
         },
         {
           icon: 'mdi-translate',
