@@ -53,8 +53,9 @@
                                 class="link"
                                 tag="h2"
                                 :to="`/item/${appearance.Id}/`"
-                                >{{ appearance.Name }}</nuxt-link
                               >
+                                {{ appearance.Name }}
+                              </nuxt-link>
                             </v-col>
                           </v-row>
                           <v-row>

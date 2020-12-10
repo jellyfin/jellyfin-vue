@@ -94,7 +94,7 @@
                 outlined
                 small-chips
               >
-                <template v-slot:no-data>
+                <template #no-data>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -118,7 +118,7 @@
                 outlined
                 small-chips
               >
-                <template v-slot:no-data>
+                <template #no-data>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -172,9 +172,9 @@
     </v-card-text>
 
     <v-card-actions class="d-flex justify-center align-center">
-      <v-btn @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn @click="$emit('cancel')">{{ $t('cancel') }}</v-btn>
       <v-btn color="primary" :loading="loading" @click="saveMetadata">
-        Save
+        {{ $t('save') }}
       </v-btn>
     </v-card-actions>
     <person-editor
@@ -188,7 +188,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { pick, set } from 'lodash';
-import { BaseItemDto, BaseItemPerson } from '~/api';
+import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

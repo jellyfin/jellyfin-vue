@@ -49,8 +49,9 @@
               large
               color="primary"
               type="submit"
-              >{{ $t('signIn') }}</v-btn
             >
+              {{ $t('signIn') }}
+            </v-btn>
           </v-col>
           <v-col cols="auto">
             <locale-switcher />

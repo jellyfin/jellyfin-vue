@@ -21,10 +21,10 @@
               />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title>{{ episode.Name }} </v-list-item-title>
-              <v-list-item-subtitle>{{
-                episode.Overview
-              }}</v-list-item-subtitle>
+              <v-list-item-title>{{ episode.Name }}</v-list-item-title>
+              <v-list-item-subtitle>
+                {{ episode.Overview }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>

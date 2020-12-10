@@ -5,7 +5,7 @@
         <v-btn
           class="card-more-button"
           icon
-          smal
+          small
           v-bind="attrs"
           v-on="on"
           @click.stop.prevent

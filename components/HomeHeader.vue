@@ -76,16 +76,18 @@
                 rounded
                 nuxt
                 :to="`item/${item.Id}/play`"
-                >{{ $t('play') }}</v-btn
               >
+                {{ $t('play') }}
+              </v-btn>
               <v-btn
                 min-width="12em"
                 outlined
                 rounded
                 nuxt
                 :to="`item/${item.Id}`"
-                >{{ $t('viewDetails') }}</v-btn
               >
+                {{ $t('viewDetails') }}
+              </v-btn>
             </v-col>
           </v-row>
         </v-container>
