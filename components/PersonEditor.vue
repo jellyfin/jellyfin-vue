@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemPerson } from '~/api';
+import { BaseItemPerson } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

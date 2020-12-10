@@ -95,7 +95,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageProviderInfo, RemoteImageInfo, ImageType } from '~/api';
+import {
+  ImageProviderInfo,
+  RemoteImageInfo,
+  ImageType
+} from '@jellyfin/client-axios';
 
 export default Vue.extend({
   filters: {

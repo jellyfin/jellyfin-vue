@@ -80,7 +80,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageInfo, ImageType } from '~/api';
+import { ImageInfo, ImageType } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
@@ -136,7 +136,7 @@ export default Vue.extend({
       this.dialog = true;
     },
     async handleDelete(item: ImageInfo) {
-      await this.$api.image.deleteItemImage2({
+      await this.$api.image.deleteItemImage({
         itemId: this.metadata.Id,
         imageType: item.ImageType as ImageType,
         imageIndex: item.ImageIndex || 0

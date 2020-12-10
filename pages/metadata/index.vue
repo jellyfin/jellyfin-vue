@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 type ITreeNode = {
   id: string | number | undefined;
