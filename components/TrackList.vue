@@ -19,7 +19,7 @@
         >
           <td colspan="4" class="text--secondary">
             <v-icon class="text--secondary">mdi-disc</v-icon>
-            {{ $t('disc', { discNumber }) }}
+            {{ $t('discNumber', { discNumber }) }}
           </td>
         </tr>
         <v-hover
