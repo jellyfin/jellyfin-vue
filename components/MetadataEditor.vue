@@ -329,7 +329,7 @@ export default Vue.extend({
         this.$emit('save');
         this.loading = false;
         this.$store.dispatch('snackbar/display', {
-          message: 'saved',
+          message: this.$t('saved'),
           color: 'success'
         });
       } catch (error) {

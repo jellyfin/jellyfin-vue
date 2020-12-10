@@ -205,7 +205,7 @@
   "viewDetails": "View details",
   "vueClientVersion": "Vue client version",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
   "signIn": "Sign in",
   "unexpectedError": "Unexpected error",
   "upNext": "Up next",
@@ -245,6 +245,7 @@
   "role": "Role",
   "primary": "Primary",
   "art": "Art",
+  "saved": "Saved",
   "backdrop": "Backdrop",
   "banner": "Banner",
   "box": "Box",
