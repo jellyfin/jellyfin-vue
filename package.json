@@ -41,7 +41,7 @@
     "lodash": "^4.17.20",
     "mux.js": "^5.7.0",
     "nuxt": "^2.14.11",
-    "nuxt-i18n": "^6.15.4",
+    "nuxt-i18n": "^6.16.0",
     "nuxt-vuex-localstorage": "^1.2.7",
     "qs": "^6.9.4",
     "shaka-player": "^3.0.6",
