@@ -175,6 +175,10 @@ const config: NuxtConfig = {
     },
     detectBrowserLanguage: { useCookie: false }
   },
+  dateFns: {
+    locales: ['en-US', 'zh-CN'],
+    defaultLocale: 'en-US'
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     :value="dialog"
-    max-width="60%"
+    max-width="80%"
     @click:outside="$emit('update:dialog', false)"
   >
     <metadata-editor

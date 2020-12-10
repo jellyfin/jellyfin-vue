@@ -26,7 +26,7 @@
                 <v-btn icon @click="handleSearch">
                   <v-icon>mdi-magnify</v-icon>
                 </v-btn>
-                <v-btn icon class="ml-3" @click="handleDelete">
+                <v-btn icon class="ml-3" @click="handleDelete(item)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -55,13 +55,13 @@
               ></v-img>
               <div class="text-center subtitle-1">{{ item.ImageType }}</div>
               <div class="text-center body-2 grey--text text--darken-2">
-                {{ item.Width }} x {{ item.Height }}
+                {{ item.Width }} &times; {{ item.Height }}
               </div>
               <v-card-actions class="justify-center">
                 <v-btn icon @click="handleSearch">
                   <v-icon>mdi-magnify</v-icon>
                 </v-btn>
-                <v-btn icon class="ml-3" @click="handleDelete">
+                <v-btn icon class="ml-3" @click="handleDelete(item)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -80,7 +80,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageInfo } from '~/api';
+import { ImageInfo, ImageType } from '~/api';
 
 export default Vue.extend({
   props: {
@@ -135,8 +135,13 @@ export default Vue.extend({
     handleSearch() {
       this.dialog = true;
     },
-    handleDelete() {
-      console.log(1);
+    async handleDelete(item: ImageInfo) {
+      await this.$imageApi.deleteItemImage2({
+        itemId: this.metadata.Id,
+        imageType: item.ImageType as ImageType,
+        imageIndex: item.ImageIndex || 0
+      });
+      this.getItemImageInfos();
     }
   }
 });

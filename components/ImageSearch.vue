@@ -56,11 +56,23 @@
               <div class="text-center subtitle-1 mt-2">
                 {{ item.ProviderName }}
               </div>
-              <div class="text-center body-2 grey--text text--darken-2">
-                {{ item.Width }} x {{ item.Height }} • {{ item.Language }}
+              <div
+                v-if="item.Width && item.Height"
+                class="text-center body-2 grey--text text--darken-2"
+              >
+                {{ item.Width }} &times; {{ item.Height }}
+                <template v-if="item.Language">
+                  &middot; {{ item.Language }}
+                </template>
               </div>
-              <div class="text-center body-2 grey--text text--darken-2">
-                {{ item.CommunityRating | fixed }} • {{ item.VoteCount }} votes
+              <div
+                v-if="item.CommunityRating"
+                class="text-center body-2 grey--text text--darken-2"
+              >
+                {{ item.CommunityRating | fixed }} &middot;
+                <template v-if="item.VoteCount">
+                  {{ item.VoteCount }} votes
+                </template>
               </div>
               <v-card-actions class="justify-center">
                 <v-btn icon :disabled="loading" @click="handleDownload(item)">

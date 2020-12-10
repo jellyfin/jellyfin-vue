@@ -35,10 +35,10 @@ export default Vue.extend({
   },
   computed: {},
   async created() {
-    const floders = (await this.$libraryApi.getMediaFolders()).data
+    const folders = (await this.$libraryApi.getMediaFolders()).data
       .Items as BaseItemDto[];
 
-    this.items = floders.map((dir, index) => {
+    this.items = folders.map((dir, index) => {
       return {
         id: dir.Id || index,
         name: dir.Name,
@@ -48,10 +48,9 @@ export default Vue.extend({
   },
   methods: {
     async fetchItems(node: ITreeNode) {
-      const userId = this.$auth.user.Id;
       const libItems = (((
         await this.$userLibraryApi.getItem(
-          { userId, itemId: '' },
+          { userId: this.$auth.user.Id, itemId: '' },
           {
             query: {
               ParentId: node.id,

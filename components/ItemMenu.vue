@@ -30,6 +30,10 @@
 <script lang="ts">
 import Vue from 'vue';
 
+type IMenuItem = {
+  title: string;
+  action: () => void;
+};
 export default Vue.extend({
   props: {
     itemId: { type: String, default: '' }
@@ -41,13 +45,11 @@ export default Vue.extend({
   },
   computed: {
     items: {
-      get() {
+      get(): IMenuItem[] {
         return [
           {
-            title: this.$t('editMetadata'),
+            title: this.$t('editMetadata') as string,
             action: () => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               this.dialog = true;
             }
           }
