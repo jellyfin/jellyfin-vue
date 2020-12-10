@@ -46,14 +46,16 @@ export default Vue.extend({
   computed: {
     items: {
       get(): IMenuItem[] {
-        return [
-          {
+        const iMenuItems = [] as IMenuItem[];
+        if (this.$auth.$state.user.Policy.IsAdministrator) {
+          iMenuItems.push({
             title: this.$t('editMetadata') as string,
             action: () => {
               this.dialog = true;
             }
-          }
-        ];
+          });
+        }
+        return iMenuItems;
       }
     }
   }
