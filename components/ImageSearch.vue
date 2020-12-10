@@ -212,7 +212,7 @@ export default Vue.extend({
   methods: {
     async getRemoteImageProviders() {
       this.providers = (
-        await this.$remoteImageApi.getRemoteImageProviders({
+        await this.$api.remoteImage.getRemoteImageProviders({
           itemId: this.metadata.Id
         })
       ).data;
@@ -220,7 +220,7 @@ export default Vue.extend({
     async getImages() {
       this.loading = true;
       this.images = (
-        await this.$remoteImageApi.getRemoteImages({
+        await this.$api.remoteImage.getRemoteImages({
           itemId: this.metadata.Id,
           type: this.type,
           limit: 30,
@@ -237,7 +237,7 @@ export default Vue.extend({
     },
     async handleDownload(item: RemoteImageInfo) {
       this.loading = true;
-      await this.$remoteImageApi.downloadRemoteImage({
+      await this.$api.remoteImage.downloadRemoteImage({
         type: item.Type as ImageType,
         imageUrl: item.Url as string,
         itemId: this.metadata.Id

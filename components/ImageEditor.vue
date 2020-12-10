@@ -124,7 +124,7 @@ export default Vue.extend({
   methods: {
     async getItemImageInfos() {
       this.images = (
-        await this.$imageApi.getItemImageInfos({
+        await this.$api.image.getItemImageInfos({
           itemId: this.metadata.Id
         })
       ).data;
@@ -136,7 +136,7 @@ export default Vue.extend({
       this.dialog = true;
     },
     async handleDelete(item: ImageInfo) {
-      await this.$imageApi.deleteItemImage2({
+      await this.$api.image.deleteItemImage2({
         itemId: this.metadata.Id,
         imageType: item.ImageType as ImageType,
         imageIndex: item.ImageIndex || 0

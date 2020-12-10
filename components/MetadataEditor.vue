@@ -1,5 +1,5 @@
 <template>
-  <v-card min-height="100%">
+  <v-card height="90vh">
     <v-card-title class="headline">{{ $t('editMetadata') }}</v-card-title>
     <v-card-text>
       <v-form ref="form" :disabled="saved">
@@ -245,7 +245,7 @@ export default Vue.extend({
     async fetchItemInfo() {
       const userId = this.$auth.user.Id;
       const itemInfo = (
-        await this.$userLibraryApi.getItem({
+        await this.$api.userLibrary.getItem({
           userId,
           itemId: this.itemId
         })
@@ -254,13 +254,13 @@ export default Vue.extend({
     },
     async getGenres(parentId = '') {
       this.genders = (
-        await this.$genresApi.getGenres({
+        await this.$api.genres.getGenres({
           parentId
         })
       ).data.Items?.map((i) => i.Name) as BaseItemDto[];
     },
     async getAncestors() {
-      return await this.$libraryApi.getAncestors({
+      return await this.$api.library.getAncestors({
         itemId: this.metadata.Id as string,
         userId: this.$auth.user.Id
       });
@@ -307,7 +307,7 @@ export default Vue.extend({
       ]);
       try {
         this.loading = true;
-        await this.$itemUpdateApi.updateItem({
+        await this.$api.itemUpdate.updateItem({
           itemId: this.metadata.Id as string,
           baseItemDto: item
         });
@@ -360,5 +360,9 @@ export default Vue.extend({
 <style scoped>
 .person-icon {
   background-color: var(--v-secondary-darken1);
+}
+.headline {
+  border-bottom: 1px solid #000;
+  margin-bottom: 20px;
 }
 </style>
