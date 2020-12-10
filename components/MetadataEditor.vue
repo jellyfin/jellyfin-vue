@@ -386,10 +386,7 @@ export default Vue.extend({
   border-right: 1px solid var(--v-secondary-lighten1);
 }
 .metadata-editor >>> .v-card__actions {
-  position: absolute;
-  bottom: 10px;
   width: 100%;
-  background-color: #1e1e1e;
 }
 .scroll-ban {
   overflow: hidden;
