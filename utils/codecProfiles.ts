@@ -1,11 +1,11 @@
-import { browserDetector } from '~/plugins/browserDetection';
 import {
   CodecProfile,
   CodecType,
   ProfileConditionType,
   ProfileCondition,
   ProfileConditionValue
-} from '~/api';
+} from '@jellyfin/client-axios';
+import { browserDetector } from '~/plugins/browserDetection';
 
 /**
  * Creates a profile condition object for use in device playback profiles.

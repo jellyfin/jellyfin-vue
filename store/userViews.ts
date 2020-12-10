@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLibraryIcon } from '~/utils/items';
 
 export interface UserViewsState {

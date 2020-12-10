@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { PublicSystemInfo } from '~/api';
+import { PublicSystemInfo } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

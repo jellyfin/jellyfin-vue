@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ItemFields } from '~/api';
+import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

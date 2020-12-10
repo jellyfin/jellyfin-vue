@@ -206,6 +206,8 @@ const config: NuxtConfig = {
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
+
+   ** Build perfs options come from this https://github.com/nuxt/nuxt.js/issues/5131#issuecomment-468231314
    */
   build: {
     // @ts-ignore -- Undocumented options
@@ -249,6 +251,9 @@ const config: NuxtConfig = {
       }
     },
     transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
+    cache: true,
+    hardSource: true,
+    parallel: true
   },
 
   /**

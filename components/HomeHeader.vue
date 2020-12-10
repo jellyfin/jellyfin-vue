@@ -67,6 +67,7 @@
                 min-width="8em"
                 depressed
                 rounded
+                nuxt
                 :to="`item/${item.Id}/play`"
                 >{{ $t('play') }}</v-btn
               >
@@ -74,6 +75,7 @@
                 min-width="12em"
                 outlined
                 rounded
+                nuxt
                 :to="`item/${item.Id}`"
                 >{{ $t('viewDetails') }}</v-btn
               >
@@ -89,7 +91,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { SwiperOptions } from 'swiper';
-import { BaseItemDto, ImageType, ItemFields } from '~/api';
+import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 
