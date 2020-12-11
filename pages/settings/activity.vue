@@ -79,7 +79,7 @@ export default Vue.extend({
     this.setPageTitle({ title: this.$t('activityLogs') });
     // calculating date of 7 days ago as min date to get activity logs
     const minDate = new Date();
-    minDate.setTime(minDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    minDate.setDate(minDate.getDate() - 7);
     this.activityList =
       (await this.$api.activityLog.getLogEntries({ minDate })).data.Items || [];
     this.logFiles = (await this.$api.system.getServerLogs()).data;
