@@ -3,6 +3,10 @@
   "albums": "Albums",
   "alphabetically": "Alphabetically",
   "architecture": "Architecture",
+  "activityLogs": "Activity Logs",
+  "actors": "Actors",
+  "albums": "Albums",
+  "alphabetically": "Alphabetically",
   "artist": "Artist",
   "artists": "Artists",
   "badRequest": "Bad request. Try again",
@@ -71,6 +75,8 @@
   "noResultsFound": "There is nothing here",
   "numberTracks": "{number} tracks",
   "operatingSystem": "Operating system",
+  "numberTracks": "{number} tracks",
+  "noResultsFound": "There is nothing here",
   "parentalRatings": "Parental Ratings",
   "password": "Password",
   "play": "Play",
@@ -165,6 +171,12 @@
       "name": "Users"
     }
   },
+  "serverAddress": "Server address",
+  "serverAddressMustBeUrl": "Server address must be a valid address",
+  "serverAddressRequired": "Server address is required",
+  "serverNotFound": "Server not found",
+  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
+  "settings": "Settings",
   "shows": "Shows",
   "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
@@ -291,4 +303,8 @@
     "viewDetails": "View details",
     "years": "Years",
     "youMayAlsoLike": "You may also like"
+  "videoTypes": "Video Types",
+  "viewDetails": "View details",
+  "years": "Years",
+  "youMayAlsoLike": "You may also like"
 }

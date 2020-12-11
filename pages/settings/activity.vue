@@ -9,6 +9,7 @@
               :key="file.Name"
               :href="getLogFileLink(file.Name)"
               target="_blank"
+              rel="noopener"
             >
               <v-list-item-avatar>
                 <v-icon>mdi-file</v-icon>
@@ -57,7 +58,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
-import { ActivityLogEntry, LogFile, LogLevel } from '~/api';
+import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
@@ -76,6 +77,7 @@ export default Vue.extend({
   },
   async beforeMount() {
     this.setPageTitle({ title: this.$t('activityLogs') });
+    // calculating date of 7 days ago as min date to get activity logs
     const minDate = new Date();
     minDate.setTime(minDate.getTime() - 7 * 24 * 60 * 60 * 1000);
     this.activityList =
@@ -132,8 +134,7 @@ export default Vue.extend({
       return day;
     },
     getFormattedLogDate(date: Date): string {
-      const day = this.$dateFns.format(date, 'Ppp');
-      return day;
+      return this.$dateFns.format(date, 'Ppp');
     },
     getLogFileLink(name: string): string {
       return (
