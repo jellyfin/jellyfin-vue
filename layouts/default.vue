@@ -48,7 +48,7 @@
         <v-list>
           <v-list-item>
             <v-switch
-              v-model="$vuetify.theme.dark"
+              v-model="darkMode"
               :label="$t('darkModeToggle')"
             ></v-switch>
           </v-list-item>
@@ -124,6 +124,16 @@ export default Vue.extend({
   },
   computed: {
     ...mapState('page', ['opaqueAppBar']),
+    darkMode: {
+      get() {
+        return this.$store.getters['displayPreferences/getDarkMode'];
+      },
+      set(value: boolean) {
+        this.$store.dispatch('displayPreferences/setDarkMode', {
+          darkMode: value
+        });
+      }
+    },
     items() {
       return [
         {
@@ -147,6 +157,7 @@ export default Vue.extend({
     }
   },
   beforeMount() {
+    this.$store.dispatch('displayPreferences/updateDarkMode', {});
     this.refreshUserViews();
   },
   methods: {
