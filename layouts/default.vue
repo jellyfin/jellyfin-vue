@@ -47,10 +47,7 @@
       <template #append>
         <v-list>
           <v-list-item>
-            <v-switch
-              v-model="darkMode"
-              :label="$t('darkModeToggle')"
-            ></v-switch>
+            <dark-mode-toggle />
           </v-list-item>
           <v-list-item
             v-for="(item, i) in configItems"
@@ -124,16 +121,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapState('page', ['opaqueAppBar']),
-    darkMode: {
-      get() {
-        return this.$store.getters['displayPreferences/getDarkMode'];
-      },
-      set(value: boolean) {
-        this.$store.dispatch('displayPreferences/setDarkMode', {
-          darkMode: value
-        });
-      }
-    },
     items() {
       return [
         {
