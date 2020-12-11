@@ -156,10 +156,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.v-application {
-  background-color: var(--v-background-base) !important;
-}
-
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }
