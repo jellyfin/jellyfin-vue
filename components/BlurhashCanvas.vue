@@ -1,10 +1,10 @@
 <template>
-  <canvas ref="canvas" :width="width" :height="height" />
+  <canvas v-if="validHash" ref="canvas" :width="width" :height="height" />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { decode } from 'blurhash';
+import getPixels from '~/plugins/workers/blurhash.worker';
 
 export default Vue.extend({
   props: {
@@ -25,6 +25,11 @@ export default Vue.extend({
       default: 1
     }
   },
+  data() {
+    return {
+      validHash: true
+    };
+  },
   watch: {
     hash() {
       this.$nextTick(() => {
@@ -36,15 +41,17 @@ export default Vue.extend({
     this.draw();
   },
   methods: {
-    draw() {
-      const pixels = decode(this.hash, this.width, this.height);
-      if (pixels) {
-        const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-        const imageData = ctx?.createImageData(this.width, this.height);
+    async draw() {
+      const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+      const imageData = ctx?.createImageData(this.width, this.height);
+      try {
+        const pixels = await getPixels(this.hash, this.width, this.height);
         if (imageData) {
           imageData.data.set(pixels);
           ctx?.putImageData(imageData, 0, 0);
         }
+      } catch {
+        this.validHash = false;
       }
     }
   }

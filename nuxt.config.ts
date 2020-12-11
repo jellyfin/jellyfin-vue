@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
+import webpack from 'webpack';
 
 const config: NuxtConfig = {
   /*
@@ -228,6 +229,25 @@ const config: NuxtConfig = {
             }
           ]
         ];
+      }
+    },
+    extend(
+      config: webpack.Configuration,
+      { isClient }: { isClient: boolean }
+    ): void {
+      if (isClient) {
+        // Web Worker support
+        config.module?.rules.push({
+          test: /\.worker\.(js|ts)$/i,
+          use: [
+            {
+              loader: 'comlink-loader',
+              options: {
+                singleton: true
+              }
+            }
+          ]
+        });
       }
     },
     transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules'],
