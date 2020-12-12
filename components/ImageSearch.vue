@@ -1,95 +1,92 @@
 <template>
   <v-dialog
     :value="dialog"
-    max-width="75%"
+    :fullscreen="$vuetify.breakpoint.mobile"
+    content-class="image-search-dialog-content"
+    width="60%"
     @click:outside="$emit('update:dialog', false)"
   >
-    <div class="image-search">
-      <v-card class="grey darken-4 px-4" min-height="600">
-        <v-card-title>{{ $t('search') }}</v-card-title>
-        <v-row>
-          <v-col cols="3" offset="1">
-            <v-select
-              v-model="source"
-              :items="sources"
-              :disabled="loading"
-              label="Source"
-              outlined
-            ></v-select>
-          </v-col>
-          <v-col cols="3">
-            <v-select
-              v-model="type"
-              :items="types"
-              :disabled="loading"
-              label="Type"
-              outlined
-            ></v-select>
-          </v-col>
-          <!-- TODO: pagination -->
-          <!-- <v-col cols="2" class="d-flex mb-8">
-          <div class="body-2 d-flex align-center">pagination</div>
-        </v-col> -->
-          <v-col cols="4">
-            <v-checkbox
-              v-model="allLanguage"
-              label="All Language"
-              value="true"
-              :disabled="loading"
-              hide-details
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-        <v-row>
-          <div class="pl-4 img-container" style="width: 100%">
-            <v-card v-for="(item, i) in images" :key="i" class="img-card">
-              <v-img
-                :src="imageFormat(item.Url)"
-                :aspect-ratio="ratio"
-                position="top center"
-                contain
-              ></v-img>
-              <div class="text-center subtitle-1 mt-2">
-                {{ item.ProviderName }}
-              </div>
-              <div
-                class="text-center body-2 grey--text text--darken-2 info-box"
-              >
-                <template v-if="item.Width && item.Height">
-                  {{ item.Width }} &times; {{ item.Height }}
-                  <template v-if="item.Language">
-                    &middot; {{ item.Language }}
-                  </template>
+    <v-card height="100%" class="image-search-card">
+      <v-card-title>{{ $t('search') }}</v-card-title>
+      <v-divider />
+      <v-row align="center" class="mx-16 my-4">
+        <v-select
+          v-model="source"
+          class="mx-4"
+          :items="sources"
+          :disabled="loading"
+          label="Source"
+          outlined
+          hide-details
+        ></v-select>
+        <v-select
+          v-model="type"
+          class="mx-4"
+          :items="types"
+          :disabled="loading"
+          label="Type"
+          outlined
+          hide-details
+        ></v-select>
+        <v-checkbox
+          v-model="allLanguages"
+          class="mt-0 mx-4"
+          :label="$t('allLanguages')"
+          :disabled="loading"
+          hide-details
+        ></v-checkbox>
+      </v-row>
+      <v-divider />
+      <v-row class="image-results">
+        <v-col class="card-grid-container">
+          <v-card
+            v-for="(item, i) in images"
+            :key="i"
+            class="ma-2 d-flex flex-column"
+          >
+            <v-img
+              :src="imageFormat(item.Url)"
+              :aspect-ratio="ratio"
+              position="top center"
+              contain
+            ></v-img>
+            <div class="text-center text-truncate subtitle-1 mt-2">
+              {{ item.ProviderName }}
+            </div>
+            <div class="text-center body-2 grey--text text--darken-2 info-box">
+              <template v-if="item.Width && item.Height">
+                {{ item.Width }} &times; {{ item.Height }}
+                <template v-if="item.Language">
+                  &middot; {{ item.Language }}
                 </template>
-              </div>
-              <div
-                class="text-center body-2 grey--text text--darken-2 info-box"
-              >
-                <template v-if="item.CommunityRating">
-                  {{ item.CommunityRating | fixed }}
-                  <template v-if="item.VoteCount">
-                    &middot; {{ item.VoteCount }} votes
-                  </template>
+              </template>
+            </div>
+            <div class="text-center body-2 grey--text text--darken-2 info-box">
+              <template v-if="item.CommunityRating">
+                {{ item.CommunityRating | fixed }}
+                <template v-if="item.VoteCount">
+                  &middot; {{ item.VoteCount }} votes
                 </template>
-              </div>
-              <v-card-actions class="justify-center">
-                <v-btn icon :disabled="loading" @click="handleDownload(item)">
-                  <v-icon>mdi-cloud-download</v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </div>
-        </v-row>
-      </v-card>
-      <v-progress-circular
-        v-if="loading"
-        :size="70"
-        :width="7"
-        color="primary"
-        indeterminate
-        class="loading-bar"
-      ></v-progress-circular>
-    </div>
+              </template>
+            </div>
+            <v-spacer />
+            <v-card-actions class="justify-center">
+              <v-btn icon :disabled="loading" @click="handleDownload(item)">
+                <v-icon>mdi-cloud-download</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+        <v-progress-circular
+          v-if="loading"
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+          class="loading-bar"
+        ></v-progress-circular>
+      </v-row>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -123,7 +120,7 @@ export default Vue.extend({
       providers: [] as ImageProviderInfo[],
       type: ImageType.Primary,
       source: 'All',
-      allLanguage: [],
+      allLanguages: false,
       types: [
         {
           value: ImageType.Primary,
@@ -199,7 +196,7 @@ export default Vue.extend({
     source() {
       this.getImages();
     },
-    allLanguage() {
+    allLanguages() {
       this.getImages();
     },
     dialog(value) {
@@ -225,9 +222,8 @@ export default Vue.extend({
         await this.$api.remoteImage.getRemoteImages({
           itemId: this.metadata.Id,
           type: this.type,
-          limit: 30,
-          startIndex: 0,
-          includeAllLanguages: this.allLanguage.length > 0
+          providerName: this.source === 'All' ? undefined : this.source,
+          includeAllLanguages: this.allLanguages
         })
       ).data.Images as RemoteImageInfo[];
 
@@ -235,7 +231,7 @@ export default Vue.extend({
     },
     imageFormat(url: string) {
       return `${
-        this.$store.state.servers.serverUsed.address
+        this.$axios.defaults.baseURL
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
     async handleDownload(item: RemoteImageInfo) {
@@ -253,27 +249,51 @@ export default Vue.extend({
       this.providers = [];
       this.type = ImageType.Primary;
       this.source = 'All';
-      this.allLanguage = [];
+      this.allLanguages = false;
     }
   }
 });
 </script>
-<style scoped>
-.image-search {
-  position: relative;
-}
+
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
 .loading-bar {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.img-container {
+
+.card-grid-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 20px 20px;
 }
-.info-box {
-  min-height: 20px;
+
+.image-results {
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .card-grid-container {
+    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'xl-only')} {
+  .card-grid-container {
+    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+  }
 }
 </style>

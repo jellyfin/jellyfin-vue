@@ -31,23 +31,6 @@
               outlined
               :label="$t('sortTitle')"
             ></v-text-field>
-          </v-tab-item>
-          <v-tab-item value="details">
-            <date-input
-              :value="dateCreated"
-              :label="$t('dateAdded')"
-              @update:date="(value) => saveDate('DateCreated', value)"
-            ></date-input>
-            <v-text-field
-              v-model="metadata.CommunityRating"
-              outlined
-              :label="$t('communityRating')"
-            ></v-text-field>
-            <v-text-field
-              v-model="metadata.CriticRating"
-              outlined
-              :label="$t('criticRating')"
-            ></v-text-field>
             <v-text-field
               v-model="metadata.Taglines"
               outlined
@@ -56,9 +39,33 @@
             <v-textarea
               v-model="metadata.Overview"
               outlined
-              auto-grow
+              no-resize
+              rows="4"
               :label="$t('overview')"
             ></v-textarea>
+          </v-tab-item>
+          <v-tab-item value="details">
+            <date-input
+              :value="dateCreated"
+              :label="$t('dateAdded')"
+              @update:date="(value) => saveDate('DateCreated', value)"
+            ></date-input>
+            <v-row>
+              <v-col sm="6" cols="12">
+                <v-text-field
+                  v-model="metadata.CommunityRating"
+                  outlined
+                  :label="$t('communityRating')"
+                ></v-text-field>
+              </v-col>
+              <v-col sm="6" cols="12">
+                <v-text-field
+                  v-model="metadata.CriticRating"
+                  outlined
+                  :label="$t('criticRating')"
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
             <date-input
               :value="premiereDate"
@@ -130,20 +137,26 @@
             </v-combobox>
           </v-tab-item>
           <v-tab-item value="castAndCrew">
-            <v-list subheader two-line>
-              <v-subheader>
-                {{ $t('people') }}
-                <v-icon class="ml-2" @click="(e) => handlePersonEdit()">
-                  mdi-plus-circle
-                </v-icon>
-              </v-subheader>
+            <v-list two-line>
+              <v-list-item @click="(e) => handlePersonEdit()">
+                <v-list-item-content>
+                  <v-list-item-title>Add a new person</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon>mdi-plus-circle</v-icon>
+                </v-list-item-action>
+              </v-list-item>
               <v-list-item
                 v-for="(item, i) in metadata.People"
-                :key="i"
+                :key="`${item.Id}-${i}`"
                 @click="handlePersonEdit(item)"
               >
                 <v-list-item-avatar>
-                  <v-icon class="person-icon">mdi-account</v-icon>
+                  <v-img
+                    v-if="item.PrimaryImageTag"
+                    :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
+                  />
+                  <v-icon v-else class="grey darken-3">mdi-account</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
@@ -175,6 +188,7 @@
       }"
     >
       <v-btn
+        depressed
         width="8em"
         color="secondary"
         class="mr-1"
@@ -183,6 +197,7 @@
         {{ $t('cancel') }}
       </v-btn>
       <v-btn
+        depressed
         width="8em"
         color="primary"
         :loading="loading"
@@ -195,6 +210,7 @@
       :person="person"
       :dialog.sync="dialog"
       @update:person="handlePersonUpdate"
+      @update:dialog="handleDialogUpdate"
     ></person-editor>
   </v-card>
 </template>
@@ -379,6 +395,9 @@ export default Vue.extend({
       } else {
         this.metadata.People.push(item);
       }
+    },
+    handleDialogUpdate(result: boolean) {
+      this.dialog = result;
     },
     handlePersonDel(index: number) {
       (this.metadata.People as BaseItemPerson[]).splice(index, 1);

@@ -22,8 +22,7 @@ export default Vue.extend({
   props: {
     dialog: {
       type: Boolean,
-      required: true,
-      default: false
+      required: true
     },
     itemId: {
       type: String,

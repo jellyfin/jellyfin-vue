@@ -1,33 +1,56 @@
 <template>
-  <v-dialog v-model="dialog" max-width="60%">
+  <v-dialog :value="dialog" max-width="30%" @click:outside="handleCancel">
     <v-card>
-      <v-card-title class="headline">{{ $t('edit') }}</v-card-title>
-      <v-card-text>
-        <v-form ref="form" @submit.prevent="handleSubmit">
-          <v-text-field
-            v-model="editState.Name"
-            outlined
-            :label="$t('name')"
-          ></v-text-field>
-          <v-select
-            v-model="editState.Type"
-            :items="options"
-            :label="$t('type')"
-            outlined
-          ></v-select>
-          <v-text-field
-            v-if="editState.Type === 'Actor'"
-            v-model="editState.Role"
-            outlined
-            :label="$t('role')"
-          ></v-text-field>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn depressed @click="handleCancle">Cancel</v-btn>
-            <v-btn depressed color="primary" type="submit">Save</v-btn>
-          </v-card-actions>
-        </v-form>
+      <v-card-title>{{ $t('editPerson') }}</v-card-title>
+      <v-divider></v-divider>
+      <v-card-text class="pa-3">
+        <v-row>
+          <v-col cols="4">
+            <v-avatar size="160" class="ml-2">
+              <v-img
+                v-if="person && person.PrimaryImageTag"
+                :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`"
+              />
+              <v-icon v-else class="grey darken-3">mdi-account</v-icon>
+            </v-avatar>
+          </v-col>
+          <v-col>
+            <v-form ref="form" @submit.prevent="handleSubmit">
+              <v-text-field
+                v-model="editState.Name"
+                outlined
+                :label="$t('name')"
+              ></v-text-field>
+              <v-select
+                v-model="editState.Type"
+                :items="options"
+                :label="$t('type')"
+                outlined
+              ></v-select>
+              <v-text-field
+                v-if="editState.Type === 'Actor'"
+                v-model="editState.Role"
+                outlined
+                :label="$t('role')"
+              ></v-text-field>
+            </v-form>
+          </v-col>
+        </v-row>
       </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions
+        class="d-flex align-center pa-3"
+        :class="{
+          'justify-end': !$vuetify.breakpoint.mobile,
+          'justify-center': $vuetify.breakpoint.mobile
+        }"
+      >
+        <v-spacer></v-spacer>
+        <v-btn depressed width="8em" class="mr-1" @click="handleCancel">
+          Cancel
+        </v-btn>
+        <v-btn depressed width="8em" color="primary" type="submit">Save</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -76,7 +99,7 @@ export default Vue.extend({
       this.$emit('update:dialog', false);
       this.reset();
     },
-    handleCancle() {
+    handleCancel() {
       this.$emit('update:dialog', false);
       this.reset();
     },
