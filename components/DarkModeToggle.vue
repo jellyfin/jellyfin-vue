@@ -4,19 +4,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default Vue.extend({
   computed: {
+    ...mapGetters('displayPreferences', ['getDarkMode']),
     darkMode: {
       get() {
-        return this.$store.getters['displayPreferences/getDarkMode'];
+        return this.getDarkMode;
       },
       set(value: boolean) {
-        this.$store.dispatch('displayPreferences/setDarkMode', {
-          darkMode: value
-        });
+        this.setDarkMode({ darkMode: value });
       }
     }
+  },
+  methods: {
+    ...mapActions('displayPreferences', ['setDarkMode'])
   }
 });
 </script>

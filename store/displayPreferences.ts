@@ -126,7 +126,7 @@ export const actions: ActionTree<
         displayPreferencesDto: state
       }
     );
-    if (response.status != 204) {
+    if (response.status !== 204) {
       console.error("Can't updated displayPreferences");
     }
   },
