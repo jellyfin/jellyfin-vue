@@ -130,7 +130,7 @@ export default Vue.extend({
       ).data;
     },
     imageFormat(imageInfo: ImageInfo) {
-      return `${this.$store.state.user.serverUrl}/Items/${this.metadata.Id}/Images/${imageInfo.ImageType}?maxWidth=600&tag=${imageInfo.ImageTag}&quality=90`;
+      return `${this.$store.state.servers.serverUsed.address}/Items/${this.metadata.Id}/Images/${imageInfo.ImageType}?maxWidth=600&tag=${imageInfo.ImageTag}&quality=90`;
     },
     handleSearch() {
       this.dialog = true;

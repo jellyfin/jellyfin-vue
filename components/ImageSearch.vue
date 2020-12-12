@@ -235,7 +235,7 @@ export default Vue.extend({
     },
     imageFormat(url: string) {
       return `${
-        this.$store.state.user.serverUrl
+        this.$store.state.servers.serverUsed.address
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
     async handleDownload(item: RemoteImageInfo) {
