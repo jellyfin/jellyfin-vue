@@ -76,7 +76,7 @@ export default Vue.extend({
     };
   },
   async beforeMount() {
-    this.setPageTitle({ title: this.$t('activityLogs') });
+    this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
     // calculating date of 7 days ago as min date to get activity logs
     const minDate = new Date();
     minDate.setDate(minDate.getDate() - 7);
