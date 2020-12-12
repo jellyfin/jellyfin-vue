@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { pickBy } from 'lodash';
 import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
@@ -30,6 +30,9 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
+  computed: {
+    ...mapGetters('displayPreferences', ['getCustomPrefs'])
+  },
   async created() {
     this.setPageTitle({ title: this.$t('home') });
 
@@ -37,7 +40,7 @@ export default Vue.extend({
 
     // Filter for valid sections in Jellyfin Vue
     let homeSectionsArray = pickBy(
-      this.$store.state.user.displayPreferences,
+      this.getCustomPrefs,
       (value: string, key: string) => {
         return (
           value &&

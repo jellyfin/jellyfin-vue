@@ -3,51 +3,36 @@ import { ActionTree, MutationTree } from 'vuex';
 export interface UserState {
   id: string;
   accessToken: string;
-  displayPreferences: { [key: string]: string };
 }
 
 export const state = (): UserState => ({
   id: '',
-  accessToken: '',
-  displayPreferences: {}
+  accessToken: ''
 });
 
 interface MutationPayload {
   id: string;
   accessToken: string;
-  displayPreferences: { [key: string]: string };
 }
 
 export const mutations: MutationTree<UserState> = {
-  SET_USER(
-    state: UserState,
-    { id, accessToken, displayPreferences }: MutationPayload
-  ) {
+  SET_USER(state: UserState, { id, accessToken }: MutationPayload) {
     state.id = id;
     state.accessToken = accessToken;
-    state.displayPreferences = displayPreferences;
   },
   CLEAR_USER(state: UserState) {
     state.accessToken = '';
-    state.displayPreferences = {};
   }
 };
 
 export const actions: ActionTree<UserState, UserState> = {
-  async setUser(
+  setUser(
     { commit },
     { id, accessToken }: { id: string; accessToken: string }
-  ): Promise<void> {
-    const response = await this.$api.displayPreferences.getDisplayPreferences({
-      displayPreferencesId: 'usersettings',
-      userId: id,
-      client: 'vue'
-    });
-
+  ) {
     commit('SET_USER', {
       id,
-      accessToken,
-      displayPreferences: response.data.CustomPrefs
+      accessToken
     });
   },
   clearUser({ commit }) {

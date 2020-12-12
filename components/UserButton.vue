@@ -57,7 +57,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
       this.$auth.logout();
