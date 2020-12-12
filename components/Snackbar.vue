@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -16,13 +17,27 @@ export default Vue.extend({
     };
   },
   created() {
+    // Empties potential already set buffer
+    this.displaySnackbar(
+      this.$store.state.snackbar.message,
+      this.$store.state.snackbar.color
+    );
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'snackbar/SET_SNACKBAR_MESSAGE') {
-        this.message = state.snackbar.message;
-        this.color = state.snackbar.color;
-        this.model = true;
+        this.displaySnackbar(state.snackbar.message, state.snackbar.color);
       }
     });
+  },
+  methods: {
+    ...mapActions('snackbar', ['resetMessage']),
+    displaySnackbar(message: string, color: string) {
+      if (message !== '') {
+        this.message = message;
+        this.color = color;
+        this.model = true;
+        this.resetMessage();
+      }
+    }
   }
 });
 </script>
