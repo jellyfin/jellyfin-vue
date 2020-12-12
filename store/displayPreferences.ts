@@ -109,8 +109,18 @@ export const actions: ActionTree<
       userId: this.$auth.user.Id,
       client: 'vue'
     });
-    commit('INIT_STATE', { displayPreferences: response.data });
-    await dispatch('updateDarkMode', {});
+
+    if (response.status === 200) {
+      commit('INIT_STATE', { displayPreferences: response.data });
+      await dispatch('updateDarkMode', {});
+    } else {
+      const message = this.$i18n.t('failedRetrievingDisplayPreferences');
+      dispatch(
+        'snackbar/pushSnackbarMessage',
+        { message, color: 'error' },
+        { root: true }
+      );
+    }
   },
 
   /**

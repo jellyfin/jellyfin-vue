@@ -30,6 +30,8 @@
       "videoPlayerError": "The video player encountered an unrecoverable error."
     }
   },
+  "episodeNumber": "Episode {episodeNumber}",
+  "failedRetrievingDisplayPreferences": "Failed retrieving display preferences, using default ones",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
