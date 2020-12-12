@@ -128,6 +128,7 @@ export default class JellyfinScheme {
 
   async logout(): Promise<never> {
     await this.$auth.ctx.app.$api.session.reportSessionEnded();
+    this.$auth.ctx.app.store.dispatch('displayPreferences/resetState');
 
     // Reset everything
     return this.$auth.reset();

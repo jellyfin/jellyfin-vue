@@ -13,9 +13,11 @@ const defaultCustomPrefs: {
   darkMode: 'True'
 };
 
-export const state = (): DisplayPreferencesState => ({
+const defaultState = (): DisplayPreferencesState => ({
   CustomPrefs: defaultCustomPrefs
 });
+
+export const state = defaultState();
 
 interface SingleCustomPrefMutationPayload {
   key: string;
@@ -57,11 +59,11 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     { displayPreferences }: { displayPreferences: DisplayPreferencesDto }
   ) {
     Object.assign(state, displayPreferences);
-    Object.keys(defaultCustomPrefs).forEach((element) => {
-      if (!(element in state.CustomPrefs)) {
-        state.CustomPrefs[element] = defaultCustomPrefs[element];
+    for (const key in defaultCustomPrefs) {
+      if (!(key in state.CustomPrefs)) {
+        state.CustomPrefs[key] = defaultCustomPrefs[key];
       }
-    });
+    }
   },
 
   /**
@@ -161,6 +163,18 @@ export const actions: ActionTree<
   async dropCustomPref({ commit, dispatch }, { key }: { key: string }) {
     commit('DROP_CUSTOM_PREF', { key });
     await dispatch('pushState');
+  },
+
+  /**
+   * Resets the state and reapply default theme
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.commit Vuex commit
+   * @param {any} param0.dispatch Vuex dispatch
+   */
+  async resetState({ commit, dispatch }) {
+    commit('INIT_STATE', { displayPreferences: defaultState() });
+    await dispatch('updateDarkMode', {});
   },
 
   /**
