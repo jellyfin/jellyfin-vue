@@ -1,179 +1,193 @@
 <template>
-  <v-card height="100%" class="metadata-editor">
-    <v-card-title class="headline">{{ $t('editMetadata') }}</v-card-title>
-    <v-card-text class="scroll-ban">
-      <v-row class="scroll-row">
-        <v-col cols="2">
-          <v-tabs v-model="tabName" vertical>
-            <v-tab href="#general">{{ $t('general') }}</v-tab>
-            <v-tab href="#details">{{ $t('details') }}</v-tab>
-            <v-tab href="#castAndCrew">{{ $t('castAndCrew') }}</v-tab>
-            <v-tab href="#images">{{ $t('images') }}</v-tab>
-          </v-tabs>
-        </v-col>
-        <v-col cols="10" class="scroll-content">
-          <v-tabs-items v-model="tabName">
-            <v-tab-item value="general">
-              <v-text-field
-                v-model="metadata.Path"
-                outlined
-                disabled
-                :label="$t('headerPaths')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.Name"
-                outlined
-                :label="$t('title')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.OriginalTitle"
-                outlined
-                :label="$t('originalTitle')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.ForcedSortName"
-                outlined
-                :label="$t('sortTitle')"
-              ></v-text-field>
-            </v-tab-item>
-            <v-tab-item value="details">
-              <date-input
-                :value="dateCreated"
-                :label="$t('dateAdded')"
-                @update:date="(value) => saveDate('DateCreated', value)"
-              ></date-input>
-              <v-text-field
-                v-model="metadata.CommunityRating"
-                outlined
-                :label="$t('communityRating')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.CriticRating"
-                outlined
-                :label="$t('criticRating')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.Taglines"
-                outlined
-                :label="$t('tagline')"
-              ></v-text-field>
-              <v-textarea
-                v-model="metadata.Overview"
-                outlined
-                auto-grow
-                :label="$t('overview')"
-              ></v-textarea>
+  <v-card height="100%" class="d-flex flex-column metadata-editor">
+    <v-card-title>{{ $t('editMetadata') }}</v-card-title>
+    <v-card-subtitle class="pb-3">
+      {{ metadata.Path }}
+    </v-card-subtitle>
 
-              <date-input
-                :value="premiereDate"
-                :label="$t('releaseDate')"
-                @update:date="(value) => saveDate('PremiereDate', value)"
-              ></date-input>
-              <v-text-field
-                v-model="metadata.ProductionYear"
-                outlined
-                :label="$t('year')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.OfficialRating"
-                outlined
-                :label="$t('parentalRating')"
-              ></v-text-field>
-              <v-text-field
-                v-model="metadata.CustomRating"
-                outlined
-                :label="$t('customRating')"
-              ></v-text-field>
-              <v-combobox
-                v-model="metadata.Genres"
-                :items="genders"
-                :search-input.sync="search"
-                :label="$t('genres')"
-                hide-selected
-                multiple
-                outlined
-                small-chips
-              >
-                <template #no-data>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        No results matching "
-                        <strong>{{ search }}</strong>
-                        ". Press
-                        <kbd>enter</kbd>
-                        to create a new one
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-combobox>
-              <v-combobox
-                v-model="metadata.Tags"
-                :items="genders"
-                :search-input.sync="search"
-                :label="$t('tags')"
-                hide-selected
-                multiple
-                outlined
-                small-chips
-              >
-                <template #no-data>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        No results matching "
-                        <strong>{{ search }}</strong>
-                        ". Press
-                        <kbd>enter</kbd>
-                        to create a new one
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-combobox>
-            </v-tab-item>
-            <v-tab-item value="castAndCrew">
-              <v-list subheader two-line>
-                <v-subheader>
-                  {{ $t('people') }}
-                  <v-icon class="ml-2" @click="(e) => handlePersonEdit()">
-                    mdi-plus-circle
-                  </v-icon>
-                </v-subheader>
-                <v-list-item
-                  v-for="(item, i) in metadata.People"
-                  :key="i"
-                  @click="handlePersonEdit(item)"
-                >
-                  <v-list-item-avatar>
-                    <v-icon class="person-icon">mdi-account</v-icon>
-                  </v-list-item-avatar>
+    <v-divider></v-divider>
+
+    <v-card-text class="pa-0 flex-grow-1">
+      <v-tabs v-model="tabName" :vertical="!$vuetify.breakpoint.mobile">
+        <v-tab href="#general">{{ $t('general') }}</v-tab>
+        <v-tab href="#details">{{ $t('details') }}</v-tab>
+        <v-tab href="#castAndCrew">{{ $t('castAndCrew') }}</v-tab>
+        <v-tab href="#images">{{ $t('images') }}</v-tab>
+
+        <v-tabs-items v-model="tabName" class="pa-3">
+          <v-tab-item value="general">
+            <v-text-field
+              v-model="metadata.Name"
+              outlined
+              :label="$t('title')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.OriginalTitle"
+              outlined
+              :label="$t('originalTitle')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.ForcedSortName"
+              outlined
+              :label="$t('sortTitle')"
+            ></v-text-field>
+          </v-tab-item>
+          <v-tab-item value="details">
+            <date-input
+              :value="dateCreated"
+              :label="$t('dateAdded')"
+              @update:date="(value) => saveDate('DateCreated', value)"
+            ></date-input>
+            <v-text-field
+              v-model="metadata.CommunityRating"
+              outlined
+              :label="$t('communityRating')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.CriticRating"
+              outlined
+              :label="$t('criticRating')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.Taglines"
+              outlined
+              :label="$t('tagline')"
+            ></v-text-field>
+            <v-textarea
+              v-model="metadata.Overview"
+              outlined
+              auto-grow
+              :label="$t('overview')"
+            ></v-textarea>
+
+            <date-input
+              :value="premiereDate"
+              :label="$t('releaseDate')"
+              @update:date="(value) => saveDate('PremiereDate', value)"
+            ></date-input>
+            <v-text-field
+              v-model="metadata.ProductionYear"
+              outlined
+              :label="$t('year')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.OfficialRating"
+              outlined
+              :label="$t('parentalRating')"
+            ></v-text-field>
+            <v-text-field
+              v-model="metadata.CustomRating"
+              outlined
+              :label="$t('customRating')"
+            ></v-text-field>
+            <v-combobox
+              v-model="metadata.Genres"
+              :items="genders"
+              :search-input.sync="search"
+              :label="$t('genres')"
+              hide-selected
+              multiple
+              outlined
+              small-chips
+            >
+              <template #no-data>
+                <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>
-                      {{ item.Name }}
+                      No results matching "
+                      <strong>{{ search }}</strong>
+                      ". Press
+                      <kbd>enter</kbd>
+                      to create a new one
                     </v-list-item-title>
-                    <v-list-item-subtitle class="mt-1">
-                      {{ item.Role || item.Type }}
-                    </v-list-item-subtitle>
                   </v-list-item-content>
-                  <v-list-item-action @click.stop="handlePersonDel(i)">
-                    <v-icon>mdi-delete</v-icon>
-                  </v-list-item-action>
                 </v-list-item>
-              </v-list>
-            </v-tab-item>
-            <v-tab-item value="images">
-              <image-editor :metadata="metadata"></image-editor>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-col>
-      </v-row>
+              </template>
+            </v-combobox>
+            <v-combobox
+              v-model="metadata.Tags"
+              :items="genders"
+              :search-input.sync="search"
+              :label="$t('tags')"
+              hide-selected
+              multiple
+              outlined
+              small-chips
+            >
+              <template #no-data>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      No results matching "
+                      <strong>{{ search }}</strong>
+                      ". Press
+                      <kbd>enter</kbd>
+                      to create a new one
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-combobox>
+          </v-tab-item>
+          <v-tab-item value="castAndCrew">
+            <v-list subheader two-line>
+              <v-subheader>
+                {{ $t('people') }}
+                <v-icon class="ml-2" @click="(e) => handlePersonEdit()">
+                  mdi-plus-circle
+                </v-icon>
+              </v-subheader>
+              <v-list-item
+                v-for="(item, i) in metadata.People"
+                :key="i"
+                @click="handlePersonEdit(item)"
+              >
+                <v-list-item-avatar>
+                  <v-icon class="person-icon">mdi-account</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.Name }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="mt-1">
+                    {{ item.Role || item.Type }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action @click.stop="handlePersonDel(i)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </v-tab-item>
+          <v-tab-item value="images">
+            <image-editor :metadata="metadata"></image-editor>
+          </v-tab-item>
+        </v-tabs-items>
+      </v-tabs>
     </v-card-text>
 
-    <v-card-actions class="d-flex justify-center align-center">
-      <v-btn @click="$emit('cancel')">{{ $t('cancel') }}</v-btn>
-      <v-btn color="primary" :loading="loading" @click="saveMetadata">
+    <v-divider></v-divider>
+    <v-card-actions
+      class="d-flex align-center pa-3"
+      :class="{
+        'justify-end': !$vuetify.breakpoint.mobile,
+        'justify-center': $vuetify.breakpoint.mobile
+      }"
+    >
+      <v-btn
+        width="8em"
+        color="secondary"
+        class="mr-1"
+        @click="$emit('cancel')"
+      >
+        {{ $t('cancel') }}
+      </v-btn>
+      <v-btn
+        width="8em"
+        color="primary"
+        :loading="loading"
+        @click="saveMetadata"
+      >
         {{ $t('save') }}
       </v-btn>
     </v-card-actions>
@@ -373,32 +387,24 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
-.metadata-editor {
-  position: relative;
-}
 .person-icon {
   background-color: var(--v-secondary-darken1);
 }
-.headline {
-  border-bottom: 1px solid var(--v-secondary-lighten1);
+.metadata-editor >>> .v-card__text {
+  overflow: hidden;
 }
-.metadata-editor >>> .v-tab {
+.metadata-editor >>> .v-tabs {
+  height: 100%;
+}
+.metadata-editor >>> .v-tabs-bar {
+  overflow: hidden;
   border-right: 1px solid var(--v-secondary-lighten1);
 }
+.metadata-editor >>> .v-tabs-items {
+  overflow-y: scroll;
+}
+
 .metadata-editor >>> .v-card__actions {
   width: 100%;
-}
-.scroll-ban {
-  overflow: hidden;
-  height: calc(100% - 64px);
-  padding: 20px 24px;
-}
-.scroll-row {
-  height: 100%;
-}
-.scroll-content {
-  height: 100%;
-  overflow: auto;
-  padding: 16px 12px 30px;
 }
 </style>

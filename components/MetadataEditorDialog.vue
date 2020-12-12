@@ -2,7 +2,8 @@
   <v-dialog
     content-class="metadata-dialog"
     :value="dialog"
-    max-width="70%"
+    :fullscreen="$vuetify.breakpoint.mobile"
+    width="50vw"
     @click:outside="$emit('update:dialog', false)"
   >
     <metadata-editor
@@ -45,6 +46,6 @@ export default Vue.extend({
 
 <style>
 .metadata-dialog {
-  height: 90%;
+  height: 60vh;
 }
 </style>
