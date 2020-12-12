@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%">
     <skeleton-home-section v-if="loading" :card-shape="section.shape" />
-    <v-col v-show="items.length > 0" class="home-section">
+    <v-col v-show="items && items.length > 0" class="home-section">
       <h1
         class="text-h5 font-weight-light header"
         :class="{ 'header-white-mode': !$vuetify.theme.dark }"
@@ -42,7 +42,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
+import { mapState, mapActions } from 'vuex';
+import { AppState } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -53,7 +54,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      items: [] as BaseItemDto[],
       breakpoints: {
         600: {
           visibleSlides: this.section.shape === 'thumb-card' ? 2 : 3
@@ -71,90 +71,49 @@ export default Vue.extend({
       loading: true
     };
   },
+  computed: mapState<AppState>({
+    items: (state: AppState) => state.homeSection.items
+  }),
   async created() {
     switch (this.section.type) {
       case 'libraries': {
-        const userViewsItems = await this.$api.userViews.getUserViews({
-          userId: this.$auth.user.Id
-        });
-
-        this.items = userViewsItems.data.Items as BaseItemDto[];
+        await this.getLibraries();
         break;
       }
       case 'resume': {
-        const resumeItems = await this.$api.items.getResumeItems({
-          userId: this.$auth.user.Id,
-          limit: 12,
-          fields: [ItemFields.PrimaryImageAspectRatio],
-          imageTypeLimit: 1,
-          enableImageTypes: [
-            ImageType.Primary,
-            ImageType.Backdrop,
-            ImageType.Thumb
-          ],
-          enableTotalRecordCount: false,
-          mediaTypes: ['Video']
-        });
-
-        this.items = resumeItems.data.Items as BaseItemDto[];
+        this.getVideoResumes();
         break;
       }
       case 'resumeaudio': {
-        const resumeItems = await this.$api.items.getResumeItems({
-          userId: this.$auth.user.Id,
-          limit: 12,
-          fields: [ItemFields.PrimaryImageAspectRatio],
-          imageTypeLimit: 1,
-          enableImageTypes: [
-            ImageType.Primary,
-            ImageType.Backdrop,
-            ImageType.Thumb
-          ],
-          enableTotalRecordCount: false,
-          mediaTypes: ['Audio']
-        });
-
-        this.items = resumeItems.data.Items as BaseItemDto[];
+        this.getAudioResumes();
         break;
       }
       case 'upnext': {
-        const latestItems = await this.$api.tvShows.getNextUp({
-          userId: this.$auth.user.Id,
-          limit: 12,
-          fields: [ItemFields.PrimaryImageAspectRatio],
-          imageTypeLimit: 1,
-          enableImageTypes: [
-            ImageType.Primary,
-            ImageType.Backdrop,
-            ImageType.Thumb
-          ],
+        this.getUpNext({
           parentId: this.section.libraryId
         });
-
-        this.items = latestItems.data.Items as BaseItemDto[];
         break;
       }
       case 'latestmedia': {
-        const latestItems = await this.$api.userLibrary.getLatestMedia({
-          userId: this.$auth.user.Id,
-          limit: 12,
-          fields: [ItemFields.PrimaryImageAspectRatio],
-          imageTypeLimit: 1,
-          enableImageTypes: [
-            ImageType.Primary,
-            ImageType.Backdrop,
-            ImageType.Thumb
-          ],
+        this.getLatestMedia({
           parentId: this.section.libraryId
         });
-
-        this.items = latestItems.data;
         break;
       }
       default:
         break;
     }
+
     this.loading = false;
+  },
+  methods: {
+    ...mapActions('homeSection', {
+      getVideoResumes: 'getVideoResumes',
+      getAudioResumes: 'getAudioResumes',
+      getUpNext: 'getUpNext',
+      getLatestMedia: 'getLatestMedia',
+      getLibraries: 'getLibraries'
+    })
   }
 });
 </script>
