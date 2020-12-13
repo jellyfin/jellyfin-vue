@@ -15,17 +15,20 @@ export const state = (): TvShowsState => ({
   seasonEpisodes: []
 });
 
-type MutationPayload = TvShowsState;
+type MutationPayload = {
+  seasons: BaseItemDto[];
+  seasonEpisodes: BaseItemDto[];
+};
 
 export const mutations: MutationTree<TvShowsState> = {
   ADD_TVSHOW_SEASONS(state: TvShowsState, { seasons }: MutationPayload) {
-    state.seasons.push(...seasons);
+    state.seasons = seasons;
   },
   ADD_TVSHOW_SEASON_EPISODES(
     state: TvShowsState,
     { seasonEpisodes }: MutationPayload
   ) {
-    state.seasonEpisodes.push(...seasonEpisodes);
+    state.seasonEpisodes.push(seasonEpisodes);
   },
   CLEAR_TVSHOWS_SEASONS(state: TvShowsState) {
     state.seasons = [];
