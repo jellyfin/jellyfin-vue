@@ -1,5 +1,9 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree, GetterTree } from 'vuex';
+import nuxtConfig from '~/nuxt.config';
+
+const stringToBoolean = (value: string) => value === 'True';
+const booleanToString = (value: boolean) => (value ? 'True' : 'False');
 
 export interface DisplayPreferencesState extends DisplayPreferencesDto {
   CustomPrefs: {
@@ -10,16 +14,15 @@ export interface DisplayPreferencesState extends DisplayPreferencesDto {
 const defaultCustomPrefs: {
   [key: string]: string;
 } = {
-  darkMode: 'True',
-  locale: 'en'
+  darkMode: booleanToString(
+    nuxtConfig.vuetify?.theme?.default === 'dark' || false
+  ),
+  locale: nuxtConfig.i18n?.defaultLocale || 'en'
 };
 
 const defaultState = (): DisplayPreferencesState => ({
   CustomPrefs: defaultCustomPrefs
 });
-
-const stringToBoolean = (value: string) => value === 'True';
-const booleanToString = (value: boolean) => (value ? 'True' : 'False');
 
 const updateMethods: { [key: string]: (value: string) => void } = {
   darkMode: (value: string) => {
