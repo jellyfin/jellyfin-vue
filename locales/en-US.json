@@ -31,7 +31,8 @@
     }
   },
   "episodeNumber": "Episode {episodeNumber}",
-  "failedRetrievingDisplayPreferences": "Failed retrieving display preferences, using default ones",
+  "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using defaults.",
+  "failedSettingDisplayPreferences": "Unable to update display preferences.",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",

@@ -104,16 +104,24 @@ export const actions: ActionTree<
    * @param {any} param0.dispatch Vuex dispatch
    */
   async initState({ commit, dispatch }) {
-    const response = await this.$api.displayPreferences.getDisplayPreferences({
-      displayPreferencesId: 'usersettings',
-      userId: this.$auth.user.Id,
-      client: 'vue'
-    });
+    try {
+      const response = await this.$api.displayPreferences.getDisplayPreferences(
+        {
+          displayPreferencesId: 'usersettings',
+          userId: this.$auth.user.Id,
+          client: 'vue'
+        }
+      );
 
-    if (response.status === 200) {
+      if (response.status !== 200)
+        throw new Error(
+          'get display preferences status response = ' + response.status
+        );
+
       commit('INIT_STATE', { displayPreferences: response.data });
-      await dispatch('updateDarkMode', {});
-    } else {
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
       const message = this.$i18n.t('failedRetrievingDisplayPreferences');
       dispatch(
         'snackbar/pushSnackbarMessage',
@@ -121,6 +129,7 @@ export const actions: ActionTree<
         { root: true }
       );
     }
+    await dispatch('updateDarkMode', {});
   },
 
   /**
@@ -128,18 +137,32 @@ export const actions: ActionTree<
    *
    * @param {any} param0 Vuex
    * @param {any} param0.state Vuex state
+   * @param {any} param0.dispatch Vuex dispatch
    */
-  async pushState({ state }) {
-    const response = await this.$api.displayPreferences.updateDisplayPreferences(
-      {
-        displayPreferencesId: 'usersettings',
-        userId: this.$auth.user.Id,
-        client: 'vue',
-        displayPreferencesDto: state
-      }
-    );
-    if (response.status !== 204) {
-      console.error("Can't updated displayPreferences");
+  async pushState({ state, dispatch }) {
+    try {
+      const response = await this.$api.displayPreferences.updateDisplayPreferences(
+        {
+          displayPreferencesId: 'usersettings',
+          userId: this.$auth.user.Id,
+          client: 'vue',
+          displayPreferencesDto: state
+        }
+      );
+      if (response.status !== 204)
+        throw new Error(
+          'set display preferences status response = ' + response.status
+        );
+      // console.error("Can't update displayPreferences");
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      const message = this.$i18n.t('failedSettingDisplayPreferences');
+      dispatch(
+        'snackbar/pushSnackbarMessage',
+        { message, color: 'error' },
+        { root: true }
+      );
     }
   },
 
