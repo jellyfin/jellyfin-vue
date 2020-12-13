@@ -62,9 +62,9 @@ export default Vue.extend({
     if (this.item.ImageTags && this.item.ImageTags.Primary) {
       const card = this.$refs.card as HTMLElement;
       this.image = this.getImageUrlForElement(
-        card,
+        ImageType.Primary,
         this.item,
-        ImageType.Primary
+        card
       );
     }
   }
