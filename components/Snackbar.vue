@@ -16,7 +16,7 @@ export default Vue.extend({
       message: ''
     };
   },
-  created() {
+  mounted() {
     // Empties potential already set buffer
     this.displaySnackbar(
       this.$store.state.snackbar.message,
