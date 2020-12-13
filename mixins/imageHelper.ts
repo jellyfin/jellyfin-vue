@@ -9,83 +9,110 @@ import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 
 declare module '@nuxt/types' {
   interface Context {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
-      item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      item?: BaseItemDto,
+      element?: HTMLElement,
+      tag?: string,
+      itemId?: string,
+      maxWidth?: number,
+      maxHeight?: number,
+      quality?: number,
+      limitByWidth?: boolean
     ) => string;
   }
 
   interface NuxtAppOptions {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
-      item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      item?: BaseItemDto,
+      element?: HTMLElement,
+      tag?: string,
+      itemId?: string,
+      maxWidth?: number,
+      maxHeight?: number,
+      quality?: number,
+      limitByWidth?: boolean
     ) => string;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    getImageUrl: (id: string, type: string) => string;
     getImageUrlForElement: (
-      element: HTMLElement,
-      item: BaseItemDto,
-      type: ImageType
+      type: ImageType,
+      item?: BaseItemDto,
+      element?: HTMLElement,
+      tag?: string,
+      itemId?: string,
+      maxWidth?: number,
+      maxHeight?: number,
+      quality?: number,
+      limitByWidth?: boolean
     ) => string;
   }
 }
 
 const imageHelper = Vue.extend({
   methods: {
-    // TODO: Merge getImageUrl and getImageUrlForElement
     /**
-     * Returns the URL of an item's image without any options
+     * Returns the URL of an item's image:
+     * · When 'element' parameter is passed, size of the image will be determined by the element's width & height
+     * · When 'maxWidth' and 'maxHeight' parameters are passed, size of the image will be as requested
+     * · When no 'element' or 'maxWidth' or 'maxHeight' is provided, image will have the original size.
      *
-     * @param {string} id - itemId to get image for
-     * @param {string} type - type of image (primary/backdrop)
-     * @returns {string} URL of the link to the image
-     */
-    getImageUrl(id: string, type: string): string {
-      return `${this.$axios.defaults.baseURL}/Items/${id}/Images/${type}`;
-    },
-    /**
-     * Returns the URL of an item's image at a specific size.
-     *
-     * @param {HTMLElement} element The DOM element which size will be used for the image's maximum width or height.
-     * @param {BaseItemDto} item The item to fetch the image for.
-     * @param {ImageType} type The type of the image to fetch.
-     * @param {boolean} [limitByWidth=false] Use the element's width instead of its height for the size calculation.
+     * @param {ImageType} type - The type of the image to fetch.
+     * @param {BaseItemDto} item - The item to fetch the image for (optional).
+     * @param {HTMLElement} element - The DOM element which size will be used for the image's maximum width or height (optional).
+     * @param {string} tag - tag of the image to fetch (optional if item is passed).
+     * @param {string} itemId - itemId to get image for (optional if item is passed).
+     * @param {number} maxWidth - Maximum width of the image (optional).
+     * @param {number} maxHeight - Maximum height of the image (optional).
+     * @param {number} quality - Quality level of the image (optional, only relevant for jpeg format).
+     * @param {boolean} [limitByWidth=false] - Use the element's width instead of its height for the size calculation.
      * @returns {string} The URL for the image, with the base URL set and the options provided.
      */
     getImageUrlForElement(
-      element: HTMLElement,
-      item: BaseItemDto,
       type: ImageType,
+      item?: BaseItemDto,
+      element?: HTMLElement,
+      tag?: string,
+      itemId = item?.Id,
+      maxWidth = element?.clientWidth.toString(),
+      maxHeight = element?.clientHeight.toString(),
+      quality = 90,
       limitByWidth = false
     ): string {
-      // TODO: Refactor this with an options object
-      if (!item) {
-        throw new TypeError('item must not be null or undefined');
-      }
-      if (!item.ImageTags) {
-        throw new TypeError('item.ImageTags must not be null or undefined');
+      if (item) {
+        if (!item.ImageTags) {
+          throw new TypeError(
+            'item.ImageTags must not be null or undefined when an item object is passed'
+          );
+        } else if (!tag) {
+          tag = item.ImageTags[type];
+        }
+      } else if (!tag) {
+        throw new TypeError(
+          'tag must not be null or undefined when an item object is not passed'
+        );
+      } else if (!itemId) {
+        throw new TypeError(
+          'itemId must not be null or undefined when an item object is not passed'
+        );
       }
 
       const url = new URL(
-        `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/${type}`
+        `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${type}`
       );
 
       const params: { [k: string]: string | number | undefined } = {
-        tag: item.ImageTags[type],
-        quality: 90
+        tag,
+        quality
       };
-      if (limitByWidth) {
-        params.maxWidth = element.clientWidth.toString();
-      } else {
-        params.maxHeight = element.clientHeight.toString();
+      if (limitByWidth && maxWidth) {
+        params.maxWidth = maxWidth;
+      } else if (maxHeight) {
+        params.maxHeight = maxHeight;
       }
       url.search = stringify(params);
 
