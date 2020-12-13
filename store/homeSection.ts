@@ -7,46 +7,63 @@ import {
 } from '@jellyfin/client-axios';
 import { AppState } from './index';
 
+interface latestMedia {
+  [key: string]: BaseItemDto[];
+}
 export interface HomeSection {
-  items: BaseItemDto[];
+  libraries: BaseItemDto[];
+  audioResumes: BaseItemDto[];
+  videoResumes: BaseItemDto[];
+  upNext: BaseItemDto[];
+  latestMedia: latestMedia;
 }
 
 export const state = (): HomeSection => ({
-  items: []
+  libraries: [],
+  audioResumes: [],
+  videoResumes: [],
+  upNext: [],
+  latestMedia: {}
 });
 
 type MutationPayload = {
+  libraries: BaseItemDto[];
   audioResumes: BaseItemDto[];
   videoResumes: BaseItemDto[];
   upNext: BaseItemDto[];
   latestMedia: BaseItemDto[];
+  libraryId?: string;
 };
 
 export const mutations: MutationTree<HomeSection> = {
-  ADD_LIBRARIES(state: HomeSection, { items }: { items: BaseItemDto[] }) {
-    state.items = items;
+  ADD_LIBRARIES(state: HomeSection, { libraries }: MutationPayload) {
+    state.libraries = libraries;
   },
   ADD_AUDIO_RESUMES(state: HomeSection, { audioResumes }: MutationPayload) {
-    state.items = audioResumes;
+    state.audioResumes = audioResumes;
   },
   ADD_VIDEO_RESUMES(state: HomeSection, { videoResumes }: MutationPayload) {
-    state.items = videoResumes;
+    state.videoResumes = videoResumes;
   },
   ADD_UP_NEXT(state: HomeSection, { upNext }: MutationPayload) {
-    state.items = upNext;
+    state.upNext = upNext;
   },
-  ADD_LATEST_MEDIA(state: HomeSection, { latestMedia }: MutationPayload) {
-    state.items = latestMedia;
+  ADD_LATEST_MEDIA(
+    state: HomeSection,
+    { latestMedia, libraryId }: MutationPayload
+  ) {
+    if (!libraryId) throw new Error('libraryId is undefined');
+    state.latestMedia[libraryId] = latestMedia;
   },
   CLEAR_HOME_SECTION_STATE(state: HomeSection) {
-    state.items = [];
+    state.libraries = [];
   }
 };
 export const actions: ActionTree<HomeSection, AppState> = {
   async getLibraries({ rootState, dispatch, commit }) {
     await dispatch('userViews/refreshUserViews', null, { root: true });
 
-    commit('ADD_LIBRARIES', rootState.userViews.views);
+    commit('ADD_LIBRARIES', { libraries: rootState.userViews.views });
   },
   async getAudioResumes({ dispatch }) {
     try {
@@ -163,7 +180,7 @@ export const actions: ActionTree<HomeSection, AppState> = {
   },
   async getLatestMedia({ dispatch }, { parentId }: { parentId: string }) {
     try {
-      const { data } = await this.$api.tvShows.getNextUp({
+      const { data } = await this.$api.userLibrary.getLatestMedia({
         userId: this.$auth.user.Id,
         limit: 12,
         fields: [ItemFields.PrimaryImageAspectRatio],
@@ -176,14 +193,18 @@ export const actions: ActionTree<HomeSection, AppState> = {
         parentId
       });
 
-      dispatch('getLatestMediaSuccess', data.Items);
+      dispatch('getLatestMediaSuccess', {
+        response: data,
+        libraryId: parentId
+      });
     } catch (err) {
       dispatch('getLatestMediaFailure', err);
     }
   },
-  getLatestMediaSuccess({ commit }, response: BaseItemDtoQueryResult) {
+  getLatestMediaSuccess({ commit }, { response, libraryId }) {
     commit('ADD_LATEST_MEDIA', {
-      latestMedia: response
+      latestMedia: response,
+      libraryId
     });
   },
   getLatestMediaFailure: async ({ dispatch }, error) => {

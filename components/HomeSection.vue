@@ -41,6 +41,7 @@
 </template>
 
 <script lang="ts">
+import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapState, mapActions } from 'vuex';
 import { AppState } from '~/store';
@@ -72,7 +73,24 @@ export default Vue.extend({
     };
   },
   computed: mapState<AppState>({
-    items: (state: AppState) => state.homeSection.items
+    items(state: AppState): BaseItemDto[] {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
+      // @ts-ignore
+      switch (this.section.type) {
+        case 'libraries':
+          return state.homeSection.libraries;
+        case 'resume':
+          return state.homeSection.videoResumes;
+        case 'resumeaudio':
+          return state.homeSection.audioResumes;
+        case 'upNext':
+          return state.homeSection.upNext;
+        case 'latestmedia':
+          return state.homeSection.latestMedia[this.section.libraryId];
+        default:
+          return [];
+      }
+    }
   }),
   async created() {
     switch (this.section.type) {
