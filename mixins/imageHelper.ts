@@ -20,6 +20,12 @@ declare module '@nuxt/types' {
       quality?: number,
       limitByWidth?: boolean
     ) => string;
+    getImageUrlById: (type: ImageType, id: string) => string;
+    getSizedImageUrlById: (
+      type: ImageType,
+      id: string,
+      element: HTMLElement
+    ) => string;
   }
 
   interface NuxtAppOptions {
@@ -33,6 +39,12 @@ declare module '@nuxt/types' {
       maxHeight?: number,
       quality?: number,
       limitByWidth?: boolean
+    ) => string;
+    getImageUrlById: (type: ImageType, id: string) => string;
+    getSizedImageUrlById: (
+      type: ImageType,
+      id: string,
+      element: HTMLElement
     ) => string;
   }
 }
@@ -50,6 +62,12 @@ declare module 'vue/types/vue' {
       quality?: number,
       limitByWidth?: boolean
     ) => string;
+    getImageUrlById: (type: ImageType, id: string) => string;
+    getSizedImageUrlById: (
+      type: ImageType,
+      id: string,
+      element: HTMLElement
+    ) => string;
   }
 }
 
@@ -65,7 +83,7 @@ const imageHelper = Vue.extend({
      * @param {BaseItemDto} item - The item to fetch the image for (optional).
      * @param {HTMLElement} element - The DOM element which size will be used for the image's maximum width or height (optional).
      * @param {string} tag - tag of the image to fetch (optional if item is passed).
-     * @param {string} itemId - itemId to get image for (optional if item is passed).
+     * @param {string} itemId - itemId to get the image from (optional if item is passed).
      * @param {number} maxWidth - Maximum width of the image (optional).
      * @param {number} maxHeight - Maximum height of the image (optional).
      * @param {number} quality - Quality level of the image (optional, only relevant for jpeg format).
@@ -114,6 +132,43 @@ const imageHelper = Vue.extend({
       url.search = stringify(params);
 
       return url.toString();
+    },
+    /**
+     * Shorthand for the 'getImageUrlForElement' function when using an itemId only.
+     *
+     * @param {ImageType} type - The type of the image to fetch.
+     * @param {string} id - iitemId to get the image from.
+     * @returns {string} The URL for the image, with the base URL set and the options provided.
+     */
+    getImageUrlById(type: ImageType, id: string): string {
+      return this.getImageUrlForElement(
+        type,
+        undefined,
+        undefined,
+        undefined,
+        id
+      );
+    },
+    /**
+     * Shorthand for the 'getImageUrlForElement' function when using an itemId and a DOM element for size calculations.
+     *
+     * @param {ImageType} type - The type of the image to fetch.
+     * @param {string} id - itemId to get the image from.
+     * @param {HTMLElement} element - The DOM element which size will be used for the image's maximum width or height (optional).
+     * @returns {string} The URL for the image, with the base URL set and the options provided.
+     */
+    getSizedImageUrlById(
+      type: ImageType,
+      id: string,
+      element: HTMLElement
+    ): string {
+      return this.getImageUrlForElement(
+        type,
+        undefined,
+        element,
+        undefined,
+        id
+      );
     }
   }
 });
