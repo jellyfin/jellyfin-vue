@@ -126,14 +126,8 @@ export const actions: ActionTree<
 
       commit('INIT_STATE', { displayPreferences: response.data });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
       const message = this.$i18n.t('failedRetrievingDisplayPreferences');
-      dispatch(
-        'snackbar/pushSnackbarMessage',
-        { message, color: 'error' },
-        { root: true }
-      );
+      dispatch('requestError', { message, error });
     }
     dispatch('callAllCallbacks');
   },
@@ -160,14 +154,8 @@ export const actions: ActionTree<
           'set display preferences status response = ' + response.status
         );
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
       const message = this.$i18n.t('failedSettingDisplayPreferences');
-      dispatch(
-        'snackbar/pushSnackbarMessage',
-        { message, color: 'error' },
-        { root: true }
-      );
+      dispatch('requestError', { message, error });
     }
   },
 
@@ -226,5 +214,27 @@ export const actions: ActionTree<
     Object.keys(state.CustomPrefs).forEach((key) => {
       if (key in updateMethods) updateMethods[key](state.CustomPrefs[key]);
     });
+  },
+
+  /**
+   * Displays and logs an error
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param1 Payload
+   * @param {string} param1.message Message to display
+   * @param {string} param1.error Error to log
+   */
+  requestError(
+    { dispatch },
+    { message, error }: { message: string; error: string }
+  ) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+    dispatch(
+      'snackbar/pushSnackbarMessage',
+      { message, color: 'error' },
+      { root: true }
+    );
   }
 };
