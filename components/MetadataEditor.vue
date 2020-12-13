@@ -101,11 +101,7 @@
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>
-                      No results matching "
-                      <strong>{{ search }}</strong>
-                      ". Press
-                      <kbd>enter</kbd>
-                      to create a new one
+                      {{ $t('metadataNoResultsMatching', { search: search }) }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -125,11 +121,7 @@
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>
-                      No results matching "
-                      <strong>{{ search }}</strong>
-                      ". Press
-                      <kbd>enter</kbd>
-                      to create a new one
+                      {{ $t('metadataNoResultsMatching', { search: search }) }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -140,7 +132,9 @@
             <v-list two-line>
               <v-list-item @click="(e) => handlePersonEdit()">
                 <v-list-item-content>
-                  <v-list-item-title>Add a new person</v-list-item-title>
+                  <v-list-item-title>
+                    {{ $t('addNewPerson') }}
+                  </v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-action>
                   <v-icon>mdi-plus-circle</v-icon>

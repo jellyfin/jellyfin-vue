@@ -47,9 +47,11 @@
       >
         <v-spacer></v-spacer>
         <v-btn depressed width="8em" class="mr-1" @click="handleCancel">
-          Cancel
+          {{ $t('cancel') }}
         </v-btn>
-        <v-btn depressed width="8em" color="primary" type="submit">Save</v-btn>
+        <v-btn depressed width="8em" color="primary" type="submit">
+          {{ $t('save') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -41,7 +41,7 @@
         <v-col class="card-grid-container">
           <v-card
             v-for="(item, i) in images"
-            :key="i"
+            :key="`${item.Type}-${i}`"
             class="ma-2 d-flex flex-column"
           >
             <v-img

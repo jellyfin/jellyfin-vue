@@ -6,7 +6,7 @@
         <div>
           <v-card
             v-for="(item, i) in generalImages"
-            :key="i"
+            :key="`${item.ImageTag}-${i}`"
             class="ma-2"
             outlined
             width="288"
@@ -39,7 +39,7 @@
         <div>
           <v-card
             v-for="(item, i) in backdropImages"
-            :key="i"
+            :key="`${item.ImageTag}-${i}`"
             class="mx-2"
             outlined
             width="288"
