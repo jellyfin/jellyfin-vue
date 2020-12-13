@@ -9,7 +9,7 @@
               class="person-image elevation-2 ml-2"
               cover
               aspect-ratio="1"
-              :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
+              :src="getImageUrl(item.Id, 'Primary')"
             />
             <div class="ml-4 d-flex flex-column">
               <div
@@ -75,10 +75,7 @@
                 <v-container>
                   <v-row>
                     <v-col>
-                      <v-img
-                        cover
-                        :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`"
-                      />
+                      <v-img cover :src="getImageUrl(item.Id, 'Backdrop')" />
                       <div v-if="item.Overview">
                         <h2 class="text-h6 mt-2">
                           <span>{{ $t('biography') }}</span>
@@ -107,7 +104,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -161,7 +158,16 @@ export default Vue.extend({
     this.clearBackdrop();
   },
   methods: {
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    getImageUrl(itemId: string, type: string): string {
+      return this.getImageUrlForElement(
+        type as ImageType,
+        undefined,
+        undefined,
+        undefined,
+        itemId
+      );
+    }
   }
 });
 </script>
