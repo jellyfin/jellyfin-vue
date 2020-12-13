@@ -151,16 +151,19 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     onVideoPlaying(_event: Event) {
       // TODO: Move to playback manager
-      this.$api.playState.reportPlaybackStart({
-        playbackStartInfo: {
-          CanSeek: true,
-          ItemId: this.item.Id,
-          PlaySessionId: this.playbackInfo.PlaySessionId,
-          MediaSourceId: this.playbackInfo.MediaSources?.[0].Id,
-          AudioStreamIndex: 0, // TODO: Don't hardcode this
-          SubtitleStreamIndex: 0 // TODO: Don't hardcode this
-        }
-      });
+      this.$api.playState.reportPlaybackStart(
+        {
+          playbackStartInfo: {
+            CanSeek: true,
+            ItemId: this.item.Id,
+            PlaySessionId: this.playbackInfo.PlaySessionId,
+            MediaSourceId: this.playbackInfo.MediaSources?.[0].Id,
+            AudioStreamIndex: 0, // TODO: Don't hardcode this
+            SubtitleStreamIndex: 0 // TODO: Don't hardcode this
+          }
+        },
+        { progress: false }
+      );
 
       this.lastProgressUpdate = new Date().getTime();
     },
@@ -168,18 +171,21 @@ export default Vue.extend({
       // TODO: Move to playback manager
       const now = new Date().getTime();
 
-      if (!(now - this.lastProgressUpdate < 700)) {
+      if (now - this.lastProgressUpdate > 1000) {
         const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
           .currentTime;
 
-        this.$api.playState.reportPlaybackProgress({
-          playbackProgressInfo: {
-            ItemId: this.item.Id,
-            PlaySessionId: this.playbackInfo.PlaySessionId,
-            IsPaused: false,
-            PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
-          }
-        });
+        this.$api.playState.reportPlaybackProgress(
+          {
+            playbackProgressInfo: {
+              ItemId: this.item.Id,
+              PlaySessionId: this.playbackInfo.PlaySessionId,
+              IsPaused: false,
+              PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
+            }
+          },
+          { progress: false }
+        );
 
         this.lastProgressUpdate = new Date().getTime();
       }
@@ -189,27 +195,33 @@ export default Vue.extend({
       const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
         .currentTime;
 
-      this.$api.playState.reportPlaybackProgress({
-        playbackProgressInfo: {
-          ItemId: this.item.Id,
-          PlaySessionId: this.playbackInfo.PlaySessionId,
-          IsPaused: true,
-          PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
-        }
-      });
+      this.$api.playState.reportPlaybackProgress(
+        {
+          playbackProgressInfo: {
+            ItemId: this.item.Id,
+            PlaySessionId: this.playbackInfo.PlaySessionId,
+            IsPaused: true,
+            PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
+          }
+        },
+        { progress: false }
+      );
     },
     onVideoStopped(_event?: Event) {
       // TODO: Move to playback manager
       const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
         .currentTime;
 
-      this.$api.playState.reportPlaybackStopped({
-        playbackStopInfo: {
-          ItemId: this.item.Id,
-          PlaySessionId: this.playbackInfo.PlaySessionId,
-          PositionTicks: this.msToTicks(currentTime * 1000)
-        }
-      });
+      this.$api.playState.reportPlaybackStopped(
+        {
+          playbackStopInfo: {
+            ItemId: this.item.Id,
+            PlaySessionId: this.playbackInfo.PlaySessionId,
+            PositionTicks: this.msToTicks(currentTime * 1000)
+          }
+        },
+        { progress: false }
+      );
 
       this.lastProgressUpdate = 0;
 

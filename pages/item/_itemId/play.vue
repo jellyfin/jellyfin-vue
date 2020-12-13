@@ -7,7 +7,7 @@
       @error="handleShakaPlayerError"
     />
 
-    <v-dialog v-model="errorDialog" :width="errorModalWidth">
+    <v-dialog v-model="errorDialog" :width="smallModalWidth">
       <v-card>
         <v-card-title class="headline">
           {{ $t('errors.anErrorHappened') }}
