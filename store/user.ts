@@ -1,23 +1,19 @@
 import { ActionTree, MutationTree } from 'vuex';
 
 export interface UserState {
-  id: string;
   accessToken: string;
 }
 
 export const state = (): UserState => ({
-  id: '',
   accessToken: ''
 });
 
 interface MutationPayload {
-  id: string;
   accessToken: string;
 }
 
 export const mutations: MutationTree<UserState> = {
-  SET_USER(state: UserState, { id, accessToken }: MutationPayload) {
-    state.id = id;
+  SET_USER(state: UserState, { accessToken }: MutationPayload) {
     state.accessToken = accessToken;
   },
   CLEAR_USER(state: UserState) {
@@ -26,12 +22,8 @@ export const mutations: MutationTree<UserState> = {
 };
 
 export const actions: ActionTree<UserState, UserState> = {
-  setUser(
-    { commit },
-    { id, accessToken }: { id: string; accessToken: string }
-  ) {
+  setUser({ commit }, { accessToken }: { accessToken: string }) {
     commit('SET_USER', {
-      id,
       accessToken
     });
   },
@@ -49,7 +41,6 @@ export const actions: ActionTree<UserState, UserState> = {
   },
   loginRequestSuccess({ dispatch }, response) {
     dispatch('setUser', {
-      id: response.User.Id,
       accessToken: response.AccessToken
     });
   },
