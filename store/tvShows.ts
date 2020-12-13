@@ -6,7 +6,13 @@ import {
 } from '@jellyfin/client-axios';
 
 export interface TvShowsState {
+  /**
+   * seasons: Stores an array of all seasons
+   */
   seasons: BaseItemDto[];
+  /**
+   * seasonEpisodes: Stores an array for each season containing all the season episodes
+   */
   seasonEpisodes: BaseItemDto[][];
 }
 
