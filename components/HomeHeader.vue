@@ -126,21 +126,49 @@ export default Vue.extend({
   },
   methods: {
     getBackdrop(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Backdrop`;
+        return this.getImageUrlForElement(
+          ImageType.Backdrop,
+          undefined,
+          undefined,
+          undefined,
+          item.SeriesId
+        );
       } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item?.AlbumArtists?.[0].Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(
+          ImageType.Backdrop,
+          undefined,
+          undefined,
+          undefined,
+          item?.AlbumArtists?.[0].Id
+        );
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(
+          ImageType.Backdrop,
+          undefined,
+          undefined,
+          undefined,
+          item.Id
+        );
       }
     },
     getLogo(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
+        return this.getImageUrlForElement(
+          ImageType.Logo,
+          undefined,
+          undefined,
+          undefined,
+          item.SeriesId
+        );
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
+        return this.getImageUrlForElement(
+          ImageType.Logo,
+          undefined,
+          undefined,
+          undefined,
+          item.Id
+        );
       }
     },
     getOverview(item: BaseItemDto): string {

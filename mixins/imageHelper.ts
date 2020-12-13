@@ -91,10 +91,6 @@ const imageHelper = Vue.extend({
         } else if (!tag) {
           tag = item.ImageTags[type];
         }
-      } else if (!tag) {
-        throw new TypeError(
-          'tag must not be null or undefined when an item object is not passed'
-        );
       } else if (!itemId) {
         throw new TypeError(
           'itemId must not be null or undefined when an item object is not passed'
@@ -109,6 +105,7 @@ const imageHelper = Vue.extend({
         tag,
         quality
       };
+
       if (limitByWidth && maxWidth) {
         params.maxWidth = maxWidth;
       } else if (maxHeight) {
