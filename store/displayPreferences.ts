@@ -10,7 +10,8 @@ export interface DisplayPreferencesState extends DisplayPreferencesDto {
 const defaultCustomPrefs: {
   [key: string]: string;
 } = {
-  darkMode: 'True'
+  darkMode: 'True',
+  locale: 'en'
 };
 
 const defaultState = (): DisplayPreferencesState => ({
@@ -23,6 +24,9 @@ const booleanToString = (value: boolean) => (value ? 'True' : 'False');
 const updateMethods: { [key: string]: (value: string) => void } = {
   darkMode: (value: string) => {
     window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+  },
+  locale: (value: string) => {
+    window.$nuxt.$i18n.setLocale(value);
   }
 };
 
@@ -179,7 +183,7 @@ export const actions: ActionTree<
     { key, value }: { key: string; value: string }
   ) {
     commit('EDIT_CUSTOM_PREF', { pref: { key, value } });
-    await dispatch('pushState');
+    if (this.$auth.loggedIn) await dispatch('pushState');
   },
 
   /**
