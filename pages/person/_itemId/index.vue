@@ -232,13 +232,7 @@ export default Vue.extend({
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getImageUrl(itemId: string): string {
       const element = this.$refs.personImg as HTMLElement;
-      return this.getImageUrlForElement(
-        ImageType.Primary,
-        undefined,
-        element,
-        undefined,
-        itemId
-      );
+      return this.getSizedImageUrlById(ImageType.Primary, itemId, element);
     }
   }
 });

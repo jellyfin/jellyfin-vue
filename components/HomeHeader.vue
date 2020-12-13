@@ -127,48 +127,24 @@ export default Vue.extend({
   methods: {
     getBackdrop(item: BaseItemDto): string {
       if (item.Type === 'Episode') {
-        return this.getImageUrlForElement(
+        return this.getImageUrlById(
           ImageType.Backdrop,
-          undefined,
-          undefined,
-          undefined,
-          item.SeriesId
+          item.SeriesId as string
         );
       } else if (item.Type === 'MusicAlbum') {
-        return this.getImageUrlForElement(
+        return this.getImageUrlById(
           ImageType.Backdrop,
-          undefined,
-          undefined,
-          undefined,
-          item?.AlbumArtists?.[0].Id
+          item?.AlbumArtists?.[0].Id as string
         );
       } else {
-        return this.getImageUrlForElement(
-          ImageType.Backdrop,
-          undefined,
-          undefined,
-          undefined,
-          item.Id
-        );
+        return this.getImageUrlById(ImageType.Backdrop, item.Id as string);
       }
     },
     getLogo(item: BaseItemDto): string {
       if (item.Type === 'Episode') {
-        return this.getImageUrlForElement(
-          ImageType.Logo,
-          undefined,
-          undefined,
-          undefined,
-          item.SeriesId
-        );
+        return this.getImageUrlById(ImageType.Logo, item.SeriesId as string);
       } else {
-        return this.getImageUrlForElement(
-          ImageType.Logo,
-          undefined,
-          undefined,
-          undefined,
-          item.Id
-        );
+        return this.getImageUrlById(ImageType.Logo, item.Id as string);
       }
     },
     getOverview(item: BaseItemDto): string {

@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -35,7 +35,10 @@ export default Vue.extend({
         throw new Error('Item not found');
       }
 
-      this.poster = this.getImageUrl(this.$route.params.itemId, 'backdrop');
+      this.poster = this.getImageUrlById(
+        ImageType.Backdrop,
+        this.$route.params.itemId
+      );
     } catch (error) {
       this.$nuxt.error({
         statusCode: 404,

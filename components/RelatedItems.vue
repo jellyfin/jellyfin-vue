@@ -160,13 +160,7 @@ export default Vue.extend({
     },
     getImageUrl(itemId: string): string {
       const element = this.$refs.avatarImg as HTMLElement;
-      return this.getImageUrlForElement(
-        ImageType.Primary,
-        undefined,
-        element,
-        undefined,
-        itemId
-      );
+      return this.getSizedImageUrlById(ImageType.Primary, itemId, element);
     }
   }
 });
