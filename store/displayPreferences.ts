@@ -17,6 +17,15 @@ const defaultState = (): DisplayPreferencesState => ({
   CustomPrefs: defaultCustomPrefs
 });
 
+const stringToBoolean = (value: string) => value === 'True';
+const booleanToString = (value: boolean) => (value ? 'True' : 'False');
+
+const updateMethods: { [key: string]: (value: string) => void } = {
+  darkMode: (value: string) => {
+    window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+  }
+};
+
 export const state = defaultState();
 
 interface SingleCustomPrefMutationPayload {
@@ -43,7 +52,7 @@ export const getters: GetterTree<
    * @returns {boolean} Current dark mode
    */
   getDarkMode: (state: DisplayPreferencesState) =>
-    state.CustomPrefs.darkMode === 'True'
+    stringToBoolean(state.CustomPrefs.darkMode)
 };
 
 export const mutations: MutationTree<DisplayPreferencesState> = {
@@ -78,17 +87,7 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     { pref }: { pref: SingleCustomPrefMutationPayload }
   ) {
     state.CustomPrefs[pref.key] = pref.value;
-  },
-
-  /**
-   * Drops a custom pref key
-   *
-   * @param {DisplayPreferencesState} state Current state
-   * @param {any} param1 Payload
-   * @param {string} param1.key Key to drop
-   */
-  DROP_CUSTOM_PREF(state: DisplayPreferencesState, { key }: { key: string }) {
-    delete state.CustomPrefs[key];
+    if (pref.key in updateMethods) updateMethods[pref.key](pref.value);
   }
 };
 
@@ -129,7 +128,7 @@ export const actions: ActionTree<
         { root: true }
       );
     }
-    await dispatch('updateDarkMode', {});
+    dispatch('callAllCallbacks');
   },
 
   /**
@@ -153,7 +152,6 @@ export const actions: ActionTree<
         throw new Error(
           'set display preferences status response = ' + response.status
         );
-      // console.error("Can't update displayPreferences");
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -185,29 +183,15 @@ export const actions: ActionTree<
   },
 
   /**
-   * Deletes a custom preference and pushes it to the server
-   *
-   * @param {any} param0 Vuex
-   * @param {any} param0.commit Vuex commit
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {string} param1.key Key to delete
-   */
-  async dropCustomPref({ commit, dispatch }, { key }: { key: string }) {
-    commit('DROP_CUSTOM_PREF', { key });
-    await dispatch('pushState');
-  },
-
-  /**
    * Resets the state and reapply default theme
    *
    * @param {any} param0 Vuex
    * @param {any} param0.commit Vuex commit
    * @param {any} param0.dispatch Vuex dispatch
    */
-  async resetState({ commit, dispatch }) {
+  resetState({ commit, dispatch }) {
     commit('INIT_STATE', { displayPreferences: defaultState() });
-    await dispatch('updateDarkMode', {});
+    dispatch('callAllCallbacks');
   },
 
   /**
@@ -219,26 +203,21 @@ export const actions: ActionTree<
    * @param {boolean} param1.darkMode Dark mode value
    */
   async setDarkMode({ dispatch }, { darkMode }: { darkMode: boolean }) {
-    await dispatch('updateDarkMode', { forceDarkMode: darkMode });
     await dispatch('editCustomPref', {
       key: 'darkMode',
-      value: darkMode ? 'True' : 'False'
+      value: booleanToString(darkMode)
     });
   },
 
   /**
-   * Updates the Vuetify dark mode setting based on:
-   * the parameter if given
-   * the current state if no parameter is given
+   * Calls all update methods available for our current custom prefs
    *
    * @param {any} param0 Vuex
-   * @param {any} param0.getters Vuex getters
-   * @param {any} param1 Payload
-   * @param {boolean | undefined} param1.forceDarkMode Dark mode setting
+   * @param {any} param0.state Vuex state
    */
-  updateDarkMode({ getters }, { forceDarkMode }: { forceDarkMode?: boolean }) {
-    if (forceDarkMode === undefined)
-      window.$nuxt.$vuetify.theme.dark = getters.getDarkMode;
-    else window.$nuxt.$vuetify.theme.dark = forceDarkMode;
+  callAllCallbacks({ state }) {
+    Object.keys(state.CustomPrefs).forEach((key) => {
+      if (key in updateMethods) updateMethods[key](state.CustomPrefs[key]);
+    });
   }
 };

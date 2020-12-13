@@ -144,11 +144,12 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.$store.dispatch('displayPreferences/updateDarkMode', {});
+    this.callAllCallbacks();
     this.refreshUserViews();
   },
   methods: {
-    ...mapActions('userViews', ['refreshUserViews'])
+    ...mapActions('userViews', ['refreshUserViews']),
+    ...mapActions('displayPreferences', ['callAllCallbacks'])
   }
 });
 </script>
