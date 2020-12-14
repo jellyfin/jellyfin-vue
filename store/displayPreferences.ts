@@ -70,13 +70,21 @@ export const getters: GetterTree<
   getCustomPrefs: (state: DisplayPreferencesState) => state.CustomPrefs,
 
   /**
-   * Gets the current dark mode setting as a boolean (default is enabled)
+   * Anonymous function returned by getBooleanCustomPref
+   *
+   * @name CustomPrefToBoolean
+   * @function
+   * @param {string} key Key of custom property to get parsed to boolean
+   * @returns {boolean} Value parsed to bool
+   */
+  /**
+   * Gets a custom preference parsed as a boolean (as bools are stored as string server-side)
    *
    * @param {DisplayPreferencesState} state Current state
-   * @returns {boolean} Current dark mode
+   * @returns {CustomPrefToBoolean} Function to pass the property key to
    */
-  getDarkMode: (state: DisplayPreferencesState) =>
-    stringToBoolean(state.CustomPrefs.darkMode)
+  getBooleanCustomPref: (state: DisplayPreferencesState) => (key: string) =>
+    stringToBoolean(state.CustomPrefs[key])
 };
 
 export const mutations: MutationTree<DisplayPreferencesState> = {
@@ -241,6 +249,22 @@ export const actions: ActionTree<
   },
 
   /**
+   * Same as editCustomPref, but takes a boolean value and parses it to string so the serve can store it
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param1 Payload
+   * @param {string} param1.key Key of custom pref to edit
+   * @param {boolean} param1.value Value to apply
+   */
+  async editBooleanCustomPref(
+    { dispatch },
+    { key, value }: { key: string; value: boolean }
+  ) {
+    await dispatch('editCustomPref', { key, value: booleanToString(value) });
+  },
+
+  /**
    * Resets the state and reapply default theme
    *
    * @param {any} param0 Vuex
@@ -250,21 +274,6 @@ export const actions: ActionTree<
   async resetState({ commit, dispatch }) {
     commit('INIT_STATE', { displayPreferences: defaultState() });
     await dispatch('callAllCallbacks');
-  },
-
-  /**
-   * Updates the dark mode value of the state and Vuetify and pushes it to the server
-   *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {boolean} param1.darkMode Dark mode value
-   */
-  async setDarkMode({ dispatch }, { darkMode }: { darkMode: boolean }) {
-    await dispatch('editCustomPref', {
-      key: 'darkMode',
-      value: booleanToString(darkMode)
-    });
   },
 
   /**

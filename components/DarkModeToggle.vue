@@ -8,18 +8,18 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapGetters('displayPreferences', ['getDarkMode']),
+    ...mapGetters('displayPreferences', ['getBooleanCustomPref']),
     darkMode: {
       get() {
-        return this.getDarkMode;
+        return this.getBooleanCustomPref('darkMode');
       },
       set(value: boolean) {
-        this.setDarkMode({ darkMode: value });
+        this.editBooleanCustomPref({ key: 'darkMode', value });
       }
     }
   },
   methods: {
-    ...mapActions('displayPreferences', ['setDarkMode'])
+    ...mapActions('displayPreferences', ['editBooleanCustomPref'])
   }
 });
 </script>
