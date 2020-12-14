@@ -24,12 +24,29 @@ const defaultState = (): DisplayPreferencesState => ({
   CustomPrefs: defaultCustomPrefs
 });
 
+/**
+ * Methods to apply for each CustomPrefs property.
+ * Those callbacks are usually done on global variables such as $vuetify or $i18n,
+ * and those may not be present early in the application lifecycle.
+ * The try-catch are there to silence those errors.
+ */
 const updateMethods: { [key: string]: (value: string) => void } = {
   darkMode: (value: string) => {
-    window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+    try {
+      window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   },
+
   locale: (value: string) => {
-    window.$nuxt.$i18n.setLocale(value);
+    try {
+      window.$nuxt.$i18n.setLocale(value);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   }
 };
 
@@ -103,13 +120,12 @@ export const actions: ActionTree<
   DisplayPreferencesState
 > = {
   /**
-   * Fetches display preferences, stores them and updates Vuetify dark mode
+   * Fetches display preferences and stores them
    *
    * @param {any} param0 Vuex
-   * @param {any} param0.commit Vuex commit
    * @param {any} param0.dispatch Vuex dispatch
    */
-  async initState({ commit, dispatch }) {
+  async initState({ dispatch }) {
     try {
       const response = await this.$api.displayPreferences.getDisplayPreferences(
         {
@@ -124,12 +140,40 @@ export const actions: ActionTree<
           'get display preferences status response = ' + response.status
         );
 
-      commit('INIT_STATE', { displayPreferences: response.data });
+      await dispatch('initStateSuccess', { displayPreferences: response.data });
     } catch (error) {
-      const message = this.$i18n.t('failedRetrievingDisplayPreferences');
-      dispatch('requestError', { message, error });
+      await dispatch('initStateFailure', { error });
     }
-    dispatch('callAllCallbacks');
+  },
+
+  /**
+   * On query success, stores the result and call the callbacks
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.commit Vuex commit
+   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param1 Payload
+   * @param {DisplayPreferencesDto} param1.displayPreferences Display preferences object
+   */
+  async initStateSuccess(
+    { commit, dispatch },
+    { displayPreferences }: { displayPreferences: DisplayPreferencesDto }
+  ) {
+    commit('INIT_STATE', { displayPreferences });
+    await dispatch('callAllCallbacks');
+  },
+
+  /**
+   * On query error, sends the error and message to the store logger
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param1 Payload
+   * @param {any} param1.error Try-catch error
+   */
+  async initStateFailure({ dispatch }, { error }: { error: unknown }) {
+    const message = this.$i18n.t('failedRetrievingDisplayPreferences');
+    await dispatch('requestError', { message, error });
   },
 
   /**
@@ -153,10 +197,29 @@ export const actions: ActionTree<
         throw new Error(
           'set display preferences status response = ' + response.status
         );
+      await dispatch('pushStateSuccess');
     } catch (error) {
-      const message = this.$i18n.t('failedSettingDisplayPreferences');
-      dispatch('requestError', { message, error });
+      await dispatch('pushStateFailure', { error });
     }
+  },
+
+  /**
+   * Empty function for push state success in case we want to subscribe to it
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  pushStateSuccess() {},
+
+  /**
+   * On push failure, logs a message
+   *
+   * @param {any} param0 Vuex
+   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param1 Payload
+   * @param {any} param1.error Try-catch error
+   */
+  async pushStateFailure({ dispatch }, { error }: { error: unknown }) {
+    const message = this.$i18n.t('failedSettingDisplayPreferences');
+    await dispatch('requestError', { message, error });
   },
 
   /**
@@ -184,9 +247,9 @@ export const actions: ActionTree<
    * @param {any} param0.commit Vuex commit
    * @param {any} param0.dispatch Vuex dispatch
    */
-  resetState({ commit, dispatch }) {
+  async resetState({ commit, dispatch }) {
     commit('INIT_STATE', { displayPreferences: defaultState() });
-    dispatch('callAllCallbacks');
+    await dispatch('callAllCallbacks');
   },
 
   /**
@@ -225,13 +288,13 @@ export const actions: ActionTree<
    * @param {string} param1.message Message to display
    * @param {string} param1.error Error to log
    */
-  requestError(
+  async requestError(
     { dispatch },
     { message, error }: { message: string; error: string }
   ) {
     // eslint-disable-next-line no-console
     console.error(error);
-    dispatch(
+    await dispatch(
       'snackbar/pushSnackbarMessage',
       { message, color: 'error' },
       { root: true }
