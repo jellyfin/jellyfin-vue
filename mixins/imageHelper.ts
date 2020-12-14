@@ -129,6 +129,7 @@ const imageHelper = Vue.extend({
       } else if (maxHeight) {
         params.maxHeight = maxHeight;
       }
+
       url.search = stringify(params);
 
       return url.toString();
