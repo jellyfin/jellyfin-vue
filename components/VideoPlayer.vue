@@ -26,7 +26,7 @@ import shaka from 'shaka-player/dist/shaka-player.ui';
 import muxjs from 'mux.js';
 import { mapActions } from 'vuex';
 import 'shaka-player/dist/controls.css';
-import { PlaybackInfoResponse } from '~/api';
+import { PlaybackInfoResponse } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
 declare global {
