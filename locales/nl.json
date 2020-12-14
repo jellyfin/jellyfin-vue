@@ -23,7 +23,7 @@
     "rating": "Beoordeling",
     "releaseDate": "Publicatiedatum",
     "serverAddress": "Server adres",
-    "serverAddressMustBeUrl": "Server adres moet een geldige URL zijn",
+    "serverAddressMustBeUrl": "Server adres moet een geldig adres zijn",
     "serverAddressRequired": "Server adres is verplicht",
     "serverNotFound": "Server niet gevonden",
     "settings": "Instellingen",
@@ -59,7 +59,7 @@
     "connect": "Verbinden",
     "changeServer": "Verander van server",
     "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
-    "studios": "Studios",
+    "studios": "Studio's",
     "series": "Series",
     "selectUser": "Selecteer een gebruiker",
     "noResultsFound": "Er is hier niets",
@@ -75,5 +75,12 @@
     "artists": "Artiesten",
     "artist": "Artiest",
     "albums": "Albums",
-    "actors": "Acteurs"
+    "actors": "Acteurs",
+    "libraries": "Bibliotheken",
+    "byArtist": "Door",
+    "viewDetails": "Bekijk details",
+    "validation": {
+        "required": "Dit veld is vereist",
+        "mustBeUrl": "Dit veld moet een geldige URL zijn"
+    }
 }
