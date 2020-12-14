@@ -74,7 +74,7 @@ export default Vue.extend({
   },
   computed: mapState<AppState>({
     items(state: AppState): BaseItemDto[] {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       switch (this.section.type) {
         case 'libraries':
@@ -86,6 +86,8 @@ export default Vue.extend({
         case 'upNext':
           return state.homeSection.upNext;
         case 'latestmedia':
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           return state.homeSection.latestMedia[this.section.libraryId];
         default:
           return [];
@@ -99,21 +101,21 @@ export default Vue.extend({
         break;
       }
       case 'resume': {
-        this.getVideoResumes();
+        await this.getVideoResumes();
         break;
       }
       case 'resumeaudio': {
-        this.getAudioResumes();
+        await this.getAudioResumes();
         break;
       }
       case 'upnext': {
-        this.getUpNext({
+        await this.getUpNext({
           parentId: this.section.libraryId
         });
         break;
       }
       case 'latestmedia': {
-        this.getLatestMedia({
+        await this.getLatestMedia({
           parentId: this.section.libraryId
         });
         break;
