@@ -2,13 +2,12 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <div class="d-flex align-center" v-bind="attrs" v-on="on">
-        <v-avatar size="48" color="primary" class="mr-4">
-          <v-img
-            v-if="userImage"
-            :src="userImage"
-            :alt="$auth.user.Name"
-          ></v-img>
-          <v-icon v-else dark>mdi-account</v-icon>
+        <v-avatar :size="avatarSize" color="primary" class="mr-4">
+          <v-img :src="userImage" :alt="$auth.user.Name">
+            <template #placeholder>
+              <v-icon dark>mdi-account</v-icon>
+            </template>
+          </v-img>
         </v-avatar>
         <h1 class="font-weight-light pb-1">
           {{ $auth.user.Name }}
@@ -35,6 +34,7 @@ import { mapActions } from 'vuex';
 export default Vue.extend({
   data() {
     return {
+      avatarSize: 48,
       menuItems: [
         {
           title: this.$t('logout'),
@@ -48,13 +48,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    userImage: {
-      get() {
-        if (this.$auth.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
-        } else {
-          return '';
-        }
+    userImage(): string {
+      if (this.$auth.user?.PrimaryImageTag) {
+        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
+      } else {
+        return '';
       }
     }
   },
