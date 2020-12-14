@@ -5,7 +5,7 @@
  */
 import Vue from 'vue';
 import { stringify } from 'qs';
-import { BaseItemDto, ImageType } from '~/api';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 
 declare module '@nuxt/types' {
   interface Context {

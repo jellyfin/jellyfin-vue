@@ -89,5 +89,10 @@
         "mustBeUrl": "Trường này phải là một URL hợp lệ",
         "required": "Trường này là bắt buộc"
     },
-    "libraries": "Thư viện"
+    "libraries": "Thư viện",
+    "viewDetails": "Xem chi tiết",
+    "numberTracks": "{number} kênh",
+    "nextUp": "Kếp tiếp",
+    "latestLibrary": "Gần nhất {libraryName}",
+    "darkModeToggle": "Chuyển đổi chế độ tối"
 }

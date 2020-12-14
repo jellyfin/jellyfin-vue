@@ -36,7 +36,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Route } from 'vue-router';
-import { BaseItemDto, ImageType } from '~/api';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import modalHelper from '~/mixins/modalHelper';
 import imageHelper from '~/mixins/imageHelper';
 

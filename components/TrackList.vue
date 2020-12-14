@@ -74,7 +74,7 @@
 <script lang="ts">
 import { groupBy } from 'lodash';
 import Vue from 'vue';
-import { BaseItemDto, BaseItemDtoQueryResult } from '~/api';
+import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({

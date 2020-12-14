@@ -56,7 +56,7 @@
 import { isEmpty } from 'lodash';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { UserDto } from '~/api';
+import { UserDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {

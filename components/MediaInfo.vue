@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { intervalToDuration } from 'date-fns';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({

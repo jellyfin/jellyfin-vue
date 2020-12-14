@@ -42,7 +42,7 @@
     "videoTypes": "Typy videa",
     "parentalRatings": "Hodnocení obsahu",
     "genres": "Žánry",
-    "themeVideo": "Tématické video",
+    "themeVideo": "Úvodní video",
     "themeSong": "Znělka",
     "specialFeatures": "Speciály",
     "trailer": "Upoutávka",
@@ -56,7 +56,7 @@
     "played": "Přehráno",
     "status": "Stav",
     "filtersNotFound": "Nelze načíst filtry",
-    "unhandledException": "Nezachycená výjimka",
+    "unhandledException": "Neošetřená výjimka",
     "selectServer": "Vybrat server",
     "connect": "Připojit",
     "changeServer": "Změnit server",
@@ -74,7 +74,7 @@
     "name": "Název",
     "filter": "Filtr",
     "collections": "Sbírky",
-    "artists": "Umělci",
+    "artists": "Interpreti",
     "studios": "Studia",
     "series": "Seriály",
     "unliked": "Zrušeno oblíbené",
@@ -89,5 +89,10 @@
         "mustBeUrl": "Toto pole musí být platná adresa URL",
         "required": "Toto pole je povinné"
     },
-    "libraries": "Knihovny"
+    "libraries": "Knihovny",
+    "viewDetails": "Zobrazit podrobnosti",
+    "numberTracks": "{number} skladeb",
+    "nextUp": "Další v pořadí",
+    "latestLibrary": "Nejnovější {libraryName}",
+    "darkModeToggle": "Přepnout tmavý režim"
 }

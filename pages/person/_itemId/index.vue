@@ -126,7 +126,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 

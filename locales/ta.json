@@ -88,5 +88,11 @@
     "validation": {
         "mustBeUrl": "இந்த புலம் சரியான URL ஆக இருக்க வேண்டும்",
         "required": "இந்த புலம் தேவை"
-    }
+    },
+    "viewDetails": "விபரங்களை பார்",
+    "numberTracks": "{number} தடங்கள்",
+    "nextUp": "அடுத்தது",
+    "libraries": "நூலகங்கள்",
+    "latestLibrary": "சமீபத்திய {libraryName}",
+    "darkModeToggle": "இருண்ட பயன்முறையை நிலைமாற்று"
 }

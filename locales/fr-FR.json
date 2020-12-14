@@ -1,10 +1,10 @@
 {
-    "alphabetically": "Alphabétique",
+    "alphabetically": "Alphabétiquement",
     "badRequest": "Mauvaise requête. Réessayez",
     "continueListening": "Poursuivre l'écoute",
     "continueWatching": "Poursuivre le visionnage",
     "endDate": "Date de fin",
-    "endsAt": "Se termine à {time}",
+    "endsAt": "Prends fin à {time}",
     "episodeNumber": "Épisode {episodeNumber}",
     "home": "Accueil",
     "incorrectUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
@@ -88,5 +88,11 @@
     "validation": {
         "mustBeUrl": "Ce champ n'est pas une URL valide",
         "required": "Ce champ est requis"
-    }
+    },
+    "viewDetails": "Afficher les détails",
+    "numberTracks": "{number} pistes",
+    "nextUp": "À suivre",
+    "libraries": "Médiathèques",
+    "latestLibrary": "Derniers {libraryName}",
+    "darkModeToggle": "Activer le mode sombre"
 }

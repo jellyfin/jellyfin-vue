@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
+import webpack from 'webpack';
 
 const config: NuxtConfig = {
   /*
@@ -205,6 +206,8 @@ const config: NuxtConfig = {
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
+
+   ** Build perfs options come from this https://github.com/nuxt/nuxt.js/issues/5131#issuecomment-468231314
    */
   build: {
     // @ts-ignore -- Undocumented options
@@ -228,7 +231,28 @@ const config: NuxtConfig = {
         ];
       }
     },
-    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
+    extend(
+      config: webpack.Configuration,
+      { isClient }: { isClient: boolean }
+    ): void {
+      if (isClient) {
+        // Web Worker support
+        config.module?.rules.push({
+          test: /\.worker\.(js|ts)$/i,
+          use: [
+            {
+              loader: 'comlink-loader',
+              options: {
+                singleton: true
+              }
+            }
+          ]
+        });
+      }
+    },
+    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules'],
+    cache: true,
+    hardSource: true
   },
 
   /**

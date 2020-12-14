@@ -61,6 +61,7 @@
                 :disabled="isPlayable"
                 depressed
                 rounded
+                nuxt
                 :to="`./${item.Id}/play`"
                 >{{ $t('play') }}</v-btn
               >
@@ -78,7 +79,7 @@
                   item.GenreItems.length > 0
                 "
               >
-                <v-col cols="2" class="d-flex align-center pa-0">
+                <v-col cols="2" class="d-flex align-center pa-0 flex-0">
                   <label class="text--secondary">Genres</label>
                 </v-col>
                 <v-col cols="7">
@@ -294,7 +295,7 @@ import {
   BaseItemPerson,
   MediaSourceInfo,
   MediaStream
-} from '~/api';
+} from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -439,5 +440,8 @@ export default Vue.extend({
 }
 .link:hover {
   text-decoration: underline;
+}
+.flex-0 {
+  flex: 0;
 }
 </style>

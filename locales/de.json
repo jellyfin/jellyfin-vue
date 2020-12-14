@@ -22,7 +22,7 @@
     "rating": "Bewertung",
     "releaseDate": "Erscheinungsdatum",
     "serverAddress": "Serveradresse",
-    "serverAddressMustBeUrl": "Serveradresse muss eine gültige URL sein",
+    "serverAddressMustBeUrl": "Die Serveradresse muss eine gültige Adresse sein",
     "serverAddressRequired": "Serveradresse ist erforderlich",
     "serverNotFound": "Server nicht gefunden",
     "settings": "Einstellungen",
@@ -72,7 +72,7 @@
     "shuffleAll": "Alle mischen",
     "selectUser": "Nutzer auswählen",
     "series": "Serie",
-    "noResultsFound": "Keine Resultate gefunden",
+    "noResultsFound": "Hier ist nichts",
     "networks": "Netzwerke",
     "name": "Name",
     "moreLikeArtist": "Mehr wie {artist}",
@@ -84,5 +84,15 @@
     "collections": "Kollektionen",
     "changeUser": "Nutzer wechseln",
     "artists": "Künstler",
-    "actors": "Schauspieler"
+    "actors": "Schauspieler",
+    "viewDetails": "Details anzeigen",
+    "validation": {
+        "required": "Dieses Feld ist erforderlich",
+        "mustBeUrl": "Dieses Feld muss eine gültige URL enthalten"
+    },
+    "numberTracks": "{number} Lieder",
+    "nextUp": "Als nächstes",
+    "libraries": "Bibliotheken",
+    "latestLibrary": "Neueste {libraryName}",
+    "darkModeToggle": "Nachtmodus umschalten"
 }
