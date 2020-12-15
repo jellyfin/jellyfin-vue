@@ -1,24 +1,24 @@
 <template>
   <swiper
-    v-if="items.length > 0 && !$vuetify.breakpoint.mobile"
+    v-if="items.length > 0 && !$vuetify.breakpoint.mobile && loaded"
     class="swiper"
     :options="swiperOptions"
   >
     <swiper-slide v-for="item in items" :key="item.Id">
-      <div
+      <blurhash-image
         class="slide-backdrop"
-        :style="{
-          backgroundImage: `url('${getBackdrop(item)}')`
-        }"
+        :item="getRelatedItem(item)"
+        :type="'Backdrop'"
       />
       <div class="slide-backdrop-overlay" />
       <div class="slide-content">
         <v-container class="mx-10 mt-5">
           <v-row>
             <v-col cols="5">
-              <v-img
+              <blurhash-image
                 v-if="item.ImageTags && item.ImageTags.Logo"
-                :src="getLogo(item)"
+                :item="getRelatedItem(item)"
+                :type="'Logo'"
               />
               <h1
                 v-else-if="item.Type === 'Episode'"
@@ -100,6 +100,8 @@ export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
+      relatedItems: {} as { [k: number]: BaseItemDto },
+      loaded: false,
       swiperOptions: {
         autoplay: {
           delay: 20000
@@ -123,25 +125,30 @@ export default Vue.extend({
         imageTypeLimit: 1
       })
     ).data;
+
+    for (const [key, i] of this.items.entries()) {
+      let id: string;
+      if (i.Type === 'Episode') {
+        id = i?.SeriesId as string;
+      } else if (i.Type === 'MusicAlbum') {
+        id = i?.AlbumArtists?.[0].Id as string;
+      } else {
+        continue;
+      }
+
+      const itemData = (
+        await this.$api.userLibrary.getItem({
+          userId: this.$auth.user.Id,
+          itemId: id
+        })
+      ).data;
+      this.relatedItems[key] = itemData;
+    }
+    this.loaded = true;
   },
   methods: {
-    getBackdrop(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
-      if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Backdrop`;
-      } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item?.AlbumArtists?.[0].Id}/Images/Backdrop`;
-      } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`;
-      }
-    },
-    getLogo(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
-      if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
-      } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
-      }
+    getRelatedItem(item: BaseItemDto): BaseItemDto {
+      return this.relatedItems[this.items.indexOf(item)];
     },
     getOverview(item: BaseItemDto): string {
       if (item.Overview) {

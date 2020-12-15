@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isValidTag()" ref="img" class="absolute">
+  <div v-if="isValidTag()" ref="img">
     <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
         v-if="isValidBlurhash()"
