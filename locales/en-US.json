@@ -22,6 +22,7 @@
   "dislikes": "Dislikes",
   "endDate": "End date",
   "endsAt": "Ends at {time}",
+  "episodeNumber": "Episode {episodeNumber}",
   "errors": {
     "anErrorHappened": "An error happened",
     "messages": {
@@ -29,7 +30,6 @@
       "videoPlayerError": "The video player encountered an unrecoverable error."
     }
   },
-  "episodeNumber": "Episode {episodeNumber}",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
@@ -66,6 +66,7 @@
   "present": "Present",
   "rating": "Rating",
   "releaseDate": "Release date",
+  "rememberMe": "Remember me",
   "resumable": "Resumable",
   "selectServer": "Select server",
   "selectUser": "Select a user",

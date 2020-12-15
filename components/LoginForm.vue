@@ -23,6 +23,11 @@
           :type="showPassword ? 'text' : 'password'"
           @click:append="() => (showPassword = !showPassword)"
         ></v-text-field>
+        <v-checkbox
+          v-model="login.rememberMe"
+          class="mb-8"
+          :label="$t('rememberMe')"
+        ></v-checkbox>
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
             <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
@@ -71,7 +76,8 @@ export default Vue.extend({
     return {
       login: {
         username: '',
-        password: ''
+        password: '',
+        rememberMe: true
       },
       showPassword: false,
       loading: false,
