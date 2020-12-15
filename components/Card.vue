@@ -8,6 +8,7 @@
           <blurhash-image
             v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
             :item="item"
+            :image-type="getImageType"
             class="card-image"
             @error="imageLoadError = true"
           />
@@ -70,7 +71,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -219,6 +220,13 @@ export default Vue.extend({
     progress: {
       get(): number | false {
         return this.item.UserData?.PlayedPercentage || false;
+      }
+    },
+    getImageType(): ImageType {
+      if (this.shape === 'thumb-card' && this.item.Type === 'Movie') {
+        return ImageType.Backdrop;
+      } else {
+        return ImageType.Primary;
       }
     }
   }
