@@ -1,23 +1,16 @@
 <template>
-  <div ref="card" class="absolute">
+  <div v-if="isValidTag()" ref="img" class="absolute">
     <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
-        v-if="
-          item.ImageBlurHashes &&
-          item.ImageBlurHashes.Primary &&
-          item.ImageTags &&
-          item.ImageTags.Primary &&
-          item.ImageBlurHashes.Primary[item.ImageTags.Primary]
-        "
+        v-if="isValidBlurhash()"
         key="canvas"
-        :hash="item.ImageBlurHashes.Primary[item.ImageTags.Primary]"
+        :hash="getHash()"
         :width="width"
         :height="height"
         :punch="punch"
         class="absolute"
       />
       <img
-        v-if="item.ImageTags && item.ImageTags.Primary"
         key="image"
         class="absolute"
         :src="image"
@@ -30,7 +23,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemDtoImageBlurHashes,
+  ImageType
+} from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -51,6 +48,10 @@ export default Vue.extend({
     punch: {
       type: Number,
       default: 1
+    },
+    type: {
+      type: String as () => ImageType,
+      default: ImageType.Primary
     }
   },
   data() {
@@ -59,13 +60,63 @@ export default Vue.extend({
     };
   },
   mounted(): void {
-    if (this.item.ImageTags && this.item.ImageTags.Primary) {
-      const card = this.$refs.card as HTMLElement;
-      this.image = this.getImageUrlForElement(
-        this.item,
-        ImageType.Primary,
-        card
-      );
+    const img = this.$refs.img as HTMLElement;
+    this.image = this.getImageUrlForElement(this.item, this.type, img);
+  },
+  methods: {
+    isValidTag(): boolean {
+      if (
+        (this.item?.ImageTags &&
+          Object.prototype.hasOwnProperty.call(
+            this.item?.ImageTags,
+            this.type
+          )) ||
+        (this.type === ImageType.Backdrop &&
+          this.item?.BackdropImageTags &&
+          this.item?.BackdropImageTags.length > 0)
+      ) {
+        return true;
+      } else {
+        console.error('Provided tag does not exist in the item');
+        return false;
+      }
+    },
+    isValidBlurhash(): boolean {
+      if (
+        this.item?.ImageBlurHashes &&
+        Object.prototype.hasOwnProperty.call(
+          this.item?.ImageBlurHashes,
+          this.type
+        ) &&
+        this.type !== ImageType.Backdrop
+      ) {
+        return true;
+      } else if (
+        this.type === ImageType.Backdrop &&
+        (this.item?.BackdropImageTags as Array<string>).length > 0 &&
+        Object.prototype.hasOwnProperty.call(
+          this.item?.ImageBlurHashes?.Backdrop,
+          (this.item?.BackdropImageTags as Array<string>)[0]
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getHash(): string {
+      if (this.type === ImageType.Backdrop) {
+        const tag = (this.item?.BackdropImageTags as Array<string>)[0];
+
+        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)
+          .Backdrop as Record<string, string>)[tag];
+      } else {
+        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)[
+          this.type
+        ] as Record<string, string>)[
+          (this.item?.ImageTags as Record<string, string>)[this.type]
+        ];
+      }
     }
   }
 });
