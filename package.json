@@ -26,7 +26,7 @@
     "@jellyfin/client-axios": "^10.7.0",
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.12.3",
+    "@nuxtjs/axios": "^5.12.4",
     "@nuxtjs/pwa": "^3.3.2",
     "@types/dompurify": "^2.0.4",
     "@types/jest": "^26.0.19",
