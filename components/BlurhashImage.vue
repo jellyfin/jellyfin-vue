@@ -61,11 +61,11 @@ export default Vue.extend({
   mounted(): void {
     if (this.item.ImageTags && this.item.ImageTags.Primary) {
       const card = this.$refs.card as HTMLElement;
-      this.image = this.getImageUrlForElement(
-        ImageType.Primary,
-        this.item,
-        card
-      );
+      this.image = this.getImageUrlForElement({
+        type: ImageType.Primary,
+        item: this.item,
+        element: card
+      });
     }
   }
 });

@@ -7,19 +7,31 @@ import Vue from 'vue';
 import { stringify } from 'qs';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 
+type getImageUrlForElementParams = {
+  type: ImageType;
+  item?: BaseItemDto;
+  element?: HTMLElement;
+  tag?: string;
+  itemId?: string;
+  maxWidth?: number;
+  maxHeight?: number;
+  quality?: number;
+  limitByWidth?: boolean;
+};
+
 declare module '@nuxt/types' {
   interface Context {
-    getImageUrlForElement: (
-      type: ImageType,
-      item?: BaseItemDto,
-      element?: HTMLElement,
-      tag?: string,
-      itemId?: string,
-      maxWidth?: number,
-      maxHeight?: number,
-      quality?: number,
-      limitByWidth?: boolean
-    ) => string;
+    getImageUrlForElement: ({
+      type,
+      item,
+      element,
+      tag,
+      itemId,
+      maxWidth,
+      maxHeight,
+      quality,
+      limitByWidth
+    }: getImageUrlForElementParams) => string;
     getImageUrlById: (type: ImageType, id: string) => string;
     getSizedImageUrlById: (
       type: ImageType,
@@ -29,17 +41,17 @@ declare module '@nuxt/types' {
   }
 
   interface NuxtAppOptions {
-    getImageUrlForElement: (
-      type: ImageType,
-      item?: BaseItemDto,
-      element?: HTMLElement,
-      tag?: string,
-      itemId?: string,
-      maxWidth?: number,
-      maxHeight?: number,
-      quality?: number,
-      limitByWidth?: boolean
-    ) => string;
+    getImageUrlForElement: ({
+      type,
+      item,
+      element,
+      tag,
+      itemId,
+      maxWidth,
+      maxHeight,
+      quality,
+      limitByWidth
+    }: getImageUrlForElementParams) => string;
     getImageUrlById: (type: ImageType, id: string) => string;
     getSizedImageUrlById: (
       type: ImageType,
@@ -51,17 +63,17 @@ declare module '@nuxt/types' {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    getImageUrlForElement: (
-      type: ImageType,
-      item?: BaseItemDto,
-      element?: HTMLElement,
-      tag?: string,
-      itemId?: string,
-      maxWidth?: number,
-      maxHeight?: number,
-      quality?: number,
-      limitByWidth?: boolean
-    ) => string;
+    getImageUrlForElement: ({
+      type,
+      item,
+      element,
+      tag,
+      itemId,
+      maxWidth,
+      maxHeight,
+      quality,
+      limitByWidth
+    }: getImageUrlForElementParams) => string;
     getImageUrlById: (type: ImageType, id: string) => string;
     getSizedImageUrlById: (
       type: ImageType,
@@ -79,28 +91,30 @@ const imageHelper = Vue.extend({
      * · When 'maxWidth' and 'maxHeight' parameters are passed, size of the image will be as requested
      * · When no 'element' or 'maxWidth' or 'maxHeight' is provided, image will have the original size.
      *
-     * @param {ImageType} type - The type of the image to fetch.
-     * @param {BaseItemDto} item - The item to fetch the image for (optional).
-     * @param {HTMLElement} element - The DOM element which size will be used for the image's maximum width or height (optional).
-     * @param {string} tag - tag of the image to fetch (optional if item is passed).
-     * @param {string} itemId - itemId to get the image from (optional if item is passed).
-     * @param {number} maxWidth - Maximum width of the image (optional).
-     * @param {number} maxHeight - Maximum height of the image (optional).
-     * @param {number} quality - Quality level of the image (optional, only relevant for jpeg format).
-     * @param {boolean} [limitByWidth=false] - Use the element's width instead of its height for the size calculation.
+     * type - The type of the image to fetch.
+     * item - The item to fetch the image for (optional).
+     * element - The DOM element which size will be used for the image's maximum width or height (optional).
+     * tag - tag of the image to fetch (optional if item is passed).
+     * [itemId=item?.Id] - itemId to get the image from (optional if item is passed).
+     * [maxWidth=element?.clientWidth] - Maximum width of the image (optional).
+     * [maxHeight=element?.clientHeight] - Maximum height of the image (optional).
+     * [quality=90] - Quality level of the image (optional, only relevant for jpeg format).
+     * [limitByWidth=false] - Use the element's width instead of its height for the size calculation.
+     *
+     * @type {getImageUrlForElementParams}
      * @returns {string} The URL for the image, with the base URL set and the options provided.
      */
-    getImageUrlForElement(
-      type: ImageType,
-      item?: BaseItemDto,
-      element?: HTMLElement,
-      tag?: string,
+    getImageUrlForElement({
+      type,
+      item,
+      element,
+      tag,
       itemId = item?.Id,
-      maxWidth = element?.clientWidth.toString(),
-      maxHeight = element?.clientHeight.toString(),
+      maxWidth = element?.clientWidth,
+      maxHeight = element?.clientHeight,
       quality = 90,
       limitByWidth = false
-    ): string {
+    }: getImageUrlForElementParams): string {
       if (item) {
         if (!item.ImageTags) {
           throw new TypeError(
@@ -125,9 +139,9 @@ const imageHelper = Vue.extend({
       };
 
       if (limitByWidth && maxWidth) {
-        params.maxWidth = maxWidth;
+        params.maxWidth = maxWidth.toString();
       } else if (maxHeight) {
-        params.maxHeight = maxHeight;
+        params.maxHeight = maxHeight.toString();
       }
 
       url.search = stringify(params);
@@ -142,13 +156,10 @@ const imageHelper = Vue.extend({
      * @returns {string} The URL for the image, with the base URL set and the options provided.
      */
     getImageUrlById(type: ImageType, id: string): string {
-      return this.getImageUrlForElement(
+      return this.getImageUrlForElement({
         type,
-        undefined,
-        undefined,
-        undefined,
-        id
-      );
+        itemId: id
+      });
     },
     /**
      * Shorthand for the 'getImageUrlForElement' function when using an itemId and a DOM element for size calculations.
@@ -163,13 +174,11 @@ const imageHelper = Vue.extend({
       id: string,
       element: HTMLElement
     ): string {
-      return this.getImageUrlForElement(
+      return this.getImageUrlForElement({
         type,
-        undefined,
-        element,
-        undefined,
-        id
-      );
+        itemId: id,
+        element
+      });
     }
   }
 });
