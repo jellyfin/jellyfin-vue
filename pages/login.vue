@@ -72,22 +72,18 @@ export default Vue.extend({
   created() {
     this.setPageTitle({ title: this.$t('login') });
   },
-  async beforeMount() {
-    try {
-      this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
-      const brandingData = (await this.$api.branding.getBrandingOptions()).data;
-      this.disclaimer = brandingData.LoginDisclaimer || '';
-    } catch (error) {
-      console.error('Unable to get public users:', error);
-    }
+  beforeMount() {
+    this.getUsers();
+    this.getLoginDisclaimer();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
-    isEmpty(value: Record<any, any>) {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    isEmpty(value: Record<any, any>): boolean {
       return isEmpty(value);
     },
-    setCurrentUser(user: UserDto) {
+    setCurrentUser(user: UserDto): void {
       if (!user.HasPassword) {
         // If the user doesn't have a password, avoid showing the password form
         this.setDeviceProfile();
@@ -99,9 +95,31 @@ export default Vue.extend({
       }
       this.currentUser = user;
     },
-    resetCurrentUser() {
+    resetCurrentUser(): void {
       this.currentUser = {};
       this.loginAsOther = false;
+    },
+    async getLoginDisclaimer(): Promise<void> {
+      try {
+        const brandingData = (await this.$api.branding.getBrandingOptions())
+          .data;
+        this.disclaimer = brandingData.LoginDisclaimer || '';
+      } catch (error) {
+        this.pushSnackbarMessage({
+          message: this.$t('unableGetServerConfiguration'),
+          color: 'error'
+        });
+      }
+    },
+    async getUsers(): Promise<void> {
+      try {
+        this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
+      } catch (error) {
+        this.pushSnackbarMessage({
+          message: this.$t('unableGetPublicUsers'),
+          color: 'error'
+        });
+      }
     }
   }
 });
