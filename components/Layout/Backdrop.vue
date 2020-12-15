@@ -42,11 +42,13 @@ export default Vue.extend({
     left: 0;
     right: 0;
     background-color: #{map-get($material-light, 'background')};
-    opacity: 0.75;
+    mix-blend-mode: screen;
+    opacity: 0.85;
   }
 }
 
 .theme--dark .backdrop::after {
   background-color: #{map-get($material-dark, 'background')};
+  mix-blend-mode: multiply;
 }
 </style>

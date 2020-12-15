@@ -2,15 +2,19 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <div
-        class="d-flex align-center no-overflow space-evenly"
+        v-ripple
+        class="d-flex align-center full-width py-8 px-4 no-overflow"
         v-bind="attrs"
         v-on="on"
       >
         <user-image />
-        <h1 v-if="$auth.user" class="font-weight-light pb-1 text-truncate">
+        <h1
+          v-if="$auth.user"
+          class="flex-grow-1 font-weight-light ml-3 pb-1 text-truncate user-select-none"
+        >
           {{ $auth.user.Name }}
         </h1>
-        <v-icon>mdi-chevron-down</v-icon>
+        <v-icon>mdi-dots-horizontal</v-icon>
       </div>
     </template>
     <v-list dense>
@@ -42,14 +46,32 @@ export default Vue.extend({
   },
   computed: {
     menuItems(): MenuItem[] {
-      return [
-        {
-          title: this.$t('logout'),
+      const menuItems = [];
+
+      if (this.$auth.$state.user.Policy.IsAdministrator) {
+        menuItems.push({
+          title: this.$t('metadata'),
           action: (): void => {
-            this.logoutUser();
+            this.$router.push('/metadata');
           }
+        });
+      }
+
+      menuItems.push({
+        title: this.$t('settings'),
+        action: (): void => {
+          this.$router.push('/settings');
         }
-      ];
+      });
+
+      menuItems.push({
+        title: this.$t('logout'),
+        action: (): void => {
+          this.logoutUser();
+        }
+      });
+
+      return menuItems;
     }
   },
   methods: {

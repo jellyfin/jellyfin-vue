@@ -121,6 +121,11 @@ export default Vue.extend({
       appearances: [] as BaseItemDto[]
     };
   },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
   computed: {
     overview(): string {
       if (this.$data.item.Overview) {
@@ -139,7 +144,9 @@ export default Vue.extend({
     ).data;
 
     if (item) {
+      this.setPageTitle({ title: item.Name });
       this.setBackdrop({ item });
+      this.setAppBarOpacity({ opaqueAppBar: false });
       this.item = item;
     }
 
@@ -157,9 +164,11 @@ export default Vue.extend({
     }
   },
   destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },
   methods: {
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getImageUrl(itemId: string | undefined, type: string): string {
       if (itemId) {

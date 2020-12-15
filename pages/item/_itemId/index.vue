@@ -460,6 +460,11 @@ export default Vue.extend({
       currentSubtitleTrack: {} as MediaStream
     };
   },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
   computed: {
     isPlayable: {
       get(): boolean {
@@ -508,6 +513,8 @@ export default Vue.extend({
     ).data;
 
     if (this.item) {
+      this.setPageTitle({ title: this.item.Name });
+      this.setAppBarOpacity({ opaqueAppBar: false });
       this.setBackdrop({ item: this.item });
 
       if (this.item.MediaSources) {
@@ -566,10 +573,12 @@ export default Vue.extend({
     }
   },
   destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code?: string): string {
       if (!code) {

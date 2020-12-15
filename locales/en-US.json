@@ -62,8 +62,8 @@
   "features": "Features",
   "filter": "Filter",
   "filtersNotFound": "Unable to load filters",
-  "general": "General",
   "fullScreen": "Full screen",
+  "general": "General",
   "genres": "Genres",
   "guestStar": "Guest Star",
   "headerExternalIds": "External IDs",
@@ -249,6 +249,10 @@
   "themeVideo": "Theme Video",
   "thumb": "Thumb",
   "title": "Title",
+  "tooltips": {
+    "changeLanguage": "Language",
+    "toggleDarkMode": "Toggle dark mode"
+  },
   "trailer": "Trailer",
   "type": "Type",
   "unableGetPublicUsers": "Unable to get users",

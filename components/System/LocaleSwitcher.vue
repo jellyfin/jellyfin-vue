@@ -1,9 +1,21 @@
 <template>
   <v-menu offset-y>
-    <template #activator="{ on, attrs }">
-      <v-btn icon size="36" v-bind="attrs" v-on="on">
-        <v-icon>mdi-web</v-icon>
-      </v-btn>
+    <template #activator="{ on: onMenu, attrs: attrsMenu }">
+      <v-tooltip bottom>
+        <template #activator="{ on: onTooltip, attrsTooltip }">
+          <v-btn
+            :icon="!fab"
+            :fab="fab"
+            :small="fab"
+            :class="{ 'mr-n1': !fab, 'ml-1': fab }"
+            v-bind="{ ...attrsMenu, ...attrsTooltip }"
+            v-on="{ ...onMenu, ...onTooltip }"
+          >
+            <v-icon>mdi-web</v-icon>
+          </v-btn>
+        </template>
+        <span>{{ $t('tooltips.changeLanguage') }}</span>
+      </v-tooltip>
     </template>
     <v-list class="overflow-y-auto">
       <v-list-item
@@ -22,6 +34,12 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
+  props: {
+    fab: {
+      type: Boolean,
+      required: true
+    }
+  },
   methods: {
     ...mapActions('displayPreferences', ['editCustomPref'])
   }

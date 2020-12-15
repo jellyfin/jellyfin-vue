@@ -1,3 +1,4 @@
+@import '~vuetify/src/styles/styles.sass';
 @import '@fontsource/noto-sans/index.css';
 @import '@fontsource/noto-sans-jp/index.css';
 @import '@fontsource/noto-sans-sc/index.css';
@@ -9,8 +10,11 @@ body {
   background-color: var(--v-background-base);
 }
 
-/* W3C standard (Firefox-only for now) */
 * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* W3C standard scrollbars (Firefox-only for now) */
   scrollbar-width: thin;
   scrollbar-color: var(--v-thumb-lighten5) var(--v-track-base);
 }
@@ -81,4 +85,13 @@ body {
 
 .link:hover {
   text-decoration: underline;
+}
+
+/* Customized Vuetify components */
+.v-menu__content .v-list {
+  background: map-get($material-light, 'cards') !important;
+}
+
+.theme--dark .v-menu__content .v-list {
+  background: map-get($material-dark, 'menus') !important;
 }

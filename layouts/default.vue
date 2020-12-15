@@ -8,10 +8,7 @@
       app
     >
       <template #prepend>
-        <div class="d-flex align-center full-width pa-6">
-          <user-button />
-          <connection-monitor class="ml-auto" />
-        </div>
+        <user-button />
         <v-divider></v-divider>
       </template>
       <v-list>
@@ -46,25 +43,7 @@
         </v-list-item>
       </v-list>
       <template #append>
-        <v-list>
-          <v-list-item>
-            <dark-mode-toggle />
-          </v-list-item>
-          <v-list-item
-            v-for="(item, i) in configItems"
-            :key="i"
-            :to="item.to"
-            router
-            exact
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+        <connection-monitor class="ml-auto" />
       </template>
     </v-navigation-drawer>
     <v-app-bar
@@ -80,8 +59,14 @@
       />
       <v-btn
         v-if="$route.name !== 'index'"
-        class="mr-2"
-        icon
+        :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
+        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :class="{
+          'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
+          'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
+          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled
+        }"
         @click="$router.back()"
       >
         <v-icon>mdi-arrow-left</v-icon>
@@ -99,7 +84,12 @@
         single-line
       />
       <v-spacer />
-      <locale-switcher class="mr-2" />
+      <dark-mode-toggle
+        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+      />
+      <locale-switcher
+        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+      />
     </v-app-bar>
     <v-main>
       <nuxt />
@@ -139,6 +129,7 @@ interface LayoutButton {
 export default Vue.extend({
   data() {
     return {
+      isScrolled: false,
       drawer: false,
       opacity: 0,
       keepAliveInterval: undefined as number | undefined
@@ -169,20 +160,6 @@ export default Vue.extend({
           to: '/'
         }
       ];
-    },
-    configItems(): LayoutButton[] {
-      return [
-        {
-          icon: 'mdi-pencil-outline',
-          title: this.$t('metadata'),
-          to: '/metadata'
-        },
-        {
-          icon: 'mdi-cog',
-          title: this.$t('settings'),
-          to: '/settings'
-        }
-      ];
     }
   },
   beforeMount() {
@@ -200,10 +177,16 @@ export default Vue.extend({
     this.$connect(socketUrl);
     this.handleKeepAlive();
   },
+  mounted() {
+    window.addEventListener('scroll', this.setIsScrolled, { passive: true });
+  },
   beforeDestroy() {
     if (this.keepAliveInterval) {
       clearInterval(this.keepAliveInterval);
     }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.setIsScrolled);
   },
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
@@ -221,6 +204,10 @@ export default Vue.extend({
           }, state.socket.message.Data * 1000 * 0.5);
         }
       });
+    },
+    setIsScrolled(): void {
+      // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
+      this.isScrolled = window.scrollY > 10;
     },
     sendWebSocketMessage(name: string, data?: Record<string, never>): void {
       const msg: WebSocketMessage = {
