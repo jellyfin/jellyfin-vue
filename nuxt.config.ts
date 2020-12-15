@@ -250,9 +250,7 @@ const config: NuxtConfig = {
         });
       }
     },
-    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules'],
-    cache: true,
-    hardSource: true
+    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
   },
 
   /**
