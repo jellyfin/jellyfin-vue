@@ -46,10 +46,17 @@ import Vue from 'vue';
 import { mapState, mapActions } from 'vuex';
 import { AppState } from '~/store';
 
+interface HomeSection {
+  name: string;
+  libraryId: string;
+  shape: string;
+  type: string;
+}
+
 export default Vue.extend({
   props: {
     section: {
-      type: Object,
+      type: Object as () => HomeSection,
       required: true
     }
   },
@@ -72,10 +79,8 @@ export default Vue.extend({
       loading: true
     };
   },
-  computed: mapState<AppState>({
+  computed: mapState({
     items(state: AppState): BaseItemDto[] {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       switch (this.section.type) {
         case 'libraries':
           return state.homeSection.libraries;
@@ -86,8 +91,6 @@ export default Vue.extend({
         case 'upNext':
           return state.homeSection.upNext;
         case 'latestmedia':
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           return state.homeSection.latestMedia[this.section.libraryId];
         default:
           return [];
