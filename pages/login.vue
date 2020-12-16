@@ -41,6 +41,7 @@
         </h1>
         <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login') }}</h1>
         <login-form :user="currentUser" @change="resetCurrentUser" />
+        <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
       </v-col>
     </v-row>
   </v-container>
@@ -59,7 +60,8 @@ export default Vue.extend({
     return {
       loginAsOther: false,
       currentUser: {} as UserDto,
-      publicUsers: [] as Array<UserDto>
+      publicUsers: [] as Array<UserDto>,
+      disclaimer: ''
     };
   },
   head() {
@@ -73,6 +75,8 @@ export default Vue.extend({
   async beforeMount() {
     try {
       this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
+      const brandingData = (await this.$api.branding.getBrandingOptions()).data;
+      this.disclaimer = brandingData.LoginDisclaimer || '';
     } catch (error) {
       console.error('Unable to get public users:', error);
     }

@@ -93,5 +93,15 @@
     "nextUp": "Következő",
     "libraries": "Könyvtárak",
     "latestLibrary": "Legújabb {libraryName}",
-    "darkModeToggle": "Váltás sötét módra"
+    "darkModeToggle": "Váltás sötét módra",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "A videolejátszó helyrehozhatatlan hibát észlelt.",
+            "errorCode": "Hibakód: {errorCode}"
+        },
+        "anErrorHappened": "Hiba történt"
+    },
+    "buttons": {
+        "ok": "Oké"
+    }
 }

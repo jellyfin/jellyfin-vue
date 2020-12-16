@@ -34,7 +34,13 @@
             <v-row>
               <v-col cols="5">
                 <v-img
-                  v-if="item.ImageTags && item.ImageTags.Logo"
+                  v-if="
+                    item.ParentLogoImageTag ||
+                    (item.ImageTags && item.ImageTags.Logo)
+                  "
+                  max-width="50%"
+                  aspect-ratio="2.58"
+                  contain
                   :src="getLogo(item)"
                 />
                 <h1
@@ -158,6 +164,8 @@ export default Vue.extend({
       // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
         return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
+      } else if (item.Type === 'MusicAlbum') {
+        return `${this.$axios.defaults.baseURL}/Items/${item.ParentLogoItemId}/Images/Logo`;
       } else {
         return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
       }

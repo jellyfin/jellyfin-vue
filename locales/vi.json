@@ -94,5 +94,15 @@
     "numberTracks": "{number} kênh",
     "nextUp": "Kếp tiếp",
     "latestLibrary": "Gần nhất {libraryName}",
-    "darkModeToggle": "Chuyển đổi chế độ tối"
+    "darkModeToggle": "Chuyển đổi chế độ tối",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Trình phát video gặp lỗi không thể khôi phục.",
+            "errorCode": "Mã lỗi: {errorCode}"
+        },
+        "anErrorHappened": "Đã xảy ra lỗi"
+    },
+    "buttons": {
+        "ok": "Đồng ý"
+    }
 }

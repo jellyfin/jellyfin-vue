@@ -1,6 +1,7 @@
 import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import { browserDetector } from '~/plugins/browserDetection';
+import { version } from '~/package.json';
 
 export interface DeviceState {
   deviceId: string;
@@ -68,7 +69,7 @@ function getDeviceName(): string {
  * @returns {string} clientVersion returns the current device version
  */
 function getClientVersion(): string {
-  return '0.0.0';
+  return version;
 }
 
 /** Get's the current device's name

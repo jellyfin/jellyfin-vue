@@ -94,5 +94,15 @@
     "numberTracks": "{number} skladeb",
     "nextUp": "Další v pořadí",
     "latestLibrary": "Nejnovější {libraryName}",
-    "darkModeToggle": "Přepnout tmavý režim"
+    "darkModeToggle": "Přepnout tmavý režim",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Ve video přehrávači došlo k nezvratné chybě.",
+            "errorCode": "Kód chyby: {errorCode}"
+        },
+        "anErrorHappened": "Došlo k chybě"
+    },
+    "buttons": {
+        "ok": "Ok"
+    }
 }
