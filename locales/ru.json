@@ -93,5 +93,15 @@
     "nextUp": "Очередное",
     "libraries": "Медиатеки",
     "latestLibrary": "Новейшее {libraryName}",
-    "darkModeToggle": "Переключиться на тёмный режим"
+    "darkModeToggle": "Переключиться на тёмный режим",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "В видео проигрывателе произошла неустранимая ошибка.",
+            "errorCode": "Код ошибки: {errorCode}"
+        },
+        "anErrorHappened": "Произошла ошибка"
+    },
+    "buttons": {
+        "ok": "ОК"
+    }
 }

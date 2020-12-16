@@ -17,7 +17,13 @@
           <v-row>
             <v-col cols="5">
               <v-img
-                v-if="item.ImageTags && item.ImageTags.Logo"
+                v-if="
+                  item.ParentLogoImageTag ||
+                  (item.ImageTags && item.ImageTags.Logo)
+                "
+                max-width="50%"
+                aspect-ratio="2.58"
+                contain
                 :src="getLogo(item)"
               />
               <h1
@@ -147,7 +153,7 @@ export default Vue.extend({
         });
       } else {
         return this.getImageUrlForElement(ImageType.Logo, {
-          itemId: item.Id
+          itemId: item.ParentLogoItemId as string
         });
       }
     },

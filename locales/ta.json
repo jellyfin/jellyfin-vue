@@ -94,5 +94,15 @@
     "nextUp": "அடுத்தது",
     "libraries": "நூலகங்கள்",
     "latestLibrary": "சமீபத்திய {libraryName}",
-    "darkModeToggle": "இருண்ட பயன்முறையை நிலைமாற்று"
+    "darkModeToggle": "இருண்ட பயன்முறையை நிலைமாற்று",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "வீடியோ பிளேயர் மீட்டெடுக்க முடியாத பிழையை எதிர்கொண்டது.",
+            "errorCode": "பிழைக் குறியீடு: {errorCode}"
+        },
+        "anErrorHappened": "பிழை ஏற்பட்டது"
+    },
+    "buttons": {
+        "ok": "சரி"
+    }
 }
