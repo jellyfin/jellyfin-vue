@@ -57,7 +57,10 @@ export default Vue.extend({
   methods: {
     getImageUrl(itemId: string): string {
       const element = this.$refs.personImg as HTMLElement;
-      return this.getSizedImageUrlById(ImageType.Primary, itemId, element);
+      return this.getImageUrlForElement(ImageType.Primary, {
+        itemId,
+        element
+      });
     }
   }
 });

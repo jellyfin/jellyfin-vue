@@ -65,10 +65,9 @@ export default Vue.extend({
         throw new Error('Item not found');
       }
 
-      this.poster = this.getImageUrlById(
-        ImageType.Backdrop,
-        this.$route.params.itemId
-      );
+      this.poster = this.getImageUrlForElement(ImageType.Backdrop, {
+        itemId: this.$route.params.itemId
+      });
     } catch (error) {
       this.$nuxt.error({
         statusCode: 404,
