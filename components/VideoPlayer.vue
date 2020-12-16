@@ -231,7 +231,7 @@ export default Vue.extend({
         this.$router.back();
       }
     },
-    onPlayerError(event: Event) {
+    onPlayerError(event: ErrorEvent) {
       this.$emit('error', event);
     }
   }

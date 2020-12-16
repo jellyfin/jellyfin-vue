@@ -48,10 +48,10 @@ export default Vue.extend({
       sortBy: 'SortName',
       hasFilters: false,
       isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
-      statusFilter: [],
-      genresFilter: [],
-      yearsFilter: [],
-      ratingsFilter: [],
+      statusFilter: [] as unknown,
+      genresFilter: [] as unknown,
+      yearsFilter: [] as unknown,
+      ratingsFilter: [] as unknown,
       filterHasSubtitles: false,
       filterHasTrailer: false,
       filterHasSpecialFeature: false,
@@ -169,9 +169,9 @@ export default Vue.extend({
     onChangeSort(sort: string) {
       this.sortBy = sort;
     },
-    onChangeFilter(filter: Record<string, any>) {
+    onChangeFilter(filter: Record<string, [string]>) {
       this.hasFilters = Object.values(filter).every((value) => {
-        return value.length > 0 || value !== false;
+        return value.length > 0;
       });
 
       this.genresFilter = filter.genres;

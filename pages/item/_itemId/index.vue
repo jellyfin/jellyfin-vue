@@ -122,6 +122,7 @@
                       single-line
                       hide-details
                     >
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="selection" slot-scope="{ item }">
                         {{ item.DisplayTitle }}
                       </template>
@@ -144,6 +145,7 @@
                       single-line
                       hide-details
                     >
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="selection" slot-scope="{ item }">
                         {{ item.DisplayTitle }}
                       </template>
@@ -167,9 +169,11 @@
                       single-line
                       hide-details
                     >
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="selection" slot-scope="{ item }">
                         {{ item.DisplayTitle }}
                       </template>
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="item" slot-scope="{ item, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-avatar>
@@ -206,9 +210,11 @@
                       single-line
                       hide-details
                     >
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="selection" slot-scope="{ item }">
                         {{ item.DisplayTitle }}
                       </template>
+                      <!-- eslint-disable-next-line vue/no-template-shadow -->
                       <template slot="item" slot-scope="{ item, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-content>

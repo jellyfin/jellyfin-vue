@@ -84,7 +84,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
-    isEmpty(value: Record<any, any>) {
+    isEmpty(value: Record<never, never>) {
       return isEmpty(value);
     },
     setCurrentUser(user: UserDto) {
