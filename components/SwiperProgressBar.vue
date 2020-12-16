@@ -88,7 +88,7 @@ export default Vue.extend({
     },
     onProgressClicked(event: MouseEvent): void {
       const target = event.target as HTMLElement;
-      this.$emit('on-progress-clicked', this.bars.indexOf(target));
+      this.$emit('on-progress-clicked', this.bars.indexOf(target) as number);
     },
     togglePause(): void {
       if (this.paused) {
