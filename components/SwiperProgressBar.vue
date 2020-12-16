@@ -1,12 +1,6 @@
 <template>
   <div class="progress-container">
-    <div
-      v-for="i in pages"
-      :key="i"
-      ref="swiperProgressBars"
-      :style="cssVars"
-      class="progress"
-    ></div>
+    <div v-for="i in pages" :key="i" ref="progress" class="progress"></div>
   </div>
 </template>
 
@@ -17,18 +11,15 @@ export default Vue.extend({
   props: {
     pages: {
       type: Number,
-      required: true,
-      default: 0
+      required: true
     },
     currentIndex: {
       type: Number,
-      required: true,
-      default: -1
+      required: true
     },
     duration: {
       type: Number,
-      required: true,
-      default: 0
+      required: true
     },
     paused: {
       type: Boolean,
@@ -38,17 +29,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      bars: [] as Element[]
+      bars: [] as HTMLElement[]
     };
-  },
-  computed: {
-    cssVars: {
-      get() {
-        return {
-          '--swiper-animation-duration': (this.duration / 1000).toString() + 's'
-        };
-      }
-    }
   },
   watch: {
     currentIndex() {
@@ -60,11 +42,17 @@ export default Vue.extend({
       this.$nextTick(() => {
         window.requestAnimationFrame(this.togglePause);
       });
+    },
+    duration() {
+      this.$nextTick(() => {
+        window.requestAnimationFrame(this.setAnimationDuration);
+      });
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.bars = this.$refs.swiperProgressBars as Array<Element>;
+      this.bars = this.$refs.progress as Array<HTMLElement>;
+      window.requestAnimationFrame(this.setAnimationDuration);
       window.requestAnimationFrame(this.updateBars);
     });
   },
@@ -74,12 +62,12 @@ export default Vue.extend({
       const previousBars = this.bars.slice(0, this.currentIndex);
       this.bars[this.currentIndex].classList.add('active');
 
-      previousBars.forEach(function (el: Element) {
+      previousBars.forEach(function (el: HTMLElement) {
         el.classList.remove('active');
         el.classList.add('passed');
       });
 
-      followingBars.forEach(function (el: Element) {
+      followingBars.forEach(function (el: HTMLElement) {
         el.classList.remove('active', 'passed', 'paused');
       });
     },
@@ -89,6 +77,12 @@ export default Vue.extend({
       } else {
         this.bars[this.currentIndex].classList.remove('paused');
       }
+    },
+    setAnimationDuration(): void {
+      const newDuration = (this.duration / 1000).toString() + 's';
+      this.bars.forEach(function (el: HTMLElement) {
+        el.style.animationDuration = newDuration;
+      });
     }
   }
 });
@@ -109,12 +103,12 @@ export default Vue.extend({
   border-radius: 4px;
   margin: 0 3px;
   display: flex;
-  background-image: -webkit-linear-gradient(
-    left,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(255, 255, 255, 0.5) 50%,
-    rgba(88, 89, 104, 0.5) 50.001%,
-    rgba(88, 89, 104, 0.5) 100%
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.4) 50.001%,
+    rgba(255, 255, 255, 0.4) 100%
   );
   background-repeat: no-repeat;
   background-size: 200%;
@@ -123,7 +117,6 @@ export default Vue.extend({
   animation-timing-function: linear;
   animation-delay: 0s;
   animation-fill-mode: forwards;
-  animation-duration: var(--swiper-animation-duration);
 }
 
 .progress.active {

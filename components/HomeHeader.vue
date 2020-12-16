@@ -3,6 +3,14 @@
     v-if="items.length > 0 && !$vuetify.breakpoint.mobile"
     class="swiperContainer"
   >
+    <swiper-progress-bar
+      :pages="items.length"
+      :current-index="currentIndex"
+      :duration="slideDuration"
+      :paused="isPaused"
+      class="progressbar"
+    />
+
     <swiper
       ref="homeSwiper"
       class="swiper"
@@ -95,13 +103,6 @@
         </div>
       </swiper-slide>
     </swiper>
-    <swiper-progress-bar
-      :pages="items.length"
-      :current-index="currentIndex"
-      :duration="slideDuration"
-      :paused="isPaused"
-      class="progressbar"
-    />
   </div>
 </template>
 
@@ -169,7 +170,8 @@ export default Vue.extend({
       }
     },
     onSwipe(): void {
-      this.currentIndex = (this.$refs.homeSwiper.$swiper as Swiper).realIndex;
+      this.currentIndex = ((this.$refs.homeSwiper as Vue)
+        .$swiper as Swiper).realIndex;
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;
@@ -186,7 +188,9 @@ export default Vue.extend({
 }
 .progressbar {
   position: absolute;
-  bottom: 0;
+  top: 0;
+  margin-top: -10px;
+  z-index: 20;
 }
 .swiper {
   margin-top: -64px;
@@ -201,10 +205,10 @@ export default Vue.extend({
   box-sizing: border-box;
   mask-image: linear-gradient(
       180deg,
-      rgba(18, 18, 18, 1) 60%,
+      rgba(18, 18, 18, 1) 87%,
       rgba(18, 18, 18, 0) 100%
     ),
-    linear-gradient(90deg, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0) 70%);
+    linear-gradient(90deg, rgba(18, 18, 18, 1) 27%, rgba(18, 18, 18, 0) 47%);
   mask-composite: subtract;
   -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
   z-index: 1;
