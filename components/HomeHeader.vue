@@ -9,13 +9,14 @@
       :duration="slideDuration"
       :paused="isPaused"
       class="progressbar"
+      @on-animation-end="onAnimationEnd"
     />
 
     <swiper
       ref="homeSwiper"
       class="swiper"
       :options="swiperOptions"
-      @slideChange="onSwipe"
+      @slideChange="onSlideChange"
       @touchStart="onTouch"
       @touchEnd="onTouch"
     >
@@ -115,19 +116,19 @@ import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper],
+  // We use our own system for the autoplay behaviour, as swiper doesn't act in a predictable way (slides continue when there is a touch event happening),
+  // at least in v5.4.1 TODO: Revise this once this is fixed upstream: https://github.com/nolimits4web/swiper/issues/4047
   data() {
     return {
       items: [] as BaseItemDto[],
       currentIndex: 0,
+      pages: 10,
       slideDuration: 7000,
       isPaused: false,
       swiperOptions: {
-        autoplay: {
-          delay: 7000,
-          disableOnInteraction: false
-        },
         initialSlide: 0,
         loop: true,
+        autoplay: false,
         effect: 'slide'
       } as SwiperOptions
     };
@@ -136,7 +137,7 @@ export default Vue.extend({
     this.items = (
       await this.$api.userLibrary.getLatestMedia({
         userId: this.$auth.user.Id,
-        limit: 10,
+        limit: this.pages,
         fields: [ItemFields.Overview],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
         imageTypeLimit: 1
@@ -169,12 +170,15 @@ export default Vue.extend({
         return '';
       }
     },
-    onSwipe(): void {
+    onSlideChange(): void {
       this.currentIndex = ((this.$refs.homeSwiper as Vue)
         .$swiper as Swiper).realIndex;
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;
+    },
+    onAnimationEnd(): void {
+      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideNext();
     }
   }
 });
@@ -189,7 +193,7 @@ export default Vue.extend({
 .progressbar {
   position: absolute;
   top: 0;
-  margin-top: -10px;
+  margin-top: -7px;
   z-index: 20;
 }
 .swiper {

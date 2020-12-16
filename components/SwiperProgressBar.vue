@@ -60,16 +60,25 @@ export default Vue.extend({
     updateBars(): void {
       const followingBars = this.bars.slice(this.currentIndex + 1);
       const previousBars = this.bars.slice(0, this.currentIndex);
-      this.bars[this.currentIndex].classList.add('active');
+      const activeBar = this.bars[this.currentIndex];
+      const emitFunction = this.onAnimationEnd;
+
+      activeBar.classList.add('active');
+      activeBar.addEventListener('animationend', emitFunction, false);
 
       previousBars.forEach(function (el: HTMLElement) {
-        el.classList.remove('active');
+        el.classList.remove('active', 'paused');
+        el.removeEventListener('animationend', emitFunction, false);
         el.classList.add('passed');
       });
 
       followingBars.forEach(function (el: HTMLElement) {
         el.classList.remove('active', 'passed', 'paused');
+        el.removeEventListener('animationend', emitFunction, false);
       });
+    },
+    onAnimationEnd(): void {
+      this.$emit('on-animation-end');
     },
     togglePause(): void {
       if (this.paused) {
