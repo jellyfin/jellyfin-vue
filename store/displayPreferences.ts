@@ -62,14 +62,6 @@ export const getters: GetterTree<
   DisplayPreferencesState
 > = {
   /**
-   * Returns the CustomPrefs object
-   *
-   * @param {DisplayPreferencesState} state Current state
-   * @returns {object} CustomPrefs object
-   */
-  getCustomPrefs: (state: DisplayPreferencesState) => state.CustomPrefs,
-
-  /**
    * Anonymous function returned by getBooleanCustomPref
    *
    * @name CustomPrefToBoolean
