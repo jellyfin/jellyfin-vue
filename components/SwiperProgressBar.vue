@@ -2,7 +2,7 @@
   <div class="progress-container">
     <div
       v-for="i in pages"
-      :key="i"
+      :key="`progress-key-${i}`"
       ref="progress"
       class="progress"
       @click.self="onProgressClicked"
