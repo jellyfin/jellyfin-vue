@@ -11,6 +11,7 @@
             v-if="isEmpty(user)"
             v-model="login.username"
             outlined
+            hide-details
             :label="$t('username')"
             :error-messages="errors"
           ></v-text-field>
@@ -18,6 +19,8 @@
         <v-text-field
           v-model="login.password"
           outlined
+          hide-details
+          class="mt-4"
           :label="$t('password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
@@ -25,7 +28,8 @@
         ></v-text-field>
         <v-checkbox
           v-model="login.rememberMe"
-          class="mb-8"
+          hide-details
+          class="mt-4 mb-8"
           :label="$t('rememberMe')"
         ></v-checkbox>
         <v-row align="center" no-gutters>
