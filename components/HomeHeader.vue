@@ -189,6 +189,7 @@ export default Vue.extend({
   min-width: 100%;
   min-height: 100%;
   position: relative;
+  user-select: none;
 }
 .progressbar {
   position: absolute;

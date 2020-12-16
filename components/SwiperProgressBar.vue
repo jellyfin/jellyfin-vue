@@ -104,6 +104,7 @@ export default Vue.extend({
   width: 100%;
   padding: 10px 0;
   cursor: pointer;
+  user-select: none;
 }
 
 .progress {
