@@ -10,6 +10,7 @@
       :paused="isPaused"
       class="progressbar"
       @on-animation-end="onAnimationEnd"
+      @on-progress-clicked="onProgressClicked"
     />
 
     <swiper
@@ -116,8 +117,6 @@ import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper],
-  // We use our own system for the autoplay behaviour, as swiper doesn't act in a predictable way (slides continue when there is a touch event happening),
-  // at least in v5.4.1 TODO: Revise this once this is fixed upstream: https://github.com/nolimits4web/swiper/issues/4047
   data() {
     return {
       items: [] as BaseItemDto[],
@@ -179,6 +178,9 @@ export default Vue.extend({
     },
     onAnimationEnd(): void {
       ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideNext();
+    },
+    onProgressClicked(index: number): void {
+      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideToLoop(index);
     }
   }
 });

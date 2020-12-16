@@ -1,6 +1,12 @@
 <template>
   <div class="progress-container">
-    <div v-for="i in pages" :key="i" ref="progress" class="progress"></div>
+    <div
+      v-for="i in pages"
+      :key="i"
+      ref="progress"
+      class="progress"
+      @click.self="onProgressClicked"
+    ></div>
   </div>
 </template>
 
@@ -61,24 +67,28 @@ export default Vue.extend({
       const followingBars = this.bars.slice(this.currentIndex + 1);
       const previousBars = this.bars.slice(0, this.currentIndex);
       const activeBar = this.bars[this.currentIndex];
-      const emitFunction = this.onAnimationEnd;
+      const animEndFunction = this.onAnimationEnd;
 
       activeBar.classList.add('active');
-      activeBar.addEventListener('animationend', emitFunction, false);
+      activeBar.addEventListener('animationend', animEndFunction);
 
       previousBars.forEach(function (el: HTMLElement) {
         el.classList.remove('active', 'paused');
-        el.removeEventListener('animationend', emitFunction, false);
+        el.removeEventListener('animationend', animEndFunction);
         el.classList.add('passed');
       });
 
       followingBars.forEach(function (el: HTMLElement) {
         el.classList.remove('active', 'passed', 'paused');
-        el.removeEventListener('animationend', emitFunction, false);
+        el.removeEventListener('animationend', animEndFunction);
       });
     },
     onAnimationEnd(): void {
       this.$emit('on-animation-end');
+    },
+    onProgressClicked(event: MouseEvent): void {
+      const target = event.target as HTMLElement;
+      this.$emit('on-progress-clicked', this.bars.indexOf(target));
     },
     togglePause(): void {
       if (this.paused) {
@@ -103,16 +113,15 @@ export default Vue.extend({
   flex-direction: row;
   width: 100%;
   padding: 10px 0;
-  cursor: pointer;
-  user-select: none;
 }
 
 .progress {
+  cursor: pointer;
   height: 2px;
   flex-grow: 1;
   border-radius: 4px;
   margin: 0 3px;
-  display: flex;
+  display: block;
   background-image: linear-gradient(
     to right,
     rgba(255, 255, 255, 1) 0%,
