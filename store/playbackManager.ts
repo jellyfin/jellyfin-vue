@@ -81,14 +81,14 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
     }
   },
   getCurrentlyPlayingType: (state) => {
-    if (state.currentItemIndex) {
+    if (state.currentItemIndex !== null) {
       return state.queue?.[state.currentItemIndex].Type;
     } else {
       return null;
     }
   },
   getCurrentlyPlayingMediaType: (state) => {
-    if (state.currentItemIndex) {
+    if (state.currentItemIndex !== null) {
       return state.queue?.[state.currentItemIndex].MediaType;
     } else {
       return null;
@@ -195,6 +195,12 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.currentTime = time;
   },
+  CHANGE_CURRENT_TIME(
+    state: PlaybackManagerState,
+    { time }: { time: number | null }
+  ) {
+    state.currentTime = time;
+  },
   RESET_CURRENT_TIME(state: PlaybackManagerState) {
     state.currentTime = 0;
   },
@@ -274,6 +280,9 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   setCurrentTime({ commit }, { time }: { time: number | null }) {
     commit('SET_CURRENT_TIME', { time });
+  },
+  changeCurrentTime({ commit }, { time }: { time: number | null }) {
+    commit('CHANGE_CURRENT_TIME', { time });
   },
   setMinimized({ commit }, { minimized }: { minimized: boolean }) {
     commit('SET_MINIMIZE', { minimized });

@@ -54,7 +54,7 @@
             </div>
             <div class="mt-3 mb-2">
               <v-btn
-                v-if="loaded"
+                v-if="loaded && canPlay(item)"
                 class="play-button mr-2"
                 color="primary"
                 min-width="8em"

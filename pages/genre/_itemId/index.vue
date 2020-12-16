@@ -4,7 +4,7 @@
       <v-toolbar-title class="d-flex genre-toolbar">
         <span>{{ genre.Name }}</span>
         <v-btn
-          v-if="loaded"
+          v-if="loaded && canPlay(genre)"
           class="play-button ml-auto mr-2"
           color="primary"
           min-width="8em"
@@ -52,8 +52,10 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
+  mixins: [itemHelper],
   data() {
     return {
       genre: [] as BaseItemDto,

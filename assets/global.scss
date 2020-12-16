@@ -63,7 +63,19 @@ body {
 }
 
 /* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
-
 .text-truncate {
   line-height: normal !important;
+}
+
+.v-navigation-drawer--fixed,
+.v-footer--fixed {
+  z-index: 100 !important;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
