@@ -7,6 +7,7 @@ import { UserViewsState } from './userViews';
 import { HomeSectionState } from './homeSection';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
+import { DisplayPreferencesState } from './displayPreferences';
 
 export interface AppState {
   tvShows: TvShowsState;
@@ -18,4 +19,5 @@ export interface AppState {
   homeSection: HomeSectionState;
   backdrop: BackdropState;
   device: DeviceState;
+  displayPreferences: DisplayPreferencesState;
 }

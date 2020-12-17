@@ -34,8 +34,12 @@ import { mapActions } from 'vuex';
 export default Vue.extend({
   data() {
     return {
-      avatarSize: 48,
-      menuItems: [
+      avatarSize: 48
+    };
+  },
+  computed: {
+    menuItems() {
+      return [
         {
           title: this.$t('logout'),
           action: () => {
@@ -44,22 +48,18 @@ export default Vue.extend({
             this.logoutUser();
           }
         }
-      ]
-    };
-  },
-  computed: {
-    userImage: {
-      get() {
-        if (this.$auth.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
-        } else {
-          return '';
-        }
+      ];
+    },
+    userImage(): string {
+      if (this.$auth.user?.PrimaryImageTag) {
+        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
+      } else {
+        return '';
       }
     }
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
       this.$auth.logout();
