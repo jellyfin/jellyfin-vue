@@ -94,5 +94,15 @@
     "nextUp": "Als nächstes",
     "libraries": "Bibliotheken",
     "latestLibrary": "Neueste {libraryName}",
-    "darkModeToggle": "Nachtmodus umschalten"
+    "darkModeToggle": "Nachtmodus umschalten",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt.",
+            "errorCode": "Fehlercode: {errorCode}"
+        },
+        "anErrorHappened": "Es ist ein Fehler passiert"
+    },
+    "buttons": {
+        "ok": "Ok"
+    }
 }
