@@ -66,6 +66,7 @@
                 rating
                 class="mt-2"
               />
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p class="mt-2" v-html="getOverview(item)" />
               <v-btn
                 class="mr-2"

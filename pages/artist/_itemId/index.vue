@@ -81,6 +81,7 @@
                           <span>{{ $t('biography') }}</span>
                         </h2>
                         <v-col cols="9" class="pl-0 pr-0">
+                          <!-- eslint-disable-next-line vue/no-v-html -->
                           <p class="item-overview" v-html="overview" />
                         </v-col>
                       </div>

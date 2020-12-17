@@ -33,12 +33,6 @@ declare module '@nuxt/types' {
         limitByWidth
       }: ImageUrlForElementParams
     ) => string;
-    getImageUrlById: (type: ImageType, id: string) => string;
-    getSizedImageUrlById: (
-      type: ImageType,
-      id: string,
-      element: HTMLElement
-    ) => string;
   }
 
   interface NuxtAppOptions {
@@ -54,12 +48,6 @@ declare module '@nuxt/types' {
         quality,
         limitByWidth
       }: ImageUrlForElementParams
-    ) => string;
-    getImageUrlById: (type: ImageType, id: string) => string;
-    getSizedImageUrlById: (
-      type: ImageType,
-      id: string,
-      element: HTMLElement
     ) => string;
   }
 }
@@ -78,12 +66,6 @@ declare module 'vue/types/vue' {
         quality,
         limitByWidth
       }: ImageUrlForElementParams
-    ) => string;
-    getImageUrlById: (type: ImageType, id: string) => string;
-    getSizedImageUrlById: (
-      type: ImageType,
-      id: string,
-      element: HTMLElement
     ) => string;
   }
 }
