@@ -1,12 +1,18 @@
 <template>
   <swiper
     v-if="items.length > 0 && !$vuetify.breakpoint.mobile && loaded"
+    ref="homeSwiper"
     class="swiper"
     :options="swiperOptions"
+    @slideChange="onSlideChange"
   >
     <swiper-slide v-for="item in items" :key="item.Id">
       <div class="slide-backdrop">
-        <blurhash-image :item="getRelatedItem(item)" :type="'Backdrop'" />
+        <blurhash-image
+          :key="`${item.Id}-${reloadSentinel}`"
+          :item="getRelatedItem(item)"
+          :type="'Backdrop'"
+        />
       </div>
       <div class="slide-backdrop-overlay" />
       <div class="slide-content">
@@ -94,7 +100,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { SwiperOptions } from 'swiper';
+import Swiper, { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
@@ -104,6 +110,8 @@ export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
+      reloadSentinel: 0,
+      pages: 10,
       relatedItems: {} as { [k: number]: BaseItemDto },
       loaded: false,
       swiperOptions: {
@@ -123,7 +131,7 @@ export default Vue.extend({
     this.items = (
       await this.$api.userLibrary.getLatestMedia({
         userId: this.$auth.user.Id,
-        limit: 10,
+        limit: this.pages,
         fields: [ItemFields.Overview],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
         imageTypeLimit: 1
@@ -169,6 +177,23 @@ export default Vue.extend({
       return this.getImageUrlForElement(ImageType.Logo, {
         itemId: relatedItem.Id
       });
+    },
+    onSlideChange(): void {
+      const currentIndex = ((this.$refs.homeSwiper as Vue).$swiper as Swiper)
+        .realIndex;
+      if (currentIndex === 0 || currentIndex === this.pages - 1) {
+        this.forceReload();
+      }
+    },
+    // Vue-awesome-swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
+    // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
+    // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
+    // we force a BlurhashImage reload to fix this by updating it's key.
+    //
+    // TODO: Revisit this once we are using the original Swiper.js library.
+    forceReload(): void {
+      this.reloadSentinel = 1;
+      this.reloadSentinel = 0;
     }
   }
 });
