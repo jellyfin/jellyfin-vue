@@ -128,7 +128,10 @@ export default Vue.extend({
   mounted(): void {
     if (this.checkImage) {
       const card = this.$refs.card as HTMLElement;
-      this.image = this.getImageUrlForElement(this.item, this.imageType, card);
+      this.image = this.getImageUrlForElement(this.imageType, {
+        item: this.item,
+        element: card
+      });
     }
   }
 });
