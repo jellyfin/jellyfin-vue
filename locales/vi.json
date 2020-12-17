@@ -104,5 +104,8 @@
     },
     "buttons": {
         "ok": "Đồng ý"
-    }
+    },
+    "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
+    "unableGetServerConfiguration": "Không thể tải cấu hình máy chủ",
+    "rememberMe": "Ghi nhớ tôi"
 }
