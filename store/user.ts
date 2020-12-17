@@ -37,9 +37,7 @@ export const actions: ActionTree<UserState, UserState> = {
   async setUser(
     { commit },
     { id, accessToken }: { id: string; accessToken: string }
-  ) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore -- $api exists on here, the issue seems random. Not sure how to fix
+  ): Promise<void> {
     const response = await this.$api.displayPreferences.getDisplayPreferences({
       displayPreferencesId: 'usersettings',
       userId: id,

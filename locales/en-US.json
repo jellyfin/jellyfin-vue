@@ -7,6 +7,9 @@
   "badRequest": "Bad request. Try again",
   "biography": "Biography",
   "browserNotSupported": "Your browser is not supported for playing this file.",
+  "buttons": {
+    "ok": "Ok"
+  },
   "byArtist": "By",
   "changeServer": "Change server",
   "changeUser": "Change user",
@@ -20,6 +23,13 @@
   "endDate": "End date",
   "endsAt": "Ends at {time}",
   "episodeNumber": "Episode {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "An error happened",
+    "messages": {
+      "errorCode": "Error code: {errorCode}",
+      "videoPlayerError": "The video player encountered an unrecoverable error."
+    }
+  },
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
@@ -47,9 +57,8 @@
   "networks": "Networks",
   "nextUp": "Next up",
   "noNetworkConnection": "No network connection",
-  "noResultsFound": "No results found",
-  "numberTracks": "{number} tracks",
   "noResultsFound": "There is nothing here",
+  "numberTracks": "{number} tracks",
   "parentalRatings": "Parental Ratings",
   "password": "Password",
   "play": "Play",
@@ -57,6 +66,7 @@
   "present": "Present",
   "rating": "Rating",
   "releaseDate": "Release date",
+  "rememberMe": "Remember me",
   "resumable": "Resumable",
   "selectServer": "Select server",
   "selectUser": "Select a user",
@@ -93,5 +103,7 @@
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "unableGetServerConfiguration": "Unable to get server configuration",
+  "unableGetPublicUsers": "Unable to get users"
 }
