@@ -123,7 +123,7 @@ export default Vue.extend({
     return {
       drawer: true,
       opacity: 0,
-      keepAliveInterval: null
+      keepAliveInterval: undefined as number | undefined
     };
   },
   computed: {
