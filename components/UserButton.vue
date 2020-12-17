@@ -18,7 +18,7 @@
     <v-list dense>
       <v-list-item
         v-for="(item, index) in menuItems"
-        :key="index"
+        :key="`bottomMenuItems-${index}`"
         @click="item.action"
       >
         <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -48,11 +48,13 @@ export default Vue.extend({
     };
   },
   computed: {
-    userImage(): string {
-      if (this.$auth.user?.PrimaryImageTag) {
-        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
-      } else {
-        return '';
+    userImage: {
+      get() {
+        if (this.$auth.user?.PrimaryImageTag) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=36`;
+        } else {
+          return '';
+        }
       }
     }
   },

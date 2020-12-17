@@ -32,6 +32,7 @@ export default Vue.extend({
   },
   async created() {
     this.setPageTitle({ title: this.$t('home') });
+    this.setAppBarOpacity({ opaqueAppBar: false });
 
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
@@ -142,8 +143,11 @@ export default Vue.extend({
       this.homeSections = homeSections;
     }
   },
+  destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
+  },
   methods: {
-    ...mapActions('page', ['setPageTitle'])
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
   }
 });
 </script>
