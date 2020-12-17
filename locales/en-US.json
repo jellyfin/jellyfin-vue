@@ -103,5 +103,7 @@
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "unableGetServerConfiguration": "Unable to get server configuration",
+  "unableGetPublicUsers": "Unable to get users"
 }
