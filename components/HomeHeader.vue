@@ -148,13 +148,17 @@ export default Vue.extend({
       }
     },
     getLogo(item: BaseItemDto): string {
-      if (item.Type === 'Episode') {
+      if (item.Type === 'Episode' && item.SeriesId) {
         return this.getImageUrlForElement(ImageType.Logo, {
           itemId: item.SeriesId
         });
-      } else {
+      } else if (item.ParentLogoItemId) {
         return this.getImageUrlForElement(ImageType.Logo, {
           itemId: item.ParentLogoItemId as string
+        });
+      } else {
+        return this.getImageUrlForElement(ImageType.Logo, {
+          item
         });
       }
     },
