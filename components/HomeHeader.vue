@@ -3,16 +3,6 @@
     v-if="items.length > 0 && !$vuetify.breakpoint.mobile"
     class="swiperContainer"
   >
-    <swiper-progress-bar
-      :pages="items.length"
-      :current-index="currentIndex"
-      :duration="slideDuration"
-      :paused="isPaused"
-      class="progressbar"
-      @on-animation-end="onAnimationEnd"
-      @on-progress-clicked="onProgressClicked"
-    />
-
     <swiper
       ref="homeSwiper"
       class="swiper"
@@ -84,9 +74,12 @@
                   tracks
                   runtime
                   rating
-                  class="mt-2"
+                  class="my-2"
                 />
-                <p class="mt-2" v-html="getOverview(item)" />
+                <p
+                  class="d-none d-xl-block overview"
+                  v-html="getOverview(item)"
+                />
                 <v-btn
                   class="mr-2"
                   color="primary"
@@ -111,6 +104,15 @@
         </div>
       </swiper-slide>
     </swiper>
+    <swiper-progress-bar
+      :pages="items.length"
+      :current-index="currentIndex"
+      :duration="slideDuration"
+      :paused="isPaused"
+      class="progressbar"
+      @on-animation-end="onAnimationEnd"
+      @on-progress-clicked="onProgressClicked"
+    />
   </div>
 </template>
 
@@ -203,8 +205,6 @@ export default Vue.extend({
 }
 .progressbar {
   position: absolute;
-  top: 0;
-  margin-top: -7px;
   z-index: 20;
 }
 .swiper {
