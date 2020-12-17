@@ -93,7 +93,8 @@ export default Vue.extend({
         this.setDeviceProfile();
         this.$auth.loginWith('jellyfin', {
           username: user.Name,
-          password: ''
+          password: '',
+          rememberMe: true
         });
         return; // Avoid changing the form
       }
