@@ -17,13 +17,7 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { pickBy } from 'lodash';
 import { getShapeFromCollectionType } from '~/utils/items';
-
-interface HomeSection {
-  name: string;
-  libraryId: string;
-  shape: string;
-  type: string;
-}
+import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
   data() {

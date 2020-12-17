@@ -1,24 +1,33 @@
-import { ActionTree, MutationTree } from 'vuex';
+import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import {
   BaseItemDto,
   BaseItemDtoQueryResult,
   ImageType,
   ItemFields
 } from '@jellyfin/client-axios';
+import Vue from 'vue';
 import { AppState } from './index';
 
-interface latestMedia {
+export interface HomeSection {
+  name: string;
+  libraryId: string;
+  shape: string;
+  type: string;
+}
+
+interface LatestMedia {
   [key: string]: BaseItemDto[];
 }
-export interface HomeSection {
+
+export interface HomeSectionState {
   libraries: BaseItemDto[];
   audioResumes: BaseItemDto[];
   videoResumes: BaseItemDto[];
   upNext: BaseItemDto[];
-  latestMedia: latestMedia;
+  latestMedia: LatestMedia;
 }
 
-export const state = (): HomeSection => ({
+export const state = (): HomeSectionState => ({
   libraries: [],
   audioResumes: [],
   videoResumes: [],
@@ -35,31 +44,58 @@ type MutationPayload = {
   libraryId?: string;
 };
 
-export const mutations: MutationTree<HomeSection> = {
-  ADD_LIBRARIES(state: HomeSection, { libraries }: MutationPayload) {
+export const getters: GetterTree<HomeSectionState, AppState> = {
+  getHomeSectionContent: (state) => (section: HomeSection) => {
+    switch (section.type) {
+      case 'libraries':
+        return state.libraries;
+      case 'resume':
+        return state.videoResumes;
+      case 'resumeaudio':
+        return state.audioResumes;
+      case 'upNext':
+        return state.upNext;
+      case 'latestmedia':
+        return state.latestMedia[section.libraryId];
+      default:
+        return [];
+    }
+  }
+};
+
+export const mutations: MutationTree<HomeSectionState> = {
+  ADD_LIBRARIES(state: HomeSectionState, { libraries }: MutationPayload) {
     state.libraries = libraries;
   },
-  ADD_AUDIO_RESUMES(state: HomeSection, { audioResumes }: MutationPayload) {
+  ADD_AUDIO_RESUMES(
+    state: HomeSectionState,
+    { audioResumes }: MutationPayload
+  ) {
     state.audioResumes = audioResumes;
   },
-  ADD_VIDEO_RESUMES(state: HomeSection, { videoResumes }: MutationPayload) {
+  ADD_VIDEO_RESUMES(
+    state: HomeSectionState,
+    { videoResumes }: MutationPayload
+  ) {
     state.videoResumes = videoResumes;
   },
-  ADD_UP_NEXT(state: HomeSection, { upNext }: MutationPayload) {
+  ADD_UP_NEXT(state: HomeSectionState, { upNext }: MutationPayload) {
     state.upNext = upNext;
   },
   ADD_LATEST_MEDIA(
-    state: HomeSection,
+    state: HomeSectionState,
     { latestMedia, libraryId }: MutationPayload
   ) {
-    if (!libraryId) throw new Error('libraryId is undefined');
-    state.latestMedia[libraryId] = latestMedia;
+    if (!libraryId) {
+      throw new Error('libraryId is undefined');
+    }
+    Vue.set(state.latestMedia, libraryId, latestMedia);
   },
-  CLEAR_HOME_SECTION_STATE(state: HomeSection) {
+  CLEAR_HOME_SECTION_STATE(state: HomeSectionState) {
     state.libraries = [];
   }
 };
-export const actions: ActionTree<HomeSection, AppState> = {
+export const actions: ActionTree<HomeSectionState, AppState> = {
   async getLibraries({ rootState, dispatch, commit }) {
     await dispatch('userViews/refreshUserViews', null, { root: true });
 

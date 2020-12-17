@@ -4,7 +4,7 @@ import { PageState } from './page';
 import { SnackbarState } from './snackbar';
 import { UserState } from './user';
 import { UserViewsState } from './userViews';
-import { HomeSection } from './homeSection';
+import { HomeSectionState } from './homeSection';
 
 export interface AppState {
   tvShows: TvShowsState;
@@ -13,5 +13,5 @@ export interface AppState {
   snackBar: SnackbarState;
   user: UserState;
   userViews: UserViewsState;
-  homeSection: HomeSection;
+  homeSection: HomeSectionState;
 }

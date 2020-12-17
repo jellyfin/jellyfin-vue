@@ -43,15 +43,8 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapState, mapActions } from 'vuex';
-import { AppState } from '~/store';
-
-interface HomeSection {
-  name: string;
-  libraryId: string;
-  shape: string;
-  type: string;
-}
+import { mapGetters, mapActions } from 'vuex';
+import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
   props: {
@@ -79,25 +72,13 @@ export default Vue.extend({
       loading: true
     };
   },
-  computed: mapState({
-    items(state: AppState): BaseItemDto[] {
-      switch (this.section.type) {
-        case 'libraries':
-          return state.homeSection.libraries;
-        case 'resume':
-          return state.homeSection.videoResumes;
-        case 'resumeaudio':
-          return state.homeSection.audioResumes;
-        case 'upNext':
-          return state.homeSection.upNext;
-        case 'latestmedia':
-          return state.homeSection.latestMedia[this.section.libraryId];
-        default:
-          return [];
-      }
+  computed: {
+    ...mapGetters('homeSection', ['getHomeSectionContent']),
+    items(): BaseItemDto[] {
+      return this.getHomeSectionContent(this.section);
     }
-  }),
-  async created() {
+  },
+  async beforeMount() {
     switch (this.section.type) {
       case 'libraries': {
         await this.getLibraries();
@@ -127,7 +108,7 @@ export default Vue.extend({
         break;
     }
 
-    this.loading = false;
+    this.$data.loading = false;
   },
   methods: {
     ...mapActions('homeSection', {
