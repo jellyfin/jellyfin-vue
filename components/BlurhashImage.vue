@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isValidTag()" ref="img">
+  <div v-if="isValidTag()" ref="img" class="absolute">
     <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
         v-if="isValidBlurhash()"
@@ -15,7 +15,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
-        @error="$emit('error')"
+        @error="onError"
       />
     </transition-group>
   </div>
@@ -28,6 +28,7 @@ import {
   BaseItemDtoImageBlurHashes,
   ImageType
 } from '@jellyfin/client-axios';
+import { mapActions } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
 
 const excludedTypes = [ImageType.Logo];
@@ -63,12 +64,15 @@ export default Vue.extend({
   },
   mounted(): void {
     const img = this.$refs.img as HTMLElement;
+    // We don't pass the item itself as we already did all the tags checking in this component,
+    // so doing it again in the mixin is useless.
     this.image = this.getImageUrlForElement(this.type, {
-      item: this.item,
+      itemId: this.item.Id,
       element: img
     });
   },
   methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     isValidTag(): boolean {
       if (
         (this.item?.ImageTags &&
@@ -82,15 +86,17 @@ export default Vue.extend({
       ) {
         return true;
       } else {
-        console.error('Provided tag does not exist in the item');
+        this.onError();
         return false;
       }
     },
     isValidBlurhash(): boolean {
-      if (excludedTypes.includes(this.type)) {
+      if (
+        excludedTypes.includes(this.type) ||
+        (this.item?.ImageBlurHashes as Array<never>).length === 0
+      ) {
         return false;
       } else if (
-        this.item?.ImageBlurHashes &&
         Object.prototype.hasOwnProperty.call(
           this.item?.ImageBlurHashes,
           this.type
@@ -100,9 +106,10 @@ export default Vue.extend({
         return true;
       } else if (
         this.type === ImageType.Backdrop &&
-        (this.item?.BackdropImageTags as Array<string>).length > 0 &&
+        (this.item?.BackdropImageTags as Array<never>).length > 0 &&
+        this.item?.ImageBlurHashes?.Backdrop &&
         Object.prototype.hasOwnProperty.call(
-          this.item?.ImageBlurHashes?.Backdrop,
+          this.item?.ImageBlurHashes?.Backdrop as Record<string, string>,
           (this.item?.BackdropImageTags as Array<string>)[0]
         )
       ) {
@@ -124,6 +131,13 @@ export default Vue.extend({
           (this.item?.ImageTags as Record<string, string>)[this.type]
         ];
       }
+    },
+    onError(): void {
+      this.pushSnackbarMessage({
+        message: this.$t('unableToLoadImage'),
+        color: 'error'
+      });
+      this.$emit('error');
     }
   }
 });

@@ -5,21 +5,23 @@
     :options="swiperOptions"
   >
     <swiper-slide v-for="item in items" :key="item.Id">
-      <blurhash-image
-        class="slide-backdrop"
-        :item="getRelatedItem(item)"
-        :type="'Backdrop'"
-      />
+      <div class="slide-backdrop">
+        <blurhash-image :item="getRelatedItem(item)" :type="'Backdrop'" />
+      </div>
       <div class="slide-backdrop-overlay" />
       <div class="slide-content">
         <v-container class="mx-10 mt-5">
           <v-row>
             <v-col cols="5">
-              <blurhash-image
-                v-if="item.ImageTags && item.ImageTags.Logo"
-                :item="getRelatedItem(item)"
-                :type="'Logo'"
-                class="contain"
+              <v-img
+                v-if="
+                  item.ParentLogoImageTag ||
+                  (item.ImageTags && item.ImageTags.Logo)
+                "
+                max-width="50%"
+                aspect-ratio="2.58"
+                contain
+                :src="getLogo(item)"
               />
               <h1
                 v-else-if="item.Type === 'Episode'"
@@ -161,6 +163,12 @@ export default Vue.extend({
       } else {
         return '';
       }
+    },
+    getLogo(item: BaseItemDto): string {
+      const relatedItem = this.getRelatedItem(item);
+      return this.getImageUrlForElement(ImageType.Logo, {
+        itemId: relatedItem.Id
+      });
     }
   }
 });
