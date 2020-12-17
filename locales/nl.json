@@ -103,5 +103,6 @@
     "darkModeToggle": "Schakel donkere modus",
     "buttons": {
         "ok": "Ok"
-    }
+    },
+    "rememberMe": "Onthoud mij"
 }
