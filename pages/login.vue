@@ -80,7 +80,7 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    isEmpty(value: Record<any, any>): boolean {
+    isEmpty(value: Record<never, never>) {
       return isEmpty(value);
     },
     setCurrentUser(user: UserDto): void {
@@ -89,7 +89,8 @@ export default Vue.extend({
         this.setDeviceProfile();
         this.$auth.loginWith('jellyfin', {
           username: user.Name,
-          password: ''
+          password: '',
+          rememberMe: true
         });
         return; // Avoid changing the form
       }

@@ -36,6 +36,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Route } from 'vue-router';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import ErrorEvent from 'shaka-player';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import modalHelper from '~/mixins/modalHelper';
 import imageHelper from '~/mixins/imageHelper';
@@ -74,7 +77,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    handleShakaPlayerError(error: any) {
+    handleShakaPlayerError(error: ErrorEvent) {
       if (error?.detail?.severity === 1) {
         // This error is recoverable, ignore for now
       } else {

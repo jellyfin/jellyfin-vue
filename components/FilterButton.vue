@@ -209,6 +209,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
 
 export default Vue.extend({
@@ -287,6 +288,7 @@ export default Vue.extend({
     }
   },
   methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems() {
       try {
         const response = (
@@ -309,7 +311,10 @@ export default Vue.extend({
           this.yearFilters = response.Years;
         }
       } catch (error) {
-        console.error('Unable to retrieve filters:', error);
+        this.pushSnackbarMessage({
+          message: this.$t('filtersNotFound'),
+          color: 'error'
+        });
       }
     },
     emitFilterChange() {

@@ -5,6 +5,8 @@ import { SnackbarState } from './snackbar';
 import { UserState } from './user';
 import { UserViewsState } from './userViews';
 import { HomeSection } from './homeSection';
+import { BackdropState } from './backdrop';
+import { DeviceState } from './deviceProfile';
 
 export interface AppState {
   tvShows: TvShowsState;
@@ -14,4 +16,6 @@ export interface AppState {
   user: UserState;
   userViews: UserViewsState;
   homeSection: HomeSection;
+  backdrop: BackdropState;
+  device: DeviceState;
 }

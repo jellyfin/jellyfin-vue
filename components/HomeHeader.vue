@@ -17,7 +17,13 @@
           <v-row>
             <v-col cols="5">
               <v-img
-                v-if="item.ImageTags && item.ImageTags.Logo"
+                v-if="
+                  item.ParentLogoImageTag ||
+                  (item.ImageTags && item.ImageTags.Logo)
+                "
+                max-width="50%"
+                aspect-ratio="2.58"
+                contain
                 :src="getLogo(item)"
               />
               <h1
@@ -60,6 +66,7 @@
                 rating
                 class="mt-2"
               />
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p class="mt-2" v-html="getOverview(item)" />
               <v-btn
                 class="mr-2"
@@ -139,6 +146,8 @@ export default Vue.extend({
       // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
         return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
+      } else if (item.Type === 'MusicAlbum') {
+        return `${this.$axios.defaults.baseURL}/Items/${item.ParentLogoItemId}/Images/Logo`;
       } else {
         return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
       }
