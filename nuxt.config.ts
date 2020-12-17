@@ -220,6 +220,7 @@ const config: NuxtConfig = {
     },
     babel: {
       // envName: server, client, modern
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       presets(): any {
         return [
           [

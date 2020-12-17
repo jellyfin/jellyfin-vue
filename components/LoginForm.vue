@@ -97,7 +97,7 @@ export default Vue.extend({
       await this.loginRequest(this.login);
       this.loading = false;
     },
-    isEmpty(value: Record<any, any>) {
+    isEmpty(value: Record<never, never>) {
       return isEmpty(value);
     }
   }
