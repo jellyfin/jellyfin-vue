@@ -6,7 +6,7 @@
           v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator"
           :class="{ 'mb-4': !$vuetify.breakpoint.mobile }"
         >
-          <v-card-text>
+          <v-card-text class="py-0">
             <v-row>
               <v-col>
                 <v-row>
@@ -51,65 +51,17 @@
                 </v-row>
               </v-col>
               <v-col cols="3" class="d-flex justify-end">
-                <v-avatar tile size="96" color="grey">
-                  <v-icon>mdi-server</v-icon>
-                </v-avatar>
+                <v-img
+                  contain
+                  src="/icon.png"
+                  width="100%"
+                  :alt="$t('jellyfinLogo')"
+                />
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
-        <v-card v-if="!$vuetify.breakpoint.mobile">
-          <v-card-text>
-            <v-row>
-              <v-col>
-                <p class="mb-0">
-                  <span
-                    v-html="
-                      sanitizeHtml(
-                        $t('links.poweredByJellyfinLink', {
-                          link: linkItems[0].link
-                        })
-                      )
-                    "
-                  />
-                  <br />
-                  <span
-                    v-html="
-                      sanitizeHtml(
-                        $t('links.readTheDocumentationLink', {
-                          link: linkItems[1].link
-                        })
-                      )
-                    "
-                  />
-                  <br />
-                  <span
-                    v-html="
-                      sanitizeHtml(
-                        $t('links.helpTranslateLink', {
-                          link: linkItems[1].link
-                        })
-                      )
-                    "
-                  />
-                  <br />
-                  <span
-                    v-html="
-                      sanitizeHtml(
-                        $t('links.reportAnIssueLink', {
-                          link: linkItems[2].link
-                        })
-                      )
-                    "
-                  />
-                </p>
-              </v-col>
-              <v-col cols="3" class="d-flex justify-end">
-                <v-img src="/icon.png" width="100%" :alt="$t('jellyfinLogo')" />
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <about-links v-if="!$vuetify.breakpoint.mobile" />
       </v-col>
       <v-col cols="12" md="6" lg="5" class="pt-0 pb-4">
         <!-- User settings -->
@@ -155,27 +107,7 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-        <!-- Mobile links -->
-        <v-list v-if="$vuetify.breakpoint.mobile">
-          <v-list-item-group>
-            <v-list-item
-              v-for="linkItem in linkItems"
-              :key="linkItem.name"
-              :href="linkItem.link"
-              target="_blank"
-            >
-              <v-list-item-avatar>
-                <v-icon v-text="linkItem.icon" />
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="linkItem.name" />
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-icon>mdi-open-in-new</v-icon>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
+        <about-links v-if="$vuetify.breakpoint.mobile" />
       </v-col>
     </v-row>
   </v-container>
@@ -289,28 +221,6 @@ export default Vue.extend({
           icon: 'mdi-text-box',
           name: this.$t('settingsSections.logs.name'),
           description: this.$t('settingsSections.logs.description')
-        }
-      ],
-      linkItems: [
-        {
-          icon: 'mdi-rocket-launch',
-          name: this.$t('links.poweredByJellyfin'),
-          link: 'https://jellyfin.org'
-        },
-        {
-          icon: 'mdi-book',
-          name: this.$t('links.readTheDocumentation'),
-          link: 'https://docs.jellyfin.org'
-        },
-        {
-          icon: 'mdi-translate',
-          name: this.$t('links.helpTranslate'),
-          link: 'https://translate.jellyfin.org'
-        },
-        {
-          icon: 'mdi-bug',
-          name: this.$t('links.reportAnIssue'),
-          link: 'https://github.com/jellyfin/jellyfin-vue/issues/new'
         }
       ]
     };

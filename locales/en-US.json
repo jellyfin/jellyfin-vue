@@ -49,13 +49,9 @@
   "likes": "Likes",
   "links": {
     "helpTranslate": "Help translate Jellyfin in your language",
-    "helpTranslateLink": "Help <a href=\"{link}\">translate Jellyfin</a> in your language",
     "poweredByJellyfin": "This server is powered by Jellyfin",
-    "poweredByJellyfinLink": "This server is powered by <a href=\"{link}\">Jellyfin</a>",
     "readTheDocumentation": "Read the documentation",
-    "readTheDocumentationLink": "Read the <a href=\"{link}\">documentation</a>",
-    "reportAnIssue": "Report an issue with the Vue client",
-    "reportAnIssueLink": "<a href=\"{link}\">Report an issue</a> with the Vue client"
+    "reportAnIssue": "Report an issue with the Vue client"
   },
   "login": "Login",
   "loginAs": "Login as {name}",

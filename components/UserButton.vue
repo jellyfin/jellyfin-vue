@@ -17,7 +17,7 @@
     </template>
     <v-list dense>
       <v-list-item
-        v-for="(item, index) in bottomMenuItems"
+        v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
         @click="item.action"
       >
@@ -35,7 +35,7 @@ export default Vue.extend({
   data() {
     return {
       avatarSize: 48,
-      bottomMenuItems: [
+      menuItems: [
         {
           title: this.$t('logout'),
           action: () => {
@@ -48,29 +48,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    menuItems: {
-      get() {
-        const items = [
-          {
-            title: this.$t('accountSettings'),
-            action: () => {
-              this.$router.push('/user/account');
-            }
-          }
-        ];
-
-        if (this.$auth.user.Policy.IsAdministrator) {
-          items.push({
-            title: this.$t('serverDashboard'),
-            action: () => {
-              this.$router.push('/admin');
-            }
-          });
-        }
-
-        return items;
-      }
-    },
     userImage: {
       get() {
         if (this.$auth.user?.PrimaryImageTag) {
