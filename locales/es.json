@@ -94,5 +94,7 @@
     "darkModeToggle": "Cambiar a modo oscuro",
     "buttons": {
         "ok": "Vale"
-    }
+    },
+    "liked": "Te gusta",
+    "latestLibrary": "Lo último en {libraryName}"
 }

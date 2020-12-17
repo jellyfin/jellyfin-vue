@@ -18,7 +18,7 @@
     <v-list dense>
       <v-list-item
         v-for="(item, index) in menuItems"
-        :key="index"
+        :key="`bottomMenuItems-${index}`"
         @click="item.action"
       >
         <v-list-item-title>{{ item.title }}</v-list-item-title>

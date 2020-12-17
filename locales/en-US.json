@@ -2,6 +2,7 @@
   "actors": "Actors",
   "albums": "Albums",
   "alphabetically": "Alphabetically",
+  "architecture": "Architecture",
   "artist": "Artist",
   "artists": "Artists",
   "badRequest": "Bad request. Try again",
@@ -42,12 +43,19 @@
   "home": "Home",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "itemNotFound": "Item not found",
+  "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Latest {libraryName}",
   "libraries": "Libraries",
   "libraryEmpty": "This library is empty",
   "libraryNotFound": "Library not found",
   "liked": "Liked",
   "likes": "Likes",
+  "links": {
+    "helpTranslate": "Help translate Jellyfin in your language",
+    "poweredByJellyfin": "This server is powered by Jellyfin",
+    "readTheDocumentation": "Read the documentation",
+    "reportAnIssue": "Report an issue with the Vue client"
+  },
   "login": "Login",
   "loginAs": "Login as {name}",
   "logout": "Logout",
@@ -62,6 +70,7 @@
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
   "numberTracks": "{number} tracks",
+  "operatingSystem": "Operating system",
   "parentalRatings": "Parental Ratings",
   "password": "Password",
   "play": "Play",
@@ -74,12 +83,88 @@
   "selectServer": "Select server",
   "selectUser": "Select a user",
   "series": "Series",
+  "server": "Server",
   "serverAddress": "Server address",
   "serverAddressMustBeUrl": "Server address must be a valid address",
   "serverAddressRequired": "Server address is required",
+  "serverDashboard": "Server dashboard",
   "serverNotFound": "Server not found",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
+  "settingsSections": {
+    "account": {
+      "description": "Edit your user's information",
+      "name": "Account"
+    },
+    "apiKeys": {
+      "description": "Add and revoke API keys for external access to your server",
+      "name": "API keys"
+    },
+    "devices": {
+      "description": "See and manage the devices connected to your server",
+      "name": "Devices"
+    },
+    "dlna": {
+      "description": "Configure DLNA settings and profile",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configure your home sections and home screen layout",
+      "name": "Home screen"
+    },
+    "libraries": {
+      "description": "Manage libraries and their metadata",
+      "name": "Libraries"
+    },
+    "liveTvAndDvr": {
+      "description": "Manage TV tuners, guide data providers and DVR settings",
+      "name": "Live TV & DVR"
+    },
+    "logs": {
+      "description": "Read and search server logs and user activity",
+      "name": "Logs & activity"
+    },
+    "mediaPlayers": {
+      "description": "Configure how the media players behave for this device",
+      "name": "Media players"
+    },
+    "networking": {
+      "description": "Manage the network settings of this server",
+      "name": "Networking"
+    },
+    "notifications": {
+      "description": "Manage and configure notification sent by this server",
+      "name": "Notifications"
+    },
+    "playback": {
+      "description": "Edit your playback preferences for this device",
+      "name": "Playback"
+    },
+    "plugins": {
+      "description": "Add and configure new features for this server",
+      "name": "Plugins"
+    },
+    "scheduledTasks": {
+      "description": "Manage scheduled tasks running on this server",
+      "name": "Scheduled tasks"
+    },
+    "server": {
+      "description": "Configure this server's language and branding",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Control how subtitles are displayed on this device",
+      "name": "Subtitles"
+    },
+    "transcodingAndStreaming": {
+      "description": "Manage how this server handles transcoding and streaming to clients",
+      "name": "Transcoding & streaming"
+    },
+    "users": {
+      "description": "Manage users and their permissions",
+      "name": "Users"
+    }
+  },
   "shows": "Shows",
   "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
@@ -103,8 +188,10 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
+  "serverVersion": "Server version",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
+  "vueClientVersion": "Vue client version",
   "years": "Years",
   "youMayAlsoLike": "You may also like",
   "unableGetServerConfiguration": "Unable to get server configuration",

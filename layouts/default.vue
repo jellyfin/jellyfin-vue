@@ -30,7 +30,7 @@
         </v-list-item>
         <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
-          v-for="library in libraries"
+          v-for="library in getNavigationDrawerItems"
           :key="library.Id"
           :to="library.to"
           router
@@ -110,7 +110,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -121,6 +121,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapState('page', ['opaqueAppBar']),
+    ...mapGetters('userViews', ['getNavigationDrawerItems']),
     items() {
       return [
         {
@@ -129,9 +130,6 @@ export default Vue.extend({
           to: '/'
         }
       ];
-    },
-    libraries() {
-      return this.$store.getters['userViews/getNavigationDrawerItems'];
     },
     configItems() {
       return [
