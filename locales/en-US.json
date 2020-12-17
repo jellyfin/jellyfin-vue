@@ -109,11 +109,11 @@
       "name": "Home screen"
     },
     "libraries": {
-      "description": "Manage your libraries and their metadata",
+      "description": "Manage libraries and their metadata",
       "name": "Libraries"
     },
     "liveTvAndDvr": {
-      "description": "Manage your TV tuners, guide data providers and DVR settings",
+      "description": "Manage TV tuners, guide data providers and DVR settings",
       "name": "Live TV & DVR"
     },
     "logs": {
@@ -125,11 +125,11 @@
       "name": "Media players"
     },
     "networking": {
-      "description": "Manage the network settings of your server",
+      "description": "Manage the network settings of this server",
       "name": "Networking"
     },
     "notifications": {
-      "description": "Manage and configure notification sent by your server",
+      "description": "Manage and configure notification sent by this server",
       "name": "Notifications"
     },
     "playback": {
@@ -137,15 +137,15 @@
       "name": "Playback"
     },
     "plugins": {
-      "description": "Add and configure new features for your server",
+      "description": "Add and configure new features for this server",
       "name": "Plugins"
     },
     "scheduledTasks": {
-      "description": "Manage scheduled tasks running on your server",
+      "description": "Manage scheduled tasks running on this server",
       "name": "Scheduled tasks"
     },
     "server": {
-      "description": "Configure your server's language and branding",
+      "description": "Configure this server's language and branding",
       "name": "Server"
     },
     "subtitles": {
@@ -153,11 +153,11 @@
       "name": "Subtitles"
     },
     "transcodingAndStreaming": {
-      "description": "Manage how your server handles transcoding and streaming to clients",
+      "description": "Manage how this server handles transcoding and streaming to clients",
       "name": "Transcoding & streaming"
     },
     "users": {
-      "description": "Manage your users and their permissions",
+      "description": "Manage users and their permissions",
       "name": "Users"
     }
   },
@@ -184,7 +184,7 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
-  "version": "Version",
+  "serverVersion": "Server version",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "vueClientVersion": "Vue client version",

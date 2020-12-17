@@ -19,7 +19,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="5" class="pt-0 pb-0">
-                    <span>{{ $t('version') }}</span>
+                    <span>{{ $t('serverVersion') }}</span>
                   </v-col>
                   <v-col class="pt-0 pb-0">
                     <span>{{ systemInfo.Version }}</span>
