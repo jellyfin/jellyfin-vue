@@ -104,5 +104,8 @@
     },
     "buttons": {
         "ok": "Ok"
-    }
+    },
+    "unableGetServerConfiguration": "Načtení konfigurace serveru se nezdařilo",
+    "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
+    "rememberMe": "Zapamatovat"
 }
