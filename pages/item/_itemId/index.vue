@@ -122,8 +122,8 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
@@ -144,8 +144,8 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
@@ -167,22 +167,20 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.DisplayTitle }}
                       </template>
-                      <template slot="item" slot-scope="{ item, on, attrs }">
+                      <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-avatar>
                             <v-icon
-                              v-text="getSurroundIcon(item.ChannelLayout)"
+                              v-text="getSurroundIcon(i.ChannelLayout)"
                             ></v-icon>
                           </v-list-item-avatar>
                           <v-list-item-content>
-                            <v-list-item-title>{{
-                              item.Title
-                            }}</v-list-item-title>
+                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(item.Language) }}
+                              {{ getLanguageName(i.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -206,17 +204,15 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.DisplayTitle }}
                       </template>
-                      <template slot="item" slot-scope="{ item, on, attrs }">
+                      <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-content>
-                            <v-list-item-title>{{
-                              item.Title
-                            }}</v-list-item-title>
+                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(item.Language) }}
+                              {{ getLanguageName(i.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>

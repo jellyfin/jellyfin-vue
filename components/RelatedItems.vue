@@ -53,9 +53,7 @@
             :to="`/item/${relatedItem.Id}`"
           >
             <v-list-item-avatar>
-              <v-img
-                :src="`${$axios.defaults.baseURL}/Items/${relatedItem.Id}/Images/Primary`"
-              />
+              <v-img ref="avatarImg" :src="getImageUrl(relatedItem.Id)" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
@@ -82,7 +80,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -159,6 +157,10 @@ export default Vue.extend({
       }
 
       this.loading = false;
+    },
+    getImageUrl(itemId: string): string {
+      const element = this.$refs.avatarImg as HTMLElement;
+      return this.getImageUrlForElement(ImageType.Primary, { itemId, element });
     }
   }
 });

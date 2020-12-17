@@ -30,6 +30,8 @@ import {
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
+const excludedTypes = [ImageType.Logo];
+
 export default Vue.extend({
   mixins: [imageHelper],
   props: {
@@ -61,7 +63,10 @@ export default Vue.extend({
   },
   mounted(): void {
     const img = this.$refs.img as HTMLElement;
-    this.image = this.getImageUrlForElement(this.item, this.type, img);
+    this.image = this.getImageUrlForElement(this.type, {
+      item: this.item,
+      element: img
+    });
   },
   methods: {
     isValidTag(): boolean {
@@ -82,7 +87,9 @@ export default Vue.extend({
       }
     },
     isValidBlurhash(): boolean {
-      if (
+      if (excludedTypes.includes(this.type)) {
+        return false;
+      } else if (
         this.item?.ImageBlurHashes &&
         Object.prototype.hasOwnProperty.call(
           this.item?.ImageBlurHashes,

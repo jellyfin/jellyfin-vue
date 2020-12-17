@@ -11,6 +11,7 @@
             v-if="isEmpty(user)"
             v-model="login.username"
             outlined
+            hide-details
             :label="$t('username')"
             :error-messages="errors"
           ></v-text-field>
@@ -18,11 +19,19 @@
         <v-text-field
           v-model="login.password"
           outlined
+          hide-details
+          class="mt-4"
           :label="$t('password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
           @click:append="() => (showPassword = !showPassword)"
         ></v-text-field>
+        <v-checkbox
+          v-model="login.rememberMe"
+          hide-details
+          class="mt-4 mb-8"
+          :label="$t('rememberMe')"
+        ></v-checkbox>
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
             <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
@@ -71,7 +80,8 @@ export default Vue.extend({
     return {
       login: {
         username: '',
-        password: ''
+        password: '',
+        rememberMe: true
       },
       showPassword: false,
       loading: false,
@@ -97,7 +107,7 @@ export default Vue.extend({
       await this.loginRequest(this.login);
       this.loading = false;
     },
-    isEmpty(value: Record<any, any>) {
+    isEmpty(value: Record<never, never>) {
       return isEmpty(value);
     }
   }

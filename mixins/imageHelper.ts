@@ -7,22 +7,47 @@ import Vue from 'vue';
 import { stringify } from 'qs';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 
+type ImageUrlForElementParams = {
+  item?: BaseItemDto;
+  element?: HTMLElement;
+  tag?: string;
+  itemId?: string;
+  maxWidth?: number;
+  maxHeight?: number;
+  quality?: number;
+  limitByWidth?: boolean;
+};
+
 declare module '@nuxt/types' {
   interface Context {
     getImageUrlForElement: (
-      item: BaseItemDto,
       type: ImageType,
-      element?: HTMLElement,
-      limitByWidth?: boolean
+      {
+        item,
+        element,
+        tag,
+        itemId,
+        maxWidth,
+        maxHeight,
+        quality,
+        limitByWidth
+      }: ImageUrlForElementParams
     ) => string;
   }
 
   interface NuxtAppOptions {
     getImageUrlForElement: (
-      item: BaseItemDto,
       type: ImageType,
-      element?: HTMLElement,
-      limitByWidth?: boolean
+      {
+        item,
+        element,
+        tag,
+        itemId,
+        maxWidth,
+        maxHeight,
+        quality,
+        limitByWidth
+      }: ImageUrlForElementParams
     ) => string;
   }
 }
@@ -30,10 +55,17 @@ declare module '@nuxt/types' {
 declare module 'vue/types/vue' {
   interface Vue {
     getImageUrlForElement: (
-      item: BaseItemDto,
       type: ImageType,
-      element?: HTMLElement,
-      limitByWidth?: boolean
+      {
+        item,
+        element,
+        tag,
+        itemId,
+        maxWidth,
+        maxHeight,
+        quality,
+        limitByWidth
+      }: ImageUrlForElementParams
     ) => string;
   }
 }
@@ -41,67 +73,62 @@ declare module 'vue/types/vue' {
 const imageHelper = Vue.extend({
   methods: {
     /**
-     * Returns the URL of an item's image at a specific size.
+     * Returns the URL of an item's image:
+     * · When 'element' parameter is passed, size of the image will be determined by the element's width & height
+     * · When 'maxWidth' and 'maxHeight' parameters are passed, size of the image will be as requested
+     * · When no 'element' or 'maxWidth' or 'maxHeight' is provided, image will have the original size.
      *
-     * @param {HTMLElement} element The DOM element which size will be used for the image's maximum width or height.
-     * @param {BaseItemDto} item The item to fetch the image for.
-     * @param {ImageType} type The type of the image to fetch.
-     * @param {boolean} [limitByWidth=false] Use the element's width instead of its height for the size calculation.
+     * @param {ImageType} type - The type of the image to fetch.
+     * @param {object} options - Optional parameters for the function.
+     * @param {BaseItemDto} options.item - The item to fetch the image for (optional).
+     * @param {HTMLElement} options.element - The DOM element which size will be used for the image's maximum width or height (optional).
+     * @param {string} options.tag - tag of the image to fetch (optional if item is passed).
+     * @param {string} [options.itemId=item?.Id] - itemId to get the image from (optional if item is passed).
+     * @param {number} [options.maxWidth=element?.clientWidth] - Maximum width of the image (optional).
+     * @param {number} [options.maxHeight=element?.clientHeight] - Maximum height of the image (optional).
+     * @param {number} [options.quality=90] - Quality level of the image (optional, only relevant for jpeg format).
+     * @param {boolean} [options.limitByWidth=false] - Use the element's width instead of its height for the size calculation.
      * @returns {string} The URL for the image, with the base URL set and the options provided.
      */
     getImageUrlForElement(
-      item: BaseItemDto,
       type: ImageType,
-      element?: HTMLElement,
-      limitByWidth = false
+      {
+        item,
+        element,
+        tag,
+        itemId = item?.Id,
+        maxWidth = element?.clientWidth,
+        maxHeight = element?.clientHeight,
+        quality = 90,
+        limitByWidth = false
+      }: ImageUrlForElementParams
     ): string {
-      // TODO: Refactor this with an options object
-      if (!item) {
-        throw new TypeError('item must not be null or undefined');
-      }
-
-      let itemId;
-      if (item.Type === 'Episode' && type === ImageType.Thumb) {
-        itemId = item.SeriesId;
-        if (item.SeriesThumbImageTag) {
-          type = ImageType.Thumb;
-        } else {
-          type = ImageType.Backdrop;
+      if (item) {
+        if (!item.ImageTags) {
+          throw new TypeError(
+            'item.ImageTags must not be null or undefined when an item object is passed'
+          );
         }
-      } else if (item.Type === 'Episode' && type === ImageType.Backdrop) {
-        itemId = item.SeriesId;
-      } else if (item.Type === 'Audio' && type === ImageType.Backdrop) {
-        itemId = item.AlbumArtists?.[0].Id;
-      } else {
-        itemId = item.Id;
+        tag = item?.ImageTags?.[type];
+      } else if (!itemId) {
+        throw new TypeError(
+          'itemId must not be null or undefined when an item object is not passed'
+        );
       }
 
       const url = new URL(
         `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${type}`
       );
 
-      let imageTag;
-      if (item.Type === 'Episode' && type === ImageType.Thumb) {
-        if (item.SeriesThumbImageTag) {
-          imageTag = item.SeriesThumbImageTag;
-        } else {
-          imageTag = item.ParentBackdropImageTags?.[0];
-        }
-      } else if (item.Type === 'Episode' && type === ImageType.Backdrop) {
-        imageTag = item.ParentBackdropImageTags?.[0];
-      } else {
-        imageTag = item.ImageTags?.[type];
-      }
-
       const params: { [k: string]: string | number | undefined } = {
-        tag: imageTag,
-        quality: 90
+        tag,
+        quality
       };
 
-      if (element && limitByWidth) {
-        params.maxWidth = element.clientWidth.toString();
-      } else if (element) {
-        params.maxHeight = element.clientHeight.toString();
+      if (limitByWidth && maxWidth) {
+        params.maxWidth = maxWidth.toString();
+      } else if (maxHeight) {
+        params.maxHeight = maxHeight.toString();
       }
 
       url.search = stringify(params);

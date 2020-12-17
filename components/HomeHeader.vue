@@ -19,6 +19,7 @@
                 v-if="item.ImageTags && item.ImageTags.Logo"
                 :item="getRelatedItem(item)"
                 :type="'Logo'"
+                class="contain"
               />
               <h1
                 v-else-if="item.Type === 'Episode'"
@@ -60,6 +61,7 @@
                 rating
                 class="mt-2"
               />
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p class="mt-2" v-html="getOverview(item)" />
               <v-btn
                 class="mr-2"
@@ -128,10 +130,12 @@ export default Vue.extend({
 
     for (const [key, i] of this.items.entries()) {
       let id: string;
-      if (i.Type === 'Episode') {
+      if (i.Type === 'Episode' && i.SeriesId) {
         id = i?.SeriesId as string;
       } else if (i.Type === 'MusicAlbum') {
         id = i?.AlbumArtists?.[0].Id as string;
+      } else if (i.ParentLogoItemId) {
+        id = i?.ParentLogoItemId as string;
       } else {
         continue;
       }
@@ -142,6 +146,7 @@ export default Vue.extend({
           itemId: id
         })
       ).data;
+
       this.relatedItems[key] = itemData;
     }
     this.loaded = true;
