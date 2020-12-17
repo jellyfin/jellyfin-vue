@@ -104,5 +104,7 @@
     "buttons": {
         "ok": "Ok"
     },
-    "rememberMe": "Onthoud mij"
+    "rememberMe": "Onthoud mij",
+    "unableGetPublicUsers": "Gebruikers laden is mislukt",
+    "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt"
 }
