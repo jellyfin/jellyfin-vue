@@ -148,7 +148,6 @@ const config: NuxtConfig = {
   },
   i18n: {
     locales: [
-      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' },
       { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
       { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
@@ -176,8 +175,25 @@ const config: NuxtConfig = {
     detectBrowserLanguage: { useCookie: false }
   },
   dateFns: {
-    locales: ['en-US', 'zh-CN'],
-    defaultLocale: 'en-US'
+    locales: [
+      'cs',
+      'de',
+      'enUS',
+      'es',
+      'fr',
+      'nb',
+      'nl',
+      'pl',
+      'ro',
+      'sk',
+      'sl',
+      'sv',
+      'ta',
+      'tr',
+      'vi',
+      'zhCN'
+    ],
+    defaultLocale: 'enUS'
   },
   /*
    ** vuetify module configuration

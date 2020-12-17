@@ -240,7 +240,7 @@ export default Vue.extend({
   },
   computed: {
     premiereDate: {
-      get() {
+      get(): string {
         if (!this.metadata.PremiereDate) return '';
         const dateStr = this.$dateFns.format(
           new Date(this.metadata.PremiereDate),
@@ -250,7 +250,7 @@ export default Vue.extend({
       }
     },
     dateCreated: {
-      get() {
+      get(): string {
         if (!this.metadata.DateCreated) return '';
         const dateStr = this.$dateFns.format(
           new Date(this.metadata.DateCreated),

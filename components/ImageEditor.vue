@@ -77,8 +77,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { ImageInfo, ImageType } from '@jellyfin/client-axios';
+import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
+  mixins: [imageHelper],
   props: {
     metadata: {
       type: Object,
@@ -126,7 +128,10 @@ export default Vue.extend({
       ).data;
     },
     imageFormat(imageInfo: ImageInfo) {
-      return `${this.$axios.defaults.baseURL}/Items/${this.metadata.Id}/Images/${imageInfo.ImageType}?maxWidth=600&tag=${imageInfo.ImageTag}&quality=90`;
+      return this.getImageUrlForElement(imageInfo.ImageType as ImageType, {
+        itemId: this.metadata.Id,
+        tag: imageInfo.ImageTag as string
+      });
     },
     handleSearch() {
       this.dialog = true;
