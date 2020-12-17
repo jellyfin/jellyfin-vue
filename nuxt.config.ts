@@ -17,12 +17,12 @@ const config: NuxtConfig = {
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
-  target: 'server',
+  target: 'static',
   /*
    ** Module loading mode
    ** See https://nuxtjs.org/api/configuration-modern
    */
-  modern: 'client',
+  modern: false,
   /*
    ** Progress bar between routes
    ** See https://nuxtjs.org/api/configuration-loading
