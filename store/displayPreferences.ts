@@ -28,25 +28,14 @@ const defaultState = (): DisplayPreferencesState => ({
  * Methods to apply for each CustomPrefs property.
  * Those callbacks are usually done on global variables such as $vuetify or $i18n,
  * and those may not be present early in the application lifecycle.
- * The try-catch are there to silence those errors.
  */
 const updateMethods: { [key: string]: (value: string) => void } = {
   darkMode: (value: string) => {
-    try {
-      window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    if (window.$nuxt) window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
   },
 
   locale: (value: string) => {
-    try {
-      window.$nuxt.$i18n.setLocale(value);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    if (window.$nuxt) window.$nuxt.$i18n.setLocale(value);
   }
 };
 
