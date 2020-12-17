@@ -104,5 +104,8 @@
     },
     "buttons": {
         "ok": "Ok"
-    }
+    },
+    "unableGetPublicUsers": "Benutzer können nicht abgerufen werden",
+    "unableGetServerConfiguration": "Serverkonfiguration kann nicht abgerufen werden",
+    "rememberMe": "Angemeldet bleiben"
 }
