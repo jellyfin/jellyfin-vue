@@ -194,5 +194,7 @@
     "jellyfinLogo": "Jellyfin Logo",
     "architecture": "Architektur",
     "vueClientVersion": "Vue Clientversion",
-    "serverVersion": "Serverversion"
+    "serverVersion": "Serverversion",
+    "failedSettingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu ändern.",
+    "failedRetrievingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu lesen. Standard wird verwendet."
 }
