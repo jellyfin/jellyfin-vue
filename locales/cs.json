@@ -107,5 +107,48 @@
     },
     "unableGetServerConfiguration": "Načtení konfigurace serveru se nezdařilo",
     "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
-    "rememberMe": "Zapamatovat"
+    "rememberMe": "Zapamatovat",
+    "settingsSections": {
+        "liveTvAndDvr": {
+            "name": "Živé vysílání a nahrávání",
+            "description": "Spravovat nastavení TV tunerů, poskytovatelů programových průvodců a nahrávání"
+        },
+        "libraries": {
+            "name": "Knihovny",
+            "description": "Spravovat knihovny a jejich metadata"
+        },
+        "home": {
+            "name": "Domovská stránka",
+            "description": "Nastavit sekce a rozvržení domovské stránky"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Nastavit nastavení a profil DLNA"
+        },
+        "devices": {
+            "name": "Zařízení",
+            "description": "Zobrazit a spravovat zařízení připojená k serveru"
+        },
+        "apiKeys": {
+            "name": "Klíče k API",
+            "description": "Přidat nebo zneplatnit klíče k API pro externí přístup k serveru"
+        },
+        "account": {
+            "name": "Účet",
+            "description": "Upravit informace o uživateli"
+        }
+    },
+    "serverDashboard": "Nástěnka",
+    "server": "Server",
+    "operatingSystem": "Operační systém",
+    "links": {
+        "reportAnIssue": "Nahlásit problém s tímto klientem",
+        "readTheDocumentation": "Přečíst si dokumentaci",
+        "poweredByJellyfin": "Tento server běží na softwaru Jellyfin",
+        "helpTranslate": "Pomozte přeložit Jellyfin do vašeho jazyka"
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "failedSettingDisplayPreferences": "Nelze aktualizovat nastavení zobrazení.",
+    "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
+    "architecture": "Architektura"
 }
