@@ -205,6 +205,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.text-h2 {
+  line-height: normal;
+}
 .swiperContainer {
   min-width: 100%;
   min-height: 100%;
@@ -228,7 +231,7 @@ export default Vue.extend({
   box-sizing: border-box;
   mask-image: linear-gradient(
       180deg,
-      rgba(18, 18, 18, 1) 45%,
+      rgba(18, 18, 18, 1) 62%,
       rgba(18, 18, 18, 0) 100%
     ),
     linear-gradient(90deg, rgba(18, 18, 18, 1) 27%, rgba(18, 18, 18, 0) 47%);
