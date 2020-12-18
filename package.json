@@ -58,8 +58,7 @@
     "vee-validate": "^3.4.5",
     "vue-awesome-swiper": "^4.1.1",
     "vue-native-websocket": "^2.0.14",
-    "vue-virtual-scroller": "^1.0.10",
-    "vueperslides": "^2.12.1"
+    "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",

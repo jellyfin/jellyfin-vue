@@ -5,6 +5,7 @@
         <v-row>
           <v-col cols="2">
             <v-img
+              v-if="item.Id"
               ref="personImg"
               class="person-image elevation-2 ml-2"
               cover
@@ -52,71 +53,21 @@
         </v-row>
         <v-row v-if="movies.length > 0">
           <v-col>
-            <h1 class="text-h5 mb-2 ml-2 header">
-              <span>{{ $t('movies') }}</span>
-            </h1>
-            <vueper-slides
-              :bullets="false"
-              :bullets-outside="false"
-              :arrows-outside="false"
-              :visible-slides="6"
-              :slide-multiple="true"
-              :breakpoints="breakpoints"
-              fixed-height="true"
-            >
-              <vueper-slide v-for="movie in movies" :key="movie.Id">
-                <template #content>
-                  <card :item="movie" />
-                </template>
-              </vueper-slide>
-
-              <template #arrow-left>
-                <v-btn icon large>
-                  <v-icon>mdi-arrow-left</v-icon>
-                </v-btn>
-              </template>
-
-              <template #arrow-right>
-                <v-btn icon large>
-                  <v-icon>mdi-arrow-right</v-icon>
-                </v-btn>
-              </template>
-            </vueper-slides>
+            <swiper-section
+              :title="$t('movies')"
+              :items="movies"
+              :loading="loading"
+            />
           </v-col>
         </v-row>
 
         <v-row v-if="shows.length > 0">
           <v-col>
-            <h1 class="text-h5 mb-2 ml-2 header">
-              <span>{{ $t('shows') }}</span>
-            </h1>
-            <vueper-slides
-              :bullets="false"
-              :bullets-outside="false"
-              :arrows-outside="false"
-              :visible-slides="6"
-              :slide-multiple="true"
-              :breakpoints="breakpoints"
-              fixed-height="true"
-            >
-              <vueper-slide v-for="show in shows" :key="show.Id">
-                <template #content>
-                  <card :item="show" />
-                </template>
-              </vueper-slide>
-
-              <template #arrow-left>
-                <v-btn icon large>
-                  <v-icon>mdi-arrow-left</v-icon>
-                </v-btn>
-              </template>
-
-              <template #arrow-right>
-                <v-btn icon large>
-                  <v-icon>mdi-arrow-right</v-icon>
-                </v-btn>
-              </template>
-            </vueper-slides>
+            <swiper-section
+              :title="$t('shows')"
+              :items="shows"
+              :loading="loading"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -127,6 +78,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
+import { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -135,23 +87,34 @@ export default Vue.extend({
   mixins: [imageHelper, timeUtils],
   data() {
     return {
+      loading: true,
+      swiperOptions: {
+        initialSlide: 0,
+        freeMode: this.$browser.isMobile(),
+        effect: 'slide',
+        navigation: {
+          nextEl: `.swiper-next`,
+          prevEl: `.swiper-prev`
+        },
+        slidesPerView: 3,
+        breakpoints: {
+          600: {
+            slidesPerView: 4
+          },
+          960: {
+            slidesPerView: 6
+          },
+          1264: {
+            slidesPerView: 6
+          },
+          1904: {
+            slidesPerView: 8
+          }
+        }
+      } as SwiperOptions,
       item: {} as BaseItemDto,
       appearances: [] as BaseItemDto[],
-      backdropImageSource: '',
-      breakpoints: {
-        600: {
-          visibleSlides: 3
-        },
-        960: {
-          visibleSlides: 4
-        },
-        1264: {
-          visibleSlides: 6
-        },
-        1904: {
-          visibleSlides: 6
-        }
-      }
+      backdropImageSource: ''
     };
   },
   computed: {
@@ -200,6 +163,7 @@ export default Vue.extend({
     }
   },
   async beforeMount() {
+    this.loading = true;
     const item = (
       await this.$api.userLibrary.getItem({
         userId: this.$auth.user?.Id,
@@ -224,6 +188,7 @@ export default Vue.extend({
     if (appearances) {
       this.appearances = appearances;
     }
+    this.loading = false;
   },
   destroyed() {
     this.clearBackdrop();
@@ -261,42 +226,5 @@ export default Vue.extend({
   bottom: 0.3em;
   left: 0;
   width: 1.25em;
-}
-</style>
-
-<style>
-.vueperslides__track {
-  position: relative;
-  cursor: default !important;
-}
-
-@media (hover: none) {
-  .vueperslides__arrows {
-    display: none !important;
-  }
-}
-
-.vueperslides__arrows {
-  display: flex;
-  position: absolute;
-  top: -2.75em;
-  right: 0;
-  align-items: center;
-}
-
-.vueperslides__arrow {
-  position: relative;
-  display: inline-flex;
-  transform: none;
-}
-
-.vueperslides__arrow--prev {
-  margin-right: 0.75em;
-}
-.vueperslides:not(.no-shadow):not(.vueperslides--3d)
-  .vueperslides__parallax-wrapper::after,
-.vueperslides:not(.no-shadow):not(.vueperslides--3d)
-  .vueperslides__parallax-wrapper::before {
-  box-shadow: none;
 }
 </style>

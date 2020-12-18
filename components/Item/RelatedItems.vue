@@ -1,41 +1,7 @@
 <template>
   <div>
-    <div
-      v-if="!vertical && !loading && relatedItems.length > 0"
-      class="related-items"
-    >
-      <slot>
-        <h1 class="text-h5 mb-2 ml-2 header">
-          <span>{{ $t('youMayAlsoLike') }}</span>
-        </h1>
-      </slot>
-      <vueper-slides
-        :bullets="false"
-        :bullets-outside="false"
-        :arrows-outside="false"
-        :visible-slides="6"
-        :slide-multiple="true"
-        :breakpoints="breakpoints"
-        fixed-height="true"
-      >
-        <vueper-slide v-for="relatedItem in relatedItems" :key="relatedItem.Id">
-          <template #content>
-            <card :item="relatedItem" />
-          </template>
-        </vueper-slide>
-
-        <template #arrow-left>
-          <v-btn icon large>
-            <v-icon>mdi-arrow-left</v-icon>
-          </v-btn>
-        </template>
-
-        <template #arrow-right>
-          <v-btn icon large>
-            <v-icon>mdi-arrow-right</v-icon>
-          </v-btn>
-        </template>
-      </vueper-slides>
+    <div v-if="!vertical" class="related-items">
+      <swiper-section :title="title" :items="relatedItems" :loading="loading" />
     </div>
     <div v-else-if="vertical">
       <h2 v-if="!loading && relatedItems.length > 0">
@@ -80,6 +46,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
+import { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -100,30 +67,42 @@ export default Vue.extend({
     skeletonLength: {
       type: Number,
       default: 5
+    },
+    title: {
+      type: String,
+      default(): string {
+        return this.$t('youMayAlsoLike').toString();
+      }
     }
   },
   data() {
     return {
-      relatedItems: [] as BaseItemDto[],
-      loading: true,
-      /**
-       * Stores Breakpoints for number of visible slides
-       * on different screen sizes
-       */
-      breakpoints: {
-        600: {
-          visibleSlides: 3
+      swiperOptions: {
+        initialSlide: 0,
+        freeMode: this.$browser.isMobile(),
+        effect: 'slide',
+        navigation: {
+          nextEl: `.related-items .swiper-next`,
+          prevEl: `.related-items .swiper-prev`
         },
-        960: {
-          visibleSlides: 4
-        },
-        1264: {
-          visibleSlides: 6
-        },
-        1904: {
-          visibleSlides: 6
+        slidesPerView: 3,
+        breakpoints: {
+          600: {
+            slidesPerView: 4
+          },
+          960: {
+            slidesPerView: 6
+          },
+          1264: {
+            slidesPerView: 6
+          },
+          1904: {
+            slidesPerView: 8
+          }
         }
-      }
+      } as SwiperOptions,
+      relatedItems: [] as BaseItemDto[],
+      loading: true
     };
   },
   watch: {
@@ -189,42 +168,5 @@ export default Vue.extend({
   bottom: 0.3em;
   left: 0;
   width: 1.25em;
-}
-</style>
-
-<style>
-.related-items .vueperslides__track {
-  position: relative;
-  cursor: default !important;
-}
-
-@media (hover: none) {
-  .related-items .vueperslides__arrows {
-    display: none !important;
-  }
-}
-
-.related-items .vueperslides__arrows {
-  display: flex;
-  position: absolute;
-  top: -2.75em;
-  right: 0;
-  align-items: center;
-}
-
-.related-items .vueperslides__arrow {
-  position: relative;
-  display: inline-flex;
-  transform: none;
-}
-
-.related-items .vueperslides__arrow--prev {
-  margin-right: 0.75em;
-}
-.vueperslides:not(.no-shadow):not(.vueperslides--3d)
-  .vueperslides__parallax-wrapper::after,
-.vueperslides:not(.no-shadow):not(.vueperslides--3d)
-  .vueperslides__parallax-wrapper::before {
-  box-shadow: none;
 }
 </style>
