@@ -1,5 +1,6 @@
 {
   "name": "jellyfin-vue",
+  "author": "Jellyfin Team",
   "version": "0.0.0",
   "private": true,
   "scripts": {

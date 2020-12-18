@@ -32,6 +32,18 @@ const config: NuxtConfig = {
     failedColor: '#FF5252',
     height: '4px'
   },
+  pwa: {
+    meta: {
+      nativeUI: true,
+      appleStatusBarStyle: 'dark',
+      name: 'Jellyfin',
+      theme_color: '#424242'
+    },
+    manifest: {
+      name: 'Jellyfin',
+      background_color: '#101010'
+    }
+  },
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
