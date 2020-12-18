@@ -192,5 +192,7 @@
         "helpTranslate": "Hilf mit Jellyfin in deine Sprache zu Übersetzen"
     },
     "jellyfinLogo": "Jellyfin Logo",
-    "architecture": "Architektur"
+    "architecture": "Architektur",
+    "vueClientVersion": "Vue Clientversion",
+    "serverVersion": "Serverversion"
 }
