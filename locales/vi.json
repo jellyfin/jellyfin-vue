@@ -107,5 +107,94 @@
     },
     "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
     "unableGetServerConfiguration": "Không thể tải cấu hình máy chủ",
-    "rememberMe": "Ghi nhớ tôi"
+    "rememberMe": "Ghi nhớ tôi",
+    "vueClientVersion": "Phiên bản trình khách Vue",
+    "serverVersion": "Phiên bản máy chủ",
+    "settingsSections": {
+        "users": {
+            "name": "Người dùng",
+            "description": "Quản lý người dùng và quyền của họ"
+        },
+        "transcodingAndStreaming": {
+            "name": "Chuyển mã và phát trực tuyến",
+            "description": "Quản lý cách máy chủ này xử lý chuyển mã và truyền trực tuyến tới máy khách"
+        },
+        "subtitles": {
+            "name": "Phụ đề",
+            "description": "Điều chỉnh cách hiển thị phụ đề trên thiết bị này"
+        },
+        "server": {
+            "name": "Máy chủ",
+            "description": "Cấu hình ngôn ngữ và thương hiệu của máy chủ này"
+        },
+        "scheduledTasks": {
+            "name": "Tác vụ đã lên lịch",
+            "description": "Quản lý các tác vụ đã lên lịch chạy trên máy chủ này"
+        },
+        "plugins": {
+            "name": "Plugins",
+            "description": "Thêm và cấu hình tính năng mới cho máy chủ này"
+        },
+        "playback": {
+            "name": "Phát lại",
+            "description": "Sửa phát lại ưa thích của bạn trên thiết bị này"
+        },
+        "notifications": {
+            "name": "Thông báo",
+            "description": "Quản lý và cài đặt thông báo gửi đi bởi máy chủ này"
+        },
+        "networking": {
+            "name": "Mạng",
+            "description": "Quản lý cài đặt mạng của máy chủ này"
+        },
+        "mediaPlayers": {
+            "name": "Trình phát phương tiện",
+            "description": "Cấu hình cách trình phát phương tiện hoạt động cho thiết bị này"
+        },
+        "logs": {
+            "name": "Nhật ký & hoạt động",
+            "description": "Đọc và tìm nhật ký máy chủ và hoạt động người dùng"
+        },
+        "liveTvAndDvr": {
+            "name": "TV Trực Tiếp & DVR",
+            "description": "Quản lý bộ dò TV, hướng dẫn nhà cung cấp dữ liệu và cài đặt DVR"
+        },
+        "libraries": {
+            "name": "Thư viện",
+            "description": "Quản lý thư viện và dữ liệu mô tả"
+        },
+        "home": {
+            "name": "Màn hình trang chủ",
+            "description": "Cấu hình các phần trên trang chủ và bố cục màn hình trang chủ của bạn"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Cấu hình cài đặt và hồ sơ DLNA"
+        },
+        "devices": {
+            "name": "Thiết bị",
+            "description": "Xem và quản lý các thiết bị được kết nối với máy chủ của bạn"
+        },
+        "apiKeys": {
+            "name": "Khóa Api",
+            "description": "Thêm và thu hồi các khóa API để truy cập bên ngoài vào máy chủ của bạn"
+        },
+        "account": {
+            "name": "Tài khoản",
+            "description": "Chỉnh sửa thông tin người dùng của bạn"
+        }
+    },
+    "serverDashboard": "Bảng điều khiển máy chủ",
+    "server": "Máy chủ",
+    "operatingSystem": "Hệ Điều Hành",
+    "links": {
+        "reportAnIssue": "Báo cáo sự cố với ứng dụng khách Vue",
+        "readTheDocumentation": "Đọc tài liệu",
+        "poweredByJellyfin": "Máy chủ này được cung cấp bởi Jellyfin",
+        "helpTranslate": "Giúp dịch Jellyfin sang ngôn ngữ của bạn"
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "failedSettingDisplayPreferences": "Không thể cập nhật tùy chọn hiển thị.",
+    "failedRetrievingDisplayPreferences": "Không thể lấy thông tin tùy chọn hiển thị. Sử dụng giá trị mặc định.",
+    "architecture": "Kiến trúc"
 }
