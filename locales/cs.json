@@ -136,6 +136,50 @@
         "account": {
             "name": "Účet",
             "description": "Upravit informace o uživateli"
+        },
+        "users": {
+            "name": "Uživatelé",
+            "description": "Spravovat uživatele a oprávnění"
+        },
+        "transcodingAndStreaming": {
+            "name": "Překódování a streamování",
+            "description": "Spravovat nastavení překódování a streamovaní klientům"
+        },
+        "subtitles": {
+            "name": "Titulky",
+            "description": "Nastavit vzhled a zobrazení titulků na tomto zařízení"
+        },
+        "server": {
+            "name": "Server",
+            "description": "Nastavit jazyk a branding serveru"
+        },
+        "scheduledTasks": {
+            "name": "Naplánované úlohy",
+            "description": "Spravovat naplánované úlohy probíhající na tomto serveru"
+        },
+        "plugins": {
+            "name": "Zásuvné moduly",
+            "description": "Přidat a nastavit nové funkce pro tento server"
+        },
+        "playback": {
+            "name": "Přehrávání",
+            "description": "Upravit nastavení přehrávání pro toto zařízení"
+        },
+        "notifications": {
+            "name": "Oznámení",
+            "description": "Spravovat a nastavit oznámení odesílaná tímto serverem"
+        },
+        "networking": {
+            "name": "Nastavení sítě",
+            "description": "Spravovat nastavení sítě tohoto serveru"
+        },
+        "mediaPlayers": {
+            "name": "Přehrávače médií",
+            "description": "Nastavit chování přehrávačů médií pro toto zařízení"
+        },
+        "logs": {
+            "name": "Záznamy a aktivita",
+            "description": "Zobrazit a hledat v záznamech serveru a uživatelské aktivitě"
         }
     },
     "serverDashboard": "Nástěnka",
@@ -150,5 +194,7 @@
     "jellyfinLogo": "Logo Jellyfin",
     "failedSettingDisplayPreferences": "Nelze aktualizovat nastavení zobrazení.",
     "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
-    "architecture": "Architektura"
+    "architecture": "Architektura",
+    "vueClientVersion": "Verze klienta Vue",
+    "serverVersion": "Verze serveru"
 }
