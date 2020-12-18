@@ -36,6 +36,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Route } from 'vue-router';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import ErrorEvent from 'shaka-player';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import modalHelper from '~/mixins/modalHelper';
 import imageHelper from '~/mixins/imageHelper';
@@ -65,7 +68,9 @@ export default Vue.extend({
         throw new Error('Item not found');
       }
 
-      this.poster = this.getImageUrlForElement(this.item, ImageType.Backdrop);
+      this.poster = this.getImageUrlForElement(ImageType.Backdrop, {
+        itemId: this.$route.params.itemId
+      });
     } catch (error) {
       this.$nuxt.error({
         statusCode: 404,
@@ -74,7 +79,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    handleShakaPlayerError(error: any) {
+    handleShakaPlayerError(error: ErrorEvent) {
       if (error?.detail?.severity === 1) {
         // This error is recoverable, ignore for now
       } else {

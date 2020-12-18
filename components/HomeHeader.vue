@@ -74,12 +74,10 @@
                   tracks
                   runtime
                   rating
-                  class="my-2"
+                  class="mt-2"
                 />
-                <p
-                  class="d-none d-xl-block overview"
-                  v-html="getOverview(item)"
-                />
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <p class="mt-2" v-html="getOverview(item)" />
                 <v-btn
                   class="mr-2"
                   color="primary"
@@ -153,23 +151,33 @@ export default Vue.extend({
   },
   methods: {
     getBackdrop(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.SeriesId
+        });
       } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item?.AlbumArtists?.[0].Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.AlbumArtists?.[0].Id
+        });
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.Id
+        });
       }
     },
     getLogo(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
-      if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
-      } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.ParentLogoItemId}/Images/Logo`;
+      if (item.Type === 'Episode' && item.SeriesId) {
+        return this.getImageUrlForElement(ImageType.Logo, {
+          itemId: item.SeriesId
+        });
+      } else if (item.ParentLogoItemId) {
+        return this.getImageUrlForElement(ImageType.Logo, {
+          itemId: item.ParentLogoItemId as string
+        });
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
+        return this.getImageUrlForElement(ImageType.Logo, {
+          item
+        });
       }
     },
     getOverview(item: BaseItemDto): string {
@@ -205,7 +213,7 @@ export default Vue.extend({
 }
 .progressbar {
   position: absolute;
-  z-index: 20;
+  z-index: 5;
 }
 .swiper {
   margin-top: -64px;
@@ -220,7 +228,7 @@ export default Vue.extend({
   box-sizing: border-box;
   mask-image: linear-gradient(
       180deg,
-      rgba(18, 18, 18, 1) 87%,
+      rgba(18, 18, 18, 1) 45%,
       rgba(18, 18, 18, 0) 100%
     ),
     linear-gradient(90deg, rgba(18, 18, 18, 1) 27%, rgba(18, 18, 18, 0) 47%);

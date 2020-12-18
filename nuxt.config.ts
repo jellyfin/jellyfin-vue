@@ -32,6 +32,18 @@ const config: NuxtConfig = {
     failedColor: '#FF5252',
     height: '4px'
   },
+  pwa: {
+    meta: {
+      nativeUI: true,
+      appleStatusBarStyle: 'dark',
+      name: 'Jellyfin',
+      theme_color: '#424242'
+    },
+    manifest: {
+      name: 'Jellyfin',
+      background_color: '#101010'
+    }
+  },
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -158,7 +170,8 @@ const config: NuxtConfig = {
     defaultLocale: 'en',
     vueI18n: {
       fallbackLocale: 'en'
-    }
+    },
+    detectBrowserLanguage: { useCookie: false }
   },
   /*
    ** vuetify module configuration
@@ -220,6 +233,7 @@ const config: NuxtConfig = {
     },
     babel: {
       // envName: server, client, modern
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       presets(): any {
         return [
           [

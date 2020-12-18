@@ -39,7 +39,6 @@ export default Vue.extend({
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: var(--v-background-base);
     opacity: 0.75;
   }
 }

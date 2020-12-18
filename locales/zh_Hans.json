@@ -94,5 +94,15 @@
     "nextUp": "下一步",
     "libraries": "媒体库",
     "latestLibrary": "最新的 {libraryName}",
-    "darkModeToggle": "切换深色模式"
+    "darkModeToggle": "切换深色模式",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "视频播放器遇到了一个不可恢复的错误。",
+            "errorCode": "错误代码：{errorCode}"
+        },
+        "anErrorHappened": "发生了一个错误"
+    },
+    "buttons": {
+        "ok": "确认"
+    }
 }

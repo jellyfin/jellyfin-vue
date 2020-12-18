@@ -32,7 +32,7 @@
     "upNext": "Volgende",
     "username": "Gebruikersnaam",
     "usernameRequired": "Gebruikersnaam is verplicht",
-    "youMayAlsoLike": "",
+    "youMayAlsoLike": "Dit vind je misschien ook leuk",
     "genres": "Genres",
     "years": "Jaren",
     "videoTypes": "Video Types",
@@ -82,5 +82,29 @@
     "validation": {
         "required": "Dit veld is vereist",
         "mustBeUrl": "Dit veld moet een geldige URL zijn"
-    }
+    },
+    "failedToRefreshItems": "Het vernieuwen van items is mislukt",
+    "unliked": "Leuk gevonden ongedaan",
+    "unableGetRelated": "Kan gerelateerde items niet ophalen",
+    "sortByType": "Sorteer op {type}",
+    "shuffleAll": "Speel af in willekeurige volgorde",
+    "numberTracks": "{number} tracks",
+    "nextUp": "Volgende",
+    "liked": "Vond ik leuk",
+    "latestLibrary": "Nieuwste {libraryName}",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Er is een onherstelbare fout opgetreden in de videospeler.",
+            "errorCode": "Foutcode: {errorCode}"
+        },
+        "anErrorHappened": "Er is een fout opgetreden"
+    },
+    "disc": "Schijf {discNumber}",
+    "darkModeToggle": "Schakel donkere modus",
+    "buttons": {
+        "ok": "Ok"
+    },
+    "rememberMe": "Onthoud mij",
+    "unableGetPublicUsers": "Gebruikers laden is mislukt",
+    "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt"
 }

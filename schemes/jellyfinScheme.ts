@@ -32,6 +32,15 @@ export default class JellyfinScheme {
     this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', false);
   }
 
+  _setRememberMe(value: boolean): void {
+    // Sets the remember me key which is used to relogin someone
+    this.$auth.$storage.setUniversal('rememberMe', value);
+  }
+
+  _getRememberMe(): boolean {
+    return this.$auth.$storage.getUniversal('rememberMe');
+  }
+
   mounted(): Promise<never> {
     const token = this.$auth.syncToken(this.name);
     this._setToken(token);
@@ -41,10 +50,12 @@ export default class JellyfinScheme {
 
   async login({
     username,
-    password
+    password,
+    rememberMe
   }: {
     username: string;
     password: string;
+    rememberMe: boolean;
   }): Promise<AxiosResponse<AuthenticationResult> | void> {
     // Ditch any leftover local tokens before attempting to log in
     await this.$auth.reset();
@@ -75,8 +86,14 @@ export default class JellyfinScheme {
       this.$auth.setToken(this.name, userToken);
       this._setToken(userToken);
 
+      // Sets the remember me to true in order to first fetch the user once
+      this._setRememberMe(true);
+
       // Fetch the user data
       await this.fetchUser();
+
+      // Set the remember me value
+      this._setRememberMe(rememberMe);
 
       return authenticateResponse;
     } else {
@@ -98,13 +115,20 @@ export default class JellyfinScheme {
       return;
     }
 
+    if (!this._getRememberMe()) {
+      await this.logout();
+      return;
+    }
+
     // Fetch the user, then set it in Nuxt Auth
     const user = (await this.$auth.ctx.app.$api.user.getCurrentUser()).data;
     this.$auth.setUser(user);
+    await this.$auth.ctx.app.store.dispatch('displayPreferences/initState');
   }
 
   async logout(): Promise<never> {
     await this.$auth.ctx.app.$api.session.reportSessionEnded();
+    this.$auth.ctx.app.store.dispatch('displayPreferences/resetState');
 
     // Reset everything
     return this.$auth.reset();
@@ -112,6 +136,7 @@ export default class JellyfinScheme {
 
   reset(): Promise<void> {
     this._clearToken();
+    this._setRememberMe(false);
 
     this.$auth.setUser(undefined);
     this.$auth.setToken(this.name, undefined);

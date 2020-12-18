@@ -18,7 +18,7 @@
     <v-list dense>
       <v-list-item
         v-for="(item, index) in menuItems"
-        :key="index"
+        :key="`bottomMenuItems-${index}`"
         @click="item.action"
       >
         <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -34,8 +34,12 @@ import { mapActions } from 'vuex';
 export default Vue.extend({
   data() {
     return {
-      avatarSize: 48,
-      menuItems: [
+      avatarSize: 48
+    };
+  },
+  computed: {
+    menuItems() {
+      return [
         {
           title: this.$t('logout'),
           action: () => {
@@ -44,10 +48,8 @@ export default Vue.extend({
             this.logoutUser();
           }
         }
-      ]
-    };
-  },
-  computed: {
+      ];
+    },
     userImage(): string {
       if (this.$auth.user?.PrimaryImageTag) {
         return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
@@ -57,7 +59,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser']),
+    ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
       this.$auth.logout();

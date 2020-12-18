@@ -30,7 +30,7 @@
         </v-list-item>
         <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
-          v-for="library in libraries"
+          v-for="library in getNavigationDrawerItems"
           :key="library.Id"
           :to="library.to"
           router
@@ -47,10 +47,7 @@
       <template #append>
         <v-list>
           <v-list-item>
-            <v-switch
-              v-model="$vuetify.theme.dark"
-              :label="$t('darkModeToggle')"
-            ></v-switch>
+            <dark-mode-toggle />
           </v-list-item>
           <v-list-item
             v-for="(item, i) in configItems"
@@ -113,7 +110,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -124,6 +121,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapState('page', ['opaqueAppBar']),
+    ...mapGetters('userViews', ['getNavigationDrawerItems']),
     items() {
       return [
         {
@@ -132,9 +130,6 @@ export default Vue.extend({
           to: '/'
         }
       ];
-    },
-    libraries() {
-      return this.$store.getters['userViews/getNavigationDrawerItems'];
     },
     configItems() {
       return [
@@ -147,19 +142,17 @@ export default Vue.extend({
     }
   },
   beforeMount() {
+    this.callAllCallbacks();
     this.refreshUserViews();
   },
   methods: {
-    ...mapActions('userViews', ['refreshUserViews'])
+    ...mapActions('userViews', ['refreshUserViews']),
+    ...mapActions('displayPreferences', ['callAllCallbacks'])
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.v-application {
-  background-color: var(--v-background-base) !important;
-}
-
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }
