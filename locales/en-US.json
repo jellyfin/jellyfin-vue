@@ -105,6 +105,5 @@
   "years": "Years",
   "youMayAlsoLike": "You may also like",
   "unableGetServerConfiguration": "Unable to get server configuration",
-  "unableGetPublicUsers": "Unable to get users",
-  "unableToLoadImage": "Unable to load an image"
+  "unableGetPublicUsers": "Unable to get users"
 }

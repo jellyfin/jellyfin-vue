@@ -2,7 +2,7 @@
   <div v-if="isValidTag()" ref="img" class="absolute">
     <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
-        v-if="isValidBlurhash()"
+        v-if="canBeBlurhashed()"
         key="canvas"
         :hash="getHash()"
         :width="width"
@@ -28,7 +28,6 @@ import {
   BaseItemDtoImageBlurHashes,
   ImageType
 } from '@jellyfin/client-axios';
-import { mapActions } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
 
 const excludedTypes = [ImageType.Logo];
@@ -72,7 +71,6 @@ export default Vue.extend({
     });
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     isValidTag(): boolean {
       if (
         (this.item?.ImageTags &&
@@ -90,7 +88,7 @@ export default Vue.extend({
         return false;
       }
     },
-    isValidBlurhash(): boolean {
+    canBeBlurhashed(): boolean {
       if (
         excludedTypes.includes(this.type) ||
         (this.item?.ImageBlurHashes as Array<never>).length === 0
@@ -133,10 +131,6 @@ export default Vue.extend({
       }
     },
     onError(): void {
-      this.pushSnackbarMessage({
-        message: this.$t('unableToLoadImage'),
-        color: 'error'
-      });
       this.$emit('error');
     }
   }

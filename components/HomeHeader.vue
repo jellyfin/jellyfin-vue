@@ -1,6 +1,6 @@
 <template>
   <swiper
-    v-if="items.length > 0 && !$vuetify.breakpoint.mobile && loaded"
+    v-if="items.length > 0 && !$vuetify.breakpoint.mobile && loading"
     ref="homeSwiper"
     class="swiper"
     :options="swiperOptions"
@@ -113,7 +113,7 @@ export default Vue.extend({
       reloadSentinel: 0,
       pages: 10,
       relatedItems: {} as { [k: number]: BaseItemDto },
-      loaded: false,
+      loading: false,
       swiperOptions: {
         autoplay: {
           delay: 20000
@@ -138,6 +138,9 @@ export default Vue.extend({
       })
     ).data;
 
+    // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
+    // for the parent items. Revisit this once proper changes are done.
+
     for (const [key, i] of this.items.entries()) {
       let id: string;
       if (i.Type === 'Episode' && i.SeriesId) {
@@ -159,11 +162,15 @@ export default Vue.extend({
 
       this.relatedItems[key] = itemData;
     }
-    this.loaded = true;
+    this.loading = true;
   },
   methods: {
     getRelatedItem(item: BaseItemDto): BaseItemDto {
-      return this.relatedItems[this.items.indexOf(item)];
+      const rItem = this.relatedItems[this.items.indexOf(item)];
+      if (!rItem) {
+        return item;
+      }
+      return rItem;
     },
     getOverview(item: BaseItemDto): string {
       if (item.Overview) {
@@ -185,7 +192,7 @@ export default Vue.extend({
         this.forceReload();
       }
     },
-    // Vue-awesome-swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
+    // HACK: Vue-awesome-swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
     // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
     // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
     // we force a BlurhashImage reload to fix this by updating it's key.
