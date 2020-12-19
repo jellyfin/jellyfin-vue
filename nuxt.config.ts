@@ -190,7 +190,7 @@ const config: NuxtConfig = {
           primary: '#00A4DC',
           secondary: '#424242',
           accent: '#FF4081',
-          info: '#2196F3',
+          info: '#0099CC',
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
@@ -202,7 +202,7 @@ const config: NuxtConfig = {
           primary: '#00A4DC',
           secondary: '#424242',
           accent: '#FF4081',
-          info: '#2196F3',
+          info: '#33b5e5',
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
@@ -219,8 +219,6 @@ const config: NuxtConfig = {
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
-
-   ** Build perfs options come from this https://github.com/nuxt/nuxt.js/issues/5131#issuecomment-468231314
    */
   build: {
     // @ts-ignore -- Undocumented options

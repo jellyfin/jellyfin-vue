@@ -70,7 +70,8 @@
             <v-list-item
               v-for="userItem in userItems"
               :key="userItem.name"
-              disabled
+              nuxt
+              :to="userItem.link"
             >
               <v-list-item-avatar>
                 <v-icon v-text="userItem.icon" />
@@ -86,14 +87,14 @@
           </v-list-item-group>
         </v-list>
         <!-- Administrator settings -->
-        <v-list
-          v-if="$auth.user.Policy.IsAdministrator"
-          two-line
-          class="mb-4"
-          disabled
-        >
+        <v-list v-if="$auth.user.Policy.IsAdministrator" two-line class="mb-4">
           <v-list-item-group>
-            <v-list-item v-for="adminItem in adminItems" :key="adminItem.name">
+            <v-list-item
+              v-for="adminItem in adminItems"
+              :key="adminItem.name"
+              nuxt
+              :to="adminItem.link"
+            >
               <v-list-item-avatar>
                 <v-icon v-text="adminItem.icon" />
               </v-list-item-avatar>
@@ -220,7 +221,8 @@ export default Vue.extend({
         {
           icon: 'mdi-text-box',
           name: this.$t('settingsSections.logs.name'),
-          description: this.$t('settingsSections.logs.description')
+          description: this.$t('settingsSections.logs.description'),
+          link: 'settings/logsAndActivity'
         }
       ]
     };

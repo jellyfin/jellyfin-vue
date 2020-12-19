@@ -1,4 +1,5 @@
 {
+  "activity": "Activity",
   "actors": "Actors",
   "albums": "Albums",
   "alphabetically": "Alphabetically",
@@ -31,7 +32,6 @@
       "videoPlayerError": "The video player encountered an unrecoverable error."
     }
   },
-  "episodeNumber": "Episode {episodeNumber}",
   "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using defaults.",
   "failedSettingDisplayPreferences": "Unable to update display preferences.",
   "failedToRefreshItems": "Failed to refresh items",
@@ -59,6 +59,7 @@
   "login": "Login",
   "loginAs": "Login as {name}",
   "logout": "Logout",
+  "logs": "Logs",
   "manualLogin": "Manual login",
   "more": "More",
   "moreLikeArtist": "More like {artist}",
@@ -89,6 +90,7 @@
   "serverAddressRequired": "Server address is required",
   "serverDashboard": "Server dashboard",
   "serverNotFound": "Server not found",
+  "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
   "settingsSections": {
@@ -176,7 +178,9 @@
   "themeSong": "Theme Song",
   "themeVideo": "Theme Video",
   "trailer": "Trailer",
+  "unableGetPublicUsers": "Unable to get users",
   "unableGetRelated": "Unable to get related items",
+  "unableGetServerConfiguration": "Unable to get server configuration",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
   "unliked": "Unliked",
@@ -188,12 +192,9 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
-  "serverVersion": "Server version",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "vueClientVersion": "Vue client version",
   "years": "Years",
-  "youMayAlsoLike": "You may also like",
-  "unableGetServerConfiguration": "Unable to get server configuration",
-  "unableGetPublicUsers": "Unable to get users"
+  "youMayAlsoLike": "You may also like"
 }
