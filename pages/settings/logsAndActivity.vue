@@ -2,7 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="12" :offset-md="1" md="5" class="pt-0 pb-4">
-        <v-list two-line class="mb-2">
+        <h2 class="text-h6 mb-2">{{ $t('logs') }}</h2>
+        <v-list v-if="logFiles && logFiles.length > 0" two-line class="mb-2">
           <v-list-item-group>
             <v-list-item
               v-for="file in logFiles"
@@ -26,15 +27,24 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
+        <v-card v-else>
+          <v-card-text>{{ $t('noResultsFound') }}</v-card-text>
+        </v-card>
       </v-col>
       <v-col cols="12" md="5" class="pt-0 pb-4">
-        <v-list two-line class="mb-2" disabled>
+        <h2 class="text-h6 mb-2">{{ $t('activity') }}</h2>
+        <v-list
+          v-if="activityList && activityList.length > 0"
+          two-line
+          class="mb-2"
+          disabled
+        >
           <v-list-item-group>
             <v-list-item v-for="activity in activityList" :key="activity.Id">
               <v-list-item-avatar
                 :color="getColorFromSeverity(activity.Severity)"
               >
-                <v-icon>mdi-shield-account-outline</v-icon>
+                <v-icon dark v-text="getIconFromType(activity.Type)"></v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title v-text="activity.Name" />
@@ -49,6 +59,9 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
+        <v-card v-else>
+          <v-card-text>{{ $t('noResultsFound') }}</v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -77,7 +90,9 @@ export default Vue.extend({
   },
   async beforeMount() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
-    // calculating date of 7 days ago as min date to get activity logs
+
+    // Only fetch the activity for the last 7 days
+    // TODO: Add this as a filter
     const minDate = new Date();
     minDate.setDate(minDate.getDate() - 7);
     this.activityList =
@@ -125,13 +140,27 @@ export default Vue.extend({
           );
       }
     },
+    getIconFromType(type: string): string {
+      switch (type) {
+        case 'SessionStarted':
+          return 'mdi-login';
+        case 'SessionEnded':
+          return 'mdi-logout';
+        case 'UserPasswordChanged':
+          return 'mdi-lock';
+        case 'VideoPlayback':
+          return 'mdi-play';
+        case 'VideoPlaybackStopped':
+          return 'mdi-stop';
+        default:
+          return 'mdi-help';
+      }
+    },
     getFormattedActivityDate(date: Date): string {
-      const today = this.$dateFns.endOfToday();
-      const day = this.$dateFns.formatRelative(
+      return this.$dateFns.formatRelative(
         this.$dateFns.parseJSON(date),
-        today
+        new Date()
       );
-      return day;
     },
     getFormattedLogDate(date: Date): string {
       return this.$dateFns.format(date, 'Ppp');
