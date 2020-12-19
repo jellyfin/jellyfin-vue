@@ -112,10 +112,11 @@
 import { stringify } from 'qs';
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import { AppState } from '~/store';
 
 interface WebSocketMessage {
   MessageType: string;
-  Data?: never;
+  Data?: Record<string, never>;
 }
 
 export default Vue.extend({
@@ -127,8 +128,9 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('page', ['opaqueAppBar']),
-    ...mapGetters('userViews', ['getNavigationDrawerItems']),
+    ...mapState<AppState>({
+      opaqueAppBar: (state: AppState) => state.page.opaqueAppBar
+    }),
     items() {
       return [
         {
@@ -171,25 +173,25 @@ export default Vue.extend({
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('displayPreferences', ['callAllCallbacks']),
-    handleKeepAlive() {
+    ...mapGetters('userViews', ['getNavigationDrawerItems']),
+    handleKeepAlive(): void {
       this.$store.subscribe((mutation, state) => {
         if (
           mutation.type === 'SOCKET_ONMESSAGE' &&
           state.socket.message.MessageType === 'ForceKeepAlive'
         ) {
           this.sendWebSocketMessage('KeepAlive');
-          this.keepAliveInterval = setInterval(() => {
+          this.keepAliveInterval = window.setInterval(() => {
             this.sendWebSocketMessage('KeepAlive');
           }, state.socket.message.Data * 1000 * 0.5);
         }
       });
     },
-    sendWebSocketMessage(name: string, data: Record<string, never>) {
-      const msg: WebSocketMessage = { MessageType: name };
-
-      if (data) {
-        msg.Data = data;
-      }
+    sendWebSocketMessage(name: string, data?: Record<string, never>): void {
+      const msg: WebSocketMessage = {
+        MessageType: name,
+        ...(data ? { Data: data } : {})
+      };
 
       this.$store.state.socket.instance.send(JSON.stringify(msg));
     }
