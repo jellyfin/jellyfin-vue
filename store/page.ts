@@ -7,7 +7,7 @@ export interface PageState {
 
 export const state = (): PageState => ({
   title: 'Jellyfin',
-  opaqueAppBar: false
+  opaqueAppBar: true
 });
 
 interface TitleMutationPayload {

@@ -66,6 +66,7 @@
                 rating
                 class="mt-2"
               />
+              <!-- eslint-disable-next-line vue/no-v-html -->
               <p class="mt-2" v-html="getOverview(item)" />
               <v-btn
                 class="mr-2"
@@ -132,23 +133,33 @@ export default Vue.extend({
   },
   methods: {
     getBackdrop(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
       if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.SeriesId
+        });
       } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item?.AlbumArtists?.[0].Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.AlbumArtists?.[0].Id
+        });
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Backdrop`;
+        return this.getImageUrlForElement(ImageType.Backdrop, {
+          itemId: item.Id
+        });
       }
     },
     getLogo(item: BaseItemDto): string {
-      // TODO: Improve the image mixin and move this there
-      if (item.Type === 'Episode') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.SeriesId}/Images/Logo`;
-      } else if (item.Type === 'MusicAlbum') {
-        return `${this.$axios.defaults.baseURL}/Items/${item.ParentLogoItemId}/Images/Logo`;
+      if (item.Type === 'Episode' && item.SeriesId) {
+        return this.getImageUrlForElement(ImageType.Logo, {
+          itemId: item.SeriesId
+        });
+      } else if (item.ParentLogoItemId) {
+        return this.getImageUrlForElement(ImageType.Logo, {
+          itemId: item.ParentLogoItemId as string
+        });
       } else {
-        return `${this.$axios.defaults.baseURL}/Items/${item.Id}/Images/Logo`;
+        return this.getImageUrlForElement(ImageType.Logo, {
+          item
+        });
       }
     },
     getOverview(item: BaseItemDto): string {

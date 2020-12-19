@@ -4,9 +4,10 @@ import { PageState } from './page';
 import { SnackbarState } from './snackbar';
 import { UserState } from './user';
 import { UserViewsState } from './userViews';
-import { HomeSection } from './homeSection';
+import { HomeSectionState } from './homeSection';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
+import { DisplayPreferencesState } from './displayPreferences';
 
 export interface AppState {
   tvShows: TvShowsState;
@@ -15,7 +16,8 @@ export interface AppState {
   snackBar: SnackbarState;
   user: UserState;
   userViews: UserViewsState;
-  homeSection: HomeSection;
+  homeSection: HomeSectionState;
   backdrop: BackdropState;
   device: DeviceState;
+  displayPreferences: DisplayPreferencesState;
 }

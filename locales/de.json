@@ -94,5 +94,107 @@
     "nextUp": "Als nächstes",
     "libraries": "Bibliotheken",
     "latestLibrary": "Neueste {libraryName}",
-    "darkModeToggle": "Nachtmodus umschalten"
+    "darkModeToggle": "Nachtmodus umschalten",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt.",
+            "errorCode": "Fehlercode: {errorCode}"
+        },
+        "anErrorHappened": "Es ist ein Fehler passiert"
+    },
+    "buttons": {
+        "ok": "Ok"
+    },
+    "unableGetPublicUsers": "Benutzer können nicht abgerufen werden",
+    "unableGetServerConfiguration": "Serverkonfiguration kann nicht abgerufen werden",
+    "rememberMe": "Angemeldet bleiben",
+    "settingsSections": {
+        "users": {
+            "name": "Benutzer",
+            "description": "Bearbeite Benutzer und Erlaubnisse"
+        },
+        "transcodingAndStreaming": {
+            "name": "Transkodierung & Streaming",
+            "description": "Bearbeite wie sich der Server bei Transkodierungen und Streaming zu Clients verhält"
+        },
+        "subtitles": {
+            "name": "Untertitel",
+            "description": "Steuere wie sich Untertitel auf anzeigenden Geräten verhält"
+        },
+        "server": {
+            "name": "Server",
+            "description": "Bearbeite die Sprache und Kennzeichnung diesen Servers"
+        },
+        "scheduledTasks": {
+            "name": "Zeitplan",
+            "description": "Bearbeite den Zeitplan diesen Servers"
+        },
+        "plugins": {
+            "name": "Erweiterungen",
+            "description": "Hinzufügen und Bearbeiten von neuen Funktionen diesen Servers"
+        },
+        "playback": {
+            "name": "Wiedergabe",
+            "description": "Bearbeite Wiedergabeeinstellungen für dieses Gerät"
+        },
+        "notifications": {
+            "name": "Benachrichtigungen",
+            "description": "Bearbeite Benachrichtigungen welche von diesem Server gesendet werden"
+        },
+        "networking": {
+            "name": "Netzwerk",
+            "description": "Bearbeite die Netzwerkeinstellungen diesen Servers"
+        },
+        "mediaPlayers": {
+            "name": "Mediaplayer",
+            "description": "Konfiguriere wie sich Mediaplayer zu diesem Geräte verhalten sollen"
+        },
+        "logs": {
+            "name": "Logs & Aktivitäten",
+            "description": "Durchsuche Serverlogs und Benutzeraktivitäten"
+        },
+        "liveTvAndDvr": {
+            "description": "Bearbeite TV-Tuner, EPG-Datenprovider und Aufnahmeeinstellungen",
+            "name": "Live-TV & Aufnahmen"
+        },
+        "libraries": {
+            "name": "Bibliotheken",
+            "description": "Bearbeite Bibliotheken und ihre Metadaten"
+        },
+        "home": {
+            "name": "Homescreen",
+            "description": "Konfiguriere Sektionen und Sortierung vom Homescreen"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Konfiguriere DLNA Einstellungen und Profile"
+        },
+        "devices": {
+            "name": "Geräte",
+            "description": "Geräte die mit deinem Server verbunden sind"
+        },
+        "apiKeys": {
+            "name": "API-Schlüssel",
+            "description": "Hinzufügen oder zurückziehen von API-Schlüssel für externen Zugriff auf deinen Server"
+        },
+        "account": {
+            "name": "Benutzer",
+            "description": "Bearbeite deine Benutzerinformationen"
+        }
+    },
+    "serverDashboard": "Server Dashboard",
+    "server": "Server",
+    "operatingSystem": "Betriebssystem",
+    "links": {
+        "reportAnIssue": "Melde einen Fehler im Vue Client",
+        "readTheDocumentation": "Lese die Dokumentation",
+        "poweredByJellyfin": "Dieser Server läuft mit Jellyfin",
+        "helpTranslate": "Hilf mit Jellyfin in deine Sprache zu Übersetzen"
+    },
+    "jellyfinLogo": "Jellyfin Logo",
+    "architecture": "Architektur",
+    "vueClientVersion": "Vue Clientversion",
+    "serverVersion": "Serverversion",
+    "failedSettingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu ändern.",
+    "failedRetrievingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu lesen. Standard wird verwendet."
 }
