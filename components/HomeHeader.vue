@@ -1,9 +1,5 @@
 <template>
-  <swiper
-    v-if="items.length > 0 && !$vuetify.breakpoint.mobile"
-    class="swiper"
-    :options="swiperOptions"
-  >
+  <swiper v-if="items.length > 0" class="swiper" :options="swiperOptions">
     <swiper-slide v-for="item in items" :key="item.Id">
       <div
         class="slide-backdrop"
@@ -11,17 +7,19 @@
           backgroundImage: `url('${getBackdrop(item)}')`
         }"
       />
-      <div class="slide-backdrop-overlay" />
       <div class="slide-content">
-        <v-container class="mx-10 mt-5">
+        <v-container
+          fill-height
+          class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-md-start"
+        >
           <v-row>
-            <v-col cols="5">
+            <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
               <v-img
                 v-if="
                   item.ParentLogoImageTag ||
                   (item.ImageTags && item.ImageTags.Logo)
                 "
-                max-width="50%"
+                :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
                 aspect-ratio="2.58"
                 contain
                 :src="getLogo(item)"
@@ -46,7 +44,10 @@
                 {{ item.SeasonName }}
                 {{ $t('episodeNumber', { episodeNumber: item.IndexNumber }) }}
               </p>
-              <h2 v-else-if="item.Taglines" class="text-truncate">
+              <h2
+                v-else-if="item.Taglines && item.Taglines.length > 0"
+                class="text-truncate"
+              >
                 {{ item.Taglines[0] }}
               </h2>
               <h2 v-if="item.Type === 'Episode'" class="text-h4 text-truncate">
@@ -64,10 +65,8 @@
                 tracks
                 runtime
                 rating
-                class="mt-2"
+                class="my-2"
               />
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <p class="mt-2" v-html="getOverview(item)" />
               <v-btn
                 class="mr-2"
                 color="primary"
@@ -91,7 +90,7 @@
         </v-container>
       </div>
     </swiper-slide>
-    <div slot="pagination" class="swiper-pagination"></div>
+    <div slot="pagination" class="d-none d-md-block swiper-pagination"></div>
   </swiper>
 </template>
 
@@ -174,45 +173,57 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.swiper {
-  margin-top: -64px;
-  margin-bottom: -128px !important;
-}
-
+@import '~vuetify/src/styles/styles.sass';
 .slide-backdrop {
-  padding-bottom: 46.25%;
-  background-position: right center;
+  padding-bottom: 80%;
+  background-position: center top;
   background-size: contain;
   background-repeat: no-repeat;
   box-sizing: border-box;
   mask-image: linear-gradient(
-      180deg,
-      rgba(18, 18, 18, 1) 60%,
-      rgba(18, 18, 18, 0) 100%
-    ),
-    linear-gradient(90deg, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0) 70%);
-  mask-composite: subtract;
-  -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
+    180deg,
+    rgba(18, 18, 18, 0.75) 0%,
+    rgba(18, 18, 18, 0) 70%
+  );
   z-index: 1;
 }
 
-.slide-backdrop-overlay {
+.slide-content {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 2;
 }
 
-.slide-content {
-  position: absolute;
-  top: 56px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  box-sizing: border-box;
-  z-index: 2;
+@media #{map-get($display-breakpoints, 'sm-and-up')} {
+  .slide-backdrop {
+    padding-bottom: 46.25%;
+    background-position: right center;
+    mask-image: linear-gradient(
+        180deg,
+        rgba(18, 18, 18, 1) 60%,
+        rgba(18, 18, 18, 0) 100%
+      ),
+      linear-gradient(90deg, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0) 70%);
+    mask-composite: subtract;
+    -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
+  }
+
+  .swiper {
+    margin-top: -64px;
+  }
+
+  .slide-content {
+    top: 56px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .swiper {
+    margin-bottom: -128px !important;
+  }
 }
 </style>

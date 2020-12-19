@@ -71,7 +71,7 @@
       class="pl-2 pr-2"
       flat
       app
-      :class="{ opaque: opaqueAppBar }"
+      :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
     >
       <v-app-bar-nav-icon
         v-if="$vuetify.breakpoint.mobile"
