@@ -24,7 +24,7 @@ declare module 'vue/types/vue' {
 }
 
 const nativeSocketPlugin: Plugin = ({ store }) => {
-  Vue.use(VueNativeSock, 'ws://localhost', {
+  Vue.use(VueNativeSock, 'ws://127.0.0.1', {
     connectManually: true,
     reconnection: true,
     reconnectionAttempts: 5,
