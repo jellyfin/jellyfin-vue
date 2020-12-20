@@ -47,7 +47,7 @@
                 <v-icon dark v-text="getIconFromType(activity.Type)"></v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title v-text="activity.Name" />
+                <v-list-item-title v-text="decodeHTML(activity.Name)" />
                 <v-list-item-subtitle v-text="activity.ShortOverview" />
               </v-list-item-content>
               <v-list-item-action>
@@ -72,6 +72,7 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
+import { decodeHTML } from 'entities';
 import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
@@ -173,7 +174,8 @@ export default Vue.extend({
         '&api_key=' +
         this.$store.state.user.accessToken
       );
-    }
+    },
+    decodeHTML
   }
 });
 </script>
