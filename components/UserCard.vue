@@ -10,7 +10,7 @@
           v-if="!user.PrimaryImageTag"
           class="empty-picture d-flex align-center justify-center"
         >
-          <v-icon size="96"> mdi-account </v-icon>
+          <v-icon dark size="96"> mdi-account </v-icon>
         </div>
       </v-responsive>
     </div>
