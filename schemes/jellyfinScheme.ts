@@ -15,6 +15,7 @@ export default class JellyfinScheme {
   $auth: NuxtAuth;
   name = 'jellyfin';
   options: Record<string, unknown>;
+  rawToken: '';
 
   constructor(auth: NuxtAuth, options: Record<string, unknown>) {
     this.$auth = auth;
@@ -85,6 +86,10 @@ export default class JellyfinScheme {
       const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
       this.$auth.setToken(this.name, userToken);
       this._setToken(userToken);
+      this.$auth.ctx.app.store.commit('user/SET_USER', {
+        id: authenticateResponse.data.User?.Id,
+        accessToken: authenticateResponse.data.AccessToken
+      });
 
       // Sets the remember me to true in order to first fetch the user once
       this._setRememberMe(true);
@@ -122,6 +127,7 @@ export default class JellyfinScheme {
 
     // Fetch the user, then set it in Nuxt Auth
     const user = (await this.$auth.ctx.app.$api.user.getCurrentUser()).data;
+
     this.$auth.setUser(user);
     await this.$auth.ctx.app.store.dispatch('displayPreferences/initState');
   }

@@ -74,6 +74,7 @@ const config: NuxtConfig = {
     // General
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
+    'plugins/nativeWebsocketPlugin.ts',
     // Components
     'plugins/components/swiper.ts',
     'plugins/components/vueperSlides.ts',

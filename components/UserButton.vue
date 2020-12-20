@@ -62,6 +62,7 @@ export default Vue.extend({
     ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
+      this.$disconnect();
       this.$auth.logout();
       this.clearDeviceProfile();
       this.clearUser();
