@@ -94,5 +94,53 @@
     "nextUp": "À suivre",
     "libraries": "Médiathèques",
     "latestLibrary": "Derniers {libraryName}",
-    "darkModeToggle": "Activer le mode sombre"
+    "darkModeToggle": "Activer le mode sombre",
+    "settingsSections": {
+        "liveTvAndDvr": {
+            "name": "TV en direct et enregistrements"
+        },
+        "libraries": {
+            "name": "Médiathèques",
+            "description": "Gérer les médiathèques et leurs métadonnées"
+        },
+        "home": {
+            "name": "Écran d'accueil"
+        },
+        "dlna": {
+            "name": "DLNA"
+        },
+        "devices": {
+            "name": "Appareils"
+        },
+        "apiKeys": {
+            "name": "Clés API"
+        },
+        "account": {
+            "name": "Compte",
+            "description": "Éditer vos informations d'utilisateur"
+        }
+    },
+    "serverDashboard": "Tableau de bord du serveur",
+    "server": "Serveur",
+    "operatingSystem": "Système d'exploitation",
+    "links": {
+        "reportAnIssue": "Reporter une erreur avec le client Vue",
+        "readTheDocumentation": "Lire la documentation",
+        "poweredByJellyfin": "Ce serveur est propulsé par Jellyfin",
+        "helpTranslate": "Aidez à traduire Jellyfin dans votre langue"
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "failedSettingDisplayPreferences": "Impossible de modifier les préférences d'affichage.",
+    "failedRetrievingDisplayPreferences": "Impossible de lire les préférences d'affichage. Les valeurs par défaut seront utilisées.",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Le lecteur vidéo a rencontré une erreur irrécupérable.",
+            "errorCode": "Code erreur : {errorCode}"
+        },
+        "anErrorHappened": "Une erreur est survenue"
+    },
+    "buttons": {
+        "ok": "OK"
+    },
+    "architecture": "Architecture"
 }
