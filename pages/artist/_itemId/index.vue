@@ -160,8 +160,12 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string, type: string): string {
-      return this.getImageUrlForElement(type as ImageType, { itemId });
+    getImageUrl(itemId: string | undefined, type: string): string {
+      if (itemId) {
+        return this.getImageUrlForElement(type as ImageType, { itemId });
+      } else {
+        return '';
+      }
     }
   }
 });
