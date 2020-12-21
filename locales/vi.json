@@ -196,5 +196,7 @@
     "jellyfinLogo": "Logo Jellyfin",
     "failedSettingDisplayPreferences": "Không thể cập nhật tùy chọn hiển thị.",
     "failedRetrievingDisplayPreferences": "Không thể lấy thông tin tùy chọn hiển thị. Sử dụng giá trị mặc định.",
-    "architecture": "Kiến trúc"
+    "architecture": "Kiến trúc",
+    "logs": "Nhật ký",
+    "activity": "Hoạt động"
 }
