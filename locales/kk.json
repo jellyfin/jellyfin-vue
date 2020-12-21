@@ -1,36 +1,36 @@
 {
-    "alphabetically": "",
-    "badRequest": "",
+    "alphabetically": "Álipbı boıynsha",
+    "badRequest": "Jaramsyz saýal. Áreketti qaıtalańyz",
     "browserNotSupported": "",
     "changeServer": "Serverdi aýystyrý",
     "connect": "Qosylý",
     "continueListening": "Tyńdaýdy jalǵastyrý",
     "continueWatching": "Qaraýdy jalǵastyrý",
     "endDate": "Aıaqtalý kúni",
-    "endsAt": "",
-    "episodeNumber": "",
+    "endsAt": "Aıaqtalýy {time}",
+    "episodeNumber": "Bólim {episodeNumber}",
     "home": "Basqy",
     "incorrectUsernameOrPassword": "",
-    "itemNotFound": "",
-    "libraryEmpty": "",
-    "libraryNotFound": "",
+    "itemNotFound": "Tarmaq tabylmady",
+    "libraryEmpty": "Bul tasyǵyshhana bos",
+    "libraryNotFound": "Tasyǵyshhana tabylmady",
     "login": "Kirý",
-    "logout": "",
+    "logout": "Shyǵý",
     "more": "Kóbirek",
     "moreLikeThis": "Osy sıaqty kóbirek",
     "movies": "Fılmder",
-    "noNetworkConnection": "",
+    "noNetworkConnection": "Jelilik baılanys joq",
     "password": "Paról",
     "play": "Oınatý",
     "playType": "",
-    "present": "",
+    "present": "Aǵymda",
     "rating": "Baǵalaý",
     "releaseDate": "Shyǵarý kúni",
     "serverAddress": "Server mekenjaıy",
     "serverAddressMustBeUrl": "",
     "serverAddressRequired": "",
     "serverNotFound": "",
-    "serverVersionTooLow": "",
+    "serverVersionTooLow": "Server nusqasy 10.7.0 ne odan joǵary qajet",
     "settings": "Parametrler",
     "shows": "Kórsetimder",
     "signIn": "Kirý",
@@ -39,7 +39,7 @@
     "upNext": "",
     "username": "Paıdalanýshy aty",
     "usernameRequired": "",
-    "filtersNotFound": "",
+    "filtersNotFound": "Súzgilerdi júkteý múmkin emes",
     "status": "Kúı",
     "played": "Oınatylǵan",
     "unplayed": "Oınatylmaǵan",
@@ -67,5 +67,85 @@
     "collections": "Jıyntyqtar",
     "artists": "Oryndaýshylar",
     "artist": "Oryndaýshy",
-    "albums": "Álbomdar"
+    "albums": "Álbomdar",
+    "sortByType": "{type} boıynsha",
+    "shuffleAll": "Bárin aralastyrý",
+    "settingsSections": {
+        "users": {
+            "name": "Paıdalanýshylar"
+        },
+        "subtitles": {
+            "name": "Sýbtıtrler"
+        },
+        "server": {
+            "name": "Server"
+        },
+        "scheduledTasks": {
+            "name": "Josparlaýshy"
+        },
+        "plugins": {
+            "name": "Plagınder"
+        },
+        "playback": {
+            "name": "Oınatý"
+        },
+        "notifications": {
+            "name": "Habarlandyrýlar"
+        },
+        "networking": {
+            "name": "Jelilik jumys"
+        },
+        "liveTvAndDvr": {
+            "name": "Efır ben DVR"
+        },
+        "libraries": {
+            "name": "Tasyǵyshhanalar"
+        },
+        "home": {
+            "name": "Basqy ekran"
+        },
+        "dlna": {
+            "name": "DLNA qyzmeti"
+        },
+        "devices": {
+            "name": "Qurylǵylar"
+        },
+        "account": {
+            "name": "Tirkelgi"
+        },
+        "apiKeys": {
+            "name": "API-kiltter"
+        }
+    },
+    "serverVersion": "Server nusqasy",
+    "server": "Server",
+    "rememberMe": "Este saqtaý",
+    "operatingSystem": "Operasıalyq júıe",
+    "numberTracks": "{number} jolshyq",
+    "noResultsFound": "Munda eshteńe joq",
+    "nextUp": "Kezekti",
+    "moreLikeArtist": "{artist} sıaqty uqsastar",
+    "logs": "Jurnaldar",
+    "liked": "Unaıdy",
+    "libraries": "Tasyǵyshhanalar",
+    "latestLibrary": "Eń keıingi {libraryName}",
+    "jellyfinLogo": "Jellyfin logotıpi",
+    "filter": "Súzgi",
+    "errors": {
+        "messages": {
+            "errorCode": "Qate kody: {errorCode}"
+        },
+        "anErrorHappened": "Qate oryn aldy"
+    },
+    "disc": "Diski {discNumber}",
+    "darkModeToggle": "Qarańǵy rejimdi qosý",
+    "changeUser": "Paıdalanýshyny aýystyrý",
+    "byArtist": "-",
+    "buttons": {
+        "ok": "Jaraıdy"
+    },
+    "biography": "Ómirbaıany",
+    "architecture": "Arhıtektýrasy",
+    "actors": "Aktórler",
+    "activity": "Áreketter"
 }
