@@ -195,5 +195,7 @@
     "jellyfinLogo": "Логотип Jellyfin",
     "failedSettingDisplayPreferences": "Невозможно обновить настройки отображения.",
     "failedRetrievingDisplayPreferences": "Невозможно получить настройки отображения. Используются значения по умолчанию.",
-    "architecture": "Архитектура"
+    "architecture": "Архитектура",
+    "logs": "Журналы",
+    "activity": "Активность"
 }
