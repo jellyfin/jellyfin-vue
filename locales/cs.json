@@ -196,5 +196,7 @@
     "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
     "architecture": "Architektura",
     "vueClientVersion": "Verze klienta Vue",
-    "serverVersion": "Verze serveru"
+    "serverVersion": "Verze serveru",
+    "logs": "Záznamy",
+    "activity": "Aktivita"
 }
