@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts">
+import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapState, mapActions } from 'vuex';
-import { AppState } from '~/store';
+import { mapActions, mapGetters } from 'vuex';
 
 export default Vue.extend({
   props: {
@@ -64,14 +64,21 @@ export default Vue.extend({
       }
     };
   },
-  computed: mapState<AppState>({
-    seasons: (state: AppState) => state.tvShows.seasons,
-    seasonEpisodes: (state: AppState) => state.tvShows.seasonEpisodes
-  }),
+  computed: {
+    ...mapGetters('tvShows', ['getSeasons', 'getSeasonEpisodes']),
+    seasons(): BaseItemDto[] {
+      return this.getSeasons({
+        itemId: this.item.Id
+      });
+    },
+    seasonEpisodes(): BaseItemDto[][] {
+      return this.getSeasonEpisodes({
+        itemId: this.item.Id
+      });
+    }
+  },
   async beforeMount() {
-    await this.getTvShows({
-      item: this.item
-    });
+    await this.getTvShows({ itemId: this.item.Id });
   },
   methods: {
     ...mapActions('tvShows', {

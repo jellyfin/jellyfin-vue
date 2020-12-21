@@ -1,11 +1,13 @@
-import { ActionTree, MutationTree } from 'vuex';
+import Vue from 'vue';
+import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import {
   BaseItemDto,
   BaseItemDtoQueryResult,
   ItemFields
 } from '@jellyfin/client-axios';
+import { AppState } from './index';
 
-export interface TvShowsState {
+interface TvShowItem {
   /**
    * seasons: Stores an array of all seasons
    */
@@ -16,54 +18,93 @@ export interface TvShowsState {
   seasonEpisodes: BaseItemDto[][];
 }
 
-export const state = (): TvShowsState => ({
-  seasons: [],
-  seasonEpisodes: []
-});
+export interface TvShowsState {
+  [key: string]: TvShowItem;
+}
+
+export const state = (): TvShowsState => ({});
 
 type MutationPayload = {
   seasons: BaseItemDto[];
   seasonEpisodes: BaseItemDto[];
+  itemId?: string;
 };
 
-export const mutations: MutationTree<TvShowsState> = {
-  ADD_TVSHOW_SEASONS(state: TvShowsState, { seasons }: MutationPayload) {
-    state.seasons = seasons;
+export const getters: GetterTree<TvShowsState, AppState> = {
+  getSeasons: (state) => ({ itemId }: { itemId: string }) => {
+    return state[itemId]?.seasons;
   },
-  ADD_TVSHOW_SEASON_EPISODES(
-    state: TvShowsState,
-    { seasonEpisodes }: MutationPayload
-  ) {
-    state.seasonEpisodes.push(seasonEpisodes);
-  },
-  CLEAR_TVSHOWS_SEASONS(state: TvShowsState) {
-    state.seasons = [];
+  getSeasonEpisodes: (state) => ({ itemId }: { itemId: string }) => {
+    return state[itemId]?.seasonEpisodes;
   }
 };
 
-export const actions: ActionTree<TvShowsState, TvShowsState> = {
-  async getTvShows({ dispatch }, { item }) {
+export const mutations: MutationTree<TvShowsState> = {
+  ADD_TVSHOW_SEASONS(
+    state: TvShowsState,
+    { seasons, itemId }: MutationPayload
+  ) {
+    if (!itemId) {
+      throw new Error('itemId is undefined');
+    }
+
+    Vue.set(state, itemId, {
+      seasonEpisodes: state[itemId]?.seasonEpisodes || [],
+      seasons
+    });
+  },
+  ADD_TVSHOW_SEASON_EPISODES(
+    state: TvShowsState,
+    { seasonEpisodes, itemId }: MutationPayload
+  ) {
+    if (!itemId) {
+      throw new Error('itemId is undefined');
+    }
+
+    Vue.set(state, itemId, {
+      seasons: state[itemId]?.seasons || [],
+      seasonEpisodes: [...state[itemId].seasonEpisodes, seasonEpisodes]
+    });
+  }
+};
+export const actions: ActionTree<TvShowsState, AppState> = {
+  async getTvShows({ dispatch }, { itemId }: { itemId: string }) {
     try {
       const { data } = await this.$api.tvShows.getSeasons({
         userId: this.$auth.user.Id,
-        seriesId: item.Id || ''
+        seriesId: itemId
       });
 
-      dispatch('getTvShowsSuccess', data);
-    } catch (err) {
-      dispatch('getTvShowsFailure', err);
+      dispatch('getTvShowsSuccess', {
+        response: data,
+        itemId
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      dispatch('getTvShowsFailure', error);
     }
   },
-  getTvShowsSuccess({ dispatch, commit }, response: BaseItemDtoQueryResult) {
+  getTvShowsSuccess(
+    { dispatch, commit },
+    {
+      response,
+      itemId
+    }: {
+      response: BaseItemDtoQueryResult;
+      itemId: string;
+    }
+  ) {
     commit('ADD_TVSHOW_SEASONS', {
-      seasons: response.Items
+      seasons: response.Items,
+      itemId
     });
 
-    response.Items?.forEach(async (season: BaseItemDto) => {
-      await dispatch('getTvShowsSeasonEpisodes', { season });
+    response.Items?.forEach(async (season) => {
+      await dispatch('getTvShowsSeasonEpisodes', { season, itemId });
     });
   },
-  async getTvShowsFailure({ dispatch }, error) {
+  getTvShowsFailure: async ({ dispatch }, error) => {
     await dispatch(
       'snackbar/pushSnackbarMessage',
       {
@@ -75,7 +116,7 @@ export const actions: ActionTree<TvShowsState, TvShowsState> = {
       }
     );
   },
-  async getTvShowsSeasonEpisodes({ dispatch }, { season }) {
+  async getTvShowsSeasonEpisodes({ dispatch }, { season, itemId }) {
     try {
       const { data } = await this.$api.items.getItems({
         userId: this.$auth.user.Id,
@@ -83,20 +124,26 @@ export const actions: ActionTree<TvShowsState, TvShowsState> = {
         fields: [ItemFields.Overview]
       });
 
-      dispatch('getTvShowsSeasonEpisodesSuccess', data);
-    } catch (err) {
-      dispatch('getTvShowsSeasonEpisodesFailure', err);
+      dispatch('getTvShowsSeasonEpisodesSuccess', {
+        response: data,
+        itemId
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      dispatch('getTvShowsSeasonEpisodesFailure', error);
     }
   },
   getTvShowsSeasonEpisodesSuccess(
     { commit },
-    response: BaseItemDtoQueryResult
+    { response, itemId }: { response: BaseItemDtoQueryResult; itemId: string }
   ) {
     commit('ADD_TVSHOW_SEASON_EPISODES', {
+      itemId,
       seasonEpisodes: response.Items
     });
   },
-  async getTvShowsSeasonEpisodesFailure({ dispatch }, error) {
+  getTvShowsSeasonEpisodesFailure: async ({ dispatch }, error) => {
     await dispatch(
       'snackbar/pushSnackbarMessage',
       {
