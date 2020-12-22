@@ -143,6 +143,11 @@ export default Vue.extend({
     configItems() {
       return [
         {
+          icon: 'mdi-pencil-outline',
+          title: this.$t('metadata'),
+          to: '/metadata'
+        },
+        {
           icon: 'mdi-cog',
           title: this.$t('settings'),
           to: '/settings'

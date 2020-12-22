@@ -13,8 +13,9 @@
           rounded
           nuxt
           :to="`./${genre.Id}/play`"
-          >{{ $t('play') }}</v-btn
         >
+          {{ $t('play') }}
+        </v-btn>
         <v-btn
           v-if="loaded"
           class="play-button mr-2"
@@ -24,8 +25,9 @@
           rounded
           nuxt
           :to="`./${genre.Id}/shuffle`"
-          >{{ $t('shuffleAll') }}</v-btn
         >
+          {{ $t('shuffleAll') }}
+        </v-btn>
       </v-toolbar-title>
     </v-app-bar>
     <v-container class="second-toolbar-follow">

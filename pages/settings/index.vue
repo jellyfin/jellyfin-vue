@@ -237,7 +237,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    isEmpty(object: any): boolean {
+    isEmpty(object: never): boolean {
       return isEmpty(object);
     }
   }

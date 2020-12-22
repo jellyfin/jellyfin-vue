@@ -57,9 +57,9 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
-              <v-list-item-subtitle>{{
-                relatedItem.ProductionYear
-              }}</v-list-item-subtitle>
+              <v-list-item-subtitle>
+                {{ relatedItem.ProductionYear }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </div>

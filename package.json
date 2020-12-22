@@ -45,6 +45,7 @@
     "fontsource-noto-sans-sc": "^3.1.5",
     "fontsource-noto-sans-tc": "^3.1.5",
     "langs": "^2.0.0",
+    "date-fns": "^2.16.1",
     "lodash": "^4.17.20",
     "mux.js": "^5.7.0",
     "nuxt": "^2.14.12",

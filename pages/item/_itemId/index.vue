@@ -63,8 +63,9 @@
                 rounded
                 nuxt
                 :to="`./${item.Id}/play`"
-                >{{ $t('play') }}</v-btn
               >
+                {{ $t('play') }}
+              </v-btn>
               <v-skeleton-loader v-else type="button" />
               <v-btn v-if="loaded" outlined icon>
                 <v-icon>mdi-dots-horizontal</v-icon>
