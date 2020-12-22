@@ -30,7 +30,7 @@
         </v-list-item>
         <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
-          v-for="library in getNavigationDrawerItems"
+          v-for="library in libraryItems"
           :key="library.Id"
           :to="library.to"
           router
@@ -109,10 +109,12 @@
 </template>
 
 <script lang="ts">
+import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
+import { getLibraryIcon } from '~/utils/items';
 
 interface WebSocketMessage {
   MessageType: string;
@@ -129,7 +131,15 @@ export default Vue.extend({
   },
   computed: {
     ...mapState<AppState>({
-      opaqueAppBar: (state: AppState) => state.page.opaqueAppBar
+      opaqueAppBar: (state: AppState) => state.page.opaqueAppBar,
+      libraryItems: (state: AppState) =>
+        state.userViews.views.map((view: BaseItemDto) => {
+          return {
+            icon: getLibraryIcon(view.CollectionType),
+            title: view.Name,
+            to: `/library/${view.Id}`
+          };
+        })
     }),
     items() {
       return [
@@ -178,7 +188,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('displayPreferences', ['callAllCallbacks']),
-    ...mapGetters('userViews', ['getNavigationDrawerItems']),
     handleKeepAlive(): void {
       this.$store.subscribe((mutation, state) => {
         if (
