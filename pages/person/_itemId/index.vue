@@ -230,9 +230,16 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string): string {
+    getImageUrl(itemId: string | undefined): string {
       const element = this.$refs.personImg as HTMLElement;
-      return this.getImageUrlForElement(ImageType.Primary, { itemId, element });
+      if (itemId) {
+        return this.getImageUrlForElement(ImageType.Primary, {
+          itemId,
+          element
+        });
+      } else {
+        return '';
+      }
     }
   }
 });
