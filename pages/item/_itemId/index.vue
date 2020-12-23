@@ -410,7 +410,8 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getLanguageName(code: string) {
+    getLanguageName(code?: string) {
+      if (!code) return '';
       return langs.where('2B', code).name;
     },
     getSurroundIcon(layout: string) {
