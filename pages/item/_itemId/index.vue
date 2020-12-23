@@ -80,7 +80,7 @@
                 "
               >
                 <v-col cols="2" class="d-flex align-center pa-0 flex-0">
-                  <label class="text--secondary">Genres</label>
+                  <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
                 <v-col cols="7">
                   <v-chip
