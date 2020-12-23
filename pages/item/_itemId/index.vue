@@ -1,14 +1,18 @@
 <template>
   <v-container class="pl-6 pr-6">
     <v-row>
-      <v-col cols="9">
-        <v-row>
-          <v-col cols="3">
+      <v-col cols="12" sm="8" md="9">
+        <v-row justify="center" justify-md="start">
+          <v-col cols="7" md="3">
             <card v-if="loaded" :item="item" no-text no-margin />
             <skeleton-card v-else no-text />
           </v-col>
-          <v-col cols="9">
-            <h1 v-if="loaded" class="text-h4 font-weight-light text-truncate">
+          <v-col cols="12" md="9" class="">
+            <h1
+              v-if="loaded"
+              class="text-h4 font-weight-light text-truncate"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               {{ item.Name }}
             </h1>
             <v-skeleton-loader
@@ -20,12 +24,14 @@
             <h2
               v-if="loaded && item.OriginalTitle"
               class="text-subtitle-1 text-truncate"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ item.OriginalTitle }}
             </h2>
             <h2
               v-if="loaded && item.AlbumArtist"
               class="text-subtitle-1 text-truncate"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ $t('byArtist') }}
               <nuxt-link
@@ -41,7 +47,10 @@
               type="heading"
               width="25em"
             />
-            <div class="text-caption text-h4 font-weight-medium">
+            <div
+              class="text-caption text-h4 font-weight-medium"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               <media-info
                 v-if="loaded"
                 :item="item"
@@ -52,7 +61,10 @@
               />
               <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
             </div>
-            <div class="mt-3 mb-2">
+            <div
+              class="mt-3 mb-2"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               <v-btn
                 v-if="loaded && canPlay(item)"
                 class="play-button mr-2"
@@ -70,7 +82,7 @@
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </div>
-            <v-col class="mt-2" cols="10">
+            <v-col class="mt-2" cols="12" md="10">
               <v-row
                 v-if="
                   loaded &&
@@ -78,11 +90,12 @@
                   item.GenreItems &&
                   item.GenreItems.length > 0
                 "
+                align="center"
               >
-                <v-col cols="2" class="d-flex align-center pa-0 flex-0">
+                <v-col cols="2" class="px-0">
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="7">
+                <v-col cols="9">
                   <v-chip
                     v-for="genre in item.GenreItems"
                     :key="genre.Id"
@@ -107,11 +120,11 @@
                 "
                 class="mt-2"
               >
-                <v-row v-if="item.MediaSources.length > 1">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="item.MediaSources.length > 1" align="center">
+                  <v-col cols="2" class="px-0">
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="9">
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -131,11 +144,11 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="videoTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="videoTracks.length > 0" align="center">
+                  <v-col cols="2" class="px-0">
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="9">
                     <v-select
                       v-model="currentVideoTrack"
                       :items="getItemizedSelect(videoTracks)"
@@ -156,11 +169,11 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="audioTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="audioTracks.length > 0" align="center">
+                  <v-col cols="2" class="px-0">
                     <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="9">
                     <v-select
                       v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
@@ -196,11 +209,11 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="subtitleTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="subtitleTracks.length > 0" align="center">
+                  <v-col cols="2" class="px-0">
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="9">
                     <v-select
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
@@ -269,7 +282,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="12" sm="4" md="3">
         <div v-if="crew.length > 0">
           <h2 v-if="loaded">Crew</h2>
           <v-skeleton-loader v-else type="heading" />
