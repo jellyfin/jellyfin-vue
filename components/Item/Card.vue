@@ -13,6 +13,13 @@
             class="card-image"
             @error="imageLoadError = true"
           />
+          <v-progress-circular
+            v-if="refreshProgress > 0"
+            class="card-chip"
+            :value="refreshProgress"
+            color="white"
+            size="24"
+          />
           <v-chip
             v-if="item.UserData && item.UserData.Played"
             color="green"
@@ -64,7 +71,7 @@
           >
             <v-icon size="36">mdi-play</v-icon>
           </v-btn>
-          <item-menu :item-id="item.Id" />
+          <item-menu :item="item" />
         </div>
       </div>
       <div v-if="!noText" class="card-text">
@@ -124,7 +131,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      imageLoadError: false
+      imageLoadError: false,
+      refreshProgress: 0
     };
   },
   computed: {
@@ -239,6 +247,17 @@ export default Vue.extend({
         return ImageType.Primary;
       }
     }
+  },
+  created() {
+    this.$store.subscribe((mutation, state) => {
+      if (
+        mutation.type === 'SOCKET_ONMESSAGE' &&
+        state.socket.message.MessageType === 'RefreshProgress' &&
+        state.socket.message.Data.ItemId === this.item.Id
+      ) {
+        this.refreshProgress = state.socket.message.Data.Progress;
+      }
+    });
   },
   methods: {
     ...mapActions('playbackManager', ['play'])
