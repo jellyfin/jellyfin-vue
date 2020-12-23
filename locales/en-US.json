@@ -11,6 +11,7 @@
   "art": "Art",
   "artist": "Artist",
   "artists": "Artists",
+  "audio": "Audio",
   "backdrop": "Backdrop",
   "badRequest": "Bad request. Try again",
   "banner": "Banner",
@@ -241,6 +242,7 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
+  "video": "Video",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "vueClientVersion": "Vue client version",
