@@ -134,6 +134,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.Name }}
@@ -159,6 +160,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
@@ -185,6 +187,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
@@ -224,6 +227,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
