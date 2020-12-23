@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ml-3 mr-3">
+  <v-container class="pl-6 pr-6">
     <v-row>
       <v-col cols="9">
         <v-row>
