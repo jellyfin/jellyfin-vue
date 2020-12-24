@@ -43,7 +43,7 @@
     "fontsource-noto-sans-jp": "^3.1.5",
     "fontsource-noto-sans-kr": "^3.1.5",
     "fontsource-noto-sans-sc": "^3.1.5",
-    "fontsource-noto-sans-tc": "^3.1.5",
+    "fontsource-noto-sans-tc": "^4.0.0",
     "langs": "^2.0.0",
     "date-fns": "^2.16.1",
     "lodash": "^4.17.20",
