@@ -10,6 +10,7 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
