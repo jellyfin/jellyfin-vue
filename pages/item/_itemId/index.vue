@@ -179,7 +179,9 @@
                             ></v-icon>
                           </v-list-item-avatar>
                           <v-list-item-content>
-                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                              i.DisplayTitle
+                            }}</v-list-item-title>
                             <v-list-item-subtitle>
                               {{ getLanguageName(i.Language) }}
                             </v-list-item-subtitle>
@@ -211,7 +213,9 @@
                       <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-content>
-                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                              i.DisplayTitle
+                            }}</v-list-item-title>
                             <v-list-item-subtitle>
                               {{ getLanguageName(i.Language) }}
                             </v-list-item-subtitle>
@@ -411,7 +415,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code?: string) {
-      if (!code) return '';
+      if (!code) return this.$t('undefined');
       return langs.where('2B', code).name;
     },
     getSurroundIcon(layout: string) {
