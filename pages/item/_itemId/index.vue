@@ -157,7 +157,7 @@
                   </v-col>
                   <v-col cols="7">
                     <v-select
-                      v-if="audioTracks.length > 1"
+                      v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
                       :items="getItemizedSelect(audioTracks)"
                       :disabled="audioTracks.length <= 1"
@@ -392,15 +392,17 @@ export default Vue.extend({
             this.currentSource.DefaultAudioStreamIndex
           ) {
             this.currentAudioTrack = this.audioTracks[
-              this.currentSource.DefaultAudioStreamIndex
+              this.currentSource.DefaultAudioStreamIndex - 1
             ];
+          } else if (this.audioTracks.length > 0) {
+            this.currentAudioTrack = this.audioTracks[0];
           }
           if (
             this.subtitleTracks.length > 0 &&
             this.currentSource.DefaultSubtitleStreamIndex
           ) {
             this.currentSubtitleTrack = this.subtitleTracks[
-              this.currentSource.DefaultSubtitleStreamIndex
+              this.currentSource.DefaultSubtitleStreamIndex - 1
             ];
           }
         }
