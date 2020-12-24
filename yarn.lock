@@ -2035,10 +2035,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/dompurify@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.0.4.tgz#25fce15f1f4b1bc0df0ad957040cf226416ac2d7"
-  integrity sha512-y6K7NyXTQvjr8hJNsAFAD8yshCsIJ0d+OYEFzULuIqWyWOKL2hRru1I+rorI5U0K4SLAROTNuSUFXPDTu278YA==
+"@types/dompurify@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.1.0.tgz#b4fd9709871a543f1f0ce07766d7eb3e1469cc97"
+  integrity sha512-6j8Q+uDWeUzmDlvNLaU8svwx1FKgrHEElMo+aIqvxQ+rhR/TGHWuu0nSexa2OoQ6r52pYVX8QzHEBOuhE6GtYA==
   dependencies:
     "@types/trusted-types" "*"
 
