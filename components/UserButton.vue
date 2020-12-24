@@ -43,8 +43,6 @@ export default Vue.extend({
         {
           title: this.$t('logout'),
           action: () => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
-            // @ts-ignore
             this.logoutUser();
           }
         }
