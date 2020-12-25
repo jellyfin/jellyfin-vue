@@ -73,8 +73,7 @@
                 min-width="8em"
                 depressed
                 rounded
-                nuxt
-                :to="`item/${item.Id}/play`"
+                @click="play({ items: [item] })"
               >
                 {{ $t('play') }}
               </v-btn>
@@ -98,6 +97,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
@@ -133,6 +133,7 @@ export default Vue.extend({
     ).data;
   },
   methods: {
+    ...mapActions('playbackManager', ['play']),
     getBackdrop(item: BaseItemDto): string {
       if (item.Type === 'Episode') {
         return this.getImageUrlForElement(ImageType.Backdrop, {

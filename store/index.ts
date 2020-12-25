@@ -7,6 +7,7 @@ import { SnackbarState } from './snackbar';
 import { UserState } from './user';
 import { UserViewsState } from './userViews';
 import { HomeSectionState } from './homeSection';
+import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { DisplayPreferencesState } from './displayPreferences';
@@ -19,6 +20,7 @@ export interface AppState {
   user: UserState;
   userViews: UserViewsState;
   homeSection: HomeSectionState;
+  playbackManager: PlaybackManagerState;
   backdrop: BackdropState;
   device: DeviceState;
   displayPreferences: DisplayPreferencesState;

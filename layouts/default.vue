@@ -105,6 +105,7 @@
     </v-main>
     <!-- Utilities and global systems -->
     <snackbar />
+    <player-manager />
   </v-app>
 </template>
 

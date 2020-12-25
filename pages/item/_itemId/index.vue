@@ -58,11 +58,10 @@
                 class="play-button mr-2"
                 color="primary"
                 min-width="8em"
-                :disabled="isPlayable"
+                :disabled="!isPlayable"
                 depressed
                 rounded
-                nuxt
-                :to="`./${item.Id}/play`"
+                @click="play({ items: [item] })"
               >
                 {{ $t('play') }}
               </v-btn>
@@ -316,7 +315,7 @@ export default Vue.extend({
     isPlayable: {
       get() {
         // TODO: Move this to a mixin
-        if (['Movie'].includes(this.$data.item.Type)) {
+        if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
           return false;
         } else {
           return true;
@@ -409,6 +408,7 @@ export default Vue.extend({
     this.clearBackdrop();
   },
   methods: {
+    ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code?: string) {
       if (!code) return '';

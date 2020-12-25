@@ -27,10 +27,10 @@
           v-slot="{ hover }"
           :key="track.Id"
         >
-          <nuxt-link :to="`/item/${track.Id}/play`" tag="tr" event="dblclick">
+          <tr @dblclick="playTracks(track)">
             <td style="width: 6em" class="pr-0 text-center">
               <span v-if="hover">
-                <v-btn icon nuxt :to="`/item/${track.Id}/play`">
+                <v-btn icon @click="playTracks(track)">
                   <v-icon>mdi-play-circle-outline</v-icon>
                 </v-btn>
               </span>
@@ -64,7 +64,7 @@
               </div>
             </td>
             <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
-          </nuxt-link>
+          </tr>
         </v-hover>
       </template>
     </tbody>
@@ -72,8 +72,9 @@
 </template>
 
 <script lang="ts">
-import { groupBy } from 'lodash';
 import Vue from 'vue';
+import { mapActions } from 'vuex';
+import { groupBy } from 'lodash';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -110,6 +111,7 @@ export default Vue.extend({
     this.tracks = tracks;
   },
   methods: {
+    ...mapActions('playbackManager', ['play']),
     /**
      * @param {number} ticks The number of ticks to convert to track length
      * @returns {string} Returns the length of the track in the format XX:XX
@@ -131,6 +133,12 @@ export default Vue.extend({
       }
 
       return `${minutes}:${formatSeconds(seconds.toString())}`;
+    },
+    playTracks(track: BaseItemDto) {
+      this.play({
+        items: this.tracks.Items,
+        startFromIndex: this.tracks.Items?.indexOf(track)
+      });
     }
   }
 });

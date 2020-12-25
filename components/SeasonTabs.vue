@@ -11,8 +11,7 @@
           <v-list-item
             v-for="episode in seasonEpisodes[currentTab]"
             :key="episode.Id"
-            nuxt
-            :to="`/item/${episode.Id}/play`"
+            @click="play({ items: [episode] })"
           >
             <v-list-item-avatar tile width="20em" height="12em">
               <blurhash-image
@@ -76,7 +75,8 @@ export default Vue.extend({
   methods: {
     ...mapActions('tvShows', {
       getTvShows: 'getTvShows'
-    })
+    }),
+    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>
