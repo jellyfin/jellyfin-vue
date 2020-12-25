@@ -298,9 +298,10 @@ import {
   MediaStream
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import formsHelper from '~/mixins/formsHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, formsHelper],
   data() {
     return {
       loaded: false,
@@ -416,11 +417,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getItemizedSelect(objects: any[]) {
-      return objects.map((item: any) => {
-        return { value: item };
-      });
-    },
     getLanguageName(code?: string) {
       if (!code) return this.$t('undefined');
       return langs.where('2B', code).name;
