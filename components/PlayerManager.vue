@@ -1,10 +1,11 @@
 <template>
-  <v-dialog
+  <player-dialog
     dark
     persistent
     hide-overlay
     no-click-animation
     scrollable
+    :fullscreen="!isMinimized"
     :retain-focus="!isMinimized"
     :content-class="getContentClass()"
     :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
@@ -22,7 +23,7 @@
         </v-fade-transition>
       </v-card>
     </v-hover>
-  </v-dialog>
+  </player-dialog>
 </template>
 
 <script lang="ts">
