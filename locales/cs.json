@@ -249,5 +249,7 @@
     "allLanguages": "Všechny jazyky",
     "addNewPerson": "Přidat novou osobu",
     "actor": "Herec",
-    "3DFormat": "3D formát"
+    "3DFormat": "3D formát",
+    "video": "Video",
+    "audio": "Zvuk"
 }
