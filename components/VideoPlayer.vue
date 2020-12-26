@@ -95,13 +95,19 @@ export default Vue.extend({
         this.$store.subscribe((mutation, _state: AppState) => {
           switch (mutation.type) {
             case 'playbackManager/PAUSE_PLAYBACK':
-              (this.$refs.videoPlayer as HTMLVideoElement).pause();
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).pause();
+              }
               break;
             case 'playbackManager/UNPAUSE_PLAYBACK':
-              (this.$refs.videoPlayer as HTMLVideoElement).play();
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).play();
+              }
               break;
             case 'playbackManager/RESET_CURRENT_TIME':
-              (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
+              }
           }
         });
       } else {

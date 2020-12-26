@@ -26,15 +26,30 @@
                 </v-btn>
               </div>
               <div class="absolute d-flex flex-row justify-center align-center">
-                <v-btn icon large @click="setPreviousTrack">
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  large
+                  @click="setPreviousTrack"
+                >
                   <v-icon size="32">mdi-skip-previous</v-icon>
                 </v-btn>
-                <v-btn icon x-large @click="togglePause">
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  x-large
+                  @click="togglePause"
+                >
                   <v-icon size="48">{{
                     isPaused ? 'mdi-play' : 'mdi-pause'
                   }}</v-icon>
                 </v-btn>
-                <v-btn icon large @click="setNextTrack">
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  large
+                  @click="setNextTrack"
+                >
                   <v-icon size="32">mdi-skip-next</v-icon>
                 </v-btn>
               </div>
@@ -222,6 +237,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .absolute {
+  pointer-events: none;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -229,6 +245,10 @@ export default Vue.extend({
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.all-pointer-events {
+  pointer-events: all;
 }
 
 .v-card.player-card {
