@@ -44,13 +44,15 @@ export default Vue.extend({
       required: true
     },
     items: {
-      type: Object as () => BaseItemDto[],
-      required: true
+      type: Array as () => BaseItemDto[],
+      default(): BaseItemDto[] {
+        return [];
+      }
     },
     shape: {
       type: String,
-      default() {
-        return undefined;
+      default(): string {
+        return '';
       }
     }
   },

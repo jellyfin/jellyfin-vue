@@ -18,12 +18,6 @@ export default Vue.extend({
     section: {
       type: Object as () => HomeSection,
       required: true
-    },
-    index: {
-      type: [Number, Boolean],
-      default() {
-        return false;
-      }
     }
   },
   data() {

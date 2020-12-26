@@ -78,7 +78,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -88,30 +87,6 @@ export default Vue.extend({
   data() {
     return {
       loading: true,
-      swiperOptions: {
-        initialSlide: 0,
-        freeMode: this.$browser.isMobile(),
-        effect: 'slide',
-        navigation: {
-          nextEl: `.swiper-next`,
-          prevEl: `.swiper-prev`
-        },
-        slidesPerView: 3,
-        breakpoints: {
-          600: {
-            slidesPerView: 4
-          },
-          960: {
-            slidesPerView: 6
-          },
-          1264: {
-            slidesPerView: 6
-          },
-          1904: {
-            slidesPerView: 8
-          }
-        }
-      } as SwiperOptions,
       item: {} as BaseItemDto,
       appearances: [] as BaseItemDto[],
       backdropImageSource: ''
