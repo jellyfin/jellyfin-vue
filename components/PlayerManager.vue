@@ -16,9 +16,45 @@
         <video-player v-if="isPlaying" />
         <v-fade-transition>
           <v-overlay v-show="hover && isMinimized" absolute>
-            <v-btn icon @click="toggleMinimized">
-              <v-icon>mdi-arrow-expand-all</v-icon>
-            </v-btn>
+            <div class="d-flex flex-column player-overlay">
+              <div class="d-flex flex-row">
+                <v-btn icon @click="toggleMinimized">
+                  <v-icon>mdi-arrow-expand-all</v-icon>
+                </v-btn>
+                <v-spacer />
+                <v-btn icon @click="stopPlayback">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </div>
+              <div class="absolute d-flex flex-row justify-center align-center">
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  large
+                  @click="setPreviousTrack"
+                >
+                  <v-icon size="32">mdi-skip-previous</v-icon>
+                </v-btn>
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  x-large
+                  @click="togglePause"
+                >
+                  <v-icon size="48">{{
+                    isPaused ? 'mdi-play' : 'mdi-pause'
+                  }}</v-icon>
+                </v-btn>
+                <v-btn
+                  class="all-pointer-events"
+                  icon
+                  large
+                  @click="setNextTrack"
+                >
+                  <v-icon size="32">mdi-skip-next</v-icon>
+                </v-btn>
+              </div>
+            </div>
           </v-overlay>
         </v-fade-transition>
       </v-card>
@@ -46,6 +82,9 @@ export default Vue.extend({
       return (
         this.$store.state.playbackManager.status !== PlaybackStatus.stopped
       );
+    },
+    isPaused(): boolean {
+      return this.$store.state.playbackManager.status === PlaybackStatus.paused;
     },
     isMinimized(): boolean {
       return this.$store.state.playbackManager.isMinimized;
@@ -100,6 +139,7 @@ export default Vue.extend({
           const now = new Date().getTime();
 
           if (
+            this.getCurrentItem !== null &&
             now - state.playbackManager.lastProgressUpdate > 1000 &&
             state.playbackManager.currentTime !== null
           ) {
@@ -164,7 +204,14 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', [
       'toggleMinimized',
-      'setLastProgressUpdate'
+      'setLastProgressUpdate',
+      'resetCurrentItemIndex',
+      'setNextTrack',
+      'setPreviousTrack',
+      'setLastItemIndex',
+      'resetLastItemIndex',
+      'pause',
+      'unpause'
     ]),
     getContentClass(): string {
       return `player ${
@@ -172,14 +219,52 @@ export default Vue.extend({
           ? 'player--minimized align-self-end'
           : 'player--fullscreen'
       }`;
+    },
+    stopPlayback() {
+      this.setLastItemIndex();
+      this.resetCurrentItemIndex();
+      this.setNextTrack();
+    },
+    togglePause() {
+      if (this.isPaused) {
+        this.unpause();
+      } else {
+        this.pause();
+      }
     }
   }
 });
 </script>
 
 <style lang="scss">
+.absolute {
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.all-pointer-events {
+  pointer-events: all;
+}
+
 .v-card.player-card {
   background-color: black !important;
+}
+
+.v-overlay .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.player-overlay {
+  height: 100%;
 }
 
 .player--fullscreen {

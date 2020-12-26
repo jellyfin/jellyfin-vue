@@ -145,13 +145,37 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   START_PLAYBACK(state: PlaybackManagerState) {
     state.status = PlaybackStatus.playing;
   },
+  UNPAUSE_PLAYBACK(state: PlaybackManagerState) {
+    state.status = PlaybackStatus.playing;
+  },
   PAUSE_PLAYBACK(state: PlaybackManagerState) {
     state.status = PlaybackStatus.paused;
   },
   STOP_PLAYBACK(state: PlaybackManagerState) {
-    state.lastItemIndex = state.currentItemIndex;
-    state.currentItemIndex = null;
     state.status = PlaybackStatus.stopped;
+    state.lastItemIndex = null;
+    state.currentItemIndex = null;
+    state.currentMediaSource = null;
+    state.currentVideoStreamIndex = 0;
+    state.currentAudioStreamIndex = 0;
+    state.currentSubtitleStreamIndex = 0;
+    state.currentItemChapters = null;
+    state.currentTime = null;
+    state.lastProgressUpdate = 0;
+    state.currentVolume = 100;
+    state.isFullscreen = false;
+    state.isMuted = false;
+    state.isShuffling = false;
+    state.isMinimized = true;
+    state.repeatMode = null;
+    state.queue = [];
+    state.playSessionId = null;
+  },
+  RESET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
+    state.lastItemIndex = null;
+  },
+  SET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
+    state.lastItemIndex = state.currentItemIndex;
   },
   SET_LAST_PROGRESS_UPDATE(state: PlaybackManagerState, { progress }) {
     state.lastProgressUpdate = progress;
@@ -170,6 +194,9 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     { time }: { time: number | null }
   ) {
     state.currentTime = time;
+  },
+  RESET_CURRENT_TIME(state: PlaybackManagerState) {
+    state.currentTime = 0;
   },
   TOGGLE_MINIMIZE(state: PlaybackManagerState) {
     state.isMinimized = !state.isMinimized;
@@ -202,6 +229,9 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   pause({ commit }) {
     commit('PAUSE_PLAYBACK');
   },
+  unpause({ commit }) {
+    commit('UNPAUSE_PLAYBACK');
+  },
   clearQueue({ commit }) {
     commit('SET_QUEUE', { queue: [] });
   },
@@ -217,6 +247,24 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     } else {
       commit('STOP_PLAYBACK');
     }
+  },
+  setPreviousTrack({ commit, state }) {
+    if (state.currentTime !== null && state.currentTime > 2) {
+      commit('RESET_CURRENT_TIME');
+    } else if (state.currentItemIndex !== null && state.currentItemIndex > 0) {
+      commit('DECREASE_QUEUE_INDEX');
+    } else {
+      commit('RESET_CURRENT_TIME');
+    }
+  },
+  resetCurrentItemIndex({ commit }) {
+    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: null });
+  },
+  setLastItemIndex({ commit }) {
+    commit('SET_LAST_ITEM_INDEX');
+  },
+  resetLastItemIndex({ commit }) {
+    commit('RESET_LAST_ITEM_INDEX');
   },
   setLastProgressUpdate({ commit }, { progress }: { progress: number }) {
     commit('SET_LAST_PROGRESS_UPDATE', { progress });

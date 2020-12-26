@@ -26,6 +26,7 @@ import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import 'shaka-player/dist/controls.css';
 import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
+import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -54,9 +55,9 @@ export default Vue.extend({
     poster(): string {
       return this.getImageUrlForElement(ImageType.Backdrop, {
         itemId:
-          this.getCurrentItem.ParentBackdropItemId ||
-          this.getCurrentItem.SeriesId ||
-          this.getCurrentItem.Id
+          this.getCurrentItem?.ParentBackdropItemId ||
+          this.getCurrentItem?.SeriesId ||
+          this.getCurrentItem?.Id
       });
     }
   },
@@ -90,6 +91,25 @@ export default Vue.extend({
         );
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
+        // Subscribe to Vuex actions
+        this.$store.subscribe((mutation, _state: AppState) => {
+          switch (mutation.type) {
+            case 'playbackManager/PAUSE_PLAYBACK':
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).pause();
+              }
+              break;
+            case 'playbackManager/UNPAUSE_PLAYBACK':
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).play();
+              }
+              break;
+            case 'playbackManager/RESET_CURRENT_TIME':
+              if (this.$refs.videoPlayer) {
+                (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
+              }
+          }
+        });
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported') as string
@@ -122,69 +142,78 @@ export default Vue.extend({
       'setLastProgressUpdate'
     ]),
     async getPlaybackUrl(): Promise<void> {
-      this.playbackInfo = (
-        await this.$api.mediaInfo.getPostedPlaybackInfo({
-          itemId: this.getCurrentItem.Id || '',
-          userId: this.$auth.user.Id,
-          playbackInfoDto: { DeviceProfile: this.$playbackProfile }
-        })
-      ).data;
+      if (this.getCurrentItem) {
+        this.playbackInfo = (
+          await this.$api.mediaInfo.getPostedPlaybackInfo({
+            itemId: this.getCurrentItem?.Id || '',
+            userId: this.$auth.user.Id,
+            playbackInfoDto: { DeviceProfile: this.$playbackProfile }
+          })
+        ).data;
 
-      this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
+        this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
 
-      let mediaSource;
-      if (this.playbackInfo?.MediaSources) {
-        mediaSource = this.playbackInfo.MediaSources[0];
-        this.setMediaSource({ mediaSource });
-      } else {
-        throw new Error("This item can't be played.");
-      }
-
-      if (mediaSource.SupportsDirectStream) {
-        const directOptions: Record<
-          string,
-          string | boolean | undefined | null
-        > = {
-          Static: true,
-          mediaSourceId: mediaSource.Id,
-          deviceId: this.$store.state.deviceProfile.deviceId,
-          api_key: this.$store.state.user.accessToken
-        };
-
-        if (mediaSource.ETag) {
-          directOptions.Tag = mediaSource.ETag;
+        let mediaSource;
+        if (this.playbackInfo?.MediaSources) {
+          mediaSource = this.playbackInfo.MediaSources[0];
+          this.setMediaSource({ mediaSource });
+        } else {
+          throw new Error("This item can't be played.");
         }
 
-        if (mediaSource.LiveStreamId) {
-          directOptions.LiveStreamId = mediaSource.LiveStreamId;
-        }
+        if (mediaSource.SupportsDirectStream) {
+          const directOptions: Record<
+            string,
+            string | boolean | undefined | null
+          > = {
+            Static: true,
+            mediaSourceId: mediaSource.Id,
+            deviceId: this.$store.state.deviceProfile.deviceId,
+            api_key: this.$store.state.user.accessToken
+          };
 
-        const params = stringify(directOptions);
-        this.source = `${this.$axios.defaults.baseURL}/Videos/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
-      } else if (
-        mediaSource.SupportsTranscoding &&
-        mediaSource.TranscodingUrl
-      ) {
-        this.source = this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
+          if (mediaSource.ETag) {
+            directOptions.Tag = mediaSource.ETag;
+          }
+
+          if (mediaSource.LiveStreamId) {
+            directOptions.LiveStreamId = mediaSource.LiveStreamId;
+          }
+
+          const params = stringify(directOptions);
+          this.source = `${this.$axios.defaults.baseURL}/Videos/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
+        } else if (
+          mediaSource.SupportsTranscoding &&
+          mediaSource.TranscodingUrl
+        ) {
+          this.source =
+            this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
+        }
       }
     },
     onVideoProgress(_event?: Event): void {
-      const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
-        .currentTime;
+      if (this.$refs.videoPlayer) {
+        const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
+          .currentTime;
 
-      this.setCurrentTime({ time: currentTime });
+        this.setCurrentTime({ time: currentTime });
+      }
     },
     onVideoPause(_event?: Event): void {
-      const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
-        .currentTime;
-      this.setCurrentTime({ time: currentTime });
-      this.pause();
+      if (this.$refs.videoPlayer) {
+        const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
+          .currentTime;
+        this.setCurrentTime({ time: currentTime });
+        this.pause();
+      }
     },
     onVideoStopped(_event?: Event): void {
-      const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
-        .currentTime;
-      this.setCurrentTime({ time: currentTime });
-      this.setNextTrack();
+      if (this.$refs.videoPlayer) {
+        const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
+          .currentTime;
+        this.setCurrentTime({ time: currentTime });
+        this.setNextTrack();
+      }
     },
     onPlayerError(event: ErrorEvent): void {
       this.$emit('error', event);
