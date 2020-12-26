@@ -50,7 +50,7 @@
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
             nuxt
-            :to="`/item/${relatedItem.Id}`"
+            :to="getItemLink(relatedItem)"
           >
             <v-list-item-avatar>
               <v-img ref="avatarImg" :src="getImageUrl(relatedItem.Id)" />
@@ -161,6 +161,16 @@ export default Vue.extend({
     getImageUrl(itemId: string): string {
       const element = this.$refs.avatarImg as HTMLElement;
       return this.getImageUrlForElement(ImageType.Primary, { itemId, element });
+    },
+    getItemLink(item: BaseItemDto): string {
+      switch (item.Type) {
+        case 'MusicArtist':
+          return `/artist/${item.Id}`;
+        case 'Person':
+          return `/person/${item.Id}`;
+        default:
+          return `/item/${item.Id}`;
+      }
     }
   }
 });
