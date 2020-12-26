@@ -155,5 +155,6 @@
     "addNewPerson": "Ajouter une nouvelle personne",
     "actor": "Acteur",
     "activity": "Activités",
-    "3DFormat": "Format 3D"
+    "3DFormat": "Format 3D",
+    "communityRating": "Notation de la communauté"
 }
