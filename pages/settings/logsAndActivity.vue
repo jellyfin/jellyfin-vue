@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" :offset-md="1" md="5" class="pt-0 pb-4">
-        <h2 class="text-h6 mb-2">{{ $t('logs') }}</h2>
+        <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.logs') }}</h2>
         <v-list v-if="logFiles && logFiles.length > 0" two-line class="mb-2">
           <v-list-item-group>
             <v-list-item
@@ -27,12 +27,23 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-        <v-card v-else>
-          <v-card-text>{{ $t('noResultsFound') }}</v-card-text>
+        <v-card v-else-if="loadingLogsStatus.status === 'loaded'">
+          <v-card-title>
+            {{ $t('logsAndActivity.noLogsFound') }}
+          </v-card-title>
+        </v-card>
+        <v-card v-else-if="loadingLogsStatus.status === 'error'">
+          <v-card-title>
+            <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+            {{ $t('logsAndActivity.failedGetLogs') }}
+          </v-card-title>
+          <v-card-text v-if="loadingLogsStatus.errorMessage">
+            {{ loadingLogsStatus.errorMessage }}</v-card-text
+          >
         </v-card>
       </v-col>
       <v-col cols="12" md="5" class="pt-0 pb-4">
-        <h2 class="text-h6 mb-2">{{ $t('activity') }}</h2>
+        <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.activity') }}</h2>
         <v-list
           v-if="activityList && activityList.length > 0"
           two-line
@@ -59,8 +70,19 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-        <v-card v-else>
-          <v-card-text>{{ $t('noResultsFound') }}</v-card-text>
+        <v-card v-else-if="loadingActivityStatus.status === 'loaded'">
+          <v-card-title>
+            {{ $t('logsAndActivity.noActivityFound') }}
+          </v-card-title>
+        </v-card>
+        <v-card v-else-if="loadingActivityStatus.status === 'error'">
+          <v-card-title>
+            <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+            {{ $t('logsAndActivity.failedGetActivity') }}
+          </v-card-title>
+          <v-card-text v-if="loadingActivityStatus.errorMessage">
+            {{ loadingActivityStatus.errorMessage }}
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -75,13 +97,20 @@ import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
 import { decodeHTML } from 'entities';
 import htmlHelper from '~/mixins/htmlHelper';
 
+interface LoadingStatus {
+  status: 'loading' | 'loaded' | 'error';
+  errorMessage: string;
+}
+
 export default Vue.extend({
   mixins: [htmlHelper],
   middleware: 'adminMiddleware',
   data() {
     return {
       activityList: [] as ActivityLogEntry[],
-      logFiles: [] as LogFile[]
+      logFiles: [] as LogFile[],
+      loadingLogsStatus: { status: 'error' } as LoadingStatus,
+      loadingActivityStatus: { status: 'error' } as LoadingStatus
     };
   },
   head() {
@@ -89,19 +118,66 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
-  async beforeMount() {
+  beforeMount() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
-
-    // Only fetch the activity for the last 7 days
-    // TODO: Add this as a filter
-    const minDate = new Date();
-    minDate.setDate(minDate.getDate() - 7);
-    this.activityList =
-      (await this.$api.activityLog.getLogEntries({ minDate })).data.Items || [];
-    this.logFiles = (await this.$api.system.getServerLogs()).data;
+    this.getActivities();
+    this.getLogs();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    async getActivities() {
+      this.loadingActivityStatus.status = 'loading';
+
+      // Only fetch the activity for the last 7 days
+      // TODO: Add this as a filter
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() - 7);
+
+      try {
+        this.activityList =
+          (await this.$api.activityLog.getLogEntries({ minDate })).data.Items ||
+          [];
+
+        this.loadingActivityStatus.status = 'loaded';
+
+        return;
+      } catch (error) {
+        this.loadingActivityStatus = {
+          status: 'error',
+          errorMessage: error || ''
+        };
+
+        // eslint-disable-next-line no-console
+        console.error(error);
+        this.pushSnackbarMessage({
+          message: this.$t('logsAndActivity.failedGetActivity'),
+          color: 'error'
+        });
+      }
+    },
+    async getLogs() {
+      this.loadingLogsStatus.status = 'loading';
+      try {
+        this.logFiles = (await this.$api.system.getServerLogs()).data;
+
+        this.loadingLogsStatus.status = 'loaded';
+
+        return;
+      } catch (error) {
+        this.loadingLogsStatus = {
+          status: 'error',
+          errorMessage: error || ''
+        };
+
+        // eslint-disable-next-line no-console
+        console.error(error);
+        this.pushSnackbarMessage({
+          message: this.$t('logsAndActivity.failedGetLogs'),
+          color: 'error'
+        });
+      }
+    },
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
         case LogLevel.Trace:
@@ -167,13 +243,7 @@ export default Vue.extend({
       return this.$dateFns.format(date, 'Ppp');
     },
     getLogFileLink(name: string): string {
-      return (
-        this.$axios.defaults.baseURL +
-        '/System/Logs/Log?name=' +
-        name +
-        '&api_key=' +
-        this.$store.state.user.accessToken
-      );
+      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$store.state.user.accessToken}`;
     },
     decodeHTML
   }

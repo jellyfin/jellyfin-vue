@@ -1,6 +1,5 @@
 {
   "3DFormat": "3D format",
-  "activity": "Activity",
   "actor": "Actor",
   "actors": "Actors",
   "addNewPerson": "Add a new person",
@@ -88,7 +87,14 @@
   "loginAs": "Login as {name}",
   "logo": "Logo",
   "logout": "Logout",
-  "logs": "Logs",
+  "logsAndActivity": {
+    "activity": "Activity",
+    "logs": "Logs",
+    "failedGetLogs": "Unable to get logs",
+    "failedGetActivity": "Unable to get activity",
+    "noActivityFound": "No activities found",
+    "noLogsFounr": "No logs found"
+  },
   "manualLogin": "Manual login",
   "menu": "Menu",
   "metadata": "Metadata",
