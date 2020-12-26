@@ -142,5 +142,18 @@
     "buttons": {
         "ok": "OK"
     },
-    "architecture": "Architecture"
+    "architecture": "Architecture",
+    "castAndCrew": "Acteurs et équipe",
+    "cancel": "Annuler",
+    "boxRear": "Boîte (dos)",
+    "box": "Boîte",
+    "banner": "Bannière",
+    "backdrop": "Toile de fond",
+    "audio": "Audio",
+    "art": "Art",
+    "allLanguages": "Toutes les langues",
+    "addNewPerson": "Ajouter une nouvelle personne",
+    "actor": "Acteur",
+    "activity": "Activités",
+    "3DFormat": "Format 3D"
 }
