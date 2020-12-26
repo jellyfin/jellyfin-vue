@@ -173,7 +173,7 @@
     "images": "Images",
     "headerPaths": "Chemin",
     "general": "Général",
-    "editPerson": "Éditer les personnes",
+    "editPerson": "Modifier la personne",
     "editMetadata": "Éditer les méta-données",
     "edit": "Éditer",
     "director": "Réalisateur",
@@ -187,5 +187,6 @@
     "screenshot": "Capture d'écran",
     "save": "Sauvegarder",
     "serverVersion": "Version du serveur",
-    "saved": "Enregistré"
+    "saved": "Enregistré",
+    "headerExternalIds": "IDs externes"
 }
