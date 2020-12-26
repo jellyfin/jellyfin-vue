@@ -25,8 +25,10 @@ export default Vue.extend({
         const down = [keyCodes.down, keyCodes.pagedown];
 
         if (up.includes(e.keyCode)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (e as any).deltaY = -1;
         } else if (down.includes(e.keyCode)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (e as any).deltaY = 1;
         }
       }
