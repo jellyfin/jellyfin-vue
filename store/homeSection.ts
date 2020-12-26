@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import {
   BaseItemDto,
@@ -5,7 +6,6 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/client-axios';
-import Vue from 'vue';
 import { AppState } from './index';
 
 export interface HomeSection {
