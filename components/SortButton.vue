@@ -10,7 +10,7 @@
         v-on="on"
       >
         {{ $t('sortByType', { type: items[model].name }) }}
-        <v-icon right> mdi-menu-down </v-icon>
+        <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
       <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
         <v-icon>mdi-sort-alphabetical-ascending</v-icon>

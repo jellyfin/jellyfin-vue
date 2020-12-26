@@ -1,7 +1,7 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div class="d-flex align-center" v-bind="attrs" v-on="on">
+      <div class="d-flex align-center no-overflow" v-bind="attrs" v-on="on">
         <v-avatar :size="avatarSize" color="primary" class="mr-4">
           <v-img :src="userImage" :alt="$auth.user.Name">
             <template #placeholder>
@@ -9,10 +9,10 @@
             </template>
           </v-img>
         </v-avatar>
-        <h1 class="font-weight-light pb-1">
+        <h1 class="font-weight-light pb-1 text-truncate">
           {{ $auth.user.Name }}
-          <v-icon>mdi-chevron-down</v-icon>
         </h1>
+        <v-icon>mdi-chevron-down</v-icon>
       </div>
     </template>
     <v-list dense>
@@ -43,8 +43,6 @@ export default Vue.extend({
         {
           title: this.$t('logout'),
           action: () => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
-            // @ts-ignore
             this.logoutUser();
           }
         }
@@ -62,6 +60,7 @@ export default Vue.extend({
     ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
+      this.$disconnect();
       this.$auth.logout();
       this.clearDeviceProfile();
       this.clearUser();
@@ -69,3 +68,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.no-overflow {
+  max-width: 100%;
+}
+</style>

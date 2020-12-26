@@ -25,8 +25,9 @@
               large
               color="primary"
               type="submit"
-              >{{ $t('connect') }}</v-btn
             >
+              {{ $t('connect') }}
+            </v-btn>
           </v-col>
           <v-col cols="auto">
             <locale-switcher />

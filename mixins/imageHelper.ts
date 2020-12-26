@@ -84,8 +84,8 @@ const imageHelper = Vue.extend({
      * @param {HTMLElement} options.element - The DOM element which size will be used for the image's maximum width or height (optional).
      * @param {string} options.tag - tag of the image to fetch (optional if item is passed).
      * @param {string} [options.itemId=item?.Id] - itemId to get the image from (optional if item is passed).
-     * @param {number} [options.maxWidth=element?.clientWidth] - Maximum width of the image (optional).
-     * @param {number} [options.maxHeight=element?.clientHeight] - Maximum height of the image (optional).
+     * @param {number} [options.maxWidth=element?.clientWidth] - Maximum width of the image in CSS pixels (optional).
+     * @param {number} [options.maxHeight=element?.clientHeight] - Maximum height of the image in CSS pixels (optional).
      * @param {number} [options.quality=90] - Quality level of the image (optional, only relevant for jpeg format).
      * @param {boolean} [options.limitByWidth=false] - Use the element's width instead of its height for the size calculation.
      * @returns {string} The URL for the image, with the base URL set and the options provided.
@@ -125,10 +125,11 @@ const imageHelper = Vue.extend({
         quality
       };
 
+      const scaling = window.devicePixelRatio;
       if (limitByWidth && maxWidth) {
-        params.maxWidth = maxWidth.toString();
+        params.maxWidth = Math.round(maxWidth * scaling).toString();
       } else if (maxHeight) {
-        params.maxHeight = maxHeight.toString();
+        params.maxHeight = Math.round(maxHeight * scaling).toString();
       }
 
       url.search = stringify(params);

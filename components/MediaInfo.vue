@@ -2,19 +2,21 @@
   <div class="text--secondary">
     <span v-if="item.ProductionYear && year">{{ item.ProductionYear }}</span>
     <span v-if="item.OfficialRating && rating">{{ item.OfficialRating }}</span>
-    <span v-if="item.CommunityRating && rating"
-      ><v-icon class="rating-icon" size="16">mdi-star</v-icon>
-      {{ item.CommunityRating }}</span
-    >
+    <span v-if="item.CommunityRating && rating">
+      <v-icon class="rating-icon" size="16">mdi-star</v-icon>
+      {{ item.CommunityRating }}
+    </span>
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
       {{ $t('numberTracks', { number: item.ChildCount }) }}
     </span>
     <span v-if="item.RunTimeTicks && runtime">{{ runtimeValue }}</span>
-    <span v-if="item.RunTimeTicks && endsAt">{{
-      $t('endsAt', {
-        time: endsAtValue
-      })
-    }}</span>
+    <span v-if="item.RunTimeTicks && endsAt">
+      {{
+        $t('endsAt', {
+          time: endsAtValue
+        })
+      }}
+    </span>
   </div>
 </template>
 
