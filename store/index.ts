@@ -55,12 +55,14 @@ export const mutations: MutationTree<RootState> = {
     Vue.set(state.socket, 'isConnected', false);
   },
   SOCKET_ONERROR(state: RootState, event: Event) {
+    // eslint-disable-next-line no-console
     console.error(state, event);
   },
   SOCKET_ONMESSAGE(state: RootState, message) {
     Vue.set(state.socket, 'message', message);
   },
   SOCKET_RECONNECT(state: RootState, count: number) {
+    // eslint-disable-next-line no-console
     console.info(state, count);
   },
   SOCKET_RECONNECT_ERROR(state: RootState) {

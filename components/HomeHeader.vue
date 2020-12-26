@@ -1,104 +1,125 @@
 <template>
-  <swiper v-if="items.length > 0" class="swiper" :options="swiperOptions">
-    <swiper-slide v-for="item in items" :key="item.Id">
-      <div
-        class="slide-backdrop"
-        :style="{
-          backgroundImage: `url('${getBackdrop(item)}')`
-        }"
-      />
-      <div class="slide-content">
-        <v-container
-          fill-height
-          class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-md-start"
-        >
-          <v-row>
-            <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
-              <v-img
-                v-if="
-                  item.ParentLogoImageTag ||
-                  (item.ImageTags && item.ImageTags.Logo)
-                "
-                :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-                aspect-ratio="2.58"
-                contain
-                :src="getLogo(item)"
-              />
-              <h1
-                v-else-if="item.Type === 'Episode'"
-                class="text-h2 text-truncate mb-2"
-              >
-                {{ item.SeriesName }}
-              </h1>
-              <h1
-                v-else-if="item.Type === 'MusicAlbum'"
-                class="text-h4 text-truncate mb-2"
-              >
-                {{ item.AlbumArtist }}
-              </h1>
-              <h1 v-else class="text-h2 text-truncate">{{ item.Name }}</h1>
-              <p
-                v-if="item.Type === 'Episode'"
-                class="mb-n1 text-truncate text-subtitle-2"
-              >
-                {{ item.SeasonName }}
-                {{ $t('episodeNumber', { episodeNumber: item.IndexNumber }) }}
-              </p>
-              <h2
-                v-else-if="item.Taglines && item.Taglines.length > 0"
-                class="text-truncate"
-              >
-                {{ item.Taglines[0] }}
-              </h2>
-              <h2 v-if="item.Type === 'Episode'" class="text-h4 text-truncate">
-                {{ item.Name }}
-              </h2>
-              <h2
-                v-else-if="item.Type === 'MusicAlbum'"
-                class="text-h2 text-truncate"
-              >
-                {{ item.Name }}
-              </h2>
-              <media-info
-                :item="item"
-                year
-                tracks
-                runtime
-                rating
-                class="my-2"
-              />
-              <v-btn
-                class="mr-2"
-                color="primary"
-                min-width="8em"
-                depressed
-                rounded
-                @click="play({ items: [item] })"
-              >
-                {{ $t('play') }}
-              </v-btn>
-              <v-btn
-                min-width="12em"
-                outlined
-                rounded
-                nuxt
-                :to="`item/${item.Id}`"
-              >
-                {{ $t('viewDetails') }}
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-    </swiper-slide>
-    <div slot="pagination" class="d-none d-md-block swiper-pagination"></div>
-  </swiper>
+  <div v-if="items.length > 0" class="swiperContainer">
+    <swiper
+      v-if="items.length > 0"
+      ref="homeSwiper"
+      class="swiper"
+      :options="swiperOptions"
+      @slideChange="onSlideChange"
+      @touchStart="onTouch"
+      @touchEnd="onTouch"
+    >
+      <swiper-slide v-for="item in items" :key="item.Id">
+        <div
+          class="slide-backdrop"
+          :style="{
+            backgroundImage: `url('${getBackdrop(item)}')`
+          }"
+        />
+        <div class="slide-content">
+          <v-container
+            fill-height
+            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-md-start"
+          >
+            <v-row>
+              <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
+                <v-img
+                  v-if="
+                    item.ParentLogoImageTag ||
+                    (item.ImageTags && item.ImageTags.Logo)
+                  "
+                  :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
+                  aspect-ratio="2.58"
+                  contain
+                  :src="getLogo(item)"
+                />
+                <h1
+                  v-else-if="item.Type === 'Episode'"
+                  class="text-h2 text-truncate mb-2"
+                >
+                  {{ item.SeriesName }}
+                </h1>
+                <h1
+                  v-else-if="item.Type === 'MusicAlbum'"
+                  class="text-h4 text-truncate mb-2"
+                >
+                  {{ item.AlbumArtist }}
+                </h1>
+                <h1 v-else class="text-h2 text-truncate">{{ item.Name }}</h1>
+                <p
+                  v-if="item.Type === 'Episode'"
+                  class="mb-n1 text-truncate text-subtitle-2"
+                >
+                  {{ item.SeasonName }}
+                  {{ $t('episodeNumber', { episodeNumber: item.IndexNumber }) }}
+                </p>
+                <h2
+                  v-else-if="item.Taglines && item.Taglines.length > 0"
+                  class="text-truncate"
+                >
+                  {{ item.Taglines[0] }}
+                </h2>
+                <h2
+                  v-if="item.Type === 'Episode'"
+                  class="text-h4 text-truncate"
+                >
+                  {{ item.Name }}
+                </h2>
+                <h2
+                  v-else-if="item.Type === 'MusicAlbum'"
+                  class="text-h2 text-truncate"
+                >
+                  {{ item.Name }}
+                </h2>
+                <media-info
+                  :item="item"
+                  year
+                  tracks
+                  runtime
+                  rating
+                  class="my-2"
+                />
+                <v-btn
+                  class="mr-2"
+                  color="primary"
+                  min-width="8em"
+                  depressed
+                  rounded
+                  @click="play({ items: [item] })"
+                >
+                  {{ $t('play') }}
+                </v-btn>
+                <v-btn
+                  min-width="12em"
+                  outlined
+                  rounded
+                  nuxt
+                  :to="`item/${item.Id}`"
+                >
+                  {{ $t('viewDetails') }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </div>
+      </swiper-slide>
+    </swiper>
+    <swiper-progress-bar
+      :pages="items.length"
+      :current-index="currentIndex"
+      :duration="slideDuration"
+      :paused="isPaused"
+      class="progressbar"
+      @on-animation-end="onAnimationEnd"
+      @on-progress-clicked="onProgressClicked"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import Swiper, { SwiperOptions } from 'swiper';
 import { mapActions } from 'vuex';
-import { SwiperOptions } from 'swiper';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
@@ -108,16 +129,15 @@ export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
+      currentIndex: 0,
+      pages: 10,
+      slideDuration: 7000,
+      isPaused: false,
       swiperOptions: {
-        autoplay: {
-          delay: 20000
-        },
         initialSlide: 0,
         loop: true,
-        effect: 'slide',
-        pagination: {
-          el: '.swiper-pagination'
-        }
+        autoplay: false,
+        effect: 'slide'
       } as SwiperOptions
     };
   },
@@ -125,7 +145,7 @@ export default Vue.extend({
     this.items = (
       await this.$api.userLibrary.getLatestMedia({
         userId: this.$auth.user.Id,
-        limit: 10,
+        limit: this.pages,
         fields: [ItemFields.Overview],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
         imageTypeLimit: 1
@@ -170,13 +190,45 @@ export default Vue.extend({
       } else {
         return '';
       }
+    },
+    onSlideChange(): void {
+      this.currentIndex = ((this.$refs.homeSwiper as Vue)
+        .$swiper as Swiper).realIndex;
+    },
+    onTouch(): void {
+      this.isPaused = !this.isPaused;
+    },
+    onAnimationEnd(): void {
+      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideNext();
+    },
+    onProgressClicked(index: number): void {
+      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideToLoop(index);
     }
   }
 });
 </script>
 
 <style lang="scss" scoped>
+.text-h2,
+.text-h4 {
+  line-height: normal;
+}
+
+.swiperContainer {
+  min-width: 100%;
+  min-height: 100%;
+  position: relative;
+  user-select: none;
+}
+
 @import '~vuetify/src/styles/styles.sass';
+.progressbar {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  margin-top: -15px;
+}
+
 .slide-backdrop {
   padding-bottom: 80%;
   background-position: center top;
@@ -227,6 +279,11 @@ export default Vue.extend({
 @media #{map-get($display-breakpoints, 'md-and-up')} {
   .swiper {
     margin-bottom: -128px !important;
+  }
+
+  .progressbar {
+    top: initial;
+    margin-top: initial;
   }
 }
 </style>
