@@ -1,22 +1,21 @@
 <template>
-  <div ref="card" class="absolute">
+  <div v-if="isValidTag()" ref="img" class="absolute">
     <transition-group mode="in-out" name="fade" class="absolute">
       <blurhash-canvas
-        v-if="checkImageHash"
+        v-if="canBeBlurhashed()"
         key="canvas"
-        :hash="getImageHash"
+        :hash="getHash()"
         :width="width"
         :height="height"
         :punch="punch"
         class="absolute"
       />
       <img
-        v-if="item.ImageTags && item.ImageTags.Primary"
         key="image"
         class="absolute"
         :src="image"
         v-bind="$attrs"
-        @error="$emit('error')"
+        @error="onError"
       />
     </transition-group>
   </div>
@@ -24,8 +23,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemDtoImageBlurHashes,
+  ImageType
+} from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+
+const excludedTypes = [ImageType.Logo];
 
 export default Vue.extend({
   mixins: [imageHelper],
@@ -46,9 +51,8 @@ export default Vue.extend({
       type: Number,
       default: 1
     },
-    imageType: {
+    type: {
       type: String as () => ImageType,
-      required: false,
       default: ImageType.Primary
     }
   },
@@ -57,81 +61,77 @@ export default Vue.extend({
       image: ''
     };
   },
-  computed: {
-    checkImageHash(): boolean {
-      if (
-        (this.imageType === ImageType.Primary &&
-          this.item.ImageBlurHashes?.Primary &&
-          this.item.ImageTags?.Primary) ||
-        (this.imageType === ImageType.Backdrop &&
-          this.item.ImageBlurHashes?.Backdrop &&
-          this.item.ImageTags &&
-          this.item.BackdropImageTags) ||
-        (this.imageType === ImageType.Thumb &&
-          this.item.ImageBlurHashes?.Thumb &&
-          this.item.ImageTags?.Thumb)
-      ) {
-        return true;
-      }
-      return false;
-    },
-    getImageHash(): string {
-      switch (this.imageType) {
-        case ImageType.Primary:
-          if (
-            this.item?.ImageTags?.Primary &&
-            this.item.ImageBlurHashes?.Primary?.[this.item?.ImageTags?.Primary]
-          ) {
-            return this.item.ImageBlurHashes?.Primary?.[
-              this.item?.ImageTags?.Primary
-            ];
-          }
-          break;
-        case ImageType.Thumb:
-          if (
-            this.item?.ImageTags?.Thumb &&
-            this.item.ImageBlurHashes?.Thumb?.[this.item?.ImageTags?.Thumb]
-          ) {
-            return this.item.ImageBlurHashes?.Thumb?.[
-              this.item?.ImageTags?.Thumb
-            ];
-          }
-        // eslint-disable-next-line no-fallthrough
-        case ImageType.Backdrop || ImageType.Thumb:
-          if (
-            this.item?.BackdropImageTags?.[0] &&
-            this.item?.ImageBlurHashes?.Backdrop
-          ) {
-            return this.item?.ImageBlurHashes?.Backdrop?.[
-              this.item?.BackdropImageTags?.[0]
-            ];
-          }
-      }
-      return '';
-    },
-    checkImage(): boolean {
-      if (
-        (this.imageType === ImageType.Primary &&
-          this.item.ImageTags &&
-          this.item.ImageTags.Primary) ||
-        (this.imageType === ImageType.Backdrop &&
-          this.item.ImageTags &&
-          this.item.BackdropImageTags) ||
-        (this.imageType === ImageType.Thumb &&
-          this.item.ImageTags &&
-          this.item.ImageTags.Thumb)
-      ) {
-        return true;
-      } else return false;
-    }
-  },
   mounted(): void {
-    if (this.checkImage) {
-      const card = this.$refs.card as HTMLElement;
-      this.image = this.getImageUrlForElement(this.imageType, {
-        item: this.item,
-        element: card
-      });
+    const img = this.$refs.img as HTMLElement;
+    // We don't pass the item itself as we already did all the tags checking in this component,
+    // so doing it again in the mixin is useless.
+    this.image = this.getImageUrlForElement(this.type, {
+      itemId: this.item.Id,
+      element: img
+    });
+  },
+  methods: {
+    isValidTag(): boolean {
+      if (
+        (this.item?.ImageTags &&
+          Object.prototype.hasOwnProperty.call(
+            this.item?.ImageTags,
+            this.type
+          )) ||
+        (this.type === ImageType.Backdrop &&
+          this.item?.BackdropImageTags &&
+          this.item?.BackdropImageTags.length > 0)
+      ) {
+        return true;
+      } else {
+        this.onError();
+        return false;
+      }
+    },
+    canBeBlurhashed(): boolean {
+      if (
+        excludedTypes.includes(this.type) ||
+        (this.item?.ImageBlurHashes as Array<never>).length === 0
+      ) {
+        return false;
+      } else if (
+        Object.prototype.hasOwnProperty.call(
+          this.item?.ImageBlurHashes,
+          this.type
+        ) &&
+        this.type !== ImageType.Backdrop
+      ) {
+        return true;
+      } else if (
+        this.type === ImageType.Backdrop &&
+        (this.item?.BackdropImageTags as Array<never>).length > 0 &&
+        this.item?.ImageBlurHashes?.Backdrop &&
+        Object.prototype.hasOwnProperty.call(
+          this.item?.ImageBlurHashes?.Backdrop as Record<string, string>,
+          (this.item?.BackdropImageTags as Array<string>)[0]
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getHash(): string {
+      if (this.type === ImageType.Backdrop) {
+        const tag = (this.item?.BackdropImageTags as Array<string>)[0];
+
+        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)
+          .Backdrop as Record<string, string>)[tag];
+      } else {
+        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)[
+          this.type
+        ] as Record<string, string>)[
+          (this.item?.ImageTags as Record<string, string>)[this.type]
+        ];
+      }
+    },
+    onError(): void {
+      this.$emit('error');
     }
   }
 });

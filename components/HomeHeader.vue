@@ -1,7 +1,6 @@
 <template>
-  <div v-if="items.length > 0" class="swiperContainer">
+  <div v-if="items.length > 0 && !loading" class="swiperContainer">
     <swiper
-      v-if="items.length > 0"
       ref="homeSwiper"
       class="swiper"
       :options="swiperOptions"
@@ -10,12 +9,13 @@
       @touchEnd="onTouch"
     >
       <swiper-slide v-for="item in items" :key="item.Id">
-        <div
-          class="slide-backdrop"
-          :style="{
-            backgroundImage: `url('${getBackdrop(item)}')`
-          }"
-        />
+        <div class="slide-backdrop">
+          <blurhash-image
+            :key="`${item.Id}-${reloadSentinel}`"
+            :item="getRelatedItem(item)"
+            :type="'Backdrop'"
+          />
+        </div>
         <div class="slide-content">
           <v-container
             fill-height
@@ -129,8 +129,11 @@ export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
-      currentIndex: 0,
+      reloadSentinel: 0,
       pages: 10,
+      relatedItems: {} as { [k: number]: BaseItemDto },
+      loading: true,
+      currentIndex: 0,
       slideDuration: 7000,
       isPaused: false,
       swiperOptions: {
@@ -151,38 +154,41 @@ export default Vue.extend({
         imageTypeLimit: 1
       })
     ).data;
+
+    // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
+    // for the parent items. Revisit this once proper changes are done.
+
+    for (const [key, i] of this.items.entries()) {
+      let id: string;
+      if (i.Type === 'Episode' && i.SeriesId) {
+        id = i?.SeriesId as string;
+      } else if (i.Type === 'MusicAlbum') {
+        id = i?.AlbumArtists?.[0].Id as string;
+      } else if (i.ParentLogoItemId) {
+        id = i?.ParentLogoItemId as string;
+      } else {
+        continue;
+      }
+
+      const itemData = (
+        await this.$api.userLibrary.getItem({
+          userId: this.$auth.user.Id,
+          itemId: id
+        })
+      ).data;
+
+      this.relatedItems[key] = itemData;
+    }
+    this.loading = false;
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
-    getBackdrop(item: BaseItemDto): string {
-      if (item.Type === 'Episode') {
-        return this.getImageUrlForElement(ImageType.Backdrop, {
-          itemId: item.SeriesId
-        });
-      } else if (item.Type === 'MusicAlbum') {
-        return this.getImageUrlForElement(ImageType.Backdrop, {
-          itemId: item.AlbumArtists?.[0].Id
-        });
-      } else {
-        return this.getImageUrlForElement(ImageType.Backdrop, {
-          itemId: item.Id
-        });
+    getRelatedItem(item: BaseItemDto): BaseItemDto {
+      const rItem = this.relatedItems[this.items.indexOf(item)];
+      if (!rItem) {
+        return item;
       }
-    },
-    getLogo(item: BaseItemDto): string {
-      if (item.Type === 'Episode' && item.SeriesId) {
-        return this.getImageUrlForElement(ImageType.Logo, {
-          itemId: item.SeriesId
-        });
-      } else if (item.ParentLogoItemId) {
-        return this.getImageUrlForElement(ImageType.Logo, {
-          itemId: item.ParentLogoItemId as string
-        });
-      } else {
-        return this.getImageUrlForElement(ImageType.Logo, {
-          item
-        });
-      }
+      return rItem;
     },
     getOverview(item: BaseItemDto): string {
       if (item.Overview) {
@@ -191,9 +197,28 @@ export default Vue.extend({
         return '';
       }
     },
+    getLogo(item: BaseItemDto): string {
+      const relatedItem = this.getRelatedItem(item);
+      return this.getImageUrlForElement(ImageType.Logo, {
+        itemId: relatedItem.Id
+      });
+    },
+    // HACK: Vue-awesome-swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
+    // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
+    // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
+    // we force a BlurhashImage reload to fix this by updating it's key.
+    //
+    // TODO: Revisit this once we are using the original Swiper.js library.
+    forceReload(): void {
+      this.reloadSentinel = 1;
+      this.reloadSentinel = 0;
+    },
     onSlideChange(): void {
       this.currentIndex = ((this.$refs.homeSwiper as Vue)
         .$swiper as Swiper).realIndex;
+      if (this.currentIndex === 0 || this.currentIndex === this.pages - 1) {
+        this.forceReload();
+      }
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;

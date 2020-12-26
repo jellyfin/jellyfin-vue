@@ -8,7 +8,7 @@
           <blurhash-image
             v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
             :item="item"
-            :image-type="getImageType"
+            :type="getImageType"
             class="card-image"
             @error="imageLoadError = true"
           />

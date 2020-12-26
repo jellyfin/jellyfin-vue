@@ -126,8 +126,8 @@ export default Vue.extend({
     to right,
     rgba(255, 255, 255, 1) 0%,
     rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0.4) 50.001%,
-    rgba(255, 255, 255, 0.4) 100%
+    rgba(255, 255, 255, 0.3) 50.001%,
+    rgba(255, 255, 255, 0.3) 100%
   );
   background-repeat: no-repeat;
   background-size: 200%;
