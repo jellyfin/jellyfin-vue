@@ -49,8 +49,9 @@
               large
               color="primary"
               type="submit"
-              >{{ $t('signIn') }}</v-btn
             >
+              {{ $t('signIn') }}
+            </v-btn>
           </v-col>
           <v-col cols="auto">
             <locale-switcher />
@@ -93,7 +94,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('user', ['setUser', 'clearUser', 'loginRequest']),
+    ...mapActions('user', ['loginRequest']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin() {

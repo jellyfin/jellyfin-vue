@@ -103,5 +103,7 @@
     },
     "buttons": {
         "ok": "Oké"
-    }
+    },
+    "failedRetrievingDisplayPreferences": "Nem sikerült lekérni a megjelenítési beállításokat. Alapértelmezések használata.",
+    "architecture": "Architektúra"
 }

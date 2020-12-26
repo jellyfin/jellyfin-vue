@@ -10,7 +10,7 @@
           v-if="!user.PrimaryImageTag"
           class="empty-picture d-flex align-center justify-center"
         >
-          <v-icon size="96"> mdi-account </v-icon>
+          <v-icon dark size="96">mdi-account</v-icon>
         </div>
       </v-responsive>
     </div>
@@ -33,9 +33,10 @@
 import Vue from 'vue';
 import { UserDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import localeHelper from '~/mixins/localeHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, localeHelper],
   props: {
     user: {
       type: Object as () => UserDto,
@@ -46,7 +47,8 @@ export default Vue.extend({
     formatDistance(value: string) {
       if (value) {
         return this.$dateFns.formatDistanceToNow(new Date(value), {
-          addSuffix: true
+          addSuffix: true,
+          locale: this.getDfnsLocale()
         });
       } else {
         return this.$t('never');

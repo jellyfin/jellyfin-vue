@@ -54,9 +54,15 @@
           v-if="overlay"
           class="card-overlay d-flex justify-center align-center"
         >
-          <v-btn fab color="primary" nuxt :to="`/item/${item.Id}/play`">
+          <v-btn
+            fab
+            color="primary"
+            nuxt
+            @click.prevent="play({ items: [item] })"
+          >
             <v-icon size="36">mdi-play</v-icon>
           </v-btn>
+          <item-menu :item-id="item.Id" />
         </div>
       </div>
       <div v-if="!noText" class="card-text">
@@ -71,6 +77,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -229,6 +236,9 @@ export default Vue.extend({
         return ImageType.Primary;
       }
     }
+  },
+  methods: {
+    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

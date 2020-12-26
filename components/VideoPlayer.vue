@@ -5,7 +5,6 @@
         ref="videoPlayer"
         :poster="poster"
         autoplay
-        @playing="onVideoPlaying"
         @timeupdate="onVideoProgress"
         @pause="onVideoPause"
         @play="onVideoProgress"
@@ -24,10 +23,11 @@ import shaka from 'shaka-player/dist/shaka-player.ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import muxjs from 'mux.js';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import 'shaka-player/dist/controls.css';
-import { PlaybackInfoResponse } from '@jellyfin/client-axios';
+import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
+import imageHelper from '~/mixins/imageHelper';
 
 declare global {
   interface Window {
@@ -37,21 +37,10 @@ declare global {
 }
 
 export default Vue.extend({
-  mixins: [timeUtils],
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    poster: {
-      type: String,
-      default: ''
-    }
-  },
+  mixins: [imageHelper, timeUtils],
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
-      lastProgressUpdate: 0,
       source: '',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player: null as any,
@@ -59,7 +48,22 @@ export default Vue.extend({
       ui: null as any
     };
   },
+  computed: {
+    ...mapGetters('playbackManager', ['getCurrentItem']),
+    ...mapState('playbackManager', ['lastProgressUpdate']),
+    poster(): string {
+      return this.getImageUrlForElement(ImageType.Backdrop, {
+        itemId:
+          this.getCurrentItem.ParentBackdropItemId ||
+          this.getCurrentItem.SeriesId ||
+          this.getCurrentItem.Id
+      });
+    }
+  },
   watch: {
+    getCurrentItem() {
+      this.getPlaybackUrl();
+    },
     async source(newSource) {
       if (this.player) {
         try {
@@ -70,19 +74,68 @@ export default Vue.extend({
       }
     }
   },
-  async mounted() {
+  mounted() {
     try {
+      this.getPlaybackUrl();
+
+      window.muxjs = muxjs;
+      shaka.polyfill.installAll();
+      if (shaka.Player.isBrowserSupported()) {
+        this.player = new shaka.Player(this.$refs.videoPlayer);
+        // TODO: Remove Shaka's OSD and use our own
+        this.ui = new shaka.ui.Overlay(
+          this.player,
+          this.$refs.videoContainer,
+          this.$refs.videoPlayer
+        );
+        // Register player events
+        this.player.addEventListener('error', this.onPlayerError);
+      } else {
+        this.$nuxt.error({
+          message: this.$t('browserNotSupported') as string
+        });
+      }
+    } catch (error) {
+      this.$nuxt.error({
+        statusCode: 404,
+        message: error
+      });
+    }
+  },
+  beforeDestroy() {
+    if (this.player) {
+      window.muxjs = undefined;
+      this.onVideoStopped(); // Report that the playback is stopping
+      this.player.removeEventListener('error', this.onPlayerError);
+      this.player.unload();
+      this.player.destroy();
+    }
+  },
+  methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    ...mapActions('playbackManager', [
+      'pause',
+      'setNextTrack',
+      'setMediaSource',
+      'setCurrentTime',
+      'setPlaySessionId',
+      'setLastProgressUpdate'
+    ]),
+    async getPlaybackUrl(): Promise<void> {
       this.playbackInfo = (
         await this.$api.mediaInfo.getPostedPlaybackInfo({
-          itemId: this.$route.params.itemId,
+          itemId: this.getCurrentItem.Id || '',
           userId: this.$auth.user.Id,
           playbackInfoDto: { DeviceProfile: this.$playbackProfile }
         })
       ).data;
 
+      this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
+
       let mediaSource;
       if (this.playbackInfo?.MediaSources) {
         mediaSource = this.playbackInfo.MediaSources[0];
+        this.setMediaSource({ mediaSource });
       } else {
         throw new Error("This item can't be played.");
       }
@@ -114,124 +167,26 @@ export default Vue.extend({
       ) {
         this.source = this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
       }
-      window.muxjs = muxjs;
-      shaka.polyfill.installAll();
-      if (shaka.Player.isBrowserSupported()) {
-        // Everything looks good!
-        this.player = new shaka.Player(this.$refs.videoPlayer);
-        this.ui = new shaka.ui.Overlay(
-          this.player,
-          this.$refs.videoContainer,
-          this.$refs.videoPlayer
-        );
-        // Register player events
-        this.player.addEventListener('error', this.onPlayerError);
-      } else {
-        this.$nuxt.error({
-          message: this.$t('browserNotSupported') as string
-        });
-      }
-    } catch (error) {
-      this.$nuxt.error({
-        statusCode: 404,
-        message: error
-      });
-    }
-  },
-  beforeDestroy() {
-    if (this.player) {
-      window.muxjs = undefined;
-      this.onVideoStopped(); // Report that the playback is stopping
-      this.player.removeEventListener('error', this.onPlayerError);
-      this.player.unload();
-      this.player.destroy();
-    }
-  },
-  methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
-    onVideoPlaying(_event: Event) {
-      // TODO: Move to playback manager
-      this.$api.playState.reportPlaybackStart(
-        {
-          playbackStartInfo: {
-            CanSeek: true,
-            ItemId: this.item.Id,
-            PlaySessionId: this.playbackInfo.PlaySessionId,
-            MediaSourceId: this.playbackInfo.MediaSources?.[0].Id,
-            AudioStreamIndex: 0, // TODO: Don't hardcode this
-            SubtitleStreamIndex: 0 // TODO: Don't hardcode this
-          }
-        },
-        { progress: false }
-      );
-
-      this.lastProgressUpdate = new Date().getTime();
     },
-    onVideoProgress(_event?: Event) {
-      // TODO: Move to playback manager
-      const now = new Date().getTime();
-
-      if (now - this.lastProgressUpdate > 1000) {
-        const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
-          .currentTime;
-
-        this.$api.playState.reportPlaybackProgress(
-          {
-            playbackProgressInfo: {
-              ItemId: this.item.Id,
-              PlaySessionId: this.playbackInfo.PlaySessionId,
-              IsPaused: false,
-              PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
-            }
-          },
-          { progress: false }
-        );
-
-        this.lastProgressUpdate = new Date().getTime();
-      }
-    },
-    onVideoPause(_event?: Event) {
-      // TODO: Move to playback manager
+    onVideoProgress(_event?: Event): void {
       const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
         .currentTime;
 
-      this.$api.playState.reportPlaybackProgress(
-        {
-          playbackProgressInfo: {
-            ItemId: this.item.Id,
-            PlaySessionId: this.playbackInfo.PlaySessionId,
-            IsPaused: true,
-            PositionTicks: Math.round(this.msToTicks(currentTime * 1000))
-          }
-        },
-        { progress: false }
-      );
+      this.setCurrentTime({ time: currentTime });
     },
-    onVideoStopped(_event?: Event) {
-      // TODO: Move to playback manager
+    onVideoPause(_event?: Event): void {
       const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
         .currentTime;
-
-      this.$api.playState.reportPlaybackStopped(
-        {
-          playbackStopInfo: {
-            ItemId: this.item.Id,
-            PlaySessionId: this.playbackInfo.PlaySessionId,
-            PositionTicks: this.msToTicks(currentTime * 1000)
-          }
-        },
-        { progress: false }
-      );
-
-      this.lastProgressUpdate = 0;
-
-      if (event !== undefined) {
-        // We're coming from a real end of playback event, so avoid staying on the video screen after playback
-        // TODO: Once in the playback manager, move this to the end of the queue
-        this.$router.back();
-      }
+      this.setCurrentTime({ time: currentTime });
+      this.pause();
     },
-    onPlayerError(event: ErrorEvent) {
+    onVideoStopped(_event?: Event): void {
+      const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
+        .currentTime;
+      this.setCurrentTime({ time: currentTime });
+      this.setNextTrack();
+    },
+    onPlayerError(event: ErrorEvent): void {
       this.$emit('error', event);
     }
   }
@@ -239,8 +194,9 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.shaka-video-container,
 video {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 </style>

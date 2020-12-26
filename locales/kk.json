@@ -1,45 +1,45 @@
 {
-    "alphabetically": "",
-    "badRequest": "",
+    "alphabetically": "Álipbı boıynsha",
+    "badRequest": "Jaramsyz saýal. Áreketti qaıtalańyz",
     "browserNotSupported": "",
     "changeServer": "Serverdi aýystyrý",
     "connect": "Qosylý",
     "continueListening": "Tyńdaýdy jalǵastyrý",
     "continueWatching": "Qaraýdy jalǵastyrý",
     "endDate": "Aıaqtalý kúni",
-    "endsAt": "",
-    "episodeNumber": "",
+    "endsAt": "Aıaqtalýy {time}",
+    "episodeNumber": "Bólim {episodeNumber}",
     "home": "Basqy",
     "incorrectUsernameOrPassword": "",
-    "itemNotFound": "",
-    "libraryEmpty": "",
-    "libraryNotFound": "",
+    "itemNotFound": "Tarmaq tabylmady",
+    "libraryEmpty": "Bul tasyǵyshhana bos",
+    "libraryNotFound": "Tasyǵyshhana tabylmady",
     "login": "Kirý",
-    "logout": "",
+    "logout": "Shyǵý",
     "more": "Kóbirek",
     "moreLikeThis": "Osy sıaqty kóbirek",
     "movies": "Fılmder",
-    "noNetworkConnection": "",
+    "noNetworkConnection": "Jelilik baılanys joq",
     "password": "Paról",
     "play": "Oınatý",
     "playType": "",
-    "present": "",
+    "present": "Aǵymda",
     "rating": "Baǵalaý",
     "releaseDate": "Shyǵarý kúni",
     "serverAddress": "Server mekenjaıy",
-    "serverAddressMustBeUrl": "",
-    "serverAddressRequired": "",
-    "serverNotFound": "",
-    "serverVersionTooLow": "",
+    "serverAddressMustBeUrl": "Server mekenjaıynda jaramdy URL qajet",
+    "serverAddressRequired": "Server mekenjaıy qajet",
+    "serverNotFound": "Server tabylmady",
+    "serverVersionTooLow": "Server nusqasy 10.7.0 ne odan joǵary qajet",
     "settings": "Parametrler",
     "shows": "Kórsetimder",
     "signIn": "Kirý",
-    "unexpectedError": "",
-    "unhandledException": "",
-    "upNext": "",
+    "unexpectedError": "Kútpegen qate",
+    "unhandledException": "Óńdelmeıtin qıys",
+    "upNext": "Kezekti",
     "username": "Paıdalanýshy aty",
-    "usernameRequired": "",
-    "filtersNotFound": "",
+    "usernameRequired": "Paıdalanýshy aty qajet",
+    "filtersNotFound": "Súzgilerdi júkteý múmkin emes",
     "status": "Kúı",
     "played": "Oınatylǵan",
     "unplayed": "Oınatylmaǵan",
@@ -47,11 +47,11 @@
     "favorite": "Tańdaýly",
     "likes": "Unatýlar",
     "dislikes": "Unatpaýlar",
-    "features": "",
+    "features": "Materıaldar",
     "selectServer": "Serverdi tańdaý",
     "subtitles": "Sýbtıtrler",
     "trailer": "Treıler",
-    "specialFeatures": "",
+    "specialFeatures": "Arnaıy materıaldar",
     "themeSong": "Taqyryptyq áýen",
     "themeVideo": "Taqyryptyq beıne",
     "genres": "Janrlar",
@@ -67,5 +67,161 @@
     "collections": "Jıyntyqtar",
     "artists": "Oryndaýshylar",
     "artist": "Oryndaýshy",
-    "albums": "Álbomdar"
+    "albums": "Álbomdar",
+    "sortByType": "{type} boıynsha",
+    "shuffleAll": "Bárin aralastyrý",
+    "settingsSections": {
+        "users": {
+            "name": "Paıdalanýshylar"
+        },
+        "subtitles": {
+            "name": "Sýbtıtrler"
+        },
+        "server": {
+            "name": "Server"
+        },
+        "scheduledTasks": {
+            "name": "Josparlaýshy"
+        },
+        "plugins": {
+            "name": "Plagınder"
+        },
+        "playback": {
+            "name": "Oınatý"
+        },
+        "notifications": {
+            "name": "Habarlandyrýlar"
+        },
+        "networking": {
+            "name": "Jelilik jumys"
+        },
+        "liveTvAndDvr": {
+            "name": "Efır ben DVR"
+        },
+        "libraries": {
+            "name": "Tasyǵyshhanalar"
+        },
+        "home": {
+            "name": "Basqy ekran"
+        },
+        "dlna": {
+            "name": "DLNA qyzmeti"
+        },
+        "devices": {
+            "name": "Qurylǵylar"
+        },
+        "account": {
+            "name": "Tirkelgi",
+            "description": "Paidalanýshy málimetterin óńdeý"
+        },
+        "apiKeys": {
+            "name": "API-kiltter"
+        },
+        "transcodingAndStreaming": {
+            "name": "Qaıta kodtaý men taratý"
+        },
+        "logs": {
+            "name": "Jurnaldar men áreketter"
+        },
+        "mediaPlayers": {
+            "name": "Tasyǵyshderekter oınatqyshtary"
+        }
+    },
+    "serverVersion": "Server nusqasy",
+    "server": "Server",
+    "rememberMe": "Este saqtaý",
+    "operatingSystem": "Operasıalyq júıe",
+    "numberTracks": "{number} jolshyq",
+    "noResultsFound": "Munda eshteńe joq",
+    "nextUp": "Kezekti",
+    "moreLikeArtist": "{artist} sıaqty uqsastar",
+    "logs": "Jurnaldar",
+    "liked": "Unaıdy",
+    "libraries": "Tasyǵyshhanalar",
+    "latestLibrary": "Eń keıingi {libraryName}",
+    "jellyfinLogo": "Jellyfin logotıpi",
+    "filter": "Súzgi",
+    "errors": {
+        "messages": {
+            "errorCode": "Qate kody: {errorCode}"
+        },
+        "anErrorHappened": "Qate oryn aldy"
+    },
+    "disc": "Diski",
+    "darkModeToggle": "Qarańǵy rejimdi qosý",
+    "changeUser": "Paıdalanýshyny aýystyrý",
+    "byArtist": "-",
+    "buttons": {
+        "ok": "Jaraıdy"
+    },
+    "biography": "Ómirbaıany",
+    "architecture": "Arhıtektýrasy",
+    "actors": "Aktórler",
+    "activity": "Áreketter",
+    "unableGetPublicUsers": "Paıdalanýshylardy alý múmkin emes",
+    "links": {
+        "poweredByJellyfin": "Bul server Jellyfin arqyly isteıdi",
+        "helpTranslate": "Óz tilińizdegi Jellyfin tárjimesine kómektesińiz",
+        "readTheDocumentation": "Qujattamany oqý"
+    },
+    "details": "Egjeıler",
+    "customRating": "Teńshelgen sanat",
+    "youMayAlsoLike": "Unatýyńyz múmkin",
+    "year": "Jyl",
+    "writer": "Senarıshy",
+    "vueClientVersion": "Vue tutynǵyshynyń nusqasy",
+    "viewDetails": "Egjeılerdi qaraý",
+    "validation": {
+        "required": "Bul óris qajet",
+        "mustBeUrl": "Bul óriste jaramdy URL qajet"
+    },
+    "unliked": "Unamaıdy",
+    "type": "Túri",
+    "title": "Ataýy",
+    "thumb": "Nobaı",
+    "tags": "Tegter",
+    "tagline": "Urany",
+    "sortTitle": "Suryptaý ataýy",
+    "serverDashboard": "Server taqtasy",
+    "search": "Izdeý",
+    "screenshot": "Ekran sýreti",
+    "saved": "Saqtalǵan",
+    "save": "Saqtaý",
+    "role": "Róli",
+    "producer": "Prodúser",
+    "primary": "Negizgi",
+    "people": "Adamdar",
+    "parentalRating": "Jastas sanaty",
+    "overview": "Jalpy sholý",
+    "originalTitle": "Bastapqy ataýy",
+    "originalAspectRatio": "Bastapqy pishimdik araqatynasy",
+    "metadata": "Metaderekter",
+    "menu": "Mázir",
+    "logo": "Logotıp",
+    "loginAs": "{name} atymen kirý",
+    "images": "Sýretter",
+    "headerPaths": "Joly",
+    "headerExternalIds": "Syrtqy sáıkestendirgishter",
+    "guestStar": "Shaqyrylǵan aktór",
+    "general": "Jalpy",
+    "editPerson": "Tulǵany óńdeý",
+    "editMetadata": "Metaderekterdi óńdeý",
+    "edit": "Óńdeý",
+    "discNumber": "Diski {discNumber}",
+    "director": "Rejısór",
+    "dateAdded": "Ústelgen kúni",
+    "criticRating": "Synshylar baǵalaýy",
+    "composer": "Kompozıtor",
+    "communityRating": "Qaýym baǵalaýy",
+    "castAndCrew": "Róldegiler men qyzmetkerler",
+    "cancel": "Boldyrmaý",
+    "boxRear": "Qorap arty",
+    "box": "Qorap",
+    "banner": "Baner",
+    "backdrop": "Artqy sýret",
+    "art": "Oıý sýret",
+    "allLanguages": "Barlyq tilder",
+    "addNewPerson": "Jańa tulǵany ústeý",
+    "actor": "Aktór",
+    "3DFormat": "3D pishimi"
 }

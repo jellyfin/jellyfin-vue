@@ -9,3 +9,11 @@ $heading-font-family: 'Noto Sans', 'Noto Sans HK', 'Noto Sans JP',
 $body-font-family: $heading-font-family;
 $font-size-root: 14px;
 $input-font-size: 14px;
+
+$material-light: (
+  'background': #f2f2f2
+);
+
+$material-dark: (
+  'background': #101010
+);

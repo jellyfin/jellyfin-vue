@@ -53,7 +53,7 @@ export const getters: GetterTree<HomeSectionState, AppState> = {
         return state.videoResumes;
       case 'resumeaudio':
         return state.audioResumes;
-      case 'upNext':
+      case 'upnext':
         return state.upNext;
       case 'latestmedia':
         return state.latestMedia[section.libraryId];

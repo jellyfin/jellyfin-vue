@@ -5,6 +5,29 @@
  */
 import Vue from 'vue';
 
+/**
+ * Converts .NET ticks to milliseconds
+ *
+ * @param {(number | null | undefined)} ticks Number of .NET ticks to convert
+ * @returns {number} The converted value in milliseconds
+ */
+export function ticksToMs(ticks: number | null | undefined): number {
+  if (!ticks) {
+    ticks = 0;
+  }
+  return Math.round(ticks / 10000);
+}
+
+/**
+ * Converts milliseconds to .NET ticks
+ *
+ * @param {string} ms Number of milliseconds to convert
+ * @returns {number} The converted value in .NET ticks
+ */
+export function msToTicks(ms: number): number {
+  return Math.round(ms * 10000);
+}
+
 declare module '@nuxt/types' {
   interface Context {
     ticksToMs: (ticks: number) => number;
@@ -27,25 +50,22 @@ declare module 'vue/types/vue' {
 const timeUtils = Vue.extend({
   methods: {
     /**
-     * Converts time from ticks to ms
+     * Converts .NET ticks to milliseconds
      *
-     * @param {string} ticks number of ticks to convert from
-     * @returns {number} Correct number of ms
+     * @param {(number | null | undefined)} ticks Number of .NET ticks to convert
+     * @returns {number} The converted value in milliseconds
      */
     ticksToMs(ticks: number | null | undefined): number {
-      if (!ticks) {
-        ticks = 0;
-      }
-      return ticks / 10000;
+      return ticksToMs(ticks);
     },
     /**
-     * Converts time from ms to ticks
+     * Converts milliseconds to .NET ticks
      *
-     * @param {string} ms number of ms to convert from
-     * @returns {number} Correct number of ticks
+     * @param {string} ms Number of milliseconds to convert
+     * @returns {number} The converted value in .NET ticks
      */
     msToTicks(ms: number): number {
-      return ms * 10000;
+      return msToTicks(ms);
     }
   }
 });

@@ -103,5 +103,8 @@
     "darkModeToggle": "Schakel donkere modus",
     "buttons": {
         "ok": "Ok"
-    }
+    },
+    "rememberMe": "Onthoud mij",
+    "unableGetPublicUsers": "Gebruikers laden is mislukt",
+    "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt"
 }

@@ -83,3 +83,5 @@ jobs:
 
       - name: Run tests
         run: yarn test
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1

@@ -32,12 +32,13 @@ export default Vue.extend({
   },
   async created() {
     this.setPageTitle({ title: this.$t('home') });
+    this.setAppBarOpacity({ opaqueAppBar: false });
 
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
     let homeSectionsArray = pickBy(
-      this.$store.state.user.displayPreferences,
+      this.$store.state.displayPreferences.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&
@@ -142,8 +143,11 @@ export default Vue.extend({
       this.homeSections = homeSections;
     }
   },
+  destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
+  },
   methods: {
-    ...mapActions('page', ['setPageTitle'])
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
   }
 });
 </script>

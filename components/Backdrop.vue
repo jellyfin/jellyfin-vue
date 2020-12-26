@@ -39,8 +39,12 @@ export default Vue.extend({
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: var(--v-background-base);
+    background-color: #{map-get($material-light, 'background')};
     opacity: 0.75;
   }
+}
+
+.theme--dark .backdrop::after {
+  background-color: #{map-get($material-dark, 'background')};
 }
 </style>

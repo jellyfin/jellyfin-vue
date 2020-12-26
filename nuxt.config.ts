@@ -32,6 +32,18 @@ const config: NuxtConfig = {
     failedColor: '#FF5252',
     height: '4px'
   },
+  pwa: {
+    meta: {
+      nativeUI: true,
+      appleStatusBarStyle: 'dark',
+      name: 'Jellyfin',
+      theme_color: '#424242'
+    },
+    manifest: {
+      name: 'Jellyfin',
+      background_color: '#101010'
+    }
+  },
   /*
    ** Headers of the page
    ** See https://nuxtjs.org/api/configuration-head
@@ -62,6 +74,7 @@ const config: NuxtConfig = {
     // General
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
+    'plugins/nativeWebsocketPlugin.ts',
     // Components
     'plugins/components/swiper.ts',
     'plugins/components/vueperSlides.ts',
@@ -135,7 +148,6 @@ const config: NuxtConfig = {
   },
   i18n: {
     locales: [
-      { code: 'chi', iso: 'zh-Hans', name: '简体中文', file: 'zh_Hans.json' },
       { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
       { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
@@ -150,7 +162,8 @@ const config: NuxtConfig = {
       { code: 'sv', iso: 'sv-SE', name: 'Svenska', file: 'sv.json' },
       { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' },
       { code: 'tr', iso: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
-      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' }
+      { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' },
+      { code: 'zh', iso: 'zh_Hans', name: '简体中文', file: 'zh_Hans.json' }
     ],
     lazy: true,
     langDir: 'locales/',
@@ -158,7 +171,29 @@ const config: NuxtConfig = {
     defaultLocale: 'en',
     vueI18n: {
       fallbackLocale: 'en'
-    }
+    },
+    detectBrowserLanguage: { useCookie: false }
+  },
+  dateFns: {
+    locales: [
+      'cs',
+      'de',
+      'enUS',
+      'es',
+      'fr',
+      'nb',
+      'nl',
+      'pl',
+      'ro',
+      'sk',
+      'sl',
+      'sv',
+      'ta',
+      'tr',
+      'vi',
+      'zhCN'
+    ],
+    defaultLocale: 'enUS'
   },
   /*
    ** vuetify module configuration
@@ -177,7 +212,7 @@ const config: NuxtConfig = {
           primary: '#00A4DC',
           secondary: '#424242',
           accent: '#FF4081',
-          info: '#2196F3',
+          info: '#0099CC',
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
@@ -189,7 +224,7 @@ const config: NuxtConfig = {
           primary: '#00A4DC',
           secondary: '#424242',
           accent: '#FF4081',
-          info: '#2196F3',
+          info: '#33b5e5',
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
@@ -206,8 +241,6 @@ const config: NuxtConfig = {
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
-
-   ** Build perfs options come from this https://github.com/nuxt/nuxt.js/issues/5131#issuecomment-468231314
    */
   build: {
     // @ts-ignore -- Undocumented options
