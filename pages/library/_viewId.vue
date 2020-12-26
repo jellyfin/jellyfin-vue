@@ -270,8 +270,6 @@ export default Vue.extend({
             ).data;
             break;
           default:
-            console.warn('loading default items');
-            console.warn(this.collectionInfo.IsFolder);
             itemsResponse = (
               await this.$api.items.getItems({
                 uId: this.$auth.user.Id,
