@@ -22,7 +22,7 @@
     "rating": "Critique",
     "releaseDate": "Date de sortie",
     "serverAddress": "Adresse du serveur",
-    "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse valide",
+    "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse URL valide",
     "serverAddressRequired": "L'adresse du serveur est requise",
     "serverNotFound": "Serveur introuvable",
     "settings": "Paramètres",
@@ -110,10 +110,12 @@
             "name": "DLNA"
         },
         "devices": {
-            "name": "Appareils"
+            "name": "Appareils",
+            "description": "Voir et gérer les appareils connectés à votre serveur"
         },
         "apiKeys": {
-            "name": "Clés API"
+            "name": "Clés API",
+            "description": "Ajouter et révoquer les clés API pour l'accès externe à votre serveur"
         },
         "account": {
             "name": "Compte",
@@ -180,5 +182,10 @@
     "criticRating": "Notation de la critique",
     "composer": "Compositeur",
     "discNumber": "Disque {discNumber}",
-    "customRating": "Notation personnalisée"
+    "customRating": "Notation personnalisée",
+    "search": "Rechercher",
+    "screenshot": "Capture d'écran",
+    "save": "Sauvegarder",
+    "serverVersion": "Version du serveur",
+    "saved": "Enregistré"
 }
