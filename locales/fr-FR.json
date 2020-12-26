@@ -59,7 +59,7 @@
     "unhandledException": "Exception non gérée",
     "selectServer": "Sélectionner le serveur",
     "moreLikeArtist": "Similaires à {artist}",
-    "disc": "Disque {discNumber}",
+    "disc": "Disque",
     "byArtist": "Par",
     "connect": "Se connecter",
     "changeServer": "Changer de serveur",
@@ -178,5 +178,7 @@
     "details": "Détails",
     "dateAdded": "Date ajoutée",
     "criticRating": "Notation de la critique",
-    "composer": "Compositeur"
+    "composer": "Compositeur",
+    "discNumber": "Disque {discNumber}",
+    "customRating": "Notation personnalisée"
 }
