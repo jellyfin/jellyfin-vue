@@ -51,3 +51,7 @@
 .v-app-bar.v-app-bar--fixed {
   z-index: 100 !important;
 }
+
+.v-navigation-drawer--temporary {
+  z-index: 105 !important;
+}
