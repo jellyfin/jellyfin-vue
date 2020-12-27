@@ -1,12 +1,9 @@
 <template>
-  <v-avatar>
-    <v-img
-      v-if="userImage"
-      :src="userImage"
-      :alt="$auth.user.Name"
-      class="userImage"
-    ></v-img>
-    <v-icon v-else dark>mdi-account</v-icon>
+  <v-avatar v-if="userImage">
+    <v-img :src="userImage" :alt="$auth.user.Name" class="userImage absolute" />
+  </v-avatar>
+  <v-avatar v-else color="primary">
+    <v-icon dark>mdi-account</v-icon>
   </v-avatar>
 </template>
 
@@ -18,7 +15,7 @@ export default Vue.extend({
     id: {
       type: String,
       required: false,
-      default: ''
+      default: undefined
     },
     quality: {
       type: Number,
@@ -28,11 +25,13 @@ export default Vue.extend({
   },
   computed: {
     userImage: {
-      get(): string {
-        if (this.id === '') {
+      get(): string | undefined {
+        if (!this.id && this.$auth.user.Id && this.$auth.user.PrimaryImageTag) {
           return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&quality=${this.quality}`;
-        } else {
+        } else if (this.id) {
           return `${this.$axios.defaults.baseURL}/Users/${this.id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&quality=${this.quality}`;
+        } else {
+          return undefined;
         }
       }
     }

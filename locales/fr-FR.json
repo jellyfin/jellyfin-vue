@@ -22,7 +22,7 @@
     "rating": "Critique",
     "releaseDate": "Date de sortie",
     "serverAddress": "Adresse du serveur",
-    "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse valide",
+    "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse URL valide",
     "serverAddressRequired": "L'adresse du serveur est requise",
     "serverNotFound": "Serveur introuvable",
     "settings": "Paramètres",
@@ -59,7 +59,7 @@
     "unhandledException": "Exception non gérée",
     "selectServer": "Sélectionner le serveur",
     "moreLikeArtist": "Similaires à {artist}",
-    "disc": "Disque {discNumber}",
+    "disc": "Disque",
     "byArtist": "Par",
     "connect": "Se connecter",
     "changeServer": "Changer de serveur",
@@ -94,5 +94,157 @@
     "nextUp": "À suivre",
     "libraries": "Médiathèques",
     "latestLibrary": "Derniers {libraryName}",
-    "darkModeToggle": "Activer le mode sombre"
+    "darkModeToggle": "Activer le mode sombre",
+    "settingsSections": {
+        "liveTvAndDvr": {
+            "name": "TV en direct et enregistrements",
+            "description": "Gérer les tuneurs TV, les fournisseurs d'information pour le guide TV et les paramètres de l’enregistreur numérique"
+        },
+        "libraries": {
+            "name": "Médiathèques",
+            "description": "Gérer les médiathèques et leurs métadonnées"
+        },
+        "home": {
+            "name": "Écran d'accueil",
+            "description": "Configurer vos sections et l'agencement de l’accueil"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Configurer les paramètres et le profil DLNA"
+        },
+        "devices": {
+            "name": "Appareils",
+            "description": "Voir et gérer les appareils connectés à votre serveur"
+        },
+        "apiKeys": {
+            "name": "Clés API",
+            "description": "Ajouter et révoquer les clés API pour l'accès externe à votre serveur"
+        },
+        "account": {
+            "name": "Compte",
+            "description": "Éditer vos informations d'utilisateur"
+        },
+        "subtitles": {
+            "description": "Contrôler l'affichage des sous-titres sur cet appareil",
+            "name": "Sous-titres"
+        },
+        "users": {
+            "name": "Utilisateurs",
+            "description": "Gérer les utilisateurs et les permissions"
+        },
+        "server": {
+            "name": "Serveur"
+        },
+        "scheduledTasks": {
+            "name": "Tâches planifiées",
+            "description": "Gérer les tâches planifiées sur ce serveur"
+        },
+        "plugins": {
+            "name": "Extensions",
+            "description": "Ajouter et configurer de nouvelles fonctionnalités pour ce serveur"
+        },
+        "playback": {
+            "name": "Lecture",
+            "description": "Éditer les préférences de lecture pour cet équipement"
+        },
+        "notifications": {
+            "name": "Notifications",
+            "description": "Gérer et configurer les notifications envoyées par ce serveur"
+        },
+        "networking": {
+            "name": "Réseau",
+            "description": "Gérer les paramètres réseau pour ce serveur"
+        },
+        "mediaPlayers": {
+            "description": "Configurer la façon dont le lecteur se comporte pour cet équipement"
+        },
+        "logs": {
+            "name": "Journaux et activité",
+            "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
+        }
+    },
+    "serverDashboard": "Tableau de bord du serveur",
+    "server": "Serveur",
+    "operatingSystem": "Système d'exploitation",
+    "links": {
+        "reportAnIssue": "Reporter une erreur avec le client Vue",
+        "readTheDocumentation": "Lire la documentation",
+        "poweredByJellyfin": "Ce serveur est propulsé par Jellyfin",
+        "helpTranslate": "Aidez à traduire Jellyfin dans votre langue"
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "failedSettingDisplayPreferences": "Impossible de modifier les préférences d'affichage.",
+    "failedRetrievingDisplayPreferences": "Impossible de lire les préférences d'affichage. Les valeurs par défaut seront utilisées.",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Le lecteur vidéo a rencontré une erreur irrécupérable.",
+            "errorCode": "Code erreur : {errorCode}"
+        },
+        "anErrorHappened": "Une erreur est survenue"
+    },
+    "buttons": {
+        "ok": "OK"
+    },
+    "architecture": "Architecture",
+    "castAndCrew": "Acteurs et équipe",
+    "cancel": "Annuler",
+    "boxRear": "Boîte (dos)",
+    "box": "Boîte",
+    "banner": "Bannière",
+    "backdrop": "Toile de fond",
+    "audio": "Audio",
+    "art": "Illustration",
+    "allLanguages": "Toutes les langues",
+    "addNewPerson": "Ajouter une nouvelle personne",
+    "actor": "Acteur",
+    "activity": "Activités",
+    "3DFormat": "Format 3D",
+    "communityRating": "Notation de la communauté",
+    "role": "Rôle",
+    "rememberMe": "Se souvenir de moi",
+    "producer": "Producteur",
+    "overview": "Synopsis",
+    "originalTitle": "Titre original",
+    "originalAspectRatio": "Ratio d'aspect original",
+    "metadataNoResultsMatching": "Pas de résultat pour \"{search}\". Appuyer sur Entrée pour effectuer une nouvelle recherche.",
+    "metadata": "Meta-données",
+    "menu": "Menu",
+    "logs": "Journaux",
+    "logo": "Logo",
+    "images": "Images",
+    "headerPaths": "Chemin",
+    "general": "Général",
+    "editPerson": "Modifier la personne",
+    "editMetadata": "Éditer les méta-données",
+    "edit": "Éditer",
+    "director": "Réalisateur",
+    "details": "Détails",
+    "dateAdded": "Date ajoutée",
+    "criticRating": "Notation de la critique",
+    "composer": "Compositeur",
+    "discNumber": "Disque {discNumber}",
+    "customRating": "Notation personnalisée",
+    "search": "Rechercher",
+    "screenshot": "Capture d'écran",
+    "save": "Sauvegarder",
+    "serverVersion": "Version du serveur",
+    "saved": "Enregistré",
+    "headerExternalIds": "Identifiants externes",
+    "year": "Année",
+    "writer": "Scénariste",
+    "unableGetServerConfiguration": "Impossible de récupérer la configuration du serveur",
+    "unableGetPublicUsers": "Impossible de récupérer les utilisateurs",
+    "type": "Type",
+    "title": "Titre",
+    "primary": "Principal",
+    "people": "Personnes",
+    "parentalRating": "Classification parentale",
+    "logsAndActivity": {
+        "noLogsFounr": "Aucun journal trouvé",
+        "noActivityFound": "Aucune activité trouvée",
+        "failedGetActivity": "Impossible de récupérer l'activité",
+        "failedGetLogs": "Impossible de récupérer le journal",
+        "logs": "Journaux",
+        "activity": "Activité"
+    }
 }

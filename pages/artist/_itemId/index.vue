@@ -53,8 +53,9 @@
                                 class="link"
                                 tag="h2"
                                 :to="`/item/${appearance.Id}/`"
-                                >{{ appearance.Name }}</nuxt-link
                               >
+                                {{ appearance.Name }}
+                              </nuxt-link>
                             </v-col>
                           </v-row>
                           <v-row>
@@ -160,8 +161,12 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string, type: string): string {
-      return this.getImageUrlForElement(type as ImageType, { itemId });
+    getImageUrl(itemId: string | undefined, type: string): string {
+      if (itemId) {
+        return this.getImageUrlForElement(type as ImageType, { itemId });
+      } else {
+        return '';
+      }
     }
   }
 });

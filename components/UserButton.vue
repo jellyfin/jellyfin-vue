@@ -1,15 +1,16 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div class="d-flex align-center space-evenly" v-bind="attrs" v-on="on">
-        <user-image v-if="userHasImage" />
-        <template v-else>
-          <v-icon dark>mdi-account</v-icon>
-        </template>
-        <h1 class="font-weight-light pb-1">
+      <div
+        class="d-flex align-center no-overflow space-evenly"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <user-image />
+        <h1 class="font-weight-light pb-1 text-truncate">
           {{ $auth.user.Name }}
-          <v-icon>mdi-chevron-down</v-icon>
         </h1>
+        <v-icon>mdi-chevron-down</v-icon>
       </div>
     </template>
     <v-list dense>
@@ -40,23 +41,17 @@ export default Vue.extend({
         {
           title: this.$t('logout'),
           action: () => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- False-positive due to Vuex's bad Typescript support
-            // @ts-ignore
             this.logoutUser();
           }
         }
       ];
-    },
-    userHasImage: {
-      get(): boolean {
-        return this.$auth.user?.PrimaryImageTag;
-      }
     }
   },
   methods: {
     ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser() {
+      this.$disconnect();
       this.$auth.logout();
       this.clearDeviceProfile();
       this.clearUser();
@@ -69,5 +64,9 @@ export default Vue.extend({
 .space-evenly {
   flex: 1 !important;
   justify-content: space-evenly !important;
+}
+
+.no-overflow {
+  max-width: 100%;
 }
 </style>

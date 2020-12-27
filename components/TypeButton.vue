@@ -2,7 +2,7 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <v-btn
-        v-if="!$vuetify.breakpoint.smAndDown"
+        v-if="!$vuetify.breakpoint.smAndDown && items[model]"
         class="my-2"
         text
         rounded
@@ -10,7 +10,7 @@
         v-on="on"
       >
         {{ items[model].name }}
-        <v-icon right> mdi-menu-down </v-icon>
+        <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
       <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
         <v-icon>mdi-eye</v-icon>

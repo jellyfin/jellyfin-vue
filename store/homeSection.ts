@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import {
   BaseItemDto,
@@ -5,7 +6,6 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/client-axios';
-import Vue from 'vue';
 import { AppState } from './index';
 
 export interface HomeSection {
@@ -53,7 +53,7 @@ export const getters: GetterTree<HomeSectionState, AppState> = {
         return state.videoResumes;
       case 'resumeaudio':
         return state.audioResumes;
-      case 'upNext':
+      case 'upnext':
         return state.upNext;
       case 'latestmedia':
         return state.latestMedia[section.libraryId];

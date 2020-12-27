@@ -58,13 +58,13 @@
                 class="play-button mr-2"
                 color="primary"
                 min-width="8em"
-                :disabled="isPlayable"
+                :disabled="!isPlayable"
                 depressed
                 rounded
-                nuxt
-                :to="`./${item.Id}/play`"
-                >{{ $t('play') }}</v-btn
+                @click="play({ items: [item] })"
               >
+                {{ $t('play') }}
+              </v-btn>
               <v-skeleton-loader v-else type="button" />
               <v-btn v-if="loaded" outlined icon>
                 <v-icon>mdi-dots-horizontal</v-icon>
@@ -109,7 +109,7 @@
               >
                 <v-row v-if="item.MediaSources.length > 1">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Video</label>
+                    <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
@@ -130,7 +130,7 @@
                 </v-row>
                 <v-row v-if="videoTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Video</label>
+                    <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
@@ -152,7 +152,7 @@
                 </v-row>
                 <v-row v-if="audioTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Audio</label>
+                    <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
@@ -190,7 +190,7 @@
                 </v-row>
                 <v-row v-if="subtitleTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Subtitles</label>
+                    <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
@@ -315,7 +315,7 @@ export default Vue.extend({
     isPlayable: {
       get() {
         // TODO: Move this to a mixin
-        if (['Movie'].includes(this.$data.item.Type)) {
+        if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
           return false;
         } else {
           return true;
@@ -408,8 +408,10 @@ export default Vue.extend({
     this.clearBackdrop();
   },
   methods: {
+    ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getLanguageName(code: string) {
+    getLanguageName(code?: string) {
+      if (!code) return '';
       return langs.where('2B', code).name;
     },
     getSurroundIcon(layout: string) {

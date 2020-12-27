@@ -9,11 +9,16 @@
       </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button
-        v-if="collectionInfo.CollectionType"
+        v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
         @change="onChangeType"
       />
-      <v-divider v-if="isSortable" inset vertical class="mx-2" />
+      <v-divider
+        v-if="isSortable && hasViewTypes"
+        inset
+        vertical
+        class="mx-2"
+      />
       <sort-button v-if="isSortable" @change="onChangeSort" />
       <filter-button
         v-if="isSortable"
@@ -69,7 +74,17 @@ export default Vue.extend({
     };
   },
   computed: {
-    isSortable() {
+    hasViewTypes(): boolean {
+      if (
+        ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
+        this.collectionInfo.CollectionType === undefined
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isSortable(): boolean {
       // Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
       // Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
       if (
@@ -141,6 +156,7 @@ export default Vue.extend({
             this.viewType = 'MusicAlbum';
             break;
           default:
+            this.refreshItems();
             break;
         }
 
@@ -260,8 +276,16 @@ export default Vue.extend({
                 userId: this.$auth.user.Id,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
-                recursive: true,
-                sortBy: this.sortBy,
+                sortBy:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? 'IsFolder,SortName'
+                    : this.sortBy,
+                recursive:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? undefined
+                    : true,
                 sortOrder: 'Ascending',
                 filters: this.statusFilter ? this.statusFilter : undefined,
                 genres: this.genresFilter ? this.genresFilter : undefined,
