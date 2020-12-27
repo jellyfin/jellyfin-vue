@@ -4,6 +4,7 @@
     <v-navigation-drawer
       v-model="drawer"
       :temporary="$vuetify.breakpoint.mobile"
+      :permanent="!$vuetify.breakpoint.mobile"
       app
     >
       <template #prepend>
@@ -125,7 +126,7 @@ interface WebSocketMessage {
 export default Vue.extend({
   data() {
     return {
-      drawer: true,
+      drawer: false,
       opacity: 0,
       keepAliveInterval: undefined as number | undefined
     };
