@@ -5,6 +5,10 @@
 @import '@fontsource/noto-sans-tc/index.css';
 @import '@fontsource/noto-sans-hk/index.css';
 
+body {
+  background-color: var(--v-background-base);
+}
+
 /* W3C standard (Firefox-only for now) */
 * {
   scrollbar-width: thin;
