@@ -249,5 +249,15 @@
     "allLanguages": "அனைத்து மொழிகளும்",
     "addNewPerson": "புதிய நபரைச் சேர்க்கவும்",
     "actor": "நடிகர்",
-    "3DFormat": "3D வடிவம்"
+    "3DFormat": "3D வடிவம்",
+    "video": "வீடியோ",
+    "logsAndActivity": {
+        "noLogsFounr": "பதிவுகள் எதுவும் கிடைக்கவில்லை",
+        "noActivityFound": "நடவடிக்கைகள் எதுவும் கிடைக்கவில்லை",
+        "activity": "நடவடிக்கை",
+        "failedGetActivity": "செயல்பாட்டைப் பெற முடியவில்லை",
+        "failedGetLogs": "பதிவுகள் பெற முடியவில்லை",
+        "logs": "பதிவுகள்"
+    },
+    "audio": "ஒலி"
 }
