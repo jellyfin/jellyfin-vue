@@ -276,9 +276,16 @@ export default Vue.extend({
                 userId: this.$auth.user.Id,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
-                sortBy: this.collectionInfo.IsFolder
-                  ? 'IsFolder,SortName'
-                  : this.sortBy,
+                sortBy:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? 'IsFolder,SortName'
+                    : this.sortBy,
+                recursive:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? undefined
+                    : true,
                 sortOrder: 'Ascending',
                 filters: this.statusFilter ? this.statusFilter : undefined,
                 genres: this.genresFilter ? this.genresFilter : undefined,
