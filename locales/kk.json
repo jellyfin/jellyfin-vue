@@ -10,7 +10,7 @@
     "endsAt": "Aıaqtalýy {time}",
     "episodeNumber": "Bólim {episodeNumber}",
     "home": "Basqy",
-    "incorrectUsernameOrPassword": "",
+    "incorrectUsernameOrPassword": "Jaramsyz paıdalanýshy aty ne paról",
     "itemNotFound": "Tarmaq tabylmady",
     "libraryEmpty": "Bul tasyǵyshhana bos",
     "libraryNotFound": "Tasyǵyshhana tabylmady",
@@ -223,5 +223,19 @@
     "allLanguages": "Barlyq tilder",
     "addNewPerson": "Jańa tulǵany ústeý",
     "actor": "Aktór",
-    "3DFormat": "3D pishimi"
+    "3DFormat": "3D pishimi",
+    "unableGetRelated": "Qatysty tarmaqtardy alý múmkin emes",
+    "failedSettingDisplayPreferences": "Beıneleý teńshelimderin jańartý múmkin emes.",
+    "failedRetrievingDisplayPreferences": "Beıneleý teńshelimderin alý múmkin emes. Ádepki maǵynalaryn paıdalanýda.",
+    "video": "Beıne",
+    "unableGetServerConfiguration": "Server teńshelimin alý múmkin emes",
+    "logsAndActivity": {
+        "noLogsFounr": "Jurnaldar tabylmady",
+        "noActivityFound": "Áreketter tabylmady",
+        "failedGetActivity": "Áreketterdi alý múmkin emes",
+        "failedGetLogs": "Jurnaldardy alý múmkin emes",
+        "logs": "Jurnaldar",
+        "activity": "Áreketter"
+    },
+    "audio": "Dybys"
 }
