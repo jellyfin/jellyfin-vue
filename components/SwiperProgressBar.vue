@@ -109,6 +109,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .progress-container {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   width: 100%;

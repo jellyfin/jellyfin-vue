@@ -6,7 +6,7 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-md-start align-center"
+            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-sm-center align-md-start"
           >
             <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
               <v-row>
@@ -49,6 +49,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -70,8 +72,6 @@ export default Vue.extend({
   position: relative;
   user-select: none;
 }
-
-@import '~vuetify/src/styles/styles.sass';
 
 .slide-backdrop {
   padding-bottom: 80%;

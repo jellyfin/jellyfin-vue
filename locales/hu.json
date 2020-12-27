@@ -61,7 +61,7 @@
     "youMayAlsoLike": "Tetszhet ez is",
     "shuffleAll": "Véletlenszerű",
     "moreLikeArtist": "Hozzá hasonlóak {artist}",
-    "disc": "{DiscNumber} lemez",
+    "disc": "Lemez",
     "byArtist": "Tőle",
     "biography": "Életrajz",
     "artist": "Előadók",
@@ -105,5 +105,96 @@
         "ok": "Oké"
     },
     "failedRetrievingDisplayPreferences": "Nem sikerült lekérni a megjelenítési beállításokat. Alapértelmezések használata.",
-    "architecture": "Architektúra"
+    "architecture": "Architektúra",
+    "settingsSections": {
+        "logs": {
+            "name": "Napló & aktivitás"
+        },
+        "liveTvAndDvr": {
+            "name": "Élő TV & DVR"
+        },
+        "libraries": {
+            "name": "Könyvtárak",
+            "description": "Könyvtárak és a metaadataik kezelése"
+        },
+        "home": {
+            "name": "Kezdőképernyő",
+            "description": "Konfiguráld a kezdőlapok és kezdőképernyő kinézetét"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "DLNA beállítások és profil konfigurálása"
+        },
+        "devices": {
+            "name": "Eszközök",
+            "description": "Nézd meg és kezeld a szerveredhez csatlakozott eszközöket"
+        },
+        "apiKeys": {
+            "name": "API kulcsok",
+            "description": "Hozzáadni és elvenni API kulcsokat a szervered külső eléréséhez"
+        },
+        "account": {
+            "name": "Felhasználó",
+            "description": "Szerkeszd a felhasználód információját"
+        }
+    },
+    "serverVersion": "Szerver verzió",
+    "serverDashboard": "Szerver vezérlőpult",
+    "server": "Szerver",
+    "search": "Keresés",
+    "screenshot": "Képernyőkép",
+    "saved": "Mentve",
+    "save": "Mentés",
+    "role": "Szerep",
+    "rememberMe": "Emlékezz rám",
+    "producer": "Producer",
+    "primary": "Elsődleges",
+    "people": "Személyek",
+    "parentalRating": "Korhatár besorolás",
+    "overview": "Áttekintés",
+    "originalTitle": "Eredeti cím",
+    "originalAspectRatio": "Eredeti oldalarány",
+    "operatingSystem": "Operációs rendszer",
+    "metadataNoResultsMatching": "A keresett kifejezés ({search}) nem található. Nyomj enter-t, hogy létrehozz egy újat.",
+    "metadata": "Metaadat",
+    "menu": "Menü",
+    "logs": "Naplók",
+    "logo": "Logó",
+    "links": {
+        "reportAnIssue": "Jelents be egy hibát a Vue klienssel",
+        "readTheDocumentation": "Olvasd el a dokumentációt",
+        "poweredByJellyfin": "Ez a szerver Jellyfin-t üzemeltet",
+        "helpTranslate": "Segítsd lefordítani Jellyfin-t a te nyelvedre"
+    },
+    "jellyfinLogo": "Jellyfin logó",
+    "images": "Képek",
+    "headerPaths": "Útvonal",
+    "headerExternalIds": "Külső azonosítók",
+    "guestStar": "Vendégsztár",
+    "general": "Általános",
+    "failedSettingDisplayPreferences": "Nem sikerült frissíteni a megjelenítési beállításokat.",
+    "banner": "Banner",
+    "backdrop": "Háttér",
+    "editPerson": "Személy szerkesztése",
+    "editMetadata": "Metaadat szerkesztése",
+    "edit": "Szerkesztés",
+    "discNumber": "{discNumber} lemez",
+    "director": "Rendező",
+    "details": "Részletek",
+    "dateAdded": "Hozzáadás dátuma",
+    "customRating": "Egyedi értékelés",
+    "criticRating": "Kritikus értékelés",
+    "communityRating": "Közösségi értékelés",
+    "composer": "Zeneszerző",
+    "castAndCrew": "Színészek & személyzet",
+    "cancel": "Mégse",
+    "boxRear": "Doboz (hátul)",
+    "box": "Doboz",
+    "audio": "Hang",
+    "art": "Művészet",
+    "allLanguages": "Összes nyelv",
+    "addNewPerson": "Új személy hozzáadása",
+    "actor": "Színész",
+    "activity": "Aktivitás",
+    "3DFormat": "3D formátum"
 }

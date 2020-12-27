@@ -19,7 +19,7 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-md-start"
+            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-sm-center align-md-start"
           >
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
@@ -112,7 +112,7 @@
       :current-index="currentIndex"
       :duration="slideDuration"
       :paused="isPaused"
-      class="progressbar"
+      class="px-2 px-sm-4 progress-bar"
       @on-animation-end="onAnimationEnd"
       @on-progress-clicked="onProgressClicked"
     />
@@ -217,6 +217,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .text-h2,
 .text-h4 {
   line-height: normal;
@@ -229,12 +231,11 @@ export default Vue.extend({
   user-select: none;
 }
 
-@import '~vuetify/src/styles/styles.sass';
-.progressbar {
+.progress-bar {
   position: absolute;
   z-index: 5;
   top: 0;
-  margin-top: -15px;
+  margin-top: 0;
 }
 
 .slide-backdrop {
@@ -282,16 +283,16 @@ export default Vue.extend({
   .slide-content {
     top: 56px;
   }
+
+  .progress-bar {
+    top: initial;
+    margin-top: initial;
+  }
 }
 
 @media #{map-get($display-breakpoints, 'md-and-up')} {
   .swiper {
     margin-bottom: -128px !important;
-  }
-
-  .progressbar {
-    top: initial;
-    margin-top: initial;
   }
 }
 </style>

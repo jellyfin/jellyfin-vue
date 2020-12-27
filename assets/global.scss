@@ -44,3 +44,10 @@
 .layout-leave-to {
   opacity: 0;
 }
+
+/* Vuetify overrides
+   We can't set these through variables, so override them here */
+
+.v-app-bar.v-app-bar--fixed {
+  z-index: 100 !important;
+}
