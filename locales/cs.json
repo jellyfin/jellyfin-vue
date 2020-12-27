@@ -251,5 +251,13 @@
     "actor": "Herec",
     "3DFormat": "3D formát",
     "video": "Video",
-    "audio": "Zvuk"
+    "audio": "Zvuk",
+    "logsAndActivity": {
+        "noLogsFounr": "Nebyly nalezeny žádné záznamy",
+        "noActivityFound": "Nebyla nalezena žádná aktivita",
+        "failedGetActivity": "Načtení aktivity se nezdařilo",
+        "failedGetLogs": "Načtení záznamů se nezdařilo",
+        "logs": "Záznamy",
+        "activity": "Aktivita"
+    }
 }
