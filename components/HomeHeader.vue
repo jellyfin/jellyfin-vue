@@ -67,7 +67,7 @@ export default Vue.extend({
 
       this.relatedItems[key] = itemData;
     }
-    this.items = [];
+    // this.items = [];
 
     if (this.items.length === 0) {
       this.extraText = 'There are no new items to show';

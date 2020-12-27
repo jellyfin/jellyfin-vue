@@ -6,19 +6,22 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-sm-center align-md-start"
+            class="mx-md-10 mt-md-5 py-0 py-md-4 align-start"
           >
             <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
-              <v-row>
-                <h1 class="text-h2 mb-2 align-center">Hello {{ userName }}!</h1>
-              </v-row>
-              <v-row>
-                <transition name="fade" mode="in-out">
-                  <h1 v-if="extraText" class="text-h2 mb-2 align-center">
-                    {{ extraText }}
-                  </h1>
-                </transition>
-              </v-row>
+              <p
+                class="text-h4 text-sm-h3 text-md-h2 text-lg-h2 text-xl-h2 text"
+              >
+                Hello {{ $auth.user.Name }}!
+              </p>
+              <transition name="fade" mode="in-out">
+                <h1
+                  v-if="extraText"
+                  class="text-h4 text-sm-h3 text-md-h2 text-lg-h2 text-xl-h2 text"
+                >
+                  {{ extraText }}
+                </h1>
+              </transition>
             </v-col>
           </v-container>
         </div>
@@ -37,13 +40,6 @@ export default Vue.extend({
       required: false,
       default: undefined
     }
-  },
-  computed: {
-    userName: {
-      get(): string {
-        return this.$auth.user.Name;
-      }
-    }
   }
 });
 </script>
@@ -61,8 +57,7 @@ export default Vue.extend({
   opacity: 0;
 }
 
-.text-h2,
-.text-h4 {
+.text {
   line-height: normal;
 }
 
