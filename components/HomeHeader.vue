@@ -41,11 +41,13 @@
                 </h1>
                 <h1
                   v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h4 text-truncate mb-2"
+                  class="text-h4 text-sm-h4 text-truncate mb-2"
                 >
                   {{ item.AlbumArtist }}
                 </h1>
-                <h1 v-else class="text-h2 text-truncate">{{ item.Name }}</h1>
+                <h1 v-else class="text-h3 text-sm-h2 text-truncate">
+                  {{ item.Name }}
+                </h1>
                 <p
                   v-if="item.Type === 'Episode'"
                   class="mb-n1 text-truncate text-subtitle-2"
@@ -67,7 +69,7 @@
                 </h2>
                 <h2
                   v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h2 text-truncate"
+                  class="text-h4 text-sm-h2 text-truncate"
                 >
                   {{ item.Name }}
                 </h2>
@@ -255,15 +257,20 @@ export default Vue.extend({
 }
 
 .slide-backdrop {
-  padding-bottom: 80%;
+  position: relative;
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  top: 0;
+  padding-bottom: (9 / 16) * 100%;
   background-position: center top;
   background-size: contain;
   background-repeat: no-repeat;
   box-sizing: border-box;
   mask-image: linear-gradient(
     180deg,
-    rgba(18, 18, 18, 0.75) 0%,
-    rgba(18, 18, 18, 0) 70%
+    rgba(37, 18, 18, 0.75) 0%,
+    rgba(0, 0, 0, 0) 100%
   );
   z-index: 1;
 }
@@ -280,14 +287,17 @@ export default Vue.extend({
 
 @media #{map-get($display-breakpoints, 'sm-and-up')} {
   .slide-backdrop {
-    padding-bottom: 46.25%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: 0;
+    padding-bottom: (9 / 16) * 80%;
     background-position: right center;
     mask-image: linear-gradient(
         180deg,
-        rgba(18, 18, 18, 1) 60%,
-        rgba(18, 18, 18, 0) 100%
+        rgba(0, 0, 0, 1) 60%,
+        rgba(0, 0, 0, 0) 100%
       ),
-      linear-gradient(90deg, rgba(18, 18, 18, 1) 20%, rgba(18, 18, 18, 0) 70%);
+      linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 40%);
     mask-composite: subtract;
     -webkit-mask-composite: source-out; // This is needed due to autoprefixed not converting subtract to the proper webkit equivalent
   }
