@@ -6,10 +6,10 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-0 py-md-4 align-start"
+            class="mx-md-10 mt-md-5 mt-10 py-0 py-md-4 align-start justify-center text-center text-md-left justify-md-start"
           >
             <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
-              <p class="text-h4 text-sm-h3 text-md-h2 text-lg-h2 text-xl-h2">
+              <p class="text-h6 text-sm-h4 text-md-h2 text-lg-h2 text-xl-h2">
                 {{
                   $t('homeHeader.welcome.helloUser', {
                     userName: $auth.user.Name
@@ -19,7 +19,7 @@
               <transition name="fade" mode="in-out">
                 <h1
                   v-if="extraText"
-                  class="text-h4 text-sm-h3 text-md-h2 text-lg-h2 text-xl-h2"
+                  class="text-h6 text-sm-h4 text-md-h2 text-lg-h2 text-xl-h2"
                 >
                   {{ extraText }}
                 </h1>

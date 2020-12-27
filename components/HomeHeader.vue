@@ -1,6 +1,11 @@
 <template>
   <transition name="fade" mode="in-out" @after-leave="onTransitionEnd">
-    <div v-if="loading" ref="headerWelcome" key="headerWelcome">
+    <div
+      v-if="loading"
+      ref="headerWelcome"
+      key="headerWelcome"
+      @animationend="onNoItemsTransitionEnd"
+    >
       <home-header-welcome :extra-text="extraText" />
     </div>
     <home-header-items
@@ -83,17 +88,17 @@ export default Vue.extend({
         // the screen height of the element, so the animation plays correctly when the height is set to 0
         elem.style.maxHeight = elem.scrollHeight + 'px';
         elem.classList.add('no-items');
-        elem.addEventListener('animationend', this.onNoItemsTransitionEnd);
       } else {
         this.loading = false;
       }
     },
     onNoItemsTransitionEnd(): void {
-      (this.$refs.headerWelcome as Element).remove();
-      this.$destroy();
+      this.loading = false;
     },
     onTransitionEnd(): void {
-      this.show = !this.loading;
+      if (this.items.length !== 0) {
+        this.show = !this.loading;
+      }
     }
   }
 });
@@ -114,6 +119,8 @@ export default Vue.extend({
   overflow: hidden;
   animation-name: slideUp;
   animation-duration: 0.75s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
 }
 
 @keyframes slideUp {
