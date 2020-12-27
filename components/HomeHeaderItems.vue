@@ -44,11 +44,11 @@
                 </h1>
                 <h1
                   v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h4 text-truncate mb-2"
+                  class="text-h4 text-sm-h4 text-truncate mb-2"
                 >
                   {{ item.AlbumArtist }}
                 </h1>
-                <h1 v-else class="text-h2 text-truncate">
+                <h1 v-else class="text-h3 text-sm-h2 text-truncate">
                   {{ item.Name }}
                 </h1>
                 <p
@@ -72,7 +72,7 @@
                 </h2>
                 <h2
                   v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h2 text-truncate"
+                  class="text-h4 text-sm-h2 text-truncate"
                 >
                   {{ item.Name }}
                 </h2>
