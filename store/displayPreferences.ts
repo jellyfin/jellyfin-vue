@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree, GetterTree } from 'vuex';
 import nuxtConfig from '~/nuxt.config';
@@ -39,7 +40,7 @@ const updateMethods: { [key: string]: (value: string) => void } = {
   }
 };
 
-export const state = defaultState();
+export const state = defaultState;
 
 interface SingleCustomPrefMutationPayload {
   key: string;
@@ -83,7 +84,7 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     Object.assign(state, displayPreferences);
     for (const key in defaultCustomPrefs) {
       if (!(key in state.CustomPrefs)) {
-        state.CustomPrefs[key] = defaultCustomPrefs[key];
+        Vue.set(state.CustomPrefs, key, defaultCustomPrefs[key]);
       }
     }
   },
@@ -99,7 +100,7 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     state: DisplayPreferencesState,
     { pref }: { pref: SingleCustomPrefMutationPayload }
   ) {
-    state.CustomPrefs[pref.key] = pref.value;
+    Vue.set(state.CustomPrefs, pref.key, pref.value);
     if (pref.key in updateMethods) updateMethods[pref.key](pref.value);
   }
 };
