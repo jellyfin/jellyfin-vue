@@ -23,7 +23,9 @@
           >
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
-                <p class="text-truncate mb-2 my-2">Recently Added</p>
+                <p class="text-truncate mb-2 my-2">
+                  {{ $t('homeHeader.items.recentlyAdded') }}
+                </p>
                 <v-img
                   v-if="
                     item.ParentLogoImageTag ||

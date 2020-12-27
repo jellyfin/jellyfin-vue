@@ -67,12 +67,11 @@ export default Vue.extend({
 
       this.relatedItems[key] = itemData;
     }
-    // this.items = [];
 
     if (this.items.length === 0) {
-      this.extraText = 'There are no new items to show';
+      this.extraText = this.$t('homeHeader.welcome.noItems').toString();
     } else {
-      this.extraText = "Check out what's new";
+      this.extraText = this.$t('homeHeader.welcome.checkNewItems').toString();
     }
     window.setTimeout(this.hideWelcomeMessage, 1500);
   },

@@ -255,5 +255,15 @@
   "writer": "Writer",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "homeHeader": {
+    "welcome": {
+      "helloUser": "Hello {userName}!",
+      "noItems": "There are no recently added items to show",
+      "checkNewItems": "Check out what's new"
+    },
+    "items": {
+      "recentlyAdded": "Recently added"
+    }
+  }
 }

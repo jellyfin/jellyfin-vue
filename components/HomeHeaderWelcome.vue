@@ -12,7 +12,11 @@
               <p
                 class="text-h4 text-sm-h3 text-md-h2 text-lg-h2 text-xl-h2 text"
               >
-                Hello {{ $auth.user.Name }}!
+                {{
+                  $t('homeHeader.welcome.helloUser', {
+                    userName: $auth.user.Name
+                  })
+                }}
               </p>
               <transition name="fade" mode="in-out">
                 <h1
