@@ -4,6 +4,7 @@
     <v-navigation-drawer
       v-model="drawer"
       :temporary="$vuetify.breakpoint.mobile"
+      :permanent="!$vuetify.breakpoint.mobile"
       app
     >
       <template #prepend>
@@ -30,7 +31,7 @@
         </v-list-item>
         <v-subheader>{{ $t('libraries') }}</v-subheader>
         <v-list-item
-          v-for="library in libraries"
+          v-for="library in libraryItems"
           :key="library.Id"
           :to="library.to"
           router
@@ -47,10 +48,7 @@
       <template #append>
         <v-list>
           <v-list-item>
-            <v-switch
-              v-model="$vuetify.theme.dark"
-              :label="$t('darkModeToggle')"
-            ></v-switch>
+            <dark-mode-toggle />
           </v-list-item>
           <v-list-item
             v-for="(item, i) in configItems"
@@ -74,7 +72,7 @@
       class="pl-2 pr-2"
       flat
       app
-      :class="{ opaque: opaqueAppBar }"
+      :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
     >
       <v-app-bar-nav-icon
         v-if="$vuetify.breakpoint.mobile"
@@ -108,22 +106,43 @@
     </v-main>
     <!-- Utilities and global systems -->
     <snackbar />
+    <player-manager />
   </v-app>
 </template>
 
 <script lang="ts">
+import { BaseItemDto } from '@jellyfin/client-axios';
+import { stringify } from 'qs';
 import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
+import { AppState } from '~/store';
+import { getLibraryIcon } from '~/utils/items';
+
+interface WebSocketMessage {
+  MessageType: string;
+  Data?: Record<string, never>;
+}
 
 export default Vue.extend({
   data() {
     return {
-      drawer: true,
-      opacity: 0
+      drawer: false,
+      opacity: 0,
+      keepAliveInterval: undefined as number | undefined
     };
   },
   computed: {
-    ...mapState('page', ['opaqueAppBar']),
+    ...mapState<AppState>({
+      opaqueAppBar: (state: AppState) => state.page.opaqueAppBar,
+      libraryItems: (state: AppState) =>
+        state.userViews.views.map((view: BaseItemDto) => {
+          return {
+            icon: getLibraryIcon(view.CollectionType),
+            title: view.Name,
+            to: `/library/${view.Id}`
+          };
+        })
+    }),
     items() {
       return [
         {
@@ -133,11 +152,13 @@ export default Vue.extend({
         }
       ];
     },
-    libraries() {
-      return this.$store.getters['userViews/getNavigationDrawerItems'];
-    },
     configItems() {
       return [
+        {
+          icon: 'mdi-pencil-outline',
+          title: this.$t('metadata'),
+          to: '/metadata'
+        },
         {
           icon: 'mdi-cog',
           title: this.$t('settings'),
@@ -147,19 +168,54 @@ export default Vue.extend({
     }
   },
   beforeMount() {
+    this.callAllCallbacks();
     this.refreshUserViews();
+
+    const socketParams = stringify({
+      api_key: this.$store.state.user.accessToken,
+      deviceId: this.$store.state.deviceProfile.deviceId
+    });
+    let socketUrl = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
+    socketUrl = socketUrl.replace('https:', 'wss:');
+    socketUrl = socketUrl.replace('http:', 'ws:');
+
+    this.$connect(socketUrl);
+    this.handleKeepAlive();
+  },
+  beforeDestroy() {
+    if (this.keepAliveInterval) {
+      clearInterval(this.keepAliveInterval);
+    }
   },
   methods: {
-    ...mapActions('userViews', ['refreshUserViews'])
+    ...mapActions('userViews', ['refreshUserViews']),
+    ...mapActions('displayPreferences', ['callAllCallbacks']),
+    handleKeepAlive(): void {
+      this.$store.subscribe((mutation, state) => {
+        if (
+          mutation.type === 'SOCKET_ONMESSAGE' &&
+          state.socket.message.MessageType === 'ForceKeepAlive'
+        ) {
+          this.sendWebSocketMessage('KeepAlive');
+          this.keepAliveInterval = window.setInterval(() => {
+            this.sendWebSocketMessage('KeepAlive');
+          }, state.socket.message.Data * 1000 * 0.5);
+        }
+      });
+    },
+    sendWebSocketMessage(name: string, data?: Record<string, never>): void {
+      const msg: WebSocketMessage = {
+        MessageType: name,
+        ...(data ? { Data: data } : {})
+      };
+
+      this.$store.state.socket.instance.send(JSON.stringify(msg));
+    }
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.v-application {
-  background-color: var(--v-background-base) !important;
-}
-
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }

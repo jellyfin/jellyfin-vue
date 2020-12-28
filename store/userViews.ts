@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLibraryIcon } from '~/utils/items';
 
 export interface UserViewsState {
@@ -34,11 +34,7 @@ export const mutations: MutationTree<UserViewsState> = {
 
 export const actions: ActionTree<UserViewsState, UserViewsState> = {
   async refreshUserViews({ commit }) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore -- $api exists on here, the issue seems random. Not sure how to fix
     const userViewsResponse = await this.$api.userViews.getUserViews({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore -- $auth exists on here
       userId: this.$auth.user.Id
     });
 

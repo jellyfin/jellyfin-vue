@@ -8,22 +8,23 @@
           class="play-button ml-auto mr-2"
           color="primary"
           min-width="8em"
-          :disabled="isPlayable"
           depressed
           rounded
-          :to="`./${genre.Id}/play`"
-          >{{ $t('play') }}</v-btn
+          @click="play({ items: [genre] })"
         >
+          {{ $t('play') }}
+        </v-btn>
         <v-btn
           v-if="loaded"
           class="play-button mr-2"
           min-width="8em"
-          :disabled="isPlayable"
           outlined
           rounded
+          nuxt
           :to="`./${genre.Id}/shuffle`"
-          >{{ $t('shuffleAll') }}</v-btn
         >
+          {{ $t('shuffleAll') }}
+        </v-btn>
       </v-toolbar-title>
     </v-app-bar>
     <v-container class="second-toolbar-follow">
@@ -50,7 +51,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   data() {
@@ -106,6 +107,7 @@ export default Vue.extend({
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
   methods: {
+    ...mapActions('playbackManager', ['play']),
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
   }
 });

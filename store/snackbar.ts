@@ -22,11 +22,18 @@ export const mutations: MutationTree<SnackbarState> = {
   ) {
     state.message = message;
     state.color = color || '';
+  },
+  RESET_MESSAGE(state: SnackbarState) {
+    state.message = '';
+    state.color = '';
   }
 };
 
 export const actions: ActionTree<SnackbarState, SnackbarState> = {
   pushSnackbarMessage({ commit }, { message, color }: MutationPayload) {
     commit('SET_SNACKBAR_MESSAGE', { message, color });
+  },
+  resetMessage({ commit }) {
+    commit('RESET_MESSAGE');
   }
 };

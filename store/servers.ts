@@ -1,13 +1,13 @@
 import compareVersions from 'compare-versions';
 import { ActionTree, MutationTree } from 'vuex';
-import { PublicSystemInfo } from '~/api';
+import { PublicSystemInfo } from '@jellyfin/client-axios';
 
 export interface ServerInfo {
   address: string;
   publicInfo: PublicSystemInfo;
 }
 
-interface ServerState {
+export interface ServerState {
   serverUsed: ServerInfo | undefined;
   serverList: ServerInfo[];
 }

@@ -53,5 +53,57 @@
     "serverVersionTooLow": "La versión del servidor debe ser 10.7.0 o superior",
     "noNetworkConnection": "Sin conexión",
     "movies": "Películas",
-    "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo."
+    "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo.",
+    "unableGetPublicUsers": "No se han podido obtener los usuarios",
+    "unableGetServerConfiguration": "No se ha podido obtener la configuración del servidor",
+    "youMayAlsoLike": "Tambien te puede gustar",
+    "viewDetails": "Ver detalles",
+    "validation": {
+        "required": "Este campo es obligatorio",
+        "mustBeUrl": "Este campo requiere una URL válida"
+    },
+    "unliked": "No te gusta",
+    "unableGetRelated": "No se han podido obtener elementos relacionados",
+    "studios": "Estudios",
+    "sortByType": "Por {type}",
+    "shuffleAll": "Mezclar todo",
+    "series": "Series",
+    "selectUser": "Seleccionar usuario",
+    "selectServer": "Seleccionar servidor",
+    "rememberMe": "Recordar",
+    "numberTracks": "{number} pistas",
+    "noResultsFound": "No hay nada aquí",
+    "nextUp": "Siguiente",
+    "networks": "Redes",
+    "name": "Nombre",
+    "moreLikeArtist": "Mas como {artist}",
+    "manualLogin": "Iniciar sesión manualmente",
+    "loginAs": "Iniciar sesión como {name}",
+    "liked": "Te Gusta",
+    "libraries": "Bibliotecas",
+    "latestLibrary": "Lo úlitmo en {libraryName}",
+    "filter": "Filtro",
+    "failedToRefreshItems": "No se han podido refrescar los elementos",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "El reproductor de video ha encontrado un error irrecuperable.",
+            "errorCode": "Código de error: {errorCode}"
+        },
+        "anErrorHappened": "Ha ocurrido un error"
+    },
+    "disc": "Disco {discNumber}",
+    "darkModeToggle": "Activar modo oscuro",
+    "connect": "Conectar",
+    "collections": "Colecciones",
+    "changeUser": "Cambiar de usuario",
+    "changeServer": "Cambiar de servidor",
+    "byArtist": "Por",
+    "buttons": {
+        "ok": "Aceptar"
+    },
+    "biography": "Biografia",
+    "artists": "Artistas",
+    "artist": "Artista",
+    "albums": "Álbumes",
+    "actors": "Actores"
 }

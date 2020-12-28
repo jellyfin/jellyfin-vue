@@ -5,10 +5,11 @@
         <v-row>
           <v-col cols="2">
             <v-img
+              ref="personImg"
               class="person-image elevation-2 ml-2"
               cover
               aspect-ratio="1"
-              :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
+              :src="getImageUrl(item.Id)"
             />
           </v-col>
           <v-col cols="7">
@@ -126,7 +127,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -228,7 +229,18 @@ export default Vue.extend({
     this.clearBackdrop();
   },
   methods: {
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    getImageUrl(itemId: string | undefined): string {
+      const element = this.$refs.personImg as HTMLElement;
+      if (itemId) {
+        return this.getImageUrlForElement(ImageType.Primary, {
+          itemId,
+          element
+        });
+      } else {
+        return '';
+      }
+    }
   }
 });
 </script>

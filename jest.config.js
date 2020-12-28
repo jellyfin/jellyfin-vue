@@ -12,7 +12,10 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
-    '<rootDir>/pages/**/*.vue'
+    '<rootDir>/mixins/**/*.vue',
+    '<rootDir>/pages/**/*.vue',
+    '<rootDir>/store/**/*.ts',
+    '<rootDir>/utils/**/*.ts'
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   setupFiles: ['jest-canvas-mock'],

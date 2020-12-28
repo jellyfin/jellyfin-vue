@@ -1,44 +1,104 @@
 {
+  "3DFormat": "3D format",
+  "actor": "Actor",
   "actors": "Actors",
+  "addNewPerson": "Add a new person",
   "albums": "Albums",
+  "allLanguages": "All languages",
   "alphabetically": "Alphabetically",
+  "architecture": "Architecture",
+  "art": "Art",
   "artist": "Artist",
   "artists": "Artists",
+  "audio": "Audio",
+  "backdrop": "Backdrop",
   "badRequest": "Bad request. Try again",
+  "banner": "Banner",
   "biography": "Biography",
+  "box": "Box",
+  "boxRear": "Box (rear)",
   "browserNotSupported": "Your browser is not supported for playing this file.",
+  "buttons": {
+    "ok": "Ok"
+  },
   "byArtist": "By",
+  "cancel": "Cancel",
+  "castAndCrew": "Cast & Crew",
   "changeServer": "Change server",
   "changeUser": "Change user",
   "collections": "Collections",
+  "communityRating": "Community rating",
+  "composer": "Composer",
   "connect": "Connect",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
+  "criticRating": "Critic rating",
+  "customRating": "Custom rating",
   "darkModeToggle": "Toggle dark mode",
-  "disc": "Disc {discNumber}",
+  "dateAdded": "Date added",
+  "details": "Details",
+  "director": "Director",
+  "disc": "Disc",
+  "discNumber": "Disc {discNumber}",
   "dislikes": "Dislikes",
+  "edit": "Edit",
+  "editMetadata": "Edit metadata",
+  "editPerson": "Edit person",
   "endDate": "End date",
   "endsAt": "Ends at {time}",
   "episodeNumber": "Episode {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "An error happened",
+    "messages": {
+      "errorCode": "Error code: {errorCode}",
+      "videoPlayerError": "The video player encountered an unrecoverable error."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using defaults.",
+  "failedSettingDisplayPreferences": "Unable to update display preferences.",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
   "filter": "Filter",
   "filtersNotFound": "Unable to load filters",
+  "general": "General",
   "genres": "Genres",
+  "guestStar": "Guest Star",
+  "headerExternalIds": "External IDs",
+  "headerPaths": "Path",
   "home": "Home",
+  "images": "Images",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "itemNotFound": "Item not found",
+  "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Latest {libraryName}",
   "libraries": "Libraries",
   "libraryEmpty": "This library is empty",
   "libraryNotFound": "Library not found",
   "liked": "Liked",
   "likes": "Likes",
+  "links": {
+    "helpTranslate": "Help translate Jellyfin in your language",
+    "poweredByJellyfin": "This server is powered by Jellyfin",
+    "readTheDocumentation": "Read the documentation",
+    "reportAnIssue": "Report an issue with the Vue client"
+  },
   "login": "Login",
   "loginAs": "Login as {name}",
+  "logo": "Logo",
   "logout": "Logout",
+  "logsAndActivity": {
+    "activity": "Activity",
+    "logs": "Logs",
+    "failedGetLogs": "Unable to get logs",
+    "failedGetActivity": "Unable to get activity",
+    "noActivityFound": "No activities found",
+    "noLogsFounr": "No logs found"
+  },
   "manualLogin": "Manual login",
+  "menu": "Menu",
+  "metadata": "Metadata",
+  "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
   "more": "More",
   "moreLikeArtist": "More like {artist}",
   "moreLikeThis": "More like this",
@@ -47,38 +107,136 @@
   "networks": "Networks",
   "nextUp": "Next up",
   "noNetworkConnection": "No network connection",
-  "noResultsFound": "No results found",
-  "numberTracks": "{number} tracks",
   "noResultsFound": "There is nothing here",
+  "numberTracks": "{number} tracks",
+  "operatingSystem": "Operating system",
+  "originalAspectRatio": "Original aspect ratio",
+  "originalTitle": "Original title",
+  "overview": "Overview",
+  "parentalRating": "Parental rating",
   "parentalRatings": "Parental Ratings",
   "password": "Password",
+  "people": "People",
   "play": "Play",
   "played": "Played",
   "present": "Present",
+  "primary": "Primary",
+  "producer": "Producer",
   "rating": "Rating",
   "releaseDate": "Release date",
+  "rememberMe": "Remember me",
   "resumable": "Resumable",
+  "role": "Role",
+  "save": "Save",
+  "saved": "Saved",
+  "screenshot": "Screenshot",
+  "search": "Search",
   "selectServer": "Select server",
   "selectUser": "Select a user",
   "series": "Series",
+  "server": "Server",
   "serverAddress": "Server address",
-  "serverAddressMustBeUrl": "Server address must be a valid address",
+  "serverAddressMustBeUrl": "Server address must be a valid URL",
   "serverAddressRequired": "Server address is required",
+  "serverDashboard": "Server dashboard",
   "serverNotFound": "Server not found",
+  "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": "Settings",
+  "settingsSections": {
+    "account": {
+      "description": "Edit your user's information",
+      "name": "Account"
+    },
+    "apiKeys": {
+      "description": "Add and revoke API keys for external access to your server",
+      "name": "API keys"
+    },
+    "devices": {
+      "description": "See and manage the devices connected to your server",
+      "name": "Devices"
+    },
+    "dlna": {
+      "description": "Configure DLNA settings and profile",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configure your home sections and home screen layout",
+      "name": "Home screen"
+    },
+    "libraries": {
+      "description": "Manage libraries and their metadata",
+      "name": "Libraries"
+    },
+    "liveTvAndDvr": {
+      "description": "Manage TV tuners, guide data providers and DVR settings",
+      "name": "Live TV & DVR"
+    },
+    "logs": {
+      "description": "Read and search server logs and user activity",
+      "name": "Logs & activity"
+    },
+    "mediaPlayers": {
+      "description": "Configure how the media players behave for this device",
+      "name": "Media players"
+    },
+    "networking": {
+      "description": "Manage the network settings of this server",
+      "name": "Networking"
+    },
+    "notifications": {
+      "description": "Manage and configure notification sent by this server",
+      "name": "Notifications"
+    },
+    "playback": {
+      "description": "Edit your playback preferences for this device",
+      "name": "Playback"
+    },
+    "plugins": {
+      "description": "Add and configure new features for this server",
+      "name": "Plugins"
+    },
+    "scheduledTasks": {
+      "description": "Manage scheduled tasks running on this server",
+      "name": "Scheduled tasks"
+    },
+    "server": {
+      "description": "Configure this server's language and branding",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Control how subtitles are displayed on this device",
+      "name": "Subtitles"
+    },
+    "transcodingAndStreaming": {
+      "description": "Manage how this server handles transcoding and streaming to clients",
+      "name": "Transcoding & streaming"
+    },
+    "users": {
+      "description": "Manage users and their permissions",
+      "name": "Users"
+    }
+  },
   "shows": "Shows",
   "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
   "sortByType": "By {type}",
+  "sortTitle": "Sort title",
   "specialFeatures": "Special Features",
   "status": "Status",
   "studios": "Studios",
   "subtitles": "Subtitles",
+  "tagline": "Tagline",
+  "tags": "Tags",
   "themeSong": "Theme Song",
   "themeVideo": "Theme Video",
+  "thumb": "Thumb",
+  "title": "Title",
   "trailer": "Trailer",
+  "type": "Type",
+  "unableGetPublicUsers": "Unable to get users",
   "unableGetRelated": "Unable to get related items",
+  "unableGetServerConfiguration": "Unable to get server configuration",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
   "unliked": "Unliked",
@@ -90,8 +248,12 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
+  "video": "Video",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
+  "vueClientVersion": "Vue client version",
+  "writer": "Writer",
+  "year": "Year",
   "years": "Years",
   "youMayAlsoLike": "You may also like"
 }

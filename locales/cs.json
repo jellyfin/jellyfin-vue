@@ -22,7 +22,7 @@
     "rating": "Hodnocení",
     "releaseDate": "Datum vydání",
     "serverAddress": "Adresa serveru",
-    "serverAddressMustBeUrl": "Adresa serveru musí být platná adresa",
+    "serverAddressMustBeUrl": "Adresa serveru musí být platná URL adresa",
     "serverAddressRequired": "Adresa serveru je povinná",
     "serverNotFound": "Server nebyl nalezen",
     "settings": "Nastavení",
@@ -62,7 +62,7 @@
     "changeServer": "Změnit server",
     "shuffleAll": "Náhodně vše",
     "moreLikeArtist": "Podobné jako {artist}",
-    "disc": "Disk {discNumber}",
+    "disc": "Disk",
     "byArtist": "Od",
     "biography": "Životopis",
     "artist": "Interpret",
@@ -94,5 +94,162 @@
     "numberTracks": "{number} skladeb",
     "nextUp": "Další v pořadí",
     "latestLibrary": "Nejnovější {libraryName}",
-    "darkModeToggle": "Přepnout tmavý režim"
+    "darkModeToggle": "Přepnout tmavý režim",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Ve video přehrávači došlo k nezvratné chybě.",
+            "errorCode": "Kód chyby: {errorCode}"
+        },
+        "anErrorHappened": "Došlo k chybě"
+    },
+    "buttons": {
+        "ok": "Ok"
+    },
+    "unableGetServerConfiguration": "Načtení konfigurace serveru se nezdařilo",
+    "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
+    "rememberMe": "Zapamatovat",
+    "settingsSections": {
+        "liveTvAndDvr": {
+            "name": "Živé vysílání a nahrávání",
+            "description": "Spravovat nastavení TV tunerů, poskytovatelů programových průvodců a nahrávání"
+        },
+        "libraries": {
+            "name": "Knihovny",
+            "description": "Spravovat knihovny a jejich metadata"
+        },
+        "home": {
+            "name": "Domovská stránka",
+            "description": "Nastavit sekce a rozvržení domovské stránky"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Nastavit nastavení a profil DLNA"
+        },
+        "devices": {
+            "name": "Zařízení",
+            "description": "Zobrazit a spravovat zařízení připojená k serveru"
+        },
+        "apiKeys": {
+            "name": "Klíče k API",
+            "description": "Přidat nebo zneplatnit klíče k API pro externí přístup k serveru"
+        },
+        "account": {
+            "name": "Účet",
+            "description": "Upravit informace o uživateli"
+        },
+        "users": {
+            "name": "Uživatelé",
+            "description": "Spravovat uživatele a oprávnění"
+        },
+        "transcodingAndStreaming": {
+            "name": "Překódování a streamování",
+            "description": "Spravovat nastavení překódování a streamovaní klientům"
+        },
+        "subtitles": {
+            "name": "Titulky",
+            "description": "Nastavit vzhled a zobrazení titulků na tomto zařízení"
+        },
+        "server": {
+            "name": "Server",
+            "description": "Nastavit jazyk a branding serveru"
+        },
+        "scheduledTasks": {
+            "name": "Naplánované úlohy",
+            "description": "Spravovat naplánované úlohy probíhající na tomto serveru"
+        },
+        "plugins": {
+            "name": "Zásuvné moduly",
+            "description": "Přidat a nastavit nové funkce pro tento server"
+        },
+        "playback": {
+            "name": "Přehrávání",
+            "description": "Upravit nastavení přehrávání pro toto zařízení"
+        },
+        "notifications": {
+            "name": "Oznámení",
+            "description": "Spravovat a nastavit oznámení odesílaná tímto serverem"
+        },
+        "networking": {
+            "name": "Nastavení sítě",
+            "description": "Spravovat nastavení sítě tohoto serveru"
+        },
+        "mediaPlayers": {
+            "name": "Přehrávače médií",
+            "description": "Nastavit chování přehrávačů médií pro toto zařízení"
+        },
+        "logs": {
+            "name": "Záznamy a aktivita",
+            "description": "Zobrazit a hledat v záznamech serveru a uživatelské aktivitě"
+        }
+    },
+    "serverDashboard": "Nástěnka",
+    "server": "Server",
+    "operatingSystem": "Operační systém",
+    "links": {
+        "reportAnIssue": "Nahlásit problém s tímto klientem",
+        "readTheDocumentation": "Přečíst si dokumentaci",
+        "poweredByJellyfin": "Tento server běží na softwaru Jellyfin",
+        "helpTranslate": "Pomozte přeložit Jellyfin do vašeho jazyka"
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "failedSettingDisplayPreferences": "Nelze aktualizovat nastavení zobrazení.",
+    "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
+    "architecture": "Architektura",
+    "vueClientVersion": "Verze klienta Vue",
+    "serverVersion": "Verze serveru",
+    "logs": "Záznamy",
+    "activity": "Aktivita",
+    "year": "Rok",
+    "writer": "Scénarista",
+    "type": "Typ",
+    "title": "Název",
+    "thumb": "Náhled",
+    "tags": "Štítky",
+    "tagline": "Podtitul",
+    "sortTitle": "Název pro řazení",
+    "search": "Hledat",
+    "screenshot": "Snímek obrazovky",
+    "saved": "Uloženo",
+    "save": "Uložit",
+    "role": "Role",
+    "producer": "Producent",
+    "primary": "Primární",
+    "people": "Lidé",
+    "parentalRating": "Rodičovské hodnocení",
+    "overview": "Přehled",
+    "originalTitle": "Původní název",
+    "originalAspectRatio": "Původní poměr stran",
+    "metadataNoResultsMatching": "Žádné výsledky pro \"{search}\". Stisknutím klávesy Enter vytvořte nový.",
+    "metadata": "Metadata",
+    "menu": "Nabídka",
+    "logo": "Logo",
+    "images": "Obrázky",
+    "headerPaths": "Cesta",
+    "headerExternalIds": "Externí ID",
+    "guestStar": "Vedlejší role",
+    "general": "Obecné",
+    "editPerson": "Upravit osobu",
+    "editMetadata": "Upravit metadata",
+    "edit": "Upravit",
+    "discNumber": "Disk {discNumber}",
+    "director": "Režisér",
+    "details": "Podrobnosti",
+    "dateAdded": "Datum přidání",
+    "customRating": "Vlastní hodnocení",
+    "criticRating": "Hodnocení kritiků",
+    "composer": "Skladatel",
+    "communityRating": "Komunitní hodnocení",
+    "castAndCrew": "Obsazení a personál",
+    "cancel": "Zrušit",
+    "boxRear": "Krabice (zadní strana)",
+    "box": "Krabice",
+    "banner": "Banner",
+    "backdrop": "Pozadí",
+    "art": "Obrázek",
+    "allLanguages": "Všechny jazyky",
+    "addNewPerson": "Přidat novou osobu",
+    "actor": "Herec",
+    "3DFormat": "3D formát",
+    "video": "Video",
+    "audio": "Zvuk"
 }

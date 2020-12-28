@@ -9,11 +9,16 @@
       </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button
-        v-if="collectionInfo.CollectionType"
+        v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
         @change="onChangeType"
       />
-      <v-divider v-if="isSortable" inset vertical class="mx-2" />
+      <v-divider
+        v-if="isSortable && hasViewTypes"
+        inset
+        vertical
+        class="mx-2"
+      />
       <sort-button v-if="isSortable" @change="onChangeSort" />
       <filter-button
         v-if="isSortable"
@@ -36,7 +41,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   data() {
@@ -48,10 +53,10 @@ export default Vue.extend({
       sortBy: 'SortName',
       hasFilters: false,
       isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
-      statusFilter: [],
-      genresFilter: [],
-      yearsFilter: [],
-      ratingsFilter: [],
+      statusFilter: [] as string[],
+      genresFilter: [] as string[],
+      yearsFilter: [] as string[],
+      ratingsFilter: [] as string[],
       filterHasSubtitles: false,
       filterHasTrailer: false,
       filterHasSpecialFeature: false,
@@ -69,7 +74,17 @@ export default Vue.extend({
     };
   },
   computed: {
-    isSortable() {
+    hasViewTypes(): boolean {
+      if (
+        ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
+        this.collectionInfo.CollectionType === undefined
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isSortable(): boolean {
       // Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
       // Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
       if (
@@ -141,6 +156,7 @@ export default Vue.extend({
             this.viewType = 'MusicAlbum';
             break;
           default:
+            this.refreshItems();
             break;
         }
 
@@ -169,9 +185,9 @@ export default Vue.extend({
     onChangeSort(sort: string) {
       this.sortBy = sort;
     },
-    onChangeFilter(filter: Record<string, any>) {
+    onChangeFilter(filter: Record<string, [string]>) {
       this.hasFilters = Object.values(filter).every((value) => {
-        return value.length > 0 || value !== false;
+        return value.length > 0;
       });
 
       this.genresFilter = filter.genres;
@@ -260,8 +276,16 @@ export default Vue.extend({
                 userId: this.$auth.user.Id,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
-                recursive: true,
-                sortBy: this.sortBy,
+                sortBy:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? 'IsFolder,SortName'
+                    : this.sortBy,
+                recursive:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? undefined
+                    : true,
                 sortOrder: 'Ascending',
                 filters: this.statusFilter ? this.statusFilter : undefined,
                 genres: this.genresFilter ? this.genresFilter : undefined,

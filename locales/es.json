@@ -84,5 +84,17 @@
         "required": "Este campo es obligatorio"
     },
     "shuffleAll": "Mezclar todo",
-    "libraries": "Bibliotecas"
+    "libraries": "Bibliotecas",
+    "errors": {
+        "messages": {
+            "errorCode": "Código de error: {errorCode}"
+        },
+        "anErrorHappened": "Ocurrió un error"
+    },
+    "darkModeToggle": "Cambiar a modo oscuro",
+    "buttons": {
+        "ok": "Vale"
+    },
+    "liked": "Te gusta",
+    "latestLibrary": "Lo último en {libraryName}"
 }

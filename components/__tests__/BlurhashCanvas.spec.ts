@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { shallowMount, Wrapper } from '@vue/test-utils';
-import BlurhashCanvas from '~/components/images/BlurhashCanvas.vue';
+import BlurhashCanvas from '~/components/Layout/Images/BlurhashCanvas.vue';
 
 let wrapper: Wrapper<Vue>;
 
