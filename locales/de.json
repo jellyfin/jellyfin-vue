@@ -249,5 +249,15 @@
     "addNewPerson": "Person hinzufügen",
     "actor": "Schauspieler",
     "activity": "Aktivität",
-    "3DFormat": "3D Format"
+    "3DFormat": "3D Format",
+    "video": "Video",
+    "logsAndActivity": {
+        "noLogsFounr": "Keine Protokolle gefunden",
+        "noActivityFound": "Keine Aktivitäten gefunden",
+        "failedGetActivity": "Aktivitäten können nicht abgerufen werden",
+        "failedGetLogs": "Protokolle können nicht abgerufen werden",
+        "logs": "Protokoll",
+        "activity": "Aktivitäten"
+    },
+    "audio": "Ton"
 }
