@@ -15,6 +15,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
+        :alt="item.Name"
         @error="onError"
       />
     </transition-group>
