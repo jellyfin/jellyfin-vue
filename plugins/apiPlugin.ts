@@ -2,13 +2,13 @@ import { Plugin } from '@nuxt/types';
 import { AxiosInstance } from 'axios';
 import {
   ActivityLogApi,
-  AlbumsApi,
   ApiKeyApi,
   ArtistsApi,
   AudioApi,
   BrandingApi,
   ChannelsApi,
   CollectionApi,
+  Configuration,
   ConfigurationApi,
   DashboardApi,
   DevicesApi,
@@ -62,12 +62,10 @@ import {
   VideoHlsApi,
   VideosApi,
   YearsApi
-} from '~/api/api';
-import { Configuration } from '~/api/configuration';
+} from '@jellyfin/client-axios';
 
 interface ApiPlugin {
   activityLog: ActivityLogApi;
-  albums: AlbumsApi;
   apiKey: ApiKeyApi;
   artists: ArtistsApi;
   audio: AudioApi;
@@ -158,7 +156,6 @@ const apiPlugin: Plugin = (context, inject) => {
 
   const api: ApiPlugin = {
     activityLog: new ActivityLogApi(config, '', contextAxios),
-    albums: new AlbumsApi(config, '', contextAxios),
     apiKey: new ApiKeyApi(config, '', contextAxios),
     artists: new ArtistsApi(config, '', contextAxios),
     audio: new AudioApi(config, '', contextAxios),

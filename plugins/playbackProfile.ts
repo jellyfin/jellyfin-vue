@@ -1,4 +1,14 @@
 import { Plugin } from '@nuxt/types/app';
+import {
+  DeviceProfile,
+  DirectPlayProfile,
+  DlnaProfileType,
+  TranscodingProfile,
+  EncodingContext,
+  SubtitleProfile,
+  SubtitleDeliveryMethod,
+  ResponseProfile
+} from '@jellyfin/client-axios';
 import { browserDetector } from './browserDetection';
 import {
   getSupportedMP4VideoCodecs,
@@ -11,16 +21,6 @@ import { getSupportedAudioCodecs } from '~/utils/audioFormats';
 import { canPlayNativeHls, hasMkvSupport } from '~/utils/transcodingFormats';
 import { getHlsVideoCodecs, getHlsAudioCodecs } from '~/utils/hlsFormats';
 import { getCodecProfiles } from '~/utils/codecProfiles';
-import {
-  DeviceProfile,
-  DirectPlayProfile,
-  DlnaProfileType,
-  TranscodingProfile,
-  EncodingContext,
-  SubtitleProfile,
-  SubtitleDeliveryMethod,
-  ResponseProfile
-} from '~/api';
 
 declare module '@nuxt/types' {
   interface Context {

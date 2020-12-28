@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { BaseItemDto } from '~/api';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLibraryIcon } from '~/utils/items';
 
 export interface UserViewsState {
@@ -33,7 +33,7 @@ export const mutations: MutationTree<UserViewsState> = {
 };
 
 export const actions: ActionTree<UserViewsState, UserViewsState> = {
-  async refresh({ commit }) {
+  async refreshUserViews({ commit }) {
     const userViewsResponse = await this.$api.userViews.getUserViews({
       userId: this.$auth.user.Id
     });

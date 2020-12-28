@@ -1,67 +1,76 @@
 import { ActionTree, MutationTree } from 'vuex';
 
 export interface UserState {
-  id: string;
-  serverUrl: string;
   accessToken: string;
-  displayPreferences: { [key: string]: string };
 }
 
 export const state = (): UserState => ({
-  id: '',
-  serverUrl: '',
-  accessToken: '',
-  displayPreferences: {}
+  accessToken: ''
 });
 
 interface MutationPayload {
-  id: string;
-  serverUrl: string;
   accessToken: string;
-  displayPreferences: { [key: string]: string };
 }
 
 export const mutations: MutationTree<UserState> = {
-  SET_USER(
-    state: UserState,
-    { id, serverUrl, accessToken, displayPreferences }: MutationPayload
-  ) {
-    state.id = id;
-    state.serverUrl = serverUrl;
+  SET_USER(state: UserState, { accessToken }: MutationPayload) {
     state.accessToken = accessToken;
-    state.displayPreferences = displayPreferences;
   },
   CLEAR_USER(state: UserState) {
-    state.serverUrl = '';
-    state.serverUrl = '';
     state.accessToken = '';
-    state.displayPreferences = {};
   }
 };
 
 export const actions: ActionTree<UserState, UserState> = {
-  async set(
-    { commit },
-    {
-      id,
-      serverUrl,
-      accessToken
-    }: { id: string; serverUrl: string; accessToken: string }
-  ) {
-    const response = await this.$api.displayPreferences.getDisplayPreferences({
-      displayPreferencesId: 'usersettings',
-      userId: id,
-      client: 'vue'
-    });
-
+  setUser({ commit }, { accessToken }: { accessToken: string }) {
     commit('SET_USER', {
-      id,
-      serverUrl,
-      accessToken,
-      displayPreferences: response.data.CustomPrefs
+      accessToken
     });
   },
-  clear({ commit }) {
+  clearUser({ commit }) {
     commit('CLEAR_USER');
+  },
+  async loginRequest({ dispatch }, credentials) {
+    try {
+      const { data } = await this.$auth.loginWith('jellyfin', credentials);
+
+      dispatch('loginRequestSuccess', data);
+    } catch (err) {
+      dispatch('loginRequestFailure', err);
+    }
+  },
+  loginRequestSuccess({ dispatch }, response) {
+    dispatch('setUser', {
+      accessToken: response.AccessToken
+    });
+  },
+  loginRequestFailure({ dispatch }, error) {
+    if (!this.$axios.defaults.baseURL) {
+      dispatch('servers/notifyNoServerUsed', {
+        root: true
+      });
+      return;
+    }
+
+    let errorMessage = 'unexpectedError';
+
+    if (!error.response) {
+      errorMessage = error.message || 'serverNotFound';
+    } else if (error.response.status === 500 || error.response.status === 401) {
+      errorMessage = 'incorrectUsernameOrPassword';
+    } else if (error.response.status === 400) {
+      errorMessage = 'badRequest';
+    }
+
+    dispatch(
+      'snackbar/pushSnackbarMessage',
+      {
+        message: errorMessage,
+        color: 'error'
+      },
+      {
+        root: true
+      }
+    );
   }
 };

@@ -5,10 +5,11 @@
         <v-row>
           <v-col cols="2">
             <v-img
+              ref="personImg"
               class="person-image elevation-2 ml-2"
               cover
               aspect-ratio="1"
-              :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
+              :src="getImageUrl(item.Id)"
             />
           </v-col>
           <v-col cols="7">
@@ -64,18 +65,18 @@
               fixed-height="true"
             >
               <vueper-slide v-for="movie in movies" :key="movie.Id">
-                <template v-slot:content>
+                <template #content>
                   <card :item="movie" />
                 </template>
               </vueper-slide>
 
-              <template v-slot:arrow-left>
+              <template #arrow-left>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
               </template>
 
-              <template v-slot:arrow-right>
+              <template #arrow-right>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-right</v-icon>
                 </v-btn>
@@ -99,18 +100,18 @@
               fixed-height="true"
             >
               <vueper-slide v-for="show in shows" :key="show.Id">
-                <template v-slot:content>
+                <template #content>
                   <card :item="show" />
                 </template>
               </vueper-slide>
 
-              <template v-slot:arrow-left>
+              <template #arrow-left>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-left</v-icon>
                 </v-btn>
               </template>
 
-              <template v-slot:arrow-right>
+              <template #arrow-right>
                 <v-btn icon large>
                   <v-icon>mdi-arrow-right</v-icon>
                 </v-btn>
@@ -125,7 +126,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '~/api';
+import { mapActions } from 'vuex';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -206,15 +208,14 @@ export default Vue.extend({
     ).data;
 
     if (item) {
-      this.$store.dispatch('backdrop/set', { item });
+      this.setBackdrop({ item });
       this.item = item;
     }
 
     const appearances = (
       await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
         userId: this.$auth.user.Id,
-        personIds: this.$route.params.itemId,
+        personIds: [this.$route.params.itemId],
         recursive: true,
         collapseBoxSetItems: false
       })
@@ -225,7 +226,21 @@ export default Vue.extend({
     }
   },
   destroyed() {
-    this.$store.dispatch('backdrop/clear');
+    this.clearBackdrop();
+  },
+  methods: {
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    getImageUrl(itemId: string | undefined): string {
+      const element = this.$refs.personImg as HTMLElement;
+      if (itemId) {
+        return this.getImageUrlForElement(ImageType.Primary, {
+          itemId,
+          element
+        });
+      } else {
+        return '';
+      }
+    }
   }
 });
 </script>

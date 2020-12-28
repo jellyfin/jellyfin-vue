@@ -23,7 +23,24 @@
             >
               {{ item.OriginalTitle }}
             </h2>
-            <v-skeleton-loader v-else type="heading" width="25em" />
+            <h2
+              v-if="loaded && item.AlbumArtist"
+              class="text-subtitle-1 text-truncate"
+            >
+              {{ $t('byArtist') }}
+              <nuxt-link
+                tag="span"
+                class="link"
+                :to="`/artist/${item.AlbumArtists[0].Id}`"
+              >
+                {{ item.AlbumArtist }}
+              </nuxt-link>
+            </h2>
+            <v-skeleton-loader
+              v-else-if="!loaded"
+              type="heading"
+              width="25em"
+            />
             <div class="text-caption text-h4 font-weight-medium">
               <media-info
                 v-if="loaded"
@@ -41,12 +58,13 @@
                 class="play-button mr-2"
                 color="primary"
                 min-width="8em"
-                :disabled="isPlayable"
+                :disabled="!isPlayable"
                 depressed
                 rounded
-                :to="`./${item.Id}/play`"
-                >{{ $t('play') }}</v-btn
+                @click="play({ items: [item] })"
               >
+                {{ $t('play') }}
+              </v-btn>
               <v-skeleton-loader v-else type="button" />
               <v-btn v-if="loaded" outlined icon>
                 <v-icon>mdi-dots-horizontal</v-icon>
@@ -54,12 +72,29 @@
             </div>
             <v-col class="mt-2" cols="10">
               <v-row
-                v-if="loaded && item && item.Genres && item.Genres.length > 1"
+                v-if="
+                  loaded &&
+                  item &&
+                  item.GenreItems &&
+                  item.GenreItems.length > 0
+                "
               >
-                <v-col cols="2" class="d-flex align-center pa-0">
+                <v-col cols="2" class="d-flex align-center pa-0 flex-0">
                   <label class="text--secondary">Genres</label>
                 </v-col>
-                <v-col cols="7">{{ item.Genres.join(', ') }}</v-col>
+                <v-col cols="7">
+                  <v-chip
+                    v-for="genre in item.GenreItems"
+                    :key="genre.Id"
+                    class="ma-2"
+                    small
+                    link
+                    nuxt
+                    :to="`/genre/${genre.Id}?type=${item.Type}`"
+                  >
+                    {{ genre.Name }}
+                  </v-chip>
+                </v-col>
               </v-row>
               <div
                 v-if="
@@ -74,12 +109,12 @@
               >
                 <v-row v-if="item.MediaSources.length > 1">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Video</label>
+                    <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
                       v-model="currentSource"
-                      :items="item.MediaSources"
+                      :items="getItemizedSelect(item.MediaSources)"
                       outlined
                       filled
                       flat
@@ -87,20 +122,20 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.value.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
                 </v-row>
                 <v-row v-if="videoTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Video</label>
+                    <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
                       v-model="currentVideoTrack"
-                      :items="videoTracks"
+                      :items="getItemizedSelect(videoTracks)"
                       :disabled="videoTracks.length <= 1"
                       outlined
                       filled
@@ -109,21 +144,21 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.value.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
                 </v-row>
                 <v-row v-if="audioTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Audio</label>
+                    <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
-                      v-if="audioTracks.length > 1"
+                      v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
-                      :items="audioTracks"
+                      :items="getItemizedSelect(audioTracks)"
                       :disabled="audioTracks.length <= 1"
                       outlined
                       filled
@@ -132,22 +167,22 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.value.DisplayTitle }}
                       </template>
-                      <template slot="item" slot-scope="{ item, on, attrs }">
+                      <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-avatar>
                             <v-icon
-                              v-text="getSurroundIcon(item.ChannelLayout)"
+                              v-text="getSurroundIcon(i.value.ChannelLayout)"
                             ></v-icon>
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title>{{
-                              item.Title
+                              i.value.DisplayTitle
                             }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(item.Language) }}
+                              {{ getLanguageName(i.value.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -157,13 +192,13 @@
                 </v-row>
                 <v-row v-if="subtitleTracks.length > 0">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">Subtitles</label>
+                    <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
-                      :items="subtitleTracks"
+                      :items="getItemizedSelect(subtitleTracks)"
                       outlined
                       filled
                       flat
@@ -171,17 +206,17 @@
                       single-line
                       hide-details
                     >
-                      <template slot="selection" slot-scope="{ item }">
-                        {{ item.DisplayTitle }}
+                      <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.value.DisplayTitle }}
                       </template>
-                      <template slot="item" slot-scope="{ item, on, attrs }">
+                      <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-content>
                             <v-list-item-title>{{
-                              item.Title
+                              i.value.DisplayTitle
                             }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(item.Language) }}
+                              {{ getLanguageName(i.value.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -213,13 +248,18 @@
         <v-row>
           <v-col cols="12">
             <related-items
-              v-if="item.Type !== 'Series'"
+              v-if="item.Type === 'Movie'"
               :id="$route.params.itemId"
+              :item="item"
             />
             <season-tabs
               v-if="item.Type === 'Series'"
               :item="item"
             ></season-tabs>
+            <track-list
+              v-if="item.Type === 'MusicAlbum'"
+              :item="item"
+            ></track-list>
           </v-col>
         </v-row>
       </v-col>
@@ -235,8 +275,8 @@
           <person-list :items="actors" :skeleton-length="5" />
         </div>
         <related-items
-          v-if="item.Type === 'Series'"
-          :id="$route.params.itemId"
+          v-if="['Series', 'MusicAlbum'].includes(item.Type)"
+          :item="item"
           vertical
         />
       </v-col>
@@ -246,6 +286,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Temporary module while waiting for fixes to language names on the server
 // @ts-ignore
 import langs from 'langs';
@@ -254,15 +295,17 @@ import {
   BaseItemPerson,
   MediaSourceInfo,
   MediaStream
-} from '~/api';
+} from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import formsHelper from '~/mixins/formsHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, formsHelper],
   data() {
     return {
       loaded: false,
       item: {} as BaseItemDto,
+      parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
       videoTracks: [] as MediaStream[],
@@ -277,7 +320,7 @@ export default Vue.extend({
     isPlayable: {
       get() {
         // TODO: Move this to a mixin
-        if (['Movie'].includes(this.$data.item.Type)) {
+        if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
           return false;
         } else {
           return true;
@@ -309,18 +352,18 @@ export default Vue.extend({
     }
   },
   async beforeMount() {
-    const item = (
+    this.item = (
       await this.$api.userLibrary.getItem({
         userId: this.$auth.user.Id,
         itemId: this.$route.params.itemId
       })
     ).data;
 
-    if (item) {
-      this.$store.dispatch('backdrop/set', { item });
+    if (this.item) {
+      this.setBackdrop({ item: this.item });
 
-      if (item.MediaSources) {
-        this.currentSource = item.MediaSources[0];
+      if (this.item.MediaSources) {
+        this.currentSource = this.item.MediaSources[0];
 
         // Filter the streams to get each type of track
         if (this.currentSource.MediaStreams) {
@@ -349,31 +392,33 @@ export default Vue.extend({
             this.currentSource.DefaultAudioStreamIndex
           ) {
             this.currentAudioTrack = this.audioTracks[
-              this.currentSource.DefaultAudioStreamIndex
+              this.currentSource.DefaultAudioStreamIndex - 1
             ];
+          } else if (this.audioTracks.length > 0) {
+            this.currentAudioTrack = this.audioTracks[0];
           }
           if (
             this.subtitleTracks.length > 0 &&
             this.currentSource.DefaultSubtitleStreamIndex
           ) {
             this.currentSubtitleTrack = this.subtitleTracks[
-              this.currentSource.DefaultSubtitleStreamIndex
+              this.currentSource.DefaultSubtitleStreamIndex - 1
             ];
           }
         }
       }
 
-      this.item = item;
       this.loaded = true;
     }
-
-    this.updateBackdropImage();
   },
   destroyed() {
-    this.$store.dispatch('backdrop/clear');
+    this.clearBackdrop();
   },
   methods: {
-    getLanguageName(code: string) {
+    ...mapActions('playbackManager', ['play']),
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    getLanguageName(code?: string) {
+      if (!code) return this.$t('undefined');
       return langs.where('2B', code).name;
     },
     getSurroundIcon(layout: string) {
@@ -389,17 +434,19 @@ export default Vue.extend({
         default:
           return 'mdi-surround-sound';
       }
-    },
-    getItemBackdrop(id: string): string {
-      if (window.innerWidth < window.innerHeight) {
-        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Primary`;
-      } else {
-        return `${this.$axios.defaults.baseURL}/Items/${id}/Images/Backdrop`;
-      }
-    },
-    updateBackdropImage() {
-      this.backdropImageSource = this.getItemBackdrop(this.item.Id || '');
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.link {
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.flex-0 {
+  flex: 0;
+}
+</style>

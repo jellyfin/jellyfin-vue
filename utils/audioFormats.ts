@@ -1,11 +1,8 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- *
- *
- *
- * @param {string} format
- * @returns
+ * @param {string} format Audio codec to test
+ * @returns {boolean} Determines if audio codec is supported
  */
 export function getSupportedAudioCodecs(format: string): boolean {
   let typeString;

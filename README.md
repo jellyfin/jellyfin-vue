@@ -50,6 +50,12 @@ Finally, we provide useful pre-commit hooks via [Husky](https://typicode.github.
 
 For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
 
+## Pre-requirements
+
+```
+Jellyfin >=10.7.0
+```
+
 ## Build Process
 
 ```bash

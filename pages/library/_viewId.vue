@@ -1,152 +1,166 @@
 <template>
-  <v-container>
-    <v-row class="align-center">
-      <v-select
-        v-model="orderMethod"
-        class="ma-2"
-        :items="sortChoices"
-        @change="sortItems"
-      ></v-select>
-      <v-btn class="ma-2" @click="changeSortDirection"
-        ><v-icon :class="{ flipped: sortDirection }"
-          >mdi-arrow-up</v-icon
-        ></v-btn
-      >
-    </v-row>
-    <v-row v-if="!loaded">
-      <v-col cols="12" class="card-grid-container">
-        <skeleton-card v-for="n in 24" :key="n" />
-      </v-col>
-    </v-row>
-    <dynamic-scroller
-      v-if="items.length"
-      class="scroller"
-      :items="itemsChunks"
-      :min-item-size="350"
-      :buffer="$vuetify.breakpoint.height * 1.5"
-      page-mode
-    >
-      <template v-slot="{ item, index, active }">
-        <dynamic-scroller-item
-          :item="item"
-          :active="active"
-          :data-index="index"
-          class="card-grid-container"
-        >
-          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
-        </dynamic-scroller-item>
-      </template>
-    </dynamic-scroller>
-    <v-row v-else-if="loaded" justify="center">
-      <v-col cols="12" class="card-grid-container empty-card-container">
-        <skeleton-card v-for="n in 24" :key="n" boilerplate />
-      </v-col>
-      <div class="empty-message text-center">
-        <h1 class="text-h5">
+  <div>
+    <v-app-bar fixed flat dense class="second-toolbar">
+      <span class="text-h6 hidden-sm-and-down">
+        {{ collectionInfo.Name }}
+      </span>
+      <v-chip v-if="!loading" small class="ma-2 hidden-sm-and-down">
+        {{ itemsCount }}
+      </v-chip>
+      <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
+      <type-button
+        v-if="hasViewTypes"
+        :type="collectionInfo.CollectionType"
+        @change="onChangeType"
+      />
+      <v-divider
+        v-if="isSortable && hasViewTypes"
+        inset
+        vertical
+        class="mx-2"
+      />
+      <sort-button v-if="isSortable" @change="onChangeSort" />
+      <filter-button
+        v-if="isSortable"
+        :collection-info="collectionInfo"
+        :items-type="viewType"
+        @change="onChangeFilter"
+      />
+    </v-app-bar>
+    <v-container class="after-second-toolbar">
+      <skeleton-item-grid v-if="loading" :view-type="viewType" />
+      <item-grid :loading="loading" :items="items">
+        <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
           {{ $t('libraryEmpty') }}
         </h1>
-      </div>
-    </v-row>
-  </v-container>
+      </item-grid>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { chunk } from 'lodash';
-import { BaseItemDto } from '~/api/api';
+import { mapActions } from 'vuex';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   data() {
     return {
       items: [] as BaseItemDto[],
-      loaded: false,
-      sortChoices: [
-        { text: this.$t('alphabetically'), value: 'SortName' },
-        { text: this.$t('rating'), value: 'CommunityRating' },
-        { text: this.$t('releaseDate'), value: 'PremiereDate' },
-        { text: this.$t('endDate'), value: 'EndDate' }
-      ],
-      orderMethod: 'SortName',
-      sortDirection: true
+      itemsCount: 0,
+      loading: false,
+      viewType: '',
+      sortBy: 'SortName',
+      hasFilters: false,
+      isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
+      statusFilter: [] as string[],
+      genresFilter: [] as string[],
+      yearsFilter: [] as string[],
+      ratingsFilter: [] as string[],
+      filterHasSubtitles: false,
+      filterHasTrailer: false,
+      filterHasSpecialFeature: false,
+      filterHasThemeSong: false,
+      filterHasThemeVideo: false,
+      filterIsHd: undefined as boolean | undefined,
+      filterIs4k: undefined as boolean | undefined,
+      filterIs3d: undefined as boolean | undefined,
+      collectionInfo: {} as BaseItemDto
+    };
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
     };
   },
   computed: {
-    itemsChunks: {
-      get() {
-        let cardsPerLine = 8;
-
-        if (this.$vuetify.breakpoint.smAndDown) {
-          cardsPerLine = 3;
-        } else if (
-          this.$vuetify.breakpoint.smAndUp &&
-          !this.$vuetify.breakpoint.lgAndUp
-        ) {
-          cardsPerLine = 4;
-        } else if (
-          this.$vuetify.breakpoint.lgAndUp &&
-          !this.$vuetify.breakpoint.xlOnly
-        ) {
-          cardsPerLine = 6;
-        }
-
-        const chunks = chunk(this.$data.items, cardsPerLine);
-
-        const keyedChunks = chunks.map((itemChunk, index) => {
-          return {
-            id: index,
-            chunk: itemChunk
-          };
-        });
-
-        return keyedChunks;
+    hasViewTypes(): boolean {
+      if (
+        ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
+        this.collectionInfo.CollectionType === undefined
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isSortable(): boolean {
+      // Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
+      // Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
+      if (
+        ![
+          'MusicArtist',
+          'Actor',
+          'Genre',
+          'MusicGenre',
+          'MusicGenre',
+          'Studio'
+        ].includes(this.viewType)
+      ) {
+        return true;
+      } else {
+        return false;
       }
     }
   },
+  watch: {
+    async viewType() {
+      this.loading = true;
+      await this.refreshItems();
+      this.loading = false;
+    },
+    async sortBy() {
+      this.loading = true;
+      await this.refreshItems();
+      this.loading = false;
+    }
+  },
   async beforeMount() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
     try {
-      const collectionInfo = await this.$api.items.getItems({
-        uId: this.$auth.user.Id,
-        userId: this.$auth.user.Id,
-        ids: this.$route.params.viewId
-      });
+      this.loading = true;
+      this.collectionInfo = (
+        await this.$api.items.getItems({
+          uId: this.$auth.user.Id,
+          userId: this.$auth.user.Id,
+          ids: this.$route.params.viewId
+        })
+      ).data.Items[0];
 
       if (
-        collectionInfo.data.Items &&
-        (collectionInfo.data.Items[0].Type === 'CollectionFolder' ||
-          collectionInfo.data.Items[0].Type === 'Folder')
+        this.collectionInfo &&
+        (this.collectionInfo.Type === 'CollectionFolder' ||
+          this.collectionInfo.Type === 'Folder')
       ) {
-        if (collectionInfo.data.Items[0].Name) {
-          this.$store.dispatch('page/setTitle', {
-            title: collectionInfo.data.Items[0].Name
+        if (this.collectionInfo.Name) {
+          this.setPageTitle({
+            title: this.collectionInfo.Name
           });
         }
 
-        const options = {
-          uId: this.$auth.user.Id,
-          userId: this.$auth.user.Id,
-          parentId: this.$route.params.viewId,
-          includeItemTypes: '',
-          recursive: true,
-          sortBy: 'SortName',
-          sortOrder: 'Ascending',
-          fields: 'SortName'
-        };
-
-        if (collectionInfo.data.Items[0].CollectionType === 'tvshows') {
-          options.includeItemTypes = 'Series';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'movies') {
-          options.includeItemTypes = 'Movie';
-        } else if (collectionInfo.data.Items[0].CollectionType === 'books') {
-          options.includeItemTypes = 'Book';
+        // Set default view type - This will trigger an items refresh
+        switch (this.collectionInfo.CollectionType) {
+          case 'tvshows':
+            this.viewType = 'Series';
+            break;
+          case 'movies':
+            this.viewType = 'Movie';
+            break;
+          case 'books':
+            this.viewType = 'Book';
+            break;
+          case 'music':
+            this.viewType = 'MusicAlbum';
+            break;
+          default:
+            this.refreshItems();
+            break;
         }
 
-        const itemsResponse = await this.$api.items.getItems(options);
-
-        if (itemsResponse.data) {
-          this.loaded = true;
-        }
-
-        this.items = itemsResponse.data.Items || [];
+        this.$nuxt.$loading.finish();
       }
     } catch (error) {
       // Can't get given library ID
@@ -156,40 +170,181 @@ export default Vue.extend({
       });
     }
   },
-  methods: {
-    sortItems() {
-      if (this.sortDirection) {
-        this.items.sort((a, b) =>
-          (a[this.orderMethod as keyof BaseItemDto] || '') >
-          (b[this.orderMethod as keyof BaseItemDto] || '')
-            ? 1
-            : -1
-        );
-      } else {
-        this.items.sort((a, b) =>
-          (a[this.orderMethod as keyof BaseItemDto] || '') <
-          (b[this.orderMethod as keyof BaseItemDto] || '')
-            ? 1
-            : -1
-        );
-      }
-    },
-    changeSortDirection() {
-      this.sortDirection = !this.sortDirection;
-      this.sortItems();
-    }
+  destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: false });
   },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
+  methods: {
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    onChangeType(type: string) {
+      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
+
+      this.viewType = type;
+      this.isDefaultView = defaultViews.includes(this.viewType);
+    },
+    onChangeSort(sort: string) {
+      this.sortBy = sort;
+    },
+    onChangeFilter(filter: Record<string, [string]>) {
+      this.hasFilters = Object.values(filter).every((value) => {
+        return value.length > 0;
+      });
+
+      this.genresFilter = filter.genres;
+      this.statusFilter = filter.status;
+      this.yearsFilter = filter.years;
+      this.ratingsFilter = filter.ratings;
+      this.filterHasSubtitles = filter.features.includes('HasSubtitles');
+      this.filterHasTrailer = filter.features.includes('HasTrailer');
+      this.filterHasSpecialFeature = filter.features.includes(
+        'HasSpecialFeature'
+      );
+      this.filterHasThemeSong = filter.features.includes('HasThemeSong');
+      this.filterHasThemeVideo = filter.features.includes('HasThemeVideo');
+
+      // The following technically have a "false" state for excluding them.
+      // TODO: Maybe add exclusion to the filters
+      if (filter.types.includes('isHD')) {
+        this.filterIsHd = true;
+      } else {
+        this.filterIsHd = undefined;
+      }
+
+      if (filter.types.includes('is4K')) {
+        this.filterIs4k = true;
+      } else {
+        this.filterIs4k = undefined;
+      }
+
+      if (filter.types.includes('is3D')) {
+        this.filterIs3d = true;
+      } else {
+        this.filterIs3d = undefined;
+      }
+
+      this.refreshItems();
+    },
+    async refreshItems() {
+      try {
+        let itemsResponse;
+        switch (this.viewType) {
+          case 'MusicArtist':
+            itemsResponse = (
+              await this.$api.artists.getAlbumArtists({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'Actor':
+            itemsResponse = (
+              await this.$api.persons.getPersons({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId,
+                personTypes: 'Actor'
+              })
+            ).data;
+            break;
+          case 'Genre':
+            itemsResponse = (
+              await this.$api.genres.getGenres({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'MusicGenre':
+            itemsResponse = (
+              await this.$api.musicGenres.getMusicGenres({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          case 'Studio':
+            itemsResponse = (
+              await this.$api.studios.getStudios({
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId
+              })
+            ).data;
+            break;
+          default:
+            itemsResponse = (
+              await this.$api.items.getItems({
+                uId: this.$auth.user.Id,
+                userId: this.$auth.user.Id,
+                parentId: this.$route.params.viewId,
+                includeItemTypes: this.viewType,
+                sortBy:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? 'IsFolder,SortName'
+                    : this.sortBy,
+                recursive:
+                  this.collectionInfo.CollectionType === 'homevideos' ||
+                  this.collectionInfo.Type === 'Folder'
+                    ? undefined
+                    : true,
+                sortOrder: 'Ascending',
+                filters: this.statusFilter ? this.statusFilter : undefined,
+                genres: this.genresFilter ? this.genresFilter : undefined,
+                years: this.yearsFilter ? this.yearsFilter : undefined,
+                officialRatings: this.ratingsFilter
+                  ? this.ratingsFilter
+                  : undefined,
+                hasSubtitles: this.filterHasSubtitles ? true : undefined,
+                hasTrailer: this.filterHasTrailer ? true : undefined,
+                hasSpecialFeature: this.filterHasSpecialFeature
+                  ? true
+                  : undefined,
+                hasThemeSong: this.filterHasThemeSong ? true : undefined,
+                hasThemeVideo: this.filterHasThemeVideo ? true : undefined,
+                isHd: this.filterIsHd ? true : undefined,
+                is4K: this.filterIs4k ? true : undefined,
+                is3D: this.filterIs3d ? true : undefined
+              })
+            ).data;
+            break;
+        }
+
+        this.items = itemsResponse.Items;
+        this.itemsCount = itemsResponse.TotalRecordCount;
+      } catch (error) {
+        this.items = [];
+        this.itemsCount = 0;
+        this.pushSnackbarMessage({
+          message: this.$t('failedToRefreshItems'),
+          color: 'error'
+        });
+      }
+
+      this.loading = false;
+    }
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.scroller {
-  max-height: 100%;
+@import '~vuetify/src/styles/styles.sass';
+.second-toolbar {
+  top: 56px;
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .second-toolbar {
+    top: 64px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .second-toolbar {
+    left: 256px !important;
+  }
+}
+
+.after-second-toolbar {
+  padding-top: 60px;
 }
 
 .empty-card-container {
@@ -203,38 +358,5 @@ export default Vue.extend({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-@import '~vuetify/src/styles/styles.sass';
-.card-grid-container {
-  display: grid;
-}
-
-@media #{map-get($display-breakpoints, 'sm-and-down')} {
-  .card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-  }
-}
-
-@media #{map-get($display-breakpoints, 'sm-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-  }
-}
-
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-  }
-}
-
-@media #{map-get($display-breakpoints, 'xl-only')} {
-  .card-grid-container {
-    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-  }
-}
-
-.flipped {
-  transform: rotateZ(180deg);
 }
 </style>

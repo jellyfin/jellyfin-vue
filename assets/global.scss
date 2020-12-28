@@ -1,0 +1,61 @@
+@import '@fontsource/noto-sans/index.css';
+@import '@fontsource/noto-sans-jp/index.css';
+@import '@fontsource/noto-sans-sc/index.css';
+@import '@fontsource/noto-sans-kr/index.css';
+@import '@fontsource/noto-sans-tc/index.css';
+@import '@fontsource/noto-sans-hk/index.css';
+
+body {
+  background-color: var(--v-background-base);
+}
+
+/* W3C standard (Firefox-only for now) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--v-thumb-lighten5) var(--v-track-base);
+}
+
+/* Reproduce something similar on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--v-track-base);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--v-thumb-lighten5);
+  border-radius: 20px;
+  border: 3px solid var(--v-track-base);
+}
+
+.nuxt-progress {
+  /* Override the color with the dynamic color from Vuetify */
+  background-color: var(--v-primary-base);
+}
+
+.page-enter-active,
+.page-leave-active,
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.25s;
+}
+
+.page-enter,
+.page-leave-to,
+.layout-enter,
+.layout-leave-to {
+  opacity: 0;
+}
+
+/* Vuetify overrides
+   We can't set these through variables, so override them here */
+
+.v-app-bar.v-app-bar--fixed {
+  z-index: 100 !important;
+}
+
+.v-navigation-drawer--temporary {
+  z-index: 105 !important;
+}

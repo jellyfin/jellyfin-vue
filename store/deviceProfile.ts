@@ -1,6 +1,7 @@
 import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import { browserDetector } from '~/plugins/browserDetection';
+import { version } from '~/package.json';
 
 export interface DeviceState {
   deviceId: string;
@@ -35,7 +36,7 @@ function getDeviceId(): string {
  *
  * @returns {string} deviceName returns the device's name
  */
-function getDeviceName() {
+function getDeviceName(): string {
   let deviceName = 'Unknown';
 
   // TODO: Replace with pattern matching once TC39 adopts the proposal
@@ -68,7 +69,7 @@ function getDeviceName() {
  * @returns {string} clientVersion returns the current device version
  */
 function getClientVersion(): string {
-  return '0.0.0';
+  return version;
 }
 
 /** Get's the current device's name
@@ -95,7 +96,7 @@ export const mutations: MutationTree<DeviceState> = {
 };
 
 export const actions: ActionTree<DeviceState, DeviceState> = {
-  set({ commit }) {
+  setDeviceProfile({ commit }) {
     commit('SET_PROFILE', {
       deviceId: getDeviceId(),
       deviceName: getDeviceName(),
@@ -103,7 +104,7 @@ export const actions: ActionTree<DeviceState, DeviceState> = {
       clientName: getClientName()
     });
   },
-  clear({ commit }) {
+  clearDeviceProfile({ commit }) {
     commit('CLEAR_PROFILE');
   }
 };

@@ -1,20 +1,20 @@
-import { browserDetector } from '~/plugins/browserDetection';
 import {
   CodecProfile,
   CodecType,
   ProfileConditionType,
   ProfileCondition,
   ProfileConditionValue
-} from '~/api';
+} from '@jellyfin/client-axios';
+import { browserDetector } from '~/plugins/browserDetection';
 
 /**
  * Creates a profile condition object for use in device playback profiles.
  *
- * @param Property
- * @param Condition
- * @param Value
- * @param IsRequired
- * @returns {ProfileCondition}
+ * @param {ProfileConditionValue} Property - Value for the property
+ * @param {ProfileConditionType} Condition - Condition that the property must comply with
+ * @param {string} Value - Value to check in the condition
+ * @param {boolean} IsRequired - Whether this property is required
+ * @returns {ProfileCondition} - Constructed ProfileCondition object
  */
 function createProfileCondition(
   Property: ProfileConditionValue,
@@ -33,8 +33,8 @@ function createProfileCondition(
 /**
  *
  *
- * @param {HTMLVideoElement} videoTestElement
- * @returns {Array<CodecProfile>}
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {Array<CodecProfile>} - Array containing the different profiles for the client
  */
 export function getCodecProfiles(
   videoTestElement: HTMLVideoElement
