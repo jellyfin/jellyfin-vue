@@ -5,6 +5,10 @@
 @import '@fontsource/noto-sans-tc/index.css';
 @import '@fontsource/noto-sans-hk/index.css';
 
+body {
+  background-color: var(--v-background-base);
+}
+
 /* W3C standard (Firefox-only for now) */
 * {
   scrollbar-width: thin;
@@ -31,6 +35,8 @@
   background-color: var(--v-primary-base);
 }
 
+/* Nuxt transitions */
+
 .page-enter-active,
 .page-leave-active,
 .layout-enter-active,
@@ -50,4 +56,14 @@
 
 .v-app-bar.v-app-bar--fixed {
   z-index: 100 !important;
+}
+
+.v-navigation-drawer--temporary {
+  z-index: 105 !important;
+}
+
+/* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+
+.text-truncate {
+  line-height: normal !important;
 }

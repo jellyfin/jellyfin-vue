@@ -97,17 +97,20 @@
     "darkModeToggle": "Activer le mode sombre",
     "settingsSections": {
         "liveTvAndDvr": {
-            "name": "TV en direct et enregistrements"
+            "name": "TV en direct et enregistrements",
+            "description": "Gérer les tuneurs TV, les fournisseurs d'information pour le guide TV et les paramètres de l’enregistreur numérique"
         },
         "libraries": {
             "name": "Médiathèques",
             "description": "Gérer les médiathèques et leurs métadonnées"
         },
         "home": {
-            "name": "Écran d'accueil"
+            "name": "Écran d'accueil",
+            "description": "Configurer vos sections et l'agencement de l’accueil"
         },
         "dlna": {
-            "name": "DLNA"
+            "name": "DLNA",
+            "description": "Configurer les paramètres et le profil DLNA"
         },
         "devices": {
             "name": "Appareils",
@@ -120,6 +123,44 @@
         "account": {
             "name": "Compte",
             "description": "Éditer vos informations d'utilisateur"
+        },
+        "subtitles": {
+            "description": "Contrôler l'affichage des sous-titres sur cet appareil",
+            "name": "Sous-titres"
+        },
+        "users": {
+            "name": "Utilisateurs",
+            "description": "Gérer les utilisateurs et les permissions"
+        },
+        "server": {
+            "name": "Serveur"
+        },
+        "scheduledTasks": {
+            "name": "Tâches planifiées",
+            "description": "Gérer les tâches planifiées sur ce serveur"
+        },
+        "plugins": {
+            "name": "Extensions",
+            "description": "Ajouter et configurer de nouvelles fonctionnalités pour ce serveur"
+        },
+        "playback": {
+            "name": "Lecture",
+            "description": "Éditer les préférences de lecture pour cet équipement"
+        },
+        "notifications": {
+            "name": "Notifications",
+            "description": "Gérer et configurer les notifications envoyées par ce serveur"
+        },
+        "networking": {
+            "name": "Réseau",
+            "description": "Gérer les paramètres réseau pour ce serveur"
+        },
+        "mediaPlayers": {
+            "description": "Configurer la façon dont le lecteur se comporte pour cet équipement"
+        },
+        "logs": {
+            "name": "Journaux et activité",
+            "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
         }
     },
     "serverDashboard": "Tableau de bord du serveur",
@@ -152,7 +193,7 @@
     "banner": "Bannière",
     "backdrop": "Toile de fond",
     "audio": "Audio",
-    "art": "Art",
+    "art": "Illustration",
     "allLanguages": "Toutes les langues",
     "addNewPerson": "Ajouter une nouvelle personne",
     "actor": "Acteur",
@@ -160,12 +201,12 @@
     "3DFormat": "Format 3D",
     "communityRating": "Notation de la communauté",
     "role": "Rôle",
-    "rememberMe": "Rappel",
+    "rememberMe": "Se souvenir de moi",
     "producer": "Producteur",
-    "overview": "Aperçu",
+    "overview": "Synopsis",
     "originalTitle": "Titre original",
-    "originalAspectRatio": "Ratio d'affichage original",
-    "metadataNoResultsMatching": "Pas de résultat pour \"{search}\". Appuyer sur Entrée pour créer un nouveau.",
+    "originalAspectRatio": "Ratio d'aspect original",
+    "metadataNoResultsMatching": "Pas de résultat pour \"{search}\". Appuyer sur Entrée pour effectuer une nouvelle recherche.",
     "metadata": "Meta-données",
     "menu": "Menu",
     "logs": "Journaux",
@@ -188,5 +229,22 @@
     "save": "Sauvegarder",
     "serverVersion": "Version du serveur",
     "saved": "Enregistré",
-    "headerExternalIds": "IDs externes"
+    "headerExternalIds": "Identifiants externes",
+    "year": "Année",
+    "writer": "Scénariste",
+    "unableGetServerConfiguration": "Impossible de récupérer la configuration du serveur",
+    "unableGetPublicUsers": "Impossible de récupérer les utilisateurs",
+    "type": "Type",
+    "title": "Titre",
+    "primary": "Principal",
+    "people": "Personnes",
+    "parentalRating": "Classification parentale",
+    "logsAndActivity": {
+        "noLogsFounr": "Aucun journal trouvé",
+        "noActivityFound": "Aucune activité trouvée",
+        "failedGetActivity": "Impossible de récupérer l'activité",
+        "failedGetLogs": "Impossible de récupérer le journal",
+        "logs": "Journaux",
+        "activity": "Activité"
+    }
 }

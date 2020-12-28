@@ -2,10 +2,7 @@
   <v-card class="mx-auto d-flex flex-column">
     <div class="user-image primary darken-4">
       <v-responsive :aspect-ratio="1 / 1">
-        <v-img
-          v-if="user.PrimaryImageTag"
-          :src="`${$axios.defaults.baseURL}/Users/${user.Id}/Images/Primary?tag=${user.PrimaryImageTag}&quality=90`"
-        />
+        <user-image v-if="user.PrimaryImageTag" :id="user.Id" />
         <div
           v-if="!user.PrimaryImageTag"
           class="empty-picture d-flex align-center justify-center"

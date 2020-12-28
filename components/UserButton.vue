@@ -1,14 +1,12 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div class="d-flex align-center no-overflow" v-bind="attrs" v-on="on">
-        <v-avatar :size="avatarSize" color="primary" class="mr-4">
-          <v-img :src="userImage" :alt="$auth.user.Name">
-            <template #placeholder>
-              <v-icon dark>mdi-account</v-icon>
-            </template>
-          </v-img>
-        </v-avatar>
+      <div
+        class="d-flex align-center no-overflow space-evenly"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <user-image />
         <h1 class="font-weight-light pb-1 text-truncate">
           {{ $auth.user.Name }}
         </h1>
@@ -47,13 +45,6 @@ export default Vue.extend({
           }
         }
       ];
-    },
-    userImage(): string {
-      if (this.$auth.user?.PrimaryImageTag) {
-        return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&maxWidth=${this.avatarSize}`;
-      } else {
-        return '';
-      }
     }
   },
   methods: {
@@ -69,7 +60,12 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.space-evenly {
+  flex: 1 !important;
+  justify-content: space-evenly !important;
+}
+
 .no-overflow {
   max-width: 100%;
 }
