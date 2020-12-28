@@ -249,5 +249,15 @@
     "boxRear": "Hộp (phía sau)",
     "box": "Hộp",
     "banner": "Ảnh bìa",
-    "thumb": "Ảnh thu nhỏ"
+    "thumb": "Ảnh thu nhỏ",
+    "video": "Video",
+    "logsAndActivity": {
+        "noLogsFounr": "Không tìm thấy nhật ký nào",
+        "noActivityFound": "Không tìm thấy hoạt động nào",
+        "failedGetActivity": "Không thể lấy dữ liệu hoạt động",
+        "failedGetLogs": "Không thể lấy dữ liệu nhật ký",
+        "logs": "Nhật ký",
+        "activity": "Hoạt động"
+    },
+    "audio": "Âm thanh"
 }
