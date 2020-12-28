@@ -156,11 +156,15 @@
             "description": "Gérer les paramètres réseau pour ce serveur"
         },
         "mediaPlayers": {
-            "description": "Configurer la façon dont le lecteur se comporte pour cet équipement"
+            "description": "Configurer la façon dont le lecteur se comporte pour cet équipement",
+            "name": "Lecteur de contenus"
         },
         "logs": {
             "name": "Journaux et activité",
             "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
+        },
+        "transcodingAndStreaming": {
+            "description": "Gérer la façon dont le serveur transcode et envoie les flux vers les clients"
         }
     },
     "serverDashboard": "Tableau de bord du serveur",

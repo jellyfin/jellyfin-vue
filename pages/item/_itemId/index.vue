@@ -114,7 +114,7 @@
                   <v-col cols="7">
                     <v-select
                       v-model="currentSource"
-                      :items="item.MediaSources"
+                      :items="getItemizedSelect(item.MediaSources)"
                       outlined
                       filled
                       flat
@@ -123,7 +123,7 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.DisplayTitle }}
+                        {{ i.value.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
@@ -135,7 +135,7 @@
                   <v-col cols="7">
                     <v-select
                       v-model="currentVideoTrack"
-                      :items="videoTracks"
+                      :items="getItemizedSelect(videoTracks)"
                       :disabled="videoTracks.length <= 1"
                       outlined
                       filled
@@ -145,7 +145,7 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.DisplayTitle }}
+                        {{ i.value.DisplayTitle }}
                       </template>
                     </v-select>
                   </v-col>
@@ -156,9 +156,9 @@
                   </v-col>
                   <v-col cols="7">
                     <v-select
-                      v-if="audioTracks.length > 1"
+                      v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
-                      :items="audioTracks"
+                      :items="getItemizedSelect(audioTracks)"
                       :disabled="audioTracks.length <= 1"
                       outlined
                       filled
@@ -168,19 +168,21 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.DisplayTitle }}
+                        {{ i.value.DisplayTitle }}
                       </template>
                       <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-avatar>
                             <v-icon
-                              v-text="getSurroundIcon(i.ChannelLayout)"
+                              v-text="getSurroundIcon(i.value.ChannelLayout)"
                             ></v-icon>
                           </v-list-item-avatar>
                           <v-list-item-content>
-                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                              i.value.DisplayTitle
+                            }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(i.Language) }}
+                              {{ getLanguageName(i.value.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -196,7 +198,7 @@
                     <v-select
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
-                      :items="subtitleTracks"
+                      :items="getItemizedSelect(subtitleTracks)"
                       outlined
                       filled
                       flat
@@ -205,14 +207,16 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.DisplayTitle }}
+                        {{ i.value.DisplayTitle }}
                       </template>
                       <template slot="item" slot-scope="{ item: i, on, attrs }">
                         <v-list-item v-bind="attrs" two-line v-on="on">
                           <v-list-item-content>
-                            <v-list-item-title>{{ i.Title }}</v-list-item-title>
+                            <v-list-item-title>{{
+                              i.value.DisplayTitle
+                            }}</v-list-item-title>
                             <v-list-item-subtitle>
-                              {{ getLanguageName(i.Language) }}
+                              {{ getLanguageName(i.value.Language) }}
                             </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
@@ -293,9 +297,10 @@ import {
   MediaStream
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import formsHelper from '~/mixins/formsHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, formsHelper],
   data() {
     return {
       loaded: false,
@@ -387,15 +392,17 @@ export default Vue.extend({
             this.currentSource.DefaultAudioStreamIndex
           ) {
             this.currentAudioTrack = this.audioTracks[
-              this.currentSource.DefaultAudioStreamIndex
+              this.currentSource.DefaultAudioStreamIndex - 1
             ];
+          } else if (this.audioTracks.length > 0) {
+            this.currentAudioTrack = this.audioTracks[0];
           }
           if (
             this.subtitleTracks.length > 0 &&
             this.currentSource.DefaultSubtitleStreamIndex
           ) {
             this.currentSubtitleTrack = this.subtitleTracks[
-              this.currentSource.DefaultSubtitleStreamIndex
+              this.currentSource.DefaultSubtitleStreamIndex - 1
             ];
           }
         }
@@ -411,7 +418,7 @@ export default Vue.extend({
     ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code?: string) {
-      if (!code) return '';
+      if (!code) return this.$t('undefined');
       return langs.where('2B', code).name;
     },
     getSurroundIcon(layout: string) {

@@ -237,6 +237,7 @@
   "unableGetPublicUsers": "Unable to get users",
   "unableGetRelated": "Unable to get related items",
   "unableGetServerConfiguration": "Unable to get server configuration",
+  "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
   "unliked": "Unliked",
