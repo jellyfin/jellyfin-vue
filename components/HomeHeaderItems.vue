@@ -11,7 +11,7 @@
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop">
           <blurhash-image
-            :key="`${item.Id}-${reloadSentinel}`"
+            :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
           />
@@ -158,10 +158,13 @@ export default Vue.extend({
   },
   data() {
     return {
-      reloadSentinel: 0,
-      currentIndex: 0,
-      isPaused: false
+      currentIndex: 0 as number | undefined,
+      isPaused: false,
+      swiper: undefined as Swiper | undefined
     };
+  },
+  mounted() {
+    this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
@@ -185,24 +188,21 @@ export default Vue.extend({
         itemId: relatedItem.Id
       });
     },
-    // HACK: Vue-awesome-swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
+    // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
     // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
     // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
-    // we force a BlurhashImage reload to fix this by updating it's key.
+    // we force a loop reload to fix this.
     //
-    // TODO: Revisit this once we are using the original Swiper.js library.
-    forceReload(): void {
-      this.reloadSentinel = 1;
-      this.reloadSentinel = 0;
-    },
+    // See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
     onSlideChange(): void {
-      this.currentIndex = ((this.$refs.homeSwiper as Vue)
-        .$swiper as Swiper).realIndex;
-      if (
-        this.currentIndex === 0 ||
-        this.currentIndex === this.items.length - 1
-      ) {
-        this.forceReload();
+      this.currentIndex = this.swiper?.realIndex;
+      if (this.swiper?.isBeginning || this.swiper?.isEnd) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.swiper?.loopDestroy();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.swiper?.loopCreate();
       }
     },
     onTouch(): void {
