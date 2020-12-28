@@ -41,6 +41,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
+import getFullServerUrl from '~/plugins/config';
 
 export default Vue.extend({
   data() {
@@ -54,6 +55,11 @@ export default Vue.extend({
         }
       }
     };
+  },
+  beforeMount() {
+    if (!this.$store.state.servers.serverList.length) {
+      this.connectServer(getFullServerUrl());
+    }
   },
   methods: {
     ...mapActions('servers', ['connectServer']),

@@ -83,7 +83,8 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     'plugins/playbackProfile.ts',
-    'plugins/apiPlugin.ts'
+    'plugins/apiPlugin.ts',
+    'plugins/config.ts'
   ],
   /*
    ** Auto import components
