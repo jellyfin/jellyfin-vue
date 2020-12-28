@@ -35,6 +35,8 @@ body {
   background-color: var(--v-primary-base);
 }
 
+/* Nuxt transitions */
+
 .page-enter-active,
 .page-leave-active,
 .layout-enter-active,
@@ -58,4 +60,10 @@ body {
 
 .v-navigation-drawer--temporary {
   z-index: 105 !important;
+}
+
+/* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+
+.text-truncate {
+  line-height: normal !important;
 }
