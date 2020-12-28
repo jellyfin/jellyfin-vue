@@ -37,6 +37,7 @@
   "darkModeToggle": "Toggle dark mode",
   "dateAdded": "Date added",
   "details": "Details",
+  "directing": "Directing",
   "director": "Director",
   "disc": "Disc",
   "discNumber": "Disc {discNumber}",
@@ -267,6 +268,7 @@
   "viewDetails": "View details",
   "vueClientVersion": "Vue client version",
   "writer": "Writer",
+  "writing": "Writing",
   "year": "Year",
   "years": "Years",
   "youMayAlsoLike": "You may also like"

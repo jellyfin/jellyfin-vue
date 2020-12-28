@@ -109,6 +109,56 @@
                   </v-chip>
                 </v-col>
               </v-row>
+              <v-row
+                v-if="
+                  loaded &&
+                  item &&
+                  directors.length > 0 &&
+                  !$vuetify.breakpoint.smAndUp
+                "
+                align="center"
+              >
+                <v-col cols="2" class="px-0">
+                  <label class="text--secondary">{{ $t('directing') }}</label>
+                </v-col>
+                <v-col cols="9">
+                  <v-chip
+                    v-for="director in directors"
+                    :key="director.Id"
+                    class="ma-2"
+                    small
+                    link
+                    nuxt
+                    :to="`/person/${director.Id}`"
+                    >{{ director.Name }}</v-chip
+                  >
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  loaded &&
+                  item &&
+                  writers.length > 0 &&
+                  !$vuetify.breakpoint.smAndUp
+                "
+                align="center"
+              >
+                <v-col cols="2" class="px-0">
+                  <label class="text--secondary">{{ $t('writing') }}</label>
+                </v-col>
+                <v-col cols="9">
+                  <v-chip
+                    v-for="writer in writers"
+                    :key="writer.Id"
+                    class="ma-2"
+                    small
+                    link
+                    nuxt
+                    :to="`/person/${writer.Id}`"
+                    >{{ writer.Name }}</v-chip
+                  >
+                </v-col>
+              </v-row>
               <div
                 v-if="
                   loaded &&
@@ -373,6 +423,16 @@ export default Vue.extend({
           return [];
         }
       }
+    },
+    directors() {
+      return this.crew.filter(
+        (person: BaseItemPerson) => person.Type === 'Director'
+      );
+    },
+    writers() {
+      return this.crew.filter(
+        (person: BaseItemPerson) => person.Type === 'Writer'
+      );
     }
   },
   async beforeMount() {
