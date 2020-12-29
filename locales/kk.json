@@ -99,13 +99,15 @@
             "name": "Efır ben DVR"
         },
         "libraries": {
-            "name": "Tasyǵyshhanalar"
+            "name": "Tasyǵyshhanalar",
+            "description": "Tasyǵyshhanalar men olardyń metaderekterіn basqarý"
         },
         "home": {
             "name": "Basqy ekran"
         },
         "dlna": {
-            "name": "DLNA qyzmeti"
+            "name": "DLNA qyzmeti",
+            "description": "DLNA parametrlerі men profaıldy teńsheý"
         },
         "devices": {
             "name": "Qurylǵylar"
@@ -237,5 +239,16 @@
         "logs": "Jurnaldar",
         "activity": "Áreketter"
     },
-    "audio": "Dybys"
+    "audio": "Dybys",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Jýyqta ústelgen"
+        },
+        "welcome": {
+            "helloUser": "Sálem, {userName}!"
+        }
+    },
+    "undefined": "Anyqtalmady",
+    "metadataNoResultsMatching": "\"{search}\" saýalyna sáıkes keletіn nátıjeler tabylmady. Jańasyn jasaý úshіn Enter pernesіn basyńyz.",
+    "failedToRefreshItems": "jańartý sátsiz aıaqtaldy"
 }
