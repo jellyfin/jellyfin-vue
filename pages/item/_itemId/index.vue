@@ -123,7 +123,10 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.value.DisplayTitle }}
+                        {{ i.value.Name }}
+                      </template>
+                      <template slot="item" slot-scope="{ item: i }">
+                        {{ i.value.Name }}
                       </template>
                     </v-select>
                   </v-col>
@@ -145,6 +148,9 @@
                       hide-details
                     >
                       <template slot="selection" slot-scope="{ item: i }">
+                        {{ i.value.DisplayTitle }}
+                      </template>
+                      <template slot="item" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
                       </template>
                     </v-select>
