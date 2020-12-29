@@ -259,5 +259,16 @@
         "failedGetLogs": "Načtení záznamů se nezdařilo",
         "logs": "Záznamy",
         "activity": "Aktivita"
-    }
+    },
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Nedávno přidáno"
+        },
+        "welcome": {
+            "checkNewItems": "Zjistěte, co je nového",
+            "noItems": "Poslední dobou nepřibyly žádné položky",
+            "helloUser": "Ahoj, {userName}!"
+        }
+    },
+    "undefined": "Nedefinováno"
 }
