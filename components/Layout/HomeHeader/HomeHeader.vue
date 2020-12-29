@@ -44,6 +44,7 @@ export default Vue.extend({
         limit: this.pages,
         fields: [ItemFields.Overview],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
+        includeItemTypes: ['Episode', 'Movie', 'MusicAlbum', 'Series'],
         imageTypeLimit: 1
       })
     ).data;
