@@ -258,5 +258,16 @@
         "failedGetLogs": "Невозможно получить журналы",
         "logs": "Журналы",
         "activity": "Действия"
-    }
+    },
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Недавно добавленное"
+        },
+        "welcome": {
+            "checkNewItems": "Узнайте, что нового",
+            "noItems": "Здесь нет недавно добавленных элементов",
+            "helloUser": "Привет, {userName}!"
+        }
+    },
+    "undefined": "Не определено"
 }
