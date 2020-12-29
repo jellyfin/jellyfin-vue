@@ -23,7 +23,7 @@
     "rating": "Beoordeling",
     "releaseDate": "Publicatiedatum",
     "serverAddress": "Server adres",
-    "serverAddressMustBeUrl": "Server adres moet een geldig adres zijn",
+    "serverAddressMustBeUrl": "Server adres moet een geldige URL zijn",
     "serverAddressRequired": "Server adres is verplicht",
     "serverNotFound": "Server niet gevonden",
     "settings": "Instellingen",
@@ -83,11 +83,11 @@
         "required": "Dit veld is vereist",
         "mustBeUrl": "Dit veld moet een geldige URL zijn"
     },
-    "failedToRefreshItems": "Het vernieuwen van items is mislukt",
+    "failedToRefreshItems": "Het verversen van items is mislukt",
     "unliked": "Leuk gevonden ongedaan",
     "unableGetRelated": "Kan gerelateerde items niet ophalen",
-    "sortByType": "Sorteer op {type}",
-    "shuffleAll": "Speel af in willekeurige volgorde",
+    "sortByType": "Op {type}",
+    "shuffleAll": "Shuffle alles",
     "numberTracks": "{number} tracks",
     "nextUp": "Volgende",
     "liked": "Vond ik leuk",
@@ -99,12 +99,96 @@
         },
         "anErrorHappened": "Er is een fout opgetreden"
     },
-    "disc": "Schijf {discNumber}",
+    "disc": "Schijf",
     "darkModeToggle": "Schakel donkere modus",
     "buttons": {
         "ok": "Ok"
     },
     "rememberMe": "Onthoud mij",
     "unableGetPublicUsers": "Gebruikers laden is mislukt",
-    "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt"
+    "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt",
+    "settingsSections": {
+        "dlna": {
+            "name": "DLNA",
+            "description": "Configureer DLNA instellingen en profiel"
+        },
+        "devices": {
+            "name": "Apparaten",
+            "description": "Bekijk en beheer de apparaten die met jouw server verbonden zijn"
+        },
+        "apiKeys": {
+            "name": "API sleutels",
+            "description": "Verwijder en voeg API sleutels toe voor externe toegang tot jouw server"
+        },
+        "account": {
+            "name": "Account",
+            "description": "Wijzig de informatie van jouw gebruiker"
+        }
+    },
+    "serverVersion": "Server versie",
+    "serverDashboard": "Server dashboard",
+    "server": "Server",
+    "search": "Zoeken",
+    "screenshot": "Schermafdruk",
+    "saved": "Opgeslagen",
+    "save": "Opslaan",
+    "role": "Rol",
+    "producer": "Producent",
+    "primary": "Primair",
+    "people": "Personen",
+    "parentalRating": "Kijkwijzer classificatie",
+    "overview": "Overzicht",
+    "originalTitle": "Originele titel",
+    "originalAspectRatio": "Originele aspect ratio",
+    "operatingSystem": "Besturingssysteem",
+    "metadataNoResultsMatching": "Geen resultaten komen overeen met \"{search}\". Druk op enter om een nieuwe aan te maken.",
+    "metadata": "Metadata",
+    "menu": "Menu",
+    "logsAndActivity": {
+        "noLogsFounr": "Geen logboeken gevonden",
+        "noActivityFound": "Geen activiteiten gevonden",
+        "failedGetActivity": "Kan de activiteit niet verkrijgen",
+        "failedGetLogs": "Kan de logboeken niet verkrijgen",
+        "logs": "Logboeken",
+        "activity": "Activiteit"
+    },
+    "logo": "Logo",
+    "links": {
+        "reportAnIssue": "Meld een probleem met de Vue client",
+        "readTheDocumentation": "Lees de documentatie",
+        "poweredByJellyfin": "Deze server draait Jellyfin",
+        "helpTranslate": "Help Jellyfin naar jouw taal te vertalen"
+    },
+    "jellyfinLogo": "Jellyfin logo",
+    "images": "Afbeeldingen",
+    "headerPaths": "Pad",
+    "headerExternalIds": "Externe ID's",
+    "guestStar": "Gast Ster",
+    "general": "Algemeen",
+    "failedSettingDisplayPreferences": "Kan de weergavevoorkeuren niet bijwerken.",
+    "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De standaardvoorkeuren worden gebruikt.",
+    "editPerson": "Persoon wijzigen",
+    "editMetadata": "Metadata wijzigen",
+    "edit": "Bewerken",
+    "discNumber": "Schijf {discNumber}",
+    "director": "Regiseur",
+    "details": "Details",
+    "dateAdded": "Datum toegevoegd",
+    "customRating": "Aangepaste beoordeling",
+    "criticRating": "Critici-beoordeling",
+    "composer": "Componist",
+    "communityRating": "Community-beoordeling",
+    "castAndCrew": "Acteurs & Medewerkers",
+    "cancel": "Annuleren",
+    "boxRear": "Hoes (achterkant)",
+    "box": "Hoes",
+    "banner": "Banner",
+    "backdrop": "Achtergrond",
+    "audio": "Geluid",
+    "art": "Afbeeldingen",
+    "architecture": "Architectuur",
+    "allLanguages": "Alle talen",
+    "addNewPerson": "Voeg een nieuw persoon toe",
+    "actor": "Acteur",
+    "3DFormat": "3D formaat"
 }
