@@ -109,7 +109,7 @@
               >
                 <v-row v-if="item.MediaSources.length > 1">
                   <v-col cols="2" class="d-flex align-center pa-0">
-                    <label class="text--secondary">{{ $t('video') }}</label>
+                    <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
                   <v-col cols="7">
                     <v-select
