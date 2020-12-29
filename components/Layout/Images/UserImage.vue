@@ -1,6 +1,12 @@
 <template>
   <v-avatar v-if="userImage">
-    <v-img :src="userImage" :alt="$auth.user.Name" class="userImage absolute" />
+    <v-img :src="userImage" :alt="$auth.user.Name" class="userImage">
+      <template #placeholder>
+        <v-avatar color="primary">
+          <v-icon dark>mdi-account</v-icon>
+        </v-avatar>
+      </template>
+    </v-img>
   </v-avatar>
   <v-avatar v-else color="primary">
     <v-icon dark>mdi-account</v-icon>
