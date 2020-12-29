@@ -67,6 +67,16 @@
   "headerExternalIds": "External IDs",
   "headerPaths": "Path",
   "home": "Home",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Recently added"
+    },
+    "welcome": {
+      "checkNewItems": "Check out what's new",
+      "helloUser": "Hello {userName}!",
+      "noItems": "There are no recently added items to show"
+    }
+  },
   "images": "Images",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "itemNotFound": "Item not found",
@@ -89,9 +99,9 @@
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Activity",
-    "logs": "Logs",
-    "failedGetLogs": "Unable to get logs",
     "failedGetActivity": "Unable to get activity",
+    "failedGetLogs": "Unable to get logs",
+    "logs": "Logs",
     "noActivityFound": "No activities found",
     "noLogsFounr": "No logs found"
   },
@@ -249,6 +259,7 @@
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
+  "version": "Version",
   "video": "Video",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
@@ -256,15 +267,5 @@
   "writer": "Writer",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like",
-  "homeHeader": {
-    "welcome": {
-      "helloUser": "Hello {userName}!",
-      "noItems": "There are no recently added items to show",
-      "checkNewItems": "Check out what's new"
-    },
-    "items": {
-      "recentlyAdded": "Recently added"
-    }
-  }
+  "youMayAlsoLike": "You may also like"
 }
