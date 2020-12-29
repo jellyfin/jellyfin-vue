@@ -1,5 +1,5 @@
-<template>
-  <div v-if="!$nuxt.isOnline">
+<template functional>
+  <div v-if="!parent.$nuxt.isOnline">
     <v-tooltip bottom>
       <template #activator="{ on, attrs }">
         <v-icon size="32" v-bind="attrs" v-on="on">
