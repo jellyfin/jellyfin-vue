@@ -62,6 +62,13 @@ export default Vue.extend({
       window.requestAnimationFrame(this.updateBars);
     });
   },
+  destroyed() {
+    const animEndFunction = this.onAnimationEnd;
+
+    this.bars.forEach((el: HTMLElement) => {
+      el.removeEventListener('animationend', animEndFunction);
+    });
+  },
   methods: {
     updateBars(): void {
       const followingBars = this.bars.slice(this.currentIndex + 1);
@@ -72,13 +79,13 @@ export default Vue.extend({
       activeBar.classList.add('active');
       activeBar.addEventListener('animationend', animEndFunction);
 
-      previousBars.forEach(function (el: HTMLElement) {
+      previousBars.forEach((el: HTMLElement) => {
         el.classList.remove('active', 'paused');
         el.removeEventListener('animationend', animEndFunction);
         el.classList.add('passed');
       });
 
-      followingBars.forEach(function (el: HTMLElement) {
+      followingBars.forEach((el: HTMLElement) => {
         el.classList.remove('active', 'passed', 'paused');
         el.removeEventListener('animationend', animEndFunction);
       });
@@ -99,7 +106,7 @@ export default Vue.extend({
     },
     setAnimationDuration(): void {
       const newDuration = (this.duration / 1000).toString() + 's';
-      this.bars.forEach(function (el: HTMLElement) {
+      this.bars.forEach((el: HTMLElement) => {
         el.style.animationDuration = newDuration;
       });
     }
