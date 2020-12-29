@@ -36,7 +36,7 @@
     "serverVersionTooLow": "La versión del servidor tiene que ser superior a 10.7.0",
     "noNetworkConnection": "No hay conexión a la red",
     "movies": "Películas",
-    "browserNotSupported": "Tu navegador no está soportado para reproducir este archivo.",
+    "browserNotSupported": "Tu navegador no es compatible con este archivo.",
     "years": "Años",
     "videoTypes": "Tipos de Vídeo",
     "parentalRatings": "Clasificaiones Parentales",
@@ -48,7 +48,7 @@
     "favorite": "Favorito",
     "played": "Reproducido",
     "status": "Estado",
-    "filtersNotFound": "Imposible cargar filtros",
+    "filtersNotFound": "Hubo un error al cargar los filtros",
     "themeVideo": "Vídeo temático",
     "dislikes": "No me gusta",
     "likes": "Me gusta",
@@ -72,16 +72,17 @@
     "networks": "Redes",
     "name": "Nombre",
     "filter": "Filtrar",
-    "failedToRefreshItems": "Fallo al refrescar los artículos",
+    "failedToRefreshItems": "Error al actualizar los ítems",
     "collections": "Colecciones",
     "artists": "Artistas",
     "actors": "Actores",
     "selectUser": "Seleccionar un usuario",
     "manualLogin": "Inicio de sesión manual",
     "loginAs": "Iniciar sesión como {name}",
-    "changeUser": "Cambiar usuario",
+    "changeUser": "Cambiar de usuario",
     "validation": {
-        "required": "Este campo es obligatorio"
+        "required": "Este campo es obligatorio",
+        "mustBeUrl": "Este campo debe ser una URL válida"
     },
     "shuffleAll": "Mezclar todo",
     "libraries": "Bibliotecas",
@@ -89,12 +90,134 @@
         "messages": {
             "errorCode": "Código de error: {errorCode}"
         },
-        "anErrorHappened": "Ocurrió un error"
+        "anErrorHappened": "Ha ocurrido un error"
     },
     "darkModeToggle": "Cambiar a modo oscuro",
     "buttons": {
         "ok": "Vale"
     },
     "liked": "Te gusta",
-    "latestLibrary": "Lo último en {libraryName}"
+    "latestLibrary": "Lo último en {libraryName}",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Añadido recientemente"
+        },
+        "welcome": {
+            "checkNewItems": "Echa un vistazo a lo que se ha añadido hace poco",
+            "noItems": "No hay ítems añadidos recientemente que mostrar",
+            "helloUser": "¡Hola {userName}!"
+        }
+    },
+    "year": "Año",
+    "writer": "Escritor",
+    "vueClientVersion": "Versión del cliente Vue",
+    "viewDetails": "Ver detalles",
+    "undefined": "Sin definir",
+    "unableGetServerConfiguration": "Error al cargar la configuración del servidor",
+    "unableGetRelated": "Error al cargar los elementos relacionados",
+    "unableGetPublicUsers": "Error al cargar los usuarios",
+    "type": "Tipo",
+    "title": "Título",
+    "tags": "Etiquetas",
+    "tagline": "Eslogan",
+    "settingsSections": {
+        "users": {
+            "name": "Usuarios",
+            "description": "Gestiona los usuarios y sus permisos"
+        },
+        "transcodingAndStreaming": {
+            "description": "Gestiona cómo el servidor realiza las conversiones y el streaming para los clientes",
+            "name": "Conversión y streaming"
+        },
+        "subtitles": {
+            "name": "Subtítulos"
+        },
+        "server": {
+            "name": "Servidor"
+        },
+        "scheduledTasks": {
+            "name": "Tareas programadas",
+            "description": "Gestiona las tareas programadas del servidor"
+        },
+        "plugins": {
+            "name": "Extensiones"
+        },
+        "notifications": {
+            "name": "Notificaciones"
+        },
+        "logs": {
+            "name": "Registros y actividad"
+        },
+        "liveTvAndDvr": {
+            "name": "Televisión en directo y grabación de vídeo (DVR)"
+        },
+        "libraries": {
+            "name": "Bibliotecas",
+            "description": "Gestiona las bibliotecas y sus etiquetas"
+        },
+        "home": {
+            "description": "Configurar la apariencia y distribución de la pantalla de inicio"
+        },
+        "dlna": {
+            "name": "DLNA"
+        },
+        "devices": {
+            "name": "Dispositivos",
+            "description": "Gestiona los dispositivos conectados al servidor"
+        },
+        "account": {
+            "name": "Cuenta",
+            "description": "Edita la información de tu cuenta"
+        }
+    },
+    "serverVersion": "Versión del servidor",
+    "search": "Buscar",
+    "saved": "Guardado",
+    "save": "Guardar",
+    "role": "Rol",
+    "rememberMe": "Recordarme",
+    "producer": "Productor",
+    "people": "Gente",
+    "parentalRating": "Calificación por edades",
+    "originalTitle": "Título original",
+    "originalAspectRatio": "Relación de aspecto original",
+    "operatingSystem": "Sistema operativo",
+    "metadata": "Etiquetas",
+    "menu": "Menú",
+    "logsAndActivity": {
+        "noLogsFounr": "No hay registros",
+        "noActivityFound": "No hay eventos registrados",
+        "failedGetActivity": "Error al obtener los eventos",
+        "failedGetLogs": "Error al obtener los registros",
+        "logs": "Registros",
+        "activity": "Actividad"
+    },
+    "logo": "Logo",
+    "links": {
+        "reportAnIssue": "Reportar un error en el cliente Vue",
+        "readTheDocumentation": "Ver la documentación",
+        "poweredByJellyfin": "Este servidor funciona gracias a Jellyfin",
+        "helpTranslate": "Colabora en la traducción de Jellyfin a tu idioma"
+    },
+    "jellyfinLogo": "Logo de Jellyfin",
+    "images": "Imágenes",
+    "headerPaths": "Ruta",
+    "headerExternalIds": "IDs externas",
+    "guestStar": "Estrella invitada",
+    "failedRetrievingDisplayPreferences": "Error al cargar las preferencias. Utilizando los valores por defecto.",
+    "failedSettingDisplayPreferences": "Error al actualizar las preferencias.",
+    "editPerson": "Editar persona",
+    "editMetadata": "Editar etiquetas",
+    "edit": "Editar",
+    "discNumber": "Disco {discNumber}",
+    "director": "Director",
+    "details": "Detalles",
+    "customRating": "Valoración personal",
+    "criticRating": "Valoración de la crítica",
+    "composer": "Compositor",
+    "architecture": "Arquitectura",
+    "allLanguages": "Todos los idiomas",
+    "addNewPerson": "Añadir una persona",
+    "actor": "Actor",
+    "3DFormat": "Formato 3D"
 }
