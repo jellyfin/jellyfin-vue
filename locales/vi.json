@@ -259,5 +259,16 @@
         "logs": "Nhật ký",
         "activity": "Hoạt động"
     },
-    "audio": "Âm thanh"
+    "audio": "Âm thanh",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Được thêm gần đây"
+        },
+        "welcome": {
+            "checkNewItems": "Kiểm tra những gì mới",
+            "noItems": "Không có mục nào được thêm gần đây để hiển thị",
+            "helloUser": "Chào {userName}!"
+        }
+    },
+    "undefined": "Chưa xác định"
 }
