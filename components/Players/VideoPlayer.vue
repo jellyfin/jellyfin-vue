@@ -112,7 +112,7 @@ export default Vue.extend({
         });
       } else {
         this.$nuxt.error({
-          message: this.$t('browserNotSupported') as string
+          message: this.$t('browserNotSupported')
         });
       }
     } catch (error) {

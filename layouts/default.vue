@@ -159,7 +159,7 @@ export default Vue.extend({
       return [
         {
           icon: 'mdi-home',
-          title: this.$t('home').toString(),
+          title: this.$t('home'),
           to: '/'
         }
       ];
@@ -168,12 +168,12 @@ export default Vue.extend({
       return [
         {
           icon: 'mdi-pencil-outline',
-          title: this.$t('metadata').toString(),
+          title: this.$t('metadata'),
           to: '/metadata'
         },
         {
           icon: 'mdi-cog',
-          title: this.$t('settings').toString(),
+          title: this.$t('settings'),
           to: '/settings'
         }
       ];

@@ -82,7 +82,7 @@ export default Vue.extend({
       // TODO: Use a Date object
       return this.$t('endsAt', {
         time: endTimeShort
-      }).toString();
+      });
     }
   }
 });

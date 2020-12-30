@@ -50,7 +50,7 @@ export default Vue.extend({
         const menuItems = [] as MenuItem[];
         if (this.$auth.$state.user.Policy.IsAdministrator) {
           menuItems.push({
-            title: this.$t('editMetadata') as string,
+            title: this.$t('editMetadata'),
             action: () => {
               this.dialog = true;
             }

@@ -49,24 +49,24 @@ export default Vue.extend({
       switch (this.type) {
         case 'movies':
           return [
-            { name: this.$t('movies').toString(), value: 'Movie' },
-            { name: this.$t('collections').toString(), value: 'BoxSet' },
-            { name: this.$t('actors').toString(), value: 'Actor' },
-            { name: this.$t('genres').toString(), value: 'Genre' },
-            { name: this.$t('studios').toString(), value: 'Studio' }
+            { name: this.$t('movies'), value: 'Movie' },
+            { name: this.$t('collections'), value: 'BoxSet' },
+            { name: this.$t('actors'), value: 'Actor' },
+            { name: this.$t('genres'), value: 'Genre' },
+            { name: this.$t('studios'), value: 'Studio' }
           ];
         case 'music':
           return [
-            { name: this.$t('albums').toString(), value: 'MusicAlbum' },
-            { name: this.$t('artists').toString(), value: 'MusicArtist' },
-            { name: this.$t('genres').toString(), value: 'MusicGenre' }
+            { name: this.$t('albums'), value: 'MusicAlbum' },
+            { name: this.$t('artists'), value: 'MusicArtist' },
+            { name: this.$t('genres'), value: 'MusicGenre' }
           ];
         case 'tvshows':
           return [
-            { name: this.$t('series').toString(), value: 'Series' },
-            { name: this.$t('actors').toString(), value: 'Actor' },
-            { name: this.$t('genres').toString(), value: 'Genre' },
-            { name: this.$t('networks').toString(), value: 'Studio' }
+            { name: this.$t('series'), value: 'Series' },
+            { name: this.$t('actors'), value: 'Actor' },
+            { name: this.$t('genres'), value: 'Genre' },
+            { name: this.$t('networks'), value: 'Studio' }
           ];
         default:
           return [];

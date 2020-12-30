@@ -426,7 +426,7 @@ export default Vue.extend({
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getLanguageName(code?: string): string {
       if (!code) {
-        return this.$t('undefined').toString();
+        return this.$t('undefined');
       }
       return langs.where('2B', code).name;
     },

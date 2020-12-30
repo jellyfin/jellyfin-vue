@@ -48,7 +48,7 @@ export default Vue.extend({
           locale: this.getDfnsLocale()
         });
       } else {
-        return this.$t('never').toString();
+        return this.$t('never');
       }
     }
   }

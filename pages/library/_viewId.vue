@@ -166,7 +166,7 @@ export default Vue.extend({
       // Can't get given library ID
       this.$nuxt.error({
         statusCode: 404,
-        message: this.$t('libraryNotFound') as string
+        message: this.$t('libraryNotFound')
       });
     }
   },

@@ -74,9 +74,9 @@ export default Vue.extend({
     }
 
     if (this.items.length === 0) {
-      this.extraText = this.$t('homeHeader.welcome.noItems').toString();
+      this.extraText = this.$t('homeHeader.welcome.noItems');
     } else {
-      this.extraText = this.$t('homeHeader.welcome.checkNewItems').toString();
+      this.extraText = this.$t('homeHeader.welcome.checkNewItems');
     }
     window.setTimeout(this.hideWelcomeMessage, 1500);
   },

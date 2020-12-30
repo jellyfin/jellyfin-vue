@@ -360,7 +360,7 @@ export default Vue.extend({
         }
 
         this.$store.dispatch('snackbar/display', {
-          message: errorMessage.toString(),
+          message: errorMessage,
           color: 'error'
         });
       }
