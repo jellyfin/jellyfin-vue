@@ -90,7 +90,7 @@
     "shuffleAll": "Shuffle alles",
     "numberTracks": "{number} tracks",
     "nextUp": "Volgende",
-    "liked": "Vond ik leuk",
+    "liked": "Vind ik leuk",
     "latestLibrary": "Nieuwste {libraryName}",
     "errors": {
         "messages": {
@@ -123,6 +123,62 @@
         "account": {
             "name": "Account",
             "description": "Wijzig de informatie van jouw gebruiker"
+        },
+        "users": {
+            "name": "Gebruikers",
+            "description": "Beheer gebruikers en hun machtigingen"
+        },
+        "transcodingAndStreaming": {
+            "name": "Transcoderen en streamen",
+            "description": "Beheer hoe deze server transcodering en streamen naar cliënts afhandelt"
+        },
+        "subtitles": {
+            "name": "Ondertitels",
+            "description": "Bepaal hoe ondertitels worden weergegeven op dit apparaat"
+        },
+        "server": {
+            "name": "Server",
+            "description": "Configureer de taal en branding van deze server"
+        },
+        "scheduledTasks": {
+            "name": "Geplande taken",
+            "description": "Beheer geplande taken die op deze server worden uitgevoerd"
+        },
+        "plugins": {
+            "name": "Plug-ins",
+            "description": "Voeg nieuwe functies toe en configureer deze voor deze server"
+        },
+        "playback": {
+            "name": "Afspelen",
+            "description": "Bewerk uw afspeelvoorkeuren voor dit apparaat"
+        },
+        "notifications": {
+            "name": "Meldingen",
+            "description": "Beheer en configureer meldingen die door deze server worden verzonden"
+        },
+        "networking": {
+            "name": "Netwerken",
+            "description": "Beheer de netwerkinstellingen van deze server"
+        },
+        "mediaPlayers": {
+            "name": "Mediaspelers",
+            "description": "Configureer hoe de mediaspelers zich gedragen voor dit apparaat"
+        },
+        "logs": {
+            "name": "Logboeken en activiteit",
+            "description": "Lees en doorzoek serverlogboeken en gebruikersactiviteit"
+        },
+        "liveTvAndDvr": {
+            "name": "Live tv en DVR",
+            "description": "Beheer tv-tuners, gids dataproviders en DVR-instellingen"
+        },
+        "libraries": {
+            "name": "Bibliotheken",
+            "description": "Beheer bibliotheken en de bijbehorende metadata"
+        },
+        "home": {
+            "name": "Startscherm",
+            "description": "Configureer uw startsecties en de indeling van het startscherm"
         }
     },
     "serverVersion": "Server versie",
@@ -190,5 +246,26 @@
     "allLanguages": "Alle talen",
     "addNewPerson": "Voeg een nieuw persoon toe",
     "actor": "Acteur",
-    "3DFormat": "3D formaat"
+    "3DFormat": "3D formaat",
+    "thumb": "Duim",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Recent toegevoegd"
+        },
+        "welcome": {
+            "checkNewItems": "Kijk wat er nieuw is",
+            "noItems": "Er zijn geen recent toegevoegde items om weer te geven",
+            "helloUser": "Hallo {userName}!"
+        }
+    },
+    "year": "Jaar",
+    "writer": "Auteur",
+    "vueClientVersion": "Vue-client versie",
+    "video": "Video",
+    "undefined": "Ongedefinieerd",
+    "type": "Type",
+    "title": "Titel",
+    "tags": "Labels",
+    "tagline": "Slogan",
+    "sortTitle": "Sorteer de titel"
 }
