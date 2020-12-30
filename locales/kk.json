@@ -1,13 +1,13 @@
 {
     "alphabetically": "Álipbı boıynsha",
     "badRequest": "Jaramsyz saýal. Áreketti qaıtalańyz",
-    "browserNotSupported": "",
+    "browserNotSupported": "Bul faıldy oınatý úshin sholǵyshyńyz qoldaý kórsetpeıdі.",
     "changeServer": "Serverdi aýystyrý",
     "connect": "Qosylý",
     "continueListening": "Tyńdaýdy jalǵastyrý",
     "continueWatching": "Qaraýdy jalǵastyrý",
     "endDate": "Aıaqtalý kúni",
-    "endsAt": "Aıaqtalýy {time}",
+    "endsAt": "Sońy {time} kezinde",
     "episodeNumber": "Bólim {episodeNumber}",
     "home": "Basqy",
     "incorrectUsernameOrPassword": "Jaramsyz paıdalanýshy aty ne paról",
@@ -72,61 +72,76 @@
     "shuffleAll": "Bárin aralastyrý",
     "settingsSections": {
         "users": {
-            "name": "Paıdalanýshylar"
+            "name": "Paıdalanýshylar",
+            "description": "Paıdalanýshylardy jáne olardyń ruqsattaryn basqarý"
         },
         "subtitles": {
-            "name": "Sýbtıtrler"
+            "name": "Sýbtıtrler",
+            "description": "Osy qurylǵyda sýbtıtrlerdіń qalaı beınelenetіnіn basqarý"
         },
         "server": {
-            "name": "Server"
+            "name": "Server",
+            "description": "Osy serverdegi tіldі jáne brendıńdі teńsheý"
         },
         "scheduledTasks": {
-            "name": "Josparlaýshy"
+            "name": "Josparlaýshy",
+            "description": "Osy serverde oryndalatyn josparlanǵan tapsyrmalardy basqarý"
         },
         "plugins": {
-            "name": "Plagınder"
+            "name": "Plagınder",
+            "description": "Osy serverge jańa múmkіndіkterdi qosý jáne teńsheý"
         },
         "playback": {
-            "name": "Oınatý"
+            "name": "Oınatý",
+            "description": "Osy qurylǵy úshin oınatý teńshelіmderіn óńdeý"
         },
         "notifications": {
-            "name": "Habarlandyrýlar"
+            "name": "Habarlandyrýlar",
+            "description": "Osy server jіbergen habarlandyrýlardy basqarý jáne teńsheý"
         },
         "networking": {
-            "name": "Jelilik jumys"
+            "name": "Jelilik jumys",
+            "description": "Osy serverdіń jelі parametrlerіn basqarý"
         },
         "liveTvAndDvr": {
-            "name": "Efır ben DVR"
+            "name": "Efır ben DVR",
+            "description": "TD-túnerlerdі, telegıd derekterin jetkіzýshіlerdі jáne DVR parametrlerіn basqarý"
         },
         "libraries": {
             "name": "Tasyǵyshhanalar",
             "description": "Tasyǵyshhanalar men olardyń metaderekterіn basqarý"
         },
         "home": {
-            "name": "Basqy ekran"
+            "name": "Basqy ekran",
+            "description": "Basqy bólіmderdі jáne basqy ekrannyń ornalasýyn teńsheý"
         },
         "dlna": {
             "name": "DLNA qyzmeti",
             "description": "DLNA parametrlerі men profaıldy teńsheý"
         },
         "devices": {
-            "name": "Qurylǵylar"
+            "name": "Qurylǵylar",
+            "description": "Serverge qosylǵan qurylǵylardy qaraý jáne basqarý"
         },
         "account": {
             "name": "Tirkelgi",
             "description": "Paidalanýshy málimetterin óńdeý"
         },
         "apiKeys": {
-            "name": "API-kiltter"
+            "name": "API-kiltter",
+            "description": "Serverge syrttan qatynaý úshin API-kіltterіn qosý jáne joıý"
         },
         "transcodingAndStreaming": {
-            "name": "Qaıta kodtaý men taratý"
+            "name": "Qaıta kodtaý men taratý",
+            "description": "Qaıta kodtaýdy jáne tutynǵyshtarǵa taratýdy bul server qalay óńdeıtinin basqarý"
         },
         "logs": {
-            "name": "Jurnaldar men áreketter"
+            "name": "Jurnaldar men áreketter",
+            "description": "Server jurnaldaryn jáne paıdalanýshy áreketterіn oqý jáne іzdeý"
         },
         "mediaPlayers": {
-            "name": "Tasyǵyshderekter oınatqyshtary"
+            "name": "Tasyǵyshderekter oınatqyshtary",
+            "description": "Tasyǵyshderekter oınatqyshtardyń osy qurylǵyǵa qalaı áreket etetіnіn teńsheý"
         }
     },
     "serverVersion": "Server nusqasy",
@@ -145,7 +160,8 @@
     "filter": "Súzgi",
     "errors": {
         "messages": {
-            "errorCode": "Qate kody: {errorCode}"
+            "errorCode": "Qate kody: {errorCode}",
+            "videoPlayerError": "Beıne oınatqysh qalpyna keltіrіlmeıtіn qatege tap boldy."
         },
         "anErrorHappened": "Qate oryn aldy"
     },
@@ -164,7 +180,8 @@
     "links": {
         "poweredByJellyfin": "Bul server Jellyfin arqyly isteıdi",
         "helpTranslate": "Óz tilińizdegi Jellyfin tárjimesine kómektesińiz",
-        "readTheDocumentation": "Qujattamany oqý"
+        "readTheDocumentation": "Qujattamany oqý",
+        "reportAnIssue": "Vue tutynǵyshymen másele týraly habarlaý"
     },
     "details": "Egjeıler",
     "customRating": "Teńshelgen sanat",
@@ -245,7 +262,9 @@
             "recentlyAdded": "Jýyqta ústelgen"
         },
         "welcome": {
-            "helloUser": "Sálem, {userName}!"
+            "helloUser": "Sálem, {userName}!",
+            "noItems": "Kórsetіletіn jýyqta ústelgen tarmaqtar joq",
+            "checkNewItems": "Jańalyqtarmen tanysyńyz"
         }
     },
     "undefined": "Anyqtalmady",
