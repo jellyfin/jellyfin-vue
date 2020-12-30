@@ -9,10 +9,13 @@ body {
   background-color: var(--v-background-base);
 }
 
-/* W3C standard (Firefox-only for now) */
 * {
+  /* W3C standard (Firefox-only for now) */
   scrollbar-width: thin;
   scrollbar-color: var(--v-thumb-lighten5) var(--v-track-base);
+
+  /* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+  line-height: normal !important;
 }
 
 /* Reproduce something similar on Chrome/Edge/Safari */
@@ -60,10 +63,4 @@ body {
 
 .v-navigation-drawer--temporary {
   z-index: 105 !important;
-}
-
-/* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
-
-.text-truncate {
-  line-height: normal !important;
 }
