@@ -3,8 +3,8 @@ import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree, GetterTree } from 'vuex';
 import nuxtConfig from '~/nuxt.config';
 
-const stringToBoolean = (value: string) => value === 'True';
-const booleanToString = (value: boolean) => (value ? 'True' : 'False');
+const stringToBoolean = (value: string): boolean => value === 'True';
+const booleanToString = (value: boolean): string => (value ? 'True' : 'False');
 
 export interface DisplayPreferencesState extends DisplayPreferencesDto {
   CustomPrefs: {
@@ -65,8 +65,9 @@ export const getters: GetterTree<
    * @param {DisplayPreferencesState} state Current state
    * @returns {CustomPrefToBoolean} Function to pass the property key to
    */
-  getBooleanCustomPref: (state: DisplayPreferencesState) => (key: string) =>
-    stringToBoolean(state.CustomPrefs[key])
+  getBooleanCustomPref: (state: DisplayPreferencesState) => (
+    key: string
+  ): boolean => stringToBoolean(state.CustomPrefs[key])
 };
 
 export const mutations: MutationTree<DisplayPreferencesState> = {

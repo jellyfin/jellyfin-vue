@@ -38,7 +38,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    handleChange(value: string) {
+    handleChange(value: string): void {
       this.menu = false;
       this.$emit('update:date', value);
     }

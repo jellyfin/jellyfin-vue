@@ -62,10 +62,10 @@ export default Vue.extend({
     }
   },
   watch: {
-    getCurrentItem() {
+    getCurrentItem(): void {
       this.getPlaybackUrl();
     },
-    async source(newSource) {
+    async source(newSource): Promise<void> {
       if (this.player) {
         try {
           await this.player.load(newSource);

@@ -283,13 +283,13 @@ export default Vue.extend({
     };
   },
   watch: {
-    itemsType() {
+    itemsType(): void {
       this.refreshItems();
     }
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async refreshItems() {
+    async refreshItems(): Promise<void> {
       try {
         const response = (
           await this.$api.filter.getQueryFiltersLegacy({
@@ -317,7 +317,7 @@ export default Vue.extend({
         });
       }
     },
-    emitFilterChange() {
+    emitFilterChange(): void {
       this.$emit('change', {
         status: this.selectedStatusFilters,
         features: this.selectedFeatureFilters,

@@ -325,7 +325,7 @@ export default Vue.extend({
   },
   computed: {
     isPlayable: {
-      get() {
+      get(): boolean {
         // TODO: Move this to a mixin
         if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
           return false;
@@ -335,7 +335,7 @@ export default Vue.extend({
       }
     },
     crew: {
-      get() {
+      get(): BaseItemPerson[] {
         if (this.$data.item.People) {
           // TODO: Figure out how common it is to have more than one director
           return this.$data.item.People.filter((person: BaseItemPerson) => {
@@ -347,7 +347,7 @@ export default Vue.extend({
       }
     },
     actors: {
-      get() {
+      get(): BaseItemPerson[] {
         if (this.$data.item.People) {
           return this.$data.item.People.filter((person: BaseItemPerson) => {
             return person.Type === 'Actor';
@@ -424,11 +424,13 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getLanguageName(code?: string) {
-      if (!code) return this.$t('undefined');
+    getLanguageName(code?: string): string {
+      if (!code) {
+        return this.$t('undefined').toString();
+      }
       return langs.where('2B', code).name;
     },
-    getSurroundIcon(layout: string) {
+    getSurroundIcon(layout: string): string {
       switch (layout) {
         case '2.0':
           return 'mdi-surround-sound-2-0';

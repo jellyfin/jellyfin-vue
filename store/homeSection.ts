@@ -45,7 +45,9 @@ type MutationPayload = {
 };
 
 export const getters: GetterTree<HomeSectionState, AppState> = {
-  getHomeSectionContent: (state) => (section: HomeSection) => {
+  getHomeSectionContent: (state) => (
+    section: HomeSection
+  ): Array<never> | BaseItemDto | BaseItemDto[] => {
     switch (section.type) {
       case 'libraries':
         return state.libraries;

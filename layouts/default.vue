@@ -155,25 +155,25 @@ export default Vue.extend({
         this.$store.state.playbackManager.status !== PlaybackStatus.stopped
       );
     },
-    items() {
+    items(): Array<Record<string, string>> {
       return [
         {
           icon: 'mdi-home',
-          title: this.$t('home'),
+          title: this.$t('home').toString(),
           to: '/'
         }
       ];
     },
-    configItems() {
+    configItems(): Array<Record<string, string>> {
       return [
         {
           icon: 'mdi-pencil-outline',
-          title: this.$t('metadata'),
+          title: this.$t('metadata').toString(),
           to: '/metadata'
         },
         {
           icon: 'mdi-cog',
-          title: this.$t('settings'),
+          title: this.$t('settings').toString(),
           to: '/settings'
         }
       ];

@@ -93,31 +93,31 @@ export default Vue.extend({
     },
     shape: {
       type: [String, Boolean],
-      default: () => {
+      default: (): string | boolean => {
         return false;
       }
     },
     episode: {
       type: Boolean,
-      default: () => {
+      default: (): boolean => {
         return false;
       }
     },
     overlay: {
       type: Boolean,
-      default: () => {
+      default: (): boolean => {
         return true;
       }
     },
     noText: {
       type: Boolean,
-      default: () => {
+      default: (): boolean => {
         return false;
       }
     },
     noMargin: {
       type: Boolean,
-      default: () => {
+      default: (): boolean => {
         return false;
       }
     }

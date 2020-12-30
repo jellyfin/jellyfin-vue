@@ -11,7 +11,7 @@ import Vue from 'vue';
 
 export default Vue.extend({
   computed: {
-    blurhash() {
+    blurhash(): string | boolean {
       if (this.$store.state.backdrop.blurhash) {
         return this.$store.state.backdrop.blurhash;
       }

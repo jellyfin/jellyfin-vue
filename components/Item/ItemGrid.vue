@@ -49,7 +49,7 @@ export default Vue.extend({
     items: {
       type: Array,
       required: true,
-      default: () => {
+      default: (): Array<never> => {
         return [];
       }
     },

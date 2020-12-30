@@ -230,12 +230,12 @@ export default Vue.extend({
           : 'player--fullscreen'
       }`;
     },
-    stopPlayback() {
+    stopPlayback(): void {
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
     },
-    togglePause() {
+    togglePause(): void {
       if (this.isPaused) {
         this.unpause();
       } else {

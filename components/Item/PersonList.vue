@@ -45,7 +45,7 @@ export default Vue.extend({
   props: {
     items: {
       type: Array,
-      default: () => {
+      default: (): Array<never> => {
         return [];
       }
     },

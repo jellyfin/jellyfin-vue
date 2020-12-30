@@ -122,7 +122,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    overview() {
+    overview(): string {
       if (this.$data.item.Overview) {
         return this.sanitizeHtml(this.$data.item.Overview);
       } else {

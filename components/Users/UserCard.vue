@@ -41,14 +41,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    formatDistance(value: string) {
+    formatDistance(value: string): string {
       if (value) {
         return this.$dateFns.formatDistanceToNow(new Date(value), {
           addSuffix: true,
           locale: this.getDfnsLocale()
         });
       } else {
-        return this.$t('never');
+        return this.$t('never').toString();
       }
     }
   }

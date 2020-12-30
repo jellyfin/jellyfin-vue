@@ -80,7 +80,7 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    isEmpty(value: Record<never, never>) {
+    isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     },
     setCurrentUser(user: UserDto): void {

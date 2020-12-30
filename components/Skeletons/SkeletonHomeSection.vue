@@ -19,7 +19,7 @@ export default Vue.extend({
   props: {
     cardShape: {
       type: String,
-      validator: (val) =>
+      validator: (val): boolean =>
         ['thumb-card', 'portrait-card', 'square-card'].includes(val),
       default: 'thumb-card'
     }

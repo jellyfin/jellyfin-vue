@@ -57,7 +57,7 @@ function hasMp2AudioSupport(): boolean {
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {boolean} Determines if browserr has DTS audio support
  */
-function hasDtsSupport(videoTestElement: HTMLVideoElement) {
+function hasDtsSupport(videoTestElement: HTMLVideoElement): boolean | string {
   // DTS audio not supported in 2018 models (Tizen 4.0)
   if (
     browserDetector.isTizen4() ||

@@ -25,8 +25,8 @@ export default Vue.extend({
     },
     cardShape: {
       type: String,
-      default: () => 'portrait-card',
-      validator: (value) =>
+      default: (): string => 'portrait-card',
+      validator: (value): boolean =>
         ['square-card', 'portrait-card', 'thumb-card'].includes(value)
     }
   }

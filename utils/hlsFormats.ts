@@ -7,7 +7,9 @@ import { browserDetector } from '~/plugins/browserDetection';
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser has AC3 in HLS support
  */
-function supportsAc3InHls(videoTestElement: HTMLVideoElement) {
+function supportsAc3InHls(
+  videoTestElement: HTMLVideoElement
+): boolean | string {
   if (browserDetector.isTv()) {
     return true;
   }

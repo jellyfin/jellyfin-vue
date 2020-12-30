@@ -31,7 +31,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    hash() {
+    hash(): void {
       this.$nextTick(() => {
         this.draw();
       });
@@ -41,7 +41,7 @@ export default Vue.extend({
     this.draw();
   },
   methods: {
-    async draw() {
+    async draw(): Promise<void> {
       const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
       const imageData = ctx?.createImageData(this.width, this.height);
       try {

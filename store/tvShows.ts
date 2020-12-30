@@ -31,10 +31,14 @@ type MutationPayload = {
 };
 
 export const getters: GetterTree<TvShowsState, AppState> = {
-  getSeasons: (state) => ({ itemId }: { itemId: string }) => {
+  getSeasons: (state) => ({ itemId }: { itemId: string }): BaseItemDto[] => {
     return state[itemId]?.seasons;
   },
-  getSeasonEpisodes: (state) => ({ itemId }: { itemId: string }) => {
+  getSeasonEpisodes: (state) => ({
+    itemId
+  }: {
+    itemId: string;
+  }): Array<BaseItemDto[]> => {
     return state[itemId]?.seasonEpisodes;
   }
 };

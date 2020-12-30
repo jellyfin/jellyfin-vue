@@ -36,11 +36,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    menuItems() {
+    menuItems(): Array<Record<never, never>> {
       return [
         {
           title: this.$t('logout'),
-          action: () => {
+          action: (): void => {
             this.logoutUser();
           }
         }
@@ -50,7 +50,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    logoutUser() {
+    logoutUser(): void {
       this.$disconnect();
       this.$auth.logout();
       this.clearDeviceProfile();
