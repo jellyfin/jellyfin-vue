@@ -16,7 +16,7 @@
     "moreLikeThis": "Similar a esto",
     "play": "Reproducir",
     "present": "Actualidad",
-    "serverAddressMustBeUrl": "La dirección del servidor debe ser una dirección válida",
+    "serverAddressMustBeUrl": "La dirección del servidor debe ser una URL válida",
     "serverAddressRequired": "Se requiere dirección del servidor",
     "serverNotFound": "No se ha podido encontrar el servidor",
     "settings": "Ajustes",
@@ -58,7 +58,7 @@
     "unplayed": "No reproducido",
     "selectServer": "Seleccionar servidor",
     "moreLikeArtist": "Más como {artist}",
-    "disc": "Disco {discNumber}",
+    "disc": "Disco",
     "byArtist": "Por",
     "connect": "Conectar",
     "changeServer": "Cambiar servidor",
@@ -159,7 +159,8 @@
             "description": "Configurar la apariencia y distribución de la pantalla de inicio"
         },
         "dlna": {
-            "name": "DLNA"
+            "name": "DLNA",
+            "description": "Configura las opciones y perfiles de DLNA"
         },
         "devices": {
             "name": "Dispositivos",
@@ -168,6 +169,9 @@
         "account": {
             "name": "Cuenta",
             "description": "Edita la información de tu cuenta"
+        },
+        "apiKeys": {
+            "name": "Claves API"
         }
     },
     "serverVersion": "Versión del servidor",
@@ -219,5 +223,18 @@
     "allLanguages": "Todos los idiomas",
     "addNewPerson": "Añadir una persona",
     "actor": "Actor",
-    "3DFormat": "Formato 3D"
+    "3DFormat": "Formato 3D",
+    "server": "Servidor",
+    "screenshot": "Captura de pantalla",
+    "overview": "Visión general",
+    "numberTracks": "{number} pistas",
+    "nextUp": "Siguiente",
+    "metadataNoResultsMatching": "Ninguna coincidencia con \"{search}\". Presiona enter para crear una nueva.",
+    "general": "General",
+    "communityRating": "Puntuación de la comunidad",
+    "castAndCrew": "Reparto",
+    "cancel": "Cancelar",
+    "box": "Caja",
+    "audio": "Audio",
+    "art": "Arte"
 }
