@@ -26,6 +26,7 @@ module.exports = {
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
     'promise/prefer-await-to-then': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'error',
     // Force some component order stuff, formatting and such, for consistency
     'vue/component-name-in-template-casing': [
       'error',
