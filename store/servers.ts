@@ -37,6 +37,9 @@ export const mutations: MutationTree<ServerState> = {
 export const actions: ActionTree<ServerState, ServerState> = {
   async connectServer({ dispatch, commit, state }, serverUrl: string) {
     try {
+      // Remove trailing slashes to prevent a double slash in URLs
+      serverUrl = serverUrl.replace(/\/$/, '');
+
       this.$axios.setBaseURL(serverUrl);
 
       const { data } = await this.$api.system.getPublicSystemInfo();

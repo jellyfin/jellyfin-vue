@@ -59,8 +59,7 @@ export default Vue.extend({
     ...mapActions('servers', ['connectServer']),
     connectToServer() {
       this.loading = true;
-      // Remove trailing slashes to prevent a double slash in URLs
-      this.connectServer(this.serverUrl.replace(/\/$/, ''));
+      this.connectServer(this.serverUrl);
       this.loading = false;
     }
   }
