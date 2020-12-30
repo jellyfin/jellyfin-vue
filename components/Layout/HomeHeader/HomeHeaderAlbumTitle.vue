@@ -8,8 +8,8 @@
         props.item.ParentLogoImageTag ||
         (props.item.ImageTags && props.item.ImageTags.Logo)
       "
-      :max-width="parent.$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-      :max-height="parent.$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
+      max-width="50%"
+      max-height="5.5em"
       contain
       position="left center"
       :src="props.logo"

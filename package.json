@@ -35,6 +35,8 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.4",
     "@nuxtjs/pwa": "^3.3.3",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/vue": "^5.6.1",
     "@types/dompurify": "^2.1.0",
     "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.166",
