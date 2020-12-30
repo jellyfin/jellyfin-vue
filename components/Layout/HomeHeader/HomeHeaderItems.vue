@@ -151,7 +151,10 @@ export default Vue.extend({
           initialSlide: 0,
           loop: true,
           autoplay: false,
-          effect: 'slide'
+          effect: 'fade',
+          fadeEffect: {
+            crossFade: true
+          }
         };
       }
     }
