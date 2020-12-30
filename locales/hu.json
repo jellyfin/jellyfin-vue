@@ -140,13 +140,16 @@
             "description": "Szerkeszd a felhasználód információját"
         },
         "transcodingAndStreaming": {
-            "name": "Átkódolás & közvetítés"
+            "name": "Átkódolás & közvetítés",
+            "description": "Szerver átkódolásainak és közvetítéseinek kezelése"
         },
         "users": {
-            "name": "Felhasználók"
+            "name": "Felhasználók",
+            "description": "Felhasználók és jogaik kezelése"
         },
         "subtitles": {
-            "name": "Feliratok"
+            "name": "Feliratok",
+            "description": "Kezeld hogy a feliratok hogyan látszanak ezen az eszközön"
         },
         "server": {
             "name": "Szerver",
@@ -255,5 +258,16 @@
         "logs": "Naplók",
         "activity": "Tevékenységek"
     },
-    "year": "Év"
+    "year": "Év",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Nemrég hozzáadott"
+        },
+        "welcome": {
+            "checkNewItems": "Tekintsd meg mi új",
+            "noItems": "Jelenleg nincsenek hozzáadva megmutatható elemek",
+            "helloUser": "Üdv {userName}!"
+        }
+    },
+    "undefined": "Meghatározatlan"
 }
