@@ -88,7 +88,8 @@
     "libraries": "Bibliotecas",
     "errors": {
         "messages": {
-            "errorCode": "Código de error: {errorCode}"
+            "errorCode": "Código de error: {errorCode}",
+            "videoPlayerError": "El reproductor de vídeo encontró un error irrecuperable."
         },
         "anErrorHappened": "Ha ocurrido un error"
     },
@@ -130,7 +131,8 @@
             "name": "Conversión y streaming"
         },
         "subtitles": {
-            "name": "Subtítulos"
+            "name": "Subtítulos",
+            "description": "Controla como se muestran los subtítulos en este dispositivo"
         },
         "server": {
             "name": "Servidor"
@@ -140,10 +142,12 @@
             "description": "Gestiona las tareas programadas del servidor"
         },
         "plugins": {
-            "name": "Extensiones"
+            "name": "Extensiones",
+            "description": "Añade y configura nuevas características para este servidor"
         },
         "notifications": {
-            "name": "Notificaciones"
+            "name": "Notificaciones",
+            "description": "Administra y configura las notificaciones enviadas por este servidor"
         },
         "logs": {
             "name": "Registros y actividad"
@@ -171,7 +175,14 @@
             "description": "Edita la información de tu cuenta"
         },
         "apiKeys": {
-            "name": "Claves API"
+            "name": "Claves API",
+            "description": "Añade y elimina claves API para acceso externo a tu servidor"
+        },
+        "networking": {
+            "description": "Administra las configuraciones de red de este servidor"
+        },
+        "mediaPlayers": {
+            "name": "Reproductores multimedia"
         }
     },
     "serverVersion": "Versión del servidor",
@@ -236,5 +247,10 @@
     "cancel": "Cancelar",
     "box": "Caja",
     "audio": "Audio",
-    "art": "Arte"
+    "art": "Arte",
+    "video": "Vídeo",
+    "sortTitle": "Ordenar título",
+    "primary": "Primario",
+    "banner": "Banner",
+    "backdrop": "Fondo"
 }
