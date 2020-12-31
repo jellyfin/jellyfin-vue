@@ -62,7 +62,7 @@
               <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
             </div>
             <div
-              class="mt-3 mb-2"
+              class="mt-3"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
@@ -82,7 +82,7 @@
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </div>
-            <v-col class="mt-2" cols="12" md="10">
+            <v-col cols="12" md="10">
               <v-row
                 v-if="
                   loaded &&
@@ -92,7 +92,7 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0">
+                <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
                 <v-col cols="9">
@@ -118,7 +118,7 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0">
+                <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
                 <v-col cols="9">
@@ -143,7 +143,7 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0">
+                <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
                 <v-col cols="9">
@@ -171,10 +171,10 @@
                 class="mt-2"
               >
                 <v-row v-if="item.MediaSources.length > 1" align="center">
-                  <v-col cols="2" class="px-0">
+                  <v-col cols="2" class="px-0 text-truncate">
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="9">
+                  <v-col cols="10">
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -196,10 +196,10 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="videoTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0">
+                  <v-col cols="2" class="px-0 text-truncate">
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="9">
+                  <v-col cols="10">
                     <v-select
                       v-model="currentVideoTrack"
                       :items="getItemizedSelect(videoTracks)"
@@ -222,10 +222,10 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="audioTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0">
+                  <v-col cols="2" class="px-0 text-truncate">
                     <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
-                  <v-col cols="9">
+                  <v-col cols="10">
                     <v-select
                       v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
@@ -263,10 +263,10 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="subtitleTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0">
+                  <v-col cols="2" class="px-0 text-truncate">
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="9">
+                  <v-col cols="10">
                     <v-select
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
