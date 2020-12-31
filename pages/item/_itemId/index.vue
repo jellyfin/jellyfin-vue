@@ -7,10 +7,10 @@
             <card v-if="loaded" :item="item" no-text no-margin />
             <skeleton-card v-else no-text />
           </v-col>
-          <v-col cols="12" md="9" class="">
+          <v-col cols="12" md="9">
             <h1
               v-if="loaded"
-              class="text-h4 font-weight-light text-truncate"
+              class="text-h4 font-weight-light"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ item.Name }}
@@ -23,14 +23,14 @@
             />
             <h2
               v-if="loaded && item.OriginalTitle"
-              class="text-subtitle-1 text-truncate"
+              class="text-subtitle-1"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ item.OriginalTitle }}
             </h2>
             <h2
               v-if="loaded && item.AlbumArtist"
-              class="text-subtitle-1 text-truncate"
+              class="text-subtitle-1 text-truncate mt-2"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ $t('byArtist') }}
@@ -48,7 +48,7 @@
               width="25em"
             />
             <div
-              class="text-caption text-h4 font-weight-medium"
+              class="text-caption text-h4 font-weight-medium mt-2"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <media-info
@@ -62,7 +62,7 @@
               <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
             </div>
             <div
-              class="mt-3"
+              class="mt-4"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
