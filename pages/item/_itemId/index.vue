@@ -379,6 +379,7 @@ export default Vue.extend({
     return {
       loaded: false,
       item: {} as BaseItemDto,
+      crew: [] as BaseItemPerson[],
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
@@ -394,29 +395,19 @@ export default Vue.extend({
     isPlayable: {
       get(): boolean {
         // TODO: Move this to a mixin
-        if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
+        if (
+          ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type as string)
+        ) {
           return false;
         } else {
           return true;
         }
       }
     },
-    crew: {
-      get(): BaseItemPerson[] {
-        if (this.$data.item.People) {
-          // TODO: Figure out how common it is to have more than one director
-          return this.$data.item.People.filter((person: BaseItemPerson) => {
-            return ['Director', 'Writer'].includes(person.Type || '');
-          });
-        } else {
-          return [];
-        }
-      }
-    },
     actors: {
       get(): BaseItemPerson[] {
-        if (this.$data.item.People) {
-          return this.$data.item.People.filter((person: BaseItemPerson) => {
+        if (this.item.People) {
+          return this.item.People.filter((person: BaseItemPerson) => {
             return person.Type === 'Actor';
           }).slice(0, 10);
         } else {
@@ -424,15 +415,19 @@ export default Vue.extend({
         }
       }
     },
-    directors() {
-      return this.crew.filter(
-        (person: BaseItemPerson) => person.Type === 'Director'
-      );
+    directors: {
+      get(): BaseItemPerson[] {
+        return this.crew.filter(
+          (person: BaseItemPerson) => person.Type === 'Director'
+        );
+      }
     },
-    writers() {
-      return this.crew.filter(
-        (person: BaseItemPerson) => person.Type === 'Writer'
-      );
+    writers: {
+      get(): BaseItemPerson[] {
+        return this.crew.filter(
+          (person: BaseItemPerson) => person.Type === 'Writer'
+        );
+      }
     }
   },
   async beforeMount() {
@@ -490,6 +485,12 @@ export default Vue.extend({
             ];
           }
         }
+      }
+
+      if (this.item.People) {
+        this.crew = this.item.People.filter((person: BaseItemPerson) => {
+          return ['Director', 'Writer'].includes(person.Type || '');
+        });
       }
 
       this.loaded = true;
