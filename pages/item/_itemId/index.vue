@@ -92,10 +92,18 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0 text-truncate">
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="10">
+                <v-col cols="12" sm="10">
                   <v-row dense>
                     <v-col
                       v-for="genre in item.GenreItems"
@@ -123,10 +131,18 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0 text-truncate">
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
-                <v-col cols="10">
+                <v-col cols="12" sm="10">
                   <v-row dense>
                     <v-col
                       v-for="director in directors"
@@ -149,10 +165,18 @@
                 "
                 align="center"
               >
-                <v-col cols="2" class="px-0 text-truncate">
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
-                <v-col cols="10">
+                <v-col cols="12" sm="10">
                   <v-row dense>
                     <v-col
                       v-for="writer in writers"
@@ -178,10 +202,18 @@
                 class="mt-2"
               >
                 <v-row v-if="item.MediaSources.length > 1" align="center">
-                  <v-col cols="2" class="px-0 text-truncate">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="10">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -203,10 +235,18 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="videoTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0 text-truncate">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="10">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-model="currentVideoTrack"
                       :items="getItemizedSelect(videoTracks)"
@@ -229,10 +269,18 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="audioTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0 text-truncate">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
-                  <v-col cols="10">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
@@ -270,10 +318,18 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="subtitleTracks.length > 0" align="center">
-                  <v-col cols="2" class="px-0 text-truncate">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="10">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
