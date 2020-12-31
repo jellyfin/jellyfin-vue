@@ -334,6 +334,8 @@
                       v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
                       :items="getItemizedSelect(subtitleTracks)"
+                      :placeholder="$t('noSelectedSubtitle')"
+                      clearable
                       outlined
                       filled
                       flat

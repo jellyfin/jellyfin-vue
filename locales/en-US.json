@@ -120,6 +120,7 @@
   "nextUp": "Next up",
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
+  "noSelectedSubtitle": "No selected subtitle",
   "numberTracks": "{number} tracks",
   "operatingSystem": "Operating system",
   "originalAspectRatio": "Original aspect ratio",
