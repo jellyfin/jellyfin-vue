@@ -76,6 +76,7 @@
     "@types/nuxtjs__auth": "^4.8.6",
     "@types/qs": "^6.9.5",
     "@vue/test-utils": "^1.1.2",
+    "axe-core": "^4.1.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
@@ -100,6 +101,7 @@
     "stylelint-config-standard": "^20.0.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.10",
+    "vue-axe": "^2.4.4",
     "vue-jest": "^3.0.7"
   },
   "config": {

@@ -71,6 +71,8 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    // Development
+    'plugins/axe.ts',
     // General
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
