@@ -13,4 +13,18 @@ describe('timeUtils', () => {
   test('converts time from ticks to ms', () => {
     expect(TestComponent.msToTicks(1)).toEqual(10000);
   });
+
+  test('formats time properly', () => {
+    expect(TestComponent.formatTime(5)).toEqual('0:05');
+
+    expect(TestComponent.formatTime(10)).toEqual('0:10');
+
+    expect(TestComponent.formatTime(65)).toEqual('1:05');
+
+    expect(TestComponent.formatTime(70)).toEqual('1:10');
+
+    expect(TestComponent.formatTime(3665)).toEqual('1:01:05');
+
+    expect(TestComponent.formatTime(4210)).toEqual('1:10:10');
+  });
 });
