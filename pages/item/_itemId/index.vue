@@ -95,7 +95,7 @@
                 <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="10">
                   <v-row dense>
                     <v-col
                       v-for="genre in item.GenreItems"
@@ -126,7 +126,7 @@
                 <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="10">
                   <v-row dense>
                     <v-col
                       v-for="director in directors"
@@ -152,7 +152,7 @@
                 <v-col cols="2" class="px-0 text-truncate">
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="10">
                   <v-row dense>
                     <v-col
                       v-for="writer in writers"
