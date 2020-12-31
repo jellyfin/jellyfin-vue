@@ -259,5 +259,10 @@
         "logs": "Protokoll",
         "activity": "Aktivitäten"
     },
-    "audio": "Ton"
+    "audio": "Ton",
+    "homeHeader": {
+        "welcome": {
+            "helloUser": "Hallo {userName}!"
+        }
+    }
 }
