@@ -96,17 +96,22 @@
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
                 <v-col cols="9">
-                  <v-chip
-                    v-for="genre in item.GenreItems"
-                    :key="genre.Id"
-                    class="ma-2"
-                    small
-                    link
-                    nuxt
-                    :to="`/genre/${genre.Id}?type=${item.Type}`"
-                  >
-                    {{ genre.Name }}
-                  </v-chip>
+                  <v-row dense>
+                    <v-col
+                      v-for="genre in item.GenreItems"
+                      :key="genre.Id"
+                      cols="auto"
+                    >
+                      <v-chip
+                        small
+                        link
+                        nuxt
+                        :to="`/genre/${genre.Id}?type=${item.Type}`"
+                      >
+                        {{ genre.Name }}
+                      </v-chip>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
               <v-row
@@ -122,16 +127,17 @@
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
                 <v-col cols="9">
-                  <v-chip
-                    v-for="director in directors"
-                    :key="director.Id"
-                    class="ma-2"
-                    small
-                    link
-                    nuxt
-                    :to="`/person/${director.Id}`"
-                    >{{ director.Name }}</v-chip
-                  >
+                  <v-row dense>
+                    <v-col
+                      v-for="director in directors"
+                      :key="director.Id"
+                      cols="auto"
+                    >
+                      <v-chip small link nuxt :to="`/person/${director.Id}`">{{
+                        director.Name
+                      }}</v-chip>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
               <v-row
@@ -147,16 +153,17 @@
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
                 <v-col cols="9">
-                  <v-chip
-                    v-for="writer in writers"
-                    :key="writer.Id"
-                    class="ma-2"
-                    small
-                    link
-                    nuxt
-                    :to="`/person/${writer.Id}`"
-                    >{{ writer.Name }}</v-chip
-                  >
+                  <v-row dense>
+                    <v-col
+                      v-for="writer in writers"
+                      :key="writer.Id"
+                      cols="auto"
+                    >
+                      <v-chip small link nuxt :to="`/person/${writer.Id}`">{{
+                        writer.Name
+                      }}</v-chip>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
               <div
