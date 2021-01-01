@@ -317,7 +317,7 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="subtitleTracks.length > 0" align="center">
+                <v-row align="center">
                   <v-col
                     cols="12"
                     sm="2"
@@ -331,10 +331,14 @@
                   </v-col>
                   <v-col cols="12" sm="10">
                     <v-select
-                      v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
                       :items="getItemizedSelect(subtitleTracks)"
-                      :placeholder="$t('noSelectedSubtitle')"
+                      :placeholder="
+                        subtitleTracks.length === 0
+                          ? $t('noSubtitleAvailable')
+                          : $t('noSubtitleSelected')
+                      "
+                      :disabled="subtitleTracks.length === 0"
                       clearable
                       outlined
                       filled
