@@ -17,6 +17,7 @@
               <blurhash-image
                 v-if="episode.ImageTags && episode.ImageTags.Primary"
                 :item="episode"
+                :alt="episode.Name"
               />
             </v-list-item-avatar>
             <v-list-item-content>

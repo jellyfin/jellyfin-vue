@@ -15,7 +15,7 @@
         class="absolute"
         :src="image"
         v-bind="$attrs"
-        :alt="item.Name"
+        :alt="alt"
         @error="onError"
       />
     </transition-group>
@@ -55,6 +55,10 @@ export default Vue.extend({
     type: {
       type: String as () => ImageType,
       default: ImageType.Primary
+    },
+    alt: {
+      type: String,
+      default: ''
     }
   },
   data() {

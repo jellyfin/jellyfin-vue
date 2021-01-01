@@ -34,6 +34,7 @@
                   :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
                   aspect-ratio="2.58"
                   contain
+                  :alt="item.Name"
                   :src="getLogo(item)"
                 />
                 <h1

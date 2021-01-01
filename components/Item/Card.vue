@@ -9,6 +9,7 @@
             v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
             :item="item"
             :type="getImageType"
+            :alt="item.Name"
             class="card-image"
             @error="imageLoadError = true"
           />
