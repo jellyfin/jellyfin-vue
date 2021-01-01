@@ -59,17 +59,25 @@
             </v-btn>
           </div>
           <v-slider
-            :value="currentPosition"
+            :value="sliderValue"
             hide-details
             min="0"
             :max="runtime"
             validate-on-blur
-            @change="onPositionChange"
+            thumb-label
+            :step="0"
+            @end="onPositionChange"
+            @mousedown="onClick"
+            @mouseup="onClick"
+            @input="onInputChange"
           >
             <template #prepend>
               <span class="mt-1">
-                {{ getRuntime(currentPosition) }}
+                {{ getRuntime(realPosition) }}
               </span>
+            </template>
+            <template #thumb-label>
+              {{ getRuntime(currentInput) }}
             </template>
             <template #append>
               <span class="mt-1">
@@ -122,6 +130,12 @@ import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
+  data() {
+    return {
+      clicked: false,
+      currentInput: 0
+    };
+  },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     runtime(): number {
@@ -130,8 +144,18 @@ export default Vue.extend({
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
     },
-    currentPosition(): number {
-      return this.$store.state.playbackManager.currentTime;
+    sliderValue: {
+      get(): number {
+        if (!this.clicked) {
+          return this.$store.state.playbackManager.currentTime;
+        }
+        return this.currentInput;
+      }
+    },
+    realPosition: {
+      get(): number {
+        return this.$store.state.playbackManager.currentTime;
+      }
     }
   },
   methods: {
@@ -169,7 +193,16 @@ export default Vue.extend({
       return `${minutes}:${formatSeconds(seconds.toString())}`;
     },
     onPositionChange(value: number) {
-      this.changeCurrentTime({ time: value });
+      if (!this.clicked) {
+        this.changeCurrentTime({ time: value });
+      }
+    },
+    onInputChange(value: number) {
+      this.currentInput = value;
+    },
+    onClick() {
+      this.currentInput = this.realPosition;
+      this.clicked = !this.clicked;
     },
     stopPlayback() {
       this.setLastItemIndex();
