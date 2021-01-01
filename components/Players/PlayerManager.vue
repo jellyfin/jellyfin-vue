@@ -50,9 +50,9 @@
                     x-large
                     @click="togglePause"
                   >
-                    <v-icon size="48">{{
-                      isPaused ? 'mdi-play' : 'mdi-pause'
-                    }}</v-icon>
+                    <v-icon size="48">
+                      {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                    </v-icon>
                   </v-btn>
                   <v-btn
                     class="all-pointer-events"
@@ -62,6 +62,89 @@
                   >
                     <v-icon size="32">mdi-skip-next</v-icon>
                   </v-btn>
+                </div>
+              </div>
+            </v-overlay>
+          </v-fade-transition>
+          <v-fade-transition>
+            <v-overlay v-show="!isMinimized && hover" absolute>
+              <div
+                class="d-flex flex-column justify-space-between align-center player-overlay"
+              >
+                <div class="osd-top">
+                  <div class="d-flex justify-space-between align-center">
+                    <div class="d-flex">
+                      <v-btn icon @click="stopPlayback">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                      <v-btn icon @click="toggleMinimized">
+                        <v-icon size="32"> mdi-chevron-down </v-icon>
+                      </v-btn>
+                    </div>
+                    <p class="ma-0">{{ currentItemName }}</p>
+                    <div class="d-flex">
+                      <v-btn icon disabled>
+                        <v-icon> mdi-autorenew </v-icon>
+                      </v-btn>
+                      <v-btn icon disabled>
+                        <v-icon> mdi-apple-airplay </v-icon>
+                      </v-btn>
+                      <v-btn icon disabled>
+                        <v-icon> mdi-cast </v-icon>
+                      </v-btn>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="px-4 osd-bottom">
+                  <div>
+                    <v-slider
+                      :value="currentPosition"
+                      min="0"
+                      :max="runtime"
+                      hide-details
+                      validate-on-blur
+                      :step="0"
+                    >
+                      <template #prepend>
+                        <span class="mt-1">
+                          {{ getRuntime(currentPosition) }}
+                        </span>
+                      </template>
+                      <template #append>
+                        <span class="mt-1">
+                          {{ getRuntime(runtime) }}
+                        </span>
+                      </template>
+                    </v-slider>
+                    <div class="d-flex justify-space-between">
+                      <div>
+                        <v-btn icon @click="setPreviousTrack">
+                          <v-icon> mdi-skip-previous </v-icon>
+                        </v-btn>
+                        <v-btn icon @click="togglePause">
+                          <v-icon>
+                            {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                          </v-icon>
+                        </v-btn>
+                        <v-btn icon @click="setNextTrack">
+                          <v-icon icon> mdi-skip-next </v-icon>
+                        </v-btn>
+                      </div>
+                      <div>
+                        <v-btn icon disabled>
+                          <v-icon> mdi-closed-caption </v-icon>
+                        </v-btn>
+                        <v-btn icon disabled>
+                          <v-icon> mdi-cog </v-icon>
+                        </v-btn>
+
+                        <v-btn icon disabled>
+                          <v-icon> mdi-fullscreen </v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </v-overlay>
@@ -98,6 +181,21 @@ export default Vue.extend({
     },
     isMinimized(): boolean {
       return this.$store.state.playbackManager.isMinimized;
+    },
+    currentPosition(): number {
+      return this.$store.state.playbackManager.currentTime;
+    },
+    runtime(): number {
+      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
+    },
+    currentItemName(): string {
+      switch (this.getCurrentItem.Type) {
+        case 'Episode':
+          return `${this.getCurrentItem.SeriesName} - S${this.getCurrentItem.ParentIndexNumber}E${this.getCurrentItem.IndexNumber} -  ${this.getCurrentItem.Name}`;
+        case 'Movie':
+        default:
+          return this.getCurrentItem.Name;
+      }
     }
   },
   created() {
@@ -241,6 +339,26 @@ export default Vue.extend({
       } else {
         this.pause();
       }
+    },
+    getRuntime(seconds: number): string {
+      let minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      minutes = minutes - hours * 60;
+      seconds = Math.floor(seconds - (minutes * 60 + hours * 60 * 60));
+      /**
+       * Formats the second number
+       * E.g. 7 -> 07
+       *
+       * @param {string} seconds Number to format
+       * @returns {string} Formatted seconds number
+       */
+      function formatSeconds(seconds: string): string {
+        return ('0' + seconds).slice(-2);
+      }
+
+      if (hours)
+        return `${hours}:${minutes}:${formatSeconds(seconds.toString())}`;
+      return `${minutes}:${formatSeconds(seconds.toString())}`;
     }
   }
 });
@@ -269,7 +387,6 @@ export default Vue.extend({
 .v-overlay .v-overlay__content {
   width: 100%;
   height: 100%;
-  padding: 8px;
   box-sizing: border-box;
 }
 
@@ -298,5 +415,35 @@ export default Vue.extend({
   left: auto;
   bottom: 2em;
   right: 2em;
+}
+
+.osd-top,
+.osd-bottom {
+  width: 100%;
+  padding: 8px;
+}
+
+.osd-bottom > div,
+.osd-top > div {
+  max-width: calc(100vh * 1.77 - 2vh);
+  margin: auto;
+}
+
+.osd-top {
+  padding-bottom: 10em;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 16, 16, 0.75) 0%,
+    rgba(16, 16, 16, 0) 100%
+  );
+}
+
+.osd-bottom {
+  padding-top: 10em;
+  background: linear-gradient(
+    0deg,
+    rgba(16, 16, 16, 0.75) 0%,
+    rgba(16, 16, 16, 0) 100%
+  );
 }
 </style>
