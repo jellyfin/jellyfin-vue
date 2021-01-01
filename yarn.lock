@@ -1206,10 +1206,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-tc/-/noto-sans-tc-4.0.1.tgz#7cd1fe24751a3318506503d6ae0fcae537047ab9"
   integrity sha512-vxfKKVgarHZtT1f2plAcEBCYLCj64twGNLPTIirNrr0QuH41/vS5dvANS5o5whvyymywe3AR8LA+Wkm5msAAuw==
 
-"@fontsource/noto-sans@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans/-/noto-sans-4.0.1.tgz#60233d49b5606b92ca96000adf6cd2891029d791"
-  integrity sha512-jdSYVHUb//rxOGFOTvAd7FIaDUrD5oQpvqUBaHLDBGO/niDuf9mZjmdPDJnm5tIFYKUKqUTyCS39dAWcdB6EeA==
+"@fontsource/noto-sans@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans/-/noto-sans-4.1.0.tgz#2412957de2bc9b49dda4b1dc9ba25a171d9ce752"
+  integrity sha512-c6Ug4PjLq9wNatEidCFajJ0qd8HOQ6pfW//yWFMNSpDhDfl+111I1bPadrDo0oZVm/DjJRcFaRyhtu1VdveoIQ==
 
 "@intlify/vue-i18n-extensions@^1.0.1":
   version "1.0.2"
