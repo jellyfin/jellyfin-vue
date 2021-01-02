@@ -57,9 +57,9 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('servers', ['connectServer']),
-    connectToServer(): void {
+    async connectToServer(): Promise<void> {
       this.loading = true;
-      this.connectServer(this.serverUrl);
+      await this.connectServer(this.serverUrl);
       this.loading = false;
     }
   }
