@@ -66,6 +66,7 @@
               </div>
             </v-overlay>
           </v-fade-transition>
+          <!-- Full Screen OSD -->
           <v-fade-transition>
             <v-overlay v-show="!isMinimized && hover" absolute>
               <div
@@ -78,10 +79,17 @@
                         <v-icon>mdi-close</v-icon>
                       </v-btn>
                       <v-btn icon @click="toggleMinimized">
-                        <v-icon size="32"> mdi-chevron-down </v-icon>
+                        <v-icon> mdi-chevron-down </v-icon>
+                      </v-btn>
+                      <v-btn
+                        v-if="supportedFeatures.pictureInPicture"
+                        icon
+                        disabled
+                      >
+                        <v-icon> mdi-picture-in-picture-bottom-right </v-icon>
                       </v-btn>
                     </div>
-                    <p class="ma-0">{{ currentItemName }}</p>
+                    <p class="ma-0 text-center">{{ currentItemName }}</p>
                     <div class="d-flex">
                       <v-btn icon disabled>
                         <v-icon> mdi-autorenew </v-icon>
