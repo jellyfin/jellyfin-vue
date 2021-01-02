@@ -5,6 +5,7 @@
       class="d-none"
     />
     <player-dialog
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
       dark
       persistent
       hide-overlay
@@ -18,9 +19,8 @@
     >
       <v-hover v-slot="{ hover }">
         <v-card class="player-card" width="100%">
-          <video-player
-            v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
-          />
+          <video-player />
+          <!-- Mini Player Overlay -->
           <v-fade-transition>
             <v-overlay v-show="hover && isMinimized" absolute>
               <div class="d-flex flex-column player-overlay">
@@ -86,7 +86,7 @@
                       <v-btn icon disabled>
                         <v-icon> mdi-autorenew </v-icon>
                       </v-btn>
-                      <v-btn icon disabled>
+                      <v-btn v-if="supportedFeatures.airplay" icon disabled>
                         <v-icon> mdi-apple-airplay </v-icon>
                       </v-btn>
                       <v-btn icon disabled>
@@ -161,9 +161,16 @@ import { mapActions, mapGetters } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
+import {
+  getSupportedFeatures,
+  SupportedFeaturesInterface
+} from '~/utils/supportedFeatures';
 
 export default Vue.extend({
   mixins: [timeUtils],
+  data() {
+    return { supportedFeatures: {} as SupportedFeaturesInterface };
+  },
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
@@ -199,6 +206,8 @@ export default Vue.extend({
     }
   },
   created() {
+    this.supportedFeatures = getSupportedFeatures();
+
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/START_PLAYBACK':
