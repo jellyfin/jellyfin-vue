@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageType } from '@jellyfin/client-axios';
+import { BaseItemPerson, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -45,7 +45,7 @@ export default Vue.extend({
   props: {
     items: {
       type: Array,
-      default: (): Array<never> => {
+      default: (): BaseItemPerson[] => {
         return [];
       }
     },

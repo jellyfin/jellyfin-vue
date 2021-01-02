@@ -29,6 +29,11 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 
+interface MenuItem {
+  title: string;
+  action: () => void;
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -36,7 +41,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    menuItems(): Array<Record<never, never>> {
+    menuItems(): MenuItem[] {
       return [
         {
           title: this.$t('logout'),

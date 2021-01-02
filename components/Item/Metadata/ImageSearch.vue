@@ -95,7 +95,8 @@ import Vue from 'vue';
 import {
   ImageProviderInfo,
   RemoteImageInfo,
-  ImageType
+  ImageType,
+  BaseItemDto
 } from '@jellyfin/client-axios';
 
 export default Vue.extend({
@@ -108,7 +109,7 @@ export default Vue.extend({
   props: {
     metadata: {
       type: Object,
-      default: (): Record<never, never> => ({})
+      default: (): BaseItemDto => ({})
     },
     dialog: {
       type: Boolean,

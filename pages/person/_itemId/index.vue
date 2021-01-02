@@ -172,7 +172,7 @@ export default Vue.extend({
       }
     },
     birthPlace: {
-      get(): null {
+      get(): string | null {
         if (this.$data.item.ProductionLocations) {
           return this.$data.item.ProductionLocations[0];
         } else {
@@ -181,7 +181,7 @@ export default Vue.extend({
       }
     },
     movies: {
-      get(): Array<Record<string, string>> {
+      get(): BaseItemDto[] {
         return this.$data.appearances
           .filter((appearance: BaseItemDto) => {
             return appearance.Type === 'Movie';
@@ -190,7 +190,7 @@ export default Vue.extend({
       }
     },
     shows: {
-      get(): Array<Record<string, string>> {
+      get(): BaseItemDto[] {
         return this.$data.appearances
           .filter((appearance: BaseItemDto) => {
             return appearance.Type === 'Series';

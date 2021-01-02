@@ -38,7 +38,7 @@ export const getters: GetterTree<TvShowsState, AppState> = {
     itemId
   }: {
     itemId: string;
-  }): Array<BaseItemDto[]> => {
+  }): BaseItemDto[][] => {
     return state[itemId]?.seasonEpisodes;
   }
 };

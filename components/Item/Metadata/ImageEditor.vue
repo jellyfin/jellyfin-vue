@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageInfo, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageInfo, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -84,7 +84,7 @@ export default Vue.extend({
   props: {
     metadata: {
       type: Object,
-      default: (): Record<never, never> => ({})
+      default: (): BaseItemDto => ({})
     }
   },
   data() {
@@ -104,7 +104,7 @@ export default Vue.extend({
         );
       });
     },
-    backdropImages(): Array<never> {
+    backdropImages(): ImageInfo[] {
       return this.$data.images.filter((image: ImageInfo) => {
         const { ImageType } = image;
         return ImageType === 'Backdrop';

@@ -65,7 +65,7 @@ export default Vue.extend({
   props: {
     person: {
       type: Object,
-      default: (): Record<string, string> => ({
+      default: (): BaseItemPerson => ({
         Name: '',
         Type: '',
         Role: ''

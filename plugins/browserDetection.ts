@@ -101,9 +101,7 @@ class BrowserDetector {
    * @memberof BrowserDetector
    */
   isApple(): boolean {
-    return (navigator.vendor &&
-      navigator.vendor.includes('Apple') &&
-      !this.isTizen()) as boolean;
+    return navigator?.vendor.includes('Apple') && !this.isTizen();
   }
 
   /**
