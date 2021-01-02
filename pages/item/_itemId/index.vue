@@ -54,7 +54,7 @@
             </div>
             <div class="mt-3 mb-2">
               <v-btn
-                v-if="loaded"
+                v-if="loaded && canPlay(item)"
                 class="play-button mr-2"
                 color="primary"
                 min-width="8em"
@@ -304,9 +304,10 @@ import {
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper, formsHelper],
+  mixins: [imageHelper, formsHelper, itemHelper],
   data() {
     return {
       loaded: false,

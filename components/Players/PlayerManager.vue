@@ -1,65 +1,75 @@
 <template>
-  <player-dialog
-    dark
-    persistent
-    hide-overlay
-    no-click-animation
-    scrollable
-    :fullscreen="!isMinimized"
-    :retain-focus="!isMinimized"
-    :content-class="getContentClass()"
-    :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
-    :value="isPlaying"
-  >
-    <v-hover v-slot="{ hover }">
-      <v-card class="player-card" width="100%">
-        <video-player v-if="isPlaying" />
-        <v-fade-transition>
-          <v-overlay v-show="hover && isMinimized" absolute>
-            <div class="d-flex flex-column player-overlay">
-              <div class="d-flex flex-row">
-                <v-btn icon @click="toggleMinimized">
-                  <v-icon>mdi-arrow-expand-all</v-icon>
-                </v-btn>
-                <v-spacer />
-                <v-btn icon @click="stopPlayback">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
+  <div>
+    <audio-player
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      class="d-none"
+    />
+    <player-dialog
+      dark
+      persistent
+      hide-overlay
+      no-click-animation
+      scrollable
+      :fullscreen="!isMinimized"
+      :retain-focus="!isMinimized"
+      :content-class="getContentClass()"
+      :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
+      :value="isPlaying"
+    >
+      <v-hover v-slot="{ hover }">
+        <v-card class="player-card" width="100%">
+          <video-player
+            v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+          />
+          <v-fade-transition>
+            <v-overlay v-show="hover && isMinimized" absolute>
+              <div class="d-flex flex-column player-overlay">
+                <div class="d-flex flex-row">
+                  <v-btn icon @click="toggleMinimized">
+                    <v-icon>mdi-arrow-expand-all</v-icon>
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn icon @click="stopPlayback">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </div>
+                <div
+                  class="absolute d-flex flex-row justify-center align-center"
+                >
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    large
+                    @click="setPreviousTrack"
+                  >
+                    <v-icon size="32">mdi-skip-previous</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    x-large
+                    @click="togglePause"
+                  >
+                    <v-icon size="48">{{
+                      isPaused ? 'mdi-play' : 'mdi-pause'
+                    }}</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    large
+                    @click="setNextTrack"
+                  >
+                    <v-icon size="32">mdi-skip-next</v-icon>
+                  </v-btn>
+                </div>
               </div>
-              <div class="absolute d-flex flex-row justify-center align-center">
-                <v-btn
-                  class="all-pointer-events"
-                  icon
-                  large
-                  @click="setPreviousTrack"
-                >
-                  <v-icon size="32">mdi-skip-previous</v-icon>
-                </v-btn>
-                <v-btn
-                  class="all-pointer-events"
-                  icon
-                  x-large
-                  @click="togglePause"
-                >
-                  <v-icon size="48">{{
-                    isPaused ? 'mdi-play' : 'mdi-pause'
-                  }}</v-icon>
-                </v-btn>
-                <v-btn
-                  class="all-pointer-events"
-                  icon
-                  large
-                  @click="setNextTrack"
-                >
-                  <v-icon size="32">mdi-skip-next</v-icon>
-                </v-btn>
-              </div>
-            </div>
-          </v-overlay>
-        </v-fade-transition>
-      </v-card>
-    </v-hover>
-  </player-dialog>
+            </v-overlay>
+          </v-fade-transition>
+        </v-card>
+      </v-hover>
+    </player-dialog>
+  </div>
 </template>
 
 <script lang="ts">

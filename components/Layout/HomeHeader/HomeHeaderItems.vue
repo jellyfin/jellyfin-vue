@@ -86,6 +86,7 @@
                   class="my-2"
                 />
                 <v-btn
+                  v-if="canPlay(item)"
                   class="mr-2"
                   color="primary"
                   min-width="8em"
@@ -129,9 +130,10 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper],
+  mixins: [htmlHelper, imageHelper, itemHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],

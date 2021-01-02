@@ -56,6 +56,7 @@
           class="card-overlay d-flex justify-center align-center"
         >
           <v-btn
+            v-if="canPlay(item)"
             fab
             color="primary"
             nuxt
@@ -81,9 +82,10 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,

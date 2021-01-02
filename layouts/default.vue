@@ -104,6 +104,12 @@
     <v-main>
       <nuxt />
     </v-main>
+    <v-footer
+      v-if="isPlaying && getCurrentlyPlayingMediaType() === 'Audio'"
+      app
+    >
+      <audio-controls />
+    </v-footer>
     <!-- Utilities and global systems -->
     <snackbar />
     <player-manager />
@@ -114,8 +120,9 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { AppState } from '~/store';
+import { PlaybackStatus } from '~/store/playbackManager';
 import { getLibraryIcon } from '~/utils/items';
 
 interface WebSocketMessage {
@@ -143,6 +150,11 @@ export default Vue.extend({
           };
         })
     }),
+    isPlaying(): boolean {
+      return (
+        this.$store.state.playbackManager.status !== PlaybackStatus.stopped
+      );
+    },
     items() {
       return [
         {
@@ -190,6 +202,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('displayPreferences', ['callAllCallbacks']),
+    ...mapGetters('playbackManager', ['getCurrentlyPlayingMediaType']),
     handleKeepAlive(): void {
       this.$store.subscribe((mutation, state) => {
         if (

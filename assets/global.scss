@@ -51,19 +51,34 @@ body {
   opacity: 0;
 }
 
-/* Vuetify overrides
-   We can't set these through variables, so override them here */
+/* Vuetify overrides */
 
+// We can't set these through variables, so override them here */
 .v-app-bar.v-app-bar--fixed {
   z-index: 100 !important;
 }
 
+// Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+.text-truncate {
+  line-height: normal !important;
+}
+
+.v-navigation-drawer--fixed,
+.v-footer--fixed {
+  z-index: 100 !important;
+}
+
+// It's important for this to be after the rule for .v-navigation-drawer--fixed
 .v-navigation-drawer--temporary {
   z-index: 105 !important;
 }
 
-/* Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+/* Custom utility classes */
 
-.text-truncate {
-  line-height: normal !important;
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
 }

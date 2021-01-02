@@ -27,7 +27,10 @@
           v-slot="{ hover }"
           :key="track.Id"
         >
-          <tr @dblclick="playTracks(track)">
+          <tr
+            :class="{ 'primary--text': isPlaying(track) }"
+            @dblclick="playTracks(track)"
+          >
             <td style="width: 6em" class="pr-0 text-center">
               <span v-if="hover">
                 <v-btn icon @click="playTracks(track)">
@@ -37,8 +40,14 @@
               <span v-else>{{ track.IndexNumber }}</span>
             </td>
             <td style="width: 3em" class="pr-0 pl-0 text-center">
-              <v-btn icon>
-                <v-icon>mdi-heart-outline</v-icon>
+              <v-btn icon disabled>
+                <v-icon>
+                  {{
+                    track.UserData.IsFavorite
+                      ? 'mdi-heart'
+                      : 'mdi-heart-outline'
+                  }}
+                </v-icon>
               </v-btn>
             </td>
             <td>
@@ -58,7 +67,7 @@
                     {{ artist.Name }}
                   </nuxt-link>
                 </div>
-                <v-btn v-if="hover" icon class="ml-auto">
+                <v-btn v-if="hover" icon disabled class="ml-auto">
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
               </div>
@@ -73,8 +82,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
-import { groupBy } from 'lodash';
+import { mapActions, mapGetters } from 'vuex';
+import { Dictionary, groupBy } from 'lodash';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -92,10 +101,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    tracksPerDisc: {
-      get() {
-        return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
-      }
+    tracksPerDisc(): Dictionary<BaseItemDto[]> {
+      return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }
   },
   async beforeMount() {
@@ -111,12 +118,13 @@ export default Vue.extend({
     this.tracks = tracks;
   },
   methods: {
+    ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapActions('playbackManager', ['play']),
     /**
      * @param {number} ticks The number of ticks to convert to track length
      * @returns {string} Returns the length of the track in the format XX:XX
      */
-    getRuntime(ticks: number) {
+    getRuntime(ticks: number): string {
       let seconds = this.ticksToMs(ticks) / 1000;
       const minutes = Math.floor(seconds / 60);
       seconds = Math.floor(seconds - minutes * 60);
@@ -134,11 +142,14 @@ export default Vue.extend({
 
       return `${minutes}:${formatSeconds(seconds.toString())}`;
     },
-    playTracks(track: BaseItemDto) {
+    playTracks(track: BaseItemDto): void {
       this.play({
         items: this.tracks.Items,
         startFromIndex: this.tracks.Items?.indexOf(track)
       });
+    },
+    isPlaying(track: BaseItemDto): boolean {
+      return track?.Id === this.getCurrentItem()?.Id;
     }
   }
 });
