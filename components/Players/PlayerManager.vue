@@ -107,17 +107,26 @@
                 <div class="px-4 osd-bottom">
                   <div>
                     <v-slider
-                      :value="currentPosition"
                       min="0"
                       :max="runtime"
-                      hide-details
                       validate-on-blur
                       :step="0"
+                      :value="sliderValue"
+                      hide-details
+                      thumb-label
+                      @end="onPositionChange"
+                      @change="onPositionChange"
+                      @mousedown="onClick"
+                      @mouseup="onClick"
+                      @input="onInputChange"
                     >
                       <template #prepend>
                         <span class="mt-1">
-                          {{ getRuntime(currentPosition) }}
+                          {{ getRuntime(realPosition) }}
                         </span>
+                      </template>
+                      <template #thumb-label>
+                        {{ getRuntime(sliderValue) }}
                       </template>
                       <template #append>
                         <span class="mt-1">
@@ -177,7 +186,11 @@ import {
 export default Vue.extend({
   mixins: [timeUtils],
   data() {
-    return { supportedFeatures: {} as SupportedFeaturesInterface };
+    return {
+      supportedFeatures: {} as SupportedFeaturesInterface,
+      clicked: false,
+      currentInput: 0
+    };
   },
   computed: {
     ...mapGetters('playbackManager', [
@@ -210,6 +223,19 @@ export default Vue.extend({
         case 'Movie':
         default:
           return this.getCurrentItem.Name;
+      }
+    },
+    sliderValue: {
+      get(): number {
+        if (!this.clicked) {
+          return this.$store.state.playbackManager.currentTime;
+        }
+        return this.currentInput;
+      }
+    },
+    realPosition: {
+      get(): number {
+        return this.$store.state.playbackManager.currentTime;
       }
     }
   },
@@ -336,7 +362,8 @@ export default Vue.extend({
       'setLastItemIndex',
       'resetLastItemIndex',
       'pause',
-      'unpause'
+      'unpause',
+      'changeCurrentTime'
     ]),
     getContentClass(): string {
       return `player ${
@@ -376,6 +403,18 @@ export default Vue.extend({
       if (hours)
         return `${hours}:${minutes}:${formatSeconds(seconds.toString())}`;
       return `${minutes}:${formatSeconds(seconds.toString())}`;
+    },
+    onPositionChange(value: number): void {
+      if (!this.clicked) {
+        this.changeCurrentTime({ time: value });
+      }
+    },
+    onInputChange(value: number): void {
+      this.currentInput = value;
+    },
+    onClick(): void {
+      this.currentInput = this.realPosition;
+      this.clicked = !this.clicked;
     }
   }
 });

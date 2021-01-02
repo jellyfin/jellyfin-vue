@@ -102,6 +102,12 @@ export default Vue.extend({
               if (this.$refs.videoPlayer) {
                 (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
               }
+              break;
+            case 'playbackManager/CHANGE_CURRENT_TIME':
+              if (this.$refs.videoPlayer && mutation?.payload?.time) {
+                (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
+                  mutation?.payload?.time;
+              }
           }
         });
       } else {
