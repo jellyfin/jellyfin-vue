@@ -133,7 +133,7 @@ import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper],
+  mixins: [htmlHelper, imageHelper, itemHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],

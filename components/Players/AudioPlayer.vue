@@ -1,7 +1,6 @@
 <template>
   <audio
     ref="audioPlayer"
-    :poster="poster"
     autoplay
     @timeupdate="onAudioProgress"
     @pause="onAudioPause"
@@ -20,7 +19,7 @@ import shaka from 'shaka-player/dist/shaka-player.compiled';
 // @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
+import { PlaybackInfoResponse } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
@@ -48,21 +47,13 @@ export default Vue.extend({
       'lastProgressUpdate',
       'currentTime',
       'currentVolume'
-    ]),
-    poster(): string {
-      return this.getImageUrlForElement(ImageType.Backdrop, {
-        itemId:
-          this.getCurrentItem?.ParentBackdropItemId ||
-          this.getCurrentItem?.SeriesId ||
-          this.getCurrentItem?.Id
-      });
-    }
+    ])
   },
   watch: {
-    getCurrentItem() {
+    getCurrentItem(): void {
       this.getPlaybackUrl();
     },
-    async source(newSource) {
+    async source(newSource): Promise<void> {
       if (this.player) {
         try {
           await this.player.load(newSource);
@@ -107,7 +98,6 @@ export default Vue.extend({
               }
               break;
             case 'playbackManager/SET_VOLUME':
-              console.warn(this.currentVolume);
               if (this.$refs.audioPlayer) {
                 (this.$refs.audioPlayer as HTMLAudioElement).volume =
                   this.currentVolume / 100;

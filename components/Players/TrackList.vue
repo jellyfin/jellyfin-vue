@@ -40,7 +40,7 @@
               <span v-else>{{ track.IndexNumber }}</span>
             </td>
             <td style="width: 3em" class="pr-0 pl-0 text-center">
-              <v-btn icon>
+              <v-btn icon disabled>
                 <v-icon>
                   {{
                     track.UserData.IsFavorite
@@ -67,7 +67,7 @@
                     {{ artist.Name }}
                   </nuxt-link>
                 </div>
-                <v-btn v-if="hover" icon class="ml-auto">
+                <v-btn v-if="hover" icon disabled class="ml-auto">
                   <v-icon>mdi-dots-horizontal</v-icon>
                 </v-btn>
               </div>
@@ -83,7 +83,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import { groupBy } from 'lodash';
+import { Dictionary, groupBy } from 'lodash';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -101,7 +101,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    tracksPerDisc() {
+    tracksPerDisc(): Dictionary<BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }
   },

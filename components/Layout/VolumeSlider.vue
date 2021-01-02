@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['setVolume']),
-    onVolumeChange(value: number) {
+    onVolumeChange(value: number): void {
       this.setVolume({ volume: value });
     }
   }

@@ -304,9 +304,10 @@ import {
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper, formsHelper],
+  mixins: [imageHelper, formsHelper, itemHelper],
   data() {
     return {
       loaded: false,

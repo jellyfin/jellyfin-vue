@@ -15,9 +15,10 @@
               tag="span"
               class="text-truncate link"
               :to="`/item/${getCurrentItem.AlbumId}`"
-              >{{ getCurrentItem.Name }}</nuxt-link
             >
-            <v-btn class="d-none d-md-inline-flex" icon>
+              {{ getCurrentItem.Name }}
+            </nuxt-link>
+            <v-btn class="d-none d-md-inline-flex" icon disabled>
               <v-icon size="18">{{
                 getCurrentItem.UserData.IsFavorite
                   ? 'mdi-heart'
@@ -61,12 +62,12 @@
           <v-slider
             :value="sliderValue"
             hide-details
-            min="0"
             :max="runtime"
             validate-on-blur
             thumb-label
             :step="0"
             @end="onPositionChange"
+            @change="onPositionChange"
             @mousedown="onClick"
             @mouseup="onClick"
             @input="onInputChange"
@@ -77,7 +78,7 @@
               </span>
             </template>
             <template #thumb-label>
-              {{ getRuntime(currentInput) }}
+              {{ getRuntime(sliderValue) }}
             </template>
             <template #append>
               <span class="mt-1">
@@ -192,24 +193,24 @@ export default Vue.extend({
 
       return `${minutes}:${formatSeconds(seconds.toString())}`;
     },
-    onPositionChange(value: number) {
+    onPositionChange(value: number): void {
       if (!this.clicked) {
         this.changeCurrentTime({ time: value });
       }
     },
-    onInputChange(value: number) {
+    onInputChange(value: number): void {
       this.currentInput = value;
     },
-    onClick() {
+    onClick(): void {
       this.currentInput = this.realPosition;
       this.clicked = !this.clicked;
     },
-    stopPlayback() {
+    stopPlayback(): void {
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
     },
-    togglePause() {
+    togglePause(): void {
       if (this.isPaused) {
         this.unpause();
       } else {
@@ -219,3 +220,11 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.v-input >>> .v-slider__thumb-container,
+.v-input >>> .v-slider__track-background,
+.v-input >>> .v-slider__track-fill {
+  transition: none !important;
+}
+</style>
