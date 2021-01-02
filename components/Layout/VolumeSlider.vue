@@ -2,6 +2,7 @@
   <div class="volume-slider">
     <v-slider
       hide-details
+      thumb-label
       min="0"
       max="100"
       :value="currentvolume"

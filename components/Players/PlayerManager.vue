@@ -160,17 +160,14 @@ export default Vue.extend({
   mixins: [timeUtils],
   data() {
     return {
-      supportedFeatures: {} as SupportedFeaturesInterface,
-      clicked: false,
-      currentInput: 0
+      supportedFeatures: {} as SupportedFeaturesInterface
     };
   },
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getPreviousItem',
-      'getCurrentlyPlayingMediaType',
-      'getCurrentlyPlayingType'
+      'getCurrentlyPlayingMediaType'
     ]),
     isPlaying(): boolean {
       return (
@@ -183,9 +180,6 @@ export default Vue.extend({
     isMinimized(): boolean {
       return this.$store.state.playbackManager.isMinimized;
     },
-    currentPosition(): number {
-      return this.$store.state.playbackManager.currentTime;
-    },
     currentItemName(): string {
       switch (this.getCurrentItem.Type) {
         case 'Episode':
@@ -193,19 +187,6 @@ export default Vue.extend({
         case 'Movie':
         default:
           return this.getCurrentItem.Name;
-      }
-    },
-    sliderValue: {
-      get(): number {
-        if (!this.clicked) {
-          return this.$store.state.playbackManager.currentTime;
-        }
-        return this.currentInput;
-      }
-    },
-    realPosition: {
-      get(): number {
-        return this.$store.state.playbackManager.currentTime;
       }
     }
   },
@@ -330,10 +311,8 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'setLastItemIndex',
-      'resetLastItemIndex',
       'pause',
-      'unpause',
-      'changeCurrentTime'
+      'unpause'
     ]),
     getContentClass(): string {
       return `player ${

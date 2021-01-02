@@ -100,24 +100,20 @@
 import { ImageType } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
+import imageHelper from '~/mixins/imageHelper';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    runtime(): number {
-      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
-    },
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
     }
   },
   methods: {
     ...mapActions('playbackManager', [
-      'changeCurrentTime',
       'setLastItemIndex',
       'resetCurrentItemIndex',
       'setNextTrack',
@@ -147,11 +143,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-.v-input >>> .v-slider__thumb-container,
-.v-input >>> .v-slider__track-background,
-.v-input >>> .v-slider__track-fill {
-  transition: none !important;
-}
-</style>

@@ -1,12 +1,11 @@
 <template>
   <v-slider
-    min="0"
-    :max="runtime"
-    validate-on-blur
-    :step="0"
     :value="sliderValue"
     hide-details
+    :max="runtime"
+    validate-on-blur
     thumb-label
+    :step="0"
     @end="onPositionChange"
     @change="onPositionChange"
     @mousedown="onClick"
@@ -15,15 +14,15 @@
   >
     <template #prepend>
       <span class="mt-1">
-        {{ formatTime(realPosition) }}
+        {{ getRuntime(realPosition) }}
       </span>
     </template>
     <template #thumb-label>
-      {{ formatTime(sliderValue) }}
+      {{ getRuntime(sliderValue) }}
     </template>
     <template #append>
       <span class="mt-1">
-        {{ formatTime(runtime) }}
+        {{ getRuntime(runtime) }}
       </span>
     </template>
   </v-slider>
@@ -44,6 +43,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
+    runtime(): number {
+      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
+    },
     sliderValue: {
       get(): number {
         if (!this.clicked) {
@@ -51,9 +53,6 @@ export default Vue.extend({
         }
         return this.currentInput;
       }
-    },
-    runtime(): number {
-      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
     },
     realPosition: {
       get(): number {
@@ -63,6 +62,23 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['changeCurrentTime']),
+    getRuntime(seconds: number): string {
+      const minutes = Math.floor(seconds / 60);
+      seconds = Math.floor(seconds - minutes * 60);
+
+      /**
+       * Formats the second number
+       * E.g. 7 -> 07
+       *
+       * @param {string} seconds - Number to format
+       * @returns {string} Formatted seconds number
+       */
+      function formatSeconds(seconds: string): string {
+        return ('0' + seconds).slice(-2);
+      }
+
+      return `${minutes}:${formatSeconds(seconds.toString())}`;
+    },
     onPositionChange(value: number): void {
       if (!this.clicked) {
         this.changeCurrentTime({ time: value });
@@ -78,3 +94,11 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.v-input >>> .v-slider__thumb-container,
+.v-input >>> .v-slider__track-background,
+.v-input >>> .v-slider__track-fill {
+  transition: none !important;
+}
+</style>
