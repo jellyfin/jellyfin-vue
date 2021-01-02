@@ -133,7 +133,8 @@
             "description": "Gérer les utilisateurs et les permissions"
         },
         "server": {
-            "name": "Serveur"
+            "name": "Serveur",
+            "description": "Configurer la langue et la marque de ce serveur"
         },
         "scheduledTasks": {
             "name": "Tâches planifiées",
@@ -164,7 +165,8 @@
             "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
         },
         "transcodingAndStreaming": {
-            "description": "Gérer la façon dont le serveur transcode et envoie les flux vers les clients"
+            "description": "Gérer la façon dont le serveur transcode et envoie les flux vers les clients",
+            "name": "Transcodage et streaming"
         }
     },
     "serverDashboard": "Tableau de bord du serveur",
@@ -250,5 +252,23 @@
         "failedGetLogs": "Impossible de récupérer le journal",
         "logs": "Journaux",
         "activity": "Activité"
-    }
+    },
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Récemment ajouté"
+        },
+        "welcome": {
+            "checkNewItems": "Découvrez les nouveautés",
+            "noItems": "Il n'y a aucun élément récemment ajouté à afficher",
+            "helloUser": "Bonjour {nom d'utilisateur} !"
+        }
+    },
+    "video": "Vidéo",
+    "vueClientVersion": "Version du client Vue",
+    "undefined": "indéfini",
+    "thumb": "Pouce",
+    "tags": "Mots clés",
+    "tagline": "Slogan",
+    "sortTitle": "trier le titre",
+    "guestStar": "Guest-star"
 }
