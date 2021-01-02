@@ -92,6 +92,23 @@ export async function translateItemForPlayback(
             startItemId: firstItem.Id
           })
         ).data.Items || items;
+
+      // This is a really hacky way to get the correct array of episodes for playback
+      // Current Server Response:
+      // Requesting first item in series -> Responds with EP2, EP3, EP4...
+      // Requesting any other item in series -> Responds with EP1, EP2, EP3, EP4...
+      // As a response, if the inputItem is of IndexNumber 1 we must add it to the beginning of the array
+      // In all other situations, we musst splice the array to remove the unnecessary items.
+
+      if (translatedItems?.[0].Id !== firstItem.Id) {
+        if (firstItem.IndexNumber === 1) translatedItems.unshift(firstItem);
+
+        if (translatedItems.findIndex((item) => firstItem.Id === item.Id) !== 0)
+          translatedItems.splice(
+            0,
+            translatedItems.findIndex((item) => firstItem.Id === item.Id)
+          );
+      }
     } else {
       translatedItems = items;
     }
