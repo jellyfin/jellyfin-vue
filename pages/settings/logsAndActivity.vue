@@ -126,7 +126,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async getActivities() {
+    async getActivities(): Promise<void> {
       this.loadingActivityStatus.status = 'loading';
 
       // Only fetch the activity for the last 7 days
@@ -156,7 +156,7 @@ export default Vue.extend({
         });
       }
     },
-    async getLogs() {
+    async getLogs(): Promise<void> {
       this.loadingLogsStatus.status = 'loading';
       try {
         this.logFiles = (await this.$api.system.getServerLogs()).data;

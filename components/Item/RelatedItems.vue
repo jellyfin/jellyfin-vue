@@ -127,7 +127,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    item() {
+    item(): void {
       this.refreshItems();
     }
   },
@@ -143,7 +143,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async refreshItems() {
+    async refreshItems(): Promise<void> {
       this.loading = true;
 
       if (this.item.Id) {

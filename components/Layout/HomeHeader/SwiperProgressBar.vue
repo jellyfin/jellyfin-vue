@@ -39,17 +39,17 @@ export default Vue.extend({
     };
   },
   watch: {
-    currentIndex() {
+    currentIndex(): void {
       this.$nextTick(() => {
         window.requestAnimationFrame(this.updateBars);
       });
     },
-    paused() {
+    paused(): void {
       this.$nextTick(() => {
         window.requestAnimationFrame(this.togglePause);
       });
     },
-    duration() {
+    duration(): void {
       this.$nextTick(() => {
         window.requestAnimationFrame(this.setAnimationDuration);
       });

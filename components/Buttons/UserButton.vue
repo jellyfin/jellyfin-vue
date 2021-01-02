@@ -29,6 +29,11 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 
+interface MenuItem {
+  title: string;
+  action: () => void;
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -36,11 +41,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    menuItems() {
+    menuItems(): MenuItem[] {
       return [
         {
           title: this.$t('logout'),
-          action: () => {
+          action: (): void => {
             this.logoutUser();
           }
         }
@@ -50,7 +55,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('user', ['clearUser']),
     ...mapActions('deviceProfile', ['clearDeviceProfile']),
-    logoutUser() {
+    logoutUser(): void {
       this.$disconnect();
       this.$auth.logout();
       this.clearDeviceProfile();

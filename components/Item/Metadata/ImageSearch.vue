@@ -95,12 +95,13 @@ import Vue from 'vue';
 import {
   ImageProviderInfo,
   RemoteImageInfo,
-  ImageType
+  ImageType,
+  BaseItemDto
 } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   filters: {
-    fixed(val: number) {
+    fixed(val: number): string | number {
       if (!val) return val;
       return val.toFixed(1);
     }
@@ -108,7 +109,7 @@ export default Vue.extend({
   props: {
     metadata: {
       type: Object,
-      default: () => ({})
+      default: (): BaseItemDto => ({})
     },
     dialog: {
       type: Boolean,
@@ -190,16 +191,16 @@ export default Vue.extend({
     }
   },
   watch: {
-    type() {
+    type(): void {
       this.getImages();
     },
-    source() {
+    source(): void {
       this.getImages();
     },
-    allLanguages() {
+    allLanguages(): void {
       this.getImages();
     },
-    dialog(value) {
+    dialog(value): void {
       if (value) {
         this.getRemoteImageProviders();
         this.getImages();
@@ -209,14 +210,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    async getRemoteImageProviders() {
+    async getRemoteImageProviders(): Promise<void> {
       this.providers = (
         await this.$api.remoteImage.getRemoteImageProviders({
           itemId: this.metadata.Id
         })
       ).data;
     },
-    async getImages() {
+    async getImages(): Promise<void> {
       this.loading = true;
       this.images = (
         await this.$api.remoteImage.getRemoteImages({
@@ -229,12 +230,12 @@ export default Vue.extend({
 
       this.loading = false;
     },
-    imageFormat(url: string) {
+    imageFormat(url: string): string {
       return `${
         this.$axios.defaults.baseURL
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
-    async handleDownload(item: RemoteImageInfo) {
+    async handleDownload(item: RemoteImageInfo): Promise<void> {
       this.loading = true;
       await this.$api.remoteImage.downloadRemoteImage({
         type: item.Type as ImageType,
@@ -245,7 +246,7 @@ export default Vue.extend({
       this.$emit('update:dialog', false);
       this.$emit('download-success', false);
     },
-    reset() {
+    reset(): void {
       this.providers = [];
       this.type = ImageType.Primary;
       this.source = 'All';

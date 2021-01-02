@@ -30,7 +30,7 @@ declare module 'vuex/types/index' {
  * @class BrowserDetector
  */
 class BrowserDetector {
-  supportsMediaSource() {
+  supportsMediaSource(): boolean {
     // Browsers that lack a media source implementation will have no reference
     // to |window.MediaSource|.
     if (!window.MediaSource) {
@@ -49,7 +49,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if user agent of navigator contains a key
    * @memberof BrowserDetector
    */
-  private userAgentContains(key: string) {
+  private userAgentContains(key: string): boolean {
     const userAgent = navigator.userAgent || '';
     return userAgent.includes(key);
   }
@@ -62,7 +62,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if browser is Mozilla Firefox
    * @memberof BrowserDetector
    */
-  isFirefox() {
+  isFirefox(): boolean {
     return this.userAgentContains('Firefox/');
   }
 
@@ -73,7 +73,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if browser is Microsoft Edge
    * @memberof BrowserDetector
    */
-  isEdge() {
+  isEdge(): boolean {
     return this.userAgentContains('Edge/');
   }
 
@@ -83,7 +83,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if browser is Google Chrome
    * @memberof BrowserDetector
    */
-  isChrome() {
+  isChrome(): boolean {
     // The Edge user agent will also contain the "Chrome" keyword, so we need
     // to make sure this is not Edge.
     return this.userAgentContains('Chrome') && !this.isEdge();
@@ -100,10 +100,8 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is from Apple
    * @memberof BrowserDetector
    */
-  isApple() {
-    return (
-      navigator.vendor && navigator.vendor.includes('Apple') && !this.isTizen()
-    );
+  isApple(): boolean {
+    return navigator?.vendor.includes('Apple') && !this.isTizen();
   }
 
   /**
@@ -143,7 +141,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen
    * @memberof BrowserDetector
    */
-  isTizen() {
+  isTizen(): boolean {
     return this.userAgentContains('Tizen');
   }
 
@@ -153,7 +151,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen 2
    * @memberof BrowserDetector
    */
-  isTizen2() {
+  isTizen2(): boolean {
     return this.userAgentContains('Tizen 2');
   }
 
@@ -163,7 +161,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen 3
    * @memberof BrowserDetector
    */
-  isTizen3() {
+  isTizen3(): boolean {
     return this.userAgentContains('Tizen 3');
   }
 
@@ -173,7 +171,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen 4
    * @memberof BrowserDetector
    */
-  isTizen4() {
+  isTizen4(): boolean {
     return this.userAgentContains('Tizen 4');
   }
 
@@ -183,7 +181,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen 5
    * @memberof BrowserDetector
    */
-  isTizen5() {
+  isTizen5(): boolean {
     return this.userAgentContains('Tizen 5');
   }
 
@@ -193,7 +191,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is Tizen 5.5
    * @memberof BrowserDetector
    */
-  isTizen55() {
+  isTizen55(): boolean {
     return this.userAgentContains('Tizen 5.5');
   }
 
@@ -203,7 +201,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is WebOS
    * @memberof BrowserDetector
    */
-  isWebOS() {
+  isWebOS(): boolean {
     return this.userAgentContains('WebOS');
   }
 
@@ -265,7 +263,7 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is mobile (Guess)
    * @memberof BrowserDetector
    */
-  isMobile() {
+  isMobile(): boolean {
     if (/(?:iPhone|iPad|iPod|Android)/.test(navigator.userAgent)) {
       // This is Android, iOS, or iPad < 13.
       return true;

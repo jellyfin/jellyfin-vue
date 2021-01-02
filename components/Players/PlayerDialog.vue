@@ -10,7 +10,7 @@ export default Vue.extend({
   methods: {
     // Copy of https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/mixins/overlayable/index.ts#L129-L152
     // A block preventing scroll on the overlay has been removed, since we always want to scroll.
-    scrollListener(e: WheelEvent & KeyboardEvent) {
+    scrollListener(e: WheelEvent & KeyboardEvent): void {
       if (e.type === 'keydown') {
         if (
           ['INPUT', 'TEXTAREA', 'SELECT'].includes(

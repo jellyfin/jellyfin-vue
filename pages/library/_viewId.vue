@@ -104,12 +104,12 @@ export default Vue.extend({
     }
   },
   watch: {
-    async viewType() {
+    async viewType(): Promise<void> {
       this.loading = true;
       await this.refreshItems();
       this.loading = false;
     },
-    async sortBy() {
+    async sortBy(): Promise<void> {
       this.loading = true;
       await this.refreshItems();
       this.loading = false;
@@ -166,7 +166,7 @@ export default Vue.extend({
       // Can't get given library ID
       this.$nuxt.error({
         statusCode: 404,
-        message: this.$t('libraryNotFound') as string
+        message: this.$t('libraryNotFound')
       });
     }
   },
@@ -176,16 +176,16 @@ export default Vue.extend({
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    onChangeType(type: string) {
+    onChangeType(type: string): void {
       const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
 
       this.viewType = type;
       this.isDefaultView = defaultViews.includes(this.viewType);
     },
-    onChangeSort(sort: string) {
+    onChangeSort(sort: string): void {
       this.sortBy = sort;
     },
-    onChangeFilter(filter: Record<string, [string]>) {
+    onChangeFilter(filter: Record<string, [string]>): boolean | void {
       this.hasFilters = Object.values(filter).every((value) => {
         return value.length > 0;
       });
@@ -224,7 +224,7 @@ export default Vue.extend({
 
       this.refreshItems();
     },
-    async refreshItems() {
+    async refreshItems(): Promise<void> {
       try {
         let itemsResponse;
         switch (this.viewType) {

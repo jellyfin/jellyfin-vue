@@ -155,7 +155,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    birthDate() {
+    birthDate(): Date | null {
       if (this.$data.item.PremiereDate) {
         return new Date(this.$data.item.PremiereDate);
       } else {
@@ -163,7 +163,7 @@ export default Vue.extend({
       }
     },
     deathDate: {
-      get() {
+      get(): Date | null {
         if (this.$data.item.EndDate) {
           return new Date(this.$data.item.EndDate);
         } else {
@@ -172,7 +172,7 @@ export default Vue.extend({
       }
     },
     birthPlace: {
-      get() {
+      get(): string | null {
         if (this.$data.item.ProductionLocations) {
           return this.$data.item.ProductionLocations[0];
         } else {
@@ -181,7 +181,7 @@ export default Vue.extend({
       }
     },
     movies: {
-      get() {
+      get(): BaseItemDto[] {
         return this.$data.appearances
           .filter((appearance: BaseItemDto) => {
             return appearance.Type === 'Movie';
@@ -190,7 +190,7 @@ export default Vue.extend({
       }
     },
     shows: {
-      get() {
+      get(): BaseItemDto[] {
         return this.$data.appearances
           .filter((appearance: BaseItemDto) => {
             return appearance.Type === 'Series';

@@ -10,10 +10,10 @@ export default Vue.extend({
   computed: {
     ...mapGetters('displayPreferences', ['getBooleanCustomPref']),
     darkMode: {
-      get() {
+      get(): boolean {
         return this.getBooleanCustomPref('darkMode');
       },
-      set(value: boolean) {
+      set(value: boolean): void {
         this.editBooleanCustomPref({ key: 'darkMode', value });
       }
     }

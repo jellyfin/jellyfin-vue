@@ -62,10 +62,10 @@ export default Vue.extend({
     }
   },
   watch: {
-    getCurrentItem() {
+    getCurrentItem(): void {
       this.getPlaybackUrl();
     },
-    async source(newSource) {
+    async source(newSource): Promise<void> {
       if (this.player) {
         try {
           await this.player.load(newSource);
@@ -112,7 +112,7 @@ export default Vue.extend({
         });
       } else {
         this.$nuxt.error({
-          message: this.$t('browserNotSupported') as string
+          message: this.$t('browserNotSupported')
         });
       }
     } catch (error) {

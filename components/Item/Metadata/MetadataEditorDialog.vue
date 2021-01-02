@@ -35,7 +35,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    close() {
+    close(): void {
       this.forceRefresh = true;
       this.$emit('update:dialog', false);
     }

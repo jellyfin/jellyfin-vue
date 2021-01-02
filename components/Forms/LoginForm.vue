@@ -72,7 +72,7 @@ export default Vue.extend({
   props: {
     user: {
       type: Object as () => UserDto,
-      default() {
+      default(): UserDto {
         return {};
       }
     }
@@ -97,7 +97,7 @@ export default Vue.extend({
     ...mapActions('user', ['loginRequest']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async userLogin() {
+    async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
         // If we have a user from the public user selector, set it as login
         this.login.username = this.user.Name || '';
@@ -108,7 +108,7 @@ export default Vue.extend({
       await this.loginRequest(this.login);
       this.loading = false;
     },
-    isEmpty(value: Record<never, never>) {
+    isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     }
   }

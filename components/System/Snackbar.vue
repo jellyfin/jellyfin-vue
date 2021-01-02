@@ -30,7 +30,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['resetMessage']),
-    displaySnackbar(message: string, color: string) {
+    displaySnackbar(message: string, color: string): void {
       if (message !== '') {
         this.message = message;
         this.color = color;

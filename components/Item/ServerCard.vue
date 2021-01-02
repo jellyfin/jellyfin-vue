@@ -43,13 +43,13 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer', 'removeServer']),
-    async setServer() {
+    async setServer(): Promise<void> {
       // TODO: Merge with the identical method in AddServerForm
       this.loading = true;
       await this.connectServer(this.serverInfo.address);
       this.loading = false;
     },
-    removeServerFromStore() {
+    removeServerFromStore(): void {
       this.removeServer(this.serverInfo);
     }
   }

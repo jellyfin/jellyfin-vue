@@ -65,7 +65,7 @@ export default Vue.extend({
   props: {
     person: {
       type: Object,
-      default: () => ({
+      default: (): BaseItemPerson => ({
         Name: '',
         Type: '',
         Role: ''
@@ -90,22 +90,22 @@ export default Vue.extend({
     };
   },
   watch: {
-    person(value: BaseItemPerson) {
+    person(value: BaseItemPerson): void {
       if (!value) return;
       this.editState = value;
     }
   },
   methods: {
-    handleSubmit() {
+    handleSubmit(): void {
       this.$emit('update:person', this.editState);
       this.$emit('update:dialog', false);
       this.reset();
     },
-    handleCancel() {
+    handleCancel(): void {
       this.$emit('update:dialog', false);
       this.reset();
     },
-    reset() {
+    reset(): void {
       this.editState = { Name: '', Type: '', Role: '' };
     }
   }

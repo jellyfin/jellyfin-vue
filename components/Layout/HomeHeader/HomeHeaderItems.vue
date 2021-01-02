@@ -149,7 +149,7 @@ export default Vue.extend({
     },
     swiperOptions: {
       type: Object as () => SwiperOptions,
-      default: () => {
+      default: (): SwiperOptions => {
         return {
           initialSlide: 0,
           loop: true,

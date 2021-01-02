@@ -52,7 +52,7 @@ export default Vue.extend({
   },
   computed: {
     runtimeValue: {
-      get() {
+      get(): string {
         const seconds = this.ticksToMs(this.item.RunTimeTicks);
         return this.$dateFns.formatDuration(
           intervalToDuration({ start: 0, end: seconds }),
@@ -63,7 +63,7 @@ export default Vue.extend({
       }
     },
     endsAtValue: {
-      get() {
+      get(): string {
         const seconds = this.ticksToMs(this.item.RunTimeTicks);
         return this.$dateFns.format(Date.now() + seconds, 'p');
       }
@@ -82,7 +82,7 @@ export default Vue.extend({
       // TODO: Use a Date object
       return this.$t('endsAt', {
         time: endTimeShort
-      }).toString();
+      });
     }
   }
 });

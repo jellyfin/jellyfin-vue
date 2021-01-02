@@ -261,10 +261,10 @@ export default Vue.extend({
     }
   },
   watch: {
-    itemId() {
+    itemId(): void {
       this.getData();
     },
-    forceRefresh() {
+    forceRefresh(): void {
       this.getData();
       this.$emit('update:forceRefresh', false);
     }
@@ -273,15 +273,17 @@ export default Vue.extend({
     this.getData();
   },
   methods: {
-    async getData() {
+    async getData(): Promise<void> {
       await this.fetchItemInfo();
+      const ancestors = await this.$api.library.getAncestors({
+        itemId: this.metadata.Id as string,
+        userId: this.$auth.user.Id
+      });
       const libraryInfo =
-        (await this.getAncestors()).data.find(
-          (i) => i.Type === 'CollectionFolder'
-        ) || {};
+        ancestors.data.find((i) => i.Type === 'CollectionFolder') || {};
       this.getGenres(libraryInfo.Id);
     },
-    async fetchItemInfo() {
+    async fetchItemInfo(): Promise<void> {
       const userId = this.$auth.user.Id;
       const itemInfo = (
         await this.$api.userLibrary.getItem({
@@ -291,20 +293,14 @@ export default Vue.extend({
       ).data;
       this.$data.metadata = itemInfo;
     },
-    async getGenres(parentId = '') {
+    async getGenres(parentId = ''): Promise<void> {
       this.genders = (
         await this.$api.genres.getGenres({
           parentId
         })
       ).data.Items?.map((i) => i.Name) as BaseItemDto[];
     },
-    async getAncestors() {
-      return await this.$api.library.getAncestors({
-        itemId: this.metadata.Id as string,
-        userId: this.$auth.user.Id
-      });
-    },
-    async saveMetadata() {
+    async saveMetadata(): Promise<void> {
       const item = pick(this.metadata, [
         'Id',
         'Name',
@@ -364,20 +360,20 @@ export default Vue.extend({
         }
 
         this.$store.dispatch('snackbar/display', {
-          message: errorMessage.toString(),
+          message: errorMessage,
           color: 'error'
         });
       }
     },
-    saveDate(key: string, date: string) {
+    saveDate(key: string, date: string): void {
       this.menu = false;
       set(this.metadata, key, this.$dateFns.formatISO(new Date(date)));
     },
-    handlePersonEdit(item: BaseItemPerson | null = null) {
+    handlePersonEdit(item: BaseItemPerson | null = null): void {
       this.person = item;
       this.dialog = true;
     },
-    handlePersonUpdate(item: BaseItemPerson) {
+    handlePersonUpdate(item: BaseItemPerson): void {
       if (!this.metadata.People) {
         this.metadata.People = [];
       }
@@ -390,10 +386,10 @@ export default Vue.extend({
         this.metadata.People.push(item);
       }
     },
-    handleDialogUpdate(result: boolean) {
+    handleDialogUpdate(result: boolean): void {
       this.dialog = result;
     },
-    handlePersonDel(index: number) {
+    handlePersonDel(index: number): void {
       (this.metadata.People as BaseItemPerson[]).splice(index, 1);
     }
   }

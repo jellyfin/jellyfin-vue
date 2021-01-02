@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { ImageInfo, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageInfo, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -84,7 +84,7 @@ export default Vue.extend({
   props: {
     metadata: {
       type: Object,
-      default: () => ({})
+      default: (): BaseItemDto => ({})
     }
   },
   data() {
@@ -94,7 +94,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    generalImages() {
+    generalImages(): boolean {
       return this.$data.images.filter((image: ImageInfo) => {
         const { ImageType } = image;
         return (
@@ -104,7 +104,7 @@ export default Vue.extend({
         );
       });
     },
-    backdropImages() {
+    backdropImages(): ImageInfo[] {
       return this.$data.images.filter((image: ImageInfo) => {
         const { ImageType } = image;
         return ImageType === 'Backdrop';
@@ -112,7 +112,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    metadata() {
+    metadata(): void {
       this.getItemImageInfos();
     }
   },
@@ -120,23 +120,23 @@ export default Vue.extend({
     this.getItemImageInfos();
   },
   methods: {
-    async getItemImageInfos() {
+    async getItemImageInfos(): Promise<void> {
       this.images = (
         await this.$api.image.getItemImageInfos({
           itemId: this.metadata.Id
         })
       ).data;
     },
-    imageFormat(imageInfo: ImageInfo) {
+    imageFormat(imageInfo: ImageInfo): string {
       return this.getImageUrlForElement(imageInfo.ImageType as ImageType, {
         itemId: this.metadata.Id,
         tag: imageInfo.ImageTag as string
       });
     },
-    handleSearch() {
+    handleSearch(): void {
       this.dialog = true;
     },
-    async handleDelete(item: ImageInfo) {
+    async handleDelete(item: ImageInfo): Promise<void> {
       await this.$api.image.deleteItemImage({
         itemId: this.metadata.Id,
         imageType: item.ImageType as ImageType,

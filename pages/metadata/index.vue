@@ -47,7 +47,7 @@ export default Vue.extend({
     });
   },
   methods: {
-    async fetchItems(node: ITreeNode) {
+    async fetchItems(node: ITreeNode): Promise<void> {
       const libItems = (((
         await this.$api.userLibrary.getItem(
           { userId: this.$auth.user.Id, itemId: '' },
@@ -72,7 +72,7 @@ export default Vue.extend({
         })
       );
     },
-    handleAction(ids: string[]) {
+    handleAction(ids: string[]): void {
       this.$data.itemId = ids[0];
     }
   }

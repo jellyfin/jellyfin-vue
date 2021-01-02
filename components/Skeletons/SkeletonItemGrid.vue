@@ -13,7 +13,7 @@ export default Vue.extend({
   props: {
     viewType: {
       type: String,
-      default: () => 'Movie'
+      default: (): string => 'Movie'
     }
   },
   data() {
@@ -22,7 +22,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    viewType() {
+    viewType(): void {
       this.setCardShape();
     }
   },
@@ -30,7 +30,7 @@ export default Vue.extend({
     this.setCardShape();
   },
   methods: {
-    setCardShape() {
+    setCardShape(): void {
       switch (this.viewType) {
         case 'Audio':
         case 'Folder':

@@ -45,7 +45,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    items() {
+    items(): Array<Record<string, string>> {
       switch (this.type) {
         case 'movies':
           return [

@@ -130,6 +130,12 @@ interface WebSocketMessage {
   Data?: Record<string, never>;
 }
 
+interface LayoutButton {
+  icon: string;
+  title: string;
+  to: string;
+}
+
 export default Vue.extend({
   data() {
     return {
@@ -155,7 +161,7 @@ export default Vue.extend({
         this.$store.state.playbackManager.status !== PlaybackStatus.stopped
       );
     },
-    items() {
+    items(): LayoutButton[] {
       return [
         {
           icon: 'mdi-home',
@@ -164,7 +170,7 @@ export default Vue.extend({
         }
       ];
     },
-    configItems() {
+    configItems(): LayoutButton[] {
       return [
         {
           icon: 'mdi-pencil-outline',

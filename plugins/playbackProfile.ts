@@ -160,7 +160,7 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
 
   ['aac', 'mp3', 'opus', 'wav']
     .filter(getSupportedAudioCodecs)
-    .forEach(function (audioFormat) {
+    .forEach((audioFormat) => {
       TranscodingProfiles.push({
         Container: audioFormat,
         Type: DlnaProfileType.Audio,
