@@ -9,7 +9,7 @@
         @pause="onVideoPause"
         @play="onVideoProgress"
         @ended="onVideoStopped"
-      ></video>
+      />
     </div>
   </v-container>
 </template>
@@ -19,12 +19,11 @@ import Vue from 'vue';
 import { stringify } from 'qs';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import shaka from 'shaka-player/dist/shaka-player.ui';
+import shaka from 'shaka-player/dist/shaka-player.compiled';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import 'shaka-player/dist/controls.css';
 import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
@@ -83,12 +82,7 @@ export default Vue.extend({
       shaka.polyfill.installAll();
       if (shaka.Player.isBrowserSupported()) {
         this.player = new shaka.Player(this.$refs.videoPlayer);
-        // TODO: Remove Shaka's OSD and use our own
-        this.ui = new shaka.ui.Overlay(
-          this.player,
-          this.$refs.videoContainer,
-          this.$refs.videoPlayer
-        );
+
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
@@ -107,6 +101,12 @@ export default Vue.extend({
             case 'playbackManager/RESET_CURRENT_TIME':
               if (this.$refs.videoPlayer) {
                 (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
+              }
+              break;
+            case 'playbackManager/CHANGE_CURRENT_TIME':
+              if (this.$refs.videoPlayer && mutation?.payload?.time) {
+                (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
+                  mutation?.payload?.time;
               }
           }
         });
@@ -225,6 +225,8 @@ export default Vue.extend({
 <style scoped>
 .shaka-video-container,
 video {
+  max-width: 100vw;
+  max-height: 100vh;
   width: 100%;
   height: 100%;
 }
