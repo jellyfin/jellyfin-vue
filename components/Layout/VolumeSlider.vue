@@ -8,7 +8,7 @@
       :value="currentvolume"
       validate-on-blur
       prepend-icon="mdi-volume-high"
-      @change="onVolumeChange"
+      @input="onVolumeChange"
     >
     </v-slider>
   </div>
