@@ -8,7 +8,7 @@ import {
 } from './mp4AudioFormats';
 
 /**
- * @param {HTMLVideoElement} videoTestElement s
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {string[]} List of ...
  */
 export function getSupportedFmp4AudioCodecs(

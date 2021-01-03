@@ -80,8 +80,8 @@ export function hasMp2AudioSupport(): boolean {
 
 /**
  *
- * @param {HTMLVideoElement} videoTestElement s
- * @returns {boolean} sd
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {boolean} Determines if browser has Mp3 support
  */
 export function hasMp3AudioSupport(
   videoTestElement: HTMLVideoElement

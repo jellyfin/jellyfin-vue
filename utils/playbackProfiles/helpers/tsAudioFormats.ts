@@ -8,8 +8,8 @@ import {
 } from './mp4AudioFormats';
 
 /**
- * @param {HTMLVideoElement} videoTestElement s
- * @returns {string[]} List of ...
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {string[]} List of supported Ts audio codecs
  */
 export function getSupportedTsAudioCodecs(
   videoTestElement: HTMLVideoElement

@@ -63,7 +63,7 @@ function createProfileCondition(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement sd
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {ProfileCondition[]} sd
  */
 export function getaacCodecProfileConditions(
