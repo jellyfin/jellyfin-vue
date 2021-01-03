@@ -9,7 +9,7 @@
       @touchEnd="onTouch"
     >
       <swiper-slide v-for="item in items" :key="item.Id">
-        <div class="slide-backdrop">
+        <div class="slide-backdrop" data-swiper-parallax="-100">
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
@@ -34,27 +34,35 @@
                   :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
                   aspect-ratio="2.58"
                   contain
+                  data-swiper-parallax="-300"
                   :alt="item.Name"
                   :src="getLogo(item)"
                 />
                 <h1
                   v-else-if="item.Type === 'Episode'"
                   class="text-h2 text-truncate mb-2"
+                  data-swiper-parallax="-300"
                 >
                   {{ item.SeriesName }}
                 </h1>
                 <h1
                   v-else-if="item.Type === 'MusicAlbum'"
                   class="text-h4 text-sm-h4 text-truncate mb-2"
+                  data-swiper-parallax="-300"
                 >
                   {{ item.AlbumArtist }}
                 </h1>
-                <h1 v-else class="text-h3 text-sm-h2 text-truncate">
+                <h1
+                  v-else
+                  class="text-h3 text-sm-h2 text-truncate"
+                  data-swiper-parallax="-300"
+                >
                   {{ item.Name }}
                 </h1>
                 <p
                   v-if="item.Type === 'Episode'"
                   class="mb-n1 text-truncate text-subtitle-2"
+                  data-swiper-parallax="-200"
                 >
                   {{ item.SeasonName }}
                   {{ $t('episodeNumber', { episodeNumber: item.IndexNumber }) }}
@@ -62,18 +70,21 @@
                 <h2
                   v-else-if="item.Taglines && item.Taglines.length > 0"
                   class="text-truncate"
+                  data-swiper-parallax="-200"
                 >
                   {{ item.Taglines[0] }}
                 </h2>
                 <h2
                   v-if="item.Type === 'Episode'"
                   class="text-h4 text-truncate"
+                  data-swiper-parallax="-200"
                 >
                   {{ item.Name }}
                 </h2>
                 <h2
                   v-else-if="item.Type === 'MusicAlbum'"
                   class="text-h4 text-sm-h2 text-truncate"
+                  data-swiper-parallax="-200"
                 >
                   {{ item.Name }}
                 </h2>
@@ -84,6 +95,7 @@
                   runtime
                   rating
                   class="my-2"
+                  data-swiper-parallax="-100"
                 />
                 <v-btn
                   v-if="canPlay(item)"
@@ -92,6 +104,7 @@
                   min-width="8em"
                   depressed
                   rounded
+                  data-swiper-parallax="-100"
                   @click="play({ items: [item] })"
                 >
                   {{ $t('play') }}
@@ -101,6 +114,7 @@
                   outlined
                   rounded
                   nuxt
+                  data-swiper-parallax="-100"
                   :to="`item/${item.Id}`"
                 >
                   {{ $t('viewDetails') }}
@@ -153,11 +167,14 @@ export default Vue.extend({
         return {
           initialSlide: 0,
           loop: true,
+          parallax: true,
           autoplay: false,
           effect: 'fade',
           fadeEffect: {
             crossFade: true
-          }
+          },
+          keyboard: true,
+          a11y: true
         };
       }
     }
@@ -203,22 +220,17 @@ export default Vue.extend({
     onSlideChange(): void {
       this.currentIndex = this.swiper?.realIndex;
       if (this.swiper?.isBeginning || this.swiper?.isEnd) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.swiper?.loopDestroy();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.swiper?.loopCreate();
+        this.swiper?.updateSlides();
       }
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;
     },
     onAnimationEnd(): void {
-      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideNext();
+      this.swiper?.slideNext();
     },
     onProgressClicked(index: number): void {
-      ((this.$refs.homeSwiper as Vue).$swiper as Swiper).slideToLoop(index);
+      this.swiper?.slideToLoop(index);
     }
   }
 });
