@@ -262,7 +262,13 @@
     "audio": "Ton",
     "homeHeader": {
         "welcome": {
-            "helloUser": "Hallo {userName}!"
+            "helloUser": "Hallo {userName}!",
+            "checkNewItems": "Schau die Neuerungen an",
+            "noItems": "Es gibt keine kürzlich hinzugefügten Elemente zum Anzeigen"
+        },
+        "items": {
+            "recentlyAdded": "Neulich hinzugefügt"
         }
-    }
+    },
+    "undefined": "Nicht definiert"
 }
