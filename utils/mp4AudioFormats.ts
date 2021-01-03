@@ -6,7 +6,7 @@ import { browserDetector } from '~/plugins/browserDetection';
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser has AC3 support
  */
-function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
+export function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
   if (browserDetector.isTv()) {
     return true;
   }
@@ -14,6 +14,33 @@ function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
   return !!videoTestElement
     .canPlayType('audio/mp4; codecs="ac-3"')
     .replace(/no/, '');
+}
+
+/**
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {boolean} Determines if the browser has AC3 support
+ */
+export function hasAc3InHlsSupport(
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (browserDetector.isTizen() || browserDetector.isWebOS()) {
+    return true;
+  }
+
+  if (videoTestElement.canPlayType) {
+    return !!(
+      videoTestElement
+        .canPlayType('application/x-mpegurl; codecs="avc1.42E01E, ac-3"')
+        .replace(/no/, '') ||
+      videoTestElement
+        .canPlayType(
+          'application/vnd.apple.mpegURL; codecs="avc1.42E01E, ac-3"'
+        )
+        .replace(/no/, '')
+    );
+  }
+
+  return false;
 }
 
 /**
@@ -47,8 +74,29 @@ export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
 /**
  * @returns {boolean} Determines if browser has MP2 support
  */
-function hasMp2AudioSupport(): boolean {
+export function hasMp2AudioSupport(): boolean {
   return browserDetector.isTv();
+}
+
+/**
+ *
+ * @param {HTMLVideoElement} videoTestElement s
+ * @returns {boolean} sd
+ */
+export function hasMp3AudioSupport(
+  videoTestElement: HTMLVideoElement
+): boolean {
+  return !!(
+    videoTestElement
+      .canPlayType('video/mp4; codecs="avc1.640029, mp4a.69"')
+      .replace(/no/, '') ||
+    videoTestElement
+      .canPlayType('video/mp4; codecs="avc1.640029, mp4a.6B"')
+      .replace(/no/, '') ||
+    videoTestElement
+      .canPlayType('video/mp4; codecs="avc1.640029, mp3"')
+      .replace(/no/, '')
+  );
 }
 
 /**

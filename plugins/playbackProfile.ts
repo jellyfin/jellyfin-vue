@@ -15,12 +15,14 @@ import {
   hasVp8Support
 } from '~/utils/mp4VideoFormats';
 import { getSupportedMP4AudioCodecs } from '~/utils/mp4AudioFormats';
-import { getSupportedVPXVideoCodecs } from '~/utils/vpxVideoFormats';
 import { getSupportedWebMAudioCodecs } from '~/utils/webmAudioFormats';
-import { getSupportedAudioCodecs } from '~/utils/audioFormats';
 import { canPlayNativeHls, hasMkvSupport } from '~/utils/transcodingFormats';
-import { getHlsVideoCodecs, getHlsAudioCodecs } from '~/utils/hlsFormats';
 import { getCodecProfiles } from '~/utils/codecProfiles';
+import { getSupportedFmp4VideoCodecs } from '~/utils/fmp4VideoFormats';
+import { getSupportedFmp4AudioCodecs } from '~/utils/fmp4AudioFormats';
+import { getSupportedTsVideoCodecs } from '~/utils/tsVideoFormats';
+import { getSupportedTsAudioCodecs } from '~/utils/tsAudioFormats';
+import { getSupportedAudioCodecs } from '~/utils/audioFormats';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -143,7 +145,7 @@ function getDirectPlayProfiles(): Array<DirectPlayProfile> {
  * @returns {Array<TranscodingProfile>} An array of transcoding profiles for the current platform.
  */
 function getTranscodingProfiles(): Array<TranscodingProfile> {
-  const TranscodingProfiles = [];
+  const TranscodingProfiles = [] as TranscodingProfile[];
 
   const hlsBreakOnNonKeyFrames = !!(
     browserDetector.isApple() ||
@@ -151,11 +153,12 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
     !canPlayNativeHls(videoTestElement)
   );
 
-  if (
-    canPlayNativeHls(videoTestElement) ||
-    browserDetector.supportsMediaSource()
-  ) {
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
+  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+
+  if (canPlayNativeHls(videoTestElement)) {
     TranscodingProfiles.push({
+      // hlsjs, edge, and android all seem to require ts container
       Container:
         !canPlayNativeHls(videoTestElement) ||
         browserDetector.isEdge() ||
@@ -185,9 +188,6 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
       });
     });
 
-  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
-  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
-
   if (hasMkvSupport(videoTestElement) && !browserDetector.isTizen()) {
     TranscodingProfiles.push({
       Container: 'mkv',
@@ -200,23 +200,40 @@ function getTranscodingProfiles(): Array<TranscodingProfile> {
     });
   }
 
-  const hlsVideoAudioCodecs = getHlsAudioCodecs(videoTestElement);
+  const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(videoTestElement);
+  const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(videoTestElement);
 
-  if (
-    canPlayNativeHls(videoTestElement) ||
-    (browserDetector.supportsMediaSource() && hlsVideoAudioCodecs.length)
-  ) {
-    TranscodingProfiles.push({
-      Container: 'ts',
-      Type: DlnaProfileType.Video,
-      AudioCodec: hlsVideoAudioCodecs.join(','),
-      VideoCodec: getHlsVideoCodecs(videoTestElement).join(','),
-      Context: EncodingContext.Streaming,
-      Protocol: 'hls',
-      MaxAudioChannels: physicalAudioChannels.toString(),
-      MinSegments: browserDetector.isApple() ? 2 : 1,
-      BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
-    });
+  const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
+  const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
+
+  if (canPlayNativeHls(videoTestElement)) {
+    if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
+      TranscodingProfiles.push({
+        Container: 'mp4',
+        Type: DlnaProfileType.Video,
+        AudioCodec: hlsInFmp4AudioCodecs.join(','),
+        VideoCodec: hlsInFmp4VideoCodecs.join(','),
+        Context: EncodingContext.Streaming,
+        Protocol: 'hls',
+        MaxAudioChannels: physicalAudioChannels.toString(),
+        MinSegments: browserDetector.isApple() ? 2 : 1,
+        BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
+      });
+    }
+
+    if (hlsInTsVideoCodecs.length && hlsInTsAudioCodecs.length) {
+      TranscodingProfiles.push({
+        Container: 'ts',
+        Type: DlnaProfileType.Video,
+        AudioCodec: hlsInTsAudioCodecs.join(','),
+        VideoCodec: hlsInTsVideoCodecs.join(','),
+        Context: EncodingContext.Streaming,
+        Protocol: 'hls',
+        MaxAudioChannels: physicalAudioChannels.toString(),
+        MinSegments: browserDetector.isApple() ? 2 : 1,
+        BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
+      });
+    }
   }
 
   if (hasVp8Support(videoTestElement)) {
