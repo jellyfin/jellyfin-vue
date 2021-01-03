@@ -57,7 +57,9 @@ function hasMp2AudioSupport(): boolean {
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {boolean} Determines if browserr has DTS audio support
  */
-function hasDtsSupport(videoTestElement: HTMLVideoElement): boolean | string {
+export function hasDtsSupport(
+  videoTestElement: HTMLVideoElement
+): boolean | string {
   // DTS audio not supported in 2018 models (Tizen 4.0)
   if (
     browserDetector.isTizen4() ||
@@ -86,16 +88,20 @@ export function getSupportedMP4AudioCodecs(
 ): string[] {
   const codecs = [];
 
-  if (hasAc3Support(videoTestElement)) {
-    codecs.push('ac3');
-  }
-
-  if (hasEac3Support(videoTestElement)) {
-    codecs.push('eac3');
-  }
-
   if (hasAacSupport(videoTestElement)) {
     codecs.push('aac');
+  }
+
+  if (hasMp3AudioSupport(videoTestElement)) {
+    codecs.push('mp3');
+  }
+
+  if (hasAc3Support(videoTestElement)) {
+    codecs.push('ac3');
+
+    if (hasEac3Support(videoTestElement)) {
+      codecs.push('eac3');
+    }
   }
 
   if (hasMp2AudioSupport()) {
@@ -107,7 +113,7 @@ export function getSupportedMP4AudioCodecs(
     codecs.push('dts');
   }
 
-  if (browserDetector.isTv()) {
+  if (browserDetector.isTizen() || browserDetector.isWebOS()) {
     codecs.push('pcm_s16le');
     codecs.push('pcm_s24le');
   }
@@ -124,7 +130,11 @@ export function getSupportedMP4AudioCodecs(
     codecs.push('flac');
   }
 
-  if (hasVp8Support(videoTestElement)) {
+  if (getSupportedAudioCodecs('alac')) {
+    codecs.push('alac');
+  }
+
+  if (hasVp8Support || browserDetector.isTizen()) {
     codecs.push('vorbis');
   }
 

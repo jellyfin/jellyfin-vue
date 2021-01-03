@@ -55,26 +55,40 @@ const videoTestElement = document.createElement('video');
  * @returns {Array<DirectPlayProfile>} An array of direct play profiles for the current platform.
  */
 function getDirectPlayProfiles(): Array<DirectPlayProfile> {
-  const DirectPlayProfiles = [];
+  const DirectPlayProfiles = [] as DirectPlayProfile[];
+
+  const webmVideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+  const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
-  const vpxVideoCodecs = getSupportedVPXVideoCodecs(videoTestElement);
-  const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
-  DirectPlayProfiles.push({
-    Container: 'webm',
-    Type: DlnaProfileType.Video,
-    AudioCodec: webmAudioCodecs.join(','),
-    VideoCodec: vpxVideoCodecs.join(',')
-  });
+  if (webmVideoCodecs.length) {
+    DirectPlayProfiles.push({
+      Container: 'webm',
+      Type: DlnaProfileType.Video,
+      VideoCodec: webmVideoCodecs.join(','),
+      AudioCodec: webmAudioCodecs.join(',')
+    });
+  }
 
-  DirectPlayProfiles.push({
-    Container: 'mp4,m4v',
-    Type: DlnaProfileType.Video,
-    VideoCodec: mp4VideoCodecs.join(','),
-    AudioCodec: mp4AudioCodecs.join(',')
-  });
+  if (mp4VideoCodecs.length) {
+    DirectPlayProfiles.push({
+      Container: 'mp4,m4v',
+      Type: DlnaProfileType.Video,
+      VideoCodec: mp4VideoCodecs.join(','),
+      AudioCodec: mp4AudioCodecs.join(',')
+    });
+  }
+
+  if (hasMkvSupport(videoTestElement) && mp4VideoCodecs.length) {
+    DirectPlayProfiles.push({
+      Container: 'mkv',
+      Type: DlnaProfileType.Video,
+      VideoCodec: mp4VideoCodecs.join(','),
+      AudioCodec: mp4AudioCodecs.join(',')
+    });
+  }
 
   const supportedAudio = [
     'opus',
