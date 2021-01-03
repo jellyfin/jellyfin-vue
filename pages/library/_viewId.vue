@@ -132,8 +132,9 @@ export default Vue.extend({
 
       if (
         this.collectionInfo &&
-        (this.collectionInfo.Type === 'CollectionFolder' ||
-          this.collectionInfo.Type === 'Folder')
+        ['CollectionFolder', 'Folder', 'UserView'].includes(
+          this.collectionInfo.Type || ''
+        )
       ) {
         if (this.collectionInfo.Name) {
           this.setPageTitle({
