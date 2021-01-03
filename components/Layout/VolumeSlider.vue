@@ -3,11 +3,10 @@
     <v-slider
       hide-details
       thumb-label
-      min="0"
       max="100"
       :value="currentvolume"
       validate-on-blur
-      prepend-icon="mdi-volume-high"
+      :prepend-icon="icon"
       @input="onVolumeChange"
     >
     </v-slider>
@@ -22,6 +21,17 @@ export default Vue.extend({
   computed: {
     currentvolume(): number {
       return this.$store.state.playbackManager.currentVolume;
+    },
+    icon(): string {
+      if (this.currentvolume >= 80) {
+        return 'mdi-volume-high';
+      } else if (this.currentvolume < 80 && this.currentvolume >= 25) {
+        return 'mdi-volume-medium';
+      } else if (this.currentvolume < 25 && this.currentvolume >= 1) {
+        return 'mdi-volume-low';
+      } else {
+        return 'mdi-volume-mute';
+      }
     }
   },
   methods: {
