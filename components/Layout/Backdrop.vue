@@ -1,9 +1,14 @@
 <template>
-  <div v-if="blurhash" class="backdrop">
-    <v-fade-transition>
-      <blurhash-canvas :hash="blurhash" :width="32" :height="18" />
-    </v-fade-transition>
-  </div>
+  <transition name="fade" mode="in-out">
+    <div
+      v-if="blurhash"
+      :key="`backdrop-${blurhash}`"
+      class="backdrop"
+      :style="`--o:${opacity}`"
+    >
+      <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -11,12 +16,15 @@ import Vue from 'vue';
 
 export default Vue.extend({
   computed: {
-    blurhash(): string | boolean {
-      if (this.$store.state.backdrop.blurhash) {
+    blurhash: {
+      get(): string {
         return this.$store.state.backdrop.blurhash;
       }
-
-      return false;
+    },
+    opacity: {
+      get(): number {
+        return this.$store.state.backdrop.opacity;
+      }
     }
   }
 });
@@ -24,6 +32,16 @@ export default Vue.extend({
 
 <style lang="scss">
 @import '~vuetify/src/styles/styles.sass';
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
 .backdrop {
   & canvas {
@@ -43,7 +61,7 @@ export default Vue.extend({
     right: 0;
     background-color: #{map-get($material-light, 'background')};
     mix-blend-mode: screen;
-    opacity: 0.85;
+    opacity: var(--o);
   }
 }
 

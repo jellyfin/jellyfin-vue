@@ -51,7 +51,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapState('playbackManager', ['lastProgressUpdate']),
-    poster(): string {
+    poster(): string | undefined {
       return this.getImageUrlForElement(ImageType.Backdrop, {
         itemId:
           this.getCurrentItem?.ParentBackdropItemId ||

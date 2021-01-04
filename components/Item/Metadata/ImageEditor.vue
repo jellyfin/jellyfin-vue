@@ -127,7 +127,7 @@ export default Vue.extend({
         })
       ).data;
     },
-    imageFormat(imageInfo: ImageInfo): string {
+    imageFormat(imageInfo: ImageInfo): string | undefined {
       return this.getImageUrlForElement(imageInfo.ImageType as ImageType, {
         itemId: this.metadata.Id,
         tag: imageInfo.ImageTag as string

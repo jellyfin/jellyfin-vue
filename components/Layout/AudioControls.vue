@@ -121,7 +121,7 @@ export default Vue.extend({
       'unpause',
       'pause'
     ]),
-    getImageUrl(itemId: string): string {
+    getImageUrl(itemId: string): string | undefined {
       const element = this.$refs.albumCover as HTMLElement;
       return this.getImageUrlForElement(ImageType.Primary, {
         itemId,

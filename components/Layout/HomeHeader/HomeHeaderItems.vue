@@ -249,7 +249,7 @@ export default Vue.extend({
         return '';
       }
     },
-    getLogo(item: BaseItemDto): string {
+    getLogo(item: BaseItemDto): string | undefined {
       const relatedItem = this.getRelatedItem(item);
       return this.getImageUrlForElement(ImageType.Logo, {
         itemId: relatedItem.Id

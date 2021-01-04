@@ -170,7 +170,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined, type: string): string {
+    getImageUrl(itemId: string | undefined, type: string): string | undefined {
       if (itemId) {
         return this.getImageUrlForElement(type as ImageType, { itemId });
       } else {
