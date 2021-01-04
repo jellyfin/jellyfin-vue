@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height fluid class="pa-0">
+  <v-container fill-height fluid class="pa-0 justify-center">
     <div ref="videoContainer">
       <video
         ref="videoPlayer"
