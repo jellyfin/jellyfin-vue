@@ -1,15 +1,14 @@
-import { hasVp8Support, hasVp9Support, hasAv1Support } from './mp4VideoFormats';
+import { hasAv1Support, hasVp8Support, hasVp9Support } from './mp4VideoFormats';
 
 /**
- *
- *
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
- * @returns {string[]} Returns an array of supported codecs
+ * @returns {string[]} An array of supported codecs
  */
-export function getSupportedVPXVideoCodecs(
+export function getSupportedWebMVideoCodecs(
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
+
   if (hasVp8Support(videoTestElement)) {
     codecs.push('vp8');
   }

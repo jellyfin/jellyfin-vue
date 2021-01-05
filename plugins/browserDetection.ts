@@ -294,6 +294,26 @@ class BrowserDetector {
   isTv(): boolean {
     return this.isTizen() || this.isWebOS();
   }
+
+  /**
+   * Guesses if the platform is a PS4
+   *
+   * @returns {boolean} Determines if the device is a PS4
+   * @memberof BrowserDetector
+   */
+  isPs4(): boolean {
+    return this.userAgentContains('playstation 4');
+  }
+
+  /**
+   * Guesses if the platform is a Xbox
+   *
+   * @returns {boolean} Determines if the device is a Xbox
+   * @memberof BrowserDetector
+   */
+  isXbox(): boolean {
+    return this.userAgentContains('xbox');
+  }
 }
 
 export const browserDetector = new BrowserDetector();

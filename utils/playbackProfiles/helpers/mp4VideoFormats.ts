@@ -41,6 +41,32 @@ export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
 
 /**
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @returns {boolean} Determines if browser has HEVC Support
+ */
+export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
+  if (browserDetector.isTv()) {
+    return true;
+  }
+
+  return !!(
+    !!videoTestElement.canPlayType &&
+    (videoTestElement
+      .canPlayType('video/mp4; codecs="hvc1.1.L120"')
+      .replace(/no/, '') ||
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.1.L120"')
+        .replace(/no/, '') ||
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
+        .replace(/no/, '') ||
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
+        .replace(/no/, ''))
+  );
+}
+
+/**
+ * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has AV1 support
  */
 export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
@@ -106,8 +132,8 @@ export function getSupportedMP4VideoCodecs(
     codecs.push('h264');
   }
 
-  if (hasH265Support(videoTestElement)) {
-    codecs.push('h265');
+  if (hasHevcSupport(videoTestElement)) {
+    // safari is lying on HDR and 60fps videos, use fMP4 instead
     codecs.push('hevc');
   }
 
@@ -119,8 +145,8 @@ export function getSupportedMP4VideoCodecs(
     codecs.push('vc1');
   }
 
-  if (hasAv1Support(videoTestElement)) {
-    codecs.push('av1');
+  if (browserDetector.isTizen()) {
+    codecs.push('msmpeg4v2');
   }
 
   if (hasVp8Support(videoTestElement)) {
@@ -129,6 +155,10 @@ export function getSupportedMP4VideoCodecs(
 
   if (hasVp9Support(videoTestElement)) {
     codecs.push('vp9');
+  }
+
+  if (hasAv1Support(videoTestElement)) {
+    codecs.push('av1');
   }
 
   return codecs;
