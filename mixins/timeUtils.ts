@@ -8,7 +8,7 @@ import Vue from 'vue';
 /**
  * Converts .NET ticks to milliseconds
  *
- * @param {(number | null | undefined)} ticks Number of .NET ticks to convert
+ * @param {(number | null | undefined)} ticks - Number of .NET ticks to convert
  * @returns {number} The converted value in milliseconds
  */
 export function ticksToMs(ticks: number | null | undefined): number {
@@ -21,7 +21,7 @@ export function ticksToMs(ticks: number | null | undefined): number {
 /**
  * Converts milliseconds to .NET ticks
  *
- * @param {string} ms Number of milliseconds to convert
+ * @param {string} ms - Number of milliseconds to convert
  * @returns {number} The converted value in .NET ticks
  */
 export function msToTicks(ms: number): number {
@@ -52,7 +52,7 @@ const timeUtils = Vue.extend({
     /**
      * Converts .NET ticks to milliseconds
      *
-     * @param {(number | null | undefined)} ticks Number of .NET ticks to convert
+     * @param {(number | null | undefined)} ticks - Number of .NET ticks to convert
      * @returns {number} The converted value in milliseconds
      */
     ticksToMs(ticks: number | null | undefined): number {
@@ -61,7 +61,7 @@ const timeUtils = Vue.extend({
     /**
      * Converts milliseconds to .NET ticks
      *
-     * @param {string} ms Number of milliseconds to convert
+     * @param {string} ms - Number of milliseconds to convert
      * @returns {number} The converted value in .NET ticks
      */
     msToTicks(ms: number): number {

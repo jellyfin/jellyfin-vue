@@ -1,7 +1,7 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser can play native Hls
  */
 export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
@@ -22,7 +22,7 @@ export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser can play Mkvs
  */
 export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {

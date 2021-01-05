@@ -3,7 +3,7 @@ import { getSupportedAudioCodecs } from './audioFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser has AC3 support
  */
 export function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
@@ -17,7 +17,7 @@ export function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser has AC3 support
  */
 export function hasAc3InHlsSupport(
@@ -46,7 +46,7 @@ export function hasAc3InHlsSupport(
 /**
  *
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has EAC3 support
  */
 export function hasEac3Support(videoTestElement: HTMLVideoElement): boolean {
@@ -62,7 +62,7 @@ export function hasEac3Support(videoTestElement: HTMLVideoElement): boolean {
 /**
  *
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has AAC support
  */
 export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
@@ -80,7 +80,7 @@ export function hasMp2AudioSupport(): boolean {
 
 /**
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has Mp3 support
  */
 export function hasMp3AudioSupport(
@@ -102,7 +102,7 @@ export function hasMp3AudioSupport(
 /**
  * Function for Determining DTS audio support
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browserr has DTS audio support
  */
 export function hasDtsSupport(
@@ -128,7 +128,7 @@ export function hasDtsSupport(
 
 /**
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} Array of supported MP4 audio codecs
  */
 export function getSupportedMP4AudioCodecs(

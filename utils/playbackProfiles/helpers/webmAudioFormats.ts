@@ -1,7 +1,7 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} An array of supported codecs
  */
 export function getSupportedWebMAudioCodecs(

@@ -19,7 +19,7 @@ import { browserDetector } from '~/plugins/browserDetection';
 /**
  * Returns a valid TranscodingProfile for the current platform.
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {Array<TranscodingProfile>} An array of transcoding profiles for the current platform.
  */
 export function getTranscodingProfiles(

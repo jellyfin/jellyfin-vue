@@ -27,7 +27,7 @@ const itemHelper = Vue.extend({
     /**
      * Test if the passed item can be played by one of the players in the client.
      *
-     * @param {BaseItemDto} item The item to be tested for playback support
+     * @param {BaseItemDto} item - The item to be tested for playback support
      * @returns {boolean} Whether the item can be played on this client or not
      */
     canPlay(item: BaseItemDto): boolean {

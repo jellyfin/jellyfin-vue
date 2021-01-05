@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     'import/newline-after-import': 'error',
     'import/order': 'error',
+    'jsdoc/require-hyphen-before-param-description': 'error',
     'promise/no-nesting': 'error',
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
