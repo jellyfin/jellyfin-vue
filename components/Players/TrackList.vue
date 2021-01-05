@@ -108,7 +108,7 @@ export default Vue.extend({
   async beforeMount() {
     const tracks = (
       await this.$api.items.getItems({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         parentId: this.item.Id,
         sortBy: 'SortName',
         sortOrder: 'Ascending'

@@ -121,7 +121,7 @@ export const actions: ActionTree<
       const response = await this.$api.displayPreferences.getDisplayPreferences(
         {
           displayPreferencesId: 'usersettings',
-          userId: this.$auth.user.Id,
+          userId: this.$auth.user?.Id,
           client: 'vue'
         }
       );
@@ -179,7 +179,7 @@ export const actions: ActionTree<
       const response = await this.$api.displayPreferences.updateDisplayPreferences(
         {
           displayPreferencesId: 'usersettings',
-          userId: this.$auth.user.Id,
+          userId: this.$auth.user?.Id,
           client: 'vue',
           displayPreferencesDto: state
         }

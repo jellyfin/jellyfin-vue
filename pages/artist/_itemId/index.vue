@@ -133,7 +133,7 @@ export default Vue.extend({
   async beforeMount() {
     const item = (
       await this.$api.userLibrary.getItem({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         itemId: this.$route.params.itemId
       })
     ).data;
@@ -145,7 +145,7 @@ export default Vue.extend({
 
     const appearances = (
       await this.$api.items.getItems({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         parentId: this.$route.params.itemId,
         sortBy: 'PremiereDate',
         sortOrder: 'Descending'

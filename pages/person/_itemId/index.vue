@@ -202,7 +202,7 @@ export default Vue.extend({
   async beforeMount() {
     const item = (
       await this.$api.userLibrary.getItem({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         itemId: this.$route.params.itemId
       })
     ).data;
@@ -214,7 +214,7 @@ export default Vue.extend({
 
     const appearances = (
       await this.$api.items.getItems({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         personIds: [this.$route.params.itemId],
         recursive: true,
         collapseBoxSetItems: false

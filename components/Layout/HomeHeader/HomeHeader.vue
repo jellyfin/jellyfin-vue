@@ -40,7 +40,7 @@ export default Vue.extend({
   async beforeMount() {
     this.items = (
       await this.$api.userLibrary.getLatestMedia({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         limit: this.pages,
         fields: [ItemFields.Overview],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
@@ -65,7 +65,7 @@ export default Vue.extend({
 
       const itemData = (
         await this.$api.userLibrary.getItem({
-          userId: this.$auth.user.Id,
+          userId: this.$auth.user?.Id,
           itemId: id
         })
       ).data;

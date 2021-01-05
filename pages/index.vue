@@ -79,7 +79,7 @@ export default Vue.extend({
             const latestMediaSections = [];
 
             const userViewsRequest = await this.$api.userViews.getUserViews({
-              userId: this.$auth.user.Id
+              userId: this.$auth.user?.Id
             });
 
             if (userViewsRequest.data.Items) {

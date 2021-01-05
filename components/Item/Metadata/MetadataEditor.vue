@@ -277,14 +277,14 @@ export default Vue.extend({
       await this.fetchItemInfo();
       const ancestors = await this.$api.library.getAncestors({
         itemId: this.metadata.Id as string,
-        userId: this.$auth.user.Id
+        userId: this.$auth.user?.Id
       });
       const libraryInfo =
         ancestors.data.find((i) => i.Type === 'CollectionFolder') || {};
       this.getGenres(libraryInfo.Id);
     },
     async fetchItemInfo(): Promise<void> {
-      const userId = this.$auth.user.Id;
+      const userId = this.$auth.user?.Id;
       const itemInfo = (
         await this.$api.userLibrary.getItem({
           userId,

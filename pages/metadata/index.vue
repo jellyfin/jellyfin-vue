@@ -50,7 +50,7 @@ export default Vue.extend({
     async fetchItems(node: ITreeNode): Promise<void> {
       const libItems = (((
         await this.$api.userLibrary.getItem(
-          { userId: this.$auth.user.Id, itemId: '' },
+          { userId: this.$auth.user?.Id, itemId: '' },
           {
             query: {
               ParentId: node.id,

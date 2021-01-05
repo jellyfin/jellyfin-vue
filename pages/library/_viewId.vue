@@ -124,8 +124,8 @@ export default Vue.extend({
       this.loading = true;
       this.collectionInfo = (
         await this.$api.items.getItems({
-          uId: this.$auth.user.Id,
-          userId: this.$auth.user.Id,
+          uId: this.$auth.user?.Id,
+          userId: this.$auth.user?.Id,
           ids: this.$route.params.viewId
         })
       ).data.Items[0];
@@ -232,7 +232,7 @@ export default Vue.extend({
           case 'MusicArtist':
             itemsResponse = (
               await this.$api.artists.getAlbumArtists({
-                userId: this.$auth.user.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -240,7 +240,7 @@ export default Vue.extend({
           case 'Actor':
             itemsResponse = (
               await this.$api.persons.getPersons({
-                userId: this.$auth.user.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId,
                 personTypes: 'Actor'
               })
@@ -249,7 +249,7 @@ export default Vue.extend({
           case 'Genre':
             itemsResponse = (
               await this.$api.genres.getGenres({
-                userId: this.$auth.user.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -257,7 +257,7 @@ export default Vue.extend({
           case 'MusicGenre':
             itemsResponse = (
               await this.$api.musicGenres.getMusicGenres({
-                userId: this.$auth.user.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -265,7 +265,7 @@ export default Vue.extend({
           case 'Studio':
             itemsResponse = (
               await this.$api.studios.getStudios({
-                userId: this.$auth.user.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -273,8 +273,8 @@ export default Vue.extend({
           default:
             itemsResponse = (
               await this.$api.items.getItems({
-                uId: this.$auth.user.Id,
-                userId: this.$auth.user.Id,
+                uId: this.$auth.user?.Id,
+                userId: this.$auth.user?.Id,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
                 sortBy:
