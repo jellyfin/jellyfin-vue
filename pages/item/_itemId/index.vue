@@ -1,14 +1,18 @@
 <template>
-  <v-container class="ml-3 mr-3">
+  <v-container class="px-6">
     <v-row>
-      <v-col cols="9">
-        <v-row>
-          <v-col cols="3">
+      <v-col cols="12" sm="8" md="9">
+        <v-row justify="center" justify-md="start">
+          <v-col cols="7" md="3">
             <card v-if="loaded" :item="item" no-text no-margin />
             <skeleton-card v-else no-text />
           </v-col>
-          <v-col cols="9">
-            <h1 v-if="loaded" class="text-h4 font-weight-light text-truncate">
+          <v-col cols="12" md="9">
+            <h1
+              v-if="loaded"
+              class="text-h4 font-weight-light"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               {{ item.Name }}
             </h1>
             <v-skeleton-loader
@@ -19,13 +23,15 @@
             />
             <h2
               v-if="loaded && item.OriginalTitle"
-              class="text-subtitle-1 text-truncate"
+              class="text-subtitle-1"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ item.OriginalTitle }}
             </h2>
             <h2
               v-if="loaded && item.AlbumArtist"
-              class="text-subtitle-1 text-truncate"
+              class="text-subtitle-1 text-truncate mt-2"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               {{ $t('byArtist') }}
               <nuxt-link
@@ -41,7 +47,10 @@
               type="heading"
               width="25em"
             />
-            <div class="text-caption text-h4 font-weight-medium">
+            <div
+              class="text-caption text-h4 font-weight-medium mt-2"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               <media-info
                 v-if="loaded"
                 :item="item"
@@ -52,7 +61,10 @@
               />
               <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
             </div>
-            <div class="mt-3 mb-2">
+            <div
+              class="mt-4"
+              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            >
               <v-btn
                 v-if="loaded && canPlay(item)"
                 class="play-button mr-2"
@@ -70,7 +82,7 @@
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-btn>
             </div>
-            <v-col class="mt-2" cols="10">
+            <v-col cols="12" md="10">
               <v-row
                 v-if="
                   loaded &&
@@ -78,22 +90,104 @@
                   item.GenreItems &&
                   item.GenreItems.length > 0
                 "
+                align="center"
               >
-                <v-col cols="2" class="d-flex align-center pa-0 flex-0">
-                  <label class="text--secondary">Genres</label>
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
+                  <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="7">
-                  <v-chip
-                    v-for="genre in item.GenreItems"
-                    :key="genre.Id"
-                    class="ma-2"
-                    small
-                    link
-                    nuxt
-                    :to="`/genre/${genre.Id}?type=${item.Type}`"
-                  >
-                    {{ genre.Name }}
-                  </v-chip>
+                <v-col cols="12" sm="10">
+                  <v-row dense>
+                    <v-col
+                      v-for="genre in item.GenreItems"
+                      :key="genre.Id"
+                      cols="auto"
+                    >
+                      <v-chip
+                        small
+                        link
+                        nuxt
+                        :to="`/genre/${genre.Id}?type=${item.Type}`"
+                      >
+                        {{ genre.Name }}
+                      </v-chip>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  loaded &&
+                  item &&
+                  directors.length > 0 &&
+                  !$vuetify.breakpoint.smAndUp
+                "
+                align="center"
+              >
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
+                  <label class="text--secondary">{{ $t('directing') }}</label>
+                </v-col>
+                <v-col cols="12" sm="10">
+                  <v-row dense>
+                    <v-col
+                      v-for="director in directors"
+                      :key="director.Id"
+                      cols="auto"
+                    >
+                      <v-chip small link nuxt :to="`/person/${director.Id}`">{{
+                        director.Name
+                      }}</v-chip>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  loaded &&
+                  item &&
+                  writers.length > 0 &&
+                  !$vuetify.breakpoint.smAndUp
+                "
+                align="center"
+              >
+                <v-col
+                  cols="12"
+                  sm="2"
+                  class="px-0 text-truncate"
+                  :class="{
+                    'py-0': !$vuetify.breakpoint.smAndUp,
+                    'mt-3': !$vuetify.breakpoint.smAndUp
+                  }"
+                >
+                  <label class="text--secondary">{{ $t('writing') }}</label>
+                </v-col>
+                <v-col cols="12" sm="10">
+                  <v-row dense>
+                    <v-col
+                      v-for="writer in writers"
+                      :key="writer.Id"
+                      cols="auto"
+                    >
+                      <v-chip small link nuxt :to="`/person/${writer.Id}`">{{
+                        writer.Name
+                      }}</v-chip>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
               <div
@@ -107,11 +201,19 @@
                 "
                 class="mt-2"
               >
-                <v-row v-if="item.MediaSources.length > 1">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="item.MediaSources.length > 1" align="center">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -121,6 +223,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.Name }}
@@ -131,11 +234,19 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="videoTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="videoTracks.length > 0" align="center">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-model="currentVideoTrack"
                       :items="getItemizedSelect(videoTracks)"
@@ -146,6 +257,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
@@ -156,11 +268,19 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="audioTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row v-if="audioTracks.length > 0" align="center">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="12" sm="10">
                     <v-select
                       v-if="audioTracks.length > 0"
                       v-model="currentAudioTrack"
@@ -172,6 +292,7 @@
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
@@ -196,21 +317,36 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="subtitleTracks.length > 0">
-                  <v-col cols="2" class="d-flex align-center pa-0">
+                <v-row align="center">
+                  <v-col
+                    cols="12"
+                    sm="2"
+                    class="px-0 text-truncate"
+                    :class="{
+                      'py-0': !$vuetify.breakpoint.smAndUp,
+                      'mt-3': !$vuetify.breakpoint.smAndUp
+                    }"
+                  >
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="7">
+                  <v-col cols="12" sm="10">
                     <v-select
-                      v-if="subtitleTracks.length > 0"
                       v-model="currentSubtitleTrack"
                       :items="getItemizedSelect(subtitleTracks)"
+                      :placeholder="
+                        subtitleTracks.length === 0
+                          ? $t('noSubtitleAvailable')
+                          : $t('noSubtitleSelected')
+                      "
+                      :disabled="subtitleTracks.length === 0"
+                      clearable
                       outlined
                       filled
                       flat
                       dense
                       single-line
                       hide-details
+                      class="text-truncate"
                     >
                       <template slot="selection" slot-scope="{ item: i }">
                         {{ i.value.DisplayTitle }}
@@ -269,7 +405,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="3">
+      <v-col cols="12" sm="4" md="3">
         <div v-if="crew.length > 0">
           <h2 v-if="loaded">Crew</h2>
           <v-skeleton-loader v-else type="heading" />
@@ -312,6 +448,7 @@ export default Vue.extend({
     return {
       loaded: false,
       item: {} as BaseItemDto,
+      crew: [] as BaseItemPerson[],
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
@@ -327,34 +464,38 @@ export default Vue.extend({
     isPlayable: {
       get(): boolean {
         // TODO: Move this to a mixin
-        if (['PhotoAlbum', 'Photo', 'Book'].includes(this.$data.item.Type)) {
+        if (
+          ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type as string)
+        ) {
           return false;
         } else {
           return true;
         }
       }
     },
-    crew: {
-      get(): BaseItemPerson[] {
-        if (this.$data.item.People) {
-          // TODO: Figure out how common it is to have more than one director
-          return this.$data.item.People.filter((person: BaseItemPerson) => {
-            return ['Director', 'Writer'].includes(person.Type || '');
-          });
-        } else {
-          return [];
-        }
-      }
-    },
     actors: {
       get(): BaseItemPerson[] {
-        if (this.$data.item.People) {
-          return this.$data.item.People.filter((person: BaseItemPerson) => {
+        if (this.item.People) {
+          return this.item.People.filter((person: BaseItemPerson) => {
             return person.Type === 'Actor';
           }).slice(0, 10);
         } else {
           return [];
         }
+      }
+    },
+    directors: {
+      get(): BaseItemPerson[] {
+        return this.crew.filter(
+          (person: BaseItemPerson) => person.Type === 'Director'
+        );
+      }
+    },
+    writers: {
+      get(): BaseItemPerson[] {
+        return this.crew.filter(
+          (person: BaseItemPerson) => person.Type === 'Writer'
+        );
       }
     }
   },
@@ -413,6 +554,12 @@ export default Vue.extend({
             ];
           }
         }
+      }
+
+      if (this.item.People) {
+        this.crew = this.item.People.filter((person: BaseItemPerson) => {
+          return ['Director', 'Writer'].includes(person.Type || '');
+        });
       }
 
       this.loaded = true;
