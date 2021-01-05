@@ -7,7 +7,7 @@
         v-on="on"
       >
         <user-image />
-        <h1 class="font-weight-light pb-1 text-truncate">
+        <h1 v-if="$auth.user" class="font-weight-light pb-1 text-truncate">
           {{ $auth.user.Name }}
         </h1>
         <v-icon>mdi-chevron-down</v-icon>
