@@ -100,7 +100,8 @@ const config: NuxtConfig = {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/date-fns'
+    '@nuxtjs/date-fns',
+    '@nuxtjs/imagemin'
   ],
   /*
    ** Nuxt.js modules
