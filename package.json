@@ -74,7 +74,7 @@
     "@nuxtjs/imagemin": "^0.2.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
-    "@types/nuxtjs__auth": "^4.8.6",
+    "@types/nuxtjs__auth": "^4.8.7",
     "@types/qs": "^6.9.5",
     "@vue/test-utils": "^1.1.2",
     "axe-core": "^4.1.1",

@@ -2241,10 +2241,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@types/nuxtjs__auth@^4.8.6":
-  version "4.8.6"
-  resolved "https://registry.yarnpkg.com/@types/nuxtjs__auth/-/nuxtjs__auth-4.8.6.tgz#5b7231c1cef5b1c4173fa1318571da7c03f21cf6"
-  integrity sha512-0vhpCWW8F2LoinbR2IAQlvU6cSYl7xbnXocJ49QPZHnXmEQsKtbp3+aUnvgaarRYrZHUU2Sbcc+nyS6YAW6RZw==
+"@types/nuxtjs__auth@^4.8.7":
+  version "4.8.7"
+  resolved "https://registry.yarnpkg.com/@types/nuxtjs__auth/-/nuxtjs__auth-4.8.7.tgz#d38c06c8d6594a985c81d3276039c84891ac2b6f"
+  integrity sha512-Y4msEIAW//Bl4+Ho0sz6E8vzIwpEGvN7hxog/AxNQTyqo5iJeStmOSeNfy0DTKUq2eyZA6Wg4sUOaUYyUyiq4Q==
   dependencies:
     vue "^2.6.10"
 
