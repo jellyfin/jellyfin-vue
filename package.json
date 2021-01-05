@@ -33,7 +33,7 @@
     "@jellyfin/client-axios": "^10.7.0",
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.12.4",
+    "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.3.3",
     "@types/dompurify": "^2.2.0",
     "@types/jest": "^26.0.19",
