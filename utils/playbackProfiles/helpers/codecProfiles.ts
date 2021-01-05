@@ -30,13 +30,13 @@ function getGlobalMaxVideoBitrate(): number | null {
     }
   }
 
-  return browserDetector.isPs4()
-    ? 8000000
-    : browserDetector.isXbox()
-    ? 12000000
-    : browserDetector.isTizen && isTizenFhd
-    ? 20000000
-    : null;
+  // TODO: These valus are taken directly from Jellyfin-web.
+  // The source of them needs to be investigated.
+
+  if (browserDetector.isPs4()) return 8000000;
+  if (browserDetector.isXbox()) return 12000000;
+  if (browserDetector.isTizen && isTizenFhd) return 20000000;
+  return null;
 }
 
 /**
@@ -63,8 +63,8 @@ function createProfileCondition(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
- * @returns {ProfileCondition[]} sd
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
+ * @returns {ProfileCondition[]} - Array of ACC Profile conditions
  */
 export function getaacCodecProfileConditions(
   videoTestElement: HTMLVideoElement
@@ -103,11 +103,11 @@ export function getaacCodecProfileConditions(
  *
  *
  * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
- * @returns {Array<CodecProfile>} - Array containing the different profiles for the client
+ * @returns {CodecProfile[]} - Array containing the different profiles for the client
  */
 export function getCodecProfiles(
   videoTestElement: HTMLVideoElement
-): Array<CodecProfile> {
+): CodecProfile[] {
   const CodecProfiles = [] as CodecProfile[];
 
   const aacProfileConditions = getaacCodecProfileConditions(videoTestElement);
@@ -160,7 +160,7 @@ export function getCodecProfiles(
       .canPlayType('video/mp4; codecs="avc1.6e0033"')
       .replace(/no/, '')
   ) {
-    // These tests are passing in safari, but playback is failing
+    // TODO: These tests are passing in safari, but playback is failing
     if (
       !browserDetector.isApple() ||
       !browserDetector.isWebOS() ||
