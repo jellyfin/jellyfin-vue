@@ -2,7 +2,7 @@ import { hasH264Support, hasHevcSupport } from './mp4VideoFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} List of supported fmp4 video codecs
  */
 export function getSupportedFmp4VideoCodecs(

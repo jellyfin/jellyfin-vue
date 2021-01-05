@@ -6,7 +6,7 @@ import { getSupportedWebMAudioCodecs } from './helpers/webmAudioFormats';
 /**
  * Returns a valid DirectPlayProfile for the current platform.
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {Array<DirectPlayProfile>} An array of direct play profiles for the current platform.
  */
 export function getDirectPlayProfiles(

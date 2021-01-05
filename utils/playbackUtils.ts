@@ -8,7 +8,7 @@ import {
 /**
  * Converts an item into a set of playable items for the playback manager to handle.
  *
- * @param {BaseItemDto[]} items Array of items to translate for playback
+ * @param {BaseItemDto[]} items - Array of items to translate for playback
  * @returns {BaseItemDto[]} A set of playable items
  */
 export async function translateItemForPlayback(

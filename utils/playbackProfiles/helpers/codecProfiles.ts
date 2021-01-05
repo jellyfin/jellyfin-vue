@@ -102,7 +102,7 @@ export function getaacCodecProfileConditions(
 /**
  *
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {CodecProfile[]} - Array containing the different profiles for the client
  */
 export function getCodecProfiles(

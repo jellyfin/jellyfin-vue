@@ -56,13 +56,13 @@ export const getters: GetterTree<
    *
    * @name CustomPrefToBoolean
    * @function
-   * @param {string} key Key of custom property to get parsed to boolean
+   * @param {string} key - Key of custom property to get parsed to boolean
    * @returns {boolean} Value parsed to bool
    */
   /**
    * Gets a custom preference parsed as a boolean (as bools are stored as string server-side)
    *
-   * @param {DisplayPreferencesState} state Current state
+   * @param {DisplayPreferencesState} state - Current state
    * @returns {CustomPrefToBoolean} Function to pass the property key to
    */
   getBooleanCustomPref: (state: DisplayPreferencesState) => (
@@ -74,9 +74,9 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
   /**
    * Sets the internal state with the server answer and assign default custom prefs if not existing
    *
-   * @param {DisplayPreferencesState} state Current state
-   * @param {any} param1 Payload
-   * @param {DisplayPreferencesDto} param1.displayPreferences Display preferences returned by the server
+   * @param {DisplayPreferencesState} state - Current state
+   * @param {any} param1 - Payload
+   * @param {DisplayPreferencesDto} param1.displayPreferences - Display preferences returned by the server
    */
   INIT_STATE(
     state: DisplayPreferencesState,
@@ -93,9 +93,9 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
   /**
    * Edits a custom pref key
    *
-   * @param {DisplayPreferencesState} state Current state
-   * @param {any} param1 Payload
-   * @param {SingleCustomPrefMutationPayload} param1.pref Key and value for new custom pref
+   * @param {DisplayPreferencesState} state - Current state
+   * @param {any} param1 - Payload
+   * @param {SingleCustomPrefMutationPayload} param1.pref - Key and value for new custom pref
    */
   EDIT_CUSTOM_PREF(
     state: DisplayPreferencesState,
@@ -113,8 +113,8 @@ export const actions: ActionTree<
   /**
    * Fetches display preferences and stores them
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param0 - Vuex
+   * @param {any} param0.dispatch - Vuex dispatch
    */
   async initState({ dispatch }) {
     try {
@@ -140,11 +140,11 @@ export const actions: ActionTree<
   /**
    * On query success, stores the result and call the callbacks
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.commit Vuex commit
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {DisplayPreferencesDto} param1.displayPreferences Display preferences object
+   * @param {any} param0 - Vuex
+   * @param {any} param0.commit - Vuex commit
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {DisplayPreferencesDto} param1.displayPreferences - Display preferences object
    */
   async initStateSuccess(
     { commit, dispatch },
@@ -157,10 +157,10 @@ export const actions: ActionTree<
   /**
    * On query error, sends the error and message to the store logger
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {any} param1.error Try-catch error
+   * @param {any} param0 - Vuex
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {any} param1.error - Try-catch error
    */
   async initStateFailure({ dispatch }, { error }: { error: unknown }) {
     const message = this.$i18n.t('failedRetrievingDisplayPreferences');
@@ -170,9 +170,9 @@ export const actions: ActionTree<
   /**
    * Pushes the current state to the server
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.state Vuex state
-   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param0 - Vuex
+   * @param {any} param0.state - Vuex state
+   * @param {any} param0.dispatch - Vuex dispatch
    */
   async pushState({ state, dispatch }) {
     try {
@@ -203,10 +203,10 @@ export const actions: ActionTree<
   /**
    * On push failure, logs a message
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {any} param1.error Try-catch error
+   * @param {any} param0 - Vuex
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {any} param1.error - Try-catch error
    */
   async pushStateFailure({ dispatch }, { error }: { error: unknown }) {
     const message = this.$i18n.t('failedSettingDisplayPreferences');
@@ -216,12 +216,12 @@ export const actions: ActionTree<
   /**
    * Edits a custom preference and pushes it to the server
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.commit Vuex commit
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {string} param1.key Key of custom pref to edit
-   * @param {string} param1.value Value to apply
+   * @param {any} param0 - Vuex
+   * @param {any} param0.commit - Vuex commit
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {string} param1.key - Key of custom pref to edit
+   * @param {string} param1.value - Value to apply
    */
   async editCustomPref(
     { commit, dispatch },
@@ -234,11 +234,11 @@ export const actions: ActionTree<
   /**
    * Same as editCustomPref, but takes a boolean value and parses it to string so the serve can store it
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {string} param1.key Key of custom pref to edit
-   * @param {boolean} param1.value Value to apply
+   * @param {any} param0 - Vuex
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {string} param1.key - Key of custom pref to edit
+   * @param {boolean} param1.value - Value to apply
    */
   async editBooleanCustomPref(
     { dispatch },
@@ -250,9 +250,9 @@ export const actions: ActionTree<
   /**
    * Resets the state and reapply default theme
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.commit Vuex commit
-   * @param {any} param0.dispatch Vuex dispatch
+   * @param {any} param0 - Vuex
+   * @param {any} param0.commit - Vuex commit
+   * @param {any} param0.dispatch - Vuex dispatch
    */
   async resetState({ commit, dispatch }) {
     commit('INIT_STATE', { displayPreferences: defaultState() });
@@ -262,8 +262,8 @@ export const actions: ActionTree<
   /**
    * Calls all update methods available for our current custom prefs
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.state Vuex state
+   * @param {any} param0 - Vuex
+   * @param {any} param0.state - Vuex state
    */
   callAllCallbacks({ state }) {
     Object.keys(state.CustomPrefs).forEach((key) => {
@@ -274,11 +274,11 @@ export const actions: ActionTree<
   /**
    * Displays and logs an error
    *
-   * @param {any} param0 Vuex
-   * @param {any} param0.dispatch Vuex dispatch
-   * @param {any} param1 Payload
-   * @param {string} param1.message Message to display
-   * @param {string} param1.error Error to log
+   * @param {any} param0 - Vuex
+   * @param {any} param0.dispatch - Vuex dispatch
+   * @param {any} param1 - Payload
+   * @param {string} param1.message - Message to display
+   * @param {string} param1.error - Error to log
    */
   async requestError(
     { dispatch },

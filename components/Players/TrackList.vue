@@ -121,7 +121,7 @@ export default Vue.extend({
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapActions('playbackManager', ['play']),
     /**
-     * @param {number} ticks The number of ticks to convert to track length
+     * @param {number} ticks - The number of ticks to convert to track length
      * @returns {string} Returns the length of the track in the format XX:XX
      */
     getRuntime(ticks: number): string {
@@ -131,9 +131,10 @@ export default Vue.extend({
 
       /**
        * Formats the second number
-       * E.g. 7 -> 07
        *
-       * @param {string} seconds Number to format
+       * @example 7 -> 07
+       *
+       * @param {string} seconds - Number to format
        * @returns {string} Formatted seconds number
        */
       function formatSeconds(seconds: string): string {

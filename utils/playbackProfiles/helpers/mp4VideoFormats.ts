@@ -1,7 +1,7 @@
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has H264 support
  */
 export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
@@ -14,7 +14,7 @@ export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has H265 support
  */
 export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
@@ -40,7 +40,7 @@ export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has HEVC Support
  */
 export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
@@ -66,7 +66,7 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has AV1 support
  */
 export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
@@ -85,7 +85,7 @@ export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has VC1 support
  */
 function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
@@ -96,7 +96,7 @@ function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has VP8 support
  */
 export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
@@ -107,7 +107,7 @@ export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has VP9 support
  */
 export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
@@ -120,7 +120,7 @@ export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
 /**
  * Queries the platform for the codecs suppers in an MP4 container.
  *
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} Array of codec identifiers.
  */
 export function getSupportedMP4VideoCodecs(

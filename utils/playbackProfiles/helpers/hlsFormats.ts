@@ -4,7 +4,7 @@ import { getSupportedAudioCodecs } from './audioFormats';
 import { browserDetector } from '~/plugins/browserDetection';
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser has AC3 in HLS support
  */
 function supportsAc3InHls(
@@ -31,7 +31,7 @@ function supportsAc3InHls(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} Array of video codecs supported in HLS
  */
 export function getHlsVideoCodecs(
@@ -52,7 +52,7 @@ export function getHlsVideoCodecs(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement A HTML video element for testing codecs
+ * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} Array of audio codecs supported in HLS
  */
 export function getHlsAudioCodecs(

@@ -30,7 +30,7 @@ const formsHelper = Vue.extend({
     /**
      * Returns a list suitable for use with the 'item' prop for v-select
      *
-     * @param {any[]} values list of values to use for the v-select
+     * @param {any[]} values - list of values to use for the v-select
      * @returns {VSelectItem[]} list ready to be used in the :item property of a v-select
      */
     getItemizedSelect(values: unknown[]): VSelectItem[] {
