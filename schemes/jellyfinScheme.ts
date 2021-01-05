@@ -15,7 +15,6 @@ export default class JellyfinScheme {
   $auth: NuxtAuth;
   name = 'jellyfin';
   options: Record<string, unknown>;
-  rawToken: '';
 
   constructor(auth: NuxtAuth, options: Record<string, unknown>) {
     this.$auth = auth;
@@ -133,6 +132,10 @@ export default class JellyfinScheme {
   }
 
   async logout(): Promise<never> {
+    // We set the 'loggedIn' variable to false as soon as possible in the logout chain, as nuxt/auth
+    // doesn't set it until 'this.$auth.setUser(undefined)' is called. At that point, component relying
+    // on $auth.user will fail, breaking the logout flow completely.
+    this.$auth.$storage.setState('loggedIn', false);
     await this.$auth.ctx.app.$api.session.reportSessionEnded();
     this.$auth.ctx.app.store.dispatch('displayPreferences/resetState');
 
