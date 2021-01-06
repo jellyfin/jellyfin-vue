@@ -75,7 +75,7 @@ export const actions: ActionTree<TvShowsState, AppState> = {
   async getTvShows({ dispatch }, { itemId }: { itemId: string }) {
     try {
       const { data } = await this.$api.tvShows.getSeasons({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         seriesId: itemId
       });
 
@@ -123,7 +123,7 @@ export const actions: ActionTree<TvShowsState, AppState> = {
   async getTvShowsSeasonEpisodes({ dispatch }, { season, itemId }) {
     try {
       const { data } = await this.$api.items.getItems({
-        userId: this.$auth.user.Id,
+        userId: this.$auth.user?.Id,
         parentId: season.Id,
         fields: [ItemFields.Overview]
       });

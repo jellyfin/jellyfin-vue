@@ -149,7 +149,7 @@ export default Vue.extend({
       if (this.item.Id) {
         const response = await this.$api.library.getSimilarItems({
           itemId: this.item.Id,
-          userId: this.$auth.user.Id,
+          userId: this.$auth.user?.Id,
           limit: this.vertical ? 5 : 12
         });
 

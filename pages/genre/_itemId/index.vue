@@ -75,7 +75,7 @@ export default Vue.extend({
     try {
       this.genre = (
         await this.$api.userLibrary.getItem({
-          userId: this.$auth.user.Id,
+          userId: this.$auth.user?.Id,
           itemId: this.$route.params.itemId
         })
       ).data;
@@ -86,8 +86,8 @@ export default Vue.extend({
 
       this.items = (
         await this.$api.items.getItems({
-          uId: this.$auth.user.Id,
-          userId: this.$auth.user.Id,
+          uId: this.$auth.user?.Id,
+          userId: this.$auth.user?.Id,
           genreIds: this.$route.params.itemId,
           includeItemTypes: type,
           recursive: true,

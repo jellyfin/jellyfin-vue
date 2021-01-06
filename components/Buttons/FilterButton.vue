@@ -293,7 +293,7 @@ export default Vue.extend({
       try {
         const response = (
           await this.$api.filter.getQueryFiltersLegacy({
-            userId: this.$auth.user.Id,
+            userId: this.$auth.user?.Id,
             parentId: this.$route.params.viewId,
             includeItemTypes: [this.itemsType]
           })

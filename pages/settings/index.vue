@@ -246,7 +246,7 @@ export default Vue.extend({
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({ title: this.$t('settings') });
 
-    if (this.$auth.user.Policy.IsAdministrator) {
+    if (this.$auth.user?.Policy?.IsAdministrator) {
       this.systemInfo = (await this.$api.system.getSystemInfo()).data;
     }
   },

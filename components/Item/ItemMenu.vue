@@ -48,7 +48,7 @@ export default Vue.extend({
     items: {
       get(): MenuItem[] {
         const menuItems = [] as MenuItem[];
-        if (this.$auth.$state.user.Policy.IsAdministrator) {
+        if (this.$auth.user?.Policy?.IsAdministrator) {
           menuItems.push({
             title: this.$t('editMetadata'),
             action: () => {
