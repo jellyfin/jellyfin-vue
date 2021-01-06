@@ -75,7 +75,7 @@
         </div>
       </div>
       <div v-if="!noText" class="card-text">
-        <div class="card-title mt-1 text-truncate">{{ item.Name }}</div>
+        <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
         <div class="card-subtitle text--secondary text-truncate">
           {{ cardSubtitle }}
         </div>
@@ -212,26 +212,45 @@ export default Vue.extend({
       }
     },
     /**
-     * @returns {string} Either an empty string, or a string representing the production year(s) for the current item or the relevant episode number of the item.
+     * @returns {string} Either the item name or the series name
+     */
+    cardTitle(): string {
+      if (this.item.Type !== 'Episode') {
+        return this.item.Name || '';
+      } else return this.item.SeriesName || '';
+    },
+    /**
+     * @returns {string} Either a string representing the production year(s) for the current item
+     *                   or the episode name of an item (SX EY - Episode Name)
+     *                   or the album artist
      */
     cardSubtitle(): string {
-      if (this.item.Type === 'MusicAlbum') {
-        return `${this.item.AlbumArtist}`;
-      } else if (this.item.Type !== 'Series' && this.item.ProductionYear) {
-        return this.item.ProductionYear.toString();
-      } else if (
-        this.item.Status === 'Continuing' &&
-        this.item.ProductionYear
-      ) {
-        return `${this.item.ProductionYear} - ${this.$t('present')}`;
-      } else if (this.item.ProductionYear && this.item.EndDate) {
-        const endYear = new Date(this.item.EndDate).toLocaleString('en-us', {
-          year: 'numeric'
-        });
-        if (this.item.ProductionYear.toString() === endYear) {
-          return this.item.ProductionYear.toString();
+      switch (this.item.Type) {
+        case 'Episode':
+          return `${this.$t('tvShowAbbrev', {
+            seasonNumber: this.item.ParentIndexNumber,
+            episodeNumber: this.item.IndexNumber
+          })} - ${this.item.Name}`;
+        case 'MusicAlbum':
+          return `${this.item.AlbumArtist}`;
+        case 'Series': {
+          if (this.item.Status === 'Continuing') {
+            return `${this.item.ProductionYear} - ${this.$t('present')}`;
+          } else if (this.item.EndDate) {
+            const endYear = new Date(this.item?.EndDate).toLocaleString(
+              'en-us',
+              { year: 'numeric' }
+            );
+            if (this.item.ProductionYear?.toString() === endYear) {
+              return this.item.ProductionYear.toString();
+            }
+            return `${this.item.ProductionYear} - ${endYear}`;
+          }
+          break;
         }
-        return `${this.item.ProductionYear} - ${endYear}`;
+        case 'Movie':
+        default:
+          return `${this.item.ProductionYear}`;
       }
       return '';
     },

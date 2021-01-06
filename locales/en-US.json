@@ -273,5 +273,6 @@
   "writing": "Writing",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}"
 }
