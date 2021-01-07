@@ -126,6 +126,9 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.lastItemIndex = state.currentItemIndex;
     state.currentItemIndex = currentItemIndex;
+    // Sometimes, the PlaybackStatus was being reported as stopped on track change.
+    // We set it as playing again here
+    state.status = PlaybackStatus.playing;
   },
   SET_CURRENT_MEDIA_SOURCE(
     state: PlaybackManagerState,
@@ -137,6 +140,9 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     if (state.currentItemIndex !== null) {
       state.lastItemIndex = state.currentItemIndex;
       state.currentItemIndex += 1;
+      // Sometimes, the PlaybackStatus was being reported as stopped on track change.
+      // We set it as playing again here
+      state.status = PlaybackStatus.playing;
     }
   },
   DECREASE_QUEUE_INDEX(state: PlaybackManagerState) {
