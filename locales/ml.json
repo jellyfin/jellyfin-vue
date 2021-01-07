@@ -1,0 +1,278 @@
+{
+    "3DFormat": "",
+    "actor": "",
+    "actors": "",
+    "addNewPerson": "",
+    "albums": "",
+    "allLanguages": "",
+    "alphabetically": "",
+    "architecture": "",
+    "art": "",
+    "artist": "",
+    "artists": "",
+    "audio": "",
+    "backdrop": "",
+    "badRequest": "",
+    "banner": "",
+    "biography": "",
+    "box": "",
+    "boxRear": "",
+    "browserNotSupported": "",
+    "buttons": {
+        "ok": ""
+    },
+    "byArtist": "",
+    "cancel": "",
+    "castAndCrew": "",
+    "changeServer": "",
+    "changeUser": "",
+    "collections": "",
+    "communityRating": "",
+    "composer": "",
+    "connect": "",
+    "continueListening": "",
+    "continueWatching": "",
+    "criticRating": "",
+    "customRating": "",
+    "darkModeToggle": "",
+    "dateAdded": "",
+    "details": "",
+    "directing": "",
+    "director": "",
+    "disc": "",
+    "discNumber": "",
+    "dislikes": "",
+    "edit": "",
+    "editMetadata": "",
+    "editPerson": "",
+    "endDate": "",
+    "endsAt": "",
+    "episodeNumber": "",
+    "errors": {
+        "anErrorHappened": "",
+        "messages": {
+            "errorCode": "",
+            "videoPlayerError": ""
+        }
+    },
+    "failedRetrievingDisplayPreferences": "",
+    "failedSettingDisplayPreferences": "",
+    "failedToRefreshItems": "",
+    "favorite": "",
+    "features": "",
+    "filter": "",
+    "filtersNotFound": "",
+    "general": "",
+    "fullScreen": "",
+    "genres": "",
+    "guestStar": "",
+    "headerExternalIds": "",
+    "headerPaths": "",
+    "home": "",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": ""
+        },
+        "welcome": {
+            "checkNewItems": "",
+            "helloUser": "",
+            "noItems": ""
+        }
+    },
+    "images": "",
+    "incorrectUsernameOrPassword": "",
+    "itemNotFound": "",
+    "jellyfinLogo": "",
+    "latestLibrary": "",
+    "libraries": "",
+    "libraryEmpty": "",
+    "libraryNotFound": "",
+    "liked": "",
+    "likes": "",
+    "links": {
+        "helpTranslate": "",
+        "poweredByJellyfin": "",
+        "readTheDocumentation": "",
+        "reportAnIssue": ""
+    },
+    "login": "",
+    "loginAs": "",
+    "logo": "",
+    "logout": "",
+    "logsAndActivity": {
+        "activity": "",
+        "failedGetActivity": "",
+        "failedGetLogs": "",
+        "logs": "",
+        "noActivityFound": "",
+        "noLogsFounr": ""
+    },
+    "manualLogin": "",
+    "menu": "",
+    "metadata": "",
+    "metadataNoResultsMatching": "",
+    "more": "",
+    "moreLikeArtist": "",
+    "moreLikeThis": "",
+    "movies": "",
+    "name": "",
+    "networks": "",
+    "nextUp": "",
+    "noNetworkConnection": "",
+    "noResultsFound": "",
+    "noSubtitleAvailable": "",
+    "noSubtitleSelected": "",
+    "numberTracks": "",
+    "operatingSystem": "",
+    "originalAspectRatio": "",
+    "originalTitle": "",
+    "overview": "",
+    "parentalRating": "",
+    "parentalRatings": "",
+    "password": "",
+    "people": "",
+    "play": "",
+    "played": "",
+    "present": "",
+    "primary": "",
+    "producer": "",
+    "queue": "",
+    "rating": "",
+    "releaseDate": "",
+    "rememberMe": "",
+    "resumable": "",
+    "role": "",
+    "save": "",
+    "saved": "",
+    "screenshot": "",
+    "search": "",
+    "selectServer": "",
+    "selectUser": "",
+    "series": "",
+    "server": "",
+    "serverAddress": "",
+    "serverAddressMustBeUrl": "",
+    "serverAddressRequired": "",
+    "serverDashboard": "",
+    "serverNotFound": "",
+    "serverVersion": "",
+    "serverVersionTooLow": "",
+    "settings": "",
+    "settingsSections": {
+        "account": {
+            "description": "",
+            "name": ""
+        },
+        "apiKeys": {
+            "description": "",
+            "name": ""
+        },
+        "devices": {
+            "description": "",
+            "name": ""
+        },
+        "dlna": {
+            "description": "",
+            "name": ""
+        },
+        "home": {
+            "description": "",
+            "name": ""
+        },
+        "libraries": {
+            "description": "",
+            "name": ""
+        },
+        "liveTvAndDvr": {
+            "description": "",
+            "name": ""
+        },
+        "logs": {
+            "description": "",
+            "name": ""
+        },
+        "mediaPlayers": {
+            "description": "",
+            "name": ""
+        },
+        "networking": {
+            "description": "",
+            "name": ""
+        },
+        "notifications": {
+            "description": "",
+            "name": ""
+        },
+        "playback": {
+            "description": "",
+            "name": ""
+        },
+        "plugins": {
+            "description": "",
+            "name": ""
+        },
+        "scheduledTasks": {
+            "description": "",
+            "name": ""
+        },
+        "server": {
+            "description": "",
+            "name": ""
+        },
+        "subtitles": {
+            "description": "",
+            "name": ""
+        },
+        "transcodingAndStreaming": {
+            "description": "",
+            "name": ""
+        },
+        "users": {
+            "description": "",
+            "name": ""
+        }
+    },
+    "shows": "",
+    "shuffleAll": "",
+    "signIn": "",
+    "sortByType": "",
+    "sortTitle": "",
+    "specialFeatures": "",
+    "status": "",
+    "studios": "",
+    "subtitles": "",
+    "tagline": "",
+    "tags": "",
+    "themeSong": "",
+    "themeVideo": "",
+    "thumb": "",
+    "title": "",
+    "trailer": "",
+    "type": "",
+    "unableGetPublicUsers": "",
+    "unableGetRelated": "",
+    "unableGetServerConfiguration": "",
+    "undefined": "",
+    "unexpectedError": "",
+    "unhandledException": "",
+    "unliked": "",
+    "unplayed": "",
+    "upNext": "",
+    "username": "",
+    "usernameRequired": "",
+    "validation": {
+        "mustBeUrl": "",
+        "required": ""
+    },
+    "version": "",
+    "video": "",
+    "videoTypes": "",
+    "viewDetails": "",
+    "vueClientVersion": "",
+    "writer": "",
+    "writing": "",
+    "year": "",
+    "years": "",
+    "youMayAlsoLike": "",
+    "tvShowAbbrev": ""
+}
