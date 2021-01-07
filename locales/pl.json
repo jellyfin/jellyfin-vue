@@ -23,7 +23,7 @@
     "rating": "Ocena",
     "releaseDate": "Data wydania",
     "serverAddress": "Adres serwera",
-    "serverAddressMustBeUrl": "Adres serwera musi być poprawnym adresem URL",
+    "serverAddressMustBeUrl": "Adres serwera musi być prawidłowym adresem URL",
     "serverAddressRequired": "Adres serwera jest wymagany",
     "serverNotFound": "Serwer nie został znaleziony",
     "settings": "Ustawienia",
@@ -32,7 +32,7 @@
     "upNext": "Następnie",
     "username": "Nazwa użytkownika",
     "usernameRequired": "Nazwa użytkownika jest wymagana",
-    "youMayAlsoLike": "",
+    "youMayAlsoLike": "Może ci się spodobać",
     "shows": "Pokazy",
     "years": "Lata",
     "videoTypes": "Typy video",
@@ -53,7 +53,219 @@
     "status": "Status",
     "filtersNotFound": "Nie można załadować filtrów",
     "unhandledException": "Nieobsługiwany wyjątek",
-    "serverVersionTooLow": "Wersja serwera musi być 10.7.0 lub wyższa",
+    "serverVersionTooLow": "Serwer musi być w wersji 10.7.0 lub wyższej",
     "noNetworkConnection": "Brak połączenia z siecią",
-    "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku."
+    "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku.",
+    "settingsSections": {
+        "transcodingAndStreaming": {
+            "name": "Transkodowanie i przesyłanie",
+            "description": "Skonfiguruj jak ten serwer obsługuje transkodowanie i przesyłanie do klientów"
+        },
+        "users": {
+            "description": "Zarządzaj użytkownikami i ich zezwoleniami",
+            "name": "Użytkownicy"
+        },
+        "subtitles": {
+            "description": "Kontroluj jak na tym urządzeniu wyświetlane są napisy",
+            "name": "Napisy"
+        },
+        "server": {
+            "description": "Skonfiguruj język i logo serwera",
+            "name": "Serwer"
+        },
+        "mediaPlayers": {
+            "name": "Odtwarzacze",
+            "description": "Skonfiguruj jak odtwarzacze zachowują się na tym urządzeniu"
+        },
+        "logs": {
+            "description": "Czytaj i przeszukuj dziennik zdarzeń serwera i aktywność użytkowników",
+            "name": "Dziennik zdarzeń i aktywność"
+        },
+        "apiKeys": {
+            "description": "Dodawaj i usuwaj klucze API do zewnętrznego dostępu do serwera",
+            "name": "Klucze API"
+        },
+        "account": {
+            "description": "Edytuj swój profil",
+            "name": "Konto"
+        },
+        "scheduledTasks": {
+            "name": "Harmonogram zadań",
+            "description": "Zarządzaj harmonogramem zadań tego serwera"
+        },
+        "plugins": {
+            "name": "Wtyczki",
+            "description": "Dodaj i skonfiguruj nowe funkcje serwera"
+        },
+        "playback": {
+            "name": "Odtwarzanie",
+            "description": "Zmień ustawienia odtwarzania dla tego urządzenia"
+        },
+        "notifications": {
+            "name": "Powiadomienia",
+            "description": "Zarządzaj i konfiguruj powiadomieniami wysyłanymi przez serwer"
+        },
+        "networking": {
+            "name": "Łączność Sieciowa",
+            "description": "Zarządzaj ustawieniami sieci serwera"
+        },
+        "liveTvAndDvr": {
+            "name": "Telewizja i DVR",
+            "description": "Zarządzaj tunerami TV, programem telewizyjnym i ustawieniami DVR"
+        },
+        "libraries": {
+            "name": "Biblioteki",
+            "description": "Zarządzaj bibliotekami i ich metadanymi"
+        },
+        "home": {
+            "name": "Start",
+            "description": "Skonfiguruj sekcje startowe i układ ekranu startowego"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Skonfiguruj profil i ustawienia DLNA"
+        },
+        "devices": {
+            "name": "Urządzenia",
+            "description": "Przeglądaj i zarządzaj urządzeniami podpiętymi do twojego serwera"
+        }
+    },
+    "links": {
+        "poweredByJellyfin": "Ten serwer jest napędzany przez Jellyfin",
+        "reportAnIssue": "Zgłoś błąd z klientem Vue",
+        "readTheDocumentation": "Przeczytaj dokumentację",
+        "helpTranslate": "Pomóż przetłumaczyć Jellyfin na twój język"
+    },
+    "homeHeader": {
+        "welcome": {
+            "checkNewItems": "Sprawdź co nowego",
+            "noItems": "Nic tu ostatnio nie dodano",
+            "helloUser": "Cześć {userName}!"
+        },
+        "items": {
+            "recentlyAdded": "Niedawno dodane"
+        }
+    },
+    "validation": {
+        "mustBeUrl": "To pole musi być prawidłowym adresem URL",
+        "required": "To pole jest wymagane"
+    },
+    "unliked": "Nie lubię",
+    "unableGetRelated": "Nie udało się odczytać powiązanych elementów",
+    "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
+    "tagline": "Motto",
+    "sortTitle": "Sortuj po tytule",
+    "sortByType": "Po {type}",
+    "shuffleAll": "Losuj",
+    "metadataNoResultsMatching": "Nie znaleziono wyników dla \"{search}\". Wciśnij enter by spróbować jeszcze raz.",
+    "year": "Rok",
+    "writer": "Scenarzysta",
+    "vueClientVersion": "Wersja klienta Vue",
+    "viewDetails": "Zobacz szczegóły",
+    "video": "Wideo",
+    "undefined": "Nieustalony",
+    "unableGetServerConfiguration": "Nie udało się odczytać konfiguracji serwera",
+    "type": "Typ",
+    "title": "Tytuł",
+    "thumb": "Miniatura",
+    "tags": "Znaczniki",
+    "studios": "Wytwórnie",
+    "serverVersion": "Wersja serwera",
+    "serverDashboard": "Kokpit serwera",
+    "server": "Serwer",
+    "series": "Seriale",
+    "selectUser": "Wybierz użytkownika",
+    "selectServer": "Wybierz serwer",
+    "search": "Szukaj",
+    "screenshot": "Zrzut ekranu",
+    "saved": "Zapisano",
+    "save": "Zapisz",
+    "role": "Rola",
+    "rememberMe": "Zapamiętaj mnie",
+    "producer": "Producent",
+    "primary": "Podstawowy",
+    "people": "Osoby",
+    "parentalRating": "Kategoria wiekowa",
+    "overview": "Opis",
+    "originalTitle": "Oryginalny tytuł",
+    "originalAspectRatio": "Oryginalne proporcje",
+    "operatingSystem": "System operacyjny",
+    "numberTracks": "{number} utworów",
+    "noResultsFound": "Nic tu nie ma",
+    "nextUp": "Następnie",
+    "networks": "Sieci",
+    "name": "Nazwa",
+    "moreLikeArtist": "Podobne do {artist}",
+    "metadata": "Metadane",
+    "menu": "Menu",
+    "manualLogin": "Logowanie ręczne",
+    "logsAndActivity": {
+        "noLogsFounr": "Nie znaleziono dziennika zdarzeń",
+        "noActivityFound": "Nie znaleziono aktywności",
+        "failedGetActivity": "Nie udało się odczytać aktywności",
+        "failedGetLogs": "Nie udało się odczytać dziennika zdarzeń",
+        "logs": "Dziennik zdarzeń",
+        "activity": "Aktywność"
+    },
+    "logo": "Logo",
+    "loginAs": "Zaloguj jako {name}",
+    "liked": "Polubione",
+    "libraries": "Biblioteki",
+    "latestLibrary": "Najnowsze {libraryName}",
+    "jellyfinLogo": "Logo Jellyfin",
+    "images": "Obrazy",
+    "headerPaths": "Folder",
+    "headerExternalIds": "Zewnętrzne ID",
+    "guestStar": "Gość",
+    "general": "Ogólne",
+    "filter": "Filtruj",
+    "failedToRefreshItems": "Nie udało się odświeżyć elementów",
+    "failedSettingDisplayPreferences": "Nie udało się odświeżyć ustawień ekranu.",
+    "failedRetrievingDisplayPreferences": "Nie udało się odczytać ustawień ekranu. Korzystanie z ustawień domyślnych.",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Odtwarzacz wideo napotkał nieodwracalny błąd.",
+            "errorCode": "Kod błędu: {errorCode}"
+        },
+        "anErrorHappened": "Wystąpił błąd"
+    },
+    "editPerson": "Edytuj osobę",
+    "editMetadata": "Edytuj metadane",
+    "edit": "Edycja",
+    "discNumber": "Dysk {discNumber}",
+    "disc": "Dysk",
+    "director": "Reżyser",
+    "details": "Szczegóły",
+    "dateAdded": "Data dodania",
+    "darkModeToggle": "Przełącz tryb ciemny",
+    "customRating": "Własna ocena",
+    "criticRating": "Ocena krytyków",
+    "connect": "Połącz",
+    "composer": "Kompozytor",
+    "communityRating": "Ocena społeczności",
+    "collections": "Kolekcje",
+    "changeUser": "Zmień użytkownika",
+    "changeServer": "Zmień serwer",
+    "castAndCrew": "Obsada i ekipa",
+    "cancel": "Anuluj",
+    "byArtist": "Od",
+    "buttons": {
+        "ok": "Ok"
+    },
+    "boxRear": "Pudełko (tył)",
+    "box": "Pudełko",
+    "biography": "Biografia",
+    "banner": "Baner",
+    "backdrop": "Fototapeta",
+    "audio": "Dźwięk",
+    "artists": "Wykonawcy",
+    "artist": "Wykonawca",
+    "art": "Przezrocze",
+    "architecture": "Architektura",
+    "allLanguages": "Wszystkie języki",
+    "albums": "Albumy",
+    "addNewPerson": "Dodaj nową osobę",
+    "actors": "Aktorzy",
+    "actor": "Aktor",
+    "3DFormat": "Format 3D"
 }
