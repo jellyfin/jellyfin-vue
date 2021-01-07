@@ -94,12 +94,14 @@
     <v-main>
       <nuxt />
     </v-main>
-    <v-footer
-      v-if="isPlaying && getCurrentlyPlayingMediaType() === 'Audio'"
-      app
-    >
-      <audio-controls />
-    </v-footer>
+    <transition name="fade" mode="in-out">
+      <v-footer
+        v-if="isPlaying && getCurrentlyPlayingMediaType() === 'Audio'"
+        app
+      >
+        <audio-controls />
+      </v-footer>
+    </transition>
     <!-- Utilities and global systems -->
     <snackbar />
     <player-manager />

@@ -55,6 +55,16 @@ body {
   opacity: 0;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 /* Vuetify overrides */
 
 // We can't set these through variables, so override them here */
