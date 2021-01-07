@@ -250,7 +250,7 @@ export default Vue.extend({
         }
         case 'Movie':
         default:
-          return `${this.item.ProductionYear}`;
+          return `${this.item.ProductionYear ? this.item.ProductionYear : ''}`;
       }
       return '';
     },
