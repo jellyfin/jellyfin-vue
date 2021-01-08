@@ -32,16 +32,7 @@ export default Vue.extend({
 
 <style lang="scss">
 @import '~vuetify/src/styles/styles.sass';
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
+@import '~/assets/transitions.scss';
 
 .backdrop {
   & canvas {

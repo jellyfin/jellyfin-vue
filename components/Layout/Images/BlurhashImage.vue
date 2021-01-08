@@ -1,6 +1,6 @@
 <template>
   <div v-if="isValidImage" ref="img" class="absolute">
-    <transition-group mode="in-out" name="fade" class="absolute">
+    <transition-group mode="in-out" name="fade-fast" class="absolute">
       <blurhash-canvas
         v-if="hash"
         key="canvas"
@@ -90,17 +90,11 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s;
-}
+<style lang="scss">
+@import '~/assets/transitions.scss';
+</style>
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
+<style lang="scss" scoped>
 .absolute {
   height: 100%;
   width: 100%;

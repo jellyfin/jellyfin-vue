@@ -280,9 +280,11 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '~/assets/styles/HomeHeader.scss';
+</style>
 
+<style lang="scss" scoped>
 .default-icon {
   display: flex;
   align-content: center;

@@ -41,29 +41,7 @@ body {
 
 /* Nuxt transitions */
 
-.page-enter-active,
-.page-leave-active,
-.layout-enter-active,
-.layout-leave-active {
-  transition: opacity 0.25s;
-}
-
-.page-enter,
-.page-leave-to,
-.layout-enter,
-.layout-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
+@import 'transitions.scss';
 
 /* Vuetify overrides */
 

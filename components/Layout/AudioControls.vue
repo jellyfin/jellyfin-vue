@@ -143,3 +143,7 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss">
+'~/assets/global.scss';
+</style>

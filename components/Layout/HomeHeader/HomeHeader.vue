@@ -104,17 +104,11 @@ export default Vue.extend({
 });
 </script>
 
+<style lang="scss">
+@import '~/assets/transitions.scss';
+</style>
+
 <style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .no-items {
   overflow: hidden;
   animation-name: slideUp;
