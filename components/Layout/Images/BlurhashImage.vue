@@ -11,12 +11,14 @@
         class="absolute"
       />
       <img
+        v-show="!loading"
         key="image"
         class="absolute"
         :src="image"
         v-bind="$attrs"
         :alt="alt"
         @error="onError"
+        @load="loading = false"
       />
     </transition-group>
   </div>
@@ -63,7 +65,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      image: ''
+      image: '',
+      loading: true
     };
   },
   mounted(): void {
@@ -145,7 +148,7 @@ export default Vue.extend({
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.25s;
 }
 
 .fade-enter,
