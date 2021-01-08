@@ -265,10 +265,18 @@
             "recentlyAdded": "Nedávno přidáno"
         },
         "welcome": {
-            "checkNewItems": "Zjistěte, co je nového",
-            "noItems": "Poslední dobou nepřibyly žádné položky",
+            "checkNewItems": "Podívejte se, co je nového.",
+            "noItems": "Poslední dobou nepřibyly žádné položky.",
             "helloUser": "Ahoj, {userName}!"
         }
     },
-    "undefined": "Nedefinováno"
+    "undefined": "Nedefinováno",
+    "tvShowAbbrev": "Řada {seasonNumber} díl {episodeNumber",
+    "writing": "Scénář píše",
+    "version": "Verze",
+    "queue": "Fronta",
+    "noSubtitleSelected": "Nevybrány žádné titulky",
+    "noSubtitleAvailable": "Žádné titulky k dispozici",
+    "fullScreen": "Celá obrazovka",
+    "directing": "Režíruje"
 }
