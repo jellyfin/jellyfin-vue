@@ -104,8 +104,8 @@ export const actions: ActionTree<HomeSectionState, AppState> = {
   async getAudioResumes({ dispatch }) {
     try {
       const { data } = await this.$api.items.getResumeItems({
-        userId: this.$auth.user?.Id,
-        limit: 12,
+        userId: this.$auth.user.Id,
+        limit: 24,
         fields: [ItemFields.PrimaryImageAspectRatio],
         imageTypeLimit: 1,
         enableImageTypes: [
@@ -142,8 +142,8 @@ export const actions: ActionTree<HomeSectionState, AppState> = {
   async getVideoResumes({ dispatch }) {
     try {
       const { data } = await this.$api.items.getResumeItems({
-        userId: this.$auth.user?.Id,
-        limit: 12,
+        userId: this.$auth.user.Id,
+        limit: 24,
         fields: [ItemFields.PrimaryImageAspectRatio],
         imageTypeLimit: 1,
         enableImageTypes: [
@@ -180,8 +180,8 @@ export const actions: ActionTree<HomeSectionState, AppState> = {
   async getUpNext({ dispatch }, { parentId }: { parentId: string }) {
     try {
       const { data } = await this.$api.tvShows.getNextUp({
-        userId: this.$auth.user?.Id,
-        limit: 12,
+        userId: this.$auth.user.Id,
+        limit: 24,
         fields: [ItemFields.PrimaryImageAspectRatio],
         imageTypeLimit: 1,
         enableImageTypes: [
@@ -217,8 +217,8 @@ export const actions: ActionTree<HomeSectionState, AppState> = {
   async getLatestMedia({ dispatch }, { parentId }: { parentId: string }) {
     try {
       const { data } = await this.$api.userLibrary.getLatestMedia({
-        userId: this.$auth.user?.Id,
-        limit: 12,
+        userId: this.$auth.user.Id,
+        limit: 24,
         fields: [ItemFields.PrimaryImageAspectRatio],
         imageTypeLimit: 1,
         enableImageTypes: [

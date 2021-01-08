@@ -6,7 +6,7 @@
         v-for="(homeSection, index) in homeSections"
         :key="`homeSection-${index}`"
       >
-        <home-section :section="homeSection" />
+        <home-section :section="homeSection" :index="index" />
       </v-row>
     </v-container>
   </div>
