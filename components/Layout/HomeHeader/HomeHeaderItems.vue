@@ -204,9 +204,20 @@ export default Vue.extend({
   },
   mounted() {
     this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
+    const hash = this.getBlurhashHash(this.items[0], ImageType.Backdrop);
+    this.setBackdrop({ hash });
+  },
+  beforeDestroy() {
+    this.clearBackdrop();
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
+    ...mapActions('backdrop', [
+      'setBackdrop',
+      'clearBackdrop',
+      'setBackdropOpacity',
+      'resetBackdropOpacity'
+    ]),
     getItemIcon(item: BaseItemDto): string {
       switch (item.Type) {
         case 'Audio':
@@ -266,6 +277,12 @@ export default Vue.extend({
       if (this.swiper?.isBeginning || this.swiper?.isEnd) {
         this.swiper?.updateSlides();
       }
+      const hash =
+        this.getBlurhashHash(
+          this.items[this.currentIndex as number],
+          ImageType.Backdrop
+        ) || '';
+      this.setBackdrop({ hash });
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;
