@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container v-if="currentQueue && currentQueue.length" fluid>
     <swiper
       ref="playbackSwiper"
       class="swiper"
@@ -7,17 +7,13 @@
       @slideChange="onSlideChange"
     >
       <swiper-slide v-for="item in currentQueue" :key="item.Id">
-        <div class="d-flex flex-column justify-center">
-          <div class="d-flex align-center justify-center">
-            <v-avatar ref="albumCover" tile size="65vh" color="primary">
-              <v-img :src="getImageUrl(item)">
-                <template #placeholder>
-                  <v-icon dark>mdi-album</v-icon>
-                </template>
-              </v-img>
-            </v-avatar>
-          </div>
-        </div>
+        <v-avatar ref="albumCover" tile size="65vh" color="primary">
+          <v-img :src="getImageUrl(item)">
+            <template #placeholder>
+              <v-icon dark large>mdi-album</v-icon>
+            </template>
+          </v-img>
+        </v-avatar>
       </swiper-slide>
     </swiper>
   </v-container>
@@ -89,11 +85,10 @@ export default Vue.extend({
   },
   watch: {
     currentItemIndex(newIndex: number): void {
-      if (this.swiperOptions.loop) {
-        this.swiper?.slideToLoop(newIndex);
-      } else {
-        this.swiper?.slideTo(newIndex);
-      }
+      this.swiper?.slideTo(newIndex);
+      // HACK: Swiper has a bug where the slides might not always appear centered:
+      // https://github.com/nolimits4web/Swiper/issues/886
+      this.swiper?.update();
       this.setBackdrop({ hash: this.backdropHash });
     },
     isPlaying(newValue: boolean): void {
@@ -114,6 +109,10 @@ export default Vue.extend({
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
     this.setBackdrop({ hash: this.backdropHash });
+    this.swiper?.slideTo(this.currentItemIndex);
+    // HACK: Swiper has a bug where the slides might not always appear centered:
+    // https://github.com/nolimits4web/Swiper/issues/886
+    this.swiper?.update();
   },
   beforeDestroy() {
     this.clearBackdrop();
@@ -139,18 +138,14 @@ export default Vue.extend({
       this.setCurrentIndex({ index });
     },
     getImageUrl(item: BaseItemDto): string | undefined {
-      const tag = this.getImageTag(item, ImageType.Primary);
-      if (tag) {
-        return this.getImageUrlForElement(ImageType.Primary, { item });
+      const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
+      if (imageUrl) {
+        return imageUrl;
       }
 
-      const albumTag = this.getImageTag(item.AlbumId, ImageType.Primary);
-      if (albumTag) {
-        return this.getImageUrlForElement(ImageType.Primary, {
-          item: item.AlbumId
-        });
-      }
-      return undefined;
+      return this.getImageUrlForElement(ImageType.Primary, {
+        itemId: item.AlbumId
+      });
     }
   }
 });

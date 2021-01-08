@@ -1,7 +1,8 @@
 <template>
-  <transition name="fade-fast" mode="in-out">
+  <transition name="fade" mode="in-out">
     <v-footer
       v-if="isPlaying && getCurrentlyPlayingMediaType() === 'Audio'"
+      key="audioControls-footer"
       app
       :color="footerColor"
     >
@@ -18,7 +19,7 @@
               size="72"
               color="primary"
             >
-              <v-img :src="getImageUrl(getCurrentItem().AlbumId)">
+              <v-img :src="getImageUrl(getCurrentItem())">
                 <template #placeholder>
                   <v-icon dark>mdi-album</v-icon>
                 </template>
@@ -29,7 +30,7 @@
                 <nuxt-link
                   tag="span"
                   class="text-truncate link"
-                  :to="`/item/${getCurrentItem().AlbumId}`"
+                  :to="`/item/${getCurrentItem()}`"
                 >
                   {{ getCurrentItem().Name }}
                 </nuxt-link>
@@ -144,7 +145,7 @@
 </template>
 
 <script lang="ts">
-import { ImageType, RepeatMode } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, RepeatMode } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
@@ -220,11 +221,14 @@ export default Vue.extend({
       'getCurrentItem',
       'getCurrentlyPlayingMediaType'
     ]),
-    getImageUrl(itemId: string): string | undefined {
-      const element = this.$refs.albumCover as HTMLElement;
+    getImageUrl(item: BaseItemDto): string | undefined {
+      const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
+      if (imageUrl) {
+        return imageUrl;
+      }
+
       return this.getImageUrlForElement(ImageType.Primary, {
-        itemId,
-        element
+        itemId: item.AlbumId
       });
     },
     stopPlayback(): void {
@@ -244,5 +248,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-'~/assets/global.scss';
+@import '~/assets/global.scss';
 </style>
