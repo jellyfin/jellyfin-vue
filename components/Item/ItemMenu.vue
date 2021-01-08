@@ -24,12 +24,14 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <metadata-editor-dialog :dialog.sync="dialog" :item-id="itemId" />
+    <metadata-editor-dialog :dialog.sync="dialog" :item-id="item.Id" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 type MenuItem = {
   title: string;
@@ -37,7 +39,12 @@ type MenuItem = {
 };
 export default Vue.extend({
   props: {
-    itemId: { type: String, default: '' }
+    item: {
+      type: Object,
+      default: (): BaseItemDto => {
+        return {};
+      }
+    }
   },
   data() {
     return {
@@ -56,9 +63,46 @@ export default Vue.extend({
             }
           });
         }
+
+        if (
+          this.$auth.user?.Policy?.IsAdministrator &&
+          ['Folder', 'CollectionFolder', 'UserView'].includes(
+            this.item.Type || ''
+          )
+        ) {
+          menuItems.push({
+            title: this.$t('refreshLibrary'),
+            action: async () => {
+              try {
+                await this.$api.itemRefresh.post({
+                  itemId: this.item.Id,
+                  replaceAllImages: false,
+                  replaceAllMetadata: false
+                });
+
+                this.pushSnackbarMessage({
+                  message: this.$t('libraryRefreshQueued'),
+                  color: 'normal'
+                });
+              } catch (e) {
+                // eslint-disable-next-line no-console
+                console.error(e);
+
+                this.pushSnackbarMessage({
+                  message: this.$t('unableToRefreshLibrary'),
+                  color: 'error'
+                });
+              }
+            }
+          });
+        }
+
         return menuItems;
       }
     }
+  },
+  methods: {
+    ...mapActions('snackbar', ['pushSnackbarMessage'])
   }
 });
 </script>
