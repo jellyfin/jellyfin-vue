@@ -128,10 +128,12 @@ export default Vue.extend({
       ).data;
     },
     imageFormat(imageInfo: ImageInfo): string | undefined {
-      return this.getImageUrlForElement(imageInfo.ImageType as ImageType, {
-        itemId: this.metadata.Id,
-        tag: imageInfo.ImageTag as string
-      });
+      if (imageInfo.ImageType) {
+        return this.getImageUrlForElement(imageInfo.ImageType, {
+          itemId: this.metadata.Id,
+          tag: imageInfo.ImageTag as string
+        });
+      }
     },
     handleSearch(): void {
       this.dialog = true;

@@ -1,22 +1,25 @@
 <template>
-  <v-container v-if="currentQueue && currentQueue.length" fluid>
-    <swiper
-      ref="playbackSwiper"
-      class="swiper"
-      :options="swiperOptions"
-      @slideChange="onSlideChange"
+  <swiper
+    v-if="currentQueue"
+    ref="playbackSwiper"
+    class="swiper"
+    :options="swiperOptions"
+    @slideChange="onSlideChange"
+  >
+    <swiper-slide
+      v-for="item in currentQueue"
+      :key="item.Id"
+      class="albumSlide"
     >
-      <swiper-slide v-for="item in currentQueue" :key="item.Id">
-        <v-avatar ref="albumCover" tile size="65vh" color="primary">
-          <v-img :src="getImageUrl(item)">
-            <template #placeholder>
-              <v-icon dark large>mdi-album</v-icon>
-            </template>
-          </v-img>
-        </v-avatar>
-      </swiper-slide>
-    </swiper>
-  </v-container>
+      <v-avatar ref="albumCover" tile size="65vh" color="primary">
+        <v-img :src="getImageUrl(item)">
+          <template #placeholder>
+            <v-icon dark large>mdi-album</v-icon>
+          </template>
+        </v-img>
+      </v-avatar>
+    </swiper-slide>
+  </swiper>
 </template>
 
 <script lang="ts">
@@ -35,7 +38,6 @@ export default Vue.extend({
         slidesPerView: 4,
         centeredSlides: true,
         initialSlide: 0,
-        parallax: true,
         autoplay: false,
         effect: 'coverflow',
         coverflowEffect: {
@@ -90,6 +92,9 @@ export default Vue.extend({
       // https://github.com/nolimits4web/Swiper/issues/886
       this.swiper?.update();
       this.setBackdrop({ hash: this.backdropHash });
+    },
+    currentQueue(): void {
+      this.swiper?.update();
     },
     isPlaying(newValue: boolean): void {
       if (!newValue) {
@@ -150,3 +155,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.albumSlide {
+  margin: 0 auto !important;
+}
+</style>

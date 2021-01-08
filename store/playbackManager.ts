@@ -84,6 +84,18 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
       return null;
     }
   },
+  getNextItem: (state) => {
+    if (
+      state.currentItemIndex !== null &&
+      state.currentItemIndex + 1 < state.queue.length
+    ) {
+      return state.queue[state.currentItemIndex + 1];
+    } else if (state.repeatMode === RepeatMode.RepeatAll) {
+      return state.queue[0];
+    } else {
+      return null;
+    }
+  },
   getCurrentlyPlayingType: (state) => {
     if (state.currentItemIndex !== null) {
       return state.queue?.[state.currentItemIndex].Type;

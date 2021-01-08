@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" mode="in-out">
     <v-footer
-      v-if="isPlaying && getCurrentlyPlayingMediaType() === 'Audio'"
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
       key="audioControls-footer"
       app
       :color="footerColor"
@@ -19,7 +19,7 @@
               size="72"
               color="primary"
             >
-              <v-img :src="getImageUrl(getCurrentItem())">
+              <v-img :src="getImageUrl(getCurrentItem)">
                 <template #placeholder>
                   <v-icon dark>mdi-album</v-icon>
                 </template>
@@ -30,13 +30,13 @@
                 <nuxt-link
                   tag="span"
                   class="text-truncate link"
-                  :to="`/item/${getCurrentItem()}`"
+                  :to="`/item/${getCurrentItem.Id}`"
                 >
-                  {{ getCurrentItem().Name }}
+                  {{ getCurrentItem.Name }}
                 </nuxt-link>
                 <v-btn class="d-none d-md-inline-flex" icon disabled>
                   <v-icon size="18">{{
-                    getCurrentItem().UserData.IsFavorite
+                    getCurrentItem.UserData.IsFavorite
                       ? 'mdi-heart'
                       : 'mdi-heart-outline'
                   }}</v-icon>
@@ -45,9 +45,9 @@
               <nuxt-link
                 tag="span"
                 class="text--secondary text-caption text-truncate mt-md-n2 link"
-                :to="`/artist/${getCurrentItem().AlbumArtists[0].Id}`"
+                :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"
               >
-                {{ getCurrentItem().AlbumArtist }}
+                {{ getCurrentItem.AlbumArtist }}
               </nuxt-link>
             </div>
           </v-col>
@@ -60,9 +60,9 @@
                   class="mx-1"
                   @click="toggleShuffle"
                 >
-                  <v-icon>{{
-                    isShuffling ? 'mdi-shuffle' : 'mdi-shuffle-disabled'
-                  }}</v-icon>
+                  <v-icon>
+                    {{ isShuffling ? 'mdi-shuffle' : 'mdi-shuffle-disabled' }}
+                  </v-icon>
                 </v-btn>
                 <v-btn icon class="mx-1" @click="setPreviousTrack">
                   <v-icon>mdi-skip-previous</v-icon>
@@ -112,7 +112,7 @@
             cols="3"
             class="d-flex d-md-none px-0 align-center justify-end"
           >
-            <v-btn icon>
+            <v-btn icon disabled>
               <v-icon>mdi-heart</v-icon>
             </v-btn>
             <v-btn icon @click="togglePause">
@@ -132,12 +132,14 @@
           </v-col>
         </v-row>
         <div
-          v-if="isFullScreenPlayer && nextTrackName"
+          v-if="isFullScreenPlayer && getNextItem"
           class="d-flex justify-center align-center"
         >
-          <h4 class="text-h6 font-weight-thin font-italic">
-            {{ $t('upNext') }}: {{ nextTrackName }}
-          </h4>
+          <div>
+            <h4 class="text-overline font-italic">
+              {{ $t('upNext') }}: {{ getNextItem.Name }}
+            </h4>
+          </div>
         </div>
       </v-container>
     </v-footer>
@@ -155,6 +157,11 @@ import { PlaybackStatus } from '~/store/playbackManager';
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
   computed: {
+    ...mapGetters('playbackManager', [
+      'getCurrentItem',
+      'getCurrentlyPlayingMediaType',
+      'getNextItem'
+    ]),
     footerColor(): string | undefined {
       if (this.isFullScreenPlayer) {
         return 'rgba(0,0,0,0.15)';
@@ -188,22 +195,6 @@ export default Vue.extend({
     },
     isFullScreenPlayer(): boolean {
       return this.$route.name === 'playback';
-    },
-    nextTrackName(): string | undefined {
-      const state = this.$store.state.playbackManager;
-      const queue = this.$store.state.playbackManager.queue;
-      if (
-        state.currentItemIndex !== null &&
-        state.currentItemIndex + 1 < state.queue.length
-      ) {
-        return queue[state.currentItemIndex + 1].Name;
-      } else if (
-        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatAll
-      ) {
-        return queue[0].Name;
-      } else {
-        return undefined;
-      }
     }
   },
   methods: {
@@ -216,10 +207,6 @@ export default Vue.extend({
       'pause',
       'toggleShuffle',
       'toggleRepeatMode'
-    ]),
-    ...mapGetters('playbackManager', [
-      'getCurrentItem',
-      'getCurrentlyPlayingMediaType'
     ]),
     getImageUrl(item: BaseItemDto): string | undefined {
       const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });

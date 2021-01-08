@@ -14,15 +14,15 @@
   >
     <template #prepend>
       <span class="mt-1">
-        {{ getRuntime(realPosition) }}
+        {{ formatTime(realPosition) }}
       </span>
     </template>
     <template #thumb-label>
-      {{ getRuntime(sliderValue) }}
+      {{ formatTime(sliderValue) }}
     </template>
     <template #append>
       <span class="mt-1">
-        {{ getRuntime(runtime) }}
+        {{ formatTime(runtime) }}
       </span>
     </template>
   </v-slider>
@@ -62,23 +62,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['changeCurrentTime']),
-    getRuntime(seconds: number): string {
-      const minutes = Math.floor(seconds / 60);
-      seconds = Math.floor(seconds - minutes * 60);
-
-      /**
-       * Formats the second number
-       * E.g. 7 -> 07
-       *
-       * @param {string} seconds - Number to format
-       * @returns {string} Formatted seconds number
-       */
-      function formatSeconds(seconds: string): string {
-        return ('0' + seconds).slice(-2);
-      }
-
-      return `${minutes}:${formatSeconds(seconds.toString())}`;
-    },
     onPositionChange(value: number): void {
       if (!this.clicked) {
         this.changeCurrentTime({ time: value });
