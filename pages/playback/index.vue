@@ -28,7 +28,7 @@ import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { mapGetters, mapActions } from 'vuex';
 import Swiper, { SwiperOptions } from 'swiper';
-import { PlaybackStatus, RepeatMode } from '~/store/playbackManager';
+import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
@@ -39,7 +39,6 @@ export default Vue.extend({
         slidesPerView: 4,
         centeredSlides: true,
         initialSlide: 0,
-        loop: true,
         parallax: true,
         autoplay: false,
         effect: 'coverflow',
@@ -104,9 +103,6 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    if (this.$store.state.playbackManager.repeatMode !== RepeatMode.all) {
-      this.swiperOptions.loop = false;
-    }
     this.showNavDrawer({ showNavDrawer: false });
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ value: 0.5 });

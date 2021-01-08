@@ -24,7 +24,11 @@ import shaka from 'shaka-player/dist/shaka-player.compiled';
 // @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
+import {
+  ImageType,
+  PlaybackInfoResponse,
+  RepeatMode
+} from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
@@ -107,6 +111,16 @@ export default Vue.extend({
               if (this.$refs.videoPlayer && mutation?.payload?.time) {
                 (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
                   mutation?.payload?.time;
+              }
+              break;
+            case 'playbackManager/SET_REPEAT_MODE':
+              if (
+                this.$refs.videoPlayer &&
+                mutation?.payload?.mode === RepeatMode.RepeatOne
+              ) {
+                (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
+              } else {
+                (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
               }
           }
         });

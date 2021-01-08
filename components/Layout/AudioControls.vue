@@ -53,8 +53,15 @@
           <v-col cols="6" class="pa-0 d-none d-md-inline">
             <div class="d-flex flex-column justify-center">
               <div class="d-flex align-center justify-center">
-                <v-btn disabled icon class="mx-1">
-                  <v-icon>mdi-shuffle</v-icon>
+                <v-btn
+                  icon
+                  :input-value="isShuffling"
+                  class="mx-1"
+                  @click="toggleShuffle"
+                >
+                  <v-icon>{{
+                    isShuffling ? 'mdi-shuffle' : 'mdi-shuffle-disabled'
+                  }}</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-1" @click="setPreviousTrack">
                   <v-icon>mdi-skip-previous</v-icon>
@@ -70,8 +77,8 @@
                 <v-btn icon class="mx-1" @click="setNextTrack">
                   <v-icon>mdi-skip-next</v-icon>
                 </v-btn>
-                <v-btn disabled icon class="mx-1">
-                  <v-icon>mdi-repeat-off</v-icon>
+                <v-btn icon class="mx-1" @click="toggleRepeatMode">
+                  <v-icon>{{ repeatIcon }}</v-icon>
                 </v-btn>
               </div>
               <time-slider v-if="!isFullScreenPlayer" />
@@ -147,6 +154,13 @@ import { PlaybackStatus } from '~/store/playbackManager';
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
   computed: {
+    footerColor(): string | undefined {
+      if (this.isFullScreenPlayer) {
+        return 'rgba(0,0,0,0.15)';
+      } else {
+        return undefined;
+      }
+    },
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
     },
@@ -155,15 +169,24 @@ export default Vue.extend({
         this.$store.state.playbackManager.status !== PlaybackStatus.stopped
       );
     },
-    isFullScreenPlayer(): boolean {
-      return !this.$store.state.playbackManager.isMinimized;
-    },
-    footerColor(): string | undefined {
-      if (this.isFullScreenPlayer) {
-        return 'rgba(0,0,0,0.15)';
+    repeatIcon(): string {
+      if (
+        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatAll
+      ) {
+        return 'mdi-repeat';
+      } else if (
+        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatOne
+      ) {
+        return 'mdi-repeat-once';
       } else {
-        return undefined;
+        return 'mdi-repeat-off';
       }
+    },
+    isShuffling(): boolean {
+      return this.$store.state.playbackManager.isShuffling;
+    },
+    isFullScreenPlayer(): boolean {
+      return this.$route.name === 'playback';
     },
     nextTrackName(): string | undefined {
       const state = this.$store.state.playbackManager;
@@ -189,7 +212,9 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'unpause',
-      'pause'
+      'pause',
+      'toggleShuffle',
+      'toggleRepeatMode'
     ]),
     ...mapGetters('playbackManager', [
       'getCurrentItem',
