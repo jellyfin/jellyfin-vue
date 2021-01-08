@@ -23,7 +23,7 @@
     "rating": "Evaluare",
     "releaseDate": "Data lansării",
     "serverAddress": "Adresa serverului",
-    "serverAddressMustBeUrl": "Adresa serverului trebuie să fie o adresă validă",
+    "serverAddressMustBeUrl": "Adresa serverului trebuie să fie un URL valid",
     "serverAddressRequired": "Adresa serverului este obligatorie",
     "serverNotFound": "Serverul nu a fost gasit",
     "settings": "Setări",
@@ -88,7 +88,7 @@
         "anErrorHappened": "A apărut o eroare"
     },
     "dislikes": "Dislike-uri",
-    "disc": "Disc {discNumber}",
+    "disc": "Placă",
     "darkModeToggle": "Comutați modul întunecat",
     "connect": "Conectare",
     "collections": "Colecții",
@@ -103,5 +103,169 @@
     "artists": "Artiști",
     "artist": "Artist",
     "albums": "Albume",
-    "actors": "Actori"
+    "actors": "Actori",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Adăugat recent"
+        },
+        "welcome": {
+            "checkNewItems": "Vedeți ce este nou",
+            "noItems": "Nu există elemente adăugate recent de afișat",
+            "helloUser": "Salut {userName}!"
+        }
+    },
+    "year": "Anul",
+    "writer": "Scriitor",
+    "vueClientVersion": "Versiunea clientului Vue",
+    "video": "Video",
+    "undefined": "Nedefinit",
+    "unableGetServerConfiguration": "Nu se poate obține configurarea serverului",
+    "unableGetPublicUsers": "Nu se pot obține utilizatorii",
+    "type": "Tip",
+    "title": "Titlu",
+    "thumb": "Miniatură",
+    "tags": "Etichete",
+    "tagline": "Slogan",
+    "sortTitle": "Sortează titlul",
+    "settingsSections": {
+        "users": {
+            "name": "Utilizatori",
+            "description": "Gestionați utilizatorii și permisiunile acestora"
+        },
+        "transcodingAndStreaming": {
+            "name": "Transcodare & streaming",
+            "description": "Gestionați modul în care acest server tratează transcodarea și transmiterea către clienți"
+        },
+        "subtitles": {
+            "name": "Subtitrări",
+            "description": "Controlați modul în care sunt afișate subtitrările pe acest dispozitiv"
+        },
+        "server": {
+            "name": "Server",
+            "description": "Configurați limba și marca acestui server"
+        },
+        "scheduledTasks": {
+            "name": "Activități programate",
+            "description": "Gestionați activitățile programate care rulează pe acest server"
+        },
+        "plugins": {
+            "name": "Pluginuri",
+            "description": "Adăugați și configurați caracteristici noi pentru acest server"
+        },
+        "playback": {
+            "name": "Redare",
+            "description": "Editați preferințele de redare pentru acest dispozitiv"
+        },
+        "notifications": {
+            "name": "Notificări",
+            "description": "Gestionați și configurați notificările trimise de acest server"
+        },
+        "networking": {
+            "name": "Rețele",
+            "description": "Gestionați setările de rețea ale acestui server"
+        },
+        "mediaPlayers": {
+            "name": "Playere media",
+            "description": "Configurați cum se comportă playerele media pentru acest dispozitiv"
+        },
+        "logs": {
+            "name": "Jurnale & Activitate",
+            "description": "Citiți și căutați în jurnalele serverului și activitatea utilizatorului"
+        },
+        "liveTvAndDvr": {
+            "name": "TV în direct & DVR",
+            "description": "Gestionați tunerele TV, furnizorii datelor ghid TV și setările DVR"
+        },
+        "libraries": {
+            "name": "Biblioteci",
+            "description": "Gestionați bibliotecile și metadatele acestora"
+        },
+        "home": {
+            "name": "Ecranul de start",
+            "description": "Configurați secțiunile de pornire și aspectul ecranului de pornire"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "Configurați setările și profilul DLNA"
+        },
+        "devices": {
+            "name": "Dispozitive",
+            "description": "Vedeți și gestionați dispozitivele conectate la serverul dvs."
+        },
+        "apiKeys": {
+            "name": "Chei API",
+            "description": "Adăugați și revocați chei API pentru acces extern la serverul dvs."
+        },
+        "account": {
+            "name": "Cont",
+            "description": "Editați informațiile utilizatorului"
+        }
+    },
+    "serverVersion": "Versiunea serverului",
+    "serverDashboard": "Tabloul de bord al serverului",
+    "server": "Server",
+    "search": "Caută",
+    "screenshot": "Captură de ecran",
+    "saved": "Salvat",
+    "save": "Salvează",
+    "role": "Rol",
+    "rememberMe": "Amintește-ți de mine",
+    "producer": "Producător",
+    "primary": "Primar",
+    "people": "Oameni",
+    "parentalRating": "Parental Rating",
+    "overview": "Prezentare generală",
+    "originalTitle": "Titlu original",
+    "originalAspectRatio": "Raport de aspect original",
+    "operatingSystem": "Sistem de operare",
+    "metadataNoResultsMatching": "Nu există rezultate care să se potrivească cu \"{search}\". Apăsați Enter pentru a crea una nouă.",
+    "metadata": "Metadată",
+    "menu": "Meniu",
+    "logsAndActivity": {
+        "noLogsFounr": "Nu s-au găsit jurnale",
+        "noActivityFound": "Nu s-au găsit activități",
+        "failedGetActivity": "Nu se poate obține activitatea",
+        "failedGetLogs": "Nu se pot obține jurnalele",
+        "logs": "Jurnal",
+        "activity": "Activitate"
+    },
+    "logo": "Siglă",
+    "links": {
+        "reportAnIssue": "Raportați o problemă cu clientul Vue",
+        "readTheDocumentation": "Citiți documentația",
+        "poweredByJellyfin": "Acest server rulează Jellyfin",
+        "helpTranslate": "Ajutați la traducerea Jellyfin în limba dvs."
+    },
+    "jellyfinLogo": "Logo Jellyfin",
+    "images": "Imagini",
+    "headerPaths": "Cale",
+    "headerExternalIds": "ID-uri externe",
+    "guestStar": "Vedetă invitată",
+    "general": "General",
+    "failedSettingDisplayPreferences": "Nu se pot actualiza preferințele de afișare.",
+    "failedRetrievingDisplayPreferences": "Nu se pot obține preferințele de afișare. Folosesc valorile implicite.",
+    "editPerson": "Editare persoană",
+    "editMetadata": "Editare metadate",
+    "edit": "Editare",
+    "discNumber": "Placă {discNumber}",
+    "director": "Regizor",
+    "details": "Detalii",
+    "dateAdded": "Data adăugării",
+    "customRating": "Evaluare personalizată",
+    "criticRating": "Evaluare critici",
+    "composer": "Compozitor",
+    "communityRating": "Evaluare de către comunitate",
+    "castAndCrew": "Distribuție și echipă",
+    "cancel": "Anulează",
+    "boxRear": "Cutie (spate)",
+    "box": "Cutie",
+    "banner": "Bandieră",
+    "backdrop": "Fundal",
+    "audio": "Audio",
+    "art": "Artă",
+    "architecture": "Arhitectura",
+    "allLanguages": "Toate limbile",
+    "addNewPerson": "Adăugați o persoană nouă",
+    "actor": "Artist",
+    "3DFormat": "Format 3D"
 }
