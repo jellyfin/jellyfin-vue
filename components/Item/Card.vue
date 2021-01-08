@@ -42,6 +42,7 @@
               !item.ImageTags ||
               (item.ImageTags && !item.ImageTags.Primary)
             "
+            class="card-image absolute"
             size="96"
             color="primary darken-2"
           >
@@ -290,27 +291,32 @@ export default Vue.extend({
   cursor: pointer;
   padding: 0;
 }
+
 .card-margin {
   margin: 0.6em;
 }
+
 .portrait-card {
   position: relative;
   padding-bottom: 150%;
   contain: strict;
   border-radius: 0.3em;
 }
+
 .thumb-card {
   position: relative;
   padding-bottom: 56.25%;
   contain: strict;
   border-radius: 0.3em;
 }
+
 .square-card {
   position: relative;
   padding-bottom: 100%;
   contain: strict;
   border-radius: 0.3em;
 }
+
 .card-content {
   overflow: hidden;
   position: absolute;
@@ -328,15 +334,18 @@ export default Vue.extend({
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
 }
+
 .card-image {
   width: 100%;
   height: 100%;
 }
+
 .card-chip {
   position: absolute;
   top: 1em;
   right: 1em;
 }
+
 .card-overlay {
   position: absolute;
   background: radial-gradient(
@@ -351,11 +360,13 @@ export default Vue.extend({
   bottom: 0;
   opacity: 0;
 }
+
 @media (hover: hover) and (pointer: fine) {
   .card-box:hover .card-overlay {
     opacity: 1;
   }
 }
+
 .card-text {
   text-align: center;
   padding: 0 0.25em;
@@ -363,7 +374,12 @@ export default Vue.extend({
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .a {
   text-decoration: none;
+}
+
+.absolute {
+  position: absolute;
 }
 </style>
