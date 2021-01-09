@@ -278,5 +278,8 @@
     "noSubtitleSelected": "Nevybrány žádné titulky",
     "noSubtitleAvailable": "Žádné titulky k dispozici",
     "fullScreen": "Celá obrazovka",
-    "directing": "Režíruje"
+    "directing": "Režíruje",
+    "unableToRefreshLibrary": "Aktualizace knihovny se nezdařila",
+    "refreshLibrary": "Aktualizovat knihovnu",
+    "libraryRefreshQueued": "Aktualizace knihovny zařazena do fronty"
 }
