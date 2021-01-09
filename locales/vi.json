@@ -265,10 +265,21 @@
             "recentlyAdded": "Được thêm gần đây"
         },
         "welcome": {
-            "checkNewItems": "Kiểm tra những gì mới",
-            "noItems": "Không có mục nào được thêm gần đây để hiển thị",
+            "checkNewItems": "Kiểm tra những gì mới.",
+            "noItems": "Không có mục nào được thêm gần đây để hiển thị.",
             "helloUser": "Chào {userName}!"
         }
     },
-    "undefined": "Chưa xác định"
+    "undefined": "Chưa xác định",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "writing": "Viết",
+    "version": "Phiên bản",
+    "unableToRefreshLibrary": "Không thể làm mới thư viện",
+    "refreshLibrary": "Làm mới thư viện",
+    "queue": "Xếp hàng",
+    "noSubtitleSelected": "Không có phụ đề nào được chọn",
+    "noSubtitleAvailable": "Không có phụ đề",
+    "libraryRefreshQueued": "Làm mới thư viện đã xếp hàng đợi",
+    "fullScreen": "Toàn màn hình",
+    "directing": "Chỉ đạo"
 }
