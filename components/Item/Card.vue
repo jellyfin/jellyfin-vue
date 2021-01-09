@@ -262,13 +262,8 @@ export default Vue.extend({
       }
     },
     getImageType(): ImageType {
-      if (
-        this.shape === 'thumb-card' &&
-        !['CollectionFolder', 'Folder', 'UserView'].includes(
-          this.item?.Type || ''
-        )
-      ) {
-        return ImageType.Thumb;
+      if (this.shape === 'thumb-card' && this.item.Type === 'Movie') {
+        return ImageType.Backdrop;
       } else {
         return ImageType.Primary;
       }
