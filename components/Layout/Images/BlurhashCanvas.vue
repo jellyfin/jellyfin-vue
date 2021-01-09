@@ -1,5 +1,13 @@
 <template>
-  <canvas v-if="validHash" ref="canvas" :width="width" :height="height" />
+  <transition name="fade" mode="in-out">
+    <canvas
+      v-if="validHash"
+      v-show="!loading"
+      ref="canvas"
+      :width="width"
+      :height="height"
+    />
+  </transition>
 </template>
 
 <script lang="ts">
@@ -27,7 +35,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      validHash: true
+      validHash: true,
+      loading: true
     };
   },
   watch: {
@@ -45,10 +54,16 @@ export default Vue.extend({
       const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
       const imageData = ctx?.createImageData(this.width, this.height);
       try {
-        const pixels = await getPixels(this.hash, this.width, this.height);
+        const pixels = await getPixels(
+          this.hash,
+          this.width,
+          this.height,
+          this.punch
+        );
         if (imageData) {
           imageData.data.set(pixels);
           ctx?.putImageData(imageData, 0, 0);
+          this.loading = false;
         }
       } catch {
         this.validHash = false;
@@ -57,3 +72,15 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
