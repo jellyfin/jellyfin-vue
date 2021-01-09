@@ -247,14 +247,14 @@
     "addNewPerson": "Voeg een nieuw persoon toe",
     "actor": "Acteur",
     "3DFormat": "3D formaat",
-    "thumb": "Duim",
+    "thumb": "Icoon",
     "homeHeader": {
         "items": {
             "recentlyAdded": "Recent toegevoegd"
         },
         "welcome": {
-            "checkNewItems": "Kijk wat er nieuw is",
-            "noItems": "Er zijn geen recent toegevoegde items om weer te geven",
+            "checkNewItems": "Kijk wat er nieuw is.",
+            "noItems": "Er zijn geen recent toegevoegde items om weer te geven.",
             "helloUser": "Hallo {userName}!"
         }
     },
@@ -267,5 +267,16 @@
     "title": "Titel",
     "tags": "Labels",
     "tagline": "Slogan",
-    "sortTitle": "Sorteer de titel"
+    "sortTitle": "Sorteer de titel",
+    "tvShowAbbrev": "S{seasonNumber} A{episodeNumber}",
+    "writing": "Schrijven",
+    "version": "Versie",
+    "unableToRefreshLibrary": "Bibliotheek kan niet worden vernieuwd",
+    "refreshLibrary": "Vernieuw bibliotheek",
+    "queue": "Wachtrij",
+    "noSubtitleSelected": "Geen ondertiteling geselecteerd",
+    "noSubtitleAvailable": "Geen ondertiteling beschikbaar",
+    "libraryRefreshQueued": "Bibliotheek vernieuwen in wachtrij geplaatst",
+    "fullScreen": "Volledig scherm",
+    "directing": "Regisseren"
 }
