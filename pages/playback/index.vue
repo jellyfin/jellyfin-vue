@@ -42,7 +42,7 @@ export default Vue.extend({
         centerInsufficientSlides: true,
         initialSlide: 0,
         autoplay: false,
-        effect: 'slide',
+        effect: 'coverflow',
         coverflowEffect: {
           depth: 500,
           slideShadows: false,

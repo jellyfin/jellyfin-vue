@@ -104,11 +104,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-@import '~/assets/transitions.scss';
-</style>
-
 <style lang="scss" scoped>
+@import '~/assets/transitions.scss';
 .no-items {
   overflow: hidden;
   animation-name: slideUp;

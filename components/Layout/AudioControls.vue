@@ -29,8 +29,8 @@
                 </template>
               </v-img>
             </v-avatar>
-            <v-col class="d-flex flex-column justify-center ml-4">
-              <v-row>
+            <v-col class="d-flex flex-column justify-center ml-4 pt-0 mt-1">
+              <v-row class="pa-0">
                 <nuxt-link
                   tag="span"
                   class="text-truncate link"
@@ -39,32 +39,32 @@
                   {{ getCurrentItem.Name }}
                 </nuxt-link>
               </v-row>
-              <v-row v-if="getCurrentItem.ArtistItems">
-                <div
+              <v-row
+                v-if="getCurrentItem.ArtistItems"
+                class="align-center pa-0"
+              >
+                <span
                   v-for="(artist, index) in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="`/artist/${artist.Id}`"
+                  class="m-0"
                 >
-                  <nuxt-link
-                    tag="span"
-                    class="text--secondary text-caption text-truncate mt-md-n2 link"
-                    :to="`/artist/${artist.Id}`"
-                    >{{ getArtistName(index) }}
-                  </nuxt-link>
-                </div>
-              </v-row>
-              <v-row class="mt-1">
-                <nuxt-link
-                  v-if="
-                    getCurrentItem.AlbumArtist &&
-                    getCurrentItem.AlbumArtists[0].Id
-                  "
-                  tag="span"
-                  class="text--secondary text-caption text-truncate mt-md-n2 link"
-                  :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"
-                >
-                  {{ getCurrentItem.AlbumArtist }}
-                </nuxt-link>
+                  <p>
+                    <nuxt-link
+                      tag="span"
+                      class="text--secondary text-caption text-truncate link"
+                      :to="`/artist/${artist.Id}`"
+                      >{{ artist.Name }}</nuxt-link
+                    >
+                    <!-- Handles whitespaces -->
+                    <!-- eslint-disable vue/no-v-html -->
+                    <span
+                      v-if="index !== getCurrentItem.ArtistItems.length - 1"
+                      v-html="'&nbsp;'"
+                    />
+                    <!-- eslint-enable vue/no-v-html -->
+                  </p>
+                </span>
               </v-row>
             </v-col>
           </v-col>
@@ -315,18 +315,6 @@ export default Vue.extend({
         itemId: item.AlbumId
       });
     },
-    getArtistName(index: number): string {
-      const item = this.getCurrentItem;
-      const artist = item.ArtistItems?.[index];
-      if (item.ArtistItems && artist && artist.Name) {
-        if (index !== item.ArtistItems.length - 1) {
-          return artist.Name + '-';
-        } else {
-          return artist.Name;
-        }
-      }
-      return '';
-    },
     stopPlayback(): void {
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
@@ -343,9 +331,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-@import '~/assets/global.scss';
-
+<style lang="scss" scoped>
+@import '~/assets/transitions.scss';
 .audioControls {
   user-select: none;
 }

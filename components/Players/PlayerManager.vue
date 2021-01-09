@@ -200,7 +200,7 @@ export default Vue.extend({
           // Report playback stop for the previous item
           if (
             state.playbackManager.currentTime !== null &&
-            this.getPreviousItem.Id
+            this.getPreviousItem?.Id
           ) {
             this.$api.playState.reportPlaybackStopped(
               {

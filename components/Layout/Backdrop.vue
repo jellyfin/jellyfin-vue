@@ -30,7 +30,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
 @import '~/assets/transitions.scss';
 

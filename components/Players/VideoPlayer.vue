@@ -119,7 +119,7 @@ export default Vue.extend({
                 mutation?.payload?.mode === RepeatMode.RepeatOne
               ) {
                 (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
-              } else {
+              } else if (this.$refs.videoPlayer) {
                 (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
               }
           }

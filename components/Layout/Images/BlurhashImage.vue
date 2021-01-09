@@ -90,11 +90,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-@import '~/assets/transitions.scss';
-</style>
-
 <style lang="scss" scoped>
+@import '~/assets/transitions.scss';
 .absolute {
   height: 100%;
   width: 100%;

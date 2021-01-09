@@ -49,7 +49,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '~/assets/transitions.scss';
 @import '~/assets/styles/HomeHeader.scss';
 </style>

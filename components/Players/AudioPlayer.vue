@@ -109,7 +109,7 @@ export default Vue.extend({
                 mutation?.payload?.mode === RepeatMode.RepeatOne
               ) {
                 (this.$refs.audioPlayer as HTMLAudioElement).loop = true;
-              } else {
+              } else if (this.$refs.audioPlayer) {
                 (this.$refs.audioPlayer as HTMLAudioElement).loop = false;
               }
           }
