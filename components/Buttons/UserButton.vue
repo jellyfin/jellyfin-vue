@@ -50,7 +50,7 @@ export default Vue.extend({
 
       if (this.$auth.$state.user.Policy.IsAdministrator) {
         menuItems.push({
-          title: this.$t('metadata'),
+          title: this.$t('metadataEditor'),
           action: (): void => {
             this.$router.push('/metadata');
           }
