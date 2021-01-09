@@ -138,8 +138,8 @@
     },
     "homeHeader": {
         "welcome": {
-            "checkNewItems": "Sprawdź co nowego",
-            "noItems": "Nic tu ostatnio nie dodano",
+            "checkNewItems": "Sprawdź co nowego.",
+            "noItems": "Nic tu ostatnio nie dodano.",
             "helloUser": "Cześć {userName}!"
         },
         "items": {
@@ -153,7 +153,7 @@
     "unliked": "Nie lubię",
     "unableGetRelated": "Nie udało się odczytać powiązanych elementów",
     "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
-    "tagline": "Motto",
+    "tagline": "Slogan",
     "sortTitle": "Sortuj po tytule",
     "sortByType": "Według {type}",
     "shuffleAll": "Losuj",
@@ -267,5 +267,21 @@
     "addNewPerson": "Dodaj nową osobę",
     "actors": "Aktorzy",
     "actor": "Aktor",
-    "3DFormat": "Format 3D"
+    "3DFormat": "Format 3D",
+    "directing": "Reżyserowanie",
+    "writing": "Scenariusz",
+    "version": "Wersja",
+    "unableToRefreshLibrary": "Nie udało się odświeżyć biblioteki",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "Przełącz na ciemny motyw",
+        "changeLanguage": "Język"
+    },
+    "refreshLibrary": "Odśwież bibliotekę",
+    "queue": "Kolejka",
+    "noSubtitleSelected": "Nie wybrano napisów",
+    "noSubtitleAvailable": "Brak dostępnych napisów",
+    "metadataEditor": "Edytor metadanych",
+    "libraryRefreshQueued": "Odświeżenie biblioteki w kolejce",
+    "fullScreen": "Pełny ekran"
 }
