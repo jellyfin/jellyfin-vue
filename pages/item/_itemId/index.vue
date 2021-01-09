@@ -66,17 +66,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="genre in item.GenreItems"
@@ -102,17 +101,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="director in directors"
@@ -133,17 +131,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="writer in writers"
@@ -160,17 +157,16 @@
               <div v-if="item && item.MediaSources" class="mt-2">
                 <v-row v-if="item.MediaSources.length > 1" align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -193,17 +189,16 @@
                 </v-row>
                 <v-row align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
                     <track-selector
                       :item="item"
                       :media-source-index="currentSourceIndex"
@@ -214,17 +209,16 @@
                 </v-row>
                 <v-row align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('audio') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
                     <track-selector
                       :item="item"
                       :media-source-index="currentSourceIndex"
@@ -235,17 +229,16 @@
                 </v-row>
                 <v-row align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
                     <track-selector
                       :item="item"
                       :media-source-index="currentSourceIndex"
@@ -314,6 +307,14 @@ import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import TrackSelector from '~/components/Item/TrackSelector.vue';
 
+interface TwoColsInfoColumn {
+  lCols: number;
+  lSm: number;
+  rCols: number;
+  rSm: number;
+  lClass: { [key: string]: boolean };
+}
+
 export default Vue.extend({
   components: { TrackSelector },
   mixins: [imageHelper, formsHelper, itemHelper],
@@ -361,6 +362,22 @@ export default Vue.extend({
     };
   },
   computed: {
+    twoColsInfoColumn: {
+      get(): TwoColsInfoColumn {
+        return {
+          lCols: 12,
+          lSm: 2,
+          lClass: {
+            'mt-3': !this.$vuetify.breakpoint.smAndUp,
+            'py-0': !this.$vuetify.breakpoint.smAndUp,
+            'px-0': true,
+            'text-truncate': true
+          },
+          rCols: 12,
+          rSm: 10
+        };
+      }
+    },
     currentSourceIndex: {
       get(): number | undefined {
         return this.item.MediaSources?.findIndex(
