@@ -8,6 +8,10 @@ const TestComponent = new Vue({
 describe('timeUtils', () => {
   test('converts time from ms to ticks', () => {
     expect(TestComponent.ticksToMs(10000)).toEqual(1);
+
+    expect(TestComponent.ticksToMs(undefined)).toEqual(0);
+
+    expect(TestComponent.ticksToMs(null)).toEqual(0);
   });
 
   test('converts time from ticks to ms', () => {
