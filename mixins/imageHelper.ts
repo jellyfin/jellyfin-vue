@@ -109,6 +109,11 @@ const imageHelper = Vue.extend({
             'item.ImageTags must not be null or undefined when an item object is passed'
           );
         }
+
+        if (type === ImageType.Thumb && !item.ImageTags[type]) {
+          type = ImageType.Primary;
+        }
+
         tag = item?.ImageTags?.[type];
       } else if (!itemId) {
         throw new TypeError(

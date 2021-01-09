@@ -73,14 +73,40 @@ export default Vue.extend({
     const img = this.$refs.img as HTMLElement;
     // We don't pass the item itself as we already did all the tags checking in this component,
     // so doing it again in the mixin is useless.
-    this.image = this.getImageUrlForElement(this.type, {
-      itemId: this.item.Id,
-      element: img
-    });
+    if (
+      this.type === ImageType.Thumb &&
+      !Object.prototype.hasOwnProperty.call(this.item?.ImageTags, this.type) &&
+      Object.prototype.hasOwnProperty.call(
+        this.item?.ImageTags,
+        ImageType.Primary
+      )
+    ) {
+      this.image = this.getImageUrlForElement(ImageType.Primary, {
+        itemId: this.item.Id,
+        element: img
+      });
+    } else {
+      this.image = this.getImageUrlForElement(this.type, {
+        itemId: this.item.Id,
+        element: img
+      });
+    }
   },
   methods: {
     isValidTag(): boolean {
       if (
+        this.type === ImageType.Thumb &&
+        !Object.prototype.hasOwnProperty.call(
+          this.item?.ImageTags,
+          this.type
+        ) &&
+        Object.prototype.hasOwnProperty.call(
+          this.item?.ImageTags,
+          ImageType.Primary
+        )
+      ) {
+        return true;
+      } else if (
         (this.item?.ImageTags &&
           Object.prototype.hasOwnProperty.call(
             this.item?.ImageTags,
