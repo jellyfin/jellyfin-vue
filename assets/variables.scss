@@ -3,8 +3,6 @@
 // The variables you want to modify
 // $font-size-root: 20px;
 
-@import '~vuetify/src/styles/styles.sass';
-
 // Globals
 $heading-font-family: 'Noto Sans',
 'Noto Sans HK',
@@ -13,17 +11,18 @@ $heading-font-family: 'Noto Sans',
 'Noto Sans SC',
 sans-serif !default;
 $body-font-family: $heading-font-family;
+
 $font-size-root: 14px;
 $input-font-size: 14px;
 $btn-font-weight: 500;
 
-$material-light: map-merge($material-light, ('background': #f2f2f2));
+$material-light: ('background': #f2f2f2);
 
-$material-dark: map-merge($material-dark, ('background': #121721,
-    'navigation-drawer': #1c2331,
-    'app-bar': #1c2331,
-    'dividers': #233543,
-    'cards': #1c2331,
-    'chips': #2b4355,
-    'menus': #252e41,
-    'text': ('primary': #edf2f7)))
+$material-dark: ('background': #121721,
+  'navigation-drawer': #1c2331,
+  'app-bar': #1c2331,
+  'dividers': #233543,
+  'cards': #1c2331,
+  'chips': #2b4355,
+  'menus': #252e41,
+  'text': ('primary': #edf2f7));
