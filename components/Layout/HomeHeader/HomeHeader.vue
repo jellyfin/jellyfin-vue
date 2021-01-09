@@ -53,12 +53,12 @@ export default Vue.extend({
 
     for (const [key, i] of this.items.entries()) {
       let id: string;
-      if (i.Type === 'Episode' && i.SeriesId) {
-        id = i?.SeriesId as string;
-      } else if (i.Type === 'MusicAlbum') {
-        id = i?.AlbumArtists?.[0].Id as string;
-      } else if (i.ParentLogoItemId) {
-        id = i?.ParentLogoItemId as string;
+      if (i.Type === 'Episode' && i?.SeriesId) {
+        id = i.SeriesId;
+      } else if (i.Type === 'MusicAlbum' && i?.AlbumArtists?.[0]?.Id) {
+        id = i.AlbumArtists[0]?.Id;
+      } else if (i?.ParentLogoItemId) {
+        id = i.ParentLogoItemId;
       } else {
         continue;
       }
