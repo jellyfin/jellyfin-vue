@@ -73,16 +73,19 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
       state.queue[state.currentItemIndex]
     ) {
       return state.queue[state.currentItemIndex];
-    } else {
-      return null;
     }
+    return null;
   },
   getPreviousItem: (state) => {
-    if (state.lastItemIndex !== null && state.queue[state.lastItemIndex]) {
-      return state.queue[state.lastItemIndex];
-    } else {
+    if (state.currentItemIndex === 0) {
       return null;
+    } else if (
+      state.lastItemIndex !== null &&
+      state.queue[state.lastItemIndex]
+    ) {
+      return state.queue[state.lastItemIndex];
     }
+    return null;
   },
   getNextItem: (state) => {
     if (
@@ -92,23 +95,20 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
       return state.queue[state.currentItemIndex + 1];
     } else if (state.repeatMode === RepeatMode.RepeatAll) {
       return state.queue[0];
-    } else {
-      return null;
     }
+    return null;
   },
   getCurrentlyPlayingType: (state) => {
     if (state.currentItemIndex !== null) {
       return state.queue?.[state.currentItemIndex].Type;
-    } else {
-      return null;
     }
+    return null;
   },
   getCurrentlyPlayingMediaType: (state) => {
     if (state.currentItemIndex !== null) {
       return state.queue?.[state.currentItemIndex].MediaType;
-    } else {
-      return null;
     }
+    return null;
   }
 };
 

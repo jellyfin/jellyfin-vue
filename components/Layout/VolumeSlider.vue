@@ -1,12 +1,15 @@
 <template>
-  <div class="volume-slider">
+  <div class="volume-slider d-flex align-center justify-center">
+    <v-btn icon fab small @click="toggleMute">
+      <v-icon>{{ icon }}</v-icon>
+    </v-btn>
     <v-slider
+      class="volume-slider"
       hide-details
       thumb-label
       max="100"
       :value="currentvolume"
       validate-on-blur
-      :prepend-icon="icon"
       @input="onVolumeChange"
     >
     </v-slider>
@@ -18,6 +21,11 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
+  data() {
+    return {
+      previousVolume: 0
+    };
+  },
   computed: {
     currentvolume(): number {
       return this.$store.state.playbackManager.currentVolume;
@@ -38,6 +46,14 @@ export default Vue.extend({
     ...mapActions('playbackManager', ['setVolume']),
     onVolumeChange(value: number): void {
       this.setVolume({ volume: value });
+    },
+    toggleMute(): void {
+      if (this.currentvolume !== 0) {
+        this.previousVolume = this.currentvolume;
+        this.setVolume({ volume: 0 });
+      } else {
+        this.setVolume({ volume: this.previousVolume });
+      }
     }
   }
 });

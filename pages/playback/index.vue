@@ -6,15 +6,17 @@
     :options="swiperOptions"
     @slideChange="onSlideChange"
   >
-    <swiper-slide
-      v-for="item in currentQueue"
-      :key="item.Id"
-      class="albumSlide"
-    >
-      <v-avatar ref="albumCover" tile size="65vh" color="primary">
+    <swiper-slide v-for="item in currentQueue" :key="item.Id">
+      <v-avatar
+        ref="albumCover"
+        tile
+        size="65vh"
+        color="primary"
+        class="elevation-20"
+      >
         <v-img :src="getImageUrl(item)">
           <template #placeholder>
-            <v-icon dark large>mdi-album</v-icon>
+            <v-icon dark x-large>mdi-album</v-icon>
           </template>
         </v-img>
       </v-avatar>
@@ -37,9 +39,10 @@ export default Vue.extend({
       swiperOptions: {
         slidesPerView: 4,
         centeredSlides: true,
+        centerInsufficientSlides: true,
         initialSlide: 0,
         autoplay: false,
-        effect: 'coverflow',
+        effect: 'slide',
         coverflowEffect: {
           depth: 500,
           slideShadows: false,
@@ -49,7 +52,8 @@ export default Vue.extend({
         keyboard: true,
         a11y: true
       } as SwiperOptions,
-      swiper: undefined as Swiper | undefined
+      swiper: undefined as Swiper | undefined,
+      previousAppBarOpacity: 0
     };
   },
   computed: {
@@ -104,6 +108,7 @@ export default Vue.extend({
   },
   beforeMount() {
     this.showNavDrawer({ showNavDrawer: false });
+    this.previousAppBarOpacity = this.$store.state.page.opaqueAppBar;
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ value: 0.5 });
     if (!this.isPlaying) {
@@ -126,7 +131,7 @@ export default Vue.extend({
   },
   destroyed() {
     this.showNavDrawer({ showNavDrawer: true });
-    this.setAppBarOpacity({ opaqueAppBar: true });
+    this.setAppBarOpacity({ opaqueAppBar: this.previousAppBarOpacity });
   },
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
@@ -140,7 +145,9 @@ export default Vue.extend({
     ]),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
-      this.setCurrentIndex({ index });
+      if (this.currentQueue[index]) {
+        this.setCurrentIndex({ index });
+      }
     },
     getImageUrl(item: BaseItemDto): string | undefined {
       const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
@@ -155,9 +162,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.albumSlide {
-  margin: 0 auto !important;
-}
-</style>

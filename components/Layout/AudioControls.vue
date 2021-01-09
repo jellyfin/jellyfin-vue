@@ -5,6 +5,7 @@
       key="audioControls-footer"
       app
       :color="footerColor"
+      class="audioControls"
     >
       <v-container v-if="isFullScreenPlayer" fluid>
         <time-slider />
@@ -19,14 +20,17 @@
               size="72"
               color="primary"
             >
-              <v-img :src="getImageUrl(getCurrentItem)">
+              <v-img
+                :alt="getCurrentItem.Name"
+                :src="getImageUrl(getCurrentItem)"
+              >
                 <template #placeholder>
                   <v-icon dark>mdi-album</v-icon>
                 </template>
               </v-img>
             </v-avatar>
-            <div class="d-flex flex-column justify-center ml-4">
-              <span class="font-weight-medium mt-md-n2">
+            <v-col class="d-flex flex-column justify-center ml-4">
+              <v-row>
                 <nuxt-link
                   tag="span"
                   class="text-truncate link"
@@ -34,51 +38,91 @@
                 >
                   {{ getCurrentItem.Name }}
                 </nuxt-link>
-                <v-btn class="d-none d-md-inline-flex" icon disabled>
-                  <v-icon size="18">{{
-                    getCurrentItem.UserData.IsFavorite
-                      ? 'mdi-heart'
-                      : 'mdi-heart-outline'
-                  }}</v-icon>
-                </v-btn>
-              </span>
-              <nuxt-link
-                tag="span"
-                class="text--secondary text-caption text-truncate mt-md-n2 link"
-                :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"
-              >
-                {{ getCurrentItem.AlbumArtist }}
-              </nuxt-link>
-            </div>
+              </v-row>
+              <v-row v-if="getCurrentItem.ArtistItems">
+                <div
+                  v-for="(artist, index) in getCurrentItem.ArtistItems"
+                  :key="`artist-${artist.Id}`"
+                  :to="`/artist/${artist.Id}`"
+                >
+                  <nuxt-link
+                    tag="span"
+                    class="text--secondary text-caption text-truncate mt-md-n2 link"
+                    :to="`/artist/${artist.Id}`"
+                    >{{ getArtistName(index) }}
+                  </nuxt-link>
+                </div>
+              </v-row>
+              <v-row class="mt-1">
+                <nuxt-link
+                  v-if="
+                    getCurrentItem.AlbumArtist &&
+                    getCurrentItem.AlbumArtists[0].Id
+                  "
+                  tag="span"
+                  class="text--secondary text-caption text-truncate mt-md-n2 link"
+                  :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"
+                >
+                  {{ getCurrentItem.AlbumArtist }}
+                </nuxt-link>
+              </v-row>
+            </v-col>
           </v-col>
           <v-col cols="6" class="pa-0 d-none d-md-inline">
             <div class="d-flex flex-column justify-center">
               <div class="d-flex align-center justify-center">
                 <v-btn
                   icon
-                  :input-value="isShuffling"
+                  fab
+                  small
+                  :elevation="isShuffling ? '3' : '0'"
                   class="mx-1"
+                  :class="isShuffling ? '' : 'text--disabled'"
+                  :color="isShuffling ? 'primary' : 'text--disabled'"
                   @click="toggleShuffle"
                 >
-                  <v-icon>
-                    {{ isShuffling ? 'mdi-shuffle' : 'mdi-shuffle-disabled' }}
-                  </v-icon>
+                  <v-icon>mdi-shuffle</v-icon>
                 </v-btn>
-                <v-btn icon class="mx-1" @click="setPreviousTrack">
+                <v-btn
+                  icon
+                  :disabled="!getPreviousItem"
+                  class="mx-1"
+                  @click="setPreviousTrack"
+                >
                   <v-icon>mdi-skip-previous</v-icon>
                 </v-btn>
-                <v-btn icon large class="mx-1" @click="togglePause">
+                <v-btn
+                  elevation="6"
+                  fab
+                  icon
+                  raised
+                  rounded
+                  outlined
+                  class="mx-1"
+                  @click="togglePause"
+                >
                   <v-icon large>
                     {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
                   </v-icon>
                 </v-btn>
-                <v-btn icon class="mx-1" @click="stopPlayback">
-                  <v-icon>mdi-stop</v-icon>
-                </v-btn>
-                <v-btn icon class="mx-1" @click="setNextTrack">
+                <v-btn
+                  icon
+                  :disabled="!getNextItem"
+                  class="mx-1"
+                  @click="setNextTrack"
+                >
                   <v-icon>mdi-skip-next</v-icon>
                 </v-btn>
-                <v-btn icon class="mx-1" @click="toggleRepeatMode">
+                <v-btn
+                  icon
+                  fab
+                  small
+                  :elevation="isRepeating ? '3' : '0'"
+                  class="mx-1"
+                  :class="isRepeating ? '' : 'text--disabled'"
+                  :color="isRepeating ? 'primary' : undefined"
+                  @click="toggleRepeatMode"
+                >
                   <v-icon>{{ repeatIcon }}</v-icon>
                 </v-btn>
               </div>
@@ -86,6 +130,13 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
+            <v-btn class="d-none d-md-inline-flex" icon disabled>
+              <v-icon size="18">{{
+                getCurrentItem.UserData.IsFavorite
+                  ? 'mdi-heart'
+                  : 'mdi-heart-outline'
+              }}</v-icon>
+            </v-btn>
             <v-tooltip top>
               <template #activator="{ on, attrs }">
                 <v-btn disabled icon class="mr-2" v-bind="attrs" v-on="on">
@@ -107,28 +158,73 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </transition>
+            <v-tooltip top>
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  class="ml-2"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="stopPlayback"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $t('stopPlayback') }}</span>
+            </v-tooltip>
+            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
           </v-col>
           <v-col
             cols="3"
             class="d-flex d-md-none px-0 align-center justify-end"
           >
-            <v-btn icon disabled>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon @click="togglePause">
+            <v-btn
+              elevation="6"
+              fab
+              icon
+              raised
+              rounded
+              class="mx-1"
+              :class="isPaused ? '' : 'outlined-button'"
+              @click="togglePause"
+            >
               <v-icon>
                 {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
               </v-icon>
             </v-btn>
-            <v-btn icon class="mx-1" @click="stopPlayback">
-              <v-icon>mdi-stop</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-1" @click="setNextTrack">
+            <v-btn
+              icon
+              :disabled="!getNextItem"
+              class="mx-1"
+              @click="setNextTrack"
+            >
               <v-icon>mdi-skip-next</v-icon>
             </v-btn>
-            <v-btn disabled icon class="mx-1">
-              <v-icon>mdi-repeat-off</v-icon>
+            <v-btn
+              icon
+              fab
+              small
+              :elevation="isRepeating ? '3' : '0'"
+              class="mx-1"
+              :class="isRepeating ? '' : 'text--disabled'"
+              :color="isRepeating ? 'primary' : undefined"
+              @click="toggleRepeatMode"
+            >
+              <v-icon>{{ repeatIcon }}</v-icon>
             </v-btn>
+            <v-btn
+              icon
+              fab
+              small
+              :elevation="isShuffling ? '3' : '0'"
+              class="mx-1"
+              :class="isShuffling ? '' : 'text--disabled'"
+              :color="isShuffling ? 'primary' : 'text--disabled'"
+              @click="toggleShuffle"
+            >
+              <v-icon>mdi-shuffle</v-icon>
+            </v-btn>
+            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
           </v-col>
         </v-row>
         <div
@@ -160,6 +256,7 @@ export default Vue.extend({
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getCurrentlyPlayingMediaType',
+      'getPreviousItem',
       'getNextItem'
     ]),
     footerColor(): string | undefined {
@@ -177,18 +274,18 @@ export default Vue.extend({
         this.$store.state.playbackManager.status !== PlaybackStatus.stopped
       );
     },
+    isRepeating(): boolean {
+      return (
+        this.$store.state.playbackManager.repeatMode !== RepeatMode.RepeatNone
+      );
+    },
     repeatIcon(): string {
       if (
-        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatAll
-      ) {
-        return 'mdi-repeat';
-      } else if (
         this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatOne
       ) {
         return 'mdi-repeat-once';
-      } else {
-        return 'mdi-repeat-off';
       }
+      return 'mdi-repeat';
     },
     isShuffling(): boolean {
       return this.$store.state.playbackManager.isShuffling;
@@ -218,6 +315,18 @@ export default Vue.extend({
         itemId: item.AlbumId
       });
     },
+    getArtistName(index: number): string {
+      const item = this.getCurrentItem;
+      const artist = item.ArtistItems?.[index];
+      if (item.ArtistItems && artist && artist.Name) {
+        if (index !== item.ArtistItems.length - 1) {
+          return artist.Name + '-';
+        } else {
+          return artist.Name;
+        }
+      }
+      return '';
+    },
     stopPlayback(): void {
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
@@ -236,4 +345,8 @@ export default Vue.extend({
 
 <style lang="scss">
 @import '~/assets/global.scss';
+
+.audioControls {
+  user-select: none;
+}
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div v-if="items.length > 0">
-    <v-menu absolute>
+    <v-menu :absolute="absolute">
       <template #activator="{ on, attrs }">
         <v-btn
-          class="card-more-button"
+          :class="absolute ? 'card-more-button' : ''"
           icon
           small
-          dark
+          :dark="dark"
           v-bind="attrs"
           v-on="on"
           @click.stop.prevent
@@ -16,11 +16,11 @@
       </template>
       <v-list>
         <v-list-item
-          v-for="(item, index) in items"
+          v-for="(it, index) in items"
           :key="index"
-          @click="item.action"
+          @click="it.action"
         >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title>{{ it.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -37,6 +37,7 @@ type MenuItem = {
   title: string;
   action: () => void;
 };
+
 export default Vue.extend({
   props: {
     item: {
@@ -44,6 +45,14 @@ export default Vue.extend({
       default: (): BaseItemDto => {
         return {};
       }
+    },
+    absolute: {
+      type: Boolean,
+      default: true
+    },
+    dark: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
