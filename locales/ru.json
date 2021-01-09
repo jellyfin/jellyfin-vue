@@ -264,10 +264,21 @@
             "recentlyAdded": "Недавно добавленное"
         },
         "welcome": {
-            "checkNewItems": "Узнайте, что нового",
-            "noItems": "Здесь нет недавно добавленных элементов",
+            "checkNewItems": "Узнайте, что нового.",
+            "noItems": "Здесь нет недавно добавленных элементов.",
             "helloUser": "Привет, {userName}!"
         }
     },
-    "undefined": "Не определено"
+    "undefined": "Не определено",
+    "directing": "Режиссура",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "writing": "Сценарий",
+    "version": "Версия",
+    "unableToRefreshLibrary": "Неврзможно подновить медиатеку",
+    "refreshLibrary": "Подновить медиатеку",
+    "queue": "Очередь",
+    "noSubtitleSelected": "Нет выбранных субтитров",
+    "noSubtitleAvailable": "Нет доступных субтитров",
+    "libraryRefreshQueued": "Подновление медиатеки в очереди",
+    "fullScreen": "Полный экран"
 }
