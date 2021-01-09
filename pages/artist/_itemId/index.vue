@@ -147,7 +147,7 @@ export default Vue.extend({
       await this.$api.items.getItems({
         userId: this.$auth.user?.Id,
         parentId: this.$route.params.itemId,
-        sortBy: 'PremiereDate',
+        sortBy: 'PremiereDate,ProductionYear,SortName',
         sortOrder: 'Descending'
       })
     ).data.Items;
