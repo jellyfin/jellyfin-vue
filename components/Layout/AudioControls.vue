@@ -27,6 +27,7 @@
             </v-btn>
           </span>
           <nuxt-link
+            v-if="getCurrentItem.AlbumArtists[0].Id"
             tag="span"
             class="text--secondary text-caption text-truncate mt-md-n2 link"
             :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"

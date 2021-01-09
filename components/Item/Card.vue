@@ -3,7 +3,7 @@
     <div class="card-box" :class="{ 'card-margin': !noMargin }">
       <div :class="shape || cardType" class="elevation-3">
         <div
-          class="card-content card-content-button d-flex justify-center align-center primary darken-4"
+          class="card-content card-content-button d-flex justify-center align-center darken-4"
         >
           <blurhash-image
             v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
@@ -42,9 +42,10 @@
               !item.ImageTags ||
               (item.ImageTags && !item.ImageTags.Primary)
             "
-            class="card-image absolute"
+            class="card-image absolute text--disabled"
             size="96"
-            color="primary darken-2"
+            color="white"
+            dark
           >
             {{ itemIcon }}
           </v-icon>
@@ -233,7 +234,7 @@ export default Vue.extend({
             episodeNumber: this.item.IndexNumber
           })} - ${this.item.Name}`;
         case 'MusicAlbum':
-          return `${this.item.AlbumArtist}`;
+          return `${this.item.AlbumArtist || ''}`;
         case 'Series': {
           if (this.item.Status === 'Continuing') {
             return `${this.item.ProductionYear} - ${this.$t('present')}`;
@@ -323,6 +324,7 @@ export default Vue.extend({
 }
 
 .card-content {
+  background-color: #{map-get($material-dark, 'menus')};
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -338,6 +340,9 @@ export default Vue.extend({
   background-clip: content-box;
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
+}
+.theme--dark .card-content {
+  background-color: #{map-get($material-dark, 'menus')};
 }
 
 .card-image {

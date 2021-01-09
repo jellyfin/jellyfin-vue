@@ -1,5 +1,22 @@
 <template>
-  <v-switch v-model="darkMode" :label="$t('darkModeToggle')"></v-switch>
+  <v-tooltip bottom>
+    <template #activator="{ on, attrs }">
+      <v-btn
+        :icon="!fab"
+        :fab="fab"
+        :small="fab"
+        :class="{ 'mr-n1': !fab }"
+        v-bind="attrs"
+        v-on="on"
+        @click="darkMode = !darkMode"
+      >
+        <v-icon>{{
+          darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'
+        }}</v-icon>
+      </v-btn>
+    </template>
+    <span>{{ $t('tooltips.toggleDarkMode') }}</span>
+  </v-tooltip>
 </template>
 
 <script lang="ts">
@@ -7,6 +24,12 @@ import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default Vue.extend({
+  props: {
+    fab: {
+      type: Boolean,
+      required: true
+    }
+  },
   computed: {
     ...mapGetters('displayPreferences', ['getBooleanCustomPref']),
     darkMode: {

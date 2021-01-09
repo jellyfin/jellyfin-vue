@@ -10,6 +10,22 @@
     >
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
+          <div
+            v-if="
+              !item.BackdropImageTags ||
+              (item.ImageTags && !item.ImageTags.Backdrop)
+            "
+            class="default-icon"
+          >
+            <v-icon
+              :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
+              class="text--disabled"
+              color="white"
+              dark
+            >
+              {{ getItemIcon(item) }}
+            </v-icon>
+          </div>
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
@@ -191,6 +207,34 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
+    getItemIcon(item: BaseItemDto): string {
+      switch (item.Type) {
+        case 'Audio':
+          return 'mdi-music-note';
+        case 'Book':
+          return 'mdi-book-open-page-variant';
+        case 'BoxSet':
+          return 'mdi-folder-multiple';
+        case 'Folder':
+        case 'CollectionFolder':
+          return 'mdi-folder';
+        case 'Movie':
+          return 'mdi-filmstrip';
+        case 'MusicAlbum':
+          return 'mdi-album';
+        case 'MusicArtist':
+        case 'Person':
+          return 'mdi-account';
+        case 'PhotoAlbum':
+          return 'mdi-image-multiple';
+        case 'Playlist':
+          return 'mdi-playlist-play';
+        case 'Series':
+          return 'mdi-television-classic';
+        default:
+          return '';
+      }
+    },
     getRelatedItem(item: BaseItemDto): BaseItemDto {
       const rItem = this.relatedItems[this.items.indexOf(item)];
       if (!rItem) {
@@ -238,4 +282,21 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~/assets/styles/HomeHeader.scss';
+
+.default-icon {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slide-backdrop {
+  background-color: #{map-get($material-dark, 'menus')};
+}
 </style>

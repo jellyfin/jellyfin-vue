@@ -4,16 +4,25 @@
 // $font-size-root: 20px;
 
 // Globals
-$heading-font-family: 'Noto Sans', 'Noto Sans HK', 'Noto Sans JP',
-  'Noto Sans KR', 'Noto Sans SC', sans-serif !default;
+$heading-font-family: 'Noto Sans',
+'Noto Sans HK',
+'Noto Sans JP',
+'Noto Sans KR',
+'Noto Sans SC',
+sans-serif !default;
 $body-font-family: $heading-font-family;
+
 $font-size-root: 14px;
 $input-font-size: 14px;
+$btn-font-weight: 500;
 
-$material-light: (
-  'background': #f2f2f2
-);
+$material-light: ('background': #f2f2f2);
 
-$material-dark: (
-  'background': #101010
-);
+$material-dark: ('background': #121721,
+  'navigation-drawer': #1c2331,
+  'app-bar': #1c2331,
+  'dividers': #233543,
+  'cards': #1c2331,
+  'chips': #2b4355,
+  'menus': #252e41,
+  'text': ('primary': #edf2f7));

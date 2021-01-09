@@ -166,6 +166,7 @@ export default Vue.extend({
   bottom: 0;
 }
 img {
+  color: transparent;
   object-fit: cover;
 }
 </style>

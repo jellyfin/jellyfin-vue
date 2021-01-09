@@ -211,16 +211,16 @@ const config: NuxtConfig = {
       disable: false,
       themes: {
         dark: {
-          primary: '#00A4DC',
-          secondary: '#424242',
+          primary: '#0086b3',
+          secondary: '#2f3951',
           accent: '#FF4081',
           info: '#0099CC',
           warning: '#FB8C00',
           error: '#FF5252',
           success: '#4CAF50',
-          background: '#101010',
-          track: '#272727',
-          thumb: '#303030'
+          background: '#14141F',
+          track: '#1c2331',
+          thumb: '#252e41'
         },
         light: {
           primary: '#00A4DC',
