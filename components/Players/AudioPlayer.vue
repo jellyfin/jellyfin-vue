@@ -86,11 +86,6 @@ export default Vue.extend({
                 (this.$refs.audioPlayer as HTMLAudioElement).play();
               }
               break;
-            case 'playbackManager/RESET_CURRENT_TIME':
-              if (this.$refs.audioPlayer) {
-                (this.$refs.audioPlayer as HTMLAudioElement).currentTime = 0;
-              }
-              break;
             case 'playbackManager/CHANGE_CURRENT_TIME':
               if (this.$refs.audioPlayer) {
                 (this.$refs

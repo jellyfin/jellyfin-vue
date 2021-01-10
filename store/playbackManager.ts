@@ -206,9 +206,6 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.currentTime = time;
   },
-  RESET_CURRENT_TIME(state: PlaybackManagerState) {
-    state.currentTime = 0;
-  },
   TOGGLE_MINIMIZE(state: PlaybackManagerState) {
     state.isMinimized = !state.isMinimized;
   },
@@ -288,12 +285,17 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   setPreviousTrack({ commit, state }) {
     if (state.currentTime !== null && state.currentTime > 2) {
-      commit('RESET_CURRENT_TIME');
+      commit('CHANGE_CURRENT_TIME', { time: 0 });
+      commit('SET_CURRENT_TIME', { time: 0 });
     } else if (state.currentItemIndex !== null && state.currentItemIndex > 0) {
       commit('DECREASE_QUEUE_INDEX');
     } else {
-      commit('RESET_CURRENT_TIME');
+      commit('CHANGE_CURRENT_TIME', { time: 0 });
+      commit('SET_CURRENT_TIME', { time: 0 });
     }
+  },
+  resetCurrentTime({ commit }) {
+    commit('CHANGE_CURRENT_TIME', { time: 0 });
   },
   resetCurrentItemIndex({ commit }) {
     commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: null });
