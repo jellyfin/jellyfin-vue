@@ -45,6 +45,16 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import { validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
+  async asyncData({ params, $api, $auth }) {
+    const collectionInfo = (
+      await $api.items.getItems({
+        userId: $auth.user?.Id,
+        ids: [params.viewId]
+      })
+    ).data?.Items?.[0];
+
+    return { collectionInfo };
+  },
   data() {
     return {
       items: [] as BaseItemDto[],
@@ -116,20 +126,13 @@ export default Vue.extend({
       this.loading = false;
     }
   },
-  async beforeMount() {
+  beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
     });
     try {
       this.loading = true;
-      this.collectionInfo = (
-        await this.$api.items.getItems({
-          uId: this.$auth.user?.Id,
-          userId: this.$auth.user?.Id,
-          ids: this.$route.params.viewId
-        })
-      ).data.Items[0];
 
       if (
         this.collectionInfo &&

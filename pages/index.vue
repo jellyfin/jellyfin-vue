@@ -20,25 +20,12 @@ import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
-  data() {
-    return {
-      homeSections: [] as HomeSection[]
-    };
-  },
-  head() {
-    return {
-      title: this.$store.state.page.title
-    };
-  },
-  async created() {
-    this.setPageTitle({ title: this.$t('home') });
-    this.setAppBarOpacity({ opaqueAppBar: false });
-
+  async asyncData({ store, app, $api, $auth }) {
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
     let homeSectionsArray = pickBy(
-      this.$store.state.displayPreferences.CustomPrefs,
+      store.state.displayPreferences.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&
@@ -58,90 +45,102 @@ export default Vue.extend({
       };
     }
 
-    if (homeSectionsArray) {
-      // Convert to an array
-      homeSectionsArray = Object.values(homeSectionsArray);
+    // Convert to an array
+    homeSectionsArray = Object.values(homeSectionsArray);
 
-      const homeSections = [];
+    const homeSections = [];
 
-      for (const homeSection of homeSectionsArray as Array<string>) {
-        switch (homeSection) {
-          case 'librarytiles': {
-            homeSections.push({
-              name: this.$t('libraries'),
-              libraryId: '',
-              shape: 'thumb-card',
-              type: 'libraries'
-            });
-            break;
-          }
-          case 'latestmedia': {
-            const latestMediaSections = [];
+    for (const homeSection of homeSectionsArray as Array<string>) {
+      switch (homeSection) {
+        case 'librarytiles': {
+          homeSections.push({
+            name: app.i18n.t('libraries'),
+            libraryId: '',
+            shape: 'thumb-card',
+            type: 'libraries'
+          });
+          break;
+        }
+        case 'latestmedia': {
+          const latestMediaSections = [];
 
-            const userViewsRequest = await this.$api.userViews.getUserViews({
-              userId: this.$auth.user?.Id
-            });
+          const userViewsRequest = await $api.userViews.getUserViews({
+            userId: $auth.user?.Id
+          });
 
-            if (userViewsRequest.data.Items) {
-              const excludeViewTypes = [
-                'playlists',
-                'livetv',
-                'boxsets',
-                'channels'
-              ];
+          if (userViewsRequest.data.Items) {
+            const excludeViewTypes = [
+              'playlists',
+              'livetv',
+              'boxsets',
+              'channels'
+            ];
 
-              for (const userView of userViewsRequest.data.Items) {
-                if (
-                  excludeViewTypes.includes(userView.CollectionType as string)
-                ) {
-                  continue;
-                }
-
-                latestMediaSections.push({
-                  name: this.$t('latestLibrary', {
-                    libraryName: userView.Name
-                  }),
-                  libraryId: userView.Id || '',
-                  shape: getShapeFromCollectionType(userView.CollectionType),
-                  type: 'latestmedia'
-                });
+            for (const userView of userViewsRequest.data.Items) {
+              if (
+                excludeViewTypes.includes(userView.CollectionType as string)
+              ) {
+                continue;
               }
 
-              homeSections.push(...latestMediaSections);
+              latestMediaSections.push({
+                name: app.i18n.t('latestLibrary', {
+                  libraryName: userView.Name
+                }),
+                libraryId: userView.Id || '',
+                shape: getShapeFromCollectionType(userView.CollectionType),
+                type: 'latestmedia'
+              });
             }
-            break;
-          }
-          case 'resume':
-            homeSections.push({
-              name: this.$t('continueWatching'),
-              libraryId: '',
-              shape: 'thumb-card',
-              type: 'resume'
-            });
-            break;
-          case 'resumeaudio':
-            homeSections.push({
-              name: this.$t('continueListening'),
-              libraryId: '',
-              shape: 'square-card',
-              type: 'resumeaudio'
-            });
-            break;
-          case 'upnext':
-            homeSections.push({
-              name: this.$t('nextUp'),
-              libraryId: '',
-              shape: 'thumb-card',
-              type: 'upnext'
-            });
-            break;
-          default:
-            break;
-        }
-      }
 
-      this.homeSections = homeSections;
+            homeSections.push(...latestMediaSections);
+          }
+          break;
+        }
+        case 'resume':
+          homeSections.push({
+            name: app.i18n.t('continueWatching'),
+            libraryId: '',
+            shape: 'thumb-card',
+            type: 'resume'
+          });
+          break;
+        case 'resumeaudio':
+          homeSections.push({
+            name: app.i18n.t('continueListening'),
+            libraryId: '',
+            shape: 'square-card',
+            type: 'resumeaudio'
+          });
+          break;
+        case 'upnext':
+          homeSections.push({
+            name: app.i18n.t('nextUp'),
+            libraryId: '',
+            shape: 'thumb-card',
+            type: 'upnext'
+          });
+          break;
+        default:
+          break;
+      }
     }
+
+    return { homeSections };
+  },
+  data() {
+    return {
+      homeSections: [] as HomeSection[]
+    };
+  },
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
+  created() {
+    this.setPageTitle({ title: this.$t('home') });
+    this.setAppBarOpacity({ opaqueAppBar: false });
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
