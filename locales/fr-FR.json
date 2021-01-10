@@ -258,8 +258,8 @@
             "recentlyAdded": "Récemment ajouté"
         },
         "welcome": {
-            "checkNewItems": "Découvrez les nouveautés",
-            "noItems": "Il n'y a aucun élément récemment ajouté à afficher",
+            "checkNewItems": "Découvrez les nouveautés.",
+            "noItems": "Il n'y a aucun élément récemment ajouté à afficher.",
             "helloUser": "Bonjour {nom d'utilisateur} !"
         }
     },
@@ -270,5 +270,16 @@
     "tags": "Mots clés",
     "tagline": "Slogan",
     "sortTitle": "trier le titre",
-    "guestStar": "Guest-star"
+    "guestStar": "Guest-star",
+    "version": "Version",
+    "unableToRefreshLibrary": "Impossible de rafraîchir la bibliothèque",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "Basculer en mode sombre",
+        "changeLanguage": "Langue"
+    },
+    "noSubtitleSelected": "Aucun sous-titre sélectionné",
+    "noSubtitleAvailable": "Aucun sous-titres disponible",
+    "metadataEditor": "Éditeur de métadonnées",
+    "fullScreen": "Plein écran"
 }
