@@ -56,6 +56,16 @@ import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
   mixins: [itemHelper],
+  async asyncData({ params, $api, $auth }) {
+    const genre = (
+      await $api.userLibrary.getItem({
+        userId: $auth.user?.Id,
+        itemId: params.itemId
+      })
+    ).data;
+
+    return { genre };
+  },
   data() {
     return {
       genre: [] as BaseItemDto,
@@ -70,26 +80,16 @@ export default Vue.extend({
   },
   async beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
+    this.setPageTitle({
+      title: this.genre.Name
+    });
 
-    const type = this.$route.query.type;
     try {
-      this.genre = (
-        await this.$api.userLibrary.getItem({
-          userId: this.$auth.user?.Id,
-          itemId: this.$route.params.itemId
-        })
-      ).data;
-
-      this.setPageTitle({
-        title: this.genre.Name
-      });
-
       this.items = (
         await this.$api.items.getItems({
-          uId: this.$auth.user?.Id,
           userId: this.$auth.user?.Id,
-          genreIds: this.$route.params.itemId,
-          includeItemTypes: type,
+          genreIds: [this.$route.params.itemId],
+          includeItemTypes: [this.$route.query.type.toString()],
           recursive: true,
           sortBy: 'SortName',
           sortOrder: 'Ascending'
@@ -98,6 +98,7 @@ export default Vue.extend({
 
       this.loaded = true;
     } catch (error) {
+      console.error(error);
       // Can't get given library ID
       this.$nuxt.error({
         statusCode: 404,

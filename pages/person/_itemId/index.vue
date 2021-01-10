@@ -84,6 +84,25 @@ import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
+  async asyncData({ params, $api, $auth }) {
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: $auth.user?.Id,
+        itemId: params.itemId
+      })
+    ).data;
+
+    const appearances = (
+      await $api.items.getItems({
+        userId: $auth.user?.Id,
+        personIds: [params.itemId],
+        recursive: true,
+        collapseBoxSetItems: false
+      })
+    ).data.Items;
+
+    return { item, appearances };
+  },
   data() {
     return {
       loading: true,
@@ -137,33 +156,8 @@ export default Vue.extend({
       }
     }
   },
-  async beforeMount() {
-    this.loading = true;
-    const item = (
-      await this.$api.userLibrary.getItem({
-        userId: this.$auth.user?.Id,
-        itemId: this.$route.params.itemId
-      })
-    ).data;
-
-    if (item) {
-      this.setBackdrop({ item });
-      this.item = item;
-    }
-
-    const appearances = (
-      await this.$api.items.getItems({
-        userId: this.$auth.user?.Id,
-        personIds: [this.$route.params.itemId],
-        recursive: true,
-        collapseBoxSetItems: false
-      })
-    ).data.Items;
-
-    if (appearances) {
-      this.appearances = appearances;
-    }
-    this.loading = false;
+  beforeMount() {
+    this.setBackdrop({ item: this.item });
   },
   destroyed() {
     this.clearBackdrop();

@@ -16,11 +16,11 @@
       </template>
       <v-list>
         <v-list-item
-          v-for="(item, index) in items"
+          v-for="(menuItem, index) in items"
           :key="index"
-          @click="item.action"
+          @click="menuItem.action"
         >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

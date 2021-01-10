@@ -113,6 +113,25 @@ import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils],
+  async asyncData({ params, $api, $auth }) {
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: $auth.user?.Id,
+        itemId: params.itemId
+      })
+    ).data;
+
+    const appearances = (
+      await $api.items.getItems({
+        userId: $auth.user?.Id,
+        parentId: params.itemId,
+        sortBy: 'PremiereDate,ProductionYear,SortName',
+        sortOrder: 'Descending'
+      })
+    ).data.Items;
+
+    return { item, appearances };
+  },
   data() {
     return {
       activeTab: 0,
@@ -135,33 +154,10 @@ export default Vue.extend({
       }
     }
   },
-  async beforeMount() {
-    const item = (
-      await this.$api.userLibrary.getItem({
-        userId: this.$auth.user?.Id,
-        itemId: this.$route.params.itemId
-      })
-    ).data;
-
-    if (item) {
-      this.setPageTitle({ title: item.Name });
-      this.setBackdrop({ item });
-      this.setAppBarOpacity({ opaqueAppBar: false });
-      this.item = item;
-    }
-
-    const appearances = (
-      await this.$api.items.getItems({
-        userId: this.$auth.user?.Id,
-        parentId: this.$route.params.itemId,
-        sortBy: 'PremiereDate,ProductionYear,SortName',
-        sortOrder: 'Descending'
-      })
-    ).data.Items;
-
-    if (appearances) {
-      this.appearances = appearances;
-    }
+  beforeMount() {
+    this.setPageTitle({ title: this.item.Name });
+    this.setBackdrop({ item: this.item });
+    this.setAppBarOpacity({ opaqueAppBar: false });
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
