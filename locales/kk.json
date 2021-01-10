@@ -263,11 +263,27 @@
         },
         "welcome": {
             "helloUser": "Sálem, {userName}!",
-            "noItems": "Kórsetіletіn jýyqta ústelgen tarmaqtar joq",
-            "checkNewItems": "Jańalyqtarmen tanysyńyz"
+            "noItems": "Kórsetіletіn jýyqta ústelgen tarmaqtar joq.",
+            "checkNewItems": "Jańalyqtarmen tanysyńyz."
         }
     },
     "undefined": "Anyqtalmady",
     "metadataNoResultsMatching": "\"{search}\" saýalyna sáıkes keletіn nátıjeler tabylmady. Jańasyn jasaý úshіn Enter pernesіn basyńyz.",
-    "failedToRefreshItems": "jańartý sátsiz aıaqtaldy"
+    "failedToRefreshItems": "jańartý sátsiz aıaqtaldy",
+    "writing": "Senarı",
+    "version": "Nusqasy",
+    "unableToRefreshLibrary": "Tasyǵyshhanany jańǵyrtý múmkin emes",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "Qarańǵy rejimdi qosý",
+        "changeLanguage": "Tili"
+    },
+    "refreshLibrary": "Tasyǵyshhanany jańǵyrtý",
+    "queue": "Kezek",
+    "noSubtitleSelected": "Sýbtıtrler tańdalmaǵan",
+    "noSubtitleAvailable": "Sýbtıtrler qoljetimsiz",
+    "metadataEditor": "Metaderekter óńdegishi",
+    "libraryRefreshQueued": "Tasyǵyshhana jańǵyrtý kezekte",
+    "fullScreen": "Tolyq ekran",
+    "directing": "Rejisór"
 }
