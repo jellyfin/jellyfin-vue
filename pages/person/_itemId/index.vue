@@ -98,8 +98,7 @@ export default Vue.extend({
   data() {
     return {
       item: {} as BaseItemDto,
-      appearances: [] as BaseItemDto[],
-      backdropImageSource: ''
+      appearances: [] as BaseItemDto[]
     };
   },
   computed: {
@@ -174,18 +173,5 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .person-image {
   border-radius: 50%;
-}
-.header span {
-  padding-left: 0.25em;
-}
-.header::before {
-  background-color: white;
-  content: '';
-  position: relative;
-  display: inline-block;
-  height: 1px;
-  bottom: 0.3em;
-  left: 0;
-  width: 1.25em;
 }
 </style>

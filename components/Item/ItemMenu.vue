@@ -18,7 +18,7 @@
       <v-list>
         <v-list-item
           v-for="(menuItem, index) in items"
-          :key="index"
+          :key="`item-${item.Id}-menu-${index}`"
           @click="menuItem.action"
         >
           <v-list-item-title>{{ menuItem.title }}</v-list-item-title>

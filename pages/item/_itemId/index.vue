@@ -361,11 +361,11 @@
       <v-col cols="12" sm="4" md="3">
         <div v-if="crew.length > 0">
           <h2>Crew</h2>
-          <person-list :items="crew" :skeleton-length="3" />
+          <person-list :items="crew" />
         </div>
         <div v-if="actors.length > 0">
           <h2>Cast</h2>
-          <person-list :items="actors" :skeleton-length="5" />
+          <person-list :items="actors" />
         </div>
         <related-items
           v-if="['Series', 'MusicAlbum'].includes(item.Type)"
