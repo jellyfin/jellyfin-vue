@@ -104,13 +104,12 @@ export default Vue.extend({
               }
               break;
             case 'playbackManager/SET_REPEAT_MODE':
-              if (
-                this.$refs.audioPlayer &&
-                mutation?.payload?.mode === RepeatMode.RepeatOne
-              ) {
-                (this.$refs.audioPlayer as HTMLAudioElement).loop = true;
-              } else if (this.$refs.audioPlayer) {
-                (this.$refs.audioPlayer as HTMLAudioElement).loop = false;
+              if (this.$refs.audioPlayer) {
+                if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
+                  (this.$refs.audioPlayer as HTMLAudioElement).loop = true;
+                } else {
+                  (this.$refs.audioPlayer as HTMLAudioElement).loop = false;
+                }
               }
           }
         });

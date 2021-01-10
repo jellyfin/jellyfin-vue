@@ -114,13 +114,12 @@ export default Vue.extend({
               }
               break;
             case 'playbackManager/SET_REPEAT_MODE':
-              if (
-                this.$refs.videoPlayer &&
-                mutation?.payload?.mode === RepeatMode.RepeatOne
-              ) {
-                (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
-              } else if (this.$refs.videoPlayer) {
-                (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
+              if (this.$refs.videoPlayer) {
+                if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
+                  (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
+                } else {
+                  (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
+                }
               }
           }
         });

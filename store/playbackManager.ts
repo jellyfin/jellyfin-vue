@@ -328,6 +328,8 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   setPlaySessionId({ commit }, { id }) {
     commit('SET_PLAY_SESSION_ID', { id });
   },
+  // This function forces specific repeat modes, should only be used in very specific cases.
+  // Use toggleRepeatMode for handling all the situations gracefully
   setRepeatMode({ commit }, { mode }) {
     commit('SET_REPEAT_MODE', { mode });
   },
@@ -335,10 +337,19 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     commit('TOGGLE_SHUFFLE');
   },
   toggleRepeatMode({ commit, state }) {
+    // If there's only one item in queue, we only switch between RepeatOne and RepeatNone
     if (state.repeatMode === RepeatMode.RepeatNone) {
-      commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatAll });
+      if (state.queue.length > 1) {
+        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatAll });
+      } else {
+        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatOne });
+      }
     } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatOne });
+      if (state.queue.length > 1) {
+        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatOne });
+      } else {
+        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatNone });
+      }
     } else {
       commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatNone });
     }
