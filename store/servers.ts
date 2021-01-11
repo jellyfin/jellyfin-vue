@@ -25,7 +25,7 @@ export const mutations: MutationTree<ServerState> = {
     state.serverUsed = selectedServer;
   },
   ADD_SERVER(state: ServerState, SToadd: ServerInfo) {
-    state.serverList = [...state.serverList, SToadd];
+    state.serverList = [...(state.serverList || []), SToadd];
   },
   REMOVE_SERVER(state: ServerState, serverId: string) {
     state.serverList = state.serverList.filter(
@@ -53,7 +53,9 @@ export const actions: ActionTree<ServerState, ServerState> = {
             address: serverUrl
           });
 
-          if (!state.serverList.find((x) => x.address === serverUrl)) {
+          if (
+            !state.serverList?.find((x: ServerInfo) => x.address === serverUrl)
+          ) {
             dispatch('addServer', {
               publicInfo: data,
               address: serverUrl
