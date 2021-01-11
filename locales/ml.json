@@ -274,5 +274,13 @@
     "year": "വർഷം",
     "years": "വർഷങ്ങൾ",
     "youMayAlsoLike": "നിങ്ങൾക്ക് ഇതും ഇഷ്ടപ്പെടുമായിരിക്കും",
-    "tvShowAbbrev": "S {seasonNumber} E {episodeNumber}"
+    "tvShowAbbrev": "S {seasonNumber} E {episodeNumber}",
+    "unableToRefreshLibrary": "ലൈബ്രറി പുതുക്കാൻ കഴിയില്ല",
+    "tooltips": {
+        "toggleDarkMode": "ഇരുണ്ട മോഡ് ടോഗിൾ ചെയ്യുക",
+        "changeLanguage": "ഭാഷ"
+    },
+    "refreshLibrary": "ലൈബ്രറി പുതുക്കുക",
+    "metadataEditor": "മെറ്റാഡാറ്റ എഡിറ്റർ",
+    "libraryRefreshQueued": "ലൈബ്രറി പുതുക്കൽ ക്യൂവിലാണ്"
 }
