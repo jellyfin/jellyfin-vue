@@ -1,15 +1,8 @@
 <template>
   <div class="absolute">
-    <transition-group
-      v-if="!error"
-      ref="img"
-      key="img"
-      mode="in-out"
-      name="fade-fast"
-      class="absolute"
-    >
+    <div v-if="!error" ref="img" class="absolute">
       <blurhash-canvas
-        v-if="hash && !error"
+        v-if="hash"
         key="canvas"
         :hash="hash"
         :width="width"
@@ -17,18 +10,19 @@
         :punch="punch"
         class="absolute"
       />
-      <img
-        v-if="!error"
-        v-show="!loading"
-        key="image"
-        class="absolute"
-        :src="image"
-        v-bind="$attrs"
-        :alt="alt"
-        @error="onError"
-        @load="loading = false"
-      />
-    </transition-group>
+      <transition name="fade-fast" mode="in-out">
+        <img
+          v-show="!loading"
+          :key="`blurhashimage-${item.Id}`"
+          class="absolute"
+          :src="image"
+          v-bind="$attrs"
+          :alt="alt"
+          @error="onError"
+          @load="loading = false"
+        />
+      </transition>
+    </div>
     <slot v-else name="placeholder" />
   </div>
 </template>
@@ -126,6 +120,7 @@ export default Vue.extend({
   right: 0;
   bottom: 0;
 }
+
 img {
   color: transparent;
   object-fit: cover;

@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade" mode="in-out">
+  <v-slide-y-reverse-transition mode="out-in">
     <v-footer
       v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
       key="audioControls-footer"
@@ -17,7 +17,7 @@
               v-if="!isFullScreenPlayer"
               ref="albumCover"
               tile
-              size="72"
+              size="85"
               color="primary"
             >
               <blurhash-image :item="getCurrentItem">
@@ -236,7 +236,7 @@
         </div>
       </v-container>
     </v-footer>
-  </transition>
+  </v-slide-y-reverse-transition>
 </template>
 
 <script lang="ts">
@@ -329,7 +329,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/transitions.scss';
 .audioControls {
   user-select: none;
 }
