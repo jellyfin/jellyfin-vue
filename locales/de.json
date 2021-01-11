@@ -270,5 +270,19 @@
             "recentlyAdded": "Neulich hinzugefügt"
         }
     },
-    "undefined": "Nicht definiert"
+    "undefined": "Nicht definiert",
+    "noSubtitleSelected": "Kein Untertitel ausgewählt",
+    "libraryRefreshQueued": "Aktualisierung der Bibliothek in der Warteschlange",
+    "directing": "Regie",
+    "version": "Version",
+    "unableToRefreshLibrary": "Bibliothek kann nicht aktualisiert werden",
+    "tooltips": {
+        "toggleDarkMode": "Umschalten des Dunkelmodus",
+        "changeLanguage": "Sprache"
+    },
+    "refreshLibrary": "Bibliothek aktualisieren",
+    "queue": "Warteschlange",
+    "noSubtitleAvailable": "Kein Untertitel verfügbar",
+    "metadataEditor": "Metadaten-Editor",
+    "fullScreen": "Vollbild"
 }
