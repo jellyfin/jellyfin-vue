@@ -139,7 +139,7 @@
         },
         "notifications": {
             "name": "Benachrichtigungen",
-            "description": "Bearbeite Benachrichtigungen welche von diesem Server gesendet werden"
+            "description": "Verwalten und Konfigurieren der von diesem Server gesendeten Benachrichtigungen"
         },
         "networking": {
             "name": "Netzwerk",
@@ -263,8 +263,8 @@
     "homeHeader": {
         "welcome": {
             "helloUser": "Hallo {userName}!",
-            "checkNewItems": "Schau die Neuerungen an",
-            "noItems": "Es gibt keine kürzlich hinzugefügten Elemente zum Anzeigen"
+            "checkNewItems": "Sehen Sie, was es Neues gibt",
+            "noItems": "Es gibt keine kürzlich hinzugefügten Elemente zum Anzeigen."
         },
         "items": {
             "recentlyAdded": "Neulich hinzugefügt"
@@ -284,5 +284,6 @@
     "queue": "Warteschlange",
     "noSubtitleAvailable": "Kein Untertitel verfügbar",
     "metadataEditor": "Metadaten-Editor",
-    "fullScreen": "Vollbild"
+    "fullScreen": "Vollbild",
+    "tvShowAbbrev": "S{seasonNumber} F{episodeNumber}"
 }
