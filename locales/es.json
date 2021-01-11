@@ -16,7 +16,7 @@
     "moreLikeThis": "Similar a esto",
     "play": "Reproducir",
     "present": "Actualidad",
-    "serverAddressMustBeUrl": "La dirección del servidor debe ser una URL válida",
+    "serverAddressMustBeUrl": "La dirección introducida debe ser válida",
     "serverAddressRequired": "Se requiere dirección del servidor",
     "serverNotFound": "No se ha podido encontrar el servidor",
     "settings": "Ajustes",
@@ -105,7 +105,7 @@
         },
         "welcome": {
             "checkNewItems": "Echa un vistazo a lo que se ha añadido hace poco",
-            "noItems": "No hay ítems añadidos recientemente que mostrar",
+            "noItems": "No hay ítems añadidos recientemente que mostrar.",
             "helloUser": "¡Hola {userName}!"
         }
     },
@@ -150,10 +150,12 @@
             "description": "Administra y configura las notificaciones enviadas por este servidor"
         },
         "logs": {
-            "name": "Registros y actividad"
+            "name": "Registros y actividad",
+            "description": "Leer y buscar registros del servidor y actividad de usuario"
         },
         "liveTvAndDvr": {
-            "name": "Televisión en directo y grabación de vídeo (DVR)"
+            "name": "Televisión en directo y grabación de vídeo (DVR)",
+            "description": "Gestionar sintonizadores de TV, proveedor de servicios y configuración de DVR"
         },
         "libraries": {
             "name": "Bibliotecas",
@@ -179,10 +181,15 @@
             "description": "Añade y elimina claves API para acceso externo a tu servidor"
         },
         "networking": {
-            "description": "Administra las configuraciones de red de este servidor"
+            "description": "Administra las configuraciones de red de este servidor",
+            "name": "Redes"
         },
         "mediaPlayers": {
-            "name": "Reproductores multimedia"
+            "name": "Reproductores multimedia",
+            "description": "Configura como se comportan los reproductores multimedia para este dispositivo"
+        },
+        "playback": {
+            "name": "Reproducción"
         }
     },
     "serverVersion": "Versión del servidor",
@@ -252,5 +259,20 @@
     "sortTitle": "Ordenar título",
     "primary": "Primario",
     "banner": "Banner",
-    "backdrop": "Fondo"
+    "backdrop": "Fondo",
+    "version": "Versión",
+    "unableToRefreshLibrary": "No se pudo actualizar la biblioteca",
+    "tvShowAbbrev": "T{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "Activar modo oscuro",
+        "changeLanguage": "Idioma"
+    },
+    "serverDashboard": "Panel del servidor",
+    "refreshLibrary": "Escanear biblioteca",
+    "queue": "Cola",
+    "noSubtitleSelected": "Ningún subtítulo seleccionado",
+    "noSubtitleAvailable": "No hay subtítulos disponibles",
+    "metadataEditor": "Editor de metadatos",
+    "libraryRefreshQueued": "Escaneo de biblioteca puesto en cola",
+    "fullScreen": "Pantalla completa"
 }
