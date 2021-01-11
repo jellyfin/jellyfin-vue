@@ -111,7 +111,7 @@
     "settingsSections": {
         "users": {
             "name": "Benutzer",
-            "description": "Bearbeite Benutzer und Erlaubnisse"
+            "description": "Bearbeite Benutzer und Berechtigungen"
         },
         "transcodingAndStreaming": {
             "name": "Transkodierung & Streaming",
@@ -263,11 +263,11 @@
     "homeHeader": {
         "welcome": {
             "helloUser": "Hallo {userName}!",
-            "checkNewItems": "Sehen Sie, was es Neues gibt",
+            "checkNewItems": "Schau, was es Neues gibt.",
             "noItems": "Es gibt keine kürzlich hinzugefügten Elemente zum Anzeigen."
         },
         "items": {
-            "recentlyAdded": "Neulich hinzugefügt"
+            "recentlyAdded": "Kürzlich hinzugefügt"
         }
     },
     "undefined": "Nicht definiert",
