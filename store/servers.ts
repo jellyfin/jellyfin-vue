@@ -12,7 +12,7 @@ export interface ServerState {
   serverList: ServerInfo[];
 }
 
-const defaultState = (): ServerState => ({
+export const defaultState = (): ServerState => ({
   serverUsed: {
     address: '',
     publicInfo: {}
