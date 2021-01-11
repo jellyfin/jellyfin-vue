@@ -17,7 +17,7 @@ module.exports = {
     '<rootDir>/store/**/*.ts',
     '<rootDir>/utils/**/*.ts'
   ],
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  testRegex: '/__tests__/[^/]+.(test|spec).(js|ts)',
   setupFiles: ['jest-canvas-mock'],
   coverageReporters: ['text', 'cobertura']
 };
