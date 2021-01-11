@@ -16,9 +16,10 @@ module.exports = {
     'plugin:nuxt/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript'
+    'plugin:import/typescript',
+    'plugin:cypress/recommended'
   ],
-  plugins: ['prettier', 'promise', 'import', 'jsdoc'],
+  plugins: ['prettier', 'promise', 'import', 'jsdoc', 'cypress'],
   rules: {
     'import/newline-after-import': 'error',
     'import/order': 'error',

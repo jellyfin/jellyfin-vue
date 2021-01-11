@@ -11,7 +11,8 @@
     "lint:js": "eslint --ext .ts,.js,.vue .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest",
+    "cypress:open": "cypress open"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "eslint",
@@ -45,6 +46,7 @@
     "date-fns": "^2.16.1",
     "dompurify": "^2.2.6",
     "entities": "^2.1.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "langs": "^2.0.0",
     "lodash": "^4.17.20",
     "mux.js": "^5.8.0",
@@ -82,6 +84,7 @@
     "babel-jest": "^26.6.3",
     "comlink-loader": "^2.0.0",
     "core-js": "^3.8.2",
+    "cypress": "^6.2.1",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",

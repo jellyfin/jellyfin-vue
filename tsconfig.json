@@ -24,7 +24,8 @@
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
       "nuxt-i18n",
-      "jest"
+      "jest",
+      "cypress"
     ]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
