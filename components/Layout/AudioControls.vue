@@ -20,14 +20,11 @@
               size="72"
               color="primary"
             >
-              <v-img
-                :alt="getCurrentItem.Name"
-                :src="getImageUrl(getCurrentItem)"
-              >
+              <blurhash-image :item="getCurrentItem">
                 <template #placeholder>
                   <v-icon dark>mdi-album</v-icon>
                 </template>
-              </v-img>
+              </blurhash-image>
             </v-avatar>
             <v-col class="d-flex flex-column justify-center ml-4 pt-0 mt-1">
               <v-row class="pa-0">

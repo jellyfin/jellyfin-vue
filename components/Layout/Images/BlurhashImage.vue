@@ -1,8 +1,15 @@
 <template>
-  <div v-if="isValidImage" ref="img" class="absolute">
-    <transition-group mode="in-out" name="fade-fast" class="absolute">
+  <div class="absolute">
+    <transition-group
+      v-if="!error"
+      ref="img"
+      key="img"
+      mode="in-out"
+      name="fade-fast"
+      class="absolute"
+    >
       <blurhash-canvas
-        v-if="hash"
+        v-if="hash && !error"
         key="canvas"
         :hash="hash"
         :width="width"
@@ -11,6 +18,7 @@
         class="absolute"
       />
       <img
+        v-if="!error"
         v-show="!loading"
         key="image"
         class="absolute"
@@ -21,6 +29,7 @@
         @load="loading = false"
       />
     </transition-group>
+    <slot v-else name="placeholder" />
   </div>
 </template>
 
@@ -60,7 +69,8 @@ export default Vue.extend({
   data() {
     return {
       image: '' as string | undefined,
-      loading: true
+      loading: true,
+      error: false
     };
   },
   computed: {
@@ -68,23 +78,38 @@ export default Vue.extend({
       get(): string | undefined {
         return this.getBlurhashHash(this.item, this.type);
       }
+    }
+  },
+  watch: {
+    item(): void {
+      this.resetImage();
     },
-    isValidImage: {
-      get(): string | undefined {
-        return this.getImageTag(this.item, this.type);
-      }
+    type(): void {
+      this.resetImage();
     }
   },
   mounted(): void {
-    const img = this.$refs.img as HTMLElement;
-    this.image = this.getImageUrlForElement(this.type, {
-      item: this.item,
-      element: img
-    });
+    this.getImage();
   },
   methods: {
     onError(): void {
       this.$emit('error');
+      this.error = true;
+    },
+    getImage(): void {
+      const img = this.$refs.img as HTMLElement;
+      this.image = this.getImageUrlForElement(this.type, {
+        item: this.item,
+        element: img
+      });
+      if (!this.image) {
+        this.onError();
+      }
+    },
+    resetImage(): void {
+      this.loading = true;
+      this.error = false;
+      this.getImage();
     }
   }
 });

@@ -1,27 +1,29 @@
 <template>
-  <swiper
-    v-if="currentQueue"
-    ref="playbackSwiper"
-    class="swiper"
-    :options="swiperOptions"
-    @slideChange="onSlideChange"
-  >
-    <swiper-slide v-for="item in currentQueue" :key="item.Id">
-      <v-avatar
-        ref="albumCover"
-        tile
-        size="65vh"
-        color="primary"
-        class="elevation-20"
+  <v-col>
+    <swiper
+      v-if="currentQueue"
+      ref="playbackSwiper"
+      class="d-flex justify-center align-center"
+      :options="swiperOptions"
+      @slideChange="onSlideChange"
+    >
+      <swiper-slide
+        v-for="item in currentQueue"
+        :key="item.Id"
+        class="swiper-no-swiping"
       >
-        <v-img :src="getImageUrl(item)">
-          <template #placeholder>
-            <v-icon dark x-large>mdi-album</v-icon>
-          </template>
-        </v-img>
-      </v-avatar>
-    </swiper-slide>
-  </swiper>
+        <div class="albumCover">
+          <blurhash-image :item="item" @error="onImageError">
+            <template #placeholder>
+              <v-avatar tile size="65vh" color="primary">
+                <v-icon dark x-large style="font-size: 60vh">mdi-album</v-icon>
+              </v-avatar>
+            </template>
+          </blurhash-image>
+        </div>
+      </swiper-slide>
+    </swiper>
+  </v-col>
 </template>
 
 <script lang="ts">
@@ -39,15 +41,16 @@ export default Vue.extend({
       swiperOptions: {
         slidesPerView: 4,
         centeredSlides: true,
-        centerInsufficientSlides: true,
         initialSlide: 0,
         autoplay: false,
         effect: 'coverflow',
+        noSwiping: true,
+        simulateTouch: false,
         coverflowEffect: {
           depth: 500,
           slideShadows: false,
-          stretch: -200,
-          rotate: 0
+          rotate: 0,
+          stretch: -400
         },
         keyboard: true,
         a11y: true
@@ -92,9 +95,6 @@ export default Vue.extend({
   watch: {
     currentItemIndex(newIndex: number): void {
       this.swiper?.slideTo(newIndex);
-      // HACK: Swiper has a bug where the slides might not always appear centered:
-      // https://github.com/nolimits4web/Swiper/issues/886
-      this.swiper?.update();
       this.setBackdrop({ hash: this.backdropHash });
     },
     currentQueue(): void {
@@ -120,9 +120,6 @@ export default Vue.extend({
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
     this.setBackdrop({ hash: this.backdropHash });
     this.swiper?.slideTo(this.currentItemIndex);
-    // HACK: Swiper has a bug where the slides might not always appear centered:
-    // https://github.com/nolimits4web/Swiper/issues/886
-    this.swiper?.update();
   },
   beforeDestroy() {
     this.clearBackdrop();
@@ -149,16 +146,19 @@ export default Vue.extend({
         this.setCurrentIndex({ index });
       }
     },
-    getImageUrl(item: BaseItemDto): string | undefined {
-      const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
-      if (imageUrl) {
-        return imageUrl;
-      }
-
-      return this.getImageUrlForElement(ImageType.Primary, {
-        itemId: item.AlbumId
-      });
+    onImageError(): void {
+      this.clearBackdrop();
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.albumCover {
+  position: relative;
+  height: 65vh;
+  min-width: 65vh;
+  width: 65vh;
+  user-select: none;
+}
+</style>

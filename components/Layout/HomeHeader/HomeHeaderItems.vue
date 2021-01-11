@@ -10,27 +10,23 @@
     >
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
-          <div
-            v-if="
-              !item.BackdropImageTags ||
-              (item.ImageTags && !item.ImageTags.Backdrop)
-            "
-            class="default-icon"
-          >
-            <v-icon
-              :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
-              class="text--disabled"
-              color="white"
-              dark
-            >
-              {{ getItemIcon(item) }}
-            </v-icon>
-          </div>
+          <div class="default-icon"></div>
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
-          />
+          >
+            <template #placeholder>
+              <v-icon
+                :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
+                class="text--disabled default-icon"
+                color="white"
+                dark
+              >
+                {{ getItemIcon(item) }}
+              </v-icon>
+            </template>
+          </blurhash-image>
         </div>
         <div class="slide-content">
           <v-container
