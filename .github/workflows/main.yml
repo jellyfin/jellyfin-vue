@@ -85,3 +85,54 @@ jobs:
         run: yarn test
       - name: Upload coverage
         uses: codecov/codecov-action@v1
+
+  cypress:
+    name: Cypress
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: node -v
+
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Start
+        run: yarn start &
+
+      - name: Cypress run
+        # uses: cypress-io/github-action@v2
+        run: yarn cypress run
+        # with:
+        #   record: false
+        #   tag: node-14
+        #   build: yarn build
+        #   start: yarn start
+        #   wait-on: 'http://localhost:3000'
