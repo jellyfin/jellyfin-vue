@@ -41,7 +41,7 @@ export interface PlaybackManagerState {
   playSessionId: string | null;
 }
 
-export const state = (): PlaybackManagerState => ({
+const defaultState = (): PlaybackManagerState => ({
   status: PlaybackStatus.stopped,
   lastItemIndex: null,
   currentItemIndex: null,
@@ -61,6 +61,8 @@ export const state = (): PlaybackManagerState => ({
   queue: [],
   playSessionId: null
 });
+
+export const state = defaultState;
 
 export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
   getCurrentItem: (state) => {
@@ -152,24 +154,7 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     state.status = PlaybackStatus.paused;
   },
   STOP_PLAYBACK(state: PlaybackManagerState) {
-    state.status = PlaybackStatus.stopped;
-    state.lastItemIndex = null;
-    state.currentItemIndex = null;
-    state.currentMediaSource = null;
-    state.currentVideoStreamIndex = 0;
-    state.currentAudioStreamIndex = 0;
-    state.currentSubtitleStreamIndex = 0;
-    state.currentItemChapters = null;
-    state.currentTime = null;
-    state.lastProgressUpdate = 0;
-    state.currentVolume = 100;
-    state.isFullscreen = false;
-    state.isMuted = false;
-    state.isShuffling = false;
-    state.isMinimized = true;
-    state.repeatMode = null;
-    state.queue = [];
-    state.playSessionId = null;
+    Object.assign(state, defaultState());
   },
   RESET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
     state.lastItemIndex = null;
