@@ -54,7 +54,6 @@
     "vee-validate": "^3.4.5",
     "vue-awesome-swiper": "^4.1.1",
     "vue-native-websocket": "^2.0.14",
-    "vue-virtual-scroller": "^1.0.10",
     "vuedraggable": "^2.24.3",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
