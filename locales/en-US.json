@@ -142,6 +142,8 @@
     "noActivityFound": "No activities found",
     "noLogsFound": "No logs found"
   },
+  "manualLogin": "Manual login",
+  "menu": "Menu",
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
   "more": "More",
@@ -226,6 +228,7 @@
     },
     "settings": "Settings"
   },
+  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settingsSections": {
     "account": {
       "description": "Edit your user's information",
@@ -299,6 +302,23 @@
   "settings": {
     "settings": "Settings",
     "help": "Help",
+    "apiKeys": {
+      "apiKeys": "API keys",
+      "description": "Add and revoke API keys for external access to your server",
+      "appName": "App name",
+      "accessToken": "Access token",
+      "dateCreated": "Date created",
+      "revokeSuccess": "Successfully revoked API key",
+      "revokeFailure": "Error revoking API key",
+      "revokeAll": "Revoke all API keys",
+      "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeAllFailure": "Error revoking all API keys",
+      "addNewKey": "Add new API key",
+      "createKeySuccess": "Successfully created a new API key",
+      "createKeyFailure": "Error creating a new API key",
+      "refreshKeysFailure": "Error refreshing API keys",
+      "addApiKey": "Add an API key"
+    },
     "devices": {
       "deleteAll": "Delete all",
       "deleteDeviceSuccess": "Device deleted successfully",
@@ -312,6 +332,14 @@
       "lastActive": "Last active",
       "userName": "Username",
       "devices": "Devices"
+    },
+    "logsAndActivity": {
+      "activity": "Activity",
+      "failedGetActivity": "Unable to get activity",
+      "failedGetLogs": "Unable to get logs",
+      "logs": "Logs",
+      "noActivityFound": "No activities found",
+      "noLogsFound": "No logs found"
     }
   },
   "shows": "Shows",
@@ -349,6 +377,7 @@
   "username": "Username",
   "validation": {
     "bothPasswordsSame": "Both passwords must be the same",
+    "mustBeUrl": "This field must be a valid URL",
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },

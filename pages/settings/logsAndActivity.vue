@@ -4,7 +4,7 @@
       <v-col md="6" class="pt-0 pb-4">
         <v-fade-transition group>
           <h2 key="logs-title" class="text-h6 mb-2">
-            {{ $t('logsAndActivity.logs') }}
+            {{ $t('settings.logsAndActivity.logs') }}
           </h2>
           <v-list
             v-if="logFiles && logFiles.length > 0"
@@ -40,7 +40,7 @@
             key="no-log-card"
           >
             <v-card-title>
-              {{ $t('logsAndActivity.noLogsFound') }}
+              {{ $t('settings.logsAndActivity.noLogsFound') }}
             </v-card-title>
           </v-card>
           <v-card
@@ -49,7 +49,7 @@
           >
             <v-card-title>
               <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
-              {{ $t('logsAndActivity.failedGetLogs') }}
+              {{ $t('settings.logsAndActivity.failedGetLogs') }}
             </v-card-title>
             <v-card-text v-if="loadingLogsStatus.errorMessage">
               {{ loadingLogsStatus.errorMessage }}</v-card-text
@@ -60,7 +60,7 @@
       <v-col md="6" class="pt-0 pb-4">
         <v-fade-transition group>
           <h2 key="activity-title" class="text-h6 mb-2">
-            {{ $t('logsAndActivity.activity') }}
+            {{ $t('settings.logsAndActivity.activity') }}
           </h2>
           <v-list
             v-if="activityList && activityList.length > 0"
@@ -94,7 +94,7 @@
             key="no-activity-card"
           >
             <v-card-title>
-              {{ $t('logsAndActivity.noActivityFound') }}
+              {{ $t('settings.logsAndActivity.noActivityFound') }}
             </v-card-title>
           </v-card>
           <v-card
@@ -103,7 +103,7 @@
           >
             <v-card-title>
               <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
-              {{ $t('logsAndActivity.failedGetActivity') }}
+              {{ $t('settings.logsAndActivity.failedGetActivity') }}
             </v-card-title>
             <v-card-text v-if="loadingActivityStatus.errorMessage">
               {{ loadingActivityStatus.errorMessage }}
