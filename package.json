@@ -35,7 +35,7 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.3.4",
-    "@types/dompurify": "^2.2.0",
+    "@types/dompurify": "^2.2.1",
     "@types/jest": "^26.0.20",
     "@types/lodash": "^4.14.167",
     "@types/swiper": "^5.4.1",
