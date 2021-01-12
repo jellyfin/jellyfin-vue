@@ -14,7 +14,7 @@ export const state = defaultState;
 
 interface MutationPayload {
   message: string;
-  color: string | undefined | null;
+  color?: string;
 }
 
 export const mutations: MutationTree<SnackbarState> = {
