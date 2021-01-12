@@ -296,6 +296,24 @@
       "name": "Users"
     }
   },
+  "settings": {
+    "settings": "Settings",
+    "help": "Help",
+    "devices": {
+      "deleteAll": "Delete all",
+      "deleteDeviceSuccess": "Device deleted successfully",
+      "deleteDeviceError": "Error deleting device",
+      "deleteAllDevicesSuccess": "All devices deleted successfully",
+      "deleteAllDevicesError": "Error deleting all devices",
+      "noDevicesFound": "No devices found",
+      "delete": "Delete",
+      "appName": "App name",
+      "appVersion": "App version",
+      "lastActive": "Last active",
+      "userName": "Username",
+      "devices": "Devices"
+    }
+  },
   "shows": "Shows",
   "signIn": "Sign in",
   "sortByType": "By {type}",
