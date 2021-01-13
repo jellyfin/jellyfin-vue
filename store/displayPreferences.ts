@@ -38,7 +38,12 @@ const updateMethods: { [key: string]: (value: string) => void } = {
   locale: (value: string) => {
     if (window.$nuxt) {
       if (value !== 'auto') window.$nuxt.$i18n.setLocale(value);
-      else window.$nuxt.$i18n.setLocale(navigator.language);
+      else
+        window.$nuxt.$i18n.setLocale(
+          window.$nuxt.$i18n.getBrowserLocale() ||
+            window.$nuxt.$i18n.defaultLocale ||
+            'en'
+        );
     }
   }
 };
