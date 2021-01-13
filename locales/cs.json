@@ -286,5 +286,6 @@
         "toggleDarkMode": "Přepnout tmavý režim",
         "changeLanguage": "Jazyk"
     },
-    "metadataEditor": "Editor metadat"
+    "metadataEditor": "Editor metadat",
+    "noImagesFound": "Nebyly nalezeny žádné obrázky"
 }
