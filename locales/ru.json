@@ -285,5 +285,6 @@
         "toggleDarkMode": "Переключиться на тёмный режим",
         "changeLanguage": "Язык"
     },
-    "metadataEditor": "Редактор метаданных"
+    "metadataEditor": "Редактор метаданных",
+    "noImagesFound": "Рисунков не найдено"
 }
