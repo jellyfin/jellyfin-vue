@@ -173,8 +173,7 @@ const config: NuxtConfig = {
     defaultLocale: 'en',
     vueI18n: {
       fallbackLocale: 'en'
-    },
-    detectBrowserLanguage: { useCookie: false }
+    }
   },
   dateFns: {
     locales: [

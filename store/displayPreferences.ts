@@ -18,7 +18,7 @@ const defaultCustomPrefs: {
   darkMode: booleanToString(
     nuxtConfig.vuetify?.theme?.default === 'dark' || false
   ),
-  locale: nuxtConfig.i18n?.defaultLocale || 'en'
+  locale: 'auto'
 };
 
 const defaultState = (): DisplayPreferencesState => ({
@@ -36,7 +36,15 @@ const updateMethods: { [key: string]: (value: string) => void } = {
   },
 
   locale: (value: string) => {
-    if (window.$nuxt) window.$nuxt.$i18n.setLocale(value);
+    if (window.$nuxt) {
+      if (value !== 'auto') window.$nuxt.$i18n.setLocale(value);
+      else
+        window.$nuxt.$i18n.setLocale(
+          window.$nuxt.$i18n.getBrowserLocale() ||
+            window.$nuxt.$i18n.defaultLocale ||
+            'en'
+        );
+    }
   }
 };
 
