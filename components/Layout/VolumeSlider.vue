@@ -1,6 +1,6 @@
 <template>
   <div class="volume-slider d-flex align-center justify-center">
-    <v-btn icon fab small @click="toggleMute">
+    <v-btn class="active-button" icon fab small @click="toggleMute">
       <v-icon>{{ icon }}</v-icon>
     </v-btn>
     <v-slider
@@ -62,5 +62,14 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .volume-slider {
   width: 10em;
+}
+
+// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
+// but it seems we're using a prop combination that it's incompatible with it.
+
+// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 </style>

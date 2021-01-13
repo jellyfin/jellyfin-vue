@@ -516,7 +516,7 @@ export default Vue.extend({
     if (this.item) {
       this.setPageTitle({ title: this.item.Name });
       this.setAppBarOpacity({ opaqueAppBar: false });
-      const hash = this.getBlurhashHash(this.item, ImageType.Backdrop);
+      const hash = this.getBlurhash(this.item, ImageType.Backdrop);
       this.setBackdrop({ hash });
 
       if (this.item.MediaSources) {

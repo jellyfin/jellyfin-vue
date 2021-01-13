@@ -200,7 +200,7 @@ export default Vue.extend({
   },
   mounted() {
     this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
-    const hash = this.getBlurhashHash(this.items[0], ImageType.Backdrop);
+    const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
     this.setBackdrop({ hash });
   },
   beforeDestroy() {
@@ -274,7 +274,7 @@ export default Vue.extend({
         this.swiper?.updateSlides();
       }
       const hash =
-        this.getBlurhashHash(
+        this.getBlurhash(
           this.items[this.currentIndex as number],
           ImageType.Backdrop
         ) || '';

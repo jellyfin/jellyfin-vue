@@ -6,6 +6,7 @@
     validate-on-blur
     thumb-label
     :step="0"
+    class="time-slider"
     @end="onPositionChange"
     @change="onPositionChange"
     @mousedown="onClick"
@@ -78,10 +79,10 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-.v-input >>> .v-slider__thumb-container,
-.v-input >>> .v-slider__track-background,
-.v-input >>> .v-slider__track-fill {
+<style lang="scss">
+.time-slider .v-slider__thumb-container,
+.time-slider .v-slider__track-background,
+.time-slider .v-slider__track-fill {
   transition: none !important;
 }
 </style>

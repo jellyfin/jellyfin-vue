@@ -72,9 +72,7 @@ export default Vue.extend({
     },
     backdropHash: {
       get(): string {
-        return (
-          this.getBlurhashHash(this.getCurrentItem(), ImageType.Primary) || ''
-        );
+        return this.getBlurhash(this.getCurrentItem(), ImageType.Primary) || '';
       }
     },
     isPaused: {

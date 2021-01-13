@@ -4,7 +4,7 @@
       v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
       key="audioControls-footer"
       app
-      :color="footerColor"
+      :class="isFullScreenPlayer ? 'fullscreen' : ''"
       class="audioControls"
     >
       <v-container v-if="isFullScreenPlayer" fluid>
@@ -73,9 +73,8 @@
                   fab
                   small
                   :elevation="isShuffling ? '3' : '0'"
-                  class="mx-1"
-                  :class="isShuffling ? '' : 'text--disabled'"
-                  :color="isShuffling ? 'primary' : 'text--disabled'"
+                  class="mx-1 active-button"
+                  :color="isShuffling ? 'primary' : undefined"
                   @click="toggleShuffle"
                 >
                   <v-icon>mdi-shuffle</v-icon>
@@ -89,17 +88,18 @@
                   <v-icon>mdi-skip-previous</v-icon>
                 </v-btn>
                 <v-btn
-                  elevation="6"
-                  fab
                   icon
                   raised
                   rounded
-                  outlined
-                  class="mx-1"
+                  class="mx-1 active-button"
                   @click="togglePause"
                 >
                   <v-icon large>
-                    {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                    {{
+                      isPaused
+                        ? 'mdi-play-circle-outline'
+                        : 'mdi-pause-circle-outline'
+                    }}
                   </v-icon>
                 </v-btn>
                 <v-btn
@@ -115,8 +115,7 @@
                   fab
                   small
                   :elevation="isRepeating ? '3' : '0'"
-                  class="mx-1"
-                  :class="isRepeating ? '' : 'text--disabled'"
+                  class="mx-1 active-button"
                   :color="isRepeating ? 'primary' : undefined"
                   @click="toggleRepeatMode"
                 >
@@ -155,38 +154,33 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </transition>
+            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
             <v-tooltip top>
               <template #activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  class="ml-2"
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="stopPlayback"
-                >
+                <v-btn icon v-bind="attrs" v-on="on" @click="stopPlayback">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </template>
               <span>{{ $t('stopPlayback') }}</span>
             </v-tooltip>
-            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
           </v-col>
           <v-col
             cols="3"
             class="d-flex d-md-none px-0 align-center justify-end"
           >
             <v-btn
-              elevation="6"
-              fab
               icon
               raised
               rounded
-              class="mx-1"
-              :class="isPaused ? '' : 'outlined-button'"
+              class="mx-1 active-button"
               @click="togglePause"
             >
               <v-icon>
-                {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                {{
+                  isPaused
+                    ? 'mdi-play-circle-outline'
+                    : 'mdi-pause-circle-outline'
+                }}
               </v-icon>
             </v-btn>
             <v-btn
@@ -202,8 +196,7 @@
               fab
               small
               :elevation="isRepeating ? '3' : '0'"
-              class="mx-1"
-              :class="isRepeating ? '' : 'text--disabled'"
+              class="mx-1 active-button"
               :color="isRepeating ? 'primary' : undefined"
               @click="toggleRepeatMode"
             >
@@ -214,9 +207,8 @@
               fab
               small
               :elevation="isShuffling ? '3' : '0'"
-              class="mx-1"
-              :class="isShuffling ? '' : 'text--disabled'"
-              :color="isShuffling ? 'primary' : 'text--disabled'"
+              class="mx-1 active-button"
+              :color="isShuffling ? 'primary' : undefined"
               @click="toggleShuffle"
             >
               <v-icon>mdi-shuffle</v-icon>
@@ -230,7 +222,7 @@
         >
           <div>
             <h4 class="text-overline font-italic">
-              {{ $t('upNext') }}: {{ getNextItem.Name }}
+              {{ $t('upNextName', { upNextItemName: getNextItem.Name }) }}
             </h4>
           </div>
         </div>
@@ -256,13 +248,6 @@ export default Vue.extend({
       'getPreviousItem',
       'getNextItem'
     ]),
-    footerColor(): string | undefined {
-      if (this.isFullScreenPlayer) {
-        return 'rgba(0,0,0,0.15)';
-      } else {
-        return undefined;
-      }
-    },
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
     },
@@ -331,5 +316,18 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .audioControls {
   user-select: none;
+}
+
+.audioControls.fullscreen {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
+// but it seems we're using a prop combination that it's incompatible with it: NaN;
+
+// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 </style>

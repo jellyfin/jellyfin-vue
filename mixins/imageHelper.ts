@@ -44,7 +44,7 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getBlurhashHash(
+    getBlurhash(
       item: BaseItemDto | BaseItemPerson,
       type: ImageType,
       index?: number,
@@ -75,7 +75,7 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getBlurhashHash(
+    getBlurhash(
       item: BaseItemDto | BaseItemPerson,
       type: ImageType,
       index?: number,
@@ -108,7 +108,7 @@ declare module 'vue/types/vue' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getBlurhashHash(
+    getBlurhash(
       item: BaseItemDto | BaseItemPerson,
       type: ImageType,
       index?: number,
@@ -241,7 +241,7 @@ const imageHelper = Vue.extend({
      * @param {number} [checkParent=true] - Checks for the parent's images blurhash (in case the provided item doesn't have it)
      * @returns {string|undefined} Returns the tag, undefined if the specific ImageType doesn't exist.
      */
-    getBlurhashHash(
+    getBlurhash(
       item: BaseItemDto | BaseItemPerson,
       type: ImageType,
       index = 0,

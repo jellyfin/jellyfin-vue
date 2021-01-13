@@ -96,18 +96,16 @@ export default Vue.extend({
   computed: {
     generalImages(): boolean {
       return this.$data.images.filter((image: ImageInfo) => {
-        const { ImageType } = image;
         return (
-          ImageType !== 'Screenshot' &&
-          ImageType !== 'Backdrop' &&
-          ImageType !== 'Chapter'
+          image.ImageType !== ImageType.Screenshot &&
+          image.ImageType !== ImageType.Backdrop &&
+          image.ImageType !== ImageType.Chapter
         );
       });
     },
     backdropImages(): ImageInfo[] {
       return this.$data.images.filter((image: ImageInfo) => {
-        const { ImageType } = image;
-        return ImageType === 'Backdrop';
+        return image.ImageType === ImageType.Backdrop;
       });
     }
   },
@@ -128,10 +126,10 @@ export default Vue.extend({
       ).data;
     },
     imageFormat(imageInfo: ImageInfo): string | undefined {
-      if (imageInfo.ImageType) {
+      if (imageInfo.ImageType && imageInfo.ImageTag) {
         return this.getImageUrlForElement(imageInfo.ImageType, {
           itemId: this.metadata.Id,
-          tag: imageInfo.ImageTag as string
+          tag: imageInfo.ImageTag
         });
       }
     },
@@ -139,11 +137,14 @@ export default Vue.extend({
       this.dialog = true;
     },
     async handleDelete(item: ImageInfo): Promise<void> {
-      await this.$api.image.deleteItemImage({
-        itemId: this.metadata.Id,
-        imageType: item.ImageType as ImageType,
-        imageIndex: item.ImageIndex || 0
-      });
+      if (item.ImageType) {
+        await this.$api.image.deleteItemImage({
+          itemId: this.metadata.Id,
+          imageType: item.ImageType,
+          imageIndex: item.ImageIndex || 0
+        });
+      }
+
       this.getItemImageInfos();
     }
   }

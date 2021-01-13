@@ -147,7 +147,7 @@ export default Vue.extend({
     ).data;
 
     if (item) {
-      const hash = this.getBlurhashHash(item, ImageType.Backdrop);
+      const hash = this.getBlurhash(item, ImageType.Backdrop);
       this.setBackdrop({ hash });
       this.item = item;
     }

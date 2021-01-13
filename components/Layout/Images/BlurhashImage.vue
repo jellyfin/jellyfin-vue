@@ -70,7 +70,7 @@ export default Vue.extend({
   computed: {
     hash: {
       get(): string | undefined {
-        return this.getBlurhashHash(this.item, this.type);
+        return this.getBlurhash(this.item, this.type);
       }
     }
   },
