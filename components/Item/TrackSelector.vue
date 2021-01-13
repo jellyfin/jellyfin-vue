@@ -123,18 +123,18 @@ export default Vue.extend({
        */
       get(): string {
         if (this.type === 'Audio' && this.tracks.length === 0)
-          return this.$t('noAudioAvailable');
+          return this.$t('noAudioTracksAvailable');
         if (this.type === 'Audio' && this.tracks.length !== 0)
-          return this.$t('noAudioSelected');
+          return this.$t('noAudioTrackSelected');
         if (this.type === 'Subtitle' && this.tracks.length === 0)
-          return this.$t('noSubtitleAvailable');
+          return this.$t('noSubtitlesAvailable');
         if (this.type === 'Subtitle' && this.tracks.length !== 0)
           return this.$t('noSubtitleSelected');
         if (this.type === 'Video' && this.tracks.length === 0)
-          return this.$t('noVideoAvailable');
+          return this.$t('noVideoTracksAvailable');
         if (this.type === 'Video' && this.tracks.length !== 0)
-          return this.$t('noVideoSelected');
-        return this.$t('noTrackAvailable');
+          return this.$t('noVideoTrackSelected');
+        return this.$t('noTracksAvailable');
       }
     },
     clearable: {
