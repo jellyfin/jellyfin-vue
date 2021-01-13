@@ -34,5 +34,82 @@
     "usernameRequired": "Kullanıcı adı gerekli",
     "youMayAlsoLike": "Şunlar da ilginizi çekebilir.",
     "shows": "Göster",
-    "browserNotSupported": "Tarayıcınız bu dosya formatını oynatmak için desteklenmiyor."
+    "browserNotSupported": "Tarayıcınız bu dosya formatını oynatmak için desteklenmiyor.",
+    "settingsSections": {
+        "server": {
+            "name": "Sunucu"
+        },
+        "plugins": {
+            "name": "Eklentiler"
+        },
+        "notifications": {
+            "name": "Bildirimler"
+        },
+        "libraries": {
+            "name": "Kütüphaneler"
+        },
+        "devices": {
+            "name": "Cihazlar"
+        }
+    },
+    "serverVersionTooLow": "Sunucu versiyonu 10.7.0 veya daha üstü olmalıdır",
+    "serverVersion": "Sunucu sürümü",
+    "server": "Sunucu",
+    "search": "Arama",
+    "save": "Kaydet",
+    "rememberMe": "Beni hatırla",
+    "parentalRatings": "Yaş Derecelendirmeleri",
+    "parentalRating": "Yaş derecelendirmesi",
+    "overview": "Özet",
+    "operatingSystem": "İşletim sistemi",
+    "networks": "Ağlar",
+    "name": "Ad",
+    "metadataEditor": "Meta veri düzenleyici",
+    "menu": "Menü",
+    "logsAndActivity": {
+        "activity": "Aktivite"
+    },
+    "likes": "Beğenilenler",
+    "liked": "Beğenildi",
+    "libraries": "Kütüphaneler",
+    "jellyfinLogo": "Jellyfin logo",
+    "images": "Resimler",
+    "homeHeader": {
+        "items": {
+            "recentlyAdded": "Son eklenen"
+        }
+    },
+    "genres": "Türler",
+    "general": "Genel",
+    "fullScreen": "Tam ekran",
+    "filter": "Filtre",
+    "features": "Özellikleri",
+    "favorite": "Favori",
+    "edit": "Düzenle",
+    "dislikes": "Beğenilmeyenler",
+    "disc": "Disk",
+    "director": "Yönetmen",
+    "details": "Detaylar",
+    "dateAdded": "Ekleme Tarihi",
+    "criticRating": "Eleştirmen puanı",
+    "connect": "Bağlan",
+    "composer": "Besteci",
+    "communityRating": "Kullanıcı puanı",
+    "collections": "Koleksiyon",
+    "changeUser": "Kullanıcıyı değiştir",
+    "changeServer": "Sunucuyu değiştir",
+    "castAndCrew": "Oyuncular & Ekip",
+    "cancel": "İptal",
+    "buttons": {
+        "ok": "Tamam"
+    },
+    "boxRear": "Kutu (arka)",
+    "box": "Kutu",
+    "banner": "Afiş",
+    "backdrop": "Arka plan",
+    "audio": "Ses",
+    "allLanguages": "Tüm diller",
+    "albums": "Albümler",
+    "actors": "Aktörler",
+    "actor": "Aktör"
 }
