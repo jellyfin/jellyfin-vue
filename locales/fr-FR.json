@@ -165,7 +165,7 @@
             "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
         },
         "transcodingAndStreaming": {
-            "description": "Gérer la façon dont le serveur transcode et envoie les flux vers les clients",
+            "description": "Gérer la façon dont ce serveur transcode et envoie les flux vers les clients",
             "name": "Transcodage et streaming"
         }
     },
@@ -281,5 +281,9 @@
     "noSubtitleSelected": "Aucun sous-titre sélectionné",
     "noSubtitleAvailable": "Aucun sous-titres disponible",
     "metadataEditor": "Éditeur de métadonnées",
-    "fullScreen": "Plein écran"
+    "fullScreen": "Plein écran",
+    "refreshLibrary": "Actualiser la médiathèque",
+    "queue": "File d'attente",
+    "libraryRefreshQueued": "Actualisation de la médiathèque mise en file d'attente",
+    "directing": "Réalisation"
 }
