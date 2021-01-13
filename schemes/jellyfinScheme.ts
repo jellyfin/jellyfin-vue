@@ -138,6 +138,7 @@ export default class JellyfinScheme {
     this.$auth.$storage.setState('loggedIn', false);
     await this.$auth.ctx.app.$api.session.reportSessionEnded();
     await this.$auth.ctx.app.store.dispatch('displayPreferences/resetState');
+    await this.$auth.ctx.app.store.dispatch('userViews/clearUserViews');
 
     // Reset everything
     return this.$auth.reset();
