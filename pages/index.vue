@@ -14,13 +14,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { pickBy } from 'lodash';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
-  async asyncData({ store, app, $api, $auth }) {
+  async asyncData({ store, app }) {
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
@@ -64,11 +65,14 @@ export default Vue.extend({
         case 'latestmedia': {
           const latestMediaSections = [];
 
-          const userViewsRequest = await $api.userViews.getUserViews({
-            userId: $auth.user?.Id
-          });
+          let userViews: BaseItemDto[] = store.state.userViews.views;
 
-          if (userViewsRequest.data.Items) {
+          if (!userViews.length) {
+            await store.dispatch('userViews/refreshUserViews');
+            userViews = await store.state.userViews.views;
+          }
+
+          if (userViews) {
             const excludeViewTypes = [
               'playlists',
               'livetv',
@@ -76,7 +80,7 @@ export default Vue.extend({
               'channels'
             ];
 
-            for (const userView of userViewsRequest.data.Items) {
+            for (const userView of userViews) {
               if (
                 excludeViewTypes.includes(userView.CollectionType as string)
               ) {
@@ -146,7 +150,9 @@ export default Vue.extend({
     this.setAppBarOpacity({ opaqueAppBar: true });
   },
   methods: {
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
+    ...mapActions('userViews', ['refreshUserViews']),
+    ...mapGetters('userViews', ['getUserViews'])
   }
 });
 </script>
