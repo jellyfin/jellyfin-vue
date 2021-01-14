@@ -11,7 +11,8 @@
           <v-list-item
             v-for="episode in seasonEpisodes[currentTab]"
             :key="episode.Id"
-            @click="play({ items: [episode] })"
+            nuxt
+            :to="`/item/${episode.Id}`"
           >
             <v-list-item-avatar tile width="20em" height="12em">
               <blurhash-image
