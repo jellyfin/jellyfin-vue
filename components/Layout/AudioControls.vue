@@ -319,6 +319,10 @@ export default Vue.extend({
 }
 
 .audioControls.fullscreen {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme--dark .audioControls.fullscreen {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
