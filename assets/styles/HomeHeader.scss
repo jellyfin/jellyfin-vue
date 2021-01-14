@@ -38,12 +38,9 @@
   background-size: contain;
   background-repeat: no-repeat;
   box-sizing: border-box;
-  background-color: #{map-get($material-dark, 'menus')};
-  mask-image: linear-gradient(
-    180deg,
-    rgba(37, 18, 18, 0.75) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  mask-image: linear-gradient(180deg,
+      rgba(37, 18, 18, 0.75) 0%,
+      rgba(0, 0, 0, 0) 100%);
   z-index: 1;
 }
 
@@ -64,8 +61,7 @@
     margin-right: 0;
     padding-bottom: (9 / 16) * 80%;
     background-position: right center;
-    mask-image: linear-gradient(
-        to right,
+    mask-image: linear-gradient(to right,
         hsla(0, 0%, 0%, 0) 0%,
         hsla(0, 0%, 0%, 0.182) 5.6%,
         hsla(0, 0%, 0%, 0.34) 9.9%,
@@ -81,10 +77,8 @@
         hsla(0, 0%, 0%, 0.989) 54.3%,
         hsla(0, 0%, 0%, 0.996) 66.6%,
         hsla(0, 0%, 0%, 0.999) 81.7%,
-        hsl(0, 0%, 0%) 100%
-      ),
-      linear-gradient(
-        to top,
+        hsl(0, 0%, 0%) 100%),
+      linear-gradient(to top,
         hsla(0, 0%, 0%, 0) 0%,
         hsla(0, 0%, 0%, 0.182) 5.6%,
         hsla(0, 0%, 0%, 0.34) 9.9%,
@@ -100,8 +94,7 @@
         hsla(0, 0%, 0%, 0.989) 54.3%,
         hsla(0, 0%, 0%, 0.996) 66.6%,
         hsla(0, 0%, 0%, 0.999) 81.7%,
-        hsl(0, 0%, 0%) 100%
-      );
+        hsl(0, 0%, 0%) 100%);
     mask-composite: intersect;
   }
 
