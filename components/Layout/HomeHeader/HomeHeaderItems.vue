@@ -208,12 +208,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
-    ...mapActions('backdrop', [
-      'setBackdrop',
-      'clearBackdrop',
-      'setBackdropOpacity',
-      'resetBackdropOpacity'
-    ]),
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getItemIcon(item: BaseItemDto): string {
       switch (item.Type) {
         case 'Audio':
