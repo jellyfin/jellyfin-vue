@@ -6,12 +6,14 @@ import { state, mutations, actions, PageState } from '../page';
 
 const PAGE_SET_TEST_VALUE = {
   title: 'Test Title',
-  opaqueAppBar: false
+  opaqueAppBar: false,
+  showNavDrawer: false
 };
 
 const PAGE_CLEAR_TEST_VALUE = {
-  title: '',
-  opaqueAppBar: true
+  title: 'Jellyfin',
+  opaqueAppBar: true,
+  showNavDrawer: true
 };
 
 let localVue: VueConstructor<Vue>;
@@ -42,6 +44,24 @@ test('When "SET_APPBAR_OPACITY" is committed, the opactity is set.', () => {
   expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
 });
 
+test('When "SET_NAVDRAWER_VISIBILITY" is committed, the navdrawer visibility is set.', () => {
+  store.replaceState({ ...PAGE_CLEAR_TEST_VALUE });
+
+  store.commit('SET_NAVDRAWER_VISIBILITY', {
+    showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+  });
+
+  expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
+});
+
+test('When "CLEAR_PAGE" is committed, the store is reset to defaults.', () => {
+  store.replaceState({ ...PAGE_SET_TEST_VALUE });
+
+  store.commit('CLEAR_PAGE');
+
+  expect(store.state).toMatchObject(PAGE_CLEAR_TEST_VALUE);
+});
+
 test('When setPageTitle is called, title is set.', () => {
   store.replaceState({ ...PAGE_CLEAR_TEST_VALUE });
 
@@ -58,4 +78,22 @@ test('When setAppBarOpacity is called, opacity is set.', () => {
   });
 
   expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
+});
+
+test('When showNavDrawer is called, showNavDrawer is set.', () => {
+  store.replaceState({ ...PAGE_CLEAR_TEST_VALUE });
+
+  store.dispatch('showNavDrawer', {
+    showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+  });
+
+  expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
+});
+
+test('When clearPage is called, store is set back to default.', () => {
+  store.replaceState({ ...PAGE_SET_TEST_VALUE });
+
+  store.dispatch('clearPage');
+
+  expect(store.state).toMatchObject(PAGE_CLEAR_TEST_VALUE);
 });
