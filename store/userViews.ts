@@ -29,6 +29,9 @@ export const getters: GetterTree<UserViewsState, UserViewsState> = {
 export const mutations: MutationTree<UserViewsState> = {
   SET_USER_VIEWS(state: UserViewsState, { userViews }: MutationPayload) {
     state.views = userViews;
+  },
+  CLEAR_USER_VIEWS(state: UserViewsState) {
+    state.views = [];
   }
 };
 
@@ -41,5 +44,8 @@ export const actions: ActionTree<UserViewsState, UserViewsState> = {
     const userViews = userViewsResponse.data.Items;
 
     commit('SET_USER_VIEWS', { userViews });
+  },
+  clearUserViews({ commit }) {
+    commit('CLEAR_USER_VIEWS');
   }
 };
