@@ -5,7 +5,8 @@ export const validLibraryTypes = [
   'CollectionFolder',
   'Folder',
   'UserView',
-  'playlists'
+  'playlists',
+  'PhotoAlbum'
 ];
 
 /**
