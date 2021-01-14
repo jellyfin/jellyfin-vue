@@ -137,8 +137,7 @@ export default class JellyfinScheme {
     // on $auth.user will fail, breaking the logout flow completely.
     this.$auth.$storage.setState('loggedIn', false);
     await this.$auth.ctx.app.$api.session.reportSessionEnded();
-    await this.$auth.ctx.app.store.dispatch('displayPreferences/resetState');
-    await this.$auth.ctx.app.store.dispatch('userViews/clearUserViews');
+    await this.$auth.ctx.app.store.dispatch('reset', { clearCritical: false });
 
     // Reset everything
     return this.$auth.reset();
