@@ -126,7 +126,7 @@ export default Vue.extend({
       this.loading = false;
     }
   },
-  beforeMount() {
+  async beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
@@ -157,7 +157,7 @@ export default Vue.extend({
           this.viewType = 'MusicAlbum';
           break;
         default:
-          this.refreshItems();
+          await this.refreshItems();
           break;
       }
 
