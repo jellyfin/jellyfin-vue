@@ -83,5 +83,9 @@
     "addNewPerson": "Legg til ny person",
     "actors": "Skuespillere",
     "actor": "Skuespiller",
-    "3DFormat": "3D-format"
+    "3DFormat": "3D-format",
+    "editPerson": "Rediger person",
+    "edit": "Rediger",
+    "discNumber": "Plate {discNumber}",
+    "disc": "Plate"
 }
