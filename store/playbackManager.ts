@@ -265,6 +265,13 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   unpause({ commit }) {
     commit('UNPAUSE_PLAYBACK');
   },
+  playPause({ commit, state }) {
+    if (state.status === PlaybackStatus.playing) {
+      commit('PAUSE_PLAYBACK');
+    } else if (state.status === PlaybackStatus.paused) {
+      commit('UNPAUSE_PLAYBACK');
+    }
+  },
   clearQueue({ commit }) {
     commit('SET_QUEUE', { queue: [] });
   },
@@ -320,6 +327,17 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   changeCurrentTime({ commit }, { time }: { time: number | null }) {
     commit('CHANGE_CURRENT_TIME', { time });
+  },
+  skipForward({ commit, state }) {
+    commit('CHANGE_CURRENT_TIME', { time: (state.currentTime || 0) + 15 });
+  },
+  skipBackward({ commit, state }) {
+    // TODO: Store time to skip in a store to make it customizable
+    if ((state.currentTime || 0) > 15) {
+      commit('CHANGE_CURRENT_TIME', { time: (state.currentTime || 0) - 15 });
+    } else {
+      commit('CHANGE_CURRENT_TIME', { time: 0 });
+    }
   },
   setMinimized({ commit }, { minimized }: { minimized: boolean }) {
     commit('SET_MINIMIZE', { minimized });
