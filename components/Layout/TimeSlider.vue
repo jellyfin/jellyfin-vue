@@ -1,12 +1,12 @@
 <template>
   <v-slider
-    min="0"
-    :max="runtime"
-    validate-on-blur
-    :step="0"
     :value="sliderValue"
     hide-details
+    :max="runtime"
+    validate-on-blur
     thumb-label
+    :step="0"
+    class="time-slider"
     @end="onPositionChange"
     @change="onPositionChange"
     @mousedown="onClick"
@@ -44,6 +44,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
+    runtime(): number {
+      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
+    },
     sliderValue: {
       get(): number {
         if (!this.clicked) {
@@ -51,9 +54,6 @@ export default Vue.extend({
         }
         return this.currentInput;
       }
-    },
-    runtime(): number {
-      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
     },
     realPosition: {
       get(): number {
@@ -78,3 +78,11 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss">
+.time-slider .v-slider__thumb-container,
+.time-slider .v-slider__track-background,
+.time-slider .v-slider__track-fill {
+  transition: none !important;
+}
+</style>

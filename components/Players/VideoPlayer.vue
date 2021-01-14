@@ -24,7 +24,11 @@ import shaka from 'shaka-player/dist/shaka-player.compiled';
 // @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { ImageType, PlaybackInfoResponse } from '@jellyfin/client-axios';
+import {
+  ImageType,
+  PlaybackInfoResponse,
+  RepeatMode
+} from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
@@ -51,7 +55,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapState('playbackManager', ['lastProgressUpdate']),
-    poster(): string {
+    poster(): string | undefined {
       return this.getImageUrlForElement(ImageType.Backdrop, {
         itemId:
           this.getCurrentItem?.ParentBackdropItemId ||
@@ -98,15 +102,19 @@ export default Vue.extend({
                 (this.$refs.videoPlayer as HTMLVideoElement).play();
               }
               break;
-            case 'playbackManager/RESET_CURRENT_TIME':
-              if (this.$refs.videoPlayer) {
-                (this.$refs.videoPlayer as HTMLVideoElement).currentTime = 0;
-              }
-              break;
             case 'playbackManager/CHANGE_CURRENT_TIME':
               if (this.$refs.videoPlayer && mutation?.payload?.time) {
                 (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
                   mutation?.payload?.time;
+              }
+              break;
+            case 'playbackManager/SET_REPEAT_MODE':
+              if (this.$refs.videoPlayer) {
+                if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
+                  (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
+                } else {
+                  (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
+                }
               }
           }
         });

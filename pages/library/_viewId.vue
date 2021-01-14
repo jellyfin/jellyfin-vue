@@ -132,7 +132,7 @@ export default Vue.extend({
 
       if (
         this.collectionInfo &&
-        ['CollectionFolder', 'Folder', 'UserView'].includes(
+        ['CollectionFolder', 'Folder', 'UserView', 'playlists'].includes(
           this.collectionInfo.Type || ''
         )
       ) {

@@ -147,7 +147,8 @@ export default Vue.extend({
     ).data;
 
     if (item) {
-      this.setBackdrop({ item });
+      const hash = this.getBlurhash(item, ImageType.Backdrop);
+      this.setBackdrop({ hash });
       this.item = item;
     }
 
@@ -170,7 +171,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined): string {
+    getImageUrl(itemId: string | undefined): string | undefined {
       const element = this.$refs.personImg as HTMLElement;
       if (itemId) {
         return this.getImageUrlForElement(ImageType.Primary, {

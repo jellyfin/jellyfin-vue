@@ -241,6 +241,7 @@
   "sortTitle": "Sort title",
   "specialFeatures": "Special Features",
   "status": "Status",
+  "stopPlayback": "Stop playback",
   "studios": "Studios",
   "subtitles": "Subtitles",
   "tagline": "Tagline",
@@ -266,6 +267,7 @@
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",
+  "upNextName": "Up next: {upNextItemName}",
   "username": "Username",
   "usernameRequired": "Username is required",
   "validation": {

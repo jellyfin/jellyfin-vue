@@ -435,6 +435,7 @@ import langs from 'langs';
 import {
   BaseItemDto,
   BaseItemPerson,
+  ImageType,
   MediaSourceInfo,
   MediaStream
 } from '@jellyfin/client-axios';
@@ -515,7 +516,8 @@ export default Vue.extend({
     if (this.item) {
       this.setPageTitle({ title: this.item.Name });
       this.setAppBarOpacity({ opaqueAppBar: false });
-      this.setBackdrop({ item: this.item });
+      const hash = this.getBlurhash(this.item, ImageType.Backdrop);
+      this.setBackdrop({ hash });
 
       if (this.item.MediaSources) {
         this.currentSource = this.item.MediaSources[0];

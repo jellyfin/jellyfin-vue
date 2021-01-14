@@ -10,27 +10,23 @@
     >
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
-          <div
-            v-if="
-              !item.BackdropImageTags ||
-              (item.ImageTags && !item.ImageTags.Backdrop)
-            "
-            class="default-icon"
-          >
-            <v-icon
-              :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
-              class="text--disabled"
-              color="white"
-              dark
-            >
-              {{ getItemIcon(item) }}
-            </v-icon>
-          </div>
+          <div class="default-icon"></div>
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
-          />
+          >
+            <template #placeholder>
+              <v-icon
+                :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
+                class="text--disabled default-icon"
+                color="white"
+                dark
+              >
+                {{ getItemIcon(item) }}
+              </v-icon>
+            </template>
+          </blurhash-image>
         </div>
         <div class="slide-content">
           <v-container
@@ -204,9 +200,20 @@ export default Vue.extend({
   },
   mounted() {
     this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
+    const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
+    this.setBackdrop({ hash });
+  },
+  beforeDestroy() {
+    this.clearBackdrop();
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
+    ...mapActions('backdrop', [
+      'setBackdrop',
+      'clearBackdrop',
+      'setBackdropOpacity',
+      'resetBackdropOpacity'
+    ]),
     getItemIcon(item: BaseItemDto): string {
       switch (item.Type) {
         case 'Audio':
@@ -249,7 +256,7 @@ export default Vue.extend({
         return '';
       }
     },
-    getLogo(item: BaseItemDto): string {
+    getLogo(item: BaseItemDto): string | undefined {
       const relatedItem = this.getRelatedItem(item);
       return this.getImageUrlForElement(ImageType.Logo, {
         itemId: relatedItem.Id
@@ -266,6 +273,12 @@ export default Vue.extend({
       if (this.swiper?.isBeginning || this.swiper?.isEnd) {
         this.swiper?.updateSlides();
       }
+      const hash =
+        this.getBlurhash(
+          this.items[this.currentIndex as number],
+          ImageType.Backdrop
+        ) || '';
+      this.setBackdrop({ hash });
     },
     onTouch(): void {
       this.isPaused = !this.isPaused;
@@ -282,21 +295,4 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~/assets/styles/HomeHeader.scss';
-
-.default-icon {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.slide-backdrop {
-  background-color: #{map-get($material-dark, 'menus')};
-}
 </style>

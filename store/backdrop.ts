@@ -2,43 +2,63 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 export interface BackdropState {
   blurhash: string;
+  opacity: number;
 }
 
 export const state = (): BackdropState => ({
-  blurhash: ''
+  blurhash: '',
+  opacity: 0.75
 });
+
+interface BackdropMutationPayload {
+  newBlurhash: string;
+}
+
+interface BackdropOpacityMutationPayload {
+  value: number;
+}
 
 export const getters: GetterTree<BackdropState, BackdropState> = {
   getBackdropBlurhash: (state: BackdropState) => state.blurhash
 };
 
 export const mutations: MutationTree<BackdropState> = {
-  SET_CURRENT_BACKDROP(state: BackdropState, newBlurhash: string) {
+  SET_CURRENT_BACKDROP(
+    state: BackdropState,
+    { newBlurhash }: BackdropMutationPayload
+  ) {
     state.blurhash = newBlurhash;
+  },
+  SET_BACKDROP_OPACITY(
+    state: BackdropState,
+    { value }: BackdropOpacityMutationPayload
+  ) {
+    state.opacity = value;
   },
   CLEAR_CURRENT_BACKDROP(state: BackdropState) {
     state.blurhash = '';
+  },
+  RESET_BACKDROP_OPACITY(state: BackdropState) {
+    state.opacity = 0.75;
   }
 };
 
 export const actions: ActionTree<BackdropState, BackdropState> = {
-  setBackdrop({ commit }, { item }) {
-    let hash: string;
-
-    if (item.ImageBlurHashes.Backdrop && item.BackdropImageTags.length > 0) {
-      hash = item.ImageBlurHashes?.Backdrop[item.BackdropImageTags[0]];
-    } else if (
-      item.ImageBlurHashes.Backdrop &&
-      item.ParentBackdropImageTags.length > 0
-    ) {
-      hash = item.ImageBlurHashes?.Backdrop[item.ParentBackdropImageTags[0]];
+  setBackdrop({ commit }, { hash }: { hash: string }) {
+    if (hash) {
+      commit('SET_CURRENT_BACKDROP', { newBlurhash: hash });
     } else {
-      hash = '';
+      commit('CLEAR_CURRENT_BACKDROP');
+      commit('RESET_BACKDROP_OPACITY');
     }
-
-    commit('SET_CURRENT_BACKDROP', hash);
   },
   clearBackdrop({ commit }) {
     commit('CLEAR_CURRENT_BACKDROP');
+  },
+  setBackdropOpacity({ commit }, { value }: { value: number }) {
+    commit('SET_BACKDROP_OPACITY', { value });
+  },
+  resetBackdropOpacity({ commit }) {
+    commit('RESET_BACKDROP_OPACITY');
   }
 };
