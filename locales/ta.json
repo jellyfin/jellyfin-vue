@@ -287,5 +287,7 @@
     "libraryRefreshQueued": "நூலக புதுப்பிப்பு வரிசை",
     "fullScreen": "முழு திரை",
     "directing": "இயக்குதல்",
-    "noImagesFound": "படங்கள் எதுவும் கிடைக்கவில்லை"
+    "noImagesFound": "படங்கள் எதுவும் கிடைக்கவில்லை",
+    "upNextName": "அடுத்தது: {upNextItemName}",
+    "stopPlayback": "பிளேபேக்கை நிறுத்துங்கள்"
 }
