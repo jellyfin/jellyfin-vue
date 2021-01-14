@@ -15,7 +15,11 @@
         }}</v-icon>
       </v-btn>
     </template>
-    <span>{{ $t('tooltips.toggleDarkMode') }}</span>
+    <span>{{
+      darkMode
+        ? $t('tooltips.switchToLightMode')
+        : $t('tooltips.switchToDarkMode')
+    }}</span>
   </v-tooltip>
 </template>
 

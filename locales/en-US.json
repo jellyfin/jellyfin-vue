@@ -118,11 +118,11 @@
   "name": "Name",
   "networks": "Networks",
   "nextUp": "Next up",
+  "noImagesFound": "No images found",
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
   "noSubtitleAvailable": "No subtitle available",
   "noSubtitleSelected": "No subtitle selected",
-  "noImagesFound": "No images found",
   "numberTracks": "{number} tracks",
   "operatingSystem": "Operating system",
   "originalAspectRatio": "Original aspect ratio",
@@ -252,7 +252,8 @@
   "title": "Title",
   "tooltips": {
     "changeLanguage": "Language",
-    "toggleDarkMode": "Toggle dark mode"
+    "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode"
   },
   "trailer": "Trailer",
   "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
