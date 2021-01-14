@@ -22,7 +22,9 @@ export interface TvShowsState {
   [key: string]: TvShowItem;
 }
 
-export const state = (): TvShowsState => ({});
+const defaultState = (): TvShowsState => ({});
+
+export const state = defaultState;
 
 type MutationPayload = {
   seasons: BaseItemDto[];
@@ -69,6 +71,9 @@ export const mutations: MutationTree<TvShowsState> = {
       seasons: state[itemId]?.seasons || [],
       seasonEpisodes: [...state[itemId].seasonEpisodes, seasonEpisodes]
     });
+  },
+  CLEAR_TVSHOWS(state: TvShowsState) {
+    Object.assign(state, defaultState());
   }
 };
 export const actions: ActionTree<TvShowsState, AppState> = {
@@ -158,5 +163,8 @@ export const actions: ActionTree<TvShowsState, AppState> = {
         root: true
       }
     );
+  },
+  clearTvShows({ commit }) {
+    commit('CLEAR_TVSHOWS');
   }
 };
