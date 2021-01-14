@@ -108,7 +108,7 @@ export default Vue.extend({
     this.showNavDrawer({ showNavDrawer: false });
     this.previousAppBarOpacity = this.$store.state.page.opaqueAppBar;
     this.setAppBarOpacity({ opaqueAppBar: false });
-    this.setBackdropOpacity({ value: 0.5 });
+    this.setBackdropOpacity({ newOpacity: 0.5 });
     if (!this.isPlaying) {
       this.$router.back();
     }

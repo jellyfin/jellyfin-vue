@@ -15,7 +15,7 @@ interface BackdropMutationPayload {
 }
 
 interface BackdropOpacityMutationPayload {
-  value: number;
+  newOpacity: number;
 }
 
 export const getters: GetterTree<BackdropState, BackdropState> = {
@@ -31,9 +31,9 @@ export const mutations: MutationTree<BackdropState> = {
   },
   SET_BACKDROP_OPACITY(
     state: BackdropState,
-    { value }: BackdropOpacityMutationPayload
+    { newOpacity }: BackdropOpacityMutationPayload
   ) {
-    state.opacity = value;
+    state.opacity = newOpacity;
   },
   CLEAR_CURRENT_BACKDROP(state: BackdropState) {
     state.blurhash = '';
@@ -55,8 +55,8 @@ export const actions: ActionTree<BackdropState, BackdropState> = {
   clearBackdrop({ commit }) {
     commit('CLEAR_CURRENT_BACKDROP');
   },
-  setBackdropOpacity({ commit }, { value }: { value: number }) {
-    commit('SET_BACKDROP_OPACITY', { value });
+  setBackdropOpacity({ commit }, { newOpacity }: { newOpacity: number }) {
+    commit('SET_BACKDROP_OPACITY', { newOpacity });
   },
   resetBackdropOpacity({ commit }) {
     commit('RESET_BACKDROP_OPACITY');
