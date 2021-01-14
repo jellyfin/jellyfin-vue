@@ -12,13 +12,15 @@ export interface ServerState {
   serverList: ServerInfo[];
 }
 
-export const state = (): ServerState => ({
+const defaultState = (): ServerState => ({
   serverUsed: {
     address: '',
     publicInfo: {}
   },
   serverList: []
 });
+
+export const state = defaultState;
 
 export const mutations: MutationTree<ServerState> = {
   SET_SERVER_USED(state: ServerState, selectedServer: ServerInfo) {
@@ -31,6 +33,9 @@ export const mutations: MutationTree<ServerState> = {
     state.serverList = state.serverList.filter(
       (item) => item.publicInfo.Id !== serverId
     );
+  },
+  CLEAR_SERVERS(state: ServerState) {
+    Object.assign(state, defaultState());
   }
 };
 
@@ -115,5 +120,8 @@ export const actions: ActionTree<ServerState, ServerState> = {
         root: true
       }
     );
+  },
+  clearServers({ commit }) {
+    commit('CLEAR_SERVERS');
   }
 };

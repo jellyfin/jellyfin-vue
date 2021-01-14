@@ -6,11 +6,13 @@ export interface PageState {
   showNavDrawer: boolean;
 }
 
-export const state = (): PageState => ({
+const defaultState = (): PageState => ({
   title: 'Jellyfin',
   opaqueAppBar: true,
   showNavDrawer: true
 });
+
+export const state = defaultState;
 
 interface TitleMutationPayload {
   title: string;
@@ -39,6 +41,9 @@ export const mutations: MutationTree<PageState> = {
     { showNavDrawer }: NavDrawerMutationPayload
   ) {
     state.showNavDrawer = showNavDrawer;
+  },
+  CLEAR_PAGE(state: PageState) {
+    Object.assign(state, defaultState());
   }
 };
 
@@ -51,5 +56,8 @@ export const actions: ActionTree<PageState, PageState> = {
   },
   showNavDrawer({ commit }, { showNavDrawer }: NavDrawerMutationPayload) {
     commit('SET_NAVDRAWER_VISIBILITY', { showNavDrawer });
+  },
+  clearPage({ commit }) {
+    commit('CLEAR_PAGE');
   }
 };

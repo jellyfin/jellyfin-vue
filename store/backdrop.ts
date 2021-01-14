@@ -5,11 +5,6 @@ export interface BackdropState {
   opacity: number;
 }
 
-export const state = (): BackdropState => ({
-  blurhash: '',
-  opacity: 0.75
-});
-
 interface BackdropMutationPayload {
   newBlurhash: string;
 }
@@ -17,6 +12,12 @@ interface BackdropMutationPayload {
 interface BackdropOpacityMutationPayload {
   newOpacity: number;
 }
+const defaultState = (): BackdropState => ({
+  blurhash: '',
+  opacity: 0.75
+});
+
+export const state = defaultState;
 
 export const getters: GetterTree<BackdropState, BackdropState> = {
   getBackdropBlurhash: (state: BackdropState) => state.blurhash
@@ -36,10 +37,13 @@ export const mutations: MutationTree<BackdropState> = {
     state.opacity = newOpacity;
   },
   CLEAR_CURRENT_BACKDROP(state: BackdropState) {
-    state.blurhash = '';
+    state.blurhash = defaultState().blurhash;
   },
   RESET_BACKDROP_OPACITY(state: BackdropState) {
-    state.opacity = 0.75;
+    state.opacity = defaultState().opacity;
+  },
+  CLEAR_ALL_BACKDROP(state: BackdropState) {
+    Object.assign(state, defaultState());
   }
 };
 
@@ -57,6 +61,9 @@ export const actions: ActionTree<BackdropState, BackdropState> = {
   },
   setBackdropOpacity({ commit }, { newOpacity }: { newOpacity: number }) {
     commit('SET_BACKDROP_OPACITY', { newOpacity });
+  },
+  clearAllBackdrop({ commit }) {
+    commit('CLEAR_ALL_BACKDROP');
   },
   resetBackdropOpacity({ commit }) {
     commit('RESET_BACKDROP_OPACITY');

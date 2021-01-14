@@ -6,9 +6,11 @@ export interface UserViewsState {
   views: BaseItemDto[];
 }
 
-export const state = (): UserViewsState => ({
+const defaultState = (): UserViewsState => ({
   views: []
 });
+
+export const state = defaultState;
 
 interface MutationPayload {
   userViews: BaseItemDto[];
@@ -31,7 +33,7 @@ export const mutations: MutationTree<UserViewsState> = {
     state.views = userViews;
   },
   CLEAR_USER_VIEWS(state: UserViewsState) {
-    state.views = [];
+    Object.assign(state, defaultState());
   }
 };
 
