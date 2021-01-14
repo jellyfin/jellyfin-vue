@@ -276,7 +276,9 @@
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
     "tooltips": {
         "toggleDarkMode": "Basculer en mode sombre",
-        "changeLanguage": "Langue"
+        "changeLanguage": "Langue",
+        "switchToDarkMode": "Basculer en mode sombre",
+        "switchToLightMode": "Basculer en mode clair"
     },
     "noSubtitleSelected": "Aucun sous-titre sélectionné",
     "noSubtitleAvailable": "Aucun sous-titres disponible",
@@ -285,5 +287,7 @@
     "refreshLibrary": "Actualiser la médiathèque",
     "queue": "File d'attente",
     "libraryRefreshQueued": "Actualisation de la médiathèque mise en file d'attente",
-    "directing": "Réalisation"
+    "directing": "Réalisation",
+    "stopPlayback": "Arrêter",
+    "noImagesFound": "Aucune image trouvée"
 }
