@@ -87,5 +87,15 @@
     "editPerson": "Rediger person",
     "edit": "Rediger",
     "discNumber": "Plate {discNumber}",
-    "disc": "Plate"
+    "disc": "Plate",
+    "fullScreen": "Fullskjerm",
+    "filter": "Filter",
+    "failedRetrievingDisplayPreferences": "Kunne ikke hente visningsinnstillinger. Bruker standardinnstillinger.",
+    "errors": {
+        "messages": {
+            "videoPlayerError": "Avspilleren har truffet på en ukorrigerbar feil.",
+            "errorCode": "Feilkode: {errorCode}"
+        },
+        "anErrorHappened": "En feil har oppstått"
+    }
 }
