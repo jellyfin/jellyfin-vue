@@ -162,7 +162,8 @@
             "description": "Gestiona las bibliotecas y sus etiquetas"
         },
         "home": {
-            "description": "Configurar la apariencia y distribución de la pantalla de inicio"
+            "description": "Configurar la apariencia y distribución de la pantalla de inicio",
+            "name": "Inicio"
         },
         "dlna": {
             "name": "DLNA",
@@ -189,7 +190,8 @@
             "description": "Configura como se comportan los reproductores multimedia para este dispositivo"
         },
         "playback": {
-            "name": "Reproducción"
+            "name": "Reproducción",
+            "description": "Editar las preferencias de reproducción para este dispositivo"
         }
     },
     "serverVersion": "Versión del servidor",
@@ -265,7 +267,9 @@
     "tvShowAbbrev": "T{seasonNumber} E{episodeNumber}",
     "tooltips": {
         "toggleDarkMode": "Activar modo oscuro",
-        "changeLanguage": "Idioma"
+        "changeLanguage": "Idioma",
+        "switchToLightMode": "Cambiar al tema claro",
+        "switchToDarkMode": "Cambiar al tema oscuro"
     },
     "serverDashboard": "Panel del servidor",
     "refreshLibrary": "Escanear biblioteca",
@@ -274,5 +278,10 @@
     "noSubtitleAvailable": "No hay subtítulos disponibles",
     "metadataEditor": "Editor de metadatos",
     "libraryRefreshQueued": "Escaneo de biblioteca puesto en cola",
-    "fullScreen": "Pantalla completa"
+    "fullScreen": "Pantalla completa",
+    "upNextName": "A continuación: {upNextItemName}",
+    "thumb": "Miniatura",
+    "stopPlayback": "Detener la reproducción",
+    "dateAdded": "Añadido el",
+    "noImagesFound": "No se han encontrado imágenes"
 }
