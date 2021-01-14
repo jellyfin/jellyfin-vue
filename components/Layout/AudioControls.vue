@@ -92,7 +92,7 @@
                   raised
                   rounded
                   class="mx-1 active-button"
-                  @click="togglePause"
+                  @click="playPause"
                 >
                   <v-icon large>
                     {{
@@ -173,7 +173,7 @@
               raised
               rounded
               class="mx-1 active-button"
-              @click="togglePause"
+              @click="playPause"
             >
               <v-icon>
                 {{
@@ -282,10 +282,9 @@ export default Vue.extend({
       'resetCurrentItemIndex',
       'setNextTrack',
       'setPreviousTrack',
-      'unpause',
-      'pause',
       'toggleShuffle',
-      'toggleRepeatMode'
+      'toggleRepeatMode',
+      'playPause'
     ]),
     getImageUrl(item: BaseItemDto): string | undefined {
       const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
@@ -301,13 +300,6 @@ export default Vue.extend({
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
-    },
-    togglePause(): void {
-      if (this.isPaused) {
-        this.unpause();
-      } else {
-        this.pause();
-      }
     }
   }
 });
