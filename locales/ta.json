@@ -1,8 +1,8 @@
 {
     "alphabetically": "அகர வரிசைப்படி",
     "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்யவும்",
-    "continueListening": "தொடர்ந்து கேளுங்கள்",
-    "continueWatching": "தொடர்ந்து பார்த்துக் கொள்ளுங்கள்",
+    "continueListening": "தொடர்ந்து கேட்பதற்கு",
+    "continueWatching": "தொடர்ந்து பார்க்க",
     "endDate": "கடைசி தேதி",
     "endsAt": "{time} இல் முடிகிறது",
     "episodeNumber": "அத்தியாயம் {episodeNumber}",
@@ -20,7 +20,7 @@
     "playType": "{mediaType} ஐ இயக்கு",
     "present": "தற்போது",
     "rating": "மதிப்பீடு",
-    "releaseDate": "வெளிவரும் தேதி",
+    "releaseDate": "வெளியீட்டு தேதி",
     "serverAddress": "சேவையக முகவரி",
     "serverAddressMustBeUrl": "சேவையக முகவரி சரியான URL ஆக இருக்க வேண்டும்",
     "serverAddressRequired": "சேவையக முகவரி தேவை",
@@ -228,9 +228,9 @@
     "headerExternalIds": "வெளி ஐடிகள்",
     "guestStar": "விருந்தினர் நட்சத்திரம்",
     "general": "பொது",
-    "editPerson": "நபரைத் திருத்து",
-    "editMetadata": "மெட்டாடேட்டாவைத் திருத்து",
-    "edit": "தொகு",
+    "editPerson": "நபரைத் திருத்த",
+    "editMetadata": "மெட்டாடேட்டாவைத் திருத்த",
+    "edit": "திருத்த",
     "discNumber": "வட்டு {discNumber}",
     "director": "இயக்குனர்",
     "details": "விவரங்கள்",
@@ -291,5 +291,6 @@
     "directing": "இயக்குதல்",
     "noImagesFound": "படங்கள் எதுவும் கிடைக்கவில்லை",
     "upNextName": "அடுத்தது: {upNextItemName}",
-    "stopPlayback": "பிளேபேக்கை நிறுத்துங்கள்"
+    "stopPlayback": "பிளேபேக்கை நிறுத்துங்கள்",
+    "person": "நபர்"
 }
