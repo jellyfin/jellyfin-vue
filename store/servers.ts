@@ -51,7 +51,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
 
       if (compareVersions.compare(data.Version || '', '10.7.0', '>=')) {
         if (!data.StartupWizardCompleted) {
-          // Redirect To Startup Wizard
+          this.$router.push('/wizard');
         } else {
           commit('SET_SERVER_USED', {
             publicInfo: data,
