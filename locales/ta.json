@@ -277,7 +277,9 @@
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
     "tooltips": {
         "toggleDarkMode": "இருண்ட பயன்முறையை நிலைமாற்று",
-        "changeLanguage": "மொழி"
+        "changeLanguage": "மொழி",
+        "switchToLightMode": "ஒளி பயன்முறைக்கு மாறவும்",
+        "switchToDarkMode": "இருண்ட பயன்முறைக்கு மாறவும்"
     },
     "refreshLibrary": "நூலகத்தைப் புதுப்பிக்கவும்",
     "queue": "வரிசை",
