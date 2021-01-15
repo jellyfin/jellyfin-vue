@@ -8,12 +8,9 @@ import {
   mutations,
   actions,
   getters,
-  UserViewsState
+  UserViewsState,
+  defaultState
 } from '../userViews';
-
-const USERVIEWS_CLEAR_STORE = {
-  views: []
-};
 
 const DEMO_TEST_ITEM_A = {
   Name: 'test-view-a',
@@ -44,7 +41,7 @@ beforeEach(() => {
 });
 
 test('When "SET_USER_VIEWS" is committed, user views are set.', () => {
-  store.replaceState({ ...USERVIEWS_CLEAR_STORE });
+  store.replaceState({ ...defaultState() });
 
   store.commit('SET_USER_VIEWS', {
     userViews: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]

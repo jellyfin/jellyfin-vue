@@ -6,7 +6,7 @@ export interface PageState {
   showNavDrawer: boolean;
 }
 
-const defaultState = (): PageState => ({
+export const defaultState = (): PageState => ({
   title: 'Jellyfin',
   opaqueAppBar: true,
   showNavDrawer: true

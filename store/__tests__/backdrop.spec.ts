@@ -2,16 +2,18 @@ import Vue, { VueConstructor } from 'vue';
 import { createLocalVue } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import { cloneDeep } from 'lodash';
-import { state, mutations, actions, BackdropState, getters } from '../backdrop';
+import {
+  state,
+  mutations,
+  actions,
+  BackdropState,
+  getters,
+  defaultState
+} from '../backdrop';
 
 const BACKDROP_SET_TEST_VALUE = {
   blurhash: 'L7F$k?_*41GX^]KhTnJ8G?OXvz#;',
   opacity: 1
-};
-
-const BACKDROP_CLEAR_TEST_VALUE: BackdropState = {
-  blurhash: '',
-  opacity: 0.75
 };
 
 const BACKDROP_TEST_MUTATION = {
@@ -30,7 +32,7 @@ beforeEach(() => {
 });
 
 test('When "SET_CURRENT_BACKDROP" is committed, the hash value is set.', () => {
-  store.replaceState({ ...BACKDROP_CLEAR_TEST_VALUE });
+  store.replaceState({ ...defaultState() });
 
   store.commit('SET_CURRENT_BACKDROP', BACKDROP_TEST_MUTATION);
 
@@ -38,7 +40,7 @@ test('When "SET_CURRENT_BACKDROP" is committed, the hash value is set.', () => {
 });
 
 test('When "SET_BACKDROP_OPACITY" is committed, the hash value is set.', () => {
-  store.replaceState({ ...BACKDROP_CLEAR_TEST_VALUE });
+  store.replaceState({ ...defaultState() });
 
   store.commit('SET_BACKDROP_OPACITY', BACKDROP_TEST_MUTATION);
 
@@ -63,7 +65,7 @@ test('When "RESET_BACKDROP_OPACITY" is committed, the opacity is set to 0.75.', 
 
 // Default case
 test('When setBackdrop is called, the has is set. Case A', () => {
-  store.replaceState({ ...BACKDROP_CLEAR_TEST_VALUE });
+  store.replaceState({ ...defaultState() });
 
   store.dispatch('setBackdrop', { hash: BACKDROP_TEST_MUTATION.newBlurhash });
 
@@ -80,7 +82,7 @@ test('When clearBackdrop is called, the hash value is cleared.', () => {
 });
 
 test('When setBackdropOpacity is called, the opacity value is set.', () => {
-  store.replaceState({ ...BACKDROP_CLEAR_TEST_VALUE });
+  store.replaceState({ ...defaultState() });
 
   store.dispatch('setBackdropOpacity', {
     newOpacity: BACKDROP_TEST_MUTATION.newOpacity
@@ -94,5 +96,5 @@ test('When resetBackdropOpacity is called, the opacity value is cleared.', () =>
 
   store.dispatch('resetBackdropOpacity');
 
-  expect(store.state.opacity).toBe(BACKDROP_CLEAR_TEST_VALUE.opacity);
+  expect(store.state.opacity).toBe(defaultState().opacity);
 });

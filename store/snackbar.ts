@@ -5,7 +5,7 @@ export interface SnackbarState {
   color: string;
 }
 
-const defaultState = (): SnackbarState => ({
+export const defaultState = (): SnackbarState => ({
   message: '',
   color: ''
 });

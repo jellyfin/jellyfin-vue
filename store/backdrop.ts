@@ -12,7 +12,8 @@ interface BackdropMutationPayload {
 interface BackdropOpacityMutationPayload {
   newOpacity: number;
 }
-const defaultState = (): BackdropState => ({
+
+export const defaultState = (): BackdropState => ({
   blurhash: '',
   opacity: 0.75
 });

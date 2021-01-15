@@ -10,7 +10,7 @@ export interface DeviceState {
   clientName: string;
 }
 
-const defaultState = (): DeviceState => ({
+export const defaultState = (): DeviceState => ({
   deviceId: '',
   deviceName: '',
   clientVersion: '',

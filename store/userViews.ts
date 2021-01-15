@@ -6,7 +6,7 @@ export interface UserViewsState {
   views: BaseItemDto[];
 }
 
-const defaultState = (): UserViewsState => ({
+export const defaultState = (): UserViewsState => ({
   views: []
 });
 
