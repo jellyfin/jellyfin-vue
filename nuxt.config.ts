@@ -155,7 +155,7 @@ const config: NuxtConfig = {
       { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
       { code: 'es', iso: 'es-ES', name: 'Español (España)', file: 'es.json' },
       { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
-      { code: 'nb', iso: 'nb-NO', name: 'Bokmål', file: 'nb_NO.json' },
+      { code: 'nb', iso: 'nb-NO', name: 'Norsk', file: 'nb_NO.json' },
       { code: 'nl', iso: 'nl-NL', name: 'Nederlands', file: 'nl.json' },
       { code: 'pl', iso: 'pl-PL', name: 'Polski', file: 'pl.json' },
       { code: 'ro', iso: 'ro-RO', name: 'Română', file: 'ro.json' },
