@@ -285,5 +285,6 @@
     "images": "Bilder",
     "headerExternalIds": "Eksterne IDer",
     "guestStar": "Gjestestjerne",
-    "general": "Generelt"
+    "general": "Generelt",
+    "editMetadata": "Rediger metadata"
 }
