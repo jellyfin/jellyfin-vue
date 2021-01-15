@@ -51,7 +51,7 @@ export default Vue.extend({
     },
     skeletonLength: {
       type: Number,
-      default: 3
+      default: 0
     }
   },
   methods: {
