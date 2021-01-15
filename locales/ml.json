@@ -287,5 +287,6 @@
     "libraryRefreshQueued": "ലൈബ്രറി പുതുക്കൽ ക്യൂവിലാണ്",
     "noImagesFound": "ചിത്രങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
     "stopPlayback": "പ്ലേബാക്ക് നിർത്തുക",
-    "upNextName": "അടുത്തത്: {upNextItemName}"
+    "upNextName": "അടുത്തത്: {upNextItemName}",
+    "person": "വ്യക്തി"
 }
