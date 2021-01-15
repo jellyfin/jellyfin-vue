@@ -6,6 +6,7 @@
           :class="absolute ? 'card-more-button' : ''"
           icon
           small
+          :outlined="outlined"
           :dark="dark"
           v-bind="attrs"
           v-on="on"
@@ -53,6 +54,10 @@ export default Vue.extend({
     dark: {
       type: Boolean,
       default: true
+    },
+    outlined: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

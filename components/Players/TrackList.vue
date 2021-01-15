@@ -67,9 +67,7 @@
                     {{ artist.Name }}
                   </nuxt-link>
                 </div>
-                <v-btn v-if="hover" icon disabled class="ml-auto">
-                  <v-icon>mdi-dots-horizontal</v-icon>
-                </v-btn>
+                <item-menu v-show="hover" :item="item" :absolute="false" />
               </div>
             </td>
             <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>

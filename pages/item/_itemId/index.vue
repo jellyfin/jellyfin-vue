@@ -61,8 +61,8 @@
               />
               <v-skeleton-loader v-else type="text" width="50em" class="mt-2" />
             </div>
-            <div
-              class="mt-4"
+            <v-row
+              class="mt-4 align-center"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
@@ -78,10 +78,8 @@
                 {{ $t('play') }}
               </v-btn>
               <v-skeleton-loader v-else type="button" />
-              <v-btn v-if="loaded" outlined icon>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </div>
+              <item-menu :item="item" outlined :absolute="false" />
+            </v-row>
             <v-col cols="12" md="10">
               <v-row
                 v-if="
