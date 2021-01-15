@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col md="4">
+      <v-col sm="6" md="6" lg="5">
         <h1 class="text-h4 mb-6 text-center">{{ $t('selectServer') }}</h1>
         <div v-if="$store.state.servers.serverList">
           <server-card
