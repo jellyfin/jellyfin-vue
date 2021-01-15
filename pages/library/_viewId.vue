@@ -42,6 +42,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
   async asyncData({ params, $api, $auth }) {
@@ -125,53 +126,42 @@ export default Vue.extend({
       this.loading = false;
     }
   },
-  beforeMount() {
+  async beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
     });
-    try {
-      this.loading = true;
 
-      if (
-        this.collectionInfo &&
-        ['CollectionFolder', 'Folder', 'UserView'].includes(
-          this.collectionInfo.Type || ''
-        )
-      ) {
-        if (this.collectionInfo.Name) {
-          this.setPageTitle({
-            title: this.collectionInfo.Name
-          });
-        }
-
-        // Set default view type - This will trigger an items refresh
-        switch (this.collectionInfo.CollectionType) {
-          case 'tvshows':
-            this.viewType = 'Series';
-            break;
-          case 'movies':
-            this.viewType = 'Movie';
-            break;
-          case 'books':
-            this.viewType = 'Book';
-            break;
-          case 'music':
-            this.viewType = 'MusicAlbum';
-            break;
-          default:
-            this.refreshItems();
-            break;
-        }
-
-        this.$nuxt.$loading.finish();
+    if (
+      this.collectionInfo?.Type &&
+      validLibraryTypes.includes(this.collectionInfo.Type)
+    ) {
+      if (this.collectionInfo.Name) {
+        this.setPageTitle({
+          title: this.collectionInfo.Name
+        });
       }
-    } catch (error) {
-      // Can't get given library ID
-      this.$nuxt.error({
-        statusCode: 404,
-        message: this.$t('libraryNotFound')
-      });
+
+      // Set default view type - This will trigger an items refresh
+      switch (this.collectionInfo.CollectionType) {
+        case 'tvshows':
+          this.viewType = 'Series';
+          break;
+        case 'movies':
+          this.viewType = 'Movie';
+          break;
+        case 'books':
+          this.viewType = 'Book';
+          break;
+        case 'music':
+          this.viewType = 'MusicAlbum';
+          break;
+        default:
+          await this.refreshItems();
+          break;
+      }
+
+      this.$nuxt.$loading.finish();
     }
   },
   destroyed() {

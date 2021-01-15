@@ -5,14 +5,16 @@ export interface SnackbarState {
   color: string;
 }
 
-export const state = (): SnackbarState => ({
+export const defaultState = (): SnackbarState => ({
   message: '',
   color: ''
 });
 
+export const state = defaultState;
+
 interface MutationPayload {
   message: string;
-  color: string | undefined | null;
+  color?: string;
 }
 
 export const mutations: MutationTree<SnackbarState> = {
@@ -24,8 +26,7 @@ export const mutations: MutationTree<SnackbarState> = {
     state.color = color || '';
   },
   RESET_MESSAGE(state: SnackbarState) {
-    state.message = '';
-    state.color = '';
+    Object.assign(state, defaultState());
   }
 };
 

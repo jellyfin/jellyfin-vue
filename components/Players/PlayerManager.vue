@@ -48,7 +48,7 @@
                     class="all-pointer-events"
                     icon
                     x-large
-                    @click="togglePause"
+                    @click="playPause"
                   >
                     <v-icon size="48">
                       {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
@@ -112,7 +112,7 @@
                         <v-btn icon @click="setPreviousTrack">
                           <v-icon> mdi-skip-previous </v-icon>
                         </v-btn>
-                        <v-btn icon @click="togglePause">
+                        <v-btn icon @click="playPause">
                           <v-icon>
                             {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
                           </v-icon>
@@ -160,17 +160,14 @@ export default Vue.extend({
   mixins: [timeUtils],
   data() {
     return {
-      supportedFeatures: {} as SupportedFeaturesInterface,
-      clicked: false,
-      currentInput: 0
+      supportedFeatures: {} as SupportedFeaturesInterface
     };
   },
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getPreviousItem',
-      'getCurrentlyPlayingMediaType',
-      'getCurrentlyPlayingType'
+      'getCurrentlyPlayingMediaType'
     ]),
     isPlaying(): boolean {
       return (
@@ -183,9 +180,6 @@ export default Vue.extend({
     isMinimized(): boolean {
       return this.$store.state.playbackManager.isMinimized;
     },
-    currentPosition(): number {
-      return this.$store.state.playbackManager.currentTime;
-    },
     currentItemName(): string {
       switch (this.getCurrentItem.Type) {
         case 'Episode':
@@ -193,19 +187,6 @@ export default Vue.extend({
         case 'Movie':
         default:
           return this.getCurrentItem.Name;
-      }
-    },
-    sliderValue: {
-      get(): number {
-        if (!this.clicked) {
-          return this.$store.state.playbackManager.currentTime;
-        }
-        return this.currentInput;
-      }
-    },
-    realPosition: {
-      get(): number {
-        return this.$store.state.playbackManager.currentTime;
       }
     }
   },
@@ -219,7 +200,7 @@ export default Vue.extend({
           // Report playback stop for the previous item
           if (
             state.playbackManager.currentTime !== null &&
-            this.getPreviousItem.Id
+            this.getPreviousItem?.Id
           ) {
             this.$api.playState.reportPlaybackStopped(
               {
@@ -322,6 +303,18 @@ export default Vue.extend({
       }
     });
   },
+  mounted() {
+    this.$store.subscribe((mutation, state: AppState) => {
+      switch (mutation.type) {
+        case 'playbackManager/TOGGLE_MINIMIZE':
+          if (state.playbackManager.isMinimized === true) {
+            window.removeEventListener('keydown', this.handleKeyPress);
+          } else if (state.playbackManager.isMinimized === false) {
+            window.addEventListener('keydown', this.handleKeyPress);
+          }
+      }
+    });
+  },
   methods: {
     ...mapActions('playbackManager', [
       'toggleMinimized',
@@ -330,10 +323,9 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'setLastItemIndex',
-      'resetLastItemIndex',
-      'pause',
-      'unpause',
-      'changeCurrentTime'
+      'playPause',
+      'skipForward',
+      'skipBackward'
     ]),
     getContentClass(): string {
       return `player ${
@@ -347,11 +339,20 @@ export default Vue.extend({
       this.resetCurrentItemIndex();
       this.setNextTrack();
     },
-    togglePause(): void {
-      if (this.isPaused) {
-        this.unpause();
-      } else {
-        this.pause();
+    handleKeyPress(e: KeyboardEvent): void {
+      if (!this.isMinimized && this.isPlaying) {
+        switch (e.key) {
+          case 'Spacebar':
+          case ' ':
+            this.playPause();
+            break;
+          case 'ArrowRight':
+            this.skipForward();
+            break;
+          case 'ArrowLeft':
+            this.skipBackward();
+            break;
+        }
       }
     }
   }

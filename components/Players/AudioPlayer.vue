@@ -19,7 +19,7 @@ import shaka from 'shaka-player/dist/shaka-player.compiled';
 // @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { PlaybackInfoResponse } from '@jellyfin/client-axios';
+import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
@@ -86,11 +86,6 @@ export default Vue.extend({
                 (this.$refs.audioPlayer as HTMLAudioElement).play();
               }
               break;
-            case 'playbackManager/RESET_CURRENT_TIME':
-              if (this.$refs.audioPlayer) {
-                (this.$refs.audioPlayer as HTMLAudioElement).currentTime = 0;
-              }
-              break;
             case 'playbackManager/CHANGE_CURRENT_TIME':
               if (this.$refs.audioPlayer) {
                 (this.$refs
@@ -101,6 +96,15 @@ export default Vue.extend({
               if (this.$refs.audioPlayer) {
                 (this.$refs.audioPlayer as HTMLAudioElement).volume =
                   this.currentVolume / 100;
+              }
+              break;
+            case 'playbackManager/SET_REPEAT_MODE':
+              if (this.$refs.audioPlayer) {
+                if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
+                  (this.$refs.audioPlayer as HTMLAudioElement).loop = true;
+                } else {
+                  (this.$refs.audioPlayer as HTMLAudioElement).loop = false;
+                }
               }
           }
         });

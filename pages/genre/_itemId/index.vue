@@ -98,6 +98,7 @@ export default Vue.extend({
 
       this.loaded = true;
     } catch (error) {
+      /* eslint-disable-next-line no-console */
       console.error(error);
       // Can't get given library ID
       this.$nuxt.error({

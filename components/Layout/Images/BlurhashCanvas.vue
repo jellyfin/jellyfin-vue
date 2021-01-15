@@ -1,13 +1,14 @@
 <template>
-  <transition name="fade" mode="in-out">
+  <transition-group name="fade-fast" mode="out-in">
     <canvas
-      v-if="validHash"
-      v-show="!loading"
+      v-show="!loading && pixels"
       ref="canvas"
+      :key="`canvas-${hash}`"
       :width="width"
       :height="height"
+      class="absolute"
     />
-  </transition>
+  </transition-group>
 </template>
 
 <script lang="ts">
@@ -35,52 +36,70 @@ export default Vue.extend({
   },
   data() {
     return {
-      validHash: true,
-      loading: true
+      loading: true,
+      pixels: undefined as Uint8ClampedArray | undefined
     };
   },
   watch: {
     hash(): void {
       this.$nextTick(() => {
-        this.draw();
+        this.loading = true;
+        this.getPixels();
       });
+    },
+    pixels(): void {
+      this.draw();
     }
   },
   mounted() {
-    this.draw();
+    this.getPixels();
   },
   methods: {
-    async draw(): Promise<void> {
+    draw(): void {
       const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
       const imageData = ctx?.createImageData(this.width, this.height);
+
+      if (imageData && this.pixels) {
+        imageData.data.set(this.pixels);
+        ctx?.putImageData(imageData, 0, 0);
+        this.loading = false;
+      }
+    },
+    async getPixels(): Promise<void> {
       try {
-        const pixels = await getPixels(
+        this.pixels = await getPixels(
           this.hash,
           this.width,
           this.height,
           this.punch
         );
-        if (imageData) {
-          imageData.data.set(pixels);
-          ctx?.putImageData(imageData, 0, 0);
-          this.loading = false;
-        }
       } catch {
-        this.validHash = false;
+        this.pixels = undefined;
+        this.$emit('error');
       }
     }
   }
 });
 </script>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s;
+<style lang="scss" scoped>
+.fade-fast-enter-active,
+.fade-fast-leave-active {
+  transition: opacity 0.15s;
 }
 
-.fade-enter,
-.fade-leave-to {
+.fade-fast-enter,
+.fade-fast-leave-to {
   opacity: 0;
+}
+
+.absolute {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>

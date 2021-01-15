@@ -1,7 +1,7 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12" :offset-md="1" md="5" class="pt-0 pb-4">
+  <settings-page>
+    <template #content>
+      <v-col md="6" class="pt-0 pb-4">
         <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.logs') }}</h2>
         <v-list v-if="logFiles && logFiles.length > 0" two-line class="mb-2">
           <v-list-item-group>
@@ -22,7 +22,7 @@
                 />
               </v-list-item-content>
               <v-list-item-action>
-                <v-icon>mdi-chevron-right</v-icon>
+                <v-icon>mdi-open-in-new</v-icon>
               </v-list-item-action>
             </v-list-item>
           </v-list-item-group>
@@ -42,7 +42,7 @@
           >
         </v-card>
       </v-col>
-      <v-col cols="12" md="5" class="pt-0 pb-4">
+      <v-col md="6" class="pt-0 pb-4">
         <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.activity') }}</h2>
         <v-list
           v-if="activityList && activityList.length > 0"
@@ -85,8 +85,8 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
-  </v-container>
+    </template>
+  </settings-page>
 </template>
 
 <script lang="ts">

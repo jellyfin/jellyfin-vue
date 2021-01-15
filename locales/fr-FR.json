@@ -165,7 +165,7 @@
             "description": "Lire et rechercher les journaux d'activité du serveur et de l'utilisateur"
         },
         "transcodingAndStreaming": {
-            "description": "Gérer la façon dont le serveur transcode et envoie les flux vers les clients",
+            "description": "Gérer la façon dont ce serveur transcode et envoie les flux vers les clients",
             "name": "Transcodage et streaming"
         }
     },
@@ -258,8 +258,8 @@
             "recentlyAdded": "Récemment ajouté"
         },
         "welcome": {
-            "checkNewItems": "Découvrez les nouveautés",
-            "noItems": "Il n'y a aucun élément récemment ajouté à afficher",
+            "checkNewItems": "Découvrez les nouveautés.",
+            "noItems": "Il n'y a aucun élément récemment ajouté à afficher.",
             "helloUser": "Bonjour {nom d'utilisateur} !"
         }
     },
@@ -270,5 +270,24 @@
     "tags": "Mots clés",
     "tagline": "Slogan",
     "sortTitle": "trier le titre",
-    "guestStar": "Guest-star"
+    "guestStar": "Guest-star",
+    "version": "Version",
+    "unableToRefreshLibrary": "Impossible de rafraîchir la bibliothèque",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "Basculer en mode sombre",
+        "changeLanguage": "Langue",
+        "switchToDarkMode": "Basculer en mode sombre",
+        "switchToLightMode": "Basculer en mode clair"
+    },
+    "noSubtitleSelected": "Aucun sous-titre sélectionné",
+    "noSubtitleAvailable": "Aucun sous-titres disponible",
+    "metadataEditor": "Éditeur de métadonnées",
+    "fullScreen": "Plein écran",
+    "refreshLibrary": "Actualiser la médiathèque",
+    "queue": "File d'attente",
+    "libraryRefreshQueued": "Actualisation de la médiathèque mise en file d'attente",
+    "directing": "Réalisation",
+    "stopPlayback": "Arrêter",
+    "noImagesFound": "Aucune image trouvée"
 }

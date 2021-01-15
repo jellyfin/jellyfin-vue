@@ -270,5 +270,7 @@
         "failedGetLogs": "无法获取到日志",
         "logs": "日志",
         "activity": "活动"
-    }
+    },
+    "libraryRefreshQueued": "媒体库将会被更新",
+    "fullScreen": "全屏幕"
 }

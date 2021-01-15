@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { MutationTree } from 'vuex';
+import { MutationTree, ActionTree } from 'vuex';
 import { TvShowsState } from './tvShows';
 import { ServerState } from './servers';
 import { PageState } from './page';
@@ -13,17 +13,17 @@ import { DeviceState } from './deviceProfile';
 import { DisplayPreferencesState } from './displayPreferences';
 
 export interface AppState {
-  tvShows: TvShowsState;
-  page: PageState;
-  servers: ServerState;
-  snackBar: SnackbarState;
-  user: UserState;
-  userViews: UserViewsState;
-  homeSection: HomeSectionState;
-  playbackManager: PlaybackManagerState;
   backdrop: BackdropState;
   device: DeviceState;
   displayPreferences: DisplayPreferencesState;
+  homeSection: HomeSectionState;
+  page: PageState;
+  playbackManager: PlaybackManagerState;
+  servers: ServerState;
+  snackBar: SnackbarState;
+  tvShows: TvShowsState;
+  user: UserState;
+  userViews: UserViewsState;
 }
 
 export interface RootState {
@@ -67,5 +67,26 @@ export const mutations: MutationTree<RootState> = {
   },
   SOCKET_RECONNECT_ERROR(state: RootState) {
     Vue.set(state.socket, 'reconnectError', true);
+  }
+};
+
+export const actions: ActionTree<RootState, RootState> = {
+  async reset({ dispatch }, { clearCritical }: { clearCritical: boolean }) {
+    const promises = [];
+    promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
+    promises.push(dispatch('deviceProfile/clearDeviceProfile', { root: true }));
+    promises.push(dispatch('displayPreferences/resetState', { root: true }));
+    promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
+    promises.push(dispatch('page/clearPage', { root: true }));
+    promises.push(dispatch('playbackManager/stop', { root: true }));
+    if (clearCritical) {
+      promises.push(dispatch('servers/clearServers', { root: true }));
+    }
+    promises.push(dispatch('snackbar/resetMessage', { root: true }));
+    promises.push(dispatch('tvShows/clearTvShows', { root: true }));
+    promises.push(dispatch('user/clearUser', { root: true }));
+    promises.push(dispatch('userViews/clearUserViews', { root: true }));
+
+    await Promise.all(promises);
   }
 };

@@ -27,13 +27,15 @@ export interface HomeSectionState {
   latestMedia: LatestMedia;
 }
 
-export const state = (): HomeSectionState => ({
+const defaultState = (): HomeSectionState => ({
   libraries: [],
   audioResumes: [],
   videoResumes: [],
   upNext: [],
   latestMedia: {}
 });
+
+export const state = defaultState;
 
 type MutationPayload = {
   libraries: BaseItemDto[];
@@ -91,8 +93,8 @@ export const mutations: MutationTree<HomeSectionState> = {
     }
     Vue.set(state.latestMedia, libraryId, latestMedia);
   },
-  CLEAR_HOME_SECTION_STATE(state: HomeSectionState) {
-    state.libraries = [];
+  CLEAR_HOME_SECTION(state: HomeSectionState) {
+    Object.assign(state, defaultState());
   }
 };
 export const actions: ActionTree<HomeSectionState, AppState> = {
@@ -254,5 +256,8 @@ export const actions: ActionTree<HomeSectionState, AppState> = {
         root: true
       }
     );
+  },
+  clearHomeSection({ commit }) {
+    commit('CLEAR_HOME_SECTION');
   }
 };

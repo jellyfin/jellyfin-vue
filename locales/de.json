@@ -94,7 +94,7 @@
     "nextUp": "Als nächstes",
     "libraries": "Bibliotheken",
     "latestLibrary": "Neueste {libraryName}",
-    "darkModeToggle": "Nachtmodus umschalten",
+    "darkModeToggle": "Dunkelmodus umschalten",
     "errors": {
         "messages": {
             "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt.",
@@ -111,7 +111,7 @@
     "settingsSections": {
         "users": {
             "name": "Benutzer",
-            "description": "Bearbeite Benutzer und Erlaubnisse"
+            "description": "Bearbeite Benutzer und Berechtigungen"
         },
         "transcodingAndStreaming": {
             "name": "Transkodierung & Streaming",
@@ -139,7 +139,7 @@
         },
         "notifications": {
             "name": "Benachrichtigungen",
-            "description": "Bearbeite Benachrichtigungen welche von diesem Server gesendet werden"
+            "description": "Verwalten und Konfigurieren der von diesem Server gesendeten Benachrichtigungen"
         },
         "networking": {
             "name": "Netzwerk",
@@ -263,12 +263,28 @@
     "homeHeader": {
         "welcome": {
             "helloUser": "Hallo {userName}!",
-            "checkNewItems": "Schau die Neuerungen an",
-            "noItems": "Es gibt keine kürzlich hinzugefügten Elemente zum Anzeigen"
+            "checkNewItems": "Schau, was es Neues gibt.",
+            "noItems": "Keine kürzlich hinzugefügten Elemente zum Anzeigen vorhanden."
         },
         "items": {
-            "recentlyAdded": "Neulich hinzugefügt"
+            "recentlyAdded": "Zuletzt hinzugefügt"
         }
     },
-    "undefined": "Nicht definiert"
+    "undefined": "Nicht definiert",
+    "noSubtitleSelected": "Kein Untertitel ausgewählt",
+    "libraryRefreshQueued": "Aktualisierung der Bibliothek in der Warteschlange",
+    "directing": "Regie",
+    "version": "Version",
+    "unableToRefreshLibrary": "Bibliothek kann nicht aktualisiert werden",
+    "tooltips": {
+        "toggleDarkMode": "Umschalten des Dunkelmodus",
+        "changeLanguage": "Sprache"
+    },
+    "refreshLibrary": "Bibliothek aktualisieren",
+    "queue": "Warteschlange",
+    "noSubtitleAvailable": "Kein Untertitel verfügbar",
+    "metadataEditor": "Metadaten-Editor",
+    "fullScreen": "Vollbild",
+    "tvShowAbbrev": "S{seasonNumber} F{episodeNumber}",
+    "writing": "Drehbuchautoren"
 }

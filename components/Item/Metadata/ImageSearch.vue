@@ -38,7 +38,20 @@
       </v-row>
       <v-divider />
       <v-row class="image-results">
-        <v-col class="card-grid-container">
+        <v-progress-circular
+          v-if="loading"
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+          class="loading-bar"
+        />
+        <v-card v-else-if="!images.length" class="mx-auto">
+          <v-card-title>
+            {{ $t('noImagesFound') }}
+          </v-card-title>
+        </v-card>
+        <v-col v-else class="card-grid-container">
           <v-card
             v-for="(item, i) in images"
             :key="`${item.Type}-${i}`"
@@ -77,14 +90,6 @@
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-progress-circular
-          v-if="loading"
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate
-          class="loading-bar"
-        ></v-progress-circular>
       </v-row>
     </v-card>
   </v-dialog>

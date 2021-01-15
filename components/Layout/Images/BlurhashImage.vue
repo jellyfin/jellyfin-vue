@@ -1,39 +1,36 @@
 <template>
-  <div v-if="isValidTag()" ref="img" class="absolute">
-    <transition-group mode="in-out" name="fade" class="absolute">
+  <div class="absolute">
+    <div v-if="!error" ref="img" class="absolute">
       <blurhash-canvas
-        v-if="canBeBlurhashed()"
+        v-if="hash"
         key="canvas"
-        :hash="getHash()"
+        :hash="hash"
         :width="width"
         :height="height"
         :punch="punch"
         class="absolute"
       />
-      <img
-        v-show="!loading"
-        key="image"
-        class="absolute"
-        :src="image"
-        v-bind="$attrs"
-        :alt="alt"
-        @error="onError"
-        @load="loading = false"
-      />
-    </transition-group>
+      <transition name="fade-fast" mode="in-out">
+        <img
+          v-show="!loading"
+          :key="`blurhashimage-${item.Id}`"
+          class="absolute"
+          :src="image"
+          v-bind="$attrs"
+          :alt="alt"
+          @error="onError"
+          @load="loading = false"
+        />
+      </transition>
+    </div>
+    <slot v-else name="placeholder" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  BaseItemDto,
-  BaseItemDtoImageBlurHashes,
-  ImageType
-} from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
-
-const excludedTypes = [ImageType.Logo];
 
 export default Vue.extend({
   mixins: [imageHelper],
@@ -65,97 +62,55 @@ export default Vue.extend({
   },
   data() {
     return {
-      image: '',
-      loading: true
+      image: '' as string | undefined,
+      loading: true,
+      error: false
     };
   },
+  computed: {
+    hash: {
+      get(): string | undefined {
+        return this.getBlurhash(this.item, this.type);
+      }
+    }
+  },
+  watch: {
+    item(): void {
+      this.resetImage();
+    },
+    type(): void {
+      this.resetImage();
+    }
+  },
   mounted(): void {
-    const img = this.$refs.img as HTMLElement;
-    // We don't pass the item itself as we already did all the tags checking in this component,
-    // so doing it again in the mixin is useless.
-    this.image = this.getImageUrlForElement(this.type, {
-      itemId: this.item.Id,
-      element: img
-    });
+    this.getImage();
   },
   methods: {
-    isValidTag(): boolean {
-      if (
-        (this.item?.ImageTags &&
-          Object.prototype.hasOwnProperty.call(
-            this.item?.ImageTags,
-            this.type
-          )) ||
-        (this.type === ImageType.Backdrop &&
-          this.item?.BackdropImageTags &&
-          this.item?.BackdropImageTags.length > 0)
-      ) {
-        return true;
-      } else {
-        this.onError();
-        return false;
-      }
-    },
-    canBeBlurhashed(): boolean {
-      if (
-        excludedTypes.includes(this.type) ||
-        (this.item?.ImageBlurHashes as Array<never>).length === 0
-      ) {
-        return false;
-      } else if (
-        Object.prototype.hasOwnProperty.call(
-          this.item?.ImageBlurHashes,
-          this.type
-        ) &&
-        this.type !== ImageType.Backdrop
-      ) {
-        return true;
-      } else if (
-        this.type === ImageType.Backdrop &&
-        (this.item?.BackdropImageTags as Array<never>).length > 0 &&
-        this.item?.ImageBlurHashes?.Backdrop &&
-        Object.prototype.hasOwnProperty.call(
-          this.item?.ImageBlurHashes?.Backdrop as Record<string, string>,
-          (this.item?.BackdropImageTags as Array<string>)[0]
-        )
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    getHash(): string {
-      if (this.type === ImageType.Backdrop) {
-        const tag = (this.item?.BackdropImageTags as Array<string>)[0];
-
-        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)
-          .Backdrop as Record<string, string>)[tag];
-      } else {
-        return ((this.item?.ImageBlurHashes as BaseItemDtoImageBlurHashes)[
-          this.type
-        ] as Record<string, string>)[
-          (this.item?.ImageTags as Record<string, string>)[this.type]
-        ];
-      }
-    },
     onError(): void {
       this.$emit('error');
+      this.error = true;
+    },
+    getImage(): void {
+      const img = this.$refs.img as HTMLElement;
+      this.image = this.getImageUrlForElement(this.type, {
+        item: this.item,
+        element: img
+      });
+      if (!this.image) {
+        this.onError();
+      }
+    },
+    resetImage(): void {
+      this.loading = true;
+      this.error = false;
+      this.getImage();
     }
   }
 });
 </script>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
+<style lang="scss" scoped>
+@import '~/assets/transitions.scss';
 .absolute {
   height: 100%;
   width: 100%;
@@ -165,6 +120,7 @@ export default Vue.extend({
   right: 0;
   bottom: 0;
 }
+
 img {
   color: transparent;
   object-fit: cover;

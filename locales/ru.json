@@ -280,5 +280,11 @@
     "noSubtitleSelected": "Нет выбранных субтитров",
     "noSubtitleAvailable": "Нет доступных субтитров",
     "libraryRefreshQueued": "Подновление медиатеки в очереди",
-    "fullScreen": "Полный экран"
+    "fullScreen": "Полный экран",
+    "tooltips": {
+        "toggleDarkMode": "Переключиться на тёмный режим",
+        "changeLanguage": "Язык"
+    },
+    "metadataEditor": "Редактор метаданных",
+    "noImagesFound": "Рисунков не найдено"
 }

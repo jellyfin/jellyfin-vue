@@ -281,5 +281,15 @@
     "directing": "Režíruje",
     "unableToRefreshLibrary": "Aktualizace knihovny se nezdařila",
     "refreshLibrary": "Aktualizovat knihovnu",
-    "libraryRefreshQueued": "Aktualizace knihovny zařazena do fronty"
+    "libraryRefreshQueued": "Aktualizace knihovny zařazena do fronty",
+    "tooltips": {
+        "toggleDarkMode": "Přepnout tmavý režim",
+        "changeLanguage": "Jazyk",
+        "switchToLightMode": "Přepnout světlý režim",
+        "switchToDarkMode": "Přepnout tmavý režim"
+    },
+    "metadataEditor": "Editor metadat",
+    "noImagesFound": "Nebyly nalezeny žádné obrázky",
+    "upNextName": "Další: {upNextItemName}",
+    "stopPlayback": "Zastavit přehrávání"
 }

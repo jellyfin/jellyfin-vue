@@ -146,7 +146,7 @@
         },
         "notifications": {
             "name": "அறிவிப்புகள்",
-            "description": "இந்த சேவையகம் அனுப்பிய அறிவிப்புகளை நிர்வகிக்கவும் உள்ளமைக்கவும்"
+            "description": "இந்த சேவையகம் அனுப்பிய அறிவிப்பை நிர்வகிக்கவும் உள்ளமைக்கவும்"
         },
         "networking": {
             "name": "நெட்வொர்க்கிங்",
@@ -265,10 +265,31 @@
             "recentlyAdded": "சமீபத்தில் சேர்க்கப்பட்டது"
         },
         "welcome": {
-            "checkNewItems": "புதியது என்ன என்பதைப் பாருங்கள்",
-            "noItems": "காண்பிக்க சமீபத்தில் சேர்க்கப்பட்ட உருப்படிகள் எதுவும் இல்லை",
+            "checkNewItems": "புதியது என்ன என்பதைப் பாருங்கள்.",
+            "noItems": "காண்பிக்க சமீபத்தில் சேர்க்கப்பட்ட உருப்படிகள் எதுவும் இல்லை.",
             "helloUser": "வணக்கம் {userName}!"
         }
     },
-    "undefined": "வரையறுக்கப்படவில்லை"
+    "undefined": "வரையறுக்கப்படவில்லை",
+    "writing": "எழுதுதல்",
+    "version": "பதிப்பு",
+    "unableToRefreshLibrary": "நூலகத்தைப் புதுப்பிக்க முடியவில்லை",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "toggleDarkMode": "இருண்ட பயன்முறையை நிலைமாற்று",
+        "changeLanguage": "மொழி",
+        "switchToLightMode": "ஒளி பயன்முறைக்கு மாறவும்",
+        "switchToDarkMode": "இருண்ட பயன்முறைக்கு மாறவும்"
+    },
+    "refreshLibrary": "நூலகத்தைப் புதுப்பிக்கவும்",
+    "queue": "வரிசை",
+    "noSubtitleSelected": "வசன வரிகள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "noSubtitleAvailable": "வசன வரிகள் எதுவும் கிடைக்கவில்லை",
+    "metadataEditor": "மெட்டாடேட்டா எடிட்டர்",
+    "libraryRefreshQueued": "நூலக புதுப்பிப்பு வரிசை",
+    "fullScreen": "முழு திரை",
+    "directing": "இயக்குதல்",
+    "noImagesFound": "படங்கள் எதுவும் கிடைக்கவில்லை",
+    "upNextName": "அடுத்தது: {upNextItemName}",
+    "stopPlayback": "பிளேபேக்கை நிறுத்துங்கள்"
 }

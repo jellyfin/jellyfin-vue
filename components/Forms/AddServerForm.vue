@@ -30,7 +30,7 @@
             </v-btn>
           </v-col>
           <v-col cols="auto">
-            <locale-switcher />
+            <locale-switcher :fab="false" />
           </v-col>
         </v-row>
       </v-form>

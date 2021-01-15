@@ -40,8 +40,8 @@
             >
               <media-info :item="item" year runtime rating ends-at />
             </div>
-            <div
-              class="mt-4"
+            <v-row
+              class="mt-4 align-center"
               :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
@@ -56,10 +56,8 @@
               >
                 {{ $t('play') }}
               </v-btn>
-              <v-btn outlined icon>
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-btn>
-            </div>
+              <item-menu :item="item" outlined :absolute="false" />
+            </v-row>
             <v-col cols="12" md="10">
               <v-row
                 v-if="item && item.GenreItems && item.GenreItems.length > 0"
@@ -278,11 +276,11 @@
       <v-col cols="12" sm="4" md="3">
         <div v-if="crew.length > 0">
           <h2>Crew</h2>
-          <person-list :items="crew" :skeleton-length="3" />
+          <person-list :items="crew" />
         </div>
         <div v-if="actors.length > 0">
           <h2>Cast</h2>
-          <person-list :items="actors" :skeleton-length="5" />
+          <person-list :items="actors" />
         </div>
         <related-items
           v-if="['Series', 'MusicAlbum'].includes(item.Type)"
@@ -300,6 +298,7 @@ import { mapActions } from 'vuex';
 import {
   BaseItemDto,
   BaseItemPerson,
+  ImageType,
   MediaSourceInfo
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
@@ -427,7 +426,8 @@ export default Vue.extend({
     if (this.item) {
       this.setPageTitle({ title: this.item.Name });
       this.setAppBarOpacity({ opaqueAppBar: false });
-      this.setBackdrop({ item: this.item });
+      const hash = this.getBlurhash(this.item, ImageType.Backdrop);
+      this.setBackdrop({ hash });
     }
   },
   destroyed() {

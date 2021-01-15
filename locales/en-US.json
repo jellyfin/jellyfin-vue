@@ -121,6 +121,7 @@
   "nextUp": "Next up",
   "noAudioTrackSelected": "No audio track selected",
   "noAudioTracksAvailable": "No audio tracks available",
+  "noImagesFound": "No images found",
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
   "noSubtitleSelected": "No subtitle selected",
@@ -137,6 +138,7 @@
   "parentalRatings": "Parental Ratings",
   "password": "Password",
   "people": "People",
+  "person": "Person",
   "play": "Play",
   "played": "Played",
   "present": "Present",
@@ -246,6 +248,7 @@
   "sortTitle": "Sort title",
   "specialFeatures": "Special Features",
   "status": "Status",
+  "stopPlayback": "Stop playback",
   "studios": "Studios",
   "subtitles": "Subtitles",
   "tagline": "Tagline",
@@ -256,7 +259,8 @@
   "title": "Title",
   "tooltips": {
     "changeLanguage": "Language",
-    "toggleDarkMode": "Toggle dark mode"
+    "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode"
   },
   "trailer": "Trailer",
   "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
@@ -271,6 +275,7 @@
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",
+  "upNextName": "Up next: {upNextItemName}",
   "username": "Username",
   "usernameRequired": "Username is required",
   "validation": {

@@ -53,21 +53,13 @@
         </v-row>
         <v-row v-if="movies.length > 0">
           <v-col>
-            <swiper-section
-              :title="$t('movies')"
-              :items="movies"
-              :loading="loading"
-            />
+            <swiper-section :title="$t('movies')" :items="movies" />
           </v-col>
         </v-row>
 
         <v-row v-if="shows.length > 0">
           <v-col>
-            <swiper-section
-              :title="$t('shows')"
-              :items="shows"
-              :loading="loading"
-            />
+            <swiper-section :title="$t('shows')" :items="shows" />
           </v-col>
         </v-row>
       </v-col>
@@ -105,10 +97,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      loading: true,
       item: {} as BaseItemDto,
-      appearances: [] as BaseItemDto[],
-      backdropImageSource: ''
+      appearances: [] as BaseItemDto[]
     };
   },
   computed: {
@@ -157,14 +147,15 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.setBackdrop({ item: this.item });
+    const hash = this.getBlurhash(this.item, ImageType.Backdrop);
+    this.setBackdrop({ hash });
   },
   destroyed() {
     this.clearBackdrop();
   },
   methods: {
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined): string {
+    getImageUrl(itemId: string | undefined): string | undefined {
       const element = this.$refs.personImg as HTMLElement;
       if (itemId) {
         return this.getImageUrlForElement(ImageType.Primary, {
@@ -182,18 +173,5 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .person-image {
   border-radius: 50%;
-}
-.header span {
-  padding-left: 0.25em;
-}
-.header::before {
-  background-color: white;
-  content: '';
-  position: relative;
-  display: inline-block;
-  height: 1px;
-  bottom: 0.3em;
-  left: 0;
-  width: 1.25em;
 }
 </style>

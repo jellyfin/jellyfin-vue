@@ -4,9 +4,11 @@ export interface UserState {
   accessToken: string;
 }
 
-export const state = (): UserState => ({
+const defaultState = (): UserState => ({
   accessToken: ''
 });
+
+export const state = defaultState;
 
 interface MutationPayload {
   accessToken: string;
@@ -17,7 +19,7 @@ export const mutations: MutationTree<UserState> = {
     state.accessToken = accessToken;
   },
   CLEAR_USER(state: UserState) {
-    state.accessToken = '';
+    Object.assign(state, defaultState());
   }
 };
 

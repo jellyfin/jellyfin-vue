@@ -6,9 +6,11 @@ export interface UserViewsState {
   views: BaseItemDto[];
 }
 
-export const state = (): UserViewsState => ({
+export const defaultState = (): UserViewsState => ({
   views: []
 });
+
+export const state = defaultState;
 
 interface MutationPayload {
   userViews: BaseItemDto[];
@@ -29,6 +31,9 @@ export const getters: GetterTree<UserViewsState, UserViewsState> = {
 export const mutations: MutationTree<UserViewsState> = {
   SET_USER_VIEWS(state: UserViewsState, { userViews }: MutationPayload) {
     state.views = userViews;
+  },
+  CLEAR_USER_VIEWS(state: UserViewsState) {
+    Object.assign(state, defaultState());
   }
 };
 
@@ -41,5 +46,8 @@ export const actions: ActionTree<UserViewsState, UserViewsState> = {
     const userViews = userViewsResponse.data.Items;
 
     commit('SET_USER_VIEWS', { userViews });
+  },
+  clearUserViews({ commit }) {
+    commit('CLEAR_USER_VIEWS');
   }
 };

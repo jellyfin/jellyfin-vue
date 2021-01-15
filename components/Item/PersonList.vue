@@ -51,11 +51,11 @@ export default Vue.extend({
     },
     skeletonLength: {
       type: Number,
-      default: 3
+      default: 0
     }
   },
   methods: {
-    getImageUrl(itemId: string): string {
+    getImageUrl(itemId: string): string | undefined {
       const element = this.$refs.personImg as HTMLElement;
       return this.getImageUrlForElement(ImageType.Primary, {
         itemId,

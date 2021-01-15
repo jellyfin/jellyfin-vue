@@ -1,23 +1,131 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-        <v-avatar ref="albumCover" tile size="72" color="primary">
-          <v-img :src="getImageUrl(getCurrentItem.AlbumId)">
-            <template #placeholder>
-              <v-icon dark>mdi-album</v-icon>
-            </template>
-          </v-img>
-        </v-avatar>
-        <div class="d-flex flex-column justify-center ml-4">
-          <span class="font-weight-medium mt-md-n2">
-            <nuxt-link
-              tag="span"
-              class="text-truncate link"
-              :to="`/item/${getCurrentItem.AlbumId}`"
+  <v-slide-y-reverse-transition mode="out-in">
+    <v-footer
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      key="audioControls-footer"
+      app
+      :class="isFullScreenPlayer ? 'fullscreen' : ''"
+      class="audioControls"
+    >
+      <v-container v-if="isFullScreenPlayer" fluid>
+        <time-slider />
+      </v-container>
+      <v-container fluid>
+        <v-row>
+          <v-col cols="9" md="3" class="d-flex flex-row pa-0">
+            <v-avatar
+              v-if="!isFullScreenPlayer"
+              ref="albumCover"
+              tile
+              size="85"
+              color="primary"
             >
-              {{ getCurrentItem.Name }}
-            </nuxt-link>
+              <blurhash-image :item="getCurrentItem">
+                <template #placeholder>
+                  <v-icon dark>mdi-album</v-icon>
+                </template>
+              </blurhash-image>
+            </v-avatar>
+            <v-col class="d-flex flex-column justify-center ml-4 pt-0 mt-1">
+              <v-row class="pa-0">
+                <nuxt-link
+                  tag="span"
+                  class="text-truncate link"
+                  :to="`/item/${getCurrentItem.Id}`"
+                >
+                  {{ getCurrentItem.Name }}
+                </nuxt-link>
+              </v-row>
+              <v-row
+                v-if="getCurrentItem.ArtistItems"
+                class="align-center pa-0"
+              >
+                <span
+                  v-for="(artist, index) in getCurrentItem.ArtistItems"
+                  :key="`artist-${artist.Id}`"
+                  :to="`/artist/${artist.Id}`"
+                  class="m-0"
+                >
+                  <p>
+                    <nuxt-link
+                      tag="span"
+                      class="text--secondary text-caption text-truncate link"
+                      :to="`/artist/${artist.Id}`"
+                      >{{ artist.Name }}</nuxt-link
+                    >
+                    <!-- Handles whitespaces -->
+                    <!-- eslint-disable vue/no-v-html -->
+                    <span
+                      v-if="index !== getCurrentItem.ArtistItems.length - 1"
+                      v-html="'&nbsp;'"
+                    />
+                    <!-- eslint-enable vue/no-v-html -->
+                  </p>
+                </span>
+              </v-row>
+            </v-col>
+          </v-col>
+          <v-col cols="6" class="pa-0 d-none d-md-inline">
+            <div class="d-flex flex-column justify-center">
+              <div class="d-flex align-center justify-center">
+                <v-btn
+                  icon
+                  fab
+                  small
+                  :elevation="isShuffling ? '3' : '0'"
+                  class="mx-1 active-button"
+                  :color="isShuffling ? 'primary' : undefined"
+                  @click="toggleShuffle"
+                >
+                  <v-icon>mdi-shuffle</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  :disabled="!getPreviousItem"
+                  class="mx-1"
+                  @click="setPreviousTrack"
+                >
+                  <v-icon>mdi-skip-previous</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  raised
+                  rounded
+                  class="mx-1 active-button"
+                  @click="playPause"
+                >
+                  <v-icon large>
+                    {{
+                      isPaused
+                        ? 'mdi-play-circle-outline'
+                        : 'mdi-pause-circle-outline'
+                    }}
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  :disabled="!getNextItem"
+                  class="mx-1"
+                  @click="setNextTrack"
+                >
+                  <v-icon>mdi-skip-next</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  fab
+                  small
+                  :elevation="isRepeating ? '3' : '0'"
+                  class="mx-1 active-button"
+                  :color="isRepeating ? 'primary' : undefined"
+                  @click="toggleRepeatMode"
+                >
+                  <v-icon>{{ repeatIcon }}</v-icon>
+                </v-btn>
+              </div>
+              <time-slider v-if="!isFullScreenPlayer" />
+            </div>
+          </v-col>
+          <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <v-btn class="d-none d-md-inline-flex" icon disabled>
               <v-icon size="18">{{
                 getCurrentItem.UserData.IsFavorite
@@ -25,133 +133,197 @@
                   : 'mdi-heart-outline'
               }}</v-icon>
             </v-btn>
-          </span>
-          <nuxt-link
-            v-if="getCurrentItem.AlbumArtists[0].Id"
-            tag="span"
-            class="text--secondary text-caption text-truncate mt-md-n2 link"
-            :to="`/artist/${getCurrentItem.AlbumArtists[0].Id}`"
+            <v-tooltip top>
+              <template #activator="{ on, attrs }">
+                <v-btn disabled icon class="mr-2" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-playlist-play</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $t('queue') }}</span>
+            </v-tooltip>
+            <volume-slider />
+            <transition name="fade-fast" mode="in-out">
+              <v-tooltip v-if="!isFullScreenPlayer" top>
+                <template #activator="{ on, attrs }">
+                  <nuxt-link tag="span" :to="'/playback'">
+                    <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
+                      <v-icon>mdi-fullscreen</v-icon>
+                    </v-btn>
+                  </nuxt-link>
+                </template>
+                <span>{{ $t('fullScreen') }}</span>
+              </v-tooltip>
+            </transition>
+            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
+            <v-tooltip top>
+              <template #activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on" @click="stopPlayback">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+              <span>{{ $t('stopPlayback') }}</span>
+            </v-tooltip>
+          </v-col>
+          <v-col
+            cols="3"
+            class="d-flex d-md-none px-0 align-center justify-end"
           >
-            {{ getCurrentItem.AlbumArtist }}
-          </nuxt-link>
-        </div>
-      </v-col>
-      <v-col cols="6" class="pa-0 d-none d-md-inline">
-        <div class="d-flex flex-column justify-center">
-          <div class="d-flex align-center justify-center">
-            <v-btn disabled icon class="mx-1">
-              <v-icon>mdi-shuffle</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-1" @click="setPreviousTrack">
-              <v-icon>mdi-skip-previous</v-icon>
-            </v-btn>
-            <v-btn icon large class="mx-1" @click="togglePause">
-              <v-icon large>
-                {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+            <v-btn
+              icon
+              raised
+              rounded
+              class="mx-1 active-button"
+              @click="playPause"
+            >
+              <v-icon>
+                {{
+                  isPaused
+                    ? 'mdi-play-circle-outline'
+                    : 'mdi-pause-circle-outline'
+                }}
               </v-icon>
             </v-btn>
-            <v-btn icon class="mx-1" @click="stopPlayback">
-              <v-icon>mdi-stop</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-1" @click="setNextTrack">
+            <v-btn
+              icon
+              :disabled="!getNextItem"
+              class="mx-1"
+              @click="setNextTrack"
+            >
               <v-icon>mdi-skip-next</v-icon>
             </v-btn>
-            <v-btn disabled icon class="mx-1">
-              <v-icon>mdi-repeat-off</v-icon>
+            <v-btn
+              icon
+              fab
+              small
+              :elevation="isRepeating ? '3' : '0'"
+              class="mx-1 active-button"
+              :color="isRepeating ? 'primary' : undefined"
+              @click="toggleRepeatMode"
+            >
+              <v-icon>{{ repeatIcon }}</v-icon>
             </v-btn>
+            <v-btn
+              icon
+              fab
+              small
+              :elevation="isShuffling ? '3' : '0'"
+              class="mx-1 active-button"
+              :color="isShuffling ? 'primary' : undefined"
+              @click="toggleShuffle"
+            >
+              <v-icon>mdi-shuffle</v-icon>
+            </v-btn>
+            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
+          </v-col>
+        </v-row>
+        <div
+          v-if="isFullScreenPlayer && getNextItem"
+          class="d-flex justify-center align-center"
+        >
+          <div>
+            <h4 class="text-overline font-italic">
+              {{ $t('upNextName', { upNextItemName: getNextItem.Name }) }}
+            </h4>
           </div>
-          <time-slider />
         </div>
-      </v-col>
-      <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn disabled icon class="mr-2" v-bind="attrs" v-on="on">
-              <v-icon>mdi-playlist-play</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('queue') }}</span>
-        </v-tooltip>
-        <volume-slider />
-        <v-tooltip top>
-          <template #activator="{ on, attrs }">
-            <v-btn disabled icon class="ml-2" v-bind="attrs" v-on="on">
-              <v-icon>mdi-fullscreen</v-icon>
-            </v-btn>
-          </template>
-          <span>{{ $t('fullScreen') }}</span>
-        </v-tooltip>
-      </v-col>
-      <v-col cols="3" class="d-flex d-md-none px-0 align-center justify-end">
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon @click="togglePause">
-          <v-icon>
-            {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-          </v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-  </v-container>
+      </v-container>
+    </v-footer>
+  </v-slide-y-reverse-transition>
 </template>
 
 <script lang="ts">
-import { ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, RepeatMode } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
+import imageHelper from '~/mixins/imageHelper';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
-    runtime(): number {
-      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
-    },
+    ...mapGetters('playbackManager', [
+      'getCurrentItem',
+      'getCurrentlyPlayingMediaType',
+      'getPreviousItem',
+      'getNextItem'
+    ]),
     isPaused(): boolean {
       return this.$store.state.playbackManager.status === PlaybackStatus.paused;
+    },
+    isPlaying(): boolean {
+      return (
+        this.$store.state.playbackManager.status !== PlaybackStatus.stopped
+      );
+    },
+    isRepeating(): boolean {
+      return (
+        this.$store.state.playbackManager.repeatMode !== RepeatMode.RepeatNone
+      );
+    },
+    repeatIcon(): string {
+      if (
+        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatOne
+      ) {
+        return 'mdi-repeat-once';
+      }
+      return 'mdi-repeat';
+    },
+    isShuffling(): boolean {
+      return this.$store.state.playbackManager.isShuffling;
+    },
+    isFullScreenPlayer(): boolean {
+      return this.$route.name === 'playback';
     }
   },
   methods: {
     ...mapActions('playbackManager', [
-      'changeCurrentTime',
       'setLastItemIndex',
       'resetCurrentItemIndex',
       'setNextTrack',
       'setPreviousTrack',
-      'unpause',
-      'pause'
+      'toggleShuffle',
+      'toggleRepeatMode',
+      'playPause'
     ]),
-    getImageUrl(itemId: string): string {
-      const element = this.$refs.albumCover as HTMLElement;
+    getImageUrl(item: BaseItemDto): string | undefined {
+      const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
+      if (imageUrl) {
+        return imageUrl;
+      }
+
       return this.getImageUrlForElement(ImageType.Primary, {
-        itemId,
-        element
+        itemId: item.AlbumId
       });
     },
     stopPlayback(): void {
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
-    },
-    togglePause(): void {
-      if (this.isPaused) {
-        this.unpause();
-      } else {
-        this.pause();
-      }
     }
   }
 });
 </script>
 
-<style scoped>
-.v-input >>> .v-slider__thumb-container,
-.v-input >>> .v-slider__track-background,
-.v-input >>> .v-slider__track-fill {
-  transition: none !important;
+<style lang="scss" scoped>
+.audioControls {
+  user-select: none;
+}
+
+.audioControls.fullscreen {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme--dark .audioControls.fullscreen {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
+// but it seems we're using a prop combination that it's incompatible with it: NaN;
+
+// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 </style>

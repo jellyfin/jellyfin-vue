@@ -10,12 +10,14 @@ export interface DeviceState {
   clientName: string;
 }
 
-export const state = (): DeviceState => ({
+export const defaultState = (): DeviceState => ({
   deviceId: '',
   deviceName: '',
   clientVersion: '',
   clientName: ''
 });
+
+export const state = defaultState;
 
 interface MutationPayload {
   deviceId: string;
@@ -88,10 +90,7 @@ export const mutations: MutationTree<DeviceState> = {
     state.clientName = payload.clientName;
   },
   CLEAR_PROFILE(state: DeviceState) {
-    state.deviceId = '';
-    state.deviceName = '';
-    state.clientVersion = '';
-    state.clientName = '';
+    Object.assign(state, defaultState());
   }
 };
 

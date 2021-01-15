@@ -156,8 +156,9 @@ export default Vue.extend({
   },
   beforeMount() {
     this.setPageTitle({ title: this.item.Name });
-    this.setBackdrop({ item: this.item });
     this.setAppBarOpacity({ opaqueAppBar: false });
+    const hash = this.getBlurhash(this.item, ImageType.Backdrop);
+    this.setBackdrop({ hash });
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
@@ -166,7 +167,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined, type: string): string {
+    getImageUrl(itemId: string | undefined, type: string): string | undefined {
       if (itemId) {
         return this.getImageUrlForElement(type as ImageType, { itemId });
       } else {

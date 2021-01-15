@@ -37,7 +37,9 @@ export default Vue.extend({
   props: {
     loading: {
       type: Boolean,
-      required: true
+      default(): boolean {
+        return false;
+      }
     },
     title: {
       type: String,
