@@ -10,9 +10,9 @@
       <swiper-slide
         v-for="item in currentQueue"
         :key="item.Id"
-        class="swiper-no-swiping"
+        class="swiper-no-swiping d-flex justify-center"
       >
-        <div class="albumCover">
+        <div class="album-cover">
           <blurhash-image :item="item" @error="onImageError">
             <template #placeholder>
               <v-avatar tile size="65vh" color="primary">
@@ -152,7 +152,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.albumCover {
+.album-cover {
   position: relative;
   height: 65vh;
   min-width: 65vh;
