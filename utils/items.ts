@@ -1,4 +1,15 @@
 /**
+ * A list of valid collections that should be treated as folders.
+ */
+export const validLibraryTypes = [
+  'CollectionFolder',
+  'Folder',
+  'UserView',
+  'playlists',
+  'PhotoAlbum'
+];
+
+/**
  * Get the Material Design Icon name associated with a type of library
  *
  * @param {(string | undefined | null)} libraryType - Type of the library

@@ -92,6 +92,7 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
+import { validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -140,10 +141,7 @@ export default Vue.extend({
   computed: {
     itemLink: {
       get(): string {
-        if (
-          this.item.Type === 'Folder' ||
-          this.item.Type === 'CollectionFolder'
-        ) {
+        if (this.item.Type && validLibraryTypes.includes(this.item.Type)) {
           return `/library/${this.item.Id}`;
         } else if (this.item.Type === 'Person') {
           return `/person/${this.item.Id}`;
@@ -324,7 +322,7 @@ export default Vue.extend({
 }
 
 .card-content {
-  background-color: #{map-get($material-dark, 'menus')};
+  background-color: #{map-get($material-light, 'menus')};
   overflow: hidden;
   position: absolute;
   top: 0;

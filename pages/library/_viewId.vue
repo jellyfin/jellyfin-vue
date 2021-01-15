@@ -42,6 +42,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
   data() {
@@ -132,9 +133,7 @@ export default Vue.extend({
 
       if (
         this.collectionInfo &&
-        ['CollectionFolder', 'Folder', 'UserView', 'playlists'].includes(
-          this.collectionInfo.Type || ''
-        )
+        validLibraryTypes.includes(this.collectionInfo.Type || '')
       ) {
         if (this.collectionInfo.Name) {
           this.setPageTitle({
