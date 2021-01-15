@@ -42,7 +42,7 @@
             </div>
             <v-row
               class="mt-4 align-center"
-              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+              :class="{ 'justify-center': !$vuetify.breakpoint.mdAndUp }"
             >
               <v-btn
                 v-if="canPlay(item)"
