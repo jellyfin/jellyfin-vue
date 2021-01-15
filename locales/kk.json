@@ -276,7 +276,9 @@
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
     "tooltips": {
         "toggleDarkMode": "Qarańǵy rejimdi qosý",
-        "changeLanguage": "Tili"
+        "changeLanguage": "Tili",
+        "switchToLightMode": "Qarańǵy rejimdi qosý",
+        "switchToDarkMode": "Qarańǵy rejimdi qosý"
     },
     "refreshLibrary": "Tasyǵyshhanany jańǵyrtý",
     "queue": "Kezek",
@@ -286,5 +288,12 @@
     "libraryRefreshQueued": "Tasyǵyshhana jańǵyrtý kezekte",
     "fullScreen": "Tolyq ekran",
     "directing": "Rejisór",
-    "noImagesFound": "Sýretter tabylmady"
+    "noImagesFound": "Sýretter tabylmady",
+    "wizard": {
+        "setupWizard": "Ornatý sheberi",
+        "confirmPassword": "Paróldi rastaý"
+    },
+    "upNextName": "Kezekti: {upNextItemName}",
+    "stopPlayback": "Oınatýdy toqtatý",
+    "person": "Tulǵa"
 }
