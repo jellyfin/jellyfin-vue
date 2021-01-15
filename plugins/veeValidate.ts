@@ -9,6 +9,13 @@ extend('mustBeUrl', (value: string): boolean => {
   return /^https?:\/\/.+/.test(value);
 });
 
+extend('bothPasswordsSame', {
+  params: ['target'],
+  validate(value, { target }) {
+    return value === target;
+  }
+});
+
 const veeValidate: Plugin = ({ app }) => {
   configure({
     defaultMessage: (_field, values) => {
