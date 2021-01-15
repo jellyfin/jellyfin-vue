@@ -278,7 +278,9 @@
     "unableToRefreshLibrary": "ലൈബ്രറി പുതുക്കാൻ കഴിയില്ല",
     "tooltips": {
         "toggleDarkMode": "ഇരുണ്ട മോഡ് ടോഗിൾ ചെയ്യുക",
-        "changeLanguage": "ഭാഷ"
+        "changeLanguage": "ഭാഷ",
+        "switchToLightMode": "ലൈറ്റ് മോഡിലേക്ക് മാറുക",
+        "switchToDarkMode": "ഇരുണ്ട മോഡിലേക്ക് മാറുക"
     },
     "refreshLibrary": "ലൈബ്രറി പുതുക്കുക",
     "metadataEditor": "മെറ്റാഡാറ്റ എഡിറ്റർ",
