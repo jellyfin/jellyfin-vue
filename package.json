@@ -51,7 +51,7 @@
     "nuxt": "^2.14.12",
     "nuxt-i18n": "^6.18.0",
     "nuxt-vuex-localstorage": "^1.2.7",
-    "qs": "^6.9.5",
+    "qs": "^6.9.6",
     "shaka-player": "^3.0.7",
     "swiper": "5.x",
     "uuid": "^8.3.2",
