@@ -87,7 +87,8 @@
     "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
     "validation": {
         "mustBeUrl": "Toto pole musí být platná adresa URL",
-        "required": "Toto pole je povinné"
+        "required": "Toto pole je povinné",
+        "bothPasswordsSame": "Obě hesla musí být stejná"
     },
     "libraries": "Knihovny",
     "viewDetails": "Zobrazit podrobnosti",
@@ -292,5 +293,24 @@
     "noImagesFound": "Nebyly nalezeny žádné obrázky",
     "upNextName": "Další: {upNextItemName}",
     "stopPlayback": "Zastavit přehrávání",
-    "person": "Osoba"
+    "person": "Osoba",
+    "wizard": {
+        "remoteAccess": "Vzdálený přístup",
+        "allowRemoteAccess": "Povolit vzdálený přístup k serveru",
+        "administratorAccount": "Účet správce",
+        "languageLocale": "Jazyk a místní jazyková nastavení",
+        "preferedLanguage": "Preferovaný jazyk",
+        "preferredMetadataLanguage": "Preferovaný jazyk metadat",
+        "completeError": "Nelze dokončit průvodce nastavením.",
+        "remoteAccessSet": "Vzdálený přístup nastaven.",
+        "metadataLanguagesSet": "Jazyky metadat nastaveny.",
+        "userSuccessfullySet": "Uživatel byl úspěšně nastaven.",
+        "languageSuccessfullySet": "Jazyk byl úspěšně nastaven.",
+        "setRemoteError": "Nelze uložit nastavení vzdáleného přístupu.",
+        "setMetadataError": "Nelze nastavit jazyky metadat.",
+        "setLanguageError": "Nelze nastavit jazyk klienta.",
+        "setAdminError": "Tvorba účtu správce se nezdařila.",
+        "setupWizard": "Průvodce nastavením",
+        "confirmPassword": "Heslo znovu"
+    }
 }
