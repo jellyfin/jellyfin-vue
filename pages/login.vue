@@ -3,7 +3,9 @@
     <v-row align="center" justify="center">
       <v-col
         v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
-        xl="8"
+        sm="7"
+        md="6"
+        lg="5"
       >
         <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>
         <v-row align="center" justify="center">
@@ -11,8 +13,8 @@
             v-for="publicUser in publicUsers"
             :key="publicUser.Id"
             xl="2"
-            lg="2"
-            md="3"
+            lg="4"
+            md="4"
             sm="4"
             xs="4"
             cols="6"
@@ -21,7 +23,7 @@
           </v-col>
         </v-row>
         <v-row align="center" justify="center" no-gutters>
-          <v-col md="4" class="d-flex flex-row mt-7">
+          <v-col class="d-flex flex-row mt-7">
             <v-btn class="flex-grow-1 mr-2" large @click="loginAsOther = true">
               {{ $t('manualLogin') }}
             </v-btn>
@@ -34,7 +36,9 @@
       </v-col>
       <v-col
         v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
-        md="4"
+        sm="6"
+        md="6"
+        lg="5"
       >
         <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-6 text-center">
           {{ $t('loginAs', { name: currentUser.Name }) }}
