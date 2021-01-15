@@ -50,17 +50,23 @@ import {
 
 export default Vue.extend({
   props: {
-    // Media item
+    /**
+     * Media item
+     */
     item: {
       type: Object as PropType<BaseItemDto>,
       required: true
     },
-    // Current media source used (current movie version for instance)
+    /**
+     * Current media source used (current movie version for instance)
+     */
     mediaSourceIndex: {
       type: Number,
       default: 0
     },
-    // Which media type to consider for this selector
+    /**
+     * Which media type to consider for this selector
+     */
     type: {
       type: String,
       required: true,
@@ -165,14 +171,16 @@ export default Vue.extend({
       this.$emit('input', newVal);
     },
     /**
-     * When the media source index is changed by the parent, we reset the selected track as they have changed
+     * When the media source index is changed by the parent, we reset the selected track as it has changed
      */
     mediaSourceIndex(): void {
       this.resetDefaultTrack();
     }
   },
+  /**
+   * Sets the default track when loading the component
+   */
   beforeMount() {
-    // Sets the default track when loading the component
     this.resetDefaultTrack();
   },
   methods: {
