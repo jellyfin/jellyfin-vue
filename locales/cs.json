@@ -291,5 +291,6 @@
     "metadataEditor": "Editor metadat",
     "noImagesFound": "Nebyly nalezeny žádné obrázky",
     "upNextName": "Další: {upNextItemName}",
-    "stopPlayback": "Zastavit přehrávání"
+    "stopPlayback": "Zastavit přehrávání",
+    "person": "Osoba"
 }
