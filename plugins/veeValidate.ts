@@ -11,6 +11,8 @@ extend('mustBeUrl', (value: string): boolean => {
 
 extend('bothPasswordsSame', {
   params: ['target'],
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   validate(value, { target }) {
     return value === target;
   }
