@@ -152,7 +152,10 @@
                   </v-row>
                 </v-col>
               </v-row>
-              <div v-if="item && item.MediaSources" class="mt-2">
+              <div
+                v-if="item && item.MediaSources && item.MediaSources.length > 0"
+                class="mt-2"
+              >
                 <v-row v-if="item.MediaSources.length > 1" align="center">
                   <v-col
                     :cols="twoColsInfoColumn.lCols"
@@ -246,6 +249,12 @@
                   </v-col>
                 </v-row>
               </div>
+              <v-row v-else no-gutters class="text-h5 my-4">
+                <v-col cols="auto" class="mr-2">
+                  <v-icon icon color="warning">mdi-alert</v-icon>
+                </v-col>
+                <v-col cols="auto">{{ $t('NoMediaSourcesAvailable') }}</v-col>
+              </v-row>
             </v-col>
             <div>
               <p v-if="item.Taglines" class="text-subtitle-1 text-truncate">
