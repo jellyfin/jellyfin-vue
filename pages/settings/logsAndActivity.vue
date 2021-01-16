@@ -249,9 +249,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style>
-.text-capitalize-first-letter::first-letter {
-  text-transform: uppercase;
-}
-</style>
