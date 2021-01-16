@@ -1,6 +1,9 @@
 <template>
   <v-container fill-height fluid class="pa-0 justify-center">
-    <div ref="videoContainer" style="height: 100%; width: 100%">
+    <div
+      ref="videoContainer"
+      style="height: 100%; width: 100%; overflow: hidden"
+    >
       <video
         ref="videoPlayer"
         :poster="poster"
