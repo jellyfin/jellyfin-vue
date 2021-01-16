@@ -188,8 +188,9 @@ export default Vue.extend({
           },
           {
             icon: 'mdi-key-chain',
-            name: this.$t('settingsSections.apiKeys.name'),
-            description: this.$t('settingsSections.apiKeys.description')
+            name: this.$t('settings.apiKeys.apiKeys'),
+            description: this.$t('settings.apiKeys.description'),
+            link: '/settings/apikeys'
           }
         ],
         [

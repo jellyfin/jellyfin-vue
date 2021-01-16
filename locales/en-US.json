@@ -22,6 +22,7 @@
     "ok": "Ok"
   },
   "byArtist": "By",
+  "confirm": "Confirm",
   "cancel": "Cancel",
   "castAndCrew": "Cast & Crew",
   "changeServer": "Change server",
@@ -161,15 +162,30 @@
   "serverNotFound": "Server not found",
   "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
-  "settings": "Settings",
+  "settings": {
+    "settings": "Settings",
+    "apiKeys": {
+      "apiKeys": "API keys",
+      "description": "Add and revoke API keys for external access to your server",
+      "appName": "App name",
+      "accessToken": "Access token",
+      "dateCreated": "Date created",
+      "revokeSuccess": "Successfully revoked API key",
+      "revokeFailure": "Error revoking API key",
+      "revokeAll": "Revoke all API keys",
+      "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeAllFailure": "Error revoking all API keys",
+      "addNewKey": "Add new API key",
+      "createKeySuccess": "Successfully created a new API key",
+      "createKeyFailure": "Error creating a new API key",
+      "refreshKeysFailure": "Error refreshing API keys",
+      "addApiKey": "Add an API key"
+    }
+  },
   "settingsSections": {
     "account": {
       "description": "Edit your user's information",
       "name": "Account"
-    },
-    "apiKeys": {
-      "description": "Add and revoke API keys for external access to your server",
-      "name": "API keys"
     },
     "devices": {
       "description": "See and manage the devices connected to your server",
