@@ -161,7 +161,9 @@ export default Vue.extend({
           break;
       }
 
-      this.$nuxt.$loading.finish();
+      this.$nextTick(() => {
+        this.$nuxt.$loading.finish();
+      });
     }
   },
   destroyed() {
