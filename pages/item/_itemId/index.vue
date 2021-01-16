@@ -205,7 +205,7 @@
                       :media-source-index="currentSourceIndex"
                       :type="'Video'"
                       @input="currentVideoTrack = $event"
-                    ></track-selector>
+                    />
                   </v-col>
                 </v-row>
                 <v-row align="center">
@@ -225,7 +225,7 @@
                       :media-source-index="currentSourceIndex"
                       :type="'Audio'"
                       @input="currentAudioTrack = $event"
-                    ></track-selector>
+                    />
                   </v-col>
                 </v-row>
                 <v-row align="center">
@@ -245,7 +245,7 @@
                       :media-source-index="currentSourceIndex"
                       :type="'Subtitle'"
                       @input="currentSubtitleTrack = $event"
-                    ></track-selector>
+                    />
                   </v-col>
                 </v-row>
               </div>
@@ -313,7 +313,6 @@ import {
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
-import TrackSelector from '~/components/Item/TrackSelector.vue';
 
 interface TwoColsInfoColumn {
   lCols: number;
@@ -324,7 +323,6 @@ interface TwoColsInfoColumn {
 }
 
 export default Vue.extend({
-  components: { TrackSelector },
   mixins: [imageHelper, formsHelper, itemHelper],
   async asyncData({ params, $api, $auth }) {
     const item = (
