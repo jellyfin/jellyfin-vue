@@ -262,7 +262,8 @@
     "usernameRequired": "ഉപയോക്തൃനാമം ആവശ്യമാണ്",
     "validation": {
         "mustBeUrl": "ഈ ഫീൽഡ് സാധുവായ ഒരു URL ആയിരിക്കണം",
-        "required": "ഈ ഫീൽഡ് പൂരിപ്പിക്കേണ്ടതുണ്ട്"
+        "required": "ഈ ഫീൽഡ് പൂരിപ്പിക്കേണ്ടതുണ്ട്",
+        "bothPasswordsSame": "രണ്ട് പാസ്‌വേഡുകളും ഒന്നായിരിക്കണം"
     },
     "version": "പതിപ്പ്",
     "video": "വീഡിയോ",
@@ -288,5 +289,24 @@
     "noImagesFound": "ചിത്രങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
     "stopPlayback": "പ്ലേബാക്ക് നിർത്തുക",
     "upNextName": "അടുത്തത്: {upNextItemName}",
-    "person": "വ്യക്തി"
+    "person": "വ്യക്തി",
+    "wizard": {
+        "remoteAccess": "വിദൂര ആക്സസ്",
+        "allowRemoteAccess": "സെർവറിലേക്ക് വിദൂര ആക്സസ് അനുവദിക്കുക",
+        "administratorAccount": "അഡ്മിനിസ്ട്രേറ്റർ അക്കൗണ്ട്",
+        "languageLocale": "ഭാഷയും സ്ഥാനവും",
+        "preferedLanguage": "ഇഷ്ടപ്പെട്ട ഭാഷ",
+        "preferredMetadataLanguage": "തിരഞ്ഞെടുത്ത മെറ്റാഡാറ്റ ഭാഷ",
+        "completeError": "സ്റ്റാർട്ടപ്പ് വിസാർഡ് പൂർത്തിയാക്കാനായില്ല.",
+        "remoteAccessSet": "വിദൂര ആക്സസ് സെറ്റ്.",
+        "metadataLanguagesSet": "മെറ്റാഡാറ്റ ഭാഷകൾ സജ്ജമാക്കി.",
+        "userSuccessfullySet": "ഉപയോക്താവ് വിജയകരമായി സജ്ജമാക്കി.",
+        "languageSuccessfullySet": "ഭാഷ വിജയകരമായി സജ്ജമാക്കി.",
+        "setRemoteError": "വിദൂര ആക്സസ് ക്രമീകരണങ്ങൾ സജ്ജമാക്കാൻ കഴിയില്ല.",
+        "setMetadataError": "മെറ്റാഡാറ്റ ഭാഷകൾ സജ്ജമാക്കാൻ കഴിയില്ല.",
+        "setLanguageError": "ക്ലയന്റ് ഭാഷ സജ്ജമാക്കാൻ കഴിയില്ല.",
+        "setAdminError": "ഒരു അഡ്‌മിൻ അക്കൗണ്ട് സൃഷ്‌ടിക്കാനായില്ല.",
+        "setupWizard": "സെറ്റപ്പ് വിസാർഡ്",
+        "confirmPassword": "പാസ്വേഡ് സ്ഥിരീകരിക്കുക"
+    }
 }
