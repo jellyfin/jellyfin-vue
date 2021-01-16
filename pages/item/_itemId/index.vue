@@ -42,7 +42,10 @@
             </div>
             <v-row
               class="mt-4 align-center"
-              :class="{ 'justify-center': !$vuetify.breakpoint.mdAndUp }"
+              :class="{
+                'justify-center': !$vuetify.breakpoint.mdAndUp,
+                'ml-1': $vuetify.breakpoint.mdAndUp
+              }"
             >
               <v-btn
                 v-if="canPlay(item)"
@@ -249,12 +252,16 @@
                   </v-col>
                 </v-row>
               </div>
-              <v-row v-else no-gutters class="text-h5 my-4">
-                <v-col cols="auto" class="mr-2">
-                  <v-icon icon color="warning">mdi-alert</v-icon>
-                </v-col>
-                <v-col cols="auto">{{ $t('NoMediaSourcesAvailable') }}</v-col>
-              </v-row>
+              <div
+                v-else-if="
+                  item &&
+                  item.MediaType === 'Video' &&
+                  (!item.MediaSources || item.MediaSources.length === 0)
+                "
+                class="text-h5 my-4"
+              >
+                {{ $t('NoMediaSourcesAvailable') }}
+              </div>
             </v-col>
             <div>
               <p v-if="item.Taglines" class="text-subtitle-1 text-truncate">
@@ -399,6 +406,12 @@ export default Vue.extend({
         ) {
           return false;
         } else {
+          if (
+            this.item.MediaType === 'Video' &&
+            (!this.item.MediaSources || this.item.MediaSources.length === 0)
+          ) {
+            return false;
+          }
           return true;
         }
       }
