@@ -87,7 +87,8 @@
     "changeUser": "பயனரை மாற்றவும்",
     "validation": {
         "mustBeUrl": "இந்த புலம் சரியான URL ஆக இருக்க வேண்டும்",
-        "required": "இந்த புலம் தேவை"
+        "required": "இந்த புலம் தேவை",
+        "bothPasswordsSame": "கடவுச்சொற்கள் இரண்டும் ஒரே மாதிரியாக இருக்க வேண்டும்"
     },
     "viewDetails": "விபரங்களை பார்",
     "numberTracks": "{number} தடங்கள்",
@@ -292,5 +293,24 @@
     "noImagesFound": "படங்கள் எதுவும் கிடைக்கவில்லை",
     "upNextName": "அடுத்தது: {upNextItemName}",
     "stopPlayback": "பிளேபேக்கை நிறுத்துங்கள்",
-    "person": "நபர்"
+    "person": "நபர்",
+    "wizard": {
+        "remoteAccess": "தொலைநிலை அணுகல்",
+        "allowRemoteAccess": "சேவையகத்திற்கு தொலைநிலை அணுகலை அனுமதிக்கவும்",
+        "administratorAccount": "நிர்வாகி கணக்கு",
+        "languageLocale": "மொழி மற்றும் இடம்",
+        "preferedLanguage": "விருப்பமான மொழி",
+        "preferredMetadataLanguage": "விருப்பமான மெட்டாடேட்டா மொழி",
+        "completeError": "தொடக்க வழிகாட்டி முடிக்க முடியவில்லை.",
+        "remoteAccessSet": "தொலைநிலை அணுகல் தொகுப்பு.",
+        "metadataLanguagesSet": "மெட்டாடேட்டா மொழிகள் அமைக்கப்பட்டன.",
+        "userSuccessfullySet": "பயனர் வெற்றிகரமாக அமைக்கப்பட்டார்.",
+        "languageSuccessfullySet": "மொழி வெற்றிகரமாக அமைக்கப்பட்டது.",
+        "setRemoteError": "தொலைநிலை அணுகல் அமைப்புகளை அமைக்க முடியவில்லை.",
+        "setMetadataError": "மெட்டாடேட்டா மொழிகளை அமைக்க முடியவில்லை.",
+        "setLanguageError": "கிளையன்ட் மொழியை அமைக்க முடியவில்லை.",
+        "setAdminError": "நிர்வாகி கணக்கை உருவாக்க முடியவில்லை.",
+        "setupWizard": "அமைவு வழிகாட்டி",
+        "confirmPassword": "கடவுச்சொல்லை உறுதிப்படுத்தவும்"
+    }
 }
