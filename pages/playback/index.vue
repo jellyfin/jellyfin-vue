@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col class="px-0">
     <swiper
       v-if="currentQueue"
       ref="playbackSwiper"
