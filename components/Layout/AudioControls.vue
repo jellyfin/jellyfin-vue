@@ -4,6 +4,7 @@
       v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
       key="audioControls-footer"
       app
+      :absolute="isFullScreenPlayer"
       :class="isFullScreenPlayer ? 'fullscreen' : ''"
       class="audioControls"
     >
