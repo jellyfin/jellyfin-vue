@@ -1,16 +1,14 @@
 <template>
   <v-container fill-height fluid class="pa-0 justify-center">
-    <div id="videoContainer" ref="videoContainer">
-      <video
-        ref="videoPlayer"
-        :poster="poster"
-        autoplay
-        @timeupdate="onVideoProgress"
-        @pause="onVideoPause"
-        @play="onVideoProgress"
-        @ended="onVideoStopped"
-      />
-    </div>
+    <video
+      ref="videoPlayer"
+      :poster="poster"
+      autoplay
+      @timeupdate="onVideoProgress"
+      @pause="onVideoPause"
+      @play="onVideoProgress"
+      @ended="onVideoStopped"
+    />
   </v-container>
 </template>
 
@@ -237,10 +235,5 @@ video {
   max-height: 100vh;
   width: 100%;
   height: 100%;
-}
-#videoContainer {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
 }
 </style>
