@@ -6,11 +6,12 @@
       class="d-flex justify-center align-center"
       :options="swiperOptions"
       @slideChange="onSlideChange"
+      @sliderMove="update"
     >
       <swiper-slide
         v-for="item in currentQueue"
         :key="item.Id"
-        class="swiper-no-swiping d-flex justify-center"
+        class="d-flex justify-center"
       >
         <div class="album-cover">
           <blurhash-image :item="item" @error="onImageError">
@@ -44,8 +45,6 @@ export default Vue.extend({
         initialSlide: 0,
         autoplay: false,
         effect: 'coverflow',
-        noSwiping: true,
-        simulateTouch: false,
         coverflowEffect: {
           depth: 500,
           slideShadows: false,
@@ -112,12 +111,14 @@ export default Vue.extend({
     if (!this.isPlaying) {
       this.$router.back();
     }
-    this.setMinimized({ minimized: false });
   },
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
     this.setBackdrop({ hash: this.backdropHash });
     this.swiper?.slideTo(this.currentItemIndex);
+    // HACK: Remove as soon as we change the transition to this page.
+    window.setTimeout(this.update, 200);
+    this.setMinimized({ minimized: false });
   },
   beforeDestroy() {
     this.clearBackdrop();
@@ -146,6 +147,9 @@ export default Vue.extend({
     },
     onImageError(): void {
       this.clearBackdrop();
+    },
+    update(): void {
+      this.swiper?.update();
     }
   }
 });
