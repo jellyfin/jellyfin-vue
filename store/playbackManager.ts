@@ -319,8 +319,10 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   setVolume({ commit }, { volume }: { volume: number }) {
     commit('SET_VOLUME', { volume });
   },
-  setCurrentIndex({ commit }, { index }: { index: number }) {
-    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: index });
+  setCurrentIndex({ commit, state }, { index }: { index: number }) {
+    if (state.currentItemIndex !== index) {
+      commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: index });
+    }
   },
   setCurrentTime({ commit }, { time }: { time: number | null }) {
     commit('SET_CURRENT_TIME', { time });

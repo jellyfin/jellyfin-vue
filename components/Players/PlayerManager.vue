@@ -197,6 +197,7 @@ export default Vue.extend({
       switch (mutation.type) {
         case 'playbackManager/START_PLAYBACK':
         case 'playbackManager/INCREASE_QUEUE_INDEX':
+        case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
           if (
             state.playbackManager.currentTime !== null &&
