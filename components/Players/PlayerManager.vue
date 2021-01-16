@@ -218,7 +218,7 @@ export default Vue.extend({
           }
 
           // Then report the start of the next one
-          if (this.getCurrentItem.Id !== null) {
+          if (this.getCurrentItem?.Id) {
             this.$api.playState.reportPlaybackStart(
               {
                 playbackStartInfo: {
