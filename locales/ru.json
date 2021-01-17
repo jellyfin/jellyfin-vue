@@ -31,7 +31,15 @@
     "serverAddressRequired": "Требуется адрес сервера",
     "serverNotFound": "Сервер не найден",
     "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше",
-    "settings": "Параметры",
+    "settings": {
+        "apiKeys": {
+            "dateCreated": "Дата создания",
+            "accessToken": "Токен доступа",
+            "appName": "Название приложения",
+            "apiKeys": "API-ключи"
+        },
+        "settings": "Параметры"
+    },
     "shows": "Передачи",
     "signIn": "Вход",
     "unexpectedError": "Непредвиденная ошибка",
@@ -278,7 +286,7 @@
     "unableToRefreshLibrary": "Неврзможно подновить медиатеку",
     "refreshLibrary": "Подновить медиатеку",
     "queue": "Очередь",
-    "noSubtitleSelected": "Нет выбранных субтитров",
+    "noSubtitleSelected": "Субтитры не выбраны",
     "noSubtitleAvailable": "Нет доступных субтитров",
     "libraryRefreshQueued": "Подновление медиатеки в очереди",
     "fullScreen": "Полный экран",
@@ -311,5 +319,13 @@
     },
     "upNextName": "Очередное: {upNextItemName}",
     "stopPlayback": "Остановить воспроизведение",
-    "person": "Персона"
+    "person": "Персона",
+    "noVideoTracksAvailable": "Нет доступных видео дорожек",
+    "noTracksAvailable": "Нет доступных дорожек",
+    "noSubtitlesAvailable": "Нет доступных субтитров",
+    "noAudioTracksAvailable": "Нет доступных аудио дорожек",
+    "noVideoTrackSelected": "Видео дорожка не выбрана",
+    "noAudioTrackSelected": "Аудио дорожка не выбрана",
+    "confirm": "Подтвердить",
+    "NoMediaSourcesAvailable": "Нет доступных источников медиаданных"
 }
