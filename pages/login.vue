@@ -3,8 +3,8 @@
     <v-row align="center" justify="center">
       <v-col
         v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
-        sm="7"
-        md="6"
+        sm="10"
+        md="7"
         lg="5"
       >
         <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>
@@ -12,27 +12,26 @@
           <v-col
             v-for="publicUser in publicUsers"
             :key="publicUser.Id"
-            xl="2"
-            lg="4"
-            md="4"
-            sm="4"
-            xs="4"
-            cols="6"
+            cols="auto"
           >
             <user-card :user="publicUser" @connect="setCurrentUser" />
           </v-col>
         </v-row>
-        <v-row align="center" justify="center" no-gutters>
-          <v-col class="d-flex flex-row mt-7">
-            <v-btn class="flex-grow-1 mr-2" large @click="loginAsOther = true">
+        <v-row align="center" justify="center" dense class="mt-7">
+          <v-col cols="11" sm="6" class="d-flex justify-center">
+            <v-btn block large @click="loginAsOther = true">
               {{ $t('manualLogin') }}
             </v-btn>
-            <v-btn class="flex-grow-1 mr-2" to="/selectServer" nuxt large>
+          </v-col>
+          <v-col cols="11" sm="6" class="d-flex justify-center">
+            <v-btn block to="/selectServer" nuxt large>
               {{ $t('changeServer') }}
             </v-btn>
-            <locale-switcher />
           </v-col>
         </v-row>
+        <div class="d-flex justify-center mt-6">
+          <locale-switcher large />
+        </div>
       </v-col>
       <v-col
         v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
