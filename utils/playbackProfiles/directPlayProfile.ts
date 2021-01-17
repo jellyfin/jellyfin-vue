@@ -2,6 +2,7 @@ import { DirectPlayProfile, DlnaProfileType } from '@jellyfin/client-axios';
 import { getSupportedMP4VideoCodecs } from './helpers/mp4VideoFormats';
 import { hasMkvSupport } from './helpers/transcodingFormats';
 import { getSupportedWebMAudioCodecs } from './helpers/webmAudioFormats';
+import { getSupportedWebMVideoCodecs } from './helpers/webmVideoFormats';
 
 /**
  * Returns a valid DirectPlayProfile for the current platform.
@@ -14,7 +15,7 @@ export function getDirectPlayProfiles(
 ): Array<DirectPlayProfile> {
   const DirectPlayProfiles = [] as DirectPlayProfile[];
 
-  const webmVideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+  const webmVideoCodecs = getSupportedWebMVideoCodecs(videoTestElement);
   const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
