@@ -159,8 +159,23 @@
     "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
     "settings": {
         "apiKeys": {
-            "addApiKey": "ഒരു API കീ ചേർക്കുക"
-        }
+            "addApiKey": "ഒരു API കീ ചേർക്കുക",
+            "refreshKeysFailure": "API കീകൾ പുതുക്കുന്നതിൽ പിശക്",
+            "createKeyFailure": "ഒരു പുതിയ API കീ സൃഷ്‌ടിക്കുന്നതിൽ പിശക്",
+            "createKeySuccess": "ഒരു പുതിയ API കീ വിജയകരമായി സൃഷ്‌ടിച്ചു",
+            "addNewKey": "പുതിയ API കീ ചേർക്കുക",
+            "revokeAllFailure": "എല്ലാ API കീകളും അസാധുവാക്കുന്നതിൽ പിശക്",
+            "revokeAllSuccess": "എല്ലാ API കീകളും വിജയകരമായി റദ്ദാക്കി",
+            "revokeAll": "എല്ലാ API കീകളും അസാധുവാക്കുക",
+            "revokeFailure": "API കീ അസാധുവാക്കുന്നതിൽ പിശക്",
+            "revokeSuccess": "API കീ വിജയകരമായി റദ്ദാക്കി",
+            "dateCreated": "തീയതി സൃഷ്ടിച്ചു",
+            "accessToken": "ടോക്കൺ ആക്സസ് ചെയ്യുക",
+            "appName": "അപ്ലിക്കേഷന്റെ പേര്",
+            "description": "നിങ്ങളുടെ സെർവറിലേക്കുള്ള ബാഹ്യ ആക്‌സസ്സിനായി API കീകൾ ചേർത്ത് അസാധുവാക്കുക",
+            "apiKeys": "API കീകൾ"
+        },
+        "settings": "ക്രമീകരണങ്ങൾ"
     },
     "settingsSections": {
         "account": {
@@ -314,5 +329,11 @@
         "confirmPassword": "പാസ്വേഡ് സ്ഥിരീകരിക്കുക"
     },
     "confirm": "സ്ഥിരീകരിക്കുക",
-    "NoMediaSourcesAvailable": "മീഡിയ ഉറവിടങ്ങളൊന്നും ലഭ്യമല്ല"
+    "NoMediaSourcesAvailable": "മീഡിയ ഉറവിടങ്ങളൊന്നും ലഭ്യമല്ല",
+    "noVideoTracksAvailable": "വീഡിയോ ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+    "noVideoTrackSelected": "വീഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല",
+    "noTracksAvailable": "ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+    "noSubtitlesAvailable": "സബ്‌ടൈറ്റിലുകളൊന്നും ലഭ്യമല്ല",
+    "noAudioTracksAvailable": "ഓഡിയോ ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+    "noAudioTrackSelected": "ഓഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല"
 }
