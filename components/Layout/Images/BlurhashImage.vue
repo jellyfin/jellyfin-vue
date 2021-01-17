@@ -10,7 +10,7 @@
         :punch="punch"
         class="absolute"
       />
-      <transition name="fade-fast" mode="in-out">
+      <v-fade-transition>
         <img
           v-show="!loading"
           :key="`blurhashimage-${item.Id}`"
@@ -21,7 +21,7 @@
           @error="onError"
           @load="loading = false"
         />
-      </transition>
+      </v-fade-transition>
     </div>
     <slot v-else name="placeholder" />
   </div>
@@ -110,7 +110,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/transitions.scss';
 .absolute {
   height: 100%;
   width: 100%;

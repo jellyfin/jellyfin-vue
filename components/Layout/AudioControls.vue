@@ -144,7 +144,7 @@
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
-            <transition name="fade-fast" mode="in-out">
+            <v-fade-transition>
               <v-tooltip v-if="!isFullScreenPlayer" top>
                 <template #activator="{ on, attrs }">
                   <nuxt-link tag="span" :to="'/playback'">
@@ -155,7 +155,7 @@
                 </template>
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
-            </transition>
+            </v-fade-transition>
             <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
             <v-tooltip top>
               <template #activator="{ on, attrs }">

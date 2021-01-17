@@ -140,9 +140,6 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.lastItemIndex = state.currentItemIndex;
     state.currentItemIndex = currentItemIndex;
-    // Sometimes, the PlaybackStatus was being reported as stopped on track change.
-    // We set it as playing again here
-    state.status = PlaybackStatus.playing;
   },
   SET_CURRENT_MEDIA_SOURCE(
     state: PlaybackManagerState,
@@ -154,9 +151,6 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     if (state.currentItemIndex !== null) {
       state.lastItemIndex = state.currentItemIndex;
       state.currentItemIndex += 1;
-      // Sometimes, the PlaybackStatus was being reported as stopped on track change.
-      // We set it as playing again here
-      state.status = PlaybackStatus.playing;
     }
   },
   DECREASE_QUEUE_INDEX(state: PlaybackManagerState) {
@@ -199,6 +193,9 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     { time }: { time: number | null }
   ) {
     state.currentTime = time;
+    // Sometimes, the PlaybackStatus was being reported as stopped. We set it as playing again here
+    // at every time report.
+    state.status = PlaybackStatus.playing;
   },
   CHANGE_CURRENT_TIME(
     state: PlaybackManagerState,
@@ -247,7 +244,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     { commit, state },
     { items, startFromIndex }: { items: BaseItemDto[]; startFromIndex?: number }
   ) {
-    if (state.status === PlaybackStatus.stopped) {
+    if (state.status !== PlaybackStatus.stopped) {
       commit('STOP_PLAYBACK');
     }
     const translatedItems = await translateItemForPlayback(items);

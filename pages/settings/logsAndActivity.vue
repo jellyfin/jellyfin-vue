@@ -2,88 +2,114 @@
   <settings-page>
     <template #content>
       <v-col md="6" class="pt-0 pb-4">
-        <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.logs') }}</h2>
-        <v-list v-if="logFiles && logFiles.length > 0" two-line class="mb-2">
-          <v-list-item-group>
-            <v-list-item
-              v-for="file in logFiles"
-              :key="file.Name"
-              :href="getLogFileLink(file.Name)"
-              target="_blank"
-              rel="noopener"
-            >
-              <v-list-item-avatar>
-                <v-icon>mdi-file</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="file.Name" />
-                <v-list-item-subtitle
-                  v-text="getFormattedLogDate(file.DateModified)"
-                />
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-icon>mdi-open-in-new</v-icon>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-        <v-card v-else-if="loadingLogsStatus.status === 'loaded'">
-          <v-card-title>
-            {{ $t('logsAndActivity.noLogsFound') }}
-          </v-card-title>
-        </v-card>
-        <v-card v-else-if="loadingLogsStatus.status === 'error'">
-          <v-card-title>
-            <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
-            {{ $t('logsAndActivity.failedGetLogs') }}
-          </v-card-title>
-          <v-card-text v-if="loadingLogsStatus.errorMessage">
-            {{ loadingLogsStatus.errorMessage }}</v-card-text
+        <v-fade-transition group>
+          <h2 key="logs-title" class="text-h6 mb-2">
+            {{ $t('logsAndActivity.logs') }}
+          </h2>
+          <v-list
+            v-if="logFiles && logFiles.length > 0"
+            key="log-list"
+            two-line
+            class="mb-2"
           >
-        </v-card>
+            <v-list-item-group>
+              <v-list-item
+                v-for="file in logFiles"
+                :key="file.Name"
+                :href="getLogFileLink(file.Name)"
+                target="_blank"
+                rel="noopener"
+              >
+                <v-list-item-avatar>
+                  <v-icon>mdi-file</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="file.Name" />
+                  <v-list-item-subtitle
+                    v-text="getFormattedLogDate(file.DateModified)"
+                  />
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-icon>mdi-open-in-new</v-icon>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+          <v-card
+            v-else-if="loadingLogsStatus.status === 'loaded'"
+            key="no-log-card"
+          >
+            <v-card-title>
+              {{ $t('logsAndActivity.noLogsFound') }}
+            </v-card-title>
+          </v-card>
+          <v-card
+            v-else-if="loadingLogsStatus.status === 'error'"
+            key="error-log-card"
+          >
+            <v-card-title>
+              <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+              {{ $t('logsAndActivity.failedGetLogs') }}
+            </v-card-title>
+            <v-card-text v-if="loadingLogsStatus.errorMessage">
+              {{ loadingLogsStatus.errorMessage }}</v-card-text
+            >
+          </v-card>
+        </v-fade-transition>
       </v-col>
       <v-col md="6" class="pt-0 pb-4">
-        <h2 class="text-h6 mb-2">{{ $t('logsAndActivity.activity') }}</h2>
-        <v-list
-          v-if="activityList && activityList.length > 0"
-          two-line
-          class="mb-2"
-          disabled
-        >
-          <v-list-item-group>
-            <v-list-item v-for="activity in activityList" :key="activity.Id">
-              <v-list-item-avatar
-                :color="getColorFromSeverity(activity.Severity)"
-              >
-                <v-icon dark v-text="getIconFromType(activity.Type)"></v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="decodeHTML(activity.Name)" />
-                <v-list-item-subtitle v-text="activity.ShortOverview" />
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-list-item-subtitle
-                  class="text-capitalize-first-letter"
-                  v-text="getFormattedActivityDate(activity.Date)"
-                />
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
-        <v-card v-else-if="loadingActivityStatus.status === 'loaded'">
-          <v-card-title>
-            {{ $t('logsAndActivity.noActivityFound') }}
-          </v-card-title>
-        </v-card>
-        <v-card v-else-if="loadingActivityStatus.status === 'error'">
-          <v-card-title>
-            <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
-            {{ $t('logsAndActivity.failedGetActivity') }}
-          </v-card-title>
-          <v-card-text v-if="loadingActivityStatus.errorMessage">
-            {{ loadingActivityStatus.errorMessage }}
-          </v-card-text>
-        </v-card>
+        <v-fade-transition group>
+          <h2 key="activity-title" class="text-h6 mb-2">
+            {{ $t('logsAndActivity.activity') }}
+          </h2>
+          <v-list
+            v-if="activityList && activityList.length > 0"
+            key="activity-list"
+            two-line
+            class="mb-2"
+            disabled
+          >
+            <v-list-item-group>
+              <v-list-item v-for="activity in activityList" :key="activity.Id">
+                <v-list-item-avatar
+                  :color="getColorFromSeverity(activity.Severity)"
+                >
+                  <v-icon dark v-text="getIconFromType(activity.Type)"></v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-text="decodeHTML(activity.Name)" />
+                  <v-list-item-subtitle v-text="activity.ShortOverview" />
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-list-item-subtitle
+                    class="text-capitalize-first-letter"
+                    v-text="getFormattedActivityDate(activity.Date)"
+                  />
+                </v-list-item-action>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+          <v-card
+            v-else-if="loadingActivityStatus.status === 'loaded'"
+            key="no-activity-card"
+          >
+            <v-card-title>
+              {{ $t('logsAndActivity.noActivityFound') }}
+            </v-card-title>
+          </v-card>
+          <v-card
+            v-else-if="loadingActivityStatus.status === 'error'"
+            key="error-activity-card"
+          >
+            <v-card-title>
+              <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+              {{ $t('logsAndActivity.failedGetActivity') }}
+            </v-card-title>
+            <v-card-text v-if="loadingActivityStatus.errorMessage">
+              {{ loadingActivityStatus.errorMessage }}
+            </v-card-text>
+          </v-card>
+        </v-fade-transition>
       </v-col>
     </template>
   </settings-page>

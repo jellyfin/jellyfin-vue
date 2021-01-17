@@ -19,14 +19,14 @@
                   })
                 }}
               </p>
-              <transition name="fade" mode="in-out">
+              <v-fade-transition>
                 <h1
                   v-if="extraText"
                   class="text-h6 text-sm-h4 text-md-h2 text-lg-h2 text-xl-h2"
                 >
                   {{ extraText }}
                 </h1>
-              </transition>
+              </v-fade-transition>
             </v-col>
           </v-container>
         </div>
@@ -50,6 +50,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/transitions.scss';
 @import '~/assets/styles/HomeHeader.scss';
 </style>
