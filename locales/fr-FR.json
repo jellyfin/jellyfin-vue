@@ -107,7 +107,7 @@
     "validation": {
         "mustBeUrl": "Ce champ n'est pas une URL valide",
         "required": "Ce champ est requis",
-        "bothPasswordsSame": "Les deux mots de passe doivent être la sauvegarde"
+        "bothPasswordsSame": "Les deux mots de passe doivent être identiques"
     },
     "viewDetails": "Afficher les détails",
     "numberTracks": "{number} pistes",
