@@ -25,7 +25,26 @@
     "serverAddressMustBeUrl": "Địa chỉ máy chủ phải là một URL hợp lệ",
     "serverAddressRequired": "Địa chỉ máy chủ là bắt buộc",
     "serverNotFound": "Không tìm thấy máy chủ",
-    "settings": "Cài đặt",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "Thêm khóa API",
+            "refreshKeysFailure": "Lỗi khi làm mới khóa API",
+            "createKeyFailure": "Lỗi khi tạo khóa API mới",
+            "createKeySuccess": "Đã tạo thành công khóa API mới",
+            "addNewKey": "Thêm khóa API mới",
+            "revokeAllFailure": "Lỗi khi thu hồi tất cả các khóa API",
+            "revokeAllSuccess": "Đã thu hồi thành công tất cả các khóa API",
+            "revokeAll": "Thu hồi tất cả các khóa API",
+            "revokeFailure": "Lỗi khi thu hồi khóa API",
+            "revokeSuccess": "Đã thu hồi thành công khóa API",
+            "dateCreated": "Ngày tạo",
+            "accessToken": "Mã truy cập",
+            "appName": "Tên ứng dụng",
+            "description": "Thêm và thu hồi các khóa API để truy cập bên ngoài vào máy chủ của bạn",
+            "apiKeys": "Khóa API"
+        },
+        "settings": "Cài đặt"
+    },
     "signIn": "Đăng nhập",
     "unexpectedError": "Lỗi không mong muốn",
     "upNext": "Tiếp theo",
@@ -311,5 +330,13 @@
     "stopPlayback": "Dừng phát",
     "person": "Người",
     "noImagesFound": "Không tìm thấy hình ảnh",
-    "metadataEditor": "Chỉnh sửa dữ liệu mô tả"
+    "metadataEditor": "Chỉnh sửa dữ liệu mô tả",
+    "noVideoTracksAvailable": "Không có đoạn video nào",
+    "noVideoTrackSelected": "Không có bản video nào được chọn",
+    "noTracksAvailable": "Không có bản nhạc nào",
+    "noSubtitlesAvailable": "Không có phụ đề",
+    "noAudioTracksAvailable": "Không có bản âm thanh nào",
+    "noAudioTrackSelected": "Không có bản âm thanh nào được chọn",
+    "confirm": "Xác nhận",
+    "NoMediaSourcesAvailable": "Không có sẵn nguồn phương tiện"
 }
