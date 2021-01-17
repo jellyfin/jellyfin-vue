@@ -25,7 +25,26 @@
     "serverAddressMustBeUrl": "Adresa serveru musí být platná URL adresa",
     "serverAddressRequired": "Adresa serveru je povinná",
     "serverNotFound": "Server nebyl nalezen",
-    "settings": "Nastavení",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "Přidat klíč k API",
+            "refreshKeysFailure": "Chyba při aktualizaci klíčů k API",
+            "createKeyFailure": "Chyba při tvorbě nového klíče k API",
+            "createKeySuccess": "Nový klíč k API úspěšně vytvořen",
+            "addNewKey": "Přidat nový klíč k API",
+            "revokeAllFailure": "Chyba při rušení všech klíčů k API",
+            "revokeAllSuccess": "Všechny klíče k API úspěšně zrušeny",
+            "revokeAll": "Zrušit všechny klíče k API",
+            "revokeFailure": "Chyba při rušení klíče k API",
+            "revokeSuccess": "Klíč k API úspěšně zrušen",
+            "dateCreated": "Datum vytvoření",
+            "accessToken": "Přístupový token",
+            "appName": "Název aplikace",
+            "description": "Přidat či zrušit klíče k API pro externí přístup k serveru",
+            "apiKeys": "Klíče k API"
+        },
+        "settings": "Nastavení"
+    },
     "signIn": "Přihlásit se",
     "unexpectedError": "Neočekávaná chyba",
     "upNext": "Následující",
@@ -312,5 +331,13 @@
         "setAdminError": "Tvorba účtu správce se nezdařila.",
         "setupWizard": "Průvodce nastavením",
         "confirmPassword": "Heslo znovu"
-    }
+    },
+    "noVideoTracksAvailable": "Žádné video stopy k dispozici",
+    "noVideoTrackSelected": "Nevybrána video stopa",
+    "noTracksAvailable": "Žádné stopy k dispozici",
+    "noSubtitlesAvailable": "Žádné titulky k dispozici",
+    "noAudioTracksAvailable": "Žádné zvukové stopy k dispozici",
+    "noAudioTrackSelected": "Nevybrána žádná zvuková stopa",
+    "confirm": "Potvrdit",
+    "NoMediaSourcesAvailable": "Nejsou k dispozici žádné zdroje médií"
 }
