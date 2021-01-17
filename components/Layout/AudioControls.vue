@@ -143,7 +143,7 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </v-fade-transition>
-            <item-menu :item="getCurrentItem" :dark="false" />
+            <item-menu :item="getCurrentItem" />
           </v-col>
           <v-col
             cols="3"

@@ -66,7 +66,7 @@ export default Vue.extend({
     },
     dark: {
       type: Boolean,
-      default: true
+      default: false
     },
     outlined: {
       type: Boolean,
