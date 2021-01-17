@@ -36,7 +36,8 @@
             "dateCreated": "Дата создания",
             "accessToken": "Токен доступа",
             "appName": "Название приложения",
-            "apiKeys": "API-ключи"
+            "apiKeys": "API-ключи",
+            "revokeAll": "Отозвать все API-ключи"
         },
         "settings": "Параметры"
     },
