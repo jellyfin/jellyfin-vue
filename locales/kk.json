@@ -36,7 +36,18 @@
             "dateCreated": "Jasalý kúni",
             "accessToken": "Qatynaý tokeni",
             "appName": "Qoldanba aty",
-            "apiKeys": "API-kiltter"
+            "apiKeys": "API-kiltter",
+            "description": "Serverge syrttan qatynaý úshin API-kіltterіn qosý jáne joıy",
+            "addApiKey": "API-kiltti ústeý",
+            "refreshKeysFailure": "API-kiltterdi jańartý kezinde qate",
+            "createKeyFailure": "Jańa API-kilt jasaý kezinde qate",
+            "createKeySuccess": "Jańa API-kilt sátti ústelindi",
+            "addNewKey": "Jańa API-kiltti ústeý",
+            "revokeAllFailure": "Barlyq API-kiltterdi qaıtaryp alý kezinde qate",
+            "revokeAllSuccess": "barlyq API-kiltter sátti qaıtaryp alyndý",
+            "revokeAll": "Barlyq API-kiltterdi qaıtaryp alý",
+            "revokeFailure": "API-kiltti qaıtaryp alý kezinde qate",
+            "revokeSuccess": "API-kilt sátti qaıtaryp alyndý"
         },
         "settings": "Parametrler"
     },
@@ -322,5 +333,10 @@
     "person": "Tulǵa",
     "noVideoTrackSelected": "Dybys jolshyǵy tańdalmaǵan",
     "noAudioTrackSelected": "Sýbtıtrler tańdalmaǵan",
-    "confirm": "Rastaý"
+    "confirm": "Rastaý",
+    "noVideoTracksAvailable": "Qatynaýly beıne jolshyqtar joq",
+    "noTracksAvailable": "Qatynaýly jolshyqtar joq",
+    "noSubtitlesAvailable": "Qatynaýly sýbtıtrler joq",
+    "noAudioTracksAvailable": "Qatynaýly dybys jolshyqtar joq",
+    "NoMediaSourcesAvailable": "Qatynaýly tasyǵyshderekterdiń kózderi joq"
 }
