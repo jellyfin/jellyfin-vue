@@ -37,7 +37,17 @@
             "accessToken": "Токен доступа",
             "appName": "Название приложения",
             "apiKeys": "API-ключи",
-            "revokeAll": "Отозвать все API-ключи"
+            "revokeAll": "Отозвать все API-ключи",
+            "addApiKey": "Добавить API-ключ",
+            "refreshKeysFailure": "Ошибка при подновлении API-ключей",
+            "createKeyFailure": "Ошибка при создании нового API-ключа",
+            "createKeySuccess": "Новый API-ключ создан успешно",
+            "addNewKey": "Добавить новый API-ключ",
+            "revokeAllFailure": "Ошибка при отзыве всех API-ключей",
+            "revokeAllSuccess": "Все API-ключи отозваны успешно",
+            "revokeFailure": "Ошибка при отзыве API-ключа",
+            "revokeSuccess": "API-ключ отозван успешно",
+            "description": "Добавлять и отзывать API-ключи внешнего доступа к серверу"
         },
         "settings": "Параметры"
     },
