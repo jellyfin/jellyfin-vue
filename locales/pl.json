@@ -148,7 +148,8 @@
     },
     "validation": {
         "mustBeUrl": "To pole musi być prawidłowym adresem URL",
-        "required": "To pole jest wymagane"
+        "required": "To pole jest wymagane",
+        "bothPasswordsSame": "Obywa hasła muszą być takie same"
     },
     "unliked": "Nie lubię",
     "unableGetRelated": "Nie udało się odczytać powiązanych elementów",
@@ -275,7 +276,9 @@
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
     "tooltips": {
         "toggleDarkMode": "Przełącz na ciemny motyw",
-        "changeLanguage": "Język"
+        "changeLanguage": "Język",
+        "switchToLightMode": "Przełącz na tryb jasny",
+        "switchToDarkMode": "Przełącz na tryb ciemny"
     },
     "refreshLibrary": "Odśwież bibliotekę",
     "queue": "Kolejka",
@@ -283,5 +286,28 @@
     "noSubtitleAvailable": "Brak dostępnych napisów",
     "metadataEditor": "Edytor metadanych",
     "libraryRefreshQueued": "Odświeżenie biblioteki w kolejce",
-    "fullScreen": "Pełny ekran"
+    "fullScreen": "Pełny ekran",
+    "wizard": {
+        "remoteAccess": "Dostęp zdalny",
+        "allowRemoteAccess": "Ustaw dostęp zdalny do serwera",
+        "administratorAccount": "Konto administratora",
+        "languageLocale": "Język i lokalizacja",
+        "preferedLanguage": "Preferowany język",
+        "preferredMetadataLanguage": "Preferowany język metadanych",
+        "completeError": "Nie można ukończyć kreatora uruchamiania.",
+        "remoteAccessSet": "Dostęp zdalny ustawiony.",
+        "metadataLanguagesSet": "Język metadanych ustawiony.",
+        "userSuccessfullySet": "Użytkownik został pomyślnie ustawiony.",
+        "languageSuccessfullySet": "Język został pomyślnie ustawiony.",
+        "setRemoteError": "Nie można ustawić konfiguracji dostępu zdalnego.",
+        "setMetadataError": "Nie można ustawić języka metadanych.",
+        "setLanguageError": "Nie można ustawić języka klienta.",
+        "setAdminError": "Nie można stworzyć konta administratora.",
+        "setupWizard": "Kreator konfiguracji",
+        "confirmPassword": "Potwierdź hasło"
+    },
+    "upNextName": "Następnie: {upNextItemName}",
+    "stopPlayback": "Zatrzymaj odtwarzanie",
+    "person": "Osoba",
+    "noImagesFound": "Nie znaleziono obrazów"
 }

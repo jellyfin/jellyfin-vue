@@ -87,13 +87,14 @@
     "viewDetails": "Подробности",
     "validation": {
         "required": "Это поле обязательное",
-        "mustBeUrl": "В этом поле должен быть действующий URL"
+        "mustBeUrl": "В этом поле должен быть действующий URL",
+        "bothPasswordsSame": "Оба пароля должны быть сохранены"
     },
     "numberTracks": "{number} дорож[ка/ки/ек]",
     "nextUp": "Очередное",
     "libraries": "Медиатеки",
     "latestLibrary": "Новейшее {libraryName}",
-    "darkModeToggle": "Переключиться на тёмный режим",
+    "darkModeToggle": "Переключение тёмного режима",
     "errors": {
         "messages": {
             "videoPlayerError": "В видео проигрывателе произошла неустранимая ошибка.",
@@ -283,8 +284,32 @@
     "fullScreen": "Полный экран",
     "tooltips": {
         "toggleDarkMode": "Переключиться на тёмный режим",
-        "changeLanguage": "Язык"
+        "changeLanguage": "Язык",
+        "switchToLightMode": "Переключить на светлый режим",
+        "switchToDarkMode": "Переключить на тёмный режим"
     },
     "metadataEditor": "Редактор метаданных",
-    "noImagesFound": "Рисунков не найдено"
+    "noImagesFound": "Рисунков не найдено",
+    "wizard": {
+        "remoteAccess": "Удалённый доступ",
+        "allowRemoteAccess": "Разрешить удалённый доступ к серверу",
+        "administratorAccount": "Административная учётная запись",
+        "languageLocale": "Язык и локаль",
+        "preferedLanguage": "Выбор языка",
+        "preferredMetadataLanguage": "Выбор языка метаданных",
+        "completeError": "Невозможно завершить работу мастера запуска.",
+        "remoteAccessSet": "Задавать удалённый доступ.",
+        "metadataLanguagesSet": "Задавать язык метаданных.",
+        "userSuccessfullySet": "Пользователь задан успешно.",
+        "languageSuccessfullySet": "Язык задан успешно.",
+        "setRemoteError": "Невозможно задать параметры удалённого доступа.",
+        "setMetadataError": "Невозможно задать языки метаданных.",
+        "setLanguageError": "Невозможно задать язык клиента.",
+        "setAdminError": "Невозможно создать административную учётную запись.",
+        "setupWizard": "Мастер установки",
+        "confirmPassword": "Подтверждение пароля"
+    },
+    "upNextName": "Очередное: {upNextItemName}",
+    "stopPlayback": "Остановить воспроизведение",
+    "person": "Персона"
 }

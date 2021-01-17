@@ -6,6 +6,7 @@
           :class="absolute ? 'card-more-button' : ''"
           icon
           small
+          :outlined="outlined"
           :dark="dark"
           v-bind="attrs"
           v-on="on"
@@ -16,11 +17,11 @@
       </template>
       <v-list>
         <v-list-item
-          v-for="(it, index) in items"
-          :key="index"
-          @click="it.action"
+          v-for="(menuItem, index) in items"
+          :key="`item-${item.Id}-menu-${index}`"
+          @click="menuItem.action"
         >
-          <v-list-item-title>{{ it.title }}</v-list-item-title>
+          <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -53,6 +54,10 @@ export default Vue.extend({
     dark: {
       type: Boolean,
       default: true
+    },
+    outlined: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

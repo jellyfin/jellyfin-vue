@@ -48,7 +48,7 @@
                     class="all-pointer-events"
                     icon
                     x-large
-                    @click="togglePause"
+                    @click="playPause"
                   >
                     <v-icon size="48">
                       {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
@@ -112,7 +112,7 @@
                         <v-btn icon @click="setPreviousTrack">
                           <v-icon> mdi-skip-previous </v-icon>
                         </v-btn>
-                        <v-btn icon @click="togglePause">
+                        <v-btn icon @click="playPause">
                           <v-icon>
                             {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
                           </v-icon>
@@ -197,6 +197,7 @@ export default Vue.extend({
       switch (mutation.type) {
         case 'playbackManager/START_PLAYBACK':
         case 'playbackManager/INCREASE_QUEUE_INDEX':
+        case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
           if (
             state.playbackManager.currentTime !== null &&
@@ -217,7 +218,7 @@ export default Vue.extend({
           }
 
           // Then report the start of the next one
-          if (this.getCurrentItem.Id !== null) {
+          if (this.getCurrentItem?.Id) {
             this.$api.playState.reportPlaybackStart(
               {
                 playbackStartInfo: {
@@ -303,6 +304,18 @@ export default Vue.extend({
       }
     });
   },
+  mounted() {
+    this.$store.subscribe((mutation, state: AppState) => {
+      switch (mutation.type) {
+        case 'playbackManager/TOGGLE_MINIMIZE':
+          if (state.playbackManager.isMinimized === true) {
+            window.removeEventListener('keydown', this.handleKeyPress);
+          } else if (state.playbackManager.isMinimized === false) {
+            window.addEventListener('keydown', this.handleKeyPress);
+          }
+      }
+    });
+  },
   methods: {
     ...mapActions('playbackManager', [
       'toggleMinimized',
@@ -311,8 +324,9 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'setLastItemIndex',
-      'pause',
-      'unpause'
+      'playPause',
+      'skipForward',
+      'skipBackward'
     ]),
     getContentClass(): string {
       return `player ${
@@ -326,11 +340,20 @@ export default Vue.extend({
       this.resetCurrentItemIndex();
       this.setNextTrack();
     },
-    togglePause(): void {
-      if (this.isPaused) {
-        this.unpause();
-      } else {
-        this.pause();
+    handleKeyPress(e: KeyboardEvent): void {
+      if (!this.isMinimized && this.isPlaying) {
+        switch (e.key) {
+          case 'Spacebar':
+          case ' ':
+            this.playPause();
+            break;
+          case 'ArrowRight':
+            this.skipForward();
+            break;
+          case 'ArrowLeft':
+            this.skipBackward();
+            break;
+        }
       }
     }
   }

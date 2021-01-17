@@ -42,8 +42,19 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
+  async asyncData({ params, $api, $auth }) {
+    const collectionInfo = (
+      await $api.items.getItems({
+        userId: $auth.user?.Id,
+        ids: [params.viewId]
+      })
+    ).data?.Items?.[0];
+
+    return { collectionInfo };
+  },
   data() {
     return {
       items: [] as BaseItemDto[],
@@ -120,54 +131,38 @@ export default Vue.extend({
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
     });
-    try {
-      this.loading = true;
-      this.collectionInfo = (
-        await this.$api.items.getItems({
-          uId: this.$auth.user?.Id,
-          userId: this.$auth.user?.Id,
-          ids: this.$route.params.viewId
-        })
-      ).data.Items[0];
 
-      if (
-        this.collectionInfo &&
-        ['CollectionFolder', 'Folder', 'UserView', 'playlists'].includes(
-          this.collectionInfo.Type || ''
-        )
-      ) {
-        if (this.collectionInfo.Name) {
-          this.setPageTitle({
-            title: this.collectionInfo.Name
-          });
-        }
-
-        // Set default view type - This will trigger an items refresh
-        switch (this.collectionInfo.CollectionType) {
-          case 'tvshows':
-            this.viewType = 'Series';
-            break;
-          case 'movies':
-            this.viewType = 'Movie';
-            break;
-          case 'books':
-            this.viewType = 'Book';
-            break;
-          case 'music':
-            this.viewType = 'MusicAlbum';
-            break;
-          default:
-            this.refreshItems();
-            break;
-        }
-
-        this.$nuxt.$loading.finish();
+    if (
+      this.collectionInfo?.Type &&
+      validLibraryTypes.includes(this.collectionInfo.Type)
+    ) {
+      if (this.collectionInfo.Name) {
+        this.setPageTitle({
+          title: this.collectionInfo.Name
+        });
       }
-    } catch (error) {
-      // Can't get given library ID
-      this.$nuxt.error({
-        statusCode: 404,
-        message: this.$t('libraryNotFound')
+
+      // Set default view type - This will trigger an items refresh
+      switch (this.collectionInfo.CollectionType) {
+        case 'tvshows':
+          this.viewType = 'Series';
+          break;
+        case 'movies':
+          this.viewType = 'Movie';
+          break;
+        case 'books':
+          this.viewType = 'Book';
+          break;
+        case 'music':
+          this.viewType = 'MusicAlbum';
+          break;
+        default:
+          await this.refreshItems();
+          break;
+      }
+
+      this.$nextTick(() => {
+        this.$nuxt.$loading.finish();
       });
     }
   },

@@ -109,8 +109,8 @@
             "recentlyAdded": "Adăugat recent"
         },
         "welcome": {
-            "checkNewItems": "Vedeți ce este nou",
-            "noItems": "Nu există elemente adăugate recent de afișat",
+            "checkNewItems": "Verifica ce este nou.",
+            "noItems": "Nu există elemente adăugate recent de afișat.",
             "helloUser": "Salut {userName}!"
         }
     },
@@ -158,7 +158,7 @@
         },
         "notifications": {
             "name": "Notificări",
-            "description": "Gestionați și configurați notificările trimise de acest server"
+            "description": "Gestionați și configurați notificări trimise de acest server"
         },
         "networking": {
             "name": "Rețele",
@@ -267,5 +267,25 @@
     "allLanguages": "Toate limbile",
     "addNewPerson": "Adăugați o persoană nouă",
     "actor": "Artist",
-    "3DFormat": "Format 3D"
+    "3DFormat": "Format 3D",
+    "writing": "Scris",
+    "version": "Versiune",
+    "upNextName": "Următorul: {upNextItemName}",
+    "unableToRefreshLibrary": "Imposibil de reîmprospătat biblioteca",
+    "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+    "tooltips": {
+        "switchToLightMode": "Treceți la modul luminos",
+        "switchToDarkMode": "Treceți la modul întunecat",
+        "changeLanguage": "Limba"
+    },
+    "stopPlayback": "Opriți redarea",
+    "refreshLibrary": "Actualizați biblioteca",
+    "queue": "Rând",
+    "noSubtitleSelected": "Nu a fost selectată nici o subtitrare",
+    "noSubtitleAvailable": "Nu există subtitrare disponibilă",
+    "noImagesFound": "Nu s-au găsit imagini",
+    "metadataEditor": "Editor de metadate",
+    "libraryRefreshQueued": "Actualizarea bibliotecii în așteptare",
+    "fullScreen": "Ecran complet",
+    "directing": "Regie"
 }

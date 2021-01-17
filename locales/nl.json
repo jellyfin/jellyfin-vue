@@ -81,7 +81,8 @@
     "viewDetails": "Bekijk details",
     "validation": {
         "required": "Dit veld is vereist",
-        "mustBeUrl": "Dit veld moet een geldige URL zijn"
+        "mustBeUrl": "Dit veld moet een geldige URL zijn",
+        "bothPasswordsSame": "Beide wachtwoorden moeten identiek zijn"
     },
     "failedToRefreshItems": "Het verversen van items is mislukt",
     "unliked": "Leuk gevonden ongedaan",
@@ -278,5 +279,34 @@
     "noSubtitleAvailable": "Geen ondertiteling beschikbaar",
     "libraryRefreshQueued": "Bibliotheek vernieuwen in wachtrij geplaatst",
     "fullScreen": "Volledig scherm",
-    "directing": "Regisseren"
+    "directing": "Regisseren",
+    "wizard": {
+        "remoteAccess": "Toegang op afstand",
+        "allowRemoteAccess": "Sta externe toegang tot de server toe",
+        "administratorAccount": "Beheerdersaccount",
+        "languageLocale": "Taal en landinstelling",
+        "preferedLanguage": "Voorkeurstaal",
+        "preferredMetadataLanguage": "Voorkeurstaal voor metadata",
+        "completeError": "Kan opstartwizard niet voltooien.",
+        "remoteAccessSet": "Toegang op afstand ingesteld.",
+        "metadataLanguagesSet": "Metadata talen ingesteld.",
+        "userSuccessfullySet": "Gebruiker succesvol ingesteld.",
+        "languageSuccessfullySet": "Taal succesvol ingesteld.",
+        "setRemoteError": "Kan instellingen voor externe toegang niet instellen.",
+        "setMetadataError": "Kan metagegevenstalen niet instellen.",
+        "setLanguageError": "Kan cliënt taal niet instellen.",
+        "setAdminError": "Kan geen beheerdersaccount maken.",
+        "setupWizard": "Installatie wizard",
+        "confirmPassword": "Bevestig wachtwoord"
+    },
+    "upNextName": "Volgende: {upNextItemName}",
+    "tooltips": {
+        "switchToLightMode": "Schakel over naar de lichtmodus",
+        "switchToDarkMode": "Schakel over naar de donkere modus",
+        "changeLanguage": "Taal"
+    },
+    "stopPlayback": "Stop afspelen",
+    "person": "Persoon",
+    "noImagesFound": "Geen afbeeldingen gevonden",
+    "metadataEditor": "Metadata bewerker"
 }

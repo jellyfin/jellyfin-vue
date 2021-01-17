@@ -39,7 +39,7 @@
     "browserNotSupported": "Tu navegador no es compatible con este archivo.",
     "years": "Años",
     "videoTypes": "Tipos de Vídeo",
-    "parentalRatings": "Clasificaiones Parentales",
+    "parentalRatings": "Clasificaciones Parentales",
     "genres": "Géneros",
     "specialFeatures": "Contenido Adicional",
     "trailer": "Trailer",
@@ -159,7 +159,7 @@
         },
         "libraries": {
             "name": "Bibliotecas",
-            "description": "Gestiona las bibliotecas y sus etiquetas"
+            "description": "Gestionar las bibliotecas y sus etiquetas"
         },
         "home": {
             "description": "Configurar la apariencia y distribución de la pantalla de inicio",
@@ -276,7 +276,7 @@
     "queue": "Cola",
     "noSubtitleSelected": "Ningún subtítulo seleccionado",
     "noSubtitleAvailable": "No hay subtítulos disponibles",
-    "metadataEditor": "Editor de metadatos",
+    "metadataEditor": "Editor de etiquetas",
     "libraryRefreshQueued": "Escaneo de biblioteca puesto en cola",
     "fullScreen": "Pantalla completa",
     "upNextName": "A continuación: {upNextItemName}",

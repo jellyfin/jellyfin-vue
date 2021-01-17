@@ -4,6 +4,7 @@
       v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
       key="audioControls-footer"
       app
+      :absolute="isFullScreenPlayer"
       :class="isFullScreenPlayer ? 'fullscreen pa-0' : 'pa-0'"
       class="audioControls"
     >
@@ -91,7 +92,7 @@
                   raised
                   rounded
                   class="mx-1 active-button"
-                  @click="togglePause"
+                  @click="playPause"
                 >
                   <v-icon large>
                     {{
@@ -174,7 +175,7 @@
               raised
               rounded
               class="mx-1 active-button"
-              @click="togglePause"
+              @click="playPause"
             >
               <v-icon>
                 {{
@@ -282,10 +283,9 @@ export default Vue.extend({
       'resetCurrentItemIndex',
       'setNextTrack',
       'setPreviousTrack',
-      'unpause',
-      'pause',
       'toggleShuffle',
-      'toggleRepeatMode'
+      'toggleRepeatMode',
+      'playPause'
     ]),
     getImageUrl(item: BaseItemDto): string | undefined {
       const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
@@ -301,13 +301,6 @@ export default Vue.extend({
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
-    },
-    togglePause(): void {
-      if (this.isPaused) {
-        this.unpause();
-      } else {
-        this.pause();
-      }
     }
   }
 });
@@ -323,6 +316,10 @@ export default Vue.extend({
 }
 
 .audioControls.fullscreen {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.theme--dark .audioControls.fullscreen {
   background-color: rgba(0, 0, 0, 0.15);
 }
 

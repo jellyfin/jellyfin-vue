@@ -9,6 +9,15 @@ extend('mustBeUrl', (value: string): boolean => {
   return /^https?:\/\/.+/.test(value);
 });
 
+extend('bothPasswordsSame', {
+  params: ['target'],
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  validate(value, { target }) {
+    return value === target;
+  }
+});
+
 const veeValidate: Plugin = ({ app }) => {
   configure({
     defaultMessage: (_field, values) => {

@@ -278,7 +278,9 @@
     "unableToRefreshLibrary": "Bibliothek kann nicht aktualisiert werden",
     "tooltips": {
         "toggleDarkMode": "Umschalten des Dunkelmodus",
-        "changeLanguage": "Sprache"
+        "changeLanguage": "Sprache",
+        "switchToLightMode": "In den hellen Modus wechseln",
+        "switchToDarkMode": "In den dunklen Modus wechseln"
     },
     "refreshLibrary": "Bibliothek aktualisieren",
     "queue": "Warteschlange",
@@ -286,5 +288,9 @@
     "metadataEditor": "Metadaten-Editor",
     "fullScreen": "Vollbild",
     "tvShowAbbrev": "S{seasonNumber} F{episodeNumber}",
-    "writing": "Drehbuchautoren"
+    "writing": "Drehbuchautoren",
+    "upNextName": "Als nächstes: {upNextItemName}",
+    "stopPlayback": "Wiedergabe anhalten",
+    "person": "Person",
+    "noImagesFound": "Keine Bilder gefunden"
 }

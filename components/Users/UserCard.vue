@@ -79,8 +79,4 @@ export default Vue.extend({
 .empty-picture {
   height: 100%;
 }
-
-.text-capitalize-first-letter::first-letter {
-  text-transform: uppercase;
-}
 </style>

@@ -290,4 +290,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~/assets/styles/HomeHeader.scss';
+
+.slide-backdrop {
+  background-color: #{map-get($material-dark, 'menus')};
+}
 </style>
