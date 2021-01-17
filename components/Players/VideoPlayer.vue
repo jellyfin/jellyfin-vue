@@ -1,16 +1,14 @@
 <template>
   <v-container fill-height fluid class="pa-0 justify-center">
-    <div ref="videoContainer">
-      <video
-        ref="videoPlayer"
-        :poster="poster"
-        autoplay
-        @timeupdate="onVideoProgress"
-        @pause="onVideoPause"
-        @play="onVideoProgress"
-        @ended="onVideoStopped"
-      />
-    </div>
+    <video
+      ref="videoPlayer"
+      :poster="poster"
+      autoplay
+      @timeupdate="onVideoProgress"
+      @pause="onVideoPause"
+      @play="onVideoProgress"
+      @ended="onVideoStopped"
+    />
   </v-container>
 </template>
 
