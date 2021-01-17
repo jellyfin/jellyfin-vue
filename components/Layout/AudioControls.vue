@@ -5,49 +5,48 @@
       key="audioControls-footer"
       app
       :absolute="isFullScreenPlayer"
-      :class="isFullScreenPlayer ? 'fullscreen' : ''"
+      :class="isFullScreenPlayer ? 'fullscreen pa-0' : 'pa-0'"
       class="audioControls"
     >
       <v-container v-if="isFullScreenPlayer" fluid>
         <time-slider />
       </v-container>
       <v-container fluid>
-        <v-row>
+        <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-            <v-avatar
-              v-if="!isFullScreenPlayer"
-              ref="albumCover"
-              tile
-              size="85"
-              color="primary"
-            >
-              <blurhash-image :item="getCurrentItem">
-                <template #placeholder>
-                  <v-icon dark>mdi-album</v-icon>
-                </template>
-              </blurhash-image>
-            </v-avatar>
-            <v-col class="d-flex flex-column justify-center ml-4 pt-0 mt-1">
+            <nuxt-link :to="'/playback'">
+              <v-avatar
+                v-if="!isFullScreenPlayer"
+                ref="albumCover"
+                tile
+                :size="$vuetify.breakpoint.xs ? 50 : 85"
+                color="primary"
+              >
+                <blurhash-image :item="getCurrentItem">
+                  <template #placeholder>
+                    <v-icon dark>mdi-album</v-icon>
+                  </template>
+                </blurhash-image>
+              </v-avatar>
+            </nuxt-link>
+            <v-col class="d-flex flex-column justify-center ml-4 py-0 mt-1">
               <v-row class="pa-0">
                 <nuxt-link
                   tag="span"
-                  class="text-truncate link"
+                  class="text-truncate link mt-auto height-fit-content"
                   :to="`/item/${getCurrentItem.Id}`"
                 >
                   {{ getCurrentItem.Name }}
                 </nuxt-link>
               </v-row>
-              <v-row
-                v-if="getCurrentItem.ArtistItems"
-                class="align-center pa-0"
-              >
+              <v-row v-if="getCurrentItem.ArtistItems" class="pa-0">
                 <span
                   v-for="(artist, index) in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="`/artist/${artist.Id}`"
                   class="m-0"
                 >
-                  <p>
+                  <p class="mb-0">
                     <nuxt-link
                       tag="span"
                       class="text--secondary text-caption text-truncate link"
@@ -142,7 +141,9 @@
               </template>
               <span>{{ $t('queue') }}</span>
             </v-tooltip>
-            <volume-slider />
+            <div class="hidden-lg-and-down">
+              <volume-slider />
+            </div>
             <transition name="fade-fast" mode="in-out">
               <v-tooltip v-if="!isFullScreenPlayer" top>
                 <template #activator="{ on, attrs }">
@@ -167,7 +168,7 @@
           </v-col>
           <v-col
             cols="3"
-            class="d-flex d-md-none px-0 align-center justify-end"
+            class="d-flex d-md-none pa-0 align-center justify-end"
           >
             <v-btn
               icon
@@ -197,7 +198,7 @@
               fab
               small
               :elevation="isRepeating ? '3' : '0'"
-              class="mx-1 active-button"
+              class="mx-1 active-button hidden-xs-only"
               :color="isRepeating ? 'primary' : undefined"
               @click="toggleRepeatMode"
             >
@@ -208,13 +209,12 @@
               fab
               small
               :elevation="isShuffling ? '3' : '0'"
-              class="mx-1 active-button"
+              class="mx-1 active-button hidden-xs-only"
               :color="isShuffling ? 'primary' : undefined"
               @click="toggleShuffle"
             >
               <v-icon>mdi-shuffle</v-icon>
             </v-btn>
-            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
           </v-col>
         </v-row>
         <div
@@ -309,6 +309,10 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .audioControls {
   user-select: none;
+}
+
+.height-fit-content {
+  height: fit-content;
 }
 
 .audioControls.fullscreen {
