@@ -1,6 +1,6 @@
 <template>
   <div v-if="items.length > 0">
-    <v-menu :absolute="absolute">
+    <v-menu absolute close-on-click close-on-content-click>
       <template #activator="{ on, attrs }">
         <v-btn
           :class="absolute ? 'card-more-button' : ''"
@@ -33,6 +33,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import itemHelper from '~/mixins/itemHelper';
 
 type MenuItem = {
   title: string;
@@ -40,6 +41,7 @@ type MenuItem = {
 };
 
 export default Vue.extend({
+  mixins: [itemHelper],
   props: {
     item: {
       type: Object,
@@ -69,6 +71,18 @@ export default Vue.extend({
     items: {
       get(): MenuItem[] {
         const menuItems = [] as MenuItem[];
+
+        if (this.canResume(this.item)) {
+          menuItems.push({
+            title: this.$t('playFromBeginning'),
+            action: () => {
+              this.play({
+                items: [this.item]
+              });
+            }
+          });
+        }
+
         if (this.$auth.user?.Policy?.IsAdministrator) {
           menuItems.push({
             title: this.$t('editMetadata'),
@@ -116,7 +130,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage'])
+    ...mapActions('snackbar', ['pushSnackbarMessage']),
+    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

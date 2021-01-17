@@ -16,9 +16,9 @@
       min-width="8em"
       depressed
       rounded
-      @click="play({ items: [item] })"
+      @click="playOrResume(item)"
     >
-      {{ $t('play') }}
+      {{ canResume(item) ? $t('resume') : $t('play') }}
     </v-btn>
   </div>
 </template>
@@ -28,9 +28,10 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
+import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
-  mixins: [itemHelper],
+  mixins: [itemHelper, timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -44,7 +45,20 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['play'])
+    ...mapActions('playbackManager', ['play']),
+    playOrResume(item: BaseItemDto): void {
+      if (this.canResume(item)) {
+        this.play({
+          items: [item],
+          startFromTime:
+            this.ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
+        });
+      } else {
+        this.play({
+          items: [item]
+        });
+      }
+    }
   }
 });
 </script>
