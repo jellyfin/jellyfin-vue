@@ -192,7 +192,8 @@
     "viewDetails": "Egjeılerdi qaraý",
     "validation": {
         "required": "Bul óris qajet",
-        "mustBeUrl": "Bul óriste jaramdy URL qajet"
+        "mustBeUrl": "Bul óriste jaramdy URL qajet",
+        "bothPasswordsSame": "Paróldin ekeýi de saqtalýy qajet"
     },
     "unliked": "Unamaıdy",
     "type": "Túri",
@@ -291,7 +292,22 @@
     "noImagesFound": "Sýretter tabylmady",
     "wizard": {
         "setupWizard": "Ornatý sheberi",
-        "confirmPassword": "Paróldi rastaý"
+        "confirmPassword": "Paróldi rastaý",
+        "remoteAccess": "Qashyqtan qatynaý",
+        "allowRemoteAccess": "Serverge syrtqy qosylymdar úshin ruqsat etý",
+        "administratorAccount": "Ákimshilik tirkelgi",
+        "languageLocale": "Til men jergilikti parametrler",
+        "preferedLanguage": "Til teńshelimi",
+        "preferredMetadataLanguage": "Metaderekter tiliniń teńshelimi",
+        "completeError": "Iske qosý sheberi aiaqtalmady.",
+        "remoteAccessSet": "Qashyqtan qatynaý ornatyldy.",
+        "metadataLanguagesSet": "Metaderekter tilderi ornatyldy.",
+        "userSuccessfullySet": "Paıdalanýshy sátti ornatyldy.",
+        "languageSuccessfullySet": "Til sátti ornatyldy.",
+        "setRemoteError": "Qashyqtan qatynaý parametrleri ornatylmady.",
+        "setMetadataError": "Metaderekter tilderin ornatý múmkin emes.",
+        "setLanguageError": "Tutynǵysh tilin ornatý múmkin emes.",
+        "setAdminError": "Ákimshilik tirkelgini jasaý múmkin emes."
     },
     "upNextName": "Kezekti: {upNextItemName}",
     "stopPlayback": "Oınatýdy toqtatý",
