@@ -157,7 +157,11 @@
     "serverNotFound": "സെർവർ കണ്ടെത്തിയില്ല",
     "serverVersion": "സെർവർ പതിപ്പ്",
     "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
-    "settings": "ക്രമീകരണങ്ങൾ",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "ഒരു API കീ ചേർക്കുക"
+        }
+    },
     "settingsSections": {
         "account": {
             "description": "നിങ്ങളുടെ ഉപയോക്താവിന്റെ വിവരങ്ങൾ എഡിറ്റുചെയ്യുക",
@@ -308,5 +312,7 @@
         "setAdminError": "ഒരു അഡ്‌മിൻ അക്കൗണ്ട് സൃഷ്‌ടിക്കാനായില്ല.",
         "setupWizard": "സെറ്റപ്പ് വിസാർഡ്",
         "confirmPassword": "പാസ്വേഡ് സ്ഥിരീകരിക്കുക"
-    }
+    },
+    "confirm": "സ്ഥിരീകരിക്കുക",
+    "NoMediaSourcesAvailable": "മീഡിയ ഉറവിടങ്ങളൊന്നും ലഭ്യമല്ല"
 }
