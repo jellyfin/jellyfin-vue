@@ -109,18 +109,7 @@
                   class="my-2"
                   data-swiper-parallax="-100"
                 />
-                <v-btn
-                  v-if="canPlay(item)"
-                  class="mr-2"
-                  color="primary"
-                  min-width="8em"
-                  depressed
-                  rounded
-                  data-swiper-parallax="-100"
-                  @click="play({ items: [item] })"
-                >
-                  {{ $t('play') }}
-                </v-btn>
+                <play-button :item="item" data-swiper-parallax="-100" />
                 <v-btn
                   min-width="12em"
                   outlined

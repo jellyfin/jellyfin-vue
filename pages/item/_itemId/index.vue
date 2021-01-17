@@ -47,18 +47,7 @@
                 'ml-1': $vuetify.breakpoint.mdAndUp
               }"
             >
-              <v-btn
-                v-if="canPlay(item)"
-                class="play-button mr-2"
-                color="primary"
-                min-width="8em"
-                :disabled="!isPlayable"
-                depressed
-                rounded
-                @click="play({ items: [item] })"
-              >
-                {{ $t('play') }}
-              </v-btn>
+              <play-button class="mr-2" :item="item" />
               <item-menu :item="item" outlined :absolute="false" />
             </v-row>
             <v-col cols="12" md="10">

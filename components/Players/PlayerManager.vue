@@ -199,7 +199,6 @@ export default Vue.extend({
 
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
-        case 'playbackManager/START_PLAYBACK':
         case 'playbackManager/INCREASE_QUEUE_INDEX':
         case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
@@ -245,28 +244,30 @@ export default Vue.extend({
           this.setLastProgressUpdate({ progress: new Date().getTime() });
           break;
         case 'playbackManager/SET_CURRENT_TIME': {
-          const now = new Date().getTime();
+          if (state.playbackManager.status === PlaybackStatus.playing) {
+            const now = new Date().getTime();
 
-          if (
-            this.getCurrentItem !== null &&
-            now - state.playbackManager.lastProgressUpdate > 1000 &&
-            state.playbackManager.currentTime !== null
-          ) {
-            this.$api.playState.reportPlaybackProgress(
-              {
-                playbackProgressInfo: {
-                  ItemId: this.getCurrentItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  IsPaused: false,
-                  PositionTicks: Math.round(
-                    this.msToTicks(state.playbackManager.currentTime * 1000)
-                  )
-                }
-              },
-              { progress: false }
-            );
+            if (
+              this.getCurrentItem !== null &&
+              now - state.playbackManager.lastProgressUpdate > 1000 &&
+              state.playbackManager.currentTime !== null
+            ) {
+              this.$api.playState.reportPlaybackProgress(
+                {
+                  playbackProgressInfo: {
+                    ItemId: this.getCurrentItem.Id,
+                    PlaySessionId: state.playbackManager.playSessionId,
+                    IsPaused: false,
+                    PositionTicks: Math.round(
+                      this.msToTicks(state.playbackManager.currentTime * 1000)
+                    )
+                  }
+                },
+                { progress: false }
+              );
 
-            this.setLastProgressUpdate({ progress: new Date().getTime() });
+              this.setLastProgressUpdate({ progress: new Date().getTime() });
+            }
           }
           break;
         }
