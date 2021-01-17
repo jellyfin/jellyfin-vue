@@ -146,8 +146,10 @@
 </template>
 
 <script lang="ts">
+import { ImageType } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
@@ -157,7 +159,7 @@ import {
 } from '~/utils/supportedFeatures';
 
 export default Vue.extend({
-  mixins: [timeUtils],
+  mixins: [timeUtils, imageHelper],
   data() {
     return {
       supportedFeatures: {} as SupportedFeaturesInterface
@@ -234,6 +236,8 @@ export default Vue.extend({
               },
               { progress: false }
             );
+
+            this.updateMetadata();
           }
 
           this.setLastProgressUpdate({ progress: new Date().getTime() });
@@ -280,6 +284,8 @@ export default Vue.extend({
             );
 
             this.setLastProgressUpdate({ progress: 0 });
+
+            this.resetMetadata();
           }
           break;
         case 'playbackManager/PAUSE_PLAYBACK':
@@ -354,6 +360,73 @@ export default Vue.extend({
             this.skipBackward();
             break;
         }
+      }
+    },
+    resetMetadata(): void {
+      if (window.navigator.mediaSession) {
+        window.navigator.mediaSession.metadata = null;
+      }
+    },
+    updateMetadata(): void {
+      if (window.navigator.mediaSession) {
+        // eslint-disable-next-line no-undef
+        window.navigator.mediaSession.metadata = new MediaMetadata({
+          title: this.getCurrentItem.Name,
+          artist: this.getCurrentItem?.AlbumArtist
+            ? this.getCurrentItem.AlbumArtist
+            : '',
+          album: this.getCurrentItem?.Album ? this.getCurrentItem.Album : '',
+          artwork: [
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 96
+                }) || '',
+              sizes: '96x96'
+            },
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 128
+                }) || '',
+              sizes: '128x128'
+            },
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 192
+                }) || '',
+              sizes: '192x192'
+            },
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 256
+                }) || '',
+              sizes: '256x256'
+            },
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 384
+                }) || '',
+              sizes: '384x384'
+            },
+            {
+              src:
+                this.getImageUrlForElement(ImageType.Primary, {
+                  item: this.getCurrentItem,
+                  maxWidth: 512
+                }) || '',
+              sizes: '512x512'
+            }
+          ]
+        });
       }
     }
   }
