@@ -25,7 +25,26 @@
     "serverAddressMustBeUrl": "L'adresse du serveur doit être une adresse URL valide",
     "serverAddressRequired": "L'adresse du serveur est requise",
     "serverNotFound": "Serveur introuvable",
-    "settings": "Paramètres",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "Ajouter une clé API",
+            "refreshKeysFailure": "Erreur lors de l'actualisation des clés API",
+            "createKeyFailure": "Erreur lors de la création d'une nouvelle clé API",
+            "createKeySuccess": "Création réussie d'une nouvelle clé API",
+            "addNewKey": "Ajouter une nouvelle clé API",
+            "revokeAllFailure": "Erreur lors de la révocation de toutes les clés API",
+            "revokeAllSuccess": "Révocation réussie de toutes les clés API",
+            "revokeAll": "Révoquer toutes les clés API",
+            "revokeFailure": "Erreur lors de la révocation de la clé API",
+            "revokeSuccess": "Clé API révoquée avec succès",
+            "dateCreated": "Date de création",
+            "accessToken": "Jeton d'accès",
+            "appName": "Nom de l'application",
+            "description": "Ajouter et révoquer des clés API pour un accès externe à votre serveur",
+            "apiKeys": "Clés API"
+        },
+        "settings": "Réglages"
+    },
     "signIn": "Se connecter",
     "unexpectedError": "Erreur inattendue",
     "upNext": "À suivre",
@@ -68,7 +87,7 @@
     "artist": "Artiste",
     "studios": "Studios",
     "collections": "Collections",
-    "unliked": "Peu aimé",
+    "unliked": "N'est plus aimé",
     "unableGetRelated": "Impossible de récupérer les éléments liés",
     "sortByType": "Par {type}",
     "shuffleAll": "Mélanger tout",
@@ -87,7 +106,8 @@
     "actors": "Acteurs",
     "validation": {
         "mustBeUrl": "Ce champ n'est pas une URL valide",
-        "required": "Ce champ est requis"
+        "required": "Ce champ est requis",
+        "bothPasswordsSame": "Les deux mots de passe doivent être la sauvegarde"
     },
     "viewDetails": "Afficher les détails",
     "numberTracks": "{number} pistes",
@@ -289,5 +309,32 @@
     "libraryRefreshQueued": "Actualisation de la médiathèque mise en file d'attente",
     "directing": "Réalisation",
     "stopPlayback": "Arrêter",
-    "noImagesFound": "Aucune image trouvée"
+    "noImagesFound": "Aucune image trouvée",
+    "writing": "En train d'écrire",
+    "wizard": {
+        "remoteAccess": "Accès à distance",
+        "allowRemoteAccess": "Autoriser l'accès à distance au serveur",
+        "administratorAccount": "Compte Administrateur",
+        "languageLocale": "Langue et paramètres régionaux",
+        "preferedLanguage": "Langue préférée",
+        "preferredMetadataLanguage": "Langue de métadonnées préférée",
+        "completeError": "Impossible de terminer l'assistant de démarrage.",
+        "userSuccessfullySet": "Utilisateur défini avec succès.",
+        "languageSuccessfullySet": "Langue définie avec succès.",
+        "setRemoteError": "Impossible de définir les paramètres d'accès à distance.",
+        "setMetadataError": "Impossible de définir les langues des métadonnées.",
+        "setLanguageError": "Impossible de définir la langue du client.",
+        "setAdminError": "Impossible de créer un compte admin.",
+        "setupWizard": "Assistant de configuration",
+        "confirmPassword": "Confirmez le mot de passe"
+    },
+    "person": "Personne",
+    "noVideoTracksAvailable": "Aucune piste vidéo disponible",
+    "noVideoTrackSelected": "Aucune piste vidéo sélectionnée",
+    "noTracksAvailable": "Aucune piste disponible",
+    "noSubtitlesAvailable": "Aucun sous-titre disponible",
+    "noAudioTracksAvailable": "Aucune piste audio disponible",
+    "noAudioTrackSelected": "Aucune piste audio sélectionnée",
+    "confirm": "Confirmer",
+    "NoMediaSourcesAvailable": "Aucune source média disponible"
 }
