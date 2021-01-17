@@ -31,7 +31,15 @@
     "serverAddressRequired": "Server mekenjaıy qajet",
     "serverNotFound": "Server tabylmady",
     "serverVersionTooLow": "Server nusqasy 10.7.0 ne odan joǵary qajet",
-    "settings": "Parametrler",
+    "settings": {
+        "apiKeys": {
+            "dateCreated": "Jasalý kúni",
+            "accessToken": "Qatynaý tokeni",
+            "appName": "Qoldanba aty",
+            "apiKeys": "API-kiltter"
+        },
+        "settings": "Parametrler"
+    },
     "shows": "Kórsetimder",
     "signIn": "Kirý",
     "unexpectedError": "Kútpegen qate",
@@ -311,5 +319,8 @@
     },
     "upNextName": "Kezekti: {upNextItemName}",
     "stopPlayback": "Oınatýdy toqtatý",
-    "person": "Tulǵa"
+    "person": "Tulǵa",
+    "noVideoTrackSelected": "Dybys jolshyǵy tańdalmaǵan",
+    "noAudioTrackSelected": "Sýbtıtrler tańdalmaǵan",
+    "confirm": "Rastaý"
 }
