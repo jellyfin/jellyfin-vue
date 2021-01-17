@@ -25,7 +25,26 @@
     "serverAddressMustBeUrl": "சேவையக முகவரி சரியான URL ஆக இருக்க வேண்டும்",
     "serverAddressRequired": "சேவையக முகவரி தேவை",
     "serverNotFound": "சேவையகம் கிடைக்கவில்லை",
-    "settings": "அமைப்புகள்",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "API விசையைச் சேர்க்கவும்",
+            "refreshKeysFailure": "API விசைகளை புதுப்பிப்பதில் பிழை",
+            "createKeyFailure": "புதிய API விசையை உருவாக்குவதில் பிழை",
+            "createKeySuccess": "புதிய API விசையை வெற்றிகரமாக உருவாக்கியது",
+            "addNewKey": "புதிய API விசையைச் சேர்க்கவும்",
+            "revokeAllFailure": "அனைத்து API விசைகளையும் திரும்பப் பெறுவதில் பிழை",
+            "revokeAllSuccess": "அனைத்து API விசைகளையும் வெற்றிகரமாக ரத்து செய்யப்பட்டது",
+            "revokeAll": "அனைத்து API விசைகளையும் திரும்பப் பெறுக",
+            "revokeFailure": "API விசையை ரத்து செய்வதில் பிழை",
+            "revokeSuccess": "API விசையை வெற்றிகரமாக ரத்து செய்யப்பட்டது",
+            "dateCreated": "உருவாக்கிய தேதி",
+            "accessToken": "அணுகல் டோக்கன்",
+            "appName": "பயன்பாட்டு பெயர்",
+            "description": "உங்கள் சேவையகத்திற்கான வெளிப்புற அணுகலுக்கான API விசைகளைச் சேர்த்து ரத்துசெய்",
+            "apiKeys": "API விசைகள்"
+        },
+        "settings": "அமைப்புகள்"
+    },
     "signIn": "உள்நுழைக",
     "unexpectedError": "எதிர்பாராத பிழை",
     "upNext": "அடுத்தது",
@@ -312,5 +331,13 @@
         "setAdminError": "நிர்வாகி கணக்கை உருவாக்க முடியவில்லை.",
         "setupWizard": "அமைவு வழிகாட்டி",
         "confirmPassword": "கடவுச்சொல்லை உறுதிப்படுத்தவும்"
-    }
+    },
+    "noVideoTracksAvailable": "வீடியோ தடங்கள் எதுவும் கிடைக்கவில்லை",
+    "noVideoTrackSelected": "வீடியோ தடங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "noTracksAvailable": "தடங்கள் எதுவும் கிடைக்கவில்லை",
+    "noSubtitlesAvailable": "வசன வரிகள் எதுவும் கிடைக்கவில்லை",
+    "noAudioTracksAvailable": "ஆடியோ தடங்கள் எதுவும் கிடைக்கவில்லை",
+    "noAudioTrackSelected": "ஆடியோ தடங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
+    "confirm": "உறுதிப்படுத்தவும்",
+    "NoMediaSourcesAvailable": "ஊடக ஆதாரங்கள் எதுவும் கிடைக்கவில்லை"
 }
