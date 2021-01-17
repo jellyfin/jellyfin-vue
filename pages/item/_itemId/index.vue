@@ -42,7 +42,10 @@
             </div>
             <v-row
               class="mt-4 align-center"
-              :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+              :class="{
+                'justify-center': !$vuetify.breakpoint.mdAndUp,
+                'ml-1': $vuetify.breakpoint.mdAndUp
+              }"
             >
               <v-btn
                 v-if="canPlay(item)"
@@ -64,17 +67,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('genres') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="genre in item.GenreItems"
@@ -100,17 +102,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('directing') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="director in directors"
@@ -131,17 +132,16 @@
                 align="center"
               >
                 <v-col
-                  cols="12"
-                  sm="2"
-                  class="px-0 text-truncate"
-                  :class="{
-                    'py-0': !$vuetify.breakpoint.smAndUp,
-                    'mt-3': !$vuetify.breakpoint.smAndUp
-                  }"
+                  :cols="twoColsInfoColumn.lCols"
+                  :sm="twoColsInfoColumn.lSm"
+                  :class="twoColsInfoColumn.lClass"
                 >
                   <label class="text--secondary">{{ $t('writing') }}</label>
                 </v-col>
-                <v-col cols="12" sm="10">
+                <v-col
+                  :cols="twoColsInfoColumn.rCols"
+                  :sm="twoColsInfoColumn.rSm"
+                >
                   <v-row dense>
                     <v-col
                       v-for="writer in writers"
@@ -156,28 +156,21 @@
                 </v-col>
               </v-row>
               <div
-                v-if="
-                  item &&
-                  ((item.MediaSources && item.MediaSources.length > 1) ||
-                    videoTracks.length > 0 ||
-                    audioTracks.length > 0 ||
-                    subtitleTracks.length > 0)
-                "
+                v-if="item && item.MediaSources && item.MediaSources.length > 0"
                 class="mt-2"
               >
                 <v-row v-if="item.MediaSources.length > 1" align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('version') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
                     <v-select
                       v-model="currentSource"
                       :items="getItemizedSelect(item.MediaSources)"
@@ -198,138 +191,76 @@
                     </v-select>
                   </v-col>
                 </v-row>
-                <v-row v-if="videoTracks.length > 0" align="center">
+                <v-row align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('video') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
-                    <v-select
-                      v-model="currentVideoTrack"
-                      :items="getItemizedSelect(videoTracks)"
-                      :disabled="videoTracks.length <= 1"
-                      outlined
-                      filled
-                      flat
-                      dense
-                      single-line
-                      hide-details
-                      class="text-truncate"
-                    >
-                      <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.value.DisplayTitle }}
-                      </template>
-                      <template slot="item" slot-scope="{ item: i }">
-                        {{ i.value.DisplayTitle }}
-                      </template>
-                    </v-select>
-                  </v-col>
-                </v-row>
-                <v-row v-if="audioTracks.length > 0" align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
                   >
-                    <label class="text--secondary">{{ $t('audio') }}</label>
-                  </v-col>
-                  <v-col cols="12" sm="10">
-                    <v-select
-                      v-if="audioTracks.length > 0"
-                      v-model="currentAudioTrack"
-                      :items="getItemizedSelect(audioTracks)"
-                      :disabled="audioTracks.length <= 1"
-                      outlined
-                      filled
-                      flat
-                      dense
-                      single-line
-                      hide-details
-                      class="text-truncate"
-                    >
-                      <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.value.DisplayTitle }}
-                      </template>
-                      <template slot="item" slot-scope="{ item: i, on, attrs }">
-                        <v-list-item v-bind="attrs" two-line v-on="on">
-                          <v-list-item-avatar>
-                            <v-icon
-                              v-text="getSurroundIcon(i.value.ChannelLayout)"
-                            ></v-icon>
-                          </v-list-item-avatar>
-                          <v-list-item-content>
-                            <v-list-item-title>{{
-                              i.value.DisplayTitle
-                            }}</v-list-item-title>
-                            <v-list-item-subtitle>
-                              {{ getLanguageName(i.value.Language) }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                    </v-select>
+                    <track-selector
+                      :item="item"
+                      :media-source-index="currentSourceIndex"
+                      :type="'Video'"
+                      @input="currentVideoTrack = $event"
+                    />
                   </v-col>
                 </v-row>
                 <v-row align="center">
                   <v-col
-                    cols="12"
-                    sm="2"
-                    class="px-0 text-truncate"
-                    :class="{
-                      'py-0': !$vuetify.breakpoint.smAndUp,
-                      'mt-3': !$vuetify.breakpoint.smAndUp
-                    }"
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
+                  >
+                    <label class="text--secondary">{{ $t('audio') }}</label>
+                  </v-col>
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
+                    <track-selector
+                      :item="item"
+                      :media-source-index="currentSourceIndex"
+                      :type="'Audio'"
+                      @input="currentAudioTrack = $event"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row align="center">
+                  <v-col
+                    :cols="twoColsInfoColumn.lCols"
+                    :sm="twoColsInfoColumn.lSm"
+                    :class="twoColsInfoColumn.lClass"
                   >
                     <label class="text--secondary">{{ $t('subtitles') }}</label>
                   </v-col>
-                  <v-col cols="12" sm="10">
-                    <v-select
-                      v-model="currentSubtitleTrack"
-                      :items="getItemizedSelect(subtitleTracks)"
-                      :placeholder="
-                        subtitleTracks.length === 0
-                          ? $t('noSubtitleAvailable')
-                          : $t('noSubtitleSelected')
-                      "
-                      :disabled="subtitleTracks.length === 0"
-                      clearable
-                      outlined
-                      filled
-                      flat
-                      dense
-                      single-line
-                      hide-details
-                      class="text-truncate"
-                    >
-                      <template slot="selection" slot-scope="{ item: i }">
-                        {{ i.value.DisplayTitle }}
-                      </template>
-                      <template slot="item" slot-scope="{ item: i, on, attrs }">
-                        <v-list-item v-bind="attrs" two-line v-on="on">
-                          <v-list-item-content>
-                            <v-list-item-title>{{
-                              i.value.DisplayTitle
-                            }}</v-list-item-title>
-                            <v-list-item-subtitle>
-                              {{ getLanguageName(i.value.Language) }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </template>
-                    </v-select>
+                  <v-col
+                    :cols="twoColsInfoColumn.rCols"
+                    :sm="twoColsInfoColumn.rSm"
+                  >
+                    <track-selector
+                      :item="item"
+                      :media-source-index="currentSourceIndex"
+                      :type="'Subtitle'"
+                      @input="currentSubtitleTrack = $event"
+                    />
                   </v-col>
                 </v-row>
+              </div>
+              <div
+                v-else-if="
+                  item &&
+                  item.MediaType === 'Video' &&
+                  (!item.MediaSources || item.MediaSources.length === 0)
+                "
+                class="text-h5 my-4"
+              >
+                {{ $t('NoMediaSourcesAvailable') }}
               </div>
             </v-col>
             <div>
@@ -380,19 +311,23 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Temporary module while waiting for fixes to language names on the server
-// @ts-ignore
-import langs from 'langs';
 import {
   BaseItemDto,
   BaseItemPerson,
   ImageType,
-  MediaSourceInfo,
-  MediaStream
+  MediaSourceInfo
 } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
+
+interface TwoColsInfoColumn {
+  lCols: number;
+  lSm: number;
+  rCols: number;
+  rSm: number;
+  lClass: { [key: string]: boolean };
+}
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
@@ -412,63 +347,14 @@ export default Vue.extend({
     }
 
     let currentSource: MediaSourceInfo = {};
-    let videoTracks: MediaStream[] = [];
-    let currentVideoTrack: MediaStream = {};
-    let audioTracks: MediaStream[] = [];
-    let currentAudioTrack: MediaStream = {};
-    let subtitleTracks: MediaStream[] = [];
-    let currentSubtitleTrack: MediaStream = {};
-    if (item.MediaSources && item.MediaSources.length > 0) {
+
+    if (item.MediaSources && item.MediaSources.length > 0)
       currentSource = item.MediaSources[0];
-
-      // Filter the streams to get each type of track
-      if (currentSource.MediaStreams) {
-        videoTracks = currentSource.MediaStreams.filter(
-          (stream: MediaStream) => {
-            return stream.Type === 'Video';
-          }
-        );
-        audioTracks = currentSource.MediaStreams.filter(
-          (stream: MediaStream) => {
-            return stream.Type === 'Audio';
-          }
-        );
-        subtitleTracks = currentSource.MediaStreams.filter(
-          (stream: MediaStream) => {
-            return stream.Type === 'Subtitle';
-          }
-        );
-
-        // Set default tracks
-        if (videoTracks.length > 0) {
-          currentVideoTrack = videoTracks[0];
-        }
-        if (audioTracks.length > 0 && currentSource.DefaultAudioStreamIndex) {
-          currentAudioTrack =
-            audioTracks[currentSource.DefaultAudioStreamIndex - 1];
-        } else if (audioTracks.length > 0) {
-          currentAudioTrack = audioTracks[0];
-        }
-        if (
-          subtitleTracks.length > 0 &&
-          currentSource.DefaultSubtitleStreamIndex
-        ) {
-          currentSubtitleTrack =
-            subtitleTracks[currentSource.DefaultSubtitleStreamIndex - 1];
-        }
-      }
-    }
 
     return {
       item,
       crew,
-      currentSource,
-      videoTracks,
-      currentVideoTrack,
-      audioTracks,
-      currentAudioTrack,
-      subtitleTracks,
-      currentSubtitleTrack
+      currentSource
     };
   },
   data() {
@@ -478,12 +364,9 @@ export default Vue.extend({
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
-      videoTracks: [] as MediaStream[],
-      currentVideoTrack: {} as MediaStream,
-      audioTracks: [] as MediaStream[],
-      currentAudioTrack: {} as MediaStream,
-      subtitleTracks: [] as MediaStream[],
-      currentSubtitleTrack: {} as MediaStream
+      currentVideoTrack: undefined as number | undefined,
+      currentAudioTrack: undefined as number | undefined,
+      currentSubtitleTrack: undefined as number | undefined
     };
   },
   head() {
@@ -492,6 +375,29 @@ export default Vue.extend({
     };
   },
   computed: {
+    twoColsInfoColumn: {
+      get(): TwoColsInfoColumn {
+        return {
+          lCols: 12,
+          lSm: 2,
+          lClass: {
+            'mt-3': !this.$vuetify.breakpoint.smAndUp,
+            'py-0': !this.$vuetify.breakpoint.smAndUp,
+            'px-0': true,
+            'text-truncate': true
+          },
+          rCols: 12,
+          rSm: 10
+        };
+      }
+    },
+    currentSourceIndex: {
+      get(): number | undefined {
+        return this.item.MediaSources?.findIndex(
+          (source) => source === this.currentSource
+        );
+      }
+    },
     isPlayable: {
       get(): boolean {
         // TODO: Move this to a mixin
@@ -500,6 +406,12 @@ export default Vue.extend({
         ) {
           return false;
         } else {
+          if (
+            this.item.MediaType === 'Video' &&
+            (!this.item.MediaSources || this.item.MediaSources.length === 0)
+          ) {
+            return false;
+          }
           return true;
         }
       }
@@ -545,27 +457,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getLanguageName(code?: string): string {
-      if (!code) {
-        return this.$t('undefined');
-      }
-      return langs.where('2B', code).name;
-    },
-    getSurroundIcon(layout: string): string {
-      switch (layout) {
-        case '2.0':
-          return 'mdi-surround-sound-2-0';
-        case '3.1':
-          return 'mdi-surround-sound-3-1';
-        case '5.1':
-          return 'mdi-surround-sound-5-1';
-        case '7.1':
-          return 'mdi-surround-sound-7-1';
-        default:
-          return 'mdi-surround-sound';
-      }
-    }
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
   }
 });
 </script>
