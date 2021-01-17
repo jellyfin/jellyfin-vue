@@ -68,7 +68,7 @@
           </v-fade-transition>
           <!-- Full Screen OSD -->
           <v-fade-transition>
-            <v-overlay v-show="!isMinimized && hover" absolute>
+            <v-overlay v-show="!isMinimized && showFullScreenOverlay" absolute>
               <div
                 class="d-flex flex-column justify-space-between align-center player-overlay"
               >
@@ -160,6 +160,8 @@ export default Vue.extend({
   mixins: [timeUtils],
   data() {
     return {
+      showFullScreenOverlay: false,
+      fullScreenOverlayTimer: null as number | null,
       supportedFeatures: {} as SupportedFeaturesInterface
     };
   },
@@ -305,6 +307,8 @@ export default Vue.extend({
     });
   },
   mounted() {
+    document.addEventListener('mousemove', this.handleMouseMove);
+
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/TOGGLE_MINIMIZE':
@@ -315,6 +319,12 @@ export default Vue.extend({
           }
       }
     });
+  },
+  beforeDestroy() {
+    if (this.fullScreenOverlayTimer) {
+      clearTimeout(this.fullScreenOverlayTimer);
+    }
+    document.removeEventListener('mousemove', this.handleMouseMove);
   },
   methods: {
     ...mapActions('playbackManager', [
@@ -328,6 +338,22 @@ export default Vue.extend({
       'skipForward',
       'skipBackward'
     ]),
+    handleMouseMove(): void {
+      if (
+        this.isPlaying &&
+        this.getCurrentlyPlayingMediaType === 'Video' &&
+        !this.isMinimized
+      ) {
+        if (this.fullScreenOverlayTimer) {
+          clearTimeout(this.fullScreenOverlayTimer);
+        }
+        this.showFullScreenOverlay = true;
+        this.fullScreenOverlayTimer = window.setTimeout(() => {
+          this.showFullScreenOverlay = false;
+          this.fullScreenOverlayTimer = null;
+        }, 5000);
+      }
+    },
     getContentClass(): string {
       return `player ${
         this.isMinimized
