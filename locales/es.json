@@ -19,7 +19,14 @@
     "serverAddressMustBeUrl": "La dirección introducida debe ser válida",
     "serverAddressRequired": "Se requiere dirección del servidor",
     "serverNotFound": "No se ha podido encontrar el servidor",
-    "settings": "Ajustes",
+    "settings": {
+        "apiKeys": {
+            "accessToken": "Token de acceso",
+            "description": "Añade y borra claves API para acceso externo a tu servidor",
+            "apiKeys": "Claves API"
+        },
+        "settings": "Configuración"
+    },
     "unexpectedError": "Error desconocido",
     "usernameRequired": "Se requiere nombre de usuario",
     "serverAddress": "Dirección del servidor",
@@ -104,7 +111,7 @@
             "recentlyAdded": "Añadido recientemente"
         },
         "welcome": {
-            "checkNewItems": "Echa un vistazo a lo que se ha añadido hace poco",
+            "checkNewItems": "Echa un vistazo a lo que se ha añadido hace poco.",
             "noItems": "No hay ítems añadidos recientemente que mostrar.",
             "helloUser": "¡Hola {userName}!"
         }
@@ -283,5 +290,7 @@
     "thumb": "Miniatura",
     "stopPlayback": "Detener la reproducción",
     "dateAdded": "Añadido el",
-    "noImagesFound": "No se han encontrado imágenes"
+    "noImagesFound": "No se han encontrado imágenes",
+    "person": "Persona",
+    "noSubtitlesAvailable": "No hay subtítulos disponibles"
 }
