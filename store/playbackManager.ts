@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { clamp, union, shuffle } from 'lodash';
+import { clamp, shuffle } from 'lodash';
 import {
   BaseItemDto,
   ChapterInfo,
@@ -42,7 +42,7 @@ export interface PlaybackManagerState {
   playSessionId: string | null;
 }
 
-const defaultState = (): PlaybackManagerState => ({
+export const defaultState = (): PlaybackManagerState => ({
   status: PlaybackStatus.stopped,
   lastItemIndex: null,
   currentItemIndex: null,
@@ -129,7 +129,7 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     state.queue = queue;
   },
   ADD_TO_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
-    state.queue = union(state.queue, queue);
+    state.queue = [...state.queue, ...queue];
   },
   CLEAR_QUEUE(state: PlaybackManagerState) {
     state.queue = [];
@@ -247,6 +247,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     if (state.status !== PlaybackStatus.stopped) {
       commit('STOP_PLAYBACK');
     }
+
     const translatedItems = await translateItemForPlayback(items);
 
     commit('SET_QUEUE', { queue: translatedItems });
@@ -344,12 +345,12 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   toggleMinimized({ commit }) {
     commit('TOGGLE_MINIMIZE');
   },
-  setPlaySessionId({ commit }, { id }) {
+  setPlaySessionId({ commit }, { id }: { id: string | null }) {
     commit('SET_PLAY_SESSION_ID', { id });
   },
   // This function forces specific repeat modes, should only be used in very specific cases.
   // Use toggleRepeatMode for handling all the situations gracefully
-  setRepeatMode({ commit }, { mode }) {
+  setRepeatMode({ commit }, { mode }: { mode: RepeatMode }) {
     commit('SET_REPEAT_MODE', { mode });
   },
   toggleShuffle({ commit }) {
