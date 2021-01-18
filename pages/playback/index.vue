@@ -59,6 +59,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapGetters('playbackManager', ['getCurrentItem']),
     currentItemIndex: {
       get(): number {
         return this.$store.state.playbackManager.currentItemIndex;
@@ -71,7 +72,7 @@ export default Vue.extend({
     },
     backdropHash: {
       get(): string {
-        return this.getBlurhash(this.getCurrentItem(), ImageType.Primary) || '';
+        return this.getBlurhash(this.getCurrentItem, ImageType.Primary) || '';
       }
     },
     isPaused: {
@@ -130,7 +131,6 @@ export default Vue.extend({
     this.setAppBarOpacity({ opaqueAppBar: this.previousAppBarOpacity });
   },
   methods: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
     ...mapActions('page', ['showNavDrawer', 'setAppBarOpacity']),
     ...mapActions('backdrop', [
