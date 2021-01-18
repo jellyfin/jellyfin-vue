@@ -4,7 +4,7 @@
     autoplay
     @timeupdate="onAudioProgress"
     @pause="onAudioPause"
-    @play="onAudioProgress"
+    @play="onPlay"
     @ended="onAudioStopped"
   ></audio>
 </template>
@@ -133,6 +133,7 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', [
       'pause',
+      'unpause',
       'setNextTrack',
       'setMediaSource',
       'setCurrentTime',
@@ -188,6 +189,9 @@ export default Vue.extend({
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
       }
+    },
+    onPlay(_event?: Event): void {
+      this.unpause();
     },
     onAudioProgress(_event?: Event): void {
       if (this.$refs.audioPlayer) {
