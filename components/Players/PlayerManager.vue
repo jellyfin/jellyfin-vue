@@ -317,6 +317,8 @@ export default Vue.extend({
   mounted() {
     document.addEventListener('mousemove', this.handleMouseMove);
 
+    this.addMediaHandlers();
+
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/TOGGLE_MINIMIZE':
@@ -343,8 +345,11 @@ export default Vue.extend({
       'setPreviousTrack',
       'setLastItemIndex',
       'playPause',
+      'pause',
+      'play',
       'skipForward',
-      'skipBackward'
+      'skipBackward',
+      'changeCurrentTime'
     ]),
     handleMouseMove(): void {
       if (
@@ -387,6 +392,82 @@ export default Vue.extend({
           case 'ArrowLeft':
             this.skipBackward();
             break;
+        }
+      }
+    },
+    addMediaHandlers(): void {
+      if (navigator.mediaSession) {
+        const actionHandlers = [
+          [
+            'play',
+            async (): Promise<void> => {
+              await this.play();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'playing';
+              }
+            }
+          ],
+          [
+            'pause',
+            (): void => {
+              this.pause();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'paused';
+              }
+            }
+          ],
+          [
+            'previoustrack',
+            (): void => {
+              this.setPreviousTrack();
+            }
+          ],
+          [
+            'nexttrack',
+            (): void => {
+              this.setNextTrack();
+            }
+          ],
+          [
+            'stop',
+            async (): Promise<void> => {
+              await this.stopPlayback();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'none';
+              }
+            }
+          ],
+          [
+            'seekbackward',
+            (): void => {
+              this.skipBackward();
+            }
+          ],
+          [
+            'seekforward',
+            (): void => {
+              this.skipForward();
+            }
+          ],
+          [
+            'seekto',
+            (): void => {
+              this.changeCurrentTime({ time: 1 });
+            }
+          ]
+        ];
+
+        for (const [action, handler] of actionHandlers) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            navigator.mediaSession.setActionHandler(action, handler);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `The media session action "${action}" is not supported.`
+            );
+          }
         }
       }
     },
