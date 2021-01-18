@@ -1,5 +1,5 @@
 <template>
-  <transition-group name="fade-fast" mode="out-in">
+  <v-fade-transition>
     <canvas
       v-show="!loading && pixels"
       ref="canvas"
@@ -8,7 +8,7 @@
       :height="height"
       class="absolute"
     />
-  </transition-group>
+  </v-fade-transition>
 </template>
 
 <script lang="ts">

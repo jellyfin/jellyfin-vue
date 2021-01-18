@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade" mode="in-out">
+  <v-fade-transition>
     <div
       v-if="blurhash"
       :key="`backdrop-${blurhash}`"
@@ -8,7 +8,7 @@
     >
       <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
     </div>
-  </transition>
+  </v-fade-transition>
 </template>
 
 <script lang="ts">
@@ -32,7 +32,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-@import '~/assets/transitions.scss';
 
 .backdrop {
   & canvas {

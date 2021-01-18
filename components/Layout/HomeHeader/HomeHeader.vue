@@ -1,5 +1,5 @@
 <template>
-  <transition name="fade" mode="in-out" @after-leave="onTransitionEnd">
+  <v-fade-transition @after-leave="onTransitionEnd">
     <div
       v-if="loading"
       ref="headerWelcome"
@@ -14,7 +14,7 @@
       :items="items"
       :related-items="relatedItems"
     />
-  </transition>
+  </v-fade-transition>
 </template>
 
 <script lang="ts">
@@ -105,7 +105,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/transitions.scss';
 .no-items {
   overflow: hidden;
   animation-name: slideUp;
