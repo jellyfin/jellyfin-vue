@@ -193,9 +193,6 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     { time }: { time: number | null }
   ) {
     state.currentTime = time;
-    // Sometimes, the PlaybackStatus was being reported as stopped. We set it as playing again here
-    // at every time report.
-    state.status = PlaybackStatus.playing;
   },
   CHANGE_CURRENT_TIME(
     state: PlaybackManagerState,
