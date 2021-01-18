@@ -58,7 +58,7 @@ export default Vue.extend({
       }
 
       menuItems.push({
-        title: this.$t('settings'),
+        title: this.$t('settings.settings'),
         action: (): void => {
           this.$router.push('/settings');
         }
