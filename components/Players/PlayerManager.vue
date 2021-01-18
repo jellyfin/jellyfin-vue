@@ -287,6 +287,8 @@ export default Vue.extend({
             this.setLastProgressUpdate({ progress: 0 });
 
             this.resetMetadata();
+
+            this.removeMediaHandlers();
           }
           break;
         case 'playbackManager/PAUSE_PLAYBACK':
@@ -346,7 +348,7 @@ export default Vue.extend({
       'setLastItemIndex',
       'playPause',
       'pause',
-      'play',
+      'unpause',
       'skipForward',
       'skipBackward',
       'changeCurrentTime'
@@ -400,8 +402,8 @@ export default Vue.extend({
         const actionHandlers = [
           [
             'play',
-            async (): Promise<void> => {
-              await this.play();
+            (): void => {
+              this.unpause();
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'playing';
               }
@@ -430,8 +432,8 @@ export default Vue.extend({
           ],
           [
             'stop',
-            async (): Promise<void> => {
-              await this.stopPlayback();
+            (): void => {
+              this.stopPlayback();
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'none';
               }
@@ -467,6 +469,31 @@ export default Vue.extend({
             console.log(
               `The media session action "${action}" is not supported.`
             );
+          }
+        }
+      }
+    },
+    removeMediaHandlers(): void {
+      if (navigator.mediaSession) {
+        const actionHandlers = [
+          ['play', null],
+          ['pause', null],
+          ['previoustrack', null],
+          ['nexttrack', null],
+          ['stop', null],
+          ['seekbackward', null],
+          ['seekforward', null],
+          ['seekto', null]
+        ];
+
+        for (const [action, handler] of actionHandlers) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            navigator.mediaSession.setActionHandler(action, handler);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Error removing mediaSession action: "${action}".`);
           }
         }
       }
