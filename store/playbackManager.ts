@@ -38,7 +38,7 @@ export interface PlaybackManagerState {
   isMinimized: boolean;
   repeatMode: RepeatMode;
   queue: BaseItemDto[];
-  originalQueue: BaseItemDto[];
+  order: number[];
   playSessionId: string | null;
 }
 
@@ -60,7 +60,7 @@ export const defaultState = (): PlaybackManagerState => ({
   isMinimized: true,
   repeatMode: RepeatMode.RepeatNone,
   queue: [],
-  originalQueue: [],
+  order: [],
   playSessionId: null
 });
 
@@ -70,9 +70,9 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
   getCurrentItem: (state) => {
     if (
       state.currentItemIndex !== null &&
-      state.queue[state.currentItemIndex]
+      state.queue[state.order[state.currentItemIndex]]
     ) {
-      return state.queue[state.currentItemIndex];
+      return state.queue[state.order[state.currentItemIndex]];
     }
     return null;
   },
@@ -81,9 +81,9 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
       return null;
     } else if (
       state.lastItemIndex !== null &&
-      state.queue[state.lastItemIndex]
+      state.queue[state.order[state.lastItemIndex]]
     ) {
-      return state.queue[state.lastItemIndex];
+      return state.queue[state.order[state.lastItemIndex]];
     }
     return null;
   },
@@ -92,21 +92,21 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
       state.currentItemIndex !== null &&
       state.currentItemIndex + 1 < state.queue.length
     ) {
-      return state.queue[state.currentItemIndex + 1];
+      return state.queue[state.order[state.currentItemIndex + 1]];
     } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      return state.queue[0];
+      return state.queue[state.order[0]];
     }
     return null;
   },
   getCurrentlyPlayingType: (state) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex].Type;
+      return state.queue?.[state.order[state.currentItemIndex]].Type;
     }
     return null;
   },
   getCurrentlyPlayingMediaType: (state) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex].MediaType;
+      return state.queue?.[state.order[state.currentItemIndex]].MediaType;
     }
     return null;
   }
@@ -127,12 +127,19 @@ interface VolumeMutationPayload {
 export const mutations: MutationTree<PlaybackManagerState> = {
   SET_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
     state.queue = queue;
+    state.order = [...queue.keys()];
   },
   ADD_TO_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
+    const maxIndex = state.order.length;
+    let indexesToAdd = [...queue.keys()];
+    indexesToAdd = indexesToAdd.map((el) => el + maxIndex);
+
     state.queue = [...state.queue, ...queue];
+    state.order = [...state.order, ...indexesToAdd];
   },
   CLEAR_QUEUE(state: PlaybackManagerState) {
-    state.queue = [];
+    state.queue = defaultState().queue;
+    state.order = defaultState().order;
   },
   SET_CURRENT_ITEM_INDEX(
     state: PlaybackManagerState,
@@ -215,21 +222,18 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   TOGGLE_SHUFFLE(state: PlaybackManagerState) {
     if (state.queue && state.currentItemIndex !== null) {
       if (!state.isShuffling) {
-        state.originalQueue = Array.from(state.queue);
-        const item = state.queue[state.currentItemIndex];
-        const itemIndex = state.queue.indexOf(item);
-        state.queue.splice(itemIndex, 1);
-        state.queue = shuffle(state.queue);
-        state.queue.unshift(item);
+        const currentOrderIndex = state.order.splice(state.currentItemIndex, 1);
+        state.order = shuffle(state.order);
+        state.order.unshift(...currentOrderIndex);
         state.currentItemIndex = 0;
         state.lastItemIndex = null;
         state.isShuffling = true;
       } else {
-        const item = state.queue[state.currentItemIndex];
-        state.currentItemIndex = state.originalQueue.indexOf(item);
-        state.queue = Array.from(state.originalQueue);
-        state.originalQueue = [];
-        state.lastItemIndex = null;
+        const currentItem = state.queue[state.order[state.currentItemIndex]];
+        state.order = [...state.queue.keys()];
+        state.currentItemIndex = state.queue.indexOf(currentItem);
+        state.lastItemIndex =
+          state.currentItemIndex > 0 ? state.currentItemIndex - 1 : null;
         state.isShuffling = false;
       }
     }

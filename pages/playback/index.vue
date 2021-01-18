@@ -1,7 +1,7 @@
 <template>
   <v-col class="px-0">
     <swiper
-      v-if="currentQueue"
+      v-if="currentOrder"
       ref="playbackSwiper"
       class="d-flex justify-center align-center"
       :options="swiperOptions"
@@ -9,12 +9,15 @@
       @sliderMove="update"
     >
       <swiper-slide
-        v-for="item in currentQueue"
-        :key="item.Id"
+        v-for="itemIndex in currentOrder"
+        :key="itemIndex"
         class="d-flex justify-center"
       >
         <div class="album-cover">
-          <blurhash-image :item="item" @error="onImageError">
+          <blurhash-image
+            :item="$store.state.playbackManager.queue[itemIndex]"
+            @error="onImageError"
+          >
             <template #placeholder>
               <v-avatar tile size="65vh" color="primary">
                 <v-icon dark x-large style="font-size: 60vh">mdi-album</v-icon>
@@ -29,7 +32,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { ImageType } from '@jellyfin/client-axios';
 import { mapGetters, mapActions } from 'vuex';
 import Swiper, { SwiperOptions } from 'swiper';
 import { PlaybackStatus } from '~/store/playbackManager';
@@ -65,9 +68,9 @@ export default Vue.extend({
         return this.$store.state.playbackManager.currentItemIndex;
       }
     },
-    currentQueue: {
-      get(): BaseItemDto[] {
-        return this.$store.state.playbackManager.queue;
+    currentOrder: {
+      get(): number[] {
+        return this.$store.state.playbackManager.order;
       }
     },
     backdropHash: {
@@ -95,7 +98,7 @@ export default Vue.extend({
       this.swiper?.slideTo(newIndex);
       this.setBackdrop({ hash: this.backdropHash });
     },
-    currentQueue(): void {
+    currentOrder(): void {
       this.swiper?.update();
     },
     isPlaying(newValue: boolean): void {
@@ -141,7 +144,7 @@ export default Vue.extend({
     ]),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
-      if (this.currentQueue[index]) {
+      if (index >= 0 && index < this.currentOrder.length) {
         this.setCurrentIndex({ index });
       }
     },
