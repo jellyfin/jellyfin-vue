@@ -25,7 +25,9 @@
     "serverAddressMustBeUrl": "Die Serveradresse muss eine gültige Adresse sein",
     "serverAddressRequired": "Serveradresse ist erforderlich",
     "serverNotFound": "Server nicht gefunden",
-    "settings": "Einstellungen",
+    "settings": {
+        "settings": "Einstellungen"
+    },
     "signIn": "Anmelden",
     "unexpectedError": "Unerwarteter Fehler",
     "upNext": "Als nächstes",
@@ -292,5 +294,12 @@
     "upNextName": "Als nächstes: {upNextItemName}",
     "stopPlayback": "Wiedergabe anhalten",
     "person": "Person",
-    "noImagesFound": "Keine Bilder gefunden"
+    "noImagesFound": "Keine Bilder gefunden",
+    "wizard": {
+        "setLanguageError": "Das Einstellen der Clientsprache",
+        "setAdminError": "Konnte keinen Admin-Account anlegen",
+        "setupWizard": "Einrichtungsassistent",
+        "confirmPassword": "Passwort bestätigen"
+    },
+    "noSubtitlesAvailable": "Keine Untertitel verfügbar"
 }
