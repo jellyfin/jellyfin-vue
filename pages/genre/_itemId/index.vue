@@ -3,7 +3,7 @@
     <v-app-bar shrink-on-scroll flat fixed class="second-toolbar">
       <v-toolbar-title class="d-flex genre-toolbar">
         <span>{{ genre.Name }}</span>
-        <v-btn v-if="loaded" :item="genre" />
+        <play-button v-if="loaded" :item="genre" />
         <v-btn
           v-if="loaded"
           class="play-button mr-2"
