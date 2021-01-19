@@ -2,7 +2,7 @@
   <audio
     ref="audioPlayer"
     autoplay
-    @timeupdate="onAudioProgress"
+    @timeupdate="onAudioProgressThrottled"
     @pause="onAudioPause"
     @play="onPlay"
     @ended="onAudioStopped"
@@ -12,6 +12,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { stringify } from 'qs';
+import { throttle } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import shaka from 'shaka-player/dist/shaka-player.compiled';
@@ -193,6 +194,11 @@ export default Vue.extend({
     onPlay(_event?: Event): void {
       this.unpause();
     },
+    onAudioProgressThrottled: throttle(function (_event?: Event) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.onAudioProgress(_event);
+    }, 500),
     onAudioProgress(_event?: Event): void {
       if (this.$refs.audioPlayer) {
         const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)

@@ -4,7 +4,7 @@
       ref="videoPlayer"
       :poster="poster"
       autoplay
-      @timeupdate="onVideoProgress"
+      @timeupdate="onVideoProgressThrottled"
       @pause="onVideoPause"
       @play="onVideoProgress"
       @ended="onVideoStopped"
@@ -15,6 +15,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { stringify } from 'qs';
+import { throttle } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import shaka from 'shaka-player/dist/shaka-player.compiled';
@@ -140,6 +141,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', [
+      'unpause',
       'pause',
       'setNextTrack',
       'setMediaSource',
@@ -197,6 +199,14 @@ export default Vue.extend({
         }
       }
     },
+    onPlay(_event?: Event): void {
+      this.unpause();
+    },
+    onVideoProgressThrottled: throttle(function (_event?: Event) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      this.onVideoProgress(_event);
+    }, 500),
     onVideoProgress(_event?: Event): void {
       if (this.$refs.videoPlayer) {
         const currentTime = (this.$refs.videoPlayer as HTMLVideoElement)
