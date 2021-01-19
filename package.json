@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt-ts",
+    "dev:ssr": "NUXT_SSR=true nuxt-ts",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
