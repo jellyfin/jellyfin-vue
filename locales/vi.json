@@ -107,7 +107,7 @@
     "validation": {
         "mustBeUrl": "Trường này phải là một URL hợp lệ",
         "required": "Trường này là bắt buộc",
-        "bothPasswordsSame": "Cả hai mật khẩu phải được lưu"
+        "bothPasswordsSame": "Cả hai mật khẩu phải giống nhau"
     },
     "libraries": "Thư viện",
     "viewDetails": "Xem chi tiết",
