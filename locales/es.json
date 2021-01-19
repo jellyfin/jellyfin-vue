@@ -23,7 +23,19 @@
         "apiKeys": {
             "accessToken": "Token de acceso",
             "description": "Añade y borra claves API para acceso externo a tu servidor",
-            "apiKeys": "Claves API"
+            "apiKeys": "Claves API",
+            "addApiKey": "Crear una clave de API",
+            "refreshKeysFailure": "Error al actualizar las claves de API",
+            "createKeyFailure": "Error al crear la clave de API",
+            "createKeySuccess": "La clave de API se ha creado correctamente",
+            "revokeSuccess": "Clave de API anulada correctamente",
+            "revokeFailure": "Error al anular la clave de API",
+            "revokeAll": "Anular todas las claves de API",
+            "revokeAllSuccess": "Todas las claves de API han sido anuladas correctamente",
+            "revokeAllFailure": "Error al anular todas las claves de API",
+            "addNewKey": "Crear una clave de API",
+            "dateCreated": "Fecha de creación",
+            "appName": "Nombre de la aplicación"
         },
         "settings": "Configuración"
     },
@@ -142,7 +154,8 @@
             "description": "Controla como se muestran los subtítulos en este dispositivo"
         },
         "server": {
-            "name": "Servidor"
+            "name": "Servidor",
+            "description": "Configurar el idioma y presentación del servidor"
         },
         "scheduledTasks": {
             "name": "Tareas programadas",
@@ -292,5 +305,17 @@
     "dateAdded": "Añadido el",
     "noImagesFound": "No se han encontrado imágenes",
     "person": "Persona",
-    "noSubtitlesAvailable": "No hay subtítulos disponibles"
+    "noSubtitlesAvailable": "No hay subtítulos disponibles",
+    "wizard": {
+        "setMetadataError": "Error al establecer el idioma para las etiquetas.",
+        "setLanguageError": "Error al establecer el idioma.",
+        "setAdminError": "Error al crear la cuenta de administrador.",
+        "setupWizard": "Asistente de configuración",
+        "confirmPassword": "Confirmar contraseña"
+    },
+    "noVideoTracksAvailable": "No hay pistas de vídeo disponibles",
+    "noVideoTrackSelected": "No se ha seleccionado pista de vídeo",
+    "noTracksAvailable": "No hay pistas disponibles",
+    "noAudioTracksAvailable": "No hay pistas de audio disponibles",
+    "confirm": "Confirmar"
 }
