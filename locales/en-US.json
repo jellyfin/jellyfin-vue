@@ -298,7 +298,7 @@
   "validation": {
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required",
-    "bothPasswordsSame": "Both passwords must be the save"
+    "bothPasswordsSame": "Both passwords must be the same"
   },
   "version": "Version",
   "video": "Video",
