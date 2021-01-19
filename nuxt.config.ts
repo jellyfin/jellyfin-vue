@@ -146,6 +146,12 @@ const config: NuxtConfig = {
       jellyfin: {
         _scheme: '~/schemes/jellyfinScheme'
       }
+    },
+    cookie: {
+      prefix: 'auth.',
+      options: {
+        path: '/'
+      }
     }
   },
   i18n: {
