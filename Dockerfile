@@ -4,23 +4,30 @@ WORKDIR /app
 
 RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g++ libpng-dev libtool nasm file
 
-ADD package.json yarn.lock ./
+COPY package.json yarn.lock ./
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
-RUN apk del .build-deps
+COPY . .
 
-ADD . .
+# Build SSR app for production in standalone mode
 
-RUN yarn build:ssr
+RUN yarn build:ssr --production --standalone
 
-# Expose the port
+# Build final image
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY .docker/package.json .docker/nuxt.config.js ./
+
+# Copy client files from the build image
+COPY --from=build /app/.nuxt ./.nuxt
+COPY --from=build /app/static ./static
+
+# Install runtime dependencies
+RUN yarn install --production
+
 EXPOSE 80
 
-# set app serving to permissive / assigned
-ENV NUXT_HOST=0.0.0.0
-# set app port
-ENV NUXT_PORT=80
-
-# start the client
-CMD [ "yarn", "start:ssr" ]
+CMD [ "yarn", "start" ]
