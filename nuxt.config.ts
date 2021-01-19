@@ -249,7 +249,8 @@ const config: NuxtConfig = {
       image: 'icon.png',
       colors: {
         client: '#00A4DC',
-        modern: '#424242'
+        modern: '#aa5cc3',
+        server: '#424242'
       }
     },
     babel: {
