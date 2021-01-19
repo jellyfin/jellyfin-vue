@@ -77,6 +77,6 @@ $ yarn build
 
 # build for production with server-side rendering and launch server
 $ yarn build:ssr
-$ yarn start
+$ yarn start:ssr
 
 ```
