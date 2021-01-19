@@ -71,6 +71,7 @@
   "headerExternalIds": "External IDs",
   "headerPaths": "Path",
   "home": "Home",
+  "hours": "hours",
   "homeHeader": {
     "items": {
       "recentlyAdded": "Recently added"
@@ -114,6 +115,7 @@
   "menu": "Menu",
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
+  "minutes": "minutes",
   "more": "More",
   "moreLikeArtist": "More like {artist}",
   "moreLikeThis": "More like this",
@@ -143,6 +145,18 @@
   "person": "Person",
   "play": "Play",
   "playFromBeginning": "Play from the beginning",
+  "playback": {
+    "stopPlayback": "Stop playback",
+    "playbackSource": {
+      "item": "Playing from {item}",
+      "shuffle": "Playing in shuffle",
+      "shuffleItem": "Playing {item} in shuffle",
+      "unknown": "Playing"
+    },
+    "saveAsPlaylist": "Save queue as a playlist",
+    "shuffleAll": "Shuffle all",
+    "playAll": "Play all"
+  },
   "played": "Played",
   "present": "Present",
   "primary": "Primary",
@@ -261,13 +275,11 @@
     }
   },
   "shows": "Shows",
-  "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
   "sortByType": "By {type}",
   "sortTitle": "Sort title",
   "specialFeatures": "Special Features",
   "status": "Status",
-  "stopPlayback": "Stop playback",
   "studios": "Studios",
   "subtitles": "Subtitles",
   "tagline": "Tagline",

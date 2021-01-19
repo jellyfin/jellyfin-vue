@@ -144,7 +144,8 @@ export default Vue.extend({
     playTracks(track: BaseItemDto): void {
       this.play({
         items: this.tracks.Items,
-        startFromIndex: this.tracks.Items?.indexOf(track)
+        startFromIndex: this.tracks.Items?.indexOf(track),
+        initiator: this.item
       });
     },
     isPlaying(track: BaseItemDto): boolean {

@@ -33,7 +33,7 @@
               <v-row class="pa-0">
                 <nuxt-link
                   tag="span"
-                  class="text-truncate link mt-auto height-fit-content"
+                  class="text-truncate link mt-2 height-fit-content"
                   :to="`/item/${getCurrentItem.Id}`"
                 >
                   {{ getCurrentItem.Name }}
@@ -44,7 +44,7 @@
                   v-for="(artist, index) in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="`/artist/${artist.Id}`"
-                  class="m-0"
+                  class="ma-0"
                 >
                   <p class="mb-0">
                     <nuxt-link
@@ -133,14 +133,7 @@
                   : 'mdi-heart-outline'
               }}</v-icon>
             </v-btn>
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
-                <v-btn disabled icon class="mr-2" v-bind="attrs" v-on="on">
-                  <v-icon>mdi-playlist-play</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ $t('queue') }}</span>
-            </v-tooltip>
+            <queue-button :item="getCurrentItem" class="mr-2" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
@@ -163,7 +156,7 @@
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </template>
-              <span>{{ $t('stopPlayback') }}</span>
+              <span>{{ $t('playback.stopPlayback') }}</span>
             </v-tooltip>
           </v-col>
           <v-col

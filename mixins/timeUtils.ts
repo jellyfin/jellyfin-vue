@@ -4,6 +4,9 @@
  * @mixin
  */
 import Vue from 'vue';
+import { intervalToDuration } from 'date-fns';
+import { sumBy } from 'lodash';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 /**
  * Converts .NET ticks to milliseconds
@@ -33,12 +36,18 @@ declare module '@nuxt/types' {
     ticksToMs: (ticks: number) => number;
     msToTicks: (ms: number) => number;
     formatTime: (seconds: number) => number;
+    getEndsAtTime: (ticks: number, suffix?: boolean) => string;
+    getRuntimeTime: (ticks: number) => string;
+    getTotalEndsAtTime: (items: BaseItemDto[], suffix?: boolean) => string;
   }
 
   interface NuxtAppOptions {
     ticksToMs: (ticks: number) => number;
     msToTicks: (ms: number) => number;
     formatTime: (seconds: number) => number;
+    getEndsAtTime: (ticks: number, suffix?: boolean) => string;
+    getRuntimeTime: (ticks: number) => string;
+    getTotalEndsAtTime: (items: BaseItemDto[], suffix?: boolean) => string;
   }
 }
 
@@ -47,6 +56,9 @@ declare module 'vue/types/vue' {
     ticksToMs: (ticks: number | null | undefined) => number;
     msToTicks: (ms: number) => number;
     formatTime: (seconds: number) => number;
+    getEndsAtTime: (ticks: number, suffix?: boolean) => string;
+    getRuntimeTime: (ticks: number) => string;
+    getTotalEndsAtTime: (items: BaseItemDto[], suffix?: boolean) => string;
   }
 }
 
@@ -92,6 +104,56 @@ const timeUtils = Vue.extend({
       } else {
         return `${minutes}:${formatDigits(seconds)}`;
       }
+    },
+    /**
+     * Returns the end time of an item
+     *
+     * @param {number} ticks - Ticks of the item to calculate
+     * @param {boolean} suffix - Whether to add or not the PM or AM prefix
+     * @returns {string} The resulting string
+     */
+    getEndsAtTime(ticks: number, suffix = true): string {
+      const ms = this.ticksToMs(ticks);
+      const endTimeLong = new Date(Date.now() + ms);
+      let format;
+      if (!suffix) {
+        format = endTimeLong.toLocaleString(this.$i18n.locale, {
+          hour: 'numeric',
+          minute: 'numeric'
+        });
+      } else {
+        format = this.$dateFns.format(Date.now() + ms, 'p');
+      }
+      // TODO: Use a Date object
+      return this.$t('endsAt', {
+        time: format
+      });
+    },
+    /**
+     * Returns the duration of an item in the following format: X hours Y minutes
+     *
+     * @param {number} ticks - Ticks of the item to calculate
+     * @returns {string} The resulting string
+     */
+    getRuntimeTime(ticks: number): string {
+      const ms = this.ticksToMs(ticks);
+      return this.$dateFns.formatDuration(
+        intervalToDuration({ start: 0, end: ms }),
+        {
+          format: [this.$t('hours'), this.$t('minutes')]
+        }
+      );
+    },
+    /**
+     * Calculates the end time of an array of BaseItemDto.
+     *
+     * @param {number} items - Array with the items to calculate.
+     * @param {boolean} suffix - Whether to add or not the PM or AM prefix
+     * @returns {string} The resulting string
+     */
+    getTotalEndsAtTime(items: BaseItemDto[], suffix = true): string {
+      const ticks = sumBy(items, 'RunTimeTicks');
+      return this.getEndsAtTime(ticks, suffix);
     }
   }
 });

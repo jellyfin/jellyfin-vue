@@ -81,6 +81,7 @@ const config: NuxtConfig = {
     'plugins/components/swiper.ts',
     'plugins/components/vueVirtualScroller.ts',
     'plugins/components/veeValidate.ts',
+    'plugins/components/vueDraggable.ts',
     // Utility
     'plugins/browserDetection.ts',
     'plugins/playbackProfile.ts',
