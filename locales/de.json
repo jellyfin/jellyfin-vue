@@ -26,7 +26,24 @@
     "serverAddressRequired": "Serveradresse ist erforderlich",
     "serverNotFound": "Server nicht gefunden",
     "settings": {
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "apiKeys": {
+            "addApiKey": "Einen API-Schlüssel hinzufügen",
+            "refreshKeysFailure": "Fehler beim Aktualisieren von API-Schlüsseln",
+            "createKeyFailure": "Fehler beim Erstellen eines neuen API-Schlüssels",
+            "createKeySuccess": "Neuen API-Schlüssel erfolgreich erstellt",
+            "addNewKey": "Neuen API-Schlüssel hinzufügen",
+            "revokeAllFailure": "Fehler beim Widerrufen aller API-Schlüssel",
+            "revokeAllSuccess": "Alle API Schlüssel erfolgreich widerrufen",
+            "revokeAll": "Alle API-Schlüssel widerrufen",
+            "revokeFailure": "Fehler beim Widerrufen des API-Schlüssels",
+            "revokeSuccess": "API-Schlüssel erfolgreich widerrufen",
+            "dateCreated": "Erstellungsdatum",
+            "accessToken": "Zugriffstoken",
+            "appName": "Applikationsname",
+            "description": "Hinzufügen und Widerrufen von API-Schlüsseln für externen Zugriff auf Ihren Server",
+            "apiKeys": "API-Schlüssel"
+        }
     },
     "signIn": "Anmelden",
     "unexpectedError": "Unerwarteter Fehler",
@@ -90,7 +107,8 @@
     "viewDetails": "Details anzeigen",
     "validation": {
         "required": "Dieses Feld ist erforderlich",
-        "mustBeUrl": "Dieses Feld muss eine gültige URL enthalten"
+        "mustBeUrl": "Dieses Feld muss eine gültige URL enthalten",
+        "bothPasswordsSame": "Beide Passwörter müssen gleich sein"
     },
     "numberTracks": "{number} Lieder",
     "nextUp": "Als nächstes",
@@ -273,7 +291,7 @@
         }
     },
     "undefined": "Nicht definiert",
-    "noSubtitleSelected": "Kein Untertitel ausgewählt",
+    "noSubtitleSelected": "Keine Untertitel ausgewählt",
     "libraryRefreshQueued": "Aktualisierung der Bibliothek in der Warteschlange",
     "directing": "Regie",
     "version": "Version",
@@ -296,10 +314,30 @@
     "person": "Person",
     "noImagesFound": "Keine Bilder gefunden",
     "wizard": {
-        "setLanguageError": "Das Einstellen der Clientsprache",
-        "setAdminError": "Konnte keinen Admin-Account anlegen",
+        "setLanguageError": "Das Einstellen der Clientsprache ist fehlgeschlagen.",
+        "setAdminError": "Das Erstellen eines Administratorkontos ist nicht möglich.",
         "setupWizard": "Einrichtungsassistent",
-        "confirmPassword": "Passwort bestätigen"
+        "confirmPassword": "Passwort bestätigen",
+        "userSuccessfullySet": "Benutzer erfolgreich gesetzt.",
+        "setMetadataError": "Das Setzen der Metadatensprache ist nicht möglich.",
+        "remoteAccess": "Fernzugriff",
+        "allowRemoteAccess": "Erlaube Fernzugriff auf den Server",
+        "administratorAccount": "Administratorkonto",
+        "languageLocale": "Sprache und Standort",
+        "preferedLanguage": "Bevorzugte Sprache",
+        "preferredMetadataLanguage": "Bevorzugte Metadatensprache",
+        "completeError": "Der Einrichtungsassistent konnte nicht abgeschlossen werden.",
+        "remoteAccessSet": "Fernzugriff eingestellt.",
+        "metadataLanguagesSet": "Metadatensprache eingestellt.",
+        "languageSuccessfullySet": "Sprache erfolgreich geändert.",
+        "setRemoteError": "Das Setzen der Fernzugriffseinstellungen ist nicht möglich."
     },
-    "noSubtitlesAvailable": "Keine Untertitel verfügbar"
+    "noSubtitlesAvailable": "Keine Untertitel verfügbar",
+    "noVideoTracksAvailable": "Keine Videospur verfügbar",
+    "noVideoTrackSelected": "Keine Videospur ausgewählt",
+    "noTracksAvailable": "Keine Titel verfügbar",
+    "noAudioTracksAvailable": "Keine Audiospur verfügbar",
+    "noAudioTrackSelected": "Keine Audiospur ausgewählt",
+    "confirm": "Bestätigen",
+    "NoMediaSourcesAvailable": "Keine Medienquellen verfügbar"
 }
