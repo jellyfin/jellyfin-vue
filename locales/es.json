@@ -167,7 +167,7 @@
         },
         "notifications": {
             "name": "Notificaciones",
-            "description": "Administra y configura las notificaciones enviadas por este servidor"
+            "description": "Administrar y configurar las notificaciones enviadas por este servidor"
         },
         "logs": {
             "name": "Registros y actividad",
@@ -311,11 +311,29 @@
         "setLanguageError": "Error al establecer el idioma.",
         "setAdminError": "Error al crear la cuenta de administrador.",
         "setupWizard": "Asistente de configuración",
-        "confirmPassword": "Confirmar contraseña"
+        "confirmPassword": "Confirmar contraseña",
+        "remoteAccess": "Acceso Remoto",
+        "allowRemoteAccess": "Permitir el acceso remoto a este servidor",
+        "administratorAccount": "Cuenta de administrador",
+        "languageLocale": "Idioma y localización",
+        "preferedLanguage": "Idioma preferido",
+        "preferredMetadataLanguage": "Idioma preferido para las etiquetas",
+        "completeError": "Error al completar el asistente de configuración.",
+        "remoteAccessSet": "Acceso remoto configurado.",
+        "metadataLanguagesSet": "Idioma para las etiquetas configurado.",
+        "userSuccessfullySet": "Usuario configurado correctamente.",
+        "languageSuccessfullySet": "Se ha configurado el idioma correctamente.",
+        "setRemoteError": "Error al establecer los ajustes para el acceso remoto."
     },
     "noVideoTracksAvailable": "No hay pistas de vídeo disponibles",
     "noVideoTrackSelected": "No se ha seleccionado pista de vídeo",
     "noTracksAvailable": "No hay pistas disponibles",
     "noAudioTracksAvailable": "No hay pistas de audio disponibles",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "NoMediaSourcesAvailable": "No hay ninguna pista disponible",
+    "writing": "Escrito",
+    "unliked": "No me gusta",
+    "noAudioTrackSelected": "No se ha seleccionado pista de audio",
+    "directing": "Dirige",
+    "boxRear": "Carátula (cara trasera)"
 }
