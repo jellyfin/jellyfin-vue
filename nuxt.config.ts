@@ -74,7 +74,7 @@ const config: NuxtConfig = {
     // Development
     'plugins/axe.ts',
     // General
-    'plugins/appInitPlugin.ts',
+    { src: 'plugins/appInitPlugin.ts', mode: 'client' },
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
     // Components
