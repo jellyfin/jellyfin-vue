@@ -68,10 +68,15 @@ $ yarn install
 # serve with hot reload at localhost:3000
 $ yarn dev
 
+# server with hot reload and server-side rendering at localhost:3000
+$ yarn dev:ssr
+
 # build for production and launch server
+# you will need a web server to host the client
 $ yarn build
+
+# build for production with server-side rendering and launch server
+$ yarn build:ssr
 $ yarn start
 
-# generate static project
-$ yarn generate
 ```
