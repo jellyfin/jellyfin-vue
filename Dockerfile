@@ -1,25 +1,26 @@
-FROM node:12-alpine AS build
+FROM node:14-alpine AS build
 
-# Install build dependencies for node modules
-RUN apk add git python make g++
-
-# Set workdir
 WORKDIR /app
 
-# Add package.json and yarn.lock
+RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g++ libpng-dev libtool nasm file
+
 ADD package.json yarn.lock ./
 
-# Install dependencies
 RUN yarn install
 
-# Copy resources
+RUN apk del .build-deps
+
 ADD . .
 
-# Build static site
-RUN yarn build
+RUN yarn build:ssr
 
-# Deploy built distribution to nginx
-FROM nginx:alpine
-COPY --from=build /app/dist/ /usr/share/nginx/html/
-COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY .docker/mime.types /etc/nginx/mime.types
+# Expose the port
+EXPOSE 80
+
+# set app serving to permissive / assigned
+ENV NUXT_HOST=0.0.0.0
+# set app port
+ENV NUXT_PORT=80
+
+# start the client
+CMD [ "yarn", "start:ssr" ]

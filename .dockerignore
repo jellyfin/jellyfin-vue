@@ -80,6 +80,8 @@ typings/
 
 # IDE / Editor
 .idea
+.run
+.vscode
 
 # Service worker
 sw.*
@@ -89,3 +91,8 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Github & CI
+.github
+.devcontainer
+.ci
