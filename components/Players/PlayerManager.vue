@@ -195,8 +195,6 @@ export default Vue.extend({
     }
   },
   created() {
-    this.supportedFeatures = getSupportedFeatures();
-
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/START_PLAYBACK':
@@ -311,6 +309,9 @@ export default Vue.extend({
           break;
       }
     });
+  },
+  beforeMount() {
+    this.supportedFeatures = getSupportedFeatures();
   },
   mounted() {
     document.addEventListener('mousemove', this.handleMouseMove);
