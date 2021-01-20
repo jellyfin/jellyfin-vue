@@ -25,7 +25,26 @@
     "serverAddressMustBeUrl": "服务器地址必须是有效的 URL",
     "serverAddressRequired": "服务器地址为必填项",
     "serverNotFound": "找不到服务器",
-    "settings": "设置",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "添加一个 API 密钥",
+            "refreshKeysFailure": "刷新 API 密钥时发生错误",
+            "createKeyFailure": "创建新 API 密钥时发生错误",
+            "createKeySuccess": "成功地创建了一个新的 API 密钥",
+            "addNewKey": "添加新的 API 密钥",
+            "revokeAllFailure": "撤销所有 API 密钥时发生错误",
+            "revokeAllSuccess": "成功地撤销了所有的 API 密钥",
+            "revokeAll": "撤销所有的 API 密钥",
+            "revokeFailure": "撤销 API 密钥时发生错误",
+            "revokeSuccess": "成功地撤销了 API 密钥",
+            "dateCreated": "创建日期",
+            "accessToken": "访问密钥",
+            "appName": "应用名称",
+            "description": "添加或撤销 API 密钥以便从外部访问你的服务器",
+            "apiKeys": "API 密钥"
+        },
+        "settings": "设置"
+    },
     "signIn": "登陆",
     "unexpectedError": "意外的错误",
     "upNext": "下一个",
@@ -89,7 +108,8 @@
     "viewDetails": "查看详情",
     "validation": {
         "required": "这是必填栏",
-        "mustBeUrl": "该字段必须是有效的 URL"
+        "mustBeUrl": "该字段必须是有效的 URL",
+        "bothPasswordsSame": "两次密码必须相同"
     },
     "nextUp": "下一步",
     "libraries": "媒体库",
@@ -283,5 +303,39 @@
     "noAudioTrackSelected": "未选中音轨",
     "metadataEditor": "元数据编辑器",
     "confirm": "确定",
-    "NoMediaSourcesAvailable": "没有可用的媒体源"
+    "NoMediaSourcesAvailable": "没有可用的媒体源",
+    "writing": "作者",
+    "queue": "队列",
+    "noTracksAvailable": "没有可用的曲目",
+    "directing": "导演",
+    "wizard": {
+        "remoteAccess": "远程访问",
+        "allowRemoteAccess": "允许远程访问此服务器",
+        "administratorAccount": "管理员账户",
+        "languageLocale": "语言和本地化",
+        "preferedLanguage": "首选的语言",
+        "preferredMetadataLanguage": "首选的元数据语言",
+        "completeError": "无法完成设置向导。",
+        "remoteAccessSet": "远程访问设置成功。",
+        "metadataLanguagesSet": "元数据设置成功。",
+        "userSuccessfullySet": "用户设置成功。",
+        "languageSuccessfullySet": "语言设置成功。",
+        "setRemoteError": "无法设置远程访问设定。",
+        "setMetadataError": "无法设置元数据语言。",
+        "setLanguageError": "无法设置客户端语言。",
+        "setAdminError": "无法创建一个管理员账户。",
+        "setupWizard": "设置向导",
+        "confirmPassword": "确认密码"
+    },
+    "version": "版本号",
+    "upNextName": "接下来：{upNextItemName}",
+    "unableToRefreshLibrary": "无法刷新媒体库",
+    "tvShowAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
+    "tooltips": {
+        "switchToLightMode": "切换到浅色模式",
+        "switchToDarkMode": "切换到深色模式",
+        "changeLanguage": "语言"
+    },
+    "stopPlayback": "停止播放",
+    "refreshLibrary": "刷新媒体库"
 }
