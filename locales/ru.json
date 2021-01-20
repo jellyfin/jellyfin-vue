@@ -107,7 +107,7 @@
     "validation": {
         "required": "Это поле обязательное",
         "mustBeUrl": "В этом поле должен быть действующий URL",
-        "bothPasswordsSame": "Оба пароля должны быть сохранены"
+        "bothPasswordsSame": "Оба пароля должны быть одинаковыми"
     },
     "numberTracks": "{number} дорож[ка/ки/ек]",
     "nextUp": "Очередное",
