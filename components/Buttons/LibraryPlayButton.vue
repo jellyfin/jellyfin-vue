@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip bottom>
+  <v-tooltip top>
     <template #activator="{ on, attrs }">
       <v-btn
         v-if="!$vuetify.breakpoint.smAndDown"

@@ -155,7 +155,10 @@
     },
     "saveAsPlaylist": "Save queue as a playlist",
     "shuffleAll": "Shuffle all",
-    "playAll": "Play all"
+    "playAll": "Play all",
+    "shuffle": "Shuffle",
+    "playNext": "Play next",
+    "addToQueue": "Add to queue"
   },
   "played": "Played",
   "present": "Present",

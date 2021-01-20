@@ -1,6 +1,12 @@
 <template>
   <div v-if="items.length > 0">
-    <v-menu absolute close-on-click close-on-content-click>
+    <v-menu
+      absolute
+      close-on-click
+      close-on-content-click
+      :z-index="zIndex"
+      top
+    >
       <template #activator="{ on, attrs }">
         <v-btn
           :class="absolute ? 'card-more-button' : ''"
@@ -21,6 +27,9 @@
           :key="`item-${item.Id}-menu-${index}`"
           @click="menuItem.action"
         >
+          <v-list-item-icon>
+            <v-icon>{{ menuItem.icon }}</v-icon>
+          </v-list-item-icon>
           <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -31,12 +40,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
 
 type MenuItem = {
   title: string;
+  icon: string;
   action: () => void;
 };
 
@@ -60,6 +70,10 @@ export default Vue.extend({
     outlined: {
       type: Boolean,
       default: false
+    },
+    zIndex: {
+      type: Number,
+      default: 100
     }
   },
   data() {
@@ -68,6 +82,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapGetters('playbackManager', ['getCurrentItem']),
     items: {
       get(): MenuItem[] {
         const menuItems = [] as MenuItem[];
@@ -75,6 +90,7 @@ export default Vue.extend({
         if (this.canResume(this.item)) {
           menuItems.push({
             title: this.$t('playFromBeginning'),
+            icon: 'mdi-replay',
             action: () => {
               this.play({
                 items: [this.item]
@@ -86,8 +102,43 @@ export default Vue.extend({
         if (this.$auth.user?.Policy?.IsAdministrator) {
           menuItems.push({
             title: this.$t('editMetadata'),
+            icon: 'mdi-pencil-outline',
             action: () => {
               this.dialog = true;
+            }
+          });
+        }
+
+        menuItems.push({
+          title: this.$t('playback.shuffle'),
+          icon: 'mdi-shuffle',
+          action: () => {
+            this.play({
+              items: [this.item],
+              initiator: this.item,
+              startShuffled: true
+            });
+          }
+        });
+
+        if (this.getCurrentItem) {
+          menuItems.push({
+            title: this.$t('playback.playNext'),
+            icon: 'mdi-play-speed',
+            action: () => {
+              this.playNext({
+                item: this.item
+              });
+            }
+          });
+
+          menuItems.push({
+            title: this.$t('playback.addToQueue'),
+            icon: 'mdi-playlist-plus',
+            action: () => {
+              this.addToQueue({
+                item: this.item
+              });
             }
           });
         }
@@ -100,6 +151,7 @@ export default Vue.extend({
         ) {
           menuItems.push({
             title: this.$t('refreshLibrary'),
+            icon: 'mdi-refresh',
             action: async () => {
               try {
                 await this.$api.itemRefresh.post({
@@ -131,7 +183,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    ...mapActions('playbackManager', ['play'])
+    ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue'])
   }
 });
 </script>

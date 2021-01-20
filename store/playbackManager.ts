@@ -302,6 +302,21 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     }
     commit('START_PLAYBACK', opts);
   },
+  async playNext({ commit, state }, { item }: { item: BaseItemDto }) {
+    const queue = Array.from(state.queue);
+    const translatedItem = await translateItemsForPlayback([item]);
+
+    if (state.currentItemIndex !== null) {
+      queue.splice(state.currentItemIndex + 1, 0, ...translatedItem);
+      commit('SET_QUEUE', { queue });
+    }
+  },
+  async addToQueue({ commit, state }, { item }: { item: BaseItemDto }) {
+    const queue = Array.from(state.queue);
+    const translatedItem = await translateItemsForPlayback([item]);
+    queue.push(...translatedItem);
+    commit('SET_QUEUE', { queue });
+  },
   setNewQueue({ commit, state }, { queue }) {
     let item;
     let lastItem;

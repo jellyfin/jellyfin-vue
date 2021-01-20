@@ -29,10 +29,8 @@
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   data() {
     return {
       dragOptions: {
@@ -56,7 +54,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapActions('playbackManager', ['play', 'setNewQueue']),
+    ...mapActions('playbackManager', ['setNewQueue']),
     isPlaying(item: BaseItemDto): boolean {
       return this.getCurrentItem()?.Id === item.Id;
     }
@@ -65,26 +63,23 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.button {
-  margin-top: 35px;
-}
 .flip-list-move {
   transition: transform 0.5s;
 }
+
 .no-move {
   transition: transform 0s;
 }
+
 .ghost {
   opacity: 0.5;
-  background: #c8ebfb;
 }
+
 .list-group {
   min-height: 20px;
 }
+
 .list-group-item {
   cursor: grab;
-}
-.list-group-item i {
-  cursor: pointer;
 }
 </style>
