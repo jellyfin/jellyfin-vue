@@ -26,7 +26,26 @@
     "serverAddressMustBeUrl": "Adres serwera musi być prawidłowym adresem URL",
     "serverAddressRequired": "Adres serwera jest wymagany",
     "serverNotFound": "Serwer nie został znaleziony",
-    "settings": "Ustawienia",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "Dodaj klucz API",
+            "refreshKeysFailure": "Błąd podczas odświeżania kluczy API",
+            "createKeyFailure": "Błąd podczas tworzenia nowego klucza API",
+            "createKeySuccess": "Pomyślnie utworzono nowy klucz API",
+            "addNewKey": "Dodaj nowy klucz API",
+            "revokeAllFailure": "Błąd podczas unieważniania wszystkich kluczy API",
+            "revokeAllSuccess": "Pomyślnie odwołano wszystkie klucze API",
+            "revokeAll": "Unieważnij wszystkie klucze API",
+            "revokeFailure": "Błąd podczas unieważniania klucza API",
+            "revokeSuccess": "Pomyślnie odwołano klucz API",
+            "dateCreated": "Data utworzenia",
+            "accessToken": "Token dostępu",
+            "appName": "Nazwa Aplikacji",
+            "description": "Dodaj i unieważnij klucze API, aby uzyskać zewnętrzny dostęp do serwera",
+            "apiKeys": "Klucze API"
+        },
+        "settings": "Ustawienia"
+    },
     "signIn": "Zaloguj",
     "unexpectedError": "Niespodziewany błąd",
     "upNext": "Następnie",
@@ -316,5 +335,6 @@
     "noAudioTracksAvailable": "Brak dostępnych ścieżek audio",
     "noAudioTrackSelected": "Nie wybrano ścieżki dźwiękowej",
     "confirm": "Potwierdź",
-    "NoMediaSourcesAvailable": "Brak dostępnych źródeł multimediów"
+    "NoMediaSourcesAvailable": "Brak dostępnych źródeł multimediów",
+    "noVideoTracksAvailable": "Brak dostępnych ścieżek wideo"
 }
