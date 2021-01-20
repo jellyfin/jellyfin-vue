@@ -309,5 +309,12 @@
     "upNextName": "Następnie: {upNextItemName}",
     "stopPlayback": "Zatrzymaj odtwarzanie",
     "person": "Osoba",
-    "noImagesFound": "Nie znaleziono obrazów"
+    "noImagesFound": "Nie znaleziono obrazów",
+    "noVideoTrackSelected": "Nie wybrano ścieżki wideo",
+    "noTracksAvailable": "Brak dostępnych utworów",
+    "noSubtitlesAvailable": "Brak dostępnych napisów",
+    "noAudioTracksAvailable": "Brak dostępnych ścieżek audio",
+    "noAudioTrackSelected": "Nie wybrano ścieżki dźwiękowej",
+    "confirm": "Potwierdź",
+    "NoMediaSourcesAvailable": "Brak dostępnych źródeł multimediów"
 }
