@@ -26,7 +26,26 @@
     "serverAddressMustBeUrl": "Server adres moet een geldige URL zijn",
     "serverAddressRequired": "Server adres is verplicht",
     "serverNotFound": "Server niet gevonden",
-    "settings": "Instellingen",
+    "settings": {
+        "apiKeys": {
+            "addApiKey": "Voeg een API-sleutel toe",
+            "refreshKeysFailure": "Fout bij vernieuwen van API-sleutels",
+            "createKeyFailure": "Fout bij het maken van een nieuwe API-sleutel",
+            "createKeySuccess": "Met succes een nieuwe API-sleutel gemaakt",
+            "addNewKey": "Voeg een nieuwe API-sleutel toe",
+            "revokeAllFailure": "Fout bij het intrekken van alle API-sleutels",
+            "revokeAllSuccess": "Alle API-sleutels zijn ingetrokken",
+            "revokeAll": "Trek alle API-sleutels in",
+            "revokeFailure": "Fout bij het intrekken van API-sleutel",
+            "revokeSuccess": "De API-sleutel is ingetrokken",
+            "dateCreated": "Datum gecreeërd",
+            "accessToken": "Toegangstoken",
+            "appName": "Applicatie naam",
+            "description": "Voeg API-sleutels toe en trek ze in voor externe toegang tot uw server",
+            "apiKeys": "API-sleutels"
+        },
+        "settings": "Instellingen"
+    },
     "signIn": "Inloggen",
     "unexpectedError": "Onverwachte fout",
     "upNext": "Volgende",
@@ -82,7 +101,7 @@
     "validation": {
         "required": "Dit veld is vereist",
         "mustBeUrl": "Dit veld moet een geldige URL zijn",
-        "bothPasswordsSame": "Beide wachtwoorden moeten identiek zijn"
+        "bothPasswordsSame": "Beide wachtwoorden moeten hetzelfde zijn"
     },
     "failedToRefreshItems": "Het verversen van items is mislukt",
     "unliked": "Leuk gevonden ongedaan",
@@ -308,5 +327,13 @@
     "stopPlayback": "Stop afspelen",
     "person": "Persoon",
     "noImagesFound": "Geen afbeeldingen gevonden",
-    "metadataEditor": "Metadata bewerker"
+    "metadataEditor": "Metagegevens bewerker",
+    "noVideoTracksAvailable": "Geen videobestand beschikbaar",
+    "noTracksAvailable": "Geen bestand beschikbaar",
+    "noVideoTrackSelected": "Geen videobestand geselecteerd",
+    "noSubtitlesAvailable": "Geen ondertitels beschikbaar",
+    "noAudioTracksAvailable": "Geen audiotracks beschikbaar",
+    "noAudioTrackSelected": "Geen audiotrack geselecteerd",
+    "confirm": "Bevestig",
+    "NoMediaSourcesAvailable": "Geen mediabronnen beschikbaar"
 }
