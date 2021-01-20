@@ -212,7 +212,7 @@
     "validation": {
         "required": "Bul óris qajet",
         "mustBeUrl": "Bul óriste jaramdy URL qajet",
-        "bothPasswordsSame": "Paróldin ekeýi de saqtalýy qajet"
+        "bothPasswordsSame": "Paróldin ekeýi de birdeı bolýy qajet"
     },
     "unliked": "Unamaıdy",
     "type": "Túri",
