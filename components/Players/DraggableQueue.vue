@@ -1,45 +1,65 @@
 <template>
-  <draggable
-    v-model="queue"
-    v-bind="dragOptions"
-    class="list-group"
-    @start="drag = true"
-    @end="drag = false"
-  >
-    <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+  <v-list>
+    <draggable v-model="queue" v-bind="dragOptions" class="list-group">
       <v-list-item
-        v-for="item in queue"
-        :key="item.Id"
-        class="list-group-item pa-0 ma-0"
+        v-for="(item, index) in queue"
+        :key="`${item.Id}-${getUuid()}`"
+        ripple
+        class="pa-0 ma-0"
+        @click="onClick(index)"
       >
-        <v-list-item-avatar tile>
+        <v-list-item-action
+          class="list-group-item d-flex justify-center text-caption ml-2 mr-7"
+          :class="{ 'primary--text': isPlaying(item) }"
+        >
+          {{ index }}
+        </v-list-item-action>
+        <v-list-item-avatar tile class="list-group-item">
           <blurhash-image :item="item" />
         </v-list-item-avatar>
-        <v-list-item-title
-          :class="{ 'primary--text': isPlaying(item) }"
-          class="text-truncate"
-          >{{ item.Name }}</v-list-item-title
-        >
+
+        <v-list-item-content>
+          <v-list-item-title
+            :class="{ 'primary--text': isPlaying(item) }"
+            class="text-truncate ml-2 list-group-item"
+          >
+            {{ item.Name }}
+          </v-list-item-title>
+          <v-list-item-subtitle
+            v-if="getArtists(item)"
+            class="ml-2 list-group-item"
+          >
+            {{ getArtists(item) }}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-action>
+          <favorite-button :item="item" />
+        </v-list-item-action>
+        <v-list-item-action class="mr-2">
+          <item-menu :item="item" />
+        </v-list-item-action>
       </v-list-item>
-    </transition-group>
-  </draggable>
+    </draggable>
+  </v-list>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   data() {
     return {
       dragOptions: {
-        animation: 200,
-        group: 'description',
-        disabled: false,
+        animation: 500,
+        delay: 0,
+        group: false,
+        dragoverBubble: true,
         ghostClass: 'ghost'
-      },
-      drag: false
+      }
     };
   },
   computed: {
@@ -54,9 +74,28 @@ export default Vue.extend({
   },
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapActions('playbackManager', ['setNewQueue']),
+    ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
     isPlaying(item: BaseItemDto): boolean {
       return this.getCurrentItem()?.Id === item.Id;
+    },
+    getArtists(item: BaseItemDto): string | null {
+      if (item.Artists) {
+        return item.Artists.join(' - ');
+      } else {
+        return null;
+      }
+    },
+    /**
+     * There can be duplicated items in the queue, so we generate an unique uuid
+     * for each item.
+     *
+     * @returns {string} The generated UUID.
+     */
+    getUuid(): string {
+      return uuidv4();
+    },
+    onClick(index: number): void {
+      this.setCurrentIndex({ index });
     }
   }
 });
@@ -76,6 +115,7 @@ export default Vue.extend({
 }
 
 .list-group {
+  user-select: none;
   min-height: 20px;
 }
 

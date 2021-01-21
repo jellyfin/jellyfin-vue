@@ -126,14 +126,8 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <v-btn class="d-none d-md-inline-flex" icon disabled>
-              <v-icon size="18">{{
-                getCurrentItem.UserData.IsFavorite
-                  ? 'mdi-heart'
-                  : 'mdi-heart-outline'
-              }}</v-icon>
-            </v-btn>
-            <queue-button :item="getCurrentItem" class="mr-2" />
+            <favorite-button :item="getCurrentItem" />
+            <queue-button :item="getCurrentItem" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
@@ -149,7 +143,7 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </v-fade-transition>
-            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
+            <item-menu :item="getCurrentItem" :dark="false" />
             <v-tooltip top>
               <template #activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on" @click="stopPlayback">

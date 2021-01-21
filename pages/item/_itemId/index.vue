@@ -4,7 +4,13 @@
       <v-col cols="12" sm="8" md="9">
         <v-row justify="center" justify-md="start">
           <v-col cols="7" md="3">
-            <card :item="item" no-text no-margin />
+            <card
+              :item="item"
+              :overlay="false"
+              :link="false"
+              no-text
+              no-margin
+            />
           </v-col>
           <v-col cols="12" md="9">
             <h1
@@ -49,6 +55,7 @@
             >
               <play-button class="mr-2" :item="item" />
               <item-menu :item="item" outlined :absolute="false" />
+              <favorite-button :item="item" class="ml-2" />
             </v-row>
             <v-col cols="12" md="10">
               <v-row

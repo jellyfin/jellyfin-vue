@@ -34,8 +34,16 @@
         @change="onChangeFilter"
       />
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
-      <library-shuffle-button v-if="isQueueable" :items="items" />
-      <library-play-button v-if="isQueueable" :items="items" />
+      <library-shuffle-button
+        v-if="isQueueable"
+        :items="items"
+        :disabled="loading || !items.length"
+      />
+      <library-play-button
+        v-if="isQueueable"
+        :items="items"
+        :disabled="loading || !items.length"
+      />
     </v-app-bar>
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />

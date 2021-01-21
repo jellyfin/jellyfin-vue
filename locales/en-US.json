@@ -158,7 +158,8 @@
     "playAll": "Play all",
     "shuffle": "Shuffle",
     "playNext": "Play next",
-    "addToQueue": "Add to queue"
+    "addToQueue": "Add to queue",
+    "queueItems": "{items} tracks"
   },
   "played": "Played",
   "present": "Present",
@@ -313,10 +314,8 @@
   "username": "Username",
   "usernameRequired": "Username is required",
   "validation": {
-    "bothPasswordsSame": "Both passwords must be the save",
-    "mustBeUrl": "This field must be a valid URL",
-    "required": "This field is required",
-    "bothPasswordsSame": "Both passwords must be the same"
+    "bothPasswordsSame": "Both passwords must be the same",
+    "mustBeUrl": "This field must be a valid URL",    
     "required": "This field is required"
   },
   "version": "Version",

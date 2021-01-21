@@ -3,12 +3,16 @@
     v-model="menu"
     :close-on-content-click="false"
     :close-on-click="false"
-    transition="slide-y-transition"
+    :transition="'slide-y-transition'"
     top
     :nudge-top="35"
     offset-y
-    min-width="40vw"
-    min-height="25vh"
+    min-width="35vw"
+    max-width="35vw"
+    min-height="60vh"
+    max-height="60vh"
+    :z-index="100"
+    class="menu"
   >
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
@@ -30,34 +34,32 @@
 
           <v-list-item-content>
             <v-list-item-title>{{ sourceText }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              getTotalEndsAtTime(queue)
-            }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              {{ getTotalEndsAtTime(queue) }} -
+              {{ $t('playback.queueItems', { items: queue.length }) }}
+            </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn
-              v-if="initiator"
-              disabled
-              :class="fav ? 'red--text' : ''"
-              icon
-              @click="fav = !fav"
-            >
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
+            <favorite-button :item="item" />
+          </v-list-item-action>
+          <v-list-item-action class="mr-1">
+            <item-menu :item="item" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
       <v-divider />
-      <v-list class="no-overflow">
-        <draggable-queue class="overflow ml-4" />
+      <v-list class="overflow">
+        <!-- We set an special property to destroy the element so it doesn't take resources while it's not being used.
+        Specially useful for really huge queues -->
+        <draggable-queue v-if="menu || !destroy" class="ml-4" />
       </v-list>
       <v-spacer />
       <v-card-actions class="d-flex justify-space-between">
         <v-btn icon fab @click="menu = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-btn color="primary" class="font-weight-medium elevation-2">
+        <v-btn disabled color="primary" class="font-weight-medium elevation-2">
           {{ $t('playback.saveAsPlaylist') }}
         </v-btn>
       </v-card-actions>
@@ -81,8 +83,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      fav: true,
-      menu: false
+      menu: false,
+      destroy: false
     };
   },
   computed: {
@@ -116,18 +118,33 @@ export default Vue.extend({
         }
       }
     }
+  },
+  /**
+   * We destroy objects 500 ms after the menu has been closed, so they're visible while the transition is taking place
+   */
+  watch: {
+    menu(): void {
+      if (!this.menu) {
+        setTimeout(() => {
+          this.destroy = true;
+        }, 500);
+      } else {
+        this.destroy = false;
+      }
+    }
   }
 });
 </script>
 
 <style lang="scss" scoped>
+.menu {
+  user-select: none;
+}
+
 .overflow {
   overflow-y: scroll;
   overflow-x: hidden;
-  min-height: 30vh;
-  max-height: 45vh;
-}
-.no-overflow {
-  overflow: hidden;
+  min-height: 40vh;
+  max-height: 40vh;
 }
 </style>

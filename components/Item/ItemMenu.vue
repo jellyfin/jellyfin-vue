@@ -9,7 +9,6 @@
     >
       <template #activator="{ on, attrs }">
         <v-btn
-          :class="absolute ? 'card-more-button' : ''"
           icon
           small
           :outlined="outlined"
@@ -21,7 +20,7 @@
           <v-icon>mdi-dots-horizontal</v-icon>
         </v-btn>
       </template>
-      <v-list>
+      <v-list dense nav>
         <v-list-item
           v-for="(menuItem, index) in items"
           :key="`item-${item.Id}-menu-${index}`"
@@ -30,11 +29,17 @@
           <v-list-item-icon>
             <v-icon>{{ menuItem.icon }}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>{{ menuItem.title }}</v-list-item-title>
+          <v-list-item-title class="text">
+            {{ menuItem.title }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
-    <metadata-editor-dialog :dialog.sync="dialog" :item-id="item.Id" />
+    <metadata-editor-dialog
+      v-if="metadataDialog"
+      :dialog.sync="metadataDialog"
+      :item-id="item.Id"
+    />
   </div>
 </template>
 
@@ -59,10 +64,6 @@ export default Vue.extend({
         return {};
       }
     },
-    absolute: {
-      type: Boolean,
-      default: true
-    },
     dark: {
       type: Boolean,
       default: true
@@ -73,12 +74,12 @@ export default Vue.extend({
     },
     zIndex: {
       type: Number,
-      default: 100
+      default: 200
     }
   },
   data() {
     return {
-      dialog: false
+      metadataDialog: false
     };
   },
   computed: {
@@ -104,7 +105,7 @@ export default Vue.extend({
             title: this.$t('editMetadata'),
             icon: 'mdi-pencil-outline',
             action: () => {
-              this.dialog = true;
+              this.metadataDialog = true;
             }
           });
         }
@@ -188,10 +189,9 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped>
-.card-more-button {
-  position: absolute;
-  right: 0.5em;
-  bottom: 0.5em;
+<style lang="scss" scoped>
+.text {
+  font-size: unset !important;
+  line-height: unset !important;
 }
 </style>
