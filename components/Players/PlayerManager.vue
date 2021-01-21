@@ -171,6 +171,7 @@ export default Vue.extend({
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getPreviousItem',
+      'getNextItem',
       'getCurrentlyPlayingMediaType'
     ]),
     isPlaying(): boolean {
@@ -198,6 +199,7 @@ export default Vue.extend({
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/INCREASE_QUEUE_INDEX':
+        case 'playbackManager/DECREASE_QUEUE_INDEX':
         case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
           if (
