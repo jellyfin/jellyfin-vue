@@ -1,106 +1,115 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="9">
-        <v-row>
-          <v-col cols="9" class="d-flex flex-row">
-            <v-img
-              v-if="item.ImageTags && item.ImageTags.Primary"
-              class="person-image elevation-2 ml-2"
-              cover
-              aspect-ratio="1"
-              :src="getImageUrl(item.Id, 'Primary')"
-            />
-            <div class="ml-4 d-flex flex-column">
-              <div
-                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
-              >
-                {{ $t('artist') }}
-              </div>
-              <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
+  <item-cols>
+    <template #left>
+      <v-row justify="center" justify-sm="start">
+        <v-col cols="6" sm="3" class="d-flex flex-row">
+          <v-img
+            v-if="item.ImageTags && item.ImageTags.Primary"
+            class="person-image elevation-2 ml-2"
+            cover
+            aspect-ratio="1"
+            :src="getImageUrl(item.Id, 'Primary')"
+          />
+        </v-col>
+        <v-col cols="12" sm="7">
+          <div class="ml-sm-4 d-flex flex-column">
+            <div
+              class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+            >
+              {{ $t('artist') }}
             </div>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-tabs v-model="activeTab" background-color="transparent">
-              <v-tab v-for="(tab, index) in tabs" :key="index">{{ tab }}</v-tab>
-            </v-tabs>
-            <v-tabs-items v-model="activeTab" class="transparent">
-              <v-tab-item :key="0">
-                <v-row>
-                  <v-col cols="12" class="mx-3">
-                    <h2 class="text-h6">
+            <h1 class="text-h4 text-md-h2 font-weight-light">
+              {{ item.Name }}
+            </h1>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-tabs v-model="activeTab" background-color="transparent">
+            <v-tab :key="0">{{ $t('overview') }}</v-tab>
+            <v-tab :key="1">{{ $t('about') }}</v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="activeTab" class="transparent">
+            <v-tab-item :key="0">
+              <v-row no-gutters>
+                <v-col cols="12" class="ma-3">
+                  <v-row>
+                    <h2 class="text-h6 my-3">
                       <span>{{ $t('albums') }}</span>
                     </h2>
-                    <v-row
-                      v-for="appearance in appearances"
-                      :key="appearance.Id"
-                    >
-                      <v-col cols="12">
-                        <div class="d-flex flex-column">
-                          <v-row>
-                            <v-col cols="1">
-                              <card :item="appearance" no-text no-margin />
-                            </v-col>
-                            <v-col>
-                              <div
-                                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
-                              >
-                                {{ appearance.ProductionYear }}
-                              </div>
-                              <nuxt-link
-                                class="link"
-                                tag="h2"
-                                :to="`/item/${appearance.Id}/`"
-                              >
-                                {{ appearance.Name }}
-                              </nuxt-link>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col>
-                              <track-list
-                                v-if="appearance.Type === 'MusicAlbum'"
-                                :item="appearance"
-                              />
-                            </v-col>
-                          </v-row>
-                        </div>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-row>
-              </v-tab-item>
-              <v-tab-item :key="1">
-                <v-container>
-                  <v-row>
-                    <v-col>
-                      <v-img cover :src="getImageUrl(item.Id, 'Backdrop')" />
-                      <div v-if="item.Overview">
-                        <h2 class="text-h6 mt-2">
-                          <span>{{ $t('biography') }}</span>
-                        </h2>
-                        <v-col cols="9" class="pl-0 pr-0">
-                          <!-- eslint-disable-next-line vue/no-v-html -->
-                          <p class="item-overview" v-html="overview" />
-                        </v-col>
+                  </v-row>
+                  <v-row v-for="appearance in appearances" :key="appearance.Id">
+                    <v-col cols="12">
+                      <div class="d-flex flex-column">
+                        <v-row>
+                          <div
+                            style="width: 125px"
+                            class="ma-2 d-none d-md-block"
+                          >
+                            <card :item="appearance" no-text no-margin />
+                          </div>
+                          <div class="py-2">
+                            <div
+                              class="text-subtitle-1 text--secondary font-weight-medium"
+                            >
+                              {{ appearance.ProductionYear }}
+                            </div>
+                            <nuxt-link
+                              class="link font-weight-bold text-h6 text-md-h4"
+                              tag="h2"
+                              :to="`/item/${appearance.Id}/`"
+                            >
+                              {{ appearance.Name }}
+                            </nuxt-link>
+                          </div>
+                        </v-row>
+                        <v-row class="my-2">
+                          <v-col>
+                            <track-list
+                              v-if="appearance.Type === 'MusicAlbum'"
+                              :item="appearance"
+                            />
+                          </v-col>
+                        </v-row>
                       </div>
                     </v-col>
                   </v-row>
-                </v-container>
-              </v-tab-item>
-            </v-tabs-items>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="3">
-        <related-items :item="item" vertical>
-          {{ $t('moreLikeArtist', { artist: item.Name }) }}
-        </related-items>
-      </v-col>
-    </v-row>
-  </v-container>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item :key="1">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-img
+                      cover
+                      aspect-ratio="1.7778"
+                      :src="getImageUrl(item.Id, 'Backdrop')"
+                    />
+                    <div v-if="item.Overview">
+                      <h2 class="text-h6 mt-2">
+                        <span>{{ $t('biography') }}</span>
+                      </h2>
+                      <v-col cols="12" sm="9" class="pl-0 pr-0">
+                        <!-- eslint-disable-next-line vue/no-v-html -->
+                        <p class="item-overview" v-html="overview" />
+                      </v-col>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-col>
+      </v-row>
+    </template>
+    <template #right>
+      <related-items :item="item" vertical>
+        {{ $t('moreLikeArtist', { artist: item.Name }) }}
+      </related-items>
+    </template>
+  </item-cols>
 </template>
 
 <script lang="ts">
@@ -137,7 +146,6 @@ export default Vue.extend({
   data() {
     return {
       activeTab: 0,
-      tabs: ['Overview', 'About'],
       item: {} as BaseItemDto,
       appearances: [] as BaseItemDto[]
     };
@@ -156,11 +164,19 @@ export default Vue.extend({
       }
     }
   },
-  beforeMount() {
-    this.setPageTitle({ title: this.item.Name });
+  watch: {
+    item: {
+      handler(val: BaseItemDto): void {
+        this.setPageTitle({ title: val.Name });
+        const hash = this.getBlurhash(val, ImageType.Backdrop);
+        this.setBackdrop({ hash });
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  created() {
     this.setAppBarOpacity({ opaqueAppBar: false });
-    const hash = this.getBlurhash(this.item, ImageType.Backdrop);
-    this.setBackdrop({ hash });
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
@@ -182,7 +198,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .person-image {
-  max-width: 8em;
   border-radius: 50%;
 }
 .header span {

@@ -10,7 +10,7 @@
       </client-only>
     </div>
     <div v-else-if="vertical">
-      <h2 v-if="!loading && relatedItems.length > 0">
+      <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
         <slot>
           {{ $t('youMayAlsoLike') }}
         </slot>

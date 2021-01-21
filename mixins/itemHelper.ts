@@ -1,9 +1,9 @@
-import { BaseItemDto } from '@jellyfin/client-axios';
 /**
  * Item and playback helpers
  *
  * @mixin
  */
+import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 
 declare module '@nuxt/types' {
