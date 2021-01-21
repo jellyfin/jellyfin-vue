@@ -3,6 +3,7 @@
     <template #activator="{ on, attrs }">
       <v-btn
         v-if="!$vuetify.breakpoint.smAndDown"
+        :disabled="disabled"
         class="ma-2"
         text
         rounded
@@ -12,7 +13,14 @@
         {{ $t('filter') }}
         <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
+      <v-btn
+        v-else
+        :disabled="disabled"
+        class="my-2"
+        icon
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-icon>mdi-filter-variant</v-icon>
       </v-btn>
     </template>
@@ -220,6 +228,10 @@ export default Vue.extend({
     },
     itemsType: {
       type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
       required: true
     }
   },

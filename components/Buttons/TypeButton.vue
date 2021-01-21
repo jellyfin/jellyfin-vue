@@ -6,13 +6,21 @@
         class="my-2"
         text
         rounded
+        :disabled="disabled"
         v-bind="attrs"
         v-on="on"
       >
         {{ items[model].name }}
         <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
+      <v-btn
+        v-else
+        :disabled="disabled"
+        class="my-2"
+        icon
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-icon>mdi-eye</v-icon>
       </v-btn>
     </template>
@@ -36,6 +44,10 @@ export default Vue.extend({
   props: {
     type: {
       type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
       required: true
     }
   },
