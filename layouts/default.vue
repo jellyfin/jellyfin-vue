@@ -74,6 +74,7 @@
       </v-btn>
       <v-text-field
         class="search-input"
+        :class="$vuetify.breakpoint.mdAndUp ? 'expandable' : null"
         prepend-inner-icon="mdi-magnify"
         placeholder="Search"
         max-width="15em"
@@ -223,5 +224,11 @@ export default Vue.extend({
 
 .search-input {
   max-width: 15em;
+  transition: max-width 0.25s;
+}
+
+.search-input.expandable.primary--text {
+  max-width: 40em;
+  transition: max-width 0.25s;
 }
 </style>
