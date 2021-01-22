@@ -159,7 +159,9 @@
     "shuffle": "Shuffle",
     "playNext": "Play next",
     "addToQueue": "Add to queue",
-    "queueItems": "{items} tracks"
+    "queueItems": "{items} tracks",
+    "keepPinned": "Keep pinned",
+    "unpin": "Unpin"
   },
   "played": "Played",
   "present": "Present",

@@ -126,8 +126,8 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <favorite-button :item="getCurrentItem" />
-            <queue-button :item="getCurrentItem" />
+            <favorite-button :item="getCurrentItem" class="active-button" />
+            <queue-button :item="getCurrentItem" class="active-button" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>

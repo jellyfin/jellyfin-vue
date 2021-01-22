@@ -2,7 +2,7 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="false"
+    :close-on-click="!pinned"
     :transition="'slide-y-transition'"
     top
     :nudge-top="35"
@@ -56,9 +56,22 @@
       </v-list>
       <v-spacer />
       <v-card-actions class="d-flex justify-space-between">
-        <v-btn icon fab @click="menu = false">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template #activator="{ on: tooltip }">
+            <v-btn
+              icon
+              fab
+              class="active-button"
+              v-on="tooltip"
+              @click="pinned = !pinned"
+            >
+              <v-icon v-if="pinned" class="pin-off-button">mdi-pin-off</v-icon>
+              <v-icon v-else>mdi-pin</v-icon>
+            </v-btn>
+          </template>
+          <span v-if="pinned">{{ $t('playback.unpin') }}</span>
+          <span v-else>{{ $t('playback.keepPinned') }}</span>
+        </v-tooltip>
         <v-btn disabled color="primary" class="font-weight-medium elevation-2">
           {{ $t('playback.saveAsPlaylist') }}
         </v-btn>
@@ -84,7 +97,8 @@ export default Vue.extend({
   data() {
     return {
       menu: false,
-      destroy: false
+      destroy: false,
+      pinned: false
     };
   },
   computed: {
@@ -139,6 +153,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .menu {
   user-select: none;
+  overflow: hidden;
 }
 
 .overflow {
@@ -146,5 +161,19 @@ export default Vue.extend({
   overflow-x: hidden;
   min-height: 40vh;
   max-height: 40vh;
+}
+
+.pin-off-button {
+  transform-origin: center center;
+  transform: rotate(-45deg);
+}
+
+// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
+// but it seems we're using a prop combination that it's incompatible with it: NaN;
+
+// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 </style>

@@ -1,45 +1,51 @@
 <template>
   <v-list>
     <draggable v-model="queue" v-bind="dragOptions" class="list-group">
-      <v-list-item
+      <v-hover
         v-for="(item, index) in queue"
         :key="`${item.Id}-${getUuid()}`"
-        ripple
+        v-slot="{ hover }"
         class="pa-0 ma-0"
-        @click="onClick(index)"
       >
-        <v-list-item-action
-          class="list-group-item d-flex justify-center text-caption ml-2 mr-7"
-          :class="{ 'primary--text': isPlaying(item) }"
-        >
-          {{ index }}
-        </v-list-item-action>
-        <v-list-item-avatar tile class="list-group-item">
-          <blurhash-image :item="item" />
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title
-            :class="{ 'primary--text': isPlaying(item) }"
-            class="text-truncate ml-2 list-group-item"
+        <v-list-item ripple class="pa-0 ma-0" @click="onClick(index)">
+          <v-list-item-action
+            v-if="!hover"
+            class="list-group-item d-flex justify-center d-flex text-caption"
+            :class="{ 'primary--text': isPlaying(index) }"
           >
-            {{ item.Name }}
-          </v-list-item-title>
-          <v-list-item-subtitle
-            v-if="getArtists(item)"
-            class="ml-2 list-group-item"
-          >
-            {{ getArtists(item) }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
+            {{ index }}
+          </v-list-item-action>
+          <v-list-item-action v-else class="justify-center d-flex">
+            <v-icon>mdi-drag-horizontal</v-icon>
+          </v-list-item-action>
+          <v-list-item-avatar tile class="list-group-item">
+            <blurhash-image :item="item" />
+          </v-list-item-avatar>
 
-        <v-list-item-action>
-          <favorite-button :item="item" />
-        </v-list-item-action>
-        <v-list-item-action class="mr-2">
-          <item-menu :item="item" />
-        </v-list-item-action>
-      </v-list-item>
+          <v-list-item-content>
+            <v-list-item-title
+              :class="{ 'primary--text': isPlaying(index) }"
+              class="text-truncate ml-2 list-group-item"
+            >
+              {{ item.Name }}
+            </v-list-item-title>
+            <v-list-item-subtitle
+              v-if="getArtists(item)"
+              class="ml-2 list-group-item"
+              :class="{ 'primary--text': isPlaying(index) }"
+            >
+              {{ getArtists(item) }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+
+          <v-list-item-action>
+            <favorite-button :item="item" />
+          </v-list-item-action>
+          <v-list-item-action class="mr-2">
+            <item-menu :item="item" />
+          </v-list-item-action>
+        </v-list-item>
+      </v-hover>
     </draggable>
   </v-list>
 </template>
@@ -75,8 +81,8 @@ export default Vue.extend({
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
-    isPlaying(item: BaseItemDto): boolean {
-      return this.getCurrentItem()?.Id === item.Id;
+    isPlaying(index: number): boolean {
+      return index === this.$store.state.playbackManager.currentItemIndex;
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {
@@ -111,7 +117,7 @@ export default Vue.extend({
 }
 
 .ghost {
-  opacity: 0.5;
+  opacity: 0;
 }
 
 .list-group {
