@@ -15,6 +15,15 @@
 import Vue from 'vue';
 import getPixels from '~/plugins/workers/blurhash.worker';
 
+/**
+ * HACK: The cleanest way to do this would be to use an store. However, that required a deep watcher and, overall,
+ * I felt that it took longer to load the blurhashes using that approach than this.
+ *
+ * Blurhashes pixels *shouldn't* be required by any other component, so it might not make sense at all
+ * to move to the store approach and we might be fine with this one.
+ */
+const cache: { [hash: string]: Uint8ClampedArray } = {};
+
 export default Vue.extend({
   props: {
     hash: {
@@ -41,18 +50,22 @@ export default Vue.extend({
     };
   },
   watch: {
-    hash(): void {
-      this.$nextTick(() => {
-        this.loading = true;
-        this.getPixels();
-      });
+    hash: {
+      immediate: true,
+      handler(): void {
+        this.$nextTick(() => {
+          this.loading = true;
+          if (cache[this.hash]) {
+            this.pixels = cache[this.hash];
+          } else {
+            this.getPixels();
+          }
+        });
+      }
     },
     pixels(): void {
       this.draw();
     }
-  },
-  mounted() {
-    this.getPixels();
   },
   methods: {
     draw(): void {
@@ -73,6 +86,7 @@ export default Vue.extend({
           this.height,
           this.punch
         );
+        cache[this.hash] = this.pixels;
       } catch {
         this.pixels = undefined;
         this.$emit('error');
