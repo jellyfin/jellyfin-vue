@@ -4,11 +4,9 @@
       <span class="text-h6 hidden-sm-and-down">
         {{ collectionInfo.Name }}
       </span>
-      <v-chip v-if="!loading" small class="ma-2 hidden-sm-and-down">
-        {{ itemsCount }}
-      </v-chip>
-      <v-chip v-else class="ma-2 hidden-sm-and-down">
-        <v-progress-circular width="2" indeterminate size="15" />
+      <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
+        <template v-if="!loading">{{ itemsCount }}</template>
+        <v-progress-circular v-else width="2" indeterminate size="16" />
       </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button

@@ -48,7 +48,8 @@ export default Vue.extend({
     },
     disabled: {
       type: Boolean,
-      required: true
+      required: false,
+      default: false
     }
   },
   data() {

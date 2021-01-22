@@ -44,7 +44,8 @@ export default Vue.extend({
   props: {
     disabled: {
       type: Boolean,
-      required: true
+      required: false,
+      default: false
     }
   },
   data() {
