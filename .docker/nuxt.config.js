@@ -1,8 +1,8 @@
 const config = {
   server: {
-    port: process.env.PORT || 80,
-    host: process.env.HOST || "0.0.0.0",
-  },
+    port: 80,
+    host: '0.0.0.0'
+  }
 };
 
 export default config;

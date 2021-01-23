@@ -71,7 +71,7 @@ $ yarn dev
 # server with hot reload and server-side rendering at localhost:3000
 $ yarn dev:ssr
 
-# build for production and launch server
+# build for production
 # you will need a web server to host the client
 $ yarn build
 
