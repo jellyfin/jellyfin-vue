@@ -326,7 +326,8 @@
         "setLanguageError": "Impossible de définir la langue du client.",
         "setAdminError": "Impossible de créer un compte admin.",
         "setupWizard": "Assistant de configuration",
-        "confirmPassword": "Confirmez le mot de passe"
+        "confirmPassword": "Confirmez le mot de passe",
+        "remoteAccessSet": "Accès à distance définis."
     },
     "person": "Personne",
     "noVideoTracksAvailable": "Aucune piste vidéo disponible",
@@ -336,5 +337,6 @@
     "noAudioTracksAvailable": "Aucune piste audio disponible",
     "noAudioTrackSelected": "Aucune piste audio sélectionnée",
     "confirm": "Confirmer",
-    "NoMediaSourcesAvailable": "Aucune source média disponible"
+    "NoMediaSourcesAvailable": "Aucune source média disponible",
+    "upNextName": "À suivre : {upNextItemName}"
 }
