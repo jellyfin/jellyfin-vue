@@ -6,13 +6,21 @@
         class="my-2"
         text
         rounded
+        :disabled="disabled"
         v-bind="attrs"
         v-on="on"
       >
         {{ $t('sortByType', { type: items[model].name }) }}
         <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="attrs" v-on="on">
+      <v-btn
+        v-else
+        :disabled="disabled"
+        class="my-2"
+        icon
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-icon>mdi-sort-alphabetical-ascending</v-icon>
       </v-btn>
     </template>
@@ -33,6 +41,13 @@
 import Vue from 'vue';
 
 export default Vue.extend({
+  props: {
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data() {
     return {
       items: [

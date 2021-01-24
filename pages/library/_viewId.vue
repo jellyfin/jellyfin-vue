@@ -4,13 +4,15 @@
       <span class="text-h6 hidden-sm-and-down">
         {{ collectionInfo.Name }}
       </span>
-      <v-chip v-if="!loading" small class="ma-2 hidden-sm-and-down">
-        {{ itemsCount }}
+      <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
+        <template v-if="!loading">{{ itemsCount }}</template>
+        <v-progress-circular v-else width="2" indeterminate size="16" />
       </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button
         v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
+        :disabled="loading || !items.length"
         @change="onChangeType"
       />
       <v-divider
@@ -19,10 +21,15 @@
         vertical
         class="mx-2"
       />
-      <sort-button v-if="isSortable" @change="onChangeSort" />
+      <sort-button
+        v-if="isSortable"
+        :disabled="loading || !items.length"
+        @change="onChangeSort"
+      />
       <filter-button
         v-if="isSortable"
         :collection-info="collectionInfo"
+        :disabled="loading || !items.length"
         :items-type="viewType"
         @change="onChangeFilter"
       />
