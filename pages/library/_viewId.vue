@@ -33,13 +33,14 @@
         :items-type="viewType"
         @change="onChangeFilter"
       />
-      <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
-      <library-shuffle-button
+      <v-spacer />
+      <global-playback-button
         v-if="isQueueable"
         :items="items"
         :disabled="loading || !items.length"
+        shuffle
       />
-      <library-play-button
+      <global-playback-button
         v-if="isQueueable"
         :items="items"
         :disabled="loading || !items.length"

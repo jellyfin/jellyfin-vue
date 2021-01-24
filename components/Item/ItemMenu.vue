@@ -100,16 +100,6 @@ export default Vue.extend({
           });
         }
 
-        if (this.$auth.user?.Policy?.IsAdministrator) {
-          menuItems.push({
-            title: this.$t('editMetadata'),
-            icon: 'mdi-pencil-outline',
-            action: () => {
-              this.metadataDialog = true;
-            }
-          });
-        }
-
         menuItems.push({
           title: this.$t('playback.shuffle'),
           icon: 'mdi-shuffle',
@@ -174,6 +164,16 @@ export default Vue.extend({
                   color: 'error'
                 });
               }
+            }
+          });
+        }
+
+        if (this.$auth.user?.Policy?.IsAdministrator) {
+          menuItems.push({
+            title: this.$t('editMetadata'),
+            icon: 'mdi-pencil-outline',
+            action: () => {
+              this.metadataDialog = true;
             }
           });
         }

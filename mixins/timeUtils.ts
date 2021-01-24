@@ -140,7 +140,8 @@ const timeUtils = Vue.extend({
       return this.$dateFns.formatDuration(
         intervalToDuration({ start: 0, end: ms }),
         {
-          format: [this.$t('hours'), this.$t('minutes')]
+          format: ['hours', 'minutes'],
+          locale: this.$i18n.locale
         }
       );
     },

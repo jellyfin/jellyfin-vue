@@ -126,7 +126,7 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <favorite-button :item="getCurrentItem" class="active-button" />
+            <like-button :item="getCurrentItem" class="active-button" />
             <queue-button :item="getCurrentItem" class="active-button" />
             <div class="hidden-lg-and-down">
               <volume-slider />
@@ -144,14 +144,6 @@
               </v-tooltip>
             </v-fade-transition>
             <item-menu :item="getCurrentItem" :dark="false" />
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on" @click="stopPlayback">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ $t('playback.stopPlayback') }}</span>
-            </v-tooltip>
           </v-col>
           <v-col
             cols="3"
@@ -283,11 +275,6 @@ export default Vue.extend({
       return this.getImageUrlForElement(ImageType.Primary, {
         itemId: item.AlbumId
       });
-    },
-    stopPlayback(): void {
-      this.setLastItemIndex();
-      this.resetCurrentItemIndex();
-      this.setNextTrack();
     }
   }
 });

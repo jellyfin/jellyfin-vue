@@ -40,7 +40,7 @@
               <span v-else>{{ track.IndexNumber }}</span>
             </td>
             <td style="width: 3em" class="pr-0 pl-0 text-center">
-              <favorite-button :item="track" />
+              <like-button :item="track" />
             </td>
             <td>
               <div class="d-flex align-center">

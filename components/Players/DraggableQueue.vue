@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list-item-group>
     <draggable v-model="queue" v-bind="dragOptions" class="list-group">
       <v-hover
         v-for="(item, index) in queue"
@@ -13,7 +13,7 @@
             class="list-group-item d-flex justify-center d-flex text-caption"
             :class="{ 'primary--text': isPlaying(index) }"
           >
-            {{ index }}
+            {{ index + 1 }}
           </v-list-item-action>
           <v-list-item-action v-else class="justify-center d-flex">
             <v-icon>mdi-drag-horizontal</v-icon>
@@ -38,16 +38,16 @@
             </v-list-item-subtitle>
           </v-list-item-content>
 
-          <v-list-item-action>
-            <favorite-button :item="item" />
+          <v-list-item-action v-if="!isPlaying(index)">
+            <like-button :item="item" />
           </v-list-item-action>
-          <v-list-item-action class="mr-2">
+          <v-list-item-action v-if="!isPlaying(index)" class="mr-2">
             <item-menu :item="item" />
           </v-list-item-action>
         </v-list-item>
       </v-hover>
     </draggable>
-  </v-list>
+  </v-list-item-group>
 </template>
 
 <script lang="ts">
@@ -86,7 +86,7 @@ export default Vue.extend({
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {
-        return item.Artists.join(' - ');
+        return item.Artists.join(', ');
       } else {
         return null;
       }

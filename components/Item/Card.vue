@@ -79,7 +79,7 @@
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
-            <favorite-button :item="item" />
+            <like-button :item="item" />
           </div>
         </div>
       </div>

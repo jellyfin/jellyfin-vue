@@ -2,7 +2,7 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="!pinned"
+    :close-on-click="false"
     :transition="'slide-y-transition'"
     top
     :nudge-top="35"
@@ -28,8 +28,9 @@
     <v-card>
       <v-list>
         <v-list-item>
-          <v-list-item-avatar v-if="initiator" tile>
-            <blurhash-image :item="initiator" />
+          <v-list-item-avatar tile>
+            <blurhash-image v-if="initiator" :item="initiator" />
+            <v-icon v-else>{{ modeIcon }}</v-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -41,13 +42,14 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <favorite-button :item="item" />
+            <like-button v-if="initiator" :item="item" />
           </v-list-item-action>
           <v-list-item-action class="mr-1">
-            <item-menu :item="item" />
+            <item-menu v-if="initiator" :item="item" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
+      <v-divider />
       <v-divider />
       <v-list class="overflow">
         <!-- We set an special property to destroy the element so it doesn't take resources while it's not being used.
@@ -58,19 +60,11 @@
       <v-card-actions class="d-flex justify-space-between">
         <v-tooltip top>
           <template #activator="{ on: tooltip }">
-            <v-btn
-              icon
-              fab
-              class="active-button"
-              v-on="tooltip"
-              @click="pinned = !pinned"
-            >
-              <v-icon v-if="pinned" class="pin-off-button">mdi-pin-off</v-icon>
-              <v-icon v-else>mdi-pin</v-icon>
+            <v-btn icon v-on="tooltip" @click="stop">
+              <v-icon>mdi-playlist-remove</v-icon>
             </v-btn>
           </template>
-          <span v-if="pinned">{{ $t('playback.unpin') }}</span>
-          <span v-else>{{ $t('playback.keepPinned') }}</span>
+          <span>{{ $t('playback.clearQueue') }}</span>
         </v-tooltip>
         <v-btn disabled color="primary" class="font-weight-medium elevation-2">
           {{ $t('playback.saveAsPlaylist') }}
@@ -83,6 +77,7 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
+import { mapActions, mapState } from 'vuex';
 import { InitMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -97,38 +92,62 @@ export default Vue.extend({
   data() {
     return {
       menu: false,
-      destroy: false,
-      pinned: false
+      destroy: false
     };
   },
   computed: {
-    queue: {
-      get(): BaseItemDto[] {
-        return this.$store.state.playbackManager.queue;
+    ...mapState('playbackManager', [
+      'queue',
+      'playbackInitiator',
+      'playbackInitMode'
+    ]),
+    sourceText: {
+      get(): string {
+        /**
+         * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
+         * https://github.com/jellyfin/jellyfin-vue/pull/609
+         */
+        switch (this.playbackInitMode) {
+          case InitMode.Unknown:
+            return this.$t('playback.playbackSource.unknown');
+          case InitMode.Item:
+            if (this.item.AlbumId !== this.playbackInitiator?.Id) {
+              return this.$t('playback.playbackSource.unknown');
+            } else {
+              return this.$t('playback.playbackSource.item', {
+                item: this.playbackInitiator?.Name
+              });
+            }
+          case InitMode.Shuffle:
+            return this.$t('playback.playbackSource.shuffle');
+          case InitMode.ShuffleItem:
+            if (this.item.AlbumId !== this.playbackInitiator?.Id) {
+              return this.$t('playback.playbackSource.unknown');
+            } else {
+              return this.$t('playback.playbackSource.shuffleItem', {
+                item: this.playbackInitiator?.Name
+              });
+            }
+          default:
+            return '';
+        }
       }
     },
     initiator: {
       get(): BaseItemDto | null {
-        return this.$store.state.playbackManager.playbackInitiator;
+        if (this.item.AlbumId === this.playbackInitiator?.Id) {
+          return this.playbackInitiator;
+        }
+        return null;
       }
     },
-    sourceText: {
+    modeIcon: {
       get(): string {
-        switch (this.$store.state.playbackManager.playbackInitMode) {
-          case InitMode.Unknown:
-            return this.$t('playback.playbackSource.unknown');
-          case InitMode.Item:
-            return this.$t('playback.playbackSource.item', {
-              item: this.initiator?.Name
-            });
+        switch (this.playbackInitMode) {
           case InitMode.Shuffle:
-            return this.$t('playback.playbackSource.shuffle');
-          case InitMode.ShuffleItem:
-            return this.$t('playback.playbackSource.shuffleItem', {
-              item: this.initiator?.Name
-            });
+            return 'mdi-shuffle';
           default:
-            return '';
+            return 'mdi-playlist-music';
         }
       }
     }
@@ -146,6 +165,9 @@ export default Vue.extend({
         this.destroy = false;
       }
     }
+  },
+  methods: {
+    ...mapActions('playbackManager', ['stop'])
   }
 });
 </script>
@@ -161,19 +183,5 @@ export default Vue.extend({
   overflow-x: hidden;
   min-height: 40vh;
   max-height: 40vh;
-}
-
-.pin-off-button {
-  transform-origin: center center;
-  transform: rotate(-45deg);
-}
-
-// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
-// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
-// but it seems we're using a prop combination that it's incompatible with it: NaN;
-
-// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
-.active-button:focus::before {
-  opacity: 0 !important;
 }
 </style>
