@@ -80,3 +80,24 @@ $ yarn build:ssr
 $ yarn start:ssr
 
 ```
+
+## Running standalone
+
+When using the SSR version of the client, you can run the client in standalone mode in order to save space.
+
+```bash
+# install dependencies
+$ yarn install
+
+# build for production in standalone mode, with server-side rendering
+$ yarn build:ssr --standalone
+
+# move the server and required files to a dedicated directory
+$ mkdir -p /opt/jellyfin-vue
+$ cp .nuxt .docker/nuxt.config.js .docker/package.json /opt/jellyfin-vue
+
+# install the required dependency and start the client
+$ cd /opt/jellyfin-vue
+$ yarn install
+$ yarn start
+```
