@@ -90,13 +90,8 @@ export default Vue.extend({
       tracks: [] as BaseItemDtoQueryResult
     };
   },
-  computed: {
-    tracksPerDisc(): Dictionary<BaseItemDto[]> {
-      return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
-    }
-  },
-  async beforeMount() {
-    const tracks = (
+  async fetch() {
+    this.tracks = (
       await this.$api.items.getItems({
         userId: this.$auth.user?.Id,
         parentId: this.item.Id,
@@ -104,8 +99,11 @@ export default Vue.extend({
         sortOrder: 'Ascending'
       })
     ).data;
-
-    this.tracks = tracks;
+  },
+  computed: {
+    tracksPerDisc(): Dictionary<BaseItemDto[]> {
+      return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
+    }
   },
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),

@@ -1,32 +1,37 @@
 <template>
   <div>
-    <v-app-bar shrink-on-scroll flat fixed class="second-toolbar">
-      <v-toolbar-title class="d-flex genre-toolbar">
-        <span>{{ genre.Name }}</span>
-        <v-fade-transition>
-          <play-button v-if="loaded" :item="genre" />
-        </v-fade-transition>
-        <v-btn
-          v-if="loaded"
-          class="play-button mr-2"
-          min-width="8em"
-          outlined
-          rounded
-          nuxt
-          :to="`./${genre.Id}/shuffle`"
-        >
-          {{ $t('playback.shuffleAll') }}
-        </v-btn>
-      </v-toolbar-title>
+    <v-app-bar fixed flat dense class="second-toolbar">
+      <span class="text-h6 hidden-sm-and-down">
+        {{ genre.Name }}
+      </span>
+      <v-spacer />
+      <v-fade-transition>
+        <play-button v-if="!$fetchState.pending" :item="genre" />
+      </v-fade-transition>
+      <v-btn
+        v-if="!$fetchState.pending"
+        class="play-button mr-2"
+        min-width="8em"
+        outlined
+        rounded
+        nuxt
+        :to="`./${genre.Id}/shuffle`"
+      >
+        {{ $t('playback.shuffleAll') }}
+      </v-btn>
     </v-app-bar>
-    <v-container class="second-toolbar-follow">
-      <v-row v-if="!loaded">
+    <v-container class="after-second-toolbar">
+      <v-row v-if="$fetchState.pending">
         <v-col cols="12" class="card-grid-container">
           <skeleton-card v-for="n in 24" :key="n" />
         </v-col>
       </v-row>
-      <item-grid v-if="items.length" :items="items" />
-      <v-row v-else-if="loaded" justify="center">
+      <item-grid
+        v-if="items.length"
+        :items="items"
+        :loading="$fetchState.pending"
+      />
+      <v-row v-else-if="!$fetchState.pending" justify="center">
         <v-col cols="12" class="card-grid-container empty-card-container">
           <skeleton-card v-for="n in 24" :key="n" boilerplate />
         </v-col>
@@ -61,43 +66,31 @@ export default Vue.extend({
   data() {
     return {
       genre: [] as BaseItemDto,
-      items: [] as BaseItemDto[],
-      loaded: false
+      items: [] as BaseItemDto[]
     };
+  },
+  async fetch() {
+    this.items = (
+      await this.$api.items.getItems({
+        userId: this.$auth.user?.Id,
+        genreIds: [this.$route.params.itemId],
+        includeItemTypes: [this.$route.query.type.toString()],
+        recursive: true,
+        sortBy: 'SortName',
+        sortOrder: 'Ascending'
+      })
+    ).data.Items;
   },
   head() {
     return {
       title: this.$store.state.page.title
     };
   },
-  async beforeMount() {
+  beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({
       title: this.genre.Name
     });
-
-    try {
-      this.items = (
-        await this.$api.items.getItems({
-          userId: this.$auth.user?.Id,
-          genreIds: [this.$route.params.itemId],
-          includeItemTypes: [this.$route.query.type.toString()],
-          recursive: true,
-          sortBy: 'SortName',
-          sortOrder: 'Ascending'
-        })
-      ).data.Items as BaseItemDto[];
-
-      this.loaded = true;
-    } catch (error) {
-      /* eslint-disable-next-line no-console */
-      console.error(error);
-      // Can't get given library ID
-      this.$nuxt.error({
-        statusCode: 404,
-        message: this.$t('libraryNotFound')
-      });
-    }
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: false });
@@ -110,13 +103,25 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
 .second-toolbar {
-  top: 64px;
-  left: 256px !important;
+  top: 56px;
 }
 
-.second-toolbar-follow {
-  padding-top: 140px;
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .second-toolbar {
+    top: 64px;
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .second-toolbar {
+    left: 256px !important;
+  }
+}
+
+.after-second-toolbar {
+  padding-top: 60px;
 }
 
 .genre-toolbar {
@@ -127,7 +132,6 @@ export default Vue.extend({
   max-height: 100%;
 }
 
-@import '~vuetify/src/styles/styles.sass';
 .card-grid-container {
   display: grid;
 }

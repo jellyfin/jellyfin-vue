@@ -57,7 +57,7 @@ export default Vue.extend({
   layout: 'fullpage',
   middleware: 'serverMiddleware',
   auth: false,
-  async asyncData({ store, redirect }) {
+  async asyncData({ store, redirect, $api }) {
     try {
       await store.dispatch(
         'servers/connectServer',
@@ -66,6 +66,13 @@ export default Vue.extend({
     } catch {
       redirect('/selectserver');
     }
+
+    const publicUsers = (await $api.user.getPublicUsers({})).data;
+
+    const brandingData = (await $api.branding.getBrandingOptions()).data;
+    const disclaimer = brandingData.LoginDisclaimer || '';
+
+    return { publicUsers, disclaimer };
   },
   data() {
     return {
@@ -82,10 +89,6 @@ export default Vue.extend({
   },
   created() {
     this.setPageTitle({ title: this.$t('login.login') });
-  },
-  beforeMount() {
-    this.getUsers();
-    this.getLoginDisclaimer();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
@@ -112,28 +115,6 @@ export default Vue.extend({
     resetCurrentUser(): void {
       this.currentUser = {};
       this.loginAsOther = false;
-    },
-    async getLoginDisclaimer(): Promise<void> {
-      try {
-        const brandingData = (await this.$api.branding.getBrandingOptions())
-          .data;
-        this.disclaimer = brandingData.LoginDisclaimer || '';
-      } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('unableGetServerConfiguration'),
-          color: 'error'
-        });
-      }
-    },
-    async getUsers(): Promise<void> {
-      try {
-        this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
-      } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('unableGetPublicUsers'),
-          color: 'error'
-        });
-      }
     }
   }
 });
