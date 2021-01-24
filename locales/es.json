@@ -101,7 +101,8 @@
     "changeUser": "Cambiar de usuario",
     "validation": {
         "required": "Este campo es obligatorio",
-        "mustBeUrl": "Este campo debe ser una URL válida"
+        "mustBeUrl": "Este campo debe ser una URL válida",
+        "bothPasswordsSame": "Ambas contraseñas deben ser iguales"
     },
     "shuffleAll": "Mezclar todo",
     "libraries": "Bibliotecas",
