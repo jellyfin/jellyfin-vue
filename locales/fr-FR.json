@@ -280,16 +280,16 @@
         "welcome": {
             "checkNewItems": "Découvrez les nouveautés.",
             "noItems": "Il n'y a aucun élément récemment ajouté à afficher.",
-            "helloUser": "Bonjour {nom d'utilisateur} !"
+            "helloUser": "Bonjour {userName} !"
         }
     },
     "video": "Vidéo",
     "vueClientVersion": "Version du client Vue",
-    "undefined": "indéfini",
-    "thumb": "Pouce",
+    "undefined": "Indéfini",
+    "thumb": "Vignette",
     "tags": "Mots clés",
     "tagline": "Slogan",
-    "sortTitle": "trier le titre",
+    "sortTitle": "Trier par titre",
     "guestStar": "Guest-star",
     "version": "Version",
     "unableToRefreshLibrary": "Impossible de rafraîchir la bibliothèque",
@@ -306,7 +306,7 @@
     "fullScreen": "Plein écran",
     "refreshLibrary": "Actualiser la médiathèque",
     "queue": "File d'attente",
-    "libraryRefreshQueued": "Actualisation de la médiathèque mise en file d'attente",
+    "libraryRefreshQueued": "Mise à jour de la librairie en attente",
     "directing": "Réalisation",
     "stopPlayback": "Arrêter",
     "noImagesFound": "Aucune image trouvée",
