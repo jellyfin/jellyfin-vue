@@ -3,6 +3,9 @@
     <v-main>
       <nuxt />
     </v-main>
+    <v-footer app color="rgba(0, 0, 0, 0)">
+      <locale-switcher :fab="false" />
+    </v-footer>
     <snackbar />
   </v-app>
 </template>

@@ -6,7 +6,7 @@
           <v-btn
             :icon="!fab"
             :fab="fab"
-            :small="!large & fab"
+            :small="!large && fab"
             :large="large"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             v-bind="{ ...attrsMenu, ...attrsTooltip }"

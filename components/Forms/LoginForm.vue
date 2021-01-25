@@ -30,15 +30,15 @@
           v-model="login.rememberMe"
           hide-details
           class="mt-4 mb-8"
-          :label="$t('rememberMe')"
+          :label="$t('login.rememberMe')"
         ></v-checkbox>
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
             <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
-              {{ $t('changeServer') }}
+              {{ $t('login.changeServer') }}
             </v-btn>
             <v-btn v-else block large @click="$emit('change')">
-              {{ $t('changeUser') }}
+              {{ $t('login.changeUser') }}
             </v-btn>
           </v-col>
           <v-col class="mr-2">
@@ -52,9 +52,6 @@
             >
               {{ $t('signIn') }}
             </v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <locale-switcher />
           </v-col>
         </v-row>
       </v-form>

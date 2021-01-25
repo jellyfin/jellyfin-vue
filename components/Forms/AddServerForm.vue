@@ -10,13 +10,18 @@
           <v-text-field
             v-model="serverUrl"
             outlined
-            :label="$t('serverAddress')"
+            :label="$t('login.serverAddress')"
             type="url"
             :error-messages="errors"
             required
           ></v-text-field>
         </validation-provider>
         <v-row align="center" no-gutters>
+          <v-col v-if="$store.state.servers.serverList.length" class="mr-2">
+            <v-btn block large @click="$router.push('/selectserver')">
+              {{ $t('login.changeServer') }}
+            </v-btn>
+          </v-col>
           <v-col class="mr-2">
             <v-btn
               :disabled="invalid"
@@ -26,11 +31,8 @@
               color="primary"
               type="submit"
             >
-              {{ $t('connect') }}
+              {{ $t('login.connect') }}
             </v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <locale-switcher :fab="false" />
           </v-col>
         </v-row>
       </v-form>

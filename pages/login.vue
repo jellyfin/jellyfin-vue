@@ -7,7 +7,7 @@
         md="7"
         lg="5"
       >
-        <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>
+        <h1 class="text-h4 mb-6 text-center">{{ $t('login.selectUser') }}</h1>
         <v-row align="center" justify="center">
           <v-col
             v-for="publicUser in publicUsers"
@@ -20,18 +20,15 @@
         <v-row align="center" justify="center" dense class="mt-7">
           <v-col cols="11" sm="6" class="d-flex justify-center">
             <v-btn block large @click="loginAsOther = true">
-              {{ $t('manualLogin') }}
+              {{ $t('login.manualLogin') }}
             </v-btn>
           </v-col>
           <v-col cols="11" sm="6" class="d-flex justify-center">
             <v-btn block to="/selectServer" nuxt large>
-              {{ $t('changeServer') }}
+              {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
         </v-row>
-        <div class="d-flex justify-center mt-6">
-          <locale-switcher large />
-        </div>
       </v-col>
       <v-col
         v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
@@ -40,9 +37,9 @@
         lg="5"
       >
         <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-6 text-center">
-          {{ $t('loginAs', { name: currentUser.Name }) }}
+          {{ $t('login.loginAs', { name: currentUser.Name }) }}
         </h1>
-        <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login') }}</h1>
+        <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login.login') }}</h1>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
       </v-col>

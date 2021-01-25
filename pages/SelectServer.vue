@@ -2,15 +2,26 @@
   <v-container fill-height>
     <v-row align="center" justify="center">
       <v-col sm="6" md="6" lg="5">
-        <h1 class="text-h4 mb-6 text-center">{{ $t('selectServer') }}</h1>
+        <h1 class="text-h4 mb-6 text-center">
+          {{ $t('login.selectServer') }}
+        </h1>
         <div v-if="$store.state.servers.serverList">
           <server-card
             v-for="server in $store.state.servers.serverList"
             :key="server.publicInfo.Id"
+            class="mt-5"
             :server-info="server"
-          ></server-card>
+          />
         </div>
-        <add-server-form />
+        <v-btn
+          class="mt-5"
+          block
+          large
+          color="primary"
+          @click="$router.push('/addserver')"
+        >
+          {{ $t('login.addServer') }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -29,7 +40,11 @@ export default Vue.extend({
     };
   },
   created() {
-    this.setPageTitle({ title: this.$t('selectServer') });
+    if (!this.$store.state.servers.serverList.length) {
+      this.$router.replace('/addserver');
+    }
+
+    this.setPageTitle({ title: this.$t('login.selectServer') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle'])

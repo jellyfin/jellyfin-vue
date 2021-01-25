@@ -89,7 +89,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverVersionTooLow'),
+        message: this.$i18n.t('login.serverVersionTooLow'),
         color: 'error'
       },
       {
@@ -101,7 +101,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverNotFound'),
+        message: this.$i18n.t('login.serverNotFound'),
         color: 'error'
       },
       {
@@ -113,7 +113,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverAddressRequired'),
+        message: this.$i18n.t('login.serverAddressRequired'),
         color: 'error'
       },
       {
