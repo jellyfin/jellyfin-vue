@@ -6,7 +6,7 @@
       autoplay
       @timeupdate="onVideoProgressThrottled"
       @pause="onVideoPause"
-      @play="onVideoProgress"
+      @play="onPlay"
       @ended="onVideoStopped"
     />
   </v-container>
