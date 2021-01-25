@@ -5,16 +5,16 @@
         <h1 class="text-h4 mb-6 text-center">
           {{ $t('login.selectServer') }}
         </h1>
-        <div v-if="$store.state.servers.serverList">
+        <div v-if="serverList">
           <server-card
-            v-for="server in $store.state.servers.serverList"
+            v-for="server in serverList"
             :key="server.publicInfo.Id"
-            class="mt-5"
+            class="mt-2"
             :server-info="server"
           />
         </div>
         <v-btn
-          class="mt-5"
+          class="mt-6"
           block
           large
           color="primary"
@@ -29,21 +29,32 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
   auth: false,
+  asyncData({ store, redirect }) {
+    if (!store.state.servers.serverList.length) {
+      redirect('/addserver');
+    }
+  },
   head() {
     return {
       title: this.$store.state.page.title
     };
   },
-  created() {
-    if (!this.$store.state.servers.serverList.length) {
-      this.$router.replace('/addserver');
+  computed: {
+    ...mapState('servers', ['serverList'])
+  },
+  watch: {
+    serverList(): void {
+      if (this.serverList.length === 0) {
+        this.$router.push('/addserver');
+      }
     }
-
+  },
+  created() {
     this.setPageTitle({ title: this.$t('login.selectServer') });
   },
   methods: {

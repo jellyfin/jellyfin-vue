@@ -17,7 +17,7 @@
             <user-card :user="publicUser" @connect="setCurrentUser" />
           </v-col>
         </v-row>
-        <v-row align="center" justify="center" dense class="mt-7">
+        <v-row align="center" justify="center" dense class="mt-6">
           <v-col cols="11" sm="6" class="d-flex justify-center">
             <v-btn block large @click="loginAsOther = true">
               {{ $t('login.manualLogin') }}
@@ -56,6 +56,17 @@ import { UserDto } from '@jellyfin/client-axios';
 export default Vue.extend({
   layout: 'fullpage',
   middleware: 'serverMiddleware',
+  auth: false,
+  async asyncData({ store, redirect }) {
+    try {
+      await store.dispatch(
+        'servers/connectServer',
+        store.state.servers.serverUsed.address
+      );
+    } catch {
+      redirect('/selectserver');
+    }
+  },
   data() {
     return {
       loginAsOther: false,
@@ -80,6 +91,7 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
+    ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     },

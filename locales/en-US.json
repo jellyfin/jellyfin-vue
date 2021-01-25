@@ -318,6 +318,7 @@
   "validation": {
     "bothPasswordsSame": "Both passwords must be the same",
     "mustBeUrl": "This field must be a valid URL",    
+    "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },
   "version": "Version",

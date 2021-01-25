@@ -1,7 +1,7 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on: onMenu, attrs: attrsMenu }">
-      <v-tooltip bottom>
+      <v-tooltip :bottom="bottom" :top="top">
         <template #activator="{ on: onTooltip, attrsTooltip }">
           <v-btn
             :icon="!fab"
@@ -41,6 +41,14 @@ export default Vue.extend({
       required: false
     },
     large: {
+      type: Boolean,
+      required: false
+    },
+    top: {
+      type: Boolean,
+      required: false
+    },
+    bottom: {
       type: Boolean,
       required: false
     }

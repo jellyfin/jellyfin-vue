@@ -64,8 +64,6 @@ export const actions: ActionTree<ServerState, ServerState> = {
               address: serverUrl
             });
           }
-
-          this.$router.push('/login');
         }
       } else {
         dispatch('notifyServerVersionIsLow');
@@ -74,6 +72,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
       // eslint-disable-next-line no-console
       console.error(err); // in case something inside the try rather than a request failure
       dispatch('notifyServerCantBeFound');
+      throw new Error(err);
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {

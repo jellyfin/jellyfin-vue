@@ -29,7 +29,7 @@
         <v-checkbox
           v-model="login.rememberMe"
           hide-details
-          class="mt-4 mb-8"
+          class="mt-6 mb-6"
           :label="$t('login.rememberMe')"
         ></v-checkbox>
         <v-row align="center" no-gutters>
