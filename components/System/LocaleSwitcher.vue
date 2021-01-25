@@ -6,7 +6,8 @@
           <v-btn
             :icon="!fab"
             :fab="fab"
-            :small="fab"
+            :small="!large & fab"
+            :large="large"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             v-bind="{ ...attrsMenu, ...attrsTooltip }"
             v-on="{ ...onMenu, ...onTooltip }"
@@ -37,7 +38,11 @@ export default Vue.extend({
   props: {
     fab: {
       type: Boolean,
-      required: true
+      required: false
+    },
+    large: {
+      type: Boolean,
+      required: false
     }
   },
   methods: {
