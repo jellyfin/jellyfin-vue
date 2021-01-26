@@ -14,7 +14,7 @@
       <v-container fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-            <nuxt-link :to="'/playback'">
+            <nuxt-link :to="'/fullscreen/playback'">
               <v-avatar
                 v-if="!isFullScreenPlayer"
                 ref="albumCover"
@@ -134,7 +134,7 @@
             <v-fade-transition>
               <v-tooltip v-if="!isFullScreenPlayer" top>
                 <template #activator="{ on, attrs }">
-                  <nuxt-link tag="span" :to="'/playback'">
+                  <nuxt-link tag="span" :to="'/fullscreen/playback'">
                     <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
                       <v-icon>mdi-fullscreen</v-icon>
                     </v-btn>
@@ -253,7 +253,7 @@ export default Vue.extend({
       return this.$store.state.playbackManager.isShuffling;
     },
     isFullScreenPlayer(): boolean {
-      return this.$route.name === 'playback';
+      return this.$route.fullPath === '/fullscreen/playback';
     }
   },
   methods: {
