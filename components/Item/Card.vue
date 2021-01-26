@@ -16,6 +16,7 @@
           <v-progress-circular
             v-if="refreshProgress > 0"
             class="card-chip"
+            rotate="-90"
             :value="refreshProgress"
             color="white"
             size="24"
