@@ -81,6 +81,7 @@ const config: NuxtConfig = {
     'plugins/components/swiper.ts',
     'plugins/components/vueVirtualScroller.ts',
     'plugins/components/veeValidate.ts',
+    'plugins/components/vueDraggable.ts',
     // Utility
     'plugins/browserDetection.ts',
     'plugins/playbackProfile.ts',
@@ -152,7 +153,7 @@ const config: NuxtConfig = {
     locales: [
       { code: 'cs', iso: 'cs-CZ', name: 'Čeština', file: 'cs.json' },
       { code: 'de', iso: 'de-DE', name: 'Deutsch', file: 'de.json' },
-      { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.json' },
+      { code: 'enUS', iso: 'en-US', name: 'English', file: 'en-US.json' },
       { code: 'es', iso: 'es-ES', name: 'Español (España)', file: 'es.json' },
       { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.json' },
       { code: 'nb', iso: 'nb-NO', name: 'Norsk', file: 'nb_NO.json' },
@@ -165,14 +166,14 @@ const config: NuxtConfig = {
       { code: 'ta', iso: 'ta-IN', name: 'தமிழ்', file: 'ta.json' },
       { code: 'tr', iso: 'tr-TR', name: 'Türkçe', file: 'tr.json' },
       { code: 'vi', iso: 'vi-VN', name: 'Tiếng Việt', file: 'vi.json' },
-      { code: 'zh', iso: 'zh_Hans', name: '简体中文', file: 'zh_Hans.json' }
+      { code: 'zhCN', iso: 'zh_Hans', name: '简体中文', file: 'zh_Hans.json' }
     ],
     lazy: true,
     langDir: 'locales/',
     strategy: 'no_prefix',
-    defaultLocale: 'en',
+    defaultLocale: 'enUS',
     vueI18n: {
-      fallbackLocale: 'en'
+      fallbackLocale: 'enUS'
     }
   },
   dateFns: {

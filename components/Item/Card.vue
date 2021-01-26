@@ -1,6 +1,14 @@
 <template>
-  <nuxt-link :to="itemLink" style="text-decoration: none; color: inherit">
-    <div class="card-box" :class="{ 'card-margin': !noMargin }">
+  <nuxt-link
+    :event="link ? 'click' : null"
+    :to="itemLink"
+    :class="link ? null : 'link-disabled'"
+    class="nuxt-link"
+  >
+    <div
+      class="card-box"
+      :class="{ 'card-margin': !noMargin, 'link-disabled': !link }"
+    >
       <div :class="shape || cardType" class="elevation-3">
         <div
           class="card-content card-content-button d-flex justify-center align-center darken-4"
@@ -67,6 +75,12 @@
         >
           <play-button fab :item="item" />
           <item-menu :item="item" />
+          <div
+            v-if="overlay"
+            class="card-lower-buttons d-flex justify-center align-center"
+          >
+            <like-button :item="item" />
+          </div>
         </div>
       </div>
       <div v-if="!noText" class="card-text">
@@ -122,6 +136,12 @@ export default Vue.extend({
       type: Boolean,
       default: (): boolean => {
         return false;
+      }
+    },
+    link: {
+      type: Boolean,
+      default: (): boolean => {
+        return true;
       }
     }
   },
@@ -284,6 +304,23 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
+.nuxt-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-disabled {
+  user-select: none;
+  pointer-events: none !important;
+  cursor: initial !important;
+}
+
+.card-lower-buttons {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+}
+
 .card-box {
   cursor: pointer;
   padding: 0;

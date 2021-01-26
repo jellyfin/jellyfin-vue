@@ -9,20 +9,17 @@
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
       {{ $t('numberTracks', { number: item.ChildCount }) }}
     </span>
-    <span v-if="item.RunTimeTicks && runtime">{{ runtimeValue }}</span>
+    <span v-if="item.RunTimeTicks && runtime">{{
+      getRuntimeTime(item.RunTimeTicks)
+    }}</span>
     <span v-if="item.RunTimeTicks && endsAt">
-      {{
-        $t('endsAt', {
-          time: endsAtValue
-        })
-      }}
+      {{ getEndsAtTime(item.RunTimeTicks, true) }}
     </span>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { intervalToDuration } from 'date-fns';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -48,41 +45,6 @@ export default Vue.extend({
     endsAt: {
       type: Boolean,
       default: false
-    }
-  },
-  computed: {
-    runtimeValue: {
-      get(): string {
-        const seconds = this.ticksToMs(this.item.RunTimeTicks);
-        return this.$dateFns.formatDuration(
-          intervalToDuration({ start: 0, end: seconds }),
-          {
-            format: ['hours', 'minutes']
-          }
-        );
-      }
-    },
-    endsAtValue: {
-      get(): string {
-        const seconds = this.ticksToMs(this.item.RunTimeTicks);
-        return this.$dateFns.format(Date.now() + seconds, 'p');
-      }
-    }
-  },
-  methods: {
-    getEndsAtTime(ticks: number): string {
-      const ms = this.ticksToMs(ticks);
-      const endTimeLong = new Date(Date.now() + ms);
-      // TODO: Respect user locale when rendering time
-      const endTimeShort = endTimeLong.toLocaleString(this.$i18n.locale, {
-        hour: 'numeric',
-        minute: 'numeric'
-      });
-
-      // TODO: Use a Date object
-      return this.$t('endsAt', {
-        time: endTimeShort
-      });
     }
   }
 });

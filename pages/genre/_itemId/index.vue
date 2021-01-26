@@ -3,7 +3,9 @@
     <v-app-bar shrink-on-scroll flat fixed class="second-toolbar">
       <v-toolbar-title class="d-flex genre-toolbar">
         <span>{{ genre.Name }}</span>
-        <play-button v-if="loaded" :item="genre" />
+        <v-fade-transition>
+          <play-button v-if="loaded" :item="genre" />
+        </v-fade-transition>
         <v-btn
           v-if="loaded"
           class="play-button mr-2"
@@ -13,7 +15,7 @@
           nuxt
           :to="`./${genre.Id}/shuffle`"
         >
-          {{ $t('shuffleAll') }}
+          {{ $t('playback.shuffleAll') }}
         </v-btn>
       </v-toolbar-title>
     </v-app-bar>

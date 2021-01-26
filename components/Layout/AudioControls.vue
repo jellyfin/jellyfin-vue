@@ -33,7 +33,7 @@
               <v-row class="pa-0">
                 <nuxt-link
                   tag="span"
-                  class="text-truncate link mt-auto height-fit-content"
+                  class="text-truncate link mt-2 height-fit-content"
                   :to="`/item/${getCurrentItem.Id}`"
                 >
                   {{ getCurrentItem.Name }}
@@ -44,7 +44,7 @@
                   v-for="(artist, index) in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="`/artist/${artist.Id}`"
-                  class="m-0"
+                  class="ma-0"
                 >
                   <p class="mb-0">
                     <nuxt-link
@@ -126,21 +126,8 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <v-btn class="d-none d-md-inline-flex" icon disabled>
-              <v-icon size="18">{{
-                getCurrentItem.UserData.IsFavorite
-                  ? 'mdi-heart'
-                  : 'mdi-heart-outline'
-              }}</v-icon>
-            </v-btn>
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
-                <v-btn disabled icon class="mr-2" v-bind="attrs" v-on="on">
-                  <v-icon>mdi-playlist-play</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ $t('queue') }}</span>
-            </v-tooltip>
+            <like-button :item="getCurrentItem" class="active-button" />
+            <queue-button :item="getCurrentItem" class="active-button" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
@@ -156,15 +143,7 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </v-fade-transition>
-            <item-menu :item="getCurrentItem" :absolute="false" :dark="false" />
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on" @click="stopPlayback">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-              </template>
-              <span>{{ $t('stopPlayback') }}</span>
-            </v-tooltip>
+            <item-menu :item="getCurrentItem" :dark="false" />
           </v-col>
           <v-col
             cols="3"
@@ -296,11 +275,6 @@ export default Vue.extend({
       return this.getImageUrlForElement(ImageType.Primary, {
         itemId: item.AlbumId
       });
-    },
-    stopPlayback(): void {
-      this.setLastItemIndex();
-      this.resetCurrentItemIndex();
-      this.setNextTrack();
     }
   }
 });

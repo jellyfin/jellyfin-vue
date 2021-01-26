@@ -40,15 +40,7 @@
               <span v-else>{{ track.IndexNumber }}</span>
             </td>
             <td style="width: 3em" class="pr-0 pl-0 text-center">
-              <v-btn icon disabled>
-                <v-icon>
-                  {{
-                    track.UserData.IsFavorite
-                      ? 'mdi-heart'
-                      : 'mdi-heart-outline'
-                  }}
-                </v-icon>
-              </v-btn>
+              <like-button :item="track" />
             </td>
             <td>
               <div class="d-flex align-center">
@@ -67,7 +59,7 @@
                     {{ artist.Name }}
                   </nuxt-link>
                 </div>
-                <item-menu v-show="hover" :item="item" :absolute="false" />
+                <item-menu v-show="hover" :item="item" />
               </div>
             </td>
             <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
@@ -144,7 +136,8 @@ export default Vue.extend({
     playTracks(track: BaseItemDto): void {
       this.play({
         items: this.tracks.Items,
-        startFromIndex: this.tracks.Items?.indexOf(track)
+        startFromIndex: this.tracks.Items?.indexOf(track),
+        initiator: this.item
       });
     },
     isPlaying(track: BaseItemDto): boolean {

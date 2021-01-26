@@ -143,6 +143,22 @@
   "person": "Person",
   "play": "Play",
   "playFromBeginning": "Play from the beginning",
+  "playback": {
+    "clearQueue": "Clear queue and stop playback",
+    "playbackSource": {
+      "item": "Playing from {item}",
+      "shuffle": "Playing in shuffle",
+      "shuffleItem": "Playing {item} in shuffle",
+      "unknown": "Playing from queue"
+    },
+    "saveAsPlaylist": "Save queue as a playlist",
+    "shuffleAll": "Shuffle all",
+    "playAll": "Play all",
+    "shuffle": "Shuffle",
+    "playNext": "Play next",
+    "addToQueue": "Add to queue",
+    "queueItems": "{items} tracks"
+  },
   "played": "Played",
   "present": "Present",
   "primary": "Primary",
@@ -261,13 +277,11 @@
     }
   },
   "shows": "Shows",
-  "shuffleAll": "Shuffle all",
   "signIn": "Sign in",
   "sortByType": "By {type}",
   "sortTitle": "Sort title",
   "specialFeatures": "Special Features",
   "status": "Status",
-  "stopPlayback": "Stop playback",
   "studios": "Studios",
   "subtitles": "Subtitles",
   "tagline": "Tagline",
@@ -288,6 +302,7 @@
   "unableGetRelated": "Unable to get related items",
   "unableGetServerConfiguration": "Unable to get server configuration",
   "unableToRefreshLibrary": "Unable to refresh library",
+  "unableToToggleLike": "Unable to change the liked status of the element",
   "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
@@ -298,10 +313,8 @@
   "username": "Username",
   "usernameRequired": "Username is required",
   "validation": {
-    "bothPasswordsSame": "Both passwords must be the save",
-    "mustBeUrl": "This field must be a valid URL",
-    "required": "This field is required",
-    "bothPasswordsSame": "Both passwords must be the same"
+    "bothPasswordsSame": "Both passwords must be the same",
+    "mustBeUrl": "This field must be a valid URL",    
     "required": "This field is required"
   },
   "version": "Version",

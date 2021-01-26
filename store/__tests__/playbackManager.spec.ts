@@ -15,7 +15,8 @@ import {
   PlaybackManagerState,
   PlaybackStatus,
   defaultState,
-  getters
+  getters,
+  InitMode
 } from '../playbackManager';
 
 const DEMO_TEST_ITEM_A = {
@@ -290,7 +291,7 @@ test('When "START_PLAYBACK" is committed, status is set to playing.', () => {
     ...defaultState()
   });
 
-  store.commit('START_PLAYBACK');
+  store.commit('START_PLAYBACK', { initMode: InitMode.Unknown });
 
   expect(store.state.status).toBe(PlaybackStatus.playing);
 });
