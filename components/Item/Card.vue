@@ -60,10 +60,7 @@
             class="align-self-end"
           />
         </div>
-        <div
-          v-if="overlay"
-          class="card-overlay d-flex justify-center align-center"
-        >
+        <div v-if="overlay" class="card-overlay justify-center align-center">
           <v-btn
             v-if="canPlay(item)"
             fab
@@ -356,6 +353,7 @@ export default Vue.extend({
 
 .card-overlay {
   position: absolute;
+  display: none;
   background: radial-gradient(
     farthest-corner at 50% 50%,
     rgba(0, 0, 0, 0.5) 50%,
@@ -370,6 +368,10 @@ export default Vue.extend({
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .card-overlay {
+    display: flex;
+  }
+
   .card-box:hover .card-overlay {
     opacity: 1;
   }
