@@ -53,7 +53,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapState('playbackManager', ['lastProgressUpdate']),
+    ...mapState('playbackManager', ['currentTime', 'lastProgressUpdate']),
     poster(): string | undefined {
       return this.getImageUrlForElement(ImageType.Backdrop, {
         itemId:
@@ -70,7 +70,7 @@ export default Vue.extend({
     async source(newSource): Promise<void> {
       if (this.player) {
         try {
-          await this.player.load(newSource);
+          await this.player.load(newSource, this.currentTime);
         } catch (e) {
           // No need to actually process the error here, the error handler will do this for us
         }

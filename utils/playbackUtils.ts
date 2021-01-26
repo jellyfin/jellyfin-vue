@@ -19,6 +19,7 @@ export async function translateItemForPlayback(
   }
 
   const firstItem = items[0];
+
   let translatedItems: BaseItemDto[] = [];
 
   if (firstItem.Type === 'Program' && firstItem.ChannelId) {

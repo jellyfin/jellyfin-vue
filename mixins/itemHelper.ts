@@ -8,17 +8,20 @@ import Vue from 'vue';
 
 declare module '@nuxt/types' {
   interface Context {
-    canPlay: () => string | number;
+    canPlay: (item: BaseItemDto) => boolean;
+    canResume: (item: BaseItemDto) => boolean;
   }
 
   interface NuxtAppOptions {
-    canPlay: () => string | number;
+    canPlay: (item: BaseItemDto) => boolean;
+    canResume: (item: BaseItemDto) => boolean;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    canPlay: () => string | number;
+    canPlay: (item: BaseItemDto) => boolean;
+    canResume: (item: BaseItemDto) => boolean;
   }
 }
 
@@ -50,6 +53,16 @@ const itemHelper = Vue.extend({
       }
 
       return false;
+    },
+    canResume(item: BaseItemDto): boolean {
+      if (
+        item?.UserData?.PlaybackPositionTicks &&
+        item.UserData.PlaybackPositionTicks > 0
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 });

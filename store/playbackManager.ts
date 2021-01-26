@@ -100,13 +100,13 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   getCurrentlyPlayingType: (state) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex].Type;
+      return state.queue?.[state.currentItemIndex]?.Type;
     }
     return null;
   },
   getCurrentlyPlayingMediaType: (state) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex].MediaType;
+      return state.queue?.[state.currentItemIndex]?.MediaType;
     }
     return null;
   }
@@ -239,7 +239,11 @@ export const mutations: MutationTree<PlaybackManagerState> = {
 export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   async play(
     { commit, state },
-    { items, startFromIndex }: { items: BaseItemDto[]; startFromIndex?: number }
+    {
+      items,
+      startFromIndex = 0,
+      startFromTime = 0
+    }: { items: BaseItemDto[]; startFromIndex?: number; startFromTime?: number }
   ) {
     if (state.status !== PlaybackStatus.stopped) {
       commit('STOP_PLAYBACK');
@@ -248,7 +252,8 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     const translatedItems = await translateItemForPlayback(items);
 
     commit('SET_QUEUE', { queue: translatedItems });
-    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex || 0 });
+    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex });
+    commit('SET_CURRENT_TIME', { time: startFromTime });
     commit('START_PLAYBACK');
   },
   stop({ commit }) {

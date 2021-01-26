@@ -65,15 +65,7 @@
           v-if="overlay"
           class="card-overlay d-flex justify-center align-center"
         >
-          <v-btn
-            v-if="canPlay(item)"
-            fab
-            color="primary"
-            nuxt
-            @click.prevent="play({ items: [item] })"
-          >
-            <v-icon size="36">mdi-play</v-icon>
-          </v-btn>
+          <play-button fab :item="item" />
           <item-menu :item="item" />
         </div>
       </div>
