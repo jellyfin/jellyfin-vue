@@ -43,7 +43,10 @@
                 {{
                   $dateFns.formatRelative(
                     $dateFns.parseJSON(selectedDevice.DateLastActivity),
-                    new Date()
+                    new Date(),
+                    {
+                      locale: $i18n.locale
+                    }
                   )
                 }}</span
               >
