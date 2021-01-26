@@ -65,19 +65,19 @@ Jellyfin >=10.7.0
 # install dependencies
 $ yarn install
 
-# serve with hot reload at localhost:3000
+# server with hot reload at localhost:3000
 $ yarn dev
 
-# server with hot reload and server-side rendering at localhost:3000
-$ yarn dev:ssr
+# serve with hot reload in static mode at localhost:3000
+$ yarn dev:static
 
-# build for production
-# you will need a web server to host the client
+# build for production and launch server
 $ yarn build
+$ yarn start
 
-# build for production with server-side rendering and launch server
-$ yarn build:ssr
-$ yarn start:ssr
+# build for production in static mode
+# you will need a web server to host the client
+$ yarn build:static
 
 ```
 
@@ -90,7 +90,7 @@ When using the SSR version of the client, you can run the client in standalone m
 $ yarn install
 
 # build for production in standalone mode, with server-side rendering
-$ yarn build:ssr --standalone
+$ yarn build --standalone
 
 # move the server and required files to a dedicated directory
 $ mkdir -p /opt/jellyfin-vue

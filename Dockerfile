@@ -12,7 +12,7 @@ COPY . .
 
 # Build SSR app for production in standalone mode
 
-RUN yarn build:ssr --production --standalone
+RUN yarn build --production --standalone
 
 # Build final image
 FROM node:14-alpine

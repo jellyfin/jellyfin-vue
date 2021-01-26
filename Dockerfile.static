@@ -16,7 +16,7 @@ RUN yarn install
 COPY . .
 
 # Build static site
-RUN yarn build
+RUN yarn build:static
 
 # Deploy built distribution to nginx
 FROM nginx:alpine
