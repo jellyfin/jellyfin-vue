@@ -74,12 +74,12 @@
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :item="item" />
-          <item-menu :item="item" />
           <div
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
-            <like-button :item="item" />
+            <like-button v-if="canPlay(item)" :item="item" />
+            <item-menu :item="item" />
           </div>
         </div>
       </div>
