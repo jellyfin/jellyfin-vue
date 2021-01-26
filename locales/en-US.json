@@ -133,7 +133,6 @@
     "serverAddress": "Server address",
     "serverAddressMustBeUrl": "Server address must be a valid URL",
     "serverAddressRequired": "Server address is required",
-    "serverDashboard": "Server dashboard",
     "serverNotFound": "Server not found",
     "serverVersionTooLow": "Server version needs to be 10.7.0 or higher"
   },
@@ -214,6 +213,8 @@
   "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": {
+  "settings": {
+    "accountAndClient": "Account & client",
     "apiKeys": {
       "accessToken": "Access token",
       "addApiKey": "Add an API key",
@@ -246,7 +247,6 @@
       "noDevicesFound": "No devices found",
       "userName": "Username"
     },
-    "help": "Help",
     "logsAndActivity": {
       "activity": "Activity",
       "failedGetActivity": "Unable to get activity",
@@ -255,76 +255,100 @@
       "noActivityFound": "No activities found",
       "noLogsFound": "No logs found"
     },
-    "settings": "Settings"
+    "settings": "Settings",
+    "serverAndAdmin": "Server and administration",
+    "settingSyncing": "Enable setting syncing",
+    "settingSyncingDescription": "Sync the settings of this device across all your devices that also use this client",
+    "goBackToUserSettings": "Go back to user settings"
   },
   "settingsSections": {
-    "account": {
-      "description": "Edit your user's information",
-      "name": "Account"
+    "user": {
+      "account": {
+        "description": "Edit your user's information",
+        "name": "Account"
+      },
+      "appearance": {
+        "description": "Change the theme and customize the appearance",
+        "name": "Appearance"
+      },
+      "home": {
+        "description": "Configure your home sections and home screen layout",
+        "name": "Home screen"
+      },
+      "playback": {
+        "description": "Edit your playback preferences for this device",
+        "name": "Playback"
+      },
+      "subtitles": {
+        "description": "Control how subtitles are displayed on this device",
+        "name": "Subtitles"
+      },
+      "mediaPlayers": {
+        "description": "Configure how the media players behave for this device",
+        "name": "Media players"
+      },
+      "server": {
+        "description": "Manage and configure this server",
+        "name": "Server dashboard"
+      }
     },
-    "devices": {
-      "description": "See and manage the devices connected to your server",
-      "name": "Devices"
-    },
-    "dlna": {
-      "description": "Configure DLNA settings and profile",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Configure your home sections and home screen layout",
-      "name": "Home screen"
-    },
-    "libraries": {
-      "description": "Manage libraries and their metadata",
-      "name": "Libraries"
-    },
-    "liveTvAndDvr": {
-      "description": "Manage TV tuners, guide data providers and DVR settings",
-      "name": "Live TV & DVR"
-    },
-    "logs": {
-      "description": "Read and search server logs and user activity",
-      "name": "Logs & activity"
-    },
-    "mediaPlayers": {
-      "description": "Configure how the media players behave for this device",
-      "name": "Media players"
-    },
-    "networking": {
-      "description": "Manage the network settings of this server",
-      "name": "Networking"
-    },
-    "notifications": {
-      "description": "Manage and configure notification sent by this server",
-      "name": "Notifications"
-    },
-    "playback": {
-      "description": "Edit your playback preferences for this device",
-      "name": "Playback"
-    },
-    "plugins": {
-      "description": "Add and configure new features for this server",
-      "name": "Plugins"
-    },
-    "scheduledTasks": {
-      "description": "Manage scheduled tasks running on this server",
-      "name": "Scheduled tasks"
-    },
-    "server": {
-      "description": "Configure this server's language and branding",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Control how subtitles are displayed on this device",
-      "name": "Subtitles"
-    },
-    "transcodingAndStreaming": {
-      "description": "Manage how this server handles transcoding and streaming to clients",
-      "name": "Transcoding & streaming"
-    },
-    "users": {
-      "description": "Manage users and their permissions",
-      "name": "Users"
+    "admin": {
+      "apiKeys": {
+        "description": "Add and revoke API keys for external access to your server",
+        "name": "API keys"
+      },
+      "devices": {
+        "description": "See and manage the devices connected to your server",
+        "name": "Devices"
+      },
+      "dlna": {
+        "description": "Configure DLNA settings and profile",
+        "name": "DLNA"
+      },
+      "libraries": {
+        "description": "Manage libraries and their metadata",
+        "name": "Libraries"
+      },
+      "liveTvAndDvr": {
+        "description": "Manage TV tuners, guide data providers and DVR settings",
+        "name": "Live TV & DVR"
+      },
+      "logs": {
+        "description": "Read and search server logs and user activity",
+        "name": "Logs & activity"
+      },
+      "networking": {
+        "description": "Manage the network settings of this server",
+        "name": "Networking"
+      },
+      "notifications": {
+        "description": "Manage and configure notification sent by this server",
+        "name": "Notifications"
+      },
+      "overview": {
+        "description": "See what's happening right now in your server at a glance",
+        "name": "Overview"
+      },
+      "transcodingAndStreaming": {
+        "description": "Manage how this server handles transcoding and streaming to clients",
+        "name": "Transcoding & streaming"
+      },
+      "users": {
+        "description": "Manage users and their permissions",
+        "name": "Users"
+      },
+      "general": {
+        "description": "Configure the server's language and branding",
+        "name": "General"
+      },
+      "plugins": {
+        "description": "Add and configure new features for this server",
+        "name": "Plugins"
+      },
+      "scheduledTasks": {
+        "description": "Manage scheduled tasks running on this server",
+        "name": "Scheduled tasks"
+      }
     }
   },
   "shows": "Shows",

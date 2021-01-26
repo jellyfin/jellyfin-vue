@@ -219,7 +219,8 @@ export default Vue.extend({
     getFormattedActivityDate(date: Date): string {
       return this.$dateFns.formatRelative(
         this.$dateFns.parseJSON(date),
-        new Date()
+        new Date(),
+        { locale: this.$i18n.locale }
       );
     },
     getFormattedLogDate(date: Date): string {
