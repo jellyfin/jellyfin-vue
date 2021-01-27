@@ -14,7 +14,24 @@
     "itemNotFound": "Элемент не найден",
     "libraryEmpty": "Эта медиатека пуста",
     "libraryNotFound": "Медиатека не найдена",
-    "login": "Вход",
+    "login": {
+        "connect": "Соединиться",
+        "changeUser": "Сменить пользователя",
+        "changeServer": "Сменить сервер",
+        "manualLogin": "Войти вручную",
+        "serverNotFound": "Сервер не найден",
+        "serverDashboard": "Панель",
+        "serverAddressRequired": "Требуется адрес сервера",
+        "serverAddressMustBeUrl": "Адресом сервера должен быть действующий URL",
+        "serverAddress": "Адрес сервера",
+        "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше",
+        "selectUser": "Выбранть пользователя",
+        "rememberMe": "Запомнить",
+        "loginAs": "Войти как {name}",
+        "addServer": "Добавить сервер",
+        "selectServer": "Выбрать сервер",
+        "login": "Вход"
+    },
     "logout": "Выход",
     "more": "Ещё",
     "moreLikeThis": "Ещё подобное",
@@ -277,7 +294,8 @@
         "noActivityFound": "Действий не найдено",
         "failedGetLogs": "Невозможно получить журналы",
         "logs": "Журналы",
-        "activity": "Действия"
+        "activity": "Действия",
+        "noLogsFound": "Журналов не найдено"
     },
     "homeHeader": {
         "items": {
@@ -338,5 +356,24 @@
     "noVideoTrackSelected": "Видео дорожка не выбрана",
     "noAudioTrackSelected": "Аудио дорожка не выбрана",
     "confirm": "Подтвердить",
-    "NoMediaSourcesAvailable": "Нет доступных источников медиаданных"
+    "NoMediaSourcesAvailable": "Нет доступных источников медиаданных",
+    "unableToToggleLike": "Невозможно изменить статус \"нравится\" у элемента",
+    "resume": "Возобновить",
+    "playback": {
+        "queueItems": "{items} дорожки",
+        "addToQueue": "Добавить в очередь",
+        "playNext": "Воспроизвести следующее",
+        "shuffle": "Перемешать",
+        "playAll": "Воспроизвести все",
+        "shuffleAll": "Перемешать все",
+        "saveAsPlaylist": "Сохранить очередь как плей-лист",
+        "playbackSource": {
+            "unknown": "Воспроизвести из очереди",
+            "shuffleItem": "Воспроизвести {item} в случайном порядке",
+            "shuffle": "Воспроизведение в случайном порядке",
+            "item": "Воспроизвести с {item}"
+        },
+        "clearQueue": "Очистить очередь и остановить воспроизведение"
+    },
+    "playFromBeginning": "Воспроизвести с начала"
 }
