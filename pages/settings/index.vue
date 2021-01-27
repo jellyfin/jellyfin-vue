@@ -131,6 +131,13 @@ import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
   mixins: [htmlHelper],
+  async asyncData({ $auth, $api }) {
+    if ($auth.user?.Policy?.IsAdministrator) {
+      const systemInfo = (await $api.system.getSystemInfo()).data;
+
+      return { systemInfo };
+    }
+  },
   data() {
     return {
       systemInfo: {} as SystemInfo,
@@ -243,13 +250,9 @@ export default Vue.extend({
       ]
     };
   },
-  async beforeMount() {
+  beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({ title: this.$t('settings') });
-
-    if (this.$auth.user?.Policy?.IsAdministrator) {
-      this.systemInfo = (await this.$api.system.getSystemInfo()).data;
-    }
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),

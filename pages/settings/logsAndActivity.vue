@@ -131,6 +131,17 @@ interface LoadingStatus {
 export default Vue.extend({
   mixins: [htmlHelper],
   middleware: 'adminMiddleware',
+  async asyncData({ $api }) {
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() - 7);
+
+    const activityList = (
+      await $api.activityLog.getLogEntries({ minDate: minDate.toISOString() })
+    ).data.Items;
+    const logFiles = (await $api.system.getServerLogs()).data;
+
+    return { activityList, logFiles };
+  },
   data() {
     return {
       activityList: [] as ActivityLogEntry[],
@@ -146,64 +157,10 @@ export default Vue.extend({
   },
   beforeMount() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
-    this.getActivities();
-    this.getLogs();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async getActivities(): Promise<void> {
-      this.loadingActivityStatus.status = 'loading';
-
-      // Only fetch the activity for the last 7 days
-      // TODO: Add this as a filter
-      const minDate = new Date();
-      minDate.setDate(minDate.getDate() - 7);
-
-      try {
-        this.activityList =
-          (await this.$api.activityLog.getLogEntries({ minDate })).data.Items ||
-          [];
-
-        this.loadingActivityStatus.status = 'loaded';
-
-        return;
-      } catch (error) {
-        this.loadingActivityStatus = {
-          status: 'error',
-          errorMessage: error || ''
-        };
-
-        // eslint-disable-next-line no-console
-        console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('logsAndActivity.failedGetActivity'),
-          color: 'error'
-        });
-      }
-    },
-    async getLogs(): Promise<void> {
-      this.loadingLogsStatus.status = 'loading';
-      try {
-        this.logFiles = (await this.$api.system.getServerLogs()).data;
-
-        this.loadingLogsStatus.status = 'loaded';
-
-        return;
-      } catch (error) {
-        this.loadingLogsStatus = {
-          status: 'error',
-          errorMessage: error || ''
-        };
-
-        // eslint-disable-next-line no-console
-        console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('logsAndActivity.failedGetLogs'),
-          color: 'error'
-        });
-      }
-    },
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
         case LogLevel.Trace:

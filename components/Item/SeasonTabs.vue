@@ -65,6 +65,9 @@ export default Vue.extend({
       }
     };
   },
+  async fetch() {
+    await this.getTvShows({ itemId: this.item.Id });
+  },
   computed: {
     ...mapGetters('tvShows', ['getSeasons', 'getSeasonEpisodes']),
     seasons(): BaseItemDto[] {
@@ -77,9 +80,6 @@ export default Vue.extend({
         itemId: this.item.Id
       });
     }
-  },
-  async beforeMount() {
-    await this.getTvShows({ itemId: this.item.Id });
   },
   methods: {
     ...mapActions('tvShows', {

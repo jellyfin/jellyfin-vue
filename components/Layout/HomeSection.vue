@@ -3,7 +3,7 @@
     :title="section.name"
     :items="items"
     :shape="section.shape"
-    :loading="loading"
+    :loading="$fetchState.pending"
   />
 </template>
 
@@ -20,18 +20,7 @@ export default Vue.extend({
       required: true
     }
   },
-  data() {
-    return {
-      loading: true
-    };
-  },
-  computed: {
-    ...mapGetters('homeSection', ['getHomeSectionContent']),
-    items(): BaseItemDto[] {
-      return this.getHomeSectionContent(this.section);
-    }
-  },
-  async beforeMount() {
+  async fetch() {
     switch (this.section.type) {
       case 'libraries': {
         await this.getLibraries();
@@ -60,8 +49,12 @@ export default Vue.extend({
       default:
         break;
     }
-
-    this.$data.loading = false;
+  },
+  computed: {
+    ...mapGetters('homeSection', ['getHomeSectionContent']),
+    items(): BaseItemDto[] {
+      return this.getHomeSectionContent(this.section);
+    }
   },
   methods: {
     ...mapActions('homeSection', {
