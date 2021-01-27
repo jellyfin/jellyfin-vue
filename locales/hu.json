@@ -264,8 +264,8 @@
             "recentlyAdded": "Nemrég hozzáadott"
         },
         "welcome": {
-            "checkNewItems": "Tekintsd meg mi új",
-            "noItems": "Jelenleg nincsenek hozzáadva megmutatható elemek",
+            "checkNewItems": "Tekintsd meg mi új.",
+            "noItems": "Jelenleg nincsenek hozzáadva megmutatható elemek.",
             "helloUser": "Üdv {userName}!"
         }
     },
