@@ -102,8 +102,15 @@ export default Vue.extend({
 
       this.loading = true;
       this.setDeviceProfile();
-      await this.loginRequest(this.login);
-      this.loading = false;
+      try {
+        await this.loginRequest(this.login);
+        this.$router.replace('/');
+      } catch {
+        this.loading = false;
+        /**
+         * Errors are already caught in servers store
+         */
+      }
     },
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);

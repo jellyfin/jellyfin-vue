@@ -81,7 +81,7 @@ export default Vue.extend({
     };
   },
   created() {
-    this.setPageTitle({ title: this.$t('login') });
+    this.setPageTitle({ title: this.$t('login.login') });
   },
   beforeMount() {
     this.getUsers();

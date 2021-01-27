@@ -39,6 +39,7 @@ export const actions: ActionTree<UserState, UserState> = {
       dispatch('loginRequestSuccess', data);
     } catch (err) {
       dispatch('loginRequestFailure', err);
+      throw new Error(err);
     }
   },
   loginRequestSuccess({ dispatch }, response) {
