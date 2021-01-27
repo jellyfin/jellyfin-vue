@@ -7,7 +7,7 @@ const config: NuxtConfig = {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  ssr: false,
+  ssr: !!process.env.NUXT_SSR,
   /*
    ** Disables telemetry prompt while installing dependencies
    ** See https://github.com/nuxt/telemetry
@@ -74,17 +74,17 @@ const config: NuxtConfig = {
     // Development
     'plugins/axe.ts',
     // General
-    'plugins/appInitPlugin.ts',
+    { src: 'plugins/appInitPlugin.ts', mode: 'client' },
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
     // Components
-    'plugins/components/swiper.ts',
+    { src: 'plugins/components/swiper.ts', mode: 'client' },
     'plugins/components/vueVirtualScroller.ts',
     'plugins/components/veeValidate.ts',
     'plugins/components/vueDraggable.ts',
     // Utility
-    'plugins/browserDetection.ts',
-    'plugins/playbackProfile.ts',
+    { src: 'plugins/browserDetection.ts', mode: 'client' },
+    { src: 'plugins/playbackProfile.ts', mode: 'client' },
     'plugins/apiPlugin.ts'
   ],
   /*
@@ -146,6 +146,12 @@ const config: NuxtConfig = {
     strategies: {
       jellyfin: {
         _scheme: '~/schemes/jellyfinScheme'
+      }
+    },
+    cookie: {
+      prefix: 'auth.',
+      options: {
+        path: '/'
       }
     }
   },
@@ -250,7 +256,8 @@ const config: NuxtConfig = {
       image: 'icon.png',
       colors: {
         client: '#00A4DC',
-        modern: '#424242'
+        modern: '#aa5cc3',
+        server: '#424242'
       }
     },
     babel: {

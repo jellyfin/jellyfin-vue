@@ -15,9 +15,6 @@ import { stringify } from 'qs';
 import { throttle } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import shaka from 'shaka-player/dist/shaka-player.compiled';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
@@ -64,8 +61,14 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
+  async mounted() {
     try {
+      const { default: shaka } = await import(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        'shaka-player/dist/shaka-player.compiled'
+      );
+
       this.getPlaybackUrl();
 
       window.muxjs = muxjs;

@@ -1,0 +1,25 @@
+FROM node:14-alpine AS build
+
+# Install build dependencies for node modules
+RUN apk add git python make g++
+
+# Set workdir
+WORKDIR /app
+
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
+
+# Install dependencies
+RUN yarn install
+
+# Copy resources
+COPY . .
+
+# Build static site
+RUN yarn build:static
+
+# Deploy built distribution to nginx
+FROM nginx:alpine
+COPY --from=build /app/dist/ /usr/share/nginx/html/
+COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY .docker/mime.types /etc/nginx/mime.types

@@ -1,25 +1,33 @@
-FROM node:12-alpine AS build
+FROM node:14-alpine AS build
 
-# Install build dependencies for node modules
-RUN apk add git python make g++
-
-# Set workdir
 WORKDIR /app
 
-# Add package.json and yarn.lock
-ADD package.json yarn.lock ./
+RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g++ libpng-dev libtool nasm file
 
-# Install dependencies
-RUN yarn install
+COPY package.json yarn.lock ./
 
-# Copy resources
-ADD . .
+RUN yarn install --frozen-lockfile
 
-# Build static site
-RUN yarn build
+COPY . .
 
-# Deploy built distribution to nginx
-FROM nginx:alpine
-COPY --from=build /app/dist/ /usr/share/nginx/html/
-COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY .docker/mime.types /etc/nginx/mime.types
+# Build SSR app for production in standalone mode
+
+RUN yarn build --production --standalone
+
+# Build final image
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY .docker/package.json .docker/nuxt.config.js ./
+
+# Copy client files from the build image
+COPY --from=build /app/.nuxt ./.nuxt
+COPY --from=build /app/static ./static
+
+# Install runtime dependencies
+RUN yarn install --production
+
+EXPOSE 80
+
+CMD [ "yarn", "start" ]
