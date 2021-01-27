@@ -95,7 +95,24 @@
         "readTheDocumentation": "ഡോക്യുമെന്റേഷൻ വായിക്കുക",
         "reportAnIssue": "Vue ക്ലയന്റുമായി ഒരു പ്രശ്നം റിപ്പോർട്ടുചെയ്യുക"
     },
-    "login": "ലോഗിൻ",
+    "login": {
+        "connect": "ഘടിപ്പിക്കുക",
+        "changeUser": "ഉപയോക്താവിനെ മാറ്റുക",
+        "changeServer": "സെർവർ മാറ്റുക",
+        "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
+        "serverNotFound": "സെർവർ കണ്ടെത്തിയില്ല",
+        "serverDashboard": "സെർവർ ഡാഷ്‌ബോർഡ്",
+        "serverAddressRequired": "സെർവർ വിലാസം ആവശ്യമാണ്",
+        "serverAddressMustBeUrl": "സെർവർ വിലാസം സാധുവായ ഒരു URL ആയിരിക്കണം",
+        "serverAddress": "സെർവർ വിലാസം",
+        "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
+        "selectUser": "ഒരു ഉപയോക്താവിനെ തിരഞ്ഞെടുക്കുക",
+        "rememberMe": "എന്നെ ഓർക്കണം",
+        "loginAs": "{name} ആയി പ്രവേശിക്കുക",
+        "addServer": "സെർവർ ചേർക്കുക",
+        "selectServer": "സെർവർ തിരഞ്ഞെടുക്കുക",
+        "login": "ലോഗിൻ"
+    },
     "loginAs": "{name} ആയി പ്രവേശിക്കുക",
     "logo": "ലോഗോ",
     "logout": "ലോഗൗട്ട്",
@@ -105,7 +122,8 @@
         "failedGetLogs": "ലോഗുകൾ നേടാനായില്ല",
         "logs": "ലോഗുകൾ",
         "noActivityFound": "പ്രവർത്തനങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
-        "noLogsFounr": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
+        "noLogsFounr": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല",
+        "noLogsFound": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
     },
     "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
     "menu": "മെനു",
@@ -335,5 +353,24 @@
     "noTracksAvailable": "ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
     "noSubtitlesAvailable": "സബ്‌ടൈറ്റിലുകളൊന്നും ലഭ്യമല്ല",
     "noAudioTracksAvailable": "ഓഡിയോ ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
-    "noAudioTrackSelected": "ഓഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല"
+    "noAudioTrackSelected": "ഓഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല",
+    "unableToToggleLike": "ഇഷ്‌ടപ്പെട്ട നില മാറ്റാൻ കഴിയില്ല",
+    "resume": "വീണ്ടും ആരംഭിക്കുക",
+    "playback": {
+        "queueItems": "{items} ട്രാക്കുകൾ",
+        "addToQueue": "ക്യൂവിലേക്ക് ചേർക്കുക",
+        "playNext": "അടുത്തത് കളിക്കുക",
+        "shuffle": "ഷഫിൾ ചെയ്യുക",
+        "playAll": "എല്ലാം പ്രവർത്തിപ്പിക്കുക",
+        "shuffleAll": "എല്ലാം ഇളക്കുക",
+        "saveAsPlaylist": "ക്യൂ ഒരു പ്ലേലിസ്റ്റായി സംരക്ഷിക്കുക",
+        "playbackSource": {
+            "unknown": "ക്യൂവിൽ നിന്ന് കളിക്കുന്നു",
+            "shuffleItem": "ഷഫിൽ {ഇനം} പ്ലേ ചെയ്യുന്നു",
+            "shuffle": "ഷഫിളിൽ കളിക്കുന്നു",
+            "item": "{ഇനം} എന്നതിൽ നിന്ന് പ്ലേ ചെയ്യുന്നു"
+        },
+        "clearQueue": "ക്യൂ മായ്‌ച്ച് പ്ലേബാക്ക് നിർത്തുക"
+    },
+    "playFromBeginning": "തുടക്കം മുതൽ കളിക്കുക"
 }
