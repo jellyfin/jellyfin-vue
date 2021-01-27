@@ -11,7 +11,24 @@
     "itemNotFound": "பொருள் கிடைக்கவில்லை",
     "libraryEmpty": "இந்த நூலகம் காலியாக உள்ளது",
     "libraryNotFound": "நூலகம் கிடைக்கவில்லை",
-    "login": "புகுபதிகை",
+    "login": {
+        "connect": "இணைக்கவும்",
+        "changeUser": "பயனரை மாற்றவும்",
+        "changeServer": "சேவையகத்தை மாற்ற",
+        "manualLogin": "கையேடு உள்நுழைவு",
+        "serverNotFound": "சேவையகம் கிடைக்கவில்லை",
+        "serverDashboard": "சேவையக டாஷ்போர்டு",
+        "serverAddressRequired": "சேவையக முகவரி தேவை",
+        "serverAddressMustBeUrl": "சேவையக முகவரி சரியான URL ஆக இருக்க வேண்டும்",
+        "serverAddress": "சேவையக முகவரி",
+        "serverVersionTooLow": "சேவையக பதிப்பு 10.7.0 அல்லது அதற்கு மேற்பட்டதாக இருக்க வேண்டும்",
+        "selectUser": "ஒரு பயனரைத் தேர்ந்தெடுக்கவும்",
+        "rememberMe": "என்னை நினைவில் வையுங்கள்",
+        "loginAs": "{name} என உள்நுழைக",
+        "addServer": "சேவையகத்தைச் சேர்க்கவும்",
+        "selectServer": "சேவையகத்தைத் தேர்ந்தெடுக்கவும்",
+        "login": "உள்நுழைய"
+    },
     "logout": "விடுபதிகை",
     "more": "மேலும்",
     "movies": "திரைப்படங்கள்",
@@ -277,7 +294,8 @@
         "activity": "நடவடிக்கை",
         "failedGetActivity": "செயல்பாட்டைப் பெற முடியவில்லை",
         "failedGetLogs": "பதிவுகள் பெற முடியவில்லை",
-        "logs": "பதிவுகள்"
+        "logs": "பதிவுகள்",
+        "noLogsFound": "பதிவுகள் எதுவும் கிடைக்கவில்லை"
     },
     "audio": "ஒலி",
     "homeHeader": {
@@ -339,5 +357,24 @@
     "noAudioTracksAvailable": "ஆடியோ தடங்கள் எதுவும் கிடைக்கவில்லை",
     "noAudioTrackSelected": "ஆடியோ தடங்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை",
     "confirm": "உறுதிப்படுத்தவும்",
-    "NoMediaSourcesAvailable": "ஊடக ஆதாரங்கள் எதுவும் கிடைக்கவில்லை"
+    "NoMediaSourcesAvailable": "ஊடக ஆதாரங்கள் எதுவும் கிடைக்கவில்லை",
+    "unableToToggleLike": "விரும்பிய நிலையை மாற்ற முடியவில்லை",
+    "resume": "தொடரவும்",
+    "playback": {
+        "queueItems": "{items} தடங்கள்",
+        "addToQueue": "வரிசையில் சேர்",
+        "playNext": "அடுத்து இயக்க",
+        "shuffle": "கலக்கு",
+        "playAll": "அனைத்தையும் இயக்கவும்",
+        "shuffleAll": "அனைத்தையும் கலக்குங்கள்",
+        "saveAsPlaylist": "வரிசையை ஒரு பிளேலிஸ்டாக சேமிக்கவும்",
+        "playbackSource": {
+            "unknown": "வரிசையில் இருந்து இயக்கப்படுகிறது",
+            "shuffleItem": "கலக்குவதில் {item} இயக்கப்படுகிறது",
+            "shuffle": "கலக்குவதில் இயக்கப்படுகிறது",
+            "item": "{item} இலிருந்து இயக்கப்படுகிறது"
+        },
+        "clearQueue": "வரிசையை அழித்து, பிளேபேக்கை நிறுத்துங்கள்"
+    },
+    "playFromBeginning": "ஆரம்பத்தில் இருந்தே இயக்கவும்"
 }
