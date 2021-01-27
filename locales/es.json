@@ -10,7 +10,24 @@
     "endsAt": "Termina a las {time}",
     "home": "Inicio",
     "incorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos",
-    "login": "Iniciar sesión",
+    "login": {
+        "connect": "Conectar",
+        "changeUser": "Cambiar de usuario",
+        "changeServer": "Cambiar de servidor",
+        "manualLogin": "Inicio de sesión manual",
+        "serverNotFound": "No se ha encontrado el servidor",
+        "serverDashboard": "Panel de control del servidor",
+        "serverAddressRequired": "Se requiere una dirección para el servidor",
+        "serverAddressMustBeUrl": "La dirección introducida debe ser válida",
+        "serverAddress": "Dirección del servidor",
+        "serverVersionTooLow": "La versión del servidor tiene que ser superior o igual a 10.7.0",
+        "selectUser": "Seleccionar usuario",
+        "rememberMe": "Recordarme",
+        "loginAs": "Iniciar sesión como {name}",
+        "addServer": "Añadir servidor",
+        "selectServer": "Seleccionar servidor",
+        "login": "Iniciar sesión"
+    },
     "logout": "Cerrar sesión",
     "more": "Más",
     "moreLikeThis": "Similar a esto",
@@ -235,7 +252,8 @@
         "failedGetActivity": "Error al obtener los eventos",
         "failedGetLogs": "Error al obtener los registros",
         "logs": "Registros",
-        "activity": "Actividad"
+        "activity": "Actividad",
+        "noLogsFound": "No hay registros"
     },
     "logo": "Logo",
     "links": {
@@ -336,5 +354,24 @@
     "unliked": "No me gusta",
     "noAudioTrackSelected": "No se ha seleccionado pista de audio",
     "directing": "Dirige",
-    "boxRear": "Carátula (cara trasera)"
+    "boxRear": "Carátula (cara trasera)",
+    "resume": "Continuar",
+    "unableToToggleLike": "Ha habido un error al cambiar el estado del 'Me gusta' de este elemento",
+    "playback": {
+        "queueItems": "{items} canciones",
+        "addToQueue": "Añadir a la cola",
+        "playNext": "Reproducir a continuación",
+        "shuffle": "Mezclar",
+        "playAll": "Reproducir todo",
+        "shuffleAll": "Mezclar todo",
+        "saveAsPlaylist": "Guardar cola como una lista de reproducción",
+        "playbackSource": {
+            "unknown": "Reproduciendo desde la cola de reproducción",
+            "shuffleItem": "Reproduciendo {item} en aleatorio",
+            "shuffle": "Reproduciendo en aleatorio",
+            "item": "Reproduciendo desde {item}"
+        },
+        "clearQueue": "Vaciar la cola y detener la reproducción"
+    },
+    "playFromBeginning": "Reproducir desde el principio"
 }
