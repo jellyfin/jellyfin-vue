@@ -246,6 +246,11 @@ const config: NuxtConfig = {
       }
     }
   },
+  loadingIndicator: {
+    name: 'circle',
+    color: '#0086b3',
+    background: '#14141F'
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
