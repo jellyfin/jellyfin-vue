@@ -14,7 +14,24 @@
     "itemNotFound": "Tarmaq tabylmady",
     "libraryEmpty": "Bul tasyǵyshhana bos",
     "libraryNotFound": "Tasyǵyshhana tabylmady",
-    "login": "Kirý",
+    "login": {
+        "serverVersionTooLow": "Server nusqasy 10.7.0 nemese odan joǵary bolýy kerek",
+        "loginAs": "{name} atynan kirý",
+        "connect": "Qosylý",
+        "changeUser": "Paıdalanýshyny aýystyrý",
+        "changeServer": "Serverdi aýystyrý",
+        "manualLogin": "Qolmen kirý",
+        "serverNotFound": "Server tabylmady",
+        "serverDashboard": "Taqta",
+        "serverAddressRequired": "Server mekenjaıy qajet",
+        "serverAddressMustBeUrl": "Server mekenjaıynda jaramdy URL qajet",
+        "serverAddress": "Server mekenjaıy",
+        "selectUser": "Paıdalanýshyny tańdaý",
+        "rememberMe": "Este saqtaý",
+        "addServer": "Server ústeý",
+        "selectServer": "Serverdi tańdaý",
+        "login": "Kirý"
+    },
     "logout": "Shyǵý",
     "more": "Kóbirek",
     "moreLikeThis": "Osy sıaqty kóbirek",
@@ -274,7 +291,8 @@
         "failedGetActivity": "Áreketterdi alý múmkin emes",
         "failedGetLogs": "Jurnaldardy alý múmkin emes",
         "logs": "Jurnaldar",
-        "activity": "Áreketter"
+        "activity": "Áreketter",
+        "noLogsFound": "Jurnaldar tabylmady"
     },
     "audio": "Dybys",
     "homeHeader": {
@@ -338,5 +356,24 @@
     "noTracksAvailable": "Qatynaýly jolshyqtar joq",
     "noSubtitlesAvailable": "Qatynaýly sýbtıtrler joq",
     "noAudioTracksAvailable": "Qatynaýly dybys jolshyqtar joq",
-    "NoMediaSourcesAvailable": "Qatynaýly tasyǵyshderekterdiń kózderi joq"
+    "NoMediaSourcesAvailable": "Qatynaýly tasyǵyshderekterdiń kózderi joq",
+    "unableToToggleLike": "Tarmaqtyń \"unaıdy\" statýsyn ózgertý múmkin emes",
+    "playback": {
+        "saveAsPlaylist": "Kezekti oınatý tizimi retinde saqtaý",
+        "playbackSource": {
+            "unknown": "Kezekten oınatý",
+            "shuffleItem": "Aralastyryp {item} oınatý",
+            "shuffle": "Aralastyryp oınatý",
+            "item": "{item} oınatý"
+        },
+        "clearQueue": "Kezekti tazalap, oınatýdy toqtatý",
+        "queueItems": "{items} jolshyqtar",
+        "addToQueue": "Kezekke ústeý",
+        "playNext": "Kelesini oınatý",
+        "shuffle": "Aralastyrý",
+        "playAll": "Bárin oınatý",
+        "shuffleAll": "Barlyǵyn aralastyrý"
+    },
+    "resume": "Jalǵastyrý",
+    "playFromBeginning": "Basynan oınatý"
 }
