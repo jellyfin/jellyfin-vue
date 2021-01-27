@@ -1,6 +1,6 @@
 <template>
-  <settings-page page-title="settingsSections.admin.libraries.name">
-    <template #content>Placeholder for libraries settings</template>
+  <settings-page page-title="settingsSections.user.accessibility.name">
+    <template #content>Placeholder for accessibility settings</template>
   </settings-page>
 </template>
 
@@ -9,7 +9,6 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
-  middleware: 'adminMiddleware',
   head() {
     return {
       title: this.$store.state.page.title
@@ -17,7 +16,7 @@ export default Vue.extend({
   },
   created() {
     this.setPageTitle({
-      title: this.$t('settingsSections.admin.libraries.name')
+      title: this.$t('settingsSections.user.accessibility.name')
     });
   },
   methods: {

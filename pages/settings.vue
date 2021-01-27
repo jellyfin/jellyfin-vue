@@ -1,52 +1,44 @@
 <template>
-  <v-container class="ma-0">
-    <v-row class="flex-lg-nowrap">
-      <v-fade-transition appear mode="out-in">
-        <v-col
-          v-if="
-            $vuetify.breakpoint.lgAndUp ||
-            ($vuetify.breakpoint.mdAndDown && inMenu)
-          "
-          cols="12"
-          lg="5"
-        >
-          <v-card>
-            <v-fade-transition
-              appear
-              mode="out-in"
-              group
-              @after-leave="transitioning = false"
-              @before-leave="transitioning = true"
-            >
-              <!-- User settings -->
-              <user-settings
-                v-if="mainSettings && !transitioning"
-                key="main-settings"
-              />
-              <!-- Administrator settings -->
-              <admin-settings
-                v-else-if="serverSettings && !transitioning"
-                key="server-settings"
-              />
-            </v-fade-transition>
-          </v-card>
-        </v-col>
-      </v-fade-transition>
-      <v-col>
-        <v-card
-          min-width="100%"
-          max-height="100%"
-          class="d-flex flex-grow-1 flex-shrink-0 overflow-y-scroll justify-center"
-        >
-          <v-container>
-            <v-fade-transition mode="out-in">
-              <nuxt-child keep-alive />
-            </v-fade-transition>
-          </v-container>
+  <div class="grid pa-2" :class="$vuetify.breakpoint.smAndDown ? 'sm' : null">
+    <v-fade-transition appear mode="out-in">
+      <v-col
+        v-if="
+          $vuetify.breakpoint.mdAndUp ||
+          ($vuetify.breakpoint.smAndDown && inMenu)
+        "
+      >
+        <v-card :class="$vuetify.breakpoint.smAndDown ? null : 'column'">
+          <v-fade-transition
+            appear
+            mode="out-in"
+            group
+            @after-leave="transitioning = false"
+            @before-leave="transitioning = true"
+          >
+            <!-- Administrator settings -->
+            <admin-settings
+              v-if="serverSettings && !transitioning"
+              key="server-settings"
+            />
+            <!-- User settings -->
+            <user-settings
+              v-else-if="mainSettings && !transitioning"
+              key="main-settings"
+            />
+          </v-fade-transition>
         </v-card>
       </v-col>
-    </v-row>
-  </v-container>
+    </v-fade-transition>
+    <v-col>
+      <v-card :class="$vuetify.breakpoint.smAndDown ? null : 'column'">
+        <v-container>
+          <v-fade-transition mode="out-in">
+            <nuxt-child :key="$route.fullPath" keep-alive />
+          </v-fade-transition>
+        </v-container>
+      </v-card>
+    </v-col>
+  </div>
 </template>
 
 <script lang="ts">
@@ -78,7 +70,7 @@ export default Vue.extend({
     },
     serverSettings: {
       get(): boolean {
-        return this.$route.fullPat.includes('/settings/admin');
+        return this.$route.fullPath.includes('/settings/admin');
       }
     }
   },
@@ -98,3 +90,22 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.grid {
+  display: grid;
+  grid-template-columns: 35% 65%;
+  grid-template-rows: 91vh;
+}
+
+.sm {
+  grid-template-columns: 100% !important;
+  grid-template-rows: unset !important;
+}
+
+.column {
+  max-height: 100%;
+  min-height: 100%;
+  overflow-y: scroll;
+}
+</style>

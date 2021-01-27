@@ -1,5 +1,5 @@
 <template>
-  <v-list>
+  <v-list nav>
     <v-list-item-group>
       <v-list-item
         v-for="linkItem in linkItems"

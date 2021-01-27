@@ -18,7 +18,7 @@
         <v-text-field
           v-model="admin.Password"
           outlined
-          :label="$t('password')"
+          :label="$t('validation.password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
           :error-messages="errors"

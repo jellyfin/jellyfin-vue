@@ -6,7 +6,7 @@
           <v-icon>mdi-chevron-left</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>
+          <v-list-item-title class="text-overline">
             {{ $t('settings.goBackToUserSettings') }}
           </v-list-item-title>
         </v-list-item-content>
@@ -25,6 +25,7 @@
           v-for="adminItem in adminSection"
           :key="adminItem.name"
           nuxt
+          exact
           :to="adminItem.link"
           :value="isCurrentLink(adminItem.link)"
           class="pb-0"

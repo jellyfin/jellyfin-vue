@@ -1,11 +1,29 @@
 <template>
-  <server-info-card />
+  <settings-page page-title="settings.serverDashboard">
+    <template #content>
+      <server-info-card />
+    </template>
+  </settings-page>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
-  middleware: 'adminMiddleware'
+  middleware: 'adminMiddleware',
+  head() {
+    return {
+      title: this.$store.state.page.title
+    };
+  },
+  created() {
+    this.setPageTitle({
+      title: this.$t('settings.serverDashboard')
+    });
+  },
+  methods: {
+    ...mapActions('page', ['setPageTitle'])
+  }
 });
 </script>

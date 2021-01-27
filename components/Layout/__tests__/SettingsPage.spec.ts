@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import SettingsPage from '~/components/Layout/SettingsPage.vue';
+import SettingsPage from '~/components/Layout/Settings/SettingsPage.vue';
 
 const $t = (str: string): string => str;
 

@@ -2,12 +2,16 @@
   <v-list two-line nav dense>
     <v-list-item-group>
       <div class="pa-4">
-        <h1 class="text-h5">{{ $t('settings.accountAndClient') }}</h1>
+        <h1 class="text-overline title">
+          {{ $t('settings.accountAndClient') }}
+        </h1>
       </div>
       <v-list-item
         v-for="userItem in userItems"
         :key="userItem.name"
         nuxt
+        exact
+        :ripple="!userItem.sync"
         :to="userItem.link"
         :inactive="userItem.sync"
         :value="isCurrentLink(userItem.link)"
@@ -21,13 +25,15 @@
         </v-list-item-content>
         <v-list-item-action>
           <v-icon v-if="!userItem.sync">mdi-chevron-right</v-icon>
-          <v-switch v-else />
+          <v-switch v-else v-model="sync" />
         </v-list-item-action>
       </v-list-item>
       <v-spacer />
       <div v-if="$auth.user.Policy.IsAdministrator">
         <div class="pa-4">
-          <h1 class="text-h5">{{ $t('settings.serverAndAdmin') }}</h1>
+          <h1 class="text-overline title">
+            {{ $t('settings.serverAndAdmin') }}
+          </h1>
         </div>
         <v-list-item
           v-for="adminItem in adminItems"
@@ -57,12 +63,21 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
+      sync: false,
       userItems: [
         {
           icon: 'mdi-account-cog',
           name: this.$t('settingsSections.user.account.name'),
           description: this.$t('settingsSections.user.account.description'),
           link: '/settings/user/account'
+        },
+        {
+          icon: 'mdi-human',
+          name: this.$t('settingsSections.user.accessibility.name'),
+          description: this.$t(
+            'settingsSections.user.accessibility.description'
+          ),
+          link: '/settings/user/accessibility'
         },
         {
           icon: 'mdi-palette',
@@ -124,3 +139,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.title {
+  font-size: 1em !important;
+}
+</style>

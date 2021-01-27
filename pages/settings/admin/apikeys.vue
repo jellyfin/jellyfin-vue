@@ -1,7 +1,10 @@
 <template>
-  <settings-page page-title="settings.apiKeys.apiKeys">
+  <settings-page
+    page-title="settingsSections.admin.apiKeys.name"
+    :loading="loading"
+  >
     <template #actions>
-      <v-btn color="primary" @click="() => $refs.addKeyDialog.openDialog()">
+      <v-btn color="primary" @click="$refs.addKeyDialog.openDialog()">
         {{ $t('settings.apiKeys.addNewKey') }}
       </v-btn>
       <v-btn
@@ -14,26 +17,22 @@
       </v-btn>
     </template>
     <template #content>
-      <v-col>
-        <v-data-table :headers="headers" :items="apiKeys" class="elevation-1">
-          <!-- eslint-disable-next-line vue/valid-v-slot -->
-          <template #item.DateCreated="{ item }">
-            <p class="text-capitalize-first-letter mb-0">
-              {{
-                $dateFns.formatRelative(
-                  $dateFns.parseJSON(item.DateCreated),
-                  new Date(),
-                  {
-                    locale: $i18n.locale
-                  }
-                )
-              }}
-            </p>
-          </template>
-        </v-data-table>
-      </v-col>
+      <v-data-table :headers="headers" :items="apiKeys">
+        <!-- eslint-disable-next-line vue/valid-v-slot -->
+        <template #item.DateCreated="{ item }">
+          <p class="text-capitalize-first-letter mb-0">
+            {{
+              $dateFns.formatRelative(
+                $dateFns.parseJSON(item.DateCreated),
+                new Date(),
+                { locale: $i18n.locale }
+              )
+            }}
+          </p>
+        </template>
+      </v-data-table>
       <!-- Add API key dialog -->
-      <add-api-key ref="addKeyDialog" @key-added="refreshApiKeys" />
+      <add-api-key-dialog ref="addKeyDialog" @key-added="refreshApiKeys" />
     </template>
   </settings-page>
 </template>
@@ -58,9 +57,9 @@ export default Vue.extend({
   data() {
     return {
       apiKeys: [] as AuthenticationInfo[],
-      addingNewKey: false,
       newKeyAppName: '',
-      revokeKeyLoading: false
+      revokeKeyLoading: false,
+      loading: false
     };
   },
   computed: {
@@ -72,9 +71,16 @@ export default Vue.extend({
       ];
     }
   },
+  created() {
+    this.setPageTitle({
+      title: this.$t('settingsSections.admin.apiKeys.name')
+    });
+  },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
+    ...mapActions('page', ['setPageTitle']),
     async revokeApiKey(token: string): Promise<void> {
+      this.revokeKeyLoading = true;
       try {
         await this.$api.apiKey.revokeKey({
           key: token
@@ -97,6 +103,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+      this.revokeKeyLoading = false;
     },
     async revokeAllApiKeys(): Promise<void> {
       this.revokeKeyLoading = true;
@@ -129,6 +136,7 @@ export default Vue.extend({
       this.revokeKeyLoading = false;
     },
     async refreshApiKeys(): Promise<void> {
+      this.loading = true;
       try {
         this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
       } catch (error) {
@@ -137,6 +145,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+      this.loading = false;
     }
   }
 });

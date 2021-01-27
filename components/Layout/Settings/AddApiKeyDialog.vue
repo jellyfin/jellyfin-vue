@@ -2,7 +2,7 @@
   <v-dialog
     :value="addingNewKey"
     :width="width"
-    @click:outside="() => (addingNewKey = false)"
+    @click:outside="addingNewKey = false"
   >
     <v-col class="pa-0 add-key-dialog">
       <v-card>
@@ -17,7 +17,7 @@
             <v-btn color="primary" :loading="loading" @click="addApiKey">
               {{ $t('confirm') }}
             </v-btn>
-            <v-btn @click="() => (addingNewKey = false)">
+            <v-btn @click="addingNewKey = false">
               {{ $t('cancel') }}
             </v-btn>
           </v-form>

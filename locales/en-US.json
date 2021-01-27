@@ -115,7 +115,7 @@
   "likes": "Likes",
   "links": {
     "helpTranslate": "Help translate Jellyfin in your language",
-    "poweredByJellyfin": "This server is powered by Jellyfin",
+    "poweredByJellyfin": "The software behind this server is Jellyfin, the free media server",
     "readTheDocumentation": "Read the documentation",
     "reportAnIssue": "Report an issue with the Vue client"
   },
@@ -174,7 +174,6 @@
   "overview": "Overview",
   "parentalRating": "Parental rating",
   "parentalRatings": "Parental Ratings",
-  "password": "Password",
   "people": "People",
   "person": "Person",
   "play": "Play",
@@ -214,12 +213,29 @@
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": {
   "settings": {
+    "about": "About",
     "accountAndClient": "Account & client",
+    "account": {
+      "admin": "Administrator",
+      "deleteImage": "Delete image",
+      "uploadImage": "Upload image",
+      "currentPassword": "Current password",
+      "changePassword": "Change password",
+      "newPassword": "New password",
+      "resetPassword": "Reset password",
+      "passwordResetSuccess": "Password was resetted successfully",
+      "passwordResetError": "There was an error while resetting the password",
+      "passwordChangedSuccessfully": "Password changed successfully",
+      "passwordChangeError": "There was an error while changing the password",
+      "imageDeleteSuccess": "The profile picture was deleted successfully",
+      "imageDeleteError": "There was an error while deleting the profile picture",
+      "imageUploadSuccess": "The profile picture was changed successfully",
+      "imageUploadError": "There was an error while changed the profile picture"
+    },
     "apiKeys": {
       "accessToken": "Access token",
       "addApiKey": "Add an API key",
       "addNewKey": "Add new API key",
-      "apiKeys": "API keys",
       "appName": "App name",
       "createKeyFailure": "Error creating a new API key",
       "createKeySuccess": "Successfully created a new API key",
@@ -247,6 +263,32 @@
       "noDevicesFound": "No devices found",
       "userName": "Username"
     },
+    "playback": {
+      "video": {
+        "video": "Video",
+        "backwardSeek": "Backward seek",
+        "forwardSeek": "Forward seek",
+        "default": "5 seconds by default",
+        "seconds": "seconds",
+        "controls": "Controls",
+        "controlsDescription": "Customize how your keyboard or touch inputs behave with the playback."
+      },
+      "music": {
+        "music": "Music",
+        "crossfade": "Crossfade",
+        "crossfadeDescription": "Mix the end of the previous song with the beginning of the next song.",
+        "queueSync": "Queue sync",
+        "queueSyncDescription": "Sync the queue across all the devices where you use this client, so you can always resume playback anywhere."
+      }
+    },
+    "players": {
+      "airplay": "AirPlay",
+      "airplayDescription": "Allows the interaction and integration with Apple TV and other devices inside the AirPlay ecosystem",
+      "disabledFeatures": "The following playback features are incompatible with this player:",
+      "gcast": "Google Cast",
+      "gcastDescription": "Allows the interaction and integration with Chromecast and other devices inside the Google Cast ecosystem"
+    },
+    "serverDashboard": "Server dashboard",
     "logsAndActivity": {
       "activity": "Activity",
       "failedGetActivity": "Unable to get activity",
@@ -259,6 +301,13 @@
     "serverAndAdmin": "Server and administration",
     "settingSyncing": "Enable setting syncing",
     "settingSyncingDescription": "Sync the settings of this device across all your devices that also use this client",
+    "tasks": {
+      "cancelling": "Cancelling...",
+      "starting": "Starting...",
+      "running": "Running...",
+      "lastRan": "Last ran {time}, taking {delta} to complete",
+      "noRuntimeInfo": "No runtime information available"
+    },
     "goBackToUserSettings": "Go back to user settings"
   },
   "settingsSections": {
@@ -266,6 +315,10 @@
       "account": {
         "description": "Edit your user's information",
         "name": "Account"
+      },
+      "accessibility": {
+        "description": "Change the font size, contrast and other accessibility choices",
+        "name": "Accessibility"
       },
       "appearance": {
         "description": "Change the theme and customize the appearance",
@@ -386,8 +439,11 @@
   "username": "Username",
   "validation": {
     "bothPasswordsSame": "Both passwords must be the same",
+    "confirmPassword": "Confirm password",
     "mustBeUrl": "This field must be a valid URL",
-    "required": "This field is required"
+    "password": "Password",
+    "required": "This field is required",
+    "invalidNumber": "Invalid number"
   },
   "version": "Version",
   "video": "Video",
