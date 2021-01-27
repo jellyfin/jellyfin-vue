@@ -95,18 +95,19 @@ export default Vue.extend({
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     },
-    setCurrentUser(user: UserDto): void {
+    async setCurrentUser(user: UserDto): Promise<void> {
       if (!user.HasPassword) {
         // If the user doesn't have a password, avoid showing the password form
         this.setDeviceProfile();
-        this.$auth.loginWith('jellyfin', {
+        await this.$auth.loginWith('jellyfin', {
           username: user.Name,
           password: '',
           rememberMe: true
         });
-        return; // Avoid changing the form
+        this.$router.replace('/');
+      } else {
+        this.currentUser = user;
       }
-      this.currentUser = user;
     },
     resetCurrentUser(): void {
       this.currentUser = {};
