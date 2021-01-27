@@ -1,15 +1,15 @@
 <template>
-  <v-card :loading="loading" class="mb-3">
+  <v-card :loading="loading" class="d-flex justify-center">
     <v-row>
-      <div class="ml-2">
+      <v-col>
         <v-card-title>{{ serverInfo.publicInfo.ServerName }}</v-card-title>
         <v-card-subtitle>{{ serverInfo.address }}</v-card-subtitle>
-      </div>
+      </v-col>
       <v-card-actions class="ml-auto mr-2">
-        <v-btn icon>
+        <v-btn icon disabled>
           <v-icon>mdi-information-outline</v-icon>
         </v-btn>
-        <v-btn icon @click="removeServerFromStore">
+        <v-btn icon :disabled="loading" @click="removeServerFromStore">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn icon :disabled="loading" @click="setServer">
@@ -44,10 +44,16 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer(): Promise<void> {
-      // TODO: Merge with the identical method in AddServerForm
       this.loading = true;
-      await this.connectServer(this.serverInfo.address);
-      this.loading = false;
+      try {
+        await this.connectServer(this.serverInfo.address);
+        this.$router.push('/login');
+      } catch {
+        this.loading = false;
+        /**
+         * Errors are already caught in servers store
+         */
+      }
     },
     removeServerFromStore(): void {
       this.removeServer(this.serverInfo);

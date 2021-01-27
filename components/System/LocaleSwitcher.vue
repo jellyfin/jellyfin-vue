@@ -1,12 +1,12 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on: onMenu, attrs: attrsMenu }">
-      <v-tooltip bottom>
+      <v-tooltip :bottom="bottom" :top="top">
         <template #activator="{ on: onTooltip, attrsTooltip }">
           <v-btn
             :icon="!fab"
             :fab="fab"
-            :small="!large & fab"
+            :small="!large && fab"
             :large="large"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             v-bind="{ ...attrsMenu, ...attrsTooltip }"
@@ -41,6 +41,14 @@ export default Vue.extend({
       required: false
     },
     large: {
+      type: Boolean,
+      required: false
+    },
+    top: {
+      type: Boolean,
+      required: false
+    },
+    bottom: {
       type: Boolean,
       required: false
     }

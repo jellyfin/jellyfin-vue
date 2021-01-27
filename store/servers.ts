@@ -64,8 +64,6 @@ export const actions: ActionTree<ServerState, ServerState> = {
               address: serverUrl
             });
           }
-
-          this.$router.push('/login');
         }
       } else {
         dispatch('notifyServerVersionIsLow');
@@ -74,6 +72,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
       // eslint-disable-next-line no-console
       console.error(err); // in case something inside the try rather than a request failure
       dispatch('notifyServerCantBeFound');
+      throw new Error(err);
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {
@@ -89,7 +88,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverVersionTooLow'),
+        message: this.$i18n.t('login.serverVersionTooLow'),
         color: 'error'
       },
       {
@@ -101,7 +100,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverNotFound'),
+        message: this.$i18n.t('login.serverNotFound'),
         color: 'error'
       },
       {
@@ -113,7 +112,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
     dispatch(
       'snackbar/pushSnackbarMessage',
       {
-        message: this.$i18n.t('serverAddressRequired'),
+        message: this.$i18n.t('login.serverAddressRequired'),
         color: 'error'
       },
       {

@@ -91,6 +91,7 @@
       />
       <locale-switcher
         :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        bottom
       />
     </v-app-bar>
     <v-main>

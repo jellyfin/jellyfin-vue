@@ -7,7 +7,7 @@
         md="7"
         lg="5"
       >
-        <h1 class="text-h4 mb-6 text-center">{{ $t('selectUser') }}</h1>
+        <h1 class="text-h4 mb-6 text-center">{{ $t('login.selectUser') }}</h1>
         <v-row align="center" justify="center">
           <v-col
             v-for="publicUser in publicUsers"
@@ -17,21 +17,18 @@
             <user-card :user="publicUser" @connect="setCurrentUser" />
           </v-col>
         </v-row>
-        <v-row align="center" justify="center" dense class="mt-7">
+        <v-row align="center" justify="center" dense class="mt-6">
           <v-col cols="11" sm="6" class="d-flex justify-center">
             <v-btn block large @click="loginAsOther = true">
-              {{ $t('manualLogin') }}
+              {{ $t('login.manualLogin') }}
             </v-btn>
           </v-col>
           <v-col cols="11" sm="6" class="d-flex justify-center">
             <v-btn block to="/selectServer" nuxt large>
-              {{ $t('changeServer') }}
+              {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
         </v-row>
-        <div class="d-flex justify-center mt-6">
-          <locale-switcher large />
-        </div>
       </v-col>
       <v-col
         v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
@@ -40,9 +37,9 @@
         lg="5"
       >
         <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-6 text-center">
-          {{ $t('loginAs', { name: currentUser.Name }) }}
+          {{ $t('login.loginAs', { name: currentUser.Name }) }}
         </h1>
-        <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login') }}</h1>
+        <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login.login') }}</h1>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
       </v-col>
@@ -59,6 +56,17 @@ import { UserDto } from '@jellyfin/client-axios';
 export default Vue.extend({
   layout: 'fullpage',
   middleware: 'serverMiddleware',
+  auth: false,
+  async asyncData({ store, redirect }) {
+    try {
+      await store.dispatch(
+        'servers/connectServer',
+        store.state.servers.serverUsed.address
+      );
+    } catch {
+      redirect('/selectserver');
+    }
+  },
   data() {
     return {
       loginAsOther: false,
@@ -83,6 +91,7 @@ export default Vue.extend({
     ...mapActions('page', ['setPageTitle']),
     ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
+    ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     },

@@ -8,7 +8,10 @@ import { Context } from '@nuxt/types';
  * @returns {void}
  */
 export default function (context: Context): void {
-  if (!context.$axios.defaults.baseURL) {
-    return context.redirect('/selectserver');
+  if (
+    !context.$axios.defaults.baseURL ||
+    !context.store.state.servers.serverList.length
+  ) {
+    return context.redirect('/addserver');
   }
 }

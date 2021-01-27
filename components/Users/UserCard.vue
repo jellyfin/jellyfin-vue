@@ -20,7 +20,7 @@
     <v-spacer />
     <v-card-actions>
       <v-btn text block color="primary" @click="$emit('connect', user)">
-        {{ $t('connect') }}
+        {{ $t('login.connect') }}
       </v-btn>
     </v-card-actions>
   </v-card>
