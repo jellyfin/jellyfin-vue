@@ -11,7 +11,24 @@
     "itemNotFound": "Položka nebyla nalezena",
     "libraryEmpty": "Tato knihovna je prázdná",
     "libraryNotFound": "Knihovna nebyla nalezena",
-    "login": "Přihlášení",
+    "login": {
+        "connect": "Připojit",
+        "changeUser": "Přepnout uživatele",
+        "changeServer": "Změnit server",
+        "manualLogin": "Ruční přihlášení",
+        "serverNotFound": "Server nenalezen",
+        "serverDashboard": "Nástěnka serveru",
+        "serverAddressRequired": "Adresa serveru je povinná",
+        "serverAddressMustBeUrl": "Adresa serveru musí být platná adresa URL",
+        "serverAddress": "Adresa serveru",
+        "serverVersionTooLow": "Verze serveru musí být 10.7.0 nebo novější",
+        "selectUser": "Vybrat uživatele",
+        "rememberMe": "Zapamatovat",
+        "loginAs": "Přihlásit jako {name}",
+        "addServer": "Přidat server",
+        "selectServer": "Vybrat server",
+        "login": "Přihlásit"
+    },
     "logout": "Odhlášení",
     "more": "Více",
     "movies": "Filmy",
@@ -278,7 +295,8 @@
         "failedGetActivity": "Načtení aktivity se nezdařilo",
         "failedGetLogs": "Načtení záznamů se nezdařilo",
         "logs": "Záznamy",
-        "activity": "Aktivita"
+        "activity": "Aktivita",
+        "noLogsFound": "Žádný záznam nenalezen"
     },
     "homeHeader": {
         "items": {
@@ -339,5 +357,24 @@
     "noAudioTracksAvailable": "Žádné zvukové stopy k dispozici",
     "noAudioTrackSelected": "Nevybrána žádná zvuková stopa",
     "confirm": "Potvrdit",
-    "NoMediaSourcesAvailable": "Nejsou k dispozici žádné zdroje médií"
+    "NoMediaSourcesAvailable": "Nejsou k dispozici žádné zdroje médií",
+    "unableToToggleLike": "Změna oblíbeného stavu položky se nezdařila",
+    "resume": "Pokračovat",
+    "playback": {
+        "queueItems": "{item} skladeb",
+        "addToQueue": "Přidat do fronty",
+        "playNext": "Přehrát další",
+        "shuffle": "Náhodně",
+        "playAll": "Přehrát vše",
+        "shuffleAll": "Náhodně přehrát vše",
+        "saveAsPlaylist": "Uložit frontu do seznamu",
+        "playbackSource": {
+            "unknown": "Přehrávání fronty",
+            "shuffleItem": "Přehrávání {item} náhodně",
+            "shuffle": "Přehrávání náhodně",
+            "item": "Přehrávání od {item}"
+        },
+        "clearQueue": "Smazat frontu a zastavit přehrávání"
+    },
+    "playFromBeginning": "Přehrát od začátku"
 }
