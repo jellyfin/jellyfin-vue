@@ -11,7 +11,24 @@
     "itemNotFound": "未找到项目",
     "libraryEmpty": "这个库是空的",
     "libraryNotFound": "未找到媒体库",
-    "login": "登陆",
+    "login": {
+        "connect": "连接",
+        "changeUser": "切换用户",
+        "changeServer": "切换服务器",
+        "manualLogin": "手动登录",
+        "serverNotFound": "找不到服务器",
+        "serverDashboard": "服务器仪表盘",
+        "serverAddressRequired": "服务器地址为必填项",
+        "serverAddressMustBeUrl": "服务器地址必须是有效的 URL",
+        "serverAddress": "服务器地址",
+        "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高",
+        "selectUser": "选择用户",
+        "rememberMe": "记住我",
+        "loginAs": "登录为 {name}",
+        "addServer": "添加服务器",
+        "selectServer": "选择服务器",
+        "login": "登录"
+    },
     "logout": "注销",
     "more": "更多",
     "movies": "电影",
@@ -289,7 +306,8 @@
         "failedGetActivity": "无法获取到活动",
         "failedGetLogs": "无法获取到日志",
         "logs": "日志",
-        "activity": "活动"
+        "activity": "活动",
+        "noLogsFound": "找不到日志"
     },
     "libraryRefreshQueued": "媒体库将会被更新",
     "fullScreen": "全屏幕",
@@ -337,5 +355,24 @@
         "changeLanguage": "语言"
     },
     "stopPlayback": "停止播放",
-    "refreshLibrary": "刷新媒体库"
+    "refreshLibrary": "刷新媒体库",
+    "playback": {
+        "queueItems": "{items} 轨道",
+        "playNext": "播放下一个",
+        "addToQueue": "添加到队列",
+        "shuffle": "随机",
+        "playAll": "全部播放",
+        "shuffleAll": "全部随机播放",
+        "saveAsPlaylist": "将队列另存为播放列表",
+        "playbackSource": {
+            "unknown": "从队列播放",
+            "shuffleItem": "从 {item} 开始随机播放",
+            "shuffle": "随机播放",
+            "item": "从 {item} 开始播放"
+        },
+        "clearQueue": "清除队列并停止播放"
+    },
+    "unableToToggleLike": "无法更改此元素的收藏状态",
+    "resume": "恢复播放",
+    "playFromBeginning": "从头开始播放"
 }
