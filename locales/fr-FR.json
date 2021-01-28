@@ -11,7 +11,24 @@
     "itemNotFound": "Élément introuvable",
     "libraryEmpty": "Cette médiathèque est vide",
     "libraryNotFound": "Médiathèque introuvable",
-    "login": "Connexion",
+    "login": {
+        "rememberMe": "Se rappeler de moi",
+        "selectServer": "Sélectionner un serveur",
+        "connect": "Se connecter",
+        "changeUser": "Changer d'utilisateur",
+        "changeServer": "Changer de serveur",
+        "manualLogin": "Connexion manuelle",
+        "serverNotFound": "Serveur non trouvé",
+        "serverDashboard": "Tableau de bord serveur",
+        "serverAddressRequired": "L'adresse du serveur est obligatoire",
+        "serverAddressMustBeUrl": "L'adresse du serveur doit être une URL valide",
+        "serverAddress": "Adresse du serveur",
+        "serverVersionTooLow": "La version du serveur doit être 10.7.0 ou supérieure",
+        "selectUser": "Sélectionner un utilisateur",
+        "loginAs": "Se connecter avec {name}",
+        "addServer": "Ajouter un serveur",
+        "login": "Connexion"
+    },
     "logout": "Se déconnecter",
     "more": "Plus",
     "movies": "Films",
@@ -271,7 +288,8 @@
         "failedGetActivity": "Impossible de récupérer l'activité",
         "failedGetLogs": "Impossible de récupérer le journal",
         "logs": "Journaux",
-        "activity": "Activité"
+        "activity": "Activité",
+        "noLogsFound": "Aucun journal trouvé"
     },
     "homeHeader": {
         "items": {
@@ -338,5 +356,16 @@
     "noAudioTrackSelected": "Aucune piste audio sélectionnée",
     "confirm": "Confirmer",
     "NoMediaSourcesAvailable": "Aucune source média disponible",
-    "upNextName": "À suivre : {upNextItemName}"
+    "upNextName": "À suivre : {upNextItemName}",
+    "playback": {
+        "saveAsPlaylist": "Sauver la file comme liste de lecture",
+        "playbackSource": {
+            "unknown": "Lecture depuis la file",
+            "shuffleItem": "Lecture de {item} en aléatoire",
+            "item": "Lecture depuis {item}",
+            "shuffle": "Lecture aléatoire"
+        },
+        "clearQueue": "Vider la file et arrêter la lecture"
+    },
+    "playFromBeginning": "Lire depuis le début"
 }
