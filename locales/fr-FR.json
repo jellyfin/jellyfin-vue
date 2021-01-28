@@ -365,7 +365,9 @@
             "item": "Lecture depuis {item}",
             "shuffle": "Lecture aléatoire"
         },
-        "clearQueue": "Vider la file et arrêter la lecture"
+        "clearQueue": "Vider la file et arrêter la lecture",
+        "addToQueue": "Ajouter à la file",
+        "shuffleAll": "Lecture aléatoire"
     },
     "playFromBeginning": "Lire depuis le début"
 }
