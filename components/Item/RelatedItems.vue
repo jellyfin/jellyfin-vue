@@ -1,7 +1,13 @@
 <template>
   <div>
     <div v-if="!vertical" class="related-items">
-      <swiper-section :title="title" :items="relatedItems" :loading="loading" />
+      <client-only>
+        <swiper-section
+          :title="title"
+          :items="relatedItems"
+          :loading="loading"
+        />
+      </client-only>
     </div>
     <div v-else-if="vertical">
       <h2 v-if="!loading && relatedItems.length > 0">
