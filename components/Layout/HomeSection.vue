@@ -1,10 +1,12 @@
 <template>
-  <swiper-section
-    :title="section.name"
-    :items="items"
-    :shape="section.shape"
-    :loading="$fetchState.pending"
-  />
+  <client-only>
+    <swiper-section
+      :title="section.name"
+      :items="items"
+      :shape="section.shape"
+      :loading="$fetchState.pending"
+    />
+  </client-only>
 </template>
 
 <script lang="ts">

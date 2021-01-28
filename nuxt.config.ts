@@ -74,7 +74,8 @@ const config: NuxtConfig = {
     // Development
     'plugins/axe.ts',
     // General
-    { src: 'plugins/appInitPlugin.ts', mode: 'client' },
+    'plugins/persistedState.ts',
+    'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
     // Components
@@ -111,7 +112,7 @@ const config: NuxtConfig = {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['user', 'deviceProfile', 'servers']
+        localStorage: ['user', 'deviceProfile']
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage

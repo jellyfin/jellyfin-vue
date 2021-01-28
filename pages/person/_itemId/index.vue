@@ -53,13 +53,17 @@
         </v-row>
         <v-row v-if="movies.length > 0">
           <v-col>
-            <swiper-section :title="$t('movies')" :items="movies" />
+            <client-only>
+              <swiper-section :title="$t('movies')" :items="movies" />
+            </client-only>
           </v-col>
         </v-row>
 
         <v-row v-if="shows.length > 0">
           <v-col>
-            <swiper-section :title="$t('shows')" :items="shows" />
+            <client-only>
+              <swiper-section :title="$t('shows')" :items="shows" />
+            </client-only>
           </v-col>
         </v-row>
       </v-col>
