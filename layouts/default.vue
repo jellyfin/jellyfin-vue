@@ -161,7 +161,6 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.callAllCallbacks();
     this.refreshUserViews();
 
     const socketParams = stringify({

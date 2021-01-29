@@ -35,18 +35,18 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters('displayPreferences', ['getBooleanCustomPref']),
+    ...mapGetters('displayPreferences', ['getDarkMode']),
     darkMode: {
       get(): boolean {
-        return this.getBooleanCustomPref('darkMode');
+        return this.getDarkMode;
       },
       set(value: boolean): void {
-        this.editBooleanCustomPref({ key: 'darkMode', value });
+        this.setDarkMode({ darkMode: value });
       }
     }
   },
   methods: {
-    ...mapActions('displayPreferences', ['editBooleanCustomPref'])
+    ...mapActions('displayPreferences', ['setDarkMode'])
   }
 });
 </script>

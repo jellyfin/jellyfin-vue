@@ -12,14 +12,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 
 export default Vue.extend({
   beforeMount() {
-    this.callAllCallbacks();
-  },
-  methods: {
-    ...mapActions('displayPreferences', ['callAllCallbacks'])
+    this.$store.watch(
+      (_state, getters) => getters['displayPreferences/getLocale'],
+      (locale: string) => {
+        if (locale !== 'auto') this.$i18n.setLocale(locale);
+        else
+          this.$i18n.setLocale(
+            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'en'
+          );
+      }
+    );
   }
 });
 </script>
