@@ -294,7 +294,8 @@
         "failedGetActivity": "Không thể lấy dữ liệu hoạt động",
         "failedGetLogs": "Không thể lấy dữ liệu nhật ký",
         "logs": "Nhật ký",
-        "activity": "Hoạt động"
+        "activity": "Hoạt động",
+        "noLogsFound": "Không tìm thấy nhật ký nào"
     },
     "audio": "Âm thanh",
     "homeHeader": {
@@ -355,5 +356,22 @@
     "noAudioTracksAvailable": "Không có bản âm thanh nào",
     "noAudioTrackSelected": "Không có bản âm thanh nào được chọn",
     "confirm": "Xác nhận",
-    "NoMediaSourcesAvailable": "Không có sẵn nguồn phương tiện"
+    "NoMediaSourcesAvailable": "Không có sẵn nguồn phương tiện",
+    "unableToToggleLike": "Không thể thay đổi trạng thái thích của phần tử",
+    "playback": {
+        "addToQueue": "Thêm vào hàng đợi",
+        "playNext": "Phát kế tiếp",
+        "shuffle": "Ngẫu nhiên",
+        "playAll": "Phát tất cả",
+        "shuffleAll": "Tất cả ngẫu nhiên",
+        "saveAsPlaylist": "Lưu hàng đợi dưới dạng danh sách phát",
+        "playbackSource": {
+            "unknown": "Đang phát hàng đợi",
+            "shuffleItem": "Đang phát {item} ngẫu nhiên",
+            "shuffle": "Phát ngẫu nhiên",
+            "item": "Đang phát từ {item}"
+        },
+        "clearQueue": "Xóa hàng đợi và dừng phát lại"
+    },
+    "playFromBeginning": "Phát từ đầu"
 }
