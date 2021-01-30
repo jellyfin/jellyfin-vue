@@ -105,7 +105,6 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.showNavDrawer({ showNavDrawer: false });
     this.previousAppBarOpacity = this.$store.state.page.opaqueAppBar;
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ newOpacity: 0.5 });
@@ -127,12 +126,11 @@ export default Vue.extend({
     this.setMinimized({ minimized: true });
   },
   destroyed() {
-    this.showNavDrawer({ showNavDrawer: true });
     this.setAppBarOpacity({ opaqueAppBar: this.previousAppBarOpacity });
   },
   methods: {
     ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
-    ...mapActions('page', ['showNavDrawer', 'setAppBarOpacity']),
+    ...mapActions('page', ['setAppBarOpacity']),
     ...mapActions('backdrop', [
       'setBackdrop',
       'setBackdropOpacity',

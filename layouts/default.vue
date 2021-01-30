@@ -59,14 +59,14 @@
         @click.stop="drawer = !drawer"
       />
       <v-btn
-        v-if="$route.name !== 'index'"
         :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
         :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
         :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
         :class="{
           'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
           'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
-          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled
+          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
+          hidden: $route.name === 'index'
         }"
         @click="$router.back()"
       >
@@ -76,7 +76,7 @@
         class="search-input"
         :class="$vuetify.breakpoint.mdAndUp ? 'expandable' : null"
         prepend-inner-icon="mdi-magnify"
-        placeholder="Search"
+        :placeholder="$t('search')"
         max-width="15em"
         dense
         outlined
@@ -154,6 +154,15 @@ export default Vue.extend({
       ];
     }
   },
+  watch: {
+    $route(to): void {
+      if (to.fullPath.includes('fullscreen')) {
+        this.showNavDrawer({ showNavDrawer: false });
+      } else if (!this.$store.state.page.showNavDrawer) {
+        this.showNavDrawer({ showNavDrawer: true });
+      }
+    }
+  },
   beforeMount() {
     this.callAllCallbacks();
     this.refreshUserViews();
@@ -183,6 +192,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('displayPreferences', ['callAllCallbacks']),
+    ...mapActions('page', ['showNavDrawer']),
     handleKeepAlive(): void {
       this.$store.subscribe((mutation, state) => {
         if (
@@ -231,5 +241,9 @@ export default Vue.extend({
 .search-input.expandable.primary--text {
   max-width: 40em;
   transition: max-width 0.25s;
+}
+
+.hidden {
+  visibility: hidden;
 }
 </style>
