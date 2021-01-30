@@ -11,7 +11,24 @@
     "itemNotFound": "Element nicht gefunden",
     "libraryEmpty": "Diese Bibliothek ist leer",
     "libraryNotFound": "Bibliothek nicht gefunden",
-    "login": "Anmelden",
+    "login": {
+        "connect": "Verbinden",
+        "changeUser": "Benutzer wechseln",
+        "changeServer": "Server wechseln",
+        "manualLogin": "Manuelle Anmeldung",
+        "serverNotFound": "Server nicht gefunden",
+        "serverDashboard": "Server-Dashboard",
+        "serverAddressRequired": "Server-Adresse wird benötigt",
+        "serverAddressMustBeUrl": "Server-Adresse muss eine gültige URL sein",
+        "serverAddress": "Server-Adresse",
+        "serverVersionTooLow": "Die Server-Version muss 10.7.0 oder höher sein",
+        "selectUser": "Benutzer auswählen",
+        "rememberMe": "Anmeldedaten speichern",
+        "loginAs": "Anmelden als {name}",
+        "addServer": "Server hinzufügen",
+        "selectServer": "Server auswählen",
+        "login": "Anmelden"
+    },
     "logout": "Abmelden",
     "more": "Mehr",
     "movies": "Filme",
@@ -277,7 +294,8 @@
         "failedGetActivity": "Aktivitäten können nicht abgerufen werden",
         "failedGetLogs": "Protokolle können nicht abgerufen werden",
         "logs": "Protokoll",
-        "activity": "Aktivitäten"
+        "activity": "Aktivitäten",
+        "noLogsFound": "Keine Protokolle gefunden"
     },
     "audio": "Ton",
     "homeHeader": {
@@ -339,5 +357,24 @@
     "noAudioTracksAvailable": "Keine Audiospur verfügbar",
     "noAudioTrackSelected": "Keine Audiospur ausgewählt",
     "confirm": "Bestätigen",
-    "NoMediaSourcesAvailable": "Keine Medienquellen verfügbar"
+    "NoMediaSourcesAvailable": "Keine Medienquellen verfügbar",
+    "unableToToggleLike": "\"Gefällt mir\"-Status konnte nicht geändert werden",
+    "resume": "Fortsetzen",
+    "playback": {
+        "queueItems": "{items} Titel",
+        "addToQueue": "Zur Warteschlange hinzufügen",
+        "playNext": "Nächstes wiedergeben",
+        "shuffle": "Mischen",
+        "playAll": "Alle wiedergeben",
+        "shuffleAll": "Alle mischen",
+        "saveAsPlaylist": "Warteschlange als Wiedergabeliste speichern",
+        "playbackSource": {
+            "unknown": "Wiedergabe aus der Warteschlange",
+            "shuffleItem": "Wiedergabe von {item} in der Zufallswiedergabe",
+            "shuffle": "Wiedergabe in der Zufallswiedergabe",
+            "item": "Wiedergabe ab {item}"
+        },
+        "clearQueue": "Warteschlange löschen und Wiedergabe stoppen"
+    },
+    "playFromBeginning": "Vom Anfang abspielen"
 }
