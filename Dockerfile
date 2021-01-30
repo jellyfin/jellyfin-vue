@@ -1,4 +1,4 @@
-FROM node:14-alpine AS build
+FROM node:12-alpine AS build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY . .
 RUN yarn build --production --standalone
 
 # Build final image
-FROM node:14-alpine
+FROM node:12-alpine
 
 WORKDIR /app
 

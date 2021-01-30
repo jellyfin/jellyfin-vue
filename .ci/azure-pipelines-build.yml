@@ -9,7 +9,7 @@ jobs:
       - task: NodeTool@0
         displayName: "Install Node"
         inputs:
-          versionSpec: "14.x"
+          versionSpec: "12.x"
 
       - task: Cache@2
         displayName: "Check Cache"
@@ -41,7 +41,7 @@ jobs:
       - task: NodeTool@0
         displayName: "Install Node"
         inputs:
-          versionSpec: "14.x"
+          versionSpec: "12.x"
 
       - task: Cache@2
         displayName: "Check Cache"
