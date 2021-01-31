@@ -308,7 +308,7 @@
     "tags": "Mots clés",
     "tagline": "Slogan",
     "sortTitle": "Trier par titre",
-    "guestStar": "Guest-star",
+    "guestStar": "vedette invitée",
     "version": "Version",
     "unableToRefreshLibrary": "Impossible de rafraîchir la bibliothèque",
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
@@ -345,7 +345,8 @@
         "setAdminError": "Impossible de créer un compte admin.",
         "setupWizard": "Assistant de configuration",
         "confirmPassword": "Confirmez le mot de passe",
-        "remoteAccessSet": "Accès à distance définis."
+        "remoteAccessSet": "Accès à distance définis.",
+        "metadataLanguagesSet": "Langue métadonnées défini."
     },
     "person": "Personne",
     "noVideoTracksAvailable": "Aucune piste vidéo disponible",
@@ -367,7 +368,13 @@
         },
         "clearQueue": "Vider la file et arrêter la lecture",
         "addToQueue": "Ajouter à la file",
-        "shuffleAll": "Lecture aléatoire"
+        "shuffleAll": "Lecture aléatoire",
+        "queueItems": "{items} pistes",
+        "playNext": "Jouer Prochaine",
+        "shuffle": "aleatoire",
+        "playAll": "Lire tout"
     },
-    "playFromBeginning": "Lire depuis le début"
+    "playFromBeginning": "Lire depuis le début",
+    "unableToToggleLike": "Impossible de modifier le statut j'aime de l'élément",
+    "resume": "Reprendre"
 }
