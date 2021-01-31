@@ -28,6 +28,7 @@ import {
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
+import { MediaSourcePreferences } from '~/store/mediaSourcePreferences';
 
 declare global {
   interface Window {
@@ -148,6 +149,9 @@ export default Vue.extend({
       'pause',
       'setNextTrack',
       'setMediaSource',
+      'setVideoSource',
+      'setAudioSource',
+      'setSubtitleSource',
       'setCurrentTime',
       'setPlaySessionId',
       'setLastProgressUpdate'
@@ -172,6 +176,30 @@ export default Vue.extend({
           throw new Error("This item can't be played.");
         }
 
+        const streamPreferences:
+          | MediaSourcePreferences
+          | undefined = mediaSource.Id
+          ? this.$store.state.mediaSourcePreferences.preferences[mediaSource.Id]
+          : undefined;
+
+        if (streamPreferences) {
+          const {
+            videoStreamIndex,
+            audioStreamIndex,
+            subtitleStreamIndex
+          } = streamPreferences;
+
+          if (typeof videoStreamIndex === 'number') {
+            this.setVideoSource({ streamIndex: videoStreamIndex });
+          }
+          if (typeof audioStreamIndex === 'number') {
+            this.setAudioSource({ streamIndex: audioStreamIndex });
+          }
+          if (typeof subtitleStreamIndex === 'number') {
+            this.setSubtitleSource({ streamIndex: subtitleStreamIndex });
+          }
+        }
+
         if (mediaSource.SupportsDirectStream) {
           const directOptions: Record<
             string,
@@ -191,14 +219,27 @@ export default Vue.extend({
             directOptions.LiveStreamId = mediaSource.LiveStreamId;
           }
 
+          directOptions.VideoStreamIndex = streamPreferences?.videoStreamIndex?.toString();
+          directOptions.AudioStreamIndex = streamPreferences?.audioStreamIndex?.toString();
+          directOptions.SubtitleStreamIndex = streamPreferences?.subtitleStreamIndex?.toString();
+
           const params = stringify(directOptions);
           this.source = `${this.$axios.defaults.baseURL}/Videos/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
         ) {
-          this.source =
-            this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
+          const transcodeOptions: Record<
+            string,
+            string | null | undefined
+          > = {};
+          transcodeOptions.VideoStreamIndex = streamPreferences?.videoStreamIndex?.toString();
+          transcodeOptions.AudioStreamIndex = streamPreferences?.audioStreamIndex?.toString();
+          transcodeOptions.SubtitleStreamIndex = streamPreferences?.subtitleStreamIndex?.toString();
+
+          const params = stringify(transcodeOptions);
+
+          this.source = `${this.$axios.defaults.baseURL}${mediaSource.TranscodingUrl}&${params}`;
         }
       }
     },
