@@ -74,5 +74,7 @@
     "artists": "Artistit",
     "artist": "Artisti",
     "albums": "Albumit",
-    "actors": "Näyttelijät"
+    "actors": "Näyttelijät",
+    "NoMediaSourcesAvailable": "Ei medialähteitä",
+    "3DFormat": "3D formaatti"
 }
