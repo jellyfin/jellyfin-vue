@@ -163,6 +163,24 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.currentMediaSource = mediaSource;
   },
+  SET_CURRENT_VIDEO_SOURCE(
+    state: PlaybackManagerState,
+    { streamIndex }: { streamIndex: number }
+  ) {
+    state.currentVideoStreamIndex = streamIndex;
+  },
+  SET_CURRENT_AUDIO_SOURCE(
+    state: PlaybackManagerState,
+    { streamIndex }: { streamIndex: number }
+  ) {
+    state.currentAudioStreamIndex = streamIndex;
+  },
+  SET_CURRENT_SUBTITLE_SOURCE(
+    state: PlaybackManagerState,
+    { streamIndex }: { streamIndex: number }
+  ) {
+    state.currentSubtitleStreamIndex = streamIndex;
+  },
   INCREASE_QUEUE_INDEX(state: PlaybackManagerState) {
     if (state.currentItemIndex !== null) {
       state.lastItemIndex = state.currentItemIndex;
@@ -358,6 +376,15 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   setMediaSource({ commit }, { mediaSource }) {
     commit('SET_CURRENT_MEDIA_SOURCE', { mediaSource });
+  },
+  setVideoSource({ commit }, { streamIndex }) {
+    commit('SET_CURRENT_VIDEO_SOURCE', { streamIndex });
+  },
+  setAudioSource({ commit }, { streamIndex }) {
+    commit('SET_CURRENT_AUDIO_SOURCE', { streamIndex });
+  },
+  setSubtitleSource({ commit }, { streamIndex }) {
+    commit('SET_CURRENT_SUBTITLE_SOURCE', { streamIndex });
   },
   setNextTrack({ commit, state }) {
     if (
