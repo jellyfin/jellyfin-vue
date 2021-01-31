@@ -322,8 +322,8 @@
     "tooltips": {
         "toggleDarkMode": "Переключиться на тёмный режим",
         "changeLanguage": "Язык",
-        "switchToLightMode": "Переключить на светлый режим",
-        "switchToDarkMode": "Переключить на тёмный режим"
+        "switchToLightMode": "Перейти на светлый режим",
+        "switchToDarkMode": "Перейти на тёмный режим"
     },
     "metadataEditor": "Редактор метаданных",
     "noImagesFound": "Рисунков не найдено",
