@@ -1,6 +1,5 @@
 <template>
   <v-select
-    v-model="trackIndex"
     outlined
     filled
     flat
@@ -8,10 +7,12 @@
     single-line
     hide-details
     class="text-truncate"
+    :value="value === undefined ? defaultIndex : value"
     :items="selectItems"
     :placeholder="placeholder"
     :disabled="disabled"
     :clearable="clearable"
+    @input="onChange"
   >
     <template slot="selection" slot-scope="{ item: i }">
       {{ getTrackSelection(i.text) }}
@@ -50,6 +51,10 @@ import {
 
 export default Vue.extend({
   props: {
+    value: {
+      type: Number,
+      default: undefined
+    },
     /**
      * Media item
      */
@@ -74,9 +79,6 @@ export default Vue.extend({
         return ['Audio', 'Subtitle', 'Video'].includes(value);
       }
     }
-  },
-  data() {
-    return { trackIndex: undefined as number | undefined };
   },
   computed: {
     mediaSourceItem: {
@@ -163,33 +165,7 @@ export default Vue.extend({
       }
     }
   },
-  watch: {
-    /**
-     * @param {number} newVal - New index value choosen in the v-select
-     */
-    trackIndex(newVal: number): void {
-      this.$emit('input', newVal);
-    },
-    /**
-     * When the media source index is changed by the parent, we reset the selected track as it has changed
-     */
-    mediaSourceIndex(): void {
-      this.resetDefaultTrack();
-    }
-  },
-  /**
-   * Sets the default track when loading the component
-   */
-  beforeMount() {
-    this.resetDefaultTrack();
-  },
   methods: {
-    /**
-     * Sets the model default track to the computed one, used at component (re)set
-     */
-    resetDefaultTrack(): void {
-      this.trackIndex = this.defaultIndex;
-    },
     /**
      * @param {MediaStream} track - Track to parse
      * @returns {string} Text to display in select when track is choosen
@@ -251,6 +227,10 @@ export default Vue.extend({
         default:
           return 'mdi-surround-sound';
       }
+    },
+    onChange(event: any): void {
+      console.log(event);
+      this.$emit('input', event);
     }
   }
 });

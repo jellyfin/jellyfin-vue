@@ -200,10 +200,10 @@
                     :sm="twoColsInfoColumn.rSm"
                   >
                     <track-selector
+                      v-model="currentVideoTrack"
                       :item="item"
                       :media-source-index="currentSourceIndex"
                       :type="'Video'"
-                      @input="currentVideoTrack = $event"
                     />
                   </v-col>
                 </v-row>
@@ -220,10 +220,10 @@
                     :sm="twoColsInfoColumn.rSm"
                   >
                     <track-selector
+                      v-model="currentAudioTrack"
                       :item="item"
                       :media-source-index="currentSourceIndex"
                       :type="'Audio'"
-                      @input="currentAudioTrack = $event"
                     />
                   </v-col>
                 </v-row>
@@ -240,10 +240,10 @@
                     :sm="twoColsInfoColumn.rSm"
                   >
                     <track-selector
+                      v-model="currentSubtitleTrack"
                       :item="item"
                       :media-source-index="currentSourceIndex"
                       :type="'Subtitle'"
-                      @input="currentSubtitleTrack = $event"
                     />
                   </v-col>
                 </v-row>
@@ -313,6 +313,7 @@ import {
   ImageType,
   MediaSourceInfo
 } from '@jellyfin/client-axios';
+import { MediaSourcePreferences } from '~/store/mediaSourcePreferences';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
@@ -359,10 +360,7 @@ export default Vue.extend({
       crew: [] as BaseItemPerson[],
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
-      currentSource: {} as MediaSourceInfo,
-      currentVideoTrack: undefined as number | undefined,
-      currentAudioTrack: undefined as number | undefined,
-      currentSubtitleTrack: undefined as number | undefined
+      currentSource: {} as MediaSourceInfo
     };
   },
   head() {
@@ -392,6 +390,61 @@ export default Vue.extend({
         return this.item.MediaSources?.findIndex(
           (source) => source === this.currentSource
         );
+      }
+    },
+    currentSourceId: {
+      get(): string | undefined | null {
+        return this.currentSource?.Id;
+      }
+    },
+    currentSourcePreferences: {
+      get(): MediaSourcePreferences | undefined {
+        if (this.currentSourceId) {
+          return this.$store.state.mediaSourcePreferences.preferences[
+            this.currentSourceId
+          ];
+        }
+
+        return undefined;
+      }
+    },
+    currentVideoTrack: {
+      get(): number | undefined {
+        return this.currentSourcePreferences?.videoStreamIndex;
+      },
+      set(newTrack): void {
+        if (this.currentSourceId) {
+          this.setVideoStream({
+            sourceId: this.currentSourceId,
+            streamIndex: newTrack
+          });
+        }
+      }
+    },
+    currentAudioTrack: {
+      get(): number | undefined {
+        return this.currentSourcePreferences?.audioStreamIndex;
+      },
+      set(newTrack): void {
+        if (this.currentSourceId) {
+          this.setAudioStream({
+            sourceId: this.currentSourceId,
+            streamIndex: newTrack
+          });
+        }
+      }
+    },
+    currentSubtitleTrack: {
+      get(): number | undefined {
+        return this.currentSourcePreferences?.subtitleStreamIndex;
+      },
+      set(newTrack): void {
+        if (this.currentSourceId) {
+          this.setSubtitleStream({
+            sourceId: this.currentSourceId,
+            streamIndex: newTrack
+          });
+        }
       }
     },
     isPlayable: {
@@ -453,7 +506,12 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    ...mapActions('mediaSourcePreferences', [
+      'setVideoStream',
+      'setAudioStream',
+      'setSubtitleStream'
+    ])
   }
 });
 </script>
