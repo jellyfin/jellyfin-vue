@@ -359,7 +359,7 @@ export default Vue.extend({
         this.fullScreenOverlayTimer = window.setTimeout(() => {
           this.showFullScreenOverlay = false;
           this.fullScreenOverlayTimer = null;
-        }, 5000);
+        }, 3000);
       }
     },
     getContentClass(): string {
