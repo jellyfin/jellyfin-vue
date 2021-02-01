@@ -25,7 +25,9 @@
         "loginAs": "Log in als {name}",
         "addServer": "Server toevoegen",
         "selectServer": "Selecteer server",
-        "login": "Log in"
+        "login": "Log in",
+        "connect": "Verbind",
+        "changeUser": "Verander gebruiker"
     },
     "logout": "Uitloggen",
     "more": "Meer",
@@ -241,7 +243,8 @@
         "failedGetActivity": "Kan de activiteit niet verkrijgen",
         "failedGetLogs": "Kan de logboeken niet verkrijgen",
         "logs": "Logboeken",
-        "activity": "Activiteit"
+        "activity": "Activiteit",
+        "noLogsFound": "Geen logboeken gevonden"
     },
     "logo": "Logo",
     "links": {
@@ -350,5 +353,23 @@
     "noAudioTracksAvailable": "Geen audiotracks beschikbaar",
     "noAudioTrackSelected": "Geen audiotrack geselecteerd",
     "confirm": "Bevestig",
-    "NoMediaSourcesAvailable": "Geen mediabronnen beschikbaar"
+    "NoMediaSourcesAvailable": "Geen mediabronnen beschikbaar",
+    "unableToToggleLike": "Kan de vind-ik-leuk-status van het element niet wijzigen",
+    "resume": "Hervatten",
+    "playback": {
+        "addToQueue": "Toevoegen aan wachtrij",
+        "playNext": "Speel daarna",
+        "shuffle": "Schudden",
+        "playAll": "Speel alles",
+        "shuffleAll": "Alles in willekeurige volgorde afspelen",
+        "saveAsPlaylist": "Bewaar wachtrij als een afspeellijst",
+        "playbackSource": {
+            "unknown": "Afspelen vanuit de wachtrij",
+            "shuffle": "Afspelen in willekeurige volgorde",
+            "shuffleItem": "{Item} in willekeurige volgorde afspelen",
+            "item": "Afspelen vanaf {item}"
+        },
+        "clearQueue": "Wis de wachtrij en stop het afspelen"
+    },
+    "playFromBeginning": "Speel vanaf het begin"
 }
