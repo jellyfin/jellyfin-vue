@@ -74,7 +74,17 @@ class BrowserDetector {
    * @memberof BrowserDetector
    */
   isEdge(): boolean {
-    return this.userAgentContains('Edge/');
+    return this.userAgentContains('Edg/') || this.userAgentContains('Edge/');
+  }
+
+  /**
+   * Check if the current platform is Chromium based.
+   *
+   * @returns {boolean} Determines if browser is Chromium based
+   * @memberof BrowserDetector
+   */
+  isChromiumBased(): boolean {
+    return this.userAgentContains('Chrome');
   }
 
   /**
