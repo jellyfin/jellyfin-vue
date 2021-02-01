@@ -31,82 +31,36 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-0 py-md-4 align-end align-sm-center align-md-start"
+            class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start"
           >
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
                 <p class="text-overline text-truncate mb-2 my-2">
                   {{ $t('homeHeader.items.recentlyAdded') }}
                 </p>
-                <v-img
-                  v-if="
-                    item.ParentLogoImageTag ||
-                    (item.ImageTags && item.ImageTags.Logo)
-                  "
-                  :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-                  aspect-ratio="2.58"
-                  contain
-                  data-swiper-parallax="-300"
-                  :alt="item.Name"
-                  :src="getLogo(item)"
+                <home-header-album-title
+                  v-if="item.Type === 'MusicAlbum'"
+                  class="mb-sm-n1"
+                  :item="item"
+                  :logo="getLogo(item)"
                 />
-                <h1
+                <home-header-episode-title
                   v-else-if="item.Type === 'Episode'"
-                  class="text-h2 text-truncate mb-2"
-                  data-swiper-parallax="-300"
-                >
-                  {{ item.SeriesName }}
-                </h1>
-                <h1
-                  v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h4 text-sm-h4 text-truncate mb-2"
-                  data-swiper-parallax="-300"
-                >
-                  {{ item.AlbumArtist }}
-                </h1>
-                <h1
+                  :item="item"
+                  :logo="getLogo(item)"
+                />
+                <home-header-generic-title
                   v-else
-                  class="text-h3 text-sm-h2 text-truncate"
-                  data-swiper-parallax="-300"
-                >
-                  {{ item.Name }}
-                </h1>
-                <p
-                  v-if="item.Type === 'Episode'"
-                  class="mb-n1 text-truncate text-subtitle-2"
-                  data-swiper-parallax="-200"
-                >
-                  {{ item.SeasonName }}
-                  {{ $t('episodeNumber', { episodeNumber: item.IndexNumber }) }}
-                </p>
-                <h2
-                  v-else-if="item.Taglines && item.Taglines.length > 0"
-                  class="text-truncate"
-                  data-swiper-parallax="-200"
-                >
-                  {{ item.Taglines[0] }}
-                </h2>
-                <h2
-                  v-if="item.Type === 'Episode'"
-                  class="text-h4 text-truncate"
-                  data-swiper-parallax="-200"
-                >
-                  {{ item.Name }}
-                </h2>
-                <h2
-                  v-else-if="item.Type === 'MusicAlbum'"
-                  class="text-h4 text-sm-h2 text-truncate"
-                  data-swiper-parallax="-200"
-                >
-                  {{ item.Name }}
-                </h2>
+                  :item="item"
+                  :logo="getLogo(item)"
+                />
                 <media-info
                   :item="item"
                   year
                   tracks
                   runtime
                   rating
-                  class="my-2"
+                  class="mb-3"
                   data-swiper-parallax="-100"
                 />
                 <play-button :item="item" data-swiper-parallax="-100" />
