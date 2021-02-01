@@ -12,6 +12,7 @@ export function getSupportedFmp4VideoCodecs(
 
   if (
     (browserDetector.isApple() ||
+      browserDetector.isEdge() ||
       browserDetector.isTizen() ||
       browserDetector.isWebOS()) &&
     hasHevcSupport(videoTestElement)
@@ -22,6 +23,7 @@ export function getSupportedFmp4VideoCodecs(
   if (hasH264Support(videoTestElement)) {
     if (
       browserDetector.isApple() ||
+      browserDetector.isEdge() ||
       browserDetector.isTizen() ||
       browserDetector.isWebOS()
     ) {

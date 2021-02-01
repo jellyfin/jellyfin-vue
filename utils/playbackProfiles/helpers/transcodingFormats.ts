@@ -22,6 +22,13 @@ export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @returns {boolean} Determines if the browser can play Hls with Media Source Extensions
+ */
+export function canPlayHlsWithMSE(): boolean {
+  return browserDetector.supportsMediaSource();
+}
+
+/**
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser can play Mkvs
  */

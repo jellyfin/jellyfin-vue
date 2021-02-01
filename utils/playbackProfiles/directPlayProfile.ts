@@ -1,5 +1,6 @@
 import { DirectPlayProfile, DlnaProfileType } from '@jellyfin/client-axios';
 import { getSupportedMP4VideoCodecs } from './helpers/mp4VideoFormats';
+import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
 import { hasMkvSupport } from './helpers/transcodingFormats';
 import { getSupportedWebMAudioCodecs } from './helpers/webmAudioFormats';
 import { getSupportedWebMVideoCodecs } from './helpers/webmVideoFormats';
@@ -19,7 +20,7 @@ export function getDirectPlayProfiles(
   const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
-  const mp4AudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
 
   if (webmVideoCodecs.length) {
     DirectPlayProfiles.push({

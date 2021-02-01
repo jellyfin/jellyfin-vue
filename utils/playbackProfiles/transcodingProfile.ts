@@ -11,7 +11,11 @@ import {
   getSupportedMP4VideoCodecs,
   hasVp8Support
 } from './helpers/mp4VideoFormats';
-import { canPlayNativeHls, hasMkvSupport } from './helpers/transcodingFormats';
+import {
+  canPlayNativeHls,
+  canPlayHlsWithMSE,
+  hasMkvSupport
+} from './helpers/transcodingFormats';
 import { getSupportedTsAudioCodecs } from './helpers/tsAudioFormats';
 import { getSupportedTsVideoCodecs } from './helpers/tsVideoFormats';
 import { browserDetector } from '~/plugins/browserDetection';
@@ -30,19 +34,20 @@ export function getTranscodingProfiles(
 
   const hlsBreakOnNonKeyFrames = !!(
     browserDetector.isApple() ||
-    browserDetector.isEdge() ||
+    (browserDetector.isEdge() && !browserDetector.isChromiumBased()) ||
     !canPlayNativeHls(videoTestElement)
   );
 
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+  const canPlayHls = canPlayNativeHls(videoTestElement) || canPlayHlsWithMSE();
 
-  if (canPlayNativeHls(videoTestElement)) {
+  if (canPlayHls) {
     TranscodingProfiles.push({
       // hlsjs, edge, and android all seem to require ts container
       Container:
         !canPlayNativeHls(videoTestElement) ||
-        browserDetector.isEdge() ||
+        (browserDetector.isEdge() && !browserDetector.isChromiumBased()) ||
         browserDetector.isAndroid()
           ? 'ts'
           : 'aac',
@@ -69,25 +74,13 @@ export function getTranscodingProfiles(
       });
     });
 
-  if (hasMkvSupport(videoTestElement) && !browserDetector.isTizen()) {
-    TranscodingProfiles.push({
-      Container: 'mkv',
-      Type: DlnaProfileType.Video,
-      AudioCodec: mp4AudioCodecs.join(','),
-      VideoCodec: mp4VideoCodecs.join(','),
-      Context: EncodingContext.Streaming,
-      MaxAudioChannels: physicalAudioChannels.toString(),
-      CopyTimestamps: true
-    });
-  }
-
   const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(videoTestElement);
   const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(videoTestElement);
 
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
 
-  if (canPlayNativeHls(videoTestElement)) {
+  if (canPlayHls) {
     if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
       TranscodingProfiles.push({
         Container: 'mp4',
@@ -115,6 +108,18 @@ export function getTranscodingProfiles(
         BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
       });
     }
+  }
+
+  if (hasMkvSupport(videoTestElement) && !browserDetector.isTizen()) {
+    TranscodingProfiles.push({
+      Container: 'mkv',
+      Type: DlnaProfileType.Video,
+      AudioCodec: mp4AudioCodecs.join(','),
+      VideoCodec: mp4VideoCodecs.join(','),
+      Context: EncodingContext.Streaming,
+      MaxAudioChannels: physicalAudioChannels.toString(),
+      CopyTimestamps: true
+    });
   }
 
   if (hasVp8Support(videoTestElement)) {
