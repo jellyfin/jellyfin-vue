@@ -147,6 +147,14 @@ export function getCodecProfiles(
     maxH264Level = 51;
   }
 
+  if (
+    videoTestElement
+      .canPlayType('video/mp4; codecs="avc1.640834"')
+      .replace(/no/, '')
+  ) {
+    maxH264Level = 52;
+  }
+
   // Support H264 Level 52 (Tizen 5.0) - app only
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -164,7 +172,7 @@ export function getCodecProfiles(
     if (
       !browserDetector.isApple() ||
       !browserDetector.isWebOS() ||
-      !browserDetector.isEdge()
+      !(browserDetector.isEdge() && !browserDetector.isChromiumBased())
     ) {
       h264Profiles += '|high 10';
     }

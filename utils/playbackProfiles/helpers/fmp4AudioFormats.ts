@@ -6,6 +6,7 @@ import {
   hasEac3Support,
   hasMp3AudioSupport
 } from './mp4AudioFormats';
+import { browserDetector } from '~/plugins/browserDetection';
 
 /**
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
@@ -35,7 +36,9 @@ export function getSupportedFmp4AudioCodecs(
   }
 
   if (getSupportedAudioCodecs('flac')) {
-    codecs.push('flac');
+    if (!browserDetector.isEdge()) {
+      codecs.push('flac');
+    }
   }
 
   if (getSupportedAudioCodecs('alac')) {

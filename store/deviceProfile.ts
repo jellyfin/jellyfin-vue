@@ -45,7 +45,7 @@ function getDeviceName(): string {
   // See: https://github.com/tc39/proposal-pattern-matching
   if (browserDetector.isChrome()) {
     deviceName = 'Chrome';
-  } else if (browserDetector.isEdge() && !browserDetector.isChrome()) {
+  } else if (browserDetector.isEdge() && !browserDetector.isChromiumBased()) {
     deviceName = 'Edge (EdgeHTML)';
   } else if (browserDetector.isEdge()) {
     deviceName = 'Edge (Chromium)';
