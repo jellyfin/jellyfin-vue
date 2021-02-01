@@ -12,44 +12,42 @@
           />
         </v-col>
         <v-col cols="12" sm="7">
-          <div class="ml-sm-4 d-flex flex-column">
-            <div
-              class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
-            >
-              {{ $t('artist') }}
+          <v-row justify="space-between">
+            <div class="ml-sm-4 d-flex flex-column">
+              <div
+                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+              >
+                {{ $t('artist') }}
+              </div>
+              <h1 class="text-h4 text-md-h2 font-weight-light">
+                {{ item.Name }}
+              </h1>
             </div>
-            <h1 class="text-h4 text-md-h2 font-weight-light">
-              {{ item.Name }}
-            </h1>
-          </div>
+            <div class="d-flex align-center">
+              <item-menu :item="item" />
+              <like-button :item="item" />
+            </div>
+          </v-row>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" background-color="transparent">
-            <v-tab :key="0">{{ $t('overview') }}</v-tab>
-            <v-tab :key="1">{{ $t('about') }}</v-tab>
+            <v-tab :key="0">{{ $t('item.artist.discography') }}</v-tab>
+            <v-tab :key="1">{{ $t('item.artist.information') }}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="activeTab" class="transparent">
             <v-tab-item :key="0">
               <v-row no-gutters>
                 <v-col cols="12" class="ma-3">
-                  <v-row>
-                    <h2 class="text-h6 my-3">
-                      <span>{{ $t('albums') }}</span>
-                    </h2>
-                  </v-row>
                   <v-row v-for="appearance in appearances" :key="appearance.Id">
                     <v-col cols="12">
                       <div class="d-flex flex-column">
                         <v-row>
-                          <div
-                            style="width: 125px"
-                            class="ma-2 d-none d-md-block"
-                          >
+                          <v-col lg="2" sm="1">
                             <card :item="appearance" no-text no-margin />
-                          </div>
-                          <div class="py-2">
+                          </v-col>
+                          <v-col class="py-2">
                             <div
                               class="text-subtitle-1 text--secondary font-weight-medium"
                             >
@@ -62,9 +60,9 @@
                             >
                               {{ appearance.Name }}
                             </nuxt-link>
-                          </div>
+                          </v-col>
                         </v-row>
-                        <v-row class="my-2">
+                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
                           <v-col>
                             <track-list
                               v-if="appearance.Type === 'MusicAlbum'"

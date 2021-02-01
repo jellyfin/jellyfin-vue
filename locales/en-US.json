@@ -1,6 +1,5 @@
 {
   "3DFormat": "3D format",
-  "about": "About",
   "actor": "Actor",
   "actors": "Actors",
   "addNewPerson": "Add a new person",
@@ -88,6 +87,10 @@
   },
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "item": {
+    "artist": {
+      "discography": "Discography",
+      "information": "Information"
+    },
     "cast": "Cast",
     "composer": "Composer",
     "crew": "Crew",
