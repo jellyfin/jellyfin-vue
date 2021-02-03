@@ -16,7 +16,7 @@ export const validLibraryTypes = [
  * @returns {string} Name of the Material Design Icon associated with the type
  */
 export function getLibraryIcon(libraryType: string | undefined | null): string {
-  switch (libraryType) {
+  switch (libraryType?.toLowerCase()) {
     case 'movies':
       return 'mdi-movie';
     case 'music':
@@ -51,7 +51,7 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
 export function getShapeFromCollectionType(
   collectionType: string | null | undefined
 ): string {
-  switch (collectionType) {
+  switch (collectionType?.toLowerCase()) {
     case 'boxsets':
     case 'movies':
     case 'tvshows':
@@ -64,5 +64,38 @@ export function getShapeFromCollectionType(
     case 'music':
     default:
       return 'square-card';
+  }
+}
+
+/**
+ * Gets the card shape associated with a collection type
+ *
+ * @param {(string | null | undefined)} itemType - type of item
+ * @returns {string} CSS class to use as the shape of the card
+ */
+export function getShapeFromItemType(
+  itemType: string | null | undefined
+): string {
+  switch (itemType?.toLowerCase()) {
+    case 'audio':
+    case 'folder':
+    case 'musicalbum':
+    case 'musicartist':
+    case 'musicgenre':
+    case 'photoalbum':
+    case 'playlist':
+    case 'video':
+      return 'square-card';
+    case 'episode':
+    case 'studio':
+      return 'thumb-card';
+    case 'book':
+    case 'boxSet':
+    case 'genre':
+    case 'movie':
+    case 'person':
+    case 'series':
+    default:
+      return 'portrait-card';
   }
 }
