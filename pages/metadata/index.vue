@@ -7,11 +7,11 @@
         activatable
         transition
         @update:active="handleAction"
-      ></v-treeview>
+      />
     </v-col>
 
     <v-col v-if="itemId" cols="9" class="metadata-card">
-      <metadata-editor :item-id="itemId"></metadata-editor>
+      <metadata-editor :item-id="itemId" />
     </v-col>
   </v-row>
 </template>

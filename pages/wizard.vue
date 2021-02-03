@@ -13,7 +13,7 @@
               {{ $t('wizard.languageLocale') }}
             </v-stepper-step>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-stepper-step
               :complete="wizardStage > 2"
@@ -23,7 +23,7 @@
               {{ $t('wizard.administratorAccount') }}
             </v-stepper-step>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-stepper-step
               :complete="wizardStage > 3"
@@ -33,7 +33,7 @@
               {{ $t('wizard.preferredMetadataLanguage') }}
             </v-stepper-step>
 
-            <v-divider></v-divider>
+            <v-divider />
 
             <v-stepper-step
               :complete="wizardStage > 4"

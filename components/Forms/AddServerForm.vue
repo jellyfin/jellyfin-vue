@@ -14,7 +14,7 @@
             type="url"
             :error-messages="errors"
             required
-          ></v-text-field>
+          />
         </validation-provider>
         <v-row align="center" no-gutters>
           <v-col v-if="previousServerLength" class="mr-2">

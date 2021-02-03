@@ -274,14 +274,8 @@
               :id="$route.params.itemId"
               :item="item"
             />
-            <season-tabs
-              v-if="item.Type === 'Series'"
-              :item="item"
-            ></season-tabs>
-            <track-list
-              v-if="item.Type === 'MusicAlbum'"
-              :item="item"
-            ></track-list>
+            <season-tabs v-if="item.Type === 'Series'" :item="item" />
+            <track-list v-if="item.Type === 'MusicAlbum'" :item="item" />
           </v-col>
         </v-row>
       </v-col>

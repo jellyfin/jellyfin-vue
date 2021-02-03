@@ -6,7 +6,7 @@
       ref="progress"
       class="progress"
       @click.self="onProgressClicked"
-    ></div>
+    />
   </div>
 </template>
 

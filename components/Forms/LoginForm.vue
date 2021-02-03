@@ -14,7 +14,7 @@
             hide-details
             :label="$t('username')"
             :error-messages="errors"
-          ></v-text-field>
+          />
         </validation-provider>
         <v-text-field
           v-model="login.password"
@@ -25,13 +25,13 @@
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
           @click:append="() => (showPassword = !showPassword)"
-        ></v-text-field>
+        />
         <v-checkbox
           v-model="login.rememberMe"
           hide-details
           class="mt-6 mb-6"
           :label="$t('login.rememberMe')"
-        ></v-checkbox>
+        />
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
             <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>

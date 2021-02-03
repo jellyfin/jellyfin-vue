@@ -74,7 +74,7 @@
                 <v-list-item-avatar
                   :color="getColorFromSeverity(activity.Severity)"
                 >
-                  <v-icon dark v-text="getIconFromType(activity.Type)"></v-icon>
+                  <v-icon dark v-text="getIconFromType(activity.Type)" />
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title v-text="decodeHTML(activity.Name)" />

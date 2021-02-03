@@ -63,7 +63,7 @@
                               <track-list
                                 v-if="appearance.Type === 'MusicAlbum'"
                                 :item="appearance"
-                              ></track-list>
+                              />
                             </v-col>
                           </v-row>
                         </div>

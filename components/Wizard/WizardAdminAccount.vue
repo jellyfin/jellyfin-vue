@@ -9,7 +9,7 @@
           type="username"
           :error-messages="errors"
           required
-        ></v-text-field>
+        />
       </validation-provider>
       <validation-provider
         v-slot="{ errors }"
@@ -23,7 +23,7 @@
           :type="showPassword ? 'text' : 'password'"
           :error-messages="errors"
           @click:append="() => (showPassword = !showPassword)"
-        ></v-text-field>
+        />
       </validation-provider>
 
       <validation-provider v-slot="{ errors }" name="confirm" rules="">
@@ -35,7 +35,7 @@
           :type="showPassword ? 'text' : 'password'"
           :error-messages="errors"
           @click:append="() => (showPassword = !showPassword)"
-        ></v-text-field>
+        />
       </validation-provider>
 
       <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">

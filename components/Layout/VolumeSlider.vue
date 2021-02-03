@@ -11,8 +11,7 @@
       :value="currentvolume"
       validate-on-blur
       @input="onVolumeChange"
-    >
-    </v-slider>
+    />
   </div>
 </template>
 

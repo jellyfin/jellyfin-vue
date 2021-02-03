@@ -11,7 +11,7 @@
       :force-refresh.sync="forceRefresh"
       @cancel="close"
       @save="close"
-    ></metadata-editor>
+    />
   </v-dialog>
 </template>
 

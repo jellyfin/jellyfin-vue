@@ -2,7 +2,7 @@
   <v-dialog :value="dialog" max-width="30%" @click:outside="handleCancel">
     <v-card>
       <v-card-title>{{ $t('editPerson') }}</v-card-title>
-      <v-divider></v-divider>
+      <v-divider />
       <v-card-text class="pa-3">
         <v-row>
           <v-col cols="4">
@@ -20,24 +20,24 @@
                 v-model="editState.Name"
                 outlined
                 :label="$t('name')"
-              ></v-text-field>
+              />
               <v-select
                 v-model="editState.Type"
                 :items="options"
                 :label="$t('type')"
                 outlined
-              ></v-select>
+              />
               <v-text-field
                 v-if="editState.Type === 'Actor'"
                 v-model="editState.Role"
                 outlined
                 :label="$t('role')"
-              ></v-text-field>
+              />
             </v-form>
           </v-col>
         </v-row>
       </v-card-text>
-      <v-divider></v-divider>
+      <v-divider />
       <v-card-actions
         class="d-flex align-center pa-3"
         :class="{
@@ -45,7 +45,7 @@
           'justify-center': $vuetify.breakpoint.mobile
         }"
       >
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn depressed width="8em" class="mr-1" @click="handleCancel">
           {{ $t('cancel') }}
         </v-btn>
