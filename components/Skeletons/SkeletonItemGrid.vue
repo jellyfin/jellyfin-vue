@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { getShapeFromItemType } from '~/utils/items';
 
 export default Vue.extend({
   props: {
@@ -31,30 +32,7 @@ export default Vue.extend({
   },
   methods: {
     setCardShape(): void {
-      switch (this.viewType) {
-        case 'Audio':
-        case 'Folder':
-        case 'MusicAlbum':
-        case 'MusicArtist':
-        case 'MusicGenre':
-        case 'PhotoAlbum':
-        case 'Playlist':
-        case 'Video':
-          this.skeletonCardShape = 'square-card';
-          return;
-        case 'Episode':
-        case 'Studio':
-          this.skeletonCardShape = 'thumb-card';
-          return;
-        case 'Book':
-        case 'BoxSet':
-        case 'Genre':
-        case 'Movie':
-        case 'Person':
-        case 'Series':
-        default:
-          this.skeletonCardShape = 'portrait-card';
-      }
+      this.skeletonCardShape = getShapeFromItemType(this.viewType);
     }
   }
 });

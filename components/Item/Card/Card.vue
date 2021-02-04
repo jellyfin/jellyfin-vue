@@ -99,7 +99,7 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
-import { validLibraryTypes } from '~/utils/items';
+import { getShapeFromItemType, validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -170,28 +170,7 @@ export default Vue.extend({
     cardType: {
       get(): string {
         // Otherwise, figure out the shape based on the type of the item
-        switch (this.item.Type) {
-          case 'Audio':
-          case 'Folder':
-          case 'MusicAlbum':
-          case 'MusicArtist':
-          case 'MusicGenre':
-          case 'PhotoAlbum':
-          case 'Playlist':
-          case 'Video':
-            return 'square-card';
-          case 'Episode':
-          case 'Studio':
-            return 'thumb-card';
-          case 'Book':
-          case 'BoxSet':
-          case 'Genre':
-          case 'Movie':
-          case 'Person':
-          case 'Series':
-          default:
-            return 'portrait-card';
-        }
+        return getShapeFromItemType(this.item.Type);
       }
     },
     itemIcon: {
