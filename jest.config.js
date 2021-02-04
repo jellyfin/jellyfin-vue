@@ -12,9 +12,13 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
+    '<rootDir>/layouts/**/*.vue',
+    '<rootDir>/middleware/**/*.vue',
     '<rootDir>/mixins/**/*.vue',
     '<rootDir>/mixins/**/*.ts',
     '<rootDir>/pages/**/*.vue',
+    '<rootDir>/plugins/**/*.ts',
+    '<rootDir>/schemes/**/*.ts',
     '<rootDir>/store/**/*.ts',
     '<rootDir>/utils/**/*.ts'
   ],
