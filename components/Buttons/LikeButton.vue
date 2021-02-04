@@ -1,20 +1,20 @@
 <template>
   <v-btn :dark="dark" icon @click.stop.prevent="toggleFavorite">
-    <v-icon :class="fav ? 'red--text' : ''">
-      {{ fav ? 'mdi-heart' : 'mdi-heart-outline' }}
+    <v-icon :class="isFavorite ? 'red--text' : ''">
+      {{ isFavorite ? 'mdi-heart' : 'mdi-heart-outline' }}
     </v-icon>
   </v-btn>
 </template>
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 
 export default Vue.extend({
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     dark: {
@@ -24,16 +24,14 @@ export default Vue.extend({
   },
   data() {
     return {
-      fav: false
+      isFavorite: false
     };
   },
   watch: {
     item: {
       immediate: true,
       handler(): void {
-        if (this.item.UserData?.IsFavorite) {
-          this.fav = this.item.UserData.IsFavorite;
-        }
+        this.isFavorite = this.item.UserData?.IsFavorite || false;
       }
     }
   },
@@ -45,9 +43,9 @@ export default Vue.extend({
       ) {
         const payloadData = mutation?.payload?.Data?.UserDataList;
         if (payloadData) {
-          for (const it of payloadData) {
-            if (it.ItemId === this.item.Id) {
-              this.fav = it.IsFavorite;
+          for (const payloadItem of payloadData) {
+            if (payloadItem.ItemId === this.item.Id) {
+              this.isFavorite = payloadItem.IsFavorite;
             }
           }
         }
@@ -57,28 +55,27 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async toggleFavorite(): Promise<void> {
-      if (this.item.Id) {
-        try {
-          if (!this.fav) {
-            await this.$nuxt.$api.userLibrary.markFavoriteItem({
-              userId: this.$auth.user.Id,
-              itemId: this.item.Id
-            });
-            this.fav = true;
-          } else {
-            await this.$nuxt.$api.userLibrary.unmarkFavoriteItem({
-              userId: this.$auth.user.Id,
-              itemId: this.item.Id
-            });
-            this.fav = false;
-          }
-        } catch {
-          this.pushSnackbarMessage({
-            message: this.$t('unableToToggleLike'),
-            color: 'error'
+      if (!this.item.Id) return;
+
+      try {
+        if (!this.isFavorite) {
+          await this.$nuxt.$api.userLibrary.markFavoriteItem({
+            userId: this.$auth.user.Id,
+            itemId: this.item.Id
           });
-          this.fav = !this.fav;
+          this.isFavorite = true;
+        } else {
+          await this.$nuxt.$api.userLibrary.unmarkFavoriteItem({
+            userId: this.$auth.user.Id,
+            itemId: this.item.Id
+          });
+          this.isFavorite = false;
         }
+      } catch {
+        this.pushSnackbarMessage({
+          message: this.$t('unableToToggleLike'),
+          color: 'error'
+        });
       }
     }
   }
