@@ -30,7 +30,7 @@
     </v-row>
     <v-row v-if="backdropImages.length">
       <v-col class="pt-0">
-        <h2 class="text-h6">{{ $t('backdrop') }}</h2>
+        <h2 class="text-h6">{{ $t('imageType.backdrop') }}</h2>
         <div>
           <v-card
             v-for="(item, i) in backdropImages"

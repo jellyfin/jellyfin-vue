@@ -17,7 +17,7 @@
             <div
               class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
             >
-              {{ $t('person') }}
+              {{ $t('item.person.person') }}
             </div>
             <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
             <v-col cols="9" class="pl-0 pr-0">
@@ -26,27 +26,27 @@
           </v-col>
           <v-col cols="3">
             <v-row v-if="birthDate">
-              <v-col cols="3" class="text--secondary">Birth</v-col>
+              <v-col cols="3" class="text--secondary">
+                {{ $t('item.person.birth') }}
+              </v-col>
               <v-col cols="9">
                 {{ birthDate }}
               </v-col>
             </v-row>
             <v-row v-if="deathDate">
-              <v-col cols="3" class="text--secondary">Death</v-col>
+              <v-col cols="3" class="text--secondary">
+                {{ $t('item.person.death') }}
+              </v-col>
               <v-col cols="9">
                 {{ deathDate }}
               </v-col>
             </v-row>
             <v-row v-if="birthPlace">
-              <v-col cols="3" class="text--secondary">Birthplace</v-col>
+              <v-col cols="3" class="text--secondary">
+                {{ $t('item.person.birthplace') }}
+              </v-col>
               <v-col cols="9">
                 {{ birthPlace }}
-              </v-col>
-            </v-row>
-            <v-row v-if="ProductionLocations && ProductionLocations.length > 0">
-              <v-col cols="3" class="text--secondary">Birth place</v-col>
-              <v-col cols="9">
-                {{ item.ProductionLocations[0] }}
               </v-col>
             </v-row>
           </v-col>
