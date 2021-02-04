@@ -1,6 +1,5 @@
 {
   "3DFormat": "3D format",
-  "NoMediaSourcesAvailable": "No media sources available",
   "actor": "Actor",
   "actors": "Actors",
   "addNewPerson": "Add a new person",
@@ -8,16 +7,11 @@
   "allLanguages": "All languages",
   "alphabetically": "Alphabetically",
   "architecture": "Architecture",
-  "art": "Art",
   "artist": "Artist",
   "artists": "Artists",
   "audio": "Audio",
-  "backdrop": "Backdrop",
   "badRequest": "Bad request. Try again",
-  "banner": "Banner",
   "biography": "Biography",
-  "box": "Box",
-  "boxRear": "Box (rear)",
   "browserNotSupported": "Your browser is not supported for playing this file.",
   "buttons": {
     "ok": "Ok"
@@ -27,7 +21,6 @@
   "castAndCrew": "Cast & Crew",
   "collections": "Collections",
   "communityRating": "Community rating",
-  "composer": "Composer",
   "confirm": "Confirm",
   "connect": "Connect",
   "continueListening": "Continue listening",
@@ -39,7 +32,6 @@
   "details": "Details",
   "directing": "Directing",
   "director": "Director",
-  "disc": "Disc",
   "discNumber": "Disc {discNumber}",
   "dislikes": "Dislikes",
   "edit": "Edit",
@@ -80,7 +72,34 @@
     }
   },
   "images": "Images",
+  "imageType": {
+    "art": "Art",
+    "backdrop": "Backdrop",
+    "banner": "Banner",
+    "box": "Box",
+    "boxRear": "Box (rear)",
+    "disc": "Disc",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Primary",
+    "screenshot": "Screenshot",
+    "thumb": "Thumb"
+  },
   "incorrectUsernameOrPassword": "Incorrect username or password",
+  "item": {
+    "cast": "Cast",
+    "composer": "Composer",
+    "crew": "Crew",
+    "person": {
+      "birth": "Birth",
+      "birthPlace": "Birth place",
+      "death": "Death",
+      "person": "Person"
+    },
+    "tracklist": {
+      "title": "Title"
+    }
+  },
   "itemNotFound": "Item not found",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Latest {libraryName}",
@@ -97,24 +116,23 @@
     "reportAnIssue": "Report an issue with the Vue client"
   },
   "login": {
-    "login": "Login",
-    "selectServer": "Select server",
     "addServer": "Add server",
+    "changeServer": "Change server",
+    "changeUser": "Change user",
+    "connect": "Connect",
+    "login": "Login",
     "loginAs": "Login as {name}",
+    "manualLogin": "Manual login",
     "rememberMe": "Remember me",
+    "selectServer": "Select server",
     "selectUser": "Select a user",
-    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
     "serverAddress": "Server address",
     "serverAddressMustBeUrl": "Server address must be a valid URL",
     "serverAddressRequired": "Server address is required",
     "serverDashboard": "Server dashboard",
     "serverNotFound": "Server not found",
-    "manualLogin": "Manual login",
-    "changeServer": "Change server",
-    "changeUser": "Change user",
-    "connect": "Connect"
+    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher"
   },
-  "logo": "Logo",
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Activity",
@@ -124,7 +142,6 @@
     "noActivityFound": "No activities found",
     "noLogsFound": "No logs found"
   },
-  "menu": "Menu",
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
   "more": "More",
@@ -134,16 +151,17 @@
   "name": "Name",
   "networks": "Networks",
   "nextUp": "Next up",
-  "noAudioTrackSelected": "No audio track selected",
   "noAudioTracksAvailable": "No audio tracks available",
+  "noAudioTrackSelected": "No audio track selected",
   "noImagesFound": "No images found",
+  "NoMediaSourcesAvailable": "No media sources available",
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
-  "noSubtitleSelected": "No subtitle selected",
   "noSubtitlesAvailable": "No subtitles available",
+  "noSubtitleSelected": "No subtitle selected",
   "noTracksAvailable": "No tracks available",
-  "noVideoTrackSelected": "No video track selected",
   "noVideoTracksAvailable": "No video tracks available",
+  "noVideoTrackSelected": "No video track selected",
   "numberTracks": "{number} tracks",
   "operatingSystem": "Operating system",
   "originalAspectRatio": "Original aspect ratio",
@@ -155,26 +173,25 @@
   "people": "People",
   "person": "Person",
   "play": "Play",
-  "playFromBeginning": "Play from the beginning",
   "playback": {
+    "addToQueue": "Add to queue",
     "clearQueue": "Clear queue and stop playback",
+    "playAll": "Play all",
     "playbackSource": {
       "item": "Playing from {item}",
       "shuffle": "Playing in shuffle",
       "shuffleItem": "Playing {item} in shuffle",
       "unknown": "Playing from queue"
     },
-    "saveAsPlaylist": "Save queue as a playlist",
-    "shuffleAll": "Shuffle all",
-    "playAll": "Play all",
-    "shuffle": "Shuffle",
     "playNext": "Play next",
-    "addToQueue": "Add to queue",
-    "queueItems": "{items} tracks"
+    "queueItems": "{items} tracks",
+    "saveAsPlaylist": "Save queue as a playlist",
+    "shuffle": "Shuffle",
+    "shuffleAll": "Shuffle all"
   },
   "played": "Played",
+  "playFromBeginning": "Play from the beginning",
   "present": "Present",
-  "primary": "Primary",
   "producer": "Producer",
   "queue": "Queue",
   "rating": "Rating",
@@ -185,11 +202,10 @@
   "role": "Role",
   "save": "Save",
   "saved": "Saved",
-  "screenshot": "Screenshot",
   "search": "Search",
   "series": "Series",
-  "serverVersion": "Server version",
   "server": "Server",
+  "serverVersion": "Server version",
   "settings": {
     "apiKeys": {
       "accessToken": "Access token",
@@ -292,8 +308,6 @@
   "tags": "Tags",
   "themeSong": "Theme Song",
   "themeVideo": "Theme Video",
-  "thumb": "Thumb",
-  "title": "Title",
   "tooltips": {
     "changeLanguage": "Language",
     "switchToDarkMode": "Switch to dark mode",
@@ -317,7 +331,6 @@
   "username": "Username",
   "validation": {
     "bothPasswordsSame": "Both passwords must be the same",
-    "mustBeUrl": "This field must be a valid URL",    
     "mustBeUrl": "This field must be a valid URL",
     "required": "This field is required"
   },

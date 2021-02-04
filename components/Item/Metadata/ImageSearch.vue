@@ -130,47 +130,47 @@ export default Vue.extend({
       types: [
         {
           value: ImageType.Primary,
-          text: this.$t('primary')
+          text: this.$t('imageType.primary')
         },
         {
           value: ImageType.Art,
-          text: this.$t('art')
+          text: this.$t('imageType.art')
         },
         {
           value: ImageType.Backdrop,
-          text: this.$t('backdrop')
+          text: this.$t('imageType.backdrop')
         },
         {
           value: ImageType.Banner,
-          text: this.$t('banner')
+          text: this.$t('imageType.banner')
         },
         {
           value: ImageType.Box,
-          text: this.$t('box')
+          text: this.$t('imageType.box')
         },
         {
           value: ImageType.BoxRear,
-          text: this.$t('boxRear')
+          text: this.$t('imageType.boxRear')
         },
         {
           value: ImageType.Disc,
-          text: this.$t('disc')
+          text: this.$t('imageType.disc')
         },
         {
           value: ImageType.Logo,
-          text: this.$t('logo')
+          text: this.$t('imageType.logo')
         },
         {
           value: ImageType.Menu,
-          text: this.$t('menu')
+          text: this.$t('imageType.menu')
         },
         {
           value: ImageType.Screenshot,
-          text: this.$t('screenshot')
+          text: this.$t('imageType.screenshot')
         },
         {
           value: ImageType.Thumb,
-          text: this.$t('thumb')
+          text: this.$t('imageType.thumb')
         }
       ],
       images: [] as RemoteImageInfo[],
