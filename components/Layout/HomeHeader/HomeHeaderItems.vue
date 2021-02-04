@@ -10,7 +10,7 @@
     >
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
-          <div class="default-icon"></div>
+          <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"

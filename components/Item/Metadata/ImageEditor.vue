@@ -11,12 +11,7 @@
             outlined
             width="288"
           >
-            <v-img
-              :src="imageFormat(item)"
-              contain
-              width="288"
-              height="162"
-            ></v-img>
+            <v-img :src="imageFormat(item)" contain width="288" height="162" />
             <div class="text-center subtitle-1">{{ item.ImageType }}</div>
             <div class="text-center body-2 text--secondary">
               {{ item.Width }} x {{ item.Height }}
@@ -44,12 +39,7 @@
             outlined
             width="288"
           >
-            <v-img
-              :src="imageFormat(item)"
-              contain
-              width="288"
-              height="162"
-            ></v-img>
+            <v-img :src="imageFormat(item)" contain width="288" height="162" />
             <div class="text-center subtitle-1">{{ item.ImageType }}</div>
             <div class="text-center body-2 text--secondary">
               {{ item.Width }} &times; {{ item.Height }}
@@ -70,7 +60,7 @@
       :dialog.sync="dialog"
       :metadata="metadata"
       @download-success="getItemImageInfos"
-    ></image-search>
+    />
   </div>
 </template>
 

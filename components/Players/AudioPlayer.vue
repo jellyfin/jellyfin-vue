@@ -6,7 +6,7 @@
     @pause="onAudioPause"
     @play="onPlay"
     @ended="onAudioStopped"
-  ></audio>
+  />
 </template>
 
 <script lang="ts">

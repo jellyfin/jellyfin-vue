@@ -41,13 +41,11 @@
                 >
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-text="status.label"
-                      ></v-list-item-title>
+                      <v-list-item-title v-text="status.label" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -79,13 +77,11 @@
                 >
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-text="feature.label"
-                      ></v-list-item-title>
+                      <v-list-item-title v-text="feature.label" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -107,11 +103,11 @@
                 <v-list-item :key="`genre-${genreIndex}`" :value="genre">
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title v-text="genre"></v-list-item-title>
+                      <v-list-item-title v-text="genre" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -135,11 +131,11 @@
                 <v-list-item :key="`rating-${ratingIndex}`" :value="rating">
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title v-text="rating"></v-list-item-title>
+                      <v-list-item-title v-text="rating" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -168,13 +164,11 @@
                 <v-list-item :key="`type-${typeIndex}`" :value="type.name">
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-text="type.label"
-                      ></v-list-item-title>
+                      <v-list-item-title v-text="type.label" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>
@@ -198,11 +192,11 @@
                 <v-list-item :key="`year-${yearIndex}`" :value="year">
                   <template #default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title v-text="year"></v-list-item-title>
+                      <v-list-item-title v-text="year" />
                     </v-list-item-content>
 
                     <v-list-item-action>
-                      <v-checkbox :input-value="active"></v-checkbox>
+                      <v-checkbox :input-value="active" />
                     </v-list-item-action>
                   </template>
                 </v-list-item>

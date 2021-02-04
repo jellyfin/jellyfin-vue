@@ -18,7 +18,7 @@
           label="Source"
           outlined
           hide-details
-        ></v-select>
+        />
         <v-select
           v-model="type"
           class="mx-4"
@@ -27,14 +27,14 @@
           label="Type"
           outlined
           hide-details
-        ></v-select>
+        />
         <v-checkbox
           v-model="allLanguages"
           class="mt-0 mx-4"
           :label="$t('allLanguages')"
           :disabled="loading"
           hide-details
-        ></v-checkbox>
+        />
       </v-row>
       <v-divider />
       <v-row class="image-results">
@@ -62,7 +62,7 @@
               :aspect-ratio="ratio"
               position="top center"
               contain
-            ></v-img>
+            />
             <div class="text-center text-truncate subtitle-1 mt-2">
               {{ item.ProviderName }}
             </div>

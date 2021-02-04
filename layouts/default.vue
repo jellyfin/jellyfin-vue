@@ -10,7 +10,7 @@
     >
       <template #prepend>
         <user-button />
-        <v-divider></v-divider>
+        <v-divider />
       </template>
       <v-list>
         <v-list-item

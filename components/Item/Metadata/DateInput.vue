@@ -13,9 +13,9 @@
         outlined
         v-bind="attrs"
         v-on="on"
-      ></v-text-field>
+      />
     </template>
-    <v-date-picker :value="value" @change="handleChange"></v-date-picker>
+    <v-date-picker :value="value" @change="handleChange" />
   </v-menu>
 </template>
 <script lang="ts">

@@ -5,7 +5,7 @@
       {{ metadata.Path }}
     </v-card-subtitle>
 
-    <v-divider></v-divider>
+    <v-divider />
 
     <v-card-text class="pa-0 flex-grow-1">
       <v-tabs v-model="tabName" :vertical="!$vuetify.breakpoint.mobile">
@@ -20,50 +20,50 @@
               v-model="metadata.Name"
               outlined
               :label="$t('title')"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="metadata.OriginalTitle"
               outlined
               :label="$t('originalTitle')"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="metadata.ForcedSortName"
               outlined
               :label="$t('sortTitle')"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="metadata.Taglines"
               outlined
               :label="$t('tagline')"
-            ></v-text-field>
+            />
             <v-textarea
               v-model="metadata.Overview"
               outlined
               no-resize
               rows="4"
               :label="$t('overview')"
-            ></v-textarea>
+            />
           </v-tab-item>
           <v-tab-item value="details">
             <date-input
               :value="dateCreated"
               :label="$t('dateAdded')"
               @update:date="(value) => saveDate('DateCreated', value)"
-            ></date-input>
+            />
             <v-row>
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CommunityRating"
                   outlined
                   :label="$t('communityRating')"
-                ></v-text-field>
+                />
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CriticRating"
                   outlined
                   :label="$t('criticRating')"
-                ></v-text-field>
+                />
               </v-col>
             </v-row>
 
@@ -71,22 +71,22 @@
               :value="premiereDate"
               :label="$t('releaseDate')"
               @update:date="(value) => saveDate('PremiereDate', value)"
-            ></date-input>
+            />
             <v-text-field
               v-model="metadata.ProductionYear"
               outlined
               :label="$t('year')"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="metadata.OfficialRating"
               outlined
               :label="$t('parentalRating')"
-            ></v-text-field>
+            />
             <v-text-field
               v-model="metadata.CustomRating"
               outlined
               :label="$t('customRating')"
-            ></v-text-field>
+            />
             <v-combobox
               v-model="metadata.Genres"
               :items="genders"
@@ -167,13 +167,13 @@
             </v-list>
           </v-tab-item>
           <v-tab-item value="images">
-            <image-editor :metadata="metadata"></image-editor>
+            <image-editor :metadata="metadata" />
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
     </v-card-text>
 
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-actions
       class="d-flex align-center pa-3"
       :class="{
@@ -205,7 +205,7 @@
       :dialog.sync="dialog"
       @update:person="handlePersonUpdate"
       @update:dialog="handleDialogUpdate"
-    ></person-editor>
+    />
   </v-card>
 </template>
 
