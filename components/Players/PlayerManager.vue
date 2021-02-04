@@ -171,6 +171,7 @@ export default Vue.extend({
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getPreviousItem',
+      'getNextItem',
       'getCurrentlyPlayingMediaType'
     ]),
     isPlaying(): boolean {
@@ -198,6 +199,7 @@ export default Vue.extend({
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/INCREASE_QUEUE_INDEX':
+        case 'playbackManager/DECREASE_QUEUE_INDEX':
         case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
           if (
@@ -287,6 +289,8 @@ export default Vue.extend({
             this.setLastProgressUpdate({ progress: 0 });
 
             this.resetMetadata();
+
+            this.removeMediaHandlers();
           }
           break;
         case 'playbackManager/PAUSE_PLAYBACK':
@@ -317,6 +321,8 @@ export default Vue.extend({
   mounted() {
     document.addEventListener('mousemove', this.handleMouseMove);
 
+    this.addMediaHandlers();
+
     this.$store.subscribe((mutation, state: AppState) => {
       switch (mutation.type) {
         case 'playbackManager/TOGGLE_MINIMIZE':
@@ -343,8 +349,11 @@ export default Vue.extend({
       'setPreviousTrack',
       'setLastItemIndex',
       'playPause',
+      'pause',
+      'unpause',
       'skipForward',
-      'skipBackward'
+      'skipBackward',
+      'changeCurrentTime'
     ]),
     handleMouseMove(): void {
       if (
@@ -387,6 +396,107 @@ export default Vue.extend({
           case 'ArrowLeft':
             this.skipBackward();
             break;
+        }
+      }
+    },
+    addMediaHandlers(): void {
+      if (navigator.mediaSession) {
+        const actionHandlers = [
+          [
+            'play',
+            (): void => {
+              this.unpause();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'playing';
+              }
+            }
+          ],
+          [
+            'pause',
+            (): void => {
+              this.pause();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'paused';
+              }
+            }
+          ],
+          [
+            'previoustrack',
+            (): void => {
+              this.setPreviousTrack();
+            }
+          ],
+          [
+            'nexttrack',
+            (): void => {
+              this.setNextTrack();
+            }
+          ],
+          [
+            'stop',
+            (): void => {
+              this.stopPlayback();
+              if (navigator.mediaSession) {
+                navigator.mediaSession.playbackState = 'none';
+              }
+            }
+          ],
+          [
+            'seekbackward',
+            (): void => {
+              this.skipBackward();
+            }
+          ],
+          [
+            'seekforward',
+            (): void => {
+              this.skipForward();
+            }
+          ],
+          [
+            'seekto',
+            (): void => {
+              this.changeCurrentTime({ time: 1 });
+            }
+          ]
+        ];
+
+        for (const [action, handler] of actionHandlers) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            navigator.mediaSession.setActionHandler(action, handler);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `The media session action "${action}" is not supported.`
+            );
+          }
+        }
+      }
+    },
+    removeMediaHandlers(): void {
+      if (navigator.mediaSession) {
+        const actionHandlers = [
+          ['play', null],
+          ['pause', null],
+          ['previoustrack', null],
+          ['nexttrack', null],
+          ['stop', null],
+          ['seekbackward', null],
+          ['seekforward', null],
+          ['seekto', null]
+        ];
+
+        for (const [action, handler] of actionHandlers) {
+          try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            navigator.mediaSession.setActionHandler(action, handler);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Error removing mediaSession action: "${action}".`);
+          }
         }
       }
     },
