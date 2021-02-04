@@ -78,7 +78,7 @@
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
-            <like-button v-if="canPlay(item)" :item="item" />
+            <like-button v-if="canPlay(item)" :item="item" dark />
             <item-menu :item="item" />
           </div>
         </div>
