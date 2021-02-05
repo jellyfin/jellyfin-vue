@@ -111,7 +111,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
     "ts-jest": "^26.5.0",
-    "ts-loader": "^8.0.10",
+    "ts-loader": "^8.0.15",
     "vue-axe": "^2.4.4",
     "vue-jest": "^3.0.7"
   },
