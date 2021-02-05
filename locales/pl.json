@@ -373,5 +373,32 @@
         },
         "clearQueue": "Wyczyść kolejkę i zatrzymaj odtwarzanie"
     },
-    "playFromBeginning": "Odtwarzaj od początku"
+    "playFromBeginning": "Odtwarzaj od początku",
+    "item": {
+        "tracklist": {
+            "title": "Tytuł"
+        },
+        "person": {
+            "person": "Osoba",
+            "death": "Śmierć",
+            "birthPlace": "Miejsce narodzin",
+            "birth": "Narodziny"
+        },
+        "crew": "Załoga",
+        "composer": "Kompozytor",
+        "cast": "Obsada"
+    },
+    "imageType": {
+        "thumb": "Miniaturka",
+        "screenshot": "Zrzut ekranu",
+        "primary": "Podstawowy",
+        "menu": "Menu",
+        "logo": "Logo",
+        "disc": "Dysk",
+        "boxRear": "Tył pudełka",
+        "box": "Pudełko",
+        "banner": "Transparent",
+        "backdrop": "Tło",
+        "art": "Obraz"
+    }
 }
