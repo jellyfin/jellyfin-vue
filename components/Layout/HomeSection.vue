@@ -22,7 +22,22 @@ export default Vue.extend({
       required: true
     }
   },
-  async fetch() {
+  data() {
+    return {
+      loading: true
+    };
+  },
+  computed: {
+    ...mapGetters('homeSection', ['getHomeSectionContent']),
+    items(): BaseItemDto[] {
+      return this.getHomeSectionContent(this.section);
+    }
+  },
+  async beforeMount() {
+    if (this.getHomeSectionContent(this.section)) {
+      this.loading = false;
+    }
+
     switch (this.section.type) {
       case 'libraries': {
         await this.getLibraries();
@@ -51,12 +66,8 @@ export default Vue.extend({
       default:
         break;
     }
-  },
-  computed: {
-    ...mapGetters('homeSection', ['getHomeSectionContent']),
-    items(): BaseItemDto[] {
-      return this.getHomeSectionContent(this.section);
-    }
+
+    this.loading = false;
   },
   methods: {
     ...mapActions('homeSection', {

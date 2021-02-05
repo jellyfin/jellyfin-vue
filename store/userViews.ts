@@ -25,6 +25,9 @@ export const getters: GetterTree<UserViewsState, UserViewsState> = {
         to: `/library/${view.Id}`
       };
     });
+  },
+  getUserViews: (state): BaseItemDto[] => {
+    return state.views;
   }
 };
 
@@ -39,13 +42,18 @@ export const mutations: MutationTree<UserViewsState> = {
 
 export const actions: ActionTree<UserViewsState, UserViewsState> = {
   async refreshUserViews({ commit }) {
-    const userViewsResponse = await this.$api.userViews.getUserViews({
-      userId: this.$auth.user?.Id
-    });
+    try {
+      const userViewsResponse = await this.$api.userViews.getUserViews({
+        userId: this.$auth.user?.Id
+      });
 
-    const userViews = userViewsResponse.data.Items;
+      const userViews = userViewsResponse.data.Items;
 
-    commit('SET_USER_VIEWS', { userViews });
+      commit('SET_USER_VIEWS', { userViews });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   },
   clearUserViews({ commit }) {
     commit('CLEAR_USER_VIEWS');

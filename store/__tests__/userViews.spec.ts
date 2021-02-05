@@ -85,3 +85,15 @@ test('When getNavigationDrawerItems is called, the nav draw items are returned.'
     { icon: 'mdi-folder', title: 'test-view-c', to: '/library/test-id-3' }
   ]);
 });
+
+test('When getUserViews is called, all userViews are returned.', () => {
+  store.replaceState({
+    views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+  });
+
+  expect(store.getters.getUserViews).toMatchObject([
+    DEMO_TEST_ITEM_A,
+    DEMO_TEST_ITEM_B,
+    DEMO_TEST_ITEM_C
+  ]);
+});
