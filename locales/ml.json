@@ -372,5 +372,32 @@
         },
         "clearQueue": "ക്യൂ മായ്‌ച്ച് പ്ലേബാക്ക് നിർത്തുക"
     },
-    "playFromBeginning": "തുടക്കം മുതൽ കളിക്കുക"
+    "playFromBeginning": "തുടക്കം മുതൽ കളിക്കുക",
+    "item": {
+        "person": {
+            "person": "വ്യക്തി",
+            "death": "മരണം",
+            "birthPlace": "ജന്മസ്ഥലം",
+            "birth": "ജനനം"
+        },
+        "crew": "ക്രൂ",
+        "composer": "കമ്പോസർ",
+        "cast": "അഭിനേതാക്കൾ",
+        "tracklist": {
+            "title": "ശീർഷകം"
+        }
+    },
+    "imageType": {
+        "thumb": "ലഘുചിത്രം",
+        "screenshot": "സ്ക്രീൻഷോട്ട്",
+        "primary": "പ്രാഥമികം",
+        "menu": "മെനു",
+        "logo": "ചിഹ്നം",
+        "disc": "ഡിസ്ക്",
+        "boxRear": "ബോക്സ് (പിൻ)",
+        "box": "പെട്ടി",
+        "banner": "ബാനർ",
+        "backdrop": "പശ്ചാത്തലം",
+        "art": "കല"
+    }
 }
