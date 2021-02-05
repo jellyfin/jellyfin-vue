@@ -4,7 +4,7 @@
       :title="section.name"
       :items="items"
       :shape="section.shape"
-      :loading="$fetchState.pending"
+      :loading="loading"
     />
   </client-only>
 </template>
