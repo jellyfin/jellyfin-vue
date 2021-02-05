@@ -375,5 +375,32 @@
         "shuffleAll": "Barlyğyn aralastyru"
     },
     "resume": "Jalğastyru",
-    "playFromBeginning": "Basynan oinatu"
+    "playFromBeginning": "Basynan oinatu",
+    "item": {
+        "tracklist": {
+            "title": "Atauy"
+        },
+        "person": {
+            "person": "Tūlğa",
+            "death": "Qaitysy",
+            "birthPlace": "Tuğan orny",
+            "birth": "Tuğany"
+        },
+        "crew": "Qyzmetkerler",
+        "composer": "Kompozitor",
+        "cast": "Taratu"
+    },
+    "imageType": {
+        "thumb": "Nobai",
+        "screenshot": "Ekran suretı",
+        "primary": "Negızgı",
+        "menu": "Mäzır",
+        "logo": "Logotip",
+        "disc": "Diskı",
+        "boxRear": "Qorap arty",
+        "box": "Qorap",
+        "banner": "Baner",
+        "backdrop": "Artqy suret",
+        "art": "Oiu suret"
+    }
 }
