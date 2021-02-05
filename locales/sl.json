@@ -3,8 +3,8 @@
     "badRequest": "Slaba zahteva. Poskusite znova",
     "continueListening": "Nadaljuj s poslušanjem",
     "continueWatching": "Nadaljuj z gledanjem",
-    "endDate": "",
-    "endsAt": "",
+    "endDate": "Datum zaključka",
+    "endsAt": "Konča se ob {time}",
     "episodeNumber": "Epizoda {episodeNumber}",
     "home": "Domov",
     "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
@@ -44,7 +44,8 @@
     "genres": "Žanri",
     "errors": {
         "messages": {
-            "errorCode": "Koda napake: {errorCode}"
+            "errorCode": "Koda napake: {errorCode}",
+            "videoPlayerError": "Video predvajalnik je naletel na nepopravljivo napako."
         },
         "anErrorHappened": "Prišlo je do napake"
     },
@@ -75,5 +76,45 @@
     "allLanguages": "Vsi jeziki",
     "addNewPerson": "Dodaj osebo",
     "actors": "Igralci",
-    "actor": "Igralec"
+    "actor": "Igralec",
+    "item": {
+        "crew": "Ekipa",
+        "composer": "Skladatelj",
+        "cast": "Zasedba"
+    },
+    "imageType": {
+        "thumb": "Sličica",
+        "screenshot": "Posnetek zaslona",
+        "menu": "Meni",
+        "logo": "Logotip",
+        "disc": "Disk",
+        "boxRear": "Ovitek (zadnja stran)",
+        "box": "Ovitek",
+        "banner": "Pasica",
+        "backdrop": "Ozadje"
+    },
+    "homeHeader": {
+        "welcome": {
+            "helloUser": "Pozdravljeni{userName}!",
+            "checkNewItems": "Kaj je novega."
+        },
+        "items": {
+            "recentlyAdded": "Nedavno dodano"
+        }
+    },
+    "general": "Splošno",
+    "editMetadata": "Uredi metapodatke",
+    "discNumber": "Disk {discNumber}",
+    "director": "Režiser",
+    "directing": "Režija",
+    "dateAdded": "Dodano",
+    "darkModeToggle": "Preklopi temen način",
+    "customRating": "Ocena po meri",
+    "communityRating": "Ocena skupnosti",
+    "castAndCrew": "Igralci in ekipa",
+    "byArtist": "Od",
+    "buttons": {
+        "ok": "Ok"
+    },
+    "audio": "Zvok"
 }
