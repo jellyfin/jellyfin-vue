@@ -376,5 +376,32 @@
         },
         "clearQueue": "Smazat frontu a zastavit přehrávání"
     },
-    "playFromBeginning": "Přehrát od začátku"
+    "playFromBeginning": "Přehrát od začátku",
+    "item": {
+        "tracklist": {
+            "title": "Název"
+        },
+        "person": {
+            "person": "Osoba",
+            "death": "Úmrtí",
+            "birthPlace": "Místo narození",
+            "birth": "Narození"
+        },
+        "crew": "Štáb",
+        "composer": "Skladatel",
+        "cast": "Obsazení"
+    },
+    "imageType": {
+        "thumb": "Náhled",
+        "screenshot": "Snímek obrazovky",
+        "primary": "Primární",
+        "menu": "Nabídka",
+        "logo": "Logo",
+        "disc": "Disk",
+        "boxRear": "Krabice (zadní strana)",
+        "box": "Krabice",
+        "banner": "Prapor",
+        "backdrop": "Pozadí",
+        "art": "Obrázky"
+    }
 }
