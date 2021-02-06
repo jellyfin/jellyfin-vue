@@ -104,7 +104,7 @@
     "artist": "Artiste",
     "studios": "Studios",
     "collections": "Collections",
-    "unliked": "N'est plus aimé",
+    "unliked": "Je n'aime pas",
     "unableGetRelated": "Impossible de récupérer les éléments liés",
     "sortByType": "Par {type}",
     "shuffleAll": "Mélanger tout",
@@ -151,7 +151,7 @@
         },
         "devices": {
             "name": "Appareils",
-            "description": "Voir et gérer les appareils connectés à votre serveur"
+            "description": "Voir et gérer les périphériques connectés à votre serveur"
         },
         "apiKeys": {
             "name": "Clés API",
@@ -308,7 +308,7 @@
     "tags": "Mots clés",
     "tagline": "Slogan",
     "sortTitle": "Trier par titre",
-    "guestStar": "vedette invitée",
+    "guestStar": "Vedette invitée",
     "version": "Version",
     "unableToRefreshLibrary": "Impossible de rafraîchir la bibliothèque",
     "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
@@ -372,9 +372,35 @@
         "queueItems": "{items} pistes",
         "playNext": "Jouer Prochaine",
         "shuffle": "aleatoire",
-        "playAll": "Lire tout"
+        "playAll": "Tout lire"
     },
     "playFromBeginning": "Lire depuis le début",
     "unableToToggleLike": "Impossible de modifier le statut j'aime de l'élément",
-    "resume": "Reprendre"
+    "resume": "Reprendre",
+    "item": {
+        "tracklist": {
+            "title": "Titre"
+        },
+        "person": {
+            "person": "Personne",
+            "death": "Date de décès",
+            "birthPlace": "Lieu de naissance",
+            "birth": "Date de naissance"
+        },
+        "crew": "Équipe",
+        "composer": "Compositeur(trice)"
+    },
+    "imageType": {
+        "thumb": "Vignette",
+        "screenshot": "Capture d'écran",
+        "primary": "Principal",
+        "menu": "Menu",
+        "logo": "Logo",
+        "disc": "Disque",
+        "boxRear": "Dos de boîtier",
+        "box": "Boîtier",
+        "banner": "Bannière",
+        "backdrop": "Arrière-plan",
+        "art": "Illustration"
+    }
 }
