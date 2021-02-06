@@ -376,5 +376,32 @@
         },
         "clearQueue": "Warteschlange löschen und Wiedergabe stoppen"
     },
-    "playFromBeginning": "Vom Anfang abspielen"
+    "playFromBeginning": "Vom Anfang abspielen",
+    "item": {
+        "tracklist": {
+            "title": "Titel"
+        },
+        "person": {
+            "person": "Person",
+            "death": "Todestag",
+            "birthPlace": "Geburtsort",
+            "birth": "Geburtstag"
+        },
+        "crew": "Mannschaft",
+        "composer": "Komponist",
+        "cast": "Besetzung"
+    },
+    "imageType": {
+        "thumb": "Vorschaubild",
+        "screenshot": "Bildschirmfoto",
+        "primary": "Hauptbild",
+        "menu": "Menü",
+        "logo": "Logo",
+        "disc": "Disk",
+        "boxRear": "Hülle (Rückseite)",
+        "box": "Hülle",
+        "banner": "Banner",
+        "backdrop": "Hintergrund",
+        "art": "Kunst"
+    }
 }
