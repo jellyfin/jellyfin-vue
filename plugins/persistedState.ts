@@ -1,6 +1,6 @@
 import { Plugin } from '@nuxt/types';
 import createPersistedState from 'vuex-persistedstate';
-import * as Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import cookie from 'cookie';
 
 const persistState: Plugin = ({ store, req, res, isDev }) => {
