@@ -1,27 +1,27 @@
 <template>
-  <v-avatar v-if="userImage">
-    <v-img :src="userImage" :alt="$auth.user.Name" class="userImage">
+  <v-avatar color="primary darken-3" :size="size">
+    <v-img :src="userImage" :alt="user.Name" class="userImage">
       <template #placeholder>
-        <v-avatar color="primary">
-          <v-icon dark>mdi-account</v-icon>
-        </v-avatar>
+        <v-icon :size="size - 32" dark>mdi-account</v-icon>
       </template>
     </v-img>
-  </v-avatar>
-  <v-avatar v-else color="primary">
-    <v-icon dark>mdi-account</v-icon>
   </v-avatar>
 </template>
 
 <script lang="ts">
+import { UserDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 
 export default Vue.extend({
   props: {
-    id: {
-      type: String,
+    user: {
+      type: Object as () => UserDto,
+      required: true
+    },
+    size: {
+      type: Number,
       required: false,
-      default: undefined
+      default: 64
     },
     quality: {
       type: Number,
@@ -32,14 +32,8 @@ export default Vue.extend({
   computed: {
     userImage: {
       get(): string | undefined {
-        if (
-          !this.id &&
-          this.$auth.user?.Id &&
-          this.$auth.user?.PrimaryImageTag
-        ) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.$auth.user.Id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&quality=${this.quality}`;
-        } else if (this.id) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.id}/Images/Primary/?tag=${this.$auth.user.PrimaryImageTag}&quality=${this.quality}`;
+        if (this.user?.Id && this.user?.PrimaryImageTag) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?tag=${this.user.PrimaryImageTag}&quality=${this.quality}`;
         } else {
           return undefined;
         }
@@ -48,9 +42,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.userImage {
-  image-rendering: crisp-edges;
-}
-</style>
