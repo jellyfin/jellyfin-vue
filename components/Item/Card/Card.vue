@@ -79,7 +79,7 @@
             class="card-lower-buttons d-flex justify-center align-center"
           >
             <like-button v-if="canPlay(item)" :item="item" dark />
-            <item-menu :item="item" />
+            <item-menu :item="item" dark />
           </div>
         </div>
       </div>
