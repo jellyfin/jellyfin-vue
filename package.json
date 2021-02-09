@@ -14,17 +14,12 @@
     "lint:js": "eslint --ext .ts,.js,.vue .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "eslint",
     "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "dependencies": {
     "@fontsource/noto-sans": "^4.2.0",
