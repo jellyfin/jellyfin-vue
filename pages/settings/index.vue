@@ -179,7 +179,8 @@ export default Vue.extend({
           {
             icon: 'mdi-devices',
             name: this.$t('settingsSections.devices.name'),
-            description: this.$t('settingsSections.devices.description')
+            description: this.$t('settingsSections.devices.description'),
+            link: 'settings/devices'
           },
           {
             icon: 'mdi-library-shelves',
@@ -252,7 +253,7 @@ export default Vue.extend({
   },
   beforeMount() {
     this.setAppBarOpacity({ opaqueAppBar: true });
-    this.setPageTitle({ title: this.$t('settings') });
+    this.setPageTitle({ title: this.$t('settings.settings') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),

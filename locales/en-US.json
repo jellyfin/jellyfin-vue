@@ -142,6 +142,8 @@
     "noActivityFound": "No activities found",
     "noLogsFound": "No logs found"
   },
+  "manualLogin": "Manual login",
+  "menu": "Menu",
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
   "more": "More",
@@ -223,6 +225,51 @@
       "revokeAllSuccess": "Successfully revoked all API keys",
       "revokeFailure": "Error revoking API key",
       "revokeSuccess": "Successfully revoked API key"
+    },
+    "settings": "Settings"
+  },
+  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Access token",
+      "addApiKey": "Add an API key",
+      "addNewKey": "Add new API key",
+      "apiKeys": "API keys",
+      "appName": "App name",
+      "createKeyFailure": "Error creating a new API key",
+      "createKeySuccess": "Successfully created a new API key",
+      "dateCreated": "Date created",
+      "description": "Add and revoke API keys for external access to your server",
+      "refreshKeysFailure": "Error refreshing API keys",
+      "revokeAll": "Revoke all API keys",
+      "revokeAllFailure": "Error revoking all API keys",
+      "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeFailure": "Error revoking API key",
+      "revokeSuccess": "Successfully revoked API key"
+    },
+    "devices": {
+      "appName": "App name",
+      "appVersion": "App version",
+      "delete": "Delete",
+      "deleteAll": "Delete all",
+      "deleteAllDevicesError": "Error deleting all devices",
+      "deleteAllDevicesSuccess": "All devices deleted successfully",
+      "deleteDeviceError": "Error deleting device",
+      "deleteDeviceSuccess": "Device deleted successfully",
+      "deviceName": "Device name",
+      "devices": "Devices",
+      "lastActive": "Last active",
+      "noDevicesFound": "No devices found",
+      "userName": "Username"
+    },
+    "help": "Help",
+    "logsAndActivity": {
+      "activity": "Activity",
+      "failedGetActivity": "Unable to get activity",
+      "failedGetLogs": "Unable to get logs",
+      "logs": "Logs",
+      "noActivityFound": "No activities found",
+      "noLogsFound": "No logs found"
     },
     "settings": "Settings"
   },
