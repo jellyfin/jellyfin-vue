@@ -380,25 +380,25 @@
         },
         "person": {
             "person": "Osoba",
-            "death": "Śmierć",
-            "birthPlace": "Miejsce narodzin",
-            "birth": "Narodziny"
+            "death": "Data śmierci",
+            "birthPlace": "Miejsce urodzenia",
+            "birth": "Data urodzenia"
         },
-        "crew": "Załoga",
+        "crew": "Ekipa",
         "composer": "Kompozytor",
         "cast": "Obsada"
     },
     "imageType": {
-        "thumb": "Miniaturka",
+        "thumb": "Miniatura",
         "screenshot": "Zrzut ekranu",
         "primary": "Podstawowy",
         "menu": "Menu",
         "logo": "Logo",
         "disc": "Dysk",
-        "boxRear": "Tył pudełka",
+        "boxRear": "Pudełko (tył)",
         "box": "Pudełko",
-        "banner": "Transparent",
-        "backdrop": "Tło",
-        "art": "Obraz"
+        "banner": "Baner",
+        "backdrop": "Fototapeta",
+        "art": "Przezrocze"
     }
 }
