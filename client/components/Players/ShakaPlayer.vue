@@ -98,9 +98,6 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    // Convert to seconds
-    this.mediaDuration =
-      this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
     try {
       // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
       window.muxjs = muxjs;
