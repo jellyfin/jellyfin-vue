@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
+  <v-card class="container">
     <div class="d-flex flex-column flex-grow-1">
-      <h2 class="countdownHeader">
+      <v-card-title class="countdownHeader">
         {{ $t('nextEpisodePlayingIn') }}
-        <span class="primary--text darken-2"
-          >{{ timeLeft }} {{ $t('seconds') }}</span
-        >
-      </h2>
-      <h3 class="title subtitle-1">
+        <span class="primary--text darken-2">
+          &ensp;{{ timeLeft }} {{ $t('seconds') }}
+        </span>
+      </v-card-title>
+      <v-card-subtitle class="title subtitle-1">
         {{ nextSeriesName }} -
         {{
           $t('tvShowAbbrev', {
@@ -16,23 +16,23 @@
           })
         }}
         - {{ nextName }}
-      </h3>
+      </v-card-subtitle>
       <div>
         {{ nextRunTime }}
         <span id="endsAt">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
       </div>
-      <div class="d-flex justify-end align-end buttons">
-        <v-btn class="primary darken-2" @click="startNext">{{
-          $t('startNow')
-        }}</v-btn>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn class="primary darken-2" @click="startNext">
+          {{ $t('startNow') }}
+        </v-btn>
         <v-btn @click="$emit('hide')"> {{ $t('hide') }}</v-btn>
-      </div>
+      </v-card-actions>
     </div>
-  </div>
+  </v-card>
 </template>
 
 <script lang="ts">
-// import { intervalToDuration } from 'date-fns';
 import Vue from 'vue';
 import { mapState, mapGetters, mapActions } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
@@ -104,6 +104,7 @@ export default Vue.extend({
 .countdownHeader {
   margin: 0.25em 0;
   font-weight: 500;
+  padding: 0;
 }
 .title {
   width: 100%;
@@ -111,21 +112,7 @@ export default Vue.extend({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.buttons {
-  width: 29.75em;
-
-  /*
-  justify-content: end;
-  align-content: flex-end;
-  */
-
-  margin-top: 1em;
-  padding-right: 1em;
-}
-
-.buttons > .v-btn {
-  margin-right: 1em;
+  padding: 0;
 }
 
 #endsAt {
