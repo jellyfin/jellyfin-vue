@@ -54,7 +54,7 @@
                     :key="artist.Id"
                     tag="span"
                     class="link text--secondary"
-                    :to="`/artist/${artist.Id}`"
+                    :to="getItemDetailsLink(artist)"
                   >
                     {{ artist.Name }}
                   </nuxt-link>
@@ -77,9 +77,10 @@ import { mapActions, mapGetters } from 'vuex';
 import { Dictionary, groupBy } from 'lodash';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [timeUtils],
+  mixins: [timeUtils, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,

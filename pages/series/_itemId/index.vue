@@ -104,7 +104,7 @@
                     :key="director.Id"
                     cols="auto"
                   >
-                    <v-chip small link nuxt :to="`/person/${director.Id}`">
+                    <v-chip small link nuxt :to="getItemDetailsLink(director)">
                       {{ director.Name }}
                     </v-chip>
                   </v-col>
@@ -128,7 +128,7 @@
               >
                 <v-row dense>
                   <v-col v-for="writer in writers" :key="writer.Id" cols="auto">
-                    <v-chip small link nuxt :to="`/person/${writer.Id}`">
+                    <v-chip small link nuxt :to="getItemDetailsLink(writer)">
                       {{ writer.Name }}
                     </v-chip>
                   </v-col>

@@ -12,7 +12,7 @@
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
             nuxt
-            :to="`/item/${episode.Id}`"
+            :to="getItemDetailsLink(episode)"
           >
             <v-list-item-avatar tile width="20em" height="12em">
               <blurhash-image
@@ -39,8 +39,10 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import { TvShowItem } from '~/store/tvShows';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
+  mixins: [itemHelper],
   props: {
     item: {
       type: Object,

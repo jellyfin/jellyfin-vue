@@ -5,7 +5,7 @@
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
         nuxt
-        :to="`/person/${item.Id}`"
+        :to="getItemDetailsLink(item)"
       >
         <v-list-item-avatar>
           <v-img
@@ -39,9 +39,10 @@
 import Vue from 'vue';
 import { BaseItemPerson, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     items: {
       type: Array,

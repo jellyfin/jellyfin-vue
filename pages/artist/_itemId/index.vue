@@ -58,7 +58,7 @@
                             <nuxt-link
                               class="link font-weight-bold text-h6 text-md-h4"
                               tag="h2"
-                              :to="`/item/${appearance.Id}/`"
+                              :to="getItemDetailsLink(appearance)"
                             >
                               {{ appearance.Name }}
                             </nuxt-link>
@@ -119,9 +119,10 @@ import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, timeUtils],
+  mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
   async asyncData({ params, $api, $auth }) {
     const item = (
       await $api.userLibrary.getItem({
