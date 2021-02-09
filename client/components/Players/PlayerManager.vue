@@ -25,6 +25,7 @@
         />
         <v-hover v-slot="{ hover }">
           <v-card class="player-card" width="100%">
+<<<<<<< HEAD
             <v-container fill-height fluid class="pa-0 justify-center">
               <shaka-player ref="videoPlayer" />
             </v-container>
@@ -83,6 +84,56 @@
                     >
                       <v-icon size="32">mdi-skip-next</v-icon>
                     </v-btn>
+=======
+            <video-player ref="videoPlayer" />
+          <up-next
+            v-if="showUpNext"
+            :time-left="timeLeft"
+            @hide="upNextUserHidden = true"
+          />
+          <!-- Mini Player Overlay -->
+          <v-fade-transition>
+            <v-overlay v-show="hover && isMinimized" absolute>
+              <div class="d-flex flex-column player-overlay">
+                <div class="d-flex flex-row">
+                  <v-btn icon @click="toggleMinimized">
+                    <v-icon>mdi-arrow-expand-all</v-icon>
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn icon @click="stopPlayback">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </div>
+                <div
+                  class="absolute d-flex flex-row justify-center align-center"
+                >
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    large
+                    @click="setPreviousTrack"
+                  >
+                    <v-icon size="32">mdi-skip-previous</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    x-large
+                    @click="playPause"
+                  >
+                    <v-icon size="48">
+                      {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                    </v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="all-pointer-events"
+                    icon
+                    large
+                    @click="setNextTrack"
+                  >
+                    <v-icon size="32">mdi-skip-next</v-icon>
+                  </v-btn>
+>>>>>>> 8c0ac403 (feat(up-next): use v-card as upNext container)
                   </div>
                 </div>
               </v-overlay>
@@ -344,6 +395,8 @@ export default Vue.extend({
           this.upNextUserHidden = false;
           break;
         case 'playbackManager/DECREASE_QUEUE_INDEX':
+          this.upNextUserHidden = false;
+          break;
         case 'playbackManager/SET_CURRENT_ITEM_INDEX':
           // Report playback stop for the previous item
           if (
@@ -539,6 +592,7 @@ export default Vue.extend({
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
+      this.upNextUserHidden = false;
     },
     handleKeyPress(e: KeyboardEvent): void {
       if (!this.isMinimized && this.isPlaying) {
