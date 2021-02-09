@@ -42,7 +42,8 @@ module.exports = {
     'vue/v-on-style': 'error',
     'vue/v-slot-style': 'error',
     'vue/attributes-order': 'error',
-    'vue/html-self-closing': 'error'
+    'vue/html-self-closing': 'error',
+    'vue/multiline-html-element-content-newline': 'error'
   },
   settings: {
     'import/resolver': {
