@@ -66,7 +66,31 @@
             "revokeSuccess": "API-ключ отозван успешно",
             "description": "Добавлять и отзывать API-ключи внешнего доступа к серверу"
         },
-        "settings": "Параметры"
+        "settings": "Параметры",
+        "devices": {
+            "lastActive": "Последнее действие",
+            "deviceName": "Имя устройства",
+            "deleteDeviceSuccess": "Устройство удалено успешно",
+            "deleteDeviceError": "Ошибка удаления устройства",
+            "deleteAllDevicesSuccess": "Все устройства удалены успешно",
+            "deleteAllDevicesError": "Ошибка удаления всех устройств",
+            "userName": "Имя пользователя",
+            "noDevicesFound": "Действий не найдено",
+            "devices": "Устройства",
+            "deleteAll": "Удалить все",
+            "delete": "Удалить",
+            "appVersion": "Версия приложения",
+            "appName": "Название приложения"
+        },
+        "logsAndActivity": {
+            "noLogsFound": "Журналов не найдено",
+            "noActivityFound": "Действий не найдено",
+            "logs": "Журналы",
+            "failedGetLogs": "Невозможно получить журналы",
+            "failedGetActivity": "Невозможно получить действия",
+            "activity": "Действия"
+        },
+        "help": "Справка"
     },
     "shows": "Передачи",
     "signIn": "Вход",
