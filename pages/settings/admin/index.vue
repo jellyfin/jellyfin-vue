@@ -1,5 +1,5 @@
 <template>
-  <settings-page page-title="settings.serverDashboard">
+  <settings-page page-title="settings.serverDashboard" no-help>
     <template #content>
       <server-info-card />
     </template>

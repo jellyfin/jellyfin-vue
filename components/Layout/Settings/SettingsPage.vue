@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-0" :loading="loading">
+  <v-card class="elevation-0" :loading="loading" color="transparent">
     <template #progress>
       <slot name="progress" />
     </template>
@@ -11,12 +11,23 @@
       />
       <v-card-actions>
         <slot name="actions" />
-        <v-btn icon :href="helpLink" target="_blank">
-          <v-icon>mdi-help-circle</v-icon>
-        </v-btn>
+        <v-tooltip v-if="!noHelp" bottom>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              icon
+              :href="helpLink"
+              target="_blank"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-help-circle</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $t('settings.help') }}</span>
+        </v-tooltip>
       </v-card-actions>
     </div>
-    <v-container class="pa-5 ma-0 parent">
+    <v-container class="parent pa-6">
       <slot name="content" />
     </v-container>
   </v-card>
@@ -41,6 +52,11 @@ export default Vue.extend({
       type: String,
       required: false,
       default: ''
+    },
+    noHelp: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 });
@@ -53,5 +69,6 @@ export default Vue.extend({
 
 .parent {
   max-width: 100%;
+  min-width: 100%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <settings-page page-title="settings.about">
+  <settings-page page-title="settings.about" no-help>
     <template #content>
       <v-img
         contain
@@ -14,7 +14,7 @@
 
 <style lang="scss" scoped>
 .logo {
-  max-width: 40%;
+  max-width: 30%;
   margin: 0 auto;
 }
 </style>

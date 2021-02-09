@@ -56,6 +56,7 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
+      <v-spacer />
       <v-btn color="error" @click="$emit('delete-selected')">
         {{ $t('settings.devices.delete') }}
       </v-btn>

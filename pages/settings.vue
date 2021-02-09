@@ -1,13 +1,21 @@
 <template>
-  <div class="grid pa-2" :class="$vuetify.breakpoint.smAndDown ? 'sm' : null">
+  <v-row>
     <v-fade-transition appear mode="out-in">
       <v-col
         v-if="
           $vuetify.breakpoint.mdAndUp ||
           ($vuetify.breakpoint.smAndDown && inMenu)
         "
+        xl="3"
+        lg="3"
+        md="3"
+        sm="auto"
+        xs="auto"
       >
-        <v-card :class="$vuetify.breakpoint.smAndDown ? null : 'column'">
+        <v-card
+          :class="$vuetify.breakpoint.smAndDown ? null : 'menu mr-0'"
+          class="ma-5 mb-0"
+        >
           <v-fade-transition
             appear
             mode="out-in"
@@ -30,7 +38,10 @@
       </v-col>
     </v-fade-transition>
     <v-col>
-      <v-card :class="$vuetify.breakpoint.smAndDown ? null : 'column'">
+      <v-card
+        class="ma-5 ml-0 mb-0 transparent elevation-0"
+        color="transparent"
+      >
         <v-container>
           <v-fade-transition mode="out-in">
             <nuxt-child :key="$route.fullPath" keep-alive />
@@ -38,7 +49,7 @@
         </v-container>
       </v-card>
     </v-col>
-  </div>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -92,20 +103,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.grid {
-  display: grid;
-  grid-template-columns: 35% 65%;
-  grid-template-rows: 91vh;
-}
-
-.sm {
-  grid-template-columns: 100% !important;
-  grid-template-rows: unset !important;
-}
-
-.column {
-  max-height: 100%;
-  min-height: 100%;
+.menu {
+  max-height: 90vh;
+  position: sticky;
+  top: 9vh;
   overflow-y: scroll;
 }
 </style>

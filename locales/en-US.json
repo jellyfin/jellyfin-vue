@@ -212,7 +212,6 @@
   "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": {
-  "settings": {
     "about": "About",
     "accountAndClient": "Account & client",
     "account": {
@@ -263,6 +262,7 @@
       "noDevicesFound": "No devices found",
       "userName": "Username"
     },
+    "help": "Help",
     "playback": {
       "video": {
         "video": "Video",

@@ -1,5 +1,8 @@
 <template>
-  <settings-page page-title="settings.devices.devices">
+  <settings-page
+    page-title="settings.devices.devices"
+    help-link="https://jellyfin.org/docs/general/server/devices.html"
+  >
     <template #actions>
       <v-btn
         v-if="devices"
@@ -8,13 +11,6 @@
         @click="deleteAllDevices"
       >
         {{ $t('settings.devices.deleteAll') }}
-      </v-btn>
-      <v-btn
-        ref="noreferrer noopener"
-        href="https://jellyfin.org/docs/general/server/devices.html"
-        target="_blank"
-      >
-        {{ $t('settings.help') }}
       </v-btn>
     </template>
     <template #content>

@@ -29,13 +29,17 @@
           :to="adminItem.link"
           :value="isCurrentLink(adminItem.link)"
           class="pb-0"
+          three-line
         >
           <v-list-item-avatar>
             <v-icon v-text="adminItem.icon" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-text="adminItem.name" />
-            <v-list-item-subtitle v-text="adminItem.description" />
+            <v-list-item-subtitle
+              class="align-self-start"
+              v-text="adminItem.description"
+            />
           </v-list-item-content>
           <v-list-item-action>
             <v-icon>mdi-chevron-right</v-icon>
@@ -72,7 +76,7 @@ export default Vue.extend({
             icon: 'mdi-devices',
             name: this.$t('settingsSections.admin.devices.name'),
             description: this.$t('settingsSections.admin.devices.description'),
-            link: undefined
+            link: '/settings/admin/devices'
           },
           {
             icon: 'mdi-library-shelves',

@@ -15,13 +15,17 @@
         :to="userItem.link"
         :inactive="userItem.sync"
         :value="isCurrentLink(userItem.link)"
+        three-line
       >
         <v-list-item-avatar>
           <v-icon v-text="userItem.icon" />
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title v-text="userItem.name" />
-          <v-list-item-subtitle v-text="userItem.description" />
+          <v-list-item-subtitle
+            class="align-self-start"
+            v-text="userItem.description"
+          />
         </v-list-item-content>
         <v-list-item-action>
           <v-icon v-if="!userItem.sync">mdi-chevron-right</v-icon>
@@ -40,13 +44,17 @@
           :key="adminItem.name"
           nuxt
           :to="adminItem.link"
+          three-line
         >
           <v-list-item-avatar>
             <v-icon v-text="adminItem.icon" />
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-text="adminItem.name" />
-            <v-list-item-subtitle v-text="adminItem.description" />
+            <v-list-item-subtitle
+              class="align-self-start"
+              v-text="adminItem.description"
+            />
           </v-list-item-content>
           <v-list-item-action>
             <v-icon>mdi-chevron-right</v-icon>
