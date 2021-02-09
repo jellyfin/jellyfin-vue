@@ -114,9 +114,9 @@
                       :key="director.Id"
                       cols="auto"
                     >
-                      <v-chip small link nuxt :to="`/person/${director.Id}`">{{
-                        director.Name
-                      }}</v-chip>
+                      <v-chip small link nuxt :to="`/person/${director.Id}`">
+                        {{ director.Name }}
+                      </v-chip>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -144,9 +144,9 @@
                       :key="writer.Id"
                       cols="auto"
                     >
-                      <v-chip small link nuxt :to="`/person/${writer.Id}`">{{
-                        writer.Name
-                      }}</v-chip>
+                      <v-chip small link nuxt :to="`/person/${writer.Id}`">
+                        {{ writer.Name }}
+                      </v-chip>
                     </v-col>
                   </v-row>
                 </v-col>

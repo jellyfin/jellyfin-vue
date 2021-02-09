@@ -52,8 +52,8 @@
               {{ $t('settings.logsAndActivity.failedGetLogs') }}
             </v-card-title>
             <v-card-text v-if="loadingLogsStatus.errorMessage">
-              {{ loadingLogsStatus.errorMessage }}</v-card-text
-            >
+              {{ loadingLogsStatus.errorMessage }}
+            </v-card-text>
           </v-card>
         </v-fade-transition>
       </v-col>
