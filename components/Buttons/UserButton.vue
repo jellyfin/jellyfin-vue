@@ -31,7 +31,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 
 interface MenuItem {
   title: string;
@@ -75,13 +74,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('user', ['clearUser']),
-    ...mapActions('deviceProfile', ['clearDeviceProfile']),
     logoutUser(): void {
       this.$disconnect();
       this.$auth.logout();
-      this.clearDeviceProfile();
-      this.clearUser();
     }
   }
 });

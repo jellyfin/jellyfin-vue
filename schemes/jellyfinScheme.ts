@@ -138,7 +138,15 @@ export default class JellyfinScheme {
     // doesn't set it until 'this.$auth.setUser(undefined)' is called. At that point, component relying
     // on $auth.user will fail, breaking the logout flow completely.
     this.$auth.$storage.setState('loggedIn', false);
-    await this.$auth.ctx.app.$api.session.reportSessionEnded();
+
+    // This can fail if the baseUrl is not currently set
+    try {
+      await this.$auth.ctx.app.$api.session.reportSessionEnded();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+
     await this.$auth.ctx.app.store.dispatch('reset', { clearCritical: false });
 
     // Reset everything
