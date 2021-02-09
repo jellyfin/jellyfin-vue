@@ -4,7 +4,7 @@
     <v-col v-show="items && items.length > 0" class="swiper-section">
       <div class="d-flex">
         <h1
-          class="text-h5 font-weight-light header mt-1 pl-3 pb-2"
+          class="text-h6 text-sm-h5 font-weight-light header mt-1 pl-3 pb-2"
           :class="{ 'header-white-mode': !$vuetify.theme.dark }"
         >
           <span class="pl-3">{{ title }}</span>
