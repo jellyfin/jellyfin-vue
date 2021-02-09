@@ -61,7 +61,31 @@
             "description": "Dodaj i unieważnij klucze API, aby uzyskać zewnętrzny dostęp do serwera",
             "apiKeys": "Klucze API"
         },
-        "settings": "Ustawienia"
+        "settings": "Ustawienia",
+        "logsAndActivity": {
+            "noLogsFound": "Nie znaleziono dziennika zdarzeń",
+            "noActivityFound": "Nie znaleziono aktywności",
+            "logs": "Dziennik zdarzeń",
+            "failedGetLogs": "Nie udało się odczytać dziennika zdarzeń",
+            "failedGetActivity": "Nie udało się odczytać aktywności",
+            "activity": "Aktywność"
+        },
+        "help": "Pomoc",
+        "devices": {
+            "userName": "Nazwa użytkownika",
+            "noDevicesFound": "Nie znaleziono urządzeń",
+            "lastActive": "Ostatnio aktywny",
+            "devices": "Urządzenia",
+            "deviceName": "Nazwa urządzenia",
+            "deleteDeviceSuccess": "Urządzenie zostało pomyślnie usunięte",
+            "deleteDeviceError": "Błąd podczas usuwania urządzenia",
+            "deleteAllDevicesSuccess": "Wszystkie urządzenia zostały pomyślnie usunięte",
+            "deleteAllDevicesError": "Błąd podczas usuwania wszystkich urządzeń",
+            "deleteAll": "Usuń wszystko",
+            "delete": "Usuń",
+            "appVersion": "Wersja aplikacji",
+            "appName": "Nazwa Aplikacji"
+        }
     },
     "signIn": "Zaloguj",
     "unexpectedError": "Niespodziewany błąd",
