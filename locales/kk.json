@@ -66,7 +66,31 @@
             "revokeFailure": "API-kılttı qaitaryp alu kezınde qate",
             "revokeSuccess": "API-kılt sättı qaitaryp alyndu"
         },
-        "settings": "Parametrler"
+        "settings": "Parametrler",
+        "devices": {
+            "deleteDeviceSuccess": "Qūrylğy sätti joiyldy",
+            "deleteAllDevicesSuccess": "Barlyq qūrylğylar sätti joiyldy",
+            "deleteAllDevicesError": "Barlyq qūrylğylardy joiu qatesı",
+            "userName": "Paidalanuşy aty",
+            "noDevicesFound": "Qūrylūylar tabylmady",
+            "lastActive": "Soŋğy äreket",
+            "devices": "Qūrylğylar",
+            "deviceName": "Qūrylğy aty",
+            "deleteDeviceError": "Qūrylğy joiu qatesı",
+            "deleteAll": "Barlyğyn joiu",
+            "delete": "Joiu",
+            "appVersion": "Qoldanba nūsqasy",
+            "appName": "Qoldanba aty"
+        },
+        "logsAndActivity": {
+            "noLogsFound": "Jūrnaldar tabylmady",
+            "noActivityFound": "Äreketter tabylmady",
+            "logs": "Jūrnaldar",
+            "failedGetLogs": "Jūrnaldardy alu mümkın emes",
+            "failedGetActivity": "Äreketterdı alu mümkın emes",
+            "activity": "Äreketter"
+        },
+        "help": "Anyqtama"
     },
     "shows": "Körsetımder",
     "signIn": "Kıru",
