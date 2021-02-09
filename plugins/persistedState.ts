@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 import Cookies from 'js-cookie';
 import cookie from 'cookie';
 
-const persistState: Plugin = ({ store, req, res, isDev }) => {
+const persistState: Plugin = ({ store, req, res }) => {
   createPersistedState({
     paths: ['servers'],
     storage: {
@@ -20,10 +20,10 @@ const persistState: Plugin = ({ store, req, res, isDev }) => {
         if (process.server) {
           res.setHeader(
             'Set-Cookie',
-            cookie.serialize(key, value, { maxAge: 365, secure: !isDev })
+            cookie.serialize(key, value, { maxAge: 365 })
           );
         } else {
-          Cookies.set(key, value, { expires: 365, secure: !isDev });
+          Cookies.set(key, value, { expires: 365 });
         }
       },
       removeItem: (key: string): void => Cookies.remove(key)
