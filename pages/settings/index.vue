@@ -9,7 +9,7 @@
           <v-card-text class="py-0">
             <v-row>
               <v-col>
-                <v-row>
+                <v-row class="my-0">
                   <v-col cols="5" class="pt-0 pb-0">
                     <span>{{ $t('server') }}</span>
                   </v-col>
@@ -17,7 +17,7 @@
                     <span>{{ systemInfo.ServerName }}</span>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="my-0">
                   <v-col cols="5" class="pt-0 pb-0">
                     <span>{{ $t('serverVersion') }}</span>
                   </v-col>
@@ -25,7 +25,7 @@
                     <span>{{ systemInfo.Version }}</span>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="my-0">
                   <v-col cols="5" class="pt-0 pb-0">
                     <span>{{ $t('operatingSystem') }}</span>
                   </v-col>
@@ -33,7 +33,7 @@
                     <span>{{ systemInfo.OperatingSystemDisplayName }}</span>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="my-0">
                   <v-col cols="5" class="pt-0 pb-0">
                     <span>{{ $t('architecture') }}</span>
                   </v-col>
@@ -41,7 +41,7 @@
                     <span>{{ systemInfo.SystemArchitecture }}</span>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="my-0">
                   <v-col cols="5" class="py-0">
                     <span>{{ $t('vueClientVersion') }}</span>
                   </v-col>
