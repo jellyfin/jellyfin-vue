@@ -2,29 +2,37 @@
   <div class="container">
     <div class="d-flex flex-column flex-grow-1">
       <h2 class="countdownHeader">
-        Next Episode Playing in
-        <span class="primary--text darken-2">{{ timeLeft }} seconds</span>
+        {{ $t('nextEpisodePlayingIn') }}
+        <span class="primary--text darken-2"
+          >{{ timeLeft }} {{ $t('seconds') }}</span
+        >
       </h2>
       <h3 class="title subtitle-1">
-        {{ nextSeriesName }} - S{{ nextSeasonNumber }}:E{{
-          nextEpisodeNumber
+        {{ nextSeriesName }} -
+        {{
+          $t('tvShowAbbrev', {
+            seasonNumber: nextSeasonNumber,
+            episodeNumber: nextEpisodeNumber
+          })
         }}
         - {{ nextName }}
       </h3>
       <div>
         {{ nextRunTime }}
-        <span id="endsAt">Ends at {{ nextEndsAt }} </span>
+        <span id="endsAt">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
       </div>
       <div class="d-flex justify-end align-end buttons">
-        <v-btn class="primary darken-2" @click="startNext">Start Now</v-btn>
-        <v-btn @click="$emit('hide')"> Hide</v-btn>
+        <v-btn class="primary darken-2" @click="startNext">{{
+          $t('startNow')
+        }}</v-btn>
+        <v-btn @click="$emit('hide')"> {{ $t('hide') }}</v-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { intervalToDuration } from 'date-fns';
+// import { intervalToDuration } from 'date-fns';
 import Vue from 'vue';
 import { mapState, mapGetters, mapActions } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
@@ -55,12 +63,7 @@ export default Vue.extend({
       return this.getNextItem?.ParentIndexNumber;
     },
     nextRunTime(): string {
-      const seconds = this.ticksToMs(this.getNextItem?.RunTimeTicks);
-
-      return this.$dateFns.formatDuration(
-        intervalToDuration({ start: 0, end: seconds }),
-        { format: ['hours', 'minutes'] }
-      );
+      return this.getRuntimeTime(this.getNextItem?.RunTimeTicks);
     },
     nextEndsAt(): string {
       const seconds =
@@ -71,15 +74,9 @@ export default Vue.extend({
       return this.getNextItem?.Name;
     }
   },
-  mounted() {
-    // eslint-disable-next-line no-console
-    console.log(this.getNextItem);
-  },
   methods: {
     ...mapActions('playbackManager', ['setNextTrack']),
     startNext(): boolean {
-      // eslint-disable-next-line no-console
-      console.log('Next');
       this.setNextTrack();
       return true;
     }
@@ -124,10 +121,13 @@ export default Vue.extend({
   */
 
   margin-top: 1em;
+  padding-right: 1em;
 }
+
 .buttons > .v-btn {
   margin-right: 1em;
 }
+
 #endsAt {
   padding-left: 1em;
 }
