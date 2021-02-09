@@ -208,26 +208,6 @@
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server version",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Access token",
-      "addApiKey": "Add an API key",
-      "addNewKey": "Add new API key",
-      "apiKeys": "API keys",
-      "appName": "App name",
-      "createKeyFailure": "Error creating a new API key",
-      "createKeySuccess": "Successfully created a new API key",
-      "dateCreated": "Date created",
-      "description": "Add and revoke API keys for external access to your server",
-      "refreshKeysFailure": "Error refreshing API keys",
-      "revokeAll": "Revoke all API keys",
-      "revokeAllFailure": "Error revoking all API keys",
-      "revokeAllSuccess": "Successfully revoked all API keys",
-      "revokeFailure": "Error revoking API key",
-      "revokeSuccess": "Successfully revoked API key"
-    },
-    "settings": "Settings"
-  },
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": {
     "apiKeys": {
