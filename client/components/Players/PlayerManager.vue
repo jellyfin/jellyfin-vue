@@ -302,23 +302,27 @@ export default Vue.extend({
       return parseInt((this.mediaDuration - this.getCurrentTime).toFixed());
     },
     showUpNext(): boolean {
-      if (this.isMinimized) {
+      if (
+        this.isMinimized ||
+        this.upNextUserHidden ||
+        this.getCurrentItem.Type !== 'Episode' ||
+        !this.getNextItem
+      ) {
         return false;
       }
 
-      if (this.upNextUserHidden) {
+      // How much of the video to go through before showing
+      // the 'up-next' component
+      const showAtProgressPercentage = 0.97;
+
+      if (
+        this.getCurrentTime <=
+        this.mediaDuration * showAtProgressPercentage
+      ) {
         return false;
       }
 
       return true;
-      // How much of the video to go through before showing
-      // the up next component
-      // const showAtProgressPercentage = 0.97;
-
-      // if (this.currentTime <= this.mediaDuration * showAtProgressPercentage) {
-      //   return true;
-      // }
-      // return false;
     }
   },
   mounted() {
