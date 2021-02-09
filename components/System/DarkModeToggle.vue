@@ -10,9 +10,9 @@
         v-on="on"
         @click="darkMode = !darkMode"
       >
-        <v-icon>{{
-          darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'
-        }}</v-icon>
+        <v-icon>
+          {{ darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+        </v-icon>
       </v-btn>
     </template>
     <span>{{

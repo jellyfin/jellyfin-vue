@@ -21,9 +21,9 @@
     <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">
       {{ $t('previous') }}
     </v-btn>
-    <v-btn :loading="loading" color="primary" @click="setMetadata">{{
-      $t('next')
-    }}</v-btn>
+    <v-btn :loading="loading" color="primary" @click="setMetadata">
+      {{ $t('next') }}
+    </v-btn>
   </div>
 </template>
 
