@@ -60,7 +60,26 @@
             "description": "Ajouter et révoquer des clés API pour un accès externe à votre serveur",
             "apiKeys": "Clés API"
         },
-        "settings": "Réglages"
+        "settings": "Réglages",
+        "logsAndActivity": {
+            "failedGetActivity": "Impossible d'obtenir l'activité"
+        },
+        "help": "Aide",
+        "devices": {
+            "userName": "Nom d'utilisateur",
+            "noDevicesFound": "Aucun appareil trouvé",
+            "lastActive": "Actif la dernière fois",
+            "devices": "Appareils",
+            "deviceName": "Nom de l'appareil",
+            "deleteDeviceSuccess": "Appareil supprimé avec succès",
+            "deleteDeviceError": "Erreur lors de suppression de l'appareil",
+            "deleteAllDevicesSuccess": "Tous les appareils ont été supprimés avec succès",
+            "deleteAllDevicesError": "Erreur lors de la suppression de tous les appareils",
+            "deleteAll": "Tout supprimer",
+            "delete": "Supprimer",
+            "appVersion": "Version de l'application",
+            "appName": "Nom de l'application"
+        }
     },
     "signIn": "Se connecter",
     "unexpectedError": "Erreur inattendue",
@@ -229,7 +248,7 @@
         "ok": "OK"
     },
     "architecture": "Architecture",
-    "castAndCrew": "Acteurs et équipe",
+    "castAndCrew": "Distribution & équipe",
     "cancel": "Annuler",
     "boxRear": "Boîte (dos)",
     "box": "Boîte",
@@ -371,7 +390,7 @@
         "shuffleAll": "Lecture aléatoire",
         "queueItems": "{items} pistes",
         "playNext": "Jouer Prochaine",
-        "shuffle": "aleatoire",
+        "shuffle": "Aléatoire",
         "playAll": "Tout lire"
     },
     "playFromBeginning": "Lire depuis le début",
@@ -388,7 +407,8 @@
             "birth": "Date de naissance"
         },
         "crew": "Équipe",
-        "composer": "Compositeur(trice)"
+        "composer": "Compositeur(trice)",
+        "cast": "Distribution"
     },
     "imageType": {
         "thumb": "Vignette",
