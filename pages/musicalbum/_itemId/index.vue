@@ -21,7 +21,7 @@
             <nuxt-link
               tag="span"
               class="link"
-              :to="getItemDetailsLink(item.AlbumArtist[0])"
+              :to="getItemDetailsLink(item.AlbumArtists[0])"
             >
               {{ item.AlbumArtist }}
             </nuxt-link>
