@@ -2,7 +2,7 @@
   <v-simple-table dense class="track-table no-select">
     <thead>
       <tr>
-        <th style="width: 6em" class="pr-0 text-center" scope="col">#</th>
+        <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
         <th style="width: 3em" class="pr-0 pl-0" scope="col" />
         <th scope="col">{{ $t('item.tracklist.title') }}</th>
         <th style="width: 6.5em" class="text-center" scope="col">
@@ -31,9 +31,9 @@
             :class="{ 'primary--text': isPlaying(track) }"
             @dblclick="playTracks(track)"
           >
-            <td style="width: 6em" class="pr-0 text-center">
+            <td style="width: 4em" class="pr-0 text-center">
               <span v-if="hover">
-                <v-btn icon @click="playTracks(track)">
+                <v-btn small icon @click="playTracks(track)">
                   <v-icon>mdi-play-circle-outline</v-icon>
                 </v-btn>
               </span>
@@ -54,11 +54,12 @@
                     :key="artist.Id"
                     tag="span"
                     class="link text--secondary"
-                    :to="`/artist/${artist.Id}`"
+                    :to="getItemDetailsLink(artist, 'MusicArtist')"
                   >
                     {{ artist.Name }}
                   </nuxt-link>
                 </div>
+                <v-spacer />
                 <item-menu v-show="hover" :item="item" />
               </div>
             </td>
@@ -76,9 +77,10 @@ import { mapActions, mapGetters } from 'vuex';
 import { Dictionary, groupBy } from 'lodash';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [timeUtils],
+  mixins: [timeUtils, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -146,12 +148,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.link {
-  cursor: pointer;
-}
-.link:hover {
-  text-decoration: underline;
-}
 .v-data-table.track-table {
   background-color: transparent;
 }

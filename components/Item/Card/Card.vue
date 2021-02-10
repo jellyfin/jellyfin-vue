@@ -1,7 +1,7 @@
 <template>
   <nuxt-link
     :event="link ? 'click' : null"
-    :to="itemLink"
+    :to="getItemDetailsLink(item)"
     :class="link ? null : 'link-disabled'"
     class="nuxt-link"
   >
@@ -70,7 +70,7 @@
           />
         </div>
         <div
-          v-if="overlay"
+          v-if="overlay && !$browser.isMobile()"
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :item="item" />
@@ -99,7 +99,7 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
-import { getShapeFromItemType, validLibraryTypes } from '~/utils/items';
+import { getShapeFromItemType } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -152,21 +152,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    itemLink: {
-      get(): string {
-        if (this.item.Type && validLibraryTypes.includes(this.item.Type)) {
-          return `/library/${this.item.Id}`;
-        } else if (this.item.Type === 'Person') {
-          return `/person/${this.item.Id}`;
-        } else if (this.item.Type === 'MusicArtist') {
-          return `/artist/${this.item.Id}`;
-        } else if (this.item.Type === 'Genre') {
-          return `/genre/${this.item.Id}`;
-        } else {
-          return `/item/${this.item.Id}`;
-        }
-      }
-    },
     cardType: {
       get(): string {
         // Otherwise, figure out the shape based on the type of the item

@@ -81,10 +81,16 @@ body {
 
 .link {
   cursor: pointer;
+  color: inherit !important;
+  text-decoration: none;
 }
 
 .link:hover {
   text-decoration: underline;
+}
+
+.flex-0 {
+  flex: 0;
 }
 
 /* Customized Vuetify components */

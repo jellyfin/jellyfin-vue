@@ -10,7 +10,7 @@
       </client-only>
     </div>
     <div v-else-if="vertical">
-      <h2 v-if="!loading && relatedItems.length > 0">
+      <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
         <slot>
           {{ $t('youMayAlsoLike') }}
         </slot>
@@ -22,7 +22,7 @@
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
             nuxt
-            :to="getItemLink(relatedItem)"
+            :to="getItemDetailsLink(relatedItem)"
           >
             <v-list-item-avatar>
               <v-img ref="avatarImg" :src="getImageUrl(relatedItem.Id)" />
@@ -54,9 +54,10 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     /**
      * item.Id To be used to get related items
@@ -121,16 +122,6 @@ export default Vue.extend({
     getImageUrl(itemId: string): string | undefined {
       const element = this.$refs.avatarImg as HTMLElement;
       return this.getImageUrlForElement(ImageType.Primary, { itemId, element });
-    },
-    getItemLink(item: BaseItemDto): string {
-      switch (item.Type) {
-        case 'MusicArtist':
-          return `/artist/${item.Id}`;
-        case 'Person':
-          return `/person/${item.Id}`;
-        default:
-          return `/item/${item.Id}`;
-      }
     }
   }
 });

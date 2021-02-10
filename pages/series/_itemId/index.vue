@@ -2,12 +2,12 @@
   <item-cols>
     <template #left>
       <v-row justify="center" justify-md="start">
-        <v-col cols="6" md="3">
-          <card :item="item" :overlay="false" :link="false" no-text no-margin />
+        <v-col cols="7" md="3">
+          <card :item="item" no-text no-margin />
         </v-col>
         <v-col cols="12" md="9">
           <h1
-            class="text-h5 text-sm-h4 font-weight-light"
+            class="text-h4 font-weight-light"
             :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
           >
             {{ item.Name }}
@@ -32,9 +32,19 @@
               'ml-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <play-button class="mr-2" :item="item" />
+            <v-btn
+              v-if="canPlay(item)"
+              class="play-button mr-2"
+              color="primary"
+              min-width="8em"
+              :disabled="!isPlayable"
+              depressed
+              rounded
+              @click="play({ items: [item] })"
+            >
+              {{ $t('play') }}
+            </v-btn>
             <item-menu :item="item" outlined :absolute="false" />
-            <like-button :item="item" class="ml-2" />
           </v-row>
           <v-col cols="12" md="10">
             <v-row
@@ -85,14 +95,14 @@
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </v-col>
               <v-col
-                class="px-0"
                 :cols="twoColsInfoColumn.rCols"
                 :sm="twoColsInfoColumn.rSm"
               >
-                <v-slide-group>
-                  <v-slide-item
+                <v-row dense>
+                  <v-col
                     v-for="director in directors"
                     :key="director.Id"
+                    cols="auto"
                   >
                     <v-chip
                       small
@@ -102,8 +112,8 @@
                     >
                       {{ director.Name }}
                     </v-chip>
-                  </v-slide-item>
-                </v-slide-group>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
             <v-row
@@ -118,12 +128,11 @@
                 <label class="text--secondary">{{ $t('writing') }}</label>
               </v-col>
               <v-col
-                class="px-0"
                 :cols="twoColsInfoColumn.rCols"
                 :sm="twoColsInfoColumn.rSm"
               >
-                <v-slide-group>
-                  <v-slide-item v-for="writer in writers" :key="writer.Id">
+                <v-row dense>
+                  <v-col v-for="writer in writers" :key="writer.Id" cols="auto">
                     <v-chip
                       small
                       link
@@ -132,121 +141,10 @@
                     >
                       {{ writer.Name }}
                     </v-chip>
-                  </v-slide-item>
-                </v-slide-group>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
-            <div
-              v-if="item && item.MediaSources && item.MediaSources.length > 0"
-              class="mt-2"
-            >
-              <v-row v-if="item.MediaSources.length > 1" align="center">
-                <v-col
-                  :cols="twoColsInfoColumn.lCols"
-                  :sm="twoColsInfoColumn.lSm"
-                  :class="twoColsInfoColumn.lClass"
-                >
-                  <label class="text--secondary">{{ $t('version') }}</label>
-                </v-col>
-                <v-col
-                  class="px-0"
-                  :cols="twoColsInfoColumn.rCols"
-                  :sm="twoColsInfoColumn.rSm"
-                >
-                  <v-select
-                    v-model="currentSource"
-                    :items="getItemizedSelect(item.MediaSources)"
-                    outlined
-                    filled
-                    flat
-                    dense
-                    single-line
-                    hide-details
-                    class="text-truncate"
-                  >
-                    <template slot="selection" slot-scope="{ item: i }">
-                      {{ i.value.Name }}
-                    </template>
-                    <template slot="item" slot-scope="{ item: i }">
-                      {{ i.value.Name }}
-                    </template>
-                  </v-select>
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
-                  :cols="twoColsInfoColumn.lCols"
-                  :sm="twoColsInfoColumn.lSm"
-                  :class="twoColsInfoColumn.lClass"
-                >
-                  <label class="text--secondary">{{ $t('video') }}</label>
-                </v-col>
-                <v-col
-                  class="px-0"
-                  :cols="twoColsInfoColumn.rCols"
-                  :sm="twoColsInfoColumn.rSm"
-                >
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Video'"
-                    @input="currentVideoTrack = $event"
-                  />
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
-                  :cols="twoColsInfoColumn.lCols"
-                  :sm="twoColsInfoColumn.lSm"
-                  :class="twoColsInfoColumn.lClass"
-                >
-                  <label class="text--secondary">{{ $t('audio') }}</label>
-                </v-col>
-                <v-col
-                  class="px-0"
-                  :cols="twoColsInfoColumn.rCols"
-                  :sm="twoColsInfoColumn.rSm"
-                >
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Audio'"
-                    @input="currentAudioTrack = $event"
-                  />
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
-                  :cols="twoColsInfoColumn.lCols"
-                  :sm="twoColsInfoColumn.lSm"
-                  :class="twoColsInfoColumn.lClass"
-                >
-                  <label class="text--secondary">{{ $t('subtitles') }}</label>
-                </v-col>
-                <v-col
-                  class="px-0"
-                  :cols="twoColsInfoColumn.rCols"
-                  :sm="twoColsInfoColumn.rSm"
-                >
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Subtitle'"
-                    @input="currentSubtitleTrack = $event"
-                  />
-                </v-col>
-              </v-row>
-            </div>
-            <div
-              v-else-if="
-                item &&
-                item.MediaType === 'Video' &&
-                (!item.MediaSources || item.MediaSources.length === 0)
-              "
-              class="text-h5 my-4"
-            >
-              {{ $t('NoMediaSourcesAvailable') }}
-            </div>
           </v-col>
           <div>
             <p
@@ -261,7 +159,7 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <related-items :id="$route.params.itemId" :item="item" />
+          <season-tabs v-if="item.Type === 'Series'" :item="item" />
         </v-col>
       </v-row>
     </template>
@@ -274,6 +172,7 @@
         <h2 class="text-h6 text-sm-h5">{{ $t('item.cast') }}</h2>
         <person-list :items="actors" />
       </div>
+      <related-items :item="item" vertical />
     </template>
   </item-cols>
 </template>

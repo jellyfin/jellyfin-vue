@@ -70,7 +70,7 @@
                   rounded
                   nuxt
                   data-swiper-parallax="-100"
-                  :to="`item/${item.Id}`"
+                  :to="getItemDetailsLink(item)"
                 >
                   {{ $t('viewDetails') }}
                 </v-btn>

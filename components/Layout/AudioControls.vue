@@ -34,7 +34,7 @@
                 <nuxt-link
                   tag="span"
                   class="text-truncate link mt-2 height-fit-content"
-                  :to="`/item/${getCurrentItem.Id}`"
+                  :to="getItemDetailsLink(getCurrentItem)"
                 >
                   {{ getCurrentItem.Name }}
                 </nuxt-link>
@@ -43,14 +43,14 @@
                 <span
                   v-for="(artist, index) in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
-                  :to="`/artist/${artist.Id}`"
+                  :to="getItemDetailsLink(artist, 'MusicArtist')"
                   class="ma-0"
                 >
                   <p class="mb-0">
                     <nuxt-link
                       tag="span"
                       class="text--secondary text-caption text-truncate link"
-                      :to="`/artist/${artist.Id}`"
+                      :to="getItemDetailsLink(artist, 'MusicArtist')"
                       >{{ artist.Name }}</nuxt-link
                     >
                     <!-- Handles whitespaces -->
@@ -218,9 +218,10 @@ import { mapActions, mapGetters } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
 import { PlaybackStatus } from '~/store/playbackManager';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [timeUtils, imageHelper],
+  mixins: [timeUtils, imageHelper, itemHelper],
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',

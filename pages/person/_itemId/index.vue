@@ -150,14 +150,26 @@ export default Vue.extend({
       }
     }
   },
-  beforeMount() {
-    const hash = this.getBlurhash(this.item, ImageType.Backdrop);
-    this.setBackdrop({ hash });
+  watch: {
+    item: {
+      handler(val: BaseItemDto): void {
+        this.setPageTitle({ title: val.Name });
+        const hash = this.getBlurhash(val, ImageType.Backdrop);
+        this.setBackdrop({ hash });
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  created() {
+    this.setAppBarOpacity({ opaqueAppBar: false });
   },
   destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },
   methods: {
+    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getImageUrl(itemId: string | undefined): string | undefined {
       const element = this.$refs.personImg as HTMLElement;
