@@ -60,7 +60,31 @@
             "description": "添加或撤销 API 密钥以便从外部访问你的服务器",
             "apiKeys": "API 密钥"
         },
-        "settings": "设置"
+        "settings": "设置",
+        "logsAndActivity": {
+            "noLogsFound": "未找到日志",
+            "noActivityFound": "未找到活动",
+            "logs": "日志",
+            "failedGetLogs": "无法获取日志",
+            "failedGetActivity": "无法获取活动",
+            "activity": "活动"
+        },
+        "help": "帮助",
+        "devices": {
+            "userName": "用户名",
+            "noDevicesFound": "未找到设备",
+            "lastActive": "上次活动",
+            "devices": "设备",
+            "deviceName": "设备名称",
+            "deleteDeviceSuccess": "设备已成功删除",
+            "deleteDeviceError": "删除设备时出错",
+            "deleteAllDevicesSuccess": "所有设备删除成功",
+            "deleteAllDevicesError": "删除所有设备时发生错误",
+            "deleteAll": "删除全部",
+            "delete": "删除",
+            "appVersion": "应用版本",
+            "appName": "应用名称"
+        }
     },
     "signIn": "登陆",
     "unexpectedError": "意外的错误",
@@ -374,5 +398,32 @@
     },
     "unableToToggleLike": "无法更改此元素的收藏状态",
     "resume": "恢复播放",
-    "playFromBeginning": "从头开始播放"
+    "playFromBeginning": "从头开始播放",
+    "imageType": {
+        "art": "艺术",
+        "thumb": "缩略图",
+        "screenshot": "截图",
+        "primary": "封面图",
+        "menu": "菜单",
+        "logo": "商标",
+        "box": "盒子",
+        "boxRear": "盒子（背面）",
+        "disc": "光盘",
+        "banner": "横幅",
+        "backdrop": "背景"
+    },
+    "item": {
+        "tracklist": {
+            "title": "标题"
+        },
+        "person": {
+            "person": "人物",
+            "death": "去世日期",
+            "birthPlace": "出生地",
+            "birth": "生日"
+        },
+        "cast": "演职人员",
+        "crew": "演职人员",
+        "composer": "作曲家"
+    }
 }
