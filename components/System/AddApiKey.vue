@@ -14,7 +14,7 @@
               outlined
               :label="$t('settings.apiKeys.appName')"
             />
-            <v-btn color="primary" @click="addApiKey">
+            <v-btn color="primary" :loading="loading" @click="addApiKey">
               {{ $t('confirm') }}
             </v-btn>
             <v-btn @click="() => (addingNewKey = false)">
@@ -35,7 +35,8 @@ export default Vue.extend({
   data() {
     return {
       addingNewKey: false,
-      newKeyAppName: ''
+      newKeyAppName: '',
+      loading: false
     };
   },
   computed: {
@@ -57,6 +58,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async addApiKey(): Promise<void> {
+      this.loading = true;
       try {
         await this.$api.apiKey.createKey({
           app: this.newKeyAppName
@@ -78,6 +80,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+      this.loading = false;
       this.addingNewKey = false;
     },
     openDialog(): void {
