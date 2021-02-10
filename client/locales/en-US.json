@@ -35,6 +35,13 @@
   "darkModeToggle": "Toggle dark mode",
   "dateAdded": "Date added",
   "details": "Details",
+  "dialog": {
+    "upNext": {
+      "nextEpisodePlayingIn": "Next Episode Playing in",
+      "startNow": "Start now",
+      "hide": "Hide"
+    }
+  },
   "directing": "Directing",
   "director": "Director",
   "discNumber": "Disc {discNumber}",
@@ -73,7 +80,6 @@
   "guestStar": "Guest Star",
   "headerExternalIds": "External IDs",
   "headerPaths": "Path",
-  "hide": "Hide",
   "home": "Home",
   "homeHeader": {
     "items": {
@@ -205,7 +211,6 @@
   "movies": "Movies",
   "name": "Name",
   "networks": "Networks",
-  "nextEpisodePlayingIn": "Next Episode Playing in",
   "nextUp": "Next up",
   "noAudioTrackSelected": "No audio track selected",
   "noAudioTracksAvailable": "No audio tracks available",

@@ -2,7 +2,7 @@
   <v-card class="container">
     <div class="d-flex flex-column flex-grow-1">
       <v-card-title class="countdownHeader">
-        {{ $t('nextEpisodePlayingIn') }}
+        {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
         <span class="primary--text darken-2">
           &ensp;{{ timeLeft }} {{ $t('seconds') }}
         </span>
@@ -24,9 +24,9 @@
       <v-card-actions>
         <v-spacer />
         <v-btn class="primary darken-2" @click="startNext">
-          {{ $t('startNow') }}
+          {{ $t('dialog.upNext.startNow') }}
         </v-btn>
-        <v-btn @click="$emit('hide')"> {{ $t('hide') }}</v-btn>
+        <v-btn @click="$emit('hide')"> {{ $t('dialog.upNext.hide') }}</v-btn>
       </v-card-actions>
     </div>
   </v-card>
