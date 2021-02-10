@@ -43,7 +43,7 @@
     "director": "Diretor",
     "disc": "Disco",
     "discNumber": "Disco {discNumber}",
-    "dislikes": "",
+    "dislikes": "Não curtidos",
     "edit": "Editar",
     "editMetadata": "Editar Metadata",
     "editPerson": "Editar pessoa",
@@ -61,14 +61,14 @@
     "failedSettingDisplayPreferences": "Incapaz de atualizar as preferências do display.",
     "failedToRefreshItems": "Falha ao recarregar os itens",
     "favorite": "Favorito",
-    "features": "",
+    "features": "Recursos",
     "filter": "Filtro",
     "filtersNotFound": "Incapaz de carregar filtros",
     "fullScreen": "Tela cheia",
     "general": "Geral",
     "genres": "Gêneros",
-    "guestStar": "",
-    "headerExternalIds": "",
+    "guestStar": "Participação especial",
+    "headerExternalIds": "IDs externos",
     "headerPaths": "Caminho",
     "home": "Casa",
     "homeHeader": {
@@ -78,7 +78,7 @@
         "welcome": {
             "checkNewItems": "Veja o que há de novo.",
             "helloUser": "Olá {userName}!",
-            "noItems": ""
+            "noItems": "Não há itens adicionados recentemente para mostrar."
         }
     },
     "images": "Imagens",
@@ -328,5 +328,14 @@
     "writing": "",
     "year": "",
     "years": "",
-    "youMayAlsoLike": ""
+    "youMayAlsoLike": "",
+    "imageType": {
+        "primary": "Principal",
+        "menu": "Menu",
+        "logo": "Logo",
+        "banner": "Cartaz",
+        "backdrop": "Imagem de fundo",
+        "art": "Arte"
+    },
+    "about": "Sobre"
 }
