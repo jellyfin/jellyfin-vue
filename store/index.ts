@@ -12,7 +12,15 @@ import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { DisplayPreferencesState } from './displayPreferences';
 
-export interface AppState {
+export interface RootState {
+  socket: {
+    instance: WebSocket | null;
+    isConnected: boolean;
+    message: Record<string, never>;
+    reconnectError: boolean;
+  };
+}
+export interface AppState extends RootState {
   backdrop: BackdropState;
   device: DeviceState;
   displayPreferences: DisplayPreferencesState;
@@ -24,15 +32,6 @@ export interface AppState {
   tvShows: TvShowsState;
   user: UserState;
   userViews: UserViewsState;
-}
-
-export interface RootState {
-  socket: {
-    instance: WebSocket | null;
-    isConnected: boolean;
-    message: Record<string, never>;
-    reconnectError: boolean;
-  };
 }
 
 export const state = (): RootState => ({
