@@ -20,7 +20,7 @@
             {{ $t('byArtist') }}
             <nuxt-link
               class="link"
-              :to="getItemDetailsLink(item.AlbumArtists[0])"
+              :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
             >
               {{ item.AlbumArtist }}
             </nuxt-link>

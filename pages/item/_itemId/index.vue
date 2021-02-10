@@ -94,7 +94,12 @@
                     v-for="director in directors"
                     :key="director.Id"
                   >
-                    <v-chip small link nuxt :to="getItemDetailsLink(director)">
+                    <v-chip
+                      small
+                      link
+                      nuxt
+                      :to="getItemDetailsLink(director, 'Person')"
+                    >
                       {{ director.Name }}
                     </v-chip>
                   </v-slide-item>
@@ -119,7 +124,12 @@
               >
                 <v-slide-group>
                   <v-slide-item v-for="writer in writers" :key="writer.Id">
-                    <v-chip small link nuxt :to="getItemDetailsLink(writer)">
+                    <v-chip
+                      small
+                      link
+                      nuxt
+                      :to="getItemDetailsLink(writer, 'Person')"
+                    >
                       {{ writer.Name }}
                     </v-chip>
                   </v-slide-item>

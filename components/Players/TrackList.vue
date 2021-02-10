@@ -54,7 +54,7 @@
                     :key="artist.Id"
                     tag="span"
                     class="link text--secondary"
-                    :to="getItemDetailsLink(artist)"
+                    :to="getItemDetailsLink(artist, 'MusicArtist')"
                   >
                     {{ artist.Name }}
                   </nuxt-link>

@@ -5,7 +5,7 @@
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
         nuxt
-        :to="getItemDetailsLink(item)"
+        :to="getItemDetailsLink(item, 'Person')"
       >
         <v-list-item-avatar>
           <v-img

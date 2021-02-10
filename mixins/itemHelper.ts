@@ -11,13 +11,13 @@ declare module '@nuxt/types' {
   interface Context {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
-    getItemDetailsLink: (item: BaseItemDto) => string;
+    getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
   }
 
   interface NuxtAppOptions {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
-    getItemDetailsLink: (item: BaseItemDto) => string;
+    getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
   }
 }
 
@@ -25,7 +25,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
-    getItemDetailsLink: (item: BaseItemDto) => string;
+    getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
   }
 }
 
@@ -72,9 +72,10 @@ const itemHelper = Vue.extend({
      * Generate a link to the item's details page route
      *
      * @param {BaseItemDto} item - The item used to generate the route
+     * @param {string} overrideType - Force the type to use
      * @returns {string} A valid route to the item's details page
      */
-    getItemDetailsLink(item: BaseItemDto): string {
+    getItemDetailsLink(item: BaseItemDto, overrideType?: string): string {
       let routeName: string;
       let routeParams: Record<never, never>;
 
@@ -82,7 +83,8 @@ const itemHelper = Vue.extend({
         routeName = 'library-viewId';
         routeParams = { viewId: item.Id };
       } else {
-        switch (item.Type) {
+        const type = overrideType || item.Type;
+        switch (type) {
           case 'Series':
             routeName = 'series-itemId';
             routeParams = { itemId: item.Id };
