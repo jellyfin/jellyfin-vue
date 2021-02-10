@@ -148,12 +148,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.link {
-  cursor: pointer;
-}
-.link:hover {
-  text-decoration: underline;
-}
 .v-data-table.track-table {
   background-color: transparent;
 }

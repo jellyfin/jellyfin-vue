@@ -19,7 +19,6 @@
           >
             {{ $t('byArtist') }}
             <nuxt-link
-              tag="span"
               class="link"
               :to="getItemDetailsLink(item.AlbumArtists[0])"
             >
@@ -185,9 +184,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.flex-0 {
-  flex: 0;
-}
-</style>

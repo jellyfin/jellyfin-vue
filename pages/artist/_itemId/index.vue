@@ -214,10 +214,4 @@ export default Vue.extend({
   left: 0;
   width: 1.25em;
 }
-.link {
-  cursor: pointer;
-}
-.link:hover {
-  text-decoration: underline;
-}
 </style>
