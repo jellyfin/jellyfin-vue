@@ -1,29 +1,33 @@
 <template>
   <v-col class="px-0">
-    <swiper
-      v-if="currentQueue"
-      ref="playbackSwiper"
-      class="d-flex justify-center align-center"
-      :options="swiperOptions"
-      @slideChange="onSlideChange"
-      @sliderMove="update"
-    >
-      <swiper-slide
-        v-for="item in currentQueue"
-        :key="item.Id"
-        class="d-flex justify-center"
+    <v-scale-transition appear>
+      <swiper
+        v-if="currentQueue"
+        ref="playbackSwiper"
+        class="d-flex justify-center align-center"
+        :options="swiperOptions"
+        @slideChange="onSlideChange"
+        @sliderMove="update"
       >
-        <div class="album-cover">
-          <blurhash-image :item="item" @error="onImageError">
-            <template #placeholder>
-              <v-avatar tile size="65vh" color="primary">
-                <v-icon dark x-large style="font-size: 60vh">mdi-album</v-icon>
-              </v-avatar>
-            </template>
-          </blurhash-image>
-        </div>
-      </swiper-slide>
-    </swiper>
+        <swiper-slide
+          v-for="item in currentQueue"
+          :key="item.Id"
+          class="d-flex justify-center"
+        >
+          <div class="album-cover">
+            <blurhash-image :item="item" @error="onImageError">
+              <template #placeholder>
+                <v-avatar tile size="65vh" color="primary">
+                  <v-icon dark x-large style="font-size: 60vh">
+                    mdi-album
+                  </v-icon>
+                </v-avatar>
+              </template>
+            </blurhash-image>
+          </div>
+        </swiper-slide>
+      </swiper>
+    </v-scale-transition>
   </v-col>
 </template>
 
@@ -96,37 +100,37 @@ export default Vue.extend({
       this.setBackdrop({ hash: this.backdropHash });
     },
     currentQueue(): void {
-      this.swiper?.update();
+      this.update();
     },
-    isPlaying(newValue: boolean): void {
-      if (!newValue) {
-        this.$router.back();
+    isPlaying: {
+      immediate: true,
+      handler(newValue: boolean): void {
+        if (!newValue) {
+          this.$router.back();
+        }
       }
     }
+  },
+  created() {
+    this.swiperOptions.initialSlide = this.currentItemIndex;
+    requestAnimationFrame(() => {
+      this.setBackdrop({ hash: this.backdropHash });
+    });
   },
   beforeMount() {
     this.previousAppBarOpacity = this.$store.state.page.opaqueAppBar;
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ newOpacity: 0.5 });
-    if (!this.isPlaying) {
-      this.$router.back();
-    }
+    this.setMinimized({ minimized: false });
   },
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
-    this.setBackdrop({ hash: this.backdropHash });
-    this.swiper?.slideTo(this.currentItemIndex);
-    // HACK: Remove as soon as we change the transition to this page.
-    window.setTimeout(this.update, 200);
-    this.setMinimized({ minimized: false });
-  },
-  beforeDestroy() {
-    this.clearBackdrop();
-    this.resetBackdropOpacity();
-    this.setMinimized({ minimized: true });
   },
   destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: this.previousAppBarOpacity });
+    this.clearBackdrop();
+    this.resetBackdropOpacity();
+    this.setMinimized({ minimized: true });
   },
   methods: {
     ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
