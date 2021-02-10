@@ -60,6 +60,30 @@
             "appName": "Applikationsname",
             "description": "Hinzufügen und Widerrufen von API-Schlüsseln für externen Zugriff auf Ihren Server",
             "apiKeys": "API-Schlüssel"
+        },
+        "logsAndActivity": {
+            "noLogsFound": "Keine Protokolle gefunden",
+            "noActivityFound": "Keine Aktivitäten gefunden",
+            "logs": "Protokoll",
+            "failedGetLogs": "Protokolle können nicht abgerufen werden",
+            "failedGetActivity": "Aktivitäten können nicht abgerufen werden",
+            "activity": "Aktivitäten"
+        },
+        "help": "Hilfe",
+        "devices": {
+            "userName": "Benutzername",
+            "noDevicesFound": "Keine Geräte gefunden",
+            "lastActive": "Zuletzt aktiv",
+            "devices": "Geräte",
+            "deviceName": "Gerätename",
+            "deleteDeviceSuccess": "Gerät erfolgreich gelöscht",
+            "deleteDeviceError": "Fehler beim Löschen des Geräts",
+            "deleteAllDevicesSuccess": "Alle Geräte erfolgreich gelöscht",
+            "deleteAllDevicesError": "Fehler beim Löschen aller Geräte",
+            "deleteAll": "Alles löschen",
+            "delete": "Löschen",
+            "appVersion": "Applikationsversion",
+            "appName": "Applikationsname"
         }
     },
     "signIn": "Anmelden",
