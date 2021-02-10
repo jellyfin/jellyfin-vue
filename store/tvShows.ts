@@ -5,9 +5,8 @@ import {
   BaseItemDtoQueryResult,
   ItemFields
 } from '@jellyfin/client-axios';
-import { AppState } from './index';
 
-interface TvShowItem {
+export interface TvShowItem {
   /**
    * seasons: Stores an array of all seasons
    */
@@ -15,32 +14,35 @@ interface TvShowItem {
   /**
    * seasonEpisodes: Stores an array for each season containing all the season episodes
    */
-  seasonEpisodes: BaseItemDto[][];
+  seasonEpisodes: { [key: string]: BaseItemDto[] };
 }
 
 export interface TvShowsState {
   [key: string]: TvShowItem;
 }
 
-const defaultState = (): TvShowsState => ({});
+export const defaultState = (): TvShowsState => ({});
 
 export const state = defaultState;
 
-type MutationPayload = {
+type AddSeasonsMutationPayload = {
   seasons: BaseItemDto[];
-  seasonEpisodes: BaseItemDto[];
   itemId?: string;
 };
 
-export const getters: GetterTree<TvShowsState, AppState> = {
-  getSeasons: (state) => ({ itemId }: { itemId: string }): BaseItemDto[] => {
+type AddSeasonsEpisodesMutationPayload = {
+  seasonEpisodes: BaseItemDto[];
+  itemId: string;
+  seasonItemId: string;
+};
+
+export const getters: GetterTree<TvShowsState, TvShowsState> = {
+  getSeasons: (state) => (itemId: string): BaseItemDto[] => {
     return state[itemId]?.seasons;
   },
-  getSeasonEpisodes: (state) => ({
-    itemId
-  }: {
-    itemId: string;
-  }): BaseItemDto[][] => {
+  getSeasonEpisodes: (state) => (
+    itemId: string
+  ): TvShowItem['seasonEpisodes'] => {
     return state[itemId]?.seasonEpisodes;
   }
 };
@@ -48,7 +50,7 @@ export const getters: GetterTree<TvShowsState, AppState> = {
 export const mutations: MutationTree<TvShowsState> = {
   ADD_TVSHOW_SEASONS(
     state: TvShowsState,
-    { seasons, itemId }: MutationPayload
+    { seasons, itemId }: AddSeasonsMutationPayload
   ) {
     if (!itemId) {
       throw new Error('itemId is undefined');
@@ -61,7 +63,7 @@ export const mutations: MutationTree<TvShowsState> = {
   },
   ADD_TVSHOW_SEASON_EPISODES(
     state: TvShowsState,
-    { seasonEpisodes, itemId }: MutationPayload
+    { seasonEpisodes, itemId, seasonItemId }: AddSeasonsEpisodesMutationPayload
   ) {
     if (!itemId) {
       throw new Error('itemId is undefined');
@@ -69,14 +71,17 @@ export const mutations: MutationTree<TvShowsState> = {
 
     Vue.set(state, itemId, {
       seasons: state[itemId]?.seasons || [],
-      seasonEpisodes: [...state[itemId].seasonEpisodes, seasonEpisodes]
+      seasonEpisodes: {
+        ...state[itemId]?.seasonEpisodes,
+        [seasonItemId]: seasonEpisodes
+      }
     });
   },
   CLEAR_TVSHOWS(state: TvShowsState) {
     Object.assign(state, defaultState());
   }
 };
-export const actions: ActionTree<TvShowsState, AppState> = {
+export const actions: ActionTree<TvShowsState, TvShowsState> = {
   async getTvShows({ dispatch }, { itemId }: { itemId: string }) {
     try {
       const { data } = await this.$api.tvShows.getSeasons({
@@ -107,7 +112,7 @@ export const actions: ActionTree<TvShowsState, AppState> = {
     commit('ADD_TVSHOW_SEASONS', {
       seasons: response.Items,
       itemId
-    });
+    } as AddSeasonsMutationPayload);
 
     response.Items?.forEach(async (season) => {
       await dispatch('getTvShowsSeasonEpisodes', { season, itemId });
@@ -135,7 +140,8 @@ export const actions: ActionTree<TvShowsState, AppState> = {
 
       dispatch('getTvShowsSeasonEpisodesSuccess', {
         response: data,
-        itemId
+        itemId,
+        seasonItemId: season.Id
       });
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -145,12 +151,21 @@ export const actions: ActionTree<TvShowsState, AppState> = {
   },
   getTvShowsSeasonEpisodesSuccess(
     { commit },
-    { response, itemId }: { response: BaseItemDtoQueryResult; itemId: string }
+    {
+      response,
+      itemId,
+      seasonItemId
+    }: {
+      response: BaseItemDtoQueryResult;
+      itemId: string;
+      seasonItemId: string;
+    }
   ) {
     commit('ADD_TVSHOW_SEASON_EPISODES', {
       itemId,
-      seasonEpisodes: response.Items
-    });
+      seasonEpisodes: response.Items,
+      seasonItemId
+    } as AddSeasonsEpisodesMutationPayload);
   },
   getTvShowsSeasonEpisodesFailure: async ({ dispatch }, error) => {
     await dispatch(
