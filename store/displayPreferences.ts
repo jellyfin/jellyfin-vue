@@ -122,17 +122,32 @@ export const actions: ActionTree<
    */
   async pushState({ state, dispatch }) {
     try {
+      // The fetch part is only done cause DisplayPreferences doesn't accept partial updates
+      const responseFetch = await this.$api.displayPreferences.getDisplayPreferences(
+        {
+          displayPreferencesId: 'usersettings',
+          userId: this.$auth.user?.Id,
+          client: 'vue'
+        }
+      );
+
+      if (responseFetch.status !== 200)
+        throw new Error(
+          'get display preferences status response = ' + responseFetch.status
+        );
+
+      const displayPrefs = responseFetch.data;
+      displayPrefs.CustomPrefs = {
+        darkMode: state.darkMode,
+        locale: state.locale
+      };
+
       const response = await this.$api.displayPreferences.updateDisplayPreferences(
         {
           displayPreferencesId: 'usersettings',
           userId: this.$auth.user?.Id,
           client: 'vue',
-          displayPreferencesDto: {
-            CustomPrefs: {
-              darkMode: state.darkMode,
-              locale: state.locale
-            }
-          }
+          displayPreferencesDto: displayPrefs
         }
       );
       if (response.status !== 204) {
