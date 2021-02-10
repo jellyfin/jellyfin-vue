@@ -60,7 +60,31 @@
             "description": "உங்கள் சேவையகத்திற்கான வெளிப்புற அணுகலுக்கான API விசைகளைச் சேர்த்து ரத்துசெய்",
             "apiKeys": "API விசைகள்"
         },
-        "settings": "அமைப்புகள்"
+        "settings": "அமைப்புகள்",
+        "logsAndActivity": {
+            "noLogsFound": "பதிவுகள் எதுவும் கிடைக்கவில்லை",
+            "noActivityFound": "நடவடிக்கைகள் எதுவும் கிடைக்கவில்லை",
+            "logs": "பதிவுகள்",
+            "failedGetLogs": "பதிவுகள் பெற முடியவில்லை",
+            "failedGetActivity": "செயல்பாட்டைப் பெற முடியவில்லை",
+            "activity": "செயல்பாடு"
+        },
+        "help": "உதவி",
+        "devices": {
+            "userName": "பயனர்பெயர்",
+            "noDevicesFound": "சாதனங்கள் எதுவும் கிடைக்கவில்லை",
+            "lastActive": "கடைசியாக செயலில்",
+            "devices": "சாதனங்கள்",
+            "deviceName": "சாதனத்தின் பெயர்",
+            "deleteDeviceSuccess": "சாதனம் வெற்றிகரமாக நீக்கப்பட்டது",
+            "deleteDeviceError": "சாதனத்தை நீக்குவதில் பிழை",
+            "deleteAllDevicesSuccess": "அனைத்து சாதனங்களும் வெற்றிகரமாக நீக்கப்பட்டன",
+            "deleteAllDevicesError": "அனைத்து சாதனங்களையும் நீக்குவதில் பிழை",
+            "deleteAll": "அனைத்தையும் நீக்கு",
+            "delete": "நீக்கு",
+            "appVersion": "பயன்பாட்டு பதிப்பு",
+            "appName": "பயன்பாட்டு பெயர்"
+        }
     },
     "signIn": "உள்நுழைக",
     "unexpectedError": "எதிர்பாராத பிழை",
