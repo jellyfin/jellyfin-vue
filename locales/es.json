@@ -54,7 +54,31 @@
             "dateCreated": "Fecha de creación",
             "appName": "Nombre de la aplicación"
         },
-        "settings": "Configuración"
+        "settings": "Configuración",
+        "logsAndActivity": {
+            "noLogsFound": "No hay registros que mostrar",
+            "noActivityFound": "No hay actividades que mostrar",
+            "logs": "Registros",
+            "failedGetLogs": "Error al obtener los registros",
+            "failedGetActivity": "Error al obtener la actividad",
+            "activity": "Actividad"
+        },
+        "help": "Ayuda",
+        "devices": {
+            "userName": "Nombre de usuario",
+            "noDevicesFound": "No se han encontrado dispositivos",
+            "lastActive": "Última actividad",
+            "devices": "Dispositivos",
+            "deviceName": "Nombre del dispositivo",
+            "deleteDeviceSuccess": "Dispositivo eliminado correctamente",
+            "deleteDeviceError": "Error al eliminar el dispositivo",
+            "deleteAllDevicesSuccess": "Todos los dispositivos se han eliminado correctamente",
+            "deleteAllDevicesError": "Error al eliminar todos los dispositivos",
+            "deleteAll": "Eliminar todos",
+            "delete": "Eliminar",
+            "appVersion": "Versión",
+            "appName": "Nombre de la aplicación"
+        }
     },
     "unexpectedError": "Error desconocido",
     "usernameRequired": "Se requiere nombre de usuario",
@@ -373,5 +397,29 @@
         },
         "clearQueue": "Vaciar la cola y detener la reproducción"
     },
-    "playFromBeginning": "Reproducir desde el principio"
+    "playFromBeginning": "Reproducir desde el principio",
+    "item": {
+        "tracklist": {
+            "title": "Título"
+        },
+        "person": {
+            "person": "Persona",
+            "death": "Fallecimiento",
+            "birthPlace": "Lugar de nacimiento",
+            "birth": "Nacimiento"
+        },
+        "crew": "Equipo",
+        "composer": "Compositor",
+        "cast": "Reparto"
+    },
+    "imageType": {
+        "thumb": "Miniatura",
+        "screenshot": "Captura de pantalla",
+        "primary": "Principal",
+        "logo": "Logo",
+        "disc": "Disco",
+        "boxRear": "Carátula trasera",
+        "box": "Carátula",
+        "backdrop": "Fondo"
+    }
 }
