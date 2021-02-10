@@ -193,7 +193,31 @@
             "description": "നിങ്ങളുടെ സെർവറിലേക്കുള്ള ബാഹ്യ ആക്‌സസ്സിനായി API കീകൾ ചേർത്ത് അസാധുവാക്കുക",
             "apiKeys": "API കീകൾ"
         },
-        "settings": "ക്രമീകരണങ്ങൾ"
+        "settings": "ക്രമീകരണങ്ങൾ",
+        "logsAndActivity": {
+            "noActivityFound": "പ്രവർത്തനങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+            "logs": "ലോഗുകൾ",
+            "failedGetLogs": "ലോഗുകൾ നേടാനായില്ല",
+            "failedGetActivity": "പ്രവർത്തനം നേടാനായില്ല",
+            "activity": "പ്രവർത്തനം",
+            "noLogsFound": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
+        },
+        "help": "സഹായം",
+        "devices": {
+            "userName": "ഉപയോക്തൃനാമം",
+            "noDevicesFound": "ഉപകരണങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+            "lastActive": "അവസാനം സജീവമാണ്",
+            "devices": "ഉപകരണങ്ങൾ",
+            "deviceName": "ഉപകരണത്തിന്റെ പേര്",
+            "deleteDeviceSuccess": "ഉപകരണം വിജയകരമായി ഇല്ലാതാക്കി",
+            "deleteDeviceError": "ഉപകരണം ഇല്ലാതാക്കുന്നതിൽ പിശക്",
+            "deleteAllDevicesSuccess": "എല്ലാ ഉപകരണങ്ങളും വിജയകരമായി ഇല്ലാതാക്കി",
+            "deleteAllDevicesError": "എല്ലാ ഉപകരണങ്ങളും ഇല്ലാതാക്കുന്നതിൽ പിശക്",
+            "deleteAll": "എല്ലാം കളയുക",
+            "delete": "ഇല്ലാതാക്കുക",
+            "appVersion": "അപ്ലിക്കേഷൻ പതിപ്പ്",
+            "appName": "അപ്ലിക്കേഷന്റെ പേര്"
+        }
     },
     "settingsSections": {
         "account": {
