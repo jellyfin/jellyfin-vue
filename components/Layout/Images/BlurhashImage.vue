@@ -11,7 +11,6 @@
         class="absolute"
       />
       <v-fade-transition>
-        <!-- eslint-disable-next-line vue/html-self-closing -->
         <img
           v-show="!loading"
           :key="`blurhashimage-${item.Id}`"
