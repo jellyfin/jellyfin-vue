@@ -20,7 +20,13 @@
           :data-index="index"
           class="card-grid-container"
         >
-          <card v-for="card of item.chunk" :key="card.Id" :item="card" margin />
+          <card
+            v-for="card of item.chunk"
+            :key="card.Id"
+            :item="card"
+            margin
+            text
+          />
         </dynamic-scroller-item>
       </template>
     </dynamic-scroller>

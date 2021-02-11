@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!noText" class="card-text">
+      <div v-if="text" class="card-text">
         <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
         <div class="card-subtitle text--secondary text-truncate">
           {{ cardSubtitle }}
@@ -126,7 +126,7 @@ export default Vue.extend({
         return false;
       }
     },
-    noText: {
+    text: {
       type: Boolean,
       default: (): boolean => {
         return false;
