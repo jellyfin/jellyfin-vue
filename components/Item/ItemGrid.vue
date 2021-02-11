@@ -26,6 +26,7 @@
             :item="card"
             margin
             text
+            overlay
           />
         </dynamic-scroller-item>
       </template>
