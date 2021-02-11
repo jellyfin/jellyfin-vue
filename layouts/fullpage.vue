@@ -15,9 +15,6 @@ import Vue from 'vue';
 import displayPreferencesHelper from '~/mixins/displayPreferencesHelper';
 
 export default Vue.extend({
-  mixins: [displayPreferencesHelper],
-  beforeMount() {
-    this.watchLocale();
-  }
+  mixins: [displayPreferencesHelper]
 });
 </script>

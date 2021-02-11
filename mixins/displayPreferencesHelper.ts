@@ -4,54 +4,30 @@
  * @mixin
  */
 import Vue from 'vue';
-
-declare module '@nuxt/types' {
-  interface Context {
-    watchDarkMode: () => void;
-    watchLocale: () => void;
-  }
-
-  interface NuxtAppOptions {
-    watchDarkMode: () => void;
-    watchLocale: () => void;
-  }
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    watchDarkMode: () => void;
-    watchLocale: () => void;
-  }
-}
+import { mapState } from 'vuex';
 
 const displayPreferencesHelper = Vue.extend({
-  methods: {
-    watchDarkMode(): void {
-      this.$store.watch(
-        (_state, getters) => getters['displayPreferences/getDarkMode'],
-        (darkMode: boolean) => {
-          this.$vuetify.theme.dark = darkMode;
-        }
-      );
-      this.$vuetify.theme.dark = this.$store.getters[
-        'displayPreferences/getDarkMode'
-      ];
+  computed: {
+    ...mapState('displayPreferences', ['darkMode', 'locale'])
+  },
+  watch: {
+    darkMode: {
+      immediate: true,
+      handler(): void {
+        this.$vuetify.theme.dark = this.darkMode;
+      }
     },
-    watchLocale(): void {
-      const apply = (locale: string): void => {
-        if (locale !== 'auto') this.$i18n.setLocale(locale);
-        else
+    locale: {
+      immediate: true,
+      handler(): void {
+        if (this.locale !== 'auto') {
+          this.$i18n.setLocale(this.locale);
+        } else {
           this.$i18n.setLocale(
-            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'en'
+            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'enUs'
           );
-      };
-
-      this.$store.watch(
-        (_state, getters) => getters['displayPreferences/getLocale'],
-        apply
-      );
-
-      apply(this.$store.getters['displayPreferences/getLocale']);
+        }
+      }
     }
   }
 });

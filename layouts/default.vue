@@ -174,9 +174,6 @@ export default Vue.extend({
     socketUrl = socketUrl.replace('http:', 'ws:');
 
     this.$connect(socketUrl);
-
-    this.watchDarkMode();
-    this.watchLocale();
   },
   mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });

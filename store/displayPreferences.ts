@@ -1,32 +1,47 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
-import { MutationTree, ActionTree, GetterTree } from 'vuex';
-import { merge } from 'lodash';
+import { MutationTree, ActionTree } from 'vuex';
+import { merge, toString as toStr } from 'lodash';
 import { boolean } from 'boolean';
-import nuxtConfig from '~/nuxt.config';
 
-export interface DisplayPreferencesState {
-  darkMode: string;
-  locale: 'auto' | string;
+/**
+ * Casted typings for the CustomPrefs property of DisplayPreferencesDto
+ */
+interface CustomPreferences {
+  darkMode: boolean;
+  locale: string;
+}
+/**
+ * DisplayPreferencesDto but with our custom typings for CustomPrefs property of DisplayPreferencesDto
+ */
+export interface ClientPreferences
+  extends Omit<DisplayPreferencesDto, 'CustomPrefs'> {
+  CustomPrefs?: CustomPreferences;
+}
+export interface DisplayPreferencesState extends CustomPreferences {
+  syncing: boolean;
 }
 
 const defaultState = (): DisplayPreferencesState => ({
-  darkMode: String(nuxtConfig.vuetify?.theme?.default === 'dark'),
-  locale: 'auto'
+  darkMode: true,
+  locale: 'auto',
+  syncing: false
 });
 
-export const state = defaultState;
-
-export const getters: GetterTree<
-  DisplayPreferencesState,
-  DisplayPreferencesState
-> = {
-  getDarkMode: (state) => {
-    return boolean(state.darkMode);
-  },
-  getLocale: (state) => {
-    return state.locale;
+/**
+ * Convert custom preferences returned from the server in the correct type
+ *
+ * @param {DisplayPreferencesDto} data - Response from the server
+ * @returns {ClientPreferences} - The response with the correct datatypes.
+ */
+function castResponse(data: DisplayPreferencesDto): ClientPreferences {
+  const result = data as ClientPreferences;
+  if (result.CustomPrefs?.darkMode) {
+    result.CustomPrefs.darkMode = boolean(result.CustomPrefs.darkMode);
   }
-};
+  return result;
+}
+
+export const state = defaultState;
 
 export const mutations: MutationTree<DisplayPreferencesState> = {
   /**
@@ -34,11 +49,11 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
    *
    * @param {DisplayPreferencesState} state - Current state
    * @param {any} param1 - Payload
-   * @param {DisplayPreferencesDto} param1.displayPreferences - Display preferences returned by the server
+   * @param {ClientPreferences} param1.displayPreferences - Display preferences returned by the server
    */
   INIT_STATE(
     state: DisplayPreferencesState,
-    { displayPreferences }: { displayPreferences: DisplayPreferencesDto }
+    { displayPreferences }: { displayPreferences: ClientPreferences }
   ) {
     merge(state, displayPreferences.CustomPrefs);
   },
@@ -46,7 +61,7 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     state: DisplayPreferencesState,
     { darkMode }: { darkMode: boolean }
   ) {
-    state.darkMode = darkMode.toString();
+    state.darkMode = darkMode;
   },
   SET_LOCALE(state: DisplayPreferencesState, { locale }: { locale: string }) {
     state.locale = locale;
@@ -63,7 +78,7 @@ export const actions: ActionTree<
    * @param {any} context - Vuex action context
    * @param {any} context.dispatch - Vuex dispatch
    */
-  async initState({ dispatch }) {
+  async initState({ dispatch, commit }) {
     try {
       const response = await this.$api.displayPreferences.getDisplayPreferences(
         {
@@ -79,39 +94,17 @@ export const actions: ActionTree<
         );
       }
 
-      await dispatch('initStateSuccess', { displayPreferences: response.data });
+      const data = castResponse(response.data);
+
+      commit('INIT_STATE', { displayPreferences: data });
     } catch (error) {
-      await dispatch('initStateFailure', { error });
+      const message = this.$i18n.t('failedRetrievingDisplayPreferences');
+      await dispatch(
+        'snackbar/pushSnackbarMessage',
+        { message, color: 'error' },
+        { root: true }
+      );
     }
-  },
-  /**
-   * On query success, stores the result and call the callbacks
-   *
-   * @param {any} context - Vuex action context
-   * @param {any} context.commit - Vuex commit
-   * @param {any} context.dispatch - Vuex dispatch
-   * @param {any} payload - Payload
-   * @param {DisplayPreferencesDto} payload.displayPreferences - Display preferences object
-   */
-  initStateSuccess(
-    { commit },
-    { displayPreferences }: { displayPreferences: DisplayPreferencesDto }
-  ) {
-    commit('INIT_STATE', { displayPreferences });
-  },
-  /**
-   * On query error, sends the error and message to the store logger
-   *
-   * @param {any} context - Vuex action context
-   * @param {any} context.dispatch - Vuex dispatch
-   */
-  async initStateFailure({ dispatch }) {
-    const message = this.$i18n.t('failedRetrievingDisplayPreferences');
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      { message, color: 'error' },
-      { root: true }
-    );
   },
   /**
    * Pushes the current state to the server
@@ -122,7 +115,7 @@ export const actions: ActionTree<
    */
   async pushState({ state, dispatch }) {
     try {
-      // The fetch part is only done cause DisplayPreferences doesn't accept partial updates
+      // The fetch part is done because DisplayPreferences doesn't accept partial updates
       const responseFetch = await this.$api.displayPreferences.getDisplayPreferences(
         {
           displayPreferencesId: 'usersettings',
@@ -137,41 +130,47 @@ export const actions: ActionTree<
         );
 
       const displayPrefs = responseFetch.data;
-      displayPrefs.CustomPrefs = {
-        darkMode: state.darkMode,
-        locale: state.locale
-      };
+
+      if (displayPrefs.CustomPrefs) {
+        Object.assign(state, displayPrefs.CustomPrefs);
+        for (const [key, value] of Object.entries(displayPrefs.CustomPrefs)) {
+          /**
+           * As TypeScript typings are erased at runtime, we can't rely on typings to distinguish between
+           * the variables that belong just to the store and the ones that we want to be synced to the server.
+           *
+           * We can overcome this limitation in the future by storing our prefs in another store and leaving this store
+           * just for the API calls.
+           */
+          if (key === 'syncing') {
+            delete displayPrefs.CustomPrefs[key];
+            continue;
+          }
+          displayPrefs.CustomPrefs[key] = toStr(value);
+        }
+      }
 
       const response = await this.$api.displayPreferences.updateDisplayPreferences(
         {
           displayPreferencesId: 'usersettings',
           userId: this.$auth.user?.Id,
           client: 'vue',
-          displayPreferencesDto: displayPrefs
+          displayPreferencesDto: displayPrefs as DisplayPreferencesDto
         }
       );
+
       if (response.status !== 204) {
         throw new Error(
           'set display preferences status response = ' + response.status
         );
       }
     } catch (error) {
-      await dispatch('pushStateFailure', { error });
+      const message = this.$i18n.t('failedSettingDisplayPreferences');
+      await dispatch(
+        'snackbar/pushSnackbarMessage',
+        { message, color: 'error' },
+        { root: true }
+      );
     }
-  },
-  /**
-   * On push failure, logs a message
-   *
-   * @param {any} context - Vuex action context
-   * @param {any} context.dispatch - Vuex dispatch
-   */
-  async pushStateFailure({ dispatch }) {
-    const message = this.$i18n.t('failedSettingDisplayPreferences');
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      { message, color: 'error' },
-      { root: true }
-    );
   },
   async setDarkMode({ commit, dispatch }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });

@@ -8,7 +8,7 @@
         :class="{ 'mr-n1': !fab }"
         v-bind="attrs"
         v-on="on"
-        @click="darkMode = !darkMode"
+        @click="toggleDarkMode"
       >
         <v-icon>
           {{ darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default Vue.extend({
   props: {
@@ -35,18 +35,13 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters('displayPreferences', ['getDarkMode']),
-    darkMode: {
-      get(): boolean {
-        return this.getDarkMode;
-      },
-      set(value: boolean): void {
-        this.setDarkMode({ darkMode: value });
-      }
-    }
+    ...mapState('displayPreferences', ['darkMode'])
   },
   methods: {
-    ...mapActions('displayPreferences', ['setDarkMode'])
+    ...mapActions('displayPreferences', ['setDarkMode']),
+    toggleDarkMode(): void {
+      this.setDarkMode({ darkMode: !this.darkMode });
+    }
   }
 });
 </script>
