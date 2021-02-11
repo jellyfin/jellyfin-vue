@@ -122,7 +122,9 @@ const timeUtils = Vue.extend({
           minute: 'numeric'
         });
       } else {
-        format = this.$dateFns.format(Date.now() + ms, 'p');
+        format = this.$dateFns.format(Date.now() + ms, 'p', {
+          locale: this.$i18n.locale
+        });
       }
       // TODO: Use a Date object
       return this.$t('endsAt', {

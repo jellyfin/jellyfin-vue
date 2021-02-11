@@ -17,7 +17,10 @@
               {{
                 $dateFns.formatRelative(
                   $dateFns.parseJSON(item.DateCreated),
-                  new Date()
+                  new Date(),
+                  {
+                    locale: $i18n.locale
+                  }
                 )
               }}
             </p>

@@ -30,10 +30,9 @@
 import Vue from 'vue';
 import { UserDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
-import localeHelper from '~/mixins/localeHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper, localeHelper],
+  mixins: [imageHelper],
   props: {
     user: {
       type: Object as () => UserDto,
@@ -45,7 +44,7 @@ export default Vue.extend({
       if (value) {
         return this.$dateFns.formatDistanceToNow(new Date(value), {
           addSuffix: true,
-          locale: this.getDfnsLocale()
+          locale: this.$i18n.locale
         });
       } else {
         return this.$t('never');
