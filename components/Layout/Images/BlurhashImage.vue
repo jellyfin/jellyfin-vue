@@ -14,7 +14,7 @@
         <img
           v-show="!loading"
           :key="`blurhashimage-${item.Id}`"
-          class="absolute"
+          class="absolute img"
           :src="image"
           v-bind="$attrs"
           :alt="alt"
@@ -22,6 +22,16 @@
           @load="loading = false"
         />
       </v-fade-transition>
+    </div>
+    <div v-if="!$slots.placeholder" class="absolute icon img">
+      <v-icon
+        class="absolute text--disabled"
+        :size="iconSize"
+        color="white"
+        dark
+      >
+        {{ getItemIcon(item) }}
+      </v-icon>
     </div>
     <slot v-else name="placeholder" />
   </div>
@@ -31,9 +41,10 @@
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -58,6 +69,11 @@ export default Vue.extend({
     alt: {
       type: String,
       default: ''
+    },
+    iconSize: {
+      type: String || Number,
+      required: false,
+      default: '7em'
     }
   },
   data() {
@@ -120,8 +136,12 @@ export default Vue.extend({
   bottom: 0;
 }
 
-img {
+.img {
   color: transparent;
   object-fit: cover;
+}
+
+.icon {
+  z-index: -5;
 }
 </style>
