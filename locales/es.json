@@ -420,6 +420,10 @@
         "disc": "Disco",
         "boxRear": "Carátula trasera",
         "box": "Carátula",
-        "backdrop": "Fondo"
-    }
+        "backdrop": "Fondo",
+        "menu": "Menú",
+        "banner": "Banner",
+        "art": "Arte"
+    },
+    "about": "Información"
 }
