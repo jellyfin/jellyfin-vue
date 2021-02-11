@@ -4,7 +4,12 @@
       <v-btn color="primary" @click="() => $refs.addKeyDialog.openDialog()">
         {{ $t('settings.apiKeys.addNewKey') }}
       </v-btn>
-      <v-btn v-if="apiKeys.length" color="error" @click="revokeAllApiKeys">
+      <v-btn
+        v-if="apiKeys.length"
+        color="error"
+        :loading="revokeKeyLoading"
+        @click="revokeAllApiKeys"
+      >
         {{ $t('settings.apiKeys.revokeAll') }}
       </v-btn>
     </template>
@@ -53,7 +58,8 @@ export default Vue.extend({
     return {
       apiKeys: [] as AuthenticationInfo[],
       addingNewKey: false,
-      newKeyAppName: ''
+      newKeyAppName: '',
+      revokeKeyLoading: false
     };
   },
   computed: {
@@ -92,6 +98,8 @@ export default Vue.extend({
       }
     },
     async revokeAllApiKeys(): Promise<void> {
+      this.revokeKeyLoading = true;
+
       try {
         for (const key of this.apiKeys) {
           await this.$api.apiKey.revokeKey({
@@ -116,6 +124,8 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
+      this.revokeKeyLoading = false;
     },
     async refreshApiKeys(): Promise<void> {
       try {
