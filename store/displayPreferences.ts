@@ -57,6 +57,12 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
   ) {
     merge(state, displayPreferences.CustomPrefs);
   },
+  SYNCING_STARTED(state: DisplayPreferencesState) {
+    state.syncing = true;
+  },
+  SYNCING_ENDED(state: DisplayPreferencesState) {
+    state.syncing = false;
+  },
   SET_DARK_MODE(
     state: DisplayPreferencesState,
     { darkMode }: { darkMode: boolean }
@@ -113,7 +119,8 @@ export const actions: ActionTree<
    * @param {any} context.state - Vuex state
    * @param {any} context.dispatch - Vuex dispatch
    */
-  async pushState({ state, dispatch }) {
+  async pushState({ state, dispatch, commit }) {
+    commit('SYNCING_STARTED');
     try {
       // The fetch part is done because DisplayPreferences doesn't accept partial updates
       const responseFetch = await this.$api.displayPreferences.getDisplayPreferences(
@@ -171,6 +178,7 @@ export const actions: ActionTree<
         { root: true }
       );
     }
+    commit('SYNCING_ENDED');
   },
   async setDarkMode({ commit, dispatch }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });
