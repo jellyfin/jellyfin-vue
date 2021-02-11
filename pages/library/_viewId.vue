@@ -12,7 +12,7 @@
       <type-button
         v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
-        :disabled="loading || !items.length"
+        :disabled="loading"
         @change="onChangeType"
       />
       <v-divider
@@ -29,7 +29,7 @@
       <filter-button
         v-if="isSortable"
         :collection-info="collectionInfo"
-        :disabled="loading || !items.length"
+        :disabled="loading"
         :items-type="viewType"
         @change="onChangeFilter"
       />
