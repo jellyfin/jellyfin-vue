@@ -7,7 +7,7 @@
   >
     <div
       class="card-box"
-      :class="{ 'card-margin': !noMargin, 'link-disabled': !link }"
+      :class="{ 'card-margin': margin, 'link-disabled': !link }"
     >
       <div :class="shape || cardType" class="elevation-3">
         <div
@@ -132,7 +132,7 @@ export default Vue.extend({
         return false;
       }
     },
-    noMargin: {
+    margin: {
       type: Boolean,
       default: (): boolean => {
         return false;
