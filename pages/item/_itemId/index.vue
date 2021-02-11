@@ -33,7 +33,7 @@
             }"
           >
             <play-button class="mr-2" :item="item" />
-            <item-menu :item="item" outlined :absolute="false" />
+            <item-menu :item="item" outlined />
             <like-button :item="item" class="ml-2" />
           </v-row>
           <v-col cols="12" md="10">
