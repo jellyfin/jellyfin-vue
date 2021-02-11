@@ -70,12 +70,12 @@
           />
         </div>
         <div
-          v-if="overlay && !$browser.isMobile()"
+          v-if="!noOverlay && !$browser.isMobile()"
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :item="item" />
           <div
-            v-if="overlay"
+            v-if="!noOverlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
             <like-button v-if="canPlay(item)" :item="item" dark />
@@ -120,10 +120,10 @@ export default Vue.extend({
         return false;
       }
     },
-    overlay: {
+    noOverlay: {
       type: Boolean,
       default: (): boolean => {
-        return true;
+        return false;
       }
     },
     noText: {
