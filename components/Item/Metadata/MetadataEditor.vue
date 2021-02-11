@@ -244,7 +244,8 @@ export default Vue.extend({
         if (!this.metadata.PremiereDate) return '';
         const dateStr = this.$dateFns.format(
           new Date(this.metadata.PremiereDate),
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
+          { locale: this.$i18n.locale }
         );
         return dateStr;
       }
@@ -254,7 +255,8 @@ export default Vue.extend({
         if (!this.metadata.DateCreated) return '';
         const dateStr = this.$dateFns.format(
           new Date(this.metadata.DateCreated),
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
+          { locale: this.$i18n.locale }
         );
         return dateStr;
       }
