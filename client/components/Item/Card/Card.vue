@@ -322,7 +322,7 @@ export default Vue.extend({
 }
 
 .card-content {
-  background-color: #{map-get($material-light, 'menus')};
+  background-color: #{map-get($material-dark, 'menus')};
   overflow: hidden;
   position: absolute;
   top: 0;
