@@ -20,7 +20,7 @@
 
       <swiper class="swiper" :options="swiperOptions">
         <swiper-slide v-for="item in items" :key="item.Id">
-          <card :shape="shape" :item="item" />
+          <card :shape="shape" :item="item" margin text overlay link />
         </swiper-slide>
       </swiper>
     </v-col>

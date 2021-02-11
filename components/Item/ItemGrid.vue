@@ -2,7 +2,7 @@
   <div>
     <v-row v-if="loading">
       <v-col cols="12" class="card-grid-container">
-        <skeleton-card v-for="n in 24" :key="n" />
+        <skeleton-card v-for="n in 24" :key="n" text />
       </v-col>
     </v-row>
     <dynamic-scroller
@@ -20,13 +20,21 @@
           :data-index="index"
           class="card-grid-container"
         >
-          <card v-for="card of item.chunk" :key="card.Id" :item="card" />
+          <card
+            v-for="card of item.chunk"
+            :key="card.Id"
+            :item="card"
+            margin
+            text
+            overlay
+            link
+          />
         </dynamic-scroller-item>
       </template>
     </dynamic-scroller>
     <v-row v-else-if="!loading" justify="center">
       <v-col cols="12" class="card-grid-container empty-card-container">
-        <skeleton-card v-for="n in 24" :key="n" boilerplate />
+        <skeleton-card v-for="n in 24" :key="n" text boilerplate />
       </v-col>
       <div class="empty-message text-center">
         <slot>

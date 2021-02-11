@@ -7,7 +7,7 @@
   >
     <div
       class="card-box"
-      :class="{ 'card-margin': !noMargin, 'link-disabled': !link }"
+      :class="{ 'card-margin': margin, 'link-disabled': !link }"
     >
       <div :class="shape || cardType" class="elevation-3">
         <div
@@ -70,12 +70,12 @@
           />
         </div>
         <div
-          v-if="!noOverlay && !$browser.isMobile()"
+          v-if="overlay && !$browser.isMobile()"
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :item="item" />
           <div
-            v-if="!noOverlay"
+            v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
             <like-button v-if="canPlay(item)" :item="item" dark />
@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!noText" class="card-text">
+      <div v-if="text" class="card-text">
         <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
         <div class="card-subtitle text--secondary text-truncate">
           {{ cardSubtitle }}
@@ -120,19 +120,19 @@ export default Vue.extend({
         return false;
       }
     },
-    noOverlay: {
+    overlay: {
       type: Boolean,
       default: (): boolean => {
         return false;
       }
     },
-    noText: {
+    text: {
       type: Boolean,
       default: (): boolean => {
         return false;
       }
     },
-    noMargin: {
+    margin: {
       type: Boolean,
       default: (): boolean => {
         return false;
@@ -141,7 +141,7 @@ export default Vue.extend({
     link: {
       type: Boolean,
       default: (): boolean => {
-        return true;
+        return false;
       }
     }
   },

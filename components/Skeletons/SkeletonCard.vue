@@ -2,7 +2,7 @@
   <div :class="`skeleton-card ${cardShape}`">
     <v-skeleton-loader type="image" :boilerplate="boilerplate" />
     <v-skeleton-loader
-      v-if="!noText"
+      v-if="text"
       type="heading"
       class="mt-1"
       :boilerplate="boilerplate"
@@ -19,7 +19,7 @@ export default Vue.extend({
       type: Boolean,
       default: false
     },
-    noText: {
+    text: {
       type: Boolean,
       default: false
     },

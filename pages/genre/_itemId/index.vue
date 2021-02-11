@@ -23,7 +23,7 @@
     <v-container class="after-second-toolbar">
       <v-row v-if="$fetchState.pending">
         <v-col cols="12" class="card-grid-container">
-          <skeleton-card v-for="n in 24" :key="n" />
+          <skeleton-card v-for="n in 24" :key="n" text />
         </v-col>
       </v-row>
       <item-grid
@@ -33,7 +33,7 @@
       />
       <v-row v-else-if="!$fetchState.pending" justify="center">
         <v-col cols="12" class="card-grid-container empty-card-container">
-          <skeleton-card v-for="n in 24" :key="n" boilerplate />
+          <skeleton-card v-for="n in 24" :key="n" boilerplate text />
         </v-col>
         <div class="empty-message text-center">
           <h1 class="text-h5">
