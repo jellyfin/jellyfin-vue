@@ -114,6 +114,7 @@ import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
+import displayPreferencesHelper from '~/mixins/displayPreferencesHelper';
 
 interface LayoutButton {
   icon: string;
@@ -122,6 +123,7 @@ interface LayoutButton {
 }
 
 export default Vue.extend({
+  mixins: [displayPreferencesHelper],
   data() {
     return {
       isScrolled: false,
@@ -172,6 +174,9 @@ export default Vue.extend({
     socketUrl = socketUrl.replace('http:', 'ws:');
 
     this.$connect(socketUrl);
+
+    this.watchDarkMode();
+    this.watchLocale();
   },
   mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });

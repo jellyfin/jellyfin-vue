@@ -12,19 +12,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import displayPreferencesHelper from '~/mixins/displayPreferencesHelper';
 
 export default Vue.extend({
+  mixins: [displayPreferencesHelper],
   beforeMount() {
-    this.$store.watch(
-      (_state, getters) => getters['displayPreferences/getLocale'],
-      (locale: string) => {
-        if (locale !== 'auto') this.$i18n.setLocale(locale);
-        else
-          this.$i18n.setLocale(
-            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'en'
-          );
-      }
-    );
+    this.watchLocale();
   }
 });
 </script>
