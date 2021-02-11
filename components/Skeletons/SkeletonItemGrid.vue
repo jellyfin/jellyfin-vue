@@ -1,7 +1,12 @@
 <template>
   <v-row>
     <v-col cols="12" class="card-grid-container">
-      <skeleton-card v-for="n in 24" :key="n" :card-shape="skeletonCardShape" />
+      <skeleton-card
+        v-for="n in 24"
+        :key="n"
+        :card-shape="skeletonCardShape"
+        text
+      />
     </v-col>
   </v-row>
 </template>
