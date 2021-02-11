@@ -45,7 +45,7 @@
                       <div class="d-flex flex-column">
                         <v-row>
                           <v-col lg="2" sm="1">
-                            <card :item="appearance" overlay />
+                            <card :item="appearance" overlay link />
                           </v-col>
                           <v-col class="py-2">
                             <div

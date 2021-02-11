@@ -141,7 +141,7 @@ export default Vue.extend({
     link: {
       type: Boolean,
       default: (): boolean => {
-        return true;
+        return false;
       }
     }
   },

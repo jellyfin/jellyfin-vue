@@ -3,7 +3,7 @@
     <template #left>
       <v-row justify="center" justify-md="start">
         <v-col cols="7" md="3">
-          <card :item="item" overlay />
+          <card :item="item" overlay link />
         </v-col>
         <v-col cols="12" md="9">
           <h1

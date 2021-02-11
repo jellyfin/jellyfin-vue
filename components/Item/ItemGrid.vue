@@ -27,6 +27,7 @@
             margin
             text
             overlay
+            link
           />
         </dynamic-scroller-item>
       </template>
