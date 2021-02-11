@@ -49,7 +49,7 @@
             >
               {{ $t('play') }}
             </v-btn>
-            <item-menu :item="item" outlined :absolute="false" />
+            <item-menu :item="item" outlined />
           </v-row>
           <v-col cols="12" md="10">
             <v-row
