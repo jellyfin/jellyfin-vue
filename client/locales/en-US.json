@@ -15,6 +15,7 @@
   "audio": "Audio",
   "audioCodecNotSupported": "The audio codec is not supported",
   "badRequest": "Bad request. Try again",
+  "books": "Books",
   "browserNotSupported": "Your browser is not supported for playing this file.",
   "buttons": {
     "ok": "Ok"
@@ -302,9 +303,12 @@
   "role": "Role",
   "save": "Save",
   "saved": "Saved",
-  "search": "Search",
   "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "search": {
+    "name": "Search",
+    "topResults": "Top results"
+  },
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server version",
@@ -425,6 +429,7 @@
   },
   "shows": "Shows",
   "signIn": "Sign in",
+  "songs": "Songs",
   "sortByType": "By {type}",
   "sortTitle": "Sort title",
   "specialFeatures": "Special Features",

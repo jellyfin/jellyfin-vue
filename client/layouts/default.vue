@@ -77,10 +77,11 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <v-text-field
+        v-model="searchQuery"
         class="search-input"
         :class="$vuetify.breakpoint.mdAndUp ? 'expandable' : null"
         prepend-inner-icon="mdi-magnify"
-        :placeholder="$t('search')"
+        :placeholder="$t('search.name')"
         max-width="15em"
         dense
         outlined
@@ -161,6 +162,14 @@ export default Vue.extend({
     ...mapState('page', ['opaqueAppBar', 'navDrawer']),
     ...mapState('user', ['accessToken']),
     ...mapState('deviceProfile', ['deviceId']),
+    searchQuery: {
+      get(): string {
+        return this.$store.state.search.query;
+      },
+      set(value: string): void {
+        this.setSearchQuery({ query: value });
+      }
+    },
     items(): LayoutButton[] {
       return [
         {
@@ -185,6 +194,12 @@ export default Vue.extend({
         if (newVal === true) {
           this.drawer = false;
         }
+      }
+    },
+    searchQuery(newQuery: string, oldQuery: string): void {
+      // If neither the old nor the new query are empty, we don't want to move.
+      if (newQuery.trim() !== '' && oldQuery.trim() === '') {
+        this.$router.push({ name: 'search' });
       }
     }
   },
@@ -211,6 +226,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('page', ['showNavDrawer']),
+    ...mapActions('search', ['setSearchQuery']),
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.isScrolled = window.scrollY > 10;

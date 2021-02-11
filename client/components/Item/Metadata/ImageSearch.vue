@@ -7,7 +7,7 @@
     @click:outside="$emit('update:dialog', false)"
   >
     <v-card height="100%" class="image-search-card">
-      <v-card-title>{{ $t('search') }}</v-card-title>
+      <v-card-title>{{ $t('search.name') }}</v-card-title>
       <v-divider />
       <v-row align="center" class="mx-16 my-4">
         <v-select
