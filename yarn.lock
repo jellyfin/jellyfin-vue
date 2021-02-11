@@ -1210,10 +1210,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-sc/-/noto-sans-sc-4.2.1.tgz#a3f95b5a4a0157d9ed0e621492aeecdb4a8597d1"
   integrity sha512-RvDpNBGCU2GW7Wkg6BkPGEvws7H94RoJU4mG1mWRDiCKbTPg4MEw8avrL63B7nBL2/J2WOEdgJ87UpL77NPmoQ==
 
-"@fontsource/noto-sans-tc@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-tc/-/noto-sans-tc-4.2.0.tgz#a7ace7530bc755fc4bad689750b7fd55404820d3"
-  integrity sha512-ONQnzG/JgT2d53ZLfzjSlZuBEEcu4XywqIlPxl369hX5PJlA1amVjTy4RXMNotCs1O5yDVp/Ee/pIE0GZkLFLA==
+"@fontsource/noto-sans-tc@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-tc/-/noto-sans-tc-4.2.1.tgz#6302f9af7ee9ee9370513622b437309a370b2246"
+  integrity sha512-OVqEwc6XNqeFxWO0cqDe6KLWSDKFThFvrRnaJYt0ecqh67McYFcpenjqQZU3HcmMR0GcGk6JN9SJYFvXrLZr8A==
 
 "@fontsource/noto-sans@^4.2.1":
   version "4.2.1"
