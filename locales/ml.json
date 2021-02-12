@@ -409,6 +409,10 @@
         "cast": "അഭിനേതാക്കൾ",
         "tracklist": {
             "title": "ശീർഷകം"
+        },
+        "artist": {
+            "discography": "ഡിസ്കോഗ്രഫി",
+            "information": "വിവരങ്ങൾ"
         }
     },
     "imageType": {
