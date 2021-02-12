@@ -410,7 +410,11 @@
         },
         "crew": "Ekipa",
         "composer": "Kompozytor",
-        "cast": "Obsada"
+        "cast": "Obsada",
+        "artist": {
+            "information": "Informacja",
+            "discography": "Dyskografia"
+        }
     },
     "imageType": {
         "thumb": "Miniatura",
