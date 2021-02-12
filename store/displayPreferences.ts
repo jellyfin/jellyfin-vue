@@ -2,6 +2,7 @@ import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree } from 'vuex';
 import { merge, toString as toStr } from 'lodash';
 import { boolean } from 'boolean';
+import nuxtConfig from '~/nuxt.config';
 
 /**
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
@@ -22,7 +23,10 @@ export interface DisplayPreferencesState extends CustomPreferences {
 }
 
 const defaultState = (): DisplayPreferencesState => ({
-  darkMode: true,
+  darkMode:
+    nuxtConfig.vuetify?.theme?.dark !== undefined
+      ? nuxtConfig.vuetify?.theme?.dark
+      : true,
   locale: 'auto',
   syncing: false
 });
