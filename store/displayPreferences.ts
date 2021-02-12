@@ -1,6 +1,6 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree } from 'vuex';
-import { merge, toString as toStr } from 'lodash';
+import { toString as toStr } from 'lodash';
 import { boolean } from 'boolean';
 import nuxtConfig from '~/nuxt.config';
 
@@ -59,7 +59,7 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     state: DisplayPreferencesState,
     { displayPreferences }: { displayPreferences: ClientPreferences }
   ) {
-    merge(state, displayPreferences.CustomPrefs);
+    Object.assign(state, displayPreferences.CustomPrefs);
   },
   SYNCING_STARTED(state: DisplayPreferencesState) {
     state.syncing = true;
@@ -83,12 +83,12 @@ export const actions: ActionTree<
   DisplayPreferencesState
 > = {
   /**
-   * Fetches display preferences and stores them
+   * Fetches display preferences and stores them at boot time
    *
    * @param {any} context - Vuex action context
    * @param {any} context.dispatch - Vuex dispatch
    */
-  async initState({ dispatch, commit }) {
+  async initState({ dispatch, commit, state }) {
     try {
       const response = await this.$api.displayPreferences.getDisplayPreferences(
         {
@@ -105,7 +105,20 @@ export const actions: ActionTree<
       }
 
       const data = castResponse(response.data);
-
+      if (!data.CustomPrefs) {
+        Object.assign(state, data.CustomPrefs);
+      } else {
+        /**
+         * We delete the keys that are not defined in the state's default state, so removed
+         * values locally don't pollute server's displayPreferences.
+         */
+        for (const key of Object.keys(data.CustomPrefs)) {
+          if (!(key in state)) {
+            // @ts-expect-error - TypeScript can't infer indexes typings from Object.keys
+            delete data.CustomPrefs[key];
+          }
+        }
+      }
       commit('INIT_STATE', { displayPreferences: data });
     } catch (error) {
       const message = this.$i18n.t('failedRetrievingDisplayPreferences');
@@ -141,23 +154,18 @@ export const actions: ActionTree<
         );
 
       const displayPrefs = responseFetch.data;
-
-      if (displayPrefs.CustomPrefs) {
-        Object.assign(state, displayPrefs.CustomPrefs);
-        for (const [key, value] of Object.entries(displayPrefs.CustomPrefs)) {
-          /**
-           * As TypeScript typings are erased at runtime, we can't rely on typings to distinguish between
-           * the variables that belong just to the store and the ones that we want to be synced to the server.
-           *
-           * We can overcome this limitation in the future by storing our prefs in another store and leaving this store
-           * just for the API calls.
-           */
-          if (key === 'syncing') {
-            delete displayPrefs.CustomPrefs[key];
-            continue;
-          }
-          displayPrefs.CustomPrefs[key] = toStr(value);
-        }
+      displayPrefs.CustomPrefs = {};
+      Object.assign(displayPrefs.CustomPrefs, state);
+      /**
+       * As TypeScript typings are erased at runtime, we can't rely on typings to distinguish between
+       * the variables that belong just to the store and the ones that we want to be synced to the server.
+       *
+       * We can overcome this limitation in the future by storing our prefs in another store and leaving this store
+       * just for the API calls and the state of syncing.
+       */
+      delete displayPrefs.CustomPrefs.syncing;
+      for (const [key, value] of Object.entries(displayPrefs.CustomPrefs)) {
+        displayPrefs.CustomPrefs[key] = toStr(value);
       }
 
       const response = await this.$api.displayPreferences.updateDisplayPreferences(
