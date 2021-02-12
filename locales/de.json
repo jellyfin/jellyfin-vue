@@ -413,7 +413,11 @@
         },
         "crew": "Mannschaft",
         "composer": "Komponist",
-        "cast": "Besetzung"
+        "cast": "Besetzung",
+        "artist": {
+            "information": "Informationen",
+            "discography": "Diskografie"
+        }
     },
     "imageType": {
         "thumb": "Vorschaubild",
