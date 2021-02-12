@@ -7,7 +7,7 @@
         v-bind="attrs"
         v-on="on"
       >
-        <user-image />
+        <user-image v-if="$auth.user" :user="$auth.user" />
         <h1
           v-if="$auth.user"
           class="flex-grow-1 font-weight-light ml-3 pb-1 text-truncate user-select-none"
