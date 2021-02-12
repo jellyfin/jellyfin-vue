@@ -413,7 +413,11 @@
         },
         "crew": "குழு",
         "composer": "இசையமைப்பாளர்",
-        "cast": "நடிகர்கள்"
+        "cast": "நடிகர்கள்",
+        "artist": {
+            "information": "தகவல்",
+            "discography": "டிஸ்கோகிராபி"
+        }
     },
     "imageType": {
         "thumb": "சிறுபடம்",
