@@ -15,18 +15,8 @@
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
-          >
-            <template #placeholder>
-              <v-icon
-                :size="$vuetify.breakpoint.mdAndUp ? 256 : 128"
-                class="text--disabled default-icon"
-                color="white"
-                dark
-              >
-                {{ getItemIcon(item) }}
-              </v-icon>
-            </template>
-          </blurhash-image>
+            :icon-size="$vuetify.breakpoint.mdAndUp ? '256' : '128'"
+          />
         </div>
         <div class="slide-content">
           <v-container
@@ -152,34 +142,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getItemIcon(item: BaseItemDto): string {
-      switch (item.Type) {
-        case 'Audio':
-          return 'mdi-music-note';
-        case 'Book':
-          return 'mdi-book-open-page-variant';
-        case 'BoxSet':
-          return 'mdi-folder-multiple';
-        case 'Folder':
-        case 'CollectionFolder':
-          return 'mdi-folder';
-        case 'Movie':
-          return 'mdi-filmstrip';
-        case 'MusicAlbum':
-          return 'mdi-album';
-        case 'MusicArtist':
-        case 'Person':
-          return 'mdi-account';
-        case 'PhotoAlbum':
-          return 'mdi-image-multiple';
-        case 'Playlist':
-          return 'mdi-playlist-play';
-        case 'Series':
-          return 'mdi-television-classic';
-        default:
-          return '';
-      }
-    },
     getRelatedItem(item: BaseItemDto): BaseItemDto {
       const rItem = this.relatedItems[this.items.indexOf(item)];
       if (!rItem) {

@@ -22,11 +22,7 @@
                 :size="$vuetify.breakpoint.xs ? 50 : 85"
                 color="primary"
               >
-                <blurhash-image :item="getCurrentItem">
-                  <template #placeholder>
-                    <v-icon dark>mdi-album</v-icon>
-                  </template>
-                </blurhash-image>
+                <blurhash-image :item="getCurrentItem" />
               </v-avatar>
             </nuxt-link>
             <v-col class="d-flex flex-column justify-center ml-4 py-0 mt-1">

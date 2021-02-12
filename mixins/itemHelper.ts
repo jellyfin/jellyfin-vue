@@ -12,12 +12,14 @@ declare module '@nuxt/types' {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
+    getItemIcon: (item: BaseItemDto) => string;
   }
 
   interface NuxtAppOptions {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
+    getItemIcon: (item: BaseItemDto) => string;
   }
 }
 
@@ -26,6 +28,7 @@ declare module 'vue/types/vue' {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
+    getItemIcon: (item: BaseItemDto) => string;
   }
 }
 
@@ -116,6 +119,41 @@ const itemHelper = Vue.extend({
         name: routeName,
         params: routeParams
       }).href;
+    },
+    /**
+     * Returns the appropiate material design icon for the BaseItemDto provided
+     *
+     * @param {BaseItemDto} item - The item we want to get the icon for
+     * @returns {string} - The string that references the icon
+     */
+    getItemIcon(item: BaseItemDto): string {
+      switch (item.Type) {
+        case 'Audio':
+          return 'mdi-music-note';
+        case 'Book':
+          return 'mdi-book-open-page-variant';
+        case 'BoxSet':
+          return 'mdi-folder-multiple';
+        case 'Folder':
+        case 'CollectionFolder':
+          return 'mdi-folder';
+        case 'Movie':
+          return 'mdi-filmstrip';
+        case 'MusicAlbum':
+          return 'mdi-album';
+        case 'MusicArtist':
+        case 'Person':
+          return 'mdi-account';
+        case 'PhotoAlbum':
+          return 'mdi-image-multiple';
+        case 'Playlist':
+          return 'mdi-playlist-play';
+        case 'Series':
+        case 'Episode':
+          return 'mdi-television-classic';
+        default:
+          return '';
+      }
     }
   }
 });

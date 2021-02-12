@@ -15,15 +15,7 @@
           class="d-flex justify-center"
         >
           <div class="album-cover">
-            <blurhash-image :item="item" @error="onImageError">
-              <template #placeholder>
-                <v-avatar tile size="65vh" color="primary">
-                  <v-icon dark x-large style="font-size: 60vh">
-                    mdi-album
-                  </v-icon>
-                </v-avatar>
-              </template>
-            </blurhash-image>
+            <blurhash-image :item="item" @error="onImageError" />
           </div>
         </swiper-slide>
       </swiper>

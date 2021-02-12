@@ -14,12 +14,10 @@
           class="card-content card-content-button d-flex justify-center align-center darken-4"
         >
           <blurhash-image
-            v-if="!imageLoadError && item.ImageTags && item.ImageTags.Primary"
             :item="item"
             :type="getImageType"
             :alt="item.Name"
             class="card-image"
-            @error="imageLoadError = true"
           />
           <v-progress-circular
             v-if="refreshProgress > 0"
@@ -45,19 +43,6 @@
           >
             {{ item.UserData.UnplayedItemCount }}
           </v-chip>
-          <v-icon
-            v-if="
-              imageLoadError ||
-              !item.ImageTags ||
-              (item.ImageTags && !item.ImageTags.Primary)
-            "
-            class="card-image absolute text--disabled"
-            size="96"
-            color="white"
-            dark
-          >
-            {{ itemIcon }}
-          </v-icon>
           <v-progress-linear
             v-if="
               item.UserData &&
@@ -147,7 +132,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      imageLoadError: false,
       refreshProgress: 0
     };
   },
@@ -156,36 +140,6 @@ export default Vue.extend({
       get(): string {
         // Otherwise, figure out the shape based on the type of the item
         return getShapeFromItemType(this.item.Type);
-      }
-    },
-    itemIcon: {
-      get(): string {
-        switch (this.item.Type) {
-          case 'Audio':
-            return 'mdi-music-note';
-          case 'Book':
-            return 'mdi-book-open-page-variant';
-          case 'BoxSet':
-            return 'mdi-folder-multiple';
-          case 'Folder':
-          case 'CollectionFolder':
-            return 'mdi-folder';
-          case 'Movie':
-            return 'mdi-filmstrip';
-          case 'MusicAlbum':
-            return 'mdi-album';
-          case 'MusicArtist':
-          case 'Person':
-            return 'mdi-account';
-          case 'PhotoAlbum':
-            return 'mdi-image-multiple';
-          case 'Playlist':
-            return 'mdi-playlist-play';
-          case 'Series':
-            return 'mdi-television-classic';
-          default:
-            return '';
-        }
       }
     },
     /**
