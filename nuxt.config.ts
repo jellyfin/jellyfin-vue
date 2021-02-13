@@ -7,7 +7,7 @@ const config: NuxtConfig = {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  ssr: !!process.env.NUXT_SSR,
+  ssr: true,
   /*
    ** Disables telemetry prompt while installing dependencies
    ** See https://github.com/nuxt/telemetry
