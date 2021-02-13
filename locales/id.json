@@ -41,48 +41,48 @@
     "endsAt": "Berakhir pada {time}",
     "episodeNumber": "Episode {episodeNumber}",
     "errors": {
-        "anErrorHappened": "",
+        "anErrorHappened": "Terjadi kesalahan",
         "messages": {
-            "errorCode": "",
-            "videoPlayerError": ""
+            "errorCode": "Kode kesalahan: {errorCode}",
+            "videoPlayerError": "Pemutar video mengalami kesalahan yang tidak dapat dipulihkan."
         }
     },
-    "failedRetrievingDisplayPreferences": "",
-    "failedSettingDisplayPreferences": "",
-    "failedToRefreshItems": "",
-    "favorite": "",
-    "features": "",
-    "filter": "",
-    "filtersNotFound": "",
-    "fullScreen": "",
-    "general": "",
-    "genres": "",
-    "guestStar": "",
-    "headerExternalIds": "",
-    "headerPaths": "",
-    "home": "",
+    "failedRetrievingDisplayPreferences": "Tak bisa mendapatkan preferensi tampilan. Menggunakan default.",
+    "failedSettingDisplayPreferences": "Tidak dapat memperbarui preferensi tampilan.",
+    "failedToRefreshItems": "Gagal menyegarkan item",
+    "favorite": "Favorit",
+    "features": "Fitur",
+    "filter": "Filter",
+    "filtersNotFound": "Tidak dapat memuat filter",
+    "fullScreen": "Layar penuh",
+    "general": "Umum",
+    "genres": "Genre",
+    "guestStar": "Bintang tamu",
+    "headerExternalIds": "ID Eksternal",
+    "headerPaths": "Lokasi",
+    "home": "Beranda",
     "homeHeader": {
         "items": {
-            "recentlyAdded": ""
+            "recentlyAdded": "Baru ditambahkan"
         },
         "welcome": {
-            "checkNewItems": "",
-            "helloUser": "",
-            "noItems": ""
+            "checkNewItems": "Lihat apa yang baru.",
+            "helloUser": "Halo {userName}!",
+            "noItems": "Tidak ada yang baru untuk ditampilkan."
         }
     },
-    "images": "",
+    "images": "Gambar",
     "imageType": {
-        "art": "",
-        "backdrop": "",
-        "banner": "",
-        "box": "",
-        "boxRear": "",
-        "disc": "",
-        "logo": "",
-        "menu": "",
-        "primary": "",
-        "screenshot": "",
+        "art": "Seni",
+        "backdrop": "Latar belakang",
+        "banner": "Spanduk",
+        "box": "Kotak",
+        "boxRear": "Kotak (belakang)",
+        "disc": "CD",
+        "logo": "Logo",
+        "menu": "Menu",
+        "primary": "Utama",
+        "screenshot": "Screenshot",
         "thumb": ""
     },
     "incorrectUsernameOrPassword": "",
