@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
 import webpack from 'webpack';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 
 const config: NuxtConfig = {
   /*
@@ -271,18 +272,15 @@ const config: NuxtConfig = {
       }
     },
     babel: {
-      // envName: server, client, modern
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      presets(): any {
-        return [
-          [
-            '@nuxt/babel-preset-app',
-            {
-              corejs: { version: 3 }
-            }
-          ]
-        ];
-      }
+      plugins: ['lodash'],
+      presets: [
+        [
+          '@nuxt/babel-preset-app',
+          {
+            corejs: { version: 3 }
+          }
+        ]
+      ]
     },
     extend(
       config: webpack.Configuration,
@@ -303,6 +301,7 @@ const config: NuxtConfig = {
         });
       }
     },
+    plugins: [new LodashModuleReplacementPlugin()],
     transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
   },
 
