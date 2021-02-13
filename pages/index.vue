@@ -15,7 +15,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import { pickBy } from 'lodash';
+import pickBy from 'lodash/pickBy';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';

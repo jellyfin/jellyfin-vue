@@ -1,5 +1,6 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { clamp, shuffle } from 'lodash';
+import clamp from 'lodash/clamp';
+import shuffle from 'lodash/shuffle';
 import {
   BaseItemDto,
   ChapterInfo,

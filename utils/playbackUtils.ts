@@ -4,7 +4,8 @@ import {
   ItemFields,
   ItemFilter
 } from '@jellyfin/client-axios';
-import { union, uniqBy } from 'lodash';
+import union from 'lodash/union';
+import uniqBy from 'lodash/uniqBy';
 
 /**
  * Converts an item into a set of playable items for the playback manager to handle.
