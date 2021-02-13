@@ -15,7 +15,8 @@
             episodeNumber: nextEpisodeNumber
           })
         }}
-        - {{ nextName }}
+        - <span v-if="$vuetify.breakpoint.xsOnly"> <br /> </span>
+        {{ nextName }}
       </v-card-subtitle>
       <div>
         {{ nextRunTime }}
@@ -83,14 +84,16 @@ export default Vue.extend({
   }
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .container {
   position: fixed;
   right: 0;
   bottom: 0;
-  width: 30em;
+  width: 100%;
   padding: 1em;
-  margin: 0 2em 6em 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   will-change: transform, opacity;
@@ -100,6 +103,13 @@ export default Vue.extend({
   user-select: none;
   z-index: 6;
   -webkit-touch-callout: none;
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .container {
+    width: 30em;
+    margin: 0 2em 6em 0;
+  }
 }
 .countdownHeader {
   margin: 0.25em 0;
