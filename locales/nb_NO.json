@@ -46,7 +46,31 @@
             "addNewKey": "Lag ny API-nøkkel",
             "addApiKey": "Legg til en API-nøkkel",
             "accessToken": "Tilgangspollett"
-        }
+        },
+        "devices": {
+            "deleteAllDevicesSuccess": "Alle enheter slettet",
+            "deleteDeviceSuccess": "Enhet slettet",
+            "userName": "Brukernavn",
+            "noDevicesFound": "Fant ingen enheter",
+            "lastActive": "Sist aktiv",
+            "devices": "Enheter",
+            "deviceName": "Enhetsnavn",
+            "deleteDeviceError": "Kunne ikke slette enhet",
+            "deleteAllDevicesError": "Kunne ikke slette alle enheter",
+            "deleteAll": "Slett alle",
+            "delete": "Slett",
+            "appVersion": "Programversjon",
+            "appName": "Programnavn"
+        },
+        "logsAndActivity": {
+            "noLogsFound": "Fant ingen logger",
+            "noActivityFound": "Fant ingen aktiviteter",
+            "logs": "Loggføring",
+            "failedGetLogs": "Kunne ikke hente loggføring",
+            "failedGetActivity": "Kunne ikke hente aktivitet",
+            "activity": "Aktivitet"
+        },
+        "help": "Hjelp"
     },
     "unexpectedError": "Uventet feil",
     "usernameRequired": "Brukernavn er påkrevd",
@@ -371,5 +395,36 @@
     "noAudioTracksAvailable": "Ingen lydspor tilgjengelige",
     "noAudioTrackSelected": "Ingen lydspor valgt",
     "confirm": "Bekreft",
-    "NoMediaSourcesAvailable": "Ingen mediekilder tilgjengelige"
+    "NoMediaSourcesAvailable": "Ingen mediekilder tilgjengelige",
+    "item": {
+        "tracklist": {
+            "title": "Tittel"
+        },
+        "person": {
+            "person": "Person",
+            "death": "Død",
+            "birthPlace": "Fødested",
+            "birth": "Geburtsdag"
+        },
+        "crew": "Mannskap",
+        "composer": "Komponist",
+        "cast": "Stab",
+        "artist": {
+            "information": "Info",
+            "discography": "Diskorografi"
+        }
+    },
+    "imageType": {
+        "thumb": "Miniatyrbilde",
+        "screenshot": "Skjermavbildning",
+        "primary": "Hovedbilde",
+        "menu": "Meny",
+        "logo": "Logo",
+        "disc": "Disk",
+        "boxRear": "Boks (bak)",
+        "box": "Boks",
+        "banner": "Banner",
+        "backdrop": "Bakgrunn",
+        "art": "Kunst"
+    }
 }
