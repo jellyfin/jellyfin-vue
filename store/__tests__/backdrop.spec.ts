@@ -31,70 +31,76 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions, getters }));
 });
 
-test('When "SET_CURRENT_BACKDROP" is committed, the hash value is set.', () => {
-  store.replaceState({ ...defaultState() });
+describe('vuex: backdrop', () => {
+  test('sets the hash when "SET_CURRENT_BACKDROP" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  store.commit('SET_CURRENT_BACKDROP', BACKDROP_TEST_MUTATION);
+    store.commit('SET_CURRENT_BACKDROP', BACKDROP_TEST_MUTATION);
 
-  expect(store.state.blurhash).toBe(BACKDROP_SET_TEST_VALUE.blurhash);
-});
-
-test('When "SET_BACKDROP_OPACITY" is committed, the hash value is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.commit('SET_BACKDROP_OPACITY', BACKDROP_TEST_MUTATION);
-
-  expect(store.state.opacity).toBe(1);
-});
-
-test('When "CLEAR_CURRENT_BACKDROP" is committed, the hash value is cleared.', () => {
-  store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
-
-  store.commit('CLEAR_CURRENT_BACKDROP');
-
-  expect(store.state.blurhash).toBe('');
-});
-
-test('When "RESET_BACKDROP_OPACITY" is committed, the opacity is set to 0.75.', () => {
-  store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
-
-  store.commit('RESET_BACKDROP_OPACITY');
-
-  expect(store.state.opacity).toBe(0.75);
-});
-
-// Default case
-test('When setBackdrop is called, the has is set. Case A', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('setBackdrop', { hash: BACKDROP_TEST_MUTATION.newBlurhash });
-
-  expect(store.state.blurhash).toBe(BACKDROP_TEST_MUTATION.newBlurhash);
-});
-// CASE B
-
-test('When clearBackdrop is called, the hash value is cleared.', () => {
-  store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
-
-  store.dispatch('clearBackdrop');
-
-  expect(store.state.blurhash).toBe('');
-});
-
-test('When setBackdropOpacity is called, the opacity value is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('setBackdropOpacity', {
-    newOpacity: BACKDROP_TEST_MUTATION.newOpacity
+    expect(store.state.blurhash).toBe(BACKDROP_SET_TEST_VALUE.blurhash);
   });
 
-  expect(store.state.opacity).toBe(BACKDROP_TEST_MUTATION.newOpacity);
-});
+  test('sets the opacity when "SET_BACKDROP_OPACITY" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-test('When resetBackdropOpacity is called, the opacity value is cleared.', () => {
-  store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
+    store.commit('SET_BACKDROP_OPACITY', BACKDROP_TEST_MUTATION);
 
-  store.dispatch('resetBackdropOpacity');
+    expect(store.state.opacity).toBe(1);
+  });
 
-  expect(store.state.opacity).toBe(defaultState().opacity);
+  test('clears the hash when "CLEAR_CURRENT_BACKDROP" is committed', () => {
+    store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
+
+    store.commit('CLEAR_CURRENT_BACKDROP');
+
+    expect(store.state.blurhash).toBe('');
+  });
+
+  test('resets the opacity when "RESET_BACKDROP_OPACITY" is committed', () => {
+    store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
+
+    store.commit('RESET_BACKDROP_OPACITY');
+
+    expect(store.state.opacity).toBe(0.75);
+  });
+
+  // Default case
+  test('sets the hash when setBackdrop is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
+
+    store.dispatch('setBackdrop', { hash: BACKDROP_TEST_MUTATION.newBlurhash });
+
+    expect(store.state.blurhash).toBe(BACKDROP_TEST_MUTATION.newBlurhash);
+  });
+  // CASE B
+
+  test('clears the hash when clearBackdrop is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
+
+    store.dispatch('clearBackdrop');
+
+    expect(store.state.blurhash).toBe('');
+  });
+
+  test('sets the opacity when setBackdropOpacity is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
+
+    store.dispatch('setBackdropOpacity', {
+      newOpacity: BACKDROP_TEST_MUTATION.newOpacity
+    });
+
+    expect(store.state.opacity).toBe(BACKDROP_TEST_MUTATION.newOpacity);
+  });
+
+  test('resets the opacity when resetBackdropOpacity is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
+
+    store.dispatch('resetBackdropOpacity');
+
+    expect(store.state.opacity).toBe(defaultState().opacity);
+  });
 });
