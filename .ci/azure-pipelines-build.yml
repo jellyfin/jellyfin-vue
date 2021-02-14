@@ -1,68 +1,69 @@
 jobs:
   - job: Build
-    displayName: "Build"
+    displayName: 'Build'
 
     pool:
-      vmImage: "ubuntu-latest"
+      vmImage: 'ubuntu-latest'
 
     steps:
       - task: NodeTool@0
-        displayName: "Install Node"
+        displayName: 'Install Node'
         inputs:
-          versionSpec: "12.x"
+          versionSpec: '12.x'
 
       - task: Cache@2
-        displayName: "Check Cache"
+        displayName: 'Check Cache'
         inputs:
-          key: "yarn | yarn.lock"
-          path: "node_modules"
+          key: 'yarn | yarn.lock'
+          path: 'node_modules'
           cacheHitVar: CACHE_RESTORED
+          securityNamespace: cache
 
-      - script: "yarn install --frozen-lockfile"
-        displayName: "Install dependencies"
+      - script: 'yarn install --frozen-lockfile'
+        displayName: 'Install dependencies'
         condition: ne(variables.CACHE_RESTORED, 'true')
 
-      - script: "yarn build --production --standalone"
-        displayName: "Build"
+      - script: 'yarn build --production --standalone'
+        displayName: 'Build'
 
       - task: PublishPipelineArtifact@1
-        displayName: "Publish generated build as artifact"
+        displayName: 'Publish generated build as artifact'
         inputs:
           targetPath: $(System.DefaultWorkingDirectory)/.nuxt
           artifactName: dist
 
   - job: BuildDocker
-    displayName: "Build Docker images"
+    displayName: 'Build Docker images'
     dependsOn: Build
     condition: succeeded()
 
     pool:
-      vmImage: "ubuntu-latest"
+      vmImage: 'ubuntu-latest'
 
     variables:
       - name: DOCKER_CLI_EXPERIMENTAL
-        value: "enabled"
+        value: 'enabled'
 
       - name: Version
         value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
 
     steps:
       - task: DownloadPipelineArtifact@2
-        displayName: "Download artifact from build job"
+        displayName: 'Download artifact from build job'
         inputs:
           source: current
           artifact: dist
           path: $(System.DefaultWorkingDirectory)/dist
 
       - task: Docker@2
-        displayName: "Login to Docker Hub"
+        displayName: 'Login to Docker Hub'
         condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
         inputs:
           command: login
-          containerRegistry: "Docker Hub"
+          containerRegistry: 'Docker Hub'
 
       - task: CmdLine@2
-        displayName: "Register Qemu Binfmt and Docker Buildx builder"
+        displayName: 'Register Qemu Binfmt and Docker Buildx builder'
         inputs:
           script: |
             docker version
@@ -70,7 +71,7 @@ jobs:
             docker buildx create --name builder --driver docker-container
 
       - task: CmdLine@2
-        displayName: "Build PR Docker image"
+        displayName: 'Build PR Docker image'
         condition: eq(variables['System.PullRequest.TargetBranch'], 'master')
         inputs:
           script: |
@@ -80,7 +81,7 @@ jobs:
               --tag pr-$(System.PullRequest.PullRequestId)-ssr .
 
       - task: CmdLine@2
-        displayName: "Build and push unstable Docker image"
+        displayName: 'Build and push unstable Docker image'
         condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
         inputs:
           script: |
@@ -91,7 +92,7 @@ jobs:
               --tag mrtimscampi/jellyvision:unstable .
 
       - task: CmdLine@2
-        displayName: "Build and push stable Docker image"
+        displayName: 'Build and push stable Docker image'
         condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
         inputs:
           script: |
@@ -103,8 +104,8 @@ jobs:
               --tag mrtimscampi/jellyvision:latest .
 
       - task: Docker@2
-        displayName: "Logout from Docker Hub"
+        displayName: 'Logout from Docker Hub'
         condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
         inputs:
           command: logout
-          containerRegistry: "Docker Hub"
+          containerRegistry: 'Docker Hub'
