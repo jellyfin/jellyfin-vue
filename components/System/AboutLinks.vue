@@ -35,19 +35,9 @@ export default Vue.extend({
           link: 'https://jellyfin.org'
         },
         {
-          icon: 'mdi-book',
-          name: this.$t('links.readTheDocumentation'),
-          link: 'https://docs.jellyfin.org'
-        },
-        {
-          icon: 'mdi-translate',
-          name: this.$t('links.helpTranslate'),
-          link: 'https://translate.jellyfin.org'
-        },
-        {
           icon: 'mdi-bug',
           name: this.$t('links.reportAnIssue'),
-          link: 'https://github.com/jellyfin/jellyfin-vue/issues/new'
+          link: 'https://github.com/MrTimscampi/jellyvision/issues/new'
         }
       ]
     };
