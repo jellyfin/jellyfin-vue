@@ -412,7 +412,11 @@
         },
         "crew": "Qyzmetkerler",
         "composer": "Kompozitor",
-        "cast": "Taratu"
+        "cast": "Taratu",
+        "artist": {
+            "information": "Aqparat",
+            "discography": "Diskografia"
+        }
     },
     "imageType": {
         "thumb": "Nobai",
