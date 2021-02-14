@@ -1,0 +1,110 @@
+jobs:
+  - job: Build
+    displayName: "Build"
+
+    pool:
+      vmImage: "ubuntu-latest"
+
+    steps:
+      - task: NodeTool@0
+        displayName: "Install Node"
+        inputs:
+          versionSpec: "12.x"
+
+      - task: Cache@2
+        displayName: "Check Cache"
+        inputs:
+          key: "yarn | yarn.lock"
+          path: "node_modules"
+          cacheHitVar: CACHE_RESTORED
+
+      - script: "yarn install --frozen-lockfile"
+        displayName: "Install dependencies"
+        condition: ne(variables.CACHE_RESTORED, 'true')
+
+      - script: "yarn build --production --standalone"
+        displayName: "Build"
+
+      - task: PublishPipelineArtifact@1
+        displayName: "Publish generated build as artifact"
+        inputs:
+          targetPath: $(System.DefaultWorkingDirectory)/.nuxt
+          artifactName: dist
+
+  - job: BuildDocker
+    displayName: "Build Docker images"
+    dependsOn: Build
+    condition: succeeded()
+
+    pool:
+      vmImage: "ubuntu-latest"
+
+    variables:
+      - name: DOCKER_CLI_EXPERIMENTAL
+        value: "enabled"
+
+      - name: Version
+        value: $[replace(variables['Build.SourceBranch'],'refs/tags/v','')]
+
+    steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: "Download artifact from build job"
+        inputs:
+          source: current
+          artifact: dist
+          path: $(System.DefaultWorkingDirectory)/dist
+
+      - task: Docker@2
+        displayName: "Login to Docker Hub"
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+        inputs:
+          command: login
+          containerRegistry: "Docker Hub"
+
+      - task: CmdLine@2
+        displayName: "Register Qemu Binfmt and Docker Buildx builder"
+        inputs:
+          script: |
+            docker version
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker buildx create --name builder --driver docker-container
+
+      - task: CmdLine@2
+        displayName: "Build PR Docker image"
+        condition: eq(variables['System.PullRequest.TargetBranch'], 'master')
+        inputs:
+          script: |
+            docker buildx use --builder builder
+            docker buildx build --file ./Dockerfile.ci --no-cache \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag pr-$(System.PullRequest.PullRequestId)-ssr .
+
+      - task: CmdLine@2
+        displayName: "Build and push unstable Docker image"
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+        inputs:
+          script: |
+            docker buildx use --builder builder
+            docker buildx build --file ./Dockerfile.ci --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag mrtimscampi/jellyvision:unstable-$(Build.BuildNumber) \
+              --tag mrtimscampi/jellyvision:unstable .
+
+      - task: CmdLine@2
+        displayName: "Build and push stable Docker image"
+        condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+        inputs:
+          script: |
+            docker buildx use --builder builder
+            docker buildx build --file ./Dockerfile.ci --no-cache --push \
+              --platform linux/arm,linux/arm64,linux/amd64 \
+              --tag mrtimscampi/jellyvision:$(Version) \
+              --tag mrtimscampi/jellyvision:stable \
+              --tag mrtimscampi/jellyvision:latest .
+
+      - task: Docker@2
+        displayName: "Logout from Docker Hub"
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+        inputs:
+          command: logout
+          containerRegistry: "Docker Hub"
