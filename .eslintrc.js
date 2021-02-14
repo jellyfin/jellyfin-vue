@@ -57,5 +57,19 @@ module.exports = {
         extensions: ['.js', '.ts', '.vue', '.json']
       }
     }
-  }
+  },
+  overrides: [
+    {
+      files: ['**/*.spec.ts'],
+      plugins: ['jest', 'jest-formatting'],
+      env: {
+        'jest/globals': true
+      },
+      extends: [
+        'plugin:jest/recommended',
+        'plugin:jest/style',
+        'plugin:jest-formatting/strict'
+      ]
+    }
+  ]
 };
