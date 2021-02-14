@@ -32,24 +32,23 @@ const wrapper = mount(PlayButton, {
   store
 });
 
-describe('Play button', () => {
-  it('Button should be visible with text "play"', (): void => {
-    expect(wrapper.find('.v-btn').exists()).toBe(true);
+describe('PlayVutton', () => {
+  it('shows the text "play"', (): void => {
     expect(wrapper.text()).toBe('play');
   });
 
-  it('Button should be disabled if item is not playable', (): void => {
+  it('is disabled if the item is not playable', (): void => {
     expect(wrapper.find('.v-btn--disabled').exists()).toBe(true);
-    expect(wrapper.text()).toBe('play');
   });
 
-  it('Button should not be disabled if item is playable', async (): Promise<void> => {
+  it('is enabled if the item is playable', async (): Promise<void> => {
+    // TODO: This should mock canPlay in order to not depend on another file
     await wrapper.setProps({ item: { Type: 'MusicGenre' } as BaseItemDto });
 
     expect(wrapper.find('.v-btn--disabled').exists()).toBe(false);
   });
 
-  it('Button should show "resume" if item can be resumed', async (): Promise<void> => {
+  it('shows the text "resume" if item can be resumed', async (): Promise<void> => {
     await wrapper.setProps({
       item: { UserData: { PlaybackPositionTicks: 1 } } as BaseItemDto
     });
@@ -57,13 +56,15 @@ describe('Play button', () => {
     expect(wrapper.text()).toBe('resume');
   });
 
-  it('When button is pressed, "play" action is called.', async (): Promise<void> => {
+  it('calls the "play" action when clicked if the item is not resumable', async (): Promise<void> => {
+    // TODO: This doesn't actually check which action is called
+    // TODO: The store should be mocked to test in isolation
     await wrapper.setProps({
       item: {
         Id: 'test-id-1',
         Type: 'MusicGenre',
         UserData: { PlaybackPositionTicks: 0 }
-      } as BaseItemDto
+      }
     });
 
     await wrapper.findComponent({ name: 'v-btn' }).trigger('click');
@@ -74,14 +75,11 @@ describe('Play button', () => {
         UserData: { PlaybackPositionTicks: 0 }
       }
     ]);
-
-    // Since PlaybackPositionTicks = 0, item should be played not resumed
-    expect(typeof spy.getCall(0).args[1].items[0].startFromTile).toBe(
-      'undefined'
-    );
   });
 
-  it('When button is pressed, "resume" action is called.', async (): Promise<void> => {
+  it('calls the "resume" action when clicked if the item is resumable', async (): Promise<void> => {
+    // TODO: This doesn't actually check which action is called
+    // TODO: The store should be mocked to test in isolation
     spy.resetHistory();
     await wrapper.setProps({
       item: {
