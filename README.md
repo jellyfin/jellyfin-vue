@@ -1,5 +1,5 @@
-<h1 align="center">Jellyfin Vue</h1>
-<h3 align="center">Part of the <a href="https://jellyfin.org">Jellyfin Project</a></h3>
+<h1 align="center">Jellyvision</h1>
+<h3 align="center">A modern Vue-based client for the <a href="https://jellyfin.org">Jellyfin Project</a></h3>
 
 ---
 
@@ -8,36 +8,19 @@
 <br/>
 <br/>
 <a href="https://github.com/jellyfin/jellyfin-vue">
-<img alt="GPL 3.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-vue.svg"/>
+<img alt="GPL 3.0 License" src="https://img.shields.io/github/license/MrTimscampi/jellyvision.svg"/>
 </a>
 <a href="https://github.com/jellyfin/jellyfin-vue/releases">
-<img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-vue.svg"/>
+<img alt="Current Release" src="https://img.shields.io/github/release/MrTimscampi/jellyvision.svg"/>
 </a>
 <a href="http://commitizen.github.io/cz-cli/">
 <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" />
 </a>
-<a href="https://codecov.io/gh/jellyfin/jellyfin-vue">
-<img src="https://codecov.io/gh/jellyfin/jellyfin-vue/branch/master/graph/badge.svg?token=6SPE6CJJD8"/>
-</a>
-<br/>
-<a href="https://opencollective.com/jellyfin">
-<img alt="Donate" src="https://img.shields.io/opencollective/all/jellyfin.svg?label=backers"/>
-</a>
-<a href="https://features.jellyfin.org">
-<img alt="Feature Requests" src="https://img.shields.io/badge/fider-vote%20on%20features-success.svg"/>
-</a>
-<a href="https://forum.jellyfin.org">
-<img alt="Discuss on our Forum" src="https://img.shields.io/discourse/https/forum.jellyfin.org/users.svg"/>
-</a>
-<a href="https://matrix.to/#/+jellyfin:matrix.org">
-<img alt="Chat on Matrix" src="https://img.shields.io/matrix/jellyfin:matrix.org.svg?logo=matrix"/>
-</a>
-<a href="https://www.reddit.com/r/jellyfin">
-<img alt="Join our Subreddit" src="https://img.shields.io/badge/reddit-r%2Fjellyfin-%23FF5700.svg"/>
-</a>
 </p>
 
-This is an experimental web client for Jellyfin based on Vue.js. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start.
+This is an experimental web client for Jellyfin based on Vue.js. We welcome all contributions and pull requests!
+
+If you have a larger feature in mind please open an issue so we can discuss the implementation and design before you start.
 
 ## Requirements
 
@@ -68,22 +51,15 @@ $ yarn install
 # server with hot reload at localhost:3000
 $ yarn dev
 
-# serve with hot reload in static mode at localhost:3000
-$ yarn dev:static
-
 # build for production and launch server
 $ yarn build
 $ yarn start
-
-# build for production in static mode
-# you will need a web server to host the client
-$ yarn build:static
 
 ```
 
 ## Running standalone
 
-When using the SSR version of the client, you can run the client in standalone mode in order to save space.
+In order to save space when deploying the client, you can run it in _standalone mode_:
 
 ```bash
 # install dependencies

@@ -37,11 +37,11 @@ const config: NuxtConfig = {
     meta: {
       nativeUI: true,
       appleStatusBarStyle: 'dark',
-      name: 'Jellyfin',
+      name: 'Jellyvision',
       theme_color: '#424242'
     },
     manifest: {
-      name: 'Jellyfin',
+      name: 'Jellyvision',
       background_color: '#101010'
     }
   },
@@ -50,8 +50,8 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - Jellyfin',
-    title: 'Jellyfin',
+    titleTemplate: '%s - Jellyvision',
+    title: 'Jellyvision',
     meta: [
       { charset: 'utf-8' },
       {
