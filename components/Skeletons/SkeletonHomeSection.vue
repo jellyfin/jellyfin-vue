@@ -1,6 +1,6 @@
 <template>
   <v-col>
-    <v-skeleton-loader type="heading" max-width="25em" />
+    <v-skeleton-loader type="heading" max-width="25em" class="ml-2" />
     <v-row class="space-around ma-0">
       <skeleton-card
         v-for="i in cardNumber"
