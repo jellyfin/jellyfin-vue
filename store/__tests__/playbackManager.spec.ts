@@ -52,721 +52,741 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions, getters }));
 });
 
-test('When getCurrentItem is called, the current item is returned', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 1
+describe('vuex: playbackManager', () => {
+  it('returns the currently playing item when getCurrentItem is called', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 1
+    });
+
+    expect(store.getters.getCurrentItem).toMatchObject(DEMO_TEST_ITEM_B);
+
+    store.replaceState({
+      ...defaultState()
+    });
+
+    expect(store.getters.getCurrentItem).toBeNull();
   });
 
-  expect(store.getters.getCurrentItem).toMatchObject(DEMO_TEST_ITEM_B);
+  it('returns the previous item when getPreviousItem is called', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 0
+    });
 
-  store.replaceState({
-    ...defaultState()
+    expect(store.getters.getPreviousItem).toBeNull();
+
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 1,
+      lastItemIndex: null
+    });
+
+    expect(store.getters.getPreviousItem).toBeNull();
+
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 1,
+      lastItemIndex: 0
+    });
+
+    expect(store.getters.getCurrentItem).toMatchObject(DEMO_TEST_ITEM_B);
   });
 
-  expect(store.getters.getCurrentItem).toBe(null);
-});
+  it('returns the next item when getNextItem is called', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 0
+    });
 
-test('When getPreviousItem is called, the previous item is returned', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 0
+    expect(store.getters.getNextItem).toMatchObject(DEMO_TEST_ITEM_B);
+
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 2,
+      repeatMode: RepeatMode.RepeatAll
+    });
+
+    expect(store.getters.getNextItem).toMatchObject(DEMO_TEST_ITEM_A);
+
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 2
+    });
+
+    expect(store.getters.getNextItem).toBeNull();
   });
 
-  expect(store.getters.getPreviousItem).toBe(null);
+  it("returns the current item's type when getCurrentlyPlayingType is called", () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 0
+    });
 
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 1,
-    lastItemIndex: null
+    expect(store.getters.getCurrentlyPlayingType).toBe('Movie');
+
+    store.replaceState({
+      ...defaultState()
+    });
+
+    expect(store.getters.getCurrentlyPlayingType).toBeNull();
   });
 
-  expect(store.getters.getPreviousItem).toBe(null);
+  it("returns the current item's media type when getCurrentlyPlayingMediaType is called", () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
+      currentItemIndex: 0
+    });
 
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 1,
-    lastItemIndex: 0
+    expect(store.getters.getCurrentlyPlayingMediaType).toBe(
+      'demo-item-1-media-type'
+    );
+
+    store.replaceState({
+      ...defaultState()
+    });
+
+    expect(store.getters.getCurrentlyPlayingMediaType).toBeNull();
   });
 
-  expect(store.getters.getCurrentItem).toMatchObject(DEMO_TEST_ITEM_B);
-});
+  it('sets the queue when "SET_QUEUE" is committed with an empty queue', () => {
+    store.replaceState({ ...defaultState() });
 
-test('When getNextItem is called, the next item is returned', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 0
-  });
+    store.commit('SET_QUEUE', {
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
 
-  expect(store.getters.getNextItem).toMatchObject(DEMO_TEST_ITEM_B);
-
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 2,
-    repeatMode: RepeatMode.RepeatAll
-  });
-
-  expect(store.getters.getNextItem).toMatchObject(DEMO_TEST_ITEM_A);
-
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 2
-  });
-
-  expect(store.getters.getNextItem).toBe(null);
-});
-
-test('When getCurrentlyPlayingType is called, it returns the correct type', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 0
-  });
-
-  expect(store.getters.getCurrentlyPlayingType).toBe('Movie');
-
-  store.replaceState({
-    ...defaultState()
-  });
-
-  expect(store.getters.getCurrentlyPlayingType).toBe(null);
-});
-
-test('When getCurrentlyPlayingMediaType is called, it returns the correct type', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
-    currentItemIndex: 0
-  });
-
-  expect(store.getters.getCurrentlyPlayingMediaType).toBe(
-    'demo-item-1-media-type'
-  );
-
-  store.replaceState({
-    ...defaultState()
-  });
-
-  expect(store.getters.getCurrentlyPlayingMediaType).toBe(null);
-});
-
-test('When "SET_QUEUE" is committed, que is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.commit('SET_QUEUE', {
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
-  });
-
-  expect(store.state.queue).toMatchObject([
-    DEMO_TEST_ITEM_A,
-    DEMO_TEST_ITEM_B,
-    DEMO_TEST_ITEM_C
-  ]);
-});
-
-test('When "ADD_TO_QUEUE" is committed, the list of items is added to the queue. Case A', () => {
-  store.replaceState({
-    ...defaultState()
-  });
-
-  store.commit('ADD_TO_QUEUE', {
-    queue: [DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_A]
-  });
-
-  expect(store.state.queue).toMatchObject([DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_A]);
-});
-
-test('When "ADD_TO_QUEUE" is committed, the list of items is added to the queue. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
-  });
-
-  store.commit('ADD_TO_QUEUE', {
-    queue: [DEMO_TEST_ITEM_B]
-  });
-
-  expect(store.state.queue).toMatchObject([
-    DEMO_TEST_ITEM_A,
-    DEMO_TEST_ITEM_B,
-    DEMO_TEST_ITEM_B
-  ]);
-});
-
-test('When "CLEAR_QUEUE" is committed, queue is cleared.', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
-  });
-
-  store.commit('CLEAR_QUEUE');
-
-  expect(store.state.queue).toMatchObject([]);
-});
-
-test('When "SET_CURRENT_ITEM_INDEX" is committed, queue is cleared.', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [
+    expect(store.state.queue).toMatchObject([
       DEMO_TEST_ITEM_A,
       DEMO_TEST_ITEM_B,
-      DEMO_TEST_ITEM_C,
+      DEMO_TEST_ITEM_C
+    ]);
+  });
+
+  it('adds a list of items to the queue when "ADD_TO_QUEUE" is committed with an empty queue', () => {
+    store.replaceState({
+      ...defaultState()
+    });
+
+    store.commit('ADD_TO_QUEUE', {
+      queue: [DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_A]
+    });
+
+    expect(store.state.queue).toMatchObject([
+      DEMO_TEST_ITEM_B,
       DEMO_TEST_ITEM_A
-    ],
-    currentItemIndex: 3
+    ]);
   });
 
-  store.commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: 5 });
+  it('adds a duplicate item at the end of the queue when "ADD_TO_QUEUE" is committed with an item already in the queue', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
+    });
 
-  expect(store.state.lastItemIndex).toBe(3);
-  expect(store.state.currentItemIndex).toBe(5);
-});
+    store.commit('ADD_TO_QUEUE', {
+      queue: [DEMO_TEST_ITEM_B]
+    });
 
-test('When "SET_CURRENT_MEDIA_SOURCE" is committed, queue is cleared.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.queue).toMatchObject([
+      DEMO_TEST_ITEM_A,
+      DEMO_TEST_ITEM_B,
+      DEMO_TEST_ITEM_B
+    ]);
   });
 
-  store.commit('SET_CURRENT_MEDIA_SOURCE', {
-    mediaSource: DEMO_TEST_MEDIA_SOURCE
+  it('adds a new item at the end of the queue when "ADD_TO_QUEUE" is committed with an item already in the queue', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
+    });
+
+    store.commit('ADD_TO_QUEUE', {
+      queue: [DEMO_TEST_ITEM_C]
+    });
+
+    expect(store.state.queue).toMatchObject([
+      DEMO_TEST_ITEM_A,
+      DEMO_TEST_ITEM_B,
+      DEMO_TEST_ITEM_C
+    ]);
   });
 
-  expect(store.state.currentMediaSource).toMatchObject(DEMO_TEST_MEDIA_SOURCE);
-});
+  it('clears the queue when "CLEAR_QUEUE" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
+    });
 
-test('When "INCREASE_QUEUE_INDEX" is committed, currentItemIndex is increased. Case A', () => {
-  store.replaceState({
-    ...defaultState()
+    store.commit('CLEAR_QUEUE');
+
+    expect(store.state.queue).toMatchObject([]);
   });
 
-  store.commit('INCREASE_QUEUE_INDEX');
+  it('sets the current and last indexes when "SET_CURRENT_ITEM_INDEX" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [
+        DEMO_TEST_ITEM_A,
+        DEMO_TEST_ITEM_B,
+        DEMO_TEST_ITEM_C,
+        DEMO_TEST_ITEM_A
+      ],
+      currentItemIndex: 1
+    });
 
-  expect(store.state.currentItemIndex).toBeNull();
-});
+    store.commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: 3 });
 
-test('When "INCREASE_QUEUE_INDEX" is committed, currentItemIndex is increased. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentItemIndex: 1,
-    lastItemIndex: 0,
-    currentTime: 100
+    expect(store.state.lastItemIndex).toBe(1);
+    expect(store.state.currentItemIndex).toBe(3);
   });
 
-  store.commit('INCREASE_QUEUE_INDEX');
+  it('sets the current media source when "SET_CURRENT_MEDIA_SOURCE" is committed', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentItemIndex).toBe(2);
-  expect(store.state.lastItemIndex).toBe(1);
-  expect(store.state.currentTime).toBe(0);
-});
+    store.commit('SET_CURRENT_MEDIA_SOURCE', {
+      mediaSource: DEMO_TEST_MEDIA_SOURCE
+    });
 
-test('When "DECREASE_QUEUE_INDEX" is committed, currentItemIndex is decreased. Case A', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentMediaSource).toMatchObject(
+      DEMO_TEST_MEDIA_SOURCE
+    );
   });
 
-  store.commit('DECREASE_QUEUE_INDEX');
+  it('does not increase the current item index when "INCREASE_QUEUE_INDEX" is committed when the current index is null', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentItemIndex).toBeNull();
-});
+    store.commit('INCREASE_QUEUE_INDEX');
 
-test('When "DECREASE_QUEUE_INDEX" is committed, currentItemIndex is decreased. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentItemIndex: 2,
-    currentTime: 1
+    expect(store.state.currentItemIndex).toBeNull();
   });
 
-  store.commit('DECREASE_QUEUE_INDEX');
+  it('increases the current and last item indexes when "INCREASE_QUEUE_INDEX" is committed when the current index is a number', () => {
+    // TODO: This should ensure that we can't reach an out of bounds index
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 1,
+      lastItemIndex: 0,
+      currentTime: 100
+    });
 
-  expect(store.state.currentItemIndex).toBe(1);
-  expect(store.state.currentTime).toBe(0);
-});
+    store.commit('INCREASE_QUEUE_INDEX');
 
-test('When "START_PLAYBACK" is committed, status is set to playing.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentItemIndex).toBe(2);
+    expect(store.state.lastItemIndex).toBe(1);
+    expect(store.state.currentTime).toBe(0);
   });
 
-  store.commit('START_PLAYBACK', { initMode: InitMode.Unknown });
+  it('does not decrease the current item index when "DECREASE_QUEUE_INDEX" is committed when the current index is null', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.playing);
-});
+    store.commit('DECREASE_QUEUE_INDEX');
 
-test('When "UNPAUSE_PLAYBACK" is committed, status is set to playing.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentItemIndex).toBeNull();
   });
 
-  store.commit('UNPAUSE_PLAYBACK');
+  it('decreases the current and last item indexes when "DECREASE_QUEUE_INDEX" is committed when the current index is a number', () => {
+    // TODO: This should ensure that we can't reach an out of bounds index
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 2,
+      currentTime: 1
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.playing);
-});
+    store.commit('DECREASE_QUEUE_INDEX');
 
-test('When "PAUSE_PLAYBACK" is committed, status is set to playing.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.playing
+    expect(store.state.currentItemIndex).toBe(1);
+    expect(store.state.currentTime).toBe(0);
   });
 
-  store.commit('PAUSE_PLAYBACK');
+  it('sets the playback status to playing when "START_PLAYBACK" is committed', () => {
+    // TODO: This should ensure that setting playing on an empty queue can't happen
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.paused);
-});
+    store.commit('START_PLAYBACK', { initMode: InitMode.Unknown });
 
-test('When "STOP_PLAYBACK" is committed, status is set back to default.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.playing
+    expect(store.state.status).toBe(PlaybackStatus.playing);
   });
 
-  store.commit('STOP_PLAYBACK');
+  it('sets the playback status to playing when "UNPAUSE_PLAYBACK" is committed', () => {
+    // TODO: This should ensure that setting playing on an empty queue can't happen
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state).toMatchObject(defaultState());
-});
+    store.commit('UNPAUSE_PLAYBACK');
 
-test('When "RESET_LAST_ITEM_INDEX" is committed, lastItemIndex is set to null', () => {
-  store.replaceState({
-    ...defaultState(),
-    lastItemIndex: 10
+    expect(store.state.status).toBe(PlaybackStatus.playing);
   });
 
-  store.commit('RESET_LAST_ITEM_INDEX');
+  it('sets the playback status to paused when "PAUSE_PLAYBACK" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.playing
+    });
 
-  expect(store.state.lastItemIndex).toBe(null);
-});
+    store.commit('PAUSE_PLAYBACK');
 
-test('When "SET_VOLUME" is committed, volume level is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.status).toBe(PlaybackStatus.paused);
   });
 
-  store.commit('SET_VOLUME', { volume: 10 });
+  it('clears the playback status when "STOP_PLAYBACK" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.playing
+    });
 
-  expect(store.state.currentVolume).toBe(10);
-});
+    store.commit('STOP_PLAYBACK');
 
-test('When "SET_MINIMIZE" is committed, isMinimized is set. Case A', () => {
-  store.replaceState({
-    ...defaultState(),
-    isMinimized: false
+    expect(store.state).toMatchObject(defaultState());
   });
 
-  store.commit('SET_MINIMIZE', { minimized: true });
+  it('clears the last item index when "RESET_LAST_ITEM_INDEX" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      lastItemIndex: 10
+    });
 
-  expect(store.state.isMinimized).toBe(true);
-});
+    store.commit('RESET_LAST_ITEM_INDEX');
 
-test('When "SET_MINIMIZE" is committed, isMinimized is set. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    isMinimized: true
+    expect(store.state.lastItemIndex).toBeNull();
   });
 
-  store.commit('SET_MINIMIZE', { minimized: false });
+  it('sets the volume when "SET_VOLUME" is committed', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.isMinimized).toBe(false);
-});
+    store.commit('SET_VOLUME', { volume: 10 });
 
-test('When "SET_CURRENT_TIME" is committed, currentTime is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentVolume).toBe(10);
   });
 
-  store.commit('SET_CURRENT_TIME', { time: 1.234 });
+  it('sets the players to minimized when "SET_MINIMIZE" is committed with true', () => {
+    store.replaceState({
+      ...defaultState(),
+      isMinimized: false
+    });
 
-  expect(store.state.currentTime).toBe(1.234);
-});
+    store.commit('SET_MINIMIZE', { minimized: true });
 
-test('When "CHANGE_CURRENT_TIME" is committed, currentTime is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.isMinimized).toBe(true);
   });
 
-  store.commit('CHANGE_CURRENT_TIME', { time: 1.234 });
+  it('sets the players to maximized when "SET_MINIMIZE" is committed with false', () => {
+    store.replaceState({
+      ...defaultState(),
+      isMinimized: true
+    });
 
-  expect(store.state.currentTime).toBe(1.234);
-});
+    store.commit('SET_MINIMIZE', { minimized: false });
 
-test('When "TOGGLE_MINIMIZE" is committed, currentTime is set.', () => {
-  store.replaceState({
-    ...defaultState(),
-    isMinimized: false
+    expect(store.state.isMinimized).toBe(false);
   });
 
-  store.commit('TOGGLE_MINIMIZE');
+  it('sets the current time when "SET_CURRENT_TIME" is committed', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.isMinimized).toBe(true);
+    store.commit('SET_CURRENT_TIME', { time: 1.234 });
 
-  store.commit('TOGGLE_MINIMIZE');
-
-  expect(store.state.isMinimized).toBe(false);
-});
-
-test('When "SET_PLAY_SESSION_ID" is is called, the playSessionId is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentTime).toBe(1.234);
   });
 
-  store.commit('SET_PLAY_SESSION_ID', { id: 'demo-play-session-id' });
+  it('sets the current time when "CHANGE_CURRENT_TIME" is committed', () => {
+    // TODO: It seems a bit idiotic to have two mutations for the same thing, that are always called together. Look into refactoring this.
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.playSessionId).toBe('demo-play-session-id');
-});
+    store.commit('CHANGE_CURRENT_TIME', { time: 1.234 });
 
-test('When stop is is called, status is set to stopped.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.playing
+    expect(store.state.currentTime).toBe(1.234);
   });
 
-  store.dispatch('stop');
+  it('toggles the minimized player flag when "TOGGLE_MINIMIZE" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      isMinimized: false
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.stopped);
-});
+    store.commit('TOGGLE_MINIMIZE');
 
-test('When pause is is called, status is set to paused.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.playing
+    expect(store.state.isMinimized).toBe(true);
+
+    store.commit('TOGGLE_MINIMIZE');
+
+    expect(store.state.isMinimized).toBe(false);
   });
 
-  store.dispatch('pause');
+  it('sets the play session ID when "SET_PLAY_SESSION_ID" is committed', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.paused);
-});
+    store.commit('SET_PLAY_SESSION_ID', { id: 'demo-play-session-id' });
 
-test('When unpause is is called, status is set to playing.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.paused
+    expect(store.state.playSessionId).toBe('demo-play-session-id');
   });
 
-  store.dispatch('unpause');
+  it('sets the playback status to stopped when stop is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.playing
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.playing);
-});
+    store.dispatch('stop');
 
-test('When playPause is is called, status is flipped.', () => {
-  store.replaceState({
-    ...defaultState(),
-    status: PlaybackStatus.paused
+    expect(store.state.status).toBe(PlaybackStatus.stopped);
   });
 
-  store.dispatch('playPause');
+  it('sets the playback status to paused when pause is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.playing
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.playing);
+    store.dispatch('pause');
 
-  store.dispatch('playPause');
-
-  expect(store.state.status).toBe(PlaybackStatus.paused);
-});
-
-test('When clearQueue is is called, the queue is cleared', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
+    expect(store.state.status).toBe(PlaybackStatus.paused);
   });
 
-  store.dispatch('clearQueue');
+  it('sets the playback status to playing when unpause is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.paused
+    });
 
-  expect(store.state.queue).toMatchObject([]);
-});
+    store.dispatch('unpause');
 
-test('When setMediaSource is is called, the correct media source is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.status).toBe(PlaybackStatus.playing);
   });
 
-  store.dispatch('setMediaSource', { mediaSource: DEMO_TEST_MEDIA_SOURCE });
+  it('toggles the playback status when playPause is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      status: PlaybackStatus.paused
+    });
 
-  expect(store.state.currentMediaSource).toMatchObject(DEMO_TEST_MEDIA_SOURCE);
-});
+    store.dispatch('playPause');
 
-test('When setNextTrack is is called, the queue is cleared. Case A', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
-    status: PlaybackStatus.playing,
-    currentItemIndex: 1
+    expect(store.state.status).toBe(PlaybackStatus.playing);
+
+    store.dispatch('playPause');
+
+    expect(store.state.status).toBe(PlaybackStatus.paused);
   });
 
-  store.dispatch('setNextTrack');
+  it('clears the queue when clearQueue is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
+    });
 
-  expect(store.state.status).toBe(PlaybackStatus.stopped);
-});
+    store.dispatch('clearQueue');
 
-test('When setNextTrack is is called, the queue is cleared. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
-    currentItemIndex: 0
+    expect(store.state.queue).toMatchObject([]);
   });
 
-  store.dispatch('setNextTrack');
+  it('sets the media source when setMediaSource is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentItemIndex).toBe(1);
-  expect(store.state.lastItemIndex).toBe(0);
-});
+    store.dispatch('setMediaSource', { mediaSource: DEMO_TEST_MEDIA_SOURCE });
 
-test('When setPreviousTrack is is called, the queue is cleared. Case A', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 5
+    expect(store.state.currentMediaSource).toMatchObject(
+      DEMO_TEST_MEDIA_SOURCE
+    );
   });
 
-  store.dispatch('setPreviousTrack');
+  it('clears the queue when setNextTrack is dispatched at the end of the queue', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
+      status: PlaybackStatus.playing,
+      currentItemIndex: 1
+    });
 
-  expect(store.state.currentTime).toBe(0);
-});
+    store.dispatch('setNextTrack');
 
-test('When setPreviousTrack is is called, the queue is cleared. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 1,
-    currentItemIndex: 3
+    expect(store.state.status).toBe(PlaybackStatus.stopped);
   });
 
-  store.dispatch('setPreviousTrack');
+  it('increases the item indexes when setNextTrack is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
+      currentItemIndex: 0
+    });
 
-  expect(store.state.currentItemIndex).toBe(2);
-});
+    store.dispatch('setNextTrack');
 
-test('When setPreviousTrack is is called, the queue is cleared. Case C', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 1
+    expect(store.state.currentItemIndex).toBe(1);
+    expect(store.state.lastItemIndex).toBe(0);
   });
 
-  store.dispatch('setPreviousTrack');
+  it('clears the current time when setPreviousTrack is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentTime: 5
+    });
 
-  expect(store.state.currentTime).toBe(0);
-});
+    store.dispatch('setPreviousTrack');
 
-test('When resetCurrentTime is is called, the currentTime is set to 0.', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 1.234
+    expect(store.state.currentTime).toBe(0);
   });
 
-  store.dispatch('resetCurrentTime');
+  it('decreases the item indexs when setPreviousTrack is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 3
+    });
 
-  expect(store.state.currentTime).toBe(0);
-});
+    store.dispatch('setPreviousTrack');
 
-test('When resetCurrentItemIndex is is called, the currentItemIndex is set to null.', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentItemIndex: 1
+    expect(store.state.currentItemIndex).toBe(2);
+    expect(store.state.lastItemIndex).toBe(3);
   });
 
-  store.dispatch('resetCurrentItemIndex');
+  it('clears the current time when resetCurrentTime is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentTime: 1.234
+    });
 
-  expect(store.state.currentItemIndex).toBe(null);
-});
+    store.dispatch('resetCurrentTime');
 
-test('When setLastItemIndex is is called, the lastItemIndex is set to null.', () => {
-  store.replaceState({
-    ...defaultState(),
-    lastItemIndex: 1,
-    currentItemIndex: 2
+    expect(store.state.currentTime).toBe(0);
   });
 
-  store.dispatch('setLastItemIndex');
+  it('clears the current item index when resetCurrentItemIndex is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 1
+    });
 
-  expect(store.state.lastItemIndex).toBe(2);
-});
+    store.dispatch('resetCurrentItemIndex');
 
-test('When resetLastItemIndex is is called, the lastItemIndex is set to null.', () => {
-  store.replaceState({
-    ...defaultState(),
-    lastItemIndex: 1
+    expect(store.state.currentItemIndex).toBeNull();
   });
 
-  store.dispatch('resetLastItemIndex');
+  it('sets the last item index to the current item index when setLastItemIndex is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      lastItemIndex: 1,
+      currentItemIndex: 2
+    });
 
-  expect(store.state.lastItemIndex).toBe(null);
-});
+    store.dispatch('setLastItemIndex');
 
-test('When setLastProgressUpdate is is called, the state is updated.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.lastItemIndex).toBe(2);
   });
 
-  store.dispatch('setLastProgressUpdate', { progress: 10 });
+  it('clears the last item index when resetLastItemIndex is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      lastItemIndex: 1
+    });
 
-  expect(store.state.lastProgressUpdate).toBe(10);
-});
+    store.dispatch('resetLastItemIndex');
 
-test('When setVolume is is called, the volumeLevel is updated.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.lastItemIndex).toBeNull();
   });
 
-  store.dispatch('setVolume', { volume: 10 });
+  it('sets the last progress update when setLastProgressUpdate is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentVolume).toBe(10);
-});
+    store.dispatch('setLastProgressUpdate', { progress: 10 });
 
-test('When setVolume is is called, the volumeLevel is updated. Case A', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentItemIndex: 5
+    expect(store.state.lastProgressUpdate).toBe(10);
   });
 
-  store.dispatch('setCurrentIndex', { index: 5 });
+  it('sets the current volume when setVolume is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentItemIndex).toBe(5);
-});
+    store.dispatch('setVolume', { volume: 10 });
 
-test('When setVolume is is called, the volumeLevel is updated. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentItemIndex: 5
+    expect(store.state.currentVolume).toBe(10);
   });
 
-  store.dispatch('setCurrentIndex', { index: 6 });
+  it('sets the current item index when setCurrentIndex is dispatched with the same index', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 5
+    });
 
-  expect(store.state.currentItemIndex).toBe(6);
-});
+    store.dispatch('setCurrentIndex', { index: 5 });
 
-test('When setCurrentTime is is called, the currentTime is updated.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentItemIndex).toBe(5);
   });
 
-  store.dispatch('setCurrentTime', { time: 12.345 });
+  it('sets the current item index when setCurrentIndex is dispatched with a new index', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentItemIndex: 5
+    });
 
-  expect(store.state.currentTime).toBe(12.345);
-});
+    store.dispatch('setCurrentIndex', { index: 6 });
 
-test('When changeCurrentTime is is called, the currentTime is updated.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.currentItemIndex).toBe(6);
   });
 
-  store.dispatch('changeCurrentTime', { time: 12.345 });
+  it('sets the current time when when setCurrentTime is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentTime).toBe(12.345);
-});
+    store.dispatch('setCurrentTime', { time: 12.345 });
 
-test('When skipForward is is called, the currentTime is updated.', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 10
+    expect(store.state.currentTime).toBe(12.345);
   });
 
-  store.dispatch('skipForward');
+  it('sets the current time when when changeCurrentTime is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.currentTime).toBe(25);
-});
+    store.dispatch('changeCurrentTime', { time: 12.345 });
 
-test('When skipBackward is is called, the currentTime is updated.', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 10
+    expect(store.state.currentTime).toBe(12.345);
   });
 
-  store.dispatch('skipBackward');
+  it('updates the current time when skipForward is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentTime: 10
+    });
 
-  expect(store.state.currentTime).toBe(0);
-});
+    store.dispatch('skipForward');
 
-test('When skipBackward is is called, the currentTime is updated. Case B', () => {
-  store.replaceState({
-    ...defaultState(),
-    currentTime: 25
+    expect(store.state.currentTime).toBe(25);
   });
 
-  store.dispatch('skipBackward');
+  it('resets the current time when skipBackward is dispatched when at 10 seconds or less', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentTime: 10
+    });
 
-  expect(store.state.currentTime).toBe(10);
-});
+    store.dispatch('skipBackward');
 
-test('When setMinimized is is called, isMinimized is updated.', () => {
-  store.replaceState({
-    ...defaultState(),
-    isMinimized: false
+    expect(store.state.currentTime).toBe(0);
   });
 
-  store.dispatch('setMinimized', { minimized: true });
+  it('sets the current time when skipBackward is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      currentTime: 25
+    });
 
-  expect(store.state.isMinimized).toBe(true);
-});
+    store.dispatch('skipBackward');
 
-test('When toggleMinimized is is called, isMinimized is toggled between.', () => {
-  store.replaceState({
-    ...defaultState(),
-    isMinimized: false
+    expect(store.state.currentTime).toBe(10);
   });
 
-  store.dispatch('toggleMinimized');
+  it('updates the minimized flag when setMinimized is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      isMinimized: false
+    });
 
-  expect(store.state.isMinimized).toBe(true);
+    store.dispatch('setMinimized', { minimized: true });
 
-  store.dispatch('toggleMinimized');
-
-  expect(store.state.isMinimized).toBe(false);
-});
-
-test('When setPlaySessionId is is called, the playSessionId is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.isMinimized).toBe(true);
   });
 
-  store.dispatch('setPlaySessionId', { id: 'demo-play-session-id' });
+  it('updates the minimized flag when toggleMinimized is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      isMinimized: false
+    });
 
-  expect(store.state.playSessionId).toBe('demo-play-session-id');
-});
+    store.dispatch('toggleMinimized');
 
-test('When setRepeatMode is is called, the repeatMode is set.', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state.isMinimized).toBe(true);
+
+    store.dispatch('toggleMinimized');
+
+    expect(store.state.isMinimized).toBe(false);
   });
 
-  store.dispatch('setRepeatMode', { mode: RepeatMode.RepeatAll });
+  it('sets the play session ID when setPlaySessionId is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatAll);
-});
+    store.dispatch('setPlaySessionId', { id: 'demo-play-session-id' });
 
-test('When toggleRepeatMode is is called, the repeatMode is toggled. More than one item in queue', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
-    repeatMode: RepeatMode.RepeatNone
+    expect(store.state.playSessionId).toBe('demo-play-session-id');
   });
 
-  store.dispatch('toggleRepeatMode');
+  it('sets the repeat mode when setRepeatMode is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatAll);
+    store.dispatch('setRepeatMode', { mode: RepeatMode.RepeatAll });
 
-  store.dispatch('toggleRepeatMode');
-
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatOne);
-
-  store.dispatch('toggleRepeatMode');
-
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatNone);
-});
-
-test('When toggleRepeatMode is is called, the repeatMode is toggled. One item in queue', () => {
-  store.replaceState({
-    ...defaultState(),
-    queue: [DEMO_TEST_ITEM_A],
-    repeatMode: RepeatMode.RepeatNone
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatAll);
   });
 
-  store.dispatch('toggleRepeatMode');
+  it('toggles between RepeatAll, RepeatOne and RepeatNone when toggleRepeatMode is dispatched with multiple items in the queue', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
+      repeatMode: RepeatMode.RepeatNone
+    });
 
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatOne);
+    store.dispatch('toggleRepeatMode');
 
-  store.dispatch('toggleRepeatMode');
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatAll);
 
-  expect(store.state.repeatMode).toBe(RepeatMode.RepeatNone);
+    store.dispatch('toggleRepeatMode');
+
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatOne);
+
+    store.dispatch('toggleRepeatMode');
+
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatNone);
+  });
+
+  it('toggles between RepeatOne and RepeatNone when toggleRepeatMode is dispatched with one item in the queue', () => {
+    store.replaceState({
+      ...defaultState(),
+      queue: [DEMO_TEST_ITEM_A],
+      repeatMode: RepeatMode.RepeatNone
+    });
+
+    store.dispatch('toggleRepeatMode');
+
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatOne);
+
+    store.dispatch('toggleRepeatMode');
+
+    expect(store.state.repeatMode).toBe(RepeatMode.RepeatNone);
+  });
 });
