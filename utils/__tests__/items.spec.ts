@@ -5,7 +5,7 @@ import {
 } from '../items';
 
 describe('getLibraryIcon', () => {
-  test('Returns correct library icon based on library type', () => {
+  test('returns the correct library icon based on library type', () => {
     expect(getLibraryIcon('movies')).toEqual('mdi-movie');
     expect(getLibraryIcon('music')).toEqual('mdi-music');
     expect(getLibraryIcon('photos')).toEqual('mdi-image');
@@ -23,22 +23,42 @@ describe('getLibraryIcon', () => {
 });
 
 describe('getShapeFromCollectionType', () => {
-  test('Returns correct card shape based on collection type', () => {
+  test('returns the correct card shape based on collection type', () => {
     expect(getShapeFromCollectionType('boxsets')).toEqual('portrait-card');
-    expect(getShapeFromCollectionType('livetv')).toEqual('thumb-card');
-    expect(getShapeFromCollectionType('folders')).toEqual('square-card');
+    expect(getShapeFromCollectionType('movies')).toEqual('portrait-card');
+    expect(getShapeFromCollectionType('tvshows')).toEqual('portrait-card');
+    expect(getShapeFromCollectionType('books')).toEqual('portrait-card');
 
+    expect(getShapeFromCollectionType('livetv')).toEqual('thumb-card');
+
+    expect(getShapeFromCollectionType('folders')).toEqual('square-card');
+    expect(getShapeFromCollectionType('playlists')).toEqual('square-card');
+    expect(getShapeFromCollectionType('music')).toEqual('square-card');
     expect(getShapeFromCollectionType(undefined)).toEqual('square-card');
     expect(getShapeFromCollectionType(null)).toEqual('square-card');
   });
 });
 
 describe('getShapeFromItemType', () => {
-  test('Returns correct card shape based on item type', () => {
+  test('returns the correct card shape based on item type', () => {
     expect(getShapeFromItemType('Audio')).toEqual('square-card');
-    expect(getShapeFromItemType('Episode')).toEqual('thumb-card');
-    expect(getShapeFromItemType('Book')).toEqual('portrait-card');
+    expect(getShapeFromItemType('folder')).toEqual('square-card');
+    expect(getShapeFromItemType('musicalbum')).toEqual('square-card');
+    expect(getShapeFromItemType('musicartist')).toEqual('square-card');
+    expect(getShapeFromItemType('musicgenre')).toEqual('square-card');
+    expect(getShapeFromItemType('photoalbum')).toEqual('square-card');
+    expect(getShapeFromItemType('playlist')).toEqual('square-card');
+    expect(getShapeFromItemType('video')).toEqual('square-card');
 
+    expect(getShapeFromItemType('Episode')).toEqual('thumb-card');
+    expect(getShapeFromItemType('Studio')).toEqual('thumb-card');
+
+    expect(getShapeFromItemType('Book')).toEqual('portrait-card');
+    expect(getShapeFromItemType('boxSet')).toEqual('portrait-card');
+    expect(getShapeFromItemType('genre')).toEqual('portrait-card');
+    expect(getShapeFromItemType('movie')).toEqual('portrait-card');
+    expect(getShapeFromItemType('person')).toEqual('portrait-card');
+    expect(getShapeFromItemType('series')).toEqual('portrait-card');
     expect(getShapeFromItemType(undefined)).toEqual('portrait-card');
     expect(getShapeFromItemType(null)).toEqual('portrait-card');
   });
