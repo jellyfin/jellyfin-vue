@@ -1,5 +1,5 @@
 <template>
-  <v-stepper v-model="identifyStage">
+  <v-stepper v-model="identifyStage" class="full-height">
     <v-stepper-header>
       <v-stepper-step
         :complete="identifyStage > 1"
@@ -9,7 +9,7 @@
         {{ $t('search') }}
       </v-stepper-step>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <v-stepper-step
         :complete="identifyStage > 2"
@@ -19,7 +19,7 @@
         {{ $t('select') }}
       </v-stepper-step>
 
-      <v-divider></v-divider>
+      <v-divider />
 
       <v-stepper-step step="3">{{ $t('confirm') }}</v-stepper-step>
     </v-stepper-header>
@@ -47,24 +47,32 @@
           :disabled="loading"
           :loading="loading"
           @click="lookupData"
-          >{{ $t('search') }}</v-btn
         >
+          {{ $t('search') }}
+        </v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <v-card
-          v-for="result in searchResults"
-          :key="result.ProviderIds.Imdb"
-          class="mb-5"
-          @click="selectItem(result)"
-        >
-          <v-img
-            v-if="result.ImageUrl"
-            :src="getSearchImage(result.ImageUrl, result.SearchProviderName)"
-          />
-          <v-card-title>{{ result.Name }}</v-card-title>
-          <v-card-subtitle>{{ result.SearchProviderName }}</v-card-subtitle>
-        </v-card>
+        <div class="identify-results">
+          <v-col class="card-grid-container">
+            <v-card
+              v-for="result in searchResults"
+              :key="result.ProviderIds.Imdb"
+              class="ma-2"
+              @click="selectItem(result)"
+            >
+              <v-img
+                v-if="result.ImageUrl"
+                :src="
+                  getSearchImage(result.ImageUrl, result.SearchProviderName)
+                "
+              />
+              <v-card-title>{{ result.Name }}</v-card-title>
+              <v-card-subtitle>{{ result.SearchProviderName }}</v-card-subtitle>
+            </v-card>
+          </v-col>
+        </div>
+        <v-divider />
         <v-card v-if="!searchResults.length">
           <v-card-title>{{ $t('noItemsFound') }}</v-card-title>
         </v-card>
@@ -131,7 +139,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    async lookupData() {
+    async lookupData(): Promise<void> {
       this.loading = true;
 
       // TODO Add support for searching by IMDB/TVDB/Zap2It
@@ -166,11 +174,11 @@ export default Vue.extend({
       this.identifyStage = 2;
       this.loading = false;
     },
-    selectItem(item: RemoteSearchResult) {
+    selectItem(item: RemoteSearchResult): void {
       this.selectedItem = item;
       this.identifyStage = 3;
     },
-    async setItem(info: RemoteSearchResult) {
+    async setItem(info: RemoteSearchResult): Promise<void> {
       try {
         this.loading = true;
         const response = await this.$api.itemLookup.applySearchCriteria({
@@ -194,12 +202,12 @@ export default Vue.extend({
         });
       }
     },
-    getSearchImage(imageUrl: string, searchProviderName: string) {
+    getSearchImage(imageUrl: string, searchProviderName: string): string {
       return encodeURI(
         `${this.$axios.defaults.baseURL}/Items/RemoteSearch/Image?imageUrl=${imageUrl}&ProviderName=${searchProviderName}&api_key=${this.$store.state.user.accessToken}`
       );
     },
-    exit() {
+    exit(): void {
       this.$emit('identified');
     }
   }
@@ -207,7 +215,41 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.identifyItemContainer {
-  padding: 0.5em;
+@import '~vuetify/src/styles/styles.sass';
+
+.full-height {
+  height: 100%;
+}
+
+.card-grid-container {
+  display: grid;
+}
+
+.identify-results {
+  overflow-y: scroll;
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-down')} {
+  .card-grid-container {
+    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'sm-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'lg-and-up')} {
+  .card-grid-container {
+    grid-template-columns: repeat(5, minmax(calc(100% / 5), 1fr));
+  }
+}
+
+@media #{map-get($display-breakpoints, 'xl-only')} {
+  .card-grid-container {
+    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+  }
 }
 </style>

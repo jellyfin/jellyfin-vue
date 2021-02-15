@@ -4,6 +4,7 @@
     :value="dialog"
     :fullscreen="$vuetify.breakpoint.mobile"
     width="50vw"
+    scrollable
     @click:outside="$emit('update:dialog', false)"
   >
     <metadata-editor

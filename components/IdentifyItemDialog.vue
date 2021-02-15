@@ -4,6 +4,7 @@
     :value="dialog"
     :fullscreen="$vuetify.breakpoint.mobile"
     width="50vw"
+    scrollable
     @click:outside="$emit('update:dialog', false)"
   >
     <identify-item :item="item" />
@@ -11,8 +12,8 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
@@ -31,7 +32,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    close() {
+    close(): void {
       this.forceRefresh = true;
       this.$emit('update:dialog', false);
     }

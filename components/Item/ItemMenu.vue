@@ -40,6 +40,11 @@
       :dialog.sync="metadataDialog"
       :item-id="item.Id"
     />
+    <identify-item-dialog
+      v-if="identifyDialog"
+      :item="item"
+      :dialog.sync="identifyDialog"
+    />
   </div>
 </template>
 
@@ -79,7 +84,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      metadataDialog: false
+      metadataDialog: false,
+      identifyDialog: false
     };
   },
   computed: {
@@ -174,6 +180,14 @@ export default Vue.extend({
             icon: 'mdi-pencil-outline',
             action: () => {
               this.metadataDialog = true;
+            }
+          });
+
+          menuItems.push({
+            title: this.$t('identify'),
+            icon: 'mdi-pencil-outline',
+            action: () => {
+              this.identifyDialog = true;
             }
           });
         }
