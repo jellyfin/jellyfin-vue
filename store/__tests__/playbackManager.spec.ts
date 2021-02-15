@@ -65,7 +65,7 @@ test('When getCurrentItem is called, the current item is returned', () => {
     ...defaultState()
   });
 
-  expect(store.getters.getCurrentItem).toBe(null);
+  expect(store.getters.getCurrentItem).toBeNull();
 });
 
 test('When getPreviousItem is called, the previous item is returned', () => {
@@ -75,7 +75,7 @@ test('When getPreviousItem is called, the previous item is returned', () => {
     currentItemIndex: 0
   });
 
-  expect(store.getters.getPreviousItem).toBe(null);
+  expect(store.getters.getPreviousItem).toBeNull();
 
   store.replaceState({
     ...defaultState(),
@@ -84,7 +84,7 @@ test('When getPreviousItem is called, the previous item is returned', () => {
     lastItemIndex: null
   });
 
-  expect(store.getters.getPreviousItem).toBe(null);
+  expect(store.getters.getPreviousItem).toBeNull();
 
   store.replaceState({
     ...defaultState(),
@@ -120,7 +120,7 @@ test('When getNextItem is called, the next item is returned', () => {
     currentItemIndex: 2
   });
 
-  expect(store.getters.getNextItem).toBe(null);
+  expect(store.getters.getNextItem).toBeNull();
 });
 
 test('When getCurrentlyPlayingType is called, it returns the correct type', () => {
@@ -136,7 +136,7 @@ test('When getCurrentlyPlayingType is called, it returns the correct type', () =
     ...defaultState()
   });
 
-  expect(store.getters.getCurrentlyPlayingType).toBe(null);
+  expect(store.getters.getCurrentlyPlayingType).toBeNull();
 });
 
 test('When getCurrentlyPlayingMediaType is called, it returns the correct type', () => {
@@ -154,7 +154,7 @@ test('When getCurrentlyPlayingMediaType is called, it returns the correct type',
     ...defaultState()
   });
 
-  expect(store.getters.getCurrentlyPlayingMediaType).toBe(null);
+  expect(store.getters.getCurrentlyPlayingMediaType).toBeNull();
 });
 
 test('When "SET_QUEUE" is committed, que is set.', () => {
@@ -336,7 +336,7 @@ test('When "RESET_LAST_ITEM_INDEX" is committed, lastItemIndex is set to null', 
 
   store.commit('RESET_LAST_ITEM_INDEX');
 
-  expect(store.state.lastItemIndex).toBe(null);
+  expect(store.state.lastItemIndex).toBeNull();
 });
 
 test('When "SET_VOLUME" is committed, volume level is set.', () => {
@@ -564,7 +564,7 @@ test('When resetCurrentItemIndex is is called, the currentItemIndex is set to nu
 
   store.dispatch('resetCurrentItemIndex');
 
-  expect(store.state.currentItemIndex).toBe(null);
+  expect(store.state.currentItemIndex).toBeNull();
 });
 
 test('When setLastItemIndex is is called, the lastItemIndex is set to null.', () => {
@@ -587,7 +587,7 @@ test('When resetLastItemIndex is is called, the lastItemIndex is set to null.', 
 
   store.dispatch('resetLastItemIndex');
 
-  expect(store.state.lastItemIndex).toBe(null);
+  expect(store.state.lastItemIndex).toBeNull();
 });
 
 test('When setLastProgressUpdate is is called, the state is updated.', () => {

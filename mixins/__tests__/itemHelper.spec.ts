@@ -6,7 +6,7 @@ const TestComponent = new Vue({
 });
 
 describe('itemHelper', () => {
-  test('Correctly returns true if the item can be resumed', () => {
+  it('Correctly returns true if the item can be resumed', () => {
     expect(TestComponent.canPlay({ Type: 'MusicGenre' })).toEqual(true);
     expect(TestComponent.canPlay({ Type: 'Season' })).toEqual(true);
     expect(TestComponent.canPlay({ Type: 'Series' })).toEqual(true);
@@ -21,7 +21,7 @@ describe('itemHelper', () => {
     expect(TestComponent.canPlay({})).toEqual(false);
   });
 
-  test('Correctly returns true if the item can be resumed', () => {
+  it('Correctly returns true if the item can be resumed - 2', () => {
     expect(
       TestComponent.canResume({ UserData: { PlaybackPositionTicks: 1 } })
     ).toEqual(true);

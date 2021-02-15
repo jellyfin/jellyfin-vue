@@ -59,6 +59,7 @@ describe('Like button', () => {
         item: { UserData: { IsFavorite: false } } as BaseItemDto
       }
     });
+
     expect(wrapper.find('.mdi-heart-outline').exists()).toBe(true);
 
     await wrapper.setProps({

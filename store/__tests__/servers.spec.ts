@@ -61,7 +61,7 @@ test('When "REMOVE_SERVER" is committed, server with relevant id is removed from
 
   store.commit('REMOVE_SERVER', DEMO_TEST_SERVER_VALUE.publicInfo.Id);
 
-  expect(store.state.serverList.length).toBe(0);
+  expect(store.state.serverList).toHaveLength(0);
 });
 
 test('When "CLEAR_SERVERS" is committed, the store is cleared', () => {
@@ -95,7 +95,7 @@ test('When removeServer is called, serverId is removed from serverList', () => {
 
   store.dispatch('removeServer', { ...DEMO_TEST_SERVER_VALUE });
 
-  expect(store.state.serverList.length).toBe(0);
+  expect(store.state.serverList).toHaveLength(0);
 });
 
 test('When clearServers is called, the store is cleared', () => {

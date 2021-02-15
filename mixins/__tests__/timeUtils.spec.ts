@@ -6,7 +6,7 @@ const TestComponent = new Vue({
 });
 
 describe('timeUtils', () => {
-  test('converts time from ms to ticks', () => {
+  it('converts time from ms to ticks', () => {
     expect(TestComponent.ticksToMs(10000)).toEqual(1);
 
     expect(TestComponent.ticksToMs(undefined)).toEqual(0);
@@ -14,11 +14,11 @@ describe('timeUtils', () => {
     expect(TestComponent.ticksToMs(null)).toEqual(0);
   });
 
-  test('converts time from ticks to ms', () => {
+  it('converts time from ticks to ms', () => {
     expect(TestComponent.msToTicks(1)).toEqual(10000);
   });
 
-  test('formats time properly', () => {
+  it('formats time properly', () => {
     expect(TestComponent.formatTime(5)).toEqual('0:05');
 
     expect(TestComponent.formatTime(10)).toEqual('0:10');

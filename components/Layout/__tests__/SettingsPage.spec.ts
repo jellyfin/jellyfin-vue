@@ -17,13 +17,13 @@ const wrapper = mount(SettingsPage, {
 });
 
 describe('Settings Page', () => {
-  test('Title and both slots are displayed', () => {
+  it('Title and both slots are displayed', () => {
     expect(wrapper.text()).toContain('test-page-title');
     expect(wrapper.text()).toContain('This is a demo action');
     expect(wrapper.text()).toContain('This is the demo content');
   });
 
-  test('Only content slot is shown when title is undefined.', async () => {
+  it('Only content slot is shown when title is undefined.', async () => {
     await wrapper.setProps({ pageTitle: undefined });
 
     expect(wrapper.text()).toEqual(
