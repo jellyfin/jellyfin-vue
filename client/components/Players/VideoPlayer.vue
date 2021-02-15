@@ -247,6 +247,10 @@ export default Vue.extend({
     },
     onPlayerError(event: ErrorEvent): void {
       this.$emit('error', event);
+    },
+    togglePictureInPicture(): void {
+      // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
+      (this.$refs.videoPlayer as HTMLVideoElement).requestPictureInPicture();
     }
   }
 });

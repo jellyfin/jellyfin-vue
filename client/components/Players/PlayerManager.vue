@@ -1,148 +1,153 @@
 <template>
-  <div>
-    <audio-player
-      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
-      class="d-none"
-    />
-    <player-dialog
-      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
-      dark
-      persistent
-      hide-overlay
-      no-click-animation
-      scrollable
-      :fullscreen="!isMinimized"
-      :retain-focus="!isMinimized"
-      :content-class="getContentClass()"
-      :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
-      :value="isPlaying"
-    >
-      <v-hover v-slot="{ hover }">
-        <v-card class="player-card" width="100%">
-          <video-player />
-          <!-- Mini Player Overlay -->
-          <v-fade-transition>
-            <v-overlay v-show="hover && isMinimized" absolute>
-              <div class="d-flex flex-column player-overlay">
-                <div class="d-flex flex-row">
-                  <v-btn icon @click="toggleMinimized">
-                    <v-icon>mdi-arrow-expand-all</v-icon>
-                  </v-btn>
-                  <v-spacer />
-                  <v-btn icon @click="stopPlayback">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
+  <client-only>
+    <div>
+      <audio-player
+        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+        class="d-none"
+      />
+      <player-dialog
+        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+        dark
+        persistent
+        hide-overlay
+        no-click-animation
+        scrollable
+        :fullscreen="!isMinimized"
+        :retain-focus="!isMinimized"
+        :content-class="getContentClass()"
+        :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
+        :value="isPlaying"
+      >
+        <v-hover v-slot="{ hover }">
+          <v-card class="player-card" width="100%">
+            <video-player ref="videoPlayer" />
+            <!-- Mini Player Overlay -->
+            <v-fade-transition>
+              <v-overlay v-show="hover && isMinimized" absolute>
+                <div class="d-flex flex-column player-overlay">
+                  <div class="d-flex flex-row">
+                    <v-btn icon @click="toggleMinimized">
+                      <v-icon>mdi-arrow-expand-all</v-icon>
+                    </v-btn>
+                    <v-spacer />
+                    <v-btn icon @click="stopPlayback">
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </div>
+                  <div
+                    class="absolute d-flex flex-row justify-center align-center"
+                  >
+                    <v-btn
+                      class="all-pointer-events"
+                      icon
+                      large
+                      @click="setPreviousTrack"
+                    >
+                      <v-icon size="32">mdi-skip-previous</v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="all-pointer-events"
+                      icon
+                      x-large
+                      @click="playPause"
+                    >
+                      <v-icon size="48">
+                        {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="all-pointer-events"
+                      icon
+                      large
+                      @click="setNextTrack"
+                    >
+                      <v-icon size="32">mdi-skip-next</v-icon>
+                    </v-btn>
+                  </div>
                 </div>
-                <div
-                  class="absolute d-flex flex-row justify-center align-center"
-                >
-                  <v-btn
-                    class="all-pointer-events"
-                    icon
-                    large
-                    @click="setPreviousTrack"
-                  >
-                    <v-icon size="32">mdi-skip-previous</v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="all-pointer-events"
-                    icon
-                    x-large
-                    @click="playPause"
-                  >
-                    <v-icon size="48">
-                      {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-                    </v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="all-pointer-events"
-                    icon
-                    large
-                    @click="setNextTrack"
-                  >
-                    <v-icon size="32">mdi-skip-next</v-icon>
-                  </v-btn>
-                </div>
-              </div>
-            </v-overlay>
-          </v-fade-transition>
-          <!-- Full Screen OSD -->
-          <v-fade-transition>
-            <v-overlay v-show="!isMinimized && showFullScreenOverlay" absolute>
-              <div
-                class="d-flex flex-column justify-space-between align-center player-overlay"
+              </v-overlay>
+            </v-fade-transition>
+            <!-- Full Screen OSD -->
+            <v-fade-transition>
+              <v-overlay
+                v-show="!isMinimized && showFullScreenOverlay"
+                absolute
               >
-                <div class="osd-top pt-s pl-s pr-s">
-                  <div class="d-flex justify-space-between align-center">
-                    <div class="d-flex">
-                      <v-btn icon @click="stopPlayback">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
-                      <v-btn icon @click="toggleMinimized">
-                        <v-icon>mdi-chevron-down</v-icon>
-                      </v-btn>
-                      <v-btn
-                        v-if="supportedFeatures.pictureInPicture"
-                        icon
-                        disabled
-                      >
-                        <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
-                      </v-btn>
-                    </div>
-                    <p class="ma-0 text-center">{{ currentItemName }}</p>
-                    <div class="d-flex">
-                      <v-btn icon disabled>
-                        <v-icon>mdi-autorenew</v-icon>
-                      </v-btn>
-                      <v-btn v-if="supportedFeatures.airplay" icon disabled>
-                        <v-icon>mdi-apple-airplay</v-icon>
-                      </v-btn>
-                      <v-btn icon disabled>
-                        <v-icon>mdi-cast</v-icon>
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="osd-bottom pb-s pl-s pr-s">
-                  <div class="px-4">
-                    <time-slider />
-                    <div class="d-flex justify-space-between">
-                      <div>
-                        <v-btn icon @click="setPreviousTrack">
-                          <v-icon>mdi-skip-previous</v-icon>
+                <div
+                  class="d-flex flex-column justify-space-between align-center player-overlay"
+                >
+                  <div class="osd-top pt-s pl-s pr-s">
+                    <div class="d-flex justify-space-between align-center">
+                      <div class="d-flex">
+                        <v-btn icon @click="stopPlayback">
+                          <v-icon>mdi-close</v-icon>
                         </v-btn>
-                        <v-btn icon @click="playPause">
-                          <v-icon>
-                            {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-                          </v-icon>
+                        <v-btn icon @click="toggleMinimized">
+                          <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
-                        <v-btn icon @click="setNextTrack">
-                          <v-icon icon>mdi-skip-next</v-icon>
+                        <v-btn
+                          v-if="supportedFeatures.pictureInPicture"
+                          icon
+                          @click="togglePictureInPicture"
+                        >
+                          <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
                         </v-btn>
                       </div>
-                      <div>
+                      <p class="ma-0 text-center">{{ currentItemName }}</p>
+                      <div class="d-flex">
                         <v-btn icon disabled>
-                          <v-icon>mdi-closed-caption</v-icon>
+                          <v-icon>mdi-autorenew</v-icon>
+                        </v-btn>
+                        <v-btn v-if="supportedFeatures.airplay" icon disabled>
+                          <v-icon>mdi-apple-airplay</v-icon>
                         </v-btn>
                         <v-btn icon disabled>
-                          <v-icon>mdi-cog</v-icon>
-                        </v-btn>
-
-                        <v-btn icon disabled>
-                          <v-icon>mdi-fullscreen</v-icon>
+                          <v-icon>mdi-cast</v-icon>
                         </v-btn>
                       </div>
                     </div>
                   </div>
+
+                  <div class="osd-bottom pb-s pl-s pr-s">
+                    <div class="px-4">
+                      <time-slider />
+                      <div class="d-flex justify-space-between">
+                        <div>
+                          <v-btn icon @click="setPreviousTrack">
+                            <v-icon>mdi-skip-previous</v-icon>
+                          </v-btn>
+                          <v-btn icon @click="playPause">
+                            <v-icon>
+                              {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                            </v-icon>
+                          </v-btn>
+                          <v-btn icon @click="setNextTrack">
+                            <v-icon icon>mdi-skip-next</v-icon>
+                          </v-btn>
+                        </div>
+                        <div>
+                          <v-btn icon disabled>
+                            <v-icon>mdi-closed-caption</v-icon>
+                          </v-btn>
+                          <v-btn icon disabled>
+                            <v-icon>mdi-cog</v-icon>
+                          </v-btn>
+
+                          <v-btn icon disabled>
+                            <v-icon>mdi-fullscreen</v-icon>
+                          </v-btn>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </v-overlay>
-          </v-fade-transition>
-        </v-card>
-      </v-hover>
-    </player-dialog>
-  </div>
+              </v-overlay>
+            </v-fade-transition>
+          </v-card>
+        </v-hover>
+      </player-dialog>
+    </div>
+  </client-only>
 </template>
 
 <script lang="ts">
@@ -571,6 +576,17 @@ export default Vue.extend({
             }
           ]
         });
+      }
+    },
+    togglePictureInPicture(): void {
+      // @ts-expect-error - `pictureInPictureElement` does not exist in relevant types
+      if (document?.pictureInPictureElement) {
+        // @ts-expect-error - `exitPictureInPicture` does not exist in relevant types
+        document.exitPictureInPicture();
+        // @ts-expect-error - `pictureInPictureEnabled` does not exist in relevant types
+      } else if (document.pictureInPictureEnabled) {
+        // @ts-expect-error - `togglePictureInPicture` does not exist in relevant types
+        this.$refs.videoPlayer.togglePictureInPicture();
       }
     }
   }
