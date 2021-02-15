@@ -1,10 +1,12 @@
+import { AuthenticationResult } from '@jellyfin/client-axios';
 import { ActionTree, MutationTree } from 'vuex';
+import { AxiosResponse } from 'axios';
 
 export interface UserState {
   accessToken: string;
 }
 
-const defaultState = (): UserState => ({
+export const defaultState = (): UserState => ({
   accessToken: ''
 });
 
@@ -34,46 +36,47 @@ export const actions: ActionTree<UserState, UserState> = {
   },
   async loginRequest({ dispatch }, credentials) {
     try {
-      const { data } = await this.$auth.loginWith('jellyfin', credentials);
+      const response: AxiosResponse<AuthenticationResult> = await this.$auth.loginWith(
+        'jellyfin',
+        credentials
+      );
 
-      dispatch('loginRequestSuccess', data);
-    } catch (err) {
-      dispatch('loginRequestFailure', err);
-      throw new Error(err);
-    }
-  },
-  loginRequestSuccess({ dispatch }, response) {
-    dispatch('setUser', {
-      accessToken: response.AccessToken
-    });
-  },
-  loginRequestFailure({ dispatch }, error) {
-    if (!this.$axios.defaults.baseURL) {
-      dispatch('servers/notifyNoServerUsed', {
-        root: true
+      dispatch('setUser', {
+        accessToken: response.data.AccessToken
       });
-      return;
-    }
-
-    let errorMessage = 'unexpectedError';
-
-    if (!error.response) {
-      errorMessage = error.message || 'serverNotFound';
-    } else if (error.response.status === 500 || error.response.status === 401) {
-      errorMessage = 'incorrectUsernameOrPassword';
-    } else if (error.response.status === 400) {
-      errorMessage = 'badRequest';
-    }
-
-    dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: errorMessage,
-        color: 'error'
-      },
-      {
-        root: true
+    } catch (error) {
+      if (!this.$axios.defaults.baseURL) {
+        dispatch('servers/notifyNoServerUsed', {
+          root: true
+        });
+        return;
       }
-    );
+
+      let errorMessage = 'unexpectedError';
+
+      if (!error.response) {
+        errorMessage = error.message || 'serverNotFound';
+      } else if (
+        error.response.status === 500 ||
+        error.response.status === 401
+      ) {
+        errorMessage = 'incorrectUsernameOrPassword';
+      } else if (error.response.status === 400) {
+        errorMessage = 'badRequest';
+      }
+
+      dispatch(
+        'snackbar/pushSnackbarMessage',
+        {
+          message: errorMessage,
+          color: 'error'
+        },
+        {
+          root: true
+        }
+      );
+
+      throw new Error(error);
+    }
   }
 };
