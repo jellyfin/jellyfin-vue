@@ -24,7 +24,7 @@ const settingsHelper = Vue.extend({
           this.$i18n.setLocale(this.locale);
         } else {
           this.$i18n.setLocale(
-            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'enUs'
+            this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'en-US'
           );
         }
       }
