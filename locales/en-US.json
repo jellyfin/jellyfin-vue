@@ -109,6 +109,7 @@
   "latestLibrary": "Latest {libraryName}",
   "libraries": "Libraries",
   "libraryEmpty": "This library is empty",
+  "libraryEmptyFilters": "No matches. Remove some filters to show more items",
   "libraryNotFound": "Library not found",
   "libraryRefreshQueued": "Library refresh queued",
   "liked": "Liked",

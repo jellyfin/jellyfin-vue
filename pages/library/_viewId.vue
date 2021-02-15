@@ -29,7 +29,7 @@
       <filter-button
         v-if="isSortable"
         :collection-info="collectionInfo"
-        :disabled="loading"
+        :disabled="loading || (!items.length && !hasFilters)"
         :items-type="viewType"
         @change="onChangeFilter"
       />
@@ -50,7 +50,7 @@
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
         <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
-          {{ $t('libraryEmpty') }}
+          {{ hasFilters ? $t('libraryEmptyFilters') : $t('libraryEmpty') }}
         </h1>
       </item-grid>
     </v-container>
@@ -211,7 +211,7 @@ export default Vue.extend({
       this.sortBy = sort;
     },
     onChangeFilter(filter: Record<string, [string]>): boolean | void {
-      this.hasFilters = Object.values(filter).every((value) => {
+      this.hasFilters = Object.values(filter).some((value) => {
         return value.length > 0;
       });
 
