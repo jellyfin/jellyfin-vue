@@ -424,6 +424,10 @@
         },
         "cast": "演职人员",
         "crew": "演职人员",
-        "composer": "作曲家"
+        "composer": "作曲家",
+        "artist": {
+            "information": "信息",
+            "discography": "唱片目录"
+        }
     }
 }
