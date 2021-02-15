@@ -49,7 +49,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
@@ -69,14 +68,12 @@ export default Vue.extend({
   },
   computed: {
     searchQuery(): string {
-      return this.$store.state.search.query;
+      return this.$route.query?.q || '';
     }
   },
   watch: {
     searchQuery(newQuery: string, _oldQuery: string): void {
-      if (newQuery === '') {
-        this.$router.back();
-      } else {
+      if (newQuery !== '') {
         this.performSearch();
       }
     }
@@ -86,11 +83,7 @@ export default Vue.extend({
       this.$router.back();
     }
   },
-  destroyed() {
-    this.setSearchQuery({ query: '' });
-  },
   methods: {
-    ...mapActions('search', ['setSearchQuery']),
     async performSearch(): Promise<void> {
       this.loading = true;
 
