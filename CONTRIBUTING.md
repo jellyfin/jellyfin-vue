@@ -35,8 +35,49 @@ The following should guide you through making a proper commit message:
 npx cz
 ```
 
-## Code style
+### Code style
 
 This repository uses [Prettier](https://prettier.io/) for automatically formating code. In addition, [ESLint](https://eslint.org/) rules are provided to help you enforce good practices.
 
 The project is written in [TypeScript](typescriptlang.org/), and using strongly typed code is recommended and expected, where possible.
+
+### Tests
+
+We use [Jest](https://jestjs.io/) for unit testing. For testing Vue components, usage of [vue-testing-library](https://testing-library.com/docs/vue-testing-library/intro/) is prefered.
+
+When writing tests, we follow some conventions in regards to messages:
+
+- The messages for `it()` always start with a lowercase letter
+- They describe the test case in detail
+- Only one thing is tested per test case (If you are testing multiple branches, you would have one test case per branch)
+- The `describe()` block should contain the name of the component, store or mixin being tested
+
+#### Vue components
+
+```typescript
+describe('ComponentName', () => {
+  it('shows the text "Lorem Ipsum"', (): void => {
+    // Your test logic goes here
+  });
+});
+```
+
+#### Mixins
+
+```typescript
+describe('myMixin', () => {
+  it('does this when passed this value', () => {
+    // Your test logic goes here
+  });
+});
+```
+
+#### Vuex stores
+
+```typescript
+describe('vuex: storeName', () => {
+  it('sets this value when myAction is dispatched', () => {
+    // Your test logic goes here
+  });
+});
+```
