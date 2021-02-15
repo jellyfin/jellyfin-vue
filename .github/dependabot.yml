@@ -7,10 +7,6 @@ updates:
     interval: daily
     time: '00:00'
   open-pull-requests-limit: 10
-  reviewers:
-    - mrtimscampi
-  assignees:
-    - mrtimscampi
   commit-message:
     prefix: fix
     prefix-development: chore
@@ -22,10 +18,6 @@ updates:
     interval: daily
     time: '00:00'
   open-pull-requests-limit: 10
-  reviewers:
-    - mrtimscampi
-  assignees:
-    - mrtimscampi
   commit-message:
     prefix: fix
     prefix-development: chore
