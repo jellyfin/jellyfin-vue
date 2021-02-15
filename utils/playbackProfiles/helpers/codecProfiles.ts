@@ -16,8 +16,7 @@ function getGlobalMaxVideoBitrate(): number | null {
   let isTizenFhd = false;
   if (browserDetector.isTizen()) {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error - Non-standard functions doesn't have typings
       // eslint-disable-next-line no-undef
       const isTizenUhd = webapis?.productinfo?.isUdPanelSupported();
       isTizenFhd = !isTizenUhd;
@@ -156,8 +155,7 @@ export function getCodecProfiles(
   }
 
   // Support H264 Level 52 (Tizen 5.0) - app only
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error - Non-standard functions doesn't have typings
   if (browserDetector.isTizen5() && window.NativeShell) {
     maxH264Level = 52;
   }

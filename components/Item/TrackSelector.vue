@@ -39,8 +39,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Temporary module while waiting for fixes to language names on the server
-// @ts-ignore
+// @ts-expect-error - This module doesn't have typings. Temporary module while waiting for fixes to language names on the server
 import langs from 'langs';
 import {
   BaseItemDto,

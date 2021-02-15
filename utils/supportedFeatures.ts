@@ -17,18 +17,14 @@ export const getSupportedFeatures = (): SupportedFeaturesInterface => {
 
   if (
     // Check non-standard Safari PiP support
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - Non-standard functions doesn't have typings
     (typeof video.webkitSupportsPresentationMode === 'function' &&
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error - Non-standard functions doesn't have typings
       video.webkitSupportsPresentationMode('picture-in-picture') &&
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error - Non-standard functions doesn't have typings
       typeof video.webkitSetPresentationMode === 'function') ||
     // Check standard PiP support
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - Non-standard functions doesn't have typings
     document.pictureInPictureEnabled
   ) {
     supportedFeatures.pictureInPicture = true;
