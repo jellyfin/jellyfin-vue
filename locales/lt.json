@@ -14,7 +14,6 @@
   "login": "Prisijungti",
   "logout": "Atsijungti",
   "more": "Daugiau",
-  "movies": "",
   "password": "Slaptažodis",
   "play": "Leisti",
   "playType": "Leisti {mediaType}",
@@ -30,7 +29,5 @@
   "unexpectedError": "Netikėta klaida",
   "upNext": "Toliau",
   "username": "Vartotojo vardas",
-  "usernameRequired": "Vartotojo vardas yra būtinas",
-  "youMayAlsoLike": "",
-  "youMightLike": ""
+  "usernameRequired": "Vartotojo vardas yra būtinas"
 }

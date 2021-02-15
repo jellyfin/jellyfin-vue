@@ -15,11 +15,9 @@
   "logout": "Logga ut",
   "more": "Mer",
   "moreLikeThis": "Mer som detta",
-  "movies": "",
   "password": "Lösenord",
   "play": "Spela",
   "playType": "Spela {mediaType}",
-  "present": "",
   "rating": "Betyg",
   "releaseDate": "Utgivningsdatum",
   "serverAddress": "Server adress",
@@ -31,6 +29,5 @@
   "unexpectedError": "Oförutsett fel",
   "upNext": "Kommer näst",
   "username": "Användarnamn",
-  "usernameRequired": "Användarnamn krävs",
-  "youMayAlsoLike": ""
+  "usernameRequired": "Användarnamn krävs"
 }
