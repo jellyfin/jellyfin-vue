@@ -98,7 +98,7 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.3.1",
-    "eslint-plugin-vue": "^7.5.0",
+    "eslint-plugin-vue": "^7.6.0",
     "husky": "^5.0.9",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.1",
