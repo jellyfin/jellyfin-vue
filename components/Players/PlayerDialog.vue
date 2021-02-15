@@ -1,8 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { VDialog } from 'vuetify/lib';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error - These typings are not declared
 import { keyCodes } from 'vuetify/lib/util/helpers';
 
 export default Vue.extend({

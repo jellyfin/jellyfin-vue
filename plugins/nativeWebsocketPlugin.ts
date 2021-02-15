@@ -1,7 +1,6 @@
 import { Plugin } from '@nuxt/types';
 import Vue from 'vue';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- Need to build a Type package for the module
-// @ts-ignore
+// @ts-expect-error - Need to build a Type package for the module
 import VueNativeSock from 'vue-native-websocket';
 
 declare module '@nuxt/types' {

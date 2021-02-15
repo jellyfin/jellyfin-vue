@@ -261,7 +261,7 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    // @ts-ignore -- Undocumented options
+    // @ts-expect-error -- Undocumented options
     loadingScreen: {
       image: 'icon.png',
       colors: {

@@ -11,8 +11,7 @@ extend('mustBeUrl', (value: string): boolean => {
 
 extend('bothPasswordsSame', {
   params: ['target'],
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error - target typing doesn't exist as we declared it in params.
   validate(value, { target }) {
     return value === target;
   }
@@ -21,7 +20,6 @@ extend('bothPasswordsSame', {
 const veeValidate: Plugin = ({ app }) => {
   configure({
     defaultMessage: (_field, values) => {
-      // values._field_ = app.i18n.t(`fields.${field}`);
       return app.i18n.t(`validation.${values._rule_}`, values);
     }
   });

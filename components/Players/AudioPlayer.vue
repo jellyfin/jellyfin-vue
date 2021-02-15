@@ -13,8 +13,7 @@
 import Vue from 'vue';
 import { stringify } from 'qs';
 import { throttle } from 'lodash';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
@@ -64,8 +63,7 @@ export default Vue.extend({
   async mounted() {
     try {
       const { default: shaka } = await import(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error - This module doesn't have typings
         'shaka-player/dist/shaka-player.compiled'
       );
 
@@ -198,8 +196,7 @@ export default Vue.extend({
       this.unpause();
     },
     onAudioProgressThrottled: throttle(function (_event?: Event) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error - TypeScript is confusing the typings with lodash's
       this.onAudioProgress(_event);
     }, 500),
     onAudioProgress(_event?: Event): void {

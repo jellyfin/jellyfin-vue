@@ -463,8 +463,7 @@ export default Vue.extend({
 
         for (const [action, handler] of actionHandlers) {
           try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error - MediaSession is still a draft. Thus, it doesn't contain proper typings.
             navigator.mediaSession.setActionHandler(action, handler);
           } catch (error) {
             // eslint-disable-next-line no-console
@@ -490,8 +489,7 @@ export default Vue.extend({
 
         for (const [action, handler] of actionHandlers) {
           try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error - MediaSession is still a draft. Thus, it doesn't contain proper typings.
             navigator.mediaSession.setActionHandler(action, handler);
           } catch (error) {
             // eslint-disable-next-line no-console
