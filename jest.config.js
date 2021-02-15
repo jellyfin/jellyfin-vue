@@ -14,6 +14,7 @@ module.exports = {
     '<rootDir>/components/**/*.vue',
     '<rootDir>/layouts/**/*.vue',
     '<rootDir>/middleware/**/*.vue',
+    '<rootDir>/middleware/**/*.ts',
     '<rootDir>/mixins/**/*.vue',
     '<rootDir>/mixins/**/*.ts',
     '<rootDir>/pages/**/*.vue',
