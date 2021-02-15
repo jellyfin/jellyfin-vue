@@ -69,7 +69,7 @@ describe('vuex: playbackManager', () => {
     expect(store.getters.getCurrentItem).toBeNull();
   });
 
-  it('returns the previous item when getPreviousItem is called', () => {
+  it('returns null when getPreviousItem is called with no last item index set', () => {
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
@@ -77,16 +77,20 @@ describe('vuex: playbackManager', () => {
     });
 
     expect(store.getters.getPreviousItem).toBeNull();
+  });
 
+  it('returns null when getPreviousItem is called with a last item index set that is not in the queue', () => {
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
       currentItemIndex: 1,
-      lastItemIndex: null
+      lastItemIndex: 3
     });
 
     expect(store.getters.getPreviousItem).toBeNull();
+  });
 
+  it('returns the previous item when getPreviousItem is called with a last item index set that exists in the queue', () => {
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C],
@@ -94,7 +98,7 @@ describe('vuex: playbackManager', () => {
       lastItemIndex: 0
     });
 
-    expect(store.getters.getCurrentItem).toMatchObject(DEMO_TEST_ITEM_B);
+    expect(store.getters.getPreviousItem).toMatchObject(DEMO_TEST_ITEM_A);
   });
 
   it('returns the next item when getNextItem is called', () => {
