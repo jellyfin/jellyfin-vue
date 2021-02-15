@@ -20,74 +20,80 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions }));
 });
 
-test('When "SET_PAGE_TITLE" is committed, the title is set.', () => {
-  store.replaceState({ ...defaultState() });
+describe('vuex: page', () => {
+  test('sets the title when "SET_PAGE_TITLE" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  store.commit('SET_PAGE_TITLE', { title: PAGE_SET_TEST_VALUE.title });
+    store.commit('SET_PAGE_TITLE', { title: PAGE_SET_TEST_VALUE.title });
 
-  expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
-});
-
-test('When "SET_APPBAR_OPACITY" is committed, the opactity is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.commit('SET_APPBAR_OPACITY', {
-    opaqueAppBar: PAGE_SET_TEST_VALUE.opaqueAppBar
+    expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
   });
 
-  expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
-});
+  test('sets the app bar opacity when "SET_APPBAR_OPACITY" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-test('When "SET_NAVDRAWER_VISIBILITY" is committed, the navdrawer visibility is set.', () => {
-  store.replaceState({ ...defaultState() });
+    store.commit('SET_APPBAR_OPACITY', {
+      opaqueAppBar: PAGE_SET_TEST_VALUE.opaqueAppBar
+    });
 
-  store.commit('SET_NAVDRAWER_VISIBILITY', {
-    showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+    expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
   });
 
-  expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
-});
+  test('sets the navigation drawer visibility when "SET_NAVDRAWER_VISIBILITY" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-test('When "CLEAR_PAGE" is committed, the store is reset to defaults.', () => {
-  store.replaceState({ ...PAGE_SET_TEST_VALUE });
+    store.commit('SET_NAVDRAWER_VISIBILITY', {
+      showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+    });
 
-  store.commit('CLEAR_PAGE');
-
-  expect(store.state).toMatchObject(defaultState());
-});
-
-test('When setPageTitle is called, title is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('setPageTitle', { title: PAGE_SET_TEST_VALUE.title });
-
-  expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
-});
-
-test('When setAppBarOpacity is called, opacity is set.', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('setAppBarOpacity', {
-    opaqueAppBar: PAGE_SET_TEST_VALUE.opaqueAppBar
+    expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
   });
 
-  expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
-});
+  test('resets the state when "CLEAR_PAGE" is committed', () => {
+    store.replaceState({ ...PAGE_SET_TEST_VALUE });
 
-test('When showNavDrawer is called, showNavDrawer is set.', () => {
-  store.replaceState({ ...defaultState() });
+    store.commit('CLEAR_PAGE');
 
-  store.dispatch('showNavDrawer', {
-    showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+    expect(store.state).toMatchObject(defaultState());
   });
 
-  expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
-});
+  test('sets the title when setPageTitle is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
 
-test('When clearPage is called, store is set back to default.', () => {
-  store.replaceState({ ...PAGE_SET_TEST_VALUE });
+    store.dispatch('setPageTitle', { title: PAGE_SET_TEST_VALUE.title });
 
-  store.dispatch('clearPage');
+    expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
+  });
 
-  expect(store.state).toMatchObject(defaultState());
+  test('sets the app bar opacity when setAppBarOpacity is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
+
+    store.dispatch('setAppBarOpacity', {
+      opaqueAppBar: PAGE_SET_TEST_VALUE.opaqueAppBar
+    });
+
+    expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
+  });
+
+  test('sets the navigation drawer visibility when showNavDrawer is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
+
+    store.dispatch('showNavDrawer', {
+      showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+    });
+
+    expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
+  });
+
+  test('resets the state when clearPage is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...PAGE_SET_TEST_VALUE });
+
+    store.dispatch('clearPage');
+
+    expect(store.state).toMatchObject(defaultState());
+  });
 });
