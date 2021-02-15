@@ -72,6 +72,7 @@
               :key="userItem.name"
               nuxt
               :to="userItem.link"
+              :disabled="!userItem.link"
             >
               <v-list-item-avatar>
                 <v-icon v-text="userItem.icon" />
@@ -100,6 +101,7 @@
                 :key="adminItem.name"
                 nuxt
                 :to="adminItem.link"
+                :disabled="!adminItem.link"
               >
                 <v-list-item-avatar>
                   <v-icon v-text="adminItem.icon" />
