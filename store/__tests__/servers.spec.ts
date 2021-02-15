@@ -33,78 +33,80 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions }));
 });
 
-test('When "SET_SERVER_USED" is committed, server used is set.', () => {
-  store.replaceState({ ...defaultState() });
+describe('vuex: servers', () => {
+  it('sets the used server when "SET_SERVER_USED" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  store.commit('SET_SERVER_USED', { ...DEMO_TEST_SERVER_VALUE });
+    store.commit('SET_SERVER_USED', { ...DEMO_TEST_SERVER_VALUE });
 
-  expect(store.state.serverUsed).toMatchObject(DEMO_TEST_SERVER_VALUE);
-});
-
-test('When "ADD_SERVER" is committed, the server is added to serverList', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.commit('ADD_SERVER', {
-    ...DEMO_TEST_SERVER_VALUE
+    expect(store.state.serverUsed).toMatchObject(DEMO_TEST_SERVER_VALUE);
   });
 
-  expect(store.state.serverList[0]).toBeDefined();
+  it('adds the server to the server list when "ADD_SERVER" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  expect(store.state.serverList?.[0]).toMatchObject(DEMO_TEST_SERVER_VALUE);
-});
+    store.commit('ADD_SERVER', {
+      ...DEMO_TEST_SERVER_VALUE
+    });
 
-test('When "REMOVE_SERVER" is committed, server with relevant id is removed from serverList', () => {
-  store.replaceState({
-    ...defaultState(),
-    serverList: [DEMO_TEST_SERVER_VALUE]
+    expect(store.state.serverList[0]).toBeDefined();
+
+    expect(store.state.serverList?.[0]).toMatchObject(DEMO_TEST_SERVER_VALUE);
   });
 
-  store.commit('REMOVE_SERVER', DEMO_TEST_SERVER_VALUE.publicInfo.Id);
+  it('removes the server from the server list when "REMOVE_SERVER" is committed', () => {
+    store.replaceState({
+      ...defaultState(),
+      serverList: [DEMO_TEST_SERVER_VALUE]
+    });
 
-  expect(store.state.serverList.length).toBe(0);
-});
+    store.commit('REMOVE_SERVER', DEMO_TEST_SERVER_VALUE.publicInfo.Id);
 
-test('When "CLEAR_SERVERS" is committed, the store is cleared', () => {
-  store.replaceState({
-    serverUsed: DEMO_TEST_SERVER_VALUE,
-    serverList: [DEMO_TEST_SERVER_VALUE]
+    expect(store.state.serverList).toHaveLength(0);
   });
 
-  store.commit('CLEAR_SERVERS');
+  it('clears the store when "CLEAR_SERVERS" is committed', () => {
+    store.replaceState({
+      serverUsed: DEMO_TEST_SERVER_VALUE,
+      serverList: [DEMO_TEST_SERVER_VALUE]
+    });
 
-  expect(store.state).toMatchObject({ ...defaultState() });
-});
+    store.commit('CLEAR_SERVERS');
 
-test('When addServer is called, server is added to serverList', () => {
-  store.replaceState({
-    ...defaultState()
+    expect(store.state).toMatchObject({ ...defaultState() });
   });
 
-  store.dispatch('addServer', { ...DEMO_TEST_SERVER_VALUE });
+  it('adds a server to the server list when addServer is dispatched', () => {
+    store.replaceState({
+      ...defaultState()
+    });
 
-  expect(store.state.serverList[0]).toBeDefined();
+    store.dispatch('addServer', { ...DEMO_TEST_SERVER_VALUE });
 
-  expect(store.state.serverList?.[0]).toMatchObject(DEMO_TEST_SERVER_VALUE);
-});
+    expect(store.state.serverList[0]).toBeDefined();
 
-test('When removeServer is called, serverId is removed from serverList', () => {
-  store.replaceState({
-    ...defaultState(),
-    serverList: [DEMO_TEST_SERVER_VALUE]
+    expect(store.state.serverList[0]).toMatchObject(DEMO_TEST_SERVER_VALUE);
   });
 
-  store.dispatch('removeServer', { ...DEMO_TEST_SERVER_VALUE });
+  it('removes a server from the server list when removeServer is dispatched', () => {
+    store.replaceState({
+      ...defaultState(),
+      serverList: [DEMO_TEST_SERVER_VALUE]
+    });
 
-  expect(store.state.serverList.length).toBe(0);
-});
+    store.dispatch('removeServer', { ...DEMO_TEST_SERVER_VALUE });
 
-test('When clearServers is called, the store is cleared', () => {
-  store.replaceState({
-    serverUsed: DEMO_TEST_SERVER_VALUE,
-    serverList: [DEMO_TEST_SERVER_VALUE]
+    expect(store.state.serverList).toHaveLength(0);
   });
 
-  store.dispatch('clearServers');
+  it('clears the store when clearServers is dispatched', () => {
+    store.replaceState({
+      serverUsed: DEMO_TEST_SERVER_VALUE,
+      serverList: [DEMO_TEST_SERVER_VALUE]
+    });
 
-  expect(store.state).toMatchObject({ ...defaultState() });
+    store.dispatch('clearServers');
+
+    expect(store.state).toMatchObject({ ...defaultState() });
+  });
 });
