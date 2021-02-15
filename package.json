@@ -57,6 +57,7 @@
     "vee-validate": "^3.4.5",
     "vue": "^2.6.12",
     "vue-awesome-swiper": "^4.1.1",
+    "vue-fullscreen": "^2.3.5",
     "vue-native-websocket": "^2.0.14",
     "vue-virtual-scroller": "^1.0.10",
     "vuedraggable": "^2.24.3",
