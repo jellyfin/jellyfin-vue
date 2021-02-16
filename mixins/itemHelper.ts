@@ -136,13 +136,16 @@ const itemHelper = Vue.extend({
     getItemIcon(item: BaseItemDto): string {
       switch (item.Type) {
         case 'Audio':
+        case 'AudioBook':
           return 'mdi-music-note';
         case 'Book':
           return 'mdi-book-open-page-variant';
         case 'BoxSet':
           return 'mdi-folder-multiple';
-        case 'Folder':
+        case 'AggregateFolder':
+        case 'BasePluginFolder':
         case 'CollectionFolder':
+        case 'Folder':
           return 'mdi-folder';
         case 'Movie':
           return 'mdi-filmstrip';
@@ -151,11 +154,14 @@ const itemHelper = Vue.extend({
         case 'MusicArtist':
         case 'Person':
           return 'mdi-account';
+        case 'Photo':
+          return 'mdi-image';
         case 'PhotoAlbum':
           return 'mdi-image-multiple';
         case 'Playlist':
           return 'mdi-playlist-play';
         case 'Series':
+        case 'Season':
         case 'Episode':
           return 'mdi-television-classic';
         default:
