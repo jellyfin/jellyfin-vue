@@ -256,13 +256,15 @@ test('When "INCREASE_QUEUE_INDEX" is committed, currentItemIndex is increased. C
   store.replaceState({
     ...defaultState(),
     currentItemIndex: 1,
-    lastItemIndex: 0
+    lastItemIndex: 0,
+    currentTime: 100
   });
 
   store.commit('INCREASE_QUEUE_INDEX');
 
   expect(store.state.currentItemIndex).toBe(2);
   expect(store.state.lastItemIndex).toBe(1);
+  expect(store.state.currentTime).toBe(0);
 });
 
 test('When "DECREASE_QUEUE_INDEX" is committed, currentItemIndex is decreased. Case A', () => {
@@ -278,12 +280,14 @@ test('When "DECREASE_QUEUE_INDEX" is committed, currentItemIndex is decreased. C
 test('When "DECREASE_QUEUE_INDEX" is committed, currentItemIndex is decreased. Case B', () => {
   store.replaceState({
     ...defaultState(),
-    currentItemIndex: 2
+    currentItemIndex: 2,
+    currentTime: 1
   });
 
   store.commit('DECREASE_QUEUE_INDEX');
 
   expect(store.state.currentItemIndex).toBe(1);
+  expect(store.state.currentTime).toBe(0);
 });
 
 test('When "START_PLAYBACK" is committed, status is set to playing.', () => {
