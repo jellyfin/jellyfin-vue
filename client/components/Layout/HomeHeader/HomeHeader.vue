@@ -44,7 +44,7 @@ export default Vue.extend({
       await this.$api.userLibrary.getLatestMedia({
         userId: this.$auth.user?.Id,
         limit: this.pages,
-        fields: [ItemFields.Overview],
+        fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
         imageTypeLimit: 1
       })

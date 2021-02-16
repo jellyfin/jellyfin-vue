@@ -196,7 +196,7 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto, ImageType, RepeatMode } from '@jellyfin/client-axios';
+import { RepeatMode } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
@@ -246,18 +246,7 @@ export default Vue.extend({
       'toggleShuffle',
       'toggleRepeatMode',
       'playPause'
-    ]),
-    getImageUrl(item: BaseItemDto): string | undefined {
-      const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
-
-      if (imageUrl) {
-        return imageUrl;
-      }
-
-      return this.getImageUrlForElement(ImageType.Primary, {
-        itemId: item.AlbumId
-      });
-    }
+    ])
   }
 });
 </script>

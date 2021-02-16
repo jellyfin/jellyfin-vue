@@ -11,7 +11,7 @@
           <v-img
             v-if="item.PrimaryImageTag"
             ref="personImg"
-            :src="getImageUrl(item.Id)"
+            :src="getPersonImage(item).url"
           />
           <v-icon v-else class="grey darken-3">mdi-account</v-icon>
         </v-list-item-avatar>
@@ -37,8 +37,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemPerson, ImageType } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
+import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
+import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
@@ -56,13 +56,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    getImageUrl(itemId: string): string | undefined {
+    getPersonImage(item: BaseItemDto): ImageUrlInfo {
       const element = this.$refs.personImg as HTMLElement;
 
-      return this.getImageUrlForElement(ImageType.Primary, {
-        itemId,
-        element
+      const image = this.getImageUrl(item, {
+        width: element?.clientWidth
       });
+
+      return image;
     }
   }
 });
