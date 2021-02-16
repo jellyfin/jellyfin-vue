@@ -1,36 +1,38 @@
 <template>
-  <v-card class="container">
-    <div class="d-flex flex-column flex-grow-1">
-      <v-card-title class="countdownHeader">
-        {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
-        <span class="primary--text darken-2">
-          &ensp;{{ timeLeft }} {{ $t('seconds') }}
-        </span>
-      </v-card-title>
-      <v-card-subtitle class="title subtitle-1">
-        {{ nextSeriesName }} -
-        {{
-          $t('tvShowAbbrev', {
-            seasonNumber: nextSeasonNumber,
-            episodeNumber: nextEpisodeNumber
-          })
-        }}
-        - <span v-if="$vuetify.breakpoint.xsOnly"> <br /> </span>
-        {{ nextName }}
-      </v-card-subtitle>
-      <div>
-        {{ nextRunTime }}
-        <span id="endsAt">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
+  <v-fade-transition>
+    <v-card class="container">
+      <div class="d-flex flex-column flex-grow-1">
+        <v-card-title class="countdown-header">
+          {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
+          <span class="primary--text darken-2">
+            &ensp;{{ timeLeft }} {{ $t('seconds') }}
+          </span>
+        </v-card-title>
+        <v-card-subtitle class="title subtitle-1">
+          {{ nextSeriesName }} -
+          {{
+            $t('tvShowAbbrev', {
+              seasonNumber: nextSeasonNumber,
+              episodeNumber: nextEpisodeNumber
+            })
+          }}
+          - <span v-if="$vuetify.breakpoint.xsOnly"> <br /> </span>
+          {{ nextName }}
+        </v-card-subtitle>
+        <div>
+          {{ nextRunTime }}
+          <span id="endsAt">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
+        </div>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn class="primary darken-2" @click="startNext">
+            {{ $t('dialog.upNext.startNow') }}
+          </v-btn>
+          <v-btn @click="$emit('hide')"> {{ $t('dialog.upNext.hide') }}</v-btn>
+        </v-card-actions>
       </div>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn class="primary darken-2" @click="startNext">
-          {{ $t('dialog.upNext.startNow') }}
-        </v-btn>
-        <v-btn @click="$emit('hide')"> {{ $t('dialog.upNext.hide') }}</v-btn>
-      </v-card-actions>
-    </div>
-  </v-card>
+    </v-card>
+  </v-fade-transition>
 </template>
 
 <script lang="ts">
@@ -97,7 +99,6 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   will-change: transform, opacity;
-  transition: opacity 300ms ease-out;
   background-color: rgba(0, 0, 0, 0.7);
   color: #fff;
   user-select: none;
@@ -111,7 +112,7 @@ export default Vue.extend({
     margin: 0 2em 6em 0;
   }
 }
-.countdownHeader {
+.countdown-header {
   margin: 0.25em 0;
   font-weight: 500;
   padding: 0;
