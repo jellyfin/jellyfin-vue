@@ -1,19 +1,19 @@
 <template>
-  <div class="absolute">
+  <div ref="imageElement">
     <div v-if="!error" ref="img" class="absolute">
-      <blurhash-canvas
-        v-if="hash"
-        key="canvas"
-        :hash="hash"
-        :width="width"
-        :height="height"
-        :punch="punch"
-        class="absolute"
-      />
+      <v-fade-transition>
+        <blurhash-canvas
+          v-if="hash"
+          :hash="hash"
+          :width="width"
+          :height="height"
+          :punch="punch"
+          class="absolute"
+        />
+      </v-fade-transition>
       <v-fade-transition>
         <img
           v-show="!loading"
-          :key="`blurhashimage-${item.Id}`"
           class="absolute img"
           :src="image"
           v-bind="$attrs"
@@ -79,6 +79,7 @@ export default Vue.extend({
   data() {
     return {
       image: '' as string | undefined,
+      tag: '' as string,
       loading: true,
       error: false,
       resetting: false
@@ -122,16 +123,25 @@ export default Vue.extend({
       this.error = true;
     },
     getImage(): void {
-      const img = this.$refs.img as HTMLElement;
+      this.$nextTick(() => {
+        const element = this.$refs.imageElement as HTMLImageElement;
 
-      this.image = this.getImageUrlForElement(this.type, {
-        item: this.item,
-        element: img
+        const imageInfo = this.getImageUrl(this.item, {
+          preferThumb: this.type === ImageType.Thumb,
+          preferBanner: this.type === ImageType.Banner,
+          preferLogo: this.type === ImageType.Logo,
+          preferBackdrop: this.type === ImageType.Backdrop,
+          width: element?.clientWidth,
+          ratio: window.devicePixelRatio || 1
+        });
+
+        this.image = imageInfo.url;
+        this.tag = imageInfo.tag ? imageInfo.tag : 'no-image-tag';
+
+        if (!this.image) {
+          this.onError();
+        }
       });
-
-      if (!this.image) {
-        this.onError();
-      }
     },
     resetImage(hideImage = true): void {
       const previousUrl = this.image;

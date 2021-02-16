@@ -6,37 +6,16 @@
 import Vue from 'vue';
 import { stringify } from 'qs';
 import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
+import { getShapeFromItemType, CardShapes } from '~/utils/items';
 
-type ImageUrlForElementParams = {
-  item?: BaseItemDto;
-  element?: HTMLElement;
-  tag?: string;
-  itemId?: string;
-  maxWidth?: number;
-  maxHeight?: number;
-  quality?: number;
-  limitByWidth?: boolean;
-  backdropIndex?: number;
-  checkParent?: boolean;
-};
+export interface ImageUrlInfo {
+  url: string | undefined;
+  tag: string | null | undefined;
+  blurhash: string | undefined;
+}
 
 declare module '@nuxt/types' {
   interface Context {
-    getImageUrlForElement: (
-      type: ImageType,
-      {
-        item,
-        element,
-        tag,
-        itemId,
-        maxWidth,
-        maxHeight,
-        quality,
-        limitByWidth,
-        backdropIndex,
-        checkParent
-      }: ImageUrlForElementParams
-    ) => string | undefined;
     getParentId(item: BaseItemDto): string | undefined;
     getImageTag(
       item: BaseItemDto | BaseItemPerson,
@@ -50,24 +29,24 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
+    getImageUrl(
+      item: BaseItemDto,
+      options?: {
+        shape?: CardShapes;
+        preferThumb?: boolean;
+        preferBanner?: boolean;
+        preferLogo?: boolean;
+        preferBackdrop?: boolean;
+        inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
   }
 
   interface NuxtAppOptions {
-    getImageUrlForElement: (
-      type: ImageType,
-      {
-        item,
-        element,
-        tag,
-        itemId,
-        maxWidth,
-        maxHeight,
-        quality,
-        limitByWidth,
-        backdropIndex,
-        checkParent
-      }: ImageUrlForElementParams
-    ) => string | undefined;
     getParentId(item: BaseItemDto): string | undefined;
     getImageTag(
       item: BaseItemDto | BaseItemPerson,
@@ -81,26 +60,26 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
+    getImageUrl(
+      item: BaseItemDto,
+      options?: {
+        shape?: CardShapes;
+        preferThumb?: boolean;
+        preferBanner?: boolean;
+        preferLogo?: boolean;
+        preferBackdrop?: boolean;
+        inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    getImageUrlForElement: (
-      type: ImageType,
-      {
-        item,
-        element,
-        tag,
-        itemId,
-        maxWidth,
-        maxHeight,
-        quality,
-        limitByWidth,
-        backdropIndex,
-        checkParent
-      }: ImageUrlForElementParams
-    ) => string | undefined;
     getParentId(item: BaseItemDto): string | undefined;
     getImageTag(
       item: BaseItemDto | BaseItemPerson,
@@ -114,6 +93,21 @@ declare module 'vue/types/vue' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
+    getImageUrl(
+      item: BaseItemDto,
+      options?: {
+        shape?: CardShapes;
+        preferThumb?: boolean;
+        preferBanner?: boolean;
+        preferLogo?: boolean;
+        preferBackdrop?: boolean;
+        inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
   }
 }
 
@@ -264,82 +258,230 @@ const imageHelper = Vue.extend({
         }
       }
     },
-    /**
-     * Returns the URL of an item's image:
-     * · When 'element' parameter is passed, size of the image will be determined by the element's width & height
-     * · When 'maxWidth' and 'maxHeight' parameters are passed, size of the image will be as requested
-     * · When no 'element' or 'maxWidth' or 'maxHeight' is provided, image will have the original size.
-     *
-     * @param {ImageType} type - The type of the image to fetch.
-     * @param {object} options - Optional parameters for the function.
-     * @param {BaseItemDto} options.item - The item to fetch the image for (optional).
-     * @param {HTMLElement} options.element - The DOM element which size will be used for the image's maximum width or height (optional).
-     * @param {string} options.tag - tag of the image to fetch (optional if item is passed).
-     * @param {string} [options.itemId=item?.Id] - itemId to get the image from (optional if item is passed).
-     * @param {number} [options.maxWidth=element?.clientWidth] - Maximum width of the image in CSS pixels (optional).
-     * @param {number} [options.maxHeight=element?.clientHeight] - Maximum height of the image in CSS pixels (optional).
-     * @param {number} [options.quality=90] - Quality level of the image (optional, only relevant for jpeg format).
-     * @param {boolean} [options.limitByWidth=false] - Use the element's width instead of its height for the size calculation.
-     * @param {number} [options.backdropIndex=0] - Index of the backdrop image to use (when image type is 'Backdrop').
-     * @param {boolean} [options.checkParent=true] - If it's needed to look for the parent's image tags in case the item's requested image type/tag doesn't exist.
-     * @returns {string} The URL for the image, with the base URL set and the options provided.
-     */
-    getImageUrlForElement(
-      type: ImageType,
+    getDesiredAspect(shape: CardShapes): number {
+      let aspectRatio;
+
+      switch (shape) {
+        case 'portrait-card':
+          aspectRatio = 2 / 3;
+          break;
+        case 'thumb-card':
+          aspectRatio = 16 / 9;
+          break;
+        case 'banner-card':
+          aspectRatio = 1000 / 185;
+          break;
+        case 'square-card':
+        default:
+          aspectRatio = 1;
+          break;
+      }
+
+      return aspectRatio;
+    },
+    getImageUrl(
+      item: BaseItemDto | BaseItemPerson,
       {
-        item,
-        element,
-        tag,
-        itemId = item?.Id,
-        maxWidth = element?.clientWidth,
-        maxHeight = element?.clientHeight,
+        shape = getShapeFromItemType(item.Type),
+        preferThumb = false,
+        preferBanner = false,
+        preferLogo = false,
+        preferBackdrop = false,
+        inheritThumb = true,
         quality = 90,
-        limitByWidth = false,
-        backdropIndex = 0,
-        checkParent = true
-      }: ImageUrlForElementParams
-    ): string | undefined {
-      if (item) {
-        if (!tag) {
-          tag = this.getImageTag(item, type, backdropIndex, false);
+        width,
+        ratio = 1,
+        tag
+      }: {
+        shape?: CardShapes;
+        preferThumb?: boolean;
+        preferBanner?: boolean;
+        preferLogo?: boolean;
+        preferBackdrop?: boolean;
+        inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      } = {}
+    ): ImageUrlInfo {
+      let url;
+      let imgType;
+      let imgTag;
+      let itemId: string | null | undefined = item.Id;
+      let height;
 
-          if (!tag && checkParent) {
-            tag = this.getImageTag(item, type, backdropIndex, true);
-            itemId = this.getParentId(item);
+      if (tag && preferBackdrop) {
+        imgType = ImageType.Backdrop;
+        imgTag = tag;
+      } else if (tag && preferBanner) {
+        imgType = ImageType.Banner;
+        imgTag = tag;
+      } else if (tag && preferLogo) {
+        imgType = ImageType.Logo;
+        imgTag = tag;
+      } else if (tag && preferThumb) {
+        imgType = ImageType.Thumb;
+        imgTag = tag;
+      } else if (tag) {
+        imgType = ImageType.Primary;
+        imgTag = tag;
+      } else if (isPerson(item)) {
+        imgType = ImageType.Primary;
+        imgTag = item.PrimaryImageTag;
+      } else if (preferThumb && item.ImageTags && item.ImageTags.Thumb) {
+        imgType = ImageType.Thumb;
+        imgTag = item.ImageTags.Thumb;
+      } else if (
+        (preferBanner || shape === 'banner-card') &&
+        item.ImageTags &&
+        item.ImageTags.Banner
+      ) {
+        imgType = ImageType.Banner;
+        imgTag = item.ImageTags.Banner;
+      } else if (preferLogo && item.ImageTags && item.ImageTags.Logo) {
+        imgType = ImageType.Logo;
+        imgTag = item.ImageTags.Logo;
+      } else if (preferBackdrop && item.BackdropImageTags?.[0]) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.BackdropImageTags[0];
+      } else if (
+        preferLogo &&
+        item.ParentLogoImageTag &&
+        item.ParentLogoItemId
+      ) {
+        imgType = ImageType.Logo;
+        imgTag = item.ParentLogoImageTag;
+        itemId = item.ParentLogoItemId;
+      } else if (
+        preferBackdrop &&
+        item.ParentBackdropImageTags?.[0] &&
+        item.ParentBackdropItemId
+      ) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.ParentBackdropImageTags[0];
+        itemId = item.ParentBackdropItemId;
+      } else if (preferThumb && item.SeriesThumbImageTag && inheritThumb) {
+        imgType = ImageType.Thumb;
+        imgTag = item.SeriesThumbImageTag;
+        itemId = item.SeriesId;
+      } else if (
+        preferThumb &&
+        item.ParentThumbItemId &&
+        inheritThumb &&
+        item.MediaType !== 'Photo'
+      ) {
+        imgType = ImageType.Thumb;
+        imgTag = item.ParentThumbImageTag;
+        itemId = item.ParentThumbItemId;
+      } else if (
+        preferThumb &&
+        item.BackdropImageTags &&
+        item.BackdropImageTags.length
+      ) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.BackdropImageTags[0];
+      } else if (
+        preferThumb &&
+        item.ParentBackdropImageTags &&
+        item.ParentBackdropImageTags.length &&
+        inheritThumb &&
+        item.Type === 'Episode'
+      ) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.ParentBackdropImageTags[0];
+        itemId = item.ParentBackdropItemId;
+      } else if (
+        item.ImageTags &&
+        item.ImageTags.Primary &&
+        (item.Type !== 'Episode' || item.ChildCount !== 0)
+      ) {
+        imgType = ImageType.Primary;
+        imgTag = item.ImageTags.Primary;
+        height =
+          width && item.PrimaryImageAspectRatio
+            ? Math.round(width / item.PrimaryImageAspectRatio)
+            : null;
+      } else if (item.SeriesPrimaryImageTag) {
+        imgType = ImageType.Primary;
+        imgTag = item.SeriesPrimaryImageTag;
+        itemId = item.SeriesId;
+      } else if (item.ParentPrimaryImageTag) {
+        imgType = ImageType.Primary;
+        imgTag = item.ParentPrimaryImageTag;
+        itemId = item.ParentPrimaryImageItemId;
+      } else if (item.AlbumId && item.AlbumPrimaryImageTag) {
+        imgType = ImageType.Primary;
+        imgTag = item.AlbumPrimaryImageTag;
+        itemId = item.AlbumId;
+        height =
+          width && item.PrimaryImageAspectRatio
+            ? Math.round(width / item.PrimaryImageAspectRatio)
+            : null;
+      } else if (
+        item.Type === 'Season' &&
+        item.ImageTags &&
+        item.ImageTags.Thumb
+      ) {
+        imgType = ImageType.Thumb;
+        imgTag = item.ImageTags.Thumb;
+      } else if (item.BackdropImageTags && item.BackdropImageTags.length) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.BackdropImageTags[0];
+      } else if (item.ImageTags && item.ImageTags.Thumb) {
+        imgType = ImageType.Thumb;
+        imgTag = item.ImageTags.Thumb;
+      } else if (item.SeriesThumbImageTag && inheritThumb !== false) {
+        imgType = ImageType.Thumb;
+        imgTag = item.SeriesThumbImageTag;
+        itemId = item.SeriesId;
+      } else if (item.ParentThumbItemId && inheritThumb !== false) {
+        imgType = ImageType.Thumb;
+        imgTag = item.ParentThumbImageTag;
+        itemId = item.ParentThumbItemId;
+      } else if (
+        item.ParentBackdropImageTags &&
+        item.ParentBackdropImageTags.length &&
+        inheritThumb !== false
+      ) {
+        imgType = ImageType.Backdrop;
+        imgTag = item.ParentBackdropImageTags[0];
+        itemId = item.ParentBackdropItemId;
+      }
 
-            if (!tag || !itemId) {
-              return undefined;
-            }
-          } else if (!tag) {
-            return undefined;
-          }
-        }
-      } else if (!itemId) {
-        throw new TypeError(
-          'itemId must not be null or undefined when an item object is not passed'
+      if (!itemId) {
+        itemId = item.Id;
+      }
+
+      if (imgTag && imgType) {
+        url = new URL(
+          `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
         );
+
+        const params: { [k: string]: string | number | undefined } = {
+          imgTag,
+          quality
+        };
+
+        if (width) {
+          width = Math.round(width * ratio);
+          params.maxWidth = width;
+        }
+
+        if (height) {
+          height = Math.round(height * ratio);
+          params.maxHeight = height;
+        }
+
+        url.search = stringify(params);
       }
 
-      const url = new URL(
-        `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${type}`
-      );
-
-      const params: { [k: string]: string | number | undefined } = {
-        tag,
-        quality
+      return {
+        url: url?.href,
+        tag: imgTag,
+        blurhash:
+          imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : ''
       };
-
-      const scaling = process.client ? window.devicePixelRatio : 1;
-
-      if (limitByWidth && maxWidth) {
-        params.maxWidth = Math.round(maxWidth * scaling).toString();
-      } else if (maxHeight) {
-        params.maxHeight = Math.round(maxHeight * scaling).toString();
-      }
-
-      url.search = stringify(params);
-
-      return url.toString();
     }
   }
 });

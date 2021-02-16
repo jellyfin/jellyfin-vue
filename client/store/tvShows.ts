@@ -135,7 +135,7 @@ export const actions: ActionTree<TvShowsState, TvShowsState> = {
       const { data } = await this.$api.items.getItems({
         userId: this.$auth.user?.Id,
         parentId: season.Id,
-        fields: [ItemFields.Overview]
+        fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
       });
 
       dispatch('getTvShowsSeasonEpisodesSuccess', {

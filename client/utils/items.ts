@@ -1,3 +1,5 @@
+import { BaseItemPerson } from '@jellyfin/client-axios';
+
 /**
  * A list of valid collections that should be treated as folders.
  */
@@ -8,6 +10,26 @@ export const validLibraryTypes = [
   'playlists',
   'PhotoAlbum'
 ];
+
+export type CardShapes =
+  | 'portrait-card'
+  | 'thumb-card'
+  | 'square-card'
+  | 'banner-card';
+
+/**
+ * Determines if the item is a person
+ *
+ * @param {*} item - The item to be checked.
+ * @returns {boolean} Whether the provided item is of type BaseItemPerson.
+ */
+export function isPerson(item: unknown): item is BaseItemPerson {
+  if ((item as BaseItemPerson).Role) {
+    return true;
+  }
+
+  return false;
+}
 
 /**
  * Checks if the string is a valid MD5 hash.
@@ -61,7 +83,7 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
  */
 export function getShapeFromCollectionType(
   collectionType: string | null | undefined
-): string {
+): CardShapes {
   switch (collectionType?.toLowerCase()) {
     case 'boxsets':
     case 'movies':
@@ -69,6 +91,7 @@ export function getShapeFromCollectionType(
     case 'books':
       return 'portrait-card';
     case 'livetv':
+    case 'musicvideos':
       return 'thumb-card';
     case 'folders':
     case 'playlists':
@@ -86,7 +109,7 @@ export function getShapeFromCollectionType(
  */
 export function getShapeFromItemType(
   itemType: string | null | undefined
-): string {
+): CardShapes {
   switch (itemType?.toLowerCase()) {
     case 'audio':
     case 'folder':
@@ -98,6 +121,7 @@ export function getShapeFromItemType(
     case 'video':
       return 'square-card';
     case 'episode':
+    case 'musicvideo':
     case 'studio':
       return 'thumb-card';
     case 'book':

@@ -13,7 +13,7 @@
           <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
-            :item="getRelatedItem(item)"
+            :item="item"
             :type="'Backdrop'"
             :icon-size="$vuetify.breakpoint.mdAndUp ? '256' : '128'"
           />
@@ -165,11 +165,7 @@ export default Vue.extend({
       }
     },
     getLogo(item: BaseItemDto): string | undefined {
-      const relatedItem = this.getRelatedItem(item);
-
-      return this.getImageUrlForElement(ImageType.Logo, {
-        itemId: relatedItem.Id
-      });
+      return this.getImageUrl(item, { preferLogo: true }).url;
     },
     // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
     // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)

@@ -157,7 +157,6 @@
 </template>
 
 <script lang="ts">
-import { ImageType } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
@@ -523,50 +522,44 @@ export default Vue.extend({
           artwork: [
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 96
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 96
+                }).url || '',
               sizes: '96x96'
             },
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 128
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 128
+                }).url || '',
               sizes: '128x128'
             },
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 192
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 192
+                }).url || '',
               sizes: '192x192'
             },
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 256
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 256
+                }).url || '',
               sizes: '256x256'
             },
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 384
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 384
+                }).url || '',
               sizes: '384x384'
             },
             {
               src:
-                this.getImageUrlForElement(ImageType.Primary, {
-                  item: this.getCurrentItem,
-                  maxWidth: 512
-                }) || '',
+                this.getImageUrl(this.getCurrentItem, {
+                  width: 512
+                }).url || '',
               sizes: '512x512'
             }
           ]

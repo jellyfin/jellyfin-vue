@@ -3,13 +3,20 @@
     <template #left>
       <v-row justify="center" justify-sm="start">
         <v-col cols="6" sm="3" class="d-flex flex-row">
-          <v-img
-            v-if="item.ImageTags && item.ImageTags.Primary"
-            class="person-image elevation-2"
-            cover
-            aspect-ratio="1"
-            :src="getImageUrl(item.Id, 'Primary')"
-          />
+          <v-responsive aspect-ratio="1">
+            <v-avatar
+              color="card"
+              width="100%"
+              height="100%"
+              class="elevation-2"
+            >
+              <blurhash-image
+                v-if="item.ImageTags && item.ImageTags.Primary"
+                :item="item"
+              />
+              <v-icon v-else size="128" dark>mdi-account</v-icon>
+            </v-avatar>
+          </v-responsive>
         </v-col>
         <v-col cols="12" sm="7">
           <v-row justify="space-between">
@@ -83,7 +90,7 @@
                     <v-img
                       cover
                       aspect-ratio="1.7778"
-                      :src="getImageUrl(item.Id, 'Backdrop')"
+                      :src="getImageUrl(item, { preferBackdrop: true }).url"
                     />
                     <div v-if="item.Overview">
                       <h2 class="text-h6 mt-2">
@@ -120,8 +127,10 @@ import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
+import BlurhashImage from '~/components/Layout/Images/BlurhashImage.vue';
 
 export default Vue.extend({
+  components: { BlurhashImage },
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
@@ -194,14 +203,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined, type: string): string | undefined {
-      if (itemId) {
-        return this.getImageUrlForElement(type as ImageType, { itemId });
-      } else {
-        return '';
-      }
-    }
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
   }
 });
 </script>

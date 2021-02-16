@@ -4,14 +4,20 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="2">
-            <v-img
-              v-if="item.Id"
-              ref="personImg"
-              class="person-image elevation-2 ml-2"
-              cover
-              aspect-ratio="1"
-              :src="getImageUrl(item.Id)"
-            />
+            <v-responsive aspect-ratio="1">
+              <v-avatar
+                color="card"
+                width="100%"
+                height="100%"
+                class="elevation-2"
+              >
+                <blurhash-image
+                  v-if="item.ImageTags && item.ImageTags.Primary"
+                  :item="item"
+                />
+                <v-icon v-else size="128" dark>mdi-account</v-icon>
+              </v-avatar>
+            </v-responsive>
           </v-col>
           <v-col cols="7">
             <div
@@ -43,7 +49,7 @@
             </v-row>
             <v-row v-if="birthPlace">
               <v-col cols="3" class="text--secondary">
-                {{ $t('item.person.birthplace') }}
+                {{ $t('item.person.birthPlace') }}
               </v-col>
               <v-col cols="9">
                 {{ birthPlace }}
@@ -180,19 +186,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getImageUrl(itemId: string | undefined): string | undefined {
-      const element = this.$refs.personImg as HTMLElement;
-
-      if (itemId) {
-        return this.getImageUrlForElement(ImageType.Primary, {
-          itemId,
-          element
-        });
-      } else {
-        return '';
-      }
-    }
+    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
   }
 });
 </script>
