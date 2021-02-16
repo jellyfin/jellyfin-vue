@@ -61,7 +61,10 @@
             "description": "Voeg API-sleutels toe en trek ze in voor externe toegang tot uw server",
             "apiKeys": "API-sleutels"
         },
-        "settings": "Instellingen"
+        "settings": "Instellingen",
+        "devices": {
+            "appName": "Applicatie Naam"
+        }
     },
     "signIn": "Inloggen",
     "unexpectedError": "Onverwachte fout",
@@ -359,7 +362,7 @@
     "playback": {
         "addToQueue": "Toevoegen aan wachtrij",
         "playNext": "Speel daarna",
-        "shuffle": "Schudden",
+        "shuffle": "willekeurige volgorde",
         "playAll": "Speel alles",
         "shuffleAll": "Alles in willekeurige volgorde afspelen",
         "saveAsPlaylist": "Bewaar wachtrij als een afspeellijst",
@@ -369,7 +372,39 @@
             "shuffleItem": "{Item} in willekeurige volgorde afspelen",
             "item": "Afspelen vanaf {item}"
         },
-        "clearQueue": "Wis de wachtrij en stop het afspelen"
+        "clearQueue": "Wis de wachtrij en stop het afspelen",
+        "queueItems": "{items} nummers"
     },
-    "playFromBeginning": "Speel vanaf het begin"
+    "playFromBeginning": "Speel vanaf het begin",
+    "item": {
+        "tracklist": {
+            "title": "Titel"
+        },
+        "person": {
+            "person": "Persoon",
+            "death": "Overleden",
+            "birthPlace": "Geboorte plaats",
+            "birth": "Geboren"
+        },
+        "crew": "Ploeg",
+        "composer": "Componist",
+        "cast": "Cast",
+        "artist": {
+            "information": "Informatie",
+            "discography": "Discografie"
+        }
+    },
+    "imageType": {
+        "thumb": "Miniatuur",
+        "screenshot": "Schermafdruk",
+        "primary": "Primair",
+        "menu": "Menu",
+        "logo": "Logo",
+        "disc": "Disk",
+        "boxRear": "Hoes (achterkant)",
+        "box": "Hoes",
+        "banner": "Vaandel",
+        "backdrop": "Achtergrond",
+        "art": "Kunst"
+    }
 }
