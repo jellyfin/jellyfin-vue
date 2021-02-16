@@ -59,23 +59,27 @@ export default Vue.extend({
 
       try {
         if (!this.isFavorite) {
-          await this.$nuxt.$api.userLibrary.markFavoriteItem({
-            userId: this.$auth.user.Id,
-            itemId: this.item.Id
-          });
           this.isFavorite = true;
-        } else {
-          await this.$nuxt.$api.userLibrary.unmarkFavoriteItem({
+
+          await this.$api.userLibrary.markFavoriteItem({
             userId: this.$auth.user.Id,
             itemId: this.item.Id
           });
+        } else {
           this.isFavorite = false;
+
+          await this.$api.userLibrary.unmarkFavoriteItem({
+            userId: this.$auth.user.Id,
+            itemId: this.item.Id
+          });
         }
       } catch {
         this.pushSnackbarMessage({
           message: this.$t('unableToToggleLike'),
           color: 'error'
         });
+
+        this.isFavorite = !this.isFavorite;
       }
     }
   }
