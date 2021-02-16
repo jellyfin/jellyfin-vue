@@ -92,7 +92,7 @@ export async function translateItemsForPlayback(
               userId: (window.$nuxt.$auth.user as UserDto).Id,
               seriesId: item.SeriesId,
               isMissing: false,
-              fields: [ItemFields.Chapters],
+              fields: [ItemFields.Chapters, ItemFields.PrimaryImageAspectRatio],
               startItemId: item.Id
             })
           ).data.Items || item;

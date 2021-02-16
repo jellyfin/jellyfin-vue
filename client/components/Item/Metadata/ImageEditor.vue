@@ -117,10 +117,13 @@ export default Vue.extend({
     },
     imageFormat(imageInfo: ImageInfo): string | undefined {
       if (imageInfo.ImageType && imageInfo.ImageTag) {
-        return this.getImageUrlForElement(imageInfo.ImageType, {
-          itemId: this.metadata.Id,
+        return this.getImageUrl(this.metadata, {
+          preferThumb: imageInfo.ImageType === ImageType.Thumb,
+          preferBanner: imageInfo.ImageType === ImageType.Banner,
+          preferLogo: imageInfo.ImageType === ImageType.Logo,
+          preferBackdrop: imageInfo.ImageType === ImageType.Backdrop,
           tag: imageInfo.ImageTag
-        });
+        }).url;
       }
     },
     handleSearch(): void {

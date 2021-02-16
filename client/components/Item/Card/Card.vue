@@ -208,8 +208,8 @@ export default Vue.extend({
       }
     },
     getImageType(): ImageType {
-      if (this.shape === 'thumb-card' && this.item.Type === 'Movie') {
-        return ImageType.Backdrop;
+      if (this.shape === 'thumb-card') {
+        return ImageType.Thumb;
       } else {
         return ImageType.Primary;
       }

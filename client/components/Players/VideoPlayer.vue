@@ -2,7 +2,7 @@
   <v-container fill-height fluid class="pa-0 justify-center">
     <video
       ref="videoPlayer"
-      :poster="poster"
+      :poster="poster.url"
       autoplay
       @timeupdate="onVideoProgressThrottled"
       @pause="onVideoPause"
@@ -19,14 +19,10 @@ import throttle from 'lodash/throttle';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import {
-  ImageType,
-  PlaybackInfoResponse,
-  RepeatMode
-} from '@jellyfin/client-axios';
+import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
-import imageHelper from '~/mixins/imageHelper';
+import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 
 declare global {
   interface Window {
@@ -54,13 +50,8 @@ export default Vue.extend({
     ...mapState('playbackManager', ['currentTime', 'lastProgressUpdate']),
     ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
-    poster(): string | undefined {
-      return this.getImageUrlForElement(ImageType.Backdrop, {
-        itemId:
-          this.getCurrentItem?.ParentBackdropItemId ||
-          this.getCurrentItem?.SeriesId ||
-          this.getCurrentItem?.Id
-      });
+    poster(): ImageUrlInfo {
+      return this.getImageUrl(this.getCurrentItem, { preferBackdrop: true });
     }
   },
   watch: {
