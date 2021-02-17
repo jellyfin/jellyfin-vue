@@ -269,5 +269,30 @@
             "helloUser": "Üdv {userName}!"
         }
     },
-    "undefined": "Meghatározatlan"
+    "undefined": "Meghatározatlan",
+    "item": {
+        "crew": "Csapat",
+        "composer": "Zeneszerző",
+        "cast": "Szereplő(k)",
+        "artist": {
+            "information": "Infromáció",
+            "discography": "Diszkográfia"
+        }
+    },
+    "imageType": {
+        "thumb": "Miniatűr",
+        "screenshot": "Képernyőkép",
+        "primary": "Elsődleges",
+        "menu": "Menü",
+        "logo": "Logo",
+        "disc": "Lemez",
+        "boxRear": "Box (hátsó)",
+        "box": "Doboz",
+        "banner": "Banner",
+        "backdrop": "Háttér",
+        "art": "Borító"
+    },
+    "fullScreen": "Teljes képernyő",
+    "directing": "Rendező(k)",
+    "confirm": "Megerősítés"
 }
