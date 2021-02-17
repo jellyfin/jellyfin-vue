@@ -1,7 +1,7 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { MutationTree, ActionTree } from 'vuex';
 import { toString as toStr } from 'lodash';
-import { boolean } from 'boolean';
+import destr from 'destr';
 import nuxtConfig from '~/nuxt.config';
 
 /**
@@ -32,15 +32,31 @@ const defaultState = (): DisplayPreferencesState => ({
 });
 
 /**
- * Convert custom preferences returned from the server in the correct type
+ * Cast custom preferences returned from the server from strings to the correct Javascript type
  *
  * @param {DisplayPreferencesDto} data - Response from the server
  * @returns {ClientPreferences} - The response with the correct datatypes.
  */
 function castResponse(data: DisplayPreferencesDto): ClientPreferences {
   const result = data as ClientPreferences;
-  if (result.CustomPrefs?.darkMode) {
-    result.CustomPrefs.darkMode = boolean(result.CustomPrefs.darkMode);
+  for (const [key, value] of Object.entries(
+    result.CustomPrefs as CustomPreferences
+  )) {
+    const val = String(value);
+    /**
+     * destr doesn't convert to arrays, so we must handle arrays manually
+     */
+    if (val.includes('[') && val.includes(']')) {
+      const arr = [];
+      for (const obj of val.split(',')) {
+        arr.push(destr(obj));
+      }
+      // @ts-expect-error - TypeScript can't infer indexes typings from Object.entries
+      result.CustomPrefs?.[key] = arr;
+    } else {
+      // @ts-expect-error - TypeScript can't infer indexes typings from Object.entries
+      result.CustomPrefs?.[key] = destr(value);
+    }
   }
   return result;
 }
@@ -105,9 +121,7 @@ export const actions: ActionTree<
       }
 
       const data = castResponse(response.data);
-      if (!data.CustomPrefs) {
-        Object.assign(state, data.CustomPrefs);
-      } else {
+      if (data.CustomPrefs) {
         /**
          * We delete the keys that are not defined in the state's default state, so removed
          * values locally don't pollute server's displayPreferences.
@@ -118,8 +132,8 @@ export const actions: ActionTree<
             delete data.CustomPrefs[key];
           }
         }
+        commit('INIT_STATE', { displayPreferences: data });
       }
-      commit('INIT_STATE', { displayPreferences: data });
     } catch (error) {
       const message = this.$i18n.t('failedRetrievingDisplayPreferences');
       await dispatch(
@@ -148,10 +162,11 @@ export const actions: ActionTree<
         }
       );
 
-      if (responseFetch.status !== 200)
+      if (responseFetch.status !== 200) {
         throw new Error(
           'get display preferences status response = ' + responseFetch.status
         );
+      }
 
       const displayPrefs = responseFetch.data;
       displayPrefs.CustomPrefs = {};
@@ -165,7 +180,11 @@ export const actions: ActionTree<
        */
       delete displayPrefs.CustomPrefs.syncing;
       for (const [key, value] of Object.entries(displayPrefs.CustomPrefs)) {
-        displayPrefs.CustomPrefs[key] = toStr(value);
+        if (Array.isArray(value)) {
+          displayPrefs.CustomPrefs[key] = `[${toStr(value)}]`;
+        } else {
+          displayPrefs.CustomPrefs[key] = toStr(value);
+        }
       }
 
       const response = await this.$api.displayPreferences.updateDisplayPreferences(
@@ -194,11 +213,15 @@ export const actions: ActionTree<
   },
   async setDarkMode({ commit, dispatch }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });
-    if (this.$auth.loggedIn) await dispatch('pushState');
+    if (this.$auth.loggedIn) {
+      await dispatch('pushState');
+    }
   },
   async setLocale({ commit, dispatch }, { locale }: { locale: string }) {
     commit('SET_LOCALE', { locale });
-    if (this.$auth.loggedIn) await dispatch('pushState');
+    if (this.$auth.loggedIn) {
+      await dispatch('pushState');
+    }
   },
   /**
    * Resets the state and reapply default theme
