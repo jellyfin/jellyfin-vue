@@ -1,14 +1,14 @@
 /**
- * Helper for watching display preferences
+ * Helper for watching client settings
  *
  * @mixin
  */
 import Vue from 'vue';
 import { mapState } from 'vuex';
 
-const displayPreferencesHelper = Vue.extend({
+const settingsHelper = Vue.extend({
   computed: {
-    ...mapState('displayPreferences', ['darkMode', 'locale'])
+    ...mapState('settings', ['darkMode', 'locale'])
   },
   watch: {
     darkMode: {
@@ -32,4 +32,4 @@ const displayPreferencesHelper = Vue.extend({
   }
 });
 
-export default displayPreferencesHelper;
+export default settingsHelper;

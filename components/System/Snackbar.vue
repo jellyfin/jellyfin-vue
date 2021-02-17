@@ -6,38 +6,34 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default Vue.extend({
   data() {
     return {
-      model: false,
-      color: '',
-      message: ''
+      model: false
     };
   },
-  mounted() {
-    // Empties potential already set buffer
-    this.displaySnackbar(
-      this.$store.state.snackbar.message,
-      this.$store.state.snackbar.color
-    );
-    this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'snackbar/SET_SNACKBAR_MESSAGE') {
-        this.displaySnackbar(state.snackbar.message, state.snackbar.color);
-      }
-    });
+  computed: {
+    ...mapState('snackbar', ['message', 'color'])
   },
-  methods: {
-    ...mapActions('snackbar', ['resetMessage']),
-    displaySnackbar(message: string, color: string): void {
-      if (message !== '') {
-        this.message = message;
-        this.color = color;
-        this.model = true;
+  watch: {
+    message: {
+      immediate: true,
+      handler(newVal: string): void {
+        if (newVal !== '') {
+          this.model = true;
+        }
+      }
+    },
+    model(newVal: boolean): void {
+      if (newVal === false) {
         this.resetMessage();
       }
     }
+  },
+  methods: {
+    ...mapActions('snackbar', ['resetMessage'])
   }
 });
 </script>

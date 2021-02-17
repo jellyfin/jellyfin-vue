@@ -114,7 +114,7 @@ import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
-import displayPreferencesHelper from '~/mixins/displayPreferencesHelper';
+import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
   icon: string;
@@ -123,7 +123,7 @@ interface LayoutButton {
 }
 
 export default Vue.extend({
-  mixins: [displayPreferencesHelper],
+  mixins: [settingsHelper],
   data() {
     return {
       isScrolled: false,
@@ -183,7 +183,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
-    ...mapActions('displayPreferences', ['callAllCallbacks']),
     ...mapActions('page', ['showNavDrawer']),
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition

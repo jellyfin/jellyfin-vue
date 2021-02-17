@@ -47,7 +47,7 @@
       "videoPlayerError": "The video player encountered an unrecoverable error."
     }
   },
-  "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using defaults.",
+  "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
   "failedSettingDisplayPreferences": "Unable to update display preferences.",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",

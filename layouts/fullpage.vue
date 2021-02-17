@@ -12,9 +12,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import displayPreferencesHelper from '~/mixins/displayPreferencesHelper';
+import settingsHelper from '~/mixins/settingsHelper';
 
 export default Vue.extend({
-  mixins: [displayPreferencesHelper]
+  mixins: [settingsHelper]
 });
 </script>

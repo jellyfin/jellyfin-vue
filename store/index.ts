@@ -10,8 +10,8 @@ import { HomeSectionState } from './homeSection';
 import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
-import { DisplayPreferencesState } from './displayPreferences';
-import { ItemsState } from './items';
+import { DisplayPreferencesApiState } from '~/store/displayPreferencesApi';
+import { CustomPreferences } from '~/store/settings';
 import { websocketPlugin } from './plugins/websocket';
 
 export const plugins = [websocketPlugin];
@@ -27,12 +27,13 @@ export interface RootState {
 export interface AppState extends RootState {
   backdrop: BackdropState;
   device: DeviceState;
-  displayPreferences: DisplayPreferencesState;
+  displayPreferencesApi: DisplayPreferencesApiState;
   homeSection: HomeSectionState;
   items: ItemsState;
   page: PageState;
   playbackManager: PlaybackManagerState;
   servers: ServerState;
+  settings: CustomPreferences;
   snackBar: SnackbarState;
   tvShows: TvShowsState;
   user: UserState;
@@ -79,14 +80,14 @@ export const actions: ActionTree<RootState, RootState> = {
     const promises = [];
     promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
     promises.push(dispatch('deviceProfile/clearDeviceProfile', { root: true }));
-    promises.push(dispatch('displayPreferences/resetState', { root: true }));
-    promises.push(dispatch('items/clearState', { root: true }));
+    promises.push(dispatch('displayPreferencesApi/resetState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
     promises.push(dispatch('page/clearPage', { root: true }));
     promises.push(dispatch('playbackManager/stop', { root: true }));
     if (clearCritical) {
       promises.push(dispatch('servers/clearServers', { root: true }));
     }
+    promises.push(dispatch('settings/resetState', { root: true }));
     promises.push(dispatch('snackbar/resetMessage', { root: true }));
     promises.push(dispatch('tvShows/clearTvShows', { root: true }));
     promises.push(dispatch('user/clearUser', { root: true }));

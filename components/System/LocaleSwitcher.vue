@@ -54,7 +54,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('displayPreferences', ['setLocale'])
+    ...mapActions('settings', ['setLocale'])
   }
 });
 </script>
