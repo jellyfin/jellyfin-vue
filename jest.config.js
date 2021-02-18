@@ -25,5 +25,5 @@ module.exports = {
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   setupFiles: ['jest-canvas-mock', './jest.setup.ts'],
-  coverageReporters: ['text', 'cobertura']
+  coverageReporters: ['text', 'cobertura', 'html', 'lcov']
 };
