@@ -96,7 +96,7 @@ const config: NuxtConfig = {
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
    */
-  components: true,
+  components: [{ path: '~/components', pathPrefix: false }],
   /*
    ** Nuxt.js dev-modules
    */
@@ -261,7 +261,6 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    // @ts-expect-error -- Undocumented options
     loadingScreen: {
       image: 'icon.png',
       colors: {
