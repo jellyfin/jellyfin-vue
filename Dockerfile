@@ -1,21 +1,20 @@
-FROM node:12-alpine AS build
+FROM node:lts-alpine AS build
 
 WORKDIR /app
 
+# Install build dependencies for node modules
 RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g++ libpng-dev libtool nasm file
 
-COPY package.json yarn.lock ./
+COPY . .
 
 RUN yarn install --frozen-lockfile
-
-COPY . .
 
 # Build SSR app for production in standalone mode
 
 RUN yarn build --production --standalone
 
 # Build final image
-FROM node:12-alpine
+FROM node:lts-alpine
 
 WORKDIR /app
 
@@ -26,7 +25,7 @@ COPY --from=build /app/.nuxt ./.nuxt
 COPY --from=build /app/static ./static
 
 # Install runtime dependencies
-RUN yarn install --production
+RUN yarn install --production --forzen-lockfile
 
 EXPOSE 80
 

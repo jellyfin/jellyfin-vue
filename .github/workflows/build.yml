@@ -1,4 +1,4 @@
-name: Code quality
+name: Build
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: Lint
+  ssr:
+    name: Build SSR
     runs-on: ubuntu-latest
 
     steps:
@@ -43,11 +43,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --froze-lockfile
 
-      - name: Run linter
-        run: yarn lint
+      - name: Build
+        run: yarn build
 
-  test:
-    name: Test
+  static:
+    name: Build static
     runs-on: ubuntu-latest
 
     steps:
@@ -63,9 +63,6 @@ jobs:
         with:
           node-version: 14
 
-      - name: Install dependencies
-        run: yarn install --froze-lockfile
-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -79,8 +76,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Run tests
-        run: yarn test
+      - name: Install dependencies
+        run: yarn install --froze-lockfile
 
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
+      - name: Build
+        run: 'yarn build:static'
