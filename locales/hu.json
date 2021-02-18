@@ -12,7 +12,16 @@
     "itemNotFound": "Az elem nem található",
     "libraryEmpty": "Ez a könyvtár üres",
     "libraryNotFound": "A könyvtár nem található",
-    "login": "Bejelentkezés",
+    "login": {
+        "rememberMe": "Emlékezz rám",
+        "manualLogin": "Manuális bejelentkezés",
+        "loginAs": "Bejelentkezés mint {name}",
+        "login": "Bejelentkezés",
+        "connect": "Kapcsolódás",
+        "changeUser": "Felhasználóváltás",
+        "changeServer": "Szerverváltás",
+        "addServer": "Szerver hozzáadása"
+    },
     "logout": "Kijelentkezés",
     "more": "Több",
     "moreLikeThis": "Több ehhez hasonló",
@@ -169,7 +178,7 @@
         },
         "notifications": {
             "name": "Értesítések",
-            "description": "Szerver által küldött értesítések kezelése és konfigurálása"
+            "description": "Szerver által küldött értesítés kezelése és konfigurálása"
         },
         "networking": {
             "name": "Hálózat",
@@ -277,6 +286,14 @@
         "artist": {
             "information": "Infromáció",
             "discography": "Diszkográfia"
+        },
+        "tracklist": {
+            "title": "Cím"
+        },
+        "person": {
+            "person": "Személy",
+            "death": "Halálozás időpontja",
+            "birthPlace": "Születési hely"
         }
     },
     "imageType": {
@@ -294,5 +311,6 @@
     },
     "fullScreen": "Teljes képernyő",
     "directing": "Rendező(k)",
-    "confirm": "Megerősítés"
+    "confirm": "Megerősítés",
+    "libraryRefreshQueued": "A könyvtár frissítése a várólistán"
 }
