@@ -50,6 +50,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import debounce from 'lodash/debounce';
 
 export default Vue.extend({
   data() {
@@ -74,7 +75,7 @@ export default Vue.extend({
   watch: {
     searchQuery(newQuery: string, _oldQuery: string): void {
       if (newQuery !== '') {
-        this.performSearch();
+        this.performSearchDebounce();
       }
     }
   },
@@ -86,6 +87,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    performSearchDebounce: debounce(function () {
+      // @ts-expect-error - TypeScript confuses the context with lodash's debounce typings
+      this.performSearch();
+    }, 500),
     async performSearch(): Promise<void> {
       this.loading = true;
 
