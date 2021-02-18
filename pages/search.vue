@@ -78,9 +78,11 @@ export default Vue.extend({
       }
     }
   },
-  beforeMount() {
+  async beforeMount() {
     if (this.searchQuery === '') {
       this.$router.back();
+    } else {
+      await this.performSearch();
     }
   },
   methods: {
