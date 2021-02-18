@@ -2521,9 +2521,9 @@
     terser "^4.6.13"
 
 "@types/trusted-types@*":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-1.0.6.tgz#569b8a08121d3203398290d602d84d73c8dcf5da"
-  integrity sha512-230RC8sFeHoT6sSUlRO6a8cAnclO06eeiq1QDfiv2FGCLWFvvERWgwIQD4FWqD9A69BN7Lzee4OXwoMVnnsWDw==
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.0.tgz#aee6e868fcef74f2b8c71614b6df81a601a42f17"
+  integrity sha512-I8MnZqNXsOLHsU111oHbn3khtvKMi5Bn4qVFsIWSJcCP1KKDiXX5AEw8UPk0nSopeC+Hvxt6yAy1/a5PailFqg==
 
 "@types/uglify-js@*":
   version "3.9.3"
