@@ -21,7 +21,7 @@ import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
-  async asyncData({ store, app }) {
+  async asyncData({ store }) {
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
@@ -55,7 +55,7 @@ export default Vue.extend({
       switch (homeSection) {
         case 'librarytiles': {
           homeSections.push({
-            name: app.i18n.t('libraries'),
+            name: 'libraries',
             libraryId: '',
             shape: 'thumb-card',
             type: 'libraries'
@@ -88,9 +88,8 @@ export default Vue.extend({
               }
 
               latestMediaSections.push({
-                name: app.i18n.t('latestLibrary', {
-                  libraryName: userView.Name
-                }),
+                name: 'latestLibrary',
+                libraryName: userView.Name,
                 libraryId: userView.Id || '',
                 shape: getShapeFromCollectionType(userView.CollectionType),
                 type: 'latestmedia'
@@ -103,7 +102,7 @@ export default Vue.extend({
         }
         case 'resume':
           homeSections.push({
-            name: app.i18n.t('continueWatching'),
+            name: 'continueWatching',
             libraryId: '',
             shape: 'thumb-card',
             type: 'resume'
@@ -111,7 +110,7 @@ export default Vue.extend({
           break;
         case 'resumeaudio':
           homeSections.push({
-            name: app.i18n.t('continueListening'),
+            name: 'continueListening',
             libraryId: '',
             shape: 'square-card',
             type: 'resumeaudio'
@@ -119,7 +118,7 @@ export default Vue.extend({
           break;
         case 'upnext':
           homeSections.push({
-            name: app.i18n.t('nextUp'),
+            name: 'nextUp',
             libraryId: '',
             shape: 'thumb-card',
             type: 'upnext'
