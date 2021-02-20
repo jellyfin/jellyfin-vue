@@ -2,16 +2,47 @@ name: Docker stable release
 
 on:
   release:
-    types: |
-      released
-      prereleased
+    types:
+      - released
+      - prereleased
 
 jobs:
   ssr:
-    name: Build SSR docker image
+    name: Build SSR images
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+          clean: true
+          ref: 'master'
+
+      - name: Setup node environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache node_modules
+        uses: actions/cache@v2.1.4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build client
+        run: yarn build --production --standalone
+
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -24,58 +55,100 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push SSR stable
-        if: github.event.release.released
+      - name: Build and push stable SSR images
+        if: github.event.action == 'released'
         uses: docker/build-push-action@v2
         with:
+          context: .
           push: true
-          tags: |
-            jellyfin/jellyfin-vue:stable-ssr
-            jellyfin/jellyfin-vue:stable-ssr-${{ env.GITHUB_REF }}
-
-      - name: Build and push SSR candidate
-        if: github.event.release.prereleased
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: |
-            jellyfin/jellyfin-vue:rc-ssr
-            jellyfin/jellyfin-vue:rc-ssr-${{ env.GITHUB_REF }}
-
-  static:
-    name: Build static docker image
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Configure QEMU
-        uses: docker/setup-qemu-action@v1
-
-      - name: Configure Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push static stable
-        if: github.event.release.released
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          file: 'Dockerfile.static'
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
+          file: '.github/workflows/Dockerfile.ssr'
           tags: |
             jellyfin/jellyfin-vue:stable
-            jellyfin/jellyfin-vue:stable-${{ env.GITHUB_REF }}
+            jellyfin/jellyfin-vue:stable-ssr
+            jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
             jellyfin/jellyfin-vue:latest
 
-      - name: Build and push static candidate
-        if: github.event.release.prereleased
+      - name: Build and push release candidate SSR images
+        if: github.event.action == 'prereleased'
         uses: docker/build-push-action@v2
         with:
+          context: .
           push: true
-          file: 'Dockerfile.static'
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
+          file: '.github/workflows/Dockerfile.ssr'
           tags: |
-            jellyfin/jellyfin-vue:rc
-            jellyfin/jellyfin-vue:rc-ssr-${{ env.GITHUB_REF }}
+            jellyfin/jellyfin-vue:stable-rc-ssr
+            jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
+
+  static:
+    name: Build static images
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+          clean: true
+          ref: 'master'
+
+      - name: Setup node environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Cache node_modules
+        uses: actions/cache@v2.1.4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build client
+        run: 'yarn build:static'
+
+      - name: Configure QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Configure Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push stable static images
+        if: github.event.action == 'released'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
+          file: '.github/workflows/Dockerfile.nginx'
+          tags: |
+            jellyfin/jellyfin-vue:stable-static
+            jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+
+      - name: Build and push release candidate static images
+        if: github.event.action == 'prereleased'
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
+          file: '.github/workflows/Dockerfile.nginx'
+          tags: |
+            jellyfin/jellyfin-vue:stable-rc-static
+            jellyfin/jellyfin-vue:stable-rc-static.${{ github.event.release.tag_name }}

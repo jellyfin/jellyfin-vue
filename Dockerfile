@@ -1,4 +1,6 @@
-FROM node:lts-alpine AS build
+## This dockerfile builds the client entirely in a Docker context
+
+FROM node:14-alpine AS build
 
 WORKDIR /app
 
@@ -7,6 +9,7 @@ RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g
 
 COPY . .
 
+# Install dependencies
 RUN yarn install --frozen-lockfile
 
 # Build SSR app for production in standalone mode
@@ -14,7 +17,7 @@ RUN yarn install --frozen-lockfile
 RUN yarn build --production --standalone
 
 # Build final image
-FROM node:lts-alpine
+FROM node:14-alpine
 
 WORKDIR /app
 
@@ -25,7 +28,7 @@ COPY --from=build /app/.nuxt ./.nuxt
 COPY --from=build /app/static ./static
 
 # Install runtime dependencies
-RUN yarn install --production --forzen-lockfile
+RUN yarn install --production --no-lockfile
 
 EXPOSE 80
 

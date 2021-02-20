@@ -18,11 +18,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           clean: true
           ref: 'master'
 
-      - name: Setup node env
+      - name: Setup node environment
         uses: actions/setup-node@v2.1.4
         with:
           node-version: 14
@@ -33,7 +33,7 @@ jobs:
 
       - name: Cache node_modules
         uses: actions/cache@v2.1.4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: yarn install --froze-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Run linter
         run: yarn lint
@@ -54,17 +54,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           clean: true
           ref: 'master'
 
-      - name: Setup node env
+      - name: Setup node environment
         uses: actions/setup-node@v2.1.4
         with:
           node-version: 14
-
-      - name: Install dependencies
-        run: yarn install --froze-lockfile
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -72,12 +69,15 @@ jobs:
 
       - name: Cache node_modules
         uses: actions/cache@v2.1.4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Run tests
         run: yarn test
