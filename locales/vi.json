@@ -60,7 +60,10 @@
             "description": "Thêm và thu hồi các khóa API để truy cập bên ngoài vào máy chủ của bạn",
             "apiKeys": "Khóa API"
         },
-        "settings": "Cài đặt"
+        "settings": "Cài đặt",
+        "devices": {
+            "appName": "Tên ứng dụng"
+        }
     },
     "signIn": "Đăng nhập",
     "unexpectedError": "Lỗi không mong muốn",
@@ -372,5 +375,32 @@
         },
         "clearQueue": "Xóa hàng đợi và dừng phát lại"
     },
-    "playFromBeginning": "Phát từ đầu"
+    "playFromBeginning": "Phát từ đầu",
+    "resume": "Bắt đầu lại",
+    "item": {
+        "tracklist": {
+            "title": "Tiêu đề"
+        },
+        "person": {
+            "person": "Người",
+            "death": "Mất",
+            "birthPlace": "Nơi sinh",
+            "birth": "Sinh"
+        },
+        "crew": "Đoàn phim",
+        "composer": "Người soạn nhạc",
+        "cast": "Truyền Trực Tiếp",
+        "artist": {
+            "information": "Thông tin",
+            "discography": "Đĩa đệm"
+        }
+    },
+    "imageType": {
+        "screenshot": "Ảnh chụp màn hình",
+        "primary": "Sơ cấp",
+        "disc": "Đĩa",
+        "boxRear": "Hộp (phía sau)",
+        "box": "Hộp",
+        "backdrop": "Phông nền"
+    }
 }
