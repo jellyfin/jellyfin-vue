@@ -21,7 +21,7 @@ beforeEach(() => {
 });
 
 describe('vuex: page', () => {
-  test('sets the title when "SET_PAGE_TITLE" is committed', () => {
+  it('sets the title when "SET_PAGE_TITLE" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_PAGE_TITLE', { title: PAGE_SET_TEST_VALUE.title });
@@ -29,7 +29,7 @@ describe('vuex: page', () => {
     expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
   });
 
-  test('sets the app bar opacity when "SET_APPBAR_OPACITY" is committed', () => {
+  it('sets the app bar opacity when "SET_APPBAR_OPACITY" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_APPBAR_OPACITY', {
@@ -39,7 +39,7 @@ describe('vuex: page', () => {
     expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
   });
 
-  test('sets the navigation drawer visibility when "SET_NAVDRAWER_VISIBILITY" is committed', () => {
+  it('sets the navigation drawer visibility when "SET_NAVDRAWER_VISIBILITY" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_NAVDRAWER_VISIBILITY', {
@@ -49,7 +49,7 @@ describe('vuex: page', () => {
     expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
   });
 
-  test('resets the state when "CLEAR_PAGE" is committed', () => {
+  it('resets the state when "CLEAR_PAGE" is committed', () => {
     store.replaceState({ ...PAGE_SET_TEST_VALUE });
 
     store.commit('CLEAR_PAGE');
@@ -57,7 +57,7 @@ describe('vuex: page', () => {
     expect(store.state).toMatchObject(defaultState());
   });
 
-  test('sets the title when setPageTitle is dispatched', () => {
+  it('sets the title when setPageTitle is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
@@ -66,7 +66,7 @@ describe('vuex: page', () => {
     expect(store.state.title).toBe(PAGE_SET_TEST_VALUE.title);
   });
 
-  test('sets the app bar opacity when setAppBarOpacity is dispatched', () => {
+  it('sets the app bar opacity when setAppBarOpacity is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
@@ -77,7 +77,7 @@ describe('vuex: page', () => {
     expect(store.state.opaqueAppBar).toBe(PAGE_SET_TEST_VALUE.opaqueAppBar);
   });
 
-  test('sets the navigation drawer visibility when showNavDrawer is dispatched', () => {
+  it('sets the navigation drawer visibility when showNavDrawer is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
@@ -88,7 +88,7 @@ describe('vuex: page', () => {
     expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
   });
 
-  test('resets the state when clearPage is dispatched', () => {
+  it('resets the state when clearPage is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...PAGE_SET_TEST_VALUE });
 

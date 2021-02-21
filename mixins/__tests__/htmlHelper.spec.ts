@@ -6,7 +6,7 @@ const TestComponent = new Vue({
 });
 
 describe('formsHelper', () => {
-  test('correctly sanitizes HTML', () => {
+  it('correctly sanitizes HTML', () => {
     /*
       NOTE: It is not our place to test if the library used is secure.
       We just want to check if it's actually doing anything.

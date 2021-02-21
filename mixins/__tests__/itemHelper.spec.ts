@@ -6,7 +6,7 @@ const TestComponent = new Vue({
 });
 
 describe('itemHelper', () => {
-  test('returns true if the item can be played', () => {
+  it('returns true if the item can be played', () => {
     // TODO: Replace with BaseItemKind enum
     expect(TestComponent.canPlay({ Type: 'AggregateFolder' })).toEqual(false);
     expect(TestComponent.canPlay({ Type: 'Audio' })).toEqual(true);
@@ -51,7 +51,7 @@ describe('itemHelper', () => {
     expect(TestComponent.canPlay({})).toEqual(false);
   });
 
-  test('returns true if the item can be resumed', () => {
+  it('returns true if the item can be resumed', () => {
     expect(
       TestComponent.canResume({ UserData: { PlaybackPositionTicks: 1 } })
     ).toEqual(true);

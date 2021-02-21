@@ -17,13 +17,13 @@ const wrapper = mount(SettingsPage, {
 });
 
 describe('SettingsPage', () => {
-  test('shows content, action and title if all are defined', () => {
+  it('shows content, action and title if all are defined', () => {
     expect(wrapper.text()).toContain('test-page-title');
     expect(wrapper.text()).toContain('This is a demo action');
     expect(wrapper.text()).toContain('This is the demo content');
   });
 
-  test('shows only the content if the title is undefined.', async () => {
+  it('shows only the content if the title is undefined.', async () => {
     await wrapper.setProps({ pageTitle: undefined });
 
     expect(wrapper.text()).toEqual(

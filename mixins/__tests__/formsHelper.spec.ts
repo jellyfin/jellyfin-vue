@@ -22,7 +22,7 @@ const FORMS_EXPECTED_OUTPUT = [
 ];
 
 describe('formsHelper', () => {
-  test('correctly itemizes the array of items', () => {
+  it('correctly itemizes the array of items', () => {
     expect(TestComponent.getItemizedSelect(FORMS_TEST_INPUT)).toMatchObject(
       FORMS_EXPECTED_OUTPUT
     );

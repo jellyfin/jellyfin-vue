@@ -28,7 +28,7 @@ beforeEach(() => {
 });
 
 describe('vuex: deviceProfile', () => {
-  test('sets the device profile when "SET_PROFILE" is committed', () => {
+  it('sets the device profile when "SET_PROFILE" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_PROFILE', SET_DEVICE_PROFILE);
@@ -36,7 +36,7 @@ describe('vuex: deviceProfile', () => {
     expect(store.state).toMatchObject(SET_DEVICE_PROFILE);
   });
 
-  test('clears the device profile when "CLEAR_PROFILE" is committed', () => {
+  it('clears the device profile when "CLEAR_PROFILE" is committed', () => {
     store.replaceState({ ...SET_DEVICE_PROFILE });
 
     store.commit('CLEAR_PROFILE');
@@ -44,7 +44,7 @@ describe('vuex: deviceProfile', () => {
     expect(store.state).toMatchObject(defaultState());
   });
 
-  test('sets the device profile when setDeviceProfile is dispatched', () => {
+  it('sets the device profile when setDeviceProfile is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     // Device profile may already be defined, this sets it to the default state
     store.replaceState({ ...defaultState() });
@@ -64,7 +64,7 @@ describe('vuex: deviceProfile', () => {
     expect(store.state.clientVersion.length).toBeGreaterThan(1);
   });
 
-  test('clears the device profile when clearDeviceProfile is dispatched', () => {
+  it('clears the device profile when clearDeviceProfile is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     // Set test values to be cleared
     store.replaceState({ ...SET_DEVICE_PROFILE });

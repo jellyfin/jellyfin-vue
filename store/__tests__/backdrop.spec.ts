@@ -32,7 +32,7 @@ beforeEach(() => {
 });
 
 describe('vuex: backdrop', () => {
-  test('sets the hash when "SET_CURRENT_BACKDROP" is committed', () => {
+  it('sets the hash when "SET_CURRENT_BACKDROP" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_CURRENT_BACKDROP', BACKDROP_TEST_MUTATION);
@@ -40,7 +40,7 @@ describe('vuex: backdrop', () => {
     expect(store.state.blurhash).toBe(BACKDROP_SET_TEST_VALUE.blurhash);
   });
 
-  test('sets the opacity when "SET_BACKDROP_OPACITY" is committed', () => {
+  it('sets the opacity when "SET_BACKDROP_OPACITY" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_BACKDROP_OPACITY', BACKDROP_TEST_MUTATION);
@@ -48,7 +48,7 @@ describe('vuex: backdrop', () => {
     expect(store.state.opacity).toBe(1);
   });
 
-  test('clears the hash when "CLEAR_CURRENT_BACKDROP" is committed', () => {
+  it('clears the hash when "CLEAR_CURRENT_BACKDROP" is committed', () => {
     store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
 
     store.commit('CLEAR_CURRENT_BACKDROP');
@@ -56,7 +56,7 @@ describe('vuex: backdrop', () => {
     expect(store.state.blurhash).toBe('');
   });
 
-  test('resets the opacity when "RESET_BACKDROP_OPACITY" is committed', () => {
+  it('resets the opacity when "RESET_BACKDROP_OPACITY" is committed', () => {
     store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
 
     store.commit('RESET_BACKDROP_OPACITY');
@@ -65,7 +65,7 @@ describe('vuex: backdrop', () => {
   });
 
   // Default case
-  test('sets the hash when setBackdrop is dispatched', () => {
+  it('sets the hash when setBackdrop is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
@@ -75,7 +75,7 @@ describe('vuex: backdrop', () => {
   });
   // CASE B
 
-  test('clears the hash when clearBackdrop is dispatched', () => {
+  it('clears the hash when clearBackdrop is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
 
@@ -84,7 +84,7 @@ describe('vuex: backdrop', () => {
     expect(store.state.blurhash).toBe('');
   });
 
-  test('sets the opacity when setBackdropOpacity is dispatched', () => {
+  it('sets the opacity when setBackdropOpacity is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
@@ -95,7 +95,7 @@ describe('vuex: backdrop', () => {
     expect(store.state.opacity).toBe(BACKDROP_TEST_MUTATION.newOpacity);
   });
 
-  test('resets the opacity when resetBackdropOpacity is dispatched', () => {
+  it('resets the opacity when resetBackdropOpacity is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...BACKDROP_SET_TEST_VALUE });
 

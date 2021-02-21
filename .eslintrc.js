@@ -69,7 +69,10 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest/style',
         'plugin:jest-formatting/strict'
-      ]
+      ],
+      rules: {
+        'jest/consistent-test-it': ['error']
+      }
     }
   ]
 };
