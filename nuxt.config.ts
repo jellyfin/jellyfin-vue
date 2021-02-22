@@ -35,7 +35,7 @@ const config: NuxtConfig = {
   pwa: {
     meta: {
       nativeUI: true,
-      appleStatusBarStyle: 'dark',
+      appleStatusBarStyle: 'black-translucent',
       name: 'Jellyfin',
       theme_color: '#424242'
     },
