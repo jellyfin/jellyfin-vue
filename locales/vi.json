@@ -62,8 +62,26 @@
         },
         "settings": "Cài đặt",
         "devices": {
-            "appName": "Tên ứng dụng"
-        }
+            "appName": "Tên ứng dụng",
+            "userName": "Tên tài khoản",
+            "noDevicesFound": "Không tìm thấy thiết bị nào",
+            "lastActive": "Hoạt động lần cuối",
+            "devices": "Thiết bị",
+            "deviceName": "Tên thiết bị",
+            "deleteDeviceSuccess": "Đã xóa thiết bị thành công",
+            "deleteDeviceError": "Lỗi khi xóa thiết bị",
+            "deleteAllDevicesSuccess": "Tất cả các thiết bị đã được xóa thành công",
+            "deleteAllDevicesError": "Lỗi khi xóa tất cả các thiết bị",
+            "deleteAll": "Xóa hết",
+            "delete": "Xóa",
+            "appVersion": "Phiên bản ứng dụng"
+        },
+        "logsAndActivity": {
+            "failedGetLogs": "Không thể lấy nhật ký",
+            "failedGetActivity": "Không thể nhận hoạt động",
+            "activity": "Hoạt động"
+        },
+        "help": "Trợ giúp"
     },
     "signIn": "Đăng nhập",
     "unexpectedError": "Lỗi không mong muốn",
@@ -122,7 +140,7 @@
     "manualLogin": "Đăng nhập thủ công",
     "loginAs": "Đăng nhập dưới tên {name}",
     "changeUser": "Thay đổi người sử dụng",
-    "unableGetRelated": "Không lấy dữ liệu các mục liên quan",
+    "unableGetRelated": "Không thể lấy các mục liên quan",
     "validation": {
         "mustBeUrl": "Trường này phải là một URL hợp lệ",
         "required": "Trường này là bắt buộc",
@@ -293,8 +311,8 @@
     "logsAndActivity": {
         "noLogsFounr": "Không tìm thấy nhật ký nào",
         "noActivityFound": "Không tìm thấy hoạt động nào",
-        "failedGetActivity": "Không thể lấy dữ liệu hoạt động",
-        "failedGetLogs": "Không thể lấy dữ liệu nhật ký",
+        "failedGetActivity": "Không thể nhận hoạt động",
+        "failedGetLogs": "Không thể lấy nhật ký",
         "logs": "Nhật ký",
         "activity": "Hoạt động",
         "noLogsFound": "Không tìm thấy nhật ký nào"
@@ -401,6 +419,7 @@
         "disc": "Đĩa",
         "boxRear": "Hộp (phía sau)",
         "box": "Hộp",
-        "backdrop": "Phông nền"
+        "backdrop": "Phông nền",
+        "menu": "Menu"
     }
 }
