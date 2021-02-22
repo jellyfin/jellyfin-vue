@@ -7,6 +7,7 @@
       :temporary="$vuetify.breakpoint.mobile"
       :permanent="!$vuetify.breakpoint.mobile"
       app
+      class="safe-zone"
     >
       <template #prepend>
         <user-button />
@@ -241,7 +242,8 @@ export default Vue.extend({
 }
 
 .safe-zone {
-  padding-top: env(safe-area-inset-top);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
