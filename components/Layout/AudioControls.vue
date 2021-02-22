@@ -279,6 +279,8 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .audioControls {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
   user-select: none;
 }
 
