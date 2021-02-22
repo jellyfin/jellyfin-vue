@@ -5,10 +5,21 @@
         <v-card-title>{{ serverInfo.publicInfo.ServerName }}</v-card-title>
         <v-card-subtitle>{{ serverInfo.address }}</v-card-subtitle>
       </v-col>
-      <v-card-actions class="ml-auto mr-2">
-        <v-btn icon disabled>
-          <v-icon>mdi-information-outline</v-icon>
-        </v-btn>
+      <v-card-actions class="ml-auto mr-4">
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-btn :disabled="loading" icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-information-outline</v-icon>
+            </v-btn>
+          </template>
+          <span>
+            <b>{{
+              `${serverInfo.publicInfo.ProductName} ${serverInfo.publicInfo.Version}`
+            }}</b>
+            <br />
+            {{ serverInfo.publicInfo.OperatingSystem }}
+          </span>
+        </v-tooltip>
         <v-btn icon :disabled="loading" @click="removeServerFromStore">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
