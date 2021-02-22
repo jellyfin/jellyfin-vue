@@ -37,11 +37,11 @@ const config: NuxtConfig = {
       nativeUI: true,
       appleStatusBarStyle: 'black-translucent',
       name: 'Jellyfin',
-      theme_color: '#424242'
+      theme_color: '#1c2331'
     },
     manifest: {
       name: 'Jellyfin',
-      background_color: '#101010'
+      background_color: '#14141F'
     }
   },
   /*
