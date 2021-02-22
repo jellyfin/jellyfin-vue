@@ -637,7 +637,8 @@ export default Vue.extend({
 }
 
 .osd-top {
-  padding-bottom: 10em;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) 10em
+    env(safe-area-inset-left);
   background: linear-gradient(
     180deg,
     rgba(16, 16, 16, 0.75) 0%,
@@ -646,7 +647,8 @@ export default Vue.extend({
 }
 
 .osd-bottom {
-  padding-top: 10em;
+  padding: 10em env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
   background: linear-gradient(
     0deg,
     rgba(16, 16, 16, 0.75) 0%,
