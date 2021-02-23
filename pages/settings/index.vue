@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="pt-4">
-      <v-col cols="12" offset-lg="1" md="5" lg="4" class="pt-4 pb-4">
+      <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
         <v-card
           v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator"
           :class="{ 'mb-4': !$vuetify.breakpoint.mobile }"
