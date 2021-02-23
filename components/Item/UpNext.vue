@@ -1,14 +1,14 @@
 <template>
   <v-fade-transition>
-    <v-card class="container">
+    <v-card class="container pa-4">
       <div class="d-flex flex-column flex-grow-1">
-        <v-card-title class="countdown-header">
+        <v-card-title class="countdown-header pa-0">
           {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
           <span class="primary--text darken-2">
             &ensp;{{ timeLeft }} {{ $t('seconds') }}
           </span>
         </v-card-title>
-        <v-card-subtitle class="title subtitle-1">
+        <v-card-subtitle class="title subtitle-1 pa-0">
           {{ nextSeriesName }} -
           {{
             $t('tvShowAbbrev', {
@@ -21,11 +21,11 @@
         </v-card-subtitle>
         <div>
           {{ nextRunTime }}
-          <span id="endsAt">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
+          <span class="pl-4">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
         </div>
         <v-card-actions>
           <v-spacer />
-          <v-btn class="primary darken-2" @click="startNext">
+          <v-btn class="primary darken-2" @click="$emit('startNext')">
             {{ $t('dialog.upNext.startNow') }}
           </v-btn>
           <v-btn @click="$emit('hide')"> {{ $t('dialog.upNext.hide') }}</v-btn>
@@ -78,11 +78,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['setNextTrack']),
-    startNext(): boolean {
-      this.setNextTrack();
-      return true;
-    }
+    ...mapActions('playbackManager', ['setNextTrack'])
   }
 });
 </script>
@@ -94,10 +90,6 @@ export default Vue.extend({
   right: 0;
   bottom: 0;
   width: 100%;
-  padding: 1em;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
   will-change: transform, opacity;
   background-color: rgba(0, 0, 0, 0.7);
   color: #fff;
@@ -115,7 +107,6 @@ export default Vue.extend({
 .countdown-header {
   margin: 0.25em 0;
   font-weight: 500;
-  padding: 0;
 }
 .title {
   width: 100%;
@@ -123,10 +114,5 @@ export default Vue.extend({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0;
-}
-
-#endsAt {
-  padding-left: 1em;
 }
 </style>
