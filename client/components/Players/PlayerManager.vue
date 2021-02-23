@@ -32,6 +32,7 @@
               v-if="showUpNext"
               :time-left="timeLeft"
               @hide="upNextUserHidden = true"
+              @startNext="setNextTrack()"
             />
             <!-- Mini Player Overlay -->
             <v-fade-transition>
