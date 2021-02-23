@@ -108,14 +108,9 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import Vue from 'vue';
-import { mapActions, mapState, MutationPayload } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
-
-interface WebSocketMessage {
-  MessageType: string;
-  Data?: Record<string, never>;
-}
 
 interface LayoutButton {
   icon: string;
@@ -128,8 +123,7 @@ export default Vue.extend({
     return {
       isScrolled: false,
       drawer: false,
-      opacity: 0,
-      keepAliveInterval: undefined as number | undefined
+      opacity: 0
     };
   },
   computed: {
@@ -176,15 +170,9 @@ export default Vue.extend({
     socketUrl = socketUrl.replace('http:', 'ws:');
 
     this.$connect(socketUrl);
-    this.handleKeepAlive();
   },
   mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });
-  },
-  beforeDestroy() {
-    if (this.keepAliveInterval) {
-      clearInterval(this.keepAliveInterval);
-    }
   },
   destroyed() {
     window.removeEventListener('scroll', this.setIsScrolled);
@@ -193,32 +181,9 @@ export default Vue.extend({
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('displayPreferences', ['callAllCallbacks']),
     ...mapActions('page', ['showNavDrawer']),
-    handleKeepAlive(): void {
-      this.$store.subscribe(
-        (mutation: MutationPayload, state: AppState): void => {
-          if (
-            mutation.type === 'SOCKET_ONMESSAGE' &&
-            state.socket.message.MessageType === 'ForceKeepAlive'
-          ) {
-            this.sendWebSocketMessage('KeepAlive');
-            this.keepAliveInterval = window.setInterval(() => {
-              this.sendWebSocketMessage('KeepAlive');
-            }, state.socket.message.Data * 1000 * 0.5);
-          }
-        }
-      );
-    },
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.isScrolled = window.scrollY > 10;
-    },
-    sendWebSocketMessage(name: string, data?: Record<string, never>): void {
-      const msg: WebSocketMessage = {
-        MessageType: name,
-        ...(data ? { Data: data } : {})
-      };
-
-      this.$store.state.socket.instance.send(JSON.stringify(msg));
     }
   }
 });
