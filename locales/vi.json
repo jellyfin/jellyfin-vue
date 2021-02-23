@@ -79,7 +79,10 @@
         "logsAndActivity": {
             "failedGetLogs": "Không thể lấy nhật ký",
             "failedGetActivity": "Không thể nhận hoạt động",
-            "activity": "Hoạt động"
+            "activity": "Hoạt động",
+            "noLogsFound": "Không tìm thấy nhật ký nào",
+            "noActivityFound": "Không tìm thấy hoạt động nào",
+            "logs": "Nhật ký"
         },
         "help": "Trợ giúp"
     },
@@ -391,7 +394,8 @@
             "shuffle": "Phát ngẫu nhiên",
             "item": "Đang phát từ {item}"
         },
-        "clearQueue": "Xóa hàng đợi và dừng phát lại"
+        "clearQueue": "Xóa hàng đợi và dừng phát lại",
+        "queueItems": "{items} kênh"
     },
     "playFromBeginning": "Phát từ đầu",
     "resume": "Bắt đầu lại",
@@ -420,6 +424,10 @@
         "boxRear": "Hộp (phía sau)",
         "box": "Hộp",
         "backdrop": "Phông nền",
-        "menu": "Menu"
+        "menu": "Menu",
+        "thumb": "Ảnh thu nhỏ",
+        "logo": "Logo",
+        "banner": "Ảnh bìa",
+        "art": "Nghệ thuật"
     }
 }
