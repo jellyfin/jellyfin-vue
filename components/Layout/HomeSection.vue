@@ -1,7 +1,11 @@
 <template>
   <client-only>
     <swiper-section
-      :title="section.name"
+      :title="
+        section.libraryName === undefined
+          ? $t(section.name)
+          : $t(section.name, { libraryName: section.libraryName })
+      "
       :items="items"
       :shape="section.shape"
       :loading="loading"
