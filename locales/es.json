@@ -410,7 +410,11 @@
         },
         "crew": "Equipo",
         "composer": "Compositor",
-        "cast": "Reparto"
+        "cast": "Reparto",
+        "artist": {
+            "information": "Información",
+            "discography": "Discografía"
+        }
     },
     "imageType": {
         "thumb": "Miniatura",
