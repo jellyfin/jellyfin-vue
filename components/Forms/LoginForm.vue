@@ -12,6 +12,7 @@
             v-model="login.username"
             outlined
             hide-details
+            autocomplete="username"
             :label="$t('username')"
             :error-messages="errors"
           />
@@ -21,6 +22,7 @@
           outlined
           hide-details
           class="mt-4"
+          autocomplete="current-password"
           :label="$t('password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
