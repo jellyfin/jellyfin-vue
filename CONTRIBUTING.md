@@ -43,7 +43,7 @@ The project is written in [TypeScript](typescriptlang.org/), and using strongly 
 
 ### Tests
 
-We use [Jest](https://jestjs.io/) for unit testing. For testing Vue components, usage of [vue-testing-library](https://testing-library.com/docs/vue-testing-library/intro/) is prefered.
+We use [Jest](https://jestjs.io/) for unit testing. For testing Vue components, usage of [vue-testing-library](https://testing-library.com/docs/vue-testing-library/intro/) is preferred.
 
 When writing tests, we follow some conventions in regards to messages:
 
