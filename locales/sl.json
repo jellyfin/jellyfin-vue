@@ -108,5 +108,6 @@
     "buttons": {
         "ok": "Ok"
     },
-    "audio": "Zvok"
+    "audio": "Zvok",
+    "favorite": "Priljubljen"
 }
