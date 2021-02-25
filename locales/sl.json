@@ -61,7 +61,9 @@
         "remoteAccess": "Oddaljen dostop",
         "allowRemoteAccess": "Dovoli oddaljen dostop do strežnika",
         "administratorAccount": "Administratorski račun",
-        "preferedLanguage": "Privzeti jezik"
+        "preferedLanguage": "Privzeti jezik",
+        "setupWizard": "Namestitveni čarovnik",
+        "userSuccessfullySet": "Uporabnik je bil uspešno nastavljen."
     },
     "art": "Umetnost",
     "architecture": "Arhitektura",
@@ -109,5 +111,8 @@
         "ok": "Ok"
     },
     "audio": "Zvok",
-    "favorite": "Priljubljen"
+    "favorite": "Priljubljen",
+    "version": "Verzija",
+    "year": "Leto",
+    "years": "Leta"
 }
