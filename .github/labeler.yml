@@ -1,0 +1,20 @@
+tests:
+  - "**/*.spec.js"
+
+github_actions:
+  - ".github/workflows/*"
+
+vuex:
+  - "store/**/*.ts"
+
+plugins:
+  - "plugins/**/*.ts"
+
+vue:
+  - "**/*.vue"
+
+docker:
+  - "Dockerfile*"
+
+ui:
+  - any: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue"]
