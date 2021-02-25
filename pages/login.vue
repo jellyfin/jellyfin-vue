@@ -63,16 +63,16 @@ export default Vue.extend({
         'servers/connectServer',
         store.state.servers.serverUsed.address
       );
+
+      const publicUsers = (await $api.user.getPublicUsers({})).data;
+
+      const brandingData = (await $api.branding.getBrandingOptions()).data;
+      const disclaimer = brandingData.LoginDisclaimer || '';
+
+      return { publicUsers, disclaimer };
     } catch {
       redirect('/selectserver');
     }
-
-    const publicUsers = (await $api.user.getPublicUsers({})).data;
-
-    const brandingData = (await $api.branding.getBrandingOptions()).data;
-    const disclaimer = brandingData.LoginDisclaimer || '';
-
-    return { publicUsers, disclaimer };
   },
   data() {
     return {
