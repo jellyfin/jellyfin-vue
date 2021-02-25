@@ -57,6 +57,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+
       - name: Build images and push
         uses: docker/build-push-action@v2
         with:
@@ -68,6 +75,9 @@ jobs:
             jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable-ssr
             jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            ghcr.io/jellyfin/jellyfin-vue:unstable
+            ghcr.io/jellyfin/jellyfin-vue:unstable-ssr
+            ghcr.io/jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
 
   static:
     name: Build static images
@@ -120,6 +130,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+
       - name: Build images and push
         uses: docker/build-push-action@v2
         with:
@@ -130,3 +147,5 @@ jobs:
           tags: |
             jellyfin/jellyfin-vue:unstable-static
             jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            ghcr.io/jellyfin/jellyfin-vue:unstable-static
+            ghcr.io/jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
