@@ -1,0 +1,15 @@
+# This dockerfile is just for CI purposes. It needs the client
+# built in the host in order to be created and deployed
+
+FROM node:14-alpine
+
+COPY .docker/package.json ./.docker/nuxt.config.js ./
+COPY .nuxt ./.nuxt
+COPY static ./static
+
+# Install runtime dependencies
+RUN yarn install --production --no-lockfile
+
+EXPOSE 80
+
+CMD [ "yarn", "start" ]

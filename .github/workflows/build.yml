@@ -1,17 +1,14 @@
-name: Code quality
+name: Build
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: Lint
+  ssr:
+    name: Build SSR
     runs-on: ubuntu-latest
 
     steps:
@@ -43,11 +40,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run linter
-        run: yarn lint
+      - name: Build
+        run: yarn build
 
-  test:
-    name: Test
+  static:
+    name: Build static
     runs-on: ubuntu-latest
 
     steps:
@@ -79,8 +76,5 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run tests
-        run: yarn test
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
+      - name: Build
+        run: 'yarn build:static'
