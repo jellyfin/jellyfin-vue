@@ -971,14 +971,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime@^7.11.2", "@babel/runtime@^7.8.4":
-  version "7.12.18"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.12.18.tgz#af137bd7e7d9705a412b3caaf991fe6aaa97831b"
-  integrity sha512-BogPQ7ciE6SYAUPtlm9tWbgI9+2AgqSam6QivMgXgAT+fKbgppaj4ZX15MHeLC1PVF5sNk70huBu20XxWOs8Cg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.13.2":
+"@babel/runtime@^7.11.2", "@babel/runtime@^7.13.2", "@babel/runtime@^7.8.4":
   version "7.13.7"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.7.tgz#d494e39d198ee9ca04f4dcb76d25d9d7a1dc961a"
   integrity sha512-h+ilqoX998mRVM5FtB5ijRuHUDVt5l3yfoOi2uh18Z/O3hvyaHQ39NpxVkCIG5yFs+mLq/ewFp8Bss6zmWv6ZA==
@@ -9555,10 +9548,10 @@ mute-stream@0.0.8:
   resolved "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-mux.js@^5.9.1:
-  version "5.9.1"
-  resolved "https://registry.npmjs.org/mux.js/-/mux.js-5.9.1.tgz#7cea6ff5d2a4a0c751818f50ba8868410f98c67c"
-  integrity sha512-EWDCIemLUoTriIQpEHEfKO8hldujpiBYIqC6ilsMaNbd+1hhGoh/w1MZIhP5wkq+tkS+HfnrnNtyfamyXWfnPg==
+mux.js@^5.9.2:
+  version "5.9.2"
+  resolved "https://registry.npmjs.org/mux.js/-/mux.js-5.9.2.tgz#f6a49685e6785517fbff3fad604a4e33424207d9"
+  integrity sha512-9UAEYfcWqCp9hJ5NnT6xZbj2XGmt2GATzNHaYddlJ2AyeDcTGiaknUKtbUlYiw5rqLt0FN9upa+GdQYWX5GxgQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
 
