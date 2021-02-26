@@ -16,11 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-          clean: true
-          ref: 'master'
+        uses: actions/checkout@v2
 
       - name: Setup node environment
         uses: actions/setup-node@v2.1.4
@@ -52,11 +48,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          clean: true
-          ref: 'master'
 
       - name: Setup node environment
         uses: actions/setup-node@v2.1.4
