@@ -3,8 +3,8 @@
 
 FROM nginx:alpine
 
-LABEL maintainer "Jellyfin Packaging Team - packaging@jellyfin.org"
-LABEL org.opencontainers.image.source https://github.com/jellyfin/jellyfin-vue
+LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
+LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 
 COPY dist/ /usr/share/nginx/html/
 COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf

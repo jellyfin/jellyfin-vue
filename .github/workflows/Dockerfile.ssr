@@ -3,8 +3,8 @@
 
 FROM node:14-alpine
 
-LABEL maintainer "Jellyfin Packaging Team - packaging@jellyfin.org"
-LABEL org.opencontainers.image.source https://github.com/jellyfin/jellyfin-vue
+LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
+LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 
 COPY .docker/package.json ./.docker/nuxt.config.js ./
 COPY .nuxt ./.nuxt

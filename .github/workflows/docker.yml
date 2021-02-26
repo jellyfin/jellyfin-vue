@@ -16,7 +16,8 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Get commit hash
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        id: sha
+        run: echo "::set-output name=sha::${GITHUB_SHA::7}"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -74,10 +75,10 @@ jobs:
           tags: |
             jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable-ssr
-            jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
             ghcr.io/jellyfin/jellyfin-vue:unstable
             ghcr.io/jellyfin/jellyfin-vue:unstable-ssr
-            ghcr.io/jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            ghcr.io/jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
 
   static:
     name: Build static images
@@ -89,7 +90,8 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Get commit hash
-        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        id: sha
+        run: echo "::set-output name=sha::${GITHUB_SHA::7}"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -131,7 +133,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -146,6 +148,6 @@ jobs:
           file: '.github/workflows/Dockerfile.nginx'
           tags: |
             jellyfin/jellyfin-vue:unstable-static
-            jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
             ghcr.io/jellyfin/jellyfin-vue:unstable-static
-            ghcr.io/jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ env.SHORT_SHA }}
+            ghcr.io/jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
