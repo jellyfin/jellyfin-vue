@@ -234,7 +234,7 @@ describe('vuex: playbackManager', () => {
 
     store.commit('CLEAR_QUEUE');
 
-    expect(store.state.queue).toMatchObject([]);
+    expect(store.state.queue).toMatchObject(defaultState().queue);
   });
 
   it('sets the current and last indexes when "SET_CURRENT_ITEM_INDEX" is committed', () => {
@@ -453,6 +453,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the playback status to stopped when stop is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       status: PlaybackStatus.playing
@@ -464,6 +465,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the playback status to paused when pause is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       status: PlaybackStatus.playing
@@ -475,6 +477,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the playback status to playing when unpause is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       status: PlaybackStatus.paused
@@ -486,6 +489,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('toggles the playback status when playPause is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       status: PlaybackStatus.paused
@@ -501,6 +505,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the queue when clearQueue is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B]
@@ -508,10 +513,11 @@ describe('vuex: playbackManager', () => {
 
     store.dispatch('clearQueue');
 
-    expect(store.state.queue).toMatchObject([]);
+    expect(store.state.queue).toMatchObject(defaultState().queue);
   });
 
   it('sets the media source when setMediaSource is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -524,6 +530,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the queue when setNextTrack is dispatched at the end of the queue', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
@@ -537,6 +544,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('increases the item indexes when setNextTrack is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
@@ -550,6 +558,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the current time when setPreviousTrack is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentTime: 5
@@ -561,6 +570,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('decreases the item indexs when setPreviousTrack is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentItemIndex: 3
@@ -573,6 +583,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the current time when resetCurrentTime is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentTime: 1.234
@@ -584,6 +595,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the current item index when resetCurrentItemIndex is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentItemIndex: 1
@@ -595,6 +607,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the last item index to the current item index when setLastItemIndex is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       lastItemIndex: 1,
@@ -607,6 +620,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('clears the last item index when resetLastItemIndex is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       lastItemIndex: 1
@@ -618,6 +632,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the last progress update when setLastProgressUpdate is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -628,6 +643,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current volume when setVolume is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -638,6 +654,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current item index when setCurrentIndex is dispatched with the same index', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentItemIndex: 5
@@ -649,6 +666,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current item index when setCurrentIndex is dispatched with a new index', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentItemIndex: 5
@@ -660,6 +678,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current time when when setCurrentTime is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -670,6 +689,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current time when when changeCurrentTime is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -680,6 +700,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('updates the current time when skipForward is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentTime: 10
@@ -691,6 +712,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('resets the current time when skipBackward is dispatched when at 10 seconds or less', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentTime: 10
@@ -702,6 +724,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the current time when skipBackward is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       currentTime: 25
@@ -713,6 +736,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('updates the minimized flag when setMinimized is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       isMinimized: false
@@ -724,6 +748,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('updates the minimized flag when toggleMinimized is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       isMinimized: false
@@ -739,6 +764,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the play session ID when setPlaySessionId is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -749,6 +775,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('sets the repeat mode when setRepeatMode is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -759,6 +786,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('toggles between RepeatAll, RepeatOne and RepeatNone when toggleRepeatMode is dispatched with multiple items in the queue', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
@@ -779,6 +807,7 @@ describe('vuex: playbackManager', () => {
   });
 
   it('toggles between RepeatOne and RepeatNone when toggleRepeatMode is dispatched with one item in the queue', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A],

@@ -53,7 +53,7 @@ describe('vuex: backdrop', () => {
 
     store.commit('CLEAR_CURRENT_BACKDROP');
 
-    expect(store.state.blurhash).toBe('');
+    expect(store.state.blurhash).toBe(defaultState().blurhash);
   });
 
   it('resets the opacity when "RESET_BACKDROP_OPACITY" is committed', () => {
@@ -61,7 +61,7 @@ describe('vuex: backdrop', () => {
 
     store.commit('RESET_BACKDROP_OPACITY');
 
-    expect(store.state.opacity).toBe(0.75);
+    expect(store.state.opacity).toBe(defaultState().opacity);
   });
 
   // Default case
@@ -81,7 +81,7 @@ describe('vuex: backdrop', () => {
 
     store.dispatch('clearBackdrop');
 
-    expect(store.state.blurhash).toBe('');
+    expect(store.state.blurhash).toBe(defaultState().blurhash);
   });
 
   it('sets the opacity when setBackdropOpacity is dispatched', () => {

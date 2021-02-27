@@ -62,17 +62,18 @@ describe('vuex: userViews', () => {
 
     store.commit('CLEAR_USER_VIEWS');
 
-    expect(store.state.views).toMatchObject([]);
+    expect(store.state.views).toMatchObject(defaultState().views);
   });
 
   it('clears the user views when clearUserViews is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
     });
 
     store.dispatch('clearUserViews');
 
-    expect(store.state.views).toMatchObject([]);
+    expect(store.state.views).toMatchObject(defaultState().views);
   });
 
   it('gets the navigation drawer items when getNavigationDrawerItems is called', () => {
@@ -87,7 +88,8 @@ describe('vuex: userViews', () => {
     ]);
   });
 
-  it('gets all the user views when getUserViews is callsed dispatched', () => {
+  it('gets all the user views when getUserViews is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
     });

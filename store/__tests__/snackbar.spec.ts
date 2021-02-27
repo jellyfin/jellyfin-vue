@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 describe('vuex: snackbar', () => {
-  it('sets the snackbard message when "SET_SNACKBAR_MESSAGE" is committed', () => {
+  it('sets the snackbar message when "SET_SNACKBAR_MESSAGE" is committed', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_SNACKBAR_MESSAGE', SNACKBAR_SET_TEST_VALUE);
@@ -34,7 +34,7 @@ describe('vuex: snackbar', () => {
     expect(store.state).toMatchObject(SNACKBAR_SET_TEST_VALUE);
   });
 
-  it('resets the snackbard message when "RESET_MESSAGE" is committed', () => {
+  it('resets the snackbar message when "RESET_MESSAGE" is committed', () => {
     store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
 
     store.commit('RESET_MESSAGE');
@@ -43,6 +43,7 @@ describe('vuex: snackbar', () => {
   });
 
   it('sets the snackbar message and color when pushSnackbarMessage is dispatched with a color', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
     store.dispatch('pushSnackbarMessage', SNACKBAR_SET_TEST_VALUE);
@@ -51,7 +52,8 @@ describe('vuex: snackbar', () => {
   });
 
   // Undefined color is '' when color is not passed
-  it('sets the snackback message and no color when pushSnackbarMessage is dispatched without a color', () => {
+  it('sets the snackbar message and no color when pushSnackbarMessage is dispatched without a color', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
     store.dispatch('pushSnackbarMessage', {
@@ -66,6 +68,7 @@ describe('vuex: snackbar', () => {
   });
 
   it('clears the snackbar message when resetMessage is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
 
     store.dispatch('resetMessage');

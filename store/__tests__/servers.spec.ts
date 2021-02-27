@@ -77,6 +77,7 @@ describe('vuex: servers', () => {
   });
 
   it('adds a server to the server list when addServer is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState()
     });
@@ -89,6 +90,7 @@ describe('vuex: servers', () => {
   });
 
   it('removes a server from the server list when removeServer is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
       serverList: [DEMO_TEST_SERVER_VALUE]
@@ -100,6 +102,7 @@ describe('vuex: servers', () => {
   });
 
   it('clears the store when clearServers is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       serverUsed: DEMO_TEST_SERVER_VALUE,
       serverList: [DEMO_TEST_SERVER_VALUE]

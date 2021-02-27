@@ -90,7 +90,8 @@ describe('vuex: tvShows', () => {
     expect(store.state).toMatchObject(defaultState());
   });
 
-  it('sets the show, seasons and episodes <hen getTvShowsSeasonEpisodesSuccess is dispatched', () => {
+  it('sets the show, seasons and episodes when getTvShowsSeasonEpisodesSuccess is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({ ...defaultState() });
 
     store.dispatch('getTvShowsSeasonEpisodesSuccess', {
@@ -107,6 +108,7 @@ describe('vuex: tvShows', () => {
   });
 
   it('clears the store when clearTvShows is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       [TEST_TV_SERIES.Id || '']: {
         seasons: [TEST_TV_SEASON_1, TEST_TV_SEASON_2],
