@@ -55,7 +55,7 @@ When writing tests, we follow some conventions in regards to messages:
 #### Vue components
 
 ```typescript
-describe('ComponentName', () => {
+describe('component: ComponentName', () => {
   it('shows the text "Lorem Ipsum"', (): void => {
     // Your test logic goes here
   });
@@ -65,8 +65,8 @@ describe('ComponentName', () => {
 #### Mixins
 
 ```typescript
-describe('myMixin', () => {
-  it('does this when passed this value', () => {
+describe('mixin: myMixin', () => {
+  it('does this when passed that value', () => {
     // Your test logic goes here
   });
 });
