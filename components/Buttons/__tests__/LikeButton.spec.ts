@@ -5,7 +5,7 @@ import Vuex, { Store } from 'vuex';
 import Vue from 'vue';
 import LikeButton from '../LikeButton.vue';
 
-describe('LikeButton', () => {
+describe('component: LikeButton', () => {
   const localVue = createLocalVue();
   let vuetify: Vuetify;
   let store: Store<unknown>;

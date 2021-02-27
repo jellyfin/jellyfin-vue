@@ -5,7 +5,7 @@ const TestComponent = new Vue({
   mixins: [itemHelper]
 });
 
-describe('itemHelper', () => {
+describe('mixin: itemHelper', () => {
   it('returns true if the item can be played', () => {
     // TODO: Replace with BaseItemKind enum
     expect(TestComponent.canPlay({ Type: 'AggregateFolder' })).toEqual(false);

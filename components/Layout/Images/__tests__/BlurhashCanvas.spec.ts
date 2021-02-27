@@ -12,7 +12,7 @@ beforeEach(() => {
   });
 });
 
-describe('BlurhashCanvas', () => {
+describe('component: BlurhashCanvas', () => {
   it('has a hash property of type String', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

@@ -5,7 +5,7 @@ const TestComponent = new Vue({
   mixins: [timeUtils]
 });
 
-describe('timeUtils', () => {
+describe('mixin: timeUtils', () => {
   it('converts time from ms to ticks', () => {
     expect(TestComponent.ticksToMs(10000)).toEqual(1);
 

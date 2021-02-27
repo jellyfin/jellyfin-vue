@@ -32,7 +32,7 @@ const wrapper = mount(PlayButton, {
   store
 });
 
-describe('PlayButton', () => {
+describe('component: PlayButton', () => {
   it('shows the text "play"', (): void => {
     expect(wrapper.text()).toBe('play');
   });

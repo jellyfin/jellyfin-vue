@@ -5,7 +5,7 @@ const TestComponent = new Vue({
   mixins: [htmlHelper]
 });
 
-describe('formsHelper', () => {
+describe('mixin: htmlHelper', () => {
   it('correctly sanitizes HTML', () => {
     /*
       NOTE: It is not our place to test if the library used is secure.

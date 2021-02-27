@@ -16,7 +16,7 @@ const wrapper = mount(SettingsPage, {
   }
 });
 
-describe('SettingsPage', () => {
+describe('component: SettingsPage', () => {
   it('shows content, action and title if all are defined', () => {
     expect(wrapper.text()).toContain('test-page-title');
     expect(wrapper.text()).toContain('This is a demo action');
