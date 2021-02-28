@@ -62,7 +62,12 @@
         },
         "settings": "Réglages",
         "logsAndActivity": {
-            "failedGetActivity": "Impossible d'obtenir l'activité"
+            "failedGetActivity": "Impossible d'obtenir l'activité",
+            "noLogsFound": "Aucun journal trouvé",
+            "noActivityFound": "Aucune activité trouvée",
+            "logs": "Journaux",
+            "failedGetLogs": "Impossible de récupérer les journaux",
+            "activity": "Activité"
         },
         "help": "Aide",
         "devices": {
@@ -407,7 +412,11 @@
         },
         "crew": "Équipe",
         "composer": "Compositeur(trice)",
-        "cast": "Distribution"
+        "cast": "Distribution",
+        "artist": {
+            "discography": "Discographie",
+            "information": "Informations"
+        }
     },
     "imageType": {
         "thumb": "Vignette",
