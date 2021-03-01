@@ -97,6 +97,27 @@ body {
   flex: 0;
 }
 
+.pa-s {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+  env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.pt-s {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pl-s {
+  padding-left: env(safe-area-inset-left);
+}
+
+.pr-s {
+  padding-right: env(safe-area-inset-right);
+}
+
+.pb-s {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* Customized Vuetify components */
 .v-menu__content .v-list {
   background: map-get($material-light, 'cards') !important;

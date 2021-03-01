@@ -72,7 +72,7 @@
               <div
                 class="d-flex flex-column justify-space-between align-center player-overlay"
               >
-                <div class="osd-top">
+                <div class="osd-top pt-s pl-s pr-s">
                   <div class="d-flex justify-space-between align-center">
                     <div class="d-flex">
                       <v-btn icon @click="stopPlayback">
@@ -104,8 +104,8 @@
                   </div>
                 </div>
 
-                <div class="px-4 osd-bottom">
-                  <div>
+                <div class="osd-bottom pb-s pl-s pr-s">
+                  <div class="px-4">
                     <time-slider />
                     <div class="d-flex justify-space-between">
                       <div>
@@ -637,8 +637,7 @@ export default Vue.extend({
 }
 
 .osd-top {
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) 10em
-    env(safe-area-inset-left);
+  padding-bottom: 10em;
   background: linear-gradient(
     180deg,
     rgba(16, 16, 16, 0.75) 0%,
@@ -647,8 +646,7 @@ export default Vue.extend({
 }
 
 .osd-bottom {
-  padding: 10em env(safe-area-inset-right) env(safe-area-inset-bottom)
-    env(safe-area-inset-left);
+  padding-top: 10em;
   background: linear-gradient(
     0deg,
     rgba(16, 16, 16, 0.75) 0%,

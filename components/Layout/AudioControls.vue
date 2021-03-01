@@ -11,7 +11,7 @@
       <v-container v-if="isFullScreenPlayer" fluid>
         <time-slider />
       </v-container>
-      <v-container class="safe-zone" fluid>
+      <v-container class="pb-s" fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
             <nuxt-link :to="'/fullscreen/playback'">
@@ -280,10 +280,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .audioControls {
   user-select: none;
-}
-
-.safe-zone {
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .height-fit-content {
