@@ -41,7 +41,13 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
 ## Requirements
 
-This project uses [npm](https://docs.npmjs.com/getting-started) as a package manager.
+This project requires [Node 14](https://nodejs.org/en/) and uses **npm** as a package manager.
+
+You also need the following Jellyfin server version:
+
+```
+Jellyfin >=10.7.0
+```
 
 ## Contributing
 
@@ -52,12 +58,6 @@ The project also contains recommended extensions for [Visual Studio Code](https:
 Finally, we provide useful pre-commit hooks via [Husky](https://typicode.github.io/husky/#/), as well as [Comitizen](https://github.com/commitizen/cz-cli) integration, in order to help you respect the style and naming conventions used throughout this project.
 
 For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
-
-## Pre-requirements
-
-```
-Jellyfin >=10.7.0
-```
 
 ## Build Process
 
