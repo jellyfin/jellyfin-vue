@@ -46,13 +46,20 @@ const itemHelper = Vue.extend({
 
       if (
         [
-          'MusicGenre',
-          'Season',
-          'Series',
+          'Audio',
+          'AudioBook',
           'BoxSet',
+          'Episode',
+          'Movie',
           'MusicAlbum',
           'MusicArtist',
-          'Playlist'
+          'MusicGenre',
+          'MusicVideo',
+          'Playlist',
+          'Season',
+          'Series',
+          'Trailer',
+          'Video'
         ].includes(itemType) ||
         ['Video', 'Audio'].includes(itemMediaType)
       ) {

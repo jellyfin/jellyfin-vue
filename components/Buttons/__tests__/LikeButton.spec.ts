@@ -5,7 +5,7 @@ import Vuex, { Store } from 'vuex';
 import Vue from 'vue';
 import LikeButton from '../LikeButton.vue';
 
-describe('Like button', () => {
+describe('component: LikeButton', () => {
   const localVue = createLocalVue();
   let vuetify: Vuetify;
   let store: Store<unknown>;
@@ -17,7 +17,7 @@ describe('Like button', () => {
   });
 
   // Item is 'favorited'
-  it('Heart outline is shown when item is not favorited', (): void => {
+  it('shows a heart outline icon when the item is not favorited', (): void => {
     wrapper = mount(LikeButton, {
       localVue,
       vuetify,
@@ -34,7 +34,7 @@ describe('Like button', () => {
   });
 
   // Item is not 'favorited'
-  it('Solid heart is shown when item is favorited', (): void => {
+  it('shows a heart icon when the item is favorited', (): void => {
     wrapper = mount(LikeButton, {
       localVue,
       vuetify,
@@ -50,7 +50,7 @@ describe('Like button', () => {
     expect(wrapper.find('.red--text').exists()).toBe(true);
   });
 
-  it('Icon updates when props change', async (): Promise<void> => {
+  it('updates the icon when the IsFavorite user data is changed', async (): Promise<void> => {
     wrapper = mount(LikeButton, {
       localVue,
       vuetify,
@@ -59,6 +59,7 @@ describe('Like button', () => {
         item: { UserData: { IsFavorite: false } } as BaseItemDto
       }
     });
+
     expect(wrapper.find('.mdi-heart-outline').exists()).toBe(true);
 
     await wrapper.setProps({

@@ -5,7 +5,7 @@ import {
 } from '../items';
 
 describe('getLibraryIcon', () => {
-  test('returns the correct library icon based on library type', () => {
+  it('returns the correct library icon based on library type', () => {
     expect(getLibraryIcon('movies')).toEqual('mdi-movie');
     expect(getLibraryIcon('music')).toEqual('mdi-music');
     expect(getLibraryIcon('photos')).toEqual('mdi-image');
@@ -23,7 +23,7 @@ describe('getLibraryIcon', () => {
 });
 
 describe('getShapeFromCollectionType', () => {
-  test('returns the correct card shape based on collection type', () => {
+  it('returns the correct card shape based on collection type', () => {
     expect(getShapeFromCollectionType('boxsets')).toEqual('portrait-card');
     expect(getShapeFromCollectionType('movies')).toEqual('portrait-card');
     expect(getShapeFromCollectionType('tvshows')).toEqual('portrait-card');
@@ -40,7 +40,7 @@ describe('getShapeFromCollectionType', () => {
 });
 
 describe('getShapeFromItemType', () => {
-  test('returns the correct card shape based on item type', () => {
+  it('returns the correct card shape based on item type', () => {
     expect(getShapeFromItemType('Audio')).toEqual('square-card');
     expect(getShapeFromItemType('folder')).toEqual('square-card');
     expect(getShapeFromItemType('musicalbum')).toEqual('square-card');

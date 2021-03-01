@@ -5,9 +5,15 @@ const TestComponent = new Vue({
   mixins: [htmlHelper]
 });
 
-test('Correctly sanitizes HTML and replaces new lines with <br> tags', () => {
-  expect(TestComponent.sanitizeHtml('text\ntext\ntext')).toBe(
-    'text<br>text<br>text'
-  );
-  expect(TestComponent.sanitizeHtml('texttexttext')).toBe('texttexttext');
+describe('mixin: htmlHelper', () => {
+  it('correctly sanitizes HTML', () => {
+    /*
+      NOTE: It is not our place to test if the library used is secure.
+      We just want to check if it's actually doing anything.
+    */
+    expect(TestComponent.sanitizeHtml('text\ntext\ntext')).toBe(
+      'text<br>text<br>text'
+    );
+    expect(TestComponent.sanitizeHtml('texttexttext')).toBe('texttexttext');
+  });
 });

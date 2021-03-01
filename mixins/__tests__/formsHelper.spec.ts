@@ -21,8 +21,10 @@ const FORMS_EXPECTED_OUTPUT = [
   { value: { name: 'eee' } }
 ];
 
-test('Correctly itemizes the array of items', () => {
-  expect(TestComponent.getItemizedSelect(FORMS_TEST_INPUT)).toMatchObject(
-    FORMS_EXPECTED_OUTPUT
-  );
+describe('mixin: formsHelper', () => {
+  it('correctly itemizes the array of items', () => {
+    expect(TestComponent.getItemizedSelect(FORMS_TEST_INPUT)).toMatchObject(
+      FORMS_EXPECTED_OUTPUT
+    );
+  });
 });

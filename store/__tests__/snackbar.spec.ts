@@ -25,49 +25,54 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions }));
 });
 
-test('When "SET_SNACKBAR_MESSAGE" is committed, the snackbar message is set.', () => {
-  store.replaceState({ ...defaultState() });
+describe('vuex: snackbar', () => {
+  it('sets the snackbar message when "SET_SNACKBAR_MESSAGE" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  store.commit('SET_SNACKBAR_MESSAGE', SNACKBAR_SET_TEST_VALUE);
+    store.commit('SET_SNACKBAR_MESSAGE', SNACKBAR_SET_TEST_VALUE);
 
-  expect(store.state).toMatchObject(SNACKBAR_SET_TEST_VALUE);
-});
-
-test('When "RESET_MESSAGE" is committed, the message is reset.', () => {
-  store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
-
-  store.commit('RESET_MESSAGE');
-
-  expect(store.state).toMatchObject(defaultState());
-});
-
-test('When pushSnackbarMessage is called, snackbar message is set. Case A', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('pushSnackbarMessage', SNACKBAR_SET_TEST_VALUE);
-
-  expect(store.state).toMatchObject(SNACKBAR_SET_TEST_VALUE);
-});
-
-// Undefined color is '' when color is not passed
-test('When pushSnackbarMessage is called, snackbar message is set. Case B', () => {
-  store.replaceState({ ...defaultState() });
-
-  store.dispatch('pushSnackbarMessage', {
-    ...SNACKBAR_SET_TEST_VALUE,
-    color: undefined
+    expect(store.state).toMatchObject(SNACKBAR_SET_TEST_VALUE);
   });
 
-  expect(store.state).toMatchObject({
-    ...SNACKBAR_SET_TEST_VALUE,
-    color: ''
+  it('resets the snackbar message when "RESET_MESSAGE" is committed', () => {
+    store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
+
+    store.commit('RESET_MESSAGE');
+
+    expect(store.state).toMatchObject(defaultState());
   });
-});
 
-test('When resetMessage is called, snackbar message is reset.', () => {
-  store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
+  it('sets the snackbar message and color when pushSnackbarMessage is dispatched with a color', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
 
-  store.dispatch('resetMessage');
+    store.dispatch('pushSnackbarMessage', SNACKBAR_SET_TEST_VALUE);
 
-  expect(store.state).toMatchObject(defaultState());
+    expect(store.state).toMatchObject(SNACKBAR_SET_TEST_VALUE);
+  });
+
+  // Undefined color is '' when color is not passed
+  it('sets the snackbar message and no color when pushSnackbarMessage is dispatched without a color', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...defaultState() });
+
+    store.dispatch('pushSnackbarMessage', {
+      ...SNACKBAR_SET_TEST_VALUE,
+      color: undefined
+    });
+
+    expect(store.state).toMatchObject({
+      ...SNACKBAR_SET_TEST_VALUE,
+      color: ''
+    });
+  });
+
+  it('clears the snackbar message when resetMessage is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({ ...SNACKBAR_SET_TEST_VALUE });
+
+    store.dispatch('resetMessage');
+
+    expect(store.state).toMatchObject(defaultState());
+  });
 });

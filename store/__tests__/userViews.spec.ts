@@ -40,60 +40,64 @@ beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions, getters }));
 });
 
-test('When "SET_USER_VIEWS" is committed, user views are set.', () => {
-  store.replaceState({ ...defaultState() });
+describe('vuex: userViews', () => {
+  it('sets the user views when "SET_USER_VIEWS" is committed', () => {
+    store.replaceState({ ...defaultState() });
 
-  store.commit('SET_USER_VIEWS', {
-    userViews: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    store.commit('SET_USER_VIEWS', {
+      userViews: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
+
+    expect(store.state.views).toMatchObject([
+      DEMO_TEST_ITEM_A,
+      DEMO_TEST_ITEM_B,
+      DEMO_TEST_ITEM_C
+    ]);
   });
 
-  expect(store.state.views).toMatchObject([
-    DEMO_TEST_ITEM_A,
-    DEMO_TEST_ITEM_B,
-    DEMO_TEST_ITEM_C
-  ]);
-});
+  it('clears the user views when "CLEAR_USER_VIEWS" is committed', () => {
+    store.replaceState({
+      views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
 
-test('When "CLEAR_USER_VIEWS" is committed, user views are cleared.', () => {
-  store.replaceState({
-    views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    store.commit('CLEAR_USER_VIEWS');
+
+    expect(store.state.views).toMatchObject(defaultState().views);
   });
 
-  store.commit('CLEAR_USER_VIEWS');
+  it('clears the user views when clearUserViews is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({
+      views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
 
-  expect(store.state.views).toMatchObject([]);
-});
+    store.dispatch('clearUserViews');
 
-test('When clearUserViews is is called, user views are cleared.', () => {
-  store.replaceState({
-    views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    expect(store.state.views).toMatchObject(defaultState().views);
   });
 
-  store.dispatch('clearUserViews');
+  it('gets the navigation drawer items when getNavigationDrawerItems is called', () => {
+    store.replaceState({
+      views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
 
-  expect(store.state.views).toMatchObject([]);
-});
-
-test('When getNavigationDrawerItems is called, the nav draw items are returned.', () => {
-  store.replaceState({
-    views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    expect(store.getters.getNavigationDrawerItems).toMatchObject([
+      { icon: 'mdi-movie', title: 'test-view-a', to: '/library/test-id-1' },
+      { icon: 'mdi-music', title: 'test-view-b', to: '/library/test-id-2' },
+      { icon: 'mdi-folder', title: 'test-view-c', to: '/library/test-id-3' }
+    ]);
   });
 
-  expect(store.getters.getNavigationDrawerItems).toMatchObject([
-    { icon: 'mdi-movie', title: 'test-view-a', to: '/library/test-id-1' },
-    { icon: 'mdi-music', title: 'test-view-b', to: '/library/test-id-2' },
-    { icon: 'mdi-folder', title: 'test-view-c', to: '/library/test-id-3' }
-  ]);
-});
+  it('gets all the user views when getUserViews is dispatched', () => {
+    // TODO: This should only test if the proper mutation is committed
+    store.replaceState({
+      views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    });
 
-test('When getUserViews is called, all userViews are returned.', () => {
-  store.replaceState({
-    views: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B, DEMO_TEST_ITEM_C]
+    expect(store.getters.getUserViews).toMatchObject([
+      DEMO_TEST_ITEM_A,
+      DEMO_TEST_ITEM_B,
+      DEMO_TEST_ITEM_C
+    ]);
   });
-
-  expect(store.getters.getUserViews).toMatchObject([
-    DEMO_TEST_ITEM_A,
-    DEMO_TEST_ITEM_B,
-    DEMO_TEST_ITEM_C
-  ]);
 });

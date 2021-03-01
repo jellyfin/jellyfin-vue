@@ -12,45 +12,46 @@ beforeEach(() => {
   });
 });
 
-describe('BlurhashCanvas', () => {
-  test('has a hash property of type String', () => {
+describe('component: BlurhashCanvas', () => {
+  it('has a hash property of type String', () => {
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.hash).toBeDefined();
+    expect(wrapper.vm.$options.props.hash).toBeDefined();
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.hash?.type).toBe(String);
-  });
-  test('has a width property of type Number', () => {
-    // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.width).toBeDefined();
-    // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.width?.type).toBe(Number);
+    expect(wrapper.vm.$options.props.hash.type).toBe(String);
   });
 
-  test('has a height property of type Number', () => {
+  it('has a width property of type Number', () => {
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.height).toBeDefined();
+    expect(wrapper.vm.$options.props.width).toBeDefined();
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.height.type).toBe(Number);
+    expect(wrapper.vm.$options.props.width.type).toBe(Number);
   });
 
-  test('has a punch property of type Number', () => {
+  it('has a height property of type Number', () => {
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.punch).toBeDefined();
+    expect(wrapper.vm.$options.props.height).toBeDefined();
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.punch?.type).toBe(Number);
+    expect(wrapper.vm.$options.props.height.type).toBe(Number);
   });
 
-  test('requires a hash', () => {
+  it('has a punch property of type Number', () => {
     // @ts-expect-error - props are not defined in the Vue type.
-    expect(wrapper?.vm?.$options?.props?.hash?.required).toBeTruthy();
+    expect(wrapper.vm.$options.props.punch).toBeDefined();
+    // @ts-expect-error - props are not defined in the Vue type.
+    expect(wrapper.vm.$options.props.punch.type).toBe(Number);
   });
 
-  test('has a default width and height', () => {
+  it('requires a hash', () => {
+    // @ts-expect-error - props are not defined in the Vue type.
+    expect(wrapper.vm.$options.props.hash.required).toBeTruthy();
+  });
+
+  it('has a default width and height', () => {
     expect(wrapper.props().width).toBe(32);
     expect(wrapper.props().height).toBe(32);
   });
 
-  test('has a default punch', () => {
+  it('has a default punch', () => {
     expect(wrapper.props().punch).toBe(1);
   });
 });
