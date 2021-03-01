@@ -11,6 +11,9 @@ import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { DisplayPreferencesState } from './displayPreferences';
+import { websocketPlugin } from './plugins/websocket';
+
+export const plugins = [websocketPlugin];
 
 export interface RootState {
   socket: {
