@@ -70,7 +70,7 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
  * @returns {boolean} Determines if browser has AV1 support
  */
 export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTizen && browserDetector.isTizen55()) {
+  if (browserDetector.isTizen() && browserDetector.isTizen55()) {
     return true;
   } else if (browserDetector.isWebOS5() && window.outerHeight >= 2160) {
     return true;

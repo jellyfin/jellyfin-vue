@@ -38,7 +38,7 @@ function getGlobalMaxVideoBitrate(): number | null {
   if (browserDetector.isXbox()) {
     return 12000000;
   }
-  if (browserDetector.isTizen && isTizenFhd) {
+  if (browserDetector.isTizen() && isTizenFhd) {
     return 20000000;
   }
   return null;

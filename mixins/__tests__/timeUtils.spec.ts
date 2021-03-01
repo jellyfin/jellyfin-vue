@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import timeUtils from '~/mixins/timeUtils.ts';
+import timeUtils from '~/mixins/timeUtils';
 
 const TestComponent = new Vue({
   mixins: [timeUtils]
