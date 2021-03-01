@@ -14,44 +14,35 @@ beforeEach(() => {
 
 describe('component: BlurhashCanvas', () => {
   it('has a hash property of type String', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.hash).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.hash.type).toBe(String);
   });
 
   it('has a width property of type Number', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.width).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.width.type).toBe(Number);
   });
 
   it('has a height property of type Number', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.height).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.height.type).toBe(Number);
   });
 
   it('has a punch property of type Number', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.punch).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.punch.type).toBe(Number);
   });
 
   it('requires a hash', () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - props are not defined in the Vue type.
     expect(wrapper.vm.$options.props.hash.required).toBeTruthy();
   });
 
