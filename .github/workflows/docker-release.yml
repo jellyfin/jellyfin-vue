@@ -51,6 +51,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+
       - name: Build and push stable SSR images
         if: github.event.action == 'released'
         uses: docker/build-push-action@v2
@@ -64,6 +71,10 @@ jobs:
             jellyfin/jellyfin-vue:stable-ssr
             jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
             jellyfin/jellyfin-vue:latest
+            ghcr.io/jellyfin/jellyfin-vue:stable
+            ghcr.io/jellyfin/jellyfin-vue:stable-ssr
+            ghcr.io/jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:latest
 
       - name: Build and push release candidate SSR images
         if: github.event.action == 'prereleased'
@@ -76,6 +87,8 @@ jobs:
           tags: |
             jellyfin/jellyfin-vue:stable-rc-ssr
             jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc-ssr
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
 
   static:
     name: Build static images
@@ -121,6 +134,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+
       - name: Build and push stable static images
         if: github.event.action == 'released'
         uses: docker/build-push-action@v2
@@ -132,6 +152,8 @@ jobs:
           tags: |
             jellyfin/jellyfin-vue:stable-static
             jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:stable-static
+            ghcr.io/jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
 
       - name: Build and push release candidate static images
         if: github.event.action == 'prereleased'
@@ -144,3 +166,5 @@ jobs:
           tags: |
             jellyfin/jellyfin-vue:stable-rc-static
             jellyfin/jellyfin-vue:stable-rc-static.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc-static
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc-static.${{ github.event.release.tag_name }}
