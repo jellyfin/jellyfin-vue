@@ -11,6 +11,7 @@ declare module '@nuxt/types' {
   interface Context {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
+    canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto) => string;
   }
@@ -18,6 +19,7 @@ declare module '@nuxt/types' {
   interface NuxtAppOptions {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
+    canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto) => string;
   }
@@ -27,6 +29,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     canPlay: (item: BaseItemDto) => boolean;
     canResume: (item: BaseItemDto) => boolean;
+    canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto) => string;
   }
@@ -77,6 +80,27 @@ const itemHelper = Vue.extend({
       } else {
         return false;
       }
+    },
+    /**
+     * Determine if an item can be mark as played
+     *
+     * @param {BaseItemDto} item - Determines if an item can be marked as played
+     * @returns {boolean} Whether the item can be mark played or not
+     */
+    canMarkWatched(item: BaseItemDto): boolean {
+      if (
+        ['Series', 'Season', 'BoxSet', 'AudioPodcast', 'AudioBook'].includes(
+          item.Type || ''
+        )
+      ) {
+        return true;
+      }
+
+      if (item.MediaType === 'Video' && item.Type !== 'TvChannel') {
+        return true;
+      }
+
+      return false;
     },
     /**
      * Generate a link to the item's details page route
