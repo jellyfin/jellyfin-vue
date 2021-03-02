@@ -35,6 +35,7 @@
             <play-button class="mr-2" :item="item" />
             <item-menu :item="item" outlined />
             <like-button :item="item" class="ml-2" />
+            <mark-played-button :item="item" />
           </v-row>
           <v-col cols="12" md="10">
             <v-row

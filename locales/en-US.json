@@ -353,6 +353,7 @@
   "unableGetServerConfiguration": "Unable to get server configuration",
   "unableToRefreshLibrary": "Unable to refresh library",
   "unableToToggleLike": "Unable to change the liked status of the element",
+  "unableToTogglePlayed": "Unable to update the watch status",
   "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",

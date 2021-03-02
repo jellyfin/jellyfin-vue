@@ -62,4 +62,60 @@ describe('mixin: itemHelper', () => {
 
     expect(TestComponent.canResume({ UserData: {} })).toEqual(false);
   });
+
+  it('returns true if the item can be marked as watched', () => {
+    expect(TestComponent.canMarkWatched({ Type: 'AggregateFolder' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'Audio' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'AudioBook' })).toEqual(true);
+    expect(TestComponent.canMarkWatched({ Type: 'BasePluginFolder' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'Book' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'BoxSet' })).toEqual(true);
+    expect(TestComponent.canMarkWatched({ Type: 'Channel' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'ChannelFolderItem' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'CollectionFolder' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'Episode' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Folder' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Genre' })).toEqual(false);
+    expect(
+      TestComponent.canMarkWatched({ Type: 'ManualPlaylistsFolder' })
+    ).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Movie' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'MusicAlbum' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'MusicArtist' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'MusicGenre' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'MusicVideo' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Person' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Photo' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'PhotoAlbum' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Playlist' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Program' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Recording' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Season' })).toEqual(true);
+    expect(TestComponent.canMarkWatched({ Type: 'Series' })).toEqual(true);
+    expect(TestComponent.canMarkWatched({ Type: 'Studio' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Trailer' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'TvChannel' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'TvProgram' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'UserRootFolder' })).toEqual(
+      false
+    );
+    expect(TestComponent.canMarkWatched({ Type: 'UserView' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Video' })).toEqual(false);
+    expect(TestComponent.canMarkWatched({ Type: 'Year' })).toEqual(false);
+
+    expect(TestComponent.canMarkWatched({ MediaType: 'Video' })).toEqual(true);
+    expect(TestComponent.canMarkWatched({ MediaType: 'Audio' })).toEqual(false);
+
+    expect(TestComponent.canMarkWatched({})).toEqual(false);
+  });
 });

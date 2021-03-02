@@ -63,6 +63,7 @@
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
+            <mark-played-button :item="item" dark />
             <like-button v-if="canPlay(item)" :item="item" dark />
             <item-menu :item="item" dark />
           </div>
