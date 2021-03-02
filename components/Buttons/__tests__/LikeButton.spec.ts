@@ -14,10 +14,6 @@ describe('component: LikeButton', () => {
   beforeEach(() => {
     vuetify = new Vuetify();
     store = new Vuex.Store({});
-  });
-
-  // Item is 'favorited'
-  it('shows a heart outline icon when the item is not favorited', (): void => {
     wrapper = mount(LikeButton, {
       localVue,
       vuetify,
@@ -26,7 +22,10 @@ describe('component: LikeButton', () => {
         item: {} as BaseItemDto
       }
     });
+  });
 
+  // Item is 'favorited'
+  it('shows a heart outline icon when the item is not favorited', (): void => {
     expect(wrapper.find('.mdi').exists()).toBe(true);
     expect(wrapper.find('.mdi-heart-outline').exists()).toBe(true);
     expect(wrapper.find('.v-btn--icon').exists()).toBe(true);
@@ -34,14 +33,9 @@ describe('component: LikeButton', () => {
   });
 
   // Item is not 'favorited'
-  it('shows a heart icon when the item is favorited', (): void => {
-    wrapper = mount(LikeButton, {
-      localVue,
-      vuetify,
-      store,
-      propsData: {
-        item: { UserData: { IsFavorite: true } } as BaseItemDto
-      }
+  it('shows a heart icon when the item is favorited', async (): Promise<void> => {
+    await wrapper.setProps({
+      item: { UserData: { IsFavorite: true } } as BaseItemDto
     });
 
     expect(wrapper.find('.mdi').exists()).toBe(true);
@@ -51,13 +45,8 @@ describe('component: LikeButton', () => {
   });
 
   it('updates the icon when the IsFavorite user data is changed', async (): Promise<void> => {
-    wrapper = mount(LikeButton, {
-      localVue,
-      vuetify,
-      store,
-      propsData: {
-        item: { UserData: { IsFavorite: false } } as BaseItemDto
-      }
+    await wrapper.setProps({
+      item: { UserData: { IsFavorite: false } } as BaseItemDto
     });
 
     expect(wrapper.find('.mdi-heart-outline').exists()).toBe(true);
