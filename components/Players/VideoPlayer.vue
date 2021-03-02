@@ -44,7 +44,9 @@ export default Vue.extend({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player: null as any,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ui: null as any
+      ui: null as any,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      unsubscribe(): void {}
     };
   },
   computed: {
@@ -90,34 +92,36 @@ export default Vue.extend({
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
-        this.$store.subscribe((mutation, _state: AppState) => {
-          switch (mutation.type) {
-            case 'playbackManager/PAUSE_PLAYBACK':
-              if (this.$refs.videoPlayer) {
-                (this.$refs.videoPlayer as HTMLVideoElement).pause();
-              }
-              break;
-            case 'playbackManager/UNPAUSE_PLAYBACK':
-              if (this.$refs.videoPlayer) {
-                (this.$refs.videoPlayer as HTMLVideoElement).play();
-              }
-              break;
-            case 'playbackManager/CHANGE_CURRENT_TIME':
-              if (this.$refs.videoPlayer && mutation?.payload?.time) {
-                (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
-                  mutation?.payload?.time;
-              }
-              break;
-            case 'playbackManager/SET_REPEAT_MODE':
-              if (this.$refs.videoPlayer) {
-                if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
-                  (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
-                } else {
-                  (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
+        this.unsubscribe = this.$store.subscribe(
+          (mutation, _state: AppState) => {
+            switch (mutation.type) {
+              case 'playbackManager/PAUSE_PLAYBACK':
+                if (this.$refs.videoPlayer) {
+                  (this.$refs.videoPlayer as HTMLVideoElement).pause();
                 }
-              }
+                break;
+              case 'playbackManager/UNPAUSE_PLAYBACK':
+                if (this.$refs.videoPlayer) {
+                  (this.$refs.videoPlayer as HTMLVideoElement).play();
+                }
+                break;
+              case 'playbackManager/CHANGE_CURRENT_TIME':
+                if (this.$refs.videoPlayer && mutation?.payload?.time) {
+                  (this.$refs.videoPlayer as HTMLVideoElement).currentTime =
+                    mutation?.payload?.time;
+                }
+                break;
+              case 'playbackManager/SET_REPEAT_MODE':
+                if (this.$refs.videoPlayer) {
+                  if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
+                    (this.$refs.videoPlayer as HTMLVideoElement).loop = true;
+                  } else {
+                    (this.$refs.videoPlayer as HTMLVideoElement).loop = false;
+                  }
+                }
+            }
           }
-        });
+        );
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -138,6 +142,7 @@ export default Vue.extend({
       this.player.unload();
       this.player.destroy();
     }
+    this.unsubscribe();
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
