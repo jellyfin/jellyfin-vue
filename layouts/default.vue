@@ -7,6 +7,7 @@
       :temporary="$vuetify.breakpoint.mobile"
       :permanent="!$vuetify.breakpoint.mobile"
       app
+      class="pa-s"
     >
       <template #prepend>
         <user-button />
@@ -49,7 +50,7 @@
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.mobile"
-      class="pl-2 pr-2"
+      class="pt-s pl-2 pr-2 app-bar-safe-zone"
       flat
       app
       :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
@@ -95,7 +96,9 @@
       />
     </v-app-bar>
     <v-main>
-      <nuxt />
+      <div class="pa-s">
+        <nuxt />
+      </div>
     </v-main>
     <audio-controls />
     <!-- Utilities and global systems -->
@@ -190,6 +193,17 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+.app-bar-safe-zone {
+  height: calc(56px + env(safe-area-inset-top)) !important;
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .app-bar-safe-zone {
+    height: calc(64px + env(safe-area-inset-top)) !important;
+  }
+}
+
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }

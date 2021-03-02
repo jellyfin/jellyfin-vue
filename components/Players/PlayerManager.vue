@@ -72,7 +72,7 @@
               <div
                 class="d-flex flex-column justify-space-between align-center player-overlay"
               >
-                <div class="osd-top">
+                <div class="osd-top pt-s pl-s pr-s">
                   <div class="d-flex justify-space-between align-center">
                     <div class="d-flex">
                       <v-btn icon @click="stopPlayback">
@@ -104,8 +104,8 @@
                   </div>
                 </div>
 
-                <div class="px-4 osd-bottom">
-                  <div>
+                <div class="osd-bottom pb-s pl-s pr-s">
+                  <div class="px-4">
                     <time-slider />
                     <div class="d-flex justify-space-between">
                       <div>

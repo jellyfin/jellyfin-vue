@@ -44,7 +44,7 @@ export default Vue.extend({
   }
   &::after {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;

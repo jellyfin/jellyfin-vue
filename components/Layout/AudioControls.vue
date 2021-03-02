@@ -11,7 +11,7 @@
       <v-container v-if="isFullScreenPlayer" fluid>
         <time-slider />
       </v-container>
-      <v-container fluid>
+      <v-container class="pb-s" fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
             <nuxt-link :to="'/fullscreen/playback'">
