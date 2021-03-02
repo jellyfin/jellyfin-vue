@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:jsdoc/recommended',
+    'plugin:json/recommended',
     'plugin:@typescript-eslint/recommended',
     '@nuxtjs/eslint-config-typescript',
     'prettier',
@@ -27,6 +28,7 @@ module.exports = {
     'promise/prefer-await-to-callbacks': 'error',
     'promise/prefer-await-to-then': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/prefer-ts-expect-error': 'error',
     'prefer-arrow-callback': 'error',
     // Force some component order stuff, formatting and such, for consistency
     'vue/component-name-in-template-casing': [
