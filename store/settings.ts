@@ -38,13 +38,11 @@ export const mutations: MutationTree<CustomPreferences> = {
 };
 
 export const actions: ActionTree<CustomPreferences, CustomPreferences> = {
-  setDarkMode({ commit, dispatch }, { darkMode }: { darkMode: boolean }) {
+  setDarkMode({ commit }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });
-    dispatch('displayPreferencesApi/updateSettings', null, { root: true });
   },
-  setLocale({ commit, dispatch }, { locale }: { locale: string }) {
+  setLocale({ commit }, { locale }: { locale: string }) {
     commit('SET_LOCALE', { locale });
-    dispatch('displayPreferencesApi/updateSettings', null, { root: true });
   },
   /**
    * Resets the state and reapply default theme

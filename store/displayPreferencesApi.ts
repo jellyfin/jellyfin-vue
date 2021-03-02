@@ -40,7 +40,7 @@ function castResponse(data: DisplayPreferencesDto): ClientPreferences {
      * destr does proper conversion for all the types, even undefined
      */
     // @ts-expect-error - TypeScript can't infer types from Object.entries
-    result.CustomPrefs?.[key] = destr(value);
+    result.CustomPrefs[key] = destr(value);
   }
   return result;
 }
@@ -68,12 +68,12 @@ export const actions: ActionTree<
   DisplayPreferencesApiState
 > = {
   /**
-   * Fetches display preferences and stores them at boot time
+   * Fetches custom preferences and inits the settings state
    *
    * @param {any} context - Vuex action context
    * @param {any} context.dispatch - Vuex dispatch
    */
-  async initState({ commit, dispatch }) {
+  async fetchCustomPreferences({ commit, dispatch }) {
     if (this.$auth.loggedIn) {
       commit('SYNCING_STARTED');
       try {
@@ -87,7 +87,7 @@ export const actions: ActionTree<
 
         if (response.status !== 200) {
           throw new Error(
-            'get display preferences status response = ' + response.status
+            `fetchCustomPreferences: Unexpected API response code (${response.status})`
           );
         }
 
@@ -124,18 +124,18 @@ export const actions: ActionTree<
     }
   },
   /**
-   * Pushes the current state to the server
+   * Pushes the client's current custom preferences to the server
    *
    * @param {any} context - Vuex action context
    * @param {any} context.state - Vuex state
    * @param {any} context.dispatch - Vuex dispatch
    */
-  async pushState({ rootState, commit, dispatch }) {
+  async pushCustomPreferences({ rootState, commit, dispatch }) {
     if (this.$auth.loggedIn) {
       commit('SYNCING_STARTED');
       try {
         // The fetch part is done because DisplayPreferences doesn't accept partial updates
-        const responseFetch = await this.$api.displayPreferences.getDisplayPreferences(
+        const response = await this.$api.displayPreferences.getDisplayPreferences(
           {
             displayPreferencesId: 'usersettings',
             userId: this.$auth.user?.Id,
@@ -143,13 +143,13 @@ export const actions: ActionTree<
           }
         );
 
-        if (responseFetch.status !== 200) {
+        if (response.status !== 200) {
           throw new Error(
-            'get display preferences status response = ' + responseFetch.status
+            `pushState(fetch): Unexpected API response code (${response.status})`
           );
         }
 
-        const displayPrefs = responseFetch.data;
+        const displayPrefs = response.data;
         displayPrefs.CustomPrefs = {};
         // @ts-expect-error - Vuex bad TypeScript support doesn't provide typings for rootState
         const settings = rootState.settings;
@@ -171,7 +171,7 @@ export const actions: ActionTree<
           displayPrefs.CustomPrefs[key] = string;
         }
 
-        const response = await this.$api.displayPreferences.updateDisplayPreferences(
+        const responseUpdate = await this.$api.displayPreferences.updateDisplayPreferences(
           {
             displayPreferencesId: 'usersettings',
             userId: this.$auth.user?.Id,
@@ -180,9 +180,9 @@ export const actions: ActionTree<
           }
         );
 
-        if (response.status !== 204) {
+        if (responseUpdate.status !== 204) {
           throw new Error(
-            'set display preferences status response = ' + response.status
+            `pushState(update): Unexpected API response code (${response.status})`
           );
         }
       } catch (error) {
@@ -201,7 +201,7 @@ export const actions: ActionTree<
   },
   async updateSettings({ commit, dispatch }) {
     commit('UPDATE_CLIENT_SETTINGS');
-    await dispatch('pushState');
+    await dispatch('pushCustomPreferences');
   },
   /**
    * Resets the state and reapply default theme

@@ -10,11 +10,12 @@ import { HomeSectionState } from './homeSection';
 import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
-import { DisplayPreferencesApiState } from '~/store/displayPreferencesApi';
-import { CustomPreferences } from '~/store/settings';
+import { DisplayPreferencesApiState } from './displayPreferencesApi';
+import { CustomPreferences } from './settings';
 import { websocketPlugin } from './plugins/websocket';
+import { preferencesSync } from './plugins/preferencesSync';
 
-export const plugins = [websocketPlugin];
+export const plugins = [websocketPlugin, preferencesSync];
 
 export interface RootState {
   socket: {
