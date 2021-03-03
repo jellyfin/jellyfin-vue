@@ -121,8 +121,7 @@ const config: NuxtConfig = {
     ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth',
-    '@nuxtjs/pwa'
+    '@nuxtjs/auth'
   ],
   /*
    ** Router configuration
@@ -312,5 +311,12 @@ const config: NuxtConfig = {
     host: '0.0.0.0'
   }
 };
+
+// Add context-dependent modules to the build
+if (process.env.NUXT_SSR) {
+  config.buildModules?.push('@nuxtjs/pwa');
+} else {
+  config.modules?.push('@nuxtjs/pwa');
+}
 
 export default config;
