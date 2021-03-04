@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
@@ -115,22 +115,8 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $api, $auth }) {
-    const item = (
-      await $api.userLibrary.getItem({
-        userId: $auth.user?.Id,
-        itemId: params.itemId
-      })
-    ).data;
-
-    return {
-      item
-    };
-  },
-  data() {
-    return {
-      item: {} as BaseItemDto
-    };
+  async asyncData({ params, $libraries }) {
+    await $libraries.fetchItem(params.itemId);
   },
   head() {
     return {
@@ -138,6 +124,10 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapGetters('items', ['getItem']),
+    item(): BaseItemDto {
+      return this.getItem(this.$route.params.itemId);
+    },
     twoColsInfoColumn: {
       get(): TwoColsInfoColumn {
         return {
