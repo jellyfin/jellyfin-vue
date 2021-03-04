@@ -1216,10 +1216,10 @@
   resolved "https://registry.npmjs.org/@fontsource/noto-sans-tc/-/noto-sans-tc-4.2.1.tgz#6302f9af7ee9ee9370513622b437309a370b2246"
   integrity sha512-OVqEwc6XNqeFxWO0cqDe6KLWSDKFThFvrRnaJYt0ecqh67McYFcpenjqQZU3HcmMR0GcGk6JN9SJYFvXrLZr8A==
 
-"@fontsource/noto-sans@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/@fontsource/noto-sans/-/noto-sans-4.2.1.tgz#074e02b25cd30eceb3a7909bf334a814220e7110"
-  integrity sha512-G2ZbQ9rNq4HrREbRKGjutJrRlrTSWUbl1CRjdlldV1Jkx15bM45gZJ2nOnkVMJRVWvUGEsSTw9rXF0AtafpFVQ==
+"@fontsource/noto-sans@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.npmjs.org/@fontsource/noto-sans/-/noto-sans-4.2.2.tgz#3f58e830bfe4cf63cb923ec519bd57f2cb428542"
+  integrity sha512-JT5Vjq0EQxbZUro2qWw/2+kGooTjJ5b4X/AmB97bOK6FLMEUoUYdKSDb/+4DCqlsWejAs0Mz2Y6Ka+FiRTgx2w==
 
 "@intlify/vue-i18n-extensions@^1.0.1":
   version "1.0.2"
