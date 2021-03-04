@@ -26,7 +26,7 @@ export const getters: GetterTree<ItemsState, ItemsState> = {
 export const mutations: MutationTree<ItemsState> = {
   ADD_ITEM(state: ItemsState, { item }: { item: BaseItemDto }) {
     if (!item.Id) {
-      throw new Error('No item ID');
+      throw new Error("No item ID in provided item, can't store it");
     }
     Vue.set(state.byId, item.Id, item);
     if (!state.allIds.includes(item.Id)) {
