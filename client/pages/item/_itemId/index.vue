@@ -315,14 +315,6 @@ export default Vue.extend({
       })
     ).data;
 
-    let crew: BaseItemPerson[] = [];
-
-    if (item.People) {
-      crew = item.People.filter((person: BaseItemPerson) => {
-        return ['Director', 'Writer'].includes(person.Type || '');
-      });
-    }
-
     let currentSource: MediaSourceInfo = {};
 
     if (item.MediaSources && item.MediaSources.length > 0) {
@@ -331,14 +323,12 @@ export default Vue.extend({
 
     return {
       item,
-      crew,
       currentSource
     };
   },
   data() {
     return {
       item: {} as BaseItemDto,
-      crew: [] as BaseItemPerson[],
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
@@ -394,6 +384,15 @@ export default Vue.extend({
           return true;
         }
       }
+    },
+    crew(): BaseItemPerson[] {
+      let crew: BaseItemPerson[] = [];
+      if (this.item.People) {
+        crew = this.item.People.filter((person: BaseItemPerson) => {
+          return ['Director', 'Writer'].includes(person.Type || '');
+        });
+      }
+      return crew;
     },
     actors: {
       get(): BaseItemPerson[] {
