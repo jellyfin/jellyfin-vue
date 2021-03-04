@@ -97,14 +97,14 @@ export default Vue.extend({
         });
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceSuccess'),
+          message: 'settings.devices.deleteDeviceSuccess',
           color: 'success'
         });
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceError'),
+          message: 'settings.devices.deleteDeviceError',
           color: 'error'
         });
 
@@ -122,14 +122,14 @@ export default Vue.extend({
         });
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteAllDevicesSuccess'),
+          message: 'settings.devices.deleteAllDevicesSuccess',
           color: 'success'
         });
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteAllDevicesError'),
+          message: 'settings.devices.deleteAllDevicesError',
           color: 'error'
         });
 
@@ -152,7 +152,7 @@ export default Vue.extend({
         });
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceSuccess'),
+          message: 'settings.devices.deleteDeviceSuccess',
           color: 'success'
         });
 
@@ -161,7 +161,7 @@ export default Vue.extend({
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('deleteDeviceError'),
+          message: 'deleteDeviceError',
           color: 'error'
         });
 

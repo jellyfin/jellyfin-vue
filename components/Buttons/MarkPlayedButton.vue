@@ -62,7 +62,7 @@ export default Vue.extend({
         }
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('unableToTogglePlayed'),
+          message: 'unableToTogglePlayed',
           color: 'error'
         });
         this.isPlayed = !this.isPlayed;

@@ -152,7 +152,7 @@ export default Vue.extend({
                 });
 
                 this.pushSnackbarMessage({
-                  message: this.$t('libraryRefreshQueued'),
+                  message: 'libraryRefreshQueued',
                   color: 'normal'
                 });
               } catch (e) {
@@ -160,7 +160,7 @@ export default Vue.extend({
                 console.error(e);
 
                 this.pushSnackbarMessage({
-                  message: this.$t('unableToRefreshLibrary'),
+                  message: 'unableToRefreshLibrary',
                   color: 'error'
                 });
               }

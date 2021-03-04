@@ -319,7 +319,7 @@ export default Vue.extend({
         }
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('filtersNotFound'),
+          message: 'filtersNotFound',
           color: 'error'
         });
       }

@@ -70,7 +70,7 @@ export default Vue.extend({
         // eslint-disable-next-line no-console
         console.error(error);
         this.pushSnackbarMessage({
-          message: this.$t('wizard.setLanguageError'),
+          message: 'wizard.setLanguageError',
           color: 'error'
         });
       }

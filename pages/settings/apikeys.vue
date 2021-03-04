@@ -82,7 +82,7 @@ export default Vue.extend({
         this.apiKeys.filter((item) => token !== item.AccessToken);
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeSuccess'),
+          message: 'settings.apiKeys.revokeSuccess',
           color: 'success'
         });
 
@@ -92,7 +92,7 @@ export default Vue.extend({
         console.error(error);
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeFailure'),
+          message: 'settings.apiKeys.revokeFailure',
           color: 'error'
         });
       }
@@ -110,7 +110,7 @@ export default Vue.extend({
         this.apiKeys = [];
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeAllSuccess'),
+          message: 'settings.apiKeys.revokeAllSuccess',
           color: 'success'
         });
 
@@ -120,7 +120,7 @@ export default Vue.extend({
         console.error(error);
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeAllFailure'),
+          message: 'settings.apiKeys.revokeAllFailure',
           color: 'error'
         });
       }
@@ -132,7 +132,7 @@ export default Vue.extend({
         this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
       } catch (error) {
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.refreshKeysFailure'),
+          message: 'settings.apiKeys.refreshKeysFailure',
           color: 'error'
         });
       }

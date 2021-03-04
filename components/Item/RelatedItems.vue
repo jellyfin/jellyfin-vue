@@ -97,7 +97,7 @@ export default Vue.extend({
       this.refreshItems();
     } catch (error) {
       this.pushSnackbarMessage({
-        message: this.$t('unableGetRelated'),
+        message: 'unableGetRelated',
         color: 'error'
       });
     }

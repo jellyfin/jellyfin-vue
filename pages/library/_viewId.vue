@@ -339,7 +339,7 @@ export default Vue.extend({
         this.items = [];
         this.itemsCount = 0;
         this.pushSnackbarMessage({
-          message: this.$t('failedToRefreshItems'),
+          message: 'failedToRefreshItems',
           color: 'error'
         });
       }

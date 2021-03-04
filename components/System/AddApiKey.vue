@@ -65,7 +65,7 @@ export default Vue.extend({
         });
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.createKeySuccess'),
+          message: 'settings.apiKeys.createKeySuccess',
           color: 'success'
         });
 
@@ -76,7 +76,7 @@ export default Vue.extend({
         console.error(error);
 
         this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.createKeyFailure'),
+          message: 'settings.apiKeys.createKeyFailure',
           color: 'error'
         });
       }

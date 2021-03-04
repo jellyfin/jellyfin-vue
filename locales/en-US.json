@@ -1,5 +1,6 @@
 {
   "3DFormat": "3D format",
+  "NoMediaSourcesAvailable": "No media sources available",
   "actor": "Actor",
   "actors": "Actors",
   "addNewPerson": "Add a new person",
@@ -29,6 +30,7 @@
   "customRating": "Custom rating",
   "darkModeToggle": "Toggle dark mode",
   "dateAdded": "Date added",
+  "deleteDeviceError": "An error happened while deleting the device",
   "details": "Details",
   "directing": "Directing",
   "director": "Director",
@@ -71,7 +73,6 @@
       "noItems": "There are no recently added items to show."
     }
   },
-  "images": "Images",
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",
@@ -85,6 +86,7 @@
     "screenshot": "Screenshot",
     "thumb": "Thumb"
   },
+  "images": "Images",
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "item": {
     "artist": {
@@ -158,17 +160,16 @@
   "name": "Name",
   "networks": "Networks",
   "nextUp": "Next up",
-  "noAudioTracksAvailable": "No audio tracks available",
   "noAudioTrackSelected": "No audio track selected",
+  "noAudioTracksAvailable": "No audio tracks available",
   "noImagesFound": "No images found",
-  "NoMediaSourcesAvailable": "No media sources available",
   "noNetworkConnection": "No network connection",
   "noResultsFound": "There is nothing here",
-  "noSubtitlesAvailable": "No subtitles available",
   "noSubtitleSelected": "No subtitle selected",
+  "noSubtitlesAvailable": "No subtitles available",
   "noTracksAvailable": "No tracks available",
-  "noVideoTracksAvailable": "No video tracks available",
   "noVideoTrackSelected": "No video track selected",
+  "noVideoTracksAvailable": "No video tracks available",
   "numberTracks": "{number} tracks",
   "operatingSystem": "Operating system",
   "originalAspectRatio": "Original aspect ratio",
@@ -180,24 +181,24 @@
   "people": "People",
   "person": "Person",
   "play": "Play",
+  "playFromBeginning": "Play from the beginning",
   "playback": {
     "addToQueue": "Add to queue",
     "clearQueue": "Clear queue and stop playback",
     "playAll": "Play all",
+    "playNext": "Play next",
     "playbackSource": {
       "item": "Playing from {item}",
       "shuffle": "Playing in shuffle",
       "shuffleItem": "Playing {item} in shuffle",
       "unknown": "Playing from queue"
     },
-    "playNext": "Play next",
     "queueItems": "{items} tracks",
     "saveAsPlaylist": "Save queue as a playlist",
     "shuffle": "Shuffle",
     "shuffleAll": "Shuffle all"
   },
   "played": "Played",
-  "playFromBeginning": "Play from the beginning",
   "present": "Present",
   "producer": "Producer",
   "queue": "Queue",

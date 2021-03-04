@@ -76,7 +76,7 @@ export default Vue.extend({
         // eslint-disable-next-line no-console
         console.error(error);
         this.pushSnackbarMessage({
-          message: this.$t('wizard.setMetadataError'),
+          message: 'wizard.setMetadataError',
           color: 'error'
         });
       }

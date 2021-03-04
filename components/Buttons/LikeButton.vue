@@ -75,7 +75,7 @@ export default Vue.extend({
         }
       } catch {
         this.pushSnackbarMessage({
-          message: this.$t('unableToToggleLike'),
+          message: 'unableToToggleLike',
           color: 'error'
         });
 
