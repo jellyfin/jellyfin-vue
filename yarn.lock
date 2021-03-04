@@ -1196,10 +1196,10 @@
   resolved "https://registry.npmjs.org/@fontsource/noto-sans-hk/-/noto-sans-hk-4.2.1.tgz#d60c52751559a34ac383f5ff52bd05bbd27445da"
   integrity sha512-N16iwzklcinsTmU26Jfm/MhZFrgwU9oUgWIcQyJp5XCsj0m1vHniuB3QY8Ug+LdggK2f/Xp7v7zns1Jf3Pa6Rw==
 
-"@fontsource/noto-sans-jp@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/@fontsource/noto-sans-jp/-/noto-sans-jp-4.2.1.tgz#359db7d745d7faa2360cc98db86843765e5bb2a9"
-  integrity sha512-j8MSsFu9EXXDUgrR9Bft3Gi76Mt6VJZ7rlpQnVn4PeXnw7EaJOzyF7U/l0VAY2cKf6545/4aqHUV0in5tHAAHg==
+"@fontsource/noto-sans-jp@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.npmjs.org/@fontsource/noto-sans-jp/-/noto-sans-jp-4.2.2.tgz#b1bc119ba16d3de6f0198287d7a8ce03a283cf70"
+  integrity sha512-Y8pWN4kGKCSde0P3uWL9/Q/yb7steK6Dkdo+tEU1eim3UZxkwRxjZL3QO7CAWlXrY4JC4QdGhntbS7k42JG4gg==
 
 "@fontsource/noto-sans-kr@^4.2.1":
   version "4.2.1"
