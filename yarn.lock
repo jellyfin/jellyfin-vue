@@ -1211,10 +1211,10 @@
   resolved "https://registry.npmjs.org/@fontsource/noto-sans-sc/-/noto-sans-sc-4.2.2.tgz#43ba185777c78b23db3334655a89db1c01fc6262"
   integrity sha512-l9HWU7sbLzafCK35vxqodX4LOOGCDmsNImLPcTKWweQwVUlveWFnPXhnsFGEbVu+d0ezOsfba/PuGaC8r539Hg==
 
-"@fontsource/noto-sans-tc@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/@fontsource/noto-sans-tc/-/noto-sans-tc-4.2.1.tgz#6302f9af7ee9ee9370513622b437309a370b2246"
-  integrity sha512-OVqEwc6XNqeFxWO0cqDe6KLWSDKFThFvrRnaJYt0ecqh67McYFcpenjqQZU3HcmMR0GcGk6JN9SJYFvXrLZr8A==
+"@fontsource/noto-sans-tc@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.npmjs.org/@fontsource/noto-sans-tc/-/noto-sans-tc-4.2.2.tgz#14780caae35318ea369f4e8d459464d3785e86c0"
+  integrity sha512-xVKFf48def5Iy7UdMM99UO1UMdKByhBQGXXysTmwvHy82q7qLu7+cW4cLwLwqTv3mEUkJrwXgZTLmkL4obwpiQ==
 
 "@fontsource/noto-sans@^4.2.1":
   version "4.2.1"
