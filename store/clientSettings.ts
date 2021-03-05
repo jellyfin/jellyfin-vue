@@ -2,47 +2,78 @@ import { MutationTree, ActionTree } from 'vuex';
 import nuxtConfig from '~/nuxt.config';
 
 /**
- * Casted typings for the CustomPrefs property of DisplayPreferencesDto
+ * Mutations that should be synced to the server
  */
-export interface CustomPreferences {
+export const syncedMutations = ['SET_DARK_MODE', 'SET_LOCALE'];
+
+/**
+ * Cast typings for the CustomPrefs property of DisplayPreferencesDto
+ */
+export interface ClientSettingsState {
   darkMode: boolean;
   locale: string;
+  lastSync: number | null;
 }
 
-export const defaultState = (): CustomPreferences => ({
+export const getDefaultState = (): ClientSettingsState => ({
   darkMode:
     nuxtConfig.vuetify?.theme?.dark !== undefined
       ? nuxtConfig.vuetify?.theme?.dark
       : true,
-  locale: 'auto'
+  locale: 'auto',
+  lastSync: null
 });
 
-export const state = defaultState;
+export const state = getDefaultState;
 
-export const mutations: MutationTree<CustomPreferences> = {
+export const mutations: MutationTree<ClientSettingsState> = {
+  /**
+   * Sets the internal state with the server answer and assign default custom prefs if not existing
+   *
+   * @param {ClientSettingsState} state - Current state
+   */
+  RESET_STATE(state: ClientSettingsState) {
+    Object.assign(state, getDefaultState());
+  },
   /**
    * Sets the internal state with the server answer and assign default custom prefs if not existing
    *
    * @param {CustomPreferences} state - Current state
-   * @param {any} param1 - Payload
+   * @param {any} payload - Payload
    */
-  INIT_STATE(state: CustomPreferences, { data }: { data: CustomPreferences }) {
+  INIT_STATE(
+    state: ClientSettingsState,
+    { data }: { data: ClientSettingsState }
+  ) {
     Object.assign(state, data);
   },
-  SET_DARK_MODE(state: CustomPreferences, { darkMode }: { darkMode: boolean }) {
+  SET_LAST_SYNC_DATE(
+    state: ClientSettingsState,
+    { lastSync }: { lastSync: number }
+  ) {
+    state.lastSync = lastSync;
+  },
+  SET_DARK_MODE(
+    state: ClientSettingsState,
+    { darkMode }: { darkMode: boolean }
+  ) {
     state.darkMode = darkMode;
   },
-  SET_LOCALE(state: CustomPreferences, { locale }: { locale: string }) {
+  SET_LOCALE(state: ClientSettingsState, { locale }: { locale: string }) {
     state.locale = locale;
   }
 };
 
-export const actions: ActionTree<CustomPreferences, CustomPreferences> = {
+export const actions: ActionTree<ClientSettingsState, ClientSettingsState> = {
   setDarkMode({ commit }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });
   },
   setLocale({ commit }, { locale }: { locale: string }) {
     commit('SET_LOCALE', { locale });
+  },
+  setLastSyncDate({ commit }) {
+    // No need to store as a Date, the timestamp is good enough
+    commit('SET_LAST_SYNC_DATE', { lastSync: Date.now() });
   },
   /**
    * Resets the state and reapply default theme
@@ -52,6 +83,9 @@ export const actions: ActionTree<CustomPreferences, CustomPreferences> = {
    * @param {any} context.dispatch - Vuex dispatch
    */
   resetState({ commit }) {
-    commit('INIT_STATE', { displayPreferences: defaultState() });
+    commit('RESET_STATE');
+  },
+  initState({ commit }, { data }: { data: ClientSettingsState }) {
+    commit('INIT_STATE', { data });
   }
 };

@@ -25,9 +25,10 @@ export default Vue.extend({
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
-    // TODO: Implement this.
+    // TODO: Implement custom section order
     let homeSectionsArray = pickBy(
-      store.state.settings.CustomPrefs,
+      // TODO: This should use another store and needs some refactoring
+      store.state.clientSettings.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&

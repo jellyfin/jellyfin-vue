@@ -45,7 +45,8 @@
         </v-list-item>
       </v-list>
       <template #append>
-        <connection-monitor class="ml-auto" />
+        <connection-monitor />
+        <syncing-monitor />
       </template>
     </v-navigation-drawer>
     <v-app-bar

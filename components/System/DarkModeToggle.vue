@@ -35,10 +35,10 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapState('settings', ['darkMode'])
+    ...mapState('clientSettings', ['darkMode'])
   },
   methods: {
-    ...mapActions('settings', ['setDarkMode']),
+    ...mapActions('clientSettings', ['setDarkMode']),
     toggleDarkMode(): void {
       this.setDarkMode({ darkMode: !this.darkMode });
     }

@@ -8,7 +8,7 @@ import { mapState } from 'vuex';
 
 const settingsHelper = Vue.extend({
   computed: {
-    ...mapState('settings', ['darkMode', 'locale'])
+    ...mapState('clientSettings', ['darkMode', 'locale'])
   },
   watch: {
     darkMode: {

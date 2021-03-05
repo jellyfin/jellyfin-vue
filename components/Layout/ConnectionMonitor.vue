@@ -1,12 +1,11 @@
 <template>
-  <div v-if="!$nuxt.isOnline">
-    <v-tooltip bottom>
-      <template #activator="{ on, attrs }">
-        <v-icon size="32" v-bind="attrs" v-on="on">
-          mdi-network-off-outline
-        </v-icon>
-      </template>
-      <span>{{ $t('noNetworkConnection') }}</span>
-    </v-tooltip>
+  <div
+    v-if="$nuxt.isOffline"
+    class="w-100 pa-3 d-flex flex-row justify-center align-center"
+  >
+    <v-icon class="mr-2" size="24" v-bind="attrs" v-on="on">
+      mdi-network-off-outline
+    </v-icon>
+    <span>{{ $t('noNetworkConnection') }}</span>
   </div>
 </template>
