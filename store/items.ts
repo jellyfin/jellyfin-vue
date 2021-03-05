@@ -40,8 +40,8 @@ export const mutations: MutationTree<ItemsState> = {
       state.allIds.splice(idx, 1);
     }
   },
-  CLEAR_STATE() {
-    this.replaceState(defaultState());
+  CLEAR_STATE(state: ItemsState) {
+    Object.assign(state, defaultState());
   }
 };
 
