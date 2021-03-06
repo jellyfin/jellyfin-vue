@@ -44,11 +44,9 @@ const itemHelper = Vue.extend({
      * @returns {boolean} Whether the item can be played on this client or not
      */
     canPlay(item: BaseItemDto): boolean {
-      const itemType = item.Type || '';
-      const itemMediaType = item.MediaType || '';
-
       if (
-        [
+        item &&
+        ([
           'Audio',
           'AudioBook',
           'BoxSet',
@@ -63,8 +61,8 @@ const itemHelper = Vue.extend({
           'Series',
           'Trailer',
           'Video'
-        ].includes(itemType) ||
-        ['Video', 'Audio'].includes(itemMediaType)
+        ].includes(item.Type || '') ||
+          ['Video', 'Audio'].includes(item.MediaType || ''))
       ) {
         return true;
       }

@@ -34,17 +34,8 @@
         @change="onChangeFilter"
       />
       <v-spacer />
-      <global-playback-button
-        v-if="isQueueable"
-        :items="items"
-        :disabled="loading || !items.length"
-        shuffle
-      />
-      <global-playback-button
-        v-if="isQueueable"
-        :items="items"
-        :disabled="loading || !items.length"
-      />
+      <play-button :items="items" shuffle />
+      <play-button :items="items" />
     </v-app-bar>
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
@@ -130,16 +121,6 @@ export default Vue.extend({
         return true;
       } else {
         return false;
-      }
-    },
-    isQueueable(): boolean {
-      switch (this.viewType) {
-        case 'MusicAlbum':
-          return true;
-        case 'MusicGenre':
-          return true;
-        default:
-          return false;
       }
     }
   },

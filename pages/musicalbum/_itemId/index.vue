@@ -38,18 +38,10 @@
               'ml-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <v-btn
-              v-if="canPlay(item)"
-              class="play-button mr-2"
-              color="primary"
-              min-width="8em"
-              depressed
-              rounded
-              @click="play({ items: [item] })"
-            >
-              {{ $t('play') }}
-            </v-btn>
-            <item-menu :item="item" outlined />
+            <play-button :items="[item]" />
+            <like-button :item="item" class="mr-2" />
+            <mark-played-button :item="item" class="mr-2" />
+            <item-menu :item="item" />
           </v-row>
           <v-col cols="12" md="10">
             <v-row
@@ -178,7 +170,6 @@ export default Vue.extend({
     this.clearBackdrop();
   },
   methods: {
-    ...mapActions('playbackManager', ['play']),
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
   }
