@@ -32,18 +32,22 @@ const defaultState = (): DisplayPreferencesState => ({
  */
 const updateMethods: { [key: string]: (value: string) => void } = {
   darkMode: (value: string) => {
-    if (window.$nuxt) window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+    if (window.$nuxt) {
+      window.$nuxt.$vuetify.theme.dark = stringToBoolean(value);
+    }
   },
 
   locale: (value: string) => {
     if (window.$nuxt) {
-      if (value !== 'auto') window.$nuxt.$i18n.setLocale(value);
-      else
+      if (value !== 'auto') {
+        window.$nuxt.$i18n.setLocale(value);
+      } else {
         window.$nuxt.$i18n.setLocale(
           window.$nuxt.$i18n.getBrowserLocale() ||
             window.$nuxt.$i18n.defaultLocale ||
             'en'
         );
+      }
     }
   }
 };
@@ -110,7 +114,9 @@ export const mutations: MutationTree<DisplayPreferencesState> = {
     { pref }: { pref: SingleCustomPrefMutationPayload }
   ) {
     Vue.set(state.CustomPrefs, pref.key, pref.value);
-    if (pref.key in updateMethods) updateMethods[pref.key](pref.value);
+    if (pref.key in updateMethods) {
+      updateMethods[pref.key](pref.value);
+    }
   }
 };
 
@@ -134,10 +140,11 @@ export const actions: ActionTree<
         }
       );
 
-      if (response.status !== 200)
+      if (response.status !== 200) {
         throw new Error(
           'get display preferences status response = ' + response.status
         );
+      }
 
       await dispatch('initStateSuccess', { displayPreferences: response.data });
     } catch (error) {
@@ -192,10 +199,11 @@ export const actions: ActionTree<
           displayPreferencesDto: state
         }
       );
-      if (response.status !== 204)
+      if (response.status !== 204) {
         throw new Error(
           'set display preferences status response = ' + response.status
         );
+      }
       await dispatch('pushStateSuccess');
     } catch (error) {
       await dispatch('pushStateFailure', { error });
@@ -236,7 +244,9 @@ export const actions: ActionTree<
     { key, value }: { key: string; value: string }
   ) {
     commit('EDIT_CUSTOM_PREF', { pref: { key, value } });
-    if (this.$auth.loggedIn) await dispatch('pushState');
+    if (this.$auth.loggedIn) {
+      await dispatch('pushState');
+    }
   },
 
   /**
@@ -275,7 +285,9 @@ export const actions: ActionTree<
    */
   callAllCallbacks({ state }) {
     Object.keys(state.CustomPrefs).forEach((key) => {
-      if (key in updateMethods) updateMethods[key](state.CustomPrefs[key]);
+      if (key in updateMethods) {
+        updateMethods[key](state.CustomPrefs[key]);
+      }
     });
   },
 

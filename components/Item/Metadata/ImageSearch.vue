@@ -107,7 +107,9 @@ import {
 export default Vue.extend({
   filters: {
     fixed(val: number): string | number {
-      if (!val) return val;
+      if (!val) {
+        return val;
+      }
       return val.toFixed(1);
     }
   },

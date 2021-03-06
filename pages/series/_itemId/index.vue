@@ -217,8 +217,9 @@ export default Vue.extend({
 
     let currentSource: MediaSourceInfo = {};
 
-    if (item.MediaSources && item.MediaSources.length > 0)
+    if (item.MediaSources && item.MediaSources.length > 0) {
       currentSource = item.MediaSources[0];
+    }
 
     return {
       item,

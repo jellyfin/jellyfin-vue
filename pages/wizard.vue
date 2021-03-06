@@ -135,12 +135,16 @@ export default Vue.extend({
       }
     },
     changeStep({ step }: { step: number }): void {
-      if (step === 4) this.completeWizard();
-      else this.wizardStage += 1;
+      if (step === 4) {
+        this.completeWizard();
+      } else {
+        this.wizardStage += 1;
+      }
 
       // This allows the return to previous steps, but not going forward past incomplete steps
-      if (this.wizardStage > this.maxWizardStage)
+      if (this.wizardStage > this.maxWizardStage) {
         this.maxWizardStage = this.wizardStage;
+      }
     },
     previousStep(): void {
       this.wizardStage -= 1;
