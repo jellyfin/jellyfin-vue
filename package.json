@@ -52,10 +52,13 @@
     "swiper": "5.x",
     "uuid": "^8.3.2",
     "vee-validate": "^3.4.5",
+    "vue": "^2.6.12",
     "vue-awesome-swiper": "^4.1.1",
     "vue-native-websocket": "^2.0.14",
     "vue-virtual-scroller": "^1.0.10",
     "vuedraggable": "^2.24.3",
+    "vuetify": "^2.4.5",
+    "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
