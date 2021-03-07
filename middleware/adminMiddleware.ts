@@ -8,7 +8,7 @@ import { Context } from '@nuxt/types';
  * @returns {void}
  */
 export default function (context: Context): void {
-  if (!context.$auth.user.Policy.IsAdministrator) {
+  if (!context.$auth.user?.Policy?.IsAdministrator) {
     return context.redirect('/');
   }
 }
