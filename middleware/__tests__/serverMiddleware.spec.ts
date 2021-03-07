@@ -40,7 +40,7 @@ const EXPECTED_REDIRECT = '/addserver';
 afterEach(() => mockRedirect.mockReset());
 
 describe('serverMiddleware', () => {
-  it('redirect to "/addserver/ when a baseUrl is not set', (): void => {
+  it('redirects to "/addserver/ when a baseUrl is not set', (): void => {
     serverMiddleware(BASE_INPUT);
 
     expect(mockRedirect).toHaveBeenCalled();
