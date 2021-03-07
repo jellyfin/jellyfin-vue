@@ -60,10 +60,10 @@
             "createKeySuccess": "Jaŋa API-kılt sättı üstelındı",
             "addNewKey": "Jaŋa API-kılttı üsteu",
             "revokeAllFailure": "Barlyq API-kıltterdı qaitaryp alu kezınde qate",
-            "revokeAllSuccess": "barlyq API-kıltter sättı qaitaryp alyndu",
+            "revokeAllSuccess": "barlyq API-kıltter sättı qaitaryp alyndy",
             "revokeAll": "Barlyq API-kıltterdı qaitaryp alu",
             "revokeFailure": "API-kılttı qaitaryp alu kezınde qate",
-            "revokeSuccess": "API-kılt sättı qaitaryp alyndu"
+            "revokeSuccess": "API-kılt sättı qaitaryp alyndy"
         },
         "settings": "Parametrler",
         "devices": {
@@ -122,7 +122,7 @@
     "selectUser": "Paıdalanýshyny tańdaý",
     "networks": "Jelıler",
     "name": "Aty",
-    "manualLogin": "Qolmen kirý",
+    "manualLogin": "Qolmen kıru",
     "collections": "Jiyntyqtar",
     "artists": "Oryndauşylar",
     "artist": "Oryndauşy",
@@ -140,7 +140,7 @@
         },
         "server": {
             "name": "Server",
-            "description": "Osy serverdegı tіldі jäne brendiŋdі teŋşeu"
+            "description": "Osy serverdegı tıldı jäne brendiŋdі teŋşeu"
         },
         "scheduledTasks": {
             "name": "Josparlauşy",
@@ -148,7 +148,7 @@
         },
         "plugins": {
             "name": "Plaginder",
-            "description": "Osy serverge jaŋa mümkіndіkterdı qosu jäne teŋşeu"
+            "description": "Osy serverge jaŋa mümkındıkterdı qosu jäne teŋşeu"
         },
         "playback": {
             "name": "Oinatu",
@@ -164,7 +164,7 @@
         },
         "liveTvAndDvr": {
             "name": "Efir ben DVR",
-            "description": "TD-tünerlerdі, telegid derekterın jetkіzuşіlerdі jäne DVR parametrlerіn basqaru"
+            "description": "TD-tünerlerdı, telegid derekterın jetkızuşılerdı jäne DVR parametrlerın basqaru"
         },
         "libraries": {
             "name": "Tasyğyşhanalar",
