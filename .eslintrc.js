@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     'prefer-arrow-callback': 'error',
+    curly: 'error',
     // Force some component order stuff, formatting and such, for consistency
     'vue/component-name-in-template-casing': [
       'error',

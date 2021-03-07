@@ -32,9 +32,15 @@ function getGlobalMaxVideoBitrate(): number | null {
   // TODO: These valus are taken directly from Jellyfin-web.
   // The source of them needs to be investigated.
 
-  if (browserDetector.isPs4()) return 8000000;
-  if (browserDetector.isXbox()) return 12000000;
-  if (browserDetector.isTizen && isTizenFhd) return 20000000;
+  if (browserDetector.isPs4()) {
+    return 8000000;
+  }
+  if (browserDetector.isXbox()) {
+    return 12000000;
+  }
+  if (browserDetector.isTizen && isTizenFhd) {
+    return 20000000;
+  }
   return null;
 }
 

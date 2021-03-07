@@ -17,8 +17,9 @@ export default Vue.extend({
           ) ||
           // https://github.com/vuetifyjs/vuetify/issues/4715
           (e.target as HTMLElement).isContentEditable
-        )
+        ) {
           return;
+        }
 
         const up = [keyCodes.up, keyCodes.pageup];
         const down = [keyCodes.down, keyCodes.pagedown];

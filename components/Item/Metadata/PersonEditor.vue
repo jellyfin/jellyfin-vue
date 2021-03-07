@@ -91,7 +91,9 @@ export default Vue.extend({
   },
   watch: {
     person(value: BaseItemPerson): void {
-      if (!value) return;
+      if (!value) {
+        return;
+      }
       this.editState = value;
     }
   },

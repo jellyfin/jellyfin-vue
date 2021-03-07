@@ -149,7 +149,9 @@ export default Vue.extend({
     cardTitle(): string {
       if (this.item.Type !== 'Episode') {
         return this.item.Name || '';
-      } else return this.item.SeriesName || '';
+      } else {
+        return this.item.SeriesName || '';
+      }
     },
     /**
      * @returns {string} Either a string representing the production year(s) for the current item

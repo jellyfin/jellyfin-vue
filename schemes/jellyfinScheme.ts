@@ -127,7 +127,9 @@ export default class JellyfinScheme {
     // Fetch the user, then set it in Nuxt Auth
     const user = (await this.$auth.ctx.app.$api.user.getCurrentUser()).data;
 
-    if (!user.Id) this.logout();
+    if (!user.Id) {
+      this.logout();
+    }
 
     this.$auth.setUser(user);
     await this.$auth.ctx.app.store.dispatch('displayPreferences/initState');

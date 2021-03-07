@@ -55,7 +55,9 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async toggleFavorite(): Promise<void> {
-      if (!this.item.Id) return;
+      if (!this.item.Id) {
+        return;
+      }
 
       try {
         if (!this.isFavorite) {
