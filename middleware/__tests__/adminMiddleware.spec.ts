@@ -32,7 +32,7 @@ const INPUT_ADMIN = ({
 afterEach(() => mockRedirect.mockReset());
 
 describe('adminMiddleware', () => {
-  it('redirect to "/" when user is not an administrator', (): void => {
+  it('redirects to "/" when user is not an administrator', (): void => {
     adminMiddleware(INPUT_NOT_ADMIN);
 
     expect(mockRedirect.mock.calls[0][0]).toBe('/');
