@@ -1,6 +1,6 @@
 <template>
   <v-snackbar v-model="model" app :color="color" bottom left>
-    {{ $t(message) }}
+    {{ message }}
   </v-snackbar>
 </template>
 
