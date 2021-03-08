@@ -66,7 +66,7 @@
     "@commitlint/config-conventional": "^12.0.1",
     "@mdi/font": "^5.9.55",
     "@nuxt/types": "^2.15.2",
-    "@nuxt/typescript-build": "^2.0.6",
+    "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/date-fns": "^1.4.3",
     "@nuxtjs/eslint-config": "^5.0.0",
     "@nuxtjs/eslint-config-typescript": "^5.0.0",
