@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import itemHelper from '~/mixins/itemHelper.ts';
+import itemHelper from '~/mixins/itemHelper';
 
 const TestComponent = new Vue({
   mixins: [itemHelper]

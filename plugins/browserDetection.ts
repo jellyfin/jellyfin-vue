@@ -220,7 +220,7 @@ class BrowserDetector {
    */
   isWebOS1(): boolean {
     return (
-      this.isWebOS &&
+      this.isWebOS() &&
       this.userAgentContains('AppleWebKit/537') &&
       !this.userAgentContains('Chrome/')
     );
@@ -231,7 +231,7 @@ class BrowserDetector {
    */
   isWebOS2(): boolean {
     return (
-      this.isWebOS &&
+      this.isWebOS() &&
       this.userAgentContains('AppleWebKit/538') &&
       !this.userAgentContains('Chrome/')
     );
@@ -241,21 +241,21 @@ class BrowserDetector {
    * @returns {boolean} Determines if current platform is WebOS3
    */
   isWebOS3(): boolean {
-    return this.isWebOS && this.userAgentContains('Chrome/38');
+    return this.isWebOS() && this.userAgentContains('Chrome/38');
   }
 
   /**
    * @returns {boolean} Determines if current platform is WebOS4
    */
   isWebOS4(): boolean {
-    return this.isWebOS && this.userAgentContains('Chrome/53');
+    return this.isWebOS() && this.userAgentContains('Chrome/53');
   }
 
   /**
    * @returns {boolean} Determines if current platform is WebOS5
    */
   isWebOS5(): boolean {
-    return this.isWebOS && this.userAgentContains('Chrome/68');
+    return this.isWebOS() && this.userAgentContains('Chrome/68');
   }
 
   /* Platform Utilities */
