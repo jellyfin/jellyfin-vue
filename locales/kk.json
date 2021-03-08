@@ -430,5 +430,7 @@
         "backdrop": "Artqy suret",
         "art": "Oiu suret"
     },
-    "about": "Qoldanba turaly"
+    "about": "Qoldanba turaly",
+    "libraryEmptyFilters": "Säikester joq. Basqa tarmaqtardy körsetu üşın keibır süzgılerdı alastaŋyz",
+    "unableToTogglePlayed": "Qarau statusyn jaŋartu mümkın emes"
 }
