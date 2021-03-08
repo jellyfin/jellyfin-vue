@@ -428,5 +428,7 @@
             "information": "信息",
             "discography": "唱片目录"
         }
-    }
+    },
+    "unableToTogglePlayed": "无法更新观看状态",
+    "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目"
 }
