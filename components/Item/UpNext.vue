@@ -48,11 +48,6 @@ export default Vue.extend({
       required: true
     }
   },
-  data() {
-    return {
-      source: ''
-    };
-  },
   computed: {
     ...mapState('playbackManager', ['queue', 'currentItemIndex']),
     ...mapGetters('playbackManager', ['getNextItem']),
