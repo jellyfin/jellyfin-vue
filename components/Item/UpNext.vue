@@ -5,7 +5,7 @@
         <v-card-title class="countdown-header pa-0">
           {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
           <span class="primary--text darken-2">
-            &ensp;{{ timeLeft }} {{ $t('seconds') }}
+            &ensp;{{ timeLeft }} {{ $t('seconds').toLowerCase() }}
           </span>
         </v-card-title>
         <v-card-subtitle class="title subtitle-1 pa-0">
