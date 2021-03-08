@@ -224,7 +224,7 @@
     "vueClientVersion": "Wersja klienta Vue",
     "viewDetails": "Zobacz szczegóły",
     "video": "Wideo",
-    "undefined": "Nieustalony",
+    "undefined": "Niezdefiniowany",
     "unableGetServerConfiguration": "Nie udało się odczytać konfiguracji serwera",
     "type": "Typ",
     "title": "Tytuł",
@@ -429,5 +429,7 @@
         "backdrop": "Fototapeta",
         "art": "Przezrocze"
     },
-    "about": "O"
+    "about": "O",
+    "unableToTogglePlayed": "Nie udało się zaktualizować statusu",
+    "libraryEmptyFilters": "Brak wyników. Usuń kilka filtrów by zobaczyć więcej"
 }
