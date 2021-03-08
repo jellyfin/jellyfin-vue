@@ -35,7 +35,7 @@
     "blurhash": "^1.1.3",
     "compare-versions": "^3.6.0",
     "cookie": "^0.4.1",
-    "date-fns": "^2.18.0",
+    "date-fns": "^2.19.0",
     "dompurify": "^2.2.6",
     "entities": "^2.2.0",
     "he": "^1.2.0",
