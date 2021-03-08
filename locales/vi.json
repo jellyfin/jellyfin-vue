@@ -429,5 +429,7 @@
         "logo": "Logo",
         "banner": "Ảnh bìa",
         "art": "Nghệ thuật"
-    }
+    },
+    "unableToTogglePlayed": "Không thể cập nhật trạng thái xem",
+    "libraryEmptyFilters": "Không phù hợp. Xóa một số bộ lọc để hiển thị nhiều mục hơn"
 }
