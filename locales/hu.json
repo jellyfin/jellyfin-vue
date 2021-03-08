@@ -427,5 +427,7 @@
     "noImagesFound": "Nem található kép",
     "noAudioTrackSelected": "Audiósáv nem került kiválasztásra",
     "noAudioTracksAvailable": "Nincs elérhető audiósáv",
-    "metadataEditor": "Metaadat-szerkesztő"
+    "metadataEditor": "Metaadat-szerkesztő",
+    "unableToTogglePlayed": "Nem lehet frissíteni a nézettség állapotát",
+    "libraryEmptyFilters": "Nincs egyezés. Távolítson el néhány szűrőt további elemek megjelenítéséhez"
 }
