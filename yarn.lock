@@ -10095,10 +10095,10 @@ num2fraction@^1.2.2:
   resolved "https://registry.npmjs.org/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
 
-nuxt-i18n@^6.20.4:
-  version "6.20.4"
-  resolved "https://registry.npmjs.org/nuxt-i18n/-/nuxt-i18n-6.20.4.tgz#1d06365d554853f715da71747781738673869aae"
-  integrity sha512-oYu/L4nLMV1QoEBdft6UEGx+qWp6yhl6STV1nRoNju6GZp1+atJzG3f3B6d/mwhRaJHrrp4mBjB9O6TeB3WWaQ==
+nuxt-i18n@^6.20.6:
+  version "6.20.6"
+  resolved "https://registry.npmjs.org/nuxt-i18n/-/nuxt-i18n-6.20.6.tgz#911f9c55dbe76c112494917d137e86a036c9b66f"
+  integrity sha512-DsbL+IsymTR0uRC7p+/mjD3yMVZgF+BlP5LAzCB/5HqMf148rFR+AjY0O/fCD9HunXXJAqaYeKXhHYDWrl6OGQ==
   dependencies:
     "@babel/parser" "^7.5.5"
     "@babel/traverse" "^7.5.5"
