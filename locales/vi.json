@@ -57,7 +57,7 @@
             "dateCreated": "Ngày tạo",
             "accessToken": "Mã truy cập",
             "appName": "Tên ứng dụng",
-            "description": "Thêm và thu hồi các khóa API để truy cập bên ngoài vào máy chủ của bạn",
+            "description": "Thêm và thu hồi khóa API để truy cập vào máy chủ",
             "apiKeys": "Khóa API"
         },
         "settings": "Cài đặt",
@@ -177,7 +177,7 @@
         },
         "transcodingAndStreaming": {
             "name": "Chuyển mã và phát trực tuyến",
-            "description": "Quản lý cách máy chủ này xử lý chuyển mã và truyền trực tuyến tới máy khách"
+            "description": "Quản lý máy chủ xử lý chuyển mã và phát trực tiếp"
         },
         "subtitles": {
             "name": "Phụ đề",
@@ -213,11 +213,11 @@
         },
         "logs": {
             "name": "Nhật ký & hoạt động",
-            "description": "Đọc và tìm nhật ký máy chủ và hoạt động người dùng"
+            "description": "Dữ liệu nhật ký máy chủ và hoạt động người dùng"
         },
         "liveTvAndDvr": {
             "name": "TV Trực Tiếp & DVR",
-            "description": "Quản lý bộ dò TV, hướng dẫn nhà cung cấp dữ liệu và cài đặt DVR"
+            "description": "Quản lý bộ dò TV, hướng dẫn và cài đặt DVR"
         },
         "libraries": {
             "name": "Thư viện",
@@ -248,10 +248,10 @@
     "server": "Máy chủ",
     "operatingSystem": "Hệ Điều Hành",
     "links": {
-        "reportAnIssue": "Báo cáo sự cố với ứng dụng khách Vue",
+        "reportAnIssue": "Báo cáo sự cố với máy khách Vue",
         "readTheDocumentation": "Đọc tài liệu",
-        "poweredByJellyfin": "Máy chủ này được cung cấp bởi Jellyfin",
-        "helpTranslate": "Giúp dịch Jellyfin sang ngôn ngữ của bạn"
+        "poweredByJellyfin": "Máy chủ này do Jellyfin cung cấp",
+        "helpTranslate": "Dịch Jellyfin sang ngôn ngữ của bạn"
     },
     "jellyfinLogo": "Logo Jellyfin",
     "failedSettingDisplayPreferences": "Không thể cập nhật tùy chọn hiển thị.",
