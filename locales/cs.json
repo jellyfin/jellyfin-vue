@@ -60,7 +60,31 @@
             "description": "Přidat či zrušit klíče k API pro externí přístup k serveru",
             "apiKeys": "Klíče k API"
         },
-        "settings": "Nastavení"
+        "settings": "Nastavení",
+        "logsAndActivity": {
+            "noLogsFound": "Nenalezeny žádné protokoly",
+            "noActivityFound": "Nenalezeny žádné aktivity",
+            "logs": "Protokoly",
+            "failedGetLogs": "Nelze načít protokoly",
+            "failedGetActivity": "Nelze načíst aktivitu",
+            "activity": "Aktivita"
+        },
+        "help": "Nápověda",
+        "devices": {
+            "userName": "Uživatelské jméno",
+            "noDevicesFound": "Nenalezena žádná zařízení",
+            "lastActive": "Poslední aktivita",
+            "devices": "Zařízení",
+            "deviceName": "Název zařízení",
+            "deleteDeviceSuccess": "Zařízení bylo úspěšně odstraněno",
+            "deleteDeviceError": "Při odstranění zařízení došlo k chybě",
+            "deleteAllDevicesSuccess": "Všechna zařízení byla úspěšně odstraněna",
+            "deleteAllDevicesError": "Při odstraňování všech zařízení došlo k chybě",
+            "deleteAll": "Odstranit vše",
+            "delete": "Odstranit",
+            "appVersion": "Verze aplikace",
+            "appName": "Název aplikace"
+        }
     },
     "signIn": "Přihlásit se",
     "unexpectedError": "Neočekávaná chyba",
@@ -214,8 +238,8 @@
             "description": "Nastavit chování přehrávačů médií pro toto zařízení"
         },
         "logs": {
-            "name": "Záznamy a aktivita",
-            "description": "Zobrazit a hledat v záznamech serveru a uživatelské aktivitě"
+            "name": "Protokoly a aktivita",
+            "description": "Zobrazit a hledat v protokolech serveru a uživatelské aktivitě"
         }
     },
     "serverDashboard": "Nástěnka",
@@ -292,10 +316,10 @@
         "noLogsFounr": "Nebyly nalezeny žádné záznamy",
         "noActivityFound": "Nebyla nalezena žádná aktivita",
         "failedGetActivity": "Načtení aktivity se nezdařilo",
-        "failedGetLogs": "Načtení záznamů se nezdařilo",
-        "logs": "Záznamy",
+        "failedGetLogs": "Načtení protokolů se nezdařilo",
+        "logs": "Protokoly",
         "activity": "Aktivita",
-        "noLogsFound": "Žádný záznam nenalezen"
+        "noLogsFound": "Žádný protokol nenalezen"
     },
     "homeHeader": {
         "items": {
@@ -388,7 +412,11 @@
         },
         "crew": "Štáb",
         "composer": "Skladatel",
-        "cast": "Obsazení"
+        "cast": "Obsazení",
+        "artist": {
+            "information": "Informace",
+            "discography": "Diskografie"
+        }
     },
     "imageType": {
         "thumb": "Náhled",
@@ -402,5 +430,7 @@
         "banner": "Prapor",
         "backdrop": "Pozadí",
         "art": "Obrázky"
-    }
+    },
+    "unableToTogglePlayed": "Nelze aktualizovat stav zhlédnutí",
+    "libraryEmptyFilters": "Nic nenalezeno. Odstraněním některých filtrů zobrazíte více položek"
 }
