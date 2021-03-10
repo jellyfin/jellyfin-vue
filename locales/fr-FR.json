@@ -430,5 +430,6 @@
         "banner": "Bannière",
         "backdrop": "Arrière-plan",
         "art": "Illustration"
-    }
+    },
+    "libraryEmptyFilters": "Pas de correspondances. Supprimez des filtres pour afficher plus d'éléments"
 }
