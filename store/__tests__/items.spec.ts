@@ -9,7 +9,7 @@ import {
   actions,
   getters
 } from '../items';
-import type { ModuleAction } from '~/jest-helpers.d.ts';
+import type { ModuleAction } from '~/jest-helpers.d';
 import { RootState } from '~/store';
 
 let store: Store<ItemsState>;
