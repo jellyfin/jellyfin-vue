@@ -429,5 +429,7 @@
         "banner": "Banner",
         "art": "Arte"
     },
-    "about": "Información"
+    "about": "Información",
+    "unableToTogglePlayed": "No se puede actualizar el estado de reproduction",
+    "libraryEmptyFilters": "No hay resultados. Quite algunos filtros para mostrar más elementos"
 }
