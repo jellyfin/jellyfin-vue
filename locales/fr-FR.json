@@ -431,5 +431,6 @@
         "backdrop": "Arrière-plan",
         "art": "Illustration"
     },
-    "libraryEmptyFilters": "Pas de correspondances. Supprimez des filtres pour afficher plus d'éléments"
+    "libraryEmptyFilters": "Pas de correspondances. Supprimez des filtres pour afficher plus d'éléments",
+    "unableToTogglePlayed": "Impossible de mettre à jour le statut de visualisation"
 }
