@@ -11,6 +11,7 @@ import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { DisplayPreferencesState } from './displayPreferences';
+import { ItemsState } from './items';
 import { websocketPlugin } from './plugins/websocket';
 
 export const plugins = [websocketPlugin];
@@ -28,6 +29,7 @@ export interface AppState extends RootState {
   device: DeviceState;
   displayPreferences: DisplayPreferencesState;
   homeSection: HomeSectionState;
+  items: ItemsState;
   page: PageState;
   playbackManager: PlaybackManagerState;
   servers: ServerState;
@@ -78,6 +80,7 @@ export const actions: ActionTree<RootState, RootState> = {
     promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
     promises.push(dispatch('deviceProfile/clearDeviceProfile', { root: true }));
     promises.push(dispatch('displayPreferences/resetState', { root: true }));
+    promises.push(dispatch('items/clearState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
     promises.push(dispatch('page/clearPage', { root: true }));
     promises.push(dispatch('playbackManager/stop', { root: true }));
