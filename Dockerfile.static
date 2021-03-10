@@ -12,10 +12,10 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm ci --no-audit
 
 # Build static site
-RUN yarn build:static
+RUN npm run build:static
 
 # Deploy built distribution to nginx
 FROM nginx:alpine

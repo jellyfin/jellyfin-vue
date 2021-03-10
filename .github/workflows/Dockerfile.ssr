@@ -6,13 +6,14 @@ FROM node:14-alpine
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 
-COPY .docker/package.json ./.docker/nuxt.config.js ./
+COPY .docker/package.json .docker/package-lock.json ./.docker/nuxt.config.js ./
 COPY .nuxt ./.nuxt
 COPY static ./static
 
 # Install runtime dependencies
-RUN yarn install --production --no-lockfile
+RUN npm ci --production --no-audit
+RUN rm -rf package-lock.json
 
 EXPOSE 80
 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]
