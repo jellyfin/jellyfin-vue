@@ -430,5 +430,7 @@
         "banner": "Banner",
         "backdrop": "Hintergrund",
         "art": "Kunst"
-    }
+    },
+    "unableToTogglePlayed": "Aktualisierung des Gesehen-Status nicht möglich",
+    "libraryEmptyFilters": "Keine Treffer. Entfernen Sie einige Filter, um mehr Elemente anzuzeigen"
 }
