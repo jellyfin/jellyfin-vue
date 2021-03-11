@@ -395,5 +395,10 @@
   "writing": "Writing",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "metadata": {
+    "source": "Source",
+    "sourceAll": "All",
+    "type": "Type"
+  }
 }
