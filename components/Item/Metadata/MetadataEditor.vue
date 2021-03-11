@@ -211,7 +211,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { pick, set } from 'lodash';
+import pick from 'lodash/pick';
+import set from 'lodash/set';
 import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 
 export default Vue.extend({

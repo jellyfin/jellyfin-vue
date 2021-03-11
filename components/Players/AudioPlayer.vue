@@ -12,7 +12,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { stringify } from 'qs';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';

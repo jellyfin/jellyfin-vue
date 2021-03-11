@@ -1,7 +1,7 @@
 import Vue, { VueConstructor } from 'vue';
 import { createLocalVue } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import {
   state,

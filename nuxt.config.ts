@@ -268,6 +268,8 @@ const config: NuxtConfig = {
         server: '#424242'
       }
     },
+    optimizeCSS: true,
+    extractCSS: true,
     babel: {
       // envName: server, client, modern
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

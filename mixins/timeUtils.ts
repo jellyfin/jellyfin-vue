@@ -5,7 +5,7 @@
  */
 import Vue from 'vue';
 import { intervalToDuration } from 'date-fns';
-import { sumBy } from 'lodash';
+import sumBy from 'lodash/sumBy';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
 /**

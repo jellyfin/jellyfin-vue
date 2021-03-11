@@ -74,7 +74,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import { Dictionary, groupBy } from 'lodash';
+import groupBy from 'lodash/groupBy';
 import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
@@ -103,7 +103,7 @@ export default Vue.extend({
     ).data;
   },
   computed: {
-    tracksPerDisc(): Dictionary<BaseItemDto[]> {
+    tracksPerDisc(): Record<string, BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }
   },

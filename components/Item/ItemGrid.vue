@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { chunk } from 'lodash';
+import chunk from 'lodash/chunk';
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
