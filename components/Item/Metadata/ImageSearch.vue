@@ -15,7 +15,7 @@
           class="mx-4"
           :items="sources"
           :disabled="loading"
-          label="Source"
+          :label="$t('metadata.source')"
           outlined
           hide-details
         />
@@ -24,7 +24,7 @@
           class="mx-4"
           :items="types"
           :disabled="loading"
-          label="Type"
+          :label="$t('metadata.type')"
           outlined
           hide-details
         />
@@ -182,15 +182,23 @@ export default Vue.extend({
   computed: {
     sources: {
       get(): string[] {
-        return ['All'].concat(
-          this.$data.providers
-            .filter((provider: ImageProviderInfo) =>
-              (provider.SupportedImages || []).some((type) => {
-                return this.type === type;
-              })
-            )
-            .map((provider: ImageProviderInfo) => provider.Name)
+        const validProviders = this.providers.filter(
+          (provider: ImageProviderInfo) => {
+            if (
+              provider.Name &&
+              provider.SupportedImages?.includes(this.type)
+            ) {
+              return true;
+            }
+            return false;
+          }
         );
+        const providerNames = validProviders.map(
+          (provider: ImageProviderInfo) => {
+            return provider.Name as string;
+          }
+        );
+        return [this.$t('metadata.sourceAll')].concat(providerNames);
       }
     },
     ratio(): string {
