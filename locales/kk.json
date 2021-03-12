@@ -1,7 +1,7 @@
 {
     "alphabetically": "Älıpbi boiynşa",
     "badRequest": "Jaramsyz saual. Ärekettı qaitalaŋyz",
-    "browserNotSupported": "Būl faildy oinatu üşın şolğyşyŋyz qoldau körsetpeidі.",
+    "browserNotSupported": "Būl faildy oinatu üşın şolğyşyŋyz qoldau körsetpeidı.",
     "changeServer": "Serverdi aýystyrý",
     "connect": "Qosylu",
     "continueListening": "Tyŋdaudy jalğastyru",
@@ -53,7 +53,7 @@
             "accessToken": "Qatynau tokenı",
             "appName": "Qoldanba aty",
             "apiKeys": "API-kıltter",
-            "description": "Serverge syrttan qatynau üşın API-kіltterіn qosu jäne joiy",
+            "description": "Serverge syrttan qatynau üşın API-kıltterın qosu jäne joiy",
             "addApiKey": "API-kılttı üsteu",
             "refreshKeysFailure": "API-kıltterdı jaŋartu kezınde qate",
             "createKeyFailure": "Jaŋa API-kılt jasau kezınde qate",
@@ -67,8 +67,8 @@
         },
         "settings": "Parametrler",
         "devices": {
-            "deleteDeviceSuccess": "Qūrylğy sätti joiyldy",
-            "deleteAllDevicesSuccess": "Barlyq qūrylğylar sätti joiyldy",
+            "deleteDeviceSuccess": "Qūrylğy sättı joiyldy",
+            "deleteAllDevicesSuccess": "Barlyq qūrylğylar sättı joiyldy",
             "deleteAllDevicesError": "Barlyq qūrylğylardy joiu qatesı",
             "userName": "Paidalanuşy aty",
             "noDevicesFound": "Qūrylūylar tabylmady",
@@ -99,7 +99,7 @@
     "username": "Paidalanuşy aty",
     "usernameRequired": "Paıdalanýshy aty qajet",
     "filtersNotFound": "Süzgılerdı jükteu mümkın emes",
-    "status": "Küi",
+    "status": "Küiı",
     "played": "Oinatylğan",
     "unplayed": "Oinatylmağan",
     "resumable": "Jalğastyra alatyn",
@@ -152,7 +152,7 @@
         },
         "playback": {
             "name": "Oinatu",
-            "description": "Osy qūrylğy üşın oinatu teŋşelіmderіn öŋdeu"
+            "description": "Osy qūrylğy üşın oinatu teŋşelіmderın öŋdeu"
         },
         "notifications": {
             "name": "Habarlandyrular",
@@ -196,11 +196,11 @@
         },
         "logs": {
             "name": "Jūrnaldar men äreketter",
-            "description": "Server jūrnaldaryn jäne paidalanuşy äreketterіn oqu jäne іzdeu"
+            "description": "Server jūrnaldaryn jäne paidalanuşy äreketterіn oqu jäne ızdeu"
         },
         "mediaPlayers": {
             "name": "Tasyğyşderekter oinatqyştary",
-            "description": "Tasyğyşderekter oinatqyştardyŋ osy qūrylğyğa qalai äreket etetіnіn teŋşeu"
+            "description": "Tasyğyşderekter oinatqyştardyŋ osy qūrylğy üşın qalai äreket etuın teŋşeu"
         }
     },
     "serverVersion": "Server nūsqasy",
@@ -262,7 +262,7 @@
     "tagline": "Ūrany",
     "sortTitle": "Sūryptau atauy",
     "serverDashboard": "Server taqtasy",
-    "search": "İzdeu",
+    "search": "Izdeu",
     "screenshot": "Ekran suretı",
     "saved": "Saqtalğan",
     "save": "Saqtau",
@@ -290,7 +290,7 @@
     "editPerson": "Tūlğany öŋdeu",
     "editMetadata": "Metaderekterdı öŋdeu",
     "edit": "Öŋdeu",
-    "discNumber": "Dıskı {discNumber}",
+    "discNumber": "Diskı {discNumber}",
     "director": "Rejisör",
     "dateAdded": "Üstelgen künı",
     "criticRating": "Synşylar bağalauy",
@@ -333,7 +333,7 @@
         }
     },
     "undefined": "Anyqtalmady",
-    "metadataNoResultsMatching": "\"{search}\" saualyna säikes keletіn nätijeler tabylmady. Jaŋasyn jasau üşіn Enter pernesіn basyŋyz.",
+    "metadataNoResultsMatching": "\"{search}\" saualyna säikes keletіn nätijeler tabylmady. Jaŋasyn jasau üşіn Enter pernesın basyŋyz.",
     "failedToRefreshItems": "jaŋartu sätsız aiaqtaldy",
     "writing": "Senari",
     "version": "Nūsqasy",
