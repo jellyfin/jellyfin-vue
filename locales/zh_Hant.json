@@ -1,50 +1,50 @@
 {
     "3DFormat": "",
-    "actor": "",
-    "actors": "",
-    "addNewPerson": "",
-    "albums": "",
-    "allLanguages": "",
-    "alphabetically": "",
+    "actor": "演員",
+    "actors": "演員",
+    "addNewPerson": "新增一位新人物",
+    "albums": "專輯",
+    "allLanguages": "所有語言",
+    "alphabetically": "按子母排序",
     "architecture": "",
-    "artist": "",
-    "artists": "",
+    "artist": "藝人",
+    "artists": "藝人",
     "audio": "",
     "badRequest": "",
     "biography": "",
     "browserNotSupported": "",
     "buttons": {
-        "ok": ""
+        "ok": "好"
     },
     "byArtist": "",
-    "cancel": "",
-    "castAndCrew": "",
-    "collections": "",
+    "cancel": "取消",
+    "castAndCrew": "工作人員名單",
+    "collections": "收藏",
     "communityRating": "",
-    "confirm": "",
-    "connect": "",
-    "continueListening": "",
-    "continueWatching": "",
+    "confirm": "確定",
+    "connect": "連接",
+    "continueListening": "繼續聆聽",
+    "continueWatching": "繼續觀看",
     "criticRating": "",
     "customRating": "",
-    "darkModeToggle": "",
+    "darkModeToggle": "切換深色模式",
     "dateAdded": "",
     "details": "",
     "directing": "",
-    "director": "",
+    "director": "導演",
     "discNumber": "",
     "dislikes": "",
-    "edit": "",
+    "edit": "編輯",
     "editMetadata": "",
     "editPerson": "",
     "endDate": "",
     "endsAt": "",
     "episodeNumber": "",
     "errors": {
-        "anErrorHappened": "",
+        "anErrorHappened": "發生錯誤",
         "messages": {
-            "errorCode": "",
-            "videoPlayerError": ""
+            "errorCode": "錯誤代碼：{errorCode}",
+            "videoPlayerError": "影片播放器出現了無法回復的錯誤。"
         }
     },
     "failedRetrievingDisplayPreferences": "",
@@ -54,57 +54,57 @@
     "features": "",
     "filter": "",
     "filtersNotFound": "",
-    "fullScreen": "",
+    "fullScreen": "全螢幕",
     "general": "",
-    "genres": "",
-    "guestStar": "",
-    "headerExternalIds": "",
-    "headerPaths": "",
-    "home": "",
+    "genres": "風格",
+    "guestStar": "特別演出",
+    "headerExternalIds": "外部編號",
+    "headerPaths": "路徑",
+    "home": "首頁",
     "homeHeader": {
         "items": {
             "recentlyAdded": ""
         },
         "welcome": {
-            "checkNewItems": "",
-            "helloUser": "",
+            "checkNewItems": "看看有甚麼新功能。",
+            "helloUser": "你好，{userName}！",
             "noItems": ""
         }
     },
-    "images": "",
+    "images": "圖片",
     "imageType": {
         "art": "",
         "backdrop": "",
         "banner": "",
-        "box": "",
+        "box": "盒子",
         "boxRear": "",
         "disc": "",
         "logo": "",
-        "menu": "",
+        "menu": "選單",
         "primary": "",
-        "screenshot": "",
+        "screenshot": "截圖",
         "thumb": ""
     },
-    "incorrectUsernameOrPassword": "",
+    "incorrectUsernameOrPassword": "錯誤的使用者名稱或密碼",
     "item": {
         "artist": {
             "discography": "",
-            "information": ""
+            "information": "資訊"
         },
         "cast": "",
-        "composer": "",
-        "crew": "",
+        "composer": "作曲家",
+        "crew": "工作人員",
         "person": {
-            "birth": "",
-            "birthPlace": "",
+            "birth": "生日",
+            "birthPlace": "出生地",
             "death": "",
             "person": ""
         },
         "tracklist": {
-            "title": ""
+            "title": "標題"
         }
     },
-    "itemNotFound": "",
+    "itemNotFound": "找不到項目",
     "jellyfinLogo": "",
     "latestLibrary": "",
     "libraries": "",
@@ -115,115 +115,115 @@
     "liked": "",
     "likes": "",
     "links": {
-        "helpTranslate": "",
+        "helpTranslate": "幫助我們把 Jellyfin 翻譯成您的語言",
         "poweredByJellyfin": "",
         "readTheDocumentation": "",
         "reportAnIssue": ""
     },
     "login": {
-        "addServer": "",
-        "changeServer": "",
-        "changeUser": "",
-        "connect": "",
-        "login": "",
+        "addServer": "新增伺服器",
+        "changeServer": "更改伺服器",
+        "changeUser": "更改使用者",
+        "connect": "連接",
+        "login": "登入",
         "loginAs": "",
-        "manualLogin": "",
-        "rememberMe": "",
-        "selectServer": "",
-        "selectUser": "",
-        "serverAddress": "",
+        "manualLogin": "手動登入",
+        "rememberMe": "記住我",
+        "selectServer": "選擇伺服器",
+        "selectUser": "選擇使用者",
+        "serverAddress": "伺服器地址",
         "serverAddressMustBeUrl": "",
         "serverAddressRequired": "",
-        "serverDashboard": "",
-        "serverNotFound": "",
-        "serverVersionTooLow": ""
+        "serverDashboard": "伺服器控制台",
+        "serverNotFound": "找不到伺服器",
+        "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0"
     },
-    "logout": "",
+    "logout": "登出",
     "logsAndActivity": {
         "activity": "",
         "failedGetActivity": "",
         "failedGetLogs": "",
-        "logs": "",
+        "logs": "日誌",
         "noActivityFound": "",
-        "noLogsFound": ""
+        "noLogsFound": "找不到日誌"
     },
-    "manualLogin": "",
-    "menu": "",
+    "manualLogin": "手動登入",
+    "menu": "選單",
     "metadataEditor": "",
     "metadataNoResultsMatching": "",
-    "more": "",
-    "moreLikeArtist": "",
-    "moreLikeThis": "",
-    "movies": "",
-    "name": "",
-    "networks": "",
-    "nextUp": "",
-    "noAudioTracksAvailable": "",
-    "noAudioTrackSelected": "",
-    "noImagesFound": "",
+    "more": "更多",
+    "moreLikeArtist": "與 {artist} 類似",
+    "moreLikeThis": "更多相關內容",
+    "movies": "電影",
+    "name": "名稱",
+    "networks": "網路",
+    "nextUp": "接下來",
+    "noAudioTracksAvailable": "無可用音軌",
+    "noAudioTrackSelected": "未選擇音軌",
+    "noImagesFound": "找不到圖片",
     "NoMediaSourcesAvailable": "",
-    "noNetworkConnection": "",
-    "noResultsFound": "",
-    "noSubtitlesAvailable": "",
-    "noSubtitleSelected": "",
-    "noTracksAvailable": "",
-    "noVideoTracksAvailable": "",
-    "noVideoTrackSelected": "",
+    "noNetworkConnection": "無網路",
+    "noResultsFound": "這裡空空如也",
+    "noSubtitlesAvailable": "無可用字幕",
+    "noSubtitleSelected": "未選擇字幕",
+    "noTracksAvailable": "無可用曲目",
+    "noVideoTracksAvailable": "無可用影片",
+    "noVideoTrackSelected": "未選擇影片",
     "numberTracks": "",
-    "operatingSystem": "",
+    "operatingSystem": "作業系統",
     "originalAspectRatio": "",
-    "originalTitle": "",
+    "originalTitle": "原始標題",
     "overview": "",
     "parentalRating": "",
     "parentalRatings": "",
-    "password": "",
+    "password": "密碼",
     "people": "",
     "person": "",
-    "play": "",
+    "play": "播放",
     "playback": {
-        "addToQueue": "",
-        "clearQueue": "",
-        "playAll": "",
+        "addToQueue": "新增至隊列",
+        "clearQueue": "清除隊列並停止播放",
+        "playAll": "全部播放",
         "playbackSource": {
             "item": "",
-            "shuffle": "",
+            "shuffle": "隨機播放",
             "shuffleItem": "",
-            "unknown": ""
+            "unknown": "從隊列播放"
         },
-        "playNext": "",
+        "playNext": "播放下一個",
         "queueItems": "",
         "saveAsPlaylist": "",
-        "shuffle": "",
-        "shuffleAll": ""
+        "shuffle": "隨機",
+        "shuffleAll": "全部隨機播放"
     },
-    "played": "",
-    "playFromBeginning": "",
+    "played": "已播放",
+    "playFromBeginning": "從頭播放",
     "present": "",
     "producer": "",
-    "queue": "",
-    "rating": "",
-    "refreshLibrary": "",
+    "queue": "隊列",
+    "rating": "評價",
+    "refreshLibrary": "重新整理收藏庫",
     "releaseDate": "",
-    "resumable": "",
-    "resume": "",
+    "resumable": "可續播",
+    "resume": "繼續播放",
     "role": "",
-    "save": "",
-    "saved": "",
-    "search": "",
+    "save": "儲存",
+    "saved": "儲存成功",
+    "search": "搜尋",
     "series": "",
-    "server": "",
-    "serverVersion": "",
-    "serverVersionTooLow": "",
+    "server": "伺服器",
+    "serverVersion": "伺服器版本",
+    "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0",
     "settings": {
         "apiKeys": {
             "accessToken": "",
-            "addApiKey": "",
-            "addNewKey": "",
-            "apiKeys": "",
+            "addApiKey": "新增 API 金鑰",
+            "addNewKey": "新增新的 API 金鑰",
+            "apiKeys": "API 金鑰",
             "appName": "",
-            "createKeyFailure": "",
-            "createKeySuccess": "",
-            "dateCreated": "",
+            "createKeyFailure": "建立 API 金鑰時發生錯誤",
+            "createKeySuccess": "成功建立 API 金鑰",
+            "dateCreated": "建立日期",
             "description": "",
             "refreshKeysFailure": "",
             "revokeAll": "",
@@ -235,45 +235,45 @@
         "devices": {
             "appName": "",
             "appVersion": "",
-            "delete": "",
-            "deleteAll": "",
-            "deleteAllDevicesError": "",
-            "deleteAllDevicesSuccess": "",
-            "deleteDeviceError": "",
-            "deleteDeviceSuccess": "",
-            "deviceName": "",
-            "devices": "",
-            "lastActive": "",
-            "noDevicesFound": "",
-            "userName": ""
+            "delete": "移除",
+            "deleteAll": "全部移除",
+            "deleteAllDevicesError": "移除所有設備時發生錯誤",
+            "deleteAllDevicesSuccess": "所有設備已成功移除",
+            "deleteDeviceError": "移除設備時發生錯誤",
+            "deleteDeviceSuccess": "設備已成功移除",
+            "deviceName": "設備名稱",
+            "devices": "設備",
+            "lastActive": "上次活動",
+            "noDevicesFound": "找不到設備",
+            "userName": "使用者名稱"
         },
-        "help": "",
+        "help": "幫助",
         "logsAndActivity": {
-            "activity": "",
+            "activity": "活動",
             "failedGetActivity": "",
             "failedGetLogs": "",
-            "logs": "",
+            "logs": "日誌",
             "noActivityFound": "",
-            "noLogsFound": ""
+            "noLogsFound": "找不到日誌"
         },
-        "settings": ""
+        "settings": "設定"
     },
     "settingsSections": {
         "account": {
             "description": "",
-            "name": ""
+            "name": "帳號"
         },
         "devices": {
             "description": "",
-            "name": ""
+            "name": "設備"
         },
         "dlna": {
             "description": "",
-            "name": ""
+            "name": "DLNA"
         },
         "home": {
             "description": "",
-            "name": ""
+            "name": "主畫面"
         },
         "libraries": {
             "description": "",
@@ -293,19 +293,19 @@
         },
         "networking": {
             "description": "",
-            "name": ""
+            "name": "網路"
         },
         "notifications": {
             "description": "",
-            "name": ""
+            "name": "通知"
         },
         "playback": {
             "description": "",
-            "name": ""
+            "name": "播放"
         },
         "plugins": {
             "description": "",
-            "name": ""
+            "name": "擴充功能"
         },
         "scheduledTasks": {
             "description": "",
@@ -313,11 +313,11 @@
         },
         "server": {
             "description": "",
-            "name": ""
+            "name": "伺服器"
         },
         "subtitles": {
             "description": "",
-            "name": ""
+            "name": "字幕"
         },
         "transcodingAndStreaming": {
             "description": "",
@@ -329,24 +329,24 @@
         }
     },
     "shows": "",
-    "signIn": "",
+    "signIn": "登入",
     "sortByType": "",
     "sortTitle": "",
     "specialFeatures": "",
-    "status": "",
-    "studios": "",
-    "subtitles": "",
+    "status": "狀態",
+    "studios": "工作室",
+    "subtitles": "字幕",
     "tagline": "",
-    "tags": "",
+    "tags": "標籤",
     "themeSong": "",
     "themeVideo": "",
     "tooltips": {
-        "changeLanguage": "",
-        "switchToDarkMode": "",
-        "switchToLightMode": ""
+        "changeLanguage": "語言",
+        "switchToDarkMode": "切換成深色模式",
+        "switchToLightMode": "切換成淺色模式"
     },
-    "trailer": "",
-    "tvShowAbbrev": "",
+    "trailer": "預告片",
+    "tvShowAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章",
     "type": "",
     "unableGetPublicUsers": "",
     "unableGetRelated": "",
