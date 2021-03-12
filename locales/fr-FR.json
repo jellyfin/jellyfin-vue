@@ -273,7 +273,11 @@
     "originalTitle": "Titre original",
     "originalAspectRatio": "Ratio d'aspect original",
     "metadataNoResultsMatching": "Pas de résultat pour \"{search}\". Appuyer sur Entrée pour effectuer une nouvelle recherche.",
-    "metadata": "Meta-données",
+    "metadata": {
+        "type": "Type",
+        "sourceAll": "Tous",
+        "source": "Source"
+    },
     "menu": "Menu",
     "logs": "Journaux",
     "logo": "Logo",
