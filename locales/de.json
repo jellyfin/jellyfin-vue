@@ -280,7 +280,11 @@
     "originalTitle": "Originaler Titel",
     "originalAspectRatio": "Originales Seitenverhältnis",
     "metadataNoResultsMatching": "Nichts passendes gefunden \"{search}\". drücke \"Enter\" um eine neue Suche zu starten.",
-    "metadata": "Metadaten",
+    "metadata": {
+        "type": "Typ",
+        "sourceAll": "Alle",
+        "source": "Quelle"
+    },
     "menu": "Menü",
     "logo": "Logo",
     "images": "Bilder",
