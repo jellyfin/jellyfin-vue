@@ -281,7 +281,11 @@
     "overview": "Обзор",
     "originalTitle": "Оригинальное название",
     "originalAspectRatio": "Исходное соотношение сторон",
-    "metadata": "Метаданные",
+    "metadata": {
+        "type": "Тип",
+        "sourceAll": "Все",
+        "source": "Источник"
+    },
     "menu": "Меню",
     "logo": "Логотип",
     "images": "Рисунки",
