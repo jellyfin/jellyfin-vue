@@ -94,7 +94,7 @@
     "criticRating": "Eleştirmen puanı",
     "connect": "Bağlan",
     "composer": "Besteci",
-    "communityRating": "Kullanıcı puanı",
+    "communityRating": "Topluluk puanı",
     "collections": "Koleksiyon",
     "changeUser": "Kullanıcıyı değiştir",
     "changeServer": "Sunucuyu değiştir",
@@ -111,5 +111,12 @@
     "allLanguages": "Tüm diller",
     "albums": "Albümler",
     "actors": "Aktörler",
-    "actor": "Aktör"
+    "actor": "Aktör",
+    "confirm": "Onay",
+    "biography": "Biyografi",
+    "artists": "Sanatçı",
+    "artist": "Sanatçı",
+    "architecture": "Mimari",
+    "addNewPerson": "Yeni kişi ekle",
+    "3DFormat": "3B format"
 }
