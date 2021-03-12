@@ -274,7 +274,11 @@
     "overview": "Jalpy şolu",
     "originalTitle": "Bastapqy atauy",
     "originalAspectRatio": "Bastapqy pışımdık araqatynasy",
-    "metadata": "Metaderekter",
+    "metadata": {
+        "type": "Türı",
+        "sourceAll": "Bärı",
+        "source": "Qainar közı"
+    },
     "menu": "Mäzır",
     "logo": "Logotip",
     "loginAs": "{name} atymen kirý",
