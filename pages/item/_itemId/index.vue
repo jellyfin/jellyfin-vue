@@ -32,10 +32,10 @@
               'ml-1': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <play-button class="mr-2" :item="item" />
-            <item-menu :item="item" outlined />
-            <like-button :item="item" class="ml-2" />
-            <mark-played-button :item="item" />
+            <play-button class="mr-2" :items="[item]" />
+            <like-button :item="item" class="mr-2" />
+            <mark-played-button :item="item" class="mr-2" />
+            <item-menu :item="item" />
           </v-row>
           <v-col cols="12" md="10">
             <v-row

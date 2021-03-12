@@ -6,7 +6,7 @@
       </span>
       <v-spacer />
       <v-fade-transition>
-        <play-button v-if="!$fetchState.pending" :item="genre" />
+        <play-button v-if="!$fetchState.pending" :items="[genre]" />
       </v-fade-transition>
       <v-btn
         v-if="!$fetchState.pending"
@@ -49,10 +49,8 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   async asyncData({ params, $api, $auth }) {
     const genre = (
       await $api.userLibrary.getItem({
