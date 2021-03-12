@@ -257,7 +257,11 @@
     "networks": "Sieci",
     "name": "Nazwa",
     "moreLikeArtist": "Podobne do {artist}",
-    "metadata": "Metadane",
+    "metadata": {
+        "type": "Typ",
+        "sourceAll": "Wszystkie",
+        "source": "Źródło"
+    },
     "menu": "Menu",
     "manualLogin": "Logowanie ręczne",
     "logsAndActivity": {
