@@ -3,13 +3,7 @@
     v-if="syncing"
     class="w-100 pa-3 d-flex flex-row justify-center align-center"
   >
-    <v-progress-circular
-      class="mr-2"
-      indeterminate
-      size="32"
-      v-bind="attrs"
-      v-on="on"
-    />
+    <v-progress-circular class="mr-2" indeterminate size="32" />
     <span>{{ $t('syncingInProgress') }}</span>
   </div>
 </template>

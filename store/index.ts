@@ -15,6 +15,7 @@ import { ClientSettingsState } from './clientSettings';
 import { websocketPlugin } from './plugins/websocket';
 import { preferencesSync } from './plugins/preferencesSyncPlugin';
 import { userPlugin } from './plugins/userPlugin';
+import { ItemsState } from './items';
 
 export const plugins = [websocketPlugin, preferencesSync, userPlugin];
 
@@ -98,6 +99,7 @@ export const actions: ActionTree<RootState, RootState> = {
     promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
     promises.push(dispatch('clientSettings/resetState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
+    promises.push(dispatch('items/clearState', { root: true }));
     promises.push(dispatch('page/clearPage', { root: true }));
     promises.push(dispatch('playbackManager/stop', { root: true }));
     promises.push(dispatch('snackbar/resetMessage', { root: true }));

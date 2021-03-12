@@ -2,11 +2,6 @@ import { MutationTree, ActionTree } from 'vuex';
 import nuxtConfig from '~/nuxt.config';
 
 /**
- * Mutations that should be synced to the server
- */
-export const syncedMutations = ['SET_DARK_MODE', 'SET_LOCALE'];
-
-/**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto
  */
 export interface ClientSettingsState {
@@ -38,7 +33,7 @@ export const mutations: MutationTree<ClientSettingsState> = {
   /**
    * Sets the internal state with the server answer and assign default custom prefs if not existing
    *
-   * @param {CustomPreferences} state - Current state
+   * @param {ClientSettingsState} state - Current state
    * @param {any} payload - Payload
    */
   INIT_STATE(
