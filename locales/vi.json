@@ -279,7 +279,11 @@
     "originalTitle": "Tiêu đề gốc",
     "originalAspectRatio": "Tỷ lệ khung hình gốc",
     "metadataNoResultsMatching": "Không có kết quả phù hợp \"{search}\". Nhấn enter để tạo một cái mới.",
-    "metadata": "Dữ liệu mô tả",
+    "metadata": {
+        "type": "Kiểu",
+        "sourceAll": "Tất cả",
+        "source": "Nguồn"
+    },
     "menu": "Menu",
     "logo": "Logo",
     "images": "Ảnh",
