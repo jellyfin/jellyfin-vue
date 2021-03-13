@@ -10,6 +10,17 @@ export const validLibraryTypes = [
 ];
 
 /**
+ * Checks if the string is a valid MD5 hash.
+ *
+ * @exports
+ * @param {string} input - The string to check for validity
+ * @returns {boolean} - A boolean representing the validity of the input string
+ */
+export function isValidMD5(input: string): boolean {
+  return /[a-fA-F0-9]{32}/.test(input);
+}
+
+/**
  * Get the Material Design Icon name associated with a type of library
  *
  * @param {(string | undefined | null)} libraryType - Type of the library

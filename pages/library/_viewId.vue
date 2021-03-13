@@ -52,9 +52,13 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { validLibraryTypes } from '~/utils/items';
+import { Context } from '@nuxt/types';
+import { isValidMD5, validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
+  validate(ctx: Context) {
+    return isValidMD5(ctx.route.params.viewId);
+  },
   async asyncData({ params, $api, $auth }) {
     const collectionInfo = (
       await $api.items.getItems({

@@ -288,9 +288,11 @@ import {
   ImageType,
   MediaSourceInfo
 } from '@jellyfin/client-axios';
+import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
+import { isValidMD5 } from '~/utils/items';
 
 interface TwoColsInfoColumn {
   lCols: number;
@@ -302,6 +304,9 @@ interface TwoColsInfoColumn {
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
+  validate(ctx: Context) {
+    return isValidMD5(ctx.route.params.itemId);
+  },
   async asyncData({ params, $api, $auth }) {
     const item = (
       await $api.userLibrary.getItem({
