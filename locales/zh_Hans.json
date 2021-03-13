@@ -1,434 +1,399 @@
 {
-    "alphabetically": "按字母排序",
-    "badRequest": "错误的请求。请重试",
-    "continueListening": "继续听",
-    "continueWatching": "继续观看",
-    "endDate": "结束日期",
-    "endsAt": "结束于 {time}",
-    "episodeNumber": "章节 {episodeNumber}",
-    "home": "首页",
-    "incorrectUsernameOrPassword": "用户名或密码错误",
-    "itemNotFound": "未找到项目",
-    "libraryEmpty": "这个库是空的",
-    "libraryNotFound": "未找到媒体库",
-    "login": {
-        "connect": "连接",
-        "changeUser": "切换用户",
-        "changeServer": "切换服务器",
-        "manualLogin": "手动登录",
-        "serverNotFound": "找不到服务器",
-        "serverDashboard": "服务器仪表盘",
-        "serverAddressRequired": "服务器地址为必填项",
-        "serverAddressMustBeUrl": "服务器地址必须是有效的 URL",
-        "serverAddress": "服务器地址",
-        "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高",
-        "selectUser": "选择用户",
-        "rememberMe": "记住我",
-        "loginAs": "登录为 {name}",
-        "addServer": "添加服务器",
-        "selectServer": "选择服务器",
-        "login": "登录"
+  "3DFormat": "3D 格式",
+  "NoMediaSourcesAvailable": "没有可用的媒体源",
+  "actor": "演员",
+  "actors": "演员",
+  "addNewPerson": "添加一位新人物",
+  "albums": "专辑",
+  "allLanguages": "全部语言",
+  "alphabetically": "按字母排序",
+  "architecture": "架构",
+  "artist": "艺术家",
+  "artists": "艺术家",
+  "audio": "音频",
+  "badRequest": "错误的请求。请重试",
+  "biography": "传记",
+  "browserNotSupported": "您的浏览器不支持播放此格式的文件。",
+  "buttons": {
+    "ok": "确认"
+  },
+  "byArtist": "来自",
+  "cancel": "取消",
+  "castAndCrew": "演员表",
+  "collections": "收藏",
+  "communityRating": "社区评分",
+  "confirm": "确定",
+  "connect": "连接",
+  "continueListening": "继续听",
+  "continueWatching": "继续观看",
+  "criticRating": "评论家评级",
+  "customRating": "自定义评级",
+  "darkModeToggle": "切换深色模式",
+  "dateAdded": "加入日期",
+  "details": "细节",
+  "directing": "导演",
+  "director": "导演",
+  "discNumber": "碟片 {discNumber}",
+  "dislikes": "不喜欢",
+  "edit": "编辑",
+  "editMetadata": "编辑元数据",
+  "editPerson": "编辑人物",
+  "endDate": "结束日期",
+  "endsAt": "结束于 {time}",
+  "episodeNumber": "章节 {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "发生了一个错误",
+    "messages": {
+      "errorCode": "错误代码：{errorCode}",
+      "videoPlayerError": "视频播放器遇到了一个不可恢复的错误。"
+    }
+  },
+  "failedRetrievingDisplayPreferences": "无法获取显示设置首选项。使用默认值。",
+  "failedSettingDisplayPreferences": "无法更新显示设置首选项。",
+  "failedToRefreshItems": "无法刷新项目",
+  "favorite": "收藏",
+  "features": "特点",
+  "filter": "筛选器",
+  "filtersNotFound": "无法加载过滤器",
+  "fullScreen": "全屏幕",
+  "general": "一般",
+  "genres": "风格",
+  "guestStar": "特邀明星",
+  "headerExternalIds": "额外编号",
+  "headerPaths": "路径",
+  "home": "首页",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "最近添加"
     },
-    "logout": "注销",
-    "more": "更多",
-    "movies": "电影",
-    "password": "密码",
-    "play": "播放",
-    "playType": "播放 {mediaType}",
-    "present": "现在",
-    "rating": "评价",
-    "releaseDate": "发布日期",
+    "welcome": {
+      "checkNewItems": "查看新的项目。",
+      "helloUser": "你好 {userName}！",
+      "noItems": "没有最近添加的项目可显示。"
+    }
+  },
+  "imageType": {
+    "art": "艺术",
+    "backdrop": "背景",
+    "banner": "横幅",
+    "box": "盒子",
+    "boxRear": "盒子（背面）",
+    "disc": "光盘",
+    "logo": "商标",
+    "menu": "菜单",
+    "primary": "封面图",
+    "screenshot": "截图",
+    "thumb": "缩略图"
+  },
+  "images": "图片",
+  "incorrectUsernameOrPassword": "用户名或密码错误",
+  "item": {
+    "artist": {
+      "discography": "唱片目录",
+      "information": "信息"
+    },
+    "cast": "演职人员",
+    "composer": "作曲家",
+    "crew": "演职人员",
+    "person": {
+      "birth": "生日",
+      "birthPlace": "出生地",
+      "death": "去世日期",
+      "person": "人物"
+    },
+    "tracklist": {
+      "title": "标题"
+    }
+  },
+  "itemNotFound": "未找到项目",
+  "jellyfinLogo": "Jellyfin 图标",
+  "latestLibrary": "最新的 {libraryName}",
+  "libraries": "媒体库",
+  "libraryEmpty": "这个库是空的",
+  "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目",
+  "libraryNotFound": "未找到媒体库",
+  "libraryRefreshQueued": "媒体库将会被更新",
+  "liked": "喜欢",
+  "likes": "喜欢",
+  "links": {
+    "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
+    "poweredByJellyfin": "本服务器由 Jellyfin 提供动力",
+    "readTheDocumentation": "阅读文档",
+    "reportAnIssue": "报告 Vue 客户端的问题"
+  },
+  "login": {
+    "addServer": "添加服务器",
+    "changeServer": "切换服务器",
+    "changeUser": "切换用户",
+    "connect": "连接",
+    "login": "登录",
+    "loginAs": "登录为 {name}",
+    "manualLogin": "手动登录",
+    "rememberMe": "记住我",
+    "selectServer": "选择服务器",
+    "selectUser": "选择用户",
     "serverAddress": "服务器地址",
     "serverAddressMustBeUrl": "服务器地址必须是有效的 URL",
     "serverAddressRequired": "服务器地址为必填项",
-    "serverNotFound": "找不到服务器",
-    "settings": {
-        "apiKeys": {
-            "addApiKey": "添加一个 API 密钥",
-            "refreshKeysFailure": "刷新 API 密钥时发生错误",
-            "createKeyFailure": "创建新 API 密钥时发生错误",
-            "createKeySuccess": "成功地创建了一个新的 API 密钥",
-            "addNewKey": "添加新的 API 密钥",
-            "revokeAllFailure": "撤销所有 API 密钥时发生错误",
-            "revokeAllSuccess": "成功地撤销了所有的 API 密钥",
-            "revokeAll": "撤销所有的 API 密钥",
-            "revokeFailure": "撤销 API 密钥时发生错误",
-            "revokeSuccess": "成功地撤销了 API 密钥",
-            "dateCreated": "创建日期",
-            "accessToken": "访问密钥",
-            "appName": "应用名称",
-            "description": "添加或撤销 API 密钥以便从外部访问你的服务器",
-            "apiKeys": "API 密钥"
-        },
-        "settings": "设置",
-        "logsAndActivity": {
-            "noLogsFound": "未找到日志",
-            "noActivityFound": "未找到活动",
-            "logs": "日志",
-            "failedGetLogs": "无法获取日志",
-            "failedGetActivity": "无法获取活动",
-            "activity": "活动"
-        },
-        "help": "帮助",
-        "devices": {
-            "userName": "用户名",
-            "noDevicesFound": "未找到设备",
-            "lastActive": "上次活动",
-            "devices": "设备",
-            "deviceName": "设备名称",
-            "deleteDeviceSuccess": "设备已成功删除",
-            "deleteDeviceError": "删除设备时出错",
-            "deleteAllDevicesSuccess": "所有设备删除成功",
-            "deleteAllDevicesError": "删除所有设备时发生错误",
-            "deleteAll": "删除全部",
-            "delete": "删除",
-            "appVersion": "应用版本",
-            "appName": "应用名称"
-        }
-    },
-    "signIn": "登陆",
-    "unexpectedError": "意外的错误",
-    "upNext": "下一个",
-    "username": "用户名",
-    "usernameRequired": "用户名为必填项",
-    "youMayAlsoLike": "猜你喜欢",
-    "shows": "电视剧",
-    "moreLikeThis": "更多相关",
-    "browserNotSupported": "您的浏览器不支持播放此格式的文件。",
-    "years": "年份",
-    "videoTypes": "视频类型",
-    "parentalRatings": "家长评级",
-    "genres": "风格",
-    "themeVideo": "主题视频",
-    "themeSong": "主题曲",
-    "specialFeatures": "特殊功能",
-    "trailer": "预告片",
-    "subtitles": "字幕",
-    "features": "特点",
-    "dislikes": "不喜欢",
-    "likes": "喜欢",
-    "favorite": "收藏",
-    "resumable": "可续播",
-    "unplayed": "未播放",
-    "played": "已播放",
-    "status": "状态",
-    "filtersNotFound": "无法加载过滤器",
-    "unhandledException": "未处理的异常",
-    "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高",
-    "noNetworkConnection": "无网络连接",
-    "shuffleAll": "全部随机",
-    "unliked": "不喜欢",
-    "unableGetRelated": "无法获取相关项目",
-    "studios": "工作室",
-    "sortByType": "根据 {type}",
-    "selectUser": "选择一个用户",
-    "series": "系列",
-    "selectServer": "选择服务器",
-    "noResultsFound": "这里空空如也",
-    "networks": "网络",
-    "name": "名称",
-    "moreLikeArtist": "更多相似的 {artist}",
-    "manualLogin": "手动登录",
-    "loginAs": "登录为 {name}",
-    "liked": "喜欢",
-    "filter": "筛选器",
-    "failedToRefreshItems": "无法刷新项目",
-    "disc": "唱片",
-    "collections": "收藏",
-    "byArtist": "来自",
-    "connect": "连接",
-    "changeUser": "更改用户",
-    "changeServer": "更改服务器",
-    "biography": "传记",
-    "artists": "艺术家",
-    "actors": "演员",
-    "artist": "艺术家",
-    "albums": "专辑",
-    "numberTracks": "{number} 轨道",
-    "viewDetails": "查看详情",
-    "validation": {
-        "required": "这是必填栏",
-        "mustBeUrl": "该字段必须是有效的 URL",
-        "bothPasswordsSame": "两次密码必须相同"
-    },
-    "nextUp": "下一步",
-    "libraries": "媒体库",
-    "latestLibrary": "最新的 {libraryName}",
-    "darkModeToggle": "切换深色模式",
-    "errors": {
-        "messages": {
-            "videoPlayerError": "视频播放器遇到了一个不可恢复的错误。",
-            "errorCode": "错误代码：{errorCode}"
-        },
-        "anErrorHappened": "发生了一个错误"
-    },
-    "buttons": {
-        "ok": "确认"
-    },
-    "year": "年份",
-    "writer": "作者",
-    "vueClientVersion": "Vue 客户端版本",
-    "unableGetServerConfiguration": "无法获取服务器配置",
-    "unableGetPublicUsers": "无法获取用户",
-    "type": "类型",
-    "title": "标题",
-    "thumb": "赞",
-    "tags": "标签",
-    "tagline": "标语",
-    "sortTitle": "排序标题",
-    "settingsSections": {
-        "users": {
-            "name": "用户",
-            "description": "管理用户及其权限"
-        },
-        "transcodingAndStreaming": {
-            "name": "转码和流式传输",
-            "description": "管理此服务器如何处理转码和流式传输到客户端"
-        },
-        "subtitles": {
-            "name": "字幕",
-            "description": "控制字幕在此设备上的显示方式"
-        },
-        "server": {
-            "name": "服务器",
-            "description": "配置此服务器的语言和商标"
-        },
-        "scheduledTasks": {
-            "name": "计划任务",
-            "description": "管理在此服务器上运行的计划任务"
-        },
-        "plugins": {
-            "name": "插件",
-            "description": "添加和配置此服务器的新功能"
-        },
-        "playback": {
-            "name": "播放",
-            "description": "编辑此设备的播放首选项"
-        },
-        "notifications": {
-            "name": "通知",
-            "description": "管理和配置此服务器发送的通知"
-        },
-        "networking": {
-            "name": "网络",
-            "description": "管理此服务器的网络设置"
-        },
-        "mediaPlayers": {
-            "name": "媒体播放器",
-            "description": "设置媒体播放器对此设备的行为"
-        },
-        "logs": {
-            "name": "日志和活动",
-            "description": "读取和搜索服务器日志和用户活动"
-        },
-        "liveTvAndDvr": {
-            "name": "直播电视和 DVR",
-            "description": "管理电视调谐器，节目表数据提供商和 DVR 设置"
-        },
-        "libraries": {
-            "name": "媒体库",
-            "description": "管理媒体库及其元数据"
-        },
-        "home": {
-            "name": "主屏幕",
-            "description": "设置主页和主屏幕布局"
-        },
-        "dlna": {
-            "name": "DLNA",
-            "description": "配置 DLNA 设置和配置文件"
-        },
-        "devices": {
-            "name": "设备",
-            "description": "查看和管理连接到服务器的设备"
-        },
-        "apiKeys": {
-            "name": "API 密钥",
-            "description": "添加和撤消用于从外部访问服务器的 API 密钥"
-        },
-        "account": {
-            "name": "账户",
-            "description": "编辑您的用户信息"
-        }
-    },
-    "serverVersion": "服务器版本",
     "serverDashboard": "服务器仪表盘",
-    "server": "服务器",
-    "search": "搜索",
-    "screenshot": "截屏",
-    "saved": "已保存",
-    "save": "保存",
-    "role": "角色",
-    "rememberMe": "记住我",
-    "producer": "制作者",
-    "primary": "主要的",
-    "people": "人物",
-    "parentalRating": "家长评级",
-    "overview": "总览",
-    "originalTitle": "原始标题",
-    "originalAspectRatio": "原始长宽比",
-    "operatingSystem": "操作系统",
-    "metadataNoResultsMatching": "没有与“{search}”匹配的结果。按回车键来创建一个新的。",
-    "metadata": "元数据",
-    "menu": "菜单",
-    "logs": "日志",
-    "logo": "图标",
-    "links": {
-        "reportAnIssue": "报告 Vue 客户端的问题",
-        "readTheDocumentation": "阅读文档",
-        "poweredByJellyfin": "本服务器由 Jellyfin 提供动力",
-        "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin"
-    },
-    "jellyfinLogo": "Jellyfin 图标",
-    "images": "图片",
-    "headerPaths": "路径",
-    "headerExternalIds": "额外编号",
-    "guestStar": "特邀明星",
-    "general": "一般",
-    "failedSettingDisplayPreferences": "无法更新显示设置首选项。",
-    "failedRetrievingDisplayPreferences": "无法获取显示设置首选项。使用默认值。",
-    "editPerson": "编辑人物",
-    "editMetadata": "编辑元数据",
-    "edit": "编辑",
-    "discNumber": "碟片 {discNumber}",
-    "director": "导演",
-    "details": "细节",
-    "dateAdded": "加入日期",
-    "customRating": "自定义评级",
-    "criticRating": "评论家评级",
-    "composer": "作曲家",
-    "communityRating": "社区评分",
-    "castAndCrew": "演员表",
-    "cancel": "取消",
-    "boxRear": "方块（背面）",
-    "box": "方块",
-    "banner": "横幅",
-    "backdrop": "背景",
-    "art": "艺术",
-    "architecture": "架构",
-    "allLanguages": "全部语言",
-    "addNewPerson": "添加一位新人物",
-    "actor": "演员",
+    "serverNotFound": "找不到服务器",
+    "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高"
+  },
+  "logout": "注销",
+  "logsAndActivity": {
     "activity": "活动",
-    "3DFormat": "3D 格式",
-    "video": "视频",
-    "audio": "音频",
-    "homeHeader": {
-        "items": {
-            "recentlyAdded": "最近添加"
-        },
-        "welcome": {
-            "checkNewItems": "查看新的项目。",
-            "noItems": "没有最近添加的项目可显示。",
-            "helloUser": "你好 {userName}！"
-        }
+    "failedGetActivity": "无法获取到活动",
+    "failedGetLogs": "无法获取到日志",
+    "logs": "日志",
+    "noActivityFound": "未找到活动",
+    "noLogsFound": "找不到日志"
+  },
+  "manualLogin": "手动登录",
+  "menu": "菜单",
+  "metadataEditor": "元数据编辑器",
+  "metadataNoResultsMatching": "没有与“{search}”匹配的结果。按回车键来创建一个新的。",
+  "more": "更多",
+  "moreLikeArtist": "更多相似的 {artist}",
+  "moreLikeThis": "更多相关",
+  "movies": "电影",
+  "name": "名称",
+  "networks": "网络",
+  "nextUp": "下一步",
+  "noAudioTrackSelected": "未选中音轨",
+  "noAudioTracksAvailable": "没有可用的音轨",
+  "noImagesFound": "暂无图像",
+  "noNetworkConnection": "无网络连接",
+  "noResultsFound": "这里空空如也",
+  "noSubtitleSelected": "未选中字幕",
+  "noSubtitlesAvailable": "没有可用的字幕",
+  "noTracksAvailable": "没有可用的曲目",
+  "noVideoTrackSelected": "未选中视频",
+  "noVideoTracksAvailable": "没有可用的视频",
+  "numberTracks": "{number} 轨道",
+  "operatingSystem": "操作系统",
+  "originalAspectRatio": "原始长宽比",
+  "originalTitle": "原始标题",
+  "overview": "总览",
+  "parentalRating": "家长评级",
+  "parentalRatings": "家长评级",
+  "password": "密码",
+  "people": "人物",
+  "person": "人员",
+  "play": "播放",
+  "playFromBeginning": "从头开始播放",
+  "playback": {
+    "addToQueue": "添加到队列",
+    "clearQueue": "清除队列并停止播放",
+    "playAll": "全部播放",
+    "playNext": "播放下一个",
+    "playbackSource": {
+      "item": "从 {item} 开始播放",
+      "shuffle": "随机播放",
+      "shuffleItem": "从 {item} 开始随机播放",
+      "unknown": "从队列播放"
     },
-    "undefined": "未定义",
+    "queueItems": "{items} 轨道",
+    "saveAsPlaylist": "将队列另存为播放列表",
+    "shuffle": "随机",
+    "shuffleAll": "全部随机播放"
+  },
+  "played": "已播放",
+  "present": "现在",
+  "producer": "制作者",
+  "queue": "队列",
+  "rating": "评价",
+  "refreshLibrary": "刷新媒体库",
+  "releaseDate": "发布日期",
+  "resumable": "可续播",
+  "resume": "恢复播放",
+  "role": "角色",
+  "save": "保存",
+  "saved": "已保存",
+  "search": "搜索",
+  "series": "系列",
+  "server": "服务器",
+  "serverVersion": "服务器版本",
+  "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "访问密钥",
+      "addApiKey": "添加一个 API 密钥",
+      "addNewKey": "添加新的 API 密钥",
+      "apiKeys": "API 密钥",
+      "appName": "应用名称",
+      "createKeyFailure": "创建新 API 密钥时发生错误",
+      "createKeySuccess": "成功地创建了一个新的 API 密钥",
+      "dateCreated": "创建日期",
+      "description": "添加或撤销 API 密钥以便从外部访问你的服务器",
+      "refreshKeysFailure": "刷新 API 密钥时发生错误",
+      "revokeAll": "撤销所有的 API 密钥",
+      "revokeAllFailure": "撤销所有 API 密钥时发生错误",
+      "revokeAllSuccess": "成功地撤销了所有的 API 密钥",
+      "revokeFailure": "撤销 API 密钥时发生错误",
+      "revokeSuccess": "成功地撤销了 API 密钥"
+    },
+    "devices": {
+      "appName": "应用名称",
+      "appVersion": "应用版本",
+      "delete": "删除",
+      "deleteAll": "删除全部",
+      "deleteAllDevicesError": "删除所有设备时发生错误",
+      "deleteAllDevicesSuccess": "所有设备删除成功",
+      "deleteDeviceError": "删除设备时出错",
+      "deleteDeviceSuccess": "设备已成功删除",
+      "deviceName": "设备名称",
+      "devices": "设备",
+      "lastActive": "上次活动",
+      "noDevicesFound": "未找到设备",
+      "userName": "用户名"
+    },
+    "help": "帮助",
     "logsAndActivity": {
-        "noLogsFounr": "未找到日志",
-        "noActivityFound": "未找到活动",
-        "failedGetActivity": "无法获取到活动",
-        "failedGetLogs": "无法获取到日志",
-        "logs": "日志",
-        "activity": "活动",
-        "noLogsFound": "找不到日志"
+      "activity": "活动",
+      "failedGetActivity": "无法获取活动",
+      "failedGetLogs": "无法获取日志",
+      "logs": "日志",
+      "noActivityFound": "未找到活动",
+      "noLogsFound": "未找到日志"
     },
-    "libraryRefreshQueued": "媒体库将会被更新",
-    "fullScreen": "全屏幕",
-    "person": "人员",
-    "noVideoTracksAvailable": "没有可用的视频",
-    "noVideoTrackSelected": "未选中视频",
-    "noSubtitlesAvailable": "没有可用的字幕",
-    "noSubtitleSelected": "未选中字幕",
-    "noImagesFound": "暂无图像",
-    "noAudioTracksAvailable": "没有可用的音轨",
-    "noAudioTrackSelected": "未选中音轨",
-    "metadataEditor": "元数据编辑器",
-    "confirm": "确定",
-    "NoMediaSourcesAvailable": "没有可用的媒体源",
-    "writing": "作者",
-    "queue": "队列",
-    "noTracksAvailable": "没有可用的曲目",
-    "directing": "导演",
-    "wizard": {
-        "remoteAccess": "远程访问",
-        "allowRemoteAccess": "允许远程访问此服务器",
-        "administratorAccount": "管理员账户",
-        "languageLocale": "语言和本地化",
-        "preferedLanguage": "首选的语言",
-        "preferredMetadataLanguage": "首选的元数据语言",
-        "completeError": "无法完成设置向导。",
-        "remoteAccessSet": "远程访问设置成功。",
-        "metadataLanguagesSet": "元数据设置成功。",
-        "userSuccessfullySet": "用户设置成功。",
-        "languageSuccessfullySet": "语言设置成功。",
-        "setRemoteError": "无法设置远程访问设定。",
-        "setMetadataError": "无法设置元数据语言。",
-        "setLanguageError": "无法设置客户端语言。",
-        "setAdminError": "无法创建一个管理员账户。",
-        "setupWizard": "设置向导",
-        "confirmPassword": "确认密码"
+    "settings": "设置"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "编辑您的用户信息",
+      "name": "账户"
     },
-    "version": "版本号",
-    "upNextName": "接下来：{upNextItemName}",
-    "unableToRefreshLibrary": "无法刷新媒体库",
-    "tvShowAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
-    "tooltips": {
-        "switchToLightMode": "切换到浅色模式",
-        "switchToDarkMode": "切换到深色模式",
-        "changeLanguage": "语言"
+    "devices": {
+      "description": "查看和管理连接到服务器的设备",
+      "name": "设备"
     },
-    "stopPlayback": "停止播放",
-    "refreshLibrary": "刷新媒体库",
+    "dlna": {
+      "description": "配置 DLNA 设置和配置文件",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "设置主页和主屏幕布局",
+      "name": "主屏幕"
+    },
+    "libraries": {
+      "description": "管理媒体库及其元数据",
+      "name": "媒体库"
+    },
+    "liveTvAndDvr": {
+      "description": "管理电视调谐器，节目表数据提供商和 DVR 设置",
+      "name": "直播电视和 DVR"
+    },
+    "logs": {
+      "description": "读取和搜索服务器日志和用户活动",
+      "name": "日志和活动"
+    },
+    "mediaPlayers": {
+      "description": "设置媒体播放器对此设备的行为",
+      "name": "媒体播放器"
+    },
+    "networking": {
+      "description": "管理此服务器的网络设置",
+      "name": "网络"
+    },
+    "notifications": {
+      "description": "管理和配置此服务器发送的通知",
+      "name": "通知"
+    },
     "playback": {
-        "queueItems": "{items} 轨道",
-        "playNext": "播放下一个",
-        "addToQueue": "添加到队列",
-        "shuffle": "随机",
-        "playAll": "全部播放",
-        "shuffleAll": "全部随机播放",
-        "saveAsPlaylist": "将队列另存为播放列表",
-        "playbackSource": {
-            "unknown": "从队列播放",
-            "shuffleItem": "从 {item} 开始随机播放",
-            "shuffle": "随机播放",
-            "item": "从 {item} 开始播放"
-        },
-        "clearQueue": "清除队列并停止播放"
+      "description": "编辑此设备的播放首选项",
+      "name": "播放"
     },
-    "unableToToggleLike": "无法更改此元素的收藏状态",
-    "resume": "恢复播放",
-    "playFromBeginning": "从头开始播放",
-    "imageType": {
-        "art": "艺术",
-        "thumb": "缩略图",
-        "screenshot": "截图",
-        "primary": "封面图",
-        "menu": "菜单",
-        "logo": "商标",
-        "box": "盒子",
-        "boxRear": "盒子（背面）",
-        "disc": "光盘",
-        "banner": "横幅",
-        "backdrop": "背景"
+    "plugins": {
+      "description": "添加和配置此服务器的新功能",
+      "name": "插件"
     },
-    "item": {
-        "tracklist": {
-            "title": "标题"
-        },
-        "person": {
-            "person": "人物",
-            "death": "去世日期",
-            "birthPlace": "出生地",
-            "birth": "生日"
-        },
-        "cast": "演职人员",
-        "crew": "演职人员",
-        "composer": "作曲家",
-        "artist": {
-            "information": "信息",
-            "discography": "唱片目录"
-        }
+    "scheduledTasks": {
+      "description": "管理在此服务器上运行的计划任务",
+      "name": "计划任务"
     },
-    "unableToTogglePlayed": "无法更新观看状态",
-    "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目"
+    "server": {
+      "description": "配置此服务器的语言和商标",
+      "name": "服务器"
+    },
+    "subtitles": {
+      "description": "控制字幕在此设备上的显示方式",
+      "name": "字幕"
+    },
+    "transcodingAndStreaming": {
+      "description": "管理此服务器如何处理转码和流式传输到客户端",
+      "name": "转码和流式传输"
+    },
+    "users": {
+      "description": "管理用户及其权限",
+      "name": "用户"
+    }
+  },
+  "shows": "电视剧",
+  "signIn": "登陆",
+  "sortByType": "根据 {type}",
+  "sortTitle": "排序标题",
+  "specialFeatures": "特殊功能",
+  "status": "状态",
+  "studios": "工作室",
+  "subtitles": "字幕",
+  "tagline": "标语",
+  "tags": "标签",
+  "themeSong": "主题曲",
+  "themeVideo": "主题视频",
+  "tooltips": {
+    "changeLanguage": "语言",
+    "switchToDarkMode": "切换到深色模式",
+    "switchToLightMode": "切换到浅色模式"
+  },
+  "trailer": "预告片",
+  "tvShowAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
+  "type": "类型",
+  "unableGetPublicUsers": "无法获取用户",
+  "unableGetRelated": "无法获取相关项目",
+  "unableGetServerConfiguration": "无法获取服务器配置",
+  "unableToRefreshLibrary": "无法刷新媒体库",
+  "unableToToggleLike": "无法更改此元素的收藏状态",
+  "unableToTogglePlayed": "无法更新观看状态",
+  "undefined": "未定义",
+  "unexpectedError": "意外的错误",
+  "unhandledException": "未处理的异常",
+  "unliked": "不喜欢",
+  "unplayed": "未播放",
+  "upNext": "下一个",
+  "upNextName": "接下来：{upNextItemName}",
+  "username": "用户名",
+  "validation": {
+    "bothPasswordsSame": "两次密码必须相同",
+    "mustBeUrl": "该字段必须是有效的 URL",
+    "required": "这是必填栏"
+  },
+  "version": "版本号",
+  "video": "视频",
+  "videoTypes": "视频类型",
+  "viewDetails": "查看详情",
+  "vueClientVersion": "Vue 客户端版本",
+  "wizard": {
+    "administratorAccount": "管理员账户",
+    "allowRemoteAccess": "允许远程访问此服务器",
+    "completeError": "无法完成设置向导。",
+    "confirmPassword": "确认密码",
+    "languageLocale": "语言和本地化",
+    "languageSuccessfullySet": "语言设置成功。",
+    "metadataLanguagesSet": "元数据设置成功。",
+    "preferedLanguage": "首选的语言",
+    "preferredMetadataLanguage": "首选的元数据语言",
+    "remoteAccess": "远程访问",
+    "remoteAccessSet": "远程访问设置成功。",
+    "setAdminError": "无法创建一个管理员账户。",
+    "setLanguageError": "无法设置客户端语言。",
+    "setMetadataError": "无法设置元数据语言。",
+    "setRemoteError": "无法设置远程访问设定。",
+    "setupWizard": "设置向导",
+    "userSuccessfullySet": "用户设置成功。"
+  },
+  "writer": "作者",
+  "writing": "作者",
+  "year": "年份",
+  "years": "年份",
+  "youMayAlsoLike": "猜你喜欢"
 }

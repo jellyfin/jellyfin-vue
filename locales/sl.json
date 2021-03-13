@@ -1,118 +1,105 @@
 {
-    "alphabetically": "Po abecedi",
-    "badRequest": "Slaba zahteva. Poskusite znova",
-    "continueListening": "Nadaljuj s poslušanjem",
-    "continueWatching": "Nadaljuj z gledanjem",
-    "endDate": "Datum zaključka",
-    "endsAt": "Konča se ob {time}",
-    "episodeNumber": "Epizoda {episodeNumber}",
-    "home": "Domov",
-    "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
-    "libraryEmpty": "Knjižnica je prazna",
-    "libraryNotFound": "Knjižnice ni najdena",
-    "login": "Prijava",
-    "logout": "Odjava",
-    "more": "Več",
-    "password": "Geslo",
-    "play": "Predvajaj",
-    "serverAddress": "Naslov strežnika",
-    "serverAddressMustBeUrl": "Naslov strežnika mora biti veljaven URL",
-    "serverAddressRequired": "Naslov strežnika je zahtevan",
-    "serverNotFound": "Strežnika ni mogoče najti",
-    "settings": "Nastavitve",
-    "signIn": "Prijavite se",
-    "unexpectedError": "Nepričakovana napaka",
-    "upNext": "Naslednje",
-    "username": "Uporabniško ime",
-    "usernameRequired": "Uporabniško ime je zahtevano",
+  "actor": "Igralec",
+  "actors": "Igralci",
+  "addNewPerson": "Dodaj osebo",
+  "albums": "Albumi",
+  "allLanguages": "Vsi jeziki",
+  "alphabetically": "Po abecedi",
+  "architecture": "Arhitektura",
+  "artist": "Izvajalec",
+  "artists": "Izvajalci",
+  "audio": "Zvok",
+  "badRequest": "Slaba zahteva. Poskusite znova",
+  "biography": "Biografija",
+  "browserNotSupported": "Brskalnik ne podpira predvajanja te datoteke.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Od",
+  "cancel": "Prekliči",
+  "castAndCrew": "Igralci in ekipa",
+  "collections": "Zbirke",
+  "communityRating": "Ocena skupnosti",
+  "confirm": "Potrdi",
+  "connect": "Poveži",
+  "continueListening": "Nadaljuj s poslušanjem",
+  "continueWatching": "Nadaljuj z gledanjem",
+  "criticRating": "Ocena kritikov",
+  "customRating": "Ocena po meri",
+  "darkModeToggle": "Preklopi temen način",
+  "dateAdded": "Dodano",
+  "details": "Podrobnosti",
+  "directing": "Režija",
+  "director": "Režiser",
+  "discNumber": "Disk {discNumber}",
+  "edit": "Uredi",
+  "editMetadata": "Uredi metapodatke",
+  "editPerson": "Uredi osebo",
+  "endDate": "Datum zaključka",
+  "endsAt": "Konča se ob {time}",
+  "episodeNumber": "Epizoda {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Prišlo je do napake",
+    "messages": {
+      "errorCode": "Koda napake: {errorCode}",
+      "videoPlayerError": "Video predvajalnik je naletel na nepopravljivo napako."
+    }
+  },
+  "favorite": "Priljubljen",
+  "general": "Splošno",
+  "genres": "Žanri",
+  "headerPaths": "Pot",
+  "home": "Domov",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Nedavno dodano"
+    },
+    "welcome": {
+      "checkNewItems": "Kaj je novega.",
+      "helloUser": "Pozdravljeni{userName}!"
+    }
+  },
+  "imageType": {
+    "backdrop": "Ozadje",
+    "banner": "Pasica",
+    "box": "Ovitek",
+    "boxRear": "Ovitek (zadnja stran)",
+    "disc": "Disk",
     "logo": "Logotip",
-    "loginAs": "Prijavi se kot {name}",
-    "links": {
-        "readTheDocumentation": "Preberi dokumentacijo"
-    },
-    "libraries": "Knjižnice",
-    "images": "Slike",
-    "headerPaths": "Pot",
-    "genres": "Žanri",
-    "errors": {
-        "messages": {
-            "errorCode": "Koda napake: {errorCode}",
-            "videoPlayerError": "Video predvajalnik je naletel na nepopravljivo napako."
-        },
-        "anErrorHappened": "Prišlo je do napake"
-    },
-    "editPerson": "Uredi osebo",
-    "edit": "Uredi",
-    "details": "Podrobnosti",
-    "criticRating": "Ocena kritikov",
-    "connect": "Poveži",
+    "menu": "Meni",
+    "screenshot": "Posnetek zaslona",
+    "thumb": "Sličica"
+  },
+  "images": "Slike",
+  "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
+  "item": {
+    "cast": "Zasedba",
     "composer": "Skladatelj",
-    "collections": "Zbirke",
-    "changeUser": "Spremeni uporabnika",
-    "changeServer": "Spremeni strežnik",
-    "cancel": "Prekliči",
-    "confirm": "Potrdi",
-    "browserNotSupported": "Brskalnik ne podpira predvajanja te datoteke.",
-    "biography": "Biografija",
-    "artists": "Izvajalci",
-    "artist": "Izvajalec",
-    "albums": "Albumi",
-    "wizard": {
-        "remoteAccess": "Oddaljen dostop",
-        "allowRemoteAccess": "Dovoli oddaljen dostop do strežnika",
-        "administratorAccount": "Administratorski račun",
-        "preferedLanguage": "Privzeti jezik",
-        "setupWizard": "Namestitveni čarovnik",
-        "userSuccessfullySet": "Uporabnik je bil uspešno nastavljen."
-    },
-    "art": "Umetnost",
-    "architecture": "Arhitektura",
-    "allLanguages": "Vsi jeziki",
-    "addNewPerson": "Dodaj osebo",
-    "actors": "Igralci",
-    "actor": "Igralec",
-    "item": {
-        "crew": "Ekipa",
-        "composer": "Skladatelj",
-        "cast": "Zasedba"
-    },
-    "imageType": {
-        "thumb": "Sličica",
-        "screenshot": "Posnetek zaslona",
-        "menu": "Meni",
-        "logo": "Logotip",
-        "disc": "Disk",
-        "boxRear": "Ovitek (zadnja stran)",
-        "box": "Ovitek",
-        "banner": "Pasica",
-        "backdrop": "Ozadje"
-    },
-    "homeHeader": {
-        "welcome": {
-            "helloUser": "Pozdravljeni{userName}!",
-            "checkNewItems": "Kaj je novega."
-        },
-        "items": {
-            "recentlyAdded": "Nedavno dodano"
-        }
-    },
-    "general": "Splošno",
-    "editMetadata": "Uredi metapodatke",
-    "discNumber": "Disk {discNumber}",
-    "director": "Režiser",
-    "directing": "Režija",
-    "dateAdded": "Dodano",
-    "darkModeToggle": "Preklopi temen način",
-    "customRating": "Ocena po meri",
-    "communityRating": "Ocena skupnosti",
-    "castAndCrew": "Igralci in ekipa",
-    "byArtist": "Od",
-    "buttons": {
-        "ok": "Ok"
-    },
-    "audio": "Zvok",
-    "favorite": "Priljubljen",
-    "version": "Verzija",
-    "year": "Leto",
-    "years": "Leta"
+    "crew": "Ekipa"
+  },
+  "libraries": "Knjižnice",
+  "libraryEmpty": "Knjižnica je prazna",
+  "libraryNotFound": "Knjižnice ni najdena",
+  "links": {
+    "readTheDocumentation": "Preberi dokumentacijo"
+  },
+  "logout": "Odjava",
+  "more": "Več",
+  "password": "Geslo",
+  "play": "Predvajaj",
+  "signIn": "Prijavite se",
+  "unexpectedError": "Nepričakovana napaka",
+  "upNext": "Naslednje",
+  "username": "Uporabniško ime",
+  "version": "Verzija",
+  "wizard": {
+    "administratorAccount": "Administratorski račun",
+    "allowRemoteAccess": "Dovoli oddaljen dostop do strežnika",
+    "preferedLanguage": "Privzeti jezik",
+    "remoteAccess": "Oddaljen dostop",
+    "setupWizard": "Namestitveni čarovnik",
+    "userSuccessfullySet": "Uporabnik je bil uspešno nastavljen."
+  },
+  "year": "Leto",
+  "years": "Leta"
 }
