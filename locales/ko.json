@@ -260,6 +260,27 @@
         "account": {
             "description": "이 사용자의 정보를 수정합니다",
             "name": "계정"
+        },
+        "liveTvAndDvr": {
+            "name": "라이브 TV & DVR",
+            "description": "TV 튜너, 가이드 제공자들과 DVR 설정을 관리합니다"
+        },
+        "libraries": {
+            "name": "라이브러리",
+            "description": "라이브러리와 메타데이타를 관리합니다"
+        },
+        "home": {
+            "name": "홈 스크린",
+            "description": "홈 섹션과 홈 스크린 레이아웃을 설정합니다"
+        },
+        "dlna": {
+            "name": "DLNA",
+            "description": "DLNA 세팅과 프로파일을 설정합니다"
+        },
+        "devices": {
+            "name": "장치",
+            "description": "서버에 연결된 장치들을 확인하고 관리합니다"
         }
-    }
+    },
+    "libraryEmptyFilters": "선택한 필터에 해당되는 항목이 없습니다. 선택된 필터 일부를 제거시 몇 항목이 더 나올 수 있습니다"
 }
