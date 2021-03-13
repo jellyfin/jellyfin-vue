@@ -280,7 +280,11 @@
     "originalTitle": "அசல் தலைப்பு",
     "originalAspectRatio": "அசல் விகித விகிதம்",
     "metadataNoResultsMatching": "\"{search}\" உடன் பொருந்தக்கூடிய முடிவுகள் எதுவும் இல்லை. புதிய ஒன்றை உருவாக்க Enter ஐ அழுத்தவும்.",
-    "metadata": "மெட்டாடேட்டா",
+    "metadata": {
+        "type": "வகை",
+        "sourceAll": "அனைத்தும்",
+        "source": "மூல"
+    },
     "menu": "பட்டியல்",
     "logo": "சின்னம்",
     "images": "படங்கள்",
