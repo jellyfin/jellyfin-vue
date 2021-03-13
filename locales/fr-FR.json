@@ -107,7 +107,7 @@
   },
   "itemNotFound": "Élément introuvable",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Derniers {libraryName}",
+  "latestLibrary": "Récemment ajoutés à {libraryName}",
   "libraries": "Médiathèques",
   "libraryEmpty": "Cette médiathèque est vide",
   "libraryEmptyFilters": "Pas de correspondances. Supprimez des filtres pour afficher plus d'éléments",
@@ -326,7 +326,7 @@
     },
     "transcodingAndStreaming": {
       "description": "Gérer la façon dont ce serveur transcode et envoie les flux vers les clients",
-      "name": "Transcodage et streaming"
+      "name": "Transcodage et diffusion"
     },
     "users": {
       "description": "Gérer les utilisateurs et les permissions",
