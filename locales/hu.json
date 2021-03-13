@@ -259,7 +259,11 @@
     "originalAspectRatio": "Eredeti oldalarány",
     "operatingSystem": "Operációs rendszer",
     "metadataNoResultsMatching": "A keresett kifejezés ({search}) nem található. Nyomj enter-t, hogy létrehozz egy újat.",
-    "metadata": "Metaadat",
+    "metadata": {
+        "type": "Típus",
+        "sourceAll": "Összes",
+        "source": "Forrás"
+    },
     "menu": "Menü",
     "logs": "Naplók",
     "logo": "Logó",
