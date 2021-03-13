@@ -127,7 +127,11 @@
     },
     "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
     "menu": "മെനു",
-    "metadata": "മെറ്റാഡാറ്റ",
+    "metadata": {
+        "type": "തരം",
+        "sourceAll": "എല്ലാം",
+        "source": "ഉറവിടം"
+    },
     "metadataNoResultsMatching": "\"{search}\" എന്നതുമായി പൊരുത്തപ്പെടുന്ന ഫലങ്ങളൊന്നുമില്ല. പുതിയതൊന്ന് സൃഷ്ടിക്കാൻ എന്റർ അമർത്തുക.",
     "more": "കൂടുതൽ",
     "moreLikeArtist": "{artist} പോലുള്ള കൂടുതൽ",
