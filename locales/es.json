@@ -150,6 +150,10 @@
   },
   "manualLogin": "Inicio de sesión manual",
   "menu": "Menú",
+  "metadata": {
+    "source": "Fuente",
+    "type": "Tipo"
+  },
   "metadataEditor": "Editor de etiquetas",
   "metadataNoResultsMatching": "No hay resultados para \"{search}\". Pulsa Entrar para crear uno nuevo.",
   "more": "Más",
