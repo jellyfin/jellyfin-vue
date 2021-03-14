@@ -98,7 +98,7 @@ $ npm run build --standalone
 
 # move the server and required files to a dedicated directory
 $ mkdir -p /opt/jellyfin-vue
-$ cp .nuxt .docker/nuxt.config.js .docker/package.json /opt/jellyfin-vue
+$ cp -r .nuxt .docker/nuxt.config.js .docker/package.json /opt/jellyfin-vue
 
 # install the required dependency and start the client
 $ cd /opt/jellyfin-vue
