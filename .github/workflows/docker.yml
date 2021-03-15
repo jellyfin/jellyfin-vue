@@ -44,7 +44,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client
-        run: npm run build --production --standalone
+        run: 'npm run build:standalone'
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1
