@@ -150,6 +150,11 @@
   },
   "manualLogin": "Ruční přihlášení",
   "menu": "Nabídka",
+  "metadata": {
+    "source": "Zdroj",
+    "sourceAll": "Vše",
+    "type": "Typ"
+  },
   "metadataEditor": "Editor metadat",
   "metadataNoResultsMatching": "Žádné výsledky pro \"{search}\". Stisknutím klávesy Enter vytvořte nový.",
   "more": "Více",
