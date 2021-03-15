@@ -1,0 +1,37 @@
+# Dockerfile
+Dockerfile
+Dockerfile.static
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variables file
+.env
+
+# IDE / Editor
+.idea
+.run
+.vscode
+
+# macOS
+.DS_Store
+
+# Vim swap files
+*.swp
+
+# Github & CI
+.github
+.devcontainer
+.ci
