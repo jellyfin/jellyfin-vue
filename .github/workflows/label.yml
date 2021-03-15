@@ -1,4 +1,4 @@
-name: "Label pull requests"
+name: 'Label pull requests'
 on:
   - pull_request_target
 
@@ -6,7 +6,7 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/labeler@main
+      - uses: actions/labeler@v3
         continue-on-error: true
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: '${{ secrets.GH_TOKEN }}'
