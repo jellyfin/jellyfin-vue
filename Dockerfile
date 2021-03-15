@@ -13,8 +13,7 @@ COPY . .
 RUN npm ci --no-audit
 
 # Build SSR app for production in standalone mode
-
-RUN npm run build --production --standalone
+RUN npm run build:standalone
 
 # Build final image
 FROM node:14-alpine

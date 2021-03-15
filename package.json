@@ -7,6 +7,7 @@
     "dev": "NUXT_SSR=1 nuxt",
     "dev:static": "nuxt",
     "build": "NUXT_SSR=1 nuxt build",
+    "build:standalone": "NUXT_SSR=1 nuxt build --standalone",
     "build:static": "nuxt build",
     "prod": "npm run build && npm run start",
     "prod:static": "npm run build:static && npm run start:static",

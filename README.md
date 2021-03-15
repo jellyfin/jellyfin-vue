@@ -94,7 +94,7 @@ When using the SSR version of the client, you can run the client in standalone m
 $ npm install
 
 # build for production in standalone mode, with server-side rendering
-$ npm run build --standalone
+$ npm run build:standalone
 
 # move the server and required files to a dedicated directory
 $ mkdir -p /opt/jellyfin-vue
