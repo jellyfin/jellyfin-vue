@@ -114,13 +114,18 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
+import { isValidMD5 } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
+  validate(ctx: Context) {
+    return isValidMD5(ctx.route.params.itemId);
+  },
   async asyncData({ params, $api, $auth }) {
     const item = (
       await $api.userLibrary.getItem({

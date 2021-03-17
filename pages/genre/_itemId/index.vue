@@ -49,8 +49,13 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { Context } from '@nuxt/types';
+import { isValidMD5 } from '~/utils/items';
 
 export default Vue.extend({
+  validate(ctx: Context) {
+    return isValidMD5(ctx.route.params.itemId);
+  },
   async asyncData({ params, $api, $auth }) {
     const genre = (
       await $api.userLibrary.getItem({
