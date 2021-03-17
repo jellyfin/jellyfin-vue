@@ -101,7 +101,7 @@ export default Vue.extend({
     async setCurrentUser(user: UserDto): Promise<void> {
       if (!user.HasPassword) {
         // If the user doesn't have a password, avoid showing the password form
-        this.setDeviceProfile();
+        await this.setDeviceProfile();
         await this.$auth.loginWith('jellyfin', {
           username: user.Name,
           password: '',

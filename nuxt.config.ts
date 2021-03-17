@@ -116,7 +116,7 @@ const config: NuxtConfig = {
     [
       'nuxt-vuex-localstorage',
       {
-        localStorage: ['user', 'deviceProfile']
+        localStorage: ['user', 'deviceProfile', 'clientSettings']
       }
     ],
     // Doc: https://axios.nuxtjs.org/usage

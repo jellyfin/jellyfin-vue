@@ -12,14 +12,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import settingsHelper from '~/mixins/settingsHelper';
 
 export default Vue.extend({
-  beforeMount() {
-    this.callAllCallbacks();
-  },
-  methods: {
-    ...mapActions('displayPreferences', ['callAllCallbacks'])
-  }
+  mixins: [settingsHelper]
 });
 </script>

@@ -23,7 +23,7 @@
         v-for="(item, index) in $i18n.locales"
         :key="index"
         :input-value="item.code === $i18n.locale"
-        @click="editCustomPref({ key: 'locale', value: item.code })"
+        @click="setLocale({ locale: item.code })"
       >
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
@@ -54,7 +54,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('displayPreferences', ['editCustomPref'])
+    ...mapActions('clientSettings', ['setLocale'])
   }
 });
 </script>

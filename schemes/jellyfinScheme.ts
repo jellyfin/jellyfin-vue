@@ -132,7 +132,6 @@ export default class JellyfinScheme {
     }
 
     this.$auth.setUser(user);
-    await this.$auth.ctx.app.store.dispatch('displayPreferences/initState');
   }
 
   async logout(): Promise<never> {
@@ -148,8 +147,6 @@ export default class JellyfinScheme {
       // eslint-disable-next-line no-console
       console.error(e);
     }
-
-    await this.$auth.ctx.app.store.dispatch('reset', { clearCritical: false });
 
     // Reset everything
     return this.$auth.reset();

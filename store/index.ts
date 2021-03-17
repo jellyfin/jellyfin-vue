@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
+import { UserDto } from '@jellyfin/client-axios';
 import { TvShowsState } from './tvShows';
 import { ServerState } from './servers';
 import { PageState } from './page';
@@ -10,13 +11,26 @@ import { HomeSectionState } from './homeSection';
 import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
-import { DisplayPreferencesState } from './displayPreferences';
-import { ItemsState } from './items';
+import { ClientSettingsState } from './clientSettings';
 import { websocketPlugin } from './plugins/websocket';
+import { preferencesSync } from './plugins/preferencesSyncPlugin';
+import { userPlugin } from './plugins/userPlugin';
+import { ItemsState } from './items';
 
-export const plugins = [websocketPlugin];
+export const plugins = [websocketPlugin, preferencesSync, userPlugin];
+
+export interface AuthState {
+  busy: boolean;
+  loggedIn: boolean;
+  rememberMe: boolean;
+  strategy: string;
+  user: UserDto;
+}
 
 export interface RootState {
+  // A generic syncing indicator for settings or item syncing to and from the server
+  syncing: boolean;
+  // Handled by vue-native-websocket
   socket: {
     instance: WebSocket | null;
     isConnected: boolean;
@@ -25,9 +39,10 @@ export interface RootState {
   };
 }
 export interface AppState extends RootState {
+  auth: AuthState;
   backdrop: BackdropState;
-  device: DeviceState;
-  displayPreferences: DisplayPreferencesState;
+  clientSettings: ClientSettingsState;
+  deviceProfile: DeviceState;
   homeSection: HomeSectionState;
   items: ItemsState;
   page: PageState;
@@ -40,6 +55,7 @@ export interface AppState extends RootState {
 }
 
 export const state = (): RootState => ({
+  syncing: false,
   socket: {
     instance: null,
     isConnected: false,
@@ -71,6 +87,9 @@ export const mutations: MutationTree<RootState> = {
   },
   SOCKET_RECONNECT_ERROR(state: RootState) {
     Vue.set(state.socket, 'reconnectError', true);
+  },
+  SET_SYNC_STATUS(state: RootState, value: boolean) {
+    state.syncing = value;
   }
 };
 
@@ -78,20 +97,23 @@ export const actions: ActionTree<RootState, RootState> = {
   async reset({ dispatch }, { clearCritical }: { clearCritical: boolean }) {
     const promises = [];
     promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
-    promises.push(dispatch('deviceProfile/clearDeviceProfile', { root: true }));
-    promises.push(dispatch('displayPreferences/resetState', { root: true }));
-    promises.push(dispatch('items/clearState', { root: true }));
+    promises.push(dispatch('clientSettings/resetState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
+    promises.push(dispatch('items/clearState', { root: true }));
     promises.push(dispatch('page/clearPage', { root: true }));
     promises.push(dispatch('playbackManager/stop', { root: true }));
-    if (clearCritical) {
-      promises.push(dispatch('servers/clearServers', { root: true }));
-    }
     promises.push(dispatch('snackbar/resetMessage', { root: true }));
     promises.push(dispatch('tvShows/clearTvShows', { root: true }));
     promises.push(dispatch('user/clearUser', { root: true }));
     promises.push(dispatch('userViews/clearUserViews', { root: true }));
 
+    if (clearCritical) {
+      promises.push(dispatch('servers/clearServers', { root: true }));
+    }
+
     await Promise.all(promises);
+  },
+  setSyncStatus({ commit }, value: boolean) {
+    commit('SET_SYNC_STATUS', value);
   }
 };
