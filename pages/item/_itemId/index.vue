@@ -13,7 +13,7 @@
             {{ item.Name }}
           </h1>
           <h2
-            v-if="item.OriginalTitle"
+            v-if="item.OriginalTitle && item.OriginalTitle !== item.Name"
             class="text-subtitle-1"
             :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
           >
