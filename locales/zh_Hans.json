@@ -150,6 +150,11 @@
   },
   "manualLogin": "手动登录",
   "menu": "菜单",
+  "metadata": {
+    "source": "来源",
+    "sourceAll": "全部",
+    "type": "类型"
+  },
   "metadataEditor": "元数据编辑器",
   "metadataNoResultsMatching": "没有与“{search}”匹配的结果。按回车键来创建一个新的。",
   "more": "更多",
