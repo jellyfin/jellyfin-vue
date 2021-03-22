@@ -126,9 +126,9 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $libraries }) {
-    await $libraries.fetchItem(params.itemId);
-    const appearanceIds = await $libraries.fetchItems({
+  async asyncData({ params, $userLibrary }) {
+    await $userLibrary.fetchItem(params.itemId);
+    const appearanceIds = await $userLibrary.fetchItems({
       albumArtistIds: [params.itemId],
       sortBy: 'PremiereDate,ProductionYear,SortName',
       sortOrder: 'Descending',

@@ -56,8 +56,8 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $libraries }) {
-    await $libraries.fetchItem(params.itemId);
+  async asyncData({ params, $userLibrary }) {
+    await $userLibrary.fetchItem(params.itemId);
   },
   data() {
     return {
@@ -65,7 +65,7 @@ export default Vue.extend({
     };
   },
   async fetch() {
-    this.itemIds = await this.$libraries.fetchItems({
+    this.itemIds = await this.$userLibrary.fetchItems({
       genreIds: [this.$route.params.itemId],
       includeItemTypes: [this.$route.query.type.toString()],
       recursive: true,

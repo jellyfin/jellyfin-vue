@@ -7,7 +7,7 @@ import { Plugin } from '@nuxt/types/app';
 type GetItemsParams = Omit<ItemsApiGetItemsRequest, 'userId'>;
 type GetLatestMediaParams = Omit<UserLibraryApiGetLatestMediaRequest, 'userId'>;
 
-type LibrariesType = {
+type UserLibraryType = {
   fetchItem: (id: string) => Promise<void>;
   fetchItems: (params: GetItemsParams) => Promise<string[]>;
   fetchLatestMedia: (params: GetLatestMediaParams) => Promise<string[]>;
@@ -15,29 +15,29 @@ type LibrariesType = {
 
 declare module '@nuxt/types' {
   interface Context {
-    $libraries: LibrariesType;
+    $userLibrary: UserLibraryType;
   }
 
   interface NuxtAppOptions {
-    $libraries: LibrariesType;
+    $userLibrary: UserLibraryType;
   }
 }
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $libraries: LibrariesType;
+    $userLibrary: UserLibraryType;
   }
 }
 
 declare module 'vuex/types/index' {
   // eslint-disable-next-line -- Current TypeScript rules flag S as unused, but Nuxt requires identical types
   interface Store<S> {
-    $libraries: LibrariesType;
+    $userLibrary: UserLibraryType;
   }
 }
 
-const librariesPlugin: Plugin = ({ $api, $auth, store }, inject) => {
-  inject('libraries', {
+const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
+  inject('userLibrary', {
     /**
      * Fetches an item based on its ID and stores it
      *
@@ -102,4 +102,4 @@ const librariesPlugin: Plugin = ({ $api, $auth, store }, inject) => {
   });
 };
 
-export default librariesPlugin;
+export default userLibraryPlugin;
