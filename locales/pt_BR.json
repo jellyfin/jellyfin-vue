@@ -324,17 +324,26 @@
   "type": "Tipo",
   "upNext": "A seguir",
   "upNextName": "A seguir: {upNextItemName}",
+  "username": "Nome de usuário",
+  "validation": {
+    "bothPasswordsSame": "As duas senhas devem ser iguais",
+    "mustBeUrl": "Este campo deve ser uma URL válida",
+    "required": "Este campo é obrigatório"
+  },
   "version": "Versão",
   "video": "Vídeo",
   "videoTypes": "Tipos de vídeo",
+  "viewDetails": "Ver detalhes",
   "vueClientVersion": "Versão do cliente Vue",
   "wizard": {
     "administratorAccount": "Conta de administrador",
     "allowRemoteAccess": "Permitir acesso remoto ao servidor",
     "confirmPassword": "Confirmar senha",
     "languageLocale": "Idioma e local",
+    "languageSuccessfullySet": "Idioma definido com êxito.",
     "preferedLanguage": "Idioma preferido",
-    "remoteAccess": "Acesso remoto"
+    "remoteAccess": "Acesso remoto",
+    "setupWizard": "Assistente de configuração"
   },
   "year": "Ano",
   "years": "Anos",
