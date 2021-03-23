@@ -18,7 +18,7 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript'
   ],
-  plugins: ['prettier', 'promise', 'import', 'jsdoc'],
+  plugins: ['prettier', 'promise', 'import', 'jsdoc', 'lodash'],
   rules: {
     'import/newline-after-import': 'error',
     'import/order': 'error',
@@ -90,7 +90,8 @@ module.exports = {
       },
       // Always require blank lines before return statements
       { blankLine: 'always', prev: '*', next: 'return' }
-    ]
+    ],
+    'lodash/import-scope': ['error', 'method']
   },
   settings: {
     'import/resolver': {
