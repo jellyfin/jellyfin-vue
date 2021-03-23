@@ -79,7 +79,7 @@
       <v-text-field
         v-model="searchQuery"
         class="search-input"
-        :class="$vuetify.breakpoint.mdAndUp ? 'expandable' : null"
+        :class="$vuetify.breakpoint.smAndUp ? 'expandable' : null"
         prepend-inner-icon="mdi-magnify"
         :placeholder="$t('search.name')"
         max-width="15em"
