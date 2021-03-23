@@ -110,6 +110,7 @@ export default Vue.extend({
       if (!val) {
         return val;
       }
+
       return val.toFixed(1);
     }
   },
@@ -190,6 +191,7 @@ export default Vue.extend({
             ) {
               return true;
             }
+
             return false;
           }
         );
@@ -198,6 +200,7 @@ export default Vue.extend({
             return provider.Name as string;
           }
         );
+
         return [this.$t('metadata.sourceAll')].concat(providerNames);
       }
     },

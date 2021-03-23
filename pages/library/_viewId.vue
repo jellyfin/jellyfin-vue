@@ -237,6 +237,7 @@ export default Vue.extend({
     async refreshItems(): Promise<void> {
       try {
         let itemsResponse;
+
         switch (this.viewType) {
           case 'MusicArtist':
             itemsResponse = (

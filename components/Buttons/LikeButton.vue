@@ -41,6 +41,7 @@ export default Vue.extend({
         mutation?.payload?.MessageType === 'UserDataChanged'
       ) {
         const payloadData = mutation?.payload?.Data?.UserDataList;
+
         if (payloadData) {
           for (const payloadItem of payloadData) {
             if (payloadItem.ItemId === this.item.Id) {

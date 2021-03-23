@@ -133,6 +133,7 @@ export default Vue.extend({
   middleware: 'adminMiddleware',
   async asyncData({ $api }) {
     const minDate = new Date();
+
     minDate.setDate(minDate.getDate() - 7);
 
     const activityList = (

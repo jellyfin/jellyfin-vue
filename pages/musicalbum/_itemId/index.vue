@@ -160,7 +160,9 @@ export default Vue.extend({
     item: {
       handler(val: BaseItemDto): void {
         this.setPageTitle({ title: val.Name });
+
         const hash = this.getBlurhash(val, ImageType.Backdrop);
+
         this.setBackdrop({ hash });
       },
       immediate: true,

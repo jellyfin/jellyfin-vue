@@ -104,6 +104,7 @@ export default Vue.extend({
 
       this.loading = true;
       await this.setDeviceProfile();
+
       try {
         await this.loginRequest(this.login);
         this.$router.replace('/');

@@ -109,6 +109,7 @@ export default Vue.extend({
         case 4:
           return this.$t('wizard.remoteAccess');
       }
+
       return '';
     }
   },

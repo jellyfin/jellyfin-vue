@@ -28,14 +28,18 @@ export const mutations: MutationTree<ItemsState> = {
     if (!item.Id) {
       throw new Error("No item ID in provided item, can't store it");
     }
+
     Vue.set(state.byId, item.Id, item);
+
     if (!state.allIds.includes(item.Id)) {
       state.allIds.push(item.Id);
     }
   },
   DELETE_ITEM(state: ItemsState, { id }: { id: string }) {
     delete state.byId[id];
+
     const idx = state.allIds.indexOf(id);
+
     if (idx > -1) {
       state.allIds.splice(idx, 1);
     }
@@ -53,6 +57,7 @@ export const actions: ActionTree<ItemsState, ItemsState> = {
     if (some(items, (item) => !item.Id)) {
       throw new Error('Item missing ID');
     }
+
     forEach(items, (item) => {
       commit('ADD_ITEM', { item });
     });

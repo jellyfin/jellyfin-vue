@@ -94,6 +94,7 @@ export default Vue.extend({
       if (!value) {
         return;
       }
+
       this.editState = value;
     }
   },

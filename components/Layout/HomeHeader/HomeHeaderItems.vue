@@ -133,7 +133,9 @@ export default Vue.extend({
   },
   mounted() {
     this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
+
     const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
+
     this.setBackdrop({ hash });
   },
   beforeDestroy() {
@@ -144,9 +146,11 @@ export default Vue.extend({
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
     getRelatedItem(item: BaseItemDto): BaseItemDto {
       const rItem = this.relatedItems[this.items.indexOf(item)];
+
       if (!rItem) {
         return item;
       }
+
       return rItem;
     },
     getOverview(item: BaseItemDto): string {
@@ -158,6 +162,7 @@ export default Vue.extend({
     },
     getLogo(item: BaseItemDto): string | undefined {
       const relatedItem = this.getRelatedItem(item);
+
       return this.getImageUrlForElement(ImageType.Logo, {
         itemId: relatedItem.Id
       });
@@ -170,14 +175,17 @@ export default Vue.extend({
     // See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
     onSlideChange(): void {
       this.currentIndex = this.swiper?.realIndex;
+
       if (this.swiper?.isBeginning || this.swiper?.isEnd) {
         this.swiper?.updateSlides();
       }
+
       const hash =
         this.getBlurhash(
           this.items[this.currentIndex as number],
           ImageType.Backdrop
         ) || '';
+
       this.setBackdrop({ hash });
     },
     onTouch(): void {

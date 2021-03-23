@@ -52,6 +52,7 @@ export const actions: ActionTree<UserState, UserState> = {
       dispatch('servers/notifyNoServerUsed', {
         root: true
       });
+
       return;
     }
 

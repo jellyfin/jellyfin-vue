@@ -95,6 +95,7 @@ export default Vue.extend({
     },
     onProgressClicked(event: MouseEvent): void {
       const target = event.target as HTMLElement;
+
       this.$emit('on-progress-clicked', this.bars.indexOf(target) as number);
     },
     togglePause(): void {
@@ -106,6 +107,7 @@ export default Vue.extend({
     },
     setAnimationDuration(): void {
       const newDuration = (this.duration / 1000).toString() + 's';
+
       this.bars.forEach((el: HTMLElement) => {
         el.style.animationDuration = newDuration;
       });

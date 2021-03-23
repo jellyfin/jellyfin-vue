@@ -10,6 +10,7 @@ const persistState: Plugin = ({ store, req, res }) => {
       getItem: (key: string): string | undefined => {
         if (process.server) {
           const parsedCookies = cookie.parse(req.headers.cookie || '');
+
           return parsedCookies[key];
         } else {
           return Cookies.get(key);

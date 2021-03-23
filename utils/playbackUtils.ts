@@ -21,8 +21,10 @@ export async function translateItemsForPlayback(
   }
 
   let translatedItems: BaseItemDto[] = [];
+
   for (const item of items) {
     let responseItems;
+
     if (item.Type === 'Program' && item.ChannelId) {
       responseItems =
         (
@@ -111,5 +113,6 @@ export async function translateItemsForPlayback(
       }
     }
   }
+
   return uniqBy(translatedItems, 'Id');
 }

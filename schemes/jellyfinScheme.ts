@@ -43,6 +43,7 @@ export default class JellyfinScheme {
 
   mounted(): Promise<never> {
     const token = this.$auth.syncToken(this.name);
+
     this._setToken(token);
 
     return this.$auth.fetchUserOnce();
@@ -62,6 +63,7 @@ export default class JellyfinScheme {
 
     // Set the empty header needed for Jellyfin to not yell at us
     const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token=""`;
+
     this._setToken(token);
 
     // Check the version info and implicitly check for the manifest
@@ -83,6 +85,7 @@ export default class JellyfinScheme {
 
       // Set the user's token
       const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
+
       this.$auth.setToken(this.name, userToken);
       this._setToken(userToken);
       this.$auth.ctx.app.store.commit('user/SET_USER', {
@@ -107,6 +110,7 @@ export default class JellyfinScheme {
 
   setUserToken(tokenValue: string): Promise<void> {
     const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${tokenValue}"`;
+
     this.$auth.setToken(this.name, token);
     this._setToken(token);
 
@@ -121,6 +125,7 @@ export default class JellyfinScheme {
 
     if (!this._getRememberMe()) {
       await this.logout();
+
       return;
     }
 

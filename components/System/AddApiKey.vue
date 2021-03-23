@@ -59,6 +59,7 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async addApiKey(): Promise<void> {
       this.loading = true;
+
       try {
         await this.$api.apiKey.createKey({
           app: this.newKeyAppName
@@ -80,6 +81,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
       this.loading = false;
       this.addingNewKey = false;
     },

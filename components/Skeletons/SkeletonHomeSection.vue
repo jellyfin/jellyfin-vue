@@ -36,6 +36,7 @@ export default Vue.extend({
       } else if (this.$vuetify.breakpoint.width < 1904) {
         return this.cardShape === 'thumb-card' ? 4 : 8;
       }
+
       return 4;
     }
   }

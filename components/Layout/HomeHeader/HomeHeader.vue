@@ -53,6 +53,7 @@ export default Vue.extend({
 
     for (const [key, i] of this.items.entries()) {
       let id: string;
+
       if (i.Type === 'Episode' && i?.SeriesId) {
         id = i.SeriesId;
       } else if (i.Type === 'MusicAlbum' && i?.AlbumArtists?.[0]?.Id) {
@@ -78,12 +79,14 @@ export default Vue.extend({
     } else {
       this.extraText = this.$t('homeHeader.welcome.checkNewItems');
     }
+
     window.setTimeout(this.hideWelcomeMessage, 1500);
   },
   methods: {
     hideWelcomeMessage(): void {
       if (this.items.length === 0) {
         const elem = this.$refs.headerWelcome as HTMLElement;
+
         // As the height of the element varies as we're using automatic values, we set first
         // the screen height of the element, so the animation plays correctly when the height is set to 0
         elem.style.maxHeight = elem.scrollHeight + 'px';

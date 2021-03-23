@@ -316,6 +316,7 @@ export default Vue.extend({
     ).data;
 
     let crew: BaseItemPerson[] = [];
+
     if (item.People) {
       crew = item.People.filter((person: BaseItemPerson) => {
         return ['Director', 'Writer'].includes(person.Type || '');
@@ -389,6 +390,7 @@ export default Vue.extend({
           ) {
             return false;
           }
+
           return true;
         }
       }
@@ -423,7 +425,9 @@ export default Vue.extend({
     item: {
       handler(val: BaseItemDto): void {
         this.setPageTitle({ title: val.Name });
+
         const hash = this.getBlurhash(val, ImageType.Backdrop);
+
         this.setBackdrop({ hash });
       },
       immediate: true,

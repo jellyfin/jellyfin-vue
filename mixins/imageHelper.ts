@@ -177,26 +177,31 @@ const imageHelper = Vue.extend({
             } else if (item.ParentPrimaryImageTag) {
               return item.ParentPrimaryImageTag;
             }
+
             break;
           case ImageType.Art:
             if (item.ParentArtImageTag) {
               return item.ParentArtImageTag;
             }
+
             break;
           case ImageType.Backdrop:
             if (item.ParentBackdropImageTags?.[index]) {
               return item.ParentBackdropImageTags[index];
             }
+
             break;
           case ImageType.Logo:
             if (item.ParentLogoImageTag) {
               return item.ParentLogoImageTag;
             }
+
             break;
           case ImageType.Thumb:
             if (item.ParentThumbImageTag) {
               return item.ParentThumbImageTag;
             }
+
             break;
           default:
             return undefined;
@@ -249,6 +254,7 @@ const imageHelper = Vue.extend({
     ): string | undefined {
       if (item) {
         const tag = this.getImageTag(item, type, index, checkParent);
+
         if (
           tag &&
           !excludedBlurhashTypes.includes(type) &&
@@ -296,9 +302,11 @@ const imageHelper = Vue.extend({
       if (item) {
         if (!tag) {
           tag = this.getImageTag(item, type, backdropIndex, false);
+
           if (!tag && checkParent) {
             tag = this.getImageTag(item, type, backdropIndex, true);
             itemId = this.getParentId(item);
+
             if (!tag || !itemId) {
               return undefined;
             }
@@ -322,6 +330,7 @@ const imageHelper = Vue.extend({
       };
 
       const scaling = window.devicePixelRatio;
+
       if (limitByWidth && maxWidth) {
         params.maxWidth = Math.round(maxWidth * scaling).toString();
       } else if (maxHeight) {

@@ -171,6 +171,7 @@ export default Vue.extend({
       deviceId: this.$store.state.deviceProfile.deviceId
     });
     let socketUrl = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
+
     socketUrl = socketUrl.replace('https:', 'wss:');
     socketUrl = socketUrl.replace('http:', 'ws:');
 

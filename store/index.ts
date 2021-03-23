@@ -67,6 +67,7 @@ export const state = (): RootState => ({
 export const mutations: MutationTree<RootState> = {
   SOCKET_ONOPEN(state: RootState, event: Event) {
     const socketInstance = event.currentTarget;
+
     Vue.set(state.socket, 'instance', socketInstance);
     Vue.set(state.socket, 'isConnected', true);
     Vue.set(state.socket, 'reconnectError', false);
@@ -96,6 +97,7 @@ export const mutations: MutationTree<RootState> = {
 export const actions: ActionTree<RootState, RootState> = {
   async reset({ dispatch }, { clearCritical }: { clearCritical: boolean }) {
     const promises = [];
+
     promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
     promises.push(dispatch('clientSettings/resetState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));

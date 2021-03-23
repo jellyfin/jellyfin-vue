@@ -45,6 +45,7 @@ export default Vue.extend({
     ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer(): Promise<void> {
       this.loading = true;
+
       try {
         await this.connectServer(this.serverInfo.address);
         this.$router.push('/login');

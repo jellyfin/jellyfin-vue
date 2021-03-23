@@ -36,6 +36,7 @@ export default Vue.extend({
   },
   async created() {
     this.loading = true;
+
     try {
       this.initialConfig = (
         await this.$api.startup.getStartupConfiguration()
@@ -50,12 +51,14 @@ export default Vue.extend({
       // eslint-disable-next-line no-console
       console.error(error);
     }
+
     this.loading = false;
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setLanguage(): Promise<void> {
       this.loading = true;
+
       try {
         this.$i18n.setLocale(this.UICulture);
         await this.$api.startup.updateInitialConfiguration({
@@ -74,6 +77,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
       this.loading = false;
     }
   }

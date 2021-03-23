@@ -22,6 +22,7 @@ export function getSupportedAudioCodecs(format: string): boolean {
   } else if (format === 'opus') {
     if (!browserDetector.isWebOS()) {
       typeString = 'audio/ogg; codecs="opus"';
+
       return !!document
         .createElement('audio')
         .canPlayType(typeString)

@@ -104,6 +104,7 @@ export default Vue.extend({
 
             homeSections.push(...latestMediaSections);
           }
+
           break;
         }
         case 'resume':

@@ -71,8 +71,10 @@ export default Vue.extend({
     ...mapActions('servers', ['connectServer']),
     async connectToServer(): Promise<void> {
       this.loading = true;
+
       try {
         await this.connectServer(this.serverUrl);
+
         if (this.previousServerLength === 0) {
           this.$router.push('/login');
         } else {
