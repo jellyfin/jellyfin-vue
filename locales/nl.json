@@ -48,7 +48,7 @@
       "videoPlayerError": "Er is een onherstelbare fout opgetreden in de videospeler."
     }
   },
-  "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De standaardvoorkeuren worden gebruikt.",
+  "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De laatst gebruikte instellingen worden gebruikt.",
   "failedSettingDisplayPreferences": "Kan de weergavevoorkeuren niet bijwerken.",
   "failedToRefreshItems": "Het verversen van items is mislukt",
   "favorite": "Favoriet",
@@ -110,6 +110,7 @@
   "latestLibrary": "Nieuwste {libraryName}",
   "libraries": "Bibliotheken",
   "libraryEmpty": "Deze bibliotheek is leeg",
+  "libraryEmptyFilters": "Geen resultaten. Verwijder enkele filters om meer items te tonen",
   "libraryNotFound": "Bibliotheek niet gevonden",
   "libraryRefreshQueued": "Bibliotheek vernieuwen in wachtrij geplaatst",
   "liked": "Vind ik leuk",
@@ -149,6 +150,11 @@
   },
   "manualLogin": "Manuele login",
   "menu": "Menu",
+  "metadata": {
+    "source": "Bron",
+    "sourceAll": "Alles",
+    "type": "Type"
+  },
   "metadataEditor": "Metagegevens bewerker",
   "metadataNoResultsMatching": "Geen resultaten komen overeen met \"{search}\". Druk op enter om een nieuwe aan te maken.",
   "more": "Meer",
@@ -232,7 +238,28 @@
       "revokeSuccess": "De API-sleutel is ingetrokken"
     },
     "devices": {
-      "appName": "Applicatie Naam"
+      "appName": "Applicatie Naam",
+      "appVersion": "App versie",
+      "delete": "Verwijder",
+      "deleteAll": "Verwijder alles",
+      "deleteAllDevicesError": "Fout bij het verwijderen van alle apparaten",
+      "deleteAllDevicesSuccess": "Alle apparaten succesvol verwijderd",
+      "deleteDeviceError": "Fout bij het verwijderen van het apparaat",
+      "deleteDeviceSuccess": "Apparaat succesvol verwijderd",
+      "deviceName": "Apparaat naam",
+      "devices": "Apparaten",
+      "lastActive": "Laatst actief",
+      "noDevicesFound": "Geen apparaten gevonden",
+      "userName": "Gebruikersnaam"
+    },
+    "help": "Help",
+    "logsAndActivity": {
+      "activity": "Activiteit",
+      "failedGetActivity": "Fout bij het verkrijgen van de activiteit",
+      "failedGetLogs": "Fout bij het verkrijgen van de logboeken",
+      "logs": "Logboeken",
+      "noActivityFound": "Geen activiteiten gevonden",
+      "noLogsFound": "Geen logboeken gevonden"
     },
     "settings": "Instellingen"
   },
@@ -314,6 +341,7 @@
   "status": "Status",
   "studios": "Studio's",
   "subtitles": "Ondertiteling",
+  "syncingInProgress": "Bezig met synchronisatie",
   "tagline": "Slogan",
   "tags": "Labels",
   "themeSong": "Thema Lied",
