@@ -39,7 +39,7 @@
   "editMetadata": "Éditer les méta-données",
   "editPerson": "Modifier la personne",
   "endDate": "Date de fin",
-  "endsAt": "Prends fin à {time}",
+  "endsAt": "Se termine à {time}",
   "episodeNumber": "Épisode {episodeNumber}",
   "errors": {
     "anErrorHappened": "Une erreur est survenue",
