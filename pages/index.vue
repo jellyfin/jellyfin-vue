@@ -21,14 +21,18 @@ import { getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
-  async asyncData({ store }) {
+  data() {
+    return {
+      homeSections: [] as HomeSection[]
+    };
+  },
+  async fetch() {
     const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
     // Filter for valid sections in Jellyfin Vue
     // TODO: Implement custom section order
     let homeSectionsArray = pickBy(
-      // TODO: This should use another store and needs some refactoring
-      store.state.clientSettings.CustomPrefs,
+      this.$store.state.clientSettings.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&
@@ -67,11 +71,11 @@ export default Vue.extend({
         case 'latestmedia': {
           const latestMediaSections = [];
 
-          let userViews: BaseItemDto[] = store.state.userViews.views;
+          let userViews: BaseItemDto[] = this.$store.state.userViews.views;
 
           if (!userViews.length) {
-            await store.dispatch('userViews/refreshUserViews');
-            userViews = await store.state.userViews.views;
+            await this.$store.dispatch('userViews/refreshUserViews');
+            userViews = await this.$store.state.userViews.views;
           }
 
           if (userViews) {
@@ -131,12 +135,7 @@ export default Vue.extend({
       }
     }
 
-    return { homeSections };
-  },
-  data() {
-    return {
-      homeSections: [] as HomeSection[]
-    };
+    this.homeSections = homeSections;
   },
   head() {
     return {
@@ -147,7 +146,18 @@ export default Vue.extend({
     this.setPageTitle({ title: this.$t('home') });
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
+  activated() {
+    if (this.$fetchState.timestamp <= Date.now() - 30000) {
+      this.$fetch();
+    }
+
+    this.setPageTitle({ title: this.$t('home') });
+    this.setAppBarOpacity({ opaqueAppBar: false });
+  },
   destroyed() {
+    this.setAppBarOpacity({ opaqueAppBar: true });
+  },
+  deactivated() {
     this.setAppBarOpacity({ opaqueAppBar: true });
   },
   methods: {

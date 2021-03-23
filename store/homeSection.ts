@@ -10,7 +10,7 @@ import { AppState } from './index';
 
 export interface HomeSection {
   name: string;
-  libraryName: string | undefined;
+  libraryName?: string | null | undefined;
   libraryId: string;
   shape: string;
   type: string;

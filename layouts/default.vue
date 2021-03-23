@@ -98,7 +98,7 @@
     </v-app-bar>
     <v-main>
       <div class="pa-s">
-        <nuxt />
+        <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
       </div>
     </v-main>
     <audio-controls />
