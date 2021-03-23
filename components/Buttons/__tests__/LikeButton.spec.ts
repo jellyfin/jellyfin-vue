@@ -41,7 +41,6 @@ describe('component: LikeButton', () => {
     expect(wrapper.find('.mdi').exists()).toBe(true);
     expect(wrapper.find('.mdi-heart').exists()).toBe(true);
     expect(wrapper.find('.v-btn--icon').exists()).toBe(true);
-    expect(wrapper.find('.red--text').exists()).toBe(true);
   });
 
   it('updates the icon when the IsFavorite user data is changed', async (): Promise<void> => {

@@ -1,8 +1,7 @@
 <template>
   <v-btn :dark="dark" icon @click.stop.prevent="toggleFavorite">
-    <v-icon :class="isFavorite ? 'red--text' : ''">
-      {{ isFavorite ? 'mdi-heart' : 'mdi-heart-outline' }}
-    </v-icon>
+    <v-icon v-if="isFavorite">mdi-heart</v-icon>
+    <v-icon v-else>mdi-heart-outline</v-icon>
   </v-btn>
 </template>
 
