@@ -51,6 +51,7 @@ class BrowserDetector {
    */
   private userAgentContains(key: string): boolean {
     const userAgent = navigator.userAgent || '';
+
     return userAgent.includes(key);
   }
 
@@ -129,6 +130,7 @@ class BrowserDetector {
     // This works for iOS Safari and desktop Safari, which contain something
     // like "Version/13.0" indicating the major Safari or iOS version.
     let match = navigator.userAgent.match(/Version\/(\d+)/);
+
     if (match) {
       return parseInt(match[1], /* base= */ 10);
     }
@@ -136,6 +138,7 @@ class BrowserDetector {
     // This works for all other browsers on iOS, which contain something like
     // "OS 13_3" indicating the major & minor iOS version.
     match = navigator.userAgent.match(/OS (\d+)(?:_\d+)?/);
+
     if (match) {
       return parseInt(match[1], /* base= */ 10);
     }

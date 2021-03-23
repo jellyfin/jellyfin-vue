@@ -30,6 +30,7 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setRemoteAccess(): Promise<void> {
       this.loading = true;
+
       try {
         await this.$api.startup.setRemoteAccess({
           startupRemoteAccessDto: {
@@ -47,6 +48,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
       this.loading = false;
     }
   }

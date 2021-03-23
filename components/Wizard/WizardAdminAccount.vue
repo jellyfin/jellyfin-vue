@@ -73,8 +73,10 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async createAdminAccount(): Promise<void> {
       this.loading = true;
+
       try {
         const token = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}"`;
+
         this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', token);
 
         await this.$api.startup.updateStartupUser({
@@ -90,6 +92,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
       this.loading = false;
     }
   }

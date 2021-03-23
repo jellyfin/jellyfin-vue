@@ -213,6 +213,7 @@ export default Vue.extend({
           } else if (state.playbackManager.isMinimized === false) {
             window.addEventListener('keydown', this.handleKeyPress);
           }
+
           break;
         case 'playbackManager/INCREASE_QUEUE_INDEX':
         case 'playbackManager/DECREASE_QUEUE_INDEX':
@@ -285,6 +286,7 @@ export default Vue.extend({
               this.setLastProgressUpdate({ progress: new Date().getTime() });
             }
           }
+
           break;
         }
         case 'playbackManager/STOP_PLAYBACK':
@@ -308,6 +310,7 @@ export default Vue.extend({
 
             this.removeMediaHandlers();
           }
+
           break;
         case 'playbackManager/PAUSE_PLAYBACK':
           if (state.playbackManager.currentTime !== null) {
@@ -327,6 +330,7 @@ export default Vue.extend({
 
             this.setLastProgressUpdate({ progress: new Date().getTime() });
           }
+
           break;
       }
     });
@@ -335,6 +339,7 @@ export default Vue.extend({
     if (this.fullScreenOverlayTimer) {
       clearTimeout(this.fullScreenOverlayTimer);
     }
+
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.removeMediaHandlers();
     this.unsubscribe();
@@ -363,6 +368,7 @@ export default Vue.extend({
         if (this.fullScreenOverlayTimer) {
           clearTimeout(this.fullScreenOverlayTimer);
         }
+
         this.showFullScreenOverlay = true;
         this.fullScreenOverlayTimer = window.setTimeout(() => {
           this.showFullScreenOverlay = false;
@@ -405,6 +411,7 @@ export default Vue.extend({
             'play',
             (): void => {
               this.unpause();
+
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'playing';
               }
@@ -414,6 +421,7 @@ export default Vue.extend({
             'pause',
             (): void => {
               this.pause();
+
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'paused';
               }
@@ -435,6 +443,7 @@ export default Vue.extend({
             'stop',
             (): void => {
               this.stopPlayback();
+
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'none';
               }

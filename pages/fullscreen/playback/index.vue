@@ -135,6 +135,7 @@ export default Vue.extend({
     ]),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
+
       if (this.currentQueue[index]) {
         this.setCurrentIndex({ index });
       }

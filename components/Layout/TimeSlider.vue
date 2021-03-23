@@ -52,6 +52,7 @@ export default Vue.extend({
         if (!this.clicked) {
           return this.$store.state.playbackManager.currentTime;
         }
+
         return this.currentInput;
       }
     },

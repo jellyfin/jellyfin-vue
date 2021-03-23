@@ -62,6 +62,7 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setMetadata(): Promise<void> {
       this.loading = true;
+
       try {
         await this.$api.startup.updateInitialConfiguration({
           startupConfigurationDto: {
@@ -80,6 +81,7 @@ export default Vue.extend({
           color: 'error'
         });
       }
+
       this.loading = false;
     }
   }

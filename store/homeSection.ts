@@ -92,6 +92,7 @@ export const mutations: MutationTree<HomeSectionState> = {
     if (!libraryId) {
       throw new Error('libraryId is undefined');
     }
+
     Vue.set(state.latestMedia, libraryId, latestMedia);
   },
   CLEAR_HOME_SECTION(state: HomeSectionState) {

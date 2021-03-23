@@ -117,6 +117,7 @@ export default Vue.extend({
     getRuntime(ticks: number): string {
       let seconds = this.ticksToMs(ticks) / 1000;
       const minutes = Math.floor(seconds / 60);
+
       seconds = Math.floor(seconds - minutes * 60);
 
       /**

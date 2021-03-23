@@ -73,6 +73,7 @@ export default Vue.extend({
 
       window.muxjs = muxjs;
       shaka.polyfill.installAll();
+
       if (shaka.Player.isBrowserSupported()) {
         this.player = new shaka.Player(this.$refs.audioPlayer);
         // Register player events
@@ -85,23 +86,27 @@ export default Vue.extend({
                 if (this.$refs.audioPlayer) {
                   (this.$refs.audioPlayer as HTMLAudioElement).pause();
                 }
+
                 break;
               case 'playbackManager/UNPAUSE_PLAYBACK':
                 if (this.$refs.audioPlayer) {
                   (this.$refs.audioPlayer as HTMLAudioElement).play();
                 }
+
                 break;
               case 'playbackManager/CHANGE_CURRENT_TIME':
                 if (this.$refs.audioPlayer) {
                   (this.$refs
                     .audioPlayer as HTMLAudioElement).currentTime = this.currentTime;
                 }
+
                 break;
               case 'playbackManager/SET_VOLUME':
                 if (this.$refs.audioPlayer) {
                   (this.$refs.audioPlayer as HTMLAudioElement).volume =
                     this.currentVolume / 100;
                 }
+
                 break;
               case 'playbackManager/SET_REPEAT_MODE':
                 if (this.$refs.audioPlayer) {
@@ -134,6 +139,7 @@ export default Vue.extend({
       this.player.unload();
       this.player.destroy();
     }
+
     this.unsubscribe();
   },
   methods: {
@@ -160,6 +166,7 @@ export default Vue.extend({
         this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
 
         let mediaSource;
+
         if (this.playbackInfo?.MediaSources) {
           mediaSource = this.playbackInfo.MediaSources[0];
           this.setMediaSource({ mediaSource });
@@ -187,6 +194,7 @@ export default Vue.extend({
           }
 
           const params = stringify(directOptions);
+
           this.source = `${this.$axios.defaults.baseURL}/Audio/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
         } else if (
           mediaSource.SupportsTranscoding &&
@@ -216,6 +224,7 @@ export default Vue.extend({
       if (this.$refs.audioPlayer) {
         const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)
           .currentTime;
+
         this.setCurrentTime({ time: currentTime });
         this.pause();
       }
@@ -224,6 +233,7 @@ export default Vue.extend({
       if (this.$refs.audioPlayer) {
         const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)
           .currentTime;
+
         this.setCurrentTime({ time: currentTime });
         this.setNextTrack();
       }

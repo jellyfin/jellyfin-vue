@@ -34,10 +34,12 @@ const htmlHelper = Vue.extend({
     sanitizeHtml(input: string): string {
       // Some providers have newlines, replace them with the proper tag.
       let cleanString = decode(input).replace(/(?:\r\n|\r|\n)/g, '<br>');
+
       cleanString = DOMPurify.sanitize(cleanString, {
         ALLOWED_TAGS: ['br', 'b', 'strong', 'i', 'em'],
         KEEP_CONTENT: true
       });
+
       return cleanString;
     }
   }

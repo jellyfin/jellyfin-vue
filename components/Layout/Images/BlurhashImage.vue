@@ -108,10 +108,12 @@ export default Vue.extend({
     },
     getImage(): void {
       const img = this.$refs.img as HTMLElement;
+
       this.image = this.getImageUrlForElement(this.type, {
         item: this.item,
         element: img
       });
+
       if (!this.image) {
         this.onError();
       }

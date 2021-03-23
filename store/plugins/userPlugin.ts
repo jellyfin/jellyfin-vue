@@ -27,6 +27,7 @@ export interface DisplayPreferencesApiState {
  */
 function castResponse(data: DisplayPreferencesDto): ClientPreferences {
   const result = data as ClientPreferences;
+
   if (result.CustomPrefs) {
     for (const [key, value] of Object.entries(result.CustomPrefs)) {
       /**
@@ -35,8 +36,10 @@ function castResponse(data: DisplayPreferencesDto): ClientPreferences {
       // @ts-expect-error - TypeScript can't infer types from Object.entries
       result.CustomPrefs[key] = destr(value);
     }
+
     return result;
   }
+
   return {};
 }
 
@@ -67,6 +70,7 @@ export const userPlugin: Plugin<AppState> = (store) => {
           }
 
           const data = castResponse(response.data);
+
           if (data.CustomPrefs) {
             /**
              * We delete the keys that are not defined in the state's default state, so removed
@@ -78,6 +82,7 @@ export const userPlugin: Plugin<AppState> = (store) => {
                 delete data.CustomPrefs[key];
               }
             }
+
             store.dispatch(
               `${subModule}/initState`,
               { data: data.CustomPrefs },
@@ -86,6 +91,7 @@ export const userPlugin: Plugin<AppState> = (store) => {
           }
         } catch (error) {
           const message = store.$i18n.t('failedRetrievingDisplayPreferences');
+
           store.dispatch(
             'snackbar/pushSnackbarMessage',
             {

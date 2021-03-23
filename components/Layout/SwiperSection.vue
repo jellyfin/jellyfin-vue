@@ -60,6 +60,7 @@ export default Vue.extend({
   },
   data() {
     const uuid = uuidv4();
+
     return {
       uuid,
       swiperOptions: {

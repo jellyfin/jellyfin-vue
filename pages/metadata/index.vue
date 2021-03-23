@@ -26,6 +26,7 @@ type ITreeNode = {
   name: string | null | undefined;
   children?: ITreeNode[];
 };
+
 export default Vue.extend({
   data() {
     return {
@@ -63,6 +64,7 @@ export default Vue.extend({
       (node.children as ITreeNode[]).push(
         ...libItems.map((item) => {
           const baseObj = { id: item.Id, name: item.Name };
+
           return item.IsFolder
             ? {
                 ...baseObj,

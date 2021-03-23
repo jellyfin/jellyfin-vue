@@ -18,6 +18,7 @@ export function ticksToMs(ticks: number | null | undefined): number {
   if (!ticks) {
     ticks = 0;
   }
+
   return Math.round(ticks / 10000);
 }
 
@@ -85,6 +86,7 @@ const timeUtils = Vue.extend({
     formatTime(seconds: number): string {
       let minutes = Math.floor(seconds / 60);
       const hours = Math.floor(minutes / 60);
+
       minutes = minutes - hours * 60;
       seconds = Math.floor(seconds - (minutes * 60 + hours * 60 * 60));
 
@@ -116,6 +118,7 @@ const timeUtils = Vue.extend({
       const ms = this.ticksToMs(ticks);
       const endTimeLong = new Date(Date.now() + ms);
       let format;
+
       if (!suffix) {
         format = endTimeLong.toLocaleString(this.$i18n.locale, {
           hour: 'numeric',
@@ -126,6 +129,7 @@ const timeUtils = Vue.extend({
           locale: this.$i18n.locale
         });
       }
+
       // TODO: Use a Date object
       return this.$t('endsAt', {
         time: format
@@ -139,6 +143,7 @@ const timeUtils = Vue.extend({
      */
     getRuntimeTime(ticks: number): string {
       const ms = this.ticksToMs(ticks);
+
       return this.$dateFns.formatDuration(
         intervalToDuration({ start: 0, end: ms }),
         {
@@ -156,6 +161,7 @@ const timeUtils = Vue.extend({
      */
     getTotalEndsAtTime(items: BaseItemDto[], suffix = true): string {
       const ticks = sumBy(items, 'RunTimeTicks');
+
       return this.getEndsAtTime(ticks, suffix);
     }
   }

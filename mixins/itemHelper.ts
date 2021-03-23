@@ -116,6 +116,7 @@ const itemHelper = Vue.extend({
         routeParams = { viewId: item.Id };
       } else {
         const type = overrideType || item.Type;
+
         switch (type) {
           case 'Series':
             routeName = 'series-itemId';

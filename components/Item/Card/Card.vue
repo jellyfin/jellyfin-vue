@@ -183,17 +183,21 @@ export default Vue.extend({
               'en-us',
               { year: 'numeric' }
             );
+
             if (this.item.ProductionYear?.toString() === endYear) {
               return this.item.ProductionYear.toString();
             }
+
             return `${this.item.ProductionYear} - ${endYear}`;
           }
+
           break;
         }
         case 'Movie':
         default:
           return `${this.item.ProductionYear ? this.item.ProductionYear : ''}`;
       }
+
       return '';
     },
     progress: {

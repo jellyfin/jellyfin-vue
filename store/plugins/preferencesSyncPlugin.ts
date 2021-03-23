@@ -64,6 +64,7 @@ export const preferencesSync: Plugin<AppState> = (store) => {
         }
 
         const displayPrefs = response.data;
+
         displayPrefs.CustomPrefs = {};
 
         // @ts-expect-error - We need a generic way to access the submodule. A string works here, despite TypeScript's protests.
@@ -81,12 +82,14 @@ export const preferencesSync: Plugin<AppState> = (store) => {
 
         for (const [key, value] of Object.entries(displayPrefs.CustomPrefs)) {
           let string = JSON.stringify(value);
+
           /**
            * Undefined can't be converted to string using JSON.stringify so we add this safeguard
            */
           if (typeof string !== 'string') {
             string = String(string);
           }
+
           displayPrefs.CustomPrefs[key] = string;
         }
 
@@ -106,6 +109,7 @@ export const preferencesSync: Plugin<AppState> = (store) => {
         }
       } catch (error) {
         const message = store.$i18n.t('failedSettingDisplayPreferences');
+
         store.dispatch(
           'snackbar/pushSnackbarMessage',
           {

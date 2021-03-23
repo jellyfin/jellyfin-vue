@@ -118,6 +118,7 @@ export default Vue.extend({
           if (this.$store.state.deviceProfile.deviceId === device.Id) {
             return;
           }
+
           await this.$api.devices.deleteDevice({ id: device.Id || '' });
         });
 
@@ -168,6 +169,7 @@ export default Vue.extend({
         // eslint-disable-next-line no-console
         console.error(error);
       }
+
       this.deviceInfoDialog = false;
     }
   }

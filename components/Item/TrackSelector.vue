@@ -97,6 +97,7 @@ export default Vue.extend({
         if (!this.mediaSourceItem.MediaStreams) {
           return [];
         }
+
         return this.mediaSourceItem.MediaStreams.filter(
           (mediaStream) => mediaStream.Type === this.type
         );
@@ -122,9 +123,11 @@ export default Vue.extend({
         if (this.tracks.length <= 0) {
           return true;
         }
+
         if (this.type !== 'Subtitle' && this.tracks.length <= 1) {
           return true;
         }
+
         return false;
       }
     },
@@ -136,21 +139,27 @@ export default Vue.extend({
         if (this.type === 'Audio' && this.tracks.length === 0) {
           return this.$t('noAudioTracksAvailable');
         }
+
         if (this.type === 'Audio' && this.tracks.length !== 0) {
           return this.$t('noAudioTrackSelected');
         }
+
         if (this.type === 'Subtitle' && this.tracks.length === 0) {
           return this.$t('noSubtitlesAvailable');
         }
+
         if (this.type === 'Subtitle' && this.tracks.length !== 0) {
           return this.$t('noSubtitleSelected');
         }
+
         if (this.type === 'Video' && this.tracks.length === 0) {
           return this.$t('noVideoTracksAvailable');
         }
+
         if (this.type === 'Video' && this.tracks.length !== 0) {
           return this.$t('noVideoTrackSelected');
         }
+
         return this.$t('noTracksAvailable');
       }
     },
@@ -168,11 +177,13 @@ export default Vue.extend({
     defaultIndex: {
       get(): number | undefined {
         const defaultTrack = this.tracks.findIndex((track) => track.IsDefault);
+
         if (defaultTrack !== -1) {
           return defaultTrack;
         } else if (this.type === 'Subtitle') {
           return undefined;
         }
+
         return 0;
       }
     }
@@ -212,6 +223,7 @@ export default Vue.extend({
       if (track.DisplayTitle) {
         return track.DisplayTitle;
       }
+
       return '';
     },
     /**
@@ -222,6 +234,7 @@ export default Vue.extend({
       if (this.type === 'Audio' && track.ChannelLayout) {
         return this.getSurroundIcon(track.ChannelLayout);
       }
+
       return undefined;
     },
     /**
@@ -232,6 +245,7 @@ export default Vue.extend({
       if (track.DisplayTitle) {
         return track.DisplayTitle;
       }
+
       return '';
     },
     /**

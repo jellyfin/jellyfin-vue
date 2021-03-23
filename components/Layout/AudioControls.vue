@@ -244,6 +244,7 @@ export default Vue.extend({
       ) {
         return 'mdi-repeat-once';
       }
+
       return 'mdi-repeat';
     },
     isShuffling(): boolean {
@@ -265,6 +266,7 @@ export default Vue.extend({
     ]),
     getImageUrl(item: BaseItemDto): string | undefined {
       const imageUrl = this.getImageUrlForElement(ImageType.Primary, { item });
+
       if (imageUrl) {
         return imageUrl;
       }

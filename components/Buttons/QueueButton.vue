@@ -138,6 +138,7 @@ export default Vue.extend({
         if (this.item.AlbumId === this.playbackInitiator?.Id) {
           return this.playbackInitiator;
         }
+
         return null;
       }
     },
