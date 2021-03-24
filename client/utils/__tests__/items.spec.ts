@@ -2,7 +2,7 @@ import {
   getShapeFromCollectionType,
   getShapeFromItemType,
   getLibraryIcon
-} from '../items';
+} from '~/utils/items';
 
 describe('getLibraryIcon', () => {
   it('returns the correct library icon based on library type', () => {

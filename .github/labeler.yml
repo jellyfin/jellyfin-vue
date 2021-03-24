@@ -1,20 +1,25 @@
 tests:
-  - "**/*.spec.js"
+  - '**/*.spec.js'
 
 github_actions:
-  - ".github/workflows/*"
+  - '.github/workflows/*'
 
 vuex:
-  - "store/**/*.ts"
+  - 'client/store/**/*.ts'
 
 plugins:
-  - "plugins/**/*.ts"
+  - 'client/plugins/**/*.ts'
 
 vue:
-  - "**/*.vue"
+  - '**/*.vue'
 
 docker:
-  - "Dockerfile*"
+  - 'Dockerfile*'
 
 ui:
-  - any: ["components/**/*.vue", "layouts/**/*.vue", "pages/**/*.vue"]
+  - any:
+      [
+        'client/components/**/*.vue',
+        'client/layouts/**/*.vue',
+        'client/pages/**/*.vue'
+      ]
