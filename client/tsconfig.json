@@ -25,7 +25,8 @@
       "@nuxtjs/date-fns",
       "nuxt-i18n",
       "@types/wicg-mediasession",
-      "jest"
+      "jest",
+      "@types/tizen-tv-webapis"
     ]
   }
 }
