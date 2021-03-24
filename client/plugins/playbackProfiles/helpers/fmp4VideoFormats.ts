@@ -22,15 +22,16 @@ export function getSupportedFmp4VideoCodecs(
     codecs.push('hevc');
   }
 
-  if (hasH264Support(videoTestElement)) {
-    if (
+  if (
+    hasH264Support(videoTestElement) &&
+    (context.$browser.isChrome() ||
+      context.$browser.isFirefox() ||
       context.$browser.isApple() ||
       context.$browser.isEdge() ||
       context.$browser.isTizen() ||
-      context.$browser.isWebOS()
-    ) {
-      codecs.push('h264');
-    }
+      context.$browser.isWebOS())
+  ) {
+    codecs.push('h264');
   }
 
   return codecs;

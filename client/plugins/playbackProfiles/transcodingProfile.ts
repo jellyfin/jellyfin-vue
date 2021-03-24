@@ -86,6 +86,9 @@ export function getTranscodingProfiles(
     videoTestElement
   );
 
+  console.dir(hlsInFmp4VideoCodecs);
+  console.dir(hlsInFmp4AudioCodecs);
+
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
     context,
