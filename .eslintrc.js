@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
     node: true
   },
   extends: [
@@ -9,11 +8,9 @@ module.exports = {
     'plugin:jsdoc/recommended',
     'plugin:json/recommended',
     'plugin:@typescript-eslint/recommended',
-    '@nuxtjs/eslint-config-typescript',
     'prettier',
     'plugin:prettier/recommended',
     'plugin:promise/recommended',
-    'plugin:nuxt/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript'
@@ -31,28 +28,6 @@ module.exports = {
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     'prefer-arrow-callback': 'error',
     curly: 'error',
-    // Force some component order stuff, formatting and such, for consistency
-    'vue/component-name-in-template-casing': [
-      'error',
-      'kebab-case',
-      {
-        ignores: []
-      }
-    ],
-    'vue/order-in-components': 'error',
-    'vue/v-bind-style': 'error',
-    'vue/v-on-style': 'error',
-    'vue/v-slot-style': 'error',
-    'vue/attributes-order': 'error',
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'always'
-        }
-      }
-    ],
-    'vue/multiline-html-element-content-newline': 'error',
     'padding-line-between-statements': [
       'error',
       // Always require blank lines after directives (like 'use-strict'), except between directives
@@ -93,14 +68,60 @@ module.exports = {
     ],
     'lodash/import-scope': ['error', 'method']
   },
-  settings: {
-    'import/resolver': {
-      nuxt: {
-        extensions: ['.js', '.ts', '.vue', '.json']
-      }
-    }
-  },
   overrides: [
+    {
+      files: ['client/**/*'],
+      env: {
+        browser: true,
+        node: true
+      },
+      extends: [
+        'eslint:recommended',
+        'plugin:jsdoc/recommended',
+        'plugin:json/recommended',
+        'plugin:@typescript-eslint/recommended',
+        '@nuxtjs/eslint-config-typescript',
+        'prettier',
+        'plugin:prettier/recommended',
+        'plugin:promise/recommended',
+        'plugin:nuxt/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:import/typescript'
+      ],
+      rules: {
+        // Force some component order stuff, formatting and such, for consistency
+        'vue/component-name-in-template-casing': [
+          'error',
+          'kebab-case',
+          {
+            ignores: []
+          }
+        ],
+        'vue/order-in-components': 'error',
+        'vue/v-bind-style': 'error',
+        'vue/v-on-style': 'error',
+        'vue/v-slot-style': 'error',
+        'vue/attributes-order': 'error',
+        'vue/html-self-closing': [
+          'error',
+          {
+            html: {
+              void: 'always'
+            }
+          }
+        ],
+        'vue/multiline-html-element-content-newline': 'error'
+      },
+      settings: {
+        'import/resolver': {
+          nuxt: {
+            extensions: ['.js', '.ts', '.vue', '.json'],
+            nuxtSrcDir: 'client/'
+          }
+        }
+      }
+    },
     {
       files: ['**/*.spec.ts'],
       plugins: ['jest', 'jest-formatting'],

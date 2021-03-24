@@ -23,8 +23,8 @@ WORKDIR /app
 COPY .docker/package.json .docker/package-lock.json .docker/nuxt.config.js ./
 
 # Copy client files from the build image
-COPY --from=build /app/.nuxt ./.nuxt
-COPY --from=build /app/static ./static
+COPY --from=build /app/client/.nuxt ./.nuxt
+COPY --from=build /app/client/static ./static
 
 # Install runtime dependencies
 RUN npm ci --production --no-audit

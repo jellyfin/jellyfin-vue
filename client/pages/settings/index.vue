@@ -128,7 +128,7 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
-import { version } from '~/package.json';
+import { version } from '../../../package.json';
 import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
