@@ -87,6 +87,7 @@ export default Vue.extend({
   },
   async asyncData({ params, $userLibrary }) {
     await $userLibrary.fetchItem(params.itemId);
+
     const appearanceIds = await $userLibrary.fetchItems({
       personIds: [params.itemId],
       recursive: true,
