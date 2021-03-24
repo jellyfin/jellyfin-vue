@@ -72,7 +72,7 @@
       <div v-if="text" class="card-text">
         <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
         <nuxt-link
-          v-if="item.Type === 'MusicAlbum'"
+          v-if="item.Type === 'MusicAlbum' && item.AlbumArtists.length > 0"
           tag="div"
           class="card-subtitle text--secondary text-truncate link"
           :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
