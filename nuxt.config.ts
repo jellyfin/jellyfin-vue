@@ -23,6 +23,11 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-modern
    */
   modern: 'client',
+  /**
+   * Source directory
+   * See https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir/
+   */
+  srcDir: 'client/',
   /*
    ** Progress bar between routes
    ** See https://nuxtjs.org/api/configuration-loading
