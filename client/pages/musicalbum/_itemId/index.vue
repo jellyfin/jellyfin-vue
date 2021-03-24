@@ -116,7 +116,16 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $userLibrary }) {
-    await $userLibrary.fetchItem(params.itemId);
+    const itemId = params.itemId;
+
+    await $userLibrary.fetchItem(itemId);
+
+    return { itemId };
+  },
+  data() {
+    return {
+      itemId: '' as string
+    };
   },
   head() {
     return {
@@ -126,7 +135,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('items', ['getItem']),
     item(): BaseItemDto {
-      return this.getItem(this.$route.params.itemId);
+      return this.getItem(this.itemId);
     },
     twoColsInfoColumn: {
       get(): TwoColsInfoColumn {
