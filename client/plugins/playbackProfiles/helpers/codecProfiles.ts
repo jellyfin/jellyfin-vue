@@ -16,25 +16,12 @@ import { Context } from '@nuxt/types';
 function getGlobalMaxVideoBitrate(context: Context): number | null {
   let isTizenFhd = false;
 
-  if (context.$browser.isTizen()) {
-    try {
-      // @ts-expect-error - Non-standard functions doesn't have typings
-      // eslint-disable-next-line no-undef
-      const isTizenUhd = webapis?.productinfo?.isUdPanelSupported();
-
-      isTizenFhd = !isTizenUhd;
-
-      // eslint-disable-next-line no-console
-      console.debug('isTizenFhd = ' + isTizenFhd);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('isUdPanelSupported() error code = ' + error.code);
-    }
+  if (context.$browser.isTizen() && window.webapis) {
+    isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }
 
   // TODO: These valus are taken directly from Jellyfin-web.
   // The source of them needs to be investigated.
-
   if (context.$browser.isPs4()) {
     return 8000000;
   }
@@ -84,7 +71,7 @@ export function getAacCodecProfileConditions(
 ): ProfileCondition[] {
   const supportsSecondaryAudio = context.$browser.isTizen();
 
-  const conditions = [] as ProfileCondition[];
+  const conditions: ProfileCondition[] = [];
 
   // Handle he-aac not supported
   if (
@@ -93,20 +80,23 @@ export function getAacCodecProfileConditions(
       .replace(/no/, '')
   ) {
     // TODO: This needs to become part of the stream url in order to prevent stream copy
-    conditions.push({
-      Condition: ProfileConditionType.NotEquals,
-      Property: ProfileConditionValue.AudioProfile,
-      Value: 'HE-AAC'
-    });
+    conditions.push(
+      createProfileCondition(
+        ProfileConditionValue.AudioProfile,
+        ProfileConditionType.NotEquals,
+        'HE-AAC'
+      )
+    );
   }
 
   if (!supportsSecondaryAudio) {
-    conditions.push({
-      Condition: ProfileConditionType.Equals,
-      Property: ProfileConditionValue.IsSecondaryAudio,
-      Value: 'false',
-      IsRequired: false
-    });
+    conditions.push(
+      createProfileCondition(
+        ProfileConditionValue.IsSecondaryAudio,
+        ProfileConditionType.Equals,
+        'false'
+      )
+    );
   }
 
   return conditions;
@@ -121,7 +111,7 @@ export function getCodecProfiles(
   context: Context,
   videoTestElement: HTMLVideoElement
 ): CodecProfile[] {
-  const CodecProfiles = [] as CodecProfile[];
+  const CodecProfiles: CodecProfile[] = [];
 
   const aacProfileConditions = getAacCodecProfileConditions(
     context,
@@ -171,19 +161,13 @@ export function getCodecProfiles(
     maxH264Level = 52;
   }
 
-  // Support H264 Level 52 (Tizen 5.0) - app only
-  // @ts-expect-error - Non-standard functions doesn't have typings
-  if (context.$browser.isTizen5() && window.NativeShell) {
-    maxH264Level = 52;
-  }
-
   if (
     context.$browser.isTizen() ||
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.6e0033"')
       .replace(/no/, '')
   ) {
-    // TODO: These tests are passing in safari, but playback is failing
+    // TODO: These tests are passing in Safari, but playback is failing
     if (
       !context.$browser.isApple() ||
       !context.$browser.isWebOS() ||
@@ -196,7 +180,7 @@ export function getCodecProfiles(
   let maxHevcLevel = 120;
   let hevcProfiles = 'main';
 
-  // hevc main level 4.1
+  // HEVC Main profile, Level 4.1
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.4.L123"')
@@ -208,7 +192,7 @@ export function getCodecProfiles(
     maxHevcLevel = 123;
   }
 
-  // hevc main10 level 4.1
+  // HEVC Main10 profile, Level 4.1
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L123"')
@@ -221,7 +205,7 @@ export function getCodecProfiles(
     hevcProfiles = 'main|main 10';
   }
 
-  // hevc main10 level 5.1
+  // HEVC Main10 profile, Level 5.1
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L153"')
@@ -234,7 +218,7 @@ export function getCodecProfiles(
     hevcProfiles = 'main|main 10';
   }
 
-  // hevc main10 level 6.1
+  // HEVC Main10 profile, Level 6.1
   if (
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L183"')
@@ -247,28 +231,25 @@ export function getCodecProfiles(
     hevcProfiles = 'main|main 10';
   }
 
-  const hevcCodecProfileConditions = [
-    {
-      Condition: 'NotEquals',
-      Property: 'IsAnamorphic',
-      Value: 'true',
-      IsRequired: false
-    },
-    {
-      Condition: 'EqualsAny',
-      Property: 'VideoProfile',
-      Value: hevcProfiles,
-      IsRequired: false
-    },
-    {
-      Condition: 'LessThanEqual',
-      Property: 'VideoLevel',
-      Value: maxHevcLevel.toString(),
-      IsRequired: false
-    }
-  ] as ProfileCondition[];
+  const hevcCodecProfileConditions: ProfileCondition[] = [
+    createProfileCondition(
+      ProfileConditionValue.IsAnamorphic,
+      ProfileConditionType.NotEquals,
+      'true'
+    ),
+    createProfileCondition(
+      ProfileConditionValue.VideoProfile,
+      ProfileConditionType.EqualsAny,
+      hevcProfiles
+    ),
+    createProfileCondition(
+      ProfileConditionValue.VideoLevel,
+      ProfileConditionType.LessThanEqual,
+      maxHevcLevel.toString()
+    )
+  ];
 
-  const h264CodecProfileConditions = [
+  const h264CodecProfileConditions: ProfileCondition[] = [
     createProfileCondition(
       ProfileConditionValue.IsAnamorphic,
       ProfileConditionType.NotEquals,
@@ -294,38 +275,39 @@ export function getCodecProfiles(
         'true'
       )
     );
-    hevcCodecProfileConditions.push({
-      Condition: ProfileConditionType.NotEquals,
-      Property: ProfileConditionValue.IsInterlaced,
-      Value: 'true',
-      IsRequired: false
-    });
+    hevcCodecProfileConditions.push(
+      createProfileCondition(
+        ProfileConditionValue.IsInterlaced,
+        ProfileConditionType.NotEquals,
+        'true'
+      )
+    );
   }
 
   const globalMaxVideoBitrate = (
     getGlobalMaxVideoBitrate(context) || ''
   ).toString();
 
-  const h264MaxVideoBitrate = globalMaxVideoBitrate;
-
-  const hevcMaxVideoBitrate = globalMaxVideoBitrate;
-
-  if (h264MaxVideoBitrate) {
-    h264CodecProfileConditions.push({
-      Condition: ProfileConditionType.LessThanEqual,
-      Property: ProfileConditionValue.VideoBitrate,
-      Value: h264MaxVideoBitrate,
-      IsRequired: true
-    });
+  if (globalMaxVideoBitrate) {
+    h264CodecProfileConditions.push(
+      createProfileCondition(
+        ProfileConditionValue.VideoBitrate,
+        ProfileConditionType.LessThanEqual,
+        globalMaxVideoBitrate,
+        true
+      )
+    );
   }
 
-  if (hevcMaxVideoBitrate) {
-    hevcCodecProfileConditions.push({
-      Condition: ProfileConditionType.LessThanEqual,
-      Property: ProfileConditionValue.VideoBitrate,
-      Value: hevcMaxVideoBitrate,
-      IsRequired: true
-    });
+  if (globalMaxVideoBitrate) {
+    hevcCodecProfileConditions.push(
+      createProfileCondition(
+        ProfileConditionValue.VideoBitrate,
+        ProfileConditionType.LessThanEqual,
+        globalMaxVideoBitrate,
+        true
+      )
+    );
   }
 
   // On iOS 12.x, for TS container max h264 level is 4.2
