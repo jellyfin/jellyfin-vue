@@ -128,6 +128,7 @@ export default Vue.extend({
   },
   async asyncData({ params, $userLibrary }) {
     await $userLibrary.fetchItem(params.itemId);
+
     const appearanceIds = await $userLibrary.fetchItems({
       albumArtistIds: [params.itemId],
       sortBy: 'PremiereDate,ProductionYear,SortName',
@@ -135,6 +136,7 @@ export default Vue.extend({
       recursive: true,
       includeItemTypes: ['MusicAlbum']
     });
+
     return { appearanceIds };
   },
   data() {

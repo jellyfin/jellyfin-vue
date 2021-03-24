@@ -374,11 +374,13 @@ export default Vue.extend({
     },
     crew(): BaseItemPerson[] {
       let crew: BaseItemPerson[] = [];
+
       if (this.item.People) {
         crew = this.item.People.filter((person: BaseItemPerson) => {
           return ['Director', 'Writer'].includes(person.Type || '');
         });
       }
+
       return crew;
     },
     actors: {
