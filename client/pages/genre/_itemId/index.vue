@@ -57,17 +57,22 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $userLibrary }) {
-    await $userLibrary.fetchItem(params.itemId);
+    const itemId = params.itemId;
+
+    await $userLibrary.fetchItem(itemId);
+
+    return { itemId };
   },
   data() {
     return {
+      itemId: '' as string,
       itemIds: [] as string[]
     };
   },
   async fetch() {
     // TODO: move the genre to a record<string, string[]> "genre" store
     this.itemIds = await this.$userLibrary.fetchItems({
-      genreIds: [this.$route.params.itemId],
+      genreIds: [this.itemId],
       includeItemTypes: [this.$route.query.type.toString()],
       recursive: true,
       sortBy: 'SortName',
@@ -82,7 +87,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('items', ['getItem', 'getItems']),
     genre(): BaseItemDto {
-      return this.getItem(this.$route.params.itemId);
+      return this.getItem(this.itemId);
     },
     items(): BaseItemDto[] {
       return this.getItems(this.itemIds);
