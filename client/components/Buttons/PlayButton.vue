@@ -4,13 +4,15 @@
       v-if="canPlay(items[0]) && fab"
       fab
       color="primary"
+      :loading="loading"
       @click.prevent="playOrResume"
     >
       <v-icon size="36">mdi-play</v-icon>
     </v-btn>
     <v-btn
-      v-if="!fab"
+      v-else-if="!fab"
       :disabled="!canPlay(items[0])"
+      :loading="loading"
       class="mr-2"
       color="primary"
       min-width="8em"
@@ -32,9 +34,10 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
 import timeUtils from '~/mixins/timeUtils';
+import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [itemHelper, timeUtils],
@@ -50,9 +53,26 @@ export default Vue.extend({
       type: Boolean
     }
   },
+  data() {
+    return {
+      loading: false
+    };
+  },
+  computed: {
+    ...mapState('playbackManager', ['status'])
+  },
+  watch: {
+    status(): void {
+      if (this.status === PlaybackStatus.playing) {
+        this.loading = false;
+      }
+    }
+  },
   methods: {
     ...mapActions('playbackManager', ['play']),
     playOrResume(): void {
+      this.loading = true;
+
       if (this.items.length > 0 && this.canResume(this.items[0])) {
         this.play({
           items: this.items,
