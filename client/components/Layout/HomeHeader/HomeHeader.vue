@@ -7,6 +7,8 @@
       @animationend="onNoItemsTransitionEnd"
     >
       <home-header-welcome :extra-text="extraText" />
+      <!-- This acts as a placeholder for the progressbar space -->
+      <div class="px-2 px-sm-4 progress-bar progress-bar-container" />
     </div>
     <home-header-items
       v-else-if="show"
@@ -108,6 +110,16 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/styles/HomeHeader.scss';
+.progress-bar-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 10px 0;
+  height: 10px;
+}
+
 .no-items {
   overflow: hidden;
   animation-name: slideUp;
