@@ -50,8 +50,7 @@ export default Vue.extend({
         keyboard: true,
         a11y: true
       } as SwiperOptions,
-      swiper: undefined as Swiper | undefined,
-      previousAppBarOpacity: 0
+      swiper: undefined as Swiper | undefined
     };
   },
   computed: {
@@ -109,8 +108,7 @@ export default Vue.extend({
       this.setBackdrop({ hash: this.backdropHash });
     });
   },
-  beforeMount() {
-    this.previousAppBarOpacity = this.$store.state.page.opaqueAppBar;
+  activated() {
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ newOpacity: 0.5 });
     this.setMinimized({ minimized: false });
@@ -118,8 +116,7 @@ export default Vue.extend({
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
   },
-  destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: this.previousAppBarOpacity });
+  deactivated() {
     this.clearBackdrop();
     this.resetBackdropOpacity();
     this.setMinimized({ minimized: true });

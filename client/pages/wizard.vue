@@ -113,7 +113,7 @@ export default Vue.extend({
       return '';
     }
   },
-  created() {
+  activated() {
     this.setPageTitle({ title: this.$t('wizard.setupWizard') });
     this.setDeviceProfile();
   },

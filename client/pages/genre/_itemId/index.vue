@@ -89,13 +89,13 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
-  beforeMount() {
+  activated() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({
       title: this.genre.Name
     });
   },
-  destroyed() {
+  deactivated() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
   methods: {
