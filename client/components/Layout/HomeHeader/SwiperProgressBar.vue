@@ -1,12 +1,17 @@
 <template>
-  <div class="progress-container">
+  <div class="progress-bar-container">
     <div
       v-for="i in pages"
       :key="`progress-key-${i}`"
       ref="progress"
-      class="progress"
-      @click.self="onProgressClicked"
-    />
+      class="progress d-flex align-center justify-center"
+      :class="expand ? 'expand' : undefined"
+      @click="onProgressClicked(i)"
+    >
+      <v-chip v-if="expand" class="pager" color="primary">
+        {{ i }}
+      </v-chip>
+    </div>
   </div>
 </template>
 
@@ -31,12 +36,22 @@ export default Vue.extend({
       type: Boolean,
       required: true,
       default: false
+    },
+    hoverable: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
     return {
       bars: [] as HTMLElement[]
     };
+  },
+  computed: {
+    expand(): boolean {
+      return this.hoverable && !this.$vuetify.breakpoint.mobile;
+    }
   },
   watch: {
     currentIndex(): void {
@@ -93,10 +108,8 @@ export default Vue.extend({
     onAnimationEnd(): void {
       this.$emit('on-animation-end');
     },
-    onProgressClicked(event: MouseEvent): void {
-      const target = event.target as HTMLElement;
-
-      this.$emit('on-progress-clicked', this.bars.indexOf(target) as number);
+    onProgressClicked(index: number): void {
+      this.$emit('on-progress-clicked', index - 1);
     },
     togglePause(): void {
       if (this.paused) {
@@ -117,17 +130,34 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.progress-container {
+.progress-bar-container {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   width: 100%;
   padding: 10px 0;
+  height: 10px;
+}
+
+.pager {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.progress-bar-container:hover .expand {
+  height: 7px !important;
+  transition: height 0.25s;
+}
+
+.progress-bar-container:hover .pager {
+  opacity: 1;
+  transition: opacity 0.25s;
 }
 
 .progress {
   cursor: pointer;
   height: 2px;
+  transition: height 0.25s;
   flex-grow: 1;
   border-radius: 4px;
   margin: 0 3px;

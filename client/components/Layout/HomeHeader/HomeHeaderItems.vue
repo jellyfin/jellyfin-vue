@@ -76,6 +76,7 @@
       :duration="slideDuration"
       :paused="isPaused"
       class="px-2 px-sm-4 progress-bar"
+      hoverable
       @on-animation-end="onAnimationEnd"
       @on-progress-clicked="onProgressClicked"
     />
