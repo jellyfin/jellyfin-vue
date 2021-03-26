@@ -88,9 +88,9 @@ export default Vue.extend({
   async asyncData({ params, $userLibrary }) {
     const itemId = params.itemId;
 
-    await $userLibrary.fetchItem(itemId);
+    await $userLibrary.getItem(itemId);
 
-    const appearanceIds = await $userLibrary.fetchItems({
+    const appearanceIds = await $userLibrary.getItems({
       personIds: [itemId],
       recursive: true,
       collapseBoxSetItems: false

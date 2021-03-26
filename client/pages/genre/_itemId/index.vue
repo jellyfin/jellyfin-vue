@@ -59,7 +59,7 @@ export default Vue.extend({
   async asyncData({ params, $userLibrary }) {
     const itemId = params.itemId;
 
-    await $userLibrary.fetchItem(itemId);
+    await $userLibrary.getItem(itemId);
 
     return { itemId };
   },
@@ -71,7 +71,7 @@ export default Vue.extend({
   },
   async fetch() {
     // TODO: move the genre to a record<string, string[]> "genre" store
-    this.itemIds = await this.$userLibrary.fetchItems({
+    this.itemIds = await this.$userLibrary.getItems({
       genreIds: [this.itemId],
       includeItemTypes: [this.$route.query.type.toString()],
       recursive: true,
