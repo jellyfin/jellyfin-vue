@@ -138,7 +138,10 @@ export default Vue.extend({
 
     this.setBackdrop({ hash });
   },
-  beforeDestroy() {
+  activated() {
+    this.onSlideChange();
+  },
+  deactivated() {
     this.clearBackdrop();
   },
   methods: {

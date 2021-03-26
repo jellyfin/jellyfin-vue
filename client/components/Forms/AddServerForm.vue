@@ -58,7 +58,7 @@ export default Vue.extend({
       previousServerLength: 0
     };
   },
-  beforeMount() {
+  activated() {
     /**
      * Instead of mapping the current state from the store, we use the number of servers that are present
      * during the initialization of the component. That way, we can do the redirection to the correct page

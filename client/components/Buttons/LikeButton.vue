@@ -23,7 +23,9 @@ export default Vue.extend({
   },
   data() {
     return {
-      isFavorite: false
+      isFavorite: false,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      unsubscribe(): void {}
     };
   },
   watch: {
@@ -34,8 +36,8 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
-    this.$store.subscribe((mutation) => {
+  activated() {
+    this.unsubscribe = this.$store.subscribe((mutation) => {
       if (
         mutation?.type === 'SOCKET_ONMESSAGE' &&
         mutation?.payload?.MessageType === 'UserDataChanged'
@@ -51,6 +53,9 @@ export default Vue.extend({
         }
       }
     });
+  },
+  deactivated() {
+    this.unsubscribe();
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
