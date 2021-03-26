@@ -9,7 +9,7 @@
     "strict": true,
     "noEmit": true,
     "baseUrl": ".",
-    "types": ["@types/node"]
+    "types": ["@types/node", "@nuxt/types"]
   },
   "exclude": ["node_modules"]
 }
