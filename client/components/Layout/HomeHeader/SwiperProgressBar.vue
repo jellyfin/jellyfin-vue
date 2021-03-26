@@ -3,14 +3,14 @@
     <div
       v-for="i in pages"
       :key="`progress-key-${i}`"
-      ref="progress"
-      class="progress d-flex align-center justify-center"
-      :class="expand ? 'expand' : undefined"
-      @click="onProgressClicked(i)"
+      class="progress-bar"
+      @click.capture="onProgressClicked(i)"
     >
-      <v-chip v-if="expand" class="pager" color="primary">
-        {{ i }}
-      </v-chip>
+      <div
+        ref="progress"
+        class="progress d-flex align-center justify-center"
+        :class="expand ? 'expand' : undefined"
+      />
     </div>
   </div>
 </template>
@@ -135,27 +135,27 @@ export default Vue.extend({
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 10px 0;
-  height: 10px;
+  padding: 0;
+  margin: 10px 0;
+  overflow: hidden;
+  justify-content: center;
 }
 
-.pager {
-  opacity: 0;
-  cursor: pointer;
+.progress-bar {
+  cursor: pointer !important;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 
-.progress-bar-container:hover .expand {
-  height: 7px !important;
+.progress-bar:hover .expand.progress {
+  height: 10px !important;
   transition: height 0.25s;
 }
 
-.progress-bar-container:hover .pager {
-  opacity: 1;
-  transition: opacity 0.25s;
-}
-
 .progress {
-  cursor: pointer;
   height: 2px;
   transition: height 0.25s;
   flex-grow: 1;
