@@ -40,7 +40,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import { mapState } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -86,7 +85,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState(['windowX', 'windowY']),
     hash: {
       get(): string | undefined {
         return this.getBlurhash(this.item, this.type);
@@ -100,14 +98,18 @@ export default Vue.extend({
     type(): void {
       this.resetImage();
     },
-    windowX(): void {
-      if (!this.resetting) {
-        this.resetImage();
+    '$vuetify.breakpoint.width': {
+      handler(): void {
+        if (!this.resetting) {
+          this.resetImage();
+        }
       }
     },
-    windowY(): void {
-      if (!this.resetting) {
-        this.resetImage();
+    '$vuetify.breakpoint.height': {
+      handler(): void {
+        if (!this.resetting) {
+          this.resetImage();
+        }
       }
     }
   },
