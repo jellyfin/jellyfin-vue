@@ -18,7 +18,9 @@
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "npm run lint:js && npm run lint:style",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tauri:dev": "tauri dev",
+    "tauri:prod": "tauri build"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "eslint",
@@ -53,6 +55,7 @@
     "qs": "^6.10.1",
     "shaka-player": "^3.0.10",
     "swiper": "5.x",
+    "tauri": "^0.14.1",
     "uuid": "^8.3.2",
     "vee-validate": "^3.4.5",
     "vue": "^2.6.12",
