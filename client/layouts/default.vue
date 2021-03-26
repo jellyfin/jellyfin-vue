@@ -161,6 +161,14 @@ export default Vue.extend({
       } else if (!this.$store.state.page.showNavDrawer) {
         this.showNavDrawer({ showNavDrawer: true });
       }
+    },
+    '$vuetify.breakpoint.mobile': {
+      immediate: true,
+      handler(newVal: boolean): void {
+        if (newVal === true) {
+          this.drawer = false;
+        }
+      }
     }
   },
   beforeMount() {
