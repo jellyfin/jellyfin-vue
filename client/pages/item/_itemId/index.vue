@@ -310,7 +310,7 @@ export default Vue.extend({
   async asyncData({ params, $userLibrary }) {
     const itemId = params.itemId;
 
-    await $userLibrary.fetchItem(itemId);
+    await $userLibrary.getItem(itemId);
 
     return { itemId };
   },

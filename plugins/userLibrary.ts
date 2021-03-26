@@ -8,9 +8,9 @@ type GetItemsParams = Omit<ItemsApiGetItemsRequest, 'userId'>;
 type GetLatestMediaParams = Omit<UserLibraryApiGetLatestMediaRequest, 'userId'>;
 
 type UserLibraryType = {
-  fetchItem: (id: string) => Promise<void>;
-  fetchItems: (params: GetItemsParams) => Promise<string[]>;
-  fetchLatestMedia: (params: GetLatestMediaParams) => Promise<string[]>;
+  getItem: (id: string) => Promise<void>;
+  getItems: (params: GetItemsParams) => Promise<string[]>;
+  getLatestMedia: (params: GetLatestMediaParams) => Promise<string[]>;
 };
 
 declare module '@nuxt/types' {
@@ -43,7 +43,7 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      *
      * @param {string} id - Item ID
      */
-    fetchItem: async (id: string): Promise<void> => {
+    getItem: async (id: string): Promise<void> => {
       const call = async (): Promise<void> => {
         const item = (
           await $api.userLibrary.getItem({
@@ -67,7 +67,7 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      * @param {object} params - Parameters of getItems API call (without user ID)
      * @returns {string[]} list of IDs
      */
-    fetchItems: async (params: GetItemsParams): Promise<string[]> => {
+    getItems: async (params: GetItemsParams): Promise<string[]> => {
       const result = (
         await $api.items.getItems({ ...params, userId: $auth.user?.Id })
       ).data.Items;
@@ -88,9 +88,7 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      * @param {object} params - Parameters of getLatestMedia API call (without user ID)
      * @returns {string[]} list of IDs
      */
-    fetchLatestMedia: async (
-      params: GetLatestMediaParams
-    ): Promise<string[]> => {
+    getLatestMedia: async (params: GetLatestMediaParams): Promise<string[]> => {
       const result = (
         await $api.userLibrary.getLatestMedia({
           ...params,
