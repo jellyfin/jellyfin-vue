@@ -113,7 +113,6 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
-import debounce from 'lodash/debounce';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
 import settingsHelper from '~/mixins/settingsHelper';
@@ -165,11 +164,6 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    /**
-     * Adding the 'resize' event listener below doesn't populate the store, so we populate
-     * it here manually right before all the page is mounted to avoid useless image reloads.
-     */
-    this.updateWindowSize();
     this.refreshUserViews();
 
     const socketParams = stringify({
@@ -185,27 +179,16 @@ export default Vue.extend({
   },
   mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });
-    window.addEventListener('resize', this.updateWindowSizeThrottled);
   },
   destroyed() {
     window.removeEventListener('scroll', this.setIsScrolled);
-    window.removeEventListener('resize', this.updateWindowSizeThrottled);
   },
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('page', ['showNavDrawer']),
-    ...mapActions(['setWindowX', 'setWindowY']),
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.isScrolled = window.scrollY > 10;
-    },
-    updateWindowSizeThrottled: debounce(function (): void {
-      // @ts-expect-error - TypeScript confuses the context with lodash's debounce typings
-      this.updateWindowSize();
-    }, 500),
-    updateWindowSize(): void {
-      this.setWindowX({ value: window.innerWidth });
-      this.setWindowY({ value: window.innerHeight });
     }
   }
 });

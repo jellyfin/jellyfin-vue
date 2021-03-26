@@ -37,8 +37,6 @@ export interface RootState {
     message: Record<string, never>;
     reconnectError: boolean;
   };
-  windowX: number;
-  windowY: number;
 }
 export interface AppState extends RootState {
   auth: AuthState;
@@ -63,9 +61,7 @@ export const state = (): RootState => ({
     isConnected: false,
     message: {},
     reconnectError: false
-  },
-  windowX: 0,
-  windowY: 0
+  }
 });
 
 export const mutations: MutationTree<RootState> = {
@@ -95,12 +91,6 @@ export const mutations: MutationTree<RootState> = {
   },
   SET_SYNC_STATUS(state: RootState, value: boolean) {
     state.syncing = value;
-  },
-  SET_WINDOW_X(state: RootState, { value }: { value: number }) {
-    state.windowX = value;
-  },
-  SET_WINDOW_Y(state: RootState, { value }: { value: number }) {
-    state.windowY = value;
   }
 };
 
@@ -127,11 +117,5 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   setSyncStatus({ commit }, value: boolean) {
     commit('SET_SYNC_STATUS', value);
-  },
-  setWindowX({ commit }, { value }: { value: number }) {
-    commit('SET_WINDOW_X', { value });
-  },
-  setWindowY({ commit }, { value }: { value: number }) {
-    commit('SET_WINDOW_Y', { value });
   }
 };
