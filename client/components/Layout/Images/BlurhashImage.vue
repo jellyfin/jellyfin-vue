@@ -101,14 +101,14 @@ export default Vue.extend({
     '$vuetify.breakpoint.width': {
       handler(): void {
         if (!this.resetting) {
-          this.resetImage();
+          this.resetImage(false);
         }
       }
     },
     '$vuetify.breakpoint.height': {
       handler(): void {
         if (!this.resetting) {
-          this.resetImage();
+          this.resetImage(false);
         }
       }
     }
@@ -133,15 +133,19 @@ export default Vue.extend({
         this.onError();
       }
     },
-    resetImage(): void {
+    resetImage(hideImage = true): void {
       const previousUrl = this.image;
 
       this.resetting = true;
-      this.loading = true;
+
+      if (hideImage) {
+        this.loading = true;
+      }
+
       this.error = false;
       this.getImage();
 
-      if (this.image === previousUrl) {
+      if (this.image === previousUrl && hideImage) {
         this.loading = false;
       }
 
