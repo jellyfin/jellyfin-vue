@@ -141,7 +141,9 @@ export default Vue.extend({
   },
   data() {
     return {
-      refreshProgress: 0
+      refreshProgress: 0,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      unsubscribe(): void {}
     };
   },
   computed: {
@@ -213,8 +215,8 @@ export default Vue.extend({
       }
     }
   },
-  created() {
-    this.$store.subscribe((mutation, state) => {
+  activated() {
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
       if (
         mutation.type === 'SOCKET_ONMESSAGE' &&
         state.socket.message.MessageType === 'RefreshProgress' &&
@@ -223,6 +225,9 @@ export default Vue.extend({
         this.refreshProgress = state.socket.message.Data.Progress;
       }
     });
+  },
+  deactivated() {
+    this.unsubscribe();
   },
   methods: {
     ...mapActions('playbackManager', ['play'])

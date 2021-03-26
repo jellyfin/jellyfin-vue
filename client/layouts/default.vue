@@ -177,10 +177,10 @@ export default Vue.extend({
 
     this.$connect(socketUrl);
   },
-  mounted() {
+  activated() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });
   },
-  destroyed() {
+  deactivated() {
     window.removeEventListener('scroll', this.setIsScrolled);
   },
   methods: {
