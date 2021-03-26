@@ -40,6 +40,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { mapState } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -80,10 +81,12 @@ export default Vue.extend({
     return {
       image: '' as string | undefined,
       loading: true,
-      error: false
+      error: false,
+      resetting: false
     };
   },
   computed: {
+    ...mapState(['windowX', 'windowY']),
     hash: {
       get(): string | undefined {
         return this.getBlurhash(this.item, this.type);
@@ -96,6 +99,16 @@ export default Vue.extend({
     },
     type(): void {
       this.resetImage();
+    },
+    windowX(): void {
+      if (!this.resetting) {
+        this.resetImage();
+      }
+    },
+    windowY(): void {
+      if (!this.resetting) {
+        this.resetImage();
+      }
     }
   },
   mounted(): void {
@@ -119,9 +132,18 @@ export default Vue.extend({
       }
     },
     resetImage(): void {
+      const previousUrl = this.image;
+
+      this.resetting = true;
       this.loading = true;
       this.error = false;
       this.getImage();
+
+      if (this.image === previousUrl) {
+        this.loading = false;
+      }
+
+      this.resetting = false;
     }
   }
 });
