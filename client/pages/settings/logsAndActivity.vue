@@ -156,7 +156,7 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
-  beforeMount() {
+  activated() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
   },
   methods: {

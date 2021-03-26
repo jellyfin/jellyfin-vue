@@ -253,7 +253,7 @@ export default Vue.extend({
       ]
     };
   },
-  beforeMount() {
+  activated() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({ title: this.$t('settings.settings') });
   },

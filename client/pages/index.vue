@@ -143,10 +143,6 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
-  created() {
-    this.setPageTitle({ title: this.$t('home') });
-    this.setAppBarOpacity({ opaqueAppBar: false });
-  },
   activated() {
     if (this.$fetchState.timestamp <= Date.now() - 30000) {
       this.$fetch();
@@ -154,9 +150,6 @@ export default Vue.extend({
 
     this.setPageTitle({ title: this.$t('home') });
     this.setAppBarOpacity({ opaqueAppBar: false });
-  },
-  destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
   },
   deactivated() {
     this.setAppBarOpacity({ opaqueAppBar: true });

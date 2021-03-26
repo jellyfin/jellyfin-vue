@@ -23,7 +23,7 @@ export default Vue.extend({
       title: this.$store.state.page.title
     };
   },
-  created() {
+  activated() {
     this.setPageTitle({ title: this.$t('login.addServer') });
   },
   methods: {

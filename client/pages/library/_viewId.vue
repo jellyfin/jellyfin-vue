@@ -140,7 +140,7 @@ export default Vue.extend({
       this.loading = false;
     }
   },
-  async beforeMount() {
+  async activated() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
@@ -180,7 +180,7 @@ export default Vue.extend({
       });
     }
   },
-  destroyed() {
+  deactivated() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
   methods: {

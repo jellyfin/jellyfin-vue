@@ -168,10 +168,10 @@ export default Vue.extend({
       deep: true
     }
   },
-  created() {
+  activated() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
-  destroyed() {
+  deactivated() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },
