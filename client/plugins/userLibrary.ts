@@ -78,7 +78,7 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
 
       await store.dispatch('items/addItems', { items: result });
 
-      // @ts-expect-error - stupid parser thinking it'll be an (undefined|string)[] when I explicitly filter them
+      // @ts-expect-error - The parser fails to infer types properly here.
       return result.filter((item) => item?.Id).map((item) => item.Id);
     },
 
@@ -102,7 +102,7 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
 
       await store.dispatch('items/addItems', { items: result });
 
-      // @ts-expect-error - TypeScript badly infers types here, we are already filtering out undefined IDs
+      // @ts-expect-error - The parser fails to infer types properly here.
       return result.filter((item) => item?.Id).map((item) => item.Id);
     }
   });
