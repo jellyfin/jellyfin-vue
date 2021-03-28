@@ -1,4 +1,4 @@
-import { Plugin } from '@nuxt/types';
+import { Context, Plugin } from '@nuxt/types';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -29,7 +29,13 @@ declare module 'vuex/types/index' {
  *
  * @class BrowserDetector
  */
-class BrowserDetector {
+export class BrowserDetector {
+  context: Context;
+
+  constructor(context: Context) {
+    this.context = context;
+  }
+
   supportsMediaSource(): boolean {
     // Browsers that lack a media source implementation will have no reference
     // to |window.MediaSource|.
@@ -50,7 +56,13 @@ class BrowserDetector {
    * @memberof BrowserDetector
    */
   private userAgentContains(key: string): boolean {
-    const userAgent = navigator.userAgent || '';
+    let userAgent = '';
+
+    if (process.client) {
+      userAgent = navigator.userAgent || '';
+    } else {
+      userAgent = this.context.req.headers['user-agent'] || '';
+    }
 
     return userAgent.includes(key);
   }
@@ -127,9 +139,17 @@ class BrowserDetector {
       return null;
     }
 
+    let userAgent = '';
+
+    if (process.client && navigator.userAgent) {
+      userAgent = navigator.userAgent;
+    } else if (this.context.req.headers['user-agent']) {
+      userAgent = this.context.req.headers['user-agent'];
+    }
+
     // This works for iOS Safari and desktop Safari, which contain something
     // like "Version/13.0" indicating the major Safari or iOS version.
-    let match = navigator.userAgent.match(/Version\/(\d+)/);
+    let match = userAgent.match(/Version\/(\d+)/);
 
     if (match) {
       return parseInt(match[1], /* base= */ 10);
@@ -137,7 +157,7 @@ class BrowserDetector {
 
     // This works for all other browsers on iOS, which contain something like
     // "OS 13_3" indicating the major & minor iOS version.
-    match = navigator.userAgent.match(/OS (\d+)(?:_\d+)?/);
+    match = userAgent.match(/OS (\d+)(?:_\d+)?/);
 
     if (match) {
       return parseInt(match[1], /* base= */ 10);
@@ -277,7 +297,15 @@ class BrowserDetector {
    * @memberof BrowserDetector
    */
   isMobile(): boolean {
-    if (/(?:iPhone|iPad|iPod|Android)/.test(navigator.userAgent)) {
+    let userAgent = '';
+
+    if (process.client && navigator.userAgent) {
+      userAgent = navigator.userAgent;
+    } else if (this.context.req.headers['user-agent']) {
+      userAgent = this.context.req.headers['user-agent'];
+    }
+
+    if (/(?:iPhone|iPad|iPod|Android)/.test(userAgent)) {
       // This is Android, iOS, or iPad < 13.
       return true;
     }
@@ -291,11 +319,11 @@ class BrowserDetector {
     // device.  If some future iOS version starts masking their user agent on
     // both iPhone & iPad, this clause should still work.  If a future
     // multi-touch desktop Mac is released, this will need some adjustment.
-    //
-    // As of January 2020, this is mainly used to adjust the default UI config
-    // for mobile devices, so it's low risk if something changes to break this
-    // detection.
-    return this.isApple() && navigator.maxTouchPoints > 1;
+    if (process.client) {
+      return this.isApple() && navigator.maxTouchPoints > 1;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -329,10 +357,8 @@ class BrowserDetector {
   }
 }
 
-export const browserDetector = new BrowserDetector();
-
-const browserDetectorPlugin: Plugin = (_context, inject) => {
-  inject('browser', browserDetector);
+const browserDetectorPlugin: Plugin = (context, inject) => {
+  inject('browser', new BrowserDetector(context));
 };
 
 export default browserDetectorPlugin;

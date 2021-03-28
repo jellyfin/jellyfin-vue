@@ -1,4 +1,4 @@
-import { browserDetector } from '~/plugins/browserDetection';
+import { Context } from '@nuxt/types';
 
 /**
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
@@ -14,11 +14,15 @@ export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has H265 support
  */
-export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTv()) {
+export function hasH265Support(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (context.$browser.isTv()) {
     return true;
   }
 
@@ -40,11 +44,15 @@ export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has HEVC Support
  */
-export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTv()) {
+export function hasHevcSupport(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (context.$browser.isTv()) {
     return true;
   }
 
@@ -66,13 +74,17 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has AV1 support
  */
-export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTizen() && browserDetector.isTizen55()) {
+export function hasAv1Support(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (context.$browser.isTizen() && context.$browser.isTizen55()) {
     return true;
-  } else if (browserDetector.isWebOS5() && window.outerHeight >= 2160) {
+  } else if (context.$browser.isWebOS5() && window.outerHeight >= 2160) {
     return true;
   }
 
@@ -85,12 +97,16 @@ export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if browser has VC1 support
  */
-function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
+function hasVc1Support(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
   return !!(
-    browserDetector.isTv() ||
+    context.$browser.isTv() ||
     videoTestElement.canPlayType('video/mp4; codecs="vc-1"').replace(/no/, '')
   );
 }
@@ -120,10 +136,12 @@ export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
 /**
  * Queries the platform for the codecs suppers in an MP4 container.
  *
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} Array of codec identifiers.
  */
 export function getSupportedMP4VideoCodecs(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
@@ -132,22 +150,22 @@ export function getSupportedMP4VideoCodecs(
     codecs.push('h264');
   }
 
-  if (hasHevcSupport(videoTestElement)) {
-    // safari is lying on HDR and 60fps videos, use fMP4 instead
-    if (!browserDetector.isApple()) {
+  if (hasHevcSupport(context, videoTestElement)) {
+    // Safari is lying on HDR and 60fps videos, use fMP4 instead
+    if (!context.$browser.isApple()) {
       codecs.push('hevc');
     }
   }
 
-  if (browserDetector.isTv()) {
+  if (context.$browser.isTv()) {
     codecs.push('mpeg2video');
   }
 
-  if (hasVc1Support(videoTestElement)) {
+  if (hasVc1Support(context, videoTestElement)) {
     codecs.push('vc1');
   }
 
-  if (browserDetector.isTizen()) {
+  if (context.$browser.isTizen()) {
     codecs.push('msmpeg4v2');
   }
 
@@ -159,7 +177,7 @@ export function getSupportedMP4VideoCodecs(
     codecs.push('vp9');
   }
 
-  if (hasAv1Support(videoTestElement)) {
+  if (hasAv1Support(context, videoTestElement)) {
     codecs.push('av1');
   }
 
