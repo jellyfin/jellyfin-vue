@@ -89,8 +89,9 @@ const config: NuxtConfig = {
     { src: 'plugins/components/vueFullscreen.ts', mode: 'client' },
     'plugins/components/vueDraggable.ts',
     // Utility
-    { src: 'plugins/browserDetection.ts', mode: 'client' },
+    'plugins/browserDetection.ts',
     { src: 'plugins/playbackProfile.ts', mode: 'client' },
+    { src: 'plugins/supportedFeaturesPlugin.ts', mode: 'client' },
     'plugins/apiPlugin.ts'
   ],
   /*
@@ -351,7 +352,9 @@ const config: NuxtConfig = {
       }
     },
     optimizeCSS: true,
-    extractCSS: true,
+    extractCSS: {
+      ignoreOrder: true
+    },
     babel: {
       // envName: server, client, modern
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

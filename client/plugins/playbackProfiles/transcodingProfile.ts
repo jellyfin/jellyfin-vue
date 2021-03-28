@@ -3,6 +3,7 @@ import {
   EncodingContext,
   TranscodingProfile
 } from '@jellyfin/client-axios';
+import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './helpers/audioFormats';
 import { getSupportedFmp4AudioCodecs } from './helpers/fmp4AudioFormats';
 import { getSupportedFmp4VideoCodecs } from './helpers/fmp4VideoFormats';
@@ -18,37 +19,39 @@ import {
 } from './helpers/transcodingFormats';
 import { getSupportedTsAudioCodecs } from './helpers/tsAudioFormats';
 import { getSupportedTsVideoCodecs } from './helpers/tsVideoFormats';
-import { browserDetector } from '~/plugins/browserDetection';
 
 /**
  * Returns a valid TranscodingProfile for the current platform.
  *
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {Array<TranscodingProfile>} An array of transcoding profiles for the current platform.
  */
 export function getTranscodingProfiles(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<TranscodingProfile> {
   const TranscodingProfiles = [] as TranscodingProfile[];
-  const physicalAudioChannels = browserDetector.isTv() ? 6 : 2;
+  const physicalAudioChannels = context.$browser.isTv() ? 6 : 2;
 
   const hlsBreakOnNonKeyFrames = !!(
-    browserDetector.isApple() ||
-    (browserDetector.isEdge() && !browserDetector.isChromiumBased()) ||
-    !canPlayNativeHls(videoTestElement)
+    context.$browser.isApple() ||
+    (context.$browser.isEdge() && !context.$browser.isChromiumBased()) ||
+    !canPlayNativeHls(context, videoTestElement)
   );
 
-  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
-  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
-  const canPlayHls = canPlayNativeHls(videoTestElement) || canPlayHlsWithMSE();
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(context, videoTestElement);
+  const mp4VideoCodecs = getSupportedMP4VideoCodecs(context, videoTestElement);
+  const canPlayHls =
+    canPlayNativeHls(context, videoTestElement) || canPlayHlsWithMSE(context);
 
   if (canPlayHls) {
     TranscodingProfiles.push({
       // hlsjs, edge, and android all seem to require ts container
       Container:
-        !canPlayNativeHls(videoTestElement) ||
-        (browserDetector.isEdge() && !browserDetector.isChromiumBased()) ||
-        browserDetector.isAndroid()
+        !canPlayNativeHls(context, videoTestElement) ||
+        (context.$browser.isEdge() && !context.$browser.isChromiumBased()) ||
+        context.$browser.isAndroid()
           ? 'ts'
           : 'aac',
       Type: DlnaProfileType.Audio,
@@ -56,13 +59,13 @@ export function getTranscodingProfiles(
       Context: EncodingContext.Streaming,
       Protocol: 'hls',
       MaxAudioChannels: physicalAudioChannels.toString(),
-      MinSegments: browserDetector.isApple() ? 2 : 1,
+      MinSegments: context.$browser.isApple() ? 2 : 1,
       BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
     });
   }
 
   ['aac', 'mp3', 'opus', 'wav']
-    .filter(getSupportedAudioCodecs)
+    .filter((format) => getSupportedAudioCodecs(context, format))
     .forEach((audioFormat) => {
       TranscodingProfiles.push({
         Container: audioFormat,
@@ -74,11 +77,20 @@ export function getTranscodingProfiles(
       });
     });
 
-  const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(videoTestElement);
-  const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(videoTestElement);
+  const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(
+    context,
+    videoTestElement
+  );
+  const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(
+    context,
+    videoTestElement
+  );
 
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
-  const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
+  const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
+    context,
+    videoTestElement
+  );
 
   if (canPlayHls) {
     if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
@@ -90,7 +102,7 @@ export function getTranscodingProfiles(
         Context: EncodingContext.Streaming,
         Protocol: 'hls',
         MaxAudioChannels: physicalAudioChannels.toString(),
-        MinSegments: browserDetector.isApple() ? 2 : 1,
+        MinSegments: context.$browser.isApple() ? 2 : 1,
         BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
       });
     }
@@ -104,13 +116,13 @@ export function getTranscodingProfiles(
         Context: EncodingContext.Streaming,
         Protocol: 'hls',
         MaxAudioChannels: physicalAudioChannels.toString(),
-        MinSegments: browserDetector.isApple() ? 2 : 1,
+        MinSegments: context.$browser.isApple() ? 2 : 1,
         BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
       });
     }
   }
 
-  if (hasMkvSupport(videoTestElement) && !browserDetector.isTizen()) {
+  if (hasMkvSupport(context, videoTestElement) && !context.$browser.isTizen()) {
     TranscodingProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,

@@ -1,3 +1,4 @@
+import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './audioFormats';
 import {
   hasAacSupport,
@@ -6,13 +7,14 @@ import {
   hasEac3Support,
   hasMp3AudioSupport
 } from './mp4AudioFormats';
-import { browserDetector } from '~/plugins/browserDetection';
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {string[]} List of supported FMP4 audio codecs
  */
 export function getSupportedFmp4AudioCodecs(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
@@ -25,23 +27,23 @@ export function getSupportedFmp4AudioCodecs(
     codecs.push('mp3');
   }
 
-  if (hasAc3Support(videoTestElement)) {
-    if (hasAc3InHlsSupport(videoTestElement)) {
+  if (hasAc3Support(context, videoTestElement)) {
+    if (hasAc3InHlsSupport(context, videoTestElement)) {
       codecs.push('ac3');
 
-      if (hasEac3Support(videoTestElement)) {
+      if (hasEac3Support(context, videoTestElement)) {
         codecs.push('eac3');
       }
     }
   }
 
-  if (getSupportedAudioCodecs('flac')) {
-    if (!browserDetector.isEdge()) {
+  if (getSupportedAudioCodecs(context, 'flac')) {
+    if (!context.$browser.isEdge()) {
       codecs.push('flac');
     }
   }
 
-  if (getSupportedAudioCodecs('alac')) {
+  if (getSupportedAudioCodecs(context, 'alac')) {
     codecs.push('alac');
   }
 

@@ -5,17 +5,18 @@ import {
   ProfileCondition,
   ProfileConditionValue
 } from '@jellyfin/client-axios';
-import { browserDetector } from '~/plugins/browserDetection';
+import { Context } from '@nuxt/types';
 
 /**
  * Gets the max video bitrate
  *
+ * @param {Context} context - Nuxt context
  * @returns {number | null} Returns the MaxVideoBitrate
  */
-function getGlobalMaxVideoBitrate(): number | null {
+function getGlobalMaxVideoBitrate(context: Context): number | null {
   let isTizenFhd = false;
 
-  if (browserDetector.isTizen()) {
+  if (context.$browser.isTizen()) {
     try {
       // @ts-expect-error - Non-standard functions doesn't have typings
       // eslint-disable-next-line no-undef
@@ -34,15 +35,15 @@ function getGlobalMaxVideoBitrate(): number | null {
   // TODO: These valus are taken directly from Jellyfin-web.
   // The source of them needs to be investigated.
 
-  if (browserDetector.isPs4()) {
+  if (context.$browser.isPs4()) {
     return 8000000;
   }
 
-  if (browserDetector.isXbox()) {
+  if (context.$browser.isXbox()) {
     return 12000000;
   }
 
-  if (browserDetector.isTizen() && isTizenFhd) {
+  if (context.$browser.isTizen() && isTizenFhd) {
     return 20000000;
   }
 
@@ -73,13 +74,15 @@ function createProfileCondition(
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {ProfileCondition[]} - Array of ACC Profile conditions
  */
-export function getaacCodecProfileConditions(
+export function getAacCodecProfileConditions(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): ProfileCondition[] {
-  const supportsSecondaryAudio = browserDetector.isTizen();
+  const supportsSecondaryAudio = context.$browser.isTizen();
 
   const conditions = [] as ProfileCondition[];
 
@@ -110,19 +113,22 @@ export function getaacCodecProfileConditions(
 }
 
 /**
- *
- *
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {CodecProfile[]} - Array containing the different profiles for the client
  */
 export function getCodecProfiles(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): CodecProfile[] {
   const CodecProfiles = [] as CodecProfile[];
 
-  const aacProfileConditions = getaacCodecProfileConditions(videoTestElement);
+  const aacProfileConditions = getAacCodecProfileConditions(
+    context,
+    videoTestElement
+  );
 
-  const supportsSecondaryAudio = browserDetector.isTizen();
+  const supportsSecondaryAudio = context.$browser.isTizen();
 
   if (aacProfileConditions.length) {
     CodecProfiles.push({
@@ -149,7 +155,7 @@ export function getCodecProfiles(
   let h264Profiles = 'high|main|baseline|constrained baseline';
 
   if (
-    browserDetector.isTv() ||
+    context.$browser.isTv() ||
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.640833"')
       .replace(/no/, '')
@@ -167,21 +173,21 @@ export function getCodecProfiles(
 
   // Support H264 Level 52 (Tizen 5.0) - app only
   // @ts-expect-error - Non-standard functions doesn't have typings
-  if (browserDetector.isTizen5() && window.NativeShell) {
+  if (context.$browser.isTizen5() && window.NativeShell) {
     maxH264Level = 52;
   }
 
   if (
-    browserDetector.isTizen() ||
+    context.$browser.isTizen() ||
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.6e0033"')
       .replace(/no/, '')
   ) {
     // TODO: These tests are passing in safari, but playback is failing
     if (
-      !browserDetector.isApple() ||
-      !browserDetector.isWebOS() ||
-      !(browserDetector.isEdge() && !browserDetector.isChromiumBased())
+      !context.$browser.isApple() ||
+      !context.$browser.isWebOS() ||
+      !(context.$browser.isEdge() && !context.$browser.isChromiumBased())
     ) {
       h264Profiles += '|high 10';
     }
@@ -280,7 +286,7 @@ export function getCodecProfiles(
     )
   ];
 
-  if (!browserDetector.isTv()) {
+  if (!context.$browser.isTv()) {
     h264CodecProfileConditions.push(
       createProfileCondition(
         ProfileConditionValue.IsInterlaced,
@@ -296,7 +302,9 @@ export function getCodecProfiles(
     });
   }
 
-  const globalMaxVideoBitrate = (getGlobalMaxVideoBitrate() || '').toString();
+  const globalMaxVideoBitrate = (
+    getGlobalMaxVideoBitrate(context) || ''
+  ).toString();
 
   const h264MaxVideoBitrate = globalMaxVideoBitrate;
 
@@ -322,9 +330,9 @@ export function getCodecProfiles(
 
   // On iOS 12.x, for TS container max h264 level is 4.2
   if (
-    browserDetector.isApple() &&
-    browserDetector.isMobile() &&
-    (browserDetector.safariVersion() as number) < 13
+    context.$browser.isApple() &&
+    context.$browser.isMobile() &&
+    (context.$browser.safariVersion() as number) < 13
   ) {
     const codecProfile = {
       Type: CodecType.Video,

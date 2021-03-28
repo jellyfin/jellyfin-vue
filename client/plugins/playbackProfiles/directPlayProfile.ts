@@ -1,4 +1,5 @@
 import { DirectPlayProfile, DlnaProfileType } from '@jellyfin/client-axios';
+import { Context } from '@nuxt/types';
 import { getSupportedMP4VideoCodecs } from './helpers/mp4VideoFormats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
 import { hasMkvSupport } from './helpers/transcodingFormats';
@@ -8,19 +9,27 @@ import { getSupportedWebMVideoCodecs } from './helpers/webmVideoFormats';
 /**
  * Returns a valid DirectPlayProfile for the current platform.
  *
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {Array<DirectPlayProfile>} An array of direct play profiles for the current platform.
  */
 export function getDirectPlayProfiles(
+  context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<DirectPlayProfile> {
   const DirectPlayProfiles = [] as DirectPlayProfile[];
 
-  const webmVideoCodecs = getSupportedWebMVideoCodecs(videoTestElement);
-  const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
+  const webmVideoCodecs = getSupportedWebMVideoCodecs(
+    context,
+    videoTestElement
+  );
+  const webmAudioCodecs = getSupportedWebMAudioCodecs(
+    context,
+    videoTestElement
+  );
 
-  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
-  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
+  const mp4VideoCodecs = getSupportedMP4VideoCodecs(context, videoTestElement);
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(context, videoTestElement);
 
   if (webmVideoCodecs.length) {
     DirectPlayProfiles.push({
@@ -40,7 +49,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (hasMkvSupport(videoTestElement) && mp4VideoCodecs.length) {
+  if (hasMkvSupport(context, videoTestElement) && mp4VideoCodecs.length) {
     DirectPlayProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,

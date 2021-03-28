@@ -1,7 +1,7 @@
 import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import { version } from '../../package.json';
-import { browserDetector } from '~/plugins/browserDetection';
+import { BrowserDetector } from '~/plugins/browserDetection';
 
 export interface DeviceState {
   deviceId: string;
@@ -36,30 +36,31 @@ function getDeviceId(): string {
 
 /** Gets the device's name
  *
+ * @param {BrowserDetector} $browser - Browser detection plugin
  * @returns {string} deviceName returns the device's name
  */
-function getDeviceName(): string {
+function getDeviceName($browser: BrowserDetector): string {
   let deviceName = 'Unknown';
 
   // TODO: Replace with pattern matching once TC39 adopts the proposal
   // See: https://github.com/tc39/proposal-pattern-matching
-  if (browserDetector.isChrome()) {
+  if ($browser.isChrome()) {
     deviceName = 'Chrome';
-  } else if (browserDetector.isEdge() && !browserDetector.isChromiumBased()) {
+  } else if ($browser.isEdge() && !$browser.isChromiumBased()) {
     deviceName = 'Edge (EdgeHTML)';
-  } else if (browserDetector.isEdge()) {
+  } else if ($browser.isEdge()) {
     deviceName = 'Edge (Chromium)';
-  } else if (browserDetector.isFirefox()) {
+  } else if ($browser.isFirefox()) {
     deviceName = 'Firefox';
-  } else if (browserDetector.isApple() && !browserDetector.isMobile()) {
+  } else if ($browser.isApple() && !$browser.isMobile()) {
     deviceName = 'Safari';
-  } else if (browserDetector.isWebOS()) {
+  } else if ($browser.isWebOS()) {
     deviceName = 'LG Smart TV';
-  } else if (browserDetector.isTizen()) {
+  } else if ($browser.isTizen()) {
     deviceName = 'Samsung Smart TV';
-  } else if (browserDetector.isApple() && browserDetector.isMobile()) {
+  } else if ($browser.isApple() && $browser.isMobile()) {
     deviceName = 'iPhone';
-  } else if (browserDetector.isAndroid()) {
+  } else if ($browser.isAndroid()) {
     deviceName = 'Android';
   }
 
@@ -98,7 +99,7 @@ export const actions: ActionTree<DeviceState, DeviceState> = {
   setDeviceProfile({ commit }) {
     commit('SET_PROFILE', {
       deviceId: getDeviceId(),
-      deviceName: getDeviceName(),
+      deviceName: getDeviceName(this.$browser),
       clientVersion: getClientVersion(),
       clientName: getClientName()
     });

@@ -1,11 +1,15 @@
-import { browserDetector } from '~/plugins/browserDetection';
+import { Context } from '@nuxt/types';
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser can play native Hls
  */
-export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTizen()) {
+export function canPlayNativeHls(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (context.$browser.isTizen()) {
     return true;
   }
 
@@ -22,18 +26,23 @@ export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @returns {boolean} Determines if the browser can play Hls with Media Source Extensions
  */
-export function canPlayHlsWithMSE(): boolean {
-  return browserDetector.supportsMediaSource();
+export function canPlayHlsWithMSE(context: Context): boolean {
+  return context.$browser.supportsMediaSource();
 }
 
 /**
+ * @param {Context} context - Nuxt context
  * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
  * @returns {boolean} Determines if the browser can play Mkvs
  */
-export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {
-  if (browserDetector.isTv()) {
+export function hasMkvSupport(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): boolean {
+  if (context.$browser.isTv()) {
     return true;
   }
 
@@ -44,7 +53,7 @@ export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {
     return true;
   }
 
-  if (browserDetector.isEdge()) {
+  if (context.$browser.isEdge()) {
     return true;
   }
 

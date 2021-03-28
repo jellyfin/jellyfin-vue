@@ -1,16 +1,37 @@
-import { browserDetector } from '~/plugins/browserDetection';
+import { Plugin } from '@nuxt/types';
 
-export interface SupportedFeaturesInterface {
+export interface SupportedFeatures {
   pictureInPicture: boolean;
   airPlay: boolean;
-  playbackRate: boolean;
 }
 
-export const getSupportedFeatures = (): SupportedFeaturesInterface => {
-  const supportedFeatures = {
+declare module '@nuxt/types' {
+  interface Context {
+    $features: SupportedFeatures;
+  }
+
+  interface NuxtAppOptions {
+    $features: SupportedFeatures;
+  }
+}
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $features: SupportedFeatures;
+  }
+}
+
+declare module 'vuex/types/index' {
+  // eslint-disable-next-line -- Current TypeScript rules flag S as unused, but Nuxt requires identical types
+  interface Store<S> {
+    $features: SupportedFeatures;
+  }
+}
+
+const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
+  const supportedFeatures: SupportedFeatures = {
     pictureInPicture: false,
-    airPlay: false,
-    playbackRate: false
+    airPlay: false
   };
 
   const video = document.createElement('video');
@@ -30,13 +51,11 @@ export const getSupportedFeatures = (): SupportedFeaturesInterface => {
     supportedFeatures.pictureInPicture = true;
   }
 
-  if (browserDetector.isApple()) {
+  if ($browser.isApple()) {
     supportedFeatures.airPlay = true;
   }
 
-  if (typeof video.playbackRate === 'number') {
-    supportedFeatures.playbackRate = true;
-  }
-
-  return supportedFeatures;
+  inject('features', supportedFeatures);
 };
+
+export default supportedFeaturesPlugin;

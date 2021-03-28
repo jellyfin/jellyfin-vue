@@ -1,10 +1,10 @@
-import { Plugin } from '@nuxt/types/app';
+import { Context, Plugin } from '@nuxt/types';
 import { DeviceProfile } from '@jellyfin/client-axios';
-import { getCodecProfiles } from '~/utils/playbackProfiles/helpers/codecProfiles';
-import { getDirectPlayProfiles } from '~/utils/playbackProfiles/directPlayProfile';
-import { getTranscodingProfiles } from '~/utils/playbackProfiles/transcodingProfile';
-import { getSubtitleProfiles } from '~/utils/playbackProfiles/subtitleProfile';
-import { getResponseProfiles } from '~/utils/playbackProfiles/responseProfile';
+import { getCodecProfiles } from './playbackProfiles/helpers/codecProfiles';
+import { getDirectPlayProfiles } from './playbackProfiles/directPlayProfile';
+import { getTranscodingProfiles } from './playbackProfiles/transcodingProfile';
+import { getSubtitleProfiles } from './playbackProfiles/subtitleProfile';
+import { getResponseProfiles } from './playbackProfiles/responseProfile';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -29,30 +29,35 @@ declare module 'vuex/types/index' {
   }
 }
 
-const videoTestElement = document.createElement('video');
-
 /**
  * Creates a device profile containing supported codecs for the active Cast device.
  *
+ * @param {Context} context - Nuxt context
+ * @param {HTMLVideoElement} videoTestElement - Dummy video element for compatibility tests
  * @returns {object} Device profile.
  */
-function getDeviceProfile(): DeviceProfile {
+function getDeviceProfile(
+  context: Context,
+  videoTestElement: HTMLVideoElement
+): DeviceProfile {
   // MaxStaticBitrate seems to be for offline sync only
   return {
     MaxStreamingBitrate: 120000000,
     MaxStaticBitrate: 0,
     MusicStreamingTranscodingBitrate: Math.min(120000000, 192000),
-    DirectPlayProfiles: getDirectPlayProfiles(videoTestElement),
-    TranscodingProfiles: getTranscodingProfiles(videoTestElement),
+    DirectPlayProfiles: getDirectPlayProfiles(context, videoTestElement),
+    TranscodingProfiles: getTranscodingProfiles(context, videoTestElement),
     ContainerProfiles: [],
-    CodecProfiles: getCodecProfiles(videoTestElement),
+    CodecProfiles: getCodecProfiles(context, videoTestElement),
     SubtitleProfiles: getSubtitleProfiles(),
     ResponseProfiles: getResponseProfiles()
   };
 }
 
-const playbackProfilePlugin: Plugin = (_context, inject) => {
-  inject('playbackProfile', getDeviceProfile());
+const playbackProfilePlugin: Plugin = (context, inject) => {
+  const videoTestElement = document.createElement('video');
+
+  inject('playbackProfile', getDeviceProfile(context, videoTestElement));
 };
 
 export default playbackProfilePlugin;
