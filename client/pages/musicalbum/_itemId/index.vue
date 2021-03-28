@@ -3,7 +3,7 @@
     <template #left>
       <v-row justify="center" justify-md="start">
         <v-col cols="7" md="3">
-          <card :item="item" overlay link />
+          <card :item="item" />
         </v-col>
         <v-col cols="12" md="9">
           <h1
@@ -48,17 +48,13 @@
               align="center"
             >
               <v-col
-                :cols="twoColsInfoColumn.lCols"
-                :sm="twoColsInfoColumn.lSm"
-                :class="twoColsInfoColumn.lClass"
+                :cols="12"
+                :sm="2"
+                class="mt-sm-3 py-sm-0 px-0 text-truncate"
               >
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </v-col>
-              <v-col
-                class="px-0"
-                :cols="twoColsInfoColumn.rCols"
-                :sm="twoColsInfoColumn.rSm"
-              >
+              <v-col class="px-0" :cols="12" :sm="10">
                 <v-slide-group>
                   <v-slide-item
                     v-for="(genre, index) in item.GenreItems"
@@ -102,14 +98,6 @@ import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
 
-interface TwoColsInfoColumn {
-  lCols: number;
-  lSm: number;
-  rCols: number;
-  rSm: number;
-  lClass: { [key: string]: boolean };
-}
-
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
   validate(ctx: Context) {
@@ -139,22 +127,6 @@ export default Vue.extend({
     ...mapState('page', ['title']),
     item(): BaseItemDto {
       return this.getItem(this.itemId);
-    },
-    twoColsInfoColumn: {
-      get(): TwoColsInfoColumn {
-        return {
-          lCols: 12,
-          lSm: 2,
-          lClass: {
-            'mt-3': !this.$vuetify.breakpoint.smAndUp,
-            'py-0': !this.$vuetify.breakpoint.smAndUp,
-            'px-0': true,
-            'text-truncate': true
-          },
-          rCols: 12,
-          rSm: 10
-        };
-      }
     }
   },
   watch: {
