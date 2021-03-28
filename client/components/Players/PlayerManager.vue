@@ -86,7 +86,7 @@
                           <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
                         <v-btn
-                          v-if="supportedFeatures.pictureInPicture"
+                          v-if="$features.pictureInPicture"
                           icon
                           @click="togglePictureInPicture"
                         >
@@ -98,7 +98,7 @@
                         <v-btn icon disabled>
                           <v-icon>mdi-autorenew</v-icon>
                         </v-btn>
-                        <v-btn v-if="supportedFeatures.airplay" icon disabled>
+                        <v-btn v-if="$features.airplay" icon disabled>
                           <v-icon>mdi-apple-airplay</v-icon>
                         </v-btn>
                         <v-btn icon disabled>
@@ -164,10 +164,6 @@ import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
-import {
-  getSupportedFeatures,
-  SupportedFeaturesInterface
-} from '~/utils/supportedFeatures';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper],
@@ -175,7 +171,6 @@ export default Vue.extend({
     return {
       showFullScreenOverlay: false,
       fullScreenOverlayTimer: null as number | null,
-      supportedFeatures: {} as SupportedFeaturesInterface,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {},
       fullScreenVideo: false
@@ -204,9 +199,6 @@ export default Vue.extend({
           return this.getCurrentItem.Name;
       }
     }
-  },
-  beforeMount() {
-    this.supportedFeatures = getSupportedFeatures();
   },
   mounted() {
     document.addEventListener('mousemove', this.handleMouseMove);

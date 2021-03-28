@@ -70,7 +70,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['client/**/*'],
+      files: ['client/**/*.ts', 'client/**/*.vue'],
       env: {
         browser: true,
         node: true

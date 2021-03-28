@@ -329,7 +329,7 @@ const imageHelper = Vue.extend({
         quality
       };
 
-      const scaling = window.devicePixelRatio;
+      const scaling = process.client ? window.devicePixelRatio : 1;
 
       if (limitByWidth && maxWidth) {
         params.maxWidth = Math.round(maxWidth * scaling).toString();

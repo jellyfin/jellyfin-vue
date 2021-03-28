@@ -55,7 +55,7 @@
           />
         </div>
         <div
-          v-if="overlay && !$browser.isMobile()"
+          v-if="overlay"
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :items="[item]" />
