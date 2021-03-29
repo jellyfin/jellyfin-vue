@@ -7,7 +7,6 @@
   "alphabetically": "按子母排序",
   "artist": "藝人",
   "artists": "藝人",
-  "browserNotSupported": "",
   "buttons": {
     "ok": "好"
   },
@@ -21,7 +20,6 @@
   "darkModeToggle": "切換深色模式",
   "director": "導演",
   "edit": "編輯",
-  "endsAt": "",
   "errors": {
     "anErrorHappened": "發生錯誤",
     "messages": {
@@ -29,7 +27,6 @@
       "videoPlayerError": "影片播放器出現了無法回復的錯誤。"
     }
   },
-  "favorite": "",
   "fullScreen": "全螢幕",
   "genres": "風格",
   "guestStar": "特別演出",
@@ -64,7 +61,6 @@
     }
   },
   "itemNotFound": "找不到項目",
-  "libraryEmpty": "",
   "liked": "",
   "links": {
     "helpTranslate": "幫助我們把 Jellyfin 翻譯成您的語言"
@@ -144,8 +140,7 @@
       "apiKeys": "API 金鑰",
       "createKeyFailure": "建立 API 金鑰時發生錯誤",
       "createKeySuccess": "成功建立 API 金鑰",
-      "dateCreated": "建立日期",
-      "revokeAllFailure": ""
+      "dateCreated": "建立日期"
     },
     "devices": {
       "appName": "",
@@ -182,9 +177,6 @@
     "home": {
       "name": "主畫面"
     },
-    "liveTvAndDvr": {
-      "name": ""
-    },
     "mediaPlayers": {
       "name": ""
     },
@@ -205,9 +197,6 @@
     },
     "subtitles": {
       "name": "字幕"
-    },
-    "users": {
-      "name": ""
     }
   },
   "signIn": "登入",
@@ -222,19 +211,13 @@
   },
   "trailer": "預告片",
   "tvShowAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章",
-  "unableGetServerConfiguration": "",
   "undefined": "",
-  "unplayed": "",
   "validation": {
     "bothPasswordsSame": ""
   },
-  "video": "",
   "wizard": {
     "administratorAccount": "",
-    "languageLocale": "",
     "preferredMetadataLanguage": "",
-    "setLanguageError": "",
     "userSuccessfullySet": ""
-  },
-  "years": ""
+  }
 }

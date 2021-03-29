@@ -1,137 +1,77 @@
 {
-  "actors": "",
   "alphabetically": "",
-  "audio": "",
   "buttons": {
     "ok": ""
   },
-  "collections": "",
   "continueListening": "",
-  "darkModeToggle": "",
   "director": "",
-  "editMetadata": "",
   "episodeNumber": "",
-  "failedRetrievingDisplayPreferences": "",
   "features": "",
-  "general": "",
   "headerPaths": "",
-  "homeHeader": {
-    "welcome": {
-      "helloUser": ""
-    }
-  },
   "imageType": {
     "banner": "",
-    "logo": "",
     "thumb": ""
   },
   "item": {
-    "artist": {
-      "information": ""
-    },
     "person": {
       "birth": ""
-    },
-    "tracklist": {
-      "title": ""
     }
   },
   "libraries": "",
-  "libraryRefreshQueued": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "changeServer": "",
     "loginAs": "",
-    "selectUser": "",
     "serverDashboard": ""
   },
   "logsAndActivity": {
-    "activity": "",
     "noActivityFound": ""
   },
-  "metadata": {
-    "sourceAll": ""
-  },
   "more": "",
-  "name": "",
   "noAudioTracksAvailable": "",
-  "noSubtitleSelected": "",
   "noVideoTracksAvailable": "",
-  "originalTitle": "",
   "password": "",
-  "playFromBeginning": "",
   "playback": {
     "playNext": "",
-    "playbackSource": {
-      "unknown": ""
-    },
     "shuffleAll": ""
   },
-  "queue": "",
   "resumable": "",
-  "saved": "",
   "serverVersion": "",
   "settings": {
     "apiKeys": {
-      "addNewKey": "",
       "createKeySuccess": "",
-      "revokeAll": "",
       "revokeSuccess": ""
     },
     "devices": {
-      "deleteAll": "",
-      "deleteDeviceSuccess": "",
-      "noDevicesFound": ""
+      "deleteDeviceSuccess": ""
     },
     "logsAndActivity": {
-      "failedGetActivity": "",
-      "noLogsFound": ""
+      "failedGetActivity": ""
     }
   },
   "settingsSections": {
     "devices": {
       "description": ""
     },
-    "home": {
-      "description": ""
-    },
     "liveTvAndDvr": {
-      "description": ""
-    },
-    "mediaPlayers": {
       "description": ""
     },
     "notifications": {
       "description": ""
     },
-    "plugins": {
-      "description": ""
-    },
     "server": {
-      "description": ""
-    },
-    "transcodingAndStreaming": {
       "description": ""
     }
   },
   "shows": "",
-  "specialFeatures": "",
   "syncingInProgress": "",
-  "themeVideo": "",
   "trailer": "",
-  "unableGetRelated": "",
   "unableToTogglePlayed": "",
-  "unliked": "",
   "username": "",
-  "version": "",
   "vueClientVersion": "",
   "wizard": {
-    "confirmPassword": "",
     "preferedLanguage": "",
-    "setAdminError": "",
     "setupWizard": ""
-  },
-  "year": ""
+  }
 }
