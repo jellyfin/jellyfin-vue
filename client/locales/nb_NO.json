@@ -39,7 +39,7 @@
   "editMetadata": "Rediger metadata",
   "editPerson": "Rediger person",
   "endDate": "Sluttdato",
-  "endsAt": "Slutter {Time}",
+  "endsAt": "Slutter {time}",
   "episodeNumber": "Episode {episodeNumber}",
   "errors": {
     "anErrorHappened": "En feil har oppstått",
