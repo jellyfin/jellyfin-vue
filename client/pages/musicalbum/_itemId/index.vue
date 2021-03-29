@@ -17,12 +17,11 @@
             class="text-subtitle-1 text-truncate mt-2"
             :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
           >
-            {{ $t('byArtist') }}
             <nuxt-link
               class="link"
               :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
             >
-              {{ item.AlbumArtist }}
+              {{ $t('byArtist', { artist: item.AlbumArtist }) }}
             </nuxt-link>
           </h2>
           <div

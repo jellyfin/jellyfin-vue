@@ -17,9 +17,9 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "By",
+  "byArtist": "By {artist}",
   "cancel": "Cancel",
-  "castAndCrew": "Cast & Crew",
+  "castAndCrew": "Cast & crew",
   "collections": "Collections",
   "communityRating": "Community rating",
   "confirm": "Confirm",
