@@ -1,405 +1,245 @@
 {
-    "3DFormat": "",
-    "NoMediaSourcesAvailable": "",
-    "actor": "",
-    "actors": "",
-    "addNewPerson": "",
-    "albums": "",
-    "allLanguages": "",
-    "alphabetically": "",
-    "architecture": "",
-    "artist": "",
-    "artists": "",
-    "audio": "",
-    "badRequest": "",
-    "biography": "",
-    "browserNotSupported": "",
-    "buttons": {
-        "ok": ""
-    },
-    "byArtist": "",
-    "cancel": "",
-    "castAndCrew": "",
-    "collections": "",
-    "communityRating": "",
-    "confirm": "",
-    "connect": "",
-    "continueListening": "",
-    "continueWatching": "",
-    "criticRating": "",
-    "customRating": "",
-    "darkModeToggle": "",
-    "dateAdded": "",
-    "details": "",
-    "directing": "",
-    "director": "",
-    "discNumber": "",
-    "dislikes": "",
-    "edit": "",
-    "editMetadata": "",
-    "editPerson": "",
-    "endDate": "",
-    "endsAt": "",
-    "episodeNumber": "",
-    "errors": {
-        "anErrorHappened": "",
-        "messages": {
-            "errorCode": "",
-            "videoPlayerError": ""
-        }
-    },
-    "failedRetrievingDisplayPreferences": "",
-    "failedSettingDisplayPreferences": "",
-    "failedToRefreshItems": "",
-    "favorite": "",
-    "features": "",
-    "filter": "",
-    "filtersNotFound": "",
-    "fullScreen": "",
-    "general": "",
-    "genres": "",
-    "guestStar": "",
-    "headerExternalIds": "",
-    "headerPaths": "",
-    "home": "",
-    "homeHeader": {
-        "items": {
-            "recentlyAdded": ""
-        },
-        "welcome": {
-            "checkNewItems": "",
-            "helloUser": "",
-            "noItems": ""
-        }
-    },
-    "imageType": {
-        "art": "",
-        "backdrop": "",
-        "banner": "",
-        "box": "",
-        "boxRear": "",
-        "disc": "",
-        "logo": "",
-        "menu": "",
-        "primary": "",
-        "screenshot": "",
-        "thumb": ""
-    },
-    "images": "",
-    "incorrectUsernameOrPassword": "",
-    "item": {
-        "artist": {
-            "discography": "",
-            "information": ""
-        },
-        "cast": "",
-        "composer": "",
-        "crew": "",
-        "person": {
-            "birth": "",
-            "birthPlace": "",
-            "death": "",
-            "person": ""
-        },
-        "tracklist": {
-            "title": ""
-        }
-    },
-    "itemNotFound": "",
-    "jellyfinLogo": "",
-    "latestLibrary": "",
-    "libraries": "",
-    "libraryEmpty": "",
-    "libraryEmptyFilters": "",
-    "libraryNotFound": "",
-    "libraryRefreshQueued": "",
-    "liked": "",
-    "likes": "",
-    "links": {
-        "helpTranslate": "",
-        "poweredByJellyfin": "",
-        "readTheDocumentation": "",
-        "reportAnIssue": ""
-    },
-    "login": {
-        "addServer": "",
-        "changeServer": "",
-        "changeUser": "",
-        "connect": "",
-        "login": "",
-        "loginAs": "",
-        "manualLogin": "",
-        "rememberMe": "",
-        "selectServer": "",
-        "selectUser": "",
-        "serverAddress": "",
-        "serverAddressMustBeUrl": "",
-        "serverAddressRequired": "",
-        "serverDashboard": "",
-        "serverNotFound": "",
-        "serverVersionTooLow": ""
-    },
-    "logout": "",
-    "logsAndActivity": {
-        "activity": "",
-        "failedGetActivity": "",
-        "failedGetLogs": "",
-        "logs": "",
-        "noActivityFound": "",
-        "noLogsFound": ""
-    },
-    "manualLogin": "",
-    "menu": "",
-    "metadataEditor": "",
-    "metadataNoResultsMatching": "",
-    "more": "",
-    "moreLikeArtist": "",
-    "moreLikeThis": "",
-    "movies": "",
-    "name": "",
-    "networks": "",
-    "nextUp": "",
-    "noAudioTrackSelected": "",
-    "noAudioTracksAvailable": "",
-    "noImagesFound": "",
-    "noNetworkConnection": "",
-    "noResultsFound": "",
-    "noSubtitleSelected": "",
-    "noSubtitlesAvailable": "",
-    "noTracksAvailable": "",
-    "noVideoTrackSelected": "",
-    "noVideoTracksAvailable": "",
-    "numberTracks": "",
-    "operatingSystem": "",
-    "originalAspectRatio": "",
-    "originalTitle": "",
-    "overview": "",
-    "parentalRating": "",
-    "parentalRatings": "",
-    "password": "",
-    "people": "",
-    "person": "",
-    "play": "",
-    "playFromBeginning": "",
-    "playback": {
-        "addToQueue": "",
-        "clearQueue": "",
-        "playAll": "",
-        "playNext": "",
-        "playbackSource": {
-            "item": "",
-            "shuffle": "",
-            "shuffleItem": "",
-            "unknown": ""
-        },
-        "queueItems": "",
-        "saveAsPlaylist": "",
-        "shuffle": "",
-        "shuffleAll": ""
-    },
-    "played": "",
-    "present": "",
-    "producer": "",
-    "queue": "",
-    "rating": "",
-    "refreshLibrary": "",
-    "releaseDate": "",
-    "resumable": "",
-    "resume": "",
-    "role": "",
-    "save": "",
-    "saved": "",
-    "search": "",
-    "series": "",
-    "server": "",
-    "serverVersion": "",
-    "serverVersionTooLow": "",
-    "settings": {
-        "apiKeys": {
-            "accessToken": "",
-            "addApiKey": "",
-            "addNewKey": "",
-            "apiKeys": "",
-            "appName": "",
-            "createKeyFailure": "",
-            "createKeySuccess": "",
-            "dateCreated": "",
-            "description": "",
-            "refreshKeysFailure": "",
-            "revokeAll": "",
-            "revokeAllFailure": "",
-            "revokeAllSuccess": "",
-            "revokeFailure": "",
-            "revokeSuccess": ""
-        },
-        "devices": {
-            "appName": "",
-            "appVersion": "",
-            "delete": "",
-            "deleteAll": "",
-            "deleteAllDevicesError": "",
-            "deleteAllDevicesSuccess": "",
-            "deleteDeviceError": "",
-            "deleteDeviceSuccess": "",
-            "deviceName": "",
-            "devices": "",
-            "lastActive": "",
-            "noDevicesFound": "",
-            "userName": ""
-        },
-        "help": "",
-        "logsAndActivity": {
-            "activity": "",
-            "failedGetActivity": "",
-            "failedGetLogs": "",
-            "logs": "",
-            "noActivityFound": "",
-            "noLogsFound": ""
-        },
-        "settings": ""
-    },
-    "settingsSections": {
-        "account": {
-            "description": "",
-            "name": ""
-        },
-        "devices": {
-            "description": "",
-            "name": ""
-        },
-        "dlna": {
-            "description": "",
-            "name": ""
-        },
-        "home": {
-            "description": "",
-            "name": ""
-        },
-        "libraries": {
-            "description": "",
-            "name": ""
-        },
-        "liveTvAndDvr": {
-            "description": "",
-            "name": ""
-        },
-        "logs": {
-            "description": "",
-            "name": ""
-        },
-        "mediaPlayers": {
-            "description": "",
-            "name": ""
-        },
-        "networking": {
-            "description": "",
-            "name": ""
-        },
-        "notifications": {
-            "description": "",
-            "name": ""
-        },
-        "playback": {
-            "description": "",
-            "name": ""
-        },
-        "plugins": {
-            "description": "",
-            "name": ""
-        },
-        "scheduledTasks": {
-            "description": "",
-            "name": ""
-        },
-        "server": {
-            "description": "",
-            "name": ""
-        },
-        "subtitles": {
-            "description": "",
-            "name": ""
-        },
-        "transcodingAndStreaming": {
-            "description": "",
-            "name": ""
-        },
-        "users": {
-            "description": "",
-            "name": ""
-        }
-    },
-    "shows": "",
-    "signIn": "",
-    "sortByType": "",
-    "sortTitle": "",
-    "specialFeatures": "",
-    "status": "",
-    "studios": "",
-    "subtitles": "",
-    "syncingInProgress": "",
-    "tagline": "",
-    "tags": "",
-    "themeSong": "",
-    "themeVideo": "",
-    "tooltips": {
-        "changeLanguage": "",
-        "switchToDarkMode": "",
-        "switchToLightMode": ""
-    },
-    "trailer": "",
-    "tvShowAbbrev": "",
-    "type": "",
-    "unableGetPublicUsers": "",
-    "unableGetRelated": "",
-    "unableGetServerConfiguration": "",
-    "unableToRefreshLibrary": "",
-    "unableToToggleLike": "",
-    "unableToTogglePlayed": "",
-    "undefined": "",
-    "unexpectedError": "",
-    "unhandledException": "",
-    "unliked": "",
-    "unplayed": "",
-    "upNext": "",
-    "upNextName": "",
-    "username": "",
-    "validation": {
-        "bothPasswordsSame": "",
-        "mustBeUrl": "",
-        "required": ""
-    },
-    "version": "",
-    "video": "",
-    "videoTypes": "",
-    "viewDetails": "",
-    "vueClientVersion": "",
-    "wizard": {
-        "administratorAccount": "",
-        "allowRemoteAccess": "",
-        "completeError": "",
-        "confirmPassword": "",
-        "languageLocale": "",
-        "languageSuccessfullySet": "",
-        "metadataLanguagesSet": "",
-        "preferedLanguage": "",
-        "preferredMetadataLanguage": "",
-        "remoteAccess": "",
-        "remoteAccessSet": "",
-        "setAdminError": "",
-        "setLanguageError": "",
-        "setMetadataError": "",
-        "setRemoteError": "",
-        "setupWizard": "",
-        "userSuccessfullySet": ""
-    },
-    "writer": "",
-    "writing": "",
-    "year": "",
-    "years": "",
-    "youMayAlsoLike": "",
-    "metadata": {
-        "source": "",
-        "sourceAll": "",
-        "type": ""
+  "NoMediaSourcesAvailable": "",
+  "actors": "",
+  "albums": "",
+  "alphabetically": "",
+  "artist": "",
+  "audio": "",
+  "biography": "",
+  "buttons": {
+    "ok": ""
+  },
+  "cancel": "",
+  "collections": "",
+  "confirm": "",
+  "continueListening": "",
+  "criticRating": "",
+  "darkModeToggle": "",
+  "details": "",
+  "director": "",
+  "dislikes": "",
+  "editMetadata": "",
+  "endDate": "",
+  "episodeNumber": "",
+  "errors": {
+    "messages": {
+      "errorCode": ""
     }
+  },
+  "failedRetrievingDisplayPreferences": "",
+  "failedToRefreshItems": "",
+  "features": "",
+  "filtersNotFound": "",
+  "general": "",
+  "guestStar": "",
+  "headerPaths": "",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": ""
+    },
+    "welcome": {
+      "helloUser": ""
+    }
+  },
+  "imageType": {
+    "art": "",
+    "banner": "",
+    "boxRear": "",
+    "logo": "",
+    "primary": "",
+    "thumb": ""
+  },
+  "incorrectUsernameOrPassword": "",
+  "item": {
+    "artist": {
+      "information": ""
+    },
+    "composer": "",
+    "person": {
+      "birth": "",
+      "death": ""
+    },
+    "tracklist": {
+      "title": ""
+    }
+  },
+  "jellyfinLogo": "",
+  "libraries": "",
+  "libraryEmptyFilters": "",
+  "libraryRefreshQueued": "",
+  "likes": "",
+  "links": {
+    "poweredByJellyfin": "",
+    "reportAnIssue": ""
+  },
+  "login": {
+    "changeServer": "",
+    "connect": "",
+    "loginAs": "",
+    "rememberMe": "",
+    "selectUser": "",
+    "serverAddressMustBeUrl": "",
+    "serverDashboard": "",
+    "serverVersionTooLow": ""
+  },
+  "logsAndActivity": {
+    "activity": "",
+    "failedGetLogs": "",
+    "noActivityFound": ""
+  },
+  "manualLogin": "",
+  "metadata": {
+    "sourceAll": ""
+  },
+  "metadataEditor": "",
+  "more": "",
+  "moreLikeThis": "",
+  "name": "",
+  "nextUp": "",
+  "noAudioTracksAvailable": "",
+  "noNetworkConnection": "",
+  "noSubtitleSelected": "",
+  "noTracksAvailable": "",
+  "noVideoTracksAvailable": "",
+  "operatingSystem": "",
+  "originalTitle": "",
+  "parentalRating": "",
+  "password": "",
+  "person": "",
+  "playFromBeginning": "",
+  "playback": {
+    "clearQueue": "",
+    "playNext": "",
+    "playbackSource": {
+      "shuffle": "",
+      "unknown": ""
+    },
+    "saveAsPlaylist": "",
+    "shuffleAll": ""
+  },
+  "present": "",
+  "queue": "",
+  "refreshLibrary": "",
+  "resumable": "",
+  "role": "",
+  "saved": "",
+  "series": "",
+  "serverVersion": "",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "",
+      "addNewKey": "",
+      "appName": "",
+      "createKeySuccess": "",
+      "description": "",
+      "revokeAll": "",
+      "revokeAllSuccess": "",
+      "revokeSuccess": ""
+    },
+    "devices": {
+      "appVersion": "",
+      "deleteAll": "",
+      "deleteAllDevicesSuccess": "",
+      "deleteDeviceSuccess": "",
+      "devices": "",
+      "noDevicesFound": ""
+    },
+    "help": "",
+    "logsAndActivity": {
+      "failedGetActivity": "",
+      "logs": "",
+      "noLogsFound": ""
+    }
+  },
+  "settingsSections": {
+    "account": {
+      "description": ""
+    },
+    "devices": {
+      "description": ""
+    },
+    "dlna": {
+      "description": ""
+    },
+    "home": {
+      "description": ""
+    },
+    "libraries": {
+      "description": ""
+    },
+    "liveTvAndDvr": {
+      "description": ""
+    },
+    "logs": {
+      "description": ""
+    },
+    "mediaPlayers": {
+      "description": ""
+    },
+    "networking": {
+      "description": ""
+    },
+    "notifications": {
+      "description": ""
+    },
+    "playback": {
+      "description": ""
+    },
+    "plugins": {
+      "description": ""
+    },
+    "scheduledTasks": {
+      "description": ""
+    },
+    "server": {
+      "description": ""
+    },
+    "subtitles": {
+      "description": ""
+    },
+    "transcodingAndStreaming": {
+      "description": ""
+    },
+    "users": {
+      "description": ""
+    }
+  },
+  "shows": "",
+  "sortByType": "",
+  "specialFeatures": "",
+  "studios": "",
+  "syncingInProgress": "",
+  "tags": "",
+  "themeVideo": "",
+  "tooltips": {
+    "switchToDarkMode": ""
+  },
+  "trailer": "",
+  "type": "",
+  "unableGetRelated": "",
+  "unableToRefreshLibrary": "",
+  "unableToTogglePlayed": "",
+  "unexpectedError": "",
+  "unliked": "",
+  "upNext": "",
+  "username": "",
+  "validation": {
+    "mustBeUrl": ""
+  },
+  "version": "",
+  "videoTypes": "",
+  "vueClientVersion": "",
+  "wizard": {
+    "allowRemoteAccess": "",
+    "confirmPassword": "",
+    "languageSuccessfullySet": "",
+    "preferedLanguage": "",
+    "remoteAccess": "",
+    "setAdminError": "",
+    "setMetadataError": "",
+    "setupWizard": ""
+  },
+  "writer": "",
+  "year": "",
+  "youMayAlsoLike": ""
 }

@@ -262,9 +262,6 @@
       "description": "Gerencie sintonizadores de TV, provedores de guias e configurações de DVR",
       "name": "TV ao vivo e DVR"
     },
-    "logs": {
-      "description": ""
-    },
     "mediaPlayers": {
       "description": "Configure o comportamento dos reprodutores de mídia para este dispositivo",
       "name": "Reprodutores de mídia"
