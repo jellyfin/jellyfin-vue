@@ -25,7 +25,7 @@
             :to="getItemDetailsLink(relatedItem)"
           >
             <v-list-item-avatar>
-              <v-img ref="avatarImg" :src="getImageUrl(relatedItem.Id)" />
+              <blurhash-image :item="relatedItem" :type="'Primary'" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
@@ -52,7 +52,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -120,11 +120,6 @@ export default Vue.extend({
       }
 
       this.loading = false;
-    },
-    getImageUrl(itemId: string): string | undefined {
-      const element = this.$refs.avatarImg as HTMLElement;
-
-      return this.getImageUrlForElement(ImageType.Primary, { itemId, element });
     }
   }
 });
