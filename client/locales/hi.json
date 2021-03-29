@@ -1,25 +1,12 @@
 {
-  "director": "",
   "imageType": {
     "banner": ""
   },
-  "links": {
-    "poweredByJellyfin": ""
-  },
   "more": "",
-  "playback": {
-    "playNext": ""
-  },
   "settings": {
     "apiKeys": {
       "createKeySuccess": ""
     }
   },
-  "settingsSections": {
-    "devices": {
-      "description": ""
-    }
-  },
-  "shows": "",
-  "username": ""
+  "shows": ""
 }
