@@ -158,7 +158,7 @@
   "metadataEditor": "Metagegevens bewerker",
   "metadataNoResultsMatching": "Geen resultaten komen overeen met \"{search}\". Druk op enter om een nieuwe aan te maken.",
   "more": "Meer",
-  "moreLikeArtist": "Meer zoals {artiest}",
+  "moreLikeArtist": "Meer zoals {artist}",
   "moreLikeThis": "Meer zoals dit",
   "movies": "Films",
   "name": "Naam",
@@ -194,7 +194,7 @@
     "playbackSource": {
       "item": "Afspelen vanaf {item}",
       "shuffle": "Afspelen in willekeurige volgorde",
-      "shuffleItem": "{Item} in willekeurige volgorde afspelen",
+      "shuffleItem": "{item} in willekeurige volgorde afspelen",
       "unknown": "Afspelen vanuit de wachtrij"
     },
     "queueItems": "{items} nummers",
