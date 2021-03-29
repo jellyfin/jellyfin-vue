@@ -1,77 +1,49 @@
 {
-  "alphabetically": "",
   "buttons": {
     "ok": ""
   },
-  "continueListening": "",
   "director": "",
-  "episodeNumber": "",
   "features": "",
-  "headerPaths": "",
   "imageType": {
-    "banner": "",
-    "thumb": ""
+    "banner": ""
   },
   "item": {
     "person": {
       "birth": ""
     }
   },
-  "libraries": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "loginAs": "",
     "serverDashboard": ""
   },
-  "logsAndActivity": {
-    "noActivityFound": ""
-  },
   "more": "",
-  "noAudioTracksAvailable": "",
   "noVideoTracksAvailable": "",
-  "password": "",
   "playback": {
-    "playNext": "",
-    "shuffleAll": ""
+    "playNext": ""
   },
   "resumable": "",
-  "serverVersion": "",
   "settings": {
     "apiKeys": {
-      "createKeySuccess": "",
-      "revokeSuccess": ""
+      "createKeySuccess": ""
     },
     "devices": {
       "deleteDeviceSuccess": ""
-    },
-    "logsAndActivity": {
-      "failedGetActivity": ""
     }
   },
   "settingsSections": {
     "devices": {
       "description": ""
     },
-    "liveTvAndDvr": {
-      "description": ""
-    },
     "notifications": {
-      "description": ""
-    },
-    "server": {
       "description": ""
     }
   },
   "shows": "",
-  "syncingInProgress": "",
   "trailer": "",
-  "unableToTogglePlayed": "",
   "username": "",
-  "vueClientVersion": "",
   "wizard": {
-    "preferedLanguage": "",
-    "setupWizard": ""
+    "preferedLanguage": ""
   }
 }

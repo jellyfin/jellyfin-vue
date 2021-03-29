@@ -61,7 +61,6 @@
     }
   },
   "itemNotFound": "找不到項目",
-  "liked": "",
   "links": {
     "helpTranslate": "幫助我們把 Jellyfin 翻譯成您的語言"
   },
@@ -143,7 +142,6 @@
       "dateCreated": "建立日期"
     },
     "devices": {
-      "appName": "",
       "delete": "移除",
       "deleteAll": "全部移除",
       "deleteAllDevicesError": "移除所有設備時發生錯誤",
@@ -177,9 +175,6 @@
     "home": {
       "name": "主畫面"
     },
-    "mediaPlayers": {
-      "name": ""
-    },
     "networking": {
       "name": "網路"
     },
@@ -211,13 +206,10 @@
   },
   "trailer": "預告片",
   "tvShowAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章",
-  "undefined": "",
   "validation": {
     "bothPasswordsSame": ""
   },
   "wizard": {
-    "administratorAccount": "",
-    "preferredMetadataLanguage": "",
-    "userSuccessfullySet": ""
+    "preferredMetadataLanguage": ""
   }
 }
