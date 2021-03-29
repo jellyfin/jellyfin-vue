@@ -1,49 +1,25 @@
 {
-  "buttons": {
-    "ok": ""
-  },
   "director": "",
-  "features": "",
   "imageType": {
     "banner": ""
-  },
-  "item": {
-    "person": {
-      "birth": ""
-    }
   },
   "links": {
     "poweredByJellyfin": ""
   },
-  "login": {
-    "serverDashboard": ""
-  },
   "more": "",
-  "noVideoTracksAvailable": "",
   "playback": {
     "playNext": ""
   },
-  "resumable": "",
   "settings": {
     "apiKeys": {
       "createKeySuccess": ""
-    },
-    "devices": {
-      "deleteDeviceSuccess": ""
     }
   },
   "settingsSections": {
     "devices": {
       "description": ""
-    },
-    "notifications": {
-      "description": ""
     }
   },
   "shows": "",
-  "trailer": "",
-  "username": "",
-  "wizard": {
-    "preferedLanguage": ""
-  }
+  "username": ""
 }
