@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "ОК"
   },
-  "byArtist": "-",
+  "byArtist": "От {artist}",
   "cancel": "Отменить",
   "castAndCrew": "Снимались и снимали",
   "collections": "Коллекции",
