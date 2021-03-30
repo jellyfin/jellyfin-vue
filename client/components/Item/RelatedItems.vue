@@ -25,7 +25,7 @@
             :to="getItemDetailsLink(relatedItem)"
           >
             <v-list-item-avatar>
-              <blurhash-image :item="relatedItem" :type="'Primary'" />
+              <blurhash-image :item="relatedItem" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
