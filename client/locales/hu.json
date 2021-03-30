@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Oké"
   },
-  "byArtist": "Tőle",
+  "byArtist": "{artist} -tól",
   "cancel": "Mégse",
   "castAndCrew": "Színészek & személyzet",
   "collections": "Gyűjtemények",
