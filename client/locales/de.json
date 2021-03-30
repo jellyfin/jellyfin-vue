@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "von",
+  "byArtist": "von {artist}",
   "cancel": "Abbrechen",
   "castAndCrew": "Schauspieler & Crew",
   "collections": "Kollektionen",
