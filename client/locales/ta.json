@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "சரி"
   },
-  "byArtist": "வழங்கியவர்",
+  "byArtist": "வழங்கியவர் {artist}",
   "cancel": "ரத்துசெய்",
   "castAndCrew": "நடிகர்கள் & குழு",
   "collections": "தொகுப்புகள்",
