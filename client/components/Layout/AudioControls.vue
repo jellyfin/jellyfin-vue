@@ -11,7 +11,7 @@
       <v-container v-if="isFullScreenPlayer" fluid>
         <time-slider />
       </v-container>
-      <v-container class="pb-s" fluid>
+      <v-container fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
             <nuxt-link :to="'/fullscreen/playback'">
@@ -25,37 +25,29 @@
                 <blurhash-image :item="getCurrentItem" />
               </v-avatar>
             </nuxt-link>
-            <v-col class="d-flex flex-column justify-center ml-4 py-0 mt-1">
-              <v-row class="pa-0">
+            <v-col class="d-flex flex-column justify-center ml-4">
+              <v-row class="align-end">
                 <nuxt-link
                   tag="span"
-                  class="text-truncate link mt-2 height-fit-content"
+                  class="text-truncate link height-fit-content"
                   :to="getItemDetailsLink(getCurrentItem)"
                 >
                   {{ getCurrentItem.Name }}
                 </nuxt-link>
               </v-row>
-              <v-row v-if="getCurrentItem.ArtistItems" class="pa-0">
+              <v-row v-if="getCurrentItem.ArtistItems" class="align-start">
                 <span
-                  v-for="(artist, index) in getCurrentItem.ArtistItems"
+                  v-for="artist in getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="getItemDetailsLink(artist, 'MusicArtist')"
-                  class="ma-0"
                 >
-                  <p class="mb-0">
+                  <p class="mb-0 mr-2">
                     <nuxt-link
                       tag="span"
                       class="text--secondary text-caption text-truncate link"
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
                       >{{ artist.Name }}</nuxt-link
                     >
-                    <!-- Handles whitespaces -->
-                    <!-- eslint-disable vue/no-v-html -->
-                    <span
-                      v-if="index !== getCurrentItem.ArtistItems.length - 1"
-                      v-html="'&nbsp;'"
-                    />
-                    <!-- eslint-enable vue/no-v-html -->
                   </p>
                 </span>
               </v-row>
@@ -68,7 +60,6 @@
                   icon
                   fab
                   small
-                  :elevation="isShuffling ? '3' : '0'"
                   class="mx-1 active-button"
                   :color="isShuffling ? 'primary' : undefined"
                   @click="toggleShuffle"
@@ -110,7 +101,6 @@
                   icon
                   fab
                   small
-                  :elevation="isRepeating ? '3' : '0'"
                   class="mx-1 active-button"
                   :color="isRepeating ? 'primary' : undefined"
                   @click="toggleRepeatMode"
@@ -127,11 +117,12 @@
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
+            <item-menu :item="getCurrentItem" />
             <v-fade-transition>
               <v-tooltip v-if="!isFullScreenPlayer" top>
                 <template #activator="{ on, attrs }">
                   <nuxt-link tag="span" :to="'/fullscreen/playback'">
-                    <v-btn icon class="ml-2" v-bind="attrs" v-on="on">
+                    <v-btn icon v-bind="attrs" v-on="on">
                       <v-icon>mdi-fullscreen</v-icon>
                     </v-btn>
                   </nuxt-link>
@@ -139,7 +130,6 @@
                 <span>{{ $t('fullScreen') }}</span>
               </v-tooltip>
             </v-fade-transition>
-            <item-menu :item="getCurrentItem" />
           </v-col>
           <v-col
             cols="3"

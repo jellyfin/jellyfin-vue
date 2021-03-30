@@ -10,7 +10,6 @@
       <template #activator="{ on, attrs }">
         <v-btn
           icon
-          small
           :outlined="outlined"
           :dark="dark"
           v-bind="attrs"
