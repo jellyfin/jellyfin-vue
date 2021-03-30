@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Đồng ý"
   },
-  "byArtist": "Bởi",
+  "byArtist": "Bởi {artist}",
   "cancel": "Hủy",
   "castAndCrew": "Diễn viên & Đoàn làm phim",
   "collections": "Bộ sưu tập",
