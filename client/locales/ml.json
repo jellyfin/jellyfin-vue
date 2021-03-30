@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "ശരി"
   },
-  "byArtist": "എഴുതിയത്",
+  "byArtist": "എഴുതിയത് {artist}",
   "cancel": "റദ്ദാക്കുക",
   "castAndCrew": "കാസ്റ്റ് & ക്രൂ",
   "collections": "ശേഖരങ്ങൾ",
