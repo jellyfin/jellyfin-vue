@@ -1,13 +1,12 @@
 <template>
-  <v-list-item-group>
-    <draggable v-model="queue" v-bind="dragOptions" class="list-group">
+  <v-list-item-group class="list-group">
+    <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
       <v-hover
         v-for="(item, index) in queue"
         :key="`${item.Id}-${getUuid()}`"
         v-slot="{ hover }"
-        class="pa-0 ma-0"
       >
-        <v-list-item ripple class="pa-0 ma-0" @click="onClick(index)">
+        <v-list-item ripple @click="onClick(index)">
           <v-list-item-action
             v-if="!hover"
             class="list-group-item d-flex justify-center d-flex text-caption"
@@ -108,19 +107,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.flip-list-move {
-  transition: transform 0.5s;
-}
-
-.no-move {
-  transition: transform 0s;
+.list-group {
+  margin: 0 !important;
 }
 
 .ghost {
   opacity: 0;
 }
 
-.list-group {
+.list-draggable {
   user-select: none;
   min-height: 20px;
 }
