@@ -55,7 +55,7 @@
           />
         </div>
         <div
-          v-if="overlay"
+          v-if="overlay && isFinePointer()"
           class="card-overlay d-flex justify-center align-center"
         >
           <play-button fab :items="[item]" />
@@ -230,7 +230,10 @@ export default Vue.extend({
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('playbackManager', ['play'])
+    ...mapActions('playbackManager', ['play']),
+    isFinePointer(): boolean {
+      return window.matchMedia('(pointer:fine)').matches;
+    }
   }
 });
 </script>
