@@ -153,6 +153,7 @@ export default Vue.extend({
 .progress-bar:hover .expand.progress {
   height: 10px !important;
   transition: height 0.25s;
+  border-radius: 2px;
 }
 
 .progress {
