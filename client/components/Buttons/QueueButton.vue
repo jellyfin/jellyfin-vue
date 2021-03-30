@@ -50,7 +50,6 @@
         </v-list-item>
       </v-list>
       <v-divider />
-      <v-divider />
       <v-list class="overflow">
         <!-- We set an special property to destroy the element so it doesn't take resources while it's not being used.
         Specially useful for really huge queues -->
