@@ -17,9 +17,9 @@
   "buttons": {
     "ok": "Aceptar"
   },
-  "byArtist": "Por",
+  "byArtist": "Por {artist}",
   "cancel": "Cancelar",
-  "castAndCrew": "Reparto",
+  "castAndCrew": "Reparto y Equipo",
   "collections": "Colecciones",
   "communityRating": "Calificación de la comunidad",
   "confirm": "Confirmar",
@@ -72,13 +72,45 @@
       "noItems": "No hay elementos agregados recientemente para mostrar."
     }
   },
+  "imageType": {
+    "art": "Arte",
+    "backdrop": "Fondo",
+    "banner": "Bandera",
+    "box": "Caja",
+    "boxRear": "Caja (trasera)",
+    "disc": "Disco",
+    "logo": "Logo",
+    "menu": "Menú",
+    "primary": "Primario",
+    "screenshot": "Captura de Pantalla",
+    "thumb": "Miniatura"
+  },
   "images": "Imagenes",
   "incorrectUsernameOrPassword": "Usuario o contraseña incorrecta",
+  "item": {
+    "artist": {
+      "discography": "Discografía",
+      "information": "Información"
+    },
+    "cast": "Reparto",
+    "composer": "Compositor",
+    "crew": "Equipo",
+    "person": {
+      "birth": "Nacimiento",
+      "birthPlace": "Lugar de Nacimiento",
+      "death": "Muerte",
+      "person": "Persona"
+    },
+    "tracklist": {
+      "title": "Titulo"
+    }
+  },
   "itemNotFound": "Item no encontrado",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Lo último en {libraryName}",
   "libraries": "Bibliotecas",
   "libraryEmpty": "La biblioteca está vacía",
+  "libraryEmptyFilters": "No hay coincidencias. Elimine algunos filtros para mostrar mas items",
   "libraryNotFound": "Librería no encontrada",
   "libraryRefreshQueued": "Actualizacion de biblioteca en cola",
   "liked": "Te Gusta",
@@ -89,16 +121,40 @@
     "readTheDocumentation": "Leer la documentacion",
     "reportAnIssue": "Reportar un problema con el cliente Vue"
   },
+  "login": {
+    "addServer": "Agregar Servidor",
+    "changeServer": "Cambiar Servidor",
+    "changeUser": "Cambiar Usuario",
+    "connect": "Conectar",
+    "login": "Ingreso",
+    "loginAs": "Ingresar como {name}",
+    "manualLogin": "Ingreso Manual",
+    "rememberMe": "Recordarme",
+    "selectServer": "Elegir Servidor",
+    "selectUser": "Elija Usuario",
+    "serverAddress": "Dirección del Servidor",
+    "serverAddressMustBeUrl": "La dirección del Servidor debe ser una URL Valida",
+    "serverAddressRequired": "La dirección del Servidor es necesaria",
+    "serverDashboard": "Tablero del Servidor",
+    "serverNotFound": "Servidor no Encontrado",
+    "serverVersionTooLow": "Se necesita la versión del servidor 10.7.0 o superior"
+  },
   "logout": "Salir",
   "logsAndActivity": {
     "activity": "Actividad",
     "failedGetActivity": "No se puede obtener la actividad",
     "failedGetLogs": "No se puede obtener el registro",
     "logs": "Registros",
-    "noActivityFound": "No se encontraron actividades"
+    "noActivityFound": "No se encontraron actividades",
+    "noLogsFound": "No se encuentran registros"
   },
   "manualLogin": "Iniciar sesión manualmente",
   "menu": "Menu",
+  "metadata": {
+    "source": "Origen",
+    "sourceAll": "Todo",
+    "type": "Tipo"
+  },
   "metadataEditor": "Editor de metadata",
   "metadataNoResultsMatching": "No hay resultados que coincidan con \"{search}\". Pulsa enter para crear uno nuevo.",
   "more": "Más",
@@ -129,6 +185,23 @@
   "people": "Personas",
   "person": "Persona",
   "play": "Reproducir",
+  "playFromBeginning": "Reproducir desde el inicio",
+  "playback": {
+    "addToQueue": "Agregar a cola",
+    "clearQueue": "Limpiar la cola y detener la reproducción",
+    "playAll": "Reproducir Todo",
+    "playNext": "Reproducir siguiente",
+    "playbackSource": {
+      "item": "Reproducir desde {item}",
+      "shuffle": "Reproducir mezclado",
+      "shuffleItem": "Reproducir {item} mezclado",
+      "unknown": "Reproducir desde la cola"
+    },
+    "queueItems": "{items} pistas",
+    "saveAsPlaylist": "Guardar la cola como Lista de Reproducción",
+    "shuffle": "Mezclar",
+    "shuffleAll": "Mezclar todo"
+  },
   "played": "Reproducido",
   "present": "Presente",
   "producer": "Productor",
@@ -137,6 +210,7 @@
   "refreshLibrary": "Actualizar biblioteca",
   "releaseDate": "Fecha de estreno",
   "resumable": "Reanudable",
+  "resume": "Reanudar",
   "role": "Rol",
   "save": "Guardar",
   "saved": "Guardado",
@@ -162,6 +236,30 @@
       "revokeAllSuccess": "Se ha revocado con exito todas las claves de API",
       "revokeFailure": "Error revocando la clave API",
       "revokeSuccess": "Clave de API revocada con éxito"
+    },
+    "devices": {
+      "appName": "Nombre de la Aplicación",
+      "appVersion": "Versión de la Aplicación",
+      "delete": "Eliminar",
+      "deleteAll": "Eliminar Todo",
+      "deleteAllDevicesError": "Error eliminando todos los dispositivos",
+      "deleteAllDevicesSuccess": "Todos los dispositivos eliminados correctamente",
+      "deleteDeviceError": "Error eliminando dispositivo",
+      "deleteDeviceSuccess": "Dispositivo eliminado correctamente",
+      "deviceName": "Nombre del Dispositivo",
+      "devices": "Dispositivos",
+      "lastActive": "Ultimo activo",
+      "noDevicesFound": "No se encuentran dispositivos",
+      "userName": "Nombre de Usuario"
+    },
+    "help": "Ayuda",
+    "logsAndActivity": {
+      "activity": "Actividad",
+      "failedGetActivity": "Incapaz de obtener actividad",
+      "failedGetLogs": "Incapaz de obtener registros",
+      "logs": "Registros",
+      "noActivityFound": "No hay actividad",
+      "noLogsFound": "No hay registros"
     },
     "settings": "Configuración"
   },
@@ -243,6 +341,7 @@
   "status": "Estado",
   "studios": "Estudios",
   "subtitles": "Subtítulos",
+  "syncingInProgress": "Sincronización en progreso",
   "tagline": "Frase",
   "tags": "Etiquetas",
   "themeSong": "Tema musical",
@@ -259,6 +358,8 @@
   "unableGetRelated": "No se han podido obtener elementos relacionados",
   "unableGetServerConfiguration": "No se ha podido obtener la configuración del servidor",
   "unableToRefreshLibrary": "No se puede actualizar la biblioteca",
+  "unableToToggleLike": "Incapaz de cambiar el estado de me gusta del elemento",
+  "unableToTogglePlayed": "Incapaz de actualizar el estado de visualizado",
   "undefined": "Indefinido",
   "unexpectedError": "Error inesperado",
   "unhandledException": "Excepcion no controlada",
