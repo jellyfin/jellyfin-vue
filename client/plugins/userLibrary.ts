@@ -1,15 +1,10 @@
-import {
-  ItemsApiGetItemsRequest,
-  UserLibraryApiGetLatestMediaRequest
-} from '@jellyfin/client-axios';
+import { UserLibraryApiGetLatestMediaRequest } from '@jellyfin/client-axios';
 import { Plugin } from '@nuxt/types/app';
 
-type GetItemsParams = Omit<ItemsApiGetItemsRequest, 'userId'>;
 type GetLatestMediaParams = Omit<UserLibraryApiGetLatestMediaRequest, 'userId'>;
 
 type UserLibraryType = {
-  getItem: (id: string) => Promise<void>;
-  getItems: (params: GetItemsParams) => Promise<string[]>;
+  getItem: (id: string, force?: boolean) => Promise<void>;
   getLatestMedia: (params: GetLatestMediaParams) => Promise<string[]>;
 };
 
@@ -62,27 +57,6 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
     },
 
     /**
-     * Executes a getItems API call with given parameters, stores the result and returns the ID list
-     *
-     * @param {object} params - Parameters of getItems API call (without user ID)
-     * @returns {string[]} list of IDs
-     */
-    getItems: async (params: GetItemsParams): Promise<string[]> => {
-      const result = (
-        await $api.items.getItems({ ...params, userId: $auth.user?.Id })
-      ).data.Items;
-
-      if (!result) {
-        return [];
-      }
-
-      await store.dispatch('items/addItems', { items: result });
-
-      // @ts-expect-error - The parser fails to infer types properly here.
-      return result.filter((item) => item?.Id).map((item) => item.Id);
-    },
-
-    /**
      * Executes a getLatestMedia API call with given parameters, stores the result and returns the ID list
      *
      * @param {object} params - Parameters of getLatestMedia API call (without user ID)
@@ -102,8 +76,14 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
 
       await store.dispatch('items/addItems', { items: result });
 
-      // @ts-expect-error - The parser fails to infer types properly here.
-      return result.filter((item) => item?.Id).map((item) => item.Id);
+      return result.reduce((acc, value) => {
+        if (value?.Id) {
+          // @ts-expect-error - The parser fails to infer types properly here.
+          acc.push(value.Id);
+        }
+
+        return acc;
+      }, []);
     }
   });
 };
