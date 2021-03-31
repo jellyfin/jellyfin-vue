@@ -4,7 +4,7 @@ import { Plugin } from '@nuxt/types/app';
 type GetLatestMediaParams = Omit<UserLibraryApiGetLatestMediaRequest, 'userId'>;
 
 type UserLibraryType = {
-  getItem: (id: string, force?: boolean) => Promise<void>;
+  getItem: (id: string) => Promise<void>;
   getLatestMedia: (params: GetLatestMediaParams) => Promise<string[]>;
 };
 
@@ -39,21 +39,15 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      * @param {string} id - Item ID
      */
     getItem: async (id: string): Promise<void> => {
-      const call = async (): Promise<void> => {
-        const item = (
-          await $api.userLibrary.getItem({
-            userId: $auth.user?.Id,
-            itemId: id
-          })
-        ).data;
+      // if (!store.getters['items/getItem'](id) || force) {
+      const item = (
+        await $api.userLibrary.getItem({
+          userId: $auth.user?.Id,
+          itemId: id
+        })
+      ).data;
 
-        await store.dispatch('items/addItem', { item });
-      };
-      const promise = call();
-
-      if (!store.getters['items/getItem'](id)) {
-        await promise;
-      }
+      await store.dispatch('items/addItem', { item });
     },
 
     /**

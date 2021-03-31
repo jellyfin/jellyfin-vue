@@ -85,10 +85,12 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $userLibrary, $items }) {
+  async asyncData({ params, $userLibrary, $items, store }) {
     const itemId = params.itemId;
 
-    await $userLibrary.getItem(itemId);
+    if (!store.getters['items/getItem'](itemId)) {
+      await $userLibrary.getItem(itemId);
+    }
 
     const appearanceIds = await $items.getItems({
       personIds: [itemId],
