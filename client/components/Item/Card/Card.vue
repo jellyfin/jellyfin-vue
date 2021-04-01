@@ -232,7 +232,11 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     isFinePointer(): boolean {
-      return window.matchMedia('(pointer:fine)').matches;
+      if (process.client) {
+        return window.matchMedia('(pointer:fine)').matches;
+      } else {
+        return false;
+      }
     }
   }
 });

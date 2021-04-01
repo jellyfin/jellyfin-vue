@@ -1,6 +1,4 @@
-import Vue, { VueConstructor } from 'vue';
-import { createLocalVue } from '@vue/test-utils';
-import Vuex, { Store } from 'vuex';
+import Vuex, { ActionContext, Store } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import {
   state,
@@ -8,7 +6,10 @@ import {
   actions,
   DeviceState,
   defaultState
-} from '../deviceProfile';
+} from '~/store/deviceProfile';
+import { RootState } from '~/store';
+import { ModuleAction } from '~/jest-helpers.d';
+import $browser from '~/mocks/browserPlugin';
 
 const SET_DEVICE_PROFILE = {
   deviceId: 'test deviceId',
@@ -17,14 +18,17 @@ const SET_DEVICE_PROFILE = {
   clientName: 'test ClientName'
 };
 
-let localVue: VueConstructor<Vue>;
 let store: Store<DeviceState>;
+let mockCommit: jest.Mock;
 
 beforeEach(() => {
-  localVue = createLocalVue();
-  localVue.use(Vuex);
-
   store = new Vuex.Store(cloneDeep({ state, mutations, actions }));
+
+  mockCommit = jest.fn();
+});
+
+afterEach((): void => {
+  mockCommit.mockReset();
 });
 
 describe('vuex: deviceProfile', () => {
@@ -45,32 +49,36 @@ describe('vuex: deviceProfile', () => {
   });
 
   it('sets the device profile when setDeviceProfile is dispatched', () => {
-    // TODO: This should only test if the proper mutation is committed
-    // Device profile may already be defined, this sets it to the default state
-    store.replaceState({ ...defaultState() });
+    let setDeviceProfile = (actions.setDeviceProfile as unknown) as ModuleAction<DeviceState>;
 
-    store.dispatch('setDeviceProfile');
+    setDeviceProfile = setDeviceProfile.bind({ $browser });
 
-    expect(typeof store.state.deviceId).toBe('string');
-    expect(store.state.deviceId.length).toBeGreaterThan(1);
+    setDeviceProfile(
+      ({ commit: mockCommit } as unknown) as ActionContext<
+        DeviceState,
+        RootState
+      >,
+      {}
+    );
 
-    expect(typeof store.state.deviceName).toBe('string');
-    expect(store.state.deviceName.length).toBeGreaterThan(1);
-
-    expect(typeof store.state.clientName).toBe('string');
-    expect(store.state.clientName.length).toBeGreaterThan(1);
-
-    expect(typeof store.state.clientVersion).toBe('string');
-    expect(store.state.clientVersion.length).toBeGreaterThan(1);
+    expect(mockCommit).toHaveBeenCalled();
+    expect(mockCommit.mock.calls[0][0]).toEqual('SET_PROFILE');
   });
 
   it('clears the device profile when clearDeviceProfile is dispatched', () => {
-    // TODO: This should only test if the proper mutation is committed
-    // Set test values to be cleared
-    store.replaceState({ ...SET_DEVICE_PROFILE });
+    let clearDeviceProfile = (actions.clearDeviceProfile as unknown) as ModuleAction<DeviceState>;
 
-    store.dispatch('clearDeviceProfile');
+    clearDeviceProfile = clearDeviceProfile.bind({ $browser });
 
-    expect(store.state).toMatchObject(defaultState());
+    clearDeviceProfile(
+      ({ commit: mockCommit } as unknown) as ActionContext<
+        DeviceState,
+        RootState
+      >,
+      {}
+    );
+
+    expect(mockCommit).toHaveBeenCalled();
+    expect(mockCommit.mock.calls[0][0]).toEqual('CLEAR_PROFILE');
   });
 });
