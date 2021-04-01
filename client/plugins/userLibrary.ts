@@ -39,7 +39,6 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      * @param {string} id - Item ID
      */
     getItem: async (id: string): Promise<void> => {
-      // if (!store.getters['items/getItem'](id) || force) {
       const item = (
         await $api.userLibrary.getItem({
           userId: $auth.user?.Id,
