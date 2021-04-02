@@ -19,7 +19,7 @@
             <v-text-field
               v-model="metadata.Name"
               outlined
-              :label="$t('title')"
+              :label="$t('item.tracklist.title')"
             />
             <v-text-field
               v-model="metadata.OriginalTitle"

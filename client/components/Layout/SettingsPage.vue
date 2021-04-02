@@ -2,11 +2,11 @@
   <v-container>
     <v-row v-if="pageTitle">
       <v-col>
-        <v-row class="mx-0 justify-space-between">
-          <h2 class="text-h6 mb-2">
+        <v-row class="mx-0 mt-4 mb-2 justify-space-between">
+          <h2 class="text-h4">
             {{ $t(pageTitle) }}
           </h2>
-          <div class="ml-a">
+          <div>
             <slot name="actions" />
           </div>
         </v-row>
