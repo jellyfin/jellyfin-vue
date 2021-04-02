@@ -230,7 +230,7 @@ const config: NuxtConfig = {
           error: '#FF5252',
           success: '#4CAF50',
           background: '#14141F',
-          track: '#1c2331',
+          card: '#1c2331',
           thumb: '#252e41'
         },
         light: {
@@ -242,7 +242,7 @@ const config: NuxtConfig = {
           error: '#FF5252',
           success: '#4CAF50',
           background: '#f2f2f2',
-          track: '#FFFFFF',
+          card: '#FFFFFF',
           thumb: '#000000'
         }
       },
