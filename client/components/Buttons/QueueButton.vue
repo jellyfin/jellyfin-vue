@@ -52,7 +52,7 @@
       <v-divider />
       <v-list class="overflow">
         <!-- We set an special property to destroy the element so it doesn't take resources while it's not being used.
-        Specially useful for really huge queues -->
+        This is especially useful for really huge queues. -->
         <draggable-queue v-if="menu || !destroy" class="ml-4" />
       </v-list>
       <v-spacer />
@@ -65,9 +65,15 @@
           </template>
           <span>{{ $t('playback.clearQueue') }}</span>
         </v-tooltip>
-        <v-btn disabled color="primary" class="font-weight-medium elevation-2">
-          {{ $t('playback.saveAsPlaylist') }}
-        </v-btn>
+        <v-tooltip top>
+          <template #activator="{ on: tooltip }">
+            <v-btn icon disabled v-on="tooltip" @click="stop">
+              <v-icon>mdi-content-save</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ $t('playback.saveAsPlaylist') }}</span>
+        </v-tooltip>
+        <v-spacer />
       </v-card-actions>
     </v-card>
   </v-menu>
