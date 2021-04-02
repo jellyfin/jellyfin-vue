@@ -2,68 +2,40 @@
   <v-container>
     <v-row class="pt-4">
       <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
-        <v-card
-          v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator"
-          :class="{ 'mb-4': !$vuetify.breakpoint.mobile }"
-        >
-          <v-card-text class="py-0">
-            <v-row>
-              <v-col>
-                <v-row class="my-0">
-                  <v-col cols="5" class="pt-0 pb-0">
-                    <span>{{ $t('server') }}</span>
-                  </v-col>
-                  <v-col class="pt-0 pb-0">
-                    <span>{{ systemInfo.ServerName }}</span>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col cols="5" class="pt-0 pb-0">
-                    <span>{{ $t('serverVersion') }}</span>
-                  </v-col>
-                  <v-col class="pt-0 pb-0">
-                    <span>{{ systemInfo.Version }}</span>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col cols="5" class="pt-0 pb-0">
-                    <span>{{ $t('operatingSystem') }}</span>
-                  </v-col>
-                  <v-col class="pt-0 pb-0">
-                    <span>{{ systemInfo.OperatingSystemDisplayName }}</span>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col cols="5" class="pt-0 pb-0">
-                    <span>{{ $t('architecture') }}</span>
-                  </v-col>
-                  <v-col class="pt-0 pb-0">
-                    <span>{{ systemInfo.SystemArchitecture }}</span>
-                  </v-col>
-                </v-row>
-                <v-row class="my-0">
-                  <v-col cols="5" class="py-0">
-                    <span>{{ $t('vueClientVersion') }}</span>
-                  </v-col>
-                  <v-col class="py-0">
-                    <span>{{ vueVersion }}</span>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col cols="3" class="d-flex justify-end">
-                <v-img
-                  contain
-                  src="/icon.png"
-                  width="100%"
-                  :alt="$t('jellyfinLogo')"
-                />
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <v-img
+          class="logo"
+          contain
+          src="/icon.png"
+          height="100px"
+          :alt="$t('jellyfinLogo')"
+        />
+        <v-simple-table class="mb-4 pb-2 information">
+          <tbody>
+            <tr>
+              <td>{{ $t('server') }}</td>
+              <td>{{ systemInfo.ServerName }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('serverVersion') }}</td>
+              <td>{{ systemInfo.Version }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('operatingSystem') }}</td>
+              <td>{{ systemInfo.OperatingSystemDisplayName }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('architecture') }}</td>
+              <td>{{ systemInfo.SystemArchitecture }}</td>
+            </tr>
+            <tr>
+              <td>{{ $t('vueClientVersion') }}</td>
+              <td>{{ vueVersion }}</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
         <about-links v-if="!$vuetify.breakpoint.mobile" />
       </v-col>
-      <v-col cols="12" md="6" lg="5" class="pt-0 pb-4">
+      <v-col cols="12" md="6" lg="5" class="py-4">
         <!-- User settings -->
         <v-list two-line class="mb-4">
           <v-list-item-group>
@@ -265,3 +237,16 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+.information td {
+  height: 3.4em !important;
+  border-bottom: 0 !important;
+}
+
+.logo {
+  background: var(--v-card-base);
+}
+</style>

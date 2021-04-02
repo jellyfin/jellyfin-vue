@@ -16,7 +16,7 @@ body {
 
   /* W3C standard scrollbars (Firefox-only for now) */
   scrollbar-width: thin;
-  scrollbar-color: var(--v-thumb-lighten5) var(--v-track-base);
+  scrollbar-color: var(--v-thumb-lighten5) var(--v-card-base);
 }
 
 /* Reproduce something similar on Chrome/Edge/Safari */
@@ -25,13 +25,13 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--v-track-base);
+  background: var(--v-card-base);
 }
 
 *::-webkit-scrollbar-thumb {
   background-color: var(--v-thumb-lighten5);
   border-radius: 20px;
-  border: 3px solid var(--v-track-base);
+  border: 3px solid var(--v-card-base);
 }
 
 .nuxt-progress {
@@ -75,6 +75,10 @@ body {
 // It's important for this to be after the rule for .v-navigation-drawer--fixed
 .v-navigation-drawer--temporary {
   z-index: 105 !important;
+}
+
+.v-data-table tr {
+  transition: 0.2s !important;
 }
 
 /* Custom utility classes */

@@ -1,4 +1,9 @@
-// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+// Global and theme variables can be found in the source and docs
+// https://github.com/vuetifyjs/vuetify/tree/master/packages/vuetify/src/styles/settings
+// https://vuetifyjs.com/en/api/vuetify/#sass-variables
+//
+// Each element has unique layout variables within its own SCSS files
+// https://github.com/vuetifyjs/vuetify/tree/master/packages/vuetify/src/components
 //
 // The variables you want to modify
 // $font-size-root: 20px;
@@ -12,6 +17,7 @@ $font-size-root: 14px;
 $input-font-size: 14px;
 $btn-font-weight: 500;
 $expansion-panel-content-padding: 0;
+$data-table-border-radius: 0;
 
 $material-light: (
   'background': #f2f2f2,
@@ -19,6 +25,9 @@ $material-light: (
   'menus': '#bbb'
 );
 
+// Table hover is primary text plus 0.08 opacity
+// Lists use the ::before selector to apply hover backgrounds
+// This is not available on tables so it has to be manual
 $material-dark: (
   'background': #121721,
   'navigation-drawer': #1c2331,
@@ -29,5 +38,8 @@ $material-dark: (
   'menus': #252e41,
   'text': (
     'primary': #edf2f7
+  ),
+  'table': (
+    'hover': #edf2f715
   )
 );
