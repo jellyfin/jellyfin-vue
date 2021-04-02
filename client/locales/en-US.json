@@ -116,10 +116,10 @@
   "liked": "Liked",
   "likes": "Likes",
   "links": {
-    "helpTranslate": "Help translate Jellyfin in your language",
+    "helpTranslate": "Translate Jellyfin to your language",
     "poweredByJellyfin": "This server is powered by Jellyfin",
     "readTheDocumentation": "Read the documentation",
-    "reportAnIssue": "Report an issue with the Vue client"
+    "reportAnIssue": "Report an issue with this client"
   },
   "login": {
     "addServer": "Add server",
@@ -372,7 +372,7 @@
   "video": "Video",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
-  "vueClientVersion": "Vue client version",
+  "vueClientVersion": "Client version",
   "wizard": {
     "administratorAccount": "Administrator account",
     "allowRemoteAccess": "Allow remote access to the server",

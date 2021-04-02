@@ -5,7 +5,7 @@
         <v-col cols="6" sm="3" class="d-flex flex-row">
           <v-img
             v-if="item.ImageTags && item.ImageTags.Primary"
-            class="person-image elevation-2 ml-2"
+            class="person-image elevation-2"
             cover
             aspect-ratio="1"
             :src="getImageUrl(item.Id, 'Primary')"
@@ -39,7 +39,7 @@
           <v-tabs-items v-model="activeTab" class="transparent">
             <v-tab-item :key="0">
               <v-row no-gutters>
-                <v-col cols="12" class="ma-3">
+                <v-col cols="12" class="my-6">
                   <v-row v-for="appearance in appearances" :key="appearance.Id">
                     <v-col cols="12">
                       <div class="d-flex flex-column">
@@ -209,9 +209,11 @@ export default Vue.extend({
 .person-image {
   border-radius: 50%;
 }
+
 .header span {
   padding-left: 0.25em;
 }
+
 .header::before {
   background-color: white;
   content: '';
