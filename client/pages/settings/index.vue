@@ -2,37 +2,39 @@
   <v-container>
     <v-row class="pt-4">
       <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
-        <v-img
-          class="logo"
-          contain
-          src="/icon.png"
-          height="100px"
-          :alt="$t('jellyfinLogo')"
-        />
-        <v-simple-table class="mb-4 pb-2 information">
-          <tbody>
-            <tr>
-              <td>{{ $t('server') }}</td>
-              <td>{{ systemInfo.ServerName }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t('serverVersion') }}</td>
-              <td>{{ systemInfo.Version }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t('operatingSystem') }}</td>
-              <td>{{ systemInfo.OperatingSystemDisplayName }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t('architecture') }}</td>
-              <td>{{ systemInfo.SystemArchitecture }}</td>
-            </tr>
-            <tr>
-              <td>{{ $t('vueClientVersion') }}</td>
-              <td>{{ vueVersion }}</td>
-            </tr>
-          </tbody>
-        </v-simple-table>
+        <div v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator">
+          <v-img
+            class="logo"
+            contain
+            src="/icon.png"
+            height="100px"
+            :alt="$t('jellyfinLogo')"
+          />
+          <v-simple-table class="mb-4 pb-2 information">
+            <tbody>
+              <tr>
+                <td>{{ $t('server') }}</td>
+                <td>{{ systemInfo.ServerName }}</td>
+              </tr>
+              <tr>
+                <td>{{ $t('serverVersion') }}</td>
+                <td>{{ systemInfo.Version }}</td>
+              </tr>
+              <tr>
+                <td>{{ $t('operatingSystem') }}</td>
+                <td>{{ systemInfo.OperatingSystemDisplayName }}</td>
+              </tr>
+              <tr>
+                <td>{{ $t('architecture') }}</td>
+                <td>{{ systemInfo.SystemArchitecture }}</td>
+              </tr>
+              <tr>
+                <td>{{ $t('vueClientVersion') }}</td>
+                <td>{{ vueVersion }}</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+        </div>
         <about-links v-if="!$vuetify.breakpoint.mobile" />
       </v-col>
       <v-col cols="12" md="6" lg="5" class="py-4">
