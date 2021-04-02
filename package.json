@@ -19,8 +19,8 @@
     "lint": "npm run lint:js && npm run lint:style",
     "test": "jest",
     "prepare": "husky install",
-    "tauri:dev": "tauri dev",
-    "tauri:prod": "tauri build"
+    "dev:tauri": "tauri dev",
+    "build:tauri": "tauri build"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "eslint",
