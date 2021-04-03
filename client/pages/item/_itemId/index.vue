@@ -28,7 +28,8 @@
           <v-row
             class="my-4 align-center"
             :class="{
-              'justify-center': !$vuetify.breakpoint.mdAndUp
+              'justify-center': !$vuetify.breakpoint.mdAndUp,
+              'ml-0': $vuetify.breakpoint.mdAndUp
             }"
           >
             <play-button class="mr-2" :items="[item]" />
