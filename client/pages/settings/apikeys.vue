@@ -15,7 +15,7 @@
     </template>
     <template #content>
       <v-col>
-        <v-data-table :headers="headers" :items="apiKeys" class="elevation-1">
+        <v-data-table :headers="headers" :items="apiKeys" class="elevation-2">
           <!-- eslint-disable-next-line vue/valid-v-slot -->
           <template #item.DateCreated="{ item }">
             <p class="text-capitalize-first-letter mb-0">
