@@ -190,7 +190,7 @@
     "addToQueue": "Ajouter à la file",
     "clearQueue": "Vider la file et arrêter la lecture",
     "playAll": "Tout lire",
-    "playNext": "Jouer Prochaine",
+    "playNext": "Mettre à la suite",
     "playbackSource": {
       "item": "Lecture depuis {item}",
       "shuffle": "Lecture aléatoire",
