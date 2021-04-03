@@ -400,6 +400,7 @@
   "metadata": {
     "source": "Source",
     "sourceAll": "All",
+    "title": "Title",
     "type": "Type"
   }
 }
