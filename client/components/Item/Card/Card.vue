@@ -9,7 +9,7 @@
       class="card-box"
       :class="{ 'card-margin': margin, 'link-disabled': !link }"
     >
-      <div :class="shape || cardType" class="elevation-3">
+      <div :class="shape || cardType" class="elevation-2">
         <div
           class="card-content card-content-button d-flex justify-center align-center darken-4"
         >
