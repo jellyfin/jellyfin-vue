@@ -116,10 +116,10 @@
   "liked": "Нравится",
   "likes": "Нравящиеся",
   "links": {
-    "helpTranslate": "Помогите перевести Jellyfin на ваш язык",
+    "helpTranslate": "Переведите Jellyfin на свой язык",
     "poweredByJellyfin": "Этот сервер работает на Jellyfin",
     "readTheDocumentation": "Читать документацию",
-    "reportAnIssue": "Сообщить о сбое с Vue-клиентом"
+    "reportAnIssue": "Сообщить о сбое клиента"
   },
   "login": {
     "addServer": "Добавить сервер",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Источник",
     "sourceAll": "Все",
+    "title": "Название",
     "type": "Тип"
   },
   "metadataEditor": "Редактор метаданных",
@@ -377,7 +378,7 @@
   "video": "Видео",
   "videoTypes": "Типы видео",
   "viewDetails": "Подробности",
-  "vueClientVersion": "Версия Vue-клиента",
+  "vueClientVersion": "Версия клиента",
   "wizard": {
     "administratorAccount": "Административная учётная запись",
     "allowRemoteAccess": "Разрешить удалённый доступ к серверу",
