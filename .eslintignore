@@ -5,3 +5,5 @@ dist
 .vscode
 .devcontainer
 sw.*
+client/.nuxt
+client/dist

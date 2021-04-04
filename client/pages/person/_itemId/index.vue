@@ -11,11 +11,11 @@
                 height="100%"
                 class="elevation-2"
               >
-                <blurhash-image
-                  v-if="item.ImageTags && item.ImageTags.Primary"
-                  :item="item"
-                />
-                <v-icon v-else size="128" dark>mdi-account</v-icon>
+                <blurhash-image :item="item">
+                  <template #placeholder>
+                    <v-icon size="128">mdi-account</v-icon>
+                  </template>
+                </blurhash-image>
               </v-avatar>
             </v-responsive>
           </v-col>
