@@ -345,8 +345,8 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
       lastItem = state.queue[state.lastItemIndex];
     }
 
-    const newIndex = state.queue?.indexOf(item as BaseItemDto);
-    const lastItemNewIndex = state.queue?.indexOf(lastItem as BaseItemDto);
+    const newIndex = queue?.indexOf(item as BaseItemDto);
+    const lastItemNewIndex = queue?.indexOf(lastItem as BaseItemDto);
 
     commit('SET_QUEUE', { queue });
     commit('SET_CURRENT_ITEM_INDEX', {
