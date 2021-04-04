@@ -290,7 +290,10 @@ export default Vue.extend({
           break;
         }
         case 'playbackManager/STOP_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
+          if (
+            state.playbackManager.currentTime !== null &&
+            this.getPreviousItem?.Id
+          ) {
             this.$api.playState.reportPlaybackStopped(
               {
                 playbackStopInfo: {
@@ -313,7 +316,10 @@ export default Vue.extend({
 
           break;
         case 'playbackManager/PAUSE_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
+          if (
+            state.playbackManager.currentTime !== null &&
+            this.getCurrentItem?.Id
+          ) {
             this.$api.playState.reportPlaybackProgress(
               {
                 playbackProgressInfo: {
