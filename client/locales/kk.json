@@ -116,10 +116,10 @@
   "liked": "Ūnaidy",
   "likes": "Ūnatular",
   "links": {
-    "helpTranslate": "Öz tılıŋızdegı Jellyfin tärjımesıne kömektesıŋız",
+    "helpTranslate": "Jellyfin-dı öz tılıŋızge tärjımeleŋiz",
     "poweredByJellyfin": "Būl server Jellyfin arqyly ısteidı",
     "readTheDocumentation": "Qūjattamany oqu",
-    "reportAnIssue": "Vue tūtynğyşymen mäsele turaly habarlau"
+    "reportAnIssue": "Osy tūtynğyş mäselesı turaly habarlau"
   },
   "login": {
     "addServer": "Server üsteu",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Qainar közı",
     "sourceAll": "Bärı",
+    "title": "Atauy",
     "type": "Türı"
   },
   "metadataEditor": "Metaderekter öŋdegışı",
@@ -377,7 +378,7 @@
   "video": "Beine",
   "videoTypes": "Beine türlerı",
   "viewDetails": "Egjeilerdı qarau",
-  "vueClientVersion": "Vue tūtynğyşynyŋ nūsqasy",
+  "vueClientVersion": "Tūtynğyş nūsqasy",
   "wizard": {
     "administratorAccount": "Äkımşılık tırkelgı",
     "allowRemoteAccess": "Serverge syrtqy qosylymdar üşın rūqsat etu",
