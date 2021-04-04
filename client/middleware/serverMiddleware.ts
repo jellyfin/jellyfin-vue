@@ -12,6 +12,6 @@ export default function (context: Context): void {
     !context.$axios.defaults.baseURL ||
     !context.store.state.servers.serverList.length
   ) {
-    return context.redirect('/addserver');
+    return context.redirect('/server/add');
   }
 }

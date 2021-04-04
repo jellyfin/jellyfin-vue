@@ -48,12 +48,9 @@ export default Vue.extend({
 
       try {
         await this.connectServer(this.serverInfo.address);
-        this.$router.push('/login');
-      } catch {
+        this.$router.push('/server/login');
+      } finally {
         this.loading = false;
-        /**
-         * Errors are already caught in servers store
-         */
       }
     },
     removeServerFromStore(): void {

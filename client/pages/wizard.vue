@@ -126,7 +126,7 @@ export default Vue.extend({
       try {
         await this.$api.startup.completeWizard();
         // Redirect to setup complete page
-        this.$router.replace('/login');
+        this.$router.replace('/server/login');
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);

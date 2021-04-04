@@ -41,38 +41,39 @@ export const mutations: MutationTree<ServerState> = {
 
 export const actions: ActionTree<ServerState, ServerState> = {
   async connectServer({ dispatch, commit, state }, serverUrl: string) {
+    // Remove trailing slashes to prevent a double slash in URLs
+    serverUrl = serverUrl.replace(/\/$/, '');
+
+    this.$axios.setBaseURL(serverUrl);
+
+    let data;
+
     try {
-      // Remove trailing slashes to prevent a double slash in URLs
-      serverUrl = serverUrl.replace(/\/$/, '');
+      data = await (await this.$api.system.getPublicSystemInfo()).data;
+    } catch (err) {
+      dispatch('notifyServerCantBeFound');
+      throw new Error(err);
+    }
 
-      this.$axios.setBaseURL(serverUrl);
+    if (compareVersions.compare(data.Version || '', '10.7.0', '>=')) {
+      if (!data.StartupWizardCompleted) {
+        this.$router.push('/wizard');
+      } else {
+        commit('SET_SERVER_USED', {
+          publicInfo: data,
+          address: serverUrl
+        });
 
-      const { data } = await this.$api.system.getPublicSystemInfo();
-
-      if (compareVersions.compare(data.Version || '', '10.7.0', '>=')) {
-        if (!data.StartupWizardCompleted) {
-          this.$router.push('/wizard');
-        } else {
-          commit('SET_SERVER_USED', {
+        if (!state.serverList.find((x) => x.address === serverUrl)) {
+          dispatch('addServer', {
             publicInfo: data,
             address: serverUrl
           });
-
-          if (!state.serverList.find((x) => x.address === serverUrl)) {
-            dispatch('addServer', {
-              publicInfo: data,
-              address: serverUrl
-            });
-          }
         }
-      } else {
-        dispatch('notifyServerVersionIsLow');
       }
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err); // in case something inside the try rather than a request failure
-      dispatch('notifyServerCantBeFound');
-      throw new Error(err);
+    } else {
+      dispatch('notifyServerVersionIsLow');
+      throw new Error('notifyServerVersionIsLow');
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {

@@ -18,7 +18,7 @@
         </validation-provider>
         <v-row align="center" no-gutters>
           <v-col v-if="previousServerLength" class="mr-2">
-            <v-btn block large @click="$router.push('/selectserver')">
+            <v-btn block large @click="$router.push('/server/select')">
               {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
@@ -79,15 +79,12 @@ export default Vue.extend({
         await this.connectServer(this.serverUrl);
 
         if (this.previousServerLength === 0) {
-          this.$router.push('/login');
+          this.$router.push('/server/login');
         } else {
-          this.$router.push('/selectserver');
+          this.$router.push('/server/select');
         }
-      } catch {
+      } finally {
         this.loading = false;
-        /**
-         * Errors are already caught in servers store
-         */
       }
     }
   }

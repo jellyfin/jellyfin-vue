@@ -36,7 +36,7 @@
         />
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
-            <v-btn v-if="isEmpty(user)" to="/selectServer" nuxt block large>
+            <v-btn v-if="isEmpty(user)" to="/server/select" nuxt block large>
               {{ $t('login.changeServer') }}
             </v-btn>
             <v-btn v-else block large @click="$emit('change')">
@@ -108,11 +108,8 @@ export default Vue.extend({
       try {
         await this.loginRequest(this.login);
         this.$router.replace('/');
-      } catch {
+      } finally {
         this.loading = false;
-        /**
-         * Errors are already caught in servers store
-         */
       }
     },
     isEmpty(value: Record<never, never>): boolean {
