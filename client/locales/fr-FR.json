@@ -36,7 +36,7 @@
   "discNumber": "Disque {discNumber}",
   "dislikes": "Pas aimés",
   "edit": "Éditer",
-  "editMetadata": "Éditer les méta-données",
+  "editMetadata": "Modifier les informations",
   "editPerson": "Modifier la personne",
   "endDate": "Date de fin",
   "endsAt": "Se termine à {time}",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Source",
     "sourceAll": "Tous",
+    "title": "Titre",
     "type": "Type"
   },
   "metadataEditor": "Éditeur de métadonnées",
