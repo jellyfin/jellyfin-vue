@@ -119,7 +119,7 @@
     "helpTranslate": "Dịch Jellyfin sang ngôn ngữ của bạn",
     "poweredByJellyfin": "Máy chủ này do Jellyfin cung cấp",
     "readTheDocumentation": "Đọc tài liệu",
-    "reportAnIssue": "Báo cáo sự cố với máy khách Vue"
+    "reportAnIssue": "Báo cáo sự cố xảy ra trên máy khách này"
   },
   "login": {
     "addServer": "Thêm máy chủ",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Nguồn",
     "sourceAll": "Tất cả",
+    "title": "Tiêu đề",
     "type": "Kiểu"
   },
   "metadataEditor": "Chỉnh sửa dữ liệu mô tả",
@@ -377,7 +378,7 @@
   "video": "Video",
   "videoTypes": "Loại Videos",
   "viewDetails": "Xem chi tiết",
-  "vueClientVersion": "Phiên bản trình khách Vue",
+  "vueClientVersion": "Phiên bản ứng dụng",
   "wizard": {
     "administratorAccount": "Tài khoản quản trị viên",
     "allowRemoteAccess": "Cho phép truy cập từ xa vào máy chủ",
