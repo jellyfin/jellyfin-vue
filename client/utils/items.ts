@@ -96,8 +96,9 @@ export function getShapeFromCollectionType(
     case 'folders':
     case 'playlists':
     case 'music':
-    default:
       return 'square-card';
+    default:
+      return 'portrait-card';
   }
 }
 
