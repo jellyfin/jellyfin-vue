@@ -3,18 +3,18 @@
     <template #left>
       <v-row justify="center" justify-sm="start">
         <v-col cols="6" sm="3" class="d-flex flex-row">
-          <v-responsive aspect-ratio="1">
+          <v-responsive aspect-ratio="1" class="overflow-visible">
             <v-avatar
               color="card"
               width="100%"
               height="100%"
               class="elevation-2"
             >
-              <blurhash-image
-                v-if="item.ImageTags && item.ImageTags.Primary"
-                :item="item"
-              />
-              <v-icon v-else size="128" dark>mdi-account</v-icon>
+              <blurhash-image :item="item">
+                <template #placeholder>
+                  <v-icon size="128">mdi-account</v-icon>
+                </template>
+              </blurhash-image>
             </v-avatar>
           </v-responsive>
         </v-col>
@@ -127,10 +127,8 @@ import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import BlurhashImage from '~/components/Layout/Images/BlurhashImage.vue';
 
 export default Vue.extend({
-  components: { BlurhashImage },
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);

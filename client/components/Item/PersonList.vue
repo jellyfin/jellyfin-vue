@@ -8,12 +8,13 @@
         :to="getItemDetailsLink(item, 'Person')"
       >
         <v-list-item-avatar>
-          <v-img
-            v-if="item.PrimaryImageTag"
-            ref="personImg"
-            :src="getPersonImage(item).url"
-          />
-          <v-icon v-else class="grey darken-3">mdi-account</v-icon>
+          <v-avatar color="card">
+            <blurhash-image :item="item">
+              <template #placeholder>
+                <v-icon size="16">mdi-account</v-icon>
+              </template>
+            </blurhash-image>
+          </v-avatar>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ item.Name }}</v-list-item-title>
@@ -37,8 +38,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import { BaseItemPerson } from '@jellyfin/client-axios';
+import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
@@ -53,17 +54,6 @@ export default Vue.extend({
     skeletonLength: {
       type: Number,
       default: 0
-    }
-  },
-  methods: {
-    getPersonImage(item: BaseItemDto): ImageUrlInfo {
-      const element = this.$refs.personImg as HTMLElement;
-
-      const image = this.getImageUrl(item, {
-        width: element?.clientWidth
-      });
-
-      return image;
     }
   }
 });

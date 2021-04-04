@@ -6,7 +6,7 @@
 import Vue from 'vue';
 import { stringify } from 'qs';
 import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
-import { getShapeFromItemType, CardShapes } from '~/utils/items';
+import { getShapeFromItemType, CardShapes, isPerson } from '~/utils/items';
 
 export interface ImageUrlInfo {
   url: string | undefined;
@@ -109,16 +109,6 @@ declare module 'vue/types/vue' {
       }
     ): ImageUrlInfo;
   }
-}
-
-/**
- * Checks if the passed object is BaseItemDto or BaseItemPerson
- *
- * @param {BaseItemDto|BaseItemPerson} obj - The object to check
- * @returns {boolean} Returns true if the object is a person, false otherwise.
- */
-function isPerson(obj: BaseItemDto | BaseItemPerson): obj is BaseItemPerson {
-  return (obj as BaseItemPerson)?.Role !== undefined;
 }
 
 const excludedBlurhashTypes = [ImageType.Logo];
