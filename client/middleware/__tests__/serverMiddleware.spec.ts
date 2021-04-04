@@ -35,12 +35,12 @@ const INPUT_WITH_BOTH = ({
   store: { state: { servers: { serverList: ['item-a'] } } }
 } as unknown) as Context;
 
-const EXPECTED_REDIRECT = '/addserver';
+const EXPECTED_REDIRECT = '/server/add';
 
 afterEach(() => mockRedirect.mockReset());
 
 describe('serverMiddleware', () => {
-  it('redirects to "/addserver/ when a baseUrl is not set', (): void => {
+  it('redirects to "/server/add" when a baseUrl is not set', (): void => {
     serverMiddleware(BASE_INPUT);
 
     expect(mockRedirect).toHaveBeenCalled();
@@ -48,13 +48,13 @@ describe('serverMiddleware', () => {
     expect(mockRedirect.mock.calls[0][0]).toBe(EXPECTED_REDIRECT);
   });
 
-  it('redirects to "/addserver" when the serverlist length is 0', (): void => {
+  it('redirects to "/server/add" when the serverlist length is zero', (): void => {
     serverMiddleware(INPUT_WITH_BASEURL);
 
     expect(mockRedirect.mock.calls[0][0]).toBe(EXPECTED_REDIRECT);
   });
 
-  it('redirects to "/addserver" when the baseUrl is undefined', (): void => {
+  it('redirects to "/server/add" when the baseUrl is undefined', (): void => {
     serverMiddleware(INPUT_WITH_SERVERLIST);
 
     expect(mockRedirect.mock.calls[0][0]).toBe(EXPECTED_REDIRECT);

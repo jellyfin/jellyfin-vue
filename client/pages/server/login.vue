@@ -24,7 +24,7 @@
             </v-btn>
           </v-col>
           <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn block to="/selectServer" nuxt large>
+            <v-btn block to="/server/select" nuxt large>
               {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
@@ -57,23 +57,6 @@ export default Vue.extend({
   layout: 'fullpage',
   middleware: 'serverMiddleware',
   auth: false,
-  async asyncData({ store, redirect, $api }) {
-    try {
-      await store.dispatch(
-        'servers/connectServer',
-        store.state.servers.serverUsed.address
-      );
-
-      const publicUsers = (await $api.user.getPublicUsers({})).data;
-
-      const brandingData = (await $api.branding.getBrandingOptions()).data;
-      const disclaimer = brandingData.LoginDisclaimer || '';
-
-      return { publicUsers, disclaimer };
-    } catch {
-      redirect('/selectserver');
-    }
-  },
   data() {
     return {
       loginAsOther: false,
@@ -81,6 +64,21 @@ export default Vue.extend({
       publicUsers: [] as Array<UserDto>,
       disclaimer: ''
     };
+  },
+  async fetch() {
+    try {
+      await this.$store.dispatch(
+        'servers/connectServer',
+        this.$store.state.servers.serverUsed.address
+      );
+
+      const brandingData = (await this.$api.branding.getBrandingOptions()).data;
+
+      this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
+      this.disclaimer = brandingData.LoginDisclaimer;
+    } catch {
+      this.$router.push('/server/select');
+    }
   },
   head() {
     return {
@@ -92,6 +90,7 @@ export default Vue.extend({
   },
   activated() {
     this.setPageTitle({ title: this.$t('login.login') });
+    this.$fetch();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),

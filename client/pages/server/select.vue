@@ -18,7 +18,7 @@
           block
           large
           color="primary"
-          @click="$router.push('/addserver')"
+          @click="$router.push('/server/add')"
         >
           {{ $t('login.addServer') }}
         </v-btn>
@@ -36,7 +36,7 @@ export default Vue.extend({
   auth: false,
   asyncData({ store, redirect }) {
     if (!store.state.servers.serverList.length) {
-      redirect('/addserver');
+      redirect('/server/add');
     }
   },
   head() {
@@ -51,7 +51,7 @@ export default Vue.extend({
   watch: {
     serverList(): void {
       if (this.serverList.length === 0) {
-        this.$router.push('/addserver');
+        this.$router.push('/server/add');
       }
     }
   },

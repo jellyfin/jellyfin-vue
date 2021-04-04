@@ -144,8 +144,8 @@ const config: NuxtConfig = {
    */
   auth: {
     redirect: {
-      login: '/login',
-      logout: '/login',
+      login: '/server/login',
+      logout: '/server/login',
       callback: false,
       home: '/'
     },
