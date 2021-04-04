@@ -1,6 +1,6 @@
 <template>
   <div ref="imageElement">
-    <div v-if="!error" ref="img" class="absolute">
+    <div v-if="!error" ref="img">
       <v-fade-transition>
         <blurhash-canvas
           v-if="hash"
@@ -23,17 +23,11 @@
         />
       </v-fade-transition>
     </div>
-    <div v-if="!$slots.placeholder" class="absolute icon img">
-      <v-icon
-        class="absolute text--disabled"
-        :size="iconSize"
-        color="white"
-        dark
-      >
+    <slot v-else name="placeholder">
+      <v-icon class="absolute text--disabled" :size="iconSize">
         {{ getItemIcon(item) }}
       </v-icon>
-    </div>
-    <slot v-else name="placeholder" />
+    </slot>
   </div>
 </template>
 
@@ -179,9 +173,5 @@ export default Vue.extend({
 .img {
   color: transparent;
   object-fit: cover;
-}
-
-.icon {
-  z-index: -5;
 }
 </style>
