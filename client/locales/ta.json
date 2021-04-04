@@ -116,10 +116,10 @@
   "liked": "பிடித்திருந்தது",
   "likes": "விருப்பங்கள்",
   "links": {
-    "helpTranslate": "உங்கள் மொழியில் ஜெல்லிஃபின் மொழிபெயர்க்க உதவுங்கள்",
+    "helpTranslate": "ஜெல்லிஃபின் உங்கள் மொழியில் மொழிபெயர்க்கவும்",
     "poweredByJellyfin": "இந்த சேவையகம் ஜெல்லிஃபின் மூலம் இயக்கப்படுகிறது",
     "readTheDocumentation": "ஆவணங்களைப் படியுங்கள்",
-    "reportAnIssue": "Vue நுகர்வி சிக்கலைப் புகாரளிக்கவும்"
+    "reportAnIssue": "நுகர்வி சிக்கலைப் புகாரளிக்கவும்"
   },
   "login": {
     "addServer": "சேவையகத்தைச் சேர்க்கவும்",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "மூல",
     "sourceAll": "அனைத்தும்",
+    "title": "தலைப்பு",
     "type": "வகை"
   },
   "metadataEditor": "மெட்டாடேட்டா எடிட்டர்",
@@ -377,7 +378,7 @@
   "video": "வீடியோ",
   "videoTypes": "வீடியோ வகைகள்",
   "viewDetails": "விபரங்களை பார்",
-  "vueClientVersion": "Vue நுகர்வி பதிப்பு",
+  "vueClientVersion": "நுகர்வி பதிப்பு",
   "wizard": {
     "administratorAccount": "நிர்வாகி கணக்கு",
     "allowRemoteAccess": "சேவையகத்திற்கு தொலைநிலை அணுகலை அனுமதிக்கவும்",
