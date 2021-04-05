@@ -34,8 +34,8 @@ describe('getShapeFromCollectionType', () => {
     expect(getShapeFromCollectionType('folders')).toEqual('square-card');
     expect(getShapeFromCollectionType('playlists')).toEqual('square-card');
     expect(getShapeFromCollectionType('music')).toEqual('square-card');
-    expect(getShapeFromCollectionType(undefined)).toEqual('square-card');
-    expect(getShapeFromCollectionType(null)).toEqual('square-card');
+    expect(getShapeFromCollectionType(undefined)).toEqual('portrait-card');
+    expect(getShapeFromCollectionType(null)).toEqual('portrait-card');
   });
 });
 

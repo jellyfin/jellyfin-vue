@@ -111,6 +111,7 @@ export function getShapeFromCollectionType(
 export function getShapeFromItemType(
   itemType: string | null | undefined
 ): CardShapes {
+  // TODO: Refactor to take a BaseItemDto or BaseItemPerson instead
   switch (itemType?.toLowerCase()) {
     case 'audio':
     case 'folder':
