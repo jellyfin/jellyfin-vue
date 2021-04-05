@@ -76,7 +76,7 @@ const config: NuxtConfig = {
    */
   plugins: [
     // Development
-    'plugins/axe.ts',
+    { src: 'plugins/axe.ts', mode: 'client' },
     // General
     'plugins/persistedState.ts',
     'plugins/appInitPlugin.ts',
