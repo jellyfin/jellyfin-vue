@@ -1,80 +1,54 @@
 {
-  "alphabetically": "",
   "buttons": {
     "ok": ""
   },
-  "continueListening": "",
   "director": "",
-  "episodeNumber": "",
   "features": "",
-  "headerPaths": "",
   "imageType": {
-    "banner": "",
-    "thumb": ""
+    "banner": ""
   },
   "item": {
     "person": {
       "birth": ""
     }
   },
-  "libraries": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "loginAs": "",
     "serverDashboard": ""
   },
-  "logsAndActivity": {
-    "noActivityFound": ""
-  },
   "metadataEditor": "",
-  "nextUp": "",
   "noTracksAvailable": "",
-  "parentalRating": "",
   "playback": {
-    "clearQueue": "",
-    "saveAsPlaylist": ""
+    "clearQueue": ""
   },
   "refreshLibrary": "",
-  "series": "",
   "settings": {
     "apiKeys": {
-      "appName": "",
-      "revokeAllSuccess": ""
+      "appName": ""
     },
     "devices": {
       "deleteAllDevicesSuccess": ""
-    },
-    "help": ""
+    }
   },
   "settingsSections": {
     "account": {
       "description": ""
     },
-    "libraries": {
-      "description": ""
-    },
     "networking": {
-      "description": ""
-    },
-    "scheduledTasks": {
       "description": ""
     },
     "users": {
       "description": ""
     }
   },
-  "studios": "",
   "tooltips": {
     "switchToDarkMode": ""
   },
-  "unableToRefreshLibrary": "",
   "upNext": "",
-  "videoTypes": "",
   "wizard": {
-    "languageSuccessfullySet": "",
-    "setMetadataError": ""
+    "languageSuccessfullySet": ""
   },
   "youMayAlsoLike": ""
 }
