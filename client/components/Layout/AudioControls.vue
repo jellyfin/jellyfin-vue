@@ -112,7 +112,7 @@
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <like-button :item="getCurrentItem" class="active-button" />
-            <queue-button :item="getCurrentItem" class="active-button" />
+            <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>

@@ -4,6 +4,7 @@
     ref="shakaPlayer"
     :poster="poster.url"
     autoplay
+    :playsinline="$browser.isMobile() && $browser.isApple()"
     @timeupdate="onProgressThrottled"
     @pause="onPause"
     @play="onPlay"

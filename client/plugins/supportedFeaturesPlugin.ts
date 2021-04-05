@@ -3,6 +3,9 @@ import { Plugin } from '@nuxt/types';
 export interface SupportedFeatures {
   pictureInPicture: boolean;
   airPlay: boolean;
+  googleCast: boolean;
+  playbackRate: boolean;
+  fullScreen: boolean;
 }
 
 declare module '@nuxt/types' {
@@ -31,10 +34,39 @@ declare module 'vuex/types/index' {
 const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
   const supportedFeatures: SupportedFeatures = {
     pictureInPicture: false,
-    airPlay: false
+    airPlay: false,
+    googleCast: false,
+    playbackRate: false,
+    fullScreen: false
   };
 
   const video = document.createElement('video');
+
+  /**
+   * Detects if the current platform supports showing fullscreen videos
+   *
+   * @returns {boolean}
+   */
+  function supportsFullscreen(): boolean {
+    // TVs don't support fullscreen. iOS, when user through the PWA, is already full screen.
+    if ($browser.isTv() || ($browser.isApple() && $browser.isMobile())) {
+      return false;
+    }
+
+    const element = document.documentElement;
+
+    return !!(
+      element.requestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      element.mozRequestFullScreen ||
+      // @ts-expect-error -- Non-standard property
+      element.webkitRequestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      element.msRequestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      document.createElement('video').webkitEnterFullscreen
+    );
+  }
 
   if (
     // Check non-standard Safari PiP support
@@ -53,6 +85,21 @@ const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
 
   if ($browser.isApple()) {
     supportedFeatures.airPlay = true;
+  }
+
+  if (
+    $browser.isChrome() ||
+    ($browser.isEdge() && $browser.isChromiumBased())
+  ) {
+    supportedFeatures.googleCast = true;
+  }
+
+  if (supportsFullscreen()) {
+    supportedFeatures.fullScreen = true;
+  }
+
+  if (typeof video.playbackRate === 'number') {
+    supportedFeatures.playbackRate = true;
   }
 
   inject('features', supportedFeatures);

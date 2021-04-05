@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
+import simpleIcons from 'simple-icons';
 
 const config: NuxtConfig = {
   /*
@@ -347,6 +348,12 @@ const config: NuxtConfig = {
       },
       options: {
         customProperties: true
+      }
+    },
+    icons: {
+      iconfont: 'mdi',
+      values: {
+        jellyfin: simpleIcons.get('jellyfin').path
       }
     }
   },
