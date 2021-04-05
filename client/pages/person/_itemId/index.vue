@@ -11,11 +11,7 @@
                 height="100%"
                 class="elevation-2"
               >
-                <blurhash-image :item="item">
-                  <template #placeholder>
-                    <v-icon size="128">mdi-account</v-icon>
-                  </template>
-                </blurhash-image>
+                <blurhash-image :item="item" />
               </v-avatar>
             </v-responsive>
           </v-col>
