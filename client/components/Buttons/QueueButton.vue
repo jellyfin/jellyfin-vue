@@ -5,20 +5,25 @@
     :close-on-click="false"
     :transition="'slide-y-transition'"
     top
-    :nudge-top="35"
+    :nudge-top="nudgeTop"
     offset-y
     min-width="35vw"
     max-width="35vw"
     min-height="60vh"
     max-height="60vh"
-    :z-index="100"
+    :z-index="500"
     class="menu"
   >
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template #activator="{ on: tooltip }">
-          <v-btn icon v-bind="attrs" v-on="{ ...tooltip, ...menu }">
+          <v-btn
+            class="align-self-center active-button"
+            icon
+            v-bind="attrs"
+            v-on="{ ...tooltip, ...menu }"
+          >
             <v-icon>mdi-playlist-play</v-icon>
           </v-btn>
         </template>
@@ -42,10 +47,10 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <like-button v-if="initiator" :item="item" />
+            <like-button v-if="initiator" :item="getCurrentItem" />
           </v-list-item-action>
           <v-list-item-action class="mr-1">
-            <item-menu v-if="initiator" :item="item" />
+            <item-menu v-if="initiator" :item="getCurrentItem" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -89,9 +94,9 @@ import timeUtils from '~/mixins/timeUtils';
 export default Vue.extend({
   mixins: [timeUtils],
   props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
+    nudgeTop: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -101,8 +106,12 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', ['playbackInitiator', 'playbackInitMode']),
-    ...mapGetters('playbackManager', ['getQueueItems']),
+    ...mapGetters('playbackManager', ['getCurrentItem', 'getQueueItems']),
+    ...mapState('playbackManager', [
+      'queue',
+      'playbackInitiator',
+      'playbackInitMode'
+    ]),
     sourceText: {
       get(): string {
         /**
@@ -113,7 +122,7 @@ export default Vue.extend({
           case InitMode.Unknown:
             return this.$t('playback.playbackSource.unknown');
           case InitMode.Item:
-            if (this.item.AlbumId !== this.playbackInitiator?.Id) {
+            if (this.getCurrentItem.AlbumId !== this.playbackInitiator?.Id) {
               return this.$t('playback.playbackSource.unknown');
             } else {
               return this.$t('playback.playbackSource.item', {
@@ -123,7 +132,7 @@ export default Vue.extend({
           case InitMode.Shuffle:
             return this.$t('playback.playbackSource.shuffle');
           case InitMode.ShuffleItem:
-            if (this.item.AlbumId !== this.playbackInitiator?.Id) {
+            if (this.getCurrentItem.AlbumId !== this.playbackInitiator?.Id) {
               return this.$t('playback.playbackSource.unknown');
             } else {
               return this.$t('playback.playbackSource.shuffleItem', {
@@ -137,7 +146,7 @@ export default Vue.extend({
     },
     initiator: {
       get(): BaseItemDto | null {
-        if (this.item.AlbumId === this.playbackInitiator?.Id) {
+        if (this.getCurrentItem.AlbumId === this.playbackInitiator?.Id) {
           return this.playbackInitiator;
         }
 

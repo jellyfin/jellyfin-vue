@@ -345,7 +345,7 @@
     "switchToLightMode": "Beralih ke mode terang"
   },
   "trailer": "Cuplikan",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tipe",
   "unableGetPublicUsers": "Tidak bisa mendapatkan pengguna",
   "unableGetRelated": "Tak bisa mendapatkan item terkait",
