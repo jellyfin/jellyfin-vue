@@ -1,17 +1,8 @@
 {
-  "imageType": {
-    "banner": ""
-  },
   "metadataEditor": "",
-  "settings": {
-    "apiKeys": {
-      "appName": ""
-    }
-  },
   "settingsSections": {
     "users": {
       "description": ""
     }
-  },
-  "youMayAlsoLike": ""
+  }
 }
