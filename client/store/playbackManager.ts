@@ -67,7 +67,7 @@ export const defaultState = (): PlaybackManagerState => ({
   isFullscreen: false,
   isMuted: false,
   isShuffling: false,
-  isMinimized: true,
+  isMinimized: false,
   repeatMode: RepeatMode.RepeatNone,
   queue: [],
   originalQueue: [],
@@ -126,6 +126,13 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
     }
 
     return null;
+  },
+  getCurrentItemSubtitleTracks: (state) => {
+    if (state.currentMediaSource !== null) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Subtitle';
+      });
+    }
   }
 };
 

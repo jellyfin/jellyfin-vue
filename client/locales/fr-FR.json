@@ -353,7 +353,7 @@
     "switchToLightMode": "Basculer en mode clair"
   },
   "trailer": "Bande-annonce",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Impossible de récupérer les utilisateurs",
   "unableGetRelated": "Impossible de récupérer les éléments liés",

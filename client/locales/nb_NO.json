@@ -345,7 +345,7 @@
     "switchToLightMode": "Bytt til lys modus"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Kunne ikke hente brukerliste",
   "unableGetRelated": "Kunne ikke hente relaterte artikler",

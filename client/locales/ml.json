@@ -353,7 +353,7 @@
     "switchToLightMode": "ലൈറ്റ് മോഡിലേക്ക് മാറുക"
   },
   "trailer": "ട്രെയിലർ",
-  "tvShowAbbrev": "S {seasonNumber} E {episodeNumber}",
+  "seasonEpisodeAbbrev": "S {seasonNumber} E {episodeNumber}",
   "type": "തരം",
   "unableGetPublicUsers": "ഉപയോക്താക്കളെ നേടാനായില്ല",
   "unableGetRelated": "അനുബന്ധ ഇനങ്ങൾ നേടാനായില്ല",

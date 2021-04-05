@@ -34,36 +34,6 @@
                       <v-icon>mdi-close</v-icon>
                     </v-btn>
                   </div>
-                  <div
-                    class="absolute d-flex flex-row justify-center align-center"
-                  >
-                    <v-btn
-                      class="all-pointer-events"
-                      icon
-                      large
-                      @click="setPreviousTrack"
-                    >
-                      <v-icon size="32">mdi-skip-previous</v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="all-pointer-events"
-                      icon
-                      x-large
-                      @click="playPause"
-                    >
-                      <v-icon size="48">
-                        {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="all-pointer-events"
-                      icon
-                      large
-                      @click="setNextTrack"
-                    >
-                      <v-icon size="32">mdi-skip-next</v-icon>
-                    </v-btn>
-                  </div>
                 </div>
               </v-overlay>
             </v-fade-transition>
@@ -71,13 +41,14 @@
             <v-fade-transition>
               <v-overlay
                 v-show="!isMinimized && showFullScreenOverlay"
+                color="transparent"
                 absolute
               >
                 <div
                   class="d-flex flex-column justify-space-between align-center player-overlay"
                 >
                   <div class="osd-top pt-s pl-s pr-s">
-                    <div class="d-flex justify-space-between align-center">
+                    <div class="d-flex align-center py-2 px-4">
                       <div class="d-flex">
                         <v-btn icon @click="stopPlayback">
                           <v-icon>mdi-close</v-icon>
@@ -85,62 +56,86 @@
                         <v-btn icon @click="toggleMinimized">
                           <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
-                        <v-btn
-                          v-if="$features.pictureInPicture"
-                          icon
-                          @click="togglePictureInPicture"
-                        >
-                          <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
-                        </v-btn>
                       </div>
-                      <p class="ma-0 text-center">{{ currentItemName }}</p>
-                      <div class="d-flex">
-                        <v-btn icon disabled>
-                          <v-icon>mdi-autorenew</v-icon>
-                        </v-btn>
-                        <v-btn v-if="$features.airplay" icon disabled>
-                          <v-icon>mdi-apple-airplay</v-icon>
-                        </v-btn>
-                        <v-btn icon disabled>
-                          <v-icon>mdi-cast</v-icon>
-                        </v-btn>
+                      <div class="d-flex ml-auto">
+                        <cast-button />
                       </div>
                     </div>
                   </div>
-
                   <div class="osd-bottom pb-s pl-s pr-s">
-                    <div class="px-4">
+                    <div class="pa-4">
                       <time-slider />
-                      <div class="d-flex justify-space-between">
-                        <div>
-                          <v-btn icon @click="setPreviousTrack">
-                            <v-icon>mdi-skip-previous</v-icon>
-                          </v-btn>
-                          <v-btn icon @click="playPause">
-                            <v-icon>
-                              {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-                            </v-icon>
-                          </v-btn>
-                          <v-btn icon @click="setNextTrack">
-                            <v-icon icon>mdi-skip-next</v-icon>
-                          </v-btn>
-                        </div>
-                        <div>
-                          <v-btn icon disabled>
-                            <v-icon>mdi-closed-caption</v-icon>
-                          </v-btn>
-                          <v-btn icon disabled>
-                            <v-icon>mdi-cog</v-icon>
-                          </v-btn>
-
-                          <v-btn icon @click="toggleFullScreen">
-                            <v-icon>
+                      <div
+                        class="controls-wrapper d-flex align-stretch justify-space-between"
+                      >
+                        <div
+                          class="d-flex flex-column align-start justify-center mr-auto video-title"
+                        >
+                          <template v-if="getCurrentItem.Type === 'Episode'">
+                            <span class="mt-1 text-subtitle-1">
+                              {{ getCurrentItem.Name }}
+                            </span>
+                            <span class="text-subtitle-2 text--secondary">
+                              {{ getCurrentItem.SeriesName }}
+                            </span>
+                            <span class="text-subtitle-2 text--secondary">
                               {{
-                                fullScreenVideo
-                                  ? 'mdi-fullscreen-exit'
-                                  : 'mdi-fullscreen'
+                                $t('seasonEpisode', {
+                                  seasonNumber:
+                                    getCurrentItem.ParentIndexNumber,
+                                  episodeNumber: getCurrentItem.IndexNumber
+                                })
+                              }}
+                            </span>
+                          </template>
+                          <template v-else>
+                            <span>{{ getCurrentItem.Name }}</span>
+                          </template>
+                        </div>
+                        <div
+                          class="d-flex player-controls align-center justify-center"
+                        >
+                          <v-btn icon class="mx-1" @click="setPreviousTrack">
+                            <v-icon> mdi-skip-previous </v-icon>
+                          </v-btn>
+                          <v-btn
+                            icon
+                            class="mx-1 active-button"
+                            @click="playPause"
+                          >
+                            <v-icon large>
+                              {{
+                                isPaused
+                                  ? 'mdi-play-circle-outline'
+                                  : 'mdi-pause-circle-outline'
                               }}
                             </v-icon>
+                          </v-btn>
+                          <v-btn icon class="mx-1" @click="setNextTrack">
+                            <v-icon icon> mdi-skip-next</v-icon>
+                          </v-btn>
+                        </div>
+                        <div class="d-flex aligh-center">
+                          <volume-slider class="mr-2" />
+                          <queue-button nudge-top="60" />
+                          <subtitle-selection-button nudge-top="60" />
+                          <playback-settings-button nudge-top="60" />
+                          <v-btn
+                            v-if="$features.pictureInPicture"
+                            class="align-self-center active-button"
+                            icon
+                            @click="togglePictureInPicture"
+                          >
+                            <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
+                          </v-btn>
+                          <v-btn
+                            v-if="$features.fullScreen"
+                            class="align-self-center active-button"
+                            icon
+                            disabled
+                            @click="toggleFullScreen"
+                          >
+                            <v-icon>mdi-fullscreen</v-icon>
                           </v-btn>
                         </div>
                       </div>
@@ -188,15 +183,6 @@ export default Vue.extend({
     },
     isPaused(): boolean {
       return this.status === PlaybackStatus.paused;
-    },
-    currentItemName(): string {
-      switch (this.getCurrentItem.Type) {
-        case 'Episode':
-          return `${this.getCurrentItem.SeriesName} - S${this.getCurrentItem.ParentIndexNumber}E${this.getCurrentItem.IndexNumber} -  ${this.getCurrentItem.Name}`;
-        case 'Movie':
-        default:
-          return this.getCurrentItem.Name;
-      }
     }
   },
   mounted() {
@@ -211,123 +197,6 @@ export default Vue.extend({
             window.removeEventListener('keydown', this.handleKeyPress);
           } else if (state.playbackManager.isMinimized === false) {
             window.addEventListener('keydown', this.handleKeyPress);
-          }
-
-          break;
-        case 'playbackManager/INCREASE_QUEUE_INDEX':
-        case 'playbackManager/DECREASE_QUEUE_INDEX':
-        case 'playbackManager/SET_CURRENT_ITEM_INDEX':
-          // Report playback stop for the previous item
-          if (
-            state.playbackManager.currentTime !== null &&
-            this.getPreviousItem?.Id
-          ) {
-            this.$api.playState.reportPlaybackStopped(
-              {
-                playbackStopInfo: {
-                  ItemId: this.getPreviousItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  PositionTicks: this.msToTicks(
-                    state.playbackManager.currentTime * 1000
-                  )
-                }
-              },
-              { progress: false }
-            );
-          }
-
-          // Then report the start of the next one
-          if (this.getCurrentItem?.Id) {
-            this.$api.playState.reportPlaybackStart(
-              {
-                playbackStartInfo: {
-                  CanSeek: true,
-                  ItemId: this.getCurrentItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  MediaSourceId: state.playbackManager.currentMediaSource?.Id,
-                  AudioStreamIndex:
-                    state.playbackManager.currentAudioStreamIndex,
-                  SubtitleStreamIndex:
-                    state.playbackManager.currentSubtitleStreamIndex
-                }
-              },
-              { progress: false }
-            );
-
-            this.updateMetadata();
-          }
-
-          this.setLastProgressUpdate({ progress: new Date().getTime() });
-          break;
-        case 'playbackManager/SET_CURRENT_TIME': {
-          if (state.playbackManager.status === PlaybackStatus.playing) {
-            const now = new Date().getTime();
-
-            if (
-              this.getCurrentItem !== null &&
-              now - state.playbackManager.lastProgressUpdate > 1000 &&
-              state.playbackManager.currentTime !== null
-            ) {
-              this.$api.playState.reportPlaybackProgress(
-                {
-                  playbackProgressInfo: {
-                    ItemId: this.getCurrentItem.Id,
-                    PlaySessionId: state.playbackManager.playSessionId,
-                    IsPaused: false,
-                    PositionTicks: Math.round(
-                      this.msToTicks(state.playbackManager.currentTime * 1000)
-                    )
-                  }
-                },
-                { progress: false }
-              );
-
-              this.setLastProgressUpdate({ progress: new Date().getTime() });
-            }
-          }
-
-          break;
-        }
-        case 'playbackManager/STOP_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
-            this.$api.playState.reportPlaybackStopped(
-              {
-                playbackStopInfo: {
-                  ItemId: this.getPreviousItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  PositionTicks: this.msToTicks(
-                    state.playbackManager.currentTime * 1000
-                  )
-                }
-              },
-              { progress: false }
-            );
-
-            this.setLastProgressUpdate({ progress: 0 });
-
-            this.resetMetadata();
-
-            this.removeMediaHandlers();
-          }
-
-          break;
-        case 'playbackManager/PAUSE_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
-            this.$api.playState.reportPlaybackProgress(
-              {
-                playbackProgressInfo: {
-                  ItemId: this.getCurrentItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  IsPaused: true,
-                  PositionTicks: Math.round(
-                    this.msToTicks(state.playbackManager.currentTime * 1000)
-                  )
-                }
-              },
-              { progress: false }
-            );
-
-            this.setLastProgressUpdate({ progress: new Date().getTime() });
           }
 
           break;
@@ -605,6 +474,20 @@ export default Vue.extend({
   bottom: 0;
 }
 
+.controls-wrapper {
+  position: relative;
+}
+
+.player-controls {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .all-pointer-events {
   pointer-events: all;
 }
@@ -661,18 +544,59 @@ export default Vue.extend({
 .osd-top {
   padding-bottom: 10em;
   background: linear-gradient(
-    180deg,
-    rgba(16, 16, 16, 0.75) 0%,
-    rgba(16, 16, 16, 0) 100%
+    to bottom,
+    hsla(0, 0%, 0%, 0.75) 0%,
+    hsla(0, 0%, 0%, 0.74) 8.1%,
+    hsla(0, 0%, 0%, 0.714) 15.5%,
+    hsla(0, 0%, 0%, 0.672) 22.5%,
+    hsla(0, 0%, 0%, 0.618) 29%,
+    hsla(0, 0%, 0%, 0.556) 35.3%,
+    hsla(0, 0%, 0%, 0.486) 41.2%,
+    hsla(0, 0%, 0%, 0.412) 47.1%,
+    hsla(0, 0%, 0%, 0.338) 52.9%,
+    hsla(0, 0%, 0%, 0.264) 58.8%,
+    hsla(0, 0%, 0%, 0.194) 64.7%,
+    hsla(0, 0%, 0%, 0.132) 71%,
+    hsla(0, 0%, 0%, 0.078) 77.5%,
+    hsla(0, 0%, 0%, 0.036) 84.5%,
+    hsla(0, 0%, 0%, 0.01) 91.9%,
+    hsla(0, 0%, 0%, 0) 100%
   );
 }
 
 .osd-bottom {
   padding-top: 10em;
   background: linear-gradient(
-    0deg,
-    rgba(16, 16, 16, 0.75) 0%,
-    rgba(16, 16, 16, 0) 100%
+    to top,
+    hsla(0, 0%, 0%, 0.75) 0%,
+    hsla(0, 0%, 0%, 0.74) 8.1%,
+    hsla(0, 0%, 0%, 0.714) 15.5%,
+    hsla(0, 0%, 0%, 0.672) 22.5%,
+    hsla(0, 0%, 0%, 0.618) 29%,
+    hsla(0, 0%, 0%, 0.556) 35.3%,
+    hsla(0, 0%, 0%, 0.486) 41.2%,
+    hsla(0, 0%, 0%, 0.412) 47.1%,
+    hsla(0, 0%, 0%, 0.338) 52.9%,
+    hsla(0, 0%, 0%, 0.264) 58.8%,
+    hsla(0, 0%, 0%, 0.194) 64.7%,
+    hsla(0, 0%, 0%, 0.132) 71%,
+    hsla(0, 0%, 0%, 0.078) 77.5%,
+    hsla(0, 0%, 0%, 0.036) 84.5%,
+    hsla(0, 0%, 0%, 0.01) 91.9%,
+    hsla(0, 0%, 0%, 0) 100%
   );
+}
+
+.video-title {
+  height: 6em;
+}
+
+// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
+// but it seems we're using a prop combination that it's incompatible with it: NaN;
+
+// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 </style>

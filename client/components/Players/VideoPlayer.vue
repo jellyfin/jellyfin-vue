@@ -4,6 +4,7 @@
       ref="videoPlayer"
       :poster="poster.url"
       autoplay
+      :playsinline="$browser.isMobile() && $browser.isApple()"
       @timeupdate="onVideoProgressThrottled"
       @pause="onVideoPause"
       @play="onPlay"

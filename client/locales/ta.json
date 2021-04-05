@@ -353,7 +353,7 @@
     "switchToLightMode": "ஒளி பயன்முறைக்கு மாறவும்"
   },
   "trailer": "டிரெய்லர்",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "வகை",
   "unableGetPublicUsers": "பயனர்களைப் பெற முடியவில்லை",
   "unableGetRelated": "தொடர்புடைய பொருட்களைப் பெற முடியவில்லை",

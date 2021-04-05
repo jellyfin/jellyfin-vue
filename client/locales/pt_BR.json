@@ -317,7 +317,7 @@
     "switchToLightMode": "Trocar para modo claro"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "T{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "upNext": "A seguir",
   "upNextName": "A seguir: {upNextItemName}",

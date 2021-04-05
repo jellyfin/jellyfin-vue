@@ -351,7 +351,7 @@
     "switchToLightMode": "Přepnout světlý režim"
   },
   "trailer": "Upoutávka",
-  "tvShowAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
+  "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
   "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
