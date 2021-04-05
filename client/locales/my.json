@@ -1,54 +1,28 @@
 {
-  "buttons": {
-    "ok": ""
-  },
   "director": "",
-  "features": "",
   "imageType": {
     "banner": ""
-  },
-  "item": {
-    "person": {
-      "birth": ""
-    }
   },
   "links": {
     "poweredByJellyfin": ""
   },
-  "login": {
-    "serverDashboard": ""
-  },
   "metadataEditor": "",
-  "noTracksAvailable": "",
   "playback": {
     "clearQueue": ""
   },
-  "refreshLibrary": "",
   "settings": {
     "apiKeys": {
       "appName": ""
-    },
-    "devices": {
-      "deleteAllDevicesSuccess": ""
     }
   },
   "settingsSections": {
     "account": {
       "description": ""
     },
-    "networking": {
-      "description": ""
-    },
     "users": {
       "description": ""
     }
   },
-  "tooltips": {
-    "switchToDarkMode": ""
-  },
   "upNext": "",
-  "wizard": {
-    "languageSuccessfullySet": ""
-  },
   "youMayAlsoLike": ""
 }
