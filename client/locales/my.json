@@ -1,28 +1,17 @@
 {
-  "director": "",
   "imageType": {
     "banner": ""
   },
-  "links": {
-    "poweredByJellyfin": ""
-  },
   "metadataEditor": "",
-  "playback": {
-    "clearQueue": ""
-  },
   "settings": {
     "apiKeys": {
       "appName": ""
     }
   },
   "settingsSections": {
-    "account": {
-      "description": ""
-    },
     "users": {
       "description": ""
     }
   },
-  "upNext": "",
   "youMayAlsoLike": ""
 }
