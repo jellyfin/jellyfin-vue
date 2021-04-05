@@ -1,144 +1,80 @@
 {
-  "actors": "",
   "alphabetically": "",
-  "audio": "",
   "buttons": {
     "ok": ""
   },
-  "collections": "",
   "continueListening": "",
-  "darkModeToggle": "",
   "director": "",
-  "editMetadata": "",
   "episodeNumber": "",
-  "failedRetrievingDisplayPreferences": "",
   "features": "",
-  "general": "",
   "headerPaths": "",
-  "homeHeader": {
-    "welcome": {
-      "helloUser": ""
-    }
-  },
   "imageType": {
     "banner": "",
-    "logo": "",
     "thumb": ""
   },
   "item": {
-    "artist": {
-      "information": ""
-    },
     "person": {
       "birth": ""
-    },
-    "tracklist": {
-      "title": ""
     }
   },
   "libraries": "",
-  "libraryRefreshQueued": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "changeServer": "",
     "loginAs": "",
-    "selectUser": "",
     "serverDashboard": ""
   },
   "logsAndActivity": {
-    "activity": "",
     "noActivityFound": ""
   },
-  "metadata": {
-    "sourceAll": ""
-  },
   "metadataEditor": "",
-  "moreLikeThis": "",
   "nextUp": "",
-  "noNetworkConnection": "",
   "noTracksAvailable": "",
-  "operatingSystem": "",
   "parentalRating": "",
-  "person": "",
   "playback": {
     "clearQueue": "",
-    "playbackSource": {
-      "shuffle": ""
-    },
     "saveAsPlaylist": ""
   },
-  "present": "",
   "refreshLibrary": "",
-  "role": "",
   "series": "",
   "settings": {
     "apiKeys": {
-      "accessToken": "",
       "appName": "",
-      "description": "",
       "revokeAllSuccess": ""
     },
     "devices": {
-      "appVersion": "",
-      "deleteAllDevicesSuccess": "",
-      "devices": ""
+      "deleteAllDevicesSuccess": ""
     },
-    "help": "",
-    "logsAndActivity": {
-      "logs": ""
-    }
+    "help": ""
   },
   "settingsSections": {
     "account": {
       "description": ""
     },
-    "dlna": {
-      "description": ""
-    },
     "libraries": {
-      "description": ""
-    },
-    "logs": {
       "description": ""
     },
     "networking": {
       "description": ""
     },
-    "playback": {
-      "description": ""
-    },
     "scheduledTasks": {
-      "description": ""
-    },
-    "subtitles": {
       "description": ""
     },
     "users": {
       "description": ""
     }
   },
-  "sortByType": "",
   "studios": "",
-  "tags": "",
   "tooltips": {
     "switchToDarkMode": ""
   },
-  "type": "",
   "unableToRefreshLibrary": "",
-  "unexpectedError": "",
   "upNext": "",
-  "validation": {
-    "mustBeUrl": ""
-  },
   "videoTypes": "",
   "wizard": {
-    "allowRemoteAccess": "",
     "languageSuccessfullySet": "",
-    "remoteAccess": "",
     "setMetadataError": ""
   },
-  "writer": "",
   "youMayAlsoLike": ""
 }
