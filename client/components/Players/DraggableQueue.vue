@@ -69,6 +69,8 @@ export default Vue.extend({
   },
   computed: {
     queue: {
+      // TODO: Explore two-way data binding with Vuex 4, like what https://github.com/maoberlehner/vuex-map-fields provides
+      // for Vue 2.
       get(): BaseItemDto[] {
         return this.$store.state.playbackManager.queue;
       },
@@ -82,7 +84,8 @@ export default Vue.extend({
     ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
     ...mapState('playbackManager', ['currentItemIndex']),
     isPlaying(index: number): boolean {
-      return index === (this.currentItemIndex as unknown);
+      // TODO: This cast should be removed on Vue 3 migration, which should provide us better typings.
+      return index === ((this.currentItemIndex as unknown) as number);
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {
