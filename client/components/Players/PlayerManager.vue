@@ -79,26 +79,26 @@
                         <v-icon>mdi-close</v-icon>
                       </v-btn>
                       <v-btn icon @click="toggleMinimized">
-                        <v-icon> mdi-chevron-down </v-icon>
+                        <v-icon>mdi-chevron-down</v-icon>
                       </v-btn>
                       <v-btn
                         v-if="supportedFeatures.pictureInPicture"
                         icon
                         disabled
                       >
-                        <v-icon> mdi-picture-in-picture-bottom-right </v-icon>
+                        <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
                       </v-btn>
                     </div>
                     <p class="ma-0 text-center">{{ currentItemName }}</p>
                     <div class="d-flex">
                       <v-btn icon disabled>
-                        <v-icon> mdi-autorenew </v-icon>
+                        <v-icon>mdi-autorenew</v-icon>
                       </v-btn>
                       <v-btn v-if="supportedFeatures.airplay" icon disabled>
-                        <v-icon> mdi-apple-airplay </v-icon>
+                        <v-icon>mdi-apple-airplay</v-icon>
                       </v-btn>
                       <v-btn icon disabled>
-                        <v-icon> mdi-cast </v-icon>
+                        <v-icon>mdi-cast</v-icon>
                       </v-btn>
                     </div>
                   </div>
@@ -110,7 +110,7 @@
                     <div class="d-flex justify-space-between">
                       <div>
                         <v-btn icon @click="setPreviousTrack">
-                          <v-icon> mdi-skip-previous </v-icon>
+                          <v-icon>mdi-skip-previous</v-icon>
                         </v-btn>
                         <v-btn icon @click="playPause">
                           <v-icon>
@@ -118,19 +118,19 @@
                           </v-icon>
                         </v-btn>
                         <v-btn icon @click="setNextTrack">
-                          <v-icon icon> mdi-skip-next </v-icon>
+                          <v-icon icon>mdi-skip-next</v-icon>
                         </v-btn>
                       </div>
                       <div>
                         <v-btn icon disabled>
-                          <v-icon> mdi-closed-caption </v-icon>
+                          <v-icon>mdi-closed-caption</v-icon>
                         </v-btn>
                         <v-btn icon disabled>
-                          <v-icon> mdi-cog </v-icon>
+                          <v-icon>mdi-cog</v-icon>
                         </v-btn>
 
                         <v-btn icon disabled>
-                          <v-icon> mdi-fullscreen </v-icon>
+                          <v-icon>mdi-fullscreen</v-icon>
                         </v-btn>
                       </div>
                     </div>
