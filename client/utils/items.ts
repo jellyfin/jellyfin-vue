@@ -1,4 +1,4 @@
-import { BaseItemPerson } from '@jellyfin/client-axios';
+import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -9,6 +9,17 @@ export const validLibraryTypes = [
   'UserView',
   'playlists',
   'PhotoAlbum'
+];
+
+export const validPersonTypes = [
+  'Actor',
+  'Director',
+  'Composer',
+  'Writer',
+  'GuestStar',
+  'Producer',
+  'Conductor',
+  'Lyricist'
 ];
 
 export type CardShapes =
@@ -23,8 +34,13 @@ export type CardShapes =
  * @param {*} item - The item to be checked.
  * @returns {boolean} Whether the provided item is of type BaseItemPerson.
  */
-export function isPerson(item: unknown): item is BaseItemPerson {
-  if ((item as BaseItemPerson).Role) {
+export function isPerson(
+  item: BaseItemDto | BaseItemPerson
+): item is BaseItemPerson {
+  if (
+    'Role' in (item as BaseItemPerson) ||
+    (item.Type && validPersonTypes.includes(item.Type))
+  ) {
     return true;
   }
 
