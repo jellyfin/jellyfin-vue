@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -69,13 +69,21 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapState('deviceProfile', [
+      'clientName',
+      'deviceId',
+      'clientVersion',
+      'deviceName'
+    ])
+  },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async createAdminAccount(): Promise<void> {
       this.loading = true;
 
       try {
-        const token = `MediaBrowser Client="${this.$store.state.deviceProfile.clientName}", Device="${this.$store.state.deviceProfile.deviceName}", DeviceId="${this.$store.state.deviceProfile.deviceId}", Version="${this.$store.state.deviceProfile.clientVersion}"`;
+        const token = `MediaBrowser Client="${this.clientName}", Device="${this.deviceName}", DeviceId="${this.deviceId}", Version="${this.clientVersion}"`;
 
         this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', token);
 

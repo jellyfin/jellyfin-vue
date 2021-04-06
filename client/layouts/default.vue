@@ -2,7 +2,7 @@
   <v-app ref="app">
     <backdrop />
     <v-navigation-drawer
-      v-if="$store.state.page.showNavDrawer"
+      v-if="navDrawer"
       v-model="drawer"
       :temporary="$vuetify.breakpoint.mobile"
       :permanent="!$vuetify.breakpoint.mobile"
@@ -57,7 +57,7 @@
       :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
     >
       <v-app-bar-nav-icon
-        v-if="$vuetify.breakpoint.mobile && $store.state.page.showNavDrawer"
+        v-if="$vuetify.breakpoint.mobile && navDrawer"
         @click.stop="drawer = !drawer"
       />
       <v-btn
@@ -134,7 +134,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapState<AppState>({
-      opaqueAppBar: (state: AppState) => state.page.opaqueAppBar,
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
           return {
@@ -144,6 +143,9 @@ export default Vue.extend({
           };
         })
     }),
+    ...mapState('page', ['opaqueAppBar', 'navDrawer']),
+    ...mapState('user', ['accessToken']),
+    ...mapState('deviceProfile', ['deviceId']),
     items(): LayoutButton[] {
       return [
         {
@@ -158,7 +160,7 @@ export default Vue.extend({
     $route(to): void {
       if (to.fullPath.includes('fullscreen')) {
         this.showNavDrawer({ showNavDrawer: false });
-      } else if (!this.$store.state.page.showNavDrawer) {
+      } else if (!this.navDrawer) {
         this.showNavDrawer({ showNavDrawer: true });
       }
     },
@@ -175,8 +177,8 @@ export default Vue.extend({
     this.refreshUserViews();
 
     const socketParams = stringify({
-      api_key: this.$store.state.user.accessToken,
-      deviceId: this.$store.state.deviceProfile.deviceId
+      api_key: this.accessToken,
+      deviceId: this.deviceId
     });
     let socketUrl = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
 

@@ -10,7 +10,7 @@
         @sliderMove="update"
       >
         <swiper-slide
-          v-for="item in currentQueue"
+          v-for="item in queue"
           :key="item.Id"
           class="d-flex justify-center"
         >
@@ -25,8 +25,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import { mapGetters, mapActions } from 'vuex';
+import { ImageType } from '@jellyfin/client-axios';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import Swiper, { SwiperOptions } from 'swiper';
 import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
@@ -55,16 +55,7 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    currentItemIndex: {
-      get(): number {
-        return this.$store.state.playbackManager.currentItemIndex;
-      }
-    },
-    currentQueue: {
-      get(): BaseItemDto[] {
-        return this.$store.state.playbackManager.queue;
-      }
-    },
+    ...mapState('playbackManager', ['currentItemIndex', 'queue', 'status']),
     backdropHash: {
       get(): string {
         return this.getBlurhash(this.getCurrentItem, ImageType.Primary) || '';
@@ -72,16 +63,12 @@ export default Vue.extend({
     },
     isPaused: {
       get(): boolean {
-        return (
-          this.$store.state.playbackManager.status === PlaybackStatus.paused
-        );
+        return this.status === PlaybackStatus.paused;
       }
     },
     isPlaying: {
       get(): boolean {
-        return (
-          this.$store.state.playbackManager.status !== PlaybackStatus.stopped
-        );
+        return this.status !== PlaybackStatus.stopped;
       }
     }
   },
@@ -90,7 +77,7 @@ export default Vue.extend({
       this.swiper?.slideTo(newIndex);
       this.setBackdrop({ hash: this.backdropHash });
     },
-    currentQueue(): void {
+    queue(): void {
       this.update();
     },
     isPlaying: {
@@ -133,7 +120,7 @@ export default Vue.extend({
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
 
-      if (this.currentQueue[index]) {
+      if (this.queue[index]) {
         this.setCurrentIndex({ index });
       }
     },

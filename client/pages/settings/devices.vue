@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { DeviceInfo } from '@jellyfin/client-axios';
 
 export default Vue.extend({
@@ -72,6 +72,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapState('deviceProfile', ['deviceId']),
     headers(): { text: string; value: string }[] {
       return [
         {
@@ -115,7 +116,7 @@ export default Vue.extend({
     async deleteAllDevices(): Promise<void> {
       try {
         await this.devices?.forEach(async (device) => {
-          if (this.$store.state.deviceProfile.deviceId === device.Id) {
+          if (this.deviceId === device.Id) {
             return;
           }
 

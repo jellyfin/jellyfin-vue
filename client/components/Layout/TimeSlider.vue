@@ -15,7 +15,7 @@
   >
     <template #prepend>
       <span class="mt-1">
-        {{ formatTime(realPosition) }}
+        {{ formatTime(currentTime) }}
       </span>
     </template>
     <template #thumb-label>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
@@ -44,21 +44,17 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
+    ...mapState('playbackManager', ['currentTime']),
     runtime(): number {
       return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
     },
     sliderValue: {
       get(): number {
         if (!this.clicked) {
-          return this.$store.state.playbackManager.currentTime;
+          return this.currentTime;
         }
 
         return this.currentInput;
-      }
-    },
-    realPosition: {
-      get(): number {
-        return this.$store.state.playbackManager.currentTime;
       }
     }
   },
@@ -73,7 +69,7 @@ export default Vue.extend({
       this.currentInput = value;
     },
     onClick(): void {
-      this.currentInput = this.realPosition;
+      this.currentInput = this.currentTime;
       this.clicked = !this.clicked;
     }
   }

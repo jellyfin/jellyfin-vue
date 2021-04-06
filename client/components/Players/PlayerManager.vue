@@ -159,7 +159,7 @@
 <script lang="ts">
 import { ImageType } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
@@ -188,16 +188,12 @@ export default Vue.extend({
       'getNextItem',
       'getCurrentlyPlayingMediaType'
     ]),
+    ...mapState('playbackManager', ['status', 'isMinimized']),
     isPlaying(): boolean {
-      return (
-        this.$store.state.playbackManager.status !== PlaybackStatus.stopped
-      );
+      return this.status !== PlaybackStatus.stopped;
     },
     isPaused(): boolean {
-      return this.$store.state.playbackManager.status === PlaybackStatus.paused;
-    },
-    isMinimized(): boolean {
-      return this.$store.state.playbackManager.isMinimized;
+      return this.status === PlaybackStatus.paused;
     },
     currentItemName(): string {
       switch (this.getCurrentItem.Type) {

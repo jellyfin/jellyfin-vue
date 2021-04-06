@@ -3,13 +3,13 @@ import { ActionTree, MutationTree } from 'vuex';
 export interface PageState {
   title: string;
   opaqueAppBar: boolean;
-  showNavDrawer: boolean;
+  navDrawer: boolean;
 }
 
 export const defaultState = (): PageState => ({
   title: 'Jellyfin',
   opaqueAppBar: true,
-  showNavDrawer: true
+  navDrawer: true
 });
 
 export const state = defaultState;
@@ -40,7 +40,7 @@ export const mutations: MutationTree<PageState> = {
     state: PageState,
     { showNavDrawer }: NavDrawerMutationPayload
   ) {
-    state.showNavDrawer = showNavDrawer;
+    state.navDrawer = showNavDrawer;
   },
   CLEAR_PAGE(state: PageState) {
     Object.assign(state, defaultState());

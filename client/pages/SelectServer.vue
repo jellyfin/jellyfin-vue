@@ -41,11 +41,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
   },
   computed: {
-    ...mapState('servers', ['serverList'])
+    ...mapState('servers', ['serverList']),
+    ...mapState('page', ['title'])
   },
   watch: {
     serverList(): void {

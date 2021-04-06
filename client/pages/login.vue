@@ -50,7 +50,7 @@
 <script lang="ts">
 import isEmpty from 'lodash/isEmpty';
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
@@ -84,8 +84,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
+  },
+  computed: {
+    ...mapState('page', ['title'])
   },
   activated() {
     this.setPageTitle({ title: this.$t('login.login') });

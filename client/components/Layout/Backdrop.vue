@@ -13,19 +13,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    blurhash: {
-      get(): string {
-        return this.$store.state.backdrop.blurhash;
-      }
-    },
-    opacity: {
-      get(): number {
-        return this.$store.state.backdrop.opacity;
-      }
-    }
+    ...mapState('backdrop', ['blurhash', 'opacity'])
   }
 });
 </script>
