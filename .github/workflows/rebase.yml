@@ -13,7 +13,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           comment-id: ${{ github.event.comment.id }}
-          reactions: +1
+          reactions: '+1'
       - name: Checkout the latest code
         uses: actions/checkout@v2
         with:
