@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div>
+    <div ref="playerContainer">
       <audio-player
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
         class="d-none"
@@ -133,8 +133,14 @@
                             <v-icon>mdi-cog</v-icon>
                           </v-btn>
 
-                          <v-btn icon disabled>
-                            <v-icon>mdi-fullscreen</v-icon>
+                          <v-btn icon @click="toggleFullScreen">
+                            <v-icon>
+                              {{
+                                fullScreenVideo
+                                  ? 'mdi-fullscreen-exit'
+                                  : 'mdi-fullscreen'
+                              }}
+                            </v-icon>
                           </v-btn>
                         </div>
                       </div>
@@ -171,7 +177,8 @@ export default Vue.extend({
       fullScreenOverlayTimer: null as number | null,
       supportedFeatures: {} as SupportedFeaturesInterface,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      unsubscribe(): void {},
+      fullScreenVideo: false
     };
   },
   computed: {
@@ -588,6 +595,18 @@ export default Vue.extend({
         // @ts-expect-error - `togglePictureInPicture` does not exist in relevant types
         this.$refs.videoPlayer.togglePictureInPicture();
       }
+    },
+    toggleFullScreen(): void {
+      if (!this.$refs.playerContainer) {
+        return;
+      }
+
+      this.$fullscreen.toggle((this.$refs.playerContainer as Vue).$el, {
+        callback: (fullscreen: boolean) => {
+          this.fullScreenVideo = fullscreen;
+        },
+        wrap: true
+      });
     }
   }
 });
