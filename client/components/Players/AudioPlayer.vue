@@ -46,7 +46,9 @@ export default Vue.extend({
       'lastProgressUpdate',
       'currentTime',
       'currentVolume'
-    ])
+    ]),
+    ...mapState('deviceProfile', ['deviceId']),
+    ...mapState('user', ['accessToken'])
   },
   watch: {
     getCurrentItem(): void {
@@ -181,8 +183,8 @@ export default Vue.extend({
           > = {
             Static: true,
             mediaSourceId: mediaSource.Id,
-            deviceId: this.$store.state.deviceProfile.deviceId,
-            api_key: this.$store.state.user.accessToken
+            deviceId: this.deviceId,
+            api_key: this.accessToken
           };
 
           if (mediaSource.ETag) {

@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -58,6 +58,9 @@ export default Vue.extend({
       previousServerLength: 0
     };
   },
+  computed: {
+    ...mapState('servers', ['serverList'])
+  },
   activated() {
     /**
      * Instead of mapping the current state from the store, we use the number of servers that are present
@@ -65,7 +68,7 @@ export default Vue.extend({
      * properly and stop the "Change server" button from appearing right after adding the first server
      * and while the transition is playing.
      */
-    this.previousServerLength = this.$store.state.servers.serverList.length;
+    this.previousServerLength = this.serverList.length;
   },
   methods: {
     ...mapActions('servers', ['connectServer']),

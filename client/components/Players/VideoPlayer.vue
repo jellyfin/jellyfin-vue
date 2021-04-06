@@ -52,6 +52,8 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapState('playbackManager', ['currentTime', 'lastProgressUpdate']),
+    ...mapState('deviceProfile', ['deviceId']),
+    ...mapState('user', ['accessToken']),
     poster(): string | undefined {
       return this.getImageUrlForElement(ImageType.Backdrop, {
         itemId:
@@ -188,8 +190,8 @@ export default Vue.extend({
           > = {
             Static: true,
             mediaSourceId: mediaSource.Id,
-            deviceId: this.$store.state.deviceProfile.deviceId,
-            api_key: this.$store.state.user.accessToken
+            deviceId: this.deviceId,
+            api_key: this.accessToken
           };
 
           if (mediaSource.ETag) {

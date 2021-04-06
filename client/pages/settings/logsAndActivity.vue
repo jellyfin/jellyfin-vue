@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
 import { decodeHTML } from 'entities';
@@ -153,8 +153,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
+  },
+  computed: {
+    ...mapState('page', ['title']),
+    ...mapState('user', ['accessToken'])
   },
   activated() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
@@ -227,7 +231,7 @@ export default Vue.extend({
       return this.$dateFns.format(date, 'Ppp');
     },
     getLogFileLink(name: string): string {
-      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$store.state.user.accessToken}`;
+      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.accessToken}`;
     },
     decodeHTML
   }

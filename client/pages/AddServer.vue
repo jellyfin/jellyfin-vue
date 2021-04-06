@@ -13,15 +13,18 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
   auth: false,
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
+  },
+  computed: {
+    ...mapState('page', ['title'])
   },
   activated() {
     this.setPageTitle({ title: this.$t('login.addServer') });

@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
@@ -131,11 +131,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
   },
   computed: {
     ...mapGetters('items', ['getItem']),
+    ...mapState('page', ['title']),
     item(): BaseItemDto {
       return this.getItem(this.itemId);
     },

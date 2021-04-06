@@ -8,7 +8,7 @@
       hide-details
       thumb-label
       max="100"
-      :value="currentvolume"
+      :value="currentVolume"
       validate-on-blur
       @input="onVolumeChange"
     />
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -26,15 +26,13 @@ export default Vue.extend({
     };
   },
   computed: {
-    currentvolume(): number {
-      return this.$store.state.playbackManager.currentVolume;
-    },
+    ...mapState('playbackManager', ['currentVolume']),
     icon(): string {
-      if (this.currentvolume >= 80) {
+      if (this.currentVolume >= 80) {
         return 'mdi-volume-high';
-      } else if (this.currentvolume < 80 && this.currentvolume >= 25) {
+      } else if (this.currentVolume < 80 && this.currentVolume >= 25) {
         return 'mdi-volume-medium';
-      } else if (this.currentvolume < 25 && this.currentvolume >= 1) {
+      } else if (this.currentVolume < 25 && this.currentVolume >= 1) {
         return 'mdi-volume-low';
       } else {
         return 'mdi-volume-mute';
@@ -47,8 +45,8 @@ export default Vue.extend({
       this.setVolume({ volume: value });
     },
     toggleMute(): void {
-      if (this.currentvolume !== 0) {
-        this.previousVolume = this.currentvolume;
+      if (this.currentVolume !== 0) {
+        this.previousVolume = this.currentVolume;
         this.setVolume({ volume: 0 });
       } else {
         this.setVolume({ volume: this.previousVolume });

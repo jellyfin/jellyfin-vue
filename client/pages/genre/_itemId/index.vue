@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
@@ -83,11 +83,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
   },
   computed: {
     ...mapGetters('items', ['getItem', 'getItems']),
+    ...mapState('page', ['title']),
     genre(): BaseItemDto {
       return this.getItem(this.itemId);
     },

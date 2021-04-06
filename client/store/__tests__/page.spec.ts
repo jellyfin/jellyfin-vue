@@ -7,7 +7,7 @@ import { state, mutations, actions, PageState, defaultState } from '../page';
 const PAGE_SET_TEST_VALUE = {
   title: 'Test Title',
   opaqueAppBar: false,
-  showNavDrawer: false
+  navDrawer: false
 };
 
 let localVue: VueConstructor<Vue>;
@@ -43,10 +43,10 @@ describe('vuex: page', () => {
     store.replaceState({ ...defaultState() });
 
     store.commit('SET_NAVDRAWER_VISIBILITY', {
-      showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+      showNavDrawer: PAGE_SET_TEST_VALUE.navDrawer
     });
 
-    expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
+    expect(store.state.navDrawer).toBe(PAGE_SET_TEST_VALUE.navDrawer);
   });
 
   it('resets the state when "CLEAR_PAGE" is committed', () => {
@@ -82,10 +82,10 @@ describe('vuex: page', () => {
     store.replaceState({ ...defaultState() });
 
     store.dispatch('showNavDrawer', {
-      showNavDrawer: PAGE_SET_TEST_VALUE.showNavDrawer
+      showNavDrawer: PAGE_SET_TEST_VALUE.navDrawer
     });
 
-    expect(store.state.showNavDrawer).toBe(PAGE_SET_TEST_VALUE.showNavDrawer);
+    expect(store.state.navDrawer).toBe(PAGE_SET_TEST_VALUE.navDrawer);
   });
 
   it('resets the state when clearPage is dispatched', () => {

@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import pickBy from 'lodash/pickBy';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getShapeFromCollectionType } from '~/utils/items';
@@ -32,7 +32,7 @@ export default Vue.extend({
     // Filter for valid sections in Jellyfin Vue
     // TODO: Implement custom section order
     let homeSectionsArray = pickBy(
-      this.$store.state.clientSettings.CustomPrefs,
+      this.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&
@@ -71,11 +71,11 @@ export default Vue.extend({
         case 'latestmedia': {
           const latestMediaSections = [];
 
-          let userViews: BaseItemDto[] = this.$store.state.userViews.views;
+          let userViews: BaseItemDto[] = this.views;
 
           if (!userViews.length) {
             await this.$store.dispatch('userViews/refreshUserViews');
-            userViews = await this.$store.state.userViews.views;
+            userViews = await this.views;
           }
 
           if (userViews) {
@@ -140,8 +140,13 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
+  },
+  computed: {
+    ...mapState('page', ['title']),
+    ...mapState('clientSettings', ['CustomPrefs']),
+    ...mapState('userViews', ['views'])
   },
   activated() {
     if (this.$fetchState.timestamp <= Date.now() - 30000) {

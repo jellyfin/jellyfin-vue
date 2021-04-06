@@ -81,7 +81,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -94,10 +94,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
   },
   computed: {
+    ...mapState('page', ['title']),
     heading(): string {
       switch (this.wizardStage) {
         case 1:

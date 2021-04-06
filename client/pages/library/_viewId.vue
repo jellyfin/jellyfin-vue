@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
@@ -95,10 +95,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.$store.state.page.title
+      title: this.title
     };
   },
   computed: {
+    ...mapState('page', ['title']),
     hasViewTypes(): boolean {
       if (
         ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||

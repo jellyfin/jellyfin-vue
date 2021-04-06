@@ -198,7 +198,7 @@
 <script lang="ts">
 import { BaseItemDto, ImageType, RepeatMode } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
 import { PlaybackStatus } from '~/store/playbackManager';
@@ -213,31 +213,26 @@ export default Vue.extend({
       'getPreviousItem',
       'getNextItem'
     ]),
+    ...mapState('playbackManager', ['status', 'repeatMode', 'isShuffling']),
     isPaused(): boolean {
-      return this.$store.state.playbackManager.status === PlaybackStatus.paused;
+      return this.status === PlaybackStatus.paused;
     },
     isPlaying(): boolean {
-      return (
-        this.$store.state.playbackManager.status !== PlaybackStatus.stopped
-      );
+      return this.status !== PlaybackStatus.stopped;
     },
     isRepeating(): boolean {
-      return (
-        this.$store.state.playbackManager.repeatMode !== RepeatMode.RepeatNone
-      );
+      return this.repeatMode !== RepeatMode.RepeatNone;
     },
     repeatIcon(): string {
-      if (
-        this.$store.state.playbackManager.repeatMode === RepeatMode.RepeatOne
-      ) {
+      if (this.repeatMode === RepeatMode.RepeatOne) {
         return 'mdi-repeat-once';
       }
 
       return 'mdi-repeat';
     },
-    isShuffling(): boolean {
-      return this.$store.state.playbackManager.isShuffling;
-    },
+    // Checking for route is faster to switch the controls than checking for the store
+    // TODO: Remove this as soon as we can use the fullpage layout in music pplayer
+    // (i.e Vue 3) https://github.com/nuxt/nuxt.js/issues/8592
     isFullScreenPlayer(): boolean {
       return this.$route.fullPath === '/fullscreen/playback';
     }

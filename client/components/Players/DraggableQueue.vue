@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
@@ -80,8 +80,9 @@ export default Vue.extend({
   methods: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
     ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
+    ...mapState('playbackManager', ['currentItemIndex']),
     isPlaying(index: number): boolean {
-      return index === this.$store.state.playbackManager.currentItemIndex;
+      return index === (this.currentItemIndex as unknown);
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {
