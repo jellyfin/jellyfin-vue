@@ -290,12 +290,16 @@ export default Vue.extend({
                 includeItemTypes: this.viewType,
                 sortBy:
                   this.collectionInfo.CollectionType === 'homevideos' ||
-                  this.collectionInfo.Type === 'Folder'
+                  this.collectionInfo.Type === 'Folder' ||
+                  (this.collectionInfo.Type === 'CollectionFolder' &&
+                    !('CollectionType' in this.collectionInfo))
                     ? 'IsFolder,SortName'
                     : this.sortBy,
                 recursive:
                   this.collectionInfo.CollectionType === 'homevideos' ||
-                  this.collectionInfo.Type === 'Folder'
+                  this.collectionInfo.Type === 'Folder' ||
+                  (this.collectionInfo.Type === 'CollectionFolder' &&
+                    !('CollectionType' in this.collectionInfo))
                     ? undefined
                     : true,
                 sortOrder: 'Ascending',
