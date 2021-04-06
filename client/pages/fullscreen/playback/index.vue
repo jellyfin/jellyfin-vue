@@ -2,7 +2,7 @@
   <v-col class="px-0">
     <v-scale-transition appear>
       <swiper
-        v-if="currentQueue"
+        v-if="queue"
         ref="playbackSwiper"
         class="d-flex justify-center align-center"
         :options="swiperOptions"

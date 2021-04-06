@@ -231,7 +231,7 @@ export default Vue.extend({
       return 'mdi-repeat';
     },
     // Checking for route is faster to switch the controls than checking for the store
-    // TODO: Remove this as soon as we can use the fullpage layout in music pplayer
+    // TODO: Remove this as soon as we can use the fullpage layout in music player
     // (i.e Vue 3) https://github.com/nuxt/nuxt.js/issues/8592
     isFullScreenPlayer(): boolean {
       return this.$route.fullPath === '/fullscreen/playback';
