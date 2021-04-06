@@ -116,10 +116,10 @@
   "liked": "Kedvelt",
   "likes": "Kedvelések",
   "links": {
-    "helpTranslate": "Segítsd lefordítani Jellyfin-t a te nyelvedre",
+    "helpTranslate": "Jellyfin lefordítása a te nyelvedre",
     "poweredByJellyfin": "Ez a szerver Jellyfin-t üzemeltet",
     "readTheDocumentation": "Olvasd el a dokumentációt",
-    "reportAnIssue": "Jelents be egy hibát a Vue klienssel"
+    "reportAnIssue": "Jelents be egy hibát ezzel a klienssel"
   },
   "login": {
     "addServer": "Szerver hozzáadása",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Forrás",
     "sourceAll": "Összes",
+    "title": "Cím",
     "type": "Típus"
   },
   "metadataEditor": "Metaadat-szerkesztő",
@@ -377,7 +378,7 @@
   "video": "Videó",
   "videoTypes": "Videó típusok",
   "viewDetails": "Részletek megjelenítése",
-  "vueClientVersion": "Vue kliens verzió",
+  "vueClientVersion": "Kliens verziója",
   "wizard": {
     "administratorAccount": "Rendszergazda fiók",
     "allowRemoteAccess": "Távoli hozzáférés engedélyezése a szerverhez",
