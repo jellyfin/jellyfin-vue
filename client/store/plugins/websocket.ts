@@ -48,19 +48,21 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
       // @ts-expect-error -- The Data property doesn't describe its content
       const itemsToUpdate: string[] = state.socket.message.Data.ItemsUpdated.filter(
         (itemId: string) => {
-          return itemId in store.state.items.allIds;
+          return store.state.items.allIds.includes(itemId);
         }
       );
 
-      const updatedItems: BaseItemDto[] =
-        (
-          await store.$api.items.getItems({
-            userId: store.$auth.user?.Id,
-            ids: itemsToUpdate
-          })
-        ).data.Items || [];
+      if (itemsToUpdate) {
+        const updatedItems: BaseItemDto[] =
+          (
+            await store.$api.items.getItems({
+              userId: store.$auth.user?.Id,
+              ids: itemsToUpdate
+            })
+          ).data.Items || [];
 
-      store.dispatch('items/addItems', { items: updatedItems });
+        store.dispatch('items/addItems', { items: updatedItems });
+      }
     }
     // Socket disconnection
     else if (mutation.type === 'SOCKET_ONCLOSE') {
