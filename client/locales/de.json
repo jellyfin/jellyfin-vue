@@ -116,10 +116,10 @@
   "liked": "Gefällt mir",
   "likes": "Gefällt mir",
   "links": {
-    "helpTranslate": "Hilf mit Jellyfin in deine Sprache zu Übersetzen",
+    "helpTranslate": "Übersetzen Sie Jellyfin in Ihre Sprache",
     "poweredByJellyfin": "Dieser Server läuft mit Jellyfin",
     "readTheDocumentation": "Lese die Dokumentation",
-    "reportAnIssue": "Melde einen Fehler im Vue Client"
+    "reportAnIssue": "Ein Problem mit diesem Client melden"
   },
   "login": {
     "addServer": "Server hinzufügen",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Quelle",
     "sourceAll": "Alle",
+    "title": "Titel",
     "type": "Typ"
   },
   "metadataEditor": "Metadaten-Editor",
@@ -377,7 +378,7 @@
   "video": "Video",
   "videoTypes": "Videotypen",
   "viewDetails": "Details anzeigen",
-  "vueClientVersion": "Vue Clientversion",
+  "vueClientVersion": "Clientversion",
   "wizard": {
     "administratorAccount": "Administratorkonto",
     "allowRemoteAccess": "Erlaube Fernzugriff auf den Server",
