@@ -1,10 +1,12 @@
+import { AuthenticationResult } from '@jellyfin/client-axios';
 import { ActionTree, MutationTree } from 'vuex';
+import { AxiosResponse } from 'axios';
 
 export interface UserState {
   accessToken: string;
 }
 
-const defaultState = (): UserState => ({
+export const defaultState = (): UserState => ({
   accessToken: ''
 });
 
@@ -34,18 +36,16 @@ export const actions: ActionTree<UserState, UserState> = {
   },
   async loginRequest({ dispatch }, credentials) {
     try {
-      const { data } = await this.$auth.loginWith('jellyfin', credentials);
+      const response: AxiosResponse<AuthenticationResult> = await this.$auth.loginWith(
+        'jellyfin',
+        credentials
+      );
 
-      dispatch('loginRequestSuccess', data);
+      dispatch('setUser', { accessToken: response.data.AccessToken });
     } catch (err) {
       dispatch('loginRequestFailure', err);
       throw new Error(err);
     }
-  },
-  loginRequestSuccess({ dispatch }, response) {
-    dispatch('setUser', {
-      accessToken: response.AccessToken
-    });
   },
   loginRequestFailure({ dispatch }, error) {
     if (!this.$axios.defaults.baseURL) {
