@@ -29,7 +29,7 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getImageUrl(
+    getImageInfo(
       item: BaseItemDto,
       options?: {
         shape?: CardShapes;
@@ -60,7 +60,7 @@ declare module '@nuxt/types' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getImageUrl(
+    getImageInfo(
       item: BaseItemDto,
       options?: {
         shape?: CardShapes;
@@ -93,7 +93,7 @@ declare module 'vue/types/vue' {
       index?: number,
       checkParent?: boolean
     ): string | undefined;
-    getImageUrl(
+    getImageInfo(
       item: BaseItemDto,
       options?: {
         shape?: CardShapes;
@@ -269,7 +269,7 @@ const imageHelper = Vue.extend({
 
       return aspectRatio;
     },
-    getImageUrl(
+    getImageInfo(
       item: BaseItemDto | BaseItemPerson,
       {
         shape = getShapeFromItemType(item.Type),

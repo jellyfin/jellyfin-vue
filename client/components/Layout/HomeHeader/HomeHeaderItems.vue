@@ -165,7 +165,7 @@ export default Vue.extend({
       }
     },
     getLogo(item: BaseItemDto): string | undefined {
-      return this.getImageUrl(item, { preferLogo: true }).url;
+      return this.getImageInfo(item, { preferLogo: true }).url;
     },
     // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
     // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)

@@ -120,7 +120,7 @@ export default Vue.extend({
       this.$nextTick(() => {
         const element = this.$refs.imageElement as HTMLImageElement;
 
-        const imageInfo = this.getImageUrl(this.item, {
+        const imageInfo = this.getImageInfo(this.item, {
           preferThumb: this.type === ImageType.Thumb,
           preferBanner: this.type === ImageType.Banner,
           preferLogo: this.type === ImageType.Logo,
