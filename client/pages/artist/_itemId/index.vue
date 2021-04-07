@@ -86,7 +86,7 @@
                     <v-img
                       cover
                       aspect-ratio="1.7778"
-                      :src="getImageUrl(item, { preferBackdrop: true }).url"
+                      :src="getImageInfo(item, { preferBackdrop: true }).url"
                     />
                     <div v-if="item.Overview">
                       <h2 class="text-h6 mt-2">

@@ -51,7 +51,7 @@ export default Vue.extend({
     ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
     poster(): ImageUrlInfo {
-      return this.getImageUrl(this.getCurrentItem, { preferBackdrop: true });
+      return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
     }
   },
   watch: {
