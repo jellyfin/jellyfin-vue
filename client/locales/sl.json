@@ -15,7 +15,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "Od",
+  "byArtist": "Od {artist}",
   "cancel": "Prekliči",
   "castAndCrew": "Igralci in ekipa",
   "collections": "Zbirke",
