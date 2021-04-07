@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "Av",
+  "byArtist": "Av {artist}",
   "cancel": "Avbryt",
   "castAndCrew": "Rollebesetning og mannskap",
   "collections": "Samlinger",
