@@ -8,7 +8,7 @@
   "badRequest": "Zlá požiadavka. Skúste to znova",
   "biography": "Biografia",
   "browserNotSupported": "Prehrávanie tohto súboru nie je podporované vo vašom prehliadači.",
-  "byArtist": "Od",
+  "byArtist": "Od {artist}",
   "collections": "Kolekcie",
   "connect": "Pripojiť",
   "continueListening": "Pokračovať v počúvaní",
