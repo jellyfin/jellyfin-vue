@@ -100,7 +100,10 @@
     </v-app-bar>
     <v-main>
       <div class="pa-s">
-        <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+        <nuxt
+          keep-alive
+          :keep-alive-props="{ max: 10, exclude: ['fullscreen-playback'] }"
+        />
       </div>
     </v-main>
     <audio-controls />
