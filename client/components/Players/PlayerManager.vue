@@ -522,42 +522,42 @@ export default Vue.extend({
           artwork: [
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 96
                 }).url || '',
               sizes: '96x96'
             },
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 128
                 }).url || '',
               sizes: '128x128'
             },
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 192
                 }).url || '',
               sizes: '192x192'
             },
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 256
                 }).url || '',
               sizes: '256x256'
             },
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 384
                 }).url || '',
               sizes: '384x384'
             },
             {
               src:
-                this.getImageUrl(this.getCurrentItem, {
+                this.getImageInfo(this.getCurrentItem, {
                   width: 512
                 }).url || '',
               sizes: '512x512'
