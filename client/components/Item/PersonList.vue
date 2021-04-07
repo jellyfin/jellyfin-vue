@@ -9,11 +9,7 @@
       >
         <v-list-item-avatar>
           <v-avatar color="card">
-            <blurhash-image :item="item">
-              <template #placeholder>
-                <v-icon size="16">mdi-account</v-icon>
-              </template>
-            </blurhash-image>
+            <blurhash-image :item="item" icon-size="16" />
           </v-avatar>
         </v-list-item-avatar>
         <v-list-item-content>

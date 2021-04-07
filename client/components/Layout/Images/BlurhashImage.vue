@@ -1,16 +1,14 @@
 <template>
   <div ref="imageElement">
     <div v-if="!error" ref="img">
-      <v-fade-transition>
-        <blurhash-canvas
-          v-if="hash"
-          :hash="hash"
-          :width="width"
-          :height="height"
-          :punch="punch"
-          class="absolute"
-        />
-      </v-fade-transition>
+      <blurhash-canvas
+        v-if="hash"
+        :hash="hash"
+        :width="width"
+        :height="height"
+        :punch="punch"
+        class="absolute"
+      />
       <v-fade-transition>
         <img
           v-show="!loading"
@@ -73,7 +71,6 @@ export default Vue.extend({
   data() {
     return {
       image: '' as string | undefined,
-      tag: '' as string,
       loading: true,
       error: false,
       resetting: false
@@ -130,7 +127,6 @@ export default Vue.extend({
         });
 
         this.image = imageInfo.url;
-        this.tag = imageInfo.tag ? imageInfo.tag : 'no-image-tag';
 
         if (!this.image) {
           this.onError();
