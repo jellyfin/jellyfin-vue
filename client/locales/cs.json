@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "Od",
+  "byArtist": "Od {artist}",
   "cancel": "Zrušit",
   "castAndCrew": "Obsazení a personál",
   "collections": "Sbírky",
