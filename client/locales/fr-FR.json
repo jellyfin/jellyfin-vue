@@ -116,7 +116,7 @@
   "liked": "Aimé",
   "likes": "Aimés",
   "links": {
-    "helpTranslate": "Aidez à traduire Jellyfin dans votre langue",
+    "helpTranslate": "Traduisez Jellyfin dans votre langue",
     "poweredByJellyfin": "Ce serveur est propulsé par Jellyfin",
     "readTheDocumentation": "Lire la documentation",
     "reportAnIssue": "Reporter une erreur avec le client Vue"
@@ -378,7 +378,7 @@
   "video": "Vidéo",
   "videoTypes": "Types de vidéo",
   "viewDetails": "Afficher les détails",
-  "vueClientVersion": "Version du client Vue",
+  "vueClientVersion": "Version du client",
   "wizard": {
     "administratorAccount": "Compte Administrateur",
     "allowRemoteAccess": "Autoriser l'accès à distance au serveur",
