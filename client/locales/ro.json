@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "De",
+  "byArtist": "De {artist}",
   "cancel": "Anulează",
   "castAndCrew": "Distribuție și echipă",
   "collections": "Colecții",
