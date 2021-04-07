@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "Por",
+  "byArtist": "Por {artist}",
   "cancel": "Cancelar",
   "castAndCrew": "Elenco & Equipe",
   "collections": "Coleções",
