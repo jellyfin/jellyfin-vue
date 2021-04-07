@@ -3,9 +3,9 @@
  *
  * @mixin
  */
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { validLibraryTypes } from '~/utils/items';
+import { isPerson, validLibraryTypes } from '~/utils/items';
 
 declare module '@nuxt/types' {
   interface Context {
@@ -13,7 +13,7 @@ declare module '@nuxt/types' {
     canResume: (item: BaseItemDto) => boolean;
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
-    getItemIcon: (item: BaseItemDto) => string;
+    getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
   }
 
   interface NuxtAppOptions {
@@ -21,7 +21,7 @@ declare module '@nuxt/types' {
     canResume: (item: BaseItemDto) => boolean;
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
-    getItemIcon: (item: BaseItemDto) => string;
+    getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
   }
 }
 
@@ -31,7 +31,7 @@ declare module 'vue/types/vue' {
     canResume: (item: BaseItemDto) => boolean;
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
-    getItemIcon: (item: BaseItemDto) => string;
+    getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
   }
 }
 
@@ -153,37 +153,53 @@ const itemHelper = Vue.extend({
     /**
      * Returns the appropiate material design icon for the BaseItemDto provided
      *
-     * @param {BaseItemDto} item - The item we want to get the icon for
+     * @param {BaseItemDto | BaseItemPerson} item - The item we want to get the icon for
      * @returns {string} - The string that references the icon
      */
-    getItemIcon(item: BaseItemDto): string {
-      switch (item.Type) {
-        case 'Audio':
-          return 'mdi-music-note';
-        case 'Book':
-          return 'mdi-book-open-page-variant';
-        case 'BoxSet':
-          return 'mdi-folder-multiple';
-        case 'Folder':
-        case 'CollectionFolder':
-          return 'mdi-folder';
-        case 'Movie':
-          return 'mdi-filmstrip';
-        case 'MusicAlbum':
-          return 'mdi-album';
-        case 'MusicArtist':
-        case 'Person':
-          return 'mdi-account';
-        case 'PhotoAlbum':
-          return 'mdi-image-multiple';
-        case 'Playlist':
-          return 'mdi-playlist-play';
-        case 'Series':
-        case 'Episode':
-          return 'mdi-television-classic';
-        default:
-          return '';
+    getItemIcon(item: BaseItemDto | BaseItemPerson): string {
+      let itemIcon = '';
+
+      if (isPerson(item)) {
+        itemIcon = 'mdi-account';
+      } else {
+        switch (item.Type) {
+          case 'Audio':
+            itemIcon = 'mdi-music-note';
+            break;
+          case 'Book':
+            itemIcon = 'mdi-book-open-page-variant';
+            break;
+          case 'BoxSet':
+            itemIcon = 'mdi-folder-multiple';
+            break;
+          case 'Folder':
+          case 'CollectionFolder':
+            itemIcon = 'mdi-folder';
+            break;
+          case 'Movie':
+            itemIcon = 'mdi-filmstrip';
+            break;
+          case 'MusicAlbum':
+            itemIcon = 'mdi-album';
+            break;
+          case 'MusicArtist':
+          case 'Person':
+            itemIcon = 'mdi-account';
+            break;
+          case 'PhotoAlbum':
+            itemIcon = 'mdi-image-multiple';
+            break;
+          case 'Playlist':
+            itemIcon = 'mdi-playlist-play';
+            break;
+          case 'Series':
+          case 'Episode':
+            itemIcon = 'mdi-television-classic';
+            break;
+        }
       }
+
+      return itemIcon;
     }
   }
 });

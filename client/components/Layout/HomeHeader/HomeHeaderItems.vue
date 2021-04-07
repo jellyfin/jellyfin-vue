@@ -13,7 +13,7 @@
           <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
-            :item="item"
+            :item="getRelatedItem(item)"
             :type="'Backdrop'"
             :icon-size="$vuetify.breakpoint.mdAndUp ? '256' : '128'"
           />
