@@ -17,9 +17,9 @@
   "buttons": {
     "ok": "Ok"
   },
-  "byArtist": "Door",
+  "byArtist": "Door {artist}",
   "cancel": "Annuleren",
-  "castAndCrew": "Acteurs & Medewerkers",
+  "castAndCrew": "Acteurs & medewerkers",
   "collections": "Collecties",
   "communityRating": "Community-beoordeling",
   "confirm": "Bevestig",
@@ -116,10 +116,10 @@
   "liked": "Vind ik leuk",
   "likes": "Leuk",
   "links": {
-    "helpTranslate": "Help Jellyfin naar jouw taal te vertalen",
+    "helpTranslate": "Vertaal Jellyfin naar jouw taal",
     "poweredByJellyfin": "Deze server draait Jellyfin",
     "readTheDocumentation": "Lees de documentatie",
-    "reportAnIssue": "Meld een probleem met de Vue client"
+    "reportAnIssue": "Meld een probleem met deze client"
   },
   "login": {
     "addServer": "Server toevoegen",
@@ -153,6 +153,7 @@
   "metadata": {
     "source": "Bron",
     "sourceAll": "Alles",
+    "title": "Titel",
     "type": "Type"
   },
   "metadataEditor": "Metagegevens bewerker",
@@ -359,6 +360,7 @@
   "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt",
   "unableToRefreshLibrary": "Bibliotheek kan niet worden vernieuwd",
   "unableToToggleLike": "Kan de vind-ik-leuk-status van het element niet wijzigen",
+  "unableToTogglePlayed": "Kon niet de bekekenstatus wijzigen",
   "undefined": "Ongedefinieerd",
   "unexpectedError": "Onverwachte fout",
   "unhandledException": "Onverwerkte error",
@@ -376,7 +378,7 @@
   "video": "Video",
   "videoTypes": "Video Types",
   "viewDetails": "Bekijk details",
-  "vueClientVersion": "Vue-client versie",
+  "vueClientVersion": "Client versie",
   "wizard": {
     "administratorAccount": "Beheerdersaccount",
     "allowRemoteAccess": "Sta externe toegang tot de server toe",
