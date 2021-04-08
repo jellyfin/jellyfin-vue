@@ -50,7 +50,7 @@
   },
   "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De laatst gebruikte instellingen worden gebruikt.",
   "failedSettingDisplayPreferences": "Kan de weergavevoorkeuren niet bijwerken.",
-  "failedToRefreshItems": "Het verversen van items is mislukt",
+  "failedToRefreshItems": "Items vernieuwen mislukt",
   "favorite": "Favoriet",
   "features": "Kenmerken",
   "filter": "Filter",
