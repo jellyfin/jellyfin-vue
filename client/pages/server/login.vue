@@ -57,6 +57,23 @@ export default Vue.extend({
   layout: 'fullpage',
   middleware: 'serverMiddleware',
   auth: false,
+  async asyncData({ store, redirect, $api }) {
+    try {
+      await store.dispatch(
+        'servers/connectServer',
+        store.state.servers.serverUsed.address
+      );
+
+      const brandingData = (await $api.branding.getBrandingOptions()).data;
+
+      const publicUsers = (await $api.user.getPublicUsers({})).data;
+      const disclaimer = brandingData.LoginDisclaimer;
+
+      return { publicUsers, disclaimer };
+    } catch {
+      redirect('/server/select');
+    }
+  },
   data() {
     return {
       loginAsOther: false,
@@ -64,21 +81,6 @@ export default Vue.extend({
       publicUsers: [] as Array<UserDto>,
       disclaimer: ''
     };
-  },
-  async fetch() {
-    try {
-      await this.$store.dispatch(
-        'servers/connectServer',
-        this.$store.state.servers.serverUsed.address
-      );
-
-      const brandingData = (await this.$api.branding.getBrandingOptions()).data;
-
-      this.publicUsers = (await this.$api.user.getPublicUsers({})).data;
-      this.disclaimer = brandingData.LoginDisclaimer;
-    } catch {
-      this.$router.push('/server/select');
-    }
   },
   head() {
     return {
@@ -90,7 +92,6 @@ export default Vue.extend({
   },
   activated() {
     this.setPageTitle({ title: this.$t('login.login') });
-    this.$fetch();
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
@@ -109,6 +110,7 @@ export default Vue.extend({
           password: '',
           rememberMe: true
         });
+
         this.$router.replace('/');
       } else {
         this.currentUser = user;

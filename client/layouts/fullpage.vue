@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <nuxt keep-alive :keep-alive-props="{ max: 10 }" />
+      <nuxt />
     </v-main>
     <v-footer app color="rgba(0, 0, 0, 0)">
       <locale-switcher large top />
