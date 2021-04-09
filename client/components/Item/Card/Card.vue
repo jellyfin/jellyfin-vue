@@ -1,14 +1,12 @@
 <template>
-  <nuxt-link
-    :event="link ? 'click' : null"
-    :to="getItemDetailsLink(item)"
-    :class="link ? null : 'link-disabled'"
-    class="nuxt-link"
-  >
-    <div
-      class="card-box"
-      :class="{ 'card-margin': margin, 'link-disabled': !link }"
+  <div :class="{ 'card-margin': margin, 'link-disabled': !link }">
+    <nuxt-link
+      :event="link ? 'click' : null"
+      :to="getItemDetailsLink(item)"
+      :class="link ? null : 'link-disabled'"
+      class="card-box nuxt-link"
     >
+      <!-- CARD -->
       <div :class="shape || cardType" class="elevation-2">
         <div
           class="card-content card-content-button d-flex justify-center align-center darken-4"
@@ -69,22 +67,25 @@
           </div>
         </div>
       </div>
-      <div v-if="text" class="card-text">
-        <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
-        <nuxt-link
-          v-if="item.Type === 'MusicAlbum' && item.AlbumArtists.length > 0"
-          tag="div"
-          class="card-subtitle text--secondary text-truncate link"
-          :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
-        >
-          {{ cardSubtitle }}
-        </nuxt-link>
-        <div v-else class="card-subtitle text--secondary text-truncate">
-          {{ cardSubtitle }}
-        </div>
+    </nuxt-link>
+    <!-- CAPTIONS -->
+    <div v-if="text" class="card-text">
+      <!-- CARD TITLE -->
+      <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
+      <!-- CARD SUBTITLE -->
+      <nuxt-link
+        v-if="item.Type === 'MusicAlbum' && item.AlbumArtists.length > 0"
+        tag="div"
+        class="card-subtitle text--secondary text-truncate link"
+        :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
+      >
+        {{ cardSubtitle }}
+      </nuxt-link>
+      <div v-else class="card-subtitle text--secondary text-truncate">
+        {{ cardSubtitle }}
       </div>
     </div>
-  </nuxt-link>
+  </div>
 </template>
 
 <script lang="ts">
