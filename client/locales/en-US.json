@@ -90,7 +90,8 @@
   "item": {
     "artist": {
       "discography": "Discography",
-      "information": "Information"
+      "information": "Information",
+      "videos": "Videos"
     },
     "cast": "Cast",
     "composer": "Composer",
@@ -150,6 +151,12 @@
   },
   "manualLogin": "Manual login",
   "menu": "Menu",
+  "metadata": {
+    "source": "Source",
+    "sourceAll": "All",
+    "title": "Title",
+    "type": "Type"
+  },
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
   "more": "More",
@@ -396,11 +403,5 @@
   "writing": "Writing",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like",
-  "metadata": {
-    "source": "Source",
-    "sourceAll": "All",
-    "title": "Title",
-    "type": "Type"
-  }
+  "youMayAlsoLike": "You may also like"
 }

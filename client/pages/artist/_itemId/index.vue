@@ -15,7 +15,7 @@
           </v-responsive>
         </v-col>
         <v-col cols="12" sm="7">
-          <v-row justify="space-between">
+          <v-row justify="d-flex flex-column">
             <div class="ml-sm-4 d-flex flex-column">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
@@ -26,7 +26,8 @@
                 {{ item.Name }}
               </h1>
             </div>
-            <div class="d-flex align-center">
+            <div class="d-flex align-center ml-sm-4 my-2">
+              <play-button :items="[item]" />
               <item-menu :item="item" />
               <like-button :item="item" />
             </div>
@@ -37,7 +38,8 @@
         <v-col>
           <v-tabs v-model="activeTab" background-color="transparent">
             <v-tab :key="0">{{ $t('item.artist.discography') }}</v-tab>
-            <v-tab :key="1">{{ $t('item.artist.information') }}</v-tab>
+            <v-tab :key="1">{{ $t('item.artist.videos') }}</v-tab>
+            <v-tab :key="2">{{ $t('item.artist.information') }}</v-tab>
           </v-tabs>
           <v-tabs-items v-model="activeTab" class="transparent">
             <v-tab-item :key="0">
@@ -80,6 +82,15 @@
               </v-row>
             </v-tab-item>
             <v-tab-item :key="1">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <item-grid :items="musicVideos" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="2">
               <v-container>
                 <v-row>
                   <v-col>
@@ -144,12 +155,21 @@ export default Vue.extend({
       includeItemTypes: ['MusicAlbum']
     });
 
-    return { appearanceIds, itemId };
+    const musicVideoIds = await $items.getItems({
+      artistIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
+      recursive: true,
+      includeItemTypes: ['MusicVideo']
+    });
+
+    return { appearanceIds, musicVideoIds, itemId };
   },
   data() {
     return {
       activeTab: 0,
       appearanceIds: [] as string[],
+      musicVideoIds: [] as string[],
       itemId: '' as string
     };
   },
@@ -163,6 +183,9 @@ export default Vue.extend({
     ...mapState('page', ['title']),
     appearances(): BaseItemDto[] {
       return this.getItems(this.appearanceIds);
+    },
+    musicVideos(): BaseItemDto[] {
+      return this.getItems(this.musicVideoIds);
     },
     item(): BaseItemDto {
       return this.getItem(this.itemId);
