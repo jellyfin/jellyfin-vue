@@ -229,6 +229,8 @@ export default Vue.extend({
           this.item.AlbumArtists[0],
           'MusicArtist'
         );
+      } else if (this.item.Type === 'Episode') {
+        return this.getItemDetailsLink(this.item);
       }
 
       return undefined;
