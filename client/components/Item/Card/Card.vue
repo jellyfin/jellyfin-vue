@@ -70,7 +70,12 @@
     <!-- CAPTIONS -->
     <div v-if="text" class="card-text">
       <!-- CARD TITLE -->
-      <div class="card-title mt-1 text-truncate">{{ cardTitle }}</div>
+      <nuxt-link
+        class="link d-block card-title mt-1 text-truncate"
+        :to="cardTitleLink"
+      >
+        {{ cardTitle }}
+      </nuxt-link>
       <!-- CARD SUBTITLE -->
       <nuxt-link
         v-if="item.Type === 'MusicAlbum' && item.AlbumArtists.length > 0"
@@ -201,6 +206,16 @@ export default Vue.extend({
       }
 
       return '';
+    },
+    /**
+     * @returns {string} A link to be applied to the title
+     */
+    cardTitleLink(): string {
+      if (this.item.Type === 'Episode' && this.item.SeriesId) {
+        return this.getItemDetailsLink({ Id: this.item.SeriesId }, 'Series');
+      }
+
+      return this.getItemDetailsLink(this.item);
     },
     progress: {
       get(): number | false {
