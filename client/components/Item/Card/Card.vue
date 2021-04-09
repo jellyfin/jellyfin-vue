@@ -78,10 +78,9 @@
       </nuxt-link>
       <!-- CARD SUBTITLE -->
       <nuxt-link
-        v-if="item.Type === 'MusicAlbum' && item.AlbumArtists.length > 0"
-        tag="div"
-        class="card-subtitle text--secondary text-truncate link"
-        :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
+        v-if="cardSubtitleLink"
+        class="link d-block card-subtitle text--secondary text-truncate"
+        :to="cardSubtitleLink"
       >
         {{ cardSubtitle }}
       </nuxt-link>
@@ -216,6 +215,23 @@ export default Vue.extend({
       }
 
       return this.getItemDetailsLink(this.item);
+    },
+    /*
+     * @returns {string|undefined} A link to be applied to the subtitle
+     */
+    cardSubtitleLink(): string | undefined {
+      if (
+        this.item.Type === 'MusicAlbum' &&
+        this.item.AlbumArtists &&
+        this.item.AlbumArtists.length > 0
+      ) {
+        return this.getItemDetailsLink(
+          this.item.AlbumArtists[0],
+          'MusicArtist'
+        );
+      }
+
+      return undefined;
     },
     progress: {
       get(): number | false {
