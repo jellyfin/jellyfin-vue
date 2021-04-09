@@ -1,7 +1,6 @@
 <template>
   <div :class="{ 'card-margin': margin, 'link-disabled': !link }">
     <nuxt-link
-      :event="link ? 'click' : null"
       :to="getItemDetailsLink(item)"
       :class="link ? null : 'link-disabled'"
       class="card-box nuxt-link"
