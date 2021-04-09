@@ -2,7 +2,7 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="false"
+    :close-on-click="closeOnClick"
     :transition="'slide-y-transition'"
     top
     :nudge-top="nudgeTop"
@@ -13,6 +13,7 @@
     max-height="60vh"
     :z-index="500"
     class="menu"
+    @input="$emit('input', $event)"
   >
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
@@ -97,6 +98,10 @@ export default Vue.extend({
     nudgeTop: {
       type: Number,
       default: 0
+    },
+    closeOnClick: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
