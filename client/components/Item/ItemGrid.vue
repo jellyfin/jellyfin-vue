@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'large-grid': large }">
     <v-row v-if="loading">
       <v-col cols="12" class="card-grid-container">
         <skeleton-card v-for="n in 24" :key="n" text />
@@ -64,24 +64,28 @@ export default Vue.extend({
     loading: {
       type: Boolean,
       required: true
+    },
+    large: {
+      type: Boolean,
+      required: false
     }
   },
   computed: {
     itemsChunks(): Array<{ [id: number]: BaseItemDto }> {
-      let cardsPerLine = 8;
+      let cardsPerLine = this.large ? 4 : 8;
 
       if (this.$vuetify.breakpoint.smAndDown) {
-        cardsPerLine = 3;
+        cardsPerLine = this.large ? 2 : 3;
       } else if (
         this.$vuetify.breakpoint.smAndUp &&
         !this.$vuetify.breakpoint.lgAndUp
       ) {
-        cardsPerLine = 4;
+        cardsPerLine = this.large ? 2 : 4;
       } else if (
         this.$vuetify.breakpoint.lgAndUp &&
         !this.$vuetify.breakpoint.xlOnly
       ) {
-        cardsPerLine = 6;
+        cardsPerLine = this.large ? 3 : 6;
       }
 
       const chunks = chunk(this.items, cardsPerLine);
@@ -124,11 +128,19 @@ export default Vue.extend({
   .card-grid-container {
     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
   }
+
+  .large-grid .card-grid-container {
+    grid-template-columns: repeat(2, minmax(calc(100% / 2), 1fr));
+  }
 }
 
 @media #{map-get($display-breakpoints, 'sm-and-up')} {
   .card-grid-container {
     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+  }
+
+  .large-grid .card-grid-container {
+    grid-template-columns: repeat(2, minmax(calc(100% / 2), 1fr));
   }
 }
 
@@ -136,11 +148,19 @@ export default Vue.extend({
   .card-grid-container {
     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
   }
+
+  .large-grid .card-grid-container {
+    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+  }
 }
 
 @media #{map-get($display-breakpoints, 'xl-only')} {
   .card-grid-container {
     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+  }
+
+  .large-grid .card-grid-container {
+    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
   }
 }
 </style>
