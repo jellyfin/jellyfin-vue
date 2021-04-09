@@ -269,6 +269,24 @@ const imageHelper = Vue.extend({
 
       return aspectRatio;
     },
+    /**
+     * Generates the image information for a BaseItemDto or a BasePersonDto according to set priorities.
+     *
+     * @param {(BaseItemDto | BaseItemPerson)} item - Item to get image information for
+     * @param {object} [options] - Optional parameters for the function.
+     * @param {CardShapes} [options.shape] - Shape of the card or element, used to determine what kind of image to prefer
+     * @param {boolean} [options.preferThumb=false] - Prefer the Thumb images
+     * @param {boolean} [options.preferBanner=false] - Prefer the Banner images
+     * @param {boolean} [options.preferLogo=false] - Prefer the Logo images
+     * @param {boolean} [options.preferBackdrop=false] - Prefer the Backdrop images
+     * @param {boolean} [options.inheritThumb=false] - Inherit the thumb from parent items
+     * @param {number} [options.quality=90] - Sets the quality of the returned image
+     * @param {number} [options.width] - Sets the requested width of the image
+     * @param {number} [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
+     * @param {string} [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
+     *
+     * @returns {ImageUrlInfo} Information for the item, containing the full URL, image tag and blurhash.
+     */
     getImageInfo(
       item: BaseItemDto | BaseItemPerson,
       {
