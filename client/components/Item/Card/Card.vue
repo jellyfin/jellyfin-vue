@@ -51,7 +51,7 @@
             "
             v-model="progress"
             color="primary accent-4"
-            class="align-self-end"
+            class="card-progress"
           />
         </div>
         <div
@@ -322,6 +322,13 @@ export default Vue.extend({
   position: absolute;
   top: 1em;
   right: 1em;
+}
+
+.card-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .card-overlay {
