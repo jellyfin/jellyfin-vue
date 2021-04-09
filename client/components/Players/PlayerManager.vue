@@ -180,7 +180,11 @@
                         </div>
                         <div class="d-flex aligh-center">
                           <volume-slider class="mr-2" />
-                          <queue-button nudge-top="60" />
+                          <queue-button
+                            nudge-top="60"
+                            :close-on-click="true"
+                            @input="onQueueChangeHandler($event)"
+                          />
                           <subtitle-selection-button nudge-top="60" />
                           <playback-settings-button nudge-top="60" />
                           <v-btn
@@ -231,7 +235,8 @@ export default Vue.extend({
       fullScreenOverlayTimer: null as number | null,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {},
-      fullScreenVideo: false
+      fullScreenVideo: false,
+      queue: false
     };
   },
   computed: {
@@ -300,6 +305,12 @@ export default Vue.extend({
       'skipBackward',
       'changeCurrentTime'
     ]),
+    setFullscreenTimeout(): void {
+      this.fullScreenOverlayTimer = window.setTimeout(() => {
+        this.showFullScreenOverlay = false;
+        this.fullScreenOverlayTimer = null;
+      }, 3000);
+    },
     handleMouseMove(): void {
       if (
         this.isPlaying &&
@@ -311,10 +322,10 @@ export default Vue.extend({
         }
 
         this.showFullScreenOverlay = true;
-        this.fullScreenOverlayTimer = window.setTimeout(() => {
-          this.showFullScreenOverlay = false;
-          this.fullScreenOverlayTimer = null;
-        }, 3000);
+
+        if (!this.queue) {
+          this.setFullscreenTimeout();
+        }
       }
     },
     getContentClass(): string {
@@ -530,6 +541,16 @@ export default Vue.extend({
         },
         wrap: true
       });
+    },
+    onQueueChangeHandler(value: boolean): void {
+      this.queue = value;
+
+      if (value && this.fullScreenOverlayTimer) {
+        clearTimeout(this.fullScreenOverlayTimer);
+        this.fullScreenOverlayTimer = null;
+      } else if (!value) {
+        this.setFullscreenTimeout();
+      }
     }
   }
 });
