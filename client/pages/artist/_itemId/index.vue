@@ -37,42 +37,48 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" background-color="transparent">
-            <v-tab :key="0">{{ $t('item.artist.discography') }}</v-tab>
-            <v-tab :key="1">{{ $t('item.artist.videos') }}</v-tab>
-            <v-tab :key="2">{{ $t('item.artist.information') }}</v-tab>
+            <v-tab :key="0" :disabled="!discographyIds.length">
+              {{ $t('item.artist.discography') }}
+            </v-tab>
+            <v-tab :key="1" :disabled="!appearancesIds.length">
+              {{ $t('item.artist.appearsOn') }}
+            </v-tab>
+            <v-tab :key="2" :disabled="!musicVideoIds.length">
+              {{ $t('item.artist.videos') }}
+            </v-tab>
+            <v-tab :key="3" :disabled="!artistBackdrop.tag && !overview">
+              {{ $t('item.artist.information') }}
+            </v-tab>
           </v-tabs>
           <v-tabs-items v-model="activeTab" class="transparent">
             <v-tab-item :key="0">
               <v-row no-gutters>
                 <v-col cols="12" class="my-6">
-                  <v-row v-for="appearance in appearances" :key="appearance.Id">
+                  <v-row v-for="album in discography" :key="album.Id">
                     <v-col cols="12">
                       <div class="d-flex flex-column">
                         <v-row>
                           <v-col lg="2" sm="1">
-                            <card :item="appearance" overlay link />
+                            <card :item="album" overlay link />
                           </v-col>
                           <v-col class="py-2">
                             <div
                               class="text-subtitle-1 text--secondary font-weight-medium"
                             >
-                              {{ appearance.ProductionYear }}
+                              {{ album.ProductionYear }}
                             </div>
                             <nuxt-link
                               class="link font-weight-bold text-h6 text-md-h4"
                               tag="h2"
-                              :to="getItemDetailsLink(appearance)"
+                              :to="getItemDetailsLink(album)"
                             >
-                              {{ appearance.Name }}
+                              {{ album.Name }}
                             </nuxt-link>
                           </v-col>
                         </v-row>
                         <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
                           <v-col>
-                            <track-list
-                              v-if="appearance.Type === 'MusicAlbum'"
-                              :item="appearance"
-                            />
+                            <track-list :item="album" />
                           </v-col>
                         </v-row>
                       </div>
@@ -85,7 +91,7 @@
               <v-container>
                 <v-row>
                   <v-col>
-                    <item-grid :items="musicVideos" large />
+                    <item-grid :items="appearances" large />
                   </v-col>
                 </v-row>
               </v-container>
@@ -94,10 +100,19 @@
               <v-container>
                 <v-row>
                   <v-col>
+                    <item-grid :items="musicVideos" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="3">
+              <v-container>
+                <v-row>
+                  <v-col>
                     <v-img
                       cover
                       aspect-ratio="1.7778"
-                      :src="getImageInfo(item, { preferBackdrop: true }).url"
+                      :src="artistBackdrop.url"
                     />
                     <div v-if="item.Overview">
                       <h2 class="text-h6 mt-2">
@@ -130,7 +145,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
-import imageHelper from '~/mixins/imageHelper';
+import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
@@ -147,8 +162,17 @@ export default Vue.extend({
       await $userLibrary.getItem(itemId);
     }
 
-    const appearanceIds = await $items.getItems({
+    const discographyIds = await $items.getItems({
       albumArtistIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
+      recursive: true,
+      includeItemTypes: ['MusicAlbum']
+    });
+
+    const appearancesIds = await $items.getItems({
+      contributingArtistIds: [itemId],
+      excludeItemIds: [itemId],
       sortBy: 'PremiereDate,ProductionYear,SortName',
       sortOrder: 'Descending',
       recursive: true,
@@ -163,12 +187,23 @@ export default Vue.extend({
       includeItemTypes: ['MusicVideo']
     });
 
-    return { appearanceIds, musicVideoIds, itemId };
+    let activeTab = 3;
+
+    if (discographyIds.length) {
+      activeTab = 0;
+    } else if (appearancesIds.length) {
+      activeTab = 1;
+    } else if (musicVideoIds.length) {
+      activeTab = 2;
+    }
+
+    return { activeTab, discographyIds, appearancesIds, musicVideoIds, itemId };
   },
   data() {
     return {
       activeTab: 0,
-      appearanceIds: [] as string[],
+      discographyIds: [] as string[],
+      appearancesIds: [] as string[],
       musicVideoIds: [] as string[],
       itemId: '' as string
     };
@@ -181,8 +216,11 @@ export default Vue.extend({
   computed: {
     ...mapGetters('items', ['getItem', 'getItems']),
     ...mapState('page', ['title']),
+    discography(): BaseItemDto[] {
+      return this.getItems(this.discographyIds);
+    },
     appearances(): BaseItemDto[] {
-      return this.getItems(this.appearanceIds);
+      return this.getItems(this.appearancesIds);
     },
     musicVideos(): BaseItemDto[] {
       return this.getItems(this.musicVideoIds);
@@ -196,6 +234,9 @@ export default Vue.extend({
       } else {
         return '';
       }
+    },
+    artistBackdrop(): ImageUrlInfo {
+      return this.getImageInfo(this.item, { preferBackdrop: true });
     }
   },
   watch: {

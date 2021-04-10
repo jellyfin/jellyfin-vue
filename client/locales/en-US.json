@@ -89,6 +89,7 @@
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "item": {
     "artist": {
+      "appearsOn": "Appearances",
       "discography": "Discography",
       "information": "Information",
       "videos": "Videos"
