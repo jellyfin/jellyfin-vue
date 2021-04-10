@@ -17,7 +17,6 @@
           <v-icon>mdi-arrow-right</v-icon>
         </v-btn>
       </div>
-      <!--TODO: Switch to 'toEdge' after Vue 3 and swiper migration -->
       <swiper ref="swiper" class="swiper" :options="swiperOptions">
         <swiper-slide v-for="item in items" :key="item.Id">
           <card :shape="shape" :item="item" margin text overlay link />
@@ -89,15 +88,23 @@ export default Vue.extend({
           }
         }
       } as SwiperOptions,
-      swiper: null as null | Swiper
+      swiper: undefined as undefined | Swiper
     };
   },
   computed: {
     isEnd(): boolean {
-      return this.swiper?.isEnd || false;
+      if (this.swiper?.isEnd === undefined) {
+        return true;
+      }
+
+      return this.swiper?.isEnd;
     },
     isBeginning(): boolean {
-      return this.swiper?.isBeginning || false;
+      if (this.swiper?.isBeginning === undefined) {
+        return true;
+      }
+
+      return this.swiper?.isBeginning;
     }
   },
   mounted() {
