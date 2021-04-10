@@ -52,8 +52,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { mapActions } from 'vuex';
+import Vue, { PropType } from 'vue';
+import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
@@ -65,7 +65,7 @@ export default Vue.extend({
      * item.Id To be used to get related items
      */
     item: {
-      type: Object,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     vertical: {
@@ -89,39 +89,56 @@ export default Vue.extend({
       loading: true
     };
   },
-  watch: {
-    item(): void {
-      this.refreshItems();
-    }
+  computed: {
+    ...mapGetters('items', ['getItems', 'getMissingIds'])
   },
-  beforeMount() {
-    try {
-      this.refreshItems();
-    } catch (error) {
-      this.pushSnackbarMessage({
-        message: this.$t('unableGetRelated'),
-        color: 'error'
-      });
+  watch: {
+    'item.Id': {
+      immediate: true,
+      async handler(): Promise<void> {
+        if (this.item.Id) {
+          await this.refreshItems();
+        }
+      }
     }
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems(): Promise<void> {
-      this.loading = true;
+      try {
+        this.loading = true;
 
-      if (this.item.Id) {
-        const response = await this.$api.library.getSimilarItems({
-          itemId: this.item.Id,
-          userId: this.$auth.user?.Id,
-          limit: this.vertical ? 5 : 12
-        });
+        if (this.item.Id) {
+          const response = await this.$api.library.getSimilarItems({
+            itemId: this.item.Id,
+            userId: this.$auth.user?.Id,
+            limit: this.vertical ? 5 : 12
+          });
 
-        if (response.data.Items) {
-          this.relatedItems = response.data.Items;
+          if (response.data.Items) {
+            const itemIds: string[] = response.data.Items.map(
+              (item: BaseItemDto) => {
+                return item.Id as string;
+              }
+            );
+
+            const missingIds = this.getMissingIds(itemIds);
+
+            if (missingIds.length > 0) {
+              await this.$items.getItems({ ids: missingIds });
+            }
+
+            this.relatedItems = this.getItems(itemIds);
+          }
         }
+      } catch (error) {
+        this.pushSnackbarMessage({
+          message: this.$t('unableGetRelated'),
+          color: 'error'
+        });
+      } finally {
+        this.loading = false;
       }
-
-      this.loading = false;
     }
   }
 });

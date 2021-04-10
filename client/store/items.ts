@@ -19,8 +19,29 @@ export const state = defaultState;
 
 export const getters: GetterTree<ItemsState, ItemsState> = {
   getItem: (state) => (id: string): BaseItemDto | undefined => state.byId[id],
-  getItems: (state) => (ids: string[]): BaseItemDto[] =>
-    map(ids, (id) => state.byId[id])
+  getMissingIds: (state) => (ids: string[]): string[] => {
+    const missingIds = [] as string[];
+
+    ids.forEach((id) => {
+      if (!state.allIds.includes(id)) {
+        missingIds.push(id);
+      }
+    });
+
+    return missingIds;
+  },
+  getItems: (state) => (ids: string[]): BaseItemDto[] => {
+    const items = map(ids, (id) => state.byId[id]);
+
+    // @ts-expect-error - At runtime not all of the elements might be defined.
+    if (items.includes(undefined)) {
+      throw new Error(
+        'One of the provided item ids is not available in the store'
+      );
+    }
+
+    return items;
+  }
 };
 
 export const mutations: MutationTree<ItemsState> = {
