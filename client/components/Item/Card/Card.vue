@@ -1,9 +1,9 @@
 <template>
-  <div :class="{ 'card-margin': margin, 'link-disabled': !link }">
-    <nuxt-link
-      :to="getItemDetailsLink(item)"
-      :class="link ? null : 'link-disabled'"
-      class="card-box nuxt-link"
+  <div :class="{ 'card-margin': margin }">
+    <component
+      :is="link ? 'nuxt-link' : 'div'"
+      :to="link ? getItemDetailsLink(item) : null"
+      :class="{ 'card-box': link }"
     >
       <!-- CARD -->
       <div :class="shape || cardType" class="elevation-2">
@@ -66,7 +66,7 @@
           </div>
         </div>
       </div>
-    </nuxt-link>
+    </component>
     <!-- CAPTIONS -->
     <div v-if="text" class="card-text">
       <!-- CARD TITLE -->
@@ -277,16 +277,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-.nuxt-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.link-disabled {
-  user-select: none;
-  pointer-events: none !important;
-  cursor: initial !important;
-}
 
 .card-lower-buttons {
   position: absolute;
