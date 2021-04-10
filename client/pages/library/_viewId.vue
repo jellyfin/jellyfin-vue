@@ -131,14 +131,10 @@ export default Vue.extend({
   },
   watch: {
     async viewType(): Promise<void> {
-      this.loading = true;
       await this.refreshItems();
-      this.loading = false;
     },
     async sortBy(): Promise<void> {
-      this.loading = true;
       await this.refreshItems();
-      this.loading = false;
     }
   },
   async activated() {
@@ -236,6 +232,8 @@ export default Vue.extend({
       this.refreshItems();
     },
     async refreshItems(): Promise<void> {
+      this.loading = true;
+
       try {
         let itemsResponse;
 
