@@ -104,8 +104,13 @@
     "person": {
       "birth": "Birth",
       "birthPlace": "Birth place",
+      "books": "Books",
       "death": "Death",
-      "person": "Person"
+      "information": "information",
+      "movies": "Movies",
+      "person": "Person",
+      "photos": "Photos",
+      "shows": "Shows"
     },
     "tracklist": {
       "title": "Title"

@@ -63,7 +63,7 @@ export default Vue.extend({
     },
     loading: {
       type: Boolean,
-      required: true
+      required: false
     },
     large: {
       type: Boolean,
@@ -72,7 +72,7 @@ export default Vue.extend({
   },
   computed: {
     itemsChunks(): Array<{ [id: number]: BaseItemDto }> {
-      let cardsPerLine = this.large ? 4 : 8;
+      let cardsPerLine = this.large ? 5 : 8;
 
       if (this.$vuetify.breakpoint.smAndDown) {
         cardsPerLine = this.large ? 2 : 3;
@@ -80,12 +80,12 @@ export default Vue.extend({
         this.$vuetify.breakpoint.smAndUp &&
         !this.$vuetify.breakpoint.lgAndUp
       ) {
-        cardsPerLine = this.large ? 2 : 4;
+        cardsPerLine = this.large ? 3 : 4;
       } else if (
         this.$vuetify.breakpoint.lgAndUp &&
         !this.$vuetify.breakpoint.xlOnly
       ) {
-        cardsPerLine = this.large ? 3 : 6;
+        cardsPerLine = this.large ? 4 : 6;
       }
 
       const chunks = chunk(this.items, cardsPerLine);
@@ -141,7 +141,7 @@ export default Vue.extend({
   }
 
   .large-grid .card-grid-container {
-    grid-template-columns: repeat(2, minmax(calc(100% / 2), 1fr));
+    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
   }
 }
 
@@ -151,7 +151,7 @@ export default Vue.extend({
   }
 
   .large-grid .card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
   }
 }
 
@@ -161,7 +161,7 @@ export default Vue.extend({
   }
 
   .large-grid .card-grid-container {
-    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+    grid-template-columns: repeat(5, minmax(calc(100% / 5), 1fr));
   }
 }
 </style>

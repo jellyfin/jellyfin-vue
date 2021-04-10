@@ -1,80 +1,152 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12">
-        <v-row>
-          <v-col cols="2">
-            <v-responsive aspect-ratio="1">
-              <v-avatar
-                color="card"
-                width="100%"
-                height="100%"
-                class="elevation-2"
-              >
-                <blurhash-image :item="item" />
-              </v-avatar>
-            </v-responsive>
-          </v-col>
-          <v-col cols="7">
-            <div
-              class="
-                text-subtitle-1 text--secondary
-                font-weight-medium
-                text-capitalize
-              "
+  <item-cols>
+    <template #left>
+      <v-row justify="center" justify-sm="start">
+        <v-col cols="6" sm="3" class="d-flex flex-row">
+          <v-responsive aspect-ratio="1">
+            <v-avatar
+              color="card"
+              width="100%"
+              height="100%"
+              class="elevation-2"
             >
-              {{ $t('item.person.person') }}
+              <blurhash-image :item="item" />
+            </v-avatar>
+          </v-responsive>
+        </v-col>
+        <v-col cols="12" sm="7">
+          <v-row justify="d-flex flex-column">
+            <div class="ml-sm-4 d-flex flex-column">
+              <div
+                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+              >
+                {{ $t('item.person.person') }}
+              </div>
+              <h1 class="text-h4 text-md-h2 font-weight-light">
+                {{ item.Name }}
+              </h1>
             </div>
-            <h1 class="text-h2 font-weight-light">{{ item.Name }}</h1>
-            <v-col cols="9" class="pl-0 pr-0">
-              <p class="item-overview">{{ item.Overview }}</p>
-            </v-col>
-          </v-col>
-          <v-col cols="3">
-            <v-row v-if="birthDate">
-              <v-col cols="3" class="text--secondary">
-                {{ $t('item.person.birth') }}
-              </v-col>
-              <v-col cols="9">
-                {{ birthDate }}
-              </v-col>
-            </v-row>
-            <v-row v-if="deathDate">
-              <v-col cols="3" class="text--secondary">
-                {{ $t('item.person.death') }}
-              </v-col>
-              <v-col cols="9">
-                {{ deathDate }}
-              </v-col>
-            </v-row>
-            <v-row v-if="birthPlace">
-              <v-col cols="3" class="text--secondary">
-                {{ $t('item.person.birthPlace') }}
-              </v-col>
-              <v-col cols="9">
-                {{ birthPlace }}
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
-        <v-row v-if="movies.length > 0">
-          <v-col>
-            <client-only>
-              <swiper-section :title="$t('movies')" :items="movies" />
-            </client-only>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="shows.length > 0">
-          <v-col>
-            <client-only>
-              <swiper-section :title="$t('shows')" :items="shows" />
-            </client-only>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+            <div class="d-flex align-center ml-sm-4 my-2">
+              <play-button :items="[item]" />
+              <item-menu :item="item" />
+              <like-button :item="item" />
+            </div>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-tabs v-model="activeTab" background-color="transparent">
+            <v-tab :key="0" :disabled="!moviesIds.length">
+              {{ $t('item.person.movies') }}
+            </v-tab>
+            <v-tab :key="1" :disabled="!seriesIds.length">
+              {{ $t('item.person.shows') }}
+            </v-tab>
+            <v-tab :key="2" :disabled="!booksIds.length">
+              {{ $t('item.person.books') }}
+            </v-tab>
+            <v-tab :key="3" :disabled="!photosIds.length">
+              {{ $t('item.person.photos') }}
+            </v-tab>
+            <v-tab :key="4" :disabled="!personBackdrop.tag && !item.Overview">
+              {{ $t('item.person.information') }}
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="activeTab" class="transparent">
+            <v-tab-item :key="0">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <item-grid :items="movies" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="1">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <item-grid :items="series" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="2">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <item-grid :items="books" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="3">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <item-grid :items="photos" large />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+            <v-tab-item :key="4">
+              <v-container>
+                <v-row>
+                  <v-col>
+                    <v-img
+                      cover
+                      aspect-ratio="1.7778"
+                      :src="personBackdrop.url"
+                    />
+                    <v-row>
+                      <v-col cols="12" md="7">
+                        <h2 class="text-h6 mt-2">
+                          <span>{{ $t('biography') }}</span>
+                        </h2>
+                        <span class="item-overview" v-text="item.Overview" />
+                      </v-col>
+                      <v-col cols="12" md="5">
+                        <v-row no-gutters class="mt-2">
+                          <v-col cols="2" md="5" class="text--secondary">
+                            {{ $t('item.person.birth') }}
+                          </v-col>
+                          <v-col cols="9" md="7">
+                            {{ birthDate }}
+                          </v-col>
+                        </v-row>
+                        <v-row no-gutters>
+                          <v-col cols="2" md="5" class="text--secondary">
+                            {{ $t('item.person.death') }}
+                          </v-col>
+                          <v-col cols="9" md="7">
+                            {{ deathDate }}
+                          </v-col>
+                        </v-row>
+                        <v-row no-gutters>
+                          <v-col cols="2" md="5" class="text--secondary">
+                            {{ $t('item.person.birthPlace') }}
+                          </v-col>
+                          <v-col cols="9" md="7">
+                            {{ birthPlace }}
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-col>
+      </v-row>
+    </template>
+    <template #right>
+      <related-items :item="item" vertical>
+        {{ $t('moreLikeArtist', { artist: item.Name }) }}
+      </related-items>
+    </template>
+  </item-cols>
 </template>
 
 <script lang="ts">
@@ -82,7 +154,7 @@ import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import imageHelper from '~/mixins/imageHelper';
+import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
 
@@ -98,17 +170,59 @@ export default Vue.extend({
       await $userLibrary.getItem(itemId);
     }
 
-    const appearanceIds = await $items.getItems({
+    const moviesIds = await $items.getItems({
       personIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
       recursive: true,
-      collapseBoxSetItems: false
+      includeItemTypes: ['Movie']
     });
 
-    return { appearanceIds, itemId };
+    const seriesIds = await $items.getItems({
+      personIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
+      recursive: true,
+      includeItemTypes: ['Series']
+    });
+
+    const booksIds = await $items.getItems({
+      personIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
+      recursive: true,
+      includeItemTypes: ['Book']
+    });
+
+    const photosIds = await $items.getItems({
+      personIds: [itemId],
+      sortBy: 'PremiereDate,ProductionYear,SortName',
+      sortOrder: 'Descending',
+      recursive: true,
+      includeItemTypes: ['Photo']
+    });
+
+    let activeTab = 4;
+
+    if (moviesIds.length) {
+      activeTab = 0;
+    } else if (seriesIds.length) {
+      activeTab = 1;
+    } else if (booksIds.length) {
+      activeTab = 2;
+    } else if (photosIds.length) {
+      activeTab = 3;
+    }
+
+    return { activeTab, moviesIds, seriesIds, booksIds, photosIds, itemId };
   },
   data() {
     return {
-      appearanceIds: [] as string[],
+      activeTab: 0,
+      moviesIds: [] as string[],
+      seriesIds: [] as string[],
+      booksIds: [] as string[],
+      photosIds: [] as string[],
       itemId: '' as string
     };
   },
@@ -117,12 +231,23 @@ export default Vue.extend({
     item(): BaseItemDto {
       return this.getItem(this.itemId);
     },
-    appearances(): BaseItemDto[] {
-      return this.getItems(this.appearanceIds);
+    movies(): BaseItemDto[] {
+      return this.getItems(this.moviesIds);
+    },
+    series(): BaseItemDto[] {
+      return this.getItems(this.seriesIds);
+    },
+    books(): BaseItemDto[] {
+      return this.getItems(this.booksIds);
+    },
+    photos(): BaseItemDto[] {
+      return this.getItems(this.photosIds);
     },
     birthDate(): Date | null {
       if (this.item.PremiereDate) {
-        return new Date(this.item.PremiereDate);
+        return this.$dateFns.format(new Date(this.item.PremiereDate), 'P', {
+          locale: this.$i18n.locale
+        });
       } else {
         return null;
       }
@@ -130,7 +255,9 @@ export default Vue.extend({
     deathDate: {
       get(): Date | null {
         if (this.item.EndDate) {
-          return new Date(this.item.EndDate);
+          return this.$dateFns.format(new Date(this.item.EndDate), 'P', {
+            locale: this.$i18n.locale
+          });
         } else {
           return null;
         }
@@ -145,23 +272,8 @@ export default Vue.extend({
         }
       }
     },
-    movies: {
-      get(): BaseItemDto[] {
-        return this.appearances
-          .filter((appearance: BaseItemDto) => {
-            return appearance.Type === 'Movie';
-          })
-          .slice(0, 10);
-      }
-    },
-    shows: {
-      get(): BaseItemDto[] {
-        return this.appearances
-          .filter((appearance: BaseItemDto) => {
-            return appearance.Type === 'Series';
-          })
-          .slice(0, 10);
-      }
+    personBackdrop(): ImageUrlInfo {
+      return this.getImageInfo(this.item, { preferBackdrop: true });
     }
   },
   watch: {
