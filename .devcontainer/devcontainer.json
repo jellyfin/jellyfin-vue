@@ -6,7 +6,7 @@
     "dockerfile": "Dockerfile",
     // Update 'VARIANT' to pick a Node version: 10, 12, 14
     "args": {
-      "VARIANT": "12"
+      "VARIANT": "14"
     }
   },
   // Set *default* container specific settings.json values on container create.
@@ -15,9 +15,11 @@
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-    "dbaeumer.vscode-eslint",
     "octref.vetur",
-    "esbenp.prettier-vscode"
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "lokalise.i18n-ally",
+    "ryanluker.vscode-coverage-gutters"
   ],
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [3000],
