@@ -20,15 +20,7 @@ export const state = defaultState;
 export const getters: GetterTree<ItemsState, ItemsState> = {
   getItem: (state) => (id: string): BaseItemDto | undefined => state.byId[id],
   getMissingIds: (state) => (ids: string[]): string[] => {
-    const missingIds = [] as string[];
-
-    ids.forEach((id) => {
-      if (!state.allIds.includes(id)) {
-        missingIds.push(id);
-      }
-    });
-
-    return missingIds;
+    return ids.filter((id) => !state.allIds.includes(id));
   },
   getItems: (state) => (ids: string[]): BaseItemDto[] => {
     const items = map(ids, (id) => state.byId[id]);

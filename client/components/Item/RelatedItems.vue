@@ -96,19 +96,17 @@ export default Vue.extend({
     'item.Id': {
       immediate: true,
       async handler(): Promise<void> {
-        if (this.item.Id) {
-          await this.refreshItems();
-        }
+        await this.refreshItems();
       }
     }
   },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems(): Promise<void> {
-      try {
-        this.loading = true;
+      if (this.item.Id) {
+        try {
+          this.loading = true;
 
-        if (this.item.Id) {
           const response = await this.$api.library.getSimilarItems({
             itemId: this.item.Id,
             userId: this.$auth.user?.Id,
@@ -130,14 +128,14 @@ export default Vue.extend({
 
             this.relatedItems = this.getItems(itemIds);
           }
+        } catch (error) {
+          this.pushSnackbarMessage({
+            message: this.$t('unableGetRelated'),
+            color: 'error'
+          });
+        } finally {
+          this.loading = false;
         }
-      } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('unableGetRelated'),
-          color: 'error'
-        });
-      } finally {
-        this.loading = false;
       }
     }
   }
