@@ -17,7 +17,7 @@
   "buttons": {
     "ok": "Oke"
   },
-  "byArtist": "Oleh",
+  "byArtist": "Oleh {artist}",
   "cancel": "Batalkan",
   "castAndCrew": "Pemeran & Kru",
   "collections": "Koleksi",
