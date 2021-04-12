@@ -119,7 +119,7 @@
     "helpTranslate": "Traduisez Jellyfin dans votre langue",
     "poweredByJellyfin": "Ce serveur est propulsé par Jellyfin",
     "readTheDocumentation": "Lire la documentation",
-    "reportAnIssue": "Reporter une erreur avec le client Vue"
+    "reportAnIssue": "Signaler une erreur avec ce client"
   },
   "login": {
     "addServer": "Ajouter un serveur",
