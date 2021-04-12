@@ -42,11 +42,7 @@
               v-if="item && item.GenreItems && item.GenreItems.length > 0"
               align="center"
             >
-              <v-col
-                :cols="12"
-                :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate"
-              >
+              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </v-col>
               <v-col class="px-0" :cols="12" :sm="10">
