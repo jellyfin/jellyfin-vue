@@ -13,7 +13,8 @@ module.exports = {
     'plugin:promise/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript'
+    'plugin:import/typescript',
+    'plugin:vue/recommended'
   ],
   plugins: ['prettier', 'promise', 'import', 'jsdoc', 'lodash'],
   rules: {
@@ -103,6 +104,7 @@ module.exports = {
         'vue/v-on-style': 'error',
         'vue/v-slot-style': 'error',
         'vue/attributes-order': 'error',
+        'vue/no-unused-refs': 'error',
         'vue/html-self-closing': [
           'error',
           {
