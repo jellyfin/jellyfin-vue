@@ -66,6 +66,7 @@ export default Vue.extend({
     nextEndsAt(): string {
       const seconds =
         this.ticksToMs(this.getNextItem?.RunTimeTicks) + this.timeLeft * 1000;
+
       return this.$dateFns.format(Date.now() + seconds, 'p');
     },
     nextName(): string {
