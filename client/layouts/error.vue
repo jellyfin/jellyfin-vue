@@ -22,7 +22,9 @@ export default Vue.extend({
   props: {
     error: {
       type: Object as PropType<NuxtError>,
-      default: { statusCode: -1, message: '' }
+      default: (): NuxtError => {
+        return { statusCode: -1, message: '' };
+      }
     }
   },
   computed: {

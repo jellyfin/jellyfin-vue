@@ -4,7 +4,7 @@
       <v-list-item
         v-for="linkItem in linkItems"
         :key="linkItem.name"
-        ref="noreferrer noopener"
+        rel="noreferrer noopener"
         :href="linkItem.link"
         target="_blank"
       >

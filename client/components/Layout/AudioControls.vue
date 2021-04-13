@@ -17,7 +17,6 @@
             <nuxt-link :to="'/fullscreen/playback'">
               <v-avatar
                 v-if="!isFullScreenPlayer"
-                ref="albumCover"
                 tile
                 :size="$vuetify.breakpoint.xs ? 50 : 85"
                 color="primary"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <validation-observer v-slot="{ invalid }">
-      <v-form ref="form" :disabled="loading" @submit.prevent="userLogin">
+      <v-form :disabled="loading" @submit.prevent="userLogin">
         <validation-provider
           v-slot="{ errors }"
           name="username"

@@ -10,7 +10,7 @@
         {{ $t('settings.devices.deleteAll') }}
       </v-btn>
       <v-btn
-        ref="noreferrer noopener"
+        rel="noreferrer noopener"
         href="https://jellyfin.org/docs/general/server/devices.html"
         target="_blank"
       >
