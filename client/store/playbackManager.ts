@@ -177,11 +177,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return null;
   },
   getCurrentTime: (state) => {
-    if (state.currentTime !== null) {
-      return state.currentTime;
-    } else {
-      return null;
-    }
+    return state.currentTime;
   }
 };
 
