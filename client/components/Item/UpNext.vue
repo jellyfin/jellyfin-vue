@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
@@ -49,7 +49,6 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapState('playbackManager', ['queue', 'currentItemIndex']),
     ...mapGetters('playbackManager', ['getNextItem']),
     nextSeriesName(): string {
       return this.getNextItem?.SeriesName;
@@ -72,9 +71,6 @@ export default Vue.extend({
     nextName(): string {
       return this.getNextItem?.Name;
     }
-  },
-  methods: {
-    ...mapActions('playbackManager', ['setNextTrack'])
   }
 });
 </script>
