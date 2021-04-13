@@ -72,7 +72,7 @@ export default Vue.extend({
       // TODO: Explore two-way data binding with Vuex 4, like what https://github.com/maoberlehner/vuex-map-fields provides
       // for Vue 2.
       get(): BaseItemDto[] {
-        return this.$store.state.playbackManager.queue;
+        return this.getQueueItems();
       },
       set(newValue: BaseItemDto[]): void {
         this.setNewQueue({ queue: newValue });
@@ -80,7 +80,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
+    ...mapGetters('playbackManager', ['getCurrentItem', 'getQueueItems']),
     ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
     ...mapState('playbackManager', ['currentItemIndex']),
     isPlaying(index: number): boolean {

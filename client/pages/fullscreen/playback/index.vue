@@ -54,8 +54,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapState('playbackManager', ['currentItemIndex', 'queue', 'status']),
+    ...mapGetters('playbackManager', ['getQueueItems', 'getCurrentItem']),
+    ...mapState('playbackManager', ['currentItemIndex', 'status']),
     backdropHash: {
       get(): string {
         return this.getBlurhash(this.getCurrentItem, ImageType.Primary) || '';
@@ -120,7 +120,7 @@ export default Vue.extend({
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
 
-      if (this.queue[index]) {
+      if (this.getQueueItems[index]) {
         this.setCurrentIndex({ index });
       }
     },

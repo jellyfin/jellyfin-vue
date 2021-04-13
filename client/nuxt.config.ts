@@ -170,7 +170,11 @@ const config: NuxtConfig = {
         path: '/'
       }
     },
-    plugins: ['~/plugins/userLibraryPlugin.ts', '~/plugins/itemsPlugin.ts']
+    plugins: [
+      '~/plugins/userLibraryPlugin.ts',
+      '~/plugins/itemsPlugin.ts',
+      '~/plugins/playbackPlugin.ts'
+    ]
   },
   i18n: {
     locales: [

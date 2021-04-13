@@ -6,7 +6,7 @@ import {
   ChapterInfo,
   MediaSourceInfo
 } from '@jellyfin/client-axios';
-import { translateItemsForPlayback } from '~/utils/playbackUtils';
+import { RootState } from '.';
 
 export enum PlaybackStatus {
   Stopped,
@@ -45,8 +45,8 @@ export interface PlaybackManagerState {
   isShuffling: boolean;
   isMinimized: boolean;
   repeatMode: RepeatMode;
-  queue: readonly BaseItemDto[];
-  originalQueue: readonly BaseItemDto[];
+  queue: readonly string[];
+  originalQueue: readonly string[];
   playSessionId: string | null;
   playbackInitiator: BaseItemDto | null;
   playbackInitMode: InitMode;
@@ -78,51 +78,58 @@ export const defaultState = (): PlaybackManagerState => ({
 
 export const state = defaultState;
 
-export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
-  getCurrentItem: (state) => {
+export const getters: GetterTree<PlaybackManagerState, RootState> = {
+  getQueueItems: (state, _getters, _rootState, rootGetters) => {
+    return rootGetters['items/getItems'](state.queue);
+  },
+  getCurrentItem: (state, _getters, _rootState, rootGetters) => {
     if (
       state.currentItemIndex !== null &&
       state.queue[state.currentItemIndex]
     ) {
-      return state.queue[state.currentItemIndex];
+      return rootGetters['items/getItem'](state.queue[state.currentItemIndex]);
     }
 
     return null;
   },
-  getPreviousItem: (state) => {
+  getPreviousItem: (state, _getters, _rootState, rootGetters) => {
     if (state.currentItemIndex === 0) {
       return null;
     } else if (
       state.lastItemIndex !== null &&
       state.queue[state.lastItemIndex]
     ) {
-      return state.queue[state.lastItemIndex];
+      return rootGetters['items/getItem'](state.queue[state.lastItemIndex]);
     }
 
     return null;
   },
-  getNextItem: (state) => {
+  getNextItem: (state, _getters, _rootState, rootGetters) => {
     if (
       state.currentItemIndex !== null &&
       state.currentItemIndex + 1 < state.queue.length
     ) {
-      return state.queue[state.currentItemIndex + 1];
+      return rootGetters['items/getItem'](
+        state.queue[state.currentItemIndex + 1]
+      );
     } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      return state.queue[0];
+      return rootGetters['items/getItem'](state.queue[0]);
     }
 
     return null;
   },
-  getCurrentlyPlayingType: (state) => {
+  getCurrentlyPlayingType: (state, _getters, _rootState, rootGetters) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex]?.Type;
+      return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
+        ?.Type;
     }
 
     return null;
   },
-  getCurrentlyPlayingMediaType: (state) => {
+  getCurrentlyPlayingMediaType: (state, _getters, _rootState, rootGetters) => {
     if (state.currentItemIndex !== null) {
-      return state.queue?.[state.currentItemIndex]?.MediaType;
+      return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
+        ?.MediaType;
     }
 
     return null;
@@ -130,7 +137,7 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
 };
 
 interface QueueMutationPayload {
-  queue: BaseItemDto[];
+  queue: string[];
 }
 
 interface CurrentItemIndexMutationPayload {
@@ -147,10 +154,10 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     state.queue = Object.freeze(queue);
   },
   ADD_TO_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
-    state.queue = [...state.queue, ...queue];
+    state.queue = Object.freeze([...state.queue, ...queue]);
   },
   CLEAR_QUEUE(state: PlaybackManagerState) {
-    state.queue = [];
+    state.queue = Object.freeze([]);
   },
   SET_CURRENT_ITEM_INDEX(
     state: PlaybackManagerState,
@@ -274,7 +281,7 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   }
 };
 
-export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
+export const actions: ActionTree<PlaybackManagerState, RootState> = {
   async play(
     { commit, state },
     {
@@ -298,9 +305,12 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     let translatedItems;
 
     if (!startShuffled) {
-      translatedItems = await translateItemsForPlayback(item);
+      translatedItems = await this.$playback.translateItemsForPlayback(item);
     } else {
-      translatedItems = await translateItemsForPlayback(item, true);
+      translatedItems = await this.$playback.translateItemsForPlayback(
+        item,
+        true
+      );
     }
 
     console.time('setting queue');
@@ -335,7 +345,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   async playNext({ commit, state }, { item }: { item: BaseItemDto }) {
     const queue = Array.from(state.queue);
-    const translatedItem = await translateItemsForPlayback(item);
+    const translatedItem = await this.$playback.translateItemsForPlayback(item);
 
     if (state.currentItemIndex !== null) {
       queue.splice(state.currentItemIndex + 1, 0, ...translatedItem);
@@ -344,7 +354,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   async addToQueue({ commit, state }, { item }: { item: BaseItemDto }) {
     const queue = Array.from(state.queue);
-    const translatedItem = await translateItemsForPlayback(item);
+    const translatedItem = await this.$playback.translateItemsForPlayback(item);
 
     queue.push(...translatedItem);
     commit('SET_QUEUE', { queue });
