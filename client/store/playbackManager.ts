@@ -6,6 +6,7 @@ import {
   MediaSourceInfo
 } from '@jellyfin/client-axios';
 import { RootState } from '.';
+import { ticksToMs } from '~/mixins/timeUtils';
 
 export enum PlaybackStatus {
   Stopped,
@@ -178,6 +179,29 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getCurrentTime: (state) => {
     return state.currentTime;
+  },
+  getDuration: (state, _getters, _rootState, rootGetters) => {
+    if (state.currentItemIndex !== null) {
+      const currentItem = rootGetters['items/getItem'](
+        state.queue?.[state.currentItemIndex]
+      );
+
+      return ticksToMs(currentItem?.RunTimeTicks) / 1000;
+    }
+
+    return null;
+  },
+  getTimeLeft: (state, _getters, _rootState, rootGetters) => {
+    if (state.currentItemIndex !== null && state.currentTime !== null) {
+      const currentItem = rootGetters['items/getItem'](
+        state.queue?.[state.currentItemIndex]
+      );
+      const duration = ticksToMs(currentItem?.RunTimeTicks) / 1000;
+
+      return parseInt((duration - state.currentTime).toFixed());
+    }
+
+    return null;
   }
 };
 
