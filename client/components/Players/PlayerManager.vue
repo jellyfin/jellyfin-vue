@@ -275,10 +275,9 @@ export default Vue.extend({
       'getCurrentItem',
       'getPreviousItem',
       'getNextItem',
-      'getCurrentlyPlayingMediaType',
-      'getCurrentTime'
+      'getCurrentlyPlayingMediaType'
     ]),
-    ...mapState('playbackManager', ['status', 'isMinimized']),
+    ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
     isPlaying(): boolean {
       return this.status !== PlaybackStatus.Stopped;
     },
@@ -315,10 +314,7 @@ export default Vue.extend({
       // the 'up-next' component
       const showAtProgressPercentage = 0.97;
 
-      if (
-        this.getCurrentTime <=
-        this.mediaDuration * showAtProgressPercentage
-      ) {
+      if (this.currentTime <= this.mediaDuration * showAtProgressPercentage) {
         return false;
       }
 
