@@ -9,19 +9,21 @@
           </span>
         </v-card-title>
         <v-card-subtitle class="title subtitle-1 pa-0">
-          {{ nextSeriesName }} -
+          {{ getNextItem.SeriesName }} -
           {{
             $t('tvShowAbbrev', {
-              seasonNumber: nextSeasonNumber,
-              episodeNumber: nextEpisodeNumber
+              seasonNumber: getNextItem.ParentIndexNumber,
+              episodeNumber: getNextItem.IndexNumber
             })
           }}
           <span v-if="$vuetify.breakpoint.smAndUp"> - </span> <br v-else />
-          {{ nextName }}
+          {{ getNextItem.Name }}
         </v-card-subtitle>
         <div>
-          {{ nextRunTime }}
-          <span class="pl-4">{{ $t('endsAt', { time: nextEndsAt }) }} </span>
+          {{ getRuntimeTime(getNextItem.RunTimeTicks) }}
+          <span class="pl-4"
+            >{{ $t('endsAt', { time: nextEndsAt(getNextItem.RunTimeTicks) }) }}
+          </span>
         </div>
         <v-card-actions>
           <v-spacer />
@@ -49,27 +51,13 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters('playbackManager', ['getNextItem']),
-    nextSeriesName(): string {
-      return this.getNextItem?.SeriesName;
-    },
-    nextEpisodeNumber(): number {
-      return this.getNextItem?.IndexNumber;
-    },
-    nextSeasonNumber(): number {
-      return this.getNextItem?.ParentIndexNumber;
-    },
-    nextRunTime(): string {
-      return this.getRuntimeTime(this.getNextItem?.RunTimeTicks);
-    },
-    nextEndsAt(): string {
-      const seconds =
-        this.ticksToMs(this.getNextItem?.RunTimeTicks) + this.timeLeft * 1000;
+    ...mapGetters('playbackManager', ['getNextItem'])
+  },
+  methods: {
+    nextEndsAt(runtimeTicks: number): string {
+      const seconds = this.ticksToMs(runtimeTicks) + this.timeLeft * 1000;
 
       return this.$dateFns.format(Date.now() + seconds, 'p');
-    },
-    nextName(): string {
-      return this.getNextItem?.Name;
     }
   }
 });
