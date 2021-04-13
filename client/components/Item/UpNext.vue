@@ -1,14 +1,14 @@
 <template>
   <v-fade-transition>
-    <v-card class="container pa-4">
+    <v-card class="container white--text pa-4">
       <div class="d-flex flex-column flex-grow-1">
-        <v-card-title class="countdown-header pa-0">
+        <v-card-title class="text-h6 pa-0 my-1 mx-0">
           {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
           <span class="primary--text darken-2">
             &ensp;{{ timeLeft }} {{ $t('seconds').toLowerCase() }}
           </span>
         </v-card-title>
-        <v-card-subtitle class="title subtitle-1 pa-0">
+        <v-card-subtitle class="mt-1 mx-0 mb-2 text-truncate subtitle-1 pa-0">
           {{ getNextItem.SeriesName }} -
           {{
             $t('tvShowAbbrev', {
@@ -71,8 +71,7 @@ export default Vue.extend({
   bottom: 0;
   width: 100%;
   will-change: transform, opacity;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #fff;
+  background-color: rgba(map-get($shades, 'black'), 0.7);
   user-select: none;
   z-index: 6;
   -webkit-touch-callout: none;
@@ -83,16 +82,5 @@ export default Vue.extend({
     width: 30em;
     margin: 0 2em 6em 0;
   }
-}
-.countdown-header {
-  margin: 0.25em 0;
-  font-weight: 500;
-}
-.title {
-  width: 100%;
-  margin: 0.25em 0 0.5em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 </style>
