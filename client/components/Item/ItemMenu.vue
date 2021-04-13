@@ -93,7 +93,7 @@ export default Vue.extend({
             icon: 'mdi-replay',
             action: () => {
               this.play({
-                items: [this.item]
+                item: this.item
               });
             }
           });
@@ -104,7 +104,7 @@ export default Vue.extend({
           icon: 'mdi-shuffle',
           action: () => {
             this.play({
-              items: [this.item],
+              item: this.item,
               initiator: this.item,
               startShuffled: true
             });

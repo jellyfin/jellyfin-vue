@@ -6,7 +6,7 @@
       </span>
       <v-spacer />
       <v-fade-transition>
-        <play-button v-if="!$fetchState.pending" :items="[genre]" />
+        <play-button v-if="!$fetchState.pending" :item="genre" />
       </v-fade-transition>
       <v-btn
         v-if="!$fetchState.pending"
