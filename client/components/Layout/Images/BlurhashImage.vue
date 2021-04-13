@@ -1,6 +1,6 @@
 <template>
   <div ref="imageElement">
-    <div v-if="!error" ref="img">
+    <div v-if="!error">
       <blurhash-canvas
         v-if="hash"
         :hash="hash"

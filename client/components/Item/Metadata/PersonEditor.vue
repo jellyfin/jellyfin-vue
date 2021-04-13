@@ -15,7 +15,7 @@
             </v-avatar>
           </v-col>
           <v-col>
-            <v-form ref="form" @submit.prevent="handleSubmit">
+            <v-form @submit.prevent="handleSubmit">
               <v-text-field
                 v-model="editState.Name"
                 outlined

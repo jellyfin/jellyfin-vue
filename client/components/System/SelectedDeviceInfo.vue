@@ -70,8 +70,10 @@ import { DeviceInfo } from '@jellyfin/client-axios';
 export default Vue.extend({
   props: {
     selectedDevice: {
-      default: {},
-      type: Object as () => DeviceInfo
+      type: Object as () => DeviceInfo,
+      default: (): DeviceInfo => {
+        return {};
+      }
     },
     isDialog: {
       default: false,

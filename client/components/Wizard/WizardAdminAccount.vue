@@ -1,6 +1,6 @@
 <template>
   <validation-observer v-slot="{ invalid }">
-    <v-form ref="form" v-model="validInputs">
+    <v-form v-model="validInputs">
       <validation-provider v-slot="{ errors }" name="username" rules="required">
         <v-text-field
           v-model="admin.Name"
