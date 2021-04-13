@@ -36,8 +36,8 @@
           <v-list-item-content>
             <v-list-item-title>{{ sourceText }}</v-list-item-title>
             <v-list-item-subtitle>
-              {{ getTotalEndsAtTime(queue) }} -
-              {{ $t('playback.queueItems', { items: queue.length }) }}
+              {{ getTotalEndsAtTime(getQueueItems) }} -
+              {{ $t('playback.queueItems', { items: getQueueItems.length }) }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -82,7 +82,7 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { InitMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -101,11 +101,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', [
-      'queue',
-      'playbackInitiator',
-      'playbackInitMode'
-    ]),
+    ...mapState('playbackManager', ['playbackInitiator', 'playbackInitMode']),
+    ...mapGetters('playbackManager', ['getQueueItems']),
     sourceText: {
       get(): string {
         /**
