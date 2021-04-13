@@ -16,7 +16,7 @@
               episodeNumber: nextEpisodeNumber
             })
           }}
-          - <span v-if="$vuetify.breakpoint.xsOnly"> <br /> </span>
+          <span v-if="$vuetify.breakpoint.smAndUp"> - </span> <br v-else />
           {{ nextName }}
         </v-card-subtitle>
         <div>
