@@ -13,8 +13,7 @@ module.exports = {
     'plugin:promise/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript',
-    'plugin:vue/recommended'
+    'plugin:import/typescript'
   ],
   plugins: ['prettier', 'promise', 'import', 'jsdoc', 'lodash'],
   rules: {
