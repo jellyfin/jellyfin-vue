@@ -37,7 +37,7 @@
               'ml-0': $vuetify.breakpoint.mdAndUp
             }"
           >
-            <play-button :items="[item]" />
+            <play-button :item="item" />
             <like-button :item="item" class="mr-2" />
             <mark-played-button :item="item" class="mr-2" />
             <item-menu :item="item" />

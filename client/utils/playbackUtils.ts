@@ -4,115 +4,120 @@ import {
   ItemFields,
   ItemFilter
 } from '@jellyfin/client-axios';
-import union from 'lodash/union';
-import uniqBy from 'lodash/uniqBy';
 
 /**
  * Converts an item into a set of playable items for the playback manager to handle.
  *
- * @param {BaseItemDto[]} items - Array of items to translate for playback
+ * @param {BaseItemDto} item - Array of items to translate for playback
  * @returns {BaseItemDto[]} A set of playable items
  */
 export async function translateItemsForPlayback(
-  items: BaseItemDto[]
+  item: BaseItemDto,
+  shuffle = false
 ): Promise<BaseItemDto[]> {
-  if (!items) {
+  console.time('Translating items for playback');
+
+  if (!item) {
     throw new TypeError('item must be defined');
   }
 
   let translatedItems: BaseItemDto[] = [];
 
-  for (const item of items) {
-    let responseItems;
+  let responseItems: BaseItemDto[] = [];
 
-    if (item.Type === 'Program' && item.ChannelId) {
-      responseItems =
-        (
-          await window.$nuxt.$api.items.getItems({
-            userId: window.$nuxt.$auth.user.Id,
-            ids: [item.ChannelId]
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'Playlist') {
-      responseItems =
-        (
-          await window.$nuxt.$api.items.getItems({
-            userId: window.$nuxt.$auth.user.Id,
-            parentId: item.Id
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'MusicArtist' && item.Id) {
-      responseItems =
-        (
-          await window.$nuxt.$api.items.getItems({
-            userId: window.$nuxt.$auth.user.Id,
-            artistIds: [item.Id],
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            sortBy: 'SortName',
-            mediaTypes: ['Audio']
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'MusicGenre' && item.Id) {
-      responseItems =
-        (
-          await window.$nuxt.$api.items.getItems({
-            userId: window.$nuxt.$auth.user.Id,
-            genreIds: [item.Id],
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            sortBy: 'SortName',
-            mediaTypes: ['Audio']
-          })
-        ).data.Items || [];
-    } else if (item.IsFolder) {
-      responseItems =
-        (
-          await window.$nuxt.$api.items.getItems({
-            userId: window.$nuxt.$auth.user.Id,
-            parentId: item.Id,
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            sortBy: !['BoxSet'].includes(item.Type || '')
-              ? 'SortName'
-              : undefined,
-            mediaTypes: ['Audio', 'Video']
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'Episode' && items.length === 1) {
-      if (
-        (window.$nuxt.$auth.user as UserDto).Configuration
-          ?.EnableNextEpisodeAutoPlay &&
-        item.SeriesId
-      ) {
-        // If autoplay is enabled and we have a seriesId, get the rest of the episodes
-        responseItems =
-          (
-            await window.$nuxt.$api.tvShows.getEpisodes({
-              userId: (window.$nuxt.$auth.user as UserDto).Id,
-              seriesId: item.SeriesId,
-              isMissing: false,
-              fields: [ItemFields.Chapters, ItemFields.PrimaryImageAspectRatio],
-              startItemId: item.Id
-            })
-          ).data.Items || item;
-      } else {
-        translatedItems.push(item);
-      }
+  if (item.Type === 'Program' && item.ChannelId) {
+    responseItems =
+      (
+        await window.$nuxt.$api.items.getItems({
+          userId: window.$nuxt.$auth.user.Id,
+          ids: [item.ChannelId],
+          limit: 300,
+          sortOrder: shuffle ? 'Random' : 'SortName'
+        })
+      ).data.Items || [];
+  } else if (item.Type === 'Playlist') {
+    responseItems =
+      (
+        await window.$nuxt.$api.items.getItems({
+          userId: window.$nuxt.$auth.user.Id,
+          parentId: item.Id,
+          limit: 300,
+          sortOrder: shuffle ? 'Random' : 'SortName'
+        })
+      ).data.Items || [];
+  } else if (item.Type === 'MusicArtist' && item.Id) {
+    responseItems =
+      (
+        await window.$nuxt.$api.items.getItems({
+          userId: window.$nuxt.$auth.user.Id,
+          artistIds: [item.Id],
+          filters: [ItemFilter.IsNotFolder],
+          recursive: true,
+          mediaTypes: ['Audio'],
+          limit: 300,
+          sortOrder: shuffle ? 'Random' : 'SortName'
+        })
+      ).data.Items || [];
+  } else if (item.Type === 'MusicGenre' && item.Id) {
+    responseItems =
+      (
+        await window.$nuxt.$api.items.getItems({
+          userId: window.$nuxt.$auth.user.Id,
+          genreIds: [item.Id],
+          filters: [ItemFilter.IsNotFolder],
+          recursive: true,
+          mediaTypes: ['Audio'],
+          limit: 300,
+          sortOrder: shuffle ? 'Random' : 'SortName'
+        })
+      ).data.Items || [];
+  } else if (item.IsFolder) {
+    responseItems =
+      (
+        await window.$nuxt.$api.items.getItems({
+          userId: window.$nuxt.$auth.user.Id,
+          parentId: item.Id,
+          filters: [ItemFilter.IsNotFolder],
+          recursive: true,
+          sortBy: ['BoxSet'].includes(item.Type || '')
+            ? undefined
+            : shuffle
+            ? 'Random'
+            : 'SortName',
+          mediaTypes: ['Audio', 'Video'],
+          limit: 300
+        })
+      ).data.Items || [];
+  } else if (item.Type === 'Episode') {
+    if (
+      (window.$nuxt.$auth.user as UserDto).Configuration
+        ?.EnableNextEpisodeAutoPlay &&
+      item.SeriesId
+    ) {
+      // If autoplay is enabled and we have a seriesId, get the rest of the episodes
+      responseItems = (
+        await window.$nuxt.$api.tvShows.getEpisodes({
+          userId: (window.$nuxt.$auth.user as UserDto).Id,
+          seriesId: item.SeriesId,
+          isMissing: false,
+          fields: [ItemFields.Chapters, ItemFields.PrimaryImageAspectRatio],
+          startItemId: item.Id,
+          limit: 300
+        })
+      ).data.Items || [item];
     } else {
-      // This type of item doesn't require any special processing
-      translatedItems = items;
+      translatedItems.push(item);
     }
-
-    if (responseItems) {
-      if (Array.isArray(responseItems)) {
-        responseItems = Array.from(responseItems);
-        translatedItems = union(translatedItems, responseItems);
-      } else {
-        translatedItems.push(responseItems);
-      }
-    }
+  } else {
+    // This type of item doesn't require any special processing
+    translatedItems = [item];
   }
 
-  return uniqBy(translatedItems, 'Id');
+  if (responseItems) {
+    translatedItems.push(...responseItems);
+  }
+
+  console.timeEnd('Translating items for playback');
+
+  return translatedItems;
 }

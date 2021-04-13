@@ -34,8 +34,8 @@
         @change="onChangeFilter"
       />
       <v-spacer />
-      <play-button :items="items" shuffle />
-      <play-button :items="items" />
+      <play-button :item="collectionInfo" shuffle />
+      <play-button :item="collectionInfo" />
     </v-app-bar>
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />

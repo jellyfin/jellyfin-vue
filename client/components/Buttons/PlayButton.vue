@@ -1,7 +1,7 @@
 <template>
   <div class="d-inline-flex">
     <v-btn
-      v-if="canPlay(items[0]) && fab"
+      v-if="canPlay(item) && fab"
       fab
       color="primary"
       :loading="loading"
@@ -11,7 +11,7 @@
     </v-btn>
     <v-btn
       v-else-if="!fab"
-      :disabled="!canPlay(items[0])"
+      :disabled="!canPlay(item)"
       :loading="loading"
       class="mr-2"
       color="primary"
@@ -23,7 +23,7 @@
       {{
         shuffle
           ? $t('playback.shuffle')
-          : canResume(items[0])
+          : canResume(item)
           ? $t('resume')
           : $t('play')
       }}
@@ -42,8 +42,8 @@ import { PlaybackStatus } from '~/store/playbackManager';
 export default Vue.extend({
   mixins: [itemHelper, timeUtils],
   props: {
-    items: {
-      type: Array as () => BaseItemDto[],
+    item: {
+      type: Object as () => BaseItemDto,
       required: true
     },
     fab: {
@@ -73,21 +73,21 @@ export default Vue.extend({
     playOrResume(): void {
       this.loading = true;
 
-      if (this.items.length > 0 && this.canResume(this.items[0])) {
+      if (this.item && this.canResume(this.item)) {
         this.play({
-          items: this.items,
+          item: this.item,
           startFromTime:
-            this.ticksToMs(this.items[0].UserData?.PlaybackPositionTicks) / 1000
+            this.ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
         });
       } else if (this.shuffle) {
         // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
         this.play({
-          items: this.items,
+          item: this.item,
           startShuffled: true
         });
       } else {
         this.play({
-          items: this.items
+          item: this.item
         });
       }
     }

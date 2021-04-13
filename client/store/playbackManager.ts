@@ -45,8 +45,8 @@ export interface PlaybackManagerState {
   isShuffling: boolean;
   isMinimized: boolean;
   repeatMode: RepeatMode;
-  queue: BaseItemDto[];
-  originalQueue: BaseItemDto[];
+  queue: readonly BaseItemDto[];
+  originalQueue: readonly BaseItemDto[];
   playSessionId: string | null;
   playbackInitiator: BaseItemDto | null;
   playbackInitMode: InitMode;
@@ -144,7 +144,7 @@ interface VolumeMutationPayload {
 
 export const mutations: MutationTree<PlaybackManagerState> = {
   SET_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
-    state.queue = queue;
+    state.queue = Object.freeze(queue);
   },
   ADD_TO_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
     state.queue = [...state.queue, ...queue];
@@ -246,14 +246,18 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   TOGGLE_SHUFFLE(state: PlaybackManagerState) {
     if (state.queue && state.currentItemIndex !== null) {
       if (!state.isShuffling) {
-        state.originalQueue = Array.from(state.queue);
+        let queue = Array.from(state.queue);
+
+        state.originalQueue = Object.freeze(queue);
 
         const item = state.queue[state.currentItemIndex];
         const itemIndex = state.queue.indexOf(item);
 
-        state.queue.splice(itemIndex, 1);
-        state.queue = shuffle(state.queue);
-        state.queue.unshift(item);
+        queue.splice(itemIndex, 1);
+        queue = shuffle(state.queue);
+        queue.unshift(item);
+
+        state.queue = Object.freeze(queue);
         state.currentItemIndex = 0;
         state.lastItemIndex = null;
         state.isShuffling = true;
@@ -261,7 +265,7 @@ export const mutations: MutationTree<PlaybackManagerState> = {
         const item = state.queue[state.currentItemIndex];
 
         state.currentItemIndex = state.originalQueue.indexOf(item);
-        state.queue = Array.from(state.originalQueue);
+        state.queue = Object.freeze(Array.from(state.originalQueue));
         state.originalQueue = [];
         state.lastItemIndex = null;
         state.isShuffling = false;
@@ -274,13 +278,13 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   async play(
     { commit, state },
     {
-      items,
+      item,
       startFromIndex = 0,
       startFromTime = 0,
       initiator,
       startShuffled = false
     }: {
-      items: BaseItemDto[];
+      item: BaseItemDto;
       startFromIndex?: number;
       startFromTime?: number;
       initiator?: BaseItemDto;
@@ -294,14 +298,22 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     let translatedItems;
 
     if (!startShuffled) {
-      translatedItems = await translateItemsForPlayback(items);
+      translatedItems = await translateItemsForPlayback(item);
     } else {
-      translatedItems = shuffle(await translateItemsForPlayback(items));
+      translatedItems = await translateItemsForPlayback(item, true);
     }
 
+    console.time('setting queue');
     commit('SET_QUEUE', { queue: translatedItems });
+    console.timeEnd('setting queue');
+    console.time('setting item index');
     commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex });
+    console.timeEnd('setting item index');
+    console.time('setting current time');
     commit('SET_CURRENT_TIME', { time: startFromTime });
+    console.timeEnd('setting current time');
+
+    console.time('setting initiator and mode');
 
     let opts;
 
@@ -315,11 +327,15 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
       opts = { initMode: InitMode.Unknown };
     }
 
+    console.timeEnd('setting initiator and mode');
+
+    console.time('starting playback');
     commit('START_PLAYBACK', opts);
+    console.timeEnd('starting playback');
   },
   async playNext({ commit, state }, { item }: { item: BaseItemDto }) {
     const queue = Array.from(state.queue);
-    const translatedItem = await translateItemsForPlayback([item]);
+    const translatedItem = await translateItemsForPlayback(item);
 
     if (state.currentItemIndex !== null) {
       queue.splice(state.currentItemIndex + 1, 0, ...translatedItem);
@@ -328,7 +344,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
   },
   async addToQueue({ commit, state }, { item }: { item: BaseItemDto }) {
     const queue = Array.from(state.queue);
-    const translatedItem = await translateItemsForPlayback([item]);
+    const translatedItem = await translateItemsForPlayback(item);
 
     queue.push(...translatedItem);
     commit('SET_QUEUE', { queue });

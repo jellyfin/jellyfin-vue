@@ -58,7 +58,7 @@
                   class="mb-3"
                   data-swiper-parallax="-100"
                 />
-                <play-button :items="[item]" data-swiper-parallax="-100" />
+                <play-button :items="item" data-swiper-parallax="-100" />
                 <v-btn
                   min-width="12em"
                   outlined
