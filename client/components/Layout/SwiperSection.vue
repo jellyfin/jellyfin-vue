@@ -2,18 +2,28 @@
   <div :class="`swiper-section-${uuid}`" style="width: 100%">
     <skeleton-home-section v-if="loading" :card-shape="shape" />
     <v-col v-show="items && items.length > 0" class="swiper-section">
-      <div class="d-flex">
+      <div class="d-flex ma-2">
         <h1
-          class="text-h6 text-sm-h5 font-weight-light header mt-1 pl-3 pb-2"
+          class="text-h6 text-sm-h5 font-weight-light header"
           :class="{ 'header-white-mode': !$vuetify.theme.dark }"
         >
-          <span class="pl-3">{{ title }}</span>
+          <span class="pl-4">{{ title }}</span>
         </h1>
         <v-spacer />
-        <v-btn class="swiper-prev" icon :disabled="loading || isBeginning">
+        <v-btn
+          v-show="!(isBeginning && isEnd)"
+          class="swiper-prev"
+          icon
+          :disabled="loading || isBeginning"
+        >
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        <v-btn class="swiper-next mr-2" icon :disabled="loading || isEnd">
+        <v-btn
+          v-show="!(isBeginning && isEnd)"
+          class="swiper-next"
+          icon
+          :disabled="loading || isEnd"
+        >
           <v-icon>mdi-arrow-right</v-icon>
         </v-btn>
       </div>
