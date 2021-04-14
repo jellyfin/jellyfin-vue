@@ -65,7 +65,7 @@ export default Vue.extend({
 
       try {
         await this.$api.startup.updateInitialConfiguration({
-          startupConfigurationDto: {
+          uNKNOWNBASETYPE: {
             ...this.initialConfig,
             MetadataCountryCode: this.metadataLanguage,
             PreferredMetadataLanguage: this.metadataCountry

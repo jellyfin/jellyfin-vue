@@ -224,7 +224,7 @@ export default Vue.extend({
           ) {
             this.$api.playState.reportPlaybackStopped(
               {
-                playbackStopInfo: {
+                uNKNOWNBASETYPE: {
                   ItemId: this.getPreviousItem.Id,
                   PlaySessionId: state.playbackManager.playSessionId,
                   PositionTicks: this.msToTicks(
@@ -240,7 +240,7 @@ export default Vue.extend({
           if (this.getCurrentItem?.Id) {
             this.$api.playState.reportPlaybackStart(
               {
-                playbackStartInfo: {
+                uNKNOWNBASETYPE: {
                   CanSeek: true,
                   ItemId: this.getCurrentItem.Id,
                   PlaySessionId: state.playbackManager.playSessionId,
@@ -270,7 +270,7 @@ export default Vue.extend({
             ) {
               this.$api.playState.reportPlaybackProgress(
                 {
-                  playbackProgressInfo: {
+                  uNKNOWNBASETYPE: {
                     ItemId: this.getCurrentItem.Id,
                     PlaySessionId: state.playbackManager.playSessionId,
                     IsPaused: false,
@@ -292,7 +292,7 @@ export default Vue.extend({
           if (state.playbackManager.currentTime !== null) {
             this.$api.playState.reportPlaybackStopped(
               {
-                playbackStopInfo: {
+                uNKNOWNBASETYPE: {
                   ItemId: this.getPreviousItem.Id,
                   PlaySessionId: state.playbackManager.playSessionId,
                   PositionTicks: this.msToTicks(
@@ -315,7 +315,7 @@ export default Vue.extend({
           if (state.playbackManager.currentTime !== null) {
             this.$api.playState.reportPlaybackProgress(
               {
-                playbackProgressInfo: {
+                uNKNOWNBASETYPE: {
                   ItemId: this.getCurrentItem.Id,
                   PlaySessionId: state.playbackManager.playSessionId,
                   IsPaused: true,

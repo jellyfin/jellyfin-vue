@@ -33,7 +33,7 @@ export default Vue.extend({
 
       try {
         await this.$api.startup.setRemoteAccess({
-          startupRemoteAccessDto: {
+          uNKNOWNBASETYPE: {
             EnableRemoteAccess: this.allowRemoteAccess,
             EnableAutomaticPortMapping: this.enableUPNP
           }

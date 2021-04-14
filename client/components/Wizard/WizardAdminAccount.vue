@@ -88,7 +88,7 @@ export default Vue.extend({
         this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', token);
 
         await this.$api.startup.updateStartupUser({
-          startupUserDto: this.admin
+          uNKNOWNBASETYPE: this.admin
         });
 
         this.$emit('step-complete', { step: 2 });
