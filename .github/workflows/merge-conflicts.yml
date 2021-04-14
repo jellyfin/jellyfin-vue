@@ -4,15 +4,14 @@ on:
   push:
     branches:
       - master
-  pull_request:
+  pull_request_target:
     types:
       - synchronize
 jobs:
   triage:
     runs-on: ubuntu-latest
-    if: github.repository == 'jellyfin/jellyfin-vue'
     steps:
-      - uses: mschilde/auto-label-merge-conflicts@v2.0
+      - uses: eps1lon/actions-label-merge-conflict@v2.0.0
         with:
-          CONFLICT_LABEL_NAME: 'merge conflict'
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          dirtyLabel: 'merge conflict'
+          repoToken: ${{ secrets.GH_TOKEN }}
