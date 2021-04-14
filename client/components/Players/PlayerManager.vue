@@ -285,15 +285,6 @@ export default Vue.extend({
     },
     isPaused(): boolean {
       return this.status === PlaybackStatus.Paused;
-    }
-  },
-  watch: {
-    isMinimized(value): void {
-      if (value) {
-        clearAllBodyScrollLocks();
-      } else {
-        disableBodyScroll(this.$refs.playerDialog as Element);
-      }
     },
     showUpNext(): boolean {
       if (
@@ -305,15 +296,40 @@ export default Vue.extend({
         return false;
       }
 
-      // How much of the video to go through before showing
-      // the 'up-next' component
-      const showAtProgressPercentage = 0.97;
+      // How many seconds left before showing upNext component
+      // Default 45 seconds for 10-45 minute video
+      let showUpNextAt = 45;
 
-      if (this.currentTime <= this.getDuration * showAtProgressPercentage) {
+      // 5h
+      if (this.getDuration >= 5 * 60 * 60) {
+        // 9 min
+        showUpNextAt = 540;
+      }
+      // 2h
+      else if (this.getDuration >= 2 * 60 * 60) {
+        // 3:30 min
+        showUpNextAt = 210;
+      }
+      // 45 min
+      else if (this.getDuration >= 45 * 60) {
+        // 2 min
+        showUpNextAt = 120;
+      }
+
+      if (this.getTimeLeft >= showUpNextAt) {
         return false;
       }
 
       return true;
+    }
+  },
+  watch: {
+    isMinimized(value): void {
+      if (value) {
+        clearAllBodyScrollLocks();
+      } else {
+        disableBodyScroll(this.$refs.playerDialog as Element);
+      }
     }
   },
   mounted() {
