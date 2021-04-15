@@ -49,6 +49,8 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
       item: BaseItemDto,
       shuffle = false
     ): Promise<string[]> => {
+      console.time('translateItemsForPlayback');
+
       if (!item) {
         throw new TypeError('item must be defined');
       }
@@ -132,6 +134,8 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
       if (responseItems) {
         translatedItems.push(...responseItems);
       }
+
+      console.timeEnd('translateItemsForPlayback');
 
       return translatedItems;
     }
