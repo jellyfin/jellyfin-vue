@@ -1,4 +1,9 @@
-import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ItemFields,
+  ItemFilter,
+  UserDto
+} from '@jellyfin/client-axios';
 import { Plugin } from '@nuxt/types/app';
 
 type PlaybackType = {
@@ -31,7 +36,7 @@ declare module 'vuex/types/index' {
   }
 }
 
-const playbackPlugin: Plugin = ({ $items, store }, inject) => {
+const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
   inject('playback', {
     /**
      * Converts an item into a set of playable items for the playback manager to handle.
@@ -59,14 +64,14 @@ const playbackPlugin: Plugin = ({ $items, store }, inject) => {
           (await $items.getItems({
             ids: [item.ChannelId],
             limit: 300,
-            sortOrder: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? 'Random' : 'SortName'
           })) || [];
       } else if (item.Type === 'Playlist') {
         responseItems =
           (await $items.getItems({
             parentId: item.Id,
             limit: 300,
-            sortOrder: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? 'Random' : undefined
           })) || [];
       } else if (item.Type === 'MusicArtist' && item.Id) {
         responseItems =
@@ -76,7 +81,7 @@ const playbackPlugin: Plugin = ({ $items, store }, inject) => {
             recursive: true,
             mediaTypes: ['Audio'],
             limit: 300,
-            sortOrder: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? 'Random' : 'SortName'
           })) || [];
       } else if (item.Type === 'MusicGenre' && item.Id) {
         responseItems =
@@ -86,7 +91,7 @@ const playbackPlugin: Plugin = ({ $items, store }, inject) => {
             recursive: true,
             mediaTypes: ['Audio'],
             limit: 300,
-            sortOrder: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? 'Random' : 'SortName'
           })) || [];
       } else if (item.IsFolder) {
         responseItems =
@@ -102,26 +107,25 @@ const playbackPlugin: Plugin = ({ $items, store }, inject) => {
             mediaTypes: ['Audio', 'Video'],
             limit: 300
           })) || [];
-      } /* else if (item.Type === 'Episode') {
+      } else if (item.Type === 'Episode') {
         if (
           ($auth.user as UserDto).Configuration?.EnableNextEpisodeAutoPlay &&
           item.SeriesId
         ) {
           // If autoplay is enabled and we have a seriesId, get the rest of the episodes
-          responseItems = (
-            await $api.tvShows.getEpisodes({
-              userId: ($auth.user as UserDto).Id,
+          responseItems =
+            (await $tvShows.getEpisodes({
               seriesId: item.SeriesId,
               isMissing: false,
               fields: [ItemFields.Chapters, ItemFields.PrimaryImageAspectRatio],
               startItemId: item.Id,
               limit: 300
-            })
-          ).data.Items || [item];
+            })) || [];
         } else {
-          translatedItems.push(item);
+          await store.dispatch('items/addItems', { items: [item] });
+          translatedItems.push(item.Id || '');
         }
-      } */ else {
+      } else {
         // This type of item doesn't require any special processing
         await store.dispatch('items/addItems', { items: [item] });
         translatedItems = [item.Id || ''];
