@@ -313,17 +313,9 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
       );
     }
 
-    console.time('setting queue');
     commit('SET_QUEUE', { queue: translatedItems });
-    console.timeEnd('setting queue');
-    console.time('setting item index');
     commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex });
-    console.timeEnd('setting item index');
-    console.time('setting current time');
     commit('SET_CURRENT_TIME', { time: startFromTime });
-    console.timeEnd('setting current time');
-
-    console.time('setting initiator and mode');
 
     let opts;
 
@@ -337,11 +329,7 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
       opts = { initMode: InitMode.Unknown };
     }
 
-    console.timeEnd('setting initiator and mode');
-
-    console.time('starting playback');
     commit('START_PLAYBACK', opts);
-    console.timeEnd('starting playback');
   },
   async playNext({ commit, state }, { item }: { item: BaseItemDto }) {
     const queue = Array.from(state.queue);
