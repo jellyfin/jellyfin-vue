@@ -33,6 +33,8 @@ export const getters: GetterTree<ItemsState, ItemsState> = {
 
 export const mutations: MutationTree<ItemsState> = {
   ADD_ITEM(state: ItemsState, { item }: { item: BaseItemDto }) {
+    console.time('ADD_ITEM');
+
     if (!item.Id) {
       throw new Error('No item ID provided');
     }
@@ -45,8 +47,12 @@ export const mutations: MutationTree<ItemsState> = {
       newAllIds.push(item.Id);
       state.allIds = Object.freeze(newAllIds);
     }
+
+    console.timeEnd('ADD_ITEM');
   },
   ADD_ITEMS(state: ItemsState, { items }: { items: BaseItemDto }) {
+    console.time('ADD_ITEMS');
+
     let newById = Object.assign({}, state.byId);
     let newAllIds = Array.from(state.allIds);
 
@@ -56,6 +62,7 @@ export const mutations: MutationTree<ItemsState> = {
 
     newAllIds = union(newAllIds, Object.keys(items));
     state.allIds = Object.freeze(newAllIds);
+    console.timeEnd('ADD_ITEMS');
   },
   DELETE_ITEM(state: ItemsState, { id }: { id: string }) {
     delete state.byId[id];
@@ -76,9 +83,13 @@ export const mutations: MutationTree<ItemsState> = {
 
 export const actions: ActionTree<ItemsState, ItemsState> = {
   addItem({ commit }, { item }: { item: BaseItemDto }) {
+    console.time('addItem');
     commit('ADD_ITEM', { item });
+    console.timeEnd('addItem');
   },
   addItems({ commit }, { items }: { items: BaseItemDto[] }) {
+    console.time('addItems');
+
     if (some(items, (item) => !item.Id)) {
       throw new Error('An item is missing an ID.');
     }
@@ -86,6 +97,7 @@ export const actions: ActionTree<ItemsState, ItemsState> = {
     const mappedItems = keyBy(items, 'Id');
 
     commit('ADD_ITEMS', { items: mappedItems });
+    console.timeEnd('addItems');
   },
   deleteItem({ commit }, { id }: { id: string }) {
     commit('DELETE_ITEM', { id });
