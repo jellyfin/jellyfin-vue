@@ -205,7 +205,7 @@ describe('Vuex: items', () => {
     });
   });
 
-  it('calls the ADD_ITEM mutation n times when addItems is dispatched with valid items', async (): Promise<void> => {
+  it('calls the ADD_ITEM mutation only 1 time when addItems is dispatched with valid items', async (): Promise<void> => {
     await addItems(
       { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
@@ -213,14 +213,10 @@ describe('Vuex: items', () => {
       }
     );
 
-    expect(mockCommit).toHaveBeenCalledTimes(2);
-    expect(mockCommit.mock.calls[0][0]).toEqual('ADD_ITEM');
+    expect(mockCommit).toHaveBeenCalledTimes(1);
+    expect(mockCommit.mock.calls[0][0]).toEqual('ADD_ITEMS');
     expect(mockCommit.mock.calls[0][1]).toEqual({
-      item: item1
-    });
-    expect(mockCommit.mock.calls[1][0]).toEqual('ADD_ITEM');
-    expect(mockCommit.mock.calls[1][1]).toEqual({
-      item: item2
+      items: { ID: item1, ID2: item2 }
     });
   });
 
