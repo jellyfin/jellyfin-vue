@@ -5,6 +5,7 @@ import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import merge from 'lodash/merge';
+import some from 'lodash/some';
 import union from 'lodash/union';
 
 export interface ItemsState {
@@ -40,8 +41,10 @@ export const mutations: MutationTree<ItemsState> = {
 
     Vue.set(state.byId, item.Id, item);
 
-    newAllIds.push();
-    state.allIds = Object.freeze(newAllIds);
+    if (!newAllIds.includes(item.Id)) {
+      newAllIds.push(item.Id);
+      state.allIds = Object.freeze(newAllIds);
+    }
   },
   ADD_ITEMS(state: ItemsState, { items }: { items: BaseItemDto }) {
     let newById = Object.assign({}, state.byId);
@@ -76,6 +79,10 @@ export const actions: ActionTree<ItemsState, ItemsState> = {
     commit('ADD_ITEM', { item });
   },
   addItems({ commit }, { items }: { items: BaseItemDto[] }) {
+    if (some(items, (item) => !item.Id)) {
+      throw new Error('An item is missing an ID.');
+    }
+
     const mappedItems = keyBy(items, 'Id');
 
     commit('ADD_ITEMS', { items: mappedItems });

@@ -25,7 +25,7 @@ describe('component: PlayButton', () => {
   it('shows the text "play"', (): void => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: []
+        item: {}
       },
       mocks: {
         $t
@@ -41,7 +41,7 @@ describe('component: PlayButton', () => {
   it('is disabled if the item is not playable', (): void => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: []
+        item: {}
       },
       mocks: {
         $t
@@ -57,11 +57,9 @@ describe('component: PlayButton', () => {
   it('is enabled if the item is playable', (): void => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: [
-          {
-            MediaType: 'Video'
-          }
-        ]
+        item: {
+          MediaType: 'Video'
+        }
       },
       mocks: {
         $t
@@ -77,13 +75,11 @@ describe('component: PlayButton', () => {
   it('shows the text "resume" if item can be resumed', (): void => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: [
-          {
-            UserData: {
-              PlaybackPositionTicks: 1000
-            }
+        item: {
+          UserData: {
+            PlaybackPositionTicks: 1000
           }
-        ]
+        }
       },
       mocks: {
         $t
@@ -99,11 +95,9 @@ describe('component: PlayButton', () => {
   it('calls the "play" action when clicked if the item is not resumable', async (): Promise<void> => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: [
-          {
-            MediaType: 'Video'
-          }
-        ]
+        item: {
+          MediaType: 'Video'
+        }
       },
       mocks: {
         $t
@@ -119,11 +113,9 @@ describe('component: PlayButton', () => {
   it('calls the "play" action with shuffling enabled when clicked if the item is not resumable and the shuffle prop is set', async (): Promise<void> => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: [
-          {
-            MediaType: 'Video'
-          }
-        ],
+        item: {
+          MediaType: 'Video'
+        },
         shuffle: true
       },
       mocks: {
@@ -142,14 +134,12 @@ describe('component: PlayButton', () => {
   it('calls the "resume" action when clicked if the item is resumable', async (): Promise<void> => {
     const { getByRole } = render(PlayButton, {
       props: {
-        items: [
-          {
-            MediaType: 'Video',
-            UserData: {
-              PlaybackPositionTicks: 1000
-            }
+        item: {
+          MediaType: 'Video',
+          UserData: {
+            PlaybackPositionTicks: 1000
           }
-        ]
+        }
       },
       mocks: {
         $t
