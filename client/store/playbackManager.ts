@@ -304,13 +304,13 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
 
     let translatedItems;
 
-    if (!startShuffled) {
-      translatedItems = await this.$playback.translateItemsForPlayback(item);
-    } else {
+    if (startShuffled) {
       translatedItems = await this.$playback.translateItemsForPlayback(
         item,
         true
       );
+    } else {
+      translatedItems = await this.$playback.translateItemsForPlayback(item);
     }
 
     commit('SET_QUEUE', { queue: translatedItems });
