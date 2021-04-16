@@ -2,7 +2,7 @@
   <v-col class="px-0">
     <v-scale-transition appear>
       <swiper
-        v-if="queue"
+        v-if="getQueueItems"
         ref="playbackSwiper"
         class="d-flex justify-center align-center"
         :options="swiperOptions"
@@ -10,7 +10,7 @@
         @sliderMove="update"
       >
         <swiper-slide
-          v-for="item in queue"
+          v-for="item in getQueueItems"
           :key="item.Id"
           class="d-flex justify-center"
         >
@@ -77,7 +77,7 @@ export default Vue.extend({
       this.swiper?.slideTo(newIndex);
       this.setBackdrop({ hash: this.backdropHash });
     },
-    queue(): void {
+    getQueueItems(): void {
       this.update();
     },
     isPlaying: {
