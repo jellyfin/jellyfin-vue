@@ -8,7 +8,7 @@
       :class="isFullScreenPlayer ? 'fullscreen pa-0' : 'pa-0'"
       class="audioControls"
     >
-      <v-container v-if="isFullScreenPlayer" fluid>
+      <v-container v-if="isFullScreenPlayer" fluid class="mx-10 pb-0">
         <time-slider />
       </v-container>
       <v-container fluid>
