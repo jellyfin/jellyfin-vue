@@ -156,8 +156,6 @@
             </v-btn>
             <v-btn
               icon
-              fab
-              small
               class="mx-1 active-button hidden-xs-only"
               :color="isRepeating ? 'primary' : undefined"
               @click="toggleRepeatMode"
@@ -166,8 +164,6 @@
             </v-btn>
             <v-btn
               icon
-              fab
-              small
               class="mx-1 active-button hidden-xs-only"
               :color="isShuffling ? 'primary' : undefined"
               @click="toggleShuffle"
