@@ -117,18 +117,14 @@
               <volume-slider />
             </div>
             <item-menu :item="getCurrentItem" />
-            <v-fade-transition>
-              <v-tooltip v-if="!isFullScreenPlayer" top>
-                <template #activator="{ on, attrs }">
-                  <nuxt-link tag="span" :to="'/fullscreen/playback'">
-                    <v-btn icon v-bind="attrs" v-on="on">
-                      <v-icon>mdi-fullscreen</v-icon>
-                    </v-btn>
-                  </nuxt-link>
-                </template>
-                <span>{{ $t('fullScreen') }}</span>
-              </v-tooltip>
-            </v-fade-transition>
+            <nuxt-link v-if="!isFullScreenPlayer" :to="'/fullscreen/playback'">
+              <v-btn icon>
+                <v-icon>mdi-fullscreen</v-icon>
+              </v-btn>
+            </nuxt-link>
+            <v-btn v-else icon @click="$router.back()">
+              <v-icon>mdi-fullscreen-exit</v-icon>
+            </v-btn>
           </v-col>
           <v-col
             cols="3"
