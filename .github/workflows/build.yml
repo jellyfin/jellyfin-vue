@@ -8,8 +8,16 @@ on:
 
 jobs:
   ssr:
-    name: Build SSR
+    name: Build SSR (Node ${{ matrix.node }} - ${{ matrix.architecture }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 14
+          - 16
+        architecture:
+          - x64
 
     steps:
       - name: Checkout
@@ -18,7 +26,8 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
 
       - name: Get npm cache directory path
         id: npm-cache-dir-path
@@ -28,10 +37,10 @@ jobs:
         uses: actions/cache@v2.1.5
         id: npm-cache
         with:
-          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ matrix.architecture }}-node${{ matrix.node }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-${{ matrix.architecture }}-node${{ matrix.node }}-npm-
 
       - name: Install dependencies
         run: npm ci --no-audit
@@ -40,8 +49,16 @@ jobs:
         run: npm run build
 
   static:
-    name: Build static
+    name: Build static (Node ${{ matrix.node }} - ${{ matrix.architecture }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 14
+          - 16
+        architecture:
+          - x64
 
     steps:
       - name: Checkout
@@ -50,7 +67,8 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.architecture }}
 
       - name: Get npm cache directory path
         id: npm-cache-dir-path
@@ -60,10 +78,10 @@ jobs:
         uses: actions/cache@v2.1.5
         id: npm-cache
         with:
-          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ matrix.architecture }}-node${{ matrix.node }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-${{ matrix.architecture }}-node${{ matrix.node }}-npm-
 
       - name: Install dependencies
         run: npm ci --no-audit
