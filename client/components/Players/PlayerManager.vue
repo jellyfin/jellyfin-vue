@@ -184,10 +184,10 @@ export default Vue.extend({
     ]),
     ...mapState('playbackManager', ['status', 'isMinimized']),
     isPlaying(): boolean {
-      return this.status !== PlaybackStatus.stopped;
+      return this.status !== PlaybackStatus.Stopped;
     },
     isPaused(): boolean {
-      return this.status === PlaybackStatus.paused;
+      return this.status === PlaybackStatus.Paused;
     },
     currentItemName(): string {
       switch (this.getCurrentItem.Type) {
@@ -260,7 +260,7 @@ export default Vue.extend({
           this.setLastProgressUpdate({ progress: new Date().getTime() });
           break;
         case 'playbackManager/SET_CURRENT_TIME': {
-          if (state.playbackManager.status === PlaybackStatus.playing) {
+          if (state.playbackManager.status === PlaybackStatus.Playing) {
             const now = new Date().getTime();
 
             if (

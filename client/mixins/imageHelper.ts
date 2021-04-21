@@ -257,16 +257,16 @@ const imageHelper = Vue.extend({
       let aspectRatio;
 
       switch (shape) {
-        case CardShapes.portrait:
+        case CardShapes.Portrait:
           aspectRatio = 2 / 3;
           break;
-        case CardShapes.thumb:
+        case CardShapes.Thumb:
           aspectRatio = 16 / 9;
           break;
-        case CardShapes.banner:
+        case CardShapes.Banner:
           aspectRatio = 1000 / 185;
           break;
-        case CardShapes.square:
+        case CardShapes.Square:
         default:
           aspectRatio = 1;
           break;
@@ -346,7 +346,7 @@ const imageHelper = Vue.extend({
         imgType = ImageType.Thumb;
         imgTag = item.ImageTags.Thumb;
       } else if (
-        (preferBanner || shape === CardShapes.banner) &&
+        (preferBanner || shape === CardShapes.Banner) &&
         item.ImageTags &&
         item.ImageTags.Banner
       ) {

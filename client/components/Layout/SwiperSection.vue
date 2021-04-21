@@ -81,20 +81,20 @@ export default Vue.extend({
           nextEl: `.swiper-section-${uuid} .swiper-next`,
           prevEl: `.swiper-section-${uuid} .swiper-prev`
         },
-        slidesPerView: this.shape === CardShapes.thumb ? 2 : 3,
-        slidesPerGroup: this.shape === CardShapes.thumb ? 2 : 3,
+        slidesPerView: this.shape === CardShapes.Thumb ? 2 : 3,
+        slidesPerGroup: this.shape === CardShapes.Thumb ? 2 : 3,
         breakpoints: {
           600: {
-            slidesPerView: this.shape === CardShapes.thumb ? 3 : 4,
-            slidesPerGroup: this.shape === CardShapes.thumb ? 3 : 4
+            slidesPerView: this.shape === CardShapes.Thumb ? 3 : 4,
+            slidesPerGroup: this.shape === CardShapes.Thumb ? 3 : 4
           },
           960: {
-            slidesPerView: this.shape === CardShapes.thumb ? 3 : 6,
-            slidesPerGroup: this.shape === CardShapes.thumb ? 3 : 6
+            slidesPerView: this.shape === CardShapes.Thumb ? 3 : 6,
+            slidesPerGroup: this.shape === CardShapes.Thumb ? 3 : 6
           },
           1904: {
-            slidesPerView: this.shape === CardShapes.thumb ? 4 : 8,
-            slidesPerGroup: this.shape === CardShapes.thumb ? 4 : 8
+            slidesPerView: this.shape === CardShapes.Thumb ? 4 : 8,
+            slidesPerGroup: this.shape === CardShapes.Thumb ? 4 : 8
           }
         }
       } as SwiperOptions,

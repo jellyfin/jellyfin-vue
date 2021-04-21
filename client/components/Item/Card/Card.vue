@@ -208,7 +208,7 @@ export default Vue.extend({
       }
     },
     getImageType(): ImageType {
-      if (this.shape === CardShapes.thumb) {
+      if (this.shape === CardShapes.Thumb) {
         return ImageType.Thumb;
       } else {
         return ImageType.Primary;

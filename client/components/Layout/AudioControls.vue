@@ -206,10 +206,10 @@ export default Vue.extend({
     ]),
     ...mapState('playbackManager', ['status', 'repeatMode', 'isShuffling']),
     isPaused(): boolean {
-      return this.status === PlaybackStatus.paused;
+      return this.status === PlaybackStatus.Paused;
     },
     isPlaying(): boolean {
-      return this.status !== PlaybackStatus.stopped;
+      return this.status !== PlaybackStatus.Stopped;
     },
     isRepeating(): boolean {
       return this.repeatMode !== RepeatMode.RepeatNone;
