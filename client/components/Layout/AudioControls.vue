@@ -117,7 +117,11 @@
               <volume-slider />
             </div>
             <item-menu :item="getCurrentItem" />
-            <nuxt-link v-if="!isFullScreenPlayer" :to="'/fullscreen/playback'">
+            <nuxt-link
+              v-if="!isFullScreenPlayer"
+              tag="span"
+              :to="'/fullscreen/playback'"
+            >
               <v-btn icon>
                 <v-icon>mdi-fullscreen</v-icon>
               </v-btn>
