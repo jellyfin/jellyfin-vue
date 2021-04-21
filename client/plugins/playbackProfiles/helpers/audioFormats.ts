@@ -11,18 +11,12 @@ export function getSupportedAudioCodecs(
 ): boolean {
   let typeString;
 
-  if (format === 'flac') {
-    if (context.$browser.isTv()) {
-      return true;
-    }
-  } else if (format === 'wma') {
-    if (context.$browser.isTizen()) {
-      return true;
-    }
-  } else if (format === 'asf') {
-    if (context.$browser.isTv()) {
-      return true;
-    }
+  if (format === 'flac' && context.$browser.isTv()) {
+    return true;
+  } else if (format === 'wma' && context.$browser.isTizen()) {
+    return true;
+  } else if (format === 'asf' && context.$browser.isTv()) {
+    return true;
   } else if (format === 'opus') {
     if (!context.$browser.isWebOS()) {
       typeString = 'audio/ogg; codecs="opus"';
@@ -34,16 +28,9 @@ export function getSupportedAudioCodecs(
     }
 
     return false;
-  } else if (format === 'alac') {
-    if (context.$browser.isApple()) {
-      return true;
-    }
-  } else if (format === 'mp2') {
-    // TODO: Remnant from jf-web. Investigate where it is supported
-    return false;
-  }
-
-  if (format === 'webma') {
+  } else if (format === 'alac' && context.$browser.isApple()) {
+    return true;
+  } else if (format === 'webma') {
     typeString = 'audio/webm';
   } else if (format === 'mp2') {
     typeString = 'audio/mpeg';
