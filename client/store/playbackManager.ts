@@ -9,10 +9,10 @@ import {
 import { translateItemsForPlayback } from '~/utils/playbackUtils';
 
 export enum PlaybackStatus {
-  stopped,
-  playing,
-  paused,
-  error
+  Stopped,
+  Playing,
+  Paused,
+  Error
 }
 
 export enum RepeatMode {
@@ -53,7 +53,7 @@ export interface PlaybackManagerState {
 }
 
 export const defaultState = (): PlaybackManagerState => ({
-  status: PlaybackStatus.stopped,
+  status: PlaybackStatus.Stopped,
   lastItemIndex: null,
   currentItemIndex: null,
   currentMediaSource: null,
@@ -188,15 +188,15 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     state: PlaybackManagerState,
     { initMode, initiator }: { initMode: InitMode; initiator: BaseItemDto }
   ) {
-    state.status = PlaybackStatus.playing;
+    state.status = PlaybackStatus.Playing;
     state.playbackInitMode = initMode;
     state.playbackInitiator = initiator;
   },
   UNPAUSE_PLAYBACK(state: PlaybackManagerState) {
-    state.status = PlaybackStatus.playing;
+    state.status = PlaybackStatus.Playing;
   },
   PAUSE_PLAYBACK(state: PlaybackManagerState) {
-    state.status = PlaybackStatus.paused;
+    state.status = PlaybackStatus.Paused;
   },
   STOP_PLAYBACK(state: PlaybackManagerState) {
     Object.assign(state, defaultState());
@@ -287,7 +287,7 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
       startShuffled?: boolean;
     }
   ) {
-    if (state.status !== PlaybackStatus.stopped) {
+    if (state.status !== PlaybackStatus.Stopped) {
       commit('STOP_PLAYBACK');
     }
 
@@ -364,9 +364,9 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     commit('UNPAUSE_PLAYBACK');
   },
   playPause({ commit, state }) {
-    if (state.status === PlaybackStatus.playing) {
+    if (state.status === PlaybackStatus.Playing) {
       commit('PAUSE_PLAYBACK');
-    } else if (state.status === PlaybackStatus.paused) {
+    } else if (state.status === PlaybackStatus.Paused) {
       commit('UNPAUSE_PLAYBACK');
     }
   },

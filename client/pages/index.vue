@@ -63,7 +63,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'libraries',
             libraryId: '',
-            shape: CardShapes.thumb,
+            shape: CardShapes.Thumb,
             type: 'libraries'
           });
           break;
@@ -111,7 +111,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'continueWatching',
             libraryId: '',
-            shape: CardShapes.thumb,
+            shape: CardShapes.Thumb,
             type: 'resume'
           });
           break;
@@ -119,7 +119,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'continueListening',
             libraryId: '',
-            shape: CardShapes.square,
+            shape: CardShapes.Square,
             type: 'resumeaudio'
           });
           break;
@@ -127,7 +127,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'nextUp',
             libraryId: '',
-            shape: CardShapes.thumb,
+            shape: CardShapes.Thumb,
             type: 'upnext'
           });
           break;

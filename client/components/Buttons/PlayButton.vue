@@ -63,7 +63,7 @@ export default Vue.extend({
   },
   watch: {
     status(): void {
-      if (this.status === PlaybackStatus.playing) {
+      if (this.status === PlaybackStatus.Playing) {
         this.loading = false;
       }
     }

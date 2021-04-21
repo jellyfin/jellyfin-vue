@@ -24,7 +24,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      skeletonCardShape: CardShapes.portrait
+      skeletonCardShape: CardShapes.Portrait
     };
   },
   watch: {

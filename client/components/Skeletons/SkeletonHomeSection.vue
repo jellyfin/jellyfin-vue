@@ -23,19 +23,19 @@ export default Vue.extend({
       type: String,
       validator: (value): boolean =>
         Object.values(CardShapes).includes(value as CardShapes),
-      default: CardShapes.thumb
+      default: CardShapes.Thumb
     }
   },
   computed: {
     cardNumber(): number {
       if (this.$vuetify.breakpoint.width < 600) {
-        return this.cardShape === CardShapes.thumb ? 2 : 3;
+        return this.cardShape === CardShapes.Thumb ? 2 : 3;
       } else if (this.$vuetify.breakpoint.width < 960) {
-        return this.cardShape === CardShapes.thumb ? 3 : 4;
+        return this.cardShape === CardShapes.Thumb ? 3 : 4;
       } else if (this.$vuetify.breakpoint.width < 1264) {
-        return this.cardShape === CardShapes.thumb ? 3 : 6;
+        return this.cardShape === CardShapes.Thumb ? 3 : 6;
       } else if (this.$vuetify.breakpoint.width < 1904) {
-        return this.cardShape === CardShapes.thumb ? 4 : 8;
+        return this.cardShape === CardShapes.Thumb ? 4 : 8;
       }
 
       return 4;

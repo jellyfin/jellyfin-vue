@@ -357,8 +357,8 @@ export class BrowserDetector {
   }
 }
 
-const browserDetectorPlugin: Plugin = (context, inject) => {
+const browserDetectionPlugin: Plugin = (context, inject) => {
   inject('browser', new BrowserDetector(context));
 };
 
-export default browserDetectorPlugin;
+export default browserDetectionPlugin;

@@ -327,7 +327,7 @@ describe('vuex: playbackManager', () => {
 
     store.commit('START_PLAYBACK', { initMode: InitMode.Unknown });
 
-    expect(store.state.status).toBe(PlaybackStatus.playing);
+    expect(store.state.status).toBe(PlaybackStatus.Playing);
   });
 
   it('sets the playback status to playing when "UNPAUSE_PLAYBACK" is committed', () => {
@@ -338,24 +338,24 @@ describe('vuex: playbackManager', () => {
 
     store.commit('UNPAUSE_PLAYBACK');
 
-    expect(store.state.status).toBe(PlaybackStatus.playing);
+    expect(store.state.status).toBe(PlaybackStatus.Playing);
   });
 
   it('sets the playback status to paused when "PAUSE_PLAYBACK" is committed', () => {
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.playing
+      status: PlaybackStatus.Playing
     });
 
     store.commit('PAUSE_PLAYBACK');
 
-    expect(store.state.status).toBe(PlaybackStatus.paused);
+    expect(store.state.status).toBe(PlaybackStatus.Paused);
   });
 
   it('clears the playback status when "STOP_PLAYBACK" is committed', () => {
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.playing
+      status: PlaybackStatus.Playing
     });
 
     store.commit('STOP_PLAYBACK');
@@ -456,52 +456,52 @@ describe('vuex: playbackManager', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.playing
+      status: PlaybackStatus.Playing
     });
 
     store.dispatch('stop');
 
-    expect(store.state.status).toBe(PlaybackStatus.stopped);
+    expect(store.state.status).toBe(PlaybackStatus.Stopped);
   });
 
   it('sets the playback status to paused when pause is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.playing
+      status: PlaybackStatus.Playing
     });
 
     store.dispatch('pause');
 
-    expect(store.state.status).toBe(PlaybackStatus.paused);
+    expect(store.state.status).toBe(PlaybackStatus.Paused);
   });
 
   it('sets the playback status to playing when unpause is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.paused
+      status: PlaybackStatus.Paused
     });
 
     store.dispatch('unpause');
 
-    expect(store.state.status).toBe(PlaybackStatus.playing);
+    expect(store.state.status).toBe(PlaybackStatus.Playing);
   });
 
   it('toggles the playback status when playPause is dispatched', () => {
     // TODO: This should only test if the proper mutation is committed
     store.replaceState({
       ...defaultState(),
-      status: PlaybackStatus.paused
+      status: PlaybackStatus.Paused
     });
 
     store.dispatch('playPause');
 
-    expect(store.state.status).toBe(PlaybackStatus.playing);
+    expect(store.state.status).toBe(PlaybackStatus.Playing);
 
     store.dispatch('playPause');
 
-    expect(store.state.status).toBe(PlaybackStatus.paused);
+    expect(store.state.status).toBe(PlaybackStatus.Paused);
   });
 
   it('clears the queue when clearQueue is dispatched', () => {
@@ -534,13 +534,13 @@ describe('vuex: playbackManager', () => {
     store.replaceState({
       ...defaultState(),
       queue: [DEMO_TEST_ITEM_A, DEMO_TEST_ITEM_B],
-      status: PlaybackStatus.playing,
+      status: PlaybackStatus.Playing,
       currentItemIndex: 1
     });
 
     store.dispatch('setNextTrack');
 
-    expect(store.state.status).toBe(PlaybackStatus.stopped);
+    expect(store.state.status).toBe(PlaybackStatus.Stopped);
   });
 
   it('increases the item indexes when setNextTrack is dispatched', () => {

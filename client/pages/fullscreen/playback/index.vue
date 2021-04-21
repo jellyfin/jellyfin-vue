@@ -63,12 +63,12 @@ export default Vue.extend({
     },
     isPaused: {
       get(): boolean {
-        return this.status === PlaybackStatus.paused;
+        return this.status === PlaybackStatus.Paused;
       }
     },
     isPlaying: {
       get(): boolean {
-        return this.status !== PlaybackStatus.stopped;
+        return this.status !== PlaybackStatus.Stopped;
       }
     }
   },

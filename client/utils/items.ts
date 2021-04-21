@@ -23,17 +23,17 @@ export const validPersonTypes = [
 ];
 
 export enum CardShapes {
-  portrait = 'portrait-card',
-  thumb = 'thumb-card',
-  square = 'square-card',
-  banner = 'banner-card'
+  Portrait = 'portrait-card',
+  Thumb = 'thumb-card',
+  Square = 'square-card',
+  Banner = 'banner-card'
 }
 
 export type ValidCardShapes =
-  | CardShapes.portrait
-  | CardShapes.thumb
-  | CardShapes.square
-  | CardShapes.banner;
+  | CardShapes.Portrait
+  | CardShapes.Thumb
+  | CardShapes.Square
+  | CardShapes.Banner;
 
 /**
  * Determines if the item is a person
@@ -110,17 +110,17 @@ export function getShapeFromCollectionType(
   switch (collectionType?.toLowerCase()) {
     case 'livetv':
     case 'musicvideos':
-      return CardShapes.thumb;
+      return CardShapes.Thumb;
     case 'folders':
     case 'playlists':
     case 'music':
-      return CardShapes.square;
+      return CardShapes.Square;
     case 'boxsets':
     case 'movies':
     case 'tvshows':
     case 'books':
     default:
-      return CardShapes.portrait;
+      return CardShapes.Portrait;
   }
 }
 
@@ -143,11 +143,11 @@ export function getShapeFromItemType(
     case 'photoalbum':
     case 'playlist':
     case 'video':
-      return CardShapes.square;
+      return CardShapes.Square;
     case 'episode':
     case 'musicvideo':
     case 'studio':
-      return CardShapes.thumb;
+      return CardShapes.Thumb;
     case 'book':
     case 'boxSet':
     case 'genre':
@@ -155,6 +155,6 @@ export function getShapeFromItemType(
     case 'person':
     case 'series':
     default:
-      return CardShapes.portrait;
+      return CardShapes.Portrait;
   }
 }
