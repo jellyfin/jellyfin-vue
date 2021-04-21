@@ -17,7 +17,7 @@ import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import pickBy from 'lodash/pickBy';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { getShapeFromCollectionType } from '~/utils/items';
+import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
@@ -55,7 +55,7 @@ export default Vue.extend({
     // Convert to an array
     homeSectionsArray = Object.values(homeSectionsArray);
 
-    const homeSections = [];
+    const homeSections: HomeSection[] = [];
 
     for (const homeSection of homeSectionsArray as Array<string>) {
       switch (homeSection) {
@@ -63,7 +63,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'libraries',
             libraryId: '',
-            shape: 'thumb-card',
+            shape: CardShapes.thumb,
             type: 'libraries'
           });
           break;
@@ -111,7 +111,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'continueWatching',
             libraryId: '',
-            shape: 'thumb-card',
+            shape: CardShapes.thumb,
             type: 'resume'
           });
           break;
@@ -119,7 +119,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'continueListening',
             libraryId: '',
-            shape: 'square-card',
+            shape: CardShapes.square,
             type: 'resumeaudio'
           });
           break;
@@ -127,7 +127,7 @@ export default Vue.extend({
           homeSections.push({
             name: 'nextUp',
             libraryId: '',
-            shape: 'thumb-card',
+            shape: CardShapes.thumb,
             type: 'upnext'
           });
           break;

@@ -7,12 +7,13 @@ import {
   ItemFields
 } from '@jellyfin/client-axios';
 import { AppState } from './index';
+import { CardShapes } from '~/utils/items';
 
 export interface HomeSection {
   name: string;
   libraryName?: string | null | undefined;
   libraryId: string;
-  shape: string;
+  shape: CardShapes;
   type: string;
 }
 

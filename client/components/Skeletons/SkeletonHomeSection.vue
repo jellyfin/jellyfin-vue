@@ -15,26 +15,27 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { CardShapes } from '~/utils/items';
 
 export default Vue.extend({
   props: {
     cardShape: {
       type: String,
-      validator: (val): boolean =>
-        ['thumb-card', 'portrait-card', 'square-card'].includes(val),
-      default: 'thumb-card'
+      validator: (value): boolean =>
+        Object.values(CardShapes).includes(value as CardShapes),
+      default: CardShapes.thumb
     }
   },
   computed: {
     cardNumber(): number {
       if (this.$vuetify.breakpoint.width < 600) {
-        return this.cardShape === 'thumb-card' ? 2 : 3;
+        return this.cardShape === CardShapes.thumb ? 2 : 3;
       } else if (this.$vuetify.breakpoint.width < 960) {
-        return this.cardShape === 'thumb-card' ? 3 : 4;
+        return this.cardShape === CardShapes.thumb ? 3 : 4;
       } else if (this.$vuetify.breakpoint.width < 1264) {
-        return this.cardShape === 'thumb-card' ? 3 : 6;
+        return this.cardShape === CardShapes.thumb ? 3 : 6;
       } else if (this.$vuetify.breakpoint.width < 1904) {
-        return this.cardShape === 'thumb-card' ? 4 : 8;
+        return this.cardShape === CardShapes.thumb ? 4 : 8;
       }
 
       return 4;
