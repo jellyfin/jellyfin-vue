@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 import Cookies from 'js-cookie';
 import cookie from 'cookie';
 
-const persistState: Plugin = ({ store, req, res }) => {
+const persistedStatePlugin: Plugin = ({ store, req, res }) => {
   createPersistedState({
     paths: ['servers'],
     storage: {
@@ -32,4 +32,4 @@ const persistState: Plugin = ({ store, req, res }) => {
   })(store);
 };
 
-export default persistState;
+export default persistedStatePlugin;

@@ -78,7 +78,7 @@ const config: NuxtConfig = {
     // Development
     { src: 'plugins/axe.ts', mode: 'client' },
     // General
-    'plugins/persistedState.ts',
+    'plugins/persistedStatePlugin.ts',
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
@@ -89,8 +89,8 @@ const config: NuxtConfig = {
     { src: 'plugins/components/vueFullscreen.ts', mode: 'client' },
     'plugins/components/vueDraggable.ts',
     // Utility
-    'plugins/browserDetection.ts',
-    { src: 'plugins/playbackProfile.ts', mode: 'client' },
+    'plugins/browserDetectionPlugin.ts',
+    { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
     { src: 'plugins/supportedFeaturesPlugin.ts', mode: 'client' },
     'plugins/apiPlugin.ts'
   ],
@@ -160,7 +160,7 @@ const config: NuxtConfig = {
         path: '/'
       }
     },
-    plugins: ['~/plugins/userLibrary.ts', '~/plugins/items.ts']
+    plugins: ['~/plugins/userLibraryPlugin.ts', '~/plugins/itemsPlugin.ts']
   },
   i18n: {
     locales: [

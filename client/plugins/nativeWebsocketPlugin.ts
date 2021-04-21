@@ -22,7 +22,7 @@ declare module 'vue/types/vue' {
   }
 }
 
-const nativeSocketPlugin: Plugin = ({ store }) => {
+const nativeWebsocketPlugin: Plugin = ({ store }) => {
   Vue.use(VueNativeSock, 'ws://127.0.0.1', {
     connectManually: true,
     reconnection: true,
@@ -32,4 +32,4 @@ const nativeSocketPlugin: Plugin = ({ store }) => {
   });
 };
 
-export default nativeSocketPlugin;
+export default nativeWebsocketPlugin;
