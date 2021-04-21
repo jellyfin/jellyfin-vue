@@ -11,7 +11,7 @@ import { CardShapes } from '~/utils/items';
 
 export interface HomeSection {
   name: string;
-  libraryName?: string | null | undefined;
+  libraryName?: string | null;
   libraryId: string;
   shape: CardShapes;
   type: string;
