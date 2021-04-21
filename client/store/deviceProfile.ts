@@ -1,7 +1,7 @@
 import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
 import { version } from '../../package.json';
-import { BrowserDetector } from '~/plugins/browserDetection';
+import { BrowserDetector } from '~/plugins/browserDetectionPlugin';
 
 export interface DeviceState {
   deviceId: string;
