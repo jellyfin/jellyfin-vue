@@ -93,7 +93,7 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
-import { getShapeFromItemType } from '~/utils/items';
+import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -208,7 +208,7 @@ export default Vue.extend({
       }
     },
     getImageType(): ImageType {
-      if (this.shape === 'thumb-card') {
+      if (this.shape === CardShapes.thumb) {
         return ImageType.Thumb;
       } else {
         return ImageType.Primary;

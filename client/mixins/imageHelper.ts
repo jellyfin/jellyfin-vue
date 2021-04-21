@@ -6,7 +6,12 @@
 import Vue from 'vue';
 import { stringify } from 'qs';
 import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
-import { getShapeFromItemType, CardShapes, isPerson } from '~/utils/items';
+import {
+  getShapeFromItemType,
+  ValidCardShapes,
+  isPerson,
+  CardShapes
+} from '~/utils/items';
 
 export interface ImageUrlInfo {
   url: string | undefined;
@@ -32,7 +37,7 @@ declare module '@nuxt/types' {
     getImageInfo(
       item: BaseItemDto,
       options?: {
-        shape?: CardShapes;
+        shape?: ValidCardShapes;
         preferThumb?: boolean;
         preferBanner?: boolean;
         preferLogo?: boolean;
@@ -63,7 +68,7 @@ declare module '@nuxt/types' {
     getImageInfo(
       item: BaseItemDto,
       options?: {
-        shape?: CardShapes;
+        shape?: ValidCardShapes;
         preferThumb?: boolean;
         preferBanner?: boolean;
         preferLogo?: boolean;
@@ -96,7 +101,7 @@ declare module 'vue/types/vue' {
     getImageInfo(
       item: BaseItemDto,
       options?: {
-        shape?: CardShapes;
+        shape?: ValidCardShapes;
         preferThumb?: boolean;
         preferBanner?: boolean;
         preferLogo?: boolean;
@@ -248,20 +253,20 @@ const imageHelper = Vue.extend({
         }
       }
     },
-    getDesiredAspect(shape: CardShapes): number {
+    getDesiredAspect(shape: ValidCardShapes): number {
       let aspectRatio;
 
       switch (shape) {
-        case 'portrait-card':
+        case CardShapes.portrait:
           aspectRatio = 2 / 3;
           break;
-        case 'thumb-card':
+        case CardShapes.thumb:
           aspectRatio = 16 / 9;
           break;
-        case 'banner-card':
+        case CardShapes.banner:
           aspectRatio = 1000 / 185;
           break;
-        case 'square-card':
+        case CardShapes.square:
         default:
           aspectRatio = 1;
           break;
@@ -274,7 +279,7 @@ const imageHelper = Vue.extend({
      *
      * @param {(BaseItemDto | BaseItemPerson)} item - Item to get image information for
      * @param {object} [options] - Optional parameters for the function.
-     * @param {CardShapes} [options.shape] - Shape of the card or element, used to determine what kind of image to prefer
+     * @param {ValidCardShapes} [options.shape] - Shape of the card or element, used to determine what kind of image to prefer
      * @param {boolean} [options.preferThumb=false] - Prefer the Thumb images
      * @param {boolean} [options.preferBanner=false] - Prefer the Banner images
      * @param {boolean} [options.preferLogo=false] - Prefer the Logo images
@@ -301,7 +306,7 @@ const imageHelper = Vue.extend({
         ratio = 1,
         tag
       }: {
-        shape?: CardShapes;
+        shape?: ValidCardShapes;
         preferThumb?: boolean;
         preferBanner?: boolean;
         preferLogo?: boolean;
@@ -341,7 +346,7 @@ const imageHelper = Vue.extend({
         imgType = ImageType.Thumb;
         imgTag = item.ImageTags.Thumb;
       } else if (
-        (preferBanner || shape === 'banner-card') &&
+        (preferBanner || shape === CardShapes.banner) &&
         item.ImageTags &&
         item.ImageTags.Banner
       ) {

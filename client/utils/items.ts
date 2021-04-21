@@ -22,11 +22,18 @@ export const validPersonTypes = [
   'Lyricist'
 ];
 
-export type CardShapes =
-  | 'portrait-card'
-  | 'thumb-card'
-  | 'square-card'
-  | 'banner-card';
+export enum CardShapes {
+  portrait = 'portrait-card',
+  thumb = 'thumb-card',
+  square = 'square-card',
+  banner = 'banner-card'
+}
+
+export type ValidCardShapes =
+  | CardShapes.portrait
+  | CardShapes.thumb
+  | CardShapes.square
+  | CardShapes.banner;
 
 /**
  * Determines if the item is a person
@@ -99,22 +106,21 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
  */
 export function getShapeFromCollectionType(
   collectionType: string | null | undefined
-): CardShapes {
+): ValidCardShapes {
   switch (collectionType?.toLowerCase()) {
+    case 'livetv':
+    case 'musicvideos':
+      return CardShapes.thumb;
+    case 'folders':
+    case 'playlists':
+    case 'music':
+      return CardShapes.square;
     case 'boxsets':
     case 'movies':
     case 'tvshows':
     case 'books':
-      return 'portrait-card';
-    case 'livetv':
-    case 'musicvideos':
-      return 'thumb-card';
-    case 'folders':
-    case 'playlists':
-    case 'music':
-      return 'square-card';
     default:
-      return 'portrait-card';
+      return CardShapes.portrait;
   }
 }
 
@@ -126,7 +132,7 @@ export function getShapeFromCollectionType(
  */
 export function getShapeFromItemType(
   itemType: string | null | undefined
-): CardShapes {
+): ValidCardShapes {
   // TODO: Refactor to take a BaseItemDto or BaseItemPerson instead
   switch (itemType?.toLowerCase()) {
     case 'audio':
@@ -137,11 +143,11 @@ export function getShapeFromItemType(
     case 'photoalbum':
     case 'playlist':
     case 'video':
-      return 'square-card';
+      return CardShapes.square;
     case 'episode':
     case 'musicvideo':
     case 'studio':
-      return 'thumb-card';
+      return CardShapes.thumb;
     case 'book':
     case 'boxSet':
     case 'genre':
@@ -149,6 +155,6 @@ export function getShapeFromItemType(
     case 'person':
     case 'series':
     default:
-      return 'portrait-card';
+      return CardShapes.portrait;
   }
 }

@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { CardShapes } from '~/utils/items';
 
 export default Vue.extend({
   props: {
@@ -25,9 +26,9 @@ export default Vue.extend({
     },
     cardShape: {
       type: String,
-      default: (): string => 'portrait-card',
+      default: (): string => CardShapes.portrait,
       validator: (value): boolean =>
-        ['square-card', 'portrait-card', 'thumb-card'].includes(value)
+        Object.values(CardShapes).includes(value as CardShapes)
     }
   }
 });

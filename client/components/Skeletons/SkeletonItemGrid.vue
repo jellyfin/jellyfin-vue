@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { getShapeFromItemType } from '~/utils/items';
+import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
 export default Vue.extend({
   props: {
@@ -24,7 +24,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      skeletonCardShape: 'portrait-card'
+      skeletonCardShape: CardShapes.portrait
     };
   },
   watch: {
