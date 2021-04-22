@@ -10,24 +10,15 @@
           <span class="pl-4">{{ title }}</span>
         </h1>
         <v-spacer />
-        <v-btn
-          v-show="!(isBeginning && isEnd)"
-          class="swiper-prev"
-          icon
-          :disabled="loading || isBeginning"
-        >
+        <v-btn class="swiper-prev" icon>
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        <v-btn
-          v-show="!(isBeginning && isEnd)"
-          class="swiper-next"
-          icon
-          :disabled="loading || isEnd"
-        >
+        <v-btn class="swiper-next mr-2" icon>
           <v-icon>mdi-arrow-right</v-icon>
         </v-btn>
       </div>
-      <swiper ref="swiper" class="swiper" :options="swiperOptions">
+
+      <swiper class="swiper" :options="swiperOptions">
         <swiper-slide v-for="item in items" :key="item.Id">
           <card :shape="shape" :item="item" margin text overlay link />
         </swiper-slide>
@@ -38,7 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Swiper, { SwiperOptions } from 'swiper';
+import { SwiperOptions } from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
@@ -97,28 +88,8 @@ export default Vue.extend({
             slidesPerGroup: this.shape === CardShapes.Thumb ? 4 : 8
           }
         }
-      } as SwiperOptions,
-      swiper: undefined as undefined | Swiper
+      } as SwiperOptions
     };
-  },
-  computed: {
-    isEnd(): boolean {
-      if (this.swiper?.isEnd === undefined) {
-        return true;
-      }
-
-      return this.swiper?.isEnd;
-    },
-    isBeginning(): boolean {
-      if (this.swiper?.isBeginning === undefined) {
-        return true;
-      }
-
-      return this.swiper?.isBeginning;
-    }
-  },
-  mounted() {
-    this.swiper = (this.$refs?.swiper as Vue)?.$swiper as Swiper;
   }
 });
 </script>
