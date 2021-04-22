@@ -2,15 +2,17 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="false"
+    :close-on-click="true"
     :transition="'slide-y-transition'"
     top
     :nudge-top="nudgeTop"
     offset-y
+    disabled
     min-width="25em"
     max-width="25em"
     :z-index="500"
     class="menu"
+    @input="$emit('input', $event)"
   >
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
@@ -18,7 +20,6 @@
           <v-btn
             class="align-self-center active-button"
             icon
-            disabled
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
@@ -60,7 +61,7 @@
             </v-col>
           </v-row>
         </v-list-item>
-        <v-list-item>
+        <v-list-item v-show="!$vuetify.breakpoint.smAndUp">
           <v-row align="center">
             <v-col :cols="4">
               <label>{{ $t('subtitles') }}</label>
@@ -107,7 +108,7 @@ import { mapGetters } from 'vuex';
 export default Vue.extend({
   props: {
     nudgeTop: {
-      type: Number,
+      type: [Number, String],
       default: 0
     }
   },
