@@ -204,7 +204,9 @@ export default Vue.extend({
       return '';
     },
     /**
-     * @returns {string} A link to be applied to the title
+     * Gets a link to be applied to the card title
+     *
+     * @returns {string} A router link to the item or a related item
      */
     cardTitleLink(): string {
       if (this.item.Type === 'Episode' && this.item.SeriesId) {
@@ -213,8 +215,10 @@ export default Vue.extend({
 
       return this.getItemDetailsLink(this.item);
     },
-    /*
-     * @returns {string|undefined} A link to be applied to the subtitle
+    /**
+     * Gets a link to be applied to the card subtitle
+     *
+     * @returns {string|undefined} A router link to the parent item or a related item
      */
     cardSubtitleLink(): string | undefined {
       if (
