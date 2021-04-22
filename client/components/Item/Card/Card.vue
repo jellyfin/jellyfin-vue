@@ -67,16 +67,13 @@
         </div>
       </div>
     </component>
-    <!-- CAPTIONS -->
     <div v-if="text" class="card-text">
-      <!-- CARD TITLE -->
       <nuxt-link
         class="link d-block card-title mt-1 text-truncate"
         :to="cardTitleLink"
       >
         {{ cardTitle }}
       </nuxt-link>
-      <!-- CARD SUBTITLE -->
       <nuxt-link
         v-if="cardSubtitleLink"
         class="link d-block card-subtitle text--secondary text-truncate"
