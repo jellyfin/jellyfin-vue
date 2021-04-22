@@ -96,7 +96,7 @@ export default Vue.extend({
   mixins: [timeUtils],
   props: {
     nudgeTop: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     closeOnClick: {

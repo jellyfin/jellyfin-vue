@@ -83,6 +83,10 @@ body {
 
 /* Custom utility classes */
 
+.hide-pointer {
+  cursor: none;
+}
+
 .pointer {
   cursor: pointer;
 }

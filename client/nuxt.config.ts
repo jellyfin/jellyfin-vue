@@ -92,7 +92,7 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetection.ts',
     { src: 'plugins/playbackProfile.ts', mode: 'client' },
-    { src: 'plugins/supportedFeaturesPlugin.ts', mode: 'client' },
+    'plugins/supportedFeaturesPlugin.ts',
     'plugins/apiPlugin.ts'
   ],
   /*
