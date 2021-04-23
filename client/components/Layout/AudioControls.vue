@@ -1,7 +1,7 @@
 <template>
   <v-slide-y-reverse-transition mode="out-in">
     <v-footer
-      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      v-if="isPlaying && (getCurrentlyPlayingMediaType === 'Audio' || isRemote)"
       key="audioControls-footer"
       app
       :absolute="isFullScreenPlayer"
@@ -236,7 +236,8 @@ export default Vue.extend({
       'setPreviousTrack',
       'toggleShuffle',
       'toggleRepeatMode',
-      'playPause'
+      'playPause',
+      'isRemote'
     ])
   }
 });

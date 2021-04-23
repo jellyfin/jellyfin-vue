@@ -93,7 +93,8 @@ const config: NuxtConfig = {
     'plugins/browserDetection.ts',
     { src: 'plugins/playbackProfile.ts', mode: 'client' },
     'plugins/supportedFeaturesPlugin.ts',
-    'plugins/apiPlugin.ts'
+    'plugins/apiPlugin.ts',
+    { src: 'plugins/castSenderPlugin.ts', mode: 'client' }
   ],
   /*
    ** Auto import components
@@ -336,7 +337,9 @@ const config: NuxtConfig = {
     icons: {
       iconfont: 'mdi',
       values: {
-        jellyfin: simpleIcons.get('jellyfin').path
+        jellyfin: simpleIcons.get('jellyfin').path,
+        firefox: simpleIcons.get('firefoxbrowser').path,
+        chrome: simpleIcons.get('googlechrome').path
       }
     }
   },

@@ -23,6 +23,8 @@
       "@nuxtjs/axios",
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
+      "@types/chromecast-caf-sender",
+      "@types/chrome",
       "nuxt-i18n",
       "@types/wicg-mediasession",
       "jest"

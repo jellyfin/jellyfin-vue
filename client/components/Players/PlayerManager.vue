@@ -2,11 +2,15 @@
   <client-only>
     <div ref="playerContainer">
       <audio-player
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+        v-if="
+          isPlaying && getCurrentlyPlayingMediaType === 'Audio' && !isRemote
+        "
         class="d-none"
       />
       <player-dialog
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+        v-if="
+          isPlaying && getCurrentlyPlayingMediaType === 'Video' && !isRemote
+        "
         dark
         persistent
         hide-overlay
@@ -195,7 +199,8 @@ export default Vue.extend({
       'getCurrentItem',
       'getPreviousItem',
       'getNextItem',
-      'getCurrentlyPlayingMediaType'
+      'getCurrentlyPlayingMediaType',
+      'isRemote'
     ]),
     ...mapState('playbackManager', ['status', 'isMinimized']),
     isPlaying(): boolean {

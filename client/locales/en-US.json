@@ -61,7 +61,7 @@
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Generic Jellyfin device",
   "genres": "Genres",
-  "googleCastPlaceholderDevice": "Google Cast device",
+  "googleCastDevice": "Google Cast",
   "guestStar": "Guest Star",
   "headerExternalIds": "External IDs",
   "headerPaths": "Path",
@@ -379,6 +379,7 @@
   "unplayed": "Unplayed",
   "upNext": "Up next",
   "upNextName": "Up next: {upNextItemName}",
+  "userOnDevice": "{user} on {device}",
   "username": "Username",
   "validation": {
     "bothPasswordsSame": "Both passwords must be the same",
