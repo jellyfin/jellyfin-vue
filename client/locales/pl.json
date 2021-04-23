@@ -353,7 +353,7 @@
     "switchToLightMode": "Przełącz na tryb jasny"
   },
   "trailer": "Zwiastun",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
   "unableGetRelated": "Nie udało się odczytać powiązanych elementów",

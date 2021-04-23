@@ -353,7 +353,7 @@
     "switchToLightMode": "Jaryq rejımge auysu"
   },
   "trailer": "Treiler",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Türı",
   "unableGetPublicUsers": "Paidalanuşylardy alu mümkın emes",
   "unableGetRelated": "Qatysty tarmaqtardy alu mümkın emes",

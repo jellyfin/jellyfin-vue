@@ -353,7 +353,7 @@
     "switchToLightMode": "Перейти на светлый режим"
   },
   "trailer": "Трейлер",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Тип",
   "unableGetPublicUsers": "Невозможно получить пользователей",
   "unableGetRelated": "Невозможно получить связанные элементы",

@@ -352,7 +352,7 @@
     "switchToLightMode": "切换到浅色模式"
   },
   "trailer": "预告片",
-  "tvShowAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
+  "seasonEpisodeAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
   "type": "类型",
   "unableGetPublicUsers": "无法获取用户",
   "unableGetRelated": "无法获取相关项目",

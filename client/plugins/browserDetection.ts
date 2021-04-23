@@ -124,7 +124,11 @@ export class BrowserDetector {
    * @memberof BrowserDetector
    */
   isApple(): boolean {
-    return navigator?.vendor.includes('Apple') && !this.isTizen();
+    if (process.client) {
+      return navigator?.vendor.includes('Apple') && !this.isTizen();
+    } else {
+      return false;
+    }
   }
 
   /**

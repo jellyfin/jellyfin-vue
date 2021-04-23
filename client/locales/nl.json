@@ -353,7 +353,7 @@
     "switchToLightMode": "Schakel over naar de lichtmodus"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "S{seasonNumber} A{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Gebruikers laden is mislukt",
   "unableGetRelated": "Kan gerelateerde items niet ophalen",

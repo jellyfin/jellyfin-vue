@@ -97,6 +97,9 @@
         :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
         bottom
       />
+      <cast-button
+        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+      />
     </v-app-bar>
     <v-main>
       <div class="pa-s">

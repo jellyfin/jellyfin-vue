@@ -3,6 +3,9 @@ import { Plugin } from '@nuxt/types';
 export interface SupportedFeatures {
   pictureInPicture: boolean;
   airPlay: boolean;
+  googleCast: boolean;
+  playbackRate: boolean;
+  fullScreen: boolean;
 }
 
 declare module '@nuxt/types' {
@@ -31,28 +34,74 @@ declare module 'vuex/types/index' {
 const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
   const supportedFeatures: SupportedFeatures = {
     pictureInPicture: false,
-    airPlay: false
+    airPlay: false,
+    googleCast: false,
+    playbackRate: false,
+    fullScreen: false
   };
 
-  const video = document.createElement('video');
+  /**
+   * Detects if the current platform supports showing fullscreen videos
+   *
+   * @returns {boolean}
+   */
+  function supportsFullscreen(): boolean {
+    // TVs don't support fullscreen. iOS, when user through the PWA, is already full screen.
+    if ($browser.isTv() || ($browser.isApple() && $browser.isMobile())) {
+      return false;
+    }
 
-  if (
-    // Check non-standard Safari PiP support
-    // @ts-expect-error - Non-standard functions doesn't have typings
-    (typeof video.webkitSupportsPresentationMode === 'function' &&
+    const element = document.documentElement;
+
+    return !!(
+      element.requestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      element.mozRequestFullScreen ||
+      // @ts-expect-error -- Non-standard property
+      element.webkitRequestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      element.msRequestFullscreen ||
+      // @ts-expect-error -- Non-standard property
+      document.createElement('video').webkitEnterFullscreen
+    );
+  }
+
+  if (process.client) {
+    const video = document.createElement('video');
+
+    if (
+      // Check non-standard Safari PiP support
       // @ts-expect-error - Non-standard functions doesn't have typings
-      video.webkitSupportsPresentationMode('picture-in-picture') &&
+      (typeof video.webkitSupportsPresentationMode === 'function' &&
+        // @ts-expect-error - Non-standard functions doesn't have typings
+        video.webkitSupportsPresentationMode('picture-in-picture') &&
+        // @ts-expect-error - Non-standard functions doesn't have typings
+        typeof video.webkitSetPresentationMode === 'function') ||
+      // Check standard PiP support
       // @ts-expect-error - Non-standard functions doesn't have typings
-      typeof video.webkitSetPresentationMode === 'function') ||
-    // Check standard PiP support
-    // @ts-expect-error - Non-standard functions doesn't have typings
-    document.pictureInPictureEnabled
-  ) {
-    supportedFeatures.pictureInPicture = true;
+      document.pictureInPictureEnabled
+    ) {
+      supportedFeatures.pictureInPicture = true;
+    }
+
+    if (typeof video.playbackRate === 'number') {
+      supportedFeatures.playbackRate = true;
+    }
+
+    if (supportsFullscreen()) {
+      supportedFeatures.fullScreen = true;
+    }
   }
 
   if ($browser.isApple()) {
     supportedFeatures.airPlay = true;
+  }
+
+  if (
+    $browser.isChrome() ||
+    ($browser.isEdge() && $browser.isChromiumBased())
+  ) {
+    supportedFeatures.googleCast = true;
   }
 
   inject('features', supportedFeatures);

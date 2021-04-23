@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
-import { UserDto } from '@jellyfin/client-axios';
+import { UserDto } from '@jellyfin/client-axios/models/user-dto';
+// Modules
 import { TvShowsState } from './tvShows';
 import { ServerState } from './servers';
 import { PageState } from './page';
@@ -12,12 +13,19 @@ import { PlaybackManagerState } from './playbackManager';
 import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { ClientSettingsState } from './clientSettings';
-import { websocketPlugin } from './plugins/websocket';
+import { ItemsState } from './items';
+// Vuex plugins
+import { websocketPlugin } from './plugins/websocketPlugin';
+import { playbackReportingPlugin } from './plugins/playbackReportingPlugin';
 import { preferencesSync } from './plugins/preferencesSyncPlugin';
 import { userPlugin } from './plugins/userPlugin';
-import { ItemsState } from './items';
 
-export const plugins = [websocketPlugin, preferencesSync, userPlugin];
+export const plugins = [
+  websocketPlugin,
+  playbackReportingPlugin,
+  preferencesSync,
+  userPlugin
+];
 
 export interface AuthState {
   busy: boolean;

@@ -353,7 +353,7 @@
     "switchToLightMode": "Cambiar a modo claro"
   },
   "trailer": "Adelanto",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "unableGetPublicUsers": "No se han podido obtener los usuarios",
   "unableGetRelated": "No se han podido obtener elementos relacionados",

@@ -353,7 +353,7 @@
     "switchToLightMode": "In den hellen Modus wechseln"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "S{seasonNumber} F{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Benutzer können nicht abgerufen werden",
   "unableGetRelated": "Verwandte Elemente konnten nicht abgerufen werden",

@@ -353,7 +353,7 @@
     "switchToLightMode": "Váltás világos módra"
   },
   "trailer": "Előzetes",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Típus",
   "unableGetPublicUsers": "Nem sikerült lekérni a felhasználókat",
   "unableGetRelated": "Nem sikerült lekérni a kapcsolódó elemeket",

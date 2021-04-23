@@ -44,12 +44,14 @@ export interface PlaybackManagerState {
   isMuted: boolean;
   isShuffling: boolean;
   isMinimized: boolean;
+  isRemote: boolean;
   repeatMode: RepeatMode;
   queue: BaseItemDto[];
   originalQueue: BaseItemDto[];
   playSessionId: string | null;
   playbackInitiator: BaseItemDto | null;
   playbackInitMode: InitMode;
+  remoteSessionId: string | null;
 }
 
 export const defaultState = (): PlaybackManagerState => ({
@@ -67,13 +69,15 @@ export const defaultState = (): PlaybackManagerState => ({
   isFullscreen: false,
   isMuted: false,
   isShuffling: false,
-  isMinimized: true,
+  isMinimized: false,
+  isRemote: false,
   repeatMode: RepeatMode.RepeatNone,
   queue: [],
   originalQueue: [],
   playSessionId: null,
   playbackInitiator: null,
-  playbackInitMode: InitMode.Unknown
+  playbackInitMode: InitMode.Unknown,
+  remoteSessionId: null
 });
 
 export const state = defaultState;
@@ -126,6 +130,13 @@ export const getters: GetterTree<PlaybackManagerState, PlaybackManagerState> = {
     }
 
     return null;
+  },
+  getCurrentItemSubtitleTracks: (state) => {
+    if (state.currentMediaSource !== null) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Subtitle';
+      });
+    }
   }
 };
 
@@ -267,6 +278,9 @@ export const mutations: MutationTree<PlaybackManagerState> = {
         state.isShuffling = false;
       }
     }
+  },
+  SET_REMOTE(state: PlaybackManagerState, { remote }: { remote: boolean }) {
+    state.isRemote = remote;
   }
 };
 
@@ -332,6 +346,18 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
 
     queue.push(...translatedItem);
     commit('SET_QUEUE', { queue });
+  },
+  setQueue(
+    { commit },
+    { queue, currentIndex }: { queue: BaseItemDto[]; currentIndex?: number }
+  ) {
+    commit('SET_QUEUE', { queue });
+
+    if (currentIndex) {
+      commit('SET_CURRENT_ITEM_INDEX', {
+        currentItemIndex: currentIndex
+      });
+    }
   },
   setNewQueue({ commit, state }, { queue }) {
     let item;
@@ -473,5 +499,8 @@ export const actions: ActionTree<PlaybackManagerState, PlaybackManagerState> = {
     } else {
       commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatNone });
     }
+  },
+  setRemote({ commit }, remote: boolean) {
+    commit('SET_REMOTE', { remote });
   }
 };

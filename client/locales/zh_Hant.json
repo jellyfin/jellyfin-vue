@@ -205,5 +205,5 @@
     "switchToLightMode": "切換成淺色模式"
   },
   "trailer": "預告片",
-  "tvShowAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章"
+  "seasonEpisodeAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章"
 }

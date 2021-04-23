@@ -353,7 +353,7 @@
     "switchToLightMode": "Chuyển sang chế độ sáng"
   },
   "trailer": "Đoạn Giới Thiệu",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Kiểu",
   "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
   "unableGetRelated": "Không thể lấy các mục liên quan",

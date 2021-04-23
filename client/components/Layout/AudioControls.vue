@@ -1,7 +1,7 @@
 <template>
   <v-slide-y-reverse-transition mode="out-in">
     <v-footer
-      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      v-if="isPlaying && (getCurrentlyPlayingMediaType === 'Audio' || isRemote)"
       key="audioControls-footer"
       app
       :absolute="isFullScreenPlayer"
@@ -112,7 +112,7 @@
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <like-button :item="getCurrentItem" class="active-button" />
-            <queue-button :item="getCurrentItem" class="active-button" />
+            <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
@@ -236,7 +236,8 @@ export default Vue.extend({
       'setPreviousTrack',
       'toggleShuffle',
       'toggleRepeatMode',
-      'playPause'
+      'playPause',
+      'isRemote'
     ])
   }
 });
