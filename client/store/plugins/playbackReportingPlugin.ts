@@ -51,7 +51,7 @@ export const playbackReportingPlugin: Plugin<AppState> = (store) => {
         });
         break;
       case 'playbackManager/SET_CURRENT_TIME': {
-        if (state.playbackManager.status === PlaybackStatus.playing) {
+        if (state.playbackManager.status === PlaybackStatus.Playing) {
           const now = new Date().getTime();
 
           if (
