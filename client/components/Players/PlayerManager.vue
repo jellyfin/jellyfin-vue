@@ -329,16 +329,18 @@ export default Vue.extend({
       if (window.matchMedia('(pointer:fine)').matches) {
         return 3000;
       } else {
-        return 10000;
+        return 7500;
       }
     },
     setFullscreenTimeout(): void {
       this.fullScreenOverlayTimer = window.setTimeout(() => {
-        this.showFullScreenOverlay = false;
+        if (!this.isMinimized) {
+          this.showFullScreenOverlay = false;
 
-        document.body.classList.add('hide-pointer');
+          document.body.classList.add('hide-pointer');
 
-        this.fullScreenOverlayTimer = null;
+          this.fullScreenOverlayTimer = null;
+        }
       }, this.getOsdTimeoutDuration());
     },
     handleMouseMove(): void {
