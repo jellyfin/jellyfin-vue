@@ -7,7 +7,6 @@
     top
     :nudge-top="nudgeTop"
     offset-y
-    disabled
     min-width="25em"
     max-width="25em"
     min-height="25em"
@@ -22,6 +21,7 @@
           <v-btn
             class="align-self-center active-button"
             icon
+            disabled
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
