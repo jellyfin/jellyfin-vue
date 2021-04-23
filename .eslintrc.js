@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- The ESLint config expects Node modules
+var restrictedGlobals = require('confusing-browser-globals');
+
 module.exports = {
   root: true,
   env: {
@@ -17,6 +20,7 @@ module.exports = {
   ],
   plugins: ['prettier', 'promise', 'import', 'jsdoc', 'lodash'],
   rules: {
+    'no-restricted-globals': ['error'].concat(restrictedGlobals),
     'import/newline-after-import': 'error',
     'import/order': 'error',
     'jsdoc/require-hyphen-before-param-description': 'error',
