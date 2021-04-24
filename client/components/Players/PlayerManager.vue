@@ -7,6 +7,7 @@
       />
       <player-dialog
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+        ref="playerDialog"
         dark
         persistent
         hide-overlay
@@ -165,6 +166,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
@@ -202,6 +204,15 @@ export default Vue.extend({
         case 'Movie':
         default:
           return this.getCurrentItem.Name;
+      }
+    }
+  },
+  watch: {
+    isMinimized(value): void {
+      if (value) {
+        clearAllBodyScrollLocks();
+      } else {
+        disableBodyScroll(this.$refs.playerDialog as Element);
       }
     }
   },

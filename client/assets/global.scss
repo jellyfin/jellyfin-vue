@@ -6,12 +6,6 @@
 @import '@fontsource/noto-sans-tc/index.css';
 @import '@fontsource/noto-sans-hk/index.css';
 
-html {
-  width: 100vw;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 body {
   background-color: var(--v-background-base);
 }
