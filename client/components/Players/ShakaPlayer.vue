@@ -1,11 +1,13 @@
 <template>
-  <audio
-    ref="audioPlayer"
+  <component
+    :is="mediaElement"
+    ref="shakaPlayer"
+    :poster="poster.url"
     autoplay
-    @timeupdate="onAudioProgressThrottled"
-    @pause="onAudioPause"
+    @timeupdate="onProgressThrottled"
+    @pause="onPause"
     @play="onPlay"
-    @ended="onAudioStopped"
+    @ended="onStopped"
   />
 </template>
 
@@ -19,7 +21,7 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
-import imageHelper from '~/mixins/imageHelper';
+import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 
 declare global {
   interface Window {
@@ -41,14 +43,33 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
+    ...mapGetters('playbackManager', [
+      'getCurrentItem',
+      'getCurrentlyPlayingMediaType'
+    ]),
     ...mapState('playbackManager', [
       'lastProgressUpdate',
       'currentTime',
       'currentVolume'
     ]),
     ...mapState('deviceProfile', ['deviceId']),
-    ...mapState('user', ['accessToken'])
+    ...mapState('user', ['accessToken']),
+    poster(): ImageUrlInfo | string {
+      if (this.getCurrentlyPlayingMediaType === 'Video') {
+        return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
+      } else {
+        return '';
+      }
+    },
+    mediaElement(): string {
+      if (this.getCurrentlyPlayingMediaType === 'Audio') {
+        return 'audio';
+      } else if (this.getCurrentlyPlayingMediaType === 'Video') {
+        return 'video';
+      } else {
+        return '';
+      }
+    }
   },
   watch: {
     getCurrentItem(): void {
@@ -57,7 +78,7 @@ export default Vue.extend({
     async source(newSource): Promise<void> {
       if (this.player) {
         try {
-          await this.player.load(newSource);
+          await this.player.load(newSource, this.currentTime);
         } catch (e) {
           // No need to actually process the error here, the error handler will do this for us
         }
@@ -77,7 +98,8 @@ export default Vue.extend({
       shaka.polyfill.installAll();
 
       if (shaka.Player.isBrowserSupported()) {
-        this.player = new shaka.Player(this.$refs.audioPlayer);
+        this.player = new shaka.Player(this.$refs.shakaPlayer);
+
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
@@ -85,37 +107,30 @@ export default Vue.extend({
           (mutation, _state: AppState) => {
             switch (mutation.type) {
               case 'playbackManager/PAUSE_PLAYBACK':
-                if (this.$refs.audioPlayer) {
-                  (this.$refs.audioPlayer as HTMLAudioElement).pause();
+                if (this.$refs.shakaPlayer) {
+                  (this.$refs.shakaPlayer as HTMLMediaElement).pause();
                 }
 
                 break;
               case 'playbackManager/UNPAUSE_PLAYBACK':
-                if (this.$refs.audioPlayer) {
-                  (this.$refs.audioPlayer as HTMLAudioElement).play();
+                if (this.$refs.shakaPlayer) {
+                  (this.$refs.shakaPlayer as HTMLMediaElement).play();
                 }
 
                 break;
               case 'playbackManager/CHANGE_CURRENT_TIME':
-                if (this.$refs.audioPlayer) {
-                  (this.$refs.audioPlayer as HTMLAudioElement).currentTime =
-                    this.currentTime;
-                }
-
-                break;
-              case 'playbackManager/SET_VOLUME':
-                if (this.$refs.audioPlayer) {
-                  (this.$refs.audioPlayer as HTMLAudioElement).volume =
-                    this.currentVolume / 100;
+                if (this.$refs.shakaPlayer && mutation?.payload?.time) {
+                  (this.$refs.shakaPlayer as HTMLMediaElement).currentTime =
+                    mutation?.payload?.time;
                 }
 
                 break;
               case 'playbackManager/SET_REPEAT_MODE':
-                if (this.$refs.audioPlayer) {
+                if (this.$refs.shakaPlayer) {
                   if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
-                    (this.$refs.audioPlayer as HTMLAudioElement).loop = true;
+                    (this.$refs.shakaPlayer as HTMLMediaElement).loop = true;
                   } else {
-                    (this.$refs.audioPlayer as HTMLAudioElement).loop = false;
+                    (this.$refs.shakaPlayer as HTMLMediaElement).loop = false;
                   }
                 }
             }
@@ -123,7 +138,7 @@ export default Vue.extend({
         );
       } else {
         this.$nuxt.error({
-          message: this.$t('browserNotSupported') as string
+          message: this.$t('browserNotSupported')
         });
       }
     } catch (error) {
@@ -136,7 +151,7 @@ export default Vue.extend({
   beforeDestroy() {
     if (this.player) {
       window.muxjs = undefined;
-      this.onAudioStopped(); // Report that the playback is stopping
+      this.onStopped(); // Report that the playback is stopping
       this.player.removeEventListener('error', this.onPlayerError);
       this.player.unload();
       this.player.destroy();
@@ -197,7 +212,13 @@ export default Vue.extend({
 
           const params = stringify(directOptions);
 
-          this.source = `${this.$axios.defaults.baseURL}/Audio/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
+          let mediaType = 'Videos';
+
+          if (this.getCurrentlyPlayingMediaType === 'Audio') {
+            mediaType = 'Audio';
+          }
+
+          this.source = `${this.$axios.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
@@ -210,30 +231,30 @@ export default Vue.extend({
     onPlay(_event?: Event): void {
       this.unpause();
     },
-    onAudioProgressThrottled: throttle(function (_event?: Event) {
+    onProgressThrottled: throttle(function (_event?: Event) {
       // @ts-expect-error - TypeScript is confusing the typings with lodash's
-      this.onAudioProgress(_event);
+      this.onProgress(_event);
     }, 500),
-    onAudioProgress(_event?: Event): void {
-      if (this.$refs.audioPlayer) {
-        const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)
+    onProgress(_event?: Event): void {
+      if (this.$refs.shakaPlayer) {
+        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
         this.setCurrentTime({ time: currentTime });
       }
     },
-    onAudioPause(_event?: Event): void {
-      if (this.$refs.audioPlayer) {
-        const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)
+    onPause(_event?: Event): void {
+      if (this.$refs.shakaPlayer) {
+        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
         this.setCurrentTime({ time: currentTime });
         this.pause();
       }
     },
-    onAudioStopped(_event?: Event): void {
-      if (this.$refs.audioPlayer) {
-        const currentTime = (this.$refs.audioPlayer as HTMLAudioElement)
+    onStopped(_event?: Event): void {
+      if (this.$refs.shakaPlayer) {
+        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
         this.setCurrentTime({ time: currentTime });
@@ -242,7 +263,21 @@ export default Vue.extend({
     },
     onPlayerError(event: ErrorEvent): void {
       this.$emit('error', event);
+    },
+    togglePictureInPicture(): void {
+      // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
+      (this.$refs.shakaPlayer as HTMLMediaElement).requestPictureInPicture();
     }
   }
 });
 </script>
+
+<style scoped>
+.shaka-video-container,
+video {
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+}
+</style>

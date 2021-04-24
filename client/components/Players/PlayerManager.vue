@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div ref="playerContainer">
-      <audio-player
+      <shaka-player
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
         class="d-none"
       />
@@ -21,7 +21,9 @@
       >
         <v-hover v-slot="{ hover }">
           <v-card class="player-card" width="100%">
-            <video-player ref="videoPlayer" />
+            <v-container fill-height fluid class="pa-0 justify-center">
+              <shaka-player ref="videoPlayer" />
+            </v-container>
             <!-- Mini Player Overlay -->
             <v-fade-transition>
               <v-overlay v-show="hover && isMinimized" absolute>
