@@ -9,7 +9,7 @@ jobs:
   automate-project-columns:
     runs-on: ubuntu-latest
     steps:
-      - uses: alex-page/github-project-automation-plus@v0.5.1
+      - uses: alex-page/github-project-automation-plus@v0.6.0
         continue-on-error: true
         with:
           project: Ongoing development
