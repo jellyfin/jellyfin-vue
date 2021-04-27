@@ -218,9 +218,9 @@ export default Vue.extend({
     /**
      * Gets a link to be applied to the card subtitle
      *
-     * @returns {string|undefined} A router link to the parent item or a related item
+     * @returns {string|null} A router link to the parent item or a related item
      */
-    cardSubtitleLink(): string | undefined {
+    cardSubtitleLink(): string | null {
       if (
         this.item.Type === 'MusicAlbum' &&
         this.item.AlbumArtists &&
@@ -234,7 +234,7 @@ export default Vue.extend({
         return this.getItemDetailsLink(this.item);
       }
 
-      return undefined;
+      return null;
     },
     progress: {
       get(): number | false {
