@@ -93,7 +93,7 @@
     "@types/wicg-mediasession": "^1.1.0",
     "@vue/test-utils": "^1.1.4",
     "axe": "^8.0.0",
-    "axe-core": "^4.1.4",
+    "axe-core": "^4.2.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
