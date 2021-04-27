@@ -229,8 +229,8 @@ const config: NuxtConfig = {
       { code: 'uk', iso: 'uk', name: 'Українська', file: 'uk.json' },
       { code: 'ur', iso: 'ur', name: 'اردو', file: 'ur.json' },
       { code: 'vi', iso: 'vi', name: 'Tiếng Việt', file: 'vi.json' },
-      { code: 'zh-CN', iso: 'zh-CN', name: '中国语文', file: 'zh_Hans.json' },
-      { code: 'zh-TW', iso: 'zh-TW', name: '中國語文', file: 'zh_Hant.json' }
+      { code: 'zh-CN', iso: 'zh-CN', name: '简体中文', file: 'zh_Hans.json' },
+      { code: 'zh-TW', iso: 'zh-TW', name: '繁體中文', file: 'zh_Hant.json' }
     ],
     lazy: true,
     langDir: 'locales/',
