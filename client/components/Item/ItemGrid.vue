@@ -102,6 +102,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
 .scroller {
   max-height: 100%;
 }
@@ -119,7 +121,6 @@ export default Vue.extend({
   transform: translate(-50%, -50%);
 }
 
-@import '~vuetify/src/styles/styles.sass';
 .card-grid-container {
   display: grid;
 }
