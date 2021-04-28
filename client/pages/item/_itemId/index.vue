@@ -394,7 +394,7 @@ export default Vue.extend({
 </script>
 
 <style>
-  .v-slide-group__prev--disabled {
-    display: none !important;
-  }
+.v-slide-group__prev--disabled {
+  display: none !important;
+}
 </style>
