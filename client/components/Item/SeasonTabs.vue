@@ -13,6 +13,7 @@
             :key="episode.Id"
             nuxt
             :to="getItemDetailsLink(episode)"
+            class="flex-column flex-md-row"
           >
             <v-list-item-avatar tile width="20em" height="12em">
               <blurhash-image
@@ -22,8 +23,10 @@
               />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title>{{ episode.Name }}</v-list-item-title>
-              <v-list-item-subtitle>
+              <v-list-item-title class="text-wrap">
+                {{ episode.Name }}
+              </v-list-item-title>
+              <v-list-item-subtitle class="text-wrap">
                 {{ episode.Overview }}
               </v-list-item-subtitle>
             </v-list-item-content>
