@@ -172,12 +172,17 @@
           </v-col>
         </v-row>
         <div
-          v-if="isFullScreenPlayer && getNextItem"
+          v-if="isFullScreenPlayer"
           class="d-flex justify-center align-center"
         >
           <div>
             <h4 class="text-overline font-italic">
-              {{ $t('upNextName', { upNextItemName: getNextItem.Name }) }}
+              {{
+                !!getNextItem
+                  ? $t('upNextName', { upNextItemName: getNextItem.Name })
+                  : ''
+              }}
+              <br />
             </h4>
           </div>
         </div>
