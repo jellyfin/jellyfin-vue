@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Hibás felhasználónév vagy jelszó",
   "item": {
     "artist": {
+      "appearsOn": "Megjelenések",
       "discography": "Diszkográfia",
-      "information": "Infromáció"
+      "information": "Infromáció",
+      "videos": "Videók"
     },
     "cast": "Szereplő(k)",
     "composer": "Zeneszerző",
