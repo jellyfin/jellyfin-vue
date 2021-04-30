@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Неверные имя пользователя или пароль",
   "item": {
     "artist": {
+      "appearsOn": "Вид",
       "discography": "Дискография",
-      "information": "Информация"
+      "information": "Информация",
+      "videos": "Видео"
     },
     "cast": "Транслировать",
     "composer": "Композитор",
