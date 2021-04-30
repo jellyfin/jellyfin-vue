@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Jaramsyz paidalanuşy aty ne paröl",
   "item": {
     "artist": {
+      "appearsOn": "Körınıster",
       "discography": "Diskografia",
-      "information": "Aqparat"
+      "information": "Aqparat",
+      "videos": "Beineler"
     },
     "cast": "Taratu",
     "composer": "Kompozitor",
