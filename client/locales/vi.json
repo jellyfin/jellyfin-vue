@@ -89,6 +89,7 @@
   "incorrectUsernameOrPassword": "Sai tên đăng nhập hoặc mật khẩu",
   "item": {
     "artist": {
+      "appearsOn": "Hiển thị",
       "discography": "Đĩa đệm",
       "information": "Thông tin"
     },
