@@ -16,5 +16,30 @@ export function getSubtitleProfiles(): Array<SubtitleProfile> {
     Method: SubtitleDeliveryMethod.External
   });
 
+  SubtitleProfiles.push({
+    Format: 'ttml',
+    Method: SubtitleDeliveryMethod.External
+  });
+
+  SubtitleProfiles.push({
+    Format: 'srt',
+    Methood: SubtitleDeliveryMethod.External
+  });
+
+  SubtitleProfiles.push({
+    Format: 'ass',
+    Methood: SubtitleDeliveryMethod.External
+  });
+
+  SubtitleProfiles.push({
+    Format: 'ssa',
+    Methood: SubtitleDeliveryMethod.External
+  });
+
+  SubtitleProfiles.push({
+    Format: 'subviewer',
+    Methood: SubtitleDeliveryMethod.External
+  });
+
   return SubtitleProfiles;
 }
