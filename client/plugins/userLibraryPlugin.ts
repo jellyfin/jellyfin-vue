@@ -1,4 +1,7 @@
-import { UserLibraryApiGetLatestMediaRequest } from '@jellyfin/client-axios';
+import {
+  UserLibraryApiGetLatestMediaRequest,
+  ItemFields
+} from '@jellyfin/client-axios';
 import { Plugin } from '@nuxt/types/app';
 
 type GetLatestMediaParams = Omit<UserLibraryApiGetLatestMediaRequest, 'userId'>;
@@ -59,7 +62,8 @@ const userLibraryPlugin: Plugin = ({ $api, $auth, store }, inject) => {
       const result = (
         await $api.userLibrary.getLatestMedia({
           ...params,
-          userId: $auth.user?.Id
+          userId: $auth.user?.Id,
+          fields: Object.values(ItemFields)
         })
       ).data;
 
