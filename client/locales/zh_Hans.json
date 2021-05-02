@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "用户名或密码错误",
   "item": {
     "artist": {
+      "appearsOn": "外观",
       "discography": "唱片目录",
-      "information": "信息"
+      "information": "信息",
+      "videos": "视频"
     },
     "cast": "演职人员",
     "composer": "作曲家",
@@ -119,7 +121,7 @@
     "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
     "poweredByJellyfin": "本服务器由 Jellyfin 提供动力",
     "readTheDocumentation": "阅读文档",
-    "reportAnIssue": "报告 Vue 客户端的问题"
+    "reportAnIssue": "报告这个客户端的问题"
   },
   "login": {
     "addServer": "添加服务器",
@@ -153,6 +155,7 @@
   "metadata": {
     "source": "来源",
     "sourceAll": "全部",
+    "title": "标题",
     "type": "类型"
   },
   "metadataEditor": "元数据编辑器",
@@ -377,7 +380,7 @@
   "video": "视频",
   "videoTypes": "视频类型",
   "viewDetails": "查看详情",
-  "vueClientVersion": "Vue 客户端版本",
+  "vueClientVersion": "客户端版本",
   "wizard": {
     "administratorAccount": "管理员账户",
     "allowRemoteAccess": "允许远程访问此服务器",

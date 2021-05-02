@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "തെറ്റായ ഉപയോക്തൃ നാമം അല്ലെങ്കിൽ പാസ്വേഡ്",
   "item": {
     "artist": {
+      "appearsOn": "ദൃശ്യങ്ങൾ",
       "discography": "ഡിസ്കോഗ്രഫി",
-      "information": "വിവരങ്ങൾ"
+      "information": "വിവരങ്ങൾ",
+      "videos": "വീഡിയോകൾ"
     },
     "cast": "അഭിനേതാക്കൾ",
     "composer": "കമ്പോസർ",

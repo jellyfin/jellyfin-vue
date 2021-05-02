@@ -77,6 +77,20 @@ describe('Vuex: items', () => {
     expect(store.state.allIds[0]).toBe(id1);
   });
 
+  it('does not update an item when ADD_ITEM is committed with an already set ID but with fewer keys', (): void => {
+    store.replaceState({
+      ...defaultState(),
+      byId: { [id1]: item1 },
+      allIds: [id1]
+    });
+
+    store.commit('ADD_ITEM', { item: { Id: id1 } });
+
+    expect(store.state.byId[id1]).toBe(item1);
+    expect(store.state.allIds).toHaveLength(1);
+    expect(store.state.allIds[0]).toBe(id1);
+  });
+
   it('throws when ADD_ITEM is commited with invalid ID', (): void => {
     store.replaceState({ ...defaultState() });
 

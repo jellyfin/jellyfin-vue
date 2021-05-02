@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "தவறான பயனர்பெயர் அல்லது கடவுச்சொல்",
   "item": {
     "artist": {
+      "appearsOn": "தோற்றங்கள்",
       "discography": "டிஸ்கோகிராபி",
-      "information": "தகவல்"
+      "information": "தகவல்",
+      "videos": "வீடியோக்கள்"
     },
     "cast": "நடிகர்கள்",
     "composer": "இசையமைப்பாளர்",

@@ -29,7 +29,12 @@ export const mutations: MutationTree<ItemsState> = {
       throw new Error("No item ID in provided item, can't store it");
     }
 
-    Vue.set(state.byId, item.Id, item);
+    if (
+      !state.byId[item.Id] ||
+      Object.keys(item).length >= Object.keys(state.byId[item.Id]).length
+    ) {
+      Vue.set(state.byId, item.Id, item);
+    }
 
     if (!state.allIds.includes(item.Id)) {
       state.allIds.push(item.Id);
