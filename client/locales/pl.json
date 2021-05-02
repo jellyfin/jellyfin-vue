@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Błędna nazwa użytkownika lub hasło",
   "item": {
     "artist": {
+      "appearsOn": "Występy",
       "discography": "Dyskografia",
-      "information": "Informacja"
+      "information": "Informacja",
+      "videos": "Wideo"
     },
     "cast": "Obsada",
     "composer": "Kompozytor",
