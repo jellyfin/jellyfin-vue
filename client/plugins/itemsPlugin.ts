@@ -1,4 +1,4 @@
-import { ItemsApiGetItemsRequest } from '@jellyfin/client-axios';
+import { ItemsApiGetItemsRequest, ItemFields } from '@jellyfin/client-axios';
 import { Plugin } from '@nuxt/types/app';
 
 type GetItemsParams = Omit<ItemsApiGetItemsRequest, 'userId'>;
@@ -40,7 +40,11 @@ const itemsPlugin: Plugin = ({ $api, $auth, store }, inject) => {
      */
     getItems: async (params: GetItemsParams): Promise<string[]> => {
       const result = (
-        await $api.items.getItems({ ...params, userId: $auth.user?.Id })
+        await $api.items.getItems({
+          ...params,
+          userId: $auth.user?.Id,
+          fields: Object.values(ItemFields)
+        })
       ).data.Items;
 
       if (!result) {
