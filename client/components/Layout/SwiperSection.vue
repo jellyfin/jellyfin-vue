@@ -103,18 +103,18 @@ export default Vue.extend({
   },
   computed: {
     isEnd(): boolean {
-      if (this.swiper?.isEnd === undefined) {
-        return true;
+      if (this.swiper) {
+        return this.swiper.isEnd;
       }
 
-      return this.swiper?.isEnd;
+      return true;
     },
     isBeginning(): boolean {
-      if (this.swiper?.isBeginning === undefined) {
-        return true;
+      if (this.swiper) {
+        return this.swiper.isBeginning;
       }
 
-      return this.swiper?.isBeginning;
+      return true;
     }
   },
   mounted() {
