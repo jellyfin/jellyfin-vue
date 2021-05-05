@@ -5,6 +5,7 @@ import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
 import { hasMkvSupport } from './helpers/transcodingFormats';
 import { getSupportedWebMAudioCodecs } from './helpers/webmAudioFormats';
 import { getSupportedWebMVideoCodecs } from './helpers/webmVideoFormats';
+import { getSupportedAudioCodecs } from './helpers/audioFormats';
 
 /**
  * Returns a valid DirectPlayProfile for the current platform.
@@ -17,7 +18,7 @@ export function getDirectPlayProfiles(
   context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<DirectPlayProfile> {
-  const DirectPlayProfiles = [] as DirectPlayProfile[];
+  const DirectPlayProfiles: DirectPlayProfile[] = [];
 
   const webmVideoCodecs = getSupportedWebMVideoCodecs(
     context,
@@ -72,30 +73,32 @@ export function getDirectPlayProfiles(
     'oga'
   ];
 
-  for (const audioFormat of supportedAudio) {
-    if (audioFormat === 'mp2') {
+  for (const audioFormat of supportedAudio.filter((format) =>
+    getSupportedAudioCodecs(context, format)
+  )) {
+    DirectPlayProfiles.push({
+      Container: audioFormat,
+      Type: DlnaProfileType.Audio
+    });
+
+    if (audioFormat === 'opus' || audioFormat === 'webma') {
       DirectPlayProfiles.push({
-        Container: 'mp2,mp3',
+        Container: 'webm',
         Type: DlnaProfileType.Audio,
         AudioCodec: audioFormat
-      });
-    } else if (audioFormat === 'mp3') {
-      DirectPlayProfiles.push({
-        Container: audioFormat,
-        Type: DlnaProfileType.Audio,
-        AudioCodec: audioFormat
-      });
-    } else {
-      DirectPlayProfiles.push({
-        Container: audioFormat === 'webma' ? 'webma,webm' : audioFormat,
-        Type: DlnaProfileType.Audio
       });
     }
 
     // aac also appears in the m4a and m4b container
     if (audioFormat === 'aac' || audioFormat === 'alac') {
       DirectPlayProfiles.push({
-        Container: 'm4a,m4b',
+        Container: 'm4a',
+        AudioCodec: audioFormat,
+        Type: DlnaProfileType.Audio
+      });
+
+      DirectPlayProfiles.push({
+        Container: 'm4b',
         AudioCodec: audioFormat,
         Type: DlnaProfileType.Audio
       });

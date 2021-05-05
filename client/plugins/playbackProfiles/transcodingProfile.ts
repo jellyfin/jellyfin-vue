@@ -31,7 +31,7 @@ export function getTranscodingProfiles(
   context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<TranscodingProfile> {
-  const TranscodingProfiles = [] as TranscodingProfile[];
+  const TranscodingProfiles: TranscodingProfile[] = [];
   const physicalAudioChannels = context.$browser.isTv() ? 6 : 2;
 
   const hlsBreakOnNonKeyFrames = !!(
@@ -86,9 +86,6 @@ export function getTranscodingProfiles(
     videoTestElement
   );
 
-  console.dir(hlsInFmp4VideoCodecs);
-  console.dir(hlsInFmp4AudioCodecs);
-
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
     context,
@@ -96,6 +93,7 @@ export function getTranscodingProfiles(
   );
 
   if (canPlayHls) {
+    // Since we have Mux.js loaded, anything using Shaka Player should be able to play fMP4 just fine.
     if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
       TranscodingProfiles.push({
         Container: 'mp4',
