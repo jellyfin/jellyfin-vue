@@ -1,5 +1,4 @@
 import { Context } from '@nuxt/types';
-import { getSupportedAudioCodecs } from './audioFormats';
 import {
   hasAacSupport,
   hasAc3InHlsSupport,
@@ -35,10 +34,6 @@ export function getSupportedTsAudioCodecs(
         codecs.push('eac3');
       }
     }
-  }
-
-  if (getSupportedAudioCodecs(context, 'opus')) {
-    codecs.push('opus');
   }
 
   return codecs;
