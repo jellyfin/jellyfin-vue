@@ -63,14 +63,14 @@
         @click.stop="drawer = !drawer"
       />
       <v-btn
+        v-hide="$route.name === 'index'"
         :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
         :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
         :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
         :class="{
           'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
           'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
-          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
-          hidden: $route.name === 'index'
+          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled
         }"
         @click="$router.back()"
       >
@@ -100,10 +100,7 @@
     </v-app-bar>
     <v-main>
       <div class="pa-s">
-        <nuxt
-          keep-alive
-          :keep-alive-props="{ max: 10, exclude: ['fullscreen-playback'] }"
-        />
+        <nuxt keep-alive :keep-alive-props="keepAliveOptions" />
       </div>
     </v-main>
     <audio-controls />
@@ -130,11 +127,21 @@ interface LayoutButton {
 
 export default Vue.extend({
   mixins: [settingsHelper],
+  props: {
+    keepAliveOptions: {
+      type: Object as () => Record<string, unknown>,
+      default: (): Record<string, unknown> => {
+        return {
+          max: 10,
+          exclude: ['fullscreen-playback']
+        };
+      }
+    }
+  },
   data() {
     return {
       isScrolled: false,
-      drawer: false,
-      opacity: 0
+      drawer: false
     };
   },
   computed: {
@@ -239,9 +246,5 @@ export default Vue.extend({
 .search-input.expandable.primary--text {
   max-width: 40em;
   transition: max-width 0.25s;
-}
-
-.hidden {
-  visibility: hidden;
 }
 </style>
