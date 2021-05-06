@@ -38,7 +38,7 @@
                     </v-btn>
                   </div>
                   <div
-                    class="absolute d-flex flex-row justify-center align-center"
+                    class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center"
                   >
                     <v-btn
                       class="all-pointer-events"
@@ -612,18 +612,7 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss">
-.absolute {
-  pointer-events: none;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
+<style lang="scss" scoped>
 .all-pointer-events {
   pointer-events: all;
 }

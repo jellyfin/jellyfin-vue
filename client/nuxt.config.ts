@@ -92,7 +92,9 @@ const config: NuxtConfig = {
     'plugins/browserDetectionPlugin.ts',
     { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
     { src: 'plugins/supportedFeaturesPlugin.ts', mode: 'client' },
-    'plugins/apiPlugin.ts'
+    'plugins/apiPlugin.ts',
+    // Directives
+    'plugins/directives/hide.ts'
   ],
   /*
    ** Auto import components
