@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Nesprávné uživatelské jméno nebo heslo",
   "item": {
     "artist": {
+      "appearsOn": "Objevuje se",
       "discography": "Diskografie",
-      "information": "Informace"
+      "information": "Informace",
+      "videos": "Videa"
     },
     "cast": "Obsazení",
     "composer": "Skladatel",
@@ -378,7 +380,7 @@
   "video": "Video",
   "videoTypes": "Typy videa",
   "viewDetails": "Zobrazit podrobnosti",
-  "vueClientVersion": "Verze klienta Vue",
+  "vueClientVersion": "Verze klienta",
   "wizard": {
     "administratorAccount": "Účet správce",
     "allowRemoteAccess": "Povolit vzdálený přístup k serveru",
