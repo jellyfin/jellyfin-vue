@@ -40,7 +40,7 @@ jobs:
         run: 'npm run build:standalone'
 
       - name: Configure QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v1.1.0
 
       - name: Configure Docker Buildx
         uses: docker/setup-buildx-action@v1.3.0
@@ -123,7 +123,7 @@ jobs:
         run: 'npm run build:static'
 
       - name: Configure QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v1.1.0
 
       - name: Configure Docker Buildx
         uses: docker/setup-buildx-action@v1.3.0
