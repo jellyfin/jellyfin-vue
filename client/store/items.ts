@@ -18,9 +18,14 @@ export const defaultState = (): ItemsState => ({
 export const state = defaultState;
 
 export const getters: GetterTree<ItemsState, ItemsState> = {
-  getItem: (state) => (id: string): BaseItemDto | undefined => state.byId[id],
-  getItems: (state) => (ids: string[]): BaseItemDto[] =>
-    map(ids, (id) => state.byId[id])
+  getItem:
+    (state) =>
+    (id: string): BaseItemDto | undefined =>
+      state.byId[id],
+  getItems:
+    (state) =>
+    (ids: string[]): BaseItemDto[] =>
+      map(ids, (id) => state.byId[id])
 };
 
 export const mutations: MutationTree<ItemsState> = {

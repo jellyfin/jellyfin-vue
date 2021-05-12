@@ -3,7 +3,7 @@ import serverMiddleware from '../serverMiddleware';
 
 const mockRedirect = jest.fn();
 
-const BASE_INPUT = ({
+const BASE_INPUT = {
   $axios: {
     defaults: {
       baseURL: ''
@@ -17,23 +17,23 @@ const BASE_INPUT = ({
     }
   },
   redirect: mockRedirect
-} as unknown) as Context;
+} as unknown as Context;
 
-const INPUT_WITH_BASEURL = ({
+const INPUT_WITH_BASEURL = {
   ...BASE_INPUT,
   $axios: { defaults: { baseURL: 'test-url' } }
-} as unknown) as Context;
+} as unknown as Context;
 
-const INPUT_WITH_SERVERLIST = ({
+const INPUT_WITH_SERVERLIST = {
   ...BASE_INPUT,
   store: { state: { servers: { serverList: ['item-a'] } } }
-} as unknown) as Context;
+} as unknown as Context;
 
-const INPUT_WITH_BOTH = ({
+const INPUT_WITH_BOTH = {
   ...BASE_INPUT,
   $axios: { defaults: { baseURL: 'test-url' } },
   store: { state: { servers: { serverList: ['item-a'] } } }
-} as unknown) as Context;
+} as unknown as Context;
 
 const EXPECTED_REDIRECT = '/server/add';
 

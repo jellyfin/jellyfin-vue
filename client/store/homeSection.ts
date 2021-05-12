@@ -49,22 +49,24 @@ type MutationPayload = {
 };
 
 export const getters: GetterTree<HomeSectionState, AppState> = {
-  getHomeSectionContent: (state) => (section: HomeSection): BaseItemDto[] => {
-    switch (section.type) {
-      case 'libraries':
-        return state.libraries;
-      case 'resume':
-        return state.videoResumes;
-      case 'resumeaudio':
-        return state.audioResumes;
-      case 'upnext':
-        return state.upNext;
-      case 'latestmedia':
-        return state.latestMedia[section.libraryId];
-      default:
-        return [];
+  getHomeSectionContent:
+    (state) =>
+    (section: HomeSection): BaseItemDto[] => {
+      switch (section.type) {
+        case 'libraries':
+          return state.libraries;
+        case 'resume':
+          return state.videoResumes;
+        case 'resumeaudio':
+          return state.audioResumes;
+        case 'upnext':
+          return state.upNext;
+        case 'latestmedia':
+          return state.latestMedia[section.libraryId];
+        default:
+          return [];
+      }
     }
-  }
 };
 
 export const mutations: MutationTree<HomeSectionState> = {

@@ -21,7 +21,12 @@
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start"
+            class="
+              mx-md-10
+              mt-md-5
+              py-md-4
+              align-end align-sm-center align-md-start
+            "
           >
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">

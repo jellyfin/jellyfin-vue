@@ -55,13 +55,12 @@ export const userPlugin: Plugin<AppState> = (store) => {
       for (const subModule of syncedStores) {
         try {
           // Fetch the user's preferences
-          const response = await store.$api.displayPreferences.getDisplayPreferences(
-            {
+          const response =
+            await store.$api.displayPreferences.getDisplayPreferences({
               displayPreferencesId: subModule,
               userId: store.$auth.user?.Id,
               client: 'vue'
-            }
-          );
+            });
 
           if (response.status !== 200) {
             throw new Error(
