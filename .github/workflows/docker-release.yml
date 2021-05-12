@@ -56,7 +56,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Build and push stable SSR images
         if: github.event.action == 'released'
@@ -139,7 +139,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Build and push stable static images
         if: github.event.action == 'released'
