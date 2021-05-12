@@ -27,7 +27,7 @@
   "dependencies": {
     "@fontsource/noto-sans": "^4.3.0",
     "@fontsource/noto-sans-hk": "^4.3.0",
-    "@fontsource/noto-sans-jp": "^4.2.2",
+    "@fontsource/noto-sans-jp": "^4.3.0",
     "@fontsource/noto-sans-kr": "^4.2.2",
     "@fontsource/noto-sans-sc": "^4.2.2",
     "@fontsource/noto-sans-tc": "^4.2.2",
@@ -107,7 +107,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-jest-formatting": "^3.0.0",
-    "eslint-plugin-jsdoc": "^33.1.0",
+    "eslint-plugin-jsdoc": "^34.0.1",
     "eslint-plugin-json": "^3.0.0",
     "eslint-plugin-lodash": "^7.2.0",
     "eslint-plugin-nuxt": "^2.0.0",
