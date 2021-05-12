@@ -37,13 +37,10 @@ describe('Vuex: user store', () => {
   });
 
   it('calls the SET_USER mutation when setUser is dispatched', () => {
-    const setUser = (actions.setUser as unknown) as ModuleAction<UserState>;
+    const setUser = actions.setUser as unknown as ModuleAction<UserState>;
 
     setUser(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        UserState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<UserState, RootState>,
       { accessToken: TEST_ACCESS_TOKEN }
     );
 
@@ -55,13 +52,10 @@ describe('Vuex: user store', () => {
   });
 
   it('calls the CLEAR_USER mutation when clearUser is dispatched', () => {
-    const clearUser = (actions.clearUser as unknown) as ModuleAction<UserState>;
+    const clearUser = actions.clearUser as unknown as ModuleAction<UserState>;
 
     clearUser(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        UserState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<UserState, RootState>,
       {}
     );
 

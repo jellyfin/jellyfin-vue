@@ -49,12 +49,13 @@ describe('vuex: deviceProfile', () => {
   });
 
   it('sets the device profile when setDeviceProfile is dispatched', () => {
-    let setDeviceProfile = (actions.setDeviceProfile as unknown) as ModuleAction<DeviceState>;
+    let setDeviceProfile =
+      actions.setDeviceProfile as unknown as ModuleAction<DeviceState>;
 
     setDeviceProfile = setDeviceProfile.bind({ $browser });
 
     setDeviceProfile(
-      ({ commit: mockCommit } as unknown) as ActionContext<
+      { commit: mockCommit } as unknown as ActionContext<
         DeviceState,
         RootState
       >,
@@ -66,12 +67,13 @@ describe('vuex: deviceProfile', () => {
   });
 
   it('clears the device profile when clearDeviceProfile is dispatched', () => {
-    let clearDeviceProfile = (actions.clearDeviceProfile as unknown) as ModuleAction<DeviceState>;
+    let clearDeviceProfile =
+      actions.clearDeviceProfile as unknown as ModuleAction<DeviceState>;
 
     clearDeviceProfile = clearDeviceProfile.bind({ $browser });
 
     clearDeviceProfile(
-      ({ commit: mockCommit } as unknown) as ActionContext<
+      { commit: mockCommit } as unknown as ActionContext<
         DeviceState,
         RootState
       >,

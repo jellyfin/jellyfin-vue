@@ -37,11 +37,11 @@ const itemInvalid: BaseItemDto = {};
 
 beforeEach(() => {
   store = new Vuex.Store(cloneDeep({ state, mutations, actions, getters }));
-  addItem = (actions.addItem as unknown) as ModuleAction<ItemsState>;
-  addItems = (actions.addItems as unknown) as ModuleAction<ItemsState>;
-  deleteItem = (actions.deleteItem as unknown) as ModuleAction<ItemsState>;
-  deleteItems = (actions.deleteItems as unknown) as ModuleAction<ItemsState>;
-  clearState = (actions.clearState as unknown) as ModuleAction<ItemsState>;
+  addItem = actions.addItem as unknown as ModuleAction<ItemsState>;
+  addItems = actions.addItems as unknown as ModuleAction<ItemsState>;
+  deleteItem = actions.deleteItem as unknown as ModuleAction<ItemsState>;
+  deleteItems = actions.deleteItems as unknown as ModuleAction<ItemsState>;
+  clearState = actions.clearState as unknown as ModuleAction<ItemsState>;
 
   mockCommit = jest.fn();
   mockDispatch = jest.fn();
@@ -177,10 +177,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation when addItem is dispatched with a valid item', async (): Promise<void> => {
     await addItem(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
         item: item1
       }
@@ -195,10 +192,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation when addItem is dispatched with an invalid item', async (): Promise<void> => {
     await addItem(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
         item: itemInvalid
       }
@@ -213,10 +207,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation n times when addItems is dispatched with valid items', async (): Promise<void> => {
     await addItems(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
         items: [item1, item2]
       }
@@ -236,7 +227,7 @@ describe('Vuex: items', () => {
   it("doesn't call the ADD_ITEM mutation when addItems is dispatched with an invalid item and throws", (): void => {
     expect(() => {
       addItems(
-        ({ commit: mockCommit } as unknown) as ActionContext<
+        { commit: mockCommit } as unknown as ActionContext<
           ItemsState,
           RootState
         >,
@@ -250,10 +241,7 @@ describe('Vuex: items', () => {
 
   it('calls the DELETE_ITEM mutation when deleteItem is dispatched with an ID', async (): Promise<void> => {
     await deleteItem(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
         id: id1
       }
@@ -268,10 +256,7 @@ describe('Vuex: items', () => {
 
   it('calls the DELETE_ITEM mutation n times when deleteItems is dispatched with IDs', async (): Promise<void> => {
     await deleteItems(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {
         ids: [id1, id2, 'unknown']
       }
@@ -294,10 +279,7 @@ describe('Vuex: items', () => {
 
   it('calls the CLEAR_STATE mutation when clearState is dispatched', async (): Promise<void> => {
     await clearState(
-      ({ commit: mockCommit } as unknown) as ActionContext<
-        ItemsState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
       {}
     );
 

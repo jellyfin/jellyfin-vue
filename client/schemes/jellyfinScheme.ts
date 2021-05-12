@@ -74,14 +74,13 @@ export default class JellyfinScheme {
     // We need a version > 10.7.0 due to the use of /Users/Me
     if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
       // Login using the Axios client
-      const authenticateResponse = await this.$auth.ctx.app.$api.user.authenticateUserByName(
-        {
+      const authenticateResponse =
+        await this.$auth.ctx.app.$api.user.authenticateUserByName({
           authenticateUserByName: {
             Username: username,
             Pw: password
           }
-        }
-      );
+        });
 
       // Set the user's token
       const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;

@@ -36,10 +36,8 @@ export const actions: ActionTree<UserState, UserState> = {
   },
   async loginRequest({ dispatch }, credentials) {
     try {
-      const response: AxiosResponse<AuthenticationResult> = await this.$auth.loginWith(
-        'jellyfin',
-        credentials
-      );
+      const response: AxiosResponse<AuthenticationResult> =
+        await this.$auth.loginWith('jellyfin', credentials);
 
       dispatch('setUser', { accessToken: response.data.AccessToken });
     } catch (err) {

@@ -74,7 +74,13 @@
                 absolute
               >
                 <div
-                  class="d-flex flex-column justify-space-between align-center player-overlay"
+                  class="
+                    d-flex
+                    flex-column
+                    justify-space-between
+                    align-center
+                    player-overlay
+                  "
                 >
                   <div class="osd-top pt-s pl-s pr-s">
                     <div class="d-flex justify-space-between align-center">

@@ -3,7 +3,7 @@ import adminMiddleware from '../adminMiddleware';
 
 const mockRedirect = jest.fn();
 
-const BASE_INPUT = ({
+const BASE_INPUT = {
   $auth: {
     user: {
       Policy: {
@@ -12,13 +12,13 @@ const BASE_INPUT = ({
     }
   },
   redirect: mockRedirect
-} as unknown) as Context;
+} as unknown as Context;
 
 const INPUT_NOT_ADMIN = {
   ...BASE_INPUT
 };
 
-const INPUT_ADMIN = ({
+const INPUT_ADMIN = {
   ...BASE_INPUT,
   $auth: {
     user: {
@@ -27,7 +27,7 @@ const INPUT_ADMIN = ({
       }
     }
   }
-} as unknown) as Context;
+} as unknown as Context;
 
 afterEach(() => mockRedirect.mockReset());
 

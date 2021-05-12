@@ -85,7 +85,7 @@ export default Vue.extend({
     ...mapState('playbackManager', ['currentItemIndex']),
     isPlaying(index: number): boolean {
       // TODO: This cast should be removed on Vue 3 migration, which should provide us better typings.
-      return index === ((this.currentItemIndex as unknown) as number);
+      return index === (this.currentItemIndex as unknown as number);
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {

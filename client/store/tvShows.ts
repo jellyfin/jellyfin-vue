@@ -37,14 +37,16 @@ type AddSeasonsEpisodesMutationPayload = {
 };
 
 export const getters: GetterTree<TvShowsState, TvShowsState> = {
-  getSeasons: (state) => (itemId: string): BaseItemDto[] => {
-    return state[itemId]?.seasons;
-  },
-  getSeasonEpisodes: (state) => (
-    itemId: string
-  ): TvShowItem['seasonEpisodes'] => {
-    return state[itemId]?.seasonEpisodes;
-  }
+  getSeasons:
+    (state) =>
+    (itemId: string): BaseItemDto[] => {
+      return state[itemId]?.seasons;
+    },
+  getSeasonEpisodes:
+    (state) =>
+    (itemId: string): TvShowItem['seasonEpisodes'] => {
+      return state[itemId]?.seasonEpisodes;
+    }
 };
 
 export const mutations: MutationTree<TvShowsState> = {

@@ -203,9 +203,8 @@ export default Vue.extend({
       this.ratingsFilter = filter.ratings;
       this.filterHasSubtitles = filter.features.includes('HasSubtitles');
       this.filterHasTrailer = filter.features.includes('HasTrailer');
-      this.filterHasSpecialFeature = filter.features.includes(
-        'HasSpecialFeature'
-      );
+      this.filterHasSpecialFeature =
+        filter.features.includes('HasSpecialFeature');
       this.filterHasThemeSong = filter.features.includes('HasThemeSong');
       this.filterHasThemeVideo = filter.features.includes('HasThemeVideo');
 

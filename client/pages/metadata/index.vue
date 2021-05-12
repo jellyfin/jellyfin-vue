@@ -49,17 +49,19 @@ export default Vue.extend({
   },
   methods: {
     async fetchItems(node: ITreeNode): Promise<void> {
-      const libItems = (((
-        await this.$api.userLibrary.getItem(
-          { userId: this.$auth.user?.Id, itemId: '' },
-          {
-            query: {
-              ParentId: node.id,
-              SortBy: 'SortName'
+      const libItems = (
+        (
+          await this.$api.userLibrary.getItem(
+            { userId: this.$auth.user?.Id, itemId: '' },
+            {
+              query: {
+                ParentId: node.id,
+                SortBy: 'SortName'
+              }
             }
-          }
-        )
-      ).data as unknown) as { Items: BaseItemDto[] }).Items; //
+          )
+        ).data as unknown as { Items: BaseItemDto[] }
+      ).Items; //
 
       (node.children as ITreeNode[]).push(
         ...libItems.map((item) => {

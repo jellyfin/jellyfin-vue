@@ -17,7 +17,11 @@
           </v-col>
           <v-col cols="7">
             <div
-              class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+              class="
+                text-subtitle-1 text--secondary
+                font-weight-medium
+                text-capitalize
+              "
             >
               {{ $t('item.person.person') }}
             </div>
