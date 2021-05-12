@@ -9,4 +9,4 @@ jobs:
       - uses: actions/labeler@v3
         continue-on-error: true
         with:
-          repo-token: '${{ secrets.GH_TOKEN }}'
+          repo-token: '${{ secrets.JF_BOT_TOKEN }}'
