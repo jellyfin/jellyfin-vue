@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
-import webpack from 'webpack';
 
 const config: NuxtConfig = {
   /*
@@ -369,14 +368,11 @@ const config: NuxtConfig = {
         ];
       }
     },
-    extend(
-      config: webpack.Configuration,
-      { isClient }: { isClient: boolean }
-    ): void {
-      if (isClient) {
-        // Web Worker support
-        config.module?.rules.push({
-          test: /\.worker\.(js|ts)$/i,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    extend(config, ctx): void {
+      if (ctx.isClient) {
+        config?.module?.rules.push({
+          test: /\.worker\.ts$/,
           use: [
             {
               loader: 'comlink-loader',
@@ -384,7 +380,8 @@ const config: NuxtConfig = {
                 singleton: true
               }
             }
-          ]
+          ],
+          exclude: /(node_modules)/
         });
       }
     },
