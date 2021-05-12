@@ -34,13 +34,13 @@ export default Vue.extend({
     },
     paused: {
       type: Boolean,
-      required: true,
+      required: false,
       default: false
     },
     hoverable: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     }
   },
   data() {
@@ -70,9 +70,9 @@ export default Vue.extend({
       });
     }
   },
-  mounted() {
+  updated() {
     this.$nextTick(() => {
-      this.bars = this.$refs.progress as Array<HTMLElement>;
+      this.bars = (this.$refs.progress as Array<HTMLElement>) || [];
       window.requestAnimationFrame(this.setAnimationDuration);
       window.requestAnimationFrame(this.updateBars);
     });

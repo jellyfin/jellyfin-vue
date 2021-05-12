@@ -13,7 +13,7 @@
           <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
-            :item="getRelatedItem(item)"
+            :item="item"
             :type="'Backdrop'"
             :icon-size="$vuetify.breakpoint.mdAndUp ? '256' : '128'"
           />
@@ -99,20 +99,16 @@ export default Vue.extend({
       type: Array as () => BaseItemDto[],
       required: true
     },
-    relatedItems: {
-      type: Object as () => { [k: number]: BaseItemDto },
-      required: true
-    },
     slideDuration: {
       type: Number,
-      default: 7000
+      default: 10000
     },
     swiperOptions: {
       type: Object as () => SwiperOptions,
       default: (): SwiperOptions => {
         return {
           initialSlide: 0,
-          loop: true,
+          loop: false,
           parallax: true,
           autoplay: false,
           effect: 'fade',
@@ -148,15 +144,6 @@ export default Vue.extend({
   methods: {
     ...mapActions('playbackManager', ['play']),
     ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
-    getRelatedItem(item: BaseItemDto): BaseItemDto {
-      const rItem = this.relatedItems[this.items.indexOf(item)];
-
-      if (!rItem) {
-        return item;
-      }
-
-      return rItem;
-    },
     getOverview(item: BaseItemDto): string {
       if (item.Overview) {
         return this.sanitizeHtml(item.Overview);
@@ -167,18 +154,8 @@ export default Vue.extend({
     getLogo(item: BaseItemDto): string | undefined {
       return this.getImageInfo(item, { preferLogo: true }).url;
     },
-    // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
-    // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
-    // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
-    // we force a loop reload to fix this.
-    //
-    // See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
     onSlideChange(): void {
       this.currentIndex = this.swiper?.realIndex;
-
-      if (this.swiper?.isBeginning || this.swiper?.isEnd) {
-        this.swiper?.updateSlides();
-      }
 
       const hash =
         this.getBlurhash(
@@ -191,11 +168,19 @@ export default Vue.extend({
     onTouch(): void {
       this.isPaused = !this.isPaused;
     },
+    // swiper has several issues with looped elements
+    // rather than try to work around the bugs we have reimplemented looping below
+    // https://github.com/nolimits4web/swiper/issues/2629
+    // https://github.com/surmon-china/vue-awesome-swiper/issues/483
     onAnimationEnd(): void {
-      this.swiper?.slideNext();
+      if (this.swiper?.isEnd) {
+        this.swiper?.slideTo(0);
+      } else {
+        this.swiper?.slideNext();
+      }
     },
     onProgressClicked(index: number): void {
-      this.swiper?.slideToLoop(index);
+      this.swiper?.slideTo(index);
     }
   }
 });
