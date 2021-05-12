@@ -76,7 +76,7 @@ export default class JellyfinScheme {
       // Login using the Axios client
       const authenticateResponse = await this.$auth.ctx.app.$api.user.authenticateUserByName(
         {
-          authenticateUserByName: {
+          uNKNOWNBASETYPE: {
             Username: username,
             Pw: password
           }

@@ -359,7 +359,7 @@ export default Vue.extend({
         this.loading = true;
         await this.$api.itemUpdate.updateItem({
           itemId: this.metadata.Id as string,
-          baseItemDto: item
+          uNKNOWNBASETYPE: item
         });
         this.$emit('save');
         this.loading = false;

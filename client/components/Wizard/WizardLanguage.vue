@@ -62,7 +62,7 @@ export default Vue.extend({
       try {
         this.$i18n.setLocale(this.UICulture);
         await this.$api.startup.updateInitialConfiguration({
-          startupConfigurationDto: {
+          uNKNOWNBASETYPE: {
             ...this.initialConfig,
             UICulture: this.UICulture
           }

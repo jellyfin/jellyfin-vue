@@ -98,7 +98,7 @@ export const preferencesSync: Plugin<AppState> = (store) => {
             displayPreferencesId: subModule,
             userId: store.$auth.user?.Id,
             client: 'vue',
-            displayPreferencesDto: displayPrefs as DisplayPreferencesDto
+            uNKNOWNBASETYPE: displayPrefs as DisplayPreferencesDto
           }
         );
 

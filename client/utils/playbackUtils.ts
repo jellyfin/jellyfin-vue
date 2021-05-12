@@ -49,7 +49,7 @@ export async function translateItemsForPlayback(
             artistIds: [item.Id],
             filters: [ItemFilter.IsNotFolder],
             recursive: true,
-            sortBy: 'SortName',
+            sortBy: ['SortName'],
             mediaTypes: ['Audio']
           })
         ).data.Items || [];
@@ -61,7 +61,7 @@ export async function translateItemsForPlayback(
             genreIds: [item.Id],
             filters: [ItemFilter.IsNotFolder],
             recursive: true,
-            sortBy: 'SortName',
+            sortBy: ['SortName'],
             mediaTypes: ['Audio']
           })
         ).data.Items || [];
@@ -74,7 +74,7 @@ export async function translateItemsForPlayback(
             filters: [ItemFilter.IsNotFolder],
             recursive: true,
             sortBy: !['BoxSet'].includes(item.Type || '')
-              ? 'SortName'
+              ? ['SortName']
               : undefined,
             mediaTypes: ['Audio', 'Video']
           })

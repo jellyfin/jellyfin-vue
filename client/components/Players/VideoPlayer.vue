@@ -159,7 +159,7 @@ export default Vue.extend({
           await this.$api.mediaInfo.getPostedPlaybackInfo({
             itemId: this.getCurrentItem?.Id || '',
             userId: this.$auth.user?.Id,
-            playbackInfoDto: { DeviceProfile: this.$playbackProfile }
+            uNKNOWNBASETYPE: { DeviceProfile: this.$playbackProfile }
           })
         ).data;
 

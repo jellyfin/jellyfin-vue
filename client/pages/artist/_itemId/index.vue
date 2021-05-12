@@ -142,7 +142,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
@@ -164,8 +164,8 @@ export default Vue.extend({
 
     const discographyIds = await $items.getItems({
       albumArtistIds: [itemId],
-      sortBy: 'PremiereDate,ProductionYear,SortName',
-      sortOrder: 'Descending',
+      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+      sortOrder: [SortOrder.Descending],
       recursive: true,
       includeItemTypes: ['MusicAlbum']
     });
