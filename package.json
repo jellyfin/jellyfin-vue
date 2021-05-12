@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.3",
     "@mdi/font": "^5.9.55",
     "@nuxt/types": "^2.15.4",
     "@nuxt/typescript-build": "^2.1.0",
