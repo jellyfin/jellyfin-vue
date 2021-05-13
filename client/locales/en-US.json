@@ -13,7 +13,11 @@
   "artists": "Artists",
   "aspectRatio": "Aspect ratio",
   "audio": "Audio",
+<<<<<<< HEAD
   "backgroundInformation": "Personal information",
+=======
+  "backgroundInformation": "Background information",
+>>>>>>> a4cd9949 (feat(person): improve background information block)
   "badRequest": "Bad request. Try again",
   "browserNotSupported": "Your browser is not supported for playing this file.",
   "buttons": {
