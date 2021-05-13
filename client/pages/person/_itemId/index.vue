@@ -18,7 +18,11 @@
           <v-row justify="d-flex flex-column">
             <div class="ml-sm-4 d-flex flex-column">
               <div
-                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
+                class="
+                  text-subtitle-1 text--secondary
+                  font-weight-medium
+                  text-capitalize
+                "
               >
                 {{ $t('item.person.person') }}
               </div>
@@ -107,15 +111,23 @@
                         <span class="item-overview" v-text="item.Overview" />
                       </v-col>
                       <v-col cols="12" md="5">
-                        <v-row no-gutters class="mt-2">
+                        <h2 class="text-h6 mt-2">
+                          <span>{{ $t('backgroundInformation') }}</span>
+                        </h2>
+                        <v-row
+                          v-if="birthDate || birthPlace"
+                          no-gutters
+                          class="mt-2"
+                        >
                           <v-col cols="2" md="5" class="text--secondary">
                             {{ $t('item.person.birth') }}
                           </v-col>
                           <v-col cols="9" md="7">
-                            {{ birthDate }}
+                            {{ birthDate }}<br />
+                            {{ birthPlace }}
                           </v-col>
                         </v-row>
-                        <v-row no-gutters>
+                        <v-row v-if="deathDate" no-gutters>
                           <v-col cols="2" md="5" class="text--secondary">
                             {{ $t('item.person.death') }}
                           </v-col>
@@ -123,12 +135,9 @@
                             {{ deathDate }}
                           </v-col>
                         </v-row>
-                        <v-row no-gutters>
-                          <v-col cols="2" md="5" class="text--secondary">
-                            {{ $t('item.person.birthPlace') }}
-                          </v-col>
-                          <v-col cols="9" md="7">
-                            {{ birthPlace }}
+                        <v-row v-if="deathDate" no-gutters>
+                          <v-col cols="12">
+                            {{ $t('noInformationAvailable') }}
                           </v-col>
                         </v-row>
                       </v-col>
@@ -245,7 +254,7 @@ export default Vue.extend({
     },
     birthDate(): Date | null {
       if (this.item.PremiereDate) {
-        return this.$dateFns.format(new Date(this.item.PremiereDate), 'P', {
+        return this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
           locale: this.$i18n.locale
         });
       } else {
@@ -255,7 +264,7 @@ export default Vue.extend({
     deathDate: {
       get(): Date | null {
         if (this.item.EndDate) {
-          return this.$dateFns.format(new Date(this.item.EndDate), 'P', {
+          return this.$dateFns.format(new Date(this.item.EndDate), 'PPP', {
             locale: this.$i18n.locale
           });
         } else {
