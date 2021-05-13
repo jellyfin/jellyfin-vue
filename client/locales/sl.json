@@ -1,4 +1,5 @@
 {
+  "3DFormat": "3D format",
   "actor": "Igralec",
   "actors": "Igralci",
   "addNewPerson": "Dodaj osebo",
@@ -32,6 +33,7 @@
   "directing": "Režija",
   "director": "Režiser",
   "discNumber": "Disk {discNumber}",
+  "dislikes": "ni mi všeč",
   "edit": "Uredi",
   "editMetadata": "Uredi metapodatke",
   "editPerson": "Uredi osebo",
@@ -46,6 +48,8 @@
     }
   },
   "favorite": "Priljubljen",
+  "filter": "Filter",
+  "fullScreen": "Celotni zaslon",
   "general": "Splošno",
   "genres": "Žanri",
   "headerPaths": "Pot",
@@ -60,6 +64,7 @@
     }
   },
   "imageType": {
+    "art": "Poster",
     "backdrop": "Ozadje",
     "banner": "Pasica",
     "box": "Ovitek",
@@ -73,10 +78,26 @@
   "images": "Slike",
   "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
   "item": {
+    "artist": {
+      "discography": "Diskografija",
+      "information": "Informacije",
+      "videos": "Videi"
+    },
     "cast": "Zasedba",
     "composer": "Skladatelj",
-    "crew": "Ekipa"
+    "crew": "Ekipa",
+    "person": {
+      "birth": "Rojstvo",
+      "birthPlace": "Rojstno Kraj",
+      "death": "Smrt",
+      "person": "Oseba"
+    },
+    "tracklist": {
+      "title": "Naslov"
+    }
   },
+  "jellyfinLogo": "Jellyfin logo",
+  "latestLibrary": "Najnovejše {libraryName}",
   "libraries": "Knjižnice",
   "libraryEmpty": "Knjižnica je prazna",
   "libraryNotFound": "Knjižnice ni najdena",
