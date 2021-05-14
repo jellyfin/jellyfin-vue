@@ -128,7 +128,8 @@ const config: NuxtConfig = {
    ** Router configuration
    */
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
+    base: './'
   },
   /*
    ** Axios module configuration
