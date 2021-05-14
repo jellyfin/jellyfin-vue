@@ -67,7 +67,7 @@
     "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.3",
+    "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.3",
     "@mdi/font": "^5.9.55",
     "@nuxt/types": "^2.15.6",
