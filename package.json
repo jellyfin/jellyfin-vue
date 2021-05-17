@@ -109,7 +109,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-jest-formatting": "^3.0.0",
-    "eslint-plugin-jsdoc": "^34.0.2",
+    "eslint-plugin-jsdoc": "^34.6.3",
     "eslint-plugin-json": "^3.0.0",
     "eslint-plugin-lodash": "^7.2.0",
     "eslint-plugin-nuxt": "^2.0.0",
