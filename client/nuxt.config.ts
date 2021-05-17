@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NuxtConfig } from '@nuxt/types';
+import { NuxtRouteConfig } from '@nuxt/types/config/router';
 
 const config: NuxtConfig = {
   /*
@@ -128,7 +129,17 @@ const config: NuxtConfig = {
    ** Router configuration
    */
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
+    extendRoutes(routes: NuxtRouteConfig[]): void {
+      // Extend all routes to be accessed by /index.html
+      for (const route of routes) {
+        if (route.path.slice(-1) === '/') {
+          route.alias = route.path + 'index.html';
+        } else {
+          route.alias = route.path + '/index.html';
+        }
+      }
+    }
   },
   /*
    ** Axios module configuration
