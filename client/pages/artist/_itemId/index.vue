@@ -31,7 +31,7 @@
               </h1>
             </div>
             <div class="d-flex align-center ml-sm-4 my-2">
-              <play-button :items="[item]" />
+              <play-button :item="item" />
               <item-menu :item="item" />
               <like-button :item="item" />
             </div>
