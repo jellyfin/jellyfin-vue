@@ -89,8 +89,10 @@
   "incorrectUsernameOrPassword": "Feil brukernavn eller passord",
   "item": {
     "artist": {
+      "appearsOn": "Opptredener",
       "discography": "Diskorografi",
-      "information": "Info"
+      "information": "Info",
+      "videos": "Videoer"
     },
     "cast": "Stab",
     "composer": "Komponist",
@@ -110,15 +112,16 @@
   "latestLibrary": "Nyeste i {libraryName}",
   "libraries": "Biblioteker",
   "libraryEmpty": "Dette biblioteket er tomt",
+  "libraryEmptyFilters": "Ingen treff. Fjern noen filtre for å vise flere elementer",
   "libraryNotFound": "Bibliotek ikke funnet",
   "libraryRefreshQueued": "Opprettet en jobb for oppdatering av biblioteket",
   "liked": "Likt",
   "likes": "Liker",
   "links": {
-    "helpTranslate": "Hjelp til med å oversette Jellyfin til ditt språk",
+    "helpTranslate": "Oversett Jellyfin til ditt språk",
     "poweredByJellyfin": "Denne serveren er drevet av Jellyfin",
     "readTheDocumentation": "Les dokumentasjonen",
-    "reportAnIssue": "Rapporter en feil i Vue-klienten"
+    "reportAnIssue": "Rapporter en feil med denne klienten"
   },
   "login": {
     "addServer": "Legg til server",
@@ -149,6 +152,12 @@
   },
   "manualLogin": "Manuell innlogging",
   "menu": "Meny",
+  "metadata": {
+    "source": "Kilde",
+    "sourceAll": "Alle",
+    "title": "Tittel",
+    "type": "Type"
+  },
   "metadataEditor": "Metadataredigerer",
   "metadataNoResultsMatching": "Ingen resultater for \"{search}\". Trykk enter for å lage et nytt.",
   "more": "Mer",
@@ -335,6 +344,7 @@
   "status": "Status",
   "studios": "Studioer",
   "subtitles": "Undertekster",
+  "syncingInProgress": "Synkronisering pågår",
   "tagline": "Slagord",
   "tags": "Etiketter",
   "themeSong": "Kjenningsmelodi",
@@ -352,6 +362,7 @@
   "unableGetServerConfiguration": "Kunne ikke hente serverkonfigurasjon",
   "unableToRefreshLibrary": "Kunne ikke oppdatere biblioteket",
   "unableToToggleLike": "Kunne ikke endre likerstatusen til elementet",
+  "unableToTogglePlayed": "Kunne ikke oppdatere sett-statusen",
   "undefined": "Udefinert",
   "unexpectedError": "Uventet feil",
   "unhandledException": "Uhåndtert feil",
@@ -369,7 +380,7 @@
   "video": "Video",
   "videoTypes": "Videoformat",
   "viewDetails": "Vis detaljer",
-  "vueClientVersion": "Vue-klientversjon",
+  "vueClientVersion": "Klientversjon",
   "wizard": {
     "administratorAccount": "Administratorkonto",
     "allowRemoteAccess": "Tillat fjerntilgang til serveren",
