@@ -289,7 +289,6 @@ const imageHelper = Vue.extend({
      * @param {number} [options.width] - Sets the requested width of the image
      * @param {number} [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
      * @param {string} [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
-     *
      * @returns {ImageUrlInfo} Information for the item, containing the full URL, image tag and blurhash.
      */
     getImageInfo(

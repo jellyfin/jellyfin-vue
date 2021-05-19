@@ -124,7 +124,6 @@ export default Vue.extend({
        * Formats the second number
        *
        * @example 7 -> 07
-       *
        * @param {string} seconds - Number to format
        * @returns {string} Formatted seconds number
        */
