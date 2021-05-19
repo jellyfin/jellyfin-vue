@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import type { NuxtConfig } from '@nuxt/types';
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
+import type { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
   /*
