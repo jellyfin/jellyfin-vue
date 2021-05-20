@@ -123,8 +123,10 @@
                             {{ $t('item.person.birth') }}
                           </v-col>
                           <v-col cols="9" md="7">
-                            {{ birthDate }}<br />
-                            {{ birthPlace }}
+                            <p>
+                              {{ birthDate }}
+                              {{ birthPlace }}
+                            </p>
                           </v-col>
                         </v-row>
                         <v-row v-if="deathDate" no-gutters>
