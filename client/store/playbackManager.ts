@@ -253,15 +253,14 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   TOGGLE_SHUFFLE(state: PlaybackManagerState) {
     if (state.queue && state.currentItemIndex !== null) {
       if (!state.isShuffling) {
-        let queue = Array.from(state.queue);
+        const queue = shuffle(state.queue);
 
-        state.originalQueue = Object.freeze(queue);
+        state.originalQueue = Object.freeze(state.queue);
 
         const item = state.queue[state.currentItemIndex];
-        const itemIndex = state.queue.indexOf(item);
+        const itemIndex = queue.indexOf(item);
 
         queue.splice(itemIndex, 1);
-        queue = shuffle(state.queue);
         queue.unshift(item);
 
         state.queue = Object.freeze(queue);
