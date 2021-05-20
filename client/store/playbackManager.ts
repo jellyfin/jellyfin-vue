@@ -370,11 +370,15 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
   stop({ commit }) {
     commit('STOP_PLAYBACK');
   },
-  pause({ commit }) {
-    commit('PAUSE_PLAYBACK');
+  pause({ commit, state }) {
+    if (state.status === PlaybackStatus.Playing) {
+      commit('PAUSE_PLAYBACK');
+    }
   },
-  unpause({ commit }) {
-    commit('UNPAUSE_PLAYBACK');
+  unpause({ commit, state }) {
+    if (state.status === PlaybackStatus.Paused) {
+      commit('UNPAUSE_PLAYBACK');
+    }
   },
   playPause({ commit, state }) {
     if (state.status === PlaybackStatus.Playing) {

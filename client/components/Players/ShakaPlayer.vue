@@ -78,7 +78,7 @@ export default Vue.extend({
     async source(newSource): Promise<void> {
       if (this.player) {
         try {
-          await this.player.load(newSource, this.currentTime);
+          await this.player.load(newSource);
         } catch (e) {
           // No need to actually process the error here, the error handler will do this for us
         }
@@ -119,7 +119,10 @@ export default Vue.extend({
 
                 break;
               case 'playbackManager/CHANGE_CURRENT_TIME':
-                if (this.$refs.shakaPlayer && mutation?.payload?.time) {
+                if (
+                  this.$refs.shakaPlayer &&
+                  mutation?.payload?.time !== null
+                ) {
                   (this.$refs.shakaPlayer as HTMLMediaElement).currentTime =
                     mutation?.payload?.time;
                 }
