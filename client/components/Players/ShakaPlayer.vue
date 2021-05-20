@@ -185,11 +185,14 @@ export default Vue.extend({
     async getPlaybackUrl(): Promise<void> {
       if (this.getCurrentItem) {
         this.playbackInfo = (
-          await this.$api.mediaInfo.getPostedPlaybackInfo({
-            itemId: this.getCurrentItem?.Id || '',
-            userId: this.$auth.user?.Id,
-            playbackInfoDto: { DeviceProfile: this.$playbackProfile }
-          })
+          await this.$api.mediaInfo.getPostedPlaybackInfo(
+            {
+              itemId: this.getCurrentItem?.Id || '',
+              userId: this.$auth.user?.Id,
+              playbackInfoDto: { DeviceProfile: this.$playbackProfile }
+            },
+            { progress: false }
+          )
         ).data;
 
         this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
