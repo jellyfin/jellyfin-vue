@@ -125,6 +125,15 @@ export default Vue.extend({
                 }
 
                 break;
+
+              case 'playbackManager/SET_VOLUME':
+                if (this.$refs.audioPlayer) {
+                  (this.$refs.audioPlayer as HTMLAudioElement).volume =
+                    this.currentVolume / 100;
+                }
+
+                break;
+
               case 'playbackManager/SET_REPEAT_MODE':
                 if (this.$refs.shakaPlayer) {
                   if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
