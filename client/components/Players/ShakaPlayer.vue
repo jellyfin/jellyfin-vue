@@ -130,8 +130,8 @@ export default Vue.extend({
                 break;
 
               case 'playbackManager/SET_VOLUME':
-                if (this.$refs.audioPlayer) {
-                  (this.$refs.audioPlayer as HTMLAudioElement).volume =
+                if (this.$refs.shakaPlayer) {
+                  (this.$refs.shakaPlayer as HTMLAudioElement).volume =
                     this.currentVolume / 100;
                 }
 
