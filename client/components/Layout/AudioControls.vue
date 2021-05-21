@@ -117,16 +117,15 @@
               <volume-slider />
             </div>
             <item-menu :item="getCurrentItem" />
-            <nuxt-link
-              v-if="!isFullScreenPlayer"
-              tag="span"
-              :to="'/fullscreen/playback'"
+            <v-btn
+              v-show="!isFullScreenPlayer"
+              icon
+              nuxt
+              to="/fullscreen/playback"
             >
-              <v-btn icon>
-                <v-icon>mdi-fullscreen</v-icon>
-              </v-btn>
-            </nuxt-link>
-            <v-btn v-else icon @click="$router.back()">
+              <v-icon>mdi-fullscreen</v-icon>
+            </v-btn>
+            <v-btn v-show="isFullScreenPlayer" icon @click="$router.back()">
               <v-icon>mdi-fullscreen-exit</v-icon>
             </v-btn>
           </v-col>
