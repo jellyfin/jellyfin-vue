@@ -3,6 +3,11 @@
   "author": "Jellyfin Team",
   "version": "0.0.0",
   "private": true,
+  "fork-ts-checker": {
+    "typescript": {
+      "memoryLimit": 4096 
+    }
+  },
   "scripts": {
     "dev": "NUXT_SSR=1 nuxt client",
     "dev:static": "nuxt client",
