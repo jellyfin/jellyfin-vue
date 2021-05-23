@@ -38,7 +38,14 @@
                     </v-btn>
                   </div>
                   <div
-                    class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center"
+                    class="
+                      absolute-cover
+                      pointer-events-none
+                      d-flex
+                      flex-row
+                      justify-center
+                      align-center
+                    "
                   >
                     <v-btn
                       class="all-pointer-events"
@@ -613,10 +620,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.all-pointer-events {
-  pointer-events: all;
-}
-
 .v-card.player-card {
   background-color: black !important;
 }
