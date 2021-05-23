@@ -48,7 +48,7 @@
                     "
                   >
                     <v-btn
-                      class="all-pointer-events"
+                      class="pointer-events-all"
                       icon
                       large
                       @click="setPreviousTrack"
@@ -56,7 +56,7 @@
                       <v-icon size="32">mdi-skip-previous</v-icon>
                     </v-btn>
                     <v-btn
-                      class="all-pointer-events"
+                      class="pointer-events-all"
                       icon
                       x-large
                       @click="playPause"
@@ -66,7 +66,7 @@
                       </v-icon>
                     </v-btn>
                     <v-btn
-                      class="all-pointer-events"
+                      class="pointer-events-all"
                       icon
                       large
                       @click="setNextTrack"
