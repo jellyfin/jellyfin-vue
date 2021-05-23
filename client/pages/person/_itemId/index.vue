@@ -53,7 +53,7 @@
             <v-tab :key="3" :disabled="!photosIds.length">
               {{ $t('item.person.photos') }}
             </v-tab>
-            <v-tab :key="4" :disabled="!personBackdrop.tag && !item.Overview">
+            <v-tab :key="4" :disabled="!item.Overview">
               {{ $t('item.person.information') }}
             </v-tab>
           </v-tabs>
@@ -98,22 +98,11 @@
               <v-container>
                 <v-row>
                   <v-col>
-                    <v-img
-                      cover
-                      aspect-ratio="1.7778"
-                      :src="personBackdrop.url"
-                    />
                     <v-row>
                       <v-col cols="12" md="7">
-                        <h2 class="text-h6 mt-2">
-                          <span>{{ $t('biography') }}</span>
-                        </h2>
                         <span class="item-overview" v-text="item.Overview" />
                       </v-col>
                       <v-col cols="12" md="5">
-                        <h2 class="text-h6 mt-2">
-                          <span>{{ $t('backgroundInformation') }}</span>
-                        </h2>
                         <v-row
                           v-if="birthDate || birthPlace"
                           no-gutters
@@ -165,7 +154,7 @@ import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
 
@@ -282,9 +271,6 @@ export default Vue.extend({
           return null;
         }
       }
-    },
-    personBackdrop(): ImageUrlInfo {
-      return this.getImageInfo(this.item, { preferBackdrop: true });
     }
   },
   watch: {
