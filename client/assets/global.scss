@@ -101,6 +101,10 @@ body {
   pointer-events: none;
 }
 
+.all-pointer-events {
+  pointer-events: all;
+}
+
 .link {
   cursor: pointer;
   color: inherit !important;
