@@ -18,7 +18,7 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Get npm cache directory path
         id: npm-cache-dir-path
@@ -50,7 +50,7 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.1.5
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Get npm cache directory path
         id: npm-cache-dir-path
