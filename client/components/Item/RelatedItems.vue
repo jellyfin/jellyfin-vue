@@ -55,6 +55,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { LibraryApiGetSimilarItemsRequest } from '@jellyfin/client-axios/api/library-api';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -109,12 +110,25 @@ export default Vue.extend({
     async refreshItems(): Promise<void> {
       this.loading = true;
 
+      let excludedArtistsIds;
+
+      if (this.item.AlbumArtists) {
+        excludedArtistsIds = this.item.AlbumArtists.map(
+          (albumArtist: { Id: string }) => albumArtist.Id
+        );
+      }
+
+      const requestParameters: LibraryApiGetSimilarItemsRequest = {
+        itemId: this.item.Id,
+        userId: this.$auth.user?.Id,
+        limit: this.vertical ? 5 : 12,
+        excludeArtistIds: excludedArtistsIds
+      };
+
       if (this.item.Id) {
-        const response = await this.$api.library.getSimilarItems({
-          itemId: this.item.Id,
-          userId: this.$auth.user?.Id,
-          limit: this.vertical ? 5 : 12
-        });
+        const response = await this.$api.library.getSimilarItems(
+          requestParameters
+        );
 
         if (response.data.Items) {
           this.relatedItems = response.data.Items;
