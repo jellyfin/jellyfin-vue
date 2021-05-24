@@ -60,7 +60,7 @@
     "shaka-player": "^3.1.0",
     "swiper": "5.x",
     "uuid": "^8.3.2",
-    "vee-validate": "^3.4.5",
+    "vee-validate": "^3.4.6",
     "vue": "^2.6.12",
     "vue-awesome-swiper": "^4.1.1",
     "vue-fullscreen": "^2.3.5",
