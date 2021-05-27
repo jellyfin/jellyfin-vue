@@ -201,12 +201,6 @@ export default Vue.extend({
           this.drawer = false;
         }
       }
-    },
-    searchQuery(newQuery: string, oldQuery: string): void {
-      // If neither the old nor the new query are empty, we don't want to move.
-      if (newQuery.trim() !== '' && oldQuery.trim() === '') {
-        this.$router.push({ name: 'search' });
-      }
     }
   },
   beforeMount() {
