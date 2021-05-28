@@ -2,7 +2,6 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="false"
     :transition="'slide-y-transition'"
     bottom
     :nudge-bottom="nudgeBottom"
@@ -22,9 +21,10 @@
             class="align-self-center active-button"
             :icon="!fab"
             :fab="fab"
-            small
+            :small="!large && fab"
+            :large="large"
+            :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             disabled
-            :class="{ 'ml-1': fab }"
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
