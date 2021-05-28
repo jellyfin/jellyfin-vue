@@ -70,7 +70,17 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/global.scss', '@mdi/font/css/materialdesignicons.css'],
+  css: [
+    '~/assets/global.scss',
+    '@mdi/font/css/materialdesignicons.css',
+    'vuetify/src/styles/styles.sass',
+    '@fontsource/noto-sans/index.css',
+    '@fontsource/noto-sans-jp/index.css',
+    '@fontsource/noto-sans-sc/index.css',
+    '@fontsource/noto-sans-kr/index.css',
+    '@fontsource/noto-sans-tc/index.css',
+    '@fontsource/noto-sans-hk/index.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
