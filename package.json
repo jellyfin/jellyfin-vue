@@ -9,6 +9,8 @@
     }
   },
   "scripts": {
+    "analyze": "NUXT_SSR=1 nuxt build --analyze client",
+    "analyze:static": "nuxt build --analyze client",
     "dev": "NUXT_SSR=1 nuxt client",
     "dev:static": "nuxt client",
     "build": "NUXT_SSR=1 nuxt build client",
