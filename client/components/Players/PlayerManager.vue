@@ -593,21 +593,8 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
-.v-card.player-card {
-  background-color: black !important;
-}
-
-.v-overlay .v-overlay__content {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.player-overlay {
-  height: 100%;
-}
-
+<style lang="scss">
+// These don't work when scoped, for some reason.
 .player--fullscreen {
   position: relative;
   width: 100vw !important;
@@ -629,6 +616,27 @@ export default Vue.extend({
   left: auto;
   bottom: 2em;
   right: 2em;
+}
+</style>
+
+<style lang="scss" scoped>
+.v-card.player-card {
+  background-color: black !important;
+}
+
+.controls-wrapper {
+  position: relative;
+}
+
+/* stylelint-disable-next-line */
+.v-overlay::v-deep .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.player-overlay {
+  height: 100%;
 }
 
 .osd-top,
@@ -687,6 +695,14 @@ export default Vue.extend({
     hsla(0, 0%, 0%, 0.01) 91.9%,
     hsla(0, 0%, 0%, 0) 100%
   );
+}
+
+.player-controls {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .video-title {
