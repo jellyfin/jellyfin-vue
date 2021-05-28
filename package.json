@@ -5,7 +5,7 @@
   "private": true,
   "fork-ts-checker": {
     "typescript": {
-      "memoryLimit": 4096 
+      "memoryLimit": 4096
     }
   },
   "scripts": {
