@@ -28,7 +28,7 @@ jobs:
         run: echo "::set-output name=dir::$(npm config get cache)"
 
       - name: Cache node_modules
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir-path.outputs.dir }}
@@ -62,7 +62,7 @@ jobs:
         run: echo "::set-output name=dir::$(npm config get cache)"
 
       - name: Cache node_modules
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         id: npm-cache
         with:
           path: ${{ steps.npm-cache-dir-path.outputs.dir }}
