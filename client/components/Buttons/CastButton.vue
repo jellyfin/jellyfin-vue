@@ -14,6 +14,7 @@
     :z-index="500"
     class="menu"
   >
+    <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip bottom>
         <template #activator="{ on: tooltip }">

@@ -13,6 +13,7 @@
     class="menu"
     @input="$emit('input', $event)"
   >
+    <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
         <template #activator="{ on: tooltip }">
