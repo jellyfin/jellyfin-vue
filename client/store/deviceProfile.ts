@@ -70,7 +70,7 @@ function getDeviceName($browser: BrowserDetector): string {
 }
 
 /**
- * Get's the current device's version
+ * Gets the current device's version
  *
  * @returns {string} clientVersion returns the current device version
  */
@@ -79,7 +79,7 @@ function getClientVersion(): string {
 }
 
 /**
- * Get's the current device's name
+ * Gets the current device's name
  *
  * @returns {string} clienName returns the current client name
  */
