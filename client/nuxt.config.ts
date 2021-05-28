@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
-import simpleIcons from 'simple-icons';
+// @ts-expect-error - Individual icons doesn't have typings
+import jellyfinIcon from 'simple-icons/icons/jellyfin';
 
 const config: NuxtConfig = {
   /*
@@ -363,7 +364,7 @@ const config: NuxtConfig = {
     icons: {
       iconfont: 'mdi',
       values: {
-        jellyfin: simpleIcons.get('jellyfin').path
+        jellyfin: jellyfinIcon.path
       }
     }
   },
