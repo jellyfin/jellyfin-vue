@@ -26,7 +26,8 @@ interface MutationPayload {
   clientName: string;
 }
 
-/** Generates a random string to be used for the deviceId
+/**
+ * Generates a random string to be used for the deviceId
  *
  * @returns {string} deviceId returns a string encoded in base-64
  */
@@ -34,7 +35,8 @@ function getDeviceId(): string {
   return uuidv4();
 }
 
-/** Gets the device's name
+/**
+ * Gets the device's name
  *
  * @param {BrowserDetector} $browser - Browser detection plugin
  * @returns {string} deviceName returns the device's name
@@ -67,7 +69,8 @@ function getDeviceName($browser: BrowserDetector): string {
   return deviceName;
 }
 
-/** Get's the current device's version
+/**
+ * Get's the current device's version
  *
  * @returns {string} clientVersion returns the current device version
  */
@@ -75,7 +78,8 @@ function getClientVersion(): string {
   return version;
 }
 
-/** Get's the current device's name
+/**
+ * Get's the current device's name
  *
  * @returns {string} clienName returns the current client name
  */
