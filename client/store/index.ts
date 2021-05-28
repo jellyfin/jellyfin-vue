@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
-import { UserDto } from '@jellyfin/client-axios/models/user-dto';
+import { UserDto } from '@jellyfin/client-axios';
 // Modules
 import { TvShowsState } from './tvShows';
 import { ServerState } from './servers';

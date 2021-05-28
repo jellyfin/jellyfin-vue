@@ -226,7 +226,7 @@
   "save": "Save",
   "saved": "Saved",
   "search": "Search",
-  "seasonEpisode": "Season {seasonNumber} Episode {episodeNumber}",
+  "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",
   "server": "Server",
