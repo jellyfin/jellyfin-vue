@@ -116,20 +116,9 @@
               <v-container>
                 <v-row>
                   <v-col>
-                    <v-img
-                      cover
-                      aspect-ratio="1.7778"
-                      :src="artistBackdrop.url"
-                    />
-                    <div v-if="item.Overview">
-                      <h2 class="text-h6 mt-2">
-                        <span>{{ $t('biography') }}</span>
-                      </h2>
-                      <v-col cols="12" sm="9" class="pl-0 pr-0">
-                        <!-- eslint-disable-next-line vue/no-v-html -->
-                        <p class="item-overview" v-html="overview" />
-                      </v-col>
-                    </div>
+                    <v-col cols="12" md="7">
+                      <span class="item-overview" v-text="item.Overview" />
+                    </v-col>
                   </v-col>
                 </v-row>
               </v-container>
