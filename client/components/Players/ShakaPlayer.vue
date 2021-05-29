@@ -88,6 +88,9 @@ export default Vue.extend({
   },
   async mounted() {
     try {
+      // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
+      window.muxjs = muxjs;
+
       const { default: shaka } = await import(
         // @ts-expect-error - This module doesn't have typings
         'shaka-player/dist/shaka-player.compiled'
@@ -95,7 +98,6 @@ export default Vue.extend({
 
       this.getPlaybackUrl();
 
-      window.muxjs = muxjs;
       shaka.polyfill.installAll();
 
       if (shaka.Player.isBrowserSupported()) {
