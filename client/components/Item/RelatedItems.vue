@@ -55,7 +55,7 @@
 import Vue from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { LibraryApiGetSimilarItemsRequest } from '@jellyfin/client-axios/api/library-api';
+import { LibraryApiGetSimilarItemsRequest } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -110,10 +110,10 @@ export default Vue.extend({
     async refreshItems(): Promise<void> {
       this.loading = true;
 
-      let excludedArtistsIds;
+      let excludeArtistsIds = [];
 
       if (this.item.AlbumArtists) {
-        excludedArtistsIds = this.item.AlbumArtists.map(
+        excludeArtistsIds = this.item.AlbumArtists.map(
           (albumArtist: { Id: string }) => albumArtist.Id
         );
       }
@@ -122,7 +122,7 @@ export default Vue.extend({
         itemId: this.item.Id,
         userId: this.$auth.user?.Id,
         limit: this.vertical ? 5 : 12,
-        excludeArtistIds: excludedArtistsIds
+        excludeArtistIds
       };
 
       if (this.item.Id) {
