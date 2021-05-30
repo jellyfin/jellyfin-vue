@@ -10,16 +10,21 @@
       :alt="item.Name"
       :src="logo"
     />
-    <h1
+    <nuxt-link
       v-else
       data-swiper-parallax="-300"
-      class="text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
+      class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
+      :to="getItemDetailsLink(item.AlbumArtists[0])"
     >
       {{ item.AlbumArtist }}
-    </h1>
-    <h2 data-swiper-parallax="-200" class="text-h4 text-sm-h3 text-truncate">
+    </nuxt-link>
+    <nuxt-link
+      data-swiper-parallax="-200"
+      class="link d-block text-h4 text-sm-h3 text-truncate"
+      :to="getItemDetailsLink(item)"
+    >
       {{ item.Name }}
-    </h2>
+    </nuxt-link>
   </div>
 </template>
 
@@ -27,9 +32,10 @@
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
