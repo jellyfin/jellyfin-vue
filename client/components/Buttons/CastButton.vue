@@ -21,8 +21,7 @@
             class="align-self-center active-button"
             :icon="!fab"
             :fab="fab"
-            :small="!large && fab"
-            :large="large"
+            :small="fab"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             disabled
             v-bind="attrs"
