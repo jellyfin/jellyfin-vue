@@ -1,16 +1,17 @@
 <template>
   <div>
-    <v-img
-      v-if="imageTag"
-      class="mb-2"
-      :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-      :max-height="$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
-      contain
-      position="left center"
-      data-swiper-parallax="-300"
-      :alt="item.Name"
-      :src="logo"
-    />
+    <nuxt-link v-if="imageTag" :to="getItemDetailsLink(item)">
+      <v-img
+        class="mb-2"
+        :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
+        :max-height="$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
+        contain
+        position="left center"
+        data-swiper-parallax="-300"
+        :alt="item.Name"
+        :src="logo"
+      />
+    </nuxt-link>
     <nuxt-link
       v-else
       data-swiper-parallax="-300"
