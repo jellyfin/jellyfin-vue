@@ -168,7 +168,7 @@ export default Vue.extend({
       },
       set(value: string): void {
         if (value === '' || !value) {
-          this.$router.go(-1);
+          this.$router.back();
         } else if (this.searchQuery) {
           this.$router.replace({ path: '/search', query: { q: value } });
         } else {
