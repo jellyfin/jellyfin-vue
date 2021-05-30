@@ -140,6 +140,36 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
         return stream.Type === 'Subtitle';
       });
     }
+  },
+  getCurrentVideoTrack: (state) => {
+    if (
+      state.currentMediaSource !== null &&
+      state.currentVideoStreamIndex !== null
+    ) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Video';
+      })[state.currentVideoStreamIndex];
+    }
+  },
+  getCurrentAudioTrack: (state) => {
+    if (
+      state.currentMediaSource !== null &&
+      state.currentAudioStreamIndex !== null
+    ) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Audio';
+      })[state.currentAudioStreamIndex];
+    }
+  },
+  getCurrentSubtitleTrack: (state) => {
+    if (
+      state.currentMediaSource !== null &&
+      state.currentSubtitleStreamIndex !== null
+    ) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Subtitle';
+      })[state.currentSubtitleStreamIndex];
+    }
   }
 };
 

@@ -20,7 +20,6 @@
           <v-btn
             class="align-self-center active-button"
             icon
-            disabled
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
@@ -92,7 +91,7 @@
             </v-col>
           </v-row>
         </v-list-item>
-        <v-list-item>
+        <v-list-item @click.stop="$emit('open-playback-data')">
           <v-list-item-content>
             {{ $t('playbackData') }}
           </v-list-item-content>
