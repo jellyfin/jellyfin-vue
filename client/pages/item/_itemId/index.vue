@@ -393,8 +393,9 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-.v-slide-group__prev--disabled {
+<style scoped>
+/* stylelint-disable-next-line */
+.v-item-group::v-deep .v-slide-group__prev--disabled {
   display: none !important;
 }
 </style>
