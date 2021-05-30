@@ -14,7 +14,7 @@
       v-else
       data-swiper-parallax="-300"
       class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
-      :to="getItemDetailsLink(item.AlbumArtists[0])"
+      :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
     >
       {{ item.AlbumArtist }}
     </nuxt-link>
