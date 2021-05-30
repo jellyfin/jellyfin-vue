@@ -11,13 +11,14 @@
       :alt="item.Name"
       :src="logo"
     />
-    <h1
+    <nuxt-link
       v-else
       data-swiper-parallax="-300"
-      class="text-h4 text-sm-h3 text-sm-h2 text-truncate"
+      class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
+      :to="getItemDetailsLink(item)"
     >
       {{ item.Name }}
-    </h1>
+    </nuxt-link>
     <h2
       v-if="item.Taglines && item.Taglines.length > 0"
       data-swiper-parallax="-200"
@@ -32,9 +33,10 @@
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
