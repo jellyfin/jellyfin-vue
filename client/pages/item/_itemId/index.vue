@@ -392,3 +392,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+/* stylelint-disable */
+.v-item-group::v-deep .v-slide-group__prev--disabled,
+.v-item-group::v-deep .v-slide-group__next--disabled {
+  display: none !important;
+}
+/* stylelint-enable */
+</style>

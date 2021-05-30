@@ -112,17 +112,20 @@
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <like-button :item="getCurrentItem" class="active-button" />
-            <queue-button :item="getCurrentItem" class="active-button" />
+            <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
             <item-menu :item="getCurrentItem" />
-            <nuxt-link v-if="!isFullScreenPlayer" :to="'/fullscreen/playback'">
-              <v-btn icon>
-                <v-icon>mdi-fullscreen</v-icon>
-              </v-btn>
-            </nuxt-link>
-            <v-btn v-else icon @click="$router.back()">
+            <v-btn
+              v-show="!isFullScreenPlayer"
+              icon
+              nuxt
+              to="/fullscreen/playback"
+            >
+              <v-icon>mdi-fullscreen</v-icon>
+            </v-btn>
+            <v-btn v-show="isFullScreenPlayer" icon @click="$router.back()">
               <v-icon>mdi-fullscreen-exit</v-icon>
             </v-btn>
           </v-col>

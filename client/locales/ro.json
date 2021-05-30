@@ -352,7 +352,7 @@
     "switchToLightMode": "Treceți la modul luminos"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tip",
   "unableGetPublicUsers": "Nu se pot obține utilizatorii",
   "unableGetRelated": "Nu se pot obține articole conexe",

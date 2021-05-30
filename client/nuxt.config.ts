@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
+// @ts-expect-error - Individual icons doesn't have typings
+import jellyfinIcon from 'simple-icons/icons/jellyfin';
 
 const config: NuxtConfig = {
   /*
@@ -69,7 +71,17 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['~/assets/global.scss', '@mdi/font/css/materialdesignicons.css'],
+  css: [
+    '~/assets/global.scss',
+    '@mdi/font/css/materialdesignicons.css',
+    'vuetify/src/styles/styles.sass',
+    '@fontsource/noto-sans/index.css',
+    '@fontsource/noto-sans-jp/index.css',
+    '@fontsource/noto-sans-sc/index.css',
+    '@fontsource/noto-sans-kr/index.css',
+    '@fontsource/noto-sans-tc/index.css',
+    '@fontsource/noto-sans-hk/index.css'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -91,8 +103,10 @@ const config: NuxtConfig = {
     // Utility
     'plugins/browserDetectionPlugin.ts',
     { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
-    { src: 'plugins/supportedFeaturesPlugin.ts', mode: 'client' },
-    'plugins/apiPlugin.ts'
+    'plugins/supportedFeaturesPlugin.ts',
+    'plugins/apiPlugin.ts',
+    // Directives
+    'plugins/directives/hide.ts'
   ],
   /*
    ** Auto import components
@@ -346,6 +360,12 @@ const config: NuxtConfig = {
       options: {
         customProperties: true
       }
+    },
+    icons: {
+      iconfont: 'mdi',
+      values: {
+        jellyfin: jellyfinIcon.path
+      }
     }
   },
   loadingIndicator: {
@@ -367,6 +387,12 @@ const config: NuxtConfig = {
       }
     },
     optimizeCSS: true,
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        maxSize: 800000
+      }
+    },
     extractCSS: {
       ignoreOrder: true
     },

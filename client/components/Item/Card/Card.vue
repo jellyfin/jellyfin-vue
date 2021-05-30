@@ -178,7 +178,7 @@ export default Vue.extend({
     cardSubtitle(): string {
       switch (this.item.Type) {
         case 'Episode':
-          return `${this.$t('tvShowAbbrev', {
+          return `${this.$t('seasonEpisodeAbbrev', {
             seasonNumber: this.item.ParentIndexNumber,
             episodeNumber: this.item.IndexNumber
           })} - ${this.item.Name}`;

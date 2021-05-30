@@ -355,7 +355,7 @@
     "switchToLightMode": "Cambiar al tema claro"
   },
   "trailer": "Trailer",
-  "tvShowAbbrev": "T{seasonNumber} E{episodeNumber}",
+  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "unableGetPublicUsers": "Error al cargar los usuarios",
   "unableGetRelated": "Error al cargar los elementos relacionados",
