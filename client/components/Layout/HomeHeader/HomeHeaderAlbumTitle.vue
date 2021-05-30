@@ -1,15 +1,19 @@
 <template>
   <div>
-    <v-img
+    <nuxt-link
       v-if="imageTag"
-      max-width="50%"
-      max-height="5.5em"
-      contain
-      position="left center"
-      data-swiper-parallax="-300"
-      :alt="item.Name"
-      :src="logo"
-    />
+      :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
+    >
+      <v-img
+        max-width="50%"
+        max-height="5.5em"
+        contain
+        position="left center"
+        data-swiper-parallax="-300"
+        :alt="item.Name"
+        :src="logo"
+      />
+    </nuxt-link>
     <nuxt-link
       v-else
       data-swiper-parallax="-300"
