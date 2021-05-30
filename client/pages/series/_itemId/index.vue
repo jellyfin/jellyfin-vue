@@ -20,7 +20,7 @@
             {{ item.OriginalTitle }}
           </h2>
           <div
-            class="text-caption text-h4 font-weight-medium mt-2"
+            class="text-overline font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
           >
             <media-info :item="item" year runtime rating ends-at />
@@ -64,42 +64,44 @@
                 </v-slide-group>
               </v-col>
             </v-row>
-            <v-row
-              v-if="
-                item && directors.length > 0 && !$vuetify.breakpoint.smAndUp
-              "
-              align="center"
-            >
-              <v-col
-                :cols="12"
-                :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate"
-              >
+            <v-row v-if="item.Tags.length > 0" align="center">
+              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
+                <label class="text--secondary">{{ $t('item.tags') }}</label>
+              </v-col>
+              <v-col class="px-0" :cols="12" :sm="10">
+                <v-slide-group>
+                  <v-slide-item v-for="(tag, index) in item.Tags" :key="index">
+                    <v-chip small :class="{ 'ml-2': index > 0 }">
+                      {{ tag }}
+                    </v-chip>
+                  </v-slide-item>
+                </v-slide-group>
+              </v-col>
+            </v-row>
+            <v-row v-if="item && directors.length > 0" align="center">
+              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </v-col>
-              <v-col :cols="12" :sm="10">
-                <v-row dense>
-                  <v-col
+              <v-col class="px-0" :cols="12" :sm="10">
+                <v-slide-group>
+                  <v-slide-item
                     v-for="director in directors"
                     :key="director.Id"
-                    cols="auto"
                   >
                     <v-chip
                       small
                       link
+                      :class="{ 'ml-2': index > 0 }"
                       nuxt
                       :to="getItemDetailsLink(director, 'Person')"
                     >
                       {{ director.Name }}
                     </v-chip>
-                  </v-col>
-                </v-row>
+                  </v-slide-item>
+                </v-slide-group>
               </v-col>
             </v-row>
-            <v-row
-              v-if="item && writers.length > 0 && !$vuetify.breakpoint.smAndUp"
-              align="center"
-            >
+            <v-row v-if="item && writers.length > 0" align="center">
               <v-col
                 :cols="12"
                 :sm="2"
@@ -108,8 +110,8 @@
                 <label class="text--secondary">{{ $t('writing') }}</label>
               </v-col>
               <v-col :cols="12" :sm="10">
-                <v-row dense>
-                  <v-col v-for="writer in writers" :key="writer.Id" cols="auto">
+                <v-slide-group>
+                  <v-slide-item v-for="writer in writers" :key="writer.Id">
                     <v-chip
                       small
                       link
@@ -118,8 +120,8 @@
                     >
                       {{ writer.Name }}
                     </v-chip>
-                  </v-col>
-                </v-row>
+                  </v-slide-item>
+                </v-slide-group>
               </v-col>
             </v-row>
           </v-col>
@@ -130,25 +132,108 @@
             >
               {{ item.Taglines[0] }}
             </p>
-            <p class="item-overview">{{ item.Overview }}</p>
           </div>
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12">
-          <season-tabs v-if="item.Type === 'Series'" :item="item" />
+        <v-col>
+          <v-tabs v-model="activeTab" background-color="transparent">
+            <v-tab :key="0">
+              {{ $t('item.series.episodes') }}
+            </v-tab>
+            <v-tab :key="1">
+              {{ $t('castAndCrew') }}
+            </v-tab>
+            <v-tab :key="2">
+              {{ $t('item.artist.information') }}
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="activeTab" class="transparent my-6">
+            <v-tab-item :key="0">
+              <season-tabs :item="item" />
+            </v-tab-item>
+            <v-tab-item :key="1"> Lorem </v-tab-item>
+            <v-tab-item :key="2">
+              <v-container>
+                <v-row>
+                  <v-col cols="12" md="7">
+                    <span
+                      class="d-block item-overview"
+                      v-text="item.Overview"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="5">
+                    <v-row
+                      v-if="item.Studios.length > 0 && item.Studios[0].Name"
+                      no-gutters
+                    >
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.series.network') }}
+                      </v-col>
+                      <v-col cols="9" md="7">
+                        {{ item.Studios[0].Name }}
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="startDate" no-gutters>
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.series.started') }}
+                      </v-col>
+                      <v-col cols="9" md="7">
+                        {{ startDate }}
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="endDate" no-gutters>
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.series.ended') }}
+                      </v-col>
+                      <v-col cols="9" md="7">
+                        {{ endDate }}
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="item.RunTimeTicks" no-gutters>
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.duration') }}
+                      </v-col>
+                      <v-col cols="9" md="7">
+                        {{ getRuntimeTime(item.RunTimeTicks) }}
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="item.OfficialRating" no-gutters>
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.rating') }}
+                      </v-col>
+                      <v-col cols="9" md="7">
+                        {{ item.OfficialRating }}
+                      </v-col>
+                    </v-row>
+                    <v-row
+                      v-if="item.HomePageUrl || item.ExternalUrls.length > 0"
+                      no-gutters
+                    >
+                      <v-col cols="2" md="5" class="text--secondary">
+                        {{ $t('item.series.links') }}
+                      </v-col>
+                      <v-col cols="9" md="7" class="d-flex flex-column">
+                        <a v-if="item.HomePageUrl" :src="item.HomePageUrl">
+                          {{ $t('item.officialWebsite') }}
+                        </a>
+                        <a
+                          v-for="(externalUrl, index) in item.ExternalUrls"
+                          :key="index"
+                          :src="externalUrl.Url"
+                          v-text="externalUrl.Name"
+                        />
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-tab-item>
+          </v-tabs-items>
         </v-col>
       </v-row>
     </template>
     <template #right>
-      <div v-if="crew.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.crew') }}</h2>
-        <person-list :items="crew" />
-      </div>
-      <div v-if="actors.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.cast') }}</h2>
-        <person-list :items="actors" />
-      </div>
       <related-items :item="item" vertical />
     </template>
   </item-cols>
@@ -162,10 +247,11 @@ import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
+import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [imageHelper, formsHelper, itemHelper],
+  mixins: [imageHelper, formsHelper, itemHelper, timeUtils],
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
@@ -180,6 +266,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      activeTab: 0,
       itemId: '' as string,
       parentItem: {} as BaseItemDto,
       backdropImageSource: '',
@@ -234,6 +321,26 @@ export default Vue.extend({
           (person: BaseItemPerson) => person.Type === 'Writer'
         );
       }
+    },
+    startDate(): Date | null {
+      if (this.item.PremiereDate) {
+        return this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
+          locale: this.$i18n.locale
+        });
+      } else {
+        return null;
+      }
+    },
+    endDate: {
+      get(): Date | null {
+        if (this.item.EndDate) {
+          return this.$dateFns.format(new Date(this.item.EndDate), 'PPP', {
+            locale: this.$i18n.locale
+          });
+        } else {
+          return null;
+        }
+      }
     }
   },
   watch: {
@@ -262,3 +369,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+/* stylelint-disable */
+.v-item-group::v-deep .v-slide-group__prev--disabled,
+.v-item-group::v-deep .v-slide-group__next--disabled {
+  display: none !important;
+}
+/* stylelint-enable */
+</style>

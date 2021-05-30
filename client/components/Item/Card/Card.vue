@@ -164,7 +164,7 @@ export default Vue.extend({
      * @returns {string} Either the item name or the series name
      */
     cardTitle(): string {
-      if (this.item.Type !== 'Episode') {
+      if (this.item.Type !== 'Episode' || this.episode) {
         return this.item.Name || '';
       } else {
         return this.item.SeriesName || '';
@@ -176,6 +176,10 @@ export default Vue.extend({
      *                   or the album artist
      */
     cardSubtitle(): string {
+      if (this.episode) {
+        return '';
+      }
+
       switch (this.item.Type) {
         case 'Episode':
           return `${this.$t('seasonEpisodeAbbrev', {

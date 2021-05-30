@@ -1,39 +1,29 @@
 <template>
   <div>
-    <v-tabs v-model="currentTab" class="mb-3" background-color="transparent">
-      <v-tab v-for="season in seasons" :key="season.Id">
-        {{ season.Name }}
+    <v-tabs
+      v-model="currentTab"
+      class="mb-3"
+      background-color="transparent"
+      :vertical="!$vuetify.breakpoint.mobile"
+    >
+      <v-tab v-for="season in seasons" :key="season.Id" class="justify-start">
+        <div class="d-flex flex-column align-start">
+          <span class="text--primary font-weight-bold">{{ season.Name }}</span>
+          <span class="text--secondary">{{ season.ProductionYear }}</span>
+        </div>
+        <div class="d-flex ml-4">
+          <v-icon v-if="season.UserData.Played" class="text--primary">
+            mdi-check
+          </v-icon>
+          <div v-else class="d-inline-block empty-icon" />
+        </div>
       </v-tab>
+      <v-tabs-items v-model="currentTab" class="transparent">
+        <v-tab-item v-for="season in seasons" :key="season.Id">
+          <item-grid :items="seasonEpisodes[season.Id]" episode large />
+        </v-tab-item>
+      </v-tabs-items>
     </v-tabs>
-    <v-tabs-items v-model="currentTab" class="transparent">
-      <v-tab-item v-for="season in seasons" :key="season.Id">
-        <v-list two-line color="transparent">
-          <v-list-item
-            v-for="episode in seasonEpisodes[season.Id]"
-            :key="episode.Id"
-            nuxt
-            :to="getItemDetailsLink(episode)"
-            class="flex-column flex-md-row"
-          >
-            <v-list-item-avatar tile width="20em" height="12em">
-              <blurhash-image
-                v-if="episode.ImageTags && episode.ImageTags.Primary"
-                :item="episode"
-                :alt="episode.Name"
-              />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="text-wrap">
-                {{ episode.Name }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="text-wrap">
-                {{ episode.Overview }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-tab-item>
-    </v-tabs-items>
   </div>
 </template>
 
@@ -48,7 +38,7 @@ export default Vue.extend({
   mixins: [itemHelper],
   props: {
     item: {
-      type: Object,
+      type: Object as () => BaseItemDto,
       required: true
     }
   },
@@ -83,6 +73,23 @@ export default Vue.extend({
       return this.getSeasonEpisodes(this.item.Id);
     }
   },
+  watch: {
+    seasons: {
+      immediate: true,
+      handler(newVal: BaseItemDto[]): void {
+        if (newVal?.length > 0) {
+          /* Get the index of the first unwatched season.
+           If there is none, findIndex returns -1, so we round up to 0 using Math.max */
+          this.currentTab = Math.max(
+            0,
+            this.seasons.findIndex((season: BaseItemDto) => {
+              return !season.UserData?.Played;
+            })
+          );
+        }
+      }
+    }
+  },
   methods: {
     ...mapActions('tvShows', {
       getTvShows: 'getTvShows'
@@ -91,3 +98,10 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.empty-icon {
+  width: 24px;
+  height: 24px;
+}
+</style>

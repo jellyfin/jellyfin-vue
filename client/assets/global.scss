@@ -148,3 +148,9 @@ body {
 .text-capitalize-first-letter::first-letter {
   text-transform: uppercase;
 }
+
+/* Global Jellyfin styles */
+
+.item-overview {
+  text-align: justify;
+}

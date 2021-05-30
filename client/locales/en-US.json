@@ -100,6 +100,8 @@
     "cast": "Cast",
     "composer": "Composer",
     "crew": "Crew",
+    "duration": "Duration",
+    "officialWebsite": "Official website",
     "person": {
       "birth": "Born",
       "birthPlace": "Birth place",
@@ -111,6 +113,16 @@
       "photos": "Photos",
       "shows": "Shows"
     },
+    "rating": "Rating",
+    "series": {
+      "airedOnNetwork": "Aired on {network}",
+      "ended": "Ended",
+      "episodes": "Episodes",
+      "links": "Links",
+      "network": "Network",
+      "started": "Started"
+    },
+    "tags": "Tags",
     "tracklist": {
       "title": "Title"
     }

@@ -24,6 +24,7 @@
             v-for="card of item.chunk"
             :key="card.Id"
             :item="card"
+            :episode="episode"
             margin
             text
             overlay
@@ -62,12 +63,13 @@ export default Vue.extend({
       }
     },
     loading: {
-      type: Boolean,
-      required: false
+      type: Boolean
+    },
+    episode: {
+      type: Boolean
     },
     large: {
-      type: Boolean,
-      required: false
+      type: Boolean
     }
   },
   computed: {

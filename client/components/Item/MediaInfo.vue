@@ -1,7 +1,11 @@
 <template>
   <div class="text--secondary">
-    <span v-if="item.ProductionYear && year">{{ item.ProductionYear }}</span>
-    <span v-if="item.OfficialRating && rating">{{ item.OfficialRating }}</span>
+    <span v-if="productionYear && year">{{ productionYear }}</span>
+    <span v-if="item.OfficialRating && rating">
+      <v-chip class="text-overline" small label>
+        {{ item.OfficialRating }}
+      </v-chip>
+    </span>
     <span v-if="item.CommunityRating && rating">
       <v-icon class="rating-icon" size="16">mdi-star</v-icon>
       {{ item.CommunityRating }}
@@ -45,6 +49,27 @@ export default Vue.extend({
     endsAt: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    productionYear(): string | null {
+      if (this.item.Status === 'Continuing') {
+        return `${this.item.ProductionYear} - ${this.$t('present')}`;
+      } else if (this.item.EndDate) {
+        const endYear = new Date(this.item?.EndDate).toLocaleString('en-us', {
+          year: 'numeric'
+        });
+
+        if (this.item.ProductionYear?.toString() === endYear) {
+          return this.item.ProductionYear.toString();
+        }
+
+        return `${this.item.ProductionYear} - ${endYear}`;
+      } else if (this.item.ProductionYear) {
+        return this.item.ProductionYear.toString();
+      }
+
+      return null;
     }
   }
 });
