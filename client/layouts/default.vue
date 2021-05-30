@@ -170,9 +170,9 @@ export default Vue.extend({
         if (value === '' || !value) {
           this.$router.push('/');
         } else if (this.searchQuery) {
-          this.$router.replace({ path: 'search', query: { q: value } });
+          this.$router.replace({ path: '/search', query: { q: value } });
         } else {
-          this.$router.push({ path: 'search', query: { q: value } });
+          this.$router.push({ path: '/search', query: { q: value } });
         }
       }
     },
