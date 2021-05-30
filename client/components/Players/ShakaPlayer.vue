@@ -28,6 +28,7 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     muxjs: any;
+    player: any;
   }
 }
 
@@ -101,7 +102,9 @@ export default Vue.extend({
       shaka.polyfill.installAll();
 
       if (shaka.Player.isBrowserSupported()) {
-        this.player = new shaka.Player(this.$refs.shakaPlayer);
+        // We use a global for ease of debugging and to fetch data from the playback information popup
+        window.player = new shaka.Player(this.$refs.shakaPlayer);
+        this.player = window.player;
 
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);

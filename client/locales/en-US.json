@@ -13,6 +13,7 @@
   "artists": "Artists",
   "aspectRatio": "Aspect ratio",
   "audio": "Audio",
+  "audioCodecNotSupported": "The audio codec is not supported",
   "badRequest": "Bad request. Try again",
   "browserNotSupported": "Your browser is not supported for playing this file.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Community rating",
   "confirm": "Confirm",
   "connect": "Connect",
+  "containerNotSupported": "The container is not supported",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
   "criticRating": "Critic rating",
@@ -56,6 +58,10 @@
   "features": "Features",
   "filter": "Filter",
   "filtersNotFound": "Unable to load filters",
+  "formats": {
+    "kbps": "{value} Kbps",
+    "mbps": "{value} Mbps"
+  },
   "fullScreen": "Full screen",
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Generic Jellyfin device",
@@ -159,6 +165,27 @@
     "noLogsFound": "No logs found"
   },
   "manualLogin": "Manual login",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Audio channels:"
+    },
+    "audioCodec": {
+      "name": "Audio codec:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "Container:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Subtitle codec:"
+    },
+    "videoCodec": {
+      "name": "Video codec:"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Source",
@@ -214,9 +241,52 @@
     "shuffle": "Shuffle",
     "shuffleAll": "Shuffle all"
   },
-  "playbackData": "Playback data",
+  "playbackData": "Playback information",
+  "playbackInfo": {
+    "name": "Playback",
+    "playMethod": {
+      "direct": "Direct",
+      "name": "Method:",
+      "remux": "Remux",
+      "transcode": "Transcode"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Stream type:",
+      "unknown": "Unknown",
+      "video": "Video"
+    },
+    "transcodingFramerate": {
+      "name": "Framerate:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progress:",
+    "transcodingReason": {
+      "name": "Reason: | Reasons:"
+    }
+  },
   "playbackSettings": "Playback settings",
   "played": "Played",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Corrupted frames:"
+    },
+    "decodedFrames": {
+      "name": "Decoded frames:"
+    },
+    "droppedFrames": {
+      "name": "Dropped frames:"
+    },
+    "name": "Player",
+    "playbackResolution": {
+      "name": "Viewport resolution:"
+    },
+    "videoResolution": {
+      "name": "Video resolution:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Present",
   "producer": "Producer",
   "quality": "Quality",
@@ -359,6 +429,7 @@
   "speed": "Speed",
   "status": "Status",
   "studios": "Studios",
+  "subtitleCodecNotSupported": "The subtitle codec is not supported",
   "subtitles": "Subtitles",
   "syncPlayGroups": "SyncPlay groups",
   "syncingInProgress": "Syncing in progress",
@@ -372,6 +443,9 @@
     "switchToLightMode": "Switch to light mode"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transcoding"
+  },
   "type": "Type",
   "unableGetPublicUsers": "Unable to get users",
   "unableGetRelated": "Unable to get related items",
@@ -394,6 +468,7 @@
   },
   "version": "Version",
   "video": "Video",
+  "videoCodecNotSupported": "The video codec is not supported",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "vueClientVersion": "Client version",
