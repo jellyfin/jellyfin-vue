@@ -1,0 +1,37 @@
+name: Automation
+
+on:
+  push:
+    branches:
+      - master
+  pull_request_target:
+
+jobs:
+  project:
+    name: Project board
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alex-page/github-project-automation-plus@v0.7.1
+        if: ${{ github.event_name == 'pull_request_target' }}
+        continue-on-error: true
+        with:
+          project: Ongoing development
+          column: In progress
+          repo-token: ${{ secrets.JF_BOT_TOKEN }}
+
+  label:
+    name: Labeling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label PR depending on modified files
+        uses: actions/labeler@v3
+        if: ${{ github.event_name == 'pull_request_target' }}
+        continue-on-error: true
+        with:
+          repo-token: '${{ secrets.JF_BOT_TOKEN }}'
+
+      - name: Check all PRs for merge conflicts
+        uses: eps1lon/actions-label-merge-conflict@v2.0.1
+        with:
+          dirtyLabel: 'merge conflict'
+          repoToken: ${{ secrets.JF_BOT_TOKEN }}

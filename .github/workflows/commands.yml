@@ -1,4 +1,4 @@
-name: Automatic Rebase
+name: Commands
 on:
   issue_comment:
     types:
