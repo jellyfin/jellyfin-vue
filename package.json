@@ -46,7 +46,7 @@
     "body-scroll-lock": "^3.1.5",
     "compare-versions": "^3.6.0",
     "cookie": "^0.4.1",
-    "date-fns": "^2.21.3",
+    "date-fns": "^2.22.1",
     "destr": "^1.1.0",
     "dompurify": "^2.2.8",
     "entities": "^2.2.0",
