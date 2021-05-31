@@ -103,11 +103,7 @@
                         <span class="item-overview" v-text="item.Overview" />
                       </v-col>
                       <v-col cols="12" md="5">
-                        <v-row
-                          v-if="birthDate || birthPlace"
-                          no-gutters
-                          class="mt-2"
-                        >
+                        <v-row v-if="birthDate || birthPlace" no-gutters>
                           <v-col cols="2" md="5" class="text--secondary">
                             {{ $t('item.person.birth') }}
                           </v-col>
@@ -126,7 +122,10 @@
                             {{ deathDate }}
                           </v-col>
                         </v-row>
-                        <v-row v-if="deathDate" no-gutters>
+                        <v-row
+                          v-if="!deathDate && !birthDate && !birthPlace"
+                          no-gutters
+                        >
                           <v-col cols="12">
                             {{ $t('noInformationAvailable') }}
                           </v-col>
