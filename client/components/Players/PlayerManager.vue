@@ -290,7 +290,7 @@ export default Vue.extend({
       if (
         this.isMinimized ||
         this.upNextUserHidden ||
-        this.getCurrentItem.Type !== 'Episode' ||
+        this.getCurrentlyPlayingMediaType !== 'Video' ||
         !this.getNextItem
       ) {
         return false;
