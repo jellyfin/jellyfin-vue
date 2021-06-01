@@ -98,7 +98,7 @@
     "@types/lodash": "^4.14.170",
     "@types/nuxtjs__auth": "^4.8.7",
     "@types/qs": "^6.9.6",
-    "@types/simple-icons": "^4.14.0",
+    "@types/simple-icons": "^5.0.0",
     "@types/swiper": "^5.4.2",
     "@types/uuid": "^8.3.0",
     "@types/wicg-mediasession": "^1.1.0",
