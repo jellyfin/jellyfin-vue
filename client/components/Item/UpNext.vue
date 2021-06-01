@@ -3,12 +3,15 @@
     <v-card class="container white--text pa-4">
       <div class="d-flex flex-column flex-grow-1">
         <v-card-title class="text-h6 pa-0 my-1 mx-0">
-          {{ $t('dialog.upNext.nextEpisodePlayingIn') }}
+          {{ $t('dialog.upNext.nextItemPlayingIn') }}
           <span class="primary--text darken-2">
             &ensp;{{ timeLeft }} {{ $t('seconds').toLowerCase() }}
           </span>
         </v-card-title>
-        <v-card-subtitle class="mt-1 mx-0 mb-2 text-truncate subtitle-1 pa-0">
+        <v-card-subtitle
+          v-if="getCurrentItem.Type === 'Episode'"
+          class="mt-1 mx-0 mb-2 text-truncate subtitle-1 pa-0"
+        >
           {{ getNextItem.SeriesName }} -
           {{
             $t('seasonEpisodeAbbrev', {
@@ -17,6 +20,12 @@
             })
           }}
           <span v-if="$vuetify.breakpoint.smAndUp"> - </span> <br v-else />
+          {{ getNextItem.Name }}
+        </v-card-subtitle>
+        <v-card-subtitle
+          v-if="getCurrentItem.Type === 'Movie'"
+          class="mt-1 mx-0 mb-2 text-truncate subtitle-1 pa-0"
+        >
           {{ getNextItem.Name }}
         </v-card-subtitle>
         <div>
@@ -51,7 +60,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapGetters('playbackManager', ['getNextItem'])
+    ...mapGetters('playbackManager', ['getNextItem', 'getCurrentItem'])
   },
   methods: {
     nextEndsAt(runtimeTicks: number): string {

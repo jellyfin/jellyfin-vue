@@ -37,7 +37,7 @@
   "details": "Details",
   "dialog": {
     "upNext": {
-      "nextEpisodePlayingIn": "Next Episode Playing in",
+      "nextItemPlayingIn": "Next Item Playing in",
       "startNow": "Start now",
       "hide": "Hide"
     }
