@@ -11,7 +11,7 @@
         <v-card-subtitle class="mt-1 mx-0 mb-2 text-truncate subtitle-1 pa-0">
           {{ getNextItem.SeriesName }} -
           {{
-            $t('tvShowAbbrev', {
+            $t('seasonEpisodeAbbrev', {
               seasonNumber: getNextItem.ParentIndexNumber,
               episodeNumber: getNextItem.IndexNumber
             })
@@ -80,7 +80,7 @@ export default Vue.extend({
 @media #{map-get($display-breakpoints, 'md-and-up')} {
   .container {
     width: 30em;
-    margin: 0 2em 6em 0;
+    margin: 0 2em 10em 0;
   }
 }
 </style>
