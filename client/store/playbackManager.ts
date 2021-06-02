@@ -150,6 +150,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
         return stream.Type === 'Video';
       })[state.currentVideoStreamIndex];
     }
+
+    return null;
   },
   getCurrentAudioTrack: (state) => {
     if (
@@ -160,6 +162,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
         return stream.Type === 'Audio';
       })[state.currentAudioStreamIndex];
     }
+
+    return null;
   },
   getCurrentSubtitleTrack: (state) => {
     if (
@@ -170,6 +174,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
         return stream.Type === 'Subtitle';
       })[state.currentSubtitleStreamIndex];
     }
+
+    return null;
   }
 };
 

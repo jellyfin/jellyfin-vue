@@ -344,6 +344,7 @@ export default Vue.extend({
     mediaTotalBitrate(): string | null | undefined {
       if (
         this.sessionInfo?.TranscodingInfo?.Bitrate &&
+        this.currentMediaSource?.Bitrate &&
         this.sessionInfo.TranscodingInfo.Bitrate !==
           this.currentMediaSource.Bitrate
       ) {
@@ -352,9 +353,11 @@ export default Vue.extend({
         )} ➞ ${this.getDisplayBitrate(
           this.sessionInfo?.TranscodingInfo?.Bitrate
         )}`;
+      } else if (this.currentMediaSource?.Bitrate) {
+        return this.getDisplayBitrate(this.currentMediaSource.Bitrate);
       }
 
-      return this.getDisplayBitrate(this.currentMediaSource.Bitrate);
+      return null;
     }
   },
   beforeMount() {
@@ -373,11 +376,11 @@ export default Vue.extend({
     },
     getDisplayBitrate(bitrate: number): string {
       if (bitrate > 1000000) {
-        return this.$t('formats.mbps', {
+        return this.$t('units.bitrate.mbps', {
           value: (bitrate / 1000000).toFixed(1)
         });
       } else {
-        return this.$t('formats.kbps', {
+        return this.$t('units.bitrate.kbps', {
           value: Math.floor(bitrate / 1000)
         });
       }

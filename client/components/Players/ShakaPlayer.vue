@@ -169,6 +169,7 @@ export default Vue.extend({
   beforeDestroy() {
     if (this.player) {
       window.muxjs = undefined;
+      window.player = undefined;
       this.onStopped(); // Report that the playback is stopping
       this.player.removeEventListener('error', this.onPlayerError);
       this.player.unload();
