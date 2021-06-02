@@ -58,9 +58,11 @@
   "features": "Features",
   "filter": "Filter",
   "filtersNotFound": "Unable to load filters",
-  "formats": {
-    "kbps": "{value} Kbps",
-    "mbps": "{value} Mbps"
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    }
   },
   "fullScreen": "Full screen",
   "general": "General",
