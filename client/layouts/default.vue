@@ -1,5 +1,5 @@
 <template v-cloak>
-  <v-app>
+  <v-app v-if="$auth.user">
     <client-only>
       <backdrop />
     </client-only>
