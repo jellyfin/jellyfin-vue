@@ -1,4 +1,4 @@
-<template>
+<template v-cloak>
   <v-app>
     <v-main>
       <nuxt />

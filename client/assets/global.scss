@@ -11,6 +11,11 @@ body {
   scrollbar-color: var(--v-thumb-lighten5) var(--v-card-base);
 }
 
+/* Hides components that haven't been compiled yet by Vue */
+[v-cloak] .v-cloak--hidden {
+  opacity: 0 !important;
+}
+
 /* Reproduce something similar on Chrome/Edge/Safari */
 *::-webkit-scrollbar {
   width: 12px;

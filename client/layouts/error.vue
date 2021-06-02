@@ -1,4 +1,4 @@
-<template>
+<template v-cloak>
   <div>
     <v-row justify="center" class="mt-16 mb-4">
       <v-icon :color="icon.color" size="72">{{ icon.icon }}</v-icon>
