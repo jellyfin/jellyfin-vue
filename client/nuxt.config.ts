@@ -90,7 +90,6 @@ const config: NuxtConfig = {
     // Development
     { src: 'plugins/axe.ts', mode: 'client' },
     // General
-    'plugins/persistedStatePlugin.ts',
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
@@ -108,8 +107,8 @@ const config: NuxtConfig = {
     // Directives
     'plugins/directives/hide.ts',
     // Store
-    { src: 'plugins/store/persistedStatePlugin.client.ts', mode: 'client' },
-    { src: 'plugins/store/persistedStatePlugin.ts', mode: 'server' }
+    'plugins/store/persistedStatePlugin.ts'
+    //'plugins/store/persistedStateServerPlugin.ts'
   ],
   /*
    ** Auto import components
@@ -175,11 +174,10 @@ const config: NuxtConfig = {
         _scheme: '~/schemes/jellyfinScheme'
       }
     },
-    cookie: {
-      prefix: 'auth.',
-      options: {
-        path: '/'
-      }
+    cookie: false,
+    localStorage: false,
+    vuex: {
+      namespace: 'auth'
     },
     plugins: [
       '~/plugins/userLibraryPlugin.ts',

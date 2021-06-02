@@ -2,11 +2,22 @@ import { Plugin } from '@nuxt/types';
 import createPersistedState from 'vuex-persistedstate';
 import Cookies from 'js-cookie';
 import cookie from 'cookie';
-import stores from './persistedStores';
 
 const persistedStatePlugin: Plugin = ({ store, req, res }) => {
+  if (!process.server) {
+    createPersistedState({
+      key: 'vuex',
+      paths: ['deviceProfile', 'clientSettings', 'i18n'],
+      overwrite: false,
+      fetchBeforeUse: true
+    })(store);
+  }
+
   createPersistedState({
-    paths: stores,
+    key: 'vuex-auth',
+    paths: ['user', 'servers', 'auth'],
+    overwrite: false,
+    fetchBeforeUse: true,
     storage: {
       getItem: (key: string): string | undefined => {
         if (process.server) {
