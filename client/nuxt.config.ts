@@ -106,7 +106,10 @@ const config: NuxtConfig = {
     'plugins/supportedFeaturesPlugin.ts',
     'plugins/apiPlugin.ts',
     // Directives
-    'plugins/directives/hide.ts'
+    'plugins/directives/hide.ts',
+    // Store
+    { src: 'plugins/store/persistedStatePlugin.client.ts', mode: 'client' },
+    { src: 'plugins/store/persistedStatePlugin.ts', mode: 'server' }
   ],
   /*
    ** Auto import components
@@ -129,12 +132,6 @@ const config: NuxtConfig = {
    */
   modules: [
     'nuxt-i18n',
-    [
-      'nuxt-vuex-localstorage',
-      {
-        localStorage: ['user', 'deviceProfile', 'clientSettings']
-      }
-    ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth'

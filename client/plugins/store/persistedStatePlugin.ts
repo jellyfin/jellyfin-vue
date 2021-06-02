@@ -2,10 +2,11 @@ import { Plugin } from '@nuxt/types';
 import createPersistedState from 'vuex-persistedstate';
 import Cookies from 'js-cookie';
 import cookie from 'cookie';
+import stores from './persistedStores';
 
 const persistedStatePlugin: Plugin = ({ store, req, res }) => {
   createPersistedState({
-    paths: ['servers'],
+    paths: stores,
     storage: {
       getItem: (key: string): string | undefined => {
         if (process.server) {
