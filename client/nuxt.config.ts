@@ -68,6 +68,12 @@ const config: NuxtConfig = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
+  env: {
+    /**
+     * See plugins/store/persistedStatePlugin.ts for more information about this variable
+     */
+    NUXT_SSR: process.env.NUXT_SSR as string
+  },
   /*
    ** Global CSS
    */
