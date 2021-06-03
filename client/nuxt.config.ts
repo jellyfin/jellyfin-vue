@@ -108,7 +108,6 @@ const config: NuxtConfig = {
     'plugins/directives/hide.ts',
     // Store
     'plugins/store/persistedStatePlugin.ts'
-    //'plugins/store/persistedStateServerPlugin.ts'
   ],
   /*
    ** Auto import components
