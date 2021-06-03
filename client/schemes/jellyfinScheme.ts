@@ -47,13 +47,13 @@ export default class JellyfinScheme {
     return destr(this.$auth.$storage.getState('rememberMe'));
   }
 
-  mount(): void {
+  async mount(): Promise<void> {
     const serverUrl = this.$auth.ctx.app.store.state.servers.serverUsed.address;
     const accessToken = this.$auth.ctx.app.store.state.user.accessToken;
 
     if (serverUrl && accessToken) {
       this._setBaseUrl(serverUrl);
-      this.setUserToken(accessToken);
+      await this.setUserToken(accessToken);
     }
   }
 
@@ -73,10 +73,10 @@ export default class JellyfinScheme {
     rememberMe: boolean;
   }): Promise<AxiosResponse<AuthenticationResult> | void> {
     // Ditch any leftover local tokens before attempting to log in
-    await this.$auth.reset();
+    await this.$auth.logout();
 
     // Set the empty header needed for Jellyfin to not yell at us
-    this.setUserToken('');
+    await this.setUserToken('');
 
     // Check the version info and implicitly check for the manifest
     const serverInfo = (
@@ -101,14 +101,11 @@ export default class JellyfinScheme {
         authenticateResponse.data?.AccessToken &&
         authenticateResponse.data?.User
       ) {
-        this.setUserToken(authenticateResponse.data.AccessToken);
+        await this.setUserToken(authenticateResponse.data.AccessToken);
         this.$auth.ctx.app.store.commit('user/SET_USER', {
           id: authenticateResponse.data.User.Id,
           accessToken: authenticateResponse.data.AccessToken
         });
-
-        // Sets the remember me to true in order to first fetch the user once
-        this._setRememberMe(true);
 
         // Set the remember me value
         this._setRememberMe(rememberMe);
@@ -120,14 +117,14 @@ export default class JellyfinScheme {
     throw new Error('serverVersionTooLow');
   }
 
-  setUserToken(tokenValue: string): void {
+  async setUserToken(tokenValue: string): Promise<void> {
     const token = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${tokenValue}"`;
 
     this.$auth.setToken(this.name, token);
     this._setToken(token);
 
     if (tokenValue) {
-      this.fetchUser();
+      await this.fetchUser();
     }
   }
 
@@ -140,10 +137,20 @@ export default class JellyfinScheme {
     // Fetch the user, then set it in Nuxt Auth
     const user = (await this.$auth.ctx.app.$api.user.getCurrentUser()).data;
 
+    if (!user) {
+      await this.$auth.logout();
+    }
+
     this.$auth.setUser(user);
   }
 
   async logout(): Promise<void> {
+    if (!this.$auth.loggedIn) {
+      this.$auth.reset();
+
+      return;
+    }
+
     // We set the 'loggedIn' variable to false as soon as possible in the logout chain, as nuxt/auth
     // doesn't set it until 'this.$auth.setUser(undefined)' is called. At that point, component relying
     // on $auth.user will fail, breaking the logout flow completely.
