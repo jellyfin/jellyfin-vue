@@ -1,13 +1,96 @@
 {
+  "3DFormat": "3D-format",
+  "NoMediaSourcesAvailable": "Inga mediekällor tillgängliga",
+  "actor": "Skådespelare",
+  "actors": "Skådespelare",
+  "addNewPerson": "Lägg till en ny person",
+  "albums": "Album",
+  "allLanguages": "Alla språk",
   "alphabetically": "Alfabatiskt",
+  "architecture": "Arkitektur",
+  "artist": "Artist",
+  "artists": "Artister",
+  "audio": "Audio",
   "badRequest": "Felaktigt anrop. Försök igen",
+  "biography": "Biografi",
+  "browserNotSupported": "Din webbläsare stöds inte för att spela upp den här filen.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Av {artist}",
+  "cancel": "Avbryt",
+  "collections": "Samlingar",
+  "confirm": "Bekräfta",
+  "connect": "Anslut",
   "continueListening": "Fortsätt lyssna",
   "continueWatching": "Fortsätt titta",
+  "criticRating": "Kritikerbetyg",
+  "darkModeToggle": "Växla mörkt läge",
+  "dateAdded": "Datum tillagt",
+  "details": "Detaljer",
+  "directing": "Regissering",
+  "director": "Regissör",
+  "discNumber": "Disk {discNumber}",
+  "edit": "Redigera",
+  "editMetadata": "Redigera metadata",
+  "editPerson": "Redigera person",
   "endDate": "Slut datum",
   "endsAt": "Slutar {time}",
   "episodeNumber": "Episod {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Ett fel inträffade",
+    "messages": {
+      "errorCode": "Felkod: {errorCode}"
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Det går inte att få visningsinställningar. Använder de senaste kända inställningarna.",
+  "failedSettingDisplayPreferences": "Det går inte att få visningsinställningar.",
+  "failedToRefreshItems": "Det gick inte att uppdatera föremålen",
+  "favorite": "Favorit",
+  "features": "Funktioner",
+  "filter": "Filter",
+  "filtersNotFound": "Det gick inte att ladda filter",
+  "fullScreen": "Fullskärm",
+  "general": "Allmän",
+  "genres": "Genrer",
+  "guestStar": "Gäststjärna",
+  "headerExternalIds": "Externa ID",
+  "headerPaths": "Sökväg",
   "home": "Hem",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Nyligen tillagda"
+    },
+    "welcome": {
+      "checkNewItems": "Kolla in vad som är nytt.",
+      "helloUser": "Hej {userName}!",
+      "noItems": "Det finns inga nyligen tillagda föremål att visa"
+    }
+  },
+  "imageType": {
+    "art": "Konst",
+    "backdrop": "Backgrund",
+    "banner": "Banderoll",
+    "box": "Låda",
+    "boxRear": "Låda (bakre)",
+    "disc": "Disk",
+    "logo": "Logotyp",
+    "menu": "Meny",
+    "primary": "Primär",
+    "screenshot": "Skärmklipp",
+    "thumb": "Tumme"
+  },
+  "images": "Bilder",
   "incorrectUsernameOrPassword": "Fel användarnamn eller lösenord",
+  "item": {
+    "artist": {
+      "discography": "Diskografi",
+      "information": "Information",
+      "videos": "Videor"
+    },
+    "cast": "Roller",
+    "composer": "Kompositör"
+  },
   "itemNotFound": "Föremål hittades inte",
   "libraryEmpty": "Biblioteket är tomt",
   "libraryNotFound": "Hittade inte biblioteket",
