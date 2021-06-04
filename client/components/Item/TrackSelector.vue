@@ -47,6 +47,11 @@ import {
   MediaSourceInfo
 } from '@jellyfin/client-axios';
 
+interface SelectableMediaStream {
+  text: MediaStream;
+  value: number;
+}
+
 export default Vue.extend({
   props: {
     /**
@@ -107,9 +112,9 @@ export default Vue.extend({
       /**
        * Used to model the index as a value and use the object items for the different displays
        *
-       * @returns {{text: MediaStream; value: number}[]} List of objects prepared for Vuetify v-select with the tracks as "text" and index number as "value".
+       * @returns {SelectableMediaStream[]} List of objects prepared for Vuetify v-select with the tracks as "text" and index number as "value".
        */
-      get(): { text: MediaStream; value: number }[] {
+      get(): SelectableMediaStream[] {
         return this.tracks.map((value, idx) => {
           return { text: value, value: idx };
         });

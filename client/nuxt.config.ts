@@ -68,6 +68,12 @@ const config: NuxtConfig = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
+  env: {
+    /**
+     * See plugins/store/persistedStatePlugin.ts for more information about this variable
+     */
+    NUXT_SSR: process.env.NUXT_SSR as string
+  },
   /*
    ** Global CSS
    */
@@ -90,7 +96,6 @@ const config: NuxtConfig = {
     // Development
     { src: 'plugins/axe.ts', mode: 'client' },
     // General
-    'plugins/persistedStatePlugin.ts',
     'plugins/appInitPlugin.ts',
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
@@ -106,7 +111,9 @@ const config: NuxtConfig = {
     'plugins/supportedFeaturesPlugin.ts',
     'plugins/apiPlugin.ts',
     // Directives
-    'plugins/directives/hide.ts'
+    'plugins/directives/hide.ts',
+    // Store
+    'plugins/store/persistedStatePlugin.ts'
   ],
   /*
    ** Auto import components
@@ -129,12 +136,6 @@ const config: NuxtConfig = {
    */
   modules: [
     'nuxt-i18n',
-    [
-      'nuxt-vuex-localstorage',
-      {
-        localStorage: ['user', 'deviceProfile', 'clientSettings']
-      }
-    ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth'
@@ -178,11 +179,10 @@ const config: NuxtConfig = {
         _scheme: '~/schemes/jellyfinScheme'
       }
     },
-    cookie: {
-      prefix: 'auth.',
-      options: {
-        path: '/'
-      }
+    cookie: false,
+    localStorage: false,
+    vuex: {
+      namespace: 'auth'
     },
     plugins: [
       '~/plugins/userLibraryPlugin.ts',
