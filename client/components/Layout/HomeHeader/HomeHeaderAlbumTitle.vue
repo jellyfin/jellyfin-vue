@@ -2,7 +2,11 @@
   <div>
     <nuxt-link
       v-if="imageTag"
-      :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
+      :to="
+        item.AlbumArtists.length > 0
+          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
+          : null
+      "
     >
       <v-img
         max-width="50%"
@@ -18,7 +22,11 @@
       v-else
       data-swiper-parallax="-300"
       class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
-      :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')"
+      :to="
+        item.AlbumArtists.length > 0
+          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
+          : null
+      "
     >
       {{ item.AlbumArtist }}
     </nuxt-link>

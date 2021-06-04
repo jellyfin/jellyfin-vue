@@ -2,7 +2,11 @@
   <div>
     <nuxt-link
       v-if="imageTag"
-      :to="getItemDetailsLink({ Id: item.SeriesId }, 'Series')"
+      :to="
+        item.SeriesId
+          ? getItemDetailsLink({ Id: item.SeriesId }, 'Series')
+          : null
+      "
     >
       <v-img
         class="mb-2"
@@ -19,7 +23,11 @@
       v-else
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h2 text-truncate mt-n2 mb-n1"
-      :to="getItemDetailsLink({ Id: item.SeriesId }, 'Series')"
+      :to="
+        item.SeriesId
+          ? getItemDetailsLink({ Id: item.SeriesId }, 'Series')
+          : null
+      "
     >
       {{ item.SeriesName }}
     </nuxt-link>
