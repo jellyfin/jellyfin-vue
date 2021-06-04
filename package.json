@@ -64,7 +64,7 @@
     "swiper": "5.x",
     "uuid": "^8.3.2",
     "vee-validate": "^3.4.8",
-    "vue": "^2.6.12",
+    "vue": "^2.6.13",
     "vue-awesome-swiper": "^4.1.1",
     "vue-fullscreen": "^2.3.5",
     "vue-native-websocket": "^2.0.14",
