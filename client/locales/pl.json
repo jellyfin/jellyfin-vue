@@ -12,7 +12,6 @@
   "artists": "Wykonawcy",
   "audio": "Dźwięk",
   "badRequest": "Błędne żądanie. Spróbuj ponownie",
-  "biography": "Biografia",
   "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku.",
   "buttons": {
     "ok": "Ok"
@@ -218,6 +217,7 @@
   "save": "Zapisz",
   "saved": "Zapisano",
   "search": "Szukaj",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seriale",
   "server": "Serwer",
   "serverVersion": "Wersja serwera",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Przełącz na tryb jasny"
   },
   "trailer": "Zwiastun",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
   "unableGetRelated": "Nie udało się odczytać powiązanych elementów",

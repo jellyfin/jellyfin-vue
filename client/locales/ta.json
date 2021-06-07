@@ -12,7 +12,6 @@
   "artists": "கலைஞர்கள்",
   "audio": "ஒலி",
   "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்யவும்",
-  "biography": "சுயசரிதை",
   "browserNotSupported": "இந்த கோப்பை இயக்குவதற்கு உங்கள் உலாவி ஆதரிக்கப்படவில்லை.",
   "buttons": {
     "ok": "சரி"
@@ -218,6 +217,7 @@
   "save": "சேமி",
   "saved": "சேமிக்கப்பட்டது",
   "search": "தேடு",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "தொடர்",
   "server": "சேவையகம்",
   "serverVersion": "சேவையக பதிப்பு",
@@ -355,7 +355,6 @@
     "switchToLightMode": "ஒளி பயன்முறைக்கு மாறவும்"
   },
   "trailer": "டிரெய்லர்",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "வகை",
   "unableGetPublicUsers": "பயனர்களைப் பெற முடியவில்லை",
   "unableGetRelated": "தொடர்புடைய பொருட்களைப் பெற முடியவில்லை",

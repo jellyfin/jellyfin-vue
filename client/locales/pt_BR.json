@@ -12,7 +12,6 @@
   "artists": "Artistas",
   "audio": "Áudio",
   "badRequest": "Requisição ruim. Tente Novamente",
-  "biography": "Biografia",
   "browserNotSupported": "Seu navegador não suporta a execução deste arquivo.",
   "buttons": {
     "ok": "Ok"
@@ -193,6 +192,7 @@
   "save": "Salvar",
   "saved": "Salvo",
   "search": "Busca",
+  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Série",
   "server": "Servidor",
   "serverVersion": "Versão do servidor",
@@ -317,7 +317,6 @@
     "switchToLightMode": "Trocar para modo claro"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "upNext": "A seguir",
   "upNextName": "A seguir: {upNextItemName}",

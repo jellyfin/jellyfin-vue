@@ -12,7 +12,6 @@
   "artists": "Artistes",
   "audio": "Audio",
   "badRequest": "Mauvaise requête. Réessayez",
-  "biography": "Biographie",
   "browserNotSupported": "Votre navigateur n'est pas pris en charge pour la lecture de ce fichier.",
   "buttons": {
     "ok": "OK"
@@ -218,6 +217,7 @@
   "save": "Sauvegarder",
   "saved": "Enregistré",
   "search": "Rechercher",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Séries",
   "server": "Serveur",
   "serverVersion": "Version du serveur",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Basculer en mode clair"
   },
   "trailer": "Bande-annonce",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Impossible de récupérer les utilisateurs",
   "unableGetRelated": "Impossible de récupérer les éléments liés",

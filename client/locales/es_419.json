@@ -12,7 +12,6 @@
   "artists": "Artistas",
   "audio": "Audio",
   "badRequest": "Solicitud incorrecta. Reintente",
-  "biography": "Biografia",
   "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo.",
   "buttons": {
     "ok": "Aceptar"
@@ -218,6 +217,7 @@
   "save": "Guardar",
   "saved": "Guardado",
   "search": "Buscar",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",
   "server": "Servidor",
   "serverVersion": "Versión del servidor",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Cambiar a modo claro"
   },
   "trailer": "Adelanto",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "unableGetPublicUsers": "No se han podido obtener los usuarios",
   "unableGetRelated": "No se han podido obtener elementos relacionados",

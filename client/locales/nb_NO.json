@@ -12,7 +12,6 @@
   "artists": "Artister",
   "audio": "Lyd",
   "badRequest": "Feil i forespørselen. Prøv igjen",
-  "biography": "Biografi",
   "browserNotSupported": "Din nettleser kan ikke spille av denne filen.",
   "buttons": {
     "ok": "Ok"
@@ -218,6 +217,7 @@
   "save": "Lagre",
   "saved": "Lagret",
   "search": "Søk",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serier",
   "server": "Server",
   "serverVersion": "Serverversjon",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Bytt til lys modus"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Kunne ikke hente brukerliste",
   "unableGetRelated": "Kunne ikke hente relaterte artikler",

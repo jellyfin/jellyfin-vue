@@ -12,7 +12,6 @@
   "artists": "കലാകാരന്മാർ",
   "audio": "ഓഡിയോ",
   "badRequest": "മോശം അഭ്യർത്ഥന. വീണ്ടും ശ്രമിക്ക്",
-  "biography": "ജീവചരിത്രം",
   "browserNotSupported": "ഈ ഫയൽ പ്ലേ ചെയ്യുന്നതിന് നിങ്ങളുടെ ബ്ര browser സറിനെ പിന്തുണയ്ക്കുന്നില്ല.",
   "buttons": {
     "ok": "ശരി"
@@ -218,6 +217,7 @@
   "save": "രക്ഷിക്കും",
   "saved": "സംരക്ഷിച്ചു",
   "search": "തിരയുക",
+  "seasonEpisodeAbbrev": "S {seasonNumber} E {episodeNumber}",
   "series": "സീരീസ്",
   "server": "സെർവർ",
   "serverVersion": "സെർവർ പതിപ്പ്",
@@ -355,7 +355,6 @@
     "switchToLightMode": "ലൈറ്റ് മോഡിലേക്ക് മാറുക"
   },
   "trailer": "ട്രെയിലർ",
-  "seasonEpisodeAbbrev": "S {seasonNumber} E {episodeNumber}",
   "type": "തരം",
   "unableGetPublicUsers": "ഉപയോക്താക്കളെ നേടാനായില്ല",
   "unableGetRelated": "അനുബന്ധ ഇനങ്ങൾ നേടാനായില്ല",

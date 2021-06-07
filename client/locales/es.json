@@ -12,7 +12,6 @@
   "artists": "Artistas",
   "audio": "Audio",
   "badRequest": "Solicitud incorrecta. Intente de nuevo",
-  "biography": "Biografía",
   "browserNotSupported": "Tu navegador no es compatible con este archivo.",
   "buttons": {
     "ok": "Vale"
@@ -218,6 +217,7 @@
   "save": "Guardar",
   "saved": "Guardado",
   "search": "Buscar",
+  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Series",
   "server": "Servidor",
   "serverVersion": "Versión del servidor",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Cambiar al tema claro"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "type": "Tipo",
   "unableGetPublicUsers": "Error al cargar los usuarios",
   "unableGetRelated": "Error al cargar los elementos relacionados",

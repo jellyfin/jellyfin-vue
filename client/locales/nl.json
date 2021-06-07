@@ -12,7 +12,6 @@
   "artists": "Artiesten",
   "audio": "Geluid",
   "badRequest": "Onjuist verzoek. Probeer het opnieuw",
-  "biography": "Biografie",
   "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
   "buttons": {
     "ok": "Ok"
@@ -216,6 +215,7 @@
   "save": "Opslaan",
   "saved": "Opgeslagen",
   "search": "Zoeken",
+  "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server versie",
@@ -353,7 +353,6 @@
     "switchToLightMode": "Schakel over naar de lichtmodus"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
   "type": "Type",
   "unableGetPublicUsers": "Gebruikers laden is mislukt",
   "unableGetRelated": "Kan gerelateerde items niet ophalen",

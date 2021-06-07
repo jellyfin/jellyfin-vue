@@ -12,7 +12,6 @@
   "artists": "Nghệ sĩ",
   "audio": "Âm thanh",
   "badRequest": "Yêu cầu đã thất bại. Thử lại",
-  "biography": "Tiểu sử",
   "browserNotSupported": "Trình duyệt của bạn không được hỗ trợ để phát tệp này.",
   "buttons": {
     "ok": "Đồng ý"
@@ -217,6 +216,7 @@
   "save": "Lưu",
   "saved": "Đã lưu",
   "search": "Tìm kiếm",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Loạt Phim",
   "server": "Máy chủ",
   "serverVersion": "Phiên bản máy chủ",
@@ -354,7 +354,6 @@
     "switchToLightMode": "Chuyển sang chế độ sáng"
   },
   "trailer": "Đoạn Giới Thiệu",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Kiểu",
   "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
   "unableGetRelated": "Không thể lấy các mục liên quan",

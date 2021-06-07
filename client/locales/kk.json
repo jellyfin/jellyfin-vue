@@ -12,7 +12,6 @@
   "artists": "Oryndauşylar",
   "audio": "Dybys",
   "badRequest": "Jaramsyz saual. Ärekettı qaitalañyz",
-  "biography": "Ömırbaiany",
   "browserNotSupported": "Būl faildy oinatu üşın şolğyşyñyz qoldau körsetpeidı.",
   "buttons": {
     "ok": "Jaraidy"
@@ -218,6 +217,7 @@
   "save": "Saqtau",
   "saved": "Saqtalğan",
   "search": "Izdeu",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Telehikaia",
   "server": "Server",
   "serverVersion": "Server nūsqasy",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Jaryq rejımge auysu"
   },
   "trailer": "Treiler",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Türı",
   "unableGetPublicUsers": "Paidalanuşylardy alu mümkın emes",
   "unableGetRelated": "Qatysty tarmaqtardy alu mümkın emes",

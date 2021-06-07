@@ -12,7 +12,6 @@
   "artists": "Künstler",
   "audio": "Ton",
   "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
-  "biography": "Biografie",
   "browserNotSupported": "Ihr Browser wird für die Wiedergabe dieser Datei nicht unterstützt.",
   "buttons": {
     "ok": "Ok"
@@ -218,6 +217,7 @@
   "save": "Speichern",
   "saved": "Gespeichert",
   "search": "Suche",
+  "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "series": "Serie",
   "server": "Server",
   "serverVersion": "Serverversion",
@@ -355,7 +355,6 @@
     "switchToLightMode": "In den hellen Modus wechseln"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Benutzer können nicht abgerufen werden",
   "unableGetRelated": "Verwandte Elemente konnten nicht abgerufen werden",

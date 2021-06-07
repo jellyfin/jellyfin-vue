@@ -12,7 +12,6 @@
   "artists": "Artis",
   "audio": "Audio",
   "badRequest": "Permintaan salah. Coba lagi",
-  "biography": "Biografi",
   "browserNotSupported": "Browser Anda tidak didukung untuk memutar file ini.",
   "buttons": {
     "ok": "Oke"
@@ -209,6 +208,7 @@
   "save": "Simpan",
   "saved": "Sudah disimpan",
   "search": "Cari",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seri",
   "server": "Server",
   "serverVersion": "Versi server",
@@ -345,7 +345,6 @@
     "switchToLightMode": "Beralih ke mode terang"
   },
   "trailer": "Cuplikan",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tipe",
   "unableGetPublicUsers": "Tidak bisa mendapatkan pengguna",
   "unableGetRelated": "Tak bisa mendapatkan item terkait",

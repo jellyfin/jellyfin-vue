@@ -12,7 +12,6 @@
   "artists": "Исполнители",
   "audio": "Аудио",
   "badRequest": "Недопустимый запрос. Попробуйте снова",
-  "biography": "Биография",
   "browserNotSupported": "Ваш браузер не поддерживает воспроизведение этого файла.",
   "buttons": {
     "ok": "ОК"
@@ -218,6 +217,7 @@
   "save": "Сохранить",
   "saved": "Сохранено",
   "search": "Поиск",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Сериал",
   "server": "Сервер",
   "serverVersion": "Версия сервера",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Перейти на светлый режим"
   },
   "trailer": "Трейлер",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Тип",
   "unableGetPublicUsers": "Невозможно получить пользователей",
   "unableGetRelated": "Невозможно получить связанные элементы",

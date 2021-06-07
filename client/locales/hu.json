@@ -12,7 +12,6 @@
   "artists": "Előadók",
   "audio": "Hang",
   "badRequest": "Hibás lekérdezés. Próbáld újra",
-  "biography": "Életrajz",
   "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
   "buttons": {
     "ok": "Oké"
@@ -218,6 +217,7 @@
   "save": "Mentés",
   "saved": "Mentve",
   "search": "Keresés",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Sorozatok",
   "server": "Szerver",
   "serverVersion": "Szerver verzió",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Váltás világos módra"
   },
   "trailer": "Előzetes",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Típus",
   "unableGetPublicUsers": "Nem sikerült lekérni a felhasználókat",
   "unableGetRelated": "Nem sikerült lekérni a kapcsolódó elemeket",

@@ -12,7 +12,6 @@
   "artists": "Artiști",
   "audio": "Audio",
   "badRequest": "Cerere greșită. Încearcă din nou",
-  "biography": "Biografie",
   "browserNotSupported": "Browserul dvs. nu este acceptat pentru redarea acestui fișier.",
   "buttons": {
     "ok": "Ok"
@@ -215,6 +214,7 @@
   "save": "Salvează",
   "saved": "Salvat",
   "search": "Caută",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serial",
   "server": "Server",
   "serverVersion": "Versiunea serverului",
@@ -352,7 +352,6 @@
     "switchToLightMode": "Treceți la modul luminos"
   },
   "trailer": "Trailer",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "type": "Tip",
   "unableGetPublicUsers": "Nu se pot obține utilizatorii",
   "unableGetRelated": "Nu se pot obține articole conexe",

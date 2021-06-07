@@ -12,7 +12,6 @@
   "artists": "Interpreti",
   "audio": "Zvuk",
   "badRequest": "Špatný požadavek. Zkuste to znovu",
-  "biography": "Životopis",
   "browserNotSupported": "Přehrávání tohoto souboru není ve vašem prohlížeči podporováno.",
   "buttons": {
     "ok": "Ok"
@@ -218,6 +217,7 @@
   "save": "Uložit",
   "saved": "Uloženo",
   "search": "Hledat",
+  "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "series": "Seriály",
   "server": "Server",
   "serverVersion": "Verze serveru",
@@ -355,7 +355,6 @@
     "switchToLightMode": "Přepnout světlý režim"
   },
   "trailer": "Upoutávka",
-  "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "type": "Typ",
   "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
   "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
