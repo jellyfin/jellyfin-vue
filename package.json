@@ -32,7 +32,7 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@fontsource/noto-sans": "^4.4.2",
+    "@fontsource/noto-sans": "^4.4.5",
     "@fontsource/noto-sans-hk": "^4.4.2",
     "@fontsource/noto-sans-jp": "^4.4.2",
     "@fontsource/noto-sans-kr": "^4.4.2",
