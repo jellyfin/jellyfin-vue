@@ -33,9 +33,9 @@ export interface PlaybackManagerState {
   lastItemIndex: number | null;
   currentItemIndex: number | null;
   currentMediaSource: MediaSourceInfo | null;
-  currentVideoStreamIndex: number | null;
-  currentAudioStreamIndex: number | null;
-  currentSubtitleStreamIndex: number | null;
+  currentVideoStreamIndex: number | undefined;
+  currentAudioStreamIndex: number | undefined;
+  currentSubtitleStreamIndex: number | undefined;
   currentItemChapters: ChapterInfo[] | null;
   currentTime: number | null;
   lastProgressUpdate: number;
@@ -57,9 +57,9 @@ export const defaultState = (): PlaybackManagerState => ({
   lastItemIndex: null,
   currentItemIndex: null,
   currentMediaSource: null,
-  currentVideoStreamIndex: 0,
-  currentAudioStreamIndex: 0,
-  currentSubtitleStreamIndex: 0,
+  currentVideoStreamIndex: undefined,
+  currentAudioStreamIndex: undefined,
+  currentSubtitleStreamIndex: undefined,
   currentItemChapters: null,
   currentTime: null,
   lastProgressUpdate: 0,
@@ -220,6 +220,24 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   ) {
     state.currentMediaSource = mediaSource;
   },
+  SET_CURRENT_VIDEO_TRACK_INDEX(
+    state: PlaybackManagerState,
+    { videoStreamIndex }: { videoStreamIndex: number }
+  ) {
+    state.currentVideoStreamIndex = videoStreamIndex;
+  },
+  SET_CURRENT_AUDIO_TRACK_INDEX(
+    state: PlaybackManagerState,
+    { audioStreamIndex }: { audioStreamIndex: number }
+  ) {
+    state.currentAudioStreamIndex = audioStreamIndex;
+  },
+  SET_CURRENT_SUBTITLE_TRACK_INDEX(
+    state: PlaybackManagerState,
+    { subtitleStreamIndex }: { subtitleStreamIndex: number }
+  ) {
+    state.currentSubtitleStreamIndex = subtitleStreamIndex;
+  },
   INCREASE_QUEUE_INDEX(state: PlaybackManagerState) {
     if (state.currentItemIndex !== null) {
       state.lastItemIndex = state.currentItemIndex;
@@ -328,12 +346,18 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
     { commit, state },
     {
       item,
+      audioTrackIndex,
+      subtitleTrackIndex,
+      videoTrackIndex,
       startFromIndex = 0,
       startFromTime = 0,
       initiator,
       startShuffled = false
     }: {
       item: BaseItemDto;
+      audioTrackIndex?: number;
+      subtitleTrackIndex?: number;
+      videoTrackIndex?: number;
       startFromIndex?: number;
       startFromTime?: number;
       initiator?: BaseItemDto;
@@ -356,6 +380,25 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
     }
 
     commit('SET_QUEUE', { queue: translatedItems });
+
+    if (videoTrackIndex !== undefined) {
+      commit('SET_CURRENT_VIDEO_TRACK_INDEX', {
+        videoStreamIndex: videoTrackIndex
+      });
+    }
+
+    if (audioTrackIndex !== undefined) {
+      commit('SET_CURRENT_AUDIO_TRACK_INDEX', {
+        audioStreamIndex: audioTrackIndex
+      });
+    }
+
+    if (subtitleTrackIndex !== undefined) {
+      commit('SET_CURRENT_SUBTITLE_TRACK_INDEX', {
+        subtitleStreamIndex: subtitleTrackIndex
+      });
+    }
+
     commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex });
     commit('SET_CURRENT_TIME', { time: startFromTime });
 

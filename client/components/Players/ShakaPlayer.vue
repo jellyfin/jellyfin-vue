@@ -52,7 +52,11 @@ export default Vue.extend({
     ...mapState('playbackManager', [
       'lastProgressUpdate',
       'currentTime',
-      'currentVolume'
+      'currentVolume',
+      'currentMediaSource',
+      'currentVideoStreamIndex',
+      'currentAudioStreamIndex',
+      'currentSubtitleStreamIndex'
     ]),
     ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
@@ -196,7 +200,13 @@ export default Vue.extend({
             {
               itemId: this.getCurrentItem?.Id || '',
               userId: this.$auth.user?.Id,
-              playbackInfoDto: { DeviceProfile: this.$playbackProfile }
+              autoOpenLiveStream: true,
+              playbackInfoDto: { DeviceProfile: this.$playbackProfile },
+              mediaSourceId: this.currentMediaSource?.Id
+                ? this.currentMediaSource.Id
+                : undefined,
+              audioStreamIndex: this.currentAudioStreamIndex,
+              subtitleStreamIndex: this.currentSubtitleStreamIndex
             },
             { progress: false }
           )
