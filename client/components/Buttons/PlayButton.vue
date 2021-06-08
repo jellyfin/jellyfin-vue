@@ -51,6 +51,18 @@ export default Vue.extend({
     },
     shuffle: {
       type: Boolean
+    },
+    videoTrackIndex: {
+      type: Number,
+      default: undefined
+    },
+    audioTrackIndex: {
+      type: Number,
+      default: undefined
+    },
+    subtitleTrackIndex: {
+      type: Number,
+      default: undefined
     }
   },
   data() {
@@ -76,6 +88,9 @@ export default Vue.extend({
       if (this.item && this.canResume(this.item)) {
         this.play({
           item: this.item,
+          audioTrackIndex: this.audioTrackIndex,
+          subtitleTrackIndex: this.subtitleTrackIndex || -1,
+          videoTrackIndex: this.videoTrackIndex,
           startFromTime:
             this.ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
         });
@@ -83,11 +98,17 @@ export default Vue.extend({
         // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
         this.play({
           item: this.item,
+          audioTrackIndex: this.audioTrackIndex,
+          subtitleTrackIndex: this.subtitleTrackIndex || -1,
+          videoTrackIndex: this.videoTrackIndex,
           startShuffled: true
         });
       } else {
         this.play({
-          item: this.item
+          item: this.item,
+          audioTrackIndex: this.audioTrackIndex,
+          subtitleTrackIndex: this.subtitleTrackIndex || -1,
+          videoTrackIndex: this.videoTrackIndex
         });
       }
     }

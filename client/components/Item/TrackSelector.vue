@@ -11,7 +11,7 @@
     :items="selectItems"
     :placeholder="placeholder"
     :disabled="disabled"
-    :clearable="clearable"
+    clearable
   >
     <template slot="selection" slot-scope="{ item: i }">
       {{ getTrackSelection(i.text) }}
@@ -75,7 +75,7 @@ export default Vue.extend({
     }
   },
   data() {
-    return { trackIndex: undefined as number | undefined };
+    return { trackIndex: -1 as number };
   },
   computed: {
     mediaSourceItem: {
@@ -163,28 +163,12 @@ export default Vue.extend({
         return this.$t('noTracksAvailable');
       }
     },
-    clearable: {
-      /**
-       * @returns {boolean} Whether the v-select is clearable
-       */
-      get(): boolean {
-        return this.type === 'Subtitle';
-      }
-    },
     /**
      * @returns {number|undefined} Default index to use (undefined if empty by default)
      */
     defaultIndex: {
-      get(): number | undefined {
-        const defaultTrack = this.tracks.findIndex((track) => track.IsDefault);
-
-        if (defaultTrack !== -1) {
-          return defaultTrack;
-        } else if (this.type === 'Subtitle') {
-          return undefined;
-        }
-
-        return 0;
+      get(): number {
+        return this.tracks.findIndex((track) => track.IsDefault);
       }
     }
   },
@@ -192,8 +176,15 @@ export default Vue.extend({
     /**
      * @param {number} newVal - New index value choosen in the v-select
      */
-    trackIndex(newVal: number): void {
-      this.$emit('input', newVal);
+    trackIndex: {
+      immediate: true,
+      handler(newVal: number): void {
+        if (this.tracks?.[newVal]?.Index) {
+          this.$emit('input', this.tracks?.[newVal]?.Index);
+        } else {
+          this.$emit('input', -1);
+        }
+      }
     },
     /**
      * When the media source index is changed by the parent, we reset the selected track as it has changed
