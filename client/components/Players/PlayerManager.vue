@@ -575,8 +575,7 @@ export default Vue.extend({
       this.$fullscreen.toggle((this.$refs.playerContainer as Vue).$el, {
         callback: (fullscreen: boolean) => {
           this.fullScreenVideo = fullscreen;
-        },
-        wrap: true
+        }
       });
     },
     onQueueChangeHandler(value: boolean): void {
