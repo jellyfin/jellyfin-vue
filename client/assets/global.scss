@@ -49,14 +49,25 @@ body {
 
 /* Vuetify overrides */
 
-// We can't set these through variables, so override them here */
 .v-app-bar.v-app-bar--fixed {
   z-index: 100 !important;
 }
 
-// Cropped text fixes. See https://github.com/vuetifyjs/vuetify/issues/6488 and https://github.com/vuetifyjs/vuetify/issues/4655 */
+// fixes cropped text in some situations
+// there are still issues with line height so this might be deprecated at some point
+// https://github.com/vuetifyjs/vuetify/issues/6488
+// https://github.com/vuetifyjs/vuetify/issues/4655
 .text-truncate {
   line-height: normal !important;
+}
+
+// retain-focus-on-click property is incompatible with NaN so we disable it manually
+// might want to enable this for all v-btn elements in the future
+// https://github.com/vuetifyjs/vuetify/issues/8436
+// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click
+// https://stackoverflow.com/questions/57830767/57831256
+.active-button:focus::before {
+  opacity: 0 !important;
 }
 
 .v-navigation-drawer--fixed,

@@ -266,13 +266,4 @@ export default Vue.extend({
 .theme--dark .audioControls.fullscreen {
   background-color: rgba(0, 0, 0, 0.15);
 }
-
-// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
-// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
-// but it seems we're using a prop combination that it's incompatible with it: NaN;
-
-// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
-.active-button:focus::before {
-  opacity: 0 !important;
-}
 </style>
