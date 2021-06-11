@@ -4,6 +4,7 @@
     ref="shakaPlayer"
     :poster="poster.url"
     autoplay
+    crossorigin="anonymous"
     :playsinline="$browser.isMobile() && $browser.isApple()"
     @timeupdate="onProgressThrottled"
     @pause="onPause"
@@ -41,7 +42,10 @@ export default Vue.extend({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player: null as any,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      unsubscribe(): void {},
+      audioContext: null as AudioContext | null,
+      audioSource: null as MediaElementAudioSourceNode | null,
+      gainNode: null as GainNode | null
     };
   },
   computed: {
@@ -110,6 +114,17 @@ export default Vue.extend({
         window.player = new shaka.Player(this.$refs.shakaPlayer);
         this.player = window.player;
 
+        // Create WebAudio context and nodes for added processing
+        this.audioContext = new AudioContext();
+        this.audioSource = this.audioContext.createMediaElementSource(
+          this.$refs.shakaPlayer as HTMLMediaElement
+        );
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.gain.value = 1;
+        this.audioSource.connect(this.gainNode);
+
+        this.gainNode.connect(this.audioContext.destination);
+
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
@@ -140,9 +155,8 @@ export default Vue.extend({
                 break;
 
               case 'playbackManager/SET_VOLUME':
-                if (this.$refs.shakaPlayer) {
-                  (this.$refs.shakaPlayer as HTMLAudioElement).volume =
-                    this.currentVolume / 100;
+                if (this.$refs.shakaPlayer && this.gainNode) {
+                  this.gainNode.gain.value = this.currentVolume / 100;
                 }
 
                 break;
@@ -178,6 +192,10 @@ export default Vue.extend({
       this.player.removeEventListener('error', this.onPlayerError);
       this.player.unload();
       this.player.destroy();
+
+      if (this.audioContext) {
+        this.audioContext.close();
+      }
     }
 
     this.unsubscribe();
