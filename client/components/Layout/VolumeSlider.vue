@@ -60,13 +60,4 @@ export default Vue.extend({
 .volume-slider {
   width: 10em;
 }
-
-// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
-// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
-// but it seems we're using a prop combination that it's incompatible with it.
-
-// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
-.active-button:focus::before {
-  opacity: 0 !important;
-}
 </style>
