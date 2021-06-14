@@ -86,7 +86,7 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/imagemin": "^1.0.1",
     "@nuxtjs/stylelint-module": "^4.0.0",
-    "@nuxtjs/vuetify": "^1.11.3",
+    "@nuxtjs/vuetify": "^1.12.1",
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/vue": "^5.6.2",
     "@types/body-scroll-lock": "^2.6.1",
