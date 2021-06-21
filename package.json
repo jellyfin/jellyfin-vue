@@ -63,7 +63,7 @@
     "simple-icons": "^5.3.0",
     "swiper": "5.x",
     "uuid": "^8.3.2",
-    "vee-validate": "^3.4.9",
+    "vee-validate": "^3.4.10",
     "vue-awesome-swiper": "^4.1.1",
     "vue-fullscreen": "^2.5.1",
     "vue-native-websocket": "^2.0.14",
