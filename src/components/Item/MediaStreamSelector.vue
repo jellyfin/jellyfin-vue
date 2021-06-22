@@ -9,7 +9,6 @@
     hide-details
     class="text-truncate"
     :items="selectItems"
-    :placeholder="placeholder"
     @input="$emit('input', $event)"
   >
     <template slot="selection" slot-scope="{ item: i }">
@@ -112,38 +111,6 @@ export default Vue.extend({
         return this.tracks.map((value, idx) => {
           return { text: value, value: idx };
         });
-      }
-    },
-    placeholder: {
-      /**
-       * @returns {string} Placeholder to use
-       */
-      get(): string {
-        if (this.type === 'Audio' && this.tracks.length === 0) {
-          return this.$t('noAudioTracksAvailable');
-        }
-
-        if (this.type === 'Audio' && this.tracks.length !== 0) {
-          return this.$t('noAudioTrackSelected');
-        }
-
-        if (this.type === 'Subtitle' && this.tracks.length === 0) {
-          return this.$t('noSubtitlesAvailable');
-        }
-
-        if (this.type === 'Subtitle' && this.tracks.length !== 0) {
-          return this.$t('noSubtitleSelected');
-        }
-
-        if (this.type === 'Video' && this.tracks.length === 0) {
-          return this.$t('noVideoTracksAvailable');
-        }
-
-        if (this.type === 'Video' && this.tracks.length !== 0) {
-          return this.$t('noVideoTrackSelected');
-        }
-
-        return this.$t('noTracksAvailable');
       }
     },
     /**
