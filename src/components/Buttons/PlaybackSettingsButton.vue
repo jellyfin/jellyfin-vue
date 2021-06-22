@@ -37,7 +37,7 @@
               <label>{{ $t('quality') }}</label>
             </v-col>
             <v-col :cols="8">
-              <track-selector
+              <media-stream-selector
                 :item="getCurrentItem"
                 :media-source-index="0"
                 type="Subtitles"
@@ -52,7 +52,7 @@
               <label>{{ $t('audio') }}</label>
             </v-col>
             <v-col :cols="8">
-              <track-selector
+              <media-stream-selector
                 :item="getCurrentItem"
                 :media-source-index="0"
                 type="Audio"
@@ -67,7 +67,7 @@
               <label>{{ $t('subtitles') }}</label>
             </v-col>
             <v-col :cols="8">
-              <track-selector
+              <media-stream-selector
                 :item="getCurrentItem"
                 :media-source-index="0"
                 type="Subtitles"
@@ -82,7 +82,7 @@
               <label>{{ $t('speed') }}</label>
             </v-col>
             <v-col :cols="8">
-              <track-selector
+              <media-stream-selector
                 :item="getCurrentItem"
                 :media-source-index="0"
                 type="Subtitles"

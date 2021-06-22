@@ -169,7 +169,7 @@
                   <label class="text--secondary">{{ $t('video') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
+                  <media-stream-selector
                     :item="item"
                     :media-source-index="currentSourceIndex"
                     :type="'Video'"
@@ -186,7 +186,7 @@
                   <label class="text--secondary">{{ $t('audio') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
+                  <media-stream-selector
                     :item="item"
                     :media-source-index="currentSourceIndex"
                     :type="'Audio'"
@@ -203,7 +203,7 @@
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
+                  <media-stream-selector
                     :item="item"
                     :media-source-index="currentSourceIndex"
                     :type="'Subtitle'"
