@@ -103,13 +103,13 @@ export default Vue.extend({
     },
     selectItems: {
       /**
-       * Used to model the index as a value and use the object items for the different displays
+       * Used to model the media stream index as a value and use the object items for the different displays
        *
        * @returns {{text: MediaStream; value: number}[]} List of objects prepared for Vuetify v-select with the tracks as "text" and index number as "value".
        */
-      get(): { text: MediaStream; value: number }[] {
-        return this.tracks.map((value, idx) => {
-          return { text: value, value: idx };
+      get(): { text: MediaStream; value: number | undefined }[] {
+        return this.tracks.map((value, _idx) => {
+          return { text: value, value: value.Index };
         });
       }
     },
