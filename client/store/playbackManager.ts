@@ -144,7 +144,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   getCurrentVideoTrack: (state) => {
     if (
       state.currentMediaSource !== null &&
-      state.currentVideoStreamIndex !== null
+      state.currentVideoStreamIndex !== undefined
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Video';
@@ -156,7 +156,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   getCurrentAudioTrack: (state) => {
     if (
       state.currentMediaSource !== null &&
-      state.currentAudioStreamIndex !== null
+      state.currentAudioStreamIndex !== undefined
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Audio';
@@ -168,7 +168,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   getCurrentSubtitleTrack: (state) => {
     if (
       state.currentMediaSource !== null &&
-      state.currentSubtitleStreamIndex !== null
+      state.currentSubtitleStreamIndex !== undefined
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Subtitle';
