@@ -10,7 +10,6 @@
     class="text-truncate"
     :items="selectItems"
     :placeholder="placeholder"
-    :disabled="disabled"
   >
     <template slot="selection" slot-scope="{ item: i }">
       {{ getTrackSelection(i.text) }}
@@ -112,22 +111,6 @@ export default Vue.extend({
         return this.tracks.map((value, idx) => {
           return { text: value, value: idx };
         });
-      }
-    },
-    disabled: {
-      /**
-       * @returns {boolean} Whether to disable the v-select
-       */
-      get(): boolean {
-        if (this.tracks.length <= 0) {
-          return true;
-        }
-
-        if (this.type !== 'Subtitle' && this.tracks.length <= 1) {
-          return true;
-        }
-
-        return false;
       }
     },
     placeholder: {
