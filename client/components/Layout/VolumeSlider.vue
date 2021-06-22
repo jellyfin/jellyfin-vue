@@ -7,7 +7,7 @@
       class="volume-slider"
       hide-details
       thumb-label
-      max="125"
+      max="100"
       :value="currentVolume"
       validate-on-blur
       @input="onVolumeChange"
