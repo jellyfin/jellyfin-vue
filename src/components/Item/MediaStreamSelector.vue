@@ -10,6 +10,7 @@
     class="text-truncate"
     :items="selectItems"
     :placeholder="placeholder"
+    @input="$emit('input', $event)"
   >
     <template slot="selection" slot-scope="{ item: i }">
       {{ getTrackSelection(i.text) }}
@@ -155,19 +156,6 @@ export default Vue.extend({
     }
   },
   watch: {
-    /**
-     * @param {number} newVal - New index value choosen in the v-select
-     */
-    trackIndex: {
-      immediate: true,
-      handler(newVal: number): void {
-        if (this.tracks?.[newVal]?.Index) {
-          this.$emit('input', this.tracks?.[newVal]?.Index);
-        } else {
-          this.$emit('input', -1);
-        }
-      }
-    },
     /**
      * When the media source index is changed by the parent, we reset the selected track as it has changed
      */
