@@ -11,7 +11,6 @@
     :items="selectItems"
     :placeholder="placeholder"
     :disabled="disabled"
-    clearable
   >
     <template slot="selection" slot-scope="{ item: i }">
       {{ getTrackSelection(i.text) }}
