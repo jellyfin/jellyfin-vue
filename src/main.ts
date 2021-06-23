@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { setupLayouts } from 'virtual:generated-layouts';
 import Vuetify from './plugins/vuetify';
 import App from './App.vue';
 import store from './store';
@@ -10,7 +11,7 @@ import 'vuetify/dist/vuetify.min.css';
 const app = createApp(App);
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes: setupLayouts(routes)
 });
 
 app.use(Vuetify);
