@@ -18,8 +18,10 @@
   },
   "dependencies": {
     "@jellyfin/client-axios": "10.7.0",
+    "@vueuse/core": "^5.0.3",
     "destr": "^1.1.0",
     "vue": "^3.0.5",
+    "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.10",
     "vuetify": "^3.0.0-alpha.6",
     "vuex": "^4.0.2"
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@intlify/vite-plugin-vue-i18n": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
     "@vitejs/plugin-vue": "^1.2.3",

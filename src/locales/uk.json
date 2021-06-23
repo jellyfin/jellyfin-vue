@@ -1,0 +1,16 @@
+{
+  "cancel": "Скасувати",
+  "castAndCrew": "Актори",
+  "collections": "Колекції",
+  "confirm": "Підтвердити",
+  "connect": "З'єднатися",
+  "continueListening": "Продовжити слухати",
+  "continueWatching": "Продовжити дивитися",
+  "criticRating": "Оцінка критиків",
+  "details": "Деталі",
+  "errors": {
+    "messages": {
+      "errorCode": "Код помилки: {errorCode}"
+    }
+  }
+}

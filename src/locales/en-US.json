@@ -1,0 +1,424 @@
+{
+  "3DFormat": "3D format",
+  "NoMediaSourcesAvailable": "No media sources available",
+  "actor": "Actor",
+  "actors": "Actors",
+  "addNewPerson": "Add a new person",
+  "airPlayDevices": "AirPlay devices",
+  "albums": "Albums",
+  "allLanguages": "All languages",
+  "alphabetically": "Alphabetically",
+  "architecture": "Architecture",
+  "artist": "Artist",
+  "artists": "Artists",
+  "aspectRatio": "Aspect ratio",
+  "audio": "Audio",
+  "badRequest": "Bad request. Try again",
+  "browserNotSupported": "Your browser is not supported for playing this file.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "By {artist}",
+  "cancel": "Cancel",
+  "castAndCrew": "Cast & crew",
+  "collections": "Collections",
+  "communityRating": "Community rating",
+  "confirm": "Confirm",
+  "connect": "Connect",
+  "continueListening": "Continue listening",
+  "continueWatching": "Continue watching",
+  "criticRating": "Critic rating",
+  "customRating": "Custom rating",
+  "darkModeToggle": "Toggle dark mode",
+  "dateAdded": "Date added",
+  "details": "Details",
+  "directing": "Directing",
+  "director": "Director",
+  "discNumber": "Disc {discNumber}",
+  "dislikes": "Dislikes",
+  "edit": "Edit",
+  "editMetadata": "Edit metadata",
+  "editPerson": "Edit person",
+  "endDate": "End date",
+  "endsAt": "Ends at {time}",
+  "episodeNumber": "Episode {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "An error happened",
+    "messages": {
+      "errorCode": "Error code: {errorCode}",
+      "videoPlayerError": "The video player encountered an unrecoverable error."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
+  "failedSettingDisplayPreferences": "Unable to update display preferences.",
+  "failedToRefreshItems": "Failed to refresh items",
+  "favorite": "Favorite",
+  "features": "Features",
+  "filter": "Filter",
+  "filtersNotFound": "Unable to load filters",
+  "fullScreen": "Full screen",
+  "general": "General",
+  "genericJellyfinPlaceholderDevice": "Generic Jellyfin device",
+  "genres": "Genres",
+  "googleCastPlaceholderDevice": "Google Cast device",
+  "guestStar": "Guest Star",
+  "headerExternalIds": "External IDs",
+  "headerPaths": "Path",
+  "home": "Home",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Recently added"
+    },
+    "welcome": {
+      "checkNewItems": "Check out what's new.",
+      "helloUser": "Hello {userName}!",
+      "noItems": "There are no recently added items to show."
+    }
+  },
+  "imageType": {
+    "art": "Art",
+    "backdrop": "Backdrop",
+    "banner": "Banner",
+    "box": "Box",
+    "boxRear": "Box (rear)",
+    "disc": "Disc",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Primary",
+    "screenshot": "Screenshot",
+    "thumb": "Thumb"
+  },
+  "images": "Images",
+  "incorrectUsernameOrPassword": "Incorrect username or password",
+  "item": {
+    "artist": {
+      "appearsOn": "Appearances",
+      "discography": "Discography",
+      "information": "Information",
+      "videos": "Videos"
+    },
+    "cast": "Cast",
+    "composer": "Composer",
+    "crew": "Crew",
+    "person": {
+      "birth": "Born",
+      "birthPlace": "Birth place",
+      "books": "Books",
+      "death": "Died",
+      "information": "Information",
+      "movies": "Movies",
+      "person": "Person",
+      "photos": "Photos",
+      "shows": "Shows"
+    },
+    "tracklist": {
+      "title": "Title"
+    }
+  },
+  "itemNotFound": "Item not found",
+  "jellyfinLogo": "Jellyfin logo",
+  "latestLibrary": "Latest {libraryName}",
+  "libraries": "Libraries",
+  "libraryEmpty": "This library is empty",
+  "libraryEmptyFilters": "No matches. Remove some filters to show more items",
+  "libraryNotFound": "Library not found",
+  "libraryRefreshQueued": "Library refresh queued",
+  "liked": "Liked",
+  "likes": "Likes",
+  "links": {
+    "helpTranslate": "Translate Jellyfin to your language",
+    "poweredByJellyfin": "This server is powered by Jellyfin",
+    "readTheDocumentation": "Read the documentation",
+    "reportAnIssue": "Report an issue with this client"
+  },
+  "login": {
+    "addServer": "Add server",
+    "changeServer": "Change server",
+    "changeUser": "Change user",
+    "connect": "Connect",
+    "login": "Login",
+    "loginAs": "Login as {name}",
+    "manualLogin": "Manual login",
+    "rememberMe": "Remember me",
+    "selectServer": "Select server",
+    "selectUser": "Select a user",
+    "serverAddress": "Server address",
+    "serverAddressMustBeUrl": "Server address must be a valid URL",
+    "serverAddressRequired": "Server address is required",
+    "serverDashboard": "Server dashboard",
+    "serverNotFound": "Server not found",
+    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher"
+  },
+  "logout": "Logout",
+  "logsAndActivity": {
+    "activity": "Activity",
+    "failedGetActivity": "Unable to get activity",
+    "failedGetLogs": "Unable to get logs",
+    "logs": "Logs",
+    "noActivityFound": "No activities found",
+    "noLogsFound": "No logs found"
+  },
+  "manualLogin": "Manual login",
+  "menu": "Menu",
+  "metadata": {
+    "source": "Source",
+    "sourceAll": "All",
+    "title": "Title",
+    "type": "Type"
+  },
+  "metadataEditor": "Metadata editor",
+  "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
+  "more": "More",
+  "moreLikeArtist": "More like {artist}",
+  "moreLikeThis": "More like this",
+  "movies": "Movies",
+  "name": "Name",
+  "networks": "Networks",
+  "nextUp": "Next up",
+  "noAudioTrackSelected": "No audio track selected",
+  "noAudioTracksAvailable": "No audio tracks available",
+  "noImagesFound": "No images found",
+  "noInformationAvailable": "No information available",
+  "noNetworkConnection": "No network connection",
+  "noResultsFound": "There is nothing here",
+  "noSubtitleSelected": "No subtitle selected",
+  "noSubtitlesAvailable": "No subtitles available",
+  "noTracksAvailable": "No tracks available",
+  "noVideoTrackSelected": "No video track selected",
+  "noVideoTracksAvailable": "No video tracks available",
+  "numberTracks": "{number} tracks",
+  "operatingSystem": "Operating system",
+  "originalAspectRatio": "Original aspect ratio",
+  "originalTitle": "Original title",
+  "overview": "Overview",
+  "parentalRating": "Parental rating",
+  "parentalRatings": "Parental Ratings",
+  "password": "Password",
+  "people": "People",
+  "person": "Person",
+  "play": "Play",
+  "playFromBeginning": "Play from the beginning",
+  "playback": {
+    "addToQueue": "Add to queue",
+    "clearQueue": "Clear queue and stop playback",
+    "playAll": "Play all",
+    "playNext": "Play next",
+    "playbackSource": {
+      "item": "Playing from {item}",
+      "shuffle": "Playing in shuffle",
+      "shuffleItem": "Playing {item} in shuffle",
+      "unknown": "Playing from queue"
+    },
+    "queueItems": "{items} tracks",
+    "saveAsPlaylist": "Save queue as a playlist",
+    "shuffle": "Shuffle",
+    "shuffleAll": "Shuffle all"
+  },
+  "playbackData": "Playback data",
+  "playbackSettings": "Playback settings",
+  "played": "Played",
+  "present": "Present",
+  "producer": "Producer",
+  "quality": "Quality",
+  "queue": "Queue",
+  "rating": "Rating",
+  "refreshLibrary": "Refresh library",
+  "releaseDate": "Release date",
+  "remoteDevices": "Remote devices",
+  "resumable": "Resumable",
+  "resume": "Resume",
+  "role": "Role",
+  "save": "Save",
+  "saved": "Saved",
+  "search": "Search",
+  "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "series": "Series",
+  "server": "Server",
+  "serverVersion": "Server version",
+  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Access token",
+      "addApiKey": "Add an API key",
+      "addNewKey": "Add new API key",
+      "apiKeys": "API keys",
+      "appName": "App name",
+      "createKeyFailure": "Error creating a new API key",
+      "createKeySuccess": "Successfully created a new API key",
+      "dateCreated": "Date created",
+      "description": "Add and revoke API keys for external access to your server",
+      "refreshKeysFailure": "Error refreshing API keys",
+      "revokeAll": "Revoke all API keys",
+      "revokeAllFailure": "Error revoking all API keys",
+      "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeFailure": "Error revoking API key",
+      "revokeSuccess": "Successfully revoked API key"
+    },
+    "devices": {
+      "appName": "App name",
+      "appVersion": "App version",
+      "delete": "Delete",
+      "deleteAll": "Delete all",
+      "deleteAllDevicesError": "Error deleting all devices",
+      "deleteAllDevicesSuccess": "All devices deleted successfully",
+      "deleteDeviceError": "Error deleting device",
+      "deleteDeviceSuccess": "Device deleted successfully",
+      "deviceName": "Device name",
+      "devices": "Devices",
+      "lastActive": "Last active",
+      "noDevicesFound": "No devices found",
+      "userName": "Username"
+    },
+    "help": "Help",
+    "logsAndActivity": {
+      "activity": "Activity",
+      "failedGetActivity": "Unable to get activity",
+      "failedGetLogs": "Unable to get logs",
+      "logs": "Logs",
+      "noActivityFound": "No activities found",
+      "noLogsFound": "No logs found"
+    },
+    "settings": "Settings"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Edit your user's information",
+      "name": "Account"
+    },
+    "devices": {
+      "description": "See and manage the devices connected to your server",
+      "name": "Devices"
+    },
+    "dlna": {
+      "description": "Configure DLNA settings and profile",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configure your home sections and home screen layout",
+      "name": "Home screen"
+    },
+    "libraries": {
+      "description": "Manage libraries and their metadata",
+      "name": "Libraries"
+    },
+    "liveTvAndDvr": {
+      "description": "Manage TV tuners, guide data providers and DVR settings",
+      "name": "Live TV & DVR"
+    },
+    "logs": {
+      "description": "Read and search server logs and user activity",
+      "name": "Logs & activity"
+    },
+    "mediaPlayers": {
+      "description": "Configure how the media players behave for this device",
+      "name": "Media players"
+    },
+    "networking": {
+      "description": "Manage the network settings of this server",
+      "name": "Networking"
+    },
+    "notifications": {
+      "description": "Manage and configure notification sent by this server",
+      "name": "Notifications"
+    },
+    "playback": {
+      "description": "Edit your playback preferences for this device",
+      "name": "Playback"
+    },
+    "plugins": {
+      "description": "Add and configure new features for this server",
+      "name": "Plugins"
+    },
+    "scheduledTasks": {
+      "description": "Manage scheduled tasks running on this server",
+      "name": "Scheduled tasks"
+    },
+    "server": {
+      "description": "Configure this server's language and branding",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Control how subtitles are displayed on this device",
+      "name": "Subtitles"
+    },
+    "transcodingAndStreaming": {
+      "description": "Manage how this server handles transcoding and streaming to clients",
+      "name": "Transcoding & streaming"
+    },
+    "users": {
+      "description": "Manage users and their permissions",
+      "name": "Users"
+    }
+  },
+  "shows": "Shows",
+  "signIn": "Sign in",
+  "sortByType": "By {type}",
+  "sortTitle": "Sort title",
+  "specialFeatures": "Special Features",
+  "speed": "Speed",
+  "status": "Status",
+  "studios": "Studios",
+  "subtitles": "Subtitles",
+  "syncPlayGroups": "SyncPlay groups",
+  "syncingInProgress": "Syncing in progress",
+  "tagline": "Tagline",
+  "tags": "Tags",
+  "themeSong": "Theme Song",
+  "themeVideo": "Theme Video",
+  "tooltips": {
+    "changeLanguage": "Language",
+    "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode"
+  },
+  "trailer": "Trailer",
+  "type": "Type",
+  "unableGetPublicUsers": "Unable to get users",
+  "unableGetRelated": "Unable to get related items",
+  "unableGetServerConfiguration": "Unable to get server configuration",
+  "unableToRefreshLibrary": "Unable to refresh library",
+  "unableToToggleLike": "Unable to change the liked status of the element",
+  "unableToTogglePlayed": "Unable to update the watch status",
+  "undefined": "Undefined",
+  "unexpectedError": "Unexpected error",
+  "unhandledException": "Unhandled exception",
+  "unliked": "Unliked",
+  "unplayed": "Unplayed",
+  "upNext": "Up next",
+  "upNextName": "Up next: {upNextItemName}",
+  "username": "Username",
+  "validation": {
+    "bothPasswordsSame": "Both passwords must be the same",
+    "mustBeUrl": "This field must be a valid URL",
+    "required": "This field is required"
+  },
+  "version": "Version",
+  "video": "Video",
+  "videoTypes": "Video Types",
+  "viewDetails": "View details",
+  "vueClientVersion": "Client version",
+  "wizard": {
+    "administratorAccount": "Administrator account",
+    "allowRemoteAccess": "Allow remote access to the server",
+    "completeError": "Unable to complete startup wizard.",
+    "confirmPassword": "Confirm password",
+    "languageLocale": "Language and locale",
+    "languageSuccessfullySet": "Language successfully set.",
+    "metadataLanguagesSet": "Metadata languages set.",
+    "preferedLanguage": "Prefered language",
+    "preferredMetadataLanguage": "Preferred metadata language",
+    "remoteAccess": "Remote Access",
+    "remoteAccessSet": "Remote access set.",
+    "setAdminError": "Unable to create an admin account.",
+    "setLanguageError": "Unable to set client language.",
+    "setMetadataError": "Unable to set metadata languages.",
+    "setRemoteError": "Unable to set remote access settings.",
+    "setupWizard": "Setup wizard",
+    "userSuccessfullySet": "User successfully set."
+  },
+  "writer": "Writer",
+  "writing": "Writing",
+  "year": "Year",
+  "years": "Years",
+  "youMayAlsoLike": "You may also like"
+}

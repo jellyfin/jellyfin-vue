@@ -1,0 +1,406 @@
+{
+  "3DFormat": "3D formaat",
+  "NoMediaSourcesAvailable": "Geen mediabronnen beschikbaar",
+  "actor": "Acteur",
+  "actors": "Acteurs",
+  "addNewPerson": "Voeg een nieuw persoon toe",
+  "albums": "Albums",
+  "allLanguages": "Alle talen",
+  "alphabetically": "Alfabetisch",
+  "architecture": "Architectuur",
+  "artist": "Artiest",
+  "artists": "Artiesten",
+  "audio": "Geluid",
+  "badRequest": "Onjuist verzoek. Probeer het opnieuw",
+  "biography": "Biografie",
+  "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Door {artist}",
+  "cancel": "Annuleren",
+  "castAndCrew": "Acteurs & medewerkers",
+  "collections": "Collecties",
+  "communityRating": "Community-beoordeling",
+  "confirm": "Bevestig",
+  "connect": "Verbinden",
+  "continueListening": "Verder luisteren",
+  "continueWatching": "Verder kijken",
+  "criticRating": "Critici-beoordeling",
+  "customRating": "Aangepaste beoordeling",
+  "darkModeToggle": "Schakel tussen donkere modus",
+  "dateAdded": "Datum toegevoegd",
+  "details": "Details",
+  "directing": "Regisseren",
+  "director": "Regiseur",
+  "discNumber": "Schijf {discNumber}",
+  "dislikes": "Niet leuk",
+  "edit": "Bewerken",
+  "editMetadata": "Metadata wijzigen",
+  "editPerson": "Persoon wijzigen",
+  "endDate": "Einddatum",
+  "endsAt": "Eindigt om {time}",
+  "episodeNumber": "Aflevering {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Er is een fout opgetreden",
+    "messages": {
+      "errorCode": "Foutcode: {errorCode}",
+      "videoPlayerError": "Er is een onherstelbare fout opgetreden in de videospeler."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De laatst gebruikte instellingen worden gebruikt.",
+  "failedSettingDisplayPreferences": "Kan de weergavevoorkeuren niet bijwerken.",
+  "failedToRefreshItems": "Items vernieuwen mislukt",
+  "favorite": "Favoriet",
+  "features": "Kenmerken",
+  "filter": "Filter",
+  "filtersNotFound": "Kan filters niet laden",
+  "fullScreen": "Volledig scherm",
+  "general": "Algemeen",
+  "genres": "Genres",
+  "guestStar": "Gast Ster",
+  "headerExternalIds": "Externe ID's",
+  "headerPaths": "Pad",
+  "home": "Home",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Recent toegevoegd"
+    },
+    "welcome": {
+      "checkNewItems": "Kijk wat er nieuw is.",
+      "helloUser": "Hallo {userName}!",
+      "noItems": "Er zijn geen recent toegevoegde items om weer te geven."
+    }
+  },
+  "imageType": {
+    "art": "Kunst",
+    "backdrop": "Achtergrond",
+    "banner": "Vaandel",
+    "box": "Hoes",
+    "boxRear": "Hoes (achterkant)",
+    "disc": "Disk",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Primair",
+    "screenshot": "Schermafdruk",
+    "thumb": "Miniatuur"
+  },
+  "images": "Afbeeldingen",
+  "incorrectUsernameOrPassword": "Onjuiste gebruikersnaam en/of wachtwoord",
+  "item": {
+    "artist": {
+      "discography": "Discografie",
+      "information": "Informatie"
+    },
+    "cast": "Cast",
+    "composer": "Componist",
+    "crew": "Ploeg",
+    "person": {
+      "birth": "Geboren",
+      "birthPlace": "Geboorte plaats",
+      "death": "Overleden",
+      "person": "Persoon"
+    },
+    "tracklist": {
+      "title": "Titel"
+    }
+  },
+  "itemNotFound": "Item niet gevonden",
+  "jellyfinLogo": "Jellyfin logo",
+  "latestLibrary": "Nieuwste {libraryName}",
+  "libraries": "Bibliotheken",
+  "libraryEmpty": "Deze bibliotheek is leeg",
+  "libraryEmptyFilters": "Geen resultaten. Verwijder enkele filters om meer items te tonen",
+  "libraryNotFound": "Bibliotheek niet gevonden",
+  "libraryRefreshQueued": "Bibliotheek vernieuwen in wachtrij geplaatst",
+  "liked": "Vind ik leuk",
+  "likes": "Leuk",
+  "links": {
+    "helpTranslate": "Vertaal Jellyfin naar jouw taal",
+    "poweredByJellyfin": "Deze server draait Jellyfin",
+    "readTheDocumentation": "Lees de documentatie",
+    "reportAnIssue": "Meld een probleem met deze client"
+  },
+  "login": {
+    "addServer": "Server toevoegen",
+    "changeServer": "Verander de server",
+    "changeUser": "Verander gebruiker",
+    "connect": "Verbind",
+    "login": "Log in",
+    "loginAs": "Log in als {name}",
+    "manualLogin": "Handmatig inloggen",
+    "rememberMe": "Onthoud me",
+    "selectServer": "Selecteer server",
+    "selectUser": "Selecteer een gebruiker",
+    "serverAddress": "Server adres",
+    "serverAddressMustBeUrl": "Het serveradres moet een geldige URL zijn",
+    "serverAddressRequired": "Server adres is vereist",
+    "serverDashboard": "Server dashboard",
+    "serverNotFound": "Server niet gevonden",
+    "serverVersionTooLow": "De serverversie moet 10.7.0 of hoger zijn"
+  },
+  "logout": "Uitloggen",
+  "logsAndActivity": {
+    "activity": "Activiteit",
+    "failedGetActivity": "Kan de activiteit niet verkrijgen",
+    "failedGetLogs": "Kan de logboeken niet verkrijgen",
+    "logs": "Logboeken",
+    "noActivityFound": "Geen activiteiten gevonden",
+    "noLogsFound": "Geen logboeken gevonden"
+  },
+  "manualLogin": "Manuele login",
+  "menu": "Menu",
+  "metadata": {
+    "source": "Bron",
+    "sourceAll": "Alles",
+    "title": "Titel",
+    "type": "Type"
+  },
+  "metadataEditor": "Metagegevens bewerker",
+  "metadataNoResultsMatching": "Geen resultaten komen overeen met \"{search}\". Druk op enter om een nieuwe aan te maken.",
+  "more": "Meer",
+  "moreLikeArtist": "Meer zoals {artist}",
+  "moreLikeThis": "Meer zoals dit",
+  "movies": "Films",
+  "name": "Naam",
+  "networks": "Netwerken",
+  "nextUp": "Volgende",
+  "noAudioTrackSelected": "Geen audiotrack geselecteerd",
+  "noAudioTracksAvailable": "Geen audiotracks beschikbaar",
+  "noImagesFound": "Geen afbeeldingen gevonden",
+  "noNetworkConnection": "Geen netwerk verbinding",
+  "noResultsFound": "Er is hier niets",
+  "noSubtitleSelected": "Geen ondertiteling geselecteerd",
+  "noSubtitlesAvailable": "Geen ondertitels beschikbaar",
+  "noTracksAvailable": "Geen bestand beschikbaar",
+  "noVideoTrackSelected": "Geen videobestand geselecteerd",
+  "noVideoTracksAvailable": "Geen videobestand beschikbaar",
+  "numberTracks": "{number} tracks",
+  "operatingSystem": "Besturingssysteem",
+  "originalAspectRatio": "Originele aspect ratio",
+  "originalTitle": "Originele titel",
+  "overview": "Overzicht",
+  "parentalRating": "Kijkwijzer classificatie",
+  "parentalRatings": "Ouderlijke Toezicht",
+  "password": "Wachtwoord",
+  "people": "Personen",
+  "person": "Persoon",
+  "play": "Afspelen",
+  "playFromBeginning": "Speel vanaf het begin",
+  "playback": {
+    "addToQueue": "Toevoegen aan wachtrij",
+    "clearQueue": "Wis de wachtrij en stop het afspelen",
+    "playAll": "Speel alles",
+    "playNext": "Speel daarna",
+    "playbackSource": {
+      "item": "Afspelen vanaf {item}",
+      "shuffle": "Afspelen in willekeurige volgorde",
+      "shuffleItem": "{item} in willekeurige volgorde afspelen",
+      "unknown": "Afspelen vanuit de wachtrij"
+    },
+    "queueItems": "{items} nummers",
+    "saveAsPlaylist": "Bewaar wachtrij als een afspeellijst",
+    "shuffle": "willekeurige volgorde",
+    "shuffleAll": "Alles in willekeurige volgorde afspelen"
+  },
+  "played": "Afgespeeld",
+  "present": "Huidig",
+  "producer": "Producent",
+  "queue": "Wachtrij",
+  "rating": "Beoordeling",
+  "refreshLibrary": "Vernieuw bibliotheek",
+  "releaseDate": "Publicatiedatum",
+  "resumable": "Hervatbaar",
+  "resume": "Hervatten",
+  "role": "Rol",
+  "save": "Opslaan",
+  "saved": "Opgeslagen",
+  "search": "Zoeken",
+  "series": "Series",
+  "server": "Server",
+  "serverVersion": "Server versie",
+  "serverVersionTooLow": "De server versie moet 10.7.0 of hoger zijn",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Toegangstoken",
+      "addApiKey": "Voeg een API-sleutel toe",
+      "addNewKey": "Voeg een nieuwe API-sleutel toe",
+      "apiKeys": "API-sleutels",
+      "appName": "Applicatie naam",
+      "createKeyFailure": "Fout bij het maken van een nieuwe API-sleutel",
+      "createKeySuccess": "Met succes een nieuwe API-sleutel gemaakt",
+      "dateCreated": "Datum gecreeërd",
+      "description": "Voeg API-sleutels toe en trek ze in voor externe toegang tot uw server",
+      "refreshKeysFailure": "Fout bij vernieuwen van API-sleutels",
+      "revokeAll": "Trek alle API-sleutels in",
+      "revokeAllFailure": "Fout bij het intrekken van alle API-sleutels",
+      "revokeAllSuccess": "Alle API-sleutels zijn ingetrokken",
+      "revokeFailure": "Fout bij het intrekken van API-sleutel",
+      "revokeSuccess": "De API-sleutel is ingetrokken"
+    },
+    "devices": {
+      "appName": "Applicatie Naam",
+      "appVersion": "App versie",
+      "delete": "Verwijder",
+      "deleteAll": "Verwijder alles",
+      "deleteAllDevicesError": "Fout bij het verwijderen van alle apparaten",
+      "deleteAllDevicesSuccess": "Alle apparaten succesvol verwijderd",
+      "deleteDeviceError": "Fout bij het verwijderen van het apparaat",
+      "deleteDeviceSuccess": "Apparaat succesvol verwijderd",
+      "deviceName": "Apparaat naam",
+      "devices": "Apparaten",
+      "lastActive": "Laatst actief",
+      "noDevicesFound": "Geen apparaten gevonden",
+      "userName": "Gebruikersnaam"
+    },
+    "help": "Help",
+    "logsAndActivity": {
+      "activity": "Activiteit",
+      "failedGetActivity": "Fout bij het verkrijgen van de activiteit",
+      "failedGetLogs": "Fout bij het verkrijgen van de logboeken",
+      "logs": "Logboeken",
+      "noActivityFound": "Geen activiteiten gevonden",
+      "noLogsFound": "Geen logboeken gevonden"
+    },
+    "settings": "Instellingen"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Wijzig de informatie van jouw gebruiker",
+      "name": "Account"
+    },
+    "devices": {
+      "description": "Bekijk en beheer de apparaten die met jouw server verbonden zijn",
+      "name": "Apparaten"
+    },
+    "dlna": {
+      "description": "Configureer DLNA instellingen en profiel",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configureer uw startsecties en de indeling van het startscherm",
+      "name": "Startscherm"
+    },
+    "libraries": {
+      "description": "Beheer bibliotheken en de bijbehorende metadata",
+      "name": "Bibliotheken"
+    },
+    "liveTvAndDvr": {
+      "description": "Beheer tv-tuners, gids dataproviders en DVR-instellingen",
+      "name": "Live tv en DVR"
+    },
+    "logs": {
+      "description": "Lees en doorzoek serverlogboeken en gebruikersactiviteit",
+      "name": "Logboeken en activiteit"
+    },
+    "mediaPlayers": {
+      "description": "Configureer hoe de mediaspelers zich gedragen voor dit apparaat",
+      "name": "Mediaspelers"
+    },
+    "networking": {
+      "description": "Beheer de netwerkinstellingen van deze server",
+      "name": "Netwerken"
+    },
+    "notifications": {
+      "description": "Beheer en configureer meldingen die door deze server worden verzonden",
+      "name": "Meldingen"
+    },
+    "playback": {
+      "description": "Bewerk uw afspeelvoorkeuren voor dit apparaat",
+      "name": "Afspelen"
+    },
+    "plugins": {
+      "description": "Voeg nieuwe functies toe en configureer deze voor deze server",
+      "name": "Plug-ins"
+    },
+    "scheduledTasks": {
+      "description": "Beheer geplande taken die op deze server worden uitgevoerd",
+      "name": "Geplande taken"
+    },
+    "server": {
+      "description": "Configureer de taal en branding van deze server",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Bepaal hoe ondertitels worden weergegeven op dit apparaat",
+      "name": "Ondertitels"
+    },
+    "transcodingAndStreaming": {
+      "description": "Beheer hoe deze server transcodering en streamen naar cliënts afhandelt",
+      "name": "Transcoderen en streamen"
+    },
+    "users": {
+      "description": "Beheer gebruikers en hun machtigingen",
+      "name": "Gebruikers"
+    }
+  },
+  "shows": "Series",
+  "signIn": "Inloggen",
+  "sortByType": "Op {type}",
+  "sortTitle": "Sorteer de titel",
+  "specialFeatures": "Speciale Features",
+  "status": "Status",
+  "studios": "Studio's",
+  "subtitles": "Ondertiteling",
+  "syncingInProgress": "Bezig met synchronisatie",
+  "tagline": "Slogan",
+  "tags": "Labels",
+  "themeSong": "Thema Lied",
+  "themeVideo": "Thema Video",
+  "tooltips": {
+    "changeLanguage": "Taal",
+    "switchToDarkMode": "Schakel over naar de donkere modus",
+    "switchToLightMode": "Schakel over naar de lichtmodus"
+  },
+  "trailer": "Trailer",
+  "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
+  "type": "Type",
+  "unableGetPublicUsers": "Gebruikers laden is mislukt",
+  "unableGetRelated": "Kan gerelateerde items niet ophalen",
+  "unableGetServerConfiguration": "Serverconfiguratie laden is mislukt",
+  "unableToRefreshLibrary": "Bibliotheek kan niet worden vernieuwd",
+  "unableToToggleLike": "Kan de vind-ik-leuk-status van het element niet wijzigen",
+  "unableToTogglePlayed": "Kon niet de bekekenstatus wijzigen",
+  "undefined": "Ongedefinieerd",
+  "unexpectedError": "Onverwachte fout",
+  "unhandledException": "Onverwerkte error",
+  "unliked": "Leuk gevonden ongedaan",
+  "unplayed": "Onafgespeeld",
+  "upNext": "Volgende",
+  "upNextName": "Volgende: {upNextItemName}",
+  "username": "Gebruikersnaam",
+  "validation": {
+    "bothPasswordsSame": "Beide wachtwoorden moeten hetzelfde zijn",
+    "mustBeUrl": "Dit veld moet een geldige URL zijn",
+    "required": "Dit veld is vereist"
+  },
+  "version": "Versie",
+  "video": "Video",
+  "videoTypes": "Video Types",
+  "viewDetails": "Bekijk details",
+  "vueClientVersion": "Client versie",
+  "wizard": {
+    "administratorAccount": "Beheerdersaccount",
+    "allowRemoteAccess": "Sta externe toegang tot de server toe",
+    "completeError": "Kan opstartwizard niet voltooien.",
+    "confirmPassword": "Bevestig wachtwoord",
+    "languageLocale": "Taal en landinstelling",
+    "languageSuccessfullySet": "Taal succesvol ingesteld.",
+    "metadataLanguagesSet": "Metadata talen ingesteld.",
+    "preferedLanguage": "Voorkeurstaal",
+    "preferredMetadataLanguage": "Voorkeurstaal voor metadata",
+    "remoteAccess": "Toegang op afstand",
+    "remoteAccessSet": "Toegang op afstand ingesteld.",
+    "setAdminError": "Kan geen beheerdersaccount maken.",
+    "setLanguageError": "Kan cliënt taal niet instellen.",
+    "setMetadataError": "Kan metagegevenstalen niet instellen.",
+    "setRemoteError": "Kan instellingen voor externe toegang niet instellen.",
+    "setupWizard": "Installatie wizard",
+    "userSuccessfullySet": "Gebruiker succesvol ingesteld."
+  },
+  "writer": "Auteur",
+  "writing": "Schrijven",
+  "year": "Jaar",
+  "years": "Jaren",
+  "youMayAlsoLike": "Dit vind je misschien ook leuk"
+}

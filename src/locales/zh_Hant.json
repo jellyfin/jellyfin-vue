@@ -1,0 +1,209 @@
+{
+  "actor": "演員",
+  "actors": "演員",
+  "addNewPerson": "新增一位新人物",
+  "albums": "專輯",
+  "allLanguages": "所有語言",
+  "alphabetically": "按子母排序",
+  "artist": "藝人",
+  "artists": "藝人",
+  "buttons": {
+    "ok": "好"
+  },
+  "cancel": "取消",
+  "castAndCrew": "工作人員名單",
+  "collections": "收藏",
+  "confirm": "確定",
+  "connect": "連接",
+  "continueListening": "繼續聆聽",
+  "continueWatching": "繼續觀看",
+  "darkModeToggle": "切換深色模式",
+  "director": "導演",
+  "edit": "編輯",
+  "errors": {
+    "anErrorHappened": "發生錯誤",
+    "messages": {
+      "errorCode": "錯誤代碼：{errorCode}",
+      "videoPlayerError": "影片播放器出現了無法回復的錯誤。"
+    }
+  },
+  "fullScreen": "全螢幕",
+  "genres": "風格",
+  "guestStar": "特別演出",
+  "headerExternalIds": "外部編號",
+  "headerPaths": "路徑",
+  "home": "首頁",
+  "homeHeader": {
+    "welcome": {
+      "checkNewItems": "看看有甚麼新功能。",
+      "helloUser": "你好，{userName}！"
+    }
+  },
+  "imageType": {
+    "box": "盒子",
+    "menu": "選單",
+    "screenshot": "截圖"
+  },
+  "images": "圖片",
+  "incorrectUsernameOrPassword": "錯誤的使用者名稱或密碼",
+  "item": {
+    "artist": {
+      "information": "資訊"
+    },
+    "composer": "作曲家",
+    "crew": "工作人員",
+    "person": {
+      "birth": "生日",
+      "birthPlace": "出生地"
+    },
+    "tracklist": {
+      "title": "標題"
+    }
+  },
+  "itemNotFound": "找不到項目",
+  "links": {
+    "helpTranslate": "幫助我們把 Jellyfin 翻譯成您的語言"
+  },
+  "login": {
+    "addServer": "新增伺服器",
+    "changeServer": "更改伺服器",
+    "changeUser": "更改使用者",
+    "connect": "連接",
+    "login": "登入",
+    "manualLogin": "手動登入",
+    "rememberMe": "記住我",
+    "selectServer": "選擇伺服器",
+    "selectUser": "選擇使用者",
+    "serverAddress": "伺服器地址",
+    "serverDashboard": "伺服器控制台",
+    "serverNotFound": "找不到伺服器",
+    "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0"
+  },
+  "logout": "登出",
+  "logsAndActivity": {
+    "logs": "日誌",
+    "noLogsFound": "找不到日誌"
+  },
+  "manualLogin": "手動登入",
+  "menu": "選單",
+  "more": "更多",
+  "moreLikeArtist": "與 {artist} 類似",
+  "moreLikeThis": "更多相關內容",
+  "movies": "電影",
+  "name": "名稱",
+  "networks": "網路",
+  "nextUp": "接下來",
+  "noAudioTrackSelected": "未選擇音軌",
+  "noAudioTracksAvailable": "無可用音軌",
+  "noImagesFound": "找不到圖片",
+  "noNetworkConnection": "無網路",
+  "noResultsFound": "這裡空空如也",
+  "noSubtitleSelected": "未選擇字幕",
+  "noSubtitlesAvailable": "無可用字幕",
+  "noTracksAvailable": "無可用曲目",
+  "noVideoTrackSelected": "未選擇影片",
+  "noVideoTracksAvailable": "無可用影片",
+  "operatingSystem": "作業系統",
+  "originalTitle": "原始標題",
+  "password": "密碼",
+  "play": "播放",
+  "playFromBeginning": "從頭播放",
+  "playback": {
+    "addToQueue": "新增至隊列",
+    "clearQueue": "清除隊列並停止播放",
+    "playAll": "全部播放",
+    "playNext": "播放下一個",
+    "playbackSource": {
+      "shuffle": "隨機播放",
+      "unknown": "從隊列播放"
+    },
+    "shuffle": "隨機",
+    "shuffleAll": "全部隨機播放"
+  },
+  "played": "已播放",
+  "queue": "隊列",
+  "rating": "評價",
+  "refreshLibrary": "重新整理收藏庫",
+  "resumable": "可續播",
+  "resume": "繼續播放",
+  "save": "儲存",
+  "saved": "儲存成功",
+  "search": "搜尋",
+  "server": "伺服器",
+  "serverVersion": "伺服器版本",
+  "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0",
+  "settings": {
+    "apiKeys": {
+      "addApiKey": "新增 API 金鑰",
+      "addNewKey": "新增新的 API 金鑰",
+      "apiKeys": "API 金鑰",
+      "createKeyFailure": "建立 API 金鑰時發生錯誤",
+      "createKeySuccess": "成功建立 API 金鑰",
+      "dateCreated": "建立日期"
+    },
+    "devices": {
+      "delete": "移除",
+      "deleteAll": "全部移除",
+      "deleteAllDevicesError": "移除所有設備時發生錯誤",
+      "deleteAllDevicesSuccess": "所有設備已成功移除",
+      "deleteDeviceError": "移除設備時發生錯誤",
+      "deleteDeviceSuccess": "設備已成功移除",
+      "deviceName": "設備名稱",
+      "devices": "設備",
+      "lastActive": "上次活動",
+      "noDevicesFound": "找不到設備",
+      "userName": "使用者名稱"
+    },
+    "help": "幫助",
+    "logsAndActivity": {
+      "activity": "活動",
+      "logs": "日誌",
+      "noLogsFound": "找不到日誌"
+    },
+    "settings": "設定"
+  },
+  "settingsSections": {
+    "account": {
+      "name": "帳號"
+    },
+    "devices": {
+      "name": "設備"
+    },
+    "dlna": {
+      "name": "DLNA"
+    },
+    "home": {
+      "name": "主畫面"
+    },
+    "networking": {
+      "name": "網路"
+    },
+    "notifications": {
+      "name": "通知"
+    },
+    "playback": {
+      "name": "播放"
+    },
+    "plugins": {
+      "name": "擴充功能"
+    },
+    "server": {
+      "name": "伺服器"
+    },
+    "subtitles": {
+      "name": "字幕"
+    }
+  },
+  "signIn": "登入",
+  "status": "狀態",
+  "studios": "工作室",
+  "subtitles": "字幕",
+  "tags": "標籤",
+  "tooltips": {
+    "changeLanguage": "語言",
+    "switchToDarkMode": "切換成深色模式",
+    "switchToLightMode": "切換成淺色模式"
+  },
+  "trailer": "預告片",
+  "seasonEpisodeAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章"
+}

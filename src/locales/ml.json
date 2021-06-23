@@ -1,0 +1,408 @@
+{
+  "3DFormat": "3D ഫോർമാറ്റ്",
+  "NoMediaSourcesAvailable": "മീഡിയ ഉറവിടങ്ങളൊന്നും ലഭ്യമല്ല",
+  "actor": "നടൻ",
+  "actors": "അഭിനേതാക്കൾ",
+  "addNewPerson": "ഒരു പുതിയ വ്യക്തിയെ ചേർക്കുക",
+  "albums": "ആൽബങ്ങൾ",
+  "allLanguages": "എല്ലാ ഭാഷകളും",
+  "alphabetically": "അക്ഷരമാലാക്രമത്തിൽ",
+  "architecture": "വാസ്തുവിദ്യ",
+  "artist": "ആർട്ടിസ്റ്റ്",
+  "artists": "കലാകാരന്മാർ",
+  "audio": "ഓഡിയോ",
+  "badRequest": "മോശം അഭ്യർത്ഥന. വീണ്ടും ശ്രമിക്ക്",
+  "biography": "ജീവചരിത്രം",
+  "browserNotSupported": "ഈ ഫയൽ പ്ലേ ചെയ്യുന്നതിന് നിങ്ങളുടെ ബ്ര browser സറിനെ പിന്തുണയ്ക്കുന്നില്ല.",
+  "buttons": {
+    "ok": "ശരി"
+  },
+  "byArtist": "എഴുതിയത് {artist}",
+  "cancel": "റദ്ദാക്കുക",
+  "castAndCrew": "കാസ്റ്റ് & ക്രൂ",
+  "collections": "ശേഖരങ്ങൾ",
+  "communityRating": "കമ്മ്യൂണിറ്റി റേറ്റിംഗ്",
+  "confirm": "സ്ഥിരീകരിക്കുക",
+  "connect": "ബന്ധിപ്പിക്കുക",
+  "continueListening": "കേൾക്കുന്നത് തുടരുക",
+  "continueWatching": "കാണുന്നത് തുടരുക",
+  "criticRating": "വിമർശനാത്മക റേറ്റിംഗ്",
+  "customRating": "ഇഷ്‌ടാനുസൃത റേറ്റിംഗ്",
+  "darkModeToggle": "ഇരുണ്ട മോഡ് ടോഗിൾ ചെയ്യുക",
+  "dateAdded": "തീയതി ചേർത്തു",
+  "details": "വിശദാംശങ്ങൾ",
+  "directing": "സംവിധാനം",
+  "director": "ഡയറക്ടർ",
+  "discNumber": "ഡിസ്ക് {discNumber}",
+  "dislikes": "അനിഷ്‌ടങ്ങൾ",
+  "edit": "എഡിറ്റുചെയ്യുക",
+  "editMetadata": "മെറ്റാഡാറ്റ എഡിറ്റുചെയ്യുക",
+  "editPerson": "വ്യക്തിയെ എഡിറ്റുചെയ്യുക",
+  "endDate": "അവസാന ദിവസം",
+  "endsAt": "{time} അവസാനിക്കുന്നു",
+  "episodeNumber": "എപ്പിസോഡ് {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "ഒരു പിശക് സംഭവിച്ചു",
+    "messages": {
+      "errorCode": "പിശക് കോഡ്: {errorCode}",
+      "videoPlayerError": "വീഡിയോ പ്ലേയർ വീണ്ടെടുക്കാൻ കഴിയാത്ത ഒരു പിശക് നേരിട്ടു."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "പ്രദർശന മുൻ‌ഗണനകൾ നേടാനായില്ല. അവസാനമായി അറിയപ്പെടുന്ന ക്രമീകരണങ്ങൾ ഉപയോഗിക്കുന്നു.",
+  "failedSettingDisplayPreferences": "പ്രദർശന മുൻ‌ഗണനകൾ അപ്‌ഡേറ്റുചെയ്യാനായില്ല.",
+  "failedToRefreshItems": "ഇനങ്ങൾ പുതുക്കുന്നതിൽ പരാജയപ്പെട്ടു",
+  "favorite": "പ്രിയപ്പെട്ടവ",
+  "features": "സവിശേഷതകൾ",
+  "filter": "ഫിൽട്ടർ ചെയ്യുക",
+  "filtersNotFound": "ഫിൽ‌റ്ററുകൾ‌ ലോഡുചെയ്യാൻ‌ കഴിയില്ല",
+  "fullScreen": "പൂർണ്ണ സ്ക്രീൻ",
+  "general": "ജനറൽ",
+  "genres": "വിഭാഗങ്ങൾ",
+  "guestStar": "അതിഥി താരം",
+  "headerExternalIds": "ബാഹ്യ ഐഡികൾ",
+  "headerPaths": "പാത",
+  "home": "വീട്",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "സമീപകാലത്ത് ചേർത്തു"
+    },
+    "welcome": {
+      "checkNewItems": "പുതിയതെന്താണെന്ന് പരിശോധിക്കുക.",
+      "helloUser": "ഹലോ {userName}!",
+      "noItems": "കാണിക്കുന്നതിന് അടുത്തിടെ ചേർത്ത ഇനങ്ങളൊന്നുമില്ല."
+    }
+  },
+  "imageType": {
+    "art": "കല",
+    "backdrop": "പശ്ചാത്തലം",
+    "banner": "ബാനർ",
+    "box": "പെട്ടി",
+    "boxRear": "ബോക്സ് (പിൻ)",
+    "disc": "ഡിസ്ക്",
+    "logo": "ചിഹ്നം",
+    "menu": "മെനു",
+    "primary": "പ്രാഥമികം",
+    "screenshot": "സ്ക്രീൻഷോട്ട്",
+    "thumb": "ലഘുചിത്രം"
+  },
+  "images": "ചിത്രങ്ങൾ",
+  "incorrectUsernameOrPassword": "തെറ്റായ ഉപയോക്തൃ നാമം അല്ലെങ്കിൽ പാസ്വേഡ്",
+  "item": {
+    "artist": {
+      "appearsOn": "ദൃശ്യങ്ങൾ",
+      "discography": "ഡിസ്കോഗ്രഫി",
+      "information": "വിവരങ്ങൾ",
+      "videos": "വീഡിയോകൾ"
+    },
+    "cast": "അഭിനേതാക്കൾ",
+    "composer": "കമ്പോസർ",
+    "crew": "ക്രൂ",
+    "person": {
+      "birth": "ജനനം",
+      "birthPlace": "ജന്മസ്ഥലം",
+      "death": "മരണം",
+      "person": "വ്യക്തി"
+    },
+    "tracklist": {
+      "title": "ശീർഷകം"
+    }
+  },
+  "itemNotFound": "ഇനം കണ്ടെത്തിയില്ല",
+  "jellyfinLogo": "ജെല്ലിഫിൻ ലോഗോ",
+  "latestLibrary": "ഏറ്റവും പുതിയ {libraryName}",
+  "libraries": "ലൈബ്രറികൾ",
+  "libraryEmpty": "ഈ ലൈബ്രറി ശൂന്യമാണ്",
+  "libraryEmptyFilters": "പൊരുത്തമൊന്നും കണ്ടെത്തിയില്ല. കൂടുതൽ ഇനങ്ങൾ കാണിക്കുന്നതിന് ചില ഫിൽട്ടറുകൾ നീക്കംചെയ്യുക",
+  "libraryNotFound": "ലൈബ്രറി കണ്ടെത്തിയില്ല",
+  "libraryRefreshQueued": "ലൈബ്രറി പുതുക്കൽ ക്യൂവിലാണ്",
+  "liked": "ഇഷ്ടപ്പെട്ടു",
+  "likes": "ഇഷ്‌ടങ്ങൾ",
+  "links": {
+    "helpTranslate": "ജെല്ലിഫിൻ നിങ്ങളുടെ ഭാഷയിലേക്ക് വിവർത്തനം ചെയ്യുക",
+    "poweredByJellyfin": "ഈ സെർവർ പ്രവർത്തിക്കുന്നത് ജെല്ലിഫിൻ ആണ്",
+    "readTheDocumentation": "ഡോക്യുമെന്റേഷൻ വായിക്കുക",
+    "reportAnIssue": "ഈ ക്ലയന്റുമായി ഒരു പ്രശ്നം റിപ്പോർട്ട് ചെയ്യുക"
+  },
+  "login": {
+    "addServer": "സെർവർ ചേർക്കുക",
+    "changeServer": "സെർവർ മാറ്റുക",
+    "changeUser": "ഉപയോക്താവിനെ മാറ്റുക",
+    "connect": "ഘടിപ്പിക്കുക",
+    "login": "ലോഗിൻ",
+    "loginAs": "{name} ആയി പ്രവേശിക്കുക",
+    "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
+    "rememberMe": "എന്നെ ഓർക്കണം",
+    "selectServer": "സെർവർ തിരഞ്ഞെടുക്കുക",
+    "selectUser": "ഒരു ഉപയോക്താവിനെ തിരഞ്ഞെടുക്കുക",
+    "serverAddress": "സെർവർ വിലാസം",
+    "serverAddressMustBeUrl": "സെർവർ വിലാസം സാധുവായ ഒരു URL ആയിരിക്കണം",
+    "serverAddressRequired": "സെർവർ വിലാസം ആവശ്യമാണ്",
+    "serverDashboard": "സെർവർ ഡാഷ്‌ബോർഡ്",
+    "serverNotFound": "സെർവർ കണ്ടെത്തിയില്ല",
+    "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം"
+  },
+  "logout": "ലോഗൗട്ട്",
+  "logsAndActivity": {
+    "activity": "പ്രവർത്തനം",
+    "failedGetActivity": "പ്രവർത്തനം നേടാനായില്ല",
+    "failedGetLogs": "ലോഗുകൾ നേടാനായില്ല",
+    "logs": "ലോഗുകൾ",
+    "noActivityFound": "പ്രവർത്തനങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+    "noLogsFound": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
+  },
+  "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
+  "menu": "മെനു",
+  "metadata": {
+    "source": "ഉറവിടം",
+    "sourceAll": "എല്ലാം",
+    "title": "ശീർഷകം",
+    "type": "തരം"
+  },
+  "metadataEditor": "മെറ്റാഡാറ്റ എഡിറ്റർ",
+  "metadataNoResultsMatching": "\"{search}\" എന്നതുമായി പൊരുത്തപ്പെടുന്ന ഫലങ്ങളൊന്നുമില്ല. പുതിയതൊന്ന് സൃഷ്ടിക്കാൻ എന്റർ അമർത്തുക.",
+  "more": "കൂടുതൽ",
+  "moreLikeArtist": "{artist} പോലുള്ള കൂടുതൽ",
+  "moreLikeThis": "ഇതുപോലുള്ള കൂടുതൽ",
+  "movies": "സിനിമകൾ",
+  "name": "പേര്",
+  "networks": "നെറ്റ്‌വർക്കുകൾ",
+  "nextUp": "അടുത്തത്",
+  "noAudioTrackSelected": "ഓഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല",
+  "noAudioTracksAvailable": "ഓഡിയോ ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+  "noImagesFound": "ചിത്രങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+  "noNetworkConnection": "നെറ്റ്‌വർക്ക് കണക്ഷനൊന്നുമില്ല",
+  "noResultsFound": "ഇവിടെ ഒന്നുമില്ല",
+  "noSubtitleSelected": "ഉപശീർഷകമൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല",
+  "noSubtitlesAvailable": "സബ്‌ടൈറ്റിലുകളൊന്നും ലഭ്യമല്ല",
+  "noTracksAvailable": "ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+  "noVideoTrackSelected": "വീഡിയോ ട്രാക്കൊന്നും തിരഞ്ഞെടുത്തിട്ടില്ല",
+  "noVideoTracksAvailable": "വീഡിയോ ട്രാക്കുകളൊന്നും ലഭ്യമല്ല",
+  "numberTracks": "{number} ട്രാക്കുകൾ",
+  "operatingSystem": "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം",
+  "originalAspectRatio": "യഥാർത്ഥ വീക്ഷണാനുപാതം",
+  "originalTitle": "യഥാർത്ഥ ശീർഷകം",
+  "overview": "അവലോകനം",
+  "parentalRating": "രക്ഷാകർതൃ റേറ്റിംഗ്",
+  "parentalRatings": "രക്ഷാകർതൃ റേറ്റിംഗുകൾ",
+  "password": "Password",
+  "people": "ആളുകൾ",
+  "person": "വ്യക്തി",
+  "play": "പ്ലേ ചെയ്യുക",
+  "playFromBeginning": "തുടക്കം മുതൽ കളിക്കുക",
+  "playback": {
+    "addToQueue": "ക്യൂവിലേക്ക് ചേർക്കുക",
+    "clearQueue": "ക്യൂ മായ്‌ച്ച് പ്ലേബാക്ക് നിർത്തുക",
+    "playAll": "എല്ലാം പ്രവർത്തിപ്പിക്കുക",
+    "playNext": "അടുത്തത് കളിക്കുക",
+    "playbackSource": {
+      "item": "{item} എന്നതിൽ നിന്ന് പ്ലേ ചെയ്യുന്നു",
+      "shuffle": "ഷഫിളിൽ കളിക്കുന്നു",
+      "shuffleItem": "ഷഫിൽ {item} പ്ലേ ചെയ്യുന്നു",
+      "unknown": "ക്യൂവിൽ നിന്ന് കളിക്കുന്നു"
+    },
+    "queueItems": "{items} ട്രാക്കുകൾ",
+    "saveAsPlaylist": "ക്യൂ ഒരു പ്ലേലിസ്റ്റായി സംരക്ഷിക്കുക",
+    "shuffle": "ഷഫിൾ ചെയ്യുക",
+    "shuffleAll": "എല്ലാം ഇളക്കുക"
+  },
+  "played": "കളിച്ചു",
+  "present": "വർത്തമാന",
+  "producer": "നിർമ്മാതാവ്",
+  "queue": "ക്യൂ",
+  "rating": "റേറ്റിംഗ്",
+  "refreshLibrary": "ലൈബ്രറി പുതുക്കുക",
+  "releaseDate": "റിലീസ് തീയതി",
+  "resumable": "പുനരാരംഭിക്കാൻ കഴിയും",
+  "resume": "വീണ്ടും ആരംഭിക്കുക",
+  "role": "പങ്ക്",
+  "save": "രക്ഷിക്കും",
+  "saved": "സംരക്ഷിച്ചു",
+  "search": "തിരയുക",
+  "series": "സീരീസ്",
+  "server": "സെർവർ",
+  "serverVersion": "സെർവർ പതിപ്പ്",
+  "serverVersionTooLow": "സെർവർ പതിപ്പ് 10.7.0 അല്ലെങ്കിൽ ഉയർന്നതായിരിക്കണം",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "ടോക്കൺ ആക്സസ് ചെയ്യുക",
+      "addApiKey": "ഒരു API കീ ചേർക്കുക",
+      "addNewKey": "പുതിയ API കീ ചേർക്കുക",
+      "apiKeys": "API കീകൾ",
+      "appName": "അപ്ലിക്കേഷന്റെ പേര്",
+      "createKeyFailure": "ഒരു പുതിയ API കീ സൃഷ്‌ടിക്കുന്നതിൽ പിശക്",
+      "createKeySuccess": "ഒരു പുതിയ API കീ വിജയകരമായി സൃഷ്‌ടിച്ചു",
+      "dateCreated": "തീയതി സൃഷ്ടിച്ചു",
+      "description": "നിങ്ങളുടെ സെർവറിലേക്കുള്ള ബാഹ്യ ആക്‌സസ്സിനായി API കീകൾ ചേർത്ത് അസാധുവാക്കുക",
+      "refreshKeysFailure": "API കീകൾ പുതുക്കുന്നതിൽ പിശക്",
+      "revokeAll": "എല്ലാ API കീകളും അസാധുവാക്കുക",
+      "revokeAllFailure": "എല്ലാ API കീകളും അസാധുവാക്കുന്നതിൽ പിശക്",
+      "revokeAllSuccess": "എല്ലാ API കീകളും വിജയകരമായി റദ്ദാക്കി",
+      "revokeFailure": "API കീ അസാധുവാക്കുന്നതിൽ പിശക്",
+      "revokeSuccess": "API കീ വിജയകരമായി റദ്ദാക്കി"
+    },
+    "devices": {
+      "appName": "അപ്ലിക്കേഷന്റെ പേര്",
+      "appVersion": "അപ്ലിക്കേഷൻ പതിപ്പ്",
+      "delete": "ഇല്ലാതാക്കുക",
+      "deleteAll": "എല്ലാം കളയുക",
+      "deleteAllDevicesError": "എല്ലാ ഉപകരണങ്ങളും ഇല്ലാതാക്കുന്നതിൽ പിശക്",
+      "deleteAllDevicesSuccess": "എല്ലാ ഉപകരണങ്ങളും വിജയകരമായി ഇല്ലാതാക്കി",
+      "deleteDeviceError": "ഉപകരണം ഇല്ലാതാക്കുന്നതിൽ പിശക്",
+      "deleteDeviceSuccess": "ഉപകരണം വിജയകരമായി ഇല്ലാതാക്കി",
+      "deviceName": "ഉപകരണത്തിന്റെ പേര്",
+      "devices": "ഉപകരണങ്ങൾ",
+      "lastActive": "അവസാനം സജീവമാണ്",
+      "noDevicesFound": "ഉപകരണങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+      "userName": "ഉപയോക്തൃനാമം"
+    },
+    "help": "സഹായം",
+    "logsAndActivity": {
+      "activity": "പ്രവർത്തനം",
+      "failedGetActivity": "പ്രവർത്തനം നേടാനായില്ല",
+      "failedGetLogs": "ലോഗുകൾ നേടാനായില്ല",
+      "logs": "ലോഗുകൾ",
+      "noActivityFound": "പ്രവർത്തനങ്ങളൊന്നും കണ്ടെത്തിയില്ല",
+      "noLogsFound": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
+    },
+    "settings": "ക്രമീകരണങ്ങൾ"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "നിങ്ങളുടെ ഉപയോക്താവിന്റെ വിവരങ്ങൾ എഡിറ്റുചെയ്യുക",
+      "name": "അക്കൗണ്ട്"
+    },
+    "devices": {
+      "description": "നിങ്ങളുടെ സെർവറിലേക്ക് കണക്റ്റുചെയ്‌തിരിക്കുന്ന ഉപകരണങ്ങൾ കാണുക, നിയന്ത്രിക്കുക",
+      "name": "ഉപകരണങ്ങൾ"
+    },
+    "dlna": {
+      "description": "DLNA ക്രമീകരണങ്ങളും പ്രൊഫൈലും ക്രമീകരിക്കുക",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "നിങ്ങളുടെ ഹോം വിഭാഗങ്ങളും ഹോം സ്‌ക്രീൻ ലേ .ട്ടും ക്രമീകരിക്കുക",
+      "name": "ഹോം സ്‌ക്രീൻ"
+    },
+    "libraries": {
+      "description": "ലൈബ്രറികളും അവയുടെ മെറ്റാഡാറ്റയും നിയന്ത്രിക്കുക",
+      "name": "ലൈബ്രറികൾ"
+    },
+    "liveTvAndDvr": {
+      "description": "ടിവി ട്യൂണറുകൾ, ഗൈഡ് ഡാറ്റ ദാതാക്കൾ, ഡിവിആർ ക്രമീകരണങ്ങൾ എന്നിവ നിയന്ത്രിക്കുക",
+      "name": "തത്സമയ ടിവിയും ഡിവിആറും"
+    },
+    "logs": {
+      "description": "സെർവർ ലോഗുകളും ഉപയോക്തൃ പ്രവർത്തനവും വായിച്ച് തിരയുക",
+      "name": "ലോഗുകളും പ്രവർത്തനവും"
+    },
+    "mediaPlayers": {
+      "description": "ഈ ഉപകരണത്തിനായി മീഡിയ പ്ലെയറുകൾ എങ്ങനെ പ്രവർത്തിക്കുന്നുവെന്ന് കോൺഫിഗർ ചെയ്യുക",
+      "name": "മീഡിയ പ്ലെയറുകൾ"
+    },
+    "networking": {
+      "description": "ഈ സെർവറിന്റെ നെറ്റ്‌വർക്ക് ക്രമീകരണങ്ങൾ നിയന്ത്രിക്കുക",
+      "name": "നെറ്റ്‌വർക്കിംഗ്"
+    },
+    "notifications": {
+      "description": "ഈ സെർവർ അയച്ച അറിയിപ്പ് നിയന്ത്രിച്ച് ക്രമീകരിക്കുക",
+      "name": "അറിയിപ്പുകൾ"
+    },
+    "playback": {
+      "description": "ഈ ഉപകരണത്തിനായി നിങ്ങളുടെ പ്ലേബാക്ക് മുൻഗണനകൾ എഡിറ്റുചെയ്യുക",
+      "name": "പ്ലേബാക്ക്"
+    },
+    "plugins": {
+      "description": "ഈ സെർവറിനായി പുതിയ സവിശേഷതകൾ ചേർത്ത് ക്രമീകരിക്കുക",
+      "name": "പ്ലഗിനുകൾ"
+    },
+    "scheduledTasks": {
+      "description": "ഈ സെർവറിൽ പ്രവർത്തിക്കുന്ന ഷെഡ്യൂൾ ചെയ്ത ടാസ്‌ക്കുകൾ നിയന്ത്രിക്കുക",
+      "name": "ഷെഡ്യൂൾ ചെയ്ത ജോലികൾ"
+    },
+    "server": {
+      "description": "ഈ സെർവറിന്റെ ഭാഷയും ബ്രാൻഡിംഗും കോൺഫിഗർ ചെയ്യുക",
+      "name": "സെർവർ"
+    },
+    "subtitles": {
+      "description": "ഈ ഉപകരണത്തിൽ സബ്ടൈറ്റിലുകൾ എങ്ങനെ ദൃശ്യമാകുമെന്ന് നിയന്ത്രിക്കുക",
+      "name": "സബ്‌ടൈറ്റിലുകൾ"
+    },
+    "transcodingAndStreaming": {
+      "description": "ക്ലയന്റുകളിലേക്ക് ട്രാൻസ്കോഡിംഗും സ്ട്രീമിംഗും ഈ സെർവർ എങ്ങനെ കൈകാര്യം ചെയ്യുന്നുവെന്ന് നിയന്ത്രിക്കുക",
+      "name": "ട്രാൻസ്കോഡിംഗും സ്ട്രീമിംഗും"
+    },
+    "users": {
+      "description": "ഉപയോക്താക്കളെയും അവരുടെ അനുമതികളെയും നിയന്ത്രിക്കുക",
+      "name": "ഉപയോക്താക്കൾ"
+    }
+  },
+  "shows": "ഷോകൾ",
+  "signIn": "സൈൻ ഇൻ",
+  "sortByType": "{type} പ്രകാരം",
+  "sortTitle": "ശീർഷകം അടുക്കുക",
+  "specialFeatures": "പ്രത്യേകതകള്",
+  "status": "പദവി",
+  "studios": "സ്റ്റുഡിയോകൾ",
+  "subtitles": "സബ്‌ടൈറ്റിലുകൾ",
+  "syncingInProgress": "സമന്വയിപ്പിക്കൽ പുരോഗമിക്കുന്നു",
+  "tagline": "ടാഗ്‌ലൈൻ",
+  "tags": "ടാഗുകൾ",
+  "themeSong": "തീം സോംഗ്",
+  "themeVideo": "തീം വീഡിയോ",
+  "tooltips": {
+    "changeLanguage": "ഭാഷ",
+    "switchToDarkMode": "ഇരുണ്ട മോഡിലേക്ക് മാറുക",
+    "switchToLightMode": "ലൈറ്റ് മോഡിലേക്ക് മാറുക"
+  },
+  "trailer": "ട്രെയിലർ",
+  "seasonEpisodeAbbrev": "S {seasonNumber} E {episodeNumber}",
+  "type": "തരം",
+  "unableGetPublicUsers": "ഉപയോക്താക്കളെ നേടാനായില്ല",
+  "unableGetRelated": "അനുബന്ധ ഇനങ്ങൾ നേടാനായില്ല",
+  "unableGetServerConfiguration": "സെർവർ കോൺഫിഗറേഷൻ നേടാനായില്ല",
+  "unableToRefreshLibrary": "ലൈബ്രറി പുതുക്കാൻ കഴിയില്ല",
+  "unableToToggleLike": "ഇഷ്‌ടപ്പെട്ട നില മാറ്റാൻ കഴിയില്ല",
+  "unableToTogglePlayed": "കണ്ട നില അപ്‌ഡേറ്റുചെയ്യാനായില്ല",
+  "undefined": "നിർവചിച്ചിട്ടില്ല",
+  "unexpectedError": "അപ്രതീക്ഷിത പിശക്",
+  "unhandledException": "കൈകാര്യം ചെയ്യാത്ത ഒഴിവാക്കൽ",
+  "unliked": "ഇഷ്ടപ്പെട്ടില്ല",
+  "unplayed": "പ്ലേ ചെയ്തിട്ടില്ല",
+  "upNext": "അടുത്തത്",
+  "upNextName": "അടുത്തത്: {upNextItemName}",
+  "username": "ഉപയോക്തൃനാമം",
+  "validation": {
+    "bothPasswordsSame": "രണ്ട് പാസ്‌വേഡുകളും ഒന്നായിരിക്കണം",
+    "mustBeUrl": "ഈ ഫീൽഡ് സാധുവായ ഒരു URL ആയിരിക്കണം",
+    "required": "ഈ ഫീൽഡ് പൂരിപ്പിക്കേണ്ടതുണ്ട്"
+  },
+  "version": "പതിപ്പ്",
+  "video": "വീഡിയോ",
+  "videoTypes": "വീഡിയോ തരങ്ങൾ",
+  "viewDetails": "വിശദാംശങ്ങൾ കാണുക",
+  "vueClientVersion": "ക്ലയൻറ് പതിപ്പ്",
+  "wizard": {
+    "administratorAccount": "അഡ്മിനിസ്ട്രേറ്റർ അക്കൗണ്ട്",
+    "allowRemoteAccess": "സെർവറിലേക്ക് വിദൂര ആക്സസ് അനുവദിക്കുക",
+    "completeError": "സ്റ്റാർട്ടപ്പ് വിസാർഡ് പൂർത്തിയാക്കാനായില്ല.",
+    "confirmPassword": "പാസ്വേഡ് സ്ഥിരീകരിക്കുക",
+    "languageLocale": "ഭാഷയും സ്ഥാനവും",
+    "languageSuccessfullySet": "ഭാഷ വിജയകരമായി സജ്ജമാക്കി.",
+    "metadataLanguagesSet": "മെറ്റാഡാറ്റ ഭാഷകൾ സജ്ജമാക്കി.",
+    "preferedLanguage": "ഇഷ്ടപ്പെട്ട ഭാഷ",
+    "preferredMetadataLanguage": "തിരഞ്ഞെടുത്ത മെറ്റാഡാറ്റ ഭാഷ",
+    "remoteAccess": "വിദൂര ആക്സസ്",
+    "remoteAccessSet": "വിദൂര ആക്സസ് സെറ്റ്.",
+    "setAdminError": "ഒരു അഡ്‌മിൻ അക്കൗണ്ട് സൃഷ്‌ടിക്കാനായില്ല.",
+    "setLanguageError": "ക്ലയന്റ് ഭാഷ സജ്ജമാക്കാൻ കഴിയില്ല.",
+    "setMetadataError": "മെറ്റാഡാറ്റ ഭാഷകൾ സജ്ജമാക്കാൻ കഴിയില്ല.",
+    "setRemoteError": "വിദൂര ആക്സസ് ക്രമീകരണങ്ങൾ സജ്ജമാക്കാൻ കഴിയില്ല.",
+    "setupWizard": "സെറ്റപ്പ് വിസാർഡ്",
+    "userSuccessfullySet": "ഉപയോക്താവ് വിജയകരമായി സജ്ജമാക്കി."
+  },
+  "writer": "എഴുത്തുകാരൻ",
+  "writing": "എഴുത്തു",
+  "year": "വർഷം",
+  "years": "വർഷങ്ങൾ",
+  "youMayAlsoLike": "നിങ്ങൾക്ക് ഇതും ഇഷ്ടപ്പെടുമായിരിക്കും"
+}

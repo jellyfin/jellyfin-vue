@@ -1,0 +1,288 @@
+{
+  "3DFormat": "formato 3D",
+  "NoMediaSourcesAvailable": "Nessuna sorgente disponibile",
+  "actor": "Attore",
+  "actors": "Attori",
+  "addNewPerson": "Aggiungi una altra persona",
+  "albums": "Albums",
+  "allLanguages": "Tutte le lingue",
+  "alphabetically": "Alfabeticamente",
+  "architecture": "Architettura",
+  "artist": "Artista",
+  "artists": "Artisti",
+  "audio": "Audio",
+  "badRequest": "Errore nella richiesta. Riprova",
+  "biography": "Biografia",
+  "browserNotSupported": "La riproduzione non è supportata per il tuo browser.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Da {artist}",
+  "cancel": "Annulla",
+  "castAndCrew": "Cast",
+  "collections": "Collezioni",
+  "communityRating": "Valutazione della community",
+  "confirm": "Conferma",
+  "connect": "Connetti",
+  "continueListening": "Continua ad ascoltare",
+  "continueWatching": "Continua a guardare",
+  "criticRating": "Valutazione dei critici",
+  "customRating": "Valutazione personale",
+  "darkModeToggle": "Attiva/Disattiva Modalità Scura",
+  "dateAdded": "Data di aggiunta",
+  "details": "Dettagli",
+  "directing": "Direzione",
+  "director": "Direttore",
+  "discNumber": "Disco {discNumber}",
+  "dislikes": "Non mi piace",
+  "edit": "Modifica",
+  "editMetadata": "Modifica i metadata",
+  "editPerson": "Modifica persona",
+  "endDate": "Data di fine",
+  "endsAt": "Finisce alle {time}",
+  "episodeNumber": "Episodio {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Si è verificato un errore",
+    "messages": {
+      "errorCode": "Codice errore: {errorCode}",
+      "videoPlayerError": "Si è verificato un errore fatale nel video player."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Impossibile ottenere le configurazioni di display. Si utilizzeranno le ultime configurazioni salvate",
+  "failedSettingDisplayPreferences": "Impossibile aggiornare le impostazioni del display.",
+  "failedToRefreshItems": "Refresh fallito",
+  "favorite": "Preferiti",
+  "features": "Features",
+  "filter": "Filtri",
+  "filtersNotFound": "Impossibile caricare i filtri",
+  "fullScreen": "Schermo intero",
+  "general": "Generali",
+  "genres": "Generi",
+  "guestStar": "Ospite d'onore",
+  "headerExternalIds": "ID Esterni",
+  "headerPaths": "Percorso",
+  "home": "Home",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Aggiunti di recente"
+    },
+    "welcome": {
+      "checkNewItems": "Dai un occhiata a che c'è di nuovo.",
+      "helloUser": "Ciao {userName}!",
+      "noItems": "Non è stato aggiunto nulla di recente."
+    }
+  },
+  "imageType": {
+    "art": "Arte",
+    "backdrop": "Sfondo",
+    "banner": "Banner",
+    "disc": "Disco",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Primario",
+    "screenshot": "Cattura Schermo",
+    "thumb": "Thumb"
+  },
+  "images": "Immagini",
+  "incorrectUsernameOrPassword": "Utente o password errati",
+  "item": {
+    "artist": {
+      "discography": "Discografia",
+      "information": "Informationi"
+    },
+    "cast": "Cast",
+    "composer": "Compositore",
+    "person": {
+      "birth": "Nascita",
+      "birthPlace": "Luogo di nascita",
+      "death": "Morte",
+      "person": "Persona"
+    },
+    "tracklist": {
+      "title": "Titolo"
+    }
+  },
+  "itemNotFound": "Oggetto non trovato",
+  "jellyfinLogo": "Logo di Jellyfin",
+  "latestLibrary": "Più recente {libraryName}",
+  "libraries": "Librerie",
+  "libraryEmpty": "Questa libreria è vuota",
+  "libraryEmptyFilters": "Nessuna corrispondenza. Rimuovi qualche filtro per vedere più corrispondenze",
+  "libraryNotFound": "Libreria non trovata",
+  "libraryRefreshQueued": "Aggiornamento della libreria in coda",
+  "liked": "Piaciuti",
+  "likes": "Mi piace",
+  "links": {
+    "helpTranslate": "Traduci Jellyfin nella tua lingua",
+    "poweredByJellyfin": "Questo server funziona grazie a Jellyfin",
+    "readTheDocumentation": "Leggi la documentazione",
+    "reportAnIssue": "Segnala un problema con questo client"
+  },
+  "login": {
+    "addServer": "Aggiungi server",
+    "changeServer": "Cambia server",
+    "changeUser": "Cambia utente",
+    "connect": "Connetti",
+    "login": "Accedi",
+    "loginAs": "Accedi come {name}",
+    "manualLogin": "Accesso manuale",
+    "rememberMe": "Ricordami",
+    "selectServer": "Scegli un server",
+    "selectUser": "Scegli un utente",
+    "serverAddress": "Indirizzo del server",
+    "serverAddressMustBeUrl": "L'indirizzo del server deve essere un URL valido",
+    "serverAddressRequired": "L'indirizzo del server e obbligatorio",
+    "serverDashboard": "Pannello di controllo del server",
+    "serverNotFound": "Impossibile trovare il server",
+    "serverVersionTooLow": "La versione del server deve essere 10.7.0 o più recente"
+  },
+  "logout": "Esci",
+  "logsAndActivity": {
+    "activity": "Attività",
+    "failedGetActivity": "Impossibile ottenere le attività",
+    "failedGetLogs": "Impossibile ottenere i log",
+    "logs": "Logs",
+    "noActivityFound": "Nessuna attività trovata",
+    "noLogsFound": "Nessun log trovato"
+  },
+  "manualLogin": "Accesso Manuale",
+  "menu": "Menu",
+  "metadataEditor": "Modificatore dei Metadati",
+  "metadataNoResultsMatching": "La ricerca per \"{search}\" non ha dato risultati. Premere Enter per crearne una nuova.",
+  "more": "Altro",
+  "moreLikeArtist": "Altri come {artist}",
+  "moreLikeThis": "Altri come questo",
+  "movies": "Films",
+  "name": "Nome",
+  "networks": "Reti",
+  "nextUp": "Prossimo",
+  "noAudioTrackSelected": "Nessuna traccia audio selezionata",
+  "noAudioTracksAvailable": "Nessuna traccia audio disponibile",
+  "noImagesFound": "Nessuna immagine trovata",
+  "noNetworkConnection": "Nessuna connessione di rete",
+  "noResultsFound": "Non c'è nulla qui",
+  "noSubtitleSelected": "Sottotitoli non selezionati",
+  "noSubtitlesAvailable": "Sottotitoli non disponibili",
+  "noTracksAvailable": "Nessuna traccia disponibile",
+  "noVideoTrackSelected": "Nessuna traccia video disponibile",
+  "noVideoTracksAvailable": "Nessuna traccia video disponibile",
+  "numberTracks": "{number} traccie",
+  "operatingSystem": "Sistema operativo",
+  "originalAspectRatio": "Proporzioni originali",
+  "originalTitle": "Titolo originale",
+  "overview": "Panoramica",
+  "parentalRating": "Valutazione dei genitori",
+  "parentalRatings": "Valutazioni dei genitori",
+  "password": "Password",
+  "people": "Persone",
+  "person": "Persona",
+  "play": "Riproduci",
+  "playFromBeginning": "Riproduci dall'inizio",
+  "playback": {
+    "addToQueue": "Aggiungi alla coda",
+    "clearQueue": "Svuota la coda e ferma la riproduzione",
+    "playAll": "Riproduci tutto",
+    "playNext": "Riproduci il prossimo",
+    "playbackSource": {
+      "item": "Riproduzione da {item}",
+      "shuffle": "Riproducendo in modo casuale",
+      "shuffleItem": "Riproducendo {item} in modo casuale",
+      "unknown": "Riproducendo dalla coda"
+    },
+    "queueItems": "{items} tracce",
+    "saveAsPlaylist": "Salva coda come playlist",
+    "shuffle": "Riproduzione casuale",
+    "shuffleAll": "Riproduci tutto casualmente"
+  },
+  "played": "Ascoltato",
+  "present": "Presente",
+  "producer": "Produttore",
+  "queue": "Coda",
+  "rating": "Valutazione",
+  "refreshLibrary": "Aggiorna Libreria",
+  "releaseDate": "Data di rilascio",
+  "resumable": "Riprendibili",
+  "resume": "Riprendi",
+  "role": "Ruolo",
+  "save": "Salva",
+  "saved": "Salvati",
+  "search": "Cerca",
+  "series": "Serie",
+  "server": "Server",
+  "serverVersion": "Versione del server",
+  "serverVersionTooLow": "Versione del server deve essere 10.7.0 o più recente",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Token di accesso",
+      "addApiKey": "Aggiungi una chiave API",
+      "addNewKey": "Aggiungi una nuova chiave API",
+      "apiKeys": "Chiavi API",
+      "appName": "Nome dell'applicazione",
+      "createKeyFailure": "Errore durante la creazione della nuova chiave API",
+      "createKeySuccess": "Creazione chiave API avvenuta",
+      "dateCreated": "Data di creazione",
+      "description": "Aggiungi e revoca chiavi API per accesso esterno al tuo server",
+      "refreshKeysFailure": "Errore durante il refresh delle chiavi API",
+      "revokeAll": "Revoca tutte le chiavi API",
+      "revokeAllFailure": "Errore durante la revoca di tutte le chiavi API",
+      "revokeAllSuccess": "La revoca di tutte le chiavi API ha avuto successo",
+      "revokeFailure": "Errore durante la revoca della chiave API",
+      "revokeSuccess": "Chiave API revocata con successo"
+    },
+    "devices": {
+      "appName": "Nome Applicazione",
+      "appVersion": "Versione Applicazione",
+      "delete": "Cancella",
+      "deleteAll": "Cancella tutto",
+      "deleteAllDevicesError": "Errore durante l'eliminazione di tutti i dispositivi",
+      "deleteAllDevicesSuccess": "Tutti i dispositivi rimossi con successo",
+      "deleteDeviceError": "Errore durante l'eliminazione del dispositivo",
+      "deleteDeviceSuccess": "Dispositivo eliminato con successo",
+      "deviceName": "Nome Dispositivo",
+      "devices": "Dispositivi",
+      "lastActive": "Ultima attività",
+      "noDevicesFound": "Nessun dispositivo trovato",
+      "userName": "Nome utente"
+    },
+    "help": "Aiuto",
+    "logsAndActivity": {
+      "activity": "Attività",
+      "failedGetActivity": "Impossibile ottenere le attività",
+      "failedGetLogs": "Impossibile ottenere i log",
+      "logs": "Logs",
+      "noActivityFound": "Nessuna attività trovata",
+      "noLogsFound": "Nessun log trovato"
+    },
+    "settings": "Impostazioni"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Modifica le tue informazioni utente",
+      "name": "Utente"
+    },
+    "devices": {
+      "description": "Visualizza e gestisci i dispositivi connessi al tuo server",
+      "name": "Dispositivi"
+    },
+    "dlna": {
+      "description": "Configura impostazioni e profili DLNA",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configura la tua schermata Home",
+      "name": "Schermata Home"
+    },
+    "libraries": {
+      "description": "Gestisci Librerie e i Metadati",
+      "name": "Librerie"
+    },
+    "liveTvAndDvr": {
+      "description": "Gestisci impostazioni di tuner TV, provider di dati guida e DVR",
+      "name": "Live TV & DVR"
+    },
+    "logs": {
+      "description": "Leggi e cerca tra i log e le attività utente",
+      "name": "Logs & Attività"
+    }
+  }
+}

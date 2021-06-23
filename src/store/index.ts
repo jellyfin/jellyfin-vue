@@ -1,6 +1,13 @@
-import { createStore, createLogger } from 'vuex';
-import Vue from 'vue';
+import {
+  createStore,
+  createLogger,
+  useStore as baseUseStore,
+  Store
+} from 'vuex';
+import { InjectionKey } from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
+// Vuex modules
+import page, { PageState } from './modules/page';
 // Vuex plugins
 import { websocketPlugin } from './plugins/websocketPlugin';
 import { playbackReportingPlugin } from './plugins/playbackReportingPlugin';
@@ -39,6 +46,22 @@ export const state: RootState = {
     reconnectError: false
   }
 };
+
+export interface AppState extends RootState {
+  // auth: AuthState;
+  // backdrop: BackdropState;
+  // clientSettings: ClientSettingsState;
+  // deviceProfile: DeviceState;
+  // homeSection: HomeSectionState;
+  // items: ItemsState;
+  page: PageState;
+  // playbackManager: PlaybackManagerState;
+  // servers: ServerState;
+  // snackBar: SnackbarState;
+  // tvShows: TvShowsState;
+  // user: UserState;
+  // userViews: UserViewsState;
+}
 
 export const mutations: MutationTree<RootState> = {
   SOCKET_ONOPEN(state: RootState, event: Event) {
@@ -96,13 +119,19 @@ export const actions: ActionTree<RootState, RootState> = {
   }
 };
 
-const store = createStore({
+export const key: InjectionKey<Store<AppState>> = Symbol();
+
+export const store = createStore({
   state,
   mutations,
   actions,
-  modules: {},
+  modules: {
+    page
+  },
   strict: true,
   plugins: plugins
 });
 
-export default store;
+export function useStore(): Store<AppState> {
+  return baseUseStore(key);
+}

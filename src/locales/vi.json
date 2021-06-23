@@ -1,0 +1,407 @@
+{
+  "3DFormat": "Định dạng 3D",
+  "NoMediaSourcesAvailable": "Không có sẵn nguồn phương tiện",
+  "actor": "Diễn viên",
+  "actors": "Diễn viên",
+  "addNewPerson": "Thêm người mới",
+  "albums": "Tuyển Tập",
+  "allLanguages": "Tất cả ngôn ngữ",
+  "alphabetically": "Theo bảng chữ cái",
+  "architecture": "Kiến trúc",
+  "artist": "Nghệ sĩ",
+  "artists": "Nghệ sĩ",
+  "audio": "Âm thanh",
+  "badRequest": "Yêu cầu đã thất bại. Thử lại",
+  "biography": "Tiểu sử",
+  "browserNotSupported": "Trình duyệt của bạn không được hỗ trợ để phát tệp này.",
+  "buttons": {
+    "ok": "Đồng ý"
+  },
+  "byArtist": "Bởi {artist}",
+  "cancel": "Hủy",
+  "castAndCrew": "Diễn viên & Đoàn làm phim",
+  "collections": "Bộ sưu tập",
+  "communityRating": "Đánh giá cộng đồng",
+  "confirm": "Xác nhận",
+  "connect": "Kết nối",
+  "continueListening": "Tiếp tục nghe",
+  "continueWatching": "Tiếp tục xem",
+  "criticRating": "Đánh giá phê bình",
+  "customRating": "Xếp hạng tùy chỉnh",
+  "darkModeToggle": "Chuyển đổi chế độ tối",
+  "dateAdded": "Ngày thêm",
+  "details": "Chi tiết",
+  "directing": "Chỉ đạo",
+  "director": "Giám đốc",
+  "discNumber": "Đĩa {discNumber}",
+  "dislikes": "Không Thích",
+  "edit": "Sửa",
+  "editMetadata": "Sửa dữ liệu mô tả",
+  "editPerson": "Sửa người",
+  "endDate": "Ngày kết thúc",
+  "endsAt": "Kết thúc lúc {time}",
+  "episodeNumber": "Tập {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Đã xảy ra lỗi",
+    "messages": {
+      "errorCode": "Mã lỗi: {errorCode}",
+      "videoPlayerError": "Trình phát video gặp lỗi không thể khôi phục."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Không thể lấy tùy chọn hiển thị. Sử dụng cài đặt đã biết gần đây nhất.",
+  "failedSettingDisplayPreferences": "Không thể cập nhật tùy chọn hiển thị.",
+  "failedToRefreshItems": "Không thể làm mới các mục",
+  "favorite": "Yêu Thích",
+  "features": "Tính Năng",
+  "filter": "Bộ lọc",
+  "filtersNotFound": "Không thể tải bộ lọc",
+  "fullScreen": "Toàn màn hình",
+  "general": "Chung",
+  "genres": "Thể Loại",
+  "guestStar": "Ngôi sao khách mời",
+  "headerExternalIds": "ID bên ngoài",
+  "headerPaths": "Đường dẫn",
+  "home": "Trang chủ",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Được thêm gần đây"
+    },
+    "welcome": {
+      "checkNewItems": "Kiểm tra những gì mới.",
+      "helloUser": "Chào {userName}!",
+      "noItems": "Không có mục nào được thêm gần đây để hiển thị."
+    }
+  },
+  "imageType": {
+    "art": "Nghệ thuật",
+    "backdrop": "Phông nền",
+    "banner": "Ảnh bìa",
+    "box": "Hộp",
+    "boxRear": "Hộp (phía sau)",
+    "disc": "Đĩa",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Sơ cấp",
+    "screenshot": "Ảnh chụp màn hình",
+    "thumb": "Ảnh thu nhỏ"
+  },
+  "images": "Ảnh",
+  "incorrectUsernameOrPassword": "Sai tên đăng nhập hoặc mật khẩu",
+  "item": {
+    "artist": {
+      "appearsOn": "Hiển thị",
+      "discography": "Đĩa đệm",
+      "information": "Thông tin"
+    },
+    "cast": "Truyền Trực Tiếp",
+    "composer": "Người soạn nhạc",
+    "crew": "Đoàn phim",
+    "person": {
+      "birth": "Sinh",
+      "birthPlace": "Nơi sinh",
+      "death": "Mất",
+      "person": "Người"
+    },
+    "tracklist": {
+      "title": "Tiêu đề"
+    }
+  },
+  "itemNotFound": "Không tìm thấy mục",
+  "jellyfinLogo": "Logo Jellyfin",
+  "latestLibrary": "Gần nhất {libraryName}",
+  "libraries": "Thư viện",
+  "libraryEmpty": "Thư viện này trống",
+  "libraryEmptyFilters": "Không phù hợp. Xóa một số bộ lọc để hiển thị nhiều mục hơn",
+  "libraryNotFound": "Không tìm thấy thư viện",
+  "libraryRefreshQueued": "Làm mới thư viện đã xếp hàng đợi",
+  "liked": "Đã thích",
+  "likes": "Thích",
+  "links": {
+    "helpTranslate": "Dịch Jellyfin sang ngôn ngữ của bạn",
+    "poweredByJellyfin": "Máy chủ này do Jellyfin cung cấp",
+    "readTheDocumentation": "Đọc tài liệu",
+    "reportAnIssue": "Báo cáo sự cố xảy ra trên máy khách này"
+  },
+  "login": {
+    "addServer": "Thêm máy chủ",
+    "changeServer": "Thay đổi máy chủ",
+    "changeUser": "Thay đổi người sử dụng",
+    "connect": "Kết nối",
+    "login": "Đăng nhập",
+    "loginAs": "Đăng nhập bằng {name}",
+    "manualLogin": "Đăng nhập thủ công",
+    "rememberMe": "Nhớ tôi",
+    "selectServer": "Chọn máy chủ",
+    "selectUser": "Chọn một người dùng",
+    "serverAddress": "Địa chỉ máy chủ",
+    "serverAddressMustBeUrl": "Địa chỉ máy chủ phải là một URL hợp lệ",
+    "serverAddressRequired": "Địa chỉ máy chủ là bắt buộc",
+    "serverDashboard": "Bảng điều khiển máy chủ",
+    "serverNotFound": "Máy chủ không tìm thấy",
+    "serverVersionTooLow": "Phiên bản máy chủ phải là 10.7.0 trở lên"
+  },
+  "logout": "Thoát",
+  "logsAndActivity": {
+    "activity": "Hoạt động",
+    "failedGetActivity": "Không thể nhận hoạt động",
+    "failedGetLogs": "Không thể lấy nhật ký",
+    "logs": "Nhật ký",
+    "noActivityFound": "Không tìm thấy hoạt động nào",
+    "noLogsFound": "Không tìm thấy nhật ký nào"
+  },
+  "manualLogin": "Đăng nhập thủ công",
+  "menu": "Menu",
+  "metadata": {
+    "source": "Nguồn",
+    "sourceAll": "Tất cả",
+    "title": "Tiêu đề",
+    "type": "Kiểu"
+  },
+  "metadataEditor": "Chỉnh sửa dữ liệu mô tả",
+  "metadataNoResultsMatching": "Không có kết quả phù hợp \"{search}\". Nhấn enter để tạo một cái mới.",
+  "more": "Thêm",
+  "moreLikeArtist": "Xem Thêm Tương Tự {artist}",
+  "moreLikeThis": "Thêm giống như này",
+  "movies": "Phim",
+  "name": "Tên",
+  "networks": "Mạng",
+  "nextUp": "Kếp tiếp",
+  "noAudioTrackSelected": "Không có bản âm thanh nào được chọn",
+  "noAudioTracksAvailable": "Không có bản âm thanh nào",
+  "noImagesFound": "Không tìm thấy hình ảnh",
+  "noNetworkConnection": "Không có kết nối mạng",
+  "noResultsFound": "Không có gì ở đây",
+  "noSubtitleSelected": "Không có phụ đề nào được chọn",
+  "noSubtitlesAvailable": "Không có phụ đề",
+  "noTracksAvailable": "Không có bản nhạc nào",
+  "noVideoTrackSelected": "Không có bản video nào được chọn",
+  "noVideoTracksAvailable": "Không có đoạn video nào",
+  "numberTracks": "{number} kênh",
+  "operatingSystem": "Hệ Điều Hành",
+  "originalAspectRatio": "Tỷ lệ khung hình gốc",
+  "originalTitle": "Tiêu đề gốc",
+  "overview": "Tổng quan",
+  "parentalRating": "Đánh giá của phụ huynh",
+  "parentalRatings": "Đánh Giá Của Phụ Huynh",
+  "password": "Mật khẩu",
+  "people": "Mọi người",
+  "person": "Người",
+  "play": "Phát",
+  "playFromBeginning": "Phát từ đầu",
+  "playback": {
+    "addToQueue": "Thêm vào hàng đợi",
+    "clearQueue": "Xóa hàng đợi và dừng phát lại",
+    "playAll": "Phát tất cả",
+    "playNext": "Phát kế tiếp",
+    "playbackSource": {
+      "item": "Đang phát từ {item}",
+      "shuffle": "Phát ngẫu nhiên",
+      "shuffleItem": "Đang phát {item} ngẫu nhiên",
+      "unknown": "Đang phát hàng đợi"
+    },
+    "queueItems": "{items} kênh",
+    "saveAsPlaylist": "Lưu hàng đợi dưới dạng danh sách phát",
+    "shuffle": "Ngẫu nhiên",
+    "shuffleAll": "Tất cả ngẫu nhiên"
+  },
+  "played": "Đã Phát",
+  "present": "Hiện tại",
+  "producer": "Nhà sản xuất",
+  "queue": "Xếp hàng",
+  "rating": "Xếp hạng",
+  "refreshLibrary": "Làm mới thư viện",
+  "releaseDate": "Ngày phát hành",
+  "resumable": "Có Thể Tiếp Tục",
+  "resume": "Bắt đầu lại",
+  "role": "Vai diễn",
+  "save": "Lưu",
+  "saved": "Đã lưu",
+  "search": "Tìm kiếm",
+  "series": "Loạt Phim",
+  "server": "Máy chủ",
+  "serverVersion": "Phiên bản máy chủ",
+  "serverVersionTooLow": "Phiên bản máy chủ phải từ 10.7.0 trở lên",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Mã truy cập",
+      "addApiKey": "Thêm khóa API",
+      "addNewKey": "Thêm khóa API mới",
+      "apiKeys": "Khóa API",
+      "appName": "Tên ứng dụng",
+      "createKeyFailure": "Lỗi khi tạo khóa API mới",
+      "createKeySuccess": "Đã tạo thành công khóa API mới",
+      "dateCreated": "Ngày tạo",
+      "description": "Thêm và thu hồi khóa API để truy cập vào máy chủ",
+      "refreshKeysFailure": "Lỗi khi làm mới khóa API",
+      "revokeAll": "Thu hồi tất cả các khóa API",
+      "revokeAllFailure": "Lỗi khi thu hồi tất cả các khóa API",
+      "revokeAllSuccess": "Đã thu hồi thành công tất cả các khóa API",
+      "revokeFailure": "Lỗi khi thu hồi khóa API",
+      "revokeSuccess": "Đã thu hồi thành công khóa API"
+    },
+    "devices": {
+      "appName": "Tên ứng dụng",
+      "appVersion": "Phiên bản ứng dụng",
+      "delete": "Xóa",
+      "deleteAll": "Xóa hết",
+      "deleteAllDevicesError": "Lỗi khi xóa tất cả các thiết bị",
+      "deleteAllDevicesSuccess": "Tất cả các thiết bị đã được xóa thành công",
+      "deleteDeviceError": "Lỗi khi xóa thiết bị",
+      "deleteDeviceSuccess": "Đã xóa thiết bị thành công",
+      "deviceName": "Tên thiết bị",
+      "devices": "Thiết bị",
+      "lastActive": "Hoạt động lần cuối",
+      "noDevicesFound": "Không tìm thấy thiết bị nào",
+      "userName": "Tên tài khoản"
+    },
+    "help": "Trợ giúp",
+    "logsAndActivity": {
+      "activity": "Hoạt động",
+      "failedGetActivity": "Không thể nhận hoạt động",
+      "failedGetLogs": "Không thể lấy nhật ký",
+      "logs": "Nhật ký",
+      "noActivityFound": "Không tìm thấy hoạt động nào",
+      "noLogsFound": "Không tìm thấy nhật ký nào"
+    },
+    "settings": "Cài đặt"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Chỉnh sửa thông tin người dùng của bạn",
+      "name": "Tài khoản"
+    },
+    "devices": {
+      "description": "Xem và quản lý các thiết bị được kết nối với máy chủ của bạn",
+      "name": "Thiết bị"
+    },
+    "dlna": {
+      "description": "Cấu hình cài đặt và hồ sơ DLNA",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Cấu hình các phần trên trang chủ và bố cục màn hình trang chủ của bạn",
+      "name": "Màn hình trang chủ"
+    },
+    "libraries": {
+      "description": "Quản lý thư viện và dữ liệu mô tả",
+      "name": "Thư viện"
+    },
+    "liveTvAndDvr": {
+      "description": "Quản lý bộ dò TV, hướng dẫn và cài đặt DVR",
+      "name": "TV Trực Tiếp & DVR"
+    },
+    "logs": {
+      "description": "Dữ liệu nhật ký máy chủ và hoạt động người dùng",
+      "name": "Nhật ký & hoạt động"
+    },
+    "mediaPlayers": {
+      "description": "Cấu hình cách trình phát phương tiện hoạt động cho thiết bị này",
+      "name": "Trình phát phương tiện"
+    },
+    "networking": {
+      "description": "Quản lý cài đặt mạng của máy chủ này",
+      "name": "Mạng"
+    },
+    "notifications": {
+      "description": "Quản lý và cài đặt thông báo gửi đi bởi máy chủ này",
+      "name": "Thông báo"
+    },
+    "playback": {
+      "description": "Sửa phát lại ưa thích của bạn trên thiết bị này",
+      "name": "Phát lại"
+    },
+    "plugins": {
+      "description": "Thêm và cấu hình tính năng mới cho máy chủ này",
+      "name": "Plugins"
+    },
+    "scheduledTasks": {
+      "description": "Quản lý các tác vụ đã lên lịch chạy trên máy chủ này",
+      "name": "Tác vụ đã lên lịch"
+    },
+    "server": {
+      "description": "Cấu hình ngôn ngữ và thương hiệu của máy chủ này",
+      "name": "Máy chủ"
+    },
+    "subtitles": {
+      "description": "Điều chỉnh cách hiển thị phụ đề trên thiết bị này",
+      "name": "Phụ đề"
+    },
+    "transcodingAndStreaming": {
+      "description": "Quản lý máy chủ xử lý chuyển mã và phát trực tiếp",
+      "name": "Chuyển mã và phát trực tuyến"
+    },
+    "users": {
+      "description": "Quản lý người dùng và quyền của họ",
+      "name": "Người dùng"
+    }
+  },
+  "shows": "Chương Trình",
+  "signIn": "Đăng nhập",
+  "sortByType": "Theo {type}",
+  "sortTitle": "Sắp xếp tiêu đề",
+  "specialFeatures": "Các Tính Năng Đặc Biệt",
+  "status": "Trạng thái",
+  "studios": "Hãng Phim",
+  "subtitles": "Phụ Đề",
+  "syncingInProgress": "Đang đồng bộ hóa",
+  "tagline": "Giới thiệu ngắn",
+  "tags": "Thẻ",
+  "themeSong": "Nhạc Nền",
+  "themeVideo": "Video Chủ Đề",
+  "tooltips": {
+    "changeLanguage": "Ngôn ngữ",
+    "switchToDarkMode": "Chuyển sang chế độ tối",
+    "switchToLightMode": "Chuyển sang chế độ sáng"
+  },
+  "trailer": "Đoạn Giới Thiệu",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "type": "Kiểu",
+  "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
+  "unableGetRelated": "Không thể lấy các mục liên quan",
+  "unableGetServerConfiguration": "Không thể tải cấu hình máy chủ",
+  "unableToRefreshLibrary": "Không thể làm mới thư viện",
+  "unableToToggleLike": "Không thể thay đổi trạng thái thích của phần tử",
+  "unableToTogglePlayed": "Không thể cập nhật trạng thái xem",
+  "undefined": "Chưa xác định",
+  "unexpectedError": "Lỗi không mong muốn",
+  "unhandledException": "Tình huống ngoại lệ không thể xử lí được",
+  "unliked": "Không thích",
+  "unplayed": "Chưa Phát",
+  "upNext": "Tiếp theo",
+  "upNextName": "Tiếp theo: {upNextItemName}",
+  "username": "Tên đăng nhập",
+  "validation": {
+    "bothPasswordsSame": "Cả hai mật khẩu phải giống nhau",
+    "mustBeUrl": "Trường này phải là một URL hợp lệ",
+    "required": "Trường này là bắt buộc"
+  },
+  "version": "Phiên bản",
+  "video": "Video",
+  "videoTypes": "Loại Videos",
+  "viewDetails": "Xem chi tiết",
+  "vueClientVersion": "Phiên bản ứng dụng",
+  "wizard": {
+    "administratorAccount": "Tài khoản quản trị viên",
+    "allowRemoteAccess": "Cho phép truy cập từ xa vào máy chủ",
+    "completeError": "Không thể hoàn thành trình hướng dẫn khởi động.",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "languageLocale": "Ngôn ngữ và địa phương",
+    "languageSuccessfullySet": "Đã đặt thành công ngôn ngữ.",
+    "metadataLanguagesSet": "Cài đặt ngôn ngữ dữ liệu mô tả.",
+    "preferedLanguage": "Ngôn ngữ ưa thích",
+    "preferredMetadataLanguage": "Ngôn ngữ dữ liệu mô tả ưa thích",
+    "remoteAccess": "Truy cập từ xa",
+    "remoteAccessSet": "Cài đặt truy cập từ xa.",
+    "setAdminError": "Không thể tạo tài khoản quản trị viên.",
+    "setLanguageError": "Không thể đặt ngôn ngữ ứng dụng.",
+    "setMetadataError": "Không thể đặt ngôn ngữ dữ liệu mô tả.",
+    "setRemoteError": "Không thể đặt cài đặt truy cập từ xa.",
+    "setupWizard": "Trình hướng dẫn thiết lập",
+    "userSuccessfullySet": "Người dùng đã cài đặt thành công."
+  },
+  "writer": "Soạn giả",
+  "writing": "Viết",
+  "year": "Năm",
+  "years": "Năm",
+  "youMayAlsoLike": "Bạn có thể thích"
+}

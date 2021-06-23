@@ -1,0 +1,105 @@
+{
+  "3DFormat": "3B format",
+  "actor": "Aktör",
+  "actors": "Aktörler",
+  "addNewPerson": "Yeni kişi ekle",
+  "albums": "Albümler",
+  "allLanguages": "Tüm diller",
+  "alphabetically": "Alfabetik",
+  "architecture": "Mimari",
+  "artist": "Sanatçı",
+  "artists": "Sanatçı",
+  "audio": "Ses",
+  "badRequest": "Hatalı istek. Tekrar deneyin",
+  "biography": "Biyografi",
+  "browserNotSupported": "Tarayıcınız bu dosya formatını oynatmak için desteklenmiyor.",
+  "buttons": {
+    "ok": "Tamam"
+  },
+  "cancel": "İptal",
+  "castAndCrew": "Oyuncular & Ekip",
+  "collections": "Koleksiyon",
+  "communityRating": "Topluluk puanı",
+  "confirm": "Onay",
+  "connect": "Bağlan",
+  "continueListening": "Dinlemeye Devam Et",
+  "continueWatching": "İzlemeye devam et",
+  "criticRating": "Eleştirmen puanı",
+  "dateAdded": "Ekleme Tarihi",
+  "details": "Detaylar",
+  "director": "Yönetmen",
+  "dislikes": "Beğenilmeyenler",
+  "edit": "Düzenle",
+  "endDate": "Bitiş tarihi",
+  "endsAt": "{time}'de bitiyor",
+  "episodeNumber": "Bölüm {episodeNumber}",
+  "favorite": "Favori",
+  "features": "Özellikleri",
+  "filter": "Filtre",
+  "fullScreen": "Tam ekran",
+  "general": "Genel",
+  "genres": "Türler",
+  "home": "Anasayfa",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Son eklenen"
+    }
+  },
+  "images": "Resimler",
+  "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya şifre",
+  "itemNotFound": "Öğe bulunamadı",
+  "jellyfinLogo": "Jellyfin logo",
+  "libraries": "Kütüphaneler",
+  "libraryEmpty": "Bu kütüphane boş",
+  "libraryNotFound": "Kütüphane bulunamadı",
+  "liked": "Beğenildi",
+  "likes": "Beğenilenler",
+  "logout": "Çıkış",
+  "logsAndActivity": {
+    "activity": "Aktivite"
+  },
+  "menu": "Menü",
+  "metadataEditor": "Meta veri düzenleyici",
+  "more": "Dahası",
+  "moreLikeThis": "Buna Benzer Daha Fazla",
+  "movies": "Filmler",
+  "name": "Ad",
+  "networks": "Ağlar",
+  "operatingSystem": "İşletim sistemi",
+  "overview": "Özet",
+  "parentalRating": "Yaş derecelendirmesi",
+  "parentalRatings": "Yaş Derecelendirmeleri",
+  "password": "Şifre",
+  "play": "Oynat",
+  "present": "Mevcut",
+  "rating": "İzlenme oranı",
+  "releaseDate": "Yayın tarihi",
+  "save": "Kaydet",
+  "search": "Arama",
+  "server": "Sunucu",
+  "serverVersion": "Sunucu sürümü",
+  "serverVersionTooLow": "Sunucu versiyonu 10.7.0 veya daha üstü olmalıdır",
+  "settingsSections": {
+    "devices": {
+      "name": "Cihazlar"
+    },
+    "libraries": {
+      "name": "Kütüphaneler"
+    },
+    "notifications": {
+      "name": "Bildirimler"
+    },
+    "plugins": {
+      "name": "Eklentiler"
+    },
+    "server": {
+      "name": "Sunucu"
+    }
+  },
+  "shows": "Göster",
+  "signIn": "Giriş yap",
+  "unexpectedError": "Beklenmedik hata",
+  "upNext": "Sonraki",
+  "username": "Kullanıcı Adı",
+  "youMayAlsoLike": "Şunlar da ilginizi çekebilir"
+}

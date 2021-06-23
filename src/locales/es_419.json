@@ -1,0 +1,408 @@
+{
+  "3DFormat": "Formato 3D",
+  "NoMediaSourcesAvailable": "No hay fuentes de medios disponibles",
+  "actor": "Actor",
+  "actors": "Actores",
+  "addNewPerson": "Añadir una nueva persona",
+  "albums": "Álbumes",
+  "allLanguages": "Todos los idiomas",
+  "alphabetically": "Alfabéticamente",
+  "architecture": "Arquitectura",
+  "artist": "Artista",
+  "artists": "Artistas",
+  "audio": "Audio",
+  "badRequest": "Solicitud incorrecta. Reintente",
+  "biography": "Biografia",
+  "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo.",
+  "buttons": {
+    "ok": "Aceptar"
+  },
+  "byArtist": "Por {artist}",
+  "cancel": "Cancelar",
+  "castAndCrew": "Reparto y Equipo",
+  "collections": "Colecciones",
+  "communityRating": "Calificación de la comunidad",
+  "confirm": "Confirmar",
+  "connect": "Conectar",
+  "continueListening": "Continuar escuchando",
+  "continueWatching": "Continuar viendo",
+  "criticRating": "Calificación de los criticos",
+  "customRating": "Calificación personalizada",
+  "darkModeToggle": "Activar modo oscuro",
+  "dateAdded": "Fecha agregada",
+  "details": "Detalles",
+  "directing": "Dirigente",
+  "director": "Director",
+  "discNumber": "Disco {discNumber}",
+  "dislikes": "No me gusta",
+  "edit": "Editar",
+  "editMetadata": "Editar metadatos",
+  "editPerson": "Editar persona",
+  "endDate": "Fecha de finalización",
+  "endsAt": "Termina en {time}",
+  "episodeNumber": "Episodio {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Ha ocurrido un error",
+    "messages": {
+      "errorCode": "Código de error: {errorCode}",
+      "videoPlayerError": "El reproductor de video ha encontrado un error irrecuperable."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "No se pueden obtener las preferencias de visualizacion. Usando valores predeterminados.",
+  "failedSettingDisplayPreferences": "No se pueden actualizar las preferencias de visualización.",
+  "failedToRefreshItems": "No se han podido refrescar los elementos",
+  "favorite": "Favorito",
+  "features": "Características",
+  "filter": "Filtro",
+  "filtersNotFound": "Imposible cargar filtros",
+  "fullScreen": "Pantalla completa",
+  "general": "General",
+  "genres": "Géneros",
+  "guestStar": "Estrella invitada",
+  "headerExternalIds": "IDs externos",
+  "headerPaths": "Ruta",
+  "home": "Inicio",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Agregado recientemente"
+    },
+    "welcome": {
+      "checkNewItems": "Mira las novedades.",
+      "helloUser": "Hola {userName}!",
+      "noItems": "No hay elementos agregados recientemente para mostrar."
+    }
+  },
+  "imageType": {
+    "art": "Arte",
+    "backdrop": "Fondo",
+    "banner": "Bandera",
+    "box": "Caja",
+    "boxRear": "Caja (trasera)",
+    "disc": "Disco",
+    "logo": "Logo",
+    "menu": "Menú",
+    "primary": "Primario",
+    "screenshot": "Captura de Pantalla",
+    "thumb": "Miniatura"
+  },
+  "images": "Imagenes",
+  "incorrectUsernameOrPassword": "Usuario o contraseña incorrecta",
+  "item": {
+    "artist": {
+      "appearsOn": "Apariciones",
+      "discography": "Discografía",
+      "information": "Información",
+      "videos": "Vídeos"
+    },
+    "cast": "Reparto",
+    "composer": "Compositor",
+    "crew": "Equipo",
+    "person": {
+      "birth": "Nacimiento",
+      "birthPlace": "Lugar de Nacimiento",
+      "death": "Muerte",
+      "person": "Persona"
+    },
+    "tracklist": {
+      "title": "Titulo"
+    }
+  },
+  "itemNotFound": "Item no encontrado",
+  "jellyfinLogo": "Logo Jellyfin",
+  "latestLibrary": "Lo último en {libraryName}",
+  "libraries": "Bibliotecas",
+  "libraryEmpty": "La biblioteca está vacía",
+  "libraryEmptyFilters": "No hay coincidencias. Elimine algunos filtros para mostrar mas items",
+  "libraryNotFound": "Librería no encontrada",
+  "libraryRefreshQueued": "Actualizacion de biblioteca en cola",
+  "liked": "Te Gusta",
+  "likes": "Me gusta",
+  "links": {
+    "helpTranslate": "Traduce Jellyfin a tu idioma",
+    "poweredByJellyfin": "Este servidor funciona con Jellyfin",
+    "readTheDocumentation": "Leer la documentacion",
+    "reportAnIssue": "Reportar un problema con este cliente"
+  },
+  "login": {
+    "addServer": "Agregar Servidor",
+    "changeServer": "Cambiar Servidor",
+    "changeUser": "Cambiar Usuario",
+    "connect": "Conectar",
+    "login": "Ingreso",
+    "loginAs": "Ingresar como {name}",
+    "manualLogin": "Ingreso Manual",
+    "rememberMe": "Recordarme",
+    "selectServer": "Elegir Servidor",
+    "selectUser": "Elija Usuario",
+    "serverAddress": "Dirección del Servidor",
+    "serverAddressMustBeUrl": "La dirección del Servidor debe ser una URL Valida",
+    "serverAddressRequired": "La dirección del Servidor es necesaria",
+    "serverDashboard": "Tablero del Servidor",
+    "serverNotFound": "Servidor no Encontrado",
+    "serverVersionTooLow": "Se necesita la versión del servidor 10.7.0 o superior"
+  },
+  "logout": "Salir",
+  "logsAndActivity": {
+    "activity": "Actividad",
+    "failedGetActivity": "No se puede obtener la actividad",
+    "failedGetLogs": "No se puede obtener el registro",
+    "logs": "Registros",
+    "noActivityFound": "No se encontraron actividades",
+    "noLogsFound": "No se encuentran registros"
+  },
+  "manualLogin": "Iniciar sesión manualmente",
+  "menu": "Menu",
+  "metadata": {
+    "source": "Origen",
+    "sourceAll": "Todo",
+    "title": "Titulo",
+    "type": "Tipo"
+  },
+  "metadataEditor": "Editor de metadata",
+  "metadataNoResultsMatching": "No hay resultados que coincidan con \"{search}\". Pulsa enter para crear uno nuevo.",
+  "more": "Más",
+  "moreLikeArtist": "Más como {artist}",
+  "moreLikeThis": "Más como esto",
+  "movies": "Películas",
+  "name": "Nombre",
+  "networks": "Redes",
+  "nextUp": "Siguiente",
+  "noAudioTrackSelected": "No se selecciono ninguna pista de audio",
+  "noAudioTracksAvailable": "No hay pistas de audio disponibles",
+  "noImagesFound": "No se encontraron imagenes",
+  "noNetworkConnection": "Sin conexión",
+  "noResultsFound": "No hay nada aquí",
+  "noSubtitleSelected": "No se selecciono ningun subtitulo",
+  "noSubtitlesAvailable": "No hay subtítulos disponibles",
+  "noTracksAvailable": "No hay pistas disponibles",
+  "noVideoTrackSelected": "No se selecciono ninguna pista de video",
+  "noVideoTracksAvailable": "No hay pistas de video disponibles",
+  "numberTracks": "{number} pistas",
+  "operatingSystem": "Sistema operativo",
+  "originalAspectRatio": "Relacion de aspecto original",
+  "originalTitle": "Titulo original",
+  "overview": "Vista general",
+  "parentalRating": "Calificación por edad",
+  "parentalRatings": "Clasificación parental",
+  "password": "Contraseña",
+  "people": "Personas",
+  "person": "Persona",
+  "play": "Reproducir",
+  "playFromBeginning": "Reproducir desde el inicio",
+  "playback": {
+    "addToQueue": "Agregar a cola",
+    "clearQueue": "Limpiar la cola y detener la reproducción",
+    "playAll": "Reproducir Todo",
+    "playNext": "Reproducir siguiente",
+    "playbackSource": {
+      "item": "Reproducir desde {item}",
+      "shuffle": "Reproducir mezclado",
+      "shuffleItem": "Reproducir {item} mezclado",
+      "unknown": "Reproducir desde la cola"
+    },
+    "queueItems": "{items} pistas",
+    "saveAsPlaylist": "Guardar la cola como Lista de Reproducción",
+    "shuffle": "Mezclar",
+    "shuffleAll": "Mezclar todo"
+  },
+  "played": "Reproducido",
+  "present": "Presente",
+  "producer": "Productor",
+  "queue": "Cola",
+  "rating": "Calificación",
+  "refreshLibrary": "Actualizar biblioteca",
+  "releaseDate": "Fecha de estreno",
+  "resumable": "Reanudable",
+  "resume": "Reanudar",
+  "role": "Rol",
+  "save": "Guardar",
+  "saved": "Guardado",
+  "search": "Buscar",
+  "series": "Series",
+  "server": "Servidor",
+  "serverVersion": "Versión del servidor",
+  "serverVersionTooLow": "La versión del servidor debe ser 10.7.0 o superior",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Token de acceso",
+      "addApiKey": "Añadir clave API",
+      "addNewKey": "Añadir nueva clave API",
+      "apiKeys": "Claves API",
+      "appName": "Nombre de aplicacion",
+      "createKeyFailure": "Error al crear una nueva clave de API",
+      "createKeySuccess": "Nueva clave API creada correctamente",
+      "dateCreated": "Fecha de creacion",
+      "description": "Agregue y revoque claves API para el acceso externo a su servidor",
+      "refreshKeysFailure": "Error al actualizar claves API",
+      "revokeAll": "Revocar todas las claves de API",
+      "revokeAllFailure": "Error al revocar todas las claves de API",
+      "revokeAllSuccess": "Se ha revocado con exito todas las claves de API",
+      "revokeFailure": "Error revocando la clave API",
+      "revokeSuccess": "Clave de API revocada con éxito"
+    },
+    "devices": {
+      "appName": "Nombre de la Aplicación",
+      "appVersion": "Versión de la Aplicación",
+      "delete": "Eliminar",
+      "deleteAll": "Eliminar Todo",
+      "deleteAllDevicesError": "Error eliminando todos los dispositivos",
+      "deleteAllDevicesSuccess": "Todos los dispositivos eliminados correctamente",
+      "deleteDeviceError": "Error eliminando dispositivo",
+      "deleteDeviceSuccess": "Dispositivo eliminado correctamente",
+      "deviceName": "Nombre del Dispositivo",
+      "devices": "Dispositivos",
+      "lastActive": "Ultimo activo",
+      "noDevicesFound": "No se encuentran dispositivos",
+      "userName": "Nombre de Usuario"
+    },
+    "help": "Ayuda",
+    "logsAndActivity": {
+      "activity": "Actividad",
+      "failedGetActivity": "Incapaz de obtener actividad",
+      "failedGetLogs": "Incapaz de obtener registros",
+      "logs": "Registros",
+      "noActivityFound": "No hay actividad",
+      "noLogsFound": "No hay registros"
+    },
+    "settings": "Configuración"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Editar informacion de usuario",
+      "name": "Cuenta"
+    },
+    "devices": {
+      "description": "Ver y administrar los dispositivos conectados a tu servidor",
+      "name": "Dispositivos"
+    },
+    "dlna": {
+      "description": "Configurar los ajustes y perfil de DLNA",
+      "name": "DLNA (Digital Living Network Alliance)"
+    },
+    "home": {
+      "description": "Configure sus secciones y el diseño de la pantalla de inicio",
+      "name": "Pantalla de inicio"
+    },
+    "libraries": {
+      "description": "Administrar biblioteca y sus metadatos",
+      "name": "Bibliotecas"
+    },
+    "liveTvAndDvr": {
+      "description": "Administre sintonizadores de TV, guías de proveedores de datos y configuraciones de DVR",
+      "name": "TV y DVR en vivo"
+    },
+    "logs": {
+      "description": "Leer y buscar registros del servidor y actividad del usuario",
+      "name": "Registros y actividad"
+    },
+    "mediaPlayers": {
+      "description": "Configurar como se comportan los reproductores multimedia con este dispositivo",
+      "name": "Reproductores multimedia"
+    },
+    "networking": {
+      "description": "Administrar la configuración de red de este servidor",
+      "name": "Redes"
+    },
+    "notifications": {
+      "description": "Gestionar y configurar las notificaciones enviadas por este servidor",
+      "name": "Notificaciones"
+    },
+    "playback": {
+      "description": "Edite sus preferencias de reproduccion para este dispositivo",
+      "name": "Reproduccion"
+    },
+    "plugins": {
+      "description": "Agregar y configurar nuevas funciones para este servidor",
+      "name": "Complementos"
+    },
+    "scheduledTasks": {
+      "description": "Administra las tareas programadas que se ejecutan en este servidor",
+      "name": "Tareas programadas"
+    },
+    "server": {
+      "description": "Configurar el idioma y la marca de este servidor",
+      "name": "Servidor"
+    },
+    "subtitles": {
+      "description": "Controla como se mostraran los subtítulos en este dispositivo",
+      "name": "Subtítulos"
+    },
+    "transcodingAndStreaming": {
+      "description": "Administre como este servidor maneja la transcodificacion y la transmision a los clientes",
+      "name": "Transcodificacion y transmision"
+    },
+    "users": {
+      "description": "Administrar usuarios y sus permisos",
+      "name": "Usuarios"
+    }
+  },
+  "shows": "Series",
+  "signIn": "Ingresar",
+  "sortByType": "Por {type}",
+  "sortTitle": "Ordenar por titulo",
+  "specialFeatures": "Características especiales",
+  "status": "Estado",
+  "studios": "Estudios",
+  "subtitles": "Subtítulos",
+  "syncingInProgress": "Sincronización en progreso",
+  "tagline": "Frase",
+  "tags": "Etiquetas",
+  "themeSong": "Tema musical",
+  "themeVideo": "Video temático",
+  "tooltips": {
+    "changeLanguage": "Idioma",
+    "switchToDarkMode": "Cambiar a modo oscuro",
+    "switchToLightMode": "Cambiar a modo claro"
+  },
+  "trailer": "Adelanto",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "type": "Tipo",
+  "unableGetPublicUsers": "No se han podido obtener los usuarios",
+  "unableGetRelated": "No se han podido obtener elementos relacionados",
+  "unableGetServerConfiguration": "No se ha podido obtener la configuración del servidor",
+  "unableToRefreshLibrary": "No se puede actualizar la biblioteca",
+  "unableToToggleLike": "Incapaz de cambiar el estado de me gusta del elemento",
+  "unableToTogglePlayed": "Incapaz de actualizar el estado de visualizado",
+  "undefined": "Indefinido",
+  "unexpectedError": "Error inesperado",
+  "unhandledException": "Excepcion no controlada",
+  "unliked": "No te gusta",
+  "unplayed": "No reproducido",
+  "upNext": "Siguiente",
+  "upNextName": "A continuacion: {upNextItemName}",
+  "username": "Usuario",
+  "validation": {
+    "bothPasswordsSame": "Ambas contraseñas deben ser iguales",
+    "mustBeUrl": "Este campo requiere una URL válida",
+    "required": "Este campo es obligatorio"
+  },
+  "version": "Versión",
+  "video": "Video",
+  "videoTypes": "Tipo de videos",
+  "viewDetails": "Ver detalles",
+  "vueClientVersion": "Versión del Cliente",
+  "wizard": {
+    "administratorAccount": "Cuenta de administrador",
+    "allowRemoteAccess": "Permitir el acceso remoto al servidor",
+    "completeError": "No se pudo completar el asistente de inicio.",
+    "confirmPassword": "Confirmar contraseña",
+    "languageLocale": "Idioma y configuracion regional",
+    "languageSuccessfullySet": "Idioma establecido correctamente.",
+    "metadataLanguagesSet": "Idioma de metadata establecido.",
+    "preferedLanguage": "Idioma preferido",
+    "preferredMetadataLanguage": "Idioma de metadatos preferido",
+    "remoteAccess": "Acceso remoto",
+    "remoteAccessSet": "Acceso remoto establecido.",
+    "setAdminError": "No se puede crear una cuenta de administrador.",
+    "setLanguageError": "No se puede establecer el idioma del cliente.",
+    "setMetadataError": "No se pueden establecer los idiomas de los metadatos.",
+    "setRemoteError": "No se puede establecer la configuracion de acceso remoto.",
+    "setupWizard": "Asistente de configuracion",
+    "userSuccessfullySet": "Usuario establecido con exito."
+  },
+  "writer": "Escritor",
+  "writing": "Escritura",
+  "year": "Año",
+  "years": "Años",
+  "youMayAlsoLike": "Tambien te puede gustar"
+}

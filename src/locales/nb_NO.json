@@ -1,0 +1,408 @@
+{
+  "3DFormat": "3D-format",
+  "NoMediaSourcesAvailable": "Ingen mediekilder tilgjengelige",
+  "actor": "Skuespiller",
+  "actors": "Skuespillere",
+  "addNewPerson": "Legg til ny person",
+  "albums": "Album",
+  "allLanguages": "Alle språk",
+  "alphabetically": "Alfabetisk",
+  "architecture": "Systemarkitektur",
+  "artist": "Artist",
+  "artists": "Artister",
+  "audio": "Lyd",
+  "badRequest": "Feil i forespørselen. Prøv igjen",
+  "biography": "Biografi",
+  "browserNotSupported": "Din nettleser kan ikke spille av denne filen.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Av {artist}",
+  "cancel": "Avbryt",
+  "castAndCrew": "Rollebesetning og mannskap",
+  "collections": "Samlinger",
+  "communityRating": "Fellesskapets vurdering",
+  "confirm": "Bekreft",
+  "connect": "Koble til",
+  "continueListening": "Fortsett å lytte",
+  "continueWatching": "Fortsett å se",
+  "criticRating": "Kritikervurdering",
+  "customRating": "Egendefinert vurdering",
+  "darkModeToggle": "Veksle mørk modus",
+  "dateAdded": "Dato lagt til",
+  "details": "Detaljer",
+  "directing": "Regi",
+  "director": "Regissør",
+  "discNumber": "Plate {discNumber}",
+  "dislikes": "Liker ikke",
+  "edit": "Rediger",
+  "editMetadata": "Rediger metadata",
+  "editPerson": "Rediger person",
+  "endDate": "Sluttdato",
+  "endsAt": "Slutter {time}",
+  "episodeNumber": "Episode {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "En feil har oppstått",
+    "messages": {
+      "errorCode": "Feilkode: {errorCode}",
+      "videoPlayerError": "Avspilleren har truffet på en ukorrigerbar feil."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Kunne ikke hente visningsinnstillinger. Bruker standardinnstillinger.",
+  "failedSettingDisplayPreferences": "Kunne ikke oppdatere visningsinnstillinger.",
+  "failedToRefreshItems": "Kunne ikke oppdatere artikler",
+  "favorite": "Favoritt",
+  "features": "Innhold",
+  "filter": "Filter",
+  "filtersNotFound": "Kan ikke laste filtre",
+  "fullScreen": "Fullskjerm",
+  "general": "Generelt",
+  "genres": "Sjangere",
+  "guestStar": "Gjesterolle",
+  "headerExternalIds": "Eksterne IDer",
+  "headerPaths": "Filbane",
+  "home": "Hjem",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Nylig lagt til"
+    },
+    "welcome": {
+      "checkNewItems": "Se hva som er nytt.",
+      "helloUser": "Hei, {userName}!",
+      "noItems": "Det er ingen nylige ankomster å vise."
+    }
+  },
+  "imageType": {
+    "art": "Kunst",
+    "backdrop": "Bakgrunn",
+    "banner": "Banner",
+    "box": "Boks",
+    "boxRear": "Boks (bak)",
+    "disc": "Plate",
+    "logo": "Logo",
+    "menu": "Meny",
+    "primary": "Hovedbilde",
+    "screenshot": "Skjermdump",
+    "thumb": "Miniatyrbilde"
+  },
+  "images": "Bilder",
+  "incorrectUsernameOrPassword": "Feil brukernavn eller passord",
+  "item": {
+    "artist": {
+      "appearsOn": "Opptredener",
+      "discography": "Diskografi",
+      "information": "Informasjon",
+      "videos": "Videoer"
+    },
+    "cast": "Stab",
+    "composer": "Komponist",
+    "crew": "Mannskap",
+    "person": {
+      "birth": "Født",
+      "birthPlace": "Fødested",
+      "death": "Død",
+      "person": "Person"
+    },
+    "tracklist": {
+      "title": "Tittel"
+    }
+  },
+  "itemNotFound": "Gjenstand ikke funnet",
+  "jellyfinLogo": "Jellyfin-logo",
+  "latestLibrary": "Nyeste i {libraryName}",
+  "libraries": "Biblioteker",
+  "libraryEmpty": "Dette biblioteket er tomt",
+  "libraryEmptyFilters": "Ingen treff. Fjern noen filtre for å vise flere elementer",
+  "libraryNotFound": "Bibliotek ikke funnet",
+  "libraryRefreshQueued": "Opprettet en jobb for oppdatering av biblioteket",
+  "liked": "Likt",
+  "likes": "Liker",
+  "links": {
+    "helpTranslate": "Oversett Jellyfin til ditt språk",
+    "poweredByJellyfin": "Denne serveren er drevet av Jellyfin",
+    "readTheDocumentation": "Les dokumentasjonen",
+    "reportAnIssue": "Rapporter en feil med denne klienten"
+  },
+  "login": {
+    "addServer": "Legg til server",
+    "changeServer": "Bytt server",
+    "changeUser": "Bytt bruker",
+    "connect": "Koble til",
+    "login": "Logg inn",
+    "loginAs": "Logg inn som {name}",
+    "manualLogin": "Manuell innlogging",
+    "rememberMe": "Husk meg",
+    "selectServer": "Velg server",
+    "selectUser": "Velg en bruker",
+    "serverAddress": "Serveradresse",
+    "serverAddressMustBeUrl": "Serveradressen må være en gyldig URL",
+    "serverAddressRequired": "Serveradresse er påkrevd",
+    "serverDashboard": "Serverdashboard",
+    "serverNotFound": "Serveren ble ikke funnet",
+    "serverVersionTooLow": "Serveren må være versjon 10.7.0 eller nyere"
+  },
+  "logout": "Logg ut",
+  "logsAndActivity": {
+    "activity": "Aktivitet",
+    "failedGetActivity": "Kunne ikke hente aktivitet",
+    "failedGetLogs": "Kunne ikke hente logger",
+    "logs": "Logger",
+    "noActivityFound": "Ingen aktiviteter funnet",
+    "noLogsFound": "Ingen logger funnet"
+  },
+  "manualLogin": "Manuell innlogging",
+  "menu": "Meny",
+  "metadata": {
+    "source": "Kilde",
+    "sourceAll": "Alle",
+    "title": "Tittel",
+    "type": "Type"
+  },
+  "metadataEditor": "Metadataredigerer",
+  "metadataNoResultsMatching": "Ingen resultater for \"{search}\". Trykk enter for å lage et nytt.",
+  "more": "Mer",
+  "moreLikeArtist": "Mer liknende {artist}",
+  "moreLikeThis": "Mer som dette",
+  "movies": "Filmer",
+  "name": "Navn",
+  "networks": "Nettverk",
+  "nextUp": "Neste",
+  "noAudioTrackSelected": "Ingen lydspor valgt",
+  "noAudioTracksAvailable": "Ingen lydspor tilgjengelige",
+  "noImagesFound": "Ingen bilder funnet",
+  "noNetworkConnection": "Ingen nettverkstilkobling",
+  "noResultsFound": "Her var det tomt",
+  "noSubtitleSelected": "Ingen undertekst valgt",
+  "noSubtitlesAvailable": "Ingen undertekst tilgjengelig",
+  "noTracksAvailable": "Ingen spor tilgjengelig",
+  "noVideoTrackSelected": "Ingen videospor valgt",
+  "noVideoTracksAvailable": "Ingen videospor tilgjengelig",
+  "numberTracks": "{number} spor",
+  "operatingSystem": "Operativsystem",
+  "originalAspectRatio": "Originalt størrelsesforhold",
+  "originalTitle": "Original tittel",
+  "overview": "Oversikt",
+  "parentalRating": "Aldersgrense",
+  "parentalRatings": "Aldersgrense",
+  "password": "Passord",
+  "people": "Personer",
+  "person": "Person",
+  "play": "Spill av",
+  "playFromBeginning": "Spill av fra starten",
+  "playback": {
+    "addToQueue": "Legg i kø",
+    "clearQueue": "Tøm køen og stopp avspilling",
+    "playAll": "Spill av alle",
+    "playNext": "Spill neste",
+    "playbackSource": {
+      "item": "Spiller fra {item}",
+      "shuffle": "Spiller tilfeldig",
+      "shuffleItem": "Spiller {item} i tilfeldig rekkefølge",
+      "unknown": "Spiller fra kø"
+    },
+    "queueItems": "{items} spor",
+    "saveAsPlaylist": "Lagre køen som spilleliste",
+    "shuffle": "Tilfeldig rekkefølge",
+    "shuffleAll": "Spill alle tilfeldig"
+  },
+  "played": "Avspilt",
+  "present": "Tilstede",
+  "producer": "Produsent",
+  "queue": "Spilleliste",
+  "rating": "Vurdering",
+  "refreshLibrary": "Oppdater bibliotek",
+  "releaseDate": "Slippdato",
+  "resumable": "Gjenopptakbar",
+  "resume": "Gjenoppta",
+  "role": "Rolle",
+  "save": "Lagre",
+  "saved": "Lagret",
+  "search": "Søk",
+  "series": "Serier",
+  "server": "Server",
+  "serverVersion": "Serverversjon",
+  "serverVersionTooLow": "Serveren må være versjon 10.7.0 eller høyere",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Tilgangspollett",
+      "addApiKey": "Legg til en API-nøkkel",
+      "addNewKey": "Lag ny API-nøkkel",
+      "apiKeys": "API-nøkler",
+      "appName": "Appnavn",
+      "createKeyFailure": "Feil oppstod under opprettelse av API-nøkkel",
+      "createKeySuccess": "Ny API-nøkkel ble laget",
+      "dateCreated": "Dato opprettet",
+      "description": "Legg til og tilbakekall API-nøkler for ekstern tilgang til serveren din",
+      "refreshKeysFailure": "Feil oppstod under lasting av API-nøkler",
+      "revokeAll": "Tilbakekall alle API-nøkler",
+      "revokeAllFailure": "Feil oppstod under tilbakekalling av API-nøklene",
+      "revokeAllSuccess": "Alle API-nøklene ble tilbakekalt",
+      "revokeFailure": "Feil oppstod under tilbakekalling av API-nøkkelen",
+      "revokeSuccess": "API-nøkkelen ble tilbakekalt"
+    },
+    "devices": {
+      "appName": "Programnavn",
+      "appVersion": "Programversjon",
+      "delete": "Slett",
+      "deleteAll": "Slett alle",
+      "deleteAllDevicesError": "Kunne ikke slette alle enheter",
+      "deleteAllDevicesSuccess": "Alle enheter slettet",
+      "deleteDeviceError": "Kunne ikke slette enhet",
+      "deleteDeviceSuccess": "Enhet slettet",
+      "deviceName": "Enhetsnavn",
+      "devices": "Enheter",
+      "lastActive": "Sist aktiv",
+      "noDevicesFound": "Fant ingen enheter",
+      "userName": "Brukernavn"
+    },
+    "help": "Hjelp",
+    "logsAndActivity": {
+      "activity": "Aktivitet",
+      "failedGetActivity": "Kunne ikke hente aktivitet",
+      "failedGetLogs": "Kunne ikke hente loggføring",
+      "logs": "Loggføring",
+      "noActivityFound": "Fant ingen aktiviteter",
+      "noLogsFound": "Fant ingen logger"
+    },
+    "settings": "Innstillinger"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Rediger din brukerinformasjon",
+      "name": "Brukerkonto"
+    },
+    "devices": {
+      "description": "Se og administrer enheter koblet til din server",
+      "name": "Enheter"
+    },
+    "dlna": {
+      "description": "Konfigurer DLNA-innstillinger og -profiler",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Konfigurer paneler og layout på startskjermen",
+      "name": "Startskjerm"
+    },
+    "libraries": {
+      "description": "Administrer biblioteker og metadata",
+      "name": "Biblioteker"
+    },
+    "liveTvAndDvr": {
+      "description": "Administrer TV-mottakere, programdatatilbydere og DVR-innstillinger",
+      "name": "Sanntids-TV og DVR"
+    },
+    "logs": {
+      "description": "Les og søk i serverlogger og brukeraktivitet",
+      "name": "Logger og aktivitet"
+    },
+    "mediaPlayers": {
+      "description": "Konfigurer avspillere på denne enheten",
+      "name": "Avspillere"
+    },
+    "networking": {
+      "description": "Administrer serverens nettverksinnstillinger",
+      "name": "Nettverk"
+    },
+    "notifications": {
+      "description": "Administrer og konfigurer varsler sendt av serveren",
+      "name": "Varsler"
+    },
+    "playback": {
+      "description": "Rediger avspillingsinnstillingene for denne enheten",
+      "name": "Avspilling"
+    },
+    "plugins": {
+      "description": "Legg til og konfigurer utvidelser",
+      "name": "Utvidelser"
+    },
+    "scheduledTasks": {
+      "description": "Administrer planlagte jobber",
+      "name": "Planlagte jobber"
+    },
+    "server": {
+      "description": "Konfigurer serverens språk og branding",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Konfigurer hvordan undertekster vises på denne enheten",
+      "name": "Undertekster"
+    },
+    "transcodingAndStreaming": {
+      "description": "Administrer hvordan serveren håndterer transcoding og strømming til klienter",
+      "name": "Transcoding og strømming"
+    },
+    "users": {
+      "description": "Administrer brukere og tillatelser",
+      "name": "Brukere"
+    }
+  },
+  "shows": "Serier",
+  "signIn": "Logg inn",
+  "sortByType": "Etter {type}",
+  "sortTitle": "Sorterbar tittel",
+  "specialFeatures": "Spesial Innhold",
+  "status": "Status",
+  "studios": "Studioer",
+  "subtitles": "Undertekster",
+  "syncingInProgress": "Synkronisering pågår",
+  "tagline": "Slagord",
+  "tags": "Etiketter",
+  "themeSong": "Kjenningsmelodi",
+  "themeVideo": "Kjenningsvideo",
+  "tooltips": {
+    "changeLanguage": "Språk",
+    "switchToDarkMode": "Bytt til mørk modus",
+    "switchToLightMode": "Bytt til lys modus"
+  },
+  "trailer": "Trailer",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "type": "Type",
+  "unableGetPublicUsers": "Kunne ikke hente brukerliste",
+  "unableGetRelated": "Kunne ikke hente relaterte artikler",
+  "unableGetServerConfiguration": "Kunne ikke hente serverkonfigurasjon",
+  "unableToRefreshLibrary": "Kunne ikke oppdatere biblioteket",
+  "unableToToggleLike": "Kunne ikke endre likerstatusen til elementet",
+  "unableToTogglePlayed": "Kunne ikke oppdatere sett-statusen",
+  "undefined": "Udefinert",
+  "unexpectedError": "Uventet feil",
+  "unhandledException": "Uhåndtert feil",
+  "unliked": "Ikke likt",
+  "unplayed": "Uspilt",
+  "upNext": "Neste",
+  "upNextName": "Neste: {upNextItemName}",
+  "username": "Brukernavn",
+  "validation": {
+    "bothPasswordsSame": "Begge passordene må være like",
+    "mustBeUrl": "Dette feltet må inneholde en gyldig URL",
+    "required": "Dette feltet må utfylles"
+  },
+  "version": "Versjon",
+  "video": "Video",
+  "videoTypes": "Videoformat",
+  "viewDetails": "Vis detaljer",
+  "vueClientVersion": "Klientversjon",
+  "wizard": {
+    "administratorAccount": "Administratorkonto",
+    "allowRemoteAccess": "Tillat fjerntilgang til serveren",
+    "completeError": "Kunne ikke fullføre oppstartsguiden.",
+    "confirmPassword": "Bekreft passord",
+    "languageLocale": "Språk",
+    "languageSuccessfullySet": "Språket ble satt.",
+    "metadataLanguagesSet": "Metadataspråkene ble satt.",
+    "preferedLanguage": "Foretrukket språk",
+    "preferredMetadataLanguage": "Foretrukket metadataspråk",
+    "remoteAccess": "Fjerntilgang",
+    "remoteAccessSet": "Fjerntilgang satt.",
+    "setAdminError": "Kunne ikke opprette administratorkonto.",
+    "setLanguageError": "Kunne ikke sette klientspråk.",
+    "setMetadataError": "Kunne ikke sette metadataspråk.",
+    "setRemoteError": "Kunne ikke sette innstillinger for fjerntilgang.",
+    "setupWizard": "Oppstartsguide",
+    "userSuccessfullySet": "Brukeren ble innstilt."
+  },
+  "writer": "Forfatter",
+  "writing": "Forfattere",
+  "year": "År",
+  "years": "År",
+  "youMayAlsoLike": "Du kan også like"
+}

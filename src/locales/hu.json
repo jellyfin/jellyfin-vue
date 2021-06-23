@@ -1,0 +1,408 @@
+{
+  "3DFormat": "3D formátum",
+  "NoMediaSourcesAvailable": "Nincs elérhető médiaforrás",
+  "actor": "Színész",
+  "actors": "Színészek",
+  "addNewPerson": "Új személy hozzáadása",
+  "albums": "Albumok",
+  "allLanguages": "Összes nyelv",
+  "alphabetically": "Abc sorrend",
+  "architecture": "Architektúra",
+  "artist": "Előadók",
+  "artists": "Előadók",
+  "audio": "Hang",
+  "badRequest": "Hibás lekérdezés. Próbáld újra",
+  "biography": "Életrajz",
+  "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
+  "buttons": {
+    "ok": "Oké"
+  },
+  "byArtist": "{artist} -tól",
+  "cancel": "Mégse",
+  "castAndCrew": "Színészek & személyzet",
+  "collections": "Gyűjtemények",
+  "communityRating": "Közösségi értékelés",
+  "confirm": "Megerősítés",
+  "connect": "Kapcsolódás",
+  "continueListening": "Hallgatás folytatása",
+  "continueWatching": "Megtekintés folytatása",
+  "criticRating": "Kritikus értékelés",
+  "customRating": "Egyedi értékelés",
+  "darkModeToggle": "Váltás sötét módra",
+  "dateAdded": "Hozzáadás dátuma",
+  "details": "Részletek",
+  "directing": "Rendező(k)",
+  "director": "Rendező",
+  "discNumber": "{discNumber} lemez",
+  "dislikes": "Nem tetszett(ek)",
+  "edit": "Szerkesztés",
+  "editMetadata": "Metaadat szerkesztése",
+  "editPerson": "Személy szerkesztése",
+  "endDate": "Befejezés dátuma",
+  "endsAt": "Befejezés ekkor: {time}",
+  "episodeNumber": "{episodeNumber}. epizód",
+  "errors": {
+    "anErrorHappened": "Hiba történt",
+    "messages": {
+      "errorCode": "Hibakód: {errorCode}",
+      "videoPlayerError": "A videolejátszó helyrehozhatatlan hibát észlelt."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Nem sikerült lekérni a megjelenítési beállításokat. Az utolsó ismert beállítások lesznek alkamazva.",
+  "failedSettingDisplayPreferences": "Nem sikerült frissíteni a megjelenítési beállításokat.",
+  "failedToRefreshItems": "Az elemek frissítése sikertelen",
+  "favorite": "Kedvenc",
+  "features": "Funkciók",
+  "filter": "Szűrő",
+  "filtersNotFound": "A szűrök betöltése sikertelen",
+  "fullScreen": "Teljes képernyő",
+  "general": "Általános",
+  "genres": "Műfaj",
+  "guestStar": "Vendégsztár",
+  "headerExternalIds": "Külső azonosítók",
+  "headerPaths": "Útvonal",
+  "home": "Kezdőlap",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Nemrég hozzáadott"
+    },
+    "welcome": {
+      "checkNewItems": "Tekintsd meg mi új.",
+      "helloUser": "Üdv {userName}!",
+      "noItems": "Jelenleg nincsenek hozzáadva megmutatható elemek."
+    }
+  },
+  "imageType": {
+    "art": "Borító",
+    "backdrop": "Háttér",
+    "banner": "Banner",
+    "box": "Doboz",
+    "boxRear": "Box (hátsó)",
+    "disc": "Lemez",
+    "logo": "Logo",
+    "menu": "Menü",
+    "primary": "Elsődleges",
+    "screenshot": "Képernyőkép",
+    "thumb": "Miniatűr"
+  },
+  "images": "Képek",
+  "incorrectUsernameOrPassword": "Hibás felhasználónév vagy jelszó",
+  "item": {
+    "artist": {
+      "appearsOn": "Megjelenések",
+      "discography": "Diszkográfia",
+      "information": "Infromáció",
+      "videos": "Videók"
+    },
+    "cast": "Szereplő(k)",
+    "composer": "Zeneszerző",
+    "crew": "Csapat",
+    "person": {
+      "birth": "Születési idő",
+      "birthPlace": "Születési hely",
+      "death": "Halálozás időpontja",
+      "person": "Személy"
+    },
+    "tracklist": {
+      "title": "Cím"
+    }
+  },
+  "itemNotFound": "Az elem nem található",
+  "jellyfinLogo": "Jellyfin logó",
+  "latestLibrary": "Legújabb {libraryName}",
+  "libraries": "Könyvtárak",
+  "libraryEmpty": "Ez a könyvtár üres",
+  "libraryEmptyFilters": "Nincs egyezés. Távolítson el néhány szűrőt további elemek megjelenítéséhez",
+  "libraryNotFound": "A könyvtár nem található",
+  "libraryRefreshQueued": "A könyvtár frissítése a várólistán",
+  "liked": "Kedvelt",
+  "likes": "Kedvelések",
+  "links": {
+    "helpTranslate": "Jellyfin lefordítása a te nyelvedre",
+    "poweredByJellyfin": "Ez a szerver Jellyfin-t üzemeltet",
+    "readTheDocumentation": "Olvasd el a dokumentációt",
+    "reportAnIssue": "Jelents be egy hibát ezzel a klienssel"
+  },
+  "login": {
+    "addServer": "Szerver hozzáadása",
+    "changeServer": "Szerverváltás",
+    "changeUser": "Felhasználóváltás",
+    "connect": "Kapcsolódás",
+    "login": "Bejelentkezés",
+    "loginAs": "Bejelentkezés mint {name}",
+    "manualLogin": "Manuális bejelentkezés",
+    "rememberMe": "Emlékezz rám",
+    "selectServer": "Szerver kiválasztása",
+    "selectUser": "Felhasználóváltás",
+    "serverAddress": "Szerver címe",
+    "serverAddressMustBeUrl": "A szerver címének érvényes URL-nek kell lennie",
+    "serverAddressRequired": "Szervercím megadása kötelező",
+    "serverDashboard": "Szerver irányítópult",
+    "serverNotFound": "Szerver nem található",
+    "serverVersionTooLow": "A szerver verziójának legalább 10.7.0-nak kell lennie"
+  },
+  "logout": "Kijelentkezés",
+  "logsAndActivity": {
+    "activity": "Tevékenységek",
+    "failedGetActivity": "Nem sikerült az aktivitásokat megszerezni",
+    "failedGetLogs": "Nem sikerült a naplókat megszerezni",
+    "logs": "Naplók",
+    "noActivityFound": "Nincs aktivitás találva",
+    "noLogsFound": "Naplófájl nem található"
+  },
+  "manualLogin": "Manuális bejelentkezés",
+  "menu": "Menü",
+  "metadata": {
+    "source": "Forrás",
+    "sourceAll": "Összes",
+    "title": "Cím",
+    "type": "Típus"
+  },
+  "metadataEditor": "Metaadat-szerkesztő",
+  "metadataNoResultsMatching": "A keresett kifejezés ({search}) nem található. Nyomj enter-t, hogy létrehozz egy újat.",
+  "more": "Több",
+  "moreLikeArtist": "Hozzá hasonlóak {artist}",
+  "moreLikeThis": "Több ehhez hasonló",
+  "movies": "Filmek",
+  "name": "Név",
+  "networks": "Hálózatok",
+  "nextUp": "Következő",
+  "noAudioTrackSelected": "Audiósáv nem került kiválasztásra",
+  "noAudioTracksAvailable": "Nincs elérhető audiósáv",
+  "noImagesFound": "Nem található kép",
+  "noNetworkConnection": "Nincs hálózati kapcsolat",
+  "noResultsFound": "Itt nincsen semmi",
+  "noSubtitleSelected": "Nincs felirat kiválasztva",
+  "noSubtitlesAvailable": "Nincs elérhető felirat",
+  "noTracksAvailable": "Nincs elérhető cím",
+  "noVideoTrackSelected": "Videosáv nincs kiválasztva",
+  "noVideoTracksAvailable": "Nincs elérhető videosáv",
+  "numberTracks": "{number} szám",
+  "operatingSystem": "Operációs rendszer",
+  "originalAspectRatio": "Eredeti oldalarány",
+  "originalTitle": "Eredeti cím",
+  "overview": "Áttekintés",
+  "parentalRating": "Korhatár besorolás",
+  "parentalRatings": "Szülői besorolás",
+  "password": "Jelszó",
+  "people": "Személyek",
+  "person": "Személy",
+  "play": "Lejátszás",
+  "playFromBeginning": "Lejátszás az elsőtől",
+  "playback": {
+    "addToQueue": "Lejátszási listához adás",
+    "clearQueue": "Lejátszási sor törlése és lejátszás megállítása",
+    "playAll": "Összes lejátszása",
+    "playNext": "Következő lejátszása",
+    "playbackSource": {
+      "item": "Lejátszás innen: {item}",
+      "shuffle": "Véletlenszerű lejátszás",
+      "shuffleItem": "A(z) {item} lejátszása véletlenszerű sorrendben",
+      "unknown": "Lejátszás a sorból"
+    },
+    "queueItems": "{items} Cím",
+    "saveAsPlaylist": "Sor mentése lejátszási listaként",
+    "shuffle": "Keverés",
+    "shuffleAll": "Összes keverése"
+  },
+  "played": "Lejátszott",
+  "present": "Jelenlegi",
+  "producer": "Producer",
+  "queue": "Sor",
+  "rating": "Értékelés",
+  "refreshLibrary": "Könyvtár frissítése",
+  "releaseDate": "Megjelenés dátuma",
+  "resumable": "Folytatható",
+  "resume": "Folytatás",
+  "role": "Szerep",
+  "save": "Mentés",
+  "saved": "Mentve",
+  "search": "Keresés",
+  "series": "Sorozatok",
+  "server": "Szerver",
+  "serverVersion": "Szerver verzió",
+  "serverVersionTooLow": "A szerver verziójának legalább 10.7.0-nak kell lennie",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Hozzáférési token",
+      "addApiKey": "API-kulcs hozzáadása",
+      "addNewKey": "Új API-kulcs hozzáadása",
+      "apiKeys": "API-kulcsok",
+      "appName": "App neve",
+      "createKeyFailure": "Hiba történt az új API-kulcs létrehozása során",
+      "createKeySuccess": "API-kulcs létrehozása sikeres",
+      "dateCreated": "Létrehozás dátuma",
+      "description": "API-kulcsok hozzáadása és visszavonása a kiszolgálóhoz való külső hozzáféréshez",
+      "refreshKeysFailure": "API-kulcsok frissítése sikertelen",
+      "revokeAll": "API-kulcsok visszavonása",
+      "revokeAllFailure": "API-kulcsok visszavonása sikertelen",
+      "revokeAllSuccess": "API-kulcsok visszavonása sikeres",
+      "revokeFailure": "API-kulcs visszavonása sikertelen",
+      "revokeSuccess": "API-kulcs visszavonásra került"
+    },
+    "devices": {
+      "appName": "App neve",
+      "appVersion": "App verziója",
+      "delete": "Törlés",
+      "deleteAll": "Összes törlése",
+      "deleteAllDevicesError": "Hiba történt az összes eszköz törlésekor",
+      "deleteAllDevicesSuccess": "Minden eszköz sikeresen törölve",
+      "deleteDeviceError": "Hiba történt az eszköz törlésekor",
+      "deleteDeviceSuccess": "Az eszköz sikeresen törölve",
+      "deviceName": "Eszköz neve",
+      "devices": "Eszközök",
+      "lastActive": "Utoljára aktív",
+      "noDevicesFound": "Nem található eszköz",
+      "userName": "Felhasználónév"
+    },
+    "help": "Segítség",
+    "logsAndActivity": {
+      "activity": "Tevékenységek",
+      "failedGetActivity": "Nem sikerült az aktivitásokat megszerezni",
+      "failedGetLogs": "Nem sikerült a naplókat megszerezni",
+      "logs": "Naplók",
+      "noActivityFound": "Nem található aktivitás",
+      "noLogsFound": "Naplófájl nem található"
+    },
+    "settings": "Beállítások"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Szerkeszd a felhasználód információját",
+      "name": "Felhasználó"
+    },
+    "devices": {
+      "description": "Nézd meg és kezeld a szerveredhez csatlakozott eszközöket",
+      "name": "Eszközök"
+    },
+    "dlna": {
+      "description": "DLNA beállítások és profil konfigurálása",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Konfiguráld a kezdőlapok és kezdőképernyő kinézetét",
+      "name": "Kezdőképernyő"
+    },
+    "libraries": {
+      "description": "Könyvtárak és a metaadataik kezelése",
+      "name": "Könyvtárak"
+    },
+    "liveTvAndDvr": {
+      "description": "TV tunerek, elektronikus műsorújságok és DVR beállítások kezelése",
+      "name": "Élő TV & DVR"
+    },
+    "logs": {
+      "description": "Olvass és keress szerver naplót és felhasználói aktivitást",
+      "name": "Napló & aktivitás"
+    },
+    "mediaPlayers": {
+      "description": "Konfiguráld hogy a médialejátszók hogyan viselkedjenek erre az eszközre",
+      "name": "Médialejátszók"
+    },
+    "networking": {
+      "description": "A szerver hálózati beállításainak kezelése",
+      "name": "Hálózat"
+    },
+    "notifications": {
+      "description": "Szerver által küldött értesítés kezelése és konfigurálása",
+      "name": "Értesítések"
+    },
+    "playback": {
+      "description": "Szerkeszd a lejátszási beállításaidat erre az eszközre",
+      "name": "Lejátszás"
+    },
+    "plugins": {
+      "description": "Adj hozzá új funkciókat és konfiguráld azokat ezen a szerveren",
+      "name": "Bővítmények"
+    },
+    "scheduledTasks": {
+      "description": "A szerveren futó ütemezett feladatok kezelése",
+      "name": "Ütemezett feladatok"
+    },
+    "server": {
+      "description": "Konfiguráld a szerver nyelvét és nevét",
+      "name": "Szerver"
+    },
+    "subtitles": {
+      "description": "Kezeld hogy a feliratok hogyan látszanak ezen az eszközön",
+      "name": "Feliratok"
+    },
+    "transcodingAndStreaming": {
+      "description": "Szerver átkódolásainak és közvetítéseinek kezelése",
+      "name": "Átkódolás & közvetítés"
+    },
+    "users": {
+      "description": "Felhasználók és jogaik kezelése",
+      "name": "Felhasználók"
+    }
+  },
+  "shows": "Sorozatok",
+  "signIn": "Bejelentkezés",
+  "sortByType": "{type} szerint",
+  "sortTitle": "Cím rendezése",
+  "specialFeatures": "Speciális funkciók",
+  "status": "Állapot",
+  "studios": "Stúdiók",
+  "subtitles": "Feliratok",
+  "syncingInProgress": "Szinkronizálás folyamatban",
+  "tagline": "Jelmondat",
+  "tags": "Címkék",
+  "themeSong": "Főcímdal",
+  "themeVideo": "Főcím",
+  "tooltips": {
+    "changeLanguage": "Nyelv",
+    "switchToDarkMode": "Váltás sötét módra",
+    "switchToLightMode": "Váltás világos módra"
+  },
+  "trailer": "Előzetes",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "type": "Típus",
+  "unableGetPublicUsers": "Nem sikerült lekérni a felhasználókat",
+  "unableGetRelated": "Nem sikerült lekérni a kapcsolódó elemeket",
+  "unableGetServerConfiguration": "Nem sikerült lekérni a szerver konfigurációt",
+  "unableToRefreshLibrary": "Nem sikerült frissíteni a könyvtárat",
+  "unableToToggleLike": "Nem lehet megváltoztatni az elem \"tetszett\" állapotát",
+  "unableToTogglePlayed": "Nem lehet frissíteni a nézettség állapotát",
+  "undefined": "Meghatározatlan",
+  "unexpectedError": "Váratlan hiba",
+  "unhandledException": "Kezeletlen kivétel",
+  "unliked": "Nem tetszett",
+  "unplayed": "Lejátszatlan",
+  "upNext": "Következik",
+  "upNextName": "Következő: {upNextItemName}",
+  "username": "Felhasználónév",
+  "validation": {
+    "bothPasswordsSame": "Mindkét jelszónak azonosnak kell lennie",
+    "mustBeUrl": "Ennek a mezőnek érvényes URL-nek kell lennie",
+    "required": "Ez a mező kötelező"
+  },
+  "version": "Verzió",
+  "video": "Videó",
+  "videoTypes": "Videó típusok",
+  "viewDetails": "Részletek megjelenítése",
+  "vueClientVersion": "Kliens verziója",
+  "wizard": {
+    "administratorAccount": "Rendszergazda fiók",
+    "allowRemoteAccess": "Távoli hozzáférés engedélyezése a szerverhez",
+    "completeError": "Nem sikerült befejezni az indítási varázslót.",
+    "confirmPassword": "Jelszó megerősítése",
+    "languageLocale": "Nyelv és területi beállítás",
+    "languageSuccessfullySet": "A nyelv beállítása sikeres.",
+    "metadataLanguagesSet": "Metaadat-nyelvek beállítása.",
+    "preferedLanguage": "Preferált nyelv",
+    "preferredMetadataLanguage": "Preferált metaadat nyelve",
+    "remoteAccess": "Távoli hozzáférés",
+    "remoteAccessSet": "Távoli hozzáférés beállítva.",
+    "setAdminError": "Nem lehet adminisztrátori fiókot létrehozni.",
+    "setLanguageError": "Nem lehet beállítani az ügyfélfiók nyelvét.",
+    "setMetadataError": "Nem lehet beállítani a metaadat nyelvét.",
+    "setRemoteError": "Nem lehet megadni a távoli hozzáférés beállításait.",
+    "setupWizard": "Beállítási varázsló",
+    "userSuccessfullySet": "A felhasználó beállítása sikeres."
+  },
+  "writer": "Író",
+  "writing": "Forgatókönyvírók",
+  "year": "Év",
+  "years": "Évek",
+  "youMayAlsoLike": "Tetszhet ez is"
+}

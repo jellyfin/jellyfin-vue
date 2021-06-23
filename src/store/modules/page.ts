@@ -1,4 +1,5 @@
 import { ActionTree, MutationTree } from 'vuex';
+import { RootState } from '..';
 
 export interface PageState {
   title: string;
@@ -47,7 +48,7 @@ export const mutations: MutationTree<PageState> = {
   }
 };
 
-export const actions: ActionTree<PageState, PageState> = {
+export const actions: ActionTree<PageState, RootState> = {
   setPageTitle({ commit }, { title }: TitleMutationPayload) {
     commit('SET_PAGE_TITLE', { title });
   },
@@ -60,4 +61,10 @@ export const actions: ActionTree<PageState, PageState> = {
   clearPage({ commit }) {
     commit('CLEAR_PAGE');
   }
+};
+
+export default {
+  state,
+  mutations,
+  actions
 };
