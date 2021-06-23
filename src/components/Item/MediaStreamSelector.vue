@@ -52,6 +52,13 @@ export default Vue.extend({
     mediaStreams: {
       type: Array as PropType<MediaStream[]>,
       default: () => []
+    },
+    /**
+     * Overrides the default track number
+     */
+    defaultStreamIndex: {
+      type: Number,
+      default: undefined
     }
   },
   data() {
@@ -105,6 +112,10 @@ export default Vue.extend({
      */
     defaultIndex: {
       get(): number | undefined {
+        if (this.defaultStreamIndex !== undefined) {
+          return this.defaultStreamIndex;
+        }
+
         return this.mediaStreams.find((track) => track.IsDefault)?.Index;
       }
     }
