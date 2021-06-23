@@ -20,6 +20,7 @@
     "@jellyfin/client-axios": "10.7.0",
     "destr": "^1.1.0",
     "vue": "^3.0.5",
+    "vue-router": "^4.0.10",
     "vuetify": "^3.0.0-alpha.6",
     "vuex": "^4.0.2"
   },
@@ -47,6 +48,7 @@
     "typescript": "^4.3.4",
     "vite": "^2.3.7",
     "vite-plugin-components": "^0.11.2",
+    "vite-plugin-vue-layouts": "^0.3.1",
     "vue-tsc": "^0.0.24"
   },
   "config": {
