@@ -38,9 +38,12 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                :item="getCurrentItem"
-                :media-source-index="0"
-                type="Subtitles"
+                :media-streams="
+                  getMediaStreams(
+                    getCurrentItem.MediaSources[0].MediaStreams,
+                    'Subtitles'
+                  )
+                "
                 @input="currentAudioTrack = $event"
               />
             </v-col>
@@ -53,9 +56,12 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                :item="getCurrentItem"
-                :media-source-index="0"
-                type="Audio"
+                :media-streams="
+                  getMediaStreams(
+                    getCurrentItem.MediaSources[0].MediaStreams,
+                    'Audio'
+                  )
+                "
                 @input="currentAudioTrack = $event"
               />
             </v-col>
@@ -68,9 +74,12 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                :item="getCurrentItem"
-                :media-source-index="0"
-                type="Subtitles"
+                :media-streams="
+                  getMediaStreams(
+                    getCurrentItem.MediaSources[0].MediaStreams,
+                    'Subtitles'
+                  )
+                "
                 @input="currentAudioTrack = $event"
               />
             </v-col>
@@ -83,9 +92,12 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                :item="getCurrentItem"
-                :media-source-index="0"
-                type="Subtitles"
+                :media-streams="
+                  getMediaStreams(
+                    getCurrentItem.MediaSources[0].MediaStreams,
+                    'Subtitles'
+                  )
+                "
                 @input="currentAudioTrack = $event"
               />
             </v-col>
@@ -109,8 +121,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
+  mixins: [itemHelper],
   props: {
     nudgeTop: {
       type: [Number, String],
