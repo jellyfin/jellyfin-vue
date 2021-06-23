@@ -105,7 +105,7 @@
     "axe-core": "^4.2.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^27.0.2",
+    "babel-jest": "^27.0.5",
     "comlink-loader": "^2.0.0",
     "confusing-browser-globals": "^1.0.10",
     "core-js": "^3.15.0",
