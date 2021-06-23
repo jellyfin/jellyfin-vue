@@ -87,14 +87,14 @@
     />
     <v-spacer />
     <!-- <dark-mode-toggle
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      />
-      <locale-switcher
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        bottom
-      />
+        :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
+      /> -->
+    <locale-switcher />
+    <!--
+      :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
+      bottom
       <cast-button
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
       /> -->
   </v-app-bar>
   <v-main>
