@@ -12,22 +12,18 @@
     @input="$emit('input', $event)"
   >
     <template slot="selection" slot-scope="{ item: i }">
-      {{ getTrackSelection(i.text) }}
+      {{ i.text.selection }}
     </template>
 
     <template slot="item" slot-scope="{ item: i, on, attrs }">
-      <v-list-item
-        v-bind="attrs"
-        :two-line="!!getTrackSubtitle(i.text)"
-        v-on="on"
-      >
-        <v-list-item-avatar v-if="getTrackIcon(i.text)">
-          <v-icon>{{ getTrackIcon(i.text) }}</v-icon>
+      <v-list-item v-bind="attrs" :two-line="!!i.text.subtitle" v-on="on">
+        <v-list-item-avatar v-if="i.text.icon">
+          <v-icon>{{ i.text.icon }}</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>{{ getTrackTitle(i.text) }}</v-list-item-title>
-          <v-list-item-subtitle v-if="getTrackSubtitle(i.text)">
-            {{ getTrackSubtitle(i.text) }}
+          <v-list-item-title>{{ i.text.title }}</v-list-item-title>
+          <v-list-item-subtitle v-if="i.text.subtitle">
+            {{ i.text.subtitle }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -39,110 +35,91 @@
 import Vue, { PropType } from 'vue';
 // @ts-expect-error - This module doesn't have typings. Temporary module while waiting for fixes to language names on the server
 import langs from 'langs';
-import {
-  BaseItemDto,
-  MediaStream,
-  MediaSourceInfo
-} from '@jellyfin/client-axios';
+import { MediaStream } from '@jellyfin/client-axios';
+
+interface SelectItems {
+  selection: string;
+  subtitle: string | undefined;
+  icon: string | undefined;
+  title: string;
+}
 
 export default Vue.extend({
   props: {
     /**
-     * Media item
+     * Media streams to display in the selector
      */
-    item: {
-      type: Object as PropType<BaseItemDto>,
-      required: true
-    },
-    /**
-     * Current media source used (current movie version for instance)
-     */
-    mediaSourceIndex: {
-      type: Number,
-      default: 0
-    },
-    /**
-     * Which media type to consider for this selector
-     */
-    type: {
-      type: String,
-      required: true,
-      validator(value: string): boolean {
-        return ['Audio', 'Subtitle', 'Video'].includes(value);
-      }
+    mediaStreams: {
+      type: Array as PropType<MediaStream[]>,
+      default: () => []
     }
   },
   data() {
     return { trackIndex: -1 as number };
   },
   computed: {
-    mediaSourceItem: {
+    type: {
       /**
-       * @returns {MediaSourceInfo} The current source object (or empty if the index or media sources array don't exist)
+       * Calculates the type for the given media streams
+       *
+       * @returns {string|undefined} Type of the given media streams
        */
-      get(): MediaSourceInfo {
-        return this.item.MediaSources &&
-          this.item.MediaSources[this.mediaSourceIndex]
-          ? this.item.MediaSources[this.mediaSourceIndex]
-          : {};
-      }
-    },
-    tracks: {
-      /**
-       * @returns {MediaStream[]} List of MediaStream of the specified type
-       */
-      get(): MediaStream[] {
-        if (!this.mediaSourceItem.MediaStreams) {
-          return [];
-        }
-
-        return this.mediaSourceItem.MediaStreams.filter(
-          (mediaStream) => mediaStream.Type === this.type
-        );
+      get(): string | undefined {
+        return this.mediaStreams[0].Type;
       }
     },
     selectItems: {
       /**
-       * Used to model the media stream index as a value and use the object items for the different displays
+       * Used to model the media stream index as a value and the potential strings
        *
-       * @returns {{text: MediaStream; value: number}[]} List of objects prepared for Vuetify v-select with the tracks as "text" and index number as "value".
+       * @returns {{text: SelectItems, value: number}[]} List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
        */
-      get(): { text: MediaStream; value: number | undefined }[] {
-        return this.tracks.map((value, _idx) => {
-          return { text: value, value: value.Index };
+      get(): { text: SelectItems; value: number | undefined }[] {
+        const items = this.mediaStreams.map((value, _idx) => {
+          return {
+            text: {
+              selection: this.getTrackSelection(value),
+              subtitle: this.getTrackSubtitle(value),
+              icon: this.getTrackIcon(value),
+              title: this.getTrackTitle(value)
+            },
+            value: value.Index
+          };
         });
+
+        items.unshift({
+          value: -1,
+          text: {
+            selection: this.$t('disabled'),
+            title: this.$t('disabled'),
+            subtitle: undefined,
+            icon: undefined
+          }
+        });
+
+        return items;
       }
     },
     /**
-     * @returns {number|undefined} Default index to use (undefined if empty by default)
+     * @returns {number|undefined} Default index to use (undefined if none)
      */
     defaultIndex: {
-      get(): number {
-        return this.tracks.findIndex((track) => track.IsDefault);
+      get(): number | undefined {
+        return this.mediaStreams.find((track) => track.IsDefault)?.Index;
       }
-    }
-  },
-  watch: {
-    /**
-     * When the media source index is changed by the parent, we reset the selected track as it has changed
-     */
-    mediaSourceIndex(): void {
-      this.resetDefaultTrack();
     }
   },
   /**
    * Sets the default track when loading the component
    */
   beforeMount() {
-    this.resetDefaultTrack();
+    if (this.defaultIndex !== undefined) {
+      this.trackIndex = this.defaultIndex;
+    }
+
+    this.$emit('input', this.trackIndex);
   },
   methods: {
-    /**
-     * Sets the model default track to the computed one, used at component (re)set
-     */
-    resetDefaultTrack(): void {
-      this.trackIndex = this.defaultIndex;
-    },
     /**
      * @param {MediaStream} track - Track to parse
      * @returns {string} Text to display in select when track is choosen

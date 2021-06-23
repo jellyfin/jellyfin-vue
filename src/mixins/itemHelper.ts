@@ -3,7 +3,11 @@
  *
  * @mixin
  */
-import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  MediaStream
+} from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { isPerson, validLibraryTypes } from '~/utils/items';
 
@@ -14,6 +18,10 @@ declare module '@nuxt/types' {
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
+    getMediaStreams: (
+      mediaStreams: MediaStream[],
+      streamType: string
+    ) => MediaStream[];
   }
 
   interface NuxtAppOptions {
@@ -22,6 +30,10 @@ declare module '@nuxt/types' {
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
+    getMediaStreams: (
+      mediaStreams: MediaStream[],
+      streamType: string
+    ) => MediaStream[];
   }
 }
 
@@ -32,6 +44,10 @@ declare module 'vue/types/vue' {
     canMarkWatched: (item: BaseItemDto) => boolean;
     getItemDetailsLink: (item: BaseItemDto, overrideType?: string) => string;
     getItemIcon: (item: BaseItemDto | BaseItemPerson) => string;
+    getMediaStreams: (
+      mediaStreams: MediaStream[],
+      streamType: string
+    ) => MediaStream[];
   }
 }
 
@@ -204,6 +220,21 @@ const itemHelper = Vue.extend({
       }
 
       return itemIcon;
+    },
+    /**
+     * Filters the media streams based on the wanted type
+     *
+     * @param mediaStreams Media streams to filter among
+     * @param streamType Stream type such as "audio" or "subtitles"
+     * @returns {MediaStream[]} - Filtered media streams
+     */
+    getMediaStreams(
+      mediaStreams: MediaStream[],
+      streamType: string
+    ): MediaStream[] {
+      return mediaStreams.filter(
+        (mediaStream) => mediaStream.Type === streamType
+      );
     }
   }
 });
