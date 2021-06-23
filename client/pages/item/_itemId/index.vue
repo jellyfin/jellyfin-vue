@@ -170,9 +170,9 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Video'"
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Video')
+                    "
                     @input="currentVideoTrack = $event"
                   />
                 </v-col>
@@ -187,9 +187,9 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Audio'"
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Audio')
+                    "
                     @input="currentAudioTrack = $event"
                   />
                 </v-col>
@@ -204,9 +204,9 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Subtitle'"
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Subtitle')
+                    "
                     @input="currentSubtitleTrack = $event"
                   />
                 </v-col>
@@ -303,13 +303,6 @@ export default Vue.extend({
     ...mapState('page', ['title']),
     item(): BaseItemDto {
       return this.getItem(this.itemId);
-    },
-    currentSourceIndex: {
-      get(): number | undefined {
-        return this.item.MediaSources?.findIndex(
-          (source) => source === this.currentSource
-        );
-      }
     },
     isPlayable: {
       get(): boolean {
