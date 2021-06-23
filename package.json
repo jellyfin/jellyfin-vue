@@ -17,8 +17,11 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
+    "@jellyfin/client-axios": "10.7.0",
+    "destr": "^1.1.0",
     "vue": "^3.0.5",
-    "vuetify": "^3.0.0-alpha.6"
+    "vuetify": "^3.0.0-alpha.6",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
