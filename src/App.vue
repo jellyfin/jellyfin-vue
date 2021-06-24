@@ -1,6 +1,10 @@
 <template>
   <v-app>
+    <!-- <backdrop /> -->
     <router-view />
+    <!-- <audio-controls /> -->
+    <!-- <snackbar /> -->
+    <!-- <player-manager /> -->
   </v-app>
 </template>
 

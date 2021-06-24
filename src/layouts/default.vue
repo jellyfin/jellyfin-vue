@@ -1,7 +1,4 @@
 <template>
-  <!-- <client-only>
-      <backdrop />
-    </client-only> -->
   <v-navigation-drawer
     v-model="drawer"
     :temporary="breakpoint.mobile"
@@ -102,10 +99,6 @@
       <router-view />
     </div>
   </v-main>
-  <!-- <audio-controls /> -->
-  <!-- Utilities and global systems -->
-  <!-- <snackbar />
-    <player-manager /> -->
 </template>
 
 <script setup lang="ts">
