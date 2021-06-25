@@ -11,16 +11,18 @@ import { store, key } from './store';
 import routes from './routes';
 import { createAxios } from './plugins/axios';
 
+const app = createApp(App);
 const i18n = createI18n({
   legacy: false,
   messages
 });
-const app = createApp(App);
 const router = createRouter({
   history: createWebHashHistory(),
   routes: setupLayouts(routes)
 });
-const axios = createAxios({ baseURL: 'http://localhost:8096' });
+const axios = createAxios({
+  baseURL: 'https://demo.jellyfin.org/stable'
+});
 
 app.use(i18n);
 app.use(Vuetify);

@@ -109,8 +109,8 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import { useEventListener } from '@vueuse/core';
-import { useStore } from '../store';
 import { useDisplay } from 'vuetify/lib/composables/display';
+import { useStore } from '../store';
 
 // import { BaseItemDto } from '@jellyfin/client-axios';
 // import { stringify } from 'qs';
