@@ -1,8 +1,9 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :temporary="display.mobile"
-    :permanent="!display.mobile"
+    :temporary="display.mobile.value"
+    :border="0"
+    :elevation="display.mobile.value ? undefined : 0"
     app
     class="pa-s"
   >
@@ -48,22 +49,24 @@
     </template>
   </v-navigation-drawer>
   <v-app-bar
-    :clipped-left="display.mobile"
+    :clipped-left="display.mobile.value"
     app
+    flat
     :class="{ opaque: opaqueAppBar }"
   >
     <v-app-bar-nav-icon
-      v-if="display.mobile && navDrawer"
+      v-if="display.mobile.value"
       @click.stop="drawer = !drawer"
     />
     <v-btn
-      :icon="opaqueAppBar || display.xsOnly || isScrolled"
-      :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled"
-      :small="!(opaqueAppBar || display.xsOnly) && !isScrolled"
+      v-hide="route.name === 'home'"
+      :icon="opaqueAppBar || display.xsOnly.value || isScrolled"
+      :fab="!(opaqueAppBar || display.xsOnly.value) && !isScrolled"
+      :small="!(opaqueAppBar || display.xsOnly.value) && !isScrolled"
       :class="{
-        'ml-n1': opaqueAppBar || display.xsOnly || isScrolled,
-        'mr-2': !(opaqueAppBar || display.xsOnly) && !isScrolled,
-        'mr-1': opaqueAppBar || display.xsOnly || isScrolled
+        'ml-n1': opaqueAppBar || display.xsOnly.value || isScrolled,
+        'mr-2': !(opaqueAppBar || display.xsOnly.value) && !isScrolled,
+        'mr-1': opaqueAppBar || display.xsOnly.value || isScrolled
       }"
       @click="router.back()"
     >
@@ -71,7 +74,7 @@
     </v-btn>
     <v-text-field
       class="search-input"
-      :class="display.mdAndUp ? 'expandable' : null"
+      :class="display.mdAndUp.value ? 'expandable' : null"
       prepend-inner-icon="mdi-magnify"
       :placeholder="t('search')"
       max-width="15em"
@@ -83,12 +86,16 @@
       single-line
     />
     <v-spacer />
-    <dark-mode-toggle :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
+    <dark-mode-toggle
+      :fab="!(opaqueAppBar || display.xsOnly.value) && !isScrolled"
+    />
     <!--<locale-switcher
       :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled"
       bottom
     />-->
-    <cast-button :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
+    <cast-button
+      :fab="!(opaqueAppBar || display.xsOnly.value) && !isScrolled"
+    />
   </v-app-bar>
   <v-main>
     <div class="pa-s">

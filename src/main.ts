@@ -25,4 +25,14 @@ app.use(Vuetify);
 app.use(store, key);
 app.use(router);
 
+app.directive('hide', (el, binding) => {
+  if (el) {
+    if (binding.value === true) {
+      el.style.visibility = 'hidden';
+    } else {
+      el.style.visibility = 'visible';
+    }
+  }
+});
+
 app.mount('#app');
