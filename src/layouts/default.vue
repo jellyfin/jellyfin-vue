@@ -1,8 +1,8 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :temporary="breakpoint.mobile"
-    :permanent="!breakpoint.mobile"
+    :temporary="display.mobile"
+    :permanent="!display.mobile"
     app
     class="pa-s"
   >
@@ -48,22 +48,22 @@
     </template>
   </v-navigation-drawer>
   <v-app-bar
-    :clipped-left="breakpoint.mobile"
+    :clipped-left="display.mobile"
     app
     :class="{ opaque: opaqueAppBar }"
   >
     <v-app-bar-nav-icon
-      v-if="breakpoint.mobile && navDrawer"
+      v-if="display.mobile && navDrawer"
       @click.stop="drawer = !drawer"
     />
     <v-btn
-      :icon="opaqueAppBar || breakpoint.xsOnly || isScrolled"
-      :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
-      :small="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
+      :icon="opaqueAppBar || display.xsOnly || isScrolled"
+      :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled"
+      :small="!(opaqueAppBar || display.xsOnly) && !isScrolled"
       :class="{
-        'ml-n1': opaqueAppBar || breakpoint.xsOnly || isScrolled,
-        'mr-2': !(opaqueAppBar || breakpoint.xsOnly) && !isScrolled,
-        'mr-1': opaqueAppBar || breakpoint.xsOnly || isScrolled
+        'ml-n1': opaqueAppBar || display.xsOnly || isScrolled,
+        'mr-2': !(opaqueAppBar || display.xsOnly) && !isScrolled,
+        'mr-1': opaqueAppBar || display.xsOnly || isScrolled
       }"
       @click="router.back()"
     >
@@ -71,7 +71,7 @@
     </v-btn>
     <v-text-field
       class="search-input"
-      :class="breakpoint.mdAndUp ? 'expandable' : null"
+      :class="display.mdAndUp ? 'expandable' : null"
       prepend-inner-icon="mdi-magnify"
       :placeholder="t('search')"
       max-width="15em"
@@ -83,16 +83,12 @@
       single-line
     />
     <v-spacer />
-    <!-- <dark-mode-toggle
-        :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
-      /> -->
-    <locale-switcher />
-    <!--
-      :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
+    <dark-mode-toggle :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
+    <locale-switcher
+      :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled"
       bottom
-      <cast-button
-        :fab="!(opaqueAppBar || breakpoint.xsOnly) && !isScrolled"
-      /> -->
+    />
+    <cast-button :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
   </v-app-bar>
   <v-main>
     <div class="pa-s">
@@ -107,8 +103,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import { useEventListener } from '@vueuse/core';
 import { useStore } from '../store';
-// FIXME: This doesn't seem to work. Figure out how to use Vuetify composables
-// import { useVuetify } from 'vuetify/lib';
+import { useDisplay } from 'vuetify/lib/composables/display';
 
 // import { BaseItemDto } from '@jellyfin/client-axios';
 // import { stringify } from 'qs';
@@ -146,13 +141,7 @@ const navDrawer = computed(() => store.state.page.navDrawer);
 
 const opaqueAppBar = computed(() => store.state.page.opaqueAppBar);
 
-// const { breakpoint } = useVuetify();
-const breakpoint = ref({
-  // TODO: Kill this when the Vuetify stuff is figured out
-  mobile: false,
-  xsOnly: false,
-  mdAndUp: true
-});
+const display = useDisplay();
 
 //export default defineComponent({
 // mixins: [settingsHelper],
