@@ -20,6 +20,7 @@
     "@jellyfin/client-axios": "10.7.0",
     "@vuetify/nightly": "^3.0.0-next-20210621.0",
     "@vueuse/core": "^5.0.3",
+    "axios": "^0.21.1",
     "destr": "^1.1.0",
     "vue": "^3.0.5",
     "vue-i18n": "^9.1.6",
