@@ -10,8 +10,6 @@ import App from './App.vue';
 import { store, key } from './store';
 import routes from './routes';
 
-import 'vuetify/dist/vuetify.min.css';
-
 const i18n = createI18n({
   legacy: false,
   messages

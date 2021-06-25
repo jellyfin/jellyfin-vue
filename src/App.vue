@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :theme="store.state.clientSettings.darkMode ? 'dark' : 'light'">
     <!-- <backdrop /> -->
     <router-view />
     <!-- <audio-controls /> -->
@@ -8,12 +8,10 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { useStore } from './store';
 
-export default defineComponent({
-  name: 'App'
-});
+const store = useStore();
 </script>
 
 <style>

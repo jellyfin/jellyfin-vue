@@ -67,7 +67,7 @@
       }"
       @click="router.back()"
     >
-      <!--<v-icon>mdi-arrow-left</v-icon>-->
+      <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     <v-text-field
       class="search-input"
@@ -84,10 +84,10 @@
     />
     <v-spacer />
     <dark-mode-toggle :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
-    <locale-switcher
+    <!--<locale-switcher
       :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled"
       bottom
-    />
+    />-->
     <cast-button :fab="!(opaqueAppBar || display.xsOnly) && !isScrolled" />
   </v-app-bar>
   <v-main>

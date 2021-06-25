@@ -7,6 +7,7 @@ import {
 import { InjectionKey } from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
 // Vuex modules
+import clientSettings, { ClientSettingsState } from './modules/clientSettings';
 import page, { PageState } from './modules/page';
 // Vuex plugins
 import { websocketPlugin } from './plugins/websocketPlugin';
@@ -50,7 +51,7 @@ export const state: RootState = {
 export interface AppState extends RootState {
   // auth: AuthState;
   // backdrop: BackdropState;
-  // clientSettings: ClientSettingsState;
+  clientSettings: ClientSettingsState;
   // deviceProfile: DeviceState;
   // homeSection: HomeSectionState;
   // items: ItemsState;
@@ -126,6 +127,7 @@ export const store = createStore({
   mutations,
   actions,
   modules: {
+    clientSettings,
     page
   },
   strict: true,

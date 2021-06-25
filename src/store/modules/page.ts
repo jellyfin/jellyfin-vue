@@ -64,6 +64,7 @@ export const actions: ActionTree<PageState, RootState> = {
 };
 
 export default {
+  namespaced: true,
   state,
   mutations,
   actions

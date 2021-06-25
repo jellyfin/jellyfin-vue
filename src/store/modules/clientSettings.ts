@@ -1,5 +1,5 @@
 import { MutationTree, ActionTree } from 'vuex';
-import nuxtConfig from '~/nuxt.config';
+import { RootState } from '..';
 
 /**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto
@@ -11,10 +11,7 @@ export interface ClientSettingsState {
 }
 
 export const getDefaultState = (): ClientSettingsState => ({
-  darkMode:
-    nuxtConfig.vuetify?.theme?.dark !== undefined
-      ? nuxtConfig.vuetify?.theme?.dark
-      : true,
+  darkMode: true,
   locale: 'auto',
   lastSync: null
 });
@@ -59,7 +56,7 @@ export const mutations: MutationTree<ClientSettingsState> = {
   }
 };
 
-export const actions: ActionTree<ClientSettingsState, ClientSettingsState> = {
+export const actions: ActionTree<ClientSettingsState, RootState> = {
   setDarkMode({ commit }, { darkMode }: { darkMode: boolean }) {
     commit('SET_DARK_MODE', { darkMode });
   },
@@ -83,4 +80,11 @@ export const actions: ActionTree<ClientSettingsState, ClientSettingsState> = {
   initState({ commit }, { data }: { data: ClientSettingsState }) {
     commit('INIT_STATE', { data });
   }
+};
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
 };
