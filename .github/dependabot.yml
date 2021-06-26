@@ -1,35 +1,51 @@
 version: 2
 updates:
-# Fetch and update latest `npm` packages
-- package-ecosystem: npm
-  directory: '/'
-  schedule:
-    interval: daily
-    time: '00:00'
-  open-pull-requests-limit: 10
-  commit-message:
-    prefix: fix
-    prefix-development: chore
-    include: scope
-# Fetch and updated latest `npm` packages for Docker SSR
-- package-ecosystem: npm
-  directory: '/.docker'
-  schedule:
-    interval: daily
-    time: '00:00'
-  open-pull-requests-limit: 10
-  commit-message:
-    prefix: fix
-    prefix-development: chore
-    include: scope
-# Fetch and update latest `github-actions` pkgs
-- package-ecosystem: github-actions
-  directory: '/'
-  schedule:
-    interval: daily
-    time: '00:00'
-  open-pull-requests-limit: 10
-  commit-message:
-    prefix: fix
-    prefix-development: chore
-    include: scope
+  # Fetch and update latest `npm` packages
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '00:00'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
+  # Fetch and updated latest `npm` packages for Docker SSR
+  - package-ecosystem: npm
+    directory: '/.docker'
+    schedule:
+      interval: daily
+      time: '00:00'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
+  # Fetch and update latest `npm` packages for the Vue 3 branch
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '00:00'
+    open-pull-requests-limit: 10
+    target-branch: vue3
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
+    labels:
+      - 'vue3'
+      - 'dependencies'
+      - 'javascript'
+  # Fetch and update latest `github-actions` pkgs
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: daily
+      time: '00:00'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+      include: scope
