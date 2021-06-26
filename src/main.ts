@@ -1,14 +1,12 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
 import { createI18n } from 'vue-i18n';
 
-import { setupLayouts } from 'virtual:generated-layouts';
 import messages from '@intlify/vite-plugin-vue-i18n/messages';
 
 import Vuetify from './plugins/vuetify';
 import App from './App.vue';
 import { store, key } from './store';
-import routes from './routes';
+import router from './router';
 import { createAxios } from './plugins/axios';
 
 const app = createApp(App);
@@ -16,10 +14,7 @@ const i18n = createI18n({
   legacy: false,
   messages
 });
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes: setupLayouts(routes)
-});
+
 const axios = createAxios({
   baseURL: 'https://demo.jellyfin.org/stable'
 });
