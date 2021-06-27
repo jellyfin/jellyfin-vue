@@ -98,9 +98,7 @@
     />
   </v-app-bar>
   <v-main>
-    <div class="pa-s">
-      <router-view />
-    </div>
+    <router-view />
   </v-main>
 </template>
 

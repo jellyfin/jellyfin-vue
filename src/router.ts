@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
-import HelloWorld from './components/HelloWorld.vue';
+import Home from '~/views/home.vue';
 
 export const routes: RouteRecordRaw[] = [
-  { name: 'home', path: '/', component: HelloWorld }
+  { name: 'home', path: '/', component: Home }
 ];
 
 const routesWithLayouts = setupLayouts(routes);
