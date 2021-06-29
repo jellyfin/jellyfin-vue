@@ -43,7 +43,13 @@
     "no-constructor-bind/no-constructor-state": "error",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "no-secrets/no-secrets": "error"
+    "no-secrets/no-secrets": "error",
+    // Doesn't seem to work with Vue components
+    "import/default": "off",
+    // Breaks with some modules, too lazy to look into why
+    "unicorn/prefer-node-protocol": "off",
+    // This makes the Composition API too annoying to use
+    "unicorn/consistent-function-scoping": "off"
   },
   "parserOptions": {
     "ecmaVersion": 2020,

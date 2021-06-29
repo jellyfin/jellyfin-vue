@@ -29,47 +29,53 @@
   </v-btn>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import type { BaseItemDto } from '@jellyfin/client-axios';
 import { noop } from '@vueuse/shared';
-import { defineProps, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import { usePlayback } from '~/composables/playback';
 
-const props = defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
+export default defineComponent({
+  props: {
+    item: {
+      type: Object as () => BaseItemDto,
+      required: true
+    },
+    fab: {
+      type: Boolean
+    },
+    shuffle: {
+      type: Boolean
+    },
+    videoTrackIndex: {
+      type: Number,
+      default: undefined
+    },
+    audioTrackIndex: {
+      type: Number,
+      default: undefined
+    },
+    subtitleTrackIndex: {
+      type: Number,
+      default: undefined
+    }
   },
-  fab: {
-    type: Boolean
-  },
-  shuffle: {
-    type: Boolean
-  },
-  videoTrackIndex: {
-    type: Number,
-    default: undefined
-  },
-  audioTrackIndex: {
-    type: Number,
-    default: undefined
-  },
-  subtitleTrackIndex: {
-    type: Number,
-    default: undefined
+  setup() {
+    const { t } = useI18n();
+
+    const loading = ref(false);
+
+    const { canPlay, canResume } = usePlayback();
+
+    const playOrResume = () => {
+      noop;
+    };
+
+    return { t, loading, canPlay, canResume, playOrResume };
   }
 });
-
-const { t } = useI18n();
-
-const loading = ref(false);
-
-const { canPlay, canResume } = usePlayback();
-
-const playOrResume = () => {
-  noop;
-};
 
 /*
 import { BaseItemDto } from '@jellyfin/client-axios';

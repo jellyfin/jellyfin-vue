@@ -13,10 +13,16 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 
-const homeSections = ref([]);
+export default defineComponent({
+  setup() {
+    const homeSections = ref([]);
+
+    return { homeSections };
+  }
+});
 
 /*
 import Vue from 'vue';
