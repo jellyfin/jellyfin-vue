@@ -94,7 +94,8 @@
     "artist": {
       "appearsOn": "Hiển thị",
       "discography": "Đĩa đệm",
-      "information": "Thông tin"
+      "information": "Thông tin",
+      "videos": "Videos"
     },
     "cast": "Truyền Trực Tiếp",
     "composer": "Người soạn nhạc",
@@ -107,7 +108,8 @@
       "information": "Thông tin",
       "movies": "Phim",
       "person": "Người",
-      "photos": "Hình ảnh"
+      "photos": "Hình ảnh",
+      "shows": "Chương Trình"
     },
     "tracklist": {
       "title": "Tiêu đề"
