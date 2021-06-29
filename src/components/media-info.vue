@@ -18,45 +18,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import type { BaseItemDto } from '@jellyfin/client-axios';
-import { defineProps } from 'vue';
+import { defineComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import { useTime } from '~/composables/time';
 
-const props = defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
-  },
-  year: {
-    type: Boolean
-  },
-  rating: {
-    type: Boolean
-  },
-  runtime: {
-    type: Boolean
-  },
-  tracks: {
-    type: Boolean
-  },
-  endsAt: {
-    type: Boolean,
-    default: false
-  }
-});
-
-const { t } = useI18n();
-
-const { getEndsAtTime, getRuntimeTime } = useTime();
-/*
-import Vue from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
-import timeUtils from '~/mixins/timeUtils';
-
-export default Vue.extend({
-  mixins: [timeUtils],
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -78,8 +47,15 @@ export default Vue.extend({
       type: Boolean,
       default: false
     }
+  },
+  setup() {
+    const { t } = useI18n();
+
+    const { getEndsAtTime, getRuntimeTime } = useTime();
+
+    return { getEndsAtTime, getRuntimeTime, t };
   }
-});*/
+});
 </script>
 
 <style lang="scss" scoped>

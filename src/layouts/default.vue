@@ -103,20 +103,14 @@
   </v-main>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter, useRoute } from 'vue-router';
+<script lang="ts">
 import { useWindowScroll } from '@vueuse/core';
+import { computed, defineComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify/lib/composables/display';
-import { useStore } from '../store';
 
-// import { BaseItemDto } from '@jellyfin/client-axios';
-// import { stringify } from 'qs';
-// import { mapActions, mapState } from 'vuex';
-/* import { AppState } from '~/store';
-import { getLibraryIcon } from '~/utils/items';
-import settingsHelper from '~/mixins/settingsHelper'; */
+import { useStore } from '../store';
 
 /*interface LayoutButton {
   icon: string;
@@ -124,22 +118,36 @@ import settingsHelper from '~/mixins/settingsHelper'; */
   to: string;
 }*/
 
-const { t } = useI18n();
-const router = useRouter();
-const route = useRoute();
-const store = useStore();
+export default defineComponent({
+  setup() {
+    const { t } = useI18n();
+    const router = useRouter();
+    const route = useRoute();
+    const store = useStore();
 
-const { y } = useWindowScroll();
+    const { y } = useWindowScroll();
 
-const isScrolled = computed(() => {
-  return y.value > 0;
+    const isScrolled = computed(() => {
+      return y.value > 0;
+    });
+
+    const opaqueAppBar = computed(() => store.state.page.opaqueAppBar);
+
+    const display = useDisplay();
+
+    const isDrawerOpen = ref(!display.mobile.value);
+
+    return {
+      t,
+      router,
+      route,
+      isScrolled,
+      opaqueAppBar,
+      display,
+      isDrawerOpen
+    };
+  }
 });
-
-const opaqueAppBar = computed(() => store.state.page.opaqueAppBar);
-
-const display = useDisplay();
-
-const isDrawerOpen = ref(!display.mobile.value);
 
 //export default defineComponent({
 // mixins: [settingsHelper],

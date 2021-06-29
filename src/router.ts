@@ -1,5 +1,8 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import includes from 'lodash-es/includes';
+// eslint-disable-next-line import/no-unresolved -- Virtual import
 import { setupLayouts } from 'virtual:generated-layouts';
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+
 import Home from '~/views/home.vue';
 
 export const routes: RouteRecordRaw[] = [
@@ -15,7 +18,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['server-add'];
-  const authRequired = !publicPages.includes(to.name?.toString() || '');
+  const authRequired = !includes(publicPages, to.name?.toString() || '');
   const loggedIn = false;
 
   if (authRequired && !loggedIn) {

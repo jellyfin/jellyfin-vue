@@ -15,7 +15,7 @@
     <router-link
       v-else
       data-swiper-parallax="-300"
-      class="link d-block text-h5 text-sm-h4 mb-n1 mb-sm-n2 mt-n3 text-truncate"
+      class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
       :to="'#'"
     >
       {{ item.AlbumArtist }}
@@ -30,44 +30,25 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { defineProps } from 'vue';
+<script lang="ts">
 import type { BaseItemDto } from '@jellyfin/client-axios';
+import { defineComponent } from 'vue';
 import { useDisplay } from 'vuetify/lib/composables/display';
+
 import { useBaseItem } from '~/composables/items';
 
-const props = defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
-  }
-});
-
-const display = useDisplay();
-
-const { getLogo } = useBaseItem();
-
-//import { defineComponent } from 'vue';
-//import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-//import imageHelper from '~/mixins/imageHelper';
-//import itemHelper from '~/mixins/itemHelper';
-
-/* export default defineComponent({
-  //mixins: [imageHelper, itemHelper],
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,
       required: true
-    },
-    logo: {
-      type: String,
-      default: ''
     }
+  },
+  setup() {
+    const display = useDisplay();
+    const { getLogo } = useBaseItem();
+
+    return { display, getLogo };
   }
-  /*computed: {
-    imageTag(): string | undefined {
-      return this.getImageTag(this.item, ImageType.Logo);
-    }
-  }*/
-//}); */
+});
 </script>

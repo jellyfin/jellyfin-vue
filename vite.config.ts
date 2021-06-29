@@ -1,9 +1,10 @@
+/* eslint-disable unicorn/prefer-module */
+import VueI18n from '@intlify/vite-plugin-vue-i18n';
+import Vue from '@vitejs/plugin-vue';
 import path from 'path';
 import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
 import ViteComponents from 'vite-plugin-components';
 import Layouts from 'vite-plugin-vue-layouts';
-import vueI18n from '@intlify/vite-plugin-vue-i18n';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,14 +15,14 @@ export default defineConfig({
     }
   },
   plugins: [
-    vue({
+    Vue({
       include: [/\.vue$/]
     }),
     ViteComponents({
       globalComponentsDeclaration: true
     }),
     Layouts(),
-    vueI18n({
+    VueI18n({
       include: path.resolve(__dirname, './src/locales/**')
     })
   ],
@@ -30,3 +31,4 @@ export default defineConfig({
     exclude: ['vue-demi', 'vuetify']
   }
 });
+/* eslint-enable unicorn/prefer-module */

@@ -1,5 +1,10 @@
-import { createApp } from 'vue';
-import { createI18n } from 'vue-i18n';
+import './assets/scss/utilities.scss';
+import 'swiper/swiper.scss';
+import 'swiper/components/a11y/a11y.scss';
+import 'swiper/components/effect-fade/effect-fade.scss';
+
+// eslint-disable-next-line import/no-unresolved -- Virtual import
+import messages from '@intlify/vite-plugin-vue-i18n/messages';
 import SwiperCore, {
   A11y,
   Autoplay,
@@ -9,21 +14,17 @@ import SwiperCore, {
   Virtual
 } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { createApp } from 'vue';
+import { createI18n } from 'vue-i18n';
 
-import messages from '@intlify/vite-plugin-vue-i18n/messages';
-
-import Vuetify from './plugins/vuetify';
-import App from './App.vue';
-import { store, key } from './store';
-import router from './router';
+import App from './app.vue';
 import { createAxios } from './plugins/axios';
-
-import './assets/scss/utilities.scss';
-import 'swiper/swiper.scss';
-import 'swiper/components/a11y/a11y.scss';
-import 'swiper/components/effect-fade/effect-fade.scss';
+import Vuetify from './plugins/vuetify';
+import router from './router';
+import { key, store } from './store';
 
 const app = createApp(App);
+// eslint-disable-next-line unicorn/prevent-abbreviations -- False positive
 const i18n = createI18n({
   legacy: false,
   messages
@@ -43,13 +44,9 @@ SwiperCore.use([A11y, Autoplay, EffectFade, Keyboard, Pagination, Virtual]);
 app.component('Swiper', Swiper);
 app.component('SwiperSlide', SwiperSlide);
 
-app.directive('hide', (el, binding) => {
-  if (el) {
-    if (binding.value === true) {
-      el.style.visibility = 'hidden';
-    } else {
-      el.style.visibility = 'visible';
-    }
+app.directive('hide', (element, binding) => {
+  if (element) {
+    element.style.visibility = binding.value === true ? 'hidden' : 'visible';
   }
 });
 

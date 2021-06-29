@@ -9,12 +9,12 @@
     "serve": "vite preview",
     "prepare": "husky install",
     "lint:js": "eslint --ext .ts,.js,.json,.vue .",
-    "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
+    "lint:style": "stylelint **/*.{vue,css,scss} --ignore-path .gitignore",
     "lint": "npm run lint:js && npm run lint:style"
   },
   "lint-staged": {
     "*.{ts,js,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
+    "*.{scss,css,vue}": "stylelint"
   },
   "dependencies": {
     "@egjs/vue3-flicking": "^4.1.0",
@@ -24,6 +24,7 @@
     "blurhash": "^1.1.3",
     "date-fns": "^2.22.1",
     "destr": "^1.1.0",
+    "lodash-es": "^4.17.21",
     "qs": "^6.10.1",
     "swiper": "^6.7.5",
     "vue": "^3.1.3",
@@ -38,6 +39,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@intlify/vite-plugin-vue-i18n": "^2.3.0",
     "@mdi/font": "^5.9.55",
+    "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.14.0",
     "@types/qs": "^6.9.6",
     "@typescript-eslint/eslint-plugin": "^4.28.1",

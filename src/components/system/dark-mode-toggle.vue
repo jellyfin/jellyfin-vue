@@ -25,25 +25,31 @@
   </v-tooltip>-->
 </template>
 
-<script setup="props" lang="ts">
-import { defineProps } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { createNamespacedHelpers } from 'vuex-composition-helpers';
+
 import { useStore } from '../../store';
 
-const props = defineProps({
-  fab: {
-    type: Boolean,
-    required: false
+export default defineComponent({
+  props: {
+    fab: {
+      type: Boolean,
+      required: false
+    }
+  },
+  setup() {
+    const store = useStore();
+
+    const { useState, useActions } = createNamespacedHelpers(
+      store,
+      'clientSettings'
+    );
+
+    const { setDarkMode } = useActions(['setDarkMode']);
+    const { darkMode } = useState(['darkMode']);
+
+    return { setDarkMode, darkMode, store };
   }
 });
-
-const store = useStore();
-
-const { useState, useActions } = createNamespacedHelpers(
-  store,
-  'clientSettings'
-);
-
-const { setDarkMode } = useActions(['setDarkMode']);
-const { darkMode } = useState(['darkMode']);
 </script>

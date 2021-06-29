@@ -140,6 +140,7 @@ export default defineComponent({
       }
     };
 
+    /* eslint-disable */
     const items = ref([
       {
         Name: 'Pioneer One',
@@ -513,6 +514,7 @@ export default defineComponent({
         MediaType: 'Video'
       }
     ]);
+    /* eslint-enable */
 
     return {
       currentIndex,
