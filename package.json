@@ -40,7 +40,7 @@
     "@mdi/font": "^5.9.55",
     "@types/node": "^15.12.5",
     "@types/qs": "^6.9.6",
-    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "@vitejs/plugin-vue": "^1.2.4",
     "@vue/compiler-sfc": "^3.0.5",
