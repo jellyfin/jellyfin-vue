@@ -7,12 +7,14 @@
         :max-height="display.smAndUp.value ? '7.5em' : '4em'"
         contain
         position="left center"
+        data-swiper-parallax="-300"
         :alt="item.Name"
         :src="getLogo(item).url"
       />
     </router-link>
     <router-link
       v-else
+      data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
       :to="'#'"
     >

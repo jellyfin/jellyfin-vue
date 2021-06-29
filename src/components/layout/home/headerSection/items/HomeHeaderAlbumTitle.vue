@@ -1,43 +1,32 @@
 <template>
   <div>
-    <!-- <nuxt-link
-      v-if="imageTag"
-      :to="
-        item.AlbumArtists.length > 0
-          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
-          : null
-      "
-    > -->
-    <v-img
-      class="mb-2"
-      :max-width="display.mdAndUp.value ? '50%' : '40%'"
-      :max-height="display.smAndUp.value ? '7.5em' : '4em'"
-      contain
-      position="left center"
-      data-swiper-parallax="-300"
-      :alt="item.Name"
-      :src="getLogo(item).url"
-    />
-    <!-- </nuxt-link>
-    <nuxt-link
+    <router-link v-if="getLogo(item).tag" :to="'#'">
+      <v-img
+        class="mb-2"
+        :max-width="display.mdAndUp.value ? '50%' : '40%'"
+        :max-height="display.smAndUp.value ? '7.5em' : '4em'"
+        contain
+        position="left center"
+        data-swiper-parallax="-300"
+        :alt="item.Name"
+        :src="getLogo(item).url"
+      />
+    </router-link>
+    <router-link
       v-else
       data-swiper-parallax="-300"
-      class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
-      :to="
-        item.AlbumArtists.length > 0
-          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
-          : null
-      "
-    > -->
-    {{ item.AlbumArtist }}
-    <!-- </nuxt-link>
-    <nuxt-link
+      class="link d-block text-h5 text-sm-h4 mb-n1 mb-sm-n2 mt-n3 text-truncate"
+      :to="'#'"
+    >
+      {{ item.AlbumArtist }}
+    </router-link>
+    <router-link
       data-swiper-parallax="-200"
       class="link d-block text-h4 text-sm-h3 text-truncate"
-      :to="getItemDetailsLink(item)"
-    > -->
-    {{ item.Name }}
-    <!-- </nuxt-link> -->
+      :to="'#'"
+    >
+      {{ item.Name }}
+    </router-link>
   </div>
 </template>
 
