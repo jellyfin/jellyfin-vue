@@ -5,17 +5,57 @@
     "es6": true,
     "node": true
   },
+  "plugins": [
+    "vue",
+    "@typescript-eslint",
+    "sonarjs",
+    "import",
+    "promise",
+    "no-constructor-bind",
+    "optimize-regex",
+    "simple-import-sort",
+    "no-secrets"
+  ],
   "extends": [
+    "plugin:jsonc/base",
+    "plugin:jsonc/recommended-with-json",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:sonarjs/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:promise/recommended",
+    "plugin:array-func/recommended",
+    "plugin:eslint-comments/recommended",
+    "plugin:lodash/recommended",
+    "plugin:no-use-extend-native/recommended",
+    "plugin:optimize-regex/recommended",
+    "plugin:no-unsanitized/DOM",
     "plugin:vue/vue3-recommended",
     "prettier"
   ],
+  "rules": {
+    "promise/prefer-await-to-then": "error",
+    "promise/prefer-await-to-callbacks": "error",
+    "promise/avoid-new": "error",
+    "no-constructor-bind/no-constructor-bind": "error",
+    "no-constructor-bind/no-constructor-state": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "no-secrets/no-secrets": "error"
+  },
   "parserOptions": {
     "ecmaVersion": 2020,
     "parser": "@typescript-eslint/parser",
-    "sourceType": "module"
+    "sourceType": "module",
+    "extraFileExtensions": [".vue"]
   },
-  "plugins": ["vue", "@typescript-eslint"],
-  "rules": {}
+  "settings": {
+    "import/parsers": {
+      "vue-eslint-parser": [".ts", ".tsx", ".vue"]
+    },
+    "import/extensions": [".ts", ".tsx", ".vue"],
+    "import/resolver": "typescript"
+  }
 }
