@@ -1,6 +1,6 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
+  <!-- <v-navigation-drawer
+    :model-value="isDrawerOpen"
     :temporary="display.mobile.value"
     :border="0"
     :elevation="display.mobile.value ? undefined : 0"
@@ -12,7 +12,6 @@
       <v-divider />
     </template>
     <v-list>
-      <!--
       <v-list-item
         v-for="item in items"
         :key="item.Id"
@@ -27,8 +26,8 @@
           <v-list-item-title v-text="item.title" />
         </v-list-item-content>
       </v-list-item>-->
-      <v-subheader>{{ t('libraries') }}</v-subheader>
-      <!-- <v-list-item
+  <!-- <v-subheader>{{ t('libraries') }}</v-subheader> -->
+  <!-- <v-list-item
         v-for="library in libraryItems"
         :key="library.Id"
         :to="library.to"
@@ -41,22 +40,24 @@
         <v-list-item-content>
           <v-list-item-title v-text="library.title" />
         </v-list-item-content>
-      </v-list-item> -->
+      </v-list-item>
     </v-list>
     <template #append>
       <connection-monitor />
       <syncing-monitor />
     </template>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
   <v-app-bar
     :clipped-left="display.mobile.value"
     app
-    flat
-    :class="{ opaque: opaqueAppBar }"
+    :flat="!display.mobile.value"
+    :permanent="!display.mobile.value"
+    :temporary="display.mobile.value"
+    :class="{ opaque: opaqueAppBar && isScrolled }"
   >
     <v-app-bar-nav-icon
       v-if="display.mobile.value"
-      @click.stop="drawer = !drawer"
+      @click.stop="isDrawerOpen = !isDrawerOpen"
     />
     <v-btn
       v-hide="route.name === 'home'"
@@ -106,7 +107,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
-import { useEventListener } from '@vueuse/core';
+import { useWindowScroll } from '@vueuse/core';
 import { useDisplay } from 'vuetify/lib/composables/display';
 import { useStore } from '../store';
 
@@ -128,25 +129,17 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 
-const y = ref(window.scrollY);
-useEventListener(
-  'scroll',
-  () => {
-    y.value = window.scrollY;
-  },
-  {
-    capture: false,
-    passive: true
-  }
-);
-const isScrolled = computed(() => y.value > 10);
+const { y } = useWindowScroll();
 
-const drawer = ref(true);
-const navDrawer = computed(() => store.state.page.navDrawer);
+const isScrolled = computed(() => {
+  return y.value > 0;
+});
 
 const opaqueAppBar = computed(() => store.state.page.opaqueAppBar);
 
 const display = useDisplay();
+
+const isDrawerOpen = ref(!display.mobile.value);
 
 //export default defineComponent({
 // mixins: [settingsHelper],

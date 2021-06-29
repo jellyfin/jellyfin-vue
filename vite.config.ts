@@ -14,8 +14,12 @@ export default defineConfig({
     }
   },
   plugins: [
-    vue(),
-    ViteComponents({}),
+    vue({
+      include: [/\.vue$/]
+    }),
+    ViteComponents({
+      globalComponentsDeclaration: true
+    }),
     Layouts(),
     vueI18n({
       include: path.resolve(__dirname, './src/locales/**')

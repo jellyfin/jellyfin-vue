@@ -8,8 +8,6 @@ export const routes: RouteRecordRaw[] = [
 
 const routesWithLayouts = setupLayouts(routes);
 
-console.dir(routesWithLayouts);
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes: routesWithLayouts

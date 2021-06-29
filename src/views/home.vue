@@ -1,12 +1,15 @@
 <template>
   <home-header />
   <v-container class="sections-after-header">
-    <!--<v-row
-        v-for="(homeSection, index) in homeSections"
-        :key="`homeSection-${index}`"
-      >
-        <home-section :section="homeSection" :index="index" />
-      </v-row>-->
+    <v-row
+      v-for="(homeSection, index) in [0, 1, 2, 3, 4, 5, 6]"
+      :key="`homeSection-${index}`"
+    >
+      <div class="mb-5">
+        <h3>Section {{ homeSection }}</h3>
+      </div>
+      <!-- <home-section :section="homeSection" :index="index" /> -->
+    </v-row>
   </v-container>
 </template>
 
