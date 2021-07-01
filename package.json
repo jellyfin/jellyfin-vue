@@ -58,7 +58,7 @@
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
-    "typescript": "^4.3.4",
+    "typescript": "^4.3.5",
     "vite": "^2.3.7",
     "vite-plugin-components": "^0.11.3",
     "vite-plugin-vue-layouts": "^0.3.1",
