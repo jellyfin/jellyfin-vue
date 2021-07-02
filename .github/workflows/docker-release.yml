@@ -60,7 +60,7 @@ jobs:
 
       - name: Build and push stable SSR images
         if: github.event.action == 'released'
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: true
@@ -78,7 +78,7 @@ jobs:
 
       - name: Build and push release candidate SSR images
         if: github.event.action == 'prereleased'
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: true
@@ -143,7 +143,7 @@ jobs:
 
       - name: Build and push stable static images
         if: github.event.action == 'released'
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: true
@@ -157,7 +157,7 @@ jobs:
 
       - name: Build and push release candidate static images
         if: github.event.action == 'prereleased'
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: true
