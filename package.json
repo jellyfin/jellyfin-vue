@@ -17,7 +17,7 @@
     "*.{css,vue}": "stylelint"
   },
   "dependencies": {
-    "@egjs/vue3-flicking": "^4.1.0",
+    "@egjs/vue3-flicking": "^4.1.1",
     "@jellyfin/client-axios": "10.7.0",
     "@vueuse/core": "^5.0.3",
     "axios": "^0.21.1",
