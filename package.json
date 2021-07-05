@@ -37,7 +37,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "@intlify/vite-plugin-vue-i18n": "^2.3.0",
+    "@intlify/vite-plugin-vue-i18n": "^2.3.1",
     "@mdi/font": "^5.9.55",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.14.0",
