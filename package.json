@@ -63,7 +63,7 @@
     "eslint-plugin-optimize-regex": "^1.2.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "eslint-plugin-sonarjs": "^0.9.0",
+    "eslint-plugin-sonarjs": "^0.9.1",
     "eslint-plugin-unicorn": "^34.0.1",
     "eslint-plugin-vue": "^7.12.1",
     "husky": "^7.0.0",
