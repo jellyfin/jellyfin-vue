@@ -41,7 +41,7 @@
     "@mdi/font": "^5.9.55",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^16.0.0",
-    "@types/qs": "^6.9.6",
+    "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.1",
     "@vitejs/plugin-vue": "^1.2.4",
