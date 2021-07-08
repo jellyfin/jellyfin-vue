@@ -88,7 +88,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/vue": "^5.8.0",
     "@types/body-scroll-lock": "^2.6.1",
-    "@types/cookie": "^0.4.0",
+    "@types/cookie": "^0.4.1",
     "@types/dompurify": "^2.2.3",
     "@types/he": "^1.1.1",
     "@types/jest": "^26.0.23",
