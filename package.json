@@ -95,7 +95,7 @@
     "@types/js-cookie": "^2.2.7",
     "@types/lodash": "^4.14.171",
     "@types/nuxtjs__auth": "^4.8.7",
-    "@types/qs": "^6.9.6",
+    "@types/qs": "^6.9.7",
     "@types/simple-icons": "^5.0.1",
     "@types/swiper": "^5.4.3",
     "@types/uuid": "^8.3.1",
