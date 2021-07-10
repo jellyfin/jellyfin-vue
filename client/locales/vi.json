@@ -13,6 +13,7 @@
   "artists": "Nghệ sĩ",
   "aspectRatio": "Tỷ lệ khung hình",
   "audio": "Âm thanh",
+  "audioCodecNotSupported": "Bộ giải mã âm thanh không được hỗ trợ",
   "badRequest": "Yêu cầu đã thất bại. Thử lại",
   "browserNotSupported": "Trình duyệt của bạn không được hỗ trợ để phát tệp này.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Đánh giá cộng đồng",
   "confirm": "Xác nhận",
   "connect": "Kết nối",
+  "containerNotSupported": "Vùng chứa không được hỗ trợ",
   "continueListening": "Tiếp tục nghe",
   "continueWatching": "Tiếp tục xem",
   "criticRating": "Đánh giá phê bình",
@@ -159,6 +161,27 @@
     "noLogsFound": "Không tìm thấy nhật ký nào"
   },
   "manualLogin": "Đăng nhập thủ công",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Các kênh âm thanh:"
+    },
+    "audioCodec": {
+      "name": "Mã hóa âm thanh:"
+    },
+    "bitrate": {
+      "name": "Tốc độ bit:"
+    },
+    "container": {
+      "name": "Vùng chứa:"
+    },
+    "name": "Phương tiện",
+    "subtitleCodec": {
+      "name": "Mã hóa phụ đề:"
+    },
+    "videoCodec": {
+      "name": "Mã hóa video:"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Nguồn",
@@ -214,9 +237,46 @@
     "shuffle": "Ngẫu nhiên",
     "shuffleAll": "Tất cả ngẫu nhiên"
   },
-  "playbackData": "Dữ liệu phát lại",
+  "playbackData": "Thông tin phát lại",
+  "playbackInfo": {
+    "name": "Phát lại",
+    "playMethod": {
+      "direct": "Trực tiếp",
+      "name": "Phương thức:",
+      "transcode": "Chuyển mã"
+    },
+    "streamType": {
+      "name": "Loại luồng:",
+      "unknown": "Không rõ"
+    },
+    "transcodingFramerate": {
+      "name": "Tỷ lệ khung hình:"
+    },
+    "transcodingProgress": "Tiến trình:",
+    "transcodingReason": {
+      "name": "Lý do: | Lý do:"
+    }
+  },
   "playbackSettings": "Cài đặt phát lại",
   "played": "Đã Phát",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Khung bị hỏng:"
+    },
+    "decodedFrames": {
+      "name": "Khung được giải mã:"
+    },
+    "droppedFrames": {
+      "name": "Khung hình bị thiếu:"
+    },
+    "name": "Trình phát",
+    "playbackResolution": {
+      "name": "Độ phân giải khung xem:"
+    },
+    "videoResolution": {
+      "name": "Độ phân giải video:"
+    }
+  },
   "present": "Hiện tại",
   "producer": "Nhà sản xuất",
   "quality": "Chất lượng",
@@ -359,6 +419,7 @@
   "speed": "Tốc độ",
   "status": "Trạng thái",
   "studios": "Hãng Phim",
+  "subtitleCodecNotSupported": "Mã hóa phụ đề không được hỗ trợ",
   "subtitles": "Phụ Đề",
   "syncPlayGroups": "Nhóm SyncPlay",
   "syncingInProgress": "Đang đồng bộ hóa",
@@ -372,6 +433,9 @@
     "switchToLightMode": "Chuyển sang chế độ sáng"
   },
   "trailer": "Đoạn Giới Thiệu",
+  "transcodingInfo": {
+    "name": "Chuyển mã"
+  },
   "type": "Kiểu",
   "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
   "unableGetRelated": "Không thể lấy các mục liên quan",
@@ -394,6 +458,7 @@
   },
   "version": "Phiên bản",
   "video": "Video",
+  "videoCodecNotSupported": "Bộ giải mã video không được hỗ trợ",
   "videoTypes": "Loại Videos",
   "viewDetails": "Xem chi tiết",
   "vueClientVersion": "Phiên bản ứng dụng",
