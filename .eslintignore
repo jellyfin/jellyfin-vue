@@ -2,3 +2,4 @@ dist
 node_modules
 public
 package-lock.json
+components.d.ts

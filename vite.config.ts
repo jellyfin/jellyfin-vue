@@ -19,6 +19,8 @@ export default defineConfig({
       include: [/\.vue$/]
     }),
     ViteComponents({
+      dirs: ['src/modules', 'src/components'],
+      deep: true,
       globalComponentsDeclaration: true
     }),
     Layouts(),

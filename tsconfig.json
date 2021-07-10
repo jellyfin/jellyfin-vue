@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "types": [
+      "node",
       "vite/client",
       "vite-plugin-vue-layouts/client",
       "@intlify/vite-plugin-vue-i18n/client"

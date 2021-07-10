@@ -1,5 +1,5 @@
 <template>
-  <v-app :theme="store.state.clientSettings.darkMode ? 'dark' : 'light'">
+  <v-app :theme="'dark'">
     <!-- <backdrop /> -->
     <router-view />
     <!-- <audio-controls /> -->
@@ -7,9 +7,3 @@
     <!-- <player-manager /> -->
   </v-app>
 </template>
-
-<script setup lang="ts">
-import { useStore } from './store';
-
-const store = useStore();
-</script>

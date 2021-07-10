@@ -19,6 +19,8 @@
   "extends": [
     "plugin:jsonc/base",
     "plugin:jsonc/recommended-with-json",
+    "plugin:yml/standard",
+    "plugin:yml/prettier",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:sonarjs/recommended",
@@ -33,6 +35,7 @@
     "plugin:optimize-regex/recommended",
     "plugin:no-unsanitized/DOM",
     "plugin:vue/vue3-recommended",
+    "plugin:@intlify/vue-i18n/recommended",
     "prettier"
   ],
   "rules": {
@@ -44,12 +47,35 @@
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "no-secrets/no-secrets": "error",
-    // Doesn't seem to work with Vue components
     "import/default": "off",
-    // Breaks with some modules, too lazy to look into why
     "unicorn/prefer-node-protocol": "off",
-    // This makes the Composition API too annoying to use
-    "unicorn/consistent-function-scoping": "off"
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "camelCase"
+      }
+    ],
+    "lodash/prefer-constant": "off",
+    "lodash/prefer-get": "off",
+    "lodash/prefer-includes": "off",
+    "lodash/prefer-is-nil": "off",
+    "lodash/prefer-lodash-chain": "off",
+    "lodash/prefer-lodash-method": "off",
+    "lodash/prefer-lodash-typecheck": "off",
+    "lodash/prefer-matches": "off",
+    "lodash/prefer-noop": "off",
+    "lodash/prefer-over-quantifier": "off",
+    "lodash/prefer-some": "off",
+    "lodash/prefer-startswith": "off",
+    "lodash/prefer-times": "off",
+    "@intlify/vue-i18n/no-dynamic-keys": "error",
+    "@intlify/vue-i18n/no-unused-keys": [
+      "error",
+      {
+        "extensions": [".ts", ".vue"]
+      }
+    ]
   },
   "parserOptions": {
     "ecmaVersion": 2020,
@@ -62,6 +88,32 @@
       "vue-eslint-parser": [".ts", ".tsx", ".vue"]
     },
     "import/extensions": [".ts", ".tsx", ".vue"],
-    "import/resolver": "typescript"
-  }
+    "import/resolver": "typescript",
+    "vue-i18n": {
+      "localeDir": "./src/locales/*.{json,json5,yaml,yml}",
+      "messageSyntaxVersion": "^9.0.0"
+    }
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.vue"],
+      "rules": {
+        "unicorn/filename-case": [
+          "error",
+          {
+            "case": "pascalCase"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.json", "*.json5"],
+      "excludedFiles": ".eslintrc.json",
+      "parser": "jsonc-eslint-parser"
+    },
+    {
+      "files": ["*.yaml", "*.yml"],
+      "parser": "yaml-eslint-parser"
+    }
+  ]
 }

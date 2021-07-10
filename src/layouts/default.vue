@@ -109,8 +109,7 @@ import { computed, defineComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify/lib/composables/display';
-
-import { useStore } from '../store';
+import { useStore } from '~/plugins/vuex';
 
 /*interface LayoutButton {
   icon: string;
@@ -131,7 +130,7 @@ export default defineComponent({
       return y.value > 0;
     });
 
-    const opaqueAppBar = computed(() => store.state.page.opaqueAppBar);
+    const opaqueAppBar = ref(true);
 
     const display = useDisplay();
 

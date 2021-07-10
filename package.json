@@ -37,6 +37,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@intlify/eslint-plugin-vue-i18n": "^0.11.1",
     "@intlify/vite-plugin-vue-i18n": "^2.3.1",
     "@mdi/font": "^5.9.55",
     "@types/lodash-es": "^4.17.4",
@@ -66,6 +67,7 @@
     "eslint-plugin-sonarjs": "^0.9.1",
     "eslint-plugin-unicorn": "^34.0.1",
     "eslint-plugin-vue": "^7.13.0",
+    "eslint-plugin-yml": "^0.9.0",
     "husky": "^7.0.1",
     "lint-staged": "^11.0.0",
     "postcss-scss": "^4.0.0",
