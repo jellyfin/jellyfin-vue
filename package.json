@@ -30,7 +30,7 @@
     "vue": "^3.1.4",
     "vue-i18n": "^9.1.6",
     "vue-router": "^4.0.10",
-    "vuetify": "^3.0.0-alpha.8",
+    "vuetify": "^3.0.0-alpha.9",
     "vuex": "^4.0.2",
     "vuex-composition-helpers": "^2.0.0"
   },
