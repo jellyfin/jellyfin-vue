@@ -4,13 +4,16 @@
   "actor": "Herec",
   "actors": "Herci",
   "addNewPerson": "Přidat novou osobu",
+  "airPlayDevices": "Zařízení AirPlay",
   "albums": "Alba",
   "allLanguages": "Všechny jazyky",
   "alphabetically": "Abecedně",
   "architecture": "Architektura",
   "artist": "Interpret",
   "artists": "Interpreti",
+  "aspectRatio": "Poměr stran",
   "audio": "Zvuk",
+  "audioCodecNotSupported": "Zvukový kodek není podporován",
   "badRequest": "Špatný požadavek. Zkuste to znovu",
   "browserNotSupported": "Přehrávání tohoto souboru není ve vašem prohlížeči podporováno.",
   "buttons": {
@@ -23,6 +26,7 @@
   "communityRating": "Komunitní hodnocení",
   "confirm": "Potvrdit",
   "connect": "Připojit",
+  "containerNotSupported": "Kontejner souboru není podporován",
   "continueListening": "Pokračovat v poslechu",
   "continueWatching": "Pokračovat ve sledování",
   "criticRating": "Hodnocení kritiků",
@@ -56,7 +60,9 @@
   "filtersNotFound": "Nelze načíst filtry",
   "fullScreen": "Celá obrazovka",
   "general": "Obecné",
+  "genericJellyfinPlaceholderDevice": "Nespecifikované zařízení Jellyfin",
   "genres": "Žánry",
+  "googleCastPlaceholderDevice": "Zařízení Google Cast",
   "guestStar": "Vedlejší role",
   "headerExternalIds": "Externí ID",
   "headerPaths": "Cesta",
@@ -99,8 +105,13 @@
     "person": {
       "birth": "Narození",
       "birthPlace": "Místo narození",
+      "books": "Knihy",
       "death": "Úmrtí",
-      "person": "Osoba"
+      "information": "Informace",
+      "movies": "Filmy",
+      "person": "Osoba",
+      "photos": "Fotky",
+      "shows": "Seriály"
     },
     "tracklist": {
       "title": "Název"
@@ -150,6 +161,27 @@
     "noLogsFound": "Žádný protokol nenalezen"
   },
   "manualLogin": "Ruční přihlášení",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Zvukové kanály:"
+    },
+    "audioCodec": {
+      "name": "Zvukový kodek:"
+    },
+    "bitrate": {
+      "name": "Datový tok:"
+    },
+    "container": {
+      "name": "Kontejner:"
+    },
+    "name": "Média",
+    "subtitleCodec": {
+      "name": "Titulkový kodek:"
+    },
+    "videoCodec": {
+      "name": "VIdeo kodek:"
+    }
+  },
   "menu": "Nabídka",
   "metadata": {
     "source": "Zdroj",
@@ -169,6 +201,7 @@
   "noAudioTrackSelected": "Nevybrána žádná zvuková stopa",
   "noAudioTracksAvailable": "Žádné zvukové stopy k dispozici",
   "noImagesFound": "Nebyly nalezeny žádné obrázky",
+  "noInformationAvailable": "Informace nejsou k dispozici",
   "noNetworkConnection": "Žádné připojení k síti",
   "noResultsFound": "Nic nebylo nalezeno",
   "noSubtitleSelected": "Nevybrány žádné titulky",
@@ -204,19 +237,67 @@
     "shuffle": "Náhodně",
     "shuffleAll": "Náhodně přehrát vše"
   },
+  "playbackData": "Informace o přehrávání",
+  "playbackInfo": {
+    "name": "Přehrávání",
+    "playMethod": {
+      "direct": "Přímé",
+      "name": "Způsob:",
+      "remux": "Remux",
+      "transcode": "Překódování"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Typ streamu:",
+      "unknown": "Neznámý",
+      "video": "Video"
+    },
+    "transcodingFramerate": {
+      "name": "Snímková frekvence:",
+      "value": "{value} szs"
+    },
+    "transcodingProgress": "Průběh:",
+    "transcodingReason": {
+      "name": "Důvod: | Důvody:"
+    }
+  },
+  "playbackSettings": "Nastavení přehrávání",
   "played": "Přehrané",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Poškozené snímky:"
+    },
+    "decodedFrames": {
+      "name": "Dekódované snímky:"
+    },
+    "droppedFrames": {
+      "name": "Vypuštěné snímky:"
+    },
+    "name": "Přehrávač",
+    "playbackResolution": {
+      "name": "Rozlišení viditelné oblasti:"
+    },
+    "videoResolution": {
+      "name": "Rozlišení videa:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Prezentovat",
   "producer": "Producent",
+  "quality": "Kvalita",
   "queue": "Fronta",
   "rating": "Hodnocení",
   "refreshLibrary": "Aktualizovat knihovnu",
   "releaseDate": "Datum vydání",
+  "remoteDevices": "Vzdálená zařízení",
   "resumable": "Rozdívané",
   "resume": "Pokračovat",
   "role": "Role",
   "save": "Uložit",
   "saved": "Uloženo",
   "search": "Hledat",
+  "seasonEpisode": "Řada {seasonNumber}, díl {episodeNumber}",
   "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "series": "Seriály",
   "server": "Server",
@@ -341,9 +422,12 @@
   "sortByType": "Řazení: {type}",
   "sortTitle": "Název pro řazení",
   "specialFeatures": "Speciály",
+  "speed": "Rychlost",
   "status": "Stav",
   "studios": "Studia",
+  "subtitleCodecNotSupported": "Titulkový kodek není podporován",
   "subtitles": "Titulky",
+  "syncPlayGroups": "Skupiny SyncPlay",
   "syncingInProgress": "Probíhá synchronizace",
   "tagline": "Podtitul",
   "tags": "Štítky",
@@ -355,6 +439,9 @@
     "switchToLightMode": "Přepnout světlý režim"
   },
   "trailer": "Upoutávka",
+  "transcodingInfo": {
+    "name": "Překódování"
+  },
   "type": "Typ",
   "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
   "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
@@ -365,6 +452,12 @@
   "undefined": "Nedefinováno",
   "unexpectedError": "Neočekávaná chyba",
   "unhandledException": "Neošetřená výjimka",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    }
+  },
   "unliked": "Nelíbilo se",
   "unplayed": "Nepřehrané",
   "upNext": "Následující",
@@ -377,6 +470,7 @@
   },
   "version": "Verze",
   "video": "Video",
+  "videoCodecNotSupported": "Video kodek není podporován",
   "videoTypes": "Typy videa",
   "viewDetails": "Zobrazit podrobnosti",
   "vueClientVersion": "Verze klienta",
