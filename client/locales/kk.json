@@ -13,6 +13,7 @@
   "artists": "Oryndauşylar",
   "aspectRatio": "Pışımdık araqatynasy",
   "audio": "Dybys",
+  "audioCodecNotSupported": "Dybys kodegı qoldauda emes",
   "badRequest": "Jaramsyz saual. Ärekettı qaitalañyz",
   "browserNotSupported": "Būl faildy oinatu üşın şolğyşyñyz qoldau körsetpeidı.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Qauym bağalauy",
   "confirm": "Rastau",
   "connect": "Qosylu",
+  "containerNotSupported": "Konteiner qoldauda emes",
   "continueListening": "Tyñdaudy jalğastyru",
   "continueWatching": "Qaraudy jalğastyru",
   "criticRating": "Synşylar bağalauy",
@@ -159,6 +161,27 @@
     "noLogsFound": "Jūrnaldar tabylmady"
   },
   "manualLogin": "Qolmen kıru",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Dybys arnalary:"
+    },
+    "audioCodec": {
+      "name": "Dybys kodegı:"
+    },
+    "bitrate": {
+      "name": "Qarqyny:"
+    },
+    "container": {
+      "name": "Konteinerı:"
+    },
+    "name": "Tasyğyşderekter",
+    "subtitleCodec": {
+      "name": "Subtitr kodegı:"
+    },
+    "videoCodec": {
+      "name": "Beine kodegı:"
+    }
+  },
   "menu": "Mäzır",
   "metadata": {
     "source": "Qainar közı",
@@ -215,8 +238,51 @@
     "shuffleAll": "Barlyğyn aralastyru"
   },
   "playbackData": "Oinatu derekterı",
+  "playbackInfo": {
+    "name": "Oinatu",
+    "playMethod": {
+      "direct": "Tıkelei",
+      "name": "Ädısı:",
+      "remux": "Remuks",
+      "transcode": "Qaita kodtau"
+    },
+    "streamType": {
+      "dash": "DASH tehnologiasy",
+      "hls": "HLS tehnologiasy",
+      "name": "Ağyn türı:",
+      "unknown": "Belgısız",
+      "video": "Beine"
+    },
+    "transcodingFramerate": {
+      "name": "Kadr jyld-ğy:",
+      "value": "{value} kadr/s"
+    },
+    "transcodingProgress": "Barysy:",
+    "transcodingReason": {
+      "name": "Sebebı: | Sebepterı:"
+    }
+  },
   "playbackSettings": "Oinatu parametrlerı",
   "played": "Oinatylğan",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Bülıngen kadrlar:"
+    },
+    "decodedFrames": {
+      "name": "Kodtaudan şesilgen kadrlar:"
+    },
+    "droppedFrames": {
+      "name": "Ötkızılgen kadrlar:"
+    },
+    "name": "Oinatqyş",
+    "playbackResolution": {
+      "name": "Qarau terezesıniñ ajyratymdylyǵy:"
+    },
+    "videoResolution": {
+      "name": "Beine ajyratymdylyğy:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Ağymda",
   "producer": "Prodüser",
   "quality": "Sapasy",
@@ -359,6 +425,7 @@
   "speed": "Jyldamdyq",
   "status": "Küiı",
   "studios": "Studialar",
+  "subtitleCodecNotSupported": "Subtitr kodegı qoldauda emes",
   "subtitles": "Subtitrler",
   "syncPlayGroups": "SyncPlay toptary",
   "syncingInProgress": "Ündestıru oryndaluda",
@@ -372,6 +439,9 @@
     "switchToLightMode": "Jaryq rejımge auysu"
   },
   "trailer": "Treiler",
+  "transcodingInfo": {
+    "name": "Qaita kodtauda"
+  },
   "type": "Türı",
   "unableGetPublicUsers": "Paidalanuşylardy alu mümkın emes",
   "unableGetRelated": "Qatysty tarmaqtardy alu mümkın emes",
@@ -382,6 +452,12 @@
   "undefined": "Anyqtalmady",
   "unexpectedError": "Kütpegen qate",
   "unhandledException": "Öñdelmeitın qiys",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} Kib/s",
+      "mbps": "{value} Mib/s"
+    }
+  },
   "unliked": "Ūnamaidy",
   "unplayed": "Oinatylmağan",
   "upNext": "Kezektı",
@@ -394,6 +470,7 @@
   },
   "version": "Nūsqasy",
   "video": "Beine",
+  "videoCodecNotSupported": "Beine kodegı qoldauda emes",
   "videoTypes": "Beine türlerı",
   "viewDetails": "Egjeilerdı qarau",
   "vueClientVersion": "Tūtynğyş nūsqasy",
