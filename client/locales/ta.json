@@ -13,6 +13,7 @@
   "artists": "கலைஞர்கள்",
   "aspectRatio": "விகிதம்",
   "audio": "ஒலி",
+  "audioCodecNotSupported": "ஆடியோ கோடெக் ஆதரிக்கப்படவில்லை",
   "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்யவும்",
   "browserNotSupported": "இந்த கோப்பை இயக்குவதற்கு உங்கள் உலாவி ஆதரிக்கப்படவில்லை.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "சமூக மதிப்பீடு",
   "confirm": "உறுதிப்படுத்தவும்",
   "connect": "இணைக்கவும்",
+  "containerNotSupported": "கொள்கலன் ஆதரிக்கப்படவில்லை",
   "continueListening": "தொடர்ந்து கேட்பதற்கு",
   "continueWatching": "தொடர்ந்து பார்க்க",
   "criticRating": "விமர்சன மதிப்பீடு",
@@ -159,6 +161,27 @@
     "noLogsFound": "பதிவுகள் எதுவும் கிடைக்கவில்லை"
   },
   "manualLogin": "கையேடு உள்நுழைவு",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "ஆடியோ சேனல்கள்:"
+    },
+    "audioCodec": {
+      "name": "ஆடியோ கோடெக்:"
+    },
+    "bitrate": {
+      "name": "பிட்ரேட்:"
+    },
+    "container": {
+      "name": "கொள்கலன்:"
+    },
+    "name": "மீடியா",
+    "subtitleCodec": {
+      "name": "வசன வரி கோடெக்:"
+    },
+    "videoCodec": {
+      "name": "வீடியோ கோடெக்:"
+    }
+  },
   "menu": "பட்டியல்",
   "metadata": {
     "source": "மூல",
@@ -215,8 +238,51 @@
     "shuffleAll": "அனைத்தையும் கலக்குங்கள்"
   },
   "playbackData": "பின்னணி தரவு",
+  "playbackInfo": {
+    "name": "பின்னணி",
+    "playMethod": {
+      "direct": "நேரடி",
+      "name": "முறை:",
+      "remux": "ரீமக்ஸ்",
+      "transcode": "டிரான்ஸ்கோட்"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "ஸ்ட்ரீம் வகை:",
+      "unknown": "தெரியாத",
+      "video": "வீடியோ"
+    },
+    "transcodingFramerate": {
+      "name": "பிரேம்ரேட்:",
+      "value": "{value}"
+    },
+    "transcodingProgress": "போக்கு:",
+    "transcodingReason": {
+      "name": "காரணம்: | காரணங்கள்:"
+    }
+  },
   "playbackSettings": "பின்னணி அமைப்புகள்",
   "played": "உடன்",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "சிதைந்த பிரேம்கள்:"
+    },
+    "decodedFrames": {
+      "name": "டிகோட் செய்யப்பட்ட பிரேம்கள்:"
+    },
+    "droppedFrames": {
+      "name": "கைவிடப்பட்ட பிரேம்கள்:"
+    },
+    "name": "பிளேயர்",
+    "playbackResolution": {
+      "name": "வியூபோர்ட் தெளிவுத்திறன்:"
+    },
+    "videoResolution": {
+      "name": "வீடியோ தெளிவுத்திறன்:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "தற்போது",
   "producer": "தயாரிப்பாளர்",
   "quality": "தரம்",
@@ -359,6 +425,7 @@
   "speed": "வேகம்",
   "status": "நிலை",
   "studios": "ஸ்டுடியோஸ்",
+  "subtitleCodecNotSupported": "வசனக் கோடெக் ஆதரிக்கப்படவில்லை",
   "subtitles": "வசன வரிகள்",
   "syncPlayGroups": "ஒத்திசைவு குழுக்கள்",
   "syncingInProgress": "ஒத்திசைவு செயலில் உள்ளது",
@@ -372,6 +439,9 @@
     "switchToLightMode": "ஒளி பயன்முறைக்கு மாறவும்"
   },
   "trailer": "டிரெய்லர்",
+  "transcodingInfo": {
+    "name": "டிரான்ஸ்கோடிங்"
+  },
   "type": "வகை",
   "unableGetPublicUsers": "பயனர்களைப் பெற முடியவில்லை",
   "unableGetRelated": "தொடர்புடைய பொருட்களைப் பெற முடியவில்லை",
@@ -382,6 +452,12 @@
   "undefined": "வரையறுக்கப்படவில்லை",
   "unexpectedError": "எதிர்பாராத பிழை",
   "unhandledException": "கட்டுப்படுத்தப்படாத விதிவிலக்கு",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} mbps"
+    }
+  },
   "unliked": "பிடிக்கவில்லை",
   "unplayed": "காட்டப்படாதது",
   "upNext": "அடுத்தது",
@@ -394,6 +470,7 @@
   },
   "version": "பதிப்பு",
   "video": "வீடியோ",
+  "videoCodecNotSupported": "வீடியோ கோடெக் ஆதரிக்கப்படவில்லை",
   "videoTypes": "வீடியோ வகைகள்",
   "viewDetails": "விபரங்களை பார்",
   "vueClientVersion": "நுகர்வி பதிப்பு",
