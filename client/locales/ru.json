@@ -13,6 +13,7 @@
   "artists": "Исполнители",
   "aspectRatio": "Соотношение сторон",
   "audio": "Аудио",
+  "audioCodecNotSupported": "Аудиокодек не поддерживается",
   "badRequest": "Недопустимый запрос. Попробуйте снова",
   "browserNotSupported": "Ваш браузер не поддерживает воспроизведение этого файла.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Общественная оценка",
   "confirm": "Подтвердить",
   "connect": "Соединение",
+  "containerNotSupported": "Контейнер не поддерживается",
   "continueListening": "Продолжение прослушивания",
   "continueWatching": "Продолжение просмотра",
   "criticRating": "Оценка критиков",
@@ -159,6 +161,27 @@
     "noLogsFound": "Журналов не найдено"
   },
   "manualLogin": "Войти вручную",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Аудиоканалы:"
+    },
+    "audioCodec": {
+      "name": "Аудиокодек:"
+    },
+    "bitrate": {
+      "name": "Поток. ск-ть:"
+    },
+    "container": {
+      "name": "Контейнер:"
+    },
+    "name": "Медиаданные",
+    "subtitleCodec": {
+      "name": "Кодек субтитров:"
+    },
+    "videoCodec": {
+      "name": "Видеокодек:"
+    }
+  },
   "menu": "Меню",
   "metadata": {
     "source": "Источник",
@@ -215,8 +238,51 @@
     "shuffleAll": "Перемешать все"
   },
   "playbackData": "Данные воспроизведения",
+  "playbackInfo": {
+    "name": "Воспроизведение",
+    "playMethod": {
+      "direct": "Напрямую",
+      "name": "Метод:",
+      "remux": "Ремукс",
+      "transcode": "Перекодирование"
+    },
+    "streamType": {
+      "dash": "Технология DASH",
+      "hls": "Технология HLS",
+      "name": "Тип потока:",
+      "unknown": "Неизвестно",
+      "video": "Видео"
+    },
+    "transcodingFramerate": {
+      "name": "Ч-та кадров:",
+      "value": "{value} кадр/с"
+    },
+    "transcodingProgress": "Прогресс:",
+    "transcodingReason": {
+      "name": "Причина: | Причины:"
+    }
+  },
   "playbackSettings": "Параметры воспроизведения",
   "played": "Воспроизведено",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Испорченные кадры:"
+    },
+    "decodedFrames": {
+      "name": "Декодированные кадры:"
+    },
+    "droppedFrames": {
+      "name": "Пропущенные кадры:"
+    },
+    "name": "Проигрыватель",
+    "playbackResolution": {
+      "name": "Разрешение окна просмотра:"
+    },
+    "videoResolution": {
+      "name": "Разрешение видео:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Н/В",
   "producer": "Продюсер",
   "quality": "Качество",
@@ -359,6 +425,7 @@
   "speed": "Скорость",
   "status": "Статус",
   "studios": "Студии",
+  "subtitleCodecNotSupported": "Кодек субтитров не поддерживается",
   "subtitles": "Субтитры",
   "syncPlayGroups": "Группы SyncPlay",
   "syncingInProgress": "Синхронизация в процессе",
@@ -372,6 +439,9 @@
     "switchToLightMode": "Перейти на светлый режим"
   },
   "trailer": "Трейлер",
+  "transcodingInfo": {
+    "name": "Перекодируется"
+  },
   "type": "Тип",
   "unableGetPublicUsers": "Невозможно получить пользователей",
   "unableGetRelated": "Невозможно получить связанные элементы",
@@ -382,6 +452,12 @@
   "undefined": "Не определено",
   "unexpectedError": "Непредвиденная ошибка",
   "unhandledException": "Необработанное исключение",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} Kib/s",
+      "mbps": "{value} Mib/s"
+    }
+  },
   "unliked": "Не нравится",
   "unplayed": "Невоспроизведено",
   "upNext": "Очередное",
@@ -394,6 +470,7 @@
   },
   "version": "Версия",
   "video": "Видео",
+  "videoCodecNotSupported": "Видеокодек не поддерживается",
   "videoTypes": "Типы видео",
   "viewDetails": "Подробности",
   "vueClientVersion": "Версия клиента",
@@ -420,5 +497,5 @@
   "writing": "Сценарий",
   "year": "Год",
   "years": "Годы",
-  "youMayAlsoLike": "Вам также может понравиться"
+  "youMayAlsoLike": "Вам может понравиться"
 }
