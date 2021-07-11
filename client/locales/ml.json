@@ -13,6 +13,7 @@
   "artists": "കലാകാരന്മാർ",
   "aspectRatio": "വീക്ഷണാനുപാതം",
   "audio": "ഓഡിയോ",
+  "audioCodecNotSupported": "ഓഡിയോ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
   "badRequest": "മോശം അഭ്യർത്ഥന. വീണ്ടും ശ്രമിക്ക്",
   "browserNotSupported": "ഈ ഫയൽ പ്ലേ ചെയ്യുന്നതിന് നിങ്ങളുടെ ബ്ര browser സറിനെ പിന്തുണയ്ക്കുന്നില്ല.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "കമ്മ്യൂണിറ്റി റേറ്റിംഗ്",
   "confirm": "സ്ഥിരീകരിക്കുക",
   "connect": "ബന്ധിപ്പിക്കുക",
+  "containerNotSupported": "கொள்கலன் ஆதரிக்கப்படவில்லை",
   "continueListening": "കേൾക്കുന്നത് തുടരുക",
   "continueWatching": "കാണുന്നത് തുടരുക",
   "criticRating": "വിമർശനാത്മക റേറ്റിംഗ്",
@@ -159,6 +161,27 @@
     "noLogsFound": "ലോഗുകളൊന്നും കണ്ടെത്തിയില്ല"
   },
   "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "ഓഡിയോ ചാനലുകൾ:"
+    },
+    "audioCodec": {
+      "name": "ഓഡിയോ കോഡെക്:"
+    },
+    "bitrate": {
+      "name": "ബിട്രേറ്റ്:"
+    },
+    "container": {
+      "name": "കണ്ടെയ്നർ:"
+    },
+    "name": "മീഡിയ",
+    "subtitleCodec": {
+      "name": "സബ്‌ടൈറ്റിൽ കോഡെക്:"
+    },
+    "videoCodec": {
+      "name": "വീഡിയോ കോഡെക്:"
+    }
+  },
   "menu": "മെനു",
   "metadata": {
     "source": "ഉറവിടം",
@@ -214,9 +237,52 @@
     "shuffle": "ഷഫിൾ ചെയ്യുക",
     "shuffleAll": "എല്ലാം ഇളക്കുക"
   },
-  "playbackData": "പ്ലേബാക്ക് ഡാറ്റ",
+  "playbackData": "പ്ലേബാക്ക് വിവരങ്ങൾ",
+  "playbackInfo": {
+    "name": "പ്ലേബാക്ക്",
+    "playMethod": {
+      "direct": "നേരിട്ട്",
+      "name": "രീതി:",
+      "remux": "റീമാക്സ്",
+      "transcode": "ട്രാൻസ്കോഡ്"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "സ്ട്രീം തരം:",
+      "unknown": "അജ്ഞാതം",
+      "video": "വീഡിയോ"
+    },
+    "transcodingFramerate": {
+      "name": "ഫ്രെയിംറേറ്റ്:",
+      "value": "{value} Fps"
+    },
+    "transcodingProgress": "പുരോഗതി:",
+    "transcodingReason": {
+      "name": "കാരണം: | കാരണങ്ങൾ:"
+    }
+  },
   "playbackSettings": "പ്ലേബാക്ക് ക്രമീകരണങ്ങൾ",
   "played": "കളിച്ചു",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "കേടായ ഫ്രെയിമുകൾ:"
+    },
+    "decodedFrames": {
+      "name": "ഡീകോഡ് ചെയ്ത ഫ്രെയിമുകൾ:"
+    },
+    "droppedFrames": {
+      "name": "ഉപേക്ഷിച്ച ഫ്രെയിമുകൾ:"
+    },
+    "name": "പ്ലെയർ",
+    "playbackResolution": {
+      "name": "വ്യൂപോർട്ട് വ്യക്തത:"
+    },
+    "videoResolution": {
+      "name": "വീഡിയോ വ്യക്തത:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "വർത്തമാന",
   "producer": "നിർമ്മാതാവ്",
   "quality": "ഗുണമേന്മയുള്ള",
@@ -359,6 +425,7 @@
   "speed": "വേഗത",
   "status": "പദവി",
   "studios": "സ്റ്റുഡിയോകൾ",
+  "subtitleCodecNotSupported": "സബ്‌ടൈറ്റിൽ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
   "subtitles": "സബ്‌ടൈറ്റിലുകൾ",
   "syncPlayGroups": "സമന്വയ പ്ലേ ഗ്രൂപ്പുകൾ",
   "syncingInProgress": "സമന്വയിപ്പിക്കൽ പുരോഗമിക്കുന്നു",
@@ -372,6 +439,9 @@
     "switchToLightMode": "ലൈറ്റ് മോഡിലേക്ക് മാറുക"
   },
   "trailer": "ട്രെയിലർ",
+  "transcodingInfo": {
+    "name": "ട്രാൻസ്കോഡിംഗ്"
+  },
   "type": "തരം",
   "unableGetPublicUsers": "ഉപയോക്താക്കളെ നേടാനായില്ല",
   "unableGetRelated": "അനുബന്ധ ഇനങ്ങൾ നേടാനായില്ല",
@@ -382,6 +452,12 @@
   "undefined": "നിർവചിച്ചിട്ടില്ല",
   "unexpectedError": "അപ്രതീക്ഷിത പിശക്",
   "unhandledException": "കൈകാര്യം ചെയ്യാത്ത ഒഴിവാക്കൽ",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} mbps"
+    }
+  },
   "unliked": "ഇഷ്ടപ്പെട്ടില്ല",
   "unplayed": "പ്ലേ ചെയ്തിട്ടില്ല",
   "upNext": "അടുത്തത്",
@@ -394,6 +470,7 @@
   },
   "version": "പതിപ്പ്",
   "video": "വീഡിയോ",
+  "videoCodecNotSupported": "വീഡിയോ കോഡെക് പിന്തുണയ്ക്കുന്നില്ല",
   "videoTypes": "വീഡിയോ തരങ്ങൾ",
   "viewDetails": "വിശദാംശങ്ങൾ കാണുക",
   "vueClientVersion": "ക്ലയൻറ് പതിപ്പ്",
