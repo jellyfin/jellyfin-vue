@@ -247,10 +247,12 @@
     },
     "streamType": {
       "name": "Loại luồng:",
-      "unknown": "Không rõ"
+      "unknown": "Không rõ",
+      "video": "Video"
     },
     "transcodingFramerate": {
-      "name": "Tỷ lệ khung hình:"
+      "name": "Tỷ lệ khung hình:",
+      "value": "{value} fps"
     },
     "transcodingProgress": "Tiến trình:",
     "transcodingReason": {
@@ -274,7 +276,8 @@
       "name": "Độ phân giải khung xem:"
     },
     "videoResolution": {
-      "name": "Độ phân giải video:"
+      "name": "Độ phân giải video:",
+      "value": "{width}✕{height}"
     }
   },
   "present": "Hiện tại",
@@ -446,6 +449,12 @@
   "undefined": "Chưa xác định",
   "unexpectedError": "Lỗi không mong muốn",
   "unhandledException": "Tình huống ngoại lệ không thể xử lí được",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    }
+  },
   "unliked": "Không thích",
   "unplayed": "Chưa Phát",
   "upNext": "Tiếp theo",
