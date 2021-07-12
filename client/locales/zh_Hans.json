@@ -4,13 +4,16 @@
   "actor": "演员",
   "actors": "演员",
   "addNewPerson": "添加一位新人物",
+  "airPlayDevices": "AirPlay 设备",
   "albums": "专辑",
   "allLanguages": "全部语言",
   "alphabetically": "按字母排序",
   "architecture": "架构",
   "artist": "艺术家",
   "artists": "艺术家",
+  "aspectRatio": "纵横比",
   "audio": "音频",
+  "audioCodecNotSupported": "音频编解码器不支持",
   "badRequest": "错误的请求。请重试",
   "browserNotSupported": "您的浏览器不支持播放此格式的文件。",
   "buttons": {
@@ -23,6 +26,7 @@
   "communityRating": "社区评分",
   "confirm": "确定",
   "connect": "连接",
+  "containerNotSupported": "容器不支持",
   "continueListening": "继续听",
   "continueWatching": "继续观看",
   "criticRating": "评论家评级",
@@ -50,13 +54,15 @@
   "failedRetrievingDisplayPreferences": "无法获取显示设置首选项。使用默认值。",
   "failedSettingDisplayPreferences": "无法更新显示设置首选项。",
   "failedToRefreshItems": "无法刷新项目",
-  "favorite": "收藏",
-  "features": "特点",
+  "favorite": "最喜爱的",
+  "features": "特性",
   "filter": "筛选器",
   "filtersNotFound": "无法加载过滤器",
   "fullScreen": "全屏幕",
   "general": "一般",
-  "genres": "风格",
+  "genericJellyfinPlaceholderDevice": "通用 Jellyfin 设备",
+  "genres": "类型",
+  "googleCastPlaceholderDevice": "Google Cast 设备",
   "guestStar": "特邀明星",
   "headerExternalIds": "额外编号",
   "headerPaths": "路径",
@@ -97,10 +103,15 @@
     "composer": "作曲家",
     "crew": "演职人员",
     "person": {
-      "birth": "生日",
+      "birth": "出生",
       "birthPlace": "出生地",
-      "death": "去世日期",
-      "person": "人物"
+      "books": "书籍",
+      "death": "去世",
+      "information": "信息",
+      "movies": "电影",
+      "person": "人物",
+      "photos": "相片",
+      "shows": "节目"
     },
     "tracklist": {
       "title": "标题"
@@ -115,7 +126,7 @@
   "libraryNotFound": "未找到媒体库",
   "libraryRefreshQueued": "媒体库将会被更新",
   "liked": "喜欢",
-  "likes": "喜欢",
+  "likes": "喜欢的",
   "links": {
     "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
     "poweredByJellyfin": "本服务器由 Jellyfin 提供动力",
@@ -150,6 +161,27 @@
     "noLogsFound": "找不到日志"
   },
   "manualLogin": "手动登录",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "音频通道："
+    },
+    "audioCodec": {
+      "name": "音频编码："
+    },
+    "bitrate": {
+      "name": "比特率："
+    },
+    "container": {
+      "name": "容器："
+    },
+    "name": "媒体",
+    "subtitleCodec": {
+      "name": "字幕编码："
+    },
+    "videoCodec": {
+      "name": "视频编码："
+    }
+  },
   "menu": "菜单",
   "metadata": {
     "source": "来源",
@@ -169,7 +201,8 @@
   "noAudioTrackSelected": "未选中音轨",
   "noAudioTracksAvailable": "没有可用的音轨",
   "noImagesFound": "暂无图像",
-  "noNetworkConnection": "无网络连接",
+  "noInformationAvailable": "没有可用信息",
+  "noNetworkConnection": "没有网络连接",
   "noResultsFound": "这里空空如也",
   "noSubtitleSelected": "未选中字幕",
   "noSubtitlesAvailable": "没有可用的字幕",
@@ -182,7 +215,7 @@
   "originalTitle": "原始标题",
   "overview": "总览",
   "parentalRating": "家长评级",
-  "parentalRatings": "家长评级",
+  "parentalRatings": "家长评分",
   "password": "密码",
   "people": "人物",
   "person": "人员",
@@ -204,19 +237,67 @@
     "shuffle": "随机",
     "shuffleAll": "全部随机播放"
   },
+  "playbackData": "播放信息",
+  "playbackInfo": {
+    "name": "回放",
+    "playMethod": {
+      "direct": "直接",
+      "name": "方法：",
+      "remux": "Remux",
+      "transcode": "转码"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "流类型：",
+      "unknown": "未知",
+      "video": "视频"
+    },
+    "transcodingFramerate": {
+      "name": "帧率：",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "进度：",
+    "transcodingReason": {
+      "name": "原因： | 原因："
+    }
+  },
+  "playbackSettings": "播放设置",
   "played": "已播放",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "错误帧："
+    },
+    "decodedFrames": {
+      "name": "解码帧："
+    },
+    "droppedFrames": {
+      "name": "丢弃帧："
+    },
+    "name": "播放器",
+    "playbackResolution": {
+      "name": "视窗分辨率："
+    },
+    "videoResolution": {
+      "name": "视频分辨率：",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "现在",
   "producer": "制作者",
+  "quality": "质量",
   "queue": "队列",
   "rating": "评价",
   "refreshLibrary": "刷新媒体库",
   "releaseDate": "发布日期",
-  "resumable": "可续播",
+  "remoteDevices": "远程设备",
+  "resumable": "可恢复的",
   "resume": "恢复播放",
   "role": "角色",
   "save": "保存",
   "saved": "已保存",
   "search": "搜索",
+  "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
   "seasonEpisodeAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
   "series": "系列",
   "server": "服务器",
@@ -340,10 +421,13 @@
   "signIn": "登陆",
   "sortByType": "根据 {type}",
   "sortTitle": "排序标题",
-  "specialFeatures": "特殊功能",
+  "specialFeatures": "特色功能",
+  "speed": "倍速",
   "status": "状态",
   "studios": "工作室",
+  "subtitleCodecNotSupported": "字幕编码不支持",
   "subtitles": "字幕",
+  "syncPlayGroups": "SyncPlay 组",
   "syncingInProgress": "正在同步",
   "tagline": "标语",
   "tags": "标签",
@@ -355,6 +439,9 @@
     "switchToLightMode": "切换到浅色模式"
   },
   "trailer": "预告片",
+  "transcodingInfo": {
+    "name": "转码"
+  },
   "type": "类型",
   "unableGetPublicUsers": "无法获取用户",
   "unableGetRelated": "无法获取相关项目",
@@ -365,6 +452,12 @@
   "undefined": "未定义",
   "unexpectedError": "意外的错误",
   "unhandledException": "未处理的异常",
+  "units": {
+    "bitrate": {
+      "kbps": "{value}kbps",
+      "mbps": "{value} Mbps"
+    }
+  },
   "unliked": "不喜欢",
   "unplayed": "未播放",
   "upNext": "下一个",
@@ -377,6 +470,7 @@
   },
   "version": "版本号",
   "video": "视频",
+  "videoCodecNotSupported": "视频编码不支持",
   "videoTypes": "视频类型",
   "viewDetails": "查看详情",
   "vueClientVersion": "客户端版本",
