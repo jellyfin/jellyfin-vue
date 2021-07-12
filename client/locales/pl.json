@@ -13,6 +13,7 @@
   "artists": "Wykonawcy",
   "aspectRatio": "Proporcje obrazu",
   "audio": "Dźwięk",
+  "audioCodecNotSupported": "Kodek audio nie jest wspierany",
   "badRequest": "Błędne żądanie. Spróbuj ponownie",
   "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Ocena społeczności",
   "confirm": "Potwierdź",
   "connect": "Połącz",
+  "containerNotSupported": "Kontener nie jest wspierany",
   "continueListening": "Kontynuuj słuchanie",
   "continueWatching": "Kontynuuj odtwarzanie",
   "criticRating": "Ocena krytyków",
@@ -159,6 +161,27 @@
     "noLogsFound": "Nie znaleziono dziennika zdarzeń"
   },
   "manualLogin": "Logowanie ręczne",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Kanały audio:"
+    },
+    "audioCodec": {
+      "name": "Kodek audio:"
+    },
+    "bitrate": {
+      "name": "Szybkość transmisji:"
+    },
+    "container": {
+      "name": "Kontener:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Kodek napisów:"
+    },
+    "videoCodec": {
+      "name": "Kodek wideo:"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Źródło",
@@ -215,8 +238,51 @@
     "shuffleAll": "Odtwarzaj wszystko losowo"
   },
   "playbackData": "Dane odtwarzania",
+  "playbackInfo": {
+    "name": "Odtwarzanie",
+    "playMethod": {
+      "direct": "Bezpośrednio",
+      "name": "Metoda:",
+      "remux": "Remux",
+      "transcode": "Transkodowanie"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Typ transmisji:",
+      "unknown": "Nieznany",
+      "video": "Wideo"
+    },
+    "transcodingFramerate": {
+      "name": "Częstotliwość klatek:",
+      "value": "{value} k/s"
+    },
+    "transcodingProgress": "Postęp:",
+    "transcodingReason": {
+      "name": "Powód: | Powody:"
+    }
+  },
   "playbackSettings": "Ustawienia odtwarzania",
   "played": "Odtworzone",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Uszkodzone klatki:"
+    },
+    "decodedFrames": {
+      "name": "Zdekodowane klatki:"
+    },
+    "droppedFrames": {
+      "name": "Upuszczone klatki:"
+    },
+    "name": "Odtwarzacz",
+    "playbackResolution": {
+      "name": "Rozmiar odtwarzacza:"
+    },
+    "videoResolution": {
+      "name": "Rozdzielczość wideo:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Teraz",
   "producer": "Producent",
   "quality": "Jakość",
@@ -359,6 +425,7 @@
   "speed": "Szybkość",
   "status": "Status",
   "studios": "Wytwórnie",
+  "subtitleCodecNotSupported": "Kodek napisów nie jest wspierany",
   "subtitles": "Napisy",
   "syncPlayGroups": "Grupy SyncPlay",
   "syncingInProgress": "Sychronizacja w trakcie",
@@ -372,6 +439,9 @@
     "switchToLightMode": "Przełącz na tryb jasny"
   },
   "trailer": "Zwiastun",
+  "transcodingInfo": {
+    "name": "Transkodowanie"
+  },
   "type": "Typ",
   "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
   "unableGetRelated": "Nie udało się odczytać powiązanych elementów",
@@ -382,6 +452,12 @@
   "undefined": "Niezdefiniowany",
   "unexpectedError": "Niespodziewany błąd",
   "unhandledException": "Nieobsługiwany wyjątek",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kb/s",
+      "mbps": "{value} Mb/s"
+    }
+  },
   "unliked": "Nie lubię",
   "unplayed": "Nieodtworzone",
   "upNext": "Następnie",
@@ -394,6 +470,7 @@
   },
   "version": "Wersja",
   "video": "Wideo",
+  "videoCodecNotSupported": "Kodek wideo nie jest wspierany",
   "videoTypes": "Typy Wideo",
   "viewDetails": "Zobacz szczegóły",
   "vueClientVersion": "Wersja klienta",
