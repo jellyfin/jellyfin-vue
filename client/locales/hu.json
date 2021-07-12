@@ -13,6 +13,7 @@
   "artists": "Előadók",
   "aspectRatio": "Képarány",
   "audio": "Hang",
+  "audioCodecNotSupported": "Az audiókodek nem támogatott",
   "badRequest": "Hibás lekérdezés. Próbáld újra",
   "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
   "buttons": {
@@ -25,6 +26,7 @@
   "communityRating": "Közösségi értékelés",
   "confirm": "Megerősítés",
   "connect": "Kapcsolódás",
+  "containerNotSupported": "A tároló nem támogatott",
   "continueListening": "Hallgatás folytatása",
   "continueWatching": "Megtekintés folytatása",
   "criticRating": "Kritikus értékelés",
@@ -159,6 +161,27 @@
     "noLogsFound": "Naplófájl nem található"
   },
   "manualLogin": "Manuális bejelentkezés",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Audio csatornák:"
+    },
+    "audioCodec": {
+      "name": "Audio kodek:"
+    },
+    "bitrate": {
+      "name": "Bitráta:"
+    },
+    "container": {
+      "name": "Konténer:"
+    },
+    "name": "Média",
+    "subtitleCodec": {
+      "name": "Felirat kodekje:"
+    },
+    "videoCodec": {
+      "name": "Videókodek:"
+    }
+  },
   "menu": "Menü",
   "metadata": {
     "source": "Forrás",
@@ -214,9 +237,52 @@
     "shuffle": "Keverés",
     "shuffleAll": "Összes keverése"
   },
-  "playbackData": "Lejátszási adatok",
+  "playbackData": "Lejátszási információk",
+  "playbackInfo": {
+    "name": "Lejátszás",
+    "playMethod": {
+      "direct": "Közvetlen",
+      "name": "Módszer:",
+      "remux": "Remux",
+      "transcode": "Transzkódolás"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Stream típusa:",
+      "unknown": "Ismeretlen",
+      "video": "Videó"
+    },
+    "transcodingFramerate": {
+      "name": "Képkockák száma:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Folyamat:",
+    "transcodingReason": {
+      "name": "Ok: | Okok:"
+    }
+  },
   "playbackSettings": "Lejátszási beállítások",
   "played": "Lejátszott",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Sérült képkockák:"
+    },
+    "decodedFrames": {
+      "name": "Dekódolt képkockák:"
+    },
+    "droppedFrames": {
+      "name": "Ejtett képkockák:"
+    },
+    "name": "Játékos",
+    "playbackResolution": {
+      "name": "Nézet ablak felbontása:"
+    },
+    "videoResolution": {
+      "name": "Videó felbontás:",
+      "value": "{width}x{height}"
+    }
+  },
   "present": "Jelenlegi",
   "producer": "Producer",
   "quality": "Minőség",
@@ -359,6 +425,7 @@
   "speed": "Sebesség",
   "status": "Állapot",
   "studios": "Stúdiók",
+  "subtitleCodecNotSupported": "A felirat kodek nem támogatott",
   "subtitles": "Feliratok",
   "syncPlayGroups": "SyncPlay csoportok",
   "syncingInProgress": "Szinkronizálás folyamatban",
@@ -372,6 +439,9 @@
     "switchToLightMode": "Váltás világos módra"
   },
   "trailer": "Előzetes",
+  "transcodingInfo": {
+    "name": "Transzkódolás"
+  },
   "type": "Típus",
   "unableGetPublicUsers": "Nem sikerült lekérni a felhasználókat",
   "unableGetRelated": "Nem sikerült lekérni a kapcsolódó elemeket",
@@ -382,6 +452,12 @@
   "undefined": "Meghatározatlan",
   "unexpectedError": "Váratlan hiba",
   "unhandledException": "Kezeletlen kivétel",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kb/s",
+      "mbps": "{value} Mb/s"
+    }
+  },
   "unliked": "Nem tetszett",
   "unplayed": "Lejátszatlan",
   "upNext": "Következik",
@@ -394,6 +470,7 @@
   },
   "version": "Verzió",
   "video": "Videó",
+  "videoCodecNotSupported": "A videókodek nem támogatott",
   "videoTypes": "Videó típusok",
   "viewDetails": "Részletek megjelenítése",
   "vueClientVersion": "Kliens verziója",
