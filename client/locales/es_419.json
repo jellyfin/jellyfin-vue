@@ -13,7 +13,9 @@
   "artists": "Artistas",
   "aspectRatio": "Relación de aspecto",
   "audio": "Audio",
+  "audioCodecNotSupported": "Este codec de audio no esta soportado",
   "badRequest": "Solicitud incorrecta. Reintente",
+  "books": "Libros",
   "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo.",
   "buttons": {
     "ok": "Aceptar"
@@ -25,6 +27,7 @@
   "communityRating": "Calificación de la comunidad",
   "confirm": "Confirmar",
   "connect": "Conectar",
+  "containerNotSupported": "No se soporta este contenedor",
   "continueListening": "Continuar escuchando",
   "continueWatching": "Continuar viendo",
   "criticRating": "Calificación de los criticos",
@@ -159,6 +162,27 @@
     "noLogsFound": "No se encuentran registros"
   },
   "manualLogin": "Iniciar sesión manualmente",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canales de Audio:"
+    },
+    "audioCodec": {
+      "name": "Codec de Audio:"
+    },
+    "bitrate": {
+      "name": "Tasa de Bits:"
+    },
+    "container": {
+      "name": "Contenedor:"
+    },
+    "name": "Medio",
+    "subtitleCodec": {
+      "name": "Codec de Subtitulo:"
+    },
+    "videoCodec": {
+      "name": "Codec de Video:"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Origen",
@@ -214,9 +238,52 @@
     "shuffle": "Mezclar",
     "shuffleAll": "Mezclar todo"
   },
-  "playbackData": "Datos de Reproducción",
+  "playbackData": "Información de Reproducción",
+  "playbackInfo": {
+    "name": "Reproducción",
+    "playMethod": {
+      "direct": "Directa",
+      "name": "Metodo:",
+      "remux": "Remezclado",
+      "transcode": "Transcodificado"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Tipo de Stream:",
+      "unknown": "Desconocido",
+      "video": "Video"
+    },
+    "transcodingFramerate": {
+      "name": "Cuadros por Segundo:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progreso:",
+    "transcodingReason": {
+      "name": "Razón: | Razones:"
+    }
+  },
   "playbackSettings": "Configuración de Reproducción",
   "played": "Reproducido",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Cuadros corrompidos:"
+    },
+    "decodedFrames": {
+      "name": "Cuadros decodificados:"
+    },
+    "droppedFrames": {
+      "name": "Cuadros perdidos:"
+    },
+    "name": "Reproductor",
+    "playbackResolution": {
+      "name": "Resolución de la ventana:"
+    },
+    "videoResolution": {
+      "name": "Resolución de Vídeo:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Presente",
   "producer": "Productor",
   "quality": "Calidad",
@@ -230,6 +297,10 @@
   "role": "Rol",
   "save": "Guardar",
   "saved": "Guardado",
+  "search": {
+    "name": "Buscar",
+    "topResults": "Primeros resultados"
+  },
   "seasonEpisode": "Temporada {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",
@@ -352,12 +423,14 @@
   },
   "shows": "Series",
   "signIn": "Ingresar",
+  "songs": "Canciones",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar por titulo",
   "specialFeatures": "Características especiales",
   "speed": "Velocidad",
   "status": "Estado",
   "studios": "Estudios",
+  "subtitleCodecNotSupported": "El codec del subtitulo no esta soportado",
   "subtitles": "Subtítulos",
   "syncPlayGroups": "Grupos de SyncPlay",
   "syncingInProgress": "Sincronización en progreso",
@@ -371,6 +444,9 @@
     "switchToLightMode": "Cambiar a modo claro"
   },
   "trailer": "Adelanto",
+  "transcodingInfo": {
+    "name": "Transcodificando"
+  },
   "type": "Tipo",
   "unableGetPublicUsers": "No se han podido obtener los usuarios",
   "unableGetRelated": "No se han podido obtener elementos relacionados",
@@ -381,6 +457,12 @@
   "undefined": "Indefinido",
   "unexpectedError": "Error inesperado",
   "unhandledException": "Excepcion no controlada",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    }
+  },
   "unliked": "No te gusta",
   "unplayed": "No reproducido",
   "upNext": "Siguiente",
@@ -393,6 +475,7 @@
   },
   "version": "Versión",
   "video": "Video",
+  "videoCodecNotSupported": "El codec de vídeo no esta soportado",
   "videoTypes": "Tipo de videos",
   "viewDetails": "Ver detalles",
   "vueClientVersion": "Versión del Cliente",
