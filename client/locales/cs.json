@@ -15,6 +15,7 @@
   "audio": "Zvuk",
   "audioCodecNotSupported": "Zvukový kodek není podporován",
   "badRequest": "Špatný požadavek. Zkuste to znovu",
+  "books": "Knihy",
   "browserNotSupported": "Přehrávání tohoto souboru není ve vašem prohlížeči podporováno.",
   "buttons": {
     "ok": "Ok"
@@ -296,6 +297,10 @@
   "role": "Role",
   "save": "Uložit",
   "saved": "Uloženo",
+  "search": {
+    "name": "Hledat",
+    "topResults": "Nejlepší výsledky"
+  },
   "seasonEpisode": "Řada {seasonNumber}, díl {episodeNumber}",
   "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "series": "Seriály",
@@ -418,6 +423,7 @@
   },
   "shows": "Seriály",
   "signIn": "Přihlásit se",
+  "songs": "Skladby",
   "sortByType": "Řazení: {type}",
   "sortTitle": "Název pro řazení",
   "specialFeatures": "Speciály",
