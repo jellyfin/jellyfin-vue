@@ -454,8 +454,8 @@
   "unhandledException": "Öñdelmeitın qiys",
   "units": {
     "bitrate": {
-      "kbps": "{value} Kib/s",
-      "mbps": "{value} Mib/s"
+      "kbps": "{value} Kibit/s",
+      "mbps": "{value} Mibit/s"
     }
   },
   "unliked": "Ūnamaidy",
