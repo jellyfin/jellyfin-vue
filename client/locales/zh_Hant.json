@@ -128,7 +128,7 @@
   "resume": "繼續播放",
   "save": "儲存",
   "saved": "儲存成功",
-  "search": "搜尋",
+  "seasonEpisodeAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章",
   "server": "伺服器",
   "serverVersion": "伺服器版本",
   "serverVersionTooLow": "伺服器版本必須高於/等於 10.7.0",
@@ -204,6 +204,5 @@
     "switchToDarkMode": "切換成深色模式",
     "switchToLightMode": "切換成淺色模式"
   },
-  "trailer": "預告片",
-  "seasonEpisodeAbbrev": "第 {seasonNumber} 季第 {episodeNumber} 章"
+  "trailer": "預告片"
 }

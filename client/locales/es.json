@@ -230,7 +230,6 @@
   "role": "Rol",
   "save": "Guardar",
   "saved": "Guardado",
-  "search": "Buscar",
   "seasonEpisode": "Temporada {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Series",

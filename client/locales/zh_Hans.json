@@ -296,7 +296,6 @@
   "role": "角色",
   "save": "保存",
   "saved": "已保存",
-  "search": "搜索",
   "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
   "seasonEpisodeAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
   "series": "系列",

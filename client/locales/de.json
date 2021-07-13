@@ -295,7 +295,6 @@
   "role": "Rolle",
   "save": "Speichern",
   "saved": "Gespeichert",
-  "search": "Suche",
   "seasonEpisode": "Staffel {seasonNumber}, Folge {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "series": "Serie",
