@@ -15,6 +15,7 @@
   "audio": "ஒலி",
   "audioCodecNotSupported": "ஆடியோ கோடெக் ஆதரிக்கப்படவில்லை",
   "badRequest": "தவறான கோரிக்கை. மீண்டும் முயற்சி செய்யவும்",
+  "books": "புத்தகங்கள்",
   "browserNotSupported": "இந்த கோப்பை இயக்குவதற்கு உங்கள் உலாவி ஆதரிக்கப்படவில்லை.",
   "buttons": {
     "ok": "சரி"
@@ -296,6 +297,10 @@
   "role": "பாத்திரம்",
   "save": "சேமி",
   "saved": "சேமிக்கப்பட்டது",
+  "search": {
+    "name": "தேடு",
+    "topResults": "சிறந்த முடிவுகள்"
+  },
   "seasonEpisode": "பருவம் {seasonNumber}, அத்தியாயம் {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "தொடர்",
@@ -418,6 +423,7 @@
   },
   "shows": "நிகழ்ச்சிகள்",
   "signIn": "உள்நுழைக",
+  "songs": "பாடல்கள்",
   "sortByType": "{type}",
   "sortTitle": "தலைப்பு வரிசை",
   "specialFeatures": "சிறப்பு அம்சங்கள்",
