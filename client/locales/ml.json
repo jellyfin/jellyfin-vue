@@ -15,6 +15,7 @@
   "audio": "ഓഡിയോ",
   "audioCodecNotSupported": "ഓഡിയോ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
   "badRequest": "മോശം അഭ്യർത്ഥന. വീണ്ടും ശ്രമിക്ക്",
+  "books": "പുസ്തകങ്ങൾ",
   "browserNotSupported": "ഈ ഫയൽ പ്ലേ ചെയ്യുന്നതിന് നിങ്ങളുടെ ബ്ര browser സറിനെ പിന്തുണയ്ക്കുന്നില്ല.",
   "buttons": {
     "ok": "ശരി"
@@ -296,6 +297,10 @@
   "role": "പങ്ക്",
   "save": "രക്ഷിക്കും",
   "saved": "സംരക്ഷിച്ചു",
+  "search": {
+    "name": "തിരയുക",
+    "topResults": "മികച്ച ഫലങ്ങൾ"
+  },
   "seasonEpisode": "സീസൺ {seasonNumber}, എപ്പിസോഡ് {episodeNumber}",
   "seasonEpisodeAbbrev": "S {seasonNumber} E {episodeNumber}",
   "series": "സീരീസ്",
@@ -418,6 +423,7 @@
   },
   "shows": "ഷോകൾ",
   "signIn": "സൈൻ ഇൻ",
+  "songs": "ഗാനങ്ങൾ",
   "sortByType": "{type} പ്രകാരം",
   "sortTitle": "ശീർഷകം അടുക്കുക",
   "specialFeatures": "പ്രത്യേകതകള്",
