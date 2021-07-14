@@ -15,6 +15,7 @@
   "audio": "Dybys",
   "audioCodecNotSupported": "Dybys kodegı qoldauda emes",
   "badRequest": "Jaramsyz saual. Ärekettı qaitalañyz",
+  "books": "Kıtaptar",
   "browserNotSupported": "Būl faildy oinatu üşın şolğyşyñyz qoldau körsetpeidı.",
   "buttons": {
     "ok": "Jaraidy"
@@ -99,7 +100,7 @@
       "information": "Aqparat",
       "videos": "Beineler"
     },
-    "cast": "Taratu",
+    "cast": "Röldegiler",
     "composer": "Kompozitor",
     "crew": "Qyzmetkerler",
     "person": {
@@ -296,6 +297,10 @@
   "role": "Rölı",
   "save": "Saqtau",
   "saved": "Saqtalğan",
+  "search": {
+    "name": "Іздеу",
+    "topResults": "Töbelık nätijeler"
+  },
   "seasonEpisode": "Mausym {seasonNumber}, Telebölım {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Telehikaia",
@@ -418,10 +423,11 @@
   },
   "shows": "Körsetımder",
   "signIn": "Kıru",
+  "songs": "Äuender",
   "sortByType": "{type} boiynşa",
   "sortTitle": "Sūryptau atauy",
   "specialFeatures": "Arnaiylar",
-  "speed": "Jyldamdyq",
+  "speed": "Jyldamdyğy",
   "status": "Küiı",
   "studios": "Studialar",
   "subtitleCodecNotSupported": "Subtitr kodegı qoldauda emes",
