@@ -15,6 +15,7 @@
   "audio": "Hang",
   "audioCodecNotSupported": "Az audiókodek nem támogatott",
   "badRequest": "Hibás lekérdezés. Próbáld újra",
+  "books": "Könyvek",
   "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
   "buttons": {
     "ok": "Oké"
@@ -296,6 +297,10 @@
   "role": "Szerep",
   "save": "Mentés",
   "saved": "Mentve",
+  "search": {
+    "name": "Keresés",
+    "topResults": "Legjobb eredmények"
+  },
   "seasonEpisode": "Évad {seasonNumber}, Epizód {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Sorozatok",
@@ -418,6 +423,7 @@
   },
   "shows": "Sorozatok",
   "signIn": "Bejelentkezés",
+  "songs": "Dalok",
   "sortByType": "{type} szerint",
   "sortTitle": "Cím rendezése",
   "specialFeatures": "Speciális funkciók",
