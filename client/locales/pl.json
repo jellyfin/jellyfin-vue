@@ -15,6 +15,7 @@
   "audio": "Dźwięk",
   "audioCodecNotSupported": "Kodek audio nie jest wspierany",
   "badRequest": "Błędne żądanie. Spróbuj ponownie",
+  "books": "Książki",
   "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku.",
   "buttons": {
     "ok": "Ok"
@@ -296,6 +297,10 @@
   "role": "Rola",
   "save": "Zapisz",
   "saved": "Zapisano",
+  "search": {
+    "name": "Szukaj",
+    "topResults": "Najlepsze wyniki"
+  },
   "seasonEpisode": "Sezon {seasonNumber}, Odcinek {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seriale",
@@ -418,6 +423,7 @@
   },
   "shows": "Seriale",
   "signIn": "Zaloguj",
+  "songs": "Utwory",
   "sortByType": "Według {type}",
   "sortTitle": "Tytuł sortowania",
   "specialFeatures": "Cechy specjalne",
