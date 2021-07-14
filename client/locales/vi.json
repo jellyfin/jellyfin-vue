@@ -15,6 +15,7 @@
   "audio": "Âm thanh",
   "audioCodecNotSupported": "Bộ giải mã âm thanh không được hỗ trợ",
   "badRequest": "Yêu cầu đã thất bại. Thử lại",
+  "books": "Sách",
   "browserNotSupported": "Trình duyệt của bạn không được hỗ trợ để phát tệp này.",
   "buttons": {
     "ok": "Đồng ý"
@@ -293,6 +294,10 @@
   "role": "Vai diễn",
   "save": "Lưu",
   "saved": "Đã lưu",
+  "search": {
+    "name": "Tìm kiếm",
+    "topResults": "Kết quả hàng đầu"
+  },
   "seasonEpisode": "Mùa {seasonNumber}, tập {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Loạt Phim",
@@ -415,6 +420,7 @@
   },
   "shows": "Chương Trình",
   "signIn": "Đăng nhập",
+  "songs": "Bài hát",
   "sortByType": "Theo {type}",
   "sortTitle": "Sắp xếp tiêu đề",
   "specialFeatures": "Các Tính Năng Đặc Biệt",
