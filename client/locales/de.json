@@ -15,6 +15,7 @@
   "audio": "Ton",
   "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
   "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
+  "books": "Bücher",
   "browserNotSupported": "Ihr Browser wird für die Wiedergabe dieser Datei nicht unterstützt.",
   "buttons": {
     "ok": "Ok"
@@ -247,6 +248,7 @@
       "transcode": "Transkodieren"
     },
     "streamType": {
+      "dash": "DASH",
       "hls": "HLS",
       "name": "Stream-Typ:",
       "unknown": "Unbekannt",
@@ -295,6 +297,10 @@
   "role": "Rolle",
   "save": "Speichern",
   "saved": "Gespeichert",
+  "search": {
+    "name": "Suche",
+    "topResults": "Beste Ergebnisse"
+  },
   "seasonEpisode": "Staffel {seasonNumber}, Folge {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "series": "Serie",
@@ -417,6 +423,7 @@
   },
   "shows": "Sendungen",
   "signIn": "Anmelden",
+  "songs": "Lieder",
   "sortByType": "Nach {type}",
   "sortTitle": "Sortiere Titel",
   "specialFeatures": "Besondere Eigenschaften",
