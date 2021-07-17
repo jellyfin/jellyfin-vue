@@ -163,7 +163,7 @@
                 class="font-weight-bold mr-2"
                 v-text="
                   $tc(
-                    'playbackInfo.transcodingReason.name',
+                    'transcodingInfo.transcodingReason.name',
                     sessionInfo.TranscodingInfo.TranscodeReasons.length
                   )
                 "
@@ -174,7 +174,13 @@
                     .TranscodeReasons"
                   :key="index"
                 >
-                  {{ $t(camelCase(reason)) }}
+                  {{
+                    $t(
+                      `transcodingInfo.transcodingReason.reasons.${camelCase(
+                        reason
+                      )}`
+                    )
+                  }}
                 </div>
               </div>
             </div>
@@ -187,11 +193,11 @@
             >
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playbackInfo.transcodingFramerate.name')"
+                v-text="$t('transcodingInfo.transcodingFramerate.name')"
               />
               <div>
                 {{
-                  $t('playbackInfo.transcodingFramerate.value', {
+                  $t('transcodingInfo.transcodingFramerate.value', {
                     value: sessionInfo.TranscodingInfo.Framerate
                   })
                 }}
@@ -207,7 +213,7 @@
               <div class="d-flex">
                 <div
                   class="font-weight-bold mr-2"
-                  v-text="$t('playbackInfo.transcodingProgress')"
+                  v-text="$t('transcodingInfo.transcodingProgress')"
                 />
                 <div>
                   {{
