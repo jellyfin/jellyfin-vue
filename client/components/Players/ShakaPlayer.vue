@@ -45,8 +45,7 @@ export default Vue.extend({
       unsubscribe(): void {},
       audioContext: null as AudioContext | null,
       audioSource: null as MediaElementAudioSourceNode | null,
-      gainNode: null as GainNode | null,
-      mediaDuration: 0
+      gainNode: null as GainNode | null
     };
   },
   computed: {
