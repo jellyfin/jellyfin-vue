@@ -109,11 +109,20 @@ export default Vue.extend({
     async refreshItems(): Promise<void> {
       this.loading = true;
 
+      let excludeArtistIds = [];
+
+      if (this.item.AlbumArtists) {
+        excludeArtistIds = this.item.AlbumArtists.map(
+          (albumArtist: { Id: string }) => albumArtist.Id
+        );
+      }
+
       if (this.item.Id) {
         const response = await this.$api.library.getSimilarItems({
           itemId: this.item.Id,
           userId: this.$auth.user?.Id,
-          limit: this.vertical ? 5 : 12
+          limit: this.vertical ? 5 : 12,
+          excludeArtistIds
         });
 
         if (response.data.Items) {
