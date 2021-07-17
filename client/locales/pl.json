@@ -34,6 +34,13 @@
   "darkModeToggle": "Przełącz tryb ciemny",
   "dateAdded": "Data dodania",
   "details": "Szczegóły",
+  "dialog": {
+    "upNext": {
+      "hide": "Ukryj",
+      "nextItemPlayingIn": "Zaczyna się za {time}",
+      "startNow": "Zacznij teraz"
+    }
+  },
   "directing": "Reżyseria",
   "director": "Reżyser",
   "discNumber": "Dysk {discNumber}",
@@ -253,9 +260,6 @@
       "unknown": "Nieznany",
       "video": "Wideo"
     },
-    "transcodingFramerate": {
-      "value": "{value} k/s"
-    },
     "transcodingReason": {
       "name": "Powód: | Powody:"
     }
@@ -425,6 +429,7 @@
   "sortTitle": "Tytuł sortowania",
   "specialFeatures": "Cechy specjalne",
   "speed": "Szybkość",
+  "startNow": "Zacznij teraz",
   "status": "Status",
   "studios": "Wytwórnie",
   "subtitles": "Napisy",
@@ -441,7 +446,35 @@
   },
   "trailer": "Zwiastun",
   "transcodingInfo": {
-    "name": "Transkodowanie"
+    "name": "Transkodowanie",
+    "transcodingFramerate": {
+      "name": "Klatki na sekundę:",
+      "value": "{value} k/s"
+    },
+    "transcodingProgress": "Postęp:",
+    "transcodingReason": {
+      "name": "Powód: | Powody:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Wideo anamorficzne nie jest obsługiwane",
+        "audioBitDepthNotSupported": "Głębia bitowa audio nie jest obsługiwana",
+        "audioBitrateNotSupported": "Bitrate audio nie jest obsługiwany",
+        "audioChannelsNotSupported": "Liczba kanałów audio nie jest obsługiwana",
+        "audioCodecNotSupported": "Kodek audio nie jest obsługiwany",
+        "audioProfileNotSupported": "Profil kodeka audio nie jest obsługiwany",
+        "audioSampleRateNotSupported": "Częstotliwość próbkowania audio nie jest obsługiwana",
+        "containerNotSupported": "Kontener nie jest obsługiwany",
+        "interlacedVideoNotSupported": "Wideo z przeplotem nie jest obsługiwane",
+        "refFramesNotSupported": "Klatki referencyjne nie są obsługiwane",
+        "secondaryAudioNotSupported": "Dodatkowe ścieżki audio nie są obsługiwane",
+        "subtitleCodecNotSupported": "Kodek napisów nie jest obsługiwany",
+        "videoBitDepthNotSupported": "Głębia bitowa wideo nie jest obsługiwana",
+        "videoCodecNotSupported": "Kodek wideo nie jest obsługiwany",
+        "videoFramerateNotSupported": "Liczba klatek na sekundę wideo nie jest obsługiwana",
+        "videoLevelNotSupported": "Poziom kodeka wideo nie jest obsługiwany",
+        "videoProfileNotSupported": "Profil kodeka wideo nie jest obsługiwany",
+        "videoResolutionNotSupported": "Rozdzielczość wideo nie jest obsługiwana"
+      }
+    }
   },
   "type": "Typ",
   "unableGetPublicUsers": "Nie udało się odczytać użytkowników",
@@ -457,6 +490,9 @@
     "bitrate": {
       "kbps": "{value} kb/s",
       "mbps": "{value} Mb/s"
+    },
+    "time": {
+      "seconds": "{count} sekunda | {count} sekund"
     }
   },
   "unliked": "Nie lubię",
