@@ -27,7 +27,6 @@
   "communityRating": "Community rating",
   "confirm": "Confirm",
   "connect": "Connect",
-  "containerNotSupported": "The container is not supported",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
   "criticRating": "Critic rating",
@@ -269,14 +268,6 @@
       "name": "Stream type:",
       "unknown": "Unknown",
       "video": "Video"
-    },
-    "transcodingFramerate": {
-      "name": "Framerate:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "Progress:",
-    "transcodingReason": {
-      "name": "Reason: | Reasons:"
     }
   },
   "playbackSettings": "Playback settings",
@@ -447,7 +438,6 @@
   "startNow": "Start now",
   "status": "Status",
   "studios": "Studios",
-  "subtitleCodecNotSupported": "The subtitle codec is not supported",
   "subtitles": "Subtitles",
   "syncPlayGroups": "SyncPlay groups",
   "syncingInProgress": "Syncing in progress",
@@ -462,7 +452,35 @@
   },
   "trailer": "Trailer",
   "transcodingInfo": {
-    "name": "Transcoding"
+    "name": "Transcoding",
+    "transcodingFramerate": {
+      "name": "Framerate:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progress:",
+    "transcodingReason": {
+      "name": "Reason: | Reasons:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorphic video is not supported",
+        "audioBitDepthNotSupported": "The audio's bit depth is not supported",
+        "audioBitrateNotSupported": "The audio's bitrate is not supported",
+        "audioChannelsNotSupported": "The number of audio channels is not supported",
+        "audioCodecNotSupported": "The audio codec is not supported",
+        "audioProfileNotSupported": "The audio codec's profile is not supported",
+        "audioSampleRateNotSupported": "The audio's sample rate is not supported",
+        "containerNotSupported": "The container is not supported",
+        "interlacedVideoNotSupported": "Interlaced video is not supported",
+        "refFramesNotSupported": "Reference frames are not supported",
+        "secondaryAudioNotSupported": "Secondary audio tracks are not supported",
+        "subtitleCodecNotSupported": "The subtitle codec is not supported",
+        "videoBitDepthNotSupported": "The video's bit depth is not supported",
+        "videoCodecNotSupported": "The video codec is not supported",
+        "videoFramerateNotSupported": "The video's framerate is not supported",
+        "videoLevelNotSupported": "The video codec's level is not supported",
+        "videoProfileNotSupported": "The video codec's profile is not supported",
+        "videoResolutionNotSupported": "The video's resolution is not supported"
+      }
+    }
   },
   "type": "Type",
   "unableGetPublicUsers": "Unable to get users",
@@ -486,7 +504,6 @@
   },
   "version": "Version",
   "video": "Video",
-  "videoCodecNotSupported": "The video codec is not supported",
   "videoTypes": "Video Types",
   "viewDetails": "View details",
   "vueClientVersion": "Client version",
