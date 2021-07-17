@@ -13,7 +13,7 @@
   "artists": "Oryndauşylar",
   "aspectRatio": "Pışımdık araqatynasy",
   "audio": "Dybys",
-  "audioCodecNotSupported": "Dybys kodegı qoldauda emes",
+  "audioCodecNotSupported": "Dybys kodegıne qoldau körsetılmeidı",
   "badRequest": "Jaramsyz saual. Ärekettı qaitalañyz",
   "books": "Kıtaptar",
   "browserNotSupported": "Būl faildy oinatu üşın şolğyşyñyz qoldau körsetpeidı.",
@@ -34,6 +34,13 @@
   "darkModeToggle": "Qarañğy rejımdı qosu",
   "dateAdded": "Üstelgen künı",
   "details": "Egjeiler",
+  "dialog": {
+    "upNext": {
+      "hide": "Jasyru",
+      "nextItemPlayingIn": "{time} kezınde bastau",
+      "startNow": "Qazır bastau"
+    }
+  },
   "directing": "Rejısör",
   "director": "Rejisör",
   "discNumber": "Diskı {discNumber}",
@@ -253,9 +260,6 @@
       "unknown": "Belgısız",
       "video": "Beine"
     },
-    "transcodingFramerate": {
-      "value": "{value} kadr/s"
-    },
     "transcodingReason": {
       "name": "Sebebı: | Sebepterı:"
     }
@@ -425,6 +429,7 @@
   "sortTitle": "Sūryptau atauy",
   "specialFeatures": "Arnaiylar",
   "speed": "Jyldamdyğy",
+  "startNow": "Qazır bastau",
   "status": "Küiı",
   "studios": "Studialar",
   "subtitles": "Subtitrler",
@@ -441,7 +446,35 @@
   },
   "trailer": "Treiler",
   "transcodingInfo": {
-    "name": "Qaita kodtauda"
+    "name": "Qaita kodtauda",
+    "transcodingFramerate": {
+      "name": "Kadr jyld-ğy:",
+      "value": "{value} kadr/s"
+    },
+    "transcodingProgress": "Barysy:",
+    "transcodingReason": {
+      "name": "Sebebı: | Sebepterı:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorftyq beinege qoldau körsetılmeidı",
+        "audioBitDepthNotSupported": "Dybystyñ bittık tereñdıgıne qoldau körsetılmeidı",
+        "audioBitrateNotSupported": "Dybys jyldamdyğyna qoldau körsetılmeidı",
+        "audioChannelsNotSupported": "Dybys arnalardyñ sanyna qoldau körsetılmeidı",
+        "audioCodecNotSupported": "Dybys kodegıne qoldau körsetılmeidı",
+        "audioProfileNotSupported": "Dybys kodegıniñ profailyna qoldau körsetılmeidı",
+        "audioSampleRateNotSupported": "Dybystyñ ülgı jiılıgıne qoldau körsetılmeidı",
+        "containerNotSupported": "Konteinerge qoldau körsetılmeidı",
+        "interlacedVideoNotSupported": "Kezektesulık beinege qoldau körsetılmeidı",
+        "refFramesNotSupported": "Anyqtamalyq kadrlarğa qoldau körsetılmeidı",
+        "secondaryAudioNotSupported": "Qosymşa dybys jolşyqtarğa qoldau körsetılmeidı",
+        "subtitleCodecNotSupported": "Subtitr kodegıne qoldau körsetılmeidı",
+        "videoBitDepthNotSupported": "Beinenıñ bittık tereñdıgıne qoldau körsetılmeidı",
+        "videoCodecNotSupported": "Beine kodegine qoldau körsetılmeidı",
+        "videoFramerateNotSupported": "Beinenıñ kadr jiılıgıne qoldau körsetılmeidı",
+        "videoLevelNotSupported": "Beine kodek deñgeiıne qoldau körsetılmeidı",
+        "videoProfileNotSupported": "Beine kodegınıñ profailyna qoldau körsetılmeidı",
+        "videoResolutionNotSupported": "Beine ajyratymdylyğyna qoldau körsetılmeidı"
+      }
+    }
   },
   "type": "Türı",
   "unableGetPublicUsers": "Paidalanuşylardy alu mümkın emes",
@@ -457,6 +490,9 @@
     "bitrate": {
       "kbps": "{value} Kibit/s",
       "mbps": "{value} Mibit/s"
+    },
+    "time": {
+      "seconds": "{count} sekund | {count} sekund"
     }
   },
   "unliked": "Ūnamaidy",
