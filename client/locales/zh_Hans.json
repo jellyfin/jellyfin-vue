@@ -27,7 +27,6 @@
   "communityRating": "社区评分",
   "confirm": "确定",
   "connect": "连接",
-  "containerNotSupported": "容器不支持",
   "continueListening": "继续听",
   "continueWatching": "继续观看",
   "criticRating": "评论家评级",
@@ -255,10 +254,8 @@
       "video": "视频"
     },
     "transcodingFramerate": {
-      "name": "帧率：",
       "value": "{value} fps"
     },
-    "transcodingProgress": "进度：",
     "transcodingReason": {
       "name": "原因： | 原因："
     }
@@ -430,7 +427,6 @@
   "speed": "倍速",
   "status": "状态",
   "studios": "工作室",
-  "subtitleCodecNotSupported": "字幕编码不支持",
   "subtitles": "字幕",
   "syncPlayGroups": "SyncPlay 组",
   "syncingInProgress": "正在同步",
@@ -475,7 +471,6 @@
   },
   "version": "版本号",
   "video": "视频",
-  "videoCodecNotSupported": "视频编码不支持",
   "videoTypes": "视频类型",
   "viewDetails": "查看详情",
   "vueClientVersion": "客户端版本",

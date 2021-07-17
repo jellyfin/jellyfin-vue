@@ -27,7 +27,6 @@
   "communityRating": "Qauym bağalauy",
   "confirm": "Rastau",
   "connect": "Qosylu",
-  "containerNotSupported": "Konteiner qoldauda emes",
   "continueListening": "Tyñdaudy jalğastyru",
   "continueWatching": "Qaraudy jalğastyru",
   "criticRating": "Synşylar bağalauy",
@@ -255,10 +254,8 @@
       "video": "Beine"
     },
     "transcodingFramerate": {
-      "name": "Kadr jyld-ğy:",
       "value": "{value} kadr/s"
     },
-    "transcodingProgress": "Barysy:",
     "transcodingReason": {
       "name": "Sebebı: | Sebepterı:"
     }
@@ -430,7 +427,6 @@
   "speed": "Jyldamdyğy",
   "status": "Küiı",
   "studios": "Studialar",
-  "subtitleCodecNotSupported": "Subtitr kodegı qoldauda emes",
   "subtitles": "Subtitrler",
   "syncPlayGroups": "SyncPlay toptary",
   "syncingInProgress": "Ündestıru oryndaluda",
@@ -475,7 +471,6 @@
   },
   "version": "Nūsqasy",
   "video": "Beine",
-  "videoCodecNotSupported": "Beine kodegı qoldauda emes",
   "videoTypes": "Beine türlerı",
   "viewDetails": "Egjeilerdı qarau",
   "vueClientVersion": "Tūtynğyş nūsqasy",

@@ -27,7 +27,6 @@
   "communityRating": "Общественная оценка",
   "confirm": "Подтвердить",
   "connect": "Соединение",
-  "containerNotSupported": "Контейнер не поддерживается",
   "continueListening": "Продолжение прослушивания",
   "continueWatching": "Продолжение просмотра",
   "criticRating": "Оценка критиков",
@@ -255,10 +254,8 @@
       "video": "Видео"
     },
     "transcodingFramerate": {
-      "name": "Ч-та кадров:",
       "value": "{value} кадр/с"
     },
-    "transcodingProgress": "Прогресс:",
     "transcodingReason": {
       "name": "Причина: | Причины:"
     }
@@ -430,7 +427,6 @@
   "speed": "Скорость",
   "status": "Статус",
   "studios": "Студии",
-  "subtitleCodecNotSupported": "Кодек субтитров не поддерживается",
   "subtitles": "Субтитры",
   "syncPlayGroups": "Группы SyncPlay",
   "syncingInProgress": "Синхронизация в процессе",
@@ -475,7 +471,6 @@
   },
   "version": "Версия",
   "video": "Видео",
-  "videoCodecNotSupported": "Видеокодек не поддерживается",
   "videoTypes": "Типы видео",
   "viewDetails": "Подробности",
   "vueClientVersion": "Версия клиента",

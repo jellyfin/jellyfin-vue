@@ -27,7 +27,6 @@
   "communityRating": "Közösségi értékelés",
   "confirm": "Megerősítés",
   "connect": "Kapcsolódás",
-  "containerNotSupported": "A tároló nem támogatott",
   "continueListening": "Hallgatás folytatása",
   "continueWatching": "Megtekintés folytatása",
   "criticRating": "Kritikus értékelés",
@@ -255,10 +254,8 @@
       "video": "Videó"
     },
     "transcodingFramerate": {
-      "name": "Képkockák száma:",
       "value": "{value} fps"
     },
-    "transcodingProgress": "Folyamat:",
     "transcodingReason": {
       "name": "Ok: | Okok:"
     }
@@ -430,7 +427,6 @@
   "speed": "Sebesség",
   "status": "Állapot",
   "studios": "Stúdiók",
-  "subtitleCodecNotSupported": "A felirat kodek nem támogatott",
   "subtitles": "Feliratok",
   "syncPlayGroups": "SyncPlay csoportok",
   "syncingInProgress": "Szinkronizálás folyamatban",
@@ -475,7 +471,6 @@
   },
   "version": "Verzió",
   "video": "Videó",
-  "videoCodecNotSupported": "A videókodek nem támogatott",
   "videoTypes": "Videó típusok",
   "viewDetails": "Részletek megjelenítése",
   "vueClientVersion": "Kliens verziója",

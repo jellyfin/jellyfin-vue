@@ -27,7 +27,6 @@
   "communityRating": "Komunitní hodnocení",
   "confirm": "Potvrdit",
   "connect": "Připojit",
-  "containerNotSupported": "Kontejner souboru není podporován",
   "continueListening": "Pokračovat v poslechu",
   "continueWatching": "Pokračovat ve sledování",
   "criticRating": "Hodnocení kritiků",
@@ -255,10 +254,8 @@
       "video": "Video"
     },
     "transcodingFramerate": {
-      "name": "Snímková frekvence:",
       "value": "{value} szs"
     },
-    "transcodingProgress": "Průběh:",
     "transcodingReason": {
       "name": "Důvod: | Důvody:"
     }
@@ -430,7 +427,6 @@
   "speed": "Rychlost",
   "status": "Stav",
   "studios": "Studia",
-  "subtitleCodecNotSupported": "Titulkový kodek není podporován",
   "subtitles": "Titulky",
   "syncPlayGroups": "Skupiny SyncPlay",
   "syncingInProgress": "Probíhá synchronizace",
@@ -475,7 +471,6 @@
   },
   "version": "Verze",
   "video": "Video",
-  "videoCodecNotSupported": "Video kodek není podporován",
   "videoTypes": "Typy videa",
   "viewDetails": "Zobrazit podrobnosti",
   "vueClientVersion": "Verze klienta",

@@ -27,7 +27,6 @@
   "communityRating": "Đánh giá cộng đồng",
   "confirm": "Xác nhận",
   "connect": "Kết nối",
-  "containerNotSupported": "Vùng chứa không được hỗ trợ",
   "continueListening": "Tiếp tục nghe",
   "continueWatching": "Tiếp tục xem",
   "criticRating": "Đánh giá phê bình",
@@ -252,10 +251,8 @@
       "video": "Video"
     },
     "transcodingFramerate": {
-      "name": "Tỷ lệ khung hình:",
       "value": "{value} fps"
     },
-    "transcodingProgress": "Tiến trình:",
     "transcodingReason": {
       "name": "Lý do: | Lý do:"
     }
@@ -427,7 +424,6 @@
   "speed": "Tốc độ",
   "status": "Trạng thái",
   "studios": "Hãng Phim",
-  "subtitleCodecNotSupported": "Mã hóa phụ đề không được hỗ trợ",
   "subtitles": "Phụ Đề",
   "syncPlayGroups": "Nhóm SyncPlay",
   "syncingInProgress": "Đang đồng bộ hóa",
@@ -472,7 +468,6 @@
   },
   "version": "Phiên bản",
   "video": "Video",
-  "videoCodecNotSupported": "Bộ giải mã video không được hỗ trợ",
   "videoTypes": "Loại Videos",
   "viewDetails": "Xem chi tiết",
   "vueClientVersion": "Phiên bản ứng dụng",

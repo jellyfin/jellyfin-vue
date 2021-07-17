@@ -27,7 +27,6 @@
   "communityRating": "കമ്മ്യൂണിറ്റി റേറ്റിംഗ്",
   "confirm": "സ്ഥിരീകരിക്കുക",
   "connect": "ബന്ധിപ്പിക്കുക",
-  "containerNotSupported": "கொள்கலன் ஆதரிக்கப்படவில்லை",
   "continueListening": "കേൾക്കുന്നത് തുടരുക",
   "continueWatching": "കാണുന്നത് തുടരുക",
   "criticRating": "വിമർശനാത്മക റേറ്റിംഗ്",
@@ -255,10 +254,8 @@
       "video": "വീഡിയോ"
     },
     "transcodingFramerate": {
-      "name": "ഫ്രെയിംറേറ്റ്:",
       "value": "{value} Fps"
     },
-    "transcodingProgress": "പുരോഗതി:",
     "transcodingReason": {
       "name": "കാരണം: | കാരണങ്ങൾ:"
     }
@@ -430,7 +427,6 @@
   "speed": "വേഗത",
   "status": "പദവി",
   "studios": "സ്റ്റുഡിയോകൾ",
-  "subtitleCodecNotSupported": "സബ്‌ടൈറ്റിൽ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
   "subtitles": "സബ്‌ടൈറ്റിലുകൾ",
   "syncPlayGroups": "സമന്വയ പ്ലേ ഗ്രൂപ്പുകൾ",
   "syncingInProgress": "സമന്വയിപ്പിക്കൽ പുരോഗമിക്കുന്നു",
@@ -475,7 +471,6 @@
   },
   "version": "പതിപ്പ്",
   "video": "വീഡിയോ",
-  "videoCodecNotSupported": "വീഡിയോ കോഡെക് പിന്തുണയ്ക്കുന്നില്ല",
   "videoTypes": "വീഡിയോ തരങ്ങൾ",
   "viewDetails": "വിശദാംശങ്ങൾ കാണുക",
   "vueClientVersion": "ക്ലയൻറ് പതിപ്പ്",

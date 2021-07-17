@@ -27,7 +27,6 @@
   "communityRating": "Community Bewertungen",
   "confirm": "Bestätigen",
   "connect": "Verbinden",
-  "containerNotSupported": "Der Container wird nicht unterstützt",
   "continueListening": "Weiter zuhören",
   "continueWatching": "Weiter anschauen",
   "criticRating": "Kritikerbewertungen",
@@ -255,10 +254,8 @@
       "video": "Video"
     },
     "transcodingFramerate": {
-      "name": "Framerate:",
       "value": "{value} fps"
     },
-    "transcodingProgress": "Fortschritt:",
     "transcodingReason": {
       "name": "Grund: | Gründe:"
     }
@@ -430,7 +427,6 @@
   "speed": "Geschwindigkeit",
   "status": "Status",
   "studios": "Studios",
-  "subtitleCodecNotSupported": "Der Untertitel-Codec wird nicht unterstützt",
   "subtitles": "Untertitel",
   "syncPlayGroups": "SyncPlay-Gruppen",
   "syncingInProgress": "Synchronisierung läuft",
@@ -475,7 +471,6 @@
   },
   "version": "Version",
   "video": "Video",
-  "videoCodecNotSupported": "Der Video-Codec wird nicht unterstützt",
   "videoTypes": "Videotypen",
   "viewDetails": "Details anzeigen",
   "vueClientVersion": "Clientversion",
