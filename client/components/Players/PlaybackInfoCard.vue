@@ -315,8 +315,8 @@ export default Vue.extend({
       if (this.getCurrentAudioTrack) {
         if (
           (this.sessionInfo?.TranscodingInfo?.AudioCodec &&
-            this.getCurrentAudioTrack.Codec !==
-              this.sessionInfo.TranscodingInfo.AudioCodec) ||
+            this.getCurrentAudioTrack?.Codec !==
+              this.sessionInfo?.TranscodingInfo?.AudioCodec) ||
           !this.sessionInfo?.TranscodingInfo?.IsAudioDirect
         ) {
           return `${this.getCurrentAudioTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioCodec}`;
@@ -331,15 +331,19 @@ export default Vue.extend({
       return this.getCurrentSubtitleTrack?.Codec;
     },
     mediaAudioChannels(): string | null | undefined {
-      if (
-        this.sessionInfo?.TranscodingInfo?.AudioChannels &&
-        this.getCurrentAudioTrack.Channels !==
-          this.sessionInfo.TranscodingInfo.AudioChannels
-      ) {
-        return `${this.getCurrentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
+      if (this.getCurrentAudioTrack) {
+        if (
+          this.sessionInfo?.TranscodingInfo?.AudioChannels &&
+          this.getCurrentAudioTrack?.Channels !==
+            this.sessionInfo?.TranscodingInfo?.AudioChannels
+        ) {
+          return `${this.getCurrentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
+        }
+
+        return this.getCurrentAudioTrack?.Channels;
       }
 
-      return this.getCurrentAudioTrack?.Channels;
+      return null;
     },
     mediaTotalBitrate(): string | null | undefined {
       if (

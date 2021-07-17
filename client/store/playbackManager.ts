@@ -5,8 +5,8 @@ import {
   ChapterInfo,
   MediaSourceInfo
 } from '@jellyfin/client-axios';
+import isNil from 'lodash/isNil';
 import { RootState } from '.';
-import { ticksToMs } from '~/mixins/timeUtils';
 
 export enum PlaybackStatus {
   Stopped,
@@ -83,10 +83,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return rootGetters['items/getItems'](state.queue);
   },
   getCurrentItem: (state, _getters, _rootState, rootGetters) => {
-    if (
-      state.currentItemIndex !== null &&
-      state.queue[state.currentItemIndex]
-    ) {
+    if (!isNil(state.currentItemIndex) && state.queue[state.currentItemIndex]) {
       return rootGetters['items/getItem'](state.queue[state.currentItemIndex]);
     }
 
@@ -96,7 +93,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     if (state.currentItemIndex === 0) {
       return null;
     } else if (
-      state.lastItemIndex !== null &&
+      !isNil(state.lastItemIndex) &&
       state.queue[state.lastItemIndex]
     ) {
       return rootGetters['items/getItem'](state.queue[state.lastItemIndex]);
@@ -106,7 +103,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getNextItem: (state, _getters, _rootState, rootGetters) => {
     if (
-      state.currentItemIndex !== null &&
+      !isNil(state.currentItemIndex) &&
       state.currentItemIndex + 1 < state.queue.length
     ) {
       return rootGetters['items/getItem'](
@@ -119,7 +116,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return null;
   },
   getCurrentlyPlayingType: (state, _getters, _rootState, rootGetters) => {
-    if (state.currentItemIndex !== null) {
+    if (!isNil(state.currentItemIndex)) {
       return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
         ?.Type;
     }
@@ -127,7 +124,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return null;
   },
   getCurrentlyPlayingMediaType: (state, _getters, _rootState, rootGetters) => {
-    if (state.currentItemIndex !== null) {
+    if (!isNil(state.currentItemIndex)) {
       return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
         ?.MediaType;
     }
@@ -135,7 +132,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return null;
   },
   getCurrentItemSubtitleTracks: (state) => {
-    if (state.currentMediaSource !== null) {
+    if (!isNil(state.currentMediaSource)) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Subtitle';
       });
@@ -143,8 +140,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getCurrentVideoTrack: (state) => {
     if (
-      state.currentMediaSource !== null &&
-      state.currentVideoStreamIndex !== undefined
+      !isNil(state.currentMediaSource) &&
+      !isNil(state.currentVideoStreamIndex)
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Video';
@@ -155,8 +152,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getCurrentAudioTrack: (state) => {
     if (
-      state.currentMediaSource !== null &&
-      state.currentAudioStreamIndex !== undefined
+      !isNil(state.currentMediaSource) &&
+      !isNil(state.currentAudioStreamIndex)
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Audio';
@@ -167,38 +164,12 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getCurrentSubtitleTrack: (state) => {
     if (
-      state.currentMediaSource !== null &&
-      state.currentSubtitleStreamIndex !== undefined
+      !isNil(state.currentMediaSource) &&
+      !isNil(state.currentSubtitleStreamIndex)
     ) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
         return stream.Type === 'Subtitle';
       })[state.currentSubtitleStreamIndex];
-    }
-
-    return null;
-  },
-  getCurrentTime: (state) => {
-    return state.currentTime;
-  },
-  getDuration: (state, _getters, _rootState, rootGetters) => {
-    if (state.currentItemIndex !== null) {
-      const currentItem = rootGetters['items/getItem'](
-        state.queue?.[state.currentItemIndex]
-      );
-
-      return ticksToMs(currentItem?.RunTimeTicks) / 1000;
-    }
-
-    return null;
-  },
-  getTimeLeft: (state, _getters, _rootState, rootGetters) => {
-    if (state.currentItemIndex !== null && state.currentTime !== null) {
-      const currentItem = rootGetters['items/getItem'](
-        state.queue?.[state.currentItemIndex]
-      );
-      const duration = ticksToMs(currentItem?.RunTimeTicks) / 1000;
-
-      return parseInt((duration - state.currentTime).toFixed());
     }
 
     return null;
