@@ -98,7 +98,7 @@
     "@types/qs": "^6.9.7",
     "@types/simple-icons": "^5.0.1",
     "@types/swiper": "^5.4.3",
-    "@types/tizen-tv-webapis": "^2.0.0",
+    "@types/tizen-tv-webapis": "^2.0.1",
     "@types/uuid": "^8.3.1",
     "@types/wicg-mediasession": "^1.1.2",
     "@vue/test-utils": "^1.2.1",
