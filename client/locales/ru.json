@@ -34,6 +34,13 @@
   "darkModeToggle": "Переключение тёмного режима",
   "dateAdded": "Дата добавления",
   "details": "Подробности",
+  "dialog": {
+    "upNext": {
+      "hide": "Скрыть",
+      "nextItemPlayingIn": "Начиная с {time}",
+      "startNow": "Запустить немедленно"
+    }
+  },
   "directing": "Режиссура",
   "director": "Режиссёр",
   "discNumber": "Диск {discNumber}",
@@ -253,9 +260,6 @@
       "unknown": "Неизвестно",
       "video": "Видео"
     },
-    "transcodingFramerate": {
-      "value": "{value} кадр/с"
-    },
     "transcodingReason": {
       "name": "Причина: | Причины:"
     }
@@ -425,6 +429,7 @@
   "sortTitle": "Название для сортировки",
   "specialFeatures": "Спецматериалы",
   "speed": "Скорость",
+  "startNow": "Запустить немедленно",
   "status": "Статус",
   "studios": "Студии",
   "subtitles": "Субтитры",
@@ -441,7 +446,35 @@
   },
   "trailer": "Трейлер",
   "transcodingInfo": {
-    "name": "Перекодируется"
+    "name": "Перекодируется",
+    "transcodingFramerate": {
+      "name": "Ч-та кадров:",
+      "value": "{value} кадр/с"
+    },
+    "transcodingProgress": "Прогресс:",
+    "transcodingReason": {
+      "name": "Причина: | Причины:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Анаморфное видео не поддерживается",
+        "audioBitDepthNotSupported": "Битовая глубина звука не поддерживается",
+        "audioBitrateNotSupported": "Потоковая скорость аудио не поддерживается",
+        "audioChannelsNotSupported": "Количество аудиоканалов не поддерживается",
+        "audioCodecNotSupported": "Аудиокодек не поддерживается",
+        "audioProfileNotSupported": "Профиль аудиокодека не поддерживается",
+        "audioSampleRateNotSupported": "Частота дискретизации аудио не поддерживается",
+        "containerNotSupported": "Контейнер не поддерживается",
+        "interlacedVideoNotSupported": "Чересстрочное видео не поддерживается",
+        "refFramesNotSupported": "Опорные кадры не поддерживаются",
+        "secondaryAudioNotSupported": "Вторичные звуковые дорожки не поддерживаются",
+        "subtitleCodecNotSupported": "Кодек субтитров не поддерживается",
+        "videoBitDepthNotSupported": "Битовая глубина видео не поддерживается",
+        "videoCodecNotSupported": "Видеокодек не поддерживается",
+        "videoFramerateNotSupported": "Частота кадров видео не поддерживается",
+        "videoLevelNotSupported": "Уровень видеокодека не поддерживается",
+        "videoProfileNotSupported": "Профиль видеокодека не поддерживается",
+        "videoResolutionNotSupported": "Разрешение видео не поддерживается"
+      }
+    }
   },
   "type": "Тип",
   "unableGetPublicUsers": "Невозможно получить пользователей",
@@ -457,6 +490,9 @@
     "bitrate": {
       "kbps": "{value} Kibit/s",
       "mbps": "{value} Mibit/s"
+    },
+    "time": {
+      "seconds": "{count} секунда | {count} секунд"
     }
   },
   "unliked": "Не нравится",
