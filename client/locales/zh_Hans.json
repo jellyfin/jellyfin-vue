@@ -13,10 +13,10 @@
   "artists": "艺术家",
   "aspectRatio": "纵横比",
   "audio": "音频",
-  "audioCodecNotSupported": "音频编解码器不支持",
+  "audioCodecNotSupported": "音频编码不支持",
   "badRequest": "错误的请求。请重试",
   "books": "书籍",
-  "browserNotSupported": "您的浏览器不支持播放此格式的文件。",
+  "browserNotSupported": "您的浏览器不支持播放此文件。",
   "buttons": {
     "ok": "确认"
   },
@@ -74,7 +74,7 @@
     },
     "welcome": {
       "checkNewItems": "查看新的项目。",
-      "helloUser": "你好 {userName}！",
+      "helloUser": "你好，{userName} ！",
       "noItems": "没有最近添加的项目可显示。"
     }
   },
@@ -130,7 +130,7 @@
   "likes": "喜欢的",
   "links": {
     "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
-    "poweredByJellyfin": "本服务器由 Jellyfin 提供动力",
+    "poweredByJellyfin": "此服务器由Jellyfin提供支持",
     "readTheDocumentation": "阅读文档",
     "reportAnIssue": "报告这个客户端的问题"
   },
@@ -302,7 +302,7 @@
     "topResults": "最佳结果"
   },
   "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
-  "seasonEpisodeAbbrev": "季 {seasonNumber} 章 {episodeNumber}",
+  "seasonEpisodeAbbrev": "第 {seasonNumber}季第 {episodeNumber}集",
   "series": "系列",
   "server": "服务器",
   "serverVersion": "服务器版本",
@@ -330,7 +330,7 @@
       "appVersion": "应用版本",
       "delete": "删除",
       "deleteAll": "删除全部",
-      "deleteAllDevicesError": "删除所有设备时发生错误",
+      "deleteAllDevicesError": "删除所有设备时出错",
       "deleteAllDevicesSuccess": "所有设备删除成功",
       "deleteDeviceError": "删除设备时出错",
       "deleteDeviceSuccess": "设备已成功删除",
@@ -459,7 +459,7 @@
   "unhandledException": "未处理的异常",
   "units": {
     "bitrate": {
-      "kbps": "{value}kbps",
+      "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
     }
   },
@@ -486,7 +486,7 @@
     "confirmPassword": "确认密码",
     "languageLocale": "语言和本地化",
     "languageSuccessfullySet": "语言设置成功。",
-    "metadataLanguagesSet": "元数据设置成功。",
+    "metadataLanguagesSet": "元数据语言已设置。",
     "preferedLanguage": "首选的语言",
     "preferredMetadataLanguage": "首选的元数据语言",
     "remoteAccess": "远程访问",
