@@ -169,10 +169,10 @@
                   <label class="text--secondary">{{ $t('video') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Video'"
+                  <media-stream-selector
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Video')
+                    "
                     @input="currentVideoTrack = $event"
                   />
                 </v-col>
@@ -186,10 +186,10 @@
                   <label class="text--secondary">{{ $t('audio') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Audio'"
+                  <media-stream-selector
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Audio')
+                    "
                     @input="currentAudioTrack = $event"
                   />
                 </v-col>
@@ -203,10 +203,10 @@
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <track-selector
-                    :item="item"
-                    :media-source-index="currentSourceIndex"
-                    :type="'Subtitle'"
+                  <media-stream-selector
+                    :media-streams="
+                      getMediaStreams(currentSource.MediaStreams, 'Subtitle')
+                    "
                     @input="currentSubtitleTrack = $event"
                   />
                 </v-col>
@@ -303,13 +303,6 @@ export default Vue.extend({
     ...mapState('page', ['title']),
     item(): BaseItemDto {
       return this.getItem(this.itemId);
-    },
-    currentSourceIndex: {
-      get(): number | undefined {
-        return this.item.MediaSources?.findIndex(
-          (source) => source === this.currentSource
-        );
-      }
     },
     isPlayable: {
       get(): boolean {
