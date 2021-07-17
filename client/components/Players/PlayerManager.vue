@@ -23,17 +23,12 @@
           v-show="!isMinimized && playbackData"
           @close-playback-data="playbackData = false"
         />
+        <up-next @change="setUpNextVisible" />
         <v-hover v-slot="{ hover }">
           <v-card class="player-card" width="100%">
             <v-container fill-height fluid class="pa-0 justify-center">
               <shaka-player ref="videoPlayer" />
             </v-container>
-            <up-next
-              v-if="showUpNext"
-              :time-left="getTimeLeft"
-              @hide="upNextUserHidden = true"
-              @startNext="setNextTrack()"
-            />
             <!-- Mini Player Overlay -->
             <v-fade-transition>
               <v-overlay v-show="hover && isMinimized" absolute>
@@ -90,7 +85,9 @@
             <!-- Full Screen OSD -->
             <v-fade-transition>
               <v-overlay
-                v-show="!isMinimized && showFullScreenOverlay"
+                v-show="
+                  !isMinimized && showFullScreenOverlay && !isUpNextVisible
+                "
                 color="transparent"
                 absolute
               >
@@ -267,7 +264,7 @@ export default Vue.extend({
       fullScreenVideo: false,
       keepOpen: false,
       playbackData: false,
-      upNextUserHidden: false
+      isUpNextVisible: false
     };
   },
   computed: {
@@ -275,52 +272,15 @@ export default Vue.extend({
       'getCurrentItem',
       'getPreviousItem',
       'getNextItem',
-      'getCurrentlyPlayingMediaType',
-      'getDuration',
-      'getTimeLeft'
+      'getCurrentlyPlayingMediaType'
     ]),
+    ...mapState('clientSettings', ['darkMode']),
     ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
     isPlaying(): boolean {
       return this.status !== PlaybackStatus.Stopped;
     },
     isPaused(): boolean {
       return this.status === PlaybackStatus.Paused;
-    },
-    showUpNext(): boolean {
-      if (
-        this.isMinimized ||
-        this.upNextUserHidden ||
-        this.getCurrentlyPlayingMediaType !== 'Video' ||
-        !this.getNextItem
-      ) {
-        return false;
-      }
-
-      // How many seconds left before showing upNext component
-      // Default 45 seconds for 10-45 minute video
-      let showUpNextAt = 45;
-
-      // 5h
-      if (this.getDuration >= 5 * 60 * 60) {
-        // 9 min
-        showUpNextAt = 540;
-      }
-      // 2h
-      else if (this.getDuration >= 2 * 60 * 60) {
-        // 3:30 min
-        showUpNextAt = 210;
-      }
-      // 45 min
-      else if (this.getDuration >= 45 * 60) {
-        // 2 min
-        showUpNextAt = 120;
-      }
-
-      if (this.getTimeLeft >= showUpNextAt) {
-        return false;
-      }
-
-      return true;
     }
   },
   watch: {
@@ -344,125 +304,6 @@ export default Vue.extend({
             window.removeEventListener('keydown', this.handleKeyPress);
           } else if (state.playbackManager.isMinimized === false) {
             window.addEventListener('keydown', this.handleKeyPress);
-          }
-
-          break;
-        case 'playbackManager/INCREASE_QUEUE_INDEX':
-        case 'playbackManager/DECREASE_QUEUE_INDEX':
-        case 'playbackManager/SET_CURRENT_ITEM_INDEX':
-          this.upNextUserHidden = false;
-
-          // Report playback stop for the previous item
-          if (
-            state.playbackManager.currentTime !== null &&
-            this.getPreviousItem?.Id
-          ) {
-            this.$api.playState.reportPlaybackStopped(
-              {
-                playbackStopInfo: {
-                  ItemId: this.getPreviousItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  PositionTicks: this.msToTicks(
-                    state.playbackManager.currentTime * 1000
-                  )
-                }
-              },
-              { progress: false }
-            );
-          }
-
-          // Then report the start of the next one
-          if (this.getCurrentItem?.Id) {
-            this.$api.playState.reportPlaybackStart(
-              {
-                playbackStartInfo: {
-                  CanSeek: true,
-                  ItemId: this.getCurrentItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  MediaSourceId: state.playbackManager.currentMediaSource?.Id,
-                  AudioStreamIndex:
-                    state.playbackManager.currentAudioStreamIndex,
-                  SubtitleStreamIndex:
-                    state.playbackManager.currentSubtitleStreamIndex
-                }
-              },
-              { progress: false }
-            );
-
-            this.updateMetadata();
-          }
-
-          this.setLastProgressUpdate({ progress: new Date().getTime() });
-          break;
-        case 'playbackManager/SET_CURRENT_TIME': {
-          if (state.playbackManager.status === PlaybackStatus.Playing) {
-            const now = new Date().getTime();
-
-            if (
-              this.getCurrentItem !== null &&
-              now - state.playbackManager.lastProgressUpdate > 1000 &&
-              state.playbackManager.currentTime !== null
-            ) {
-              this.$api.playState.reportPlaybackProgress(
-                {
-                  playbackProgressInfo: {
-                    ItemId: this.getCurrentItem.Id,
-                    PlaySessionId: state.playbackManager.playSessionId,
-                    IsPaused: false,
-                    PositionTicks: Math.round(
-                      this.msToTicks(state.playbackManager.currentTime * 1000)
-                    )
-                  }
-                },
-                { progress: false }
-              );
-
-              this.setLastProgressUpdate({ progress: new Date().getTime() });
-            }
-          }
-
-          break;
-        }
-        case 'playbackManager/STOP_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
-            this.$api.playState.reportPlaybackStopped(
-              {
-                playbackStopInfo: {
-                  ItemId: this.getPreviousItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  PositionTicks: this.msToTicks(
-                    state.playbackManager.currentTime * 1000
-                  )
-                }
-              },
-              { progress: false }
-            );
-
-            this.setLastProgressUpdate({ progress: 0 });
-
-            this.resetMetadata();
-
-            this.removeMediaHandlers();
-          }
-
-          break;
-        case 'playbackManager/PAUSE_PLAYBACK':
-          if (state.playbackManager.currentTime !== null) {
-            this.$api.playState.reportPlaybackProgress(
-              {
-                playbackProgressInfo: {
-                  ItemId: this.getCurrentItem.Id,
-                  PlaySessionId: state.playbackManager.playSessionId,
-                  IsPaused: true,
-                  PositionTicks: Math.round(
-                    this.msToTicks(state.playbackManager.currentTime * 1000)
-                  )
-                }
-              },
-              { progress: false }
-            );
-
-            this.setLastProgressUpdate({ progress: new Date().getTime() });
           }
 
           break;
@@ -493,6 +334,9 @@ export default Vue.extend({
       'skipBackward',
       'changeCurrentTime'
     ]),
+    setUpNextVisible(isVisible: boolean): void {
+      this.isUpNextVisible = isVisible;
+    },
     getOsdTimeoutDuration(): number {
       // If we're on mobile, the OSD timer must be longer, to account for the lack of pointer movement
       if (window.matchMedia('(pointer:fine)').matches) {
@@ -546,7 +390,6 @@ export default Vue.extend({
       this.setLastItemIndex();
       this.resetCurrentItemIndex();
       this.setNextTrack();
-      this.upNextUserHidden = false;
     },
     handleKeyPress(e: KeyboardEvent): void {
       if (!this.isMinimized && this.isPlaying) {

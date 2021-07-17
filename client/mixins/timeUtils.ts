@@ -111,24 +111,14 @@ const timeUtils = Vue.extend({
      * Returns the end time of an item
      *
      * @param {number} ticks - Ticks of the item to calculate
-     * @param {boolean} suffix - Whether to add or not the PM or AM prefix
      * @returns {string} The resulting string
      */
-    getEndsAtTime(ticks: number, suffix = true): string {
+    getEndsAtTime(ticks: number): string {
       const ms = this.ticksToMs(ticks);
-      const endTimeLong = new Date(Date.now() + ms);
-      let format;
 
-      if (!suffix) {
-        format = endTimeLong.toLocaleString(this.$i18n.locale, {
-          hour: 'numeric',
-          minute: 'numeric'
-        });
-      } else {
-        format = this.$dateFns.format(Date.now() + ms, 'p', {
-          locale: this.$i18n.locale
-        });
-      }
+      const format = this.$dateFns.format(Date.now() + ms, 'p', {
+        locale: this.$i18n.locale
+      });
 
       // TODO: Use a Date object
       return this.$t('endsAt', {

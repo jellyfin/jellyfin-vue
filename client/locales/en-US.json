@@ -37,7 +37,7 @@
   "details": "Details",
   "dialog": {
     "upNext": {
-      "nextItemPlayingIn": "Next Item Playing in",
+      "nextItemPlayingIn": "Starting in {time}",
       "startNow": "Start now",
       "hide": "Hide"
     }
@@ -70,6 +70,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} second | {count} seconds"
     }
   },
   "fullScreen": "Full screen",
@@ -316,7 +319,6 @@
     "name": "Search",
     "topResults": "Top results"
   },
-  "seconds": "Seconds",
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server version",
