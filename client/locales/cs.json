@@ -459,6 +459,7 @@
         "audioCodecNotSupported": "Zvukový kodek není podporován",
         "audioProfileNotSupported": "Profil zvukového kodeku není podporován",
         "audioSampleRateNotSupported": "Vzorkovací frekvence zvuku není podporována",
+        "containerBitrateExceedsLimit": "Datový tok kontejneru překračuje nastavenou mez",
         "containerNotSupported": "Kontejner není podporován",
         "interlacedVideoNotSupported": "Prokládané video není podporováno",
         "refFramesNotSupported": "Referenční snímky nejsou podporovány",
