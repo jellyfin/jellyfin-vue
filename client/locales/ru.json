@@ -459,6 +459,7 @@
         "audioCodecNotSupported": "Аудиокодек не поддерживается",
         "audioProfileNotSupported": "Профиль аудиокодека не поддерживается",
         "audioSampleRateNotSupported": "Частота дискретизации аудио не поддерживается",
+        "containerBitrateExceedsLimit": "Потоковая скорость контейнера превышает установленный лимит",
         "containerNotSupported": "Контейнер не поддерживается",
         "interlacedVideoNotSupported": "Чересстрочное видео не поддерживается",
         "refFramesNotSupported": "Опорные кадры не поддерживаются",
