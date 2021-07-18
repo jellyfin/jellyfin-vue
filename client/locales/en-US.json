@@ -468,6 +468,7 @@
         "audioCodecNotSupported": "The audio codec is not supported",
         "audioProfileNotSupported": "The audio codec's profile is not supported",
         "audioSampleRateNotSupported": "The audio's sample rate is not supported",
+        "containerBitrateExceedsLimit": "The container bitrate exceeds the set limit",
         "containerNotSupported": "The container is not supported",
         "interlacedVideoNotSupported": "Interlaced video is not supported",
         "refFramesNotSupported": "Reference frames are not supported",

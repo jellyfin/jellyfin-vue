@@ -371,9 +371,10 @@ export default Vue.extend({
     }
   },
   beforeMount() {
+    this.updateSession();
     this.updateSessionInterval = window.setInterval(() => {
       this.updateSession();
-    }, 1000);
+    }, 10000);
   },
   beforeDestroy() {
     if (this.updateSessionInterval !== null) {

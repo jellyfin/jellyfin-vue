@@ -56,7 +56,7 @@ export const playbackReportingPlugin: Plugin<AppState> = (store) => {
 
           if (
             store.getters['playbackManager/getCurrentItem'] &&
-            now - state.playbackManager.lastProgressUpdate > 1000 &&
+            now - state.playbackManager.lastProgressUpdate > 10000 &&
             state.playbackManager.currentTime !== null
           ) {
             store.$api.playState.reportPlaybackProgress(
