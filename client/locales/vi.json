@@ -34,6 +34,13 @@
   "darkModeToggle": "Chuyển đổi chế độ tối",
   "dateAdded": "Ngày thêm",
   "details": "Chi tiết",
+  "dialog": {
+    "upNext": {
+      "hide": "Ẩn",
+      "nextItemPlayingIn": "Bắt đầu sau {time}",
+      "startNow": "Bắt đầu bây giờ"
+    }
+  },
   "directing": "Chỉ đạo",
   "director": "Giám đốc",
   "discNumber": "Đĩa {discNumber}",
@@ -250,9 +257,6 @@
       "unknown": "Không rõ",
       "video": "Video"
     },
-    "transcodingFramerate": {
-      "value": "{value} fps"
-    },
     "transcodingReason": {
       "name": "Lý do: | Lý do:"
     }
@@ -422,6 +426,7 @@
   "sortTitle": "Sắp xếp tiêu đề",
   "specialFeatures": "Các Tính Năng Đặc Biệt",
   "speed": "Tốc độ",
+  "startNow": "Bắt đầu ngay",
   "status": "Trạng thái",
   "studios": "Hãng Phim",
   "subtitles": "Phụ Đề",
@@ -438,7 +443,35 @@
   },
   "trailer": "Đoạn Giới Thiệu",
   "transcodingInfo": {
-    "name": "Chuyển mã"
+    "name": "Chuyển mã",
+    "transcodingFramerate": {
+      "name": "Tỷ lệ khung hình:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Tiến độ:",
+    "transcodingReason": {
+      "name": "Lý do: | Lý do:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Video Anamorphic không được hỗ trợ",
+        "audioBitDepthNotSupported": "Độ sâu bit của âm thanh không được hỗ trợ",
+        "audioBitrateNotSupported": "Tốc độ bit của âm thanh không được hỗ trợ",
+        "audioChannelsNotSupported": "Số kênh âm thanh không được hỗ trợ",
+        "audioCodecNotSupported": "Bộ giải mã âm thanh không được hỗ trợ",
+        "audioProfileNotSupported": "Cấu hình mã hóa âm thanh không được hỗ trợ",
+        "audioSampleRateNotSupported": "Tốc độ mẫu của âm thanh không được hỗ trợ",
+        "containerNotSupported": "Vùng chứa không được hỗ trợ",
+        "interlacedVideoNotSupported": "Video xen kẽ không được hỗ trợ",
+        "refFramesNotSupported": "Khung tham chiếu không được hỗ trợ",
+        "secondaryAudioNotSupported": "Các bản âm thanh phụ không được hỗ trợ",
+        "subtitleCodecNotSupported": "Mã hóa phụ đề không được hỗ trợ",
+        "videoBitDepthNotSupported": "Độ sâu bit của video không được hỗ trợ",
+        "videoCodecNotSupported": "Bộ giải mã video không được hỗ trợ",
+        "videoFramerateNotSupported": "Tỉ lệ khung hình của video không được hỗ trợ",
+        "videoLevelNotSupported": "Cấp độ mã hóa video không được hỗ trợ",
+        "videoProfileNotSupported": "Cấu hình của mã hóa video không được hỗ trợ",
+        "videoResolutionNotSupported": "Độ phân giải video không được hỗ trợ"
+      }
+    }
   },
   "type": "Kiểu",
   "unableGetPublicUsers": "Không thể lấy được thông tin người dùng",
@@ -454,6 +487,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} giây | {count} giây"
     }
   },
   "unliked": "Không thích",
