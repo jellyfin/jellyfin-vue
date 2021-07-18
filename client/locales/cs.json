@@ -34,6 +34,13 @@
   "darkModeToggle": "Přepnout tmavý režim",
   "dateAdded": "Datum přidání",
   "details": "Podrobnosti",
+  "dialog": {
+    "upNext": {
+      "hide": "Skrýt",
+      "nextItemPlayingIn": "Přehrávání začne za {time}",
+      "startNow": "Přehrát hned"
+    }
+  },
   "directing": "Režíruje",
   "director": "Režisér",
   "discNumber": "Disk {discNumber}",
@@ -253,9 +260,6 @@
       "unknown": "Neznámý",
       "video": "Video"
     },
-    "transcodingFramerate": {
-      "value": "{value} szs"
-    },
     "transcodingReason": {
       "name": "Důvod: | Důvody:"
     }
@@ -425,6 +429,7 @@
   "sortTitle": "Název pro řazení",
   "specialFeatures": "Speciály",
   "speed": "Rychlost",
+  "startNow": "Přehrát hned",
   "status": "Stav",
   "studios": "Studia",
   "subtitles": "Titulky",
@@ -441,7 +446,35 @@
   },
   "trailer": "Upoutávka",
   "transcodingInfo": {
-    "name": "Překódování"
+    "name": "Překódování",
+    "transcodingFramerate": {
+      "name": "Snímková frekvence:",
+      "value": "{value} szs"
+    },
+    "transcodingProgress": "Postup:",
+    "transcodingReason": {
+      "name": "Důvod: | Důvody:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorfní video není podporováno",
+        "audioBitDepthNotSupported": "Bitová hloubka zvuku není podporována",
+        "audioBitrateNotSupported": "Datový tok zvuku není podporován",
+        "audioChannelsNotSupported": "Počet zvukových kanálů není podporován",
+        "audioCodecNotSupported": "Zvukový kodek není podporován",
+        "audioProfileNotSupported": "Profil zvukového kodeku není podporován",
+        "audioSampleRateNotSupported": "Vzorkovací frekvence zvuku není podporována",
+        "containerNotSupported": "Kontejner není podporován",
+        "interlacedVideoNotSupported": "Prokládané video není podporováno",
+        "refFramesNotSupported": "Referenční snímky nejsou podporovány",
+        "secondaryAudioNotSupported": "Sekundární zvukové stopy nejsou podporovány",
+        "subtitleCodecNotSupported": "Titulkový kodek není podporován",
+        "videoBitDepthNotSupported": "Barevná hloubka videa není podporována",
+        "videoCodecNotSupported": "Video kodek není podporován",
+        "videoFramerateNotSupported": "Snímková frekvence videa není podporována",
+        "videoLevelNotSupported": "Úroveň kodeku videa není podporována",
+        "videoProfileNotSupported": "Profil kodeku videa není podporován",
+        "videoResolutionNotSupported": "Rozlišení videa není podporováno"
+      }
+    }
   },
   "type": "Typ",
   "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
@@ -457,6 +490,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekundu | {count} sekundy"
     }
   },
   "unliked": "Nelíbilo se",
