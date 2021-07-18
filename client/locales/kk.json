@@ -459,6 +459,7 @@
         "audioCodecNotSupported": "Dybys kodegıne qoldau körsetılmeidı",
         "audioProfileNotSupported": "Dybys kodegıniñ profailyna qoldau körsetılmeidı",
         "audioSampleRateNotSupported": "Dybystyñ ülgı jiılıgıne qoldau körsetılmeidı",
+        "containerBitrateExceedsLimit": "Konteynerdiñ qarqyny belgilengen şekten asadı",
         "containerNotSupported": "Konteinerge qoldau körsetılmeidı",
         "interlacedVideoNotSupported": "Kezektesulık beinege qoldau körsetılmeidı",
         "refFramesNotSupported": "Anyqtamalyq kadrlarğa qoldau körsetılmeidı",
