@@ -20,7 +20,7 @@
         :value="isPlaying"
       >
         <playback-info-card
-          v-show="!isMinimized && playbackData"
+          v-if="!isMinimized && playbackData"
           @close-playback-data="playbackData = false"
         />
         <up-next @change="setUpNextVisible" />
