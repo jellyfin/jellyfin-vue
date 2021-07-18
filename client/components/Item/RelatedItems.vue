@@ -65,7 +65,7 @@ export default Vue.extend({
      * item.Id To be used to get related items
      */
     item: {
-      type: Object,
+      type: Object as () => BaseItemDto,
       required: true
     },
     vertical: {
@@ -109,20 +109,15 @@ export default Vue.extend({
     async refreshItems(): Promise<void> {
       this.loading = true;
 
-      let excludeArtistIds = [];
-
-      if (this.item.AlbumArtists) {
-        excludeArtistIds = this.item.AlbumArtists.map(
-          (albumArtist: { Id: string }) => albumArtist.Id
-        );
-      }
-
       if (this.item.Id) {
         const response = await this.$api.library.getSimilarItems({
           itemId: this.item.Id,
           userId: this.$auth.user?.Id,
           limit: this.vertical ? 5 : 12,
-          excludeArtistIds
+          excludeArtistIds: this.item.AlbumArtists?.flatMap(
+            (albumArtist: BaseItemDto) =>
+              albumArtist.Id ? [albumArtist.Id] : []
+          )
         });
 
         if (response.data.Items) {
