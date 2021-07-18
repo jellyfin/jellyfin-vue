@@ -259,9 +259,6 @@
       "name": "Тип потока:",
       "unknown": "Неизвестно",
       "video": "Видео"
-    },
-    "transcodingReason": {
-      "name": "Причина: | Причины:"
     }
   },
   "playbackSettings": "Параметры воспроизведения",

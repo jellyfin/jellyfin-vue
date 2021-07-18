@@ -253,9 +253,6 @@
       "unknown": "未知",
       "video": "视频"
     },
-    "transcodingFramerate": {
-      "value": "{value} fps"
-    },
     "transcodingReason": {
       "name": "原因： | 原因："
     }

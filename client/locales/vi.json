@@ -256,9 +256,6 @@
       "name": "Loại luồng:",
       "unknown": "Không rõ",
       "video": "Video"
-    },
-    "transcodingReason": {
-      "name": "Lý do: | Lý do:"
     }
   },
   "playbackSettings": "Cài đặt phát lại",

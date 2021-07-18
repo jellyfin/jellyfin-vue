@@ -253,9 +253,6 @@
       "unknown": "Ismeretlen",
       "video": "Videó"
     },
-    "transcodingFramerate": {
-      "value": "{value} fps"
-    },
     "transcodingReason": {
       "name": "Ok: | Okok:"
     }

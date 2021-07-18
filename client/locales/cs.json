@@ -259,9 +259,6 @@
       "name": "Typ streamu:",
       "unknown": "Neznámý",
       "video": "Video"
-    },
-    "transcodingReason": {
-      "name": "Důvod: | Důvody:"
     }
   },
   "playbackSettings": "Nastavení přehrávání",

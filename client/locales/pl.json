@@ -259,9 +259,6 @@
       "name": "Typ transmisji:",
       "unknown": "Nieznany",
       "video": "Wideo"
-    },
-    "transcodingReason": {
-      "name": "Powód: | Powody:"
     }
   },
   "playbackSettings": "Ustawienia odtwarzania",

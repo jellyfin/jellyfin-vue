@@ -253,9 +253,6 @@
       "unknown": "தெரியாத",
       "video": "வீடியோ"
     },
-    "transcodingFramerate": {
-      "value": "{value}"
-    },
     "transcodingReason": {
       "name": "காரணம்: | காரணங்கள்:"
     }

@@ -253,9 +253,6 @@
       "unknown": "അജ്ഞാതം",
       "video": "വീഡിയോ"
     },
-    "transcodingFramerate": {
-      "value": "{value} Fps"
-    },
     "transcodingReason": {
       "name": "കാരണം: | കാരണങ്ങൾ:"
     }

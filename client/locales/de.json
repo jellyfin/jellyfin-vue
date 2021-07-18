@@ -253,9 +253,6 @@
       "unknown": "Unbekannt",
       "video": "Video"
     },
-    "transcodingFramerate": {
-      "value": "{value} fps"
-    },
     "transcodingReason": {
       "name": "Grund: | Gründe:"
     }
