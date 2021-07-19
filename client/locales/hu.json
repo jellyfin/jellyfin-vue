@@ -34,6 +34,13 @@
   "darkModeToggle": "Váltás sötét módra",
   "dateAdded": "Hozzáadás dátuma",
   "details": "Részletek",
+  "dialog": {
+    "upNext": {
+      "hide": "Elrejt",
+      "nextItemPlayingIn": "Kezdés ekkor {time}",
+      "startNow": "Indítás most"
+    }
+  },
   "directing": "Rendező(k)",
   "director": "Rendező",
   "discNumber": "{discNumber} lemez",
@@ -252,9 +259,6 @@
       "name": "Stream típusa:",
       "unknown": "Ismeretlen",
       "video": "Videó"
-    },
-    "transcodingReason": {
-      "name": "Ok: | Okok:"
     }
   },
   "playbackSettings": "Lejátszási beállítások",
@@ -422,6 +426,7 @@
   "sortTitle": "Cím rendezése",
   "specialFeatures": "Speciális funkciók",
   "speed": "Sebesség",
+  "startNow": "Indítás most",
   "status": "Állapot",
   "studios": "Stúdiók",
   "subtitles": "Feliratok",
@@ -438,7 +443,36 @@
   },
   "trailer": "Előzetes",
   "transcodingInfo": {
-    "name": "Transzkódolás"
+    "name": "Transzkódolás",
+    "transcodingFramerate": {
+      "name": "Képkocka Szám:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Folyamat:",
+    "transcodingReason": {
+      "name": "Ok: | Okok:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Az anamorf videó nem támogatott",
+        "audioBitDepthNotSupported": "Az audio bitmélysége nem támogatott",
+        "audioBitrateNotSupported": "Az audió bitsebessége nem támogatott",
+        "audioChannelsNotSupported": "Az audiócsatornák száma nem támogatott",
+        "audioCodecNotSupported": "Az audiókodek nem támogatott",
+        "audioProfileNotSupported": "Az audiókodek profilja nem támogatott",
+        "audioSampleRateNotSupported": "A hang mintavételi aránya nem támogatott",
+        "containerBitrateExceedsLimit": "A tároló bitsebessége meghaladja a beállított határt",
+        "containerNotSupported": "A tároló nem támogatott",
+        "interlacedVideoNotSupported": "Az átlapolt videók nem támogatottak",
+        "refFramesNotSupported": "A referenciakeretek nem támogatottak",
+        "secondaryAudioNotSupported": "A másodlagos hangsávok nem támogatottak",
+        "subtitleCodecNotSupported": "A felirat kodek nem támogatott",
+        "videoBitDepthNotSupported": "A videó bitmélysége nem támogatott",
+        "videoCodecNotSupported": "A videokodek nem támogatott",
+        "videoFramerateNotSupported": "A videó képkocka sebessége nem támogatott",
+        "videoLevelNotSupported": "A videókodek szintje nem támogatott",
+        "videoProfileNotSupported": "A videókodek profilja nem támogatott",
+        "videoResolutionNotSupported": "A videó felbontása nem támogatott"
+      }
+    }
   },
   "type": "Típus",
   "unableGetPublicUsers": "Nem sikerült lekérni a felhasználókat",
@@ -454,6 +488,9 @@
     "bitrate": {
       "kbps": "{value} kb/s",
       "mbps": "{value} Mb/s"
+    },
+    "time": {
+      "seconds": "{count} másodperc | {count} másodperc(ek)"
     }
   },
   "unliked": "Nem tetszett",
