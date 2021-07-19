@@ -252,9 +252,6 @@
       "name": "സ്ട്രീം തരം:",
       "unknown": "അജ്ഞാതം",
       "video": "വീഡിയോ"
-    },
-    "transcodingReason": {
-      "name": "കാരണം: | കാരണങ്ങൾ:"
     }
   },
   "playbackSettings": "പ്ലേബാക്ക് ക്രമീകരണങ്ങൾ",

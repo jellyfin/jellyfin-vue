@@ -252,9 +252,6 @@
       "name": "流类型：",
       "unknown": "未知",
       "video": "视频"
-    },
-    "transcodingReason": {
-      "name": "原因： | 原因："
     }
   },
   "playbackSettings": "播放设置",

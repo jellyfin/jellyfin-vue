@@ -252,9 +252,6 @@
       "name": "Stream-Typ:",
       "unknown": "Unbekannt",
       "video": "Video"
-    },
-    "transcodingReason": {
-      "name": "Grund: | Gründe:"
     }
   },
   "playbackSettings": "Wiedergabeeinstellungen",
