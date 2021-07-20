@@ -34,6 +34,13 @@
   "darkModeToggle": "切换深色模式",
   "dateAdded": "加入日期",
   "details": "细节",
+  "dialog": {
+    "upNext": {
+      "hide": "隐藏",
+      "nextItemPlayingIn": "开始于 {time}",
+      "startNow": "现在开始"
+    }
+  },
   "directing": "导演",
   "director": "导演",
   "discNumber": "碟片 {discNumber}",
@@ -419,6 +426,7 @@
   "sortTitle": "排序标题",
   "specialFeatures": "特色功能",
   "speed": "倍速",
+  "startNow": "现在开始",
   "status": "状态",
   "studios": "工作室",
   "subtitles": "字幕",
@@ -435,7 +443,36 @@
   },
   "trailer": "预告片",
   "transcodingInfo": {
-    "name": "转码"
+    "name": "转码",
+    "transcodingFramerate": {
+      "name": "帧率 ：",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "进度：",
+    "transcodingReason": {
+      "name": "原因：| 原因：",
+      "reasons": {
+        "anamorphicVideoNotSupported": "变形视频不支持",
+        "audioBitDepthNotSupported": "音频比特深度不支持",
+        "audioBitrateNotSupported": "音频比特率不支持",
+        "audioChannelsNotSupported": "音频通道数不支持",
+        "audioCodecNotSupported": "音频编码不支持",
+        "audioProfileNotSupported": "音频编码的配置文件不支持",
+        "audioSampleRateNotSupported": "音频采样率不支持",
+        "containerBitrateExceedsLimit": "容器比特率超过设定的限制",
+        "containerNotSupported": "容器不支持",
+        "interlacedVideoNotSupported": "隔行扫描视频不支持",
+        "refFramesNotSupported": "参考帧不支持",
+        "secondaryAudioNotSupported": "二级音轨不支持",
+        "subtitleCodecNotSupported": "字幕编码不支持",
+        "videoBitDepthNotSupported": "视频的比特深度不支持",
+        "videoCodecNotSupported": "视频编码不支持",
+        "videoFramerateNotSupported": "视频帧率不支持",
+        "videoLevelNotSupported": "视频编码的级别不支持",
+        "videoProfileNotSupported": "视频编码的配置文件不支持",
+        "videoResolutionNotSupported": "视频的分辨率不支持"
+      }
+    }
   },
   "type": "类型",
   "unableGetPublicUsers": "无法获取用户",
@@ -451,6 +488,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} 秒 | {count} 秒"
     }
   },
   "unliked": "不喜欢",
