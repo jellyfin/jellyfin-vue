@@ -34,6 +34,13 @@
   "darkModeToggle": "Dunkelmodus umschalten",
   "dateAdded": "Datum hinzugefügt",
   "details": "Details",
+  "dialog": {
+    "upNext": {
+      "hide": "Ausblenden",
+      "nextItemPlayingIn": "Beginnt in {time}",
+      "startNow": "Jetzt beginnen"
+    }
+  },
   "directing": "Regie",
   "director": "Regisseur",
   "discNumber": "Disk {discNumber}",
@@ -419,6 +426,7 @@
   "sortTitle": "Sortiere Titel",
   "specialFeatures": "Besondere Eigenschaften",
   "speed": "Geschwindigkeit",
+  "startNow": "Jetzt beginnen",
   "status": "Status",
   "studios": "Studios",
   "subtitles": "Untertitel",
@@ -435,7 +443,36 @@
   },
   "trailer": "Trailer",
   "transcodingInfo": {
-    "name": "Transcodierung"
+    "name": "Transcodierung",
+    "transcodingFramerate": {
+      "name": "Bildrate:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Fortschritt:",
+    "transcodingReason": {
+      "name": "Grund: | Gründe:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorphotisches Videomaterial wird nicht unterstützt",
+        "audioBitDepthNotSupported": "Die Bittiefe des Audios wird nicht unterstützt",
+        "audioBitrateNotSupported": "Die Bitrate des Audios wird nicht unterstützt",
+        "audioChannelsNotSupported": "Die Anzahl der Audiokanäle wird nicht unterstützt",
+        "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
+        "audioProfileNotSupported": "Das Profil des Audio-Codecs wird nicht unterstützt",
+        "audioSampleRateNotSupported": "Die Abtastrate des Audios wird nicht unterstützt",
+        "containerBitrateExceedsLimit": "Die Container-Bitrate überschreitet den eingestellten Grenzwert",
+        "containerNotSupported": "Der Container wird nicht unterstützt",
+        "interlacedVideoNotSupported": "Video im Zeilensprungverfahren wird nicht unterstützt",
+        "refFramesNotSupported": "Referenzbilder werden nicht unterstützt",
+        "secondaryAudioNotSupported": "Sekundäre Audiospuren werden nicht unterstützt",
+        "subtitleCodecNotSupported": "Der Untertitel-Codec wird nicht unterstützt",
+        "videoBitDepthNotSupported": "Die Bittiefe des Videos wird nicht unterstützt",
+        "videoCodecNotSupported": "Der Video-Codec wird nicht unterstützt",
+        "videoFramerateNotSupported": "Die Bildrate des Videos wird nicht unterstützt",
+        "videoLevelNotSupported": "Die Stufe des Video-Codecs wird nicht unterstützt",
+        "videoProfileNotSupported": "Das Profil des Video-Codecs wird nicht unterstützt",
+        "videoResolutionNotSupported": "Die Auflösung des Videos wird nicht unterstützt"
+      }
+    }
   },
   "type": "Typ",
   "unableGetPublicUsers": "Benutzer können nicht abgerufen werden",
@@ -451,6 +488,9 @@
     "bitrate": {
       "kbps": "{value} Kbit/s",
       "mbps": "{value} Mbit/s"
+    },
+    "time": {
+      "seconds": "{count} Sekunde | {count} Sekunden"
     }
   },
   "unliked": "Gefällt mir nicht",
