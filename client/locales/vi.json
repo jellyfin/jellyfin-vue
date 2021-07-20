@@ -456,6 +456,7 @@
         "audioCodecNotSupported": "Bộ giải mã âm thanh không được hỗ trợ",
         "audioProfileNotSupported": "Cấu hình mã hóa âm thanh không được hỗ trợ",
         "audioSampleRateNotSupported": "Tốc độ mẫu của âm thanh không được hỗ trợ",
+        "containerBitrateExceedsLimit": "Tốc độ bit vùng chứa vượt quá giới hạn đã đặt",
         "containerNotSupported": "Vùng chứa không được hỗ trợ",
         "interlacedVideoNotSupported": "Video xen kẽ không được hỗ trợ",
         "refFramesNotSupported": "Khung tham chiếu không được hỗ trợ",
