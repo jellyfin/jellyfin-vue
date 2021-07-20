@@ -459,6 +459,7 @@
         "audioCodecNotSupported": "Kodek audio nie jest obsługiwany",
         "audioProfileNotSupported": "Profil kodeka audio nie jest obsługiwany",
         "audioSampleRateNotSupported": "Częstotliwość próbkowania audio nie jest obsługiwana",
+        "containerBitrateExceedsLimit": "Bitrate kontenera przekracza ustawiony limit",
         "containerNotSupported": "Kontener nie jest obsługiwany",
         "interlacedVideoNotSupported": "Wideo z przeplotem nie jest obsługiwane",
         "refFramesNotSupported": "Klatki referencyjne nie są obsługiwane",
