@@ -70,7 +70,7 @@
     "vue-native-websocket": "^2.0.14",
     "vue-virtual-scroller": "^1.0.10",
     "vuedraggable": "^2.24.3",
-    "vuex-persistedstate": "^4.0.0-beta.3"
+    "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
