@@ -106,9 +106,9 @@
       "information": "信息",
       "videos": "视频"
     },
-    "cast": "演职人员",
+    "cast": "演员",
     "composer": "作曲家",
-    "crew": "演职人员",
+    "crew": "工作人员",
     "person": {
       "birth": "出生",
       "birthPlace": "出生地",
@@ -527,8 +527,8 @@
     "setupWizard": "设置向导",
     "userSuccessfullySet": "用户设置成功。"
   },
-  "writer": "作者",
-  "writing": "作者",
+  "writer": "编剧",
+  "writing": "写作",
   "year": "年份",
   "years": "年份",
   "youMayAlsoLike": "猜你喜欢"
