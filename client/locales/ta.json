@@ -34,6 +34,13 @@
   "darkModeToggle": "இருண்ட பயன்முறையை நிலைமாற்று",
   "dateAdded": "சேர்க்கப்பட்ட தேதி",
   "details": "விவரங்கள்",
+  "dialog": {
+    "upNext": {
+      "hide": "மறை",
+      "nextItemPlayingIn": "{time}இல் தொடங்குகிறது",
+      "startNow": "இப்போதே துவக்கு"
+    }
+  },
   "directing": "இயக்குதல்",
   "director": "இயக்குனர்",
   "discNumber": "வட்டு {discNumber}",
@@ -419,6 +426,7 @@
   "sortTitle": "தலைப்பு வரிசை",
   "specialFeatures": "சிறப்பு அம்சங்கள்",
   "speed": "வேகம்",
+  "startNow": "இப்போதே துவக்கு",
   "status": "நிலை",
   "studios": "ஸ்டுடியோஸ்",
   "subtitles": "வசன வரிகள்",
@@ -435,7 +443,36 @@
   },
   "trailer": "டிரெய்லர்",
   "transcodingInfo": {
-    "name": "டிரான்ஸ்கோடிங்"
+    "name": "டிரான்ஸ்கோடிங்",
+    "transcodingFramerate": {
+      "name": "பிரேம்ரேட்:",
+      "value": "{value} FPS"
+    },
+    "transcodingProgress": "முன்னேற்றம்:",
+    "transcodingReason": {
+      "name": "காரணம்: | காரணங்கள்:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "அனமார்பிக் வீடியோ ஆதரிக்கப்படவில்லை",
+        "audioBitDepthNotSupported": "ஆடியோவின் பிட் ஆழம் ஆதரிக்கப்படவில்லை",
+        "audioBitrateNotSupported": "ஆடியோவின் பிட்ரேட் ஆதரிக்கப்படவில்லை",
+        "audioChannelsNotSupported": "ஆடியோ சேனல்களின் எண்ணிக்கை ஆதரிக்கப்படவில்லை",
+        "audioCodecNotSupported": "ஆடியோ கோடெக் ஆதரிக்கப்படவில்லை",
+        "audioProfileNotSupported": "ஆடியோ கோடெக்கின் சுயவிவரம் ஆதரிக்கப்படவில்லை",
+        "audioSampleRateNotSupported": "ஆடியோவின் மாதிரி வீதம் ஆதரிக்கப்படவில்லை",
+        "containerBitrateExceedsLimit": "கொள்கலன் பிட்ரேட் தொகுப்பு வரம்பை மீறுகிறது",
+        "containerNotSupported": "கொள்கலன் ஆதரிக்கப்படவில்லை",
+        "interlacedVideoNotSupported": "இடைப்பட்ட வீடியோ ஆதரிக்கப்படவில்லை",
+        "refFramesNotSupported": "குறிப்பு பிரேம்கள் ஆதரிக்கப்படவில்லை",
+        "secondaryAudioNotSupported": "இரண்டாம் நிலை ஆடியோ தடங்கள் ஆதரிக்கப்படவில்லை",
+        "subtitleCodecNotSupported": "வசனக் கோடெக் ஆதரிக்கப்படவில்லை",
+        "videoBitDepthNotSupported": "வீடியோவின் பிட் ஆழம் ஆதரிக்கப்படவில்லை",
+        "videoCodecNotSupported": "வீடியோ கோடெக் ஆதரிக்கப்படவில்லை",
+        "videoFramerateNotSupported": "வீடியோவின் ஃப்ரேம்ரேட் ஆதரிக்கப்படவில்லை",
+        "videoLevelNotSupported": "வீடியோ கோடெக்கின் நிலை ஆதரிக்கப்படவில்லை",
+        "videoProfileNotSupported": "வீடியோ கோடெக்கின் சுயவிவரம் ஆதரிக்கப்படவில்லை",
+        "videoResolutionNotSupported": "வீடியோவின் தீர்மானம் ஆதரிக்கப்படவில்லை"
+      }
+    }
   },
   "type": "வகை",
   "unableGetPublicUsers": "பயனர்களைப் பெற முடியவில்லை",
@@ -451,6 +488,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} mbps"
+    },
+    "time": {
+      "seconds": "{count} வினாடி | {count} வினாடிகள்"
     }
   },
   "unliked": "பிடிக்கவில்லை",
