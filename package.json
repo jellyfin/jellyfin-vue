@@ -41,7 +41,7 @@
     "@intlify/vite-plugin-vue-i18n": "^2.3.2",
     "@mdi/font": "^5.9.55",
     "@types/lodash-es": "^4.17.4",
-    "@types/node": "^16.3.3",
+    "@types/node": "^16.4.0",
     "@types/qs": "^6.9.7",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
