@@ -34,6 +34,13 @@
   "darkModeToggle": "ഇരുണ്ട മോഡ് ടോഗിൾ ചെയ്യുക",
   "dateAdded": "തീയതി ചേർത്തു",
   "details": "വിശദാംശങ്ങൾ",
+  "dialog": {
+    "upNext": {
+      "hide": "മറയ്‌ക്കുക",
+      "nextItemPlayingIn": "{time} മുതൽ ആരംഭിക്കുന്നു",
+      "startNow": "ഇപ്പോൾ ആരംഭിക്കുക"
+    }
+  },
   "directing": "സംവിധാനം",
   "director": "ഡയറക്ടർ",
   "discNumber": "ഡിസ്ക് {discNumber}",
@@ -419,6 +426,7 @@
   "sortTitle": "ശീർഷകം അടുക്കുക",
   "specialFeatures": "പ്രത്യേകതകള്",
   "speed": "വേഗത",
+  "startNow": "ഇപ്പോൾ ആരംഭിക്കുക",
   "status": "പദവി",
   "studios": "സ്റ്റുഡിയോകൾ",
   "subtitles": "സബ്‌ടൈറ്റിലുകൾ",
@@ -435,7 +443,36 @@
   },
   "trailer": "ട്രെയിലർ",
   "transcodingInfo": {
-    "name": "ട്രാൻസ്കോഡിംഗ്"
+    "name": "ട്രാൻസ്കോഡിംഗ്",
+    "transcodingFramerate": {
+      "name": "ഫ്രെയിംറേറ്റ്:",
+      "value": "{value} Fps"
+    },
+    "transcodingProgress": "പുരോഗതി:",
+    "transcodingReason": {
+      "name": "കാരണം: | കാരണങ്ങൾ:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "അനാമോർഫിക്ക് വീഡിയോ പിന്തുണയ്‌ക്കുന്നില്ല",
+        "audioBitDepthNotSupported": "ഓഡിയോയുടെ ബിറ്റ് ഡെപ്ത് പിന്തുണയ്‌ക്കുന്നില്ല",
+        "audioBitrateNotSupported": "ഓഡിയോയുടെ ബിറ്റ്റേറ്റ് പിന്തുണയ്ക്കുന്നില്ല",
+        "audioChannelsNotSupported": "ഓഡിയോ ചാനലുകളുടെ എണ്ണം പിന്തുണയ്‌ക്കുന്നില്ല",
+        "audioCodecNotSupported": "ഓഡിയോ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
+        "audioProfileNotSupported": "ഓഡിയോ കോഡെക്കിന്റെ പ്രൊഫൈൽ പിന്തുണയ്‌ക്കുന്നില്ല",
+        "audioSampleRateNotSupported": "ഓഡിയോയുടെ സാമ്പിൾ നിരക്ക് പിന്തുണയ്‌ക്കുന്നില്ല",
+        "containerBitrateExceedsLimit": "കണ്ടെയ്നർ ബിറ്റ്റേറ്റ് നിശ്ചിത പരിധി കവിഞ്ഞു",
+        "containerNotSupported": "കണ്ടെയ്നർ പിന്തുണയ്ക്കുന്നില്ല",
+        "interlacedVideoNotSupported": "ഇന്റർലേസ്ഡ് വീഡിയോ പിന്തുണയ്ക്കുന്നില്ല",
+        "refFramesNotSupported": "റഫറൻസ് ഫ്രെയിമുകൾ പിന്തുണയ്‌ക്കുന്നില്ല",
+        "secondaryAudioNotSupported": "ദ്വിതീയ ഓഡിയോ ട്രാക്കുകൾ പിന്തുണയ്ക്കുന്നില്ല",
+        "subtitleCodecNotSupported": "സബ്‌ടൈറ്റിൽ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
+        "videoBitDepthNotSupported": "വീഡിയോയുടെ ബിറ്റ് ഡെപ്ത് പിന്തുണയ്‌ക്കുന്നില്ല",
+        "videoCodecNotSupported": "വീഡിയോ കോഡെക് പിന്തുണയ്ക്കുന്നില്ല",
+        "videoFramerateNotSupported": "വീഡിയോയുടെ ഫ്രെയിംറേറ്റ് പിന്തുണയ്ക്കുന്നില്ല",
+        "videoLevelNotSupported": "വീഡിയോ കോഡെക്കിന്റെ ലെവൽ പിന്തുണയ്ക്കുന്നില്ല",
+        "videoProfileNotSupported": "വീഡിയോ കോഡെക്കിന്റെ പ്രൊഫൈൽ പിന്തുണയ്ക്കുന്നില്ല",
+        "videoResolutionNotSupported": "വീഡിയോയുടെ മിഴിവ് പിന്തുണയ്‌ക്കുന്നില്ല"
+      }
+    }
   },
   "type": "തരം",
   "unableGetPublicUsers": "ഉപയോക്താക്കളെ നേടാനായില്ല",
@@ -451,6 +488,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} mbps"
+    },
+    "time": {
+      "seconds": "{count} സെ | {count} സെക്കൻഡ്"
     }
   },
   "unliked": "ഇഷ്ടപ്പെട്ടില്ല",
