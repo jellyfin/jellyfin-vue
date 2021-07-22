@@ -80,7 +80,7 @@
     "vite": "^2.4.3",
     "vite-plugin-components": "^0.13.0",
     "vite-plugin-vue-layouts": "^0.3.1",
-    "vue-tsc": "^0.2.1"
+    "vue-tsc": "^0.2.2"
   },
   "config": {
     "commitizen": {
