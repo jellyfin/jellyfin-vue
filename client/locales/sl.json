@@ -10,7 +10,9 @@
   "artist": "Izvajalec",
   "artists": "Izvajalci",
   "audio": "Zvok",
+  "audioCodecNotSupported": "Avdio kodek ni podport",
   "badRequest": "Slaba zahteva. Poskusite znova",
+  "books": "Knjige",
   "browserNotSupported": "Brskalnik ne podpira predvajanja te datoteke.",
   "buttons": {
     "ok": "Ok"
@@ -29,6 +31,12 @@
   "darkModeToggle": "Preklopi temen način",
   "dateAdded": "Dodano",
   "details": "Podrobnosti",
+  "dialog": {
+    "upNext": {
+      "hide": "Skrij",
+      "startNow": "Začni zdaj"
+    }
+  },
   "directing": "Režija",
   "director": "Režiser",
   "discNumber": "Disk {discNumber}",
@@ -46,11 +54,14 @@
       "videoPlayerError": "Video predvajalnik je naletel na nepopravljivo napako."
     }
   },
+  "failedRetrievingDisplayPreferences": "Ni mogoče pridobiti zaslonskih nastavitev. Uporabljam zadnje znane nastavitve.",
   "favorite": "Priljubljen",
   "filter": "Filter",
+  "filtersNotFound": "Ni mogoče naložiti filtrov",
   "fullScreen": "Celotni zaslon",
   "general": "Splošno",
   "genres": "Žanri",
+  "googleCastPlaceholderDevice": "Naprava Google Cast",
   "headerPaths": "Pot",
   "home": "Domov",
   "homeHeader": {
@@ -78,6 +89,7 @@
   "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
   "item": {
     "artist": {
+      "appearsOn": "Pojavitve",
       "discography": "Diskografija",
       "information": "Informacije",
       "videos": "Videi"
@@ -88,8 +100,12 @@
     "person": {
       "birth": "Rojstvo",
       "birthPlace": "Rojstno Kraj",
+      "books": "Knjige",
       "death": "Smrt",
-      "person": "Oseba"
+      "information": "Informacije",
+      "movies": "Filmi",
+      "person": "Oseba",
+      "photos": "Fotografije"
     },
     "tracklist": {
       "title": "Naslov"
@@ -101,14 +117,43 @@
   "libraryEmpty": "Knjižnica je prazna",
   "libraryNotFound": "Knjižnice ni najdena",
   "links": {
+    "helpTranslate": "Prevedite Jellyfin v svoj jezik",
     "readTheDocumentation": "Preberi dokumentacijo"
   },
+  "login": {
+    "addServer": "Dodaj strežnik",
+    "changeServer": "Zamenjaj strežnik",
+    "changeUser": "Zamenjaj uporabnika",
+    "connect": "Poveži",
+    "login": "Prijava",
+    "loginAs": "Prijava kot {name}",
+    "manualLogin": "Ročna prijava",
+    "rememberMe": "Zapomni se me",
+    "selectServer": "Izberi strežnik",
+    "selectUser": "Izberi uporabnika",
+    "serverAddress": "Naslov strežnika",
+    "serverAddressMustBeUrl": "Naslov strežnika mora biti veljaven URL",
+    "serverNotFound": "Strežnika ni mogoče najti",
+    "serverVersionTooLow": "Različica strežnika mora biti 10.7.0 ali višja"
+  },
   "logout": "Odjava",
+  "logsAndActivity": {
+    "activity": "Aktivnost"
+  },
   "more": "Več",
   "password": "Geslo",
   "play": "Predvajaj",
   "signIn": "Prijavite se",
   "unexpectedError": "Nepričakovana napaka",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekunda | {count} sekund"
+    }
+  },
   "upNext": "Naslednje",
   "username": "Uporabniško ime",
   "version": "Verzija",
