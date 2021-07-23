@@ -283,7 +283,7 @@
     }
   },
   "present": "Jelenlegi",
-  "producer": "Producer",
+  "producer": "Producer(ek)",
   "quality": "Minőség",
   "queue": "Sor",
   "rating": "Értékelés",
@@ -446,7 +446,7 @@
     "name": "Transzkódolás",
     "transcodingFramerate": {
       "name": "Képkocka Szám:",
-      "value": "{value} fps"
+      "value": "{value} Képkocka/mp"
     },
     "transcodingProgress": "Folyamat:",
     "transcodingReason": {
