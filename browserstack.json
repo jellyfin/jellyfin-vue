@@ -1,0 +1,25 @@
+{
+  "browsers": [
+    {
+      "browser": "chrome",
+      "os": "Windows 10",
+      "versions": ["latest"]
+    },
+    {
+      "browser": "firefox",
+      "os": "Windows 10",
+      "versions": ["latest"]
+    },
+    {
+      "browser": "edge",
+      "os": "Windows 10",
+      "versions": ["latest"]
+    }
+  ],
+  "run_settings": {
+    "cypress_config_file": "cypress.json",
+    "parallels": "5",
+    "headless": true
+  },
+  "disable_usage_reporting": true
+}

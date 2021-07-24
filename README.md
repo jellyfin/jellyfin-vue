@@ -17,7 +17,7 @@
 <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" />
 </a>
 <a href="https://codecov.io/gh/jellyfin/jellyfin-vue">
-<img src="https://codecov.io/gh/jellyfin/jellyfin-vue/branch/master/graph/badge.svg?token=6SPE6CJJD8"/>
+<img alt="Codecov" src="https://codecov.io/gh/jellyfin/jellyfin-vue/branch/master/graph/badge.svg?token=6SPE6CJJD8"/>
 </a>
 <br/>
 <a href="https://opencollective.com/jellyfin">

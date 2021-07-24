@@ -37,6 +37,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@cypress/vue": "^2.2.3",
     "@intlify/eslint-plugin-vue-i18n": "^0.11.1",
     "@intlify/vite-plugin-vue-i18n": "^2.3.1",
     "@mdi/font": "^5.9.55",
@@ -48,6 +49,7 @@
     "@vitejs/plugin-vue": "^1.2.4",
     "@vue/compiler-sfc": "^3.1.4",
     "autoprefixer": "^10.3.0",
+    "cypress": "^8.0.0",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",

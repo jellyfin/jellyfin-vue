@@ -1,13 +1,6 @@
 name: Lint
 
-on:
-  push:
-    branches:
-      - vue3
-  pull_request:
-    branches:
-      - vue3
-  workflow_dispatch:
+on: ['push', 'pull_request', 'workflow_dispatch']
 
 jobs:
   eslint:

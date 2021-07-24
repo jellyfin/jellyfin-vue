@@ -1,0 +1,32 @@
+name: Cypress
+
+on: ['push', 'pull_request', 'workflow_dispatch']
+
+jobs:
+  cypress-run:
+    name: Integration tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'BrowserStack Environment Setup'
+        uses: browserstack/github-actions/setup-env@master
+        with:
+          username: ${{ secrets.BROWSERSTACK_USERNAME }}
+          access-key: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      - name: 'BrowserStack Local Tunnel Setup'
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: start
+          local-identifier: random
+      - name: 'Install browserstack-cypress'
+        run: npm i -g browserstack-cypress-cli
+      - name: 'Checkout the repository'
+        uses: actions/checkout@v2
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          command: browserstack-cypress run --sync
+      - name: 'BrowserStackLocal Stop'
+        uses: browserstack/github-actions/setup-local@master
+        with:
+          local-testing: stop
