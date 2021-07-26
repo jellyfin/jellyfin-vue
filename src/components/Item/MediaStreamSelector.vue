@@ -11,19 +11,19 @@
     :items="selectItems"
     @input="$emit('input', $event)"
   >
-    <template slot="selection" slot-scope="{ item: i }">
-      {{ i.text.selection }}
+    <template slot="selection" slot-scope="{ item }">
+      {{ item.text.selection }}
     </template>
 
-    <template slot="item" slot-scope="{ item: i, on, attrs }">
-      <v-list-item v-bind="attrs" :two-line="!!i.text.subtitle" v-on="on">
-        <v-list-item-avatar v-if="i.text.icon">
-          <v-icon>{{ i.text.icon }}</v-icon>
+    <template slot="item" slot-scope="{ item, on, attrs }">
+      <v-list-item v-bind="attrs" :two-line="!!item.text.subtitle" v-on="on">
+        <v-list-item-avatar v-if="item.text.icon">
+          <v-icon>{{ item.text.icon }}</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>{{ i.text.title }}</v-list-item-title>
-          <v-list-item-subtitle v-if="i.text.subtitle">
-            {{ i.text.subtitle }}
+          <v-list-item-title>{{ item.text.title }}</v-list-item-title>
+          <v-list-item-subtitle v-if="item.text.subtitle">
+            {{ item.text.subtitle }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
