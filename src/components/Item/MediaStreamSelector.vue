@@ -85,10 +85,10 @@ export default Vue.extend({
         const items = this.mediaStreams.map((value, _idx) => {
           return {
             text: {
-              selection: this.getTrackSelection(value),
+              selection: value.DisplayTitle ?? '',
               subtitle: this.getTrackSubtitle(value),
               icon: this.getTrackIcon(value),
-              title: this.getTrackTitle(value)
+              title: value.DisplayTitle ?? ''
             },
             value: value.Index
           };
@@ -133,17 +133,6 @@ export default Vue.extend({
   methods: {
     /**
      * @param {MediaStream} track - Track to parse
-     * @returns {string} Text to display in select when track is choosen
-     */
-    getTrackSelection(track: MediaStream): string {
-      if (track.DisplayTitle) {
-        return track.DisplayTitle;
-      }
-
-      return '';
-    },
-    /**
-     * @param {MediaStream} track - Track to parse
      * @returns {string|undefined} Optional icon to use for the track line in the v-select menu
      */
     getTrackIcon(track: MediaStream): string | undefined {
@@ -152,17 +141,6 @@ export default Vue.extend({
       }
 
       return undefined;
-    },
-    /**
-     * @param {MediaStream} track - Track to parse
-     * @returns {string} Text to use for the track line in the v-select menu
-     */
-    getTrackTitle(track: MediaStream): string {
-      if (track.DisplayTitle) {
-        return track.DisplayTitle;
-      }
-
-      return '';
     },
     /**
      * @param {MediaStream} track - Track to parse
