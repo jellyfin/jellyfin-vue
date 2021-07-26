@@ -139,8 +139,6 @@ export default Vue.extend({
       if (this.type === 'Audio' && track.ChannelLayout) {
         return this.getSurroundIcon(track.ChannelLayout);
       }
-
-      return undefined;
     },
     /**
      * @param {MediaStream} track - Track to parse
@@ -155,8 +153,6 @@ export default Vue.extend({
       } else if (this.type === 'Audio' || this.type === 'Subtitle') {
         return this.$t('undefined');
       }
-
-      return undefined;
     },
     /**
      * @param {string} code - Converts a two letters language code to full word
