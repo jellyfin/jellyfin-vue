@@ -35,7 +35,7 @@
     "vuex-composition-helpers": "^2.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
+    "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^12.1.4",
     "@intlify/eslint-plugin-vue-i18n": "^0.11.1",
     "@intlify/vite-plugin-vue-i18n": "^2.3.2",
