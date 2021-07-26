@@ -96,7 +96,7 @@
     "@types/lodash": "^4.14.171",
     "@types/nuxtjs__auth": "^4.8.8",
     "@types/qs": "^6.9.7",
-    "@types/simple-icons": "^5.0.1",
+    "@types/simple-icons": "^5.8.0",
     "@types/swiper": "^5.4.3",
     "@types/tizen-tv-webapis": "^2.0.1",
     "@types/uuid": "^8.3.1",
