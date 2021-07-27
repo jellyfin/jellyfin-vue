@@ -15,6 +15,7 @@
   "audio": "Audio",
   "audioCodecNotSupported": "Le codec audio n'est pas supporté",
   "badRequest": "Mauvaise requête. Réessayez",
+  "books": "Livres",
   "browserNotSupported": "Votre navigateur n'est pas pris en charge pour la lecture de ce fichier.",
   "buttons": {
     "ok": "OK"
@@ -33,6 +34,11 @@
   "darkModeToggle": "Activer le mode sombre",
   "dateAdded": "Date d'ajout",
   "details": "Détails",
+  "dialog": {
+    "upNext": {
+      "nextItemPlayingIn": "Commence dans {time}"
+    }
+  },
   "directing": "Réalisation",
   "director": "Réalisateur",
   "discNumber": "Disque {discNumber}",
