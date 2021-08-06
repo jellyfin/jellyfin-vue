@@ -4,14 +4,18 @@
   "actor": "Attore",
   "actors": "Attori",
   "addNewPerson": "Aggiungi una altra persona",
+  "airPlayDevices": "Dispositivi AirPlay",
   "albums": "Albums",
   "allLanguages": "Tutte le lingue",
   "alphabetically": "Alfabeticamente",
   "architecture": "Architettura",
   "artist": "Artista",
   "artists": "Artisti",
+  "aspectRatio": "Rapporto d'aspetto",
   "audio": "Audio",
+  "audioCodecNotSupported": "Il codec audio non è supportato",
   "badRequest": "Errore nella richiesta. Riprova",
+  "books": "Libri",
   "browserNotSupported": "La riproduzione non è supportata per il tuo browser.",
   "buttons": {
     "ok": "Ok"
@@ -27,9 +31,16 @@
   "continueWatching": "Continua a guardare",
   "criticRating": "Valutazione dei critici",
   "customRating": "Valutazione personale",
-  "darkModeToggle": "Attiva/Disattiva Modalità Scura",
+  "darkModeToggle": "Attiva/Disattiva modalità scura",
   "dateAdded": "Data di aggiunta",
   "details": "Dettagli",
+  "dialog": {
+    "upNext": {
+      "hide": "Nascondi",
+      "nextItemPlayingIn": "Inizia in {time}",
+      "startNow": "Inizia ora"
+    }
+  },
   "directing": "Direzione",
   "director": "Direttore",
   "discNumber": "Disco {discNumber}",
@@ -47,7 +58,7 @@
       "videoPlayerError": "Si è verificato un errore fatale nel video player."
     }
   },
-  "failedRetrievingDisplayPreferences": "Impossibile ottenere le configurazioni di display. Si utilizzeranno le ultime configurazioni salvate",
+  "failedRetrievingDisplayPreferences": "Impossibile ottenere le configurazioni di display. Si utilizzeranno le ultime configurazioni salvate.",
   "failedSettingDisplayPreferences": "Impossibile aggiornare le impostazioni del display.",
   "failedToRefreshItems": "Refresh fallito",
   "favorite": "Preferiti",
@@ -56,7 +67,9 @@
   "filtersNotFound": "Impossibile caricare i filtri",
   "fullScreen": "Schermo intero",
   "general": "Generali",
+  "genericJellyfinPlaceholderDevice": "Dispositivo Jellyfin generico",
   "genres": "Generi",
+  "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Ospite d'onore",
   "headerExternalIds": "ID Esterni",
   "headerPaths": "Percorso",
@@ -86,16 +99,23 @@
   "incorrectUsernameOrPassword": "Utente o password errati",
   "item": {
     "artist": {
+      "appearsOn": "Apparizioni",
       "discography": "Discografia",
-      "information": "Informationi"
+      "information": "Informationi",
+      "videos": "Video"
     },
     "cast": "Cast",
     "composer": "Compositore",
     "person": {
-      "birth": "Nascita",
+      "birth": "Nato",
       "birthPlace": "Luogo di nascita",
-      "death": "Morte",
-      "person": "Persona"
+      "books": "Libri",
+      "death": "Morto",
+      "information": "Informazione",
+      "movies": "Film",
+      "person": "Persona",
+      "photos": "Foto",
+      "shows": "Serie TV"
     },
     "tracklist": {
       "title": "Titolo"
@@ -145,7 +165,34 @@
     "noLogsFound": "Nessun log trovato"
   },
   "manualLogin": "Accesso Manuale",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canali audio:"
+    },
+    "audioCodec": {
+      "name": "Codec audio:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "Contenitore:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Codec dei sottotitoli:"
+    },
+    "videoCodec": {
+      "name": "Codec dei video:"
+    }
+  },
   "menu": "Menu",
+  "metadata": {
+    "source": "Fonte",
+    "sourceAll": "Tutto",
+    "title": "Titolo",
+    "type": "Tipo"
+  },
   "metadataEditor": "Modificatore dei Metadati",
   "metadataNoResultsMatching": "La ricerca per \"{search}\" non ha dato risultati. Premere Enter per crearne una nuova.",
   "more": "Altro",
@@ -158,9 +205,10 @@
   "noAudioTrackSelected": "Nessuna traccia audio selezionata",
   "noAudioTracksAvailable": "Nessuna traccia audio disponibile",
   "noImagesFound": "Nessuna immagine trovata",
+  "noInformationAvailable": "Nessuna informazione disponibile",
   "noNetworkConnection": "Nessuna connessione di rete",
   "noResultsFound": "Non c'è nulla qui",
-  "noSubtitleSelected": "Sottotitoli non selezionati",
+  "noSubtitleSelected": "Nessun sottotitolo selezionato",
   "noSubtitlesAvailable": "Sottotitoli non disponibili",
   "noTracksAvailable": "Nessuna traccia disponibile",
   "noVideoTrackSelected": "Nessuna traccia video disponibile",
@@ -193,18 +241,60 @@
     "shuffle": "Riproduzione casuale",
     "shuffleAll": "Riproduci tutto casualmente"
   },
+  "playbackData": "Informazioni sulla riproduzione",
+  "playbackInfo": {
+    "name": "Riproduzione",
+    "playMethod": {
+      "direct": "Diretto",
+      "name": "Metodo:",
+      "remux": "Remux",
+      "transcode": "Transcodifica"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Tipo di stream:",
+      "unknown": "Sconosciuto",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Impostazioni di riproduzione",
   "played": "Ascoltato",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Fotogrammi corrotti:"
+    },
+    "decodedFrames": {
+      "name": "Fotogrammi decodificati:"
+    },
+    "droppedFrames": {
+      "name": "Fotogrammi persi:"
+    },
+    "name": "Player",
+    "videoResolution": {
+      "name": "Risoluzione video:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Presente",
   "producer": "Produttore",
+  "quality": "Qualità",
   "queue": "Coda",
   "rating": "Valutazione",
   "refreshLibrary": "Aggiorna Libreria",
   "releaseDate": "Data di rilascio",
+  "remoteDevices": "Dispositivi remoti",
   "resumable": "Riprendibili",
   "resume": "Riprendi",
   "role": "Ruolo",
   "save": "Salva",
   "saved": "Salvati",
+  "search": {
+    "name": "Cerca",
+    "topResults": "Risultati principali"
+  },
+  "seasonEpisode": "Stagione {seasonNumber}, Episodio {episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serie",
   "server": "Server",
   "serverVersion": "Versione del server",
@@ -275,12 +365,73 @@
       "name": "Librerie"
     },
     "liveTvAndDvr": {
-      "description": "Gestisci impostazioni di tuner TV, provider di dati guida e DVR",
-      "name": "Live TV & DVR"
+      "description": "Gestisci i sintonizzatori TV, i provider di dati di guida e le impostazioni del DVR",
+      "name": "TV in diretta e DVR"
     },
     "logs": {
       "description": "Leggi e cerca tra i log e le attività utente",
       "name": "Logs & Attività"
+    },
+    "mediaPlayers": {
+      "description": "Configura il funzionamento dei lettori multimediali per questo dispositivo",
+      "name": "Lettori multimediali"
+    },
+    "networking": {
+      "description": "Gestisci le impostazioni di rete di questo server",
+      "name": "Rete"
+    },
+    "notifications": {
+      "description": "Gestisci e configura la notifica inviata da questo server",
+      "name": "Notifiche"
+    },
+    "playback": {
+      "description": "Modifica le tue preferenze di riproduzione per questo dispositivo",
+      "name": "Riproduzione"
+    },
+    "plugins": {
+      "description": "Aggiungi e configura nuove funzionalità per questo server",
+      "name": "Estensioni"
+    },
+    "scheduledTasks": {
+      "description": "Gestisci i lavori pianificati in corso su questo server",
+      "name": "Attività programmate"
+    },
+    "server": {
+      "description": "Configura la lingua e il nome di questo server",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Controlla come vengono visualizzati i sottotitoli su questo dispositivo",
+      "name": "Sottotitoli"
+    },
+    "transcodingAndStreaming": {
+      "description": "Gestisci come questo server opera la transcodifica e lo streaming ai client",
+      "name": "Transcodifica e streaming"
+    },
+    "users": {
+      "description": "Gestisci gli utenti e i loro permessi",
+      "name": "Utenti"
+    }
+  },
+  "shows": "Serie TV",
+  "signIn": "Accedi",
+  "songs": "Brani",
+  "specialFeatures": "Caratteristiche speciali",
+  "speed": "Velocità",
+  "startNow": "Inizia ora",
+  "status": "Stato",
+  "subtitles": "Sottotitoli",
+  "syncingInProgress": "Sincronizzazione in corso",
+  "tagline": "Tagline",
+  "tags": "Tags",
+  "themeSong": "Sigla",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} secondo | {count} secondi"
     }
   }
 }
