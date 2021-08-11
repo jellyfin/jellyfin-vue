@@ -4,14 +4,18 @@
   "actor": "Skuespiller",
   "actors": "Skuespillere",
   "addNewPerson": "Legg til ny person",
+  "airPlayDevices": "AirPlay enheter",
   "albums": "Album",
   "allLanguages": "Alle språk",
   "alphabetically": "Alfabetisk",
   "architecture": "Systemarkitektur",
   "artist": "Artist",
   "artists": "Artister",
+  "aspectRatio": "Størrelsesforhold",
   "audio": "Lyd",
+  "audioCodecNotSupported": "Lydkodeken støttes ikke",
   "badRequest": "Feil i forespørselen. Prøv igjen",
+  "books": "Bøker",
   "browserNotSupported": "Din nettleser kan ikke spille av denne filen.",
   "buttons": {
     "ok": "Ok"
@@ -30,6 +34,12 @@
   "darkModeToggle": "Veksle mørk modus",
   "dateAdded": "Dato lagt til",
   "details": "Detaljer",
+  "dialog": {
+    "upNext": {
+      "hide": "Skjul",
+      "startNow": "Start nå"
+    }
+  },
   "directing": "Regi",
   "director": "Regissør",
   "discNumber": "Plate {discNumber}",
@@ -57,6 +67,7 @@
   "fullScreen": "Fullskjerm",
   "general": "Generelt",
   "genres": "Sjangere",
+  "googleCastPlaceholderDevice": "Google Cast enhet",
   "guestStar": "Gjesterolle",
   "headerExternalIds": "Eksterne IDer",
   "headerPaths": "Filbane",
@@ -99,8 +110,13 @@
     "person": {
       "birth": "Født",
       "birthPlace": "Fødested",
-      "death": "Død",
-      "person": "Person"
+      "books": "Bøker",
+      "death": "Døde",
+      "information": "Informasjon",
+      "movies": "Filmer",
+      "person": "Person",
+      "photos": "Bilder",
+      "shows": "Serier"
     },
     "tracklist": {
       "title": "Tittel"
@@ -150,6 +166,23 @@
     "noLogsFound": "Ingen logger funnet"
   },
   "manualLogin": "Manuell innlogging",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Lydkanaler:"
+    },
+    "audioCodec": {
+      "name": "Lydkodek:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "subtitleCodec": {
+      "name": "Undertekstkodek:"
+    },
+    "videoCodec": {
+      "name": "Videokodek:"
+    }
+  },
   "menu": "Meny",
   "metadata": {
     "source": "Kilde",
@@ -169,6 +202,7 @@
   "noAudioTrackSelected": "Ingen lydspor valgt",
   "noAudioTracksAvailable": "Ingen lydspor tilgjengelige",
   "noImagesFound": "Ingen bilder funnet",
+  "noInformationAvailable": "Ingen tilgjengelig informasjon",
   "noNetworkConnection": "Ingen nettverkstilkobling",
   "noResultsFound": "Her var det tomt",
   "noSubtitleSelected": "Ingen undertekst valgt",
@@ -204,6 +238,19 @@
     "shuffle": "Tilfeldig rekkefølge",
     "shuffleAll": "Spill alle tilfeldig"
   },
+  "playbackData": "Avspillingsinformasjon",
+  "playbackInfo": {
+    "name": "Avspilling",
+    "playMethod": {
+      "direct": "Direkte"
+    },
+    "streamType": {
+      "name": "Strømmetype:",
+      "unknown": "Ukjent",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Avspillingsinnstillinger",
   "played": "Avspilt",
   "present": "Tilstede",
   "producer": "Produsent",
