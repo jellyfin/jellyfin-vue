@@ -13,7 +13,9 @@
   "artists": "Artistas",
   "aspectRatio": "Relación de aspecto",
   "audio": "Audio",
+  "audioCodecNotSupported": "El formato de audio no está soportado",
   "badRequest": "Solicitud incorrecta. Intente de nuevo",
+  "books": "Libros",
   "browserNotSupported": "Tu navegador no es compatible con este archivo.",
   "buttons": {
     "ok": "Vale"
@@ -32,6 +34,13 @@
   "darkModeToggle": "Cambiar a modo oscuro",
   "dateAdded": "Añadido el",
   "details": "Detalles",
+  "dialog": {
+    "upNext": {
+      "hide": "Ocultar",
+      "nextItemPlayingIn": "Empieza en {time}",
+      "startNow": "Empieza ahora"
+    }
+  },
   "directing": "Dirige",
   "director": "Director",
   "discNumber": "Disco {discNumber}",
@@ -159,6 +168,24 @@
     "noLogsFound": "No hay registros"
   },
   "manualLogin": "Inicio de sesión manual",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canales de audio:"
+    },
+    "audioCodec": {
+      "name": "Codec de audio:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "Contenedor:"
+    },
+    "name": "Medio",
+    "subtitleCodec": {
+      "name": "Formato de subtítulo:"
+    }
+  },
   "menu": "Menú",
   "metadata": {
     "source": "Fuente",
@@ -381,6 +408,15 @@
   "undefined": "Sin definir",
   "unexpectedError": "Error desconocido",
   "unhandledException": "Excepción no controlada",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} mbps"
+    },
+    "time": {
+      "seconds": "{count} segundo | {count} segundos"
+    }
+  },
   "unliked": "No me gusta",
   "unplayed": "No reproducido",
   "upNext": "A continuación",
