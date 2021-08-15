@@ -5,7 +5,7 @@ import cookie from 'cookie';
 
 const persistedStatePlugin: Plugin = ({ store, req, res }) => {
   createPersistedState({
-    paths: ['servers'],
+    paths: ['servers', 'user', 'deviceProfile', 'clientSettings'],
     storage: {
       getItem: (key: string): string | undefined => {
         if (process.server) {

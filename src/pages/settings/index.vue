@@ -103,10 +103,8 @@ import { mapActions } from 'vuex';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
 import { version } from '../../../package.json';
-import htmlHelper from '~/mixins/htmlHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper],
   async asyncData({ $auth, $api }) {
     if ($auth.user?.Policy?.IsAdministrator) {
       const systemInfo = (await $api.system.getSystemInfo()).data;

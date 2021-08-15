@@ -50,7 +50,7 @@
             <v-tab :key="2" :disabled="!musicVideoIds.length">
               {{ $t('item.artist.videos') }}
             </v-tab>
-            <v-tab :key="3" :disabled="!artistBackdrop.tag && !overview">
+            <v-tab :key="3" :disabled="!artistBackdrop.tag && !item.Overview">
               {{ $t('item.artist.information') }}
             </v-tab>
           </v-tabs>
@@ -140,14 +140,13 @@ import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
+  mixins: [imageHelper, timeUtils, itemHelper],
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
@@ -223,13 +222,6 @@ export default Vue.extend({
     },
     item(): BaseItemDto {
       return this.getItem(this.itemId);
-    },
-    overview(): string {
-      if (this.item.Overview) {
-        return this.sanitizeHtml(this.item.Overview);
-      } else {
-        return '';
-      }
     },
     artistBackdrop(): ImageUrlInfo {
       return this.getImageInfo(this.item, { preferBackdrop: true });

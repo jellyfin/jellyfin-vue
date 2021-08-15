@@ -93,12 +93,11 @@ import Vue from 'vue';
 import Swiper, { SwiperOptions } from 'swiper';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, itemHelper],
+  mixins: [imageHelper, itemHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
@@ -161,13 +160,6 @@ export default Vue.extend({
       }
 
       return rItem;
-    },
-    getOverview(item: BaseItemDto): string {
-      if (item.Overview) {
-        return this.sanitizeHtml(item.Overview);
-      } else {
-        return '';
-      }
     },
     getLogo(item: BaseItemDto): string | undefined {
       return this.getImageInfo(item, { preferLogo: true }).url;

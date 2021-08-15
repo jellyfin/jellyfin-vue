@@ -52,10 +52,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import Draggable from 'vuedraggable';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
+  components: { Draggable },
   data() {
     return {
       dragOptions: {

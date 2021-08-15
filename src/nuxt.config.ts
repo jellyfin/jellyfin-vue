@@ -81,8 +81,6 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    // Development
-    { src: 'plugins/axe.ts', mode: 'client' },
     // General
     'plugins/persistedStatePlugin.ts',
     'plugins/appInitPlugin.ts',
@@ -93,7 +91,6 @@ const config: NuxtConfig = {
     'plugins/components/vueVirtualScroller.ts',
     'plugins/components/veeValidate.ts',
     { src: 'plugins/components/vueFullscreen.ts', mode: 'client' },
-    'plugins/components/vueDraggable.ts',
     // Utility
     'plugins/browserDetectionPlugin.ts',
     { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
@@ -123,12 +120,6 @@ const config: NuxtConfig = {
    */
   modules: [
     '@nuxtjs/i18n',
-    [
-      'nuxt-vuex-localstorage',
-      {
-        localStorage: ['user', 'deviceProfile', 'clientSettings']
-      }
-    ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth'
@@ -391,13 +382,13 @@ const config: NuxtConfig = {
       ignoreOrder: true
     },
     babel: {
-      // envName: server, client, modern
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      presets(): any {
+      compact: true,
+      presets(_context, [preset, options]) {
         return [
           [
-            '@nuxt/babel-preset-app',
+            preset,
             {
+              ...options,
               corejs: { version: 3 }
             }
           ]
@@ -437,6 +428,10 @@ if (process.env.NUXT_SSR) {
   config.buildModules?.push('@nuxtjs/pwa');
 } else {
   config.modules?.push('@nuxtjs/pwa');
+}
+
+if (process.env.NODE_ENV === 'development') {
+  config.plugins?.push({ src: 'plugins/axe.ts', mode: 'client' });
 }
 
 export default config;
