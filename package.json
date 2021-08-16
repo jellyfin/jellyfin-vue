@@ -118,7 +118,7 @@
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-jest-formatting": "^3.0.0",
     "eslint-plugin-jsdoc": "^36.0.7",
-    "eslint-plugin-json": "^3.0.0",
+    "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-lodash": "^7.2.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.4.0",
