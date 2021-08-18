@@ -348,12 +348,6 @@ export default Vue.extend({
   height: 100%;
 }
 
-.card-chip {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-}
-
 .card-progress {
   position: absolute;
   bottom: 0;
