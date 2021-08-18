@@ -24,7 +24,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-wrap">
-                {{ episode.Name }}
+                {{ episode.IndexNumber }}. {{ episode.Name }}
               </v-list-item-title>
               <v-list-item-subtitle class="text-wrap">
                 {{ episode.Overview }}
