@@ -23,7 +23,7 @@
       "@nuxtjs/axios",
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
-      "nuxt-i18n",
+      "@nuxtjs/i18n",
       "@types/wicg-mediasession",
       "jest",
       "@types/tizen-tv-webapis"
