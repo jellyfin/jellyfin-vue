@@ -128,7 +128,7 @@ const config: NuxtConfig = {
    ** Nuxt.js modules
    */
   modules: [
-    'nuxt-i18n',
+    '@nuxtjs/i18n',
     [
       'nuxt-vuex-localstorage',
       {
