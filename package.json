@@ -93,7 +93,7 @@
     "@types/he": "^1.1.2",
     "@types/jest": "^27.0.1",
     "@types/js-cookie": "^2.2.7",
-    "@types/lodash": "^4.14.171",
+    "@types/lodash": "^4.14.172",
     "@types/nuxtjs__auth": "^4.8.8",
     "@types/qs": "^6.9.7",
     "@types/simple-icons": "^5.8.0",
