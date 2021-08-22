@@ -5,7 +5,5 @@
   "vetur.format.defaultFormatter.html": "prettier",
   "i18n-ally.sourceLanguage": "en-US",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "i18n-ally.localesPaths": [
-    "client/locales"
-  ]
+  "i18n-ally.localesPaths": ["src/locales"]
 }

@@ -74,7 +74,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['client/**/*.ts', 'client/**/*.vue'],
+      files: ['src/**/*.ts', 'src/**/*.vue'],
       env: {
         browser: true,
         node: true
@@ -122,7 +122,7 @@ module.exports = {
         'import/resolver': {
           nuxt: {
             extensions: ['.js', '.ts', '.vue', '.json'],
-            nuxtSrcDir: 'client/'
+            nuxtSrcDir: 'src/'
           }
         }
       }
