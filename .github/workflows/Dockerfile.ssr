@@ -7,8 +7,8 @@ LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 
 COPY .docker/package.json .docker/package-lock.json ./.docker/nuxt.config.js ./
-COPY client/.nuxt ./.nuxt
-COPY client/static ./static
+COPY src/.nuxt ./.nuxt
+COPY src/static ./static
 
 # Install runtime dependencies
 RUN npm ci --production --no-audit

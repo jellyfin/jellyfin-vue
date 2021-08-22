@@ -1,7 +1,7 @@
 module.exports = {
   projects: [
     {
-      root: './client',
+      root: './src',
       package: '../package.json'
     }
   ]
