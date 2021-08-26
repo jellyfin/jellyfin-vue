@@ -27,11 +27,23 @@
 import Vue from 'vue';
 import { ImageType } from '@jellyfin/client-axios';
 import { mapGetters, mapActions, mapState } from 'vuex';
-import Swiper, { SwiperOptions } from 'swiper';
+import {
+  Swiper as SwiperClass,
+  EffectCoverflow,
+  SwiperOptions
+} from 'swiper/core';
+import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter';
 import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
 
+import 'swiper/swiper-bundle.css';
+
+SwiperClass.use([EffectCoverflow]);
+
+const { Swiper, SwiperSlide } = getAwesomeSwiper(SwiperClass);
+
 export default Vue.extend({
+  components: { Swiper, SwiperSlide },
   mixins: [imageHelper],
   data() {
     return {
@@ -46,11 +58,9 @@ export default Vue.extend({
           slideShadows: false,
           rotate: 0,
           stretch: -400
-        },
-        keyboard: true,
-        a11y: true
+        }
       } as SwiperOptions,
-      swiper: undefined as Swiper | undefined
+      swiper: undefined as SwiperClass | undefined
     };
   },
   computed: {
@@ -101,7 +111,7 @@ export default Vue.extend({
     this.setMinimized({ minimized: false });
   },
   mounted() {
-    this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
+    this.swiper = this.$refs.playbackSwiper.$swiper as SwiperClass;
   },
   deactivated() {
     this.clearBackdrop();

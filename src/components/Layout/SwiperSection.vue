@@ -29,12 +29,25 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { SwiperOptions } from 'swiper';
+import {
+  Swiper as SwiperClass,
+  Pagination,
+  Navigation,
+  SwiperOptions
+} from 'swiper/core';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
+import 'swiper/swiper-bundle.css';
+
+SwiperClass.use([Pagination, Navigation]);
+
+const { Swiper, SwiperSlide } = getAwesomeSwiper(SwiperClass);
+
 export default Vue.extend({
+  components: { Swiper, SwiperSlide },
   props: {
     loading: {
       type: Boolean,
