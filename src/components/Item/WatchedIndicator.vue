@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <v-chip color="green" class="card-chip" small>
     <v-icon>mdi-check</v-icon>
   </v-chip>
