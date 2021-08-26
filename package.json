@@ -1,53 +1,67 @@
 {
-  "name": "jellyfin-vue",
-  "author": "Jellyfin Team",
+  "name": "@jellyfin/frontend-vue",
   "version": "0.0.0",
   "private": true,
-  "fork-ts-checker": {
-    "typescript": {
-      "memoryLimit": 4096
-    }
+  "homepage": "https://jellyfin.org/",
+  "bugs": {
+    "url": "https://github.com/jellyfin/jellyfin-vue/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jellyfin/jellyfin-vue/"
+  },
+  "license": "GPL-3.0-only",
+  "contributors": [
+    {
+      "name": "Julien Machiels",
+      "email": "iamtimscampi@gmail.com"
+    }
+  ],
   "scripts": {
     "analyze": "NUXT_SSR=1 nuxt build --analyze src",
     "analyze:static": "nuxt build --analyze src",
-    "dev": "NUXT_SSR=1 nuxt src",
-    "dev:static": "nuxt src",
     "build": "NUXT_SSR=1 nuxt build src",
     "build:standalone": "NUXT_SSR=1 nuxt build --standalone src",
     "build:static": "nuxt build src",
+    "dev": "NUXT_SSR=1 nuxt src",
+    "dev:static": "nuxt src",
+    "generate": "nuxt generate src",
+    "lint": "npm run lint:js && npm run lint:style",
+    "lint:js": "eslint --ext .ts,.js,.json,.vue .",
+    "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
+    "prepare": "husky install",
     "prod": "npm run build src && npm run start src",
     "prod:static": "npm run build:static src && npm run start:static src",
     "start": "NUXT_SSR=1 nuxt start src",
     "start:static": "nuxt start src",
-    "generate": "nuxt generate src",
-    "lint:js": "eslint --ext .ts,.js,.json,.vue .",
-    "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
-    "lint": "npm run lint:js && npm run lint:style",
-    "test": "jest",
-    "prepare": "husky install"
+    "test": "jest"
   },
   "lint-staged": {
-    "*.{ts,js,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
+    "*.{css,vue}": "stylelint",
+    "*.{ts,js,vue}": "eslint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "dependencies": {
-    "@fontsource/noto-sans": "^4.5.0",
-    "@fontsource/noto-sans-hk": "^4.5.0",
-    "@fontsource/noto-sans-jp": "^4.5.0",
-    "@fontsource/noto-sans-kr": "^4.5.0",
-    "@fontsource/noto-sans-sc": "^4.5.0",
-    "@fontsource/noto-sans-tc": "^4.5.0",
-    "@jellyfin/client-axios": "^10.7.7",
+    "@jellyfin/client-axios": "10.7.7",
+    "@mdi/font": "^5.9.55",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/date-fns": "^1.5.0",
     "@nuxtjs/i18n": "^7.0.2",
+    "@nuxtjs/imagemin": "^1.0.1",
     "@nuxtjs/pwa": "^3.3.5",
+    "@nuxtjs/vuetify": "^1.12.1",
     "blurhash": "^1.1.4",
     "body-scroll-lock": "^3.1.5",
     "camel-case": "^4.1.2",
+    "comlink-loader": "^2.0.0",
     "compare-versions": "^3.6.0",
     "cookie": "^0.4.1",
+    "core-js": "^3.16.3",
     "date-fns": "^2.23.0",
     "destr": "^1.1.0",
     "dompurify": "^2.3.1",
@@ -75,16 +89,12 @@
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
-    "@mdi/font": "^5.9.55",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/date-fns": "^1.5.0",
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/imagemin": "^1.0.1",
     "@nuxtjs/stylelint-module": "^4.0.0",
-    "@nuxtjs/vuetify": "^1.12.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/vue": "^5.8.2",
     "@types/body-scroll-lock": "^3.1.0",
@@ -107,9 +117,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.0.6",
-    "comlink-loader": "^2.0.0",
     "confusing-browser-globals": "^1.0.10",
-    "core-js": "^3.16.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
@@ -136,12 +144,14 @@
     "vue-axe": "^2.4.4",
     "vue-jest": "^3.0.7"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "engines": {
-    "yarn": "YARN NO LONGER USED - use npm instead."
+    "node": ">=14.0.0 <15.0.0",
+    "npm": "<2.0.0",
+    "yarn": "Yarn is not supported. Please use NPM."
+  },
+  "fork-ts-checker": {
+    "typescript": {
+      "memoryLimit": 4096
+    }
   }
 }
