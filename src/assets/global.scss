@@ -159,10 +159,3 @@ body {
 .text-capitalize-first-letter::first-letter {
   text-transform: uppercase;
 }
-
-// Marked as watched chip
-.card-chip {
-  position: absolute !important;
-  top: 1em;
-  right: 1em;
-}
