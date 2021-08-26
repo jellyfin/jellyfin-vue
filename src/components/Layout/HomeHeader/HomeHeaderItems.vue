@@ -37,16 +37,29 @@
                   v-if="item.Type === 'MusicAlbum'"
                   class="mb-sm-n1"
                   :item="item"
+                  :parent-link="
+                    item.AlbumArtists.length > 0
+                      ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
+                      : null
+                  "
+                  :link="getItemDetailsLink(item)"
                   :logo="getLogo(item)"
                 />
                 <home-header-episode-title
                   v-else-if="item.Type === 'Episode'"
                   :item="item"
+                  :parent-link="
+                    item.SeriesId
+                      ? getItemDetailsLink({ Id: item.SeriesId }, 'Series')
+                      : null
+                  "
+                  :link="getItemDetailsLink(item)"
                   :logo="getLogo(item)"
                 />
                 <home-header-generic-title
                   v-else
                   :item="item"
+                  :link="getItemDetailsLink(item)"
                   :logo="getLogo(item)"
                 />
                 <media-info
@@ -168,9 +181,6 @@ export default Vue.extend({
       } else {
         return '';
       }
-    },
-    getLogo(item: BaseItemDto): string | undefined {
-      return this.getImageInfo(item, { preferLogo: true }).url;
     },
     // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
     // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)

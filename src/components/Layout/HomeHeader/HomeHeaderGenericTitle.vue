@@ -1,56 +1,55 @@
-<template>
+<template functional>
   <div>
-    <nuxt-link v-if="imageTag" :to="getItemDetailsLink(item)">
+    <nuxt-link v-if="props.logo && props.logo.tag" :to="props.link">
       <v-img
         class="mb-2"
-        :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-        :max-height="$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
+        :max-width="parent.$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
+        :max-height="parent.$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
         contain
-        position="left center"
         data-swiper-parallax="-300"
-        :alt="item.Name"
-        :src="logo"
+        :alt="props.item.Name"
+        :src="props.logo.url"
       />
     </nuxt-link>
     <nuxt-link
       v-else
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
-      :to="getItemDetailsLink(item)"
+      :to="props.link"
     >
-      {{ item.Name }}
+      {{ props.item.Name }}
     </nuxt-link>
     <h2
-      v-if="item.Taglines && item.Taglines.length > 0"
+      v-if="props.item.Taglines && props.item.Taglines.length > 0"
       data-swiper-parallax="-200"
       class="text-truncate"
     >
-      {{ item.Taglines[0] }}
+      {{ props.item.Taglines[0] }}
     </h2>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
-import itemHelper from '~/mixins/itemHelper';
+import { VImg } from 'vuetify/lib';
+import { BaseItemDto } from '@jellyfin/client-axios';
+import { ImageUrlInfo } from '~/mixins/imageHelper';
+
+Vue.component('VImg', VImg);
 
 export default Vue.extend({
-  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
       required: true
     },
-    logo: {
+    link: {
       type: String,
-      default: ''
-    }
-  },
-  computed: {
-    imageTag(): string | undefined {
-      return this.getImageTag(this.item, ImageType.Logo);
+      required: true
+    },
+    logo: {
+      type: Object as () => ImageUrlInfo,
+      default: undefined
     }
   }
 });

@@ -1,66 +1,59 @@
-<template>
+<template functional>
   <div>
-    <nuxt-link
-      v-if="imageTag"
-      :to="
-        item.AlbumArtists.length > 0
-          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
-          : null
-      "
-    >
+    <nuxt-link v-if="props.logo.tag" :to="props.parentLink">
       <v-img
         max-width="50%"
         max-height="5.5em"
         contain
         position="left center"
         data-swiper-parallax="-300"
-        :alt="item.Name"
-        :src="logo"
+        :alt="props.item.Name"
+        :src="props.logo.url"
       />
     </nuxt-link>
     <nuxt-link
       v-else
       data-swiper-parallax="-300"
       class="link d-block text-h5 text-sm-h4 text-truncate mb-n1 mb-sm-n2 mt-n3"
-      :to="
-        item.AlbumArtists.length > 0
-          ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
-          : null
-      "
+      :to="props.parentLink"
     >
-      {{ item.AlbumArtist }}
+      {{ props.item.AlbumArtist }}
     </nuxt-link>
     <nuxt-link
       data-swiper-parallax="-200"
       class="link d-block text-h4 text-sm-h3 text-truncate"
-      :to="getItemDetailsLink(item)"
+      :to="props.link"
     >
-      {{ item.Name }}
+      {{ props.item.Name }}
     </nuxt-link>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
-import itemHelper from '~/mixins/itemHelper';
+import { VImg } from 'vuetify/lib';
+import { BaseItemDto } from '@jellyfin/client-axios';
+import { ImageUrlInfo } from '~/mixins/imageHelper';
+
+Vue.component('VImg', VImg);
 
 export default Vue.extend({
-  mixins: [imageHelper, itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
       required: true
     },
-    logo: {
+    parentLink: {
       type: String,
-      default: ''
-    }
-  },
-  computed: {
-    imageTag(): string | undefined {
-      return this.getImageTag(this.item, ImageType.Logo);
+      required: true
+    },
+    link: {
+      type: String,
+      required: true
+    },
+    logo: {
+      type: Object as () => ImageUrlInfo,
+      default: undefined
     }
   }
 });

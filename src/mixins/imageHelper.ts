@@ -49,6 +49,15 @@ declare module '@nuxt/types' {
         tag?: string;
       }
     ): ImageUrlInfo;
+    getLogo(
+      item: BaseItemDto,
+      options?: {
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
   }
 
   interface NuxtAppOptions {
@@ -74,6 +83,15 @@ declare module '@nuxt/types' {
         preferLogo?: boolean;
         preferBackdrop?: boolean;
         inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
+    getLogo(
+      item: BaseItemDto,
+      options?: {
         quality?: number;
         width?: number;
         ratio?: number;
@@ -107,6 +125,15 @@ declare module 'vue/types/vue' {
         preferLogo?: boolean;
         preferBackdrop?: boolean;
         inheritThumb?: boolean;
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      }
+    ): ImageUrlInfo;
+    getLogo(
+      item: BaseItemDto,
+      options?: {
         quality?: number;
         width?: number;
         ratio?: number;
@@ -317,6 +344,7 @@ const imageHelper = Vue.extend({
         tag?: string;
       } = {}
     ): ImageUrlInfo {
+      // TODO: Refactor to have separate getPosterImageInfo, getThumbImageInfo and getBackdropImageInfo.
       let url;
       let imgType;
       let imgTag;
@@ -463,6 +491,79 @@ const imageHelper = Vue.extend({
 
       if (!itemId) {
         itemId = item.Id;
+      }
+
+      if (imgTag && imgType) {
+        url = new URL(
+          `${this.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
+        );
+
+        const params: { [k: string]: string | number | undefined } = {
+          imgTag,
+          quality
+        };
+
+        if (width) {
+          width = Math.round(width * ratio);
+          params.maxWidth = width;
+        }
+
+        if (height) {
+          height = Math.round(height * ratio);
+          params.maxHeight = height;
+        }
+
+        url.search = stringify(params);
+      }
+
+      return {
+        url: url?.href,
+        tag: imgTag,
+        blurhash:
+          imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : ''
+      };
+    },
+    /**
+     * Generates the logo information for a BaseItemDto or a BasePersonDto according to set priorities.
+     *
+     * @param {(BaseItemDto | BaseItemPerson)} item - Item to get image information for
+     * @param {object} [options] - Optional parameters for the function.
+     * @param {number} [options.quality=90] - Sets the quality of the returned image
+     * @param {number} [options.width] - Sets the requested width of the image
+     * @param {number} [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
+     * @param {string} [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
+     * @returns {ImageUrlInfo} Information for the item, containing the full URL, image tag and blurhash.
+     */
+    getLogo(
+      item: BaseItemDto,
+      {
+        quality = 90,
+        width,
+        ratio = 1,
+        tag
+      }: {
+        quality?: number;
+        width?: number;
+        ratio?: number;
+        tag?: string;
+      } = {}
+    ): ImageUrlInfo {
+      let url;
+      let imgType;
+      let imgTag;
+      let height;
+      let itemId: string | null | undefined = item.Id;
+
+      if (tag) {
+        imgType = ImageType.Logo;
+        imgTag = tag;
+      } else if (item.ImageTags && item.ImageTags.Logo) {
+        imgType = ImageType.Logo;
+        imgTag = item.ImageTags.Logo;
+      } else if (item.ParentLogoImageTag && item.ParentLogoItemId) {
+        imgType = ImageType.Logo;
+        imgTag = item.ParentLogoImageTag;
+        itemId = item.ParentLogoItemId;
       }
 
       if (imgTag && imgType) {
