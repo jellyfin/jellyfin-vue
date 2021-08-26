@@ -25,6 +25,8 @@ body:
     attributes:
       label: Expected behavior
       description: Provide a clear and concise description of what you expected to happen.
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Logs
@@ -60,6 +62,8 @@ body:
     attributes:
       label: Jellyfin server version
       placeholder: 10.7.6
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Additional context
