@@ -21,14 +21,7 @@
                 :item="episode"
                 :alt="episode.Name"
               />
-              <v-chip
-                v-if="episode.UserData.Played"
-                color="green"
-                class="card-chip"
-                small
-              >
-                <v-icon>mdi-check</v-icon>
-              </v-chip>
+              <watched-indicator v-if="episode.UserData.Played" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-wrap">

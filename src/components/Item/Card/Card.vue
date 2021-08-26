@@ -30,14 +30,7 @@
             color="white"
             size="24"
           />
-          <v-chip
-            v-if="item.UserData && item.UserData.Played"
-            color="green"
-            class="card-chip"
-            small
-          >
-            <v-icon>mdi-check</v-icon>
-          </v-chip>
+          <watched-indicator v-if="item.UserData && item.UserData.Played" />
           <v-chip
             v-if="item.UserData && item.UserData.UnplayedItemCount"
             color="primary"
@@ -346,6 +339,12 @@ export default Vue.extend({
 .card-image {
   width: 100%;
   height: 100%;
+}
+
+.card-chip {
+  position: absolute;
+  top: 1em;
+  right: 1em;
 }
 
 .card-progress {
