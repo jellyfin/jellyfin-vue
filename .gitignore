@@ -37,6 +37,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+src/node_modules/
 
 # TypeScript v1 declaration files
 typings/
@@ -67,9 +68,11 @@ typings/
 
 # nuxt.js build output
 .nuxt
+src/.nuxt
 
 # Nuxt generate
 dist
+src/dist
 
 # vuepress build output
 .vuepress/dist

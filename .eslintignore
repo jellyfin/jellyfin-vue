@@ -7,3 +7,4 @@ dist
 sw.*
 src/.nuxt
 src/dist
+src/dist/_nuxt
