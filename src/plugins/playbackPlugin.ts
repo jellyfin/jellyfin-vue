@@ -62,14 +62,14 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
           (await $items.getItems({
             ids: [item.ChannelId],
             limit: 300,
-            sortBy: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? ['Random'] : ['SortName']
           })) || [];
       } else if (item.Type === 'Playlist') {
         responseItems =
           (await $items.getItems({
             parentId: item.Id,
             limit: 300,
-            sortBy: shuffle ? 'Random' : undefined
+            sortBy: shuffle ? ['Random'] : undefined
           })) || [];
       } else if (item.Type === 'MusicArtist' && item.Id) {
         responseItems =
@@ -79,7 +79,7 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
             recursive: true,
             mediaTypes: ['Audio'],
             limit: 300,
-            sortBy: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? ['Random'] : ['SortName']
           })) || [];
       } else if (item.Type === 'MusicGenre' && item.Id) {
         responseItems =
@@ -89,7 +89,7 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
             recursive: true,
             mediaTypes: ['Audio'],
             limit: 300,
-            sortBy: shuffle ? 'Random' : 'SortName'
+            sortBy: shuffle ? ['Random'] : ['SortName']
           })) || [];
       } else if (item.IsFolder) {
         responseItems =
@@ -100,8 +100,8 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
             sortBy: ['BoxSet'].includes(item.Type || '')
               ? undefined
               : shuffle
-              ? 'Random'
-              : 'SortName',
+              ? ['Random']
+              : ['SortName'],
             mediaTypes: ['Audio', 'Video'],
             limit: 300
           })) || [];
