@@ -2,7 +2,6 @@ import Vue, { VueConstructor } from 'vue';
 import { createLocalVue } from '@vue/test-utils';
 import Vuex, { Store } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
-import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import {
   state,
   mutations,
@@ -17,27 +16,27 @@ let store: Store<TvShowsState>;
 
 const TEST_TV_SERIES = {
   Id: 'series-id-1'
-} as BaseItemDto;
+};
 
 const TEST_TV_SEASON_1 = {
   Id: 'season-id-1',
   ParentId: 'series-id-1'
-} as BaseItemDto;
+};
 
 const TEST_TV_SEASON_2 = {
   Id: 'season-id-2',
   ParentId: 'series-id-1'
-} as BaseItemDto;
+};
 
 const TEST_TV_EPISODE_1 = {
   Id: 'episode-id-1',
   ParentId: 'season-id-2'
-} as BaseItemDto;
+};
 
 const TEST_TV_EPISODE_2 = {
   Id: 'episode-id-1',
   ParentId: 'season-id-2'
-} as BaseItemDto;
+};
 
 beforeEach(() => {
   localVue = createLocalVue();
@@ -97,7 +96,7 @@ describe('vuex: tvShows', () => {
     store.dispatch('getTvShowsSeasonEpisodesSuccess', {
       response: {
         Items: [TEST_TV_EPISODE_1, TEST_TV_EPISODE_2]
-      } as BaseItemDtoQueryResult,
+      },
       itemId: TEST_TV_SERIES.Id,
       seasonItemId: TEST_TV_SEASON_1.Id
     });
