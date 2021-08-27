@@ -151,7 +151,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -171,32 +171,32 @@ export default Vue.extend({
 
     const moviesIds = await $items.getItems({
       personIds: [itemId],
-      sortBy: 'PremiereDate,ProductionYear,SortName',
-      sortOrder: 'Descending',
+      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+      sortOrder: [SortOrder.Descending],
       recursive: true,
       includeItemTypes: ['Movie']
     });
 
     const seriesIds = await $items.getItems({
       personIds: [itemId],
-      sortBy: 'PremiereDate,ProductionYear,SortName',
-      sortOrder: 'Descending',
+      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+      sortOrder: [SortOrder.Descending],
       recursive: true,
       includeItemTypes: ['Series']
     });
 
     const booksIds = await $items.getItems({
       personIds: [itemId],
-      sortBy: 'PremiereDate,ProductionYear,SortName',
-      sortOrder: 'Descending',
+      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+      sortOrder: [SortOrder.Descending],
       recursive: true,
       includeItemTypes: ['Book']
     });
 
     const photosIds = await $items.getItems({
       personIds: [itemId],
-      sortBy: 'PremiereDate,ProductionYear,SortName',
-      sortOrder: 'Descending',
+      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+      sortOrder: [SortOrder.Descending],
       recursive: true,
       includeItemTypes: ['Photo']
     });

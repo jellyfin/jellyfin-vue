@@ -75,7 +75,11 @@
 import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import groupBy from 'lodash/groupBy';
-import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemDtoQueryResult,
+  SortOrder
+} from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 
@@ -97,8 +101,8 @@ export default Vue.extend({
       await this.$api.items.getItems({
         userId: this.$auth.user?.Id,
         parentId: this.item.Id,
-        sortBy: 'SortName',
-        sortOrder: 'Ascending'
+        sortBy: ['SortName'],
+        sortOrder: [SortOrder.Ascending]
       })
     ).data;
   },
