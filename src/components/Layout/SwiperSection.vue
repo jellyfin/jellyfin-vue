@@ -3,12 +3,16 @@
     <skeleton-home-section v-if="loading" :card-shape="shape" />
     <v-col v-show="items && items.length > 0" class="swiper-section">
       <div class="d-flex ma-2">
-        <h1
+        <component
+          :is="link ? 'nuxt-link' : 'h1'"
+          :to="link ? link : null"
+          :tag="link ? 'h1' : null"
           class="text-h6 text-sm-h5 font-weight-light header"
-          :class="{ 'header-white-mode': !$vuetify.theme.dark }"
+          :class="{ 'header-white-mode': !$vuetify.theme.dark, pointer: link }"
         >
           <span class="pl-4">{{ title }}</span>
-        </h1>
+          <v-icon v-if="link">mdi-chevron-right</v-icon>
+        </component>
         <v-spacer />
         <v-btn class="swiper-prev" icon>
           <v-icon>mdi-arrow-left</v-icon>
@@ -57,6 +61,10 @@ export default Vue.extend({
       default(): string {
         return getShapeFromItemType(this.items?.[0]?.Type);
       }
+    },
+    link: {
+      type: String,
+      default: ''
     }
   },
   data() {

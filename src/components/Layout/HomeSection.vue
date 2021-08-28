@@ -9,6 +9,7 @@
       :items="items"
       :shape="section.shape"
       :loading="loading"
+      :link="section.libraryId ? `/library/${section.libraryId}` : undefined"
     />
   </client-only>
 </template>

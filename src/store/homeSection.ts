@@ -12,7 +12,7 @@ import { CardShapes } from '~/utils/items';
 export interface HomeSection {
   name: string;
   libraryName?: string | null;
-  libraryId: string;
+  libraryId?: string;
   shape: CardShapes;
   type: string;
 }
@@ -57,7 +57,11 @@ export const getters: GetterTree<HomeSectionState, AppState> = {
             ...state.upNext
           ];
         case 'recentlyadded':
-          return state.latestMedia[section.libraryId];
+          if (section.libraryId) {
+            return state.latestMedia[section.libraryId];
+          }
+
+          return [];
         default:
           return [];
       }

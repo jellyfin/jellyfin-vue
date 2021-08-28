@@ -98,7 +98,6 @@ export default Vue.extend({
         case 'ondeck':
           homeSections.push({
             name: 'onDeck',
-            libraryId: '',
             shape: CardShapes.Thumb,
             type: 'ondeck'
           });
