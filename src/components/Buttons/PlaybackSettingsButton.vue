@@ -38,6 +38,7 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
+                v-if="getCurrentItem.MediaSources[0].MediaStreams"
                 :media-streams="
                   getMediaStreams(
                     getCurrentItem.MediaSources[0].MediaStreams,
@@ -56,6 +57,7 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
+                v-if="getCurrentItem.MediaSources[0].MediaStreams"
                 :media-streams="
                   getMediaStreams(
                     getCurrentItem.MediaSources[0].MediaStreams,
@@ -74,6 +76,7 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
+                v-if="getCurrentItem.MediaSources[0].MediaStreams"
                 :media-streams="
                   getMediaStreams(
                     getCurrentItem.MediaSources[0].MediaStreams,
@@ -92,6 +95,7 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
+                v-if="getCurrentItem.MediaSources[0].MediaStreams"
                 :media-streams="
                   getMediaStreams(
                     getCurrentItem.MediaSources[0].MediaStreams,
