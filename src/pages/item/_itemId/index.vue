@@ -170,6 +170,7 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
+                    v-if="currentSource.MediaStreams"
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
@@ -187,6 +188,7 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
+                    v-if="currentSource.MediaStreams"
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
@@ -204,6 +206,7 @@
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
                   <media-stream-selector
+                    v-if="currentSource.MediaStreams"
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
