@@ -112,7 +112,7 @@
     }
   },
   "jellyfinLogo": "Jellyfin logo",
-  "latestLibrary": "Najnovejše {libraryName}",
+  "recentlyAdded": "Najnovejše {libraryName}",
   "libraries": "Knjižnice",
   "libraryEmpty": "Knjižnica je prazna",
   "libraryNotFound": "Knjižnice ni najdena",

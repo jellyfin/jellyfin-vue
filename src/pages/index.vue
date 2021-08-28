@@ -27,7 +27,7 @@ export default Vue.extend({
     };
   },
   async fetch() {
-    const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
+    const validSections = ['ondeck', 'recentlyadded'];
 
     // Filter for valid sections in Jellyfin Vue
     // TODO: Implement custom section order
@@ -44,11 +44,8 @@ export default Vue.extend({
 
     if (!Object.keys(homeSectionsArray).length) {
       homeSectionsArray = {
-        homeSection0: 'librarytiles',
-        homeSection1: 'resume',
-        homeSection2: 'resumeaudio',
-        homeSection3: 'upnext',
-        homeSection4: 'latestmedia'
+        homeSection3: 'ondeck',
+        homeSection4: 'recentlyadded'
       };
     }
 
@@ -59,16 +56,7 @@ export default Vue.extend({
 
     for (const homeSection of homeSectionsArray as Array<string>) {
       switch (homeSection) {
-        case 'librarytiles': {
-          homeSections.push({
-            name: 'libraries',
-            libraryId: '',
-            shape: CardShapes.Thumb,
-            type: 'libraries'
-          });
-          break;
-        }
-        case 'latestmedia': {
+        case 'recentlyadded': {
           const latestMediaSections = [];
 
           let userViews: BaseItemDto[] = this.views;
@@ -94,11 +82,11 @@ export default Vue.extend({
               }
 
               latestMediaSections.push({
-                name: 'latestLibrary',
+                name: 'recentlyAdded',
                 libraryName: userView.Name,
                 libraryId: userView.Id || '',
                 shape: getShapeFromCollectionType(userView.CollectionType),
-                type: 'latestmedia'
+                type: 'recentlyadded'
               });
             }
 
@@ -107,28 +95,12 @@ export default Vue.extend({
 
           break;
         }
-        case 'resume':
+        case 'ondeck':
           homeSections.push({
-            name: 'continueWatching',
+            name: 'onDeck',
             libraryId: '',
             shape: CardShapes.Thumb,
-            type: 'resume'
-          });
-          break;
-        case 'resumeaudio':
-          homeSections.push({
-            name: 'continueListening',
-            libraryId: '',
-            shape: CardShapes.Square,
-            type: 'resumeaudio'
-          });
-          break;
-        case 'upnext':
-          homeSections.push({
-            name: 'nextUp',
-            libraryId: '',
-            shape: CardShapes.Thumb,
-            type: 'upnext'
+            type: 'ondeck'
           });
           break;
         default:

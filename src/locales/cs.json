@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Položka nebyla nalezena",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Nejnovější {libraryName}",
+  "recentlyAdded": "Nejnovější {libraryName}",
   "libraries": "Knihovny",
   "libraryEmpty": "Tato knihovna je prázdná",
   "libraryEmptyFilters": "Nic nenalezeno. Odstraněním některých filtrů zobrazíte více položek",

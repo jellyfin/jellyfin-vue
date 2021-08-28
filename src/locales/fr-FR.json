@@ -124,7 +124,7 @@
   },
   "itemNotFound": "Élément introuvable",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Récemment ajoutés à {libraryName}",
+  "recentlyAdded": "Récemment ajoutés à {libraryName}",
   "libraries": "Médiathèques",
   "libraryEmpty": "Cette médiathèque est vide",
   "libraryEmptyFilters": "Pas de correspondances. Supprimez des filtres pour afficher plus d'éléments",

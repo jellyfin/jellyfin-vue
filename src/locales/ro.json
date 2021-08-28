@@ -106,7 +106,7 @@
   },
   "itemNotFound": "Articolul nu a fost găsit",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Ultimul {libraryName}",
+  "recentlyAdded": "Ultimul {libraryName}",
   "libraries": "Biblioteci",
   "libraryEmpty": "Această bibliotecă este goală",
   "libraryEmptyFilters": "Nici o potrivire. Eliminați câteva filtre pentru a afișa mai multe articole",

@@ -43,25 +43,15 @@ export default Vue.extend({
     }
 
     switch (this.section.type) {
-      case 'libraries': {
-        await this.getLibraries();
-        break;
-      }
-      case 'resume': {
+      case 'ondeck': {
         await this.getVideoResumes();
-        break;
-      }
-      case 'resumeaudio': {
         await this.getAudioResumes();
-        break;
-      }
-      case 'upnext': {
         await this.getUpNext({
           parentId: this.section.libraryId
         });
         break;
       }
-      case 'latestmedia': {
+      case 'recentlyadded': {
         await this.getLatestMedia({
           parentId: this.section.libraryId
         });
@@ -78,8 +68,7 @@ export default Vue.extend({
       getVideoResumes: 'getVideoResumes',
       getAudioResumes: 'getAudioResumes',
       getUpNext: 'getUpNext',
-      getLatestMedia: 'getLatestMedia',
-      getLibraries: 'getLibraries'
+      getLatestMedia: 'getLatestMedia'
     })
   }
 });

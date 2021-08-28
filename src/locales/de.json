@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Element nicht gefunden",
   "jellyfinLogo": "Jellyfin Logo",
-  "latestLibrary": "Neueste {libraryName}",
+  "recentlyAdded": "Neueste {libraryName}",
   "libraries": "Bibliotheken",
   "libraryEmpty": "Diese Bibliothek ist leer",
   "libraryEmptyFilters": "Keine Treffer. Entfernen Sie einige Filter, um mehr Elemente anzuzeigen",

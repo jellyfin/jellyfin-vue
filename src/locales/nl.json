@@ -106,7 +106,7 @@
   },
   "itemNotFound": "Item niet gevonden",
   "jellyfinLogo": "Jellyfin logo",
-  "latestLibrary": "Nieuwste {libraryName}",
+  "recentlyAdded": "Nieuwste {libraryName}",
   "libraries": "Bibliotheken",
   "libraryEmpty": "Deze bibliotheek is leeg",
   "libraryEmptyFilters": "Geen resultaten. Verwijder enkele filters om meer items te tonen",

@@ -126,7 +126,7 @@
   },
   "itemNotFound": "பொருள் கிடைக்கவில்லை",
   "jellyfinLogo": "ஜெல்லிஃபின் சின்னம்",
-  "latestLibrary": "சமீபத்திய {libraryName}",
+  "recentlyAdded": "சமீபத்திய {libraryName}",
   "libraries": "நூலகங்கள்",
   "libraryEmpty": "இந்த நூலகம் காலியாக உள்ளது",
   "libraryEmptyFilters": "எந்த பொருத்தமும் கிடைக்கவில்லை. கூடுதல் உருப்படிகளைக் காட்ட சில வடிப்பான்களை அகற்று",

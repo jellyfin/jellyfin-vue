@@ -106,7 +106,7 @@
   },
   "itemNotFound": "Item tidak ditemukan",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "{libraryName} terbaru",
+  "recentlyAdded": "{libraryName} terbaru",
   "libraries": "Pustaka",
   "libraryEmpty": "Pustaka ini kosong",
   "libraryNotFound": "Pustaka tidak ditemukan",

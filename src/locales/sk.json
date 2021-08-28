@@ -26,7 +26,7 @@
   "home": "Domov",
   "incorrectUsernameOrPassword": "Nesprávne používateľské meno alebo heslo",
   "itemNotFound": "Položka nebola nájdená",
-  "latestLibrary": "Najnovšie {libraryName}",
+  "recentlyAdded": "Najnovšie {libraryName}",
   "libraries": "Knižnice",
   "libraryEmpty": "Táto knižnica je prázdna",
   "libraryNotFound": "Knižnica nebola nájdená",

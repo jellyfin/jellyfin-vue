@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Az elem nem található",
   "jellyfinLogo": "Jellyfin logó",
-  "latestLibrary": "Legújabb {libraryName}",
+  "recentlyAdded": "Legújabb {libraryName}",
   "libraries": "Könyvtárak",
   "libraryEmpty": "Ez a könyvtár üres",
   "libraryEmptyFilters": "Nincs egyezés. Távolítson el néhány szűrőt további elemek megjelenítéséhez",

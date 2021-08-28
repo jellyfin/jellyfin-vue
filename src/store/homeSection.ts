@@ -22,7 +22,6 @@ interface LatestMedia {
 }
 
 export interface HomeSectionState {
-  libraries: BaseItemDto[];
   audioResumes: BaseItemDto[];
   videoResumes: BaseItemDto[];
   upNext: BaseItemDto[];
@@ -30,7 +29,6 @@ export interface HomeSectionState {
 }
 
 const defaultState = (): HomeSectionState => ({
-  libraries: [],
   audioResumes: [],
   videoResumes: [],
   upNext: [],
@@ -40,7 +38,6 @@ const defaultState = (): HomeSectionState => ({
 export const state = defaultState;
 
 type MutationPayload = {
-  libraries: BaseItemDto[];
   audioResumes: BaseItemDto[];
   videoResumes: BaseItemDto[];
   upNext: BaseItemDto[];
@@ -53,15 +50,13 @@ export const getters: GetterTree<HomeSectionState, AppState> = {
     (state) =>
     (section: HomeSection): BaseItemDto[] => {
       switch (section.type) {
-        case 'libraries':
-          return state.libraries;
-        case 'resume':
-          return state.videoResumes;
-        case 'resumeaudio':
-          return state.audioResumes;
-        case 'upnext':
-          return state.upNext;
-        case 'latestmedia':
+        case 'ondeck':
+          return [
+            ...state.videoResumes,
+            ...state.audioResumes,
+            ...state.upNext
+          ];
+        case 'recentlyadded':
           return state.latestMedia[section.libraryId];
         default:
           return [];
@@ -70,9 +65,6 @@ export const getters: GetterTree<HomeSectionState, AppState> = {
 };
 
 export const mutations: MutationTree<HomeSectionState> = {
-  ADD_LIBRARIES(state: HomeSectionState, { libraries }: MutationPayload) {
-    state.libraries = libraries;
-  },
   ADD_AUDIO_RESUMES(
     state: HomeSectionState,
     { audioResumes }: MutationPayload
@@ -103,11 +95,6 @@ export const mutations: MutationTree<HomeSectionState> = {
   }
 };
 export const actions: ActionTree<HomeSectionState, AppState> = {
-  async getLibraries({ rootState, dispatch, commit }) {
-    await dispatch('userViews/refreshUserViews', null, { root: true });
-
-    commit('ADD_LIBRARIES', { libraries: rootState.userViews.views });
-  },
   async getAudioResumes({ dispatch }) {
     try {
       const { data } = await this.$api.items.getResumeItems({

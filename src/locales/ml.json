@@ -126,7 +126,7 @@
   },
   "itemNotFound": "ഇനം കണ്ടെത്തിയില്ല",
   "jellyfinLogo": "ജെല്ലിഫിൻ ലോഗോ",
-  "latestLibrary": "ഏറ്റവും പുതിയ {libraryName}",
+  "recentlyAdded": "ഏറ്റവും പുതിയ {libraryName}",
   "libraries": "ലൈബ്രറികൾ",
   "libraryEmpty": "ഈ ലൈബ്രറി ശൂന്യമാണ്",
   "libraryEmptyFilters": "പൊരുത്തമൊന്നും കണ്ടെത്തിയില്ല. കൂടുതൽ ഇനങ്ങൾ കാണിക്കുന്നതിന് ചില ഫിൽട്ടറുകൾ നീക്കംചെയ്യുക",

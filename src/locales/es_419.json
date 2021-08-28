@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Item no encontrado",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Lo último en {libraryName}",
+  "recentlyAdded": "Lo último en {libraryName}",
   "libraries": "Bibliotecas",
   "libraryEmpty": "La biblioteca está vacía",
   "libraryEmptyFilters": "No hay coincidencias. Elimine algunos filtros para mostrar mas items",

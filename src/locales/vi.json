@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Không tìm thấy mục",
   "jellyfinLogo": "Logo Jellyfin",
-  "latestLibrary": "Gần nhất {libraryName}",
+  "recentlyAdded": "Gần nhất {libraryName}",
   "libraries": "Thư viện",
   "libraryEmpty": "Thư viện này trống",
   "libraryEmptyFilters": "Không phù hợp. Xóa một số bộ lọc để hiển thị nhiều mục hơn",

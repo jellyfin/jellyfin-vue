@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Элемент не найден",
   "jellyfinLogo": "Логотип Jellyfin",
-  "latestLibrary": "Крайние {libraryName}",
+  "recentlyAdded": "Крайние {libraryName}",
   "libraries": "Медиатеки",
   "libraryEmpty": "Эта медиатека пуста",
   "libraryEmptyFilters": "Нет совпадений. Удалите некоторые фильтры, чтобы показать больше элементов",

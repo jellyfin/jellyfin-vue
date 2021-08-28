@@ -107,7 +107,7 @@
   },
   "itemNotFound": "Gjenstand ikkje funnet",
   "jellyfinLogo": "Jellyfin-logo",
-  "latestLibrary": "Nyaste i {libraryName}",
+  "recentlyAdded": "Nyaste i {libraryName}",
   "libraries": "Bibliotek",
   "libraryEmpty": "Dette biblioteket er tomt",
   "libraryEmptyFilters": "Ingen treff. Fjern nokre filter for å visa fleire element",

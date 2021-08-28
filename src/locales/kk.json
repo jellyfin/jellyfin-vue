@@ -126,7 +126,7 @@
   },
   "itemNotFound": "Tarmaq tabylmady",
   "jellyfinLogo": "Jellyfin logotipı",
-  "latestLibrary": "Eñ keiıngı {libraryName}",
+  "recentlyAdded": "Eñ keiıngı {libraryName}",
   "libraries": "Tasyğyşhanalar",
   "libraryEmpty": "Būl tasyğyşhana bos",
   "libraryEmptyFilters": "Säikester joq. Basqa tarmaqtardy körsetu üşın keibır süzgılerdı alastañyz",

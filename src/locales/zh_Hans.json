@@ -126,7 +126,7 @@
   },
   "itemNotFound": "未找到项目",
   "jellyfinLogo": "Jellyfin 图标",
-  "latestLibrary": "最新的 {libraryName}",
+  "recentlyAdded": "最新的 {libraryName}",
   "libraries": "媒体库",
   "libraryEmpty": "这个库是空的",
   "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目",
