@@ -327,7 +327,7 @@ const config: NuxtConfig = {
       disable: false,
       themes: {
         dark: {
-          primary: '#0086b3',
+          primary: '#9d37c2',
           secondary: '#2f3951',
           accent: '#FF4081',
           info: '#0099CC',
@@ -339,7 +339,7 @@ const config: NuxtConfig = {
           thumb: '#252e41'
         },
         light: {
-          primary: '#00A4DC',
+          primary: '#9d37c2',
           secondary: '#424242',
           accent: '#FF4081',
           info: '#33b5e5',
