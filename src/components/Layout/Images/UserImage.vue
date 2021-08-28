@@ -2,7 +2,9 @@
   <v-avatar color="primary" :size="size">
     <v-img :src="userImage" :alt="user.Name" class="userImage">
       <template #placeholder>
-        <v-icon :size="size - 32" dark>mdi-account</v-icon>
+        <v-row class="fill-height ma-0" align="center" justify="center">
+          <v-icon :size="size - 12" dark>mdi-account</v-icon>
+        </v-row>
       </template>
     </v-img>
   </v-avatar>

@@ -1,25 +1,29 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense class="second-toolbar">
-      <span class="text-h6 hidden-sm-and-down">
-        {{ genre.Name }}
-      </span>
-      <v-spacer />
-      <v-fade-transition>
-        <play-button v-if="!$fetchState.pending" :item="genre" />
-      </v-fade-transition>
-      <v-btn
-        v-if="!$fetchState.pending"
-        class="play-button mr-2"
-        min-width="8em"
-        outlined
-        rounded
-        nuxt
-        :to="`./${genre.Id}/shuffle`"
-      >
-        {{ $t('playback.shuffleAll') }}
-      </v-btn>
-    </v-app-bar>
+    <div
+      :style="`position: fixed; left: ${$vuetify.application.left}px !important; top: ${$vuetify.application.top}px !important; right: 0; z-index: 100;`"
+    >
+      <v-app-bar color="#374151" flat dense>
+        <span class="text-h6 hidden-sm-and-down">
+          {{ genre.Name }}
+        </span>
+        <v-spacer />
+        <v-fade-transition>
+          <play-button v-if="!$fetchState.pending" :item="genre" />
+        </v-fade-transition>
+        <v-btn
+          v-if="!$fetchState.pending"
+          class="play-button mr-2"
+          min-width="8em"
+          outlined
+          rounded
+          nuxt
+          :to="`./${genre.Id}/shuffle`"
+        >
+          {{ $t('playback.shuffleAll') }}
+        </v-btn>
+      </v-app-bar>
+    </div>
     <v-container class="after-second-toolbar">
       <v-row v-if="$fetchState.pending">
         <v-col cols="12" class="card-grid-container">
@@ -114,22 +118,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-.second-toolbar {
-  top: 56px;
-}
-
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .second-toolbar {
-    top: 64px;
-  }
-}
-
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .second-toolbar {
-    left: 256px !important;
-  }
-}
-
 .after-second-toolbar {
   padding-top: 60px;
 }

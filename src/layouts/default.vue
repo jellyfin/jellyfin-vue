@@ -6,16 +6,14 @@
     <v-navigation-drawer
       v-if="navDrawer"
       v-model="drawer"
-      :temporary="$vuetify.breakpoint.mobile"
+      clipped
       :permanent="!$vuetify.breakpoint.mobile"
+      :mini-variant="!$vuetify.breakpoint.mobile && mini"
+      mini-variant-width="68"
       app
       class="pa-s"
     >
-      <template #prepend>
-        <user-button />
-        <v-divider />
-      </template>
-      <v-list>
+      <v-list class="py-0">
         <v-list-item
           v-for="item in items"
           :key="item.Id"
@@ -30,7 +28,8 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-        <v-subheader>{{ $t('libraries') }}</v-subheader>
+        <v-subheader v-if="!mini">{{ $t('libraries') }}</v-subheader>
+        <v-divider v-else />
         <v-list-item
           v-for="library in libraryItems"
           :key="library.Id"
@@ -52,21 +51,25 @@
       </template>
     </v-navigation-drawer>
     <v-app-bar
-      :clipped-left="$vuetify.breakpoint.mobile"
       class="pt-s pl-2 pr-2 app-bar-safe-zone"
+      outlined
+      clipped-left
       flat
       app
-      :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
     >
       <v-app-bar-nav-icon
-        v-if="$vuetify.breakpoint.mobile && navDrawer"
-        @click.stop="drawer = !drawer"
+        :class="{ 'mr-2': !$vuetify.breakpoint.mobile }"
+        @click.stop="onNavIconClick()"
+      />
+      <img
+        v-if="!$vuetify.breakpoint.mobile"
+        :src="logo"
+        class="mr-2"
+        :style="{ height: '40px' }"
       />
       <v-btn
         v-hide="$route.name === 'index'"
-        :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        icon
         :class="{
           'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
           'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
@@ -76,31 +79,30 @@
       >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-text-field
-        v-model="searchQuery"
-        class="search-input"
-        :class="$vuetify.breakpoint.smAndUp ? 'expandable' : null"
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="$t('search.name')"
-        max-width="15em"
-        dense
-        outlined
-        filled
-        flat
-        hide-details
-        single-line
-      />
+      <div
+        :style="{
+          width: '30em'
+        }"
+      >
+        <v-text-field
+          v-if="!$vuetify.breakpoint.mobile"
+          v-model="searchQuery"
+          class="search-input"
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="$t('search.name')"
+          dense
+          outlined
+          filled
+          flat
+          hide-details
+          single-line
+        />
+      </div>
       <v-spacer />
-      <dark-mode-toggle
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      />
-      <locale-switcher
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        bottom
-      />
-      <cast-button
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      />
+      <dark-mode-toggle />
+      <locale-switcher bottom />
+      <cast-button />
+      <user-button />
     </v-app-bar>
     <v-main>
       <div class="pa-s">
@@ -145,7 +147,8 @@ export default Vue.extend({
   data() {
     return {
       isScrolled: false,
-      drawer: false
+      drawer: false,
+      mini: true
     };
   },
   computed: {
@@ -184,6 +187,17 @@ export default Vue.extend({
           to: '/'
         }
       ];
+    },
+    logo(): string {
+      if (this.$vuetify.theme.dark) {
+        return process.env.NODE_ENV === 'development'
+          ? '/banner-dev-dark.svg'
+          : '/banner-dark.svg';
+      }
+
+      return process.env.NODE_ENV === 'development'
+        ? '/banner-dev-light.svg'
+        : '/banner-light.svg';
     }
   },
   watch: {
@@ -230,6 +244,13 @@ export default Vue.extend({
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.isScrolled = window.scrollY > 10;
+    },
+    onNavIconClick(): void {
+      if (this.$vuetify.breakpoint.mobile) {
+        this.drawer = !this.drawer;
+      } else {
+        this.mini = !this.mini;
+      }
     }
   }
 });
@@ -245,25 +266,5 @@ export default Vue.extend({
   .app-bar-safe-zone {
     height: calc(64px + env(safe-area-inset-top)) !important;
   }
-}
-
-.v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
-  background-color: transparent !important;
-}
-
-.v-app-bar .v-app-bar--is-scrolled:not(.opaque) {
-  padding-top: 0;
-  padding-bottom: 0;
-  background-color: rgba(32, 32, 32, 1) !important;
-}
-
-.search-input {
-  max-width: 15em;
-  transition: max-width 0.25s;
-}
-
-.search-input.expandable.primary--text {
-  max-width: 40em;
-  transition: max-width 0.25s;
 }
 </style>

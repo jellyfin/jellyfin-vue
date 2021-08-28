@@ -1,17 +1,21 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense class="second-toolbar">
-      <v-tabs v-model="searchTab" centered>
-        <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
-        <v-tab :key="1">{{ $t('movies') }}</v-tab>
-        <v-tab :key="2">{{ $t('shows') }}</v-tab>
-        <v-tab :key="3">{{ $t('albums') }}</v-tab>
-        <v-tab :key="4">{{ $t('songs') }}</v-tab>
-        <v-tab :key="5">{{ $t('books') }}</v-tab>
-        <v-tab :key="6">{{ $t('people') }}</v-tab>
-        <v-tab :key="7">{{ $t('artists') }}</v-tab>
-      </v-tabs>
-    </v-app-bar>
+    <div
+      :style="`position: fixed; left: ${$vuetify.application.left}px !important; top: ${$vuetify.application.top}px !important; right: 0; z-index: 100;`"
+    >
+      <v-app-bar color="#374151" flat dense>
+        <v-tabs v-model="searchTab" centered>
+          <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
+          <v-tab :key="1">{{ $t('movies') }}</v-tab>
+          <v-tab :key="2">{{ $t('shows') }}</v-tab>
+          <v-tab :key="3">{{ $t('albums') }}</v-tab>
+          <v-tab :key="4">{{ $t('songs') }}</v-tab>
+          <v-tab :key="5">{{ $t('books') }}</v-tab>
+          <v-tab :key="6">{{ $t('people') }}</v-tab>
+          <v-tab :key="7">{{ $t('artists') }}</v-tab>
+        </v-tabs>
+      </v-app-bar>
+    </div>
     <v-container class="after-second-toolbar">
       <v-row>
         <v-col>
@@ -145,23 +149,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-
-.second-toolbar {
-  top: 56px;
-}
-
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .second-toolbar {
-    top: 64px;
-  }
-}
-
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .second-toolbar {
-    left: 256px !important;
-  }
-}
-
 .after-second-toolbar {
   padding-top: 48px;
 }

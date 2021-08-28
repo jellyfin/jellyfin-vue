@@ -1,28 +1,14 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div
-        v-ripple
-        class="d-flex align-center full-width py-8 px-4 no-overflow"
+      <v-btn
+        class="align-self-center active-button ml-2"
+        icon
         v-bind="attrs"
         v-on="on"
       >
-        <user-image v-if="$auth.user" :user="$auth.user" />
-        <h1
-          v-if="$auth.user"
-          class="
-            flex-grow-1
-            font-weight-light
-            ml-3
-            pb-1
-            text-truncate
-            user-select-none
-          "
-        >
-          {{ $auth.user.Name }}
-        </h1>
-        <v-icon>mdi-dots-horizontal</v-icon>
-      </div>
+        <user-image v-if="$auth.user" :user="$auth.user" :size="48" />
+      </v-btn>
     </template>
     <v-list dense>
       <v-list-item

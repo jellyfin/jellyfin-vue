@@ -1,42 +1,46 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense class="second-toolbar">
-      <span class="text-h6 hidden-sm-and-down">
-        {{ collectionInfo.Name }}
-      </span>
-      <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
-        <template v-if="!loading">{{ itemsCount }}</template>
-        <v-progress-circular v-else width="2" indeterminate size="16" />
-      </v-chip>
-      <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
-      <type-button
-        v-if="hasViewTypes"
-        :type="collectionInfo.CollectionType"
-        :disabled="loading"
-        @change="onChangeType"
-      />
-      <v-divider
-        v-if="isSortable && hasViewTypes"
-        inset
-        vertical
-        class="mx-2"
-      />
-      <sort-button
-        v-if="isSortable"
-        :disabled="loading || !items.length"
-        @change="onChangeSort"
-      />
-      <filter-button
-        v-if="isSortable"
-        :collection-info="collectionInfo"
-        :disabled="loading || (!items.length && !hasFilters)"
-        :items-type="viewType"
-        @change="onChangeFilter"
-      />
-      <v-spacer />
-      <play-button :item="collectionInfo" shuffle />
-      <play-button :item="collectionInfo" />
-    </v-app-bar>
+    <div
+      :style="`position: fixed; left: ${$vuetify.application.left}px !important; top: ${$vuetify.application.top}px !important; right: 0; z-index: 100;`"
+    >
+      <v-app-bar color="#374151" flat dense>
+        <span class="text-h6 hidden-sm-and-down">
+          {{ collectionInfo.Name }}
+        </span>
+        <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
+          <template v-if="!loading">{{ itemsCount }}</template>
+          <v-progress-circular v-else width="2" indeterminate size="16" />
+        </v-chip>
+        <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
+        <type-button
+          v-if="hasViewTypes"
+          :type="collectionInfo.CollectionType"
+          :disabled="loading"
+          @change="onChangeType"
+        />
+        <v-divider
+          v-if="isSortable && hasViewTypes"
+          inset
+          vertical
+          class="mx-2"
+        />
+        <sort-button
+          v-if="isSortable"
+          :disabled="loading || !items.length"
+          @change="onChangeSort"
+        />
+        <filter-button
+          v-if="isSortable"
+          :collection-info="collectionInfo"
+          :disabled="loading || (!items.length && !hasFilters)"
+          :items-type="viewType"
+          @change="onChangeFilter"
+        />
+        <v-spacer />
+        <play-button :item="collectionInfo" shuffle />
+        <play-button :item="collectionInfo" />
+      </v-app-bar>
+    </div>
     <v-container class="after-second-toolbar">
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
@@ -175,6 +179,8 @@ export default Vue.extend({
       this.$nextTick(() => {
         this.$nuxt.$loading.finish();
       });
+
+      console.dir(this.$vuetify.application);
     }
   },
   deactivated() {
@@ -340,22 +346,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
-.second-toolbar {
-  top: 56px;
-}
-
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .second-toolbar {
-    top: 64px;
-  }
-}
-
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .second-toolbar {
-    left: 256px !important;
-  }
-}
-
 .after-second-toolbar {
   padding-top: 60px;
 }

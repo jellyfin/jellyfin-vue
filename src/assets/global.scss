@@ -70,18 +70,23 @@ body {
   opacity: 0 !important;
 }
 
-.v-navigation-drawer--fixed,
 .v-footer--fixed {
   z-index: 100 !important;
 }
 
 // It's important for this to be after the rule for .v-navigation-drawer--fixed
-.v-navigation-drawer--temporary {
+.v-navigation-drawer--fixed {
   z-index: 105 !important;
 }
 
 .v-data-table tr {
   transition: 0.2s !important;
+}
+
+.v-app-bar.v-sheet--outlined {
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 
 /* Custom utility classes */

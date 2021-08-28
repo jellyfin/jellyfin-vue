@@ -2,10 +2,8 @@
   <v-tooltip bottom>
     <template #activator="{ on, attrs }">
       <v-btn
-        :icon="!fab"
-        :fab="fab"
-        :small="fab"
-        :class="{ 'mr-n1': !fab }"
+        icon
+        class="mr-n1"
         v-bind="attrs"
         v-on="on"
         @click="toggleDarkMode"
@@ -28,12 +26,6 @@ import Vue from 'vue';
 import { mapState, mapActions } from 'vuex';
 
 export default Vue.extend({
-  props: {
-    fab: {
-      type: Boolean,
-      required: true
-    }
-  },
   computed: {
     ...mapState('clientSettings', ['darkMode'])
   },
