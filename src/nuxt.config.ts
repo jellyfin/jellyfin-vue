@@ -66,7 +66,16 @@ const config: NuxtConfig = {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href:
+          process.env.NODE_ENV === 'development'
+            ? '/favicon-dev.ico'
+            : '/favicon.ico'
+      }
+    ]
   },
   /*
    ** Global CSS
@@ -373,7 +382,8 @@ const config: NuxtConfig = {
    */
   build: {
     loadingScreen: {
-      image: 'icon.png',
+      image:
+        process.env.NODE_ENV === 'development' ? 'icon-dev.png' : 'icon.png',
       colors: {
         client: '#00A4DC',
         modern: '#aa5cc3',
