@@ -157,7 +157,10 @@ export default Vue.extend({
 
               case 'playbackManager/SET_VOLUME':
                 if (this.$refs.shakaPlayer && this.gainNode) {
-                  this.gainNode.gain.value = this.currentVolume / 100;
+                  this.gainNode.gain.value = Math.pow(
+                    this.currentVolume / 100,
+                    3
+                  );
                 }
 
                 break;
