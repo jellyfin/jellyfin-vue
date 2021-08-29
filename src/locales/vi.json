@@ -250,9 +250,11 @@
     "playMethod": {
       "direct": "Trực tiếp",
       "name": "Phương thức:",
+      "remux": "Remux",
       "transcode": "Chuyển mã"
     },
     "streamType": {
+      "hls": "HLS",
       "name": "Loại luồng:",
       "unknown": "Không rõ",
       "video": "Video"
@@ -443,7 +445,7 @@
     "name": "Chuyển mã",
     "transcodingFramerate": {
       "name": "Tỷ lệ khung hình:",
-      "value": "{value} fps"
+      "value": "{value} khung hình / giây"
     },
     "transcodingProgress": "Tiến độ:",
     "transcodingReason": {
