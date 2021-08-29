@@ -6,9 +6,10 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
+import noop from 'lodash/noop';
+import { BaseItemDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
@@ -24,8 +25,7 @@ export default Vue.extend({
   data() {
     return {
       isFavorite: false,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      unsubscribe: noop
     };
   },
   watch: {

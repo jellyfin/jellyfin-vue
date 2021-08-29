@@ -248,6 +248,7 @@
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import noop from 'lodash/noop';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
@@ -259,8 +260,7 @@ export default Vue.extend({
     return {
       showFullScreenOverlay: false,
       fullScreenOverlayTimer: null as number | null,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {},
+      unsubscribe: noop,
       fullScreenVideo: false,
       keepOpen: false,
       playbackData: false,

@@ -91,6 +91,7 @@
 import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import noop from 'lodash/noop';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
@@ -141,7 +142,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      refreshProgress: 0
+      refreshProgress: 0,
+      unsubscribe: noop
     };
   },
   computed: {

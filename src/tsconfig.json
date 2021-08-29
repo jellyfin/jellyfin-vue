@@ -26,7 +26,8 @@
       "@nuxtjs/i18n",
       "@types/wicg-mediasession",
       "jest",
-      "@types/tizen-tv-webapis"
+      "@types/tizen-tv-webapis",
+      "shaka-player"
     ]
   }
 }

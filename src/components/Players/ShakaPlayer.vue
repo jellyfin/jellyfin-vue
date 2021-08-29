@@ -17,10 +17,12 @@
 import Vue from 'vue';
 import { stringify } from 'qs';
 import throttle from 'lodash/throttle';
+import noop from 'lodash/noop';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
+import type { Player } from 'shaka-player';
 import { AppState } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
@@ -29,7 +31,7 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     muxjs: any;
-    player: any;
+    player: Player;
   }
 }
 
@@ -39,10 +41,8 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      player: null as any,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {},
+      player: null as Player | null,
+      unsubscribe: noop,
       audioContext: null as AudioContext | null,
       audioSource: null as MediaElementAudioSourceNode | null,
       gainNode: null as GainNode | null
@@ -102,7 +102,6 @@ export default Vue.extend({
       window.muxjs = muxjs;
 
       const { default: shaka } = await import(
-        // @ts-expect-error - This module doesn't have typings
         'shaka-player/dist/shaka-player.compiled'
       );
 
@@ -112,7 +111,9 @@ export default Vue.extend({
 
       if (shaka.Player.isBrowserSupported()) {
         // We use a global for ease of debugging and to fetch data from the playback information popup
-        window.player = new shaka.Player(this.$refs.shakaPlayer);
+        window.player = new shaka.Player(
+          this.$refs.shakaPlayer as HTMLMediaElement
+        );
         this.player = window.player;
 
         // Create WebAudio context and nodes for added processing
@@ -127,7 +128,7 @@ export default Vue.extend({
         this.gainNode.connect(this.audioContext.destination);
 
         // Register player events
-        this.player.addEventListener('error', this.onPlayerError);
+        this.player?.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
         this.unsubscribe = this.$store.subscribe(
           (mutation, _state: AppState) => {
@@ -312,7 +313,7 @@ export default Vue.extend({
         this.setNextTrack();
       }
     },
-    onPlayerError(event: ErrorEvent): void {
+    onPlayerError(event: Event): void {
       this.$emit('error', event);
     },
     togglePictureInPicture(): void {
