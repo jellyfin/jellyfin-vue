@@ -210,14 +210,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
     collectionInfo: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     itemsType: {

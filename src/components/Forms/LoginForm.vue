@@ -63,14 +63,14 @@
 
 <script lang="ts">
 import isEmpty from 'lodash/isEmpty';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
     user: {
-      type: Object as () => UserDto,
+      type: Object as PropType<UserDto>,
       default(): UserDto {
         return {};
       }

@@ -21,17 +21,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
-import { PublicSystemInfo } from '@jellyfin/client-axios';
+import { ServerInfo } from '~/store/servers';
 
 export default Vue.extend({
   props: {
     serverInfo: {
-      type: Object as () => {
-        address: string;
-        publicInfo: PublicSystemInfo;
-      },
+      type: Object as PropType<ServerInfo>,
       required: true
     }
   },

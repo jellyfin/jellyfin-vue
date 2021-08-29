@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions, mapState } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -43,7 +43,7 @@ export default Vue.extend({
   mixins: [itemHelper, timeUtils],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     fab: {

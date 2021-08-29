@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { UserDto } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 
@@ -18,7 +18,7 @@ export default Vue.extend({
   mixins: [imageHelper],
   props: {
     user: {
-      type: Object as () => UserDto,
+      type: Object as PropType<UserDto>,
       required: true
     }
   },

@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
@@ -99,7 +99,7 @@ export default Vue.extend({
   mixins: [imageHelper, itemHelper],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     shape: {
@@ -141,9 +141,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      refreshProgress: 0,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      refreshProgress: 0
     };
   },
   computed: {

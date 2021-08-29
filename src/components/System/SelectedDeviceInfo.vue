@@ -64,13 +64,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { DeviceInfo } from '@jellyfin/client-axios';
 
 export default Vue.extend({
   props: {
     selectedDevice: {
-      type: Object as () => DeviceInfo,
+      type: Object as PropType<DeviceInfo>,
       default: (): DeviceInfo => {
         return {};
       }

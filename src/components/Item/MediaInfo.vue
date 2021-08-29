@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -27,7 +27,7 @@ export default Vue.extend({
   mixins: [timeUtils],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     year: {

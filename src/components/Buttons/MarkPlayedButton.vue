@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
@@ -19,7 +19,7 @@ export default Vue.extend({
   mixins: [itemHelper],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     dark: {

@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { VImg } from 'vuetify/lib';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { ImageUrlInfo } from '~/mixins/imageHelper';
@@ -40,7 +40,7 @@ Vue.component('VImg', VImg);
 export default Vue.extend({
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     parentLink: {
@@ -52,7 +52,7 @@ export default Vue.extend({
       required: true
     },
     logo: {
-      type: Object as () => ImageUrlInfo,
+      type: Object as PropType<ImageUrlInfo>,
       default: undefined
     }
   }

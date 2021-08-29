@@ -102,7 +102,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import Swiper, { SwiperOptions } from 'swiper';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
@@ -114,11 +114,11 @@ export default Vue.extend({
   mixins: [htmlHelper, imageHelper, itemHelper],
   props: {
     items: {
-      type: Array as () => BaseItemDto[],
+      type: Array as PropType<BaseItemDto[]>,
       required: true
     },
     relatedItems: {
-      type: Object as () => { [k: number]: BaseItemDto },
+      type: Object as PropType<{ [k: number]: BaseItemDto }>,
       required: true
     },
     slideDuration: {
@@ -126,7 +126,7 @@ export default Vue.extend({
       default: 7000
     },
     swiperOptions: {
-      type: Object as () => SwiperOptions,
+      type: Object as PropType<SwiperOptions>,
       default: (): SwiperOptions => {
         return {
           initialSlide: 0,

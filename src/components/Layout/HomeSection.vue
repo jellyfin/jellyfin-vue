@@ -15,14 +15,14 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
   props: {
     section: {
-      type: Object as () => HomeSection,
+      type: Object as PropType<HomeSection>,
       required: true
     }
   },

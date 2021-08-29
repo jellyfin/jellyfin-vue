@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
@@ -39,7 +39,7 @@ export default Vue.extend({
   mixins: [imageHelper, itemHelper],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     },
     width: {
@@ -55,7 +55,7 @@ export default Vue.extend({
       default: 1
     },
     type: {
-      type: String as () => ImageType,
+      type: String as PropType<ImageType>,
       default: ImageType.Primary
     },
     alt: {

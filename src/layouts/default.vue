@@ -119,7 +119,7 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
@@ -135,7 +135,7 @@ export default Vue.extend({
   mixins: [settingsHelper],
   props: {
     keepAliveOptions: {
-      type: Object as () => Record<string, unknown>,
+      type: Object as PropType<Record<string, unknown>>,
       default: (): Record<string, unknown> => {
         return {
           max: 10,

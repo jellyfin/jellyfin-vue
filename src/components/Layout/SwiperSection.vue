@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { SwiperOptions } from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
@@ -47,7 +47,7 @@ export default Vue.extend({
       required: true
     },
     items: {
-      type: Array as () => BaseItemDto[],
+      type: Array as PropType<BaseItemDto[]>,
       default(): BaseItemDto[] {
         return [];
       }

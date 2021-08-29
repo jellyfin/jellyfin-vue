@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts">
+import Vue, { PropType } from 'vue';
 import { UserDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
 
 export default Vue.extend({
   props: {
     user: {
-      type: Object as () => UserDto,
+      type: Object as PropType<UserDto>,
       required: true
     },
     size: {

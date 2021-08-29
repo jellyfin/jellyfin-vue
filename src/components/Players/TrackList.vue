@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import groupBy from 'lodash/groupBy';
 import {
@@ -87,7 +87,7 @@ export default Vue.extend({
   mixins: [timeUtils, itemHelper],
   props: {
     item: {
-      type: Object as () => BaseItemDto,
+      type: Object as PropType<BaseItemDto>,
       required: true
     }
   },
