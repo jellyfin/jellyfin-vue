@@ -65,7 +65,7 @@
     "comlink-loader": "^2.0.0",
     "compare-versions": "^3.6.0",
     "cookie": "^0.4.1",
-    "core-js": "^3.16.3",
+    "core-js": "^3.16.4",
     "date-fns": "^2.23.0",
     "destr": "^1.1.0",
     "dompurify": "^2.3.1",
