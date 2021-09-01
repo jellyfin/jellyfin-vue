@@ -98,9 +98,7 @@
       "birth": "Nascimento",
       "birthPlace": "Local de nascimento",
       "death": "Morte",
-      "movies": "",
-      "person": "Pessoa",
-      "shows": ""
+      "person": "Pessoa"
     },
     "tracklist": {
       "title": "Título"
@@ -114,7 +112,6 @@
   "libraryEmptyFilters": "Nenhuma correspondência. Remove alguns filtros para mostrar mais itens",
   "libraryNotFound": "Biblioteca não encontrada",
   "libraryRefreshQueued": "Atualização da biblioteca na fila",
-  "likes": "",
   "links": {
     "helpTranslate": "Ajude a traduzir o Jellyfin para seu idioma",
     "poweredByJellyfin": "Este servidor é operado por Jellyfin",
@@ -140,15 +137,9 @@
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Atividade",
-    "failedGetLogs": "",
     "noActivityFound": "Nenhuma atividade encontrada"
   },
   "manualLogin": "Login manual",
-  "mediaInfo": {
-    "audioCodec": {
-      "name": ""
-    }
-  },
   "menu": "Menu",
   "metadata": {
     "type": "Tipo"
