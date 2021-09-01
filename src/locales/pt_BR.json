@@ -89,8 +89,7 @@
   "item": {
     "artist": {
       "discography": "Discografia",
-      "information": "Informações",
-      "videos": ""
+      "information": "Informações"
     },
     "cast": "Elenco",
     "composer": "Compositor",
@@ -98,12 +97,9 @@
     "person": {
       "birth": "Nascimento",
       "birthPlace": "Local de nascimento",
-      "books": "",
       "death": "Morte",
-      "information": "",
       "movies": "",
       "person": "Pessoa",
-      "photos": "",
       "shows": ""
     },
     "tracklist": {
@@ -118,7 +114,6 @@
   "libraryEmptyFilters": "Nenhuma correspondência. Remove alguns filtros para mostrar mais itens",
   "libraryNotFound": "Biblioteca não encontrada",
   "libraryRefreshQueued": "Atualização da biblioteca na fila",
-  "liked": "",
   "likes": "",
   "links": {
     "helpTranslate": "Ajude a traduzir o Jellyfin para seu idioma",
@@ -131,9 +126,7 @@
     "changeServer": "Trocar servidor",
     "changeUser": "Trocar usuário",
     "connect": "Conectar",
-    "login": "",
     "loginAs": "Entrar como {name}",
-    "manualLogin": "",
     "rememberMe": "Manter-me conectado",
     "selectServer": "Selecione o servidor",
     "selectUser": "Selecione um usuário",
@@ -147,21 +140,12 @@
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Atividade",
-    "failedGetActivity": "",
     "failedGetLogs": "",
-    "logs": "",
-    "noActivityFound": "Nenhuma atividade encontrada",
-    "noLogsFound": ""
+    "noActivityFound": "Nenhuma atividade encontrada"
   },
   "manualLogin": "Login manual",
   "mediaInfo": {
-    "audioChannels": {
-      "name": ""
-    },
     "audioCodec": {
-      "name": ""
-    },
-    "bitrate": {
       "name": ""
     }
   },
