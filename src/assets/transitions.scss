@@ -1,0 +1,33 @@
+/* Default transitions */
+
+.page-enter-active,
+.layout-enter-active {
+  animation: enter-page 0.2s;
+}
+
+.page-leave-active,
+.layout-leave-active {
+  animation: leave-page 0.2s;
+}
+
+@keyframes enter-page {
+  0% {
+    opacity: 0;
+    transform: translate3d(10px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: initial;
+  }
+}
+
+@keyframes leave-page {
+  0% {
+    opacity: 1;
+    transform: initial;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-10px, 0, 0);
+  }
+}
