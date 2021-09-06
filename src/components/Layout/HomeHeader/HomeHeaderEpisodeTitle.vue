@@ -1,6 +1,6 @@
 <template functional>
   <div>
-    <nuxt-link v-if="props.logo.tag" :to="props.parentLink">
+    <nuxt-link v-if="props.logo.tag && props.parentLink" :to="props.parentLink">
       <v-img
         class="mb-2"
         :max-width="parent.$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
@@ -13,7 +13,7 @@
       />
     </nuxt-link>
     <nuxt-link
-      v-else
+      v-else-if="props.parentLink"
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h2 text-truncate mt-n2 mb-n1"
       :to="props.parentLink"
