@@ -31,22 +31,6 @@ body {
   background-color: var(--v-primary-base);
 }
 
-/* Nuxt transitions */
-
-.page-enter-active,
-.page-leave-active,
-.layout-enter-active,
-.layout-leave-active {
-  transition: opacity 0.25s;
-}
-
-.page-enter,
-.page-leave-to,
-.layout-enter,
-.layout-leave-to {
-  opacity: 0;
-}
-
 /* Vuetify overrides */
 
 .v-app-bar.v-app-bar--fixed {
