@@ -36,7 +36,9 @@
   "details": "Détails",
   "dialog": {
     "upNext": {
-      "nextItemPlayingIn": "Commence dans {time}"
+      "hide": "Cacher",
+      "nextItemPlayingIn": "Commence dans {time}",
+      "startNow": "Commencer maintenant"
     }
   },
   "directing": "Réalisation",
@@ -166,6 +168,17 @@
     "noLogsFound": "Aucun journal trouvé"
   },
   "manualLogin": "Connexion manuelle",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Pistes Audio"
+    },
+    "audioCodec": {
+      "name": "Codec audio :"
+    },
+    "bitrate": {
+      "name": "Taux :"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Source",
@@ -392,6 +405,9 @@
     "bitrate": {
       "kbps": "{value} kb/s",
       "mbps": "{value} Mb/s"
+    },
+    "time": {
+      "seconds": "{count} secondes | {count} secondes"
     }
   },
   "unliked": "Je n'aime pas",
