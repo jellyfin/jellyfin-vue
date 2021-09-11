@@ -170,7 +170,7 @@
   "manualLogin": "Connexion manuelle",
   "mediaInfo": {
     "audioChannels": {
-      "name": "Pistes Audio"
+      "name": "Pistes Audio:"
     },
     "audioCodec": {
       "name": "Codec audio :"
