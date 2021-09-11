@@ -170,13 +170,23 @@
   "manualLogin": "Connexion manuelle",
   "mediaInfo": {
     "audioChannels": {
-      "name": "Pistes Audio:"
+      "name": "Pistes Audio :"
     },
     "audioCodec": {
       "name": "Codec audio :"
     },
     "bitrate": {
       "name": "Taux :"
+    },
+    "container": {
+      "name": "Container :"
+    },
+    "name": "Média",
+    "subtitleCodec": {
+      "name": "Codec pour les sous-titres :"
+    },
+    "videoCodec": {
+      "name": "Codec pour la vidéo :"
     }
   },
   "menu": "Menu",
@@ -235,8 +245,27 @@
     "shuffleAll": "Lecture aléatoire"
   },
   "playbackData": "Données de lecture",
+  "playbackInfo": {
+    "name": "Lecture",
+    "playMethod": {
+      "direct": "Directe",
+      "name": "Méthode :",
+      "remux": "Réencoder",
+      "transcode": "Transcoder"
+    },
+    "streamType": {
+      "name": "Type de flux :",
+      "unknown": "Inconnu",
+      "video": "Vidéo"
+    }
+  },
   "playbackSettings": "Paramètres de lecture",
   "played": "Lu",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Images corrompues :"
+    }
+  },
   "present": "Maintenant",
   "producer": "Producteur",
   "quality": "Qualité",
