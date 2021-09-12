@@ -254,6 +254,8 @@
       "transcode": "Transcoder"
     },
     "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
       "name": "Type de flux :",
       "unknown": "Inconnu",
       "video": "Vidéo"
@@ -264,6 +266,17 @@
   "playerInfo": {
     "corruptedFrames": {
       "name": "Images corrompues :"
+    },
+    "decodedFrames": {
+      "name": "Images décodées :"
+    },
+    "droppedFrames": {
+      "name": "Images perdues :"
+    },
+    "name": "Lecteur",
+    "videoResolution": {
+      "name": "Résolution vidéo :",
+      "value": "{width}x{height}"
     }
   },
   "present": "Maintenant",
@@ -279,6 +292,10 @@
   "role": "Rôle",
   "save": "Sauvegarder",
   "saved": "Enregistré",
+  "search": {
+    "name": "Recherche",
+    "topResults": "Meilleurs résultats"
+  },
   "seasonEpisode": "Saison {seasonNumber}, Épisode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Séries",
@@ -401,10 +418,12 @@
   },
   "shows": "Émissions",
   "signIn": "Se connecter",
+  "songs": "Musiques",
   "sortByType": "Par {type}",
   "sortTitle": "Trier par titre",
   "specialFeatures": "Particularités",
   "speed": "Vitesse",
+  "startNow": "Démarrer maintenant",
   "status": "État",
   "studios": "Studios",
   "subtitles": "Sous-titres",
@@ -420,6 +439,16 @@
     "switchToLightMode": "Basculer en mode clair"
   },
   "trailer": "Bande-annonce",
+  "transcodingInfo": {
+    "transcodingProgress": "Progression :",
+    "transcodingReason": {
+      "name": "Raison : | Raisons :",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Les vidéos anamorphiques ne sont pas supportées",
+        "audioBitrateNotSupported": "Le débit audio n'est pas supporté"
+      }
+    }
+  },
   "type": "Type",
   "unableGetPublicUsers": "Impossible de récupérer les utilisateurs",
   "unableGetRelated": "Impossible de récupérer les éléments liés",
