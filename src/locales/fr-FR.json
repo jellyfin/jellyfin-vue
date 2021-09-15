@@ -176,7 +176,7 @@
       "name": "Codec audio :"
     },
     "bitrate": {
-      "name": "Taux :"
+      "name": "Débit :"
     },
     "container": {
       "name": "Container :"
@@ -186,7 +186,7 @@
       "name": "Codec pour les sous-titres :"
     },
     "videoCodec": {
-      "name": "Codec pour la vidéo :"
+      "name": "Codec vidéo :"
     }
   },
   "menu": "Menu",
@@ -250,8 +250,8 @@
     "playMethod": {
       "direct": "Directe",
       "name": "Méthode :",
-      "remux": "Réencoder",
-      "transcode": "Transcoder"
+      "remux": "Ré-encoder",
+      "transcode": "Convertir"
     },
     "streamType": {
       "dash": "DASH",
@@ -274,6 +274,9 @@
       "name": "Images perdues :"
     },
     "name": "Lecteur",
+    "playbackResolution": {
+      "name": "Résolution Viewport :"
+    },
     "videoResolution": {
       "name": "Résolution vidéo :",
       "value": "{width}x{height}"
@@ -440,12 +443,34 @@
   },
   "trailer": "Bande-annonce",
   "transcodingInfo": {
+    "name": "Transcodage",
+    "transcodingFramerate": {
+      "name": "Taux de rafraîchissement :",
+      "value": "fps {value}"
+    },
     "transcodingProgress": "Progression :",
     "transcodingReason": {
       "name": "Raison : | Raisons :",
       "reasons": {
         "anamorphicVideoNotSupported": "Les vidéos anamorphiques ne sont pas supportées",
-        "audioBitrateNotSupported": "Le débit audio n'est pas supporté"
+        "audioBitDepthNotSupported": "La résolution audio n'est pas supportée",
+        "audioBitrateNotSupported": "Le débit audio n'est pas supporté",
+        "audioChannelsNotSupported": "Le nombre de canaux audio n'est pas supporté",
+        "audioCodecNotSupported": "Le codec audio n'est pas supporté",
+        "audioProfileNotSupported": "Le profile du codec audio n'est pas supporté",
+        "audioSampleRateNotSupported": "Le taux d’échantillonnage audio n'est pas supporté",
+        "containerBitrateExceedsLimit": "Le début du container dépasse la limite fixée",
+        "containerNotSupported": "Le container n'est pas supporté",
+        "interlacedVideoNotSupported": "La vidéo entrelacée n'est pas supportée",
+        "refFramesNotSupported": "Les frames de référence ne sont pas supportées",
+        "secondaryAudioNotSupported": "Les pistes audio supplémentaires ne sont pas supportées",
+        "subtitleCodecNotSupported": "Le codec de sous-titre n'est pas supporté",
+        "videoBitDepthNotSupported": "La résolution vidéo n'est pas supportée",
+        "videoCodecNotSupported": "Le codec vidéo n'est pas supporté",
+        "videoFramerateNotSupported": "Le taux de rafraîchissement vidéo n'est pas supporté",
+        "videoLevelNotSupported": "Le niveau du codec vidéo n'est pas supporté",
+        "videoProfileNotSupported": "Le profil du codec vidéo n'est pas supporté",
+        "videoResolutionNotSupported": "Le résolution vidéo n'est pas supportée"
       }
     }
   },
