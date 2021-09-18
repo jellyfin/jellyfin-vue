@@ -4,14 +4,18 @@
   "actor": "Autor",
   "actors": "Autores",
   "addNewPerson": "Adicionar nova pessoa",
+  "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Álbuns",
   "allLanguages": "Todas as Línguas",
   "alphabetically": "Alfabeticamente",
   "architecture": "Arquitetura",
   "artist": "Artista",
   "artists": "Artistas",
+  "aspectRatio": "Proporção da tela",
   "audio": "Áudio",
+  "audioCodecNotSupported": "O codec do áudio não é suportado",
   "badRequest": "Requisição ruim. Tente Novamente",
+  "books": "Livros",
   "browserNotSupported": "Seu navegador não suporta a execução deste arquivo.",
   "buttons": {
     "ok": "Ok"
@@ -30,6 +34,12 @@
   "darkModeToggle": "Alternar modo escuro",
   "dateAdded": "Data de Adição",
   "details": "Detalhes",
+  "dialog": {
+    "upNext": {
+      "hide": "Esconder",
+      "nextItemPlayingIn": "Iniciando em {time}"
+    }
+  },
   "directing": "Diretor",
   "director": "Diretor",
   "discNumber": "Disco {discNumber}",
@@ -57,6 +67,7 @@
   "fullScreen": "Tela cheia",
   "general": "Geral",
   "genres": "Gêneros",
+  "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Participação especial",
   "headerExternalIds": "IDs externos",
   "headerPaths": "Caminho",
@@ -88,8 +99,10 @@
   "incorrectUsernameOrPassword": "Usuário ou senha incorreto",
   "item": {
     "artist": {
+      "appearsOn": "Aparências",
       "discography": "Discografia",
-      "information": "Informações"
+      "information": "Informações",
+      "videos": "Vídeos"
     },
     "cast": "Elenco",
     "composer": "Compositor",
@@ -97,8 +110,13 @@
     "person": {
       "birth": "Nascimento",
       "birthPlace": "Local de nascimento",
+      "books": "Livros",
       "death": "Morte",
-      "person": "Pessoa"
+      "information": "Informação",
+      "movies": "Filmes",
+      "person": "Pessoa",
+      "photos": "Fotos",
+      "shows": "Shows"
     },
     "tracklist": {
       "title": "Título"
@@ -112,6 +130,7 @@
   "libraryEmptyFilters": "Nenhuma correspondência. Remove alguns filtros para mostrar mais itens",
   "libraryNotFound": "Biblioteca não encontrada",
   "libraryRefreshQueued": "Atualização da biblioteca na fila",
+  "liked": "Gostou",
   "links": {
     "helpTranslate": "Ajude a traduzir o Jellyfin para seu idioma",
     "poweredByJellyfin": "Este servidor é operado por Jellyfin",
@@ -137,11 +156,23 @@
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Atividade",
+    "logs": "Logs",
     "noActivityFound": "Nenhuma atividade encontrada"
   },
   "manualLogin": "Login manual",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canais de áudio:"
+    },
+    "audioCodec": {
+      "name": "Codec de áudio:"
+    },
+    "name": "Mídia"
+  },
   "menu": "Menu",
   "metadata": {
+    "source": "Origem",
+    "title": "Título",
     "type": "Tipo"
   },
   "metadataEditor": "Editor de metadata",
@@ -156,6 +187,7 @@
   "noAudioTrackSelected": "Nenhuma trilha de áudio selecionada",
   "noAudioTracksAvailable": "Nenhuma trilha de áudio disponível",
   "noImagesFound": "Nenhuma imagem encontrada",
+  "noInformationAvailable": "Nenhuma informação disponível",
   "noNetworkConnection": "Sem conexão com a internet",
   "noResultsFound": "Não tem nada aqui",
   "noSubtitleSelected": "Nenhuma legenda selecionada",
@@ -180,17 +212,55 @@
     "clearQueue": "Limpar fila e parar reprodução",
     "playAll": "Reproduzir tudo",
     "playNext": "Reproduzir próximo",
-    "queueItems": "{items} faixas"
+    "playbackSource": {
+      "item": "Reproduzindo de {item}",
+      "shuffle": "Reproduzindo em ordem aleatória",
+      "shuffleItem": "Reproduzindo {item} em ordem aleatória",
+      "unknown": "Reproduzindo da fila"
+    },
+    "queueItems": "{items} faixas",
+    "shuffle": "Ordem aleatória"
   },
+  "playbackData": "Informação da reprodução",
+  "playbackInfo": {
+    "name": "Reprodução",
+    "playMethod": {
+      "direct": "Direto",
+      "name": "Método:"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "unknown": "Desconhecido",
+      "video": "Vídeo"
+    }
+  },
+  "playbackSettings": "Configurações de reprodução",
   "played": "Reproduzido",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Frames corrompidos:"
+    },
+    "decodedFrames": {
+      "name": "Frames decodificados:"
+    },
+    "name": "Reprodutor",
+    "videoResolution": {
+      "name": "Resolução de vídeo:",
+      "value": "{width}✕{height}"
+    }
+  },
   "producer": "Produtor",
+  "quality": "Qualidade",
   "queue": "Fila",
   "rating": "Avaliação",
   "refreshLibrary": "Recarregar biblioteca",
   "releaseDate": "Data de lançamento",
+  "remoteDevices": "Dispositivos remotos",
   "role": "Papel",
   "save": "Salvar",
   "saved": "Salvo",
+  "seasonEpisode": "Temporada {seasonNumber}, Episódio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Série",
   "server": "Servidor",
@@ -232,6 +302,7 @@
     "help": "Ajuda",
     "logsAndActivity": {
       "activity": "Atividade",
+      "logs": "Logs",
       "noActivityFound": "Nenhuma atividade encontrada"
     },
     "settings": "Configurações"
@@ -260,6 +331,9 @@
     "liveTvAndDvr": {
       "description": "Gerencie sintonizadores de TV, provedores de guias e configurações de DVR",
       "name": "TV ao vivo e DVR"
+    },
+    "logs": {
+      "name": "Logs e atividade"
     },
     "mediaPlayers": {
       "description": "Configure o comportamento dos reprodutores de mídia para este dispositivo",
@@ -293,6 +367,9 @@
       "description": "Controle como legendas são exibidas neste dispositivo",
       "name": "Legendas"
     },
+    "transcodingAndStreaming": {
+      "description": "Gerencia como esse servidor lida com transcodificação e streaming para os clientes"
+    },
     "users": {
       "description": "Gerencie usuários e suas permissões",
       "name": "Usuários"
@@ -302,9 +379,11 @@
   "signIn": "Entrar",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar título",
+  "speed": "Velocidade",
   "status": "Estado",
   "studios": "Estúdios",
   "subtitles": "Legendas",
+  "syncPlayGroups": "Grupos SyncPlay",
   "syncingInProgress": "Sincronização em andamento",
   "tagline": "Slogan",
   "tags": "Etiquetas",
@@ -316,7 +395,35 @@
     "switchToLightMode": "Trocar para modo claro"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "transcodingFramerate": {
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progresso:",
+    "transcodingReason": {
+      "name": "Razão: | Razões:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Vídeo anamórfico não é suportado",
+        "audioChannelsNotSupported": "O número de canais de aúdo não é suportado",
+        "audioCodecNotSupported": "O codec do áudio não é suportado",
+        "audioProfileNotSupported": "O perfil do codec do áudio não é suportado",
+        "audioSampleRateNotSupported": "A taxa de amostra do áudio não é suportado",
+        "interlacedVideoNotSupported": "Vídeo entrelaçado não é suportado",
+        "secondaryAudioNotSupported": "Faixas de áudio secundárias não são suportadas",
+        "subtitleCodecNotSupported": "O codec da legenda não é suportado"
+      }
+    }
+  },
   "type": "Tipo",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} segundo | {count} segundos"
+    }
+  },
   "upNext": "A seguir",
   "upNextName": "A seguir: {upNextItemName}",
   "username": "Nome de usuário",
