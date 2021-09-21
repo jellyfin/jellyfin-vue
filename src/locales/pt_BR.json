@@ -71,7 +71,7 @@
   "guestStar": "Participação especial",
   "headerExternalIds": "IDs externos",
   "headerPaths": "Caminho",
-  "home": "Casa",
+  "home": "Home",
   "homeHeader": {
     "items": {
       "recentlyAdded": "Adicionado recentemente"
@@ -99,7 +99,7 @@
   "incorrectUsernameOrPassword": "Usuário ou senha incorreto",
   "item": {
     "artist": {
-      "appearsOn": "Aparências",
+      "appearsOn": "Aparições",
       "discography": "Discografia",
       "information": "Informações",
       "videos": "Vídeos"
@@ -257,6 +257,7 @@
   "refreshLibrary": "Recarregar biblioteca",
   "releaseDate": "Data de lançamento",
   "remoteDevices": "Dispositivos remotos",
+  "resume": "Continuar",
   "role": "Papel",
   "save": "Salvar",
   "saved": "Salvo",
