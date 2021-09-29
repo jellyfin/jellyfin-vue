@@ -4,14 +4,18 @@
   "actor": "Acteur",
   "actors": "Acteurs",
   "addNewPerson": "Voeg een nieuw persoon toe",
+  "airPlayDevices": "AirPlay apparaten",
   "albums": "Albums",
   "allLanguages": "Alle talen",
   "alphabetically": "Alfabetisch",
   "architecture": "Architectuur",
   "artist": "Artiest",
   "artists": "Artiesten",
+  "aspectRatio": "Beeldverhouding",
   "audio": "Geluid",
+  "audioCodecNotSupported": "De audio codec wordt niet ondersteund",
   "badRequest": "Onjuist verzoek. Probeer het opnieuw",
+  "books": "Boeken",
   "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
   "buttons": {
     "ok": "Ok"
@@ -30,6 +34,13 @@
   "darkModeToggle": "Schakel tussen donkere modus",
   "dateAdded": "Datum toegevoegd",
   "details": "Details",
+  "dialog": {
+    "upNext": {
+      "hide": "Verbergen",
+      "nextItemPlayingIn": "Start in {time}",
+      "startNow": "Start nu"
+    }
+  },
   "directing": "Regisseren",
   "director": "Regiseur",
   "discNumber": "Schijf {discNumber}",
@@ -56,7 +67,9 @@
   "filtersNotFound": "Kan filters niet laden",
   "fullScreen": "Volledig scherm",
   "general": "Algemeen",
+  "genericJellyfinPlaceholderDevice": "Generiek Jellyfin apparaat",
   "genres": "Genres",
+  "googleCastPlaceholderDevice": "Google Cast apparaat",
   "guestStar": "Gast Ster",
   "headerExternalIds": "Externe ID's",
   "headerPaths": "Pad",
@@ -88,8 +101,10 @@
   "incorrectUsernameOrPassword": "Onjuiste gebruikersnaam en/of wachtwoord",
   "item": {
     "artist": {
+      "appearsOn": "Uiterlijk",
       "discography": "Discografie",
-      "information": "Informatie"
+      "information": "Informatie",
+      "videos": "Videos"
     },
     "cast": "Cast",
     "composer": "Componist",
@@ -97,8 +112,13 @@
     "person": {
       "birth": "Geboren",
       "birthPlace": "Geboorte plaats",
+      "books": "Boeken",
       "death": "Overleden",
-      "person": "Persoon"
+      "information": "Informatie",
+      "movies": "Films",
+      "person": "Persoon",
+      "photos": "Foto's",
+      "shows": "Series"
     },
     "tracklist": {
       "title": "Titel"
@@ -148,6 +168,27 @@
     "noLogsFound": "Geen logboeken gevonden"
   },
   "manualLogin": "Manuele login",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Audio kanalen:"
+    },
+    "audioCodec": {
+      "name": "Audio codec:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "Container:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Ondertiteling codec:"
+    },
+    "videoCodec": {
+      "name": "Video codec:"
+    }
+  },
   "menu": "Menu",
   "metadata": {
     "source": "Bron",
@@ -167,6 +208,7 @@
   "noAudioTrackSelected": "Geen audiotrack geselecteerd",
   "noAudioTracksAvailable": "Geen audiotracks beschikbaar",
   "noImagesFound": "Geen afbeeldingen gevonden",
+  "noInformationAvailable": "Geen informatie beschikbaar",
   "noNetworkConnection": "Geen netwerk verbinding",
   "noResultsFound": "Er is hier niets",
   "noSubtitleSelected": "Geen ondertiteling geselecteerd",
@@ -202,18 +244,62 @@
     "shuffle": "willekeurige volgorde",
     "shuffleAll": "Alles in willekeurige volgorde afspelen"
   },
+  "playbackData": "Afspeelinformatie",
+  "playbackInfo": {
+    "name": "Afspelen",
+    "playMethod": {
+      "direct": "Rechtstreeks",
+      "name": "Methode:",
+      "remux": "Remux",
+      "transcode": "Transcoderen"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Stream type:",
+      "unknown": "Onbekend",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Afspeelinstellingen",
   "played": "Afgespeeld",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Beschadigde frames:"
+    },
+    "decodedFrames": {
+      "name": "Gedecodeerde frames:"
+    },
+    "droppedFrames": {
+      "name": "Verloren frames:"
+    },
+    "name": "Speler",
+    "playbackResolution": {
+      "name": "Viewport resolutie:"
+    },
+    "videoResolution": {
+      "name": "Video resolutie:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Huidig",
   "producer": "Producent",
+  "quality": "Kwaliteit",
   "queue": "Wachtrij",
   "rating": "Beoordeling",
   "refreshLibrary": "Vernieuw bibliotheek",
   "releaseDate": "Publicatiedatum",
+  "remoteDevices": "Externe apparaten",
   "resumable": "Hervatbaar",
   "resume": "Hervatten",
   "role": "Rol",
   "save": "Opslaan",
   "saved": "Opgeslagen",
+  "search": {
+    "name": "Zoeken",
+    "topResults": "Top resultaten"
+  },
+  "seasonEpisode": "Seizoen {seasonNumber}, Aflevering {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
   "series": "Series",
   "server": "Server",
@@ -335,12 +421,16 @@
   },
   "shows": "Series",
   "signIn": "Inloggen",
+  "songs": "Liedjes",
   "sortByType": "Op {type}",
   "sortTitle": "Sorteer de titel",
   "specialFeatures": "Speciale Features",
+  "speed": "Snelheid",
+  "startNow": "Start nu",
   "status": "Status",
   "studios": "Studio's",
   "subtitles": "Ondertiteling",
+  "syncPlayGroups": "SyncPlay groepen",
   "syncingInProgress": "Bezig met synchronisatie",
   "tagline": "Slogan",
   "tags": "Labels",
@@ -352,6 +442,38 @@
     "switchToLightMode": "Schakel over naar de lichtmodus"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transcodering",
+    "transcodingFramerate": {
+      "name": "Framerate:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Vooruitgang:",
+    "transcodingReason": {
+      "name": "Reden: | Redenen:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorphic video wordt niet ondersteund",
+        "audioBitDepthNotSupported": "De bit-diepte van de audio wordt niet ondersteund",
+        "audioBitrateNotSupported": "De bitrate van de audio wordt niet ondersteund",
+        "audioChannelsNotSupported": "Het aantal audiokanalen wordt niet ondersteund",
+        "audioCodecNotSupported": "De audio codec wordt niet ondersteund",
+        "audioProfileNotSupported": "Het profiel van de audio codec wordt niet ondersteund",
+        "audioSampleRateNotSupported": "De snelheid van het audiosample wordt niet ondersteund",
+        "containerBitrateExceedsLimit": "De bitrate van de container overschrijdt de ingestelde limiet",
+        "containerNotSupported": "De container wordt niet ondersteund",
+        "interlacedVideoNotSupported": "Interlaced video wordt niet ondersteund",
+        "refFramesNotSupported": "Referentieframes worden niet ondersteund",
+        "secondaryAudioNotSupported": "Secundaire audiotracks worden niet ondersteund",
+        "subtitleCodecNotSupported": "De ondertitel codec wordt niet ondersteund",
+        "videoBitDepthNotSupported": "De bit-diepte van de video wordt niet ondersteund",
+        "videoCodecNotSupported": "De video codec wordt niet ondersteund",
+        "videoFramerateNotSupported": "De framerate van de video wordt niet ondersteund",
+        "videoLevelNotSupported": "Het niveau van de video codec wordt niet ondersteund",
+        "videoProfileNotSupported": "Het profiel van de video codec wordt niet ondersteund",
+        "videoResolutionNotSupported": "De resolutie van de video wordt niet ondersteund"
+      }
+    }
+  },
   "type": "Type",
   "unableGetPublicUsers": "Gebruikers laden is mislukt",
   "unableGetRelated": "Kan gerelateerde items niet ophalen",
@@ -362,6 +484,15 @@
   "undefined": "Ongedefinieerd",
   "unexpectedError": "Onverwachte fout",
   "unhandledException": "Onverwerkte error",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} seconde | {count} seconden"
+    }
+  },
   "unliked": "Leuk gevonden ongedaan",
   "unplayed": "Onafgespeeld",
   "upNext": "Volgende",
