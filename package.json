@@ -55,7 +55,7 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/date-fns": "^1.5.0",
-    "@nuxtjs/i18n": "^7.0.2",
+    "@nuxtjs/i18n": "^7.0.3",
     "@nuxtjs/imagemin": "^1.0.1",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/vuetify": "^1.12.1",
