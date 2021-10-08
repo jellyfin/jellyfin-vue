@@ -24,7 +24,7 @@ const config: NuxtConfig = {
    ** Module loading mode
    ** See https://nuxtjs.org/api/configuration-modern
    */
-  modern: 'client',
+  modern: false,
   /*
    ** Progress bar between routes
    ** See https://nuxtjs.org/api/configuration-loading
@@ -421,7 +421,12 @@ const config: NuxtConfig = {
         });
       }
     },
-    transpile: ['@nuxtjs/auth', 'vee-validate/dist/rules']
+    transpile: [
+      // JF client transpiled cause needed to support "export *" https://stackoverflow.com/a/59313455
+      '@jellyfin/client-axios',
+      '@nuxtjs/auth',
+      'vee-validate/dist/rules'
+    ]
   },
 
   /**

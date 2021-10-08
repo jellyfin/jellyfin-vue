@@ -4,6 +4,10 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1'
   },
   moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
+  transformIgnorePatterns: [
+    // https://github.com/facebook/jest/issues/6229#issuecomment-403539460
+    '/node_modules/(?!@jellyfin/client-axios).+\\.js$'
+  ],
   transform: {
     '^.+\\.ts$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',
