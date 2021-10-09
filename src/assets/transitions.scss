@@ -10,6 +10,18 @@
   animation: leave-page 0.2s;
 }
 
+@media (prefers-reduced-motion) {
+  .page-leave-active,
+  .layout-leave-active {
+    opacity: 0;
+  }
+
+  .page-enter-active,
+  .layout-enter-active {
+    transition: opacity 0.25s;
+  }
+}
+
 @keyframes enter-page {
   0% {
     opacity: 0;
