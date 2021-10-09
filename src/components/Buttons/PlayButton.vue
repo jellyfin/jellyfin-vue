@@ -1,13 +1,15 @@
 <template>
   <div class="d-inline-flex">
     <v-btn
-      v-if="canPlay(item) && fab"
-      fab
-      color="primary"
+      v-if="canPlay(item) && (fab || iconOnly)"
+      :fab="fab"
+      :text="iconOnly"
+      :color="iconOnly ? null : 'primary'"
       :loading="loading"
       @click.prevent="playOrResume"
     >
-      <v-icon size="36">mdi-play</v-icon>
+      <v-icon v-if="shuffle" :size="fab ? 36 : null">mdi-shuffle</v-icon>
+      <v-icon v-else :size="fab ? 36 : null">mdi-play</v-icon>
     </v-btn>
     <v-btn
       v-else-if="!fab"
@@ -45,6 +47,9 @@ export default Vue.extend({
     item: {
       type: Object as () => BaseItemDto,
       required: true
+    },
+    iconOnly: {
+      type: Boolean
     },
     fab: {
       type: Boolean
