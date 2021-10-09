@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar dense class="second-toolbar">
+    <v-app-bar dense flat>
       <span class="text-h6 hidden-sm-and-down">
         {{ collectionInfo.Name }}
       </span>
@@ -37,7 +37,7 @@
       <play-button :item="collectionInfo" shuffle />
       <play-button :item="collectionInfo" />
     </v-app-bar>
-    <v-container class="after-second-toolbar">
+    <v-container>
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
       <item-grid :loading="loading" :items="items">
         <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
