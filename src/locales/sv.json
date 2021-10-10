@@ -63,7 +63,7 @@
     "welcome": {
       "checkNewItems": "Kolla in vad som är nytt.",
       "helloUser": "Hej {userName}!",
-      "noItems": "Det finns inga nyligen tillagda föremål att visa"
+      "noItems": "Det finns inga nyligen tillagda föremål att visa."
     }
   },
   "imageType": {
