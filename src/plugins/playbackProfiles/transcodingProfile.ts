@@ -98,7 +98,11 @@ export function getTranscodingProfiles(
       TranscodingProfiles.push({
         Container: 'mp4',
         Type: DlnaProfileType.Video,
-        AudioCodec: hlsInFmp4AudioCodecs.join(','),
+        // Stripping out AAC for now as it doesn't work with Shask 3.2.0 in fMP4
+        // https://github.com/jellyfin/jellyfin-vue/issues/1518
+        AudioCodec: hlsInFmp4AudioCodecs
+          .filter((codec) => codec !== 'aac')
+          .join(','),
         VideoCodec: hlsInFmp4VideoCodecs.join(','),
         Context: EncodingContext.Streaming,
         Protocol: 'hls',
