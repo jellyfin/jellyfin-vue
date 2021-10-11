@@ -103,7 +103,7 @@ export default Vue.extend({
 
       const { default: shaka } = await import(
         // @ts-expect-error - This module doesn't have typings
-        'shaka-player/dist/shaka-player.compiled'
+        'shaka-player/dist/shaka-player.compiled.debug'
       );
 
       this.getPlaybackUrl();
