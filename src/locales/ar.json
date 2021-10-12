@@ -1,1 +1,39 @@
-{}
+{
+  "3DFormat": "صيغة ثلاثية الابعاد",
+  "actor": "الممثل",
+  "actors": "الممثلون",
+  "albums": "الألبومات",
+  "allLanguages": "كل اللغات",
+  "artist": "الفنان",
+  "artists": "الفنانون",
+  "books": "الكتب",
+  "buttons": {
+    "ok": "موافق"
+  },
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "connect": "اتصال",
+  "continueWatching": "متابعة المشاهدة",
+  "details": "التفاصيل",
+  "dialog": {
+    "upNext": {
+      "hide": "إخفاء",
+      "startNow": "شغل الآن"
+    }
+  },
+  "director": "المخرج",
+  "edit": "تعديل",
+  "editMetadata": "تعديل البيانات التعريفية",
+  "features": "الميزات",
+  "fullScreen": "ملء الشاشة",
+  "guestStar": "ضيف الشرف",
+  "headerPaths": "المسار",
+  "home": "الرئيسية",
+  "imageType": {
+    "art": "فن",
+    "banner": "اللافتة",
+    "menu": "القائمة",
+    "screenshot": "لقطة الشاشة"
+  },
+  "images": "الصور"
+}
