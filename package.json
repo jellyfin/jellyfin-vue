@@ -11,16 +11,7 @@
     "url": "https://github.com/jellyfin/jellyfin-vue/"
   },
   "license": "GPL-3.0-only",
-  "contributors": [
-    {
-      "name": "Julien Machiels",
-      "email": "iamtimscampi@gmail.com"
-    },
-    {
-      "name": "Thibault Nocchi",
-      "email": "thibaultnocchi@gmail.com"
-    }
-  ],
+  "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "scripts": {
     "analyze": "NUXT_SSR=1 nuxt build --analyze src",
     "analyze:static": "nuxt build --analyze src",
