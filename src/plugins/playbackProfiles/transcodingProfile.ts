@@ -5,8 +5,6 @@ import {
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './helpers/audioFormats';
-import { getSupportedFmp4AudioCodecs } from './helpers/fmp4AudioFormats';
-import { getSupportedFmp4VideoCodecs } from './helpers/fmp4VideoFormats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
 import {
   getSupportedMP4VideoCodecs,
@@ -77,15 +75,6 @@ export function getTranscodingProfiles(
       });
     });
 
-  const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(
-    context,
-    videoTestElement
-  );
-  const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(
-    context,
-    videoTestElement
-  );
-
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
     context,
@@ -93,20 +82,32 @@ export function getTranscodingProfiles(
   );
 
   if (canPlayHls) {
-    // Since we have Mux.js loaded, anything using Shaka Player should be able to play fMP4 just fine.
-    if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
-      TranscodingProfiles.push({
-        Container: 'mp4',
-        Type: DlnaProfileType.Video,
-        AudioCodec: hlsInFmp4AudioCodecs.join(','),
-        VideoCodec: hlsInFmp4VideoCodecs.join(','),
-        Context: EncodingContext.Streaming,
-        Protocol: 'hls',
-        MaxAudioChannels: physicalAudioChannels.toString(),
-        MinSegments: context.$browser.isApple() ? 2 : 1,
-        BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
-      });
-    }
+    // TODO
+    // Disabled for now as HLS.js has troubles seeking in it
+    // We should enable it for platforms supporting it natively
+
+    // const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(
+    //   context,
+    //   videoTestElement
+    // );
+    // const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(
+    //   context,
+    //   videoTestElement
+    // );
+
+    // if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
+    //   TranscodingProfiles.push({
+    //     Container: 'mp4',
+    //     Type: DlnaProfileType.Video,
+    //     AudioCodec: hlsInFmp4AudioCodecs.join(','),
+    //     VideoCodec: hlsInFmp4VideoCodecs.join(','),
+    //     Context: EncodingContext.Streaming,
+    //     Protocol: 'hls',
+    //     MaxAudioChannels: physicalAudioChannels.toString(),
+    //     MinSegments: context.$browser.isApple() ? 2 : 1,
+    //     BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
+    //   });
+    // }
 
     if (hlsInTsVideoCodecs.length && hlsInTsAudioCodecs.length) {
       TranscodingProfiles.push({
