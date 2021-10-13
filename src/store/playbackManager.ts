@@ -3,7 +3,8 @@ import shuffle from 'lodash/shuffle';
 import {
   BaseItemDto,
   ChapterInfo,
-  MediaSourceInfo
+  MediaSourceInfo,
+  SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
 import isNil from 'lodash/isNil';
 import { RootState } from '.';
@@ -26,6 +27,14 @@ export enum InitMode {
   Shuffle,
   Item,
   ShuffleItem
+}
+
+export interface PlaybackTrack {
+  label: string;
+  src?: string;
+  srcLang?: string;
+  jfIdx: number;
+  type: SubtitleDeliveryMethod;
 }
 
 export interface PlaybackManagerState {
@@ -137,6 +146,36 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
         return stream.Type === 'Subtitle';
       });
     }
+  },
+  getCurrentItemParsedSubtitleTracks: (state) => {
+    return (state.currentMediaSource?.MediaStreams?.map((el, idx) => ({
+      jfIdx: idx,
+      el
+    }))
+      .filter(
+        (sub) =>
+          (sub.el.Type === 'Subtitle' &&
+            sub.el.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
+          sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
+      )
+      .map((sub) => ({
+        label: sub.el.DisplayTitle || 'Undefined',
+        src:
+          sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
+            ? sub.el.DeliveryUrl
+            : undefined,
+        srcLang: sub.el.Language || undefined,
+        type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
+        jfIdx: sub.jfIdx
+      })) || []) as PlaybackTrack[];
+  },
+  getCurrentItemVttParsedSubtitleTracks: (_state, getters) => {
+    const subs: PlaybackTrack[] = getters.getCurrentItemParsedSubtitleTracks;
+
+    return (
+      subs.filter((sub) => sub.src && sub.src.match(/Stream\.vtt(\?.*)?$/)) ||
+      []
+    );
   },
   getCurrentVideoTrack: (state) => {
     if (

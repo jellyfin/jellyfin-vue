@@ -22,7 +22,7 @@
           <v-btn
             class="align-self-center active-button"
             icon
-            disabled
+            :disabled="getCurrentItemParsedSubtitleTracks.length === 0"
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
@@ -35,16 +35,21 @@
     <v-card>
       <v-list color="transparent">
         <v-list-item
-          v-for="(track, index) of getCurrentItemSubtitleTracks"
-          :key="track.Index"
+          v-for="track of tracks"
+          :key="track.jfIdx"
+          @click="
+            SET_CURRENT_SUBTITLE_TRACK_INDEX({
+              subtitleStreamIndex: track.jfIdx
+            })
+          "
         >
           <v-list-item-icon>
-            <v-icon v-if="index === currentSubtitleStreamIndex">
+            <v-icon v-if="track.jfIdx === currentSubtitleStreamIndex">
               mdi-check
             </v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            {{ track.DisplayTitle }}
+            {{ track.label }}
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -53,8 +58,10 @@
 </template>
 
 <script lang="ts">
+import { SubtitleDeliveryMethod } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapMutations } from 'vuex';
+import { PlaybackTrack } from '~/store/playbackManager';
 
 export default Vue.extend({
   props: {
@@ -69,8 +76,23 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItemSubtitleTracks']),
-    ...mapState('playbackManager', ['currentSubtitleStreamIndex'])
+    ...mapGetters('playbackManager', ['getCurrentItemParsedSubtitleTracks']),
+    ...mapState('playbackManager', ['currentSubtitleStreamIndex']),
+    tracks(): PlaybackTrack[] {
+      const subs = this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
+      const res = [
+        {
+          label: this.$t('disabled'),
+          jfIdx: -1,
+          type: SubtitleDeliveryMethod.External
+        }
+      ].concat(subs) as PlaybackTrack[];
+
+      return res;
+    }
+  },
+  methods: {
+    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX'])
   }
 });
 </script>
