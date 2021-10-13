@@ -9,7 +9,16 @@
     @pause="onPause"
     @play="onPlay"
     @ended="onStopped"
-  />
+  >
+    <track
+      v-for="track in getCurrentItemVttParsedSubtitleTracks"
+      :key="track.jfIdx"
+      kind="subtitles"
+      :label="track.label"
+      :srcLang="track.srcLang"
+      :src="$axios.defaults.baseURL + track.src"
+    />
+  </video>
 </template>
 
 <script lang="ts">
@@ -27,6 +36,7 @@ import { stringify } from 'qs';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
+import { PlaybackTrack } from '~/store/playbackManager';
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
@@ -42,7 +52,9 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
-      'getCurrentlyPlayingMediaType'
+      'getCurrentlyPlayingMediaType',
+      'getCurrentItemParsedSubtitleTracks',
+      'getCurrentItemVttParsedSubtitleTracks'
     ]),
     ...mapState('playbackManager', [
       'lastProgressUpdate',
@@ -104,16 +116,11 @@ export default Vue.extend({
         return;
       }
 
-      window.player = this.$refs.player;
+      (this.$refs.player as HTMLVideoElement).oncanplay = (_ev): void => {
+        this.changeSubtitle(this.currentSubtitleStreamIndex);
+      };
 
-      // if (
-      //   this.$refs.player &&
-      //   item.UserData?.PlaybackPositionTicks &&
-      //   item.UserData.PlaybackPositionTicks !== 0
-      // ) {
-      //   (this.$refs.player as HTMLMediaElement).currentTime =
-      //     this.ticksToMs(item.UserData.PlaybackPositionTicks) / 1000;
-      // }
+      window.player = this.$refs.player;
 
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
@@ -141,6 +148,13 @@ export default Vue.extend({
                 this.currentVolume / 100,
                 3
               );
+
+            break;
+
+          case 'playbackManager/SET_CURRENT_SUBTITLE_TRACK_INDEX':
+            if (mutation?.payload?.subtitleStreamIndex !== null) {
+              this.changeSubtitle(mutation?.payload?.subtitleStreamIndex);
+            }
 
             break;
 
@@ -239,6 +253,31 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
+      }
+    },
+    changeSubtitle(jfIdx: number): void {
+      for (
+        let i = 0;
+        i < this.getCurrentItemVttParsedSubtitleTracks.length;
+        ++i
+      ) {
+        (this.$refs.player as HTMLMediaElement).textTracks[i].mode = 'disabled';
+      }
+
+      const subs = this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
+      const sub = subs.find((el) => el.jfIdx === jfIdx);
+
+      // No sub found in the available ones matching the wanted index
+      if (!sub) return;
+
+      // Found a VTT sub matching the wanted index
+      const vttIdx = (
+        this.getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
+      ).findIndex((el) => el.jfIdx === sub.jfIdx);
+
+      if (vttIdx !== -1) {
+        (this.$refs.player as HTMLMediaElement).textTracks[vttIdx].mode =
+          'showing';
       }
     },
     onHlsError(_event: Events.ERROR, data: ErrorData): void {
