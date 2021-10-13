@@ -34,6 +34,7 @@ export default Vue.extend({
     height: 100vh;
     background-size: cover;
   }
+
   &::after {
     content: '';
     position: fixed;

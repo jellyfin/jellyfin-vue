@@ -111,6 +111,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~/assets/styles/HomeHeader.scss';
+
 .progress-bar-container {
   box-sizing: border-box;
   display: flex;

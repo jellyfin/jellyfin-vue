@@ -55,12 +55,15 @@ span {
   margin-left: 0.6em;
   margin-right: 0.6em;
 }
+
 span:first-of-type {
   margin-left: 0;
 }
+
 span:last-of-type {
   margin-right: 0;
 }
+
 .rating-icon {
   opacity: 0.6;
 }

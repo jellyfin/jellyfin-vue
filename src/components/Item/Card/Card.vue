@@ -332,6 +332,7 @@ export default Vue.extend({
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
 }
+
 .theme--dark .card-content {
   background-color: #{map-get($material-dark, 'menus')};
 }

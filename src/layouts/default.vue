@@ -237,6 +237,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
+
 .app-bar-safe-zone {
   height: calc(56px + env(safe-area-inset-top)) !important;
 }

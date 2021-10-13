@@ -155,9 +155,11 @@ export default Vue.extend({
 .v-data-table.track-table {
   background-color: transparent;
 }
+
 .v-data-table tr.disc-header:hover {
   background: transparent !important;
 }
+
 .no-select {
   user-select: none;
 }
