@@ -4,7 +4,7 @@
     :poster="poster.url"
     autoplay
     crossorigin="anonymous"
-    :playsinline="$browser.isMobile() && $browser.isApple()"
+    playsinline
     @timeupdate="onProgressThrottled"
     @pause="onPause"
     @play="onPlay"
@@ -42,8 +42,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
-      'getCurrentlyPlayingMediaType',
-      'getCurrentItemVttSubtitleTracks'
+      'getCurrentlyPlayingMediaType'
     ]),
     ...mapState('playbackManager', [
       'lastProgressUpdate',
@@ -75,11 +74,21 @@ export default Vue.extend({
       const startPosition =
         this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
 
-      if (
-        Hls.isSupported() &&
+      const isHls =
         mediaSource.SupportsTranscoding &&
-        mediaSource.TranscodingSubProtocol === 'hls'
+        mediaSource.TranscodingSubProtocol === 'hls';
+
+      if (
+        mediaSource.SupportsDirectPlay ||
+        (isHls &&
+          (this.$refs.player as HTMLVideoElement).canPlayType(
+            'application/vnd.apple.mpegurl'
+          ))
       ) {
+        console.log('direct play (or HLS native on iOS)');
+        (this.$refs.player as HTMLVideoElement).src = newSource;
+        (this.$refs.player as HTMLVideoElement).currentTime = startPosition;
+      } else if (Hls.isSupported() && isHls) {
         console.log('hls');
         this.hls = new Hls({
           startPosition
@@ -87,10 +96,6 @@ export default Vue.extend({
         this.hls.loadSource(newSource);
         this.hls.attachMedia(this.$refs.player as HTMLVideoElement);
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
-      } else if (mediaSource.SupportsDirectPlay) {
-        console.log('direct play');
-        (this.$refs.player as HTMLVideoElement).src = newSource;
-        (this.$refs.player as HTMLVideoElement).currentTime = startPosition;
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
