@@ -7,19 +7,19 @@ import {
 
 describe('getLibraryIcon', () => {
   it('returns the correct library icon based on library type', () => {
-    expect(getLibraryIcon('movies')).toEqual('mdi-movie');
-    expect(getLibraryIcon('music')).toEqual('mdi-music');
-    expect(getLibraryIcon('photos')).toEqual('mdi-image');
-    expect(getLibraryIcon('livetv')).toEqual('mdi-youtube-tv');
-    expect(getLibraryIcon('tvshows')).toEqual('mdi-television-classic');
-    expect(getLibraryIcon('homevideos')).toEqual('mdi-image-multiple');
-    expect(getLibraryIcon('musicvideos')).toEqual('mdi-music-box');
-    expect(getLibraryIcon('books')).toEqual('mdi-book-open-page-variant');
-    expect(getLibraryIcon('channels')).toEqual('mdi-youtube');
-    expect(getLibraryIcon('playlists')).toEqual('mdi-playlist-play');
+    expect(getLibraryIcon('movies')).toBe('mdi-movie');
+    expect(getLibraryIcon('music')).toBe('mdi-music');
+    expect(getLibraryIcon('photos')).toBe('mdi-image');
+    expect(getLibraryIcon('livetv')).toBe('mdi-youtube-tv');
+    expect(getLibraryIcon('tvshows')).toBe('mdi-television-classic');
+    expect(getLibraryIcon('homevideos')).toBe('mdi-image-multiple');
+    expect(getLibraryIcon('musicvideos')).toBe('mdi-music-box');
+    expect(getLibraryIcon('books')).toBe('mdi-book-open-page-variant');
+    expect(getLibraryIcon('channels')).toBe('mdi-youtube');
+    expect(getLibraryIcon('playlists')).toBe('mdi-playlist-play');
 
-    expect(getLibraryIcon(undefined)).toEqual('mdi-folder');
-    expect(getLibraryIcon(null)).toEqual('mdi-folder');
+    expect(getLibraryIcon(undefined)).toBe('mdi-folder');
+    expect(getLibraryIcon(null)).toBe('mdi-folder');
   });
 });
 

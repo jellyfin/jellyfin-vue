@@ -45,7 +45,7 @@ describe('Vuex: user store', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('SET_USER');
+    expect(mockCommit.mock.calls[0][0]).toBe('SET_USER');
     expect(mockCommit.mock.calls[0][1]).toMatchObject({
       accessToken: TEST_ACCESS_TOKEN
     });
@@ -60,6 +60,6 @@ describe('Vuex: user store', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('CLEAR_USER');
+    expect(mockCommit.mock.calls[0][0]).toBe('CLEAR_USER');
   });
 });

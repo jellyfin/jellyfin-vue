@@ -184,7 +184,7 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('ADD_ITEM');
+    expect(mockCommit.mock.calls[0][0]).toBe('ADD_ITEM');
     expect(mockCommit.mock.calls[0][1]).toEqual({
       item: item1
     });
@@ -199,7 +199,7 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('ADD_ITEM');
+    expect(mockCommit.mock.calls[0][0]).toBe('ADD_ITEM');
     expect(mockCommit.mock.calls[0][1]).toEqual({
       item: itemInvalid
     });
@@ -214,7 +214,7 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalledTimes(1);
-    expect(mockCommit.mock.calls[0][0]).toEqual('ADD_ITEMS');
+    expect(mockCommit.mock.calls[0][0]).toBe('ADD_ITEMS');
     expect(mockCommit.mock.calls[0][1]).toEqual({
       items: { ID: item1, ID2: item2 }
     });
@@ -244,7 +244,7 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('DELETE_ITEM');
+    expect(mockCommit.mock.calls[0][0]).toBe('DELETE_ITEM');
     expect(mockCommit.mock.calls[0][1]).toEqual({
       id: id1
     });
@@ -259,15 +259,15 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalledTimes(3);
-    expect(mockCommit.mock.calls[0][0]).toEqual('DELETE_ITEM');
+    expect(mockCommit.mock.calls[0][0]).toBe('DELETE_ITEM');
     expect(mockCommit.mock.calls[0][1]).toEqual({
       id: id1
     });
-    expect(mockCommit.mock.calls[1][0]).toEqual('DELETE_ITEM');
+    expect(mockCommit.mock.calls[1][0]).toBe('DELETE_ITEM');
     expect(mockCommit.mock.calls[1][1]).toEqual({
       id: id2
     });
-    expect(mockCommit.mock.calls[2][0]).toEqual('DELETE_ITEM');
+    expect(mockCommit.mock.calls[2][0]).toBe('DELETE_ITEM');
     expect(mockCommit.mock.calls[2][1]).toEqual({
       id: 'unknown'
     });
@@ -280,6 +280,6 @@ describe('Vuex: items', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('CLEAR_STATE');
+    expect(mockCommit.mock.calls[0][0]).toBe('CLEAR_STATE');
   });
 });

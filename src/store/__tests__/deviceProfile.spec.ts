@@ -63,7 +63,7 @@ describe('vuex: deviceProfile', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('SET_PROFILE');
+    expect(mockCommit.mock.calls[0][0]).toBe('SET_PROFILE');
   });
 
   it('clears the device profile when clearDeviceProfile is dispatched', () => {
@@ -81,6 +81,6 @@ describe('vuex: deviceProfile', () => {
     );
 
     expect(mockCommit).toHaveBeenCalled();
-    expect(mockCommit.mock.calls[0][0]).toEqual('CLEAR_PROFILE');
+    expect(mockCommit.mock.calls[0][0]).toBe('CLEAR_PROFILE');
   });
 });
