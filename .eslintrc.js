@@ -121,7 +121,7 @@ module.exports = {
       settings: {
         'import/resolver': {
           nuxt: {
-            extensions: ['.js', '.ts', '.vue', '.json'],
+            extensions: ['.js', '.ts', '.d.ts', '.vue', '.json'],
             nuxtSrcDir: 'src/'
           }
         }
