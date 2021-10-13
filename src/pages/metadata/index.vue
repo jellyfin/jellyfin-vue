@@ -87,11 +87,13 @@ export default Vue.extend({
   height: calc(100vh - 64px);
   overflow: hidden;
 }
+
 .tree-view-container {
   border-right: 1px solid var(--v-secondary-lighten1);
   height: 100%;
   overflow: auto;
 }
+
 .metadata-card {
   height: 100%;
 }

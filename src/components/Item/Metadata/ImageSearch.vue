@@ -276,6 +276,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/styles.sass';
+
 .loading-bar {
   position: absolute;
   top: 50%;

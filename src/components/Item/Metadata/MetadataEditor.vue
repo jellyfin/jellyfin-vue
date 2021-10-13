@@ -416,16 +416,20 @@ export default Vue.extend({
 .person-icon {
   background-color: var(--v-secondary-darken1);
 }
+
 .metadata-editor >>> .v-card__text {
   overflow: hidden;
 }
+
 .metadata-editor >>> .v-tabs {
   height: 100%;
 }
+
 .metadata-editor >>> .v-tabs-bar {
   overflow: hidden;
   border-right: 1px solid var(--v-secondary-lighten1);
 }
+
 .metadata-editor >>> .v-tabs-items {
   overflow-y: scroll;
 }

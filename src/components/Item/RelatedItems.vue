@@ -135,6 +135,7 @@ export default Vue.extend({
 .header span {
   padding-left: 0.25em;
 }
+
 .header::before {
   background-color: white;
   content: '';
