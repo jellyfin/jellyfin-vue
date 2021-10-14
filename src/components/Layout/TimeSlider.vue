@@ -7,7 +7,6 @@
     thumb-label
     :step="0"
     class="time-slider"
-    @end="onPositionChange"
     @change="onPositionChange"
     @mousedown="onClick"
     @mouseup="onClick"
