@@ -30,7 +30,8 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import {
   BaseItemDto,
   MediaSourceInfo,
-  PlaybackInfoResponse
+  PlaybackInfoResponse,
+  SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
@@ -46,7 +47,8 @@ export default Vue.extend({
       source: '',
       hls: undefined as Hls | undefined,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      unsubscribe(): void {},
+      subtitleTrack: undefined as PlaybackTrack | undefined
     };
   },
   computed: {
@@ -81,6 +83,10 @@ export default Vue.extend({
       if (newItem !== oldItem) this.getPlaybackUrl();
     },
     source(newSource): void {
+      if (this.hls) this.hls.destroy();
+
+      this.unsubscribe();
+
       const mediaSource = this.currentMediaSource as MediaSourceInfo;
       const item = this.getCurrentItem as BaseItemDto;
       const startPosition =
@@ -116,11 +122,16 @@ export default Vue.extend({
         return;
       }
 
-      (this.$refs.player as HTMLVideoElement).oncanplay = (_ev): void => {
-        this.changeSubtitle(this.currentSubtitleStreamIndex);
-      };
-
       window.player = this.$refs.player;
+
+      this.subtitleTrack = (
+        this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+      ).find((sub) => sub.jfIdx === this.currentSubtitleStreamIndex);
+
+      // Will display (or not) external subs
+      (this.$refs.player as HTMLVideoElement).oncanplay = (_ev): void => {
+        this.displayExternalSub(this.subtitleTrack);
+      };
 
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
@@ -197,9 +208,7 @@ export default Vue.extend({
               userId: this.$auth.user?.Id,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
-              mediaSourceId: this.currentMediaSource?.Id
-                ? this.currentMediaSource.Id
-                : undefined,
+              mediaSourceId: this.getCurrentItem?.Id,
               audioStreamIndex: this.currentAudioStreamIndex,
               subtitleStreamIndex: this.currentSubtitleStreamIndex
             },
@@ -255,7 +264,28 @@ export default Vue.extend({
         }
       }
     },
-    changeSubtitle(jfIdx: number): void {
+    async changeSubtitle(newJfIdx: number): Promise<void> {
+      // Find new sub
+      const newSub = (
+        this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+      ).find((el) => el.jfIdx === newJfIdx);
+
+      // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
+      if (
+        (this.subtitleTrack &&
+          this.subtitleTrack.type === SubtitleDeliveryMethod.Encode) ||
+        (newSub && newSub.type === SubtitleDeliveryMethod.Encode)
+      ) {
+        await this.getPlaybackUrl();
+
+        return;
+      }
+
+      // Manage non-encoded subs
+      this.displayExternalSub(newSub);
+    },
+    displayExternalSub(newSub: PlaybackTrack | undefined) {
+      // Disable all VTT subs
       for (
         let i = 0;
         i < this.getCurrentItemVttParsedSubtitleTracks.length;
@@ -264,20 +294,22 @@ export default Vue.extend({
         (this.$refs.player as HTMLMediaElement).textTracks[i].mode = 'disabled';
       }
 
-      const subs = this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
-      const sub = subs.find((el) => el.jfIdx === jfIdx);
+      // If new sub doesn't exist, we're done here
+      if (!newSub) {
+        this.subtitleTrack = newSub;
 
-      // No sub found in the available ones matching the wanted index
-      if (!sub) return;
+        return;
+      }
 
-      // Found a VTT sub matching the wanted index
+      // If new sub is a VTT file
       const vttIdx = (
         this.getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
-      ).findIndex((el) => el.jfIdx === sub.jfIdx);
+      ).findIndex((el) => el.jfIdx === newSub.jfIdx);
 
       if (vttIdx !== -1) {
         (this.$refs.player as HTMLMediaElement).textTracks[vttIdx].mode =
           'showing';
+        this.subtitleTrack = newSub;
       }
     },
     onHlsError(_event: Events.ERROR, data: ErrorData): void {

@@ -35,6 +35,7 @@ export interface PlaybackTrack {
   srcLang?: string;
   jfIdx: number;
   type: SubtitleDeliveryMethod;
+  codec?: string;
 }
 
 export interface PlaybackManagerState {
@@ -166,7 +167,8 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
             : undefined,
         srcLang: sub.el.Language || undefined,
         type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
-        jfIdx: sub.jfIdx
+        jfIdx: sub.jfIdx,
+        codec: sub.el.Codec
       })) || []) as PlaybackTrack[];
   },
   getCurrentItemVttParsedSubtitleTracks: (_state, getters) => {
@@ -175,6 +177,13 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
     return (
       subs.filter((sub) => sub.src && sub.src.match(/Stream\.vtt(\?.*)?$/)) ||
       []
+    );
+  },
+  getCurrentItemAssParsedSubtitleTracks: (_state, getters) => {
+    const subs: PlaybackTrack[] = getters.getCurrentItemParsedSubtitleTracks;
+
+    return (
+      subs.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') || []
     );
   },
   getCurrentVideoTrack: (state) => {

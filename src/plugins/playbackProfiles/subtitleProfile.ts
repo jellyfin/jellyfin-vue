@@ -27,15 +27,15 @@ export function getSubtitleProfiles(): Array<SubtitleProfile> {
   //   Method: SubtitleDeliveryMethod.External
   // });
 
-  // SubtitleProfiles.push({
-  //   Format: 'ass',
-  //   Method: SubtitleDeliveryMethod.External
-  // });
+  SubtitleProfiles.push({
+    Format: 'ass',
+    Method: SubtitleDeliveryMethod.Encode
+  });
 
-  // SubtitleProfiles.push({
-  //   Format: 'ssa',
-  //   Method: SubtitleDeliveryMethod.External
-  // });
+  SubtitleProfiles.push({
+    Format: 'ssa',
+    Method: SubtitleDeliveryMethod.Encode
+  });
 
   // SubtitleProfiles.push({
   //   Format: 'subviewer',
