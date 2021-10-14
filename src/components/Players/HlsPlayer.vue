@@ -48,7 +48,8 @@ export default Vue.extend({
       hls: undefined as Hls | undefined,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {},
-      subtitleTrack: undefined as PlaybackTrack | undefined
+      subtitleTrack: undefined as PlaybackTrack | undefined,
+      restartTime: undefined as number | undefined
     };
   },
   computed: {
@@ -88,7 +89,10 @@ export default Vue.extend({
       const mediaSource = this.currentMediaSource as MediaSourceInfo;
       const item = this.getCurrentItem as BaseItemDto;
       const startPosition =
+        this.restartTime ||
         this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
+
+      this.restartTime = undefined;
 
       const isHls =
         mediaSource.SupportsTranscoding &&
@@ -272,6 +276,8 @@ export default Vue.extend({
           this.subtitleTrack.type === SubtitleDeliveryMethod.Encode) ||
         (newSub && newSub.type === SubtitleDeliveryMethod.Encode)
       ) {
+        // Set the restart time so that the function knows where to restart
+        this.restartTime = (this.$refs.player as HTMLVideoElement).currentTime;
         await this.getPlaybackUrl();
 
         return;
