@@ -83,9 +83,7 @@ export default Vue.extend({
       if (newItem !== oldItem) this.getPlaybackUrl();
     },
     source(newSource): void {
-      if (this.hls) this.hls.destroy();
-
-      this.unsubscribe();
+      this.destroy();
 
       const mediaSource = this.currentMediaSource as MediaSourceInfo;
       const item = this.getCurrentItem as BaseItemDto;
@@ -185,9 +183,7 @@ export default Vue.extend({
     this.getPlaybackUrl();
   },
   beforeDestroy() {
-    if (this.hls) this.hls.destroy();
-
-    this.unsubscribe();
+    this.destroy();
   },
   methods: {
     ...mapActions('playbackManager', [
@@ -340,6 +336,11 @@ export default Vue.extend({
       }
 
       (this.$refs.player as HTMLMediaElement).play();
+    },
+    destroy() {
+      if (this.hls) this.hls.destroy();
+
+      this.unsubscribe();
     },
     onPlay(_event?: Event): void {
       this.unpause();
