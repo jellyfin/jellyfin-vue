@@ -1,24 +1,26 @@
 <template>
-  <video
-    ref="player"
-    :poster="poster.url"
-    autoplay
-    crossorigin="anonymous"
-    playsinline
-    @timeupdate="onProgressThrottled"
-    @pause="onPause"
-    @play="onPlay"
-    @ended="onStopped"
-  >
-    <track
-      v-for="track in getCurrentItemVttParsedSubtitleTracks"
-      :key="track.jfIdx"
-      kind="subtitles"
-      :label="track.label"
-      :srcLang="track.srcLang"
-      :src="$axios.defaults.baseURL + track.src"
-    />
-  </video>
+  <div>
+    <video
+      ref="player"
+      :poster="poster.url"
+      autoplay
+      crossorigin="anonymous"
+      playsinline
+      @timeupdate="onProgressThrottled"
+      @pause="onPause"
+      @play="onPlay"
+      @ended="onStopped"
+    >
+      <track
+        v-for="track in getCurrentItemVttParsedSubtitleTracks"
+        :key="track.jfIdx"
+        kind="subtitles"
+        :label="track.label"
+        :srcLang="track.srcLang"
+        :src="$axios.defaults.baseURL + track.src"
+      />
+    </video>
+  </div>
 </template>
 
 <script lang="ts">
