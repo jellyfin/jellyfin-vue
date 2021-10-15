@@ -609,6 +609,11 @@ export default Vue.extend({
 
 <style lang="scss">
 // These don't work when scoped, for some reason.
+
+.player {
+  overflow-y: hidden;
+}
+
 .player--fullscreen {
   position: relative;
   width: 100vw !important;
