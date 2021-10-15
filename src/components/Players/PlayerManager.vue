@@ -19,10 +19,10 @@
         :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
         :value="isPlaying"
       >
-        <playback-info-card
+        <!-- <playback-info-card
           v-if="!isMinimized && playbackData"
           @close-playback-data="playbackData = false"
-        />
+        /> -->
         <up-next @change="setUpNextVisible" />
         <v-hover v-slot="{ hover }">
           <v-card class="player-card" width="100%">
