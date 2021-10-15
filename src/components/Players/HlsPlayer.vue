@@ -95,6 +95,9 @@ export default Vue.extend({
       } else {
         return '';
       }
+    },
+    videoElement(): HTMLVideoElement {
+      return this.$refs.player as HTMLVideoElement;
     }
   },
   watch: {
@@ -117,7 +120,7 @@ export default Vue.extend({
         mediaSource.TranscodingSubProtocol === 'hls';
 
       if (!this.plyr) {
-        this.plyr = new Plyr(this.$refs.player as HTMLVideoElement, {
+        this.plyr = new Plyr(this.videoElement, {
           controls: [],
           keyboard: { global: true }
         });
@@ -126,20 +129,18 @@ export default Vue.extend({
       if (
         mediaSource.SupportsDirectPlay ||
         (isHls &&
-          (this.$refs.player as HTMLVideoElement).canPlayType(
-            'application/vnd.apple.mpegurl'
-          ))
+          this.videoElement.canPlayType('application/vnd.apple.mpegurl'))
       ) {
         console.log('direct play (or HLS native on iOS)');
-        (this.$refs.player as HTMLVideoElement).src = newSource;
-        (this.$refs.player as HTMLVideoElement).currentTime = startPosition;
+        this.videoElement.src = newSource;
+        this.videoElement.currentTime = startPosition;
       } else if (Hls.isSupported() && isHls) {
         console.log('hls');
         this.hls = new Hls({
           startPosition
         });
         this.hls.loadSource(newSource);
-        this.hls.attachMedia(this.$refs.player as HTMLVideoElement);
+        this.hls.attachMedia(this.videoElement);
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
       } else {
         this.$nuxt.error({
@@ -156,36 +157,30 @@ export default Vue.extend({
       ).find((sub) => sub.jfIdx === this.currentSubtitleStreamIndex);
 
       // Will display (or not) external subs
-      (this.$refs.player as HTMLVideoElement).oncanplay = (_ev): void => {
+      this.videoElement.oncanplay = (_ev): void => {
         this.displayExternalSub(this.subtitleTrack);
       };
 
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
           case 'playbackManager/PAUSE_PLAYBACK':
-            if (this.$refs.player)
-              (this.$refs.player as HTMLMediaElement).pause();
+            if (this.videoElement) this.videoElement.pause();
 
             break;
           case 'playbackManager/UNPAUSE_PLAYBACK':
-            if (this.$refs.player)
-              (this.$refs.player as HTMLMediaElement).play();
+            if (this.videoElement) this.videoElement.play();
 
             break;
           case 'playbackManager/CHANGE_CURRENT_TIME':
-            if (this.$refs.player && mutation?.payload?.time !== null) {
-              (this.$refs.player as HTMLMediaElement).currentTime =
-                mutation?.payload?.time;
+            if (this.videoElement && mutation?.payload?.time !== null) {
+              this.videoElement.currentTime = mutation?.payload?.time;
             }
 
             break;
 
           case 'playbackManager/SET_VOLUME':
-            if (this.$refs.player)
-              (this.$refs.player as HTMLMediaElement).volume = Math.pow(
-                this.currentVolume / 100,
-                3
-              );
+            if (this.videoElement)
+              this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
 
             break;
 
@@ -302,7 +297,7 @@ export default Vue.extend({
         (newSub && newSub.type === SubtitleDeliveryMethod.Encode)
       ) {
         // Set the restart time so that the function knows where to restart
-        this.restartTime = (this.$refs.player as HTMLVideoElement).currentTime;
+        this.restartTime = this.videoElement.currentTime;
         await this.getPlaybackUrl();
 
         return;
@@ -347,7 +342,7 @@ export default Vue.extend({
         if (this.plyr) this.plyr.currentTrack = -1;
 
         this.octopus = new SubtitlesOctopus({
-          video: this.$refs.player,
+          video: this.videoElement,
           workerUrl: SubtitlesOctopusWorker,
           legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
           subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
@@ -383,7 +378,7 @@ export default Vue.extend({
         }
       }
 
-      (this.$refs.player as HTMLMediaElement).play();
+      this.videoElement.play();
     },
     destroy() {
       if (this.hls) {
@@ -411,23 +406,23 @@ export default Vue.extend({
       this.onProgress(_event);
     }, 500),
     onProgress(_event?: Event): void {
-      if (this.$refs.player) {
-        const currentTime = (this.$refs.player as HTMLMediaElement).currentTime;
+      if (this.videoElement) {
+        const currentTime = this.videoElement.currentTime;
 
         this.setCurrentTime({ time: currentTime });
       }
     },
     onPause(_event?: Event): void {
-      if (this.$refs.player) {
-        const currentTime = (this.$refs.player as HTMLMediaElement).currentTime;
+      if (this.videoElement) {
+        const currentTime = this.videoElement.currentTime;
 
         this.setCurrentTime({ time: currentTime });
         this.pause();
       }
     },
     onStopped(_event?: Event): void {
-      if (this.$refs.player) {
-        const currentTime = (this.$refs.player as HTMLMediaElement).currentTime;
+      if (this.videoElement) {
+        const currentTime = this.videoElement.currentTime;
 
         this.setCurrentTime({ time: currentTime });
         this.setNextTrack();
