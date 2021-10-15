@@ -420,6 +420,20 @@ const config: NuxtConfig = {
           exclude: /(node_modules)/
         });
       }
+
+      config.module?.rules.push(
+        // Hacky rule to make the libass WASM not being parsed when requiring it for the file loader
+        // https://github.com/webpack/webpack/issues/6725#issuecomment-391237775
+        {
+          test: /libass-wasm\/dist\/js\/subtitles-octopus-worker\.wasm/,
+          type: 'javascript/auto'
+        },
+        {
+          test: /libass-wasm\/dist\/js\/subtitles-octopus-worker/,
+          loader: 'file-loader',
+          options: { name: '[name].[ext]' }
+        }
+      );
     },
     transpile: [
       // JF client transpiled cause needed to support "export *" https://stackoverflow.com/a/59313455

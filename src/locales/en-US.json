@@ -36,13 +36,14 @@
   "details": "Details",
   "dialog": {
     "upNext": {
+      "hide": "Hide",
       "nextItemPlayingIn": "Starting in {time}",
-      "startNow": "Start now",
-      "hide": "Hide"
+      "startNow": "Start now"
     }
   },
   "directing": "Directing",
   "director": "Director",
+  "disabled": "Disabled",
   "discNumber": "Disc {discNumber}",
   "dislikes": "Dislikes",
   "edit": "Edit",
@@ -65,15 +66,6 @@
   "features": "Features",
   "filter": "Filter",
   "filtersNotFound": "Unable to load filters",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} second | {count} seconds"
-    }
-  },
   "fullScreen": "Full screen",
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Generic Jellyfin device",
@@ -304,12 +296,12 @@
   "role": "Role",
   "save": "Save",
   "saved": "Saved",
-  "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
-  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "search": {
     "name": "Search",
     "topResults": "Top results"
   },
+  "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server version",
@@ -493,6 +485,15 @@
   "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} second | {count} seconds"
+    }
+  },
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",

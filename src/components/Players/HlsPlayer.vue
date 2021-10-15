@@ -25,6 +25,12 @@
 import Vue from 'vue';
 // @ts-expect-error No typings in the old version we're using
 import Hls, { ErrorData, Events } from 'hls.js';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopus from 'libass-wasm';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
 import throttle from 'lodash/throttle';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import {
@@ -39,6 +45,12 @@ import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
 import { PlaybackTrack } from '~/store/playbackManager';
 
+// Using requires so those aren't treeshaked and loaded by the webpack file loader as static assets
+require('libass-wasm/dist/js/subtitles-octopus-worker.data');
+require('libass-wasm/dist/js/subtitles-octopus-worker-legacy.data');
+require('libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem');
+require('libass-wasm/dist/js/subtitles-octopus-worker.wasm');
+
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
   data() {
@@ -46,6 +58,7 @@ export default Vue.extend({
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
       hls: undefined as Hls | undefined,
+      octopus: undefined as SubtitlesOctopus | undefined,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {},
       subtitleTrack: undefined as PlaybackTrack | undefined,
@@ -57,7 +70,8 @@ export default Vue.extend({
       'getCurrentItem',
       'getCurrentlyPlayingMediaType',
       'getCurrentItemParsedSubtitleTracks',
-      'getCurrentItemVttParsedSubtitleTracks'
+      'getCurrentItemVttParsedSubtitleTracks',
+      'getCurrentItemAssParsedSubtitleTracks'
     ]),
     ...mapState('playbackManager', [
       'lastProgressUpdate',
@@ -296,6 +310,12 @@ export default Vue.extend({
         (this.$refs.player as HTMLMediaElement).textTracks[i].mode = 'disabled';
       }
 
+      // Disable octopus
+      if (this.octopus) {
+        this.octopus.dispose();
+        this.octopus = undefined;
+      }
+
       // If new sub doesn't exist, we're done here
       if (!newSub) {
         this.subtitleTrack = newSub;
@@ -303,14 +323,26 @@ export default Vue.extend({
         return;
       }
 
-      // If new sub is a VTT file
+      // Find the sub in the VTT or ASS subs
       const vttIdx = (
         this.getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
+      ).findIndex((el) => el.jfIdx === newSub.jfIdx);
+      const assIdx = (
+        this.getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
       ).findIndex((el) => el.jfIdx === newSub.jfIdx);
 
       if (vttIdx !== -1) {
         (this.$refs.player as HTMLMediaElement).textTracks[vttIdx].mode =
           'showing';
+        this.subtitleTrack = newSub;
+      } else if (assIdx !== -1) {
+        this.octopus = new SubtitlesOctopus({
+          video: this.$refs.player,
+          workerUrl: SubtitlesOctopusWorker,
+          legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
+          subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
+          blendRender: true
+        });
         this.subtitleTrack = newSub;
       }
     },
@@ -344,7 +376,15 @@ export default Vue.extend({
       (this.$refs.player as HTMLMediaElement).play();
     },
     destroy() {
-      if (this.hls) this.hls.destroy();
+      if (this.hls) {
+        this.hls.destroy();
+        this.hls = undefined;
+      }
+
+      if (this.octopus) {
+        this.octopus.dispose();
+        this.octopus = undefined;
+      }
 
       this.unsubscribe();
     },
