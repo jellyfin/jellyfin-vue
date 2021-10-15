@@ -427,6 +427,9 @@ export default Vue.extend({
         this.setCurrentTime({ time: currentTime });
         this.setNextTrack();
       }
+    },
+    togglePictureInPicture(): void {
+      if (this.plyr) this.plyr.pip = !this.plyr.pip;
     }
   }
 });
