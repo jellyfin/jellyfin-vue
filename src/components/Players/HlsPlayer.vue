@@ -27,6 +27,7 @@
 import Vue from 'vue';
 // @ts-expect-error No typings in the old version we're using
 import Hls, { ErrorData, Events } from 'hls.js';
+import Plyr from 'plyr';
 // @ts-expect-error - No types for libass
 import SubtitlesOctopus from 'libass-wasm';
 // @ts-expect-error - No types for libass
@@ -59,6 +60,7 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
+      plyr: undefined as Plyr | undefined,
       hls: undefined as Hls | undefined,
       octopus: undefined as SubtitlesOctopus | undefined,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -113,6 +115,13 @@ export default Vue.extend({
       const isHls =
         mediaSource.SupportsTranscoding &&
         mediaSource.TranscodingSubProtocol === 'hls';
+
+      if (!this.plyr) {
+        this.plyr = new Plyr(this.$refs.player as HTMLVideoElement, {
+          controls: [],
+          keyboard: { global: true }
+        });
+      }
 
       if (
         mediaSource.SupportsDirectPlay ||
@@ -303,24 +312,21 @@ export default Vue.extend({
       this.displayExternalSub(newSub);
     },
     displayExternalSub(newSub: PlaybackTrack | undefined) {
-      // Disable all VTT subs
-      for (
-        let i = 0;
-        i < this.getCurrentItemVttParsedSubtitleTracks.length;
-        ++i
-      ) {
-        (this.$refs.player as HTMLMediaElement).textTracks[i].mode = 'disabled';
-      }
-
       // Disable octopus
       if (this.octopus) {
         this.octopus.dispose();
         this.octopus = undefined;
       }
 
+      // We don't always set the Plyr current track to -1 cause it bugs the subs if you then change it back to a new value
+      // This causes a bug when some tracks have the same srcLang
+      // https://github.com/sampotts/plyr/issues/2330
+
       // If new sub doesn't exist, we're done here
       if (!newSub) {
         this.subtitleTrack = newSub;
+
+        if (this.plyr) this.plyr.currentTrack = -1;
 
         return;
       }
@@ -334,10 +340,12 @@ export default Vue.extend({
       ).findIndex((el) => el.jfIdx === newSub.jfIdx);
 
       if (vttIdx !== -1) {
-        (this.$refs.player as HTMLMediaElement).textTracks[vttIdx].mode =
-          'showing';
+        if (this.plyr) this.plyr.currentTrack = vttIdx;
+
         this.subtitleTrack = newSub;
       } else if (assIdx !== -1) {
+        if (this.plyr) this.plyr.currentTrack = -1;
+
         this.octopus = new SubtitlesOctopus({
           video: this.$refs.player,
           workerUrl: SubtitlesOctopusWorker,
@@ -388,6 +396,11 @@ export default Vue.extend({
         this.octopus = undefined;
       }
 
+      if (this.plyr) {
+        this.plyr.destroy();
+        this.plyr = undefined;
+      }
+
       this.unsubscribe();
     },
     onPlay(_event?: Event): void {
@@ -432,4 +445,10 @@ video {
   width: 100%;
   height: 100%;
 }
+</style>
+
+<style lang="scss">
+// Plyr 3.6.4 is used for now as their latest CSS (3.6.8) isn't working with Nuxt's postcss 7
+// It should work in postcss 8
+@import '~plyr/src/sass/plyr.scss';
 </style>
