@@ -29,12 +29,12 @@ export function getSubtitleProfiles(): Array<SubtitleProfile> {
 
   SubtitleProfiles.push({
     Format: 'ass',
-    Method: SubtitleDeliveryMethod.Encode
+    Method: SubtitleDeliveryMethod.External
   });
 
   SubtitleProfiles.push({
     Format: 'ssa',
-    Method: SubtitleDeliveryMethod.Encode
+    Method: SubtitleDeliveryMethod.External
   });
 
   // SubtitleProfiles.push({
