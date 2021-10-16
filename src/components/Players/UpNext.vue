@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import timeUtils from '~/mixins/timeUtils';
 
 export default Vue.extend({
@@ -87,8 +87,7 @@ export default Vue.extend({
     ...mapGetters('playbackManager', [
       'getCurrentlyPlayingMediaType',
       'getNextItem',
-      'getCurrentItem',
-      'setNextTrack'
+      'getCurrentItem'
     ]),
     currentItemDuration(): number {
       return this.ticksToMs(this.getCurrentItem?.RunTimeTicks) / 1000;
@@ -136,6 +135,9 @@ export default Vue.extend({
     visible(): void {
       this.$emit('change', this.visible);
     }
+  },
+  methods: {
+    ...mapActions('playbackManager', ['setNextTrack'])
   }
 });
 </script>
