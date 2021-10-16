@@ -119,13 +119,6 @@ export default Vue.extend({
         mediaSource.SupportsTranscoding &&
         mediaSource.TranscodingSubProtocol === 'hls';
 
-      if (!this.plyr) {
-        this.plyr = new Plyr(this.videoElement, {
-          controls: [],
-          keyboard: { global: true }
-        });
-      }
-
       if (
         mediaSource.SupportsDirectPlay ||
         (isHls &&
@@ -136,12 +129,19 @@ export default Vue.extend({
         this.videoElement.currentTime = startPosition;
       } else if (Hls.isSupported() && isHls) {
         console.log('hls');
+
+        if (this.hls) {
+          this.hls.destroy();
+          this.hls = undefined;
+        }
+
         this.hls = new Hls({
           startPosition
         });
-        this.hls.loadSource(newSource);
-        this.hls.attachMedia(this.videoElement);
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
+        this.hls.attachMedia(this.videoElement);
+        this.hls.loadSource(newSource);
+        console.log('resource loaded');
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -149,8 +149,6 @@ export default Vue.extend({
 
         return;
       }
-
-      window.player = this.$refs.player;
 
       this.subtitleTrack = (
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
@@ -164,23 +162,23 @@ export default Vue.extend({
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
           case 'playbackManager/PAUSE_PLAYBACK':
-            if (this.videoElement) this.videoElement.pause();
+            if (this.plyr) this.plyr.pause();
 
             break;
           case 'playbackManager/UNPAUSE_PLAYBACK':
-            if (this.videoElement) this.videoElement.play();
+            if (this.plyr) this.plyr.play();
 
             break;
           case 'playbackManager/CHANGE_CURRENT_TIME':
-            if (this.videoElement && mutation?.payload?.time !== null) {
-              this.videoElement.currentTime = mutation?.payload?.time;
+            if (this.plyr && mutation?.payload?.time !== null) {
+              this.plyr.currentTime = mutation?.payload?.time;
             }
 
             break;
 
           case 'playbackManager/SET_VOLUME':
-            if (this.videoElement)
-              this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
+            if (this.plyr)
+              this.plyr.volume = Math.pow(this.currentVolume / 100, 3);
 
             break;
 
@@ -204,9 +202,20 @@ export default Vue.extend({
     }
   },
   mounted() {
+    this.plyr = new Plyr(this.videoElement, {
+      controls: [],
+      keyboard: { global: true },
+      captions: { update: true }
+    });
     this.getPlaybackUrl();
   },
   beforeDestroy() {
+    this.onStopped(); // Report that the playback is stopping
+
+    if (this.plyr) this.plyr.destroy();
+
+    if (this.hls) this.hls.destroy();
+
     this.destroy();
   },
   methods: {
@@ -381,19 +390,14 @@ export default Vue.extend({
       this.videoElement.play();
     },
     destroy() {
-      if (this.hls) {
-        this.hls.destroy();
-        this.hls = undefined;
-      }
+      // if (this.hls) {
+      //   this.hls.destroy();
+      //   this.hls = undefined;
+      // }
 
       if (this.octopus) {
         this.octopus.dispose();
         this.octopus = undefined;
-      }
-
-      if (this.plyr) {
-        this.plyr.destroy();
-        this.plyr = undefined;
       }
 
       this.unsubscribe();
