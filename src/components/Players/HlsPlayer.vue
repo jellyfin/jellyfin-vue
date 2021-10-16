@@ -35,7 +35,7 @@ import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker
 // @ts-expect-error - No types for libass
 import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
 import throttle from 'lodash/throttle';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState, mapMutations } from 'vuex';
 import {
   BaseItemDto,
   MediaSourceInfo,
@@ -154,7 +154,14 @@ export default Vue.extend({
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
       ).find((sub) => sub.jfIdx === this.currentSubtitleStreamIndex);
 
-      // Will display (or not) external subs
+      // If index isn't -1 and there's no sub found, it doesn't exist and we reset it
+      if (this.currentSubtitleStreamIndex !== -1 && !this.subtitleTrack) {
+        this.SET_CURRENT_SUBTITLE_TRACK_INDEX({
+          subtitleStreamIndex: -1
+        });
+      }
+
+      // Will display (or not) external subs when video is loaded
       this.videoElement.oncanplay = (_ev): void => {
         this.displayExternalSub(this.subtitleTrack);
       };
@@ -228,6 +235,7 @@ export default Vue.extend({
       'setPlaySessionId',
       'setLastProgressUpdate'
     ]),
+    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
     async getPlaybackUrl(): Promise<void> {
       if (this.getCurrentItem) {
         this.playbackInfo = (
