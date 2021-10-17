@@ -126,7 +126,6 @@ export default Vue.extend({
       ) {
         console.log('direct play (or HLS native on iOS)');
         this.videoElement.src = newSource;
-        this.videoElement.currentTime = startPosition;
       } else if (Hls.isSupported() && isHls) {
         console.log('hls');
 
@@ -135,9 +134,7 @@ export default Vue.extend({
           this.hls = undefined;
         }
 
-        this.hls = new Hls({
-          startPosition
-        });
+        this.hls = new Hls();
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
         this.hls.attachMedia(this.videoElement);
         this.hls.loadSource(newSource);
@@ -149,6 +146,8 @@ export default Vue.extend({
 
         return;
       }
+
+      this.videoElement.currentTime = startPosition;
 
       this.subtitleTrack = (
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
