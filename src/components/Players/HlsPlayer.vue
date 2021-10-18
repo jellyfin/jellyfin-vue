@@ -10,16 +10,7 @@
       @pause="onPause"
       @play="onPlay"
       @ended="onStopped"
-    >
-      <track
-        v-for="track in getCurrentItemVttParsedSubtitleTracks"
-        :key="track.jfIdx"
-        kind="subtitles"
-        :label="track.label"
-        :srcLang="track.srcLang"
-        :src="$axios.defaults.baseURL + track.src"
-      />
-    </video>
+    />
   </div>
 </template>
 
@@ -27,7 +18,6 @@
 import Vue from 'vue';
 // @ts-expect-error No typings in the old version we're using
 import Hls, { ErrorData, Events } from 'hls.js';
-import Plyr from 'plyr';
 // @ts-expect-error - No types for libass
 import SubtitlesOctopus from 'libass-wasm';
 // @ts-expect-error - No types for libass
@@ -60,7 +50,6 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
-      plyr: undefined as Plyr | undefined,
       hls: undefined as Hls | undefined,
       octopus: undefined as SubtitlesOctopus | undefined,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -128,12 +117,6 @@ export default Vue.extend({
         this.videoElement.src = newSource;
       } else if (Hls.isSupported() && isHls) {
         console.log('hls');
-
-        if (this.hls) {
-          this.hls.destroy();
-          this.hls = undefined;
-        }
-
         this.hls = new Hls();
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
         this.hls.attachMedia(this.videoElement);
@@ -161,30 +144,29 @@ export default Vue.extend({
       }
 
       // Will display (or not) external subs when video is loaded
-      this.videoElement.oncanplay = (_ev): void => {
+      this.videoElement.addEventListener('loadeddata', () => {
         this.displayExternalSub(this.subtitleTrack);
-      };
+      });
 
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
           case 'playbackManager/PAUSE_PLAYBACK':
-            if (this.plyr) this.plyr.pause();
+            this.videoElement.pause();
 
             break;
           case 'playbackManager/UNPAUSE_PLAYBACK':
-            if (this.plyr) this.plyr.play();
+            this.videoElement.play();
 
             break;
           case 'playbackManager/CHANGE_CURRENT_TIME':
-            if (this.plyr && mutation?.payload?.time !== null) {
-              this.plyr.currentTime = mutation?.payload?.time;
+            if (mutation?.payload?.time !== null) {
+              this.videoElement.currentTime = mutation?.payload?.time;
             }
 
             break;
 
           case 'playbackManager/SET_VOLUME':
-            if (this.plyr)
-              this.plyr.volume = Math.pow(this.currentVolume / 100, 3);
+            this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
 
             break;
 
@@ -208,17 +190,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.plyr = new Plyr(this.videoElement, {
-      controls: [],
-      keyboard: { global: true },
-      captions: { update: true }
-    });
     this.getPlaybackUrl();
   },
   beforeDestroy() {
     this.onStopped(); // Report that the playback is stopping
-
-    if (this.plyr) this.plyr.destroy();
 
     if (this.hls) this.hls.destroy();
 
@@ -329,15 +304,17 @@ export default Vue.extend({
         this.octopus = undefined;
       }
 
-      // We don't always set the Plyr current track to -1 cause it bugs the subs if you then change it back to a new value
-      // This causes a bug when some tracks have the same srcLang
-      // https://github.com/sampotts/plyr/issues/2330
+      // Disable VTT
+      const oldVtt = document.getElementsByTagName('track')[0];
+
+      if (oldVtt) {
+        this.videoElement.textTracks[0].mode = 'disabled';
+        oldVtt.remove();
+      }
 
       // If new sub doesn't exist, we're done here
       if (!newSub) {
         this.subtitleTrack = newSub;
-
-        if (this.plyr) this.plyr.currentTrack = -1;
 
         return;
       }
@@ -351,12 +328,15 @@ export default Vue.extend({
       ).findIndex((el) => el.jfIdx === newSub.jfIdx);
 
       if (vttIdx !== -1) {
-        if (this.plyr) this.plyr.currentTrack = vttIdx;
+        const newVtt = document.createElement('track');
 
+        newVtt.kind = 'subtitles';
+        newVtt.srclang = newSub.srcLang || '';
+        newVtt.src = this.$axios.defaults.baseURL + (newSub.src || '');
+        this.videoElement.appendChild(newVtt);
+        this.videoElement.textTracks[0].mode = 'showing';
         this.subtitleTrack = newSub;
       } else if (assIdx !== -1) {
-        if (this.plyr) this.plyr.currentTrack = -1;
-
         this.octopus = new SubtitlesOctopus({
           video: this.videoElement,
           workerUrl: SubtitlesOctopusWorker,
@@ -393,14 +373,12 @@ export default Vue.extend({
             break;
         }
       }
-
-      this.videoElement.play();
     },
     destroy() {
-      // if (this.hls) {
-      //   this.hls.destroy();
-      //   this.hls = undefined;
-      // }
+      if (this.hls) {
+        this.hls.destroy();
+        this.hls = undefined;
+      }
 
       if (this.octopus) {
         this.octopus.dispose();
@@ -440,7 +418,15 @@ export default Vue.extend({
       }
     },
     togglePictureInPicture(): void {
-      if (this.plyr) this.plyr.pip = !this.plyr.pip;
+      // @ts-expect-error - `pictureInPictureElement` does not exist in relevant types
+      if (document.pictureInPictureElement) {
+        // @ts-expect-error - `exitPictureInPicture` does not exist in relevant types
+        document.exitPictureInPicture();
+        // @ts-expect-error - `pictureInPictureEnabled` does not exist in relevant types
+      } else if (document.pictureInPictureEnabled) {
+        // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
+        this.videoElement.requestPictureInPicture();
+      }
     }
   }
 });
@@ -454,10 +440,4 @@ video {
   width: 100%;
   height: 100%;
 }
-</style>
-
-<style lang="scss">
-// Plyr 3.6.4 is used for now as their latest CSS (3.6.8) isn't working with Nuxt's postcss 7
-// It should work in postcss 8
-@import '~plyr/src/sass/plyr.scss';
 </style>
