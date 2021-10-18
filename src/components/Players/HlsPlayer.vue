@@ -61,32 +61,32 @@ export default Vue.extend({
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItem',
-      'getCurrentlyPlayingMediaType',
       'getCurrentItemParsedSubtitleTracks',
       'getCurrentItemVttParsedSubtitleTracks',
       'getCurrentItemAssParsedSubtitleTracks'
     ]),
     ...mapState('playbackManager', [
-      'lastProgressUpdate',
       'currentTime',
       'currentVolume',
       'currentMediaSource',
-      'currentVideoStreamIndex',
       'currentAudioStreamIndex',
-      'currentSubtitleStreamIndex',
-      'isMinimized'
+      'currentSubtitleStreamIndex'
     ]),
     ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
     poster(): ImageUrlInfo | string {
-      if (this.getCurrentlyPlayingMediaType === 'Video') {
-        return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
-      } else {
-        return '';
-      }
+      return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
     },
     videoElement(): HTMLVideoElement {
       return this.$refs.player as HTMLVideoElement;
+    },
+    isHls() {
+      const mediaSource = this.currentMediaSource as MediaSourceInfo;
+
+      return (
+        mediaSource.SupportsTranscoding &&
+        mediaSource.TranscodingSubProtocol === 'hls'
+      );
     }
   },
   watch: {
@@ -98,24 +98,15 @@ export default Vue.extend({
 
       const mediaSource = this.currentMediaSource as MediaSourceInfo;
       const item = this.getCurrentItem as BaseItemDto;
-      const startPosition =
-        this.restartTime ||
-        this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
-
-      this.restartTime = undefined;
-
-      const isHls =
-        mediaSource.SupportsTranscoding &&
-        mediaSource.TranscodingSubProtocol === 'hls';
 
       if (
         mediaSource.SupportsDirectPlay ||
-        (isHls &&
+        (this.isHls &&
           this.videoElement.canPlayType('application/vnd.apple.mpegurl'))
       ) {
         console.log('direct play (or HLS native on iOS)');
         this.videoElement.src = newSource;
-      } else if (Hls.isSupported() && isHls) {
+      } else if (Hls.isSupported() && this.isHls) {
         console.log('hls');
         this.hls = new Hls();
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
@@ -130,7 +121,10 @@ export default Vue.extend({
         return;
       }
 
-      this.videoElement.currentTime = startPosition;
+      this.videoElement.currentTime =
+        this.restartTime ||
+        this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
+      this.restartTime = undefined;
 
       this.subtitleTrack = (
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
@@ -143,7 +137,7 @@ export default Vue.extend({
         });
       }
 
-      // Will display (or not) external subs when video is loaded
+      // Will display (or not) current external subtitle when start of video is loaded
       this.videoElement.addEventListener('loadeddata', () => {
         this.displayExternalSub(this.subtitleTrack);
       });
@@ -176,15 +170,6 @@ export default Vue.extend({
             }
 
             break;
-
-          // case 'playbackManager/SET_REPEAT_MODE':
-          //   if (this.$refs.shakaPlayer) {
-          //     if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
-          //       (this.$refs.shakaPlayer as HTMLMediaElement).loop = true;
-          //     } else {
-          //       (this.$refs.shakaPlayer as HTMLMediaElement).loop = false;
-          //     }
-          //   }
         }
       });
     }
@@ -195,8 +180,6 @@ export default Vue.extend({
   beforeDestroy() {
     this.onStopped(); // Report that the playback is stopping
 
-    if (this.hls) this.hls.destroy();
-
     this.destroy();
   },
   methods: {
@@ -206,8 +189,7 @@ export default Vue.extend({
       'setNextTrack',
       'setMediaSource',
       'setCurrentTime',
-      'setPlaySessionId',
-      'setLastProgressUpdate'
+      'setPlaySessionId'
     ]),
     ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
     async getPlaybackUrl(): Promise<void> {
@@ -229,14 +211,13 @@ export default Vue.extend({
 
         this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
 
-        let mediaSource;
-
-        if (this.playbackInfo?.MediaSources) {
-          mediaSource = this.playbackInfo.MediaSources[0];
-          this.setMediaSource({ mediaSource });
-        } else {
+        if (!this.playbackInfo?.MediaSources?.[0]) {
           throw new Error("This item can't be played.");
         }
+
+        const mediaSource = this.playbackInfo.MediaSources[0];
+
+        this.setMediaSource({ mediaSource });
 
         if (mediaSource.SupportsDirectStream) {
           const directOptions: Record<
@@ -259,13 +240,7 @@ export default Vue.extend({
 
           const params = stringify(directOptions);
 
-          let mediaType = 'Videos';
-
-          if (this.getCurrentlyPlayingMediaType === 'Audio') {
-            mediaType = 'Audio';
-          }
-
-          this.source = `${this.$axios.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
+          this.source = `${this.$axios.defaults.baseURL}/Videos/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
@@ -305,7 +280,7 @@ export default Vue.extend({
       }
 
       // Disable VTT
-      const oldVtt = document.getElementsByTagName('track')[0];
+      const oldVtt = this.videoElement.getElementsByTagName('track')[0];
 
       if (oldVtt) {
         this.videoElement.textTracks[0].mode = 'disabled';
@@ -328,6 +303,7 @@ export default Vue.extend({
       ).findIndex((el) => el.jfIdx === newSub.jfIdx);
 
       if (vttIdx !== -1) {
+        // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
         const newVtt = document.createElement('track');
 
         newVtt.kind = 'subtitles';
