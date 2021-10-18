@@ -91,11 +91,6 @@
             </v-col>
           </v-row>
         </v-list-item>
-        <!-- <v-list-item @click.stop="$emit('open-playback-data')">
-          <v-list-item-content>
-            {{ $t('playbackData') }}
-          </v-list-item-content>
-        </v-list-item> -->
       </v-list>
     </v-card>
   </v-menu>

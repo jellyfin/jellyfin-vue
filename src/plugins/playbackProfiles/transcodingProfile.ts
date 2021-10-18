@@ -75,6 +75,17 @@ export function getTranscodingProfiles(
       });
     });
 
+  // TODO
+  // See below
+  // const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(
+  //   context,
+  //   videoTestElement
+  // );
+  // const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(
+  //   context,
+  //   videoTestElement
+  // );
+
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
     context,
