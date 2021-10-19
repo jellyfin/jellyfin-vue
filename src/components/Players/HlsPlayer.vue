@@ -128,7 +128,7 @@ export default Vue.extend({
 
       this.subtitleTrack = (
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
-      ).find((sub) => sub.jfIdx === this.currentSubtitleStreamIndex);
+      ).find((sub) => sub.srcIndex === this.currentSubtitleStreamIndex);
 
       // If index isn't -1 and there's no sub found, it doesn't exist and we reset it
       if (this.currentSubtitleStreamIndex !== -1 && !this.subtitleTrack) {
@@ -250,11 +250,11 @@ export default Vue.extend({
         }
       }
     },
-    async changeSubtitle(newJfIdx: number): Promise<void> {
+    async changeSubtitle(newsrcIndex: number): Promise<void> {
       // Find new sub
       const newSub = (
         this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
-      ).find((el) => el.jfIdx === newJfIdx);
+      ).find((el) => el.srcIndex === newsrcIndex);
 
       // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
       if (
@@ -297,10 +297,10 @@ export default Vue.extend({
       // Find the sub in the VTT or ASS subs
       const vttIdx = (
         this.getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
-      ).findIndex((el) => el.jfIdx === newSub.jfIdx);
+      ).findIndex((el) => el.srcIndex === newSub.srcIndex);
       const assIdx = (
         this.getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
-      ).findIndex((el) => el.jfIdx === newSub.jfIdx);
+      ).findIndex((el) => el.srcIndex === newSub.srcIndex);
 
       if (vttIdx !== -1) {
         // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
