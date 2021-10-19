@@ -104,15 +104,12 @@ export default Vue.extend({
         (this.isHls &&
           this.videoElement.canPlayType('application/vnd.apple.mpegurl'))
       ) {
-        console.log('direct play (or HLS native on iOS)');
         this.videoElement.src = newSource;
       } else if (Hls.isSupported() && this.isHls) {
-        console.log('hls');
         this.hls = new Hls();
         this.hls.on(Hls.Events.ERROR, this.onHlsError);
         this.hls.attachMedia(this.videoElement);
         this.hls.loadSource(newSource);
-        console.log('resource loaded');
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -326,18 +323,13 @@ export default Vue.extend({
     onHlsError(_event: Events.ERROR, data: ErrorData): void {
       if (!this.hls) return;
 
-      console.warn('HLS exception');
-      console.warn(data);
-
       if (data.fatal) {
         switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
             // try to recover network error
-            console.log('fatal network error encountered, try to recover');
             this.hls.startLoad();
             break;
           case Hls.ErrorTypes.MEDIA_ERROR:
-            console.log('fatal media error encountered, try to recover');
             this.hls.recoverMediaError();
             break;
           default:
