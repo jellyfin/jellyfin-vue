@@ -33,7 +33,7 @@ export interface PlaybackTrack {
   label: string;
   src?: string;
   srcLang?: string;
-  jfIdx: number;
+  srcIndex: number;
   type: SubtitleDeliveryMethod;
   codec?: string;
 }
@@ -150,7 +150,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
   },
   getCurrentItemParsedSubtitleTracks: (state) => {
     return (state.currentMediaSource?.MediaStreams?.map((el, idx) => ({
-      jfIdx: idx,
+      srcIndex: idx,
       el
     }))
       .filter(
@@ -167,7 +167,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
             : undefined,
         srcLang: sub.el.Language || undefined,
         type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
-        jfIdx: sub.jfIdx,
+        srcIndex: sub.srcIndex,
         codec: sub.el.Codec
       })) || []) as PlaybackTrack[];
   },

@@ -36,15 +36,15 @@
       <v-list color="transparent">
         <v-list-item
           v-for="track of tracks"
-          :key="track.jfIdx"
+          :key="track.srcIndex"
           @click="
             SET_CURRENT_SUBTITLE_TRACK_INDEX({
-              subtitleStreamIndex: track.jfIdx
+              subtitleStreamIndex: track.srcIndex
             })
           "
         >
           <v-list-item-icon>
-            <v-icon v-if="track.jfIdx === currentSubtitleStreamIndex">
+            <v-icon v-if="track.srcIndex === currentSubtitleStreamIndex">
               mdi-check
             </v-icon>
           </v-list-item-icon>
@@ -83,7 +83,7 @@ export default Vue.extend({
       const res = [
         {
           label: this.$t('disabled'),
-          jfIdx: -1,
+          srcIndex: -1,
           type: SubtitleDeliveryMethod.External
         }
       ].concat(subs) as PlaybackTrack[];
