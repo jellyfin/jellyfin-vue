@@ -190,15 +190,15 @@ export default Vue.extend({
     ]),
     ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
     async getPlaybackUrl(): Promise<void> {
-      if (this.getCurrentItem) {
+      if (this.getCurrentItem && this.getCurrentItem.Id) {
         this.playbackInfo = (
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
-              itemId: this.getCurrentItem?.Id || '',
+              itemId: this.getCurrentItem.Id,
               userId: this.$auth.user?.Id,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
-              mediaSourceId: this.getCurrentItem?.Id,
+              mediaSourceId: this.getCurrentItem.Id,
               audioStreamIndex: this.currentAudioStreamIndex,
               subtitleStreamIndex: this.currentSubtitleStreamIndex
             },
