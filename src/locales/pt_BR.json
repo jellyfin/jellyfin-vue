@@ -133,6 +133,7 @@
   "libraryNotFound": "Biblioteca não encontrada",
   "libraryRefreshQueued": "Atualização da biblioteca na fila",
   "liked": "Gostou",
+  "likes": "Gosta",
   "links": {
     "helpTranslate": "Ajude a traduzir o Jellyfin para seu idioma",
     "poweredByJellyfin": "Este servidor é operado por Jellyfin",
@@ -144,7 +145,9 @@
     "changeServer": "Trocar servidor",
     "changeUser": "Trocar usuário",
     "connect": "Conectar",
+    "login": "Entrar",
     "loginAs": "Entrar como {name}",
+    "manualLogin": "Entrar manualmente",
     "rememberMe": "Manter-me conectado",
     "selectServer": "Selecione o servidor",
     "selectUser": "Selecione um usuário",
@@ -158,8 +161,11 @@
   "logout": "Logout",
   "logsAndActivity": {
     "activity": "Atividade",
-    "logs": "Logs",
-    "noActivityFound": "Nenhuma atividade encontrada"
+    "failedGetActivity": "Não foi possível obter atividade",
+    "failedGetLogs": "Não foi possível obter logs",
+    "logs": "Histórico",
+    "noActivityFound": "Nenhuma atividade encontrada",
+    "noLogsFound": "Sem logs encontrados"
   },
   "manualLogin": "Login manual",
   "mediaInfo": {
@@ -168,6 +174,9 @@
     },
     "audioCodec": {
       "name": "Codec de áudio:"
+    },
+    "bitrate": {
+      "name": "Taxa de bits:"
     },
     "name": "Mídia"
   },
