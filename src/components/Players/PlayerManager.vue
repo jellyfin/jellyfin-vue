@@ -12,7 +12,6 @@
         hide-overlay
         no-click-animation
         scrollable
-        :fullscreen="!isMinimized"
         :retain-focus="!isMinimized"
         :content-class="getContentClass()"
         :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
