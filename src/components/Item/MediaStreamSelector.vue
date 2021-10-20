@@ -94,15 +94,17 @@ export default Vue.extend({
           };
         });
 
-        items.unshift({
-          value: -1,
-          text: {
-            selection: this.$t('disabled'),
-            title: this.$t('disabled'),
-            subtitle: undefined,
-            icon: undefined
-          }
-        });
+        if (this.type === 'Subtitle') {
+          items.unshift({
+            value: -1,
+            text: {
+              selection: this.$t('disabled'),
+              title: this.$t('disabled'),
+              subtitle: undefined,
+              icon: undefined
+            }
+          });
+        }
 
         return items;
       }
