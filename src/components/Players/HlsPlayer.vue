@@ -169,6 +169,12 @@ export default Vue.extend({
             }
 
             break;
+          case 'playbackManager/SET_CURRENT_AUDIO_TRACK_INDEX':
+            if (mutation?.payload?.audioStreamIndex !== null) {
+              // Set the restart time so that the function knows where to restart
+              this.restartTime = this.videoElement.currentTime;
+              this.getPlaybackUrl();
+            }
         }
       });
     }

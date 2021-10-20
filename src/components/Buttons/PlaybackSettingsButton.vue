@@ -48,14 +48,10 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="getCurrentItem.MediaSources[0].MediaStreams"
-                :media-streams="
-                  getMediaStreams(
-                    getCurrentItem.MediaSources[0].MediaStreams,
-                    'Audio'
-                  )
-                "
-                @input="currentAudioTrack = $event"
+                v-if="getCurrentItemAudioTrack"
+                :media-streams="getCurrentItemAudioTrack"
+                :default-stream-index="currentAudioStreamIndex"
+                @input="setAudio($event)"
               />
             </v-col>
           </v-row>
@@ -130,13 +126,24 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', [
-      'getCurrentItem',
+      'getCurrentItemAudioTrack',
       'getCurrentItemSubtitleTracks'
     ]),
-    ...mapState('playbackManager', ['currentSubtitleStreamIndex'])
+    ...mapState('playbackManager', [
+      'currentAudioStreamIndex',
+      'currentSubtitleStreamIndex'
+    ])
   },
   methods: {
-    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
+    ...mapMutations('playbackManager', [
+      'SET_CURRENT_AUDIO_TRACK_INDEX',
+      'SET_CURRENT_SUBTITLE_TRACK_INDEX'
+    ]),
+    setAudio(audioStreamIndex: number) {
+      if (this.currentAudioStreamIndex !== audioStreamIndex) {
+        this.SET_CURRENT_AUDIO_TRACK_INDEX({ audioStreamIndex });
+      }
+    },
     setSubtitle(subtitleStreamIndex: number) {
       if (this.currentSubtitleStreamIndex !== subtitleStreamIndex) {
         this.SET_CURRENT_SUBTITLE_TRACK_INDEX({ subtitleStreamIndex });
