@@ -224,8 +224,8 @@ const itemHelper = Vue.extend({
     /**
      * Filters the media streams based on the wanted type
      *
-     * @param mediaStreams Media streams to filter among
-     * @param streamType Stream type such as "audio" or "subtitles"
+     * @param {MediaStream[]} mediaStreams Media streams to filter among
+     * @param {string} streamType Stream type such as "audio" or "subtitles"
      * @returns {MediaStream[]} - Filtered media streams
      */
     getMediaStreams(

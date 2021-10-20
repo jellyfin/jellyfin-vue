@@ -67,14 +67,10 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="getCurrentItem.MediaSources[0].MediaStreams"
-                :media-streams="
-                  getMediaStreams(
-                    getCurrentItem.MediaSources[0].MediaStreams,
-                    'Subtitle'
-                  )
-                "
-                @input="currentAudioTrack = $event"
+                v-if="getCurrentItemSubtitleTracks"
+                :media-streams="getCurrentItemSubtitleTracks"
+                :default-stream-index="currentSubtitleStreamIndex"
+                @input="setSubtitle($event)"
               />
             </v-col>
           </v-row>
@@ -106,7 +102,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
@@ -124,15 +120,27 @@ export default Vue.extend({
       stretch: this.stretchProp
     };
   },
-  computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem'])
-  },
   watch: {
     stretchProp(value) {
       this.stretch = value;
     },
     stretch(value) {
       this.$emit('stretch', value);
+    }
+  },
+  computed: {
+    ...mapGetters('playbackManager', [
+      'getCurrentItem',
+      'getCurrentItemSubtitleTracks'
+    ]),
+    ...mapState('playbackManager', ['currentSubtitleStreamIndex'])
+  },
+  methods: {
+    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
+    setSubtitle(subtitleStreamIndex: number) {
+      if (this.currentSubtitleStreamIndex !== subtitleStreamIndex) {
+        this.SET_CURRENT_SUBTITLE_TRACK_INDEX({ subtitleStreamIndex });
+      }
     }
   }
 });
