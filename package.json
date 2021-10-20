@@ -74,7 +74,7 @@
     "hls.js": "0.14.17",
     "js-cookie": "^3.0.1",
     "langs": "^2.0.0",
-    "libass-wasm": "git+https://github.com/jellyfin/JavascriptSubtitlesOctopus.git#4.0.0-jf",
+    "libass-wasm": "^4.0.0",
     "lodash": "^4.17.21",
     "mux.js": "^5.14.1",
     "nuxt": "^2.15.8",

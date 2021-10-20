@@ -267,8 +267,7 @@ export default Vue.extend({
     displayExternalSub(newSub?: PlaybackTrack) {
       // Disable octopus
       if (this.octopus) {
-        this.octopus.dispose();
-        this.octopus = undefined;
+        this.octopus.freeTrack();
       }
 
       // Disable VTT
@@ -305,13 +304,20 @@ export default Vue.extend({
         this.videoElement.textTracks[0].mode = 'showing';
         this.subtitleTrack = newSub;
       } else if (assIdx !== -1) {
-        this.octopus = new SubtitlesOctopus({
-          video: this.videoElement,
-          workerUrl: SubtitlesOctopusWorker,
-          legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
-          subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
-          blendRender: true
-        });
+        if (!this.octopus) {
+          this.octopus = new SubtitlesOctopus({
+            video: this.videoElement,
+            workerUrl: SubtitlesOctopusWorker,
+            legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
+            subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
+            blendRender: true
+          });
+        } else {
+          this.octopus.setTrackByUrl(
+            this.$axios.defaults.baseURL + (newSub.src || '')
+          );
+        }
+
         this.subtitleTrack = newSub;
       }
     },
