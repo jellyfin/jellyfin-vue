@@ -31,22 +31,13 @@
     </template>
     <v-card>
       <v-list color="transparent">
-        <v-list-item>
+        <v-list-item disabled>
           <v-row align="center">
             <v-col :cols="4">
               <label>{{ $t('quality') }}</label>
             </v-col>
             <v-col :cols="8">
-              <media-stream-selector
-                v-if="getCurrentItem.MediaSources[0].MediaStreams"
-                :media-streams="
-                  getMediaStreams(
-                    getCurrentItem.MediaSources[0].MediaStreams,
-                    'Subtitles'
-                  )
-                "
-                @input="currentAudioTrack = $event"
-              />
+              <v-select />
             </v-col>
           </v-row>
         </v-list-item>
@@ -80,7 +71,7 @@
                 :media-streams="
                   getMediaStreams(
                     getCurrentItem.MediaSources[0].MediaStreams,
-                    'Subtitles'
+                    'Subtitle'
                   )
                 "
                 @input="currentAudioTrack = $event"
@@ -88,22 +79,13 @@
             </v-col>
           </v-row>
         </v-list-item>
-        <v-list-item>
+        <v-list-item disabled>
           <v-row align="center">
             <v-col :cols="4">
               <label>{{ $t('speed') }}</label>
             </v-col>
             <v-col :cols="8">
-              <media-stream-selector
-                v-if="getCurrentItem.MediaSources[0].MediaStreams"
-                :media-streams="
-                  getMediaStreams(
-                    getCurrentItem.MediaSources[0].MediaStreams,
-                    'Subtitles'
-                  )
-                "
-                @input="currentAudioTrack = $event"
-              />
+              <v-select />
             </v-col>
           </v-row>
         </v-list-item>
