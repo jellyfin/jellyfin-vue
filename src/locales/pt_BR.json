@@ -37,7 +37,8 @@
   "dialog": {
     "upNext": {
       "hide": "Esconder",
-      "nextItemPlayingIn": "Iniciando em {time}"
+      "nextItemPlayingIn": "Iniciando em {time}",
+      "startNow": "Começar agora"
     }
   },
   "directing": "Diretor",
@@ -66,6 +67,7 @@
   "filtersNotFound": "Incapaz de carregar filtros",
   "fullScreen": "Tela cheia",
   "general": "Geral",
+  "genericJellyfinPlaceholderDevice": "Dispositivo genérico Jellyfin",
   "genres": "Gêneros",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Participação especial",
