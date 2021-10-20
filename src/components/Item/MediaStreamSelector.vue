@@ -33,7 +33,6 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-// @ts-expect-error - This module doesn't have typings. Temporary module while waiting for fixes to language names on the server
 import langs from 'langs';
 import { MediaStream } from '@jellyfin/client-axios';
 
@@ -168,7 +167,7 @@ export default Vue.extend({
      * @returns {string} Full word
      */
     getLanguageName(code: string): string {
-      return langs.where('2B', code).name;
+      return langs.where('2B', code)?.name || '';
     },
     /**
      * @param {string} layout - Audio layout to get related icon
