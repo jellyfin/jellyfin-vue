@@ -122,6 +122,13 @@ export default Vue.extend({
       }
     }
   },
+  watch: {
+    defaultStreamIndex(newValue) {
+      if (newValue !== this.trackIndex) {
+        this.trackIndex = newValue;
+      }
+    }
+  },
   /**
    * Sets the default track when loading the component
    */
