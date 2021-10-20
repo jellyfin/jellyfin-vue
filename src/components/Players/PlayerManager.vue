@@ -7,7 +7,6 @@
       />
       <player-dialog
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
-        ref="playerDialog"
         dark
         persistent
         hide-overlay
@@ -243,7 +242,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
@@ -282,9 +280,16 @@ export default Vue.extend({
   watch: {
     isMinimized(value): void {
       if (value) {
-        clearAllBodyScrollLocks();
+        document.documentElement.classList.remove('overflow-hidden');
       } else {
-        disableBodyScroll(this.$refs.playerDialog as Element);
+        document.documentElement.classList.add('overflow-hidden');
+      }
+    },
+    isPlaying(value) {
+      if (value && !this.isMinimized) {
+        document.documentElement.classList.add('overflow-hidden');
+      } else {
+        document.documentElement.classList.remove('overflow-hidden');
       }
     }
   },
