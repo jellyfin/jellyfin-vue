@@ -1,4 +1,220 @@
 {
   "actor": "Aktoro",
-  "actors": "Aktoroj"
+  "actors": "Aktoroj",
+  "albums": "Albumoj",
+  "allLanguages": "Ĉiuj lingvoj",
+  "alphabetically": "Alfabete",
+  "architecture": "Arkitekturo",
+  "artist": "Artisto",
+  "artists": "Artistoj",
+  "audio": "Aŭda",
+  "books": "Libroj",
+  "buttons": {
+    "ok": "Ek"
+  },
+  "byArtist": "De {artist}",
+  "cancel": "Rezignu",
+  "castAndCrew": "Roluloj kaj Skipanoj",
+  "collections": "Kolektoj",
+  "confirm": "Konfirmu",
+  "connect": "Konektu",
+  "continueWatching": "Daŭrigu spektadon",
+  "dateAdded": "Dato aldonita",
+  "details": "Detaloj",
+  "dialog": {
+    "upNext": {
+      "hide": "Kaŝu",
+      "startNow": "Startu nun"
+    }
+  },
+  "directing": "Reĝisorado",
+  "director": "Reĝisoro",
+  "dislikes": "Malŝatitaj",
+  "edit": "Redaktu",
+  "editMetadata": "Redaktu metadatenaron",
+  "endDate": "Fina dato",
+  "favorite": "Favorata",
+  "features": "Rimedoj",
+  "fullScreen": "Plenekranen",
+  "general": "Ĝenerala",
+  "genres": "Ĝenroj",
+  "guestStar": "Gaststelulo",
+  "headerPaths": "Serĉvojo",
+  "home": "Hejmo",
+  "imageType": {
+    "art": "Vinjeto",
+    "backdrop": "Dorsbildo",
+    "banner": "Standardo",
+    "box": "Skatolo",
+    "boxRear": "Skatolo (dorsa)",
+    "disc": "Diskedo",
+    "logo": "Logotipo",
+    "menu": "Menuo",
+    "primary": "Primara",
+    "screenshot": "Ekrankopio",
+    "thumb": "Avizobildo"
+  },
+  "images": "Bildoj",
+  "item": {
+    "artist": {
+      "appearsOn": "Aperoj",
+      "information": "Informo",
+      "videos": "Videoj"
+    },
+    "cast": "Roluloj",
+    "composer": "Komponisto",
+    "crew": "Skipanoj",
+    "person": {
+      "birth": "Naskiĝinta",
+      "birthPlace": "Naskiĝloko",
+      "books": "Libroj",
+      "death": "Mortis",
+      "information": "Informo",
+      "movies": "Filmoj",
+      "person": "Persono",
+      "photos": "Fotoj",
+      "shows": "Serioj"
+    },
+    "tracklist": {
+      "title": "Titolo"
+    }
+  },
+  "libraries": "Libraroj",
+  "liked": "Ŝati",
+  "likes": "Ŝatitaj",
+  "login": {
+    "connect": "Konektu",
+    "login": "Ensaluto"
+  },
+  "logout": "Elsaluto",
+  "logsAndActivity": {
+    "activity": "Aktiveco",
+    "logs": "Ĵurnaloj"
+  },
+  "mediaInfo": {
+    "bitrate": {
+      "name": "Bitrapido:"
+    },
+    "container": {
+      "name": "Ujo:"
+    },
+    "name": "Plurmedio"
+  },
+  "menu": "Menuo",
+  "metadata": {
+    "source": "Fonto",
+    "sourceAll": "Ĉiuj",
+    "title": "Titolo",
+    "type": "Tipo"
+  },
+  "more": "Pli",
+  "movies": "Filmoj",
+  "name": "Nomo",
+  "networks": "TV-retoj",
+  "password": "Pasvorto",
+  "people": "Homoj",
+  "person": "Persono",
+  "play": "Ludu",
+  "playback": {
+    "shuffle": "Miksu"
+  },
+  "playbackInfo": {
+    "playMethod": {
+      "direct": "Rekta",
+      "name": "Metodo:"
+    },
+    "streamType": {
+      "unknown": "Nekonata",
+      "video": "Video"
+    }
+  },
+  "played": "Ludita",
+  "playerInfo": {
+    "name": "Ludilo"
+  },
+  "present": "Nuna",
+  "producer": "Produktanto",
+  "quality": "Kvalito",
+  "queue": "Vico",
+  "rating": "Taksado",
+  "resume": "Daŭrigu",
+  "role": "Rolo",
+  "save": "Savu",
+  "saved": "Savita",
+  "search": {
+    "name": "Serĉu"
+  },
+  "series": "Serio",
+  "server": "Servilo",
+  "settings": {
+    "devices": {
+      "delete": "Forigu",
+      "devices": "Aparatoj",
+      "userName": "Uzantnomo"
+    },
+    "help": "Helpo",
+    "logsAndActivity": {
+      "activity": "Aktiveco",
+      "logs": "Ĵurnaloj"
+    },
+    "settings": "Parametroj"
+  },
+  "settingsSections": {
+    "account": {
+      "name": "Konto"
+    },
+    "devices": {
+      "name": "Aparatoj"
+    },
+    "dlna": {
+      "name": "DLNA"
+    },
+    "libraries": {
+      "name": "Libraroj"
+    },
+    "networking": {
+      "name": "Retkonektado"
+    },
+    "notifications": {
+      "name": "Sciigoj"
+    },
+    "plugins": {
+      "name": "Kromprogramoj"
+    },
+    "server": {
+      "name": "Servilo"
+    },
+    "subtitles": {
+      "name": "Subtekstoj"
+    },
+    "users": {
+      "name": "Uzantoj"
+    }
+  },
+  "shows": "Serioj",
+  "songs": "Kantoj",
+  "speed": "Rapido",
+  "status": "Stato",
+  "studios": "Studioj",
+  "subtitles": "Subtekstoj",
+  "tagline": "Slogano",
+  "tags": "Etikedoj",
+  "tooltips": {
+    "changeLanguage": "Lingvo"
+  },
+  "trailer": "Filmanonco",
+  "transcodingInfo": {
+    "transcodingProgress": "Progreso:"
+  },
+  "type": "Tipo",
+  "undefined": "Nedifinita",
+  "unliked": "Malŝati",
+  "unplayed": "Neludita",
+  "username": "Uzantnomo",
+  "version": "Versio",
+  "video": "Video",
+  "writer": "Scenaristo",
+  "writing": "Scenaro",
+  "year": "Jaro",
+  "years": "Jaroj"
 }
