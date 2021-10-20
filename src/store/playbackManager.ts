@@ -141,6 +141,13 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
 
     return null;
   },
+  getCurrentItemAudioTrack: (state) => {
+    if (!isNil(state.currentMediaSource)) {
+      return state.currentMediaSource.MediaStreams?.filter((stream) => {
+        return stream.Type === 'Audio';
+      });
+    }
+  },
   getCurrentItemSubtitleTracks: (state) => {
     if (!isNil(state.currentMediaSource)) {
       return state.currentMediaSource.MediaStreams?.filter((stream) => {
