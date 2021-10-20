@@ -264,7 +264,7 @@ export default Vue.extend({
       // Manage non-encoded subs
       this.displayExternalSub(newSub);
     },
-    displayExternalSub(newSub: PlaybackTrack | undefined) {
+    displayExternalSub(newSub?: PlaybackTrack) {
       // Disable octopus
       if (this.octopus) {
         this.octopus.dispose();
