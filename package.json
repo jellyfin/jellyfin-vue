@@ -99,6 +99,7 @@
     "@types/he": "^1.1.2",
     "@types/jest": "^27.0.2",
     "@types/js-cookie": "^3.0.0",
+    "@types/langs": "^2.0.1",
     "@types/lodash": "^4.14.176",
     "@types/nuxtjs__auth": "^4.8.8",
     "@types/qs": "^6.9.7",
