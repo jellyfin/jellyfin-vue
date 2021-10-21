@@ -21,7 +21,10 @@
         <v-hover v-slot="{ hover }">
           <v-card class="player-card" width="100%">
             <v-container fill-height fluid class="pa-0 justify-center">
-              <hls-player ref="videoPlayer" />
+              <hls-player
+                ref="videoPlayer"
+                :stretch="stretchVideo && !isMinimized"
+              />
             </v-container>
             <!-- Mini Player Overlay -->
             <v-fade-transition>
@@ -205,8 +208,10 @@
                           />
                           <playback-settings-button
                             :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                            :stretch-prop="stretchVideo"
                             @input="onMenuOpen($event)"
                             @open-playback-data="playbackData = true"
+                            @stretch="stretchVideo = $event"
                           />
                           <v-btn
                             v-if="$features.pictureInPicture"
@@ -215,6 +220,19 @@
                             @click="togglePictureInPicture"
                           >
                             <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
+                          </v-btn>
+                          <v-btn
+                            v-if="$vuetify.breakpoint.smAndUp"
+                            class="align-self-center active-button"
+                            icon
+                            @click="stretchVideo = !stretchVideo"
+                          >
+                            <v-icon v-if="!stretchVideo">
+                              mdi-stretch-to-page-outline
+                            </v-icon>
+                            <v-icon v-if="stretchVideo">
+                              mdi-stretch-to-page
+                            </v-icon>
                           </v-btn>
                           <v-btn
                             v-if="$features.fullScreen"
@@ -257,7 +275,8 @@ export default Vue.extend({
       fullScreenVideo: false,
       keepOpen: false,
       playbackData: false,
-      isUpNextVisible: false
+      isUpNextVisible: false,
+      stretchVideo: true
     };
   },
   computed: {
