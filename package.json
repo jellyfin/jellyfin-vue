@@ -61,7 +61,7 @@
     "dompurify": "^2.3.3",
     "entities": "^3.0.1",
     "he": "^1.2.0",
-    "hls.js": "0.14.17",
+    "hls.js": "1.0.11",
     "js-cookie": "^3.0.1",
     "langs": "^2.0.0",
     "libass-wasm": "^4.0.0",
