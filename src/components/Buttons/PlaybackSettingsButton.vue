@@ -91,6 +91,16 @@
             </v-col>
           </v-row>
         </v-list-item>
+        <v-list-item>
+          <v-row align="center">
+            <v-col :cols="4">
+              <label>{{ $t('stretch') }}</label>
+            </v-col>
+            <v-col :cols="8">
+              <v-switch v-model="stretch" />
+            </v-col>
+          </v-row>
+        </v-list-item>
       </v-list>
     </v-card>
   </v-menu>
@@ -105,15 +115,25 @@ export default Vue.extend({
     nudgeTop: {
       type: [Number, String],
       default: 0
-    }
+    },
+    stretchProp: Boolean
   },
   data() {
     return {
-      menu: false
+      menu: false,
+      stretch: this.stretchProp
     };
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem'])
+  },
+  watch: {
+    stretchProp(value) {
+      this.stretch = value;
+    },
+    stretch(value) {
+      this.$emit('stretch', value);
+    }
   }
 });
 </script>

@@ -2,6 +2,7 @@
   <div>
     <video
       ref="player"
+      :class="{ stretch: stretch }"
       :poster="poster.url"
       autoplay
       crossorigin="anonymous"
@@ -46,6 +47,12 @@ require('libass-wasm/dist/js/subtitles-octopus-worker.wasm');
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
+  props: {
+    stretch: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
@@ -407,6 +414,9 @@ video {
   max-width: 100vw;
   max-height: 100vh;
   width: 100%;
-  height: 100%;
+}
+
+.stretch {
+  width: 100vw !important;
 }
 </style>
