@@ -1,12 +1,14 @@
 {
   "actor": "Aktoro",
   "actors": "Aktoroj",
+  "airPlayDevices": "Aparatoj de AirPlay",
   "albums": "Albumoj",
   "allLanguages": "Ĉiuj lingvoj",
   "alphabetically": "Alfabete",
   "architecture": "Arkitekturo",
   "artist": "Artisto",
   "artists": "Artistoj",
+  "aspectRatio": "Proporcio",
   "audio": "Aŭda",
   "books": "Libroj",
   "buttons": {
@@ -16,9 +18,13 @@
   "cancel": "Rezignu",
   "castAndCrew": "Roluloj kaj Skipanoj",
   "collections": "Kolektoj",
+  "communityRating": "Komunuma taksado",
   "confirm": "Konfirmu",
   "connect": "Konektu",
+  "continueListening": "Daŭru aŭskulton",
   "continueWatching": "Daŭrigu spektadon",
+  "criticRating": "Kritika taksado",
+  "customRating": "Laŭmenda taksado",
   "dateAdded": "Dato aldonita",
   "details": "Detaloj",
   "dialog": {
@@ -29,18 +35,34 @@
   },
   "directing": "Reĝisorado",
   "director": "Reĝisoro",
+  "discNumber": "Diskedo {discNumber}",
   "dislikes": "Malŝatitaj",
   "edit": "Redaktu",
   "editMetadata": "Redaktu metadatenaron",
+  "editPerson": "Redaktu personon",
   "endDate": "Fina dato",
+  "episodeNumber": "Epizodo {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Eraro okazis"
+  },
   "favorite": "Favorata",
   "features": "Rimedoj",
+  "filter": "Filtru",
   "fullScreen": "Plenekranen",
   "general": "Ĝenerala",
   "genres": "Ĝenroj",
   "guestStar": "Gaststelulo",
+  "headerExternalIds": "Eksteraj identigiloj",
   "headerPaths": "Serĉvojo",
   "home": "Hejmo",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Lastatempe aldonitaj"
+    },
+    "welcome": {
+      "helloUser": "Saluton, {userName}!"
+    }
+  },
   "imageType": {
     "art": "Vinjeto",
     "backdrop": "Dorsbildo",
@@ -58,6 +80,7 @@
   "item": {
     "artist": {
       "appearsOn": "Aperoj",
+      "discography": "Diskografio",
       "information": "Informo",
       "videos": "Videoj"
     },
@@ -79,26 +102,51 @@
       "title": "Titolo"
     }
   },
+  "jellyfinLogo": "Logotipo de Jellyfin",
+  "latestLibrary": "Plej nova {libraryName}",
   "libraries": "Libraroj",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
   "login": {
+    "addServer": "Aldonu Servilon",
+    "changeServer": "Ŝanĝi Servilon",
+    "changeUser": "Ŝanĝi uzanton",
     "connect": "Konektu",
-    "login": "Ensaluto"
+    "login": "Ensaluto",
+    "manualLogin": "Mana ensaluto",
+    "rememberMe": "Memoru min",
+    "selectServer": "Elektu Servilon",
+    "serverAddress": "Servila adreso",
+    "serverDashboard": "Servila panelo"
   },
   "logout": "Elsaluto",
   "logsAndActivity": {
     "activity": "Aktiveco",
-    "logs": "Ĵurnaloj"
+    "logs": "Ĵurnaloj",
+    "noActivityFound": "Neniuj agadoj trovitaj",
+    "noLogsFound": "Neniuj ĵurnaloj trovitaj"
   },
+  "manualLogin": "Mana ensaluto",
   "mediaInfo": {
+    "audioChannels": {
+      "name": "Aŭdaj kanaloj:"
+    },
+    "audioCodec": {
+      "name": "Aŭda kodeko:"
+    },
     "bitrate": {
       "name": "Bitrapido:"
     },
     "container": {
       "name": "Ujo:"
     },
-    "name": "Plurmedio"
+    "name": "Plurmedio",
+    "subtitleCodec": {
+      "name": "Subteksta kodeko:"
+    },
+    "videoCodec": {
+      "name": "Videa kodeko:"
+    }
   },
   "menu": "Menuo",
   "metadata": {
@@ -107,49 +155,103 @@
     "title": "Titolo",
     "type": "Tipo"
   },
+  "metadataEditor": "Redaktilo pri metadatenaro",
   "more": "Pli",
+  "moreLikeArtist": "Pli kiel {artist}",
+  "moreLikeThis": "Pli Ĉi Tiel",
   "movies": "Filmoj",
   "name": "Nomo",
   "networks": "TV-retoj",
+  "nextUp": "Sekva Plue",
+  "noImagesFound": "Neniuj bildoj trovitaj",
+  "noNetworkConnection": "Neniu retkonekto",
+  "noSubtitleSelected": "Neniu subteksto elektita",
+  "numberTracks": "{number} trakoj",
+  "operatingSystem": "Operaciumo",
+  "originalTitle": "Originala titolo",
+  "parentalRating": "Gepatra taksado",
+  "parentalRatings": "Gepatraj taksadoj",
   "password": "Pasvorto",
   "people": "Homoj",
   "person": "Persono",
   "play": "Ludu",
   "playback": {
-    "shuffle": "Miksu"
+    "addToQueue": "Aldoni al vico",
+    "clearQueue": "Klaru vicon kaj haltu ludadon",
+    "playAll": "Ludu ĉiujn",
+    "playNext": "Ludu sekvan",
+    "playbackSource": {
+      "item": "Ludante de {item}",
+      "shuffle": "Ludante en miksado",
+      "shuffleItem": "Ludante {item} en miksado",
+      "unknown": "Ludante de vico"
+    },
+    "queueItems": "{items} trakoj",
+    "saveAsPlaylist": "Savu vicon kiel ludliston",
+    "shuffle": "Miksu",
+    "shuffleAll": "Miksu ĉiujn"
   },
+  "playbackData": "Ludada informo",
   "playbackInfo": {
+    "name": "Ludado",
     "playMethod": {
       "direct": "Rekta",
       "name": "Metodo:"
     },
     "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Flua tipo:",
       "unknown": "Nekonata",
       "video": "Video"
     }
   },
+  "playbackSettings": "Ludadaj parametroj",
   "played": "Ludita",
   "playerInfo": {
-    "name": "Ludilo"
+    "name": "Ludilo",
+    "playbackResolution": {
+      "name": "Vduja distingivo:"
+    },
+    "videoResolution": {
+      "name": "Videa distingivo:"
+    }
   },
   "present": "Nuna",
   "producer": "Produktanto",
   "quality": "Kvalito",
   "queue": "Vico",
   "rating": "Taksado",
+  "refreshLibrary": "Refreŝigi libraron",
+  "releaseDate": "Eldona dato",
+  "remoteDevices": "Foraj aparatoj",
   "resume": "Daŭrigu",
   "role": "Rolo",
   "save": "Savu",
   "saved": "Savita",
   "search": {
-    "name": "Serĉu"
+    "name": "Serĉu",
+    "topResults": "Pintaj rezultoj"
   },
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serio",
   "server": "Servilo",
+  "serverVersion": "Servila versio",
   "settings": {
+    "apiKeys": {
+      "accessToken": "Alira ĵetono",
+      "apiKeys": "API-ŝlosiloj",
+      "appName": "Apa nomo",
+      "dateCreated": "Dato kreita"
+    },
     "devices": {
+      "appName": "Apa nomo",
+      "appVersion": "Apa versio",
       "delete": "Forigu",
+      "deleteAll": "Forigu ĉiujn",
+      "deviceName": "Aparata nomo",
       "devices": "Aparatoj",
+      "lastActive": "Laste aktiva",
       "userName": "Uzantnomo"
     },
     "help": "Helpo",
@@ -169,8 +271,14 @@
     "dlna": {
       "name": "DLNA"
     },
+    "home": {
+      "name": "Hejma ekrano"
+    },
     "libraries": {
       "name": "Libraroj"
+    },
+    "mediaPlayers": {
+      "name": "Plurmediaj ludiloj"
     },
     "networking": {
       "name": "Retkonektado"
@@ -178,8 +286,15 @@
     "notifications": {
       "name": "Sciigoj"
     },
+    "playback": {
+      "description": "Redaktu viajn ludadajn preferojn por ĉi tiu aparato",
+      "name": "Ludado"
+    },
     "plugins": {
       "name": "Kromprogramoj"
+    },
+    "scheduledTasks": {
+      "name": "Planitaj taskoj"
     },
     "server": {
       "name": "Servilo"
@@ -192,27 +307,59 @@
     }
   },
   "shows": "Serioj",
+  "signIn": "Ensaluti",
   "songs": "Kantoj",
+  "sortByType": "De {type}",
+  "sortTitle": "Ordiga titolo",
+  "specialFeatures": "Speciala Rimedoj",
   "speed": "Rapido",
+  "startNow": "Startu nun",
   "status": "Stato",
   "studios": "Studioj",
   "subtitles": "Subtekstoj",
+  "syncPlayGroups": "Grupoj de SyncPlay",
   "tagline": "Slogano",
   "tags": "Etikedoj",
+  "themeSong": "Tema Kanto",
+  "themeVideo": "Tema Video",
   "tooltips": {
     "changeLanguage": "Lingvo"
   },
   "trailer": "Filmanonco",
   "transcodingInfo": {
-    "transcodingProgress": "Progreso:"
+    "transcodingProgress": "Progreso:",
+    "transcodingReason": {
+      "reasons": {
+        "videoResolutionNotSupported": "La distingivo de la video ne estas subtenata"
+      }
+    }
   },
   "type": "Tipo",
   "undefined": "Nedifinita",
+  "unexpectedError": "Neatendita eraro",
+  "unhandledException": "Ne pritraktita escepto",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} Kibit/s",
+      "mbps": "{value} Mibit/s"
+    }
+  },
   "unliked": "Malŝati",
   "unplayed": "Neludita",
+  "upNext": "Plu sekva",
   "username": "Uzantnomo",
   "version": "Versio",
   "video": "Video",
+  "videoTypes": "Videaj Tipoj",
+  "viewDetails": "Vidu detalojn",
+  "vueClientVersion": "Klienta versio",
+  "wizard": {
+    "administratorAccount": "Administranta konto",
+    "confirmPassword": "Konfirmu pasvorton",
+    "preferedLanguage": "Preferata lingvo",
+    "remoteAccess": "Fora Aliro",
+    "setupWizard": "Asistanto pri agordo"
+  },
   "writer": "Scenaristo",
   "writing": "Scenaro",
   "year": "Jaro",
