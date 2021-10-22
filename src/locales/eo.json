@@ -115,6 +115,10 @@
   "libraryNotFound": "Libraro ne trovita",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
+  "links": {
+    "poweredByJellyfin": "Ĉi tiu servilo funkcias per Jellyfin",
+    "reportAnIssue": "Raporti problemon kun ĉi tiu kliento"
+  },
   "login": {
     "addServer": "Aldonu servilon",
     "changeServer": "Ŝanĝi servilon",
