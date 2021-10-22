@@ -1,4 +1,5 @@
 {
+  "3DFormat": "3D-formato",
   "actor": "Aktoro",
   "actors": "Aktoroj",
   "airPlayDevices": "Aparatoj de AirPlay",
@@ -35,15 +36,20 @@
   },
   "directing": "Reĝisorado",
   "director": "Reĝisoro",
+  "disabled": "Malebligita",
   "discNumber": "Diskedo {discNumber}",
   "dislikes": "Malŝatitaj",
   "edit": "Redaktu",
   "editMetadata": "Redaktu metadatenaron",
   "editPerson": "Redaktu personon",
   "endDate": "Fina dato",
+  "endsAt": "Finiĝas je {time}",
   "episodeNumber": "Epizodo {episodeNumber}",
   "errors": {
-    "anErrorHappened": "Eraro okazis"
+    "anErrorHappened": "Eraro okazis",
+    "messages": {
+      "errorCode": "Erara kodo: {errorCode}"
+    }
   },
   "favorite": "Favorata",
   "features": "Rimedoj",
@@ -102,22 +108,26 @@
       "title": "Titolo"
     }
   },
+  "itemNotFound": "Aĵo ne trovita",
   "jellyfinLogo": "Logotipo de Jellyfin",
   "latestLibrary": "Plej nova {libraryName}",
   "libraries": "Libraroj",
+  "libraryNotFound": "Libraro ne trovita",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
   "login": {
-    "addServer": "Aldonu Servilon",
-    "changeServer": "Ŝanĝi Servilon",
+    "addServer": "Aldonu servilon",
+    "changeServer": "Ŝanĝi servilon",
     "changeUser": "Ŝanĝi uzanton",
     "connect": "Konektu",
     "login": "Ensaluto",
     "manualLogin": "Mana ensaluto",
     "rememberMe": "Memoru min",
     "selectServer": "Elektu Servilon",
+    "selectUser": "Elektu uzanton",
     "serverAddress": "Servila adreso",
-    "serverDashboard": "Servila panelo"
+    "serverDashboard": "Servila panelo",
+    "serverNotFound": "Servilo ne trovita"
   },
   "logout": "Elsaluto",
   "logsAndActivity": {
@@ -168,7 +178,9 @@
   "noSubtitleSelected": "Neniu subteksto elektita",
   "numberTracks": "{number} trakoj",
   "operatingSystem": "Operaciumo",
+  "originalAspectRatio": "Originala proporcio",
   "originalTitle": "Originala titolo",
+  "overview": "Superrigardo",
   "parentalRating": "Gepatra taksado",
   "parentalRatings": "Gepatraj taksadoj",
   "password": "Pasvorto",
@@ -196,7 +208,9 @@
     "name": "Ludado",
     "playMethod": {
       "direct": "Rekta",
-      "name": "Metodo:"
+      "name": "Metodo:",
+      "remux": "Replekto",
+      "transcode": "Transkodado"
     },
     "streamType": {
       "dash": "DASH",
@@ -214,7 +228,8 @@
       "name": "Vduja distingivo:"
     },
     "videoResolution": {
-      "name": "Videa distingivo:"
+      "name": "Videa distingivo:",
+      "value": "{width}✕{height}"
     }
   },
   "present": "Nuna",
@@ -225,6 +240,7 @@
   "refreshLibrary": "Refreŝigi libraron",
   "releaseDate": "Eldona dato",
   "remoteDevices": "Foraj aparatoj",
+  "resumable": "Daŭrebla",
   "resume": "Daŭrigu",
   "role": "Rolo",
   "save": "Savu",
@@ -257,7 +273,9 @@
     "help": "Helpo",
     "logsAndActivity": {
       "activity": "Aktiveco",
-      "logs": "Ĵurnaloj"
+      "logs": "Ĵurnaloj",
+      "noActivityFound": "Neniuj agadoj trovitaj",
+      "noLogsFound": "Neniuj ĵurnaloj trovitaj"
     },
     "settings": "Parametroj"
   },
@@ -302,6 +320,9 @@
     "subtitles": {
       "name": "Subtekstoj"
     },
+    "transcodingAndStreaming": {
+      "name": "Transkodado kaj elsendfluo"
+    },
     "users": {
       "name": "Uzantoj"
     }
@@ -327,6 +348,10 @@
   },
   "trailer": "Filmanonco",
   "transcodingInfo": {
+    "name": "Transkodigante",
+    "transcodingFramerate": {
+      "name": "Kadra frekvenco:"
+    },
     "transcodingProgress": "Progreso:",
     "transcodingReason": {
       "reasons": {
@@ -357,6 +382,7 @@
     "administratorAccount": "Administranta konto",
     "confirmPassword": "Konfirmu pasvorton",
     "preferedLanguage": "Preferata lingvo",
+    "preferredMetadataLanguage": "Preferata Lingvo por Metadatenaro",
     "remoteAccess": "Fora Aliro",
     "setupWizard": "Asistanto pri agordo"
   },
