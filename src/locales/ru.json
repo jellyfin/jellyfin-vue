@@ -151,7 +151,7 @@
     "manualLogin": "Войти вручную",
     "rememberMe": "Запомнить",
     "selectServer": "Выбрать сервер",
-    "selectUser": "Выбранть пользователя",
+    "selectUser": "Выбрать пользователя",
     "serverAddress": "Адрес сервера",
     "serverAddressMustBeUrl": "Адресом сервера должен быть действующий URL",
     "serverAddressRequired": "Требуется адрес сервера",
