@@ -43,6 +43,7 @@
   },
   "directing": "Dirige",
   "director": "Director",
+  "disabled": "Deshabilitado",
   "discNumber": "Disco {discNumber}",
   "dislikes": "No me gusta",
   "edit": "Editar",
@@ -242,8 +243,35 @@
     "shuffleAll": "Mezclar todo"
   },
   "playbackData": "Datos de reproducción",
+  "playbackInfo": {
+    "name": "Reproducción",
+    "playMethod": {
+      "direct": "Directo",
+      "name": "Método:",
+      "transcode": "Transcodificar"
+    },
+    "streamType": {
+      "hls": "HLS",
+      "name": "Tipo de stream:",
+      "unknown": "Desconocido",
+      "video": "Video"
+    }
+  },
   "playbackSettings": "Ajustes de reproducción",
   "played": "Reproducido",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Frames corruptos:"
+    },
+    "decodedFrames": {
+      "name": "Frames decodificados:"
+    },
+    "name": "Reproductor",
+    "videoResolution": {
+      "name": "Resolución del video:",
+      "value": "{ancho}✕{alto}"
+    }
+  },
   "present": "Actualidad",
   "producer": "Productor",
   "quality": "Calidad",
@@ -257,6 +285,9 @@
   "role": "Rol",
   "save": "Guardar",
   "saved": "Guardado",
+  "search": {
+    "name": "Buscar"
+  },
   "seasonEpisode": "Temporada {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Series",
@@ -379,10 +410,12 @@
   },
   "shows": "Series",
   "signIn": "Iniciar sesión",
+  "songs": "Canciones",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar título",
   "specialFeatures": "Contenido Adicional",
   "speed": "Velocidad",
+  "startNow": "Empezar ahora",
   "status": "Estado",
   "studios": "Estudios",
   "subtitles": "Subtítulos",
@@ -398,6 +431,12 @@
     "switchToLightMode": "Cambiar al tema claro"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transcodificando",
+    "transcodingFramerate": {
+      "name": "Framerate:"
+    }
+  },
   "type": "Tipo",
   "unableGetPublicUsers": "Error al cargar los usuarios",
   "unableGetRelated": "Error al cargar los elementos relacionados",
