@@ -1,7 +1,9 @@
 {
   "3DFormat": "3D-formato",
+  "NoMediaSourcesAvailable": "Neniuj plurmediaj fontoj haveblaj",
   "actor": "Aktoro",
   "actors": "Aktoroj",
+  "addNewPerson": "Aldoni novan personon",
   "airPlayDevices": "Aparatoj de AirPlay",
   "albums": "Albumoj",
   "allLanguages": "Ĉiuj lingvoj",
@@ -11,7 +13,10 @@
   "artists": "Artistoj",
   "aspectRatio": "Proporcio",
   "audio": "Aŭda",
+  "audioCodecNotSupported": "La aŭdkodeko ne subtenatas",
+  "badRequest": "Malbona peto. Provi denove",
   "books": "Libroj",
+  "browserNotSupported": "Via foliumilo ne subtenatas por ludi ĉi tiun dosieron.",
   "buttons": {
     "ok": "Ek"
   },
@@ -50,12 +55,17 @@
   "errors": {
     "anErrorHappened": "Eraro okazis",
     "messages": {
-      "errorCode": "Erara kodo: {errorCode}"
+      "errorCode": "Erara kodo: {errorCode}",
+      "videoPlayerError": "La videoludilo renkontis nerestaŭreblan eraron."
     }
   },
+  "failedRetrievingDisplayPreferences": "Ne eblas akiri ekranajn preferojn. Uzante lastajn konatajn parametrojn.",
+  "failedSettingDisplayPreferences": "Ne eblas ĝisdatigi ekranajn preferojn.",
+  "failedToRefreshItems": "Malsukcesis refreŝigi aĵojn",
   "favorite": "Favorata",
   "features": "Rimedoj",
   "filter": "Filtru",
+  "filtersNotFound": "Ne eblas ŝargi filtrilojn",
   "fullScreen": "Plenekranen",
   "general": "Ĝenerala",
   "genericJellyfinPlaceholderDevice": "Ĝenerala Jellyfin-aparato",
@@ -70,7 +80,9 @@
       "recentlyAdded": "Lastatempe aldonitaj"
     },
     "welcome": {
-      "helloUser": "Saluton, {userName}!"
+      "checkNewItems": "Kontroli, kio estas nova.",
+      "helloUser": "Saluton, {userName}!",
+      "noItems": "Ne estas lastatempe aldonitaj ajoj por montri."
     }
   },
   "imageType": {
@@ -87,6 +99,7 @@
     "thumb": "Avizobildo"
   },
   "images": "Bildoj",
+  "incorrectUsernameOrPassword": "Malĝusta uzantnomo aŭ pasvorto",
   "item": {
     "artist": {
       "appearsOn": "Aperoj",
@@ -116,11 +129,14 @@
   "jellyfinLogo": "Logotipo de Jellyfin",
   "latestLibrary": "Plej nova {libraryName}",
   "libraries": "Libraroj",
+  "libraryEmpty": "Ĉi tiu libraro estas malplena",
+  "libraryEmptyFilters": "Neniuj kongruantoj. Forigu iujn filtrilojn por montri pliajn aĵojn",
   "libraryNotFound": "Libraro ne trovita",
   "libraryRefreshQueued": "Librara refreŝiĝo envicigita",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
   "links": {
+    "helpTranslate": "Traduki Jellyfin al via lingvo",
     "poweredByJellyfin": "Ĉi tiu servilo funkcias per Jellyfin",
     "readTheDocumentation": "Legi la dokumentadon",
     "reportAnIssue": "Raporti problemon kun ĉi tiu kliento"
@@ -137,12 +153,17 @@
     "selectServer": "Elektu Servilon",
     "selectUser": "Elektu uzanton",
     "serverAddress": "Servila adreso",
+    "serverAddressMustBeUrl": "Servila adreso devas esti valida URL-o",
+    "serverAddressRequired": "Servila adreso estas bezonata",
     "serverDashboard": "Servila panelo",
-    "serverNotFound": "Servilo ne trovita"
+    "serverNotFound": "Servilo ne trovita",
+    "serverVersionTooLow": "Servila versio devas esti 10.7.0 aŭ pli alta"
   },
   "logout": "Elsaluto",
   "logsAndActivity": {
     "activity": "Aktiveco",
+    "failedGetActivity": "Ne eblas akiri aktivecon",
+    "failedGetLogs": "Ne eblas akiri ĵurnalojn",
     "logs": "Ĵurnaloj",
     "noActivityFound": "Neniuj agadoj trovitaj",
     "noLogsFound": "Neniuj ĵurnaloj trovitaj"
@@ -177,6 +198,7 @@
     "type": "Tipo"
   },
   "metadataEditor": "Redaktilo pri metadatenaro",
+  "metadataNoResultsMatching": "Neniuj rezultoj kongruas kun \"{search}\". Premi \"Enter\" por krei novan.",
   "more": "Pli",
   "moreLikeArtist": "Pli kiel {artist}",
   "moreLikeThis": "Pli Ĉi Tiel",
@@ -184,12 +206,17 @@
   "name": "Nomo",
   "networks": "TV-retoj",
   "nextUp": "Sekva Plue",
+  "noAudioTrackSelected": "Neniu aŭdtrako elektita",
+  "noAudioTracksAvailable": "Neniuj aŭdtrakoj disponeblas",
   "noImagesFound": "Neniuj bildoj trovitaj",
   "noInformationAvailable": "Neniu informo havebla",
   "noNetworkConnection": "Neniu retkonekto",
+  "noResultsFound": "Estas nenio ĉi tie",
   "noSubtitleSelected": "Neniu subteksto elektita",
   "noSubtitlesAvailable": "Neniuj subtekstoj haveblaj",
   "noTracksAvailable": "Neniuj trakoj haveblaj",
+  "noVideoTrackSelected": "Neniu videotrako elektita",
+  "noVideoTracksAvailable": "Neniu videotrakoj disponeblas",
   "numberTracks": "{number} trakoj",
   "operatingSystem": "Operaciumo",
   "originalAspectRatio": "Originala proporcio",
@@ -201,6 +228,7 @@
   "people": "Homoj",
   "person": "Persono",
   "play": "Ludu",
+  "playFromBeginning": "Ludi de la komenco",
   "playback": {
     "addToQueue": "Aldoni al vico",
     "clearQueue": "Klaru vicon kaj haltu ludadon",
@@ -272,23 +300,39 @@
     "name": "Serĉu",
     "topResults": "Pintaj rezultoj"
   },
+  "seasonEpisode": "Sezono {seasonNumber}, Epizodo {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serio",
   "server": "Servilo",
   "serverVersion": "Servila versio",
+  "serverVersionTooLow": "Servila versio devas esti 10.7.0 aŭ pli alta",
   "settings": {
     "apiKeys": {
       "accessToken": "Alira ĵetono",
+      "addApiKey": "Aldoni API-ŝlosilon",
+      "addNewKey": "Aldoni novan API-ŝlosilon",
       "apiKeys": "API-ŝlosiloj",
       "appName": "Apa nomo",
-      "dateCreated": "Dato kreita"
+      "createKeyFailure": "Eraro dum kreado de nova API-ŝlosilo",
+      "createKeySuccess": "Sukcese kreis novan API-ŝlosilon",
+      "dateCreated": "Dato kreita",
+      "description": "Aldonadi kaj revokadi API-ŝlosilojn por ekstera aliro al via servilo",
+      "refreshKeysFailure": "Eraro refreŝigante API-ŝlosilojn",
+      "revokeAll": "Revoki ĉiujn API-ŝlosilojn",
+      "revokeAllFailure": "Eraro dum revokado de ĉiuj API-ŝlosiloj",
+      "revokeAllSuccess": "Sukcese revokis ĉiujn API-ŝlosilojn",
+      "revokeFailure": "Eraro dum revokado de API-ŝlosilo",
+      "revokeSuccess": "Sukcese revokita API-ŝlosilo"
     },
     "devices": {
       "appName": "Apa nomo",
       "appVersion": "Apa versio",
       "delete": "Forigu",
       "deleteAll": "Forigu ĉiujn",
+      "deleteAllDevicesError": "Eraro dum forigo de ĉiuj aparatoj",
+      "deleteAllDevicesSuccess": "Ĉiuj aparatoj sukcese forigitaj",
       "deleteDeviceError": "Eraro dum forigo de aparato",
+      "deleteDeviceSuccess": "Aparato forigita sukcese",
       "deviceName": "Aparata nomo",
       "devices": "Aparatoj",
       "lastActive": "Laste aktiva",
@@ -298,6 +342,8 @@
     "help": "Helpo",
     "logsAndActivity": {
       "activity": "Aktiveco",
+      "failedGetActivity": "Ne eblas akiri aktivecon",
+      "failedGetLogs": "Ne eblas akiri ĵurnalojn",
       "logs": "Ĵurnaloj",
       "noActivityFound": "Neniuj agadoj trovitaj",
       "noLogsFound": "Neniuj ĵurnaloj trovitaj"
@@ -306,30 +352,43 @@
   },
   "settingsSections": {
     "account": {
+      "description": "Redakti la informojn de via uzanto",
       "name": "Konto"
     },
     "devices": {
+      "description": "Vidi kaj administri la aparatojn konektitajn al via servilo",
       "name": "Aparatoj"
     },
     "dlna": {
+      "description": "Agordi DLNA-parametrojn kaj profilon",
       "name": "DLNA"
     },
     "home": {
+      "description": "Agordi viajn hejmajn sekciojn kaj hejmekranan aranĝon",
       "name": "Hejma ekrano"
     },
     "libraries": {
+      "description": "Administri librarojn kaj iliajn metadatenojn",
       "name": "Libraroj"
     },
+    "liveTvAndDvr": {
+      "description": "Administri Tv-kartojn, gviddatenoj provizantojn kaj DVR-parametrojn",
+      "name": "TV-etero kaj DVR"
+    },
     "logs": {
+      "description": "Legi kaj serĉi servilajn ĵurnalojn kaj uzantan aktivecon",
       "name": "Ĵurnaloj kaj aktiveco"
     },
     "mediaPlayers": {
+      "description": "Agordi kiel kondutas la plurmediaj ludiloj por ĉi tiu aparato",
       "name": "Plurmediaj ludiloj"
     },
     "networking": {
+      "description": "Administri la retajn parametrojn de ĉi tiu servilo",
       "name": "Retkonektado"
     },
     "notifications": {
+      "description": "Administri kaj agordi sciigon senditan de ĉi tiu servilo",
       "name": "Sciigoj"
     },
     "playback": {
@@ -337,6 +396,7 @@
       "name": "Ludado"
     },
     "plugins": {
+      "description": "Aldonadi kaj agordadi novajn funkciojn por ĉi tiu servilo",
       "name": "Kromprogramoj"
     },
     "scheduledTasks": {
@@ -344,15 +404,19 @@
       "name": "Planitaj taskoj"
     },
     "server": {
+      "description": "Agordi la lingvon kaj varmarkadon de ĉi tiu servilo",
       "name": "Servilo"
     },
     "subtitles": {
+      "description": "Kontroli kiel subtekstoj estas montrataj sur ĉi tiu aparato",
       "name": "Subtekstoj"
     },
     "transcodingAndStreaming": {
+      "description": "Administri kiel ĉi tiu servilo traktas transkodadon kaj elsendfluon al klientoj",
       "name": "Transkodado kaj elsendfluo"
     },
     "users": {
+      "description": "Administri uzantojn kaj iliajn permesojn",
       "name": "Uzantoj"
     }
   },
@@ -374,7 +438,9 @@
   "themeSong": "Tema Kanto",
   "themeVideo": "Tema Video",
   "tooltips": {
-    "changeLanguage": "Lingvo"
+    "changeLanguage": "Lingvo",
+    "switchToDarkMode": "Ŝalti al malhela reĝimo",
+    "switchToLightMode": "Ŝalti al hela reĝimo"
   },
   "trailer": "Filmanonco",
   "transcodingInfo": {
@@ -387,7 +453,24 @@
     "transcodingReason": {
       "name": "Kialo: | Kialoj:",
       "reasons": {
-        "videoResolutionNotSupported": "La distingivo de la video ne estas subtenata"
+        "anamorphicVideoNotSupported": "Anamorfa video ne subtenatas",
+        "audioBitDepthNotSupported": "La aŭda bitprofundo ne subtenatas",
+        "audioBitrateNotSupported": "La aŭda bitrapido ne subtenatas",
+        "audioChannelsNotSupported": "La nombro de aŭkanaloj ne subtenatas",
+        "audioCodecNotSupported": "La aŭdkodeko ne subtenatas",
+        "audioProfileNotSupported": "La profilo de la aŭdkodeko ne subtenatas",
+        "audioSampleRateNotSupported": "La specimenada frekvenco de la aŭdio ne subtenatas",
+        "containerBitrateExceedsLimit": "La uja bitrapido superas la starigitan limon",
+        "containerNotSupported": "La ujo ne subtenatas",
+        "interlacedVideoNotSupported": "Interplektita video ne subtenatas",
+        "refFramesNotSupported": "Referencaj kadroj ne subtenatas",
+        "secondaryAudioNotSupported": "Duarangaj aŭdtrakoj ne subtenatas",
+        "subtitleCodecNotSupported": "La subteksta kodeko ne subtenatas",
+        "videoBitDepthNotSupported": "La bitprofundo de la video ne subtenatas",
+        "videoCodecNotSupported": "La video-kodeko ne subtenatas",
+        "videoFramerateNotSupported": "La kadra frekvenco de la video ne subtenatas",
+        "videoLevelNotSupported": "La nivelo de la videokodeko ne subtenatas",
+        "videoResolutionNotSupported": "La distingivo de la video ne subtenatas"
       }
     }
   },
