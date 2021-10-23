@@ -26,12 +26,14 @@
   "continueWatching": "Daŭrigu spektadon",
   "criticRating": "Kritika taksado",
   "customRating": "Laŭmenda taksado",
+  "darkModeToggle": "Baskuligi malhelan reĝimon",
   "dateAdded": "Dato aldonita",
   "details": "Detaloj",
   "dialog": {
     "upNext": {
       "hide": "Kaŝu",
-      "startNow": "Startu nun"
+      "nextItemPlayingIn": "Lanĉante je {time}",
+      "startNow": "Lanĉu nun"
     }
   },
   "directing": "Reĝisorado",
@@ -56,7 +58,9 @@
   "filter": "Filtru",
   "fullScreen": "Plenekranen",
   "general": "Ĝenerala",
+  "genericJellyfinPlaceholderDevice": "Ĝenerala Jellyfin-aparato",
   "genres": "Ĝenroj",
+  "googleCastPlaceholderDevice": "Google Cast aparato",
   "guestStar": "Gaststelulo",
   "headerExternalIds": "Eksteraj identigiloj",
   "headerPaths": "Serĉvojo",
@@ -113,10 +117,12 @@
   "latestLibrary": "Plej nova {libraryName}",
   "libraries": "Libraroj",
   "libraryNotFound": "Libraro ne trovita",
+  "libraryRefreshQueued": "Librara refreŝiĝo envicigita",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
   "links": {
     "poweredByJellyfin": "Ĉi tiu servilo funkcias per Jellyfin",
+    "readTheDocumentation": "Legi la dokumentadon",
     "reportAnIssue": "Raporti problemon kun ĉi tiu kliento"
   },
   "login": {
@@ -125,6 +131,7 @@
     "changeUser": "Ŝanĝi uzanton",
     "connect": "Konektu",
     "login": "Ensaluto",
+    "loginAs": "Ensaluti kiel {name}",
     "manualLogin": "Mana ensaluto",
     "rememberMe": "Memoru min",
     "selectServer": "Elektu Servilon",
@@ -178,8 +185,11 @@
   "networks": "TV-retoj",
   "nextUp": "Sekva Plue",
   "noImagesFound": "Neniuj bildoj trovitaj",
+  "noInformationAvailable": "Neniu informo havebla",
   "noNetworkConnection": "Neniu retkonekto",
   "noSubtitleSelected": "Neniu subteksto elektita",
+  "noSubtitlesAvailable": "Neniuj subtekstoj haveblaj",
+  "noTracksAvailable": "Neniuj trakoj haveblaj",
   "numberTracks": "{number} trakoj",
   "operatingSystem": "Operaciumo",
   "originalAspectRatio": "Originala proporcio",
@@ -227,6 +237,15 @@
   "playbackSettings": "Ludadaj parametroj",
   "played": "Ludita",
   "playerInfo": {
+    "corruptedFrames": {
+      "name": "Koruptitaj kadroj:"
+    },
+    "decodedFrames": {
+      "name": "Malkodigitaj kadroj:"
+    },
+    "droppedFrames": {
+      "name": "Faligitaj kadroj:"
+    },
     "name": "Ludilo",
     "playbackResolution": {
       "name": "Vduja distingivo:"
@@ -269,9 +288,11 @@
       "appVersion": "Apa versio",
       "delete": "Forigu",
       "deleteAll": "Forigu ĉiujn",
+      "deleteDeviceError": "Eraro dum forigo de aparato",
       "deviceName": "Aparata nomo",
       "devices": "Aparatoj",
       "lastActive": "Laste aktiva",
+      "noDevicesFound": "Neniuj aparatoj trovitaj",
       "userName": "Uzantnomo"
     },
     "help": "Helpo",
@@ -299,6 +320,9 @@
     "libraries": {
       "name": "Libraroj"
     },
+    "logs": {
+      "name": "Ĵurnaloj kaj aktiveco"
+    },
     "mediaPlayers": {
       "name": "Plurmediaj ludiloj"
     },
@@ -316,6 +340,7 @@
       "name": "Kromprogramoj"
     },
     "scheduledTasks": {
+      "description": "Administri planitajn taskojn funkciantajn sur ĉi tiu servilo",
       "name": "Planitaj taskoj"
     },
     "server": {
@@ -338,11 +363,12 @@
   "sortTitle": "Ordiga titolo",
   "specialFeatures": "Speciala Rimedoj",
   "speed": "Rapido",
-  "startNow": "Startu nun",
+  "startNow": "Lanĉu nun",
   "status": "Stato",
   "studios": "Studioj",
   "subtitles": "Subtekstoj",
   "syncPlayGroups": "Grupoj de SyncPlay",
+  "syncingInProgress": "Sinkronigado en progreso",
   "tagline": "Slogano",
   "tags": "Etikedoj",
   "themeSong": "Tema Kanto",
@@ -354,10 +380,12 @@
   "transcodingInfo": {
     "name": "Transkodigante",
     "transcodingFramerate": {
-      "name": "Kadra frekvenco:"
+      "name": "Kadra frekvenco:",
+      "value": "{value} kadro/s"
     },
     "transcodingProgress": "Progreso:",
     "transcodingReason": {
+      "name": "Kialo: | Kialoj:",
       "reasons": {
         "videoResolutionNotSupported": "La distingivo de la video ne estas subtenata"
       }
@@ -376,6 +404,7 @@
   "unliked": "Malŝati",
   "unplayed": "Neludita",
   "upNext": "Plu sekva",
+  "upNextName": "Plu sekva: {upNextItemName}",
   "username": "Uzantnomo",
   "version": "Versio",
   "video": "Video",
@@ -385,10 +414,15 @@
   "wizard": {
     "administratorAccount": "Administranta konto",
     "confirmPassword": "Konfirmu pasvorton",
+    "languageLocale": "Lingvo kaj lokaĵaro",
+    "languageSuccessfullySet": "Lingvo sukcese starigita.",
+    "metadataLanguagesSet": "Metadatenaraj lingvoj starigitaj.",
     "preferedLanguage": "Preferata lingvo",
     "preferredMetadataLanguage": "Preferata Lingvo por Metadatenaro",
     "remoteAccess": "Fora Aliro",
-    "setupWizard": "Asistanto pri agordo"
+    "remoteAccessSet": "Telealiro starigita.",
+    "setupWizard": "Asistanto pri agordo",
+    "userSuccessfullySet": "Uzanto sukcese starigita."
   },
   "writer": "Scenaristo",
   "writing": "Scenaro",
