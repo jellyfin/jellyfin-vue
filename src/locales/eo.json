@@ -470,11 +470,18 @@
         "videoCodecNotSupported": "La video-kodeko ne subtenatas",
         "videoFramerateNotSupported": "La kadra frekvenco de la video ne subtenatas",
         "videoLevelNotSupported": "La nivelo de la videokodeko ne subtenatas",
+        "videoProfileNotSupported": "La profilo de la videokodeko ne subtenatas",
         "videoResolutionNotSupported": "La distingivo de la video ne subtenatas"
       }
     }
   },
   "type": "Tipo",
+  "unableGetPublicUsers": "Ne eblas akiri uzantojn",
+  "unableGetRelated": "Ne eblas akiri rilatajn aĵojn",
+  "unableGetServerConfiguration": "Ne eblas akiri servilan agordaron",
+  "unableToRefreshLibrary": "Ne eblas refreŝigi libraron",
+  "unableToToggleLike": "Ne eblas ŝanĝi la ŝatatan staton de la elemento",
+  "unableToTogglePlayed": "Ne eblas ĝisdatigi la spektan staton",
   "undefined": "Nedifinita",
   "unexpectedError": "Neatendita eraro",
   "unhandledException": "Ne pritraktita escepto",
@@ -482,6 +489,9 @@
     "bitrate": {
       "kbps": "{value} Kibit/s",
       "mbps": "{value} Mibit/s"
+    },
+    "time": {
+      "seconds": "{count} sekundo | {count} sekundoj"
     }
   },
   "unliked": "Malŝati",
@@ -489,6 +499,11 @@
   "upNext": "Plu sekva",
   "upNextName": "Plu sekva: {upNextItemName}",
   "username": "Uzantnomo",
+  "validation": {
+    "bothPasswordsSame": "Ambaŭ pasvortoj devas esti samaj",
+    "mustBeUrl": "Ĉi tiu kampo devas esti valida URL-o",
+    "required": "Ĉi tiu kampo estas deviga"
+  },
   "version": "Versio",
   "video": "Video",
   "videoTypes": "Videaj Tipoj",
@@ -496,6 +511,8 @@
   "vueClientVersion": "Klienta versio",
   "wizard": {
     "administratorAccount": "Administranta konto",
+    "allowRemoteAccess": "Permesi telealiron al la servilo",
+    "completeError": "Ne povas kompletigi startigan asistanton.",
     "confirmPassword": "Konfirmu pasvorton",
     "languageLocale": "Lingvo kaj lokaĵaro",
     "languageSuccessfullySet": "Lingvo sukcese starigita.",
@@ -504,11 +521,16 @@
     "preferredMetadataLanguage": "Preferata Lingvo por Metadatenaro",
     "remoteAccess": "Fora Aliro",
     "remoteAccessSet": "Telealiro starigita.",
+    "setAdminError": "Ne eblas krei administran konton.",
+    "setLanguageError": "Ne eblas starigi klientan lingvon.",
+    "setMetadataError": "Ne eblas starigi metadatenajn lingvojn.",
+    "setRemoteError": "Ne eblas starigi telealirajn parametrojn.",
     "setupWizard": "Asistanto pri agordo",
     "userSuccessfullySet": "Uzanto sukcese starigita."
   },
   "writer": "Scenaristo",
   "writing": "Scenaro",
   "year": "Jaro",
-  "years": "Jaroj"
+  "years": "Jaroj",
+  "youMayAlsoLike": "Eble ankaŭ vi ŝatos"
 }
