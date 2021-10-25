@@ -124,7 +124,7 @@
     "eslint-plugin-jsdoc": "^37.0.0",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-lodash": "^7.3.0",
-    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-nuxt": "^3.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^7.19.1",
