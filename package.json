@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@jellyfin/client-axios": "10.7.7",
-    "@mdi/font": "^6.3.95",
+    "@mdi/font": "^6.4.95",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/date-fns": "^1.5.0",
