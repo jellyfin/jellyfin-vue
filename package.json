@@ -126,7 +126,7 @@
     "eslint-plugin-lodash": "^7.3.0",
     "eslint-plugin-nuxt": "^3.0.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-vue": "^7.20.0",
     "file-loader": "^6.2.0",
     "husky": "^7.0.2",
