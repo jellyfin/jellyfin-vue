@@ -129,7 +129,7 @@
   "jellyfinLogo": "Logotipo de Jellyfin",
   "latestLibrary": "Plej nova {libraryName}",
   "libraries": "Tekoj",
-  "libraryEmpty": "Ĉi tiu teko estas malplena",
+  "libraryEmpty": "Ĉi tiu plurmediteko estas malplena",
   "libraryEmptyFilters": "Neniuj kongruantoj. Forigu iujn filtrilojn por montri pliajn aĵojn",
   "libraryNotFound": "Teko ne trovita",
   "libraryRefreshQueued": "Teka refreŝiĝo envicigita",
@@ -288,7 +288,7 @@
   "quality": "Kvalito",
   "queue": "Vico",
   "rating": "Taksado",
-  "refreshLibrary": "Refreŝigi tekon",
+  "refreshLibrary": "Refreŝigi plurmeditekon",
   "releaseDate": "Eldona dato",
   "remoteDevices": "Foraj aparatoj",
   "resumable": "Daŭrebla",
@@ -368,7 +368,7 @@
       "name": "Hejma ekrano"
     },
     "libraries": {
-      "description": "Administri tekojn kaj iliajn metadatenojn",
+      "description": "Administri plurmeditekojn kaj iliajn metadatenojn",
       "name": "Tekoj"
     },
     "liveTvAndDvr": {
@@ -479,7 +479,7 @@
   "unableGetPublicUsers": "Ne eblas akiri uzantojn",
   "unableGetRelated": "Ne eblas akiri rilatajn aĵojn",
   "unableGetServerConfiguration": "Ne eblas akiri servilan agordaron",
-  "unableToRefreshLibrary": "Ne eblas refreŝigi tekon",
+  "unableToRefreshLibrary": "Ne eblas refreŝigi plurmeditekon",
   "unableToToggleLike": "Ne eblas ŝanĝi la ŝatatan staton de la elemento",
   "unableToTogglePlayed": "Ne eblas ĝisdatigi la spektan staton",
   "undefined": "Nedifinita",
