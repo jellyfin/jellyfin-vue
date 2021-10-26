@@ -269,7 +269,7 @@
     "name": "Reproductor",
     "videoResolution": {
       "name": "Resolución del video:",
-      "value": "{ancho}✕{alto}"
+      "value": "{width}✕{height}"
     }
   },
   "present": "Actualidad",
