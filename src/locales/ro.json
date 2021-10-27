@@ -115,7 +115,7 @@
   "liked": "Mi-a plăcut",
   "likes": "Like-uri",
   "links": {
-    "helpTranslate": "Ajutați la traducerea Jellyfin în limba dvs.",
+    "helpTranslate": "Ajutați la traducerea Jellyfin în limba dvs",
     "poweredByJellyfin": "Acest server rulează Jellyfin",
     "readTheDocumentation": "Citiți documentația",
     "reportAnIssue": "Raportați o problemă cu clientul Vue"
@@ -268,7 +268,7 @@
       "name": "Cont"
     },
     "devices": {
-      "description": "Vedeți și gestionați dispozitivele conectate la serverul dvs.",
+      "description": "Vedeți și gestionați dispozitivele conectate la serverul dvs",
       "name": "Dispozitive"
     },
     "dlna": {
