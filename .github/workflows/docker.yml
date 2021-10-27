@@ -25,8 +25,9 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.4.0
         with:
-          node-version: 14
+          node-version: 16
           cache: 'npm'
+          check-latest: true
 
       - name: Install dependencies
         run: npm ci --no-audit
@@ -87,8 +88,9 @@ jobs:
       - name: Setup node environment
         uses: actions/setup-node@v2.4.0
         with:
-          node-version: 14
+          node-version: 16
           cache: 'npm'
+          check-latest: true
 
       - name: Install dependencies
         run: npm ci --no-audit
