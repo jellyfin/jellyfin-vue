@@ -42,7 +42,7 @@ export const actions: ActionTree<UserState, UserState> = {
       dispatch('setUser', { accessToken: response.data.AccessToken });
     } catch (err) {
       dispatch('loginRequestFailure', err);
-      throw new Error(err);
+      throw new Error(err as string);
     }
   },
   loginRequestFailure({ dispatch }, error) {

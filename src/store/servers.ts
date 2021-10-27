@@ -52,7 +52,7 @@ export const actions: ActionTree<ServerState, ServerState> = {
       data = await (await this.$api.system.getPublicSystemInfo()).data;
     } catch (err) {
       dispatch('notifyServerCantBeFound');
-      throw new Error(err);
+      throw new Error(err as string);
     }
 
     if (compareVersions.compare(data.Version || '', '10.7.0', '>=')) {
