@@ -38,7 +38,7 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
 ## Requirements
 
-This project requires [Node 14](https://nodejs.org/en/) and uses **npm** as a package manager.
+This project requires [Node 16](https://nodejs.org/en/) and uses **npm** as a package manager.
 
 You also need the following Jellyfin server version:
 
