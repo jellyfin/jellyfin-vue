@@ -372,8 +372,8 @@
       "name": "Tekoj"
     },
     "liveTvAndDvr": {
-      "description": "Administri Tv-kartojn, gviddatenoj provizantojn kaj DVR-parametrojn",
-      "name": "TV-etero kaj DVR"
+      "description": "Administri TV-aparatojn, gviddatenoj provizantojn kaj cifereca rikordilo parametrojn",
+      "name": "TV-etero kaj Cifereca Rikordilo"
     },
     "logs": {
       "description": "Legi kaj serĉi servilajn ĵurnalojn kaj uzantan aktivecon",
