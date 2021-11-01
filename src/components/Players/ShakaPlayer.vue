@@ -185,7 +185,7 @@ export default Vue.extend({
     } catch (error) {
       this.$nuxt.error({
         statusCode: 404,
-        message: error
+        message: error as string
       });
     }
   },

@@ -78,7 +78,6 @@ const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
         // @ts-expect-error - Non-standard functions doesn't have typings
         typeof video.webkitSetPresentationMode === 'function') ||
       // Check standard PiP support
-      // @ts-expect-error - Non-standard functions doesn't have typings
       document.pictureInPictureEnabled
     ) {
       supportedFeatures.pictureInPicture = true;

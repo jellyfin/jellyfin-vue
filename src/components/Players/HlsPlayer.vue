@@ -394,13 +394,9 @@ export default Vue.extend({
       }
     },
     togglePictureInPicture(): void {
-      // @ts-expect-error - `pictureInPictureElement` does not exist in relevant types
       if (document.pictureInPictureElement) {
-        // @ts-expect-error - `exitPictureInPicture` does not exist in relevant types
         document.exitPictureInPicture();
-        // @ts-expect-error - `pictureInPictureEnabled` does not exist in relevant types
       } else if (document.pictureInPictureEnabled) {
-        // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
         this.videoElement.requestPictureInPicture();
       }
     }

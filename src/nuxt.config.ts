@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
-// @ts-expect-error - Individual icons doesn't have typings
 import jellyfinIcon from 'simple-icons/icons/jellyfin';
 
 const config: NuxtConfig = {
