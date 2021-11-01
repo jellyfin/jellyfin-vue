@@ -13,7 +13,7 @@
 <a href="https://github.com/jellyfin/jellyfin-vue/releases">
 <img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-vue.svg"/>
 </a>
-<a href="http://commitizen.github.io/cz-cli/">
+<a href="https://commitizen.github.io/cz-cli/">
 <img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" />
 </a>
 <a href="https://codecov.io/gh/jellyfin/jellyfin-vue">
