@@ -368,9 +368,14 @@ export default Vue.extend({
           color: 'success'
         });
       } catch (error) {
+        // TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
+        // not expecting bad request messages.
+        // TODO: Revise similar blocks like this through the entire codebase.
         let errorMessage = this.$t('unexpectedError');
 
-        if (error.response.status === 400) {
+        // @ts-expect-error - AxiosError can't be imported from @nuxtjs/axios for some reason. Revisit this to have proper error typing
+        // for axios responses.
+        if (error?.response?.status === 400) {
           errorMessage = this.$t('badRequest');
         }
 
