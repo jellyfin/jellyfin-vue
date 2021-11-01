@@ -11,14 +11,10 @@
 }
 
 @media (prefers-reduced-motion) {
-  .page-leave-active,
-  .layout-leave-active {
-    opacity: 0;
-  }
-
   .page-enter-active,
   .layout-enter-active {
-    transition: opacity 0.25s;
+    transition: none !important;
+    animation: none !important;
   }
 }
 
