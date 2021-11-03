@@ -53,7 +53,7 @@
     "blurhash": "^1.1.4",
     "camel-case": "^4.1.2",
     "comlink-loader": "^2.0.0",
-    "compare-versions": "^3.6.0",
+    "compare-versions": "^4.0.1",
     "cookie": "^0.4.1",
     "core-js": "^3.19.0",
     "date-fns": "^2.25.0",
