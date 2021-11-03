@@ -116,14 +116,6 @@ export default Vue.extend({
       stretch: this.stretchProp
     };
   },
-  watch: {
-    stretchProp(value) {
-      this.stretch = value;
-    },
-    stretch(value) {
-      this.$emit('stretch', value);
-    }
-  },
   computed: {
     ...mapGetters('playbackManager', [
       'getCurrentItemAudioTrack',
@@ -133,6 +125,14 @@ export default Vue.extend({
       'currentAudioStreamIndex',
       'currentSubtitleStreamIndex'
     ])
+  },
+  watch: {
+    stretchProp(value) {
+      this.stretch = value;
+    },
+    stretch(value) {
+      this.$emit('stretch', value);
+    }
   },
   methods: {
     ...mapMutations('playbackManager', [
