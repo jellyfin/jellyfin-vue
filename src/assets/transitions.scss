@@ -23,6 +23,7 @@
     opacity: 0;
     transform: translate3d(10px, 0, 0);
   }
+
   100% {
     opacity: 1;
     transform: initial;
@@ -34,6 +35,7 @@
     opacity: 1;
     transform: initial;
   }
+
   100% {
     opacity: 0;
     transform: translate3d(-10px, 0, 0);
