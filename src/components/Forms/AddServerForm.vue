@@ -83,6 +83,7 @@ export default Vue.extend({
         } else {
           this.$router.push('/server/select');
         }
+      } catch (e) {
       } finally {
         this.loading = false;
       }
