@@ -174,6 +174,7 @@
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
+                    type="Video"
                     @input="currentVideoTrack = $event"
                   />
                 </v-col>
@@ -192,6 +193,7 @@
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
+                    type="Audio"
                     @input="currentAudioTrack = $event"
                   />
                 </v-col>
@@ -210,6 +212,7 @@
                     :media-streams="
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
+                    type="Subtitle"
                     @input="currentSubtitleTrack = $event"
                   />
                 </v-col>

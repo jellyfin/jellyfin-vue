@@ -50,6 +50,7 @@
               <media-stream-selector
                 v-if="getCurrentItemAudioTrack"
                 :media-streams="getCurrentItemAudioTrack"
+                type="Audio"
                 :default-stream-index="currentAudioStreamIndex"
                 @input="setAudio($event)"
               />
@@ -65,6 +66,7 @@
               <media-stream-selector
                 v-if="getCurrentItemSubtitleTracks"
                 :media-streams="getCurrentItemSubtitleTracks"
+                type="Subtitle"
                 :default-stream-index="currentSubtitleStreamIndex"
                 @input="setSubtitle($event)"
               />
