@@ -57,11 +57,11 @@ export const actions: ActionTree<UserState, UserState> = {
     let errorMessage = 'unexpectedError';
 
     if (!error.response) {
-      errorMessage = error.message || 'serverNotFound';
+      errorMessage = error.message || this.$i18n.t('login.serverNotFound');
     } else if (error.response.status === 500 || error.response.status === 401) {
-      errorMessage = 'incorrectUsernameOrPassword';
+      errorMessage = this.$i18n.t('incorrectUsernameOrPassword');
     } else if (error.response.status === 400) {
-      errorMessage = 'badRequest';
+      errorMessage = this.$i18n.t('badRequest');
     }
 
     dispatch(
