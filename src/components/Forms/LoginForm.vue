@@ -108,6 +108,7 @@ export default Vue.extend({
       try {
         await this.loginRequest(this.login);
         this.$router.replace('/');
+      } catch (e) {
       } finally {
         this.loading = false;
       }
