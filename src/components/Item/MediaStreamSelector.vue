@@ -53,6 +53,13 @@ export default Vue.extend({
       default: () => []
     },
     /**
+     * Media streams type
+     */
+    type: {
+      type: String,
+      required: true
+    },
+    /**
      * Overrides the default track number
      */
     defaultStreamIndex: {
@@ -64,16 +71,6 @@ export default Vue.extend({
     return { trackIndex: -1 as number };
   },
   computed: {
-    type: {
-      /**
-       * Calculates the type for the given media streams
-       *
-       * @returns {string|undefined} Type of the given media streams
-       */
-      get(): string | undefined {
-        return this.mediaStreams[0].Type;
-      }
-    },
     selectItems: {
       /**
        * Used to model the media stream index as a value and the potential strings
