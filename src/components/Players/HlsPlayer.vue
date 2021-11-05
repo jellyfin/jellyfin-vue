@@ -146,6 +146,12 @@ export default Vue.extend({
         this.displayExternalSub(this.subtitleTrack);
       });
 
+      const updateVolume = (): void => {
+        this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
+      };
+
+      updateVolume();
+
       this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
         switch (mutation.type) {
           case 'playbackManager/PAUSE_PLAYBACK':
@@ -161,7 +167,7 @@ export default Vue.extend({
 
             break;
           case 'playbackManager/SET_VOLUME':
-            this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
+            updateVolume();
             break;
           case 'playbackManager/SET_CURRENT_SUBTITLE_TRACK_INDEX':
             if (mutation?.payload?.subtitleStreamIndex !== null) {

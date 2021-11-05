@@ -319,7 +319,10 @@ export const mutations: MutationTree<PlaybackManagerState> = {
     state.status = PlaybackStatus.Paused;
   },
   STOP_PLAYBACK(state: PlaybackManagerState) {
+    const volume = state.currentVolume;
+
     Object.assign(state, defaultState());
+    state.currentVolume = volume;
   },
   RESET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
     state.lastItemIndex = null;
