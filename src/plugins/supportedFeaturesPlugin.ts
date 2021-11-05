@@ -46,8 +46,8 @@ const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
    * @returns {boolean} - Whether fullscreen is supported or not
    */
   function supportsFullscreen(): boolean {
-    // TVs don't support fullscreen. iOS, when user through the PWA, is already full screen.
-    if ($browser.isTv() || ($browser.isApple() && $browser.isMobile())) {
+    // TVs don't support fullscreen.
+    if ($browser.isTv()) {
       return false;
     }
 

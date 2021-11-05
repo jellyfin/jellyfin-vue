@@ -598,11 +598,17 @@ export default Vue.extend({
         return;
       }
 
-      this.$fullscreen.toggle((this.$refs.playerContainer as Vue).$el, {
-        callback: (fullscreen: boolean) => {
-          this.fullScreenVideo = fullscreen;
-        }
-      });
+      // Use native video fullscreen on iPhone to hide the bottom home bar
+      if (this.$browser.isApple() && this.$browser.isMobile()) {
+        // @ts-expect-error - `togglePictureInPicture` does not exist in relevant types
+        this.$refs.videoPlayer.toggleNativeFullscreen();
+      } else {
+        this.$fullscreen.toggle((this.$refs.playerContainer as Vue).$el, {
+          callback: (fullscreen: boolean) => {
+            this.fullScreenVideo = fullscreen;
+          }
+        });
+      }
     },
     onMenuOpen(value: boolean): void {
       this.keepOpen = value;
