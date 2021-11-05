@@ -127,6 +127,14 @@ export default Vue.extend({
 
         this.gainNode.connect(this.audioContext.destination);
 
+        const updateVolume = (): void => {
+          if (this.$refs.shakaPlayer && this.gainNode) {
+            this.gainNode.gain.value = Math.pow(this.currentVolume / 100, 3);
+          }
+        };
+
+        updateVolume();
+
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
@@ -157,12 +165,7 @@ export default Vue.extend({
                 break;
 
               case 'playbackManager/SET_VOLUME':
-                if (this.$refs.shakaPlayer && this.gainNode) {
-                  this.gainNode.gain.value = Math.pow(
-                    this.currentVolume / 100,
-                    3
-                  );
-                }
+                updateVolume();
 
                 break;
 
