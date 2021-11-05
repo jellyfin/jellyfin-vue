@@ -88,11 +88,8 @@ const config: NuxtConfig = {
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
     // Components
-    { src: 'plugins/components/swiper.ts', mode: 'client' },
-    'plugins/components/vueVirtualScroller.ts',
-    'plugins/components/veeValidate.ts',
-    { src: 'plugins/components/vueFullscreen.ts', mode: 'client' },
-    'plugins/components/vueDraggable.ts',
+    { src: 'components/External/clientOnly.ts', mode: 'client' },
+    'components/External/common.ts',
     // Utility
     'plugins/browserDetectionPlugin.ts',
     { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
