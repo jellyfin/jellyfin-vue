@@ -411,6 +411,13 @@ export default Vue.extend({
       } else if (document.pictureInPictureEnabled) {
         this.videoElement.requestPictureInPicture();
       }
+    },
+    toggleNativeFullscreen(): void {
+      // @ts-expect-error - `webkitEnterFullscreen` does not exist in relevant type
+      if (this.videoElement?.webkitEnterFullscreen) {
+        // @ts-expect-error - `webkitEnterFullscreen` does not exist in relevant type
+        this.videoElement.webkitEnterFullscreen();
+      }
     }
   }
 });
