@@ -12,7 +12,7 @@
   "artist": "Artisto",
   "artists": "Artistoj",
   "aspectRatio": "Proporcio",
-  "audio": "Aŭda",
+  "audio": "Aŭdio",
   "audioCodecNotSupported": "La aŭdkodeko ne subtenatas",
   "badRequest": "Malbona peto. Provi denove",
   "books": "Libroj",
@@ -150,7 +150,7 @@
     "loginAs": "Ensaluti kiel {name}",
     "manualLogin": "Mana ensaluto",
     "rememberMe": "Memoru min",
-    "selectServer": "Elektu Servilon",
+    "selectServer": "Elektu servilon",
     "selectUser": "Elektu uzanton",
     "serverAddress": "Servila adreso",
     "serverAddressMustBeUrl": "Servila adreso devas esti valida URL-o",
@@ -171,10 +171,10 @@
   "manualLogin": "Mana ensaluto",
   "mediaInfo": {
     "audioChannels": {
-      "name": "Aŭdaj kanaloj:"
+      "name": "Aŭdiokanaloj:"
     },
     "audioCodec": {
-      "name": "Aŭda kodeko:"
+      "name": "Aŭdiokodeko:"
     },
     "bitrate": {
       "name": "Bitrapido:"
@@ -206,12 +206,10 @@
   "name": "Nomo",
   "networks": "TV-retoj",
   "nextUp": "Sekva Plue",
-  "noAudioTracksAvailable": "Neniuj aŭdtrakoj disponeblas",
   "noImagesFound": "Neniuj bildoj trovitaj",
   "noInformationAvailable": "Neniu informo havebla",
   "noNetworkConnection": "Neniu retkonekto",
   "noResultsFound": "Estas nenio ĉi tie",
-  "noSubtitlesAvailable": "Neniuj subtekstoj haveblaj",
   "noVideoTrackSelected": "Neniu videotrako elektita",
   "numberTracks": "{number} trakoj",
   "operatingSystem": "Operaciumo",
@@ -451,8 +449,8 @@
       "name": "Kialo: | Kialoj:",
       "reasons": {
         "anamorphicVideoNotSupported": "Anamorfa video ne subtenatas",
-        "audioBitDepthNotSupported": "La aŭda bitprofundo ne subtenatas",
-        "audioBitrateNotSupported": "La aŭda bitrapido ne subtenatas",
+        "audioBitDepthNotSupported": "La aŭdia bitprofundo ne subtenatas",
+        "audioBitrateNotSupported": "La aŭdia bitrapido ne subtenatas",
         "audioChannelsNotSupported": "La nombro de aŭkanaloj ne subtenatas",
         "audioCodecNotSupported": "La aŭdkodeko ne subtenatas",
         "audioProfileNotSupported": "La profilo de la aŭdkodeko ne subtenatas",
