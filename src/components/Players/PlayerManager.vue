@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div ref="playerContainer">
+    <div>
       <shaka-player
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
         class="d-none"
@@ -272,7 +272,6 @@ export default Vue.extend({
       fullScreenOverlayTimer: null as number | null,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {},
-      fullScreenVideo: false,
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
@@ -594,20 +593,25 @@ export default Vue.extend({
       this.$refs.videoPlayer.togglePictureInPicture();
     },
     toggleFullScreen(): void {
-      if (!this.$refs.playerContainer) {
-        return;
-      }
-
-      // Use native video fullscreen on iPhone to hide the bottom home bar
       if (this.$browser.isApple() && this.$browser.isMobile()) {
-        // @ts-expect-error - `togglePictureInPicture` does not exist in relevant types
+        // Use native video fullscreen on iPhone to hide the bottom home bar
+        // @ts-expect-error - `toggleNativeFullscreen` does not exist in relevant types
         this.$refs.videoPlayer.toggleNativeFullscreen();
-      } else {
-        this.$fullscreen.toggle((this.$refs.playerContainer as Vue).$el, {
-          callback: (fullscreen: boolean) => {
-            this.fullScreenVideo = fullscreen;
-          }
-        });
+      } else if (this.$browser.isApple()) {
+        // On Safari, we need to call the vendor element
+        // @ts-expect-error - `webkitFullscreenElement` does not exist in relevant types
+        if (!document.webkitFullscreenElement) {
+          // @ts-expect-error - `webkitRequestFullscreen` does not exist in relevant types
+          document.documentElement.webkitRequestFullscreen();
+          // @ts-expect-error - `webkitExitFullscreen` does not exist in relevant types
+        } else if (document.webkitExitFullscreen) {
+          // @ts-expect-error - `webkitExitFullscreen` does not exist in relevant types
+          document.webkitExitFullscreen();
+        }
+      } else if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
       }
     },
     onMenuOpen(value: boolean): void {
