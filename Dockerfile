@@ -2,34 +2,23 @@
 
 FROM node:16-alpine AS build
 
-WORKDIR /app
-
 # Install build dependencies for node modules
 RUN apk add --no-cache --virtual .build-deps git python make automake autoconf g++ libpng-dev libtool nasm file
 
+# Set workdir
+WORKDIR /app
+
+# Copy files to workdir
 COPY . .
 
 # Install dependencies
 RUN npm ci --no-audit
 
-# Build SSR app for production in standalone mode
-RUN npm run build:standalone
+# Build static site
+RUN npm run build
 
-# Build final image
-FROM node:16-alpine
-
-WORKDIR /app
-
-COPY .docker/package.json .docker/package-lock.json .docker/nuxt.config.js ./
-
-# Copy client files from the build image
-COPY --from=build /app/src/.nuxt ./.nuxt
-COPY --from=build /app/src/static ./static
-
-# Install runtime dependencies
-RUN npm ci --production --no-audit
-RUN rm -rf package-lock.json
-
-EXPOSE 80
-
-CMD [ "npm", "start" ]
+# Deploy built distribution to nginx
+FROM nginx:alpine
+COPY --from=build /app/src/dist/ /usr/share/nginx/html/
+COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY .docker/mime.types /etc/nginx/mime.types

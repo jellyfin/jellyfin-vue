@@ -33,7 +33,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client
-        run: 'npm run build:standalone'
+        run: 'npm run build:ssr:standalone'
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1.2.0
@@ -62,10 +62,8 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           file: '.github/workflows/Dockerfile.ssr'
           tags: |
-            jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable-ssr
             jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
-            ghcr.io/jellyfin/jellyfin-vue:unstable
             ghcr.io/jellyfin/jellyfin-vue:unstable-ssr
             ghcr.io/jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
 
@@ -96,7 +94,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client
-        run: 'npm run build:static'
+        run: npm run build
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1.2.0
@@ -125,7 +123,9 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           file: '.github/workflows/Dockerfile.nginx'
           tags: |
+            jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable-static
             jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
+            ghcr.io/jellyfin/jellyfin-vue:unstable
             ghcr.io/jellyfin/jellyfin-vue:unstable-static
             ghcr.io/jellyfin/jellyfin-vue:unstable-static.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}

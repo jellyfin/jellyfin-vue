@@ -9,3 +9,5 @@ LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 COPY src/dist/ /usr/share/nginx/html/
 COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY .docker/mime.types /etc/nginx/mime.types
+
+EXPOSE 80

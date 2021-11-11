@@ -26,7 +26,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client
-        run: 'npm run build:standalone'
+        run: 'npm run build:ssr:standalone'
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1.2.0
@@ -56,14 +56,10 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           file: '.github/workflows/Dockerfile.ssr'
           tags: |
-            jellyfin/jellyfin-vue:stable
             jellyfin/jellyfin-vue:stable-ssr
             jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
-            jellyfin/jellyfin-vue:latest
-            ghcr.io/jellyfin/jellyfin-vue:stable
             ghcr.io/jellyfin/jellyfin-vue:stable-ssr
             ghcr.io/jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
-            ghcr.io/jellyfin/jellyfin-vue:latest
 
       - name: Build and push release candidate SSR images
         if: github.event.action == 'prereleased'
@@ -98,7 +94,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client
-        run: 'npm run build:static'
+        run: npm run build
 
       - name: Configure QEMU
         uses: docker/setup-qemu-action@v1.2.0
@@ -128,10 +124,14 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           file: '.github/workflows/Dockerfile.nginx'
           tags: |
+            jellyfin/jellyfin-vue:stable
             jellyfin/jellyfin-vue:stable-static
             jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+            jellyfin/jellyfin-vue:latest
+            ghcr.io/jellyfin/jellyfin-vue:stable
             ghcr.io/jellyfin/jellyfin-vue:stable-static
             ghcr.io/jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:latest
 
       - name: Build and push release candidate static images
         if: github.event.action == 'prereleased'
