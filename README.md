@@ -36,17 +36,82 @@
 
 This is an experimental web client for Jellyfin based on Vue.js. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start.
 
-## Requirements
+# Build Process
 
-This project requires [Node 16](https://nodejs.org/en/) and uses **npm** as a package manager.
+## Dependencies
 
-You also need the following Jellyfin server version:
+- [Node.js LTS](https://nodejs.org/en/download) `>=16.13.0 <17.0.0`
+- npm `>=8.1.0` (included in Node.js)
+- Jellyfin Server `>=10.7.0`
 
+## Getting Started
+
+1. Clone or download this repository.
+
+   ```bash
+   git clone https://github.com/jellyfin/jellyfin-vue.git
+   cd jellyfin-vue
+   ```
+
+2. Install the build dependencies in the project directory.
+
+   ```bash
+   npm install
+   ```
+
+3. Run the web client with Nuxt as a server for local development.
+
+   ```bash
+   npm start
+   ```
+
+   The client will be served at http://127.0.0.1:3000 by default.
+
+   ### Build for production
+
+   When you're ready to deploy the client,
+   you must build the client specifically for production:
+
+   ```bash
+   npm run build
+   ```
+
+   Build output will be available under the `src/dist` folder.
+
+## Other build features
+
+### Running a production build
+
+Instead of a development version, you can run a server with a production-ready build of the client
+directly with Nuxt, so you can verify in advance how the client will work in your production environment:
+
+```bash
+npm run prod
 ```
-Jellyfin >=10.7.0
+
+### Server-Side Rendering (SSR)
+
+This client fully supports Server-Side Rendering. All the commands listed above have their SSR siblings:
+
+```bash
+npm run build:ssr
+npm run start:ssr
+npm run prod:ssr
 ```
 
-## Contributing
+#### Running standalone
+
+When building the SSR version of the client, all the dependencies (including those only relevant for development)
+will be included. If you don't plan to contribute or customize the client, these dependencies won't be
+useful at all for you. In order to save some space at runtime, you can specify to `npm` that you want only
+runtime dependencies and build an standalone version of the client:
+
+```bash
+npm install --production
+npm run build:ssr:standalone
+```
+
+# Contributing
 
 We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers) to help you setup your environment.
 
@@ -55,53 +120,3 @@ The project also contains recommended extensions for [Visual Studio Code](https:
 Finally, we provide useful pre-commit hooks via [Husky](https://typicode.github.io/husky/#/), as well as [Comitizen](https://github.com/commitizen/cz-cli) integration, in order to help you respect the style and naming conventions used throughout this project.
 
 For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
-
-## Build Process
-
-```bash
-# install dependencies
-$ npm install
-
-# server with hot reload at localhost:3000
-$ npm run dev
-
-# serve with hot reload in static mode at localhost:3000
-$ npm run dev:static
-
-# build for production
-$ npm run build
-# launch server
-$ npm run start
-
-# build for production and launch server
-$ npm run prod
-
-# build for production in static mode
-# you will need a web server to host the client
-$ npm run build:static
-
-# build for production in static mode and run server
-$ npm run prod:static
-
-```
-
-## Running standalone
-
-When using the SSR version of the client, you can run the client in standalone mode in order to save space.
-
-```bash
-# install dependencies
-$ npm install
-
-# build for production in standalone mode, with server-side rendering
-$ npm run build:standalone
-
-# move the server and required files to a dedicated directory
-$ mkdir -p /opt/jellyfin-vue
-$ cp -r .nuxt .docker/nuxt.config.js .docker/package.json /opt/jellyfin-vue
-
-# install the required dependency and start the client
-$ cd /opt/jellyfin-vue
-$ npm install
-$ npm run start
-```
