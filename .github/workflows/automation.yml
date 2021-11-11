@@ -1,4 +1,4 @@
-name: Automation
+name: Automation 🤖
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   project:
-    name: Project board
+    name: Project board 📊
     runs-on: ubuntu-latest
     steps:
       - uses: alex-page/github-project-automation-plus@v0.8.1
@@ -20,7 +20,7 @@ jobs:
           repo-token: ${{ secrets.JF_BOT_TOKEN }}
 
   label:
-    name: Labeling
+    name: Labeling 🏷️
     runs-on: ubuntu-latest
     steps:
       - name: Label PR depending on modified files
@@ -30,7 +30,7 @@ jobs:
         with:
           repo-token: '${{ secrets.JF_BOT_TOKEN }}'
 
-      - name: Check all PRs for merge conflicts
+      - name: Check all PRs for merge conflicts ⛔
         uses: eps1lon/actions-label-merge-conflict@v2.0.1
         with:
           dirtyLabel: 'merge conflict'

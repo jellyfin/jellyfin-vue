@@ -1,4 +1,4 @@
-name: Build
+name: Build 🛠️
 
 on:
   pull_request:
@@ -8,43 +8,43 @@ on:
 
 jobs:
   ssr:
-    name: Build SSR
+    name: Build SSR 🖥️
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build
+      - name: Build 🛠️
         run: 'npm run build:ssr'
 
   static:
-    name: Build static
+    name: Build static 💻
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build
+      - name: Build 🛠️
         run: npm run build

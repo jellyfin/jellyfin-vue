@@ -1,4 +1,4 @@
-name: Docker stable release
+name: Docker stable release 🕊️📦
 
 on:
   release:
@@ -8,46 +8,46 @@ on:
 
 jobs:
   ssr:
-    name: Build SSR images
+    name: Build SSR images 💿🖥️
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build client
+      - name: Build client 🛠️
         run: 'npm run build:ssr:standalone'
 
-      - name: Configure QEMU
+      - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
 
-      - name: Configure Docker Buildx
+      - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v1.5.1
 
-      - name: Login to Docker Hub
+      - name: Login to Docker Hub 🔑
         uses: docker/login-action@v1.10.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry 🔑
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build and push stable SSR images
+      - name: Build and push stable SSR images 🛠️⬆️
         if: github.event.action == 'released'
         uses: docker/build-push-action@v2.6.1
         with:
@@ -61,7 +61,7 @@ jobs:
             ghcr.io/jellyfin/jellyfin-vue:stable-ssr
             ghcr.io/jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
 
-      - name: Build and push release candidate SSR images
+      - name: Build and push release candidate SSR images 🛠️⬆️
         if: github.event.action == 'prereleased'
         uses: docker/build-push-action@v2.6.1
         with:
@@ -76,46 +76,46 @@ jobs:
             ghcr.io/jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
 
   static:
-    name: Build static images
+    name: Build static images 💿💻
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build client
+      - name: Build client 🛠️
         run: npm run build
 
-      - name: Configure QEMU
+      - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
 
-      - name: Configure Docker Buildx
+      - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v1.5.1
 
-      - name: Login to Docker Hub
+      - name: Login to Docker Hub 🔑
         uses: docker/login-action@v1.10.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry 🔑
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build and push stable static images
+      - name: Build and push stable static images 🛠️⬆️
         if: github.event.action == 'released'
         uses: docker/build-push-action@v2.6.1
         with:
@@ -133,7 +133,7 @@ jobs:
             ghcr.io/jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
             ghcr.io/jellyfin/jellyfin-vue:latest
 
-      - name: Build and push release candidate static images
+      - name: Build and push release candidate static images 🛠️⬆️
         if: github.event.action == 'prereleased'
         uses: docker/build-push-action@v2.6.1
         with:

@@ -1,4 +1,4 @@
-name: Docker unstable release
+name: Docker unstable release 🪲📦
 
 on:
   push:
@@ -7,54 +7,54 @@ on:
 
 jobs:
   ssr:
-    name: Build SSR images
+    name: Build SSR images 💿🖥️
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get current date
+      - name: Get current date ⌛
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Get commit hash
+      - name: Get commit hash ⚙️
         id: sha
         run: echo "::set-output name=sha::${GITHUB_SHA::7}"
 
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build client
+      - name: Build client 🛠️
         run: 'npm run build:ssr:standalone'
 
-      - name: Configure QEMU
+      - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
 
-      - name: Configure Docker Buildx
+      - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v1.5.1
 
-      - name: Login to Docker Hub
+      - name: Login to Docker Hub 🔑
         uses: docker/login-action@v1.10.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry 🔑
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build images and push
+      - name: Build images and push 🛠️⬆️
         uses: docker/build-push-action@v2.6.1
         with:
           context: .
@@ -68,54 +68,54 @@ jobs:
             ghcr.io/jellyfin/jellyfin-vue:unstable-ssr.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
 
   static:
-    name: Build static images
+    name: Build static images 💿💻
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get current date
+      - name: Get current date ⌛
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Get commit hash
+      - name: Get commit hash ⚙️
         id: sha
         run: echo "::set-output name=sha::${GITHUB_SHA::7}"
 
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Build client
+      - name: Build client 🛠️
         run: npm run build
 
-      - name: Configure QEMU
+      - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
 
-      - name: Configure Docker Buildx
+      - name: Configure Docker Buildx ⚙️
         uses: docker/setup-buildx-action@v1.5.1
 
-      - name: Login to Docker Hub
+      - name: Login to Docker Hub 🔑
         uses: docker/login-action@v1.10.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry 🔑
         uses: docker/login-action@v1.10.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build images and push
+      - name: Build images and push 🛠️⬆️
         uses: docker/build-push-action@v2.6.1
         with:
           context: .

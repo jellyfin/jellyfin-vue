@@ -1,4 +1,4 @@
-name: GitHub CodeQL
+name: GitHub CodeQL 🔬
 
 on:
   push:
@@ -16,7 +16,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze 🔬
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,17 +24,17 @@ jobs:
       matrix:
         language: ['typescript']
     steps:
-      - name: Checkout repository
+      - name: Checkout repository ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Initialize CodeQL
+      - name: Initialize CodeQL 🛠️
         uses: github/codeql-action/init@v1
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
-      - name: Autobuild
+      - name: Autobuild 📦
         uses: github/codeql-action/autobuild@v1
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysis 🧪
         uses: github/codeql-action/analyze@v1
