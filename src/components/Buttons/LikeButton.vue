@@ -36,7 +36,7 @@ export default Vue.extend({
       }
     }
   },
-  activated() {
+  mounted() {
     this.unsubscribe = this.$store.subscribe((mutation) => {
       if (
         mutation?.type === 'SOCKET_ONMESSAGE' &&
@@ -54,7 +54,7 @@ export default Vue.extend({
       }
     });
   },
-  deactivated() {
+  destroyed() {
     this.unsubscribe();
   },
   methods: {

@@ -105,7 +105,7 @@
     </v-app-bar>
     <v-main>
       <div class="pa-s">
-        <nuxt keep-alive :keep-alive-props="keepAliveOptions" />
+        <nuxt />
       </div>
     </v-main>
     <audio-controls />
@@ -132,17 +132,6 @@ interface LayoutButton {
 
 export default Vue.extend({
   mixins: [settingsHelper],
-  props: {
-    keepAliveOptions: {
-      type: Object as () => Record<string, unknown>,
-      default: (): Record<string, unknown> => {
-        return {
-          max: 10,
-          exclude: ['fullscreen-playback']
-        };
-      }
-    }
-  },
   data() {
     return {
       isScrolled: false,
@@ -218,10 +207,10 @@ export default Vue.extend({
 
     this.$connect(socketUrl);
   },
-  activated() {
+  mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });
   },
-  deactivated() {
+  destroyed() {
     window.removeEventListener('scroll', this.setIsScrolled);
   },
   methods: {

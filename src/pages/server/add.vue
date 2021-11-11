@@ -26,7 +26,7 @@ export default Vue.extend({
   computed: {
     ...mapState('page', ['title'])
   },
-  activated() {
+  mounted() {
     this.setPageTitle({ title: this.$t('login.addServer') });
   },
   methods: {

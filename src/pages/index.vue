@@ -148,7 +148,7 @@ export default Vue.extend({
     ...mapState('clientSettings', ['CustomPrefs']),
     ...mapState('userViews', ['views'])
   },
-  activated() {
+  mounted() {
     if (this.$fetchState.timestamp <= Date.now() - 30000) {
       this.$fetch();
     }
@@ -156,7 +156,7 @@ export default Vue.extend({
     this.setPageTitle({ title: this.$t('home') });
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
-  deactivated() {
+  destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
   },
   methods: {

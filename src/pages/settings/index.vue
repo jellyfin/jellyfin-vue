@@ -227,7 +227,7 @@ export default Vue.extend({
       ]
     };
   },
-  activated() {
+  mounted() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({ title: this.$t('settings.settings') });
   },

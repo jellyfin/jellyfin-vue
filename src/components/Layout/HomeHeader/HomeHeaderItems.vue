@@ -156,11 +156,9 @@ export default Vue.extend({
     const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
 
     this.setBackdrop({ hash });
-  },
-  activated() {
     this.onSlideChange();
   },
-  deactivated() {
+  destroyed() {
     this.clearBackdrop();
   },
   methods: {
