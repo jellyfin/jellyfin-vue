@@ -1,4 +1,4 @@
-name: Code quality
+name: Code quality 🧪
 
 on:
   push:
@@ -11,48 +11,48 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: Lint 🔬
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Run linter
+      - name: Run linter ✏️
         run: npm run lint
 
   test:
-    name: Test
+    name: Test 🧫
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
         with:
           fetch-depth: 0
 
-      - name: Setup node environment
+      - name: Setup node environment ⚙️
         uses: actions/setup-node@v2.5.0
         with:
           node-version: 16
           cache: 'npm'
           check-latest: true
 
-      - name: Install dependencies
+      - name: Install dependencies 📦
         run: npm ci --no-audit
 
-      - name: Run tests
+      - name: Run tests 🧪
         run: npm run test
 
-      - name: Upload coverage
+      - name: Upload coverage ⬆️
         uses: codecov/codecov-action@v2.0.3
