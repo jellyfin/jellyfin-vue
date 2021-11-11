@@ -137,7 +137,7 @@ export default Vue.extend({
       await this.refreshItems();
     }
   },
-  async activated() {
+  async mounted() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
@@ -177,7 +177,7 @@ export default Vue.extend({
       });
     }
   },
-  deactivated() {
+  destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
   methods: {

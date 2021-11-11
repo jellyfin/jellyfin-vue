@@ -95,15 +95,13 @@ export default Vue.extend({
       this.setBackdrop({ hash: this.backdropHash });
     });
   },
-  activated() {
+  mounted() {
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ newOpacity: 0.5 });
     this.setMinimized({ minimized: false });
-  },
-  mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
   },
-  deactivated() {
+  destroyed() {
     this.clearBackdrop();
     this.resetBackdropOpacity();
     this.setMinimized({ minimized: true });

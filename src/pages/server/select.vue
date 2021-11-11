@@ -55,7 +55,7 @@ export default Vue.extend({
       }
     }
   },
-  activated() {
+  mounted() {
     this.setPageTitle({ title: this.$t('login.selectServer') });
   },
   methods: {

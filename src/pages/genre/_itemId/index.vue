@@ -96,13 +96,13 @@ export default Vue.extend({
       return this.getItems(this.itemIds);
     }
   },
-  activated() {
+  mounted() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.setPageTitle({
       title: this.genre.Name
     });
   },
-  deactivated() {
+  destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
   methods: {

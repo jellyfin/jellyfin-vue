@@ -157,7 +157,7 @@ export default Vue.extend({
     ...mapState('page', ['title']),
     ...mapState('user', ['accessToken'])
   },
-  activated() {
+  mounted() {
     this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
   },
   methods: {

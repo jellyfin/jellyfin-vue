@@ -138,10 +138,10 @@ export default Vue.extend({
       deep: true
     }
   },
-  activated() {
+  mounted() {
     this.setAppBarOpacity({ opaqueAppBar: false });
   },
-  deactivated() {
+  destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },

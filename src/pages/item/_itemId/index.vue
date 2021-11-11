@@ -379,14 +379,14 @@ export default Vue.extend({
       deep: true
     }
   },
-  activated() {
+  mounted() {
     this.setAppBarOpacity({ opaqueAppBar: false });
 
     if (this.item.MediaSources && this.item.MediaSources.length > 0) {
       this.currentSource = this.item.MediaSources[0];
     }
   },
-  deactivated() {
+  destroyed() {
     this.setAppBarOpacity({ opaqueAppBar: true });
     this.clearBackdrop();
   },
