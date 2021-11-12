@@ -88,8 +88,8 @@ const config: NuxtConfig = {
     'plugins/veeValidate.ts',
     'plugins/nativeWebsocketPlugin.ts',
     // Components
-    { src: 'components/External/clientOnly.ts', mode: 'client' },
-    'components/External/common.ts',
+    { src: 'plugins/components/clientOnly.ts', mode: 'client' },
+    'plugins/components/common.ts',
     // Utility
     'plugins/browserDetectionPlugin.ts',
     { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
