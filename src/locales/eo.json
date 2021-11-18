@@ -128,11 +128,11 @@
   "itemNotFound": "Aĵo ne trovita",
   "jellyfinLogo": "Logotipo de Jellyfin",
   "latestLibrary": "Plej nova {libraryName}",
-  "libraries": "Tekoj",
+  "libraries": "Plurmeditekoj",
   "libraryEmpty": "Ĉi tiu plurmediteko estas malplena",
   "libraryEmptyFilters": "Neniuj kongruantoj. Forigu iujn filtrilojn por montri pliajn aĵojn",
-  "libraryNotFound": "Teko ne trovita",
-  "libraryRefreshQueued": "Teka refreŝiĝo envicigita",
+  "libraryNotFound": "Plurmediteko ne trovita",
+  "libraryRefreshQueued": "Plurmediteka refreŝiĝo envicigita",
   "liked": "Ŝati",
   "likes": "Ŝatitaj",
   "links": {
@@ -362,7 +362,7 @@
     },
     "libraries": {
       "description": "Administri plurmeditekojn kaj iliajn metadatenojn",
-      "name": "Tekoj"
+      "name": "Plurmeditekoj"
     },
     "liveTvAndDvr": {
       "description": "Administri eteraparatojn, gviddatenoj provizantojn kaj cifereca rikordilo parametrojn",
