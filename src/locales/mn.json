@@ -1,1 +1,72 @@
-{}
+{
+  "artist": "Жүжигчин",
+  "cancel": "Цуцлах",
+  "collections": "Багц",
+  "criticRating": "Зэрэглэл",
+  "dateAdded": "Өдөр нэмэх",
+  "disabled": "Идэвхгүй",
+  "favorite": "Дуртай",
+  "filter": "Шүүлтүүр",
+  "general": "Ерөнхий",
+  "genres": "Төрөл зүйл",
+  "homeHeader": {
+    "welcome": {
+      "helloUser": "Сайн уу {userName}!"
+    }
+  },
+  "item": {
+    "artist": {
+      "videos": "Видеонууд"
+    },
+    "person": {
+      "birth": "Эхэлсэн",
+      "movies": "Кино"
+    }
+  },
+  "movies": "Кино",
+  "name": "Нэр",
+  "nextUp": "Дараах",
+  "people": "Хүмүүс",
+  "play": "Тоглуулах",
+  "playback": {
+    "playAll": "Бүгдийг тоглуулах",
+    "shuffleAll": "Бүгдийг хутгах"
+  },
+  "playbackInfo": {
+    "name": "Тоглуулах",
+    "playMethod": {
+      "direct": "Зам"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "unknown": "Тодорхойгүй",
+      "video": "Видео"
+    }
+  },
+  "playerInfo": {
+    "videoResolution": {
+      "value": "{width}✕{height}"
+    }
+  },
+  "rating": "Зэрэглэл",
+  "search": {
+    "name": "Хайх"
+  },
+  "series": "Цуврал",
+  "settings": {
+    "settings": "Тохиргоо"
+  },
+  "settingsSections": {
+    "dlna": {
+      "name": "DLNA"
+    },
+    "playback": {
+      "name": "Тоглуулах"
+    }
+  },
+  "songs": "Дуунууд",
+  "trailer": "Трейлер",
+  "version": "Хувилбар",
+  "video": "Видео"
+}
