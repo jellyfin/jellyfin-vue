@@ -1,13 +1,7 @@
 {
-  "login": {
-    "serverDashboard": ""
-  },
   "settings": {
     "devices": {
       "userName": ""
     }
-  },
-  "wizard": {
-    "setMetadataError": ""
   }
 }
