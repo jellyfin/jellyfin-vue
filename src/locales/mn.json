@@ -1,33 +1,19 @@
 {
-  "dateAdded": "",
   "headerExternalIds": "",
-  "item": {
-    "person": {
-      "movies": ""
-    }
-  },
   "login": {
     "serverDashboard": ""
   },
-  "noImagesFound": "",
   "playbackInfo": {
     "playMethod": {
       "remux": ""
     }
   },
-  "seasonEpisodeAbbrev": "",
   "settings": {
     "devices": {
       "userName": ""
     }
   },
-  "settingsSections": {
-    "plugins": {
-      "name": ""
-    }
-  },
   "trailer": "",
-  "undefined": "",
   "wizard": {
     "setMetadataError": ""
   }
