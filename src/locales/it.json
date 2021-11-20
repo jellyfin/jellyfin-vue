@@ -43,6 +43,7 @@
   },
   "directing": "Direzione",
   "director": "Direttore",
+  "disabled": "Disabilitato",
   "discNumber": "Disco {discNumber}",
   "dislikes": "Non mi piace",
   "edit": "Modifica",
@@ -88,6 +89,8 @@
     "art": "Arte",
     "backdrop": "Sfondo",
     "banner": "Banner",
+    "box": "Scatola",
+    "boxRear": "Scatola (retro)",
     "disc": "Disco",
     "logo": "Logo",
     "menu": "Menu",
@@ -106,6 +109,7 @@
     },
     "cast": "Cast",
     "composer": "Compositore",
+    "crew": "Troupe",
     "person": {
       "birth": "Nato",
       "birthPlace": "Luogo di nascita",
@@ -264,6 +268,9 @@
       "name": "Fotogrammi persi:"
     },
     "name": "Player",
+    "playbackResolution": {
+      "name": "Risoluzione viewport:"
+    },
     "videoResolution": {
       "name": "Risoluzione video:",
       "value": "{width}✕{height}"
@@ -409,15 +416,69 @@
   "shows": "Serie TV",
   "signIn": "Accedi",
   "songs": "Brani",
+  "sortByType": "Per {type}",
+  "sortTitle": "Titolo per ordinamento",
   "specialFeatures": "Caratteristiche speciali",
   "speed": "Velocità",
   "startNow": "Inizia ora",
   "status": "Stato",
+  "stretch": "Allunga",
+  "studios": "Studios",
   "subtitles": "Sottotitoli",
+  "syncPlayGroups": "Gruppi SyncPlay",
   "syncingInProgress": "Sincronizzazione in corso",
   "tagline": "Tagline",
   "tags": "Tags",
   "themeSong": "Sigla",
+  "themeVideo": "Video Sigla",
+  "tooltips": {
+    "changeLanguage": "Lingua",
+    "switchToDarkMode": "Passa a modalità scura",
+    "switchToLightMode": "Passa a modalità chiara"
+  },
+  "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Trascodifica",
+    "transcodingFramerate": {
+      "name": "Framerate:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Avanzamento:",
+    "transcodingReason": {
+      "name": "Motivo: | Motivi:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Video anamorfico non supportato",
+        "audioBitDepthNotSupported": "Bit depth audio non supportato",
+        "audioBitrateNotSupported": "Bitrate audio non supportato",
+        "audioChannelsNotSupported": "Numero canali audio non supportato",
+        "audioCodecNotSupported": "Codec Audio non supportato",
+        "audioProfileNotSupported": "Profilo codec audio non supportato",
+        "audioSampleRateNotSupported": "Frequenza campionamento audio non supportata",
+        "containerBitrateExceedsLimit": "Il bitrate del container supera il limite impostato",
+        "containerNotSupported": "Container non supportato",
+        "interlacedVideoNotSupported": "Video interlacciato non supportato",
+        "refFramesNotSupported": "Reference frame non supportati",
+        "secondaryAudioNotSupported": "Tracce audio secondarie non supportate",
+        "subtitleCodecNotSupported": "Codec sottotitoli non supportato",
+        "videoBitDepthNotSupported": "Bit depth video non supportato",
+        "videoCodecNotSupported": "Codec Video non supportato",
+        "videoFramerateNotSupported": "Framerate video non supportato",
+        "videoLevelNotSupported": "Livello codec video non supportato",
+        "videoProfileNotSupported": "Profilo codec video non supportato",
+        "videoResolutionNotSupported": "Risoluzione video non supportata"
+      }
+    }
+  },
+  "type": "Tipo",
+  "unableGetPublicUsers": "Impossibile recuperare utenti",
+  "unableGetRelated": "Impossibile recuperare elementi collegati",
+  "unableGetServerConfiguration": "Impossibile recuperare configurazione server",
+  "unableToRefreshLibrary": "Impossibile aggiornare la libreria",
+  "unableToToggleLike": "Impossibile cambiare preferenza dell'elemento",
+  "unableToTogglePlayed": "Impossibile aggiornare lo stato di visualizzazione",
+  "undefined": "Non Definito",
+  "unexpectedError": "Errore inatteso",
+  "unhandledException": "Eccezione non gestita",
   "units": {
     "bitrate": {
       "kbps": "{value} kbps",
@@ -426,5 +487,44 @@
     "time": {
       "seconds": "{count} secondo | {count} secondi"
     }
-  }
+  },
+  "unliked": "Non mi piace più",
+  "unplayed": "Non visto",
+  "upNext": "Prossimo",
+  "upNextName": "Prossimo: {upNextItemName}",
+  "username": "Nome utente",
+  "validation": {
+    "bothPasswordsSame": "Le password devono essere uguali",
+    "mustBeUrl": "Questo campo deve essere un URL valido",
+    "required": "Campo obbligatorio"
+  },
+  "version": "Versione",
+  "video": "Video",
+  "videoTypes": "Tipi Video",
+  "viewDetails": "Dettagli video",
+  "vueClientVersion": "Versione client",
+  "wizard": {
+    "administratorAccount": "Account amministratore",
+    "allowRemoteAccess": "Consenti accesso remoto al server",
+    "completeError": "Impossibile completare avvio guidato.",
+    "confirmPassword": "Conferma password",
+    "languageLocale": "Lingua e località",
+    "languageSuccessfullySet": "Lingua impostata correttamente.",
+    "metadataLanguagesSet": "Impostata lingua metadati.",
+    "preferedLanguage": "Lingua preferita",
+    "preferredMetadataLanguage": "Lingua metadati preferita",
+    "remoteAccess": "Accesso remoto",
+    "remoteAccessSet": "Accesso remoto impostato correttamente.",
+    "setAdminError": "Impossibile creare un account amministratore.",
+    "setLanguageError": "Impossibile impostare lingua client.",
+    "setMetadataError": "Impossibile impostare lingua metadati.",
+    "setRemoteError": "Impossibile salvare le impostazioni di accesso remoto.",
+    "setupWizard": "Avvio guidato",
+    "userSuccessfullySet": "Utente impostato correttamente."
+  },
+  "writer": "Sceneggiatore",
+  "writing": "Scrittura",
+  "year": "Anno",
+  "years": "Anni",
+  "youMayAlsoLike": "Potrebbe piacerti anche"
 }
