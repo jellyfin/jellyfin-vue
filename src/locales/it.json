@@ -63,7 +63,7 @@
   "failedSettingDisplayPreferences": "Impossibile aggiornare le impostazioni del display.",
   "failedToRefreshItems": "Refresh fallito",
   "favorite": "Preferiti",
-  "features": "Features",
+  "features": "Caratteristiche",
   "filter": "Filtri",
   "filtersNotFound": "Impossibile caricare i filtri",
   "fullScreen": "Schermo intero",
@@ -96,7 +96,7 @@
     "menu": "Menu",
     "primary": "Primario",
     "screenshot": "Cattura Schermo",
-    "thumb": "Thumb"
+    "thumb": "Miniatura"
   },
   "images": "Immagini",
   "incorrectUsernameOrPassword": "Utente o password errati",
@@ -427,7 +427,7 @@
   "subtitles": "Sottotitoli",
   "syncPlayGroups": "Gruppi SyncPlay",
   "syncingInProgress": "Sincronizzazione in corso",
-  "tagline": "Tagline",
+  "tagline": "Slogan",
   "tags": "Tags",
   "themeSong": "Sigla",
   "themeVideo": "Video Sigla",
