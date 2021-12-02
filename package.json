@@ -24,8 +24,8 @@
     "lint:js": "eslint --ext .ts,.js,.json,.vue .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "prepare": "husky install",
-    "prod": "npm run build src && nuxt start src",
-    "prod:ssr": "npm run build:ssr src && NUXT_SSR=1 nuxt start src",
+    "prod": "npm run build && nuxt start src",
+    "prod:ssr": "npm run build:ssr && NUXT_SSR=1 nuxt start src",
     "test": "jest"
   },
   "lint-staged": {
