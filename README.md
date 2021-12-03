@@ -69,8 +69,7 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
    ### Build for production
 
-   When you're ready to deploy the client,
-   you must build the client specifically for production:
+   When you're ready to deploy the client, you must build the client specifically production:
 
    ```bash
    npm run build
@@ -102,10 +101,7 @@ npm run prod:ssr
 
 #### Running standalone
 
-When building the SSR version of the client, all the dependencies (including those only relevant for development)
-will be included. If you don't plan to contribute or customize the client, these dependencies won't be
-useful at all for you. In order to save some space at runtime, you can specify to `npm` that you want only
-runtime dependencies and build an standalone version of the client:
+When building the SSR version of the client, all the dependencies (including those only relevant for development) will be included. If you don't plan to contribute or customize the client, these dependencies won't be useful at all for you. In order to save some space at runtime, you can specify to `npm` that you want only runtime dependencies and build an standalone version of the client:
 
 ```bash
 npm install --production
