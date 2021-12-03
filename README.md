@@ -82,15 +82,13 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
 ### Running a production build
 
-Instead of a development version, you can run a server with a production-ready build of the client
-directly with Nuxt, so you can verify in advance how the client will work in your production environment with a reverse proxy:
+Instead of a development version, you can run a server with a production-ready build of the client directly with Nuxt, so you can verify in advance how the client will work in a production environment:
 
 ```bash
 npm run prod
 ```
 
-_(Although the build of the client is production-ready,_
-_Nuxt's own HTTP server should never be exposed directly to the internet and a proper reverse proxy like nginx should always be used instead)_
+_Although the build of the client is production-ready, Nuxt's own HTTP server should never be exposed directly to the internet and a proper hosting tool like Nginx should always be used instead._
 
 ### Server-Side Rendering (SSR)
 
