@@ -36,18 +36,15 @@ export default Vue.extend({
     },
     parent: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     season: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     episodeNumber: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     }
   },
   data() {

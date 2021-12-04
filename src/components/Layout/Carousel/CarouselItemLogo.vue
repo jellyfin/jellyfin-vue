@@ -37,13 +37,11 @@ export default Vue.extend({
     },
     parent: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     textFallback: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     }
   },
   data() {
