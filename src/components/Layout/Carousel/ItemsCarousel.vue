@@ -28,34 +28,12 @@
                 <p class="text-overline text-truncate mb-2 my-2">
                   {{ $t('homeHeader.items.recentlyAdded') }}
                 </p>
-                <home-header-album-title
-                  v-if="item.Type === 'MusicAlbum'"
-                  class="mb-sm-n1"
+                <carousel-item-logo :item="item" parent text-fallback />
+                <carousel-item-title
                   :item="item"
-                  :parent-link="
-                    item.AlbumArtists.length > 0
-                      ? getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')
-                      : null
-                  "
-                  :link="getItemDetailsLink(item)"
-                  :logo="getLogo(item)"
-                />
-                <home-header-episode-title
-                  v-else-if="item.Type === 'Episode'"
-                  :item="item"
-                  :parent-link="
-                    item.SeriesId
-                      ? getItemDetailsLink({ Id: item.SeriesId }, 'Series')
-                      : null
-                  "
-                  :link="getItemDetailsLink(item)"
-                  :logo="getLogo(item)"
-                />
-                <home-header-generic-title
-                  v-else
-                  :item="item"
-                  :link="getItemDetailsLink(item)"
-                  :logo="getLogo(item)"
+                  parent
+                  season
+                  episode-number
                 />
                 <media-info
                   :item="item"
@@ -83,7 +61,7 @@
         </div>
       </swiper-slide>
     </swiper>
-    <swiper-progress-bar
+    <carousel-progress-bar
       :pages="items.length"
       :current-index="currentIndex"
       :duration="slideDuration"
@@ -103,17 +81,12 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
-import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, itemHelper],
+  mixins: [htmlHelper, imageHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
-      required: true
-    },
-    relatedItems: {
-      type: Object as () => { [k: number]: BaseItemDto },
       required: true
     },
     slideDuration: {
@@ -142,8 +115,35 @@ export default Vue.extend({
     return {
       currentIndex: 0 as number | undefined,
       isPaused: false,
-      swiper: undefined as Swiper | undefined
+      swiper: undefined as Swiper | undefined,
+      relatedItems: {} as { [k: number]: BaseItemDto }
     };
+  },
+  async beforeMount() {
+    // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
+    // for the parent items. Revisit this once proper changes are done.
+    for (const [key, i] of this.items.entries()) {
+      let id: string;
+
+      if (i.Type === 'Episode' && i?.SeriesId) {
+        id = i.SeriesId;
+      } else if (i.Type === 'MusicAlbum' && i?.AlbumArtists?.[0]?.Id) {
+        id = i.AlbumArtists[0]?.Id;
+      } else if (i?.ParentLogoItemId) {
+        id = i.ParentLogoItemId;
+      } else {
+        continue;
+      }
+
+      const itemData = (
+        await this.$api.userLibrary.getItem({
+          userId: this.$auth.user?.Id,
+          itemId: id
+        })
+      ).data;
+
+      this.relatedItems[key] = itemData;
+    }
   },
   mounted() {
     this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;

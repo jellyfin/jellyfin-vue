@@ -1,6 +1,6 @@
 <template>
   <div>
-    <carousel v-if="carouselItems.length" />
+    <items-carousel v-if="carouselItems.length" :items="carouselItems" />
     <v-container class="sections-after-header">
       <v-row
         v-for="(homeSection, index) in homeSections"
