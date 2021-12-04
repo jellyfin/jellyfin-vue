@@ -126,6 +126,7 @@ export default Vue.extend({
   },
   async mounted() {
     this.swiper = (this.$refs.carousel as Vue).$swiper as Swiper;
+
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
     for (const [key, i] of this.items.entries()) {
