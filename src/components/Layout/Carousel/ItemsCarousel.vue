@@ -26,7 +26,7 @@
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
                 <p class="text-overline text-truncate mb-2 my-2">
-                  {{ $t('homeHeader.items.recentlyAdded') }}
+                  <slot name="referenceText" />
                 </p>
                 <carousel-item-logo :item="item" parent text-fallback />
                 <carousel-item-title
