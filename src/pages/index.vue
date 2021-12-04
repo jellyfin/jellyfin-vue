@@ -1,6 +1,6 @@
 <template>
   <div>
-    <home-header />
+    <carousel v-if="carouselItems.length" />
     <v-container class="sections-after-header">
       <v-row
         v-for="(homeSection, index) in homeSections"
@@ -16,14 +16,30 @@
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import pickBy from 'lodash/pickBy';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
 
 export default Vue.extend({
+  // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
+  // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
+  async asyncData({ $api, $auth }) {
+    const carouselItems = (
+      await $api.userLibrary.getLatestMedia({
+        userId: $auth.user?.Id,
+        limit: 10,
+        fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
+        enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
+        imageTypeLimit: 1
+      })
+    ).data;
+
+    return { carouselItems };
+  },
   data() {
     return {
-      homeSections: [] as HomeSection[]
+      homeSections: [] as HomeSection[],
+      carouselItems: [] as BaseItemDto[]
     };
   },
   async fetch() {
