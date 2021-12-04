@@ -78,11 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Recently added"
-    },
-    "welcome": {
-      "checkNewItems": "Check out what's new.",
-      "helloUser": "Hello {userName}!",
-      "noItems": "There are no recently added items to show."
     }
   },
   "imageType": {
