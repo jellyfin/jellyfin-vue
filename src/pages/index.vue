@@ -8,6 +8,7 @@
       <template #referenceText>
         {{ $t('homeHeader.items.recentlyAdded') }}
       </template>
+    </items-carousel>
     <v-container class="sections-after-header">
       <v-row
         v-for="(homeSection, index) in homeSections"
