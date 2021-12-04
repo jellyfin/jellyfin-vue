@@ -4,6 +4,7 @@
       v-if="carouselItems.length"
       :items="carouselItems"
       page-backdrop
+      class="top-carousel"
     >
       <template #referenceText>
         {{ $t('homeHeader.items.recentlyAdded') }}
@@ -198,6 +199,10 @@ export default Vue.extend({
   .home-header-margin {
     margin-top: -64px;
   }
+}
+
+.top-carousel {
+  margin-top: -64px;
 }
 
 .sections-after-header {
