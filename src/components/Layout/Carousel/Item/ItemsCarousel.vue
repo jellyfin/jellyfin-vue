@@ -1,7 +1,7 @@
 <template>
   <div class="swiperContainer">
     <swiper
-      ref="homeSwiper"
+      ref="carousel"
       class="swiper"
       :options="swiperOptions"
       @slideChange="onSlideChange"
@@ -81,9 +81,10 @@ import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper],
+  mixins: [htmlHelper, imageHelper, itemHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
@@ -123,7 +124,8 @@ export default Vue.extend({
       relatedItems: {} as { [k: number]: BaseItemDto }
     };
   },
-  async beforeMount() {
+  async mounted() {
+    this.swiper = (this.$refs.carousel as Vue).$swiper as Swiper;
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
     for (const [key, i] of this.items.entries()) {
@@ -148,9 +150,6 @@ export default Vue.extend({
 
       this.relatedItems[key] = itemData;
     }
-  },
-  mounted() {
-    this.swiper = (this.$refs.homeSwiper as Vue).$swiper as Swiper;
 
     const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
 

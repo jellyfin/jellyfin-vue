@@ -27,8 +27,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
+  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
