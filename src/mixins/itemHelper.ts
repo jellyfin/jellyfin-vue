@@ -186,6 +186,9 @@ const itemHelper = Vue.extend({
           case 'Audio':
             itemIcon = 'mdi-music-note';
             break;
+          case 'AudioBook':
+            itemIcon = 'mdi-book-music';
+            break;
           case 'Book':
             itemIcon = 'mdi-book-open-page-variant';
             break;
