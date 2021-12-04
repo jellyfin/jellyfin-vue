@@ -1,33 +1,30 @@
-<template functional>
+<template>
   <div>
-    <nuxt-link
-      v-if="props.logo && props.logo.tag && props.link"
-      :to="props.link"
-    >
+    <nuxt-link v-if="logo && logo.tag && link" :to="link">
       <v-img
         class="mb-2"
-        :max-width="parent.$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
-        :max-height="parent.$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
+        :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
+        :max-height="$vuetify.breakpoint.smAndUp ? '7.5em' : '4em'"
         contain
         data-swiper-parallax="-300"
-        :alt="props.item.Name"
-        :src="props.logo.url"
+        :alt="item.Name"
+        :src="logo.url"
       />
     </nuxt-link>
     <nuxt-link
-      v-else-if="props.link"
+      v-else-if="link"
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
-      :to="props.link"
+      :to="link"
     >
-      {{ props.item.Name }}
+      {{ item.Name }}
     </nuxt-link>
     <h2
-      v-if="props.item.Taglines && props.item.Taglines.length > 0"
+      v-if="item.Taglines && item.Taglines.length > 0"
       data-swiper-parallax="-200"
       class="text-truncate"
     >
-      {{ props.item.Taglines[0] }}
+      {{ item.Taglines[0] }}
     </h2>
   </div>
 </template>
