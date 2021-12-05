@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
 import jellyfinIcon from 'simple-icons/icons/jellyfin';
@@ -384,20 +383,6 @@ const config: NuxtConfig = {
     },
     extractCSS: {
       ignoreOrder: true
-    },
-    babel: {
-      // envName: server, client, modern
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      presets(): any {
-        return [
-          [
-            '@nuxt/babel-preset-app',
-            {
-              corejs: { version: 3 }
-            }
-          ]
-        ];
-      }
     },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     extend(config, ctx): void {
