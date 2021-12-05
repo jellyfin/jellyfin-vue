@@ -241,7 +241,7 @@
 import { SessionInfo } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapGetters, mapState } from 'vuex';
-import { camelCase } from 'camel-case';
+import camelCase from 'lodash/camelCase';
 
 export default Vue.extend({
   data() {
@@ -382,9 +382,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    camelCase(value: string): string {
-      return camelCase(value);
-    },
+    camelCase,
     getDisplayBitrate(bitrate: number): string {
       if (bitrate > 1000000) {
         return this.$t('units.bitrate.mbps', {
