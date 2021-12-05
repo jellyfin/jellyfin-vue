@@ -77,7 +77,7 @@
                   <v-icon dark v-text="getIconFromType(activity.Type)" />
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-text="decodeHTML(activity.Name)" />
+                  <v-list-item-title v-text="activity.Name" />
                   <v-list-item-subtitle v-text="activity.ShortOverview" />
                 </v-list-item-content>
                 <v-list-item-action>
@@ -120,8 +120,6 @@ import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
-import { decodeHTML } from 'entities';
-import htmlHelper from '~/mixins/htmlHelper';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -129,7 +127,6 @@ interface LoadingStatus {
 }
 
 export default Vue.extend({
-  mixins: [htmlHelper],
   middleware: 'adminMiddleware',
   async asyncData({ $api }) {
     const minDate = new Date();
@@ -232,8 +229,7 @@ export default Vue.extend({
     },
     getLogFileLink(name: string): string {
       return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.accessToken}`;
-    },
-    decodeHTML
+    }
   }
 });
 </script>
