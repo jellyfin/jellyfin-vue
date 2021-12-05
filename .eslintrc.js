@@ -116,7 +116,10 @@ module.exports = {
             }
           }
         ],
-        'vue/multiline-html-element-content-newline': 'error'
+        'vue/multiline-html-element-content-newline': 'error',
+        'vue/multi-word-component-names': 'off',
+        // This rule gives false positives with asyncData
+        'vue/no-dupe-keys': 'off'
       },
       settings: {
         'import/resolver': {
