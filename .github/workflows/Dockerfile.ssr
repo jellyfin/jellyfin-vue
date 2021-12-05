@@ -16,4 +16,4 @@ RUN rm -rf package-lock.json
 
 EXPOSE 80
 
-CMD [ "npm", "run", "start:ssr" ]
+CMD [ "npx", "nuxt-start" ]
