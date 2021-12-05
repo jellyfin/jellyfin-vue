@@ -1,6 +1,6 @@
 # Dockerfile
 Dockerfile
-Dockerfile.static
+Dockerfile.ssr
 
 # Coverage directory used by tools like istanbul
 coverage
