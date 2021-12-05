@@ -414,13 +414,7 @@ const config: NuxtConfig = {
           options: { name: '[name].[ext]' }
         }
       );
-    },
-    transpile: [
-      // JF client transpiled cause needed to support "export *" https://stackoverflow.com/a/59313455
-      '@jellyfin/client-axios',
-      '@nuxtjs/auth',
-      'vee-validate/dist/rules'
-    ]
+    }
   },
 
   /**
