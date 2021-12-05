@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div>
+    <div ref="playerContainer">
       <shaka-player
         v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
         class="d-none"
@@ -259,6 +259,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import screenfull from 'screenfull';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { AppState } from '~/store';
@@ -597,21 +598,8 @@ export default Vue.extend({
         // Use native video fullscreen on iPhone to hide the bottom home bar
         // @ts-expect-error - `toggleNativeFullscreen` does not exist in relevant types
         this.$refs.videoPlayer.toggleNativeFullscreen();
-      } else if (this.$browser.isApple()) {
-        // On Safari, we need to call the vendor element
-        // @ts-expect-error - `webkitFullscreenElement` does not exist in relevant types
-        if (!document.webkitFullscreenElement) {
-          // @ts-expect-error - `webkitRequestFullscreen` does not exist in relevant types
-          document.documentElement.webkitRequestFullscreen();
-          // @ts-expect-error - `webkitExitFullscreen` does not exist in relevant types
-        } else if (document.webkitExitFullscreen) {
-          // @ts-expect-error - `webkitExitFullscreen` does not exist in relevant types
-          document.webkitExitFullscreen();
-        }
-      } else if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else if (document.exitFullscreen) {
-        document.exitFullscreen();
+      } else if (screenfull.isEnabled) {
+        screenfull.toggle((this.$refs.playerContainer as Vue).$el);
       }
     },
     onMenuOpen(value: boolean): void {

@@ -412,7 +412,8 @@ const config: NuxtConfig = {
           options: { name: '[name].[ext]' }
         }
       );
-    }
+    },
+    transpile: ['screenfull']
   },
 
   /**
