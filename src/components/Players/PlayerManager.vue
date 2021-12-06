@@ -598,7 +598,7 @@ export default Vue.extend({
         // Use native video fullscreen on iPhone to hide the bottom home bar
         // @ts-expect-error - `toggleNativeFullscreen` does not exist in relevant types
         this.$refs.videoPlayer.toggleNativeFullscreen();
-      } else if (screenfull.isEnabled) {
+      } else if (this.$refs.playerContainer && screenfull.isEnabled) {
         screenfull.toggle((this.$refs.playerContainer as Vue).$el);
       }
     },
