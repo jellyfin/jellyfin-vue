@@ -76,6 +76,12 @@ export default Vue.extend({
 
           break;
       }
+
+      // Instead of using 'default', we need this additional extra check
+      // in case an Album doesn't have artists, for example.
+      if (this.link === '') {
+        this.link = this.getItemDetailsLink(this.item);
+      }
     } else {
       this.link = this.getItemDetailsLink(this.item);
     }
