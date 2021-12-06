@@ -2,6 +2,9 @@
 
 FROM node:16-alpine AS build
 
+# Build dependencies required to build some node modules on ARM platforms
+RUN apk add --no-cache python3 make g++
+
 # Set workdir
 WORKDIR /app
 
