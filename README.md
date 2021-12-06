@@ -7,6 +7,9 @@
 <img alt="Logo Banner" src="https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true"/>
 <br/>
 <br/>
+<a href="https://hub.docker.com/r/jellyfin/jellyfin-vue">
+<img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jellyfin/jellyfin-vue">
+</a>
 <a href="https://github.com/jellyfin/jellyfin-vue">
 <img alt="GPL 3.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-vue.svg"/>
 </a>
