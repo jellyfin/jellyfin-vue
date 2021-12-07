@@ -127,7 +127,7 @@
     "prettier": "^2.4.1",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-standard": "^22.0.0",
+    "stylelint-config-standard": "^24.0.0",
     "ts-jest": "^26.5.6",
     "vue-axe": "^2.4.4",
     "vue-jest": "^3.0.7"
