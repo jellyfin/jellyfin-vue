@@ -10,6 +10,10 @@
 <a href="https://hub.docker.com/r/jellyfin/jellyfin-vue">
 <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/jellyfin/jellyfin-vue">
 </a>
+<a href="https://github.com/jellyfin/jellyfin-vue/pkgs/container/jellyfin-vue">
+<img alt="GHCR images" src="https://img.shields.io/badge/Github-packages-blue">
+</a>
+<br/>
 <a href="https://github.com/jellyfin/jellyfin-vue">
 <img alt="GPL 3.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-vue.svg"/>
 </a>
