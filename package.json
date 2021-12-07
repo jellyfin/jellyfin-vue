@@ -47,7 +47,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/vuetify": "^1.12.1",
     "blurhash": "^1.1.4",
-    "compare-versions": "^3.6.0",
+    "compare-versions": "^4.1.1",
     "cookie": "^0.4.1",
     "core-js": "^3.19.2",
     "date-fns": "^2.25.0",
