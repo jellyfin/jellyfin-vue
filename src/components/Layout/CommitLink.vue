@@ -1,5 +1,6 @@
 <template>
   <v-list-item
+    v-if="commit"
     :href="'https://github.com/jellyfin/jellyfin-vue/commit/' + commit"
   >
     <v-list-item-action>
@@ -15,10 +16,9 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  props: {
-    commit: {
-      type: String,
-      required: true
+  computed: {
+    commit() {
+      return process.env.NUXT_ENV_COMMIT;
     }
   }
 });

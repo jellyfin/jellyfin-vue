@@ -33,7 +33,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client 🛠️
-        run: 'npm run build:ssr:standalone'
+        run: 'NUXT_ENV_COMMIT=$GITHUB_SHA npm run build:ssr:standalone'
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
@@ -94,7 +94,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Build client 🛠️
-        run: npm run build
+        run: NUXT_ENV_COMMIT=$GITHUB_SHA npm run build
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
