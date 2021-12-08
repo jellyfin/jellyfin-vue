@@ -49,6 +49,7 @@
       <template #append>
         <connection-monitor />
         <syncing-monitor />
+        <commit-link v-if="commit" :commit="commit" />
       </template>
     </v-navigation-drawer>
     <v-app-bar
@@ -184,6 +185,9 @@ export default Vue.extend({
           to: '/'
         }
       ];
+    },
+    commit() {
+      return process.env.NUXT_ENV_COMMIT;
     }
   },
   watch: {
