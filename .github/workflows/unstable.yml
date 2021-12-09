@@ -1,4 +1,4 @@
-name: Docker unstable release 🪲📦
+name: Unstable release 🪲📦
 
 on:
   push:
