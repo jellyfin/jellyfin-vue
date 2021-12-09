@@ -1,9 +1,6 @@
-name: Code quality 🧪
+name: Pull Request Checks 👌🧪
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     branches:
       - master
@@ -56,3 +53,45 @@ jobs:
 
       - name: Upload coverage ⬆️
         uses: codecov/codecov-action@v2.0.3
+
+  ssr:
+    name: Build SSR 🖥️
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: 16
+          cache: 'npm'
+          check-latest: true
+
+      - name: Install dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Build 🛠️
+        run: 'NUXT_ENV_COMMIT=$GITHUB_SHA npm run build:ssr'
+
+  static:
+    name: Build static 💻
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: 16
+          cache: 'npm'
+          check-latest: true
+
+      - name: Install dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Build 🛠️
+        run: NUXT_ENV_COMMIT=$GITHUB_SHA npm run build
