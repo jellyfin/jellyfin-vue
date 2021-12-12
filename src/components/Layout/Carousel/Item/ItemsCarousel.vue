@@ -28,13 +28,7 @@
                 <p class="text-overline text-truncate mb-2 my-2">
                   <slot name="referenceText" />
                 </p>
-                <carousel-item-logo :item="item" parent text-fallback />
-                <carousel-item-title
-                  :item="item"
-                  parent
-                  season
-                  episode-number
-                />
+                <items-carousel-title class="mb-sm-n1" :item="item"/>
                 <media-info
                   :item="item"
                   year
