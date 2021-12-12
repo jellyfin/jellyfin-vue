@@ -21,7 +21,7 @@
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"
-      class="mb-n1 text-truncate text-subtitle-2"
+      class="text-truncate text-subtitle-2"
     >
       {{ subtitle }}
     </p>
@@ -47,15 +47,6 @@ export default Vue.extend({
     item: {
       type: Object as () => BaseItemDto,
       required: true
-    }
-  },
-  computed: {
-    titleString(): string | undefined | null {
-      if (this.item.SeriesName) {
-        return this.item.SeriesName;
-      }
-
-      return this.item.Name;
     }
   },
   data() {

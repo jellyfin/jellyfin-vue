@@ -28,7 +28,7 @@
                 <p class="text-overline text-truncate mb-2 my-2">
                   <slot name="referenceText" />
                 </p>
-                <items-carousel-title class="mb-sm-n1" :item="item"/>
+                <items-carousel-title :item="item"/>
                 <media-info
                   :item="item"
                   year
