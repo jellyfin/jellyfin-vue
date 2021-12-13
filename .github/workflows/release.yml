@@ -7,76 +7,8 @@ on:
       - prereleased
 
 jobs:
-  ssr:
-    name: Build SSR images 💿🖥️
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout ⬇️
-        uses: actions/checkout@v2.4.0
-
-      - name: Setup node environment ⚙️
-        uses: actions/setup-node@v2.5.0
-        with:
-          node-version: 16
-          cache: 'npm'
-          check-latest: true
-
-      - name: Install dependencies 📦
-        run: npm ci --no-audit
-
-      - name: Build client 🛠️
-        run: 'npm run build:ssr:standalone'
-
-      - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v1.2.0
-
-      - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v1.5.1
-
-      - name: Login to Docker Hub 🔑
-        uses: docker/login-action@v1.10.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to GitHub Container Registry 🔑
-        uses: docker/login-action@v1.10.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.JF_BOT_TOKEN }}
-
-      - name: Build and push stable SSR images 🛠️⬆️
-        if: github.event.action == 'released'
-        uses: docker/build-push-action@v2.6.1
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.ssr'
-          tags: |
-            jellyfin/jellyfin-vue:stable-ssr
-            jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
-            ghcr.io/jellyfin/jellyfin-vue:stable-ssr
-            ghcr.io/jellyfin/jellyfin-vue:stable-ssr.${{ github.event.release.tag_name }}
-
-      - name: Build and push release candidate SSR images 🛠️⬆️
-        if: github.event.action == 'prereleased'
-        uses: docker/build-push-action@v2.6.1
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.ssr'
-          tags: |
-            jellyfin/jellyfin-vue:stable-rc-ssr
-            jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
-            ghcr.io/jellyfin/jellyfin-vue:stable-rc-ssr
-            ghcr.io/jellyfin/jellyfin-vue:stable-rc-ssr.${{ github.event.release.tag_name }}
-
-  static:
-    name: Build static images 💿💻
+  docker:
+    name: Build Docker images 💿💻
     runs-on: ubuntu-latest
 
     steps:
@@ -115,7 +47,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build and push stable static images 🛠️⬆️
+      - name: Build and push stable images 🛠️⬆️
         if: github.event.action == 'released'
         uses: docker/build-push-action@v2.6.1
         with:
@@ -125,15 +57,13 @@ jobs:
           file: '.github/workflows/Dockerfile.nginx'
           tags: |
             jellyfin/jellyfin-vue:stable
-            jellyfin/jellyfin-vue:stable-static
-            jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+            jellyfin/jellyfin-vue:stable.${{ github.event.release.tag_name }}
             jellyfin/jellyfin-vue:latest
             ghcr.io/jellyfin/jellyfin-vue:stable
-            ghcr.io/jellyfin/jellyfin-vue:stable-static
-            ghcr.io/jellyfin/jellyfin-vue:stable-static.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:stable.${{ github.event.release.tag_name }}
             ghcr.io/jellyfin/jellyfin-vue:latest
 
-      - name: Build and push release candidate static images 🛠️⬆️
+      - name: Build and push release candidate images 🛠️⬆️
         if: github.event.action == 'prereleased'
         uses: docker/build-push-action@v2.6.1
         with:
@@ -142,7 +72,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           file: '.github/workflows/Dockerfile.nginx'
           tags: |
-            jellyfin/jellyfin-vue:stable-rc-static
-            jellyfin/jellyfin-vue:stable-rc-static.${{ github.event.release.tag_name }}
-            ghcr.io/jellyfin/jellyfin-vue:stable-rc-static
-            ghcr.io/jellyfin/jellyfin-vue:stable-rc-static.${{ github.event.release.tag_name }}
+            jellyfin/jellyfin-vue:stable-rc
+            jellyfin/jellyfin-vue:stable-rc.${{ github.event.release.tag_name }}
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc
+            ghcr.io/jellyfin/jellyfin-vue:stable-rc.${{ github.event.release.tag_name }}
