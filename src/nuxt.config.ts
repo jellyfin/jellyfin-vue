@@ -79,23 +79,23 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    // Development
-    { src: 'plugins/axe.ts', mode: 'client' },
-    // General
-    'plugins/persistedStatePlugin.ts',
-    'plugins/appInitPlugin.ts',
-    'plugins/veeValidate.ts',
-    'plugins/nativeWebsocketPlugin.ts',
-    // Components
-    { src: 'plugins/components/clientOnly.ts', mode: 'client' },
-    'plugins/components/common.ts',
-    // Utility
-    'plugins/browserDetectionPlugin.ts',
-    { src: 'plugins/playbackProfilePlugin.ts', mode: 'client' },
-    'plugins/supportedFeaturesPlugin.ts',
-    'plugins/apiPlugin.ts',
-    // Directives
-    'plugins/directives/hide.ts'
+    /*
+     ** Nuxt plugins
+     */
+    'plugins/nuxt/axe.ts',
+    'plugins/nuxt/persistedStatePlugin.ts',
+    'plugins/nuxt/appInitPlugin.ts',
+    'plugins/nuxt/veeValidate.ts',
+    'plugins/nuxt/nativeWebsocketPlugin.ts',
+    'plugins/nuxt/browserDetectionPlugin.ts',
+    'plugins/nuxt/playbackProfilePlugin.ts',
+    'plugins/nuxt/supportedFeaturesPlugin.ts',
+    'plugins/nuxt/apiPlugin.ts',
+    /*
+     ** Vue plugins
+     */
+    'plugins/vue/components.ts',
+    'plugins/vue/directives/hide.ts'
   ],
   /*
    ** Auto import components
@@ -174,10 +174,10 @@ const config: NuxtConfig = {
       }
     },
     plugins: [
-      '~/plugins/userLibraryPlugin.ts',
-      '~/plugins/itemsPlugin.ts',
-      '~/plugins/tvShowsPlugin.ts',
-      '~/plugins/playbackPlugin.ts'
+      '~/plugins/nuxt/userLibraryPlugin.ts',
+      '~/plugins/nuxt/itemsPlugin.ts',
+      '~/plugins/nuxt/tvShowsPlugin.ts',
+      '~/plugins/nuxt/playbackPlugin.ts'
     ]
   },
   i18n: {
