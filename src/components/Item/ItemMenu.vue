@@ -1,5 +1,5 @@
 <template>
-  <div v-if="items.length > 0">
+  <div v-if="options.length > 0">
     <v-menu
       absolute
       close-on-click
@@ -21,15 +21,15 @@
       </template>
       <v-list dense nav>
         <v-list-item
-          v-for="(menuItem, index) in items"
+          v-for="(menuOption, index) in options"
           :key="`item-${item.Id}-menu-${index}`"
-          @click="menuItem.action"
+          @click="menuOption.action"
         >
           <v-list-item-icon>
-            <v-icon>{{ menuItem.icon }}</v-icon>
+            <v-icon>{{ menuOption.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="text">
-            {{ menuItem.title }}
+            {{ menuOption.title }}
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -48,7 +48,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
 
-type MenuItem = {
+type MenuOption = {
   title: string;
   icon: string;
   action: () => void;
@@ -81,14 +81,16 @@ export default Vue.extend({
       metadataDialog: false
     };
   },
+  mounted() {
+  },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
-    items: {
-      get(): MenuItem[] {
-        const menuItems = [] as MenuItem[];
+    options: {
+      get(): MenuOption[] {
+        const menuOptions = [] as MenuOption[];
 
         if (this.canResume(this.item)) {
-          menuItems.push({
+          menuOptions.push({
             title: this.$t('playFromBeginning'),
             icon: 'mdi-replay',
             action: () => {
@@ -99,7 +101,7 @@ export default Vue.extend({
           });
         }
 
-        menuItems.push({
+        menuOptions.push({
           title: this.$t('playback.shuffle'),
           icon: 'mdi-shuffle',
           action: () => {
@@ -112,7 +114,7 @@ export default Vue.extend({
         });
 
         if (this.getCurrentItem) {
-          menuItems.push({
+          menuOptions.push({
             title: this.$t('playback.playNext'),
             icon: 'mdi-play-speed',
             action: () => {
@@ -122,7 +124,7 @@ export default Vue.extend({
             }
           });
 
-          menuItems.push({
+          menuOptions.push({
             title: this.$t('playback.addToQueue'),
             icon: 'mdi-playlist-plus',
             action: () => {
@@ -139,7 +141,7 @@ export default Vue.extend({
             this.item.Type || ''
           )
         ) {
-          menuItems.push({
+          menuOptions.push({
             title: this.$t('refreshLibrary'),
             icon: 'mdi-refresh',
             action: async () => {
@@ -168,7 +170,7 @@ export default Vue.extend({
         }
 
         if (this.$auth.user?.Policy?.IsAdministrator) {
-          menuItems.push({
+          menuOptions.push({
             title: this.$t('editMetadata'),
             icon: 'mdi-pencil-outline',
             action: () => {
@@ -177,7 +179,7 @@ export default Vue.extend({
           });
         }
 
-        return menuItems;
+        return menuOptions;
       }
     }
   },
