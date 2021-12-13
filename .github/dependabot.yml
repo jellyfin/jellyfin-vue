@@ -11,6 +11,7 @@ updates:
       prefix: fix
       prefix-development: chore
       include: scope
+    versioning-strategy: increase
   # Fetch and updated latest `npm` packages for Docker SSR
   - package-ecosystem: npm
     directory: '/.docker'
