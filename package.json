@@ -14,18 +14,13 @@
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "scripts": {
     "analyze": "nuxt build --analyze src",
-    "analyze:ssr": "NUXT_SSR=1 nuxt build --analyze src",
     "build": "nuxt build src",
-    "build:ssr": "NUXT_SSR=1 nuxt build src",
-    "build:ssr:standalone": "NUXT_SSR=1 nuxt build --standalone src",
     "start": "nuxt src",
-    "start:ssr": "NUXT_SSR=1 nuxt src",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:js": "eslint --ext .ts,.js,.json,.vue .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "prepare": "husky install",
     "prod": "npm run build && nuxt start src",
-    "prod:ssr": "npm run build:ssr && NUXT_SSR=1 nuxt start src",
     "test": "jest"
   },
   "lint-staged": {
