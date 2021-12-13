@@ -60,7 +60,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.nginx'
+          file: '.github/workflows/Dockerfile.ci'
           tags: |
             jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}
