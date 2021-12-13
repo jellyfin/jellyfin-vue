@@ -58,57 +58,68 @@ export default Vue.extend({
       logo: {} as ImageUrlInfo
     };
   },
-  beforeMount(): void {
-    switch (this.item.Type) {
-      case 'MusicAlbum':
-        if (this.item.AlbumArtists?.length) {
-          this.logoLink = this.getItemDetailsLink(
-            this.item.AlbumArtists[0],
-            'MusicArtist'
-          );
+  watch: {
+    item: {
+      immediate: true,
+      handler(): void {
+        switch (this.item.Type) {
+          case 'MusicAlbum':
+            if (this.item.AlbumArtists?.length) {
+              this.logoLink = this.getItemDetailsLink(
+                this.item.AlbumArtists[0],
+                'MusicArtist'
+              );
+            }
+
+            if (this.item.AlbumArtist) {
+              this.titleString = this.item.AlbumArtist;
+            }
+
+            if (this.item.Name) {
+              this.subtitle = this.item.Name;
+            }
+
+            break;
+          case 'Episode':
+            if (this.item.SeriesId) {
+              this.logoLink = this.getItemDetailsLink(
+                { Id: this.item.SeriesId },
+                'Series'
+              );
+            }
+
+            if (
+              this.item.SeasonName &&
+              this.item.IndexNumber &&
+              this.item.Name
+            ) {
+              const episodeString = this.$t('episodeNumber', {
+                episodeNumber: this.item.IndexNumber
+              });
+
+              this.subtitle = `${this.item.SeasonName} - ${episodeString}\n${this.item.Name}`;
+            }
+
+            if (this.item.SeriesName) {
+              this.titleString = this.item.SeriesName;
+            }
+
+            break;
         }
 
-        if (this.item.AlbumArtist) {
-          this.titleString = this.item.AlbumArtist;
+        // Instead of using 'default', we need this additional extra check
+        // in case an Album doesn't have artists, for example.
+        if (this.itemLink === '') {
+          this.itemLink = this.getItemDetailsLink(this.item);
         }
 
-        if (this.item.Name) {
-          this.subtitle = this.item.Name;
+        if (this.titleString === '' && this.item.Name) {
+          this.titleString = this.item.Name;
         }
 
-        break;
-      case 'Episode':
-        if (this.item.SeriesId) {
-          this.logoLink = this.getItemDetailsLink(
-            { Id: this.item.SeriesId },
-            'Series'
-          );
-        }
-
-        if (this.item.SeasonName && this.item.IndexNumber) {
-          this.subtitle =
-            this.item.SeasonName +
-            this.$t('episodeNumber', { episodeNumber: this.item.IndexNumber });
-        }
-
-        if (this.item.SeriesName) {
-          this.titleString = this.item.SeriesName;
-        }
-
-        break;
+        this.logo = this.getLogo(this.item);
+      }
     }
-
-    // Instead of using 'default', we need this additional extra check
-    // in case an Album doesn't have artists, for example.
-    if (this.itemLink === '') {
-      this.itemLink = this.getItemDetailsLink(this.item);
-    }
-
-    if (this.titleString === '' && this.item.Name) {
-      this.titleString = this.item.Name;
-    }
-
-    this.logo = this.getLogo(this.item);
   }
 });
 </script>
