@@ -7,7 +7,7 @@ const config: NuxtConfig = {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  ssr: !!process.env.NUXT_SSR,
+  ssr: false,
   /*
    ** Disables telemetry prompt while installing dependencies
    ** See https://github.com/nuxt/telemetry
@@ -125,7 +125,8 @@ const config: NuxtConfig = {
     ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    '@nuxtjs/pwa'
   ],
   /*
    ** Router configuration
@@ -423,12 +424,5 @@ const config: NuxtConfig = {
     host: '0.0.0.0'
   }
 };
-
-// Add context-dependent modules to the build
-if (process.env.NUXT_SSR) {
-  config.buildModules?.push('@nuxtjs/pwa');
-} else {
-  config.modules?.push('@nuxtjs/pwa');
-}
 
 export default config;
