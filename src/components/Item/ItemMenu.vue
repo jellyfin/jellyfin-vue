@@ -1,39 +1,45 @@
 <template>
   <div v-if="options.length > 0">
-    <v-menu
-      absolute
-      close-on-click
-      close-on-content-click
-      :z-index="zIndex"
-      top
-    >
-      <template #activator="{ on, attrs }">
-        <v-btn
-          icon
-          :outlined="outlined"
-          :dark="dark"
-          v-bind="attrs"
-          v-on="on"
-          @click.stop.prevent
-        >
-          <v-icon>mdi-dots-horizontal</v-icon>
-        </v-btn>
-      </template>
-      <v-list dense nav>
-        <v-list-item
-          v-for="(menuOption, index) in options"
-          :key="`item-${item.Id}-menu-${index}`"
-          @click="menuOption.action"
-        >
-          <v-list-item-icon>
-            <v-icon>{{ menuOption.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title class="text">
-            {{ menuOption.title }}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+    <v-fade-transition>
+      <v-menu
+        v-model="show"
+        absolute
+        close-on-click
+        close-on-content-click
+        :z-index="zIndex"
+        :position-x="positionX"
+        :position-y="positionY"
+        top
+      >
+        <template #activator="{ on, attrs }">
+          <v-btn
+            icon
+            :outlined="outlined"
+            :dark="dark"
+            v-bind="attrs"
+            v-on="on"
+            @click.stop.prevent="onActivatorClick"
+            @contextmenu="onRightClick"
+          >
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+        <v-list dense nav>
+          <v-list-item
+            v-for="(menuOption, index) in options"
+            :key="`item-${item.Id}-menu-${index}`"
+            @click="menuOption.action"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ menuOption.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text">
+              {{ menuOption.title }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-fade-transition>
     <metadata-editor-dialog
       v-if="metadataDialog"
       :dialog.sync="metadataDialog"
@@ -74,14 +80,19 @@ export default Vue.extend({
     zIndex: {
       type: Number,
       default: 200
+    },
+    rightClick: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
+      show: false,
+      positionX: null as number | null,
+      positionY: null as number | null,
       metadataDialog: false
     };
-  },
-  mounted() {
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
@@ -183,9 +194,40 @@ export default Vue.extend({
       }
     }
   },
+  mounted() {
+    if (this.rightClick && this.$parent.$el) {
+      (this.$parent.$el as HTMLElement).addEventListener(
+        'contextmenu',
+        // @ts-expect-error - Typings for contextmenu event are incorrect
+        this.onRightClick
+      );
+    }
+  },
+  destroyed() {
+    if (this.$parent.$el) {
+      (this.$parent.$el as HTMLElement).removeEventListener(
+        'contextmenu',
+        // @ts-expect-error - Typings for contextmenu event are incorrect
+        this.onRightClick
+      );
+    }
+  },
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
-    ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue'])
+    ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue']),
+    onRightClick(e: PointerEvent): void {
+      e.stopPropagation();
+      e.preventDefault();
+      this.positionX = e.clientX;
+      this.positionY = e.clientY;
+      this.$nextTick(() => {
+        this.show = true;
+      });
+    },
+    onActivatorClick(): void {
+      this.positionX = null;
+      this.positionY = null;
+    }
   }
 });
 </script>
