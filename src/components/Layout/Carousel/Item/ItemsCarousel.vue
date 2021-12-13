@@ -1,13 +1,6 @@
 <template>
-  <div class="swiperContainer">
-    <swiper
-      ref="carousel"
-      class="swiper"
-      :options="swiperOptions"
-      @slideChange="onSlideChange"
-      @touchStart="onTouch"
-      @touchEnd="onTouch"
-    >
+  <carousel progressbar :slides="items.length" @onSlideChange="onSlideChange">
+    <template #slides>
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
           <div class="default-icon" />
@@ -28,7 +21,7 @@
                 <p class="text-overline text-truncate mb-2 my-2">
                   <slot name="referenceText" />
                 </p>
-                <items-carousel-title :item="item"/>
+                <items-carousel-title :item="item" />
                 <media-info
                   :item="item"
                   year
@@ -54,23 +47,12 @@
           </v-container>
         </div>
       </swiper-slide>
-    </swiper>
-    <carousel-progress-bar
-      :pages="items.length"
-      :current-index="currentIndex"
-      :duration="slideDuration"
-      :paused="isPaused"
-      class="px-2 px-sm-4 progress-bar"
-      hoverable
-      @on-animation-end="onAnimationEnd"
-      @on-progress-clicked="onProgressClicked"
-    />
-  </div>
+    </template>
+  </carousel>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Swiper, { SwiperOptions } from 'swiper';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
@@ -84,43 +66,17 @@ export default Vue.extend({
       type: Array as () => BaseItemDto[],
       required: true
     },
-    slideDuration: {
-      type: Number,
-      default: 7000
-    },
     pageBackdrop: {
       type: Boolean,
       default: false
-    },
-    swiperOptions: {
-      type: Object as () => SwiperOptions,
-      default: (): SwiperOptions => {
-        return {
-          initialSlide: 0,
-          loop: true,
-          parallax: true,
-          autoplay: false,
-          effect: 'fade',
-          fadeEffect: {
-            crossFade: true
-          },
-          keyboard: true,
-          a11y: true
-        };
-      }
     }
   },
   data() {
     return {
-      currentIndex: 0 as number | undefined,
-      isPaused: false,
-      swiper: undefined as Swiper | undefined,
       relatedItems: {} as { [k: number]: BaseItemDto }
     };
   },
   async mounted() {
-    this.swiper = (this.$refs.carousel as Vue).$swiper as Swiper;
-
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
     for (const [key, i] of this.items.entries()) {
@@ -146,14 +102,7 @@ export default Vue.extend({
       this.relatedItems[key] = itemData;
     }
 
-    const hash = this.getBlurhash(this.items[0], ImageType.Backdrop);
-
-    if (this.pageBackdrop) {
-      this.setBackdrop({ hash });
-    }
-  },
-  activated() {
-    this.onSlideChange();
+    this.updateBackdrop(0);
   },
   destroyed() {
     this.clearBackdrop();
@@ -177,37 +126,15 @@ export default Vue.extend({
         return '';
       }
     },
-    // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
-    // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
-    // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
-    // we force a loop reload to fix this.
-    //
-    // See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
-    onSlideChange(): void {
-      this.currentIndex = this.swiper?.realIndex;
-
-      if (this.swiper?.isBeginning || this.swiper?.isEnd) {
-        this.swiper?.updateSlides();
-      }
-
-      const hash =
-        this.getBlurhash(
-          this.items[this.currentIndex as number],
-          ImageType.Backdrop
-        ) || '';
-
+    updateBackdrop(index: number) {
       if (this.pageBackdrop) {
+        const hash = this.getBlurhash(this.items[index], ImageType.Backdrop);
+
         this.setBackdrop({ hash });
       }
     },
-    onTouch(): void {
-      this.isPaused = !this.isPaused;
-    },
-    onAnimationEnd(): void {
-      this.swiper?.slideNext();
-    },
-    onProgressClicked(index: number): void {
-      this.swiper?.slideToLoop(index);
+    onSlideChange(index: number): void {
+      this.updateBackdrop(index);
     }
   }
 });
@@ -220,3 +147,6 @@ export default Vue.extend({
   background-color: #{map-get($material-dark, 'menus')};
 }
 </style>
+
+@import "~/assets/styles/HomeHeader.scss"; .slide-backdrop { background-color:
+#{map-get($material-dark, "menus")}; }
