@@ -96,25 +96,6 @@ npm run prod
 
 _Although the build of the client is production-ready, Nuxt's own HTTP server should never be exposed directly to the internet and a proper hosting tool like Nginx should always be used instead._
 
-### Server-Side Rendering (SSR)
-
-This client fully supports Server-Side Rendering. All the commands listed above have their SSR siblings:
-
-```bash
-npm run build:ssr
-npm run start:ssr
-npm run prod:ssr
-```
-
-#### Running standalone
-
-When building the SSR version of the client, all the dependencies (including those only relevant for development) will be included. If you don't plan to contribute or customize the client, these dependencies won't be useful at all for you. In order to save some space at runtime, you can specify to `npm` that you want only runtime dependencies and build an standalone version of the client:
-
-```bash
-npm install --production
-npm run build:ssr:standalone
-```
-
 # Contributing
 
 We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers) to help you setup your environment.
