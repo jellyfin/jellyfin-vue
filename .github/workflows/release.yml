@@ -54,7 +54,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.nginx'
+          file: '.github/workflows/Dockerfile.ci'
           tags: |
             jellyfin/jellyfin-vue:stable
             jellyfin/jellyfin-vue:stable.${{ github.event.release.tag_name }}
@@ -70,7 +70,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.nginx'
+          file: '.github/workflows/Dockerfile.ci'
           tags: |
             jellyfin/jellyfin-vue:stable-rc
             jellyfin/jellyfin-vue:stable-rc.${{ github.event.release.tag_name }}
