@@ -1,7 +1,7 @@
 <template>
   <div class="swiperContainer">
     <carousel-progress-bar
-      v-if="progressbar && topProgress && slides > 0"
+      v-if="progressBar && topProgressBar && slides > 0"
       :pages="slides"
       :current-index="currentIndex"
       :duration="slideDuration"
@@ -22,7 +22,7 @@
       <slot name="slides" />
     </swiper>
     <carousel-progress-bar
-      v-if="progressbar && !topProgress && slides > 0"
+      v-if="progressBar && !topProgressBar && slides > 0"
       :pages="slides"
       :current-index="currentIndex"
       :duration="slideDuration"
@@ -50,11 +50,11 @@ export default Vue.extend({
       type: Number,
       default: 7000
     },
-    progressbar: {
+    progressBar: {
       type: Boolean,
       default: false
     },
-    topProgress: {
+    topProgressBar: {
       type: Boolean,
       default: false
     },
@@ -124,9 +124,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/styles/HomeHeader.scss';
-
-.slide-backdrop {
-  background-color: #{map-get($material-dark, 'menus')};
-}
+@import '~/assets/styles/Carousel.scss';
 </style>

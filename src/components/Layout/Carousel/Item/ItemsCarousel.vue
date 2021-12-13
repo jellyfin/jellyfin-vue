@@ -1,5 +1,5 @@
 <template>
-  <carousel progressbar :slides="items.length" @onSlideChange="onSlideChange">
+  <carousel progress-bar :slides="items.length" @onSlideChange="onSlideChange">
     <template #slides>
       <swiper-slide v-for="item in items" :key="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
@@ -141,12 +141,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/styles/HomeHeader.scss';
+@import '~/assets/styles/Carousel.scss';
 
 .slide-backdrop {
   background-color: #{map-get($material-dark, 'menus')};
 }
 </style>
-
-@import "~/assets/styles/HomeHeader.scss"; .slide-backdrop { background-color:
-#{map-get($material-dark, "menus")}; }
