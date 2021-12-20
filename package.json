@@ -65,7 +65,7 @@
     "qs": "^6.10.1",
     "screenfull": "^6.0.0",
     "shaka-player": "^3.2.1",
-    "simple-icons": "^5.20.0",
+    "simple-icons": "^6.3.0",
     "swiper": "5.x",
     "uuid": "^8.3.2",
     "vee-validate": "^3.4.13",
