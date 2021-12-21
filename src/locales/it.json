@@ -164,7 +164,7 @@
     "activity": "Attività",
     "failedGetActivity": "Impossibile ottenere le attività",
     "failedGetLogs": "Impossibile ottenere i log",
-    "logs": "Logs",
+    "logs": "Log",
     "noActivityFound": "Nessuna attività trovata",
     "noLogsFound": "Nessun log trovato"
   },
@@ -337,7 +337,7 @@
       "activity": "Attività",
       "failedGetActivity": "Impossibile ottenere le attività",
       "failedGetLogs": "Impossibile ottenere i log",
-      "logs": "Logs",
+      "logs": "Log",
       "noActivityFound": "Nessuna attività trovata",
       "noLogsFound": "Nessun log trovato"
     },
