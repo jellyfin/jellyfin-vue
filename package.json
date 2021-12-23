@@ -131,10 +131,5 @@
     "node": ">=16.13.1 <17.0.0",
     "npm": ">=8.1.2",
     "yarn": "Yarn is not supported. Please use NPM."
-  },
-  "fork-ts-checker": {
-    "typescript": {
-      "memoryLimit": 4096
-    }
   }
 }
