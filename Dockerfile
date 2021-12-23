@@ -20,7 +20,5 @@ RUN npm run build
 # Deploy built distribution to nginx
 FROM nginx:alpine
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
-COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY .docker/mime.types /etc/nginx/mime.types
 
 EXPOSE 80
