@@ -374,12 +374,6 @@ const config: NuxtConfig = {
       }
     },
     optimizeCSS: true,
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-        maxSize: 800000
-      }
-    },
     extractCSS: {
       ignoreOrder: true
     },
