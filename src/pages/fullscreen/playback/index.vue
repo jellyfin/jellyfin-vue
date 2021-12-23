@@ -96,10 +96,10 @@ export default Vue.extend({
     });
   },
   mounted() {
+    this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
     this.setAppBarOpacity({ opaqueAppBar: false });
     this.setBackdropOpacity({ newOpacity: 0.5 });
     this.setMinimized({ minimized: false });
-    this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
   },
   destroyed() {
     this.clearBackdrop();
