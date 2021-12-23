@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v2.4.0
+
       - name: Get current date ⌛
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -18,22 +21,6 @@ jobs:
       - name: Get commit hash ⚙️
         id: sha
         run: echo "::set-output name=sha::${GITHUB_SHA::7}"
-
-      - name: Checkout ⬇️
-        uses: actions/checkout@v2.4.0
-
-      - name: Setup node environment ⚙️
-        uses: actions/setup-node@v2.5.0
-        with:
-          node-version: 16
-          cache: 'npm'
-          check-latest: true
-
-      - name: Install dependencies 📦
-        run: npm ci --no-audit
-
-      - name: Build client 🛠️
-        run: NUXT_ENV_COMMIT=$GITHUB_SHA npm run build
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
@@ -54,13 +41,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.JF_BOT_TOKEN }}
 
-      - name: Build images and push 🛠️⬆️
+      - name: Build and push Docker images 🛠️
         uses: docker/build-push-action@v2.6.1
         with:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.ci'
           tags: |
             jellyfin/jellyfin-vue:unstable
             jellyfin/jellyfin-vue:unstable.${{ steps.date.outputs.date }}.${{ steps.sha.outputs.sha }}

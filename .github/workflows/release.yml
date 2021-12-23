@@ -15,19 +15,6 @@ jobs:
       - name: Checkout ⬇️
         uses: actions/checkout@v2.4.0
 
-      - name: Setup node environment ⚙️
-        uses: actions/setup-node@v2.5.0
-        with:
-          node-version: 16
-          cache: 'npm'
-          check-latest: true
-
-      - name: Install dependencies 📦
-        run: npm ci --no-audit
-
-      - name: Build client 🛠️
-        run: npm run build
-
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v1.2.0
 
@@ -54,7 +41,8 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.ci'
+          build-args: |
+            IS_STABLE=1
           tags: |
             jellyfin/jellyfin-vue:stable
             jellyfin/jellyfin-vue:stable.${{ github.event.release.tag_name }}
@@ -70,7 +58,8 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
-          file: '.github/workflows/Dockerfile.ci'
+          build-args: |
+            IS_STABLE=1
           tags: |
             jellyfin/jellyfin-vue:stable-rc
             jellyfin/jellyfin-vue:stable-rc.${{ github.event.release.tag_name }}
