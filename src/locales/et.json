@@ -1,186 +1,99 @@
 {
-  "actors": "",
   "allLanguages": "",
-  "artists": "",
   "badRequest": "",
-  "byArtist": "",
   "communityRating": "",
-  "continueWatching": "",
   "dateAdded": "",
-  "dialog": {
-    "upNext": {
-      "startNow": ""
-    }
-  },
   "discNumber": "",
-  "editPerson": "",
   "errors": {
     "anErrorHappened": ""
   },
-  "failedSettingDisplayPreferences": "",
   "filter": "",
-  "genericJellyfinPlaceholderDevice": "",
   "headerExternalIds": "",
-  "homeHeader": {
-    "welcome": {
-      "checkNewItems": ""
-    }
-  },
   "imageType": {
     "backdrop": "",
-    "disc": "",
     "screenshot": ""
   },
   "item": {
-    "artist": {
-      "appearsOn": ""
-    },
     "cast": "",
     "person": {
-      "birthPlace": "",
       "movies": ""
-    },
-    "tracklist": {
-      "title": ""
     }
   },
   "libraries": "",
-  "libraryRefreshQueued": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "changeServer": "",
     "loginAs": "",
-    "selectUser": "",
     "serverDashboard": ""
   },
   "logsAndActivity": {
-    "activity": "",
     "noActivityFound": ""
   },
   "mediaInfo": {
-    "audioCodec": {
-      "name": ""
-    },
     "subtitleCodec": {
       "name": ""
     }
   },
-  "metadata": {
-    "sourceAll": ""
-  },
   "metadataNoResultsMatching": "",
-  "movies": "",
   "noImagesFound": "",
-  "numberTracks": "",
   "overview": "",
-  "people": "",
   "playback": {
     "addToQueue": "",
-    "playbackSource": {
-      "item": ""
-    },
     "queueItems": ""
   },
-  "playbackData": "",
   "playbackInfo": {
     "playMethod": {
       "remux": ""
-    },
-    "streamType": {
-      "name": ""
     }
   },
   "played": "",
-  "playerInfo": {
-    "name": ""
-  },
   "present": "",
-  "rating": "",
   "resumable": "",
-  "saved": "",
   "seasonEpisodeAbbrev": "",
-  "serverVersionTooLow": "",
   "settings": {
     "apiKeys": {
       "apiKeys": "",
-      "dateCreated": "",
       "revokeAllFailure": ""
     },
     "devices": {
-      "appName": "",
       "deleteAllDevicesError": "",
-      "deviceName": "",
       "userName": ""
-    },
-    "logsAndActivity": {
-      "failedGetLogs": ""
     },
     "settings": ""
   },
   "settingsSections": {
-    "devices": {
-      "name": ""
-    },
     "home": {
-      "name": ""
-    },
-    "liveTvAndDvr": {
       "name": ""
     },
     "mediaPlayers": {
       "name": ""
     },
-    "notifications": {
-      "name": ""
-    },
     "plugins": {
-      "name": ""
-    },
-    "server": {
       "name": ""
     },
     "transcodingAndStreaming": {
       "name": ""
     }
   },
-  "signIn": "",
   "specialFeatures": "",
-  "stretch": "",
   "syncingInProgress": "",
-  "themeVideo": "",
   "trailer": "",
   "transcodingInfo": {
-    "transcodingProgress": "",
     "transcodingReason": {
       "reasons": {
         "audioBitrateNotSupported": "",
-        "audioSampleRateNotSupported": "",
         "refFramesNotSupported": "",
-        "videoCodecNotSupported": "",
         "videoResolutionNotSupported": ""
       }
     }
   },
-  "unableGetServerConfiguration": "",
   "undefined": "",
-  "units": {
-    "bitrate": {
-      "mbps": ""
-    }
-  },
   "upNext": "",
-  "validation": {
-    "mustBeUrl": ""
-  },
   "videoTypes": "",
   "wizard": {
-    "allowRemoteAccess": "",
     "languageSuccessfullySet": "",
-    "remoteAccess": "",
     "setMetadataError": ""
   },
-  "writer": "",
   "youMayAlsoLike": ""
 }
