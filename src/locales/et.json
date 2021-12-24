@@ -1,99 +1,68 @@
 {
-  "allLanguages": "",
   "badRequest": "",
-  "communityRating": "",
   "dateAdded": "",
-  "discNumber": "",
   "errors": {
     "anErrorHappened": ""
   },
-  "filter": "",
   "headerExternalIds": "",
   "imageType": {
-    "backdrop": "",
     "screenshot": ""
   },
   "item": {
-    "cast": "",
     "person": {
       "movies": ""
     }
   },
-  "libraries": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "loginAs": "",
     "serverDashboard": ""
-  },
-  "logsAndActivity": {
-    "noActivityFound": ""
   },
   "mediaInfo": {
     "subtitleCodec": {
       "name": ""
     }
   },
-  "metadataNoResultsMatching": "",
   "noImagesFound": "",
-  "overview": "",
   "playback": {
-    "addToQueue": "",
-    "queueItems": ""
+    "addToQueue": ""
   },
   "playbackInfo": {
     "playMethod": {
       "remux": ""
     }
   },
-  "played": "",
   "present": "",
-  "resumable": "",
   "seasonEpisodeAbbrev": "",
   "settings": {
     "apiKeys": {
-      "apiKeys": "",
       "revokeAllFailure": ""
     },
     "devices": {
-      "deleteAllDevicesError": "",
       "userName": ""
-    },
-    "settings": ""
+    }
   },
   "settingsSections": {
     "home": {
       "name": ""
     },
-    "mediaPlayers": {
-      "name": ""
-    },
     "plugins": {
-      "name": ""
-    },
-    "transcodingAndStreaming": {
       "name": ""
     }
   },
   "specialFeatures": "",
-  "syncingInProgress": "",
   "trailer": "",
   "transcodingInfo": {
     "transcodingReason": {
       "reasons": {
-        "audioBitrateNotSupported": "",
-        "refFramesNotSupported": "",
-        "videoResolutionNotSupported": ""
+        "refFramesNotSupported": ""
       }
     }
   },
   "undefined": "",
-  "upNext": "",
   "videoTypes": "",
   "wizard": {
-    "languageSuccessfullySet": "",
     "setMetadataError": ""
-  },
-  "youMayAlsoLike": ""
+  }
 }
