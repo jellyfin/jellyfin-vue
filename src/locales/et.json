@@ -1,19 +1,12 @@
 {
-  "headerExternalIds": "",
   "login": {
     "serverDashboard": ""
-  },
-  "playbackInfo": {
-    "playMethod": {
-      "remux": ""
-    }
   },
   "settings": {
     "devices": {
       "userName": ""
     }
   },
-  "trailer": "",
   "wizard": {
     "setMetadataError": ""
   }
