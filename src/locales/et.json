@@ -1,1 +1,344 @@
-{}
+{
+  "3DFormat": "3D vorming",
+  "NoMediaSourcesAvailable": "Meediaallikaid pole saadaval",
+  "actor": "Näitleja",
+  "actors": "Näitlejad",
+  "addNewPerson": "Lisa uus inimene",
+  "airPlayDevices": "AirPlay seadmed",
+  "albums": "Albumid",
+  "allLanguages": "Kõik keeled",
+  "alphabetically": "Tähestikuline",
+  "architecture": "Arhitektuur",
+  "artist": "Esitaja",
+  "artists": "Esitajad",
+  "aspectRatio": "Kuvasuhe",
+  "audio": "Heli",
+  "audioCodecNotSupported": "Helikoodekit ei toetata",
+  "badRequest": "Halb taotlus. Proovi uuesti",
+  "books": "Raamatud",
+  "browserNotSupported": "Sinu veebilehitseja ei toeta selle faili esitamist.",
+  "byArtist": "Järjestus {artist}",
+  "cancel": "Tühista",
+  "castAndCrew": "Näitlejad ja meeskond",
+  "collections": "Kogumikud",
+  "communityRating": "Kogukonna hinne",
+  "confirm": "Kinnita",
+  "connect": "Ühendu",
+  "continueListening": "Jätka kuulamist",
+  "continueWatching": "Jätka vaatamist",
+  "criticRating": "Kriitikute hinne",
+  "customRating": "Kohandatud hinne",
+  "darkModeToggle": "Tumeda režiimi lüliti",
+  "dateAdded": "Lisatud",
+  "details": "Üksikasjad",
+  "dialog": {
+    "upNext": {
+      "hide": "Peida",
+      "nextItemPlayingIn": "Algab {time}",
+      "startNow": "Alusta kohe"
+    }
+  },
+  "directing": "Lavastamine",
+  "director": "Lavastaja",
+  "disabled": "Keelatud",
+  "discNumber": "Plaat {discNumber}",
+  "dislikes": "Ei meeldi",
+  "edit": "Muuda",
+  "editMetadata": "Muuda metaandmeid",
+  "editPerson": "Muuda inimest",
+  "endDate": "Lõpukuupäev",
+  "endsAt": "Lõpeb {time}",
+  "episodeNumber": "Episood {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Tekkis viga",
+    "messages": {
+      "errorCode": "Veakood: {errorCode}",
+      "videoPlayerError": "Videopleieris ilmnes parandamatu viga."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Kuvaseadeid ei saa hankida. Kasutame viimaseid teadaolevaid seadeid.",
+  "failedSettingDisplayPreferences": "Kuvaseadeid ei saa värskendada.",
+  "failedToRefreshItems": "Üksuste värskendamine nurjus",
+  "favorite": "Lemmik",
+  "filter": "Filter",
+  "filtersNotFound": "Filtrite laadimine nurjus",
+  "fullScreen": "Täisekraan",
+  "general": "Üldine",
+  "genericJellyfinPlaceholderDevice": "Üldine Jellyfin seade",
+  "genres": "Žanrid",
+  "googleCastPlaceholderDevice": "Google Cast seade",
+  "guestStar": "Külalisstaar",
+  "headerExternalIds": "Välised ID-d",
+  "headerPaths": "Rada",
+  "home": "Avaleht",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Viimati lisatud"
+    },
+    "welcome": {
+      "checkNewItems": "Vaata, mis on uut.",
+      "helloUser": "Tere {userName}!",
+      "noItems": "Siin pole hiljuti lisatud üksusi."
+    }
+  },
+  "imageType": {
+    "art": "Pildid",
+    "backdrop": "Taustapilt",
+    "banner": "Bänner",
+    "box": "Karp",
+    "boxRear": "Karp (tagakülg)",
+    "disc": "Plaat",
+    "logo": "Logo",
+    "menu": "Menüü",
+    "primary": "Peamine",
+    "screenshot": "Ekraanipilt",
+    "thumb": "Pisipilt"
+  },
+  "images": "Pildid",
+  "incorrectUsernameOrPassword": "Vale kasutajanimi või parool",
+  "item": {
+    "artist": {
+      "discography": "Diskograafia",
+      "information": "Teave",
+      "videos": "Videod"
+    },
+    "composer": "Helilooja",
+    "crew": "Meeskond",
+    "person": {
+      "birth": "Sündinud",
+      "birthPlace": "Sünnikoht",
+      "books": "Raamatud",
+      "death": "Surnud",
+      "information": "Teave",
+      "movies": "Filmid",
+      "person": "Isik",
+      "photos": "Fotod",
+      "shows": "Sarjad"
+    },
+    "tracklist": {
+      "title": "Pealkiri"
+    }
+  },
+  "itemNotFound": "Üksust ei leitud",
+  "jellyfinLogo": "Jellyfin logo",
+  "latestLibrary": "{libraryName} - uued",
+  "libraries": "Meediakogud",
+  "libraryEmpty": "See meediakogu on tühi",
+  "libraryEmptyFilters": "Vasteid pole. Rohkemate üksuste kuvamiseks eemalda mõned filtrid",
+  "libraryNotFound": "Meediakogu ei leitud",
+  "libraryRefreshQueued": "Meediakogu värskendus on ootel",
+  "liked": "Meeldib",
+  "likes": "Meeldib",
+  "links": {
+    "helpTranslate": "Tõlgi Jellyfin eesti keelde",
+    "poweredByJellyfin": "See on Jellyfin server",
+    "readTheDocumentation": "Loe dokumentatsiooni",
+    "reportAnIssue": "Teata probleemist selle kliendiga"
+  },
+  "login": {
+    "addServer": "Lisa server",
+    "changeServer": "Muuda serverit",
+    "changeUser": "Muuda kasutajat",
+    "connect": "Ühenda",
+    "login": "Logi sisse",
+    "loginAs": "Logi sisse kasutajana {name}",
+    "manualLogin": "Manuaalne sisselogimine",
+    "rememberMe": "Pea meeles",
+    "selectServer": "Vali server",
+    "selectUser": "Vali kasutaja",
+    "serverAddress": "Serveri aadress",
+    "serverAddressMustBeUrl": "Serveri aadress peab olema kehtiv URL",
+    "serverAddressRequired": "Serveri aadress on nõutav",
+    "serverDashboard": "Serveri paneel",
+    "serverNotFound": "Serverit ei leitud",
+    "serverVersionTooLow": "Serveri versioon peab olema 10.7.0 või uuem"
+  },
+  "logout": "Logi välja",
+  "logsAndActivity": {
+    "activity": "Tegevus",
+    "failedGetActivity": "Tegevuse toomine nurjus",
+    "failedGetLogs": "Logide toomine nurjus",
+    "logs": "Logid",
+    "noActivityFound": "Tegevusi ei leitud",
+    "noLogsFound": "Logisi ei leitud"
+  },
+  "manualLogin": "Manuaalne sisselogimine",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Helikanalid:"
+    },
+    "audioCodec": {
+      "name": "Helikoodek:"
+    },
+    "bitrate": {
+      "name": "Bitikiirus:"
+    },
+    "container": {
+      "name": "Konteiner:"
+    },
+    "name": "Meedia",
+    "subtitleCodec": {
+      "name": "Subtiitrite koodek:"
+    },
+    "videoCodec": {
+      "name": "Videokoodek:"
+    }
+  },
+  "menu": "Menüü",
+  "metadata": {
+    "source": "Allikas",
+    "sourceAll": "Kõik",
+    "title": "Pealkiri",
+    "type": "Tüüp"
+  },
+  "metadataEditor": "Metaandmete redaktor",
+  "metadataNoResultsMatching": "Päringule \"{search}\" ei leitud ühtegi vastet. Uue loomiseks vajuta sisestusklahvi.",
+  "more": "Veel",
+  "moreLikeArtist": "Sarnased esitajale {artist}",
+  "moreLikeThis": "Veel sarnaseid",
+  "movies": "Filmid",
+  "name": "Nimi",
+  "networks": "Telejaamad",
+  "nextUp": "Järgmisena",
+  "noImagesFound": "Pilte ei leitud",
+  "noInformationAvailable": "Teave puudub",
+  "noNetworkConnection": "Võrguühendus puudub",
+  "noResultsFound": "Siin pole midagi",
+  "numberTracks": "{number} lugu",
+  "operatingSystem": "Operatsioonisüsteem",
+  "originalAspectRatio": "Algne kuvasuhe",
+  "originalTitle": "Algne pealkiri",
+  "overview": "Ülevaade",
+  "parentalRating": "Vanusepiirang",
+  "parentalRatings": "Vanusepiirangud",
+  "password": "Parool",
+  "people": "Inimesed",
+  "person": "Isik",
+  "play": "Esita",
+  "playFromBeginning": "Esita algusest",
+  "playback": {
+    "addToQueue": "Lisa järjekorda",
+    "clearQueue": "Tühjenda järjekord ja peata taasesitus",
+    "playAll": "Esita kõik",
+    "playNext": "Esita järgmine",
+    "playbackSource": {
+      "shuffle": "Esitus segajärjekorras",
+      "shuffleItem": "{item} esitus segajärjekorras",
+      "unknown": "Esitus järjekorrast"
+    },
+    "queueItems": "{items} lugu",
+    "saveAsPlaylist": "Salvesta järjekord esitusloendina",
+    "shuffle": "Sega",
+    "shuffleAll": "Sega kõik"
+  },
+  "playbackData": "Taasesituse teave",
+  "playbackInfo": {
+    "name": "Taasesitus",
+    "playMethod": {
+      "direct": "Otsene",
+      "name": "Meetod:",
+      "transcode": "Transkoodi"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Voo tüüp:",
+      "unknown": "Tundmatu",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Taasesituse seaded",
+  "played": "Esitatud",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Rikutud kaadrid:"
+    },
+    "decodedFrames": {
+      "name": "Dekodeeritud kaadrid:"
+    },
+    "name": "Pleier",
+    "videoResolution": {
+      "value": "{width}✕{height}"
+    }
+  },
+  "producer": "Produtsent",
+  "quality": "Kvaliteet",
+  "queue": "Järjekord",
+  "rating": "Hinne",
+  "refreshLibrary": "Värskenda meediakogu",
+  "releaseDate": "Välja lastud",
+  "remoteDevices": "Kaugseadmed",
+  "resumable": "Jätkatav",
+  "resume": "Jätka",
+  "role": "Roll",
+  "save": "Salvesta",
+  "saved": "Salvestatud",
+  "search": {
+    "name": "Otsi",
+    "topResults": "Parimad vasted"
+  },
+  "seasonEpisode": "Hooaeg {seasonNumber}, episood {episodeNumber}",
+  "seasonEpisodeAbbrev": "H{seasonNumber} E{episodeNumber}",
+  "series": "Seriaal",
+  "server": "Server",
+  "serverVersion": "Serveri versioon",
+  "serverVersionTooLow": "Serveri versioon peab olema 10.7.0 või uuem",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Juurdepääsuluba",
+      "addApiKey": "Lisa API võti",
+      "addNewKey": "Lisa uus API võti",
+      "apiKeys": "API võtmed",
+      "appName": "Rakenduse nimi",
+      "createKeyFailure": "Viga uue API võtme loomisel",
+      "createKeySuccess": "Uue API võtme loomine õnnestus",
+      "dateCreated": "Loodud",
+      "description": "Lisa ja tühista oma serverile välise juurdepääsu saamiseks API võtmeid",
+      "refreshKeysFailure": "Viga API võtmete värskendamisel",
+      "revokeAll": "Tühista kõik API võtmed",
+      "revokeAllFailure": "Viga kõigi API võtmete tühistamisel",
+      "revokeAllSuccess": "Kõik API võtmed on edukalt tühistatud",
+      "revokeFailure": "Viga API võtme tühistamisel",
+      "revokeSuccess": "API võti tühistati edukalt"
+    },
+    "devices": {
+      "appName": "Rakenduse nimi",
+      "appVersion": "Rakenduse versioon",
+      "delete": "Kustuta",
+      "deleteAll": "Kustuta kõik",
+      "deleteAllDevicesError": "Viga kõigi seadmete kustutamisel",
+      "deleteAllDevicesSuccess": "Kõik seadmed kustutati edukalt",
+      "deleteDeviceError": "Viga seadme kustutamisel",
+      "deleteDeviceSuccess": "Seadme kustutamine õnnestus",
+      "deviceName": "Seadme nimi",
+      "devices": "Seadmed",
+      "lastActive": "Viimati aktiivne",
+      "noDevicesFound": "Seadmeid ei leitud",
+      "userName": "Kasutajanimi"
+    },
+    "help": "Abi",
+    "logsAndActivity": {
+      "activity": "Tegevus",
+      "failedGetActivity": "Tegevuse toomine nurjus",
+      "failedGetLogs": "Logide toomine nurjus",
+      "logs": "Logid",
+      "noActivityFound": "Tegevusi ei leitud",
+      "noLogsFound": "Logisi ei leitud"
+    },
+    "settings": "Seaded"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Muuda oma kasutajateavet",
+      "name": "Konto"
+    },
+    "devices": {
+      "description": "Vaata ja halda oma serveriga ühendatud seadmeid",
+      "name": "Seadmed"
+    },
+    "dlna": {
+      "description": "Seadista DLNA sätted ja profiil",
+      "name": "DLNA"
+    }
+  }
+}
