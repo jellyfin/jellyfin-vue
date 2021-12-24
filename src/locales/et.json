@@ -1,67 +1,33 @@
 {
-  "badRequest": "",
   "dateAdded": "",
-  "errors": {
-    "anErrorHappened": ""
-  },
   "headerExternalIds": "",
-  "imageType": {
-    "screenshot": ""
-  },
   "item": {
     "person": {
       "movies": ""
     }
   },
-  "links": {
-    "poweredByJellyfin": ""
-  },
   "login": {
     "serverDashboard": ""
   },
-  "mediaInfo": {
-    "subtitleCodec": {
-      "name": ""
-    }
-  },
   "noImagesFound": "",
-  "playback": {
-    "addToQueue": ""
-  },
   "playbackInfo": {
     "playMethod": {
       "remux": ""
     }
   },
-  "present": "",
   "seasonEpisodeAbbrev": "",
   "settings": {
-    "apiKeys": {
-      "revokeAllFailure": ""
-    },
     "devices": {
       "userName": ""
     }
   },
   "settingsSections": {
-    "home": {
-      "name": ""
-    },
     "plugins": {
       "name": ""
     }
   },
-  "specialFeatures": "",
   "trailer": "",
-  "transcodingInfo": {
-    "transcodingReason": {
-      "reasons": {
-        "refFramesNotSupported": ""
-      }
-    }
-  },
   "undefined": "",
-  "videoTypes": "",
   "wizard": {
     "setMetadataError": ""
   }
