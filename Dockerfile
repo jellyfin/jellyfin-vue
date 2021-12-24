@@ -1,9 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
 FROM node:16-alpine AS build
-# Set labels
-LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
-LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 # Set environment variables
 ARG IS_STABLE=0
 ENV NUXT_ENV_COMMIT=""
@@ -29,5 +26,8 @@ RUN npm run build
 # Deploy built distribution to nginx
 FROM nginx:alpine
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
-
 EXPOSE 80
+
+# Set labels
+LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
+LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
