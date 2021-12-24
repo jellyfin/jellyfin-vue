@@ -10,14 +10,6 @@ jobs:
   docker:
     name: Build Docker images 💿💻
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - 'linux/amd64'
-          - 'linux/arm64'
-          - 'linux/arm'
-          - 'linux/arm/v6'
 
     steps:
       - name: Checkout ⬇️
@@ -48,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           build-args: |
             IS_STABLE=1
           tags: |
@@ -65,7 +57,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64,linux/arm,linux/arm/v6
           build-args: |
             IS_STABLE=1
           tags: |
