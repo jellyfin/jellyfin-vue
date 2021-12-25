@@ -17,7 +17,10 @@
   "badRequest": "Halb taotlus. Proovi uuesti",
   "books": "Raamatud",
   "browserNotSupported": "Sinu veebilehitseja ei toeta selle faili esitamist.",
-  "byArtist": "Järjestus {artist}",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "{artist}",
   "cancel": "Tühista",
   "castAndCrew": "Näitlejad ja meeskond",
   "collections": "Kogumikud",
@@ -60,6 +63,7 @@
   "failedSettingDisplayPreferences": "Kuvaseadeid ei saa värskendada.",
   "failedToRefreshItems": "Üksuste värskendamine nurjus",
   "favorite": "Lemmik",
+  "features": "Omadused",
   "filter": "Filter",
   "filtersNotFound": "Filtrite laadimine nurjus",
   "fullScreen": "Täisekraan",
@@ -256,8 +260,12 @@
     "decodedFrames": {
       "name": "Dekodeeritud kaadrid:"
     },
+    "droppedFrames": {
+      "name": "Kaotatud kaadrid:"
+    },
     "name": "Pleier",
     "videoResolution": {
+      "name": "Video lahutus:",
       "value": "{width}✕{height}"
     }
   },
@@ -339,6 +347,176 @@
     "dlna": {
       "description": "Seadista DLNA sätted ja profiil",
       "name": "DLNA"
+    },
+    "home": {
+      "description": "Seadista avakuva jaotised ja paigutus",
+      "name": "Avakuva"
+    },
+    "libraries": {
+      "description": "Halda meediakogusi ja nende metaandmeid",
+      "name": "Meediakogud"
+    },
+    "liveTvAndDvr": {
+      "description": "Halda TV-tuunereid, telekava pakkujaid ja digisalvesti seadeid",
+      "name": "Otse TV ja DVR"
+    },
+    "logs": {
+      "description": "Loe ja otsi serveri logisid ja kasutaja tegevusi",
+      "name": "Logid ja tegevus"
+    },
+    "mediaPlayers": {
+      "description": "Seadista, kuidas meediapleierid selle seadme puhul käituvad",
+      "name": "Meediapleierid"
+    },
+    "networking": {
+      "description": "Halda selle serveri võrgusätteid",
+      "name": "Võrgu seaded"
+    },
+    "notifications": {
+      "description": "Halda ja seadista selle serveri saadetud märguandeid",
+      "name": "Märguanded"
+    },
+    "playback": {
+      "description": "Muuda selle seadme taasesituse eelistusi",
+      "name": "Taasesitus"
+    },
+    "plugins": {
+      "description": "Lisa ja seadista selle serveri jaoks uusi funktsioone",
+      "name": "Pluginad"
+    },
+    "scheduledTasks": {
+      "description": "Halda selles serveris töötavaid ajastatud ülesandeid",
+      "name": "Ajastatud ülesanded"
+    },
+    "server": {
+      "description": "Seadista selle serveri keel ja logo",
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Määra, kuidas selles seadmes subtiitreid kuvatakse",
+      "name": "Subtiitrid"
+    },
+    "transcodingAndStreaming": {
+      "description": "Halda, kuidas see server käsitleb transkoodimist ja voogesitust klientidele",
+      "name": "Transkoodimine ja voogesitus"
+    },
+    "users": {
+      "description": "Halda kasutajaid ja nende õigusi",
+      "name": "Kasutajad"
     }
-  }
+  },
+  "shows": "Sarjad",
+  "signIn": "Logi sisse",
+  "songs": "Lood",
+  "sortByType": "{type}",
+  "sortTitle": "Pealkiri järjestamiseks",
+  "specialFeatures": "Eriomadused",
+  "speed": "Kiirus",
+  "startNow": "Alusta kohe",
+  "status": "Olek",
+  "stretch": "Venita",
+  "studios": "Stuudiod",
+  "subtitles": "Subtiitrid",
+  "syncPlayGroups": "SyncPlay rühmad",
+  "syncingInProgress": "Toimub sünkimine",
+  "tagline": "Juhtlause",
+  "tags": "Sildid",
+  "themeSong": "Teemalaul",
+  "themeVideo": "Teemavideo",
+  "tooltips": {
+    "changeLanguage": "Keel",
+    "switchToDarkMode": "Lülitu tumedale režiimile",
+    "switchToLightMode": "Lülitu heledale režiimile"
+  },
+  "trailer": "Treiler",
+  "transcodingInfo": {
+    "name": "Transkoodimine",
+    "transcodingFramerate": {
+      "name": "Kaadrisagedus:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Edenemine:",
+    "transcodingReason": {
+      "name": "Põhjus: | Põhjused:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorfset videot ei toetata",
+        "audioBitDepthNotSupported": "Heli bitisügavust ei toetata",
+        "audioBitrateNotSupported": "Heli bitikiirust ei toetata",
+        "audioChannelsNotSupported": "Helikanalite arvu ei toetata",
+        "audioCodecNotSupported": "Helikoodekit ei toetata",
+        "audioProfileNotSupported": "Helikoodeki profiili ei toetata",
+        "audioSampleRateNotSupported": "Heli diskreetimissagedust ei toetata",
+        "containerBitrateExceedsLimit": "Konteineri bitikiirus ületab seatud piirangu",
+        "containerNotSupported": "Konteinerit ei toetata",
+        "interlacedVideoNotSupported": "Ülerealaotusega videot ei toetata",
+        "refFramesNotSupported": "Referentskaadreid ei toetata",
+        "secondaryAudioNotSupported": "Teiseseid heliradasid ei toetata",
+        "subtitleCodecNotSupported": "Subtiitrite koodekit ei toetata",
+        "videoBitDepthNotSupported": "Video bitisügavust ei toetata",
+        "videoCodecNotSupported": "Videokoodekit ei toetata",
+        "videoFramerateNotSupported": "Video kaadrisagedust ei toetata",
+        "videoLevelNotSupported": "Videokoodeki taset ei toetata",
+        "videoProfileNotSupported": "Videokoodeki profiili ei toetata",
+        "videoResolutionNotSupported": "Videolahutust ei toetata"
+      }
+    }
+  },
+  "type": "Tüüp",
+  "unableGetPublicUsers": "Kasutajaid ei õnnestu leida",
+  "unableGetRelated": "Seotuid üksusi ei õnnestu leida",
+  "unableGetServerConfiguration": "Serveri seadistust ei õnnestu leida",
+  "unableToRefreshLibrary": "Meediakogu ei õnnestu värskendada",
+  "unableToToggleLike": "Elemendi meeldimise olekut ei õnnestu muuta",
+  "unableToTogglePlayed": "Vaatamise olekut ei õnnestu muuta",
+  "undefined": "Määratlemata",
+  "unexpectedError": "Ootamatu viga",
+  "unhandledException": "Käsitlemata erand",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekund | {count} sekundit"
+    }
+  },
+  "unliked": "Ei meeldi",
+  "unplayed": "Esitamata",
+  "upNext": "Järgmiseks",
+  "upNextName": "Järgmiseks: {upNextItemName}",
+  "username": "Kasutajanimi",
+  "validation": {
+    "bothPasswordsSame": "Mõlemad paroolid peavad olema samad",
+    "mustBeUrl": "See väli peab olema kehtiv URL",
+    "required": "See väli on kohustuslik"
+  },
+  "version": "Versioon",
+  "video": "Video",
+  "videoTypes": "Video tüübid",
+  "viewDetails": "Täpsemalt",
+  "vueClientVersion": "Kliendi versioon",
+  "wizard": {
+    "administratorAccount": "Administraatori konto",
+    "allowRemoteAccess": "Luba serverile kaugjuurdepääs",
+    "completeError": "Käivitusviisardi lõpuleviimine nurjus.",
+    "confirmPassword": "Kinnita parool",
+    "languageLocale": "Keel ja asukoht",
+    "languageSuccessfullySet": "Keele seadistamine õnnestus.",
+    "metadataLanguagesSet": "Metaandmete keeled määrati.",
+    "preferedLanguage": "Eelistatud keel",
+    "preferredMetadataLanguage": "Eelistatud metaandmete keel",
+    "remoteAccess": "Kaugjuurdepääs",
+    "remoteAccessSet": "Kaugjuurdepääs seatud.",
+    "setAdminError": "Administraatori konto loomine nurjus.",
+    "setLanguageError": "Kliendi keele määramine nurjus.",
+    "setMetadataError": "Metaandmete keelte määramine nurjus.",
+    "setRemoteError": "Kaugjuurdepääsu seadeid ei õnnestu määrata.",
+    "setupWizard": "Seadistusviisard",
+    "userSuccessfullySet": "Kasutaja on seadistatud."
+  },
+  "writer": "Stsenarist",
+  "writing": "Stsenaarium",
+  "year": "Aasta",
+  "years": "Aastad",
+  "youMayAlsoLike": "Sulle võib meeldida ka"
 }
