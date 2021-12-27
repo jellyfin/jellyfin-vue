@@ -1,1 +1,157 @@
-{}
+{
+  "3DFormat": "3D format",
+  "NoMediaSourcesAvailable": "Walang available na media source",
+  "actor": "Aktor",
+  "actors": "Mga Aktor",
+  "addNewPerson": "Magdagdag ng bagong tao",
+  "airPlayDevices": "Mga AirPlay Device",
+  "albums": "Mga Album",
+  "allLanguages": "Lahat ng mga wika",
+  "alphabetically": "Ayon sa alpabeto",
+  "architecture": "Arkitektura",
+  "artist": "Artista",
+  "artists": "Mga artista",
+  "aspectRatio": "Aspect ratio",
+  "audio": "Audio",
+  "audioCodecNotSupported": "Ang audio codec ay hindi suportado",
+  "badRequest": "Bad request. Subukan muli",
+  "books": "Mga libro",
+  "browserNotSupported": "Ang iyong browser ay hindi suportado para sa pag-play ng file na ito.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Ayon sa {artist}",
+  "cancel": "Kanselahin",
+  "castAndCrew": "Cast at crew",
+  "collections": "Mga koleksyon",
+  "communityRating": "Rating ng komunidad",
+  "confirm": "Kumpirmahin",
+  "connect": "Kumonekta",
+  "continueListening": "Ipagpatuloy ang pakikinig",
+  "continueWatching": "Ituloy ang panonood",
+  "criticRating": "Rating ng kritiko",
+  "customRating": "Custom na rating",
+  "darkModeToggle": "I-toggle ang dark mode",
+  "dateAdded": "Idinagdag ng petsa",
+  "details": "Mga Detalye",
+  "dialog": {
+    "upNext": {
+      "hide": "Itago",
+      "nextItemPlayingIn": "Magsisimula sa {time}",
+      "startNow": "Magsimula ngayon"
+    }
+  },
+  "directing": "Nagdidirekta",
+  "director": "Direktor",
+  "disabled": "Naka-disable",
+  "discNumber": "Disc {discNumber}",
+  "dislikes": "Mga dislike",
+  "edit": "I-edit",
+  "editMetadata": "I-edit ang metadata",
+  "editPerson": "I-edit ang tao",
+  "endDate": "Petsa ng pagtatapos",
+  "endsAt": "Matatapos sa {time}",
+  "episodeNumber": "Episode {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "May error na nangyari",
+    "messages": {
+      "errorCode": "Error code: {errorCode}",
+      "videoPlayerError": "Nakatagpo ang video player ng hindi nababawi na error."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Hindi makuha ang mga kagustuhan sa display. Gagamitin ang huling alam na mga setting.",
+  "failedSettingDisplayPreferences": "Hindi ma-update ang mga kagustuhan sa display.",
+  "failedToRefreshItems": "Na-fail ang pag-refresh ng mga item",
+  "favorite": "Paborito",
+  "features": "Mga Feature",
+  "filter": "I-filter",
+  "filtersNotFound": "Hindi ma-load ang mga filter",
+  "fullScreen": "I-fullscreen",
+  "general": "General",
+  "genericJellyfinPlaceholderDevice": "Generic na Jellyfin device",
+  "genres": "Mga genre",
+  "googleCastPlaceholderDevice": "Google Cast device",
+  "guestStar": "Guest Star",
+  "headerExternalIds": "Mga External ID",
+  "headerPaths": "Path",
+  "home": "Home",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Kamakailang idinagdag"
+    },
+    "welcome": {
+      "checkNewItems": "Tingnan kung ano ang bago.",
+      "helloUser": "Kamusta {userName}!",
+      "noItems": "Walang mga kamakailang idinagdag na item na ipapakita."
+    }
+  },
+  "imageType": {
+    "art": "Art",
+    "backdrop": "Backdrop",
+    "banner": "Banner",
+    "box": "Kahon",
+    "boxRear": "Kahon (likod)",
+    "disc": "Disc",
+    "logo": "Logo",
+    "menu": "Menu",
+    "primary": "Pangunahin",
+    "screenshot": "Screenshot",
+    "thumb": "Thumb"
+  },
+  "images": "Mga larawan",
+  "incorrectUsernameOrPassword": "Maling username o password",
+  "item": {
+    "artist": {
+      "appearsOn": "Mga pagpapakita",
+      "discography": "Discography",
+      "information": "Impormasyon",
+      "videos": "Mga video"
+    },
+    "cast": "Cast",
+    "composer": "Composer",
+    "crew": "Crew",
+    "person": {
+      "birth": "Ipinanganak",
+      "birthPlace": "Lugar ng kapanganakan",
+      "books": "Mga libro",
+      "death": "Namatay",
+      "information": "Impormasyon",
+      "movies": "Mga pelikula",
+      "person": "Tao",
+      "photos": "Mga larawan",
+      "shows": "Mga palabas"
+    },
+    "tracklist": {
+      "title": "Pamagat"
+    }
+  },
+  "itemNotFound": "Hindi nahanap ang item",
+  "jellyfinLogo": "Logo ng jellyfin",
+  "latestLibrary": "Pinakabagong {libraryName}",
+  "libraries": "Mga Library",
+  "libraryEmpty": "Walang laman ang library na ito",
+  "libraryEmptyFilters": "Walang tugma. Alisin ang ilang mga filter upang magpakita ng higit pang mga item",
+  "libraryNotFound": "Hindi nahanap ang library",
+  "libraryRefreshQueued": "Naka-queue ang pag-refresh ng library",
+  "liked": "Nagustuhan",
+  "likes": "Mga gusto",
+  "links": {
+    "helpTranslate": "Isalin ang Jellyfin sa iyong wika",
+    "poweredByJellyfin": "Ang server na ito ay powered ng Jellyfin",
+    "readTheDocumentation": "Basahin ang dokumentasyon",
+    "reportAnIssue": "Mag-ulat ng isyu sa client na ito"
+  },
+  "login": {
+    "addServer": "Magdagdag ng server",
+    "changeServer": "Baguhin ang server",
+    "changeUser": "Baguhin ang user",
+    "connect": "Kumonekta",
+    "login": "Login",
+    "loginAs": "Mag-login bilang {name}",
+    "manualLogin": "Manu-manong pag-log in",
+    "rememberMe": "Tandaan mo ako",
+    "selectServer": "Pumili ng server",
+    "selectUser": "Pumili ng user",
+    "serverAddress": "Address ng server"
+  }
+}
