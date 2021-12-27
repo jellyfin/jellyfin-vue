@@ -12,6 +12,7 @@
         top
       >
         <template #activator="{ on, attrs }">
+          <!-- See comments for this in the onRightClick method -->
           <v-btn
             icon
             :outlined="outlined"
@@ -216,6 +217,15 @@ export default Vue.extend({
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue']),
     onRightClick(e: PointerEvent): void {
+      // Vue 2's API doesn't support native JavaScript events when the component's instances
+      // are referenced using refs, only custom ones (generated using $emit): https://vuejs.org/v2/api/#vm-on
+      // We get the parent's component instance using refs, so we need to add the event handler directly to
+      // the DOM, not to the Vue instance (as done in the mounted() hook)
+      //
+      // We share this callback with the parent element and the v-btn Vue instance. This is why
+      // we need to stopPropagation and preventDefault here, instead of using the @contextmenu.stop.prevent syntax.
+      //
+      // TODO: Revisit this on Vue 3, maybe this Vue API quirk is fixed
       e.stopPropagation();
       e.preventDefault();
       this.positionX = e.clientX;
