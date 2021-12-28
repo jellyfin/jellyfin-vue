@@ -8,13 +8,7 @@
       <!-- CARD -->
       <div :class="shape || cardType" class="elevation-2">
         <div
-          class="
-            card-content card-content-button
-            d-flex
-            justify-center
-            align-center
-            darken-4
-          "
+          class="card-content card-content-button d-flex justify-center align-center darken-4"
         >
           <blurhash-image
             :item="item"
