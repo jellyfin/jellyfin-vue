@@ -47,7 +47,7 @@
     }
   ],
   "dependencyDashboard": false,
-  "ignoreDeps": ["npm", "swiper", "node", "hls"],
+  "ignoreDeps": ["npm", "swiper", "node", "hls.js"],
   "lockFileMaintenance": {
     "enabled": false,
     "extends": ["schedule:monthly"]

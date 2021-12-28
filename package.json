@@ -49,7 +49,7 @@
     "destr": "1.1.0",
     "dompurify": "2.3.4",
     "he": "1.2.0",
-    "hls.js": "1.1.2",
+    "hls.js": "0.14.17",
     "js-cookie": "3.0.1",
     "langs": "2.0.0",
     "libass-wasm": "4.0.0",
