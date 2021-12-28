@@ -52,7 +52,6 @@
     "enabled": false,
     "extends": ["schedule:monthly"]
   },
-  "respectLatest": true,
   "enabledManagers": ["npm", "github-actions"],
   "labels": ["dependencies"],
   "rebaseWhen": "behind-base-branch",
