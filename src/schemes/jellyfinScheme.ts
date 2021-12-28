@@ -1,4 +1,3 @@
-import compareVersions from 'compare-versions';
 import { Context } from '@nuxt/types';
 import { Auth } from '@nuxtjs/auth';
 import { AxiosResponse } from 'axios';
@@ -66,45 +65,34 @@ export default class JellyfinScheme {
 
     this._setToken(token);
 
-    // Check the version info and implicitly check for the manifest
-    const serverInfo = (
-      await this.$auth.ctx.app.$api.system.getPublicSystemInfo()
-    ).data;
-
-    // We need a version > 10.7.0 due to the use of /Users/Me
-    if (compareVersions.compare(serverInfo.Version || '', '10.7.0', '>=')) {
-      // Login using the Axios client
-      const authenticateResponse =
-        await this.$auth.ctx.app.$api.user.authenticateUserByName({
-          authenticateUserByName: {
-            Username: username,
-            Pw: password
-          }
-        });
-
-      // Set the user's token
-      const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
-
-      this.$auth.setToken(this.name, userToken);
-      this._setToken(userToken);
-      this.$auth.ctx.app.store.commit('user/SET_USER', {
-        id: authenticateResponse.data.User?.Id,
-        accessToken: authenticateResponse.data.AccessToken
+    const authenticateResponse =
+      await this.$auth.ctx.app.$api.user.authenticateUserByName({
+        authenticateUserByName: {
+          Username: username,
+          Pw: password
+        }
       });
 
-      // Sets the remember me to true in order to first fetch the user once
-      this._setRememberMe(true);
+    // Set the user's token
+    const userToken = `MediaBrowser Client="${this.$auth.ctx.app.store.state.deviceProfile.clientName}", Device="${this.$auth.ctx.app.store.state.deviceProfile.deviceName}", DeviceId="${this.$auth.ctx.app.store.state.deviceProfile.deviceId}", Version="${this.$auth.ctx.app.store.state.deviceProfile.clientVersion}", Token="${authenticateResponse.data.AccessToken}"`;
 
-      // Fetch the user data
-      await this.fetchUser();
+    this.$auth.setToken(this.name, userToken);
+    this._setToken(userToken);
+    this.$auth.ctx.app.store.commit('user/SET_USER', {
+      id: authenticateResponse.data.User?.Id,
+      accessToken: authenticateResponse.data.AccessToken
+    });
 
-      // Set the remember me value
-      this._setRememberMe(rememberMe);
+    // Sets the remember me to true in order to first fetch the user once
+    this._setRememberMe(true);
 
-      return authenticateResponse;
-    } else {
-      throw new Error('serverVersionTooLow');
-    }
+    // Fetch the user data
+    await this.fetchUser();
+
+    // Set the remember me value
+    this._setRememberMe(rememberMe);
+
+    return authenticateResponse;
   }
 
   setUserToken(tokenValue: string): Promise<void> {
