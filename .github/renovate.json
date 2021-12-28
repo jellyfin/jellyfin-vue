@@ -1,0 +1,62 @@
+{
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "bump",
+        "pin",
+        "digest",
+        "lockfileMaintenance",
+        "rollback"
+      ],
+      "groupName": "development dependencies",
+      "groupSlug": "dev-deps"
+    },
+    {
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "bump",
+        "pin",
+        "digest",
+        "lockfileMaintenance",
+        "rollback"
+      ],
+      "groupName": "dependencies",
+      "groupSlug": "deps"
+    },
+    {
+      "matchDepTypes": ["action"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "bump",
+        "pin",
+        "digest",
+        "lockfileMaintenance",
+        "rollback"
+      ],
+      "groupName": "CI dependencies",
+      "groupSlug": "ci-deps"
+    }
+  ],
+  "dependencyDashboard": false,
+  "ignoreDeps": ["npm", "swiper", "node"],
+  "lockFileMaintenance": {
+    "enabled": false,
+    "extends": ["schedule:monthly"]
+  },
+  "respectLatest": true,
+  "enabledManagers": ["npm", "github-actions"],
+  "labels": ["dependencies"],
+  "rebaseWhen": "behind-base-branch",
+  "rangeStrategy": "pin",
+  "assignees": ["ferferga", "ThibaultNocchi"],
+  "reviewers": ["ferferga", "ThibaultNocchi"]
+}
