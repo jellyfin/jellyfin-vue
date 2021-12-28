@@ -18,11 +18,7 @@
           <v-row justify="d-flex flex-column">
             <div class="ml-sm-4 d-flex flex-column">
               <div
-                class="
-                  text-subtitle-1 text--secondary
-                  font-weight-medium
-                  text-capitalize
-                "
+                class="text-subtitle-1 text--secondary font-weight-medium text-capitalize"
               >
                 {{ $t('item.person.person') }}
               </div>
