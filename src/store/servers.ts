@@ -1,4 +1,3 @@
-import compareVersions from 'compare-versions';
 import { ActionTree, MutationTree } from 'vuex';
 import { PublicSystemInfo } from '@jellyfin/client-axios';
 
@@ -55,7 +54,12 @@ export const actions: ActionTree<ServerState, ServerState> = {
       throw new Error(err as string);
     }
 
-    if (compareVersions.compare(data.Version || '', '10.7.0', '>=')) {
+    const semverMajor = data.Version?.split('.')[0] as string;
+    const semverMinor = data.Version?.split('.')[1] as string;
+    const isServerVersionSupported =
+      parseInt(semverMajor) >= 10 && parseInt(semverMinor) >= 7;
+
+    if (isServerVersionSupported) {
       if (!data.StartupWizardCompleted) {
         this.$router.push('/wizard');
       } else {
