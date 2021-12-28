@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { MutationTree, ActionTree } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
 // Modules
@@ -19,6 +18,7 @@ import { websocketPlugin } from './plugins/websocketPlugin';
 import { playbackReportingPlugin } from './plugins/playbackReportingPlugin';
 import { preferencesSync } from './plugins/preferencesSyncPlugin';
 import { userPlugin } from './plugins/userPlugin';
+import { SocketState } from './socket';
 
 export const plugins = [
   websocketPlugin,
@@ -38,13 +38,6 @@ export interface AuthState {
 export interface RootState {
   // A generic syncing indicator for settings or item syncing to and from the server
   syncing: boolean;
-  // Handled by vue-native-websocket
-  socket: {
-    instance: WebSocket | null;
-    isConnected: boolean;
-    message: Record<string, never>;
-    reconnectError: boolean;
-  };
 }
 export interface AppState extends RootState {
   auth: AuthState;
@@ -60,43 +53,14 @@ export interface AppState extends RootState {
   tvShows: TvShowsState;
   user: UserState;
   userViews: UserViewsState;
+  socket: SocketState;
 }
 
 export const state = (): RootState => ({
-  syncing: false,
-  socket: {
-    instance: null,
-    isConnected: false,
-    message: {},
-    reconnectError: false
-  }
+  syncing: false
 });
 
 export const mutations: MutationTree<RootState> = {
-  SOCKET_ONOPEN(state: RootState, event: Event) {
-    const socketInstance = event.currentTarget;
-
-    Vue.set(state.socket, 'instance', socketInstance);
-    Vue.set(state.socket, 'isConnected', true);
-    Vue.set(state.socket, 'reconnectError', false);
-  },
-  SOCKET_ONCLOSE(state: RootState, _event: CloseEvent) {
-    Vue.set(state.socket, 'isConnected', false);
-  },
-  SOCKET_ONERROR(state: RootState, event: Event) {
-    // eslint-disable-next-line no-console
-    console.error(state, event);
-  },
-  SOCKET_ONMESSAGE(state: RootState, message) {
-    Vue.set(state.socket, 'message', message);
-  },
-  SOCKET_RECONNECT(state: RootState, count: number) {
-    // eslint-disable-next-line no-console
-    console.info(state, count);
-  },
-  SOCKET_RECONNECT_ERROR(state: RootState) {
-    Vue.set(state.socket, 'reconnectError', true);
-  },
   SET_SYNC_STATUS(state: RootState, value: boolean) {
     state.syncing = value;
   }
@@ -116,6 +80,7 @@ export const actions: ActionTree<RootState, RootState> = {
     promises.push(dispatch('tvShows/clearTvShows', { root: true }));
     promises.push(dispatch('user/clearUser', { root: true }));
     promises.push(dispatch('userViews/clearUserViews', { root: true }));
+    promises.push(dispatch('socket/closeSocket', { root: true }));
 
     if (clearCritical) {
       promises.push(dispatch('servers/clearServers', { root: true }));

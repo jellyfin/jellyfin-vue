@@ -1,15 +1,9 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Plugin } from 'vuex';
 import { AppState } from '..';
-
-interface WebSocketMessage {
-  MessageType: string;
-  Data?: Record<string, never>;
-}
+import { WebSocketMessage } from '../socket';
 
 export const websocketPlugin: Plugin<AppState> = (store) => {
-  let keepAliveInterval: number;
-
   /**
    * Builds and sends a websocket message of a given type, with the specified payload.
    *
@@ -25,7 +19,7 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
       ...(data ? { Data: data } : {})
     };
 
-    store.state.socket.instance?.send(JSON.stringify(msg));
+    store.dispatch('socket/sendToSocket', { message: msg });
   }
 
   /**
@@ -48,21 +42,19 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
   }
 
   store.subscribe((mutation, state) => {
-    const message = state.socket.message;
+    const messageType = state.socket.messageType;
+    const messageData = state.socket.messageData;
     const storeIds = store.state.items.allIds;
     let itemsToUpdate: string[];
 
-    if (mutation.type === 'SOCKET_ONMESSAGE') {
-      switch (message.MessageType) {
+    if (mutation.type === 'socket/ONMESSAGE') {
+      switch (messageType) {
         case 'ForceKeepAlive': // Keep the websocket alive
           sendWebsocketMessage('KeepAlive');
-          keepAliveInterval = window.setInterval(() => {
-            sendWebsocketMessage('KeepAlive');
-          }, message.Data * 1000 * 0.5);
           break;
         case 'LibraryChanged': // Update items when metadata changes
           // @ts-expect-error -- The Data property doesn't describe its content
-          itemsToUpdate = message.Data.ItemsUpdated.filter((itemId: string) => {
+          itemsToUpdate = messageData.ItemsUpdated.filter((itemId: string) => {
             return storeIds.includes(itemId);
           });
 
@@ -70,7 +62,7 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
           break;
         case 'UserDataChanged': // Update items when their userdata is changed (like, mark as watched, etc)
           // @ts-expect-error -- The Data property doesn't describe its content
-          itemsToUpdate = message.Data.UserDataList.filter(
+          itemsToUpdate = messageData.UserDataList.filter(
             (updatedData: never) => {
               // @ts-expect-error -- There are no typings for websocket returned data.
               const itemId = updatedData.ItemId as string;
@@ -86,12 +78,6 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
           break;
         default:
           break;
-      }
-    }
-    // Socket disconnection
-    else if (mutation.type === 'SOCKET_ONCLOSE') {
-      if (keepAliveInterval) {
-        clearInterval(keepAliveInterval);
       }
     }
   });

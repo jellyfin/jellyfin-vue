@@ -195,17 +195,7 @@ export default Vue.extend({
   },
   beforeMount() {
     this.refreshUserViews();
-
-    const socketParams = stringify({
-      api_key: this.accessToken,
-      deviceId: this.deviceId
-    });
-    let socketUrl = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
-
-    socketUrl = socketUrl.replace('https:', 'wss:');
-    socketUrl = socketUrl.replace('http:', 'ws:');
-
-    this.$connect(socketUrl);
+    this.connectToWebSocket();
   },
   mounted() {
     window.addEventListener('scroll', this.setIsScrolled, { passive: true });
@@ -217,9 +207,22 @@ export default Vue.extend({
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('page', ['showNavDrawer']),
     ...mapActions('search', ['setSearchQuery']),
+    ...mapActions('socket', ['connectSocket']),
     setIsScrolled(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.isScrolled = window.scrollY > 10;
+    },
+    connectToWebSocket(): void {
+      const socketParams = stringify({
+        api_key: this.accessToken,
+        deviceId: this.deviceId
+      });
+      let url = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
+
+      url = url.replace('https:', 'wss:');
+      url = url.replace('http:', 'ws:');
+
+      this.connectSocket({ url });
     }
   }
 });
