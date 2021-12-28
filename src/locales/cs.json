@@ -31,7 +31,7 @@
   "continueWatching": "Pokračovat ve sledování",
   "criticRating": "Hodnocení kritiků",
   "customRating": "Vlastní hodnocení",
-  "darkModeToggle": "Přepnout tmavý režim",
+  "darkModeToggle": "Přepnout do tmavého režimu",
   "dateAdded": "Datum přidání",
   "details": "Podrobnosti",
   "dialog": {
@@ -276,7 +276,7 @@
       "value": "{width}✕{height}"
     }
   },
-  "present": "Prezentovat",
+  "present": "nyní",
   "producer": "Producent",
   "quality": "Kvalita",
   "queue": "Fronta",
@@ -433,8 +433,8 @@
   "themeVideo": "Úvodní video",
   "tooltips": {
     "changeLanguage": "Jazyk",
-    "switchToDarkMode": "Přepnout tmavý režim",
-    "switchToLightMode": "Přepnout světlý režim"
+    "switchToDarkMode": "Přepnout do tmavého režimu",
+    "switchToLightMode": "Přepnout do světlého režimu"
   },
   "trailer": "Upoutávka",
   "transcodingInfo": {
@@ -500,7 +500,7 @@
   },
   "version": "Verze",
   "video": "Video",
-  "videoTypes": "Typy videa",
+  "videoTypes": "Typ videa",
   "viewDetails": "Zobrazit podrobnosti",
   "vueClientVersion": "Verze klienta",
   "wizard": {
