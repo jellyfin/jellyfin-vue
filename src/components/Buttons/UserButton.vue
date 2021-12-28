@@ -82,7 +82,6 @@ export default Vue.extend({
   },
   methods: {
     logoutUser(): void {
-      this.$disconnect();
       this.$auth.logout();
     }
   }

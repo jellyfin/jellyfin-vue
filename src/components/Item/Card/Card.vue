@@ -245,11 +245,11 @@ export default Vue.extend({
   mounted() {
     this.unsubscribe = this.$store.subscribe((mutation, state) => {
       if (
-        mutation.type === 'SOCKET_ONMESSAGE' &&
-        state.socket.message.MessageType === 'RefreshProgress' &&
-        state.socket.message.Data.ItemId === this.item.Id
+        mutation.type === 'socket/ONMESSAGE' &&
+        state.socket.messageType === 'RefreshProgress' &&
+        state.socket.messageData.ItemId === this.item.Id
       ) {
-        this.refreshProgress = state.socket.message.Data.Progress;
+        this.refreshProgress = state.socket.messageData.Progress;
       }
     });
   },
