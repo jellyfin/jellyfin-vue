@@ -1,6 +1,6 @@
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import type { NuxtConfig } from '@nuxt/types';
-import jellyfinIcon from 'simple-icons/icons/jellyfin';
+import { siJellyfin as jellyfinIcon } from 'simple-icons/icons';
 
 const config: NuxtConfig = {
   /*
