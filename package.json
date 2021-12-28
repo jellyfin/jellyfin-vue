@@ -65,7 +65,6 @@
     "uuid": "8.3.2",
     "vee-validate": "3.4.14",
     "vue-awesome-swiper": "4.1.1",
-    "vue-native-websocket": "2.0.15",
     "vue-virtual-scroller": "1.0.10",
     "vuedraggable": "2.24.3",
     "vuex-persistedstate": "4.1.0"
