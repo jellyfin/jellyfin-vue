@@ -31,3 +31,4 @@ EXPOSE 80
 # Set labels
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
+LABEL org.opencontainers.image.description "Commit: ${NUXT_ENV_COMMIT}"
