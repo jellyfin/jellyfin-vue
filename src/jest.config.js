@@ -11,8 +11,9 @@ module.exports = {
   transform: {
     '^.+\\.ts$': 'ts-jest',
     '^.+\\.js$': 'ts-jest',
-    '.*\\.(vue)$': 'vue-jest'
+    '.*\\.(vue)$': '@vue/vue2-jest'
   },
+  testEnvironment: 'jsdom',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/layouts/**/*.vue',
