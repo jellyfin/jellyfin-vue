@@ -427,7 +427,7 @@ export default Vue.extend({
 /* stylelint-disable-next-line */
 ::cue {
   background-color: transparent;
-  text-shadow: 0.14em 0.14em 0.14em rgba(0, 0, 0, 1);
+  text-shadow: 0.14em 0.14em 0.14em rgba(0, 0, 0, 100%);
   font-family: inherit;
   line-height: normal; /* Restore value. See -webkit-media-text-track-container 'line-height' */
   -webkit-font-smoothing: antialiased;
