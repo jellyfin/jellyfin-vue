@@ -185,6 +185,9 @@
     "name": "Medio",
     "subtitleCodec": {
       "name": "Formato de subtítulo:"
+    },
+    "videoCodec": {
+      "name": "Codec de video:"
     }
   },
   "menu": "Menú",
@@ -244,6 +247,7 @@
       "transcode": "Transcodificar"
     },
     "streamType": {
+      "dash": "DASH",
       "hls": "HLS",
       "name": "Tipo de stream:",
       "unknown": "Desconocido",
@@ -410,6 +414,7 @@
   "speed": "Velocidad",
   "startNow": "Empezar ahora",
   "status": "Estado",
+  "stretch": "Estirar",
   "studios": "Estudios",
   "subtitles": "Subtítulos",
   "syncPlayGroups": "Grupos de SyncPlay",
@@ -427,7 +432,31 @@
   "transcodingInfo": {
     "name": "Transcodificando",
     "transcodingFramerate": {
-      "name": "Framerate:"
+      "name": "Fotogramas por segundo:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progreso:",
+    "transcodingReason": {
+      "name": "Razones: | Razones:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "El video anamórfico no está soportado",
+        "audioBitDepthNotSupported": "La densidad de bits del audio no está soportada",
+        "audioBitrateNotSupported": "La tasa de bits del audio no está soportada",
+        "audioChannelsNotSupported": "El número de canales de audio no está soportado",
+        "audioCodecNotSupported": "El códec de audio no está soportado",
+        "audioProfileNotSupported": "El perfil del códec de audio no está soportado",
+        "containerBitrateExceedsLimit": "La tasa de bits del contenedor no está soportada",
+        "containerNotSupported": "El contenedor no está soportado",
+        "interlacedVideoNotSupported": "El video entrelazado no está soportado",
+        "refFramesNotSupported": "Los marcos de referencia no están soportados",
+        "secondaryAudioNotSupported": "Las pistas de audio secundarias no están soportadas",
+        "subtitleCodecNotSupported": "El códec de subtítulos no está soportado",
+        "videoBitDepthNotSupported": "La densidad de bits del video no está soportada",
+        "videoCodecNotSupported": "El códec de video no está soportado",
+        "videoFramerateNotSupported": "Los fotogramas por segundo del video no están soportados",
+        "videoProfileNotSupported": "El perfil del códec de video no está soportado",
+        "videoResolutionNotSupported": "La resolución del video no está soportada"
+      }
     }
   },
   "type": "Tipo",
