@@ -37,9 +37,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-div.v-snack:not(.v-snack--absolute) {
-  height: 100%;
-}
-</style>
