@@ -4,12 +4,14 @@ export interface PageState {
   title: string;
   opaqueAppBar: boolean;
   navDrawer: boolean;
+  isScrolled: boolean;
 }
 
 export const defaultState = (): PageState => ({
   title: 'Jellyfin',
   opaqueAppBar: true,
-  navDrawer: true
+  navDrawer: true,
+  isScrolled: false
 });
 
 export const state = defaultState;
@@ -24,6 +26,10 @@ interface AppBarMutationPayload {
 
 interface NavDrawerMutationPayload {
   showNavDrawer: boolean;
+}
+
+interface ScrolledMutationPayload {
+  scrolled: boolean;
 }
 
 export const mutations: MutationTree<PageState> = {
@@ -42,6 +48,9 @@ export const mutations: MutationTree<PageState> = {
   ) {
     state.navDrawer = showNavDrawer;
   },
+  SET_IS_SCROLLED(state: PageState, { scrolled }: ScrolledMutationPayload) {
+    state.isScrolled = scrolled;
+  },
   CLEAR_PAGE(state: PageState) {
     Object.assign(state, defaultState());
   }
@@ -53,6 +62,9 @@ export const actions: ActionTree<PageState, PageState> = {
   },
   setAppBarOpacity({ commit }, { opaqueAppBar }: AppBarMutationPayload) {
     commit('SET_APPBAR_OPACITY', { opaqueAppBar });
+  },
+  setIsScrolled({ commit }, { scrolled }: ScrolledMutationPayload) {
+    commit('SET_IS_SCROLLED', { scrolled });
   },
   showNavDrawer({ commit }, { showNavDrawer }: NavDrawerMutationPayload) {
     commit('SET_NAVDRAWER_VISIBILITY', { showNavDrawer });

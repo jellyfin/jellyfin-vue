@@ -134,7 +134,6 @@ export default Vue.extend({
   mixins: [settingsHelper],
   data() {
     return {
-      isScrolled: false,
       drawer: false
     };
   },
@@ -149,7 +148,7 @@ export default Vue.extend({
           };
         })
     }),
-    ...mapState('page', ['opaqueAppBar', 'navDrawer']),
+    ...mapState('page', ['opaqueAppBar', 'navDrawer', 'isScrolled']),
     ...mapState('user', ['accessToken']),
     ...mapState('deviceProfile', ['deviceId']),
     searchQuery: {
@@ -198,19 +197,19 @@ export default Vue.extend({
     this.connectToWebSocket();
   },
   mounted() {
-    window.addEventListener('scroll', this.setIsScrolled, { passive: true });
+    window.addEventListener('scroll', this.setScroll, { passive: true });
   },
   destroyed() {
-    window.removeEventListener('scroll', this.setIsScrolled);
+    window.removeEventListener('scroll', this.setScroll);
   },
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
-    ...mapActions('page', ['showNavDrawer']),
+    ...mapActions('page', ['showNavDrawer', 'setIsScrolled']),
     ...mapActions('search', ['setSearchQuery']),
     ...mapActions('socket', ['connectSocket']),
-    setIsScrolled(): void {
+    setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
-      this.isScrolled = window.scrollY > 10;
+      this.setIsScrolled({ scrolled: window.scrollY > 10 });
     },
     connectToWebSocket(): void {
       const socketParams = stringify({
