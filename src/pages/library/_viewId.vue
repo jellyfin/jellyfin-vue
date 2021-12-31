@@ -45,6 +45,7 @@
         </h1>
       </item-grid>
     </v-container>
+    <scroll-to-top-button />
   </div>
 </template>
 
