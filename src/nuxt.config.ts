@@ -83,8 +83,8 @@ const config: NuxtConfig = {
     /*
      ** Nuxt plugins
      */
+    'plugins/nuxt/store/persistedStatePlugin.ts',
     'plugins/nuxt/axe.ts',
-    'plugins/nuxt/persistedStatePlugin.ts',
     'plugins/nuxt/appInitPlugin.ts',
     'plugins/nuxt/veeValidate.ts',
     'plugins/nuxt/browserDetectionPlugin.ts',
