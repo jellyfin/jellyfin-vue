@@ -7,7 +7,8 @@ import { state, mutations, actions, PageState, defaultState } from '../page';
 const PAGE_SET_TEST_VALUE = {
   title: 'Test Title',
   opaqueAppBar: false,
-  navDrawer: false
+  navDrawer: false,
+  isScrolled: false
 };
 
 let localVue: VueConstructor<Vue>;
