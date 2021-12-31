@@ -115,12 +115,6 @@ const config: NuxtConfig = {
    */
   modules: [
     '@nuxtjs/i18n',
-    [
-      'nuxt-vuex-localstorage',
-      {
-        localStorage: ['user', 'deviceProfile', 'clientSettings']
-      }
-    ],
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
