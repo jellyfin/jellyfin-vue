@@ -105,7 +105,7 @@
       "appearsOn": "Apariencias",
       "discography": "Discografía",
       "information": "Información",
-      "videos": "Videos"
+      "videos": "Vídeos"
     },
     "cast": "Reparto",
     "composer": "Compositor",
@@ -174,7 +174,7 @@
       "name": "Canales de audio:"
     },
     "audioCodec": {
-      "name": "Codec de audio:"
+      "name": "Códec de audio:"
     },
     "bitrate": {
       "name": "Bitrate:"
@@ -184,10 +184,10 @@
     },
     "name": "Medio",
     "subtitleCodec": {
-      "name": "Formato de subtítulo:"
+      "name": "Códec de subtítulos:"
     },
     "videoCodec": {
-      "name": "Codec de video:"
+      "name": "Códec de vídeo:"
     }
   },
   "menu": "Menú",
@@ -244,6 +244,7 @@
     "playMethod": {
       "direct": "Directo",
       "name": "Método:",
+      "remux": "Remezclado",
       "transcode": "Transcodificar"
     },
     "streamType": {
@@ -251,7 +252,7 @@
       "hls": "HLS",
       "name": "Tipo de stream:",
       "unknown": "Desconocido",
-      "video": "Video"
+      "video": "Vídeo"
     }
   },
   "playbackSettings": "Ajustes de reproducción",
@@ -263,9 +264,15 @@
     "decodedFrames": {
       "name": "Frames decodificados:"
     },
+    "droppedFrames": {
+      "name": "Fotogramas caídos:"
+    },
     "name": "Reproductor",
+    "playbackResolution": {
+      "name": "Resolución de ventana:"
+    },
     "videoResolution": {
-      "name": "Resolución del video:",
+      "name": "Resolución del vídeo:",
       "value": "{width}✕{height}"
     }
   },
@@ -439,23 +446,24 @@
     "transcodingReason": {
       "name": "Razones: | Razones:",
       "reasons": {
-        "anamorphicVideoNotSupported": "El video anamórfico no está soportado",
+        "anamorphicVideoNotSupported": "El vídeo anamórfico no está soportado",
         "audioBitDepthNotSupported": "La densidad de bits del audio no está soportada",
         "audioBitrateNotSupported": "La tasa de bits del audio no está soportada",
         "audioChannelsNotSupported": "El número de canales de audio no está soportado",
         "audioCodecNotSupported": "El códec de audio no está soportado",
         "audioProfileNotSupported": "El perfil del códec de audio no está soportado",
+        "audioSampleRateNotSupported": "La frecuencia de muestreo del audio no está soportada",
         "containerBitrateExceedsLimit": "La tasa de bits del contenedor no está soportada",
         "containerNotSupported": "El contenedor no está soportado",
-        "interlacedVideoNotSupported": "El video entrelazado no está soportado",
+        "interlacedVideoNotSupported": "El vídeo entrelazado no está soportado",
         "refFramesNotSupported": "Los marcos de referencia no están soportados",
         "secondaryAudioNotSupported": "Las pistas de audio secundarias no están soportadas",
         "subtitleCodecNotSupported": "El códec de subtítulos no está soportado",
-        "videoBitDepthNotSupported": "La densidad de bits del video no está soportada",
-        "videoCodecNotSupported": "El códec de video no está soportado",
-        "videoFramerateNotSupported": "Los fotogramas por segundo del video no están soportados",
-        "videoProfileNotSupported": "El perfil del códec de video no está soportado",
-        "videoResolutionNotSupported": "La resolución del video no está soportada"
+        "videoBitDepthNotSupported": "La densidad de bits del vídeo no está soportada",
+        "videoCodecNotSupported": "El códec de vídeo no está soportado",
+        "videoFramerateNotSupported": "Los fotogramas por segundo del vídeo no están soportados",
+        "videoProfileNotSupported": "El perfil del códec de vídeo no está soportado",
+        "videoResolutionNotSupported": "La resolución del vídeo no está soportada"
       }
     }
   },
