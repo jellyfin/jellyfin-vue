@@ -259,10 +259,10 @@
   "played": "Reproducido",
   "playerInfo": {
     "corruptedFrames": {
-      "name": "Frames corruptos:"
+      "name": "Fotogramas corruptos:"
     },
     "decodedFrames": {
-      "name": "Frames decodificados:"
+      "name": "Fotogramas decodificados:"
     },
     "droppedFrames": {
       "name": "Fotogramas caídos:"
