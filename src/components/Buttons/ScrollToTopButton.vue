@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   methods: {
     scrollToTop(): void {
-      window.scrollTo(0, 0);
+      window.scrollTo({top: 0});
     }
   }
 });
