@@ -6,7 +6,7 @@ ARG IS_STABLE=0
 ENV NUXT_ENV_COMMIT=""
 
 # Build dependencies required to build some node modules on ARM platforms. git is needed for fetching the latest commit
-RUN apk add --no-cache python3 make g++ git
+RUN apk add git
 
 # Set workdir
 WORKDIR /app
