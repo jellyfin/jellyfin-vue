@@ -12,7 +12,7 @@
     />
     <app-bar-button-layout
       v-hide="$route.name === 'index'"
-      @click="$router.back()"
+      @click.native="$router.back()"
     >
       <template #icon>
         <v-icon>mdi-arrow-left</v-icon>
@@ -51,7 +51,7 @@
       </template>
     </app-bar-button-layout>
 
-    <app-bar-button-layout @click="toggleDarkMode">
+    <app-bar-button-layout @click.native="toggleDarkMode">
       <template #icon>
         <v-icon>
           {{ darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
@@ -68,6 +68,7 @@
     <cast-button
       :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
     />
+    <user-button />
     <locale-switcher
       :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
       bottom
@@ -83,13 +84,49 @@ export default Vue.extend({
   computed: {
     ...mapState('page', ['opaqueAppBar', 'isScrolled']),
     ...mapState('clientSettings', ['darkMode']),
-    ...mapState(['syncing'])
+    ...mapState(['syncing']),
+    searchQuery: {
+      get(): string {
+        return this.$route.query.q?.toString();
+      },
+      set(value: string): void {
+        if (value === '' || !value) {
+          this.$router.back();
+        } else if (this.searchQuery) {
+          this.$router.replace({ path: '/search', query: { q: value } });
+        } else {
+          this.$router.push({ path: '/search', query: { q: value } });
+        }
+      }
+    }
   },
   methods: {
     ...mapActions('clientSettings', ['setDarkMode']),
+    ...mapActions('search', ['setSearchQuery']),
     toggleDarkMode(): void {
       this.setDarkMode({ darkMode: !this.darkMode });
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
+  background-color: transparent !important;
+}
+
+.v-app-bar .v-app-bar--is-scrolled:not(.opaque) {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: rgba(32, 32, 32, 1) !important;
+}
+.search-input {
+  max-width: 15em;
+  transition: max-width 0.25s;
+}
+
+.search-input.expandable.primary--text {
+  max-width: 40em;
+  transition: max-width 0.25s;
+}
+</style>

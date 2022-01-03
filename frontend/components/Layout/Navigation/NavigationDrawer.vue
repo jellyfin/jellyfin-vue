@@ -7,10 +7,6 @@
     app
     class="pa-s"
   >
-    <template #prepend>
-      <user-button />
-      <v-divider />
-    </template>
     <v-list>
       <v-list-item
         v-for="item in items"
@@ -43,8 +39,6 @@
       </v-list-item>
     </v-list>
     <template #append>
-      <connection-monitor />
-      <syncing-monitor />
       <v-list-item
         v-if="commit"
         :href="'https://github.com/jellyfin/jellyfin-vue/commit/' + commit"
@@ -63,7 +57,7 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
 
@@ -74,7 +68,30 @@ interface LayoutButton {
 }
 
 export default Vue.extend({
+  data() {
+    return {
+      drawer: false
+    };
+  },
+  watch: {
+    $route(to): void {
+      if (to.fullPath.includes('fullscreen')) {
+        this.showNavDrawer({ showNavDrawer: false });
+      } else if (!this.navDrawer) {
+        this.showNavDrawer({ showNavDrawer: true });
+      }
+    },
+    '$vuetify.breakpoint.mobile': {
+      immediate: true,
+      handler(newVal: boolean): void {
+        if (newVal === true) {
+          this.drawer = false;
+        }
+      }
+    }
+  },
   computed: {
+    ...mapState('page', ['navDrawer']),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
@@ -97,6 +114,9 @@ export default Vue.extend({
         }
       ];
     }
+  },
+  methods: {
+    ...mapActions('page', ['showNavDrawer'])
   }
 });
 </script>
