@@ -1,21 +1,16 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
-      <div
-        v-ripple
-        class="d-flex align-center full-width py-8 px-4 no-overflow"
-        v-bind="attrs"
-        v-on="on"
-      >
-        <user-image v-if="auth.currentUser" :user="auth.currentUser" />
-        <h1
-          v-if="auth.currentUser"
-          class="flex-grow-1 font-weight-light ml-3 pb-1 text-truncate user-select-none"
-        >
-          {{ auth.currentUser.Name }}
-        </h1>
-        <v-icon>mdi-dots-horizontal</v-icon>
-      </div>
+      <app-bar-button-layout :custom-listener="on" v-bind="attrs">
+        <template #icon>
+          <user-image
+            v-if="auth.currentUser"
+            :user="auth.currentUser"
+            :size="40"
+            rounded
+          />
+        </template>
+      </app-bar-button-layout>
     </template>
     <v-list dense>
       <v-list-item
@@ -76,11 +71,16 @@ export default Vue.extend({
         title: this.$t('logout'),
         icon: 'mdi-logout',
         action: (): void => {
-          this.auth.logoutCurrentUser();
+          this.logoutUser();
         }
       });
 
       return menuItems;
+    }
+  },
+  methods: {
+    logoutUser(): void {
+      this.auth.logoutCurrentUser();
     }
   }
 });

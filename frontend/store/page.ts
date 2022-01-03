@@ -11,6 +11,7 @@ export interface PageState {
   title: string;
   opaqueAppBar: boolean;
   navDrawer: boolean;
+  openDrawer: boolean;
   isScrolled: boolean;
   syncing: boolean;
   backdrop: BackdropParameters;
@@ -24,6 +25,7 @@ export const pageStore = defineStore('page', {
       title: 'Jellyfin',
       opaqueAppBar: true,
       navDrawer: true,
+      openDrawer: true,
       isScrolled: false,
       syncing: false,
       backdrop: {
