@@ -1,57 +1,6 @@
 <template>
   <v-app>
-    <client-only>
-      <backdrop />
-    </client-only>
-    <v-navigation-drawer
-      v-if="navDrawer"
-      v-model="drawer"
-      :temporary="$vuetify.breakpoint.mobile"
-      :permanent="!$vuetify.breakpoint.mobile"
-      app
-      class="pa-s"
-    >
-      <template #prepend>
-        <user-button />
-        <v-divider />
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="item in items"
-          :key="item.Id"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-        <v-subheader>{{ $t('libraries') }}</v-subheader>
-        <v-list-item
-          v-for="library in libraryItems"
-          :key="library.Id"
-          :to="library.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ library.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="library.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <template #append>
-        <connection-monitor />
-        <syncing-monitor />
-        <commit-link />
-      </template>
-    </v-navigation-drawer>
+    <backdrop />
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.mobile"
       class="pt-s pl-2 pr-2 app-bar-safe-zone"
@@ -116,19 +65,10 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
-import { AppState } from '~/store';
-import { getLibraryIcon } from '~/utils/items';
 import settingsHelper from '~/mixins/settingsHelper';
-
-interface LayoutButton {
-  icon: string;
-  title: string;
-  to: string;
-}
 
 export default Vue.extend({
   mixins: [settingsHelper],
@@ -138,16 +78,6 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState<AppState>({
-      libraryItems: (state: AppState) =>
-        state.userViews.views.map((view: BaseItemDto) => {
-          return {
-            icon: getLibraryIcon(view.CollectionType),
-            title: view.Name,
-            to: `/library/${view.Id}`
-          };
-        })
-    }),
     ...mapState('page', ['opaqueAppBar', 'navDrawer', 'isScrolled']),
     ...mapState('user', ['accessToken']),
     ...mapState('deviceProfile', ['deviceId']),
@@ -164,15 +94,6 @@ export default Vue.extend({
           this.$router.push({ path: '/search', query: { q: value } });
         }
       }
-    },
-    items(): LayoutButton[] {
-      return [
-        {
-          icon: 'mdi-home',
-          title: this.$t('home'),
-          to: '/'
-        }
-      ];
     }
   },
   watch: {
