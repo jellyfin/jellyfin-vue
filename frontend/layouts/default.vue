@@ -1,57 +1,7 @@
 <template>
   <v-app>
     <backdrop />
-    <v-app-bar
-      :clipped-left="$vuetify.breakpoint.mobile"
-      class="pt-s pl-2 pr-2 app-bar-safe-zone"
-      flat
-      app
-      :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
-    >
-      <v-app-bar-nav-icon
-        v-if="$vuetify.breakpoint.mobile && navDrawer"
-        @click.stop="drawer = !drawer"
-      />
-      <v-btn
-        v-hide="$route.name === 'index'"
-        :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        :class="{
-          'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
-          'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
-          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled
-        }"
-        @click="$router.back()"
-      >
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <v-text-field
-        v-model="searchQuery"
-        class="search-input"
-        :class="$vuetify.breakpoint.smAndUp ? 'expandable' : null"
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="$t('search.name')"
-        max-width="15em"
-        dense
-        outlined
-        filled
-        flat
-        hide-details
-        single-line
-      />
-      <v-spacer />
-      <dark-mode-toggle
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      />
-      <locale-switcher
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        bottom
-      />
-      <cast-button
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      />
-    </v-app-bar>
+    <app-bar />
     <v-main>
       <div class="pa-s">
         <nuxt />

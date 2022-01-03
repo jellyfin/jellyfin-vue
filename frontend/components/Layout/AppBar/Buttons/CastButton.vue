@@ -15,23 +15,14 @@
   >
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
-      <v-tooltip bottom>
-        <template #activator="{ on: tooltip }">
-          <v-btn
-            class="align-self-center active-button"
-            :icon="!fab"
-            :fab="fab"
-            :small="fab"
-            :class="{ 'mr-n1': !fab, 'ml-1': fab }"
-            disabled
-            v-bind="attrs"
-            v-on="{ ...tooltip, ...menu }"
-          >
-            <v-icon>mdi-cast</v-icon>
-          </v-btn>
+      <app-bar-button-layout :custom-listener="menu" v-bind="attrs">
+        <template #icon>
+          <v-icon>mdi-cast</v-icon>
         </template>
-        <span>{{ $t('remoteDevices') }}</span>
-      </v-tooltip>
+        <template #tooltip>
+          <span>{{ $t('remoteDevices') }}</span>
+        </template>
+      </app-bar-button-layout>
     </template>
     <v-card>
       <v-list color="transparent">
