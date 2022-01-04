@@ -18,3 +18,4 @@ export * from './homeSection';
 export * from './auth';
 export * from './items';
 export * from './playbackManager';
+export * from './taskManager';
