@@ -2,10 +2,13 @@
   <v-navigation-drawer
     v-if="navDrawer"
     v-model="drawer"
+    app
     :temporary="$vuetify.breakpoint.mobile"
     :permanent="!$vuetify.breakpoint.mobile"
-    app
+    floating
+    clipped
     class="pa-s"
+    :class="{ opaque: opaqueAppBar }"
   >
     <v-list>
       <v-list-item
@@ -91,7 +94,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapState('page', ['navDrawer']),
+    ...mapState('page', ['navDrawer', 'opaqueAppBar']),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {

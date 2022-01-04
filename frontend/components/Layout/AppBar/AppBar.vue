@@ -1,10 +1,10 @@
 <template>
   <v-app-bar
-    :clipped-left="$vuetify.breakpoint.mobile"
+    clipped-left
     class="pt-s pl-2 pr-2 app-bar-safe-zone"
     flat
     app
-    :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
+    :class="{ opaque: opaqueAppBar }"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.mobile && navDrawer"
@@ -115,11 +115,6 @@ export default Vue.extend({
   background-color: transparent !important;
 }
 
-.v-app-bar .v-app-bar--is-scrolled:not(.opaque) {
-  padding-top: 0;
-  padding-bottom: 0;
-  background-color: rgba(32, 32, 32, 1) !important;
-}
 .search-input {
   max-width: 15em;
   transition: max-width 0.25s;
