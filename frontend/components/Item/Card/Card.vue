@@ -91,7 +91,7 @@ import {
   getItemDetailsLink,
   canPlay
 } from '~/utils/items';
-import { socketStore } from '~/store';
+import { taskManagerStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -136,13 +136,8 @@ export default Vue.extend({
       }
     }
   },
-  data() {
-    return {
-      refreshProgress: 0
-    };
-  },
   computed: {
-    ...mapStores(socketStore),
+    ...mapStores(taskManagerStore),
     cardType: {
       get(): string {
         // Otherwise, figure out the shape based on the type of the item
@@ -242,18 +237,12 @@ export default Vue.extend({
       } else {
         return ImageType.Primary;
       }
-    }
-  },
-  watch: {
-    socket() {
-      if (
-        this.socket.messageType === 'RefreshProgress' &&
-        // @ts-expect-error - No typings for WebSocket messages
-        this.socket.messageData?.ItemId === this.item.Id
-      ) {
-        // @ts-expect-error - No typings for WebSocket messages
-        this.refreshProgress = this.socket.messageData.Progress;
-      }
+    },
+    /**
+     * Gets the library update progress
+     */
+    refreshProgress(): number | undefined {
+      return this.taskManager.getTask(this.item.Id || '')?.progress;
     }
   },
   methods: {

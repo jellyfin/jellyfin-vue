@@ -9,7 +9,7 @@ import {
   _ActionsTree,
   _GettersTree
 } from 'pinia';
-import { authStore, pageStore, snackbarStore } from '~/store';
+import { authStore, pageStore, snackbarStore, taskManagerStore } from '~/store';
 
 const syncedStores = ['clientSettings'];
 
@@ -137,6 +137,7 @@ export default function preferencesSync({ store }: PiniaPluginContext): void {
     const page = pageStore();
     const auth = authStore();
     const snackbar = snackbarStore();
+    const taskManager = taskManagerStore();
 
     store.$onAction(({ after, name }) => {
       after(async () => {
@@ -144,9 +145,9 @@ export default function preferencesSync({ store }: PiniaPluginContext): void {
           if (!isNil(auth.currentUser)) {
             try {
               /**
-               * Set the state of the page to syncing, so UI can show that there's a syncing in progress
+               * Creates a config syncing task, so UI can show that there's a syncing in progress
                */
-              page.startSync();
+              taskManager.startConfigSync();
               /**
                * We set a new last sync date at the start, so if the push fails, we still have the last attempt's
                * date and we can compare with the server when we're back online
@@ -174,7 +175,7 @@ export default function preferencesSync({ store }: PiniaPluginContext): void {
                 'error'
               );
             } finally {
-              page.stopSync();
+              taskManager.stopConfigSync();
             }
           }
         }

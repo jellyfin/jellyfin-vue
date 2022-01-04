@@ -60,7 +60,13 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { authStore, playbackManagerStore, snackbarStore } from '~/store';
+import {
+  authStore,
+  playbackManagerStore,
+  snackbarStore,
+  taskManagerStore
+} from '~/store';
+import { TaskType, RunningTask } from '~/store/taskManager';
 import { canResume } from '~/utils/items';
 
 type MenuOption = {
@@ -72,7 +78,7 @@ type MenuOption = {
 export default Vue.extend({
   props: {
     item: {
-      type: Object,
+      type: Object as () => BaseItemDto,
       default: (): BaseItemDto => {
         return {};
       }
@@ -107,25 +113,56 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore, playbackManagerStore),
-    options: {
-      get(): MenuOption[][] {
-        const menuOptions = [] as MenuOption[][];
-        const playNextAction = {
-          title: this.$t('playback.playNext'),
-          icon: 'mdi-play-speed',
+    ...mapStores(
+      authStore,
+      snackbarStore,
+      playbackManagerStore,
+      taskManagerStore
+    ),
+    isItemRefreshing(): boolean {
+      return (
+        this.taskManager.getTask(this.item.Id || '')?.progress !== undefined
+      );
+    },
+    options(): MenuOption[][] {
+      const menuOptions = [] as MenuOption[][];
+
+      const playNextAction = {
+        title: this.$t('playback.playNext'),
+        icon: 'mdi-play-speed',
+        action: (): void => {
+          this.playbackManager.playNext(this.item);
+          this.snackbar.push(this.$t('snackbar.playNext'), 'success');
+        }
+      };
+
+      /**
+       * Queue options
+       */
+      const queueOptions = [] as MenuOption[];
+
+      if (
+        this.queue &&
+        this.playbackManager.queue.includes(this.item.Id || '')
+      ) {
+        queueOptions.push({
+          title: this.$t('itemMenu.pushToTop'),
+          icon: 'mdi-arrow-expand-up',
           action: (): void => {
             this.playbackManager.playNext(this.item);
             this.snackbar.push(this.$t('snackbar.playNext'), 'success');
           }
-        };
+        });
 
         /**
          * Queue options
          */
         const queueOptions = [] as MenuOption[];
 
-        if (this.queue && this.playbackManager.queue.includes(this.item.Id)) {
+        if (
+          this.queue &&
+          this.playbackManager.queue.includes(this.item.Id || '')
+        ) {
           queueOptions.push({
             title: this.$t('itemMenu.pushToTop'),
             icon: 'mdi-arrow-expand-up',
@@ -139,7 +176,7 @@ export default Vue.extend({
               title: this.$t('itemMenu.removeFromQueue'),
               icon: 'mdi-playlist-minus',
               action: (): void => {
-                this.playbackManager.removeFromQueue(this.item.Id);
+                this.playbackManager.removeFromQueue(this.item.Id || '');
               }
             });
           }
@@ -228,12 +265,18 @@ export default Vue.extend({
             action: async (): Promise<void> => {
               try {
                 await this.$api.itemRefresh.post({
-                  itemId: this.item.Id,
+                  itemId: this.item.Id as string,
                   replaceAllImages: false,
                   replaceAllMetadata: false
                 });
 
                 this.snackbar.push(this.$t('libraryRefreshQueued'), 'normal');
+                this.taskManager.startTask({
+                  type: TaskType.LibraryRefresh,
+                  id: this.item.Id,
+                  data: this.item.Name,
+                  progress: 0
+                } as RunningTask);
               } catch (e) {
                 // eslint-disable-next-line no-console
                 console.error(e);

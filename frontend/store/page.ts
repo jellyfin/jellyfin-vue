@@ -13,7 +13,6 @@ export interface PageState {
   navDrawer: boolean;
   openDrawer: boolean;
   isScrolled: boolean;
-  syncing: boolean;
   backdrop: BackdropParameters;
 }
 
@@ -27,7 +26,6 @@ export const pageStore = defineStore('page', {
       navDrawer: true,
       openDrawer: true,
       isScrolled: false,
-      syncing: false,
       backdrop: {
         blurhash: '',
         opacity: defaultBackdropOpacity
@@ -41,12 +39,6 @@ export const pageStore = defineStore('page', {
     clearBackdrop(): void {
       this.resetBackdropOpacity();
       this.backdrop.blurhash = '';
-    },
-    startSync(): void {
-      this.syncing = true;
-    },
-    stopSync(): void {
-      this.syncing = false;
     }
   }
 });

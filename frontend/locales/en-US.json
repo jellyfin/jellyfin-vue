@@ -532,5 +532,14 @@
   "writing": "Writing",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like"
+  "youMayAlsoLike": "You may also like",
+  "appbar": {
+    "tooltips": {
+      "tasks": "Running tasks"
+    },
+    "tasks": {
+      "configSync": "Syncing settings...",
+      "scanningLibrary": "Scanning library '{library}'..."
+    }
+  }
 }

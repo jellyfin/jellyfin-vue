@@ -41,16 +41,7 @@
         <span>{{ $t('noNetworkConnection') }}</span>
       </template>
     </app-bar-button-layout>
-    <!-- Syncing monitor -->
-    <app-bar-button-layout v-if="!page.syncing">
-      <template #icon>
-        <v-progress-circular indeterminate size="24" />
-      </template>
-      <template #tooltip>
-        <span>{{ $t('syncingInProgress') }}</span>
-      </template>
-    </app-bar-button-layout>
-
+    <task-manager-button />
     <app-bar-button-layout @click.native="toggleDarkMode">
       <template #icon>
         <v-icon>
