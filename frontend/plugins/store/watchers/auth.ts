@@ -8,7 +8,8 @@ import {
   playbackManagerStore,
   snackbarStore,
   socketStore,
-  userViewsStore
+  userViewsStore,
+  taskManagerStore
 } from '~/store';
 import { authLogic } from '~/middleware/auth';
 
@@ -28,6 +29,7 @@ export default function (ctx: Context): void {
   const userViews = userViewsStore();
   const items = itemsStore();
   const playbackManager = playbackManagerStore();
+  const taskManager = taskManagerStore();
 
   /**
    * Watch for actions after the app has been initialized
@@ -54,6 +56,7 @@ export default function (ctx: Context): void {
           userViews.$reset();
           items.$reset();
           playbackManager.$reset();
+          taskManager.$reset();
         }
 
         if (name === 'loginUser') {
