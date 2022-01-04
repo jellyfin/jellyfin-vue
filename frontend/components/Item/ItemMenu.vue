@@ -29,6 +29,7 @@
           <v-list-item
             v-for="(menuOption, index) in options"
             :key="`item-${item.Id}-menu-${index}`"
+            :disabled="menuOption.disabled"
             @click="menuOption.action"
           >
             <v-list-item-icon>
@@ -60,6 +61,7 @@ type MenuOption = {
   title: string;
   icon: string;
   action: () => void;
+  disabled?: boolean;
 };
 
 export default Vue.extend({
@@ -98,6 +100,17 @@ export default Vue.extend({
   },
   computed: {
     ...mapGetters('playbackManager', ['getCurrentItem']),
+    /**
+     * For some reason, mapGetters doesn't work at all with parametrized Vuex getters,
+     * so we need to resort to this computed property.
+     */
+    isItemRefreshing(): boolean {
+      const progress = this.$store.getters['taskManager/getTaskProgress'](
+        this.item.Id
+      );
+
+      return progress !== undefined && progress >= 0 && progress < 100;
+    },
     options: {
       get(): MenuOption[] {
         const menuOptions = [] as MenuOption[];
@@ -185,7 +198,8 @@ export default Vue.extend({
                   color: 'error'
                 });
               }
-            }
+            },
+            disabled: this.isItemRefreshing
           });
         }
 
