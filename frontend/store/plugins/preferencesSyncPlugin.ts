@@ -42,7 +42,7 @@ export const preferencesSync: Plugin<AppState> = (store) => {
       const [subModule] = mutation.type.split('/');
 
       try {
-        await store.dispatch('setSyncStatus', true);
+        await store.dispatch('taskManager/setConfigSyncStatus', true);
         // We set a new last sync date at the start, so if the push fails, we still have the last attempt's
         // date and we can compare with the server when we're back online
         await store.dispatch(`${subModule}/setLastSyncDate`);
@@ -117,7 +117,7 @@ export const preferencesSync: Plugin<AppState> = (store) => {
           { root: true }
         );
       } finally {
-        await store.dispatch('setSyncStatus', false);
+        await store.dispatch('taskManager/setConfigSyncStatus', false);
       }
     }
   });

@@ -133,13 +133,6 @@ export default Vue.extend({
       }
     }
   },
-  data() {
-    return {
-      refreshProgress: 0,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
-    };
-  },
   computed: {
     cardType: {
       get(): string {
@@ -240,21 +233,14 @@ export default Vue.extend({
       } else {
         return ImageType.Primary;
       }
+    },
+    /**
+     * For some reason, mapGetters doesn't work at all with parametrized Vuex getters,
+     * so we need to resort to this computed property.
+     */
+    refreshProgress(): number {
+      return this.$store.getters['taskManager/getTaskProgress'](this.item.Id);
     }
-  },
-  mounted() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (
-        mutation.type === 'socket/ONMESSAGE' &&
-        state.socket.messageType === 'RefreshProgress' &&
-        state.socket.messageData.ItemId === this.item.Id
-      ) {
-        this.refreshProgress = state.socket.messageData.Progress;
-      }
-    });
-  },
-  destroyed() {
-    this.unsubscribe();
   },
   methods: {
     ...mapActions('playbackManager', ['play']),

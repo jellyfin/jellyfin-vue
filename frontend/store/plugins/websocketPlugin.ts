@@ -1,7 +1,9 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
+import destr from 'destr';
 import { Plugin } from 'vuex';
 import { AppState } from '..';
 import { WebSocketMessage } from '../socket';
+import { TaskType, RunningTask } from '../taskManager';
 
 export const websocketPlugin: Plugin<AppState> = (store) => {
   /**
@@ -41,7 +43,7 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
     }
   }
 
-  store.subscribe((mutation, state) => {
+  store.subscribe(async (mutation, state) => {
     const messageType = state.socket.messageType;
     const messageData = state.socket.messageData;
     const storeIds = store.state.items.allIds;
@@ -53,7 +55,7 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
           sendWebsocketMessage('KeepAlive');
           break;
         case 'LibraryChanged': // Update items when metadata changes
-          // @ts-expect-error -- The Data property doesn't describe its content
+          // @ts-expect-error - No typings for this
           itemsToUpdate = messageData.ItemsUpdated.filter((itemId: string) => {
             return storeIds.includes(itemId);
           });
@@ -61,7 +63,7 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
           updateStoreItems(itemsToUpdate);
           break;
         case 'UserDataChanged': // Update items when their userdata is changed (like, mark as watched, etc)
-          // @ts-expect-error -- The Data property doesn't describe its content
+          // @ts-expect-error - No typings for this
           itemsToUpdate = messageData.UserDataList.filter(
             (updatedData: never) => {
               // @ts-expect-error -- There are no typings for websocket returned data.
@@ -75,6 +77,38 @@ export const websocketPlugin: Plugin<AppState> = (store) => {
           });
 
           updateStoreItems(itemsToUpdate);
+          break;
+        case 'RefreshProgress':
+          // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+
+          /* eslint-disable no-case-declarations */
+          // @ts-expect-error - No typings for this
+          const progress = parseInt(messageData.Progress);
+          const taskPayload: RunningTask = store.getters['taskManager/getTask'](
+            // @ts-expect-error - No typings for this
+            messageData.ItemId
+          );
+          const payload: RunningTask = {
+            type: TaskType.LibraryRefresh,
+            // @ts-expect-error - No typings for this
+            id: messageData.ItemId as string,
+            progress
+          };
+
+          /* eslint-enable no-case-declarations */
+          if (taskPayload !== undefined) {
+            if (progress >= 0 && progress < 100) {
+              payload.data = taskPayload.data;
+              store.dispatch('taskManager/updateTask', {
+                id: payload.id,
+                newPayload: payload
+              });
+            } else if (progress >= 0) {
+              // @ts-expect-error - No typings for this
+              store.dispatch('taskManager/finishTask', messageData.ItemId);
+            }
+          }
+
           break;
         default:
           break;

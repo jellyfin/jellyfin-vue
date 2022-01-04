@@ -54,6 +54,7 @@ import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
+import { RunningTask, TaskType } from '~/store/taskManager';
 
 type MenuOption = {
   title: string;
@@ -65,7 +66,7 @@ export default Vue.extend({
   mixins: [itemHelper],
   props: {
     item: {
-      type: Object,
+      type: Object as () => BaseItemDto,
       default: (): BaseItemDto => {
         return {};
       }
@@ -159,7 +160,7 @@ export default Vue.extend({
             action: async () => {
               try {
                 await this.$api.itemRefresh.post({
-                  itemId: this.item.Id,
+                  itemId: this.item.Id as string,
                   replaceAllImages: false,
                   replaceAllMetadata: false
                 });
@@ -168,6 +169,13 @@ export default Vue.extend({
                   message: this.$t('libraryRefreshQueued'),
                   color: 'normal'
                 });
+
+                this.startTask({
+                  type: TaskType.LibraryRefresh,
+                  id: this.item.Id,
+                  data: this.item.Name,
+                  progress: 0
+                } as RunningTask);
               } catch (e) {
                 // eslint-disable-next-line no-console
                 console.error(e);
@@ -216,6 +224,7 @@ export default Vue.extend({
   methods: {
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue']),
+    ...mapActions('taskManager', ['startTask']),
     onRightClick(e: PointerEvent): void {
       // Vue 2's API doesn't support native JavaScript events when the component's instances
       // are referenced using refs, only custom ones (generated using $emit): https://vuejs.org/v2/api/#vm-on

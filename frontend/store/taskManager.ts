@@ -1,4 +1,5 @@
-import { ActionTree, MutationTree } from 'vuex';
+import { ActionTree, MutationTree, GetterTree } from 'vuex';
+import { AppState } from '.';
 
 export enum TaskType {
   ConfigSync = 1,
@@ -32,6 +33,23 @@ export const defaultState = (): TaskManagerState => ({
 });
 
 export const state = defaultState;
+
+export const getters: GetterTree<TaskManagerState, AppState> = {
+  getTaskProgress:
+    (state) =>
+    (id: string): number | undefined => {
+      return state.tasks.find((payload) => {
+        return payload.id === id;
+      })?.progress;
+    },
+  getTask:
+    (state) =>
+    (id: string): RunningTask | undefined => {
+      return state.tasks.find((payload) => {
+        return payload.id === id;
+      });
+    }
+};
 
 export const mutations: MutationTree<TaskManagerState> = {
   START_TASK(state: TaskManagerState, payload: RunningTask) {
