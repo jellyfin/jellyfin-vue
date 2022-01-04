@@ -1,6 +1,7 @@
 import { ItemFields } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import { authStore, itemsStore, socketStore } from '~/store';
+import { authStore, itemsStore, socketStore, taskManagerStore } from '~/store';
+import { TaskType, RunningTask } from '~/store/taskManager';
 
 /**
  * Handle socket messages that are relevant to items inside the items store.
@@ -10,6 +11,7 @@ export default function (ctx: Context): void {
   const auth = authStore();
   const socket = socketStore();
   const items = itemsStore();
+  const taskManager = taskManagerStore();
 
   /**
    * Updates the items in the store after the websocket informs of it. Just a request is enough, as the Axios
@@ -67,6 +69,31 @@ export default function (ctx: Context): void {
 
             updateStoreItems(itemsToUpdate);
             break;
+          case 'RefreshProgress':
+            // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+
+            /* eslint-disable no-case-declarations */
+            // @ts-expect-error - No typings for this
+            const progress = parseInt(messageData.Progress);
+            // @ts-expect-error - No typings for this
+            const taskPayload = taskManager.getTask(messageData.ItemId || '');
+            const payload: RunningTask = {
+              type: TaskType.LibraryRefresh,
+              // @ts-expect-error - No typings for this
+              id: messageData.ItemId as string,
+              progress
+            };
+
+            /* eslint-enable no-case-declarations */
+            if (taskPayload !== undefined) {
+              if (progress >= 0 && progress < 100) {
+                payload.data = taskPayload.data;
+                taskManager.updateTask(payload);
+              } else if (progress >= 0) {
+                // @ts-expect-error - No typings for this
+                taskManager.finishTask(messageData.ItemId);
+              }
+            }
           default:
             break;
         }

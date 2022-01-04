@@ -44,8 +44,6 @@
       </v-list-item>
     </v-list>
     <template #append>
-      <connection-monitor />
-      <syncing-monitor />
       <commit-link />
     </template>
   </v-navigation-drawer>

@@ -68,20 +68,26 @@ export const taskManagerStore = defineStore('taskManager', {
       checkTaskIndex(taskIndex);
       this.tasks.splice(taskIndex);
     },
-    setConfigSyncStatus(value: boolean): void {
+    startConfigSync(): void {
       const payload = {
         type: TaskType.ConfigSync
       };
 
-      if (value === true) {
-        this.startTask(payload);
-      } else if (value === false) {
-        this.tasks.splice(
-          this.tasks.findIndex(
-            (payload) => payload.type === TaskType.ConfigSync
-          )
-        );
-      }
+      this.startTask(payload);
+    },
+    stopConfigSync(): void {
+      this.tasks.splice(
+        this.tasks.findIndex((payload) => payload.type === TaskType.ConfigSync)
+      );
     }
+  },
+  getters: {
+    getTask:
+      (state) =>
+      (id: string): RunningTask | undefined => {
+        return state.tasks.find((payload) => {
+          return payload.id === id;
+        });
+      }
   }
 });
