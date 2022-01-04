@@ -1,5 +1,6 @@
 import Vuex, { ActionContext, Store } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
+import { AppState } from '..';
 import {
   state,
   mutations,
@@ -7,7 +8,6 @@ import {
   DeviceState,
   defaultState
 } from '~/store/deviceProfile';
-import { RootState } from '~/store';
 import { ModuleAction } from '~/jest-helpers.d';
 import $browser from '~/mocks/browserPlugin';
 
@@ -55,10 +55,7 @@ describe('vuex: deviceProfile', () => {
     setDeviceProfile = setDeviceProfile.bind({ $browser });
 
     setDeviceProfile(
-      { commit: mockCommit } as unknown as ActionContext<
-        DeviceState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<DeviceState, AppState>,
       {}
     );
 
@@ -73,10 +70,7 @@ describe('vuex: deviceProfile', () => {
     clearDeviceProfile = clearDeviceProfile.bind({ $browser });
 
     clearDeviceProfile(
-      { commit: mockCommit } as unknown as ActionContext<
-        DeviceState,
-        RootState
-      >,
+      { commit: mockCommit } as unknown as ActionContext<DeviceState, AppState>,
       {}
     );
 

@@ -1,6 +1,7 @@
 import Vuex, { Store, ActionContext } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import cloneDeep from 'lodash/cloneDeep';
+import { AppState } from '..';
 import {
   state,
   mutations,
@@ -10,7 +11,6 @@ import {
   getters
 } from '../items';
 import type { ModuleAction } from '~/jest-helpers.d';
-import { RootState } from '~/store';
 
 let store: Store<ItemsState>;
 let mockCommit: jest.Mock;
@@ -177,7 +177,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation when addItem is dispatched with a valid item', async (): Promise<void> => {
     await addItem(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {
         item: item1
       }
@@ -192,7 +192,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation when addItem is dispatched with an invalid item', async (): Promise<void> => {
     await addItem(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {
         item: itemInvalid
       }
@@ -207,7 +207,7 @@ describe('Vuex: items', () => {
 
   it('calls the ADD_ITEM mutation only 1 time when addItems is dispatched with valid items', async (): Promise<void> => {
     await addItems(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {
         items: [item1, item2]
       }
@@ -225,7 +225,7 @@ describe('Vuex: items', () => {
       addItems(
         { commit: mockCommit } as unknown as ActionContext<
           ItemsState,
-          RootState
+          AppState
         >,
         {
           items: [item1, item2, itemInvalid]
@@ -237,7 +237,7 @@ describe('Vuex: items', () => {
 
   it('calls the DELETE_ITEM mutation when deleteItem is dispatched with an ID', async (): Promise<void> => {
     await deleteItem(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {
         id: id1
       }
@@ -252,7 +252,7 @@ describe('Vuex: items', () => {
 
   it('calls the DELETE_ITEM mutation n times when deleteItems is dispatched with IDs', async (): Promise<void> => {
     await deleteItems(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {
         ids: [id1, id2, 'unknown']
       }
@@ -275,7 +275,7 @@ describe('Vuex: items', () => {
 
   it('calls the CLEAR_STATE mutation when clearState is dispatched', async (): Promise<void> => {
     await clearState(
-      { commit: mockCommit } as unknown as ActionContext<ItemsState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<ItemsState, AppState>,
       {}
     );
 

@@ -7,7 +7,7 @@ import {
   SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
 import isNil from 'lodash/isNil';
-import { RootState } from '.';
+import { AppState } from '.';
 
 export enum PlaybackStatus {
   Stopped,
@@ -88,18 +88,18 @@ export const defaultState = (): PlaybackManagerState => ({
 
 export const state = defaultState;
 
-export const getters: GetterTree<PlaybackManagerState, RootState> = {
-  getQueueItems: (state, _getters, _rootState, rootGetters) => {
+export const getters: GetterTree<PlaybackManagerState, AppState> = {
+  getQueueItems: (state, _getters, _AppState, rootGetters) => {
     return rootGetters['items/getItems'](state.queue);
   },
-  getCurrentItem: (state, _getters, _rootState, rootGetters) => {
+  getCurrentItem: (state, _getters, _AppState, rootGetters) => {
     if (!isNil(state.currentItemIndex) && state.queue[state.currentItemIndex]) {
       return rootGetters['items/getItem'](state.queue[state.currentItemIndex]);
     }
 
     return null;
   },
-  getPreviousItem: (state, _getters, _rootState, rootGetters) => {
+  getPreviousItem: (state, _getters, _AppState, rootGetters) => {
     if (state.currentItemIndex === 0) {
       return null;
     } else if (
@@ -111,7 +111,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
 
     return null;
   },
-  getNextItem: (state, _getters, _rootState, rootGetters) => {
+  getNextItem: (state, _getters, _AppState, rootGetters) => {
     if (
       !isNil(state.currentItemIndex) &&
       state.currentItemIndex + 1 < state.queue.length
@@ -125,7 +125,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
 
     return null;
   },
-  getCurrentlyPlayingType: (state, _getters, _rootState, rootGetters) => {
+  getCurrentlyPlayingType: (state, _getters, _AppState, rootGetters) => {
     if (!isNil(state.currentItemIndex)) {
       return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
         ?.Type;
@@ -133,7 +133,7 @@ export const getters: GetterTree<PlaybackManagerState, RootState> = {
 
     return null;
   },
-  getCurrentlyPlayingMediaType: (state, _getters, _rootState, rootGetters) => {
+  getCurrentlyPlayingMediaType: (state, _getters, _AppState, rootGetters) => {
     if (!isNil(state.currentItemIndex)) {
       return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
         ?.MediaType;
@@ -396,7 +396,7 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   }
 };
 
-export const actions: ActionTree<PlaybackManagerState, RootState> = {
+export const actions: ActionTree<PlaybackManagerState, AppState> = {
   async play(
     { commit, state },
     {

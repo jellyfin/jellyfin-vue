@@ -1,7 +1,7 @@
 import Vuex, { ActionContext, Store } from 'vuex';
 import cloneDeep from 'lodash/cloneDeep';
 import { state, mutations, actions, UserState, defaultState } from '../user';
-import { RootState } from '..';
+import { AppState } from '..';
 import { ModuleAction } from '~/jest-helpers.d';
 
 let store: Store<UserState>;
@@ -40,7 +40,7 @@ describe('Vuex: user store', () => {
     const setUser = actions.setUser as unknown as ModuleAction<UserState>;
 
     setUser(
-      { commit: mockCommit } as unknown as ActionContext<UserState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<UserState, AppState>,
       { accessToken: TEST_ACCESS_TOKEN }
     );
 
@@ -55,7 +55,7 @@ describe('Vuex: user store', () => {
     const clearUser = actions.clearUser as unknown as ModuleAction<UserState>;
 
     clearUser(
-      { commit: mockCommit } as unknown as ActionContext<UserState, RootState>,
+      { commit: mockCommit } as unknown as ActionContext<UserState, AppState>,
       {}
     );
 
