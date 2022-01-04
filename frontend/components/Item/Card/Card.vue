@@ -17,10 +17,11 @@
             class="card-image"
           />
           <v-progress-circular
-            v-if="refreshProgress > 0"
+            v-if="refreshProgress !== undefined"
             class="card-chip"
             rotate="-90"
             :value="refreshProgress"
+            :indeterminate="refreshProgress === 0"
             color="white"
             size="24"
           />
