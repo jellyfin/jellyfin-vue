@@ -1,4 +1,5 @@
 import { ActionTree, MutationTree, GetterTree } from 'vuex';
+import { v4 as uuidv4 } from 'uuid';
 import { AppState } from '.';
 
 export enum TaskType {
@@ -14,12 +15,12 @@ export enum TaskType {
  * - progress: Current progress, ranging from 0-100.
  *
  * The meaning of fields are different based on the task type:
- * - ConfigSync: Only the type key is needed, the rest will be ignored. Use
+ * - ConfigSync: Only the type key is strictly needed. Always start this task using the setConfigSync action.
  * - LibraryRefresh: Id must be the ItemId of the library. Data should be the library's name.
  */
 export interface RunningTask {
   type: TaskType;
-  id?: string;
+  id: string;
   data?: string;
   progress?: number;
 }
@@ -81,11 +82,15 @@ function checkTaskIndex(index: number | undefined): void {
 }
 
 export const actions: ActionTree<TaskManagerState, TaskManagerState> = {
-  startTask({ commit }, payload: RunningTask) {
+  startTask({ commit, getters }, payload: RunningTask) {
     if (payload.progress && (payload.progress < 0 || payload.progress > 100)) {
       throw new TypeError(
         "[VUEX: taskManager]: Progress can't be below 0 or above 100"
       );
+    }
+
+    if (getters.getTask(payload.id)) {
+      throw new TypeError('[VUEX: taskManager]: This task id already exists');
     }
 
     commit('START_TASK', payload);
@@ -109,10 +114,14 @@ export const actions: ActionTree<TaskManagerState, TaskManagerState> = {
   },
   setConfigSyncStatus({ commit, state }, value: boolean) {
     const payload = {
-      type: TaskType.ConfigSync
+      type: TaskType.ConfigSync,
+      id: uuidv4()
     };
 
-    if (value === true) {
+    if (
+      value === true &&
+      !state.tasks.some((payload) => payload.type === TaskType.ConfigSync)
+    ) {
       commit('START_TASK', payload);
     } else if (value === false) {
       commit(
