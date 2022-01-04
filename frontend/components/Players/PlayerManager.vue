@@ -1,225 +1,220 @@
 <template>
-  <client-only>
-    <div ref="playerContainer">
-      <shaka-player
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
-        class="d-none"
-      />
-      <player-dialog
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
-        dark
-        persistent
-        hide-overlay
-        no-click-animation
-        scrollable
-        :retain-focus="!isMinimized"
-        :content-class="getContentClass()"
-        :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
-        :value="isPlaying"
-      >
-        <up-next @change="setUpNextVisible" />
-        <v-hover v-slot="{ hover }">
-          <v-card class="player-card" width="100%">
-            <v-container fill-height fluid class="pa-0 justify-center">
-              <hls-player
-                ref="videoPlayer"
-                :stretch="stretchVideo && !isMinimized"
-              />
-            </v-container>
-            <!-- Mini Player Overlay -->
-            <v-fade-transition>
-              <v-overlay v-show="hover && isMinimized" absolute>
-                <div class="d-flex flex-column player-overlay">
-                  <div class="d-flex flex-row">
-                    <v-btn icon @click="toggleMinimized">
-                      <v-icon>mdi-arrow-expand-all</v-icon>
-                    </v-btn>
-                    <v-spacer />
-                    <v-btn icon @click="stopPlayback">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                  </div>
-                  <div
-                    class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center"
-                  >
-                    <v-btn
-                      class="pointer-events-all"
-                      icon
-                      large
-                      @click="setPreviousTrack"
-                    >
-                      <v-icon size="32">mdi-skip-previous</v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="pointer-events-all"
-                      icon
-                      x-large
-                      @click="playPause"
-                    >
-                      <v-icon size="48">
-                        {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="pointer-events-all"
-                      icon
-                      large
-                      @click="setNextTrack"
-                    >
-                      <v-icon size="32">mdi-skip-next</v-icon>
-                    </v-btn>
-                  </div>
+  <div ref="playerContainer">
+    <shaka-player
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      class="d-none"
+    />
+    <player-dialog
+      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+      dark
+      persistent
+      hide-overlay
+      no-click-animation
+      scrollable
+      :retain-focus="!isMinimized"
+      :content-class="getContentClass()"
+      :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
+      :value="isPlaying"
+    >
+      <up-next @change="setUpNextVisible" />
+      <v-hover v-slot="{ hover }">
+        <v-card class="player-card" width="100%">
+          <v-container fill-height fluid class="pa-0 justify-center">
+            <hls-player
+              ref="videoPlayer"
+              :stretch="stretchVideo && !isMinimized"
+            />
+          </v-container>
+          <!-- Mini Player Overlay -->
+          <v-fade-transition>
+            <v-overlay v-show="hover && isMinimized" absolute>
+              <div class="d-flex flex-column player-overlay">
+                <div class="d-flex flex-row">
+                  <v-btn icon @click="toggleMinimized">
+                    <v-icon>mdi-arrow-expand-all</v-icon>
+                  </v-btn>
+                  <v-spacer />
+                  <v-btn icon @click="stopPlayback">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
                 </div>
-              </v-overlay>
-            </v-fade-transition>
-            <!-- Full Screen OSD -->
-            <v-fade-transition>
-              <v-overlay
-                v-show="
-                  !isMinimized && showFullScreenOverlay && !isUpNextVisible
-                "
-                color="transparent"
-                absolute
-              >
                 <div
-                  class="d-flex flex-column justify-space-between align-center player-overlay"
+                  class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center"
                 >
-                  <div class="osd-top pt-s pl-s pr-s">
-                    <div class="d-flex align-center py-2 px-4">
-                      <div class="d-flex">
-                        <v-btn icon @click="stopPlayback">
-                          <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                        <v-btn icon @click="toggleMinimized">
-                          <v-icon>mdi-chevron-down</v-icon>
-                        </v-btn>
-                      </div>
-                      <div class="d-flex ml-auto">
-                        <cast-button />
-                      </div>
+                  <v-btn
+                    class="pointer-events-all"
+                    icon
+                    large
+                    @click="setPreviousTrack"
+                  >
+                    <v-icon size="32">mdi-skip-previous</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="pointer-events-all"
+                    icon
+                    x-large
+                    @click="playPause"
+                  >
+                    <v-icon size="48">
+                      {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                    </v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="pointer-events-all"
+                    icon
+                    large
+                    @click="setNextTrack"
+                  >
+                    <v-icon size="32">mdi-skip-next</v-icon>
+                  </v-btn>
+                </div>
+              </div>
+            </v-overlay>
+          </v-fade-transition>
+          <!-- Full Screen OSD -->
+          <v-fade-transition>
+            <v-overlay
+              v-show="!isMinimized && showFullScreenOverlay && !isUpNextVisible"
+              color="transparent"
+              absolute
+            >
+              <div
+                class="d-flex flex-column justify-space-between align-center player-overlay"
+              >
+                <div class="osd-top pt-s pl-s pr-s">
+                  <div class="d-flex align-center py-2 px-4">
+                    <div class="d-flex">
+                      <v-btn icon @click="stopPlayback">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                      <v-btn icon @click="toggleMinimized">
+                        <v-icon>mdi-chevron-down</v-icon>
+                      </v-btn>
+                    </div>
+                    <div class="d-flex ml-auto">
+                      <cast-button />
                     </div>
                   </div>
-                  <div class="osd-bottom pb-s pl-s pr-s">
-                    <div class="pa-4">
-                      <time-slider />
+                </div>
+                <div class="osd-bottom pb-s pl-s pr-s">
+                  <div class="pa-4">
+                    <time-slider />
+                    <div
+                      class="controls-wrapper d-flex align-stretch justify-space-between"
+                    >
                       <div
-                        class="controls-wrapper d-flex align-stretch justify-space-between"
+                        v-if="$vuetify.breakpoint.mdAndUp"
+                        class="d-flex flex-column align-start justify-center mr-auto video-title"
                       >
-                        <div
-                          v-if="$vuetify.breakpoint.mdAndUp"
-                          class="d-flex flex-column align-start justify-center mr-auto video-title"
+                        <template v-if="getCurrentItem.Type === 'Episode'">
+                          <span class="mt-1 text-subtitle-1 text-truncate">
+                            {{ getCurrentItem.Name }}
+                          </span>
+                          <span
+                            class="text-subtitle-2 text--secondary text-truncate"
+                          >
+                            {{ getCurrentItem.SeriesName }}
+                          </span>
+                          <span
+                            class="text-subtitle-2 text--secondary text-truncate"
+                          >
+                            {{
+                              $t('seasonEpisode', {
+                                seasonNumber: getCurrentItem.ParentIndexNumber,
+                                episodeNumber: getCurrentItem.IndexNumber
+                              })
+                            }}
+                          </span>
+                        </template>
+                        <template v-else>
+                          <span>{{ getCurrentItem.Name }}</span>
+                        </template>
+                      </div>
+                      <div
+                        class="d-flex player-controls align-center justify-start justify-md-center"
+                      >
+                        <v-btn icon class="mx-1" @click="setPreviousTrack">
+                          <v-icon> mdi-skip-previous </v-icon>
+                        </v-btn>
+                        <v-btn
+                          icon
+                          class="mx-1 active-button"
+                          @click="playPause"
                         >
-                          <template v-if="getCurrentItem.Type === 'Episode'">
-                            <span class="mt-1 text-subtitle-1 text-truncate">
-                              {{ getCurrentItem.Name }}
-                            </span>
-                            <span
-                              class="text-subtitle-2 text--secondary text-truncate"
-                            >
-                              {{ getCurrentItem.SeriesName }}
-                            </span>
-                            <span
-                              class="text-subtitle-2 text--secondary text-truncate"
-                            >
-                              {{
-                                $t('seasonEpisode', {
-                                  seasonNumber:
-                                    getCurrentItem.ParentIndexNumber,
-                                  episodeNumber: getCurrentItem.IndexNumber
-                                })
-                              }}
-                            </span>
-                          </template>
-                          <template v-else>
-                            <span>{{ getCurrentItem.Name }}</span>
-                          </template>
-                        </div>
-                        <div
-                          class="d-flex player-controls align-center justify-start justify-md-center"
+                          <v-icon large>
+                            {{
+                              isPaused
+                                ? 'mdi-play-circle-outline'
+                                : 'mdi-pause-circle-outline'
+                            }}
+                          </v-icon>
+                        </v-btn>
+                        <v-btn icon class="mx-1" @click="setNextTrack">
+                          <v-icon icon> mdi-skip-next</v-icon>
+                        </v-btn>
+                      </div>
+                      <div class="d-flex aligh-center ml-auto ml-md-0">
+                        <volume-slider
+                          v-if="$vuetify.breakpoint.smAndUp"
+                          class="mr-2"
+                        />
+                        <queue-button
+                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          :close-on-click="true"
+                          @input="onMenuOpen($event)"
+                        />
+                        <subtitle-selection-button
+                          v-if="$vuetify.breakpoint.smAndUp"
+                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          @input="onMenuOpen($event)"
+                        />
+                        <playback-settings-button
+                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          :stretch-prop="stretchVideo"
+                          @input="onMenuOpen($event)"
+                          @open-playback-data="playbackData = true"
+                          @stretch="stretchVideo = $event"
+                        />
+                        <v-btn
+                          v-if="$features.pictureInPicture"
+                          class="align-self-center active-button"
+                          icon
+                          @click="togglePictureInPicture"
                         >
-                          <v-btn icon class="mx-1" @click="setPreviousTrack">
-                            <v-icon> mdi-skip-previous </v-icon>
-                          </v-btn>
-                          <v-btn
-                            icon
-                            class="mx-1 active-button"
-                            @click="playPause"
-                          >
-                            <v-icon large>
-                              {{
-                                isPaused
-                                  ? 'mdi-play-circle-outline'
-                                  : 'mdi-pause-circle-outline'
-                              }}
-                            </v-icon>
-                          </v-btn>
-                          <v-btn icon class="mx-1" @click="setNextTrack">
-                            <v-icon icon> mdi-skip-next</v-icon>
-                          </v-btn>
-                        </div>
-                        <div class="d-flex aligh-center ml-auto ml-md-0">
-                          <volume-slider
-                            v-if="$vuetify.breakpoint.smAndUp"
-                            class="mr-2"
-                          />
-                          <queue-button
-                            :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
-                            :close-on-click="true"
-                            @input="onMenuOpen($event)"
-                          />
-                          <subtitle-selection-button
-                            v-if="$vuetify.breakpoint.smAndUp"
-                            :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
-                            @input="onMenuOpen($event)"
-                          />
-                          <playback-settings-button
-                            :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
-                            :stretch-prop="stretchVideo"
-                            @input="onMenuOpen($event)"
-                            @open-playback-data="playbackData = true"
-                            @stretch="stretchVideo = $event"
-                          />
-                          <v-btn
-                            v-if="$features.pictureInPicture"
-                            class="align-self-center active-button"
-                            icon
-                            @click="togglePictureInPicture"
-                          >
-                            <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
-                          </v-btn>
-                          <v-btn
-                            v-if="$vuetify.breakpoint.smAndUp"
-                            class="align-self-center active-button"
-                            icon
-                            @click="stretchVideo = !stretchVideo"
-                          >
-                            <v-icon v-if="!stretchVideo">
-                              mdi-stretch-to-page-outline
-                            </v-icon>
-                            <v-icon v-if="stretchVideo">
-                              mdi-stretch-to-page
-                            </v-icon>
-                          </v-btn>
-                          <v-btn
-                            v-if="$features.fullScreen"
-                            class="align-self-center active-button"
-                            icon
-                            @click="toggleFullScreen"
-                          >
-                            <v-icon>mdi-fullscreen</v-icon>
-                          </v-btn>
-                        </div>
+                          <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
+                        </v-btn>
+                        <v-btn
+                          v-if="$vuetify.breakpoint.smAndUp"
+                          class="align-self-center active-button"
+                          icon
+                          @click="stretchVideo = !stretchVideo"
+                        >
+                          <v-icon v-if="!stretchVideo">
+                            mdi-stretch-to-page-outline
+                          </v-icon>
+                          <v-icon v-if="stretchVideo">
+                            mdi-stretch-to-page
+                          </v-icon>
+                        </v-btn>
+                        <v-btn
+                          v-if="$features.fullScreen"
+                          class="align-self-center active-button"
+                          icon
+                          @click="toggleFullScreen"
+                        >
+                          <v-icon>mdi-fullscreen</v-icon>
+                        </v-btn>
                       </div>
                     </div>
                   </div>
                 </div>
-              </v-overlay>
-            </v-fade-transition>
-          </v-card>
-        </v-hover>
-      </player-dialog>
-    </div>
-  </client-only>
+              </div>
+            </v-overlay>
+          </v-fade-transition>
+        </v-card>
+      </v-hover>
+    </player-dialog>
+  </div>
 </template>
 
 <script lang="ts">
