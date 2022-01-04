@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { v4 as uuidv4 } from 'uuid';
 
 function checkTaskIndex(index: number | undefined): void {
   if (typeof index !== 'number') {
@@ -21,12 +22,12 @@ export enum TaskType {
  * - progress: Current progress, ranging from 0-100.
  *
  * The meaning of fields are different based on the task type:
- * - ConfigSync: Only the type key is needed, the rest will be ignored. Use
+ * - ConfigSync: Only the type key is strictly needed. Always start this task using the startConfigSync action.
  * - LibraryRefresh: Id must be the ItemId of the library. Data should be the library's name.
  */
 export interface RunningTask {
   type: TaskType;
-  id?: string;
+  id: string;
   data?: string;
   progress?: number;
 }
@@ -49,7 +50,11 @@ export const taskManagerStore = defineStore('taskManager', {
         );
       }
 
-      this.tasks.push(task);
+      if (this.getTask(task.id)) {
+        this.updateTask(task);
+      } else {
+        this.tasks.push(task);
+      }
     },
     updateTask(updatedTask: RunningTask): void {
       const taskIndex = this.tasks.findIndex(
@@ -69,11 +74,14 @@ export const taskManagerStore = defineStore('taskManager', {
       this.tasks.splice(taskIndex);
     },
     startConfigSync(): void {
-      const payload = {
-        type: TaskType.ConfigSync
-      };
+      if (!this.tasks.some((task) => task.type === TaskType.ConfigSync)) {
+        const payload = {
+          type: TaskType.ConfigSync,
+          id: uuidv4()
+        };
 
-      this.startTask(payload);
+        this.startTask(payload);
+      }
     },
     stopConfigSync(): void {
       this.tasks.splice(
