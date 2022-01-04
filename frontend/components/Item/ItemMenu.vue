@@ -35,6 +35,7 @@
             <v-list-item
               v-for="(menuOption, index2) in section"
               :key="`item-${item.Id}-section-${index1}-option-${index2}`"
+              :disabled="menuOption.disabled"
               @click="menuOption.action"
             >
               <v-list-item-icon>
@@ -73,6 +74,7 @@ type MenuOption = {
   title: string;
   icon: string;
   action: () => void;
+  disabled?: boolean;
 };
 
 export default Vue.extend({
@@ -120,9 +122,7 @@ export default Vue.extend({
       taskManagerStore
     ),
     isItemRefreshing(): boolean {
-      return (
-        this.taskManager.getTask(this.item.Id || '')?.progress !== undefined
-      );
+      return this.taskManager.getTask(this.item.Id || '') !== undefined;
     },
     options(): MenuOption[][] {
       const menuOptions = [] as MenuOption[][];
@@ -149,160 +149,142 @@ export default Vue.extend({
           title: this.$t('itemMenu.pushToTop'),
           icon: 'mdi-arrow-expand-up',
           action: (): void => {
-            this.playbackManager.playNext(this.item);
-            this.snackbar.push(this.$t('snackbar.playNext'), 'success');
+            this.playbackManager.changeItemPosition(this.item.Id, 0);
           }
         });
 
-        /**
-         * Queue options
-         */
-        const queueOptions = [] as MenuOption[];
-
-        if (
-          this.queue &&
-          this.playbackManager.queue.includes(this.item.Id || '')
-        ) {
+        if (this.playbackManager.getCurrentItem?.Id !== this.item.Id) {
           queueOptions.push({
-            title: this.$t('itemMenu.pushToTop'),
-            icon: 'mdi-arrow-expand-up',
+            title: this.$t('itemMenu.removeFromQueue'),
+            icon: 'mdi-playlist-minus',
             action: (): void => {
-              this.playbackManager.changeItemPosition(this.item.Id, 0);
-            }
-          });
-
-          if (this.playbackManager.getCurrentItem?.Id !== this.item.Id) {
-            queueOptions.push({
-              title: this.$t('itemMenu.removeFromQueue'),
-              icon: 'mdi-playlist-minus',
-              action: (): void => {
-                this.playbackManager.removeFromQueue(this.item.Id || '');
-              }
-            });
-          }
-
-          if (
-            this.playbackManager.getNextItem?.Id !== this.item.Id &&
-            this.playbackManager.getCurrentItem?.Id !== this.item.Id
-          ) {
-            queueOptions.push(playNextAction);
-          }
-
-          queueOptions.push({
-            title: this.$t('itemMenu.pushToBottom'),
-            icon: 'mdi-arrow-expand-down',
-            action: (): void => {
-              this.playbackManager.changeItemPosition(
-                this.item.Id,
-                this.playbackManager.queue.length - 1
-              );
+              this.playbackManager.removeFromQueue(this.item.Id || '');
             }
           });
         }
 
-        /**
-         * Playback options
-         */
-        const playbackOptions = [] as MenuOption[];
+        if (
+          this.playbackManager.getNextItem?.Id !== this.item.Id &&
+          this.playbackManager.getCurrentItem?.Id !== this.item.Id
+        ) {
+          queueOptions.push(playNextAction);
+        }
 
-        if (canResume(this.item)) {
-          playbackOptions.push({
-            title: this.$t('playFromBeginning'),
-            icon: 'mdi-replay',
-            action: (): void => {
-              this.playbackManager.play({
-                item: this.item
-              });
-            }
+        queueOptions.push({
+          title: this.$t('itemMenu.pushToBottom'),
+          icon: 'mdi-arrow-expand-down',
+          action: (): void => {
+            this.playbackManager.changeItemPosition(
+              this.item.Id,
+              this.playbackManager.queue.length - 1
+            );
+          }
+        });
+      }
+
+      /**
+       * Playback options
+       */
+      const playbackOptions = [] as MenuOption[];
+
+      if (canResume(this.item)) {
+        playbackOptions.push({
+          title: this.$t('playFromBeginning'),
+          icon: 'mdi-replay',
+          action: (): void => {
+            this.playbackManager.play({
+              item: this.item
+            });
+          }
+        });
+      }
+
+      playbackOptions.push({
+        title: this.$t('playback.shuffle'),
+        icon: 'mdi-shuffle',
+        action: (): void => {
+          this.playbackManager.play({
+            item: this.item,
+            initiator: this.item,
+            startShuffled: true
           });
+        }
+      });
+
+      if (this.playbackManager.getCurrentItem) {
+        if (
+          this.playbackManager.getNextItem?.Id !== this.item.Id &&
+          this.playbackManager.getCurrentItem?.Id !== this.item.Id &&
+          !this.queue
+        ) {
+          playbackOptions.push(playNextAction);
         }
 
         playbackOptions.push({
-          title: this.$t('playback.shuffle'),
-          icon: 'mdi-shuffle',
+          title: this.$t('playback.addToQueue'),
+          icon: 'mdi-playlist-plus',
           action: (): void => {
-            this.playbackManager.play({
-              item: this.item,
-              initiator: this.item,
-              startShuffled: true
-            });
+            this.playbackManager.addToQueue(this.item);
+            this.snackbar.push(this.$t('snackbar.addedToQueue'), 'success');
           }
         });
-
-        if (this.playbackManager.getCurrentItem) {
-          if (
-            this.playbackManager.getNextItem?.Id !== this.item.Id &&
-            this.playbackManager.getCurrentItem?.Id !== this.item.Id &&
-            !this.queue
-          ) {
-            playbackOptions.push(playNextAction);
-          }
-
-          playbackOptions.push({
-            title: this.$t('playback.addToQueue'),
-            icon: 'mdi-playlist-plus',
-            action: (): void => {
-              this.playbackManager.addToQueue(this.item);
-              this.snackbar.push(this.$t('snackbar.addedToQueue'), 'success');
-            }
-          });
-        }
-
-        /**
-         * Library options
-         */
-        const libraryOptions = [] as MenuOption[];
-
-        if (
-          this.auth.currentUser?.Policy?.IsAdministrator &&
-          ['Folder', 'CollectionFolder', 'UserView'].includes(
-            this.item.Type || ''
-          )
-        ) {
-          libraryOptions.push({
-            title: this.$t('refreshLibrary'),
-            icon: 'mdi-refresh',
-            action: async (): Promise<void> => {
-              try {
-                await this.$api.itemRefresh.post({
-                  itemId: this.item.Id as string,
-                  replaceAllImages: false,
-                  replaceAllMetadata: false
-                });
-
-                this.snackbar.push(this.$t('libraryRefreshQueued'), 'normal');
-                this.taskManager.startTask({
-                  type: TaskType.LibraryRefresh,
-                  id: this.item.Id,
-                  data: this.item.Name,
-                  progress: 0
-                } as RunningTask);
-              } catch (e) {
-                // eslint-disable-next-line no-console
-                console.error(e);
-
-                this.snackbar.push(this.$t('unableToRefreshLibrary'), 'error');
-              }
-            }
-          });
-        }
-
-        if (this.auth.currentUser?.Policy?.IsAdministrator) {
-          libraryOptions.push({
-            title: this.$t('editMetadata'),
-            icon: 'mdi-pencil-outline',
-            action: (): void => {
-              this.metadataDialog = true;
-            }
-          });
-        }
-
-        menuOptions.push(queueOptions);
-        menuOptions.push(playbackOptions);
-        menuOptions.push(libraryOptions);
-
-        return menuOptions;
       }
+
+      /**
+       * Library options
+       */
+      const libraryOptions = [] as MenuOption[];
+
+      if (
+        this.auth.currentUser?.Policy?.IsAdministrator &&
+        ['Folder', 'CollectionFolder', 'UserView'].includes(
+          this.item.Type || ''
+        )
+      ) {
+        libraryOptions.push({
+          title: this.$t('refreshLibrary'),
+          icon: 'mdi-refresh',
+          action: async (): Promise<void> => {
+            try {
+              await this.$api.itemRefresh.post({
+                itemId: this.item.Id as string,
+                replaceAllImages: false,
+                replaceAllMetadata: false
+              });
+
+              this.snackbar.push(this.$t('libraryRefreshQueued'), 'normal');
+              this.taskManager.startTask({
+                type: TaskType.LibraryRefresh,
+                id: this.item.Id,
+                data: this.item.Name,
+                progress: 0
+              } as RunningTask);
+            } catch (e) {
+              // eslint-disable-next-line no-console
+              console.error(e);
+
+              this.snackbar.push(this.$t('unableToRefreshLibrary'), 'error');
+            }
+          },
+          disabled: this.isItemRefreshing
+        });
+      }
+
+      if (this.auth.currentUser?.Policy?.IsAdministrator) {
+        libraryOptions.push({
+          title: this.$t('editMetadata'),
+          icon: 'mdi-pencil-outline',
+          action: (): void => {
+            this.metadataDialog = true;
+          }
+        });
+      }
+
+      menuOptions.push(queueOptions);
+      menuOptions.push(playbackOptions);
+      menuOptions.push(libraryOptions);
+
+      return menuOptions;
     }
   },
   mounted() {
