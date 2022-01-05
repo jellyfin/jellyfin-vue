@@ -40,10 +40,7 @@ export default Vue.extend({
   computed: {
     ...mapState('page', ['opaqueAppBar', 'isScrolled']),
     fab(): boolean {
-      return (
-        !(this.opaqueAppBar || this.$vuetify.breakpoint.xsOnly) &&
-        !this.isScrolled
-      );
+      return !this.opaqueAppBar && !this.isScrolled;
     }
   }
 });

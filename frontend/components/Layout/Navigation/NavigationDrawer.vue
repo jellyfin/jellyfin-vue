@@ -8,9 +8,9 @@
     floating
     clipped
     class="pa-s"
-    :class="{ opaque: opaqueAppBar }"
+    :class="{ transparent: !opaqueAppBar }"
   >
-    <v-list>
+    <v-list nav>
       <v-list-item
         v-for="item in items"
         :key="item.Id"
@@ -76,25 +76,8 @@ export default Vue.extend({
       drawer: false
     };
   },
-  watch: {
-    $route(to): void {
-      if (to.fullPath.includes('fullscreen')) {
-        this.showNavDrawer({ showNavDrawer: false });
-      } else if (!this.navDrawer) {
-        this.showNavDrawer({ showNavDrawer: true });
-      }
-    },
-    '$vuetify.breakpoint.mobile': {
-      immediate: true,
-      handler(newVal: boolean): void {
-        if (newVal === true) {
-          this.drawer = false;
-        }
-      }
-    }
-  },
   computed: {
-    ...mapState('page', ['navDrawer', 'opaqueAppBar']),
+    ...mapState('page', ['navDrawer', 'opaqueAppBar', 'isScrolled']),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
@@ -118,8 +101,32 @@ export default Vue.extend({
       ];
     }
   },
+  watch: {
+    $route(to): void {
+      if (to.fullPath.includes('fullscreen')) {
+        this.showNavDrawer({ showNavDrawer: false });
+      } else if (!this.navDrawer) {
+        this.showNavDrawer({ showNavDrawer: true });
+      }
+    },
+    '$vuetify.breakpoint.mobile': {
+      immediate: true,
+      handler(newVal: boolean): void {
+        if (newVal === true) {
+          this.drawer = false;
+        }
+      }
+    }
+  },
+
   methods: {
     ...mapActions('page', ['showNavDrawer'])
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.transparent {
+  background-color: transparent !important;
+}
+</style>
