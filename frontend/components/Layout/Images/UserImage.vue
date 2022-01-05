@@ -1,6 +1,10 @@
 <template>
   <v-avatar color="primary" :size="size">
-    <v-img :src="userImage" :alt="user.Name" class="userImage">
+    <v-img
+      :src="userImage"
+      :alt="user ? user.Name : undefined"
+      class="userImage"
+    >
       <template #placeholder>
         <v-icon :size="size - 32" dark>mdi-account</v-icon>
       </template>
