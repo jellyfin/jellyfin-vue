@@ -42,6 +42,14 @@
       </template>
     </app-bar-button-layout>
     <progress-button />
+    <app-bar-button-layout>
+      <template #icon>
+        <v-icon> mdi-magnify </v-icon>
+      </template>
+      <template #tooltip>
+        <span>{{ $t('search.name') }}</span>
+      </template>
+    </app-bar-button-layout>
     <app-bar-button-layout @click.native="toggleDarkMode">
       <template #icon>
         <v-icon>
