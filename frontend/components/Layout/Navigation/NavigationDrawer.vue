@@ -12,7 +12,7 @@
       transparent: page.transparentLayout && !$vuetify.breakpoint.mobile
     }"
   >
-    <v-list>
+    <v-list nav>
       <v-list-item
         v-for="item in items"
         :key="item.Id"
@@ -95,3 +95,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.transparent {
+  background-color: transparent !important;
+}
+</style>
