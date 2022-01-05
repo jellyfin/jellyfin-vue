@@ -3,7 +3,7 @@
     <template #activator="{ on, attrs }">
       <app-bar-button-layout :custom-listener="on" v-bind="attrs">
         <template #icon>
-          <user-image :user="$auth.user" :size="40" />
+          <user-image v-if="$auth.user" :user="$auth.user" :size="40" />
         </template>
       </app-bar-button-layout>
     </template>
