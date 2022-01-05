@@ -4,14 +4,18 @@
   "actor": "Aktor",
   "actors": "Aktor",
   "addNewPerson": "Tambahkan orang baru",
+  "airPlayDevices": "Perangkat AirPlay",
   "albums": "Album",
   "allLanguages": "Semua bahasa",
   "alphabetically": "Menurut abjad",
   "architecture": "Arsitektur",
   "artist": "Artis",
   "artists": "Artis",
+  "aspectRatio": "Aspek rasio",
   "audio": "Audio",
+  "audioCodecNotSupported": "Kode audio tidak didukung",
   "badRequest": "Permintaan salah. Coba lagi",
+  "books": "Buku",
   "browserNotSupported": "Browser Anda tidak didukung untuk memutar file ini.",
   "buttons": {
     "ok": "Oke"
@@ -30,8 +34,16 @@
   "darkModeToggle": "Ubah mode gelap",
   "dateAdded": "Tanggal ditambahkan",
   "details": "Detail",
+  "dialog": {
+    "upNext": {
+      "hide": "Sembunyikan",
+      "nextItemPlayingIn": "Mulai dalam {time}",
+      "startNow": "Mulai sekarang"
+    }
+  },
   "directing": "Mengarahkan",
   "director": "Sutradara",
+  "disabled": "Matikan",
   "discNumber": "Disc {discNumber}",
   "dislikes": "Tidak suka",
   "edit": "Sunting",
@@ -56,7 +68,9 @@
   "filtersNotFound": "Tidak dapat memuat filter",
   "fullScreen": "Layar penuh",
   "general": "Umum",
+  "genericJellyfinPlaceholderDevice": "Perangkat Jellyfin normal",
   "genres": "Genre",
+  "googleCastPlaceholderDevice": "Perangkat Google Cast",
   "guestStar": "Bintang tamu",
   "headerExternalIds": "ID Eksternal",
   "headerPaths": "Lokasi",
@@ -88,8 +102,10 @@
   "incorrectUsernameOrPassword": "Username atau kata sandi salah",
   "item": {
     "artist": {
+      "appearsOn": "Penampilan",
       "discography": "Diskografi",
-      "information": "Informasi"
+      "information": "Informasi",
+      "videos": "Video"
     },
     "cast": "Pemeran",
     "composer": "Komposer",
@@ -97,8 +113,13 @@
     "person": {
       "birth": "Lahir",
       "birthPlace": "Tempat lahir",
+      "books": "Buku",
       "death": "Wafat",
-      "person": "Orang"
+      "information": "Informasi",
+      "movies": "Film",
+      "person": "Orang",
+      "photos": "Foto",
+      "shows": "Sinetron"
     },
     "tracklist": {
       "title": "Judul"
@@ -109,6 +130,7 @@
   "latestLibrary": "{libraryName} terbaru",
   "libraries": "Pustaka",
   "libraryEmpty": "Pustaka ini kosong",
+  "libraryEmptyFilters": "Tidak ada kecocokan. Hapus beberapa filter untuk menampilkan item lebih banyak",
   "libraryNotFound": "Pustaka tidak ditemukan",
   "libraryRefreshQueued": "Penyegaran pustaka diantrikan",
   "liked": "Disukai",
@@ -147,7 +169,34 @@
     "noLogsFound": "Tidak ada log yang ditemukan"
   },
   "manualLogin": "Login manual",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Kanal audio:"
+    },
+    "audioCodec": {
+      "name": "Kode audio:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "Kontainer:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Kode subtitel:"
+    },
+    "videoCodec": {
+      "name": "Kode video:"
+    }
+  },
   "menu": "Menu",
+  "metadata": {
+    "source": "Sumber",
+    "sourceAll": "Semua",
+    "title": "Judul",
+    "type": "Jenis"
+  },
   "metadataEditor": "Editor metadata",
   "metadataNoResultsMatching": "Tidak ada hasil yang cocok dengan \"{search}\". Tekan enter untuk membuat yang baru.",
   "more": "Lebih banyak",
@@ -158,6 +207,7 @@
   "networks": "Jaringan",
   "nextUp": "Selanjutnya",
   "noImagesFound": "Tidak ada gambar yang ditemukan",
+  "noInformationAvailable": "Tidak ada informasi tersedia",
   "noNetworkConnection": "Tidak ada koneksi jaringan",
   "noResultsFound": "Tidak ada apa-apa di sini",
   "numberTracks": "{number} trek",
@@ -188,18 +238,59 @@
     "shuffle": "Acak",
     "shuffleAll": "Acak semua"
   },
+  "playbackData": "Informasi pemutaran",
+  "playbackInfo": {
+    "name": "Pemutaran",
+    "playMethod": {
+      "direct": "Langsung",
+      "name": "Metode:",
+      "remux": "Remux",
+      "transcode": "Transkode"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Tipe stream:",
+      "unknown": "Tidak diketahui",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Pengaturan pemutaran",
   "played": "Sudah diputar",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Frame rusak:"
+    },
+    "droppedFrames": {
+      "name": "Frame dibuang:"
+    },
+    "name": "Pemutar",
+    "playbackResolution": {
+      "name": "Resolusi ditampilkan:"
+    },
+    "videoResolution": {
+      "name": "Resolusi video:",
+      "value": "{width} x {height}"
+    }
+  },
   "present": "Mempersembahkan",
   "producer": "Produser",
+  "quality": "Kualitas",
   "queue": "Antrian",
   "rating": "Rating",
   "refreshLibrary": "Segarkan pustaka",
   "releaseDate": "Tanggal rilis",
+  "remoteDevices": "Perangkat jauh",
   "resumable": "Dapat dilanjutkan",
   "resume": "Lanjut",
   "role": "Peran",
   "save": "Simpan",
   "saved": "Sudah disimpan",
+  "search": {
+    "name": "Cari",
+    "topResults": "Hasil paling atas"
+  },
+  "seasonEpisode": "Musim {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seri",
   "server": "Server",
@@ -321,12 +412,18 @@
   },
   "shows": "Pertunjukkan",
   "signIn": "Masuk",
+  "songs": "Lagu",
   "sortByType": "Menurut {type}",
   "sortTitle": "Urutkan judul",
   "specialFeatures": "Fitur spesial",
+  "speed": "Kecepatan",
+  "startNow": "Mulai sekarang",
   "status": "Status",
+  "stretch": "Perpanjang",
   "studios": "Studio",
   "subtitles": "Subtitles",
+  "syncPlayGroups": "Grup SyncPlay",
+  "syncingInProgress": "Penyambungan sedang berlangsung",
   "tagline": "Slogan",
   "tags": "Tag",
   "themeSong": "Lagu Tema",
