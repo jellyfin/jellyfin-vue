@@ -1,15 +1,14 @@
 <template>
   <v-app-bar
     clipped-left
-    class="pt-s pl-2 pr-2 app-bar-safe-zone"
+    class="ml-n3 mr-n3 app-bar-safe-zone"
     flat
     app
+    elevate-on-scroll
+    elevation="3"
+    :hide-on-scroll="$vuetify.breakpoint.mobile"
     :class="{ opaque: opaqueAppBar }"
   >
-    <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.mobile && navDrawer"
-      @click.stop="drawer = !drawer"
-    />
     <app-bar-button-layout
       v-hide="$route.name === 'index'"
       @click.native="$router.back()"
@@ -18,20 +17,6 @@
         <v-icon>mdi-arrow-left</v-icon>
       </template>
     </app-bar-button-layout>
-    <v-text-field
-      v-model="searchQuery"
-      class="search-input"
-      :class="$vuetify.breakpoint.smAndUp ? 'expandable' : null"
-      prepend-inner-icon="mdi-magnify"
-      :placeholder="$t('search.name')"
-      max-width="15em"
-      dense
-      outlined
-      filled
-      flat
-      hide-details
-      single-line
-    />
     <v-spacer />
     <app-bar-button-layout v-if="!$nuxt.isOffline" :color="'red'">
       <template #icon>
@@ -42,14 +27,6 @@
       </template>
     </app-bar-button-layout>
     <progress-button />
-    <app-bar-button-layout>
-      <template #icon>
-        <v-icon> mdi-magnify </v-icon>
-      </template>
-      <template #tooltip>
-        <span>{{ $t('search.name') }}</span>
-      </template>
-    </app-bar-button-layout>
     <app-bar-button-layout @click.native="toggleDarkMode">
       <template #icon>
         <v-icon>
@@ -62,6 +39,14 @@
             ? $t('tooltips.switchToLightMode')
             : $t('tooltips.switchToDarkMode')
         }}</span>
+      </template>
+    </app-bar-button-layout>
+    <app-bar-button-layout>
+      <template #icon>
+        <v-icon> mdi-magnify </v-icon>
+      </template>
+      <template #tooltip>
+        <span>{{ $t('search.name') }}</span>
       </template>
     </app-bar-button-layout>
     <cast-button
@@ -110,6 +95,20 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+.app-bar-safe-zone {
+  height: calc(56px + env(safe-area-inset-top)) !important;
+}
+
+@media #{map-get($display-breakpoints, 'md-and-up')} {
+  .app-bar-safe-zone {
+    height: calc(64px + env(safe-area-inset-top)) !important;
+  }
+}
+.v-toolbar.ml-n3 {
+  max-width: initial !important;
+}
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
 }

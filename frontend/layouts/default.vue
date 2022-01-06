@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <backdrop />
-    <navigation-drawer />
+    <navigation-drawer v-if="!$vuetify.breakpoint.mobile" />
     <app-bar />
     <v-main>
       <div class="pa-s">
@@ -60,17 +60,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
-.app-bar-safe-zone {
-  height: calc(56px + env(safe-area-inset-top)) !important;
-}
-
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .app-bar-safe-zone {
-    height: calc(64px + env(safe-area-inset-top)) !important;
-  }
-}
-</style>
