@@ -4,6 +4,9 @@
     class="ml-n3 mr-n3 app-bar-safe-zone"
     flat
     app
+    elevate-on-scroll
+    elevation="3"
+    :hide-on-scroll="$vuetify.breakpoint.mobile"
     :class="{ opaque: page.opaqueAppBar }"
   >
     <v-app-bar-nav-icon
@@ -18,20 +21,6 @@
         <v-icon>mdi-arrow-left</v-icon>
       </template>
     </app-bar-button-layout>
-    <v-text-field
-      v-model="searchQuery"
-      class="search-input"
-      :class="$vuetify.breakpoint.smAndUp ? 'expandable' : null"
-      prepend-inner-icon="mdi-magnify"
-      :placeholder="$t('search.name')"
-      max-width="15em"
-      dense
-      outlined
-      filled
-      flat
-      hide-details
-      single-line
-    />
     <v-spacer />
     <app-bar-button-layout v-if="$nuxt.isOffline" color="red">
       <template #icon>
@@ -56,6 +45,14 @@
             ? $t('tooltips.switchToLightMode')
             : $t('tooltips.switchToDarkMode')
         }}</span>
+      </template>
+    </app-bar-button-layout>
+    <app-bar-button-layout>
+      <template #icon>
+        <v-icon> mdi-magnify </v-icon>
+      </template>
+      <template #tooltip>
+        <span>{{ $t('search.name') }}</span>
       </template>
     </app-bar-button-layout>
     <cast-button
