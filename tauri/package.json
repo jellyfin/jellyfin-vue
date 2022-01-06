@@ -1,0 +1,19 @@
+{
+  "name": "@jellyfin-vue/tauri",
+  "private": true,
+  "version": "0.0.0",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "tauri": "tauri",
+    "tauri:build": "tauri build",
+    "tauri:dev": "tauri dev"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "1.0.0-rc.1"
+  },
+  "engines": {
+    "node": ">=16.13.1 <17.0.0",
+    "npm": ">=8.1.2",
+    "yarn": "Yarn is not supported. Please use NPM."
+  }
+}

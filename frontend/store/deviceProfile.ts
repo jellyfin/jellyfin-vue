@@ -1,6 +1,6 @@
 import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
-import { version } from '../../package.json';
+import { version } from '~/package.json';
 import { BrowserDetector } from '~/plugins/nuxt/browserDetectionPlugin';
 
 export interface DeviceState {

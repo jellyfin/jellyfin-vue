@@ -18,11 +18,7 @@
   ],
   "dependencyDashboard": false,
   "ignoreDeps": ["npm", "swiper", "node", "hls.js"],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "extends": ["schedule:monthly"]
-  },
-  "enabledManagers": ["npm", "github-actions"],
+  "enabledManagers": ["npm", "github-actions", "rust"],
   "labels": ["dependencies"],
   "rebaseWhen": "behind-base-branch",
   "rangeStrategy": "pin",

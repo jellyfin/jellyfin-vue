@@ -85,3 +85,42 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             jellyfin/jellyfin-vue:pr-build
+
+  tauri:
+    name: Tauri 🛠️
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - 'macos-latest'
+          - 'ubuntu-latest'
+          - 'windows-latest'
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout ⬇️
+        uses: actions/checkout@v2.4.0
+
+      - name: Setup node environment ⚙️
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 16
+          cache: 'npm'
+          check-latest: true
+
+      - name: Setup rust environment ⚙️
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install dependencies 📦
+        run: npm ci --no-audit
+
+      - name: Install webkit2gtk (ubuntu only)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webkit2gtk-4.0
+
+      - name: Build Tauri 🛠️
+        run: 'npm run tauri:build --workspace=tauri'
