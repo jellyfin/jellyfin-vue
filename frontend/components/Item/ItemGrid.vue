@@ -10,7 +10,7 @@
       class="scroller"
       :items="itemsChunks"
       :min-item-size="350"
-      :buffer="$vuetify.breakpoint.height * 1.5"
+      :buffer="$vuetify.breakpoint.height * 1.15"
       page-mode
     >
       <template #default="{ item, index, active }">
@@ -70,8 +70,31 @@ export default Vue.extend({
       required: false
     }
   },
-  computed: {
-    itemsChunks(): Array<{ [id: number]: BaseItemDto }> {
+  data() {
+    return {
+      itemsChunks: [] as Array<{ [id: number]: BaseItemDto }>
+    };
+  },
+  watch: {
+    '$vuetify.breakpoint.width': {
+      handler(): void {
+        this.chunkItems();
+      }
+    },
+    '$vuetify.breakpoint.height': {
+      handler(): void {
+        this.chunkItems();
+      }
+    },
+    items: {
+      immediate: true,
+      handler() {
+        this.chunkItems();
+      }
+    }
+  },
+  methods: {
+    chunkItems(): void {
       let cardsPerLine = this.large ? 5 : 8;
 
       if (this.$vuetify.breakpoint.smAndDown) {
@@ -90,7 +113,7 @@ export default Vue.extend({
 
       const chunks = chunk(this.items, cardsPerLine);
 
-      return chunks.map((itemChunk, index) => {
+      this.itemsChunks = chunks.map((itemChunk, index) => {
         return {
           id: index,
           chunk: itemChunk
