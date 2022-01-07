@@ -41,6 +41,10 @@ body {
   background-color: #f5f5f5;
 }
 
+.v-btn {
+  overflow: hidden;
+}
+
 // fixes cropped text in some situations
 // there are still issues with line height so this might be deprecated at some point
 // https://github.com/vuetifyjs/vuetify/issues/6488
