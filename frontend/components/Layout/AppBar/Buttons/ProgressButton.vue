@@ -33,25 +33,23 @@
     </template>
     <v-card>
       <v-list color="transparent">
-        <v-list-item-group>
-          <v-list-item v-for="task in taskList" :key="`${task.id}`">
-            <v-list-item-content>
-              {{ task.text }}
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-progress-circular
-                v-if="!(task.progress === 100)"
-                :indeterminate="
-                  task.progress === undefined || task.progress === 0
-                "
-                :value="task.progress"
-                rotate="-90"
-                size="24"
-              />
-              <v-icon v-else>mdi-check</v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-item-group>
+        <v-list-item v-for="task in taskList" :key="`${task.id}`">
+          <v-list-item-content>
+            {{ task.text }}
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-progress-circular
+              v-if="!(task.progress === 100)"
+              :indeterminate="
+                task.progress === undefined || task.progress === 0
+              "
+              :value="task.progress"
+              rotate="-90"
+              size="24"
+            />
+            <v-icon v-else>mdi-check</v-icon>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
     </v-card>
   </v-menu>

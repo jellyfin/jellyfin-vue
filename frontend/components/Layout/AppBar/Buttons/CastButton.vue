@@ -6,6 +6,7 @@
     bottom
     :nudge-bottom="nudgeBottom"
     offset-y
+    disabled
     min-width="25em"
     max-width="25em"
     min-height="25em"
@@ -75,10 +76,6 @@ import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   props: {
-    fab: {
-      type: Boolean,
-      required: false
-    },
     nudgeBottom: {
       type: Number,
       default: 5

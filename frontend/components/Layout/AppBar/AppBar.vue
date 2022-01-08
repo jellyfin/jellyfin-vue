@@ -18,7 +18,7 @@
       </template>
     </app-bar-button-layout>
     <v-spacer />
-    <app-bar-button-layout v-if="!$nuxt.isOffline" :color="'red'">
+    <app-bar-button-layout v-if="$nuxt.isOffline" :color="'red'">
       <template #icon>
         <v-icon>mdi-network-off-outline</v-icon>
       </template>
@@ -27,20 +27,6 @@
       </template>
     </app-bar-button-layout>
     <progress-button />
-    <app-bar-button-layout @click.native="toggleDarkMode">
-      <template #icon>
-        <v-icon>
-          {{ darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
-        </v-icon>
-      </template>
-      <template #tooltip>
-        <span>{{
-          darkMode
-            ? $t('tooltips.switchToLightMode')
-            : $t('tooltips.switchToDarkMode')
-        }}</span>
-      </template>
-    </app-bar-button-layout>
     <app-bar-button-layout>
       <template #icon>
         <v-icon> mdi-magnify </v-icon>
@@ -49,47 +35,18 @@
         <span>{{ $t('search.name') }}</span>
       </template>
     </app-bar-button-layout>
-    <cast-button
-      :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-    />
+    <cast-button />
     <user-button />
-    <locale-switcher
-      :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-      bottom
-    />
   </v-app-bar>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapState('page', ['opaqueAppBar', 'isScrolled']),
-    ...mapState('clientSettings', ['darkMode']),
-    ...mapState(['syncing']),
-    searchQuery: {
-      get(): string {
-        return this.$route.query.q?.toString();
-      },
-      set(value: string): void {
-        if (value === '' || !value) {
-          this.$router.back();
-        } else if (this.searchQuery) {
-          this.$router.replace({ path: '/search', query: { q: value } });
-        } else {
-          this.$router.push({ path: '/search', query: { q: value } });
-        }
-      }
-    }
-  },
-  methods: {
-    ...mapActions('clientSettings', ['setDarkMode']),
-    ...mapActions('search', ['setSearchQuery']),
-    toggleDarkMode(): void {
-      this.setDarkMode({ darkMode: !this.darkMode });
-    }
+    ...mapState('page', ['opaqueAppBar'])
   }
 });
 </script>
@@ -111,15 +68,5 @@ export default Vue.extend({
 }
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
-}
-
-.search-input {
-  max-width: 15em;
-  transition: max-width 0.25s;
-}
-
-.search-input.expandable.primary--text {
-  max-width: 40em;
-  transition: max-width 0.25s;
 }
 </style>
