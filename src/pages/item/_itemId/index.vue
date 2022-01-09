@@ -241,6 +241,12 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col v-if="item.Type === 'BoxSet'" cols="12">
+          <collection-tabs
+            :id="$route.params.itemId + '_children'"
+            :item="item"
+          />
+        </v-col>
         <v-col cols="12">
           <related-items :id="$route.params.itemId" :item="item" />
         </v-col>
