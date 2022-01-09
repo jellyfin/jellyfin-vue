@@ -19,7 +19,6 @@ import { playbackReportingPlugin } from './plugins/playbackReportingPlugin';
 import { preferencesSync } from './plugins/preferencesSyncPlugin';
 import { userPlugin } from './plugins/userPlugin';
 import { SocketState } from './socket';
-import { CollectionsState } from './collections';
 
 export const plugins = [
   websocketPlugin,
@@ -52,7 +51,6 @@ export interface AppState extends RootState {
   servers: ServerState;
   snackBar: SnackbarState;
   tvShows: TvShowsState;
-  collections: CollectionsState;
   user: UserState;
   userViews: UserViewsState;
   socket: SocketState;
@@ -80,7 +78,6 @@ export const actions: ActionTree<RootState, RootState> = {
     promises.push(dispatch('playbackManager/stop', { root: true }));
     promises.push(dispatch('snackbar/resetMessage', { root: true }));
     promises.push(dispatch('tvShows/clearTvShows', { root: true }));
-    promises.push(dispatch('collections/clearChildren', { root: true }));
     promises.push(dispatch('user/clearUser', { root: true }));
     promises.push(dispatch('userViews/clearUserViews', { root: true }));
     promises.push(dispatch('socket/closeSocket', { root: true }));
