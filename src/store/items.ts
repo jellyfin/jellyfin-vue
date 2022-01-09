@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import map from 'lodash/map';
 import forEach from 'lodash/forEach';
@@ -8,14 +8,21 @@ import merge from 'lodash/merge';
 import some from 'lodash/some';
 import union from 'lodash/union';
 
+interface ItemsByType {
+  Type: string;
+  Items: BaseItemDto[];
+}
+
 export interface ItemsState {
   byId: Record<string, BaseItemDto>;
   allIds: readonly string[];
+  boxSetChildrenById: Record<string, ItemsByType[]>;
 }
 
 export const defaultState = (): ItemsState => ({
   byId: {},
-  allIds: []
+  allIds: [],
+  boxSetChildrenById: {}
 });
 
 export const state = defaultState;
@@ -28,7 +35,16 @@ export const getters: GetterTree<ItemsState, ItemsState> = {
   getItems:
     (state) =>
     (ids: string[]): BaseItemDto[] =>
-      map(ids, (id) => state.byId[id])
+      map(ids, (id) => state.byId[id]),
+  getBoxsetChildren:
+    (state) =>
+    (id: string): ItemsByType[] =>
+      state.boxSetChildrenById[id]
+};
+
+type AddBoxsetChildrenMutationPayload = {
+  childrenList: BaseItemDto[];
+  itemId?: string;
 };
 
 export const mutations: MutationTree<ItemsState> = {
@@ -69,6 +85,34 @@ export const mutations: MutationTree<ItemsState> = {
       state.allIds = Object.freeze(newAllIds);
     }
   },
+  ADD_BOXSET_CHILDREN(state: ItemsState, { childrenList, itemId }) {
+    if (!itemId) {
+      throw new Error('itemId is undefined');
+    }
+
+    if (!childrenList) return [];
+    //  Error('childrenList is undefined');
+
+    const children: { [key: string]: BaseItemDto[] } = {};
+
+    childrenList.forEach((item: BaseItemDto) => {
+      if (item.Type && typeof item.Type === 'string') {
+        if (!children[item.Type]) children[item.Type] = [];
+
+        children[item.Type].push(item);
+      }
+    });
+
+    const perTypeList: ItemsByType[] = Object.keys(children).map((type) => {
+      return { Type: type, Items: children[type] };
+    });
+
+    const perTypeOrderedList: ItemsByType[] = perTypeList.sort(
+      (a, b) => b.Items.length - a.Items.length
+    );
+
+    Vue.set(state.boxSetChildrenById, itemId, perTypeOrderedList || []);
+  },
   CLEAR_STATE(state: ItemsState) {
     Object.assign(state, defaultState());
   }
@@ -94,6 +138,50 @@ export const actions: ActionTree<ItemsState, ItemsState> = {
     forEach(ids, (id) => {
       commit('DELETE_ITEM', { id });
     });
+  },
+  async fetchBoxsetChildren({ dispatch }, { itemId }: { itemId: string }) {
+    try {
+      const { data } = await this.$api.items.getItems({
+        userId: this.$auth.user?.Id,
+        parentId: itemId
+      });
+
+      dispatch('fetchBoxsetChildrenSuccess', {
+        response: data,
+        itemId
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      dispatch('fetchBoxsetChildrenFailure', error);
+    }
+  },
+  fetchBoxsetChildrenSuccess(
+    { commit },
+    {
+      response,
+      itemId
+    }: {
+      response: BaseItemDtoQueryResult;
+      itemId: string;
+    }
+  ) {
+    commit('ADD_BOXSET_CHILDREN', {
+      childrenList: response.Items,
+      itemId
+    } as AddBoxsetChildrenMutationPayload);
+  },
+  fetchBoxsetChildrenFailure: async ({ dispatch }, error) => {
+    await dispatch(
+      'snackbar/pushSnackbarMessage',
+      {
+        message: error.message,
+        color: 'error'
+      },
+      {
+        root: true
+      }
+    );
   },
   clearState({ commit }) {
     commit('CLEAR_STATE');
