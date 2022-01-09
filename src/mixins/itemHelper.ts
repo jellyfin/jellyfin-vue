@@ -142,6 +142,10 @@ const itemHelper = Vue.extend({
             routeName = 'series-itemId';
             routeParams = { itemId: item.Id };
             break;
+          case 'BoxSet':
+            routeName = 'collections-itemId';
+            routeParams = { itemId: item.Id };
+            break;
           case 'Person':
             routeName = 'person-itemId';
             routeParams = { itemId: item.Id };
