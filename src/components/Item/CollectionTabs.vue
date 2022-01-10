@@ -5,6 +5,12 @@
         {{ typeList.Type }} ({{ typeList.Items.length }})
       </v-tab>
     </v-tabs>
+    <h1
+      v-if="(!children && !loading) || (children && children.length === 0)"
+      class="text-h5 text-center"
+    >
+      {{ $t('collectionEmpty') }}
+    </h1>
     <v-tabs-items v-model="currentTab" class="transparent">
       <v-tab-item v-for="typeList in children" :key="typeList.Type">
         <v-container>
