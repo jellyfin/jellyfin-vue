@@ -24,35 +24,15 @@ import { mapGetters, mapActions } from 'vuex';
 export default Vue.extend({
   props: {
     item: {
-      type: Object,
+      type: Object as () => BaseItemDto,
       required: true
     }
   },
   data() {
     return {
       currentTab: 0,
-      loading: false,
-      breakpoints: {
-        600: {
-          visibleSlides: 2
-        },
-        960: {
-          visibleSlides: 3
-        },
-        1264: {
-          visibleSlides: 4
-        },
-        1904: {
-          visibleSlides: 5
-        }
-      }
+      loading: false
     };
-  },
-  async fetch() {
-    this.loading = true;
-    await this.fetchBoxsetChildren({ itemId: this.item.Id }).finally(
-      () => (this.loading = false)
-    );
   },
   computed: {
     ...mapGetters('items', ['getBoxsetChildren']),
@@ -60,10 +40,18 @@ export default Vue.extend({
       return this.getBoxsetChildren(this.item.Id);
     }
   },
+  watch: {
+    item: {
+      immediate: true,
+      async handler(item: BaseItemDto): Promise<void> {
+        this.loading = true;
+        await this.fetchBoxsetChildren({ itemId: item.Id });
+        this.loading = false;
+      }
+    }
+  },
   methods: {
-    ...mapActions('items', {
-      fetchBoxsetChildren: 'fetchBoxsetChildren'
-    })
+    ...mapActions('items', ['fetchBoxsetChildren'])
   }
 });
 </script>
