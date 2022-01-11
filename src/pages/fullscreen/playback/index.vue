@@ -33,6 +33,10 @@ import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
   mixins: [imageHelper],
+  meta: {
+    backdrop: { opacity: 0.5 },
+    transparentAppBar: true
+  },
   data() {
     return {
       swiperOptions: {
@@ -97,22 +101,14 @@ export default Vue.extend({
   },
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
-    this.setAppBarOpacity({ opaqueAppBar: false });
-    this.setBackdropOpacity({ newOpacity: 0.5 });
     this.setMinimized({ minimized: false });
   },
   destroyed() {
-    this.clearBackdrop();
     this.setMinimized({ minimized: true });
   },
   methods: {
     ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
-    ...mapActions('page', ['setAppBarOpacity']),
-    ...mapActions('backdrop', [
-      'setBackdrop',
-      'setBackdropOpacity',
-      'clearBackdrop'
-    ]),
+    ...mapActions('page', ['setBackdrop', 'clearBackdrop']),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
 

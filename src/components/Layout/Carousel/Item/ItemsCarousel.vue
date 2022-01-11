@@ -104,12 +104,9 @@ export default Vue.extend({
 
     this.updateBackdrop(0);
   },
-  destroyed() {
-    this.clearBackdrop();
-  },
   methods: {
     ...mapActions('playbackManager', ['play']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop']),
+    ...mapActions('page', ['setBackdrop']),
     getRelatedItem(item: BaseItemDto): BaseItemDto {
       const rItem = this.relatedItems[this.items.indexOf(item)];
 
