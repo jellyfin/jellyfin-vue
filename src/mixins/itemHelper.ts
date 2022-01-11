@@ -168,7 +168,7 @@ const itemHelper = Vue.extend({
       return this.$router.resolve({
         name: routeName,
         params: routeParams
-      }).href;
+      }).resolved.path;
     },
     /**
      * Returns the appropiate material design icon for the BaseItemDto provided
