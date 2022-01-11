@@ -1,1 +1,128 @@
-{}
+{
+  "3DFormat": "3D format",
+  "NoMediaSourcesAvailable": "Nema dosutpnih izvora za medije",
+  "actor": "Glumac",
+  "actors": "Glumci",
+  "addNewPerson": "Dodaj novu osobu",
+  "airPlayDevices": "AirPlay uređaji",
+  "albums": "Albumi",
+  "allLanguages": "Svi jezici",
+  "alphabetically": "Po abecednom redu",
+  "architecture": "Arhitektura",
+  "artist": "Umetnik",
+  "artists": "Umetnici",
+  "aspectRatio": "Odnos širine i visine",
+  "audio": "Zvuk",
+  "audioCodecNotSupported": "audio kodek nije podržan",
+  "badRequest": "Loš zahtev. Probajte ponovo",
+  "books": "Knjige",
+  "browserNotSupported": "Vaš pretraživač nije podržan za puštanje ovog fajla.",
+  "buttons": {
+    "ok": "U redu"
+  },
+  "byArtist": "Od strane {artist}",
+  "cancel": "Otkaži",
+  "castAndCrew": "Glumci i ekipa",
+  "collections": "Kolekcije",
+  "communityRating": "Ocena zajednice",
+  "confirm": "Potvrdi",
+  "connect": "Poveži se",
+  "continueListening": "Nastavi sa slušanjem",
+  "continueWatching": "Nastavi sa gledanjem",
+  "criticRating": "Ocena kritičara",
+  "customRating": "Prilagođena ocena",
+  "darkModeToggle": "Upali tamni režim",
+  "dateAdded": "Dodat na datum",
+  "details": "Detalji",
+  "dialog": {
+    "upNext": {
+      "hide": "Sakrij",
+      "nextItemPlayingIn": "Počinje u {time}",
+      "startNow": "Počni sada"
+    }
+  },
+  "directing": "Režija",
+  "director": "Režiser",
+  "disabled": "Onemogućeno",
+  "discNumber": "Disk {discNumber}",
+  "dislikes": "Ne sviđanja",
+  "edit": "Uredi",
+  "editMetadata": "Uredi metapodatke",
+  "editPerson": "Uredi osobu",
+  "endDate": "Krajni datum",
+  "endsAt": "Završava se u {time}",
+  "episodeNumber": "Epizoda {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Dogodila se greška",
+    "messages": {
+      "errorCode": "Kod greške: {errorCode}",
+      "videoPlayerError": "Ovaj video plejer susreo se sa nepopravljivom greškom."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Nije moguće uzeti podešavanja prikaza. Koriste se poslednja poznata podešavanja.",
+  "failedSettingDisplayPreferences": "Nije moguće ažurirati podešavanja prikaza.",
+  "failedToRefreshItems": "Neuspešno osvežavanje stavki",
+  "favorite": "Omiljeno",
+  "features": "Karakteristike",
+  "filter": "Filter",
+  "filtersNotFound": "Nije moguće učitati filtere",
+  "fullScreen": "ceo ekran",
+  "general": "Generalno",
+  "genericJellyfinPlaceholderDevice": "Opšti Jellyfin uređaj",
+  "genres": "Žanrovi",
+  "googleCastPlaceholderDevice": "Google Cast uređaj",
+  "guestStar": "Gostujuća zvezda",
+  "headerExternalIds": "Eksterni ID-evi",
+  "headerPaths": "Putanja",
+  "home": "Početna strana",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Skoro dodato"
+    },
+    "welcome": {
+      "checkNewItems": "Proveri šta je novo.",
+      "helloUser": "Zdravo {userName}!",
+      "noItems": "Nema skoro dodatih stavki za prikaz."
+    }
+  },
+  "imageType": {
+    "art": "Umetnost",
+    "backdrop": "Pozadina",
+    "banner": "Baner",
+    "box": "Kutija",
+    "boxRear": "Kutija (nazad)",
+    "disc": "Disk",
+    "logo": "Logo",
+    "menu": "Meni",
+    "primary": "Glavno",
+    "screenshot": "Snimak ekrana",
+    "thumb": "Palac"
+  },
+  "images": "Slike",
+  "incorrectUsernameOrPassword": "Pogrešno korisničko ime ili šifra",
+  "item": {
+    "artist": {
+      "appearsOn": "Pojavljivanja",
+      "discography": "Diskografija",
+      "information": "Informacija",
+      "videos": "Video snimci"
+    },
+    "cast": "Ekipa",
+    "composer": "Kompozitor",
+    "crew": "Ekipa",
+    "person": {
+      "birth": "Rođen",
+      "birthPlace": "Rodno mesto",
+      "books": "Knjige",
+      "death": "Umro/la",
+      "information": "Informacije",
+      "movies": "Filmovi",
+      "person": "Osoba",
+      "photos": "Slike",
+      "shows": "Serije"
+    },
+    "tracklist": {
+      "title": "Naslov"
+    }
+  }
+}
