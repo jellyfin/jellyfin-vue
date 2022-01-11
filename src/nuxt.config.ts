@@ -134,7 +134,8 @@ const config: NuxtConfig = {
           route.alias = route.path + '/index.html';
         }
       }
-    }
+    },
+    mode: 'hash'
   },
   /*
    ** Axios module configuration
