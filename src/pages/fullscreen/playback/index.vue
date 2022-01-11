@@ -103,7 +103,6 @@ export default Vue.extend({
   },
   destroyed() {
     this.clearBackdrop();
-    this.resetBackdropOpacity();
     this.setMinimized({ minimized: true });
   },
   methods: {
@@ -112,7 +111,6 @@ export default Vue.extend({
     ...mapActions('backdrop', [
       'setBackdrop',
       'setBackdropOpacity',
-      'resetBackdropOpacity',
       'clearBackdrop'
     ]),
     onSlideChange(): void {

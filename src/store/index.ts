@@ -9,7 +9,6 @@ import { UserState } from './user';
 import { UserViewsState } from './userViews';
 import { HomeSectionState } from './homeSection';
 import { PlaybackManagerState } from './playbackManager';
-import { BackdropState } from './backdrop';
 import { DeviceState } from './deviceProfile';
 import { ClientSettingsState } from './clientSettings';
 import { ItemsState } from './items';
@@ -41,7 +40,6 @@ export interface RootState {
 }
 export interface AppState extends RootState {
   auth: AuthState;
-  backdrop: BackdropState;
   clientSettings: ClientSettingsState;
   deviceProfile: DeviceState;
   homeSection: HomeSectionState;
@@ -70,7 +68,6 @@ export const actions: ActionTree<RootState, RootState> = {
   async reset({ dispatch }, { clearCritical }: { clearCritical: boolean }) {
     const promises = [];
 
-    promises.push(dispatch('backdrop/clearAllBackdrop', { root: true }));
     promises.push(dispatch('clientSettings/resetState', { root: true }));
     promises.push(dispatch('homeSection/clearHomeSection', { root: true }));
     promises.push(dispatch('items/clearState', { root: true }));
