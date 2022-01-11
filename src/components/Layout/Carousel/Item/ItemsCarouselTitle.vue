@@ -54,9 +54,13 @@ export default Vue.extend({
       itemLink: '',
       titleString: '',
       logoLink: '',
-      subtitle: '',
-      logo: {} as ImageUrlInfo
+      subtitle: ''
     };
+  },
+  computed: {
+    logo(): ImageUrlInfo {
+      return this.getLogo(this.item);
+    }
   },
   watch: {
     item: {
@@ -116,8 +120,6 @@ export default Vue.extend({
         if (this.titleString === '' && this.item.Name) {
           this.titleString = this.item.Name;
         }
-
-        this.logo = this.getLogo(this.item);
       }
     }
   }
