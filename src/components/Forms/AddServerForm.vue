@@ -10,6 +10,7 @@
           <v-text-field
             v-model="serverUrl"
             outlined
+            autofocus
             :label="$t('login.serverAddress')"
             type="url"
             :error-messages="errors"
