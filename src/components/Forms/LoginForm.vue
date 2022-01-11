@@ -12,6 +12,7 @@
             v-model="login.username"
             outlined
             hide-details
+            autofocus
             autocomplete="username"
             :label="$t('username')"
             :error-messages="errors"
