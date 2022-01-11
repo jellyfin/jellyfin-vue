@@ -124,7 +124,7 @@ const config: NuxtConfig = {
    ** Router configuration
    */
   router: {
-    middleware: ['auth'],
+    middleware: ['auth', 'meta'],
     extendRoutes(routes: NuxtRouteConfig[]): void {
       // Extend all routes to be accessed by /index.html
       for (const route of routes) {
