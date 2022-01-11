@@ -3,7 +3,12 @@
     <v-avatar v-if="loading" color="primary" :size="size">
       <v-icon :size="iconSize" dark>mdi-account</v-icon>
     </v-avatar>
-    <div v-show="!loading" ref="img" class="user-image" />
+    <div
+      v-show="!loading"
+      ref="img"
+      class="user-image"
+      :class="{ 'rounded-circle': rounded }"
+    />
   </div>
 </template>
 
@@ -26,6 +31,10 @@ export default Vue.extend({
       type: Number,
       required: false,
       default: 90
+    },
+    rounded: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -62,6 +71,14 @@ export default Vue.extend({
     this.manageDiv();
   },
   methods: {
+    /**
+     * We're using a div to have a fully centered image for all kind of possible sizes, something that
+     * img doesn't allow and we couldn't do before with v-avatar and v-img.
+     *
+     * v-img also uses a div, so it can be replaced with it, but doesn't emit a 'load'
+     * event that allows us to make the switch between the image and the placeholder when v-show is true for it.
+     * TODO: This might be a bug upstream that can be reported.
+     */
     manageDiv(): void {
       this.loading = true;
 
