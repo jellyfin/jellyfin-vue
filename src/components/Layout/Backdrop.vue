@@ -17,7 +17,13 @@ import { mapState } from 'vuex';
 
 export default Vue.extend({
   computed: {
-    ...mapState('backdrop', ['blurhash', 'opacity'])
+    ...mapState('page', ['backdrop']),
+    blurhash(): string {
+      return this.backdrop.blurhash;
+    },
+    opacity(): number {
+      return this.backdrop.opacity;
+    }
   }
 });
 </script>
