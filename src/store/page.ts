@@ -105,6 +105,11 @@ export const actions: ActionTree<PageState, PageState> = {
   setBackdropOpacity({ commit }, { newOpacity }: { newOpacity: number }) {
     commit('SET_BACKDROP_OPACITY', { newOpacity });
   },
+  resetBackdropOpacity({ commit }) {
+    commit('SET_BACKDROP_OPACITY', {
+      newOpacity: defaultState().backdrop.opacity
+    });
+  },
   clearBackdrop({ commit }) {
     commit('RESET_BACKDROP');
   },
