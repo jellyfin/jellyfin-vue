@@ -26,6 +26,7 @@ RUN npm run build
 # Deploy built distribution to nginx
 FROM nginx:alpine
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
+COPY --from=build /app/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
 # Set labels
