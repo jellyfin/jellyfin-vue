@@ -54,10 +54,10 @@ export const actions: ActionTree<ServerState, ServerState> = {
       throw new Error(err as string);
     }
 
-    const semverMajor = data.Version?.split('.')[0] as string;
-    const semverMinor = data.Version?.split('.')[1] as string;
+    const semverMajor = parseInt(data.Version?.split('.')[0] as string);
+    const semverMinor = parseInt(data.Version?.split('.')[1] as string);
     const isServerVersionSupported =
-      parseInt(semverMajor) >= 10 && parseInt(semverMinor) >= 7;
+      semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
 
     if (isServerVersionSupported) {
       if (!data.StartupWizardCompleted) {
