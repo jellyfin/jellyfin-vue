@@ -1,7 +1,6 @@
 <template>
   <v-fade-transition>
     <canvas
-      v-show="!loading && pixels"
       ref="canvas"
       :key="`canvas-${hash}`"
       :width="width"
@@ -36,14 +35,12 @@ export default Vue.extend({
   },
   data() {
     return {
-      loading: true,
       pixels: undefined as Uint8ClampedArray | undefined
     };
   },
   watch: {
     hash(): void {
       this.$nextTick(() => {
-        this.loading = true;
         this.getPixels();
       });
     },
@@ -62,7 +59,6 @@ export default Vue.extend({
       if (imageData && this.pixels) {
         imageData.data.set(this.pixels);
         ctx?.putImageData(imageData, 0, 0);
-        this.loading = false;
       }
     },
     async getPixels(): Promise<void> {
