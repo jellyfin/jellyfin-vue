@@ -30,7 +30,6 @@ export default Vue.extend({
   props: {
     color: {
       type: String,
-      required: false,
       default: ''
     },
     disabled: {
@@ -39,7 +38,6 @@ export default Vue.extend({
     },
     customListener: {
       type: Object as () => EventTarget,
-      required: false,
       default: undefined
     }
   },
