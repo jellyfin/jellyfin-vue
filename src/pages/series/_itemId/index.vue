@@ -166,6 +166,10 @@ import { isValidMD5 } from '~/utils/items';
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
+  meta: {
+    backdrop: true,
+    transparentAppBar: true
+  },
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
@@ -249,16 +253,8 @@ export default Vue.extend({
       deep: true
     }
   },
-  mounted() {
-    this.setAppBarOpacity({ opaqueAppBar: false });
-  },
-  destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
-    this.clearBackdrop();
-  },
   methods: {
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('backdrop', ['setBackdrop', 'clearBackdrop'])
+    ...mapActions('page', ['setPageTitle', 'setBackdrop'])
   }
 });
 </script>

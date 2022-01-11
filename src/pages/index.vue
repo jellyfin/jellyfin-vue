@@ -45,6 +45,10 @@ export default Vue.extend({
 
     return { carouselItems };
   },
+  meta: {
+    backdrop: true,
+    transparentAppBar: true
+  },
   data() {
     return {
       homeSections: [] as HomeSection[],
