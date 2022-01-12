@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Skoro dodato"
-    },
-    "welcome": {
-      "helloUser": "Zdravo {userName}!"
     }
   },
   "imageType": {
@@ -122,5 +119,107 @@
     "tracklist": {
       "title": "Naslov"
     }
+  },
+  "itemNotFound": "Stavka nije pronađena",
+  "jellyfinLogo": "logo Jellyfin-a",
+  "latestLibrary": "Najnovije {libraryName}",
+  "libraries": "Biblioteke",
+  "libraryEmpty": "Ova biblioteka je prazna",
+  "libraryEmptyFilters": "Nema podudaranja. Izbrišite neke filtere da bi se videlo više stavki",
+  "libraryNotFound": "Biblioteka nije pronađena",
+  "libraryRefreshQueued": "Osvežavanje bilbioteke je na čekanju",
+  "liked": "Sviđano",
+  "likes": "Sviđanja",
+  "links": {
+    "helpTranslate": "Prevedi Jellyfin na svoj jezik",
+    "poweredByJellyfin": "Ovaj server napaja Jellyfin",
+    "readTheDocumentation": "Pročitaj dokumentaciju",
+    "reportAnIssue": "Prijavi grešku sa ovim klijentom"
+  },
+  "login": {
+    "addServer": "Dodaj server",
+    "changeServer": "Promeni server",
+    "changeUser": "Promeni korisnika",
+    "connect": "Poveži se",
+    "login": "Prijavi se",
+    "loginAs": "Prijavi se kao {name}",
+    "manualLogin": "Ručno prijavljivanje",
+    "rememberMe": "Zapamti me",
+    "selectServer": "Izaberite server",
+    "selectUser": "Izaberite korisnika",
+    "serverAddress": "Adresa servera",
+    "serverAddressMustBeUrl": "Adresa servera mora biti validan URL",
+    "serverAddressRequired": "Adresa servera je obavezna",
+    "serverDashboard": "Kontrolna tabla servera",
+    "serverNotFound": "Server nije pronađen",
+    "serverVersionTooLow": "Verzija servera mora biti 10.7.0 ili veća"
+  },
+  "logout": "Odjavi se",
+  "logsAndActivity": {
+    "activity": "Aktivnost",
+    "failedGetActivity": "Nije moguće dobiti aktivnost",
+    "failedGetLogs": "Nije moguće dobiti evidencije",
+    "logs": "Evidencije",
+    "noActivityFound": "Aktivnosti nisu pronađene",
+    "noLogsFound": "Evidencije nisu pronađene"
+  },
+  "manualLogin": "Ručno prijavljivanje",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Zvučni kanali:"
+    },
+    "audioCodec": {
+      "name": "Zvučni kodek:"
+    },
+    "bitrate": {
+      "name": "Protok bitova:"
+    },
+    "container": {
+      "name": "Kontejner:"
+    },
+    "name": "Mediji",
+    "subtitleCodec": {
+      "name": "Kodek za titlove:"
+    },
+    "videoCodec": {
+      "name": "Kodek za video snimke:"
+    }
+  },
+  "menu": "Meni",
+  "metadata": {
+    "source": "Izvor",
+    "sourceAll": "Sve",
+    "title": "Naslov",
+    "type": "Tip"
+  },
+  "metadataEditor": "Uređivač metapodataka",
+  "metadataNoResultsMatching": "Nema rezultata koji se podudaraju sa \"{search}\". Pritisnite eneter da napravite novi.",
+  "more": "Više",
+  "moreLikeArtist": "Više kao {artist}",
+  "moreLikeThis": "Više kao ovo",
+  "movies": "Filmovi",
+  "name": "Ime",
+  "networks": "Mreže",
+  "nextUp": "Sledeće",
+  "noImagesFound": "Slike nisu pronađene",
+  "noInformationAvailable": "Nema dostupnih informacija",
+  "noNetworkConnection": "Nema internet konekcije",
+  "noResultsFound": "Ovde nema ničega",
+  "numberTracks": "{number} traka",
+  "operatingSystem": "Operativni sistem",
+  "originalAspectRatio": "Originalni odnos širine i visine",
+  "originalTitle": "Originalni naslov",
+  "overview": "Pregled",
+  "parentalRating": "Roditeljska ocena",
+  "parentalRatings": "Roditeljske ocene",
+  "password": "Šifra",
+  "people": "Ljudi",
+  "person": "Osoba",
+  "play": "Pusti",
+  "playFromBeginning": "Pusti od početka",
+  "playback": {
+    "addToQueue": "Dodaj u red",
+    "clearQueue": "Obrišite red i zaustavite reprodukciju",
+    "playAll": "Pusti sve"
   }
 }
