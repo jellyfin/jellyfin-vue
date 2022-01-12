@@ -136,7 +136,7 @@ const config: NuxtConfig = {
       }
     },
     mode:
-      process.env.ROUTER_MODE_HISTORY?.toString()?.toLowerCase() === 'true'
+      process.env.HISTORY_ROUTER_MODE?.toString()?.toLowerCase() === 'true'
         ? 'history'
         : 'hash'
   },
