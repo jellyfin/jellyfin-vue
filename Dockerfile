@@ -4,8 +4,8 @@
 FROM node:16-alpine AS build
 
 # Set environment variables
-ARG ROUTER_MODE_HISTORY=false
-ENV ROUTER_MODE_HISTORY=$ROUTER_MODE_HISTORY
+ARG HISTORY_ROUTER_MODE=false
+ENV HISTORY_ROUTER_MODE=$HISTORY_ROUTER_MODE
 
 ARG IS_STABLE=0
 
@@ -19,9 +19,6 @@ WORKDIR /app
 
 # Copy files to workdir
 COPY . .
-
-# Set router mode variable
-# RUN if [[ $ROUTER_MODE_HISTORY == 'true' ]] ; then ROUTER_MODE_HISTORY="true" ; fi
 
 # Install dependencies
 RUN npm ci --no-audit
@@ -38,14 +35,14 @@ RUN npm run build
 FROM nginx:alpine
 
 # Set environment variables
-ARG ROUTER_MODE_HISTORY=false
+ARG HISTORY_ROUTER_MODE=false
 
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
 
 COPY --from=build /app/.docker/nginx.conf /etc/nginx/conf.d/custom.conf 
 
 # If specified, set's custom nginx.conf to support spa (for 'history' routing mode)
-RUN  if [[ $ROUTER_MODE_HISTORY == 'true' ]] ; then \
+RUN  if [[ $HISTORY_ROUTER_MODE == 'true' ]] ; then \
   echo "configuring nginx for router.mode = history" ; \
   mv /etc/nginx/conf.d/custom.conf /etc/nginx/conf.d/default.conf  ; \
 else \
@@ -60,4 +57,4 @@ EXPOSE 80
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
 LABEL org.opencontainers.image.description "Commit: ${NUXT_ENV_COMMIT}"
-LABEL org.opencontainers.image.description "History Router Mode: ${ROUTER_MODE_HISTORY}"
+LABEL org.opencontainers.image.description "History Router Mode: ${HISTORY_ROUTER_MODE}"
