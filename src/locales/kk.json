@@ -80,9 +80,7 @@
       "recentlyAdded": "Juyqta üstelgen"
     },
     "welcome": {
-      "checkNewItems": "Jañalyqtarmen tanysyñyz.",
-      "helloUser": "Sälem, {userName}!",
-      "noItems": "Körsetіletіn juyqta üstelgen tarmaqtar joq."
+      "helloUser": "Sälem, {userName}!"
     }
   },
   "imageType": {

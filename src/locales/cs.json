@@ -80,9 +80,7 @@
       "recentlyAdded": "Nedávno přidáno"
     },
     "welcome": {
-      "checkNewItems": "Podívejte se, co je nového.",
-      "helloUser": "Ahoj, {userName}!",
-      "noItems": "Poslední dobou nepřibyly žádné položky."
+      "helloUser": "Ahoj, {userName}!"
     }
   },
   "imageType": {

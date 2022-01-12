@@ -80,9 +80,7 @@
       "recentlyAdded": "Añadido recientemente"
     },
     "welcome": {
-      "checkNewItems": "Echa un vistazo a lo que se ha añadido recientemente.",
-      "helloUser": "¡Hola {userName}!",
-      "noItems": "No hay ítems añadidos recientemente que mostrar."
+      "helloUser": "¡Hola {userName}!"
     }
   },
   "imageType": {

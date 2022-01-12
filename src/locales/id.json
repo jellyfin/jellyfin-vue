@@ -80,9 +80,7 @@
       "recentlyAdded": "Baru ditambahkan"
     },
     "welcome": {
-      "checkNewItems": "Lihat apa yang baru.",
-      "helloUser": "Halo {userName}!",
-      "noItems": "Tidak ada yang baru untuk ditampilkan."
+      "helloUser": "Halo {userName}!"
     }
   },
   "imageType": {

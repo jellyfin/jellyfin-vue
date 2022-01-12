@@ -35,7 +35,6 @@
   "home": "首頁",
   "homeHeader": {
     "welcome": {
-      "checkNewItems": "看看有甚麼新功能。",
       "helloUser": "你好，{userName}！"
     }
   },

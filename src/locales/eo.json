@@ -80,9 +80,7 @@
       "recentlyAdded": "Lastatempe aldonitaj"
     },
     "welcome": {
-      "checkNewItems": "Kontroli, kio estas nova.",
-      "helloUser": "Saluton, {userName}!",
-      "noItems": "Ne estas lastatempe aldonitaj ajoj por montri."
+      "helloUser": "Saluton, {userName}!"
     }
   },
   "imageType": {

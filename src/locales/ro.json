@@ -66,9 +66,7 @@
       "recentlyAdded": "Adăugat recent"
     },
     "welcome": {
-      "checkNewItems": "Verifica ce este nou.",
-      "helloUser": "Salut {userName}!",
-      "noItems": "Nu există elemente adăugate recent de afișat."
+      "helloUser": "Salut {userName}!"
     }
   },
   "imageType": {

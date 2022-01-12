@@ -77,9 +77,7 @@
       "recentlyAdded": "Nylig lagt til"
     },
     "welcome": {
-      "checkNewItems": "Se hva som er nytt.",
-      "helloUser": "Hei, {userName}!",
-      "noItems": "Det er ingen nylige ankomster å vise."
+      "helloUser": "Hei, {userName}!"
     }
   },
   "imageType": {

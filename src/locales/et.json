@@ -80,9 +80,7 @@
       "recentlyAdded": "Viimati lisatud"
     },
     "welcome": {
-      "checkNewItems": "Vaata, mis on uut.",
-      "helloUser": "Tere {userName}!",
-      "noItems": "Siin pole hiljuti lisatud üksusi."
+      "helloUser": "Tere {userName}!"
     }
   },
   "imageType": {

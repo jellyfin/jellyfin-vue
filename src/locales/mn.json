@@ -9,11 +9,6 @@
   "filter": "Шүүлтүүр",
   "general": "Ерөнхий",
   "genres": "Төрөл зүйл",
-  "homeHeader": {
-    "welcome": {
-      "helloUser": "Сайн уу {userName}!"
-    }
-  },
   "item": {
     "artist": {
       "videos": "Видеонууд"

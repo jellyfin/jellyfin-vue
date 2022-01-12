@@ -80,9 +80,7 @@
       "recentlyAdded": "Skoro dodato"
     },
     "welcome": {
-      "checkNewItems": "Proveri šta je novo.",
-      "helloUser": "Zdravo {userName}!",
-      "noItems": "Nema skoro dodatih stavki za prikaz."
+      "helloUser": "Zdravo {userName}!"
     }
   },
   "imageType": {

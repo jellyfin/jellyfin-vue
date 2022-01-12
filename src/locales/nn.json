@@ -65,9 +65,7 @@
       "recentlyAdded": "Nyleg lagt til"
     },
     "welcome": {
-      "checkNewItems": "Sjå kva som er nytt.",
-      "helloUser": "Hei, {userName}!",
-      "noItems": "Det er ingen nylege tilkomer å visa."
+      "helloUser": "Hei, {userName}!"
     }
   },
   "imageType": {

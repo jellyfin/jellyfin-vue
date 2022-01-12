@@ -80,9 +80,7 @@
       "recentlyAdded": "最近添加"
     },
     "welcome": {
-      "checkNewItems": "查看新的项目。",
-      "helloUser": "你好，{userName} ！",
-      "noItems": "没有最近添加的项目可显示。"
+      "helloUser": "你好，{userName} ！"
     }
   },
   "imageType": {

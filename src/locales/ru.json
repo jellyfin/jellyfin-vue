@@ -80,9 +80,7 @@
       "recentlyAdded": "Недавно добавленное"
     },
     "welcome": {
-      "checkNewItems": "Узнайте, что нового.",
-      "helloUser": "Привет, {userName}!",
-      "noItems": "Здесь нет недавно добавленных элементов."
+      "helloUser": "Привет, {userName}!"
     }
   },
   "imageType": {

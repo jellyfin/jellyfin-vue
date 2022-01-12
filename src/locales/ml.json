@@ -79,9 +79,7 @@
       "recentlyAdded": "സമീപകാലത്ത് ചേർത്തു"
     },
     "welcome": {
-      "checkNewItems": "പുതിയതെന്താണെന്ന് പരിശോധിക്കുക.",
-      "helloUser": "ഹലോ {userName}!",
-      "noItems": "കാണിക്കുന്നതിന് അടുത്തിടെ ചേർത്ത ഇനങ്ങളൊന്നുമില്ല."
+      "helloUser": "ഹലോ {userName}!"
     }
   },
   "imageType": {

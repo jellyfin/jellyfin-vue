@@ -80,9 +80,7 @@
       "recentlyAdded": "Kamakailang idinagdag"
     },
     "welcome": {
-      "checkNewItems": "Tingnan kung ano ang bago.",
-      "helloUser": "Kamusta {userName}!",
-      "noItems": "Walang mga kamakailang idinagdag na item na ipapakita."
+      "helloUser": "Kamusta {userName}!"
     }
   },
   "imageType": {

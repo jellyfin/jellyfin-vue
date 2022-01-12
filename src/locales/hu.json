@@ -80,9 +80,7 @@
       "recentlyAdded": "Nemrég hozzáadott"
     },
     "welcome": {
-      "checkNewItems": "Tekintsd meg mi új.",
-      "helloUser": "Üdv {userName}!",
-      "noItems": "Jelenleg nincsenek hozzáadva megmutatható elemek."
+      "helloUser": "Üdv {userName}!"
     }
   },
   "imageType": {

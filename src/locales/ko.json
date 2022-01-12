@@ -79,9 +79,7 @@
       "recentlyAdded": "최근 추가됨"
     },
     "welcome": {
-      "checkNewItems": "새로 추가된 항목을 살펴보세요.",
-      "helloUser": "{userName}님, 안녕하세요!",
-      "noItems": "최근에 추가된 항목이 없습니다."
+      "helloUser": "{userName}님, 안녕하세요!"
     }
   },
   "imageType": {

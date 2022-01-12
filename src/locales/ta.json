@@ -80,9 +80,7 @@
       "recentlyAdded": "சமீபத்தில் சேர்க்கப்பட்டது"
     },
     "welcome": {
-      "checkNewItems": "புதியது என்ன என்பதைப் பாருங்கள்.",
-      "helloUser": "வணக்கம் {userName}!",
-      "noItems": "காண்பிக்க சமீபத்தில் சேர்க்கப்பட்ட உருப்படிகள் எதுவும் இல்லை."
+      "helloUser": "வணக்கம் {userName}!"
     }
   },
   "imageType": {

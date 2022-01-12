@@ -80,9 +80,7 @@
       "recentlyAdded": "Được thêm gần đây"
     },
     "welcome": {
-      "checkNewItems": "Kiểm tra những gì mới.",
-      "helloUser": "Chào {userName}!",
-      "noItems": "Không có mục nào được thêm gần đây để hiển thị."
+      "helloUser": "Chào {userName}!"
     }
   },
   "imageType": {
