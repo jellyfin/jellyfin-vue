@@ -4,7 +4,7 @@
 FROM node:16-alpine AS build
 
 # Set environment variables
-ARG HISTORY_ROUTER_MODE=false
+ARG HISTORY_ROUTER_MODE=true
 ENV HISTORY_ROUTER_MODE=$HISTORY_ROUTER_MODE
 
 ARG IS_STABLE=0
@@ -34,22 +34,9 @@ RUN npm run build
 # Deploy built distribution to nginx
 FROM nginx:alpine
 
-# Set environment variables
-ARG HISTORY_ROUTER_MODE=false
-
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
 
-COPY --from=build /app/.docker/nginx.conf /etc/nginx/conf.d/custom.conf 
-
-# If specified, set's custom nginx.conf to support spa (for 'history' routing mode)
-RUN  if [[ $HISTORY_ROUTER_MODE == 'true' ]] ; then \
-  echo "configuring nginx for router.mode = history" ; \
-  mv /etc/nginx/conf.d/custom.conf /etc/nginx/conf.d/default.conf  ; \
-else \
-  rm /etc/nginx/conf.d/custom.conf ; \
-  echo "standard nginx configuration for router.mode = hash" ; \
-fi
-
+COPY --from=build /app/.docker/nginx.conf /etc/nginx/conf.d/default.conf 
 
 EXPOSE 80
 
