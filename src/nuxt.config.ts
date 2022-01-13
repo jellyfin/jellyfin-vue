@@ -135,10 +135,8 @@ const config: NuxtConfig = {
         }
       }
     },
-    mode:
-      process.env.HISTORY_ROUTER_MODE?.toString()?.toLowerCase() === 'true'
-        ? 'history'
-        : 'hash'
+    // mode: process.env.HISTORY_ROUTER_MODE == '1' ? 'history' : 'hash'
+    mode: process.env.HISTORY_ROUTER_MODE === '1' ? 'history' : 'hash'
   },
   /*
    ** Axios module configuration
