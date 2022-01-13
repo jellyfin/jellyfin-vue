@@ -135,7 +135,6 @@ const config: NuxtConfig = {
         }
       }
     },
-    // mode: process.env.HISTORY_ROUTER_MODE == '1' ? 'history' : 'hash'
     mode: process.env.HISTORY_ROUTER_MODE === '1' ? 'history' : 'hash'
   },
   /*

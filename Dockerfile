@@ -1,6 +1,5 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-
 FROM node:16-alpine AS build
 
 # Set build arguments
@@ -33,7 +32,6 @@ RUN npm run build
 FROM nginx:alpine
 
 COPY --from=build /app/src/dist/ /usr/share/nginx/html/
-
 COPY --from=build /app/.docker/nginx.conf /etc/nginx/conf.d/default.conf 
 
 EXPOSE 80
@@ -41,4 +39,4 @@ EXPOSE 80
 # Set labels
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
-LABEL org.opencontainers.image.description "Commit: ${NUXT_ENV_COMMIT} History router rode: ${HISTORY_ROUTER_MODE}"
+LABEL org.opencontainers.image.description="Commit: ${NUXT_ENV_COMMIT} History router rode: ${HISTORY_ROUTER_MODE}"
