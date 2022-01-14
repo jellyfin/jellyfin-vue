@@ -91,7 +91,7 @@
     "@types/wicg-mediasession": "1.1.3",
     "@vue/test-utils": "1.3.0",
     "@vue/vue2-jest": "27.0.0-alpha.4",
-    "axe": "8.1.0",
+    "axe": "8.1.1",
     "axe-core": "4.3.5",
     "comlink-loader": "2.0.0",
     "confusing-browser-globals": "1.0.11",
