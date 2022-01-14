@@ -22,14 +22,14 @@
   },
   "byArtist": "De {artist}",
   "cancel": "Rezignu",
-  "castAndCrew": "Roluloj kaj Skipanoj",
+  "castAndCrew": "Roluloj kaj skipanoj",
   "collections": "Kolektoj",
-  "communityRating": "Komunuma taksado",
+  "communityRating": "Taksado de komunumo",
   "confirm": "Konfirmu",
   "connect": "Konektu",
   "continueListening": "Daŭru aŭskulton",
-  "continueWatching": "Daŭrigu spektadon",
-  "criticRating": "Kritika taksado",
+  "continueWatching": "Daŭrigi spektadon",
+  "criticRating": "Taksado de kritikistoj",
   "customRating": "Laŭmenda taksado",
   "darkModeToggle": "Baskuligi malhelan reĝimon",
   "dateAdded": "Dato aldonita",
@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Lastatempe aldonitaj"
-    },
-    "welcome": {
-      "helloUser": "Saluton, {userName}!"
     }
   },
   "imageType": {
