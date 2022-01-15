@@ -279,6 +279,8 @@ export default Vue.extend({
   },
   mounted() {
     document.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('keyup', this.handleKeyPress);
+    window.addEventListener('click', this.handleVideoClick);
 
     this.addMediaHandlers();
 
@@ -286,9 +288,7 @@ export default Vue.extend({
       switch (mutation.type) {
         case 'playbackManager/TOGGLE_MINIMIZE':
           if (state.playbackManager.isMinimized === true) {
-            window.removeEventListener('keydown', this.handleKeyPress);
-          } else if (state.playbackManager.isMinimized === false) {
-            window.addEventListener('keydown', this.handleKeyPress);
+            window.removeEventListener('keyup', this.handleKeyPress);
           }
 
           break;
@@ -301,6 +301,8 @@ export default Vue.extend({
     }
 
     document.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('keyup', this.handleKeyPress);
+    window.removeEventListener('click', this.handleVideoClick);
     this.removeMediaHandlers();
     this.unsubscribe();
   },
@@ -390,6 +392,17 @@ export default Vue.extend({
             this.skipBackward();
             break;
         }
+      }
+    },
+    handleVideoClick(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+
+      if (
+        target &&
+        target.classList.contains('player-overlay') &&
+        this.getCurrentlyPlayingMediaType === 'Video'
+      ) {
+        this.playPause();
       }
     },
     addMediaHandlers(): void {
