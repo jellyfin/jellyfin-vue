@@ -48,7 +48,7 @@ import { mapActions, mapState } from 'vuex';
 export default Vue.extend({
   data() {
     return {
-      serverUrl: '192.168.4.122',
+      serverUrl: '',
       loading: false,
       rules: {
         serverUrl: {
