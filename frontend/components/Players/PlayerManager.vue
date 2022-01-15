@@ -391,6 +391,12 @@ export default Vue.extend({
           case 'ArrowLeft':
             this.skipBackward();
             break;
+          case 'f':
+            if (this.getCurrentlyPlayingMediaType === 'Video') {
+              this.toggleFullScreen();
+            }
+
+            break;
         }
       }
     },
