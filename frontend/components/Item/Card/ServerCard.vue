@@ -9,7 +9,11 @@
         <v-btn icon disabled>
           <v-icon>mdi-information-outline</v-icon>
         </v-btn>
-        <v-btn icon :disabled="loading" @click="removeServerFromStore">
+        <v-btn
+          icon
+          :disabled="loading || serverInfo.isDefault"
+          @click="removeServerFromStore"
+        >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
         <v-btn icon :disabled="loading" @click="setServer">

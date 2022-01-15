@@ -4,6 +4,7 @@ import { PublicSystemInfo } from '@jellyfin/client-axios';
 export interface ServerInfo {
   address: string;
   publicInfo: PublicSystemInfo;
+  isDefault?: boolean;
 }
 
 export interface ServerState {
@@ -40,44 +41,48 @@ export const mutations: MutationTree<ServerState> = {
 
 export const actions: ActionTree<ServerState, ServerState> = {
   async connectServer({ dispatch, commit, state }, serverUrl: string) {
-    // Remove trailing slashes to prevent a double slash in URLs
-    serverUrl = serverUrl.replace(/\/$/, '');
+    const isNotAlreadyConnected = state.serverUsed?.address !== serverUrl;
 
-    this.$axios.setBaseURL(serverUrl);
+    if (isNotAlreadyConnected) {
+      // Remove trailing slashes to prevent a double slash in URLs
+      serverUrl = serverUrl.replace(/\/$/, '');
 
-    let data;
+      this.$axios.setBaseURL(serverUrl);
 
-    try {
-      data = await (await this.$api.system.getPublicSystemInfo()).data;
-    } catch (err) {
-      dispatch('notifyServerCantBeFound');
-      throw new Error(err as string);
-    }
+      let data;
 
-    const semverMajor = parseInt(data.Version?.split('.')[0] as string);
-    const semverMinor = parseInt(data.Version?.split('.')[1] as string);
-    const isServerVersionSupported =
-      semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
+      try {
+        data = await (await this.$api.system.getPublicSystemInfo()).data;
+      } catch (err) {
+        dispatch('notifyServerCantBeFound');
+        throw new Error(err as string);
+      }
 
-    if (isServerVersionSupported) {
-      if (!data.StartupWizardCompleted) {
-        this.$router.push('/wizard');
-      } else {
-        commit('SET_SERVER_USED', {
-          publicInfo: data,
-          address: serverUrl
-        });
+      const semverMajor = parseInt(data.Version?.split('.')[0] as string);
+      const semverMinor = parseInt(data.Version?.split('.')[1] as string);
+      const isServerVersionSupported =
+        semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
 
-        if (!state.serverList.find((x) => x.address === serverUrl)) {
-          dispatch('addServer', {
+      if (isServerVersionSupported) {
+        if (!data.StartupWizardCompleted) {
+          this.$router.push('/wizard');
+        } else {
+          commit('SET_SERVER_USED', {
             publicInfo: data,
             address: serverUrl
           });
+
+          if (!state.serverList.find((x) => x.address === serverUrl)) {
+            dispatch('addServer', {
+              publicInfo: data,
+              address: serverUrl
+            });
+          }
         }
+      } else {
+        dispatch('notifyServerVersionIsLow');
+        throw new Error('notifyServerVersionIsLow');
       }
-    } else {
-      dispatch('notifyServerVersionIsLow');
-      throw new Error('notifyServerVersionIsLow');
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {
