@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Được thêm gần đây"
-    },
-    "welcome": {
-      "helloUser": "Chào {userName}!"
     }
   },
   "imageType": {

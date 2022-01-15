@@ -33,11 +33,6 @@
   "headerExternalIds": "外部編號",
   "headerPaths": "路徑",
   "home": "首頁",
-  "homeHeader": {
-    "welcome": {
-      "helloUser": "你好，{userName}！"
-    }
-  },
   "imageType": {
     "box": "盒子",
     "menu": "選單",

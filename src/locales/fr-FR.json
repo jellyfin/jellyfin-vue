@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Récemment ajouté"
-    },
-    "welcome": {
-      "helloUser": "Bonjour {userName} !"
     }
   },
   "imageType": {

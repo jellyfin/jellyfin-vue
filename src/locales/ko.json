@@ -77,9 +77,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "최근 추가됨"
-    },
-    "welcome": {
-      "helloUser": "{userName}님, 안녕하세요!"
     }
   },
   "imageType": {

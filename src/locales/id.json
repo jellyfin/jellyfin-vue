@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Baru ditambahkan"
-    },
-    "welcome": {
-      "helloUser": "Halo {userName}!"
     }
   },
   "imageType": {

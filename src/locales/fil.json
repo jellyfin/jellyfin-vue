@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Kamakailang idinagdag"
-    },
-    "welcome": {
-      "helloUser": "Kamusta {userName}!"
     }
   },
   "imageType": {

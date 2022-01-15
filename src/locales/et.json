@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Viimati lisatud"
-    },
-    "welcome": {
-      "helloUser": "Tere {userName}!"
     }
   },
   "imageType": {

@@ -67,9 +67,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Nedavno dodano"
-    },
-    "welcome": {
-      "helloUser": "Pozdravljeni{userName}!"
     }
   },
   "imageType": {

@@ -77,9 +77,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "സമീപകാലത്ത് ചേർത്തു"
-    },
-    "welcome": {
-      "helloUser": "ഹലോ {userName}!"
     }
   },
   "imageType": {

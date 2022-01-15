@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "சமீபத்தில் சேர்க்கப்பட்டது"
-    },
-    "welcome": {
-      "helloUser": "வணக்கம் {userName}!"
     }
   },
   "imageType": {

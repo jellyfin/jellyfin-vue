@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "最近添加"
-    },
-    "welcome": {
-      "helloUser": "你好，{userName} ！"
     }
   },
   "imageType": {

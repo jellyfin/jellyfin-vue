@@ -63,9 +63,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Nyleg lagt til"
-    },
-    "welcome": {
-      "helloUser": "Hei, {userName}!"
     }
   },
   "imageType": {

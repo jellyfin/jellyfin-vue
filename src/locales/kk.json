@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Juyqta üstelgen"
-    },
-    "welcome": {
-      "helloUser": "Sälem, {userName}!"
     }
   },
   "imageType": {

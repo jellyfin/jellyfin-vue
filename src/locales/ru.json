@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Недавно добавленное"
-    },
-    "welcome": {
-      "helloUser": "Привет, {userName}!"
     }
   },
   "imageType": {

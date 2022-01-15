@@ -78,9 +78,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Nemrég hozzáadott"
-    },
-    "welcome": {
-      "helloUser": "Üdv {userName}!"
     }
   },
   "imageType": {

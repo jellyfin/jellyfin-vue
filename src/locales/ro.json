@@ -64,9 +64,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Adăugat recent"
-    },
-    "welcome": {
-      "helloUser": "Salut {userName}!"
     }
   },
   "imageType": {

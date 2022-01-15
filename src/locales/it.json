@@ -23,8 +23,8 @@
   "byArtist": "Da {artist}",
   "cancel": "Annulla",
   "castAndCrew": "Cast",
-  "collections": "Collezioni",
   "collectionEmpty": "Questa collezione è vuota",
+  "collections": "Collezioni",
   "communityRating": "Valutazione della community",
   "confirm": "Conferma",
   "connect": "Connetti",
@@ -79,9 +79,6 @@
   "homeHeader": {
     "items": {
       "recentlyAdded": "Aggiunti di recente"
-    },
-    "welcome": {
-      "helloUser": "Ciao {userName}!"
     }
   },
   "imageType": {
