@@ -41,48 +41,44 @@ export const mutations: MutationTree<ServerState> = {
 
 export const actions: ActionTree<ServerState, ServerState> = {
   async connectServer({ dispatch, commit, state }, serverUrl: string) {
-    const isNotAlreadyConnected = state.serverUsed?.address !== serverUrl;
+    // Remove trailing slashes to prevent a double slash in URLs
+    serverUrl = serverUrl.replace(/\/$/, '');
 
-    if (isNotAlreadyConnected) {
-      // Remove trailing slashes to prevent a double slash in URLs
-      serverUrl = serverUrl.replace(/\/$/, '');
+    this.$axios.setBaseURL(serverUrl);
 
-      this.$axios.setBaseURL(serverUrl);
+    let data;
 
-      let data;
+    try {
+      data = await (await this.$api.system.getPublicSystemInfo()).data;
+    } catch (err) {
+      dispatch('notifyServerCantBeFound');
+      throw new Error(err as string);
+    }
 
-      try {
-        data = await (await this.$api.system.getPublicSystemInfo()).data;
-      } catch (err) {
-        dispatch('notifyServerCantBeFound');
-        throw new Error(err as string);
-      }
+    const semverMajor = parseInt(data.Version?.split('.')[0] as string);
+    const semverMinor = parseInt(data.Version?.split('.')[1] as string);
+    const isServerVersionSupported =
+      semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
 
-      const semverMajor = parseInt(data.Version?.split('.')[0] as string);
-      const semverMinor = parseInt(data.Version?.split('.')[1] as string);
-      const isServerVersionSupported =
-        semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
+    if (isServerVersionSupported) {
+      if (!data.StartupWizardCompleted) {
+        this.$router.push('/wizard');
+      } else {
+        commit('SET_SERVER_USED', {
+          publicInfo: data,
+          address: serverUrl
+        });
 
-      if (isServerVersionSupported) {
-        if (!data.StartupWizardCompleted) {
-          this.$router.push('/wizard');
-        } else {
-          commit('SET_SERVER_USED', {
+        if (!state.serverList.find((x) => x.address === serverUrl)) {
+          dispatch('addServer', {
             publicInfo: data,
             address: serverUrl
           });
-
-          if (!state.serverList.find((x) => x.address === serverUrl)) {
-            dispatch('addServer', {
-              publicInfo: data,
-              address: serverUrl
-            });
-          }
         }
-      } else {
-        dispatch('notifyServerVersionIsLow');
-        throw new Error('notifyServerVersionIsLow');
       }
+    } else {
+      dispatch('notifyServerVersionIsLow');
+      throw new Error('notifyServerVersionIsLow');
     }
   },
   addServer({ commit }, { address, publicInfo }: ServerInfo) {
