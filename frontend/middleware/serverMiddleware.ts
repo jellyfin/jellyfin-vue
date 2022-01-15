@@ -9,13 +9,13 @@ import { Context } from '@nuxt/types';
  */
 export default function (context: Context): void {
   if (
-    !context.$axios.defaults.baseURL &&
+    !context.$axios.defaults.baseURL ||
     !context.store.state.servers.serverList.length
   ) {
     return context.redirect('/server/add');
   } else if (
-    !context.$axios.defaults.baseURL &&
-    context.store.state.servers.serverList.length > 1
+    context.store.state.servers.serverList.length > 1 &&
+    !context.store.state.servers?.serverUsed?.address
   ) {
     return context.redirect('/server/select');
   }
