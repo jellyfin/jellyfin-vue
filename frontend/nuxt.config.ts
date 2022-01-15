@@ -4,6 +4,14 @@ import { siJellyfin as jellyfinIcon } from 'simple-icons/icons';
 
 const config: NuxtConfig = {
   /*
+   ** Nuxt Environment Variables
+   ** See https://nuxtjs.org/docs/configuration-glossary/configuration-env
+   */
+  env: {
+    // Comma separated list of predefined servers (I.e. 'http://192.168.1.1' or 'http://192.168.1.1, https://your.server.domain')
+    server_url_list: process.env.DEFAULT_SERVERS || ''
+  },
+  /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
@@ -85,12 +93,12 @@ const config: NuxtConfig = {
      */
     'plugins/nuxt/store/persistedStatePlugin.ts',
     'plugins/nuxt/axe.ts',
-    'plugins/nuxt/appInitPlugin.ts',
     'plugins/nuxt/veeValidate.ts',
     'plugins/nuxt/browserDetectionPlugin.ts',
     'plugins/nuxt/playbackProfilePlugin.ts',
     'plugins/nuxt/supportedFeaturesPlugin.ts',
     'plugins/nuxt/apiPlugin.ts',
+    'plugins/nuxt/appInitPlugin.ts',
     /*
      ** Vue plugins
      */

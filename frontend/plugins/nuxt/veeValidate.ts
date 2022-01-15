@@ -1,12 +1,13 @@
 import { Plugin } from '@nuxt/types/app';
 import { configure, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
+import { urlRegEx } from '~/utils/servers';
 
 // Rules
 extend('required', required);
 
 extend('mustBeUrl', (value: string): boolean => {
-  return /^https?:\/\/.+/.test(value);
+  return urlRegEx.test(value);
 });
 
 extend('bothPasswordsSame', {
