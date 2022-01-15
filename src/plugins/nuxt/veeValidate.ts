@@ -6,7 +6,7 @@ import { required } from 'vee-validate/dist/rules';
 extend('required', required);
 
 extend('mustBeUrl', (value: string): boolean => {
-  return /^https?:\/\/.+/.test(value);
+  return /^(https?:\/\/)?[0-9.]+(:[0-9]+)?/.test(value);
 });
 
 extend('bothPasswordsSame', {

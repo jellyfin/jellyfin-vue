@@ -48,7 +48,7 @@ import { mapActions, mapState } from 'vuex';
 export default Vue.extend({
   data() {
     return {
-      serverUrl: '',
+      serverUrl: '192.168.4.122',
       loading: false,
       rules: {
         serverUrl: {
@@ -75,6 +75,14 @@ export default Vue.extend({
     ...mapActions('servers', ['connectServer']),
     async connectToServer(): Promise<void> {
       this.loading = true;
+
+      if (!this.serverUrl.match(/^https?:\/\//)) {
+        this.serverUrl = 'http://' + this.serverUrl;
+      }
+
+      if (!this.serverUrl.match(/:[0-9]+$/)) {
+        this.serverUrl = this.serverUrl + ':8096';
+      }
 
       try {
         await this.connectServer(this.serverUrl);
