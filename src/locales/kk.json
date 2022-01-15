@@ -23,6 +23,7 @@
   "byArtist": "{artist} arqyly",
   "cancel": "Boldyrmau",
   "castAndCrew": "Röldegıler men qyzmetkerler",
+  "collectionEmpty": "Būl jiyntyq bos",
   "collections": "Jiyntyqtar",
   "communityRating": "Qauym bağalauy",
   "confirm": "Rastau",
@@ -285,7 +286,7 @@
   "save": "Saqtau",
   "saved": "Saqtalğan",
   "search": {
-    "name": "Іздеу",
+    "name": "Izdeu",
     "topResults": "Töbelık nätijeler"
   },
   "seasonEpisode": "Mausym {seasonNumber}, Telebölım {episodeNumber}",
