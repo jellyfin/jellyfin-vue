@@ -40,9 +40,5 @@ export default function ({ route, store }: Context): void {
   }
 
   /** Change AppBar state based on meta */
-  if (!meta.transparentAppBar) {
-    store.dispatch('page/setAppBarOpacity', { opaqueAppBar: true });
-  } else {
-    store.dispatch('page/setAppBarOpacity', { opaqueAppBar: false });
-  }
+      store.dispatch('page/setAppBarOpacity', { opaqueAppBar: !meta.transparentAppBar });
 }
