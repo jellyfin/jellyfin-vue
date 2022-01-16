@@ -228,7 +228,6 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import screenfull from 'screenfull';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
-import { AppState } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
@@ -242,7 +241,8 @@ export default Vue.extend({
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
-      stretchVideo: true
+      stretchVideo: true,
+      previousVolume: 0
     };
   },
   computed: {
@@ -253,7 +253,12 @@ export default Vue.extend({
       'getCurrentlyPlayingMediaType'
     ]),
     ...mapState('clientSettings', ['darkMode']),
-    ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
+    ...mapState('playbackManager', [
+      'status',
+      'isMinimized',
+      'currentTime',
+      'currentVolume'
+    ]),
     isPlaying(): boolean {
       return this.status !== PlaybackStatus.Stopped;
     },
@@ -283,17 +288,6 @@ export default Vue.extend({
     window.addEventListener('click', this.handleVideoClick);
 
     this.addMediaHandlers();
-
-    this.unsubscribe = this.$store.subscribe((mutation, state: AppState) => {
-      switch (mutation.type) {
-        case 'playbackManager/TOGGLE_MINIMIZE':
-          if (state.playbackManager.isMinimized === true) {
-            window.removeEventListener('keyup', this.handleKeyPress);
-          }
-
-          break;
-      }
-    });
   },
   beforeDestroy() {
     if (this.fullScreenOverlayTimer) {
@@ -314,6 +308,7 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'setLastItemIndex',
+      'setVolume',
       'playPause',
       'pause',
       'unpause',
@@ -342,6 +337,14 @@ export default Vue.extend({
           this.fullScreenOverlayTimer = null;
         }
       }, this.getOsdTimeoutDuration());
+    },
+    toggleMute(): void {
+      if (this.currentVolume !== 0) {
+        this.previousVolume = this.currentVolume;
+        this.setVolume({ volume: 0 });
+      } else {
+        this.setVolume({ volume: this.previousVolume });
+      }
     },
     handleMouseMove(): void {
       if (
@@ -380,20 +383,51 @@ export default Vue.extend({
     },
     handleKeyPress(e: KeyboardEvent): void {
       if (!this.isMinimized && this.isPlaying) {
+        const focusEl = document.activeElement;
+
+        let spaceEnabled = false;
+
+        if (e.key === 'Spacebar' || e.key === ' ') {
+          spaceEnabled =
+            focusEl?.classList.contains('v-dialog__content') ||
+            focusEl?.classList.contains('hide-pointer') ||
+            focusEl?.className === '';
+        }
+
         switch (e.key) {
           case 'Spacebar':
           case ' ':
+            if (spaceEnabled) {
+              this.playPause();
+            }
+
+            break;
+          case 'k':
             this.playPause();
             break;
           case 'ArrowRight':
+          case 'l':
             this.skipForward();
             break;
           case 'ArrowLeft':
+          case 'j':
             this.skipBackward();
             break;
           case 'f':
             if (this.getCurrentlyPlayingMediaType === 'Video') {
               this.toggleFullScreen();
+            }
+
+            break;
+          case 'm':
+            this.toggleMute();
+            break;
+        }
+      } else if (this.isMinimized && this.isPlaying) {
+        switch (e.key) {
+          case 'f':
+            if (this.getCurrentlyPlayingMediaType === 'Video') {
+              this.toggleMinimized();
             }
 
             break;
