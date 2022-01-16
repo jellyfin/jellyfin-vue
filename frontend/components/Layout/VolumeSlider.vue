@@ -40,17 +40,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['setVolume']),
+    ...mapActions('playbackManager', ['setVolume', 'toggleMute']),
     onVolumeChange(value: number): void {
       this.setVolume({ volume: value });
-    },
-    toggleMute(): void {
-      if (this.currentVolume !== 0) {
-        this.previousVolume = this.currentVolume;
-        this.setVolume({ volume: 0 });
-      } else {
-        this.setVolume({ volume: this.previousVolume });
-      }
     }
   }
 });

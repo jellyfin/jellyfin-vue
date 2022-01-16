@@ -49,6 +49,7 @@ export interface PlaybackManagerState {
   currentItemChapters: ChapterInfo[] | null;
   currentTime: number | null;
   lastProgressUpdate: number;
+  previousValume: number;
   currentVolume: number;
   isFullscreen: boolean;
   isMuted: boolean;
@@ -73,6 +74,7 @@ export const defaultState = (): PlaybackManagerState => ({
   currentItemChapters: null,
   currentTime: null,
   lastProgressUpdate: 0,
+  previousValume: 100,
   currentVolume: 100,
   isFullscreen: false,
   isMuted: false,
@@ -333,6 +335,12 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   SET_LAST_PROGRESS_UPDATE(state: PlaybackManagerState, { progress }) {
     state.lastProgressUpdate = progress;
   },
+  SET_PREV_VOLUME(
+    state: PlaybackManagerState,
+    { volume }: VolumeMutationPayload
+  ) {
+    state.previousValume = volume;
+  },
   SET_VOLUME(state: PlaybackManagerState, { volume }: VolumeMutationPayload) {
     state.currentVolume = volume;
   },
@@ -526,6 +534,14 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
       commit('PAUSE_PLAYBACK');
     } else if (state.status === PlaybackStatus.Paused) {
       commit('UNPAUSE_PLAYBACK');
+    }
+  },
+  toggleMute({ commit, state, dispatch }) {
+    if (state.currentVolume !== 0) {
+      commit('SET_PREV_VOLUME', { volume: state.currentVolume });
+      dispatch('setVolume', { volume: 0 });
+    } else {
+      dispatch('setVolume', { volume: state.previousValume });
     }
   },
   clearQueue({ commit }) {
