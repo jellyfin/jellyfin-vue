@@ -14,12 +14,10 @@ export function parseServerListString(value: string | undefined): string[] {
 
   const serverUrlList: string[] = [];
 
-  /**
-   * Check the URL with the appropriate Regex and if valid, adds it to the list
-   *
-   * @param {string} url Url string to test and add
-   */
-  function checkAndAddUrl(url: string): void {
+  const trimmedSplit = value.split(',').map((url) => url.trim());
+
+  // Url Validity Check
+  trimmedSplit.forEach((url: string) => {
     if (urlRegEx.test(url)) {
       // Valid Url
       serverUrlList.push(url);
@@ -28,14 +26,6 @@ export function parseServerListString(value: string | undefined): string[] {
         `[Default Servers] This url is not valid. It will be excluded from the server list to avoid errors. (${url})`
       );
     }
-  }
-
-  const splitByComma = value.split(',');
-  const trimmedSplit = splitByComma.map((url) => url.trim());
-
-  // Url Validity Check
-  trimmedSplit.forEach((url) => {
-    checkAndAddUrl(url);
   });
 
   return serverUrlList;
