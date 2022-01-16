@@ -68,7 +68,10 @@ const appInitPlugin: Plugin = async (context) => {
   } else if (fullInfoServers.length > 0) {
     const defaultServer = fullInfoServers[0];
 
-    if (missingServers.includes(defaultServer.address)) {
+    if (
+      missingServers.includes(defaultServer.address) &&
+      fullInfoServers.length === 1
+    ) {
       context.store.commit('servers/SET_SERVER_USED', {
         ...defaultServer,
         isDefault: true
