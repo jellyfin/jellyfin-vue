@@ -309,6 +309,7 @@ export default Vue.extend({
       'setPreviousTrack',
       'setLastItemIndex',
       'setVolume',
+      'toggleMute',
       'playPause',
       'pause',
       'unpause',
@@ -337,14 +338,6 @@ export default Vue.extend({
           this.fullScreenOverlayTimer = null;
         }
       }, this.getOsdTimeoutDuration());
-    },
-    toggleMute(): void {
-      if (this.currentVolume !== 0) {
-        this.previousVolume = this.currentVolume;
-        this.setVolume({ volume: 0 });
-      } else {
-        this.setVolume({ volume: this.previousVolume });
-      }
     },
     handleMouseMove(): void {
       if (
