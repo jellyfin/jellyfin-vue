@@ -36,10 +36,15 @@
         md="6"
         lg="5"
       >
-        <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-6 text-center">
+        <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-3 text-center">
           {{ $t('login.loginAs', { name: currentUser.Name }) }}
         </h1>
-        <h1 v-else class="text-h4 mb-6 text-center">{{ $t('login.login') }}</h1>
+        <h1 v-else class="text-h4 text-center">
+          {{ $t('login.login') }}
+        </h1>
+        <h5 class="text-center mb-3 text--disabled">
+          {{ serverUsed.publicInfo.ServerName }}
+        </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
       </v-col>
@@ -88,7 +93,8 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('page', ['title'])
+    ...mapState('page', ['title']),
+    ...mapState('servers', ['serverUsed'])
   },
   mounted() {
     this.setPageTitle({ title: this.$t('login.login') });
