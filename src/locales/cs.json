@@ -78,7 +78,7 @@
   "home": "Domů",
   "homeHeader": {
     "items": {
-      "recentlyAdded": "Nedávno přidáno"
+      "recentlyAdded": "Nově přidáno"
     }
   },
   "imageType": {
@@ -201,7 +201,7 @@
   "movies": "Filmy",
   "name": "Název",
   "networks": "Stanice",
-  "nextUp": "Další v pořadí",
+  "nextUp": "Další díly",
   "noImagesFound": "Nebyly nalezeny žádné obrázky",
   "noInformationAvailable": "Informace nejsou k dispozici",
   "noNetworkConnection": "Žádné připojení k síti",
