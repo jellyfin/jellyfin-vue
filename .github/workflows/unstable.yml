@@ -42,7 +42,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Build and push Docker images 🛠️
-        uses: docker/build-push-action@v2.7.0
+        uses: docker/build-push-action@v2.8.0
         with:
           context: .
           push: true
