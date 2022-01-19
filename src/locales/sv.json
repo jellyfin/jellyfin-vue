@@ -52,7 +52,8 @@
   "errors": {
     "anErrorHappened": "Ett fel inträffade",
     "messages": {
-      "errorCode": "Felkod: {errorCode}"
+      "errorCode": "Felkod: {errorCode}",
+      "videoPlayerError": "Videospelaren stötte på ett kritiskt fel."
     }
   },
   "failedRetrievingDisplayPreferences": "Det går inte att få visningsinställningar. Använder de senaste kända inställningarna.",
