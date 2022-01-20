@@ -22,6 +22,7 @@ export function parseServerListString(value: string | undefined): string[] {
       // Valid Url
       serverUrlList.push(url);
     } else {
+      // eslint-disable-next-line no-console
       console.warn(
         `[Default Servers] This url is not valid. It will be excluded from the server list to avoid errors. (${url})`
       );
