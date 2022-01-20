@@ -50,7 +50,7 @@ describe('serverMiddleware', () => {
     expect(mockRedirect.mock.calls[0][0]).toBe(EXPECTED_REDIRECT);
   });
 
-  it('redirects to "/server/add" when baseUrl is set the serverlist length is zero', (): void => {
+  it('redirects to "/server/add" when baseUrl is set and the serverlist length is zero', (): void => {
     serverMiddleware(INPUT_WITH_NO_SERVER_LIST);
 
     expect(mockRedirect.mock.calls[0][0]).toBe(EXPECTED_REDIRECT);

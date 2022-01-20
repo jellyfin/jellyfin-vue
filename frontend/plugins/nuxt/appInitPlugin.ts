@@ -23,33 +23,10 @@ const appInitPlugin: Plugin = async (context) => {
   const promises = [];
 
   for (const serverUrl of missingServers) {
-    // Use Then and Catch only to be able to perform parallel calls (for loading speed reasons)
-    const promise = new Promise((resolve, _reject) => {
-      // Use a Systemapi instance only because otherwise the same baseUrl
-      // would be used during parallel calls
-      // eslint-disable-next-line promise/catch-or-return
-      new SystemApi(undefined, serverUrl, undefined)
-        .getPublicSystemInfo()
-        // eslint-disable-next-line promise/prefer-await-to-then
-        .then((info) => {
-          fullInfoServers.push({
-            address: serverUrl,
-            publicInfo: info.data
-          });
-
-          resolve(null);
-
-          return info;
-        })
-        // eslint-disable-next-line promise/prefer-await-to-then
-        .catch((_err) => {
-          console.warn('[Default Servers] Unreachable server: ', serverUrl);
-
-          resolve(null);
-        });
-    });
-
-    promises.push(promise);
+    // Use a Systemapi instance only because otherwise the same baseUrl
+    // would be used during parallel calls
+    // eslint-disable-next-line promise/catch-or-return
+    promises.push(callSystemApi(serverUrl, fullInfoServers));
   }
 
   await Promise.all(promises);
@@ -81,5 +58,26 @@ const appInitPlugin: Plugin = async (context) => {
     context.$axios.setBaseURL(defaultServer.address);
   }
 };
+
+/**
+ * Call System Api
+ *
+ * Call to get the server's public info, and adds to the FullLinfoServers list
+ * @param url URL of the server whose publicinfo wants to get
+ * @param fullInfoServer Array of ServerInfo. The push () of the new server is performed inside it
+ */
+async function callSystemApi(
+  url: string,
+  fullInfoServers: ServerInfo[]
+): Promise<void> {
+  const publicInfo = (
+    await new SystemApi(undefined, url, undefined).getPublicSystemInfo()
+  ).data;
+
+  fullInfoServers.push({
+    address: url,
+    publicInfo
+  });
+}
 
 export default appInitPlugin;
