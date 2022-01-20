@@ -49,7 +49,6 @@ export interface PlaybackManagerState {
   currentItemChapters: ChapterInfo[] | null;
   currentTime: number | null;
   lastProgressUpdate: number;
-  previousValume: number;
   currentVolume: number;
   isFullscreen: boolean;
   isMuted: boolean;
@@ -74,7 +73,6 @@ export const defaultState = (): PlaybackManagerState => ({
   currentItemChapters: null,
   currentTime: null,
   lastProgressUpdate: 0,
-  previousValume: 100,
   currentVolume: 100,
   isFullscreen: false,
   isMuted: false,
@@ -246,6 +244,10 @@ interface VolumeMutationPayload {
   volume: number;
 }
 
+interface IsMutedMutationPayload {
+  isMuted: boolean;
+}
+
 export const mutations: MutationTree<PlaybackManagerState> = {
   SET_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
     state.queue = Object.freeze(queue);
@@ -335,14 +337,14 @@ export const mutations: MutationTree<PlaybackManagerState> = {
   SET_LAST_PROGRESS_UPDATE(state: PlaybackManagerState, { progress }) {
     state.lastProgressUpdate = progress;
   },
-  SET_PREV_VOLUME(
-    state: PlaybackManagerState,
-    { volume }: VolumeMutationPayload
-  ) {
-    state.previousValume = volume;
-  },
   SET_VOLUME(state: PlaybackManagerState, { volume }: VolumeMutationPayload) {
     state.currentVolume = volume;
+  },
+  SET_IS_MUTED(
+    state: PlaybackManagerState,
+    { isMuted }: IsMutedMutationPayload
+  ) {
+    state.isMuted = isMuted;
   },
   SET_MINIMIZE(
     state: PlaybackManagerState,
@@ -536,13 +538,13 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
       commit('UNPAUSE_PLAYBACK');
     }
   },
-  toggleMute({ commit, state, dispatch }) {
-    if (state.currentVolume !== 0) {
-      commit('SET_PREV_VOLUME', { volume: state.currentVolume });
-      dispatch('setVolume', { volume: 0 });
-    } else {
-      dispatch('setVolume', { volume: state.previousValume });
+  toggleMute({ commit, state }) {
+    if (state.currentVolume === 0 && state.isMuted) {
+      // if the volume is zero and isMuted is true, the volume returns to 100 when it is reactivated
+      commit('SET_VOLUME', { volume: 100 });
     }
+
+    commit('SET_IS_MUTED', { isMuted: !state.isMuted });
   },
   clearQueue({ commit }) {
     commit('SET_QUEUE', { queue: [] });
@@ -588,8 +590,14 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
   setLastProgressUpdate({ commit }, { progress }: { progress: number }) {
     commit('SET_LAST_PROGRESS_UPDATE', { progress });
   },
-  setVolume({ commit }, { volume }: { volume: number }) {
+  setVolume({ commit, state }, { volume }: { volume: number }) {
     commit('SET_VOLUME', { volume });
+
+    if (volume === 0) {
+      commit('SET_IS_MUTED', { isMuted: true });
+    } else if (state.isMuted === true) {
+      commit('SET_IS_MUTED', { isMuted: false });
+    }
   },
   setCurrentIndex({ commit, state }, { index }: { index: number }) {
     if (state.currentItemIndex !== index) {
