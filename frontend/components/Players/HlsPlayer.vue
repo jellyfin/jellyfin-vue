@@ -4,6 +4,7 @@
       ref="player"
       :class="{ stretch: stretch }"
       :poster="poster.url"
+      :muted="isMuted"
       autoplay
       crossorigin="anonymous"
       playsinline
@@ -73,6 +74,7 @@ export default Vue.extend({
       'getCurrentItemAssParsedSubtitleTracks'
     ]),
     ...mapState('playbackManager', [
+      'isMuted',
       'currentTime',
       'currentVolume',
       'currentMediaSource',

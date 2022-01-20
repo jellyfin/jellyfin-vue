@@ -8,7 +8,7 @@
       hide-details
       thumb-label
       max="100"
-      :value="currentVolume"
+      :value="isMuted ? 0 : currentVolume"
       validate-on-blur
       @input="onVolumeChange"
     />
@@ -26,9 +26,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', ['currentVolume']),
+    ...mapState('playbackManager', ['currentVolume', 'isMuted']),
     icon(): string {
-      if (this.currentVolume >= 80) {
+      if (this.isMuted) {
+        return 'mdi-volume-mute';
+      } else if (this.currentVolume >= 80) {
         return 'mdi-volume-high';
       } else if (this.currentVolume < 80 && this.currentVolume >= 25) {
         return 'mdi-volume-medium';

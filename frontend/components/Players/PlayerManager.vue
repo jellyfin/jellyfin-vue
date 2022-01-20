@@ -241,8 +241,7 @@ export default Vue.extend({
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
-      stretchVideo: true,
-      previousVolume: 0
+      stretchVideo: true
     };
   },
   computed: {
@@ -257,6 +256,7 @@ export default Vue.extend({
       'status',
       'isMinimized',
       'currentTime',
+      'isMuted',
       'currentVolume'
     ]),
     isPlaying(): boolean {
