@@ -252,13 +252,7 @@ export default Vue.extend({
       'getCurrentlyPlayingMediaType'
     ]),
     ...mapState('clientSettings', ['darkMode']),
-    ...mapState('playbackManager', [
-      'status',
-      'isMinimized',
-      'currentTime',
-      'isMuted',
-      'currentVolume'
-    ]),
+    ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
     isPlaying(): boolean {
       return this.status !== PlaybackStatus.Stopped;
     },
@@ -308,7 +302,6 @@ export default Vue.extend({
       'setNextTrack',
       'setPreviousTrack',
       'setLastItemIndex',
-      'setVolume',
       'toggleMute',
       'playPause',
       'pause',
