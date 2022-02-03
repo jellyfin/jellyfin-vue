@@ -4,14 +4,18 @@
   "actor": "Artist",
   "actors": "Actori",
   "addNewPerson": "Adăugați o persoană nouă",
+  "airPlayDevices": "Dizpozitive AirPlay",
   "albums": "Albume",
   "allLanguages": "Toate limbile",
   "alphabetically": "Alfabetic",
   "architecture": "Arhitectura",
   "artist": "Artist",
   "artists": "Artiști",
+  "aspectRatio": "Raport de aspect",
   "audio": "Audio",
+  "audioCodecNotSupported": "Acest codec audio nu este suportat",
   "badRequest": "Cerere greșită. Încearcă din nou",
+  "books": "Carți",
   "browserNotSupported": "Browserul dvs. nu este acceptat pentru redarea acestui fișier.",
   "buttons": {
     "ok": "Ok"
@@ -19,6 +23,7 @@
   "byArtist": "De {artist}",
   "cancel": "Anulează",
   "castAndCrew": "Distribuție și echipă",
+  "collectionEmpty": "Această colecție e goala",
   "collections": "Colecții",
   "communityRating": "Evaluare de către comunitate",
   "confirm": "Confirmă",
@@ -30,8 +35,16 @@
   "darkModeToggle": "Comutați modul întunecat",
   "dateAdded": "Data adăugării",
   "details": "Detalii",
+  "dialog": {
+    "upNext": {
+      "hide": "Ascunde",
+      "nextItemPlayingIn": "Începe in {time}",
+      "startNow": "Începe acum"
+    }
+  },
   "directing": "Regie",
   "director": "Regizor",
+  "disabled": "Dezactivat",
   "discNumber": "Placă {discNumber}",
   "dislikes": "Dislike-uri",
   "edit": "Editare",
@@ -50,13 +63,15 @@
   "failedRetrievingDisplayPreferences": "Nu se pot obține preferințele de afișare. Folosesc ultimile valori cunoscute.",
   "failedSettingDisplayPreferences": "Nu se pot actualiza preferințele de afișare.",
   "failedToRefreshItems": "Nu s-au reîmprospătat articolele",
-  "favorite": "Favorite",
+  "favorite": "Favorit",
   "features": "Caracteristici",
   "filter": "Filtru",
   "filtersNotFound": "Nu se pot încărca filtrele",
   "fullScreen": "Ecran complet",
   "general": "General",
+  "genericJellyfinPlaceholderDevice": "Dispozitiv generic Jellyfin",
   "genres": "Genuri",
+  "googleCastPlaceholderDevice": "Dispozitiv Google Cast",
   "guestStar": "Vedetă invitată",
   "headerExternalIds": "ID-uri externe",
   "headerPaths": "Cale",
@@ -83,8 +98,10 @@
   "incorrectUsernameOrPassword": "Numele de utilizator sau parola incorectă",
   "item": {
     "artist": {
+      "appearsOn": "Apariții",
       "discography": "Discografie",
-      "information": "Informație"
+      "information": "Informație",
+      "videos": "Videoclipuri"
     },
     "cast": "Proiectează",
     "composer": "Compozitor",
@@ -92,8 +109,13 @@
     "person": {
       "birth": "Naștere",
       "birthPlace": "Locul nașterii",
+      "books": "Cărți",
       "death": "Decedat",
-      "person": "Persoană"
+      "information": "Informații",
+      "movies": "Filme",
+      "person": "Persoană",
+      "photos": "Poze",
+      "shows": "Show-uri"
     },
     "tracklist": {
       "title": "Titlu"
@@ -143,10 +165,32 @@
     "noLogsFound": "Nu s-au găsit loguri"
   },
   "manualLogin": "Autentificare manuală",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canale audio:"
+    },
+    "audioCodec": {
+      "name": "Codec audio:"
+    },
+    "bitrate": {
+      "name": "Rată de biți:"
+    },
+    "container": {
+      "name": "Container:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Codec subtitrări:"
+    },
+    "videoCodec": {
+      "name": "Codec video:"
+    }
+  },
   "menu": "Meniu",
   "metadata": {
     "source": "Sursă",
     "sourceAll": "Toate",
+    "title": "Titlu",
     "type": "Tip"
   },
   "metadataEditor": "Editor de metadate",
@@ -159,6 +203,7 @@
   "networks": "Rețele TV",
   "nextUp": "Urmează",
   "noImagesFound": "Nu s-au găsit imagini",
+  "noInformationAvailable": "Nu există informații disponibile",
   "noNetworkConnection": "Nu există conexiune la rețea",
   "noResultsFound": "Nu este nimic aici",
   "numberTracks": "{number} piese",
@@ -189,18 +234,62 @@
     "shuffle": "Amestecă",
     "shuffleAll": "Amestecă tot"
   },
+  "playbackData": "Informații redare",
+  "playbackInfo": {
+    "name": "Redare",
+    "playMethod": {
+      "direct": "Direcție",
+      "name": "Metodă:",
+      "remux": "Remux",
+      "transcode": "Transcodare"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Tip de transmitere:",
+      "unknown": "Necunoscut",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Setări de redare",
   "played": "Rulat",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Cadre corupte:"
+    },
+    "decodedFrames": {
+      "name": "Cadre decodificate:"
+    },
+    "droppedFrames": {
+      "name": "Cadre scăpate:"
+    },
+    "name": "Player",
+    "playbackResolution": {
+      "name": "Rezoluție viewport:"
+    },
+    "videoResolution": {
+      "name": "Rezoluție video:",
+      "value": "{width}✕{height}"
+    }
+  },
   "present": "Acum",
   "producer": "Producător",
+  "quality": "Calitate",
   "queue": "Rând",
   "rating": "Evaluare",
   "refreshLibrary": "Actualizați biblioteca",
   "releaseDate": "Data lansării",
+  "remoteDevices": "Dizpozitive la distanță",
   "resumable": "Poate fi continuat",
   "resume": "Continuă",
   "role": "Rol",
   "save": "Salvează",
   "saved": "Salvat",
+  "search": {
+    "name": "Cautare",
+    "topResults": "Rezultate de top"
+  },
+  "seasonEpisode": "Sezonul {seasonNumber}, Episodul {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serial",
   "server": "Server",
@@ -322,12 +411,17 @@
   },
   "shows": "Spectacole",
   "signIn": "Autentificare",
+  "songs": "Melodii",
   "sortByType": "De {type}",
   "sortTitle": "Sortează titlul",
   "specialFeatures": "Caracteristici Speciale",
+  "speed": "Viteză",
+  "startNow": "Începe acum",
   "status": "Stare",
+  "stretch": "Întinde",
   "studios": "Studiouri",
   "subtitles": "Subtitrări",
+  "syncPlayGroups": "Grupuri SyncPlay",
   "syncingInProgress": "Sincronizare în curs",
   "tagline": "Slogan",
   "tags": "Etichete",
@@ -339,6 +433,38 @@
     "switchToLightMode": "Treceți la modul luminos"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transcodare",
+    "transcodingFramerate": {
+      "name": "Frecvența cadre:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progres:",
+    "transcodingReason": {
+      "name": "Motiv: | Motive:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Video anamorfotic nu este suportat",
+        "audioBitDepthNotSupported": "Adâncimea de biți audio nu este suportată",
+        "audioBitrateNotSupported": "Rata de biți audio nu este suportat",
+        "audioChannelsNotSupported": "Numărul de canale audio nu este suportat",
+        "audioCodecNotSupported": "Codec audio nu este suportat",
+        "audioProfileNotSupported": "Profilul codecului audio nu este suportat",
+        "audioSampleRateNotSupported": "Rata de eșantionare audio nu e suportată",
+        "containerBitrateExceedsLimit": "Rata de biți al containerului depașeste limita stabilită",
+        "containerNotSupported": "Containerul nu este suportat",
+        "interlacedVideoNotSupported": "Video întrepătruns nu este suportat",
+        "refFramesNotSupported": "Cadrele de referință nu sunt suportate",
+        "secondaryAudioNotSupported": "Pistele audio secundare nu sunt suportate",
+        "subtitleCodecNotSupported": "Codecul subtitrarii nu este suportat",
+        "videoBitDepthNotSupported": "Adâncimea de biți a videoului nu e suportată",
+        "videoCodecNotSupported": "Codecul video nu este suportat",
+        "videoFramerateNotSupported": "Viteza de cadre a videoclipului nu este suportată",
+        "videoLevelNotSupported": "Nivelul codecului a videoclipului nu este suportat",
+        "videoProfileNotSupported": "Profilul codecului a videoclipului nu este suportat",
+        "videoResolutionNotSupported": "Rezoluția videoclipului nu este suportată"
+      }
+    }
+  },
   "type": "Tip",
   "unableGetPublicUsers": "Nu se pot obține utilizatorii",
   "unableGetRelated": "Nu se pot obține articole conexe",
@@ -349,6 +475,15 @@
   "undefined": "Nedefinit",
   "unexpectedError": "Eroare neașteptată",
   "unhandledException": "Excepție netratată",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} secundă | {count} secunde"
+    }
+  },
   "unliked": "Neplăcut",
   "unplayed": "Nerulat",
   "upNext": "Urmează",
