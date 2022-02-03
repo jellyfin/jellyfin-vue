@@ -74,7 +74,7 @@
     "@nuxtjs/eslint-config": "8.0.0",
     "@nuxtjs/eslint-config-typescript": "8.0.0",
     "@nuxtjs/eslint-module": "3.0.2",
-    "@testing-library/jest-dom": "5.16.1",
+    "@testing-library/jest-dom": "5.16.2",
     "@testing-library/vue": "5.8.2",
     "@types/cookie": "0.4.1",
     "@types/dompurify": "2.3.3",
