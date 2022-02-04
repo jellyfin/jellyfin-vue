@@ -5,6 +5,6 @@ dist
 .vscode
 .devcontainer
 sw.*
-src/.nuxt
-src/dist
-src/dist/_nuxt
+frontend/.nuxt
+frontend/dist
+frontend/dist/_nuxt

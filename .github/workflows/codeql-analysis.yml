@@ -5,12 +5,10 @@ on:
     branches: [master]
     paths-ignore:
       - '**/*.md'
-      - 'api/**'
   pull_request:
     branches: [master]
     paths-ignore:
       - '**/*.md'
-      - 'api/**'
   schedule:
     - cron: '30 7 * * 6'
 
