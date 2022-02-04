@@ -84,7 +84,7 @@ frontend/dist
 .idea
 
 # Service worker
-sw.*
+sw.js
 
 # macOS
 .DS_Store
