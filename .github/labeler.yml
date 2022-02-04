@@ -5,10 +5,10 @@ github_actions:
   - '.github/workflows/*'
 
 vuex:
-  - 'src/store/**/*.ts'
+  - 'frontend/store/**/*.ts'
 
 plugins:
-  - 'src/plugins/**/*.ts'
+  - 'frontend/plugins/**/*.ts'
 
 vue:
   - '**/*.vue'
@@ -18,4 +18,8 @@ docker:
 
 ui:
   - any:
-      ['src/components/**/*.vue', 'src/layouts/**/*.vue', 'src/pages/**/*.vue']
+      [
+        'frontend/components/**/*.vue',
+        'frontend/layouts/**/*.vue',
+        'frontend/pages/**/*.vue'
+      ]

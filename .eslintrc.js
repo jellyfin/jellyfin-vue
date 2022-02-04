@@ -74,7 +74,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/**/*.ts', 'src/**/*.vue'],
+      files: ['frontend/**/*.ts', 'frontend/**/*.vue'],
       env: {
         browser: true,
         node: true
@@ -125,7 +125,7 @@ module.exports = {
         'import/resolver': {
           nuxt: {
             extensions: ['.js', '.ts', '.d.ts', '.vue', '.json'],
-            nuxtSrcDir: 'src/'
+            nuxtSrcDir: 'frontend/'
           }
         }
       }
