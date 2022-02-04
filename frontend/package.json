@@ -19,6 +19,7 @@
     "lint": "npm run lint:js && npm run lint:style",
     "lint:js": "eslint --ext .ts,.js,.json,.vue .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
+    "lint:fix": "npm run lint:js -- --fix && npm run lint:style -- --fix",
     "prod": "npm run build && nuxt start",
     "test": "jest"
   },
