@@ -90,14 +90,18 @@ export const mutations: MutationTree<ItemsState> = {
       throw new Error('itemId is undefined');
     }
 
-    if (!childrenList) return [];
+    if (!childrenList) {
+      return [];
+    }
     //  Error('childrenList is undefined');
 
     const children: { [key: string]: BaseItemDto[] } = {};
 
     childrenList.forEach((item: BaseItemDto) => {
       if (item.Type && typeof item.Type === 'string') {
-        if (!children[item.Type]) children[item.Type] = [];
+        if (!children[item.Type]) {
+          children[item.Type] = [];
+        }
 
         children[item.Type].push(item);
       }
