@@ -4,7 +4,7 @@ dist
 .run
 .vscode
 .devcontainer
-sw.*
+sw.js
 frontend/.nuxt
 frontend/dist
 frontend/dist/_nuxt

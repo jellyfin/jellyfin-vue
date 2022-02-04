@@ -2,7 +2,7 @@
 var restrictedGlobals = require('confusing-browser-globals');
 
 module.exports = {
-  root: true,
+  root: false,
   env: {
     node: true
   },
@@ -74,7 +74,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['frontend/**/*.ts', 'frontend/**/*.vue'],
+      files: ['./**/*.ts', './**/*.vue'],
       env: {
         browser: true,
         node: true
@@ -125,7 +125,7 @@ module.exports = {
         'import/resolver': {
           nuxt: {
             extensions: ['.js', '.ts', '.d.ts', '.vue', '.json'],
-            nuxtSrcDir: 'frontend/'
+            nuxtSrcDir: '.'
           }
         }
       }
