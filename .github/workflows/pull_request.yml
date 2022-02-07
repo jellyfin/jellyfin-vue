@@ -114,7 +114,7 @@ jobs:
           toolchain: stable
 
       - name: Install dependencies 📦
-        run: npm ci --no-audit
+        run: npm ci --no-audit -w tauri
 
       - name: Install webkit2gtk (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
@@ -123,4 +123,4 @@ jobs:
           sudo apt-get install -y webkit2gtk-4.0
 
       - name: Build Tauri 🛠️
-        run: 'npm run tauri:build --workspace=tauri'
+        run: 'npm run tauri:build -w tauri'
