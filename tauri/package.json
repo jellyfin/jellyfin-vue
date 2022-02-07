@@ -8,6 +8,9 @@
     "tauri:build": "tauri build",
     "tauri:dev": "tauri dev"
   },
+  "dependencies": {
+    "@jellyfin-vue/frontend": "*"
+  },
   "devDependencies": {
     "@tauri-apps/cli": "1.0.0-rc.1"
   },
