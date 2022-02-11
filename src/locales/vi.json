@@ -23,6 +23,7 @@
   "byArtist": "Bởi {artist}",
   "cancel": "Hủy",
   "castAndCrew": "Diễn viên & Đoàn làm phim",
+  "collectionEmpty": "Bộ sưu tập này còn đang trống",
   "collections": "Bộ sưu tập",
   "communityRating": "Đánh giá cộng đồng",
   "confirm": "Xác nhận",
@@ -243,6 +244,7 @@
       "transcode": "Chuyển mã"
     },
     "streamType": {
+      "dash": "DASH",
       "hls": "HLS",
       "name": "Loại luồng:",
       "unknown": "Không rõ",
