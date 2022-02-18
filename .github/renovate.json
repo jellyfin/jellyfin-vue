@@ -1,7 +1,7 @@
 {
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": ["devDependencies", "build-dependencies"],
       "groupName": "development dependencies",
       "groupSlug": "dev-deps"
     },
