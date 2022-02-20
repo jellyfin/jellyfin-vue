@@ -1,16 +1,158 @@
 {
+  "3DFormat": "3D формат",
+  "NoMediaSourcesAvailable": "Немає доступних медіа-джерел",
+  "actor": "Актор",
+  "actors": "Актори",
+  "addNewPerson": "Додати нову персону",
+  "airPlayDevices": "Пристрої AirPlay",
+  "albums": "Альбоми",
+  "allLanguages": "Всі мови",
+  "alphabetically": "За алфавітом",
+  "architecture": "Архітектура",
+  "artist": "Виконавець",
+  "artists": "Виконавці",
+  "aspectRatio": "Співвідношення",
+  "audio": "Аудіо",
+  "audioCodecNotSupported": "Аудіокодек не підтримується",
+  "badRequest": "Помилка запиту. Спробуйте ще раз",
+  "books": "Книги",
+  "browserNotSupported": "Ваш браузер не підтримує відтворення цього файлу.",
+  "buttons": {
+    "ok": "Добре"
+  },
+  "byArtist": "За {artist}",
   "cancel": "Скасувати",
   "castAndCrew": "Актори",
+  "collectionEmpty": "Ця збірка порожня",
   "collections": "Колекції",
+  "communityRating": "Оцінка спільноти",
   "confirm": "Підтвердити",
   "connect": "З'єднатися",
   "continueListening": "Продовжити слухати",
   "continueWatching": "Продовжити дивитися",
   "criticRating": "Оцінка критиків",
+  "customRating": "Індивідуальний рейтинг",
+  "darkModeToggle": "Увімкнути темний режим",
+  "dateAdded": "Додано",
   "details": "Деталі",
-  "errors": {
-    "messages": {
-      "errorCode": "Код помилки: {errorCode}"
+  "dialog": {
+    "upNext": {
+      "hide": "Приховати",
+      "nextItemPlayingIn": "Початок о {time}",
+      "startNow": "Почати зараз"
     }
+  },
+  "directing": "Режисура",
+  "director": "Режисер",
+  "disabled": "Вимкнено",
+  "discNumber": "Платівка {discNumber}",
+  "dislikes": "Не подобається",
+  "edit": "Редагувати",
+  "editMetadata": "Редагувати метадані",
+  "editPerson": "Редагувати персону",
+  "endDate": "Дата закінчення",
+  "endsAt": "Закінчується о {time}",
+  "episodeNumber": "Серія {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Ой, сталась помилка",
+    "messages": {
+      "errorCode": "Код помилки: {errorCode}",
+      "videoPlayerError": "Відеопрогравач зіткнувся з невиправною помилкою."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Не вдається отримати налаштування відображення. Використовую останні відомі налаштування.",
+  "failedSettingDisplayPreferences": "Не вдається оновити параметри відображення.",
+  "failedToRefreshItems": "Помилка оновлення елементів",
+  "favorite": "Вибране",
+  "features": "Особливості",
+  "filter": "Фільтр",
+  "filtersNotFound": "Неможливо завантажити фільтри",
+  "fullScreen": "На весь екран",
+  "general": "Загальне",
+  "genericJellyfinPlaceholderDevice": "Стандартний пристрій Jellyfin",
+  "genres": "Жанри",
+  "googleCastPlaceholderDevice": "Пристрої Google Cast",
+  "guestStar": "Запрошені зірки",
+  "headerExternalIds": "Зовнішні ID",
+  "headerPaths": "Шлях",
+  "home": "Домівка",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Недавно додане"
+    }
+  },
+  "imageType": {
+    "art": "Обкладинка",
+    "backdrop": "Фон",
+    "banner": "Банер",
+    "box": "Бокс",
+    "boxRear": "Бокс (ззаду)",
+    "disc": "Платівка",
+    "logo": "Лого",
+    "menu": "Меню",
+    "primary": "Основна",
+    "screenshot": "Скріншот",
+    "thumb": "Ярлик"
+  },
+  "images": "Зображення",
+  "incorrectUsernameOrPassword": "Неправильний логін чи пароль",
+  "item": {
+    "artist": {
+      "appearsOn": "Види",
+      "discography": "Дискографія",
+      "information": "Інфо",
+      "videos": "Відео"
+    },
+    "cast": "Акторський склад",
+    "composer": "Композитор",
+    "crew": "Знімальна група",
+    "person": {
+      "birth": "Народився",
+      "birthPlace": "Місце народження",
+      "books": "Книги",
+      "death": "Помер",
+      "information": "Інфо",
+      "movies": "Фільми",
+      "person": "Персона",
+      "photos": "Фото",
+      "shows": "ТБ-шоу"
+    },
+    "tracklist": {
+      "title": "Заголовок"
+    }
+  },
+  "itemNotFound": "Елемент не знайдено",
+  "jellyfinLogo": "Лого Jellyfin",
+  "latestLibrary": "Остання {libraryName}",
+  "libraries": "Медіатеки",
+  "libraryEmpty": "Ця медіатека порожня",
+  "libraryEmptyFilters": "Немає збігів. Видаліть деякі фільтри, щоб показати більше елементів",
+  "libraryNotFound": "Медіатеку не знайдено",
+  "libraryRefreshQueued": "У черзі оновлення медіатеки",
+  "liked": "Сподобалось",
+  "likes": "Вподобайки",
+  "links": {
+    "helpTranslate": "Перекладіть Jellyfin на вашу мову",
+    "poweredByJellyfin": "Цей сервер працює на Jellyfin",
+    "readTheDocumentation": "Прочитайте документацію",
+    "reportAnIssue": "Повідомте про проблему з цим клієнтом"
+  },
+  "login": {
+    "addServer": "Додати сервер",
+    "changeServer": "Змінити сервер",
+    "changeUser": "Змінити користувача",
+    "connect": "Приєднатись",
+    "login": "Ввійти",
+    "loginAs": "Ввійти як {name}",
+    "manualLogin": "Ввійти вручну",
+    "rememberMe": "Запам'ятати мене",
+    "selectServer": "Вибрати сервер",
+    "selectUser": "Вибрати користувача",
+    "serverAddress": "Адреса серверу",
+    "serverAddressMustBeUrl": "Адреса сервера має бути коректним URL",
+    "serverAddressRequired": "Введіть адресу серверу",
+    "serverDashboard": "Панель серверу",
+    "serverNotFound": "Сервер не знайдено",
+    "serverVersionTooLow": "Версія сервера має бути 10.7.0 або вище"
   }
 }
