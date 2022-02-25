@@ -23,11 +23,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import pickBy from 'lodash/pickBy';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
+import { clientSettingsStore } from '~/store';
 
 export default Vue.extend({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
@@ -173,6 +175,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(clientSettingsStore),
     ...mapState('page', ['title']),
     ...mapState('clientSettings', ['CustomPrefs']),
     ...mapState('userViews', ['views'])

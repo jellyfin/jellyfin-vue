@@ -11,12 +11,14 @@
         @click="toggleDarkMode"
       >
         <v-icon>
-          {{ darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night' }}
+          {{
+            clientSettings.darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'
+          }}
         </v-icon>
       </v-btn>
     </template>
     <span>{{
-      darkMode
+      clientSettings.darkMode
         ? $t('tooltips.switchToLightMode')
         : $t('tooltips.switchToDarkMode')
     }}</span>
@@ -25,7 +27,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState, mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { clientSettingsStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -34,14 +37,13 @@ export default Vue.extend({
       required: true
     }
   },
-  computed: {
-    ...mapState('clientSettings', ['darkMode'])
-  },
   methods: {
-    ...mapActions('clientSettings', ['setDarkMode']),
     toggleDarkMode(): void {
-      this.setDarkMode({ darkMode: !this.darkMode });
+      this.clientSettings.setDarkMode(!this.clientSettings.darkMode);
     }
+  },
+  computed: {
+    ...mapStores(clientSettingsStore)
   }
 });
 </script>

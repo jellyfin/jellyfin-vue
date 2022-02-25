@@ -23,16 +23,18 @@
         v-for="(item, index) in $i18n.locales"
         :key="index"
         :input-value="item.code === $i18n.locale"
-        @click="setLocale({ locale: item.code })"
+        @click="clientSettings.setLocale({ locale: item.code })"
       >
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
 </template>
+
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { clientSettingsStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -53,11 +55,12 @@ export default Vue.extend({
       required: false
     }
   },
-  methods: {
-    ...mapActions('clientSettings', ['setLocale'])
+  computed: {
+    ...mapStores(clientSettingsStore)
   }
 });
 </script>
+
 <style scoped>
 .v-list {
   max-height: 31em;

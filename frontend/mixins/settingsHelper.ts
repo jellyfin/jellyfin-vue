@@ -4,24 +4,25 @@
  * @mixin
  */
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { clientSettingsStore } from '~/store';
 
 const settingsHelper = Vue.extend({
   computed: {
-    ...mapState('clientSettings', ['darkMode', 'locale'])
+    ...mapStores(clientSettingsStore)
   },
   watch: {
-    darkMode: {
+    'clientSettings.darkMode': {
       immediate: true,
       handler(): void {
-        this.$vuetify.theme.dark = this.darkMode;
+        this.$vuetify.theme.dark = this.clientSettings.darkMode;
       }
     },
-    locale: {
+    'clientSettings.locale': {
       immediate: true,
       handler(): void {
-        if (this.locale !== 'auto') {
-          this.$i18n.setLocale(this.locale);
+        if (this.clientSettings.locale !== 'auto') {
+          this.$i18n.setLocale(this.clientSettings.locale);
         } else {
           this.$i18n.setLocale(
             this.$i18n.getBrowserLocale() || this.$i18n.defaultLocale || 'en-US'
