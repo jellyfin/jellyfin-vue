@@ -16,7 +16,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -27,7 +28,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setRemoteAccess(): Promise<void> {
       this.loading = true;
 
@@ -43,14 +43,14 @@ export default Vue.extend({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('wizard.setRemoteError'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('wizard.setRemoteError'), 'error');
       }
 
       this.loading = false;
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

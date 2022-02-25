@@ -56,9 +56,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import { DeviceInfo } from '@jellyfin/client-axios';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   async asyncData({ $api }) {
@@ -74,7 +73,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
+    ...mapStores(deviceProfileStore, snackbarStore),
     headers(): { text: string; value: string }[] {
       return [
         {
@@ -92,25 +91,22 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async deleteDevice(item: DeviceInfo): Promise<void> {
       try {
         await this.$api.devices.deleteDevice({
           id: item.Id || ''
         });
 
-        this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceSuccess'),
-          color: 'success'
-        });
-
+        this.snackbar.push(
+          this.$t('settings.devices.deleteDeviceSuccess'),
+          'success'
+        );
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceError'),
-          color: 'error'
-        });
-
+        this.snackbar.push(
+          this.$t('settings.devices.deleteDeviceError'),
+          'error'
+        );
         // eslint-disable-next-line no-console
         console.error(error);
       }
@@ -125,17 +121,17 @@ export default Vue.extend({
           await this.$api.devices.deleteDevice({ id: device.Id || '' });
         });
 
-        this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteAllDevicesSuccess'),
-          color: 'success'
-        });
+        this.snackbar.push(
+          this.$t('settings.devices.deleteAllDevicesSuccess'),
+          'success'
+        );
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteAllDevicesError'),
-          color: 'error'
-        });
+        this.snackbar.push(
+          this.$t('settings.devices.deleteAllDevicesError'),
+          'error'
+        );
 
         // eslint-disable-next-line no-console
         console.error(error);
@@ -155,19 +151,16 @@ export default Vue.extend({
           id: this.selectedDevice.Id || ''
         });
 
-        this.pushSnackbarMessage({
-          message: this.$t('settings.devices.deleteDeviceSuccess'),
-          color: 'success'
-        });
+        this.snackbar.push(
+          this.$t('settings.devices.deleteDeviceSuccess'),
+          'success'
+        );
 
         this.selectedDevice = {};
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('deleteDeviceError'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('deleteDeviceError'), 'error');
 
         // eslint-disable-next-line no-console
         console.error(error);

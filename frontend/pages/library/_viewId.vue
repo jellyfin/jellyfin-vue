@@ -51,9 +51,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
+import { snackbarStore } from '~/store';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
 
 export default Vue.extend({
@@ -100,6 +102,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     ...mapState('page', ['title']),
     hasViewTypes(): boolean {
       if (
@@ -183,7 +186,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     onChangeType(type: string): void {
       const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
 
@@ -327,10 +329,7 @@ export default Vue.extend({
       } catch (error) {
         this.items = [];
         this.itemsCount = 0;
-        this.pushSnackbarMessage({
-          message: this.$t('failedToRefreshItems'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('failedToRefreshItems'), 'error');
       }
 
       this.loading = false;

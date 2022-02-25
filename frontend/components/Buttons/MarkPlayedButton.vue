@@ -11,9 +11,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   mixins: [itemHelper],
@@ -44,7 +45,6 @@ export default Vue.extend({
     this.isPlayed = this.item.UserData?.Played || false;
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async togglePlayed(): Promise<void> {
       try {
         if (this.isPlayed) {
@@ -61,13 +61,13 @@ export default Vue.extend({
           });
         }
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('unableToTogglePlayed'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('unableToTogglePlayed'), 'error');
         this.isPlayed = !this.isPlayed;
       }
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

@@ -214,6 +214,8 @@ import Vue from 'vue';
 import pick from 'lodash/pick';
 import set from 'lodash/set';
 import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -240,6 +242,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     premiereDate: {
       get(): string {
         if (!this.metadata.PremiereDate) {
@@ -363,10 +366,7 @@ export default Vue.extend({
         });
         this.$emit('save');
         this.loading = false;
-        this.$store.dispatch('snackbar/display', {
-          message: this.$t('saved'),
-          color: 'success'
-        });
+        this.snackbar.push(this.$t('saved'), 'success');
       } catch (error) {
         // TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
         // not expecting bad request messages.
@@ -379,10 +379,7 @@ export default Vue.extend({
           errorMessage = this.$t('badRequest');
         }
 
-        this.$store.dispatch('snackbar/display', {
-          message: errorMessage,
-          color: 'error'
-        });
+        this.snackbar.push(errorMessage, 'error');
       }
     },
     saveDate(key: string, date: string): void {
@@ -417,6 +414,7 @@ export default Vue.extend({
   }
 });
 </script>
+
 <style scoped>
 .person-icon {
   background-color: var(--v-secondary-darken1);

@@ -56,8 +56,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -72,7 +71,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async createAdminAccount(): Promise<void> {
       this.loading = true;
 
@@ -89,17 +87,14 @@ export default Vue.extend({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('wizard.setAdminError'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('wizard.setAdminError'), 'error');
       }
 
       this.loading = false;
     }
   },
   computed: {
-    ...mapStores(deviceProfileStore)
+    ...mapStores(deviceProfileStore, snackbarStore)
   }
 });
 </script>
