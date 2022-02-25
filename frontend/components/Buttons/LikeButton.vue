@@ -10,7 +10,7 @@ import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import { PropType } from 'vue';
-import { snackbarStore } from '~/store';
+import { snackbarStore, socketStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -25,9 +25,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      isFavorite: false,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      isFavorite: false
     };
   },
   watch: {
@@ -36,15 +34,11 @@ export default Vue.extend({
       handler(): void {
         this.isFavorite = this.item.UserData?.IsFavorite || false;
       }
-    }
-  },
-  mounted() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (
-        mutation?.type === 'socket/ONMESSAGE' &&
-        state.socket.messageType === 'UserDataChanged'
-      ) {
-        const payloadData = state.socket.messageData.UserDataList;
+    },
+    socket() {
+      if (this.socket.messageData) {
+        // @ts-expect-error - No typings for WebSocket messages
+        const payloadData = this.socket.messageData.UserDataList;
 
         if (payloadData) {
           for (const payloadItem of payloadData) {
@@ -54,10 +48,7 @@ export default Vue.extend({
           }
         }
       }
-    });
-  },
-  destroyed() {
-    this.unsubscribe();
+    }
   },
   methods: {
     async toggleFavorite(): Promise<void> {
@@ -89,7 +80,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(snackbarStore)
+    ...mapStores(snackbarStore, socketStore)
   }
 });
 </script>
