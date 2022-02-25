@@ -45,7 +45,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer(): Promise<void> {
       this.loading = true;

@@ -211,7 +211,6 @@ export default Vue.extend({
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', [
       'pause',
       'unpause',

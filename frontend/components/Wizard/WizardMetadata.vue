@@ -28,13 +28,14 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import {
   CountryInfo,
   CultureDto,
   StartupConfigurationDto
 } from '@jellyfin/client-axios';
-import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -59,7 +60,6 @@ export default Vue.extend({
     this.countryOptions = (await this.$api.localization.getCountries()).data;
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setMetadata(): Promise<void> {
       this.loading = true;
 
@@ -76,14 +76,14 @@ export default Vue.extend({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('wizard.setMetadataError'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('wizard.setMetadataError'), 'error');
       }
 
       this.loading = false;
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

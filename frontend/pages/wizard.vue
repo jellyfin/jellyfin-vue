@@ -83,7 +83,7 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { mapActions, mapState } from 'vuex';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -100,7 +100,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
+    ...mapStores(deviceProfileStore, snackbarStore),
     ...mapState('page', ['title']),
     heading(): string {
       switch (this.wizardStage) {
@@ -122,7 +122,6 @@ export default Vue.extend({
     this.deviceProfile.setDeviceProfile();
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('page', ['setPageTitle']),
     async completeWizard(): Promise<void> {
       try {
@@ -132,10 +131,7 @@ export default Vue.extend({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('wizard.completeError'),
-          color: 'success'
-        });
+        this.snackbar.push(this.$t('wizard.completeError'), 'success');
       }
     },
     changeStep({ step }: { step: number }): void {

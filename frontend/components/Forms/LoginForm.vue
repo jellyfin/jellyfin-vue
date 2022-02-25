@@ -97,7 +97,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('user', ['loginRequest']),
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
         // If we have a user from the public user selector, set it as login

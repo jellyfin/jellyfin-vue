@@ -211,8 +211,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -295,7 +296,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems(): Promise<void> {
       try {
         const response = (
@@ -318,10 +318,7 @@ export default Vue.extend({
           this.yearFilters = response.Years;
         }
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('filtersNotFound'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('filtersNotFound'), 'error');
       }
     },
     emitFilterChange(): void {
@@ -334,6 +331,9 @@ export default Vue.extend({
         years: this.selectedYearFilters
       });
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

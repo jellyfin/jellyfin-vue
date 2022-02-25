@@ -18,11 +18,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/client-axios';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   auth: false,
@@ -55,7 +56,6 @@ export default Vue.extend({
     this.loading = false;
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async setLanguage(): Promise<void> {
       this.loading = true;
 
@@ -72,14 +72,14 @@ export default Vue.extend({
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-        this.pushSnackbarMessage({
-          message: this.$t('wizard.setLanguageError'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('wizard.setLanguageError'), 'error');
       }
 
       this.loading = false;
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

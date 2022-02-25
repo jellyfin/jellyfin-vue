@@ -6,9 +6,11 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue, { PropType } from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { PropType } from 'vue';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -58,7 +60,6 @@ export default Vue.extend({
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async toggleFavorite(): Promise<void> {
       if (!this.item.Id) {
         return;
@@ -81,14 +82,14 @@ export default Vue.extend({
           });
         }
       } catch {
-        this.pushSnackbarMessage({
-          message: this.$t('unableToToggleLike'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('unableToToggleLike'), 'error');
 
         this.isFavorite = !this.isFavorite;
       }
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>
