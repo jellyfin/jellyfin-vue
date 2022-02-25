@@ -1,1 +1,17 @@
-{}
+{
+  "3DFormat": "Formato 3D",
+  "NoMediaSourcesAvailable": "Nenhuma fonte de media disponível",
+  "actor": "Actor",
+  "actors": "Actores",
+  "addNewPerson": "Adicionar uma pessoa",
+  "airPlayDevices": "Dispositivos AirPlay",
+  "albums": "Albuns",
+  "allLanguages": "Todos os idiomas",
+  "alphabetically": "Alfabeticamente",
+  "architecture": "Arquitectura",
+  "artist": "Artista",
+  "artists": "Artistas",
+  "aspectRatio": "Proporção de tela",
+  "audio": "Áudio",
+  "audioCodecNotSupported": "O codec de áudio não é suportado"
+}
