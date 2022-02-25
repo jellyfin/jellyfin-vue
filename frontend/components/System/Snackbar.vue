@@ -1,12 +1,13 @@
 <template>
-  <v-snackbar v-model="model" app :color="color" bottom left>
-    {{ message }}
+  <v-snackbar v-model="model" app :color="snackbar.color" bottom left>
+    {{ snackbar.message }}
   </v-snackbar>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState, mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -14,11 +15,8 @@ export default Vue.extend({
       model: false
     };
   },
-  computed: {
-    ...mapState('snackbar', ['message', 'color'])
-  },
   watch: {
-    message: {
+    'snackbar.message': {
       immediate: true,
       handler(newVal: string): void {
         if (newVal !== '') {
@@ -28,12 +26,12 @@ export default Vue.extend({
     },
     model(newVal: boolean): void {
       if (newVal === false) {
-        this.resetMessage();
+        this.snackbar.$reset();
       }
     }
   },
-  methods: {
-    ...mapActions('snackbar', ['resetMessage'])
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

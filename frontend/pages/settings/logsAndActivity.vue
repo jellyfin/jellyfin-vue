@@ -162,7 +162,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
         case LogLevel.Trace:

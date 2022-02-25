@@ -103,7 +103,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);

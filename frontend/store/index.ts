@@ -10,3 +10,4 @@ setMapStoreSuffix('');
 
 export * from './clientSettings';
 export * from './deviceProfile';
+export * from './snackbar';

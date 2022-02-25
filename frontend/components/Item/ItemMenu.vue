@@ -51,9 +51,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
+import { snackbarStore } from '~/store';
 
 type MenuOption = {
   title: string;
@@ -96,6 +98,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     ...mapGetters('playbackManager', ['getCurrentItem']),
     options: {
       get(): MenuOption[] {
@@ -164,18 +167,12 @@ export default Vue.extend({
                   replaceAllMetadata: false
                 });
 
-                this.pushSnackbarMessage({
-                  message: this.$t('libraryRefreshQueued'),
-                  color: 'normal'
-                });
+                this.snackbar.push(this.$t('libraryRefreshQueued'), 'normal');
               } catch (e) {
                 // eslint-disable-next-line no-console
                 console.error(e);
 
-                this.pushSnackbarMessage({
-                  message: this.$t('unableToRefreshLibrary'),
-                  color: 'error'
-                });
+                this.snackbar.push(this.$t('unableToRefreshLibrary'), 'error');
               }
             }
           });
@@ -214,7 +211,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue']),
     onRightClick(e: PointerEvent): void {
       // Vue 2's API doesn't support native JavaScript events when the component's instances

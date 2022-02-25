@@ -53,10 +53,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { mapStores } from 'pinia';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -98,14 +99,10 @@ export default Vue.extend({
     try {
       this.refreshItems();
     } catch (error) {
-      this.pushSnackbarMessage({
-        message: this.$t('unableGetRelated'),
-        color: 'error'
-      });
+      this.snackbar.push(this.$t('unableGetRelated'), 'error');
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async refreshItems(): Promise<void> {
       this.loading = true;
 
@@ -127,6 +124,9 @@ export default Vue.extend({
 
       this.loading = false;
     }
+  },
+  computed: {
+    ...mapStores(snackbarStore)
   }
 });
 </script>

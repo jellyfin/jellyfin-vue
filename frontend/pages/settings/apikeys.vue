@@ -40,8 +40,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
 import { AuthenticationInfo } from '@jellyfin/client-axios';
+import { snackbarStore } from '~/store';
 
 interface TableHeaders {
   text: string;
@@ -63,6 +64,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     headers(): TableHeaders[] {
       return [
         { text: this.$t('settings.apiKeys.appName'), value: 'AppName' },
@@ -72,7 +74,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async revokeApiKey(token: string): Promise<void> {
       try {
         await this.$api.apiKey.revokeKey({
@@ -80,21 +81,15 @@ export default Vue.extend({
         });
 
         this.apiKeys.filter((item) => token !== item.AccessToken);
-
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeSuccess'),
-          color: 'success'
-        });
-
+        this.snackbar.push(
+          this.$t('settings.apiKeys.revokeSuccess'),
+          'success'
+        );
         this.refreshApiKeys();
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeFailure'),
-          color: 'error'
-        });
+        this.snackbar.push(this.$t('settings.apiKeys.revokeFailure'), 'error');
       }
     },
     async revokeAllApiKeys(): Promise<void> {
@@ -108,21 +103,18 @@ export default Vue.extend({
         }
 
         this.apiKeys = [];
-
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeAllSuccess'),
-          color: 'success'
-        });
-
+        this.snackbar.push(
+          this.$t('settings.apiKeys.revokeAllSuccess'),
+          'success'
+        );
         this.refreshApiKeys();
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);
-
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.revokeAllFailure'),
-          color: 'error'
-        });
+        this.snackbar.push(
+          this.$t('settings.apiKeys.revokeAllFailure'),
+          'error'
+        );
       }
 
       this.revokeKeyLoading = false;
@@ -131,10 +123,10 @@ export default Vue.extend({
       try {
         this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
       } catch (error) {
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.refreshKeysFailure'),
-          color: 'error'
-        });
+        this.snackbar.push(
+          this.$t('settings.apiKeys.refreshKeysFailure'),
+          'error'
+        );
       }
     }
   }

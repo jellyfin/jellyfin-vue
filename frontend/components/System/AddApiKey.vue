@@ -29,7 +29,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -40,6 +41,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     width(): number | string {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs':
@@ -56,7 +58,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('snackbar', ['pushSnackbarMessage']),
     async addApiKey(): Promise<void> {
       this.loading = true;
 
@@ -65,10 +66,10 @@ export default Vue.extend({
           app: this.newKeyAppName
         });
 
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.createKeySuccess'),
-          color: 'success'
-        });
+        this.snackbar.push(
+          this.$t('settings.apiKeys.createKeySuccess'),
+          'success'
+        );
 
         this.newKeyAppName = '';
         this.$emit('key-added');
@@ -76,10 +77,10 @@ export default Vue.extend({
         // eslint-disable-next-line no-console
         console.error(error);
 
-        this.pushSnackbarMessage({
-          message: this.$t('settings.apiKeys.createKeyFailure'),
-          color: 'error'
-        });
+        this.snackbar.push(
+          this.$t('settings.apiKeys.createKeyFailure'),
+          'error'
+        );
       }
 
       this.loading = false;
