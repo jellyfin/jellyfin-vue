@@ -9,3 +9,4 @@ import { setMapStoreSuffix } from 'pinia';
 setMapStoreSuffix('');
 
 export * from './clientSettings';
+export * from './deviceProfile';

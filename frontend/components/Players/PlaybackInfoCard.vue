@@ -238,10 +238,12 @@
 </template>
 
 <script lang="ts">
-import { SessionInfo } from '@jellyfin/client-axios';
 import Vue from 'vue';
+import { SessionInfo } from '@jellyfin/client-axios';
+import { mapStores } from 'pinia';
 import { mapGetters, mapState } from 'vuex';
 import camelCase from 'lodash/camelCase';
+import { deviceProfileStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -253,7 +255,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('deviceProfile', ['deviceId']),
+    ...mapStores(deviceProfileStore),
     ...mapState('playbackManager', ['currentMediaSource']),
     ...mapGetters('playbackManager', [
       'getCurrentVideoTrack',
@@ -397,7 +399,7 @@ export default Vue.extend({
     async updateSession(): Promise<void> {
       this.sessionInfo = (
         await this.$api.session.getSessions({
-          deviceId: this.deviceId
+          deviceId: this.deviceProfile.deviceId
         })
       ).data?.[0];
 

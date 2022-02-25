@@ -19,9 +19,11 @@ import { stringify } from 'qs';
 import throttle from 'lodash/throttle';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
+import { mapStores } from 'pinia';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
 import { AppState } from '~/store';
+import { deviceProfileStore } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 
@@ -50,6 +52,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(deviceProfileStore),
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getCurrentlyPlayingMediaType'
@@ -64,7 +67,6 @@ export default Vue.extend({
       'currentSubtitleStreamIndex',
       'isMinimized'
     ]),
-    ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
     poster(): ImageUrlInfo | string {
       if (this.getCurrentlyPlayingMediaType === 'Video') {
@@ -256,7 +258,7 @@ export default Vue.extend({
           > = {
             Static: true,
             mediaSourceId: mediaSource.Id,
-            deviceId: this.deviceId,
+            deviceId: this.deviceProfile.deviceId,
             api_key: this.accessToken
           };
 

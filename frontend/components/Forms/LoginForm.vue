@@ -63,10 +63,12 @@
 </template>
 
 <script lang="ts">
-import isEmpty from 'lodash/isEmpty';
 import Vue from 'vue';
+import isEmpty from 'lodash/isEmpty';
+import { mapStores } from 'pinia';
 import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
+import { deviceProfileStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -95,7 +97,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('user', ['loginRequest']),
-    ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
@@ -104,7 +105,7 @@ export default Vue.extend({
       }
 
       this.loading = true;
-      await this.setDeviceProfile();
+      this.deviceProfile.setDeviceProfile();
 
       try {
         await this.loginRequest(this.login);
@@ -117,6 +118,9 @@ export default Vue.extend({
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     }
+  },
+  computed: {
+    ...mapStores(deviceProfileStore)
   }
 });
 </script>

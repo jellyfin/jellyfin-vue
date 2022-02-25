@@ -27,6 +27,7 @@ import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker
 // @ts-expect-error - No types for libass
 import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
 import throttle from 'lodash/throttle';
+import { mapStores } from 'pinia';
 import { mapActions, mapGetters, mapState, mapMutations } from 'vuex';
 import {
   BaseItemDto,
@@ -37,8 +38,8 @@ import {
 import { stringify } from 'qs';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
-import { AppState } from '~/store';
 import { PlaybackTrack } from '~/store/playbackManager';
+import { deviceProfileStore } from '~/store';
 
 // Using requires so those aren't treeshaked and loaded by the webpack file loader as static assets
 require('libass-wasm/dist/js/subtitles-octopus-worker.data');
@@ -67,6 +68,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(deviceProfileStore),
     ...mapGetters('playbackManager', [
       'getCurrentItem',
       'getCurrentItemParsedSubtitleTracks',
@@ -81,7 +83,6 @@ export default Vue.extend({
       'currentAudioStreamIndex',
       'currentSubtitleStreamIndex'
     ]),
-    ...mapState('deviceProfile', ['deviceId']),
     ...mapState('user', ['accessToken']),
     poster(): ImageUrlInfo | string {
       return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
@@ -241,7 +242,7 @@ export default Vue.extend({
           > = {
             Static: true,
             mediaSourceId: mediaSource.Id,
-            deviceId: this.deviceId,
+            deviceId: this.deviceProfile.deviceId,
             api_key: this.accessToken
           };
 

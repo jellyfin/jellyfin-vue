@@ -120,7 +120,9 @@ import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
 import { getLibraryIcon } from '~/utils/items';
+import { deviceProfileStore } from '~/store';
 import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
@@ -137,6 +139,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(deviceProfileStore),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
@@ -149,7 +152,6 @@ export default Vue.extend({
     }),
     ...mapState('page', ['opaqueAppBar', 'navDrawer', 'isScrolled']),
     ...mapState('user', ['accessToken']),
-    ...mapState('deviceProfile', ['deviceId']),
     searchQuery: {
       get(): string {
         return this.$route.query.q?.toString();
@@ -213,7 +215,7 @@ export default Vue.extend({
     connectToWebSocket(): void {
       const socketParams = stringify({
         api_key: this.accessToken,
-        deviceId: this.deviceId
+        deviceId: this.deviceProfile.deviceId
       });
       let url = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;
 
