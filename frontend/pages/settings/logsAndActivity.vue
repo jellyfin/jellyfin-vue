@@ -117,9 +117,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { mapState } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
+import { pageStore } from '~/store';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -150,18 +152,17 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapState('page', ['title']),
+    ...mapStores(pageStore),
     ...mapState('user', ['accessToken'])
   },
   mounted() {
-    this.setPageTitle({ title: this.$t('settingsSections.logs.name') });
+    this.page.title = this.$t('settingsSections.logs.name');
   },
   methods: {
-    ...mapActions('page', ['setPageTitle']),
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
         case LogLevel.Trace:

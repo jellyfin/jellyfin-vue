@@ -52,11 +52,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapState } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import { snackbarStore } from '~/store';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
+import { snackbarStore, pageStore } from '~/store';
 
 export default Vue.extend({
   validate(ctx: Context) {
@@ -98,12 +97,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapStores(snackbarStore),
-    ...mapState('page', ['title']),
+    ...mapStores(snackbarStore, pageStore),
     hasViewTypes(): boolean {
       if (
         ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
@@ -142,7 +140,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
+    this.page.opaqueAppBar = true;
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
     });
@@ -152,9 +150,7 @@ export default Vue.extend({
       validLibraryTypes.includes(this.collectionInfo.Type)
     ) {
       if (this.collectionInfo.Name) {
-        this.setPageTitle({
-          title: this.collectionInfo.Name
-        });
+        this.page.title = this.collectionInfo.Name;
       }
 
       // Set default view type - This will trigger an items refresh
@@ -182,10 +178,9 @@ export default Vue.extend({
     }
   },
   destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: false });
+    this.page.opaqueAppBar = false;
   },
   methods: {
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     onChangeType(type: string): void {
       const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
 

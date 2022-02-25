@@ -91,19 +91,29 @@ export default Vue.extend({
       const activeBar = this.bars[this.currentIndex];
       const animEndFunction = this.onAnimationEnd;
 
-      activeBar.classList.add('active');
-      activeBar.addEventListener('animationend', animEndFunction);
+      if (activeBar) {
+        activeBar.classList.add('active');
+        activeBar.addEventListener('animationend', animEndFunction);
+      }
 
-      previousBars.forEach((el: HTMLElement) => {
-        el.classList.remove('active', 'paused');
-        el.removeEventListener('animationend', animEndFunction);
-        el.classList.add('passed');
-      });
+      if (previousBars) {
+        window.requestAnimationFrame(() => {
+          previousBars.forEach((el: HTMLElement) => {
+            el.classList.remove('active', 'paused');
+            el.removeEventListener('animationend', animEndFunction);
+            el.classList.add('passed');
+          });
+        });
+      }
 
-      followingBars.forEach((el: HTMLElement) => {
-        el.classList.remove('active', 'passed', 'paused');
-        el.removeEventListener('animationend', animEndFunction);
-      });
+      if (followingBars) {
+        window.requestAnimationFrame(() => {
+          followingBars.forEach((el: HTMLElement) => {
+            el.classList.remove('active', 'passed', 'paused');
+            el.removeEventListener('animationend', animEndFunction);
+          });
+        });
+      }
     },
     onAnimationEnd(): void {
       this.$emit('on-animation-end');
