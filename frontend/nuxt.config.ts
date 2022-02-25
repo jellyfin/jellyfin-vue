@@ -116,7 +116,9 @@ const config: NuxtConfig = {
   buildModules: [
     '@nuxt/typescript-build',
     '@nuxtjs/vuetify',
-    '@nuxtjs/date-fns'
+    '@nuxtjs/date-fns',
+    '@nuxtjs/composition-api/module',
+    ['@pinia/nuxt', { disableVuex: true }]
   ],
   /*
    ** Nuxt.js modules
