@@ -99,11 +99,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapStores } from 'pinia';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
 import { version } from '~/package.json';
 import htmlHelper from '~/mixins/htmlHelper';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper],
@@ -113,6 +114,9 @@ export default Vue.extend({
 
       return { systemInfo };
     }
+  },
+  computed: {
+    ...mapStores(pageStore)
   },
   data() {
     return {
@@ -228,11 +232,10 @@ export default Vue.extend({
     };
   },
   mounted() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
-    this.setPageTitle({ title: this.$t('settings.settings') });
+    this.page.opaqueAppBar = true;
+    this.page.title = this.$t('settings.settings');
   },
   methods: {
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     isEmpty(object: never): boolean {
       return isEmpty(object);
     }

@@ -4,7 +4,7 @@
       <backdrop />
     </client-only>
     <v-navigation-drawer
-      v-if="navDrawer"
+      v-if="page.navDrawer"
       v-model="drawer"
       :temporary="$vuetify.breakpoint.mobile"
       :permanent="!$vuetify.breakpoint.mobile"
@@ -57,21 +57,31 @@
       class="pt-s pl-2 pr-2 app-bar-safe-zone"
       flat
       app
-      :class="{ opaque: opaqueAppBar || $vuetify.breakpoint.xsOnly }"
+      :class="{ opaque: page.opaqueAppBar || $vuetify.breakpoint.xsOnly }"
     >
       <v-app-bar-nav-icon
-        v-if="$vuetify.breakpoint.mobile && navDrawer"
+        v-if="$vuetify.breakpoint.mobile && page.navDrawer"
         @click.stop="drawer = !drawer"
       />
       <v-btn
         v-hide="$route.name === 'index'"
-        :icon="opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled"
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
-        :small="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :icon="
+          page.opaqueAppBar || $vuetify.breakpoint.xsOnly || page.isScrolled
+        "
+        :fab="
+          !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        "
+        :small="
+          !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        "
         :class="{
-          'ml-n1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled,
-          'mr-2': !(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled,
-          'mr-1': opaqueAppBar || $vuetify.breakpoint.xsOnly || isScrolled
+          'ml-n1':
+            page.opaqueAppBar || $vuetify.breakpoint.xsOnly || page.isScrolled,
+          'mr-2':
+            !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) &&
+            !page.isScrolled,
+          'mr-1':
+            page.opaqueAppBar || $vuetify.breakpoint.xsOnly || page.isScrolled
         }"
         @click="$router.back()"
       >
@@ -93,14 +103,20 @@
       />
       <v-spacer />
       <dark-mode-toggle
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :fab="
+          !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        "
       />
       <locale-switcher
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :fab="
+          !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        "
         bottom
       />
       <cast-button
-        :fab="!(opaqueAppBar || $vuetify.breakpoint.xsOnly) && !isScrolled"
+        :fab="
+          !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        "
       />
     </v-app-bar>
     <v-main>
@@ -122,7 +138,7 @@ import { stringify } from 'qs';
 import { mapActions, mapState } from 'vuex';
 import { mapStores } from 'pinia';
 import { getLibraryIcon } from '~/utils/items';
-import { deviceProfileStore, socketStore } from '~/store';
+import { deviceProfileStore, socketStore, pageStore } from '~/store';
 import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
@@ -139,7 +155,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, socketStore),
+    ...mapStores(deviceProfileStore, socketStore, pageStore),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
@@ -150,7 +166,6 @@ export default Vue.extend({
           };
         })
     }),
-    ...mapState('page', ['opaqueAppBar', 'navDrawer', 'isScrolled']),
     ...mapState('user', ['accessToken']),
     searchQuery: {
       get(): string {
@@ -179,9 +194,9 @@ export default Vue.extend({
   watch: {
     $route(to): void {
       if (to.fullPath.includes('fullscreen')) {
-        this.showNavDrawer({ showNavDrawer: false });
-      } else if (!this.navDrawer) {
-        this.showNavDrawer({ showNavDrawer: true });
+        this.page.navDrawer = false;
+      } else if (!this.page.navDrawer) {
+        this.page.navDrawer = true;
       }
     },
     '$vuetify.breakpoint.mobile': {
@@ -205,11 +220,10 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('userViews', ['refreshUserViews']),
-    ...mapActions('page', ['showNavDrawer', 'setIsScrolled']),
     ...mapActions('search', ['setSearchQuery']),
     setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
-      this.setIsScrolled({ scrolled: window.scrollY > 10 });
+      this.page.isScrolled = window.scrollY > 10;
     },
     connectToWebSocket(): void {
       const socketParams = stringify({

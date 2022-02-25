@@ -264,7 +264,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { mapActions, mapGetters } from 'vuex';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -276,6 +277,7 @@ import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
@@ -308,12 +310,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
+    ...mapStores(pageStore),
     ...mapGetters('items', ['getItem']),
-    ...mapState('page', ['title']),
     item(): BaseItemDto {
       return this.getItem(this.itemId);
     },
@@ -376,11 +378,9 @@ export default Vue.extend({
   watch: {
     item: {
       handler(val: BaseItemDto): void {
-        this.setPageTitle({ title: val.Name });
+        this.page.title = val.Name || '';
 
-        const hash = this.getBlurhash(val, ImageType.Backdrop);
-
-        this.setBackdrop({ hash });
+        this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
       },
       immediate: true,
       deep: true
@@ -392,8 +392,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['play']),
-    ...mapActions('page', ['setPageTitle', 'setBackdrop'])
+    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

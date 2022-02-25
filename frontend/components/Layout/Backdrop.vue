@@ -4,7 +4,7 @@
       v-if="blurhash"
       :key="`backdrop-${blurhash}`"
       class="backdrop"
-      :style="`--o:${opacity}`"
+      :style="`--o:${page.backdrop.opacity}`"
     >
       <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
     </div>
@@ -13,16 +13,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   computed: {
-    ...mapState('page', ['backdrop']),
-    blurhash(): string {
-      return this.backdrop.blurhash;
-    },
-    opacity(): number {
-      return this.backdrop.opacity;
+    ...mapStores(pageStore),
+    blurhash(): string | null | undefined {
+      return this.page.backdrop.blurhash;
     }
   }
 });

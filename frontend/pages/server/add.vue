@@ -13,24 +13,22 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
   auth: false,
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
-  computed: {
-    ...mapState('page', ['title'])
-  },
   mounted() {
-    this.setPageTitle({ title: this.$t('login.addServer') });
+    this.page.title = this.$t('login.addServer');
   },
-  methods: {
-    ...mapActions('page', ['setPageTitle'])
+  computed: {
+    ...mapStores(pageStore)
   }
 });
 </script>

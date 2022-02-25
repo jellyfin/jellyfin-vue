@@ -25,11 +25,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/client-axios';
 import { mapGetters, mapActions, mapState } from 'vuex';
 import Swiper, { SwiperOptions } from 'swiper';
 import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper],
@@ -58,6 +60,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(pageStore),
     ...mapGetters('playbackManager', ['getQueueItems', 'getCurrentItem']),
     ...mapState('playbackManager', ['currentItemIndex', 'status']),
     backdropHash: {
@@ -79,7 +82,7 @@ export default Vue.extend({
   watch: {
     currentItemIndex(newIndex: number): void {
       this.swiper?.slideTo(newIndex);
-      this.setBackdrop({ hash: this.backdropHash });
+      this.page.backdrop.blurhash = this.backdropHash;
     },
     getQueueItems(): void {
       this.update();
@@ -96,7 +99,7 @@ export default Vue.extend({
   created() {
     this.swiperOptions.initialSlide = this.currentItemIndex;
     requestAnimationFrame(() => {
-      this.setBackdrop({ hash: this.backdropHash });
+      this.page.backdrop.blurhash = this.backdropHash;
     });
   },
   mounted() {
@@ -108,7 +111,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
-    ...mapActions('page', ['setBackdrop', 'clearBackdrop']),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
 
@@ -117,7 +119,7 @@ export default Vue.extend({
       }
     },
     onImageError(): void {
-      this.clearBackdrop();
+      this.page.clearBackdrop();
     },
     update(): void {
       this.swiper?.update();

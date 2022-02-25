@@ -29,7 +29,7 @@ import pickBy from 'lodash/pickBy';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
-import { clientSettingsStore } from '~/store';
+import { clientSettingsStore, pageStore } from '~/store';
 
 export default Vue.extend({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
@@ -172,12 +172,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapStores(clientSettingsStore),
-    ...mapState('page', ['title']),
+    ...mapStores(clientSettingsStore, pageStore),
     ...mapState('userViews', ['views'])
   },
   mounted() {
@@ -185,14 +184,13 @@ export default Vue.extend({
       this.$fetch();
     }
 
-    this.setPageTitle({ title: this.$t('home') });
-    this.setAppBarOpacity({ opaqueAppBar: false });
+    this.page.title = this.$t('home');
+    this.page.opaqueAppBar = false;
   },
   destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
+    this.pageopaqueAppBar = true;
   },
   methods: {
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity']),
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapGetters('userViews', ['getUserViews'])
   }

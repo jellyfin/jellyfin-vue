@@ -82,8 +82,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapState } from 'vuex';
-import { deviceProfileStore, snackbarStore } from '~/store';
+import { deviceProfileStore, snackbarStore, pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -96,12 +95,11 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, snackbarStore),
-    ...mapState('page', ['title']),
+    ...mapStores(deviceProfileStore, snackbarStore, pageStore),
     heading(): string {
       switch (this.wizardStage) {
         case 1:
@@ -118,11 +116,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.setPageTitle({ title: this.$t('wizard.setupWizard') });
+    this.page.title = this.$t('wizard.setupWizard');
     this.deviceProfile.setDeviceProfile();
   },
   methods: {
-    ...mapActions('page', ['setPageTitle']),
     async completeWizard(): Promise<void> {
       try {
         await this.$api.startup.completeWizard();

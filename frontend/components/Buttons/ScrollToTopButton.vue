@@ -1,7 +1,7 @@
 <template>
   <v-fab-transition>
     <v-btn
-      v-show="isScrolled"
+      v-show="page.isScrolled"
       color="primary"
       fab
       dark
@@ -17,16 +17,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
-  computed: {
-    ...mapState('page', ['isScrolled'])
-  },
   methods: {
     scrollToTop(): void {
       window.scrollTo({ top: 0 });
     }
+  },
+  computed: {
+    ...mapStores(pageStore)
   }
 });
 </script>

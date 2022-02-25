@@ -47,10 +47,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   validate(ctx: Context) {
@@ -83,12 +85,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
+    ...mapStores(pageStore),
     ...mapGetters('items', ['getItem', 'getItems']),
-    ...mapState('page', ['title']),
     genre(): BaseItemDto {
       return this.getItem(this.itemId);
     },
@@ -97,17 +99,14 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.setAppBarOpacity({ opaqueAppBar: true });
-    this.setPageTitle({
-      title: this.genre.Name
-    });
+    this.page.opaqueAppBar = true;
+    this.page.title = this.genre.Name || '';
   },
   destroyed() {
-    this.setAppBarOpacity({ opaqueAppBar: false });
+    this.page.opaqueAppBar = false;
   },
   methods: {
-    ...mapActions('playbackManager', ['play']),
-    ...mapActions('page', ['setPageTitle', 'setAppBarOpacity'])
+    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>
