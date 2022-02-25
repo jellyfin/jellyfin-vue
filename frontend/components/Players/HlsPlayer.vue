@@ -100,7 +100,9 @@ export default Vue.extend({
   },
   watch: {
     getCurrentItem(newItem, oldItem): void {
-      if (newItem !== oldItem) this.getPlaybackUrl();
+      if (newItem !== oldItem) {
+        this.getPlaybackUrl();
+      }
     },
     source(newSource): void {
       this.destroy();
@@ -343,7 +345,9 @@ export default Vue.extend({
       }
     },
     onHlsError(_event: Events.ERROR, data: ErrorData): void {
-      if (!this.hls) return;
+      if (!this.hls) {
+        return;
+      }
 
       if (data.fatal) {
         switch (data.type) {
