@@ -251,7 +251,6 @@ export default Vue.extend({
       'getNextItem',
       'getCurrentlyPlayingMediaType'
     ]),
-    ...mapState('clientSettings', ['darkMode']),
     ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
     isPlaying(): boolean {
       return this.status !== PlaybackStatus.Stopped;

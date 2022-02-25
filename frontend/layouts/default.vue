@@ -116,11 +116,10 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
-import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
-import { AppState } from '~/store';
 import { getLibraryIcon } from '~/utils/items';
 import settingsHelper from '~/mixins/settingsHelper';
 
