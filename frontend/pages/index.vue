@@ -24,12 +24,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters, mapState } from 'vuex';
 import pickBy from 'lodash/pickBy';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { HomeSection } from '~/store/homeSection';
-import { clientSettingsStore, pageStore } from '~/store';
+import { clientSettingsStore, pageStore, userViewsStore } from '~/store';
 
 export default Vue.extend({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
@@ -100,17 +99,14 @@ export default Vue.extend({
           });
           break;
         }
-        case 'latestmedia': {
-          const latestMediaSections = [];
+        case 'latestmedia':
+          {
+            const latestMediaSections = [];
 
-          let userViews: BaseItemDto[] = this.views;
+            if (!this.userViews.views) {
+              this.userViews.refreshUserViews();
+            }
 
-          if (!userViews.length) {
-            await this.$store.dispatch('userViews/refreshUserViews');
-            userViews = await this.views;
-          }
-
-          if (userViews) {
             const excludeViewTypes = [
               'playlists',
               'livetv',
@@ -118,7 +114,7 @@ export default Vue.extend({
               'channels'
             ];
 
-            for (const userView of userViews) {
+            for (const userView of this.userViews.views) {
               if (
                 excludeViewTypes.includes(userView.CollectionType as string)
               ) {
@@ -138,7 +134,6 @@ export default Vue.extend({
           }
 
           break;
-        }
         case 'resume':
           homeSections.push({
             name: 'continueWatching',
@@ -176,8 +171,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(clientSettingsStore, pageStore),
-    ...mapState('userViews', ['views'])
+    ...mapStores(clientSettingsStore, pageStore, userViewsStore)
   },
   mounted() {
     if (this.$fetchState.timestamp <= Date.now() - 30000) {
@@ -188,11 +182,7 @@ export default Vue.extend({
     this.page.opaqueAppBar = false;
   },
   destroyed() {
-    this.pageopaqueAppBar = true;
-  },
-  methods: {
-    ...mapActions('userViews', ['refreshUserViews']),
-    ...mapGetters('userViews', ['getUserViews'])
+    this.page.opaqueAppBar = true;
   }
 });
 </script>

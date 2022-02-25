@@ -133,12 +133,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import { mapActions, mapState } from 'vuex';
 import { mapStores } from 'pinia';
 import { getLibraryIcon } from '~/utils/items';
-import { deviceProfileStore, socketStore, pageStore } from '~/store';
+import {
+  deviceProfileStore,
+  socketStore,
+  pageStore,
+  userViewsStore
+} from '~/store';
 import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
@@ -155,17 +159,10 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, socketStore, pageStore),
-    ...mapState<AppState>({
-      libraryItems: (state: AppState) =>
-        state.userViews.views.map((view: BaseItemDto) => {
-          return {
-            icon: getLibraryIcon(view.CollectionType),
-            title: view.Name,
-            to: `/library/${view.Id}`
-          };
-        })
-    }),
+    ...mapStores(deviceProfileStore, socketStore, pageStore, userViewsStore),
+    libraryItems() {
+      return this.userViews.getNavigationDrawerItems;
+    },
     ...mapState('user', ['accessToken']),
     searchQuery: {
       get(): string {
@@ -209,7 +206,7 @@ export default Vue.extend({
     }
   },
   beforeMount() {
-    this.refreshUserViews();
+    this.userViews.refreshUserViews();
     this.connectToWebSocket();
   },
   mounted() {
@@ -219,7 +216,6 @@ export default Vue.extend({
     window.removeEventListener('scroll', this.setScroll);
   },
   methods: {
-    ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('search', ['setSearchQuery']),
     setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
