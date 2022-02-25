@@ -57,7 +57,6 @@ export function isPerson(
 /**
  * Checks if the string is a valid MD5 hash.
  *
- * @exports
  * @param {string} input - The string to check for validity
  * @returns {boolean} - A boolean representing the validity of the input string
  */

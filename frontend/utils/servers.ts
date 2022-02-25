@@ -10,7 +10,9 @@ export const urlRegEx = /^https?:\/\/.+/;
  * @returns {string[]} list of url strings. (default: empty array)
  */
 export function parseServerListString(value: string | undefined): string[] {
-  if (!value) return [];
+  if (!value) {
+    return [];
+  }
 
   const serverUrlList: string[] = [];
 

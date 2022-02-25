@@ -15,7 +15,9 @@ const appInitPlugin: Plugin = async (context) => {
       (lsServer: ServerInfo) => lsServer.address === serverUrl
     );
 
-    if (server) fullInfoServers.push(server);
+    if (server) {
+      fullInfoServers.push(server);
+    }
 
     return !server;
   });
