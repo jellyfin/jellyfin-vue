@@ -368,7 +368,7 @@ export default Vue.extend({
       this.setNextTrack();
     },
     handleKeyPress(e: KeyboardEvent): void {
-      if (!this.isMinimized && this.isPlaying) {
+      if (!this.isMinimized) {
         const focusEl = document.activeElement;
 
         let spaceEnabled = false;
@@ -409,7 +409,7 @@ export default Vue.extend({
             this.toggleMute();
             break;
         }
-      } else if (this.isMinimized && this.isPlaying) {
+      } else {
         switch (e.key) {
           case 'f':
             if (this.getCurrentlyPlayingMediaType === 'Video') {
