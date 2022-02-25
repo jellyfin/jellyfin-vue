@@ -122,7 +122,7 @@ import { stringify } from 'qs';
 import { mapActions, mapState } from 'vuex';
 import { mapStores } from 'pinia';
 import { getLibraryIcon } from '~/utils/items';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, socketStore } from '~/store';
 import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
@@ -139,7 +139,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
+    ...mapStores(deviceProfileStore, socketStore),
     ...mapState<AppState>({
       libraryItems: (state: AppState) =>
         state.userViews.views.map((view: BaseItemDto) => {
@@ -207,7 +207,6 @@ export default Vue.extend({
     ...mapActions('userViews', ['refreshUserViews']),
     ...mapActions('page', ['showNavDrawer', 'setIsScrolled']),
     ...mapActions('search', ['setSearchQuery']),
-    ...mapActions('socket', ['connectSocket']),
     setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.setIsScrolled({ scrolled: window.scrollY > 10 });
@@ -221,8 +220,7 @@ export default Vue.extend({
 
       url = url.replace('https:', 'wss:');
       url = url.replace('http:', 'ws:');
-
-      this.connectSocket({ url });
+      this.socket.connect(url);
     }
   }
 });

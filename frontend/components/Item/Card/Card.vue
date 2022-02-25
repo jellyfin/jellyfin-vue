@@ -83,11 +83,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
+import { socketStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -135,12 +137,11 @@ export default Vue.extend({
   },
   data() {
     return {
-      refreshProgress: 0,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {}
+      refreshProgress: 0
     };
   },
   computed: {
+    ...mapStores(socketStore),
     cardType: {
       get(): string {
         // Otherwise, figure out the shape based on the type of the item
@@ -242,19 +243,17 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+  watch: {
+    socket() {
       if (
-        mutation.type === 'socket/ONMESSAGE' &&
-        state.socket.messageType === 'RefreshProgress' &&
-        state.socket.messageData.ItemId === this.item.Id
+        this.socket.messageType === 'RefreshProgress' &&
+        // @ts-expect-error - No typings for WebSocket messages
+        this.socket.messageData?.ItemId === this.item.Id
       ) {
-        this.refreshProgress = state.socket.messageData.Progress;
+        // @ts-expect-error - No typings for WebSocket messages
+        this.refreshProgress = this.socket.messageData.Progress;
       }
-    });
-  },
-  destroyed() {
-    this.unsubscribe();
+    }
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
