@@ -1,30 +1,7 @@
-import { ActionTree, MutationTree } from 'vuex';
 import { v4 as uuidv4 } from 'uuid';
+import { defineStore } from 'pinia';
 import { version } from '~/package.json';
 import { BrowserDetector } from '~/plugins/nuxt/browserDetectionPlugin';
-
-export interface DeviceState {
-  deviceId: string;
-  deviceName: string;
-  clientVersion: string;
-  clientName: string;
-}
-
-export const defaultState = (): DeviceState => ({
-  deviceId: '',
-  deviceName: '',
-  clientVersion: '',
-  clientName: ''
-});
-
-export const state = defaultState;
-
-interface MutationPayload {
-  deviceId: string;
-  deviceName: string;
-  clientVersion: string;
-  clientName: string;
-}
 
 /**
  * Generates a random string to be used for the deviceId
@@ -87,28 +64,28 @@ function getClientName(): string {
   return 'Jellyfin Web (Vue)';
 }
 
-export const mutations: MutationTree<DeviceState> = {
-  SET_PROFILE(state: DeviceState, payload: MutationPayload) {
-    state.deviceId = payload.deviceId;
-    state.deviceName = payload.deviceName;
-    state.clientVersion = payload.clientVersion;
-    state.clientName = payload.clientName;
-  },
-  CLEAR_PROFILE(state: DeviceState) {
-    Object.assign(state, defaultState());
-  }
-};
+export interface DeviceState {
+  deviceId: string;
+  deviceName: string;
+  clientVersion: string;
+  clientName: string;
+}
 
-export const actions: ActionTree<DeviceState, DeviceState> = {
-  setDeviceProfile({ commit }) {
-    commit('SET_PROFILE', {
-      deviceId: getDeviceId(),
-      deviceName: getDeviceName(this.$browser),
-      clientVersion: getClientVersion(),
-      clientName: getClientName()
-    });
+export const deviceProfileStore = defineStore('deviceProfile', {
+  state: () => {
+    return {
+      deviceId: '',
+      deviceName: '',
+      clientVersion: '',
+      clientName: ''
+    } as DeviceState;
   },
-  clearDeviceProfile({ commit }) {
-    commit('CLEAR_PROFILE');
+  actions: {
+    setDeviceProfile(): void {
+      this.deviceId = getDeviceId();
+      this.deviceName = getDeviceName(this.$nuxt.$browser);
+      this.clientVersion = getClientVersion();
+      this.clientName = getClientName();
+    }
   }
-};
+});
