@@ -63,7 +63,8 @@ export default Vue.extend({
     // Filter for valid sections in Jellyfin Vue
     // TODO: Implement custom section order
     let homeSectionsArray = pickBy(
-      this.CustomPrefs,
+      // @ts-expect-error - No typings for this
+      this.clientSettings.CustomPrefs,
       (value: string, key: string) => {
         return (
           value &&
@@ -177,7 +178,6 @@ export default Vue.extend({
   computed: {
     ...mapStores(clientSettingsStore),
     ...mapState('page', ['title']),
-    ...mapState('clientSettings', ['CustomPrefs']),
     ...mapState('userViews', ['views'])
   },
   mounted() {

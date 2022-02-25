@@ -53,10 +53,12 @@
 </template>
 
 <script lang="ts">
-import isEmpty from 'lodash/isEmpty';
 import Vue from 'vue';
+import isEmpty from 'lodash/isEmpty';
+import { mapStores } from 'pinia';
 import { mapActions, mapState } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
+import { deviceProfileStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -93,15 +95,14 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('page', ['title']),
-    ...mapState('servers', ['serverUsed'])
+    ...mapStores(deviceProfileStore),
+    ...mapState('page', ['title'])
   },
   mounted() {
     this.setPageTitle({ title: this.$t('login.login') });
   },
   methods: {
     ...mapActions('page', ['setPageTitle']),
-    ...mapActions('deviceProfile', ['setDeviceProfile']),
     ...mapActions('snackbar', ['pushSnackbarMessage']),
     ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
@@ -110,7 +111,7 @@ export default Vue.extend({
     async setCurrentUser(user: UserDto): Promise<void> {
       if (!user.HasPassword) {
         // If the user doesn't have a password, avoid showing the password form
-        await this.setDeviceProfile();
+        this.deviceProfile.setDeviceProfile();
         await this.$auth.loginWith('jellyfin', {
           username: user.Name,
           password: '',
