@@ -53,11 +53,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, itemHelper],
@@ -106,7 +108,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions('playbackManager', ['play']),
-    ...mapActions('page', ['setBackdrop']),
     getRelatedItem(item: BaseItemDto): BaseItemDto {
       const rItem = this.relatedItems[this.items.indexOf(item)];
 
@@ -127,12 +128,15 @@ export default Vue.extend({
       if (this.pageBackdrop) {
         const hash = this.getBlurhash(this.items[index], ImageType.Backdrop);
 
-        this.setBackdrop({ hash });
+        this.page.backdrop.blurhash = hash;
       }
     },
     onSlideChange(index: number): void {
       this.updateBackdrop(index);
     }
+  },
+  computed: {
+    ...mapStores(pageStore)
   }
 });
 </script>

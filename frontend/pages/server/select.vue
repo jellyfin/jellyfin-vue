@@ -29,7 +29,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { mapState } from 'vuex';
+import { pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -41,12 +43,12 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapState('servers', ['serverList']),
-    ...mapState('page', ['title'])
+    ...mapStores(pageStore),
+    ...mapState('servers', ['serverList'])
   },
   watch: {
     serverList(): void {
@@ -56,10 +58,7 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.setPageTitle({ title: this.$t('login.selectServer') });
-  },
-  methods: {
-    ...mapActions('page', ['setPageTitle'])
+    this.page.title = this.$t('login.selectServer');
   }
 });
 </script>

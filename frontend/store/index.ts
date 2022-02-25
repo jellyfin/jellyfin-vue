@@ -12,3 +12,4 @@ export * from './clientSettings';
 export * from './deviceProfile';
 export * from './snackbar';
 export * from './socket';
+export * from './page';

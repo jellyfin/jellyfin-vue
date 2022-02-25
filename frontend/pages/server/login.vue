@@ -56,9 +56,9 @@
 import Vue from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
@@ -91,18 +91,16 @@ export default Vue.extend({
   },
   head() {
     return {
-      title: this.title
+      title: this.page.title
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
-    ...mapState('page', ['title'])
+    ...mapStores(deviceProfileStore, pageStore)
   },
   mounted() {
-    this.setPageTitle({ title: this.$t('login.login') });
+    this.page.title = this.$t('login.login');
   },
   methods: {
-    ...mapActions('page', ['setPageTitle']),
     ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
