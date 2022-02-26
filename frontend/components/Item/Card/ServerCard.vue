@@ -2,8 +2,8 @@
   <v-card :loading="loading" class="d-flex justify-center">
     <v-row>
       <v-col>
-        <v-card-title>{{ serverInfo.publicInfo.ServerName }}</v-card-title>
-        <v-card-subtitle>{{ serverInfo.address }}</v-card-subtitle>
+        <v-card-title>{{ serverInfo.ServerName }}</v-card-title>
+        <v-card-subtitle>{{ serverInfo.Address }}</v-card-subtitle>
       </v-col>
       <v-card-actions class="ml-auto mr-2">
         <v-btn icon disabled>
@@ -26,16 +26,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
-import { PublicSystemInfo } from '@jellyfin/client-axios';
+import { mapStores } from 'pinia';
+import { authStore, ServerInfo } from '~/store';
 
 export default Vue.extend({
   props: {
     serverInfo: {
-      type: Object as () => {
-        address: string;
-        publicInfo: PublicSystemInfo;
-      },
+      type: Object as () => ServerInfo,
       required: true
     }
   },
@@ -45,20 +42,22 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('servers', ['connectServer', 'removeServer']),
     async setServer(): Promise<void> {
       this.loading = true;
 
       try {
-        await this.connectServer(this.serverInfo.address);
+        await this.auth.connectServer(this.serverInfo.Address);
         this.$router.push('/server/login');
       } finally {
         this.loading = false;
       }
     },
-    removeServerFromStore(): void {
-      this.removeServer(this.serverInfo);
+    async removeServerFromStore(): Promise<void> {
+      await this.auth.deleteServer(this.serverInfo.Address);
     }
+  },
+  computed: {
+    ...mapStores(authStore)
   }
 });
 </script>

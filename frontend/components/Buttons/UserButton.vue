@@ -34,6 +34,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
+import { authStore } from '~/store';
 
 interface MenuItem {
   title: string;
@@ -48,10 +50,11 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(authStore),
     menuItems(): MenuItem[] {
       const menuItems = [];
 
-      if (this.$auth.$state.user?.Policy?.IsAdministrator) {
+      if (this.$auth.user?.Policy?.IsAdministrator) {
         menuItems.push({
           title: this.$t('metadataEditor'),
           icon: 'mdi-pencil',
@@ -73,16 +76,11 @@ export default Vue.extend({
         title: this.$t('logout'),
         icon: 'mdi-logout',
         action: (): void => {
-          this.logoutUser();
+          this.auth.logoutUser(true);
         }
       });
 
       return menuItems;
-    }
-  },
-  methods: {
-    logoutUser(): void {
-      this.$auth.logout();
     }
   }
 });

@@ -18,7 +18,6 @@ import { pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
-  auth: false,
   head() {
     return {
       title: this.page.title

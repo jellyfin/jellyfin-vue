@@ -19,7 +19,6 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@types/nuxtjs__auth",
       "@nuxtjs/axios",
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
