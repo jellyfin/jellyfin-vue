@@ -26,7 +26,6 @@ import { mapStores } from 'pinia';
 import { snackbarStore } from '~/store';
 
 export default Vue.extend({
-  auth: false,
   data() {
     return {
       UICulture: 'en-GB',

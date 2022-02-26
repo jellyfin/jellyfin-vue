@@ -16,7 +16,7 @@ export const userViewsStore = defineStore('userViews', {
     async refreshUserViews(): Promise<void> {
       try {
         const userViewsResponse = await this.$nuxt.$api.userViews.getUserViews({
-          userId: this.$nuxt.$auth.user?.Id
+          userId: this.$nuxt.$auth.user?.Id as string
         });
 
         this.views = userViewsResponse.data.Items || [];

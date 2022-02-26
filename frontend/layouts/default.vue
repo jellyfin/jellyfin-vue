@@ -134,10 +134,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { stringify } from 'qs';
-import { mapActions, mapState } from 'vuex';
 import { mapStores } from 'pinia';
-import { getLibraryIcon } from '~/utils/items';
 import {
+  authStore,
   deviceProfileStore,
   socketStore,
   pageStore,
@@ -159,11 +158,16 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, socketStore, pageStore, userViewsStore),
+    ...mapStores(
+      authStore,
+      deviceProfileStore,
+      socketStore,
+      pageStore,
+      userViewsStore
+    ),
     libraryItems() {
       return this.userViews.getNavigationDrawerItems;
     },
-    ...mapState('user', ['accessToken']),
     searchQuery: {
       get(): string {
         return this.$route.query.q?.toString();
@@ -216,14 +220,13 @@ export default Vue.extend({
     window.removeEventListener('scroll', this.setScroll);
   },
   methods: {
-    ...mapActions('search', ['setSearchQuery']),
     setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
       this.page.isScrolled = window.scrollY > 10;
     },
     connectToWebSocket(): void {
       const socketParams = stringify({
-        api_key: this.accessToken,
+        api_key: this.auth.getUserAccessToken(this.auth.getCurrentUser),
         deviceId: this.deviceProfile.deviceId
       });
       let url = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;

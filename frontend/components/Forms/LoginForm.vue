@@ -66,9 +66,8 @@
 import Vue from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
-import { deviceProfileStore } from '~/store';
+import { authStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -96,7 +95,6 @@ export default Vue.extend({
     };
   },
   methods: {
-    ...mapActions('user', ['loginRequest']),
     async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
         // If we have a user from the public user selector, set it as login
@@ -104,11 +102,13 @@ export default Vue.extend({
       }
 
       this.loading = true;
-      this.deviceProfile.setDeviceProfile();
 
       try {
-        await this.loginRequest(this.login);
-        this.$router.replace('/');
+        await this.auth.loginUser(
+          this.login.username,
+          this.login.password,
+          this.login.rememberMe
+        );
       } catch (e) {
       } finally {
         this.loading = false;
@@ -119,7 +119,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(deviceProfileStore)
+    ...mapStores(authStore)
   }
 });
 </script>
