@@ -16,8 +16,8 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
-import { HomeSection } from '~/store/homeSection';
+import { mapStores } from 'pinia';
+import { HomeSection, homeSectionStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -32,39 +32,35 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('homeSection', ['getHomeSectionContent']),
+    ...mapStores(homeSectionStore),
     items(): BaseItemDto[] {
-      return this.getHomeSectionContent(this.section);
+      return this.homeSection.getHomeSectionContent(this.section);
     }
   },
   async beforeMount() {
-    if (this.getHomeSectionContent(this.section)) {
+    if (this.homeSection.getHomeSectionContent(this.section)) {
       this.loading = false;
     }
 
     switch (this.section.type) {
       case 'libraries': {
-        await this.getLibraries();
+        await this.homeSection.getLibraries();
         break;
       }
       case 'resume': {
-        await this.getVideoResumes();
+        await this.homeSection.getVideoResumes();
         break;
       }
       case 'resumeaudio': {
-        await this.getAudioResumes();
+        await this.homeSection.getAudioResumes();
         break;
       }
       case 'upnext': {
-        await this.getUpNext({
-          parentId: this.section.libraryId
-        });
+        await this.homeSection.getUpNext(this.section.libraryId);
         break;
       }
       case 'latestmedia': {
-        await this.getLatestMedia({
-          parentId: this.section.libraryId
-        });
+        await this.homeSection.getLatestMedia(this.section.libraryId);
         break;
       }
       default:
@@ -72,15 +68,6 @@ export default Vue.extend({
     }
 
     this.loading = false;
-  },
-  methods: {
-    ...mapActions('homeSection', {
-      getVideoResumes: 'getVideoResumes',
-      getAudioResumes: 'getAudioResumes',
-      getUpNext: 'getUpNext',
-      getLatestMedia: 'getLatestMedia',
-      getLibraries: 'getLibraries'
-    })
   }
 });
 </script>

@@ -1,12 +1,7 @@
 import Vue from 'vue';
-import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import {
-  BaseItemDto,
-  BaseItemDtoQueryResult,
-  ImageType,
-  ItemFields
-} from '@jellyfin/client-axios';
-import { AppState } from './index';
+import { defineStore } from 'pinia';
+import { userViewsStore, snackbarStore } from '.';
+import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes } from '~/utils/items';
 
 export interface HomeSection {
@@ -29,240 +24,146 @@ export interface HomeSectionState {
   latestMedia: LatestMedia;
 }
 
-const defaultState = (): HomeSectionState => ({
-  libraries: [],
-  audioResumes: [],
-  videoResumes: [],
-  upNext: [],
-  latestMedia: {}
+export const homeSectionStore = defineStore('homeSection', {
+  state: () => {
+    return {
+      libraries: [],
+      audioResumes: [],
+      videoResumes: [],
+      upNext: [],
+      latestMedia: {}
+    } as HomeSectionState;
+  },
+  actions: {
+    async getLibraries(): Promise<void> {
+      const userViews = userViewsStore();
+      userViews.refreshUserViews();
+
+      this.libraries = Array.from(userViews.views);
+    },
+    async getAudioResumes(): Promise<void> {
+      const snackbar = snackbarStore();
+
+      try {
+        const audioResumes = (
+          await this.$nuxt.$api.items.getResumeItems({
+            userId: this.$nuxt.$auth.user.Id,
+            limit: 24,
+            fields: [ItemFields.PrimaryImageAspectRatio],
+            imageTypeLimit: 1,
+            enableImageTypes: [
+              ImageType.Primary,
+              ImageType.Backdrop,
+              ImageType.Thumb
+            ],
+            enableTotalRecordCount: false,
+            mediaTypes: ['Audio']
+          })
+        ).data.Items;
+
+        if (audioResumes) {
+          this.audioResumes = audioResumes;
+        }
+      } catch (err) {
+        snackbar.push(err as string, 'error');
+      }
+    },
+    async getVideoResumes(): Promise<void> {
+      const snackbar = snackbarStore();
+
+      try {
+        const videoResumes = (
+          await this.$nuxt.$api.items.getResumeItems({
+            userId: this.$nuxt.$auth.user.Id,
+            limit: 24,
+            fields: [ItemFields.PrimaryImageAspectRatio],
+            imageTypeLimit: 1,
+            enableImageTypes: [
+              ImageType.Primary,
+              ImageType.Backdrop,
+              ImageType.Thumb
+            ],
+            enableTotalRecordCount: false,
+            mediaTypes: ['Video']
+          })
+        ).data.Items;
+
+        if (videoResumes) {
+          this.videoResumes = videoResumes;
+        }
+      } catch (err) {
+        snackbar.push(err as string, 'error');
+      }
+    },
+    async getUpNext(libraryId: string): Promise<void> {
+      const snackbar = snackbarStore();
+
+      try {
+        const upNext = (
+          await this.$nuxt.$api.tvShows.getNextUp({
+            userId: this.$nuxt.$auth.user.Id,
+            limit: 24,
+            fields: [ItemFields.PrimaryImageAspectRatio],
+            imageTypeLimit: 1,
+            enableImageTypes: [
+              ImageType.Primary,
+              ImageType.Backdrop,
+              ImageType.Thumb
+            ],
+            parentId: libraryId
+          })
+        ).data.Items;
+
+        if (upNext) {
+          this.upNext = upNext;
+        }
+      } catch (err) {
+        snackbar.push(err as string, 'error');
+      }
+    },
+    async getLatestMedia(libraryId: string): Promise<void> {
+      const snackbar = snackbarStore();
+
+      try {
+        const latestMedia = (
+          await this.$nuxt.$api.userLibrary.getLatestMedia({
+            userId: this.$nuxt.$auth.user.Id,
+            limit: 24,
+            fields: [ItemFields.PrimaryImageAspectRatio],
+            imageTypeLimit: 1,
+            enableImageTypes: [
+              ImageType.Primary,
+              ImageType.Backdrop,
+              ImageType.Thumb
+            ],
+            parentId: libraryId
+          })
+        ).data;
+
+        Vue.set(this.latestMedia, libraryId, latestMedia);
+      } catch (err) {
+        snackbar.push(err as string, 'error');
+      }
+    }
+  },
+  getters: {
+    getHomeSectionContent:
+      (state) =>
+      (section: HomeSection): BaseItemDto[] => {
+        switch (section.type) {
+          case 'libraries':
+            return state.libraries;
+          case 'resume':
+            return state.videoResumes;
+          case 'resumeaudio':
+            return state.audioResumes;
+          case 'upnext':
+            return state.upNext;
+          case 'latestmedia':
+            return state.latestMedia[section.libraryId];
+          default:
+            return [];
+        }
+      }
+  }
 });
-
-export const state = defaultState;
-
-type MutationPayload = {
-  libraries: BaseItemDto[];
-  audioResumes: BaseItemDto[];
-  videoResumes: BaseItemDto[];
-  upNext: BaseItemDto[];
-  latestMedia: BaseItemDto[];
-  libraryId?: string;
-};
-
-export const getters: GetterTree<HomeSectionState, AppState> = {
-  getHomeSectionContent:
-    (state) =>
-    (section: HomeSection): BaseItemDto[] => {
-      switch (section.type) {
-        case 'libraries':
-          return state.libraries;
-        case 'resume':
-          return state.videoResumes;
-        case 'resumeaudio':
-          return state.audioResumes;
-        case 'upnext':
-          return state.upNext;
-        case 'latestmedia':
-          return state.latestMedia[section.libraryId];
-        default:
-          return [];
-      }
-    }
-};
-
-export const mutations: MutationTree<HomeSectionState> = {
-  ADD_LIBRARIES(state: HomeSectionState, { libraries }: MutationPayload) {
-    state.libraries = libraries;
-  },
-  ADD_AUDIO_RESUMES(
-    state: HomeSectionState,
-    { audioResumes }: MutationPayload
-  ) {
-    state.audioResumes = audioResumes;
-  },
-  ADD_VIDEO_RESUMES(
-    state: HomeSectionState,
-    { videoResumes }: MutationPayload
-  ) {
-    state.videoResumes = videoResumes;
-  },
-  ADD_UP_NEXT(state: HomeSectionState, { upNext }: MutationPayload) {
-    state.upNext = upNext;
-  },
-  ADD_LATEST_MEDIA(
-    state: HomeSectionState,
-    { latestMedia, libraryId }: MutationPayload
-  ) {
-    if (!libraryId) {
-      throw new Error('libraryId is undefined');
-    }
-
-    Vue.set(state.latestMedia, libraryId, latestMedia);
-  },
-  CLEAR_HOME_SECTION(state: HomeSectionState) {
-    Object.assign(state, defaultState());
-  }
-};
-export const actions: ActionTree<HomeSectionState, AppState> = {
-  async getLibraries({ rootState, dispatch, commit }) {
-    await dispatch('userViews/refreshUserViews', null, { root: true });
-
-    commit('ADD_LIBRARIES', { libraries: rootState.userViews.views });
-  },
-  async getAudioResumes({ dispatch }) {
-    try {
-      const { data } = await this.$api.items.getResumeItems({
-        userId: this.$auth.user.Id,
-        limit: 24,
-        fields: [ItemFields.PrimaryImageAspectRatio],
-        imageTypeLimit: 1,
-        enableImageTypes: [
-          ImageType.Primary,
-          ImageType.Backdrop,
-          ImageType.Thumb
-        ],
-        enableTotalRecordCount: false,
-        mediaTypes: ['Audio']
-      });
-
-      dispatch('getAudioResumesSuccess', data);
-    } catch (err) {
-      dispatch('getAudioResumesFailure', err);
-    }
-  },
-  getAudioResumesSuccess({ commit }, response: BaseItemDtoQueryResult) {
-    commit('ADD_AUDIO_RESUMES', {
-      audioResumes: response.Items
-    });
-  },
-  getAudioResumesFailure: async ({ dispatch }, error) => {
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: error.message,
-        color: 'error'
-      },
-      {
-        root: true
-      }
-    );
-  },
-  async getVideoResumes({ dispatch }) {
-    try {
-      const { data } = await this.$api.items.getResumeItems({
-        userId: this.$auth.user.Id,
-        limit: 24,
-        fields: [ItemFields.PrimaryImageAspectRatio],
-        imageTypeLimit: 1,
-        enableImageTypes: [
-          ImageType.Primary,
-          ImageType.Backdrop,
-          ImageType.Thumb
-        ],
-        enableTotalRecordCount: false,
-        mediaTypes: ['Video']
-      });
-
-      dispatch('getVideoResumesSuccess', data);
-    } catch (err) {
-      dispatch('getVideoResumesFailure', err);
-    }
-  },
-  getVideoResumesSuccess({ commit }, response: BaseItemDtoQueryResult) {
-    commit('ADD_VIDEO_RESUMES', {
-      videoResumes: response.Items
-    });
-  },
-  getVideoResumesFailure: async ({ dispatch }, error) => {
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: error.message,
-        color: 'error'
-      },
-      {
-        root: true
-      }
-    );
-  },
-  async getUpNext({ dispatch }, { parentId }: { parentId: string }) {
-    try {
-      const { data } = await this.$api.tvShows.getNextUp({
-        userId: this.$auth.user.Id,
-        limit: 24,
-        fields: [ItemFields.PrimaryImageAspectRatio],
-        imageTypeLimit: 1,
-        enableImageTypes: [
-          ImageType.Primary,
-          ImageType.Backdrop,
-          ImageType.Thumb
-        ],
-        parentId
-      });
-
-      dispatch('getUpNextSuccess', data);
-    } catch (err) {
-      dispatch('getUpNextFailure', err);
-    }
-  },
-  getUpNextSuccess({ commit }, response: BaseItemDtoQueryResult) {
-    commit('ADD_UP_NEXT', {
-      upNext: response.Items
-    });
-  },
-  getUpNextFailure: async ({ dispatch }, error) => {
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: error.message,
-        color: 'error'
-      },
-      {
-        root: true
-      }
-    );
-  },
-  async getLatestMedia({ dispatch }, { parentId }: { parentId: string }) {
-    try {
-      const { data } = await this.$api.userLibrary.getLatestMedia({
-        userId: this.$auth.user.Id,
-        limit: 24,
-        fields: [ItemFields.PrimaryImageAspectRatio],
-        imageTypeLimit: 1,
-        enableImageTypes: [
-          ImageType.Primary,
-          ImageType.Backdrop,
-          ImageType.Thumb
-        ],
-        parentId
-      });
-
-      dispatch('getLatestMediaSuccess', {
-        response: data,
-        libraryId: parentId
-      });
-    } catch (err) {
-      dispatch('getLatestMediaFailure', err);
-    }
-  },
-  getLatestMediaSuccess({ commit }, { response, libraryId }) {
-    commit('ADD_LATEST_MEDIA', {
-      latestMedia: response,
-      libraryId
-    });
-  },
-  getLatestMediaFailure: async ({ dispatch }, error) => {
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: error.message,
-        color: 'error'
-      },
-      {
-        root: true
-      }
-    );
-  },
-  clearHomeSection({ commit }) {
-    commit('CLEAR_HOME_SECTION');
-  }
-};
