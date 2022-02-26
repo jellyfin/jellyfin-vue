@@ -14,3 +14,4 @@ export * from './snackbar';
 export * from './socket';
 export * from './page';
 export * from './userViews';
+export * from './homeSection';
