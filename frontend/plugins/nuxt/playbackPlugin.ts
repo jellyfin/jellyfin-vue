@@ -47,7 +47,7 @@ const playbackPlugin: Plugin = ({ $auth, $items, $tvShows, store }, inject) => {
      */
     translateItemsForPlayback: async (
       item: BaseItemDto,
-      shuffle = false
+      shuffle: boolean = false
     ): Promise<string[]> => {
       if (!item) {
         throw new TypeError('item must be defined');

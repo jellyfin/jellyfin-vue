@@ -39,11 +39,21 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
-import { TvShowItem } from '~/store/tvShows';
+import { mapActions } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
+
+interface TvShowItem {
+  /**
+   * seasons: Stores an array of all seasons
+   */
+  seasons: BaseItemDto[];
+  /**
+   * seasonEpisodes: Stores an array for each season containing all the season episodes
+   */
+  seasonEpisodes: { [key: string]: BaseItemDto[] };
+}
 
 export default Vue.extend({
   mixins: [itemHelper],
@@ -51,6 +61,36 @@ export default Vue.extend({
     item: {
       type: Object,
       required: true
+    }
+  },
+  async asyncData({ $api, $auth }) {
+    const seasons = (
+      await $api.tvShows.getSeasons({
+        userId: this.$auth.user?.Id,
+        seriesId: this.item.Id
+      })
+    ).data.Items;
+
+    let seasonEpisodes = {} as TvShowItem['seasonEpisodes'];
+
+    if (seasons) {
+      for (const season of seasons) {
+        if (season.Id) {
+          const episodes = (
+            await $api.items.getItems({
+              userId: $auth.user?.Id,
+              parentId: season.Id,
+              fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+            })
+          ).data;
+
+          if (episodes.Items) {
+            seasonEpisodes[season.Id] = episodes.Items;
+          }
+        }
+
+        return { seasons, seasonEpisodes };
+      }
     }
   },
   data() {
@@ -69,25 +109,12 @@ export default Vue.extend({
         1904: {
           visibleSlides: 5
         }
-      }
+      },
+      seasons: [] as BaseItemDto[],
+      seasonEpisodes: {} as TvShowItem['seasonEpisodes']
     };
   },
-  async fetch() {
-    await this.getTvShows({ itemId: this.item.Id });
-  },
-  computed: {
-    ...mapGetters('tvShows', ['getSeasons', 'getSeasonEpisodes']),
-    seasons(): BaseItemDto[] {
-      return this.getSeasons(this.item.Id);
-    },
-    seasonEpisodes(): TvShowItem['seasonEpisodes'] {
-      return this.getSeasonEpisodes(this.item.Id);
-    }
-  },
   methods: {
-    ...mapActions('tvShows', {
-      getTvShows: 'getTvShows'
-    }),
     ...mapActions('playbackManager', ['play'])
   }
 });
