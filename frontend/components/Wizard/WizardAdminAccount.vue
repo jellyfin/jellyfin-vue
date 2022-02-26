@@ -56,7 +56,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { deviceProfileStore, snackbarStore } from '~/store';
+import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -75,9 +75,7 @@ export default Vue.extend({
       this.loading = true;
 
       try {
-        const token = `MediaBrowser Client="${this.deviceProfile.clientName}", Device="${this.deviceProfile.deviceName}", DeviceId="${this.deviceProfile.deviceId}", Version="${this.deviceProfile.clientVersion}"`;
-
-        this.$auth.ctx.app.$axios.setHeader('X-Emby-Authorization', token);
+        this.auth.setAxiosHeader();
 
         await this.$api.startup.updateStartupUser({
           startupUserDto: this.admin
@@ -94,7 +92,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(deviceProfileStore, snackbarStore)
+    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

@@ -58,28 +58,17 @@ import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
 import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
-import { deviceProfileStore, pageStore } from '~/store';
+import { authStore, deviceProfileStore, pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
-  middleware: 'serverMiddleware',
-  auth: false,
-  async asyncData({ store, redirect, $api }) {
-    try {
-      await store.dispatch(
-        'servers/connectServer',
-        store.state.servers.serverUsed.address
-      );
+  async asyncData({ $api }) {
+    const brandingData = (await $api.branding.getBrandingOptions()).data;
 
-      const brandingData = (await $api.branding.getBrandingOptions()).data;
+    const publicUsers = (await $api.user.getPublicUsers({})).data;
+    const disclaimer = brandingData.LoginDisclaimer;
 
-      const publicUsers = (await $api.user.getPublicUsers({})).data;
-      const disclaimer = brandingData.LoginDisclaimer;
-
-      return { publicUsers, disclaimer };
-    } catch {
-      redirect('/server/select');
-    }
+    return { publicUsers, disclaimer };
   },
   data() {
     return {
@@ -95,7 +84,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, pageStore)
+    ...mapStores(deviceProfileStore, pageStore, authStore)
   },
   mounted() {
     this.page.title = this.$t('login.login');
@@ -106,16 +95,10 @@ export default Vue.extend({
       return isEmpty(value);
     },
     async setCurrentUser(user: UserDto): Promise<void> {
-      if (!user.HasPassword) {
+      if (!user.HasPassword && user.Name) {
         // If the user doesn't have a password, avoid showing the password form
-        this.deviceProfile.setDeviceProfile();
-        await this.$auth.loginWith('jellyfin', {
-          username: user.Name,
-          password: '',
-          rememberMe: true
-        });
+        await this.auth.loginUser(user.Name, '', true);
 
-        this.$router.replace('/');
       } else {
         this.currentUser = user;
       }

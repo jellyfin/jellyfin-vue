@@ -89,21 +89,32 @@ const config: NuxtConfig = {
    */
   plugins: [
     /*
+     ** Pinia plugins (need to be loaded first to ensure persistence)
+     */
+    'plugins/store/plugins.ts',
+    'plugins/store/watchers.ts',
+    /*
      ** Nuxt plugins
      */
-    'plugins/nuxt/store/persistedStatePlugin.ts',
+    'plugins/nuxt/apiPlugin.ts',
+    'plugins/nuxt/auth.ts',
     'plugins/nuxt/axe.ts',
     'plugins/nuxt/veeValidate.ts',
     'plugins/nuxt/browserDetectionPlugin.ts',
     'plugins/nuxt/playbackProfilePlugin.ts',
     'plugins/nuxt/supportedFeaturesPlugin.ts',
-    'plugins/nuxt/apiPlugin.ts',
-    'plugins/nuxt/appInitPlugin.ts',
     /*
      ** Vue plugins
      */
     'plugins/vue/components.ts',
-    'plugins/vue/directives/hide.ts'
+    'plugins/vue/directives/hide.ts',
+    /**
+     * Utility plugins
+     */
+    '~/plugins/nuxt/userLibraryPlugin.ts',
+    '~/plugins/nuxt/itemsPlugin.ts',
+    '~/plugins/nuxt/tvShowsPlugin.ts',
+    '~/plugins/nuxt/playbackPlugin.ts'
   ],
   /*
    ** Auto import components
@@ -127,7 +138,6 @@ const config: NuxtConfig = {
     '@nuxtjs/i18n',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
   /*
@@ -153,35 +163,6 @@ const config: NuxtConfig = {
    */
   axios: {
     baseURL: ''
-  },
-  /*
-   ** Axios-based Authentication
-   ** See https://auth.nuxtjs.org/schemes/local.html#options
-   */
-  auth: {
-    redirect: {
-      login: '/server/login',
-      logout: '/server/login',
-      callback: false,
-      home: '/'
-    },
-    strategies: {
-      jellyfin: {
-        _scheme: '~/schemes/jellyfinScheme'
-      }
-    },
-    cookie: {
-      prefix: 'auth.',
-      options: {
-        path: '/'
-      }
-    },
-    plugins: [
-      '~/plugins/nuxt/userLibraryPlugin.ts',
-      '~/plugins/nuxt/itemsPlugin.ts',
-      '~/plugins/nuxt/tvShowsPlugin.ts',
-      '~/plugins/nuxt/playbackPlugin.ts'
-    ]
   },
   i18n: {
     locales: [

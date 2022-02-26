@@ -43,7 +43,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { authStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -60,7 +61,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('servers', ['serverList'])
+    ...mapStores(authStore)
   },
   mounted() {
     /**
@@ -69,22 +70,14 @@ export default Vue.extend({
      * properly and stop the "Change server" button from appearing right after adding the first server
      * and while the transition is playing.
      */
-    this.previousServerLength = this.serverList.length;
+    this.previousServerLength = this.auth.servers.length;
   },
   methods: {
-    ...mapActions('servers', ['connectServer']),
     async connectToServer(): Promise<void> {
       this.loading = true;
 
       try {
-        await this.connectServer(this.serverUrl);
-
-        if (this.previousServerLength === 0) {
-          this.$router.push('/server/login');
-        } else {
-          this.$router.push('/server/select');
-        }
-      } catch (e) {
+        await this.auth.connectServer(this.serverUrl);
       } finally {
         this.loading = false;
       }

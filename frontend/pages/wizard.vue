@@ -86,7 +86,6 @@ import { deviceProfileStore, snackbarStore, pageStore } from '~/store';
 
 export default Vue.extend({
   layout: 'fullpage',
-  auth: false,
   data() {
     return {
       wizardStage: 1,
@@ -117,7 +116,6 @@ export default Vue.extend({
   },
   mounted() {
     this.page.title = this.$t('wizard.setupWizard');
-    this.deviceProfile.setDeviceProfile();
   },
   methods: {
     async completeWizard(): Promise<void> {

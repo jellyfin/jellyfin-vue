@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { deviceProfileStore, snackbarStore } from '.';
 import { AxiosError } from 'axios';
 
-interface ServerInfo extends PublicSystemInfo {
+export interface ServerInfo extends PublicSystemInfo {
   PublicAddress: string;
   isDefault?: boolean;
 }
@@ -37,6 +37,7 @@ export const authStore = defineStore('auth', {
      * Adds a new server to the store and set
      */
     async connectServer(serverUrl: string) {
+      serverUrl = serverUrl.replace(/\/$/, '');
       const snackbar = snackbarStore();
       this.$nuxt.$axios.setBaseURL(serverUrl);
       this.setAxiosHeader();
@@ -105,6 +106,7 @@ export const authStore = defineStore('auth', {
 
           this.users.push(authenticateResponse.User);
           this.currentUserIndex = this.users.indexOf(authenticateResponse.User);
+          this.setAxiosHeader();
         }
       } catch (err) {
         const snackbar = snackbarStore();
