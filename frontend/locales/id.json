@@ -23,6 +23,7 @@
   "byArtist": "Oleh {artist}",
   "cancel": "Batalkan",
   "castAndCrew": "Pemeran & Kru",
+  "collectionEmpty": "Koleksi ini kosong",
   "collections": "Koleksi",
   "communityRating": "Peringkat komunitas",
   "confirm": "Konfirmasi",
@@ -256,6 +257,9 @@
     "corruptedFrames": {
       "name": "Frame rusak:"
     },
+    "decodedFrames": {
+      "name": "Frame didekodekan:"
+    },
     "droppedFrames": {
       "name": "Frame dibuang:"
     },
@@ -429,15 +433,57 @@
     "switchToLightMode": "Beralih ke mode terang"
   },
   "trailer": "Cuplikan",
+  "transcodingInfo": {
+    "name": "Transkode",
+    "transcodingFramerate": {
+      "name": "Kecepatan frame:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Perkembangan:",
+    "transcodingReason": {
+      "name": "Penyebab: | Penyebab:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Video anamorphic tidak didukung",
+        "audioBitDepthNotSupported": "Kedalaman bit audio tidak didukung",
+        "audioBitrateNotSupported": "Kecepatan bit audio tidak didukung",
+        "audioChannelsNotSupported": "Jumlah saluran audio tidak didukung",
+        "audioCodecNotSupported": "Codec audio tidak didukung",
+        "audioProfileNotSupported": "Profil codec audio tidak didukung",
+        "audioSampleRateNotSupported": "Tingkat sampel audio tidak didukung",
+        "containerBitrateExceedsLimit": "Kecepatan bit kontainer melebihi batas yang ditetapkan",
+        "containerNotSupported": "Kontainer tidak didukung",
+        "interlacedVideoNotSupported": "Video yang saling terkait tidak didukung",
+        "refFramesNotSupported": "Frame referensi tidak didukung",
+        "secondaryAudioNotSupported": "Trek audio sekunder tidak didukung",
+        "subtitleCodecNotSupported": "Codec takarir tidak didukung",
+        "videoBitDepthNotSupported": "Kedalaman bit video tidak didukung",
+        "videoCodecNotSupported": "Codec video tidak didukung",
+        "videoFramerateNotSupported": "Kecepatan frame video tidak didukung",
+        "videoLevelNotSupported": "Level codec video tidak didukung",
+        "videoProfileNotSupported": "Profil codec video tidak didukung",
+        "videoResolutionNotSupported": "Resolusi video tidak didukung"
+      }
+    }
+  },
   "type": "Tipe",
   "unableGetPublicUsers": "Tidak bisa mendapatkan pengguna",
   "unableGetRelated": "Tak bisa mendapatkan item terkait",
   "unableGetServerConfiguration": "Tidak bisa mendapatkan konfigurasi server",
   "unableToRefreshLibrary": "Tidak dapat menyegarkan pustaka",
   "unableToToggleLike": "Tak dapat mengubah status suka dari elemen tersebut",
+  "unableToTogglePlayed": "Tidak dapat memperbarui status tontonan",
   "undefined": "Tidak terdefinisi",
   "unexpectedError": "Kesalahan yang tidak terduga",
   "unhandledException": "Pengecualian tidak tertangani",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} detik | {count} detik"
+    }
+  },
   "unliked": "Tidak disukai",
   "unplayed": "Belum dimainkan",
   "upNext": "Selanjutnya",
