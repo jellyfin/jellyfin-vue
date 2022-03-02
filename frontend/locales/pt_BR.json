@@ -180,6 +180,7 @@
   "menu": "Menu",
   "metadata": {
     "source": "Origem",
+    "sourceAll": "Todos",
     "title": "Título",
     "type": "Tipo"
   },
