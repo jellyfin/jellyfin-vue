@@ -131,7 +131,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapGetters } from 'vuex';
 import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
@@ -139,7 +138,7 @@ import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
+import { pageStore, itemsStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
@@ -150,57 +149,70 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $userLibrary, $items, store }) {
+  async asyncData({ params, $api, $auth }) {
+    const items = itemsStore();
     const itemId = params.itemId;
+    let item = items.getItemById(itemId);
 
-    if (!store.getters['items/getItem'](itemId)) {
-      await $userLibrary.getItem(itemId);
+    if (!item) {
+      item = (
+        await $api.userLibrary.getItem({
+          userId: $auth.user.Id as string,
+          itemId
+        })
+      ).data;
     }
 
-    const discographyIds = await $items.getItems({
-      albumArtistIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['MusicAlbum']
-    });
+    const discography = (
+      await $api.items.getItems({
+        albumArtistIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['MusicAlbum']
+      })
+    ).data.Items;
 
-    const appearancesIds = await $items.getItems({
-      contributingArtistIds: [itemId],
-      excludeItemIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['MusicAlbum']
-    });
+    const appearances = (
+      await $api.items.getItems({
+        contributingArtistIds: [itemId],
+        excludeItemIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['MusicAlbum']
+      })
+    ).data.Items;
 
-    const musicVideoIds = await $items.getItems({
-      artistIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['MusicVideo']
-    });
+    const musicVideo = (
+      await $api.items.getItems({
+        artistIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['MusicVideo']
+      })
+    ).data.Items;
 
     let activeTab = 3;
 
-    if (discographyIds.length) {
+    if (discography?.length) {
       activeTab = 0;
-    } else if (appearancesIds.length) {
+    } else if (appearances?.length) {
       activeTab = 1;
-    } else if (musicVideoIds.length) {
+    } else if (musicVideo?.length) {
       activeTab = 2;
     }
 
-    return { activeTab, discographyIds, appearancesIds, musicVideoIds, itemId };
+    return { activeTab, discography, appearances, musicVideo, item };
   },
   data() {
     return {
       activeTab: 0,
-      discographyIds: [] as string[],
-      appearancesIds: [] as string[],
-      musicVideoIds: [] as string[],
-      itemId: '' as string
+      discographyIds: [] as BaseItemDto[],
+      appearancesIds: [] as BaseItemDto[],
+      musicVideoIds: [] as BaseItemDto[],
+      item: {} as BaseItemDto
     };
   },
   head() {
@@ -210,21 +222,8 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(pageStore),
-    ...mapGetters('items', ['getItem', 'getItems']),
-    discography(): BaseItemDto[] {
-      return this.getItems(this.discographyIds);
-    },
-    appearances(): BaseItemDto[] {
-      return this.getItems(this.appearancesIds);
-    },
-    musicVideos(): BaseItemDto[] {
-      return this.getItems(this.musicVideoIds);
-    },
-    item(): BaseItemDto {
-      return this.getItem(this.itemId);
-    },
     overview(): string {
-      if (this.item.Overview) {
+      if (this.item?.Overview) {
         return this.sanitizeHtml(this.item.Overview);
       } else {
         return '';

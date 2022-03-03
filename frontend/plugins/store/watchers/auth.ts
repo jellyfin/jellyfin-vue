@@ -4,6 +4,7 @@ import {
   clientSettingsStore,
   deviceProfileStore,
   homeSectionStore,
+  itemsStore,
   pageStore,
   snackbarStore,
   socketStore,
@@ -25,6 +26,7 @@ export default function watchAuth(ctx: Context) {
   const page = pageStore();
   const socket = socketStore();
   const userViews = userViewsStore();
+  const items = itemsStore();
 
   /**
    * Watch for actions after the app has been initialized
@@ -42,6 +44,7 @@ export default function watchAuth(ctx: Context) {
           page.$reset();
           socket.closeSocket();
           userViews.$reset();
+          items.$reset();
         }
       }
     });

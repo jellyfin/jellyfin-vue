@@ -25,7 +25,8 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapStores } from 'pinia';
+import { itemsStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -41,23 +42,22 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('items', ['getBoxsetChildren']),
+    ...mapStores(itemsStore),
     children(): BaseItemDto[] {
-      return this.getBoxsetChildren(this.item.Id);
+      return this.items.getChildrenOfParent(this.item.Id) || [];
     }
   },
   watch: {
     item: {
       immediate: true,
       async handler(item: BaseItemDto): Promise<void> {
-        this.loading = true;
-        await this.fetchBoxsetChildren({ itemId: item.Id });
-        this.loading = false;
+        if (!this.children) {
+          this.loading = true;
+          await this.items.fetchAndAddCollection(item.Id);
+          this.loading = false;
+        }
       }
     }
-  },
-  methods: {
-    ...mapActions('items', ['fetchBoxsetChildren'])
   }
 });
 </script>
