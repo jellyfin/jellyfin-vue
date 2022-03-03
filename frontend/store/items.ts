@@ -1,193 +1,161 @@
 import Vue from 'vue';
-import { BaseItemDto, BaseItemDtoQueryResult } from '@jellyfin/client-axios';
-import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import map from 'lodash/map';
-import forEach from 'lodash/forEach';
-import keyBy from 'lodash/keyBy';
-import merge from 'lodash/merge';
-import some from 'lodash/some';
-import union from 'lodash/union';
-
-interface ItemsByType {
-  Type: string;
-  Items: BaseItemDto[];
-}
+import { BaseItem, BaseItemDto, ItemFields } from '@jellyfin/client-axios';
+import { defineStore } from 'pinia';
 
 export interface ItemsState {
   byId: Record<string, BaseItemDto>;
-  allIds: readonly string[];
-  boxSetChildrenById: Record<string, ItemsByType[]>;
+  collectionById: Record<string, string[]>;
 }
 
-export const defaultState = (): ItemsState => ({
-  byId: {},
-  allIds: [],
-  boxSetChildrenById: {}
-});
+const allFields = Object.values(ItemFields);
 
-export const state = defaultState;
-
-export const getters: GetterTree<ItemsState, ItemsState> = {
-  getItem:
-    (state) =>
-    (id: string): BaseItemDto | undefined =>
-      state.byId[id],
-  getItems:
-    (state) =>
-    (ids: string[]): BaseItemDto[] =>
-      map(ids, (id) => state.byId[id]),
-  getBoxsetChildren:
-    (state) =>
-    (id: string): ItemsByType[] =>
-      state.boxSetChildrenById[id]
-};
-
-type AddBoxsetChildrenMutationPayload = {
-  childrenList: BaseItemDto[];
-  itemId?: string;
-};
-
-export const mutations: MutationTree<ItemsState> = {
-  ADD_ITEM(state: ItemsState, { item }: { item: BaseItemDto }) {
-    if (!item.Id) {
-      throw new Error('No item ID provided');
-    }
-
-    const newAllIds = Array.from(state.allIds);
-
-    Vue.set(state.byId, item.Id, item);
-
-    if (!newAllIds.includes(item.Id)) {
-      newAllIds.push(item.Id);
-      state.allIds = Object.freeze(newAllIds);
-    }
+export const itemsStore = defineStore('items', {
+  state: () => {
+    return {
+      byId: {},
+      collectionById: {}
+    } as ItemsState;
   },
-  ADD_ITEMS(state: ItemsState, { items }: { items: BaseItemDto }) {
-    let newById = Object.assign({}, state.byId);
-    let newAllIds = Array.from(state.allIds);
+  actions: {
+    /**
+     * Add or update an item or items to the store
+     *
+     * @returns - The reactive references
+     */
+    add(payload: BaseItemDto | BaseItemDto[]): BaseItemDto | BaseItemDto[] {
+      if (!Array.isArray(payload)) {
+        payload = [payload];
+      }
 
-    newById = merge(newById, items);
+      const res = [];
 
-    state.byId = newById;
-
-    newAllIds = union(newAllIds, Object.keys(items));
-    state.allIds = Object.freeze(newAllIds);
-  },
-  DELETE_ITEM(state: ItemsState, { id }: { id: string }) {
-    delete state.byId[id];
-
-    const idx = state.allIds.indexOf(id);
-
-    if (idx > -1) {
-      const newAllIds = Array.from(state.allIds);
-
-      newAllIds.splice(idx, 1);
-      state.allIds = Object.freeze(newAllIds);
-    }
-  },
-  ADD_BOXSET_CHILDREN(state: ItemsState, { childrenList, itemId }) {
-    if (!itemId) {
-      throw new Error('itemId is undefined');
-    }
-
-    if (!childrenList) {
-      return [];
-    }
-    //  Error('childrenList is undefined');
-
-    const children: { [key: string]: BaseItemDto[] } = {};
-
-    childrenList.forEach((item: BaseItemDto) => {
-      if (item.Type && typeof item.Type === 'string') {
-        if (!children[item.Type]) {
-          children[item.Type] = [];
+      for (const item of payload) {
+        if (!item.Id) {
+          throw new Error("One item doesn't have an id");
         }
 
-        children[item.Type].push(item);
+        Vue.set(this.byId, item.Id, item);
+        res.push(this.byId[item.Id]);
       }
-    });
 
-    const perTypeList: ItemsByType[] = Object.keys(children).map((type) => {
-      return { Type: type, Items: children[type] };
-    });
-
-    const perTypeOrderedList: ItemsByType[] = perTypeList.sort(
-      (a, b) => b.Items.length - a.Items.length
-    );
-
-    Vue.set(state.boxSetChildrenById, itemId, perTypeOrderedList || []);
-  },
-  CLEAR_STATE(state: ItemsState) {
-    Object.assign(state, defaultState());
-  }
-};
-
-export const actions: ActionTree<ItemsState, ItemsState> = {
-  addItem({ commit }, { item }: { item: BaseItemDto }) {
-    commit('ADD_ITEM', { item });
-  },
-  addItems({ commit }, { items }: { items: BaseItemDto[] }) {
-    if (some(items, (item) => !item.Id)) {
-      throw new Error('An item is missing an ID.');
-    }
-
-    const mappedItems = keyBy(items, 'Id');
-
-    commit('ADD_ITEMS', { items: mappedItems });
-  },
-  deleteItem({ commit }, { id }: { id: string }) {
-    commit('DELETE_ITEM', { id });
-  },
-  deleteItems({ commit }, { ids }: { ids: string[] }) {
-    forEach(ids, (id) => {
-      commit('DELETE_ITEM', { id });
-    });
-  },
-  async fetchBoxsetChildren({ dispatch }, { itemId }: { itemId: string }) {
-    try {
-      const { data } = await this.$api.items.getItems({
-        userId: this.$auth.user?.Id,
-        parentId: itemId
-      });
-
-      dispatch('fetchBoxsetChildrenSuccess', {
-        response: data,
-        itemId
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      dispatch('fetchBoxsetChildrenFailure', error);
-    }
-  },
-  fetchBoxsetChildrenSuccess(
-    { commit },
-    {
-      response,
-      itemId
-    }: {
-      response: BaseItemDtoQueryResult;
-      itemId: string;
-    }
-  ) {
-    commit('ADD_BOXSET_CHILDREN', {
-      childrenList: response.Items,
-      itemId
-    } as AddBoxsetChildrenMutationPayload);
-  },
-  fetchBoxsetChildrenFailure: async ({ dispatch }, error) => {
-    await dispatch(
-      'snackbar/pushSnackbarMessage',
-      {
-        message: error.message,
-        color: 'error'
-      },
-      {
-        root: true
+      if (res.length === 1) {
+        return res[0];
       }
-    );
+
+      return res;
+    },
+    /**
+     * Deletes a single or multiple items from the store
+     */
+    delete(payload: string | string[]): void {
+      if (!Array.isArray(payload)) {
+        payload = [payload];
+      }
+
+      for (const id of payload) {
+        Vue.delete(this.byId, id);
+      }
+    },
+    /**
+     * Associate an item that has children with its children
+     *
+     * @returns - The children of the item
+     */
+    addCollection(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
+      if (!parent.Id) {
+        throw new Error("Parent item doesn't have an Id");
+      }
+
+      const childIds = [];
+
+      for (const child of children) {
+        if (child.Id) {
+          if (!this.getItemById(child.Id)) {
+            this.add(child);
+          }
+          childIds.push(child.Id);
+        }
+      }
+
+      Vue.set(this.collectionById, parent.Id, childIds);
+
+      return this.getChildrenOfParent(parent.Id) as BaseItemDto[];
+    },
+    /**
+     * Fetches a parent and its children and adds thecollection to the store
+     */
+    async fetchAndAddCollection(
+      parentId: string | undefined
+    ): Promise<BaseItemDto[] | undefined> {
+      if (parentId && !this.getItemById(parentId)) {
+        const parentItem = (
+          await this.$nuxt.$api.items.getItems({
+            userId: this.$nuxt.$auth.user?.Id,
+            ids: [parentId],
+            fields: allFields
+          })
+        ).data;
+        if (!parentItem.Items?.[0]) {
+          throw new Error("This parent doesn't exist");
+        }
+
+        this.add(parentItem.Items[0]);
+      }
+
+      const childItems = (
+        await this.$nuxt.$api.items.getItems({
+          userId: this.$nuxt.$auth.user?.Id,
+          parentId,
+          fields: allFields
+        })
+      ).data;
+
+      if (childItems.Items) {
+        return this.add(childItems.Items) as BaseItemDto[];
+      }
+    }
   },
-  clearState({ commit }) {
-    commit('CLEAR_STATE');
+  getters: {
+    getItemById: (state) => {
+      return (id: string | undefined): BaseItemDto | undefined => {
+        if (id) {
+          return state.byId[id];
+        }
+      };
+    },
+    getItemsById: (state) => {
+      return (ids: string[]): BaseItemDto[] => {
+        const res = [] as BaseItemDto[];
+
+        for (const id of ids) {
+          const item = state.byId[id];
+
+          if (!item) {
+            throw new Error(`Item ${id} doesn't exist in the store`);
+          }
+          res.push(item);
+        }
+
+        return res;
+      };
+    },
+    getChildrenOfParent: (state) => {
+      return (id: string | undefined): BaseItemDto[] | undefined => {
+        if (!id) {
+          throw new Error('No itemId provided');
+        }
+
+        const res = [] as BaseItemDto[];
+        const ids = state.collectionById[id];
+
+        if (ids) {
+          for (const id of ids) {
+            res.push(state.byId[id]);
+          }
+        }
+
+        return res;
+      };
+    }
   }
-};
+});
