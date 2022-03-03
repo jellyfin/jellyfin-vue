@@ -35,10 +35,10 @@ export const itemsStore = defineStore('items', {
         }
 
         Vue.set(this.byId, item.Id, item);
-        res.push(this.byId[item.Id]);
+        res.push(this.getItemById(item.Id) as BaseItemDto);
       }
 
-      if (res.length === 1) {
+      if (res.length === 1 && !Array.isArray(payload)) {
         return res[0];
       }
 

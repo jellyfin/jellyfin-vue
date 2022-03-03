@@ -37,16 +37,16 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" background-color="transparent">
-            <v-tab :key="0" :disabled="!moviesIds.length">
+            <v-tab :key="0" :disabled="!movies.length">
               {{ $t('item.person.movies') }}
             </v-tab>
-            <v-tab :key="1" :disabled="!seriesIds.length">
+            <v-tab :key="1" :disabled="!series.length">
               {{ $t('item.person.shows') }}
             </v-tab>
-            <v-tab :key="2" :disabled="!booksIds.length">
+            <v-tab :key="2" :disabled="!books.length">
               {{ $t('item.person.books') }}
             </v-tab>
-            <v-tab :key="3" :disabled="!photosIds.length">
+            <v-tab :key="3" :disabled="!photos.length">
               {{ $t('item.person.photos') }}
             </v-tab>
             <v-tab :key="4" :disabled="!item.Overview">
@@ -153,7 +153,7 @@ import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
+import { itemsStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
@@ -164,87 +164,86 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $userLibrary, $items, store }) {
+  async asyncData({ params, $auth, $api }) {
+    const items = itemsStore();
     const itemId = params.itemId;
+    let item = items.getItemById(itemId);
 
-    if (!store.getters['items/getItem'](itemId)) {
-      await $userLibrary.getItem(itemId);
+    if (!item) {
+      item = (
+        await $api.userLibrary.getItem({
+          userId: $auth.user.Id as string,
+          itemId
+        })
+      ).data;
     }
 
-    const moviesIds = await $items.getItems({
-      personIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['Movie']
-    });
+    const movies = (
+      await $api.items.getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['Movie']
+      })
+    ).data.Items;
 
-    const seriesIds = await $items.getItems({
-      personIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['Series']
-    });
+    const series = (
+      await $api.items.getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['Series']
+      })
+    ).data.Items;
 
-    const booksIds = await $items.getItems({
-      personIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['Book']
-    });
+    const books = (
+      await $api.items.getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['Book']
+      })
+    ).data.Items;
 
-    const photosIds = await $items.getItems({
-      personIds: [itemId],
-      sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-      sortOrder: [SortOrder.Descending],
-      recursive: true,
-      includeItemTypes: ['Photo']
-    });
+    const photos = (
+      await $api.items.getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: ['Photo']
+      })
+    ).data.Items;
 
     let activeTab = 4;
 
-    if (moviesIds.length) {
+    if (movies?.length) {
       activeTab = 0;
-    } else if (seriesIds.length) {
+    } else if (series?.length) {
       activeTab = 1;
-    } else if (booksIds.length) {
+    } else if (books?.length) {
       activeTab = 2;
-    } else if (photosIds.length) {
+    } else if (photos?.length) {
       activeTab = 3;
     }
 
-    return { activeTab, moviesIds, seriesIds, booksIds, photosIds, itemId };
+    return { activeTab, movies, series, books, photos, itemId };
   },
   data() {
     return {
       activeTab: 0,
-      moviesIds: [] as string[],
-      seriesIds: [] as string[],
-      booksIds: [] as string[],
-      photosIds: [] as string[],
-      itemId: '' as string
+      movies: [] as BaseItemDto[],
+      series: [] as BaseItemDto[],
+      books: [] as BaseItemDto[],
+      photos: [] as BaseItemDto[],
+      item: {} as BaseItemDto
     };
   },
   computed: {
     ...mapStores(pageStore),
-    ...mapGetters('items', ['getItem', 'getItems']),
-    item(): BaseItemDto {
-      return this.getItem(this.itemId);
-    },
-    movies(): BaseItemDto[] {
-      return this.getItems(this.moviesIds);
-    },
-    series(): BaseItemDto[] {
-      return this.getItems(this.seriesIds);
-    },
-    books(): BaseItemDto[] {
-      return this.getItems(this.booksIds);
-    },
-    photos(): BaseItemDto[] {
-      return this.getItems(this.photosIds);
-    },
     birthDate(): Date | null {
       if (this.item.PremiereDate) {
         return this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {

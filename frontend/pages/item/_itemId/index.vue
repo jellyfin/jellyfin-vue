@@ -265,7 +265,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -277,7 +277,7 @@ import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
+import { itemsStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
@@ -288,19 +288,25 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $userLibrary, store }) {
+  async asyncData({ params, $api, $auth }) {
+    const items = itemsStore();
     const itemId = params.itemId;
+    let item = items.getItemById(itemId);
 
-    if (!store.getters['items/getItem'](itemId)) {
-      await $userLibrary.getItem(itemId);
+    if (!item) {
+      item = (
+        await $api.userLibrary.getItem({
+          userId: $auth.user.Id as string,
+          itemId
+        })
+      ).data;
     }
 
-    return { itemId };
+    return { item };
   },
   data() {
     return {
-      itemId: '' as string,
-      parentItem: {} as BaseItemDto,
+      item: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
       currentVideoTrack: undefined as number | undefined,
@@ -315,10 +321,6 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(pageStore),
-    ...mapGetters('items', ['getItem']),
-    item(): BaseItemDto {
-      return this.getItem(this.itemId);
-    },
     isPlayable: {
       get(): boolean {
         // TODO: Move this to a mixin
