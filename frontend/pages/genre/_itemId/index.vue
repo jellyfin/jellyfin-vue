@@ -27,8 +27,8 @@
         </v-col>
       </v-row>
       <item-grid
-        v-if="items.length"
-        :items="items"
+        v-if="genres.length"
+        :items="genres"
         :loading="$fetchState.pending"
       />
       <v-row v-else-if="!$fetchState.pending" justify="center">
@@ -48,40 +48,49 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters } from 'vuex';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { mapActions } from 'vuex';
+import { BaseItemDto, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
+import { itemsStore, pageStore } from '~/store';
 
 export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $userLibrary, store }) {
+  async asyncData({ params, $api, $auth }) {
+    const items = itemsStore();
     const itemId = params.itemId;
+    let item = items.getItemById(itemId);
 
-    if (!store.getters['items/getItem'](itemId)) {
-      await $userLibrary.getItem(itemId);
+    if (!item) {
+      item = (
+        await $api.userLibrary.getItem({
+          userId: $auth.user.Id as string,
+          itemId
+        })
+      ).data;
     }
 
-    return { itemId };
+    let genres = (
+      await $api.items.getItems({
+        genreIds: [item.Id as string],
+        includeItemTypes: [this.$route.query.type.toString()],
+        recursive: true,
+        sortBy: ['SortName'],
+        sortOrder: [SortOrder.Ascending]
+      })
+    ).data.Items;
+
+    genres = items.addCollection(item, genres || []);
+
+    return { item, genres };
   },
   data() {
     return {
-      itemId: '' as string,
-      itemIds: [] as string[]
+      item: {} as BaseItemDto,
+      genres: [] as BaseItemDto[]
     };
-  },
-  async fetch() {
-    // TODO: move the genre to a record<string, string[]> "genre" store
-    this.itemIds = await this.$items.getItems({
-      genreIds: [this.itemId],
-      includeItemTypes: [this.$route.query.type.toString()],
-      recursive: true,
-      sortBy: 'SortName',
-      sortOrder: 'Ascending'
-    });
   },
   head() {
     return {
@@ -89,18 +98,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(pageStore),
-    ...mapGetters('items', ['getItem', 'getItems']),
-    genre(): BaseItemDto {
-      return this.getItem(this.itemId);
-    },
-    items(): BaseItemDto[] {
-      return this.getItems(this.itemIds);
-    }
+    ...mapStores(pageStore)
   },
   mounted() {
     this.page.opaqueAppBar = true;
-    this.page.title = this.genre.Name || '';
+    this.page.title = this.item.Name || '';
   },
   destroyed() {
     this.page.opaqueAppBar = false;

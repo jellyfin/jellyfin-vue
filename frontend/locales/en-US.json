@@ -153,7 +153,8 @@
     "serverAddressRequired": "Server address is required",
     "serverDashboard": "Server dashboard",
     "serverNotFound": "Server not found",
-    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher"
+    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
+    "kickedOut": "Authorization has been revoked and this session is no longer valid. Please, log in again"
   },
   "logout": "Logout",
   "logsAndActivity": {
