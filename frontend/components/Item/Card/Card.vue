@@ -24,9 +24,13 @@
             color="white"
             size="24"
           />
-          <watched-indicator v-if="item.UserData && item.UserData.Played" />
+          <watched-indicator v-if="watchedIndicator" />
           <v-chip
-            v-if="item.UserData && item.UserData.UnplayedItemCount"
+            v-if="
+              !watchedIndicator &&
+              item.UserData &&
+              item.UserData.UnplayedItemCount
+            "
             color="primary"
             class="card-chip"
             small
@@ -53,7 +57,11 @@
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center"
           >
-            <mark-played-button :item="item" dark />
+            <mark-played-button
+              :item="item"
+              dark
+              @change="updateWatchedIndicator"
+            />
             <like-button v-if="canPlay(item)" :item="item" dark />
             <item-menu :item="item" dark />
           </div>
@@ -136,6 +144,7 @@ export default Vue.extend({
   data() {
     return {
       refreshProgress: 0,
+      watchedIndicator: this.item.UserData?.Played || false,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       unsubscribe(): void {}
     };
@@ -264,6 +273,9 @@ export default Vue.extend({
       } else {
         return false;
       }
+    },
+    updateWatchedIndicator(value: boolean): void {
+      this.watchedIndicator = value;
     }
   }
 });

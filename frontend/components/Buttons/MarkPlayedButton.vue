@@ -60,6 +60,8 @@ export default Vue.extend({
             itemId: this.item.Id || ''
           });
         }
+
+        this.$emit('change', this.isPlayed);
       } catch (error) {
         this.pushSnackbarMessage({
           message: this.$t('unableToTogglePlayed'),
