@@ -43,6 +43,10 @@
 
 This is an experimental web client for Jellyfin based on Vue.js. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start.
 
+<p align="center">
+    <a href="https://jf-vue.pages.dev/">View demo</a>
+</p>
+
 # Build Process
 
 ## Dependencies
