@@ -106,6 +106,6 @@ We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers
 
 The project also contains recommended extensions for [Visual Studio Code](https://code.visualstudio.com/), which will help you with syntax style and development.
 
-Finally, we provide useful pre-commit hooks via [Husky](https://typicode.github.io/husky/#/), as well as [Comitizen](https://github.com/commitizen/cz-cli) integration, in order to help you respect the style and naming conventions used throughout this project.
+Finally, we try to follow the [ConventionalCommits Guidelines](https://www.conventionalcommits.org/en/v1.0.0/#summary) when writing commit messages.
 
 For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
