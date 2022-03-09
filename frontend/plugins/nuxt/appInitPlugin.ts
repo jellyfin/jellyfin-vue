@@ -63,8 +63,9 @@ const appInitPlugin: Plugin = async (context) => {
  * Call System Api
  *
  * Call to get the server's public info, and adds to the FullLinfoServers list
- * @param url URL of the server whose publicinfo wants to get
- * @param fullInfoServer Array of ServerInfo. The push () of the new server is performed inside it
+ *
+ * @param {string} url URL of the server whose publicinfo wants to get
+ * @param {object} fullInfoServers Array of ServerInfo. The push () of the new server is performed inside it
  */
 async function callSystemApi(
   url: string,
