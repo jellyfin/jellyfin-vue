@@ -16,7 +16,7 @@
   "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
   "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
   "books": "Bücher",
-  "browserNotSupported": "Ihr Browser wird für die Wiedergabe dieser Datei nicht unterstützt.",
+  "browserNotSupported": "Dein Browser wird für die Wiedergabe dieser Datei nicht unterstützt.",
   "buttons": {
     "ok": "Ok"
   },
@@ -126,13 +126,13 @@
   "latestLibrary": "Neueste {libraryName}",
   "libraries": "Bibliotheken",
   "libraryEmpty": "Diese Bibliothek ist leer",
-  "libraryEmptyFilters": "Keine Treffer. Entfernen Sie einige Filter, um mehr Elemente anzuzeigen",
+  "libraryEmptyFilters": "Keine Treffer. Entferne einige Filter, um mehr Elemente anzuzeigen",
   "libraryNotFound": "Bibliothek nicht gefunden",
   "libraryRefreshQueued": "Aktualisierung der Bibliothek in der Warteschlange",
   "liked": "Gefällt mir",
   "likes": "Gefällt mir",
   "links": {
-    "helpTranslate": "Übersetzen Sie Jellyfin in Ihre Sprache",
+    "helpTranslate": "Übersetze Jellyfin in deine Sprache",
     "poweredByJellyfin": "Dieser Server läuft mit Jellyfin",
     "readTheDocumentation": "Lese die Dokumentation",
     "reportAnIssue": "Ein Problem mit diesem Client melden"
@@ -305,7 +305,7 @@
       "createKeyFailure": "Fehler beim Erstellen eines neuen API-Schlüssels",
       "createKeySuccess": "Neuen API-Schlüssel erfolgreich erstellt",
       "dateCreated": "Erstellungsdatum",
-      "description": "Hinzufügen und Widerrufen von API-Schlüsseln für externen Zugriff auf Ihren Server",
+      "description": "Hinzufügen und Widerrufen von API-Schlüsseln für externen Zugriff auf deinen Server",
       "refreshKeysFailure": "Fehler beim Aktualisieren von API-Schlüsseln",
       "revokeAll": "Alle API-Schlüssel widerrufen",
       "revokeAllFailure": "Fehler beim Widerrufen aller API-Schlüssel",
@@ -522,5 +522,5 @@
   "writing": "Drehbuchautoren",
   "year": "Jahr",
   "years": "Jahre",
-  "youMayAlsoLike": "Sie könnten auch folgendes mögen"
+  "youMayAlsoLike": "Vielleicht gefällt dir Folgendes"
 }
