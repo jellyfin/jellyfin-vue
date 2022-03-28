@@ -443,7 +443,7 @@
     "transcodingReason": {
       "name": "Motiv: | Motive:",
       "reasons": {
-        "anamorphicVideoNotSupported": "Video anamorfotic nu este suportat",
+        "anamorphicVideoNotSupported": "Video anamorfic nu este suportat",
         "audioBitDepthNotSupported": "Adâncimea de biți audio nu este suportată",
         "audioBitrateNotSupported": "Rata de biți audio nu este suportat",
         "audioChannelsNotSupported": "Numărul de canale audio nu este suportat",
