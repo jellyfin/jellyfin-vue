@@ -43,7 +43,7 @@
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ serverUsed.publicInfo.ServerName }}
+          {{ auth.getCurrentServer.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
@@ -98,7 +98,6 @@ export default Vue.extend({
       if (!user.HasPassword && user.Name) {
         // If the user doesn't have a password, avoid showing the password form
         await this.auth.loginUser(user.Name, '', true);
-
       } else {
         this.currentUser = user;
       }
