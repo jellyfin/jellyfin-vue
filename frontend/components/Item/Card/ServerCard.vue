@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <v-card-title>{{ serverInfo.ServerName }}</v-card-title>
-        <v-card-subtitle>{{ serverInfo.Address }}</v-card-subtitle>
+        <v-card-subtitle>{{ serverInfo.PublicAddress }}</v-card-subtitle>
       </v-col>
       <v-card-actions class="ml-auto mr-2">
         <v-btn icon disabled>
@@ -46,14 +46,14 @@ export default Vue.extend({
       this.loading = true;
 
       try {
-        await this.auth.connectServer(this.serverInfo.Address);
+        await this.auth.connectServer(this.serverInfo.PublicAddress);
         this.$router.push('/server/login');
       } finally {
         this.loading = false;
       }
     },
     async removeServerFromStore(): Promise<void> {
-      await this.auth.deleteServer(this.serverInfo.Address);
+      await this.auth.deleteServer(this.serverInfo.PublicAddress);
     }
   },
   computed: {

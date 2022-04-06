@@ -34,6 +34,10 @@ export default function watchAuth(ctx: Context) {
   auth.$onAction(({ name, after, store }) => {
     after(() => {
       if (name !== 'setAxiosHeader') {
+        /**
+         * We set the useContext boolean to false since at this point the app will be already booted, so
+         * we need to stick to Vue Router.
+         */
         authLogic(ctx, auth, false);
 
         if (name === 'logoutUser' && store.currentUserIndex === -1) {
