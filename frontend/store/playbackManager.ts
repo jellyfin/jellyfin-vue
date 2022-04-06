@@ -1,32 +1,35 @@
-import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import shuffle from 'lodash/shuffle';
 import {
   BaseItemDto,
   ChapterInfo,
+  ItemFields,
+  ItemFilter,
   MediaSourceInfo,
-  SubtitleDeliveryMethod
+  SubtitleDeliveryMethod,
+  MediaStream
 } from '@jellyfin/client-axios';
-import isNil from 'lodash/isNil';
-import { RootState } from '.';
+import { defineStore } from 'pinia';
+import { itemsStore } from './items';
+import { isNil } from 'lodash';
 
 export enum PlaybackStatus {
-  Stopped,
-  Playing,
-  Paused,
-  Error
+  Stopped = 0,
+  Playing = 1,
+  Paused = 2,
+  Error = 3
 }
 
 export enum RepeatMode {
-  RepeatNone = 'RepeatNone',
-  RepeatOne = 'RepeatOne',
-  RepeatAll = 'RepeatAll'
+  RepeatNone = 0,
+  RepeatOne = 1,
+  RepeatAll = 2
 }
 
 export enum InitMode {
-  Unknown,
-  Shuffle,
-  Item,
-  ShuffleItem
+  Unknown = 0,
+  Shuffle = 1,
+  Item = 2,
+  ShuffleItem = 3
 }
 
 export interface PlaybackTrack {
@@ -38,7 +41,7 @@ export interface PlaybackTrack {
   codec?: string;
 }
 
-export interface PlaybackManagerState {
+interface PlaybackManagerState {
   status: PlaybackStatus;
   lastItemIndex: number | null;
   currentItemIndex: number | null;
@@ -50,366 +53,60 @@ export interface PlaybackManagerState {
   currentTime: number | null;
   lastProgressUpdate: number;
   currentVolume: number;
-  isFullscreen: boolean;
   isMuted: boolean;
   isShuffling: boolean;
   isMinimized: boolean;
   repeatMode: RepeatMode;
-  queue: readonly string[];
-  originalQueue: readonly string[];
+  queue: string[];
+  originalQueue: string[];
   playSessionId: string | null;
   playbackInitiator: BaseItemDto | null;
   playbackInitMode: InitMode;
 }
 
-export const defaultState = (): PlaybackManagerState => ({
-  status: PlaybackStatus.Stopped,
-  lastItemIndex: null,
-  currentItemIndex: null,
-  currentMediaSource: null,
-  currentVideoStreamIndex: undefined,
-  currentAudioStreamIndex: undefined,
-  currentSubtitleStreamIndex: undefined,
-  currentItemChapters: null,
-  currentTime: null,
-  lastProgressUpdate: 0,
-  currentVolume: 100,
-  isFullscreen: false,
-  isMuted: false,
-  isShuffling: false,
-  isMinimized: false,
-  repeatMode: RepeatMode.RepeatNone,
-  queue: [],
-  originalQueue: [],
-  playSessionId: null,
-  playbackInitiator: null,
-  playbackInitMode: InitMode.Unknown
-});
+export const playbackManagerStore = defineStore('playbackManager', {
+  state: () => {
+    return {
+      status: PlaybackStatus.Stopped,
+      lastItemIndex: null,
+      currentItemIndex: null,
+      currentMediaSource: null,
+      currentVideoStreamIndex: undefined,
+      currentAudioStreamIndex: undefined,
+      currentSubtitleStreamIndex: undefined,
+      currentItemChapters: null,
+      currentTime: null,
+      lastProgressUpdate: 0,
+      currentVolume: 100,
+      isMuted: false,
+      isShuffling: false,
+      isMinimized: false,
+      repeatMode: RepeatMode.RepeatNone,
+      queue: [],
+      originalQueue: [],
+      playSessionId: null,
+      playbackInitiator: null,
+      playbackInitMode: InitMode.Unknown
+    } as PlaybackManagerState;
+  },
+  actions: {
+    async addToQueue(item: BaseItemDto) {
+      const queue = Array.from(this.queue);
+      const translatedItem = await this.translateItemsForPlayback(item);
 
-export const state = defaultState;
-
-export const getters: GetterTree<PlaybackManagerState, RootState> = {
-  getQueueItems: (state, _getters, _rootState, rootGetters) => {
-    return rootGetters['items/getItems'](state.queue);
-  },
-  getCurrentItem: (state, _getters, _rootState, rootGetters) => {
-    if (!isNil(state.currentItemIndex) && state.queue[state.currentItemIndex]) {
-      return rootGetters['items/getItem'](state.queue[state.currentItemIndex]);
-    }
-
-    return null;
-  },
-  getPreviousItem: (state, _getters, _rootState, rootGetters) => {
-    if (state.currentItemIndex === 0) {
-      return null;
-    } else if (
-      !isNil(state.lastItemIndex) &&
-      state.queue[state.lastItemIndex]
-    ) {
-      return rootGetters['items/getItem'](state.queue[state.lastItemIndex]);
-    }
-
-    return null;
-  },
-  getNextItem: (state, _getters, _rootState, rootGetters) => {
-    if (
-      !isNil(state.currentItemIndex) &&
-      state.currentItemIndex + 1 < state.queue.length
-    ) {
-      return rootGetters['items/getItem'](
-        state.queue[state.currentItemIndex + 1]
-      );
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      return rootGetters['items/getItem'](state.queue[0]);
-    }
-
-    return null;
-  },
-  getCurrentlyPlayingType: (state, _getters, _rootState, rootGetters) => {
-    if (!isNil(state.currentItemIndex)) {
-      return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
-        ?.Type;
-    }
-
-    return null;
-  },
-  getCurrentlyPlayingMediaType: (state, _getters, _rootState, rootGetters) => {
-    if (!isNil(state.currentItemIndex)) {
-      return rootGetters['items/getItem'](state.queue?.[state.currentItemIndex])
-        ?.MediaType;
-    }
-
-    return null;
-  },
-  getCurrentItemAudioTrack: (state) => {
-    if (!isNil(state.currentMediaSource)) {
-      return state.currentMediaSource.MediaStreams?.filter((stream) => {
-        return stream.Type === 'Audio';
-      });
-    }
-  },
-  getCurrentItemSubtitleTracks: (state) => {
-    if (!isNil(state.currentMediaSource)) {
-      return state.currentMediaSource.MediaStreams?.filter((stream) => {
-        return stream.Type === 'Subtitle';
-      });
-    }
-  },
-  getCurrentItemParsedSubtitleTracks: (state) => {
-    return (state.currentMediaSource?.MediaStreams?.map((el, idx) => ({
-      srcIndex: idx,
-      el
-    }))
-      .filter(
-        (sub) =>
-          (sub.el.Type === 'Subtitle' &&
-            sub.el.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
-          sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
-      )
-      .map((sub) => ({
-        label: sub.el.DisplayTitle || 'Undefined',
-        src:
-          sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
-            ? sub.el.DeliveryUrl
-            : undefined,
-        srcLang: sub.el.Language || undefined,
-        type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
-        srcIndex: sub.srcIndex,
-        codec: sub.el.Codec
-      })) || []) as PlaybackTrack[];
-  },
-  getCurrentItemVttParsedSubtitleTracks: (_state, getters) => {
-    const subs: PlaybackTrack[] = getters.getCurrentItemParsedSubtitleTracks;
-
-    return (
-      subs.filter((sub) => sub.src && sub.src.match(/Stream\.vtt(\?.*)?$/)) ||
-      []
-    );
-  },
-  getCurrentItemAssParsedSubtitleTracks: (_state, getters) => {
-    const subs: PlaybackTrack[] = getters.getCurrentItemParsedSubtitleTracks;
-
-    return (
-      subs.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') || []
-    );
-  },
-  getCurrentVideoTrack: (state) => {
-    if (
-      !isNil(state.currentMediaSource) &&
-      !isNil(state.currentVideoStreamIndex)
-    ) {
-      return state.currentMediaSource.MediaStreams?.filter((stream) => {
-        return stream.Type === 'Video';
-      })[state.currentVideoStreamIndex];
-    }
-
-    return null;
-  },
-  getCurrentAudioTrack: (state) => {
-    if (
-      !isNil(state.currentMediaSource) &&
-      !isNil(state.currentAudioStreamIndex)
-    ) {
-      return state.currentMediaSource.MediaStreams?.filter((stream) => {
-        return stream.Type === 'Audio';
-      })[state.currentAudioStreamIndex];
-    }
-
-    return null;
-  },
-  getCurrentSubtitleTrack: (state) => {
-    if (
-      !isNil(state.currentMediaSource) &&
-      !isNil(state.currentSubtitleStreamIndex)
-    ) {
-      return state.currentMediaSource.MediaStreams?.filter((stream) => {
-        return stream.Type === 'Subtitle';
-      })[state.currentSubtitleStreamIndex];
-    }
-
-    return null;
-  }
-};
-
-interface QueueMutationPayload {
-  queue: string[];
-}
-
-interface CurrentItemIndexMutationPayload {
-  currentItemIndex: number;
-  lastItemIndex?: number;
-}
-
-interface VolumeMutationPayload {
-  volume: number;
-}
-
-interface IsMutedMutationPayload {
-  isMuted: boolean;
-}
-
-export const mutations: MutationTree<PlaybackManagerState> = {
-  SET_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
-    state.queue = Object.freeze(queue);
-  },
-  ADD_TO_QUEUE(state: PlaybackManagerState, { queue }: QueueMutationPayload) {
-    state.queue = Object.freeze([...state.queue, ...queue]);
-  },
-  CLEAR_QUEUE(state: PlaybackManagerState) {
-    state.queue = Object.freeze([]);
-  },
-  SET_CURRENT_ITEM_INDEX(
-    state: PlaybackManagerState,
-    { currentItemIndex, lastItemIndex }: CurrentItemIndexMutationPayload
-  ) {
-    if (!lastItemIndex) {
-      state.lastItemIndex = state.currentItemIndex;
-    } else {
-      state.lastItemIndex = lastItemIndex;
-    }
-
-    state.currentItemIndex = currentItemIndex;
-  },
-  SET_CURRENT_MEDIA_SOURCE(
-    state: PlaybackManagerState,
-    { mediaSource }: { mediaSource: MediaSourceInfo }
-  ) {
-    state.currentMediaSource = mediaSource;
-  },
-  SET_CURRENT_VIDEO_TRACK_INDEX(
-    state: PlaybackManagerState,
-    { videoStreamIndex }: { videoStreamIndex: number }
-  ) {
-    state.currentVideoStreamIndex = videoStreamIndex;
-  },
-  SET_CURRENT_AUDIO_TRACK_INDEX(
-    state: PlaybackManagerState,
-    { audioStreamIndex }: { audioStreamIndex: number }
-  ) {
-    state.currentAudioStreamIndex = audioStreamIndex;
-  },
-  SET_CURRENT_SUBTITLE_TRACK_INDEX(
-    state: PlaybackManagerState,
-    { subtitleStreamIndex }: { subtitleStreamIndex: number }
-  ) {
-    state.currentSubtitleStreamIndex = subtitleStreamIndex;
-  },
-  INCREASE_QUEUE_INDEX(state: PlaybackManagerState) {
-    if (state.currentItemIndex !== null) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex += 1;
-      state.currentTime = 0;
-    }
-  },
-  DECREASE_QUEUE_INDEX(state: PlaybackManagerState) {
-    if (state.currentItemIndex !== null) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex -= 1;
-      state.currentTime = 0;
-    }
-  },
-  START_PLAYBACK(
-    state: PlaybackManagerState,
-    { initMode, initiator }: { initMode: InitMode; initiator: BaseItemDto }
-  ) {
-    state.status = PlaybackStatus.Playing;
-    state.playbackInitMode = initMode;
-    state.playbackInitiator = initiator;
-  },
-  UNPAUSE_PLAYBACK(state: PlaybackManagerState) {
-    state.status = PlaybackStatus.Playing;
-  },
-  PAUSE_PLAYBACK(state: PlaybackManagerState) {
-    state.status = PlaybackStatus.Paused;
-  },
-  STOP_PLAYBACK(state: PlaybackManagerState) {
-    const volume = state.currentVolume;
-
-    Object.assign(state, defaultState());
-    state.currentVolume = volume;
-  },
-  RESET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
-    state.lastItemIndex = null;
-  },
-  SET_LAST_ITEM_INDEX(state: PlaybackManagerState) {
-    state.lastItemIndex = state.currentItemIndex;
-  },
-  SET_LAST_PROGRESS_UPDATE(state: PlaybackManagerState, { progress }) {
-    state.lastProgressUpdate = progress;
-  },
-  SET_VOLUME(state: PlaybackManagerState, { volume }: VolumeMutationPayload) {
-    state.currentVolume = volume;
-  },
-  SET_IS_MUTED(
-    state: PlaybackManagerState,
-    { isMuted }: IsMutedMutationPayload
-  ) {
-    state.isMuted = isMuted;
-  },
-  SET_MINIMIZE(
-    state: PlaybackManagerState,
-    { minimized }: { minimized: boolean }
-  ) {
-    state.isMinimized = minimized;
-  },
-  SET_CURRENT_TIME(
-    state: PlaybackManagerState,
-    { time }: { time: number | null }
-  ) {
-    state.currentTime = time;
-  },
-  CHANGE_CURRENT_TIME(
-    state: PlaybackManagerState,
-    { time }: { time: number | null }
-  ) {
-    state.currentTime = time;
-  },
-  TOGGLE_MINIMIZE(state: PlaybackManagerState) {
-    state.isMinimized = !state.isMinimized;
-  },
-  SET_PLAY_SESSION_ID(
-    state: PlaybackManagerState,
-    { id }: { id: string | null }
-  ) {
-    state.playSessionId = id;
-  },
-  SET_REPEAT_MODE(state: PlaybackManagerState, { mode }: { mode: RepeatMode }) {
-    state.repeatMode = mode;
-  },
-  TOGGLE_SHUFFLE(state: PlaybackManagerState) {
-    if (state.queue && state.currentItemIndex !== null) {
-      if (!state.isShuffling) {
-        const queue = shuffle(state.queue);
-
-        state.originalQueue = Object.freeze(state.queue);
-
-        const item = state.queue[state.currentItemIndex];
-        const itemIndex = queue.indexOf(item);
-
-        queue.splice(itemIndex, 1);
-        queue.unshift(item);
-
-        state.queue = Object.freeze(queue);
-        state.currentItemIndex = 0;
-        state.lastItemIndex = null;
-        state.isShuffling = true;
-      } else {
-        const item = state.queue[state.currentItemIndex];
-
-        state.currentItemIndex = state.originalQueue.indexOf(item);
-        state.queue = Object.freeze(Array.from(state.originalQueue));
-        state.originalQueue = [];
-        state.lastItemIndex = null;
-        state.isShuffling = false;
-      }
-    }
-  }
-};
-
-export const actions: ActionTree<PlaybackManagerState, RootState> = {
-  async play(
-    { commit, state },
-    {
+      queue.push(...translatedItem);
+      this.queue = queue;
+    },
+    clearQueue(): void {
+      this.queue = [];
+    },
+    changeCurrentTime(time: number | null) {
+      this.currentTime = time;
+    },
+    /**
+     * Plays an item and initializes playbackManager's state
+     */
+    async play({
       item,
       audioTrackIndex,
       subtitleTrackIndex,
@@ -427,233 +124,497 @@ export const actions: ActionTree<PlaybackManagerState, RootState> = {
       startFromTime?: number;
       initiator?: BaseItemDto;
       startShuffled?: boolean;
-    }
-  ) {
-    if (state.status !== PlaybackStatus.Stopped) {
-      commit('STOP_PLAYBACK');
-    }
+    }): Promise<void> {
+      if (this.status !== PlaybackStatus.Stopped) {
+        this.stop();
+      }
 
-    let translatedItems;
+      this.queue = await this.translateItemsForPlayback(item, startShuffled);
 
-    if (startShuffled) {
-      translatedItems = await this.$playback.translateItemsForPlayback(
-        item,
-        true
+      if (videoTrackIndex !== undefined) {
+        this.currentVideoStreamIndex = videoTrackIndex;
+      }
+
+      if (audioTrackIndex !== undefined) {
+        this.currentAudioStreamIndex = audioTrackIndex;
+      }
+
+      if (subtitleTrackIndex !== undefined) {
+        this.currentSubtitleStreamIndex = subtitleTrackIndex;
+      }
+
+      this.currentItemIndex = startFromIndex;
+      this.currentTime = startFromTime;
+
+      if (!startShuffled && initiator) {
+        this.playbackInitMode = InitMode.Item;
+      } else if (startShuffled && !initiator) {
+        this.playbackInitMode = InitMode.Shuffle;
+      } else if (startShuffled && initiator) {
+        this.playbackInitMode = InitMode.ShuffleItem;
+      } else {
+        this.playbackInitMode = InitMode.Unknown;
+      }
+
+      this.playbackInitiator = initiator || null;
+      this.status = PlaybackStatus.Playing;
+    },
+    /**
+     * Adds to the queue the items of a collection item (i.e album, tv show, etc...)
+     */
+    async playNext(item: BaseItemDto): Promise<void> {
+      const queue = Array.from(this.queue);
+      const translatedItem = await this.translateItemsForPlayback(item);
+
+      if (this.currentItemIndex !== null) {
+        queue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
+        this.queue = queue;
+      }
+    },
+    pause(): void {
+      if (this.status === PlaybackStatus.Playing) {
+        this.status = PlaybackStatus.Paused;
+      }
+    },
+    unpause(): void {
+      if (this.status === PlaybackStatus.Paused) {
+        this.status = PlaybackStatus.Playing;
+      }
+    },
+    playPause(): void {
+      if (this.status === PlaybackStatus.Playing) {
+        this.status = PlaybackStatus.Paused;
+      } else if (this.status === PlaybackStatus.Paused) {
+        this.status = PlaybackStatus.Playing;
+      }
+    },
+    resetCurrentTime(): void {
+      this.currentTime = 0;
+    },
+    resetCurrentItemIndex(): void {
+      this.currentItemIndex = null;
+    },
+    setLastItemIndex(): void {
+      this.lastItemIndex = this.currentItemIndex;
+    },
+    resetLastItemIndex(): void {
+      this.lastItemIndex = null;
+    },
+    setVolume(volume: number): void {
+      this.currentVolume = volume;
+
+      if (volume === 0) {
+        this.isMuted = true;
+      } else if (this.isMuted === true) {
+        this.isMuted = false;
+      }
+    },
+    setCurrentIndex(index: number) {
+      this.currentItemIndex = index;
+    },
+    setCurrentTime(time: number | null) {
+      this.currentTime = time;
+    },
+    setLastProgressUpdate(progress: number): void {
+      this.lastProgressUpdate = progress;
+    },
+    setMediaSource(mediaSource: MediaSourceInfo): void {
+      this.currentMediaSource = mediaSource;
+    },
+    setPlaySessionId(id: string) {
+      this.playSessionId = id;
+    },
+    setNextTrack(): void {
+      if (
+        !isNil(this.currentItemIndex) &&
+        this.currentItemIndex + 1 < this.queue.length
+      ) {
+        this.lastItemIndex = this.currentItemIndex;
+        this.currentItemIndex += 1;
+        this.currentTime = 0;
+      } else if (this.repeatMode === RepeatMode.RepeatAll) {
+        this.lastItemIndex = this.currentItemIndex;
+        this.currentItemIndex = 0;
+        this.currentTime = 0;
+      } else {
+        this.stop();
+      }
+    },
+    setPreviousTrack(): void {
+      if (!isNil(this.currentItemIndex) && this.currentItemIndex > 0) {
+        this.lastItemIndex = this.currentItemIndex;
+        this.currentItemIndex -= 1;
+        this.currentTime = 0;
+      }
+
+      this.currentTime = 0;
+    },
+    setNewQueue(queue: string[]): void {
+      let item;
+      let lastItem;
+
+      if (this.currentItemIndex !== null) {
+        item = this.queue[this.currentItemIndex];
+      }
+
+      if (this.lastItemIndex !== null) {
+        lastItem = this.queue[this.lastItemIndex];
+      }
+
+      const newIndex = queue?.indexOf(item || '');
+      const lastItemNewIndex = queue?.indexOf(lastItem || '');
+
+      this.queue = queue;
+      this.lastItemIndex = lastItemNewIndex;
+      this.currentItemIndex = newIndex;
+    },
+    stop(): void {
+      const volume = this.currentVolume;
+
+      this.$reset();
+      this.currentVolume = volume;
+    },
+    skipForward(): void {
+      this.changeCurrentTime((this.currentTime || 0) + 15);
+    },
+    skipBackward(): void {
+      if ((this.currentTime || 0) > 15) {
+        this.changeCurrentTime((this.currentTime || 0) - 15);
+      } else {
+        this.changeCurrentTime(0);
+      }
+    },
+    toggleShuffle(): void {
+      if (this.queue && !isNil(this.currentItemIndex)) {
+        if (!this.isShuffling) {
+          const queue = shuffle(this.queue);
+
+          this.originalQueue = this.queue;
+
+          const item = this.queue[this.currentItemIndex];
+          const itemIndex = queue.indexOf(item);
+
+          queue.splice(itemIndex, 1);
+          queue.unshift(item);
+
+          this.queue = queue;
+          this.currentItemIndex = 0;
+          this.lastItemIndex = null;
+          this.isShuffling = true;
+        } else {
+          const item = this.queue[this.currentItemIndex];
+
+          this.currentItemIndex = this.originalQueue.indexOf(item);
+          this.queue = this.originalQueue;
+          this.originalQueue = [];
+          this.lastItemIndex = null;
+          this.isShuffling = false;
+        }
+      }
+    },
+    /**
+     * Toggles between the different repeat modes
+     *
+     * If there's only one item in queue, we only switch between RepeatOne and RepeatNone
+     */
+    toggleRepeatMode(): void {
+      if (this.repeatMode === RepeatMode.RepeatNone) {
+        if (this.queue.length > 1) {
+          this.repeatMode = RepeatMode.RepeatAll;
+        } else {
+          this.repeatMode = RepeatMode.RepeatOne;
+        }
+      } else if (this.repeatMode === RepeatMode.RepeatAll) {
+        if (this.queue.length > 1) {
+          this.repeatMode = RepeatMode.RepeatOne;
+        } else {
+          this.repeatMode = RepeatMode.RepeatNone;
+        }
+      } else {
+        this.repeatMode = RepeatMode.RepeatNone;
+      }
+    },
+    /**
+     * Toggles the mute function
+     *
+     * If the volume is zero and isMuted is true, the volume returns to 100 when it is reactivated
+     */
+    toggleMute(): void {
+      if (this.currentVolume === 0 && this.isMuted) {
+        this.currentVolume = 100;
+      }
+      this.isMuted = !this.isMuted;
+    },
+    toggleMinimized() {
+      this.isMinimized = !this.isMinimized;
+    },
+    /**
+     * Builds an array of item ids based on a collection item (i.e album, tv show, etc...)
+     */
+    async translateItemsForPlayback(
+      item: BaseItemDto,
+      shuffle: boolean = false
+    ): Promise<string[]> {
+      let responseItems: BaseItemDto[] = [];
+
+      if (item.Type === 'Program' && item.ChannelId) {
+        responseItems =
+          (
+            await this.$nuxt.$api.items.getItems({
+              ids: [item.ChannelId],
+              limit: 300,
+              sortBy: shuffle ? ['Random'] : ['SortName']
+            })
+          ).data.Items || [];
+      } else if (item.Type === 'Playlist') {
+        responseItems =
+          (
+            await this.$nuxt.$api.items.getItems({
+              parentId: item.Id,
+              limit: 300,
+              sortBy: shuffle ? ['Random'] : undefined
+            })
+          ).data.Items || [];
+      } else if (item.Type === 'MusicArtist' && item.Id) {
+        responseItems =
+          (
+            await this.$nuxt.$api.items.getItems({
+              artistIds: [item.Id],
+              filters: [ItemFilter.IsNotFolder],
+              recursive: true,
+              mediaTypes: ['Audio'],
+              limit: 300,
+              sortBy: shuffle ? ['Random'] : ['SortName']
+            })
+          ).data.Items || [];
+      } else if (item.Type === 'MusicGenre' && item.Id) {
+        responseItems =
+          (
+            await this.$nuxt.$api.items.getItems({
+              genreIds: [item.Id],
+              filters: [ItemFilter.IsNotFolder],
+              recursive: true,
+              mediaTypes: ['Audio'],
+              limit: 300,
+              sortBy: shuffle ? ['Random'] : ['SortName']
+            })
+          ).data.Items || [];
+      } else if (item.IsFolder) {
+        responseItems =
+          (
+            await this.$nuxt.$api.items.getItems({
+              parentId: item.Id,
+              filters: [ItemFilter.IsNotFolder],
+              recursive: true,
+              sortBy: ['BoxSet'].includes(item.Type || '')
+                ? undefined
+                : shuffle
+                ? ['Random']
+                : ['SortName'],
+              mediaTypes: ['Audio', 'Video'],
+              limit: 300
+            })
+          ).data.Items || [];
+      } else if (item.Type === 'Episode') {
+        if (
+          this.$nuxt.$auth.user.Configuration?.EnableNextEpisodeAutoPlay &&
+          item.SeriesId
+        ) {
+          /**
+           * If autoplay is enabled and we have a seriesId, get the rest of the episodes
+           */
+          responseItems =
+            (
+              await this.$nuxt.$api.tvShows.getEpisodes({
+                seriesId: item.SeriesId,
+                isMissing: false,
+                fields: [
+                  ItemFields.Chapters,
+                  ItemFields.PrimaryImageAspectRatio
+                ],
+                startItemId: item.Id,
+                limit: 300
+              })
+            ).data.Items || [];
+        } else {
+          responseItems.push(item);
+        }
+      } else {
+        /**
+         * This type of item doesn't require any special processing
+         */
+        return [item.Id || ''];
+      }
+
+      return responseItems.map((item) => {
+        return item.Id ? item.Id : '';
+      });
+    }
+  },
+  getters: {
+    /**
+     * Get reactive BaseItemDto's objects of the queue
+     */
+    getQueueItems(): BaseItemDto[] {
+      const items = itemsStore();
+
+      return items.getItemsById(this.queue);
+    },
+    /**
+     * Get a reactive BaseItemDto object of the currently playing item
+     */
+    getCurrentItem(): BaseItemDto | undefined {
+      const items = itemsStore();
+
+      if (!isNil(this.currentItemIndex)) {
+        return items.getItemById(this.queue?.[this.currentItemIndex]);
+      }
+    },
+    /**
+     * Get a reactive BaseItemDto object of the previous item in queue
+     */
+    getPreviousItem(): BaseItemDto | null | undefined {
+      const items = itemsStore();
+
+      if (this.currentItemIndex === 0) {
+        return null;
+      } else if (!isNil(this.lastItemIndex)) {
+        return items.getItemById(this.queue?.[this.lastItemIndex]);
+      }
+    },
+    /**
+     * Get a reactive BaseItemDto object of the next item in queue
+     */
+    getNextItem(): BaseItemDto | undefined {
+      const items = itemsStore();
+
+      if (
+        !isNil(this.currentItemIndex) &&
+        this.currentItemIndex + 1 < this.queue.length
+      ) {
+        return items.getItemById(this.queue[this.currentItemIndex + 1]);
+      } else if (this.repeatMode === RepeatMode.RepeatAll) {
+        return items.getItemById(this.queue?.[0]);
+      }
+    },
+    /**
+     * Get the type of the currently playing item
+     */
+    getCurrentlyPlayingType(): string | null | undefined {
+      const items = itemsStore();
+
+      if (!isNil(this.currentItemIndex)) {
+        return items.getItemById(this.queue?.[this.currentItemIndex])?.Type;
+      }
+    },
+    /**
+     * Get the media type of the currently playing item
+     */
+    getCurrentlyPlayingMediaType(): string | null | undefined {
+      const items = itemsStore();
+
+      if (!isNil(this.currentItemIndex)) {
+        return items.getItemById(this.queue?.[this.currentItemIndex])
+          ?.MediaType;
+      }
+    },
+    /**
+     * Get current's item audio tracks
+     */
+    getCurrentItemAudioTracks(): MediaStream[] | undefined {
+      const items = itemsStore();
+
+      if (!isNil(this.currentMediaSource?.MediaStreams)) {
+        // @ts-expect-error - TODO: Check why typechecking this fails
+        return this.currentMediaSource.MediaStreams.filter((stream) => {
+          return stream.Type === 'Audio';
+        });
+      }
+    },
+    /**
+     * Get current's item subtitle tracks
+     */
+    getCurrentItemSubtitleTracks(): MediaStream[] | undefined {
+      const items = itemsStore();
+
+      if (!isNil(this.currentMediaSource?.MediaStreams)) {
+        // @ts-expect-error - TODO: Check why typechecking this fails
+        return this.currentMediaSource.MediaStreams.filter((stream) => {
+          return stream.Type === 'Subtitle';
+        });
+      }
+    },
+    getCurrentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
+      return (this.currentMediaSource?.MediaStreams?.map((el, idx) => ({
+        srcIndex: idx,
+        el
+      }))
+        .filter(
+          (sub) =>
+            (sub.el.Type === 'Subtitle' &&
+              sub.el.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
+            sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
+        )
+        .map((sub) => ({
+          label: sub.el.DisplayTitle || 'Undefined',
+          src:
+            sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
+              ? sub.el.DeliveryUrl
+              : undefined,
+          srcLang: sub.el.Language || undefined,
+          type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
+          srcIndex: sub.srcIndex,
+          codec: sub.el.Codec
+        })) || []) as PlaybackTrack[];
+    },
+    getCurrentItemVttParsedSubtitleTracks(): PlaybackTrack[] {
+      const subs = this.getCurrentItemParsedSubtitleTracks;
+
+      return (
+        subs?.filter(
+          (sub) => sub.src && sub.src.match(/Stream\.vtt(\?.*)?$/)
+        ) || []
       );
-    } else {
-      translatedItems = await this.$playback.translateItemsForPlayback(item);
-    }
+    },
+    getCurrentItemAssParsedSubtitleTracks(): PlaybackTrack[] {
+      const subs = this.getCurrentItemParsedSubtitleTracks;
 
-    commit('SET_QUEUE', { queue: translatedItems });
-
-    if (videoTrackIndex !== undefined) {
-      commit('SET_CURRENT_VIDEO_TRACK_INDEX', {
-        videoStreamIndex: videoTrackIndex
-      });
-    }
-
-    if (audioTrackIndex !== undefined) {
-      commit('SET_CURRENT_AUDIO_TRACK_INDEX', {
-        audioStreamIndex: audioTrackIndex
-      });
-    }
-
-    if (subtitleTrackIndex !== undefined) {
-      commit('SET_CURRENT_SUBTITLE_TRACK_INDEX', {
-        subtitleStreamIndex: subtitleTrackIndex
-      });
-    }
-
-    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: startFromIndex });
-    commit('SET_CURRENT_TIME', { time: startFromTime });
-
-    let opts;
-
-    if (!startShuffled && initiator) {
-      opts = { initMode: InitMode.Item, initiator };
-    } else if (startShuffled && !initiator) {
-      opts = { initMode: InitMode.Shuffle };
-    } else if (startShuffled && initiator) {
-      opts = { initMode: InitMode.ShuffleItem, initiator };
-    } else {
-      opts = { initMode: InitMode.Unknown };
-    }
-
-    commit('START_PLAYBACK', opts);
-  },
-  async playNext({ commit, state }, { item }: { item: BaseItemDto }) {
-    const queue = Array.from(state.queue);
-    const translatedItem = await this.$playback.translateItemsForPlayback(item);
-
-    if (state.currentItemIndex !== null) {
-      queue.splice(state.currentItemIndex + 1, 0, ...translatedItem);
-      commit('SET_QUEUE', { queue });
-    }
-  },
-  async addToQueue({ commit, state }, { item }: { item: BaseItemDto }) {
-    const queue = Array.from(state.queue);
-    const translatedItem = await this.$playback.translateItemsForPlayback(item);
-
-    queue.push(...translatedItem);
-    commit('SET_QUEUE', { queue });
-  },
-  setNewQueue({ commit, state }, { queue }) {
-    let item;
-    let lastItem;
-
-    if (state.currentItemIndex !== null) {
-      item = state.queue[state.currentItemIndex];
-    }
-
-    if (state.lastItemIndex !== null) {
-      lastItem = state.queue[state.lastItemIndex];
-    }
-
-    const newIndex = queue?.indexOf(item as BaseItemDto);
-    const lastItemNewIndex = queue?.indexOf(lastItem as BaseItemDto);
-
-    commit('SET_QUEUE', { queue });
-    commit('SET_CURRENT_ITEM_INDEX', {
-      currentItemIndex: newIndex,
-      lastItemIndex: lastItemNewIndex
-    });
-  },
-  stop({ commit }) {
-    commit('STOP_PLAYBACK');
-  },
-  pause({ commit, state }) {
-    if (state.status === PlaybackStatus.Playing) {
-      commit('PAUSE_PLAYBACK');
-    }
-  },
-  unpause({ commit, state }) {
-    if (state.status === PlaybackStatus.Paused) {
-      commit('UNPAUSE_PLAYBACK');
-    }
-  },
-  playPause({ commit, state }) {
-    if (state.status === PlaybackStatus.Playing) {
-      commit('PAUSE_PLAYBACK');
-    } else if (state.status === PlaybackStatus.Paused) {
-      commit('UNPAUSE_PLAYBACK');
-    }
-  },
-  toggleMute({ commit, state }) {
-    if (state.currentVolume === 0 && state.isMuted) {
-      // if the volume is zero and isMuted is true, the volume returns to 100 when it is reactivated
-      commit('SET_VOLUME', { volume: 100 });
-    }
-
-    commit('SET_IS_MUTED', { isMuted: !state.isMuted });
-  },
-  clearQueue({ commit }) {
-    commit('SET_QUEUE', { queue: [] });
-  },
-  setMediaSource({ commit }, { mediaSource }) {
-    commit('SET_CURRENT_MEDIA_SOURCE', { mediaSource });
-  },
-  setNextTrack({ commit, state }) {
-    if (
-      state.currentItemIndex !== null &&
-      state.currentItemIndex + 1 < state.queue.length
-    ) {
-      commit('INCREASE_QUEUE_INDEX');
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: 0 });
-    } else {
-      commit('STOP_PLAYBACK');
-    }
-  },
-  setPreviousTrack({ commit, state }) {
-    if (state.currentTime !== null && state.currentTime > 2) {
-      commit('CHANGE_CURRENT_TIME', { time: 0 });
-      commit('SET_CURRENT_TIME', { time: 0 });
-    } else if (state.currentItemIndex !== null && state.currentItemIndex > 0) {
-      commit('DECREASE_QUEUE_INDEX');
-    } else {
-      commit('CHANGE_CURRENT_TIME', { time: 0 });
-      commit('SET_CURRENT_TIME', { time: 0 });
-    }
-  },
-  resetCurrentTime({ commit }) {
-    commit('CHANGE_CURRENT_TIME', { time: 0 });
-  },
-  resetCurrentItemIndex({ commit }) {
-    commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: null });
-  },
-  setLastItemIndex({ commit }) {
-    commit('SET_LAST_ITEM_INDEX');
-  },
-  resetLastItemIndex({ commit }) {
-    commit('RESET_LAST_ITEM_INDEX');
-  },
-  setLastProgressUpdate({ commit }, { progress }: { progress: number }) {
-    commit('SET_LAST_PROGRESS_UPDATE', { progress });
-  },
-  setVolume({ commit, state }, { volume }: { volume: number }) {
-    commit('SET_VOLUME', { volume });
-
-    if (volume === 0) {
-      commit('SET_IS_MUTED', { isMuted: true });
-    } else if (state.isMuted === true) {
-      commit('SET_IS_MUTED', { isMuted: false });
-    }
-  },
-  setCurrentIndex({ commit, state }, { index }: { index: number }) {
-    if (state.currentItemIndex !== index) {
-      commit('SET_CURRENT_ITEM_INDEX', { currentItemIndex: index });
-    }
-  },
-  setCurrentTime({ commit }, { time }: { time: number | null }) {
-    commit('SET_CURRENT_TIME', { time });
-  },
-  changeCurrentTime({ commit }, { time }: { time: number | null }) {
-    commit('CHANGE_CURRENT_TIME', { time });
-  },
-  skipForward({ commit, state }) {
-    commit('CHANGE_CURRENT_TIME', { time: (state.currentTime || 0) + 15 });
-  },
-  skipBackward({ commit, state }) {
-    // TODO: Store time to skip in a store to make it customizable
-    if ((state.currentTime || 0) > 15) {
-      commit('CHANGE_CURRENT_TIME', { time: (state.currentTime || 0) - 15 });
-    } else {
-      commit('CHANGE_CURRENT_TIME', { time: 0 });
-    }
-  },
-  setMinimized({ commit }, { minimized }: { minimized: boolean }) {
-    commit('SET_MINIMIZE', { minimized });
-  },
-  toggleMinimized({ commit }) {
-    commit('TOGGLE_MINIMIZE');
-  },
-  setPlaySessionId({ commit }, { id }: { id: string | null }) {
-    commit('SET_PLAY_SESSION_ID', { id });
-  },
-  // This function forces specific repeat modes, should only be used in very specific cases.
-  // Use toggleRepeatMode for handling all the situations gracefully
-  setRepeatMode({ commit }, { mode }: { mode: RepeatMode }) {
-    commit('SET_REPEAT_MODE', { mode });
-  },
-  toggleShuffle({ commit }) {
-    commit('TOGGLE_SHUFFLE');
-  },
-  toggleRepeatMode({ commit, state }) {
-    // If there's only one item in queue, we only switch between RepeatOne and RepeatNone
-    if (state.repeatMode === RepeatMode.RepeatNone) {
-      if (state.queue.length > 1) {
-        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatAll });
-      } else {
-        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatOne });
+      return (
+        subs?.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') || []
+      );
+    },
+    getCurrentVideoTrack(): MediaStream | undefined {
+      if (
+        !isNil(this.currentMediaSource?.MediaStreams) &&
+        !isNil(this.currentVideoStreamIndex)
+      ) {
+        // @ts-expect-error - TODO: Check why typechecking this fails
+        return this.currentMediaSource.MediaStreams.filter((stream) => {
+          return stream.Type === 'Video';
+        })[this.currentVideoStreamIndex];
       }
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      if (state.queue.length > 1) {
-        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatOne });
-      } else {
-        commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatNone });
+    },
+    getCurrentAudioTrack(): MediaStream | undefined {
+      if (
+        !isNil(this.currentMediaSource?.MediaStreams) &&
+        !isNil(this.currentAudioStreamIndex)
+      ) {
+        // @ts-expect-error - TODO: Check why typechecking this fails
+        return this.currentMediaSource.MediaStreams.filter((stream) => {
+          return stream.Type === 'Audio';
+        })[this.currentAudioStreamIndex];
       }
-    } else {
-      commit('SET_REPEAT_MODE', { mode: RepeatMode.RepeatNone });
+    },
+    getCurrentSubtitleTrack(): MediaStream | undefined {
+      if (
+        !isNil(this.currentMediaSource?.MediaStreams) &&
+        !isNil(this.currentSubtitleStreamIndex)
+      ) {
+        // @ts-expect-error - TODO: Check why typechecking this fails
+        return this.currentMediaSource.MediaStreams?.filter((stream) => {
+          return stream.Type === 'Subtitle';
+        })[this.currentSubtitleStreamIndex];
+      }
     }
   }
-};
+});
