@@ -31,7 +31,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     'prefer-arrow-callback': 'error',
-    curly: 'error',
     'padding-line-between-statements': [
       'error',
       // Always require blank lines after directives (like 'use-strict'), except between directives
@@ -95,6 +94,7 @@ module.exports = {
       ],
       rules: {
         // Force some component order stuff, formatting and such, for consistency
+        curly: ['error', 'all'],
         'vue/component-name-in-template-casing': [
           'error',
           'kebab-case',
