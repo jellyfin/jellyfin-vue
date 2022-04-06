@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 
 export interface ServerInfo extends PublicSystemInfo {
   PublicAddress: string;
-  isDefault?: boolean;
+  isDefault: boolean;
 }
 
 export interface AuthState {
@@ -34,9 +34,9 @@ export const authStore = defineStore('auth', {
   },
   actions: {
     /**
-     * Adds a new server to the store and set
+     * Adds a new server to the store and sets it as the default one
      */
-    async connectServer(serverUrl: string) {
+    async connectServer(serverUrl: string, isDefault?: boolean) {
       serverUrl = serverUrl.replace(/\/$/, '');
       const snackbar = snackbarStore();
       this.$nuxt.$axios.setBaseURL(serverUrl);
@@ -48,6 +48,7 @@ export const authStore = defineStore('auth', {
         data = (await this.$nuxt.$api.system.getPublicSystemInfo())
           .data as ServerInfo;
         data.PublicAddress = serverUrl;
+        data.isDefault = isDefault ? true : false;
       } catch (err) {
         snackbar.push(this.$nuxt.i18n.t('login.serverNotFound'), 'error');
         throw new Error(err as string);
@@ -81,7 +82,6 @@ export const authStore = defineStore('auth', {
      * Logs the user to the current server
      */
     async loginUser(username: string, password: string, rememberMe: boolean) {
-      const deviceProfile = deviceProfileStore();
       if (!this.getCurrentServer) {
         throw new Error('There is no server in use');
       }

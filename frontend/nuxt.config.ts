@@ -91,12 +91,12 @@ const config: NuxtConfig = {
     /*
      ** Pinia plugins (need to be loaded first to ensure persistence)
      */
-    'plugins/store/plugins.ts',
-    'plugins/store/watchers.ts',
+    'plugins/store/index.ts',
     /*
      ** Nuxt plugins
      */
     'plugins/nuxt/apiPlugin.ts',
+    'plugins/nuxt/appInit.ts',
     'plugins/nuxt/auth.ts',
     'plugins/nuxt/axiosInterceptors.ts',
     'plugins/nuxt/axe.ts',

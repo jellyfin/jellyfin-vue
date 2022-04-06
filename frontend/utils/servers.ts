@@ -26,7 +26,7 @@ export function parseServerListString(value: string | undefined): string[] {
     } else {
       // eslint-disable-next-line no-console
       console.warn(
-        `[Default Servers] This url is not valid. It will be excluded from the server list to avoid errors. (${url})`
+        `[Auth] Invalid url for default server. It will be excluded from the server list: ${url}`
       );
     }
   });

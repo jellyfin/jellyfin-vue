@@ -35,7 +35,10 @@ function handleAuthRedirections(
 
   const currentBaseUrl = context.$axios.defaults.baseURL;
 
-  if (!servers.length) {
+  if (
+    !servers.length ||
+    (currentRoute === serverSelectUrl && nextRoute === serverAddUrl)
+  ) {
     destinationRoute = serverAddUrl;
   } else if (
     (currentBaseUrl && !userToken) ||
@@ -81,7 +84,7 @@ export function setHeaderAndBaseUrl(
   ctx: Context,
   auth: ReturnType<typeof authStore>
 ) {
-  const currentServer = auth.getCurrentServer?.Address || '';
+  const currentServer = auth.getCurrentServer?.PublicAddress || '';
 
   ctx.$axios.setBaseURL(currentServer);
   auth.setAxiosHeader();
