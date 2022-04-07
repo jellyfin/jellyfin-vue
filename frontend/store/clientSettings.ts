@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import nuxtConfig from '~/nuxt.config';
+import { fetchSettingsFromServer } from '~/plugins/store/plugins/preferencesSync';
 
 /**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto
@@ -28,8 +29,10 @@ export const clientSettingsStore = defineStore('clientSettings', {
     setLocale(locale: string): void {
       this.locale = locale;
     },
-    setLastSyncDate(): void {
-      this.lastSync = Date.now();
+    async initState(): Promise<void> {
+      const data = await fetchSettingsFromServer(this.$nuxt, this.$id);
+      // @ts-expect-error - Everything is dynamic at runtime, so we need to exclude type checking here.
+      this.$patch(data.CustomPrefs);
     }
   }
 });
