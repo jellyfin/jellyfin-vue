@@ -2,10 +2,10 @@ import { Context } from '@nuxt/types';
 import {
   authStore,
   clientSettingsStore,
-  deviceProfileStore,
   homeSectionStore,
   itemsStore,
   pageStore,
+  playbackManagerStore,
   snackbarStore,
   socketStore,
   userViewsStore
@@ -19,7 +19,6 @@ import { authLogic } from '~/middleware/auth';
  */
 export default function watchAuth(ctx: Context) {
   const auth = authStore();
-  const deviceProfile = deviceProfileStore();
   const clientSettings = clientSettingsStore();
   const homeSection = homeSectionStore();
   const snackbar = snackbarStore();
@@ -27,6 +26,7 @@ export default function watchAuth(ctx: Context) {
   const socket = socketStore();
   const userViews = userViewsStore();
   const items = itemsStore();
+  const playbackManager = playbackManagerStore();
 
   /**
    * Watch for actions after the app has been initialized
@@ -41,7 +41,6 @@ export default function watchAuth(ctx: Context) {
         authLogic(ctx, auth, false);
 
         if (name === 'logoutUser' && store.currentUserIndex === -1) {
-          deviceProfile.$reset();
           clientSettings.$reset();
           homeSection.$reset();
           snackbar.$reset();
@@ -49,6 +48,7 @@ export default function watchAuth(ctx: Context) {
           socket.closeSocket();
           userViews.$reset();
           items.$reset();
+          playbackManager.$reset();
         }
       }
     });
