@@ -2,11 +2,13 @@ name: GitHub CodeQL 🔬
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
     paths-ignore:
       - '**/*.md'
   pull_request:
-    branches: [master]
+    branches:
+      - master
     paths-ignore:
       - '**/*.md'
   schedule:
@@ -20,19 +22,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['typescript']
+        language:
+          - typescript
     steps:
       - name: Checkout repository ⬇️
         uses: actions/checkout@v3.0.0
 
       - name: Initialize CodeQL 🛠️
-        uses: github/codeql-action/init@v1
+        uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
           queries: +security-and-quality
 
       - name: Autobuild 📦
-        uses: github/codeql-action/autobuild@v1
+        uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis 🧪
-        uses: github/codeql-action/analyze@v1
+        uses: github/codeql-action/analyze@v2
