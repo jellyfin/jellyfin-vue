@@ -32,7 +32,7 @@ export default function watchAuth(ctx: Context) {
    * Watch for actions after the app has been initialized
    */
   auth.$onAction(({ name, after, store }) => {
-    after(() => {
+    after(async () => {
       if (name !== 'setAxiosHeader') {
         /**
          * We set the useContext boolean to false since at this point the app will be already booted, so
@@ -49,6 +49,10 @@ export default function watchAuth(ctx: Context) {
           userViews.$reset();
           items.$reset();
           playbackManager.$reset();
+        }
+
+        if (name === 'loginUser') {
+          await clientSettings.initState();
         }
       }
     });

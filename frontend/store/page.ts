@@ -12,6 +12,7 @@ export interface PageState {
   opaqueAppBar: boolean;
   navDrawer: boolean;
   isScrolled: boolean;
+  syncing: boolean;
   backdrop: BackdropParameters;
 }
 
@@ -24,6 +25,7 @@ export const pageStore = defineStore('page', {
       opaqueAppBar: true,
       navDrawer: true,
       isScrolled: false,
+      syncing: false,
       backdrop: {
         blurhash: '',
         opacity: defaultBackdropOpacity
@@ -34,9 +36,15 @@ export const pageStore = defineStore('page', {
     resetBackdropOpacity(): void {
       this.backdrop.opacity = defaultBackdropOpacity;
     },
-    clearBackdrop() {
+    clearBackdrop(): void {
       this.resetBackdropOpacity();
       this.backdrop.blurhash = '';
+    },
+    startSync(): void {
+      this.syncing = true;
+    },
+    stopSync(): void {
+      this.syncing = false;
     }
   }
 });
