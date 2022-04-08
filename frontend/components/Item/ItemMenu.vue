@@ -54,7 +54,7 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
-import { playbackManagerStore, snackbarStore } from '~/store';
+import { authStore, playbackManagerStore, snackbarStore } from '~/store';
 
 type MenuOption = {
   title: string;
@@ -97,7 +97,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(snackbarStore, playbackManagerStore),
+    ...mapStores(authStore, snackbarStore, playbackManagerStore),
     options: {
       get(): MenuOption[] {
         const menuOptions = [] as MenuOption[];
@@ -145,7 +145,7 @@ export default Vue.extend({
         }
 
         if (
-          this.$auth.user?.Policy?.IsAdministrator &&
+          this.auth.currentUser?.Policy?.IsAdministrator &&
           ['Folder', 'CollectionFolder', 'UserView'].includes(
             this.item.Type || ''
           )
@@ -172,7 +172,7 @@ export default Vue.extend({
           });
         }
 
-        if (this.$auth.user?.Policy?.IsAdministrator) {
+        if (this.auth.currentUser?.Policy?.IsAdministrator) {
           menuOptions.push({
             title: this.$t('editMetadata'),
             icon: 'mdi-pencil-outline',

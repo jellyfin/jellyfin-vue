@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { BaseItem, BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
+import { authStore } from '.';
 
 export interface ItemsState {
   byId: Record<string, BaseItemDto>;
@@ -87,10 +88,12 @@ export const itemsStore = defineStore('items', {
     async fetchAndAddCollection(
       parentId: string | undefined
     ): Promise<BaseItemDto[] | undefined> {
+      const auth = authStore();
+
       if (parentId && !this.getItemById(parentId)) {
         const parentItem = (
           await this.$nuxt.$api.items.getItems({
-            userId: this.$nuxt.$auth.user?.Id,
+            userId: auth.currentUserId,
             ids: [parentId],
             fields: allFields
           })
@@ -104,7 +107,7 @@ export const itemsStore = defineStore('items', {
 
       const childItems = (
         await this.$nuxt.$api.items.getItems({
-          userId: this.$nuxt.$auth.user?.Id,
+          userId: auth.currentUserId,
           parentId,
           fields: allFields
         })

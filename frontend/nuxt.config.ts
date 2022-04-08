@@ -97,7 +97,6 @@ const config: NuxtConfig = {
      */
     'plugins/nuxt/apiPlugin.ts',
     'plugins/nuxt/appInit.ts',
-    'plugins/nuxt/auth.ts',
     'plugins/nuxt/axiosInterceptors.ts',
     'plugins/nuxt/axe.ts',
     'plugins/nuxt/veeValidate.ts',

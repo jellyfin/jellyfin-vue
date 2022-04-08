@@ -57,7 +57,7 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
-import { snackbarStore } from '~/store';
+import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, itemHelper],
@@ -109,7 +109,7 @@ export default Vue.extend({
       if (this.item.Id) {
         const response = await this.$api.library.getSimilarItems({
           itemId: this.item.Id,
-          userId: this.$auth.user?.Id,
+          userId: this.auth.currentUserId,
           limit: this.vertical ? 5 : 12,
           excludeArtistIds: this.item.AlbumArtists?.flatMap(
             (albumArtist: BaseItemDto) =>
@@ -126,7 +126,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(snackbarStore)
+    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

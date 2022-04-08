@@ -82,7 +82,7 @@ import {
 } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
-import { playbackManagerStore } from '~/store';
+import { authStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   mixins: [timeUtils, itemHelper],
@@ -100,7 +100,7 @@ export default Vue.extend({
   async fetch() {
     this.tracks = (
       await this.$api.items.getItems({
-        userId: this.$auth.user?.Id,
+        userId: this.auth.currentUserId,
         parentId: this.item.Id,
         sortBy: ['SortName'],
         sortOrder: [SortOrder.Ascending]
@@ -108,7 +108,7 @@ export default Vue.extend({
     ).data;
   },
   computed: {
-    ...mapStores(playbackManagerStore),
+    ...mapStores(authStore, playbackManagerStore),
     tracksPerDisc(): Record<string, BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }

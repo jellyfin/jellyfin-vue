@@ -31,16 +31,19 @@ import {
   clientSettingsStore,
   pageStore,
   userViewsStore,
-  HomeSection
+  HomeSection,
+  authStore
 } from '~/store';
 
 export default Vue.extend({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
   // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
-  async asyncData({ $api, $auth }) {
+  async asyncData({ $api }) {
+    const auth = authStore();
+
     const carouselItems = (
       await $api.userLibrary.getLatestMedia({
-        userId: $auth.user?.Id,
+        userId: auth.currentUserId,
         limit: 10,
         fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],

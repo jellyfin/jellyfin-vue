@@ -213,7 +213,7 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
-import { snackbarStore } from '~/store';
+import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -300,7 +300,7 @@ export default Vue.extend({
       try {
         const response = (
           await this.$api.filter.getQueryFiltersLegacy({
-            userId: this.$auth.user?.Id,
+            userId: this.auth.currentUserId,
             parentId: this.$route.params.viewId,
             includeItemTypes: [this.itemsType]
           })
@@ -333,7 +333,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(snackbarStore)
+    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

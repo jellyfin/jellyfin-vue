@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLibraryIcon } from '~/utils/items';
+import { authStore } from '.';
 
 export interface UserViewsState {
   views: BaseItemDto[];
@@ -14,9 +15,11 @@ export const userViewsStore = defineStore('userViews', {
   },
   actions: {
     async refreshUserViews(): Promise<void> {
+      const auth = authStore();
+
       try {
         const userViewsResponse = await this.$nuxt.$api.userViews.getUserViews({
-          userId: this.$nuxt.$auth.user?.Id as string
+          userId: auth.currentUserId
         });
 
         this.views = userViewsResponse.data.Items || [];

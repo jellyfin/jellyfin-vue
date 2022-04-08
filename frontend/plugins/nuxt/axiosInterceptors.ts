@@ -8,23 +8,20 @@ import { BaseItemDto } from '@jellyfin/client-axios';
  */
 
 const authPlugin: Plugin = (ctx: Context) => {
-  const items = itemsStore();
-  const auth = authStore();
-  const snackbar = snackbarStore();
-
   /**
    * Function to run on every successful response
    */
   const onRequestResponse = (response: AxiosResponse<any>) => {
+    const items = itemsStore();
+    const auth = authStore();
     const data = response.data;
-    const userId = ctx.$auth.user?.Id;
 
     if (data) {
       if (data.Items && Array.isArray(data.Items)) {
         response.data = items.add(data.Items as BaseItemDto[]);
       } else if (
-        userId &&
-        response.config.url?.includes(`/Users/${userId}/Items/`)
+        auth.currentUser &&
+        response.config.url?.includes(`/Users/${auth.currentUserId}/Items/`)
       ) {
         response.data = items.add(data);
       }
@@ -36,6 +33,9 @@ const authPlugin: Plugin = (ctx: Context) => {
    * Function to run on every failed request
    */
   const onRequestError = async (error: any) => {
+    const auth = authStore();
+    const snackbar = snackbarStore();
+
     if (error.response.status === 401) {
       try {
         await ctx.$api.user.getCurrentUser();
