@@ -4,14 +4,15 @@
       ref="player"
       :class="{ stretch: stretch }"
       :poster="poster.url"
-      :muted="isMuted"
+      :muted="playbackManager.isMuted"
       autoplay
       crossorigin="anonymous"
       playsinline
-      @timeupdate="onProgressThrottled"
+      @timeupdate="onProgress"
       @pause="onPause"
       @play="onPlay"
-      @ended="onStopped"
+      @ended="onEnd"
+      @waiting="onWaiting"
     />
   </div>
 </template>
@@ -26,9 +27,8 @@ import SubtitlesOctopus from 'libass-wasm';
 import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
 // @ts-expect-error - No types for libass
 import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
-import throttle from 'lodash/throttle';
+import isNil from 'lodash/isNil';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters, mapState, mapMutations } from 'vuex';
 import {
   BaseItemDto,
   MediaSourceInfo,
@@ -38,8 +38,12 @@ import {
 import { stringify } from 'qs';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
-import { PlaybackTrack } from '~/store/playbackManager';
-import { deviceProfileStore } from '~/store';
+import { authStore, deviceProfileStore, playbackManagerStore } from '~/store';
+import {
+  PlaybackStatus,
+  PlaybackTrack,
+  RepeatMode
+} from '~/store/playbackManager';
 
 // Using requires so those aren't treeshaked and loaded by the webpack file loader as static assets
 require('libass-wasm/dist/js/subtitles-octopus-worker.data');
@@ -61,179 +65,200 @@ export default Vue.extend({
       source: '',
       hls: undefined as Hls | undefined,
       octopus: undefined as SubtitlesOctopus | undefined,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {},
       subtitleTrack: undefined as PlaybackTrack | undefined,
       restartTime: undefined as number | undefined
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
-    ...mapGetters('playbackManager', [
-      'getCurrentItem',
-      'getCurrentItemParsedSubtitleTracks',
-      'getCurrentItemVttParsedSubtitleTracks',
-      'getCurrentItemAssParsedSubtitleTracks'
-    ]),
-    ...mapState('playbackManager', [
-      'isMuted',
-      'currentTime',
-      'currentVolume',
-      'currentMediaSource',
-      'currentAudioStreamIndex',
-      'currentSubtitleStreamIndex'
-    ]),
-    ...mapState('user', ['accessToken']),
-    poster(): ImageUrlInfo | string {
-      return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
+    ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
+    poster(): ImageUrlInfo | string | undefined {
+      if (!isNil(this.playbackManager.getCurrentItem)) {
+        return this.getImageInfo(this.playbackManager.getCurrentItem, {
+          preferBackdrop: true
+        });
+      }
     },
-    videoElement(): HTMLVideoElement {
-      return this.$refs.player as HTMLVideoElement;
+    videoElement(): HTMLVideoElement | undefined {
+      return this.$refs.player as HTMLVideoElement | undefined;
     },
-    isHls() {
-      const mediaSource = this.currentMediaSource as MediaSourceInfo;
+    isHls(): boolean {
+      const mediaSource = this.playbackManager.currentMediaSource;
 
-      return (
+      if (
+        !isNil(mediaSource) &&
         mediaSource.SupportsTranscoding &&
         mediaSource.TranscodingSubProtocol === 'hls'
-      );
+      ) {
+        return true;
+      }
+      return false;
     }
   },
   watch: {
-    getCurrentItem(newItem, oldItem): void {
-      if (newItem !== oldItem) {
-        this.getPlaybackUrl();
+    'playbackManager.getCurrentItem': {
+      immediate: true,
+      async handler(newItem, oldItem): Promise<void> {
+        if (newItem !== oldItem) {
+          this.playbackManager.setBuffering();
+          await this.getPlaybackUrl();
+        }
+      }
+    },
+    'playbackManager.status': {
+      immediate: true,
+      handler(): void {
+        if (this.videoElement) {
+          switch (this.playbackManager.status) {
+            case PlaybackStatus.Playing:
+              this.videoElement.play();
+              break;
+            case PlaybackStatus.Paused:
+              this.videoElement.pause();
+              break;
+          }
+        }
+      }
+    },
+    'playbackManager.currentVolume': {
+      immediate: true,
+      handler(): void {
+        this.updateVolume();
+      }
+    },
+    'playbackManager.isMuted': {
+      immediate: true,
+      handler(): void {
+        this.updateVolume();
+      }
+    },
+    'playbackManager.repeatMode': {
+      immediate: true,
+      handler(): void {
+        if (this.videoElement) {
+          if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
+            this.videoElement.loop = true;
+          } else {
+            this.videoElement.loop = false;
+          }
+        }
+      }
+    },
+    'playbackManager.currentSubtitleStreamIndex': {
+      handler(): void {
+        this.changeSubtitle(
+          this.playbackManager.currentSubtitleStreamIndex || 0
+        );
+      }
+    },
+    'playbackManager.currentAudioStreamIndex': {
+      async handler(): Promise<void> {
+        if (!isNil(this.videoElement)) {
+          this.restartTime = this.videoElement.currentTime;
+          await this.getPlaybackUrl();
+        }
       }
     },
     source(newSource): void {
       this.destroy();
+      const mediaSource = this.playbackManager.currentMediaSource;
+      const item = this.playbackManager.getCurrentItem;
 
-      const mediaSource = this.currentMediaSource as MediaSourceInfo;
-      const item = this.getCurrentItem as BaseItemDto;
+      if (!isNil(item) && !isNil(mediaSource) && !isNil(this.videoElement)) {
+        if (
+          mediaSource.SupportsDirectPlay ||
+          (this.isHls &&
+            this.videoElement.canPlayType('application/vnd.apple.mpegurl'))
+        ) {
+          this.videoElement.src = newSource;
+        } else if (Hls.isSupported() && this.isHls) {
+          this.hls = new Hls();
+          this.hls.on(Hls.Events.ERROR, this.onHlsError);
+          this.hls.attachMedia(this.videoElement);
+          this.hls.loadSource(newSource);
+        } else {
+          this.$nuxt.error({
+            message: this.$t('browserNotSupported')
+          });
 
-      if (
-        mediaSource.SupportsDirectPlay ||
-        (this.isHls &&
-          this.videoElement.canPlayType('application/vnd.apple.mpegurl'))
-      ) {
-        this.videoElement.src = newSource;
-      } else if (Hls.isSupported() && this.isHls) {
-        this.hls = new Hls();
-        this.hls.on(Hls.Events.ERROR, this.onHlsError);
-        this.hls.attachMedia(this.videoElement);
-        this.hls.loadSource(newSource);
-      } else {
-        this.$nuxt.error({
-          message: this.$t('browserNotSupported')
-        });
-
-        return;
-      }
-
-      this.videoElement.currentTime =
-        this.restartTime ||
-        this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
-      this.restartTime = undefined;
-
-      this.subtitleTrack = (
-        this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
-      ).find((sub) => sub.srcIndex === this.currentSubtitleStreamIndex);
-
-      // If index isn't -1 and there's no sub found, it doesn't exist and we reset it
-      if (this.currentSubtitleStreamIndex !== -1 && !this.subtitleTrack) {
-        this.SET_CURRENT_SUBTITLE_TRACK_INDEX({
-          subtitleStreamIndex: -1
-        });
-      }
-
-      // Will display (or not) current external subtitle when start of video is loaded
-      this.videoElement.addEventListener('loadeddata', () => {
-        this.displayExternalSub(this.subtitleTrack);
-      });
-
-      const updateVolume = (): void => {
-        this.videoElement.volume = Math.pow(this.currentVolume / 100, 3);
-      };
-
-      updateVolume();
-
-      this.unsubscribe = this.$store.subscribe((mutation, _state: AppState) => {
-        switch (mutation.type) {
-          case 'playbackManager/PAUSE_PLAYBACK':
-            this.videoElement.pause();
-            break;
-          case 'playbackManager/UNPAUSE_PLAYBACK':
-            this.videoElement.play();
-            break;
-          case 'playbackManager/CHANGE_CURRENT_TIME':
-            if (mutation?.payload?.time !== null) {
-              this.videoElement.currentTime = mutation?.payload?.time;
-            }
-
-            break;
-          case 'playbackManager/SET_VOLUME':
-            updateVolume();
-            break;
-          case 'playbackManager/SET_CURRENT_SUBTITLE_TRACK_INDEX':
-            if (mutation?.payload?.subtitleStreamIndex !== null) {
-              this.changeSubtitle(mutation?.payload?.subtitleStreamIndex);
-            }
-
-            break;
-          case 'playbackManager/SET_CURRENT_AUDIO_TRACK_INDEX':
-            if (mutation?.payload?.audioStreamIndex !== null) {
-              // Set the restart time so that the function knows where to restart
-              this.restartTime = this.videoElement.currentTime;
-              this.getPlaybackUrl();
-            }
+          return;
         }
-      });
+
+        this.videoElement.currentTime =
+          this.restartTime ||
+          this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
+        this.restartTime = undefined;
+
+        this.subtitleTrack = (
+          this.playbackManager
+            .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+        ).find(
+          (sub) =>
+            sub.srcIndex === this.playbackManager.currentSubtitleStreamIndex
+        );
+
+        // If index isn't -1 and there's no sub found, it doesn't exist and we reset it
+        if (
+          this.playbackManager.currentSubtitleStreamIndex !== -1 &&
+          !this.subtitleTrack
+        ) {
+          this.playbackManager.currentSubtitleStreamIndex = -1;
+        }
+
+        // Will display (or not) current external subtitle when start of video is loaded
+        this.videoElement.addEventListener('loadeddata', () => {
+          this.displayExternalSub(this.subtitleTrack);
+        });
+
+        this.updateVolume();
+
+        this.playbackManager.$onAction(({ name, after }) => {
+          after(() => {
+            if (name === 'changeCurrentTime' && !isNil(this.videoElement)) {
+              this.videoElement.currentTime =
+                this.playbackManager.currentTime || 0;
+            }
+          });
+        });
+      }
     }
   },
-  mounted() {
-    this.getPlaybackUrl();
-  },
   beforeDestroy() {
-    this.onStopped(); // Report that the playback is stopping
+    this.playbackManager.stop();
 
     this.destroy();
   },
   methods: {
-    ...mapActions('playbackManager', [
-      'pause',
-      'unpause',
-      'setNextTrack',
-      'setMediaSource',
-      'setCurrentTime',
-      'setPlaySessionId'
-    ]),
-    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX']),
     async getPlaybackUrl(): Promise<void> {
-      if (this.getCurrentItem && this.getCurrentItem.Id) {
+      if (
+        this.playbackManager.getCurrentItem &&
+        this.playbackManager.getCurrentItem.Id
+      ) {
         this.playbackInfo = (
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
-              itemId: this.getCurrentItem.Id,
+              itemId: this.playbackManager.getCurrentItem.Id,
               userId: this.$auth.user?.Id,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
-              mediaSourceId: this.getCurrentItem.Id,
-              audioStreamIndex: this.currentAudioStreamIndex,
-              subtitleStreamIndex: this.currentSubtitleStreamIndex
+              mediaSourceId: undefined,
+              audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
+              subtitleStreamIndex:
+                this.playbackManager.currentSubtitleStreamIndex
             },
             { progress: false }
           )
         ).data;
 
-        this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
+        this.playbackManager.setPlaySessionId(
+          this.playbackInfo.PlaySessionId || ''
+        );
 
         if (!this.playbackInfo?.MediaSources?.[0]) {
           throw new Error("This item can't be played.");
         }
 
         const mediaSource = this.playbackInfo.MediaSources[0];
-
-        this.setMediaSource({ mediaSource });
+        this.playbackManager.setMediaSource(mediaSource);
 
         if (mediaSource.SupportsDirectStream) {
           const directOptions: Record<
@@ -243,7 +268,7 @@ export default Vue.extend({
             Static: true,
             mediaSourceId: mediaSource.Id,
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.accessToken
+            api_key: this.auth.getUserAccessToken(this.auth.getCurrentUser)
           };
 
           if (mediaSource.ETag) {
@@ -269,19 +294,20 @@ export default Vue.extend({
     async changeSubtitle(newsrcIndex: number): Promise<void> {
       // Find new sub
       const newSub = (
-        this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+        this.playbackManager
+          .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
       ).find((el) => el.srcIndex === newsrcIndex);
 
       // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
       if (
-        (this.subtitleTrack &&
+        !isNil(this.videoElement) &&
+        ((this.subtitleTrack &&
           this.subtitleTrack.type === SubtitleDeliveryMethod.Encode) ||
-        (newSub && newSub.type === SubtitleDeliveryMethod.Encode)
+          (newSub && newSub.type === SubtitleDeliveryMethod.Encode))
       ) {
         // Set the restart time so that the function knows where to restart
         this.restartTime = this.videoElement.currentTime;
         await this.getPlaybackUrl();
-
         return;
       }
 
@@ -289,60 +315,64 @@ export default Vue.extend({
       this.displayExternalSub(newSub);
     },
     displayExternalSub(newSub?: PlaybackTrack) {
-      // Disable octopus
-      if (this.octopus) {
-        this.octopus.freeTrack();
-      }
-
-      // Disable VTT
-      const oldVtt = this.videoElement.getElementsByTagName('track')[0];
-
-      if (oldVtt) {
-        this.videoElement.textTracks[0].mode = 'disabled';
-        oldVtt.remove();
-      }
-
-      // If new sub doesn't exist, we're done here
-      if (!newSub) {
-        this.subtitleTrack = newSub;
-
-        return;
-      }
-
-      // Find the sub in the VTT or ASS subs
-      const vttIdx = (
-        this.getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
-      ).findIndex((el) => el.srcIndex === newSub.srcIndex);
-      const assIdx = (
-        this.getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
-      ).findIndex((el) => el.srcIndex === newSub.srcIndex);
-
-      if (vttIdx !== -1) {
-        // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
-        const newVtt = document.createElement('track');
-
-        newVtt.kind = 'subtitles';
-        newVtt.srclang = newSub.srcLang || '';
-        newVtt.src = this.$axios.defaults.baseURL + (newSub.src || '');
-        this.videoElement.appendChild(newVtt);
-        this.videoElement.textTracks[0].mode = 'showing';
-        this.subtitleTrack = newSub;
-      } else if (assIdx !== -1) {
-        if (!this.octopus) {
-          this.octopus = new SubtitlesOctopus({
-            video: this.videoElement,
-            workerUrl: SubtitlesOctopusWorker,
-            legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
-            subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
-            blendRender: true
-          });
-        } else {
-          this.octopus.setTrackByUrl(
-            this.$axios.defaults.baseURL + (newSub.src || '')
-          );
+      if (!isNil(this.videoElement)) {
+        // Disable octopus
+        if (this.octopus) {
+          this.octopus.freeTrack();
         }
 
-        this.subtitleTrack = newSub;
+        // Disable VTT
+        const oldVtt = this.videoElement.getElementsByTagName('track')[0];
+
+        if (oldVtt) {
+          this.videoElement.textTracks[0].mode = 'disabled';
+          oldVtt.remove();
+        }
+
+        // If new sub doesn't exist, we're done here
+        if (!newSub) {
+          this.subtitleTrack = newSub;
+
+          return;
+        }
+
+        // Find the sub in the VTT or ASS subs
+        const vttIdx = (
+          this.playbackManager
+            .getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
+        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
+        const assIdx = (
+          this.playbackManager
+            .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
+        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
+
+        if (vttIdx !== -1) {
+          // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
+          const newVtt = document.createElement('track');
+
+          newVtt.kind = 'subtitles';
+          newVtt.srclang = newSub.srcLang || '';
+          newVtt.src = this.$axios.defaults.baseURL + (newSub.src || '');
+          this.videoElement.appendChild(newVtt);
+          this.videoElement.textTracks[0].mode = 'showing';
+          this.subtitleTrack = newSub;
+        } else if (assIdx !== -1) {
+          if (!this.octopus) {
+            this.octopus = new SubtitlesOctopus({
+              video: this.videoElement,
+              workerUrl: SubtitlesOctopusWorker,
+              legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
+              subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
+              blendRender: true
+            });
+          } else {
+            this.octopus.setTrackByUrl(
+              this.$axios.defaults.baseURL + (newSub.src || '')
+            );
+          }
+
+          this.subtitleTrack = newSub;
+        }
       }
     },
     onHlsError(_event: Events.ERROR, data: ErrorData): void {
@@ -379,43 +409,47 @@ export default Vue.extend({
         this.octopus.dispose();
         this.octopus = undefined;
       }
-
-      this.unsubscribe();
     },
     onPlay(_event?: Event): void {
-      this.unpause();
+      this.playbackManager.unpause();
     },
-    onProgressThrottled: throttle(function (_event?: Event) {
-      // @ts-expect-error - TypeScript is confusing the typings with lodash's
-      this.onProgress(_event);
-    }, 500),
     onProgress(_event?: Event): void {
+      if (this.playbackManager.status === PlaybackStatus.Buffering) {
+        this.playbackManager.cancelBuffering();
+      }
+
       if (this.videoElement) {
         const currentTime = this.videoElement.currentTime;
 
-        this.setCurrentTime({ time: currentTime });
+        this.playbackManager.setCurrentTime(currentTime);
       }
     },
-    onPause(_event?: Event): void {
+    onPause(): void {
       if (this.videoElement) {
         const currentTime = this.videoElement.currentTime;
 
-        this.setCurrentTime({ time: currentTime });
-        this.pause();
+        this.playbackManager.setCurrentTime(currentTime);
+        this.playbackManager.pause();
       }
     },
-    onStopped(_event?: Event): void {
+    onEnd(): void {
       if (this.videoElement) {
         const currentTime = this.videoElement.currentTime;
 
-        this.setCurrentTime({ time: currentTime });
-        this.setNextTrack();
+        this.playbackManager.setCurrentTime(currentTime);
+        this.playbackManager.setNextTrack();
       }
+    },
+    onWaiting(): void {
+      this.playbackManager.setBuffering();
     },
     togglePictureInPicture(): void {
       if (document.pictureInPictureElement) {
         document.exitPictureInPicture();
-      } else if (document.pictureInPictureEnabled) {
+      } else if (
+        document.pictureInPictureEnabled &&
+        !isNil(this.videoElement)
+      ) {
         this.videoElement.requestPictureInPicture();
       }
     },
@@ -424,6 +458,15 @@ export default Vue.extend({
       if (this.videoElement?.webkitEnterFullscreen) {
         // @ts-expect-error - `webkitEnterFullscreen` does not exist in relevant type
         this.videoElement.webkitEnterFullscreen();
+      }
+    },
+    updateVolume(): void {
+      if (!isNil(this.videoElement)) {
+        const targetVolume = this.playbackManager.isMuted
+          ? 0
+          : this.playbackManager.currentVolume;
+
+        this.videoElement.volume = Math.pow(targetVolume / 100, 3);
       }
     }
   }

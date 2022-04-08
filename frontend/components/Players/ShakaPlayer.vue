@@ -6,24 +6,29 @@
     autoplay
     crossorigin="anonymous"
     :playsinline="$browser.isMobile() && $browser.isApple()"
-    @timeupdate="onProgressThrottled"
+    @timeupdate="onProgress"
     @pause="onPause"
     @play="onPlay"
-    @ended="onStopped"
+    @ended="onEnd"
+    @waiting="onWaiting"
   />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { stringify } from 'qs';
-import throttle from 'lodash/throttle';
+import isNil from 'lodash/isNil';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters, mapState } from 'vuex';
-import { PlaybackInfoResponse, RepeatMode } from '@jellyfin/client-axios';
-import { AppState } from '~/store';
-import { deviceProfileStore } from '~/store';
+import { PlaybackInfoResponse } from '@jellyfin/client-axios';
+import {
+  authStore,
+  deviceProfileStore,
+  playbackManagerStore,
+  PlaybackStatus
+} from '~/store';
+import { RepeatMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 
@@ -44,41 +49,31 @@ export default Vue.extend({
       source: '',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       player: null as any,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {},
       audioContext: null as AudioContext | null,
       audioSource: null as MediaElementAudioSourceNode | null,
       gainNode: null as GainNode | null
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
-    ...mapGetters('playbackManager', [
-      'getCurrentItem',
-      'getCurrentlyPlayingMediaType'
-    ]),
-    ...mapState('playbackManager', [
-      'lastProgressUpdate',
-      'currentTime',
-      'currentVolume',
-      'currentMediaSource',
-      'currentVideoStreamIndex',
-      'currentAudioStreamIndex',
-      'currentSubtitleStreamIndex',
-      'isMinimized'
-    ]),
-    ...mapState('user', ['accessToken']),
+    ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
     poster(): ImageUrlInfo | string {
-      if (this.getCurrentlyPlayingMediaType === 'Video') {
-        return this.getImageInfo(this.getCurrentItem, { preferBackdrop: true });
+      if (
+        this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
+        !isNil(this.playbackManager.getCurrentItem)
+      ) {
+        return this.getImageInfo(this.playbackManager.getCurrentItem, {
+          preferBackdrop: true
+        });
       } else {
         return '';
       }
     },
     mediaElement(): string {
-      if (this.getCurrentlyPlayingMediaType === 'Audio') {
+      if (this.playbackManager.getCurrentlyPlayingMediaType === 'Audio') {
         return 'audio';
-      } else if (this.getCurrentlyPlayingMediaType === 'Video') {
+      } else if (
+        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+      ) {
         return 'video';
       } else {
         return '';
@@ -86,15 +81,51 @@ export default Vue.extend({
     }
   },
   watch: {
-    getCurrentItem(): void {
-      this.getPlaybackUrl();
+    'playbackManager.currentItemIndex': {
+      async handler(): Promise<void> {
+        this.playbackManager.setBuffering();
+        await this.getPlaybackUrl();
+        if (this.$refs.shakaPlayer) {
+          (this.$refs.shakaPlayer as HTMLMediaElement).play();
+        }
+      }
     },
-    async source(newSource): Promise<void> {
-      if (this.player) {
-        try {
-          await this.player.load(newSource);
-        } catch (e) {
-          // No need to actually process the error here, the error handler will do this for us
+    'playbackManager.status': {
+      immediate: true,
+      handler(): void {
+        if (this.$refs.shakaPlayer) {
+          switch (this.playbackManager.status) {
+            case PlaybackStatus.Playing:
+              (this.$refs.shakaPlayer as HTMLMediaElement).play();
+              break;
+            case PlaybackStatus.Paused:
+              (this.$refs.shakaPlayer as HTMLMediaElement).pause();
+              break;
+          }
+        }
+      }
+    },
+    'playbackManager.currentVolume': {
+      immediate: true,
+      handler(): void {
+        this.updateVolume();
+      }
+    },
+    'playbackManager.isMuted': {
+      immediate: true,
+      handler(): void {
+        this.updateVolume();
+      }
+    },
+    'playbackManager.repeatMode': {
+      immediate: true,
+      handler(): void {
+        if (this.$refs.shakaPlayer) {
+          if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
+            (this.$refs.shakaPlayer as HTMLMediaElement).loop = true;
+          } else {
+            (this.$refs.shakaPlayer as HTMLMediaElement).loop = false;
+          }
         }
       }
     }
@@ -108,8 +139,6 @@ export default Vue.extend({
         // @ts-expect-error - This module doesn't have typings
         'shaka-player/dist/shaka-player.compiled'
       );
-
-      this.getPlaybackUrl();
 
       shaka.polyfill.installAll();
 
@@ -129,59 +158,27 @@ export default Vue.extend({
 
         this.gainNode.connect(this.audioContext.destination);
 
-        const updateVolume = (): void => {
-          if (this.$refs.shakaPlayer && this.gainNode) {
-            this.gainNode.gain.value = Math.pow(this.currentVolume / 100, 3);
-          }
-        };
-
-        updateVolume();
+        this.updateVolume();
 
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
         // Subscribe to Vuex actions
-        this.unsubscribe = this.$store.subscribe(
-          (mutation, _state: AppState) => {
-            switch (mutation.type) {
-              case 'playbackManager/PAUSE_PLAYBACK':
-                if (this.$refs.shakaPlayer) {
-                  (this.$refs.shakaPlayer as HTMLMediaElement).pause();
-                }
-
-                break;
-              case 'playbackManager/UNPAUSE_PLAYBACK':
-                if (this.$refs.shakaPlayer) {
-                  (this.$refs.shakaPlayer as HTMLMediaElement).play();
-                }
-
-                break;
-              case 'playbackManager/CHANGE_CURRENT_TIME':
-                if (
-                  this.$refs.shakaPlayer &&
-                  mutation?.payload?.time !== null
-                ) {
-                  (this.$refs.shakaPlayer as HTMLMediaElement).currentTime =
-                    mutation?.payload?.time;
-                }
-
-                break;
-
-              case 'playbackManager/SET_VOLUME':
-                updateVolume();
-
-                break;
-
-              case 'playbackManager/SET_REPEAT_MODE':
-                if (this.$refs.shakaPlayer) {
-                  if (mutation?.payload?.mode === RepeatMode.RepeatOne) {
-                    (this.$refs.shakaPlayer as HTMLMediaElement).loop = true;
-                  } else {
-                    (this.$refs.shakaPlayer as HTMLMediaElement).loop = false;
-                  }
-                }
+        this.playbackManager.$onAction(({ name, after }) => {
+          after(() => {
+            if (name === 'changeCurrentTime') {
+              if (this.$refs.shakaPlayer) {
+                (this.$refs.shakaPlayer as HTMLMediaElement).currentTime =
+                  this.playbackManager.currentTime || 0;
+              }
             }
-          }
-        );
+          });
+        });
+
+        /**
+         * We can't reuse the watcher for this as we need to ensure the player instance is fully functional
+         * before starting playback on mount.
+         */
+        await this.getPlaybackUrl();
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -198,7 +195,7 @@ export default Vue.extend({
     if (this.player) {
       window.muxjs = undefined;
       window.player = undefined;
-      this.onStopped(); // Report that the playback is stopping
+      this.playbackManager.stop();
       this.player.removeEventListener('error', this.onPlayerError);
       this.player.unload();
       this.player.destroy();
@@ -207,45 +204,35 @@ export default Vue.extend({
         this.audioContext.close();
       }
     }
-
-    this.unsubscribe();
   },
   methods: {
-    ...mapActions('playbackManager', [
-      'pause',
-      'unpause',
-      'setNextTrack',
-      'setMediaSource',
-      'setCurrentTime',
-      'setPlaySessionId',
-      'setLastProgressUpdate'
-    ]),
     async getPlaybackUrl(): Promise<void> {
-      if (this.getCurrentItem) {
+      if (this.playbackManager.getCurrentItem) {
         this.playbackInfo = (
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
-              itemId: this.getCurrentItem?.Id || '',
+              itemId: this.playbackManager.getCurrentItem?.Id || '',
               userId: this.$auth.user?.Id,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
-              mediaSourceId: this.currentMediaSource?.Id
-                ? this.currentMediaSource.Id
-                : undefined,
-              audioStreamIndex: this.currentAudioStreamIndex,
-              subtitleStreamIndex: this.currentSubtitleStreamIndex
+              mediaSourceId: undefined,
+              audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
+              subtitleStreamIndex:
+                this.playbackManager.currentSubtitleStreamIndex
             },
             { progress: false }
           )
         ).data;
 
-        this.setPlaySessionId({ id: this.playbackInfo.PlaySessionId });
+        this.playbackManager.setPlaySessionId(
+          this.playbackInfo.PlaySessionId || ''
+        );
 
         let mediaSource;
 
         if (this.playbackInfo?.MediaSources) {
           mediaSource = this.playbackInfo.MediaSources[0];
-          this.setMediaSource({ mediaSource });
+          this.playbackManager.setMediaSource(mediaSource);
         } else {
           throw new Error("This item can't be played.");
         }
@@ -258,7 +245,7 @@ export default Vue.extend({
             Static: true,
             mediaSourceId: mediaSource.Id,
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.accessToken
+            api_key: this.auth.getUserAccessToken(this.auth.getCurrentUser)
           };
 
           if (mediaSource.ETag) {
@@ -273,7 +260,7 @@ export default Vue.extend({
 
           let mediaType = 'Videos';
 
-          if (this.getCurrentlyPlayingMediaType === 'Audio') {
+          if (this.playbackManager.getCurrentlyPlayingMediaType === 'Audio') {
             mediaType = 'Audio';
           }
 
@@ -285,47 +272,59 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
+        this.player.load(this.source);
       }
     },
-    onPlay(_event?: Event): void {
-      this.unpause();
-    },
-    onProgressThrottled: throttle(function (_event?: Event) {
-      // @ts-expect-error - TypeScript is confusing the typings with lodash's
-      this.onProgress(_event);
-    }, 500),
-    onProgress(_event?: Event): void {
+    onPause(): void {
       if (this.$refs.shakaPlayer) {
         const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
-        this.setCurrentTime({ time: currentTime });
+        this.playbackManager.setCurrentTime(currentTime);
+        this.playbackManager.pause();
       }
     },
-    onPause(_event?: Event): void {
+    onPlay(): void {
+      this.playbackManager.unpause();
+    },
+    onProgress(): void {
+      if (this.playbackManager.status === PlaybackStatus.Buffering) {
+        this.playbackManager.cancelBuffering();
+      }
       if (this.$refs.shakaPlayer) {
         const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
-        this.setCurrentTime({ time: currentTime });
-        this.pause();
+        this.playbackManager.setCurrentTime(currentTime);
       }
     },
-    onStopped(_event?: Event): void {
+    onEnd(): void {
       if (this.$refs.shakaPlayer) {
         const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;
 
-        this.setCurrentTime({ time: currentTime });
-        this.setNextTrack();
+        this.playbackManager.setCurrentTime(currentTime);
+        this.playbackManager.setNextTrack();
       }
     },
     onPlayerError(event: ErrorEvent): void {
       this.$emit('error', event);
     },
+    onWaiting(): void {
+      this.playbackManager.setBuffering();
+    },
     togglePictureInPicture(): void {
       // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
       (this.$refs.shakaPlayer as HTMLMediaElement).requestPictureInPicture();
+    },
+    updateVolume(): void {
+      if (this.$refs.shakaPlayer && this.gainNode) {
+        const targetVolume = this.playbackManager.isMuted
+          ? 0
+          : this.playbackManager.currentVolume;
+
+        this.gainNode.gain.value = Math.pow(targetVolume / 100, 3);
+      }
     }
   }
 });

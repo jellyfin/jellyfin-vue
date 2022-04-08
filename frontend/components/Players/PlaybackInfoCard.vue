@@ -241,9 +241,8 @@
 import Vue from 'vue';
 import { SessionInfo } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { mapGetters, mapState } from 'vuex';
 import camelCase from 'lodash/camelCase';
-import { deviceProfileStore } from '~/store';
+import { deviceProfileStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -255,13 +254,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
-    ...mapState('playbackManager', ['currentMediaSource']),
-    ...mapGetters('playbackManager', [
-      'getCurrentVideoTrack',
-      'getCurrentAudioTrack',
-      'getCurrentSubtitleTrack'
-    ]),
+    ...mapStores(deviceProfileStore, playbackManagerStore),
     isTranscoding(): boolean {
       return !!(
         this.sessionInfo?.PlayState?.PlayMethod === 'Transcode' ||
@@ -304,51 +297,51 @@ export default Vue.extend({
       return this.sessionInfo?.NowPlayingItem?.Container;
     },
     mediaVideoCodec(): string | null | undefined {
-      if (this.getCurrentVideoTrack) {
+      if (this.playbackManager.getCurrentVideoTrack) {
         if (
           (this.sessionInfo?.TranscodingInfo?.VideoCodec &&
-            this.getCurrentVideoTrack.Codec !==
+            this.playbackManager.getCurrentVideoTrack.Codec !==
               this.sessionInfo.TranscodingInfo.VideoCodec) ||
           !this.sessionInfo?.TranscodingInfo?.IsAudioDirect
         ) {
-          return `${this.getCurrentVideoTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.VideoCodec}`;
+          return `${this.playbackManager.getCurrentVideoTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.VideoCodec}`;
         }
 
-        return this.getCurrentVideoTrack.Codec;
+        return this.playbackManager.getCurrentVideoTrack.Codec;
       }
 
       return null;
     },
     mediaAudioCodec(): string | null | undefined {
-      if (this.getCurrentAudioTrack) {
+      if (this.playbackManager.getCurrentAudioTrack) {
         if (
           (this.sessionInfo?.TranscodingInfo?.AudioCodec &&
-            this.getCurrentAudioTrack?.Codec !==
+            this.playbackManager.getCurrentAudioTrack?.Codec !==
               this.sessionInfo?.TranscodingInfo?.AudioCodec) ||
           !this.sessionInfo?.TranscodingInfo?.IsAudioDirect
         ) {
-          return `${this.getCurrentAudioTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioCodec}`;
+          return `${this.playbackManager.getCurrentAudioTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioCodec}`;
         }
 
-        return this.getCurrentAudioTrack.Codec;
+        return this.playbackManager.getCurrentAudioTrack.Codec;
       }
 
       return null;
     },
     mediaSubtitleCodec(): string | null | undefined {
-      return this.getCurrentSubtitleTrack?.Codec;
+      return this.playbackManager.getCurrentSubtitleTrack?.Codec;
     },
     mediaAudioChannels(): string | null | undefined {
-      if (this.getCurrentAudioTrack) {
+      if (this.playbackManager.getCurrentAudioTrack) {
         if (
           this.sessionInfo?.TranscodingInfo?.AudioChannels &&
-          this.getCurrentAudioTrack?.Channels !==
+          this.playbackManager.getCurrentAudioTrack?.Channels !==
             this.sessionInfo?.TranscodingInfo?.AudioChannels
         ) {
-          return `${this.getCurrentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
+          return `${this.playbackManager.getCurrentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
         }
 
-        return this.getCurrentAudioTrack?.Channels;
+        return this.playbackManager.getCurrentAudioTrack?.Channels?.toString();
       }
 
       return null;
@@ -356,17 +349,19 @@ export default Vue.extend({
     mediaTotalBitrate(): string | null | undefined {
       if (
         this.sessionInfo?.TranscodingInfo?.Bitrate &&
-        this.currentMediaSource?.Bitrate &&
+        this.playbackManager.currentMediaSource?.Bitrate &&
         this.sessionInfo.TranscodingInfo.Bitrate !==
-          this.currentMediaSource.Bitrate
+          this.playbackManager.currentMediaSource.Bitrate
       ) {
         return `${this.getDisplayBitrate(
-          this.currentMediaSource.Bitrate
+          this.playbackManager.currentMediaSource.Bitrate
         )} ➞ ${this.getDisplayBitrate(
           this.sessionInfo?.TranscodingInfo?.Bitrate
         )}`;
-      } else if (this.currentMediaSource?.Bitrate) {
-        return this.getDisplayBitrate(this.currentMediaSource.Bitrate);
+      } else if (this.playbackManager.currentMediaSource?.Bitrate) {
+        return this.getDisplayBitrate(
+          this.playbackManager.currentMediaSource.Bitrate
+        );
       }
 
       return null;

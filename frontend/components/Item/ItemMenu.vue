@@ -52,10 +52,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions, mapGetters } from 'vuex';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
-import { snackbarStore } from '~/store';
+import { playbackManagerStore, snackbarStore } from '~/store';
 
 type MenuOption = {
   title: string;
@@ -98,8 +97,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(snackbarStore),
-    ...mapGetters('playbackManager', ['getCurrentItem']),
+    ...mapStores(snackbarStore, playbackManagerStore),
     options: {
       get(): MenuOption[] {
         const menuOptions = [] as MenuOption[];
@@ -109,7 +107,7 @@ export default Vue.extend({
             title: this.$t('playFromBeginning'),
             icon: 'mdi-replay',
             action: () => {
-              this.play({
+              this.playbackManager.play({
                 item: this.item
               });
             }
@@ -120,7 +118,7 @@ export default Vue.extend({
           title: this.$t('playback.shuffle'),
           icon: 'mdi-shuffle',
           action: () => {
-            this.play({
+            this.playbackManager.play({
               item: this.item,
               initiator: this.item,
               startShuffled: true
@@ -128,14 +126,12 @@ export default Vue.extend({
           }
         });
 
-        if (this.getCurrentItem) {
+        if (this.playbackManager.getCurrentItem) {
           menuOptions.push({
             title: this.$t('playback.playNext'),
             icon: 'mdi-play-speed',
             action: () => {
-              this.playNext({
-                item: this.item
-              });
+              this.playbackManager.playNext(this.item);
             }
           });
 
@@ -143,9 +139,7 @@ export default Vue.extend({
             title: this.$t('playback.addToQueue'),
             icon: 'mdi-playlist-plus',
             action: () => {
-              this.addToQueue({
-                item: this.item
-              });
+              this.playbackManager.addToQueue(this.item);
             }
           });
         }
@@ -211,7 +205,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['play', 'playNext', 'addToQueue']),
     onRightClick(e: PointerEvent): void {
       // Vue 2's API doesn't support native JavaScript events when the component's instances
       // are referenced using refs, only custom ones (generated using $emit): https://vuejs.org/v2/api/#vm-on

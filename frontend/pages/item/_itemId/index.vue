@@ -265,7 +265,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -392,9 +391,6 @@ export default Vue.extend({
     if (this.item.MediaSources && this.item.MediaSources.length > 0) {
       this.currentSource = this.item.MediaSources[0];
     }
-  },
-  methods: {
-    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

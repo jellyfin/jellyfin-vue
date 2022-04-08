@@ -1,6 +1,12 @@
 <template>
   <div class="volume-slider d-flex align-center justify-center">
-    <v-btn class="active-button" icon fab small @click="toggleMute">
+    <v-btn
+      class="active-button"
+      icon
+      fab
+      small
+      @click="playbackManager.toggleMute"
+    >
       <v-icon>{{ icon }}</v-icon>
     </v-btn>
     <v-slider
@@ -8,7 +14,7 @@
       hide-details
       thumb-label
       max="100"
-      :value="isMuted ? 0 : currentVolume"
+      :value="playbackManager.isMuted ? 0 : playbackManager.currentVolume"
       validate-on-blur
       @input="onVolumeChange"
     />
@@ -17,7 +23,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -26,15 +33,21 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', ['currentVolume', 'isMuted']),
+    ...mapStores(playbackManagerStore),
     icon(): string {
-      if (this.isMuted) {
+      if (this.playbackManager.isMuted) {
         return 'mdi-volume-mute';
-      } else if (this.currentVolume >= 80) {
+      } else if (this.playbackManager.currentVolume >= 80) {
         return 'mdi-volume-high';
-      } else if (this.currentVolume < 80 && this.currentVolume >= 25) {
+      } else if (
+        this.playbackManager.currentVolume < 80 &&
+        this.playbackManager.currentVolume >= 25
+      ) {
         return 'mdi-volume-medium';
-      } else if (this.currentVolume < 25 && this.currentVolume >= 1) {
+      } else if (
+        this.playbackManager.currentVolume < 25 &&
+        this.playbackManager.currentVolume >= 1
+      ) {
         return 'mdi-volume-low';
       } else {
         return 'mdi-volume-mute';
@@ -42,9 +55,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['setVolume', 'toggleMute']),
     onVolumeChange(value: number): void {
-      this.setVolume({ volume: value });
+      this.playbackManager.setVolume(value);
     }
   }
 });
