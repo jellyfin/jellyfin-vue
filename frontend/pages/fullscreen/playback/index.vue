@@ -2,7 +2,7 @@
   <v-col class="px-0">
     <v-scale-transition appear>
       <swiper
-        v-if="getQueueItems"
+        v-if="playbackManager.getQueueItems"
         ref="playbackSwiper"
         class="d-flex justify-center align-center"
         :options="swiperOptions"
@@ -10,7 +10,7 @@
         @sliderMove="update"
       >
         <swiper-slide
-          v-for="item in getQueueItems"
+          v-for="item in playbackManager.getQueueItems"
           :key="item.Id"
           class="d-flex justify-center"
         >
@@ -27,11 +27,10 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/client-axios';
-import { mapGetters, mapActions, mapState } from 'vuex';
 import Swiper, { SwiperOptions } from 'swiper';
 import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
-import { pageStore } from '~/store';
+import { pageStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper],
@@ -60,22 +59,25 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(pageStore),
-    ...mapGetters('playbackManager', ['getQueueItems', 'getCurrentItem']),
-    ...mapState('playbackManager', ['currentItemIndex', 'status']),
+    ...mapStores(pageStore, playbackManagerStore),
     backdropHash: {
       get(): string {
-        return this.getBlurhash(this.getCurrentItem, ImageType.Primary) || '';
+        return (
+          this.getBlurhash(
+            this.playbackManager.getCurrentItem,
+            ImageType.Primary
+          ) || ''
+        );
       }
     },
     isPaused: {
       get(): boolean {
-        return this.status === PlaybackStatus.Paused;
+        return this.playbackManager.status === PlaybackStatus.Paused;
       }
     },
     isPlaying: {
       get(): boolean {
-        return this.status !== PlaybackStatus.Stopped;
+        return this.playbackManager.status !== PlaybackStatus.Stopped;
       }
     }
   },
@@ -97,25 +99,25 @@ export default Vue.extend({
     }
   },
   created() {
-    this.swiperOptions.initialSlide = this.currentItemIndex;
+    this.swiperOptions.initialSlide =
+      this.playbackManager.currentItemIndex || 0;
     requestAnimationFrame(() => {
       this.page.backdrop.blurhash = this.backdropHash;
     });
   },
   mounted() {
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
-    this.setMinimized({ minimized: false });
+    this.playbackManager.setMinimized(false);
   },
   destroyed() {
-    this.setMinimized({ minimized: true });
+    this.playbackManager.setMinimized(true);
   },
   methods: {
-    ...mapActions('playbackManager', ['setCurrentIndex', 'setMinimized']),
     onSlideChange(): void {
       const index = this.swiper?.realIndex || 0;
 
-      if (this.getQueueItems[index]) {
-        this.setCurrentIndex({ index });
+      if (this.playbackManager.getQueueItems[index]) {
+        this.playbackManager.setCurrentIndex(index);
       }
     },
     onImageError(): void {

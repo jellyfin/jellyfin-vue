@@ -48,10 +48,10 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="getCurrentItemAudioTrack"
-                :media-streams="getCurrentItemAudioTrack"
+                v-if="playbackManager.getCurrentItemAudioTrack"
+                :media-streams="playbackManager.getCurrentItemAudioTrack"
                 type="Audio"
-                :default-stream-index="currentAudioStreamIndex"
+                :default-stream-index="playbackManager.currentAudioStreamIndex"
                 @input="setAudio($event)"
               />
             </v-col>
@@ -64,10 +64,12 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="getCurrentItemSubtitleTracks"
-                :media-streams="getCurrentItemSubtitleTracks"
+                v-if="playbackManager.getCurrentItemSubtitleTracks"
+                :media-streams="playbackManager.getCurrentItemSubtitleTracks"
                 type="Subtitle"
-                :default-stream-index="currentSubtitleStreamIndex"
+                :default-stream-index="
+                  playbackManager.currentSubtitleStreamIndex
+                "
                 @input="setSubtitle($event)"
               />
             </v-col>
@@ -100,7 +102,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapMutations, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
@@ -119,14 +122,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', [
-      'getCurrentItemAudioTrack',
-      'getCurrentItemSubtitleTracks'
-    ]),
-    ...mapState('playbackManager', [
-      'currentAudioStreamIndex',
-      'currentSubtitleStreamIndex'
-    ])
+    ...mapStores(playbackManagerStore)
   },
   watch: {
     stretchProp(value) {
@@ -137,19 +133,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutations('playbackManager', [
-      'SET_CURRENT_AUDIO_TRACK_INDEX',
-      'SET_CURRENT_SUBTITLE_TRACK_INDEX'
-    ]),
     setAudio(audioStreamIndex: number) {
-      if (this.currentAudioStreamIndex !== audioStreamIndex) {
-        this.SET_CURRENT_AUDIO_TRACK_INDEX({ audioStreamIndex });
-      }
+      this.playbackManager.currentAudioStreamIndex = audioStreamIndex;
     },
     setSubtitle(subtitleStreamIndex: number) {
-      if (this.currentSubtitleStreamIndex !== subtitleStreamIndex) {
-        this.SET_CURRENT_SUBTITLE_TRACK_INDEX({ subtitleStreamIndex });
-      }
+      this.playbackManager.currentSubtitleStreamIndex = subtitleStreamIndex;
     }
   }
 });

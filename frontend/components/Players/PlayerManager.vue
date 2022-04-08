@@ -2,17 +2,21 @@
   <client-only>
     <div ref="playerContainer">
       <shaka-player
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+        v-if="
+          isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+        "
         class="d-none"
       />
       <player-dialog
-        v-if="isPlaying && getCurrentlyPlayingMediaType === 'Video'"
+        v-if="
+          isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        "
         dark
         persistent
         hide-overlay
         no-click-animation
         scrollable
-        :retain-focus="!isMinimized"
+        :retain-focus="!playbackManager.isMinimized"
         :content-class="getContentClass()"
         :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
         :value="isPlaying"
@@ -23,12 +27,12 @@
             <v-container fill-height fluid class="pa-0 justify-center">
               <hls-player
                 ref="videoPlayer"
-                :stretch="stretchVideo && !isMinimized"
+                :stretch="stretchVideo && !playbackManager.isMinimized"
               />
             </v-container>
             <!-- Mini Player Overlay -->
             <v-fade-transition>
-              <v-overlay v-show="hover && isMinimized" absolute>
+              <v-overlay v-show="hover && playbackManager.isMinimized" absolute>
                 <div class="d-flex flex-column player-overlay">
                   <div class="d-flex flex-row">
                     <v-btn icon @click="toggleMinimized">
@@ -46,7 +50,7 @@
                       class="pointer-events-all"
                       icon
                       large
-                      @click="setPreviousTrack"
+                      @click="playbackManager.setPreviousTrack"
                     >
                       <v-icon size="32">mdi-skip-previous</v-icon>
                     </v-btn>
@@ -54,7 +58,7 @@
                       class="pointer-events-all"
                       icon
                       x-large
-                      @click="playPause"
+                      @click="playbackManager.playPause"
                     >
                       <v-icon size="48">
                         {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
@@ -64,7 +68,7 @@
                       class="pointer-events-all"
                       icon
                       large
-                      @click="setNextTrack"
+                      @click="playbackManager.setNextTrack"
                     >
                       <v-icon size="32">mdi-skip-next</v-icon>
                     </v-btn>
@@ -76,7 +80,9 @@
             <v-fade-transition>
               <v-overlay
                 v-show="
-                  !isMinimized && showFullScreenOverlay && !isUpNextVisible
+                  !playbackManager.isMinimized &&
+                  showFullScreenOverlay &&
+                  !isUpNextVisible
                 "
                 color="transparent"
                 absolute
@@ -109,14 +115,18 @@
                           v-if="$vuetify.breakpoint.mdAndUp"
                           class="d-flex flex-column align-start justify-center mr-auto video-title"
                         >
-                          <template v-if="getCurrentItem.Type === 'Episode'">
+                          <template
+                            v-if="
+                              playbackManager.getCurrentItem.Type === 'Episode'
+                            "
+                          >
                             <span class="mt-1 text-subtitle-1 text-truncate">
-                              {{ getCurrentItem.Name }}
+                              {{ playbackManager.getCurrentItem.Name }}
                             </span>
                             <span
                               class="text-subtitle-2 text--secondary text-truncate"
                             >
-                              {{ getCurrentItem.SeriesName }}
+                              {{ playbackManager.getCurrentItem.SeriesName }}
                             </span>
                             <span
                               class="text-subtitle-2 text--secondary text-truncate"
@@ -124,14 +134,18 @@
                               {{
                                 $t('seasonEpisode', {
                                   seasonNumber:
-                                    getCurrentItem.ParentIndexNumber,
-                                  episodeNumber: getCurrentItem.IndexNumber
+                                    playbackManager.getCurrentItem
+                                      .ParentIndexNumber,
+                                  episodeNumber:
+                                    playbackManager.getCurrentItem.IndexNumber
                                 })
                               }}
                             </span>
                           </template>
                           <template v-else>
-                            <span>{{ getCurrentItem.Name }}</span>
+                            <span>{{
+                              playbackManager.getCurrentItem.Name
+                            }}</span>
                           </template>
                         </div>
                         <div
@@ -153,7 +167,11 @@
                               }}
                             </v-icon>
                           </v-btn>
-                          <v-btn icon class="mx-1" @click="setNextTrack">
+                          <v-btn
+                            icon
+                            class="mx-1"
+                            @click="playbackManager.setNextTrack"
+                          >
                             <v-icon icon> mdi-skip-next</v-icon>
                           </v-btn>
                         </div>
@@ -224,10 +242,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
+import isNil from 'lodash/isNil';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
+import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
@@ -236,8 +256,6 @@ export default Vue.extend({
     return {
       showFullScreenOverlay: false,
       fullScreenOverlayTimer: null as number | null,
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      unsubscribe(): void {},
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
@@ -245,30 +263,26 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', [
-      'getCurrentItem',
-      'getPreviousItem',
-      'getNextItem',
-      'getCurrentlyPlayingMediaType'
-    ]),
-    ...mapState('playbackManager', ['status', 'isMinimized', 'currentTime']),
+    ...mapStores(playbackManagerStore),
     isPlaying(): boolean {
-      return this.status !== PlaybackStatus.Stopped;
+      return this.playbackManager.status !== PlaybackStatus.Stopped;
     },
     isPaused(): boolean {
-      return this.status === PlaybackStatus.Paused;
+      return this.playbackManager.status === PlaybackStatus.Paused;
     }
   },
   watch: {
-    isMinimized(value): void {
-      if (value) {
-        document.documentElement.classList.remove('overflow-hidden');
-      } else {
-        document.documentElement.classList.add('overflow-hidden');
+    'playbackManager.isMinimized': {
+      handler(): void {
+        if (this.playbackManager.isMinimized) {
+          document.documentElement.classList.remove('overflow-hidden');
+        } else {
+          document.documentElement.classList.add('overflow-hidden');
+        }
       }
     },
     isPlaying(value) {
-      if (value && !this.isMinimized) {
+      if (value && !this.playbackManager.isMinimized) {
         document.documentElement.classList.add('overflow-hidden');
       } else {
         document.documentElement.classList.remove('overflow-hidden');
@@ -291,24 +305,8 @@ export default Vue.extend({
     window.removeEventListener('keyup', this.handleKeyPress);
     window.removeEventListener('click', this.handleVideoClick);
     this.removeMediaHandlers();
-    this.unsubscribe();
   },
   methods: {
-    ...mapActions('playbackManager', [
-      'toggleMinimized',
-      'setLastProgressUpdate',
-      'resetCurrentItemIndex',
-      'setNextTrack',
-      'setPreviousTrack',
-      'setLastItemIndex',
-      'toggleMute',
-      'playPause',
-      'pause',
-      'unpause',
-      'skipForward',
-      'skipBackward',
-      'changeCurrentTime'
-    ]),
     setUpNextVisible(isVisible: boolean): void {
       this.isUpNextVisible = isVisible;
     },
@@ -322,7 +320,7 @@ export default Vue.extend({
     },
     setFullscreenTimeout(): void {
       this.fullScreenOverlayTimer = window.setTimeout(() => {
-        if (!this.isMinimized) {
+        if (!this.playbackManager.isMinimized) {
           this.showFullScreenOverlay = false;
 
           document.body.classList.add('hide-pointer');
@@ -334,8 +332,8 @@ export default Vue.extend({
     handleMouseMove(): void {
       if (
         this.isPlaying &&
-        this.getCurrentlyPlayingMediaType === 'Video' &&
-        !this.isMinimized
+        this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
+        !this.playbackManager.isMinimized
       ) {
         if (this.fullScreenOverlayTimer) {
           window.clearTimeout(this.fullScreenOverlayTimer);
@@ -352,7 +350,7 @@ export default Vue.extend({
     },
     getContentClass(): string {
       return `player ${
-        this.isMinimized
+        this.playbackManager.isMinimized
           ? 'player--minimized align-self-end'
           : 'player--fullscreen'
       }`;
@@ -362,12 +360,10 @@ export default Vue.extend({
         window.clearTimeout(this.fullScreenOverlayTimer);
       }
 
-      this.setLastItemIndex();
-      this.resetCurrentItemIndex();
-      this.setNextTrack();
+      this.playbackManager.stop();
     },
     handleKeyPress(e: KeyboardEvent): void {
-      if (!this.isMinimized) {
+      if (!this.playbackManager.isMinimized) {
         const focusEl = document.activeElement;
 
         let spaceEnabled = false;
@@ -383,36 +379,36 @@ export default Vue.extend({
           case 'Spacebar':
           case ' ':
             if (spaceEnabled) {
-              this.playPause();
+              this.playbackManager.playPause();
             }
 
             break;
           case 'k':
-            this.playPause();
+            this.playbackManager.playPause();
             break;
           case 'ArrowRight':
           case 'l':
-            this.skipForward();
+            this.playbackManager.skipForward();
             break;
           case 'ArrowLeft':
           case 'j':
-            this.skipBackward();
+            this.playbackManager.skipBackward();
             break;
           case 'f':
-            if (this.getCurrentlyPlayingMediaType === 'Video') {
+            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
               this.toggleFullScreen();
             }
 
             break;
           case 'm':
-            this.toggleMute();
+            this.playbackManager.toggleMute();
             break;
         }
       } else {
         switch (e.key) {
           case 'f':
-            if (this.getCurrentlyPlayingMediaType === 'Video') {
-              this.toggleMinimized();
+            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+              this.playbackManager.toggleMinimized();
             }
 
             break;
@@ -425,9 +421,9 @@ export default Vue.extend({
       if (
         target &&
         target.classList.contains('player-overlay') &&
-        this.getCurrentlyPlayingMediaType === 'Video'
+        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
       ) {
-        this.playPause();
+        this.playbackManager.playPause();
       }
     },
     addMediaHandlers(): void {
@@ -436,7 +432,7 @@ export default Vue.extend({
           [
             'play',
             (): void => {
-              this.unpause();
+              this.playbackManager.unpause();
 
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'playing';
@@ -446,7 +442,7 @@ export default Vue.extend({
           [
             'pause',
             (): void => {
-              this.pause();
+              this.playbackManager.pause();
 
               if (navigator.mediaSession) {
                 navigator.mediaSession.playbackState = 'paused';
@@ -456,13 +452,13 @@ export default Vue.extend({
           [
             'previoustrack',
             (): void => {
-              this.setPreviousTrack();
+              this.playbackManager.setPreviousTrack();
             }
           ],
           [
             'nexttrack',
             (): void => {
-              this.setNextTrack();
+              this.playbackManager.setNextTrack();
             }
           ],
           [
@@ -478,19 +474,19 @@ export default Vue.extend({
           [
             'seekbackward',
             (): void => {
-              this.skipBackward();
+              this.playbackManager.skipBackward();
             }
           ],
           [
             'seekforward',
             (): void => {
-              this.skipForward();
+              this.playbackManager.skipForward();
             }
           ],
           [
             'seekto',
             (): void => {
-              this.changeCurrentTime({ time: 1 });
+              this.playbackManager.changeCurrentTime(1);
             }
           ]
         ];
@@ -538,53 +534,58 @@ export default Vue.extend({
       }
     },
     updateMetadata(): void {
-      if (window.navigator.mediaSession) {
+      if (
+        window.navigator.mediaSession &&
+        !isNil(this.playbackManager.getCurrentItem)
+      ) {
         // eslint-disable-next-line no-undef
         window.navigator.mediaSession.metadata = new MediaMetadata({
-          title: this.getCurrentItem.Name,
-          artist: this.getCurrentItem?.AlbumArtist
-            ? this.getCurrentItem.AlbumArtist
+          title: this.playbackManager.getCurrentItem.Name || '',
+          artist: this.playbackManager.getCurrentItem?.AlbumArtist
+            ? this.playbackManager.getCurrentItem.AlbumArtist
             : '',
-          album: this.getCurrentItem?.Album ? this.getCurrentItem.Album : '',
+          album: this.playbackManager.getCurrentItem?.Album
+            ? this.playbackManager.getCurrentItem.Album
+            : '',
           artwork: [
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 96
                 }).url || '',
               sizes: '96x96'
             },
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 128
                 }).url || '',
               sizes: '128x128'
             },
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 192
                 }).url || '',
               sizes: '192x192'
             },
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 256
                 }).url || '',
               sizes: '256x256'
             },
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 384
                 }).url || '',
               sizes: '384x384'
             },
             {
               src:
-                this.getImageInfo(this.getCurrentItem, {
+                this.getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 512
                 }).url || '',
               sizes: '512x512'

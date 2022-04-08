@@ -36,7 +36,8 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 import itemHelper from '~/mixins/itemHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { PlaybackStatus } from '~/store/playbackManager';
@@ -76,22 +77,23 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', ['status'])
+    ...mapStores(playbackManagerStore)
   },
   watch: {
-    status(): void {
-      if (this.status === PlaybackStatus.Playing) {
-        this.loading = false;
+    'playbackManager.status': {
+      handler(): void {
+        if (this.playbackManager.status === PlaybackStatus.Playing) {
+          this.loading = false;
+        }
       }
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['play']),
     playOrResume(): void {
       this.loading = true;
 
       if (this.item && this.canResume(this.item)) {
-        this.play({
+        this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
@@ -101,7 +103,7 @@ export default Vue.extend({
         });
       } else if (this.shuffle) {
         // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
-        this.play({
+        this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
@@ -109,7 +111,7 @@ export default Vue.extend({
           startShuffled: true
         });
       } else {
-        this.play({
+        this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,

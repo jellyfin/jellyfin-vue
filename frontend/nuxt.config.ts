@@ -108,11 +108,7 @@ const config: NuxtConfig = {
      ** Vue plugins
      */
     'plugins/vue/components.ts',
-    'plugins/vue/directives/hide.ts',
-    /**
-     * Utility plugins
-     */
-    '~/plugins/nuxt/playbackPlugin.ts'
+    'plugins/vue/directives/hide.ts'
   ],
   /*
    ** Auto import components

@@ -35,23 +35,36 @@
       <v-list>
         <v-list-item>
           <v-list-item-avatar tile>
-            <blurhash-image v-if="initiator" :item="initiator" />
+            <blurhash-image
+              v-if="playbackManager.initiator"
+              :item="playbackManager.initiator"
+            />
             <v-icon v-else>{{ modeIcon }}</v-icon>
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title>{{ sourceText }}</v-list-item-title>
             <v-list-item-subtitle>
-              {{ getTotalEndsAtTime(getQueueItems) }} -
-              {{ $t('playback.queueItems', { items: getQueueItems.length }) }}
+              {{ getTotalEndsAtTime(playbackManager.getQueueItems) }} -
+              {{
+                $t('playback.queueItems', {
+                  items: playbackManager.getQueueItems.length
+                })
+              }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
           <v-list-item-action>
-            <like-button v-if="initiator" :item="getCurrentItem" />
+            <like-button
+              v-if="playbackManager.initiator"
+              :item="playbackManager.getCurrentItem"
+            />
           </v-list-item-action>
           <v-list-item-action class="mr-1">
-            <item-menu v-if="initiator" :item="getCurrentItem" />
+            <item-menu
+              v-if="playbackManager.initiator"
+              :item="playbackManager.getCurrentItem"
+            />
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -65,7 +78,7 @@
       <v-card-actions class="d-flex justify-space-between">
         <v-tooltip top>
           <template #activator="{ on: tooltip }">
-            <v-btn icon v-on="tooltip" @click="stop">
+            <v-btn icon v-on="tooltip" @click="playbackManager.stop">
               <v-icon>mdi-playlist-remove</v-icon>
             </v-btn>
           </template>
@@ -73,7 +86,7 @@
         </v-tooltip>
         <v-tooltip top>
           <template #activator="{ on: tooltip }">
-            <v-btn icon disabled v-on="tooltip" @click="stop">
+            <v-btn icon disabled v-on="tooltip">
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
           </template>
@@ -88,7 +101,8 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 
@@ -111,37 +125,38 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem', 'getQueueItems']),
-    ...mapState('playbackManager', [
-      'queue',
-      'playbackInitiator',
-      'playbackInitMode'
-    ]),
+    ...mapStores(playbackManagerStore),
     sourceText: {
       get(): string {
         /**
          * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
          * https://github.com/jellyfin/jellyfin-vue/pull/609
          */
-        switch (this.playbackInitMode) {
+        switch (this.playbackManager.playbackInitMode) {
           case InitMode.Unknown:
             return this.$t('playback.playbackSource.unknown');
           case InitMode.Item:
-            if (this.getCurrentItem.AlbumId !== this.playbackInitiator?.Id) {
+            if (
+              this.playbackManager.getCurrentItem?.AlbumId !==
+              this.playbackManager.playbackInitiator?.Id
+            ) {
               return this.$t('playback.playbackSource.unknown');
             } else {
               return this.$t('playback.playbackSource.item', {
-                item: this.playbackInitiator?.Name
+                item: this.playbackManager.playbackInitiator?.Name
               });
             }
           case InitMode.Shuffle:
             return this.$t('playback.playbackSource.shuffle');
           case InitMode.ShuffleItem:
-            if (this.getCurrentItem.AlbumId !== this.playbackInitiator?.Id) {
+            if (
+              this.playbackManager.getCurrentItem?.AlbumId !==
+              this.playbackManager.playbackInitiator?.Id
+            ) {
               return this.$t('playback.playbackSource.unknown');
             } else {
               return this.$t('playback.playbackSource.shuffleItem', {
-                item: this.playbackInitiator?.Name
+                item: this.playbackManager.playbackInitiator?.Name
               });
             }
           default:
@@ -151,8 +166,11 @@ export default Vue.extend({
     },
     initiator: {
       get(): BaseItemDto | null {
-        if (this.getCurrentItem.AlbumId === this.playbackInitiator?.Id) {
-          return this.playbackInitiator;
+        if (
+          this.playbackManager.getCurrentItem?.AlbumId ===
+          this.playbackManager.playbackInitiator?.Id
+        ) {
+          return this.playbackManager.playbackInitiator;
         }
 
         return null;
@@ -160,7 +178,7 @@ export default Vue.extend({
     },
     modeIcon: {
       get(): string {
-        switch (this.playbackInitMode) {
+        switch (this.playbackManager.playbackInitMode) {
           case InitMode.Shuffle:
             return 'mdi-shuffle';
           default:
@@ -182,9 +200,6 @@ export default Vue.extend({
         this.destroy = false;
       }
     }
-  },
-  methods: {
-    ...mapActions('playbackManager', ['stop'])
   }
 });
 </script>

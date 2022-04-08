@@ -22,7 +22,9 @@
           <v-btn
             class="align-self-center active-button"
             icon
-            :disabled="getCurrentItemParsedSubtitleTracks.length === 0"
+            :disabled="
+              playbackManager.getCurrentItemParsedSubtitleTracks.length === 0
+            "
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }"
           >
@@ -37,14 +39,14 @@
         <v-list-item
           v-for="track of tracks"
           :key="track.srcIndex"
-          @click="
-            SET_CURRENT_SUBTITLE_TRACK_INDEX({
-              subtitleStreamIndex: track.srcIndex
-            })
-          "
+          @click="playbackManager.currentSubtitleStreamIndex = track.srcIndex"
         >
           <v-list-item-icon>
-            <v-icon v-if="track.srcIndex === currentSubtitleStreamIndex">
+            <v-icon
+              v-if="
+                track.srcIndex === playbackManager.currentSubtitleStreamIndex
+              "
+            >
               mdi-check
             </v-icon>
           </v-list-item-icon>
@@ -60,7 +62,8 @@
 <script lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapGetters, mapState, mapMutations } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 import { PlaybackTrack } from '~/store/playbackManager';
 
 export default Vue.extend({
@@ -76,10 +79,10 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItemParsedSubtitleTracks']),
-    ...mapState('playbackManager', ['currentSubtitleStreamIndex']),
+    ...mapStores(playbackManagerStore),
     tracks(): PlaybackTrack[] {
-      const subs = this.getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
+      const subs = this.playbackManager
+        .getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
       const res = [
         {
           label: this.$t('disabled'),
@@ -90,9 +93,6 @@ export default Vue.extend({
 
       return res;
     }
-  },
-  methods: {
-    ...mapMutations('playbackManager', ['SET_CURRENT_SUBTITLE_TRACK_INDEX'])
   }
 });
 </script>

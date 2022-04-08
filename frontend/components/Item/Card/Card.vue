@@ -84,7 +84,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
@@ -256,7 +255,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['play']),
     isFinePointer(): boolean {
       if (process.client) {
         return window.matchMedia('(pointer:fine)').matches;

@@ -82,7 +82,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   props: {
@@ -99,10 +98,6 @@ export default Vue.extend({
     return {
       menu: false
     };
-  },
-  computed: {
-    ...mapGetters('playbackManager', ['getCurrentItemSubtitleTracks']),
-    ...mapState('playbackManager', ['currentSubtitleStreamIndex'])
   }
 });
 </script>
