@@ -49,8 +49,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import debounce from 'lodash/debounce';
+import { authStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -68,6 +70,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(authStore),
     searchQuery(): string {
       return this.$route.query?.q || '';
     }
@@ -96,7 +99,7 @@ export default Vue.extend({
 
       const itemResults = (
         await this.$api.items.getItemsByUserId({
-          userId: this.$auth.user.Id,
+          userId: this.auth.currentUserId,
           searchTerm: this.searchQuery,
           includeItemTypes:
             'Movie,Series,Audio,MusicAlbum,Book,MusicArtist,Person',
@@ -128,7 +131,7 @@ export default Vue.extend({
 
       this.personSearchResults = (
         await this.$api.persons.getPersons({
-          userId: this.$auth.user.Id,
+          userId: this.auth.currentUserId,
           searchTerm: this.searchQuery
         })
       ).data.Items;

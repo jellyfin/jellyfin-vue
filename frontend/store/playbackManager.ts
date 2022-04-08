@@ -445,7 +445,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
           ).data.Items || [];
       } else if (item.Type === 'Episode') {
         if (
-          this.$nuxt.$auth.user.Configuration?.EnableNextEpisodeAutoPlay &&
+          auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
           item.SeriesId
         ) {
           /**

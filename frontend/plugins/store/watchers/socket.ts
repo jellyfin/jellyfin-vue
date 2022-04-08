@@ -1,12 +1,13 @@
 import { ItemFields } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import { itemsStore, socketStore } from '~/store';
+import { authStore, itemsStore, socketStore } from '~/store';
 
 /**
  * Handle socket messages that are relevant to items inside the items store.
  *
  */
 export default function watchSocket(ctx: Context) {
+  const auth = authStore();
   const socket = socketStore();
   const items = itemsStore();
 
@@ -19,7 +20,7 @@ export default function watchSocket(ctx: Context) {
   async function updateStoreItems(itemIds: string[]): Promise<void> {
     if (itemIds.length) {
       await ctx.$api.items.getItems({
-        userId: ctx.$auth.user?.Id,
+        userId: auth.currentUserId,
         ids: itemIds,
         fields: Object.keys(ItemFields) as ItemFields[]
       });

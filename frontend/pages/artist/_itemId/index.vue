@@ -138,7 +138,7 @@ import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore, itemsStore } from '~/store';
+import { pageStore, itemsStore, authStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
@@ -149,15 +149,16 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $api, $auth }) {
+  async asyncData({ params, $api }) {
     const items = itemsStore();
+    const auth = authStore();
     const itemId = params.itemId;
     let item = items.getItemById(itemId);
 
     if (!item) {
       item = (
         await $api.userLibrary.getItem({
-          userId: $auth.user.Id as string,
+          userId: auth.currentUserId,
           itemId
         })
       ).data;

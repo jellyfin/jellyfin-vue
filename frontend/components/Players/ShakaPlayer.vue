@@ -212,7 +212,7 @@ export default Vue.extend({
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
               itemId: this.playbackManager.getCurrentItem?.Id || '',
-              userId: this.$auth.user?.Id,
+              userId: this.auth.currentUserId,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
               mediaSourceId: undefined,
@@ -245,7 +245,7 @@ export default Vue.extend({
             Static: true,
             mediaSourceId: mediaSource.Id,
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.auth.getUserAccessToken(this.auth.getCurrentUser)
+            api_key: this.auth.getCurrentUserAccessToken
           };
 
           if (mediaSource.ETag) {

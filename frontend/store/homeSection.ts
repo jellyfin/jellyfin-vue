@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { defineStore } from 'pinia';
-import { userViewsStore, snackbarStore } from '.';
+import { authStore, userViewsStore, snackbarStore } from '.';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { CardShapes } from '~/utils/items';
 
@@ -42,12 +42,13 @@ export const homeSectionStore = defineStore('homeSection', {
       this.libraries = Array.from(userViews.views);
     },
     async getAudioResumes(): Promise<void> {
+      const auth = authStore();
       const snackbar = snackbarStore();
 
       try {
         const audioResumes = (
           await this.$nuxt.$api.items.getResumeItems({
-            userId: this.$nuxt.$auth.user.Id,
+            userId: auth.currentUserId,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -69,12 +70,13 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getVideoResumes(): Promise<void> {
+      const auth = authStore();
       const snackbar = snackbarStore();
 
       try {
         const videoResumes = (
           await this.$nuxt.$api.items.getResumeItems({
-            userId: this.$nuxt.$auth.user.Id,
+            userId: auth.currentUserId,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -96,12 +98,13 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getUpNext(libraryId: string): Promise<void> {
+      const auth = authStore();
       const snackbar = snackbarStore();
 
       try {
         const upNext = (
           await this.$nuxt.$api.tvShows.getNextUp({
-            userId: this.$nuxt.$auth.user.Id,
+            userId: auth.currentUserId,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -122,12 +125,13 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getLatestMedia(libraryId: string): Promise<void> {
+      const auth = authStore();
       const snackbar = snackbarStore();
 
       try {
         const latestMedia = (
           await this.$nuxt.$api.userLibrary.getLatestMedia({
-            userId: this.$nuxt.$auth.user.Id,
+            userId: auth.currentUserId,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,

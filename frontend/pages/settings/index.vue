@@ -2,7 +2,9 @@
   <v-container>
     <v-row class="pt-4">
       <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
-        <div v-if="!isEmpty(systemInfo) && $auth.user.Policy.IsAdministrator">
+        <div
+          v-if="!isEmpty(systemInfo) && auth.currentUser.Policy.IsAdministrator"
+        >
           <v-img
             class="logo"
             contain
@@ -62,7 +64,7 @@
           </v-list-item-group>
         </v-list>
         <!-- Administrator settings -->
-        <div v-if="$auth.user.Policy.IsAdministrator">
+        <div v-if="auth.currentUser.Policy.IsAdministrator">
           <v-list
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
@@ -104,19 +106,20 @@ import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
 import { version } from '~/package.json';
 import htmlHelper from '~/mixins/htmlHelper';
-import { pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper],
-  async asyncData({ $auth, $api }) {
-    if ($auth.user?.Policy?.IsAdministrator) {
+  async asyncData({ $api }) {
+    const auth = authStore();
+    if (auth.currentUser?.Policy?.IsAdministrator) {
       const systemInfo = (await $api.system.getSystemInfo()).data;
 
       return { systemInfo };
     }
   },
   computed: {
-    ...mapStores(pageStore)
+    ...mapStores(authStore, pageStore)
   },
   data() {
     return {

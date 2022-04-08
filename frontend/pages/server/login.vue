@@ -43,7 +43,7 @@
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ auth.getCurrentServer.ServerName }}
+          {{ auth.currentServer.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>

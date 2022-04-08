@@ -7,12 +7,12 @@
         v-bind="attrs"
         v-on="on"
       >
-        <user-image v-if="$auth.user" :user="$auth.user" />
+        <user-image v-if="auth.currentUser" :user="auth.currentUser" />
         <h1
-          v-if="$auth.user"
+          v-if="auth.currentUser"
           class="flex-grow-1 font-weight-light ml-3 pb-1 text-truncate user-select-none"
         >
-          {{ $auth.user.Name }}
+          {{ auth.currentUser.Name }}
         </h1>
         <v-icon>mdi-dots-horizontal</v-icon>
       </div>
@@ -54,7 +54,7 @@ export default Vue.extend({
     menuItems(): MenuItem[] {
       const menuItems = [];
 
-      if (this.$auth.user?.Policy?.IsAdministrator) {
+      if (this.auth.currentUser?.Policy?.IsAdministrator) {
         menuItems.push({
           title: this.$t('metadataEditor'),
           icon: 'mdi-pencil',
