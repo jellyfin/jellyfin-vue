@@ -11,12 +11,14 @@ import {
 import { defineStore } from 'pinia';
 import { itemsStore } from './items';
 import { isNil } from 'lodash';
+import { authStore } from '.';
 
 export enum PlaybackStatus {
   Stopped = 0,
   Playing = 1,
   Paused = 2,
-  Error = 3
+  Buffering = 3,
+  Error = 4
 }
 
 export enum RepeatMode {
@@ -194,6 +196,12 @@ export const playbackManagerStore = defineStore('playbackManager', {
     resetCurrentItemIndex(): void {
       this.currentItemIndex = null;
     },
+    setBuffering(): void {
+      this.status = PlaybackStatus.Buffering;
+    },
+    cancelBuffering(): void {
+      this.status = PlaybackStatus.Playing;
+    },
     setLastItemIndex(): void {
       this.lastItemIndex = this.currentItemIndex;
     },
@@ -210,7 +218,11 @@ export const playbackManagerStore = defineStore('playbackManager', {
       }
     },
     setCurrentIndex(index: number) {
-      this.currentItemIndex = index;
+      if (this.currentItemIndex !== index) {
+        this.lastItemIndex = this.currentItemIndex;
+        this.currentItemIndex = index;
+        this.currentTime = 0;
+      }
     },
     setCurrentTime(time: number | null) {
       this.currentTime = time;
@@ -241,13 +253,18 @@ export const playbackManagerStore = defineStore('playbackManager', {
       }
     },
     setPreviousTrack(): void {
-      if (!isNil(this.currentItemIndex) && this.currentItemIndex > 0) {
+      if (!isNil(this.currentTime) && this.currentTime > 2) {
+        this.changeCurrentTime(0);
+      } else if (!isNil(this.currentItemIndex) && this.currentItemIndex > 0) {
         this.lastItemIndex = this.currentItemIndex;
         this.currentItemIndex -= 1;
         this.currentTime = 0;
+      } else {
+        this.currentTime = 0;
       }
-
-      this.currentTime = 0;
+    },
+    setMinimized(minimized: boolean) {
+      this.isMinimized = minimized;
     },
     setNewQueue(queue: string[]): void {
       let item;
@@ -355,6 +372,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       item: BaseItemDto,
       shuffle: boolean = false
     ): Promise<string[]> {
+      const auth = authStore();
       let responseItems: BaseItemDto[] = [];
 
       if (item.Type === 'Program' && item.ChannelId) {
@@ -363,7 +381,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
             await this.$nuxt.$api.items.getItems({
               ids: [item.ChannelId],
               limit: 300,
-              sortBy: shuffle ? ['Random'] : ['SortName']
+              sortBy: shuffle ? ['Random'] : ['SortName'],
+              userId: auth.currentUserId,
+              fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'Playlist') {
@@ -372,7 +392,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
             await this.$nuxt.$api.items.getItems({
               parentId: item.Id,
               limit: 300,
-              sortBy: shuffle ? ['Random'] : undefined
+              sortBy: shuffle ? ['Random'] : undefined,
+              userId: auth.currentUserId,
+              fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'MusicArtist' && item.Id) {
@@ -384,7 +406,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
               recursive: true,
               mediaTypes: ['Audio'],
               limit: 300,
-              sortBy: shuffle ? ['Random'] : ['SortName']
+              sortBy: shuffle ? ['Random'] : ['SortName'],
+              userId: auth.currentUserId,
+              fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'MusicGenre' && item.Id) {
@@ -396,7 +420,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
               recursive: true,
               mediaTypes: ['Audio'],
               limit: 300,
-              sortBy: shuffle ? ['Random'] : ['SortName']
+              sortBy: shuffle ? ['Random'] : ['SortName'],
+              userId: auth.currentUserId,
+              fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.IsFolder) {
@@ -412,7 +438,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
                 ? ['Random']
                 : ['SortName'],
               mediaTypes: ['Audio', 'Video'],
-              limit: 300
+              limit: 300,
+              userId: auth.currentUserId,
+              fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'Episode') {
@@ -428,12 +456,10 @@ export const playbackManagerStore = defineStore('playbackManager', {
               await this.$nuxt.$api.tvShows.getEpisodes({
                 seriesId: item.SeriesId,
                 isMissing: false,
-                fields: [
-                  ItemFields.Chapters,
-                  ItemFields.PrimaryImageAspectRatio
-                ],
                 startItemId: item.Id,
-                limit: 300
+                limit: 300,
+                userId: auth.currentUserId,
+                fields: Object.values(ItemFields)
               })
             ).data.Items || [];
         } else {

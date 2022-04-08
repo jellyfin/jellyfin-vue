@@ -24,28 +24,30 @@
             </i18n>
           </v-card-title>
           <v-card-subtitle class="text-truncate subtitle-1">
-            <span v-if="getCurrentItem.Type === 'Episode'">
-              {{ getNextItem.SeriesName }} -
+            <span v-if="playbackManager.getCurrentItem.Type === 'Episode'">
+              {{ playbackManager.getNextItem.SeriesName }} -
               {{
                 $t('seasonEpisodeAbbrev', {
-                  seasonNumber: getNextItem.ParentIndexNumber,
-                  episodeNumber: getNextItem.IndexNumber
+                  seasonNumber: playbackManager.getNextItem.ParentIndexNumber,
+                  episodeNumber: playbackManager.getNextItem.IndexNumber
                 })
               }}
               <span v-if="$vuetify.breakpoint.smAndUp"> - </span> <br v-else />
-              {{ getNextItem.Name }}
+              {{ playbackManager.getNextItem.Name }}
             </span>
-            <span v-if="getCurrentItem.Type === 'Movie'">
-              {{ getNextItem.Name }}
+            <span v-if="playbackManager.getCurrentItem.Type === 'Movie'">
+              {{ playbackManager.getNextItem.Name }}
             </span>
           </v-card-subtitle>
           <v-card-text>
             <span>
-              {{ getRuntimeTime(getNextItem.RunTimeTicks) }}
+              {{ getRuntimeTime(playbackManager.getNextItem.RunTimeTicks) }}
               <span class="pl-4"
                 >{{
                   $t('endsAt', {
-                    time: getEndsAtTime(getNextItem.RunTimeTicks)
+                    time: getEndsAtTime(
+                      playbackManager.getNextItem.RunTimeTicks
+                    )
                   })
                 }}
               </span>
@@ -53,7 +55,11 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn class="primary darken-2" depressed @click="setNextTrack()">
+            <v-btn
+              class="primary darken-2"
+              depressed
+              @click="playbackManager.setNextTrack"
+            >
               {{ $t('dialog.upNext.startNow') }}
             </v-btn>
             <v-btn depressed outlined @click="isHiddenByUser = true">
@@ -68,8 +74,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapGetters, mapState, mapActions } from 'vuex';
+import { mapStores } from 'pinia';
 import timeUtils from '~/mixins/timeUtils';
+import { playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   mixins: [timeUtils],
@@ -79,28 +86,23 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapState('playbackManager', [
-      'currentItemIndex',
-      'currentTime',
-      'isMinimized'
-    ]),
-    ...mapGetters('playbackManager', [
-      'getCurrentlyPlayingMediaType',
-      'getNextItem',
-      'getCurrentItem'
-    ]),
+    ...mapStores(playbackManagerStore),
     currentItemDuration(): number {
-      return this.ticksToMs(this.getCurrentItem?.RunTimeTicks) / 1000;
+      return (
+        this.ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000
+      );
     },
     currentItemTimeLeft(): number {
-      return Math.round(this.currentItemDuration - this.currentTime);
+      return Math.round(
+        this.currentItemDuration - (this.playbackManager.currentTime || 0)
+      );
     },
     visible(): boolean {
       if (
-        this.isMinimized ||
+        this.playbackManager.isMinimized ||
         this.isHiddenByUser ||
-        this.getCurrentlyPlayingMediaType !== 'Video' ||
-        !this.getNextItem
+        this.playbackManager.getCurrentlyPlayingMediaType !== 'Video' ||
+        !this.playbackManager.getNextItem
       ) {
         return false;
       }
@@ -135,9 +137,6 @@ export default Vue.extend({
     visible(): void {
       this.$emit('change', this.visible);
     }
-  },
-  methods: {
-    ...mapActions('playbackManager', ['setNextTrack'])
   }
 });
 </script>

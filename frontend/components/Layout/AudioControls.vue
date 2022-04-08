@@ -1,7 +1,9 @@
 <template>
   <v-slide-y-reverse-transition mode="out-in">
     <v-footer
-      v-if="isPlaying && getCurrentlyPlayingMediaType === 'Audio'"
+      v-if="
+        isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+      "
       key="audioControls-footer"
       app
       :absolute="isFullScreenPlayer"
@@ -21,7 +23,7 @@
                 :size="$vuetify.breakpoint.xs ? 50 : 85"
                 color="primary"
               >
-                <blurhash-image :item="getCurrentItem" />
+                <blurhash-image :item="playbackManager.getCurrentItem" />
               </v-avatar>
             </nuxt-link>
             <v-col class="d-flex flex-column justify-center ml-4">
@@ -29,14 +31,17 @@
                 <nuxt-link
                   tag="span"
                   class="text-truncate link height-fit-content"
-                  :to="getItemDetailsLink(getCurrentItem)"
+                  :to="getItemDetailsLink(playbackManager.getCurrentItem)"
                 >
-                  {{ getCurrentItem.Name }}
+                  {{ playbackManager.getCurrentItem.Name }}
                 </nuxt-link>
               </v-row>
-              <v-row v-if="getCurrentItem.ArtistItems" class="align-start">
+              <v-row
+                v-if="playbackManager.getCurrentItem.ArtistItems"
+                class="align-start"
+              >
                 <span
-                  v-for="artist in getCurrentItem.ArtistItems"
+                  v-for="artist in playbackManager.getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="getItemDetailsLink(artist, 'MusicArtist')"
                 >
@@ -60,16 +65,15 @@
                   fab
                   small
                   class="mx-1 active-button"
-                  :color="isShuffling ? 'primary' : undefined"
-                  @click="toggleShuffle"
+                  :color="playbackManager.isShuffling ? 'primary' : undefined"
+                  @click="playbackManager.toggleShuffle"
                 >
                   <v-icon>mdi-shuffle</v-icon>
                 </v-btn>
                 <v-btn
                   icon
-                  :disabled="!getPreviousItem"
                   class="mx-1"
-                  @click="setPreviousTrack"
+                  @click="playbackManager.setPreviousTrack"
                 >
                   <v-icon>mdi-skip-previous</v-icon>
                 </v-btn>
@@ -77,8 +81,9 @@
                   icon
                   raised
                   rounded
+                  :loading="isBuffering"
                   class="mx-1 active-button"
-                  @click="playPause"
+                  @click="playbackManager.playPause"
                 >
                   <v-icon large>
                     {{
@@ -90,9 +95,9 @@
                 </v-btn>
                 <v-btn
                   icon
-                  :disabled="!getNextItem"
+                  :disabled="!playbackManager.getNextItem"
                   class="mx-1"
-                  @click="setNextTrack"
+                  @click="playbackManager.setNextTrack"
                 >
                   <v-icon>mdi-skip-next</v-icon>
                 </v-btn>
@@ -102,7 +107,7 @@
                   small
                   class="mx-1 active-button"
                   :color="isRepeating ? 'primary' : undefined"
-                  @click="toggleRepeatMode"
+                  @click="playbackManager.toggleRepeatMode"
                 >
                   <v-icon>{{ repeatIcon }}</v-icon>
                 </v-btn>
@@ -111,12 +116,15 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <like-button :item="getCurrentItem" class="active-button" />
+            <like-button
+              :item="playbackManager.getCurrentItem"
+              class="active-button"
+            />
             <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
-            <item-menu :item="getCurrentItem" />
+            <item-menu :item="playbackManager.getCurrentItem" />
             <v-btn
               v-show="!isFullScreenPlayer"
               icon
@@ -138,7 +146,7 @@
               raised
               rounded
               class="mx-1 active-button"
-              @click="playPause"
+              @click="playbackManager.playPause"
             >
               <v-icon>
                 {{
@@ -150,9 +158,9 @@
             </v-btn>
             <v-btn
               icon
-              :disabled="!getNextItem"
+              :disabled="!playbackManager.getNextItem"
               class="mx-1"
-              @click="setNextTrack"
+              @click="playbackManager.setNextTrack"
             >
               <v-icon>mdi-skip-next</v-icon>
             </v-btn>
@@ -160,15 +168,15 @@
               icon
               class="mx-1 active-button hidden-xs-only"
               :color="isRepeating ? 'primary' : undefined"
-              @click="toggleRepeatMode"
+              @click="playbackManager.toggleRepeatMode"
             >
               <v-icon>{{ repeatIcon }}</v-icon>
             </v-btn>
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
-              :color="isShuffling ? 'primary' : undefined"
-              @click="toggleShuffle"
+              :color="playbackManager.isShuffling ? 'primary' : undefined"
+              @click="playbackManager.toggleShuffle"
             >
               <v-icon>mdi-shuffle</v-icon>
             </v-btn>
@@ -181,8 +189,10 @@
           <div>
             <h4 class="text-overline font-italic">
               {{
-                !!getNextItem
-                  ? $t('upNextName', { upNextItemName: getNextItem.Name })
+                !!playbackManager.getNextItem
+                  ? $t('upNextName', {
+                      upNextItemName: playbackManager.getNextItem.Name
+                    })
                   : ''
               }}
               <br />
@@ -195,35 +205,32 @@
 </template>
 
 <script lang="ts">
-import { RepeatMode } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
+import { playbackManagerStore } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
-import { PlaybackStatus } from '~/store/playbackManager';
+import { PlaybackStatus, RepeatMode } from '~/store/playbackManager';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
   mixins: [timeUtils, imageHelper, itemHelper],
   computed: {
-    ...mapGetters('playbackManager', [
-      'getCurrentItem',
-      'getCurrentlyPlayingMediaType',
-      'getPreviousItem',
-      'getNextItem'
-    ]),
-    ...mapState('playbackManager', ['status', 'repeatMode', 'isShuffling']),
+    ...mapStores(playbackManagerStore),
+    isBuffering(): boolean {
+      return this.playbackManager.status === PlaybackStatus.Buffering;
+    },
     isPaused(): boolean {
-      return this.status === PlaybackStatus.Paused;
+      return this.playbackManager.status === PlaybackStatus.Paused;
     },
     isPlaying(): boolean {
-      return this.status !== PlaybackStatus.Stopped;
+      return this.playbackManager.status !== PlaybackStatus.Stopped;
     },
     isRepeating(): boolean {
-      return this.repeatMode !== RepeatMode.RepeatNone;
+      return this.playbackManager.repeatMode !== RepeatMode.RepeatNone;
     },
     repeatIcon(): string {
-      if (this.repeatMode === RepeatMode.RepeatOne) {
+      if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
         return 'mdi-repeat-once';
       }
 
@@ -235,17 +242,6 @@ export default Vue.extend({
     isFullScreenPlayer(): boolean {
       return this.$route.fullPath === '/fullscreen/playback';
     }
-  },
-  methods: {
-    ...mapActions('playbackManager', [
-      'setLastItemIndex',
-      'resetCurrentItemIndex',
-      'setNextTrack',
-      'setPreviousTrack',
-      'toggleShuffle',
-      'toggleRepeatMode',
-      'playPause'
-    ])
   }
 });
 </script>

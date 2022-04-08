@@ -1,8 +1,12 @@
 <template>
   <v-list-item-group class="list-group">
-    <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
+    <draggable
+      v-model="playbackManager.getQueueItems"
+      v-bind="dragOptions"
+      class="list-draggable"
+    >
       <v-hover
-        v-for="(item, index) in queue"
+        v-for="(item, index) in playbackManager.getQueueItems"
         :key="`${item.Id}-${getUuid()}`"
         v-slot="{ hover }"
       >
@@ -51,9 +55,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   data() {
@@ -68,24 +73,11 @@ export default Vue.extend({
     };
   },
   computed: {
-    queue: {
-      // TODO: Explore two-way data binding with Vuex 4, like what https://github.com/maoberlehner/vuex-map-fields provides
-      // for Vue 2.
-      get(): BaseItemDto[] {
-        return this.getQueueItems();
-      },
-      set(newValue: BaseItemDto[]): void {
-        this.setNewQueue({ queue: newValue });
-      }
-    }
+    ...mapStores(playbackManagerStore)
   },
   methods: {
-    ...mapGetters('playbackManager', ['getCurrentItem', 'getQueueItems']),
-    ...mapActions('playbackManager', ['setNewQueue', 'setCurrentIndex']),
-    ...mapState('playbackManager', ['currentItemIndex']),
     isPlaying(index: number): boolean {
-      // TODO: This cast should be removed on Vue 3 migration, which should provide us better typings.
-      return index === (this.currentItemIndex as unknown as number);
+      return index === this.playbackManager.currentItemIndex;
     },
     getArtists(item: BaseItemDto): string | null {
       if (item.Artists) {
@@ -104,7 +96,7 @@ export default Vue.extend({
       return uuidv4();
     },
     onClick(index: number): void {
-      this.setCurrentIndex({ index });
+      this.playbackManager.setCurrentIndex(index);
     }
   }
 });

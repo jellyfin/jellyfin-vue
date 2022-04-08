@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapStores } from 'pinia';
 import groupBy from 'lodash/groupBy';
 import {
   BaseItemDto,
@@ -82,6 +82,7 @@ import {
 } from '@jellyfin/client-axios';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
+import { playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   mixins: [timeUtils, itemHelper],
@@ -107,13 +108,12 @@ export default Vue.extend({
     ).data;
   },
   computed: {
+    ...mapStores(playbackManagerStore),
     tracksPerDisc(): Record<string, BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }
   },
   methods: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapActions('playbackManager', ['play']),
     /**
      * @param {number} ticks - The number of ticks to convert to track length
      * @returns {string} Returns the length of the track in the format XX:XX
@@ -138,14 +138,14 @@ export default Vue.extend({
       return `${minutes}:${formatSeconds(seconds.toString())}`;
     },
     playTracks(track: BaseItemDto): void {
-      this.play({
+      this.playbackManager.play({
         item: this.item,
         startFromIndex: this.tracks.Items?.indexOf(track),
         initiator: this.item
       });
     },
     isPlaying(track: BaseItemDto): boolean {
-      return track?.Id === this.getCurrentItem()?.Id;
+      return track?.Id === this.playbackManager.getCurrentItem?.Id;
     }
   }
 });

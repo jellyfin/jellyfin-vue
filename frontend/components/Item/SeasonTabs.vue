@@ -41,7 +41,6 @@
 <script lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import { mapActions } from 'vuex';
 import itemHelper from '~/mixins/itemHelper';
 
 interface TvShowItem {
@@ -113,9 +112,6 @@ export default Vue.extend({
       seasons: [] as BaseItemDto[],
       seasonEpisodes: {} as TvShowItem['seasonEpisodes']
     };
-  },
-  methods: {
-    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

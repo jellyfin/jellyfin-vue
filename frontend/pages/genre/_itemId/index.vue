@@ -48,7 +48,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import { BaseItemDto, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
@@ -106,9 +105,6 @@ export default Vue.extend({
   },
   destroyed() {
     this.page.opaqueAppBar = false;
-  },
-  methods: {
-    ...mapActions('playbackManager', ['play'])
   }
 });
 </script>

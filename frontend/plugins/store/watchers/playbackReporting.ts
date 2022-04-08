@@ -11,12 +11,14 @@ import { isNil } from 'lodash';
 export default function watchPlaybackReporting(ctx: Context) {
   const playbackManager = playbackManagerStore();
 
-  playbackManager.$onAction(({ name, after, store }) => {
-    after(() => {
+  playbackManager.$onAction(({ name, after }) => {
+    // @ts-expect-error - For some reason, types are not recognised properly here
+    after(async () => {
       switch (name) {
         case 'setNextTrack':
         case 'setPreviousTrack':
         case 'setCurrentIndex':
+        case 'play':
           if (
             !isNil(playbackManager.currentTime) &&
             playbackManager.getPreviousItem
@@ -24,7 +26,7 @@ export default function watchPlaybackReporting(ctx: Context) {
             /**
              * Report stop for the previous item
              */
-            ctx.$api.playState.reportPlaybackStopped(
+            await ctx.$api.playState.reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -34,25 +36,27 @@ export default function watchPlaybackReporting(ctx: Context) {
               },
               { progress: false }
             );
-            /**
-             * And then report play for the next one
-             */
-            if (playbackManager.getCurrentItem) {
-              ctx.$api.playState.reportPlaybackStart(
-                {
-                  playbackStartInfo: {
-                    CanSeek: true,
-                    ItemId: playbackManager.getCurrentItem?.Id,
-                    PlaySessionId: playbackManager.playSessionId,
-                    MediaSourceId: playbackManager.currentMediaSource?.Id,
-                    AudioStreamIndex: playbackManager.currentAudioStreamIndex,
-                    SubtitleStreamIndex:
-                      playbackManager.currentSubtitleStreamIndex
-                  }
-                },
-                { progress: false }
-              );
-            }
+
+            playbackManager.setLastProgressUpdate(new Date().getTime());
+          }
+          /**
+           * And then report play for the next one if it exists
+           */
+          if (playbackManager.getCurrentItem) {
+            await ctx.$api.playState.reportPlaybackStart(
+              {
+                playbackStartInfo: {
+                  CanSeek: true,
+                  ItemId: playbackManager.getCurrentItem?.Id,
+                  PlaySessionId: playbackManager.playSessionId,
+                  MediaSourceId: playbackManager.currentMediaSource?.Id,
+                  AudioStreamIndex: playbackManager.currentAudioStreamIndex,
+                  SubtitleStreamIndex:
+                    playbackManager.currentSubtitleStreamIndex
+                }
+              },
+              { progress: false }
+            );
 
             playbackManager.setLastProgressUpdate(new Date().getTime());
             break;
@@ -66,7 +70,7 @@ export default function watchPlaybackReporting(ctx: Context) {
               now - playbackManager.lastProgressUpdate > 10000 &&
               !isNil(playbackManager.currentTime)
             ) {
-              ctx.$api.playState.reportPlaybackProgress(
+              await ctx.$api.playState.reportPlaybackProgress(
                 {
                   playbackProgressInfo: {
                     ItemId: playbackManager.getCurrentItem?.Id,
@@ -86,8 +90,9 @@ export default function watchPlaybackReporting(ctx: Context) {
 
           break;
         case 'stop':
+        case 'clearQueue':
           if (!isNil(playbackManager.currentTime)) {
-            ctx.$api.playState.reportPlaybackStopped(
+            await ctx.$api.playState.reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -106,7 +111,7 @@ export default function watchPlaybackReporting(ctx: Context) {
         case 'unpause':
         case 'playPause':
           if (!isNil(playbackManager.currentTime)) {
-            ctx.$api.playState.reportPlaybackProgress(
+            await ctx.$api.playState.reportPlaybackProgress(
               {
                 playbackProgressInfo: {
                   ItemId: playbackManager.getCurrentItem?.Id,

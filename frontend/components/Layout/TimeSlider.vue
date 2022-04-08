@@ -14,7 +14,7 @@
   >
     <template #prepend>
       <span class="mt-1">
-        {{ formatTime(currentTime) }}
+        {{ formatTime(playbackManager.currentTime) }}
       </span>
     </template>
     <template #thumb-label>
@@ -30,8 +30,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapStores } from 'pinia';
 import timeUtils from '~/mixins/timeUtils';
+import { playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   mixins: [timeUtils],
@@ -42,15 +43,17 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapGetters('playbackManager', ['getCurrentItem']),
-    ...mapState('playbackManager', ['currentTime']),
+    ...mapStores(playbackManagerStore),
     runtime(): number {
-      return this.ticksToMs(this.getCurrentItem.RunTimeTicks) / 1000;
+      return (
+        this.ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) /
+          1000 || 0
+      );
     },
     sliderValue: {
       get(): number {
         if (!this.clicked) {
-          return this.currentTime;
+          return this.playbackManager.currentTime || 0;
         }
 
         return this.currentInput;
@@ -58,17 +61,16 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapActions('playbackManager', ['changeCurrentTime']),
     onPositionChange(value: number): void {
       if (!this.clicked) {
-        this.changeCurrentTime({ time: value });
+        this.playbackManager.changeCurrentTime(value);
       }
     },
     onInputChange(value: number): void {
       this.currentInput = value;
     },
     onClick(): void {
-      this.currentInput = this.currentTime;
+      this.currentInput = this.playbackManager.currentTime || 0;
       this.clicked = !this.clicked;
     }
   }
