@@ -1,4 +1,5 @@
 import { Context } from '@nuxt/types';
+import { authStore } from '~/store';
 
 /**
  * Middleware providing a redirect to the home page in case the
@@ -8,7 +9,8 @@ import { Context } from '@nuxt/types';
  * @returns {void}
  */
 export default function (context: Context): void {
-  if (!context.$auth.user?.Policy?.IsAdministrator) {
+  const auth = authStore();
+  if (!auth.currentUser?.Policy?.IsAdministrator) {
     return context.redirect('/');
   }
 }

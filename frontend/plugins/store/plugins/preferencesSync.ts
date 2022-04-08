@@ -1,5 +1,6 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
+import destr from 'destr';
 import { isNil } from 'lodash';
 import { PiniaPluginContext } from 'pinia';
 import { authStore, pageStore, snackbarStore } from '~/store';
@@ -19,7 +20,7 @@ function castDisplayPreferencesResponse(
       /**
        * destr does proper conversion for all the types, even undefined
        */
-      // @ts-expect-error - TypeScript can't infer types from Object.entries
+
       data.CustomPrefs[key] = destr(value);
     }
 
@@ -34,34 +35,32 @@ function castDisplayPreferencesResponse(
  */
 export async function fetchSettingsFromServer(
   ctx: Context,
+  auth: ReturnType<typeof authStore>,
   storeId: string,
   cast = true
 ): Promise<DisplayPreferencesDto> {
-  if (ctx.$auth.user.Id) {
-    const response = await ctx.$api.displayPreferences.getDisplayPreferences({
-      displayPreferencesId: storeId,
-      userId: ctx.$auth.user.Id,
-      client: 'vue'
-    });
+  const response = await ctx.$api.displayPreferences.getDisplayPreferences({
+    displayPreferencesId: storeId,
+    userId: auth.currentUserId,
+    client: 'vue'
+  });
 
-    if (response.status !== 200) {
-      throw new Error(
-        `Unexpected API response code while fetching displayPreferences with id: ${storeId} (${response.status})`
-      );
-    }
-
-    return cast ? castDisplayPreferencesResponse(response.data) : response.data;
-  } else {
-    throw new Error(`There's no user logged in`);
+  if (response.status !== 200) {
+    throw new Error(
+      `Unexpected API response code while fetching displayPreferences with id: ${storeId} (${response.status})`
+    );
   }
+
+  return cast ? castDisplayPreferencesResponse(response.data) : response.data;
 }
 
 async function pushSettingsToServer(
   ctx: Context,
+  auth: ReturnType<typeof authStore>,
   storeId: string,
   prefs: DisplayPreferencesDto
 ): Promise<void> {
-  if (prefs.CustomPrefs && ctx.$auth.user.Id) {
+  if (prefs.CustomPrefs) {
     for (const [key, value] of Object.entries(prefs.CustomPrefs)) {
       let string = JSON.stringify(value);
 
@@ -78,7 +77,7 @@ async function pushSettingsToServer(
     const responseUpdate =
       await ctx.$api.displayPreferences.updateDisplayPreferences({
         displayPreferencesId: storeId,
-        userId: ctx.$auth.user.Id,
+        userId: auth.currentUserId,
         client: 'vue',
         displayPreferencesDto: prefs
       });
@@ -105,7 +104,7 @@ export default function preferencesSync({ store }: PiniaPluginContext) {
     const auth = authStore();
     const snackbar = snackbarStore();
     store.$subscribe(async () => {
-      if (!isNil(auth.getCurrentUser)) {
+      if (!isNil(auth.currentUser)) {
         try {
           /**
            * Set the state of the page to syncing, so UI can show that there's a syncing in progress
@@ -123,6 +122,7 @@ export default function preferencesSync({ store }: PiniaPluginContext) {
            */
           const displayPrefs = await fetchSettingsFromServer(
             store.$nuxt,
+            auth,
             store.$id,
             false
           );
@@ -130,7 +130,7 @@ export default function preferencesSync({ store }: PiniaPluginContext) {
 
           const settings = store.state;
           Object.assign(displayPrefs.CustomPrefs, settings);
-          pushSettingsToServer(store.$nuxt, store.$id, displayPrefs);
+          pushSettingsToServer(store.$nuxt, auth, store.$id, displayPrefs);
         } catch (error) {
           snackbar.push(
             store.$nuxt.i18n.t('failedSettingDisplayPreferences'),

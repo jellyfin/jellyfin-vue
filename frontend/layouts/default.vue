@@ -226,7 +226,7 @@ export default Vue.extend({
     },
     connectToWebSocket(): void {
       const socketParams = stringify({
-        api_key: this.auth.getUserAccessToken(this.auth.getCurrentUser),
+        api_key: this.auth.getCurrentUserAccessToken,
         deviceId: this.deviceProfile.deviceId
       });
       let url = `${this.$axios.defaults.baseURL}/socket?${socketParams}`;

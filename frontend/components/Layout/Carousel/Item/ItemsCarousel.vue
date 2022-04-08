@@ -58,7 +58,7 @@ import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
-import { pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, itemHelper],
@@ -95,7 +95,7 @@ export default Vue.extend({
 
       const itemData = (
         await this.$api.userLibrary.getItem({
-          userId: this.$auth.user?.Id,
+          userId: this.auth.currentUserId,
           itemId: id
         })
       ).data;
@@ -134,7 +134,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(pageStore)
+    ...mapStores(authStore, pageStore)
   }
 });
 </script>

@@ -27,7 +27,7 @@ function handleAuthRedirections(
   useContext: boolean
 ) {
   const servers = auth.servers || [];
-  const userToken = auth.getUserAccessToken(auth.getCurrentUser) || '';
+  const userToken = auth.getCurrentUserAccessToken;
   const currentRoute = context.app.router?.currentRoute?.fullPath || '';
   // @ts-expect-error - No types for this. TODO: Investigate why
   const nextRoute = context.app.router?.history?.pending?.fullPath || '';
@@ -84,7 +84,7 @@ export function setHeaderAndBaseUrl(
   ctx: Context,
   auth: ReturnType<typeof authStore>
 ) {
-  const currentServer = auth.getCurrentServer?.PublicAddress || '';
+  const currentServer = auth.currentServer?.PublicAddress || '';
 
   ctx.$axios.setBaseURL(currentServer);
   auth.setAxiosHeader();

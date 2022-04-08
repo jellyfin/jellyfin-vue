@@ -10,7 +10,7 @@ import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import { PropType } from 'vue';
-import { snackbarStore, socketStore } from '~/store';
+import { authStore, snackbarStore, socketStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -52,23 +52,23 @@ export default Vue.extend({
   },
   methods: {
     async toggleFavorite(): Promise<void> {
-      if (!this.item.Id) {
-        return;
-      }
-
       try {
+        if (!this.item.Id) {
+          throw new Error();
+        }
+
         if (!this.isFavorite) {
           this.isFavorite = true;
 
           await this.$api.userLibrary.markFavoriteItem({
-            userId: this.$auth.user.Id,
+            userId: this.auth.currentUserId,
             itemId: this.item.Id
           });
         } else {
           this.isFavorite = false;
 
           await this.$api.userLibrary.unmarkFavoriteItem({
-            userId: this.$auth.user.Id,
+            userId: this.auth.currentUserId,
             itemId: this.item.Id
           });
         }
@@ -80,7 +80,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(snackbarStore, socketStore)
+    ...mapStores(authStore, snackbarStore, socketStore)
   }
 });
 </script>

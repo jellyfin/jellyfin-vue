@@ -215,7 +215,7 @@ import pick from 'lodash/pick';
 import set from 'lodash/set';
 import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   props: {
@@ -242,7 +242,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(snackbarStore),
+    ...mapStores(authStore, snackbarStore),
     premiereDate: {
       get(): string {
         if (!this.metadata.PremiereDate) {
@@ -292,7 +292,7 @@ export default Vue.extend({
 
       const ancestors = await this.$api.library.getAncestors({
         itemId: this.metadata.Id as string,
-        userId: this.$auth.user?.Id
+        userId: this.auth.currentUserId
       });
       const libraryInfo =
         ancestors.data.find((i) => i.Type === 'CollectionFolder') || {};
@@ -300,10 +300,9 @@ export default Vue.extend({
       this.getGenres(libraryInfo.Id);
     },
     async fetchItemInfo(): Promise<void> {
-      const userId = this.$auth.user?.Id;
       const itemInfo = (
         await this.$api.userLibrary.getItem({
-          userId,
+          userId: this.auth.currentUserId,
           itemId: this.itemId
         })
       ).data;

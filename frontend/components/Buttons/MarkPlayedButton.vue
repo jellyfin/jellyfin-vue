@@ -14,7 +14,7 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import itemHelper from '~/mixins/itemHelper';
-import { snackbarStore } from '~/store';
+import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
   mixins: [itemHelper],
@@ -47,17 +47,21 @@ export default Vue.extend({
   methods: {
     async togglePlayed(): Promise<void> {
       try {
+        if (!this.item.Id) {
+          throw new Error();
+        }
+
         if (this.isPlayed) {
           this.isPlayed = false;
           await this.$api.playState.markUnplayedItem({
-            userId: this.$auth.user.Id,
-            itemId: this.item.Id || ''
+            userId: this.auth.currentUserId,
+            itemId: this.item.Id
           });
         } else {
           this.isPlayed = true;
           await this.$api.playState.markPlayedItem({
-            userId: this.$auth.user.Id,
-            itemId: this.item.Id || ''
+            userId: this.auth.currentUserId,
+            itemId: this.item.Id
           });
         }
       } catch (error) {
@@ -67,7 +71,7 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapStores(snackbarStore)
+    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

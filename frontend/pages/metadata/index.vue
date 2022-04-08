@@ -18,8 +18,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
+import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
+import { authStore } from '~/store';
 
 type ITreeNode = {
   id: string | number | undefined;
@@ -34,7 +35,9 @@ export default Vue.extend({
       itemId: ''
     };
   },
-  computed: {},
+  computed: {
+    ...mapStores(authStore)
+  },
   async created() {
     const folders = (await this.$api.library.getMediaFolders()).data
       .Items as BaseItemDto[];
@@ -52,7 +55,7 @@ export default Vue.extend({
       const libItems = (
         (
           await this.$api.userLibrary.getItem(
-            { userId: this.$auth.user?.Id, itemId: '' },
+            { userId: this.auth.currentUserId, itemId: '' },
             {
               query: {
                 ParentId: node.id,

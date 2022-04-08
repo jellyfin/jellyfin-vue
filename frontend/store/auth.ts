@@ -82,7 +82,7 @@ export const authStore = defineStore('auth', {
      * Logs the user to the current server
      */
     async loginUser(username: string, password: string, rememberMe: boolean) {
-      if (!this.getCurrentServer) {
+      if (!this.currentServer) {
         throw new Error('There is no server in use');
       }
 
@@ -139,12 +139,10 @@ export const authStore = defineStore('auth', {
         }
       } finally {
         if (clearUser === true) {
-          const currentUser = this.getCurrentUser;
+          const currentUser = this.currentUser;
           if (currentUser) {
             Vue.delete(this.accessTokens, currentUser.Id as string);
-            this.users = this.users.filter(
-              (user) => user === this.getCurrentUser
-            );
+            this.users = this.users.filter((user) => user === this.currentUser);
             this.currentUserIndex = -1;
           }
         }
@@ -175,8 +173,8 @@ export const authStore = defineStore('auth', {
           Vue.delete(this.accessTokens, user.Id as string);
         }
 
-        if (this.getCurrentServer?.PublicAddress) {
-          this.$nuxt.$axios.setBaseURL(this.getCurrentServer?.PublicAddress);
+        if (this.currentServer?.PublicAddress) {
+          this.$nuxt.$axios.setBaseURL(this.currentServer?.PublicAddress);
           this.setAxiosHeader();
         }
 
@@ -193,7 +191,7 @@ export const authStore = defineStore('auth', {
     setAxiosHeader(accessToken?: string): void {
       const deviceProfile = deviceProfileStore();
       if (!accessToken) {
-        accessToken = this.getUserAccessToken(this.getCurrentUser) || '';
+        accessToken = this.getUserAccessToken(this.currentUser) || '';
       }
 
       if (
@@ -211,14 +209,21 @@ export const authStore = defineStore('auth', {
     }
   },
   getters: {
-    getCurrentServer(): ServerInfo | undefined {
+    currentServer(): ServerInfo | undefined {
       return this.servers[this.currentServerIndex];
     },
-    getCurrentUser(): UserDto | undefined {
+    currentUser(): UserDto | undefined {
       return this.users[this.currentUserIndex];
     },
+    currentUserId(): string {
+      if (!this.currentUser?.Id) {
+        throw new Error('There is no user logged in or the data is malformed');
+      }
+
+      return this.currentUser.Id;
+    },
     getCurrentUserAccessToken(): string | undefined {
-      return this.getUserAccessToken(this.getCurrentUser);
+      return this.getUserAccessToken(this.currentUser);
     },
     getServerById: (state) => {
       return (serverId: string | undefined | null): ServerInfo | undefined => {

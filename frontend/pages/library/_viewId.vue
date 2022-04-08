@@ -55,16 +55,18 @@ import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
-import { snackbarStore, pageStore } from '~/store';
+import { authStore, snackbarStore, pageStore } from '~/store';
 
 export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.viewId);
   },
-  async asyncData({ params, $api, $auth }) {
+  async asyncData({ params, $api }) {
+    const auth = authStore();
+
     const collectionInfo = (
       await $api.items.getItems({
-        userId: $auth.user?.Id,
+        userId: auth.currentUserId,
         ids: [params.viewId]
       })
     ).data?.Items?.[0];
@@ -101,7 +103,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(snackbarStore, pageStore),
+    ...mapStores(authStore, snackbarStore, pageStore),
     hasViewTypes(): boolean {
       if (
         ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
@@ -238,7 +240,7 @@ export default Vue.extend({
           case 'MusicArtist':
             itemsResponse = (
               await this.$api.artists.getAlbumArtists({
-                userId: this.$auth.user?.Id,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -246,7 +248,7 @@ export default Vue.extend({
           case 'Actor':
             itemsResponse = (
               await this.$api.persons.getPersons({
-                userId: this.$auth.user?.Id,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId,
                 personTypes: 'Actor'
               })
@@ -255,7 +257,7 @@ export default Vue.extend({
           case 'Genre':
             itemsResponse = (
               await this.$api.genres.getGenres({
-                userId: this.$auth.user?.Id,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -263,7 +265,7 @@ export default Vue.extend({
           case 'MusicGenre':
             itemsResponse = (
               await this.$api.musicGenres.getMusicGenres({
-                userId: this.$auth.user?.Id,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -271,7 +273,7 @@ export default Vue.extend({
           case 'Studio':
             itemsResponse = (
               await this.$api.studios.getStudios({
-                userId: this.$auth.user?.Id,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -279,8 +281,8 @@ export default Vue.extend({
           default:
             itemsResponse = (
               await this.$api.items.getItems({
-                uId: this.$auth.user?.Id,
-                userId: this.$auth.user?.Id,
+                uId: this.auth.currentUserId,
+                userId: this.auth.currentUserId,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
                 sortBy:

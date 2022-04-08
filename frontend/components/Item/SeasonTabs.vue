@@ -42,6 +42,7 @@
 import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import itemHelper from '~/mixins/itemHelper';
+import { authStore } from '~/store';
 
 interface TvShowItem {
   /**
@@ -62,10 +63,11 @@ export default Vue.extend({
       required: true
     }
   },
-  async asyncData({ $api, $auth }) {
+  async asyncData({ $api }) {
+    const auth = authStore();
     const seasons = (
       await $api.tvShows.getSeasons({
-        userId: this.$auth.user?.Id,
+        userId: auth.currentUserId,
         seriesId: this.item.Id
       })
     ).data.Items;
@@ -77,7 +79,7 @@ export default Vue.extend({
         if (season.Id) {
           const episodes = (
             await $api.items.getItems({
-              userId: $auth.user?.Id,
+              userId: auth.currentUserId,
               parentId: season.Id,
               fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
             })
