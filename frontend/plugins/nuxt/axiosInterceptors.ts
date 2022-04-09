@@ -36,7 +36,7 @@ const authPlugin: Plugin = (ctx: Context) => {
     const auth = authStore();
     const snackbar = snackbarStore();
 
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && auth.currentUser) {
       try {
         await ctx.$api.user.getCurrentUser();
       } catch {
@@ -45,7 +45,10 @@ const authPlugin: Plugin = (ctx: Context) => {
       }
     }
 
-    return error;
+    /**
+     * Pass the error so it's handled in try/catch blocks afterwards
+     */
+    throw error;
   };
 
   ctx.$axios.interceptors.response.use(onRequestResponse, onRequestError);
