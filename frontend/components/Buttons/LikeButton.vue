@@ -6,10 +6,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { PropType } from 'vue';
 import { authStore, snackbarStore, socketStore } from '~/store';
 
 export default Vue.extend({
@@ -27,6 +26,9 @@ export default Vue.extend({
     return {
       isFavorite: false
     };
+  },
+  computed: {
+    ...mapStores(authStore, snackbarStore, socketStore)
   },
   watch: {
     item: {
@@ -54,7 +56,7 @@ export default Vue.extend({
     async toggleFavorite(): Promise<void> {
       try {
         if (!this.item.Id) {
-          throw new Error();
+          throw new Error('Item has no Id');
         }
 
         if (!this.isFavorite) {
@@ -78,9 +80,6 @@ export default Vue.extend({
         this.isFavorite = !this.isFavorite;
       }
     }
-  },
-  computed: {
-    ...mapStores(authStore, snackbarStore, socketStore)
   }
 });
 </script>

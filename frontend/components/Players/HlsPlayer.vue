@@ -30,8 +30,6 @@ import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-
 import isNil from 'lodash/isNil';
 import { mapStores } from 'pinia';
 import {
-  BaseItemDto,
-  MediaSourceInfo,
   PlaybackInfoResponse,
   SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
@@ -71,11 +69,13 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
-    poster(): ImageUrlInfo | string | undefined {
+    poster(): ImageUrlInfo | string | null {
       if (!isNil(this.playbackManager.getCurrentItem)) {
         return this.getImageInfo(this.playbackManager.getCurrentItem, {
           preferBackdrop: true
         });
+      } else {
+        return null;
       }
     },
     videoElement(): HTMLVideoElement | undefined {
@@ -91,6 +91,7 @@ export default Vue.extend({
       ) {
         return true;
       }
+
       return false;
     }
   },
@@ -160,6 +161,7 @@ export default Vue.extend({
     },
     source(newSource): void {
       this.destroy();
+
       const mediaSource = this.playbackManager.currentMediaSource;
       const item = this.playbackManager.getCurrentItem;
 
@@ -308,6 +310,7 @@ export default Vue.extend({
         // Set the restart time so that the function knows where to restart
         this.restartTime = this.videoElement.currentTime;
         await this.getPlaybackUrl();
+
         return;
       }
 

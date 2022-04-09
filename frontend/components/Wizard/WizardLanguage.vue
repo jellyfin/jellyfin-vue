@@ -34,6 +34,9 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapStores(snackbarStore)
+  },
   async created() {
     this.loading = true;
 
@@ -76,9 +79,6 @@ export default Vue.extend({
 
       this.loading = false;
     }
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   }
 });
 </script>

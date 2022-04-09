@@ -77,6 +77,9 @@ export default Vue.extend({
       relatedItems: {} as { [k: number]: BaseItemDto }
     };
   },
+  computed: {
+    ...mapStores(authStore, pageStore)
+  },
   async mounted() {
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
@@ -132,9 +135,6 @@ export default Vue.extend({
     onSlideChange(index: number): void {
       this.updateBackdrop(index);
     }
-  },
-  computed: {
-    ...mapStores(authStore, pageStore)
   }
 });
 </script>

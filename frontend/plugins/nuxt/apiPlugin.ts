@@ -143,13 +143,6 @@ declare module 'vue/types/vue' {
   }
 }
 
-declare module 'vuex/types/index' {
-  // eslint-disable-next-line -- Current TypeScript rules flag S as unused, but Nuxt requires identical types
-  interface Store<S> {
-    $api: ApiPlugin;
-  }
-}
-
 const apiPlugin: Plugin = (context, inject) => {
   const config = new Configuration();
   const contextAxios = context.$axios as AxiosInstance;

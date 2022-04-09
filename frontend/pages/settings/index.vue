@@ -112,14 +112,12 @@ export default Vue.extend({
   mixins: [htmlHelper],
   async asyncData({ $api }) {
     const auth = authStore();
+
     if (auth.currentUser?.Policy?.IsAdministrator) {
       const systemInfo = (await $api.system.getSystemInfo()).data;
 
       return { systemInfo };
     }
-  },
-  computed: {
-    ...mapStores(authStore, pageStore)
   },
   data() {
     return {
@@ -234,14 +232,15 @@ export default Vue.extend({
       ]
     };
   },
+  computed: {
+    ...mapStores(authStore, pageStore)
+  },
   mounted() {
     this.page.opaqueAppBar = true;
     this.page.title = this.$t('settings.settings');
   },
   methods: {
-    isEmpty(object: never): boolean {
-      return isEmpty(object);
-    }
+    isEmpty
   }
 });
 </script>

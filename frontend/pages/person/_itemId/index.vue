@@ -147,7 +147,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapGetters } from 'vuex';
 import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';

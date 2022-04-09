@@ -88,16 +88,24 @@ const config: NuxtConfig = {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    /**
+     * THE LOAD ORDER OF THE PLUGINS IS RELEVANT
+     */
     /*
      ** Pinia plugins (need to be loaded first to ensure persistence)
      */
     'plugins/store/index.ts',
-    /*
-     ** Nuxt plugins
+    /**
+     * Axios plugins
+     *
+     * Load first our custom interceptors and the, the API
      */
-    'plugins/nuxt/apiPlugin.ts',
-    'plugins/nuxt/appInit.ts',
     'plugins/nuxt/axiosInterceptors.ts',
+    'plugins/nuxt/apiPlugin.ts',
+    /**
+     * Rest of Nuxt plugins
+     */
+    'plugins/nuxt/appInit.ts',
     'plugins/nuxt/axe.ts',
     'plugins/nuxt/veeValidate.ts',
     'plugins/nuxt/browserDetectionPlugin.ts',
@@ -127,12 +135,7 @@ const config: NuxtConfig = {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    '@nuxtjs/i18n',
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa'
-  ],
+  modules: ['@nuxtjs/i18n', '@nuxtjs/axios', '@nuxtjs/pwa'],
   /*
    ** Router configuration
    */

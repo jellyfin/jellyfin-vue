@@ -94,6 +94,9 @@ export default Vue.extend({
       }
     };
   },
+  computed: {
+    ...mapStores(authStore)
+  },
   methods: {
     async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
@@ -117,9 +120,6 @@ export default Vue.extend({
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     }
-  },
-  computed: {
-    ...mapStores(authStore)
   }
 });
 </script>

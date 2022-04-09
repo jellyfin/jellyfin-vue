@@ -84,6 +84,9 @@ export default Vue.extend({
       loading: true
     };
   },
+  computed: {
+    ...mapStores(authStore, snackbarStore)
+  },
   watch: {
     item(): void {
       this.refreshItems();
@@ -118,9 +121,6 @@ export default Vue.extend({
 
       this.loading = false;
     }
-  },
-  computed: {
-    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>
