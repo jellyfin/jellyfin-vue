@@ -2,7 +2,8 @@ import Vue from 'vue';
 import { PublicSystemInfo, UserDto } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { AxiosError } from 'axios';
-import { deviceProfileStore, snackbarStore } from '.';
+import { deviceProfileStore, snackbarStore, socketStore } from '.';
+import isNil from 'lodash/isNil';
 
 export interface ServerInfo extends PublicSystemInfo {
   PublicAddress: string;
@@ -44,7 +45,7 @@ export const authStore = defineStore('auth', {
 
       const snackbar = snackbarStore();
 
-      this.$nuxt.$axios.setBaseURL(serverUrl);
+      this.$nuxt.$axios.defaults.baseURL = serverUrl;
       this.setAxiosHeader();
 
       let data: ServerInfo;
@@ -185,7 +186,7 @@ export const authStore = defineStore('auth', {
         /**
          * We set the baseUrl to the one of the server to log out users of that server properly
          */
-        this.$nuxt.$axios.setBaseURL(server.PublicAddress);
+        this.$nuxt.$axios.defaults.baseURL = server.PublicAddress;
 
         for (const user of users) {
           this.setAxiosHeader(this.getUserAccessToken(user));
@@ -193,15 +194,22 @@ export const authStore = defineStore('auth', {
           Vue.delete(this.accessTokens, user.Id as string);
         }
 
-        if (this.currentServer?.PublicAddress) {
-          this.$nuxt.$axios.setBaseURL(this.currentServer?.PublicAddress);
-          this.setAxiosHeader();
-        }
-
+        this.setAxiosBaseUrl();
+        this.setAxiosHeader();
         this.users = this.users.filter((user) => users.includes(user));
       }
 
       this.servers = this.servers.splice(this.servers.indexOf(server), 1);
+    },
+    /**
+     * Sets the Axios baseUrl so we can make request to a server
+     */
+    setAxiosBaseUrl(serverUrl?: string): void {
+      if (isNil(serverUrl) && this.currentServer?.PublicAddress) {
+        this.$nuxt.$axios.defaults.baseURL = this.currentServer.PublicAddress;
+      } else {
+        this.$nuxt.$axios.defaults.baseURL = serverUrl;
+      }
     },
     /**
      * Sets the header so the server can handle our requests. By default, it sets the request to the current logged user.
@@ -212,7 +220,7 @@ export const authStore = defineStore('auth', {
       const deviceProfile = deviceProfileStore();
 
       if (!accessToken) {
-        accessToken = this.getCurrentUserAccessToken;
+        accessToken = this.currentUserToken;
       }
 
       if (
@@ -226,7 +234,20 @@ export const authStore = defineStore('auth', {
 
       const token = `MediaBrowser Client="${deviceProfile.clientName}", Device="${deviceProfile.deviceName}", DeviceId="${deviceProfile.deviceId}", Version="${deviceProfile.clientVersion}", Token="${accessToken}"`;
 
-      this.$nuxt.$axios.setHeader('X-Emby-Authorization', token);
+      this.$nuxt.$axios.defaults.headers['common']['X-Emby-Authorization'] =
+        token;
+    },
+    /**
+     * Configures the Axios instance with the appropiate baseUrl and token, based on current user and server selection
+     * and starts the user websocket
+     * Used at app initialization time.
+     */
+    authInit(): void {
+      const socket = socketStore();
+
+      this.setAxiosBaseUrl();
+      this.setAxiosHeader();
+      socket.connectUserWebSocket();
     }
   },
   getters: {
@@ -239,7 +260,7 @@ export const authStore = defineStore('auth', {
     currentUserId(): string {
       return this.currentUser?.Id || '';
     },
-    getCurrentUserAccessToken(): string {
+    currentUserToken(): string {
       return this.getUserAccessToken(this.currentUser) || '';
     },
     getServerById: (state) => {

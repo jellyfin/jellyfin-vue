@@ -1,11 +1,15 @@
-import { Context, Plugin } from '@nuxt/types';
+import { Plugin } from '@nuxt/types';
 import isNil from 'lodash/isNil';
 import { authStore, ServerInfo } from '~/store';
 import { parseServerListString } from '~/utils/servers';
-import { setHeaderAndBaseUrl } from '~/middleware/auth';
 
-const appInit: Plugin = (ctx: Context) => {
+const appInit: Plugin = () => {
   const auth = authStore();
+
+  /**
+   * Initializes Axios and the websocket with the current data in the store
+   */
+  auth.authInit();
 
   /**
    * Logout the user on app initialization if the user doesn't want to be remembered.
@@ -14,7 +18,6 @@ const appInit: Plugin = (ctx: Context) => {
    * Middleware lives at ~/middleware/auth
    */
   if (!auth.rememberMe) {
-    setHeaderAndBaseUrl(ctx, auth);
     auth.logoutUser();
   }
 

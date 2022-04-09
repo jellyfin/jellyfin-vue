@@ -1,4 +1,5 @@
 import { Context } from '@nuxt/types';
+import isNil from 'lodash/isNil';
 import { authStore } from '~/store';
 
 /**
@@ -27,7 +28,7 @@ function handleAuthRedirections(
   useContext: boolean
 ): void {
   const servers = auth.servers || [];
-  const userToken = auth.getCurrentUserAccessToken;
+  const userToken = auth.currentUserToken;
   const currentRoute = context.app.router?.currentRoute?.fullPath || '';
   // @ts-expect-error - No types for this. TODO: Investigate why
   const nextRoute = context.app.router?.history?.pending?.fullPath || '';
@@ -75,22 +76,6 @@ function handleAuthRedirections(
 }
 
 /**
- * Set the header and base url to communicate with the server
- *
- * @param ctx - The Nuxt context
- * @param auth - The Pinia's authStore instance
- */
-export function setHeaderAndBaseUrl(
-  ctx: Context,
-  auth: ReturnType<typeof authStore>
-): void {
-  const currentServer = auth.currentServer?.PublicAddress || '';
-
-  ctx.$axios.setBaseURL(currentServer);
-  auth.setAxiosHeader();
-}
-
-/**
  * Runs all the logic to keep the communication with the server and acts as a middleware for login
  * when necessary.
  *
@@ -106,7 +91,10 @@ export function authLogic(
   auth: ReturnType<typeof authStore>,
   useContext: boolean
 ): void {
-  setHeaderAndBaseUrl(ctx, auth);
+  if (isNil(ctx.$axios.defaults.baseURL)) {
+    auth.authInit();
+  }
+
   handleAuthRedirections(ctx, auth, useContext);
 }
 
@@ -121,7 +109,6 @@ let appBooting = true;
  */
 export default function (context: Context): void {
   const auth = authStore();
-
   authLogic(context, auth, appBooting);
 
   if (appBooting) {
