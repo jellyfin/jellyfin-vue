@@ -37,7 +37,7 @@ export const homeSectionStore = defineStore('homeSection', {
   actions: {
     async getLibraries(): Promise<void> {
       const userViews = userViewsStore();
-      userViews.refreshUserViews();
+      await userViews.refreshUserViews();
 
       this.libraries = Array.from(userViews.views);
     },
