@@ -162,7 +162,7 @@ export default Vue.extend({
 
         // Register player events
         this.player.addEventListener('error', this.onPlayerError);
-        // Subscribe to Vuex actions
+        // Subscribe to Store actions
         this.playbackManager.$onAction(({ name, after }) => {
           after(() => {
             if (name === 'changeCurrentTime') {
@@ -245,7 +245,7 @@ export default Vue.extend({
             Static: true,
             mediaSourceId: mediaSource.Id,
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.auth.getCurrentUserAccessToken
+            api_key: this.auth.currentUserToken
           };
 
           if (mediaSource.ETag) {

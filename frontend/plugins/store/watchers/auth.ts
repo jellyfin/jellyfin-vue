@@ -35,10 +35,14 @@ export default function watchAuth(ctx: Context): void {
    */
   auth.$onAction(({ name, after, store }) => {
     after(async () => {
-      if (name !== 'setAxiosHeader') {
+      if (
+        name !== 'authInit' &&
+        name !== 'setAxiosHeader' &&
+        name !== 'setAxiosBaseUrl'
+      ) {
         /**
          * We set the useContext boolean to false since at this point the app will be already booted, so
-         * we need to stick to Vue Router.
+         * we need to stick to Vue Router to avoid conflicts.
          */
         authLogic(ctx, auth, false);
 
@@ -55,6 +59,7 @@ export default function watchAuth(ctx: Context): void {
 
         if (name === 'loginUser') {
           await clientSettings.initState();
+          socket.connectUserWebSocket();
         }
       }
     });
