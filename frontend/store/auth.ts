@@ -100,7 +100,7 @@ export const authStore = defineStore('auth', {
         if (authenticateResponse.User?.Id && authenticateResponse.AccessToken) {
           Vue.set(
             this.accessTokens,
-            authenticateResponse.User?.Id,
+            authenticateResponse.User.Id,
             authenticateResponse.AccessToken
           );
 
@@ -124,8 +124,11 @@ export const authStore = defineStore('auth', {
         } else if (error.response.status === 400) {
           errorMessage = this.$nuxt.i18n.t('badRequest');
         }
-
         snackbar.push(errorMessage, 'error');
+        /**
+         * Pass the error up, so it's handled successfully in the action's subscriptions
+         */
+        throw err;
       }
     },
     /**
@@ -191,7 +194,7 @@ export const authStore = defineStore('auth', {
     setAxiosHeader(accessToken?: string): void {
       const deviceProfile = deviceProfileStore();
       if (!accessToken) {
-        accessToken = this.getUserAccessToken(this.currentUser) || '';
+        accessToken = this.getCurrentUserAccessToken;
       }
 
       if (
@@ -216,14 +219,10 @@ export const authStore = defineStore('auth', {
       return this.users[this.currentUserIndex];
     },
     currentUserId(): string {
-      if (!this.currentUser?.Id) {
-        throw new Error('There is no user logged in or the data is malformed');
-      }
-
-      return this.currentUser.Id;
+      return this.currentUser?.Id || '';
     },
-    getCurrentUserAccessToken(): string | undefined {
-      return this.getUserAccessToken(this.currentUser);
+    getCurrentUserAccessToken(): string {
+      return this.getUserAccessToken(this.currentUser) || '';
     },
     getServerById: (state) => {
       return (serverId: string | undefined | null): ServerInfo | undefined => {
