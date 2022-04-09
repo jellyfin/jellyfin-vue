@@ -63,37 +63,6 @@ export default Vue.extend({
       required: true
     }
   },
-  async asyncData({ $api }) {
-    const auth = authStore();
-    const seasons = (
-      await $api.tvShows.getSeasons({
-        userId: auth.currentUserId,
-        seriesId: this.item.Id
-      })
-    ).data.Items;
-
-    let seasonEpisodes = {} as TvShowItem['seasonEpisodes'];
-
-    if (seasons) {
-      for (const season of seasons) {
-        if (season.Id) {
-          const episodes = (
-            await $api.items.getItems({
-              userId: auth.currentUserId,
-              parentId: season.Id,
-              fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-            })
-          ).data;
-
-          if (episodes.Items) {
-            seasonEpisodes[season.Id] = episodes.Items;
-          }
-        }
-
-        return { seasons, seasonEpisodes };
-      }
-    }
-  },
   data() {
     return {
       currentTab: 0,
@@ -114,6 +83,38 @@ export default Vue.extend({
       seasons: [] as BaseItemDto[],
       seasonEpisodes: {} as TvShowItem['seasonEpisodes']
     };
+  },
+  async fetch() {
+    const auth = authStore();
+    const seasons = (
+      await this.$api.tvShows.getSeasons({
+        userId: auth.currentUserId,
+        seriesId: this.item.Id
+      })
+    ).data.Items;
+
+    const seasonEpisodes = {} as TvShowItem['seasonEpisodes'];
+
+    if (seasons) {
+      for (const season of seasons) {
+        if (season.Id) {
+          const episodes = (
+            await this.$api.items.getItems({
+              userId: auth.currentUserId,
+              parentId: season.Id,
+              fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+            })
+          ).data;
+
+          if (episodes.Items) {
+            seasonEpisodes[season.Id] = episodes.Items;
+          }
+        }
+
+        this.seasons = seasons;
+        this.seasonEpisodes = seasonEpisodes;
+      }
+    }
   }
 });
 </script>

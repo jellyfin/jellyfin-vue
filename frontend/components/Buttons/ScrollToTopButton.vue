@@ -21,13 +21,13 @@ import { mapStores } from 'pinia';
 import { pageStore } from '~/store';
 
 export default Vue.extend({
+  computed: {
+    ...mapStores(pageStore)
+  },
   methods: {
     scrollToTop(): void {
       window.scrollTo({ top: 0 });
     }
-  },
-  computed: {
-    ...mapStores(pageStore)
   }
 });
 </script>

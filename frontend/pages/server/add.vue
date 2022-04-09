@@ -23,11 +23,11 @@ export default Vue.extend({
       title: this.page.title
     };
   },
-  mounted() {
-    this.page.title = this.$t('login.addServer');
-  },
   computed: {
     ...mapStores(pageStore)
+  },
+  mounted() {
+    this.page.title = this.$t('login.addServer');
   }
 });
 </script>

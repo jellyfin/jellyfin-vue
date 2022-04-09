@@ -290,6 +290,9 @@ export default Vue.extend({
       selectedYearFilters: []
     };
   },
+  computed: {
+    ...mapStores(authStore, snackbarStore)
+  },
   watch: {
     itemsType(): void {
       this.refreshItems();
@@ -331,9 +334,6 @@ export default Vue.extend({
         years: this.selectedYearFilters
       });
     }
-  },
-  computed: {
-    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

@@ -10,6 +10,7 @@ import { authStore } from '~/store';
  */
 export default function (context: Context): void {
   const auth = authStore();
+
   if (!auth.currentUser?.Policy?.IsAdministrator) {
     return context.redirect('/');
   }

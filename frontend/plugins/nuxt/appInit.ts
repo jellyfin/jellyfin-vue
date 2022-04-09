@@ -1,4 +1,5 @@
 import { Context, Plugin } from '@nuxt/types';
+import isNil from 'lodash/isNil';
 import { authStore, ServerInfo } from '~/store';
 import { parseServerListString } from '~/utils/servers';
 import { setHeaderAndBaseUrl } from '~/middleware/auth';
@@ -26,7 +27,7 @@ const appInit: Plugin = (ctx: Context) => {
       (lsServer: ServerInfo) => lsServer.PublicAddress === serverUrl
     );
 
-    return server ? true : false;
+    return !isNil(server);
   });
 
   for (const serverUrl of missingServers) {

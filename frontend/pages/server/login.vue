@@ -56,7 +56,6 @@
 import Vue from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
-import { mapActions } from 'vuex';
 import { UserDto } from '@jellyfin/client-axios';
 import { authStore, deviceProfileStore, pageStore } from '~/store';
 
@@ -90,7 +89,6 @@ export default Vue.extend({
     this.page.title = this.$t('login.login');
   },
   methods: {
-    ...mapActions('servers', ['connectServer']),
     isEmpty(value: Record<never, never>): boolean {
       return isEmpty(value);
     },

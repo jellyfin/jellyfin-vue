@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { defineStore } from 'pinia';
-import { authStore, userViewsStore, snackbarStore } from '.';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
+import { authStore, userViewsStore, snackbarStore } from '.';
 import { CardShapes } from '~/utils/items';
 
 export interface HomeSection {
@@ -37,6 +37,7 @@ export const homeSectionStore = defineStore('homeSection', {
   actions: {
     async getLibraries(): Promise<void> {
       const userViews = userViewsStore();
+
       await userViews.refreshUserViews();
 
       this.libraries = Array.from(userViews.views);

@@ -27,6 +27,9 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapStores(snackbarStore)
+  },
   methods: {
     async setRemoteAccess(): Promise<void> {
       this.loading = true;
@@ -48,9 +51,6 @@ export default Vue.extend({
 
       this.loading = false;
     }
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   }
 });
 </script>

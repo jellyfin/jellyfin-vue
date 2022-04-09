@@ -37,13 +37,13 @@ export default Vue.extend({
       required: true
     }
   },
+  computed: {
+    ...mapStores(clientSettingsStore)
+  },
   methods: {
     toggleDarkMode(): void {
       this.clientSettings.setDarkMode(!this.clientSettings.darkMode);
     }
-  },
-  computed: {
-    ...mapStores(clientSettingsStore)
   }
 });
 </script>

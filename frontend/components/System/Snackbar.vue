@@ -15,6 +15,9 @@ export default Vue.extend({
       model: false
     };
   },
+  computed: {
+    ...mapStores(snackbarStore)
+  },
   watch: {
     'snackbar.message': {
       immediate: true,
@@ -29,9 +32,6 @@ export default Vue.extend({
         this.snackbar.$reset();
       }
     }
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   }
 });
 </script>

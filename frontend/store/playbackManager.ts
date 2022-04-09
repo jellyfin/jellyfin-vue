@@ -9,9 +9,8 @@ import {
   MediaStream
 } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
-import { itemsStore } from './items';
-import { isNil } from 'lodash';
-import { authStore } from '.';
+import isNil from 'lodash/isNil';
+import { authStore, itemsStore } from '.';
 
 export enum PlaybackStatus {
   Stopped = 0,
@@ -107,6 +106,16 @@ export const playbackManagerStore = defineStore('playbackManager', {
     },
     /**
      * Plays an item and initializes playbackManager's state
+     *
+     * @param root0
+     * @param root0.item
+     * @param root0.audioTrackIndex
+     * @param root0.subtitleTrackIndex
+     * @param root0.videoTrackIndex
+     * @param root0.startFromIndex
+     * @param root0.startFromTime
+     * @param root0.initiator
+     * @param root0.startShuffled
      */
     async play({
       item,
@@ -163,6 +172,8 @@ export const playbackManagerStore = defineStore('playbackManager', {
     },
     /**
      * Adds to the queue the items of a collection item (i.e album, tv show, etc...)
+     *
+     * @param item
      */
     async playNext(item: BaseItemDto): Promise<void> {
       const queue = Array.from(this.queue);
@@ -360,6 +371,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       if (this.currentVolume === 0 && this.isMuted) {
         this.currentVolume = 100;
       }
+
       this.isMuted = !this.isMuted;
     },
     toggleMinimized() {
@@ -367,10 +379,13 @@ export const playbackManagerStore = defineStore('playbackManager', {
     },
     /**
      * Builds an array of item ids based on a collection item (i.e album, tv show, etc...)
+     *
+     * @param item
+     * @param shuffle
      */
     async translateItemsForPlayback(
       item: BaseItemDto,
-      shuffle: boolean = false
+      shuffle = false
     ): Promise<string[]> {
       const auth = authStore();
       let responseItems: BaseItemDto[] = [];
@@ -548,8 +563,6 @@ export const playbackManagerStore = defineStore('playbackManager', {
      * Get current's item audio tracks
      */
     getCurrentItemAudioTracks(): MediaStream[] | undefined {
-      const items = itemsStore();
-
       if (!isNil(this.currentMediaSource?.MediaStreams)) {
         // @ts-expect-error - TODO: Check why typechecking this fails
         return this.currentMediaSource.MediaStreams.filter((stream) => {
@@ -561,8 +574,6 @@ export const playbackManagerStore = defineStore('playbackManager', {
      * Get current's item subtitle tracks
      */
     getCurrentItemSubtitleTracks(): MediaStream[] | undefined {
-      const items = itemsStore();
-
       if (!isNil(this.currentMediaSource?.MediaStreams)) {
         // @ts-expect-error - TODO: Check why typechecking this fails
         return this.currentMediaSource.MediaStreams.filter((stream) => {

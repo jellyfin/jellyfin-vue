@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { PublicSystemInfo, UserDto } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
-import { deviceProfileStore, snackbarStore } from '.';
 import { AxiosError } from 'axios';
+import { deviceProfileStore, snackbarStore } from '.';
 
 export interface ServerInfo extends PublicSystemInfo {
   PublicAddress: string;
@@ -35,10 +35,15 @@ export const authStore = defineStore('auth', {
   actions: {
     /**
      * Adds a new server to the store and sets it as the default one
+     *
+     * @param serverUrl
+     * @param isDefault
      */
     async connectServer(serverUrl: string, isDefault?: boolean) {
       serverUrl = serverUrl.replace(/\/$/, '');
+
       const snackbar = snackbarStore();
+
       this.$nuxt.$axios.setBaseURL(serverUrl);
       this.setAxiosHeader();
 
@@ -48,7 +53,7 @@ export const authStore = defineStore('auth', {
         data = (await this.$nuxt.$api.system.getPublicSystemInfo())
           .data as ServerInfo;
         data.PublicAddress = serverUrl;
-        data.isDefault = isDefault ? true : false;
+        data.isDefault = !!isDefault;
       } catch (err) {
         snackbar.push(this.$nuxt.i18n.t('login.serverNotFound'), 'error');
         throw new Error(err as string);
@@ -80,6 +85,10 @@ export const authStore = defineStore('auth', {
     },
     /**
      * Logs the user to the current server
+     *
+     * @param username
+     * @param password
+     * @param rememberMe
      */
     async loginUser(username: string, password: string, rememberMe: boolean) {
       if (!this.currentServer) {
@@ -97,6 +106,7 @@ export const authStore = defineStore('auth', {
         ).data;
 
         this.rememberMe = rememberMe;
+
         if (authenticateResponse.User?.Id && authenticateResponse.AccessToken) {
           Vue.set(
             this.accessTokens,
@@ -124,6 +134,7 @@ export const authStore = defineStore('auth', {
         } else if (error.response.status === 400) {
           errorMessage = this.$nuxt.i18n.t('badRequest');
         }
+
         snackbar.push(errorMessage, 'error');
         /**
          * Pass the error up, so it's handled successfully in the action's subscriptions
@@ -133,7 +144,9 @@ export const authStore = defineStore('auth', {
     },
     /**
      * Logs out the user from the server using the current base url and access token parameters.
+     *
      * @param clearUser - Removes the user from the store
+     * @param skipRequest
      */
     async logoutUser(clearUser = true, skipRequest = false): Promise<void> {
       try {
@@ -143,6 +156,7 @@ export const authStore = defineStore('auth', {
       } finally {
         if (clearUser === true) {
           const currentUser = this.currentUser;
+
           if (currentUser) {
             Vue.delete(this.accessTokens, currentUser.Id as string);
             this.users = this.users.filter((user) => user === this.currentUser);
@@ -153,6 +167,8 @@ export const authStore = defineStore('auth', {
     },
     /**
      * Logs out all the user sessions from the provided server and removes it from the store
+     *
+     * @param serverUrl
      */
     async deleteServer(serverUrl: string): Promise<void> {
       const server = this.servers.find(
@@ -170,6 +186,7 @@ export const authStore = defineStore('auth', {
          * We set the baseUrl to the one of the server to log out users of that server properly
          */
         this.$nuxt.$axios.setBaseURL(server.PublicAddress);
+
         for (const user of users) {
           this.setAxiosHeader(this.getUserAccessToken(user));
           await this.logoutUser(false);
@@ -193,6 +210,7 @@ export const authStore = defineStore('auth', {
      */
     setAxiosHeader(accessToken?: string): void {
       const deviceProfile = deviceProfileStore();
+
       if (!accessToken) {
         accessToken = this.getCurrentUserAccessToken;
       }

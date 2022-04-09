@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { getLibraryIcon } from '~/utils/items';
 import { authStore } from '.';
+import { getLibraryIcon } from '~/utils/items';
 
 export interface UserViewsState {
   views: BaseItemDto[];

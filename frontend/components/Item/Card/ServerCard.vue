@@ -41,6 +41,9 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapStores(authStore)
+  },
   methods: {
     async setServer(): Promise<void> {
       this.loading = true;
@@ -55,9 +58,6 @@ export default Vue.extend({
     async removeServerFromStore(): Promise<void> {
       await this.auth.deleteServer(this.serverInfo.PublicAddress);
     }
-  },
-  computed: {
-    ...mapStores(authStore)
   }
 });
 </script>
