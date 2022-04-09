@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <client-only>
-      <backdrop />
-    </client-only>
+    <backdrop />
     <v-navigation-drawer
       v-if="page.navDrawer"
       v-model="drawer"
