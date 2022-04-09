@@ -1,16 +1,14 @@
 <template>
-  <client-only>
-    <swiper-section
-      :title="
-        section.libraryName === undefined
-          ? $t(section.name)
-          : $t(section.name, { libraryName: section.libraryName })
-      "
-      :items="items"
-      :shape="section.shape"
-      :loading="loading"
-    />
-  </client-only>
+  <swiper-section
+    :title="
+      section.libraryName === undefined
+        ? $t(section.name)
+        : $t(section.name, { libraryName: section.libraryName })
+    "
+    :items="items"
+    :shape="section.shape"
+    :loading="loading"
+  />
 </template>
 
 <script lang="ts">
