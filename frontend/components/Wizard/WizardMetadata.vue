@@ -48,6 +48,9 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapStores(snackbarStore)
+  },
   async created() {
     this.initialConfig = (
       await this.$api.startup.getStartupConfiguration()
@@ -81,9 +84,6 @@ export default Vue.extend({
 
       this.loading = false;
     }
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   }
 });
 </script>

@@ -118,10 +118,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { mapState } from 'vuex';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
-import { pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -156,8 +155,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(pageStore),
-    ...mapState('user', ['accessToken'])
+    ...mapStores(authStore, pageStore)
   },
   mounted() {
     this.page.title = this.$t('settingsSections.logs.name');
@@ -228,7 +226,7 @@ export default Vue.extend({
       return this.$dateFns.format(date, 'Ppp');
     },
     getLogFileLink(name: string): string {
-      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.accessToken}`;
+      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.auth.currentUserToken}`;
     }
   }
 });

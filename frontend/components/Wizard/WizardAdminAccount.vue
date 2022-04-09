@@ -70,6 +70,9 @@ export default Vue.extend({
       loading: false
     };
   },
+  computed: {
+    ...mapStores(authStore, snackbarStore)
+  },
   methods: {
     async createAdminAccount(): Promise<void> {
       this.loading = true;
@@ -90,9 +93,6 @@ export default Vue.extend({
 
       this.loading = false;
     }
-  },
-  computed: {
-    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

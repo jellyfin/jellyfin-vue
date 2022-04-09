@@ -1,7 +1,7 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import destr from 'destr';
-import { isNil } from 'lodash';
+import isNil from 'lodash/isNil';
 import {
   PiniaPluginContext,
   StateTree,
@@ -17,6 +17,7 @@ const syncedStores = ['clientSettings'];
  * Cast custom preferences returned from the server from strings to the correct Javascript type
  *
  * @param {DisplayPreferencesDto} data - Response from the server
+ * @param store
  */
 function castDisplayPreferencesResponse(
   data: DisplayPreferencesDto,
@@ -47,6 +48,11 @@ function castDisplayPreferencesResponse(
 
 /**
  * Fetches settings from server
+ *
+ * @param ctx
+ * @param auth
+ * @param store
+ * @param cast
  */
 export async function fetchSettingsFromServer(
   ctx: Context,
@@ -71,6 +77,12 @@ export async function fetchSettingsFromServer(
     : response.data;
 }
 
+/**
+ * @param ctx
+ * @param auth
+ * @param storeId
+ * @param prefs
+ */
 export async function pushSettingsToServer(
   ctx: Context,
   auth: ReturnType<typeof authStore>,
@@ -114,8 +126,9 @@ export async function pushSettingsToServer(
  * Make sure your store implements a 'lastSync' property of type 'number | null'
  *
  * It will automatically be synced when a property changes.
+ *
  */
-export default function preferencesSync({ store }: PiniaPluginContext) {
+export default function preferencesSync({ store }: PiniaPluginContext): void {
   if (syncedStores.includes(store.$id)) {
     const page = pageStore();
     const auth = authStore();
@@ -146,6 +159,7 @@ export default function preferencesSync({ store }: PiniaPluginContext) {
                 store,
                 false
               );
+
               displayPrefs.CustomPrefs = {};
 
               Object.assign(displayPrefs.CustomPrefs, store.$state);

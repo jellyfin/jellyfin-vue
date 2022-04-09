@@ -24,13 +24,6 @@ declare module 'vue/types/vue' {
   }
 }
 
-declare module 'vuex/types/index' {
-  // eslint-disable-next-line -- Current TypeScript rules flag S as unused, but Nuxt requires identical types
-  interface Store<S> {
-    $features: SupportedFeatures;
-  }
-}
-
 const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
   const supportedFeatures: SupportedFeatures = {
     pictureInPicture: false,

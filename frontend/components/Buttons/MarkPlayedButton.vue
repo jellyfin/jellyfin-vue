@@ -33,6 +33,9 @@ export default Vue.extend({
       isPlayed: false
     };
   },
+  computed: {
+    ...mapStores(authStore, snackbarStore)
+  },
   watch: {
     item: {
       immediate: true,
@@ -48,7 +51,7 @@ export default Vue.extend({
     async togglePlayed(): Promise<void> {
       try {
         if (!this.item.Id) {
-          throw new Error();
+          throw new Error('Item has no Id');
         }
 
         if (this.isPlayed) {
@@ -69,9 +72,6 @@ export default Vue.extend({
         this.isPlayed = !this.isPlayed;
       }
     }
-  },
-  computed: {
-    ...mapStores(authStore, snackbarStore)
   }
 });
 </script>

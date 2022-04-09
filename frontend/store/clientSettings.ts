@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
+import { authStore, snackbarStore } from '.';
 import nuxtConfig from '~/nuxt.config';
 import { fetchSettingsFromServer } from '~/plugins/store/plugins/preferencesSync';
-import { authStore, snackbarStore } from '.';
 
 /**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto

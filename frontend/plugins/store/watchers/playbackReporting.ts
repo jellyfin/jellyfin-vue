@@ -1,14 +1,16 @@
 import { Context } from '@nuxt/types';
+import isNil from 'lodash/isNil';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/mixins/timeUtils';
-import { isNil } from 'lodash';
 
 /**
  * Playback reporting logic
  *
  * Reports the state of the playback to the server
+ *
+ * @param ctx
  */
-export default function watchPlaybackReporting(ctx: Context) {
+export default function watchPlaybackReporting(ctx: Context): void {
   const playbackManager = playbackManagerStore();
 
   playbackManager.$onAction(({ name, after }) => {
@@ -59,8 +61,9 @@ export default function watchPlaybackReporting(ctx: Context) {
             );
 
             playbackManager.setLastProgressUpdate(new Date().getTime());
-            break;
           }
+
+          break;
         case 'setCurrentTime':
           if (playbackManager.status === PlaybackStatus.Playing) {
             const now = new Date().getTime();
@@ -116,10 +119,7 @@ export default function watchPlaybackReporting(ctx: Context) {
                 playbackProgressInfo: {
                   ItemId: playbackManager.getCurrentItem?.Id,
                   PlaySessionId: playbackManager.playSessionId,
-                  IsPaused:
-                    playbackManager.status === PlaybackStatus.Playing
-                      ? false
-                      : true,
+                  IsPaused: playbackManager.status !== PlaybackStatus.Playing,
                   PositionTicks: Math.round(
                     msToTicks(playbackManager.currentTime * 1000)
                   )
@@ -129,8 +129,9 @@ export default function watchPlaybackReporting(ctx: Context) {
             );
 
             playbackManager.setLastProgressUpdate(new Date().getTime());
-            break;
           }
+
+          break;
       }
     });
   });

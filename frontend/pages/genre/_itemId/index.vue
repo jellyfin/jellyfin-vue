@@ -57,7 +57,7 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $api }) {
+  async asyncData({ params, $api, route }) {
     const items = itemsStore();
     const auth = authStore();
 
@@ -76,7 +76,7 @@ export default Vue.extend({
     let genres = (
       await $api.items.getItems({
         genreIds: [item.Id as string],
-        includeItemTypes: [this.$route.query.type.toString()],
+        includeItemTypes: [route.query.type.toString()],
         recursive: true,
         sortBy: ['SortName'],
         sortOrder: [SortOrder.Ascending]

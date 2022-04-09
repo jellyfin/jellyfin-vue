@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { BaseItem, BaseItemDto, ItemFields } from '@jellyfin/client-axios';
+import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { authStore } from '.';
 
@@ -21,6 +21,7 @@ export const itemsStore = defineStore('items', {
     /**
      * Add or update an item or items to the store
      *
+     * @param payload
      * @returns - The reactive references
      */
     add(payload: BaseItemDto | BaseItemDto[]): BaseItemDto | BaseItemDto[] {
@@ -47,6 +48,8 @@ export const itemsStore = defineStore('items', {
     },
     /**
      * Deletes a single or multiple items from the store
+     *
+     * @param payload
      */
     delete(payload: string | string[]): void {
       if (!Array.isArray(payload)) {
@@ -60,6 +63,8 @@ export const itemsStore = defineStore('items', {
     /**
      * Associate an item that has children with its children
      *
+     * @param parent
+     * @param children
      * @returns - The children of the item
      */
     addCollection(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
@@ -74,6 +79,7 @@ export const itemsStore = defineStore('items', {
           if (!this.getItemById(child.Id)) {
             this.add(child);
           }
+
           childIds.push(child.Id);
         }
       }
@@ -84,6 +90,8 @@ export const itemsStore = defineStore('items', {
     },
     /**
      * Fetches a parent and its children and adds thecollection to the store
+     *
+     * @param parentId
      */
     async fetchAndAddCollection(
       parentId: string | undefined
@@ -98,6 +106,7 @@ export const itemsStore = defineStore('items', {
             fields: allFields
           })
         ).data;
+
         if (!parentItem.Items?.[0]) {
           throw new Error("This parent doesn't exist");
         }
@@ -136,6 +145,7 @@ export const itemsStore = defineStore('items', {
           if (!item) {
             throw new Error(`Item ${id} doesn't exist in the store`);
           }
+
           res.push(item);
         }
 

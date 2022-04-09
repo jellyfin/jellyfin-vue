@@ -25,7 +25,7 @@ function handleAuthRedirections(
   context: Context,
   auth: ReturnType<typeof authStore>,
   useContext: boolean
-) {
+): void {
   const servers = auth.servers || [];
   const userToken = auth.getCurrentUserAccessToken;
   const currentRoute = context.app.router?.currentRoute?.fullPath || '';
@@ -83,7 +83,7 @@ function handleAuthRedirections(
 export function setHeaderAndBaseUrl(
   ctx: Context,
   auth: ReturnType<typeof authStore>
-) {
+): void {
   const currentServer = auth.currentServer?.PublicAddress || '';
 
   ctx.$axios.setBaseURL(currentServer);
@@ -105,7 +105,7 @@ export function authLogic(
   ctx: Context,
   auth: ReturnType<typeof authStore>,
   useContext: boolean
-) {
+): void {
   setHeaderAndBaseUrl(ctx, auth);
   handleAuthRedirections(ctx, auth, useContext);
 }
@@ -116,6 +116,9 @@ export function authLogic(
  */
 let appBooting = true;
 
+/**
+ * @param context
+ */
 export default function (context: Context): void {
   const auth = authStore();
 
