@@ -207,8 +207,8 @@ export default Vue.extend({
       }
     }
   },
-  beforeMount() {
-    this.userViews.refreshUserViews();
+  async beforeMount() {
+    await this.userViews.refreshUserViews();
     this.connectToWebSocket();
   },
   mounted() {

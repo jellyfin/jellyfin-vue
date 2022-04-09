@@ -111,7 +111,7 @@ export default Vue.extend({
             const latestMediaSections = [];
 
             if (!this.userViews.views) {
-              this.userViews.refreshUserViews();
+              await this.userViews.refreshUserViews();
             }
 
             const excludeViewTypes = [
