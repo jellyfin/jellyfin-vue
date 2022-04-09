@@ -1,5 +1,7 @@
 import destr from 'destr';
 import { defineStore } from 'pinia';
+import { stringify } from 'qs';
+import { authStore, deviceProfileStore } from '.';
 
 let intervalId: number | null = null;
 
@@ -119,6 +121,26 @@ export const socketStore = defineStore('socket', {
         this.instance = null;
         this.isConnected = false;
         this.$reset();
+      }
+    },
+    connectUserWebSocket(): void {
+      const auth = authStore();
+      const deviceProfile = deviceProfileStore();
+
+      if (
+        auth.currentUserToken &&
+        this.$nuxt.$axios.defaults.baseURL &&
+        deviceProfile.deviceId
+      ) {
+        const socketParams = stringify({
+          api_key: auth.currentUserToken,
+          deviceId: deviceProfile.deviceId
+        });
+        let url = `${this.$nuxt.$axios.defaults.baseURL}/socket?${socketParams}`;
+
+        url = url.replace('https:', 'wss:');
+        url = url.replace('http:', 'ws:');
+        this.connect(url);
       }
     }
   }

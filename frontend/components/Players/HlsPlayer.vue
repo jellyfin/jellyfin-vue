@@ -270,7 +270,7 @@ export default Vue.extend({
             Static: true,
             mediaSourceId: mediaSource.Id,
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.auth.getCurrentUserAccessToken
+            api_key: this.auth.currentUserToken
           };
 
           if (mediaSource.ETag) {
