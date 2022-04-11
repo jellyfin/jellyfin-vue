@@ -1,12 +1,8 @@
 <template>
   <v-list-item-group class="list-group">
-    <draggable
-      v-model="playbackManager.getQueueItems"
-      v-bind="dragOptions"
-      class="list-draggable"
-    >
+    <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
       <v-hover
-        v-for="(item, index) in playbackManager.getQueueItems"
+        v-for="(item, index) in queue"
         :key="`${item.Id}-${getUuid()}`"
         v-slot="{ hover }"
       >
@@ -73,7 +69,19 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore)
+    ...mapStores(playbackManagerStore),
+    queue: {
+      get(): BaseItemDto[] {
+        return this.playbackManager.getQueueItems;
+      },
+      set(newValue: BaseItemDto[]): void {
+        this.playbackManager.setNewQueue(
+          newValue.map((item) => {
+            return item.Id as string;
+          })
+        );
+      }
+    }
   },
   methods: {
     isPlaying(index: number): boolean {
