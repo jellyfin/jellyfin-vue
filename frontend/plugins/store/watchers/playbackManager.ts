@@ -69,7 +69,7 @@ export default function (ctx: Context): void {
 
             if (
               playbackManager.getCurrentItem &&
-              now - playbackManager.lastProgressUpdate > 10000 &&
+              now - playbackManager.lastProgressUpdate >= 1250 &&
               !isNil(playbackManager.currentTime)
             ) {
               await ctx.$api.playState.reportPlaybackProgress(
