@@ -23,6 +23,7 @@
   "byArtist": "Por {artist}",
   "cancel": "Cancelar",
   "castAndCrew": "Reparto y equipo",
+  "collectionEmpty": "Esta colección está vacía",
   "collections": "Colecciones",
   "communityRating": "Puntuación de la comunidad",
   "confirm": "Confirmar",
@@ -285,7 +286,8 @@
   "save": "Guardar",
   "saved": "Guardado",
   "search": {
-    "name": "Buscar"
+    "name": "Buscar",
+    "topResults": "Mejores resultados"
   },
   "seasonEpisode": "Temporada {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
@@ -439,7 +441,7 @@
     },
     "transcodingProgress": "Progreso:",
     "transcodingReason": {
-      "name": "Razones: | Razones:",
+      "name": "Razón: | Razones:",
       "reasons": {
         "anamorphicVideoNotSupported": "El vídeo anamórfico no está soportado",
         "audioBitDepthNotSupported": "La densidad de bits del audio no está soportada",
@@ -457,6 +459,7 @@
         "videoBitDepthNotSupported": "La densidad de bits del vídeo no está soportada",
         "videoCodecNotSupported": "El códec de vídeo no está soportado",
         "videoFramerateNotSupported": "Los fotogramas por segundo del vídeo no están soportados",
+        "videoLevelNotSupported": "El nivel del códec de vídeo no está soportado",
         "videoProfileNotSupported": "El perfil del códec de vídeo no está soportado",
         "videoResolutionNotSupported": "La resolución del vídeo no está soportada"
       }
