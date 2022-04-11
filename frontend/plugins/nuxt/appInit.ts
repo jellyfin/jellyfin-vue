@@ -1,9 +1,8 @@
-import { Plugin } from '@nuxt/types';
 import isNil from 'lodash/isNil';
 import { authStore, ServerInfo } from '~/store';
 import { parseServerListString } from '~/utils/servers';
 
-const appInit: Plugin = () => {
+export default function (): void {
   const auth = authStore();
 
   /**
@@ -36,6 +35,4 @@ const appInit: Plugin = () => {
   for (const serverUrl of missingServers) {
     auth.connectServer(serverUrl, true);
   }
-};
-
-export default appInit;
+}

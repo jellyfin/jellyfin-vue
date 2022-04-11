@@ -7,14 +7,12 @@ import { msToTicks } from '~/mixins/timeUtils';
  * Playback reporting logic
  *
  * Reports the state of the playback to the server
- *
- * @param ctx
  */
-export default function watchPlaybackReporting(ctx: Context): void {
+export default function (ctx: Context): void {
   const playbackManager = playbackManagerStore();
 
   playbackManager.$onAction(({ name, after }) => {
-    // @ts-expect-error - For some reason, types are not recognised properly here
+    // @ts-expect-error - Typings are not recognised properly here for some reason
     after(async () => {
       switch (name) {
         case 'setNextTrack':

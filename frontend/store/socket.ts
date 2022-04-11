@@ -47,16 +47,12 @@ export const socketStore = defineStore('socket', {
      * @param url
      * @param reconnect
      */
-    connect(url: string, reconnect?: boolean): void {
+    connect(url: string, reconnect = true): void {
       const isDifferentWebsocket = this.instance && url !== this.instance.url;
 
       if (!this.instance || isDifferentWebsocket) {
         if (isDifferentWebsocket) {
           this.closeSocket();
-        }
-
-        if (reconnect === undefined) {
-          reconnect = true;
         }
 
         console.info(`[WebSocket] Connecting to ${url}...`);
