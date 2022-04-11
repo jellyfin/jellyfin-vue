@@ -551,7 +551,6 @@ const imageHelper = Vue.extend({
       let url;
       let imgType;
       let imgTag;
-      let height;
       let itemId: string | null | undefined = item.Id;
 
       if (tag) {
@@ -579,11 +578,6 @@ const imageHelper = Vue.extend({
         if (width) {
           width = Math.round(width * ratio);
           params.maxWidth = width;
-        }
-
-        if (height) {
-          height = Math.round(height * ratio);
-          params.maxHeight = height;
         }
 
         url.search = stringify(params);
