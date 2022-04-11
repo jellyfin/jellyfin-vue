@@ -27,13 +27,7 @@ Unattended pull requests will be marked as stale after a period of 90 days witho
 
 ## Conventions
 
-This repository uses the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) convention for commit messages. In order to help you with writing commit messages, we provide [Commitizen](https://github.com/commitizen/cz-cli) support in the repository.
-
-The following should guide you through making a proper commit message:
-
-```bash
-npx cz
-```
+This repository uses the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) convention for commit messages.
 
 ### Code style
 
@@ -67,16 +61,6 @@ describe('component: ComponentName', () => {
 ```typescript
 describe('mixin: myMixin', () => {
   it('does this when passed that value', () => {
-    // Your test logic goes here
-  });
-});
-```
-
-#### Vuex stores
-
-```typescript
-describe('vuex: storeName', () => {
-  it('sets this value when myAction is dispatched', () => {
     // Your test logic goes here
   });
 });
