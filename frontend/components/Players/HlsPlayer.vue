@@ -260,6 +260,7 @@ export default Vue.extend({
         }
 
         const mediaSource = this.playbackInfo.MediaSources[0];
+
         this.playbackManager.setMediaSource(mediaSource);
 
         if (mediaSource.SupportsDirectStream) {

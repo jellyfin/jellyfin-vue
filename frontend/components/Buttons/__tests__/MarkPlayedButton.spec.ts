@@ -1,23 +1,19 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
 import Vuetify from 'vuetify';
-import Vuex, { Store } from 'vuex';
 import Vue from 'vue';
 import MarkPlayedButton from '../MarkPlayedButton.vue';
 
 describe('component: MarkPlayedButton', () => {
   const localVue = createLocalVue();
   let vuetify: Vuetify;
-  let store: Store<unknown>;
   let wrapper: Wrapper<Vue>;
 
   beforeEach(() => {
     vuetify = new Vuetify();
-    store = new Vuex.Store({});
     wrapper = mount(MarkPlayedButton, {
       localVue,
       vuetify,
-      store,
       propsData: {
         item: { Type: 'Series' } as BaseItemDto
       }

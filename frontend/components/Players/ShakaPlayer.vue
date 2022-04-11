@@ -85,6 +85,7 @@ export default Vue.extend({
       async handler(): Promise<void> {
         this.playbackManager.setBuffering();
         await this.getPlaybackUrl();
+
         if (this.$refs.shakaPlayer) {
           (this.$refs.shakaPlayer as HTMLMediaElement).play();
         }
@@ -272,6 +273,7 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
+
         this.player.load(this.source);
       }
     },
@@ -291,6 +293,7 @@ export default Vue.extend({
       if (this.playbackManager.status === PlaybackStatus.Buffering) {
         this.playbackManager.cancelBuffering();
       }
+
       if (this.$refs.shakaPlayer) {
         const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
           .currentTime;

@@ -2,8 +2,8 @@ import Vue from 'vue';
 import { PublicSystemInfo, UserDto } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { AxiosError } from 'axios';
-import { deviceProfileStore, snackbarStore, socketStore } from '.';
 import isNil from 'lodash/isNil';
+import { deviceProfileStore, snackbarStore, socketStore } from '.';
 
 export interface ServerInfo extends PublicSystemInfo {
   PublicAddress: string;
@@ -234,8 +234,7 @@ export const authStore = defineStore('auth', {
 
       const token = `MediaBrowser Client="${deviceProfile.clientName}", Device="${deviceProfile.deviceName}", DeviceId="${deviceProfile.deviceId}", Version="${deviceProfile.clientVersion}", Token="${accessToken}"`;
 
-      this.$nuxt.$axios.defaults.headers['common']['X-Emby-Authorization'] =
-        token;
+      this.$nuxt.$axios.defaults.headers.common['X-Emby-Authorization'] = token;
     },
     /**
      * Configures the Axios instance with the appropiate baseUrl and token, based on current user and server selection

@@ -41,6 +41,7 @@ export default function watchPlaybackReporting(ctx: Context): void {
 
             playbackManager.setLastProgressUpdate(new Date().getTime());
           }
+
           /**
            * And then report play for the next one if it exists
            */
