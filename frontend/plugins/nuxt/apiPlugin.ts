@@ -148,7 +148,10 @@ declare module 'vue/types/vue' {
   }
 }
 
-const apiPlugin: Plugin = (context, inject) => {
+export default function (
+  context: Context,
+  inject: (key: string, value: any) => void
+) {
   const config = new Configuration();
   const contextAxios = context.$axios;
 
@@ -216,6 +219,4 @@ const apiPlugin: Plugin = (context, inject) => {
   };
 
   inject('api', api);
-};
-
-export default apiPlugin;
+}

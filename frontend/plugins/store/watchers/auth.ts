@@ -17,9 +17,8 @@ import { authLogic } from '~/middleware/auth';
  *
  * The logic to handle logouts and user switches during initialization lives inside Nuxt's auth plugin (~/plugins/nuxt/auth)
  *
- * @param ctx
  */
-export default function watchAuth(ctx: Context): void {
+export default function (ctx: Context): void {
   const auth = authStore();
   const clientSettings = clientSettingsStore();
   const homeSection = homeSectionStore();
