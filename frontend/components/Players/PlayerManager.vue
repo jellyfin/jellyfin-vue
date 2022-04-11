@@ -34,7 +34,7 @@
             <v-overlay v-show="hover && playbackManager.isMinimized" absolute>
               <div class="d-flex flex-column player-overlay">
                 <div class="d-flex flex-row">
-                  <v-btn icon @click="toggleMinimized">
+                  <v-btn icon @click="playbackManager.toggleMinimized">
                     <v-icon>mdi-arrow-expand-all</v-icon>
                   </v-btn>
                   <v-spacer />
@@ -95,7 +95,7 @@
                       <v-btn icon @click="stopPlayback">
                         <v-icon>mdi-close</v-icon>
                       </v-btn>
-                      <v-btn icon @click="toggleMinimized">
+                      <v-btn icon @click="playbackManager.toggleMinimized">
                         <v-icon>mdi-chevron-down</v-icon>
                       </v-btn>
                     </div>
@@ -148,13 +148,17 @@
                       <div
                         class="d-flex player-controls align-center justify-start justify-md-center"
                       >
-                        <v-btn icon class="mx-1" @click="setPreviousTrack">
+                        <v-btn
+                          icon
+                          class="mx-1"
+                          @click="playbackManager.setPreviousTrack"
+                        >
                           <v-icon> mdi-skip-previous </v-icon>
                         </v-btn>
                         <v-btn
                           icon
                           class="mx-1 active-button"
-                          @click="playPause"
+                          @click="playbackManager.playPause"
                         >
                           <v-icon large>
                             {{
@@ -277,30 +281,48 @@ export default Vue.extend({
         }
       }
     },
-    isPlaying(value) {
-      if (value && !this.playbackManager.isMinimized) {
+    isPlaying() {
+      if (
+        this.isPlaying &&
+        !this.playbackManager.isMinimized &&
+        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+      ) {
         document.documentElement.classList.add('overflow-hidden');
       } else {
         document.documentElement.classList.remove('overflow-hidden');
       }
-    }
-  },
-  mounted() {
-    document.addEventListener('mousemove', this.handleMouseMove);
-    window.addEventListener('keyup', this.handleKeyPress);
-    window.addEventListener('click', this.handleVideoClick);
+    },
+    'playbackManager.status': {
+      handler(): void {
+        switch (this.playbackManager.status) {
+          case PlaybackStatus.Playing:
+            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+              window.addEventListener('mousemove', this.handleMouseMove);
+              window.addEventListener('keyup', this.handleKeyPress);
+              window.addEventListener('click', this.handleVideoClick);
+            }
 
-    this.addMediaHandlers();
+            this.addMediaHandlers();
+            break;
+          case PlaybackStatus.Stopped:
+            window.removeEventListener('mousemove', this.handleMouseMove);
+            window.removeEventListener('keyup', this.handleKeyPress);
+            window.removeEventListener('click', this.handleVideoClick);
+            this.removeMediaHandlers();
+            break;
+        }
+      }
+    },
+    'playbackManager.currentItemIndex': {
+      handler(): void {
+        this.updateMetadata();
+      }
+    }
   },
   beforeDestroy() {
     if (this.fullScreenOverlayTimer) {
       clearTimeout(this.fullScreenOverlayTimer);
     }
-
-    document.removeEventListener('mousemove', this.handleMouseMove);
-    window.removeEventListener('keyup', this.handleKeyPress);
-    window.removeEventListener('click', this.handleVideoClick);
-    this.removeMediaHandlers();
   },
   methods: {
     setUpNextVisible(isVisible: boolean): void {
