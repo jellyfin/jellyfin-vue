@@ -1,4 +1,4 @@
-import { Context, Plugin } from '@nuxt/types/app';
+import { Context } from '@nuxt/types/app';
 import axios, { AxiosResponse, AxiosError, AxiosInstance } from 'axios';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { itemsStore, authStore, snackbarStore } from '~/store';
@@ -27,7 +27,10 @@ declare module 'vue/types/vue' {
  * by components)
  */
 
-const axiosPlugin: Plugin = (ctx: Context, inject): void => {
+export default function (
+  ctx: Context,
+  inject: (key: string, value: any) => void
+) {
   const axiosInstance = axios.create();
 
   /**
@@ -77,6 +80,4 @@ const axiosPlugin: Plugin = (ctx: Context, inject): void => {
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
 
   inject('axios', axiosInstance);
-};
-
-export default axiosPlugin;
+}

@@ -5,9 +5,8 @@ import { authStore, itemsStore, socketStore } from '~/store';
 /**
  * Handle socket messages that are relevant to items inside the items store.
  *
- * @param ctx
  */
-export default function watchSocket(ctx: Context): void {
+export default function (ctx: Context): void {
   const auth = authStore();
   const socket = socketStore();
   const items = itemsStore();

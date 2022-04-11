@@ -139,11 +139,11 @@ export const itemsStore = defineStore('items', {
       return (ids: string[]): BaseItemDto[] => {
         const res = [] as BaseItemDto[];
 
-        for (const id of ids) {
-          const item = state.byId[id];
+        for (const i of ids) {
+          const item = state.byId[i];
 
           if (!item) {
-            throw new Error(`Item ${id} doesn't exist in the store`);
+            throw new Error(`Item ${i} doesn't exist in the store`);
           }
 
           res.push(item);
