@@ -109,6 +109,7 @@ let appBooting = true;
  */
 export default function (context: Context): void {
   const auth = authStore();
+
   authLogic(context, auth, appBooting);
 
   if (appBooting) {

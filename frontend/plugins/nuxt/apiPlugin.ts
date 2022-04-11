@@ -1,3 +1,8 @@
+/**
+ * Upstream Axios has different typings than @jellyfin/client-axios, so we need to add this comment
+ * until @jellyfin/client-axios can be updated to the latest upstream Axios version.
+ */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { Plugin } from '@nuxt/types';
 import {
