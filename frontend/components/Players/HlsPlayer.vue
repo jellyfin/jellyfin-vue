@@ -96,14 +96,9 @@ export default Vue.extend({
     }
   },
   watch: {
-    'playbackManager.getCurrentItem': {
-      immediate: true,
-      async handler(newItem, oldItem): Promise<void> {
-        if (newItem !== oldItem) {
-          this.playbackManager.setBuffering();
-          await this.getPlaybackUrl();
-        }
-      }
+    async 'playbackManager.getCurrentItem.Id'(): Promise<void> {
+      this.playbackManager.setBuffering();
+      await this.getPlaybackUrl();
     },
     'playbackManager.status': {
       immediate: true,
@@ -144,19 +139,13 @@ export default Vue.extend({
         }
       }
     },
-    'playbackManager.currentSubtitleStreamIndex': {
-      handler(): void {
-        this.changeSubtitle(
-          this.playbackManager.currentSubtitleStreamIndex || 0
-        );
-      }
+    'playbackManager.currentSubtitleStreamIndex'(): void {
+      this.changeSubtitle(this.playbackManager.currentSubtitleStreamIndex || 0);
     },
-    'playbackManager.currentAudioStreamIndex': {
-      async handler(): Promise<void> {
-        if (!isNil(this.videoElement)) {
-          this.restartTime = this.videoElement.currentTime;
-          await this.getPlaybackUrl();
-        }
+    async 'playbackManager.currentAudioStreamIndex'(): Promise<void> {
+      if (!isNil(this.videoElement)) {
+        this.restartTime = this.videoElement.currentTime;
+        await this.getPlaybackUrl();
       }
     },
     source(newSource): void {
@@ -223,6 +212,9 @@ export default Vue.extend({
         });
       }
     }
+  },
+  async mounted() {
+    await this.getPlaybackUrl();
   },
   beforeDestroy() {
     this.playbackManager.stop();

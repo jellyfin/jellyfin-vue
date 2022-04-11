@@ -80,11 +80,9 @@ export default Vue.extend({
     ...mapStores(playbackManagerStore)
   },
   watch: {
-    'playbackManager.status': {
-      handler(): void {
-        if (this.playbackManager.status === PlaybackStatus.Playing) {
-          this.loading = false;
-        }
+    'playbackManager.status'(): void {
+      if (this.playbackManager.status === PlaybackStatus.Playing) {
+        this.loading = false;
       }
     }
   },

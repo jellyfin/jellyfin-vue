@@ -22,6 +22,8 @@ import isNil from 'lodash/isNil';
 import muxjs from 'mux.js';
 import { mapStores } from 'pinia';
 import { PlaybackInfoResponse } from '@jellyfin/client-axios';
+// @ts-expect-error - This module doesn't have typings
+import shaka from 'shaka-player/dist/shaka-player.compiled';
 import {
   authStore,
   deviceProfileStore,
@@ -81,7 +83,8 @@ export default Vue.extend({
     }
   },
   watch: {
-    'playbackManager.currentItemIndex': {
+    'playbackManager.getCurrentItem.Id': {
+      immediate: true,
       async handler(): Promise<void> {
         this.playbackManager.setBuffering();
         await this.getPlaybackUrl();
@@ -131,15 +134,10 @@ export default Vue.extend({
       }
     }
   },
-  async mounted() {
+  mounted() {
     try {
       // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
       window.muxjs = muxjs;
-
-      const { default: shaka } = await import(
-        // @ts-expect-error - This module doesn't have typings
-        'shaka-player/dist/shaka-player.compiled'
-      );
 
       shaka.polyfill.installAll();
 
@@ -174,12 +172,6 @@ export default Vue.extend({
             }
           });
         });
-
-        /**
-         * We can't reuse the watcher for this as we need to ensure the player instance is fully functional
-         * before starting playback on mount.
-         */
-        await this.getPlaybackUrl();
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -273,8 +265,6 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
-
-        this.player.load(this.source);
       }
     },
     onPause(): void {
