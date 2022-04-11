@@ -272,13 +272,11 @@ export default Vue.extend({
     }
   },
   watch: {
-    'playbackManager.isMinimized': {
-      handler(): void {
-        if (this.playbackManager.isMinimized) {
-          document.documentElement.classList.remove('overflow-hidden');
-        } else {
-          document.documentElement.classList.add('overflow-hidden');
-        }
+    'playbackManager.isMinimized'(): void {
+      if (this.playbackManager.isMinimized) {
+        document.documentElement.classList.remove('overflow-hidden');
+      } else {
+        document.documentElement.classList.add('overflow-hidden');
       }
     },
     isPlaying() {
@@ -292,31 +290,27 @@ export default Vue.extend({
         document.documentElement.classList.remove('overflow-hidden');
       }
     },
-    'playbackManager.status': {
-      handler(): void {
-        switch (this.playbackManager.status) {
-          case PlaybackStatus.Playing:
-            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
-              window.addEventListener('mousemove', this.handleMouseMove);
-              window.addEventListener('keyup', this.handleKeyPress);
-              window.addEventListener('click', this.handleVideoClick);
-            }
+    'playbackManager.status'(): void {
+      switch (this.playbackManager.status) {
+        case PlaybackStatus.Playing:
+          if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+            window.addEventListener('mousemove', this.handleMouseMove);
+            window.addEventListener('keyup', this.handleKeyPress);
+            window.addEventListener('click', this.handleVideoClick);
+          }
 
-            this.addMediaHandlers();
-            break;
-          case PlaybackStatus.Stopped:
-            window.removeEventListener('mousemove', this.handleMouseMove);
-            window.removeEventListener('keyup', this.handleKeyPress);
-            window.removeEventListener('click', this.handleVideoClick);
-            this.removeMediaHandlers();
-            break;
-        }
+          this.addMediaHandlers();
+          break;
+        case PlaybackStatus.Stopped:
+          window.removeEventListener('mousemove', this.handleMouseMove);
+          window.removeEventListener('keyup', this.handleKeyPress);
+          window.removeEventListener('click', this.handleVideoClick);
+          this.removeMediaHandlers();
+          break;
       }
     },
-    'playbackManager.currentItemIndex': {
-      handler(): void {
-        this.updateMetadata();
-      }
+    'playbackManager.getCurrentItem'(): void {
+      this.updateMetadata();
     }
   },
   beforeDestroy() {

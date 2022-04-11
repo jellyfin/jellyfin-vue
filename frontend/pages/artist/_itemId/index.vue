@@ -236,13 +236,13 @@ export default Vue.extend({
   },
   watch: {
     item: {
+      immediate: true,
+      deep: true,
       handler(val: BaseItemDto): void {
         this.page.title = val.Name || '';
 
         this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
       },
-      immediate: true,
-      deep: true
     }
   }
 });

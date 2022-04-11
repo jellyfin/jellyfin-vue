@@ -82,11 +82,11 @@ export default Vue.extend({
     }
   },
   watch: {
-    currentItemIndex(newIndex: number): void {
+    'playbackManager.currentItemIndex'(newIndex: number): void {
       this.swiper?.slideTo(newIndex);
       this.page.backdrop.blurhash = this.backdropHash;
     },
-    getQueueItems(): void {
+    'playbackManager.getQueueItems'(): void {
       this.update();
     },
     isPlaying: {

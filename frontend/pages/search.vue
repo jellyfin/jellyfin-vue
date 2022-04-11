@@ -76,7 +76,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    searchQuery(newQuery: string, _oldQuery: string): void {
+    searchQuery(newQuery: string): void {
       if (newQuery !== '') {
         this.performSearchDebounce();
       }

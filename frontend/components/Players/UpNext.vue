@@ -131,7 +131,7 @@ export default Vue.extend({
     }
   },
   watch: {
-    currentItemIndex(): void {
+    'playbackManager.currentItemIndex'(): void {
       this.isHiddenByUser = false;
     },
     visible(): void {

@@ -90,18 +90,14 @@ export default Vue.extend({
     type(): void {
       this.resetImage();
     },
-    '$vuetify.breakpoint.width': {
-      handler(): void {
-        if (!this.resetting) {
-          this.resetImage(false);
-        }
+    '$vuetify.breakpoint.width'(): void {
+      if (!this.resetting) {
+        this.resetImage(false);
       }
     },
-    '$vuetify.breakpoint.height': {
-      handler(): void {
-        if (!this.resetting) {
-          this.resetImage(false);
-        }
+    '$vuetify.breakpoint.height'(): void {
+      if (!this.resetting) {
+        this.resetImage(false);
       }
     }
   },
