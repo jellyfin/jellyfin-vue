@@ -1,5 +1,5 @@
+// @ts-nocheck
 import { Plugin } from '@nuxt/types';
-import { AxiosInstance } from 'axios';
 import {
   ActivityLogApi,
   ApiKeyApi,
@@ -145,7 +145,7 @@ declare module 'vue/types/vue' {
 
 const apiPlugin: Plugin = (context, inject) => {
   const config = new Configuration();
-  const contextAxios = context.$axios as AxiosInstance;
+  const contextAxios = context.$axios;
 
   const api: ApiPlugin = {
     activityLog: new ActivityLogApi(config, '', contextAxios),

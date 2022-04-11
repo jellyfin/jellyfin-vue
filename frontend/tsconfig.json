@@ -19,12 +19,12 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/axios",
       "@nuxtjs/vuetify",
       "@nuxtjs/date-fns",
       "@nuxtjs/i18n",
       "@types/wicg-mediasession",
       "jest",
+      "axios",
       "@types/tizen-tv-webapis",
       "@pinia/nuxt"
     ]

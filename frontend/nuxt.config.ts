@@ -98,17 +98,17 @@ const config: NuxtConfig = {
     /**
      * Axios plugins
      *
-     * Load first our custom interceptors and the, the API
+     * Load first our custom axios instance and, afterwards, the API
      */
-    'plugins/nuxt/axiosInterceptors.ts',
+    'plugins/nuxt/axios.ts',
     'plugins/nuxt/apiPlugin.ts',
     /**
      * Rest of Nuxt plugins
      */
+    'plugins/nuxt/browserDetectionPlugin.ts',
     'plugins/nuxt/appInit.ts',
     'plugins/nuxt/axe.ts',
     'plugins/nuxt/veeValidate.ts',
-    'plugins/nuxt/browserDetectionPlugin.ts',
     'plugins/nuxt/playbackProfilePlugin.ts',
     'plugins/nuxt/supportedFeaturesPlugin.ts',
     /*
@@ -135,7 +135,7 @@ const config: NuxtConfig = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/i18n', '@nuxtjs/axios', '@nuxtjs/pwa'],
+  modules: ['@nuxtjs/i18n', '@nuxtjs/pwa'],
   /*
    ** Router configuration
    */
@@ -152,13 +152,6 @@ const config: NuxtConfig = {
       }
     },
     mode: process.env.HISTORY_ROUTER_MODE === '1' ? 'history' : 'hash'
-  },
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {
-    baseURL: ''
   },
   i18n: {
     locales: [
