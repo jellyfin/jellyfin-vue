@@ -163,7 +163,7 @@ import imageHelper from '~/mixins/imageHelper';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import { authStore, itemsStore, pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, formsHelper, itemHelper],
@@ -175,20 +175,16 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const items = itemsStore();
     const auth = authStore();
 
     const itemId = params.itemId;
-    let item = items.getItemById(itemId);
 
-    if (!item) {
-      item = (
-        await $api.userLibrary.getItem({
-          userId: auth.currentUserId,
-          itemId
-        })
-      ).data;
-    }
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: auth.currentUserId,
+        itemId
+      })
+    ).data;
 
     return { item };
   },

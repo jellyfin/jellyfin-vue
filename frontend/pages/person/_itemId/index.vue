@@ -147,12 +147,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, ItemFields, SortOrder } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
-import { authStore, itemsStore, pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],
@@ -164,20 +164,15 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const items = itemsStore();
     const auth = authStore();
 
     const itemId = params.itemId;
-    let item = items.getItemById(itemId);
-
-    if (!item) {
-      item = (
-        await $api.userLibrary.getItem({
-          userId: auth.currentUserId,
-          itemId
-        })
-      ).data;
-    }
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: auth.currentUserId,
+        itemId
+      })
+    ).data;
 
     const movies = (
       await $api.items.getItems({
@@ -185,7 +180,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Movie']
+        includeItemTypes: ['Movie'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId,
       })
     ).data.Items;
 
@@ -195,7 +192,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Series']
+        includeItemTypes: ['Series'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId,
       })
     ).data.Items;
 
@@ -205,7 +204,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Book']
+        includeItemTypes: ['Book'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId,
       })
     ).data.Items;
 
@@ -215,7 +216,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Photo']
+        includeItemTypes: ['Photo'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId,
       })
     ).data.Items;
 
@@ -231,7 +234,7 @@ export default Vue.extend({
       activeTab = 3;
     }
 
-    return { activeTab, movies, series, books, photos, itemId };
+    return { activeTab, movies, series, books, photos, item };
   },
   data() {
     return {
