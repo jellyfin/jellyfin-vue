@@ -131,14 +131,19 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, ImageType, SortOrder } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ImageType,
+  ItemFields,
+  SortOrder
+} from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
-import { pageStore, itemsStore, authStore } from '~/store';
+import { pageStore, authStore } from '~/store';
 
 export default Vue.extend({
   mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
@@ -150,19 +155,15 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const items = itemsStore();
     const auth = authStore();
     const itemId = params.itemId;
-    let item = items.getItemById(itemId);
 
-    if (!item) {
-      item = (
-        await $api.userLibrary.getItem({
-          userId: auth.currentUserId,
-          itemId
-        })
-      ).data;
-    }
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: auth.currentUserId,
+        itemId
+      })
+    ).data;
 
     const discography = (
       await $api.items.getItems({
@@ -170,7 +171,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicAlbum']
+        includeItemTypes: ['MusicAlbum'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -181,7 +184,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicAlbum']
+        includeItemTypes: ['MusicAlbum'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -191,7 +196,9 @@ export default Vue.extend({
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicVideo']
+        includeItemTypes: ['MusicVideo'],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -242,7 +249,7 @@ export default Vue.extend({
         this.page.title = val.Name || '';
 
         this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
-      },
+      }
     }
   }
 });
