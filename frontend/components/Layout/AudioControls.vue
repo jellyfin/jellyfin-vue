@@ -2,7 +2,8 @@
   <v-slide-y-reverse-transition mode="out-in">
     <v-footer
       v-if="
-        isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+        playbackManager.isPlaying &&
+        playbackManager.getCurrentlyPlayingMediaType === 'Audio'
       "
       key="audioControls-footer"
       app
@@ -81,13 +82,13 @@
                   icon
                   raised
                   rounded
-                  :loading="isBuffering"
+                  :loading="playbackManager.isBuffering"
                   class="mx-1 active-button"
                   @click="playbackManager.playPause"
                 >
                   <v-icon large>
                     {{
-                      isPaused
+                      playbackManager.isPaused
                         ? 'mdi-play-circle-outline'
                         : 'mdi-pause-circle-outline'
                     }}
@@ -106,7 +107,7 @@
                   fab
                   small
                   class="mx-1 active-button"
-                  :color="isRepeating ? 'primary' : undefined"
+                  :color="playbackManager.isRepeating ? 'primary' : undefined"
                   @click="playbackManager.toggleRepeatMode"
                 >
                   <v-icon>{{ repeatIcon }}</v-icon>
@@ -150,7 +151,7 @@
             >
               <v-icon>
                 {{
-                  isPaused
+                  playbackManager.isPaused
                     ? 'mdi-play-circle-outline'
                     : 'mdi-pause-circle-outline'
                 }}
@@ -167,7 +168,7 @@
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
-              :color="isRepeating ? 'primary' : undefined"
+              :color="playbackManager.isRepeating ? 'primary' : undefined"
               @click="playbackManager.toggleRepeatMode"
             >
               <v-icon>{{ repeatIcon }}</v-icon>
@@ -217,18 +218,6 @@ export default Vue.extend({
   mixins: [timeUtils, imageHelper, itemHelper],
   computed: {
     ...mapStores(playbackManagerStore),
-    isBuffering(): boolean {
-      return this.playbackManager.status === PlaybackStatus.Buffering;
-    },
-    isPaused(): boolean {
-      return this.playbackManager.status === PlaybackStatus.Paused;
-    },
-    isPlaying(): boolean {
-      return this.playbackManager.status !== PlaybackStatus.Stopped;
-    },
-    isRepeating(): boolean {
-      return this.playbackManager.repeatMode !== RepeatMode.RepeatNone;
-    },
     repeatIcon(): string {
       if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
         return 'mdi-repeat-once';

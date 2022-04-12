@@ -77,7 +77,7 @@ export default function (ctx: Context): void {
                   playbackProgressInfo: {
                     ItemId: playbackManager.getCurrentItem?.Id,
                     PlaySessionId: playbackManager.playSessionId,
-                    IsPaused: false,
+                    IsPaused: playbackManager.isPaused,
                     PositionTicks: Math.round(
                       msToTicks(playbackManager.currentTime * 1000)
                     )
@@ -118,7 +118,7 @@ export default function (ctx: Context): void {
                 playbackProgressInfo: {
                   ItemId: playbackManager.getCurrentItem?.Id,
                   PlaySessionId: playbackManager.playSessionId,
-                  IsPaused: playbackManager.status !== PlaybackStatus.Playing,
+                  IsPaused: playbackManager.isPaused,
                   PositionTicks: Math.round(
                     msToTicks(playbackManager.currentTime * 1000)
                   )
