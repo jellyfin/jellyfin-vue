@@ -8,8 +8,14 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/docs/configuration-glossary/configuration-env
    */
   env: {
-    // Comma separated list of predefined servers (I.e. 'http://192.168.1.1' or 'http://192.168.1.1, https://your.server.domain')
-    server_url_list: process.env.DEFAULT_SERVERS || ''
+    /**
+     * Comma separated list of predefined servers (I.e. 'http://192.168.1.1' or 'http://192.168.1.1, https://your.server.domain')
+     */
+    server_url_list: process.env.DEFAULT_SERVERS || '',
+    /**
+     * Commit hash of the current build. Automatically set in CI
+     */
+    commit_hash: process.env.COMMIT_HASH || ''
   },
   /*
    ** Nuxt rendering mode

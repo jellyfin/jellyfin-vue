@@ -10,7 +10,7 @@ ARG IS_STABLE=0
 # Set environment variables
 ENV DEFAULT_SERVERS=$DEFAULT_SERVERS
 ENV HISTORY_ROUTER_MODE=$HISTORY_ROUTER_MODE
-ENV NUXT_ENV_COMMIT=""
+ENV COMMIT_HASH=""
 
 # Build dependencies required to build some node modules on ARM platforms. git is needed for fetching the latest commit
 RUN apk add --no-cache git
@@ -25,7 +25,7 @@ COPY . .
 RUN npm ci --no-audit
 
 # Set commit hash
-RUN if [[ $IS_STABLE == "0" ]] ; then NUXT_ENV_COMMIT=$(git rev-parse HEAD) ; fi
+RUN if [[ $IS_STABLE == "0" ]] ; then COMMIT_HASH=$(git rev-parse HEAD) ; fi
 
 # Build client
 RUN npm run build
@@ -41,4 +41,4 @@ EXPOSE 80
 # Set labels
 LABEL maintainer="Jellyfin Packaging Team - packaging@jellyfin.org"
 LABEL org.opencontainers.image.source="https://github.com/jellyfin/jellyfin-vue"
-LABEL org.opencontainers.image.description="Commit: ${NUXT_ENV_COMMIT} History router rode: ${HISTORY_ROUTER_MODE}"
+LABEL org.opencontainers.image.description="Commit: ${COMMIT_HASH} History router rode: ${HISTORY_ROUTER_MODE}"
