@@ -1,4 +1,5 @@
 import destr from 'destr';
+import isNil from 'lodash/isNil';
 import { defineStore } from 'pinia';
 import { stringify } from 'qs';
 import { authStore, deviceProfileStore } from '.';
@@ -102,9 +103,15 @@ export const socketStore = defineStore('socket', {
       this.messageType = messageType;
       this.messageData = messageData;
     },
-    sendToSocket(message: string): void {
+    sendToSocket(name: string, data?: Record<string, never>): void {
       if (this.instance) {
-        this.instance.send(JSON.stringify(message));
+        const msg: WebSocketMessage = { MessageType: name };
+
+        if (!isNil(data)) {
+          msg.Data = data;
+        }
+
+        this.instance.send(JSON.stringify(msg));
       }
     },
     closeSocket(): void {
