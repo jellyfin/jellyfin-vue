@@ -2,13 +2,15 @@
   <div ref="playerContainer">
     <shaka-player
       v-if="
-        isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+        playbackManager.isPlaying &&
+        playbackManager.getCurrentlyPlayingMediaType === 'Audio'
       "
       class="d-none"
     />
     <player-dialog
       v-if="
-        isPlaying && playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        playbackManager.isPlaying &&
+        playbackManager.getCurrentlyPlayingMediaType === 'Video'
       "
       dark
       persistent
@@ -18,7 +20,7 @@
       :retain-focus="!playbackManager.isMinimized"
       :content-class="getContentClass()"
       :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
-      :value="isPlaying"
+      :value="playbackManager.isPlaying"
     >
       <up-next @change="setUpNextVisible" />
       <v-hover v-slot="{ hover }">
@@ -60,7 +62,7 @@
                     @click="playbackManager.playPause"
                   >
                     <v-icon size="48">
-                      {{ isPaused ? 'mdi-play' : 'mdi-pause' }}
+                      {{ playbackManager.isPaused ? 'mdi-play' : 'mdi-pause' }}
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -162,7 +164,7 @@
                         >
                           <v-icon large>
                             {{
-                              isPaused
+                              playbackManager.isPaused
                                 ? 'mdi-play-circle-outline'
                                 : 'mdi-pause-circle-outline'
                             }}
@@ -263,13 +265,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
-    isPlaying(): boolean {
-      return this.playbackManager.status !== PlaybackStatus.Stopped;
-    },
-    isPaused(): boolean {
-      return this.playbackManager.status === PlaybackStatus.Paused;
-    }
+    ...mapStores(playbackManagerStore)
   },
   watch: {
     'playbackManager.isMinimized'(): void {
@@ -279,9 +275,9 @@ export default Vue.extend({
         document.documentElement.classList.add('overflow-hidden');
       }
     },
-    isPlaying() {
+    'playbackManager.isPlaying'(): void {
       if (
-        this.isPlaying &&
+        this.playbackManager.isPlaying &&
         !this.playbackManager.isMinimized &&
         this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
       ) {
@@ -343,7 +339,7 @@ export default Vue.extend({
     },
     handleMouseMove(): void {
       if (
-        this.isPlaying &&
+        this.playbackManager.isPlaying &&
         this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !this.playbackManager.isMinimized
       ) {

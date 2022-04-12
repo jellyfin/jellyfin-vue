@@ -28,7 +28,6 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/client-axios';
 import Swiper, { SwiperOptions } from 'swiper';
-import { PlaybackStatus } from '~/store/playbackManager';
 import imageHelper from '~/mixins/imageHelper';
 import { pageStore, playbackManagerStore } from '~/store';
 
@@ -69,16 +68,6 @@ export default Vue.extend({
           ) || ''
         );
       }
-    },
-    isPaused: {
-      get(): boolean {
-        return this.playbackManager.status === PlaybackStatus.Paused;
-      }
-    },
-    isPlaying: {
-      get(): boolean {
-        return this.playbackManager.status !== PlaybackStatus.Stopped;
-      }
     }
   },
   watch: {
@@ -89,7 +78,7 @@ export default Vue.extend({
     'playbackManager.getQueueItems'(): void {
       this.update();
     },
-    isPlaying: {
+    'playbackManager.isPlaying': {
       immediate: true,
       handler(newValue: boolean): void {
         if (!newValue) {

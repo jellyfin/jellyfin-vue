@@ -493,6 +493,18 @@ export const playbackManagerStore = defineStore('playbackManager', {
     }
   },
   getters: {
+    isBuffering(): boolean {
+      return this.status === PlaybackStatus.Buffering;
+    },
+    isPlaying(): boolean {
+      return this.status !== PlaybackStatus.Stopped;
+    },
+    isRepeating(): boolean {
+      return this.repeatMode !== RepeatMode.RepeatNone;
+    },
+    isPaused(): boolean {
+      return this.status === PlaybackStatus.Paused;
+    },
     /**
      * Get reactive BaseItemDto's objects of the queue
      */
