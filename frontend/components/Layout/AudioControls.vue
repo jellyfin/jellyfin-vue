@@ -211,7 +211,7 @@ import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper from '~/mixins/imageHelper';
-import { PlaybackStatus, RepeatMode } from '~/store/playbackManager';
+import { RepeatMode } from '~/store/playbackManager';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({

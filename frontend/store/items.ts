@@ -8,8 +8,6 @@ export interface ItemsState {
   collectionById: Record<string, string[]>;
 }
 
-const allFields = Object.values(ItemFields);
-
 export const itemsStore = defineStore('items', {
   state: () => {
     return {
@@ -26,6 +24,7 @@ export const itemsStore = defineStore('items', {
      */
     add(payload: BaseItemDto | BaseItemDto[]): BaseItemDto | BaseItemDto[] {
       const isArray = Array.isArray(payload);
+
       if (!isArray) {
         // @ts-expect-error - We do the proper typecheck with the isArray variable
         payload = [payload];
@@ -106,7 +105,7 @@ export const itemsStore = defineStore('items', {
           await this.$nuxt.$api.items.getItems({
             userId: auth.currentUserId,
             ids: [parentId],
-            fields: allFields
+            fields: Object.values(ItemFields)
           })
         ).data;
 
@@ -121,16 +120,14 @@ export const itemsStore = defineStore('items', {
         await this.$nuxt.$api.items.getItems({
           userId: auth.currentUserId,
           parentId,
-          fields: allFields
+          fields: Object.values(ItemFields)
         })
       ).data;
 
-      if (childItems.Items && parent) {
+      if (childItems.Items) {
         const parent = this.getItemById(parentId);
-        return this.addCollection(
-          parent as BaseItemDto,
-          childItems.Items
-        ) as BaseItemDto[];
+
+        return this.addCollection(parent as BaseItemDto, childItems.Items);
       }
     }
   },
@@ -168,13 +165,13 @@ export const itemsStore = defineStore('items', {
         const res = [] as BaseItemDto[];
         const ids = state.collectionById[id];
 
-        if (ids) {
-          for (const id of ids) {
-            res.push(state.byId[id]);
+        if (ids?.length) {
+          for (const _id of ids) {
+            res.push(state.byId[_id]);
           }
-        }
 
-        return res;
+          return res;
+        }
       };
     }
   }

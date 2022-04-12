@@ -97,7 +97,7 @@ export default Vue.extend({
         this.currentItemDuration - (this.playbackManager.currentTime || 0)
       );
     },
-    visible(): boolean {
+    visible(): boolean | undefined {
       if (
         this.playbackManager.isMinimized ||
         this.isHiddenByUser ||
@@ -110,8 +110,6 @@ export default Vue.extend({
       if (this.currentItemTimeLeft <= this.nextUpDuration) {
         return true;
       }
-
-      return false;
     },
     nextUpDuration(): number {
       // If longer than 5 hours, set the duration to 9 minutes

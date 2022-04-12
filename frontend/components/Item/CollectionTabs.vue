@@ -1,21 +1,18 @@
 <template>
   <div v-if="!!children">
     <v-tabs v-model="currentTab" class="mb-3" background-color="transparent">
-      <v-tab v-for="typeList in children" :key="typeList.Type">
-        {{ typeList.Type }} ({{ typeList.Items.length }})
+      <v-tab v-for="(items, type) in children" :key="type">
+        {{ type }} ({{ items.length }})
       </v-tab>
     </v-tabs>
-    <h1
-      v-if="(!children && !loading) || (children && children.length === 0)"
-      class="text-h5 text-center"
-    >
+    <h1 v-if="!children && !loading" class="text-h5 text-center">
       {{ $t('collectionEmpty') }}
     </h1>
     <v-tabs-items v-model="currentTab" class="transparent">
-      <v-tab-item v-for="typeList in children" :key="typeList.Type">
+      <v-tab-item v-for="(items, type) in children" :key="type">
         <v-container>
           <skeleton-item-grid v-if="loading" :view-type="''" />
-          <item-grid :loading="loading" :items="typeList.Items" />
+          <item-grid :loading="loading" :items="items" />
         </v-container>
       </v-tab-item>
     </v-tabs-items>
@@ -24,6 +21,7 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
+import groupBy from 'lodash/groupBy';
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { itemsStore } from '~/store';
@@ -43,8 +41,10 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(itemsStore),
-    children(): BaseItemDto[] {
-      return this.items.getChildrenOfParent(this.item.Id) || [];
+    children(): Record<string, BaseItemDto[]> | undefined {
+      if (this.items.getChildrenOfParent(this.item.Id)?.length) {
+        return groupBy(this.items.getChildrenOfParent(this.item.Id), 'Type');
+      }
     }
   },
   watch: {
