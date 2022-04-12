@@ -41,10 +41,7 @@ function handleAuthRedirections(
     (currentRoute === serverSelectUrl && nextRoute === serverAddUrl)
   ) {
     destinationRoute = serverAddUrl;
-  } else if (
-    (currentBaseUrl && !userToken) ||
-    (currentRoute === serverAddUrl && servers.length === 1)
-  ) {
+  } else if (currentBaseUrl && !userToken) {
     destinationRoute = serverLoginUrl;
   } else if (
     currentBaseUrl &&

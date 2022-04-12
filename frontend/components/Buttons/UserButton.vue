@@ -76,7 +76,7 @@ export default Vue.extend({
         title: this.$t('logout'),
         icon: 'mdi-logout',
         action: (): void => {
-          this.auth.logoutUser(true);
+          this.auth.logoutCurrentUser();
         }
       });
 

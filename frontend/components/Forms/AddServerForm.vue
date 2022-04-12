@@ -78,6 +78,12 @@ export default Vue.extend({
 
       try {
         await this.auth.connectServer(this.serverUrl);
+
+        if (this.previousServerLength === 0) {
+          this.$router.push('/server/login');
+        } else {
+          this.$router.push('/server/select');
+        }
       } finally {
         this.loading = false;
       }
