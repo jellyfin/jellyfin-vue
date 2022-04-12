@@ -18,7 +18,7 @@ import Vue from 'vue';
 export default Vue.extend({
   computed: {
     commit() {
-      return process.env.NUXT_ENV_COMMIT;
+      return process.env.commit_hash;
     }
   }
 });
