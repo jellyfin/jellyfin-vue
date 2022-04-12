@@ -242,6 +242,7 @@ import Vue from 'vue';
 import { SessionInfo } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import camelCase from 'lodash/camelCase';
+import isNil from 'lodash/isNil';
 import { deviceProfileStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
@@ -249,7 +250,7 @@ export default Vue.extend({
     return {
       updateSessionInterval: null as number | null,
       sessionInfo: null as SessionInfo | null,
-      playerStats: {},
+      playerStats: {} as shaka.extern.Stats,
       videoDimensions: { width: 0, height: 0 }
     };
   },
@@ -263,9 +264,9 @@ export default Vue.extend({
     },
     getStreamType(): string {
       if (window.player?.getAssetUri()) {
-        if (window.player.getAssetUri().includes('.m3u8')) {
+        if (window.player.getAssetUri()?.includes('.m3u8')) {
           return this.$t('playbackInfo.streamType.hls');
-        } else if (window.player.getAssetUri().includes('.mpd')) {
+        } else if (window.player.getAssetUri()?.includes('.mpd')) {
           return this.$t('playbackInfo.streamType.dash');
         } else {
           return this.$t('playbackInfo.streamType.video');
@@ -398,28 +399,41 @@ export default Vue.extend({
         })
       ).data?.[0];
 
-      this.playerStats = window.player.getStats();
+      if (!isNil(window.player)) {
+        this.playerStats = window.player?.getStats();
 
-      // Compute the displayed video's size
-      const videoRatio =
-        window.player.getMediaElement().videoWidth /
-        window.player.getMediaElement().videoHeight;
-      let width = window.player.getMediaElement().offsetWidth;
-      let height = window.player.getMediaElement().offsetHeight;
+        if (
+          !isNil(window.player?.getMediaElement()) &&
+          !isNil(
+            (window.player?.getMediaElement() as HTMLVideoElement)?.videoWidth
+          ) &&
+          !isNil(
+            (window.player?.getMediaElement() as HTMLVideoElement)?.videoHeight
+          ) &&
+          !isNil(window.player?.getMediaElement()?.offsetWidth) &&
+          !isNil(window.player?.getMediaElement()?.offsetHeight)
+        ) {
+          const videoRatio =
+            (window.player.getMediaElement() as HTMLVideoElement).videoWidth /
+            (window.player.getMediaElement() as HTMLVideoElement).videoHeight;
+          let width = window.player?.getMediaElement()?.offsetWidth as number;
+          let height = window.player?.getMediaElement()?.offsetHeight as number;
 
-      const elementRatio = width / height;
+          const elementRatio = width / height;
 
-      // If the video element is short and wide
-      if (elementRatio > videoRatio) {
-        width = height * videoRatio;
-      } else {
-        height = width / videoRatio;
+          // If the video element is short and wide
+          if (elementRatio > videoRatio) {
+            width = height * videoRatio;
+          } else {
+            height = width / videoRatio;
+          }
+
+          this.videoDimensions = {
+            width: Math.floor(width),
+            height: Math.floor(height)
+          };
+        }
       }
-
-      this.videoDimensions = {
-        width: Math.floor(width),
-        height: Math.floor(height)
-      };
     }
   }
 });

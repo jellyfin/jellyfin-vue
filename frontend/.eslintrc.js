@@ -120,6 +120,8 @@ module.exports = {
         'vue/multi-word-component-names': 'off',
         // This rule gives false positives with asyncData
         'vue/no-dupe-keys': 'off',
+        // This rule gives false positives, even when undefined return type is established
+        'vue/return-in-computed-property': 'off',
         'jsdoc/require-param-type': 'off'
       },
       settings: {

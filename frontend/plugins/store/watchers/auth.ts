@@ -32,7 +32,7 @@ export default function (ctx: Context): void {
   /**
    * Watch for actions after the app has been initialized
    */
-  auth.$onAction(({ name, after, store }) => {
+  auth.$onAction(({ name, after }) => {
     after(async () => {
       if (
         name !== 'authInit' &&

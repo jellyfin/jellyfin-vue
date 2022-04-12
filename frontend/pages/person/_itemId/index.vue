@@ -147,7 +147,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, ImageType, ItemFields, SortOrder } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ImageType,
+  ItemFields,
+  SortOrder
+} from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import imageHelper from '~/mixins/imageHelper';
 import timeUtils from '~/mixins/timeUtils';
@@ -182,7 +187,7 @@ export default Vue.extend({
         recursive: true,
         includeItemTypes: ['Movie'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId,
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -194,7 +199,7 @@ export default Vue.extend({
         recursive: true,
         includeItemTypes: ['Series'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId,
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -206,7 +211,7 @@ export default Vue.extend({
         recursive: true,
         includeItemTypes: ['Book'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId,
+        userId: auth.currentUserId
       })
     ).data.Items;
 
@@ -218,7 +223,7 @@ export default Vue.extend({
         recursive: true,
         includeItemTypes: ['Photo'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId,
+        userId: auth.currentUserId
       })
     ).data.Items;
 

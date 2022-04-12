@@ -17,7 +17,7 @@ export default function (): void {
    * Middleware lives at ~/middleware/auth
    */
   if (!auth.rememberMe) {
-    auth.logoutUser();
+    auth.logoutCurrentUser();
   }
 
   /**
@@ -29,7 +29,7 @@ export default function (): void {
       (lsServer: ServerInfo) => lsServer.PublicAddress === serverUrl
     );
 
-    return !isNil(server);
+    return isNil(server);
   });
 
   for (const serverUrl of missingServers) {
