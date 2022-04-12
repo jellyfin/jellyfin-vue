@@ -48,7 +48,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, SortOrder } from '@jellyfin/client-axios';
+import { BaseItemDto, SortOrder, ItemFields } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
 import { authStore, itemsStore, pageStore } from '~/store';
@@ -62,16 +62,12 @@ export default Vue.extend({
     const auth = authStore();
 
     const itemId = params.itemId;
-    let item = items.getItemById(itemId);
-
-    if (!item) {
-      item = (
-        await $api.userLibrary.getItem({
-          userId: auth.currentUserId,
-          itemId
-        })
-      ).data;
-    }
+    const item = (
+      await $api.userLibrary.getItem({
+        userId: auth.currentUserId,
+        itemId
+      })
+    ).data;
 
     let genres = (
       await $api.items.getItems({
@@ -79,7 +75,9 @@ export default Vue.extend({
         includeItemTypes: [route.query.type.toString()],
         recursive: true,
         sortBy: ['SortName'],
-        sortOrder: [SortOrder.Ascending]
+        sortOrder: [SortOrder.Ascending],
+        fields: Object.values(ItemFields),
+        userId: auth.currentUserId
       })
     ).data.Items;
 

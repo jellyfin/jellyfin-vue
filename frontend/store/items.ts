@@ -25,12 +25,15 @@ export const itemsStore = defineStore('items', {
      * @returns - The reactive references
      */
     add(payload: BaseItemDto | BaseItemDto[]): BaseItemDto | BaseItemDto[] {
-      if (!Array.isArray(payload)) {
+      const isArray = Array.isArray(payload);
+      if (!isArray) {
+        // @ts-expect-error - We do the proper typecheck with the isArray variable
         payload = [payload];
       }
 
       const res = [];
 
+      // @ts-expect-error - We do the proper typecheck with the isArray variable
       for (const item of payload) {
         if (!item.Id) {
           throw new Error("One item doesn't have an id");
@@ -40,7 +43,7 @@ export const itemsStore = defineStore('items', {
         res.push(this.getItemById(item.Id) as BaseItemDto);
       }
 
-      if (res.length === 1 && !Array.isArray(payload)) {
+      if (res.length === 1 && !isArray) {
         return res[0];
       }
 
@@ -122,8 +125,12 @@ export const itemsStore = defineStore('items', {
         })
       ).data;
 
-      if (childItems.Items) {
-        return this.add(childItems.Items) as BaseItemDto[];
+      if (childItems.Items && parent) {
+        const parent = this.getItemById(parentId);
+        return this.addCollection(
+          parent as BaseItemDto,
+          childItems.Items
+        ) as BaseItemDto[];
       }
     }
   },
