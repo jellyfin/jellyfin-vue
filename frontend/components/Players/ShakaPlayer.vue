@@ -22,7 +22,7 @@ import isNil from 'lodash/isNil';
 import muxjs from 'mux.js';
 import { mapStores } from 'pinia';
 import { PlaybackInfoResponse } from '@jellyfin/client-axios';
-// @ts-expect-error - This module doesn't have typings
+// @ts-expect-error - No types for Shaka
 import shaka from 'shaka-player/dist/shaka-player.compiled';
 import {
   authStore,
@@ -34,12 +34,16 @@ import { RepeatMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
 
+// @ts-expect-error - No types for Shaka
+declare module 'shaka-player/dist/shaka-player.compiled' {
+  export = shaka;
+}
+
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     muxjs: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    player: any;
+    player: shaka.Player | undefined;
   }
 }
 
@@ -49,8 +53,7 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      player: null as any,
+      player: null as shaka.Player | null,
       audioContext: null as AudioContext | null,
       audioSource: null as MediaElementAudioSourceNode | null,
       gainNode: null as GainNode | null
@@ -143,7 +146,9 @@ export default Vue.extend({
 
       if (shaka.Player.isBrowserSupported()) {
         // We use a global for ease of debugging and to fetch data from the playback information popup
-        window.player = new shaka.Player(this.$refs.shakaPlayer);
+        window.player = new shaka.Player(
+          this.$refs.shakaPlayer as HTMLMediaElement
+        );
         this.player = window.player;
 
         // Create WebAudio context and nodes for added processing
@@ -186,8 +191,6 @@ export default Vue.extend({
   },
   beforeDestroy() {
     if (this.player) {
-      window.muxjs = undefined;
-      window.player = undefined;
       this.playbackManager.stop();
       this.player.removeEventListener('error', this.onPlayerError);
       this.player.unload();
@@ -197,6 +200,9 @@ export default Vue.extend({
         this.audioContext.close();
       }
     }
+
+    window.muxjs = undefined;
+    window.player = undefined;
   },
   methods: {
     async getPlaybackUrl(): Promise<void> {
@@ -265,6 +271,8 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
+
+        this.player.load(this.source);
       }
     },
     onPause(): void {
@@ -300,8 +308,8 @@ export default Vue.extend({
         this.playbackManager.setNextTrack();
       }
     },
-    onPlayerError(event: ErrorEvent): void {
-      this.$emit('error', event);
+    onPlayerError(e: any): void {
+      this.$emit('error', e);
     },
     onWaiting(): void {
       this.playbackManager.setBuffering();

@@ -4,7 +4,6 @@
  */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { Plugin } from '@nuxt/types';
 import {
   ActivityLogApi,
   ApiKeyApi,
@@ -151,7 +150,7 @@ declare module 'vue/types/vue' {
 export default function (
   context: Context,
   inject: (key: string, value: any) => void
-) {
+): void {
   const config = new Configuration();
   const contextAxios = context.$axios;
 

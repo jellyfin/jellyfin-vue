@@ -34,8 +34,6 @@ export default Vue.extend({
       get(): string | undefined {
         if (this.user?.Id && this.user?.PrimaryImageTag) {
           return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?tag=${this.user.PrimaryImageTag}&quality=${this.quality}`;
-        } else {
-          return undefined;
         }
       }
     }

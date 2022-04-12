@@ -30,7 +30,7 @@ declare module 'vue/types/vue' {
 export default function (
   ctx: Context,
   inject: (key: string, value: any) => void
-) {
+): void {
   const axiosInstance = axios.create();
 
   /**
@@ -74,6 +74,7 @@ export default function (
       await auth.logoutCurrentUser(true);
       snackbar.push(ctx.i18n.t('login.kickedOut'), 'error');
     }
+
     /**
      * Pass the error so it's handled in try/catch blocks afterwards
      */

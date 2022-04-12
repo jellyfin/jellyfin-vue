@@ -487,8 +487,8 @@ export const playbackManagerStore = defineStore('playbackManager', {
         return [item.Id || ''];
       }
 
-      return responseItems.map((item) => {
-        return item.Id ? item.Id : '';
+      return responseItems.map((i) => {
+        return i.Id ? i.Id : '';
       });
     }
   },
