@@ -146,24 +146,51 @@ export const authStore = defineStore('auth', {
     /**
      * Logs out the user from the server using the current base url and access token parameters.
      *
-     * @param clearUser - Removes the user from the store
+     * @param skipRequest - Skips the request and directly removes the user from the store
+     */
+    async logoutCurrentUser(skipRequest = false): Promise<void> {
+      if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
+        await this.logoutUser(
+          this.currentUser,
+          this.currentServer,
+          skipRequest
+        );
+
+        this.currentUserIndex = -1;
+      }
+    },
+    /**
+     * Logs out an user from the server
+     *
+     * @param user
+     * @param server
      * @param skipRequest
      */
-    async logoutUser(clearUser = true, skipRequest = false): Promise<void> {
+    async logoutUser(
+      user: UserDto,
+      server: ServerInfo,
+      skipRequest = false
+    ): Promise<void> {
       try {
         if (!skipRequest) {
+          /**
+           * We set the baseUrl and the token to the server where we want to log out users
+           */
+          this.setAxiosBaseUrl(server.PublicAddress);
+          this.setAxiosHeader(this.getUserAccessToken(user));
           await this.$nuxt.$api.session.reportSessionEnded();
         }
+      } catch {
       } finally {
-        if (clearUser === true) {
-          const currentUser = this.currentUser;
+        const storeUser = this.users.find((u) => u.Id === user.Id);
 
-          if (currentUser) {
-            Vue.delete(this.accessTokens, currentUser.Id as string);
-            this.users = this.users.filter((user) => user === this.currentUser);
-            this.currentUserIndex = -1;
-          }
+        if (!isNil(storeUser)) {
+          this.users.splice(this.users.indexOf(storeUser), 1);
         }
+
+        Vue.delete(this.accessTokens, user.Id as string);
+        this.setAxiosBaseUrl(this.currentServer?.PublicAddress);
+        this.setAxiosHeader();
       }
     },
     /**
@@ -181,23 +208,12 @@ export const authStore = defineStore('auth', {
       const users = this.getUsersFromServer(server);
 
       if (users) {
-        /**
-         * We set the baseUrl to the one of the server to log out users of that server properly
-         */
-        this.$nuxt.$axios.defaults.baseURL = server.PublicAddress;
-
         for (const user of users) {
-          this.setAxiosHeader(this.getUserAccessToken(user));
-          await this.logoutUser(false);
-          Vue.delete(this.accessTokens, user.Id as string);
+          await this.logoutUser(user, server);
         }
-
-        this.setAxiosBaseUrl();
-        this.setAxiosHeader();
-        this.users = this.users.filter((user) => users.includes(user));
       }
 
-      this.servers = this.servers.splice(this.servers.indexOf(server), 1);
+      this.servers.splice(this.servers.indexOf(server), 1);
     },
     /**
      * Sets the Axios baseUrl so we can make request to a server

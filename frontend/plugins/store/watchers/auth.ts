@@ -45,7 +45,7 @@ export default function (ctx: Context): void {
          */
         authLogic(ctx, auth, false);
 
-        if (name === 'logoutUser' && store.currentUserIndex === -1) {
+        if (name === 'logoutCurrentUser') {
           clientSettings.$reset();
           homeSection.$reset();
           snackbar.$reset();

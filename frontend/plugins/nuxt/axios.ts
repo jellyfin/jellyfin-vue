@@ -66,15 +66,18 @@ export default function (
     const auth = authStore();
     const snackbar = snackbarStore();
 
-    if (error.response?.status === 401 && auth.currentUser) {
-      await auth.logoutUser(true, true);
+    if (
+      error.response?.status === 401 &&
+      auth.currentUser &&
+      !error.config.url?.includes('/Sessions/Logout')
+    ) {
+      await auth.logoutCurrentUser(true);
       snackbar.push(ctx.i18n.t('login.kickedOut'), 'error');
-    } else {
-      /**
-       * Pass the error so it's handled in try/catch blocks afterwards
-       */
-      throw error;
     }
+    /**
+     * Pass the error so it's handled in try/catch blocks afterwards
+     */
+    throw error;
   };
 
   axiosInstance.interceptors.response.use(onResponse, onResponseError);
