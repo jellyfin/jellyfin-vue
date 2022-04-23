@@ -353,7 +353,7 @@
     },
     "liveTvAndDvr": {
       "description": "Hallitse TV-virittimiä, oppaiden tietolähteitä ja DVR-asetuksia",
-      "name": "Live TV ja DVR"
+      "name": "Televisio ja tallennus"
     },
     "logs": {
       "description": "Lue ja hae palvelimen lokeja ja käyttäjien aktiivisuutta",
