@@ -19,12 +19,12 @@ jobs:
           reactions: '+1'
 
       - name: Checkout the latest code ⬇️
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.2
         with:
           token: ${{ secrets.JF_BOT_TOKEN }}
           fetch-depth: 0
 
       - name: Automatic Rebase 🤖
-        uses: cirrus-actions/rebase@1.5
+        uses: cirrus-actions/rebase@1.6
         env:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
