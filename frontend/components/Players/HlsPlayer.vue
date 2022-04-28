@@ -61,6 +61,7 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
+      videoElement: undefined as HTMLVideoElement | undefined,
       hls: undefined as Hls | undefined,
       octopus: undefined as SubtitlesOctopus | undefined,
       subtitleTrack: undefined as PlaybackTrack | undefined,
@@ -77,9 +78,6 @@ export default Vue.extend({
       } else {
         return null;
       }
-    },
-    videoElement(): HTMLVideoElement | undefined {
-      return this.$refs.player as HTMLVideoElement | undefined;
     },
     isHls(): boolean {
       const mediaSource = this.playbackManager.currentMediaSource;
@@ -214,6 +212,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    this.videoElement = this.$refs.player as HTMLVideoElement;
     await this.getPlaybackUrl();
   },
   beforeDestroy() {
