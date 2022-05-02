@@ -22,7 +22,6 @@ import isNil from 'lodash/isNil';
 import muxjs from 'mux.js';
 import { mapStores } from 'pinia';
 import { PlaybackInfoResponse } from '@jellyfin/client-axios';
-// @ts-expect-error - No types for Shaka
 import shaka from 'shaka-player/dist/shaka-player.compiled';
 import {
   authStore,
@@ -33,11 +32,6 @@ import {
 import { RepeatMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
 import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
-
-// @ts-expect-error - No types for Shaka
-declare module 'shaka-player/dist/shaka-player.compiled' {
-  export = shaka;
-}
 
 declare global {
   interface Window {
@@ -206,7 +200,7 @@ export default Vue.extend({
   },
   methods: {
     async getPlaybackUrl(): Promise<void> {
-      if (this.playbackManager.getCurrentItem) {
+      if (this.playbackManager.getCurrentItem && this.player) {
         this.playbackInfo = (
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
