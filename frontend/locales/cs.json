@@ -142,6 +142,7 @@
     "changeServer": "Změnit server",
     "changeUser": "Přepnout uživatele",
     "connect": "Připojit",
+    "kickedOut": "Oprávnění bylo zrušeno a tato relace již tak není platná. Přihlašte se prosím znovu",
     "login": "Přihlásit",
     "loginAs": "Přihlásit jako {name}",
     "manualLogin": "Ruční přihlášení",
