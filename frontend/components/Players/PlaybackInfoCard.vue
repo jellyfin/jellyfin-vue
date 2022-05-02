@@ -243,6 +243,7 @@ import { SessionInfo } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import camelCase from 'lodash/camelCase';
 import isNil from 'lodash/isNil';
+import type shaka from 'shaka-player/dist/shaka-player.compiled';
 import { deviceProfileStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
