@@ -98,6 +98,11 @@ export const playbackManagerStore = defineStore('playbackManager', {
       queue.push(...translatedItem);
       this.queue = queue;
     },
+    removeFromQueue(itemId: string) {
+      if (this.queue.includes(itemId)) {
+        this.queue.splice(this.queue.indexOf(itemId), 1);
+      }
+    },
     clearQueue(): void {
       this.queue = [];
     },
