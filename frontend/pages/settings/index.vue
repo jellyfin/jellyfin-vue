@@ -191,7 +191,8 @@ export default Vue.extend({
           {
             icon: 'mdi-dlna',
             name: this.$t('settingsSections.dlna.name'),
-            description: this.$t('settingsSections.dlna.description')
+            description: this.$t('settingsSections.dlna.description'),
+            link: 'settings/dlna'
           },
           {
             icon: 'mdi-television-classic',

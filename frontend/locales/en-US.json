@@ -323,6 +323,175 @@
       "revokeFailure": "Error revoking API key",
       "revokeSuccess": "Successfully revoked API key"
     },
+    "dlna": {
+      "dlna": "DLNA",
+      "EnablePlayTo": {
+        "text": "Enable DLNA Play To",
+        "description": "Detect devices within your network and offer the ability to control them remotely."
+      },
+      "EnableDebugLog": {
+        "text": "Enable DLNA debug logging",
+        "description": "Create large log files and should only be used as needed for troubleshooting purposes."
+      },
+      "ClientDiscoveryIntervalSeconds": {
+        "text": "Client discovery interval",
+        "description": "Determines the duration in seconds between SSDP searches."
+      },
+      "EnableServer": {
+        "text": "Enable DLNA server",
+        "description": "Allows UPnP devices on your network to browse and play content."
+      },
+      "BlastAliveMessages": {
+        "text": "Blast alive messages",
+        "description": "Enable this if the server is not detected reliably by other UPnP devices on your network."
+      },
+      "AliveMessageIntervalSeconds": {
+        "text": "Alive message interval",
+        "description": "Determines the duration in seconds between blast alive messages."
+      },
+      "DefaultUserId": {
+        "text": "Default user",
+        "description": "Determines which user library should be displayed on connected devices. This can be overridden for each device using profiles.",
+        "selector": "Select default user"
+      },
+      "profile": {
+        "new": "New Profile",
+        "name": "Profile name",
+        "custom": {
+          "text": "Custom profiles",
+          "subtitle": "Create a custom profile to target a new device or override a system profile."
+        },
+        "system": {
+          "text": "System profiles",
+          "subtitle": "System profiles are read-only. Changes to a system profile will be saved to a new custom profile."
+        },
+        "saveNew": "Save as new custom profile",
+        "save": "Save profile",
+        "info": {
+          "title": "Info",
+          "general": {
+            "title": "General settings",
+            "name": {
+              "text": "Name",
+              "info": "Set the name of this profile."
+            },
+            "userLibrary": {
+              "text": "User library",
+              "info": "Select which user library to display to the device. Leave empty to inherit the default setting."
+            },
+            "mediaTypes": {
+              "text": "Supported Media Types",
+              "audio": "Audio",
+              "video": "Video",
+              "photo": "Photo"
+            },
+            "maxStreamQuality": {
+              "text": "Maximum streaming quality",
+              "info": "Specify a maximum bitrate when streaming."
+            },
+            "musicTranscodeQuality": {
+              "text": "Music transcoding bitrate",
+              "info": "Specify a maximum bitrate when streaming music."
+            }
+          },
+          "display": {
+            "title": "Display Settings",
+            "plainFolder": {
+              "text": "Display all folders as plain storage folders",
+              "info": "All folders are represented in DIDL as \"object.container.storageFolder\" instead of a more specific type, such as \"object.container.person.musicArtist\"."
+            },
+            "plainVideo": {
+              "text": "Display all videos as plain video items",
+              "info": "All videos are represented in DIDL as \"object.item.videoItem\" instead of a more specific type, such as \"object.item.videoItem.movie\"."
+            }
+          },
+          "image": {
+            "title": "Image Settings",
+            "albumMaxDimension": "Maximum resolution of album art exposed via the upnp:albumArtURI property.",
+            "iconMaxDimension": "Maximum resolution of icons exposed via the upnp:icon property.",
+            "embedDidl": {
+              "text": "Embed album art in Didl",
+              "info": "Some devices prefer this method for obtaining album art. Others may fail to play with this option enabled."
+            },
+            "singleEmbed": {
+              "text": "Limit to single embedded image",
+              "info": "Some devices will not render properly if multiple images are embedded within Didl."
+            },
+            "albumPN": {
+              "text": "Album art PN",
+              "info": "PN used for album art, within the dlna:profileID attribute on upnp:albumArtURI. Some devices require a specific value, regardless of the size of the image."
+            },
+            "albumArtMaxWidth": "Album art max width",
+            "albumArtMaxHeight": "Album art max height",
+            "iconMaxWidth": "Icon maximum width",
+            "iconMaxHeight": "Icon maximum height"
+          }
+        },
+        "identification": {
+          "title": "Identification",
+          "device": {
+            "title": "Device identification",
+            "info": "Enter at least one identification criteria.",
+            "infoText": "A case-insensitive substring or regex expression.",
+            "friendlyName": "Friendly name",
+            "manufacturer": "Manufacturer",
+            "manufacturerUrl": "Manufacturer URL",
+            "modelName": "Model name",
+            "modelNumber": "Model number",
+            "modelDescription": "Model description",
+            "modelUrl": "Model URL",
+            "serialNumber": "Serial number",
+            "deviceDescription": "Device description"
+          },
+          "server": {
+            "title": "Server identification",
+            "info": "These values control how the server will present itself to clients.",
+            "friendlyName": "Friendly name",
+            "manufacturer": "Manufacturer",
+            "manufacturerUrl": "Manufacturer URL",
+            "modelName": "Model name",
+            "modelNumber": "Model number",
+            "modelDescription": "Model description",
+            "modelUrl": "Model URL",
+            "serialNumber": "Serial number",
+            "protocolInfo": {
+              "text": "Protocol info",
+              "info": "The value that will be used when responding to GetProtocolInfo requests from the device."
+            },
+            "sonyAggregationFlags": {
+              "text": "Sony aggregation flags",
+              "info": "Determines the content of the aggreagationFlags element in the urn:schemas-sonycom:av namespace."
+            }
+          }
+        },
+        "subtitle": {
+          "title": "Subtitle"
+        },
+        "directPlay": {
+          "title": "Direct Play",
+          "text": "Add direct play profiles to indicate which formats the device can handle natively."
+        },
+        "transcoding": {
+          "title": "Transcoding",
+          "text": "Add transcoding profiles to indicate which formats should be used when transcoding is required."
+        },
+        "containers": {
+          "title": "Containers",
+          "text": "Container profiles indicate the limitations of a device when playing specific formats. If a limitation applies then the media will be transcoded, even if the format is configured for direct play."
+        },
+        "codecs": {
+          "title": "Codecs",
+          "text": "Codec profiles indicate the limitations of a device when playing specific codecs. If a limitation applies then the media will be transcoded, even if the codec is configured for direct play."
+        },
+        "responses": {
+          "title": "Responses",
+          "text": "Response profiles provide a way to customize information sent to the device when playing certain kinds of media."
+        },
+        "xml": {
+          "title": "XML"
+        }
+      }
+    },
     "devices": {
       "appName": "App name",
       "appVersion": "App version",
