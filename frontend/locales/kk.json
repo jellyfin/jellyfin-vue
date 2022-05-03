@@ -142,6 +142,7 @@
     "changeServer": "Serverdı auystyru",
     "changeUser": "Paidalanuşyny auystyru",
     "connect": "Qosylu",
+    "kickedOut": "Rastau qaytarylyp alyndy jäne būl seans endı jaramsyz. Jüiege qaita kırıñız",
     "login": "Kıru",
     "loginAs": "{name} atynan kıru",
     "manualLogin": "Qolmen kıru",
