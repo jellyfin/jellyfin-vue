@@ -142,6 +142,7 @@
     "changeServer": "Ŝanĝi servilon",
     "changeUser": "Ŝanĝi uzanton",
     "connect": "Konektu",
+    "kickedOut": "Rajtigo estis nuligita kaj ĉi tiu sesio ne plu validas. Ensaluti denove",
     "login": "Ensaluto",
     "loginAs": "Ensaluti kiel {name}",
     "manualLogin": "Mana ensaluto",
