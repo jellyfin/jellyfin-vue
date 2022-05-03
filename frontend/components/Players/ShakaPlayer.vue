@@ -131,7 +131,7 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
+  async mounted() {
     try {
       // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
       window.muxjs = muxjs;
@@ -144,6 +144,8 @@ export default Vue.extend({
           this.$refs.shakaPlayer as HTMLMediaElement
         );
         this.player = window.player;
+
+        await this.getPlaybackUrl();
 
         // Create WebAudio context and nodes for added processing
         this.audioContext = new AudioContext();
