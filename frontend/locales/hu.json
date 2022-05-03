@@ -142,6 +142,7 @@
     "changeServer": "Szerverváltás",
     "changeUser": "Felhasználóváltás",
     "connect": "Kapcsolódás",
+    "kickedOut": "Az bejelentkezési munkamenet már nem érvényes. Kérjük, jelentkezz be újra",
     "login": "Bejelentkezés",
     "loginAs": "Bejelentkezés mint {name}",
     "manualLogin": "Manuális bejelentkezés",
