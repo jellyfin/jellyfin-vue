@@ -92,11 +92,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
   },
   actions: {
     async addToQueue(item: BaseItemDto) {
-      const queue = Array.from(this.queue);
       const translatedItem = await this.translateItemsForPlayback(item);
 
-      queue.push(...translatedItem);
-      this.queue = queue;
+      this.queue.push(...translatedItem);
     },
     removeFromQueue(itemId: string) {
       if (this.queue.includes(itemId)) {
@@ -181,12 +179,10 @@ export const playbackManagerStore = defineStore('playbackManager', {
      * @param item
      */
     async playNext(item: BaseItemDto): Promise<void> {
-      const queue = Array.from(this.queue);
       const translatedItem = await this.translateItemsForPlayback(item);
 
       if (this.currentItemIndex !== null) {
-        queue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
-        this.queue = queue;
+        this.queue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
       }
     },
     pause(): void {
