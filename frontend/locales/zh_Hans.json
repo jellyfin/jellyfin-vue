@@ -142,6 +142,7 @@
     "changeServer": "切换服务器",
     "changeUser": "切换用户",
     "connect": "连接",
+    "kickedOut": "授权已被撤销，此会话不再有效。请重新登录",
     "login": "登录",
     "loginAs": "登录为 {name}",
     "manualLogin": "手动登录",
