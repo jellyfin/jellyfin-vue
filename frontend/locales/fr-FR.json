@@ -142,6 +142,7 @@
     "changeServer": "Changer de serveur",
     "changeUser": "Changer d'utilisateur",
     "connect": "Se connecter",
+    "kickedOut": "L’autorisation a été révoquée et cette session n’est plus valide. Veuillez vous reconnecter",
     "login": "Connexion",
     "loginAs": "Se connecter avec {name}",
     "manualLogin": "Connexion manuelle",
