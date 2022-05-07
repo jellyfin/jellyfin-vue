@@ -20,6 +20,7 @@
   "buttons": {
     "ok": "Ok"
   },
+  "byArtist": "{artist}",
   "cancel": "Peruuta",
   "castAndCrew": "Näyttelijät ja henkilöstö",
   "collectionEmpty": "Tämä kokoelma on tyhjä",
@@ -45,6 +46,7 @@
   "director": "Ohjaaja",
   "disabled": "Poissa käytöstä",
   "discNumber": "Levy {discNumber}",
+  "dislikes": "Ei tykkäykset",
   "edit": "Muokkaa",
   "editMetadata": "Muokkaa metadataa",
   "editPerson": "Muokkaa henkilöä",
@@ -58,6 +60,8 @@
       "videoPlayerError": "Videotoistin kohtasi peruuttamattoman virheen."
     }
   },
+  "failedRetrievingDisplayPreferences": "Näyttöasetuksia ei saatu. Käytetään viimeisiä tiedossa olevia asetuksia.",
+  "failedSettingDisplayPreferences": "Näyttöasetuksia ei voitu päivittää.",
   "failedToRefreshItems": "Kohteiden päivittäminen epäonnistui",
   "favorite": "Suosikki",
   "features": "Ominaisuudet",
@@ -138,6 +142,7 @@
     "changeServer": "Vaihda palvelin",
     "changeUser": "Vaihda käyttäjää",
     "connect": "Yhdistä",
+    "kickedOut": "Käyttöoikeus on evätty, eikä istunto ole enää voimassa. Kirjaudu sisään uudelleen",
     "login": "Kirjaudu",
     "loginAs": "Kirjaudu sisään käyttäjänä {name}",
     "manualLogin": "Manuaalinen kirjautuminen",
@@ -174,6 +179,7 @@
     "container": {
       "name": "Säiliö:"
     },
+    "name": "Media",
     "subtitleCodec": {
       "name": "Tekstityksen koodekki:"
     },
@@ -191,6 +197,7 @@
   "metadataEditor": "Metadatamuokkain",
   "metadataNoResultsMatching": "Ei tuloksia haulla \"{search}\". Paina enteriä luodaksesi uuden.",
   "more": "Lisää",
+  "moreLikeArtist": "Lisää esittäjän {artist} kaltaisia",
   "moreLikeThis": "Lisää samanlaisia",
   "movies": "Elokuvat",
   "name": "Nimi",
@@ -218,6 +225,7 @@
     "playAll": "Toista kaikki",
     "playNext": "Toista seuraava",
     "playbackSource": {
+      "item": "Toistetaan lähteestä {item}",
       "shuffle": "Toistetaan sekoitustilassa",
       "shuffleItem": "Toistetaan kohdetta {item} sekoitustilassa",
       "unknown": "Toistetaan jonosta"
@@ -233,11 +241,13 @@
     "playMethod": {
       "direct": "Suora",
       "name": "Tapa:",
+      "remux": "Remux",
       "transcode": "Transkoodaus"
     },
     "streamType": {
       "dash": "DASH",
       "hls": "HLS",
+      "name": "Mediavirran tyyppi:",
       "unknown": "Tuntematon",
       "video": "Video"
     }
@@ -360,7 +370,8 @@
       "name": "Lokit ja aktiivisuus"
     },
     "mediaPlayers": {
-      "description": "Määrittele miten mediatoistimet toimivat tällä laitteella"
+      "description": "Määrittele miten mediatoistimet toimivat tällä laitteella",
+      "name": "Mediasoittimet"
     },
     "networking": {
       "description": "Hallitse palvelimen verkkoasetuksia",
@@ -402,6 +413,7 @@
   "shows": "Ohjelmat",
   "signIn": "Kirjaudu sisään",
   "songs": "Kappaleet",
+  "sortByType": "{type}",
   "sortTitle": "Suodata otsikko",
   "specialFeatures": "Erikoisominaisuudet",
   "speed": "Nopeus",
@@ -442,6 +454,7 @@
         "containerBitrateExceedsLimit": "Säiliön bittinopeus ylittää asetetun rajan",
         "containerNotSupported": "Säiliö ei tuettu",
         "interlacedVideoNotSupported": "Lomitettua videota ei tueta",
+        "refFramesNotSupported": "Viitekehyksiä ei tueta",
         "secondaryAudioNotSupported": "Toissijaisia ääniraitoja ei tueta",
         "subtitleCodecNotSupported": "Tekstityksen koodekkia ei tueta",
         "videoBitDepthNotSupported": "VIdeon bittisyvyyttä ei tueta",
@@ -454,6 +467,12 @@
     }
   },
   "type": "Tyyppi",
+  "unableGetPublicUsers": "Käyttäjiä ei voitu noutaa",
+  "unableGetRelated": "Liittyviä kohteita ei voitu noutaa",
+  "unableGetServerConfiguration": "Palvelinmäärityksiä ei voitu noutaa",
+  "unableToRefreshLibrary": "Kirjastoa ei voitu päivittää",
+  "unableToToggleLike": "Elementin tykkäystilaa ei voitu muuttaa",
+  "unableToTogglePlayed": "Katselutilaa ei voitu päivittää",
   "undefined": "Määrittelemätön",
   "unexpectedError": "Odottamaton virhe",
   "unhandledException": "Käsittelemätön poikkeus",
@@ -461,6 +480,9 @@
     "bitrate": {
       "kbps": "{value} kbps",
       "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekunti | {count} sekuntia"
     }
   },
   "unliked": "Ei tykätty",
@@ -477,20 +499,28 @@
   "video": "Video",
   "videoTypes": "Videotyypit",
   "viewDetails": "Katso tiedot",
+  "vueClientVersion": "Päätteen versio",
   "wizard": {
     "administratorAccount": "Pääkäyttäjän tili",
     "allowRemoteAccess": "Salli palvelimen etäkäyttö",
+    "completeError": "Käyttöönottoavustajaa ei voitu suorittaa.",
     "confirmPassword": "Vahvista salasana",
     "languageLocale": "Kieli ja alue",
     "languageSuccessfullySet": "Kieli asetettu onnistuneesti.",
+    "metadataLanguagesSet": "Metatietojen kielet on määritetty.",
     "preferedLanguage": "Suositeltu kieli",
+    "preferredMetadataLanguage": "Metatietojen ensisijainen kieli",
     "remoteAccess": "Etäkäyttö",
     "remoteAccessSet": "Etäkäyttö asetettu.",
     "setAdminError": "Pääkäyttäjän tiliä ei voitu luoda.",
+    "setLanguageError": "Päätteen kieltä ei voitu määrittää.",
+    "setMetadataError": "Metatietojen kieliä ei voitu määrittää.",
+    "setRemoteError": "Etäkäytön asetuksia ei voitu määrittää.",
     "setupWizard": "Ohjattu asennus",
     "userSuccessfullySet": "Käyttäjä asetettu onnistuneesti."
   },
   "writer": "Kirjoittaja",
+  "writing": "Kirjoitus",
   "year": "Vuosi",
   "years": "Vuodet",
   "youMayAlsoLike": "Saatat myös pitää seuraavista"
