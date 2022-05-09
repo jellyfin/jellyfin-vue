@@ -99,7 +99,7 @@
         </v-card>
       </v-col>
       <v-dialog v-model="deviceInfoDialog" width="fit-content">
-        <selected-dlna-profile
+        <dlna-profile-editor
           v-if="selectedProfile.Name"
           :selected-profile="selectedProfile"
           :is-dialog="true"
@@ -123,7 +123,7 @@ import {
   UserDto
 } from '@jellyfin/client-axios';
 import isNil from 'lodash/isNil';
-import SelectedDlnaProfile from '~/components/System/SelectedDlnaProfile.vue';
+import DlnaProfileEditor from '~/components/System/DlnaProfileEditor.vue';
 
 /**
  * We need to define those interfaces here as the axios hook for
@@ -148,7 +148,7 @@ interface DlnaNamedConfiguration extends RelevantConfig {
 }
 
 export default Vue.extend({
-  components: { SelectedDlnaProfile },
+  components: { DlnaProfileEditor },
   async asyncData({ $api }) {
     const dlnaSettings = (
       await $api.configuration.getNamedConfiguration({ key: 'dlna' })

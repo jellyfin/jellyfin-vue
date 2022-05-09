@@ -381,9 +381,9 @@
             },
             "mediaTypes": {
               "text": "Supported Media Types",
-              "audio": "Audio",
-              "video": "Video",
-              "photo": "Photo"
+              "Audio": "Audio",
+              "Video": "Video",
+              "Photo": "Photo"
             },
             "maxStreamQuality": {
               "text": "Maximum streaming quality",
@@ -396,99 +396,100 @@
           },
           "display": {
             "title": "Display Settings",
-            "plainFolder": {
+            "RequiresPlainFolders": {
               "text": "Display all folders as plain storage folders",
               "info": "All folders are represented in DIDL as \"object.container.storageFolder\" instead of a more specific type, such as \"object.container.person.musicArtist\"."
             },
-            "plainVideo": {
+            "RequiresPlainVideoItems": {
               "text": "Display all videos as plain video items",
               "info": "All videos are represented in DIDL as \"object.item.videoItem\" instead of a more specific type, such as \"object.item.videoItem.movie\"."
             }
           },
           "image": {
             "title": "Image Settings",
-            "albumMaxDimension": "Maximum resolution of album art exposed via the upnp:albumArtURI property.",
-            "iconMaxDimension": "Maximum resolution of icons exposed via the upnp:icon property.",
-            "embedDidl": {
+            "EnableAlbumArtInDidl": {
               "text": "Embed album art in Didl",
               "info": "Some devices prefer this method for obtaining album art. Others may fail to play with this option enabled."
             },
-            "singleEmbed": {
+            "EnableSingleAlbumArtLimit": {
               "text": "Limit to single embedded image",
               "info": "Some devices will not render properly if multiple images are embedded within Didl."
             },
-            "albumPN": {
+            "AlbumArtPn": {
               "text": "Album art PN",
               "info": "PN used for album art, within the dlna:profileID attribute on upnp:albumArtURI. Some devices require a specific value, regardless of the size of the image."
             },
-            "albumArtMaxWidth": "Album art max width",
-            "albumArtMaxHeight": "Album art max height",
-            "iconMaxWidth": "Icon maximum width",
-            "iconMaxHeight": "Icon maximum height"
+            "MaxAlbumArtWidth": {
+              "text": "Album art max width",
+              "info": "Maximum resolution of album art exposed via the upnp:albumArtURI property."
+            },
+            "MaxAlbumArtHeight": {
+              "text": "Album art max height",
+              "info": "Maximum resolution of album art exposed via the upnp:albumArtURI property."
+            },
+            "MaxIconWidth": {
+              "text": "Icon maximum width",
+              "info": "Maximum resolution of icons exposed via the upnp:icon property."
+            },
+            "MaxIconHeight": {
+              "text": "Icon maximum height",
+              "info": "Maximum resolution of icons exposed via the upnp:icon property."
+            }
           }
         },
         "identification": {
           "title": "Identification",
+          "FriendlyName": "Friendly name",
+          "Manufacturer": "Manufacturer",
+          "ManufacturerUrl": "Manufacturer URL",
+          "ModelName": "Model name",
+          "ModelNumber": "Model number",
+          "ModelDescription": "Model description",
+          "ModelUrl": "Model URL",
+          "SerialNumber": "Serial number",
+          "ProtocolInfo": "Protocol info",
+          "SonyAggregationFlags": "Sony aggregation flags",
+          "extra": {
+            "ProtocolInfo": "The value that will be used when responding to GetProtocolInfo requests from the device.",
+            "SonyAggregationFlags": "Determines the content of the aggreagationFlags element in the urn:schemas-sonycom:av namespace."
+          },
           "device": {
             "title": "Device identification",
             "info": "Enter at least one identification criteria.",
-            "infoText": "A case-insensitive substring or regex expression.",
-            "friendlyName": "Friendly name",
-            "manufacturer": "Manufacturer",
-            "manufacturerUrl": "Manufacturer URL",
-            "modelName": "Model name",
-            "modelNumber": "Model number",
-            "modelDescription": "Model description",
-            "modelUrl": "Model URL",
-            "serialNumber": "Serial number",
-            "deviceDescription": "Device description"
+            "infoText": "A case-insensitive substring or regex expression."
           },
           "server": {
             "title": "Server identification",
-            "info": "These values control how the server will present itself to clients.",
-            "friendlyName": "Friendly name",
-            "manufacturer": "Manufacturer",
-            "manufacturerUrl": "Manufacturer URL",
-            "modelName": "Model name",
-            "modelNumber": "Model number",
-            "modelDescription": "Model description",
-            "modelUrl": "Model URL",
-            "serialNumber": "Serial number",
-            "protocolInfo": {
-              "text": "Protocol info",
-              "info": "The value that will be used when responding to GetProtocolInfo requests from the device."
-            },
-            "sonyAggregationFlags": {
-              "text": "Sony aggregation flags",
-              "info": "Determines the content of the aggreagationFlags element in the urn:schemas-sonycom:av namespace."
-            }
+            "info": "These values control how the server will present itself to clients."
           }
         },
-        "subtitle": {
-          "title": "Subtitle"
+        "SubtitleProfiles": {
+          "title": "Subtitle",
+          "text": "Subtitle profiles describe the subtitle formats supported by the device."
         },
-        "directPlay": {
+        "DirectPlayProfiles": {
           "title": "Direct Play",
           "text": "Add direct play profiles to indicate which formats the device can handle natively."
         },
-        "transcoding": {
+        "TranscodingProfiles": {
           "title": "Transcoding",
           "text": "Add transcoding profiles to indicate which formats should be used when transcoding is required."
         },
-        "containers": {
+        "ContainerProfiles": {
           "title": "Containers",
           "text": "Container profiles indicate the limitations of a device when playing specific formats. If a limitation applies then the media will be transcoded, even if the format is configured for direct play."
         },
-        "codecs": {
+        "CodecProfiles": {
           "title": "Codecs",
           "text": "Codec profiles indicate the limitations of a device when playing specific codecs. If a limitation applies then the media will be transcoded, even if the codec is configured for direct play."
         },
-        "responses": {
+        "ResponseProfiles": {
           "title": "Responses",
           "text": "Response profiles provide a way to customize information sent to the device when playing certain kinds of media."
         },
-        "xml": {
-          "title": "XML"
+        "XmlRootAttributes": {
+          "title": "XML",
+          "text": "These attributes are applied to the root element of every XML response."
         }
       }
     },
