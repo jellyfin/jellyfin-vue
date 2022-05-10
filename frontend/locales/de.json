@@ -142,6 +142,7 @@
     "changeServer": "Server wechseln",
     "changeUser": "Benutzer wechseln",
     "connect": "Verbinden",
+    "kickedOut": "Die Autorisierung wurde widerrufen und diese Sitzung ist nicht mehr gültig. Bitte melden Sie sich erneut an",
     "login": "Anmelden",
     "loginAs": "Anmelden als {name}",
     "manualLogin": "Manuelle Anmeldung",
