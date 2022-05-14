@@ -41,7 +41,6 @@ import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { canResume, canPlay } from '~/utils/items';
 import { ticksToMs } from '~/utils/time';
-import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
   props: {
@@ -83,19 +82,12 @@ export default Vue.extend({
   computed: {
     ...mapStores(playbackManagerStore)
   },
-  watch: {
-    'playbackManager.status'(): void {
-      if (this.playbackManager.status === PlaybackStatus.Playing) {
-        this.loading = false;
-      }
-    }
-  },
   methods: {
-    playOrResume(): void {
+    async playOrResume(): Promise<void> {
       this.loading = true;
 
       if (this.item && canResume(this.item)) {
-        this.playbackManager.play({
+        await this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
@@ -105,7 +97,7 @@ export default Vue.extend({
         });
       } else if (this.shuffle) {
         // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
-        this.playbackManager.play({
+        await this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
@@ -113,13 +105,15 @@ export default Vue.extend({
           startShuffled: true
         });
       } else {
-        this.playbackManager.play({
+        await this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
           videoTrackIndex: this.videoTrackIndex
         });
       }
+
+      this.loading = false;
     },
     canPlay,
     canResume

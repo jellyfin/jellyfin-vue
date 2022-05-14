@@ -139,39 +139,44 @@ export const playbackManagerStore = defineStore('playbackManager', {
       initiator?: BaseItemDto;
       startShuffled?: boolean;
     }): Promise<void> {
-      if (this.status !== PlaybackStatus.Stopped) {
-        this.stop();
+      try {
+        if (this.status !== PlaybackStatus.Stopped) {
+          this.stop();
+        }
+
+        this.status = PlaybackStatus.Buffering;
+        this.queue = await this.translateItemsForPlayback(item, startShuffled);
+
+        if (videoTrackIndex !== undefined) {
+          this.currentVideoStreamIndex = videoTrackIndex;
+        }
+
+        if (audioTrackIndex !== undefined) {
+          this.currentAudioStreamIndex = audioTrackIndex;
+        }
+
+        if (subtitleTrackIndex !== undefined) {
+          this.currentSubtitleStreamIndex = subtitleTrackIndex;
+        }
+
+        this.currentItemIndex = startFromIndex;
+        this.currentTime = startFromTime;
+
+        if (!startShuffled && initiator) {
+          this.playbackInitMode = InitMode.Item;
+        } else if (startShuffled && !initiator) {
+          this.playbackInitMode = InitMode.Shuffle;
+        } else if (startShuffled && initiator) {
+          this.playbackInitMode = InitMode.ShuffleItem;
+        } else {
+          this.playbackInitMode = InitMode.Unknown;
+        }
+
+        this.playbackInitiator = initiator || null;
+        this.status = PlaybackStatus.Playing;
+      } catch {
+        this.status = PlaybackStatus.Error;
       }
-
-      this.queue = await this.translateItemsForPlayback(item, startShuffled);
-
-      if (videoTrackIndex !== undefined) {
-        this.currentVideoStreamIndex = videoTrackIndex;
-      }
-
-      if (audioTrackIndex !== undefined) {
-        this.currentAudioStreamIndex = audioTrackIndex;
-      }
-
-      if (subtitleTrackIndex !== undefined) {
-        this.currentSubtitleStreamIndex = subtitleTrackIndex;
-      }
-
-      this.currentItemIndex = startFromIndex;
-      this.currentTime = startFromTime;
-
-      if (!startShuffled && initiator) {
-        this.playbackInitMode = InitMode.Item;
-      } else if (startShuffled && !initiator) {
-        this.playbackInitMode = InitMode.Shuffle;
-      } else if (startShuffled && initiator) {
-        this.playbackInitMode = InitMode.ShuffleItem;
-      } else {
-        this.playbackInitMode = InitMode.Unknown;
-      }
-
-      this.playbackInitiator = initiator || null;
-      this.status = PlaybackStatus.Playing;
     },
     /**
      * Adds to the queue the items of a collection item (i.e album, tv show, etc...)
