@@ -5,6 +5,7 @@
         v-for="(item, index) in queue"
         :key="`${item.Id}-${index}`"
         v-slot="{ hover }"
+        ref="listItems"
       >
         <v-list-item ripple @click="onClick(index)">
           <v-list-item-action
@@ -86,6 +87,23 @@ export default Vue.extend({
           })
         );
       }
+    }
+  },
+  /**
+   * Scroll the currently playing item to view after opening the queue
+   */
+  mounted() {
+    const ref = this.$refs.listItems as Vue[];
+    const currentItemId = this.playbackManager.getCurrentItem?.Id || '';
+
+    const el = ref.find(
+      (v) => v.$vnode.key === `${currentItemId}-${ref.indexOf(v)}`
+    );
+
+    if (el?.$el) {
+      window.requestIdleCallback(() => {
+        el.$el.scrollIntoView();
+      });
     }
   },
   methods: {
