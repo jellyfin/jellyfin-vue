@@ -9,8 +9,8 @@
         <v-list-item ripple @click="onClick(index)">
           <v-list-item-action
             v-if="!hover"
-            class="list-group-item d-flex justify-center d-flex text-caption"
-            :class="{ 'primary--text': isPlaying(index) }"
+            class="list-group-item d-flex justify-center d-flex"
+            :class="{ 'primary--text font-weight-bold': isPlaying(index) }"
           >
             {{ index + 1 }}
           </v-list-item-action>
@@ -23,7 +23,9 @@
 
           <v-list-item-content>
             <v-list-item-title
-              :class="{ 'primary--text': isPlaying(index) }"
+              :class="{
+                'primary--text font-weight-bold': isPlaying(index)
+              }"
               class="text-truncate ml-2 list-group-item"
             >
               {{ item.Name }}
@@ -31,7 +33,9 @@
             <v-list-item-subtitle
               v-if="getArtists(item)"
               class="ml-2 list-group-item"
-              :class="{ 'primary--text': isPlaying(index) }"
+              :class="{
+                'primary--text font-weight-bold': isPlaying(index)
+              }"
             >
               {{ getArtists(item) }}
             </v-list-item-subtitle>
