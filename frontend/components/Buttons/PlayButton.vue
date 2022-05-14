@@ -6,6 +6,7 @@
       :text="iconOnly"
       :color="iconOnly ? null : 'primary'"
       :loading="loading"
+      :disabled="disabled"
       @click.prevent="playOrResume"
     >
       <v-icon v-if="shuffle" :size="fab ? 36 : null">mdi-shuffle</v-icon>
@@ -13,7 +14,7 @@
     </v-btn>
     <v-btn
       v-else-if="!fab"
-      :disabled="!canPlay(item)"
+      :disabled="disabled || !canPlay(item)"
       :loading="loading"
       class="mr-2"
       color="primary"
@@ -69,6 +70,10 @@ export default Vue.extend({
     subtitleTrackIndex: {
       type: Number,
       default: undefined
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
