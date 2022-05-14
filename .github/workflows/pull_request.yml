@@ -26,7 +26,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Run linter ✏️
-        run: npm run lint
+        run: 'npm run lint:js && npm run lint:style'
 
   test:
     name: Test 🧫
