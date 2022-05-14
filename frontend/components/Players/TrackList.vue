@@ -32,7 +32,7 @@
             @dblclick="playTracks(track)"
           >
             <td style="width: 4em" class="pr-0 text-center">
-              <span v-if="hover">
+              <span v-if="hover && !isPlaying(track)">
                 <v-btn small icon @click="playTracks(track)">
                   <v-icon>mdi-play-circle-outline</v-icon>
                 </v-btn>
