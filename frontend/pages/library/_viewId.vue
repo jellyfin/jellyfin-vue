@@ -12,7 +12,7 @@
       <type-button
         v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
-        :disabled="loading"
+        :disabled="noContent"
         @change="onChangeType"
       />
       <v-divider
@@ -23,7 +23,7 @@
       />
       <sort-button
         v-if="isSortable"
-        :disabled="loading || !items.length"
+        :disabled="noContent"
         @change="onChangeSort"
       />
       <filter-button
@@ -34,8 +34,8 @@
         @change="onChangeFilter"
       />
       <v-spacer />
-      <play-button :item="collectionInfo" shuffle />
-      <play-button :item="collectionInfo" />
+      <play-button :item="collectionInfo" shuffle :disabled="noContent" />
+      <play-button :item="collectionInfo" :disabled="noContent" />
     </v-app-bar>
     <v-container>
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
@@ -104,6 +104,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(authStore, snackbarStore, pageStore),
+    noContent(): boolean {
+      return this.loading || !this.itemsCount;
+    },
     hasViewTypes(): boolean {
       if (
         ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
