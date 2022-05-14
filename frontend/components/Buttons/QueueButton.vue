@@ -121,7 +121,8 @@ export default Vue.extend({
   data() {
     return {
       menu: false,
-      destroy: false
+      destroy: false,
+      timeout: -1
     };
   },
   computed: {
@@ -193,10 +194,12 @@ export default Vue.extend({
   watch: {
     menu(): void {
       if (!this.menu) {
-        setTimeout(() => {
+        this.timeout = window.setTimeout(() => {
           this.destroy = true;
         }, 500);
       } else {
+        window.clearTimeout(this.timeout);
+        this.timeout = -1;
         this.destroy = false;
       }
     }
