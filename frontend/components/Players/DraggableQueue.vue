@@ -3,13 +3,13 @@
     <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
       <v-hover
         v-for="(item, index) in queue"
-        :key="`${item.Id}-${getUuid()}`"
+        :key="`${item.Id}-${index}`"
         v-slot="{ hover }"
       >
         <v-list-item ripple @click="onClick(index)">
           <v-list-item-action
             v-if="!hover"
-            class="list-group-item d-flex justify-center d-flex"
+            class="list-group-item d-flex justify-center d-flex transition"
             :class="{ 'primary--text font-weight-bold': isPlaying(index) }"
           >
             {{ index + 1 }}
@@ -26,13 +26,13 @@
               :class="{
                 'primary--text font-weight-bold': isPlaying(index)
               }"
-              class="text-truncate ml-2 list-group-item"
+              class="text-truncate ml-2 list-group-item transition"
             >
               {{ item.Name }}
             </v-list-item-title>
             <v-list-item-subtitle
               v-if="getArtists(item)"
-              class="ml-2 list-group-item"
+              class="ml-2 list-group-item transition"
               :class="{
                 'primary--text font-weight-bold': isPlaying(index)
               }"
@@ -41,10 +41,10 @@
             </v-list-item-subtitle>
           </v-list-item-content>
 
-          <v-list-item-action v-if="!isPlaying(index)">
+          <v-list-item-action v-hide="isPlaying(index)">
             <like-button :item="item" />
           </v-list-item-action>
-          <v-list-item-action v-if="!isPlaying(index)" class="mr-2">
+          <v-list-item-action v-hide="isPlaying(index)" class="mr-2">
             <v-btn icon @click="playbackManager.removeFromQueue(item.Id)">
               <v-icon>mdi-playlist-minus</v-icon>
             </v-btn>
@@ -58,7 +58,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { playbackManagerStore } from '~/store';
 
@@ -100,15 +99,6 @@ export default Vue.extend({
         return null;
       }
     },
-    /**
-     * There can be duplicated items in the queue, so we generate an unique uuid
-     * for each item.
-     *
-     * @returns {string} The generated UUID.
-     */
-    getUuid(): string {
-      return uuidv4();
-    },
     onClick(index: number): void {
       this.playbackManager.setCurrentIndex(index);
     }
@@ -117,6 +107,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.transition {
+  transition: all 0.15s ease-in;
+}
+
 .list-group {
   margin: 0 !important;
 }
