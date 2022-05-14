@@ -121,7 +121,7 @@ const config: NuxtConfig = {
      ** Vue plugins
      */
     'plugins/vue/components.ts',
-    'plugins/vue/directives/hide.ts'
+    'plugins/vue/directives.ts'
   ],
   /*
    ** Auto import components
