@@ -26,18 +26,25 @@
           </v-btn>
         </template>
         <v-list dense nav>
-          <v-list-item
-            v-for="(menuOption, index) in options"
-            :key="`item-${item.Id}-menu-${index}`"
-            @click="menuOption.action"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ menuOption.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="text">
-              {{ menuOption.title }}
-            </v-list-item-title>
-          </v-list-item>
+          <template v-for="(section, index1) in options">
+            <v-divider
+              v-if="section.length && index1 > 0"
+              :key="`item-${item.Id}-section-${index1}-divider`"
+              light
+            />
+            <v-list-item
+              v-for="(menuOption, index2) in section"
+              :key="`item-${item.Id}-section-${index1}-option-${index2}`"
+              @click="menuOption.action"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ menuOption.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="text">
+                {{ menuOption.title }}
+              </v-list-item-title>
+            </v-list-item>
+          </template>
         </v-list>
       </v-menu>
     </v-fade-transition>
@@ -80,11 +87,15 @@ export default Vue.extend({
     },
     zIndex: {
       type: Number,
-      default: 200
+      default: 1000
     },
     rightClick: {
       type: Boolean,
       default: true
+    },
+    queue: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -98,11 +109,65 @@ export default Vue.extend({
   computed: {
     ...mapStores(authStore, snackbarStore, playbackManagerStore),
     options: {
-      get(): MenuOption[] {
-        const menuOptions = [] as MenuOption[];
+      get(): MenuOption[][] {
+        const menuOptions = [] as MenuOption[][];
+        const playNextAction = {
+          title: this.$t('playback.playNext'),
+          icon: 'mdi-play-speed',
+          action: () => {
+            this.playbackManager.playNext(this.item);
+            this.snackbar.push(this.$t('snackbar.playNext'), 'success');
+          }
+        };
 
+        /**
+         * Queue options
+         */
+        const queueOptions = [] as MenuOption[];
+        if (this.queue && this.playbackManager.queue.includes(this.item.Id)) {
+          queueOptions.push({
+            title: this.$t('itemMenu.pushToTop'),
+            icon: 'mdi-arrow-expand-up',
+            action: () => {
+              this.playbackManager.changeItemPosition(this.item.Id, 0);
+            }
+          });
+
+          if (this.playbackManager.getCurrentItem?.Id !== this.item.Id) {
+            queueOptions.push({
+              title: this.$t('itemMenu.removeFromQueue'),
+              icon: 'mdi-playlist-minus',
+              action: () => {
+                this.playbackManager.removeFromQueue(this.item.Id);
+              }
+            });
+          }
+
+          if (
+            this.playbackManager.getNextItem?.Id !== this.item.Id &&
+            this.playbackManager.getCurrentItem?.Id !== this.item.Id
+          ) {
+            queueOptions.push(playNextAction);
+          }
+
+          queueOptions.push({
+            title: this.$t('itemMenu.pushToBottom'),
+            icon: 'mdi-arrow-expand-down',
+            action: () => {
+              this.playbackManager.changeItemPosition(
+                this.item.Id,
+                this.playbackManager.queue.length - 1
+              );
+            }
+          });
+        }
+
+        /**
+         * Playback options
+         */
+        const playbackOptions = [] as MenuOption[];
         if (canResume(this.item)) {
-          menuOptions.push({
+          playbackOptions.push({
             title: this.$t('playFromBeginning'),
             icon: 'mdi-replay',
             action: () => {
@@ -113,7 +178,7 @@ export default Vue.extend({
           });
         }
 
-        menuOptions.push({
+        playbackOptions.push({
           title: this.$t('playback.shuffle'),
           icon: 'mdi-shuffle',
           action: () => {
@@ -126,30 +191,35 @@ export default Vue.extend({
         });
 
         if (this.playbackManager.getCurrentItem) {
-          menuOptions.push({
-            title: this.$t('playback.playNext'),
-            icon: 'mdi-play-speed',
-            action: () => {
-              this.playbackManager.playNext(this.item);
-            }
-          });
+          if (
+            this.playbackManager.getNextItem?.Id !== this.item.Id &&
+            this.playbackManager.getCurrentItem?.Id !== this.item.Id &&
+            !this.queue
+          ) {
+            playbackOptions.push(playNextAction);
+          }
 
-          menuOptions.push({
+          playbackOptions.push({
             title: this.$t('playback.addToQueue'),
             icon: 'mdi-playlist-plus',
             action: () => {
               this.playbackManager.addToQueue(this.item);
+              this.snackbar.push(this.$t('snackbar.addedToQueue'), 'success');
             }
           });
         }
 
+        /**
+         * Library options
+         */
+        const libraryOptions = [] as MenuOption[];
         if (
           this.auth.currentUser?.Policy?.IsAdministrator &&
           ['Folder', 'CollectionFolder', 'UserView'].includes(
             this.item.Type || ''
           )
         ) {
-          menuOptions.push({
+          libraryOptions.push({
             title: this.$t('refreshLibrary'),
             icon: 'mdi-refresh',
             action: async () => {
@@ -172,7 +242,7 @@ export default Vue.extend({
         }
 
         if (this.auth.currentUser?.Policy?.IsAdministrator) {
-          menuOptions.push({
+          libraryOptions.push({
             title: this.$t('editMetadata'),
             icon: 'mdi-pencil-outline',
             action: () => {
@@ -181,6 +251,9 @@ export default Vue.extend({
           });
         }
 
+        menuOptions.push(queueOptions);
+        menuOptions.push(playbackOptions);
+        menuOptions.push(libraryOptions);
         return menuOptions;
       }
     }

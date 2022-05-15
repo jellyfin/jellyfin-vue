@@ -187,7 +187,12 @@ export const playbackManagerStore = defineStore('playbackManager', {
       const translatedItem = await this.translateItemsForPlayback(item);
 
       if (this.currentItemIndex !== null) {
-        this.queue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
+        /**
+         * Removes the elements that already exists and append the new ones next to the currently playing item
+         */
+        const newQueue = this.queue.filter((i) => !translatedItem.includes(i));
+        newQueue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
+        this.setNewQueue(newQueue);
       }
     },
     pause(): void {
@@ -301,6 +306,13 @@ export const playbackManagerStore = defineStore('playbackManager', {
       this.queue = queue;
       this.lastItemIndex = lastItemNewIndex;
       this.currentItemIndex = newIndex;
+    },
+    changeItemPosition(itemId: string | undefined, newIndex: number): void {
+      if (itemId && this.queue.includes(itemId)) {
+        const newQueue = this.queue.filter((i) => i !== itemId);
+        newQueue.splice(newIndex, 0, itemId);
+        this.setNewQueue(newQueue);
+      }
     },
     stop(): void {
       const volume = this.currentVolume;
