@@ -45,10 +45,8 @@
           <v-list-item-action v-hide="isPlaying(index)">
             <like-button :item="item" />
           </v-list-item-action>
-          <v-list-item-action v-hide="isPlaying(index)" class="mr-2">
-            <v-btn icon @click="playbackManager.removeFromQueue(item.Id)">
-              <v-icon>mdi-playlist-minus</v-icon>
-            </v-btn>
+          <v-list-item-action class="mr-2">
+            <item-menu :item="item" queue />
           </v-list-item-action>
         </v-list-item>
       </v-hover>

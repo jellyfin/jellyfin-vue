@@ -42,6 +42,15 @@
       "startNow": "Start now"
     }
   },
+  "snackbar": {
+    "addedToQueue": "Added to queue",
+    "playNext": "The selected item will be played after the current one"
+  },
+  "itemMenu": {
+    "pushToTop": "Move to the beginning",
+    "pushToBottom": "Move to the end",
+    "removeFromQueue": "Remove from queue"
+  },
   "directing": "Directing",
   "director": "Director",
   "disabled": "Disabled",
