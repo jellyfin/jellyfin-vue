@@ -1,12 +1,11 @@
 <template>
   <v-card class="dlnaProfileEditor">
-    <v-row v-if="isDialog" class="ma-0 justify-space-between align-center">
+    <v-row class="ma-0 justify-space-between align-center">
       <v-card-title>{{ selectedProfile.Name }}</v-card-title>
       <v-btn icon class="mr-2" @click="$emit('close-dialog')">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-row>
-    <v-card-title v-else>{{ currentProfile.Name }}</v-card-title>
     <v-tabs v-model="tab" centered dark icons-and-text>
       <v-tabs-slider />
       <v-tab v-for="i in categories" :key="i" :href="'#tab-' + i">
@@ -20,37 +19,24 @@
           <v-list-group :value="true">
             <template #activator>
               <v-list-item-title>
-                {{ $t('settings.dlna.profile.info.general.title') }}
+                {{ $t('settings.dlna.profile.info.general') }}
               </v-list-item-title>
             </template>
-            <v-list-item>
+            <v-list-item
+              v-for="key in Object.keys(profileInformation)"
+              :key="key"
+            >
               <v-list-item-content>
                 <v-list-item-title
-                  v-text="$t('settings.dlna.profile.info.general.name.text')"
+                  v-text="$t('settings.dlna.profile.info.' + key + '.text')"
                 />
                 <v-list-item-subtitle
-                  v-text="$t('settings.dlna.profile.info.general.name.info')"
-                />
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-text-field v-model="currentProfile.Name" outlined dense />
-              </v-list-item-action>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="
-                    $t('settings.dlna.profile.info.general.userLibrary.text')
-                  "
-                />
-                <v-list-item-subtitle
-                  v-text="
-                    $t('settings.dlna.profile.info.general.userLibrary.info')
-                  "
+                  v-text="$t('settings.dlna.profile.info.' + key + '.info')"
                 />
               </v-list-item-content>
               <v-list-item-action>
                 <v-select
+                  v-if="key === 'UserId'"
                   v-model="currentProfile.UserId"
                   :items="users"
                   item-text="Name"
@@ -61,56 +47,15 @@
                   :label="$t('settings.dlna.DefaultUserId.selector')"
                   reverse
                 />
-              </v-list-item-action>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="
-                    $t(
-                      'settings.dlna.profile.info.general.maxStreamQuality.text'
-                    )
-                  "
-                />
-                <v-list-item-subtitle
-                  v-text="
-                    $t(
-                      'settings.dlna.profile.info.general.maxStreamQuality.info'
-                    )
-                  "
-                />
-              </v-list-item-content>
-              <v-list-item-action>
                 <v-text-field
-                  v-model.number="currentProfile.MaxStreamingBitrate"
-                  type="number"
+                  v-else-if="typeof currentProfile[key] === 'string'"
+                  v-model="currentProfile[key]"
                   outlined
                   dense
                 />
-              </v-list-item-action>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="
-                    $t(
-                      'settings.dlna.profile.info.general.musicTranscodeQuality.text'
-                    )
-                  "
-                />
-                <v-list-item-subtitle
-                  v-text="
-                    $t(
-                      'settings.dlna.profile.info.general.musicTranscodeQuality.info'
-                    )
-                  "
-                />
-              </v-list-item-content>
-              <v-list-item-action>
                 <v-text-field
-                  v-model.number="
-                    currentProfile.MusicStreamingTranscodingBitrate
-                  "
+                  v-else
+                  v-model.number="currentProfile.MaxStreamingBitrate"
                   type="number"
                   outlined
                   dense
@@ -123,7 +68,7 @@
           <v-list-group :value="false">
             <template #activator>
               <v-list-item-title>
-                {{ $t('settings.dlna.profile.info.general.mediaTypes.text') }}
+                {{ $t('settings.dlna.profile.info.mediaTypes.text') }}
               </v-list-item-title>
             </template>
             <v-list-item v-for="key in Object.keys(mediaTypes)" :key="key">
@@ -132,9 +77,7 @@
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title
-                  v-text="
-                    $t('settings.dlna.profile.info.general.mediaTypes.' + key)
-                  "
+                  v-text="$t('settings.dlna.profile.info.mediaTypes.' + key)"
                 />
               </v-list-item-content>
             </v-list-item>
@@ -273,15 +216,7 @@
       </v-tab-item>
 
       <v-tab-item
-        v-for="section in [
-          'SubtitleProfiles',
-          'DirectPlayProfiles',
-          'TranscodingProfiles',
-          'ContainerProfiles',
-          'CodecProfiles',
-          'ResponseProfiles',
-          'XmlRootAttributes'
-        ]"
+        v-for="section in tableCategories"
         :key="section"
         :value="'tab-' + section"
       >
@@ -295,17 +230,36 @@
                 {{ $t('settings.dlna.profile.' + section + '.text') }}
               </v-toolbar-title>
               <v-spacer />
+              <v-btn class="ml-a" color="primary" @click="newItem(section)">
+                {{ $t('settings.dlna.newEntry') }}
+              </v-btn>
+              <v-dialog
+                v-model="entryEditor"
+                width="fit-content"
+                :retain-focus="false"
+              >
+                <dlna-entry-editor
+                  v-if="editEntry !== undefined"
+                  :entry-data="editEntry"
+                  :category="currentCategory"
+                  @close-editor="closeEditor"
+                  @save-item="saveItem"
+                />
+              </v-dialog>
             </v-toolbar>
           </template>
+          <template #item.Conditions="{ item }">
+            {{ JSON.stringify(item.Conditions) }}
+          </template>
+          <template #item.action="{ item }">
+            <v-icon small class="mr-2" @click="editItem(section, item)">
+              mdi-pencil
+            </v-icon>
+            <v-icon small class="mr-2" @click="deleteItem(section, item)">
+              mdi-delete
+            </v-icon>
+          </template>
         </v-data-table>
-      </v-tab-item>
-
-      <v-tab-item value="tab-xml">
-        <v-card>
-          <v-card-text>
-            {{ $t('settings.dlna.profile.xml.text') }}
-          </v-card-text>
-        </v-card>
       </v-tab-item>
     </v-tabs-items>
     <v-card-actions>
@@ -330,10 +284,20 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
+  CodecProfile,
+  ContainerProfile,
   DeviceProfile,
+  DirectPlayProfile,
   DlnaProfileType,
-  UserDto
+  SubtitleProfile,
+  TranscodeSeekInfo,
+  TranscodingProfile,
+  UserDto,
+  XmlAttribute
 } from '@jellyfin/client-axios';
+import { SubtitleDeliveryMethod } from '@jellyfin/client-axios/dist/models/subtitle-delivery-method';
+import { EncodingContext } from '@jellyfin/client-axios/dist/models/encoding-context';
+import { CodecType } from '@jellyfin/client-axios/dist/models/codec-type';
 
 enum DlnaProfileCategories {
   info = 'info',
@@ -345,6 +309,23 @@ enum DlnaProfileCategories {
   codecs = 'CodecProfiles',
   responses = 'ResponseProfiles',
   xml = 'XmlRootAttributes'
+}
+
+enum TableCategories {
+  SubtitleProfiles = 'SubtitleProfiles',
+  DirectPlayProfiles = 'DirectPlayProfiles',
+  TranscodingProfiles = 'TranscodingProfiles',
+  ContainerProfiles = 'ContainerProfiles',
+  CodecProfiles = 'CodecProfiles',
+  ResponseProfiles = 'ResponseProfiles',
+  XmlRootAttributes = 'XmlRootAttributes'
+}
+
+enum ProfileInfo {
+  Name = 'Name',
+  UserId = 'UserId',
+  MaxStreamingBitrate = 'MaxStreamingBitrate',
+  MusicStreamingTranscodingBitrate = 'MusicStreamingTranscodingBitrate'
 }
 
 enum ServerIdentification {
@@ -375,6 +356,19 @@ enum ImageSettings {
   MaxIconHeight = 'MaxIconHeight'
 }
 
+type TableUnion =
+  | SubtitleProfile
+  | DirectPlayProfile
+  | TranscodingProfile
+  | CodecProfile
+  | ContainerProfile
+  | XmlAttribute;
+
+interface HeaderType {
+  text: string;
+  value: string;
+}
+
 export default Vue.extend({
   props: {
     selectedProfile: {
@@ -390,195 +384,107 @@ export default Vue.extend({
     users: {
       type: Array as () => UserDto[],
       default: () => undefined
-    },
-    isDialog: {
-      default: false,
-      type: Boolean
     }
   },
   data() {
     return {
-      headers: {
-        SubtitleProfiles: [
-          {
-            text: 'Format',
-            value: 'Format'
-          },
-          {
-            text: 'Method',
-            value: 'Method'
-          },
-          {
-            text: 'DidlMode',
-            value: 'DidlMode'
-          },
-          {
-            text: 'Language',
-            value: 'Language'
-          },
-          {
-            text: 'Container',
-            value: 'Container'
-          }
-        ],
-        DirectPlayProfiles: [
-          {
-            text: 'Container',
-            value: 'Container'
-          },
-          {
-            text: 'AudioCodec',
-            value: 'AudioCodec'
-          },
-          {
-            text: 'VideoCodec',
-            value: 'VideoCodec'
-          },
-          {
-            text: 'Type',
-            value: 'Type'
-          }
-        ],
-        TranscodingProfiles: [
-          {
-            text: 'Container',
-            value: 'Container'
-          },
-          {
-            text: 'Type',
-            value: 'Type'
-          },
-          {
-            text: 'AudioCodec',
-            value: 'AudioCodec'
-          },
-          {
-            text: 'VideoCodec',
-            value: 'VideoCodec'
-          },
-          {
-            text: 'Protocol',
-            value: 'Protocol'
-          },
-          {
-            text: 'EstimateContentLength',
-            value: 'EstimateContentLength'
-          },
-          {
-            text: 'EnableMpegtsM2TsMode',
-            value: 'EnableMpegtsM2TsMode'
-          },
-          {
-            text: 'TranscodeSeekInfo',
-            value: 'TranscodeSeekInfo'
-          },
-          {
-            text: 'CopyTimeStamps',
-            value: 'CopyTimeStamps'
-          },
-          {
-            text: 'Context',
-            value: 'Context'
-          },
-          {
-            text: 'EnableSubtitleInManifest',
-            value: 'EnableSubtitleInManifest'
-          },
-          {
-            text: 'MaxAudioChannels',
-            value: 'MaxAudioChannels'
-          },
-          {
-            text: 'MinSegments',
-            value: 'MinSegments'
-          },
-          {
-            text: 'SegmentLength',
-            value: 'SegmentLength'
-          },
-          {
-            text: 'BreakOnNonKeyFrames',
-            value: 'BreakOnNonKeyFrames'
-          }
-        ],
-        ContainerProfiles: [
-          {
-            text: 'Type',
-            value: 'Type'
-          },
-          {
-            text: 'Condition',
-            value: 'Condition'
-          },
-          {
-            text: 'Container',
-            value: 'Container'
-          }
-        ],
-        CodecProfiles: [
-          {
-            text: 'Type',
-            value: 'Type'
-          },
-          {
-            text: 'Condition',
-            value: 'Condition'
-          },
-          {
-            text: 'Container',
-            value: 'Container'
-          }
-        ],
-        ResponseProfiles: [
-          {
-            text: 'Container',
-            value: 'Container'
-          },
-          {
-            text: 'AudioCodec',
-            value: 'AudioCodec'
-          },
-          {
-            text: 'VideoCodec',
-            value: 'VideoCodec'
-          },
-          {
-            text: 'Type',
-            value: 'Type'
-          },
-          {
-            text: 'OrgPn',
-            value: 'OrgPn'
-          },
-          {
-            text: 'MimeType',
-            value: 'MimeType'
-          },
-          {
-            text: 'Conditions',
-            value: 'Conditions'
-          }
-        ],
-        XmlRootAttributes: [
-          {
-            text: 'Name',
-            value: 'Name'
-          },
-          {
-            text: 'Value',
-            value: 'Value'
-          }
-        ]
-      },
+      entryEditor: false,
       mediaTypes: DlnaProfileType,
+      profileInformation: ProfileInfo,
+      tableCategories: TableCategories,
       serverIdentification: ServerIdentification,
       categories: DlnaProfileCategories,
       displaySettings: DisplaySettings,
       imageSettings: ImageSettings,
       tab: null,
+      originalItem: {} as TableUnion | undefined,
+      editEntry: {} as TableUnion | undefined,
+      currentCategory: '',
+      emptyProfiles: {
+        SubtitleProfiles: {
+          Format: '',
+          Method: SubtitleDeliveryMethod.External,
+          DidlMode: '',
+          Language: '',
+          Container: ''
+        },
+        DirectPlayProfiles: {
+          Container: '',
+          AudioCodec: '',
+          VideoCodec: '',
+          Type: DlnaProfileType.Audio
+        },
+        TranscodingProfiles: {
+          Container: '',
+          Type: DlnaProfileType.Audio,
+          VideoCodec: '',
+          AudioCodec: '',
+          Protocol: '',
+          EstimateContentLength: false,
+          EnableMpegtsM2TsMode: false,
+          TranscodeSeekInfo: TranscodeSeekInfo.Auto,
+          CopyTimestamps: false,
+          Context: EncodingContext.Static,
+          EnableSubtitlesInManifest: false,
+          MaxAudioChannels: '',
+          MinSegments: 0,
+          SegmentLength: 0,
+          BreakOnNonKeyFrames: false
+        },
+        ContainerProfiles: {
+          Type: DlnaProfileType.Audio,
+          Conditions: [],
+          Container: ''
+        },
+        CodecProfiles: {
+          Type: CodecType.Audio,
+          Conditions: [],
+          ApplyConditions: [],
+          Codec: '',
+          Container: ''
+        },
+        ResponseProfiles: {
+          Container: '',
+          AudioCodec: '',
+          VideoCodec: '',
+          Type: DlnaProfileType.Audio,
+          OrgPn: '',
+          MimeType: '',
+          Conditions: []
+        },
+        XmlRootAttributes: {
+          Name: '',
+          Value: ''
+        }
+      } as Record<string, TableUnion>,
       currentProfile: undefined as DeviceProfile | undefined,
       supportedMediaTypes: [] as Array<string> | undefined
     };
+  },
+  computed: {
+    headers(): Record<string, Array<HeaderType>> {
+      const record: Record<string, Array<HeaderType>> = {};
+
+      Object.entries(this.emptyProfiles).forEach(([key, value]) => {
+        const temp: Array<HeaderType> = [];
+
+        for (const entry in value) {
+          temp.push({
+            text: this.$t('settings.dlna.table.' + entry),
+            value: entry
+          });
+        }
+
+        temp.push({
+          text: this.$t('settings.dlna.table.action'),
+          value: 'action'
+        });
+
+        record[key] = temp;
+      });
+
+      return record;
+    }
   },
   watch: {
     supportedMediaTypes() {
@@ -598,6 +504,55 @@ export default Vue.extend({
       this.currentProfile = tempProfile;
       this.supportedMediaTypes =
         tempProfile.SupportedMediaTypes?.split(',') || [];
+    },
+    newItem(key: TableCategories) {
+      this.originalItem = undefined;
+      this.editEntry = this.emptyProfiles[key];
+      this.currentCategory = key;
+      this.entryEditor = true;
+    },
+    editItem(key: TableCategories, item: TableUnion) {
+      this.originalItem = item;
+      this.editEntry = {
+        ...this.emptyProfiles[key],
+        ...item
+      };
+      this.currentCategory = key;
+      this.entryEditor = true;
+    },
+    closeEditor() {
+      this.originalItem = undefined;
+      this.editEntry = undefined;
+      this.currentCategory = '';
+      this.entryEditor = false;
+    },
+    saveItem(item: TableUnion) {
+      if (!this.currentProfile) {
+        return;
+      }
+
+      const tab = this.currentProfile[
+        this.currentCategory as keyof DeviceProfile
+      ] as Array<TableUnion>;
+
+      if (this.originalItem === undefined) {
+        tab.push(item);
+      } else {
+        tab.splice(tab.indexOf(this.originalItem), 1, item);
+      }
+
+      this.closeEditor();
+    },
+    deleteItem(key: TableCategories, item: TableUnion) {
+      if (!this.currentProfile) {
+        return;
+      }
+
+      const tab = this.currentProfile[
+        key as keyof DeviceProfile
+      ] as Array<TableUnion>;
+
+      tab.splice(tab.indexOf(item), 1);
     }
   }
 });

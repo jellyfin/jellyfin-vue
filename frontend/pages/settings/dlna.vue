@@ -15,7 +15,7 @@
           <v-list two-line flat>
             <v-list-item-group>
               <v-list-item
-                v-for="dlnaSettingName in Object.keys(bindToRelevantConfig)"
+                v-for="dlnaSettingName in Object.keys(dlnaSettings)"
                 :key="dlnaSettingName"
               >
                 <v-list-item-content>
@@ -98,11 +98,14 @@
           />
         </v-card>
       </v-col>
-      <v-dialog v-model="deviceInfoDialog" width="fit-content">
+      <v-dialog
+        v-model="deviceInfoDialog"
+        width="fit-content"
+        :retain-focus="false"
+      >
         <dlna-profile-editor
           v-if="selectedProfile.Name"
           :selected-profile="selectedProfile"
-          :is-dialog="true"
           :is-custom-profile="isCustomProfile"
           :users="users"
           @close-dialog="closeDialog"
@@ -123,32 +126,27 @@ import {
   UserDto
 } from '@jellyfin/client-axios';
 import isNil from 'lodash/isNil';
-import DlnaProfileEditor from '~/components/System/DlnaProfileEditor.vue';
 
 /**
  * We need to define those interfaces here as the axios hook for
  * $api.configuration.getNamedConfiguration() returns an
  * any typed object which we cannot use further down the line.
  */
-interface RelevantConfig {
+interface DlnaNamedConfiguration {
   EnablePlayTo: boolean;
+  EnablePlayToTracing: boolean;
   EnableDebugLog: boolean;
   ClientDiscoveryIntervalSeconds: number;
   EnableServer: boolean;
-  BlastAliveMessages: boolean;
   AliveMessageIntervalSeconds: number;
-  DefaultUserId: string;
-}
-
-interface DlnaNamedConfiguration extends RelevantConfig {
-  EnablePlayToTracing: boolean;
+  BlastAliveMessages: boolean;
   BlastAliveMessageIntervalSeconds: number;
+  DefaultUserId: string;
   AutoCreatePlayToProfiles: boolean;
   SendOnlyMatchedHost: boolean;
 }
 
 export default Vue.extend({
-  components: { DlnaProfileEditor },
   async asyncData({ $api }) {
     const dlnaSettings = (
       await $api.configuration.getNamedConfiguration({ key: 'dlna' })
@@ -188,19 +186,6 @@ export default Vue.extend({
       return this.dlnaProfiles.filter(
         (profile) => profile.Type === DeviceProfileType.System
       );
-    },
-    bindToRelevantConfig(): RelevantConfig {
-      return {
-        EnablePlayTo: this.dlnaSettings.EnablePlayTo,
-        EnableDebugLog: this.dlnaSettings.EnableDebugLog,
-        ClientDiscoveryIntervalSeconds:
-          this.dlnaSettings.ClientDiscoveryIntervalSeconds,
-        EnableServer: this.dlnaSettings.EnableServer,
-        BlastAliveMessages: this.dlnaSettings.BlastAliveMessages,
-        AliveMessageIntervalSeconds:
-          this.dlnaSettings.AliveMessageIntervalSeconds,
-        DefaultUserId: this.dlnaSettings.DefaultUserId
-      };
     }
   },
   methods: {
