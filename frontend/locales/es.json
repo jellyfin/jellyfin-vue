@@ -142,6 +142,7 @@
     "changeServer": "Cambiar de servidor",
     "changeUser": "Cambiar de usuario",
     "connect": "Conectar",
+    "kickedOut": "Se ha revocado la autorización y esta sesión ya no es válida. Inicie sesión de nuevo",
     "login": "Iniciar sesión",
     "loginAs": "Iniciar sesión como {name}",
     "manualLogin": "Inicio de sesión manual",
@@ -298,20 +299,20 @@
   "settings": {
     "apiKeys": {
       "accessToken": "Token de acceso",
-      "addApiKey": "Crear una clave de API",
-      "addNewKey": "Crear una clave de API",
+      "addApiKey": "Agregar una clave API",
+      "addNewKey": "Crear una clave API",
       "apiKeys": "Claves API",
       "appName": "Nombre de la aplicación",
-      "createKeyFailure": "Error al crear la clave de API",
-      "createKeySuccess": "La clave de API se ha creado correctamente",
+      "createKeyFailure": "Error al crear la clave API",
+      "createKeySuccess": "La clave API se ha creado correctamente",
       "dateCreated": "Fecha de creación",
       "description": "Añade y borra claves API para acceso externo a tu servidor",
-      "refreshKeysFailure": "Error al actualizar las claves de API",
-      "revokeAll": "Anular todas las claves de API",
-      "revokeAllFailure": "Error al anular todas las claves de API",
-      "revokeAllSuccess": "Todas las claves de API han sido anuladas correctamente",
-      "revokeFailure": "Error al anular la clave de API",
-      "revokeSuccess": "Clave de API anulada correctamente"
+      "refreshKeysFailure": "Error al actualizar claves API",
+      "revokeAll": "Revocar todas las claves API",
+      "revokeAllFailure": "Error al revocar todas las claves API",
+      "revokeAllSuccess": "Revocó con éxito todas las claves API",
+      "revokeFailure": "Error al revocar la clave API",
+      "revokeSuccess": "Clave API revocada con éxito"
     },
     "devices": {
       "appName": "Nombre de la aplicación",
