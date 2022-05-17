@@ -122,7 +122,7 @@ export default Vue.extend({
     return {
       menu: false,
       destroy: false,
-      timeout: -1
+      timeout: undefined as undefined | number
     };
   },
   computed: {
@@ -199,7 +199,7 @@ export default Vue.extend({
         }, 500);
       } else {
         window.clearTimeout(this.timeout);
-        this.timeout = -1;
+        this.timeout = undefined;
         this.destroy = false;
       }
     }

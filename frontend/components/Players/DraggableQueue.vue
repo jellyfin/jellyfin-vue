@@ -90,7 +90,7 @@ export default Vue.extend({
     }
   },
   /**
-   * Scroll the currently playing item to view after opening the queue
+   * Scroll the queue view to the currently playing item
    */
   mounted() {
     const ref = this.$refs.listItems as Vue[];
@@ -101,6 +101,15 @@ export default Vue.extend({
     );
 
     if (el?.$el) {
+      /**
+       * As the queue opening has a transition effect, el.$el.scrollIntoView() doesn't work directly,
+       * as the parent DOM node is not fully rendered while the transition is taking place
+       * (so scrollIntoView() doesn't know exactly what to scroll).
+       *
+       * The browser always give full priority to the DOM manipulation and painting process,
+       * while the idle callback runs with lower priority. This assures us that the view will be scrolled to
+       * the currently playing element as soon as all the DOM operations and transitions are over.
+       */
       window.requestIdleCallback(() => {
         el.$el.scrollIntoView();
       });
