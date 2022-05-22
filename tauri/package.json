@@ -5,6 +5,7 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "tauri": "tauri",
+    "tauri:icon": "tauricon ../frontend/static/icon.png",
     "tauri:build": "tauri build",
     "tauri:dev": "tauri dev"
   },
@@ -12,7 +13,8 @@
     "@jellyfin-vue/frontend": "*"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "1.0.0-rc.10"
+    "@tauri-apps/cli": "1.0.0-rc.10",
+    "@tauri-apps/tauricon": "1.0.2"
   },
   "engines": {
     "node": ">=16.13.1 <17.0.0",

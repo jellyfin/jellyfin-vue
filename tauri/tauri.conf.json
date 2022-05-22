@@ -14,7 +14,6 @@
       "active": true,
       "targets": "all",
       "identifier": "org.jellyfin.vue.tauri",
-      "icon": ["../frontend/static/icon.png"],
       "resources": [],
       "externalBin": [],
       "copyright": "",
