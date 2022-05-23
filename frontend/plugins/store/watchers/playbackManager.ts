@@ -1,7 +1,7 @@
 import { Context } from '@nuxt/types';
 import isNil from 'lodash/isNil';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
-import { msToTicks } from '~/mixins/timeUtils';
+import { msToTicks } from '~/utils/time';
 
 /**
  * Playback reporting logic

@@ -40,11 +40,10 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { canResume, canPlay } from '~/utils/items';
-import timeUtils from '~/mixins/timeUtils';
+import { ticksToMs } from '~/utils/time';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -102,7 +101,7 @@ export default Vue.extend({
           subtitleTrackIndex: this.subtitleTrackIndex || -1,
           videoTrackIndex: this.videoTrackIndex,
           startFromTime:
-            this.ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
+            ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
         });
       } else if (this.shuffle) {
         // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time

@@ -81,11 +81,10 @@ import {
   SortOrder
 } from '@jellyfin/client-axios';
 import { getItemDetailsLink } from '~/utils/items';
-import timeUtils from '~/mixins/timeUtils';
+import { ticksToMs } from '~/utils/time';
 import { authStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -119,7 +118,7 @@ export default Vue.extend({
      * @returns {string} Returns the length of the track in the format XX:XX
      */
     getRuntime(ticks: number): string {
-      let seconds = this.ticksToMs(ticks) / 1000;
+      let seconds = ticksToMs(ticks) / 1000;
       const minutes = Math.floor(seconds / 60);
 
       seconds = Math.floor(seconds - minutes * 60);

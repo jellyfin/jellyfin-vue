@@ -248,12 +248,10 @@ import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
 import isNil from 'lodash/isNil';
 import { getImageInfo } from '~/utils/images';
-import timeUtils from '~/mixins/timeUtils';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   data() {
     return {
       showFullScreenOverlay: false,

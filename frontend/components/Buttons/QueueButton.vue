@@ -104,10 +104,9 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
-import timeUtils from '~/mixins/timeUtils';
+import { getTotalEndsAtTime } from '~/utils/time';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   props: {
     nudgeTop: {
       type: [Number, String],
@@ -203,6 +202,9 @@ export default Vue.extend({
         this.destroy = false;
       }
     }
+  },
+  methods: {
+    getTotalEndsAtTime
   }
 });
 </script>

@@ -75,11 +75,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import timeUtils from '~/mixins/timeUtils';
 import { playbackManagerStore } from '~/store';
+import { ticksToMs, getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   data() {
     return {
       isHiddenByUser: false
@@ -89,7 +88,7 @@ export default Vue.extend({
     ...mapStores(playbackManagerStore),
     currentItemDuration(): number {
       return (
-        this.ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000
+        ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000
       );
     },
     currentItemTimeLeft(): number {
@@ -135,6 +134,10 @@ export default Vue.extend({
     visible(): void {
       this.$emit('change', this.visible);
     }
+  },
+  methods: {
+    getEndsAtTime,
+    getRuntimeTime
   }
 });
 </script>

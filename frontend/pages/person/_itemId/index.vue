@@ -155,12 +155,10 @@ import {
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
-import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   meta: {
     backdrop: true,
     transparentAppBar: true
