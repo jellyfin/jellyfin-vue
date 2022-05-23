@@ -31,11 +31,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import timeUtils from '~/mixins/timeUtils';
 import { playbackManagerStore } from '~/store';
+import { ticksToMs, formatTime } from '~/utils/time';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   data() {
     return {
       clicked: false,
@@ -46,8 +45,7 @@ export default Vue.extend({
     ...mapStores(playbackManagerStore),
     runtime(): number {
       return (
-        this.ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) /
-          1000 || 0
+        ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000 || 0
       );
     },
     sliderValue: {
@@ -72,7 +70,8 @@ export default Vue.extend({
     onClick(): void {
       this.currentInput = this.playbackManager.currentTime || 0;
       this.clicked = !this.clicked;
-    }
+    },
+    formatTime
   }
 });
 </script>

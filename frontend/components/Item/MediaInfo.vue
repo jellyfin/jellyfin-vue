@@ -29,10 +29,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import timeUtils from '~/mixins/timeUtils';
+import { getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -54,6 +53,10 @@ export default Vue.extend({
       type: Boolean,
       default: false
     }
+  },
+  methods: {
+    getEndsAtTime,
+    getRuntimeTime
   }
 });
 </script>

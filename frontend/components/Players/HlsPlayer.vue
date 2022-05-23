@@ -39,7 +39,7 @@ import {
 } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
-import timeUtils from '~/mixins/timeUtils';
+import { ticksToMs } from '~/utils/time';
 import { authStore, deviceProfileStore, playbackManagerStore } from '~/store';
 import {
   PlaybackStatus,
@@ -48,7 +48,6 @@ import {
 } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [timeUtils],
   props: {
     stretch: {
       type: Boolean,
@@ -172,7 +171,7 @@ export default Vue.extend({
 
         this.videoElement.currentTime =
           this.restartTime ||
-          this.ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
+          ticksToMs(item.UserData?.PlaybackPositionTicks || 0) / 1000;
         this.restartTime = undefined;
 
         this.subtitleTrack = (

@@ -30,7 +30,6 @@ import {
   PlaybackStatus
 } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
-import timeUtils from '~/mixins/timeUtils';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 
 declare global {
@@ -42,7 +41,6 @@ declare global {
 }
 
 export default Vue.extend({
-  mixins: [timeUtils],
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
