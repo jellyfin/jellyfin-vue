@@ -107,11 +107,6 @@ jobs:
           cache: 'npm'
           check-latest: true
 
-      - name: Setup rust environment ⚙️
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
       - name: Install dependencies 📦
         run: npm ci --no-audit -w tauri
 
