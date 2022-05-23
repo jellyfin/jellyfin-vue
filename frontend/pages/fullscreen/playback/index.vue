@@ -58,12 +58,10 @@ export default Vue.extend({
   },
   computed: {
     ...mapStores(pageStore, playbackManagerStore),
-    backdropHash: {
-      get(): string | undefined {
-        return this.playbackManager.getCurrentItem
-          ? getBlurhash(this.playbackManager.getCurrentItem, ImageType.Primary)
-          : '';
-      }
+    backdropHash(): string | undefined {
+      return this.playbackManager.getCurrentItem
+        ? getBlurhash(this.playbackManager.getCurrentItem, ImageType.Primary)
+        : '';
     }
   },
   watch: {
