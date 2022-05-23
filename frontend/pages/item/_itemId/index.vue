@@ -274,12 +274,11 @@ import {
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
 import formsHelper from '~/mixins/formsHelper';
-import itemHelper from '~/mixins/itemHelper';
-import { isValidMD5 } from '~/utils/items';
+import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [formsHelper, itemHelper],
+  mixins: [formsHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -388,6 +387,10 @@ export default Vue.extend({
     if (this.item.MediaSources && this.item.MediaSources.length > 0) {
       this.currentSource = this.item.MediaSources[0];
     }
+  },
+  methods: {
+    getItemDetailsLink,
+    getMediaStreams
   }
 });
 </script>

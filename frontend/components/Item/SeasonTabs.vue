@@ -41,8 +41,8 @@
 <script lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import Vue from 'vue';
-import itemHelper from '~/mixins/itemHelper';
 import { authStore } from '~/store';
+import { getItemDetailsLink } from '~/utils/items';
 
 interface TvShowItem {
   /**
@@ -56,7 +56,6 @@ interface TvShowItem {
 }
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object,
@@ -115,6 +114,9 @@ export default Vue.extend({
         this.seasonEpisodes = seasonEpisodes;
       }
     }
+  },
+  methods: {
+    getItemDetailsLink
   }
 });
 </script>

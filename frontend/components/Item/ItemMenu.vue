@@ -53,8 +53,8 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import itemHelper from '~/mixins/itemHelper';
 import { authStore, playbackManagerStore, snackbarStore } from '~/store';
+import { canResume } from '~/utils/items';
 
 type MenuOption = {
   title: string;
@@ -63,7 +63,6 @@ type MenuOption = {
 };
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object,
@@ -102,7 +101,7 @@ export default Vue.extend({
       get(): MenuOption[] {
         const menuOptions = [] as MenuOption[];
 
-        if (this.canResume(this.item)) {
+        if (canResume(this.item)) {
           menuOptions.push({
             title: this.$t('playFromBeginning'),
             icon: 'mdi-replay',

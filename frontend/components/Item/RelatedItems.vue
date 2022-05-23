@@ -49,11 +49,10 @@
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import itemHelper from '~/mixins/itemHelper';
 import { authStore, snackbarStore } from '~/store';
+import { getItemDetailsLink } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     /**
      * item.Id To be used to get related items
@@ -119,7 +118,8 @@ export default Vue.extend({
       }
 
       this.loading = false;
-    }
+    },
+    getItemDetailsLink
   }
 });
 </script>

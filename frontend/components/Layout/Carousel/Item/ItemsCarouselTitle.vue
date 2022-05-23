@@ -39,10 +39,9 @@
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLogo, ImageUrlInfo } from '~/utils/images';
-import itemHelper from '~/mixins/itemHelper';
+import { getItemDetailsLink } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -69,7 +68,7 @@ export default Vue.extend({
         switch (this.item.Type) {
           case 'MusicAlbum':
             if (this.item.AlbumArtists?.length) {
-              this.logoLink = this.getItemDetailsLink(
+              this.logoLink = getItemDetailsLink(
                 this.item.AlbumArtists[0],
                 'MusicArtist'
               );
@@ -86,7 +85,7 @@ export default Vue.extend({
             break;
           case 'Episode':
             if (this.item.SeriesId) {
-              this.logoLink = this.getItemDetailsLink(
+              this.logoLink = getItemDetailsLink(
                 { Id: this.item.SeriesId },
                 'Series'
               );
@@ -111,10 +110,12 @@ export default Vue.extend({
             break;
         }
 
-        // Instead of using 'default', we need this additional extra check
-        // in case an Album doesn't have artists, for example.
+        /**
+         * Instead of using 'default', we need this additional extra check
+         * in case an Album doesn't have artists, for example.
+         */
         if (this.itemLink === '') {
-          this.itemLink = this.getItemDetailsLink(this.item);
+          this.itemLink = getItemDetailsLink(this.item);
         }
 
         if (this.titleString === '' && this.item.Name) {

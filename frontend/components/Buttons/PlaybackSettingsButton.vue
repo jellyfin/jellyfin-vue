@@ -104,10 +104,8 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
-import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     nudgeTop: {
       type: [Number, String],

@@ -141,12 +141,11 @@ import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
-import itemHelper from '~/mixins/itemHelper';
-import { isValidMD5 } from '~/utils/items';
+import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper, timeUtils, itemHelper],
+  mixins: [htmlHelper, timeUtils],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -251,6 +250,9 @@ export default Vue.extend({
         this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
       }
     }
+  },
+  methods: {
+    getItemDetailsLink
   }
 });
 </script>

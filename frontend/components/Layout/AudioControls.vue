@@ -210,11 +210,11 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
+import { getItemDetailsLink } from '~/utils/items';
 import { RepeatMode } from '~/store/playbackManager';
-import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [timeUtils, itemHelper],
+  mixins: [timeUtils],
   computed: {
     ...mapStores(playbackManagerStore),
     repeatIcon(): string {
@@ -230,6 +230,9 @@ export default Vue.extend({
     isFullScreenPlayer(): boolean {
       return this.$route.fullPath === '/fullscreen/playback';
     }
+  },
+  methods: {
+    getItemDetailsLink
   }
 });
 </script>
