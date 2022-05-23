@@ -67,10 +67,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto, ImageInfo, ImageType } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
+import { getImageInfo } from '~/utils/images';
 
 export default Vue.extend({
-  mixins: [imageHelper],
   props: {
     metadata: {
       type: Object,
@@ -117,7 +116,7 @@ export default Vue.extend({
     },
     imageFormat(imageInfo: ImageInfo): string | undefined {
       if (imageInfo.ImageType && imageInfo.ImageTag) {
-        return this.getImageInfo(this.metadata, {
+        return getImageInfo(this.metadata, {
           preferThumb: imageInfo.ImageType === ImageType.Thumb,
           preferBanner: imageInfo.ImageType === ImageType.Banner,
           preferLogo: imageInfo.ImageType === ImageType.Logo,

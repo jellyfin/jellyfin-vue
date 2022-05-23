@@ -272,14 +272,14 @@ import {
   MediaSourceInfo
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import imageHelper from '~/mixins/imageHelper';
+import { getBlurhash } from '~/utils/images';
 import formsHelper from '~/mixins/formsHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [imageHelper, formsHelper, itemHelper],
+  mixins: [formsHelper, itemHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -378,7 +378,7 @@ export default Vue.extend({
       handler(val: BaseItemDto): void {
         this.page.title = val.Name || '';
 
-        this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
       },
       immediate: true,
       deep: true

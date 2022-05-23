@@ -32,11 +32,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
+import { getBlurhash, getImageInfo } from '~/utils/images';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper, itemHelper],
+  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -79,7 +79,7 @@ export default Vue.extend({
   computed: {
     hash: {
       get(): string | undefined {
-        return this.getBlurhash(this.item, this.type);
+        return getBlurhash(this.item, this.type);
       }
     }
   },
@@ -113,7 +113,7 @@ export default Vue.extend({
       this.$nextTick(() => {
         const element = this.$refs.imageElement as HTMLImageElement;
 
-        const imageInfo = this.getImageInfo(this.item, {
+        const imageInfo = getImageInfo(this.item, {
           preferThumb: this.type === ImageType.Thumb,
           preferBanner: this.type === ImageType.Banner,
           preferLogo: this.type === ImageType.Logo,

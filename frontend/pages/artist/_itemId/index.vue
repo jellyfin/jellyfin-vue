@@ -139,14 +139,14 @@ import {
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import htmlHelper from '~/mixins/htmlHelper';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
 import itemHelper from '~/mixins/itemHelper';
 import { isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, timeUtils, itemHelper],
+  mixins: [htmlHelper, timeUtils, itemHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -238,7 +238,7 @@ export default Vue.extend({
       }
     },
     artistBackdrop(): ImageUrlInfo {
-      return this.getImageInfo(this.item, { preferBackdrop: true });
+      return getImageInfo(this.item, { preferBackdrop: true });
     }
   },
   watch: {
@@ -248,7 +248,7 @@ export default Vue.extend({
       handler(val: BaseItemDto): void {
         this.page.title = val.Name || '';
 
-        this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
       }
     }
   }

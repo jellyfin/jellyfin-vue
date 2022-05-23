@@ -35,11 +35,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemPerson } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper, itemHelper],
+  mixins: [itemHelper],
   props: {
     items: {
       type: Array,

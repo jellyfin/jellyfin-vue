@@ -154,13 +154,13 @@ import {
   SortOrder
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import imageHelper from '~/mixins/imageHelper';
+import { getBlurhash } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
 import { isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [imageHelper, timeUtils],
+  mixins: [timeUtils],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -288,7 +288,7 @@ export default Vue.extend({
       handler(val: BaseItemDto): void {
         this.page.title = val.Name || '';
 
-        this.page.backdrop.blurhash = this.getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
       },
       immediate: true,
       deep: true
