@@ -138,14 +138,14 @@ import {
   SortOrder
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
-import htmlHelper from '~/mixins/htmlHelper';
+import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper, timeUtils],
+  mixins: [timeUtils],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -231,7 +231,7 @@ export default Vue.extend({
     ...mapStores(pageStore),
     overview(): string {
       if (this.item?.Overview) {
-        return this.sanitizeHtml(this.item.Overview);
+        return sanitizeHtml(this.item.Overview);
       } else {
         return '';
       }

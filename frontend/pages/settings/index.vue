@@ -105,11 +105,9 @@ import { mapStores } from 'pinia';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
 import { version } from '~/package.json';
-import htmlHelper from '~/mixins/htmlHelper';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper],
   async asyncData({ $api }) {
     const auth = authStore();
 

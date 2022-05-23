@@ -55,13 +55,12 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import htmlHelper from '~/mixins/htmlHelper';
+import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
@@ -120,7 +119,7 @@ export default Vue.extend({
     },
     getOverview(item: BaseItemDto): string {
       if (item.Overview) {
-        return this.sanitizeHtml(item.Overview);
+        return sanitizeHtml(item.Overview);
       } else {
         return '';
       }
