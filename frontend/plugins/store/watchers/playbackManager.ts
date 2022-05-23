@@ -2,6 +2,130 @@ import { Context } from '@nuxt/types';
 import isNil from 'lodash/isNil';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/utils/time';
+import { getImageInfo } from '~/utils/images';
+
+/**
+ * Add or remove media handlers
+ */
+function handleMediaSession(
+  playbackManager: ReturnType<typeof playbackManagerStore>,
+  remove = false
+): void {
+  if (window.navigator.mediaSession) {
+    const actionHandlers = {
+      play: (): void => {
+        playbackManager.unpause();
+      },
+      pause: (): void => {
+        playbackManager.pause();
+      },
+      previoustrack: (): void => {
+        playbackManager.setPreviousTrack();
+      },
+      nexttrack: (): void => {
+        playbackManager.setNextTrack();
+      },
+      stop: (): void => {
+        playbackManager.stop();
+      },
+      seekbackward: (): void => {
+        playbackManager.skipBackward();
+      },
+      seekforward: (): void => {
+        playbackManager.skipForward();
+      },
+      seekto: (action): void => {
+        playbackManager.changeCurrentTime(action.seekTime || 1);
+      }
+    } as { [key in MediaSessionAction]?: MediaSessionActionHandler };
+
+    for (const [action, handler] of Object.entries(actionHandlers)) {
+      try {
+        window.navigator.mediaSession.setActionHandler(
+          action as MediaSessionAction,
+          remove ? null : handler
+        );
+      } catch (error) {
+        console.error(`The media session action "${action}" is not supported.`);
+      }
+    }
+  }
+}
+
+/**
+ * Updates mediasession metadata based on the currently playing item
+ */
+function updateMediaSessionMetadata(
+  playbackManager: ReturnType<typeof playbackManagerStore>
+): void {
+  if (window.navigator.mediaSession && !isNil(playbackManager.getCurrentItem)) {
+    const mediaSessionMetadata = new MediaMetadata({
+      title: playbackManager.getCurrentItem.Name || '',
+      artist: playbackManager.getCurrentItem.AlbumArtist || '',
+      album: playbackManager.getCurrentItem.Album || '',
+      artwork: [
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 96
+            }).url || '',
+          sizes: '96x96'
+        },
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 128
+            }).url || '',
+          sizes: '128x128'
+        },
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 192
+            }).url || '',
+          sizes: '192x192'
+        },
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 256
+            }).url || '',
+          sizes: '256x256'
+        },
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 384
+            }).url || '',
+          sizes: '384x384'
+        },
+        {
+          src:
+            getImageInfo(playbackManager.getCurrentItem, {
+              width: 512
+            }).url || '',
+          sizes: '512x512'
+        }
+      ]
+    });
+
+    switch (playbackManager.status) {
+      case PlaybackStatus.Playing:
+        window.navigator.mediaSession.playbackState = 'playing';
+        window.navigator.mediaSession.metadata = mediaSessionMetadata;
+        break;
+      case PlaybackStatus.Paused:
+        window.navigator.mediaSession.playbackState = 'paused';
+        window.navigator.mediaSession.metadata = mediaSessionMetadata;
+        break;
+      case PlaybackStatus.Stopped:
+      default:
+        window.navigator.mediaSession.playbackState = 'none';
+        window.navigator.mediaSession.metadata = null;
+        break;
+    }
+  }
+}
 
 /**
  * Playback reporting logic
@@ -19,6 +143,12 @@ export default function (ctx: Context): void {
         case 'setPreviousTrack':
         case 'setCurrentIndex':
         case 'play':
+          if (name === 'play') {
+            handleMediaSession(playbackManager);
+          }
+
+          updateMediaSessionMetadata(playbackManager);
+
           if (
             !isNil(playbackManager.currentTime) &&
             playbackManager.getPreviousItem
@@ -93,6 +223,8 @@ export default function (ctx: Context): void {
           break;
         case 'stop':
         case 'clearQueue':
+          handleMediaSession(playbackManager, true);
+
           if (!isNil(playbackManager.currentTime)) {
             await ctx.$api.playState.reportPlaybackStopped(
               {
@@ -112,6 +244,8 @@ export default function (ctx: Context): void {
         case 'pause':
         case 'unpause':
         case 'playPause':
+          updateMediaSessionMetadata(playbackManager);
+
           if (!isNil(playbackManager.currentTime)) {
             await ctx.$api.playState.reportPlaybackProgress(
               {

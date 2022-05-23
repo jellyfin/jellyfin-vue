@@ -191,6 +191,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
          * Removes the elements that already exists and append the new ones next to the currently playing item
          */
         const newQueue = this.queue.filter((i) => !translatedItem.includes(i));
+
         newQueue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
         this.setNewQueue(newQueue);
       }
@@ -310,6 +311,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
     changeItemPosition(itemId: string | undefined, newIndex: number): void {
       if (itemId && this.queue.includes(itemId)) {
         const newQueue = this.queue.filter((i) => i !== itemId);
+
         newQueue.splice(newIndex, 0, itemId);
         this.setNewQueue(newQueue);
       }

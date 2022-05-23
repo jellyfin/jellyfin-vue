@@ -114,7 +114,7 @@ export default Vue.extend({
         const playNextAction = {
           title: this.$t('playback.playNext'),
           icon: 'mdi-play-speed',
-          action: () => {
+          action: (): void => {
             this.playbackManager.playNext(this.item);
             this.snackbar.push(this.$t('snackbar.playNext'), 'success');
           }
@@ -124,11 +124,12 @@ export default Vue.extend({
          * Queue options
          */
         const queueOptions = [] as MenuOption[];
+
         if (this.queue && this.playbackManager.queue.includes(this.item.Id)) {
           queueOptions.push({
             title: this.$t('itemMenu.pushToTop'),
             icon: 'mdi-arrow-expand-up',
-            action: () => {
+            action: (): void => {
               this.playbackManager.changeItemPosition(this.item.Id, 0);
             }
           });
@@ -137,7 +138,7 @@ export default Vue.extend({
             queueOptions.push({
               title: this.$t('itemMenu.removeFromQueue'),
               icon: 'mdi-playlist-minus',
-              action: () => {
+              action: (): void => {
                 this.playbackManager.removeFromQueue(this.item.Id);
               }
             });
@@ -153,7 +154,7 @@ export default Vue.extend({
           queueOptions.push({
             title: this.$t('itemMenu.pushToBottom'),
             icon: 'mdi-arrow-expand-down',
-            action: () => {
+            action: (): void => {
               this.playbackManager.changeItemPosition(
                 this.item.Id,
                 this.playbackManager.queue.length - 1
@@ -166,11 +167,12 @@ export default Vue.extend({
          * Playback options
          */
         const playbackOptions = [] as MenuOption[];
+
         if (canResume(this.item)) {
           playbackOptions.push({
             title: this.$t('playFromBeginning'),
             icon: 'mdi-replay',
-            action: () => {
+            action: (): void => {
               this.playbackManager.play({
                 item: this.item
               });
@@ -181,7 +183,7 @@ export default Vue.extend({
         playbackOptions.push({
           title: this.$t('playback.shuffle'),
           icon: 'mdi-shuffle',
-          action: () => {
+          action: (): void => {
             this.playbackManager.play({
               item: this.item,
               initiator: this.item,
@@ -202,7 +204,7 @@ export default Vue.extend({
           playbackOptions.push({
             title: this.$t('playback.addToQueue'),
             icon: 'mdi-playlist-plus',
-            action: () => {
+            action: (): void => {
               this.playbackManager.addToQueue(this.item);
               this.snackbar.push(this.$t('snackbar.addedToQueue'), 'success');
             }
@@ -213,6 +215,7 @@ export default Vue.extend({
          * Library options
          */
         const libraryOptions = [] as MenuOption[];
+
         if (
           this.auth.currentUser?.Policy?.IsAdministrator &&
           ['Folder', 'CollectionFolder', 'UserView'].includes(
@@ -222,7 +225,7 @@ export default Vue.extend({
           libraryOptions.push({
             title: this.$t('refreshLibrary'),
             icon: 'mdi-refresh',
-            action: async () => {
+            action: async (): Promise<void> => {
               try {
                 await this.$api.itemRefresh.post({
                   itemId: this.item.Id,
@@ -245,7 +248,7 @@ export default Vue.extend({
           libraryOptions.push({
             title: this.$t('editMetadata'),
             icon: 'mdi-pencil-outline',
-            action: () => {
+            action: (): void => {
               this.metadataDialog = true;
             }
           });
@@ -254,6 +257,7 @@ export default Vue.extend({
         menuOptions.push(queueOptions);
         menuOptions.push(playbackOptions);
         menuOptions.push(libraryOptions);
+
         return menuOptions;
       }
     }
