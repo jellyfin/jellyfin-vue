@@ -1,9 +1,4 @@
-import Vue from 'vue';
-import formsHelper from '../formsHelper';
-
-const TestComponent = new Vue({
-  mixins: [formsHelper]
-});
+import { getItemizedSelect } from '../forms';
 
 const FORMS_TEST_INPUT = [
   { name: 'aaa' },
@@ -21,9 +16,9 @@ const FORMS_EXPECTED_OUTPUT = [
   { value: { name: 'eee' } }
 ];
 
-describe('mixin: formsHelper', () => {
+describe('utils: forms', () => {
   it('correctly itemizes the array of items', () => {
-    expect(TestComponent.getItemizedSelect(FORMS_TEST_INPUT)).toMatchObject(
+    expect(getItemizedSelect(FORMS_TEST_INPUT)).toMatchObject(
       FORMS_EXPECTED_OUTPUT
     );
   });

@@ -273,12 +273,11 @@ import {
 } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
-import formsHelper from '~/mixins/formsHelper';
 import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';
+import { getItemizedSelect } from '~/utils/forms';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [formsHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -390,7 +389,8 @@ export default Vue.extend({
   },
   methods: {
     getItemDetailsLink,
-    getMediaStreams
+    getMediaStreams,
+    getItemizedSelect
   }
 });
 </script>

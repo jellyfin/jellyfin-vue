@@ -160,12 +160,10 @@ import { mapStores } from 'pinia';
 import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
-import formsHelper from '~/mixins/formsHelper';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [formsHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
