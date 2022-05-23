@@ -12,9 +12,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import settingsHelper from '~/mixins/settingsHelper';
 
-export default Vue.extend({
-  mixins: [settingsHelper]
-});
+export default Vue.extend({});
 </script>
