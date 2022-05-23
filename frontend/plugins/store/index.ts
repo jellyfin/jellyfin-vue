@@ -4,6 +4,7 @@ import preferencesSync from './plugins/preferencesSync';
 import watchAuth from './watchers/auth';
 import watchPlaybackReporting from './watchers/playbackManager';
 import watchSocket from './watchers/socket';
+import watchClientSettings from './watchers/clientSettings';
 
 const piniaPlugins: Plugin = (ctx: Context): void => {
   ctx.$pinia.use(persistence);
@@ -11,6 +12,7 @@ const piniaPlugins: Plugin = (ctx: Context): void => {
   watchAuth(ctx);
   watchSocket(ctx);
   watchPlaybackReporting(ctx);
+  watchClientSettings(ctx);
 };
 
 export default piniaPlugins;

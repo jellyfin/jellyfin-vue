@@ -138,7 +138,6 @@ import {
   pageStore,
   userViewsStore
 } from '~/store';
-import settingsHelper from '~/mixins/settingsHelper';
 
 interface LayoutButton {
   icon: string;
@@ -147,7 +146,6 @@ interface LayoutButton {
 }
 
 export default Vue.extend({
-  mixins: [settingsHelper],
   data() {
     return {
       drawer: false
