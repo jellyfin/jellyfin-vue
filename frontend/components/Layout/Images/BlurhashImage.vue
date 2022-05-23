@@ -33,10 +33,9 @@
 import Vue from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { getBlurhash, getImageInfo } from '~/utils/images';
-import itemHelper from '~/mixins/itemHelper';
+import { getItemIcon } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -146,7 +145,8 @@ export default Vue.extend({
       }
 
       this.resetting = false;
-    }
+    },
+    getItemIcon
   }
 });
 </script>

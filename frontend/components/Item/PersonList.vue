@@ -35,10 +35,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemPerson } from '@jellyfin/client-axios';
-import itemHelper from '~/mixins/itemHelper';
+import { getItemDetailsLink } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     items: {
       type: Array,
@@ -50,6 +49,9 @@ export default Vue.extend({
       type: Number,
       default: 0
     }
+  },
+  methods: {
+    getItemDetailsLink
   }
 });
 </script>

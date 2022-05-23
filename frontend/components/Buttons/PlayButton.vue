@@ -39,12 +39,12 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
-import itemHelper from '~/mixins/itemHelper';
+import { canResume, canPlay } from '~/utils/items';
 import timeUtils from '~/mixins/timeUtils';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [itemHelper, timeUtils],
+  mixins: [timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -95,7 +95,7 @@ export default Vue.extend({
     playOrResume(): void {
       this.loading = true;
 
-      if (this.item && this.canResume(this.item)) {
+      if (this.item && canResume(this.item)) {
         this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
@@ -121,7 +121,9 @@ export default Vue.extend({
           videoTrackIndex: this.videoTrackIndex
         });
       }
-    }
+    },
+    canPlay,
+    canResume
   }
 });
 </script>

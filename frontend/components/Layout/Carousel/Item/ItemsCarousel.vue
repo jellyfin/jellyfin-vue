@@ -57,11 +57,11 @@ import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
 import { getBlurhash } from '~/utils/images';
-import itemHelper from '~/mixins/itemHelper';
+import { getItemDetailsLink } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper, itemHelper],
+  mixins: [htmlHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
@@ -134,7 +134,8 @@ export default Vue.extend({
     },
     onSlideChange(index: number): void {
       this.updateBackdrop(index);
-    }
+    },
+    getItemDetailsLink
   }
 });
 </script>

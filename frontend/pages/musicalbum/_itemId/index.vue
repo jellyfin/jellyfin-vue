@@ -91,12 +91,11 @@ import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
 import formsHelper from '~/mixins/formsHelper';
-import itemHelper from '~/mixins/itemHelper';
-import { isValidMD5 } from '~/utils/items';
+import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [formsHelper, itemHelper],
+  mixins: [formsHelper],
   meta: {
     backdrop: true,
     transparentAppBar: true
@@ -140,6 +139,9 @@ export default Vue.extend({
       immediate: true,
       deep: true
     }
+  },
+  methods: {
+    getItemDetailsLink
   }
 });
 </script>

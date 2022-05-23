@@ -85,12 +85,15 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
-import itemHelper from '~/mixins/itemHelper';
-import { CardShapes, getShapeFromItemType } from '~/utils/items';
+import {
+  CardShapes,
+  getShapeFromItemType,
+  getItemDetailsLink,
+  canPlay
+} from '~/utils/items';
 import { socketStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -256,7 +259,9 @@ export default Vue.extend({
   methods: {
     isFinePointer(): boolean {
       return window.matchMedia('(pointer:fine)').matches;
-    }
+    },
+    getItemDetailsLink,
+    canPlay
   }
 });
 </script>

@@ -13,11 +13,10 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import itemHelper from '~/mixins/itemHelper';
 import { authStore, snackbarStore } from '~/store';
+import { canMarkWatched } from '~/utils/items';
 
 export default Vue.extend({
-  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -71,7 +70,8 @@ export default Vue.extend({
         this.snackbar.push(this.$t('unableToTogglePlayed'), 'error');
         this.isPlayed = !this.isPlayed;
       }
-    }
+    },
+    canMarkWatched
   }
 });
 </script>

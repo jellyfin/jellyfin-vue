@@ -80,12 +80,12 @@ import {
   BaseItemDtoQueryResult,
   SortOrder
 } from '@jellyfin/client-axios';
+import { getItemDetailsLink } from '~/utils/items';
 import timeUtils from '~/mixins/timeUtils';
-import itemHelper from '~/mixins/itemHelper';
 import { authStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [timeUtils, itemHelper],
+  mixins: [timeUtils],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -146,7 +146,8 @@ export default Vue.extend({
     },
     isPlaying(track: BaseItemDto): boolean {
       return track?.Id === this.playbackManager.getCurrentItem?.Id;
-    }
+    },
+    getItemDetailsLink
   }
 });
 </script>
