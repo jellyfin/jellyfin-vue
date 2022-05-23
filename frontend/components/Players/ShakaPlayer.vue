@@ -31,7 +31,7 @@ import {
 } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
 import timeUtils from '~/mixins/timeUtils';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 
 declare global {
   interface Window {
@@ -42,7 +42,7 @@ declare global {
 }
 
 export default Vue.extend({
-  mixins: [imageHelper, timeUtils],
+  mixins: [timeUtils],
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
@@ -60,7 +60,7 @@ export default Vue.extend({
         this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !isNil(this.playbackManager.getCurrentItem)
       ) {
-        return this.getImageInfo(this.playbackManager.getCurrentItem, {
+        return getImageInfo(this.playbackManager.getCurrentItem, {
           preferBackdrop: true
         });
       } else {

@@ -38,7 +38,7 @@ import {
   SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
 import { stringify } from 'qs';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
 import { authStore, deviceProfileStore, playbackManagerStore } from '~/store';
 import {
@@ -48,7 +48,7 @@ import {
 } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [imageHelper, timeUtils],
+  mixins: [timeUtils],
   props: {
     stretch: {
       type: Boolean,
@@ -70,7 +70,7 @@ export default Vue.extend({
     ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
     poster(): ImageUrlInfo | string | null {
       if (!isNil(this.playbackManager.getCurrentItem)) {
-        return this.getImageInfo(this.playbackManager.getCurrentItem, {
+        return getImageInfo(this.playbackManager.getCurrentItem, {
           preferBackdrop: true
         });
       } else {

@@ -56,12 +56,12 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import htmlHelper from '~/mixins/htmlHelper';
-import imageHelper from '~/mixins/imageHelper';
+import { getBlurhash } from '~/utils/images';
 import itemHelper from '~/mixins/itemHelper';
 import { authStore, pageStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [htmlHelper, imageHelper, itemHelper],
+  mixins: [htmlHelper, itemHelper],
   props: {
     items: {
       type: Array as () => BaseItemDto[],
@@ -127,7 +127,7 @@ export default Vue.extend({
     },
     updateBackdrop(index: number) {
       if (this.pageBackdrop) {
-        const hash = this.getBlurhash(this.items[index], ImageType.Backdrop);
+        const hash = getBlurhash(this.items[index], ImageType.Backdrop);
 
         this.page.backdrop.blurhash = hash;
       }

@@ -247,13 +247,13 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
 import isNil from 'lodash/isNil';
-import imageHelper from '~/mixins/imageHelper';
+import { getImageInfo } from '~/utils/images';
 import timeUtils from '~/mixins/timeUtils';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 
 export default Vue.extend({
-  mixins: [timeUtils, imageHelper],
+  mixins: [timeUtils],
   data() {
     return {
       showFullScreenOverlay: false,
@@ -558,42 +558,42 @@ export default Vue.extend({
           artwork: [
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 96
                 }).url || '',
               sizes: '96x96'
             },
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 128
                 }).url || '',
               sizes: '128x128'
             },
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 192
                 }).url || '',
               sizes: '192x192'
             },
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 256
                 }).url || '',
               sizes: '256x256'
             },
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 384
                 }).url || '',
               sizes: '384x384'
             },
             {
               src:
-                this.getImageInfo(this.playbackManager.getCurrentItem, {
+                getImageInfo(this.playbackManager.getCurrentItem, {
                   width: 512
                 }).url || '',
               sizes: '512x512'

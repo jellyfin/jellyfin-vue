@@ -210,12 +210,11 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import timeUtils from '~/mixins/timeUtils';
-import imageHelper from '~/mixins/imageHelper';
 import { RepeatMode } from '~/store/playbackManager';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [timeUtils, imageHelper, itemHelper],
+  mixins: [timeUtils, itemHelper],
   computed: {
     ...mapStores(playbackManagerStore),
     repeatIcon(): string {

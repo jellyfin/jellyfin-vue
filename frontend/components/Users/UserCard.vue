@@ -12,10 +12,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import { UserDto } from '@jellyfin/client-axios';
-import imageHelper from '~/mixins/imageHelper';
 
 export default Vue.extend({
-  mixins: [imageHelper],
   props: {
     user: {
       type: Object as () => UserDto,

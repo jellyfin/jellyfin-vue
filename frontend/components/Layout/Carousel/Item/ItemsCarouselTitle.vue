@@ -38,11 +38,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import imageHelper, { ImageUrlInfo } from '~/mixins/imageHelper';
+import { getLogo, ImageUrlInfo } from '~/utils/images';
 import itemHelper from '~/mixins/itemHelper';
 
 export default Vue.extend({
-  mixins: [itemHelper, imageHelper],
+  mixins: [itemHelper],
   props: {
     item: {
       type: Object as () => BaseItemDto,
@@ -59,7 +59,7 @@ export default Vue.extend({
   },
   computed: {
     logo(): ImageUrlInfo {
-      return this.getLogo(this.item);
+      return getLogo(this.item);
     }
   },
   watch: {

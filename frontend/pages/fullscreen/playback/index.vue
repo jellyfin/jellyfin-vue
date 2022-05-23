@@ -28,11 +28,10 @@ import Vue from 'vue';
 import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/client-axios';
 import Swiper, { SwiperOptions } from 'swiper';
-import imageHelper from '~/mixins/imageHelper';
+import { getBlurhash } from '~/utils/images';
 import { pageStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [imageHelper],
   meta: {
     backdrop: { opacity: 0.5 },
     transparentAppBar: true
@@ -60,13 +59,10 @@ export default Vue.extend({
   computed: {
     ...mapStores(pageStore, playbackManagerStore),
     backdropHash: {
-      get(): string {
-        return (
-          this.getBlurhash(
-            this.playbackManager.getCurrentItem,
-            ImageType.Primary
-          ) || ''
-        );
+      get(): string | undefined {
+        return this.playbackManager.getCurrentItem
+          ? getBlurhash(this.playbackManager.getCurrentItem, ImageType.Primary)
+          : '';
       }
     }
   },

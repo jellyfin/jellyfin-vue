@@ -49,12 +49,11 @@
 import Vue from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import imageHelper from '~/mixins/imageHelper';
 import itemHelper from '~/mixins/itemHelper';
 import { authStore, snackbarStore } from '~/store';
 
 export default Vue.extend({
-  mixins: [imageHelper, itemHelper],
+  mixins: [itemHelper],
   props: {
     /**
      * item.Id To be used to get related items
