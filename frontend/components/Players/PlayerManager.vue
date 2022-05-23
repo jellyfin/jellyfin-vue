@@ -246,8 +246,6 @@
 import Vue from 'vue';
 import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
-import isNil from 'lodash/isNil';
-import { getImageInfo } from '~/utils/images';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 
@@ -293,18 +291,13 @@ export default Vue.extend({
             window.addEventListener('click', this.handleVideoClick);
           }
 
-          this.addMediaHandlers();
           break;
         case PlaybackStatus.Stopped:
           window.removeEventListener('mousemove', this.handleMouseMove);
           window.removeEventListener('keyup', this.handleKeyPress);
           window.removeEventListener('click', this.handleVideoClick);
-          this.removeMediaHandlers();
           break;
       }
-    },
-    'playbackManager.getCurrentItem'(): void {
-      this.updateMetadata();
     }
   },
   beforeDestroy() {
@@ -432,174 +425,6 @@ export default Vue.extend({
         this.playbackManager.playPause();
       }
     },
-    addMediaHandlers(): void {
-      if (navigator.mediaSession) {
-        const actionHandlers = [
-          [
-            'play',
-            (): void => {
-              this.playbackManager.unpause();
-
-              if (navigator.mediaSession) {
-                navigator.mediaSession.playbackState = 'playing';
-              }
-            }
-          ],
-          [
-            'pause',
-            (): void => {
-              this.playbackManager.pause();
-
-              if (navigator.mediaSession) {
-                navigator.mediaSession.playbackState = 'paused';
-              }
-            }
-          ],
-          [
-            'previoustrack',
-            (): void => {
-              this.playbackManager.setPreviousTrack();
-            }
-          ],
-          [
-            'nexttrack',
-            (): void => {
-              this.playbackManager.setNextTrack();
-            }
-          ],
-          [
-            'stop',
-            (): void => {
-              this.stopPlayback();
-
-              if (navigator.mediaSession) {
-                navigator.mediaSession.playbackState = 'none';
-              }
-            }
-          ],
-          [
-            'seekbackward',
-            (): void => {
-              this.playbackManager.skipBackward();
-            }
-          ],
-          [
-            'seekforward',
-            (): void => {
-              this.playbackManager.skipForward();
-            }
-          ],
-          [
-            'seekto',
-            (): void => {
-              this.playbackManager.changeCurrentTime(1);
-            }
-          ]
-        ];
-
-        for (const [action, handler] of actionHandlers) {
-          try {
-            // @ts-expect-error - MediaSession is still a draft. Thus, it doesn't contain proper typings.
-            navigator.mediaSession.setActionHandler(action, handler);
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(
-              `The media session action "${action}" is not supported.`
-            );
-          }
-        }
-      }
-    },
-    removeMediaHandlers(): void {
-      if (navigator.mediaSession) {
-        const actionHandlers = [
-          ['play', null],
-          ['pause', null],
-          ['previoustrack', null],
-          ['nexttrack', null],
-          ['stop', null],
-          ['seekbackward', null],
-          ['seekforward', null],
-          ['seekto', null]
-        ];
-
-        for (const [action, handler] of actionHandlers) {
-          try {
-            // @ts-expect-error - MediaSession is still a draft. Thus, it doesn't contain proper typings.
-            navigator.mediaSession.setActionHandler(action, handler);
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`Error removing mediaSession action: "${action}".`);
-          }
-        }
-      }
-    },
-    resetMetadata(): void {
-      if (window.navigator.mediaSession) {
-        window.navigator.mediaSession.metadata = null;
-      }
-    },
-    updateMetadata(): void {
-      if (
-        window.navigator.mediaSession &&
-        !isNil(this.playbackManager.getCurrentItem)
-      ) {
-        // eslint-disable-next-line no-undef
-        window.navigator.mediaSession.metadata = new MediaMetadata({
-          title: this.playbackManager.getCurrentItem.Name || '',
-          artist: this.playbackManager.getCurrentItem?.AlbumArtist
-            ? this.playbackManager.getCurrentItem.AlbumArtist
-            : '',
-          album: this.playbackManager.getCurrentItem?.Album
-            ? this.playbackManager.getCurrentItem.Album
-            : '',
-          artwork: [
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 96
-                }).url || '',
-              sizes: '96x96'
-            },
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 128
-                }).url || '',
-              sizes: '128x128'
-            },
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 192
-                }).url || '',
-              sizes: '192x192'
-            },
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 256
-                }).url || '',
-              sizes: '256x256'
-            },
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 384
-                }).url || '',
-              sizes: '384x384'
-            },
-            {
-              src:
-                getImageInfo(this.playbackManager.getCurrentItem, {
-                  width: 512
-                }).url || '',
-              sizes: '512x512'
-            }
-          ]
-        });
-      }
-    },
     togglePictureInPicture(): void {
       // @ts-expect-error - `togglePictureInPicture` does not exist in relevant types
       this.$refs.videoPlayer.togglePictureInPicture();
@@ -617,7 +442,7 @@ export default Vue.extend({
       this.keepOpen = value;
 
       if (value && this.fullScreenOverlayTimer) {
-        clearTimeout(this.fullScreenOverlayTimer);
+        window.clearTimeout(this.fullScreenOverlayTimer);
         this.fullScreenOverlayTimer = null;
       } else if (!value) {
         this.setFullscreenTimeout();
