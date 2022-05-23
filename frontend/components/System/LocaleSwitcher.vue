@@ -23,7 +23,7 @@
         v-for="(item, index) in $i18n.locales"
         :key="index"
         :input-value="item.code === $i18n.locale"
-        @click="clientSettings.setLocale({ locale: item.code })"
+        @click="clientSettings.setLocale(item.code)"
       >
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>

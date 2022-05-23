@@ -91,7 +91,11 @@ export async function pushSettingsToServer(
 ): Promise<void> {
   if (prefs.CustomPrefs) {
     for (const [key, value] of Object.entries(prefs.CustomPrefs)) {
-      let string = JSON.stringify(value);
+      let string = value;
+
+      if (typeof value !== 'string') {
+        string = JSON.stringify(value);
+      }
 
       /**
        * Undefined can't be converted to string using JSON.stringify so we add this safeguard
