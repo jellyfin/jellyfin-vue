@@ -27,6 +27,10 @@ import SubtitlesOctopus from 'libass-wasm';
 import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
 // @ts-expect-error - No types for libass
 import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
+import 'libass-wasm/dist/js/subtitles-octopus-worker.data';
+import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.data';
+import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem';
+import 'libass-wasm/dist/js/subtitles-octopus-worker.wasm';
 import isNil from 'lodash/isNil';
 import { mapStores } from 'pinia';
 import {
@@ -42,12 +46,6 @@ import {
   PlaybackTrack,
   RepeatMode
 } from '~/store/playbackManager';
-
-// Using requires so those aren't treeshaked and loaded by the webpack file loader as static assets
-require('libass-wasm/dist/js/subtitles-octopus-worker.data');
-require('libass-wasm/dist/js/subtitles-octopus-worker-legacy.data');
-require('libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem');
-require('libass-wasm/dist/js/subtitles-octopus-worker.wasm');
 
 export default Vue.extend({
   mixins: [imageHelper, timeUtils],

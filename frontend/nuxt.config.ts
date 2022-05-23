@@ -377,11 +377,11 @@ const config: NuxtConfig = {
         // Hacky rule to make the libass WASM not being parsed when requiring it for the file loader
         // https://github.com/webpack/webpack/issues/6725#issuecomment-391237775
         {
-          test: /libass-wasm\/dist\/js\/subtitles-octopus-worker\.wasm/,
+          test: /libass-wasm([\\]+|\/)dist([\\]+|\/)js([\\]+|\/)subtitles-octopus-worker\.wasm/,
           type: 'javascript/auto'
         },
         {
-          test: /libass-wasm\/dist\/js\/subtitles-octopus-worker/,
+          test: /libass-wasm([\\]+|\/)dist([\\]+|\/)js([\\]+|\/)subtitles-octopus-worker/,
           loader: 'file-loader',
           options: { name: '[name].[ext]' }
         }
