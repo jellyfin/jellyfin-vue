@@ -121,3 +121,28 @@ jobs:
 
       - name: Build Tauri 🛠️
         run: 'npm run tauri:build -w tauri'
+
+      - name: Upload artifact (Linux) ⬆️🐧
+        uses: actions/upload-artifact@v3.1.0
+        if: matrix.platform == 'ubuntu-latest'
+        with:
+          name: jellyfin-vue_linux-amd64
+          path: |
+            tauri/target/release/bundle/deb/*.deb
+            tauri/target/release/bundle/appimage_deb
+
+      - name: Upload artifact (MacOS) ⬆️🍎
+        uses: actions/upload-artifact@v3.1.0
+        if: matrix.platform == 'macos-latest'
+        with:
+          name: jellyfin-vue_macOS
+          path: |
+            tauri/target/release/bundle/macos
+            tauri/target/release/bundle/dmg/*.dmg
+
+      - name: Upload artifact (Windows) ⬆️🪟
+        uses: actions/upload-artifact@v3.1.0
+        if: matrix.platform == 'windows-latest'
+        with:
+          name: jellyfin-vue_windows_amd64
+          path: tauri/target/release/jellyfin-vue.exe
