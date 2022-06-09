@@ -121,6 +121,11 @@
       "title": "Název"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Přesunout na konec",
+    "pushToTop": "Přesunout na začátek",
+    "removeFromQueue": "Odstranit z fronty"
+  },
   "itemNotFound": "Položka nebyla nalezena",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Nejnovější {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Seriály",
   "signIn": "Přihlásit se",
+  "snackbar": {
+    "addedToQueue": "Přidáno do fronty",
+    "playNext": "Vybraná položka bude přehrána jako další"
+  },
   "songs": "Skladby",
   "sortByType": "Řazení: {type}",
   "sortTitle": "Název pro řazení",
