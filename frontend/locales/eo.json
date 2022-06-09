@@ -121,6 +121,11 @@
       "title": "Titolo"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Movi al la fino",
+    "pushToTop": "Movi al la komenco",
+    "removeFromQueue": "Forigi de vico"
+  },
   "itemNotFound": "Aĵo ne trovita",
   "jellyfinLogo": "Logotipo de Jellyfin",
   "latestLibrary": "Plej nova {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Serioj",
   "signIn": "Ensaluto",
+  "snackbar": {
+    "addedToQueue": "Aldoni al vico",
+    "playNext": "La elektita aĵo estos ludata post la nuna"
+  },
   "songs": "Kantoj",
   "sortByType": "De {type}",
   "sortTitle": "Ordiga titolo",
