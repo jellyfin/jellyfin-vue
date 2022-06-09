@@ -121,6 +121,11 @@
       "title": "Название"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Перейти к концу",
+    "pushToTop": "Перейти к началу",
+    "removeFromQueue": "Изъять из очереди"
+  },
   "itemNotFound": "Элемент не найден",
   "jellyfinLogo": "Логотип Jellyfin",
   "latestLibrary": "Крайние {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Передачи",
   "signIn": "Вход",
+  "snackbar": {
+    "addedToQueue": "Добавить в очередь",
+    "playNext": "Выбранный элемент будет воспроизводиться после текущего"
+  },
   "songs": "Композиции",
   "sortByType": "По {type}",
   "sortTitle": "Название для сортировки",
