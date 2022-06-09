@@ -121,6 +121,11 @@
       "title": "Cím"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Ugrás a végére",
+    "pushToTop": "Ugrás az elejére",
+    "removeFromQueue": "Eltávolítás a sorból"
+  },
   "itemNotFound": "Az elem nem található",
   "jellyfinLogo": "Jellyfin logó",
   "latestLibrary": "Legújabb {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Sorozatok",
   "signIn": "Bejelentkezés",
+  "snackbar": {
+    "addedToQueue": "Hozzáadva a sorhoz",
+    "playNext": "A kiválasztott elem az aktuális után kerül lejátszásra"
+  },
   "songs": "Dalok",
   "sortByType": "{type} szerint",
   "sortTitle": "Cím rendezése",
