@@ -121,6 +121,11 @@
       "title": "Atauy"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Soñyna jyljytu",
+    "pushToTop": "Basyna jyljytu",
+    "removeFromQueue": "Kezekten alastau"
+  },
   "itemNotFound": "Tarmaq tabylmady",
   "jellyfinLogo": "Jellyfin logotipı",
   "latestLibrary": "Eñ keiıngı {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Körsetımder",
   "signIn": "Kıru",
+  "snackbar": {
+    "addedToQueue": "Kezekke üstelındı",
+    "playNext": "Tañdalğan tarmaq ağymdağydan keiın oınatylady"
+  },
   "songs": "Äuender",
   "sortByType": "{type} boiynşa",
   "sortTitle": "Sūryptau atauy",
