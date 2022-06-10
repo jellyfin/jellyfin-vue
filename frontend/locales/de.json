@@ -121,6 +121,11 @@
       "title": "Titel"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Zum Ende bewegen",
+    "pushToTop": "Zum Anfang bewegen",
+    "removeFromQueue": "Aus der Warteschlange entfernen"
+  },
   "itemNotFound": "Element nicht gefunden",
   "jellyfinLogo": "Jellyfin Logo",
   "latestLibrary": "Neueste {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Sendungen",
   "signIn": "Anmelden",
+  "snackbar": {
+    "addedToQueue": "Zur Warteschlange hinzugefügt",
+    "playNext": "Das ausgewählte Element wird nach dem derzeitigen abgespielt"
+  },
   "songs": "Lieder",
   "sortByType": "Nach {type}",
   "sortTitle": "Sortiere Titel",
