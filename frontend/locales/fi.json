@@ -121,6 +121,11 @@
       "title": "Otsikko"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Siirrä loppuun",
+    "pushToTop": "Siirrä alkuun",
+    "removeFromQueue": "Poista jonosta"
+  },
   "itemNotFound": "Kohdetta ei löydy",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Viimeisin {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Ohjelmat",
   "signIn": "Kirjaudu sisään",
+  "snackbar": {
+    "addedToQueue": "Lisättiin jonoon",
+    "playNext": "Valittu kohde toistetaan seuraavaksi nykyisen jälkeen"
+  },
   "songs": "Kappaleet",
   "sortByType": "{type}",
   "sortTitle": "Suodata otsikko",
