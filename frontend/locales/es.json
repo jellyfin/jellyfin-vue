@@ -121,6 +121,11 @@
       "title": "Título"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Mover al final",
+    "pushToTop": "Mover al principio",
+    "removeFromQueue": "Eliminar de la cola"
+  },
   "itemNotFound": "Elemento no encontrado",
   "jellyfinLogo": "Logo de Jellyfin",
   "latestLibrary": "Lo último en {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "Series",
   "signIn": "Iniciar sesión",
+  "snackbar": {
+    "addedToQueue": "Añadido a la cola de reproducción",
+    "playNext": "El elemento seleccionado se reproducirá a continuación"
+  },
   "songs": "Canciones",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar título",
