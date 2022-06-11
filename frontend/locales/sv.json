@@ -42,6 +42,7 @@
   },
   "directing": "Regissering",
   "director": "Regissör",
+  "disabled": "Inaktiverad",
   "discNumber": "Disk {discNumber}",
   "edit": "Redigera",
   "editMetadata": "Redigera metadata",
@@ -99,20 +100,368 @@
       "videos": "Videor"
     },
     "cast": "Roller",
-    "composer": "Kompositör"
+    "composer": "Kompositör",
+    "person": {
+      "birth": "Född",
+      "birthPlace": "Födelseort",
+      "books": "Böcker",
+      "death": "Avled",
+      "information": "Information",
+      "movies": "Filmer",
+      "person": "Person",
+      "photos": "Bilder",
+      "shows": "Serier"
+    },
+    "tracklist": {
+      "title": "Titel"
+    }
+  },
+  "itemMenu": {
+    "pushToBottom": "Flytta till slutet",
+    "pushToTop": "Flytta till början",
+    "removeFromQueue": "Ta bort från kö"
   },
   "itemNotFound": "Föremål hittades inte",
+  "jellyfinLogo": "Jellyfinlogotyp",
+  "latestLibrary": "Senast {libraryName}",
+  "libraries": "Bibliotek",
   "libraryEmpty": "Biblioteket är tomt",
   "libraryNotFound": "Hittade inte biblioteket",
+  "libraryRefreshQueued": "Biblioteksuppdatering köad",
+  "links": {
+    "helpTranslate": "Översätt Jellyfin till ditt språk",
+    "poweredByJellyfin": "Denna server drivs av Jellyfin",
+    "readTheDocumentation": "Läs dokumentationen",
+    "reportAnIssue": "Rapportera ett problem med denna klient"
+  },
+  "login": {
+    "addServer": "Lägg till server",
+    "changeServer": "Byt server",
+    "changeUser": "Byt användare",
+    "connect": "Anslut",
+    "kickedOut": "Auktoriseringen har återkallats och denna session är inte längre giltig. Vänligen logga in igen",
+    "login": "Logga in",
+    "loginAs": "Logga in som {name}",
+    "manualLogin": "Manuell inloggning",
+    "rememberMe": "Kom ihåg mig",
+    "selectServer": "Välj server",
+    "selectUser": "Välj en användare",
+    "serverAddress": "Serveradress",
+    "serverAddressMustBeUrl": "Serveradressen måste vara en giltig URL",
+    "serverAddressRequired": "Serveradress krävs",
+    "serverNotFound": "Server hittades ej",
+    "serverVersionTooLow": "Serverversionen måste vara 10.7.0 eller högre"
+  },
   "logout": "Logga ut",
+  "logsAndActivity": {
+    "activity": "Aktivitet",
+    "failedGetActivity": "Kunde inte hämta aktivitet",
+    "failedGetLogs": "Kunde inte hämta loggar",
+    "logs": "Loggar",
+    "noActivityFound": "Inga aktiviteter hittades",
+    "noLogsFound": "Inga loggar hittades"
+  },
+  "manualLogin": "Manuell inloggning",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Ljudkanaler:"
+    },
+    "audioCodec": {
+      "name": "Ljudkodek:"
+    },
+    "name": "Media",
+    "subtitleCodec": {
+      "name": "Undertextkodek:"
+    },
+    "videoCodec": {
+      "name": "Videokodek:"
+    }
+  },
+  "menu": "Meny",
+  "metadata": {
+    "source": "Källa",
+    "sourceAll": "Alla",
+    "title": "Titel",
+    "type": "Typ"
+  },
   "more": "Mer",
+  "moreLikeArtist": "Mer likt {artist}",
   "moreLikeThis": "Mer som detta",
+  "movies": "Filmer",
+  "name": "Namn",
+  "networks": "Nätverk",
+  "noImagesFound": "Inga bilder hittades",
+  "noInformationAvailable": "Ingen information tillgänglig",
+  "noNetworkConnection": "Ingen nätverksanslutning",
+  "noResultsFound": "Det finns inget här",
+  "numberTracks": "{number} spår",
+  "operatingSystem": "Operativsystem",
+  "originalTitle": "Originaltitel",
+  "overview": "Översikt",
   "password": "Lösenord",
+  "people": "Folk",
+  "person": "Person",
   "play": "Spela",
+  "playFromBeginning": "Spela från början",
+  "playback": {
+    "addToQueue": "Lägg till i kö",
+    "clearQueue": "Töm kö och stoppa uppspelning",
+    "playAll": "Spela alla",
+    "playNext": "Spela nästa",
+    "playbackSource": {
+      "item": "Spelar från {item}",
+      "unknown": "Spelar från kö"
+    },
+    "queueItems": "{items} spår",
+    "saveAsPlaylist": "Spara kö som spellista"
+  },
+  "playbackData": "Uppspelningsinformation",
+  "playbackInfo": {
+    "name": "Uppspelning",
+    "playMethod": {
+      "direct": "Direkt",
+      "name": "Metod:",
+      "transcode": "Transkodning"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Strömningstyp:",
+      "unknown": "Okänd",
+      "video": "Video"
+    }
+  },
+  "playbackSettings": "Uppspelningsinställningar",
+  "played": "Spelad",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Korrupta bilder:"
+    },
+    "decodedFrames": {
+      "name": "Avkodade bilder:"
+    },
+    "playbackResolution": {
+      "name": "Viewportupplösning:"
+    },
+    "videoResolution": {
+      "name": "Videoupplösning:",
+      "value": "{width}✕{height}"
+    }
+  },
+  "producer": "Producent",
+  "quality": "Kvalitet",
+  "queue": "Kö",
   "rating": "Betyg",
+  "refreshLibrary": "Uppdatera bibliotek",
   "releaseDate": "Utgivningsdatum",
+  "remoteDevices": "Fjärrenheter",
+  "resume": "Fortsätt",
+  "role": "Roll",
+  "save": "Spara",
+  "saved": "Sparad",
+  "search": {
+    "name": "Sök",
+    "topResults": "Toppresultat"
+  },
+  "seasonEpisode": "Säsong {seasonNumber}, Avsnitt {episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
+  "server": "Server",
+  "serverVersion": "Serverversion",
+  "settings": {
+    "apiKeys": {
+      "addApiKey": "Lägg till en API-nyckel",
+      "addNewKey": "Lägg till en ny API-nyckel",
+      "apiKeys": "API-nycklar",
+      "appName": "Appnamn",
+      "createKeyFailure": "Fel vid skapande av API-nyckel",
+      "createKeySuccess": "Lyckades skapa en ny API-nyckel",
+      "description": "Lägg till och ta bort API-nycklar för extern tillgång till din server",
+      "refreshKeysFailure": "Fel vid uppdatering av API-nycklar",
+      "revokeAll": "Återkalla samtliga API-nycklar",
+      "revokeAllFailure": "Fel vid återkallning av samtliga API-nycklar",
+      "revokeAllSuccess": "Lyckades återkalla samtliga API-nycklar",
+      "revokeFailure": "Fel vid återkallelse av API-nyckel",
+      "revokeSuccess": "Lyckades återkalla API-nyckel"
+    },
+    "devices": {
+      "appName": "Appnamn",
+      "appVersion": "Appversion",
+      "delete": "Ta bort",
+      "deleteAll": "Ta bort alla",
+      "deleteAllDevicesSuccess": "Alla enheter togs bort",
+      "deleteDeviceSuccess": "Enhet borttagen",
+      "deviceName": "Enhetsnamn",
+      "devices": "Enheter",
+      "lastActive": "Senast aktiv",
+      "noDevicesFound": "Inga enheter funna",
+      "userName": "Användarnamn"
+    },
+    "help": "Hjälp",
+    "logsAndActivity": {
+      "activity": "Aktivitet",
+      "failedGetLogs": "Kunde inte hämta loggar",
+      "logs": "Loggar",
+      "noActivityFound": "Inga aktiviteter hittades",
+      "noLogsFound": "Inga loggar hittades"
+    },
+    "settings": "Inställningar"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Ändra din användarinformation",
+      "name": "Konto"
+    },
+    "devices": {
+      "description": "Se och hantera anslutna enheter",
+      "name": "Enheter"
+    },
+    "dlna": {
+      "description": "Konfigurera DLNA inställningar och profil",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Konfigurera dina hemsektioner och hemskärmsform",
+      "name": "Hemskärm"
+    },
+    "libraries": {
+      "description": "Hantera bibliotek och dess metadata",
+      "name": "Bibliotek"
+    },
+    "logs": {
+      "description": "Läs och sök serverloggar och användaraktivitet",
+      "name": "Loggar & aktivitet"
+    },
+    "mediaPlayers": {
+      "description": "Konfigurera hur mediaspelarna beter sig på denna enhet",
+      "name": "Mediaspelare"
+    },
+    "networking": {
+      "description": "Hantera serverns nätverksinställningar"
+    },
+    "notifications": {
+      "description": "Hantera och konfigurera meddelanden skickade av denna server",
+      "name": "Meddelanden"
+    },
+    "playback": {
+      "description": "Ändra dina uppspelningsinställningar för denna enhet",
+      "name": "Uppspelning"
+    },
+    "plugins": {
+      "description": "Lägg till och konfigurera nya funktioner för denna server",
+      "name": "Tilläggsprogram"
+    },
+    "scheduledTasks": {
+      "description": "Hantera serverns schemalagda uppgifter",
+      "name": "Schemalagda uppgifter"
+    },
+    "server": {
+      "name": "Server"
+    },
+    "subtitles": {
+      "description": "Styr hur undertexter visas på denna enhet",
+      "name": "Undertexter"
+    },
+    "transcodingAndStreaming": {
+      "description": "Hantera hur denna server hanterar transkodning och strömning till klienter",
+      "name": "Transkodning & strömning"
+    },
+    "users": {
+      "description": "Hantera användare och deras rättigheter",
+      "name": "Användare"
+    }
+  },
+  "shows": "Serier",
   "signIn": "Logga in",
+  "snackbar": {
+    "addedToQueue": "Tillagd i kö",
+    "playNext": "Det valda objektet spelas efter det pågående"
+  },
+  "songs": "Låtar",
+  "sortByType": "Av {type}",
+  "sortTitle": "Sorteringstitel",
+  "speed": "Hastighet",
+  "startNow": "Börja nu",
+  "status": "Status",
+  "subtitles": "Undertexter",
+  "syncPlayGroups": "SyncPlay-grupper",
+  "syncingInProgress": "Synkronisering pågår",
+  "tooltips": {
+    "changeLanguage": "Språk",
+    "switchToDarkMode": "Växla till mörkerläge",
+    "switchToLightMode": "Växla till ljusläge"
+  },
+  "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transkodning",
+    "transcodingFramerate": {
+      "name": "Bildfrekvens:",
+      "value": "{value} bps"
+    },
+    "transcodingReason": {
+      "name": "Anledning: | Anledning:",
+      "reasons": {
+        "audioChannelsNotSupported": "Antalet ljudkanaler stöds ej",
+        "secondaryAudioNotSupported": "Sekundära ljudspår stöds ej",
+        "subtitleCodecNotSupported": "Undertextens kodek stöds ej",
+        "videoBitDepthNotSupported": "Videons bitdjup stöds ej",
+        "videoCodecNotSupported": "Videokodeken stöds ej",
+        "videoFramerateNotSupported": "Videons bildfrekvens stöds ej",
+        "videoLevelNotSupported": "Videons kodeknivå stöds ej",
+        "videoProfileNotSupported": "Videons kodekprofil stöds ej",
+        "videoResolutionNotSupported": "Videons upplösning stöds ej"
+      }
+    }
+  },
+  "type": "Typ",
+  "unableGetPublicUsers": "Kunde inte hämta användare",
+  "unableGetServerConfiguration": "Kunde inte hämta serverkonfiguration",
+  "unableToRefreshLibrary": "Kunde inte uppdatera bibliotek",
+  "undefined": "Odefinierad",
   "unexpectedError": "Oförutsett fel",
+  "unhandledException": "Ohanterat undantag",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekund | {count} sekunder"
+    }
+  },
+  "unplayed": "Ospelad",
   "upNext": "Kommer näst",
-  "username": "Användarnamn"
+  "username": "Användarnamn",
+  "validation": {
+    "bothPasswordsSame": "Lösenorden måste stämma överens",
+    "mustBeUrl": "Detta fält måste vara en giltig URL",
+    "required": "Detta fält krävs"
+  },
+  "version": "Version",
+  "video": "Video",
+  "videoTypes": "Videotyper",
+  "viewDetails": "Se detaljer",
+  "vueClientVersion": "Klientversion",
+  "wizard": {
+    "administratorAccount": "Administratörskonto",
+    "allowRemoteAccess": "Tillåt fjärråtkomst till servern",
+    "completeError": "Kunde inte slutföra installationsguiden.",
+    "confirmPassword": "Bekräfta lösenord",
+    "languageLocale": "Språk och hemvist",
+    "languageSuccessfullySet": "Språk satt.",
+    "metadataLanguagesSet": "Språk för metadata satt.",
+    "preferedLanguage": "Föredraget språk",
+    "preferredMetadataLanguage": "Föredraget språk för metadata",
+    "remoteAccess": "Fjärråtkomst",
+    "remoteAccessSet": "Fjärråtkomst satt.",
+    "setAdminError": "Kunde inte skapa ett administratörskonto.",
+    "setLanguageError": "Kunde inte sätta klientspråk.",
+    "setMetadataError": "Kunde inte sätta språk för metadata.",
+    "setRemoteError": "Kunde inte sätta fjärråtkomstinställningar.",
+    "setupWizard": "Installationsguide",
+    "userSuccessfullySet": "Användare satt."
+  },
+  "writer": "Författare",
+  "year": "År",
+  "years": "År",
+  "youMayAlsoLike": "Du kanske även gillar"
 }
