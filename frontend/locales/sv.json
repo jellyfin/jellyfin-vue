@@ -95,6 +95,7 @@
   "incorrectUsernameOrPassword": "Fel användarnamn eller lösenord",
   "item": {
     "artist": {
+      "appearsOn": "Framträdanden",
       "discography": "Diskografi",
       "information": "Information",
       "videos": "Videor"
