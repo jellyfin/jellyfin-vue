@@ -121,6 +121,11 @@
       "title": "标题"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "置底",
+    "pushToTop": "置顶",
+    "removeFromQueue": "移出队列"
+  },
   "itemNotFound": "未找到项目",
   "jellyfinLogo": "Jellyfin 图标",
   "latestLibrary": "最新的 {libraryName}",
@@ -412,6 +417,10 @@
   },
   "shows": "电视剧",
   "signIn": "登录",
+  "snackbar": {
+    "addedToQueue": "增加至队列",
+    "playNext": "所选项会在当前项目结束后播放"
+  },
   "songs": "歌曲",
   "sortByType": "根据 {type}",
   "sortTitle": "排序标题",
