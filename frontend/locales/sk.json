@@ -60,6 +60,8 @@
       "videoPlayerError": "Vo video prehrávači sa vyskytla neodstrániteľná chyba."
     }
   },
+  "failedRetrievingDisplayPreferences": "Nepodarilo sa získať nastavenia zobrazenia. Budú použité pôvodné nastavenia.",
+  "failedSettingDisplayPreferences": "Nebolo možné aktualizovať nastavenia zobrazenia.",
   "failedToRefreshItems": "Obnovenie položiek zlyhalo",
   "favorite": "Obľúbené",
   "features": "Features",
@@ -90,7 +92,7 @@
     "menu": "Menu",
     "primary": "Primárne",
     "screenshot": "Snímok obrazovky",
-    "thumb": "Thumb"
+    "thumb": "Náhľad"
   },
   "images": "Obrázky",
   "incorrectUsernameOrPassword": "Nesprávne používateľské meno alebo heslo",
@@ -118,6 +120,11 @@
       "title": "Názov"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Presunúť na koniec",
+    "pushToTop": "Presunúť na začiatok",
+    "removeFromQueue": "Odstrániť z fronty"
+  },
   "itemNotFound": "Položka nebola nájdená",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Najnovšie {libraryName}",
@@ -139,6 +146,7 @@
     "changeServer": "Zmeniť server",
     "changeUser": "Zmeniť používateľa",
     "connect": "Pripojiť",
+    "kickedOut": "Autorizácia bola zrušená a toto sedenie už nie je platné. Prihláste sa prosím znova",
     "login": "Prihlásiť sa",
     "loginAs": "Prihlásiť sa ako {name}",
     "manualLogin": "Manuálne prihlásenie",
@@ -155,6 +163,8 @@
   "logout": "Odhlásenie",
   "logsAndActivity": {
     "activity": "Aktivita",
+    "failedGetActivity": "Nepodarilo sa získať aktivitu",
+    "failedGetLogs": "Nepodarilo sa získať logy",
     "logs": "Logy",
     "noActivityFound": "Nebola nájdená žiadna aktivita",
     "noLogsFound": "Neboli nájdené žiadne logy"
@@ -189,6 +199,7 @@
     "type": "Typ"
   },
   "metadataEditor": "Editor metadát",
+  "metadataNoResultsMatching": "Žiadne výsledky pre \"{search}\". Stlačte enter pre vytvorenie nového.",
   "more": "Viac",
   "moreLikeArtist": "Podobné ako {artist}",
   "moreLikeThis": "Podobné ako toto",
@@ -325,6 +336,8 @@
     "help": "Nápoveda",
     "logsAndActivity": {
       "activity": "Aktivita",
+      "failedGetActivity": "Nepodarilo sa získať aktivitu",
+      "failedGetLogs": "Nepodarilo sa získať logy",
       "logs": "Logy",
       "noActivityFound": "Neboli nájdené žiadne aktivity",
       "noLogsFound": "Neboli nájdené žiadne logy"
@@ -337,6 +350,7 @@
       "name": "Účet"
     },
     "devices": {
+      "description": "Zobraziť a spravovať zariadenia pripojené na server",
       "name": "Zariadenia"
     },
     "dlna": {
@@ -355,57 +369,128 @@
       "description": "Spravovať TV tunery, poskytovateľov programových sprievodcov a nastavenie nahrávania",
       "name": "Živá TV a nahrávanie"
     },
+    "logs": {
+      "description": "Zobraziť a hľadať v logoch servera a užívateľskej aktivite",
+      "name": "Logy a aktivita"
+    },
+    "mediaPlayers": {
+      "description": "Nastaviť správanie prehrávačov médií pre toto zariadenie",
+      "name": "Prehrávače médií"
+    },
     "networking": {
+      "description": "Spravovať sieťové nastavenia tohoto servera",
       "name": "Sieť"
     },
     "notifications": {
+      "description": "Spravovať a nastaviť oznámenia odosielané týmto serverom",
       "name": "Upozornenia"
     },
     "playback": {
+      "description": "Upraviť nastavenia prehrávania pre toto zariadenie",
       "name": "Prehrávanie"
     },
     "plugins": {
+      "description": "Pridať a nastaviť nové funkcie pre tento server",
       "name": "Zásuvné moduly"
     },
+    "scheduledTasks": {
+      "description": "Spravovať naplánované úlohy bežiace na tomto serveri",
+      "name": "Naplánované úlohy"
+    },
     "server": {
+      "description": "Nastaviť jazyk a branding servera",
       "name": "Server"
     },
     "subtitles": {
+      "description": "Nastaviť zobrazenie titulkov na tomto zariadení",
       "name": "Titulky"
     },
+    "transcodingAndStreaming": {
+      "name": "Prekódovanie a streamovanie"
+    },
     "users": {
+      "description": "Spravovať užívateľov a ich oprávnení",
       "name": "Používatelia"
     }
   },
   "shows": "Seriály",
   "signIn": "Prihlásiť sa",
+  "snackbar": {
+    "addedToQueue": "Pridané do fronty",
+    "playNext": "Vybraná položka bude prehrávaná ako ďalšia"
+  },
+  "songs": "Skladby",
   "sortByType": "Podľa {type}",
+  "sortTitle": "Názov pre zoradenie",
   "specialFeatures": "Bonusový materiál",
   "speed": "Rýchlosť",
+  "startNow": "Prehrať hneď",
   "status": "Stav",
+  "stretch": "Roztiahnuť",
   "studios": "Štúdiá",
   "subtitles": "Titulky",
+  "syncPlayGroups": "Skupiny SyncPlay",
+  "syncingInProgress": "Prebieha synchronizácia",
   "tagline": "Slogan",
   "tags": "Tagy",
   "themeSong": "Tématická hudba",
   "themeVideo": "Tématické video",
   "tooltips": {
-    "changeLanguage": "Jazyk"
+    "changeLanguage": "Jazyk",
+    "switchToDarkMode": "Prepnúť na tmavý režim",
+    "switchToLightMode": "Prepnúť na svetlý režim"
   },
   "trailer": "Trailer",
   "transcodingInfo": {
-    "name": "Prekódovanie"
+    "name": "Prekódovanie",
+    "transcodingFramerate": {
+      "name": "Snímky za sekundu:",
+      "value": "{value} snímkov/s"
+    },
+    "transcodingReason": {
+      "name": "Dôvod: | Dôvody:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorfné video nie je podporované",
+        "audioBitDepthNotSupported": "Bitová hĺbka zvuku nie je podporovaná",
+        "audioBitrateNotSupported": "Dátovy tok zvuku nie je podporovaný",
+        "audioChannelsNotSupported": "Počet zvukových kanálov nie je podporovaný",
+        "audioCodecNotSupported": "Zvukový kodek nie je podporovaný",
+        "audioProfileNotSupported": "Profil zvukového kodeku nie je podporovaný",
+        "containerNotSupported": "Kontajner nie je podporovaný",
+        "refFramesNotSupported": "Referenčné snímky nie su podporované",
+        "secondaryAudioNotSupported": "Sekundárne zvukové stopy nie su podporované",
+        "subtitleCodecNotSupported": "Titulkový kodek nie je podporovaný",
+        "videoCodecNotSupported": "Video kodek nie je podporovaný",
+        "videoResolutionNotSupported": "Rozlíšenie videa nie je podporované"
+      }
+    }
   },
   "type": "Typ",
+  "unableGetPublicUsers": "Nebolo možné získať používateľov",
   "unableGetRelated": "Načítanie súvisiacich položiek nebolo možné",
+  "unableGetServerConfiguration": "Nebolo možné získať nastavenia serveru",
+  "unableToRefreshLibrary": "Nebolo možné aktualizovať knižnicu",
+  "unableToToggleLike": "Zmena stavu obľúbenosti danej položky sa nepodarila",
+  "unableToTogglePlayed": "Nepodarilo sa aktualizovať stav pozretia",
   "undefined": "Nedefinované",
   "unexpectedError": "Neočakávaná chyba",
   "unhandledException": "Neošetrená výnimka",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekunda | {count} sekundy"
+    }
+  },
   "unliked": "Nepáči sa mi to",
   "unplayed": "Neprehrané",
   "upNext": "Nasleduje",
+  "upNextName": "Nasleduje: {upNextItemName}",
   "username": "Používateľské meno",
   "validation": {
+    "bothPasswordsSame": "Obe heslá musia byť totožné",
     "mustBeUrl": "Toto pole musí byť platná URL",
     "required": "Toto pole je vyžadované"
   },
@@ -413,7 +498,28 @@
   "video": "Video",
   "videoTypes": "Typy videa",
   "viewDetails": "Zobraziť detaily",
+  "vueClientVersion": "Verzia klienta",
+  "wizard": {
+    "administratorAccount": "Účet správcu",
+    "allowRemoteAccess": "Povoliť vzdialený prístup k serveru",
+    "completeError": "Nebolo možné dokončiť sprievodcu nastaveniami.",
+    "confirmPassword": "Potvrdiť heslo",
+    "languageLocale": "Jazyk a regionálne nastavenia",
+    "languageSuccessfullySet": "Jazyk bol úspešne nastavený.",
+    "metadataLanguagesSet": "Jazyky metadát boli nastavené.",
+    "preferedLanguage": "Preferovaný jazyk",
+    "preferredMetadataLanguage": "Preferovaný jazyk metadát",
+    "remoteAccess": "Vzdialený prístup",
+    "remoteAccessSet": "Vzdialený prístup nastavený.",
+    "setAdminError": "Nebolo možné vytvoriť účet správcu.",
+    "setLanguageError": "Nebolo možné nastaviť jazyk klienta.",
+    "setMetadataError": "Nebolo možné nastaviť jazyky metadát.",
+    "setRemoteError": "Nebolo možné uložiť nastavenia vzdialeného prístupu.",
+    "setupWizard": "Sprievodca nastaveniami",
+    "userSuccessfullySet": "Používatel bol úspešne nastavený."
+  },
   "writer": "Scenárista",
+  "writing": "Scénar",
   "year": "Rok",
   "years": "Roky",
   "youMayAlsoLike": "Mohlo by sa vám páčiť"
