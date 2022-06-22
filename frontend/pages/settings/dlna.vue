@@ -126,6 +126,8 @@ import {
   UserDto
 } from '@jellyfin/client-axios';
 import isNil from 'lodash/isNil';
+import { mapStores } from 'pinia';
+import { snackbarStore } from '~/store';
 
 /**
  * We need to define those interfaces here as the axios hook for
@@ -144,6 +146,24 @@ interface DlnaNamedConfiguration {
   AutoCreatePlayToProfiles: boolean;
   SendOnlyMatchedHost: boolean;
 }
+
+/**
+ * FIXME: this is a short term hack in order for it to display all entries
+ * needs architectural change.
+ */
+const identification = {
+  Identification: {
+    FriendlyName: '',
+    ModelNumber: '',
+    SerialNumber: '',
+    ModelName: '',
+    ModelDescription: '',
+    ModelUrl: '',
+    Manufacturer: '',
+    ManufacturerUrl: '',
+    Headers: []
+  }
+};
 
 export default Vue.extend({
   async asyncData({ $api }) {
@@ -171,6 +191,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    ...mapStores(snackbarStore),
     headers(): { text: string; value: string }[] {
       return [
         {
@@ -192,12 +213,19 @@ export default Vue.extend({
   },
   methods: {
     async storeDlnaConfiguration(): Promise<void> {
-      await this.$api.configuration.updateNamedConfiguration(
-        {
-          key: 'dlna'
-        },
-        { data: this.dlnaSettings }
-      );
+      await this.$api.configuration
+        .updateNamedConfiguration(
+          {
+            key: 'dlna'
+          },
+          { data: this.dlnaSettings }
+        )
+        .then(() =>
+          this.snackbar.push(this.$t('settings.dlna.savedSuccess'), 'success')
+        )
+        .catch(() =>
+          this.snackbar.push(this.$t('settings.dlna.savedError'), 'error')
+        );
     },
     async setSelectedDevice(selectedDevice: DeviceProfileInfo): Promise<void> {
       if (!isNil(selectedDevice)) {
@@ -207,22 +235,46 @@ export default Vue.extend({
             profileId: selectedDevice.Id as string
           })
         ).data;
+        this.selectedProfile = {
+          ...selectedDevice,
+          ...identification
+        };
         this.isCustomProfile = this.userProfiles.includes(selectedDevice);
         this.deviceInfoDialog = true;
       }
     },
     async saveProfile(profile: DeviceProfile): Promise<void> {
-      await this.$api.dlna.updateProfile({
-        profileId: this.currentProfileId,
-        deviceProfile: profile
-      });
+      await this.$api.dlna
+        .updateProfile({
+          profileId: this.currentProfileId,
+          deviceProfile: profile
+        })
+        .then(() =>
+          this.snackbar.push(
+            this.$t('settings.dlna.savedProfileSuccess'),
+            'success'
+          )
+        )
+        .catch(() =>
+          this.snackbar.push(
+            this.$t('settings.dlna.savedProfileError'),
+            'error'
+          )
+        );
       this.dlnaProfiles = (await this.$api.dlna.getProfileInfos()).data;
       this.closeDialog();
     },
     async deleteSelectedProfile(): Promise<void> {
-      await this.$api.dlna.deleteProfile({
-        profileId: this.currentProfileId
-      });
+      await this.$api.dlna
+        .deleteProfile({
+          profileId: this.currentProfileId
+        })
+        .then(() =>
+          this.snackbar.push(this.$t('settings.dlna.deleteSuccess'), 'success')
+        )
+        .catch(() =>
+          this.snackbar.push(this.$t('settings.dlna.deleteError'), 'error')
+        );
       this.dlnaProfiles = (await this.$api.dlna.getProfileInfos()).data;
       this.closeDialog();
     },

@@ -329,6 +329,12 @@
         "text": "Enable DLNA PlayTo",
         "description": "Detect devices within your network and offer the ability to control them remotely."
       },
+      "savedSuccess": "Settings saved",
+      "savedError": "An error occurred saving the configuration",
+      "savedProfileSuccess": "Profile saved",
+      "savedProfileError": "An error occurred saving the profile",
+      "deleteSuccess": "Deleted profile",
+      "deleteError": "An error occurred deleting the profile",
       "EnableDebugLog": {
         "text": "Enable DLNA debug logging",
         "description": "Create large log files and should only be used as needed for troubleshooting purposes."
@@ -357,10 +363,6 @@
       "EnablePlayToTracing": {
         "text": "Enable PlayTo Tracing",
         "description": "Enables debug logging for DLNA PlayTo"
-      },
-      "BlastAliveMessageIntervalSeconds": {
-        "text": "[deprecated] Alive message interval",
-        "description": "MIGRATING - TO BE REMOVED ONCE WEB HAS BEEN ALTERED"
       },
       "SendOnlyMatchedHost": {
         "text": "Send only matched host",
