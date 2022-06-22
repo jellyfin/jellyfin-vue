@@ -140,7 +140,6 @@ interface DlnaNamedConfiguration {
   EnableServer: boolean;
   AliveMessageIntervalSeconds: number;
   BlastAliveMessages: boolean;
-  BlastAliveMessageIntervalSeconds: number;
   DefaultUserId: string;
   AutoCreatePlayToProfiles: boolean;
   SendOnlyMatchedHost: boolean;
@@ -151,6 +150,9 @@ export default Vue.extend({
     const dlnaSettings = (
       await $api.configuration.getNamedConfiguration({ key: 'dlna' })
     ).data;
+
+    // remove deprecated duplicate option
+    delete dlnaSettings.BlastAliveMessageIntervalSeconds;
 
     const dlnaProfiles = (await $api.dlna.getProfileInfos()).data;
     const users = (await $api.user.getUsers()).data;

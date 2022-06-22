@@ -362,6 +362,10 @@
         "text": "[deprecated] Alive message interval",
         "description": "MIGRATING - TO BE REMOVED ONCE WEB HAS BEEN ALTERED"
       },
+      "SendOnlyMatchedHost": {
+        "text": "Send only matched host",
+        "description": "Only send data if the host matches"
+      },
       "AutoCreatePlayToProfiles": {
         "text": "Automatically create PlayTo device profiles",
         "description": ""
