@@ -22,7 +22,7 @@
   },
   "byArtist": "За {artist}",
   "cancel": "Скасувати",
-  "castAndCrew": "Актори",
+  "castAndCrew": "Актори і знімальна команда",
   "collectionEmpty": "Ця збірка порожня",
   "collections": "Колекції",
   "communityRating": "Оцінка спільноти",
@@ -52,7 +52,7 @@
   "editPerson": "Редагувати персону",
   "endDate": "Дата закінчення",
   "endsAt": "Закінчується о {time}",
-  "episodeNumber": "Серія {episodeNumber}",
+  "episodeNumber": "Епізод {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ой, сталась помилка",
     "messages": {
@@ -121,6 +121,11 @@
       "title": "Заголовок"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Перейти до кінця",
+    "pushToTop": "Перейти до початку",
+    "removeFromQueue": "Прибрати з черги"
+  },
   "itemNotFound": "Елемент не знайдено",
   "jellyfinLogo": "Лого Jellyfin",
   "latestLibrary": "Остання {libraryName}",
@@ -142,6 +147,7 @@
     "changeServer": "Змінити сервер",
     "changeUser": "Змінити користувача",
     "connect": "Приєднатись",
+    "kickedOut": "Авторизація була відібрана і сесія більше не є дійсною. Будь ласка, увійдіть знову",
     "login": "Ввійти",
     "loginAs": "Ввійти як {name}",
     "manualLogin": "Ввійти вручну",
@@ -154,5 +160,377 @@
     "serverDashboard": "Панель серверу",
     "serverNotFound": "Сервер не знайдено",
     "serverVersionTooLow": "Версія сервера має бути 10.7.0 або вище"
-  }
+  },
+  "logout": "Вийти",
+  "logsAndActivity": {
+    "activity": "Активність",
+    "failedGetActivity": "Неможливо дістати активність",
+    "failedGetLogs": "Неможливо видобути логи",
+    "logs": "Логи",
+    "noActivityFound": "Не знайдено активності",
+    "noLogsFound": "Не знайдено логів"
+  },
+  "manualLogin": "Вхід вручну",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Аудіоканали:"
+    },
+    "audioCodec": {
+      "name": "Аудіокодек:"
+    },
+    "bitrate": {
+      "name": "Бітрейт:"
+    },
+    "container": {
+      "name": "Контейнер:"
+    },
+    "name": "Медіа",
+    "subtitleCodec": {
+      "name": "Кодек субтитрів:"
+    },
+    "videoCodec": {
+      "name": "Відео кодек:"
+    }
+  },
+  "menu": "Меню",
+  "metadata": {
+    "source": "Джерело",
+    "sourceAll": "Усе",
+    "title": "Назва",
+    "type": "Тип"
+  },
+  "metadataEditor": "Редактор метаданих",
+  "metadataNoResultsMatching": "Не знайшлось результатів, відповідних \"{search}\". Натисніть Enter аби створити новий.",
+  "more": "Більше",
+  "moreLikeArtist": "Більше схожих на {artist}",
+  "moreLikeThis": "Більше схожих на це",
+  "movies": "Фільми",
+  "name": "Імʼя",
+  "networks": "Мережі",
+  "nextUp": "Наступне",
+  "noImagesFound": "Не знайдено зображень",
+  "noInformationAvailable": "Немає інформації",
+  "noNetworkConnection": "Немає зʼєднання з мережею",
+  "noResultsFound": "Тут нічого немає",
+  "numberTracks": "{number} треків",
+  "operatingSystem": "Операційна система",
+  "originalAspectRatio": "Оригінальне співвідношення сторін",
+  "originalTitle": "Оригінальна назва",
+  "overview": "Огляд",
+  "parentalRating": "Вікова категорія",
+  "parentalRatings": "Вікові категорії",
+  "password": "Пароль",
+  "people": "Люди",
+  "person": "Людина",
+  "play": "Грати",
+  "playFromBeginning": "Грати спочатку",
+  "playback": {
+    "addToQueue": "Додати до черги",
+    "clearQueue": "Очистити чергу і зупинити відтворення",
+    "playAll": "Грати все",
+    "playNext": "Грати наступне",
+    "playbackSource": {
+      "item": "Грати з {item}",
+      "shuffle": "Грати впереміш",
+      "shuffleItem": "Грати {item} впереміш",
+      "unknown": "Грати з черги"
+    },
+    "queueItems": "{items} треків",
+    "saveAsPlaylist": "Зберегти чергу як список відтворення",
+    "shuffle": "Перемішати",
+    "shuffleAll": "Перемішати все"
+  },
+  "playbackData": "Інформація про відтворення",
+  "playbackInfo": {
+    "name": "Відтворення",
+    "playMethod": {
+      "direct": "Пряме",
+      "name": "Метод:",
+      "remux": "Remux",
+      "transcode": "Перекодування"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Тип потоку:",
+      "unknown": "Невідомо",
+      "video": "Відео"
+    }
+  },
+  "playbackSettings": "Налаштування відтворення",
+  "played": "Відтворено",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Спотворених кадрів:"
+    },
+    "decodedFrames": {
+      "name": "Декодованих кадрів:"
+    },
+    "droppedFrames": {
+      "name": "Випавших кадрів:"
+    },
+    "name": "Програвач",
+    "playbackResolution": {
+      "name": "Роздільна здатність вікна:"
+    },
+    "videoResolution": {
+      "name": "Роздільна здатність відео:",
+      "value": "{width}✕{height}"
+    }
+  },
+  "present": "Поточне",
+  "producer": "Продюсер",
+  "quality": "Якість",
+  "queue": "Черга",
+  "rating": "Рейтинг",
+  "refreshLibrary": "Оновити бібліотеку",
+  "releaseDate": "Дата виходу",
+  "remoteDevices": "Віддалені пристрої",
+  "resumable": "Відновлюване",
+  "resume": "Відновити",
+  "role": "Роль",
+  "save": "Зберегти",
+  "saved": "Збережене",
+  "search": {
+    "name": "Пошук",
+    "topResults": "Найкращі результати"
+  },
+  "seasonEpisode": "Сезон {seasonNumber}, Епізод {episodeNumber}",
+  "seasonEpisodeAbbrev": "С{seasonNumber}Е{episodeNumber}",
+  "series": "Серіал",
+  "server": "Сервер",
+  "serverVersion": "Версія серверу",
+  "serverVersionTooLow": "Версія серверу має бути 10.7.0 або вища",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Токен доступу",
+      "addApiKey": "Додати ключ API",
+      "addNewKey": "Додати новий ключ API",
+      "apiKeys": "Ключі API",
+      "appName": "Назва застосунку",
+      "createKeyFailure": "Помилка при створенні нового ключа API",
+      "createKeySuccess": "Новий ключ API успішно створено",
+      "dateCreated": "Дата створення",
+      "description": "Додати і відкликати ключі API для зовнішнього доступу до вашого сервера",
+      "refreshKeysFailure": "Помилка при оновленні ключів API",
+      "revokeAll": "Відкликати всі ключі API",
+      "revokeAllFailure": "Помилка при відкликанні всіх ключів API",
+      "revokeAllSuccess": "Успішно відкликано всі ключі API",
+      "revokeFailure": "Помилка при відкликанні ключа API",
+      "revokeSuccess": "Успішно відкликано ключ API"
+    },
+    "devices": {
+      "appName": "Назва застосунку",
+      "appVersion": "Версія застосунку",
+      "delete": "Видалити",
+      "deleteAll": "Видалити все",
+      "deleteAllDevicesError": "Помилка при видаленні усіх пристроїв",
+      "deleteAllDevicesSuccess": "Всі пристрої видалено успішно",
+      "deleteDeviceError": "Помилка при видалені пристрою",
+      "deleteDeviceSuccess": "Пристрій видалено успішно",
+      "deviceName": "Назва пристрою",
+      "devices": "Пристрої",
+      "lastActive": "Активний востаннє",
+      "noDevicesFound": "Пристроїв не знайдено",
+      "userName": "Імʼя користувача"
+    },
+    "help": "Допомога",
+    "logsAndActivity": {
+      "activity": "Активність",
+      "failedGetActivity": "Не вийшло видобути активність",
+      "failedGetLogs": "Не вийшло видобути логи",
+      "logs": "Логи",
+      "noActivityFound": "Не знайдено активності",
+      "noLogsFound": "Не знайдено логів"
+    },
+    "settings": "Налаштування"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Редагувати інформацію про вашого користувача",
+      "name": "Обліковий запис"
+    },
+    "devices": {
+      "description": "Переглянути та керувати пристроями, підʼєднаними до вашого сервера",
+      "name": "Пристрої"
+    },
+    "dlna": {
+      "description": "Конфігурація налаштувань та профілю DLNA",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Конфігурація секцій та макету домівки",
+      "name": "Домівка"
+    },
+    "libraries": {
+      "description": "Керувати бібліотеками та їх метаданими",
+      "name": "Бібліотеки"
+    },
+    "liveTvAndDvr": {
+      "description": "Керувати тюнерами ТВ, провайдерами даних, налаштуванням DVR",
+      "name": "Телебачення наживо та DVR"
+    },
+    "logs": {
+      "description": "Читати і шукати в логах сервера і активності користувачів",
+      "name": "Логи і активність"
+    },
+    "mediaPlayers": {
+      "description": "Конфігурація поведінки медіапрогравачів для цього пристрою",
+      "name": "Медіапрогравачі"
+    },
+    "networking": {
+      "description": "Керувати мережевими налаштуваннями сервера",
+      "name": "Мережеві налаштування"
+    },
+    "notifications": {
+      "description": "Керувати і конфігурувати сповіщення, надіслані цим сервером",
+      "name": "Сповіщення"
+    },
+    "playback": {
+      "description": "Редагувати налаштування відтворення для цього пристрою",
+      "name": "Відтворення"
+    },
+    "plugins": {
+      "description": "Додати і конфігурувати нові функції для цього серверу",
+      "name": "Плагіни"
+    },
+    "scheduledTasks": {
+      "description": "Керувати запланованими задачами, що запускаються на цьому сервері",
+      "name": "Заплановані задачі"
+    },
+    "server": {
+      "description": "Конфігурувати мову і брендування цього сервера",
+      "name": "Сервер"
+    },
+    "subtitles": {
+      "description": "Налаштувати показ субтитрів на цьому пристрої",
+      "name": "Субтитри"
+    },
+    "transcodingAndStreaming": {
+      "description": "Керувати поведінку сервера при перекодуванні і потоковій передачі клієнтам",
+      "name": "Перекодування і потокова передача"
+    },
+    "users": {
+      "description": "Керувати користувачами та їх дозволами",
+      "name": "Користувачі"
+    }
+  },
+  "shows": "Телепередачі",
+  "signIn": "Увійти",
+  "snackbar": {
+    "addedToQueue": "Додано до черги",
+    "playNext": "Обраний елемент відтворюватиметься після поточного"
+  },
+  "songs": "Пісні",
+  "sortByType": "За {type}",
+  "sortTitle": "Сортувати назви",
+  "specialFeatures": "Спеціальні функції",
+  "speed": "Швидкість",
+  "startNow": "Почати зараз",
+  "status": "Статус",
+  "stretch": "Розтягнути",
+  "studios": "Студії",
+  "subtitles": "Субтитри",
+  "syncPlayGroups": "Групи SyncPlay",
+  "syncingInProgress": "Синхронізація в процесі",
+  "tagline": "Девіз",
+  "tags": "Теги",
+  "themeSong": "Мотив",
+  "themeVideo": "Тематичне відео",
+  "tooltips": {
+    "changeLanguage": "Мова",
+    "switchToDarkMode": "Переключити в темний режим",
+    "switchToLightMode": "Переключити в світлий режим"
+  },
+  "trailer": "Трейлер",
+  "transcodingInfo": {
+    "name": "Перекодування",
+    "transcodingFramerate": {
+      "name": "Частота кадрів:",
+      "value": "{value} кадрів/c"
+    },
+    "transcodingProgress": "Прогрес:",
+    "transcodingReason": {
+      "name": "Причина: | Причини:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Анаморфічне відео не підтримується",
+        "audioBitDepthNotSupported": "Ця бітова глибина звуку не підтримується",
+        "audioBitrateNotSupported": "Цей бітрейт звуку не підтримується",
+        "audioChannelsNotSupported": "Ця кількість аудіоканалів не підтримується",
+        "audioCodecNotSupported": "Цей аудіокодек не підтримується",
+        "audioProfileNotSupported": "Цей профіль аудіокодеку не підтримується",
+        "audioSampleRateNotSupported": "Ця частота семплів аудіо не підтримується",
+        "containerBitrateExceedsLimit": "Бітрейт цього контейнера перевищує встановлений ліміт",
+        "containerNotSupported": "Цей контейнер не підтримується",
+        "interlacedVideoNotSupported": "Відео з черезрядковою розгорткою не підтримується",
+        "refFramesNotSupported": "Відео з референтними кадрами не підтримується",
+        "secondaryAudioNotSupported": "Вторинні аудіодоріжки не підтримуються",
+        "subtitleCodecNotSupported": "Цей кодек субтитрів не підтримується",
+        "videoBitDepthNotSupported": "Ця бітова глибина відео не підтримується",
+        "videoCodecNotSupported": "Цей відеокодек не підтримується",
+        "videoFramerateNotSupported": "Ця частота кадрів не підтримується",
+        "videoLevelNotSupported": "Цей рівень відеокодеку не підтримується",
+        "videoProfileNotSupported": "Цей профіль відеокодеку не підтримується",
+        "videoResolutionNotSupported": "Роздільна здатність цього відео не підтримується"
+      }
+    }
+  },
+  "type": "Тип",
+  "unableGetPublicUsers": "Не вдається видобути користувачів",
+  "unableGetRelated": "Не вдається видобути повʼязані елементи",
+  "unableGetServerConfiguration": "Не вдається видобути конфігурацію сервера",
+  "unableToRefreshLibrary": "Не вдається оновити бібліотеку",
+  "unableToToggleLike": "Не вдається змінити статус улюбленості елемента",
+  "unableToTogglePlayed": "Не вдається змінити статус перегляду",
+  "undefined": "Не визначено",
+  "unexpectedError": "Неочікувана помилка",
+  "unhandledException": "Необроблена виключна ситуація",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} кбіт/с",
+      "mbps": "{value} мбіт/с"
+    },
+    "time": {
+      "seconds": "{count} секунда | {count} секунд"
+    }
+  },
+  "unliked": "Не улюблене",
+  "unplayed": "Не відтворене",
+  "upNext": "Наступне",
+  "upNextName": "Наступне: {upNextItemName}",
+  "username": "Імʼя користувача",
+  "validation": {
+    "bothPasswordsSame": "Обидва паролі мають бути однаковими",
+    "mustBeUrl": "В цьому полі має бути дійсний URL",
+    "required": "Це поле є необхідним"
+  },
+  "version": "Версія",
+  "video": "Відео",
+  "videoTypes": "Типи відео",
+  "viewDetails": "Деталі перегляду",
+  "vueClientVersion": "Версія клієнта",
+  "wizard": {
+    "administratorAccount": "Обліковий запис адміністратора",
+    "allowRemoteAccess": "Дозволити віддалений доступ до серверу",
+    "completeError": "Не вийшло завершити стартове налаштування.",
+    "confirmPassword": "Підтвердіть пароль",
+    "languageLocale": "Мова та локалізація",
+    "languageSuccessfullySet": "Мову встановлено успішно.",
+    "metadataLanguagesSet": "Мови метаданих встановлено.",
+    "preferedLanguage": "Бажана мова",
+    "preferredMetadataLanguage": "Бажана мова метаданих",
+    "remoteAccess": "Віддалений доступ",
+    "remoteAccessSet": "Віддалений доступ налаштовано.",
+    "setAdminError": "Не вдається створити обліковий запис адміністратора.",
+    "setLanguageError": "Не вдається встановити мову застосунку.",
+    "setMetadataError": "Не вдається встановити мови метаданих.",
+    "setRemoteError": "Не вдається встановити налаштування віддаленого доступу.",
+    "setupWizard": "Стартове налаштування",
+    "userSuccessfullySet": "Користувача встановлено успішно."
+  },
+  "writer": "Сценарист",
+  "writing": "Сценарій",
+  "year": "Рік",
+  "years": "Роки",
+  "youMayAlsoLike": "Вам також сподобається"
 }
