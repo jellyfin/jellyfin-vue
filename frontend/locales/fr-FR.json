@@ -121,6 +121,11 @@
       "title": "Titre"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Aller à la fin",
+    "pushToTop": "Aller au début",
+    "removeFromQueue": "Enlever de la file d'attente"
+  },
   "itemNotFound": "Élément introuvable",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Récemment ajoutés à {libraryName}",
@@ -410,8 +415,12 @@
       "name": "Utilisateurs"
     }
   },
-  "shows": "Émissions",
+  "shows": "Séries",
   "signIn": "Se connecter",
+  "snackbar": {
+    "addedToQueue": "Ajouté en file d'attente",
+    "playNext": "L'élément sélectionné sera lancé après l'élément actuel"
+  },
   "songs": "Musiques",
   "sortByType": "Par {type}",
   "sortTitle": "Trier par titre",
