@@ -63,7 +63,7 @@
   "failedRetrievingDisplayPreferences": "Не вдається отримати налаштування відображення. Використовую останні відомі налаштування.",
   "failedSettingDisplayPreferences": "Не вдається оновити параметри відображення.",
   "failedToRefreshItems": "Помилка оновлення елементів",
-  "favorite": "Вибране",
+  "favorite": "Обране",
   "features": "Особливості",
   "filter": "Фільтр",
   "filtersNotFound": "Неможливо завантажити фільтри",
@@ -124,7 +124,7 @@
   "itemMenu": {
     "pushToBottom": "Перейти до кінця",
     "pushToTop": "Перейти до початку",
-    "removeFromQueue": "Прибрати з черги"
+    "removeFromQueue": "Видалити з черги"
   },
   "itemNotFound": "Елемент не знайдено",
   "jellyfinLogo": "Лого Jellyfin",
@@ -283,7 +283,7 @@
   "quality": "Якість",
   "queue": "Черга",
   "rating": "Рейтинг",
-  "refreshLibrary": "Оновити бібліотеку",
+  "refreshLibrary": "Оновити медіатеку",
   "releaseDate": "Дата виходу",
   "remoteDevices": "Віддалені пристрої",
   "resumable": "Відновлюване",
@@ -363,8 +363,8 @@
       "name": "Домівка"
     },
     "libraries": {
-      "description": "Керувати бібліотеками та їх метаданими",
-      "name": "Бібліотеки"
+      "description": "Керувати медіатеками та їх метаданими",
+      "name": "Медіатеки"
     },
     "liveTvAndDvr": {
       "description": "Керувати тюнерами ТВ, провайдерами даних, налаштуванням DVR",
@@ -479,7 +479,7 @@
   "unableGetPublicUsers": "Не вдається видобути користувачів",
   "unableGetRelated": "Не вдається видобути повʼязані елементи",
   "unableGetServerConfiguration": "Не вдається видобути конфігурацію сервера",
-  "unableToRefreshLibrary": "Не вдається оновити бібліотеку",
+  "unableToRefreshLibrary": "Не вдається оновити медіатеку",
   "unableToToggleLike": "Не вдається змінити статус улюбленості елемента",
   "unableToTogglePlayed": "Не вдається змінити статус перегляду",
   "undefined": "Не визначено",
