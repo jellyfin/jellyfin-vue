@@ -7,7 +7,7 @@
     elevate-on-scroll
     elevation="3"
     :hide-on-scroll="$vuetify.breakpoint.mobile"
-    :class="{ opaque: page.opaqueAppBar }"
+    :class="{ transparent: page.transparentLayout && !page.isScrolled }"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.mobile && page.navDrawer"
@@ -51,13 +51,15 @@
     </app-bar-button-layout>
     <cast-button
       :fab="
-        !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        !(!page.transparentLayout || $vuetify.breakpoint.xsOnly) &&
+        !page.isScrolled
       "
     />
     <user-button />
     <locale-switcher
       :fab="
-        !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
+        !(!page.transparentLayout || $vuetify.breakpoint.xsOnly) &&
+        !page.isScrolled
       "
     />
   </v-app-bar>
@@ -94,9 +96,5 @@ export default Vue.extend({
 }
 .v-toolbar.ml-n3 {
   max-width: initial !important;
-}
-
-.v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
-  background-color: transparent !important;
 }
 </style>

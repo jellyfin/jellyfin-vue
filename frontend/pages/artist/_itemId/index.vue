@@ -146,7 +146,7 @@ import { pageStore, authStore } from '~/store';
 export default Vue.extend({
   meta: {
     backdrop: true,
-    transparentAppBar: true
+    transparentLayout: true
   },
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);

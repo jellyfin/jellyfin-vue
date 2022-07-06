@@ -100,11 +100,7 @@ export default Vue.extend({
     ...mapStores(pageStore)
   },
   mounted() {
-    this.page.opaqueAppBar = true;
     this.page.title = this.item.Name || '';
-  },
-  destroyed() {
-    this.page.opaqueAppBar = false;
   }
 });
 </script>

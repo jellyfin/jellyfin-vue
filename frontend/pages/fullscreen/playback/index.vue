@@ -34,7 +34,7 @@ import { pageStore, playbackManagerStore } from '~/store';
 export default Vue.extend({
   meta: {
     backdrop: { opacity: 0.5 },
-    transparentAppBar: true
+    transparentLayout: true
   },
   data() {
     return {

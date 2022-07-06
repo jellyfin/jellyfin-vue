@@ -145,7 +145,6 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    this.page.opaqueAppBar = true;
     this.$nextTick(() => {
       this.$nuxt.$loading.start();
     });
@@ -181,9 +180,6 @@ export default Vue.extend({
         this.$nuxt.$loading.finish();
       });
     }
-  },
-  destroyed() {
-    this.page.opaqueAppBar = false;
   },
   methods: {
     onChangeType(type: string): void {

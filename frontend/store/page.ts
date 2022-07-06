@@ -9,7 +9,7 @@ export interface BackdropParameters {
 }
 export interface PageState {
   title: string;
-  opaqueAppBar: boolean;
+  transparentLayout: boolean;
   navDrawer: boolean;
   openDrawer: boolean;
   isScrolled: boolean;
@@ -22,7 +22,7 @@ export const pageStore = defineStore('page', {
   state: () => {
     return {
       title: 'Jellyfin',
-      opaqueAppBar: true,
+      transparentLayout: false,
       navDrawer: true,
       openDrawer: true,
       isScrolled: false,
@@ -39,6 +39,12 @@ export const pageStore = defineStore('page', {
     clearBackdrop(): void {
       this.resetBackdropOpacity();
       this.backdrop.blurhash = '';
+    },
+    setTransparentLayout(value: boolean) {
+      this.transparentLayout = value;
+    },
+    setBackdropOpacity(value: number) {
+      this.backdrop.opacity = value;
     }
   }
 });

@@ -234,7 +234,6 @@ export default Vue.extend({
     ...mapStores(authStore, pageStore)
   },
   mounted() {
-    this.page.opaqueAppBar = true;
     this.page.title = this.$t('settings.settings');
   },
   methods: {

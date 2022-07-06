@@ -45,7 +45,7 @@ export default Vue.extend({
     ...mapStores(pageStore),
     fab(): boolean {
       return (
-        !(this.page.opaqueAppBar || this.$vuetify.breakpoint.xsOnly) &&
+        !(!this.page.transparentLayout || this.$vuetify.breakpoint.xsOnly) &&
         !this.page.isScrolled
       );
     }
