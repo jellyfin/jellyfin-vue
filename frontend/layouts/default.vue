@@ -33,7 +33,7 @@ export default Vue.extend({
   methods: {
     setScroll(): void {
       // Set it slightly higher than needed, so the transition of the app bar syncs with the button transition
-      this.page.isScrolled = window.scrollY > 10;
+      this.page.isScrolled = window.scrollY > 1;
     }
   }
 });

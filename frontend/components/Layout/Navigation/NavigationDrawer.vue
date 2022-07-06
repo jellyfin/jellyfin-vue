@@ -8,9 +8,7 @@
     floating
     clipped
     class="pa-s"
-    :class="{
-      transparent: page.transparentLayout && !$vuetify.breakpoint.mobile
-    }"
+    :class="{ transparent: page.transparentLayout }"
   >
     <v-list nav>
       <v-list-item
@@ -95,9 +93,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-.transparent {
-  background-color: transparent !important;
-}
-</style>

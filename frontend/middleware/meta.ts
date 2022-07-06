@@ -5,7 +5,7 @@ interface MetaBackdropPayload {
   opacity: number;
 }
 interface RouteMeta {
-  transparentAppBar?: boolean;
+  transparentLayout?: boolean;
   backdrop?: boolean | MetaBackdropPayload;
 }
 
@@ -21,10 +21,7 @@ export default function ({ route }: Context): void {
   const currentBackdrop = page.backdrop;
 
   /** Change backdrop state based on meta */
-  if (
-    (meta.backdrop === false || typeof meta.backdrop === 'undefined') &&
-    currentBackdrop.blurhash
-  ) {
+  if (!meta.backdrop && currentBackdrop.blurhash) {
     page.clearBackdrop();
   } else if (
     meta.backdrop === true &&
@@ -35,9 +32,9 @@ export default function ({ route }: Context): void {
     typeof meta.backdrop !== 'boolean' &&
     typeof meta.backdrop?.opacity !== 'undefined'
   ) {
-    page.backdrop.opacity = meta.backdrop.opacity;
+    page.setBackdropOpacity(meta.backdrop.opacity);
   }
 
   /** Change AppBar state based on meta */
-  page.opaqueAppBar = !meta.transparentAppBar;
+  page.setTransparentLayout(meta.transparentLayout ? true : false);
 }

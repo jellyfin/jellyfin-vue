@@ -55,7 +55,7 @@ export default Vue.extend({
   },
   meta: {
     backdrop: true,
-    transparentAppBar: true
+    transparentLayout: true
   },
   data() {
     return {
@@ -186,10 +186,6 @@ export default Vue.extend({
     }
 
     this.page.title = this.$t('home');
-    this.page.opaqueAppBar = false;
-  },
-  destroyed() {
-    this.page.opaqueAppBar = true;
   }
 });
 </script>
