@@ -59,6 +59,18 @@ interface LayoutButton {
 }
 
 export default Vue.extend({
+  computed: {
+    ...mapStores(userViewsStore, pageStore),
+    items(): LayoutButton[] {
+      return [
+        {
+          icon: 'mdi-home',
+          title: this.$t('home'),
+          to: '/'
+        }
+      ];
+    }
+  },
   watch: {
     $route(to): void {
       if (to.fullPath.includes('fullscreen')) {
@@ -74,18 +86,6 @@ export default Vue.extend({
           this.page.openDrawer = false;
         }
       }
-    }
-  },
-  computed: {
-    ...mapStores(userViewsStore, pageStore),
-    items(): LayoutButton[] {
-      return [
-        {
-          icon: 'mdi-home',
-          title: this.$t('home'),
-          to: '/'
-        }
-      ];
     }
   },
   async beforeMount() {

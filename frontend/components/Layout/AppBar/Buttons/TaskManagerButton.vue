@@ -108,6 +108,7 @@ export default Vue.extend({
       immediate: true,
       handler(): void {
         this.getTaskList();
+
         if (this.taskList.length) {
           this.showButton = true;
         }
@@ -118,6 +119,7 @@ export default Vue.extend({
      */
     buttonColor() {
       window.clearTimeout(this.scheduledTimeout);
+
       if (this.buttonColor && !this.menu) {
         this.setTimeout();
       }
@@ -143,6 +145,7 @@ export default Vue.extend({
     },
     getTaskList(): void {
       const list: Array<TaskInfo> = [];
+
       for (const task of this.taskManager.tasks as RunningTask[]) {
         switch (task.type) {
           case TaskType.ConfigSync:
@@ -166,10 +169,12 @@ export default Vue.extend({
             break;
         }
       }
+
       const taskIds = (list as TaskInfo[]).map((task) => {
         return task.id;
       });
       const finishedTasks: Array<TaskInfo> = [];
+
       this.taskList.forEach((task) => {
         if (!taskIds.includes(task.id)) {
           task.progress = 100;

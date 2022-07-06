@@ -40,7 +40,11 @@ export const pageStore = defineStore('page', {
       this.resetBackdropOpacity();
       this.backdrop.blurhash = '';
     },
-    setTransparentLayout(value: boolean) {
+    setTransparentLayout(value: boolean | undefined) {
+      if (typeof value === 'undefined') {
+        value = false;
+      }
+
       this.transparentLayout = value;
     },
     setBackdropOpacity(value: number) {

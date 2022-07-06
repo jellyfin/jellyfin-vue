@@ -62,6 +62,7 @@ export const taskManagerStore = defineStore('taskManager', {
       );
 
       checkTaskIndex(taskIndex);
+
       const newArray = Array.from(this.tasks);
 
       newArray[taskIndex] = updatedTask;
