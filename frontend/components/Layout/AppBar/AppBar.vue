@@ -22,6 +22,8 @@
       </template>
     </app-bar-button-layout>
     <v-spacer />
+    <search-field />
+    <v-spacer />
     <app-bar-button-layout v-if="$nuxt.isOffline" color="red">
       <template #icon>
         <v-icon>mdi-network-off-outline</v-icon>
@@ -47,14 +49,6 @@
         }}</span>
       </template>
     </app-bar-button-layout>
-    <app-bar-button-layout>
-      <template #icon>
-        <v-icon> mdi-magnify </v-icon>
-      </template>
-      <template #tooltip>
-        <span>{{ $t('search.name') }}</span>
-      </template>
-    </app-bar-button-layout>
     <cast-button
       :fab="
         !(page.opaqueAppBar || $vuetify.breakpoint.xsOnly) && !page.isScrolled
@@ -76,21 +70,7 @@ import { pageStore, clientSettingsStore } from '~/store';
 
 export default Vue.extend({
   computed: {
-    ...mapStores(pageStore, clientSettingsStore),
-    searchQuery: {
-      get(): string {
-        return this.$route.query.q?.toString();
-      },
-      set(value: string): void {
-        if (value === '' || !value) {
-          this.$router.back();
-        } else if (this.searchQuery) {
-          this.$router.replace({ path: '/search', query: { q: value } });
-        } else {
-          this.$router.push({ path: '/search', query: { q: value } });
-        }
-      }
-    }
+    ...mapStores(pageStore, clientSettingsStore)
   },
   methods: {
     toggleDarkMode(): void {
@@ -118,15 +98,5 @@ export default Vue.extend({
 
 .v-app-bar:not(.v-app-bar--is-scrolled):not(.opaque) {
   background-color: transparent !important;
-}
-
-.search-input {
-  max-width: 15em;
-  transition: max-width 0.25s;
-}
-
-.search-input.expandable.primary--text {
-  max-width: 40em;
-  transition: max-width 0.25s;
 }
 </style>
