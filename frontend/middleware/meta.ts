@@ -36,5 +36,5 @@ export default function ({ route }: Context): void {
   }
 
   /** Change AppBar state based on meta */
-  page.setTransparentLayout(meta.transparentLayout ? true : false);
+  page.setTransparentLayout(meta.transparentLayout);
 }

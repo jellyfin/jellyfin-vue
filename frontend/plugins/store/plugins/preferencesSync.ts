@@ -9,7 +9,7 @@ import {
   _ActionsTree,
   _GettersTree
 } from 'pinia';
-import { authStore, pageStore, snackbarStore, taskManagerStore } from '~/store';
+import { authStore, snackbarStore, taskManagerStore } from '~/store';
 
 const syncedStores = ['clientSettings'];
 
@@ -134,7 +134,6 @@ export async function pushSettingsToServer(
  */
 export default function preferencesSync({ store }: PiniaPluginContext): void {
   if (syncedStores.includes(store.$id)) {
-    const page = pageStore();
     const auth = authStore();
     const snackbar = snackbarStore();
     const taskManager = taskManagerStore();

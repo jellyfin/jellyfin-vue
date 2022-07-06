@@ -94,6 +94,8 @@ export default function (ctx: Context): void {
                 taskManager.finishTask(messageData.ItemId);
               }
             }
+
+            break;
           default:
             break;
         }
