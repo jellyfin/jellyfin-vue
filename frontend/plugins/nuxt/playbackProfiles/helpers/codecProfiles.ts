@@ -20,7 +20,7 @@ function getGlobalMaxVideoBitrate(context: Context): number | null {
     isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }
 
-  // TODO: These valus are taken directly from Jellyfin-web.
+  // TODO: These values are taken directly from Jellyfin-web.
   // The source of them needs to be investigated.
   if (context.$browser.isPs4()) {
     return 8000000;
