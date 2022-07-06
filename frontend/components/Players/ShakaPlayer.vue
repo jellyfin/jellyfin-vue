@@ -16,7 +16,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { stringify } from 'qs';
 import isNil from 'lodash/isNil';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
@@ -231,12 +230,9 @@ export default Vue.extend({
         }
 
         if (mediaSource.SupportsDirectStream) {
-          const directOptions: Record<
-            string,
-            string | boolean | undefined | null
-          > = {
-            Static: true,
-            mediaSourceId: mediaSource.Id,
+          const directOptions: Record<string, string> = {
+            Static: String(true),
+            mediaSourceId: String(mediaSource.Id),
             deviceId: this.deviceProfile.deviceId,
             api_key: this.auth.currentUserToken
           };
@@ -249,7 +245,7 @@ export default Vue.extend({
             directOptions.LiveStreamId = mediaSource.LiveStreamId;
           }
 
-          const params = stringify(directOptions);
+          const params = new URLSearchParams(directOptions).toString();
 
           let mediaType = 'Videos';
 

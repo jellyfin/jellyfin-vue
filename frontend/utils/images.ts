@@ -2,7 +2,6 @@
  * Helper for image manipulation and image-related utility functions
  *
  */
-import { stringify } from 'qs';
 import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
 import {
   getShapeFromItemType,
@@ -365,22 +364,22 @@ export function getImageInfo(
       `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
     );
 
-    const params: { [k: string]: string | number | undefined } = {
+    const params: Record<string, string> = {
       imgTag,
-      quality
+      quality: quality.toString()
     };
 
     if (width) {
       width = Math.round(width * ratio);
-      params.maxWidth = width;
+      params.maxWidth = width.toString();
     }
 
     if (height) {
       height = Math.round(height * ratio);
-      params.maxHeight = height;
+      params.maxHeight = height.toString();
     }
 
-    url.search = stringify(params);
+    url.search = new URLSearchParams(params).toString();
   }
 
   return {
@@ -436,17 +435,17 @@ export function getLogo(
       `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
     );
 
-    const params: { [k: string]: string | number | undefined } = {
+    const params: Record<string, string> = {
       imgTag,
-      quality
+      quality: quality.toString()
     };
 
     if (width) {
       width = Math.round(width * ratio);
-      params.maxWidth = width;
+      params.maxWidth = width.toString();
     }
 
-    url.search = stringify(params);
+    url.search = new URLSearchParams(params).toString();
   }
 
   return {
