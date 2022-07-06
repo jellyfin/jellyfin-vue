@@ -17,7 +17,7 @@
     }
   ],
   "dependencyDashboard": false,
-  "ignoreDeps": ["npm", "swiper", "node", "hls.js"],
+  "ignoreDeps": ["npm", "swiper", "node"],
   "enabledManagers": ["npm", "github-actions", "cargo"],
   "labels": ["dependencies"],
   "rebaseWhen": "behind-base-branch",
