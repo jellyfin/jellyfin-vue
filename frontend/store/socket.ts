@@ -1,7 +1,6 @@
 import destr from 'destr';
 import isNil from 'lodash/isNil';
 import { defineStore } from 'pinia';
-import { stringify } from 'qs';
 import { authStore, deviceProfileStore } from '.';
 
 let intervalId: number | null = null;
@@ -135,10 +134,11 @@ export const socketStore = defineStore('socket', {
         this.$nuxt.$axios.defaults.baseURL &&
         deviceProfile.deviceId
       ) {
-        const socketParams = stringify({
+        const socketParams = new URLSearchParams({
           api_key: auth.currentUserToken,
           deviceId: deviceProfile.deviceId
-        });
+        }).toString();
+
         let url = `${this.$nuxt.$axios.defaults.baseURL}/socket?${socketParams}`;
 
         url = url.replace('https:', 'wss:');

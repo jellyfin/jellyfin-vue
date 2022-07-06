@@ -37,7 +37,6 @@ import {
   PlaybackInfoResponse,
   SubtitleDeliveryMethod
 } from '@jellyfin/client-axios';
-import { stringify } from 'qs';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 import { ticksToMs } from '~/utils/time';
 import { authStore, deviceProfileStore, playbackManagerStore } from '~/store';
@@ -252,12 +251,9 @@ export default Vue.extend({
         this.playbackManager.setMediaSource(mediaSource);
 
         if (mediaSource.SupportsDirectStream) {
-          const directOptions: Record<
-            string,
-            string | boolean | undefined | null
-          > = {
-            Static: true,
-            mediaSourceId: mediaSource.Id,
+          const directOptions: Record<string, string> = {
+            Static: String(true),
+            mediaSourceId: String(mediaSource.Id),
             deviceId: this.deviceProfile.deviceId,
             api_key: this.auth.currentUserToken
           };
@@ -270,7 +266,7 @@ export default Vue.extend({
             directOptions.LiveStreamId = mediaSource.LiveStreamId;
           }
 
-          const params = stringify(directOptions);
+          const params = new URLSearchParams(directOptions).toString();
 
           this.source = `${this.$axios.defaults.baseURL}/Videos/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
         } else if (
