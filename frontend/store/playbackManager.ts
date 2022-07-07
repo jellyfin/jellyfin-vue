@@ -260,30 +260,39 @@ export const playbackManagerStore = defineStore('playbackManager', {
       this.playSessionId = id;
     },
     setNextTrack(): void {
+      this.currentTime = 0;
+
       if (
         !isNil(this.currentItemIndex) &&
         this.currentItemIndex + 1 < this.queue.length
       ) {
         this.lastItemIndex = this.currentItemIndex;
         this.currentItemIndex += 1;
-        this.currentTime = 0;
       } else if (this.repeatMode === RepeatMode.RepeatAll) {
         this.lastItemIndex = this.currentItemIndex;
         this.currentItemIndex = 0;
-        this.currentTime = 0;
       } else {
         this.stop();
       }
+
+      /**
+       * We set the time again to 0 to avoid jumps in the time slider if there's
+       * a timeUpdate event originated by the player while the index switching is taking place
+       */
+      this.currentTime = 0;
     },
     setPreviousTrack(): void {
-      if (!isNil(this.currentTime) && this.currentTime > 2) {
-        this.changeCurrentTime(0);
-      } else if (!isNil(this.currentItemIndex) && this.currentItemIndex > 0) {
+      if (
+        !isNil(this.currentItemIndex) &&
+        this.currentItemIndex > 0 &&
+        !isNil(this.currentTime) &&
+        this.currentTime < 2
+      ) {
+        this.currentTime = 0;
         this.lastItemIndex = this.currentItemIndex;
         this.currentItemIndex -= 1;
-        this.currentTime = 0;
       } else {
-        this.currentTime = 0;
+        this.changeCurrentTime(0);
       }
     },
     setMinimized(minimized: boolean) {
