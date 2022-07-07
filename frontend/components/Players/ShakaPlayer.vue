@@ -5,7 +5,8 @@
     :poster="poster.url"
     autoplay
     crossorigin="anonymous"
-    :playsinline="$browser.isMobile() && $browser.isApple()"
+    playsinline
+    :loop="isLooping"
     @timeupdate="onProgress"
     @pause="onPause"
     @play="onPlay"
@@ -19,17 +20,34 @@ import Vue from 'vue';
 import isNil from 'lodash/isNil';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
-import { mapStores } from 'pinia';
-import { PlaybackInfoResponse } from '@jellyfin/client-axios';
+// @ts-expect-error - This module doesn't have typings
 import shaka from 'shaka-player/dist/shaka-player.compiled';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopus from 'libass-wasm';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
+// @ts-expect-error - No types for libass
+import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
+import 'libass-wasm/dist/js/subtitles-octopus-worker.data';
+import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.data';
+import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem';
+import 'libass-wasm/dist/js/subtitles-octopus-worker.wasm';
+import { mapStores } from 'pinia';
+import {
+  PlaybackInfoResponse,
+  SubtitleDeliveryMethod
+} from '@jellyfin/client-axios';
+
 import {
   authStore,
   deviceProfileStore,
   playbackManagerStore,
-  PlaybackStatus
+  PlaybackStatus,
+  PlaybackTrack
 } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
+import { ticksToMs } from '~/utils/time';
 
 declare global {
   interface Window {
@@ -44,10 +62,13 @@ export default Vue.extend({
     return {
       playbackInfo: {} as PlaybackInfoResponse,
       source: '',
-      player: null as shaka.Player | null,
+      shaka: null as shaka.Player | null,
+      player: undefined as HTMLMediaElement | undefined,
       audioContext: null as AudioContext | null,
-      audioSource: null as MediaElementAudioSourceNode | null,
-      gainNode: null as GainNode | null
+      gainNode: null as GainNode | null,
+      octopus: undefined as SubtitlesOctopus | undefined,
+      subtitleTrack: undefined as PlaybackTrack | undefined,
+      restartTime: undefined as number | undefined
     };
   },
   computed: {
@@ -74,62 +95,70 @@ export default Vue.extend({
       } else {
         return '';
       }
+    },
+    isLooping(): boolean {
+      return this.playbackManager.repeatMode === RepeatMode.RepeatOne;
+    },
+    isHls(): boolean {
+      const mediaSource = this.playbackManager.currentMediaSource;
+
+      if (
+        !isNil(mediaSource) &&
+        mediaSource.SupportsTranscoding &&
+        mediaSource.TranscodingSubProtocol === 'hls'
+      ) {
+        return true;
+      }
+
+      return false;
     }
   },
   watch: {
     'playbackManager.getCurrentItem.Id': {
-      immediate: true,
       async handler(): Promise<void> {
         this.playbackManager.setBuffering();
         await this.getPlaybackUrl();
-
-        if (this.$refs.shakaPlayer) {
-          (this.$refs.shakaPlayer as HTMLMediaElement).play();
-        }
+        this.startPlayback();
       }
     },
     'playbackManager.status': {
-      immediate: true,
       handler(): void {
-        if (this.$refs.shakaPlayer) {
+        if (this.player) {
           switch (this.playbackManager.status) {
             case PlaybackStatus.Playing:
-              (this.$refs.shakaPlayer as HTMLMediaElement).play();
+              this.player.play();
               break;
             case PlaybackStatus.Paused:
-              (this.$refs.shakaPlayer as HTMLMediaElement).pause();
+              this.player.pause();
               break;
           }
         }
       }
     },
     'playbackManager.currentVolume': {
-      immediate: true,
       handler(): void {
         this.updateVolume();
       }
     },
     'playbackManager.isMuted': {
-      immediate: true,
       handler(): void {
         this.updateVolume();
       }
     },
-    'playbackManager.repeatMode': {
-      immediate: true,
-      handler(): void {
-        if (this.$refs.shakaPlayer) {
-          if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
-            (this.$refs.shakaPlayer as HTMLMediaElement).loop = true;
-          } else {
-            (this.$refs.shakaPlayer as HTMLMediaElement).loop = false;
-          }
-        }
+    'playbackManager.currentSubtitleStreamIndex'(): void {
+      this.changeSubtitle(this.playbackManager.currentSubtitleStreamIndex || 0);
+    },
+    async 'playbackManager.currentAudioStreamIndex'(): Promise<void> {
+      if (this.player) {
+        this.restartTime = this.player.currentTime;
+        await this.getPlaybackUrl();
       }
     }
   },
   async mounted() {
     try {
+      this.playbackManager.setBuffering();
+      this.player = this.$refs.shakaPlayer as HTMLMediaElement;
       // Mux.js needs to be globally available before Shaka is loaded, in order for MPEG2 TS transmuxing to work.
       window.muxjs = muxjs;
 
@@ -137,39 +166,37 @@ export default Vue.extend({
 
       if (shaka.Player.isBrowserSupported()) {
         // We use a global for ease of debugging and to fetch data from the playback information popup
-        window.player = new shaka.Player(
-          this.$refs.shakaPlayer as HTMLMediaElement
-        );
-        this.player = window.player;
-
-        await this.getPlaybackUrl();
+        window.player = new shaka.Player(this.player);
+        this.shaka = window.player;
 
         // Create WebAudio context and nodes for added processing
         this.audioContext = new AudioContext();
-        this.audioSource = this.audioContext.createMediaElementSource(
-          this.$refs.shakaPlayer as HTMLMediaElement
+
+        const audioSource = this.audioContext.createMediaElementSource(
+          this.player
         );
+
         this.gainNode = this.audioContext.createGain();
         this.gainNode.gain.value = 1;
-        this.audioSource.connect(this.gainNode);
+        audioSource.connect(this.gainNode);
 
         this.gainNode.connect(this.audioContext.destination);
 
-        this.updateVolume();
-
         // Register player events
-        this.player.addEventListener('error', this.onPlayerError);
+        this.shaka.addEventListener('error', this.onPlayerError);
         // Subscribe to Store actions
         this.playbackManager.$onAction(({ name, after }) => {
           after(() => {
             if (name === 'changeCurrentTime') {
-              if (this.$refs.shakaPlayer) {
-                (this.$refs.shakaPlayer as HTMLMediaElement).currentTime =
-                  this.playbackManager.currentTime || 0;
+              if (this.player) {
+                this.player.currentTime = this.playbackManager.currentTime || 0;
               }
             }
           });
         });
+
+        await this.getPlaybackUrl();
+        this.startPlayback();
       } else {
         this.$nuxt.error({
           message: this.$t('browserNotSupported')
@@ -183,15 +210,20 @@ export default Vue.extend({
     }
   },
   beforeDestroy() {
-    if (this.player) {
-      this.playbackManager.stop();
-      this.player.removeEventListener('error', this.onPlayerError);
-      this.player.unload();
-      this.player.destroy();
+    this.playbackManager.stop();
 
-      if (this.audioContext) {
-        this.audioContext.close();
-      }
+    if (this.shaka) {
+      this.shaka.removeEventListener('error', this.onPlayerError);
+      this.shaka.unload();
+      this.shaka.destroy();
+    }
+
+    if (this.octopus) {
+      this.octopus.dispose();
+    }
+
+    if (this.audioContext) {
+      this.audioContext.close();
     }
 
     window.muxjs = undefined;
@@ -199,7 +231,7 @@ export default Vue.extend({
   },
   methods: {
     async getPlaybackUrl(): Promise<void> {
-      if (this.playbackManager.getCurrentItem && this.player) {
+      if (this.playbackManager.getCurrentItem && this.shaka) {
         this.playbackInfo = (
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
@@ -261,14 +293,132 @@ export default Vue.extend({
           this.source =
             this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
         }
+      }
+    },
+    async changeSubtitle(newsrcIndex: number): Promise<void> {
+      // Find new sub
+      const newSub = (
+        this.playbackManager
+          .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+      ).find((el) => el.srcIndex === newsrcIndex);
 
-        this.player.load(this.source);
+      // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
+      if (
+        this.player &&
+        ((this.subtitleTrack &&
+          this.subtitleTrack.type === SubtitleDeliveryMethod.Encode) ||
+          (newSub && newSub.type === SubtitleDeliveryMethod.Encode))
+      ) {
+        // Set the restart time so that the function knows where to restart
+        this.restartTime = this.player.currentTime;
+        await this.getPlaybackUrl();
+
+        return;
+      }
+
+      // Manage non-encoded subs
+      this.displayExternalSub(newSub);
+    },
+    displayExternalSub(newSub?: PlaybackTrack) {
+      if (this.player) {
+        // Disable octopus
+        if (this.octopus) {
+          this.octopus.freeTrack();
+        }
+
+        // Disable VTT
+        const oldVtt = this.player.getElementsByTagName('track')[0];
+
+        if (oldVtt) {
+          this.player.textTracks[0].mode = 'disabled';
+          oldVtt.remove();
+        }
+
+        // If new sub doesn't exist, we're done here
+        if (!newSub) {
+          this.subtitleTrack = newSub;
+
+          return;
+        }
+
+        // Find the sub in the VTT or ASS subs
+        const vttIdx = (
+          this.playbackManager
+            .getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
+        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
+        const assIdx = (
+          this.playbackManager
+            .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
+        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
+
+        if (vttIdx !== -1) {
+          // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
+          const newVtt = document.createElement('track');
+
+          newVtt.kind = 'subtitles';
+          newVtt.srclang = newSub.srcLang || '';
+          newVtt.src = this.$axios.defaults.baseURL + (newSub.src || '');
+          this.player.appendChild(newVtt);
+          this.player.textTracks[0].mode = 'showing';
+          this.subtitleTrack = newSub;
+        } else if (assIdx !== -1) {
+          if (!this.octopus) {
+            this.octopus = new SubtitlesOctopus({
+              video: this.player,
+              workerUrl: SubtitlesOctopusWorker,
+              legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
+              subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
+              blendRender: true
+            });
+          } else {
+            this.octopus.setTrackByUrl(
+              this.$axios.defaults.baseURL + (newSub.src || '')
+            );
+          }
+
+          this.subtitleTrack = newSub;
+        }
+      }
+    },
+    startPlayback(): void {
+      this.shaka.load(this.source);
+
+      if (this.player) {
+        this.player.currentTime =
+          this.restartTime ||
+          ticksToMs(
+            this.playbackManager.getCurrentItem?.UserData
+              ?.PlaybackPositionTicks || 0
+          ) / 1000;
+        this.restartTime = undefined;
+
+        this.subtitleTrack = (
+          this.playbackManager
+            .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+        ).find(
+          (sub) =>
+            sub.srcIndex === this.playbackManager.currentSubtitleStreamIndex
+        );
+
+        // If index isn't -1 and there's no sub found, it doesn't exist and we reset it
+        if (
+          this.playbackManager.currentSubtitleStreamIndex !== -1 &&
+          !this.subtitleTrack
+        ) {
+          this.playbackManager.currentSubtitleStreamIndex = -1;
+        }
+
+        // Will display (or not) current external subtitle when start of video is loaded
+        this.player.addEventListener('loadeddata', () => {
+          this.displayExternalSub(this.subtitleTrack);
+        });
+
+        this.updateVolume();
       }
     },
     onPause(): void {
-      if (this.$refs.shakaPlayer) {
-        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
-          .currentTime;
+      if (this.player) {
+        const currentTime = this.player.currentTime;
 
         this.playbackManager.setCurrentTime(currentTime);
         this.playbackManager.pause();
@@ -282,17 +432,15 @@ export default Vue.extend({
         this.playbackManager.cancelBuffering();
       }
 
-      if (this.$refs.shakaPlayer) {
-        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
-          .currentTime;
+      if (this.player) {
+        const currentTime = this.player.currentTime;
 
         this.playbackManager.setCurrentTime(currentTime);
       }
     },
     onEnd(): void {
-      if (this.$refs.shakaPlayer) {
-        const currentTime = (this.$refs.shakaPlayer as HTMLMediaElement)
-          .currentTime;
+      if (this.player) {
+        const currentTime = this.player.currentTime;
 
         this.playbackManager.setCurrentTime(currentTime);
         this.playbackManager.setNextTrack();
@@ -306,10 +454,10 @@ export default Vue.extend({
     },
     togglePictureInPicture(): void {
       // @ts-expect-error - `requestPictureInPicture` does not exist in relevant types
-      (this.$refs.shakaPlayer as HTMLMediaElement).requestPictureInPicture();
+      this.player.requestPictureInPicture();
     },
     updateVolume(): void {
-      if (this.$refs.shakaPlayer && this.gainNode) {
+      if (this.player && this.gainNode) {
         const targetVolume = this.playbackManager.isMuted
           ? 0
           : this.playbackManager.currentVolume;

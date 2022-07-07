@@ -243,6 +243,7 @@ import { SessionInfo } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import camelCase from 'lodash/camelCase';
 import isNil from 'lodash/isNil';
+// @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
 import { deviceProfileStore, playbackManagerStore } from '~/store';
 
