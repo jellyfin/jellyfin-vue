@@ -138,7 +138,7 @@
   "likes": "喜欢的",
   "links": {
     "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
-    "poweredByJellyfin": "此服务器由Jellyfin提供支持",
+    "poweredByJellyfin": "此服务器由 Jellyfin 提供支持",
     "readTheDocumentation": "阅读文档",
     "reportAnIssue": "报告这个客户端的问题"
   },
