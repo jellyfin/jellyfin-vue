@@ -129,6 +129,8 @@
   "libraryEmpty": "Biblioteket är tomt",
   "libraryNotFound": "Hittade inte biblioteket",
   "libraryRefreshQueued": "Biblioteksuppdatering köad",
+  "liked": "Gillade",
+  "likes": "Gillar",
   "links": {
     "helpTranslate": "Översätt Jellyfin till ditt språk",
     "poweredByJellyfin": "Denna server drivs av Jellyfin",
@@ -150,6 +152,7 @@
     "serverAddress": "Serveradress",
     "serverAddressMustBeUrl": "Serveradressen måste vara en giltig URL",
     "serverAddressRequired": "Serveradress krävs",
+    "serverDashboard": "Serverpanel",
     "serverNotFound": "Server hittades ej",
     "serverVersionTooLow": "Serverversionen måste vara 10.7.0 eller högre"
   },
@@ -463,6 +466,7 @@
     "userSuccessfullySet": "Användare satt."
   },
   "writer": "Författare",
+  "writing": "Manus",
   "year": "År",
   "years": "År",
   "youMayAlsoLike": "Du kanske även gillar"
