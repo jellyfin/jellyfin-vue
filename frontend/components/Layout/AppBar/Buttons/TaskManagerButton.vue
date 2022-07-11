@@ -3,7 +3,7 @@
     v-if="showButton"
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="$vuetify.breakpoint.mobile"
+    close-on-click
     :transition="'slide-y-transition'"
     bottom
     :nudge-bottom="nudgeBottom"
