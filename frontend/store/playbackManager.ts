@@ -645,15 +645,6 @@ export const playbackManagerStore = defineStore('playbackManager', {
           codec: sub.el.Codec
         })) || []) as PlaybackTrack[];
     },
-    getCurrentItemVttParsedSubtitleTracks(): PlaybackTrack[] {
-      const subs = this.getCurrentItemParsedSubtitleTracks;
-
-      return (
-        subs?.filter(
-          (sub) => sub.src && sub.src.match(/Stream\.vtt(\?.*)?$/)
-        ) || []
-      );
-    },
     getCurrentItemAssParsedSubtitleTracks(): PlaybackTrack[] {
       const subs = this.getCurrentItemParsedSubtitleTracks;
 
