@@ -1,18 +1,29 @@
 <template>
-  <component
-    :is="mediaElement"
-    ref="shakaPlayer"
-    :poster="poster.url"
-    autoplay
-    crossorigin="anonymous"
-    playsinline
-    :loop="isLooping"
-    @timeupdate="onProgress"
-    @pause="onPause"
-    @play="onPlay"
-    @ended="onEnd"
-    @waiting="onWaiting"
-  />
+  <div>
+    <component
+      :is="mediaElement"
+      ref="shakaPlayer"
+      :poster="poster.url"
+      autoplay
+      crossorigin="anonymous"
+      playsinline
+      :loop="isLooping"
+      @timeupdate="onProgress"
+      @pause="onPause"
+      @play="onPlay"
+      @ended="onEnd"
+      @waiting="onWaiting"
+    >
+      <track
+        v-if="subtitleTrack && !isAssSubtitle"
+        kind="subtitles"
+        default
+        :label="subtitleTrack.label"
+        :srcLang="subtitleTrack.srcLang"
+        :src="$axios.defaults.baseURL + subtitleTrack.src"
+      />
+    </component>
+  </div>
 </template>
 
 <script lang="ts">
@@ -111,6 +122,17 @@ export default Vue.extend({
       }
 
       return false;
+    },
+    isAssSubtitle(): boolean {
+      return (
+        (
+          this.playbackManager
+            .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
+        ).findIndex(
+          (el) =>
+            this.subtitleTrack && el.srcIndex === this.subtitleTrack.srcIndex
+        ) !== -1
+      );
     }
   },
   watch: {
@@ -311,72 +333,55 @@ export default Vue.extend({
       ) {
         // Set the restart time so that the function knows where to restart
         this.restartTime = this.player.currentTime;
+        this.subtitleTrack = undefined;
         await this.getPlaybackUrl();
 
         return;
       }
 
-      // Manage non-encoded subs
-      this.displayExternalSub(newSub);
+      /**
+       * If the subtitles are not burned in the video, we need to render them in the browser.
+       */
+      this.subtitleTrack = newSub;
+
+      /**
+       * Handle non-encoded subtitles
+       */
+      this.displayExternalSub();
     },
-    displayExternalSub(newSub?: PlaybackTrack) {
+    displayExternalSub() {
       if (this.player) {
         // Disable octopus
         if (this.octopus) {
           this.octopus.freeTrack();
         }
 
-        // Disable VTT
-        const oldVtt = this.player.getElementsByTagName('track')[0];
-
-        if (oldVtt) {
-          this.player.textTracks[0].mode = 'disabled';
-          oldVtt.remove();
-        }
-
-        // If new sub doesn't exist, we're done here
-        if (!newSub) {
-          this.subtitleTrack = newSub;
-
+        /**
+         * Nothing else to do if the new subtitle doesn't exist
+         */
+        if (!this.subtitleTrack) {
           return;
         }
 
-        // Find the sub in the VTT or ASS subs
-        const vttIdx = (
-          this.playbackManager
-            .getCurrentItemVttParsedSubtitleTracks as PlaybackTrack[]
-        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
-        const assIdx = (
-          this.playbackManager
-            .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
-        ).findIndex((el) => el.srcIndex === newSub.srcIndex);
-
-        if (vttIdx !== -1) {
-          // Manually add and remove (when disabling) a <track> tag cause in FF we weren't able to make it reliably work with a v-for and a tracks[index].mode = "showing"
-          const newVtt = document.createElement('track');
-
-          newVtt.kind = 'subtitles';
-          newVtt.srclang = newSub.srcLang || '';
-          newVtt.src = this.$axios.defaults.baseURL + (newSub.src || '');
-          this.player.appendChild(newVtt);
-          this.player.textTracks[0].mode = 'showing';
-          this.subtitleTrack = newSub;
-        } else if (assIdx !== -1) {
+        /**
+         * VTT is handled automatically by the track element in this Vue component.
+         * Here we just handle ASS subtitles (rendered by JavascriptSubtitleOctopus)
+         */
+        if (this.isAssSubtitle) {
           if (!this.octopus) {
             this.octopus = new SubtitlesOctopus({
               video: this.player,
               workerUrl: SubtitlesOctopusWorker,
               legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
-              subUrl: this.$axios.defaults.baseURL + (newSub.src || ''),
+              subUrl:
+                this.$axios.defaults.baseURL + (this.subtitleTrack.src || ''),
               blendRender: true
             });
           } else {
             this.octopus.setTrackByUrl(
-              this.$axios.defaults.baseURL + (newSub.src || '')
+              this.$axios.defaults.baseURL + (this.subtitleTrack.src || '')
             );
           }
-
-          this.subtitleTrack = newSub;
         }
       }
     },
@@ -410,7 +415,7 @@ export default Vue.extend({
 
         // Will display (or not) current external subtitle when start of video is loaded
         this.player.addEventListener('loadeddata', () => {
-          this.displayExternalSub(this.subtitleTrack);
+          this.displayExternalSub();
         });
 
         this.updateVolume();
