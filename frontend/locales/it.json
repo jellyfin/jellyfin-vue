@@ -121,6 +121,11 @@
       "title": "Titolo"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Vai alla fine",
+    "pushToTop": "Vai all'inizio",
+    "removeFromQueue": "Rimuovi dalla coda"
+  },
   "itemNotFound": "Oggetto non trovato",
   "jellyfinLogo": "Logo di Jellyfin",
   "latestLibrary": "Più recente {libraryName}",
@@ -142,6 +147,7 @@
     "changeServer": "Cambia server",
     "changeUser": "Cambia utente",
     "connect": "Connetti",
+    "kickedOut": "L'autorizzazione è stata revocata e questa sessione non è più valida. Effettua nuovamente l'accesso",
     "login": "Accedi",
     "loginAs": "Accedi come {name}",
     "manualLogin": "Accesso manuale",
@@ -411,6 +417,10 @@
   },
   "shows": "Serie TV",
   "signIn": "Accedi",
+  "snackbar": {
+    "addedToQueue": "Aggiunto alla coda",
+    "playNext": "L'elemento selezionato sarà riprodotto dopo quello corrente"
+  },
   "songs": "Brani",
   "sortByType": "Per {type}",
   "sortTitle": "Titolo per ordinamento",
