@@ -1,5 +1,5 @@
 {
-  "3DFormat": "3D 格式",
+  "3DFormat": "3D格式",
   "NoMediaSourcesAvailable": "没有可用的媒体源",
   "actor": "演员",
   "actors": "演员",
@@ -128,7 +128,7 @@
   },
   "itemNotFound": "未找到项目",
   "jellyfinLogo": "Jellyfin 图标",
-  "latestLibrary": "最新的 {libraryName}",
+  "latestLibrary": "最新{libraryName}",
   "libraries": "媒体库",
   "libraryEmpty": "这个库是空的",
   "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目",
@@ -207,7 +207,7 @@
   "movies": "电影",
   "name": "名称",
   "networks": "网络",
-  "nextUp": "下一步",
+  "nextUp": "接下来",
   "noImagesFound": "暂无图像",
   "noInformationAvailable": "没有可用信息",
   "noNetworkConnection": "没有网络连接",
@@ -418,7 +418,7 @@
   "shows": "电视剧",
   "signIn": "登录",
   "snackbar": {
-    "addedToQueue": "增加至队列",
+    "addedToQueue": "添加到队列中",
     "playNext": "所选项会在当前项目结束后播放"
   },
   "songs": "歌曲",
