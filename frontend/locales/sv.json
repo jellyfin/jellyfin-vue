@@ -427,7 +427,7 @@
   "unableGetServerConfiguration": "Kunde inte hämta serverkonfiguration",
   "unableToRefreshLibrary": "Kunde inte uppdatera bibliotek",
   "undefined": "Odefinierad",
-  "unexpectedError": "Oförutsett fel",
+  "unexpectedError": "Oväntat fel",
   "unhandledException": "Ohanterat undantag",
   "units": {
     "bitrate": {
