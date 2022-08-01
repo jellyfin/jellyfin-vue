@@ -71,7 +71,7 @@
   "general": "Allmän",
   "genericJellyfinPlaceholderDevice": "Generisk Jellyfin enhet",
   "genres": "Genrer",
-  "googleCastPlaceholderDevice": "Google Cast enhet",
+  "googleCastPlaceholderDevice": "Google Cast-enhet",
   "guestStar": "Gäststjärna",
   "headerExternalIds": "Externa ID",
   "headerPaths": "Sökväg",
@@ -132,7 +132,7 @@
   "libraries": "Bibliotek",
   "libraryEmpty": "Biblioteket är tomt",
   "libraryEmptyFilters": "Inga träffar. Ta bort några filter för att se mer",
-  "libraryNotFound": "Hittade inte biblioteket",
+  "libraryNotFound": "Biblioteket hittades inte",
   "libraryRefreshQueued": "Biblioteksuppdatering köad",
   "liked": "Gillade",
   "likes": "Gillar",
@@ -193,12 +193,15 @@
     "title": "Titel",
     "type": "Typ"
   },
+  "metadataEditor": "Metadataredigerare",
+  "metadataNoResultsMatching": "Inga resultat matchande \"{search}\". Tryck enter för att skapa en ny.",
   "more": "Mer",
   "moreLikeArtist": "Mer likt {artist}",
   "moreLikeThis": "Mer som detta",
   "movies": "Filmer",
   "name": "Namn",
   "networks": "Nätverk",
+  "nextUp": "Kommande",
   "noImagesFound": "Inga bilder hittades",
   "noInformationAvailable": "Ingen information tillgänglig",
   "noNetworkConnection": "Ingen nätverksanslutning",
@@ -249,6 +252,9 @@
     "decodedFrames": {
       "name": "Avkodade bilder:"
     },
+    "droppedFrames": {
+      "name": "Tappade bilder:"
+    },
     "playbackResolution": {
       "name": "Viewportupplösning:"
     },
@@ -275,6 +281,7 @@
   },
   "seasonEpisode": "Säsong {seasonNumber}, Avsnitt {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} A{episodeNumber}",
+  "series": "Serie",
   "server": "Server",
   "serverVersion": "Serverversion",
   "settings": {
@@ -285,6 +292,7 @@
       "appName": "Appnamn",
       "createKeyFailure": "Fel vid skapande av API-nyckel",
       "createKeySuccess": "Lyckades skapa en ny API-nyckel",
+      "dateCreated": "Datum skapad",
       "description": "Lägg till och ta bort API-nycklar för extern tillgång till din server",
       "refreshKeysFailure": "Fel vid uppdatering av API-nycklar",
       "revokeAll": "Återkalla samtliga API-nycklar",
@@ -346,7 +354,8 @@
       "name": "Mediaspelare"
     },
     "networking": {
-      "description": "Hantera serverns nätverksinställningar"
+      "description": "Hantera serverns nätverksinställningar",
+      "name": "Nätverksinställningar"
     },
     "notifications": {
       "description": "Hantera och konfigurera meddelanden skickade av denna server",
