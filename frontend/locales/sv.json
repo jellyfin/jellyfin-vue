@@ -127,6 +127,7 @@
   "latestLibrary": "Senast {libraryName}",
   "libraries": "Bibliotek",
   "libraryEmpty": "Biblioteket är tomt",
+  "libraryEmptyFilters": "Inga träffar. Ta bort några filter för att hitta fler",
   "libraryNotFound": "Hittade inte biblioteket",
   "libraryRefreshQueued": "Biblioteksuppdatering köad",
   "liked": "Gillade",
