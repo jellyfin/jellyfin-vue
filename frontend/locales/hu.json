@@ -8,6 +8,15 @@
   "albums": "Albumok",
   "allLanguages": "Összes nyelv",
   "alphabetically": "Abc sorrend",
+  "appbar": {
+    "tasks": {
+      "configSync": "Szinkronizálási beállítások...",
+      "scanningLibrary": "Könyvtár szkennelése '{library}'..."
+    },
+    "tooltips": {
+      "tasks": "Futó folyamatok"
+    }
+  },
   "architecture": "Architektúra",
   "artist": "Előadók",
   "artists": "Előadók",
