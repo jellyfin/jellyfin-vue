@@ -8,6 +8,15 @@
   "albums": "Альбомы",
   "allLanguages": "Все языки",
   "alphabetically": "Алфавитный",
+  "appbar": {
+    "tasks": {
+      "configSync": "Синхронизируются параметры…",
+      "scanningLibrary": "Сканируется медиатека \"{library}\"…"
+    },
+    "tooltips": {
+      "tasks": "Исполняющиеся задачи"
+    }
+  },
   "architecture": "Архитектура",
   "artist": "Исполнитель",
   "artists": "Исполнители",
