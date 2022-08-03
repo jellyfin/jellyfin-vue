@@ -8,6 +8,15 @@
   "albums": "Albumit",
   "allLanguages": "Kaikki kielet",
   "alphabetically": "Aakkosjärjestyksessä",
+  "appbar": {
+    "tasks": {
+      "configSync": "Synkronoidaan asetuksia...",
+      "scanningLibrary": "Päivitetään kirjastoa \"{library}\"..."
+    },
+    "tooltips": {
+      "tasks": "Käynnissä olevat tehtävät"
+    }
+  },
   "architecture": "Arkkitehtuuri",
   "artist": "Artisti",
   "artists": "Artistit",
@@ -395,8 +404,8 @@
       "name": "Lisäosat"
     },
     "scheduledTasks": {
-      "description": "Hallitse palvelimella ajoitettuja tehtäviä",
-      "name": "Ajoitetut toiminnot"
+      "description": "Hallitse palvelimen ajoitettuja tehtäviä",
+      "name": "Ajoitetut tehtävät"
     },
     "server": {
       "description": "Määrittele palvelimen kieli ja brändäys",
