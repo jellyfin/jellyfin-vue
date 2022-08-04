@@ -8,6 +8,15 @@
   "albums": "Alben",
   "allLanguages": "Alle Sprachen",
   "alphabetically": "Alphabetisch",
+  "appbar": {
+    "tasks": {
+      "configSync": "Einstellungen synchronisieren...",
+      "scanningLibrary": "Bibliothek '{library}' scannen..."
+    },
+    "tooltips": {
+      "tasks": "Laufende Aufgaben"
+    }
+  },
   "architecture": "Architektur",
   "artist": "Künstler",
   "artists": "Künstler",
