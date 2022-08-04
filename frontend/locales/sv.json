@@ -312,6 +312,7 @@
   "serverVersionTooLow": "Serverversion behöver vara 10.7.0 eller högre",
   "settings": {
     "apiKeys": {
+      "accessToken": "Åtkomsttoken",
       "addApiKey": "Lägg till en API-nyckel",
       "addNewKey": "Lägg till en ny API-nyckel",
       "apiKeys": "API-nycklar",
@@ -375,7 +376,8 @@
       "name": "Bibliotek"
     },
     "liveTvAndDvr": {
-      "name": "Live TV & DVR"
+      "description": "Hantera TV-mottagare, leverantör för guidedata och DVR-inställningar",
+      "name": "Direktsänd-TV & DVR"
     },
     "logs": {
       "description": "Läs och sök serverloggar och användaraktivitet",
@@ -488,6 +490,7 @@
   "unableGetServerConfiguration": "Kunde inte hämta serverkonfiguration",
   "unableToRefreshLibrary": "Kunde inte uppdatera bibliotek",
   "unableToToggleLike": "Det gick inte att ändra den gillade statusen av elementet",
+  "unableToTogglePlayed": "Det gick inte att uppdatera statusen för uppspelningstillstånd",
   "undefined": "Odefinierad",
   "unexpectedError": "Oväntat fel",
   "unhandledException": "Ohanterat undantag",
