@@ -8,6 +8,15 @@
   "albums": "专辑",
   "allLanguages": "全部语言",
   "alphabetically": "按字母排序",
+  "appbar": {
+    "tasks": {
+      "configSync": "正在同步设置...",
+      "scanningLibrary": "正在扫描库“{library}”..."
+    },
+    "tooltips": {
+      "tasks": "运行中的任务"
+    }
+  },
   "architecture": "架构",
   "artist": "艺术家",
   "artists": "艺术家",
