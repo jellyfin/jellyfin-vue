@@ -8,6 +8,14 @@
   "albums": "Älbomdar",
   "allLanguages": "Barlyq tılder",
   "alphabetically": "Älıpbi boiynşa",
+  "appbar": {
+    "tasks": {
+      "configSync": "Parametrler ündestırilude…"
+    },
+    "tooltips": {
+      "tasks": "Oryndalyp jatqan tapsyrmalar"
+    }
+  },
   "architecture": "Arhitekturasy",
   "artist": "Oryndauşy",
   "artists": "Oryndauşylar",
