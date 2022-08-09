@@ -8,6 +8,11 @@
   "albums": "Albumoj",
   "allLanguages": "Ĉiuj lingvoj",
   "alphabetically": "Alfabete",
+  "appbar": {
+    "tooltips": {
+      "tasks": "Kurantaj taskoj"
+    }
+  },
   "architecture": "Arkitekturo",
   "artist": "Artisto",
   "artists": "Artistoj",
