@@ -26,7 +26,10 @@
       <v-hover v-slot="{ hover }">
         <v-card class="player-card" width="100%">
           <v-container fill-height fluid class="pa-0 justify-center">
-            <shaka-player ref="videoPlayer" />
+            <shaka-player
+              ref="videoPlayer"
+              :stretch="stretchVideo && !playbackManager.isMinimized"
+            />
           </v-container>
           <!-- Mini Player Overlay -->
           <v-fade-transition>

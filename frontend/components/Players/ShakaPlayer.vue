@@ -3,6 +3,7 @@
     <component
       :is="mediaElement"
       ref="shakaPlayer"
+      :class="{ stretch: stretch }"
       :poster="poster.url"
       autoplay
       crossorigin="anonymous"
@@ -69,6 +70,12 @@ declare global {
 }
 
 export default Vue.extend({
+  props: {
+    stretch: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
@@ -481,5 +488,9 @@ video {
   max-height: 100vh;
   width: 100%;
   height: 100%;
+}
+
+.stretch {
+  width: 100vw !important;
 }
 </style>
