@@ -8,6 +8,15 @@
   "albums": "Alba",
   "allLanguages": "Všechny jazyky",
   "alphabetically": "Abecedně",
+  "appbar": {
+    "tasks": {
+      "configSync": "Synchronizují se nastavení…",
+      "scanningLibrary": "Skenuje se knihovna '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Probíhají úlohy"
+    }
+  },
   "architecture": "Architektura",
   "artist": "Interpret",
   "artists": "Interpreti",
