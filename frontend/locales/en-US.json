@@ -538,8 +538,8 @@
       "tasks": "Running tasks"
     },
     "tasks": {
-      "configSync": "Syncing settings...",
-      "scanningLibrary": "Scanning library '{library}'..."
+      "configSync": "Syncing settings…",
+      "scanningLibrary": "Scanning library '{library}'…"
     }
   }
 }
