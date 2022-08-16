@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <backdrop />
-    <navigation-drawer v-if="!$vuetify.breakpoint.mobile" />
+    <navigation-drawer />
     <app-bar />
     <v-main>
       <div class="pa-s">
