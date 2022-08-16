@@ -37,13 +37,13 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" background-color="transparent">
-            <v-tab :key="0" :disabled="!discographyIds.length">
+            <v-tab :key="0" :disabled="!discography.length">
               {{ $t('item.artist.discography') }}
             </v-tab>
-            <v-tab :key="1" :disabled="!appearancesIds.length">
+            <v-tab :key="1" :disabled="!appearances.length">
               {{ $t('item.artist.appearsOn') }}
             </v-tab>
-            <v-tab :key="2" :disabled="!musicVideoIds.length">
+            <v-tab :key="2" :disabled="!musicVideo.length">
               {{ $t('item.artist.videos') }}
             </v-tab>
             <v-tab :key="3" :disabled="!artistBackdrop.tag && !overview">
@@ -214,9 +214,6 @@ export default Vue.extend({
   data() {
     return {
       activeTab: 0,
-      discographyIds: [] as BaseItemDto[],
-      appearancesIds: [] as BaseItemDto[],
-      musicVideoIds: [] as BaseItemDto[],
       item: {} as BaseItemDto
     };
   },
