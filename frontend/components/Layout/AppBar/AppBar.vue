@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     clipped-left
-    class="ml-n3 mr-n3 app-bar-safe-zone"
+    class="app-bar-safe-zone"
     flat
     app
     elevate-on-scroll
