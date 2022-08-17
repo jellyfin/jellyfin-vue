@@ -13,6 +13,23 @@
       </app-bar-button-layout>
     </template>
     <v-list dense>
+      <v-list-item>
+        <v-list-item-avatar>
+          <user-image
+            v-if="auth.currentUser"
+            :user="auth.currentUser"
+            :size="40"
+            rounded
+          />
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title>{{ auth.currentUser.Name }}</v-list-item-title>
+          <v-list-item-subtitle v-if="auth.currentUser.Policy.IsAdministrator">
+            {{ $t('administrator') }}
+            <v-icon small>mdi-key-chain</v-icon>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
