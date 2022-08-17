@@ -110,7 +110,7 @@ export default Vue.extend({
           {
             const latestMediaSections = [];
 
-            if (!this.userViews.views) {
+            if (this.userViews.views.length === 0) {
               await this.userViews.refreshUserViews();
             }
 
