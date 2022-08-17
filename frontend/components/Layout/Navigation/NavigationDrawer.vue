@@ -8,7 +8,9 @@
     floating
     clipped
     class="pa-s"
-    :class="{ transparent: page.transparentLayout }"
+    :class="{
+      transparent: page.transparentLayout && !$vuetify.breakpoint.mobile
+    }"
   >
     <v-list nav>
       <v-list-item
