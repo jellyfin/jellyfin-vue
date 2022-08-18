@@ -8,6 +8,15 @@
   "albums": "Albums",
   "allLanguages": "All languages",
   "alphabetically": "Alphabetically",
+  "appbar": {
+    "tasks": {
+      "configSync": "Syncing settings…",
+      "scanningLibrary": "Scanning library '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Running tasks"
+    }
+  },
   "architecture": "Architecture",
   "artist": "Artist",
   "artists": "Artists",
@@ -23,8 +32,8 @@
   "byArtist": "By {artist}",
   "cancel": "Cancel",
   "castAndCrew": "Cast & crew",
-  "collections": "Collections",
   "collectionEmpty": "This collection is empty",
+  "collections": "Collections",
   "communityRating": "Community rating",
   "confirm": "Confirm",
   "connect": "Connect",
@@ -41,15 +50,6 @@
       "nextItemPlayingIn": "Starting in {time}",
       "startNow": "Start now"
     }
-  },
-  "snackbar": {
-    "addedToQueue": "Added to queue",
-    "playNext": "The selected item will be played after the current one"
-  },
-  "itemMenu": {
-    "pushToTop": "Move to the beginning",
-    "pushToBottom": "Move to the end",
-    "removeFromQueue": "Remove from queue"
   },
   "directing": "Directing",
   "director": "Director",
@@ -130,6 +130,11 @@
       "title": "Title"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Move to the end",
+    "pushToTop": "Move to the beginning",
+    "removeFromQueue": "Remove from queue"
+  },
   "itemNotFound": "Item not found",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Latest {libraryName}",
@@ -151,6 +156,7 @@
     "changeServer": "Change server",
     "changeUser": "Change user",
     "connect": "Connect",
+    "kickedOut": "Authorization has been revoked and this session is no longer valid. Please log in again",
     "login": "Login",
     "loginAs": "Login as {name}",
     "manualLogin": "Manual login",
@@ -162,8 +168,7 @@
     "serverAddressRequired": "Server address is required",
     "serverDashboard": "Server dashboard",
     "serverNotFound": "Server not found",
-    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
-    "kickedOut": "Authorization has been revoked and this session is no longer valid. Please log in again"
+    "serverVersionTooLow": "Server version needs to be 10.7.0 or higher"
   },
   "logout": "Logout",
   "logsAndActivity": {
@@ -421,6 +426,10 @@
   },
   "shows": "Shows",
   "signIn": "Sign in",
+  "snackbar": {
+    "addedToQueue": "Added to queue",
+    "playNext": "The selected item will be played after the current one"
+  },
   "songs": "Songs",
   "sortByType": "By {type}",
   "sortTitle": "Sort title",
@@ -532,14 +541,5 @@
   "writing": "Writing",
   "year": "Year",
   "years": "Years",
-  "youMayAlsoLike": "You may also like",
-  "appbar": {
-    "tooltips": {
-      "tasks": "Running tasks"
-    },
-    "tasks": {
-      "configSync": "Syncing settings…",
-      "scanningLibrary": "Scanning library '{library}'…"
-    }
-  }
+  "youMayAlsoLike": "You may also like"
 }
