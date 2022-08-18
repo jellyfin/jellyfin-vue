@@ -30,6 +30,7 @@
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
+      <v-divider class="my-2" light />
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
