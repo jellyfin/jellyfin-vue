@@ -10,8 +10,8 @@
   "alphabetically": "Aakkosjärjestyksessä",
   "appbar": {
     "tasks": {
-      "configSync": "Synkronoidaan asetuksia...",
-      "scanningLibrary": "Päivitetään kirjastoa \"{library}\"..."
+      "configSync": "Synkronoidaan asetuksia…",
+      "scanningLibrary": "Päivitetään kirjastoa \"{library}\"…"
     },
     "tooltips": {
       "tasks": "Käynnissä olevat tehtävät"
