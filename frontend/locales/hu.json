@@ -10,8 +10,8 @@
   "alphabetically": "Abc sorrend",
   "appbar": {
     "tasks": {
-      "configSync": "Szinkronizálási beállítások...",
-      "scanningLibrary": "Könyvtár szkennelése '{library}'..."
+      "configSync": "Szinkronizálási beállítások…",
+      "scanningLibrary": "Könyvtár szkennelése '{library}'…"
     },
     "tooltips": {
       "tasks": "Futó folyamatok"
