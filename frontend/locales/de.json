@@ -10,8 +10,8 @@
   "alphabetically": "Alphabetisch",
   "appbar": {
     "tasks": {
-      "configSync": "Einstellungen synchronisieren...",
-      "scanningLibrary": "Bibliothek '{library}' scannen..."
+      "configSync": "Einstellungen synchronisieren…",
+      "scanningLibrary": "Bibliothek '{library}' scannen…"
     },
     "tooltips": {
       "tasks": "Laufende Aufgaben"
