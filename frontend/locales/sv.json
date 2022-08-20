@@ -10,8 +10,8 @@
   "alphabetically": "Alfabetiskt",
   "appbar": {
     "tasks": {
-      "configSync": "Synkar inställningar...",
-      "scanningLibrary": "Skannar bibliotek '{library}'..."
+      "configSync": "Synkar inställningar…",
+      "scanningLibrary": "Skannar bibliotek '{library}'…"
     },
     "tooltips": {
       "tasks": "Pågående aktiviteter"
