@@ -10,8 +10,8 @@
   "alphabetically": "按字母排序",
   "appbar": {
     "tasks": {
-      "configSync": "正在同步设置...",
-      "scanningLibrary": "正在扫描库“{library}”..."
+      "configSync": "正在同步设置…",
+      "scanningLibrary": "正在扫描库“{library}”…"
     },
     "tooltips": {
       "tasks": "运行中的任务"
