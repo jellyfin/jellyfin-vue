@@ -1,13 +1,13 @@
 {
-  "3DFormat": "3D formaatti",
-  "NoMediaSourcesAvailable": "Ei medialähteitä",
+  "3DFormat": "3D-muoto",
+  "NoMediaSourcesAvailable": "Medialähteitä ei ole",
   "actor": "Näyttelijä",
   "actors": "Näyttelijät",
   "addNewPerson": "Lisää uusi henkilö",
-  "airPlayDevices": "AirPlay laitteet",
+  "airPlayDevices": "AirPlay-laitteet",
   "albums": "Albumit",
   "allLanguages": "Kaikki kielet",
-  "alphabetically": "Aakkosjärjestyksessä",
+  "alphabetically": "Aakkosellisesti",
   "appbar": {
     "tasks": {
       "configSync": "Synkronoidaan asetuksia…",
@@ -18,14 +18,14 @@
     }
   },
   "architecture": "Arkkitehtuuri",
-  "artist": "Artisti",
-  "artists": "Artistit",
+  "artist": "Esittäjä",
+  "artists": "Esittäjät",
   "aspectRatio": "Kuvasuhde",
   "audio": "Ääni",
-  "audioCodecNotSupported": "Äänikoodekki ei ole tuettu",
+  "audioCodecNotSupported": "Äänikoodekkia ei tueta",
   "badRequest": "Virheellinen pyyntö. Yritä uudelleen",
   "books": "Kirjat",
-  "browserNotSupported": "Selaimesi ei tue tämän tiedoston toistamista.",
+  "browserNotSupported": "Tämän tiedoston toistoa selaimessasi ei tueta.",
   "buttons": {
     "ok": "Ok"
   },
@@ -40,76 +40,76 @@
   "continueListening": "Jatka kuuntelua",
   "continueWatching": "Jatka katselua",
   "criticRating": "Kriitikkojen arvio",
-  "customRating": "Mukautettu arvio",
+  "customRating": "Oma arvio",
   "darkModeToggle": "Tumma tila",
-  "dateAdded": "Lisäyspäivämäärä",
+  "dateAdded": "Lisäysaika",
   "details": "Tiedot",
   "dialog": {
     "upNext": {
       "hide": "Piilota",
-      "nextItemPlayingIn": "Alkaa kohdasta {time}",
-      "startNow": "Aloita"
+      "nextItemPlayingIn": "Alkaa {time} kuluttua",
+      "startNow": "Aloita nyt"
     }
   },
   "directing": "Ohjaus",
   "director": "Ohjaaja",
-  "disabled": "Poissa käytöstä",
+  "disabled": "Ei käytössä",
   "discNumber": "Levy {discNumber}",
   "dislikes": "Ei tykkäykset",
   "edit": "Muokkaa",
-  "editMetadata": "Muokkaa metadataa",
+  "editMetadata": "Muokkaa metatietoja",
   "editPerson": "Muokkaa henkilöä",
   "endDate": "Päättymispäivä",
   "endsAt": "Päättyy {time}",
   "episodeNumber": "Jakso {episodeNumber}",
   "errors": {
-    "anErrorHappened": "Virhe tapahtui",
+    "anErrorHappened": "Tapahtui virhe",
     "messages": {
       "errorCode": "Virhekoodi: {errorCode}",
-      "videoPlayerError": "Videotoistin kohtasi peruuttamattoman virheen."
+      "videoPlayerError": "Videosoitin kohtasi peruuttamattoman virheen."
     }
   },
-  "failedRetrievingDisplayPreferences": "Näyttöasetuksia ei saatu. Käytetään viimeisiä tiedossa olevia asetuksia.",
-  "failedSettingDisplayPreferences": "Näyttöasetuksia ei voitu päivittää.",
-  "failedToRefreshItems": "Kohteiden päivittäminen epäonnistui",
+  "failedRetrievingDisplayPreferences": "Näyttöasetuksia ei saatu. Käytetään viimeisiä tunnettuja asetuksia.",
+  "failedSettingDisplayPreferences": "Näyttöasetuksia ei voitu muuttaa.",
+  "failedToRefreshItems": "Kohteiden päivitys epäonnistui",
   "favorite": "Suosikki",
   "features": "Ominaisuudet",
   "filter": "Suodata",
-  "filtersNotFound": "Suodatinten lataaminen epäonnistui",
-  "fullScreen": "Kokoruutu",
+  "filtersNotFound": "Suodattimia ei voitu ladata",
+  "fullScreen": "Koko näyttö",
   "general": "Yleiset",
   "genericJellyfinPlaceholderDevice": "Yleinen Jellyfin-laite",
-  "genres": "Tyylilajit",
-  "googleCastPlaceholderDevice": "Google Cast laite",
-  "guestStar": "Vieraileva tähti",
+  "genres": "Lajityypit",
+  "googleCastPlaceholderDevice": "Google Cast -laite",
+  "guestStar": "Vieraileva pääosa",
   "headerExternalIds": "Ulkoiset ID:t",
   "headerPaths": "Polku",
   "home": "Koti",
   "homeHeader": {
     "items": {
-      "recentlyAdded": "Viimeksi lisätty"
+      "recentlyAdded": "Viimeksi lisätyt"
     }
   },
   "imageType": {
     "art": "Taide",
     "backdrop": "Tausta",
-    "banner": "Kansikuva",
-    "box": "Laatikko",
-    "boxRear": "Laatikko (takaa)",
+    "banner": "Banneri",
+    "box": "Kansi",
+    "boxRear": "Takakansi",
     "disc": "Levy",
     "logo": "Logo",
     "menu": "Valikko",
     "primary": "Ensisijainen",
-    "screenshot": "Näyttökuva",
-    "thumb": "Esikatselu"
+    "screenshot": "Kuvankaappaus",
+    "thumb": "Pienoiskuva"
   },
   "images": "Kuvat",
-  "incorrectUsernameOrPassword": "Väärä käyttäjätunnus tai salasana",
+  "incorrectUsernameOrPassword": "Virheellinen käyttäjätunnus tai salasana",
   "item": {
     "artist": {
-      "appearsOn": "Ulkonäkö",
+      "appearsOn": "Ulkoasu",
       "discography": "Diskografia",
-      "information": "Tietoa",
+      "information": "Tietoja",
       "videos": "Videot"
     },
     "cast": "Näyttelijät",
@@ -120,11 +120,11 @@
       "birthPlace": "Synnyinpaikka",
       "books": "Kirjat",
       "death": "Kuollut",
-      "information": "Tietoa",
+      "information": "Tiedot",
       "movies": "Elokuvat",
       "person": "Henkilö",
       "photos": "Kuvat",
-      "shows": "Ohjelmat"
+      "shows": "Sarjat"
     },
     "tracklist": {
       "title": "Otsikko"
@@ -136,29 +136,29 @@
     "removeFromQueue": "Poista jonosta"
   },
   "itemNotFound": "Kohdetta ei löydy",
-  "jellyfinLogo": "Jellyfin logo",
-  "latestLibrary": "Viimeisin {libraryName}",
+  "jellyfinLogo": "Jellyfin-logo",
+  "latestLibrary": "Uudet {libraryName}",
   "libraries": "Kirjastot",
   "libraryEmpty": "Kirjasto on tyhjä",
-  "libraryEmptyFilters": "Ei tuloksia. Poista jotain suodattimia nähdäksesi enemmän kohteita",
+  "libraryEmptyFilters": "Ei tuloksia. Poista jotakin suodattimia nähdäksesi enemmän kohteita",
   "libraryNotFound": "Kirjastoa ei löydy",
-  "libraryRefreshQueued": "Kirjaston päivitys jonossa",
+  "libraryRefreshQueued": "Kirjastopäivitys on jonossa",
   "liked": "Tykätty",
   "likes": "Tykkäykset",
   "links": {
     "helpTranslate": "Käännä Jellyfin kielellesi",
-    "poweredByJellyfin": "Palvelimen taustavoimana Jellyfin",
-    "readTheDocumentation": "Lue dokumentaatio",
-    "reportAnIssue": "Raportoi ongelmasta tällä laitteella"
+    "poweredByJellyfin": "Palvelimen voimanlähteenä on Jellyfin",
+    "readTheDocumentation": "Lue ohjeet",
+    "reportAnIssue": "Ilmoita ongelma tällä päätteellä"
   },
   "login": {
     "addServer": "Lisää palvelin",
-    "changeServer": "Vaihda palvelin",
+    "changeServer": "Vaihda palvelinta",
     "changeUser": "Vaihda käyttäjää",
     "connect": "Yhdistä",
-    "kickedOut": "Käyttöoikeus on evätty, eikä istunto ole enää voimassa. Kirjaudu sisään uudelleen",
+    "kickedOut": "Todennus on mitätöity, eikä istunto ole enää voimassa. Kirjaudu uudelleen",
     "login": "Kirjaudu",
-    "loginAs": "Kirjaudu sisään käyttäjänä {name}",
+    "loginAs": "Kirjaudu käyttäjänä {name}",
     "manualLogin": "Manuaalinen kirjautuminen",
     "rememberMe": "Muista minut",
     "selectServer": "Valitse palvelin",
@@ -166,20 +166,20 @@
     "serverAddress": "Palvelimen osoite",
     "serverAddressMustBeUrl": "Palvelimen osoitteen on oltava kelvollinen URL-osoite",
     "serverAddressRequired": "Palvelimen osoite vaaditaan",
-    "serverDashboard": "Palvelimen kojelauta",
+    "serverDashboard": "Palvelimen hallintapaneeli",
     "serverNotFound": "Palvelinta ei löytynyt",
-    "serverVersionTooLow": "Palvelinversion on oltava 10.7.0 tai korkeampi"
+    "serverVersionTooLow": "Palvelimen version on oltava vähintään 10.7.0"
   },
   "logout": "Kirjaudu ulos",
   "logsAndActivity": {
-    "activity": "Aktiivisuus",
-    "failedGetActivity": "Aktiivisuutta ei saatu",
-    "failedGetLogs": "Lokeja ei voitu ladata",
-    "logs": "Lokit",
-    "noActivityFound": "Aktiviteetteja ei löytynyt",
-    "noLogsFound": "Lokeja ei löytynyt"
+    "activity": "Toimintahistoria",
+    "failedGetActivity": "Toimintahistoriaa ei saatu",
+    "failedGetLogs": "Lokitietoja ei saatu",
+    "logs": "Lokitiedot",
+    "noActivityFound": "Toimintahistoriaa ei löytynyt",
+    "noLogsFound": "Lokitietoja ei löytynyt"
   },
-  "manualLogin": "Manuaalinen sisäänkirjautuminen",
+  "manualLogin": "Manuaalinen kirjautuminen",
   "mediaInfo": {
     "audioChannels": {
       "name": "Äänikanavat:"
@@ -195,7 +195,7 @@
     },
     "name": "Media",
     "subtitleCodec": {
-      "name": "Tekstityksen koodekki:"
+      "name": "Tekstityskoodekki:"
     },
     "videoCodec": {
       "name": "Videokoodekki:"
@@ -205,46 +205,46 @@
   "metadata": {
     "source": "Lähde",
     "sourceAll": "Kaikki",
-    "title": "Otsikko",
+    "title": "Nimike",
     "type": "Tyyppi"
   },
-  "metadataEditor": "Metadatamuokkain",
-  "metadataNoResultsMatching": "Ei tuloksia haulla \"{search}\". Paina enteriä luodaksesi uuden.",
+  "metadataEditor": "Metatietoeditori",
+  "metadataNoResultsMatching": "Haku \"{search}\" ei tuottanut tuloksia. Luo uusi painamalla Enter.",
   "more": "Lisää",
   "moreLikeArtist": "Lisää esittäjän {artist} kaltaisia",
-  "moreLikeThis": "Lisää samanlaisia",
+  "moreLikeThis": "Lisää tämänkaltaisia",
   "movies": "Elokuvat",
   "name": "Nimi",
   "networks": "Verkot",
   "nextUp": "Seuraavaksi",
   "noImagesFound": "Kuvia ei löytynyt",
-  "noInformationAvailable": "Tietoja ei saatavilla",
+  "noInformationAvailable": "Tietoja ei ole saatavilla",
   "noNetworkConnection": "Ei verkkoyhteyttä",
   "noResultsFound": "Täällä ei ole mitään",
-  "numberTracks": "{number} raitaa",
+  "numberTracks": "{number} kappaletta",
   "operatingSystem": "Käyttöjärjestelmä",
   "originalAspectRatio": "Alkuperäinen kuvasuhde",
-  "originalTitle": "Alkuperäinen otsikko",
-  "overview": "Yleiskatsaus",
-  "parentalRating": "Vanhempainluokitus",
-  "parentalRatings": "Ikärajat",
+  "originalTitle": "Alkuperäinen nimi",
+  "overview": "Yhteenveto",
+  "parentalRating": "Ikäluokitus",
+  "parentalRatings": "Ikäluokitukset",
   "password": "Salasana",
-  "people": "Ihmiset",
+  "people": "Henkilöt",
   "person": "Henkilö",
   "play": "Toista",
-  "playFromBeginning": "Aloita alusta",
+  "playFromBeginning": "Toista alusta",
   "playback": {
     "addToQueue": "Lisää jonoon",
-    "clearQueue": "Tyhjää jono ja pysäytä toisto",
+    "clearQueue": "Tyhjennä jono ja pysäytä toisto",
     "playAll": "Toista kaikki",
     "playNext": "Toista seuraava",
     "playbackSource": {
       "item": "Toistetaan lähteestä {item}",
       "shuffle": "Toistetaan sekoitustilassa",
-      "shuffleItem": "Toistetaan kohdetta {item} sekoitustilassa",
+      "shuffleItem": "Toistetaan {item} sekoitustilassa",
       "unknown": "Toistetaan jonosta"
     },
-    "queueItems": "{items} raitaa",
+    "queueItems": "{items} kappaletta",
     "saveAsPlaylist": "Tallenna jono soittolistaksi",
     "shuffle": "Sekoita",
     "shuffleAll": "Sekoita kaikki"
@@ -255,7 +255,7 @@
     "playMethod": {
       "direct": "Suora",
       "name": "Tapa:",
-      "remux": "Remux",
+      "remux": "Remuksaus",
       "transcode": "Transkoodaus"
     },
     "streamType": {
@@ -267,10 +267,10 @@
     }
   },
   "playbackSettings": "Toiston asetukset",
-  "played": "Toistetut",
+  "played": "Toistettu",
   "playerInfo": {
     "corruptedFrames": {
-      "name": "Korruptoituneet kehykset:"
+      "name": "Vaurioituneet kehykset:"
     },
     "decodedFrames": {
       "name": "Dekoodatut kehykset:"
@@ -278,9 +278,9 @@
     "droppedFrames": {
       "name": "Pudotetut kehykset:"
     },
-    "name": "Toistin",
+    "name": "Soitin",
     "playbackResolution": {
-      "name": "Kuvaruudun resoluutio:"
+      "name": "Näyttöalueen resoluutio:"
     },
     "videoResolution": {
       "name": "Videon resoluutio:",
@@ -295,62 +295,62 @@
   "refreshLibrary": "Päivitä kirjasto",
   "releaseDate": "Julkaisupäivä",
   "remoteDevices": "Etälaitteet",
-  "resumable": "Jatkettavissa oleva",
+  "resumable": "Keskeneräinen",
   "resume": "Jatka",
   "role": "Rooli",
   "save": "Tallenna",
   "saved": "Tallennettu",
   "search": {
     "name": "Haku",
-    "topResults": "Parhaimmat tulokset"
+    "topResults": "Parhaat tulokset"
   },
-  "seasonEpisode": "Kausi {seasonNumber}, Jakso {episodeNumber}",
+  "seasonEpisode": "Kausi {seasonNumber}, jakso {episodeNumber}",
   "seasonEpisodeAbbrev": "K{seasonNumber} J{episodeNumber}",
   "series": "Sarjat",
   "server": "Palvelin",
   "serverVersion": "Palvelimen versio",
-  "serverVersionTooLow": "Palvelimen version tulee olla 10.7.0 tai uudempi",
+  "serverVersionTooLow": "Palvelimen version on oltava vähintään 10.7.0",
   "settings": {
     "apiKeys": {
-      "accessToken": "Pääsytunnus",
+      "accessToken": "Käyttöoikeustunniste",
       "addApiKey": "Lisää API-avain",
       "addNewKey": "Lisää uusi API-avain",
-      "apiKeys": "API avaimet",
+      "apiKeys": "API-avaimet",
       "appName": "Sovelluksen nimi",
-      "createKeyFailure": "Virhe API-avainta luotaessa",
-      "createKeySuccess": "API-avain luotu",
+      "createKeyFailure": "Virhe luotaessa API-avainta",
+      "createKeySuccess": "Uusi API-avain luotiin",
       "dateCreated": "Lisäyspäivä",
-      "description": "Lisää ja evää API-avaimia palvelimen etäkäyttöön",
-      "refreshKeysFailure": "Virhe API-avaimia päivittäessä",
-      "revokeAll": "Evää kaikki API-avaimet",
-      "revokeAllFailure": "Virhe poistaessa API-avaimia",
-      "revokeAllSuccess": "API-avaimet poistettu",
-      "revokeFailure": "Virhe poistaessa API-avainta",
-      "revokeSuccess": "API-avain poistettu"
+      "description": "Lisää ja peru palvelimen etäkäytön API-avaimia",
+      "refreshKeysFailure": "Virhe päivittäessä API-avaimia",
+      "revokeAll": "Peru kaikki API-avaimet",
+      "revokeAllFailure": "Virhe peruttaessa kaikkia API-avaimia",
+      "revokeAllSuccess": "Kaikki API-avaimet peruttiin",
+      "revokeFailure": "Virhe peruttaessa API-avainta",
+      "revokeSuccess": "API-avain peruttiin"
     },
     "devices": {
-      "appName": "Sovellusnimi",
+      "appName": "Sovelluksen nimi",
       "appVersion": "Sovelluksen versio",
       "delete": "Poista",
       "deleteAll": "Poista kaikki",
-      "deleteAllDevicesError": "Virhe poistaessa kaikki laitteet",
-      "deleteAllDevicesSuccess": "Kaikki laitteet poistettu",
-      "deleteDeviceError": "Virhe laitetta poistaessa",
-      "deleteDeviceSuccess": "Laite poistettu",
+      "deleteAllDevicesError": "Virhe poistaessa kaikkia laitteita",
+      "deleteAllDevicesSuccess": "Kaikki laitteet poistettiin",
+      "deleteDeviceError": "Virhe poistaessa laitetta",
+      "deleteDeviceSuccess": "Laite poistettiin",
       "deviceName": "Laitteen nimi",
       "devices": "Laitteet",
       "lastActive": "Viimeksi aktiivinen",
       "noDevicesFound": "Laitteita ei löytynyt",
-      "userName": "Käyttäjänimi"
+      "userName": "Käyttäjätunnus"
     },
-    "help": "Apua",
+    "help": "Ohje",
     "logsAndActivity": {
-      "activity": "Aktiivisuus",
-      "failedGetActivity": "Aktiivisuutta ei voitu hakea",
-      "failedGetLogs": "Lokeja ei voitu hakea",
-      "logs": "Lokit",
-      "noActivityFound": "Aktiivisuuksia ei löytynyt",
-      "noLogsFound": "Lokeja ei löytynyt"
+      "activity": "Toimintahistoria",
+      "failedGetActivity": "Toimintahistoriaa ei saatu",
+      "failedGetLogs": "Lokitietoja ei saatu",
+      "logs": "Lokitiedot",
+      "noActivityFound": "Toimintahistoriaa ei löytynyt",
+      "noLogsFound": "Lokitietoja ei löytynyt"
     },
     "settings": "Asetukset"
   },
@@ -360,7 +360,7 @@
       "name": "Tili"
     },
     "devices": {
-      "description": "Katso ja hallitse palvelimeen yhdistettyjä laitteita",
+      "description": "Tutki ja hallitse palvelimeen yhdistettyjä laitteita",
       "name": "Laitteet"
     },
     "dlna": {
@@ -372,19 +372,19 @@
       "name": "Kotinäyttö"
     },
     "libraries": {
-      "description": "Hallitse kirjastoja ja niiden metadataa",
+      "description": "Hallitse kirjastoja ja niiden metatietoja",
       "name": "Kirjastot"
     },
     "liveTvAndDvr": {
-      "description": "Hallitse TV-virittimiä, oppaiden tietolähteitä ja DVR-asetuksia",
+      "description": "Hallitse virittimiä, ohjelmaoppaiden tietolähteitä ja DVR-asetuksia",
       "name": "Televisio ja tallennus"
     },
     "logs": {
-      "description": "Lue ja hae palvelimen lokeja ja käyttäjien aktiivisuutta",
-      "name": "Lokit ja aktiivisuus"
+      "description": "Tutki ja etsi palvelimen lokitietoja ja käyttäjien toimia",
+      "name": "Lokitiedot ja toimintahistoria"
     },
     "mediaPlayers": {
-      "description": "Määrittele miten mediatoistimet toimivat tällä laitteella",
+      "description": "Määritä mediasoittimien toiminta tällä laitteella",
       "name": "Mediasoittimet"
     },
     "networking": {
@@ -392,7 +392,7 @@
       "name": "Verkko"
     },
     "notifications": {
-      "description": "Hallitse ja määrittele palvelimen lähettämiä ilmoituksia",
+      "description": "Hallitse palvelimen lähettämiä ilmoituksia",
       "name": "Ilmoitukset"
     },
     "playback": {
@@ -400,15 +400,15 @@
       "name": "Toisto"
     },
     "plugins": {
-      "description": "Lisää ja määritä uusia ominaisuuksia palvelimelle",
+      "description": "Lisää palvelimelle uusia ominaisuuksia ja määritä niiden asetukset",
       "name": "Lisäosat"
     },
     "scheduledTasks": {
-      "description": "Hallitse palvelimen ajoitettuja tehtäviä",
+      "description": "Hallitse palvelimella suoritettavia ajoitettuja tehtäviä",
       "name": "Ajoitetut tehtävät"
     },
     "server": {
-      "description": "Määrittele palvelimen kieli ja brändäys",
+      "description": "Määritä palvelimen kieli ja brändäys",
       "name": "Palvelin"
     },
     "subtitles": {
@@ -416,33 +416,33 @@
       "name": "Tekstitykset"
     },
     "transcodingAndStreaming": {
-      "description": "Hallitse miten palvelin käsittelee transkoodausta ja streamausta päätelaitteille",
-      "name": "Transkoodaus ja streamaus"
+      "description": "Hallitse miten palvelin toteuttaa transkoodauksen ja suoratoiston päätteille",
+      "name": "Transkoodaus ja suoratoisto"
     },
     "users": {
-      "description": "Hallitse käyttäjiä ja niiden oikeuksia",
+      "description": "Hallitse käyttäjiä ja heidän oikeuksiaan",
       "name": "Käyttäjät"
     }
   },
-  "shows": "Ohjelmat",
-  "signIn": "Kirjaudu sisään",
+  "shows": "Sarjat",
+  "signIn": "Kirjaudu",
   "snackbar": {
     "addedToQueue": "Lisättiin jonoon",
     "playNext": "Valittu kohde toistetaan seuraavaksi nykyisen jälkeen"
   },
   "songs": "Kappaleet",
   "sortByType": "{type}",
-  "sortTitle": "Suodata otsikko",
-  "specialFeatures": "Erikoisominaisuudet",
+  "sortTitle": "Järjestysnimi",
+  "specialFeatures": "Erityisominaisuudet",
   "speed": "Nopeus",
   "startNow": "Aloita nyt",
   "status": "Tila",
   "stretch": "Venytä",
   "studios": "Studiot",
   "subtitles": "Tekstitykset",
-  "syncPlayGroups": "SyncPlay ryhmät",
-  "syncingInProgress": "Synkronointi meneillään",
-  "tagline": "Tunnuslause",
+  "syncPlayGroups": "SyncPlay-ryhmät",
+  "syncingInProgress": "Synkronointi on käynnissä",
+  "tagline": "Iskulause",
   "tags": "Tunnisteet",
   "themeSong": "Tunnuskappale",
   "themeVideo": "Tunnusvideo",
@@ -455,7 +455,7 @@
   "transcodingInfo": {
     "name": "Transkoodaus",
     "transcodingFramerate": {
-      "name": "Ruudunpäivitysnopeus:",
+      "name": "Kuvanopeus:",
       "value": "{value} fps"
     },
     "transcodingProgress": "Edistyminen:",
@@ -463,31 +463,31 @@
       "name": "Syyt: | Syyt:",
       "reasons": {
         "anamorphicVideoNotSupported": "Anamorfista videota ei tueta",
-        "audioBitDepthNotSupported": "Äänen bittisyvyys ei ole tuettu",
-        "audioBitrateNotSupported": "Audion bittinopeutta ei tueta",
-        "audioChannelsNotSupported": "Äänikanavien määrä ei ole tuettu",
+        "audioBitDepthNotSupported": "Äänen bittisyvyyttä ei tueta",
+        "audioBitrateNotSupported": "Äänen bittinopeutta ei tueta",
+        "audioChannelsNotSupported": "Äänikanavamäärää ei tueta",
         "audioCodecNotSupported": "Äänikoodekkia ei tueta",
-        "audioProfileNotSupported": "Äänikoodekin profiili ei ole tuettu",
-        "audioSampleRateNotSupported": "Audion näytetaajuutta ei tueta",
+        "audioProfileNotSupported": "Äänikoodekin profiilia ei tueta",
+        "audioSampleRateNotSupported": "Äänen näytteenottotaajuutta ei tueta",
         "containerBitrateExceedsLimit": "Säiliön bittinopeus ylittää asetetun rajan",
-        "containerNotSupported": "Säiliö ei tuettu",
+        "containerNotSupported": "Säiliötä ei tueta",
         "interlacedVideoNotSupported": "Lomitettua videota ei tueta",
         "refFramesNotSupported": "Viitekehyksiä ei tueta",
         "secondaryAudioNotSupported": "Toissijaisia ääniraitoja ei tueta",
-        "subtitleCodecNotSupported": "Tekstityksen koodekkia ei tueta",
+        "subtitleCodecNotSupported": "Tekstityskoodekkia ei tueta",
         "videoBitDepthNotSupported": "VIdeon bittisyvyyttä ei tueta",
         "videoCodecNotSupported": "Videokoodekkia ei tueta",
-        "videoFramerateNotSupported": "Videon päivitysnopeutta ei tueta",
-        "videoLevelNotSupported": "Videon koodekin tasoa ei tueta",
-        "videoProfileNotSupported": "Videon koodekin profiilia ei tueta",
+        "videoFramerateNotSupported": "Videon kuvanopeutta ei tueta",
+        "videoLevelNotSupported": "Videokoodekin tasoa ei tueta",
+        "videoProfileNotSupported": "Videokoodekin profiilia ei tueta",
         "videoResolutionNotSupported": "Videon resoluutiota ei tueta"
       }
     }
   },
   "type": "Tyyppi",
-  "unableGetPublicUsers": "Käyttäjiä ei voitu noutaa",
-  "unableGetRelated": "Liittyviä kohteita ei voitu noutaa",
-  "unableGetServerConfiguration": "Palvelinmäärityksiä ei voitu noutaa",
+  "unableGetPublicUsers": "Käyttäjiä ei saatu",
+  "unableGetRelated": "Aiheeseen liittyviä kohteita ei saatu",
+  "unableGetServerConfiguration": "Palvelinmäärityksiä ei saatu",
   "unableToRefreshLibrary": "Kirjastoa ei voitu päivittää",
   "unableToToggleLike": "Elementin tykkäystilaa ei voitu muuttaa",
   "unableToTogglePlayed": "Katselutilaa ei voitu päivittää",
@@ -504,42 +504,42 @@
     }
   },
   "unliked": "Ei tykätty",
-  "unplayed": "Toistamattomat",
-  "upNext": "Seuraava",
+  "unplayed": "Toistamaton",
+  "upNext": "Seuraavaksi",
   "upNextName": "Seuraavaksi: {upNextItemName}",
   "username": "Käyttäjätunnus",
   "validation": {
     "bothPasswordsSame": "Salasanojen täytyy vastata toisiaan",
     "mustBeUrl": "Kentän on oltava kelvollinen URL-osoite",
-    "required": "Tämä kenttä on vaadittu"
+    "required": "Kenttä on pakollinen"
   },
   "version": "Versio",
   "video": "Video",
   "videoTypes": "Videotyypit",
-  "viewDetails": "Katso tiedot",
+  "viewDetails": "Näytä tiedot",
   "vueClientVersion": "Päätteen versio",
   "wizard": {
-    "administratorAccount": "Pääkäyttäjän tili",
+    "administratorAccount": "Ylläpitäjän tili",
     "allowRemoteAccess": "Salli palvelimen etäkäyttö",
-    "completeError": "Käyttöönottoavustajaa ei voitu suorittaa.",
+    "completeError": "Opastettua käyttöönottoa ei voitu suorittaa.",
     "confirmPassword": "Vahvista salasana",
     "languageLocale": "Kieli ja alue",
-    "languageSuccessfullySet": "Kieli asetettu onnistuneesti.",
+    "languageSuccessfullySet": "Kieli on määritetty.",
     "metadataLanguagesSet": "Metatietojen kielet on määritetty.",
-    "preferedLanguage": "Suositeltu kieli",
+    "preferedLanguage": "Ensisijainen kieli",
     "preferredMetadataLanguage": "Metatietojen ensisijainen kieli",
     "remoteAccess": "Etäkäyttö",
-    "remoteAccessSet": "Etäkäyttö asetettu.",
-    "setAdminError": "Pääkäyttäjän tiliä ei voitu luoda.",
+    "remoteAccessSet": "Etäkäyttö on määritetty.",
+    "setAdminError": "Ylläpitäjän tiliä ei voitu luoda.",
     "setLanguageError": "Päätteen kieltä ei voitu määrittää.",
     "setMetadataError": "Metatietojen kieliä ei voitu määrittää.",
     "setRemoteError": "Etäkäytön asetuksia ei voitu määrittää.",
-    "setupWizard": "Ohjattu asennus",
-    "userSuccessfullySet": "Käyttäjä asetettu onnistuneesti."
+    "setupWizard": "Opastettu käyttöönotto",
+    "userSuccessfullySet": "Käyttäjä on määritetty."
   },
   "writer": "Kirjoittaja",
   "writing": "Kirjoitus",
   "year": "Vuosi",
   "years": "Vuodet",
-  "youMayAlsoLike": "Saatat myös pitää seuraavista"
+  "youMayAlsoLike": "Saattaisit pitää myös näistä"
 }
