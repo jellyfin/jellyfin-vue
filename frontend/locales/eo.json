@@ -9,6 +9,10 @@
   "allLanguages": "Ĉiuj lingvoj",
   "alphabetically": "Alfabete",
   "appbar": {
+    "tasks": {
+      "configSync": "Sinkronigado de parametroj…",
+      "scanningLibrary": "Skanante bibliotekon '{library}'…"
+    },
     "tooltips": {
       "tasks": "Kurantaj taskoj"
     }
