@@ -12,7 +12,7 @@
         </template>
       </app-bar-button-layout>
     </template>
-    <v-list dense>
+    <v-list class="min-list-width" dense>
       <v-list-item>
         <v-list-item-avatar>
           <user-image
@@ -118,5 +118,9 @@ export default Vue.extend({
 
 .user-select-none {
   user-select: none;
+}
+
+.min-list-width {
+  min-width: 200px;
 }
 </style>
