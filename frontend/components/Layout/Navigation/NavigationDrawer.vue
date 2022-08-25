@@ -89,9 +89,6 @@ export default Vue.extend({
         }
       }
     }
-  },
-  async beforeMount() {
-    await this.userViews.refreshUserViews();
   }
 });
 </script>
