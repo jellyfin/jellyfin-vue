@@ -17,7 +17,6 @@ interface LatestMedia {
 }
 
 export interface HomeSectionState {
-  libraries: BaseItemDto[];
   audioResumes: BaseItemDto[];
   videoResumes: BaseItemDto[];
   upNext: BaseItemDto[];
@@ -27,7 +26,6 @@ export interface HomeSectionState {
 export const homeSectionStore = defineStore('homeSection', {
   state: () => {
     return {
-      libraries: [],
       audioResumes: [],
       videoResumes: [],
       upNext: [],
@@ -35,13 +33,6 @@ export const homeSectionStore = defineStore('homeSection', {
     } as HomeSectionState;
   },
   actions: {
-    async getLibraries(): Promise<void> {
-      const userViews = userViewsStore();
-
-      await userViews.refreshUserViews();
-
-      this.libraries = Array.from(userViews.views);
-    },
     async getAudioResumes(): Promise<void> {
       const auth = authStore();
       const snackbar = snackbarStore();
@@ -152,12 +143,15 @@ export const homeSectionStore = defineStore('homeSection', {
     }
   },
   getters: {
-    getHomeSectionContent:
-      (state) =>
-      (section: HomeSection): BaseItemDto[] => {
+    libraries: (): BaseItemDto[] => {
+      const userViews = userViewsStore();
+      return Array.from(userViews.views);
+    },
+    getHomeSectionContent(state) {
+      return (section: HomeSection): BaseItemDto[] => {
         switch (section.type) {
           case 'libraries':
-            return state.libraries;
+            return this.libraries;
           case 'resume':
             return state.videoResumes;
           case 'resumeaudio':
@@ -169,6 +163,7 @@ export const homeSectionStore = defineStore('homeSection', {
           default:
             return [];
         }
-      }
+      };
+    }
   }
 });

@@ -42,7 +42,6 @@ export default Vue.extend({
 
     switch (this.section.type) {
       case 'libraries': {
-        await this.homeSection.getLibraries();
         break;
       }
       case 'resume': {
