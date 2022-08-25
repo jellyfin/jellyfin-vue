@@ -59,118 +59,8 @@ export default Vue.extend({
   },
   data() {
     return {
-      homeSections: [] as HomeSection[],
       carouselItems: [] as BaseItemDto[]
     };
-  },
-  async fetch() {
-    const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
-
-    // Filter for valid sections in Jellyfin Vue
-    // TODO: Implement custom section order
-    let homeSectionsArray = pickBy(
-      // @ts-expect-error - No typings for this
-      this.clientSettings.CustomPrefs,
-      (value: string, key: string) => {
-        return (
-          value &&
-          validSections.includes(value) &&
-          key.startsWith('homesection')
-        );
-      }
-    );
-
-    if (!Object.keys(homeSectionsArray).length) {
-      homeSectionsArray = {
-        homeSection0: 'librarytiles',
-        homeSection1: 'resume',
-        homeSection2: 'resumeaudio',
-        homeSection3: 'upnext',
-        homeSection4: 'latestmedia'
-      };
-    }
-
-    // Convert to an array
-    homeSectionsArray = Object.values(homeSectionsArray);
-
-    const homeSections: HomeSection[] = [];
-
-    for (const homeSection of homeSectionsArray as Array<string>) {
-      switch (homeSection) {
-        case 'librarytiles': {
-          homeSections.push({
-            name: 'libraries',
-            libraryId: '',
-            shape: CardShapes.Thumb,
-            type: 'libraries'
-          });
-          break;
-        }
-        case 'latestmedia':
-          {
-            const latestMediaSections = [];
-
-            if (this.userViews.views.length === 0) {
-              await this.userViews.refreshUserViews();
-            }
-
-            const excludeViewTypes = [
-              'playlists',
-              'livetv',
-              'boxsets',
-              'channels'
-            ];
-
-            for (const userView of this.userViews.views) {
-              if (
-                excludeViewTypes.includes(userView.CollectionType as string)
-              ) {
-                continue;
-              }
-
-              latestMediaSections.push({
-                name: 'latestLibrary',
-                libraryName: userView.Name,
-                libraryId: userView.Id || '',
-                shape: getShapeFromCollectionType(userView.CollectionType),
-                type: 'latestmedia'
-              });
-            }
-
-            homeSections.push(...latestMediaSections);
-          }
-
-          break;
-        case 'resume':
-          homeSections.push({
-            name: 'continueWatching',
-            libraryId: '',
-            shape: CardShapes.Thumb,
-            type: 'resume'
-          });
-          break;
-        case 'resumeaudio':
-          homeSections.push({
-            name: 'continueListening',
-            libraryId: '',
-            shape: CardShapes.Square,
-            type: 'resumeaudio'
-          });
-          break;
-        case 'upnext':
-          homeSections.push({
-            name: 'nextUp',
-            libraryId: '',
-            shape: CardShapes.Thumb,
-            type: 'upnext'
-          });
-          break;
-        default:
-          break;
-      }
-    }
-
-    this.homeSections = homeSections;
   },
   head() {
     return {
@@ -178,13 +68,113 @@ export default Vue.extend({
     };
   },
   computed: {
-    ...mapStores(clientSettingsStore, pageStore, userViewsStore)
+    ...mapStores(clientSettingsStore, pageStore, userViewsStore),
+    homeSections(): HomeSection[] {
+      const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
+
+      // Filter for valid sections in Jellyfin Vue
+      // TODO: Implement custom section order
+      let homeSectionsArray = pickBy(
+        // @ts-expect-error - No typings for this
+        this.clientSettings.CustomPrefs,
+        (value: string, key: string) => {
+          return (
+            value &&
+            validSections.includes(value) &&
+            key.startsWith('homesection')
+          );
+        }
+      );
+
+      if (!Object.keys(homeSectionsArray).length) {
+        homeSectionsArray = {
+          homeSection0: 'librarytiles',
+          homeSection1: 'resume',
+          homeSection2: 'resumeaudio',
+          homeSection3: 'upnext',
+          homeSection4: 'latestmedia'
+        };
+      }
+
+      // Convert to an array
+      homeSectionsArray = Object.values(homeSectionsArray);
+
+      const homeSections: HomeSection[] = [];
+
+      for (const homeSection of homeSectionsArray as Array<string>) {
+        switch (homeSection) {
+          case 'librarytiles': {
+            homeSections.push({
+              name: 'libraries',
+              libraryId: '',
+              shape: CardShapes.Thumb,
+              type: 'libraries'
+            });
+            break;
+          }
+          case 'latestmedia':
+            {
+              const latestMediaSections = [];
+
+              const excludeViewTypes = [
+                'playlists',
+                'livetv',
+                'boxsets',
+                'channels'
+              ];
+
+              for (const userView of this.userViews.views) {
+                if (
+                  excludeViewTypes.includes(userView.CollectionType as string)
+                ) {
+                  continue;
+                }
+
+                latestMediaSections.push({
+                  name: 'latestLibrary',
+                  libraryName: userView.Name,
+                  libraryId: userView.Id || '',
+                  shape: getShapeFromCollectionType(userView.CollectionType),
+                  type: 'latestmedia'
+                });
+              }
+
+              homeSections.push(...latestMediaSections);
+            }
+
+            break;
+          case 'resume':
+            homeSections.push({
+              name: 'continueWatching',
+              libraryId: '',
+              shape: CardShapes.Thumb,
+              type: 'resume'
+            });
+            break;
+          case 'resumeaudio':
+            homeSections.push({
+              name: 'continueListening',
+              libraryId: '',
+              shape: CardShapes.Square,
+              type: 'resumeaudio'
+            });
+            break;
+          case 'upnext':
+            homeSections.push({
+              name: 'nextUp',
+              libraryId: '',
+              shape: CardShapes.Thumb,
+              type: 'upnext'
+            });
+            break;
+          default:
+            break;
+        }
+      }
+      return homeSections;
+    }
   },
   mounted() {
-    if (this.$fetchState.timestamp <= Date.now() - 30000) {
-      this.$fetch();
-    }
-
     this.page.title = this.$t('home');
   }
 });
