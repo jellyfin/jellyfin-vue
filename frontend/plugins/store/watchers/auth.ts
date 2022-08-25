@@ -36,6 +36,11 @@ export default function (ctx: Context): void {
    */
   auth.$onAction(({ name, after }) => {
     after(async () => {
+      if ((auth.currentUser && name === 'authInit') || name === 'loginUser') {
+        // Get user info, either at already logged in app start or when manually login in
+        userViews.refreshUserViews();
+      }
+
       if (
         name !== 'authInit' &&
         name !== 'setAxiosHeader' &&
