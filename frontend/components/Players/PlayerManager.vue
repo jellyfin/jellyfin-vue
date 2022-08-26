@@ -266,6 +266,7 @@ export default Vue.extend({
   watch: {
     'playbackManager.isMinimized'(): void {
       if (this.playbackManager.isMinimized) {
+        screenfull.exit();
         document.documentElement.classList.remove('overflow-hidden');
       } else {
         document.documentElement.classList.add('overflow-hidden');
@@ -355,6 +356,8 @@ export default Vue.extend({
       }`;
     },
     stopPlayback(): void {
+      screenfull.exit();
+
       if (this.fullScreenOverlayTimer) {
         window.clearTimeout(this.fullScreenOverlayTimer);
       }
