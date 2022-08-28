@@ -4,6 +4,7 @@
   "actor": "Näyttelijä",
   "actors": "Näyttelijät",
   "addNewPerson": "Lisää uusi henkilö",
+  "administrator": "Ylläpitäjä",
   "airPlayDevices": "AirPlay-laitteet",
   "albums": "Albumit",
   "allLanguages": "Kaikki kielet",
@@ -107,7 +108,7 @@
   "incorrectUsernameOrPassword": "Virheellinen käyttäjätunnus tai salasana",
   "item": {
     "artist": {
-      "appearsOn": "Ulkoasu",
+      "appearsOn": "Esiintymiset",
       "discography": "Diskografia",
       "information": "Tietoja",
       "videos": "Videot"
