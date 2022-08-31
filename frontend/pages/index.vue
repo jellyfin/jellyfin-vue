@@ -35,6 +35,8 @@ import {
   authStore
 } from '~/store';
 
+const VALID_SECTIONS = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
+
 export default Vue.extend({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
   // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
@@ -70,8 +72,6 @@ export default Vue.extend({
   computed: {
     ...mapStores(clientSettingsStore, pageStore, userViewsStore),
     homeSections(): HomeSection[] {
-      const validSections = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
-
       // Filter for valid sections in Jellyfin Vue
       // TODO: Implement custom section order
       let homeSectionsArray = pickBy(
@@ -80,7 +80,7 @@ export default Vue.extend({
         (value: string, key: string) => {
           return (
             value &&
-            validSections.includes(value) &&
+            VALID_SECTIONS.includes(value) &&
             key.startsWith('homesection')
           );
         }
@@ -96,7 +96,6 @@ export default Vue.extend({
         };
       }
 
-      // Convert to an array
       homeSectionsArray = Object.values(homeSectionsArray);
 
       const homeSections: HomeSection[] = [];
@@ -171,6 +170,7 @@ export default Vue.extend({
             break;
         }
       }
+
       return homeSections;
     }
   },
