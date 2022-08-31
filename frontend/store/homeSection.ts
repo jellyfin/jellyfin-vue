@@ -145,21 +145,22 @@ export const homeSectionStore = defineStore('homeSection', {
   getters: {
     libraries: (): BaseItemDto[] => {
       const userViews = userViewsStore();
+
       return Array.from(userViews.views);
     },
-    getHomeSectionContent(state) {
+    getHomeSectionContent() {
       return (section: HomeSection): BaseItemDto[] => {
         switch (section.type) {
           case 'libraries':
             return this.libraries;
           case 'resume':
-            return state.videoResumes;
+            return this.videoResumes;
           case 'resumeaudio':
-            return state.audioResumes;
+            return this.audioResumes;
           case 'upnext':
-            return state.upNext;
+            return this.upNext;
           case 'latestmedia':
-            return state.latestMedia[section.libraryId];
+            return this.latestMedia[section.libraryId];
           default:
             return [];
         }
