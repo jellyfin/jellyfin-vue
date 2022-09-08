@@ -13,19 +13,15 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     },
     "types": [
       "@types/node",
-      "@nuxt/types",
-      "@nuxtjs/vuetify",
-      "@nuxtjs/date-fns",
-      "@nuxtjs/i18n",
-      "jest",
       "axios",
       "@types/tizen-tv-webapis",
-      "@pinia/nuxt"
+      "unplugin-icons/types/vue",
+      "vite-plugin-vue-layouts/client",
+      "vite/client"
     ]
   }
 }
