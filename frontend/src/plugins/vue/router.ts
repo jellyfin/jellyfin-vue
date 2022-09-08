@@ -1,9 +1,9 @@
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
 import generatedRoutes from '~pages';
 
-const router = new VueRouter({
-  fallback: true,
+const router = createRouter({
+  history: createWebHistory(),
   routes: setupLayouts(generatedRoutes)
 });
 
