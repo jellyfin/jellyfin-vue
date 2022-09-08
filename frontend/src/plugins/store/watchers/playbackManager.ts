@@ -1,8 +1,8 @@
-import { Context } from '@nuxt/types';
 import isNil from 'lodash/isNil';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/utils/time';
 import { getImageInfo } from '~/utils/images';
+import { PiniaPluginContext } from 'pinia';
 
 /**
  * Add or remove media handlers
@@ -132,7 +132,7 @@ function updateMediaSessionMetadata(
  *
  * Reports the state of the playback to the server
  */
-export default function (ctx: Context): void {
+export default function (ctx: PiniaPluginContext): void {
   const playbackManager = playbackManagerStore();
 
   playbackManager.$onAction(({ name, after }) => {

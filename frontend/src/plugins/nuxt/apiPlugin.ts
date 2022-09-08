@@ -131,16 +131,6 @@ interface ApiPlugin {
   years: YearsApi;
 }
 
-declare module '@nuxt/types' {
-  interface Context {
-    $api: ApiPlugin;
-  }
-
-  interface NuxtAppOptions {
-    $api: ApiPlugin;
-  }
-}
-
 declare module 'vue/types/vue' {
   interface Vue {
     $api: ApiPlugin;
@@ -217,5 +207,5 @@ export default function (
     years: new YearsApi(config, '', contextAxios)
   };
 
-  inject('api', api);
+  provide('api', api);
 }
