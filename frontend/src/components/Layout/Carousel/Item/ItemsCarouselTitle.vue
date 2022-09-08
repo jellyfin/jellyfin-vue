@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link v-if="logo && logo.tag && logoLink" :to="logoLink">
+    <router-link v-if="logo && logo.tag && logoLink" :to="logoLink">
       <v-img
         class="mb-2"
         :max-width="$vuetify.breakpoint.mdAndUp ? '50%' : '40%'"
@@ -9,15 +9,15 @@
         data-swiper-parallax="-300"
         :src="logo.url"
       />
-    </nuxt-link>
-    <nuxt-link
+    </router-link>
+    <router-link
       v-else-if="itemLink && titleString"
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
       :to="itemLink"
     >
       {{ titleString }}
-    </nuxt-link>
+    </router-link>
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"
