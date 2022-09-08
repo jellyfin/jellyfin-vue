@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
@@ -93,7 +93,7 @@ import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   meta: {
     backdrop: true,
     transparentLayout: true

@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     viewType: {
       type: String,

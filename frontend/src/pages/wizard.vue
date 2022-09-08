@@ -80,11 +80,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { deviceProfileStore, snackbarStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   layout: 'fullpage',
   data() {
     return {

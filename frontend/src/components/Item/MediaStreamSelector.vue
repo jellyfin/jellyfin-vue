@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { PropType, defineComponent } from 'vue';
 import langs from 'langs';
 import { MediaStream } from '@jellyfin/client-axios';
 
@@ -43,7 +43,7 @@ interface SelectItems {
   title: string;
 }
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     /**
      * Media streams to display in the selector

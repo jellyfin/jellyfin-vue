@@ -210,13 +210,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
 import { sanitizeHtml } from '~/utils/html';
 import { authStore, snackbarStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     collectionInfo: {
       type: Object as () => BaseItemDto,

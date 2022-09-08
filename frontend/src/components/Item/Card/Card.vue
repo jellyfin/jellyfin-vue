@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import {
@@ -94,7 +94,7 @@ import {
 } from '~/utils/items';
 import { taskManagerStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

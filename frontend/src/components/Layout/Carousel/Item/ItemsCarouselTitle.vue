@@ -36,12 +36,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getLogo, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

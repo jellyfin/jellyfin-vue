@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { authStore } from '~/store';
@@ -28,7 +28,7 @@ type ITreeNode = {
   children?: ITreeNode[];
 };
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       items: [] as ITreeNode[],

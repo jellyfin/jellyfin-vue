@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { authStore, ServerInfo } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     serverInfo: {
       type: Object as () => ServerInfo,
