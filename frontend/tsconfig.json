@@ -13,8 +13,9 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
+    "jsx": "preserve",
     "types": [
       "@types/node",
       "axios",
@@ -26,5 +27,6 @@
   },
   "vueCompilerOptions": {
     "target": 2.7
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "./*.d.ts"]
 }
