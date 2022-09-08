@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
   ImageProviderInfo,
   RemoteImageInfo,
@@ -104,7 +104,7 @@ import {
   BaseItemDto
 } from '@jellyfin/client-axios';
 
-export default Vue.extend({
+export default defineComponent({
   filters: {
     fixed(val: number): string | number {
       if (!val) {

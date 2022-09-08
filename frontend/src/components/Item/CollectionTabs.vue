@@ -22,11 +22,11 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
 import groupBy from 'lodash/groupBy';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { itemsStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

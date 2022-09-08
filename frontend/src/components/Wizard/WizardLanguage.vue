@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
   LocalizationOption,
   StartupConfigurationDto
@@ -25,7 +25,7 @@ import {
 import { mapStores } from 'pinia';
 import { snackbarStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       UICulture: 'en-GB',

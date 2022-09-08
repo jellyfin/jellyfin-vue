@@ -48,13 +48,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import debounce from 'lodash/debounce';
 import { authStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       loading: false,
