@@ -36,16 +36,16 @@ import isNil from 'lodash/isNil';
 import muxjs from 'mux.js';
 // @ts-expect-error - This module doesn't have typings
 import shaka from 'shaka-player/dist/shaka-player.compiled';
-// @ts-expect-error - No types for libass
-import SubtitlesOctopus from 'libass-wasm';
-// @ts-expect-error - No types for libass
-import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
-// @ts-expect-error - No types for libass
-import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
-import 'libass-wasm/dist/js/subtitles-octopus-worker.data';
-import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.data';
-import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem';
-import 'libass-wasm/dist/js/subtitles-octopus-worker.wasm';
+// // @ts-expect-error - No types for libass
+// import SubtitlesOctopus from 'libass-wasm';
+// // @ts-expect-error - No types for libass
+// import SubtitlesOctopusWorker from 'libass-wasm/dist/js/subtitles-octopus-worker.js';
+// // @ts-expect-error - No types for libass
+// import SubtitlesOctopusWorkerLegacy from 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js';
+// import 'libass-wasm/dist/js/subtitles-octopus-worker.data';
+// import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.data';
+// import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem';
+// import 'libass-wasm/dist/js/subtitles-octopus-worker.wasm?init';
 import { mapStores } from 'pinia';
 import {
   PlaybackInfoResponse,
