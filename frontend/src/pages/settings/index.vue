@@ -243,8 +243,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .information td {
   height: 3.4em !important;
   border-bottom: 0 !important;

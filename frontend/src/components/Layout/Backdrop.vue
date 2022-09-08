@@ -27,8 +27,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .backdrop {
   & canvas {
     position: fixed;
@@ -39,19 +37,19 @@ export default Vue.extend({
     background-size: cover;
   }
 
-  &::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #{map-get($material-light, 'background')};
-    opacity: var(--o);
-  }
+  // &::after {
+  //   content: '';
+  //   position: fixed;
+  //   top: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   right: 0;
+  //   background-color: #{map-get($material-light, 'background')};
+  //   opacity: var(--o);
+  // }
 }
 
-.theme--dark .backdrop::after {
-  background-color: #{map-get($material-dark, 'background')};
-}
+// .theme--dark .backdrop::after {
+//   background-color: #{map-get($material-dark, 'background')};
+// }
 </style>

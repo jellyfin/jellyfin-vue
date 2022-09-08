@@ -125,8 +125,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .scroller {
   max-height: 100%;
 }
