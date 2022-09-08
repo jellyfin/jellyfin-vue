@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { authStore } from '.';
@@ -38,7 +37,7 @@ export const itemsStore = defineStore('items', {
           throw new Error("One item doesn't have an id");
         }
 
-        Vue.set(this.byId, item.Id, item);
+        this.byId[item.Id] = item;
         res.push(this.getItemById(item.Id) as BaseItemDto);
       }
 
@@ -59,7 +58,7 @@ export const itemsStore = defineStore('items', {
       }
 
       for (const id of payload) {
-        Vue.delete(this.byId, id);
+        delete this.byId[id];
       }
     },
     /**
@@ -86,7 +85,7 @@ export const itemsStore = defineStore('items', {
         }
       }
 
-      Vue.set(this.collectionById, parent.Id, childIds);
+      this.collectionById[parent.Id] = childIds;
 
       return this.getChildrenOfParent(parent.Id) as BaseItemDto[];
     },
