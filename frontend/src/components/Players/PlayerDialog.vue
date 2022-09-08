@@ -1,6 +1,6 @@
 <script lang="ts">
 import Vue from 'vue';
-import { VDialog } from 'vuetify/lib';
+import { VDialog } from 'vuetify/components';
 // @ts-expect-error - These typings are not declared
 import { keyCodes } from 'vuetify/lib/util/helpers';
 

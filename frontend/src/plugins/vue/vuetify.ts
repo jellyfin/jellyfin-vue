@@ -1,11 +1,8 @@
-/** Vuetify Plugin */
-import type { UserVuetifyPreset } from 'vuetify';
 import variables from '@/assets/styles/variables.scss';
-import Vuetify from 'vuetify';
+import { createVuetify } from 'vuetify';
 
 export default createVuetify({
   customVariables: [variables],
-  treeShake: true,
   defaultAssets: false,
   theme: {
     dark: true,
@@ -13,6 +10,7 @@ export default createVuetify({
     disable: false,
     themes: {
       dark: {
+        name: 'dark',
         primary: '#9d37c2',
         secondary: '#2f3951',
         accent: '#FF4081',
@@ -42,8 +40,3 @@ export default createVuetify({
     }
   }
 });
-
-/** Create Vuetify */
-export function createVuetify(options: UserVuetifyPreset): Vuetify {
-  return new Vuetify(options);
-}

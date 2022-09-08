@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import RouteLocationNormalized from 'vue-router';
+import { RouteLocationNormalized } from 'vue-router';
 
 interface Props {
   /**
@@ -39,8 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 function getKey(route: RouteLocationNormalized) {
   if (props.isRoot) {
-    return String(route.currentRoute.meta?.layout) || 'default';
+    return String(route.meta.layout) || 'default';
   }
-  return String(route.currentRoute.name);
+  return String(route.name);
 }
 </script>
