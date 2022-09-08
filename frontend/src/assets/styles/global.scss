@@ -140,13 +140,13 @@ body {
 }
 
 /* Customized Vuetify components */
-.v-menu__content .v-list {
-  background: map-get($material-light, 'cards') !important;
-}
+// .v-menu__content .v-list {
+//   background: map-get($material-light, 'cards') !important;
+// }
 
-.theme--dark .v-menu__content .v-list {
-  background: map-get($material-dark, 'menus') !important;
-}
+// .theme--dark .v-menu__content .v-list {
+//   background: map-get($material-dark, 'menus') !important;
+// }
 
 .text-capitalize-first-letter::first-letter {
   text-transform: uppercase;

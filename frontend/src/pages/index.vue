@@ -181,13 +181,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .home-header-margin {
-    margin-top: -64px;
-  }
-}
+// @media #{map-get($display-breakpoints, 'md-and-up')} {
+//   .home-header-margin {
+//     margin-top: -64px;
+//   }
+// }
 
 .top-carousel {
   margin-top: -64px;
