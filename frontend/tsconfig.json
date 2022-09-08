@@ -13,7 +13,8 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
     },
     "jsx": "preserve",
     "types": [
@@ -22,7 +23,9 @@
       "@types/tizen-tv-webapis",
       "unplugin-icons/types/vue",
       "vite-plugin-vue-layouts/client",
-      "vite/client"
+      "vite/client",
+      "vuetify",
+      "vue"
     ]
   },
   "vueCompilerOptions": {
