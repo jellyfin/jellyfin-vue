@@ -11,7 +11,6 @@
     <audio-controls />
     <!-- Utilities and global systems -->
     <snackbar />
-    <player-manager />
   </v-app>
 </template>
 
