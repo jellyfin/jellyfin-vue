@@ -1,5 +1,6 @@
 import { ItemFields } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
+import { PiniaPluginContext } from 'pinia';
 import { authStore, itemsStore, socketStore, taskManagerStore } from '~/store';
 import { TaskType, RunningTask } from '~/store/taskManager';
 
@@ -7,7 +8,7 @@ import { TaskType, RunningTask } from '~/store/taskManager';
  * Handle socket messages that are relevant to items inside the items store.
  *
  */
-export default function (ctx: Context): void {
+export default function (ctx: PiniaPluginContext): void {
   const auth = authStore();
   const socket = socketStore();
   const items = itemsStore();
