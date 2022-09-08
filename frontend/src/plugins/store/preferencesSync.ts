@@ -1,5 +1,4 @@
 import { DisplayPreferencesDto } from '@jellyfin/client-axios';
-import { Context } from '@nuxt/types';
 import destr from 'destr';
 import isNil from 'lodash/isNil';
 import {
