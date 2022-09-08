@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { authStore, snackbarStore } from '.';
-import nuxtConfig from '~/nuxt.config';
-import { fetchSettingsFromServer } from '~/plugins/store/plugins/preferencesSync';
+import { fetchSettingsFromServer } from '~/plugins/store/preferencesSync';
 
 /**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto
@@ -15,10 +14,7 @@ export interface ClientSettingsState {
 export const clientSettingsStore = defineStore('clientSettings', {
   state: () => {
     return {
-      darkMode:
-        nuxtConfig.vuetify?.theme?.dark !== undefined
-          ? nuxtConfig.vuetify?.theme?.dark
-          : true,
+      darkMode: true,
       locale: 'auto',
       lastSync: null
     } as ClientSettingsState;
