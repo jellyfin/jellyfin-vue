@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <nuxt />
+      <router-view />
     </v-main>
     <v-footer app color="rgba(0, 0, 0, 0)">
       <locale-switcher large top />
