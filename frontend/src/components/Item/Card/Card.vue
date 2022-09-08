@@ -257,8 +257,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .card-lower-buttons {
   position: absolute;
   right: 0.5em;
@@ -295,28 +293,28 @@ export default Vue.extend({
   border-radius: 0.3em;
 }
 
-.card-content {
-  background-color: #{map-get($material-dark, 'menus')};
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0 !important;
-  height: 100%;
-  width: 100%;
-  contain: strict;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-clip: content-box;
-  background-position: center center;
-  -webkit-tap-highlight-color: transparent;
-}
+// .card-content {
+//   background-color: #{map-get($material-dark, 'menus')};
+//   overflow: hidden;
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   margin: 0 !important;
+//   height: 100%;
+//   width: 100%;
+//   contain: strict;
+//   background-size: cover;
+//   background-repeat: no-repeat;
+//   background-clip: content-box;
+//   background-position: center center;
+//   -webkit-tap-highlight-color: transparent;
+// }
 
-.theme--dark .card-content {
-  background-color: #{map-get($material-dark, 'menus')};
-}
+// .theme--dark .card-content {
+//   background-color: #{map-get($material-dark, 'menus')};
+// }
 
 .card-image {
   width: 100%;

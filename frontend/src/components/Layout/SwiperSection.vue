@@ -95,20 +95,18 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
+// .swiper-section .header::before {
+//   background-color: #{map-get($material-dark, 'text-color')};
+//   content: '';
+//   position: relative;
+//   display: inline-block;
+//   height: 1px;
+//   bottom: 0.3em;
+//   left: 0;
+//   width: 1.25em;
+// }
 
-.swiper-section .header::before {
-  background-color: #{map-get($material-dark, 'text-color')};
-  content: '';
-  position: relative;
-  display: inline-block;
-  height: 1px;
-  bottom: 0.3em;
-  left: 0;
-  width: 1.25em;
-}
-
-.swiper-section .header-white-mode::before {
-  background-color: #{map-get($material-light, 'text-color')};
-}
+// .swiper-section .header-white-mode::before {
+//   background-color: #{map-get($material-light, 'text-color')};
+// }
 </style>
