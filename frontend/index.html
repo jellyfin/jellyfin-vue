@@ -1,11 +1,9 @@
-<div class="splashLogo"></div>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <style>
-      body,
-      html {
+      body > .splashLogo,
+      html > .splashLogo {
         background: #111827;
         width: 100%;
         height: 100%;
@@ -30,9 +28,11 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jellyfin</title>
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="app">
+      <div class="splashLogo"></div>
+    </div>
   </body>
 </html>

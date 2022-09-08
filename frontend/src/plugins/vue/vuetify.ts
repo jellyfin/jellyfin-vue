@@ -2,7 +2,6 @@
 import type { UserVuetifyPreset } from 'vuetify';
 import variables from '@/assets/styles/variables.scss';
 import Vuetify from 'vuetify';
-import Vue from 'vue';
 
 export default createVuetify({
   customVariables: [variables],
@@ -46,6 +45,5 @@ export default createVuetify({
 
 /** Create Vuetify */
 export function createVuetify(options: UserVuetifyPreset): Vuetify {
-  Vue.use(Vuetify);
   return new Vuetify(options);
 }
