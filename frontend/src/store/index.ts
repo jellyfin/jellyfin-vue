@@ -1,11 +1,10 @@
-import { setMapStoreSuffix, createPinia } from 'pinia';
+import { setMapStoreSuffix } from 'pinia';
 declare module 'pinia' {
   export interface MapStoresCustomization {
     suffix: '';
   }
 }
 
-const store = createPinia();
 setMapStoreSuffix('');
 
 export * from './clientSettings';
@@ -19,5 +18,3 @@ export * from './auth';
 export * from './items';
 export * from './playbackManager';
 export * from './taskManager';
-
-export default store;
