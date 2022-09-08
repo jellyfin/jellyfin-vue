@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@jellyfin/client-axios": "10.7.8",
+    "@vueuse/core": "9.2.0",
     "axios": "0.27.2",
     "blurhash": "1.1.5",
     "date-fns": "2.28.0",
@@ -35,7 +36,6 @@
     "dompurify": "2.3.8",
     "he": "1.2.0",
     "langs": "2.0.0",
-    "libass-wasm": "4.0.0",
     "lodash": "4.17.21",
     "mux.js": "6.1.0",
     "pinia": "2.0.14",
