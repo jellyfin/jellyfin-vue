@@ -1,17 +1,17 @@
-import { Context } from '@nuxt/types';
+import { PiniaPluginContext } from 'pinia';
 import { clientSettingsStore } from '~/store';
 
 /**
  * React to changes in client settings
  */
-export default function (ctx: Context): void {
+export default function (ctx: PiniaPluginContext): void {
   const clientSettings = clientSettingsStore();
 
   clientSettings.$subscribe((_mutation, state) => {
     /**
      * Theme change
      */
-    ctx.$vuetify.theme.dark = state.darkMode;
+    ctx.app.$vuetify.theme.dark = state.darkMode;
 
     /**
      * Locale change
