@@ -9,12 +9,9 @@ import vuetify from '@/plugins/vue/vuetify';
 import piniaPlugins from '@/plugins/store';
 /**
  * CSS Imports
- *
- * Order of imports is relevant. Vuetify needs to be loaded first, so it's variables are available to the rest of SCSS files.
  */
-import 'vuetify/src/styles/styles.sass';
-//import '@/assets/global.scss';
-import '@/assets/transitions.scss';
+import '@/assets/styles/global.scss';
+import '@/assets/styles/transitions.scss';
 
 /**
  * Pinia
