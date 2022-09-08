@@ -49,7 +49,7 @@
                   v-if="!track.Artists.includes(track.AlbumArtist)"
                   class="ml-3"
                 >
-                  <nuxt-link
+                  <router-link
                     v-for="artist of track.ArtistItems"
                     :key="artist.Id"
                     tag="span"
@@ -57,7 +57,7 @@
                     :to="getItemDetailsLink(artist, 'MusicArtist')"
                   >
                     {{ artist.Name }}
-                  </nuxt-link>
+                  </router-link>
                 </div>
                 <v-spacer />
                 <item-menu v-show="hover" :item="item" />
