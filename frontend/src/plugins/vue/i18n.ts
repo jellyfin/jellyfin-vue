@@ -1,5 +1,4 @@
 import VueI18n from 'vue-i18n';
-import Vue from 'vue';
 
 export const DEFAULT_LANGUAGE = 'en';
 export const BROWSER_LANGUAGE = navigator?.language?.split('-')[0];
@@ -20,14 +19,4 @@ function getMessages() {
   return messages;
 }
 
-Vue.use(VueI18n);
-const messages = getMessages();
-const i18n = new VueI18n({
-  locale: Object.keys(messages).includes(BROWSER_LANGUAGE)
-    ? BROWSER_LANGUAGE
-    : DEFAULT_LANGUAGE,
-  fallbackLocale: DEFAULT_LANGUAGE,
-  messages
-});
-
-export default i18n;
+export const messages = getMessages();

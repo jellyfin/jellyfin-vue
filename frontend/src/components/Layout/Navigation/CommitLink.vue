@@ -6,7 +6,7 @@
     rel="noopener noreferrer"
   >
     <v-list-item-action>
-      <v-icon>mdi-github</v-icon>
+      <i-mdi-github />
     </v-list-item-action>
     <v-list-item-content>
       <v-list-item-title v-text="'#' + commit.substring(0, 7)" />
@@ -20,7 +20,7 @@ import Vue from 'vue';
 export default Vue.extend({
   computed: {
     commit() {
-      return process.env.commit_hash;
+      return __COMMIT_HASH__;
     }
   }
 });

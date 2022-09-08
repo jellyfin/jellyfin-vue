@@ -29,13 +29,13 @@ interface Props {
    * layout
    */
   isRoot?: boolean;
+  enableTransitions: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isRoot: false
+  isRoot: false,
+  enableTransitions: true
 });
-
-const enableTransitions = true;
 
 function getKey(route: RouteLocationNormalized) {
   if (props.isRoot) {
