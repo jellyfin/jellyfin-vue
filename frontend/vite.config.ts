@@ -6,6 +6,7 @@ import Layouts from 'vite-plugin-vue-layouts';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
+import { VuetifyResolver } from 'unplugin-vue-components/resolvers';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
@@ -30,7 +31,7 @@ export default defineConfig({
        * The icons resolver finds icons components from 'unplugin-icons' using this convenction:
        * {prefix}-{collection}-{icon} e.g. <i-mdi-thumb-up />
        */
-      resolvers: [IconsResolver()]
+      resolvers: [IconsResolver(), VuetifyResolver()]
     }),
     /**
      * This plugin allows to use all icons from Iconify as vue components
