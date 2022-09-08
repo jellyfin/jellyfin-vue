@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types';
 import {
   authStore,
   clientSettingsStore,
@@ -10,8 +9,9 @@ import {
   socketStore,
   userViewsStore,
   taskManagerStore
-} from '~/store';
-import { authLogic } from '~/middleware/auth';
+} from '@/store';
+import { authLogic } from '@/middleware/auth';
+import { PiniaPluginContext } from 'pinia';
 
 /**
  * Authentication logic on app runtime
@@ -19,7 +19,7 @@ import { authLogic } from '~/middleware/auth';
  * The logic to handle logouts and user switches during initialization lives inside Nuxt's auth plugin (~/plugins/nuxt/auth)
  *
  */
-export default function (ctx: Context): void {
+export default function (ctx: PiniaPluginContext): void {
   const auth = authStore();
   const clientSettings = clientSettingsStore();
   const homeSection = homeSectionStore();
