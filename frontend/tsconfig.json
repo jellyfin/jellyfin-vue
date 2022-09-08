@@ -23,5 +23,8 @@
       "vite-plugin-vue-layouts/client",
       "vite/client"
     ]
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
   }
 }
