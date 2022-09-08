@@ -49,10 +49,10 @@
 
 <script lang="ts">
 import chunk from 'lodash/chunk';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     items: {
       type: Array,

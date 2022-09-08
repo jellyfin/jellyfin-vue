@@ -27,11 +27,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

@@ -206,13 +206,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 import { RepeatMode } from '~/store/playbackManager';
 
-export default Vue.extend({
+export default defineComponent({
   computed: {
     ...mapStores(playbackManagerStore),
     repeatIcon(): string {

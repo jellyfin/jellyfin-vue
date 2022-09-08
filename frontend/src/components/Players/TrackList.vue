@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import groupBy from 'lodash/groupBy';
 import {
@@ -84,7 +84,7 @@ import { getItemDetailsLink } from '~/utils/items';
 import { ticksToMs } from '~/utils/time';
 import { authStore, playbackManagerStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

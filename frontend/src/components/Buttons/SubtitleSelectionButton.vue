@@ -61,12 +61,12 @@
 
 <script lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { PlaybackTrack } from '~/store/playbackManager';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     nudgeTop: {
       type: [Number, String],

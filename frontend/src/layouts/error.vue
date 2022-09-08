@@ -10,15 +10,14 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
-import { NuxtError } from '@nuxt/types';
+import { PropType, defineComponent } from 'vue';
 
 interface Icon {
   icon: string;
   color: string | undefined | null;
 }
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     error: {
       type: Object as PropType<NuxtError>,
