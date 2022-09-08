@@ -124,5 +124,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/styles/Carousel.scss';
+@import '~/assets/styles/Carousel/index.scss';
 </style>
