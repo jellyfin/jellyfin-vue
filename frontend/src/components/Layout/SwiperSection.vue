@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { SwiperOptions } from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     loading: {
       type: Boolean,

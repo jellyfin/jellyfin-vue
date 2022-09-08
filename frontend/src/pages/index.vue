@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import pickBy from 'lodash/pickBy';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
@@ -37,7 +37,7 @@ import {
 
 const VALID_SECTIONS = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
 
-export default Vue.extend({
+export default defineComponent({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
   // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
   async asyncData({ $api }) {

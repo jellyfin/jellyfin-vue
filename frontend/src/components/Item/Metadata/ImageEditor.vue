@@ -65,11 +65,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto, ImageInfo, ImageType } from '@jellyfin/client-axios';
 import { getImageInfo } from '~/utils/images';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     metadata: {
       type: Object,

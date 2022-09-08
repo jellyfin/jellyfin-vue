@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemPerson } from '@jellyfin/client-axios';
 import { getItemDetailsLink } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     items: {
       type: Array,

@@ -100,13 +100,13 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
 import { getTotalEndsAtTime } from '~/utils/time';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     nudgeTop: {
       type: [Number, String],

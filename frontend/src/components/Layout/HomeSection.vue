@@ -13,11 +13,11 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { HomeSection, homeSectionStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     section: {
       type: Object as () => HomeSection,
