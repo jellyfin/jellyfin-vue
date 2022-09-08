@@ -66,7 +66,7 @@ export default Vue.extend({
       uuid,
       swiperOptions: {
         initialSlide: 0,
-        freeMode: this.$browser.isMobile(),
+        freeMode: this.$vuetify.breakpoint.mobile,
         effect: 'slide',
         navigation: {
           nextEl: `.swiper-section-${uuid} .swiper-next`,
