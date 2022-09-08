@@ -1,0 +1,38 @@
+<div class="splashLogo"></div>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body,
+      html {
+        background: #111827;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .splashLogo {
+        width: 30%;
+        height: 30%;
+        /* This file is in the 'static' folder, so it will be placed at the root when the client is built */
+        background-image: url(/icon.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jellyfin</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
