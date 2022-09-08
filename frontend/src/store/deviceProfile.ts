@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { defineStore } from 'pinia';
-import { version } from '~/package.json';
+import { version } from '@/../package.json';
 import { BrowserDetector } from '~/plugins/nuxt/browserDetectionPlugin';
 
 /**
