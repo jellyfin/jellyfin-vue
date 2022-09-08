@@ -32,11 +32,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { clientSettingsStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     fab: {
       type: Boolean,

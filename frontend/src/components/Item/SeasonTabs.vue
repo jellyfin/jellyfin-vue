@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { authStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 
@@ -55,7 +55,7 @@ interface TvShowItem {
   seasonEpisodes: { [key: string]: BaseItemDto[] };
 }
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object,

@@ -55,12 +55,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { playbackManagerStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       dragOptions: {
