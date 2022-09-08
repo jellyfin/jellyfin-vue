@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { PublicSystemInfo, UserDto } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { AxiosError } from 'axios';
@@ -109,11 +108,8 @@ export const authStore = defineStore('auth', {
         this.rememberMe = rememberMe;
 
         if (authenticateResponse.User?.Id && authenticateResponse.AccessToken) {
-          Vue.set(
-            this.accessTokens,
-            authenticateResponse.User.Id,
-            authenticateResponse.AccessToken
-          );
+          this.accessTokens[authenticateResponse.User.Id] =
+            authenticateResponse.AccessToken;
 
           this.users.push(authenticateResponse.User);
           this.currentUserIndex = this.users.indexOf(authenticateResponse.User);
@@ -188,7 +184,7 @@ export const authStore = defineStore('auth', {
           this.users.splice(this.users.indexOf(storeUser), 1);
         }
 
-        Vue.delete(this.accessTokens, user.Id as string);
+        delete this.accessTokens[user.Id as string];
         this.setAxiosBaseUrl(this.currentServer?.PublicAddress);
         this.setAxiosHeader();
       }
