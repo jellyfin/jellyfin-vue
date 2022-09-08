@@ -147,8 +147,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .second-toolbar {
   top: 56px;
 }
