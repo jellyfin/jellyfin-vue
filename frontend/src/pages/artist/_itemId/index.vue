@@ -114,7 +114,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import {
   BaseItemDto,
@@ -129,7 +129,7 @@ import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
 import { msToTicks } from '~/utils/time';
 
-export default Vue.extend({
+export default defineComponent({
   meta: {
     backdrop: true,
     transparentLayout: true

@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { CardShapes } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     boilerplate: {
       type: Boolean,

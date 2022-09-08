@@ -210,14 +210,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import pick from 'lodash/pick';
 import set from 'lodash/set';
 import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import { authStore, snackbarStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     itemId: {
       type: String,

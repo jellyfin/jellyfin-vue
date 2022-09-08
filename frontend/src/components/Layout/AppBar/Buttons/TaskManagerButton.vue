@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { taskManagerStore } from '~/store';
 import { RunningTask, TaskType } from '~/store/taskManager';
@@ -70,7 +70,7 @@ interface TaskInfo {
   id: string;
 }
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     fab: {
       type: Boolean,

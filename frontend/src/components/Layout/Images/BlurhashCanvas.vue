@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import getPixels from '~/plugins/workers/blurhash.worker';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     hash: {
       type: String,
