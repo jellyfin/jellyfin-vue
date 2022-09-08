@@ -37,6 +37,16 @@ export default defineConfig({
     }),
     VitePWA()
   ],
+  /**
+   * Import Vuetify SASS variables so they're available globally, even in scoped CSS
+   */
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: "\n@import 'vuetify/src/styles/styles.sass';\n"
+      }
+    }
+  },
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, './src')}/`,
