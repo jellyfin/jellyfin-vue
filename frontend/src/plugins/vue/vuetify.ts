@@ -1,6 +1,6 @@
 /** Vuetify Plugin */
 import type { UserVuetifyPreset } from 'vuetify';
-import variables from '@/assets/variables.scss';
+import variables from '@/assets/styles/variables.scss';
 import Vuetify from 'vuetify';
 import Vue from 'vue';
 
