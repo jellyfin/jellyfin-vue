@@ -5,7 +5,7 @@
     <app-bar />
     <v-main>
       <div class="pa-s">
-        <nuxt />
+        <router-view />
       </div>
     </v-main>
     <audio-controls />
