@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue';
 import RouteLocationNormalized from 'vue-router';
 
 interface Props {
@@ -36,12 +35,12 @@ const props = withDefaults(defineProps<Props>(), {
   isRoot: false
 });
 
-const enableTransitions = inject('enable-route-transitions', true);
+const enableTransitions = true;
 
 function getKey(route: RouteLocationNormalized) {
   if (props.isRoot) {
-    return String(route.meta.layout) || 'default';
+    return String(route.currentRoute.meta?.layout) || 'default';
   }
-  return String(route.name);
+  return String(route.currentRoute.name);
 }
 </script>
