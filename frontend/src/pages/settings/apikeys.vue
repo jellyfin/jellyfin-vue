@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { AuthenticationInfo } from '@jellyfin/client-axios';
 import { snackbarStore } from '~/store';
@@ -49,7 +49,7 @@ interface TableHeaders {
   value: string;
 }
 
-export default Vue.extend({
+export default defineComponent({
   async asyncData({ $api }) {
     const apiKeys = (await $api.apiKey.getKeys()).data.Items;
 

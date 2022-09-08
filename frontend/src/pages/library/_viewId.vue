@@ -50,14 +50,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
 import { authStore, snackbarStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.viewId);
   },

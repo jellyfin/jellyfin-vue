@@ -116,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import colors from 'vuetify/lib/util/colors';
 import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
@@ -127,7 +127,7 @@ interface LoadingStatus {
   errorMessage: string;
 }
 
-export default Vue.extend({
+export default defineComponent({
   middleware: 'adminMiddleware',
   async asyncData({ $api }) {
     const minDate = new Date();

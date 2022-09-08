@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { sanitizeHtml } from '~/utils/html';
@@ -60,7 +60,7 @@ import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
 import { authStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     items: {
       type: Array as () => BaseItemDto[],

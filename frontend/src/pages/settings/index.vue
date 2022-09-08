@@ -100,14 +100,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/client-axios';
 import { version } from '@/../package.json';
 import { authStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   async asyncData({ $api }) {
     const auth = authStore();
 
