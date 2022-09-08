@@ -17,7 +17,7 @@
       <v-container fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-            <nuxt-link :to="'/fullscreen/playback'">
+            <router-link :to="'/fullscreen/playback'">
               <v-avatar
                 v-if="!isFullScreenPlayer"
                 tile
@@ -26,16 +26,16 @@
               >
                 <blurhash-image :item="playbackManager.getCurrentItem" />
               </v-avatar>
-            </nuxt-link>
+            </router-link>
             <v-col class="d-flex flex-column justify-center ml-4">
               <v-row class="align-end">
-                <nuxt-link
+                <router-link
                   tag="span"
                   class="text-truncate link height-fit-content"
                   :to="getItemDetailsLink(playbackManager.getCurrentItem)"
                 >
                   {{ playbackManager.getCurrentItem.Name }}
-                </nuxt-link>
+                </router-link>
               </v-row>
               <v-row
                 v-if="playbackManager.getCurrentItem.ArtistItems"
@@ -47,11 +47,11 @@
                   :to="getItemDetailsLink(artist, 'MusicArtist')"
                 >
                   <p class="mb-0 mr-2">
-                    <nuxt-link
+                    <router-link
                       tag="span"
                       class="text--secondary text-caption text-truncate link"
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
-                      >{{ artist.Name }}</nuxt-link
+                      >{{ artist.Name }}</router-link
                     >
                   </p>
                 </span>
