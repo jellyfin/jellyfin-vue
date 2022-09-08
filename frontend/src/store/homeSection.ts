@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { defineStore } from 'pinia';
 import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { authStore, userViewsStore, snackbarStore } from '.';
@@ -136,7 +135,7 @@ export const homeSectionStore = defineStore('homeSection', {
           })
         ).data;
 
-        Vue.set(this.latestMedia, libraryId, latestMedia);
+        this.latestMedia[libraryId] = latestMedia;
       } catch (err) {
         snackbar.push(err as string, 'error');
       }
