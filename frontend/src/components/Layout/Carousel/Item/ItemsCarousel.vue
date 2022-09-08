@@ -140,7 +140,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/styles/Carousel.scss';
+@import '~/assets/styles/Carousel/index.scss';
 
 .slide-backdrop {
   background-color: #{map-get($material-dark, 'menus')};
