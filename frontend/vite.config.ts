@@ -14,11 +14,6 @@ export default defineConfig({
   server: {
     port: 3000
   },
-  define: {
-    server_url_list: process.env.DEFAULT_SERVERS || '',
-    commit_hash:
-      process.env.COMMIT_HASH || process.env.CF_PAGES_COMMIT_SHA || ''
-  },
   plugins: [
     createVuePlugin(),
     Pages({
@@ -44,7 +39,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@/': `${path.resolve(__dirname, './src')}/`
+      '@/': `${path.resolve(__dirname, './src')}/`,
+      '~/': `${path.resolve(__dirname, './src')}/`
     }
   }
 });
