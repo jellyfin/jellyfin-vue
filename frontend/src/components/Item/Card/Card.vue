@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'card-margin': margin }">
     <component
-      :is="link ? 'nuxt-link' : 'div'"
+      :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
       :class="{ 'card-box': link }"
     >
@@ -62,19 +62,19 @@
       </div>
     </component>
     <div v-if="text" class="card-text">
-      <nuxt-link
+      <router-link
         class="link d-block card-title mt-1 text-truncate"
         :to="cardTitleLink"
       >
         {{ cardTitle }}
-      </nuxt-link>
-      <nuxt-link
+      </router-link>
+      <router-link
         v-if="cardSubtitleLink"
         class="link d-block card-subtitle text--secondary text-truncate"
         :to="cardSubtitleLink"
       >
         {{ cardSubtitle }}
-      </nuxt-link>
+      </router-link>
       <div v-else class="card-subtitle text--secondary text-truncate">
         {{ cardSubtitle }}
       </div>

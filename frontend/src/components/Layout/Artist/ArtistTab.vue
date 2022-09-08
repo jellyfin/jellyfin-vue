@@ -12,13 +12,13 @@
                 <div class="text-subtitle-1 text--secondary font-weight-medium">
                   {{ release.ProductionYear }}
                 </div>
-                <nuxt-link
+                <router-link
                   class="link font-weight-bold text-h6 text-md-h4"
                   tag="h2"
                   :to="getItemDetailsLink(release)"
                 >
                   {{ release.Name }}
-                </nuxt-link>
+                </router-link>
               </v-col>
             </v-row>
             <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
