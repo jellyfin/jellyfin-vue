@@ -1,10 +1,10 @@
-import VueI18n from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
 
-export const DEFAULT_LANGUAGE = 'en';
-export const BROWSER_LANGUAGE = navigator?.language?.split('-')[0];
+const DEFAULT_LANGUAGE = 'en';
+const BROWSER_LANGUAGE = navigator?.language?.split('-')[0];
 
 function getMessages() {
-  const messages: VueI18n.LocaleMessages = {};
+  const messages: any = {};
   // See: https://vitejs.dev/guide/features.html#glob-import
   const localeFiles = import.meta.glob('../../locales/*.json');
   for (const path in localeFiles) {
@@ -19,4 +19,14 @@ function getMessages() {
   return messages;
 }
 
-export const messages = getMessages();
+const messages = getMessages();
+const i18n = createI18n({
+  locale: Object.keys(messages).includes(BROWSER_LANGUAGE)
+    ? BROWSER_LANGUAGE
+    : DEFAULT_LANGUAGE,
+  fallbackLocale: DEFAULT_LANGUAGE,
+  legacy: true, // Enables $t(), $tc(), etc in templates
+  messages
+});
+
+export default i18n;
