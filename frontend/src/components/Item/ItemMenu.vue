@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import {
@@ -77,7 +77,7 @@ type MenuOption = {
   disabled?: boolean;
 };
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,

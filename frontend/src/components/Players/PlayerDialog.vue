@@ -1,10 +1,10 @@
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { VDialog } from 'vuetify/components';
 // @ts-expect-error - These typings are not declared
 import { keyCodes } from 'vuetify/lib/util/helpers';
 
-export default Vue.extend({
+export default defineComponent({
   extends: VDialog,
   methods: {
     // Copy of https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/mixins/overlayable/index.ts#L129-L152

@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { snackbarStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       model: false

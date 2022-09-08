@@ -14,9 +14,9 @@
 
 <script lang="ts">
 import { UserDto } from '@jellyfin/client-axios';
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     user: {
       type: Object as () => UserDto,
