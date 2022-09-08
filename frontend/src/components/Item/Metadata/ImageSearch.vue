@@ -275,45 +275,43 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
+// .loading-bar {
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+// }
 
-.loading-bar {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+// .card-grid-container {
+//   display: grid;
+// }
 
-.card-grid-container {
-  display: grid;
-}
+// .image-results {
+//   height: 50vh;
+//   overflow-y: scroll;
+// }
 
-.image-results {
-  height: 50vh;
-  overflow-y: scroll;
-}
+// @media #{map-get($display-breakpoints, 'sm-and-down')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'sm-and-down')} {
-  .card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'sm-and-up')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'sm-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'lg-and-up')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-  }
-}
-
-@media #{map-get($display-breakpoints, 'xl-only')} {
-  .card-grid-container {
-    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'xl-only')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+//   }
+// }
 </style>

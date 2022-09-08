@@ -54,71 +54,71 @@
   z-index: 2;
 }
 
-@media #{map-get($display-breakpoints, 'sm-and-up')} {
-  .slide-backdrop {
-    width: 80%;
-    margin-left: auto;
-    margin-right: 0;
-    padding-bottom: (9 / 16) * 80%;
-    background-position: right center;
-    mask-image: linear-gradient(
-        to right,
-        hsla(0, 0%, 0%, 0) 0%,
-        hsla(0, 0%, 0%, 0.182) 5.6%,
-        hsla(0, 0%, 0%, 0.34) 9.9%,
-        hsla(0, 0%, 0%, 0.476) 13.1%,
-        hsla(0, 0%, 0%, 0.593) 15.7%,
-        hsla(0, 0%, 0%, 0.69) 17.9%,
-        hsla(0, 0%, 0%, 0.771) 20.2%,
-        hsla(0, 0%, 0%, 0.836) 22.9%,
-        hsla(0, 0%, 0%, 0.888) 26.3%,
-        hsla(0, 0%, 0%, 0.927) 30.8%,
-        hsla(0, 0%, 0%, 0.956) 36.7%,
-        hsla(0, 0%, 0%, 0.976) 44.4%,
-        hsla(0, 0%, 0%, 0.989) 54.3%,
-        hsla(0, 0%, 0%, 0.996) 66.6%,
-        hsla(0, 0%, 0%, 0.999) 81.7%,
-        hsl(0, 0%, 0%) 100%
-      ),
-      linear-gradient(
-        to top,
-        hsla(0, 0%, 0%, 0) 0%,
-        hsla(0, 0%, 0%, 0.182) 5.6%,
-        hsla(0, 0%, 0%, 0.34) 9.9%,
-        hsla(0, 0%, 0%, 0.476) 13.1%,
-        hsla(0, 0%, 0%, 0.593) 15.7%,
-        hsla(0, 0%, 0%, 0.69) 17.9%,
-        hsla(0, 0%, 0%, 0.771) 20.2%,
-        hsla(0, 0%, 0%, 0.836) 22.9%,
-        hsla(0, 0%, 0%, 0.888) 26.3%,
-        hsla(0, 0%, 0%, 0.927) 30.8%,
-        hsla(0, 0%, 0%, 0.956) 36.7%,
-        hsla(0, 0%, 0%, 0.976) 44.4%,
-        hsla(0, 0%, 0%, 0.989) 54.3%,
-        hsla(0, 0%, 0%, 0.996) 66.6%,
-        hsla(0, 0%, 0%, 0.999) 81.7%,
-        hsl(0, 0%, 0%) 100%
-      );
-    mask-composite: intersect;
-  }
+// @media #{map-get($display-breakpoints, 'sm-and-up')} {
+//   .slide-backdrop {
+//     width: 80%;
+//     margin-left: auto;
+//     margin-right: 0;
+//     padding-bottom: (9 / 16) * 80%;
+//     background-position: right center;
+//     mask-image: linear-gradient(
+//         to right,
+//         hsla(0, 0%, 0%, 0) 0%,
+//         hsla(0, 0%, 0%, 0.182) 5.6%,
+//         hsla(0, 0%, 0%, 0.34) 9.9%,
+//         hsla(0, 0%, 0%, 0.476) 13.1%,
+//         hsla(0, 0%, 0%, 0.593) 15.7%,
+//         hsla(0, 0%, 0%, 0.69) 17.9%,
+//         hsla(0, 0%, 0%, 0.771) 20.2%,
+//         hsla(0, 0%, 0%, 0.836) 22.9%,
+//         hsla(0, 0%, 0%, 0.888) 26.3%,
+//         hsla(0, 0%, 0%, 0.927) 30.8%,
+//         hsla(0, 0%, 0%, 0.956) 36.7%,
+//         hsla(0, 0%, 0%, 0.976) 44.4%,
+//         hsla(0, 0%, 0%, 0.989) 54.3%,
+//         hsla(0, 0%, 0%, 0.996) 66.6%,
+//         hsla(0, 0%, 0%, 0.999) 81.7%,
+//         hsl(0, 0%, 0%) 100%
+//       ),
+//       linear-gradient(
+//         to top,
+//         hsla(0, 0%, 0%, 0) 0%,
+//         hsla(0, 0%, 0%, 0.182) 5.6%,
+//         hsla(0, 0%, 0%, 0.34) 9.9%,
+//         hsla(0, 0%, 0%, 0.476) 13.1%,
+//         hsla(0, 0%, 0%, 0.593) 15.7%,
+//         hsla(0, 0%, 0%, 0.69) 17.9%,
+//         hsla(0, 0%, 0%, 0.771) 20.2%,
+//         hsla(0, 0%, 0%, 0.836) 22.9%,
+//         hsla(0, 0%, 0%, 0.888) 26.3%,
+//         hsla(0, 0%, 0%, 0.927) 30.8%,
+//         hsla(0, 0%, 0%, 0.956) 36.7%,
+//         hsla(0, 0%, 0%, 0.976) 44.4%,
+//         hsla(0, 0%, 0%, 0.989) 54.3%,
+//         hsla(0, 0%, 0%, 0.996) 66.6%,
+//         hsla(0, 0%, 0%, 0.999) 81.7%,
+//         hsl(0, 0%, 0%) 100%
+//       );
+//     mask-composite: intersect;
+//   }
 
-  .swiper {
-    margin-top: -64px;
-  }
+//   .swiper {
+//     margin-top: -64px;
+//   }
 
-  .slide-content {
-    top: 56px;
-  }
+//   .slide-content {
+//     top: 56px;
+//   }
 
-  .progress-bar {
-    position: relative !important;
-    top: initial;
-    margin-top: initial;
-  }
-}
+//   .progress-bar {
+//     position: relative !important;
+//     top: initial;
+//     margin-top: initial;
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .swiper {
-    margin-bottom: -128px !important;
-  }
-}
+// @media #{map-get($display-breakpoints, 'md-and-up')} {
+//   .swiper {
+//     margin-bottom: -128px !important;
+//   }
+// }
