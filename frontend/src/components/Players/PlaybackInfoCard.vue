@@ -238,7 +238,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { SessionInfo } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import camelCase from 'lodash/camelCase';
@@ -247,7 +247,7 @@ import isNil from 'lodash/isNil';
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
 import { deviceProfileStore, playbackManagerStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   data() {
     return {
       updateSessionInterval: null as number | null,

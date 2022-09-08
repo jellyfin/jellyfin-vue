@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue';
+import { PropType, defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import { authStore, snackbarStore, socketStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as PropType<BaseItemDto>,

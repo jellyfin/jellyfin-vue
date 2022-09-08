@@ -58,10 +58,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemPerson } from '@jellyfin/client-axios';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     person: {
       type: Object,

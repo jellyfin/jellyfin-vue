@@ -46,13 +46,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
 import { authStore, snackbarStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     /**
      * item.Id To be used to get related items

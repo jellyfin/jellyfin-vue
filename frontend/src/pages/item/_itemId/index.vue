@@ -263,7 +263,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import {
   BaseItemDto,
@@ -277,7 +277,7 @@ import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';
 import { getItemizedSelect } from '~/utils/forms';
 import { authStore, pageStore } from '~/store';
 
-export default Vue.extend({
+export default defineComponent({
   meta: {
     backdrop: true,
     transparentLayout: true

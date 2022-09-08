@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Swiper, { SwiperOptions } from 'swiper';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     slides: {
       type: Number,

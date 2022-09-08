@@ -30,12 +30,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
 import { getBlurhash, getImageInfo } from '~/utils/images';
 import { getItemIcon } from '~/utils/items';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     item: {
       type: Object as () => BaseItemDto,
