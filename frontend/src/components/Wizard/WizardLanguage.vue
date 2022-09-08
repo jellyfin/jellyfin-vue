@@ -62,7 +62,8 @@ export default Vue.extend({
       this.loading = true;
 
       try {
-        this.$i18n.setLocale(this.UICulture);
+        this.$i18n.locale = this.UICulture;
+        this.$i18n.fallbackLocale;
         await this.$api.startup.updateInitialConfiguration({
           startupConfigurationDto: {
             ...this.initialConfig,

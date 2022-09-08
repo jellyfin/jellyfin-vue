@@ -24,7 +24,7 @@
     <v-spacer />
     <search-field />
     <v-spacer />
-    <app-bar-button-layout v-if="$nuxt.isOffline" color="red">
+    <app-bar-button-layout v-if="network.isOnline" color="red">
       <template #icon>
         <v-icon>mdi-network-off-outline</v-icon>
       </template>
@@ -68,10 +68,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { useNetwork } from '@vueuse/core';
 import { mapStores } from 'pinia';
 import { pageStore, clientSettingsStore } from '~/store';
 
 export default Vue.extend({
+  data() {
+    return {
+      network: useNetwork()
+    };
+  },
   computed: {
     ...mapStores(pageStore, clientSettingsStore)
   },
