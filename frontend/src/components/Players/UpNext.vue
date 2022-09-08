@@ -142,8 +142,6 @@ export default Vue.extend({
 });
 </script>
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/styles.sass';
-
 .up-next-dialog {
   position: absolute;
   bottom: 0;
