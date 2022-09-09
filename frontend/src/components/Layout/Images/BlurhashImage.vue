@@ -89,12 +89,12 @@ export default defineComponent({
     type(): void {
       this.resetImage();
     },
-    '$vuetify.breakpoint.width'(): void {
+    '$vuetify.display.width'(): void {
       if (!this.resetting) {
         this.resetImage(false);
       }
     },
-    '$vuetify.breakpoint.height'(): void {
+    '$vuetify.display.height'(): void {
       if (!this.resetting) {
         this.resetImage(false);
       }
