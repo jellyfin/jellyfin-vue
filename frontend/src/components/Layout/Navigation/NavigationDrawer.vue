@@ -3,13 +3,13 @@
     v-if="page.navDrawer"
     v-model="page.openDrawer"
     app
-    :temporary="$vuetify.breakpoint.mobile"
-    :permanent="!$vuetify.breakpoint.mobile"
+    :temporary="$vuetify.display.mobile"
+    :permanent="!$vuetify.display.mobile"
     floating
     clipped
     class="pa-s"
     :class="{
-      transparent: page.transparentLayout && !$vuetify.breakpoint.mobile
+      transparent: page.transparentLayout && !$vuetify.display.mobile
     }"
   >
     <v-list nav>
@@ -81,7 +81,7 @@ export default defineComponent({
         this.page.navDrawer = true;
       }
     },
-    '$vuetify.breakpoint.mobile': {
+    '$vuetify.display.mobile': {
       immediate: true,
       handler(newVal: boolean): void {
         if (newVal === true) {

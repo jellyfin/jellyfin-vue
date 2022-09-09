@@ -45,7 +45,7 @@ export default defineComponent({
     ...mapStores(pageStore),
     fab(): boolean {
       return (
-        !(!this.page.transparentLayout || this.$vuetify.breakpoint.xsOnly) &&
+        !(!this.page.transparentLayout || this.$vuetify.display.xsOnly) &&
         !this.page.isScrolled
       );
     }

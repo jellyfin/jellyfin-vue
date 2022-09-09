@@ -57,7 +57,7 @@
             </v-col>
           </v-row>
         </v-list-item>
-        <v-list-item v-show="!$vuetify.breakpoint.smAndUp">
+        <v-list-item v-show="!$vuetify.display.smAndUp">
           <v-row align="center">
             <v-col :cols="4">
               <label>{{ $t('subtitles') }}</label>
