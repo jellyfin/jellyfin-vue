@@ -2,7 +2,7 @@
   <v-menu offset-y>
     <template #activator="{ on, attrs }">
       <v-btn
-        v-if="!$vuetify.breakpoint.smAndDown && items[model]"
+        v-if="!$vuetify.display.smAndDown && items[model]"
         class="my-2"
         text
         rounded

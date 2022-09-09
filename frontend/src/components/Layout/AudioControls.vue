@@ -21,7 +21,7 @@
               <v-avatar
                 v-if="!isFullScreenPlayer"
                 tile
-                :size="$vuetify.breakpoint.xs ? 50 : 85"
+                :size="$vuetify.display.xs ? 50 : 85"
                 color="primary"
               >
                 <blurhash-image :item="playbackManager.getCurrentItem" />
