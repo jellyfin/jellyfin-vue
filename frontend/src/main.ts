@@ -6,7 +6,7 @@ import { createApp } from 'vue';
 import Root from '@/App.vue';
 import router from '@/plugins/vue/router';
 import i18n from '@/plugins/vue/i18n';
-import vuetify from '@/plugins/vue/vuetify';
+import { vuetify } from '@/plugins/vue/vuetify';
 import { hideDirective } from '@/plugins/vue/directives';
 import piniaPlugins from '@/plugins/store';
 import axiosInstance from '@/plugins/axios';
@@ -28,10 +28,10 @@ pinia.use(piniaPlugins);
  */
 const app = createApp(Root);
 
-app.use(router);
-app.use(pinia);
 app.use(vuetify);
 app.use(i18n);
+app.use(router);
+app.use(pinia);
 
 /**
  * Vue directives

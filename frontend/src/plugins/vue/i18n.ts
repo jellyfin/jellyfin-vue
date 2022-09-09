@@ -25,8 +25,9 @@ const i18n = createI18n({
     ? BROWSER_LANGUAGE
     : DEFAULT_LANGUAGE,
   fallbackLocale: DEFAULT_LANGUAGE,
-  legacy: true, // Enables $t(), $tc(), etc in templates
-  messages
+  legacy: false, // Enables $t(), $tc(), etc in templates
+  messages,
+  globalInjection: true
 });
 
 export default i18n;
