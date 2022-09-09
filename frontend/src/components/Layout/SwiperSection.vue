@@ -66,7 +66,7 @@ export default defineComponent({
       uuid,
       swiperOptions: {
         initialSlide: 0,
-        freeMode: this.$vuetify.breakpoint.mobile,
+        freeMode: this.$vuetify.display.mobile,
         effect: 'slide',
         navigation: {
           nextEl: `.swiper-section-${uuid} .swiper-next`,
