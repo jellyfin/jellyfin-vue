@@ -43,7 +43,7 @@ export default defineComponent({
   computed: {
     ...mapStores(snackbarStore),
     width(): number | string {
-      switch (this.$vuetify.breakpoint.name) {
+      switch (this.$vuetify.display.name) {
         case 'xs':
           return '100%';
         case 'sm':

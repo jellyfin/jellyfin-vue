@@ -8,14 +8,14 @@
         <v-col cols="12" md="9">
           <h1
             class="text-h4 font-weight-light"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             {{ item.Name }}
           </h1>
           <h2
             v-if="item.AlbumArtist"
             class="text-subtitle-1 text-truncate mt-2"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             <router-link
               class="link"
@@ -26,15 +26,15 @@
           </h2>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             <media-info :item="item" year runtime rating ends-at />
           </div>
           <v-row
             class="my-4 align-center"
             :class="{
-              'justify-center': !$vuetify.breakpoint.mdAndUp,
-              'ml-0': $vuetify.breakpoint.mdAndUp
+              'justify-center': !$vuetify.display.mdAndUp,
+              'ml-0': $vuetify.display.mdAndUp
             }"
           >
             <play-button :item="item" />
