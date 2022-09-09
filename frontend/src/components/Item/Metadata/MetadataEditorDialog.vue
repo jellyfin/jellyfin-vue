@@ -2,7 +2,7 @@
   <v-dialog
     content-class="metadata-dialog"
     :value="dialog"
-    :fullscreen="$vuetify.breakpoint.mobile"
+    :fullscreen="$vuetify.display.mobile"
     width="50vw"
     @click:outside="$emit('update:dialog', false)"
   >

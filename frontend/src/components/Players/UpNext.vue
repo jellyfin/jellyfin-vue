@@ -32,7 +32,7 @@
                   episodeNumber: playbackManager.getNextItem.IndexNumber
                 })
               }}
-              <span v-if="$vuetify.breakpoint.smAndUp"> - </span> <br v-else />
+              <span v-if="$vuetify.display.smAndUp"> - </span> <br v-else />
               {{ playbackManager.getNextItem.Name }}
             </span>
             <span v-if="playbackManager.getCurrentItem.Type === 'Movie'">

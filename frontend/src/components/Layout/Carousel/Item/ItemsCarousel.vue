@@ -8,7 +8,7 @@
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
-            :icon-size="$vuetify.breakpoint.mdAndUp ? '256' : '128'"
+            :icon-size="$vuetify.display.mdAndUp ? '256' : '128'"
           />
         </div>
         <div class="slide-content">

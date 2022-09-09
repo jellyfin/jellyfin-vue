@@ -2,7 +2,7 @@
   <v-menu :offset-y="true" :close-on-content-click="false" max-width="250px">
     <template #activator="{ on, attrs }">
       <v-btn
-        v-if="!$vuetify.breakpoint.smAndDown"
+        v-if="!$vuetify.display.smAndDown"
         :disabled="disabled"
         class="ma-2"
         text

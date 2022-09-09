@@ -8,28 +8,28 @@
         <v-col cols="12" md="9">
           <h1
             class="text-h4 font-weight-light"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             {{ item.Name }}
           </h1>
           <h2
             v-if="item.OriginalTitle && item.OriginalTitle !== item.Name"
             class="text-subtitle-1"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             {{ item.OriginalTitle }}
           </h2>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
-            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
           >
             <media-info :item="item" year runtime rating ends-at />
           </div>
           <v-row
             class="my-4 align-center"
             :class="{
-              'justify-center': !$vuetify.breakpoint.mdAndUp,
-              'ml-0': $vuetify.breakpoint.mdAndUp
+              'justify-center': !$vuetify.display.mdAndUp,
+              'ml-0': $vuetify.display.mdAndUp
             }"
           >
             <play-button class="mr-2" :item="item" />
@@ -65,9 +65,7 @@
               </v-col>
             </v-row>
             <v-row
-              v-if="
-                item && directors.length > 0 && !$vuetify.breakpoint.smAndUp
-              "
+              v-if="item && directors.length > 0 && !$vuetify.display.smAndUp"
               align="center"
             >
               <v-col
@@ -97,7 +95,7 @@
               </v-col>
             </v-row>
             <v-row
-              v-if="item && writers.length > 0 && !$vuetify.breakpoint.smAndUp"
+              v-if="item && writers.length > 0 && !$vuetify.display.smAndUp"
               align="center"
             >
               <v-col
