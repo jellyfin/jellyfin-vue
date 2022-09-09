@@ -2,21 +2,70 @@
 <html lang="en">
   <head>
     <style>
-      html > body > div#app > div.splashLogo {
-        background: #111827;
-        width: 100%;
-        height: 100%;
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      @media (prefers-color-scheme: light) {
+        .splashBackground {
+          background: linear-gradient(
+            280deg,
+            #4f5b62,
+            #62727b,
+            #718792,
+            #819ca9,
+            #8eacbb
+          );
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .splashBackground {
+          background: linear-gradient(
+            280deg,
+            #111827,
+            #1c2741,
+            #332d41,
+            #4a2532,
+            #381e73,
+            #244415
+          );
+        }
+      }
+
+      @media (prefers-reduced-motion) {
+        .animation {
+          animation: gradient 30s linear infinite;
+        }
+      }
+
+      .splashBackground {
+        position: fixed;
+        padding: 0;
+        margin: 0;
+        top: 0;
+        left: 0;
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0;
-        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-size: 400% 400%;
+        animation: gradient 2s linear infinite;
       }
 
       .splashLogo {
         width: 30%;
         height: 30%;
-        /* This file is in the 'static' folder, so it will be placed at the root when the client is built */
+        /* This file is in the 'public' folder, so it will be placed at the root when the client is built */
         background-image: url(icon.png);
         background-position: center center;
         background-repeat: no-repeat;
@@ -24,7 +73,7 @@
       }
     </style>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
@@ -33,8 +82,10 @@
   </head>
   <body>
     <div id="app">
-      <div class="splashLogo"></div>
+      <div class="splashBackground">
+        <div class="splashLogo"></div>
+      </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="src/main.ts"></script>
   </body>
 </html>
