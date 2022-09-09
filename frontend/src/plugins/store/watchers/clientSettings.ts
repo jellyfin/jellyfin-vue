@@ -1,27 +1,34 @@
 import { PiniaPluginContext } from 'pinia';
 import { clientSettingsStore } from '~/store';
 import { useNavigatorLanguage } from '@vueuse/core';
+import { useTheme } from 'vuetify/lib/framework.mjs';
+import { useI18n } from 'vue-i18n';
 
 /**
  * React to changes in client settings
  */
-export default function (ctx: PiniaPluginContext): void {
+export default function (_ctx: PiniaPluginContext): void {
   const clientSettings = clientSettingsStore();
 
   clientSettings.$subscribe((_mutation, state) => {
+    const theme = useTheme();
+    const i18n = useI18n();
+
     /**
      * Theme change
      */
-    ctx.app.$vuetify.theme.dark = state.darkMode;
+
+    theme.global.name.value = state.darkMode ? 'dark' : 'light';
 
     /**
      * Locale change
      */
     if (state.locale !== 'auto') {
-      ctx.app.$i18n.locale = state.locale;
+      i18n.locale.value = state.locale;
     } else {
-      ctx.app.$i18n.locale =
-        useNavigatorLanguage().language || ctx.app.$i18n.fallbackLocale;
+      i18n.locale.value =
+        useNavigatorLanguage().language.value ||
+        String(i18n.fallbackLocale.value);
     }
   });
 }
