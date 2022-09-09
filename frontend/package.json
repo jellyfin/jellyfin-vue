@@ -13,8 +13,8 @@
   "license": "GPL-3.0-only",
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "scripts": {
-    "analyze": "vite build --analyze",
-    "build": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "analyze": "vite build --mode analyze",
+    "build": "vite build",
     "start": "vite",
     "serve": "vite preview",
     "lint": "npm run lint:js && npm run lint:style",
@@ -61,6 +61,7 @@
     "@types/uuid": "8.3.4",
     "@vitejs/plugin-vue": "3.1.0",
     "confusing-browser-globals": "1.0.11",
+    "rollup-plugin-visualizer": "5.8.1",
     "sass": "1.54.9",
     "typescript": "4.8.2",
     "unplugin-icons": "0.14.9",
