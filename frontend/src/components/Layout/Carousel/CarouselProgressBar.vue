@@ -50,7 +50,7 @@ export default defineComponent({
   },
   computed: {
     expand(): boolean {
-      return this.hoverable && !this.$vuetify.breakpoint.mobile;
+      return this.hoverable && !this.$vuetify.display.mobile;
     }
   },
   watch: {

@@ -19,7 +19,7 @@
       scrollable
       :retain-focus="!playbackManager.isMinimized"
       :content-class="getContentClass()"
-      :width="$vuetify.breakpoint.mobile ? '60vw' : '25vw'"
+      :width="$vuetify.display.mobile ? '60vw' : '25vw'"
       :value="playbackManager.isPlaying"
     >
       <up-next @change="setUpNextVisible" />
@@ -113,7 +113,7 @@
                       class="controls-wrapper d-flex align-stretch justify-space-between"
                     >
                       <div
-                        v-if="$vuetify.breakpoint.mdAndUp"
+                        v-if="$vuetify.display.mdAndUp"
                         class="d-flex flex-column align-start justify-center mr-auto video-title"
                       >
                         <template
@@ -180,21 +180,21 @@
                       </div>
                       <div class="d-flex aligh-center ml-auto ml-md-0">
                         <volume-slider
-                          v-if="$vuetify.breakpoint.smAndUp"
+                          v-if="$vuetify.display.smAndUp"
                           class="mr-2"
                         />
                         <queue-button
-                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
                           :close-on-click="true"
                           @input="onMenuOpen($event)"
                         />
                         <subtitle-selection-button
-                          v-if="$vuetify.breakpoint.smAndUp"
-                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          v-if="$vuetify.display.smAndUp"
+                          :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
                           @input="onMenuOpen($event)"
                         />
                         <playback-settings-button
-                          :nudge-top="$vuetify.breakpoint.mdAndUp ? 60 : 30"
+                          :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
                           :stretch-prop="stretchVideo"
                           @input="onMenuOpen($event)"
                           @open-playback-data="playbackData = true"
@@ -209,7 +209,7 @@
                           <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
                         </v-btn>
                         <v-btn
-                          v-if="$vuetify.breakpoint.smAndUp"
+                          v-if="$vuetify.display.smAndUp"
                           class="align-self-center active-button"
                           icon
                           @click="stretchVideo = !stretchVideo"

@@ -6,11 +6,11 @@
     app
     elevate-on-scroll
     elevation="3"
-    :hide-on-scroll="$vuetify.breakpoint.mobile"
+    :hide-on-scroll="$vuetify.display.mobile"
     :class="{ transparent: page.transparentLayout && !page.isScrolled }"
   >
     <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.mobile && page.navDrawer"
+      v-if="$vuetify.display.mobile && page.navDrawer"
       @click.stop="page.openDrawer = !page.openDrawer"
     />
     <app-bar-button-layout
@@ -52,14 +52,14 @@
     <!-- Uncomment when some of the remote play features are fully implemented -->
     <!-- <cast-button
       :fab="
-        !(!page.transparentLayout || $vuetify.breakpoint.xsOnly) &&
+        !(!page.transparentLayout || $vuetify.display.xsOnly) &&
         !page.isScrolled
       "
     /> -->
     <user-button />
     <locale-switcher
       :fab="
-        !(!page.transparentLayout || $vuetify.breakpoint.xsOnly) &&
+        !(!page.transparentLayout || $vuetify.display.xsOnly) &&
         !page.isScrolled
       "
     />
