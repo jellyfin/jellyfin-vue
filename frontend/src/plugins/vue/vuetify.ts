@@ -1,42 +1,43 @@
-import variables from '@/assets/styles/variables.scss';
-import { createVuetify } from 'vuetify';
+import { createVuetify, ThemeDefinition } from 'vuetify';
 
-export default createVuetify({
-  customVariables: [variables],
-  defaultAssets: false,
+const dark: ThemeDefinition = {
+  dark: true,
+  colors: {
+    primary: '#9d37c2',
+    secondary: '#2f3951',
+    accent: '#FF4081',
+    info: '#0099CC',
+    warning: '#FB8C00',
+    error: '#FF5252',
+    success: '#4CAF50',
+    background: '#14141F',
+    card: '#1c2331',
+    thumb: '#252e41'
+  }
+};
+
+const light: ThemeDefinition = {
+  dark: false,
+  colors: {
+    primary: '#9d37c2',
+    secondary: '#424242',
+    accent: '#FF4081',
+    info: '#33b5e5',
+    warning: '#FB8C00',
+    error: '#FF5252',
+    success: '#4CAF50',
+    background: '#f2f2f2',
+    card: '#FFFFFF',
+    thumb: '#000000'
+  }
+};
+
+export const vuetify = createVuetify({
   theme: {
-    dark: true,
-    default: 'dark',
-    disable: false,
+    defaultTheme: 'dark',
     themes: {
-      dark: {
-        name: 'dark',
-        primary: '#9d37c2',
-        secondary: '#2f3951',
-        accent: '#FF4081',
-        info: '#0099CC',
-        warning: '#FB8C00',
-        error: '#FF5252',
-        success: '#4CAF50',
-        background: '#14141F',
-        card: '#1c2331',
-        thumb: '#252e41'
-      },
-      light: {
-        primary: '#9d37c2',
-        secondary: '#424242',
-        accent: '#FF4081',
-        info: '#33b5e5',
-        warning: '#FB8C00',
-        error: '#FF5252',
-        success: '#4CAF50',
-        background: '#f2f2f2',
-        card: '#FFFFFF',
-        thumb: '#000000'
-      }
-    },
-    options: {
-      customProperties: true
+      dark,
+      light
     }
   }
 });
