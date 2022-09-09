@@ -10,16 +10,6 @@ declare module 'vue-router' {
   }
 }
 
-/**
- * Overloads VueI18n interface to avoid needing to cast return value to string.
- * See https://github.com/kazupon/vue-i18n/issues/410
- */
-declare module 'vue-i18n/types' {
-  export default class VueI18n {
-    t(key: Path, values?: Values): string;
-  }
-}
-
 declare module 'vue/types/vue' {
   interface Vue {
     $api: typeof AxiosInstance;
