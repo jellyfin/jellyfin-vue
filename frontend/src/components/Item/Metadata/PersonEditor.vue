@@ -41,8 +41,8 @@
       <v-card-actions
         class="d-flex align-center pa-3"
         :class="{
-          'justify-end': !$vuetify.breakpoint.mobile,
-          'justify-center': $vuetify.breakpoint.mobile
+          'justify-end': !$vuetify.display.mobile,
+          'justify-center': $vuetify.display.mobile
         }"
       >
         <v-spacer />

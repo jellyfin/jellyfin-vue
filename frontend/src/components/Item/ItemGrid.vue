@@ -10,7 +10,7 @@
       class="scroller"
       :items="itemsChunks"
       :min-item-size="350"
-      :buffer="$vuetify.breakpoint.height * 1.15"
+      :buffer="$vuetify.display.height * 1.15"
       page-mode
     >
       <template #default="{ item, index, active }">
@@ -76,12 +76,12 @@ export default defineComponent({
     };
   },
   watch: {
-    '$vuetify.breakpoint.width': {
+    '$vuetify.display.width': {
       handler(): void {
         this.chunkItems();
       }
     },
-    '$vuetify.breakpoint.height': {
+    '$vuetify.display.height': {
       handler(): void {
         this.chunkItems();
       }
@@ -97,17 +97,14 @@ export default defineComponent({
     chunkItems(): void {
       let cardsPerLine = this.large ? 5 : 8;
 
-      if (this.$vuetify.breakpoint.smAndDown) {
+      if (this.$vuetify.display.smAndDown) {
         cardsPerLine = this.large ? 2 : 3;
       } else if (
-        this.$vuetify.breakpoint.smAndUp &&
-        !this.$vuetify.breakpoint.lgAndUp
+        this.$vuetify.display.smAndUp &&
+        !this.$vuetify.display.lgAndUp
       ) {
         cardsPerLine = this.large ? 3 : 4;
-      } else if (
-        this.$vuetify.breakpoint.lgAndUp &&
-        !this.$vuetify.breakpoint.xlOnly
-      ) {
+      } else if (this.$vuetify.display.lgAndUp && !this.$vuetify.display.xl) {
         cardsPerLine = this.large ? 4 : 6;
       }
 

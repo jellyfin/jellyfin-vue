@@ -8,7 +8,7 @@
     <v-divider />
 
     <v-card-text class="pa-0 flex-grow-1">
-      <v-tabs v-model="tabName" :vertical="!$vuetify.breakpoint.mobile">
+      <v-tabs v-model="tabName" :vertical="!$vuetify.display.mobile">
         <v-tab href="#general">{{ $t('general') }}</v-tab>
         <v-tab href="#details">{{ $t('details') }}</v-tab>
         <v-tab href="#castAndCrew">{{ $t('castAndCrew') }}</v-tab>
@@ -177,8 +177,8 @@
     <v-card-actions
       class="d-flex align-center pa-3"
       :class="{
-        'justify-end': !$vuetify.breakpoint.mobile,
-        'justify-center': $vuetify.breakpoint.mobile
+        'justify-end': !$vuetify.display.mobile,
+        'justify-center': $vuetify.display.mobile
       }"
     >
       <v-btn
