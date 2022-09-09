@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     :value="dialog"
-    :fullscreen="$vuetify.breakpoint.mobile"
+    :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
     width="60%"
     @click:outside="$emit('update:dialog', false)"
