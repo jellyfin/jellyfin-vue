@@ -25,9 +25,12 @@ export default defineConfig({
   plugins: [
     vue(),
     Pages({
-      routeStyle: 'nuxt'
+      routeStyle: 'nuxt',
+      importMode: 'sync'
     }),
-    Layouts(),
+    Layouts({
+      importMode: () => 'sync'
+    }),
     // This plugin allows to autoimport vue components
     Components({
       /**
@@ -49,6 +52,13 @@ export default defineConfig({
     }),
     VitePWA()
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, './src')}/`,
