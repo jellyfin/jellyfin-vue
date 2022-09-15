@@ -347,6 +347,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .filter-content {
   max-height: 15rem;
-  overflow: scroll;
+  overflow-y: auto;
 }
 </style>
