@@ -12,7 +12,7 @@
   "appbar": {
     "tasks": {
       "configSync": "Synchronisation des paramètres…",
-      "scanningLibrary": "Scan de la médiathèque '{library}'…"
+      "scanningLibrary": "Scan de la bibliothèque '{library}'…"
     },
     "tooltips": {
       "tasks": "Tâches en cours"
