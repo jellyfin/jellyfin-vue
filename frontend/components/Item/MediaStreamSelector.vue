@@ -133,6 +133,17 @@ export default Vue.extend({
       this.trackIndex = this.defaultIndex;
     }
 
+    /**
+     * Check if Type is Video and trackIndex is -1 then set trackIndex as this.selectItems[0].value
+     */
+    if (
+      this.type === 'Video' &&
+      this.trackIndex === -1 &&
+      this.selectItems[0].value !== undefined
+    ) {
+      this.trackIndex = this.selectItems[0].value;
+    }
+
     this.$emit('input', this.trackIndex);
   },
   methods: {
