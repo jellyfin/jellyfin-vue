@@ -4,10 +4,20 @@
   "actor": "Attore",
   "actors": "Attori",
   "addNewPerson": "Aggiungi una altra persona",
+  "administrator": "Amministratore",
   "airPlayDevices": "Dispositivi AirPlay",
   "albums": "Albums",
   "allLanguages": "Tutte le lingue",
   "alphabetically": "Alfabeticamente",
+  "appbar": {
+    "tasks": {
+      "configSync": "Impostazioni di sincronizzazione…",
+      "scanningLibrary": "Scansione libreria '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Compiti in esecuzione"
+    }
+  },
   "architecture": "Architettura",
   "artist": "Artista",
   "artists": "Artisti",
@@ -446,7 +456,7 @@
   "transcodingInfo": {
     "name": "Trascodifica",
     "transcodingFramerate": {
-      "name": "Framerate:",
+      "name": "Frequenza dei fotogrammi:",
       "value": "{value} fps"
     },
     "transcodingProgress": "Avanzamento:",
