@@ -24,7 +24,7 @@
         <v-icon>mdi-filter-variant</v-icon>
       </v-btn>
     </template>
-    <v-expansion-panels accordion flat focusable>
+    <v-expansion-panels accordion flat focusable class="dropdown">
       <v-expansion-panel>
         <v-expansion-panel-header>{{ $t('status') }}</v-expansion-panel-header>
         <v-expansion-panel-content class="filter-content">
@@ -347,6 +347,9 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .filter-content {
   max-height: 15rem;
-  overflow-y: auto;
+}
+
+.dropdown {
+  overflow-y: scroll;
 }
 </style>
