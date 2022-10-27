@@ -15,8 +15,7 @@ const config: NuxtConfig = {
     /**
      * Commit hash of the current build. Automatically set in CI
      */
-    commit_hash:
-      process.env.COMMIT_HASH || process.env.CF_PAGES_COMMIT_SHA || ''
+    commit_hash: process.env.COMMIT_HASH || ''
   },
   /*
    ** Nuxt rendering mode
