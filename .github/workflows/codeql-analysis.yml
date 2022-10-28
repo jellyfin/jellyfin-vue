@@ -26,7 +26,7 @@ jobs:
           - typescript
     steps:
       - name: Checkout repository ⬇️
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.1.0
 
       - name: Initialize CodeQL 🛠️
         uses: github/codeql-action/init@v2

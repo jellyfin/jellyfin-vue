@@ -11,7 +11,7 @@ jobs:
     name: Project board 📊
     runs-on: ubuntu-latest
     steps:
-      - uses: alex-page/github-project-automation-plus@v0.8.1
+      - uses: alex-page/github-project-automation-plus@v0.8.2
         if: ${{ github.event_name == 'pull_request_target' }}
         continue-on-error: true
         with:
