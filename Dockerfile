@@ -1,6 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:16-alpine AS build
+FROM node:18-alpine AS build
 
 # Set build arguments
 ARG DEFAULT_SERVERS
