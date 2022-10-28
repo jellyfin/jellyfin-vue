@@ -20,9 +20,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       port: 3000
     },
     define: {
-      __COMMIT_HASH__: JSON.stringify(
-        process.env.COMMIT_HASH || process.env.CF_PAGES_COMMIT_SHA || ''
-      )
+      __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
     },
     plugins: [
       vue(),
