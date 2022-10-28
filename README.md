@@ -51,8 +51,8 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
 ## Dependencies
 
-- [Node.js LTS](https://nodejs.org/en/download) `>=16.13.1 <17.0.0`
-- npm `>=8.1.2` (included in Node.js)
+- [Node.js LTS](https://nodejs.org/en/download) `>=18.12.0 <19.0.0`
+- npm `>=8.19.2` (included in Node.js)
 - Jellyfin Server `>=10.7.0`
 
 ## Getting Started
