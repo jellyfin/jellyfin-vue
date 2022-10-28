@@ -50,7 +50,6 @@ jobs:
         with:
           context: .
           push: true
-          load: true
           platforms: linux/amd64,linux/arm64,linux/arm
           tags: |
             jellyfin/jellyfin-vue:unstable
@@ -60,7 +59,8 @@ jobs:
 
       - name: Extract built client for artifact publishing 📦
         run: |
-          docker cp $(docker create --name jf jellyfin/jellyfin-vue:unstable):/usr/share/nginx/html/ ./dist
+          docker pull ghcr.io/jellyfin/jellyfin-vue:unstable
+          docker cp $(docker create --name jf ghcr.io/jellyfin/jellyfin-vue:unstable):/usr/share/nginx/html/ ./dist
           docker rm jf
 
       - name: Upload artifact (Client) ⬆️💻

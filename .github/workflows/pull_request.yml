@@ -190,4 +190,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: jf-vue
           directory: dist
+          branch: ${{ github.head_ref }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
