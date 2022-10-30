@@ -4,10 +4,20 @@
   "actor": "Acteur",
   "actors": "Acteurs",
   "addNewPerson": "Voeg een nieuw persoon toe",
+  "administrator": "Beheerder",
   "airPlayDevices": "AirPlay apparaten",
   "albums": "Albums",
   "allLanguages": "Alle talen",
   "alphabetically": "Alfabetisch",
+  "appbar": {
+    "tasks": {
+      "configSync": "Instellingen synchroniseren…",
+      "scanningLibrary": "Bibliotheek '{library}' scannen…"
+    },
+    "tooltips": {
+      "tasks": "Taken uitvoeren"
+    }
+  },
   "architecture": "Architectuur",
   "artist": "Artiest",
   "artists": "Artiesten",
@@ -23,7 +33,8 @@
   "byArtist": "Door {artist}",
   "cancel": "Annuleren",
   "castAndCrew": "Acteurs & medewerkers",
-  "collections": "Collecties",
+  "collectionEmpty": "Deze lijst is leeg",
+  "collections": "Verzamelingen",
   "communityRating": "Community-beoordeling",
   "confirm": "Bevestig",
   "connect": "Verbinden",
@@ -43,6 +54,7 @@
   },
   "directing": "Regisseren",
   "director": "Regiseur",
+  "disabled": "Uitgeschakeld",
   "discNumber": "Schijf {discNumber}",
   "dislikes": "Niet leuk",
   "edit": "Bewerken",
