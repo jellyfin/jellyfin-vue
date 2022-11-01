@@ -4,10 +4,20 @@
   "actor": "Actor",
   "actors": "Actores",
   "addNewPerson": "Añadir una nueva persona",
+  "administrator": "Administrador",
   "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Álbumes",
   "allLanguages": "Todos los idiomas",
   "alphabetically": "Alfabéticamente",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sincronizando ajustes…",
+      "scanningLibrary": "Escaneando la biblioteca '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Tareas en ejecución"
+    }
+  },
   "architecture": "Arquitectura",
   "artist": "Artista",
   "artists": "Artistas",
@@ -23,6 +33,7 @@
   "byArtist": "Por {artist}",
   "cancel": "Cancelar",
   "castAndCrew": "Reparto y Equipo",
+  "collectionEmpty": "Esta colección está vacía",
   "collections": "Colecciones",
   "communityRating": "Calificación de la comunidad",
   "confirm": "Confirmar",
@@ -43,6 +54,7 @@
   },
   "directing": "Dirigente",
   "director": "Director",
+  "disabled": "Deshabilitado",
   "discNumber": "Disco {discNumber}",
   "dislikes": "No me gusta",
   "edit": "Editar",
@@ -119,6 +131,11 @@
       "title": "Titulo"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Moverse al final",
+    "pushToTop": "Moverse al inicio",
+    "removeFromQueue": "Remover de la cola"
+  },
   "itemNotFound": "Item no encontrado",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Lo último en {libraryName}",
@@ -140,6 +157,7 @@
     "changeServer": "Cambiar Servidor",
     "changeUser": "Cambiar Usuario",
     "connect": "Conectar",
+    "kickedOut": "La autorización ha sido revocada y esta sesión ya no es válida. Por favor, vuelva a iniciar sesión",
     "login": "Ingreso",
     "loginAs": "Ingresar como {name}",
     "manualLogin": "Ingreso Manual",
@@ -409,6 +427,10 @@
   },
   "shows": "Series",
   "signIn": "Ingresar",
+  "snackbar": {
+    "addedToQueue": "Añadido a la cola",
+    "playNext": "El elemento seleccionado se reproducirá después del actual"
+  },
   "songs": "Canciones",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar por titulo",
@@ -416,6 +438,7 @@
   "speed": "Velocidad",
   "startNow": "Comenzar ahora",
   "status": "Estado",
+  "stretch": "Estirar",
   "studios": "Estudios",
   "subtitles": "Subtítulos",
   "syncPlayGroups": "Grupos de SyncPlay",
