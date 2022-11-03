@@ -368,8 +368,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.v-item-group::v-deep .v-slide-group__prev--disabled,
-.v-item-group::v-deep .v-slide-group__next--disabled {
+:deep(.v-slide-group__prev--disabled),
+:deep(.v-slide-group__next--disabled) {
   display: none !important;
 }
 </style>

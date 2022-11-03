@@ -108,17 +108,17 @@ export default defineComponent({
   top: 56px;
 }
 
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .second-toolbar {
-    top: 64px;
-  }
-}
+// @media #{map-get($display-breakpoints, 'md-and-up')} {
+//   .second-toolbar {
+//     top: 64px;
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .second-toolbar {
-    left: 256px !important;
-  }
-}
+// @media #{map-get($display-breakpoints, 'lg-and-up')} {
+//   .second-toolbar {
+//     left: 256px !important;
+//   }
+// }
 
 .after-second-toolbar {
   padding-top: 60px;
@@ -136,27 +136,27 @@ export default defineComponent({
   display: grid;
 }
 
-@media #{map-get($display-breakpoints, 'sm-and-down')} {
-  .card-grid-container {
-    grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'sm-and-down')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'sm-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'sm-and-up')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .card-grid-container {
-    grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'lg-and-up')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'xl-only')} {
-  .card-grid-container {
-    grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-  }
-}
+// @media #{map-get($display-breakpoints, 'xl-only')} {
+//   .card-grid-container {
+//     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+//   }
+// }
 </style>
