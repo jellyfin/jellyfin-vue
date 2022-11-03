@@ -86,11 +86,9 @@
               small-chips>
               <template #no-data>
                 <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ $t('metadataNoResultsMatching', { search: search }) }}
-                    </v-list-item-title>
-                  </v-list-item-content>
+                  <v-list-item-title>
+                    {{ $t('metadataNoResultsMatching', { search: search }) }}
+                  </v-list-item-title>
                 </v-list-item>
               </template>
             </v-combobox>
@@ -105,11 +103,9 @@
               small-chips>
               <template #no-data>
                 <v-list-item>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ $t('metadataNoResultsMatching', { search: search }) }}
-                    </v-list-item-title>
-                  </v-list-item-content>
+                  <v-list-item-title>
+                    {{ $t('metadataNoResultsMatching', { search: search }) }}
+                  </v-list-item-title>
                 </v-list-item>
               </template>
             </v-combobox>
@@ -117,11 +113,9 @@
           <v-tab-item value="castAndCrew">
             <v-list two-line>
               <v-list-item @click="(e) => handlePersonEdit()">
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ $t('addNewPerson') }}
-                  </v-list-item-title>
-                </v-list-item-content>
+                <v-list-item-title>
+                  {{ $t('addNewPerson') }}
+                </v-list-item-title>
                 <v-list-item-action>
                   <v-icon>mdi-plus-circle</v-icon>
                 </v-list-item-action>
@@ -136,14 +130,12 @@
                     :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
                   <v-icon v-else class="grey darken-3">mdi-account</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ item.Name }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="mt-1">
-                    {{ item.Role || item.Type }}
-                  </v-list-item-subtitle>
-                </v-list-item-content>
+                <v-list-item-title>
+                  {{ item.Name }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="mt-1">
+                  {{ item.Role || item.Type }}
+                </v-list-item-subtitle>
                 <v-list-item-action @click.stop="handlePersonDel(i)">
                   <v-icon>mdi-delete</v-icon>
                 </v-list-item-action>
