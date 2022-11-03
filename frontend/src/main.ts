@@ -15,6 +15,7 @@ import axiosInstance from '@/plugins/axios';
  */
 import '@/assets/styles/global.scss';
 import '@/assets/styles/transitions.scss';
+import '@/assets/styles/variables.scss';
 
 /**
  * Pinia

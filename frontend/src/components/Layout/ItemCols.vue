@@ -10,3 +10,7 @@
     </v-row>
   </v-container>
 </template>
+
+<script lang="ts">
+export default defineComponent();
+</script>
