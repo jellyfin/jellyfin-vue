@@ -1,3 +1,4 @@
+import { PiniaPluginContext } from 'pinia';
 import {
   authStore,
   clientSettingsStore,
@@ -11,7 +12,6 @@ import {
   taskManagerStore
 } from '@/store';
 import { authLogic } from '@/middleware/auth';
-import { PiniaPluginContext } from 'pinia';
 
 /**
  * Authentication logic on app runtime

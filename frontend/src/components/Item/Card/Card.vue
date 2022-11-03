@@ -3,19 +3,16 @@
     <component
       :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
-      :class="{ 'card-box': link }"
-    >
+      :class="{ 'card-box': link }">
       <!-- CARD -->
       <div :class="shape || cardType" class="elevation-2">
         <div
-          class="card-content card-content-button d-flex justify-center align-center darken-4"
-        >
+          class="card-content card-content-button d-flex justify-center align-center darken-4">
           <blurhash-image
             :item="item"
             :type="getImageType"
             :alt="item.Name"
-            class="card-image"
-          />
+            class="card-image" />
           <v-progress-circular
             v-if="refreshProgress !== undefined"
             class="card-chip"
@@ -23,15 +20,13 @@
             :value="refreshProgress"
             :indeterminate="refreshProgress === 0"
             color="white"
-            size="24"
-          />
+            size="24" />
           <watched-indicator v-if="item.UserData && item.UserData.Played" />
           <v-chip
             v-if="item.UserData && item.UserData.UnplayedItemCount"
             color="primary"
             class="card-chip"
-            small
-          >
+            small>
             {{ item.UserData.UnplayedItemCount }}
           </v-chip>
           <v-progress-linear
@@ -42,18 +37,15 @@
             "
             v-model="progress"
             color="primary accent-4"
-            class="card-progress"
-          />
+            class="card-progress" />
         </div>
         <div
           v-if="overlay && isFinePointer()"
-          class="card-overlay d-flex justify-center align-center"
-        >
+          class="card-overlay d-flex justify-center align-center">
           <play-button fab :item="item" />
           <div
             v-if="overlay"
-            class="card-lower-buttons d-flex justify-center align-center"
-          >
+            class="card-lower-buttons d-flex justify-center align-center">
             <mark-played-button :item="item" dark />
             <like-button v-if="canPlay(item)" :item="item" dark />
             <item-menu :item="item" dark />
@@ -64,15 +56,13 @@
     <div v-if="text" class="card-text">
       <router-link
         class="link d-block card-title mt-1 text-truncate"
-        :to="cardTitleLink"
-      >
+        :to="cardTitleLink">
         {{ cardTitle }}
       </router-link>
       <router-link
         v-if="cardSubtitleLink"
         class="link d-block card-subtitle text--secondary text-truncate"
-        :to="cardSubtitleLink"
-      >
+        :to="cardSubtitleLink">
         {{ cardSubtitle }}
       </router-link>
       <div v-else class="card-subtitle text--secondary text-truncate">
@@ -146,7 +136,7 @@ export default defineComponent({
       }
     },
     /**
-     * @returns {string} Either the item name or the series name
+     * @returns Either the item name or the series name
      */
     cardTitle(): string {
       if (this.item.Type !== 'Episode') {
@@ -156,7 +146,7 @@ export default defineComponent({
       }
     },
     /**
-     * @returns {string} Either a string representing the production year(s) for the current item
+     * @returns Either a string representing the production year(s) for the current item
      *                   or the episode name of an item (SX EY - Episode Name)
      *                   or the album artist
      */
@@ -197,7 +187,7 @@ export default defineComponent({
     /**
      * Gets a link to be applied to the card title
      *
-     * @returns {string} A router link to the item or a related item
+     * @returns A router link to the item or a related item
      */
     cardTitleLink(): string {
       if (this.item.Type === 'Episode' && this.item.SeriesId) {
@@ -209,7 +199,7 @@ export default defineComponent({
     /**
      * Gets a link to be applied to the card subtitle
      *
-     * @returns {string|null} A router link to the parent item or a related item
+     * @returns A router link to the parent item or a related item
      */
     cardSubtitleLink(): string | null {
       if (

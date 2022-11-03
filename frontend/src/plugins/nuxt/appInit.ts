@@ -2,6 +2,9 @@ import isNil from 'lodash/isNil';
 import { authStore, ServerInfo } from '~/store';
 import { parseServerListString } from '~/utils/servers';
 
+/**
+ *
+ */
 export default function (): void {
   const auth = authStore();
 

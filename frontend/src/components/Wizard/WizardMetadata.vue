@@ -7,8 +7,7 @@
       required
       item-text="DisplayName"
       item-value="TwoLetterISOLanguageName"
-      :items="cultureOptions"
-    />
+      :items="cultureOptions" />
     <v-select
       v-model="metadataCountry"
       outlined
@@ -16,8 +15,7 @@
       required
       item-text="DisplayName"
       item-value="TwoLetterISORegionName"
-      :items="countryOptions"
-    />
+      :items="countryOptions" />
     <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">
       {{ $t('previous') }}
     </v-btn>
@@ -77,7 +75,6 @@ export default defineComponent({
 
         this.$emit('step-complete', { step: 3 });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         this.snackbar.push(this.$t('wizard.setMetadataError'), 'error');
       }

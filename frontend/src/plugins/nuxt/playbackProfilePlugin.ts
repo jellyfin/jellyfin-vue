@@ -25,9 +25,9 @@ declare module 'vue/types/vue' {
 /**
  * Creates a device profile containing supported codecs for the active Cast device.
  *
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - Dummy video element for compatibility tests
- * @returns {object} Device profile.
+ * @param context - Nuxt context
+ * @param videoTestElement - Dummy video element for compatibility tests
+ * @returns Device profile.
  */
 function getDeviceProfile(
   context: Context,

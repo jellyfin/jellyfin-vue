@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <RouterViewTransition is-root></RouterViewTransition>
+      <RouterViewTransition is-root />
     </v-main>
     <snackbar />
     <player-manager />

@@ -5,8 +5,7 @@
       <div class="d-flex ma-2">
         <h1
           class="text-h6 text-sm-h5 font-weight-light header"
-          :class="{ 'header-white-mode': !$vuetify.theme.dark }"
-        >
+          :class="{ 'header-white-mode': !$vuetify.theme.dark }">
           <span class="pl-4">{{ title }}</span>
         </h1>
         <v-spacer />

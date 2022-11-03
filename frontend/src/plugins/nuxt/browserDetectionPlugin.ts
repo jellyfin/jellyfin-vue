@@ -44,8 +44,8 @@ export class BrowserDetector {
    *
    * @private
    * @static
-   * @param {string} key - Key for which to perform a check.
-   * @returns {boolean} Determines if user agent of navigator contains a key
+   * @param key - Key for which to perform a check.
+   * @returns Determines if user agent of navigator contains a key
    * @memberof BrowserDetector
    */
   private userAgentContains(key: string): boolean {
@@ -65,7 +65,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Mozilla Firefox.
    *
-   * @returns {boolean} Determines if browser is Mozilla Firefox
+   * @returns Determines if browser is Mozilla Firefox
    * @memberof BrowserDetector
    */
   isFirefox(): boolean {
@@ -76,7 +76,7 @@ export class BrowserDetector {
    * Check if the current platform is Microsoft Edge.
    *
    * @static
-   * @returns {boolean} Determines if browser is Microsoft Edge
+   * @returns Determines if browser is Microsoft Edge
    * @memberof BrowserDetector
    */
   isEdge(): boolean {
@@ -86,7 +86,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Chromium based.
    *
-   * @returns {boolean} Determines if browser is Chromium based
+   * @returns Determines if browser is Chromium based
    * @memberof BrowserDetector
    */
   isChromiumBased(): boolean {
@@ -96,7 +96,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Google Chrome.
    *
-   * @returns {boolean} Determines if browser is Google Chrome
+   * @returns Determines if browser is Google Chrome
    * @memberof BrowserDetector
    */
   isChrome(): boolean {
@@ -113,7 +113,7 @@ export class BrowserDetector {
    * Returns false for non-Safari browsers on macOS, which are independent of
    * Apple.
    *
-   * @returns {boolean} Determines if current platform is from Apple
+   * @returns Determines if current platform is from Apple
    * @memberof BrowserDetector
    */
   isApple(): boolean {
@@ -127,7 +127,7 @@ export class BrowserDetector {
   /**
    * Returns a major version number for Safari, or Safari-based iOS browsers.
    *
-   * @returns {number | null} The major version number for Safari
+   * @returns The major version number for Safari
    * @memberof BrowserDetector
    */
   safariVersion(): number | null {
@@ -168,7 +168,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen.
    *
-   * @returns {boolean} Determines if current platform is Tizen
+   * @returns Determines if current platform is Tizen
    * @memberof BrowserDetector
    */
   isTizen(): boolean {
@@ -178,7 +178,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen 2
    *
-   * @returns {boolean} Determines if current platform is Tizen 2
+   * @returns Determines if current platform is Tizen 2
    * @memberof BrowserDetector
    */
   isTizen2(): boolean {
@@ -188,7 +188,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen 3
    *
-   * @returns {boolean} Determines if current platform is Tizen 3
+   * @returns Determines if current platform is Tizen 3
    * @memberof BrowserDetector
    */
   isTizen3(): boolean {
@@ -198,7 +198,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen 4.
    *
-   * @returns {boolean} Determines if current platform is Tizen 4
+   * @returns Determines if current platform is Tizen 4
    * @memberof BrowserDetector
    */
   isTizen4(): boolean {
@@ -208,7 +208,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen 5.
    *
-   * @returns {boolean} Determines if current platform is Tizen 5
+   * @returns Determines if current platform is Tizen 5
    * @memberof BrowserDetector
    */
   isTizen5(): boolean {
@@ -218,7 +218,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is Tizen 5.5.
    *
-   * @returns {boolean} Determines if current platform is Tizen 5.5
+   * @returns Determines if current platform is Tizen 5.5
    * @memberof BrowserDetector
    */
   isTizen55(): boolean {
@@ -228,7 +228,7 @@ export class BrowserDetector {
   /**
    * Check if the current platform is WebOS.
    *
-   * @returns {boolean} Determines if current platform is WebOS
+   * @returns Determines if current platform is WebOS
    * @memberof BrowserDetector
    */
   isWebOS(): boolean {
@@ -236,7 +236,7 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns {boolean} Determines if current platform is WebOS1
+   * @returns Determines if current platform is WebOS1
    */
   isWebOS1(): boolean {
     return (
@@ -247,7 +247,7 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns {boolean} Determines if current platform is WebOS1
+   * @returns Determines if current platform is WebOS1
    */
   isWebOS2(): boolean {
     return (
@@ -258,21 +258,21 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns {boolean} Determines if current platform is WebOS3
+   * @returns Determines if current platform is WebOS3
    */
   isWebOS3(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/38');
   }
 
   /**
-   * @returns {boolean} Determines if current platform is WebOS4
+   * @returns Determines if current platform is WebOS4
    */
   isWebOS4(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/53');
   }
 
   /**
-   * @returns {boolean} Determines if current platform is WebOS5
+   * @returns Determines if current platform is WebOS5
    */
   isWebOS5(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/68');
@@ -281,7 +281,7 @@ export class BrowserDetector {
   /* Platform Utilities */
 
   /**
-   * @returns {boolean} Determines if current platform is Android
+   * @returns Determines if current platform is Android
    */
   isAndroid(): boolean {
     return this.userAgentContains('Android');
@@ -290,7 +290,7 @@ export class BrowserDetector {
   /**
    * Guesses if the platform is a mobile one (iOS or Android).
    *
-   * @returns {boolean} Determines if current platform is mobile (Guess)
+   * @returns Determines if current platform is mobile (Guess)
    * @memberof BrowserDetector
    */
   isMobile(): boolean {
@@ -326,7 +326,7 @@ export class BrowserDetector {
   /**
    * Guesses if the platform is a Smart TV (Tizen or WebOS).
    *
-   * @returns {boolean} Determines if platform is a Smart TV
+   * @returns Determines if platform is a Smart TV
    * @memberof BrowserDetector
    */
   isTv(): boolean {
@@ -336,7 +336,7 @@ export class BrowserDetector {
   /**
    * Guesses if the platform is a PS4
    *
-   * @returns {boolean} Determines if the device is a PS4
+   * @returns Determines if the device is a PS4
    * @memberof BrowserDetector
    */
   isPs4(): boolean {
@@ -346,7 +346,7 @@ export class BrowserDetector {
   /**
    * Guesses if the platform is a Xbox
    *
-   * @returns {boolean} Determines if the device is a Xbox
+   * @returns Determines if the device is a Xbox
    * @memberof BrowserDetector
    */
   isXbox(): boolean {

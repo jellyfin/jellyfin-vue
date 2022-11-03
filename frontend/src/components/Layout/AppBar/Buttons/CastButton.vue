@@ -11,8 +11,7 @@
     min-height="25em"
     max-height="25em"
     :z-index="500"
-    class="menu"
-  >
+    class="menu">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <app-bar-button-layout :custom-listener="menu" v-bind="attrs" disabled>

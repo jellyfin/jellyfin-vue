@@ -6,7 +6,7 @@ import { BrowserDetector } from '~/plugins/nuxt/browserDetectionPlugin';
 /**
  * Generates a random string to be used for the deviceId
  *
- * @returns {string} deviceId returns a string encoded in base-64
+ * @returns deviceId returns a string encoded in base-64
  */
 function getDeviceId(): string {
   return uuidv4();
@@ -15,8 +15,8 @@ function getDeviceId(): string {
 /**
  * Gets the device's name
  *
- * @param {BrowserDetector} $browser - Browser detection plugin
- * @returns {string} deviceName returns the device's name
+ * @param $browser - Browser detection plugin
+ * @returns deviceName returns the device's name
  */
 function getDeviceName($browser: BrowserDetector): string {
   let deviceName = 'Unknown';
@@ -49,7 +49,7 @@ function getDeviceName($browser: BrowserDetector): string {
 /**
  * Gets the current device's version
  *
- * @returns {string} clientVersion returns the current device version
+ * @returns clientVersion returns the current device version
  */
 function getClientVersion(): string {
   return version;
@@ -58,7 +58,7 @@ function getClientVersion(): string {
 /**
  * Gets the current device's name
  *
- * @returns {string} clienName returns the current client name
+ * @returns clienName returns the current client name
  */
 function getClientName(): string {
   return 'Jellyfin Web (Vue)';

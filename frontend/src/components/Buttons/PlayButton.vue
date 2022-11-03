@@ -7,8 +7,7 @@
       :color="iconOnly ? null : 'primary'"
       :loading="loading"
       :disabled="disabled"
-      @click.prevent="playOrResume"
-    >
+      @click.prevent="playOrResume">
       <v-icon v-if="shuffle" :size="fab ? 36 : null">mdi-shuffle</v-icon>
       <v-icon v-else :size="fab ? 36 : null">mdi-play</v-icon>
     </v-btn>
@@ -21,8 +20,7 @@
       min-width="8em"
       depressed
       rounded
-      @click="playOrResume"
-    >
+      @click="playOrResume">
       {{
         shuffle
           ? $t('playback.shuffle')

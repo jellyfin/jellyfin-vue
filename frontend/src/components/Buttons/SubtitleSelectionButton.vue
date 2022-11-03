@@ -13,8 +13,7 @@
     max-height="25em"
     :z-index="500"
     class="menu"
-    @input="$emit('input', $event)"
-  >
+    @input="$emit('input', $event)">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
@@ -26,8 +25,7 @@
               playbackManager.getCurrentItemParsedSubtitleTracks.length === 0
             "
             v-bind="attrs"
-            v-on="{ ...tooltip, ...menu }"
-          >
+            v-on="{ ...tooltip, ...menu }">
             <v-icon>mdi-closed-caption</v-icon>
           </v-btn>
         </template>
@@ -39,14 +37,12 @@
         <v-list-item
           v-for="track of tracks"
           :key="track.srcIndex"
-          @click="playbackManager.currentSubtitleStreamIndex = track.srcIndex"
-        >
+          @click="playbackManager.currentSubtitleStreamIndex = track.srcIndex">
           <v-list-item-icon>
             <v-icon
               v-if="
                 track.srcIndex === playbackManager.currentSubtitleStreamIndex
-              "
-            >
+              ">
               mdi-check
             </v-icon>
           </v-list-item-icon>
@@ -83,15 +79,14 @@ export default defineComponent({
     tracks(): PlaybackTrack[] {
       const subs = this.playbackManager
         .getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
-      const res = [
+
+      return [
         {
           label: this.$t('disabled'),
           srcIndex: -1,
           type: SubtitleDeliveryMethod.External
         }
       ].concat(subs) as PlaybackTrack[];
-
-      return res;
     }
   }
 });

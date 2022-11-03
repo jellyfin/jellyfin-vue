@@ -3,11 +3,11 @@ import { decode } from 'blurhash';
 /**
  * Decodes blurhash outside the main thread, in a web worker
  *
- * @param {string} hash - Hash to decode.
- * @param {number} width - Width of the decoded pixel array
- * @param {number} height - Height of the decoded pixel array.
- * @param {number} punch - Contrast of the decoded pixels
- * @returns {Uint8ClampedArray} - Returns the decoded pixels in the proxied response by Comlink
+ * @param hash - Hash to decode.
+ * @param width - Width of the decoded pixel array
+ * @param height - Height of the decoded pixel array.
+ * @param punch - Contrast of the decoded pixels
+ * @returns - Returns the decoded pixels in the proxied response by Comlink
  */
 export default function getPixels(
   hash: string,
