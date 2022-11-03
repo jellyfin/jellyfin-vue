@@ -32,12 +32,12 @@
     <v-card>
       <v-list>
         <v-list-item>
-          <v-list-item-avatar tile>
+          <v-avatar>
             <blurhash-image
               v-if="playbackManager.initiator"
               :item="playbackManager.initiator" />
             <v-icon v-else>{{ modeIcon }}</v-icon>
-          </v-list-item-avatar>
+          </v-avatar>
 
           <v-list-item-title>{{ sourceText }}</v-list-item-title>
           <v-list-item-subtitle>
