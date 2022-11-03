@@ -23,13 +23,13 @@
       </v-btn>
     </template>
     <v-list dense>
-      <v-list-item-group
+      <v-list-group
         v-model="model"
         @change="$emit('change', items[model].value)">
         <v-list-item v-for="item in items" :key="item.value">
           <v-list-item-title>{{ item.name }}</v-list-item-title>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
     </v-list>
   </v-menu>
 </template>
