@@ -13,13 +13,13 @@
     </template>
     <v-list class="min-list-width" dense>
       <v-list-item>
-        <v-list-item-avatar>
+        <v-avatar>
           <user-image
             v-if="auth.currentUser"
             :user="auth.currentUser"
             :size="40"
             rounded />
-        </v-list-item-avatar>
+        </v-avatar>
         <v-list-item-title class="text-body-1">
           {{ auth.currentUser.Name }}
         </v-list-item-title>

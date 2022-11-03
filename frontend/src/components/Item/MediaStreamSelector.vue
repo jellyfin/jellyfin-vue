@@ -16,9 +16,9 @@
 
     <template #item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" :two-line="!!item.text.subtitle" v-on="on">
-        <v-list-item-avatar v-if="item.text.icon">
+        <v-avatar v-if="item.text.icon">
           <v-icon>{{ item.text.icon }}</v-icon>
-        </v-list-item-avatar>
+        </v-avatar>
         <v-list-item-title>{{ item.text.title }}</v-list-item-title>
         <v-list-item-subtitle v-if="item.text.subtitle">
           {{ item.text.subtitle }}
