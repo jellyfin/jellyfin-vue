@@ -11,7 +11,7 @@
             key="log-list"
             two-line
             class="mb-2">
-            <v-list-item-group>
+            <v-list-group>
               <v-list-item
                 v-for="file in logFiles"
                 :key="file.Name"
@@ -28,7 +28,7 @@
                   <v-icon>mdi-open-in-new</v-icon>
                 </v-list-item-action>
               </v-list-item>
-            </v-list-item-group>
+            </v-list-group>
           </v-list>
           <v-card
             v-else-if="loadingLogsStatus.status === 'loaded'"
@@ -61,7 +61,7 @@
             two-line
             class="mb-2"
             disabled>
-            <v-list-item-group>
+            <v-list-group>
               <v-list-item v-for="activity in activityList" :key="activity.Id">
                 <v-avatar :color="getColorFromSeverity(activity.Severity)">
                   <v-icon dark v-text="getIconFromType(activity.Type)" />
@@ -74,7 +74,7 @@
                     v-text="getFormattedActivityDate(activity.Date)" />
                 </v-list-item-action>
               </v-list-item>
-            </v-list-item-group>
+            </v-list-group>
           </v-list>
           <v-card
             v-else-if="loadingActivityStatus.status === 'loaded'"
