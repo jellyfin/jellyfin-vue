@@ -3,7 +3,8 @@
     <v-row align="center" justify="center">
       <v-col cols="12" sm="12" md="12" xl="8">
         <h1 class="text-h4 mb-6 text-center">{{ heading }}</h1>
-        <v-stepper v-model="wizardStage" class="transparent-background">
+        <!-- TODO: Wait for Vuetify 3.1 -->
+        <!-- <v-stepper v-model="wizardStage" class="transparent-background">
           <v-stepper-header>
             <v-stepper-step
               :complete="wizardStage > 1"
@@ -66,7 +67,7 @@
                 @previous-step="previousStep" />
             </v-stepper-content>
           </v-stepper-items>
-        </v-stepper>
+        </v-stepper> -->
       </v-col>
     </v-row>
   </v-container>
