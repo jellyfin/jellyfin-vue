@@ -27,9 +27,7 @@
       <v-list color="transparent">
         <v-list-item-group>
           <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-account-group</v-icon>
-            </v-list-item-icon>
+            <v-icon>mdi-account-group</v-icon>
             {{ $t('syncPlayGroups') }}
             <v-list-item-action>
               <v-icon>mdi-arrow-right</v-icon>
@@ -37,21 +35,15 @@
           </v-list-item>
           <v-divider />
           <v-list-item v-if="$features.airPlay">
-            <v-list-item-icon>
-              <v-icon>mdi-apple-airplay</v-icon>
-            </v-list-item-icon>
+            <v-icon>mdi-apple-airplay</v-icon>
             {{ $t('airPlayDevices') }}
           </v-list-item>
           <v-list-item v-if="$features.googleCast">
-            <v-list-item-icon>
-              <v-icon>mdi-cast</v-icon>
-            </v-list-item-icon>
+            <v-icon>mdi-cast</v-icon>
             {{ $t('googleCastPlaceholderDevice') }}
           </v-list-item>
           <v-list-item>
-            <v-list-item-icon>
-              <v-icon>$vuetify.icons.jellyfin</v-icon>
-            </v-list-item-icon>
+            <v-icon>$vuetify.icons.jellyfin</v-icon>
             {{ $t('genericJellyfinPlaceholderDevice') }}
           </v-list-item>
         </v-list-item-group>
