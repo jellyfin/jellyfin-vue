@@ -15,32 +15,32 @@
     <v-container class="after-second-toolbar">
       <v-row>
         <v-col>
-          <v-tabs-items v-model="searchTab" class="transparent">
-            <v-tab-item :key="0">
+          <v-tabs v-model="searchTab" class="transparent">
+            <v-tab :key="0">
               <item-grid :items="topSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="1">
+            </v-tab>
+            <v-tab :key="1">
               <item-grid :items="movieSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="2">
+            </v-tab>
+            <v-tab :key="2">
               <item-grid :items="showSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="3">
+            </v-tab>
+            <v-tab :key="3">
               <item-grid :items="albumSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="4">
+            </v-tab>
+            <v-tab :key="4">
               <item-grid :items="trackSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="5">
+            </v-tab>
+            <v-tab :key="5">
               <item-grid :items="bookSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="6">
+            </v-tab>
+            <v-tab :key="6">
               <item-grid :items="personSearchResults" :loading="loading" />
-            </v-tab-item>
-            <v-tab-item :key="7">
+            </v-tab>
+            <v-tab :key="7">
               <item-grid :items="artistSearchResults" :loading="loading" />
-            </v-tab-item>
-          </v-tabs-items>
+            </v-tab>
+          </v-tabs>
         </v-col>
       </v-row>
     </v-container>

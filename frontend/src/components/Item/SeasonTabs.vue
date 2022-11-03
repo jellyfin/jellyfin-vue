@@ -5,8 +5,8 @@
         {{ season.Name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="currentTab" class="transparent">
-      <v-tab-item v-for="season in seasons" :key="season.Id">
+    <v-tabs v-model="currentTab" class="transparent">
+      <v-tab v-for="season in seasons" :key="season.Id">
         <v-list two-line color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
@@ -29,8 +29,8 @@
             </v-list-item-subtitle>
           </v-list-item>
         </v-list>
-      </v-tab-item>
-    </v-tabs-items>
+      </v-tab>
+    </v-tabs>
   </div>
 </template>
 
