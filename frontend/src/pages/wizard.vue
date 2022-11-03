@@ -148,7 +148,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .transparent-background {
   background-color: transparent !important;
 }
