@@ -11,6 +11,7 @@
     "strict": true,
     "noEmit": true,
     "noImplicitThis": true,
+    "noImplicitAny": true,
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
@@ -19,7 +20,6 @@
     },
     "jsx": "preserve",
     "types": [
-      "@types/node",
       "axios",
       "@types/tizen-tv-webapis",
       "unplugin-icons/types/vue",

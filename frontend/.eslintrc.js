@@ -4,26 +4,56 @@ var restrictedGlobals = require('confusing-browser-globals');
 module.exports = {
   root: false,
   env: {
-    node: true
+    node: false,
+    browser: true
   },
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module'
+  },
+  // Ignore test files for now
+  ignorePatterns: ['*.spec.ts', '.eslintrc.js', '*.config.js'],
   extends: [
     'eslint:recommended',
-    'plugin:jsdoc/recommended',
     'plugin:json/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:prettier/recommended',
     'plugin:promise/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript'
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:vue/vue3-recommended',
+    'plugin:sonarjs/recommended',
+    'plugin:eslint-comments/recommended',
+    'plugin:css/recommended',
+    'plugin:prettier/recommended'
   ],
-  plugins: ['prettier', 'promise', 'import', 'jsdoc', 'lodash'],
+  plugins: [
+    'jsdoc',
+    'json',
+    '@typescript-eslint',
+    'promise',
+    'import',
+    'vue',
+    'lodash',
+    'prettier',
+    'sonarjs',
+    'eslint-comments',
+    'css',
+    'file-progress'
+  ],
   rules: {
+    'file-progress/activate': 1,
     'no-restricted-globals': ['error'].concat(restrictedGlobals),
     'import/newline-after-import': 'error',
     'import/order': 'error',
+    'import/no-unresolved': [
+      'error',
+      { ignore: ['virtual:generated-layouts', '~pages'] }
+    ],
     'jsdoc/require-hyphen-before-param-description': 'error',
+    'jsdoc/require-description': 'error',
+    'jsdoc/no-types': 'error',
+    'jsdoc/require-jsdoc': 'error',
     'promise/no-nesting': 'error',
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
@@ -69,84 +99,44 @@ module.exports = {
       // Always require blank lines before return statements
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
-    'lodash/import-scope': ['error', 'method']
-  },
-  overrides: [
-    {
-      files: ['./**/*.ts', './**/*.vue'],
-      env: {
-        browser: true,
-        node: true
-      },
-      extends: [
-        'eslint:recommended',
-        'plugin:jsdoc/recommended',
-        'plugin:json/recommended',
-        'plugin:@typescript-eslint/recommended',
-        '@nuxtjs/eslint-config-typescript',
-        'prettier',
-        'plugin:prettier/recommended',
-        'plugin:promise/recommended',
-        'plugin:nuxt/recommended',
-        'plugin:import/errors',
-        'plugin:import/warnings',
-        'plugin:import/typescript'
-      ],
-      rules: {
-        // Force some component order stuff, formatting and such, for consistency
-        curly: ['error', 'all'],
-        'vue/component-name-in-template-casing': [
-          'error',
-          'kebab-case',
-          {
-            ignores: []
-          }
-        ],
-        'vue/order-in-components': 'error',
-        'vue/v-bind-style': 'error',
-        'vue/v-on-style': 'error',
-        'vue/v-slot-style': 'error',
-        'vue/attributes-order': 'error',
-        'vue/no-unused-refs': 'error',
-        'vue/html-self-closing': [
-          'error',
-          {
-            html: {
-              void: 'always'
-            }
-          }
-        ],
-        'vue/multiline-html-element-content-newline': 'error',
-        'vue/multi-word-component-names': 'off',
-        // This rule gives false positives with asyncData
-        'vue/no-dupe-keys': 'off',
-        // This rule gives false positives, even when undefined return type is established
-        'vue/return-in-computed-property': 'off',
-        'jsdoc/require-param-type': 'off'
-      },
-      settings: {
-        'import/resolver': {
-          nuxt: {
-            extensions: ['.js', '.ts', '.d.ts', '.vue', '.json'],
-            nuxtSrcDir: '.'
-          }
+    'lodash/import-scope': ['error', 'method'],
+    // Force some component order stuff, formatting and such, for consistency
+    curly: ['error', 'all'],
+    'vue/component-name-in-template-casing': [
+      'error',
+      'kebab-case',
+      {
+        ignores: []
+      }
+    ],
+    'vue/order-in-components': 'error',
+    'vue/v-bind-style': 'error',
+    'vue/v-on-style': 'error',
+    'vue/v-slot-style': 'error',
+    'vue/attributes-order': 'error',
+    'vue/no-unused-refs': 'error',
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'always'
         }
       }
+    ],
+    'vue/multiline-html-element-content-newline': 'error',
+    'vue/multi-word-component-names': 'off',
+    'eslint-comments/no-unused-disable': 'error'
+  },
+  settings: {
+    'import/resolver': {
+      typescript: true,
+      node: true
     },
-    {
-      files: ['**/*.spec.ts'],
-      plugins: ['jest', 'jest-formatting'],
-      env: {
-        'jest/globals': true
-      },
-      extends: [
-        'plugin:jest/recommended',
-        'plugin:jest/style',
-        'plugin:jest-formatting/strict'
-      ],
-      rules: {
-        'jest/consistent-test-it': ['error']
+    settings: {
+      progress: {
+        hide: false,
+        successMessage: 'Linting done!'
       }
     }
-  ]
+  }
 };

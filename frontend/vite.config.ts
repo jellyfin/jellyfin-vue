@@ -1,6 +1,6 @@
+import path from 'path';
 import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import path from 'path';
 import Pages from 'vite-plugin-pages';
 import Layouts from 'vite-plugin-vue-layouts';
 import Icons from 'unplugin-icons/vite';
@@ -8,7 +8,8 @@ import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import {
   Vuetify3Resolver,
-  VueUseComponentsResolver
+  VueUseComponentsResolver,
+  VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
 import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
@@ -40,7 +41,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         resolvers: [
           IconsResolver(),
           Vuetify3Resolver(),
-          VueUseComponentsResolver()
+          VueUseComponentsResolver(),
+          VueUseDirectiveResolver()
         ]
       }),
       /**
@@ -78,5 +80,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       }
     }
   };
+
   return config;
 });

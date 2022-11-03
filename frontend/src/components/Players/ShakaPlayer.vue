@@ -483,7 +483,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .video-container,
 video {
   width: 100%;
