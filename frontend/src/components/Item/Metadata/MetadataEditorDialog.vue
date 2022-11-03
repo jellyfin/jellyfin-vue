@@ -43,7 +43,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
 .metadata-dialog {
   height: 60vh;
 }
