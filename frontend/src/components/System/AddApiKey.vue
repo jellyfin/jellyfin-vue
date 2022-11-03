@@ -2,8 +2,7 @@
   <v-dialog
     :value="addingNewKey"
     :width="width"
-    @click:outside="() => (addingNewKey = false)"
-  >
+    @click:outside="() => (addingNewKey = false)">
     <v-col class="pa-0 add-key-dialog">
       <v-card>
         <v-card-title>{{ $t('settings.apiKeys.addApiKey') }}</v-card-title>
@@ -12,8 +11,7 @@
             <v-text-field
               v-model="newKeyAppName"
               outlined
-              :label="$t('settings.apiKeys.appName')"
-            />
+              :label="$t('settings.apiKeys.appName')" />
             <v-btn color="primary" :loading="loading" @click="addApiKey">
               {{ $t('confirm') }}
             </v-btn>
@@ -74,7 +72,6 @@ export default defineComponent({
         this.newKeyAppName = '';
         this.$emit('key-added');
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
 
         this.snackbar.push(

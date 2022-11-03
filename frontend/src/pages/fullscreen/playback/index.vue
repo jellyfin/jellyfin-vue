@@ -7,13 +7,11 @@
         class="d-flex justify-center align-center"
         :options="swiperOptions"
         @slideChange="onSlideChange"
-        @sliderMove="update"
-      >
+        @sliderMove="update">
         <swiper-slide
           v-for="item in playbackManager.getQueueItems"
           :key="item.Id"
-          class="d-flex justify-center"
-        >
+          class="d-flex justify-center">
           <div class="album-cover">
             <blurhash-image :item="item" @error="onImageError" />
           </div>
@@ -92,7 +90,7 @@ export default defineComponent({
     this.swiper = (this.$refs.playbackSwiper as Vue).$swiper as Swiper;
     this.playbackManager.setMinimized(false);
   },
-  destroyed() {
+  unmounted() {
     this.playbackManager.setMinimized(true);
   },
   methods: {

@@ -11,8 +11,7 @@
     max-width="25em"
     :z-index="500"
     class="menu"
-    @input="$emit('input', $event)"
-  >
+    @input="$emit('input', $event)">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
@@ -21,8 +20,7 @@
             class="align-self-center active-button"
             icon
             v-bind="attrs"
-            v-on="{ ...tooltip, ...menu }"
-          >
+            v-on="{ ...tooltip, ...menu }">
             <v-icon>mdi-cog</v-icon>
           </v-btn>
         </template>
@@ -52,8 +50,7 @@
                 :media-streams="playbackManager.getCurrentItemAudioTrack"
                 type="Audio"
                 :default-stream-index="playbackManager.currentAudioStreamIndex"
-                @input="setAudio($event)"
-              />
+                @input="setAudio($event)" />
             </v-col>
           </v-row>
         </v-list-item>
@@ -70,8 +67,7 @@
                 :default-stream-index="
                   playbackManager.currentSubtitleStreamIndex
                 "
-                @input="setSubtitle($event)"
-              />
+                @input="setSubtitle($event)" />
             </v-col>
           </v-row>
         </v-list-item>

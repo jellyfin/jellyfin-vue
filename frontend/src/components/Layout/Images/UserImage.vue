@@ -7,8 +7,7 @@
       v-show="!loading"
       ref="img"
       class="user-image"
-      :class="{ 'rounded-circle': rounded }"
-    />
+      :class="{ 'rounded-circle': rounded }" />
   </div>
 </template>
 

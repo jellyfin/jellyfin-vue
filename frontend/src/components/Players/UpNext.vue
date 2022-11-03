@@ -1,8 +1,7 @@
 <template>
   <v-container
     v-if="visible"
-    class="up-next-dialog pointer-events-none pa-lg-6"
-  >
+    class="up-next-dialog pointer-events-none pa-lg-6">
     <v-row>
       <v-col
         cols="12"
@@ -11,8 +10,7 @@
         offset-lg="8"
         lg="4"
         offset-xl="9"
-        xl="3"
-      >
+        xl="3">
         <v-card class="pointer-events-all">
           <v-card-title class="text-h6">
             <i18n path="dialog.upNext.nextItemPlayingIn" tag="span">
@@ -58,8 +56,7 @@
             <v-btn
               class="primary darken-2"
               depressed
-              @click="playbackManager.setNextTrack"
-            >
+              @click="playbackManager.setNextTrack">
               {{ $t('dialog.upNext.startNow') }}
             </v-btn>
             <v-btn depressed outlined @click="isHiddenByUser = true">

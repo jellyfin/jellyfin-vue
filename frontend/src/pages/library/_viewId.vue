@@ -13,26 +13,22 @@
         v-if="hasViewTypes"
         :type="collectionInfo.CollectionType"
         :disabled="noContent"
-        @change="onChangeType"
-      />
+        @change="onChangeType" />
       <v-divider
         v-if="isSortable && hasViewTypes"
         inset
         vertical
-        class="mx-2"
-      />
+        class="mx-2" />
       <sort-button
         v-if="isSortable"
         :disabled="noContent"
-        @change="onChangeSort"
-      />
+        @change="onChangeSort" />
       <filter-button
         v-if="isSortable"
         :collection-info="collectionInfo"
         :disabled="loading || (!items.length && !hasFilters)"
         :items-type="viewType"
-        @change="onChangeFilter"
-      />
+        @change="onChangeFilter" />
       <v-spacer />
       <play-button :item="collectionInfo" shuffle :disabled="noContent" />
       <play-button :item="collectionInfo" :disabled="noContent" />

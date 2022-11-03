@@ -7,8 +7,7 @@
     "
     :items="items"
     :shape="section.shape"
-    :loading="loading"
-  />
+    :loading="loading" />
 </template>
 
 <script lang="ts">

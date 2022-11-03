@@ -45,8 +45,8 @@ export type ValidCardShapes =
 /**
  * Determines if the item is a person
  *
- * @param {*} item - The item to be checked.
- * @returns {boolean} Whether the provided item is of type BaseItemPerson.
+ * @param item - The item to be checked.
+ * @returns Whether the provided item is of type BaseItemPerson.
  */
 export function isPerson(
   item: BaseItemDto | BaseItemPerson
@@ -64,8 +64,8 @@ export function isPerson(
 /**
  * Checks if the string is a valid MD5 hash.
  *
- * @param {string} input - The string to check for validity
- * @returns {boolean} - A boolean representing the validity of the input string
+ * @param input - The string to check for validity
+ * @returns - A boolean representing the validity of the input string
  */
 export function isValidMD5(input: string): boolean {
   return /[a-fA-F0-9]{32}/.test(input);
@@ -74,8 +74,8 @@ export function isValidMD5(input: string): boolean {
 /**
  * Get the Material Design Icon name associated with a type of library
  *
- * @param {(string | undefined | null)} libraryType - Type of the library
- * @returns {string} Name of the Material Design Icon associated with the type
+ * @param libraryType - Type of the library
+ * @returns Name of the Material Design Icon associated with the type
  */
 export function getLibraryIcon(libraryType: string | undefined | null): string {
   switch (libraryType?.toLowerCase()) {
@@ -107,8 +107,8 @@ export function getLibraryIcon(libraryType: string | undefined | null): string {
 /**
  * Get the card shape associated with a collection type
  *
- * @param {(string | null | undefined)} collectionType - Type of the collection
- * @returns {string} CSS class to use as the shape of the card
+ * @param collectionType - Type of the collection
+ * @returns CSS class to use as the shape of the card
  */
 export function getShapeFromCollectionType(
   collectionType: string | null | undefined
@@ -133,8 +133,8 @@ export function getShapeFromCollectionType(
 /**
  * Gets the card shape associated with a collection type
  *
- * @param {(string | null | undefined)} itemType - type of item
- * @returns {string} CSS class to use as the shape of the card
+ * @param itemType - type of item
+ * @returns CSS class to use as the shape of the card
  */
 export function getShapeFromItemType(
   itemType: string | null | undefined
@@ -168,8 +168,8 @@ export function getShapeFromItemType(
 /**
  * Test if the passed item can be played by one of the players in the client.
  *
- * @param {BaseItemDto} item - The item to be tested for playback support
- * @returns {boolean} Whether the item can be played on this client or not
+ * @param item - The item to be tested for playback support
+ * @returns Whether the item can be played on this client or not
  */
 export function canPlay(item: BaseItemDto | undefined): boolean {
   if (item === undefined) {
@@ -201,6 +201,9 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
 
   return false;
 }
+/**
+ *
+ */
 export function canResume(item: BaseItemDto): boolean {
   if (
     item?.UserData?.PlaybackPositionTicks &&
@@ -214,8 +217,8 @@ export function canResume(item: BaseItemDto): boolean {
 /**
  * Determine if an item can be mark as played
  *
- * @param {BaseItemDto} item - Determines if an item can be marked as played
- * @returns {boolean} Whether the item can be mark played or not
+ * @param item - Determines if an item can be marked as played
+ * @returns Whether the item can be mark played or not
  */
 export function canMarkWatched(item: BaseItemDto): boolean {
   if (
@@ -235,9 +238,9 @@ export function canMarkWatched(item: BaseItemDto): boolean {
 /**
  * Generate a link to the item's details page route
  *
- * @param {BaseItemDto} item - The item used to generate the route
- * @param {string} overrideType - Force the type to use
- * @returns {string} A valid route to the item's details page
+ * @param item - The item used to generate the route
+ * @param overrideType - Force the type to use
+ * @returns A valid route to the item's details page
  */
 export function getItemDetailsLink(
   item: BaseItemDto,
@@ -288,8 +291,8 @@ export function getItemDetailsLink(
 /**
  * Returns the appropiate material design icon for the BaseItemDto provided
  *
- * @param {BaseItemDto | BaseItemPerson} item - The item we want to get the icon for
- * @returns {string} - The string that references the icon
+ * @param item - The item we want to get the icon for
+ * @returns - The string that references the icon
  */
 export function getItemIcon(item: BaseItemDto | BaseItemPerson): string {
   let itemIcon = '';
@@ -342,9 +345,9 @@ export function getItemIcon(item: BaseItemDto | BaseItemPerson): string {
 /**
  * Filters the media streams based on the wanted type
  *
- * @param {MediaStream[]} mediaStreams - Media streams to filter among
- * @param {string} streamType - Stream type such as "audio" or "subtitles"
- * @returns {MediaStream[]} - Filtered media streams
+ * @param mediaStreams - Media streams to filter among
+ * @param streamType - Stream type such as "audio" or "subtitles"
+ * @returns - Filtered media streams
  */
 export function getMediaStreams(
   mediaStreams: MediaStream[],

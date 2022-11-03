@@ -1,8 +1,8 @@
 import { PiniaPluginContext } from 'pinia';
-import { clientSettingsStore } from '~/store';
 import { useNavigatorLanguage } from '@vueuse/core';
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import { useI18n } from 'vue-i18n';
+import { clientSettingsStore } from '~/store';
 
 /**
  * React to changes in client settings

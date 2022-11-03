@@ -1,9 +1,9 @@
 import { Context } from '@nuxt/types';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {string} format - Audio codec to test
- * @returns {boolean} Determines if audio codec is supported
+ * @param context - Nuxt context
+ * @param format - Audio codec to test
+ * @returns Determines if audio codec is supported
  */
 export function getSupportedAudioCodecs(
   context: Context,

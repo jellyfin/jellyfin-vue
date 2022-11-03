@@ -1,9 +1,9 @@
 import { Context } from '@nuxt/types';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if the browser can play native Hls
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if the browser can play native Hls
  */
 export function canPlayNativeHls(
   context: Context,
@@ -26,17 +26,17 @@ export function canPlayNativeHls(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @returns {boolean} Determines if the browser can play Hls with Media Source Extensions
+ * @param context - Nuxt context
+ * @returns Determines if the browser can play Hls with Media Source Extensions
  */
 export function canPlayHlsWithMSE(context: Context): boolean {
   return context.$browser.supportsMediaSource();
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if the browser can play Mkvs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if the browser can play Mkvs
  */
 export function hasMkvSupport(
   context: Context,

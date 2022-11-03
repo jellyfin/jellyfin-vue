@@ -8,8 +8,8 @@ import { decode } from 'he';
 /**
  * Sanitizes a string containing HTML tags and replaces newlines with the proper HTML tag.
  *
- * @param {string} input - string to sanitize
- * @returns {string} a cleaned up string
+ * @param input - string to sanitize
+ * @returns a cleaned up string
  */
 export function sanitizeHtml(input: string): string {
   // Some providers have newlines, replace them with the proper tag.

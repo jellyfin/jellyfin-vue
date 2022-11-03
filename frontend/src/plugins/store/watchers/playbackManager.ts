@@ -1,8 +1,8 @@
 import isNil from 'lodash/isNil';
+import { PiniaPluginContext } from 'pinia';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/utils/time';
 import { getImageInfo } from '~/utils/images';
-import { PiniaPluginContext } from 'pinia';
 
 /**
  * Add or remove media handlers

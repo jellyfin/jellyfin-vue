@@ -8,8 +8,7 @@
         v-if="apiKeys.length"
         color="error"
         :loading="revokeKeyLoading"
-        @click="revokeAllApiKeys"
-      >
+        @click="revokeAllApiKeys">
         {{ $t('settings.apiKeys.revokeAll') }}
       </v-btn>
     </template>
@@ -87,7 +86,6 @@ export default defineComponent({
         );
         this.refreshApiKeys();
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         this.snackbar.push(this.$t('settings.apiKeys.revokeFailure'), 'error');
       }
@@ -109,7 +107,6 @@ export default defineComponent({
         );
         this.refreshApiKeys();
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         this.snackbar.push(
           this.$t('settings.apiKeys.revokeAllFailure'),

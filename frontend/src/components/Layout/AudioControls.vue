@@ -9,8 +9,7 @@
       app
       :absolute="isFullScreenPlayer"
       :class="isFullScreenPlayer ? 'fullscreen pa-0' : 'pa-0'"
-      class="audioControls"
-    >
+      class="audioControls">
       <v-container v-if="isFullScreenPlayer" fluid class="mx-10 pb-0">
         <time-slider />
       </v-container>
@@ -22,8 +21,7 @@
                 v-if="!isFullScreenPlayer"
                 tile
                 :size="$vuetify.display.xs ? 50 : 85"
-                color="primary"
-              >
+                color="primary">
                 <blurhash-image :item="playbackManager.getCurrentItem" />
               </v-avatar>
             </router-link>
@@ -32,20 +30,17 @@
                 <router-link
                   tag="span"
                   class="text-truncate link height-fit-content"
-                  :to="getItemDetailsLink(playbackManager.getCurrentItem)"
-                >
+                  :to="getItemDetailsLink(playbackManager.getCurrentItem)">
                   {{ playbackManager.getCurrentItem.Name }}
                 </router-link>
               </v-row>
               <v-row
                 v-if="playbackManager.getCurrentItem.ArtistItems"
-                class="align-start"
-              >
+                class="align-start">
                 <span
                   v-for="artist in playbackManager.getCurrentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
-                  :to="getItemDetailsLink(artist, 'MusicArtist')"
-                >
+                  :to="getItemDetailsLink(artist, 'MusicArtist')">
                   <p class="mb-0 mr-2">
                     <router-link
                       tag="span"
@@ -67,15 +62,13 @@
                   small
                   class="mx-1 active-button"
                   :color="playbackManager.isShuffling ? 'primary' : undefined"
-                  @click="playbackManager.toggleShuffle"
-                >
+                  @click="playbackManager.toggleShuffle">
                   <v-icon>mdi-shuffle</v-icon>
                 </v-btn>
                 <v-btn
                   icon
                   class="mx-1"
-                  @click="playbackManager.setPreviousTrack"
-                >
+                  @click="playbackManager.setPreviousTrack">
                   <v-icon>mdi-skip-previous</v-icon>
                 </v-btn>
                 <v-btn
@@ -84,8 +77,7 @@
                   rounded
                   :loading="playbackManager.isBuffering"
                   class="mx-1 active-button"
-                  @click="playbackManager.playPause"
-                >
+                  @click="playbackManager.playPause">
                   <v-icon large>
                     {{
                       playbackManager.isPaused
@@ -98,8 +90,7 @@
                   icon
                   :disabled="!playbackManager.getNextItem"
                   class="mx-1"
-                  @click="playbackManager.setNextTrack"
-                >
+                  @click="playbackManager.setNextTrack">
                   <v-icon>mdi-skip-next</v-icon>
                 </v-btn>
                 <v-btn
@@ -108,8 +99,7 @@
                   small
                   class="mx-1 active-button"
                   :color="playbackManager.isRepeating ? 'primary' : undefined"
-                  @click="playbackManager.toggleRepeatMode"
-                >
+                  @click="playbackManager.toggleRepeatMode">
                   <v-icon>{{ repeatIcon }}</v-icon>
                 </v-btn>
               </div>
@@ -119,8 +109,7 @@
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <like-button
               :item="playbackManager.getCurrentItem"
-              class="active-button"
-            />
+              class="active-button" />
             <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
@@ -130,8 +119,7 @@
               v-show="!isFullScreenPlayer"
               icon
               nuxt
-              to="/fullscreen/playback"
-            >
+              to="/fullscreen/playback">
               <v-icon>mdi-fullscreen</v-icon>
             </v-btn>
             <v-btn v-show="isFullScreenPlayer" icon @click="$router.back()">
@@ -140,15 +128,13 @@
           </v-col>
           <v-col
             cols="3"
-            class="d-flex d-md-none pa-0 align-center justify-end"
-          >
+            class="d-flex d-md-none pa-0 align-center justify-end">
             <v-btn
               icon
               raised
               rounded
               class="mx-1 active-button"
-              @click="playbackManager.playPause"
-            >
+              @click="playbackManager.playPause">
               <v-icon>
                 {{
                   playbackManager.isPaused
@@ -161,32 +147,28 @@
               icon
               :disabled="!playbackManager.getNextItem"
               class="mx-1"
-              @click="playbackManager.setNextTrack"
-            >
+              @click="playbackManager.setNextTrack">
               <v-icon>mdi-skip-next</v-icon>
             </v-btn>
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
               :color="playbackManager.isRepeating ? 'primary' : undefined"
-              @click="playbackManager.toggleRepeatMode"
-            >
+              @click="playbackManager.toggleRepeatMode">
               <v-icon>{{ repeatIcon }}</v-icon>
             </v-btn>
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
               :color="playbackManager.isShuffling ? 'primary' : undefined"
-              @click="playbackManager.toggleShuffle"
-            >
+              @click="playbackManager.toggleShuffle">
               <v-icon>mdi-shuffle</v-icon>
             </v-btn>
           </v-col>
         </v-row>
         <div
           v-if="isFullScreenPlayer"
-          class="d-flex justify-center align-center"
-        >
+          class="d-flex justify-center align-center">
           <div>
             <h4 class="text-overline font-italic">
               {{

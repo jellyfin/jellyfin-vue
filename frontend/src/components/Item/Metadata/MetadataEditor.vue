@@ -19,84 +19,71 @@
             <v-text-field
               v-model="metadata.Name"
               outlined
-              :label="$t('metadata.title')"
-            />
+              :label="$t('metadata.title')" />
             <v-text-field
               v-model="metadata.OriginalTitle"
               outlined
-              :label="$t('originalTitle')"
-            />
+              :label="$t('originalTitle')" />
             <v-text-field
               v-model="metadata.ForcedSortName"
               outlined
-              :label="$t('sortTitle')"
-            />
+              :label="$t('sortTitle')" />
             <v-text-field
               v-model="metadata.Taglines"
               outlined
-              :label="$t('tagline')"
-            />
+              :label="$t('tagline')" />
             <v-textarea
               v-model="metadata.Overview"
               outlined
               no-resize
               rows="4"
-              :label="$t('overview')"
-            />
+              :label="$t('overview')" />
           </v-tab-item>
           <v-tab-item value="details">
             <date-input
               :value="dateCreated"
               :label="$t('dateAdded')"
-              @update:date="(value) => saveDate('DateCreated', value)"
-            />
+              @update:date="(value) => saveDate('DateCreated', value)" />
             <v-row>
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CommunityRating"
                   outlined
-                  :label="$t('communityRating')"
-                />
+                  :label="$t('communityRating')" />
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CriticRating"
                   outlined
-                  :label="$t('criticRating')"
-                />
+                  :label="$t('criticRating')" />
               </v-col>
             </v-row>
 
             <date-input
               :value="premiereDate"
               :label="$t('releaseDate')"
-              @update:date="(value) => saveDate('PremiereDate', value)"
-            />
+              @update:date="(value) => saveDate('PremiereDate', value)" />
             <v-text-field
               v-model="metadata.ProductionYear"
               outlined
-              :label="$t('year')"
-            />
+              :label="$t('year')" />
             <v-text-field
               v-model="metadata.OfficialRating"
               outlined
-              :label="$t('parentalRating')"
-            />
+              :label="$t('parentalRating')" />
             <v-text-field
               v-model="metadata.CustomRating"
               outlined
-              :label="$t('customRating')"
-            />
+              :label="$t('customRating')" />
             <v-combobox
               v-model="metadata.Genres"
+              v-model:search-input="search"
               :items="genders"
-              :search-input.sync="search"
               :label="$t('genres')"
               hide-selected
               multiple
               outlined
-              small-chips
-            >
+              small-chips>
               <template #no-data>
                 <v-list-item>
                   <v-list-item-content>
@@ -109,14 +96,13 @@
             </v-combobox>
             <v-combobox
               v-model="metadata.Tags"
+              v-model:search-input="search"
               :items="genders"
-              :search-input.sync="search"
               :label="$t('tags')"
               hide-selected
               multiple
               outlined
-              small-chips
-            >
+              small-chips>
               <template #no-data>
                 <v-list-item>
                   <v-list-item-content>
@@ -143,13 +129,11 @@
               <v-list-item
                 v-for="(item, i) in metadata.People"
                 :key="`${item.Id}-${i}`"
-                @click="handlePersonEdit(item)"
-              >
+                @click="handlePersonEdit(item)">
                 <v-list-item-avatar>
                   <v-img
                     v-if="item.PrimaryImageTag"
-                    :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`"
-                  />
+                    :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
                   <v-icon v-else class="grey darken-3">mdi-account</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
@@ -179,15 +163,13 @@
       :class="{
         'justify-end': !$vuetify.display.mobile,
         'justify-center': $vuetify.display.mobile
-      }"
-    >
+      }">
       <v-btn
         depressed
         width="8em"
         color="secondary"
         class="mr-1"
-        @click="$emit('cancel')"
-      >
+        @click="$emit('cancel')">
         {{ $t('cancel') }}
       </v-btn>
       <v-btn
@@ -195,17 +177,15 @@
         width="8em"
         color="primary"
         :loading="loading"
-        @click="saveMetadata"
-      >
+        @click="saveMetadata">
         {{ $t('save') }}
       </v-btn>
     </v-card-actions>
     <person-editor
+      v-model:dialog="dialog"
       :person="person"
-      :dialog.sync="dialog"
       @update:person="handlePersonUpdate"
-      @update:dialog="handleDialogUpdate"
-    />
+      @update:dialog="handleDialogUpdate" />
   </v-card>
 </template>
 
@@ -249,13 +229,11 @@ export default defineComponent({
           return '';
         }
 
-        const dateStr = this.$dateFns.format(
+        return this.$dateFns.format(
           new Date(this.metadata.PremiereDate),
           'yyyy-MM-dd',
           { locale: this.$i18n.locale }
         );
-
-        return dateStr;
       }
     },
     dateCreated: {
@@ -264,13 +242,11 @@ export default defineComponent({
           return '';
         }
 
-        const dateStr = this.$dateFns.format(
+        return this.$dateFns.format(
           new Date(this.metadata.DateCreated),
           'yyyy-MM-dd',
           { locale: this.$i18n.locale }
         );
-
-        return dateStr;
       }
     }
   },
