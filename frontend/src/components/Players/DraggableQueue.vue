@@ -1,5 +1,5 @@
 <template>
-  <v-list-item-group class="list-group">
+  <v-list-group class="list-group">
     <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
       <v-hover
         v-for="(item, index) in queue"
@@ -45,7 +45,7 @@
         </v-list-item>
       </v-hover>
     </draggable>
-  </v-list-item-group>
+  </v-list-group>
 </template>
 
 <script lang="ts">
