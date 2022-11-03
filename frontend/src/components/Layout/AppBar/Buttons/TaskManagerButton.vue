@@ -33,9 +33,7 @@
       <v-list color="transparent">
         <v-list-item-group>
           <v-list-item v-for="task in taskList" :key="`${task.id}`">
-            <v-list-item-content>
-              {{ $t(task.textKey, { ...task.textParams }) }}
-            </v-list-item-content>
+            {{ $t(task.textKey, { ...task.textParams }) }}
             <v-list-item-action>
               <v-progress-circular
                 v-if="task.progress !== 100"
