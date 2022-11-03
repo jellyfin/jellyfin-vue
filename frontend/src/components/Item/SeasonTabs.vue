@@ -21,14 +21,12 @@
                 :alt="episode.Name" />
               <watched-indicator v-if="episode.UserData.Played" />
             </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="text-wrap">
-                {{ episode.IndexNumber }}. {{ episode.Name }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="text-wrap">
-                {{ episode.Overview }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
+            <v-list-item-title class="text-wrap">
+              {{ episode.IndexNumber }}. {{ episode.Name }}
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-wrap">
+              {{ episode.Overview }}
+            </v-list-item-subtitle>
           </v-list-item>
         </v-list>
       </v-tab-item>

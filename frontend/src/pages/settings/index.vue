@@ -52,10 +52,8 @@
               <v-list-item-avatar>
                 <v-icon v-text="userItem.icon" />
               </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-text="userItem.name" />
-                <v-list-item-subtitle v-text="userItem.description" />
-              </v-list-item-content>
+              <v-list-item-title v-text="userItem.name" />
+              <v-list-item-subtitle v-text="userItem.description" />
               <v-list-item-action>
                 <v-icon>mdi-chevron-right</v-icon>
               </v-list-item-action>
@@ -79,10 +77,8 @@
                 <v-list-item-avatar>
                   <v-icon v-text="adminItem.icon" />
                 </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title v-text="adminItem.name" />
-                  <v-list-item-subtitle v-text="adminItem.description" />
-                </v-list-item-content>
+                <v-list-item-title v-text="adminItem.name" />
+                <v-list-item-subtitle v-text="adminItem.description" />
                 <v-list-item-action>
                   <v-icon>mdi-chevron-right</v-icon>
                 </v-list-item-action>
