@@ -23,7 +23,7 @@
         </v-list-item-action>
         <v-list-item-title v-text="item.title" />
       </v-list-item>
-      <v-subheader>{{ $t('libraries') }}</v-subheader>
+      <v-list-subheader>{{ $t('libraries') }}</v-list-subheader>
       <v-list-item
         v-for="library in userViews.getNavigationDrawerItems"
         :key="library.Id"
