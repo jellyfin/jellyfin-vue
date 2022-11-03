@@ -5,8 +5,7 @@
         <validation-provider
           v-slot="{ errors }"
           name="username"
-          :rules="rules.username"
-        >
+          :rules="rules.username">
           <v-text-field
             v-if="isEmpty(user)"
             v-model="login.username"
@@ -15,8 +14,7 @@
             autofocus
             autocomplete="username"
             :label="$t('username')"
-            :error-messages="errors"
-          />
+            :error-messages="errors" />
         </validation-provider>
         <v-text-field
           v-model="login.password"
@@ -27,14 +25,12 @@
           :label="$t('password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
-          @click:append="() => (showPassword = !showPassword)"
-        />
+          @click:append="() => (showPassword = !showPassword)" />
         <v-checkbox
           v-model="login.rememberMe"
           hide-details
           class="mt-6 mb-6"
-          :label="$t('login.rememberMe')"
-        />
+          :label="$t('login.rememberMe')" />
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
             <v-btn v-if="isEmpty(user)" to="/server/select" nuxt block large>
@@ -51,8 +47,7 @@
               block
               large
               color="primary"
-              type="submit"
-            >
+              type="submit">
               {{ $t('signIn') }}
             </v-btn>
           </v-col>

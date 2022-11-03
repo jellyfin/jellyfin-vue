@@ -3,8 +3,7 @@
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition"
-    offset-y
-  >
+    offset-y>
     <template #:activator="{ on, attrs }">
       <v-text-field
         :value="value"
@@ -12,8 +11,7 @@
         readonly
         outlined
         v-bind="attrs"
-        v-on="on"
-      />
+        v-on="on" />
     </template>
     <v-date-picker :value="value" @change="handleChange" />
   </v-menu>

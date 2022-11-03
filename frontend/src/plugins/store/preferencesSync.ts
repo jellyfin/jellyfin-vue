@@ -15,7 +15,7 @@ const syncedStores = ['clientSettings'];
 /**
  * Cast custom preferences returned from the server from strings to the correct Javascript type
  *
- * @param {DisplayPreferencesDto} data - Response from the server
+ * @param data - Response from the server
  * @param store
  */
 function castDisplayPreferencesResponse(

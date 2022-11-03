@@ -4,8 +4,7 @@
       v-if="carouselItems.length"
       :items="carouselItems"
       page-backdrop
-      class="top-carousel"
-    >
+      class="top-carousel">
       <template #referenceText>
         {{ $t('homeHeader.items.recentlyAdded') }}
       </template>
@@ -13,8 +12,7 @@
     <v-container class="sections-after-header">
       <v-row
         v-for="(homeSection, index) in homeSections"
-        :key="`homeSection-${index}`"
-      >
+        :key="`homeSection-${index}`">
         <home-section :section="homeSection" :index="index" />
       </v-row>
     </v-container>

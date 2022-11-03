@@ -9,8 +9,7 @@
         :z-index="zIndex"
         :position-x="positionX"
         :position-y="positionY"
-        top
-      >
+        top>
         <template #activator="{ on, attrs }">
           <!-- See comments for this in the onRightClick method -->
           <v-btn
@@ -20,8 +19,7 @@
             v-bind="attrs"
             v-on="on"
             @click.stop.prevent="onActivatorClick"
-            @contextmenu="onRightClick"
-          >
+            @contextmenu="onRightClick">
             <v-icon>mdi-dots-horizontal</v-icon>
           </v-btn>
         </template>
@@ -30,14 +28,12 @@
             <v-divider
               v-if="section.length && index1 > 0"
               :key="`item-${item.Id}-section-${index1}-divider`"
-              light
-            />
+              light />
             <v-list-item
               v-for="(menuOption, index2) in section"
               :key="`item-${item.Id}-section-${index1}-option-${index2}`"
               :disabled="menuOption.disabled"
-              @click="menuOption.action"
-            >
+              @click="menuOption.action">
               <v-list-item-icon>
                 <v-icon>{{ menuOption.icon }}</v-icon>
               </v-list-item-icon>
@@ -51,9 +47,8 @@
     </v-fade-transition>
     <metadata-editor-dialog
       v-if="metadataDialog"
-      :dialog.sync="metadataDialog"
-      :item-id="item.Id"
-    />
+      v-model:dialog="metadataDialog"
+      :item-id="item.Id" />
   </div>
 </template>
 
@@ -260,7 +255,6 @@ export default defineComponent({
                 progress: 0
               } as RunningTask);
             } catch (e) {
-              // eslint-disable-next-line no-console
               console.error(e);
 
               this.snackbar.push(this.$t('unableToRefreshLibrary'), 'error');
@@ -296,7 +290,7 @@ export default defineComponent({
       );
     }
   },
-  destroyed() {
+  unmounted() {
     if (this.$parent.$el) {
       (this.$parent.$el as HTMLElement).removeEventListener(
         'contextmenu',

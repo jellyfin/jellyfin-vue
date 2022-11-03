@@ -11,8 +11,7 @@
           :color="color"
           :disabled="disabled"
           v-bind="attrs"
-          v-on="$slots.tooltip ? { ...on, ...customListener } : customListener"
-        >
+          v-on="$slots.tooltip ? { ...on, ...customListener } : customListener">
           <slot name="icon" />
         </v-btn>
       </template>

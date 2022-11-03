@@ -3,7 +3,7 @@ import { DlnaProfileType, ResponseProfile } from '@jellyfin/client-axios';
 /**
  * Returns a valid ResponseProfile for the current platform.
  *
- * @returns {Array<ResponseProfile>} An array of subtitle profiles for the current platform.
+ * @returns An array of subtitle profiles for the current platform.
  */
 export function getResponseProfiles(): Array<ResponseProfile> {
   const ResponseProfiles = [];

@@ -11,15 +11,13 @@
       :items="itemsChunks"
       :min-item-size="350"
       :buffer="$vuetify.display.height * 1.15"
-      page-mode
-    >
+      page-mode>
       <template #default="{ item, index, active }">
         <dynamic-scroller-item
           :item="item"
           :active="active"
           :data-index="index"
-          class="card-grid-container"
-        >
+          class="card-grid-container">
           <card
             v-for="card of item.chunk"
             :key="card.Id"
@@ -27,8 +25,7 @@
             margin
             text
             overlay
-            link
-          />
+            link />
         </dynamic-scroller-item>
       </template>
     </dynamic-scroller>

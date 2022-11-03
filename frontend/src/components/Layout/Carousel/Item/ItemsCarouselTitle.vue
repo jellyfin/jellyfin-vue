@@ -7,29 +7,25 @@
         :max-height="$vuetify.display.smAndUp ? '7.5em' : '4em'"
         contain
         data-swiper-parallax="-300"
-        :src="logo.url"
-      />
+        :src="logo.url" />
     </router-link>
     <router-link
       v-else-if="itemLink && titleString"
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
-      :to="itemLink"
-    >
+      :to="itemLink">
       {{ titleString }}
     </router-link>
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"
-      class="text-truncate text-subtitle-2"
-    >
+      class="text-truncate text-subtitle-2">
       {{ subtitle }}
     </p>
     <h2
       v-if="item.Taglines && item.Taglines.length"
       data-swiper-parallax="-200"
-      class="text-truncate"
-    >
+      class="text-truncate">
       {{ item.Taglines[0] }}
     </h2>
   </div>

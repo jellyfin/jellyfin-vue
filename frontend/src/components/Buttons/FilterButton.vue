@@ -8,8 +8,7 @@
         text
         rounded
         v-bind="attrs"
-        v-on="on"
-      >
+        v-on="on">
         {{ $t('filter') }}
         <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
@@ -19,8 +18,7 @@
         class="my-2"
         icon
         v-bind="attrs"
-        v-on="on"
-      >
+        v-on="on">
         <v-icon>mdi-filter-variant</v-icon>
       </v-btn>
     </template>
@@ -32,13 +30,11 @@
             <v-list-item-group
               v-model="selectedStatusFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(status, statusIndex) in statusFilters">
                 <v-list-item
                   :key="`status-${statusIndex}`"
-                  :value="status.name"
-                >
+                  :value="status.name">
                   <template #default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title v-text="status.label" />
@@ -58,8 +54,7 @@
         v-if="
           collectionInfo.CollectionType === 'movies' ||
           collectionInfo.CollectionType === 'tvshows'
-        "
-      >
+        ">
         <v-expansion-panel-header>
           {{ $t('features') }}
         </v-expansion-panel-header>
@@ -68,13 +63,11 @@
             <v-list-item-group
               v-model="selectedFeatureFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(feature, featureIndex) in featureFilters">
                 <v-list-item
                   :key="`feature-${featureIndex}`"
-                  :value="feature.name"
-                >
+                  :value="feature.name">
                   <template #default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title v-text="feature.label" />
@@ -97,8 +90,7 @@
             <v-list-item-group
               v-model="selectedGenreFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(genre, genreIndex) in genreFilters">
                 <v-list-item :key="`genre-${genreIndex}`" :value="genre">
                   <template #default="{ active }">
@@ -125,8 +117,7 @@
             <v-list-item-group
               v-model="selectedRatingFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(rating, ratingIndex) in ratingFilters">
                 <v-list-item :key="`rating-${ratingIndex}`" :value="rating">
                   <template #default="{ active }">
@@ -148,8 +139,7 @@
         v-if="
           collectionInfo.CollectionType === 'movies' ||
           collectionInfo.CollectionType === 'tvshows'
-        "
-      >
+        ">
         <v-expansion-panel-header>
           {{ $t('videoTypes') }}
         </v-expansion-panel-header>
@@ -158,8 +148,7 @@
             <v-list-item-group
               v-model="selectedTypeFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(type, typeIndex) in typeFilters">
                 <v-list-item :key="`type-${typeIndex}`" :value="type.name">
                   <template #default="{ active }">
@@ -186,8 +175,7 @@
             <v-list-item-group
               v-model="selectedYearFilters"
               multiple
-              @change="emitFilterChange"
-            >
+              @change="emitFilterChange">
               <template v-for="(year, yearIndex) in yearFilters">
                 <v-list-item :key="`year-${yearIndex}`" :value="year">
                   <template #default="{ active }">

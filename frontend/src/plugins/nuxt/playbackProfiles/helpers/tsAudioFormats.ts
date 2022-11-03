@@ -8,9 +8,9 @@ import {
 } from './mp4AudioFormats';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} List of supported Ts audio codecs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns List of supported Ts audio codecs
  */
 export function getSupportedTsAudioCodecs(
   context: Context,
