@@ -10,9 +10,7 @@
         <v-list-item-avatar>
           <v-icon v-text="linkItem.icon" />
         </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title v-text="linkItem.name" />
-        </v-list-item-content>
+        <v-list-item-title v-text="linkItem.name" />
         <v-list-item-action>
           <v-icon>mdi-open-in-new</v-icon>
         </v-list-item-action>

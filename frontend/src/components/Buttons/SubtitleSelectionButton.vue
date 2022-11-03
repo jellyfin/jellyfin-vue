@@ -46,9 +46,7 @@
               mdi-check
             </v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
-            {{ track.label }}
-          </v-list-item-content>
+          {{ track.label }}
         </v-list-item>
       </v-list>
     </v-card>
