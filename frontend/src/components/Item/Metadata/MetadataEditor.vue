@@ -395,24 +395,24 @@ export default defineComponent({
   background-color: var(--v-secondary-darken1);
 }
 
-.metadata-editor >>> .v-card__text {
+:deep(.v-card__text) {
   overflow: hidden;
 }
 
-.metadata-editor >>> .v-tabs {
+:deep(.v-tabs) {
   height: 100%;
 }
 
-.metadata-editor >>> .v-tabs-bar {
+:deep(.v-tabs-bar) {
   overflow: hidden;
   border-right: 1px solid var(--v-secondary-lighten1);
 }
 
-.metadata-editor >>> .v-tabs-items {
+:deep(.v-tabs-items) {
   overflow-y: scroll;
 }
 
-.metadata-editor >>> .v-card__actions {
+:deep(.v-card__actions) {
   width: 100%;
 }
 </style>
