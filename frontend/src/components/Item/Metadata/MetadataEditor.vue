@@ -124,12 +124,12 @@
                 v-for="(item, i) in metadata.People"
                 :key="`${item.Id}-${i}`"
                 @click="handlePersonEdit(item)">
-                <v-list-item-avatar>
+                <v-avatar>
                   <v-img
                     v-if="item.PrimaryImageTag"
                     :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
                   <v-icon v-else class="grey darken-3">mdi-account</v-icon>
-                </v-list-item-avatar>
+                </v-avatar>
                 <v-list-item-title>
                   {{ item.Name }}
                 </v-list-item-title>

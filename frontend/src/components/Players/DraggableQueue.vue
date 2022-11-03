@@ -16,9 +16,9 @@
           <v-list-item-action v-else class="justify-center d-flex">
             <v-icon>mdi-drag-horizontal</v-icon>
           </v-list-item-action>
-          <v-list-item-avatar tile class="list-group-item">
+          <v-avatar tile class="list-group-item">
             <blurhash-image :item="item" />
-          </v-list-item-avatar>
+          </v-avatar>
 
           <v-list-item-title
             :class="{
