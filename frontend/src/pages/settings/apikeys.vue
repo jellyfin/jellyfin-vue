@@ -14,8 +14,8 @@
     </template>
     <template #content>
       <v-col>
-        <v-data-table :headers="headers" :items="apiKeys" class="elevation-2">
-          <!-- eslint-disable-next-line vue/valid-v-slot -->
+        <!-- TODO: Wait for Vuetify 3.1 -->
+        <!-- <v-data-table :headers="headers" :items="apiKeys" class="elevation-2">
           <template #item.DateCreated="{ item }">
             <p class="text-capitalize-first-letter mb-0">
               {{
@@ -29,7 +29,7 @@
               }}
             </p>
           </template>
-        </v-data-table>
+        </v-data-table> -->
       </v-col>
       <!-- Add API key dialog -->
       <add-api-key ref="addKeyDialog" @key-added="refreshApiKeys" />
