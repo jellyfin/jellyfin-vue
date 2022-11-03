@@ -8,8 +8,7 @@
         rounded
         :disabled="disabled"
         v-bind="attrs"
-        v-on="on"
-      >
+        v-on="on">
         {{ $t('sortByType', { type: items[model].name }) }}
         <v-icon right>mdi-menu-down</v-icon>
       </v-btn>
@@ -19,16 +18,14 @@
         class="my-2"
         icon
         v-bind="attrs"
-        v-on="on"
-      >
+        v-on="on">
         <v-icon>mdi-sort-alphabetical-ascending</v-icon>
       </v-btn>
     </template>
     <v-list dense>
       <v-list-item-group
         v-model="model"
-        @change="$emit('change', items[model].value)"
-      >
+        @change="$emit('change', items[model].value)">
         <v-list-item v-for="item in items" :key="item.value">
           <v-list-item-title>{{ item.name }}</v-list-item-title>
         </v-list-item>

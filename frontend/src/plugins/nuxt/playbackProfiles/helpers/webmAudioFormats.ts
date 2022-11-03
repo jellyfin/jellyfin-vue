@@ -1,9 +1,9 @@
 import { Context } from '@nuxt/types';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} An array of supported codecs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns An array of supported codecs
  */
 export function getSupportedWebMAudioCodecs(
   context: Context,

@@ -3,9 +3,9 @@ import { hasVp8Support } from './mp4VideoFormats';
 import { getSupportedAudioCodecs } from './audioFormats';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if the browser has AC3 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if the browser has AC3 support
  */
 export function hasAc3Support(
   context: Context,
@@ -21,9 +21,9 @@ export function hasAc3Support(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if the browser has AC3 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if the browser has AC3 support
  */
 export function hasAc3InHlsSupport(
   context: Context,
@@ -50,9 +50,9 @@ export function hasAc3InHlsSupport(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has EAC3 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has EAC3 support
  */
 export function hasEac3Support(
   context: Context,
@@ -68,8 +68,8 @@ export function hasEac3Support(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has AAC support
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has AAC support
  */
 export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
   return !!videoTestElement
@@ -78,8 +78,8 @@ export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @returns {boolean} Determines if browser has MP2 support
+ * @param context - Nuxt context
+ * @returns Determines if browser has MP2 support
  */
 export function hasMp2AudioSupport(context: Context): boolean {
   return context.$browser.isTv();
@@ -87,8 +87,8 @@ export function hasMp2AudioSupport(context: Context): boolean {
 
 /**
  *
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has Mp3 support
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has Mp3 support
  */
 export function hasMp3AudioSupport(
   videoTestElement: HTMLVideoElement
@@ -109,9 +109,9 @@ export function hasMp3AudioSupport(
 /**
  * Determines DTS audio support
  *
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browserr has DTS audio support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browserr has DTS audio support
  */
 export function hasDtsSupport(
   context: Context,
@@ -136,9 +136,9 @@ export function hasDtsSupport(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} Array of supported MP4 audio codecs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Array of supported MP4 audio codecs
  */
 export function getSupportedMP4AudioCodecs(
   context: Context,

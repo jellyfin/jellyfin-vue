@@ -21,9 +21,9 @@ import { getSupportedTsVideoCodecs } from './helpers/tsVideoFormats';
 /**
  * Returns a valid TranscodingProfile for the current platform.
  *
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {Array<TranscodingProfile>} An array of transcoding profiles for the current platform.
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns An array of transcoding profiles for the current platform.
  */
 export function getTranscodingProfiles(
   context: Context,

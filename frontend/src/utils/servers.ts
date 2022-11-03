@@ -6,8 +6,8 @@ export const urlRegEx = /^https?:\/\/.+/;
 /**
  * Parse and returns a list of url strings from DEFAULT_SERVERS env var
  *
- * @param {string | undefined} value Env var DEFAULT_SERVERS value
- * @returns {string[]} list of url strings. (default: empty array)
+ * @param value - Env var DEFAULT_SERVERS value
+ * @returns list of url strings. (default: empty array)
  */
 export function parseServerListString(value: string | undefined): string[] {
   if (!value) {
@@ -24,7 +24,6 @@ export function parseServerListString(value: string | undefined): string[] {
       // Valid Url
       serverUrlList.push(url);
     } else {
-      // eslint-disable-next-line no-console
       console.warn(
         `[Auth] Invalid url for default server. It will be excluded from the server list: ${url}`
       );

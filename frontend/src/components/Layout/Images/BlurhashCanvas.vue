@@ -5,8 +5,7 @@
       :key="`canvas-${hash}`"
       :width="width"
       :height="height"
-      class="absolute"
-    />
+      class="absolute" />
   </v-fade-transition>
 </template>
 

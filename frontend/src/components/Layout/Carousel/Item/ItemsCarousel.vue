@@ -8,14 +8,12 @@
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="'Backdrop'"
-            :icon-size="$vuetify.display.mdAndUp ? '256' : '128'"
-          />
+            :icon-size="$vuetify.display.mdAndUp ? '256' : '128'" />
         </div>
         <div class="slide-content">
           <v-container
             fill-height
-            class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start"
-          >
+            class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start">
             <v-row>
               <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
                 <p class="text-overline text-truncate mb-2 my-2">
@@ -29,8 +27,7 @@
                   runtime
                   rating
                   class="mb-3"
-                  data-swiper-parallax="-100"
-                />
+                  data-swiper-parallax="-100" />
                 <play-button :item="item" data-swiper-parallax="-100" />
                 <v-btn
                   min-width="12em"
@@ -38,8 +35,7 @@
                   rounded
                   nuxt
                   data-swiper-parallax="-100"
-                  :to="getItemDetailsLink(item)"
-                >
+                  :to="getItemDetailsLink(item)">
                   {{ $t('viewDetails') }}
                 </v-btn>
               </v-col>

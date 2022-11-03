@@ -15,8 +15,7 @@
                 <router-link
                   class="link font-weight-bold text-h6 text-md-h4"
                   tag="h2"
-                  :to="getItemDetailsLink(release)"
-                >
+                  :to="getItemDetailsLink(release)">
                   {{ release.Name }}
                 </router-link>
               </v-col>

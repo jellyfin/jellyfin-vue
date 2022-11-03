@@ -9,16 +9,14 @@
       class="px-2 px-sm-4 progress-bar"
       hoverable
       @on-animation-end="onAnimationEnd"
-      @on-progress-clicked="onProgressClicked"
-    />
+      @on-progress-clicked="onProgressClicked" />
     <swiper
       ref="carousel"
       class="swiper"
       :options="swiperOptions"
       @slideChange="onSlideChange"
       @touchStart="onTouch"
-      @touchEnd="onTouch"
-    >
+      @touchEnd="onTouch">
       <slot name="slides" />
     </swiper>
     <carousel-progress-bar
@@ -30,8 +28,7 @@
       class="px-2 px-sm-4 progress-bar"
       hoverable
       @on-animation-end="onAnimationEnd"
-      @on-progress-clicked="onProgressClicked"
-    />
+      @on-progress-clicked="onProgressClicked" />
   </div>
 </template>
 

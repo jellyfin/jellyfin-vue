@@ -4,8 +4,7 @@
       v-if="blurhash"
       :key="`backdrop-${blurhash}`"
       class="backdrop"
-      :style="`--o:${page.backdrop.opacity}`"
-    >
+      :style="`--o:${page.backdrop.opacity}`">
       <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
     </div>
   </v-fade-transition>

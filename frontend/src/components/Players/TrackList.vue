@@ -15,8 +15,7 @@
         <tr
           v-if="Object.keys(tracksPerDisc).length > 1"
           :key="discNumber"
-          class="disc-header"
-        >
+          class="disc-header">
           <td colspan="4" class="text--secondary">
             <v-icon class="text--secondary">mdi-disc</v-icon>
             {{ $t('discNumber', { discNumber }) }}
@@ -25,12 +24,10 @@
         <v-hover
           v-for="track in tracksOnDisc"
           v-slot="{ hover }"
-          :key="track.Id"
-        >
+          :key="track.Id">
           <tr
             :class="{ 'primary--text': isPlaying(track) }"
-            @dblclick="playTracks(track)"
-          >
+            @dblclick="playTracks(track)">
             <td style="width: 4em" class="pr-0 text-center">
               <span v-if="hover && !isPlaying(track)">
                 <v-btn small icon @click="playTracks(track)">
@@ -47,15 +44,13 @@
                 <span>{{ track.Name }}</span>
                 <div
                   v-if="!track.Artists.includes(track.AlbumArtist)"
-                  class="ml-3"
-                >
+                  class="ml-3">
                   <router-link
                     v-for="artist of track.ArtistItems"
                     :key="artist.Id"
                     tag="span"
                     class="link text--secondary"
-                    :to="getItemDetailsLink(artist, 'MusicArtist')"
-                  >
+                    :to="getItemDetailsLink(artist, 'MusicArtist')">
                     {{ artist.Name }}
                   </router-link>
                 </div>
@@ -114,8 +109,8 @@ export default defineComponent({
   },
   methods: {
     /**
-     * @param {number} ticks - The number of ticks to convert to track length
-     * @returns {string} Returns the length of the track in the format XX:XX
+     * @param ticks - The number of ticks to convert to track length
+     * @returns Returns the length of the track in the format XX:XX
      */
     getRuntime(ticks: number): string {
       let seconds = ticksToMs(ticks) / 1000;
@@ -127,8 +122,8 @@ export default defineComponent({
        * Formats the second number
        *
        * @example 7 -> 07
-       * @param {string} seconds - Number to format
-       * @returns {string} Formatted seconds number
+       * @param seconds - Number to format
+       * @returns Formatted seconds number
        */
       function formatSeconds(seconds: string): string {
         return ('0' + seconds).slice(-2);

@@ -24,7 +24,6 @@ export const userViewsStore = defineStore('userViews', {
 
         this.views = userViewsResponse.data.Items || [];
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
       }
     }

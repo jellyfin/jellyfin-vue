@@ -3,8 +3,7 @@
     v-if="canMarkWatched(item)"
     icon
     :dark="dark"
-    @click.stop.prevent="togglePlayed"
-  >
+    @click.stop.prevent="togglePlayed">
     <v-icon :color="isPlayed ? 'primary' : ''">mdi-check</v-icon>
   </v-btn>
 </template>
