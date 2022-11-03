@@ -21,11 +21,9 @@
                 <v-list-item-avatar>
                   <v-icon>mdi-file</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title v-text="file.Name" />
-                  <v-list-item-subtitle
-                    v-text="getFormattedLogDate(file.DateModified)" />
-                </v-list-item-content>
+                <v-list-item-title v-text="file.Name" />
+                <v-list-item-subtitle
+                  v-text="getFormattedLogDate(file.DateModified)" />
                 <v-list-item-action>
                   <v-icon>mdi-open-in-new</v-icon>
                 </v-list-item-action>
@@ -69,10 +67,8 @@
                   :color="getColorFromSeverity(activity.Severity)">
                   <v-icon dark v-text="getIconFromType(activity.Type)" />
                 </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title v-text="activity.Name" />
-                  <v-list-item-subtitle v-text="activity.ShortOverview" />
-                </v-list-item-content>
+                <v-list-item-title v-text="activity.Name" />
+                <v-list-item-subtitle v-text="activity.ShortOverview" />
                 <v-list-item-action>
                   <v-list-item-subtitle
                     class="text-capitalize-first-letter"

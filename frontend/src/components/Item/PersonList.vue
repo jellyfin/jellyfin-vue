@@ -11,12 +11,10 @@
             <blurhash-image :item="item" icon-size="16" />
           </v-avatar>
         </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>{{ item.Name }}</v-list-item-title>
-          <v-list-item-subtitle>
-            {{ item.Role || item.Type }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <v-list-item-title>{{ item.Name }}</v-list-item-title>
+        <v-list-item-subtitle>
+          {{ item.Role || item.Type }}
+        </v-list-item-subtitle>
       </v-list-item>
     </div>
     <div

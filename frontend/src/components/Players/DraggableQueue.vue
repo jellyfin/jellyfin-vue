@@ -20,23 +20,21 @@
             <blurhash-image :item="item" />
           </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title
-              :class="{
-                'primary--text font-weight-bold': isPlaying(index)
-              }"
-              class="text-truncate ml-2 list-group-item transition">
-              {{ item.Name }}
-            </v-list-item-title>
-            <v-list-item-subtitle
-              v-if="getArtists(item)"
-              class="ml-2 list-group-item transition"
-              :class="{
-                'primary--text font-weight-bold': isPlaying(index)
-              }">
-              {{ getArtists(item) }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
+          <v-list-item-title
+            :class="{
+              'primary--text font-weight-bold': isPlaying(index)
+            }"
+            class="text-truncate ml-2 list-group-item transition">
+            {{ item.Name }}
+          </v-list-item-title>
+          <v-list-item-subtitle
+            v-if="getArtists(item)"
+            class="ml-2 list-group-item transition"
+            :class="{
+              'primary--text font-weight-bold': isPlaying(index)
+            }">
+            {{ getArtists(item) }}
+          </v-list-item-subtitle>
 
           <v-list-item-action v-hide="isPlaying(index)">
             <like-button :item="item" />
