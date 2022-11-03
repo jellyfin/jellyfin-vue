@@ -9,7 +9,8 @@
           {{ $t('youMayAlsoLike') }}
         </slot>
       </h2>
-      <v-skeleton-loader v-else-if="loading" type="heading" />
+      <!-- TODO: Wait for Vuetify 3.1 -->
+      <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
       <v-list color="transparent" two-line>
         <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
@@ -33,8 +34,9 @@
           v-else-if="loading"
           :key="index"
           class="d-flex align-center mt-5 mb-5">
-          <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
-          <v-skeleton-loader type="sentences" width="10em" class="pr-5" />
+          <!-- TODO: Wait for Vuetify 3.1 -->
+          <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
+          <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
         </div>
       </v-list>
     </div>
