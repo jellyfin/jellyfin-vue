@@ -85,7 +85,7 @@ export default defineComponent({
   }
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .metadata {
   height: calc(100vh - 64px);
   overflow: hidden;

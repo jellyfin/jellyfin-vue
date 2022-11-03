@@ -393,11 +393,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-/* stylelint-disable */
+<style lang="scss" scoped>
 .v-item-group::v-deep .v-slide-group__prev--disabled,
 .v-item-group::v-deep .v-slide-group__next--disabled {
   display: none !important;
 }
-/* stylelint-enable */
 </style>

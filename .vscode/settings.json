@@ -5,6 +5,8 @@
   "i18n-ally.sourceLanguage": "en-US",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "i18n-ally.localesPaths": ["frontend/locales"],
-  "stylelint.validate": ["vue"],
-  "i18n-ally.enabledFrameworks": ["vue"]
+  "i18n-ally.enabledFrameworks": ["vue"],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
