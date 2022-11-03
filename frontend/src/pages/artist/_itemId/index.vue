@@ -57,20 +57,20 @@
               {{ $t('item.artist.information') }}
             </v-tab>
           </v-tabs>
-          <v-tabs-items v-model="activeTab" class="transparent">
-            <v-tab-item :key="0">
+          <v-tabs v-model="activeTab" class="transparent">
+            <v-tab :key="0">
               <artist-tab :releases="discography" />
-            </v-tab-item>
-            <v-tab-item :key="1">
+            </v-tab>
+            <v-tab :key="1">
               <artist-tab :releases="albums" />
-            </v-tab-item>
-            <v-tab-item :key="2">
+            </v-tab>
+            <v-tab :key="2">
               <artist-tab :releases="eps" />
-            </v-tab-item>
-            <v-tab-item :key="3">
+            </v-tab>
+            <v-tab :key="3">
               <artist-tab :releases="singles" />
-            </v-tab-item>
-            <v-tab-item :key="4">
+            </v-tab>
+            <v-tab :key="4">
               <v-container>
                 <v-row>
                   <v-col>
@@ -78,8 +78,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab-item>
-            <v-tab-item :key="5">
+            </v-tab>
+            <v-tab :key="5">
               <v-container>
                 <v-row>
                   <v-col>
@@ -87,8 +87,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab-item>
-            <v-tab-item :key="6">
+            </v-tab>
+            <v-tab :key="6">
               <v-container>
                 <v-row>
                   <v-col>
@@ -98,8 +98,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab-item>
-          </v-tabs-items>
+            </v-tab>
+          </v-tabs>
         </v-col>
       </v-row>
     </template>
