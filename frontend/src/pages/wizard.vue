@@ -8,8 +8,7 @@
             <v-stepper-step
               :complete="wizardStage > 1"
               step="1"
-              :editable="maxWizardStage > 0"
-            >
+              :editable="maxWizardStage > 0">
               {{ $t('wizard.languageLocale') }}
             </v-stepper-step>
 
@@ -18,8 +17,7 @@
             <v-stepper-step
               :complete="wizardStage > 2"
               step="2"
-              :editable="maxWizardStage > 1"
-            >
+              :editable="maxWizardStage > 1">
               {{ $t('wizard.administratorAccount') }}
             </v-stepper-step>
 
@@ -28,8 +26,7 @@
             <v-stepper-step
               :complete="wizardStage > 3"
               step="3"
-              :editable="maxWizardStage > 2"
-            >
+              :editable="maxWizardStage > 2">
               {{ $t('wizard.preferredMetadataLanguage') }}
             </v-stepper-step>
 
@@ -38,8 +35,7 @@
             <v-stepper-step
               :complete="wizardStage > 4"
               step="4"
-              :editable="maxWizardStage > 3"
-            >
+              :editable="maxWizardStage > 3">
               {{ $t('wizard.remoteAccess') }}
             </v-stepper-step>
           </v-stepper-header>
@@ -53,24 +49,21 @@
               <wizard-admin-account
                 class="pt-4"
                 @step-complete="changeStep"
-                @previous-step="previousStep"
-              />
+                @previous-step="previousStep" />
             </v-stepper-content>
 
             <v-stepper-content step="3">
               <wizard-metadata
                 class="pt-4"
                 @step-complete="changeStep"
-                @previous-step="previousStep"
-              />
+                @previous-step="previousStep" />
             </v-stepper-content>
 
             <v-stepper-content step="4">
               <wizard-remote-access
                 class="pt-4"
                 @step-complete="changeStep"
-                @previous-step="previousStep"
-              />
+                @previous-step="previousStep" />
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper>
@@ -124,7 +117,6 @@ export default defineComponent({
         // Redirect to setup complete page
         this.$router.replace('/server/login');
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         this.snackbar.push(this.$t('wizard.completeError'), 'success');
       }

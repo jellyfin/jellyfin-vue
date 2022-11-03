@@ -15,8 +15,7 @@
         outlined
         rounded
         nuxt
-        :to="`./${genre.Id}/shuffle`"
-      >
+        :to="`./${genre.Id}/shuffle`">
         {{ $t('playback.shuffleAll') }}
       </v-btn>
     </v-app-bar>
@@ -29,8 +28,7 @@
       <item-grid
         v-if="genres.length"
         :items="genres"
-        :loading="$fetchState.pending"
-      />
+        :loading="$fetchState.pending" />
       <v-row v-else-if="!$fetchState.pending" justify="center">
         <v-col cols="12" class="card-grid-container empty-card-container">
           <skeleton-card v-for="n in 24" :key="n" boilerplate text />

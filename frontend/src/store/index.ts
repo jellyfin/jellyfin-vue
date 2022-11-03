@@ -1,4 +1,5 @@
 import { setMapStoreSuffix } from 'pinia';
+
 declare module 'pinia' {
   export interface MapStoresCustomization {
     suffix: '';

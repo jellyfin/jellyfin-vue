@@ -10,8 +10,7 @@
             :large="large"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             v-bind="{ ...attrsMenu, ...attrsTooltip }"
-            v-on="{ ...onMenu, ...onTooltip }"
-          >
+            v-on="{ ...onMenu, ...onTooltip }">
             <v-icon>mdi-web</v-icon>
           </v-btn>
         </template>
@@ -23,8 +22,7 @@
         v-for="(item, index) in $i18n.locales"
         :key="index"
         :input-value="item.code === $i18n.locale"
-        @click="clientSettings.setLocale(item.code)"
-      >
+        @click="clientSettings.setLocale(item.code)">
         <v-list-item-title>{{ item.name }}</v-list-item-title>
       </v-list-item>
     </v-list>

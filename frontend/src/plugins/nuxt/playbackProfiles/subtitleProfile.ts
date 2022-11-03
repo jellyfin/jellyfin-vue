@@ -6,7 +6,7 @@ import {
 /**
  * Returns a valid SubtitleProfile for the current platform.
  *
- * @returns {Array<SubtitleProfile>} An array of subtitle profiles for the current platform.
+ * @returns An array of subtitle profiles for the current platform.
  */
 export function getSubtitleProfiles(): Array<SubtitleProfile> {
   const SubtitleProfiles: Array<SubtitleProfile> = [];

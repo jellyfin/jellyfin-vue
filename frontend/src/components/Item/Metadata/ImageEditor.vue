@@ -9,8 +9,7 @@
             :key="`${item.ImageTag}-${i}`"
             class="ma-2"
             outlined
-            width="288"
-          >
+            width="288">
             <v-img :src="imageFormat(item)" contain width="288" height="162" />
             <div class="text-center subtitle-1">{{ item.ImageType }}</div>
             <div class="text-center body-2 text--secondary">
@@ -37,8 +36,7 @@
             :key="`${item.ImageTag}-${i}`"
             class="mx-2"
             outlined
-            width="288"
-          >
+            width="288">
             <v-img :src="imageFormat(item)" contain width="288" height="162" />
             <div class="text-center subtitle-1">{{ item.ImageType }}</div>
             <div class="text-center body-2 text--secondary">
@@ -57,10 +55,9 @@
       </v-col>
     </v-row>
     <image-search
-      :dialog.sync="dialog"
+      v-model:dialog="dialog"
       :metadata="metadata"
-      @download-success="getItemImageInfos"
-    />
+      @download-success="getItemImageInfos" />
   </div>
 </template>
 

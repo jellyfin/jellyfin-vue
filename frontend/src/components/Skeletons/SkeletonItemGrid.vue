@@ -5,8 +5,7 @@
         v-for="n in 24"
         :key="n"
         :card-shape="skeletonCardShape"
-        text
-      />
+        text />
     </v-col>
   </v-row>
 </template>

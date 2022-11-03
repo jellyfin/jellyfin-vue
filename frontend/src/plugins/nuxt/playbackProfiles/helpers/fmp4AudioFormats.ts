@@ -9,9 +9,9 @@ import {
 } from './mp4AudioFormats';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} List of supported FMP4 audio codecs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns List of supported FMP4 audio codecs
  */
 export function getSupportedFmp4AudioCodecs(
   context: Context,

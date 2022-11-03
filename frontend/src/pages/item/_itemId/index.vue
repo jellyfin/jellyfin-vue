@@ -8,21 +8,18 @@
         <v-col cols="12" md="9">
           <h1
             class="text-h5 text-sm-h4 font-weight-light"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
-          >
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             {{ item.Name }}
           </h1>
           <h2
             v-if="item.OriginalTitle && item.OriginalTitle !== item.Name"
             class="text-subtitle-1"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
-          >
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             {{ item.OriginalTitle }}
           </h2>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
-            :class="{ 'text-center': !$vuetify.display.mdAndUp }"
-          >
+            :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             <media-info :item="item" year runtime rating ends-at />
           </div>
           <v-row
@@ -30,15 +27,13 @@
             :class="{
               'justify-center': !$vuetify.display.mdAndUp,
               'ml-0': $vuetify.display.mdAndUp
-            }"
-          >
+            }">
             <play-button
               class="mr-2"
               :item="item"
               :video-track-index="currentVideoTrack"
               :audio-track-index="currentAudioTrack"
-              :subtitle-track-index="currentSubtitleTrack"
-            />
+              :subtitle-track-index="currentSubtitleTrack" />
             <like-button :item="item" class="mr-2" />
             <mark-played-button :item="item" class="mr-2" />
             <item-menu :item="item" />
@@ -46,8 +41,7 @@
           <v-col cols="12" md="10">
             <v-row
               v-if="item && item.GenreItems && item.GenreItems.length > 0"
-              align="center"
-            >
+              align="center">
               <v-col :cols="12" :sm="2" class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
               </v-col>
@@ -55,15 +49,13 @@
                 <v-slide-group>
                   <v-slide-item
                     v-for="(genre, index) in item.GenreItems"
-                    :key="`genre-${genre.Id}`"
-                  >
+                    :key="`genre-${genre.Id}`">
                     <v-chip
                       small
                       link
                       :class="{ 'ml-2': index > 0 }"
                       nuxt
-                      :to="`/genre/${genre.Id}?type=${item.Type}`"
-                    >
+                      :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
                     </v-chip>
                   </v-slide-item>
@@ -72,27 +64,23 @@
             </v-row>
             <v-row
               v-if="item && directors.length > 0 && !$vuetify.display.smAndUp"
-              align="center"
-            >
+              align="center">
               <v-col
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate"
-              >
+                class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('directing') }}</label>
               </v-col>
               <v-col class="px-0" :cols="12" :sm="10">
                 <v-slide-group>
                   <v-slide-item
                     v-for="director in directors"
-                    :key="director.Id"
-                  >
+                    :key="director.Id">
                     <v-chip
                       small
                       link
                       nuxt
-                      :to="getItemDetailsLink(director, 'Person')"
-                    >
+                      :to="getItemDetailsLink(director, 'Person')">
                       {{ director.Name }}
                     </v-chip>
                   </v-slide-item>
@@ -101,13 +89,11 @@
             </v-row>
             <v-row
               v-if="item && writers.length > 0 && !$vuetify.display.smAndUp"
-              align="center"
-            >
+              align="center">
               <v-col
                 :cols="12"
                 :sm="2"
-                class="mt-sm-3 py-sm-0 px-0 text-truncate"
-              >
+                class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('writing') }}</label>
               </v-col>
               <v-col class="px-0" :cols="12" :sm="10">
@@ -117,8 +103,7 @@
                       small
                       link
                       nuxt
-                      :to="getItemDetailsLink(writer, 'Person')"
-                    >
+                      :to="getItemDetailsLink(writer, 'Person')">
                       {{ writer.Name }}
                     </v-chip>
                   </v-slide-item>
@@ -127,14 +112,12 @@
             </v-row>
             <div
               v-if="item && item.MediaSources && item.MediaSources.length > 0"
-              class="mt-2"
-            >
+              class="mt-2">
               <v-row v-if="item.MediaSources.length > 1" align="center">
                 <v-col
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate"
-                >
+                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('version') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
@@ -147,12 +130,11 @@
                     dense
                     single-line
                     hide-details
-                    class="text-truncate"
-                  >
-                    <template slot="selection" slot-scope="{ item: i }">
+                    class="text-truncate">
+                    <template #selection="{ item: i }">
                       {{ i.value.Name }}
                     </template>
-                    <template slot="item" slot-scope="{ item: i }">
+                    <template #item="{ item: i }">
                       {{ i.value.Name }}
                     </template>
                   </v-select>
@@ -162,8 +144,7 @@
                 <v-col
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate"
-                >
+                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('video') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
@@ -173,16 +154,14 @@
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
                     type="Video"
-                    @input="currentVideoTrack = $event"
-                  />
+                    @input="currentVideoTrack = $event" />
                 </v-col>
               </v-row>
               <v-row align="center">
                 <v-col
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate"
-                >
+                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('audio') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
@@ -192,16 +171,14 @@
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
                     type="Audio"
-                    @input="currentAudioTrack = $event"
-                  />
+                    @input="currentAudioTrack = $event" />
                 </v-col>
               </v-row>
               <v-row align="center">
                 <v-col
                   :cols="12"
                   :sm="2"
-                  class="mt-sm-3 py-sm-0 px-0 text-truncate"
-                >
+                  class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
@@ -211,8 +188,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
                     type="Subtitle"
-                    @input="currentSubtitleTrack = $event"
-                  />
+                    @input="currentSubtitleTrack = $event" />
                 </v-col>
               </v-row>
             </div>
@@ -222,16 +198,14 @@
                 item.MediaType === 'Video' &&
                 (!item.MediaSources || item.MediaSources.length === 0)
               "
-              class="text-h5 my-4"
-            >
+              class="text-h5 my-4">
               {{ $t('NoMediaSourcesAvailable') }}
             </div>
           </v-col>
           <div>
             <p
               v-if="item.Taglines && item.Taglines.length > 0"
-              class="text-subtitle-1 text-truncate"
-            >
+              class="text-subtitle-1 text-truncate">
               {{ item.Taglines[0] }}
             </p>
             <p class="item-overview">{{ item.Overview }}</p>

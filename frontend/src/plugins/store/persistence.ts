@@ -8,6 +8,9 @@ localStorage.removeItem('vuex');
  */
 const storageStores = ['deviceProfile', 'clientSettings', 'auth'];
 
+/**
+ *
+ */
 export default function persistence({ store }: PiniaPluginContext): void {
   if (storageStores.includes(store.$id)) {
     store.$state = destr(localStorage.getItem(store.$id));

@@ -137,6 +137,9 @@ declare module 'vue/types/vue' {
   }
 }
 
+/**
+ *
+ */
 export default function (
   context: Context,
   inject: (key: string, value: any) => void

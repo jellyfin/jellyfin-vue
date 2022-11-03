@@ -26,7 +26,7 @@ export default defineComponent({
   mounted() {
     window.addEventListener('scroll', this.setScroll, { passive: true });
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('scroll', this.setScroll);
   },
   methods: {
