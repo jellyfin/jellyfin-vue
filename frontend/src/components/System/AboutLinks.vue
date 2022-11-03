@@ -6,8 +6,7 @@
         :key="linkItem.name"
         rel="noreferrer noopener"
         :href="linkItem.link"
-        target="_blank"
-      >
+        target="_blank">
         <v-list-item-avatar>
           <v-icon v-text="linkItem.icon" />
         </v-list-item-avatar>

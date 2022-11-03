@@ -3,8 +3,7 @@
     v-if="commit"
     :href="'https://github.com/jellyfin/jellyfin-vue/commit/' + commit"
     target="_blank"
-    rel="noopener noreferrer"
-  >
+    rel="noopener noreferrer">
     <v-list-item-action>
       <i-mdi-github />
     </v-list-item-action>

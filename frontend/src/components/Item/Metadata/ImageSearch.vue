@@ -4,8 +4,7 @@
     :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
     width="60%"
-    @click:outside="$emit('update:dialog', false)"
-  >
+    @click:outside="$emit('update:dialog', false)">
     <v-card height="100%" class="image-search-card">
       <v-card-title>{{ $t('search.name') }}</v-card-title>
       <v-divider />
@@ -17,8 +16,7 @@
           :disabled="loading"
           :label="$t('metadata.source')"
           outlined
-          hide-details
-        />
+          hide-details />
         <v-select
           v-model="type"
           class="mx-4"
@@ -26,15 +24,13 @@
           :disabled="loading"
           :label="$t('metadata.type')"
           outlined
-          hide-details
-        />
+          hide-details />
         <v-checkbox
           v-model="allLanguages"
           class="mt-0 mx-4"
           :label="$t('allLanguages')"
           :disabled="loading"
-          hide-details
-        />
+          hide-details />
       </v-row>
       <v-divider />
       <v-row class="image-results">
@@ -44,8 +40,7 @@
           :width="7"
           color="primary"
           indeterminate
-          class="loading-bar"
-        />
+          class="loading-bar" />
         <v-card v-else-if="!images.length" class="mx-auto">
           <v-card-title>
             {{ $t('noImagesFound') }}
@@ -55,14 +50,12 @@
           <v-card
             v-for="(item, i) in images"
             :key="`${item.Type}-${i}`"
-            class="ma-2 d-flex flex-column"
-          >
+            class="ma-2 d-flex flex-column">
             <v-img
               :src="imageFormat(item.Url)"
               :aspect-ratio="ratio"
               position="top center"
-              contain
-            />
+              contain />
             <div class="text-center text-truncate subtitle-1 mt-2">
               {{ item.ProviderName }}
             </div>

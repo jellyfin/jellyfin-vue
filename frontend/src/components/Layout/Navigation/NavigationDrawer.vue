@@ -10,16 +10,14 @@
     class="pa-s"
     :class="{
       transparent: page.transparentLayout && !$vuetify.display.mobile
-    }"
-  >
+    }">
     <v-list nav>
       <v-list-item
         v-for="item in items"
         :key="item.Id"
         :to="item.to"
         router
-        exact
-      >
+        exact>
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
@@ -33,8 +31,7 @@
         :key="library.Id"
         :to="library.to"
         router
-        exact
-      >
+        exact>
         <v-list-item-action>
           <v-icon>{{ library.icon }}</v-icon>
         </v-list-item-action>

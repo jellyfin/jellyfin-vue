@@ -6,8 +6,7 @@
         :load-children="fetchItems"
         activatable
         transition
-        @update:active="handleAction"
-      />
+        @update:active="handleAction" />
     </v-col>
 
     <v-col v-if="itemId" cols="9" class="metadata-card">

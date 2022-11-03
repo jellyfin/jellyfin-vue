@@ -8,13 +8,11 @@
           :label="$t('username')"
           type="username"
           :error-messages="errors"
-          required
-        />
+          required />
       </validation-provider>
       <validation-provider
         v-slot="{ errors }"
-        rules="bothPasswordsSame:@confirm"
-      >
+        rules="bothPasswordsSame:@confirm">
         <v-text-field
           v-model="admin.Password"
           outlined
@@ -22,8 +20,7 @@
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
           :error-messages="errors"
-          @click:append="() => (showPassword = !showPassword)"
-        />
+          @click:append="() => (showPassword = !showPassword)" />
       </validation-provider>
 
       <validation-provider v-slot="{ errors }" name="confirm" rules="">
@@ -34,8 +31,7 @@
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
           :error-messages="errors"
-          @click:append="() => (showPassword = !showPassword)"
-        />
+          @click:append="() => (showPassword = !showPassword)" />
       </validation-provider>
 
       <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">
@@ -45,8 +41,7 @@
         color="primary"
         :disabled="invalid"
         :loading="loading"
-        @click="createAdminAccount"
-      >
+        @click="createAdminAccount">
         {{ $t('next') }}
       </v-btn>
     </v-form>
@@ -86,7 +81,6 @@ export default defineComponent({
 
         this.$emit('step-complete', { step: 2 });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         this.snackbar.push(this.$t('wizard.setAdminError'), 'error');
       }

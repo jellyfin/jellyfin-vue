@@ -5,14 +5,12 @@
         v-for="(item, index) in queue"
         :key="`${item.Id}-${index}`"
         v-slot="{ hover }"
-        ref="listItems"
-      >
+        ref="listItems">
         <v-list-item ripple @click="onClick(index)">
           <v-list-item-action
             v-if="!hover"
             class="list-group-item d-flex justify-center d-flex transition"
-            :class="{ 'primary--text font-weight-bold': isPlaying(index) }"
-          >
+            :class="{ 'primary--text font-weight-bold': isPlaying(index) }">
             {{ index + 1 }}
           </v-list-item-action>
           <v-list-item-action v-else class="justify-center d-flex">
@@ -27,8 +25,7 @@
               :class="{
                 'primary--text font-weight-bold': isPlaying(index)
               }"
-              class="text-truncate ml-2 list-group-item transition"
-            >
+              class="text-truncate ml-2 list-group-item transition">
               {{ item.Name }}
             </v-list-item-title>
             <v-list-item-subtitle
@@ -36,8 +33,7 @@
               class="ml-2 list-group-item transition"
               :class="{
                 'primary--text font-weight-bold': isPlaying(index)
-              }"
-            >
+              }">
               {{ getArtists(item) }}
             </v-list-item-subtitle>
           </v-list-item-content>

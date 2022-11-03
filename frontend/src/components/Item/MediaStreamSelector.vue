@@ -9,13 +9,12 @@
     hide-details
     class="text-truncate"
     :items="selectItems"
-    @input="$emit('input', $event)"
-  >
-    <template slot="selection" slot-scope="{ item }">
+    @input="$emit('input', $event)">
+    <template #selection="{ item }">
       {{ item.text.selection }}
     </template>
 
-    <template slot="item" slot-scope="{ item, on, attrs }">
+    <template #item="{ item, on, attrs }">
       <v-list-item v-bind="attrs" :two-line="!!item.text.subtitle" v-on="on">
         <v-list-item-avatar v-if="item.text.icon">
           <v-icon>{{ item.text.icon }}</v-icon>
@@ -75,7 +74,7 @@ export default defineComponent({
       /**
        * Used to model the media stream index as a value and the potential strings
        *
-       * @returns {{text: SelectItems, value: number}[]} List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
+       * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
        */
       get(): { text: SelectItems; value: number | undefined }[] {
         const items = this.mediaStreams.map((value, _idx) => {
@@ -148,8 +147,8 @@ export default defineComponent({
   },
   methods: {
     /**
-     * @param {MediaStream} track - Track to parse
-     * @returns {string|undefined} Optional icon to use for the track line in the v-select menu
+     * @param track - Track to parse
+     * @returns Optional icon to use for the track line in the v-select menu
      */
     getTrackIcon(track: MediaStream): string | undefined {
       if (this.type === 'Audio' && track.ChannelLayout) {
@@ -157,8 +156,8 @@ export default defineComponent({
       }
     },
     /**
-     * @param {MediaStream} track - Track to parse
-     * @returns {string|undefined} Optional subtitle to use for the track line in the v-select menu
+     * @param track - Track to parse
+     * @returns Optional subtitle to use for the track line in the v-select menu
      */
     getTrackSubtitle(track: MediaStream): string | undefined {
       if (
@@ -171,15 +170,15 @@ export default defineComponent({
       }
     },
     /**
-     * @param {string} code - Converts a two letters language code to full word
-     * @returns {string} Full word
+     * @param code - Converts a two letters language code to full word
+     * @returns Full word
      */
     getLanguageName(code: string): string {
       return langs.where('2B', code)?.name || '';
     },
     /**
-     * @param {string} layout - Audio layout to get related icon
-     * @returns {string} Icon name
+     * @param layout - Audio layout to get related icon
+     * @returns Icon name
      */
     getSurroundIcon(layout: string): string {
       switch (layout) {

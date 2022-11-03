@@ -5,15 +5,13 @@
         v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
         sm="10"
         md="7"
-        lg="5"
-      >
+        lg="5">
         <h1 class="text-h4 mb-6 text-center">{{ $t('login.selectUser') }}</h1>
         <v-row align="center" justify="center">
           <v-col
             v-for="publicUser in publicUsers"
             :key="publicUser.Id"
-            cols="auto"
-          >
+            cols="auto">
             <user-card :user="publicUser" @connect="setCurrentUser" />
           </v-col>
         </v-row>
@@ -34,8 +32,7 @@
         v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
         sm="6"
         md="6"
-        lg="5"
-      >
+        lg="5">
         <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-3 text-center">
           {{ $t('login.loginAs', { name: currentUser.Name }) }}
         </h1>

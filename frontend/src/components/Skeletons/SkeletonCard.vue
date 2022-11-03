@@ -5,8 +5,7 @@
       v-if="text"
       type="heading"
       class="mt-1"
-      :boilerplate="boilerplate"
-    />
+      :boilerplate="boilerplate" />
   </div>
 </template>
 

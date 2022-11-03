@@ -7,16 +7,13 @@
     elevate-on-scroll
     elevation="3"
     :hide-on-scroll="$vuetify.display.mobile"
-    :class="{ transparent: page.transparentLayout && !page.isScrolled }"
-  >
+    :class="{ transparent: page.transparentLayout && !page.isScrolled }">
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile && page.navDrawer"
-      @click.stop="page.openDrawer = !page.openDrawer"
-    />
+      @click.stop="page.openDrawer = !page.openDrawer" />
     <app-bar-button-layout
       v-hide="$route.name === 'index'"
-      @click.native="$router.back()"
-    >
+      @click.native="$router.back()">
       <template #icon>
         <v-icon>mdi-arrow-left</v-icon>
       </template>
@@ -61,8 +58,7 @@
       :fab="
         !(!page.transparentLayout || $vuetify.display.xsOnly) &&
         !page.isScrolled
-      "
-    />
+      " />
   </v-app-bar>
 </template>
 

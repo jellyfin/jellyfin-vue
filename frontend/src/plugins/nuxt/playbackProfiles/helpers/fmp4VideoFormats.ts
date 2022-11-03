@@ -2,9 +2,9 @@ import { Context } from '@nuxt/types';
 import { hasH264Support, hasHevcSupport } from './mp4VideoFormats';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} List of supported fmp4 video codecs
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns List of supported fmp4 video codecs
  */
 export function getSupportedFmp4VideoCodecs(
   context: Context,

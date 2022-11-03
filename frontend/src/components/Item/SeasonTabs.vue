@@ -13,14 +13,12 @@
             :key="episode.Id"
             nuxt
             :to="getItemDetailsLink(episode)"
-            class="flex-column flex-md-row"
-          >
+            class="flex-column flex-md-row">
             <v-list-item-avatar tile width="20em" height="12em">
               <blurhash-image
                 v-if="episode.ImageTags && episode.ImageTags.Primary"
                 :item="episode"
-                :alt="episode.Name"
-              />
+                :alt="episode.Name" />
               <watched-indicator v-if="episode.UserData.Played" />
             </v-list-item-avatar>
             <v-list-item-content>
