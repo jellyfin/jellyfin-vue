@@ -49,9 +49,9 @@
               nuxt
               :to="userItem.link"
               :disabled="!userItem.link">
-              <v-list-item-avatar>
+              <v-avatar>
                 <v-icon v-text="userItem.icon" />
-              </v-list-item-avatar>
+              </v-avatar>
               <v-list-item-title v-text="userItem.name" />
               <v-list-item-subtitle v-text="userItem.description" />
               <v-list-item-action>
@@ -74,9 +74,9 @@
                 nuxt
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
-                <v-list-item-avatar>
+                <v-avatar>
                   <v-icon v-text="adminItem.icon" />
-                </v-list-item-avatar>
+                </v-avatar>
                 <v-list-item-title v-text="adminItem.name" />
                 <v-list-item-subtitle v-text="adminItem.description" />
                 <v-list-item-action>
