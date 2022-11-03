@@ -8,14 +8,14 @@
     <h1 v-if="!children && !loading" class="text-h5 text-center">
       {{ $t('collectionEmpty') }}
     </h1>
-    <v-tabs-items v-model="currentTab" class="transparent">
-      <v-tab-item v-for="(items, type) in children" :key="type">
+    <v-tabs v-model="currentTab" class="transparent">
+      <v-tab v-for="(items, type) in children" :key="type">
         <v-container>
           <skeleton-item-grid v-if="loading" :view-type="''" />
           <item-grid :loading="loading" :items="items" />
         </v-container>
-      </v-tab-item>
-    </v-tabs-items>
+      </v-tab>
+    </v-tabs>
   </div>
 </template>
 
