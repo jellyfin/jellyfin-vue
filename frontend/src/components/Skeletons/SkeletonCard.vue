@@ -34,7 +34,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .skeleton-card {
   padding: 0.6em;
 }

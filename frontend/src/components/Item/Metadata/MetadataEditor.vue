@@ -414,7 +414,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .person-icon {
   background-color: var(--v-secondary-darken1);
 }

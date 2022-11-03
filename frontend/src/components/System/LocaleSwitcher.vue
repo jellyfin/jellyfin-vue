@@ -61,7 +61,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-list {
   max-height: 31em;
 }
