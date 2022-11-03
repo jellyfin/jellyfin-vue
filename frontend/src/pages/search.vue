@@ -151,17 +151,17 @@ export default defineComponent({
   top: 56px;
 }
 
-@media #{map-get($display-breakpoints, 'md-and-up')} {
-  .second-toolbar {
-    top: 64px;
-  }
-}
+// @media #{map-get($display-breakpoints, 'md-and-up')} {
+//   .second-toolbar {
+//     top: 64px;
+//   }
+// }
 
-@media #{map-get($display-breakpoints, 'lg-and-up')} {
-  .second-toolbar {
-    left: 256px !important;
-  }
-}
+// @media #{map-get($display-breakpoints, 'lg-and-up')} {
+//   .second-toolbar {
+//     left: 256px !important;
+//   }
+// }
 
 .after-second-toolbar {
   padding-top: 48px;

@@ -13,6 +13,7 @@ import {
 } from 'unplugin-vue-components/resolvers';
 import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
+import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
@@ -52,7 +53,11 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       Icons({
         compiler: 'vue3'
       }),
-      VitePWA()
+      VitePWA(),
+      vuetify({
+        autoImport: false,
+        styles: { configFile: 'src/assets/styles/variables.scss' }
+      })
     ],
     build: {
       rollupOptions: {

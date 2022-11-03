@@ -499,7 +499,7 @@ export default defineComponent({
   position: relative;
 }
 
-.v-overlay::v-deep .v-overlay__content {
+:deep(.v-overlay__content) {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
