@@ -8,8 +8,8 @@ import { BaseItemDto } from '@jellyfin/client-axios';
 /**
  * Converts .NET ticks to milliseconds
  *
- * @param {(number | null | undefined)} ticks - Number of .NET ticks to convert
- * @returns {number} The converted value in milliseconds
+ * @param ticks - Number of .NET ticks to convert
+ * @returns The converted value in milliseconds
  */
 export function ticksToMs(ticks: number | null | undefined): number {
   if (!ticks) {
@@ -22,13 +22,16 @@ export function ticksToMs(ticks: number | null | undefined): number {
 /**
  * Converts milliseconds to .NET ticks
  *
- * @param {string} ms - Number of milliseconds to convert
- * @returns {number} The converted value in .NET ticks
+ * @param ms - Number of milliseconds to convert
+ * @returns The converted value in .NET ticks
  */
 export function msToTicks(ms: number): number {
   return Math.round(ms * 10000);
 }
 
+/**
+ *
+ */
 export function formatTime(seconds: number): string {
   let minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -40,8 +43,8 @@ export function formatTime(seconds: number): string {
    * Formats Time
    * E.g. 7 -> 07
    *
-   * @param {number} number - Number to format
-   * @returns {string} Formated seconds number
+   * @param number - Number to format
+   * @returns Formated seconds number
    */
   function formatDigits(number: number): string {
     return ('0' + number).slice(-2);
@@ -57,8 +60,8 @@ export function formatTime(seconds: number): string {
 /**
  * Returns the end time of an item
  *
- * @param {number} ticks - Ticks of the item to calculate
- * @returns {string} The resulting string
+ * @param ticks - Ticks of the item to calculate
+ * @returns The resulting string
  */
 export function getEndsAtTime(ticks: number): string {
   const ms = ticksToMs(ticks);
@@ -76,8 +79,8 @@ export function getEndsAtTime(ticks: number): string {
 /**
  * Returns the duration of an item in the following format: X hours Y minutes
  *
- * @param {number} ticks - Ticks of the item to calculate
- * @returns {string} The resulting string
+ * @param ticks - Ticks of the item to calculate
+ * @returns The resulting string
  */
 export function getRuntimeTime(ticks: number): string {
   const ms = ticksToMs(ticks);
@@ -93,8 +96,8 @@ export function getRuntimeTime(ticks: number): string {
 /**
  * Calculates the end time of an array of BaseItemDto.
  *
- * @param {number} items - Array with the items to calculate.
- * @returns {string} The resulting string
+ * @param items - Array with the items to calculate.
+ * @returns The resulting string
  */
 export function getTotalEndsAtTime(items: BaseItemDto[]): string {
   const ticks = sumBy(items, 'RunTimeTicks');

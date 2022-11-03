@@ -8,8 +8,7 @@
       bottom
       right
       fixed
-      @click="scrollToTop"
-    >
+      @click="scrollToTop">
       <v-icon>mdi-chevron-up</v-icon>
     </v-btn>
   </v-fab-transition>

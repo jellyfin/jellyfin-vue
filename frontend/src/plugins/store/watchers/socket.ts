@@ -18,7 +18,7 @@ export default function (ctx: PiniaPluginContext): void {
    * Updates the items in the store after the websocket informs of it. Just a request is enough, as the Axios
    * interceptors already handle updating the item in the store
    *
-   * @param {string[]} itemIds - Ids of the items to update
+   * @param itemIds - Ids of the items to update
    */
   async function updateStoreItems(itemIds: string[]): Promise<void> {
     if (itemIds.length) {

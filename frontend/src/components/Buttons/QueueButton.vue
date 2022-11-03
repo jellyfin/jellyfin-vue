@@ -13,8 +13,7 @@
     max-height="60vh"
     :z-index="500"
     class="menu"
-    @input="$emit('input', $event)"
-  >
+    @input="$emit('input', $event)">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <v-tooltip top>
@@ -23,8 +22,7 @@
             class="align-self-center active-button"
             icon
             v-bind="attrs"
-            v-on="{ ...tooltip, ...menu }"
-          >
+            v-on="{ ...tooltip, ...menu }">
             <v-icon>mdi-playlist-play</v-icon>
           </v-btn>
         </template>
@@ -37,8 +35,7 @@
           <v-list-item-avatar tile>
             <blurhash-image
               v-if="playbackManager.initiator"
-              :item="playbackManager.initiator"
-            />
+              :item="playbackManager.initiator" />
             <v-icon v-else>{{ modeIcon }}</v-icon>
           </v-list-item-avatar>
 
@@ -57,14 +54,12 @@
           <v-list-item-action>
             <like-button
               v-if="playbackManager.initiator"
-              :item="playbackManager.getCurrentItem"
-            />
+              :item="playbackManager.getCurrentItem" />
           </v-list-item-action>
           <v-list-item-action class="mr-1">
             <item-menu
               v-if="playbackManager.initiator"
-              :item="playbackManager.getCurrentItem"
-            />
+              :item="playbackManager.getCurrentItem" />
           </v-list-item-action>
         </v-list-item>
       </v-list>

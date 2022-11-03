@@ -10,9 +10,9 @@ import { getSupportedAudioCodecs } from './helpers/audioFormats';
 /**
  * Returns a valid DirectPlayProfile for the current platform.
  *
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {Array<DirectPlayProfile>} An array of direct play profiles for the current platform.
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns An array of direct play profiles for the current platform.
  */
 export function getDirectPlayProfiles(
   context: Context,

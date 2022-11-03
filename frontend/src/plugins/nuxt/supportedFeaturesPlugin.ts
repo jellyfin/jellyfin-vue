@@ -36,7 +36,7 @@ const supportedFeaturesPlugin: Plugin = ({ $browser }, inject) => {
   /**
    * Detects if the current platform supports showing fullscreen videos
    *
-   * @returns {boolean} - Whether fullscreen is supported or not
+   * @returns - Whether fullscreen is supported or not
    */
   function supportsFullscreen(): boolean {
     // TVs don't support fullscreen.

@@ -9,8 +9,7 @@
             <v-avatar size="160" class="ml-2">
               <v-img
                 v-if="person && person.PrimaryImageTag"
-                :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`"
-              />
+                :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`" />
               <v-icon v-else class="grey darken-3">mdi-account</v-icon>
             </v-avatar>
           </v-col>
@@ -19,20 +18,17 @@
               <v-text-field
                 v-model="editState.Name"
                 outlined
-                :label="$t('name')"
-              />
+                :label="$t('name')" />
               <v-select
                 v-model="editState.Type"
                 :items="options"
                 :label="$t('type')"
-                outlined
-              />
+                outlined />
               <v-text-field
                 v-if="editState.Type === 'Actor'"
                 v-model="editState.Role"
                 outlined
-                :label="$t('role')"
-              />
+                :label="$t('role')" />
             </v-form>
           </v-col>
         </v-row>
@@ -43,8 +39,7 @@
         :class="{
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile
-        }"
-      >
+        }">
         <v-spacer />
         <v-btn depressed width="8em" class="mr-1" @click="handleCancel">
           {{ $t('cancel') }}

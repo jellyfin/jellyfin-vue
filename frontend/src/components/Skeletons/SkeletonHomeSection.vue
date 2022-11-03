@@ -7,8 +7,7 @@
         :key="i"
         :card-shape="cardShape"
         :style="`width: ${100 / cardNumber}%`"
-        text
-      />
+        text />
     </v-row>
   </v-col>
 </template>
