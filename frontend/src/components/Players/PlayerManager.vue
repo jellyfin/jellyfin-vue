@@ -524,7 +524,6 @@ export default defineComponent({
   position: relative;
 }
 
-/* stylelint-disable-next-line */
 .v-overlay::v-deep .v-overlay__content {
   width: 100%;
   height: 100%;
