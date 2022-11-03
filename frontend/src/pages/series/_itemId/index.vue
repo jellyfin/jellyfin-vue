@@ -42,7 +42,7 @@
               </v-col>
               <v-col class="px-0" :cols="12" :sm="10">
                 <v-slide-group>
-                  <v-slide-item
+                  <v-slide-group-item
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
                     <v-chip
@@ -53,7 +53,7 @@
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
                     </v-chip>
-                  </v-slide-item>
+                  </v-slide-group-item>
                 </v-slide-group>
               </v-col>
             </v-row>
