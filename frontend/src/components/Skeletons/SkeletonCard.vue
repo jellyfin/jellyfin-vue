@@ -1,11 +1,13 @@
 <template>
   <div :class="`skeleton-card ${cardShape}`">
-    <v-skeleton-loader type="image" :boilerplate="boilerplate" />
+    <!-- TODO: Wait for Vuetify 3.1 -->
+    <!-- <v-skeleton-loader type="image" :boilerplate="boilerplate" />
     <v-skeleton-loader
       v-if="text"
       type="heading"
       class="mt-1"
-      :boilerplate="boilerplate" />
+      :boilerplate="boilerplate"
+    /> -->
   </div>
 </template>
 
