@@ -1,6 +1,6 @@
 <template>
   <v-list>
-    <v-list-item-group>
+    <v-list-group>
       <v-list-item
         v-for="linkItem in linkItems"
         :key="linkItem.name"
@@ -15,7 +15,7 @@
           <v-icon>mdi-open-in-new</v-icon>
         </v-list-item-action>
       </v-list-item>
-    </v-list-item-group>
+    </v-list-group>
   </v-list>
 </template>
 
