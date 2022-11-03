@@ -7,9 +7,9 @@
         rel="noreferrer noopener"
         :href="linkItem.link"
         target="_blank">
-        <v-list-item-avatar>
+        <v-avatar>
           <v-icon v-text="linkItem.icon" />
-        </v-list-item-avatar>
+        </v-avatar>
         <v-list-item-title v-text="linkItem.name" />
         <v-list-item-action>
           <v-icon>mdi-open-in-new</v-icon>
