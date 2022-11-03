@@ -1,8 +1,8 @@
 import { Context } from '@nuxt/types';
 
 /**
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has H264 support
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has H264 support
  */
 export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
@@ -14,9 +14,9 @@ export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has H265 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has H265 support
  */
 export function hasH265Support(
   context: Context,
@@ -44,9 +44,9 @@ export function hasH265Support(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has HEVC Support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has HEVC Support
  */
 export function hasHevcSupport(
   context: Context,
@@ -74,9 +74,9 @@ export function hasHevcSupport(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has AV1 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has AV1 support
  */
 export function hasAv1Support(
   context: Context,
@@ -97,9 +97,9 @@ export function hasAv1Support(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has VC1 support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has VC1 support
  */
 function hasVc1Support(
   context: Context,
@@ -112,8 +112,8 @@ function hasVc1Support(
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has VP8 support
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has VP8 support
  */
 export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
@@ -123,8 +123,8 @@ export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if browser has VP9 support
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if browser has VP9 support
  */
 export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
@@ -136,9 +136,9 @@ export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
 /**
  * Queries the platform for the codecs suppers in an MP4 container.
  *
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} Array of codec identifiers.
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Array of codec identifiers.
  */
 export function getSupportedMP4VideoCodecs(
   context: Context,

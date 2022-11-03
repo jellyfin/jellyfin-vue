@@ -10,8 +10,8 @@ import { Context } from '@nuxt/types';
 /**
  * Gets the max video bitrate
  *
- * @param {Context} context - Nuxt context
- * @returns {number | null} Returns the MaxVideoBitrate
+ * @param context - Nuxt context
+ * @returns Returns the MaxVideoBitrate
  */
 function getGlobalMaxVideoBitrate(context: Context): number | null {
   let isTizenFhd = false;
@@ -40,11 +40,11 @@ function getGlobalMaxVideoBitrate(context: Context): number | null {
 /**
  * Creates a profile condition object for use in device playback profiles.
  *
- * @param {ProfileConditionValue} Property - Value for the property
- * @param {ProfileConditionType} Condition - Condition that the property must comply with
- * @param {string} Value - Value to check in the condition
- * @param {boolean} IsRequired - Whether this property is required
- * @returns {ProfileCondition} - Constructed ProfileCondition object
+ * @param Property - Value for the property
+ * @param Condition - Condition that the property must comply with
+ * @param Value - Value to check in the condition
+ * @param IsRequired - Whether this property is required
+ * @returns - Constructed ProfileCondition object
  */
 function createProfileCondition(
   Property: ProfileConditionValue,
@@ -61,9 +61,9 @@ function createProfileCondition(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {ProfileCondition[]} - Array of ACC Profile conditions
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns - Array of ACC Profile conditions
  */
 export function getAacCodecProfileConditions(
   context: Context,
@@ -103,9 +103,9 @@ export function getAacCodecProfileConditions(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {CodecProfile[]} - Array containing the different profiles for the client
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns - Array containing the different profiles for the client
  */
 export function getCodecProfiles(
   context: Context,

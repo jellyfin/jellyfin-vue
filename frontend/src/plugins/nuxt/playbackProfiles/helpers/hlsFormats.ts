@@ -4,9 +4,9 @@ import { hasEac3Support, hasAacSupport } from './mp4AudioFormats';
 import { getSupportedAudioCodecs } from './audioFormats';
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {boolean} Determines if the browser has AC3 in HLS support
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Determines if the browser has AC3 in HLS support
  */
 function supportsAc3InHls(
   context: Context,
@@ -33,9 +33,9 @@ function supportsAc3InHls(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} Array of video codecs supported in HLS
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Array of video codecs supported in HLS
  */
 export function getHlsVideoCodecs(
   context: Context,
@@ -56,9 +56,9 @@ export function getHlsVideoCodecs(
 }
 
 /**
- * @param {Context} context - Nuxt context
- * @param {HTMLVideoElement} videoTestElement - A HTML video element for testing codecs
- * @returns {string[]} Array of audio codecs supported in HLS
+ * @param context - Nuxt context
+ * @param videoTestElement - A HTML video element for testing codecs
+ * @returns Array of audio codecs supported in HLS
  */
 export function getHlsAudioCodecs(
   context: Context,

@@ -12,8 +12,8 @@ interface RouteMeta {
 /**
  * Middleware that handles the meta tags that are present in pages.
  *
- * @param {Context} context - Nuxt application context
- * @returns {void}
+ * @param context - Nuxt application context
+ * @returns
  */
 export default function ({ route }: Context): void {
   const meta = route.meta?.[0] as RouteMeta;

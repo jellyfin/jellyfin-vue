@@ -5,8 +5,7 @@
         <validation-provider
           v-slot="{ errors }"
           name="serverUrl"
-          :rules="rules.serverUrl"
-        >
+          :rules="rules.serverUrl">
           <v-text-field
             v-model="serverUrl"
             outlined
@@ -14,8 +13,7 @@
             :label="$t('login.serverAddress')"
             type="url"
             :error-messages="errors"
-            required
-          />
+            required />
         </validation-provider>
         <v-row align="center" no-gutters>
           <v-col v-if="previousServerLength" class="mr-2">
@@ -30,8 +28,7 @@
               block
               large
               color="primary"
-              type="submit"
-            >
+              type="submit">
               {{ $t('login.connect') }}
             </v-btn>
           </v-col>

@@ -4,13 +4,11 @@
       v-for="i in pages"
       :key="`progress-key-${i}`"
       class="progress-bar"
-      @click.capture="onProgressClicked(i)"
-    >
+      @click.capture="onProgressClicked(i)">
       <div
         ref="progress"
         class="progress d-flex align-center justify-center"
-        :class="expand ? 'expand' : undefined"
-      />
+        :class="expand ? 'expand' : undefined" />
     </div>
   </div>
 </template>
@@ -77,7 +75,7 @@ export default defineComponent({
       window.requestAnimationFrame(this.updateBars);
     });
   },
-  destroyed() {
+  unmounted() {
     const animEndFunction = this.onAnimationEnd;
 
     this.bars.forEach((el: HTMLElement) => {

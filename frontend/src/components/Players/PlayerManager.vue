@@ -5,8 +5,7 @@
         playbackManager.isPlaying &&
         playbackManager.getCurrentlyPlayingMediaType === 'Audio'
       "
-      class="d-none"
-    />
+      class="d-none" />
     <player-dialog
       v-if="
         playbackManager.isPlaying &&
@@ -20,16 +19,14 @@
       :retain-focus="!playbackManager.isMinimized"
       :content-class="getContentClass()"
       :width="$vuetify.display.mobile ? '60vw' : '25vw'"
-      :value="playbackManager.isPlaying"
-    >
+      :value="playbackManager.isPlaying">
       <up-next @change="setUpNextVisible" />
       <v-hover v-slot="{ hover }">
         <v-card class="player-card" width="100%">
           <v-container fill-height fluid class="pa-0 justify-center">
             <shaka-player
               ref="videoPlayer"
-              :stretch="stretchVideo && !playbackManager.isMinimized"
-            />
+              :stretch="stretchVideo && !playbackManager.isMinimized" />
           </v-container>
           <!-- Mini Player Overlay -->
           <v-fade-transition>
@@ -45,22 +42,19 @@
                   </v-btn>
                 </div>
                 <div
-                  class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center"
-                >
+                  class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center">
                   <v-btn
                     class="pointer-events-all"
                     icon
                     large
-                    @click="playbackManager.setPreviousTrack"
-                  >
+                    @click="playbackManager.setPreviousTrack">
                     <v-icon size="32">mdi-skip-previous</v-icon>
                   </v-btn>
                   <v-btn
                     class="pointer-events-all"
                     icon
                     x-large
-                    @click="playbackManager.playPause"
-                  >
+                    @click="playbackManager.playPause">
                     <v-icon size="48">
                       {{ playbackManager.isPaused ? 'mdi-play' : 'mdi-pause' }}
                     </v-icon>
@@ -69,8 +63,7 @@
                     class="pointer-events-all"
                     icon
                     large
-                    @click="playbackManager.setNextTrack"
-                  >
+                    @click="playbackManager.setNextTrack">
                     <v-icon size="32">mdi-skip-next</v-icon>
                   </v-btn>
                 </div>
@@ -86,11 +79,9 @@
                 !isUpNextVisible
               "
               color="transparent"
-              absolute
-            >
+              absolute>
               <div
-                class="d-flex flex-column justify-space-between align-center player-overlay"
-              >
+                class="d-flex flex-column justify-space-between align-center player-overlay">
                 <div class="osd-top pt-s pl-s pr-s">
                   <div class="d-flex align-center py-2 px-4">
                     <div class="d-flex">
@@ -110,28 +101,23 @@
                   <div class="pa-4">
                     <time-slider />
                     <div
-                      class="controls-wrapper d-flex align-stretch justify-space-between"
-                    >
+                      class="controls-wrapper d-flex align-stretch justify-space-between">
                       <div
                         v-if="$vuetify.display.mdAndUp"
-                        class="d-flex flex-column align-start justify-center mr-auto video-title"
-                      >
+                        class="d-flex flex-column align-start justify-center mr-auto video-title">
                         <template
                           v-if="
                             playbackManager.getCurrentItem.Type === 'Episode'
-                          "
-                        >
+                          ">
                           <span class="mt-1 text-subtitle-1 text-truncate">
                             {{ playbackManager.getCurrentItem.Name }}
                           </span>
                           <span
-                            class="text-subtitle-2 text--secondary text-truncate"
-                          >
+                            class="text-subtitle-2 text--secondary text-truncate">
                             {{ playbackManager.getCurrentItem.SeriesName }}
                           </span>
                           <span
-                            class="text-subtitle-2 text--secondary text-truncate"
-                          >
+                            class="text-subtitle-2 text--secondary text-truncate">
                             {{
                               $t('seasonEpisode', {
                                 seasonNumber:
@@ -148,20 +134,17 @@
                         </template>
                       </div>
                       <div
-                        class="d-flex player-controls align-center justify-start justify-md-center"
-                      >
+                        class="d-flex player-controls align-center justify-start justify-md-center">
                         <v-btn
                           icon
                           class="mx-1"
-                          @click="playbackManager.setPreviousTrack"
-                        >
+                          @click="playbackManager.setPreviousTrack">
                           <v-icon> mdi-skip-previous </v-icon>
                         </v-btn>
                         <v-btn
                           icon
                           class="mx-1 active-button"
-                          @click="playbackManager.playPause"
-                        >
+                          @click="playbackManager.playPause">
                           <v-icon large>
                             {{
                               playbackManager.isPaused
@@ -173,47 +156,40 @@
                         <v-btn
                           icon
                           class="mx-1"
-                          @click="playbackManager.setNextTrack"
-                        >
+                          @click="playbackManager.setNextTrack">
                           <v-icon icon> mdi-skip-next</v-icon>
                         </v-btn>
                       </div>
                       <div class="d-flex aligh-center ml-auto ml-md-0">
                         <volume-slider
                           v-if="$vuetify.display.smAndUp"
-                          class="mr-2"
-                        />
+                          class="mr-2" />
                         <queue-button
                           :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
                           :close-on-click="true"
-                          @input="onMenuOpen($event)"
-                        />
+                          @input="onMenuOpen($event)" />
                         <subtitle-selection-button
                           v-if="$vuetify.display.smAndUp"
                           :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
-                          @input="onMenuOpen($event)"
-                        />
+                          @input="onMenuOpen($event)" />
                         <playback-settings-button
                           :nudge-top="$vuetify.display.mdAndUp ? 60 : 30"
                           :stretch-prop="stretchVideo"
                           @input="onMenuOpen($event)"
                           @open-playback-data="playbackData = true"
-                          @stretch="stretchVideo = $event"
-                        />
+                          @stretch="stretchVideo = $event" />
                         <v-btn
                           v-if="$features.pictureInPicture"
                           class="align-self-center active-button"
                           icon
-                          @click="togglePictureInPicture"
-                        >
+                          @click="togglePictureInPicture">
                           <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
                         </v-btn>
                         <v-btn
                           v-if="$vuetify.display.smAndUp"
                           class="align-self-center active-button"
                           icon
-                          @click="stretchVideo = !stretchVideo"
-                        >
+                          @click="stretchVideo = !stretchVideo">
                           <v-icon v-if="!stretchVideo">
                             mdi-stretch-to-page-outline
                           </v-icon>
@@ -225,8 +201,7 @@
                           v-if="$features.fullScreen"
                           class="align-self-center active-button"
                           icon
-                          @click="toggleFullScreen"
-                        >
+                          @click="toggleFullScreen">
                           <v-icon>mdi-fullscreen</v-icon>
                         </v-btn>
                       </div>
@@ -304,7 +279,7 @@ export default defineComponent({
       }
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.fullScreenOverlayTimer) {
       clearTimeout(this.fullScreenOverlayTimer);
     }

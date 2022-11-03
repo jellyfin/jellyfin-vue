@@ -21,11 +21,11 @@ const excludedBlurhashTypes = [ImageType.Logo];
 /**
  * Gets the tag of the image of an specific item and type.
  *
- * @param {BaseItemDto|BaseItemPerson} item - The item object.
- * @param {ImageType} type - The type of the image requested.
- * @param {number} [index=0] - Index of the Backdrop image (when ImageType equals to 'Backdrop').
- * @param {boolean} [checkParent=true] - Looks for tag/image type for the parent if the passed item doesn't have the ImageType requested
- * @returns {string|undefined} Returns the tag, undefined if the specific ImageType doesn't exist.
+ * @param item - The item object.
+ * @param type - The type of the image requested.
+ * @param [index=0] - Index of the Backdrop image (when ImageType equals to 'Backdrop').
+ * @param [checkParent=true] - Looks for tag/image type for the parent if the passed item doesn't have the ImageType requested
+ * @returns Returns the tag, undefined if the specific ImageType doesn't exist.
  */
 export function getImageTag(
   item: BaseItemDto | BaseItemPerson,
@@ -96,8 +96,8 @@ export function getImageTag(
 /**
  * Gets the itemId of the parent element.
  *
- * @param {BaseItemDto} item - The item object.
- * @returns {string|undefined} Returns the parent itemId, undefined if it doesn't exist.
+ * @param item - The item object.
+ * @returns Returns the parent itemId, undefined if it doesn't exist.
  */
 export function getParentId(item: BaseItemDto): string | undefined {
   if (item.AlbumId) {
@@ -125,11 +125,11 @@ export function getParentId(item: BaseItemDto): string | undefined {
 /**
  * Gets the blurhash string of an image given the item and the image type desired.
  *
- * @param {BaseItemDto|BaseItemPerson} item - The item object.
- * @param {ImageType} type - The type of the image requested.
- * @param {number} [index=0] - Index of the Backdrop image (when ImageType equals to 'Backdrop').
- * @param {number} [checkParent=true] - Checks for the parent's images blurhash (in case the provided item doesn't have it)
- * @returns {string|undefined} Returns the tag, undefined if the specific ImageType doesn't exist.
+ * @param item - The item object.
+ * @param type - The type of the image requested.
+ * @param [index=0] - Index of the Backdrop image (when ImageType equals to 'Backdrop').
+ * @param [checkParent=true] - Checks for the parent's images blurhash (in case the provided item doesn't have it)
+ * @returns Returns the tag, undefined if the specific ImageType doesn't exist.
  */
 export function getBlurhash(
   item: BaseItemDto | BaseItemPerson,
@@ -178,19 +178,19 @@ export function getDesiredAspect(shape: ValidCardShapes): number {
 /**
  * Generates the image information for a BaseItemDto or a BasePersonDto according to set priorities.
  *
- * @param {(BaseItemDto | BaseItemPerson)} item - Item to get image information for
- * @param {object} [options] - Optional parameters for the function.
- * @param {ValidCardShapes} [options.shape] - Shape of the card or element, used to determine what kind of image to prefer
- * @param {boolean} [options.preferThumb=false] - Prefer the Thumb images
- * @param {boolean} [options.preferBanner=false] - Prefer the Banner images
- * @param {boolean} [options.preferLogo=false] - Prefer the Logo images
- * @param {boolean} [options.preferBackdrop=false] - Prefer the Backdrop images
- * @param {boolean} [options.inheritThumb=false] - Inherit the thumb from parent items
- * @param {number} [options.quality=90] - Sets the quality of the returned image
- * @param {number} [options.width] - Sets the requested width of the image
- * @param {number} [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
- * @param {string} [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
- * @returns {ImageUrlInfo} Information for the item, containing the full URL, image tag and blurhash.
+ * @param item - Item to get image information for
+ * @param [options] - Optional parameters for the function.
+ * @param [options.shape] - Shape of the card or element, used to determine what kind of image to prefer
+ * @param [options.preferThumb=false] - Prefer the Thumb images
+ * @param [options.preferBanner=false] - Prefer the Banner images
+ * @param [options.preferLogo=false] - Prefer the Logo images
+ * @param [options.preferBackdrop=false] - Prefer the Backdrop images
+ * @param [options.inheritThumb=false] - Inherit the thumb from parent items
+ * @param [options.quality=90] - Sets the quality of the returned image
+ * @param [options.width] - Sets the requested width of the image
+ * @param [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
+ * @param [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
+ * @returns Information for the item, containing the full URL, image tag and blurhash.
  */
 export function getImageInfo(
   item: BaseItemDto | BaseItemPerson,
@@ -391,13 +391,13 @@ export function getImageInfo(
 /**
  * Generates the logo information for a BaseItemDto or a BasePersonDto according to set priorities.
  *
- * @param {(BaseItemDto | BaseItemPerson)} item - Item to get image information for
- * @param {object} [options] - Optional parameters for the function.
- * @param {number} [options.quality=90] - Sets the quality of the returned image
- * @param {number} [options.width] - Sets the requested width of the image
- * @param {number} [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
- * @param {string} [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
- * @returns {ImageUrlInfo} Information for the item, containing the full URL, image tag and blurhash.
+ * @param item - Item to get image information for
+ * @param [options] - Optional parameters for the function.
+ * @param [options.quality=90] - Sets the quality of the returned image
+ * @param [options.width] - Sets the requested width of the image
+ * @param [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
+ * @param [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
+ * @returns Information for the item, containing the full URL, image tag and blurhash.
  */
 export function getLogo(
   item: BaseItemDto,
