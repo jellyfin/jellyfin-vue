@@ -1,12 +1,14 @@
 <template>
   <v-row class="pa-4 metadata">
     <v-col cols="3" class="tree-view-container">
-      <v-treeview
+      <!-- TODO: Wait for Vuetify 3.1 -->
+      <!-- <v-treeview
         :items="items"
         :load-children="fetchItems"
         activatable
         transition
-        @update:active="handleAction" />
+        @update:active="handleAction"
+      /> -->
     </v-col>
 
     <v-col v-if="itemId" cols="9" class="metadata-card">
