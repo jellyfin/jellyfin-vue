@@ -20,15 +20,13 @@
             :size="40"
             rounded />
         </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title class="text-body-1">
-            {{ auth.currentUser.Name }}
-          </v-list-item-title>
-          <v-list-item-subtitle v-if="auth.currentUser.Policy.IsAdministrator">
-            {{ $t('administrator') }}
-            <v-icon small>mdi-key-chain</v-icon>
-          </v-list-item-subtitle>
-        </v-list-item-content>
+        <v-list-item-title class="text-body-1">
+          {{ auth.currentUser.Name }}
+        </v-list-item-title>
+        <v-list-item-subtitle v-if="auth.currentUser.Policy.IsAdministrator">
+          {{ $t('administrator') }}
+          <v-icon small>mdi-key-chain</v-icon>
+        </v-list-item-subtitle>
       </v-list-item>
       <v-divider class="my-2" light />
       <v-list-item

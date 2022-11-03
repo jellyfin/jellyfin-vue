@@ -39,17 +39,15 @@
             <v-icon v-else>{{ modeIcon }}</v-icon>
           </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ sourceText }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ getTotalEndsAtTime(playbackManager.getQueueItems) }} -
-              {{
-                $t('playback.queueItems', {
-                  items: playbackManager.getQueueItems.length
-                })
-              }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
+          <v-list-item-title>{{ sourceText }}</v-list-item-title>
+          <v-list-item-subtitle>
+            {{ getTotalEndsAtTime(playbackManager.getQueueItems) }} -
+            {{
+              $t('playback.queueItems', {
+                items: playbackManager.getQueueItems.length
+              })
+            }}
+          </v-list-item-subtitle>
 
           <v-list-item-action>
             <like-button
