@@ -10,16 +10,14 @@
             v-for="server in auth.servers"
             :key="server.Id"
             class="mt-2"
-            :server-info="server"
-          />
+            :server-info="server" />
         </div>
         <v-btn
           class="mt-6"
           block
           large
           color="primary"
-          @click="$router.push('/server/add')"
-        >
+          @click="$router.push('/server/add')">
           {{ $t('login.addServer') }}
         </v-btn>
       </v-col>

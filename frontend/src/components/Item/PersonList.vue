@@ -5,8 +5,7 @@
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
         nuxt
-        :to="getItemDetailsLink(item, 'Person')"
-      >
+        :to="getItemDetailsLink(item, 'Person')">
         <v-list-item-avatar>
           <v-avatar color="card">
             <blurhash-image :item="item" icon-size="16" />
@@ -24,8 +23,7 @@
       v-for="index in skeletonLength"
       v-else
       :key="index"
-      class="d-flex align-center mt-5 mb-5"
-    >
+      class="d-flex align-center mt-5 mb-5">
       <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
       <v-skeleton-loader type="sentences" width="10em" class="pr-5" />
     </div>

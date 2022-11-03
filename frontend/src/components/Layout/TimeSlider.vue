@@ -10,8 +10,7 @@
     @change="onPositionChange"
     @mousedown="onClick"
     @mouseup="onClick"
-    @input="onInputChange"
-  >
+    @input="onInputChange">
     <template #prepend>
       <span class="mt-1">
         {{ formatTime(playbackManager.currentTime) }}

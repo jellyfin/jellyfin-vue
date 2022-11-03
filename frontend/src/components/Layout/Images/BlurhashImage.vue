@@ -7,8 +7,7 @@
         :width="width"
         :height="height"
         :punch="punch"
-        class="absolute"
-      />
+        class="absolute" />
       <v-fade-transition>
         <img
           v-show="!loading"
@@ -17,8 +16,7 @@
           v-bind="$attrs"
           :alt="alt"
           @error="onError"
-          @load="loading = false"
-        />
+          @load="loading = false" />
       </v-fade-transition>
     </div>
     <slot v-else name="placeholder">

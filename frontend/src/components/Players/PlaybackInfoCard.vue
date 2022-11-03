@@ -1,8 +1,7 @@
 <template>
   <v-container
     v-if="sessionInfo"
-    class="playback-data-dialog pointer-events-none pa-lg-6"
-  >
+    class="playback-data-dialog pointer-events-none pa-lg-6">
     <v-row>
       <v-col cols="12" md="6" lg="4" xl="3">
         <v-card class="mt-12 pb-6">
@@ -12,8 +11,7 @@
             <v-btn
               class="pointer-events-all"
               icon
-              @click="$emit('close-playback-data')"
-            >
+              @click="$emit('close-playback-data')">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
@@ -21,15 +19,13 @@
             <div v-if="getPlayMethod" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playbackInfo.playMethod.name')"
-              />
+                v-text="$t('playbackInfo.playMethod.name')" />
               <div>{{ getPlayMethod }}</div>
             </div>
             <div v-if="getStreamType" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playbackInfo.streamType.name')"
-              />
+                v-text="$t('playbackInfo.streamType.name')" />
               <div>{{ getStreamType }}</div>
             </div>
           </v-card-text>
@@ -41,8 +37,7 @@
             <div v-if="playerStats.width && playerStats.height" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playerInfo.videoResolution.name')"
-              />
+                v-text="$t('playerInfo.videoResolution.name')" />
               <div>
                 {{
                   $t('playerInfo.videoResolution.value', {
@@ -54,12 +49,10 @@
             </div>
             <div
               v-if="videoDimensions.width && videoDimensions.height"
-              class="d-flex"
-            >
+              class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playerInfo.playbackResolution.name')"
-              />
+                v-text="$t('playerInfo.playbackResolution.name')" />
               <div>
                 {{ $t('playerInfo.videoResolution.value', videoDimensions) }}
               </div>
@@ -67,22 +60,19 @@
             <div v-if="!isNaN(playerStats.decodedFrames)" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playerInfo.decodedFrames.name')"
-              />
+                v-text="$t('playerInfo.decodedFrames.name')" />
               <div>{{ playerStats.decodedFrames }}</div>
             </div>
             <div v-if="!isNaN(playerStats.corruptedFrames)" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playerInfo.droppedFrames.name')"
-              />
+                v-text="$t('playerInfo.droppedFrames.name')" />
               <div>{{ playerStats.droppedFrames }}</div>
             </div>
             <div v-if="!isNaN(playerStats.corruptedFrames)" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('playerInfo.corruptedFrames.name')"
-              />
+                v-text="$t('playerInfo.corruptedFrames.name')" />
               <div>{{ playerStats.corruptedFrames }}</div>
             </div>
           </v-card-text>
@@ -94,8 +84,7 @@
             <div v-if="mediaContainer" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.container.name')"
-              />
+                v-text="$t('mediaInfo.container.name')" />
               <div>
                 {{ mediaContainer }}
               </div>
@@ -103,8 +92,7 @@
             <div v-if="mediaVideoCodec" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.videoCodec.name')"
-              />
+                v-text="$t('mediaInfo.videoCodec.name')" />
               <div>
                 {{ mediaVideoCodec }}
               </div>
@@ -112,8 +100,7 @@
             <div v-if="mediaAudioCodec" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.audioCodec.name')"
-              />
+                v-text="$t('mediaInfo.audioCodec.name')" />
               <div>
                 {{ mediaAudioCodec }}
               </div>
@@ -121,8 +108,7 @@
             <div v-if="mediaSubtitleCodec" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.subtitleCodec.name')"
-              />
+                v-text="$t('mediaInfo.subtitleCodec.name')" />
               <div>
                 {{ mediaSubtitleCodec }}
               </div>
@@ -130,8 +116,7 @@
             <div v-if="mediaAudioChannels" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.audioChannels.name')"
-              />
+                v-text="$t('mediaInfo.audioChannels.name')" />
               <div>
                 {{ mediaAudioChannels }}
               </div>
@@ -139,8 +124,7 @@
             <div v-if="mediaTotalBitrate" class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('mediaInfo.bitrate.name')"
-              />
+                v-text="$t('mediaInfo.bitrate.name')" />
               <div>
                 {{ mediaTotalBitrate }}
               </div>
@@ -157,8 +141,7 @@
                 sessionInfo.TranscodingInfo &&
                 sessionInfo.TranscodingInfo.TranscodeReasons.length > 0
               "
-              class="d-flex"
-            >
+              class="d-flex">
               <div
                 class="font-weight-bold mr-2"
                 v-text="
@@ -166,14 +149,12 @@
                     'transcodingInfo.transcodingReason.name',
                     sessionInfo.TranscodingInfo.TranscodeReasons.length
                   )
-                "
-              />
+                " />
               <div class="d-flex flex-column">
                 <div
                   v-for="(reason, index) in sessionInfo.TranscodingInfo
                     .TranscodeReasons"
-                  :key="index"
-                >
+                  :key="index">
                   {{
                     $t(
                       `transcodingInfo.transcodingReason.reasons.${camelCase(
@@ -189,12 +170,10 @@
                 sessionInfo.TranscodingInfo &&
                 sessionInfo.TranscodingInfo.Framerate
               "
-              class="d-flex"
-            >
+              class="d-flex">
               <div
                 class="font-weight-bold mr-2"
-                v-text="$t('transcodingInfo.transcodingFramerate.name')"
-              />
+                v-text="$t('transcodingInfo.transcodingFramerate.name')" />
               <div>
                 {{
                   $t('transcodingInfo.transcodingFramerate.value', {
@@ -208,13 +187,11 @@
                 sessionInfo.TranscodingInfo &&
                 sessionInfo.TranscodingInfo.CompletionPercentage
               "
-              class="d-flex flex-column"
-            >
+              class="d-flex flex-column">
               <div class="d-flex">
                 <div
                   class="font-weight-bold mr-2"
-                  v-text="$t('transcodingInfo.transcodingProgress')"
-                />
+                  v-text="$t('transcodingInfo.transcodingProgress')" />
                 <div>
                   {{
                     sessionInfo.TranscodingInfo.CompletionPercentage.toFixed(
@@ -227,8 +204,7 @@
                 class="d-inline-block mt-2"
                 :value="
                   sessionInfo.TranscodingInfo.CompletionPercentage.toFixed(1)
-                "
-              />
+                " />
             </div>
           </v-card-text>
         </v-card>
@@ -376,7 +352,7 @@ export default defineComponent({
       this.updateSession();
     }, 10000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.updateSessionInterval !== null) {
       window.clearInterval(this.updateSessionInterval);
     }
