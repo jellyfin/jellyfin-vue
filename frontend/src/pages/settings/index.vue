@@ -42,7 +42,7 @@
       <v-col cols="12" md="6" lg="5" class="py-4">
         <!-- User settings -->
         <v-list two-line class="mb-4">
-          <v-list-item-group>
+          <v-list-group>
             <v-list-item
               v-for="userItem in userItems"
               :key="userItem.name"
@@ -58,7 +58,7 @@
                 <v-icon>mdi-chevron-right</v-icon>
               </v-list-item-action>
             </v-list-item>
-          </v-list-item-group>
+          </v-list-group>
         </v-list>
         <!-- Administrator settings -->
         <div v-if="auth.currentUser.Policy.IsAdministrator">
@@ -67,7 +67,7 @@
             :key="`admin-section-${index}`"
             two-line
             class="mb-4">
-            <v-list-item-group>
+            <v-list-group>
               <v-list-item
                 v-for="adminItem in adminSection"
                 :key="adminItem.name"
@@ -83,7 +83,7 @@
                   <v-icon>mdi-chevron-right</v-icon>
                 </v-list-item-action>
               </v-list-item>
-            </v-list-item-group>
+            </v-list-group>
           </v-list>
         </div>
         <about-links v-if="$vuetify.display.mobile" />
