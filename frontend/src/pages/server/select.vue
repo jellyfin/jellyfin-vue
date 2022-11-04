@@ -15,7 +15,7 @@
         <v-btn
           class="mt-6"
           block
-          large
+          size="large"
           color="primary"
           @click="$router.push('/server/add')">
           {{ $t('login.addServer') }}

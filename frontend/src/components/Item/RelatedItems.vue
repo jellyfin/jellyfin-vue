@@ -11,7 +11,7 @@
       </h2>
       <!-- TODO: Wait for Vuetify 3.1 -->
       <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
-      <v-list color="transparent" two-line>
+      <v-list color="transparent" lines="two">
         <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
             v-for="relatedItem in relatedItems"

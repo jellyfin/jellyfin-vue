@@ -1,12 +1,12 @@
 <template>
   <div class="ma-1">
-    <v-tooltip bottom>
+    <v-tooltip location="bottom">
       <template #activator="{ on, attrs }">
         <v-btn
           class="align-self-center active-button"
           :icon="!fab"
           :fab="fab"
-          :small="fab"
+          :size="fab && 'small'"
           :class="{ 'ma-n1': !fab }"
           :color="color"
           :disabled="disabled"

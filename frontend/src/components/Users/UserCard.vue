@@ -1,6 +1,6 @@
 <template>
   <div class="ma-2 d-flex flex-column pointer" @click="$emit('connect', user)">
-    <v-btn plain ripple :height="128" :width="128">
+    <v-btn variant="plain" ripple :height="128" :width="128">
       <user-image :size="128" :user="user" rounded />
     </v-btn>
     <a class="text-subtitle-1 text-center mt-2 link">
