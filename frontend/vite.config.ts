@@ -21,7 +21,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       port: 3000
     },
     define: {
-      __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
+      __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || ''),
+      __HISTORY_ROUTER_MODE__: process.env.HISTORY_ROUTER_MODE ? true : false
     },
     plugins: [
       vue(),
