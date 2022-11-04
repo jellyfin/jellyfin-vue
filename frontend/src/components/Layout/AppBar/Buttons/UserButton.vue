@@ -25,7 +25,7 @@
         </v-list-item-title>
         <v-list-item-subtitle v-if="auth.currentUser.Policy.IsAdministrator">
           {{ $t('administrator') }}
-          <v-icon small>mdi-key-chain</v-icon>
+          <v-icon size="small">mdi-key-chain</v-icon>
         </v-list-item-subtitle>
       </v-list-item>
       <v-divider class="my-2" light />
@@ -33,7 +33,7 @@
         v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
         @click="item.action">
-        <v-icon small>{{ item.icon }}</v-icon>
+        <v-icon size="small">{{ item.icon }}</v-icon>
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>

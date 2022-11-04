@@ -8,7 +8,7 @@
           :rules="rules.serverUrl">
           <v-text-field
             v-model="serverUrl"
-            outlined
+            variant="outlined"
             autofocus
             :label="$t('login.serverAddress')"
             type="url"
@@ -17,7 +17,7 @@
         </validation-provider>
         <v-row align="center" no-gutters>
           <v-col v-if="previousServerLength" class="mr-2">
-            <v-btn block large @click="$router.push('/server/select')">
+            <v-btn block size="large" @click="$router.push('/server/select')">
               {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
@@ -26,7 +26,7 @@
               :disabled="invalid"
               :loading="loading"
               block
-              large
+              size="large"
               color="primary"
               type="submit">
               {{ $t('login.connect') }}

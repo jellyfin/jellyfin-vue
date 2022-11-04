@@ -3,7 +3,7 @@
     v-model="menu"
     :close-on-content-click="false"
     :transition="'slide-y-transition'"
-    bottom
+    location="bottom"
     :nudge-bottom="nudgeBottom"
     offset-y
     min-width="25em"
