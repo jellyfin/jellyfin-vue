@@ -1,5 +1,5 @@
 <template>
-  <v-list color="transparent" two-line>
+  <v-list color="transparent" lines="two">
     <div v-if="items.length > 0">
       <v-list-item
         v-for="(item, index) in items"

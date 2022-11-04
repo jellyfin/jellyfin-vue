@@ -15,7 +15,7 @@
     <v-container class="after-second-toolbar">
       <v-row>
         <v-col>
-          <v-tabs v-model="searchTab" class="transparent">
+          <v-tabs v-model="searchTab" class="bg-transparent">
             <v-tab :key="0">
               <item-grid :items="topSearchResults" :loading="loading" />
             </v-tab>

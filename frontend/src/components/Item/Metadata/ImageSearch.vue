@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :value="dialog"
+    :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
     width="60%"
@@ -15,7 +15,7 @@
           :items="sources"
           :disabled="loading"
           :label="$t('metadata.source')"
-          outlined
+          variant="outlined"
           hide-details />
         <v-select
           v-model="type"
@@ -23,7 +23,7 @@
           :items="types"
           :disabled="loading"
           :label="$t('metadata.type')"
-          outlined
+          variant="outlined"
           hide-details />
         <v-checkbox
           v-model="allLanguages"
@@ -56,10 +56,10 @@
               :aspect-ratio="ratio"
               position="top center"
               contain />
-            <div class="text-center text-truncate subtitle-1 mt-2">
+            <div class="text-center text-truncate text-subtitle-1 mt-2">
               {{ item.ProviderName }}
             </div>
-            <div class="text-center body-2 grey--text text--darken-2 info-box">
+            <div class="text-center text-body-2 text-grey-darken-2 info-box">
               <template v-if="item.Width && item.Height">
                 {{ item.Width }} &times; {{ item.Height }}
                 <template v-if="item.Language">
@@ -67,7 +67,7 @@
                 </template>
               </template>
             </div>
-            <div class="text-center body-2 grey--text text--darken-2 info-box">
+            <div class="text-center text-body-2 text-grey-darken-2 info-box">
               <template v-if="item.CommunityRating">
                 {{ item.CommunityRating | fixed }}
                 <template v-if="item.VoteCount">

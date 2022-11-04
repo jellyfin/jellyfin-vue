@@ -31,7 +31,7 @@
                 <play-button :item="item" data-swiper-parallax="-100" />
                 <v-btn
                   min-width="12em"
-                  outlined
+                  variant="outlined"
                   rounded
                   nuxt
                   data-swiper-parallax="-100"

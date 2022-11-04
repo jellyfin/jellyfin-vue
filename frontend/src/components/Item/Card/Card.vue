@@ -17,7 +17,7 @@
             v-if="refreshProgress !== undefined"
             class="card-chip"
             rotate="-90"
-            :value="refreshProgress"
+            :model-value="refreshProgress"
             :indeterminate="refreshProgress === 0"
             color="white"
             size="24" />
@@ -36,7 +36,7 @@
               item.UserData.PlayedPercentage > 0
             "
             v-model="progress"
-            color="primary accent-4"
+            color="primary-accent-4"
             class="card-progress" />
         </div>
         <div

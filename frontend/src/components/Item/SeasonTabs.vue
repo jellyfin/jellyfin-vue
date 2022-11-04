@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-tabs v-model="currentTab" class="mb-3" background-color="transparent">
+    <v-tabs v-model="currentTab" class="mb-3" bg-color="transparent">
       <v-tab v-for="season in seasons" :key="season.Id">
         {{ season.Name }}
       </v-tab>
     </v-tabs>
-    <v-tabs v-model="currentTab" class="transparent">
+    <v-tabs v-model="currentTab" class="bg-transparent">
       <v-tab v-for="season in seasons" :key="season.Id">
-        <v-list two-line color="transparent">
+        <v-list lines="two" color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
