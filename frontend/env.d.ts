@@ -10,3 +10,4 @@ declare module '*.vue' {
 }
 
 declare const __COMMIT_HASH__: string;
+declare const __HISTORY_ROUTER_MODE__: boolean;
