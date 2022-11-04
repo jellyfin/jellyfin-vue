@@ -5,12 +5,10 @@
     <app-bar />
     <v-main>
       <div class="pa-s">
-        <router-view />
+        <router-view-transition />
       </div>
     </v-main>
     <audio-controls />
-    <!-- Utilities and global systems -->
-    <snackbar />
   </v-app>
 </template>
 
