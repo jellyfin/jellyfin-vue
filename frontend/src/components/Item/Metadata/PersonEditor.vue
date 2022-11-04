@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="dialog" max-width="30%" @click:outside="handleCancel">
+  <v-dialog :model-value="dialog" max-width="30%" @click:outside="handleCancel">
     <v-card>
       <v-card-title>{{ $t('editPerson') }}</v-card-title>
       <v-divider />
@@ -10,24 +10,24 @@
               <v-img
                 v-if="person && person.PrimaryImageTag"
                 :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`" />
-              <v-icon v-else class="grey darken-3">mdi-account</v-icon>
+              <v-icon v-else class="bg-grey-darken-3">mdi-account</v-icon>
             </v-avatar>
           </v-col>
           <v-col>
             <v-form @submit.prevent="handleSubmit">
               <v-text-field
                 v-model="editState.Name"
-                outlined
+                variant="outlined"
                 :label="$t('name')" />
               <v-select
                 v-model="editState.Type"
                 :items="options"
                 :label="$t('type')"
-                outlined />
+                variant="outlined" />
               <v-text-field
                 v-if="editState.Type === 'Actor'"
                 v-model="editState.Role"
-                outlined
+                variant="outlined"
                 :label="$t('role')" />
             </v-form>
           </v-col>
@@ -41,10 +41,10 @@
           'justify-center': $vuetify.display.mobile
         }">
         <v-spacer />
-        <v-btn depressed width="8em" class="mr-1" @click="handleCancel">
+        <v-btn variant="flat" width="8em" class="mr-1" @click="handleCancel">
           {{ $t('cancel') }}
         </v-btn>
-        <v-btn depressed width="8em" color="primary" type="submit">
+        <v-btn variant="flat" width="8em" color="primary" type="submit">
           {{ $t('save') }}
         </v-btn>
       </v-card-actions>

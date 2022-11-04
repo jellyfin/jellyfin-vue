@@ -202,7 +202,7 @@
               </div>
               <v-progress-linear
                 class="d-inline-block mt-2"
-                :value="
+                :model-value="
                   sessionInfo.TranscodingInfo.CompletionPercentage.toFixed(1)
                 " />
             </div>

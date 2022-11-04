@@ -4,7 +4,7 @@
       <validation-provider v-slot="{ errors }" name="username" rules="required">
         <v-text-field
           v-model="admin.Name"
-          outlined
+          variant="outlined"
           :label="$t('username')"
           type="username"
           :error-messages="errors"
@@ -15,7 +15,7 @@
         rules="bothPasswordsSame:@confirm">
         <v-text-field
           v-model="admin.Password"
-          outlined
+          variant="outlined"
           :label="$t('password')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"
@@ -26,7 +26,7 @@
       <validation-provider v-slot="{ errors }" name="confirm" rules="">
         <v-text-field
           v-model="passwordCheck"
-          outlined
+          variant="outlined"
           :label="$t('wizard.confirmPassword')"
           :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           :type="showPassword ? 'text' : 'password'"

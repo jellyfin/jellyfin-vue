@@ -4,17 +4,17 @@
       <v-menu
         v-model="show"
         absolute
-        close-on-click
+        :persistent="false"
         close-on-content-click
         :z-index="zIndex"
         :position-x="positionX"
         :position-y="positionY"
-        top>
+        location="top">
         <template #activator="{ on, attrs }">
           <!-- See comments for this in the onRightClick method -->
           <v-btn
             icon
-            :outlined="outlined"
+            :variant="outlined && 'outlined'"
             :dark="dark"
             v-bind="attrs"
             v-on="on"

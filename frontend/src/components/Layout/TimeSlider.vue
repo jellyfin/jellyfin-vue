@@ -1,9 +1,9 @@
 <template>
   <v-slider
-    :value="sliderValue"
+    :model-value="sliderValue"
     hide-details
     :max="runtime"
-    validate-on-blur
+    validate-on="blur"
     thumb-label
     :step="0"
     class="time-slider"

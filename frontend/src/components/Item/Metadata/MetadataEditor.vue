@@ -18,23 +18,23 @@
           <v-tab value="general">
             <v-text-field
               v-model="metadata.Name"
-              outlined
+              variant="outlined"
               :label="$t('metadata.title')" />
             <v-text-field
               v-model="metadata.OriginalTitle"
-              outlined
+              variant="outlined"
               :label="$t('originalTitle')" />
             <v-text-field
               v-model="metadata.ForcedSortName"
-              outlined
+              variant="outlined"
               :label="$t('sortTitle')" />
             <v-text-field
               v-model="metadata.Taglines"
-              outlined
+              variant="outlined"
               :label="$t('tagline')" />
             <v-textarea
               v-model="metadata.Overview"
-              outlined
+              variant="outlined"
               no-resize
               rows="4"
               :label="$t('overview')" />
@@ -48,13 +48,13 @@
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CommunityRating"
-                  outlined
+                  variant="outlined"
                   :label="$t('communityRating')" />
               </v-col>
               <v-col sm="6" cols="12">
                 <v-text-field
                   v-model="metadata.CriticRating"
-                  outlined
+                  variant="outlined"
                   :label="$t('criticRating')" />
               </v-col>
             </v-row>
@@ -65,15 +65,15 @@
               @update:date="(value) => saveDate('PremiereDate', value)" />
             <v-text-field
               v-model="metadata.ProductionYear"
-              outlined
+              variant="outlined"
               :label="$t('year')" />
             <v-text-field
               v-model="metadata.OfficialRating"
-              outlined
+              variant="outlined"
               :label="$t('parentalRating')" />
             <v-text-field
               v-model="metadata.CustomRating"
-              outlined
+              variant="outlined"
               :label="$t('customRating')" />
             <v-combobox
               v-model="metadata.Genres"
@@ -82,7 +82,7 @@
               :label="$t('genres')"
               hide-selected
               multiple
-              outlined
+              variant="outlined"
               small-chips>
               <template #no-data>
                 <v-list-item>
@@ -99,7 +99,7 @@
               :label="$t('tags')"
               hide-selected
               multiple
-              outlined
+              variant="outlined"
               small-chips>
               <template #no-data>
                 <v-list-item>
@@ -111,7 +111,7 @@
             </v-combobox>
           </v-tab>
           <v-tab value="castAndCrew">
-            <v-list two-line>
+            <v-list lines="two">
               <v-list-item @click="(e) => handlePersonEdit()">
                 <v-list-item-title>
                   {{ $t('addNewPerson') }}
@@ -128,7 +128,7 @@
                   <v-img
                     v-if="item.PrimaryImageTag"
                     :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
-                  <v-icon v-else class="grey darken-3">mdi-account</v-icon>
+                  <v-icon v-else class="bg-grey-darken-3">mdi-account</v-icon>
                 </v-avatar>
                 <v-list-item-title>
                   {{ item.Name }}
@@ -157,7 +157,7 @@
         'justify-center': $vuetify.display.mobile
       }">
       <v-btn
-        depressed
+        variant="flat"
         width="8em"
         color="secondary"
         class="mr-1"
@@ -165,7 +165,7 @@
         {{ $t('cancel') }}
       </v-btn>
       <v-btn
-        depressed
+        variant="flat"
         width="8em"
         color="primary"
         :loading="loading"

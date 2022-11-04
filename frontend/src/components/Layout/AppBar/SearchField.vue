@@ -5,8 +5,8 @@
     prepend-inner-icon="mdi-magnify"
     :placeholder="$t('search.name')"
     dense
-    outlined
-    filled
+    variant="outlined"
+    variant="filled"
     flat
     hide-details
     single-line />
