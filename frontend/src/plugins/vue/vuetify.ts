@@ -1,4 +1,5 @@
 import { createVuetify, ThemeDefinition } from 'vuetify';
+import { md3 } from 'vuetify/blueprints';
 
 const dark: ThemeDefinition = {
   dark: true,
@@ -33,6 +34,7 @@ const light: ThemeDefinition = {
 };
 
 export const vuetify = createVuetify({
+  blueprint: md3,
   theme: {
     defaultTheme: 'dark',
     themes: {
