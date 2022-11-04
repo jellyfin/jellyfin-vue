@@ -29,10 +29,10 @@ pinia.use(piniaPlugins);
  */
 const app = createApp(Root);
 
-app.use(vuetify);
 app.use(i18n);
 app.use(router);
 app.use(pinia);
+app.use(vuetify);
 
 /**
  * Vue directives
