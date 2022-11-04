@@ -46,10 +46,7 @@ module.exports = {
     'no-restricted-globals': ['error'].concat(restrictedGlobals),
     'import/newline-after-import': 'error',
     'import/order': 'error',
-    'import/no-unresolved': [
-      'error',
-      { ignore: ['virtual:generated-layouts', '~pages'] }
-    ],
+    'import/no-unresolved': ['error', { ignore: ['virtual:*'] }],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',
