@@ -1,8 +1,8 @@
 <template>
   <v-select
     v-model="trackIndex"
-    outlined
-    filled
+    variant="outlined"
+    variant="filled"
     flat
     dense
     single-line
@@ -15,7 +15,10 @@
     </template>
 
     <template #item="{ item, on, attrs }">
-      <v-list-item v-bind="attrs" :two-line="!!item.text.subtitle" v-on="on">
+      <v-list-item
+        v-bind="attrs"
+        :lines="!!item.text.subtitle && 'two'"
+        v-on="on">
         <v-avatar v-if="item.text.icon">
           <v-icon>{{ item.text.icon }}</v-icon>
         </v-avatar>

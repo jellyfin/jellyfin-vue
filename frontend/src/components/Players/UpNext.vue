@@ -15,13 +15,13 @@
           <v-card-title class="text-h6">
             <i18n path="dialog.upNext.nextItemPlayingIn" tag="span">
               <template #time>
-                <span class="primary--text darken-2">
+                <span class="text-primary darken-2">
                   {{ $tc('units.time.seconds', currentItemTimeLeft) }}
                 </span>
               </template>
             </i18n>
           </v-card-title>
-          <v-card-subtitle class="text-truncate subtitle-1">
+          <v-card-subtitle class="text-truncate text-subtitle-1">
             <span v-if="playbackManager.getCurrentItem.Type === 'Episode'">
               {{ playbackManager.getNextItem.SeriesName }} -
               {{
@@ -54,12 +54,15 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              class="primary darken-2"
-              depressed
+              class="bg-primary-darken-2"
+              variant="flat"
               @click="playbackManager.setNextTrack">
               {{ $t('dialog.upNext.startNow') }}
             </v-btn>
-            <v-btn depressed outlined @click="isHiddenByUser = true">
+            <v-btn
+              variant="flat"
+              variant="outlined"
+              @click="isHiddenByUser = true">
               {{ $t('dialog.upNext.hide') }}
             </v-btn>
           </v-card-actions>

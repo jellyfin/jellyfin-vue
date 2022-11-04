@@ -41,7 +41,7 @@
       </v-col>
       <v-col cols="12" md="6" lg="5" class="py-4">
         <!-- User settings -->
-        <v-list two-line class="mb-4">
+        <v-list lines="two" class="mb-4">
           <v-list-group>
             <v-list-item
               v-for="userItem in userItems"
@@ -65,7 +65,7 @@
           <v-list
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
-            two-line
+            lines="two"
             class="mb-4">
             <v-list-group>
               <v-list-item

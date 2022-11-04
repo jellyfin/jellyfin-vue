@@ -9,7 +9,7 @@
           <v-text-field
             v-if="isEmpty(user)"
             v-model="login.username"
-            outlined
+            variant="outlined"
             hide-details
             autofocus
             autocomplete="username"
@@ -18,7 +18,7 @@
         </validation-provider>
         <v-text-field
           v-model="login.password"
-          outlined
+          variant="outlined"
           hide-details
           class="mt-4"
           autocomplete="current-password"
@@ -33,10 +33,15 @@
           :label="$t('login.rememberMe')" />
         <v-row align="center" no-gutters>
           <v-col class="mr-2">
-            <v-btn v-if="isEmpty(user)" to="/server/select" nuxt block large>
+            <v-btn
+              v-if="isEmpty(user)"
+              to="/server/select"
+              nuxt
+              block
+              size="large">
               {{ $t('login.changeServer') }}
             </v-btn>
-            <v-btn v-else block large @click="$emit('change')">
+            <v-btn v-else block size="large" @click="$emit('change')">
               {{ $t('login.changeUser') }}
             </v-btn>
           </v-col>
@@ -45,7 +50,7 @@
               :disabled="invalid"
               :loading="loading"
               block
-              large
+              size="large"
               color="primary"
               type="submit">
               {{ $t('signIn') }}

@@ -6,10 +6,10 @@
     offset-y>
     <template #:activator="{ on, attrs }">
       <v-text-field
-        :value="value"
+        :model-value="value"
         :label="label"
         readonly
-        outlined
+        variant="outlined"
         v-bind="attrs"
         v-on="on" />
     </template>
