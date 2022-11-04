@@ -7,7 +7,6 @@ import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import {
-  Vuetify3Resolver,
   VueUseComponentsResolver,
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
@@ -28,7 +27,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       vue(),
       Pages({
         routeStyle: 'nuxt',
-        importMode: 'sync'
+        importMode: 'sync',
+        moduleId: 'virtual:generated-pages'
       }),
       Layouts({
         importMode: () => 'sync'
@@ -41,7 +41,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
          */
         resolvers: [
           IconsResolver(),
-          Vuetify3Resolver(),
           VueUseComponentsResolver(),
           VueUseDirectiveResolver()
         ]
@@ -55,7 +54,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       }),
       VitePWA(),
       vuetify({
-        autoImport: false,
+        autoImport: true,
         styles: { configFile: 'src/assets/styles/variables.scss' }
       })
     ],
@@ -77,6 +76,9 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           ]
         }
       }
+    },
+    preview: {
+      port: 3000
     },
     resolve: {
       alias: {

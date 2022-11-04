@@ -100,8 +100,7 @@
                 <v-slide-group>
                   <v-slide-group-item
                     v-for="writer in writers"
-                    :key="writer.Id"
-                  >
+                    :key="writer.Id">
                     <v-chip
                       small
                       link

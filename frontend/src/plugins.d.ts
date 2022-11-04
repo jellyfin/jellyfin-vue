@@ -1,5 +1,5 @@
 import 'vue-router';
-import AxiosInstance from 'axios';
+import { AxiosInstance } from 'axios';
 import Swiper from 'swiper';
 
 declare module 'vue-router' {
@@ -12,7 +12,7 @@ declare module 'vue-router' {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $api: typeof AxiosInstance;
+    $api: AxiosInstance;
     $swiper: Swiper;
   }
 }
