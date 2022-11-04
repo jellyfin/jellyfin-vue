@@ -5,7 +5,7 @@
       <div class="d-flex ma-2">
         <h1
           class="text-h6 text-sm-h5 font-weight-light header"
-          :class="{ 'header-white-mode': !$vuetify.theme.dark }">
+          :class="{ 'header-white-mode': !$vuetify.theme.current.value.dark }">
           <span class="pl-4">{{ title }}</span>
         </h1>
         <v-spacer />
@@ -65,7 +65,7 @@ export default defineComponent({
       uuid,
       swiperOptions: {
         initialSlide: 0,
-        freeMode: this.$vuetify.display.mobile,
+        freeMode: this.isMobile,
         effect: 'slide',
         navigation: {
           nextEl: `.swiper-section-${uuid} .swiper-next`,
@@ -89,6 +89,11 @@ export default defineComponent({
         }
       } as SwiperOptions
     };
+  },
+  computed: {
+    isMobile(): boolean {
+      return this.$vuetify.display.mobile;
+    }
   }
 });
 </script>

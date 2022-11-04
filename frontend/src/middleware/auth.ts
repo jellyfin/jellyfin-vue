@@ -30,7 +30,6 @@ function handleAuthRedirections(
   const servers = auth.servers || [];
   const userToken = auth.currentUserToken;
   const currentRoute = context.app.router?.currentRoute?.fullPath || '';
-  // @ts-expect-error - No types for this. TODO: Investigate why
   const nextRoute = context.app.router?.history?.pending?.fullPath || '';
   let destinationRoute = '';
 
