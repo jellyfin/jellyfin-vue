@@ -3,10 +3,10 @@
     <v-select
       v-model="UICulture"
       :loading="loading"
-      outlined
+      variant="outlined"
       :label="$t('wizard.preferedLanguage')"
       required
-      item-text="Name"
+      item-title="Name"
       item-value="Value"
       :items="culturesList" />
     <v-btn color="primary" @click="setLanguage">

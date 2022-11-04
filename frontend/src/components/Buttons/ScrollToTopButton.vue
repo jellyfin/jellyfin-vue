@@ -5,8 +5,8 @@
       color="primary"
       fab
       dark
-      bottom
-      right
+      location="bottom"
+      location="right"
       fixed
       @click="scrollToTop">
       <v-icon>mdi-chevron-up</v-icon>
