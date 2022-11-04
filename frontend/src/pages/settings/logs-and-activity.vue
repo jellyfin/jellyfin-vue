@@ -9,7 +9,7 @@
           <v-list
             v-if="logFiles && logFiles.length > 0"
             key="log-list"
-            two-line
+            lines="two"
             class="mb-2">
             <v-list-group>
               <v-list-item
@@ -58,7 +58,7 @@
           <v-list
             v-if="activityList && activityList.length > 0"
             key="activity-list"
-            two-line
+            lines="two"
             class="mb-2"
             disabled>
             <v-list-group>

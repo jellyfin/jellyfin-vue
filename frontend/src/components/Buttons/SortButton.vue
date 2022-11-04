@@ -4,13 +4,13 @@
       <v-btn
         v-if="!$vuetify.display.smAndDown"
         class="my-2"
-        text
+        variant="text"
         rounded
         :disabled="disabled"
         v-bind="attrs"
         v-on="on">
         {{ $t('sortByType', { type: items[model].name }) }}
-        <v-icon right>mdi-menu-down</v-icon>
+        <v-icon end>mdi-menu-down</v-icon>
       </v-btn>
       <v-btn
         v-else

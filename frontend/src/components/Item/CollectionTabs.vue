@@ -1,6 +1,6 @@
 <template>
   <div v-if="!!children">
-    <v-tabs v-model="currentTab" class="mb-3" background-color="transparent">
+    <v-tabs v-model="currentTab" class="mb-3" bg-color="transparent">
       <v-tab v-for="(items, type) in children" :key="type">
         {{ type }} ({{ items.length }})
       </v-tab>
@@ -8,7 +8,7 @@
     <h1 v-if="!children && !loading" class="text-h5 text-center">
       {{ $t('collectionEmpty') }}
     </h1>
-    <v-tabs v-model="currentTab" class="transparent">
+    <v-tabs v-model="currentTab" class="bg-transparent">
       <v-tab v-for="(items, type) in children" :key="type">
         <v-container>
           <skeleton-item-grid v-if="loading" :view-type="''" />

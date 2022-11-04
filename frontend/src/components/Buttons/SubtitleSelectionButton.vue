@@ -2,9 +2,9 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="true"
+    :persistent="!true"
     :transition="'slide-y-transition'"
-    top
+    location="top"
     :nudge-top="nudgeTop"
     offset-y
     min-width="25em"
@@ -16,7 +16,7 @@
     @input="$emit('input', $event)">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
-      <v-tooltip top>
+      <v-tooltip location="top">
         <template #activator="{ on: tooltip }">
           <v-btn
             class="align-self-center active-button"
