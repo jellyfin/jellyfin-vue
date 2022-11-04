@@ -1,13 +1,12 @@
 <template>
   <v-menu offset-y>
     <template #activator="{ on: onMenu, attrs: attrsMenu }">
-      <v-tooltip :bottom="bottom" :top="top">
+      <v-tooltip :location="bottom ? 'bottom' : 'top'">
         <template #activator="{ on: onTooltip, attrsTooltip }">
           <v-btn
             :icon="!fab"
             :fab="fab"
-            :small="!large && fab"
-            :large="large"
+            :size="large ? 'large' : 'small'"
             :class="{ 'mr-n1': !fab, 'ml-1': fab }"
             v-bind="{ ...attrsMenu, ...attrsTooltip }"
             v-on="{ ...onMenu, ...onTooltip }">

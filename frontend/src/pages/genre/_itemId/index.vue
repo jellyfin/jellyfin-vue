@@ -12,7 +12,7 @@
         v-if="!$fetchState.pending"
         class="play-button mr-2"
         min-width="8em"
-        outlined
+        variant="outlined"
         rounded
         nuxt
         :to="`./${genre.Id}/shuffle`">

@@ -2,9 +2,9 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    :close-on-click="closeOnClick"
+    :persistent="!closeOnClick"
     :transition="'slide-y-transition'"
-    top
+    location="top"
     :nudge-top="nudgeTop"
     offset-y
     min-width="35vw"
@@ -16,7 +16,7 @@
     @input="$emit('input', $event)">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
-      <v-tooltip top>
+      <v-tooltip location="top">
         <template #activator="{ on: tooltip }">
           <v-btn
             class="align-self-center active-button"
@@ -69,7 +69,7 @@
       </v-list>
       <v-spacer />
       <v-card-actions class="d-flex justify-space-between">
-        <v-tooltip top>
+        <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon v-on="tooltip" @click="playbackManager.stop">
               <v-icon>mdi-playlist-remove</v-icon>
@@ -77,7 +77,7 @@
           </template>
           <span>{{ $t('playback.clearQueue') }}</span>
         </v-tooltip>
-        <v-tooltip top>
+        <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon disabled v-on="tooltip">
               <v-icon>mdi-content-save</v-icon>

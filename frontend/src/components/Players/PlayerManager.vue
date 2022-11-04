@@ -46,14 +46,14 @@
                   <v-btn
                     class="pointer-events-all"
                     icon
-                    large
+                    size="large"
                     @click="playbackManager.setPreviousTrack">
                     <v-icon size="32">mdi-skip-previous</v-icon>
                   </v-btn>
                   <v-btn
                     class="pointer-events-all"
                     icon
-                    x-large
+                    size="x-large"
                     @click="playbackManager.playPause">
                     <v-icon size="48">
                       {{ playbackManager.isPaused ? 'mdi-play' : 'mdi-pause' }}
@@ -62,7 +62,7 @@
                   <v-btn
                     class="pointer-events-all"
                     icon
-                    large
+                    size="large"
                     @click="playbackManager.setNextTrack">
                     <v-icon size="32">mdi-skip-next</v-icon>
                   </v-btn>
@@ -78,7 +78,7 @@
                 showFullScreenOverlay &&
                 !isUpNextVisible
               "
-              color="transparent"
+              scrim="transparent"
               absolute>
               <div
                 class="d-flex flex-column justify-space-between align-center player-overlay">
@@ -145,7 +145,7 @@
                           icon
                           class="mx-1 active-button"
                           @click="playbackManager.playPause">
-                          <v-icon large>
+                          <v-icon size="large">
                             {{
                               playbackManager.isPaused
                                 ? 'mdi-play-circle-outline'

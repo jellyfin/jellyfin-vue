@@ -8,11 +8,11 @@
             v-for="(item, i) in generalImages"
             :key="`${item.ImageTag}-${i}`"
             class="ma-2"
-            outlined
+            variant="outlined"
             width="288">
             <v-img :src="imageFormat(item)" contain width="288" height="162" />
-            <div class="text-center subtitle-1">{{ item.ImageType }}</div>
-            <div class="text-center body-2 text--secondary">
+            <div class="text-center text-subtitle-1">{{ item.ImageType }}</div>
+            <div class="text-center text-body-2 text--secondary">
               {{ item.Width }} x {{ item.Height }}
             </div>
             <v-card-actions class="justify-center">
@@ -35,11 +35,11 @@
             v-for="(item, i) in backdropImages"
             :key="`${item.ImageTag}-${i}`"
             class="mx-2"
-            outlined
+            variant="outlined"
             width="288">
             <v-img :src="imageFormat(item)" contain width="288" height="162" />
-            <div class="text-center subtitle-1">{{ item.ImageType }}</div>
-            <div class="text-center body-2 text--secondary">
+            <div class="text-center text-subtitle-1">{{ item.ImageType }}</div>
+            <div class="text-center text-body-2 text--secondary">
               {{ item.Width }} &times; {{ item.Height }}
             </div>
             <v-card-actions class="justify-center">
