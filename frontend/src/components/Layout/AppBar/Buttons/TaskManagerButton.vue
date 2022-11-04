@@ -3,9 +3,9 @@
     v-if="showButton"
     v-model="menu"
     :close-on-content-click="false"
-    close-on-click
+    :persistent="false"
     :transition="'slide-y-transition'"
-    bottom
+    location="bottom"
     :nudge-bottom="nudgeBottom"
     offset-y
     min-width="25em"
@@ -40,7 +40,7 @@
                 :indeterminate="
                   task.progress === undefined || task.progress === 0
                 "
-                :value="task.progress"
+                :model-value="task.progress"
                 rotate="-90"
                 size="24" />
               <v-icon v-else>mdi-check</v-icon>

@@ -4,7 +4,7 @@
       class="active-button"
       icon
       fab
-      small
+      size="small"
       @click="playbackManager.toggleMute">
       <v-icon>{{ icon }}</v-icon>
     </v-btn>
@@ -13,8 +13,8 @@
       hide-details
       thumb-label
       max="100"
-      :value="playbackManager.isMuted ? 0 : playbackManager.currentVolume"
-      validate-on-blur
+      :model-value="playbackManager.isMuted ? 0 : playbackManager.currentVolume"
+      validate-on="blur"
       @input="onVolumeChange" />
   </div>
 </template>

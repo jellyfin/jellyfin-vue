@@ -34,7 +34,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-tabs v-model="activeTab" background-color="transparent">
+          <v-tabs v-model="activeTab" bg-color="transparent">
             <v-tab :key="0" :disabled="!movies.length">
               {{ $t('item.person.movies') }}
             </v-tab>
@@ -51,7 +51,7 @@
               {{ $t('item.person.information') }}
             </v-tab>
           </v-tabs>
-          <v-tabs v-model="activeTab" class="transparent">
+          <v-tabs v-model="activeTab" class="bg-transparent">
             <v-tab :key="0">
               <v-container>
                 <v-row>
