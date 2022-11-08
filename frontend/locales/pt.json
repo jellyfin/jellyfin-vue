@@ -4,14 +4,123 @@
   "actor": "Actor",
   "actors": "Actores",
   "addNewPerson": "Adicionar uma pessoa",
+  "administrator": "Administrador",
   "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Albuns",
   "allLanguages": "Todos os idiomas",
   "alphabetically": "Alfabeticamente",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sincronizar definições…",
+      "scanningLibrary": "A scanear a biblioteca '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Tarefas a decorrer"
+    }
+  },
   "architecture": "Arquitectura",
   "artist": "Artista",
   "artists": "Artistas",
   "aspectRatio": "Proporção de tela",
   "audio": "Áudio",
-  "audioCodecNotSupported": "O codec de áudio não é suportado"
+  "audioCodecNotSupported": "O codec de áudio não é suportado",
+  "badRequest": "Mau pedido. Tente de Novo",
+  "books": "Livros",
+  "browserNotSupported": "O seu browser não suporta a reprodução deste ficheiro.",
+  "buttons": {
+    "ok": "Ok"
+  },
+  "byArtist": "Por {artist}",
+  "cancel": "Cancelar",
+  "castAndCrew": "Casting & equipa",
+  "collectionEmpty": "Esta coleção está vazia",
+  "collections": "Coleções",
+  "communityRating": "Avaliação da comunidade",
+  "confirm": "Confirmar",
+  "connect": "Conectar",
+  "continueListening": "Continuar a ouvir",
+  "continueWatching": "continuar a ver",
+  "criticRating": "Avaliação crítica",
+  "customRating": "Avaliação personalizada",
+  "darkModeToggle": "Alterar modo escuro",
+  "dateAdded": "Adicionado a",
+  "details": "Detalhes",
+  "dialog": {
+    "upNext": {
+      "hide": "Esconder",
+      "nextItemPlayingIn": "A começar dentro de {time}",
+      "startNow": "Começar agora"
+    }
+  },
+  "director": "Diretor",
+  "disabled": "Desativado",
+  "discNumber": "Disco {discNumber}",
+  "dislikes": "Dislikes",
+  "edit": "Editar",
+  "editMetadata": "Editar metadados",
+  "editPerson": "Editar pessoa",
+  "endDate": "Data de fim",
+  "endsAt": "Termina às {time}",
+  "episodeNumber": "Episódio {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Ocorreu um erro",
+    "messages": {
+      "errorCode": "Código de erro: {errorCode}",
+      "videoPlayerError": "O reprodutor de vídeo encontrou um erro irrecuperável."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "Não foi possível obter as definições do ecrã. Usando as últimas definições conhecidas.",
+  "failedSettingDisplayPreferences": "Não foi possível atualizar as preferências de ecrã.",
+  "failedToRefreshItems": "Falha ao atualizar itens",
+  "favorite": "Favorito",
+  "features": "Funcionalidades",
+  "filter": "Filtrar",
+  "filtersNotFound": "Impossível carregar filtros",
+  "fullScreen": "Ecrã cheio",
+  "general": "Geral",
+  "genericJellyfinPlaceholderDevice": "Dispositivo Jellyfin genérico",
+  "genres": "Géneros",
+  "googleCastPlaceholderDevice": "Dispositivo Google Cast",
+  "guestStar": "Estrela Convidada",
+  "headerExternalIds": "IDs externos",
+  "headerPaths": "Caminho",
+  "home": "Menu Principal",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "Adicionado recentemente"
+    }
+  },
+  "imageType": {
+    "art": "Arte",
+    "backdrop": "Plano de Fundo",
+    "box": "Caixa",
+    "boxRear": "Caixa (traseira)",
+    "disc": "Disco",
+    "logo": "Logótipo",
+    "menu": "Menu",
+    "primary": "Primário",
+    "screenshot": "Captura de Ecrã",
+    "thumb": "Miniatura"
+  },
+  "images": "Imagens",
+  "incorrectUsernameOrPassword": "Nome de utilizador ou palavra-passe incorreto",
+  "item": {
+    "artist": {
+      "appearsOn": "Aparece em",
+      "discography": "Discografia",
+      "information": "Informação",
+      "videos": "Vídeos"
+    },
+    "composer": "Compositor",
+    "crew": "Equipa",
+    "person": {
+      "birth": "Nascido",
+      "birthPlace": "Lugar do Nascimento",
+      "books": "Livros",
+      "death": "Faleceu em",
+      "information": "Informação",
+      "movies": "Filmes",
+      "person": "Pessoa"
+    }
+  }
 }
