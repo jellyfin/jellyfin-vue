@@ -8,5 +8,7 @@
   "i18n-ally.enabledFrameworks": ["vue"],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "eslint.validate": ["vue"],
+  "eslint.workingDirectories": [{ "mode": "auto" }]
 }
