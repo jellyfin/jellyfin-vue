@@ -19,7 +19,7 @@
     "start": "vite",
     "serve": "vite preview",
     "lint": "prettier . --check --ignore-path ../.gitignore && eslint . --ext .ts,.js,.json,.vue --ignore-path ../.gitignore",
-    "lint-fix": "eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore && prettier . --write --ignore-path ../.gitignore",
+    "lint-fix": "prettier . --write --ignore-path ../.gitignore && eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore",
     "prod": "npm run build && npm run serve",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "vue-i18n-extract": "npx vue-i18n-extract",
