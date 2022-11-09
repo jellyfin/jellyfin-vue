@@ -120,6 +120,7 @@ module.exports = {
         }
       }
     ],
+    'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
     'vue/multiline-html-element-content-newline': 'error',
     'vue/multi-word-component-names': 'off',
     'eslint-comments/no-unused-disable': 'error'
