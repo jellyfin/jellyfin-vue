@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div
+    class="'video-container'"
+    :class="{ 'video-container--stretched': stretch }"
+  >
     <component
       :is="mediaElement"
       ref="shakaPlayer"
-      :class="{ stretch: stretch }"
       :poster="poster.url"
       autoplay
       crossorigin="anonymous"
@@ -482,15 +484,19 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.shaka-video-container,
-video {
-  max-width: 100vw;
-  max-height: 100vh;
+.video-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
-.stretch {
-  width: 100vw !important;
+.video-container--stretched {
+  position: absolute;
+  inset: 0;
+}
+
+video {
+  width: 100%;
+  height: 100%;
 }
 </style>
