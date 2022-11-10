@@ -1,5 +1,5 @@
 <template>
-  <settings-page>
+  <settings-page page-title="settingsSections.logsAndActivity.logsAndActivity">
     <template #content>
       <v-col md="6" class="pt-0 pb-4">
         <v-fade-transition group>
