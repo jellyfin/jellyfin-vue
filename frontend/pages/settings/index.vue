@@ -224,7 +224,7 @@ export default Vue.extend({
             icon: 'mdi-text-box',
             name: this.$t('settingsSections.logs.name'),
             description: this.$t('settingsSections.logs.description'),
-            link: 'settings/logsAndActivity'
+            link: 'settings/logs-and-activity'
           }
         ]
       ]
