@@ -1,6 +1,6 @@
 <template>
   <div
-    class="'video-container'"
+    class="video-container"
     :class="{ 'video-container--stretched': stretch }"
   >
     <component
@@ -484,19 +484,17 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.video-container {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.video-container--stretched {
-  position: absolute;
-  inset: 0;
-}
-
+.video-container,
 video {
   width: 100%;
   height: 100%;
+}
+
+.video-container {
+  overflow: hidden;
+}
+
+.video-container--stretched video {
+  object-fit: cover;
 }
 </style>
