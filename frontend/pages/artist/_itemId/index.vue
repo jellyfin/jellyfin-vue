@@ -40,13 +40,22 @@
             <v-tab :key="0" :disabled="!discography.length">
               {{ $t('item.artist.discography') }}
             </v-tab>
-            <v-tab :key="1" :disabled="!appearances.length">
+            <v-tab :key="1" :disabled="!albums.length">
+              {{ $t('item.artist.albums') }}
+            </v-tab>
+            <v-tab :key="2" :disabled="!eps.length">
+              {{ $t('item.artist.eps') }}
+            </v-tab>
+            <v-tab :key="3" :disabled="!singles.length">
+              {{ $t('item.artist.singles') }}
+            </v-tab>
+            <v-tab :key="4" :disabled="!appearances.length">
               {{ $t('item.artist.appearsOn') }}
             </v-tab>
-            <v-tab :key="2" :disabled="!musicVideo.length">
+            <v-tab :key="5" :disabled="!musicVideo.length">
               {{ $t('item.artist.videos') }}
             </v-tab>
-            <v-tab :key="3" :disabled="!artistBackdrop.tag && !overview">
+            <v-tab :key="6" :disabled="!artistBackdrop.tag && !overview">
               {{ $t('item.artist.information') }}
             </v-tab>
           </v-tabs>
@@ -88,6 +97,114 @@
               </v-row>
             </v-tab-item>
             <v-tab-item :key="1">
+              <v-row no-gutters>
+                <v-col cols="12" class="my-6">
+                  <v-row v-for="album in albums" :key="album.Id">
+                    <v-col cols="12">
+                      <div class="d-flex flex-column">
+                        <v-row>
+                          <v-col lg="2" sm="1">
+                            <card :item="album" overlay link />
+                          </v-col>
+                          <v-col class="py-2">
+                            <div
+                              class="text-subtitle-1 text--secondary font-weight-medium"
+                            >
+                              {{ album.ProductionYear }}
+                            </div>
+                            <nuxt-link
+                              class="link font-weight-bold text-h6 text-md-h4"
+                              tag="h2"
+                              :to="getItemDetailsLink(album)"
+                            >
+                              {{ album.Name }}
+                            </nuxt-link>
+                          </v-col>
+                        </v-row>
+                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
+                          <v-col>
+                            <track-list :item="album" />
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item :key="2">
+              <v-row no-gutters>
+                <v-col cols="12" class="my-6">
+                  <v-row v-for="album in eps" :key="album.Id">
+                    <v-col cols="12">
+                      <div class="d-flex flex-column">
+                        <v-row>
+                          <v-col lg="2" sm="1">
+                            <card :item="album" overlay link />
+                          </v-col>
+                          <v-col class="py-2">
+                            <div
+                              class="text-subtitle-1 text--secondary font-weight-medium"
+                            >
+                              {{ album.ProductionYear }}
+                            </div>
+                            <nuxt-link
+                              class="link font-weight-bold text-h6 text-md-h4"
+                              tag="h2"
+                              :to="getItemDetailsLink(album)"
+                            >
+                              {{ album.Name }}
+                            </nuxt-link>
+                          </v-col>
+                        </v-row>
+                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
+                          <v-col>
+                            <track-list :item="album" />
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item :key="3">
+              <v-row no-gutters>
+                <v-col cols="12" class="my-6">
+                  <v-row v-for="album in singles" :key="album.Id">
+                    <v-col cols="12">
+                      <div class="d-flex flex-column">
+                        <v-row>
+                          <v-col lg="2" sm="1">
+                            <card :item="album" overlay link />
+                          </v-col>
+                          <v-col class="py-2">
+                            <div
+                              class="text-subtitle-1 text--secondary font-weight-medium"
+                            >
+                              {{ album.ProductionYear }}
+                            </div>
+                            <nuxt-link
+                              class="link font-weight-bold text-h6 text-md-h4"
+                              tag="h2"
+                              :to="getItemDetailsLink(album)"
+                            >
+                              {{ album.Name }}
+                            </nuxt-link>
+                          </v-col>
+                        </v-row>
+                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
+                          <v-col>
+                            <track-list :item="album" />
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item :key="4">
               <v-container>
                 <v-row>
                   <v-col>
@@ -96,7 +213,7 @@
                 </v-row>
               </v-container>
             </v-tab-item>
-            <v-tab-item :key="2">
+            <v-tab-item :key="5">
               <v-container>
                 <v-row>
                   <v-col>
@@ -105,7 +222,7 @@
                 </v-row>
               </v-container>
             </v-tab-item>
-            <v-tab-item :key="3">
+            <v-tab-item :key="6">
               <v-container>
                 <v-row>
                   <v-col>
@@ -141,7 +258,7 @@ import { Context } from '@nuxt/types';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
-import { pageStore, authStore } from '~/store';
+import { pageStore, authStore, albumRuntimeBreakpointsStore } from '~/store';
 
 export default Vue.extend({
   meta: {
@@ -152,6 +269,7 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $api }) {
+    const albumBreakpoints = albumRuntimeBreakpointsStore();
     const auth = authStore();
     const itemId = params.itemId;
 
@@ -173,6 +291,24 @@ export default Vue.extend({
         userId: auth.currentUserId
       })
     ).data.Items;
+
+    const singles = discography?.filter(
+      (album: BaseItemDto) =>
+        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
+        albumBreakpoints.singleTicksMaxLength
+    );
+    const eps = discography?.filter(
+      (album: BaseItemDto) =>
+        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
+          albumBreakpoints.singleTicksMaxLength &&
+        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
+          albumBreakpoints.epTicksMaxLength
+    );
+    const albums = discography?.filter(
+      (album: BaseItemDto) =>
+        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
+        albumBreakpoints.epTicksMaxLength
+    );
 
     const appearances = (
       await $api.items.getItems({
@@ -203,13 +339,25 @@ export default Vue.extend({
 
     if (discography?.length) {
       activeTab = 0;
+      if (albums?.length) {
+        activeTab = 1;
+      }
     } else if (appearances?.length) {
-      activeTab = 1;
+      activeTab = 4;
     } else if (musicVideo?.length) {
-      activeTab = 2;
+      activeTab = 5;
     }
 
-    return { activeTab, discography, appearances, musicVideo, item };
+    return {
+      activeTab,
+      discography,
+      albums,
+      eps,
+      singles,
+      appearances,
+      musicVideo,
+      item
+    };
   },
   data() {
     return {
