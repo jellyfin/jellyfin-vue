@@ -254,6 +254,7 @@ export default Vue.extend({
     return {
       showFullScreenOverlay: false,
       fullScreenOverlayTimer: null as number | null,
+      clickTimer: null as number | null,
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
@@ -290,6 +291,7 @@ export default Vue.extend({
             window.addEventListener('mousemove', this.handleMouseMove);
             window.addEventListener('keyup', this.handleKeyPress);
             window.addEventListener('click', this.handleVideoClick);
+            window.addEventListener('dblclick', this.handleVideoDoubleClick);
           }
 
           break;
@@ -297,6 +299,7 @@ export default Vue.extend({
           window.removeEventListener('mousemove', this.handleMouseMove);
           window.removeEventListener('keyup', this.handleKeyPress);
           window.removeEventListener('click', this.handleVideoClick);
+          window.removeEventListener('dblclick', this.handleVideoDoubleClick);
           break;
       }
     }
@@ -418,6 +421,27 @@ export default Vue.extend({
       }
     },
     handleVideoClick(e: MouseEvent) {
+      if (this.clickTimer) {
+        clearTimeout(this.clickTimer);
+      }
+
+      this.clickTimer = window.setTimeout(() => {
+        const target = e.target as HTMLElement;
+
+        if (
+          target &&
+          target.classList.contains('player-overlay') &&
+          this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        ) {
+          this.playbackManager.playPause();
+        }
+      }, 200);
+    },
+    handleVideoDoubleClick(e: MouseEvent) {
+      if (this.clickTimer) {
+        clearTimeout(this.clickTimer);
+      }
+
       const target = e.target as HTMLElement;
 
       if (
@@ -425,7 +449,7 @@ export default Vue.extend({
         target.classList.contains('player-overlay') &&
         this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
       ) {
-        this.playbackManager.playPause();
+        this.toggleFullScreen();
       }
     },
     togglePictureInPicture(): void {
