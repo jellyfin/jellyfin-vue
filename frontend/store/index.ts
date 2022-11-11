@@ -19,3 +19,4 @@ export * from './auth';
 export * from './items';
 export * from './playbackManager';
 export * from './taskManager';
+export * from './albumRuntimeBreakpoints';
