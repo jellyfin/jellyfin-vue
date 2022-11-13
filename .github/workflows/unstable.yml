@@ -11,7 +11,7 @@ on:
 
 jobs:
   docker:
-    name: Build Docker images 💿💻
+    name: Build frontend Docker images 💿💻
     runs-on: ubuntu-latest
 
     steps:
@@ -71,7 +71,7 @@ jobs:
             dist
 
   tauri:
-    name: Tauri 🛠️
+    name: Build Tauri 🛠️
     strategy:
       fail-fast: false
       matrix:

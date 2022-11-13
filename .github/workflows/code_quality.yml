@@ -92,7 +92,7 @@ jobs:
         uses: codecov/codecov-action@v3.1.1
 
   build:
-    name: Build 🛠️
+    name: Build frontend 🛠️
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -147,7 +147,7 @@ jobs:
             dist
 
   tauri:
-    name: Tauri 🛠️
+    name: Build Tauri 🛠️
     strategy:
       fail-fast: false
       matrix:
