@@ -29,11 +29,6 @@ jobs:
     name: CodeQL Analysis 🔬
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language:
-          - typescript
     steps:
       - name: Checkout repository ⬇️
         uses: actions/checkout@v3.1.0
@@ -41,7 +36,6 @@ jobs:
       - name: Initialize CodeQL 🛠️
         uses: github/codeql-action/init@v2
         with:
-          languages: ${{ matrix.language }}
           queries: +security-and-quality
 
       - name: Autobuild 📦
