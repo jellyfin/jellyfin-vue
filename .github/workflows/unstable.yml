@@ -132,23 +132,10 @@ jobs:
           name: jellyfin-vue_windows_amd64
           path: tauri/target/release/jellyfin-vue.exe
 
-  cf-pages:
-    name: Publish to CloudFlare Pages 📃
-    runs-on: 'ubuntu-latest'
+  deploy:
+    name: Start deployment
+    uses: ./.github/workflows/deploy.yml
     needs: docker
-
-    steps:
-      - name: Download client artifact ⬇️
-        uses: actions/download-artifact@v3.0.1
-        with:
-          name: client
-          path: dist
-
-      - name: Publish to Cloudflare Pages 📃
-        uses: cloudflare/pages-action@v1.1.0
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: jf-vue
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      workflow_run: ${{ github.run_id }}
+      branch: ${{ github.head_ref }}

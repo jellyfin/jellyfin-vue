@@ -1,0 +1,39 @@
+name: Deploy 🏗️
+
+on:
+  workflow_run:
+    workflows: |
+      - Quality Checks 👌🧪
+    types:
+      - completed
+  workflow_call:
+    inputs:
+      workflow_run:
+        description: Run ID of the workflow whose artifacts are going to be downloaded
+        required: true
+        type: string
+      branch:
+        description: Name of the branch that it's being deployed
+        required: true
+        type: string
+
+jobs:
+  cf-pages:
+    name: CloudFlare Pages 📃
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download workflow artifact ⬇️
+        uses: dawidd6/action-download-artifact@v2.24.2
+        with:
+          run_id: ${{ github.event.workflow_run.run_id }}
+
+      - name: Publish to Cloudflare Pages 📃
+        uses: cloudflare/pages-action@v1.1.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: jf-vue
+          directory: dist
+          branch: ${{ github.event.workflow_run.head_branch }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

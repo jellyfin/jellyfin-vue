@@ -213,10 +213,3 @@ jobs:
         with:
           name: jellyfin-vue_windows_amd64
           path: tauri/target/release/jellyfin-vue.exe
-
-  deploy:
-    uses: ./.github/workflows/deploy.yml
-    with:
-      os: 'linux'
-      architectures: '["amd64", "arm64"]'
-      release: false
