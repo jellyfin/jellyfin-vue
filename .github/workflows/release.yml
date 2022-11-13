@@ -8,7 +8,7 @@ on:
 
 jobs:
   docker:
-    name: Build Docker images 💿💻
+    name: Build frontend Docker images 💿💻
     runs-on: ubuntu-latest
 
     steps:
@@ -67,7 +67,7 @@ jobs:
             ghcr.io/jellyfin/jellyfin-vue:stable-rc.${{ github.event.release.tag_name }}
 
   tauri:
-    name: Tauri 🛠️
+    name: Build Tauri 🛠️
     strategy:
       fail-fast: false
       matrix:
