@@ -25,25 +25,6 @@ jobs:
       - name: Scan
         uses: actions/dependency-review-action@v3.0.0
 
-  analyze:
-    name: CodeQL Analysis 🔬
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository ⬇️
-        uses: actions/checkout@v3.1.0
-
-      - name: Initialize CodeQL 🛠️
-        uses: github/codeql-action/init@v2
-        with:
-          queries: +security-and-quality
-
-      - name: Autobuild 📦
-        uses: github/codeql-action/autobuild@v2
-
-      - name: Perform CodeQL Analysis 🧪
-        uses: github/codeql-action/analyze@v2
-
   lint:
     name: Lint 🔬
     runs-on: ubuntu-latest
