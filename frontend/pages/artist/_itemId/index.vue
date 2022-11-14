@@ -258,7 +258,7 @@ import { Context } from '@nuxt/types';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
-import { pageStore, authStore, albumRuntimeBreakpointsStore } from '~/store';
+import { pageStore, authStore } from '~/store';
 
 export default Vue.extend({
   meta: {
@@ -269,7 +269,10 @@ export default Vue.extend({
     return isValidMD5(ctx.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const albumBreakpoints = albumRuntimeBreakpointsStore();
+    const albumBreakpoints = {
+      singleTicksMaxLength: 6000000000,
+      epTicksMaxLength: 18000000000
+    };
     const auth = authStore();
     const itemId = params.itemId;
 
@@ -339,6 +342,7 @@ export default Vue.extend({
 
     if (discography?.length) {
       activeTab = 0;
+
       if (albums?.length) {
         activeTab = 1;
       }
