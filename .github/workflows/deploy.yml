@@ -2,13 +2,13 @@ name: Deploy 🏗️
 
 on:
   workflow_run:
-    workflows: |
+    workflows:
       - Quality Checks 👌🧪
     types:
       - completed
   workflow_call:
     inputs:
-      workflow_run:
+      workflow_run_id:
         description: Run ID of the workflow whose artifacts are going to be downloaded
         required: true
         type: string
@@ -26,7 +26,7 @@ jobs:
       - name: Download workflow artifact ⬇️
         uses: dawidd6/action-download-artifact@v2.24.2
         with:
-          run_id: ${{ github.event.workflow_run.run_id }}
+          run_id: ${{ inputs.workflow_run_id || github.event.workflow_run.id }}
 
       - name: Publish to Cloudflare Pages 📃
         uses: cloudflare/pages-action@v1.1.0
@@ -35,5 +35,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: jf-vue
           directory: dist
-          branch: ${{ github.event.workflow_run.head_branch }}
+          branch: ${{ inputs.branch || github.event.workflow_run.head_branch }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

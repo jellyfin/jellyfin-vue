@@ -137,5 +137,5 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     needs: docker
     with:
-      workflow_run: ${{ github.run_id }}
+      workflow_run_id: ${{ github.run_id }}
       branch: ${{ github.head_ref }}
