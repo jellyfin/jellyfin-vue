@@ -21,15 +21,19 @@ jobs:
   cf-pages:
     name: CloudFlare Pages 📃
     runs-on: ubuntu-latest
+    if: ${{ (inputs.workflow_run_id && inputs.branch) || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Download workflow artifact ⬇️
         uses: dawidd6/action-download-artifact@v2.24.2
         with:
           run_id: ${{ inputs.workflow_run_id || github.event.workflow_run.id }}
+          name: frontend
+          path: dist
 
       - name: Publish to Cloudflare Pages 📃
         uses: cloudflare/pages-action@v1.1.0
+        id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -37,3 +41,8 @@ jobs:
           directory: dist
           branch: ${{ inputs.branch || github.event.workflow_run.head_branch }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create job summary 📖
+        run: |
+          echo '# CloudFlare Pages deployment' >> $GITHUB_STEP_SUMMARY
+          echo '${{ steps.cf.outputs.url }}' >> $GITHUB_STEP_SUMMARY

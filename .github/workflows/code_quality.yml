@@ -142,7 +142,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         if: matrix.platform == 'linux/amd64'
         with:
-          name: client
+          name: frontend
           path: |
             dist
 
