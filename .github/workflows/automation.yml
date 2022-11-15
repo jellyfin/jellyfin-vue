@@ -7,6 +7,37 @@ on:
   pull_request_target:
 
 jobs:
+  comment:
+    name: Create system comment 🖥️
+    if: ${{ github.event_name == 'pull_request_target'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create job summary and add to environment
+        id: msg
+        env:
+          COMMIT: ${{ github.event.pull_request.head.sha }}
+        # EOF is needed for multiline environment variables in a GitHub Actions context
+        run: |
+          echo "## Cloudflare Pages deployment" > $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| **Latest commit**       	|       <code>$COMMIT</code>    |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------------------------	|:----------------------------:	|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Status**              	| 🔄 Deploying...              |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Preview URL**         	| Not available yet            	|" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<!--- CFPages deployment marker --->" >> $GITHUB_STEP_SUMMARY
+          COMPOSED_MSG=$(cat $GITHUB_STEP_SUMMARY)
+          echo "msg<<EOF" >> $GITHUB_ENV
+          echo "$COMPOSED_MSG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create CF Pages deployment comment
+        uses: thollander/actions-comment-pull-request@v1.5.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.msg }}
+          comment_includes: '<!--- CFPages deployment marker --->'
+
   project:
     name: Project board 📊
     runs-on: ubuntu-latest

@@ -16,33 +16,76 @@ on:
         description: Name of the branch that it's being deployed
         required: true
         type: string
+      commit_id:
+        description: Commit ID that triggered the workflow
+        required: true
+        type: string
 
 jobs:
   cf-pages:
     name: CloudFlare Pages 📃
     runs-on: ubuntu-latest
-    if: ${{ (inputs.workflow_run_id && inputs.branch) || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Download workflow artifact ⬇️
         uses: dawidd6/action-download-artifact@v2.24.2
+        if: ${{ inputs.workflow_run_id != '' || github.event.workflow_run.conclusion == 'success' }}
         with:
-          run_id: ${{ inputs.workflow_run_id || github.event.workflow_run.id }}
+          run_id: ${{ inputs.workflow_run_id != '' && inputs.workflow_run_id || github.event.workflow_run.id }}
           name: frontend
           path: dist
 
       - name: Publish to Cloudflare Pages 📃
         uses: cloudflare/pages-action@v1.1.0
+        if: ${{ inputs.branch != '' || github.event.workflow_run.conclusion == 'success' }}
         id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: jf-vue
           directory: dist
-          branch: ${{ inputs.branch || github.event.workflow_run.head_branch }}
+          branch: ${{ inputs.branch != '' && inputs.branch || github.event.workflow_run.head_branch }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create job summary 📖
+      - name: Create job summary
+        id: msg
+        env:
+          COMMIT: ${{ inputs.commit_id != '' && inputs.commit_id || github.event.workflow_run.head_commit.id }}
+          PREVIEW_URL: ${{ steps.cf.outputs.url != '' && steps.cf.outputs.url || 'Not available' }}
+          DEPLOY_STATUS: ${{ steps.cf.outputs.url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for more info' }}
+        # EOF is needed for multiline environment variables in a GitHub Actions context
         run: |
-          echo '# CloudFlare Pages deployment' >> $GITHUB_STEP_SUMMARY
-          echo '${{ steps.cf.outputs.url }}' >> $GITHUB_STEP_SUMMARY
+          echo "## Cloudflare Pages deployment" > $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| **Latest commit**       	| <code>$COMMIT</code>          |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------------------------	|:----------------------------:	|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Status**              	| $DEPLOY_STATUS                |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Preview URL**         	| $PREVIEW_URL                  |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<!--- CFPages deployment marker --->" >> $GITHUB_STEP_SUMMARY
+          COMPOSED_MSG=$(cat $GITHUB_STEP_SUMMARY)
+          echo "msg<<EOF" >> $GITHUB_ENV
+          echo "$COMPOSED_MSG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Get PR number ⬇️
+        uses: dawidd6/action-download-artifact@v2.24.2
+        if: ${{ github.event_name == 'workflow_run' }}
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: PR_number
+
+      - name: Set PR number environment variable
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: |
+          PR_NUMBER=$(cat PR_number)
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+
+      - name: Update job summary in PR comment
+        uses: thollander/actions-comment-pull-request@v1.5.0
+        if: ${{ github.event_name == 'workflow_run' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.msg }}
+          pr_number: ${{ env.pr_number }}
+          comment_includes: '<!--- CFPages deployment marker --->'
