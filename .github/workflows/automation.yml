@@ -13,14 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create job summary and add to environment
-        id: msg
         env:
           COMMIT: ${{ github.event.pull_request.head.sha }}
         # EOF is needed for multiline environment variables in a GitHub Actions context
         run: |
           echo "## Cloudflare Pages deployment" > $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| **Latest commit**       	|       <code>$COMMIT</code>    |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Latest commit**       	| `$COMMIT`    |" >> $GITHUB_STEP_SUMMARY
           echo "|-------------------------	|:----------------------------:	|" >> $GITHUB_STEP_SUMMARY
           echo "| **Status**              	| 🔄 Deploying...              |" >> $GITHUB_STEP_SUMMARY
           echo "| **Preview URL**         	| Not available yet            	|" >> $GITHUB_STEP_SUMMARY

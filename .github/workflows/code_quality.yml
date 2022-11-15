@@ -1,4 +1,4 @@
-name: Quality Checks 👌🧪
+name: Quality checks 👌🧪
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -191,6 +191,7 @@ jobs:
 
   pr_number:
     name: Save PR number as artifact
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
 
     steps:
