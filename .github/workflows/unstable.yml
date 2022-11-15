@@ -22,11 +22,11 @@ jobs:
 
       - name: Get current date ⌛
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
       - name: Get commit hash ⚙️
         id: sha
-        run: echo "::set-output name=sha::${GITHUB_SHA::7}"
+        run: echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v2.1.0
