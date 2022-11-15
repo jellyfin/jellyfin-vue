@@ -74,6 +74,11 @@ This is an experimental web client for Jellyfin based on Vue.js. We welcome all 
 
    ```bash
    npm start
+
+   # Run with the following env variable if you get an error such as this:
+   # Error: error:0308010C:digital envelope routines::unsupported
+   # It's _probably_ due to a conflict between recent OpenSSL versions and Node 16-17
+   NODE_OPTIONS=--openssl-legacy-provider npm start
    ```
 
    The client will be available at http://127.0.0.1:3000 by default.
