@@ -16,18 +16,22 @@ on:
         description: Name of the branch that it's being deployed
         required: true
         type: string
+      commit_id:
+        description: Commit ID that triggered the workflow
+        required: true
+        type: string
 
 jobs:
   cf-pages:
     name: CloudFlare Pages 📃
     runs-on: ubuntu-latest
-    if: ${{ (inputs.workflow_run_id && inputs.branch) || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ (inputs.workflow_run_id != '' && inputs.branch != '' && inputs.commit_id != '') || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Download workflow artifact ⬇️
         uses: dawidd6/action-download-artifact@v2.24.2
         with:
-          run_id: ${{ inputs.workflow_run_id || github.event.workflow_run.id }}
+          run_id: ${{ inputs.workflow_run_id != '' && inputs.workflow_run_id || github.event.workflow_run.id }}
           name: frontend
           path: dist
 
@@ -39,10 +43,51 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: jf-vue
           directory: dist
-          branch: ${{ inputs.branch || github.event.workflow_run.head_branch }}
+          branch: ${{ inputs.branch != '' && inputs.branch || github.event.workflow_run.head_branch }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create job summary 📖
+      - name: Create job summary and add to environment
         run: |
-          echo '# CloudFlare Pages deployment' >> $GITHUB_STEP_SUMMARY
-          echo '${{ steps.cf.outputs.url }}' >> $GITHUB_STEP_SUMMARY
+          echo -e '## Cloudflare Pages deployment' > $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '| **Latest commit**       	|       ``${{ inputs.commit_id != '' && inputs.commit_id || github.event.workflow_run.head_commit.id }}``      	|' >> $GITHUB_STEP_SUMMARY
+          echo '|-------------------------	|:----------------------------:	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Status**              	| ✅ Deployed!                     |' >> $GITHUB_STEP_SUMMARY
+          echo '| **Preview URL**         	| ${{ steps.cf.outputs.url }}            	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Branch Preview URL:** 	| https://${{ inputs.branch != '' && inputs.branch || github.event.workflow_run.head_branch }}.jf-vue.pages.dev 	|' >> $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '<!--- CFPages deployment marker --->' >> $GITHUB_STEP_SUMMARY
+          echo 'job_summary=$GITHUB_STEP_SUMMARY' >> $GITHUB_ENV
+
+      - name: Update CF Pages deployment comment
+        uses: thollander/actions-comment-pull-request@v1.5.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.job_summary }}
+          comment_includes: '<!--- CFPages deployment marker --->'
+
+  comment:
+    name: Update system comment status
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'success' || failure() }}
+
+    steps:
+      - name: Create job summary and add to environment
+        run: |
+          echo -e '## Cloudflare Pages deployment' > $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '| **Latest commit**       	|       ``${{ github.event.workflow_run.head_commit.id }}``      	|' >> $GITHUB_STEP_SUMMARY
+          echo '|-------------------------	|:----------------------------:	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Status**              	| ❌ Failure. Check workflow logs for more info                     |' >> $GITHUB_STEP_SUMMARY
+          echo '| **Preview URL**         	| Not available               	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Branch Preview URL:** 	| https://${{ github.event.workflow_run.head_branch }}.jf-vue.pages.dev 	|' >> $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '<!--- CFPages deployment marker --->' >> $GITHUB_STEP_SUMMARY
+          echo 'job_summary=$GITHUB_STEP_SUMMARY' >> $GITHUB_ENV
+
+      - name: Update CF Pages deployment comment
+        uses: thollander/actions-comment-pull-request@v1.5.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.job_summary }}
+          comment_includes: '<!--- CFPages deployment marker --->'

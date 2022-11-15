@@ -7,6 +7,30 @@ on:
   pull_request_target:
 
 jobs:
+  comment:
+    name: Create system comments 🖥️
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create job summary and add to environment
+        run: |
+          echo -e '## Cloudflare Pages deployment' >> $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '| **Latest commit**       	|       ``${{ github.sha }}``      	|' >> $GITHUB_STEP_SUMMARY
+          echo '|-------------------------	|:----------------------------:	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Status**              	| 🔄 Deploying...                  |' >> $GITHUB_STEP_SUMMARY
+          echo '| **Preview URL**         	| Not available yet            	|' >> $GITHUB_STEP_SUMMARY
+          echo '| **Branch Preview URL:** 	| https://${{ github.head_ref }}.jf-vue.pages.dev 	|' >> $GITHUB_STEP_SUMMARY
+          echo -e '\n' >> $GITHUB_STEP_SUMMARY
+          echo '<!--- CFPages deployment marker --->' >> $GITHUB_STEP_SUMMARY
+          echo 'job_summary=$GITHUB_STEP_SUMMARY' >> $GITHUB_ENV
+
+      - name: Create CF Pages deployment comment
+        uses: thollander/actions-comment-pull-request@v1.5.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          message: ${{ env.job_summary }}
+          comment_includes: '<!--- CFPages deployment marker --->'
+
   project:
     name: Project board 📊
     runs-on: ubuntu-latest

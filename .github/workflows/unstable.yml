@@ -139,3 +139,4 @@ jobs:
     with:
       workflow_run_id: ${{ github.run_id }}
       branch: ${{ github.head_ref }}
+      commit_id: ${{ github.sha }}
