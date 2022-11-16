@@ -105,6 +105,16 @@ npm run prod
 
 _Although the build of the client is production-ready, Nuxt's own HTTP server should never be exposed directly to the internet and a proper hosting tool like Nginx should always be used instead._
 
+## Running Docker Container
+
+You can run the Docker container with the following command, replacing 8080 with the port of your choice:
+
+```bash
+docker run -d -p 8080:80 ghcr.io/jellyfin/jellyfin-vue
+```
+
+You can check [Packages](https://github.com/jellyfin/jellyfin-vue/pkgs/container/jellyfin-vue) (recommended) or [DockerHub](https://hub.docker.com/r/jellyfin/jellyfin-vue) for all the tagged images.
+
 # Contributing
 
 We provide a [devcontainer](https://code.visualstudio.com/docs/remote/containers) to help you setup your environment.
