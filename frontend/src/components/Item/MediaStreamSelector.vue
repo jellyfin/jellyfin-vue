@@ -1,8 +1,6 @@
 <template>
   <v-select
     v-model="trackIndex"
-    variant="outlined"
-    variant="filled"
     flat
     dense
     single-line

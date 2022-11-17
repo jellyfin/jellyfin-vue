@@ -4,37 +4,36 @@ import { md3 } from 'vuetify/blueprints';
 const dark: ThemeDefinition = {
   dark: true,
   colors: {
-    primary: '#9d37c2',
-    secondary: '#2f3951',
-    accent: '#FF4081',
-    info: '#0099CC',
-    warning: '#FB8C00',
-    error: '#FF5252',
-    success: '#4CAF50',
-    background: '#14141F',
-    card: '#1c2331',
-    thumb: '#252e41'
+    background: '#111827',
+    'navigation-drawer': '#1f2937',
+    'app-bar': '#1f2937',
+    dividers: '#374151',
+    cards: '#1f2937',
+    chips: '#4b5563',
+    menus: '#374151',
+    primary: '#edf2f7'
   }
 };
 
 const light: ThemeDefinition = {
   dark: false,
   colors: {
-    primary: '#9d37c2',
-    secondary: '#424242',
-    accent: '#FF4081',
-    info: '#33b5e5',
-    warning: '#FB8C00',
-    error: '#FF5252',
-    success: '#4CAF50',
     background: '#f2f2f2',
-    card: '#FFFFFF',
-    thumb: '#000000'
+    chip: '#e4e4e4',
+    menus: '#bbb'
   }
 };
 
 export const vuetify = createVuetify({
   blueprint: md3,
+  defaults: {
+    select: {
+      variant: 'outlined'
+    },
+    textfield: {
+      variant: 'outlined'
+    }
+  },
   theme: {
     defaultTheme: 'dark',
     themes: {
