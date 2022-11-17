@@ -14,31 +14,37 @@
         }
       }
 
-      @media (prefers-color-scheme: light) {
-        .splashBackground {
-          background: linear-gradient(
-            280deg,
-            #4f5b62,
-            #62727b,
-            #718792,
-            #819ca9,
-            #8eacbb
-          );
-        }
+      /**
+        * Light color scheme for splashscreen
+        *
+      */
+
+      .light {
+        background: linear-gradient(
+          280deg,
+          #4f5b62,
+          #62727b,
+          #718792,
+          #819ca9,
+          #8eacbb
+        );
       }
 
-      @media (prefers-color-scheme: dark) {
-        .splashBackground {
-          background: linear-gradient(
-            280deg,
-            #111827,
-            #1c2741,
-            #332d41,
-            #4a2532,
-            #381e73,
-            #244415
-          );
-        }
+      /**
+        * Dark color scheme for splashscreen
+        *
+      */
+
+      .dark {
+        background: linear-gradient(
+          280deg,
+          #111827,
+          #1c2741,
+          #332d41,
+          #4a2532,
+          #381e73,
+          #244415
+        );
       }
 
       @media (prefers-reduced-motion) {
@@ -48,7 +54,7 @@
       }
 
       .splashBackground {
-        position: fixed;
+        position: absolute;
         padding: 0;
         margin: 0;
         top: 0;
@@ -60,6 +66,7 @@
         height: 100%;
         background-size: 400% 400%;
         animation: gradient 2s linear infinite;
+        z-index: 99999999;
       }
 
       .splashLogo {
@@ -71,20 +78,42 @@
         background-repeat: no-repeat;
         background-size: contain;
       }
+
+      /* Class to apply when the load process is finished */
+      .loadFinished {
+        opacity: 0;
+        transition: opacity 0.75s linear;
+      }
     </style>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <title>Jellyfin</title>
+
+    <script type="module" src="src/main.ts"></script>
+    <title>Jellyfin Vue</title>
   </head>
   <body>
-    <div id="app">
-      <div class="splashBackground">
-        <div class="splashLogo"></div>
-      </div>
+    <div class="splashBackground">
+      <div class="splashLogo"></div>
     </div>
-    <script type="module" src="src/main.ts"></script>
+    <div id="app"></div>
+    <!-- Load splashcreen color scheme based on stored settings or user-agent preferences. -->
+    <script>
+      const store = localStorage.getItem('clientSettings') || '{}';
+      const storedMode = JSON.parse(store).darkMode;
+      const matchedDarkColorScheme = window.matchMedia(
+        'prefers-color-scheme: dark'
+      ).matches;
+      const useDarkMode =
+        typeof storedMode === 'boolean' ? storedMode : matchedDarkColorScheme;
+      const classToApply = useDarkMode ? 'dark' : 'light';
+      const element = document.querySelector('.splashBackground');
+
+      if (element) {
+        element.classList.add(classToApply);
+      }
+    </script>
   </body>
 </html>
