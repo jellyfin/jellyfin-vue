@@ -59,10 +59,7 @@
               @click="playbackManager.setNextTrack">
               {{ $t('dialog.upNext.startNow') }}
             </v-btn>
-            <v-btn
-              variant="flat"
-              variant="outlined"
-              @click="isHiddenByUser = true">
+            <v-btn @click="isHiddenByUser = true">
               {{ $t('dialog.upNext.hide') }}
             </v-btn>
           </v-card-actions>
