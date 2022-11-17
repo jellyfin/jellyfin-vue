@@ -12,6 +12,10 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     sourceType: 'module'
   },
+  globals: {
+    __COMMIT_HASH__: 'readonly',
+    __HISTORY_ROUTER_MODE__: 'readonly'
+  },
   // Ignore test files for now
   ignorePatterns: ['*.spec.ts', '.eslintrc.js', '*.config.js'],
   extends: [

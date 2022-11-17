@@ -38,6 +38,11 @@ app.use(vuetify);
  */
 app.directive('hide', hideDirective);
 
+/**
+ * Top-level await requires ES2022 as target and module for TypeScript compiler (check tsconfig.json)
+ * https://caniuse.com/mdn-javascript_operators_await_top_level
+ */
+
 await router.isReady();
 app.mount('#app');
 
