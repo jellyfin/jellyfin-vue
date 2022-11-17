@@ -1,5 +1,5 @@
 <template>
-  <v-simple-table dense class="track-table no-select">
+  <v-table dense class="track-table no-select">
     <thead>
       <tr>
         <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
@@ -63,7 +63,7 @@
         </v-hover>
       </template>
     </tbody>
-  </v-simple-table>
+  </v-table>
 </template>
 
 <script lang="ts">
