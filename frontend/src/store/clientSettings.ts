@@ -14,7 +14,7 @@ export interface ClientSettingsState {
 export const clientSettingsStore = defineStore('clientSettings', {
   state: () => {
     return {
-      darkMode: true,
+      darkMode: window.matchMedia('prefers-color-scheme: dark').matches,
       locale: 'auto',
       lastSync: null
     } as ClientSettingsState;
