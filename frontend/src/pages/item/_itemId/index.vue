@@ -126,8 +126,6 @@
                   <v-select
                     v-model="currentSource"
                     :items="getItemizedSelect(item.MediaSources)"
-                    variant="outlined"
-                    variant="filled"
                     flat
                     dense
                     single-line
