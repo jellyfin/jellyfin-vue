@@ -12,7 +12,7 @@
             src="/icon.png"
             height="100px"
             :alt="$t('jellyfinLogo')" />
-          <v-simple-table class="mb-4 pb-2 information">
+          <v-table class="mb-4 pb-2 information">
             <tbody>
               <tr>
                 <td>{{ $t('server') }}</td>
@@ -35,7 +35,7 @@
                 <td>{{ vueVersion }}</td>
               </tr>
             </tbody>
-          </v-simple-table>
+          </v-table>
         </div>
         <about-links v-if="!$vuetify.display.mobile" />
       </v-col>
