@@ -85,7 +85,7 @@ export default defineComponent({
    * Scroll the queue view to the currently playing item
    */
   mounted() {
-    const ref = this.$refs.listItems as Vue[];
+    const ref = this.$refs.listItems as VueElement[];
     const currentItemId = this.playbackManager.getCurrentItem?.Id || '';
 
     const el = ref.find(
