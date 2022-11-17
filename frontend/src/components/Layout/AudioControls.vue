@@ -34,7 +34,7 @@
                 </router-link>
               </v-row>
               <v-row
-                v-if="playbackManager.getCurrentItem.ArtistItems"
+                v-if="playbackManager.getCurrentItem?.ArtistItems"
                 class="align-start">
                 <span
                   v-for="artist in playbackManager.getCurrentItem.ArtistItems"
@@ -44,9 +44,9 @@
                     <router-link
                       tag="span"
                       class="text--secondary text-caption text-truncate link"
-                      :to="getItemDetailsLink(artist, 'MusicArtist')"
-                      >{{ artist.Name }}</router-link
-                    >
+                      :to="getItemDetailsLink(artist, 'MusicArtist')">
+                      {{ artist.Name }}
+                    </router-link>
                   </p>
                 </span>
               </v-row>
