@@ -8,11 +8,11 @@ import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import {
   VueUseComponentsResolver,
+  Vuetify3Resolver,
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
 import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
-import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
@@ -43,6 +43,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         resolvers: [
           IconsResolver(),
           VueUseComponentsResolver(),
+          Vuetify3Resolver(),
           VueUseDirectiveResolver()
         ]
       }),
@@ -53,16 +54,16 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       Icons({
         compiler: 'vue3'
       }),
-      VitePWA(),
-      vuetify({
-        autoImport: true,
-        styles: { configFile: 'src/assets/styles/variables.scss' }
-      })
+      VitePWA()
+      // vuetify({
+      //   autoImport: true,
+      //   styles: { configFile: 'src/assets/styles/variables.scss' }
+      // })
     ],
     build: {
+      target: 'esnext',
       rollupOptions: {
         output: {
-          manualChunks: undefined,
           plugins: [
             mode === 'analyze'
               ? // rollup-plugin-visualizer
