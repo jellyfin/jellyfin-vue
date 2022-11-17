@@ -9,7 +9,6 @@ import i18n from '@/plugins/vue/i18n';
 import { vuetify } from '@/plugins/vue/vuetify';
 import { hideDirective } from '@/plugins/vue/directives';
 import piniaPlugins from '@/plugins/store';
-import axiosInstance from '@/plugins/axios';
 /**
  * CSS Imports
  */
@@ -39,4 +38,21 @@ app.use(vuetify);
  */
 app.directive('hide', hideDirective);
 
+await router.isReady();
 app.mount('#app');
+
+/**
+ * Once we reach this point, the bundle will be completely loaded,
+ * so we can fire a fade out transition and mount the app when that transition ends to give a nice effect
+ */
+const splashDOM = document.querySelector('.splashBackground');
+
+splashDOM?.addEventListener(
+  'transitionend',
+  () => {
+    splashDOM.remove();
+  },
+  { once: true }
+);
+
+splashDOM?.classList.add('loadFinished');
