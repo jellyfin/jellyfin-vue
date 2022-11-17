@@ -4,6 +4,8 @@
   </v-chip>
 </template>
 
+<script setup lang="ts" />
+
 <style lang="scss" scoped>
 .card-chip {
   position: absolute;
