@@ -3,8 +3,7 @@
     v-model="model"
     app
     :color="snackbar.color"
-    location="bottom"
-    location="left">
+    location="bottom left">
     {{ snackbar.message }}
   </v-snackbar>
 </template>

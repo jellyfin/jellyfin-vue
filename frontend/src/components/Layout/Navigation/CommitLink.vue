@@ -7,7 +7,9 @@
     <v-list-item-action>
       <i-mdi-github />
     </v-list-item-action>
-    <v-list-item-title v-text="'#' + commit.substring(0, 7)" />
+    <v-list-item-title>
+      {{ '#' + commit.substring(0, 7) }}
+    </v-list-item-title>
   </v-list-item>
 </template>
 
