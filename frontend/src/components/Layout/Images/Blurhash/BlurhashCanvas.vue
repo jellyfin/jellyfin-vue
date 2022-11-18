@@ -11,7 +11,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import getPixels from '~/plugins/workers/blurhash.worker';
+import { wrap } from 'comlink';
+import BlurhashWorker from './BlurhashWorker?worker&inline';
+
+const worker = new BlurhashWorker();
+const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
 
 export default defineComponent({
   props: {
@@ -62,7 +66,7 @@ export default defineComponent({
     },
     async getPixels(): Promise<void> {
       try {
-        this.pixels = await getPixels(
+        this.pixels = await pixelWorker(
           this.hash,
           this.width,
           this.height,
