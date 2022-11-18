@@ -1,4 +1,5 @@
 import { decode } from 'blurhash';
+import { expose } from 'comlink';
 
 /**
  * Decodes blurhash outside the main thread, in a web worker
@@ -21,3 +22,5 @@ export default function getPixels(
     throw new TypeError(`Blurhash ${hash} is not valid`);
   }
 }
+
+expose(getPixels);
