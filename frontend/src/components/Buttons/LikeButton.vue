@@ -9,7 +9,8 @@
 import { PropType, defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { authStore, snackbarStore, socketStore } from '~/store';
+import { authStore, socketStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -22,13 +23,18 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       isFavorite: false
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore, socketStore)
+    ...mapStores(authStore, socketStore)
   },
   watch: {
     item: {
@@ -75,7 +81,7 @@ export default defineComponent({
           });
         }
       } catch {
-        this.snackbar.push(this.$t('unableToToggleLike'), 'error');
+        this.useSnackbar(this.$t('unableToToggleLike'), 'error');
 
         this.isFavorite = !this.isFavorite;
       }

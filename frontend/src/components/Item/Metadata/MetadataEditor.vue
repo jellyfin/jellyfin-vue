@@ -187,7 +187,8 @@ import pick from 'lodash/pick';
 import set from 'lodash/set';
 import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { authStore, snackbarStore } from '~/store';
+import { authStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -200,7 +201,11 @@ export default defineComponent({
       default: false
     }
   },
-
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       metadata: {} as BaseItemDto,
@@ -214,19 +219,17 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore),
-    premiereDate: {
-      get(): string {
-        if (!this.metadata.PremiereDate) {
-          return '';
-        }
-
-        return this.$dateFns.format(
-          new Date(this.metadata.PremiereDate),
-          'yyyy-MM-dd',
-          { locale: this.$i18n.locale }
-        );
+    ...mapStores(authStore),
+    premiereDate(): string {
+      if (!this.metadata.PremiereDate) {
+        return '';
       }
+
+      return this.$dateFns.format(
+        new Date(this.metadata.PremiereDate),
+        'yyyy-MM-dd',
+        { locale: this.$i18n.locale }
+      );
     },
     dateCreated: {
       get(): string {
@@ -333,7 +336,7 @@ export default defineComponent({
         });
         this.$emit('save');
         this.loading = false;
-        this.snackbar.push(this.$t('saved'), 'success');
+        this.useSnackbar(this.$t('saved'), 'success');
       } catch (error) {
         // TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
         // not expecting bad request messages.
@@ -346,7 +349,7 @@ export default defineComponent({
           errorMessage = this.$t('badRequest');
         }
 
-        this.snackbar.push(errorMessage, 'error');
+        this.useSnackbar(errorMessage, 'error');
       }
     },
     saveDate(key: string, date: string): void {
