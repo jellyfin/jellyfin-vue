@@ -15,19 +15,20 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       allowRemoteAccess: false,
       enableUPNP: false,
       loading: false
     };
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   },
   methods: {
     async setRemoteAccess(): Promise<void> {
@@ -44,7 +45,7 @@ export default defineComponent({
         this.$emit('step-complete', { step: 4 });
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('wizard.setRemoteError'), 'error');
+        this.useSnackbar(this.$t('wizard.setRemoteError'), 'error');
       }
 
       this.loading = false;

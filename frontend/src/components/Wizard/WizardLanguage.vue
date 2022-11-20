@@ -21,10 +21,14 @@ import {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/client-axios';
-import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       UICulture: 'en-GB',
@@ -32,9 +36,6 @@ export default defineComponent({
       initialConfig: {} as StartupConfigurationDto,
       loading: false
     };
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   },
   async created() {
     this.loading = true;
@@ -72,7 +73,7 @@ export default defineComponent({
         this.$emit('step-complete', { step: 1 });
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('wizard.setLanguageError'), 'error');
+        this.useSnackbar(this.$t('wizard.setLanguageError'), 'error');
       }
 
       this.loading = false;
