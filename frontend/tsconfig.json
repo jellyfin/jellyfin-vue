@@ -28,6 +28,9 @@
       "vue"
     ]
   },
+  "vueCompilerOptions": {
+    "strictTemplates": true
+  },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "./*.d.ts"],
   "exclude": ["src/**/*.spec.ts", "node_modules"]
 }
