@@ -47,8 +47,9 @@
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { mapStores } from 'pinia';
-import { authStore, snackbarStore } from '~/store';
+import { authStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -74,6 +75,11 @@ export default defineComponent({
       }
     }
   },
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       relatedItems: [] as BaseItemDto[],
@@ -81,7 +87,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore)
+    ...mapStores(authStore)
   },
   watch: {
     item(): void {
@@ -92,7 +98,7 @@ export default defineComponent({
     try {
       this.refreshItems();
     } catch (error) {
-      this.snackbar.push(this.$t('unableGetRelated'), 'error');
+      this.useSnackbar(this.$t('unableGetRelated'), 'error');
     }
   },
   methods: {
