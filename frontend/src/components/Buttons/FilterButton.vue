@@ -176,7 +176,8 @@ import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
 import { sanitizeHtml } from '~/utils/html';
-import { authStore, snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
+import { authStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -193,6 +194,11 @@ export default defineComponent({
       required: false,
       default: false
     }
+  },
+  setup() {
+    return {
+      useSnackbar
+    };
   },
   data() {
     return {
@@ -254,7 +260,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore)
+    ...mapStores(authStore)
   },
   watch: {
     itemsType(): void {
@@ -289,7 +295,7 @@ export default defineComponent({
           this.yearFilters = response.Years;
         }
       } catch (error) {
-        this.snackbar.push(this.$t('filtersNotFound'), 'error');
+        this.useSnackbar(this.$t('filtersNotFound'), 'error');
       }
     },
     emitFilterChange(): void {
