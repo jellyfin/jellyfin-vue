@@ -1,40 +1,40 @@
 <template>
-  <v-snackbar
-    v-model="model"
-    app
-    :color="snackbar.color"
-    location="bottom left">
-    {{ snackbar.message }}
+  <v-snackbar v-model="model" app :color="state.color" location="bottom left">
+    {{ state.message }}
   </v-snackbar>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { reactive, computed } from 'vue';
 
-export default defineComponent({
-  data() {
-    return {
-      model: false
-    };
+interface SnackbarState {
+  message: string;
+  color: string;
+}
+
+let state: SnackbarState = reactive({
+  message: '',
+  color: ''
+});
+
+/**
+ * Composable for invoking snackbar message
+ */
+export function useSnackbar(message: string, color: string): void {
+  state.color = color;
+  state.message = message;
+}
+</script>
+
+<script setup lang="ts">
+const model = computed<boolean>({
+  get() {
+    return state.message !== '';
   },
-  computed: {
-    ...mapStores(snackbarStore)
-  },
-  watch: {
-    'snackbar.message': {
-      immediate: true,
-      handler(newVal: string): void {
-        if (newVal !== '') {
-          this.model = true;
-        }
-      }
-    },
-    model(newVal: boolean): void {
-      if (newVal === false) {
-        this.snackbar.$reset();
-      }
+  set(newValue) {
+    if (newValue === false) {
+      state.message = '';
+      state.color = '';
     }
   }
 });

@@ -54,9 +54,15 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { DeviceInfo } from '@jellyfin/client-axios';
-import { deviceProfileStore, snackbarStore } from '~/store';
+import { deviceProfileStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   async asyncData({ $api }) {
     const devices = (await $api.devices.getDevices()).data.Items;
 
@@ -70,7 +76,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, snackbarStore),
+    ...mapStores(deviceProfileStore),
     headers(): { text: string; value: string }[] {
       return [
         {
@@ -94,13 +100,13 @@ export default defineComponent({
           id: item.Id || ''
         });
 
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.devices.deleteDeviceSuccess'),
           'success'
         );
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.devices.deleteDeviceError'),
           'error'
         );
@@ -118,14 +124,14 @@ export default defineComponent({
           await this.$api.devices.deleteDevice({ id: device.Id || '' });
         });
 
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.devices.deleteAllDevicesSuccess'),
           'success'
         );
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.devices.deleteAllDevicesError'),
           'error'
         );
@@ -147,7 +153,7 @@ export default defineComponent({
           id: this.selectedDevice.Id || ''
         });
 
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.devices.deleteDeviceSuccess'),
           'success'
         );
@@ -156,7 +162,7 @@ export default defineComponent({
 
         this.devices = (await this.$api.devices.getDevices()).data.Items || [];
       } catch (error) {
-        this.snackbar.push(this.$t('deleteDeviceError'), 'error');
+        this.useSnackbar(this.$t('deleteDeviceError'), 'error');
 
         console.error(error);
       }

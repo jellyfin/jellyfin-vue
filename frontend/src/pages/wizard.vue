@@ -76,10 +76,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { deviceProfileStore, snackbarStore, pageStore } from '~/store';
+import { deviceProfileStore, pageStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   layout: 'fullpage',
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       wizardStage: 1,
@@ -92,7 +98,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, snackbarStore, pageStore),
+    ...mapStores(deviceProfileStore, pageStore),
     heading(): string {
       switch (this.wizardStage) {
         case 1:
@@ -119,7 +125,7 @@ export default defineComponent({
         this.$router.replace('/server/login');
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('wizard.completeError'), 'success');
+        this.useSnackbar(this.$t('wizard.completeError'), 'success');
       }
     },
     changeStep({ step }: { step: number }): void {

@@ -51,11 +51,17 @@ import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
 import { Context } from '@nuxt/types';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
-import { authStore, snackbarStore, pageStore } from '~/store';
+import { authStore, pageStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.viewId);
+  },
+  setup() {
+    return {
+      useSnackbar
+    };
   },
   async asyncData({ params, $api }) {
     const auth = authStore();
@@ -99,37 +105,27 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore, pageStore),
+    ...mapStores(authStore, pageStore),
     noContent(): boolean {
       return this.loading || !this.itemsCount;
     },
     hasViewTypes(): boolean {
-      if (
+      return !(
         ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
         this.collectionInfo.CollectionType === undefined
-      ) {
-        return false;
-      } else {
-        return true;
-      }
+      );
     },
     isSortable(): boolean {
       // Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
       // Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
-      if (
-        ![
-          'MusicArtist',
-          'Actor',
-          'Genre',
-          'MusicGenre',
-          'MusicGenre',
-          'Studio'
-        ].includes(this.viewType)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
+      return ![
+        'MusicArtist',
+        'Actor',
+        'Genre',
+        'MusicGenre',
+        'MusicGenre',
+        'Studio'
+      ].includes(this.viewType);
     }
   },
   watch: {
@@ -321,7 +317,7 @@ export default defineComponent({
       } catch (error) {
         this.items = [];
         this.itemsCount = 0;
-        this.snackbar.push(this.$t('failedToRefreshItems'), 'error');
+        this.useSnackbar(this.$t('failedToRefreshItems'), 'error');
       }
 
       this.loading = false;
