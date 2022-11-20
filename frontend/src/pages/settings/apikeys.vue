@@ -39,9 +39,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { AuthenticationInfo } from '@jellyfin/client-axios';
-import { snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 interface TableHeaders {
   text: string;
@@ -49,6 +48,11 @@ interface TableHeaders {
 }
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   async asyncData({ $api }) {
     const apiKeys = (await $api.apiKey.getKeys()).data.Items;
 
@@ -63,7 +67,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(snackbarStore),
     headers(): TableHeaders[] {
       return [
         { text: this.$t('settings.apiKeys.appName'), value: 'AppName' },
@@ -80,14 +83,11 @@ export default defineComponent({
         });
 
         this.apiKeys.filter((item) => token !== item.AccessToken);
-        this.snackbar.push(
-          this.$t('settings.apiKeys.revokeSuccess'),
-          'success'
-        );
+        this.useSnackbar(this.$t('settings.apiKeys.revokeSuccess'), 'success');
         this.refreshApiKeys();
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('settings.apiKeys.revokeFailure'), 'error');
+        this.useSnackbar(this.$t('settings.apiKeys.revokeFailure'), 'error');
       }
     },
     async revokeAllApiKeys(): Promise<void> {
@@ -101,17 +101,14 @@ export default defineComponent({
         }
 
         this.apiKeys = [];
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.apiKeys.revokeAllSuccess'),
           'success'
         );
         this.refreshApiKeys();
       } catch (error) {
         console.error(error);
-        this.snackbar.push(
-          this.$t('settings.apiKeys.revokeAllFailure'),
-          'error'
-        );
+        this.useSnackbar(this.$t('settings.apiKeys.revokeAllFailure'), 'error');
       }
 
       this.revokeKeyLoading = false;
@@ -120,7 +117,7 @@ export default defineComponent({
       try {
         this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
       } catch (error) {
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.apiKeys.refreshKeysFailure'),
           'error'
         );

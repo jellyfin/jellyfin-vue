@@ -12,8 +12,9 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import { authStore, snackbarStore } from '~/store';
+import { authStore } from '~/store';
 import { canMarkWatched } from '~/utils/items';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -26,13 +27,18 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       isPlayed: false
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore)
+    ...mapStores(authStore)
   },
   watch: {
     item: {
@@ -66,7 +72,7 @@ export default defineComponent({
           });
         }
       } catch (error) {
-        this.snackbar.push(this.$t('unableToTogglePlayed'), 'error');
+        this.useSnackbar(this.$t('unableToTogglePlayed'), 'error');
         this.isPlayed = !this.isPlayed;
       }
     },

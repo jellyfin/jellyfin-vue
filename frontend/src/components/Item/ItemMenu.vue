@@ -54,14 +54,10 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/client-axios';
-import {
-  authStore,
-  playbackManagerStore,
-  snackbarStore,
-  taskManagerStore
-} from '~/store';
+import { authStore, playbackManagerStore, taskManagerStore } from '~/store';
 import { TaskType, RunningTask } from '~/store/taskManager';
 import { canResume } from '~/utils/items';
+import { useSnackbar } from '@/composables';
 
 type MenuOption = {
   title: string;
@@ -99,6 +95,11 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       show: false,
@@ -108,12 +109,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(
-      authStore,
-      snackbarStore,
-      playbackManagerStore,
-      taskManagerStore
-    ),
+    ...mapStores(authStore, playbackManagerStore, taskManagerStore),
     isItemRefreshing(): boolean {
       return this.taskManager.getTask(this.item.Id || '') !== undefined;
     },
@@ -125,7 +121,7 @@ export default defineComponent({
         icon: 'mdi-play-speed',
         action: (): void => {
           this.playbackManager.playNext(this.item);
-          this.snackbar.push(this.$t('snackbar.playNext'), 'success');
+          this.useSnackbar(this.$t('snackbar.playNext'), 'success');
         }
       };
 
@@ -218,7 +214,7 @@ export default defineComponent({
           icon: 'mdi-playlist-plus',
           action: (): void => {
             this.playbackManager.addToQueue(this.item);
-            this.snackbar.push(this.$t('snackbar.addedToQueue'), 'success');
+            this.useSnackbar(this.$t('snackbar.addedToQueue'), 'success');
           }
         });
       }
@@ -245,7 +241,7 @@ export default defineComponent({
                 replaceAllMetadata: false
               });
 
-              this.snackbar.push(this.$t('libraryRefreshQueued'), 'normal');
+              this.useSnackbar(this.$t('libraryRefreshQueued'), 'normal');
               this.taskManager.startTask({
                 type: TaskType.LibraryRefresh,
                 id: this.item.Id,
@@ -255,7 +251,7 @@ export default defineComponent({
             } catch (e) {
               console.error(e);
 
-              this.snackbar.push(this.$t('unableToRefreshLibrary'), 'error');
+              this.useSnackbar(this.$t('unableToRefreshLibrary'), 'error');
             }
           },
           disabled: this.isItemRefreshing

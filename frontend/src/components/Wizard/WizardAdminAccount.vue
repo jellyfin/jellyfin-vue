@@ -51,9 +51,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { authStore, snackbarStore } from '~/store';
+import { authStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       admin: {
@@ -66,7 +72,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, snackbarStore)
+    ...mapStores(authStore)
   },
   methods: {
     async createAdminAccount(): Promise<void> {
@@ -82,7 +88,7 @@ export default defineComponent({
         this.$emit('step-complete', { step: 2 });
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('wizard.setAdminError'), 'error');
+        this.useSnackbar(this.$t('wizard.setAdminError'), 'error');
       }
 
       this.loading = false;
