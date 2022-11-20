@@ -27,10 +27,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       addingNewKey: false,
@@ -39,7 +43,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(snackbarStore),
     width(): number | string {
       switch (this.$vuetify.display.name) {
         case 'xs':
@@ -64,7 +67,7 @@ export default defineComponent({
           app: this.newKeyAppName
         });
 
-        this.snackbar.push(
+        this.useSnackbar(
           this.$t('settings.apiKeys.createKeySuccess'),
           'success'
         );
@@ -74,10 +77,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
 
-        this.snackbar.push(
-          this.$t('settings.apiKeys.createKeyFailure'),
-          'error'
-        );
+        this.useSnackbar(this.$t('settings.apiKeys.createKeyFailure'), 'error');
       }
 
       this.loading = false;
