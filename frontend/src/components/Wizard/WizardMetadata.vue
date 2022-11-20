@@ -32,10 +32,14 @@ import {
   CultureDto,
   StartupConfigurationDto
 } from '@jellyfin/client-axios';
-import { mapStores } from 'pinia';
-import { snackbarStore } from '~/store';
+import { useSnackbar } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return {
+      useSnackbar
+    };
+  },
   data() {
     return {
       metadataLanguage: '',
@@ -45,9 +49,6 @@ export default defineComponent({
       countryOptions: [] as CountryInfo[],
       loading: false
     };
-  },
-  computed: {
-    ...mapStores(snackbarStore)
   },
   async created() {
     this.initialConfig = (
@@ -76,7 +77,7 @@ export default defineComponent({
         this.$emit('step-complete', { step: 3 });
       } catch (error) {
         console.error(error);
-        this.snackbar.push(this.$t('wizard.setMetadataError'), 'error');
+        this.useSnackbar(this.$t('wizard.setMetadataError'), 'error');
       }
 
       this.loading = false;
