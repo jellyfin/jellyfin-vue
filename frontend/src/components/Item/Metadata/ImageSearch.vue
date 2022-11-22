@@ -41,7 +41,7 @@
           color="primary"
           indeterminate
           class="loading-bar" />
-        <v-card v-else-if="!images.length" class="mx-auto">
+        <v-card v-else-if="images.length === 0" class="mx-auto">
           <v-card-title>
             {{ $t('noImagesFound') }}
           </v-card-title>
@@ -99,12 +99,12 @@ import {
 
 export default defineComponent({
   filters: {
-    fixed(val: number): string | number {
-      if (!val) {
-        return val;
+    fixed(value: number): string | number {
+      if (!value) {
+        return value;
       }
 
-      return val.toFixed(1);
+      return value.toFixed(1);
     }
   },
   props: {

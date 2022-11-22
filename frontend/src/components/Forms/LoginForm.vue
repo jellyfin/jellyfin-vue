@@ -112,7 +112,7 @@ export default defineComponent({
           this.login.password,
           this.login.rememberMe
         );
-      } catch (e) {
+      } catch {
       } finally {
         this.loading = false;
       }

@@ -35,22 +35,22 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" bg-color="transparent">
-            <v-tab :key="0" :disabled="!discography.length">
+            <v-tab :key="0" :disabled="discography.length === 0">
               {{ $t('item.artist.discography') }}
             </v-tab>
-            <v-tab :key="1" :disabled="!albums.length">
+            <v-tab :key="1" :disabled="albums.length === 0">
               {{ $t('item.artist.albums') }}
             </v-tab>
-            <v-tab :key="2" :disabled="!eps.length">
+            <v-tab :key="2" :disabled="eps.length === 0">
               {{ $t('item.artist.eps') }}
             </v-tab>
-            <v-tab :key="3" :disabled="!singles.length">
+            <v-tab :key="3" :disabled="singles.length === 0">
               {{ $t('item.artist.singles') }}
             </v-tab>
-            <v-tab :key="4" :disabled="!appearances.length">
+            <v-tab :key="4" :disabled="appearances.length === 0">
               {{ $t('item.artist.appearsOn') }}
             </v-tab>
-            <v-tab :key="5" :disabled="!musicVideo.length">
+            <v-tab :key="5" :disabled="musicVideo.length === 0">
               {{ $t('item.artist.videos') }}
             </v-tab>
             <v-tab :key="6" :disabled="!artistBackdrop.tag && !overview">
@@ -132,13 +132,13 @@ export default defineComponent({
     backdrop: true,
     transparentLayout: true
   },
-  validate(ctx: Context) {
-    return isValidMD5(ctx.route.params.itemId);
+  validate(context: Context) {
+    return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api }) {
     const albumBreakpoints = {
-      singleMsMaxLength: 600000,
-      epMsMaxLength: 1800000
+      singleMsMaxLength: 600_000,
+      epMsMaxLength: 1_800_000
     };
     const auth = authStore();
     const itemId = params.itemId;
@@ -244,11 +244,7 @@ export default defineComponent({
   computed: {
     ...mapStores(pageStore),
     overview(): string {
-      if (this.item?.Overview) {
-        return sanitizeHtml(this.item.Overview);
-      } else {
-        return '';
-      }
+      return this.item?.Overview ? sanitizeHtml(this.item.Overview) : '';
     },
     artistBackdrop(): ImageUrlInfo {
       return getImageInfo(this.item, { preferBackdrop: true });
@@ -258,10 +254,10 @@ export default defineComponent({
     item: {
       immediate: true,
       deep: true,
-      handler(val: BaseItemDto): void {
-        this.page.title = val.Name || '';
+      handler(value: BaseItemDto): void {
+        this.page.title = value.Name || '';
 
-        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
       }
     }
   },

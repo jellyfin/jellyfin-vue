@@ -9,7 +9,7 @@ import { authStore } from '~/store';
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
 const serverLoginUrl = '/server/login';
-const loginRoutes = [serverAddUrl, serverSelectUrl, serverLoginUrl];
+const loginRoutes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
 
 /**
  * This function acts as a middleware when auth is not completed or an user attempts to access auth
@@ -36,17 +36,13 @@ function handleAuthRedirections(
   const currentBaseUrl = context.$axios.defaults.baseURL;
 
   if (
-    !servers.length ||
+    servers.length === 0 ||
     (currentRoute === serverSelectUrl && nextRoute === serverAddUrl)
   ) {
     destinationRoute = serverAddUrl;
   } else if (currentBaseUrl && !userToken) {
     destinationRoute = serverLoginUrl;
-  } else if (
-    currentBaseUrl &&
-    userToken &&
-    loginRoutes.includes(currentRoute)
-  ) {
+  } else if (currentBaseUrl && userToken && loginRoutes.has(currentRoute)) {
     destinationRoute = '/';
   } else if (!currentBaseUrl) {
     destinationRoute = serverSelectUrl;
@@ -83,15 +79,15 @@ function handleAuthRedirections(
  * which redirection method to use
  */
 export function authLogic(
-  ctx: Context,
+  context: Context,
   auth: ReturnType<typeof authStore>,
   useContext: boolean
 ): void {
-  if (isNil(ctx.$axios.defaults.baseURL)) {
+  if (isNil(context.$axios.defaults.baseURL)) {
     auth.authInit();
   }
 
-  handleAuthRedirections(ctx, auth, useContext);
+  handleAuthRedirections(context, auth, useContext);
 }
 
 /**

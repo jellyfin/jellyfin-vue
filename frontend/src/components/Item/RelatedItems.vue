@@ -97,7 +97,7 @@ export default defineComponent({
   beforeMount() {
     try {
       this.refreshItems();
-    } catch (error) {
+    } catch {
       this.useSnackbar(this.$t('unableGetRelated'), 'error');
     }
   },

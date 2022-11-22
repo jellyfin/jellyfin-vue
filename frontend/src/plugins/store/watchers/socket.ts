@@ -8,7 +8,7 @@ import { TaskType, RunningTask } from '~/store/taskManager';
  * Handle socket messages that are relevant to items inside the items store.
  *
  */
-export default function (ctx: PiniaPluginContext): void {
+export default function (context: PiniaPluginContext): void {
   const auth = authStore();
   const socket = socketStore();
   const items = itemsStore();
@@ -21,8 +21,8 @@ export default function (ctx: PiniaPluginContext): void {
    * @param itemIds - Ids of the items to update
    */
   async function updateStoreItems(itemIds: string[]): Promise<void> {
-    if (itemIds.length) {
-      await ctx.$api.items.getItems({
+    if (itemIds.length > 0) {
+      await context.$api.items.getItems({
         userId: auth.currentUserId,
         ids: itemIds,
         fields: Object.keys(ItemFields) as ItemFields[]
@@ -41,10 +41,13 @@ export default function (ctx: PiniaPluginContext): void {
         let itemsToUpdate: string[];
 
         switch (messageType) {
-          case 'ForceKeepAlive': // Keep the websocket alive
+          case 'ForceKeepAlive': {
+            // Keep the websocket alive
             socket.sendToSocket('KeepAlive');
             break;
-          case 'LibraryChanged': // Update items when metadata changes
+          }
+          case 'LibraryChanged': {
+            // Update items when metadata changes
             // @ts-expect-error -- The Data property doesn't describe its content
             itemsToUpdate = messageData.ItemsUpdated.filter(
               (itemId: string) => {
@@ -54,7 +57,9 @@ export default function (ctx: PiniaPluginContext): void {
 
             updateStoreItems(itemsToUpdate);
             break;
-          case 'UserDataChanged': // Update items when their userdata is changed (like, mark as watched, etc)
+          }
+          case 'UserDataChanged': {
+            // Update items when their userdata is changed (like, mark as watched, etc)
             // @ts-expect-error -- The Data property doesn't describe its content
             itemsToUpdate = messageData.UserDataList.filter(
               (updatedData: never) => {
@@ -70,12 +75,12 @@ export default function (ctx: PiniaPluginContext): void {
 
             updateStoreItems(itemsToUpdate);
             break;
-          case 'RefreshProgress':
+          }
+          case 'RefreshProgress': {
             // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
-            /* eslint-disable no-case-declarations */
             // @ts-expect-error - No typings for this
-            const progress = parseInt(messageData.Progress);
+            const progress = Number.parseInt(messageData.Progress);
             // @ts-expect-error - No typings for this
             const taskPayload = taskManager.getTask(messageData.ItemId || '');
             const payload: RunningTask = {
@@ -97,8 +102,10 @@ export default function (ctx: PiniaPluginContext): void {
             }
 
             break;
-          default:
+          }
+          default: {
             break;
+          }
         }
       }
     });
