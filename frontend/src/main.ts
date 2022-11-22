@@ -7,6 +7,7 @@ import { vuetify } from '@/plugins/vue/vuetify';
 import { hideDirective } from '@/plugins/vue/directives';
 import piniaPlugins from '@/plugins/store';
 import { createRemote } from '@/plugins/vue/remote';
+import { createJSONConfig } from '@/plugins/vue/config';
 /**
  * CSS Imports
  */
@@ -14,18 +15,20 @@ import '@/assets/styles/global.scss';
 import '@/assets/styles/transitions.scss';
 import '@/assets/styles/variables.scss';
 
-/**
- * App initialization
- */
 const app = createApp(Root);
 const pinia = createPinia();
 const remote = createRemote();
+const config = createJSONConfig();
 
-pinia.use(piniaPlugins);
+/**
+ * The order of statements IS IMPORTANT
+ */
 app.use(i18n);
 app.use(router);
 app.use(remote);
+pinia.use(piniaPlugins);
 app.use(pinia);
+app.use(config);
 app.use(vuetify);
 
 /**
