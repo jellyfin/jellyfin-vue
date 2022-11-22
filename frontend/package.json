@@ -26,7 +26,8 @@
     "vue-i18n-extract-remove": "npx vue-i18n-extract --remove"
   },
   "dependencies": {
-    "@jellyfin/client-axios": "10.7.8",
+    "@intlify/unplugin-vue-i18n": "0.8.0",
+    "@jellyfin/sdk": "0.7.0",
     "@vueuse/components": "9.2.0",
     "@vueuse/core": "9.2.0",
     "axios": "0.27.2",
@@ -76,7 +77,9 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-sonarjs": "0.16.0",
+    "eslint-plugin-unicorn": "44.0.2",
     "eslint-plugin-vue": "9.7.0",
+    "eslint-plugin-you-dont-need-lodash-underscore": "6.12.0",
     "prettier": "2.7.1",
     "rollup-plugin-visualizer": "5.8.1",
     "sass": "1.54.9",
@@ -87,7 +90,6 @@
     "vite-plugin-pages": "0.27.1",
     "vite-plugin-pwa": "0.13.2",
     "vite-plugin-vue-layouts": "0.7.0",
-    "vite-plugin-vuetify": "1.0.0",
     "vue-eslint-parser": "9.1.0",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "0.34.16"
