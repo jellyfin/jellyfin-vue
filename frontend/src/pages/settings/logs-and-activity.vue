@@ -104,7 +104,11 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import colors from 'vuetify/lib/util/colors';
-import { ActivityLogEntry, LogFile, LogLevel } from '@jellyfin/client-axios';
+import {
+  ActivityLogEntry,
+  LogFile,
+  LogLevel
+} from '@jellyfin/sdk/lib/generated-client';
 import { authStore, pageStore } from '~/store';
 
 interface LoadingStatus {

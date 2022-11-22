@@ -63,7 +63,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemDto, ImageInfo, ImageType } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ImageInfo,
+  ImageType
+} from '@jellyfin/sdk/lib/generated-client';
 import { getImageInfo } from '~/utils/images';
 
 export default defineComponent({

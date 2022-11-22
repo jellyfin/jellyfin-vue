@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getBlurhash, getImageInfo } from '~/utils/images';
 import { getItemIcon } from '~/utils/items';
 
