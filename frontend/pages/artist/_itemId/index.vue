@@ -128,6 +128,7 @@ import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
 import ArtistTab from '~/components/Layout/Artist/ArtistTab.vue';
+import { msToTicks } from '~/utils/time';
 
 export default Vue.extend({
   components: { ArtistTab },
@@ -140,8 +141,8 @@ export default Vue.extend({
   },
   async asyncData({ params, $api }) {
     const albumBreakpoints = {
-      singleTicksMaxLength: 6000000000,
-      epTicksMaxLength: 18000000000
+      singleMsMaxLength: 600000,
+      epMsMaxLength: 1800000
     };
     const auth = authStore();
     const itemId = params.itemId;
@@ -168,19 +169,19 @@ export default Vue.extend({
     const singles = discography?.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
-        albumBreakpoints.singleTicksMaxLength
+        msToTicks(albumBreakpoints.singleMsMaxLength)
     );
     const eps = discography?.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
-          albumBreakpoints.singleTicksMaxLength &&
+          msToTicks(albumBreakpoints.singleMsMaxLength) &&
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
-          albumBreakpoints.epTicksMaxLength
+          msToTicks(albumBreakpoints.epMsMaxLength)
     );
     const albums = discography?.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
-        albumBreakpoints.epTicksMaxLength
+        msToTicks(albumBreakpoints.epMsMaxLength)
     );
 
     const appearances = (
