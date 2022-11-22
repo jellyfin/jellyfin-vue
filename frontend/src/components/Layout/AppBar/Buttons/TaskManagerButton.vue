@@ -17,7 +17,7 @@
     <!-- eslint-disable-next-line vue/no-template-shadow -->
     <template #activator="{ on: menu, attrs }">
       <app-bar-button-layout
-        :custom-listener="taskList.length ? menu : undefined"
+        :custom-listener="taskList.length > 0 ? menu : undefined"
         :color="buttonColor"
         v-bind="attrs">
         <template #icon>
@@ -104,7 +104,7 @@ export default defineComponent({
       handler(): void {
         this.getTaskList();
 
-        if (this.taskList.length) {
+        if (this.taskList.length > 0) {
           this.showButton = true;
         }
       }
@@ -143,7 +143,7 @@ export default defineComponent({
 
       for (const task of this.taskManager.tasks as RunningTask[]) {
         switch (task.type) {
-          case TaskType.ConfigSync:
+          case TaskType.ConfigSync: {
             list.push({
               progress: undefined,
               textKey: 'appbar.tasks.configSync',
@@ -151,7 +151,8 @@ export default defineComponent({
             });
 
             break;
-          case TaskType.LibraryRefresh:
+          }
+          case TaskType.LibraryRefresh: {
             list.push({
               progress: task.progress,
               textKey: 'appbar.tasks.scanningLibrary',
@@ -162,22 +163,25 @@ export default defineComponent({
             });
 
             break;
+          }
         }
       }
 
-      const taskIds = (list as TaskInfo[]).map((task) => {
-        return task.id;
-      });
+      const taskIds = new Set(
+        (list as TaskInfo[]).map((task) => {
+          return task.id;
+        })
+      );
       const finishedTasks: Array<TaskInfo> = [];
 
-      this.taskList.forEach((task) => {
-        if (!taskIds.includes(task.id)) {
+      for (const task of this.taskList) {
+        if (!taskIds.has(task.id)) {
           task.progress = 100;
           finishedTasks.push(task);
         }
-      });
+      }
 
-      this.taskList = list.concat(finishedTasks);
+      this.taskList = [...list, ...finishedTasks];
     }
   }
 });

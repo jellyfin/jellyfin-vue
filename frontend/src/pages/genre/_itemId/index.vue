@@ -26,7 +26,7 @@
         </v-col>
       </v-row>
       <item-grid
-        v-if="genres.length"
+        v-if="genres.length > 0"
         :items="genres"
         :loading="$fetchState.pending" />
       <v-row v-else-if="!$fetchState.pending" justify="center">
@@ -52,8 +52,8 @@ import { isValidMD5 } from '~/utils/items';
 import { authStore, itemsStore, pageStore } from '~/store';
 
 export default defineComponent({
-  validate(ctx: Context) {
-    return isValidMD5(ctx.route.params.itemId);
+  validate(context: Context) {
+    return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api, route }) {
     const items = itemsStore();

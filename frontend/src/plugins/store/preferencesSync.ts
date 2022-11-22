@@ -10,7 +10,7 @@ import {
 } from 'pinia';
 import { authStore, snackbarStore, taskManagerStore } from '~/store';
 
-const syncedStores = ['clientSettings'];
+const syncedStores = new Set(['clientSettings']);
 
 /**
  * Cast custom preferences returned from the server from strings to the correct Javascript type
@@ -54,12 +54,12 @@ function castDisplayPreferencesResponse(
  * @param cast
  */
 export async function fetchSettingsFromServer(
-  ctx: Context,
+  context: Context,
   auth: ReturnType<typeof authStore>,
   store: Store<string, StateTree, _GettersTree<StateTree>, _ActionsTree>,
   cast = true
 ): Promise<DisplayPreferencesDto> {
-  const response = await ctx.$api.displayPreferences.getDisplayPreferences({
+  const response = await context.$api.displayPreferences.getDisplayPreferences({
     displayPreferencesId: store.$id,
     userId: auth.currentUserId,
     client: 'vue'
@@ -83,7 +83,7 @@ export async function fetchSettingsFromServer(
  * @param prefs
  */
 export async function pushSettingsToServer(
-  ctx: Context,
+  context: Context,
   auth: ReturnType<typeof authStore>,
   storeId: string,
   prefs: DisplayPreferencesDto
@@ -107,7 +107,7 @@ export async function pushSettingsToServer(
     }
 
     const responseUpdate =
-      await ctx.$api.displayPreferences.updateDisplayPreferences({
+      await context.$api.displayPreferences.updateDisplayPreferences({
         displayPreferencesId: storeId,
         userId: auth.currentUserId,
         client: 'vue',
@@ -132,49 +132,47 @@ export async function pushSettingsToServer(
  *
  */
 export default function preferencesSync({ store }: PiniaPluginContext): void {
-  if (syncedStores.includes(store.$id)) {
+  if (syncedStores.has(store.$id)) {
     const auth = authStore();
     const snackbar = snackbarStore();
     const taskManager = taskManagerStore();
 
     store.$onAction(({ after, name }) => {
       after(async () => {
-        if (name !== 'initState') {
-          if (!isNil(auth.currentUser)) {
-            try {
-              /**
-               * Creates a config syncing task, so UI can show that there's a syncing in progress
-               */
-              taskManager.startConfigSync();
-              /**
-               * We set a new last sync date at the start, so if the push fails, we still have the last attempt's
-               * date and we can compare with the server when we're back online
-               */
-              store.$state.lastSync = Date.now();
+        if (name !== 'initState' && !isNil(auth.currentUser)) {
+          try {
+            /**
+             * Creates a config syncing task, so UI can show that there's a syncing in progress
+             */
+            taskManager.startConfigSync();
+            /**
+             * We set a new last sync date at the start, so if the push fails, we still have the last attempt's
+             * date and we can compare with the server when we're back online
+             */
+            store.$state.lastSync = Date.now();
 
-              /**
-               * The fetch part is done because DisplayPreferences doesn't accept partial updates
-               * TODO: Revisit if we ever get PATCH support
-               */
-              const displayPrefs = await fetchSettingsFromServer(
-                store.$nuxt,
-                auth,
-                store,
-                false
-              );
+            /**
+             * The fetch part is done because DisplayPreferences doesn't accept partial updates
+             * TODO: Revisit if we ever get PATCH support
+             */
+            const displayPrefs = await fetchSettingsFromServer(
+              store.$nuxt,
+              auth,
+              store,
+              false
+            );
 
-              displayPrefs.CustomPrefs = {};
+            displayPrefs.CustomPrefs = {};
 
-              Object.assign(displayPrefs.CustomPrefs, store.$state);
-              pushSettingsToServer(store.$nuxt, auth, store.$id, displayPrefs);
-            } catch (error) {
-              snackbar.push(
-                store.$nuxt.i18n.t('failedSettingDisplayPreferences'),
-                'error'
-              );
-            } finally {
-              taskManager.stopConfigSync();
-            }
+            Object.assign(displayPrefs.CustomPrefs, store.$state);
+            pushSettingsToServer(store.$nuxt, auth, store.$id, displayPrefs);
+          } catch {
+            snackbar.push(
+              store.$nuxt.i18n.t('failedSettingDisplayPreferences'),
+              'error'
+            );
+          } finally {
+            taskManager.stopConfigSync();
           }
         }
       });

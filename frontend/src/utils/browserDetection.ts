@@ -109,7 +109,7 @@ export class BrowserDetector {
     let match = userAgent.match(/Version\/(\d+)/);
 
     if (match) {
-      return parseInt(match[1], /* base= */ 10);
+      return Number.parseInt(match[1], /* base= */ 10);
     }
 
     // This works for all other browsers on iOS, which contain something like
@@ -117,7 +117,7 @@ export class BrowserDetector {
     match = userAgent.match(/OS (\d+)(?:_\d+)?/);
 
     if (match) {
-      return parseInt(match[1], /* base= */ 10);
+      return Number.parseInt(match[1], /* base= */ 10);
     }
 
     return null;
@@ -260,7 +260,7 @@ export class BrowserDetector {
       userAgent = navigator.userAgent;
     }
 
-    if (/(?:iPhone|iPad|iPod|Android)/.test(userAgent)) {
+    if (/iPhone|iPad|iPod|Android/.test(userAgent)) {
       // This is Android, iOS, or iPad < 13.
       return true;
     }

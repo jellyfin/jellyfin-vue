@@ -126,34 +126,31 @@ export default defineComponent({
          * https://github.com/jellyfin/jellyfin-vue/pull/609
          */
         switch (this.playbackManager.playbackInitMode) {
-          case InitMode.Unknown:
+          case InitMode.Unknown: {
             return this.$t('playback.playbackSource.unknown');
-          case InitMode.Item:
-            if (
-              this.playbackManager.getCurrentItem?.AlbumId !==
+          }
+          case InitMode.Item: {
+            return this.playbackManager.getCurrentItem?.AlbumId !==
               this.playbackManager.playbackInitiator?.Id
-            ) {
-              return this.$t('playback.playbackSource.unknown');
-            } else {
-              return this.$t('playback.playbackSource.item', {
-                item: this.playbackManager.playbackInitiator?.Name
-              });
-            }
-          case InitMode.Shuffle:
+              ? this.$t('playback.playbackSource.unknown')
+              : this.$t('playback.playbackSource.item', {
+                  item: this.playbackManager.playbackInitiator?.Name
+                });
+          }
+          case InitMode.Shuffle: {
             return this.$t('playback.playbackSource.shuffle');
-          case InitMode.ShuffleItem:
-            if (
-              this.playbackManager.getCurrentItem?.AlbumId !==
+          }
+          case InitMode.ShuffleItem: {
+            return this.playbackManager.getCurrentItem?.AlbumId !==
               this.playbackManager.playbackInitiator?.Id
-            ) {
-              return this.$t('playback.playbackSource.unknown');
-            } else {
-              return this.$t('playback.playbackSource.shuffleItem', {
-                item: this.playbackManager.playbackInitiator?.Name
-              });
-            }
-          default:
+              ? this.$t('playback.playbackSource.unknown')
+              : this.$t('playback.playbackSource.shuffleItem', {
+                  item: this.playbackManager.playbackInitiator?.Name
+                });
+          }
+          default: {
             return '';
+          }
         }
       }
     },
@@ -172,10 +169,12 @@ export default defineComponent({
     modeIcon: {
       get(): string {
         switch (this.playbackManager.playbackInitMode) {
-          case InitMode.Shuffle:
+          case InitMode.Shuffle: {
             return 'mdi-shuffle';
-          default:
+          }
+          default: {
             return 'mdi-playlist-music';
+          }
         }
       }
     }

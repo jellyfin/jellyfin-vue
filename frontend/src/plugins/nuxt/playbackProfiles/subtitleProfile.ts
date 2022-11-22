@@ -11,20 +11,20 @@ import {
 export function getSubtitleProfiles(): Array<SubtitleProfile> {
   const SubtitleProfiles: Array<SubtitleProfile> = [];
 
-  SubtitleProfiles.push({
-    Format: 'vtt',
-    Method: SubtitleDeliveryMethod.External
-  });
-
-  SubtitleProfiles.push({
-    Format: 'ass',
-    Method: SubtitleDeliveryMethod.External
-  });
-
-  SubtitleProfiles.push({
-    Format: 'ssa',
-    Method: SubtitleDeliveryMethod.External
-  });
+  SubtitleProfiles.push(
+    {
+      Format: 'vtt',
+      Method: SubtitleDeliveryMethod.External
+    },
+    {
+      Format: 'ass',
+      Method: SubtitleDeliveryMethod.External
+    },
+    {
+      Format: 'ssa',
+      Method: SubtitleDeliveryMethod.External
+    }
+  );
 
   return SubtitleProfiles;
 }

@@ -57,7 +57,7 @@ export default defineComponent({
   computed: {
     items(): Array<Record<string, string>> {
       switch (this.type) {
-        case 'movies':
+        case 'movies': {
           return [
             { name: this.$t('movies'), value: 'Movie' },
             { name: this.$t('collections'), value: 'BoxSet' },
@@ -65,21 +65,25 @@ export default defineComponent({
             { name: this.$t('genres'), value: 'Genre' },
             { name: this.$t('studios'), value: 'Studio' }
           ];
-        case 'music':
+        }
+        case 'music': {
           return [
             { name: this.$t('albums'), value: 'MusicAlbum' },
             { name: this.$t('artists'), value: 'MusicArtist' },
             { name: this.$t('genres'), value: 'MusicGenre' }
           ];
-        case 'tvshows':
+        }
+        case 'tvshows': {
           return [
             { name: this.$t('series'), value: 'Series' },
             { name: this.$t('actors'), value: 'Actor' },
             { name: this.$t('genres'), value: 'Genre' },
             { name: this.$t('networks'), value: 'Studio' }
           ];
-        default:
+        }
+        default: {
           return [];
+        }
       }
     }
   }

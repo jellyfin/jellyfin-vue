@@ -254,12 +254,17 @@ export default defineComponent({
       return this.$t('playbackInfo.streamType.unknown');
     },
     getPlayMethod(): string {
-      if (this.sessionInfo?.PlayState?.PlayMethod === 'Transcode') {
-        return this.$t('playbackInfo.playMethod.transcode');
-      } else if (this.sessionInfo?.PlayState?.PlayMethod === 'DirectStream') {
-        return this.$t('playbackInfo.playMethod.remux');
-      } else if (this.sessionInfo?.PlayState?.PlayMethod === 'DirectPlay') {
-        return this.$t('playbackInfo.playMethod.direct');
+      switch (this.sessionInfo?.PlayState?.PlayMethod) {
+        case 'Transcode': {
+          return this.$t('playbackInfo.playMethod.transcode');
+        }
+        case 'DirectStream': {
+          return this.$t('playbackInfo.playMethod.remux');
+        }
+        case 'DirectPlay': {
+          return this.$t('playbackInfo.playMethod.direct');
+        }
+        // No default
       }
 
       return '';
@@ -350,7 +355,7 @@ export default defineComponent({
     this.updateSession();
     this.updateSessionInterval = window.setInterval(() => {
       this.updateSession();
-    }, 10000);
+    }, 10_000);
   },
   beforeUnmount() {
     if (this.updateSessionInterval !== null) {
@@ -360,15 +365,13 @@ export default defineComponent({
   methods: {
     camelCase,
     getDisplayBitrate(bitrate: number): string {
-      if (bitrate > 1000000) {
-        return this.$t('units.bitrate.mbps', {
-          value: (bitrate / 1000000).toFixed(1)
-        });
-      } else {
-        return this.$t('units.bitrate.kbps', {
-          value: Math.floor(bitrate / 1000)
-        });
-      }
+      return bitrate > 1_000_000
+        ? this.$t('units.bitrate.mbps', {
+            value: (bitrate / 1_000_000).toFixed(1)
+          })
+        : this.$t('units.bitrate.kbps', {
+            value: Math.floor(bitrate / 1000)
+          });
     },
     async updateSession(): Promise<void> {
       this.sessionInfo = (

@@ -78,8 +78,8 @@ export default defineComponent({
   unmounted() {
     const animEndFunction = this.onAnimationEnd;
 
-    this.bars.forEach((el: HTMLElement) => {
-      el.removeEventListener('animationend', animEndFunction);
+    this.bars.forEach((element: HTMLElement) => {
+      element.removeEventListener('animationend', animEndFunction);
     });
   },
   methods: {
@@ -96,19 +96,19 @@ export default defineComponent({
 
       if (previousBars) {
         window.requestAnimationFrame(() => {
-          previousBars.forEach((el: HTMLElement) => {
-            el.classList.remove('active', 'paused');
-            el.removeEventListener('animationend', animEndFunction);
-            el.classList.add('passed');
+          previousBars.forEach((element: HTMLElement) => {
+            element.classList.remove('active', 'paused');
+            element.removeEventListener('animationend', animEndFunction);
+            element.classList.add('passed');
           });
         });
       }
 
       if (followingBars) {
         window.requestAnimationFrame(() => {
-          followingBars.forEach((el: HTMLElement) => {
-            el.classList.remove('active', 'passed', 'paused');
-            el.removeEventListener('animationend', animEndFunction);
+          followingBars.forEach((element: HTMLElement) => {
+            element.classList.remove('active', 'passed', 'paused');
+            element.removeEventListener('animationend', animEndFunction);
           });
         });
       }
@@ -129,8 +129,8 @@ export default defineComponent({
     setAnimationDuration(): void {
       const newDuration = (this.duration / 1000).toString() + 's';
 
-      this.bars.forEach((el: HTMLElement) => {
-        el.style.animationDuration = newDuration;
+      this.bars.forEach((element: HTMLElement) => {
+        element.style.animationDuration = newDuration;
       });
     }
   }

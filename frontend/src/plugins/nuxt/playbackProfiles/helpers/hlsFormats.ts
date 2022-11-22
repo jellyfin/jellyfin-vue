@@ -48,8 +48,7 @@ export function getHlsVideoCodecs(
   }
 
   if (hasH265Support(context, videoTestElement) || context.$browser.isTv()) {
-    hlsVideoCodecs.push('h265');
-    hlsVideoCodecs.push('hevc');
+    hlsVideoCodecs.push('h265', 'hevc');
   }
 
   return hlsVideoCodecs;

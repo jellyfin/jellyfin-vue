@@ -261,7 +261,7 @@ export default defineComponent({
     },
     'playbackManager.status'(): void {
       switch (this.playbackManager.status) {
-        case PlaybackStatus.Playing:
+        case PlaybackStatus.Playing: {
           if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
             window.addEventListener('mousemove', this.handleMouseMove);
             window.addEventListener('keyup', this.handleKeyPress);
@@ -270,12 +270,14 @@ export default defineComponent({
           }
 
           break;
-        case PlaybackStatus.Stopped:
+        }
+        case PlaybackStatus.Stopped: {
           window.removeEventListener('mousemove', this.handleMouseMove);
           window.removeEventListener('keyup', this.handleKeyPress);
           window.removeEventListener('click', this.handleVideoClick);
           window.removeEventListener('dblclick', this.handleVideoDoubleClick);
           break;
+        }
       }
     }
   },
@@ -290,11 +292,7 @@ export default defineComponent({
     },
     getOsdTimeoutDuration(): number {
       // If we're on mobile, the OSD timer must be longer, to account for the lack of pointer movement
-      if (window.matchMedia('(pointer:fine)').matches) {
-        return 3000;
-      } else {
-        return 7500;
-      }
+      return window.matchMedia('(pointer:fine)').matches ? 3000 : 7500;
     },
     setFullscreenTimeout(): void {
       this.fullScreenOverlayTimer = window.setTimeout(() => {
@@ -344,54 +342,61 @@ export default defineComponent({
     },
     handleKeyPress(e: KeyboardEvent): void {
       if (!this.playbackManager.isMinimized) {
-        const focusEl = document.activeElement;
+        const focusElement = document.activeElement;
 
         let spaceEnabled = false;
 
         if (e.key === 'Spacebar' || e.key === ' ') {
           spaceEnabled =
-            focusEl?.classList.contains('v-dialog__content') ||
-            focusEl?.classList.contains('hide-pointer') ||
-            focusEl?.className === '';
+            focusElement?.classList.contains('v-dialog__content') ||
+            focusElement?.classList.contains('hide-pointer') ||
+            focusElement?.className === '';
         }
 
         switch (e.key) {
           case 'Spacebar':
-          case ' ':
+          case ' ': {
             if (spaceEnabled) {
               this.playbackManager.playPause();
             }
 
             break;
-          case 'k':
+          }
+          case 'k': {
             this.playbackManager.playPause();
             break;
+          }
           case 'ArrowRight':
-          case 'l':
+          case 'l': {
             this.playbackManager.skipForward();
             break;
+          }
           case 'ArrowLeft':
-          case 'j':
+          case 'j': {
             this.playbackManager.skipBackward();
             break;
-          case 'f':
+          }
+          case 'f': {
             if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
               this.toggleFullScreen();
             }
 
             break;
-          case 'm':
+          }
+          case 'm': {
             this.playbackManager.toggleMute();
             break;
+          }
         }
       } else {
         switch (e.key) {
-          case 'f':
+          case 'f': {
             if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
               this.playbackManager.toggleMinimized();
             }
 
             break;
+          }
         }
       }
     },

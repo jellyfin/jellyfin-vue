@@ -16,7 +16,7 @@ export function ticksToMs(ticks: number | null | undefined): number {
     ticks = 0;
   }
 
-  return Math.round(ticks / 10000);
+  return Math.round(ticks / 10_000);
 }
 
 /**
@@ -26,7 +26,7 @@ export function ticksToMs(ticks: number | null | undefined): number {
  * @returns The converted value in .NET ticks
  */
 export function msToTicks(ms: number): number {
-  return Math.round(ms * 10000);
+  return Math.round(ms * 10_000);
 }
 
 /**
@@ -50,11 +50,9 @@ export function formatTime(seconds: number): string {
     return ('0' + number).slice(-2);
   }
 
-  if (hours) {
-    return `${hours}:${formatDigits(minutes)}:${formatDigits(seconds)}`;
-  } else {
-    return `${minutes}:${formatDigits(seconds)}`;
-  }
+  return hours
+    ? `${hours}:${formatDigits(minutes)}:${formatDigits(seconds)}`
+    : `${minutes}:${formatDigits(seconds)}`;
 }
 
 /**

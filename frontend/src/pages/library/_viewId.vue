@@ -26,7 +26,7 @@
       <filter-button
         v-if="isSortable"
         :collection-info="collectionInfo"
-        :disabled="loading || (!items.length && !hasFilters)"
+        :disabled="loading || (items.length === 0 && !hasFilters)"
         :items-type="viewType"
         @change="onChangeFilter" />
       <v-spacer />
@@ -55,8 +55,8 @@ import { authStore, pageStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
-  validate(ctx: Context) {
-    return isValidMD5(ctx.route.params.viewId);
+  validate(context: Context) {
+    return isValidMD5(context.route.params.viewId);
   },
   setup() {
     return {
@@ -151,21 +151,26 @@ export default defineComponent({
 
       // Set default view type - This will trigger an items refresh
       switch (this.collectionInfo.CollectionType) {
-        case 'tvshows':
+        case 'tvshows': {
           this.viewType = 'Series';
           break;
-        case 'movies':
+        }
+        case 'movies': {
           this.viewType = 'Movie';
           break;
-        case 'books':
+        }
+        case 'books': {
           this.viewType = 'Book';
           break;
-        case 'music':
+        }
+        case 'music': {
           this.viewType = 'MusicAlbum';
           break;
-        default:
+        }
+        default: {
           await this.refreshItems();
           break;
+        }
       }
 
       this.$nextTick(() => {
@@ -201,23 +206,11 @@ export default defineComponent({
 
       // The following technically have a "false" state for excluding them.
       // TODO: Maybe add exclusion to the filters
-      if (filter.types.includes('isHD')) {
-        this.filterIsHd = true;
-      } else {
-        this.filterIsHd = undefined;
-      }
+      this.filterIsHd = filter.types.includes('isHD') ? true : undefined;
 
-      if (filter.types.includes('is4K')) {
-        this.filterIs4k = true;
-      } else {
-        this.filterIs4k = undefined;
-      }
+      this.filterIs4k = filter.types.includes('is4K') ? true : undefined;
 
-      if (filter.types.includes('is3D')) {
-        this.filterIs3d = true;
-      } else {
-        this.filterIs3d = undefined;
-      }
+      this.filterIs3d = filter.types.includes('is3D') ? true : undefined;
 
       this.refreshItems();
     },
@@ -228,7 +221,7 @@ export default defineComponent({
         let itemsResponse;
 
         switch (this.viewType) {
-          case 'MusicArtist':
+          case 'MusicArtist': {
             itemsResponse = (
               await this.$api.artists.getAlbumArtists({
                 userId: this.auth.currentUserId,
@@ -236,7 +229,8 @@ export default defineComponent({
               })
             ).data;
             break;
-          case 'Actor':
+          }
+          case 'Actor': {
             itemsResponse = (
               await this.$api.persons.getPersons({
                 userId: this.auth.currentUserId,
@@ -245,7 +239,8 @@ export default defineComponent({
               })
             ).data;
             break;
-          case 'Genre':
+          }
+          case 'Genre': {
             itemsResponse = (
               await this.$api.genres.getGenres({
                 userId: this.auth.currentUserId,
@@ -253,7 +248,8 @@ export default defineComponent({
               })
             ).data;
             break;
-          case 'MusicGenre':
+          }
+          case 'MusicGenre': {
             itemsResponse = (
               await this.$api.musicGenres.getMusicGenres({
                 userId: this.auth.currentUserId,
@@ -261,7 +257,8 @@ export default defineComponent({
               })
             ).data;
             break;
-          case 'Studio':
+          }
+          case 'Studio': {
             itemsResponse = (
               await this.$api.studios.getStudios({
                 userId: this.auth.currentUserId,
@@ -269,7 +266,8 @@ export default defineComponent({
               })
             ).data;
             break;
-          default:
+          }
+          default: {
             itemsResponse = (
               await this.$api.items.getItems({
                 uId: this.auth.currentUserId,
@@ -310,11 +308,12 @@ export default defineComponent({
               })
             ).data;
             break;
+          }
         }
 
         this.items = itemsResponse.Items;
         this.itemsCount = itemsResponse.TotalRecordCount;
-      } catch (error) {
+      } catch {
         this.items = [];
         this.itemsCount = 0;
         this.useSnackbar(this.$t('failedToRefreshItems'), 'error');

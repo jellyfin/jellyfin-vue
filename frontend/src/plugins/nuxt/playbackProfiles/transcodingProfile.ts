@@ -62,18 +62,18 @@ export function getTranscodingProfiles(
     });
   }
 
-  ['aac', 'mp3', 'opus', 'wav']
-    .filter((format) => getSupportedAudioCodecs(context, format))
-    .forEach((audioFormat) => {
-      TranscodingProfiles.push({
-        Container: audioFormat,
-        Type: DlnaProfileType.Audio,
-        AudioCodec: audioFormat,
-        Context: EncodingContext.Streaming,
-        Protocol: 'http',
-        MaxAudioChannels: physicalAudioChannels.toString()
-      });
+  for (const audioFormat of ['aac', 'mp3', 'opus', 'wav'].filter((format) =>
+    getSupportedAudioCodecs(context, format)
+  )) {
+    TranscodingProfiles.push({
+      Container: audioFormat,
+      Type: DlnaProfileType.Audio,
+      AudioCodec: audioFormat,
+      Context: EncodingContext.Streaming,
+      Protocol: 'http',
+      MaxAudioChannels: physicalAudioChannels.toString()
     });
+  }
 
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
@@ -81,8 +81,8 @@ export function getTranscodingProfiles(
     videoTestElement
   );
 
-  if (canPlayHls) {
-    // TODO
+  if (
+    canPlayHls && // TODO
     // Disabled for now as HLS.js has troubles seeking in it
     // We should enable it for platforms supporting it natively
 
@@ -109,19 +109,20 @@ export function getTranscodingProfiles(
     //   });
     // }
 
-    if (hlsInTsVideoCodecs.length && hlsInTsAudioCodecs.length) {
-      TranscodingProfiles.push({
-        Container: 'ts',
-        Type: DlnaProfileType.Video,
-        AudioCodec: hlsInTsAudioCodecs.join(','),
-        VideoCodec: hlsInTsVideoCodecs.join(','),
-        Context: EncodingContext.Streaming,
-        Protocol: 'hls',
-        MaxAudioChannels: physicalAudioChannels.toString(),
-        MinSegments: context.$browser.isApple() ? 2 : 1,
-        BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
-      });
-    }
+    hlsInTsVideoCodecs.length > 0 &&
+    hlsInTsAudioCodecs.length > 0
+  ) {
+    TranscodingProfiles.push({
+      Container: 'ts',
+      Type: DlnaProfileType.Video,
+      AudioCodec: hlsInTsAudioCodecs.join(','),
+      VideoCodec: hlsInTsVideoCodecs.join(','),
+      Context: EncodingContext.Streaming,
+      Protocol: 'hls',
+      MaxAudioChannels: physicalAudioChannels.toString(),
+      MinSegments: context.$browser.isApple() ? 2 : 1,
+      BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
+    });
   }
 
   if (hasMkvSupport(context, videoTestElement) && !context.$browser.isTizen()) {
