@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import groupBy from 'lodash/groupBy';
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';

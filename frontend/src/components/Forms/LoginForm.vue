@@ -66,7 +66,7 @@
 import { defineComponent } from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
-import { UserDto } from '@jellyfin/client-axios';
+import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { authStore } from '~/store';
 
 export default defineComponent({

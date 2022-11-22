@@ -3,7 +3,7 @@
  */
 import { intervalToDuration } from 'date-fns';
 import sumBy from 'lodash/sumBy';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 
 /**
  * Converts .NET ticks to milliseconds

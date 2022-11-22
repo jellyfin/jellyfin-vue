@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
 export default defineComponent({

@@ -185,7 +185,10 @@
 import { defineComponent } from 'vue';
 import pick from 'lodash/pick';
 import set from 'lodash/set';
-import { BaseItemDto, BaseItemPerson } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemPerson
+} from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
 import { authStore } from '~/store';
 import { useSnackbar } from '@/composables';

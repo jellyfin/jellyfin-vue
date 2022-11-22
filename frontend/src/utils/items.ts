@@ -5,7 +5,7 @@ import {
   BaseItemDto,
   BaseItemPerson,
   MediaStream
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 
 /**
  * A list of valid collections that should be treated as folders.

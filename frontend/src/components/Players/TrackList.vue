@@ -74,7 +74,7 @@ import {
   BaseItemDto,
   BaseItemDtoQueryResult,
   SortOrder
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '~/utils/items';
 import { ticksToMs } from '~/utils/time';
 import { authStore, playbackManagerStore } from '~/store';
