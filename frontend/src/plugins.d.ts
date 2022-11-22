@@ -1,6 +1,5 @@
 import 'vue-router';
-import { AxiosInstance } from 'axios';
-import Swiper from 'swiper';
+import { RemotePlugin } from './plugins/vue/remote/types';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -10,9 +9,15 @@ declare module 'vue-router' {
   }
 }
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $api: AxiosInstance;
-    $swiper: Swiper;
+declare module 'vue' {
+  export interface ComponentCustomProperties {
+    $remote: RemotePlugin;
   }
 }
+
+/**
+ * This is important: https://stackoverflow.com/a/64189046
+ * https://www.typescriptlang.org/docs/handbook/modules.html
+ */
+
+export {};
