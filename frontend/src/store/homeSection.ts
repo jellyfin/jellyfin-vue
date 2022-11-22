@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia';
-import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ImageType,
+  ItemFields
+} from '@jellyfin/sdk/lib/generated-client';
 import { authStore, userViewsStore, snackbarStore } from '.';
 import { CardShapes } from '~/utils/items';
 

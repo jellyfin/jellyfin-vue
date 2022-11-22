@@ -7,7 +7,7 @@ import {
   MediaSourceInfo,
   SubtitleDeliveryMethod,
   MediaStream
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
 import isNil from 'lodash/isNil';
 import { authStore, itemsStore } from '.';

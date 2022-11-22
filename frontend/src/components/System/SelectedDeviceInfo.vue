@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { DeviceInfo } from '@jellyfin/client-axios';
+import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 
 export default defineComponent({
   props: {

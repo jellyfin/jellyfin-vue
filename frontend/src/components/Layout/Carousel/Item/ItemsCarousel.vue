@@ -50,7 +50,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, ImageType } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
