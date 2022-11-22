@@ -127,7 +127,7 @@ jobs:
           path: |
             dist
 
-  tauri:
+  build_tauri:
     name: Build Tauri 🛠️
     strategy:
       fail-fast: false
@@ -191,8 +191,14 @@ jobs:
 
   pr_context:
     name: Save PR context as artifact
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ always() && !cancelled() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
+    needs:
+      - dependency-review
+      - lint
+      - test
+      - build
+      - build_tauri
 
     steps:
       - name: Save PR context

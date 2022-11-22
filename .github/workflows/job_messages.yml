@@ -46,7 +46,7 @@ jobs:
         env:
           COMMIT: ${{ inputs.commit }}
           PREVIEW_URL: ${{ inputs.preview_url != '' && (inputs.branch != 'master' && inputs.preview_url || format('https://jf-vue.pages.dev ({0})', inputs.preview_url)) || 'Not available' }}
-          DEPLOY_STATUS: ${{ inputs.in_progress && '🔄 Deploying...' || (steps.cf.outputs.url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for more info') }}
+          DEPLOY_STATUS: ${{ inputs.in_progress && '🔄 Deploying...' || (inputs.preview_url != '' && '✅ Deployed!' || '❌ Failure. Check workflow logs for details') }}
           DEPLOYMENT_TYPE: ${{ inputs.branch != 'master' && '🔀 Preview' || '⚙️ Production' }}
           BUILD_WORKFLOW_RUN: ${{ !inputs.in_progress && format('**[View build logs](https://github.com/{0}/actions/runs/{1})**', 'jellyfin/jellyfin-vue', inputs.build_workflow_run_id) || '' }}
           COMMENTING_WORKFLOW_RUN: ${{ format('**[View bot logs](https://github.com/{0}/actions/runs/{1})**', 'jellyfin/jellyfin-vue', inputs.commenting_workflow_run_id) }}
