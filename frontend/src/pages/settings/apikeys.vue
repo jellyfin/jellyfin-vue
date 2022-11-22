@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { AuthenticationInfo } from '@jellyfin/client-axios';
+import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
 
 interface TableHeaders {

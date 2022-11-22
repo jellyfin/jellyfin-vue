@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
 import { authStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';

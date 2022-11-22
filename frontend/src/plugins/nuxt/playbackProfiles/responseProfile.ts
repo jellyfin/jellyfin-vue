@@ -1,4 +1,7 @@
-import { DlnaProfileType, ResponseProfile } from '@jellyfin/client-axios';
+import {
+  DlnaProfileType,
+  ResponseProfile
+} from '@jellyfin/sdk/lib/generated-client';
 
 /**
  * Returns a valid ResponseProfile for the current platform.

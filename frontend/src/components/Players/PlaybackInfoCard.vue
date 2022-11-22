@@ -215,7 +215,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { SessionInfo } from '@jellyfin/client-axios';
+import { SessionInfo } from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
 import camelCase from 'lodash/camelCase';
 import isNil from 'lodash/isNil';

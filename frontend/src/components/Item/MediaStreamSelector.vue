@@ -32,7 +32,7 @@
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
 import langs from 'langs';
-import { MediaStream } from '@jellyfin/client-axios';
+import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 
 interface SelectItems {
   selection: string;
