@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { UserDto } from '@jellyfin/client-axios';
+import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
 
 export default defineComponent({

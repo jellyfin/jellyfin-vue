@@ -95,7 +95,7 @@ import {
   RemoteImageInfo,
   ImageType,
   BaseItemDto
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 
 export default defineComponent({
   filters: {
