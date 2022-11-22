@@ -4,7 +4,7 @@ import {
   ProfileConditionType,
   ProfileCondition,
   ProfileConditionValue
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 
 /**

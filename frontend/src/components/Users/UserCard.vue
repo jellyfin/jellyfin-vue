@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { UserDto } from '@jellyfin/client-axios';
+import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 
 export default defineComponent({
   props: {
