@@ -30,7 +30,7 @@
 import { defineComponent } from 'vue';
 import { SwiperOptions } from 'swiper';
 import { v4 as uuidv4 } from 'uuid';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
 export default defineComponent({

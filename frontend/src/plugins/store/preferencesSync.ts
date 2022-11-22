@@ -1,4 +1,4 @@
-import { DisplayPreferencesDto } from '@jellyfin/client-axios';
+import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import destr from 'destr';
 import isNil from 'lodash/isNil';
 import {

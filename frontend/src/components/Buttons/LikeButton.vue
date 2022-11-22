@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
 import { authStore, socketStore } from '~/store';
 import { useSnackbar } from '@/composables';

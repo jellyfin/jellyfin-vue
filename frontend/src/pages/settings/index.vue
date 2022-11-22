@@ -96,7 +96,7 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import isEmpty from 'lodash/isEmpty';
-import { SystemInfo } from '@jellyfin/client-axios';
+import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { version } from '@/../package.json';
 import { authStore, pageStore } from '~/store';
 

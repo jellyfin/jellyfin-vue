@@ -24,7 +24,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { ImageType } from '@jellyfin/client-axios';
+import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import Swiper, { SwiperOptions } from 'swiper';
 import { getBlurhash } from '~/utils/images';
 import { pageStore, playbackManagerStore } from '~/store';

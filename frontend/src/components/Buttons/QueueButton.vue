@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
