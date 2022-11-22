@@ -45,7 +45,7 @@ function handleMediaSession(
           action as MediaSessionAction,
           remove ? null : handler
         );
-      } catch (error) {
+      } catch {
         console.error(`The media session action "${action}" is not supported.`);
       }
     }
@@ -110,19 +110,22 @@ function updateMediaSessionMetadata(
     });
 
     switch (playbackManager.status) {
-      case PlaybackStatus.Playing:
+      case PlaybackStatus.Playing: {
         window.navigator.mediaSession.playbackState = 'playing';
         window.navigator.mediaSession.metadata = mediaSessionMetadata;
         break;
-      case PlaybackStatus.Paused:
+      }
+      case PlaybackStatus.Paused: {
         window.navigator.mediaSession.playbackState = 'paused';
         window.navigator.mediaSession.metadata = mediaSessionMetadata;
         break;
+      }
       case PlaybackStatus.Stopped:
-      default:
+      default: {
         window.navigator.mediaSession.playbackState = 'none';
         window.navigator.mediaSession.metadata = null;
         break;
+      }
     }
   }
 }
@@ -132,7 +135,7 @@ function updateMediaSessionMetadata(
  *
  * Reports the state of the playback to the server
  */
-export default function (ctx: PiniaPluginContext): void {
+export default function (context: PiniaPluginContext): void {
   const playbackManager = playbackManagerStore();
 
   playbackManager.$onAction(({ name, after }) => {
@@ -142,7 +145,7 @@ export default function (ctx: PiniaPluginContext): void {
         case 'setNextTrack':
         case 'setPreviousTrack':
         case 'setCurrentIndex':
-        case 'play':
+        case 'play': {
           if (name === 'play') {
             handleMediaSession(playbackManager);
           }
@@ -156,7 +159,7 @@ export default function (ctx: PiniaPluginContext): void {
             /**
              * Report stop for the previous item
              */
-            await ctx.$api.playState.reportPlaybackStopped(
+            await context.$api.playState.reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -167,14 +170,14 @@ export default function (ctx: PiniaPluginContext): void {
               { progress: false }
             );
 
-            playbackManager.setLastProgressUpdate(new Date().getTime());
+            playbackManager.setLastProgressUpdate(Date.now());
           }
 
           /**
            * And then report play for the next one if it exists
            */
           if (playbackManager.getCurrentItem) {
-            await ctx.$api.playState.reportPlaybackStart(
+            await context.$api.playState.reportPlaybackStart(
               {
                 playbackStartInfo: {
                   CanSeek: true,
@@ -189,20 +192,21 @@ export default function (ctx: PiniaPluginContext): void {
               { progress: false }
             );
 
-            playbackManager.setLastProgressUpdate(new Date().getTime());
+            playbackManager.setLastProgressUpdate(Date.now());
           }
 
           break;
-        case 'setCurrentTime':
+        }
+        case 'setCurrentTime': {
           if (playbackManager.status === PlaybackStatus.Playing) {
-            const now = new Date().getTime();
+            const now = Date.now();
 
             if (
               playbackManager.getCurrentItem &&
               now - playbackManager.lastProgressUpdate >= 1250 &&
               !isNil(playbackManager.currentTime)
             ) {
-              await ctx.$api.playState.reportPlaybackProgress(
+              await context.$api.playState.reportPlaybackProgress(
                 {
                   playbackProgressInfo: {
                     ItemId: playbackManager.getCurrentItem?.Id,
@@ -216,17 +220,18 @@ export default function (ctx: PiniaPluginContext): void {
                 { progress: false }
               );
 
-              playbackManager.setLastProgressUpdate(new Date().getTime());
+              playbackManager.setLastProgressUpdate(Date.now());
             }
           }
 
           break;
+        }
         case 'stop':
-        case 'clearQueue':
+        case 'clearQueue': {
           handleMediaSession(playbackManager, true);
 
           if (!isNil(playbackManager.currentTime)) {
-            await ctx.$api.playState.reportPlaybackStopped(
+            await context.$api.playState.reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -241,13 +246,14 @@ export default function (ctx: PiniaPluginContext): void {
           }
 
           break;
+        }
         case 'pause':
         case 'unpause':
-        case 'playPause':
+        case 'playPause': {
           updateMediaSessionMetadata(playbackManager);
 
           if (!isNil(playbackManager.currentTime)) {
-            await ctx.$api.playState.reportPlaybackProgress(
+            await context.$api.playState.reportPlaybackProgress(
               {
                 playbackProgressInfo: {
                   ItemId: playbackManager.getCurrentItem?.Id,
@@ -261,10 +267,11 @@ export default function (ctx: PiniaPluginContext): void {
               { progress: false }
             );
 
-            playbackManager.setLastProgressUpdate(new Date().getTime());
+            playbackManager.setLastProgressUpdate(Date.now());
           }
 
           break;
+        }
       }
     });
   });

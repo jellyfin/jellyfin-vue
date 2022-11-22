@@ -7,7 +7,7 @@ import { clientSettingsStore } from '~/store';
 /**
  * React to changes in client settings
  */
-export default function (_ctx: PiniaPluginContext): void {
+export default function (_context: PiniaPluginContext): void {
   const clientSettings = clientSettingsStore();
 
   clientSettings.$subscribe((_mutation, state) => {
@@ -23,12 +23,10 @@ export default function (_ctx: PiniaPluginContext): void {
     /**
      * Locale change
      */
-    if (state.locale !== 'auto') {
-      i18n.locale.value = state.locale;
-    } else {
-      i18n.locale.value =
-        useNavigatorLanguage().language.value ||
-        String(i18n.fallbackLocale.value);
-    }
+    i18n.locale.value =
+      state.locale !== 'auto'
+        ? state.locale
+        : useNavigatorLanguage().language.value ||
+          String(i18n.fallbackLocale.value);
   });
 }

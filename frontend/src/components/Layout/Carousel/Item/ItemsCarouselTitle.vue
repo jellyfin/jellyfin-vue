@@ -23,7 +23,7 @@
       {{ subtitle }}
     </p>
     <h2
-      v-if="item.Taglines && item.Taglines.length"
+      v-if="item.Taglines && item.Taglines.length > 0"
       data-swiper-parallax="-200"
       class="text-truncate">
       {{ item.Taglines[0] }}
@@ -62,7 +62,7 @@ export default defineComponent({
       immediate: true,
       handler(): void {
         switch (this.item.Type) {
-          case 'MusicAlbum':
+          case 'MusicAlbum': {
             if (this.item.AlbumArtists?.length) {
               this.logoLink = getItemDetailsLink(
                 this.item.AlbumArtists[0],
@@ -79,7 +79,8 @@ export default defineComponent({
             }
 
             break;
-          case 'Episode':
+          }
+          case 'Episode': {
             if (this.item.SeriesId) {
               this.logoLink = getItemDetailsLink(
                 { Id: this.item.SeriesId },
@@ -104,6 +105,7 @@ export default defineComponent({
             }
 
             break;
+          }
         }
 
         /**

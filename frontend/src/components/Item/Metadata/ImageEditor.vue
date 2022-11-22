@@ -27,7 +27,7 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-if="backdropImages.length">
+    <v-row v-if="backdropImages.length > 0">
       <v-col class="pt-0">
         <h2 class="text-h6">{{ $t('imageType.backdrop') }}</h2>
         <div>
