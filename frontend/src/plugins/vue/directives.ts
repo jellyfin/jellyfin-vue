@@ -4,14 +4,10 @@ import Vue from 'vue';
  * Toggles the CSS 'visibility' property of an element.
  */
 export function hideDirective(
-  el: HTMLElement,
-  binding: Vue.DirectiveBinding<any>
-) {
-  if (el) {
-    if (binding.value === true) {
-      el.style.visibility = 'hidden';
-    } else {
-      el.style.visibility = 'visible';
-    }
+  element: HTMLElement,
+  binding: Vue.DirectiveBinding<boolean>
+): void {
+  if (element) {
+    element.style.visibility = binding.value === true ? 'hidden' : 'visible';
   }
 }

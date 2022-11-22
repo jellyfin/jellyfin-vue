@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { usePreferredDark } from '@vueuse/core';
 import { authStore, snackbarStore } from '.';
 import { fetchSettingsFromServer } from '~/plugins/store/preferencesSync';
 
@@ -8,15 +9,15 @@ import { fetchSettingsFromServer } from '~/plugins/store/preferencesSync';
 export interface ClientSettingsState {
   darkMode: boolean;
   locale: string;
-  lastSync: number | null;
+  lastSync: number | undefined;
 }
 
 export const clientSettingsStore = defineStore('clientSettings', {
   state: () => {
     return {
-      darkMode: window.matchMedia('prefers-color-scheme: dark').matches,
+      darkMode: usePreferredDark().value,
       locale: 'auto',
-      lastSync: null
+      lastSync: undefined
     } as ClientSettingsState;
   },
   actions: {
