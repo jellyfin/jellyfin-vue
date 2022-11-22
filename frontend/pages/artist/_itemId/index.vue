@@ -61,148 +61,16 @@
           </v-tabs>
           <v-tabs-items v-model="activeTab" class="transparent">
             <v-tab-item :key="0">
-              <v-row no-gutters>
-                <v-col cols="12" class="my-6">
-                  <v-row v-for="album in discography" :key="album.Id">
-                    <v-col cols="12">
-                      <div class="d-flex flex-column">
-                        <v-row>
-                          <v-col lg="2" sm="1">
-                            <card :item="album" overlay link />
-                          </v-col>
-                          <v-col class="py-2">
-                            <div
-                              class="text-subtitle-1 text--secondary font-weight-medium"
-                            >
-                              {{ album.ProductionYear }}
-                            </div>
-                            <nuxt-link
-                              class="link font-weight-bold text-h6 text-md-h4"
-                              tag="h2"
-                              :to="getItemDetailsLink(album)"
-                            >
-                              {{ album.Name }}
-                            </nuxt-link>
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
-                          <v-col>
-                            <track-list :item="album" />
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <artist-tab :releases="discography" />
             </v-tab-item>
             <v-tab-item :key="1">
-              <v-row no-gutters>
-                <v-col cols="12" class="my-6">
-                  <v-row v-for="album in albums" :key="album.Id">
-                    <v-col cols="12">
-                      <div class="d-flex flex-column">
-                        <v-row>
-                          <v-col lg="2" sm="1">
-                            <card :item="album" overlay link />
-                          </v-col>
-                          <v-col class="py-2">
-                            <div
-                              class="text-subtitle-1 text--secondary font-weight-medium"
-                            >
-                              {{ album.ProductionYear }}
-                            </div>
-                            <nuxt-link
-                              class="link font-weight-bold text-h6 text-md-h4"
-                              tag="h2"
-                              :to="getItemDetailsLink(album)"
-                            >
-                              {{ album.Name }}
-                            </nuxt-link>
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
-                          <v-col>
-                            <track-list :item="album" />
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <artist-tab :releases="albums" />
             </v-tab-item>
             <v-tab-item :key="2">
-              <v-row no-gutters>
-                <v-col cols="12" class="my-6">
-                  <v-row v-for="album in eps" :key="album.Id">
-                    <v-col cols="12">
-                      <div class="d-flex flex-column">
-                        <v-row>
-                          <v-col lg="2" sm="1">
-                            <card :item="album" overlay link />
-                          </v-col>
-                          <v-col class="py-2">
-                            <div
-                              class="text-subtitle-1 text--secondary font-weight-medium"
-                            >
-                              {{ album.ProductionYear }}
-                            </div>
-                            <nuxt-link
-                              class="link font-weight-bold text-h6 text-md-h4"
-                              tag="h2"
-                              :to="getItemDetailsLink(album)"
-                            >
-                              {{ album.Name }}
-                            </nuxt-link>
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
-                          <v-col>
-                            <track-list :item="album" />
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <artist-tab :releases="eps" />
             </v-tab-item>
             <v-tab-item :key="3">
-              <v-row no-gutters>
-                <v-col cols="12" class="my-6">
-                  <v-row v-for="album in singles" :key="album.Id">
-                    <v-col cols="12">
-                      <div class="d-flex flex-column">
-                        <v-row>
-                          <v-col lg="2" sm="1">
-                            <card :item="album" overlay link />
-                          </v-col>
-                          <v-col class="py-2">
-                            <div
-                              class="text-subtitle-1 text--secondary font-weight-medium"
-                            >
-                              {{ album.ProductionYear }}
-                            </div>
-                            <nuxt-link
-                              class="link font-weight-bold text-h6 text-md-h4"
-                              tag="h2"
-                              :to="getItemDetailsLink(album)"
-                            >
-                              {{ album.Name }}
-                            </nuxt-link>
-                          </v-col>
-                        </v-row>
-                        <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
-                          <v-col>
-                            <track-list :item="album" />
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <artist-tab :releases="singles" />
             </v-tab-item>
             <v-tab-item :key="4">
               <v-container>
@@ -259,8 +127,10 @@ import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
+import ArtistTab from '~/components/Layout/Artist/ArtistTab.vue';
 
 export default Vue.extend({
+  components: { ArtistTab },
   meta: {
     backdrop: true,
     transparentLayout: true
