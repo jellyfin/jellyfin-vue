@@ -167,13 +167,11 @@ export function getSupportedMP4AudioCodecs(
   }
 
   if (hasDtsSupport(context, videoTestElement)) {
-    codecs.push('dca');
-    codecs.push('dts');
+    codecs.push('dca', 'dts');
   }
 
   if (context.$browser.isTizen() || context.$browser.isWebOS()) {
-    codecs.push('pcm_s16le');
-    codecs.push('pcm_s24le');
+    codecs.push('pcm_s16le', 'pcm_s24le');
   }
 
   if (context.$browser.isTizen()) {

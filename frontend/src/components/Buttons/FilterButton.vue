@@ -294,7 +294,7 @@ export default defineComponent({
         if (response.Years) {
           this.yearFilters = response.Years;
         }
-      } catch (error) {
+      } catch {
         this.useSnackbar(this.$t('filtersNotFound'), 'error');
       }
     },

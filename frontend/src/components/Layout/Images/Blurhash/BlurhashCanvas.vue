@@ -56,12 +56,12 @@ export default defineComponent({
   },
   methods: {
     draw(): void {
-      const ctx = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-      const imageData = ctx?.createImageData(this.width, this.height);
+      const context = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
+      const imageData = context?.createImageData(this.width, this.height);
 
       if (imageData && this.pixels) {
         imageData.data.set(this.pixels);
-        ctx?.putImageData(imageData, 0, 0);
+        context?.putImageData(imageData, 0, 0);
       }
     },
     async getPixels(): Promise<void> {

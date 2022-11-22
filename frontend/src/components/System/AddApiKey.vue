@@ -45,16 +45,20 @@ export default defineComponent({
   computed: {
     width(): number | string {
       switch (this.$vuetify.display.name) {
-        case 'xs':
+        case 'xs': {
           return '100%';
-        case 'sm':
+        }
+        case 'sm': {
           return 400;
-        case 'md':
+        }
+        case 'md': {
           return 500;
+        }
         case 'lg':
         case 'xl':
-        default:
+        default: {
           return 600;
+        }
       }
     }
   },

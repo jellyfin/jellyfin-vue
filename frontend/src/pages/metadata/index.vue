@@ -53,7 +53,7 @@ export default defineComponent({
   },
   methods: {
     async fetchItems(node: ITreeNode): Promise<void> {
-      const libItems = (
+      const libraryItems = (
         (
           await this.$api.userLibrary.getItem(
             { userId: this.auth.currentUserId, itemId: '' },
@@ -68,15 +68,15 @@ export default defineComponent({
       ).Items; //
 
       (node.children as ITreeNode[]).push(
-        ...libItems.map((item) => {
-          const baseObj = { id: item.Id, name: item.Name };
+        ...libraryItems.map((item) => {
+          const baseObject = { id: item.Id, name: item.Name };
 
           return item.IsFolder
             ? {
-                ...baseObj,
+                ...baseObject,
                 children: []
               }
-            : baseObj;
+            : baseObject;
         })
       );
     },
