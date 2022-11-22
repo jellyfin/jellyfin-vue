@@ -20,7 +20,7 @@ import { defineComponent } from 'vue';
 import {
   LocalizationOption,
   StartupConfigurationDto
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({

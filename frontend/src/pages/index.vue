@@ -23,7 +23,11 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import pickBy from 'lodash/pickBy';
-import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  ImageType,
+  ItemFields
+} from '@jellyfin/sdk/lib/generated-client';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import {
   clientSettingsStore,

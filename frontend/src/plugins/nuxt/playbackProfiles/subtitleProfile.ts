@@ -1,7 +1,7 @@
 import {
   SubtitleDeliveryMethod,
   SubtitleProfile
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 
 /**
  * Returns a valid SubtitleProfile for the current platform.

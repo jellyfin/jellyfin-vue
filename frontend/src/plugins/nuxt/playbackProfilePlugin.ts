@@ -1,5 +1,5 @@
 import { Context, Plugin } from '@nuxt/types';
-import { DeviceProfile } from '@jellyfin/client-axios';
+import { DeviceProfile } from '@jellyfin/sdk/lib/generated-client';
 import { getCodecProfiles } from './playbackProfiles/helpers/codecProfiles';
 import { getDirectPlayProfiles } from './playbackProfiles/directPlayProfile';
 import { getTranscodingProfiles } from './playbackProfiles/transcodingProfile';

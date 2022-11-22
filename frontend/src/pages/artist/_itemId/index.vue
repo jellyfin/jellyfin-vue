@@ -119,7 +119,7 @@ import {
   ImageType,
   ItemFields,
   SortOrder
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';

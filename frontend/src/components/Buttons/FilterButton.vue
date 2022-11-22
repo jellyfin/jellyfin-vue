@@ -174,7 +174,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto, ItemFilter } from '@jellyfin/client-axios';
+import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { sanitizeHtml } from '~/utils/html';
 import { useSnackbar } from '@/composables';
 import { authStore } from '~/store';

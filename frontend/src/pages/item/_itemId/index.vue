@@ -242,7 +242,7 @@ import {
   BaseItemPerson,
   ImageType,
   MediaSourceInfo
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';

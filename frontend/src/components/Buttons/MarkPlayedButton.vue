@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { BaseItemDto } from '@jellyfin/client-axios';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { authStore } from '~/store';
 import { canMarkWatched } from '~/utils/items';
 import { useSnackbar } from '@/composables';

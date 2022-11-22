@@ -2,7 +2,11 @@
  * Helper for image manipulation and image-related utility functions
  *
  */
-import { BaseItemDto, BaseItemPerson, ImageType } from '@jellyfin/client-axios';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  ImageType
+} from '@jellyfin/sdk/lib/generated-client';
 import {
   getShapeFromItemType,
   ValidCardShapes,
