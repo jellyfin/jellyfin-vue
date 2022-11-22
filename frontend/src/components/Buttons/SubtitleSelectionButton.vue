@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { SubtitleDeliveryMethod } from '@jellyfin/client-axios';
+import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';

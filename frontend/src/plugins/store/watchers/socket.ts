@@ -1,4 +1,4 @@
-import { ItemFields } from '@jellyfin/client-axios';
+import { ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { PiniaPluginContext } from 'pinia';
 import { authStore, itemsStore, socketStore, taskManagerStore } from '~/store';

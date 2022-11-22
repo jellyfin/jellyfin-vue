@@ -2,7 +2,7 @@ import {
   DlnaProfileType,
   EncodingContext,
   TranscodingProfile
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './helpers/audioFormats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';

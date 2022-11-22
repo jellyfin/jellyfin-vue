@@ -47,7 +47,7 @@ import { mapStores } from 'pinia';
 import {
   PlaybackInfoResponse,
   SubtitleDeliveryMethod
-} from '@jellyfin/client-axios';
+} from '@jellyfin/sdk/lib/generated-client';
 
 import {
   authStore,

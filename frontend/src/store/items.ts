@@ -1,4 +1,4 @@
-import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
+import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
 import { authStore } from '.';
 
