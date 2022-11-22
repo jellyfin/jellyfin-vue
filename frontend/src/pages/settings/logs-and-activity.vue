@@ -148,57 +148,70 @@ export default defineComponent({
   methods: {
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
-        case LogLevel.Trace:
+        case LogLevel.Trace: {
           return (
             this.$vuetify.theme.currentTheme.success?.toString() ||
             colors.green.base
           );
-        case LogLevel.Debug:
+        }
+        case LogLevel.Debug: {
           return (
             this.$vuetify.theme.currentTheme.accent?.toString() ||
             colors.blue.accent1
           );
-        case LogLevel.Information:
+        }
+        case LogLevel.Information: {
           return (
             this.$vuetify.theme.currentTheme.info?.toString() ||
             colors.blue.base
           );
-        case LogLevel.Warning:
+        }
+        case LogLevel.Warning: {
           return (
             this.$vuetify.theme.currentTheme.warning?.toString() ||
             colors.amber.base
           );
-        case LogLevel.Error:
+        }
+        case LogLevel.Error: {
           return (
             this.$vuetify.theme.currentTheme.error?.toString() ||
             colors.red.accent2
           );
-        case LogLevel.Critical:
+        }
+        case LogLevel.Critical: {
           return (
             this.$vuetify.theme.currentTheme.secondary?.toString() ||
             colors.grey.darken3
           );
-        default:
+        }
+        default: {
           return (
             this.$vuetify.theme.currentTheme.primary?.toString() ||
             colors.blue.darken2
           );
+        }
       }
     },
     getIconFromType(type: string): string {
       switch (type) {
-        case 'SessionStarted':
+        case 'SessionStarted': {
           return 'mdi-login';
-        case 'SessionEnded':
+        }
+        case 'SessionEnded': {
           return 'mdi-logout';
-        case 'UserPasswordChanged':
+        }
+        case 'UserPasswordChanged': {
           return 'mdi-lock';
-        case 'VideoPlayback':
+        }
+        case 'VideoPlayback': {
           return 'mdi-play';
-        case 'VideoPlaybackStopped':
+        }
+        case 'VideoPlaybackStopped': {
           return 'mdi-stop';
-        default:
+        }
+        default: {
           return 'mdi-help';
+        }
       }
     },
     getFormattedActivityDate(date: Date): string {

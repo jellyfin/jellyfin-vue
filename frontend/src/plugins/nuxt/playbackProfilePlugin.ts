@@ -35,9 +35,9 @@ function getDeviceProfile(
 ): DeviceProfile {
   // MaxStaticBitrate seems to be for offline sync only
   return {
-    MaxStreamingBitrate: 120000000,
+    MaxStreamingBitrate: 120_000_000,
     MaxStaticBitrate: 0,
-    MusicStreamingTranscodingBitrate: Math.min(120000000, 192000),
+    MusicStreamingTranscodingBitrate: Math.min(120_000_000, 192_000),
     DirectPlayProfiles: getDirectPlayProfiles(context, videoTestElement),
     TranscodingProfiles: getTranscodingProfiles(context, videoTestElement),
     ContainerProfiles: [],

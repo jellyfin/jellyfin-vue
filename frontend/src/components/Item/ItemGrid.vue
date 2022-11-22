@@ -6,7 +6,7 @@
       </v-col>
     </v-row>
     <dynamic-scroller
-      v-if="items.length"
+      v-if="items.length > 0"
       class="scroller"
       :items="itemsChunks"
       :min-item-size="350"

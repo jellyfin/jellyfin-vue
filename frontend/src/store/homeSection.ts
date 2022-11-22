@@ -56,8 +56,8 @@ export const homeSectionStore = defineStore('homeSection', {
         if (audioResumes) {
           this.audioResumes = audioResumes;
         }
-      } catch (err) {
-        snackbar.push(err as string, 'error');
+      } catch (error) {
+        snackbar.push(error as string, 'error');
       }
     },
     async getVideoResumes(): Promise<void> {
@@ -84,8 +84,8 @@ export const homeSectionStore = defineStore('homeSection', {
         if (videoResumes) {
           this.videoResumes = videoResumes;
         }
-      } catch (err) {
-        snackbar.push(err as string, 'error');
+      } catch (error) {
+        snackbar.push(error as string, 'error');
       }
     },
     async getUpNext(libraryId: string): Promise<void> {
@@ -111,8 +111,8 @@ export const homeSectionStore = defineStore('homeSection', {
         if (upNext) {
           this.upNext = upNext;
         }
-      } catch (err) {
-        snackbar.push(err as string, 'error');
+      } catch (error) {
+        snackbar.push(error as string, 'error');
       }
     },
     async getLatestMedia(libraryId: string): Promise<void> {
@@ -136,8 +136,8 @@ export const homeSectionStore = defineStore('homeSection', {
         ).data;
 
         this.latestMedia[libraryId] = latestMedia;
-      } catch (err) {
-        snackbar.push(err as string, 'error');
+      } catch (error) {
+        snackbar.push(error as string, 'error');
       }
     }
   },
@@ -145,23 +145,29 @@ export const homeSectionStore = defineStore('homeSection', {
     libraries: (): BaseItemDto[] => {
       const userViews = userViewsStore();
 
-      return Array.from(userViews.views);
+      return [...userViews.views];
     },
     getHomeSectionContent() {
       return (section: HomeSection): BaseItemDto[] => {
         switch (section.type) {
-          case 'libraries':
+          case 'libraries': {
             return this.libraries;
-          case 'resume':
+          }
+          case 'resume': {
             return this.videoResumes;
-          case 'resumeaudio':
+          }
+          case 'resumeaudio': {
             return this.audioResumes;
-          case 'upnext':
+          }
+          case 'upnext': {
             return this.upNext;
-          case 'latestmedia':
+          }
+          case 'latestmedia': {
             return this.latestMedia[section.libraryId];
-          default:
+          }
+          default: {
             return [];
+          }
         }
       };
     }

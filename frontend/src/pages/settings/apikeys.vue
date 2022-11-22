@@ -5,7 +5,7 @@
         {{ $t('settings.apiKeys.addNewKey') }}
       </v-btn>
       <v-btn
-        v-if="apiKeys.length"
+        v-if="apiKeys.length > 0"
         color="error"
         :loading="revokeKeyLoading"
         @click="revokeAllApiKeys">
@@ -116,7 +116,7 @@ export default defineComponent({
     async refreshApiKeys(): Promise<void> {
       try {
         this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
-      } catch (error) {
+      } catch {
         this.useSnackbar(
           this.$t('settings.apiKeys.refreshKeysFailure'),
           'error'

@@ -150,11 +150,11 @@ export function getSupportedMP4VideoCodecs(
     codecs.push('h264');
   }
 
-  if (hasHevcSupport(context, videoTestElement)) {
-    // Safari is lying on HDR and 60fps videos, use fMP4 instead
-    if (!context.$browser.isApple()) {
-      codecs.push('hevc');
-    }
+  if (
+    hasHevcSupport(context, videoTestElement) && // Safari is lying on HDR and 60fps videos, use fMP4 instead
+    !context.$browser.isApple()
+  ) {
+    codecs.push('hevc');
   }
 
   if (context.$browser.isTv()) {
