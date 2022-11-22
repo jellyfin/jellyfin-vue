@@ -79,20 +79,20 @@ export default defineComponent({
     manageDiv(): void {
       this.loading = true;
 
-      const elem = this.$refs.img as HTMLElement;
+      const element = this.$refs.img as HTMLElement;
 
-      elem.style.width = `${this.size}px`;
-      elem.style.height = `${this.size}px`;
+      element.style.width = `${this.size}px`;
+      element.style.height = `${this.size}px`;
 
-      if (elem && this.userImage) {
+      if (element && this.userImage) {
         let img = new Image();
 
-        img.onload = (): void => {
-          elem.style.backgroundImage = 'url(' + img.src + ')';
+        img.addEventListener('load', (): void => {
+          element.style.backgroundImage = 'url(' + img.src + ')';
           this.loading = false;
           // @ts-expect-error - Disposes the object
           img = null;
-        };
+        });
 
         img.src = this.userImage;
       }

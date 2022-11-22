@@ -85,14 +85,14 @@ export default defineComponent({
    * Scroll the queue view to the currently playing item
    */
   mounted() {
-    const ref = this.$refs.listItems as VueElement[];
+    const reference = this.$refs.listItems as VueElement[];
     const currentItemId = this.playbackManager.getCurrentItem?.Id || '';
 
-    const el = ref.find(
-      (v) => v.$vnode.key === `${currentItemId}-${ref.indexOf(v)}`
+    const element = reference.find(
+      (v) => v.$vnode.key === `${currentItemId}-${reference.indexOf(v)}`
     );
 
-    if (el?.$el) {
+    if (element?.$el) {
       /**
        * As the queue opening has a transition effect, el.$el.scrollIntoView() doesn't work directly,
        * as the parent DOM node is not fully rendered while the transition is taking place
@@ -103,7 +103,7 @@ export default defineComponent({
        * the currently playing element as soon as all the DOM operations and transitions are over.
        */
       window.requestIdleCallback(() => {
-        el.$el.scrollIntoView();
+        element.$el.scrollIntoView();
       });
     }
   },
@@ -112,11 +112,7 @@ export default defineComponent({
       return index === this.playbackManager.currentItemIndex;
     },
     getArtists(item: BaseItemDto): string | null {
-      if (item.Artists) {
-        return item.Artists.join(', ');
-      } else {
-        return null;
-      }
+      return item.Artists ? item.Artists.join(', ') : null;
     },
     onClick(index: number): void {
       this.playbackManager.setCurrentIndex(index);

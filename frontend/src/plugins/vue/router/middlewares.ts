@@ -1,10 +1,10 @@
-import { useRemote } from '@/composables';
 import isNil from 'lodash/isNil';
 import {
   NavigationGuardNext,
   RouteLocationNormalized,
   RouteLocationRaw
 } from 'vue-router';
+import { useRemote } from '@/composables';
 
 /**
  * loggedInIndex: Location to redirect when an user is logged in and access one of

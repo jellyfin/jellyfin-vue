@@ -76,7 +76,7 @@ export default defineComponent({
        * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
        */
       get(): { text: SelectItems; value: number | undefined }[] {
-        const items = this.mediaStreams.map((value, _idx) => {
+        const items = this.mediaStreams.map((value, _index) => {
           return {
             text: {
               selection: value.DisplayTitle ?? '',
@@ -181,16 +181,21 @@ export default defineComponent({
      */
     getSurroundIcon(layout: string): string {
       switch (layout) {
-        case '2.0':
+        case '2.0': {
           return 'mdi-surround-sound-2-0';
-        case '3.1':
+        }
+        case '3.1': {
           return 'mdi-surround-sound-3-1';
-        case '5.1':
+        }
+        case '5.1': {
           return 'mdi-surround-sound-5-1';
-        case '7.1':
+        }
+        case '7.1': {
           return 'mdi-surround-sound-7-1';
-        default:
+        }
+        default: {
           return 'mdi-surround-sound';
+        }
       }
     }
   }
