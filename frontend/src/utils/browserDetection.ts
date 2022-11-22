@@ -1,21 +1,3 @@
-import { Context, Plugin } from '@nuxt/types';
-
-declare module '@nuxt/types' {
-  interface Context {
-    $browser: BrowserDetector;
-  }
-
-  interface NuxtAppOptions {
-    $browser: BrowserDetector;
-  }
-}
-
-declare module 'vue/types/vue' {
-  interface Vue {
-    $browser: BrowserDetector;
-  }
-}
-
 /**
  * Utilities to detect the browser and get information on the current environment
  * Based on https://github.com/google/shaka-player/blob/master/lib/util/platform.js
@@ -23,20 +5,10 @@ declare module 'vue/types/vue' {
  * @class BrowserDetector
  */
 export class BrowserDetector {
-  context: Context;
-
-  constructor(context: Context) {
-    this.context = context;
-  }
-
   supportsMediaSource(): boolean {
     // Browsers that lack a media source implementation will have no reference
     // to |window.MediaSource|.
-    if (!window.MediaSource) {
-      return false;
-    }
-
-    return true;
+    return !!window.MediaSource;
   }
 
   /**
@@ -49,13 +21,7 @@ export class BrowserDetector {
    * @memberof BrowserDetector
    */
   private userAgentContains(key: string): boolean {
-    let userAgent = '';
-
-    if (process.client) {
-      userAgent = navigator.userAgent || '';
-    } else {
-      userAgent = this.context.req.headers['user-agent'] || '';
-    }
+    const userAgent = navigator.userAgent || '';
 
     return userAgent.includes(key);
   }
@@ -117,11 +83,7 @@ export class BrowserDetector {
    * @memberof BrowserDetector
    */
   isApple(): boolean {
-    if (process.client) {
-      return navigator?.vendor.includes('Apple') && !this.isTizen();
-    } else {
-      return false;
-    }
+    return navigator?.vendor.includes('Apple') && !this.isTizen();
   }
 
   /**
@@ -138,10 +100,8 @@ export class BrowserDetector {
 
     let userAgent = '';
 
-    if (process.client && navigator.userAgent) {
+    if (navigator.userAgent) {
       userAgent = navigator.userAgent;
-    } else if (this.context.req.headers['user-agent']) {
-      userAgent = this.context.req.headers['user-agent'];
     }
 
     // This works for iOS Safari and desktop Safari, which contain something
@@ -236,7 +196,7 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns Determines if current platform is WebOS1
+   * Determines if current platform is WebOS1
    */
   isWebOS1(): boolean {
     return (
@@ -247,7 +207,7 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns Determines if current platform is WebOS1
+   * Determines if current platform is WebOS2
    */
   isWebOS2(): boolean {
     return (
@@ -258,21 +218,21 @@ export class BrowserDetector {
   }
 
   /**
-   * @returns Determines if current platform is WebOS3
+   * Determines if current platform is WebOS3
    */
   isWebOS3(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/38');
   }
 
   /**
-   * @returns Determines if current platform is WebOS4
+   * Determines if current platform is WebOS4
    */
   isWebOS4(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/53');
   }
 
   /**
-   * @returns Determines if current platform is WebOS5
+   * Determines if current platform is WebOS5
    */
   isWebOS5(): boolean {
     return this.isWebOS() && this.userAgentContains('Chrome/68');
@@ -281,7 +241,7 @@ export class BrowserDetector {
   /* Platform Utilities */
 
   /**
-   * @returns Determines if current platform is Android
+   * Determines if current platform is Android
    */
   isAndroid(): boolean {
     return this.userAgentContains('Android');
@@ -296,10 +256,8 @@ export class BrowserDetector {
   isMobile(): boolean {
     let userAgent = '';
 
-    if (process.client && navigator.userAgent) {
+    if (navigator.userAgent) {
       userAgent = navigator.userAgent;
-    } else if (this.context.req.headers['user-agent']) {
-      userAgent = this.context.req.headers['user-agent'];
     }
 
     if (/(?:iPhone|iPad|iPod|Android)/.test(userAgent)) {
@@ -316,11 +274,7 @@ export class BrowserDetector {
     // device.  If some future iOS version starts masking their user agent on
     // both iPhone & iPad, this clause should still work.  If a future
     // multi-touch desktop Mac is released, this will need some adjustment.
-    if (process.client) {
-      return this.isApple() && navigator.maxTouchPoints > 1;
-    } else {
-      return false;
-    }
+    return this.isApple() && navigator.maxTouchPoints > 1;
   }
 
   /**
@@ -353,9 +307,3 @@ export class BrowserDetector {
     return this.userAgentContains('xbox');
   }
 }
-
-const browserDetectionPlugin: Plugin = (context, inject) => {
-  inject('browser', new BrowserDetector(context));
-};
-
-export default browserDetectionPlugin;
