@@ -29,6 +29,8 @@ module.exports = {
     'plugin:sonarjs/recommended',
     'plugin:eslint-comments/recommended',
     'plugin:css/recommended',
+    'plugin:unicorn/recommended',
+    'plugin:you-dont-need-lodash-underscore/compatible',
     'plugin:prettier/recommended'
   ],
   plugins: [
@@ -43,6 +45,8 @@ module.exports = {
     'sonarjs',
     'eslint-comments',
     'css',
+    'unicorn',
+    'you-dont-need-lodash-underscore',
     'file-progress'
   ],
   rules: {
@@ -51,6 +55,15 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/order': 'error',
     'import/no-unresolved': ['error', { ignore: ['virtual:*'] }],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['vite.config.ts', '**/*.spec.ts'],
+        optionalDependencies: false,
+        peerDependencies: false,
+        bundledDependencies: false
+      }
+    ],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',
@@ -100,6 +113,7 @@ module.exports = {
       // Always require blank lines before return statements
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
+    'sonarjs/cognitive-complexity': 'warn',
     'lodash/import-scope': ['error', 'method'],
     // Force some component order stuff, formatting and such, for consistency
     curly: ['error', 'all'],
@@ -127,6 +141,9 @@ module.exports = {
     'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
     'vue/multiline-html-element-content-newline': 'error',
     'vue/multi-word-component-names': 'off',
+    'unicorn/filename-case': 'off',
+    'unicorn/consistent-function-scoping': 'off',
+    'unicorn/prevent-abbreviations': 'off',
     'eslint-comments/no-unused-disable': 'error'
   },
   settings: {

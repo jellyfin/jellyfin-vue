@@ -1,4 +1,5 @@
-import path from 'path';
+import path, { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Pages from 'vite-plugin-pages';
@@ -13,6 +14,7 @@ import {
 } from 'unplugin-vue-components/resolvers';
 import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
@@ -54,11 +56,17 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       Icons({
         compiler: 'vue3'
       }),
-      VitePWA()
-      // vuetify({
-      //   autoImport: true,
-      //   styles: { configFile: 'src/assets/styles/variables.scss' }
-      // })
+      VitePWA(),
+      VueI18nPlugin({
+        runtimeOnly: true,
+        compositionOnly: true,
+        fullInstall: false,
+        forceStringify: true,
+        include: resolve(
+          dirname(fileURLToPath(import.meta.url)),
+          './locales/**'
+        )
+      })
     ],
     build: {
       target: 'esnext',
@@ -84,8 +92,14 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     },
     resolve: {
       alias: {
-        '@/': `${path.resolve(__dirname, './src')}/`,
-        '~/': `${path.resolve(__dirname, './src')}/`
+        '@/': `${path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          './src'
+        )}/`,
+        '~/': `${path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          './src'
+        )}/`
       }
     }
   };
