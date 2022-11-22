@@ -90,8 +90,8 @@ export default defineComponent({
     backdrop: true,
     transparentLayout: true
   },
-  validate(ctx: Context) {
-    return isValidMD5(ctx.route.params.itemId);
+  validate(context: Context) {
+    return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api }) {
     const auth = authStore();
@@ -121,10 +121,10 @@ export default defineComponent({
   },
   watch: {
     item: {
-      handler(val: BaseItemDto): void {
-        this.page.title = val.Name || '';
+      handler(value: BaseItemDto): void {
+        this.page.title = value.Name || '';
 
-        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
       },
       immediate: true,
       deep: true

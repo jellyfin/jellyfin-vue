@@ -71,7 +71,7 @@ export default defineComponent({
             itemId: this.item.Id
           });
         }
-      } catch (error) {
+      } catch {
         this.useSnackbar(this.$t('unableToTogglePlayed'), 'error');
         this.isPlayed = !this.isPlayed;
       }

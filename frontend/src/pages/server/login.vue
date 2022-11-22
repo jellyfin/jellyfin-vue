@@ -29,7 +29,9 @@
         </v-row>
       </v-col>
       <v-col
-        v-else-if="!isEmpty(currentUser) || loginAsOther || !publicUsers.length"
+        v-else-if="
+          !isEmpty(currentUser) || loginAsOther || publicUsers.length === 0
+        "
         sm="6"
         md="6"
         lg="5">

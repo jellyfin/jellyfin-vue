@@ -26,13 +26,14 @@ export function getSupportedTsAudioCodecs(
     codecs.push('mp3');
   }
 
-  if (hasAc3Support(context, videoTestElement)) {
-    if (hasAc3InHlsSupport(context, videoTestElement)) {
-      codecs.push('ac3');
+  if (
+    hasAc3Support(context, videoTestElement) &&
+    hasAc3InHlsSupport(context, videoTestElement)
+  ) {
+    codecs.push('ac3');
 
-      if (hasEac3Support(context, videoTestElement)) {
-        codecs.push('eac3');
-      }
+    if (hasEac3Support(context, videoTestElement)) {
+      codecs.push('eac3');
     }
   }
 

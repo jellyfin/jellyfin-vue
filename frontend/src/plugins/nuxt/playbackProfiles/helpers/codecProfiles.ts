@@ -23,15 +23,15 @@ function getGlobalMaxVideoBitrate(context: Context): number | null {
   // TODO: These values are taken directly from Jellyfin-web.
   // The source of them needs to be investigated.
   if (context.$browser.isPs4()) {
-    return 8000000;
+    return 8_000_000;
   }
 
   if (context.$browser.isXbox()) {
-    return 12000000;
+    return 12_000_000;
   }
 
   if (context.$browser.isTizen() && isTizenFhd) {
-    return 20000000;
+    return 20_000_000;
   }
 
   return null;
@@ -120,7 +120,7 @@ export function getCodecProfiles(
 
   const supportsSecondaryAudio = context.$browser.isTizen();
 
-  if (aacProfileConditions.length) {
+  if (aacProfileConditions.length > 0) {
     CodecProfiles.push({
       Type: CodecType.VideoAudio,
       Codec: 'aac',
@@ -162,19 +162,15 @@ export function getCodecProfiles(
   }
 
   if (
-    context.$browser.isTizen() ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.6e0033"')
-      .replace(/no/, '')
-  ) {
-    // TODO: These tests are passing in Safari, but playback is failing
-    if (
-      !context.$browser.isApple() ||
+    (context.$browser.isTizen() ||
+      videoTestElement
+        .canPlayType('video/mp4; codecs="avc1.6e0033"')
+        .replace(/no/, '')) && // TODO: These tests are passing in Safari, but playback is failing
+    (!context.$browser.isApple() ||
       !context.$browser.isWebOS() ||
-      !(context.$browser.isEdge() && !context.$browser.isChromiumBased())
-    ) {
-      h264Profiles += '|high 10';
-    }
+      !(context.$browser.isEdge() && !context.$browser.isChromiumBased()))
+  ) {
+    h264Profiles += '|high 10';
   }
 
   let maxHevcLevel = 120;
@@ -336,17 +332,18 @@ export function getCodecProfiles(
     CodecProfiles.push(codecProfile);
   }
 
-  CodecProfiles.push({
-    Type: CodecType.Video,
-    Codec: 'h264',
-    Conditions: h264CodecProfileConditions
-  });
-
-  CodecProfiles.push({
-    Type: CodecType.Video,
-    Codec: 'hevc',
-    Conditions: hevcCodecProfileConditions
-  });
+  CodecProfiles.push(
+    {
+      Type: CodecType.Video,
+      Codec: 'h264',
+      Conditions: h264CodecProfileConditions
+    },
+    {
+      Type: CodecType.Video,
+      Codec: 'hevc',
+      Conditions: hevcCodecProfileConditions
+    }
+  );
 
   return CodecProfiles;
 }

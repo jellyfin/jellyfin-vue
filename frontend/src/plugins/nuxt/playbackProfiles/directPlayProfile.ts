@@ -32,7 +32,7 @@ export function getDirectPlayProfiles(
   const mp4VideoCodecs = getSupportedMP4VideoCodecs(context, videoTestElement);
   const mp4AudioCodecs = getSupportedMP4AudioCodecs(context, videoTestElement);
 
-  if (webmVideoCodecs.length) {
+  if (webmVideoCodecs.length > 0) {
     DirectPlayProfiles.push({
       Container: 'webm',
       Type: DlnaProfileType.Video,
@@ -41,7 +41,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (mp4VideoCodecs.length) {
+  if (mp4VideoCodecs.length > 0) {
     DirectPlayProfiles.push({
       Container: 'mp4,m4v',
       Type: DlnaProfileType.Video,
@@ -50,7 +50,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (hasMkvSupport(context, videoTestElement) && mp4VideoCodecs.length) {
+  if (hasMkvSupport(context, videoTestElement) && mp4VideoCodecs.length > 0) {
     DirectPlayProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,
@@ -91,17 +91,18 @@ export function getDirectPlayProfiles(
 
     // aac also appears in the m4a and m4b container
     if (audioFormat === 'aac' || audioFormat === 'alac') {
-      DirectPlayProfiles.push({
-        Container: 'm4a',
-        AudioCodec: audioFormat,
-        Type: DlnaProfileType.Audio
-      });
-
-      DirectPlayProfiles.push({
-        Container: 'm4b',
-        AudioCodec: audioFormat,
-        Type: DlnaProfileType.Audio
-      });
+      DirectPlayProfiles.push(
+        {
+          Container: 'm4a',
+          AudioCodec: audioFormat,
+          Type: DlnaProfileType.Audio
+        },
+        {
+          Container: 'm4b',
+          AudioCodec: audioFormat,
+          Type: DlnaProfileType.Audio
+        }
+      );
     }
   }
 

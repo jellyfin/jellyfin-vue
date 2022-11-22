@@ -76,8 +76,8 @@ export default defineComponent({
     },
     '$vuetify.display.mobile': {
       immediate: true,
-      handler(newVal: boolean): void {
-        if (newVal === true) {
+      handler(newValue: boolean): void {
+        if (newValue === true) {
           this.page.openDrawer = false;
         }
       }

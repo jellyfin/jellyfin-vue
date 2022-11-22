@@ -78,15 +78,15 @@ export default defineComponent({
   async mounted() {
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
-    for (const [key, i] of this.items.entries()) {
+    for (const [key, index] of this.items.entries()) {
       let id: string;
 
-      if (i.Type === 'Episode' && i?.SeriesId) {
-        id = i.SeriesId;
-      } else if (i.Type === 'MusicAlbum' && i?.AlbumArtists?.[0]?.Id) {
-        id = i.AlbumArtists[0]?.Id;
-      } else if (i?.ParentLogoItemId) {
-        id = i.ParentLogoItemId;
+      if (index.Type === 'Episode' && index?.SeriesId) {
+        id = index.SeriesId;
+      } else if (index.Type === 'MusicAlbum' && index?.AlbumArtists?.[0]?.Id) {
+        id = index.AlbumArtists[0]?.Id;
+      } else if (index?.ParentLogoItemId) {
+        id = index.ParentLogoItemId;
       } else {
         continue;
       }
@@ -114,11 +114,7 @@ export default defineComponent({
       return rItem;
     },
     getOverview(item: BaseItemDto): string {
-      if (item.Overview) {
-        return sanitizeHtml(item.Overview);
-      } else {
-        return '';
-      }
+      return item.Overview ? sanitizeHtml(item.Overview) : '';
     },
     updateBackdrop(index: number) {
       if (this.pageBackdrop) {

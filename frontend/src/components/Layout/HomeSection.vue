@@ -59,8 +59,9 @@ export default defineComponent({
         await this.homeSection.getLatestMedia(this.section.libraryId);
         break;
       }
-      default:
+      default: {
         break;
+      }
     }
 
     this.loading = false;
