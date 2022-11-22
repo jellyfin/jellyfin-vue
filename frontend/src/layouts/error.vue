@@ -29,11 +29,13 @@ export default defineComponent({
   computed: {
     icon(): Icon {
       switch (this.error.statusCode) {
-        case 404:
+        case 404: {
           return { icon: 'mdi-alert', color: 'warning' };
+        }
 
-        default:
+        default: {
           return { icon: 'mdi-alert-circle', color: 'error' };
+        }
       }
     }
   }

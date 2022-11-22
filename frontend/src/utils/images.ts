@@ -16,7 +16,7 @@ export interface ImageUrlInfo {
   blurhash: string | undefined;
 }
 
-const excludedBlurhashTypes = [ImageType.Logo];
+const excludedBlurhashTypes = new Set([ImageType.Logo]);
 
 /**
  * Gets the tag of the image of an specific item and type.
@@ -38,11 +38,9 @@ export function getImageTag(
   }
 
   if (isPerson(item)) {
-    if (item.PrimaryImageTag && type === ImageType.Primary) {
-      return item.PrimaryImageTag;
-    } else {
-      return;
-    }
+    return item.PrimaryImageTag && type === ImageType.Primary
+      ? item.PrimaryImageTag
+      : undefined;
   }
 
   if (item.ImageTags?.[type]) {
@@ -53,7 +51,7 @@ export function getImageTag(
 
   if (checkParent) {
     switch (type) {
-      case ImageType.Primary:
+      case ImageType.Primary: {
         if (item.AlbumPrimaryImageTag) {
           return item.AlbumPrimaryImageTag;
         } else if (item.ChannelPrimaryImageTag) {
@@ -63,32 +61,38 @@ export function getImageTag(
         }
 
         break;
-      case ImageType.Art:
+      }
+      case ImageType.Art: {
         if (item.ParentArtImageTag) {
           return item.ParentArtImageTag;
         }
 
         break;
-      case ImageType.Backdrop:
+      }
+      case ImageType.Backdrop: {
         if (item.ParentBackdropImageTags?.[index]) {
           return item.ParentBackdropImageTags[index];
         }
 
         break;
-      case ImageType.Logo:
+      }
+      case ImageType.Logo: {
         if (item.ParentLogoImageTag) {
           return item.ParentLogoImageTag;
         }
 
         break;
-      case ImageType.Thumb:
+      }
+      case ImageType.Thumb: {
         if (item.ParentThumbImageTag) {
           return item.ParentThumbImageTag;
         }
 
         break;
-      default:
+      }
+      default: {
         return undefined;
+      }
     }
   }
 }
@@ -142,7 +146,7 @@ export function getBlurhash(
 
     if (
       tag &&
-      !excludedBlurhashTypes.includes(type) &&
+      !excludedBlurhashTypes.has(type) &&
       item.ImageBlurHashes?.[type]?.[tag]
     ) {
       return item.ImageBlurHashes?.[type]?.[tag];
@@ -158,19 +162,23 @@ export function getDesiredAspect(shape: ValidCardShapes): number {
   let aspectRatio;
 
   switch (shape) {
-    case CardShapes.Portrait:
+    case CardShapes.Portrait: {
       aspectRatio = 2 / 3;
       break;
-    case CardShapes.Thumb:
+    }
+    case CardShapes.Thumb: {
       aspectRatio = 16 / 9;
       break;
-    case CardShapes.Banner:
+    }
+    case CardShapes.Banner: {
       aspectRatio = 1000 / 185;
       break;
+    }
     case CardShapes.Square:
-    default:
+    default: {
       aspectRatio = 1;
       break;
+    }
   }
 
   return aspectRatio;
@@ -287,14 +295,14 @@ export function getImageInfo(
   } else if (
     preferThumb &&
     item.BackdropImageTags &&
-    item.BackdropImageTags.length
+    item.BackdropImageTags.length > 0
   ) {
     imgType = ImageType.Backdrop;
     imgTag = item.BackdropImageTags[0];
   } else if (
     preferThumb &&
     item.ParentBackdropImageTags &&
-    item.ParentBackdropImageTags.length &&
+    item.ParentBackdropImageTags.length > 0 &&
     inheritThumb &&
     item.Type === 'Episode'
   ) {
@@ -331,7 +339,7 @@ export function getImageInfo(
   } else if (item.Type === 'Season' && item.ImageTags && item.ImageTags.Thumb) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
-  } else if (item.BackdropImageTags && item.BackdropImageTags.length) {
+  } else if (item.BackdropImageTags && item.BackdropImageTags.length > 0) {
     imgType = ImageType.Backdrop;
     imgTag = item.BackdropImageTags[0];
   } else if (item.ImageTags && item.ImageTags.Thumb) {
@@ -347,7 +355,7 @@ export function getImageInfo(
     itemId = item.ParentThumbItemId;
   } else if (
     item.ParentBackdropImageTags &&
-    item.ParentBackdropImageTags.length &&
+    item.ParentBackdropImageTags.length > 0 &&
     inheritThumb !== false
   ) {
     imgType = ImageType.Backdrop;
@@ -364,22 +372,22 @@ export function getImageInfo(
       `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
     );
 
-    const params: Record<string, string> = {
+    const parameters: Record<string, string> = {
       imgTag,
       quality: quality.toString()
     };
 
     if (width) {
       width = Math.round(width * ratio);
-      params.maxWidth = width.toString();
+      parameters.maxWidth = width.toString();
     }
 
     if (height) {
       height = Math.round(height * ratio);
-      params.maxHeight = height.toString();
+      parameters.maxHeight = height.toString();
     }
 
-    url.search = new URLSearchParams(params).toString();
+    url.search = new URLSearchParams(parameters).toString();
   }
 
   return {
@@ -435,17 +443,17 @@ export function getLogo(
       `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
     );
 
-    const params: Record<string, string> = {
+    const parameters: Record<string, string> = {
       imgTag,
       quality: quality.toString()
     };
 
     if (width) {
       width = Math.round(width * ratio);
-      params.maxWidth = width.toString();
+      parameters.maxWidth = width.toString();
     }
 
-    url.search = new URLSearchParams(params).toString();
+    url.search = new URLSearchParams(parameters).toString();
   }
 
   return {

@@ -101,14 +101,18 @@ export default defineComponent({
     ...mapStores(deviceProfileStore, pageStore),
     heading(): string {
       switch (this.wizardStage) {
-        case 1:
+        case 1: {
           return this.$t('wizard.languageLocale');
-        case 2:
+        }
+        case 2: {
           return this.$t('wizard.administratorAccount');
-        case 3:
+        }
+        case 3: {
           return this.$t('wizard.preferredMetadataLanguage');
-        case 4:
+        }
+        case 4: {
           return this.$t('wizard.remoteAccess');
+        }
       }
 
       return '';

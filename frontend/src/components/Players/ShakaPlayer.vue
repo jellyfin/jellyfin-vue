@@ -91,16 +91,12 @@ export default defineComponent({
   computed: {
     ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
     poster(): ImageUrlInfo | string {
-      if (
-        this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
+      return this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !isNil(this.playbackManager.getCurrentItem)
-      ) {
-        return getImageInfo(this.playbackManager.getCurrentItem, {
-          preferBackdrop: true
-        });
-      } else {
-        return '';
-      }
+        ? getImageInfo(this.playbackManager.getCurrentItem, {
+            preferBackdrop: true
+          })
+        : '';
     },
     mediaElement(): string {
       if (this.playbackManager.getCurrentlyPlayingMediaType === 'Audio') {
@@ -135,8 +131,9 @@ export default defineComponent({
           this.playbackManager
             .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
         ).findIndex(
-          (el) =>
-            this.subtitleTrack && el.srcIndex === this.subtitleTrack.srcIndex
+          (element) =>
+            this.subtitleTrack &&
+            element.srcIndex === this.subtitleTrack.srcIndex
         ) !== -1
       );
     }
@@ -153,12 +150,14 @@ export default defineComponent({
       handler(): void {
         if (this.player) {
           switch (this.playbackManager.status) {
-            case PlaybackStatus.Playing:
+            case PlaybackStatus.Playing: {
               this.player.play();
               break;
-            case PlaybackStatus.Paused:
+            }
+            case PlaybackStatus.Paused: {
               this.player.pause();
               break;
+            }
           }
         }
       }
@@ -215,10 +214,8 @@ export default defineComponent({
         // Subscribe to Store actions
         this.playbackManager.$onAction(({ name, after }) => {
           after(() => {
-            if (name === 'changeCurrentTime') {
-              if (this.player) {
-                this.player.currentTime = this.playbackManager.currentTime || 0;
-              }
+            if (name === 'changeCurrentTime' && this.player) {
+              this.player.currentTime = this.playbackManager.currentTime || 0;
             }
           });
         });
@@ -305,7 +302,7 @@ export default defineComponent({
             directOptions.LiveStreamId = mediaSource.LiveStreamId;
           }
 
-          const params = new URLSearchParams(directOptions).toString();
+          const parameters = new URLSearchParams(directOptions).toString();
 
           let mediaType = 'Videos';
 
@@ -313,7 +310,7 @@ export default defineComponent({
             mediaType = 'Audio';
           }
 
-          this.source = `${this.$axios.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${params}`;
+          this.source = `${this.$axios.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
@@ -328,7 +325,7 @@ export default defineComponent({
       const newSub = (
         this.playbackManager
           .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
-      ).find((el) => el.srcIndex === newsrcIndex);
+      ).find((element) => element.srcIndex === newsrcIndex);
 
       // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
       if (

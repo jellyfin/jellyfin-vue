@@ -64,7 +64,7 @@ export const socketStore = defineStore('socket', {
         this.isConnecting = false;
         this.isConnected = true;
 
-        instance.onopen = (_event: Event): void => {
+        instance.addEventListener('open', (_event: Event): void => {
           const url = instance.url;
 
           console.info(`[WebSocket] Connection established to ${url}!`);
@@ -85,7 +85,7 @@ export const socketStore = defineStore('socket', {
               }, 3000);
             }
           };
-        };
+        });
 
         instance.onmessage = (event: MessageEvent): void => {
           if (event.data) {
@@ -104,13 +104,13 @@ export const socketStore = defineStore('socket', {
     },
     sendToSocket(name: string, data?: Record<string, never>): void {
       if (this.instance) {
-        const msg: WebSocketMessage = { MessageType: name };
+        const message: WebSocketMessage = { MessageType: name };
 
         if (!isNil(data)) {
-          msg.Data = data;
+          message.Data = data;
         }
 
-        this.instance.send(JSON.stringify(msg));
+        this.instance.send(JSON.stringify(message));
       }
     },
     closeSocket(): void {
@@ -134,12 +134,12 @@ export const socketStore = defineStore('socket', {
         this.$nuxt.$axios.defaults.baseURL &&
         deviceProfile.deviceId
       ) {
-        const socketParams = new URLSearchParams({
+        const socketParameters = new URLSearchParams({
           api_key: auth.currentUserToken,
           deviceId: deviceProfile.deviceId
         }).toString();
 
-        let url = `${this.$nuxt.$axios.defaults.baseURL}/socket?${socketParams}`;
+        let url = `${this.$nuxt.$axios.defaults.baseURL}/socket?${socketParameters}`;
 
         url = url.replace('https:', 'wss:');
         url = url.replace('http:', 'ws:');

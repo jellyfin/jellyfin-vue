@@ -22,14 +22,12 @@ export default defineComponent({
   },
   methods: {
     formatDistance(value: string): string {
-      if (value) {
-        return this.$dateFns.formatDistanceToNow(new Date(value), {
-          addSuffix: true,
-          locale: this.$i18n.locale
-        });
-      } else {
-        return this.$t('never');
-      }
+      return value
+        ? this.$dateFns.formatDistanceToNow(new Date(value), {
+            addSuffix: true,
+            locale: this.$i18n.locale
+          })
+        : this.$t('never');
     }
   }
 });
