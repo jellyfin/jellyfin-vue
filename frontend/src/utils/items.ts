@@ -68,7 +68,7 @@ export function isPerson(
  * @returns - A boolean representing the validity of the input string
  */
 export function isValidMD5(input: string): boolean {
-  return /[a-fA-F0-9]{32}/.test(input);
+  return /[\dA-Fa-f]{32}/.test(input);
 }
 
 /**
@@ -79,28 +79,39 @@ export function isValidMD5(input: string): boolean {
  */
 export function getLibraryIcon(libraryType: string | undefined | null): string {
   switch (libraryType?.toLowerCase()) {
-    case 'movies':
+    case 'movies': {
       return 'mdi-movie';
-    case 'music':
+    }
+    case 'music': {
       return 'mdi-music';
-    case 'photos':
+    }
+    case 'photos': {
       return 'mdi-image';
-    case 'livetv':
+    }
+    case 'livetv': {
       return 'mdi-youtube-tv';
-    case 'tvshows':
+    }
+    case 'tvshows': {
       return 'mdi-television-classic';
-    case 'homevideos':
+    }
+    case 'homevideos': {
       return 'mdi-image-multiple';
-    case 'musicvideos':
+    }
+    case 'musicvideos': {
       return 'mdi-music-box';
-    case 'books':
+    }
+    case 'books': {
       return 'mdi-book-open-page-variant';
-    case 'channels':
+    }
+    case 'channels': {
       return 'mdi-youtube';
-    case 'playlists':
+    }
+    case 'playlists': {
       return 'mdi-playlist-play';
-    default:
+    }
+    default: {
       return 'mdi-folder';
+    }
   }
 }
 
@@ -115,18 +126,21 @@ export function getShapeFromCollectionType(
 ): ValidCardShapes {
   switch (collectionType?.toLowerCase()) {
     case 'livetv':
-    case 'musicvideos':
+    case 'musicvideos': {
       return CardShapes.Thumb;
+    }
     case 'folders':
     case 'playlists':
-    case 'music':
+    case 'music': {
       return CardShapes.Square;
+    }
     case 'boxsets':
     case 'movies':
     case 'tvshows':
     case 'books':
-    default:
+    default: {
       return CardShapes.Portrait;
+    }
   }
 }
 
@@ -148,20 +162,23 @@ export function getShapeFromItemType(
     case 'musicgenre':
     case 'photoalbum':
     case 'playlist':
-    case 'video':
+    case 'video': {
       return CardShapes.Square;
+    }
     case 'episode':
     case 'musicvideo':
-    case 'studio':
+    case 'studio': {
       return CardShapes.Thumb;
+    }
     case 'book':
     case 'boxSet':
     case 'genre':
     case 'movie':
     case 'person':
     case 'series':
-    default:
+    default: {
       return CardShapes.Portrait;
+    }
   }
 }
 
@@ -205,14 +222,10 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
  *
  */
 export function canResume(item: BaseItemDto): boolean {
-  if (
-    item?.UserData?.PlaybackPositionTicks &&
+  return item?.UserData?.PlaybackPositionTicks &&
     item.UserData.PlaybackPositionTicks > 0
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+    ? true
+    : false;
 }
 /**
  * Determine if an item can be mark as played
@@ -247,45 +260,51 @@ export function getItemDetailsLink(
   overrideType?: string
 ): string {
   let routeName: string;
-  let routeParams: Record<never, never>;
+  let routeParameters: Record<never, never>;
 
   if (item.Type && validLibraryTypes.includes(item.Type)) {
     routeName = 'library-viewId';
-    routeParams = { viewId: item.Id };
+    routeParameters = { viewId: item.Id };
   } else {
     const type = overrideType || item.Type;
 
     switch (type) {
-      case 'Series':
+      case 'Series': {
         routeName = 'series-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
-      case 'Person':
+      }
+      case 'Person': {
         routeName = 'person-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
-      case 'MusicArtist':
+      }
+      case 'MusicArtist': {
         routeName = 'artist-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
-      case 'MusicAlbum':
+      }
+      case 'MusicAlbum': {
         routeName = 'musicalbum-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
-      case 'Genre':
+      }
+      case 'Genre': {
         routeName = 'genre-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
-      default:
+      }
+      default: {
         routeName = 'item-itemId';
-        routeParams = { itemId: item.Id };
+        routeParameters = { itemId: item.Id };
         break;
+      }
     }
   }
 
   return window.$nuxt.$router.resolve({
     name: routeName,
-    params: routeParams
+    params: routeParameters
   }).resolved.path;
 }
 /**
@@ -301,42 +320,53 @@ export function getItemIcon(item: BaseItemDto | BaseItemPerson): string {
     itemIcon = 'mdi-account';
   } else {
     switch (item.Type) {
-      case 'Audio':
+      case 'Audio': {
         itemIcon = 'mdi-music-note';
         break;
-      case 'AudioBook':
+      }
+      case 'AudioBook': {
         itemIcon = 'mdi-book-music';
         break;
-      case 'Book':
+      }
+      case 'Book': {
         itemIcon = 'mdi-book-open-page-variant';
         break;
-      case 'BoxSet':
+      }
+      case 'BoxSet': {
         itemIcon = 'mdi-folder-multiple';
         break;
+      }
       case 'Folder':
-      case 'CollectionFolder':
+      case 'CollectionFolder': {
         itemIcon = 'mdi-folder';
         break;
-      case 'Movie':
+      }
+      case 'Movie': {
         itemIcon = 'mdi-filmstrip';
         break;
-      case 'MusicAlbum':
+      }
+      case 'MusicAlbum': {
         itemIcon = 'mdi-album';
         break;
+      }
       case 'MusicArtist':
-      case 'Person':
+      case 'Person': {
         itemIcon = 'mdi-account';
         break;
-      case 'PhotoAlbum':
+      }
+      case 'PhotoAlbum': {
         itemIcon = 'mdi-image-multiple';
         break;
-      case 'Playlist':
+      }
+      case 'Playlist': {
         itemIcon = 'mdi-playlist-play';
         break;
+      }
       case 'Series':
-      case 'Episode':
+      case 'Episode': {
         itemIcon = 'mdi-television-classic';
         break;
+      }
     }
   }
 

@@ -139,11 +139,9 @@ export default defineComponent({
      * @returns Either the item name or the series name
      */
     cardTitle(): string {
-      if (this.item.Type !== 'Episode') {
-        return this.item.Name || '';
-      } else {
-        return this.item.SeriesName || '';
-      }
+      return this.item.Type !== 'Episode'
+        ? this.item.Name || ''
+        : this.item.SeriesName || '';
     },
     /**
      * @returns Either a string representing the production year(s) for the current item
@@ -152,13 +150,15 @@ export default defineComponent({
      */
     cardSubtitle(): string {
       switch (this.item.Type) {
-        case 'Episode':
+        case 'Episode': {
           return `${this.$t('seasonEpisodeAbbrev', {
             seasonNumber: this.item.ParentIndexNumber,
             episodeNumber: this.item.IndexNumber
           })} - ${this.item.Name}`;
-        case 'MusicAlbum':
+        }
+        case 'MusicAlbum': {
           return `${this.item.AlbumArtist || ''}`;
+        }
         case 'Series': {
           if (this.item.Status === 'Continuing') {
             return `${this.item.ProductionYear} - ${this.$t('present')}`;
@@ -178,8 +178,9 @@ export default defineComponent({
           break;
         }
         case 'Movie':
-        default:
+        default: {
           return `${this.item.ProductionYear ? this.item.ProductionYear : ''}`;
+        }
       }
 
       return '';
@@ -223,11 +224,9 @@ export default defineComponent({
       }
     },
     getImageType(): ImageType {
-      if (this.shape === CardShapes.Thumb) {
-        return ImageType.Thumb;
-      } else {
-        return ImageType.Primary;
-      }
+      return this.shape === CardShapes.Thumb
+        ? ImageType.Thumb
+        : ImageType.Primary;
     },
     /**
      * Gets the library update progress

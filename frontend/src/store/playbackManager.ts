@@ -190,7 +190,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
         /**
          * Removes the elements that already exists and append the new ones next to the currently playing item
          */
-        const newQueue = this.queue.filter((i) => !translatedItem.includes(i));
+        const newQueue = this.queue.filter(
+          (index) => !translatedItem.includes(index)
+        );
 
         newQueue.splice(this.currentItemIndex + 1, 0, ...translatedItem);
         this.setNewQueue(newQueue);
@@ -319,7 +321,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
     },
     changeItemPosition(itemId: string | undefined, newIndex: number): void {
       if (itemId && this.queue.includes(itemId)) {
-        const newQueue = this.queue.filter((i) => i !== itemId);
+        const newQueue = this.queue.filter((index) => index !== itemId);
 
         newQueue.splice(newIndex, 0, itemId);
         this.setNewQueue(newQueue);
@@ -376,17 +378,11 @@ export const playbackManagerStore = defineStore('playbackManager', {
      */
     toggleRepeatMode(): void {
       if (this.repeatMode === RepeatMode.RepeatNone) {
-        if (this.queue.length > 1) {
-          this.repeatMode = RepeatMode.RepeatAll;
-        } else {
-          this.repeatMode = RepeatMode.RepeatOne;
-        }
+        this.repeatMode =
+          this.queue.length > 1 ? RepeatMode.RepeatAll : RepeatMode.RepeatOne;
       } else if (this.repeatMode === RepeatMode.RepeatAll) {
-        if (this.queue.length > 1) {
-          this.repeatMode = RepeatMode.RepeatOne;
-        } else {
-          this.repeatMode = RepeatMode.RepeatNone;
-        }
+        this.repeatMode =
+          this.queue.length > 1 ? RepeatMode.RepeatOne : RepeatMode.RepeatNone;
       } else {
         this.repeatMode = RepeatMode.RepeatNone;
       }
@@ -516,8 +512,8 @@ export const playbackManagerStore = defineStore('playbackManager', {
         return [item.Id || ''];
       }
 
-      return responseItems.map((i) => {
-        return i.Id ? i.Id : '';
+      return responseItems.map((index) => {
+        return index.Id ? index.Id : '';
       });
     }
   },
@@ -623,9 +619,9 @@ export const playbackManagerStore = defineStore('playbackManager', {
       }
     },
     getCurrentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
-      return (this.currentMediaSource?.MediaStreams?.map((el, idx) => ({
-        srcIndex: idx,
-        el
+      return (this.currentMediaSource?.MediaStreams?.map((element, index) => ({
+        srcIndex: index,
+        el: element
       }))
         .filter(
           (sub) =>

@@ -35,16 +35,16 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" bg-color="transparent">
-            <v-tab :key="0" :disabled="!movies.length">
+            <v-tab :key="0" :disabled="movies.length === 0">
               {{ $t('item.person.movies') }}
             </v-tab>
-            <v-tab :key="1" :disabled="!series.length">
+            <v-tab :key="1" :disabled="series.length === 0">
               {{ $t('item.person.shows') }}
             </v-tab>
-            <v-tab :key="2" :disabled="!books.length">
+            <v-tab :key="2" :disabled="books.length === 0">
               {{ $t('item.person.books') }}
             </v-tab>
-            <v-tab :key="3" :disabled="!photos.length">
+            <v-tab :key="3" :disabled="photos.length === 0">
               {{ $t('item.person.photos') }}
             </v-tab>
             <v-tab :key="4" :disabled="!item.Overview">
@@ -160,8 +160,8 @@ export default defineComponent({
     backdrop: true,
     transparentLayout: true
   },
-  validate(ctx: Context) {
-    return isValidMD5(ctx.route.params.itemId);
+  validate(context: Context) {
+    return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api }) {
     const auth = authStore();
@@ -249,41 +249,35 @@ export default defineComponent({
   computed: {
     ...mapStores(pageStore),
     birthDate(): Date | null {
-      if (this.item.PremiereDate) {
-        return this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
-          locale: this.$i18n.locale
-        });
-      } else {
-        return null;
-      }
+      return this.item.PremiereDate
+        ? this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
+            locale: this.$i18n.locale
+          })
+        : null;
     },
     deathDate: {
       get(): Date | null {
-        if (this.item.EndDate) {
-          return this.$dateFns.format(new Date(this.item.EndDate), 'PPP', {
-            locale: this.$i18n.locale
-          });
-        } else {
-          return null;
-        }
+        return this.item.EndDate
+          ? this.$dateFns.format(new Date(this.item.EndDate), 'PPP', {
+              locale: this.$i18n.locale
+            })
+          : null;
       }
     },
     birthPlace: {
       get(): string | null {
-        if (this.item.ProductionLocations) {
-          return this.item.ProductionLocations[0];
-        } else {
-          return null;
-        }
+        return this.item.ProductionLocations
+          ? this.item.ProductionLocations[0]
+          : null;
       }
     }
   },
   watch: {
     item: {
-      handler(val: BaseItemDto): void {
-        this.page.title = val.Name || '';
+      handler(value: BaseItemDto): void {
+        this.page.title = value.Name || '';
 
-        this.page.backdrop.blurhash = getBlurhash(val, ImageType.Backdrop);
+        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
       },
       immediate: true,
       deep: true

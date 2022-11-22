@@ -266,7 +266,7 @@ export default defineComponent({
         userId: this.auth.currentUserId
       });
       const libraryInfo =
-        ancestors.data.find((i) => i.Type === 'CollectionFolder') || {};
+        ancestors.data.find((index) => index.Type === 'CollectionFolder') || {};
 
       this.getGenres(libraryInfo.Id);
     },
@@ -285,7 +285,7 @@ export default defineComponent({
         await this.$api.genres.getGenres({
           parentId
         })
-      ).data.Items?.map((i) => i.Name) as BaseItemDto[];
+      ).data.Items?.map((index) => index.Name) as BaseItemDto[];
     },
     async saveMetadata(): Promise<void> {
       const item = pick(this.metadata, [

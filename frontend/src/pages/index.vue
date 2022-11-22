@@ -1,7 +1,7 @@
 <template>
   <div>
     <items-carousel
-      v-if="carouselItems.length"
+      v-if="carouselItems.length > 0"
       :items="carouselItems"
       page-backdrop
       class="top-carousel">
@@ -33,7 +33,12 @@ import {
   authStore
 } from '~/store';
 
-const VALID_SECTIONS = ['resume', 'resumeaudio', 'upnext', 'latestmedia'];
+const VALID_SECTIONS = new Set([
+  'resume',
+  'resumeaudio',
+  'upnext',
+  'latestmedia'
+]);
 
 export default defineComponent({
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
@@ -77,14 +82,12 @@ export default defineComponent({
         this.clientSettings.CustomPrefs,
         (value: string, key: string) => {
           return (
-            value &&
-            VALID_SECTIONS.includes(value) &&
-            key.startsWith('homesection')
+            value && VALID_SECTIONS.has(value) && key.startsWith('homesection')
           );
         }
       );
 
-      if (!Object.keys(homeSectionsArray).length) {
+      if (Object.keys(homeSectionsArray).length === 0) {
         homeSectionsArray = {
           homeSection0: 'librarytiles',
           homeSection1: 'resume',
@@ -109,21 +112,19 @@ export default defineComponent({
             });
             break;
           }
-          case 'latestmedia':
+          case 'latestmedia': {
             {
               const latestMediaSections = [];
 
-              const excludeViewTypes = [
+              const excludeViewTypes = new Set([
                 'playlists',
                 'livetv',
                 'boxsets',
                 'channels'
-              ];
+              ]);
 
               for (const userView of this.userViews.views) {
-                if (
-                  excludeViewTypes.includes(userView.CollectionType as string)
-                ) {
+                if (excludeViewTypes.has(userView.CollectionType as string)) {
                   continue;
                 }
 
@@ -140,7 +141,8 @@ export default defineComponent({
             }
 
             break;
-          case 'resume':
+          }
+          case 'resume': {
             homeSections.push({
               name: 'continueWatching',
               libraryId: '',
@@ -148,7 +150,8 @@ export default defineComponent({
               type: 'resume'
             });
             break;
-          case 'resumeaudio':
+          }
+          case 'resumeaudio': {
             homeSections.push({
               name: 'continueListening',
               libraryId: '',
@@ -156,7 +159,8 @@ export default defineComponent({
               type: 'resumeaudio'
             });
             break;
-          case 'upnext':
+          }
+          case 'upnext': {
             homeSections.push({
               name: 'nextUp',
               libraryId: '',
@@ -164,8 +168,10 @@ export default defineComponent({
               type: 'upnext'
             });
             break;
-          default:
+          }
+          default: {
             break;
+          }
         }
       }
 

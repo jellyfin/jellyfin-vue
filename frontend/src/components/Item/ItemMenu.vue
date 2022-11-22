@@ -26,7 +26,7 @@
         <v-list dense nav>
           <template v-for="(section, index1) in options">
             <v-divider
-              v-if="section.length && index1 > 0"
+              v-if="section.length > 0 && index1 > 0"
               :key="`item-${item.Id}-section-${index1}-divider`"
               light />
             <v-list-item
@@ -248,8 +248,8 @@ export default defineComponent({
                 data: this.item.Name,
                 progress: 0
               } as RunningTask);
-            } catch (e) {
-              console.error(e);
+            } catch (error) {
+              console.error(error);
 
               this.useSnackbar(this.$t('unableToRefreshLibrary'), 'error');
             }
@@ -268,9 +268,7 @@ export default defineComponent({
         });
       }
 
-      menuOptions.push(queueOptions);
-      menuOptions.push(playbackOptions);
-      menuOptions.push(libraryOptions);
+      menuOptions.push(queueOptions, playbackOptions, libraryOptions);
 
       return menuOptions;
     }
