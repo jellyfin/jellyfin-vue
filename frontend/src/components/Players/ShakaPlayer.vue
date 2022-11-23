@@ -49,13 +49,7 @@ import {
   SubtitleDeliveryMethod
 } from '@jellyfin/sdk/lib/generated-client';
 
-import {
-  authStore,
-  deviceProfileStore,
-  playbackManagerStore,
-  PlaybackStatus,
-  PlaybackTrack
-} from '~/store';
+import { playbackManagerStore, PlaybackStatus, PlaybackTrack } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 import { ticksToMs } from '~/utils/time';
@@ -89,7 +83,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, deviceProfileStore, playbackManagerStore),
+    ...mapStores(deviceProfileStore, playbackManagerStore),
     poster(): ImageUrlInfo | string {
       return this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !isNil(this.playbackManager.getCurrentItem)
@@ -261,7 +255,7 @@ export default defineComponent({
           await this.$api.mediaInfo.getPostedPlaybackInfo(
             {
               itemId: this.playbackManager.getCurrentItem?.Id || '',
-              userId: this.auth.currentUserId,
+              userId: this.$remote.auth.currentUserId.value,
               autoOpenLiveStream: true,
               playbackInfoDto: { DeviceProfile: this.$playbackProfile },
               mediaSourceId: undefined,
@@ -291,7 +285,7 @@ export default defineComponent({
             Static: String(true),
             mediaSourceId: String(mediaSource.Id),
             deviceId: this.deviceProfile.deviceId,
-            api_key: this.auth.currentUserToken
+            api_key: this.$remote.auth.currentUserToken.value
           };
 
           if (mediaSource.ETag) {

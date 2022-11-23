@@ -7,7 +7,7 @@
         </h1>
         <div>
           <server-card
-            v-for="server in auth.servers"
+            v-for="server in $remote.auth.servers.value"
             :key="server.Id"
             class="mt-2"
             :server-info="server" />
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   layout: 'fullpage',
@@ -38,7 +38,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(pageStore, authStore)
+    ...mapStores(pageStore)
   },
   mounted() {
     this.page.title = this.$t('login.selectServer');

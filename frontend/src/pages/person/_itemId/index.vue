@@ -153,7 +153,7 @@ import {
 import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
 import { isValidMD5 } from '~/utils/items';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   meta: {
@@ -164,12 +164,10 @@ export default defineComponent({
     return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const auth = authStore();
-
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
-        userId: auth.currentUserId,
+        userId: this.$remote.auth.currentUserId,
         itemId
       })
     ).data;
@@ -182,7 +180,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['Movie'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId.value
       })
     ).data.Items;
 
@@ -194,7 +192,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['Series'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId
       })
     ).data.Items;
 
@@ -206,7 +204,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['Book'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId
       })
     ).data.Items;
 
@@ -218,7 +216,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['Photo'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId
       })
     ).data.Items;
 
