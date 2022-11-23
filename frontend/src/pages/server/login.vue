@@ -42,7 +42,7 @@
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ auth.currentServer.ServerName }}
+          {{ $remote.auth.currentServer.value.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
@@ -82,7 +82,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, pageStore)
+    ...mapStores(pageStore)
   },
   mounted() {
     this.page.title = this.$t('login.login');
