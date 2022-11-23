@@ -189,8 +189,6 @@ import {
   BaseItemDto,
   BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
-import { mapStores } from 'pinia';
-import { authStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -222,7 +220,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore),
     premiereDate(): string {
       if (!this.metadata.PremiereDate) {
         return '';
@@ -266,7 +263,7 @@ export default defineComponent({
 
       const ancestors = await this.$api.library.getAncestors({
         itemId: this.metadata.Id as string,
-        userId: this.auth.currentUserId
+        userId: this.$remote.auth.currentUserId.value
       });
       const libraryInfo =
         ancestors.data.find((index) => index.Type === 'CollectionFolder') || {};
@@ -276,7 +273,7 @@ export default defineComponent({
     async fetchItemInfo(): Promise<void> {
       const itemInfo = (
         await this.$api.userLibrary.getItem({
-          userId: this.auth.currentUserId,
+          userId: this.$remote.auth.currentUserId.value,
           itemId: this.itemId
         })
       ).data;
