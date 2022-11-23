@@ -53,7 +53,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { isValidMD5 } from '~/utils/items';
-import { authStore, itemsStore, pageStore } from '~/store';
+import { itemsStore, pageStore } from '~/store';
 
 export default defineComponent({
   validate(context: Context) {
@@ -61,12 +61,11 @@ export default defineComponent({
   },
   async asyncData({ params, $api, route }) {
     const items = itemsStore();
-    const auth = authStore();
 
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
-        userId: auth.currentUserId,
+        userId: this.$remote.auth.currentUserId.value,
         itemId
       })
     ).data;
@@ -79,7 +78,7 @@ export default defineComponent({
         sortBy: ['SortName'],
         sortOrder: [SortOrder.Ascending],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId
       })
     ).data.Items;
 

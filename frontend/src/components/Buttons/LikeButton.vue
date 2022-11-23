@@ -9,7 +9,7 @@
 import { PropType, defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
-import { authStore, socketStore } from '~/store';
+import { socketStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, socketStore)
+    ...mapStores(socketStore)
   },
   watch: {
     item: {
@@ -69,14 +69,14 @@ export default defineComponent({
           this.isFavorite = true;
 
           await this.$api.userLibrary.markFavoriteItem({
-            userId: this.auth.currentUserId,
+            userId: this.$remote.auth.currentUserId.value,
             itemId: this.item.Id
           });
         } else {
           this.isFavorite = false;
 
           await this.$api.userLibrary.unmarkFavoriteItem({
-            userId: this.auth.currentUserId,
+            userId: this.$remote.auth.currentUserId.value,
             itemId: this.item.Id
           });
         }
