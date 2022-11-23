@@ -2,14 +2,13 @@ import { PiniaPluginContext } from 'pinia';
 import persistence from './persistence';
 import preferencesSync from './preferencesSync';
 import watchPlaybackReporting from './watchers/playbackManager';
-import watchSocket from './watchers/socket';
 import watchClientSettings from './watchers/clientSettings';
 
 const piniaPlugins = (context: PiniaPluginContext): void => {
   const plugins = [persistence, preferencesSync];
-  const watchers = [watchSocket, watchPlaybackReporting, watchClientSettings];
+  const watchers = [watchPlaybackReporting, watchClientSettings];
 
-  for (const p of plugins.concat(watchers)) {
+  for (const p of [...plugins, ...watchers]) {
     context.pinia.use(p);
   }
 };
