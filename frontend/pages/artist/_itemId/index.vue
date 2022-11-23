@@ -127,11 +127,9 @@ import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
 import { pageStore, authStore } from '~/store';
-import ArtistTab from '~/components/Layout/Artist/ArtistTab.vue';
 import { msToTicks } from '~/utils/time';
 
 export default Vue.extend({
-  components: { ArtistTab },
   meta: {
     backdrop: true,
     transparentLayout: true
