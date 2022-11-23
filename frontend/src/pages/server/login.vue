@@ -56,7 +56,7 @@ import { defineComponent } from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { mapStores } from 'pinia';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore, deviceProfileStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   layout: 'fullpage',
@@ -82,7 +82,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, pageStore, authStore)
+    ...mapStores(deviceProfileStore, pageStore)
   },
   mounted() {
     this.page.title = this.$t('login.login');
@@ -94,7 +94,7 @@ export default defineComponent({
     async setCurrentUser(user: UserDto): Promise<void> {
       if (!user.HasPassword && user.Name) {
         // If the user doesn't have a password, avoid showing the password form
-        await this.auth.loginUser(user.Name, '', true);
+        await this.$remote.auth.loginUser(user.Name, '', true);
       } else {
         this.currentUser = user;
       }

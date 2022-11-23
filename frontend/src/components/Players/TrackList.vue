@@ -77,7 +77,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '~/utils/items';
 import { ticksToMs } from '~/utils/time';
-import { authStore, playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -94,7 +94,7 @@ export default defineComponent({
   async fetch() {
     this.tracks = (
       await this.$api.items.getItems({
-        userId: this.auth.currentUserId,
+        userId: this.$remote.auth.currentUserId.value,
         parentId: this.item.Id,
         sortBy: ['SortName'],
         sortOrder: [SortOrder.Ascending]
@@ -102,7 +102,7 @@ export default defineComponent({
     ).data;
   },
   computed: {
-    ...mapStores(authStore, playbackManagerStore),
+    ...mapStores(playbackManagerStore),
     tracksPerDisc(): Record<string, BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }

@@ -46,8 +46,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { mapStores } from 'pinia';
-import { authStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
@@ -86,9 +84,6 @@ export default defineComponent({
       loading: true
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   watch: {
     item(): void {
       this.refreshItems();
@@ -108,7 +103,7 @@ export default defineComponent({
       if (this.item.Id) {
         const response = await this.$api.library.getSimilarItems({
           itemId: this.item.Id,
-          userId: this.auth.currentUserId,
+          userId: this.$remote.auth.currentUserId.value,
           limit: this.vertical ? 5 : 12,
           excludeArtistIds: this.item.AlbumArtists?.flatMap(
             (albumArtist: BaseItemDto) =>
