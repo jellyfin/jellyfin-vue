@@ -10,11 +10,13 @@ import { App } from 'vue';
 import RemotePluginAxiosInstance from './axios';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
+import RemotePluginSocketInstance from './socket';
 
 class RemotePlugin {
   public axios = RemotePluginAxiosInstance;
   public auth = RemotePluginAuthInstance;
   public sdk = RemotePluginSDKInstance;
+  public socket = RemotePluginSocketInstance;
 }
 
 export const remoteInstance = new RemotePlugin();

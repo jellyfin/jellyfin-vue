@@ -128,6 +128,21 @@ export const itemsStore = defineStore('items', {
 
         return this.addCollection(parent as BaseItemDto, childItems.Items);
       }
+    },
+    /**
+     * Updates the items in the store. Just a request is enough, as the Axios
+     * interceptors already handle updating the item in the store
+     *
+     * @param itemIds - Ids of the items to update
+     */
+    async updateStoreItems(itemIds: string[]): Promise<void> {
+      if (itemIds.length > 0) {
+        await context.$api.items.getItems({
+          userId: auth.currentUserId,
+          ids: itemIds,
+          fields: Object.keys(ItemFields) as ItemFields[]
+        });
+      }
     }
   },
   getters: {
