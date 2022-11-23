@@ -42,8 +42,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { authStore } from '~/store';
 
 interface MenuItem {
   title: string;
@@ -58,11 +56,10 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore),
     menuItems(): MenuItem[] {
       const menuItems = [];
 
-      if (this.auth.currentUser?.Policy?.IsAdministrator) {
+      if (this.$remote.auth.currentUser.value?.Policy?.IsAdministrator) {
         menuItems.push({
           title: this.$t('metadataEditor'),
           icon: 'mdi-pencil',

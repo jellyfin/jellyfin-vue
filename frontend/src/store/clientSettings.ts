@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { usePreferredDark } from '@vueuse/core';
-import { authStore, snackbarStore } from '.';
 import { fetchSettingsFromServer } from '~/plugins/store/preferencesSync';
 
 /**

@@ -65,9 +65,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import isEmpty from 'lodash/isEmpty';
-import { mapStores } from 'pinia';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -94,9 +92,6 @@ export default defineComponent({
       }
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   methods: {
     async userLogin(): Promise<void> {
       if (!isEmpty(this.user)) {
@@ -107,12 +102,11 @@ export default defineComponent({
       this.loading = true;
 
       try {
-        await this.auth.loginUser(
+        await this.$remote.auth.loginUser(
           this.login.username,
           this.login.password,
           this.login.rememberMe
         );
-      } catch {
       } finally {
         this.loading = false;
       }

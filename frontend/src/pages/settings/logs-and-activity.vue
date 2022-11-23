@@ -109,7 +109,7 @@ import {
   LogFile,
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -144,7 +144,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, pageStore)
+    ...mapStores(pageStore)
   },
   mounted() {
     this.page.title = this.$t('settingsSections.logs.name');
@@ -228,7 +228,7 @@ export default defineComponent({
       return this.$dateFns.format(date, 'Ppp');
     },
     getLogFileLink(name: string): string {
-      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.auth.currentUserToken}`;
+      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
     }
   }
 });
