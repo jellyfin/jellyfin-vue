@@ -52,7 +52,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
 
@@ -75,7 +74,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore),
     headers(): { text: string; value: string }[] {
       return [
         {
@@ -116,7 +114,7 @@ export default defineComponent({
     async deleteAllDevices(): Promise<void> {
       try {
         this.devices?.forEach(async (device) => {
-          if (this.deviceProfile.deviceId === device.Id) {
+          if (this.$remote.sdk.deviceInfo.id === device.Id) {
             return;
           }
 

@@ -98,7 +98,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, pageStore),
+    ...mapStores(pageStore),
     heading(): string {
       switch (this.wizardStage) {
         case 1: {
