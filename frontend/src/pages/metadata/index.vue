@@ -19,9 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore } from '~/store';
 
 type ITreeNode = {
   id: string | number | undefined;
@@ -35,9 +33,6 @@ export default defineComponent({
       items: [] as ITreeNode[],
       itemId: ''
     };
-  },
-  computed: {
-    ...mapStores(authStore)
   },
   async created() {
     const folders = (await this.$api.library.getMediaFolders()).data
@@ -56,7 +51,7 @@ export default defineComponent({
       const libraryItems = (
         (
           await this.$api.userLibrary.getItem(
-            { userId: this.auth.currentUserId, itemId: '' },
+            { userId: this.$remote.auth.currentUserId.value, itemId: '' },
             {
               query: {
                 ParentId: node.id,

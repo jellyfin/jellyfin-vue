@@ -40,8 +40,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { authStore } from '~/store';
 
 export default defineComponent({
   data() {
@@ -57,9 +55,6 @@ export default defineComponent({
       previousServerLength: 0
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   mounted() {
     /**
      * Instead of mapping the current state from the store, we use the number of servers that are present
@@ -67,14 +62,14 @@ export default defineComponent({
      * properly and stop the "Change server" button from appearing right after adding the first server
      * and while the transition is playing.
      */
-    this.previousServerLength = this.auth.servers.length;
+    this.previousServerLength = this.$remote.auth.servers.value.length;
   },
   methods: {
     async connectToServer(): Promise<void> {
       this.loading = true;
 
       try {
-        await this.auth.connectServer(this.serverUrl);
+        await this.$remote.auth.connectServer(this.serverUrl);
 
         if (this.previousServerLength === 0) {
           this.$router.push('/server/login');

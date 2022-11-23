@@ -76,7 +76,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import { deviceProfileStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({

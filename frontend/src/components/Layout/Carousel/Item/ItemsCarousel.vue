@@ -54,7 +54,7 @@ import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -73,7 +73,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, pageStore)
+    ...mapStores(pageStore)
   },
   async mounted() {
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
@@ -93,7 +93,7 @@ export default defineComponent({
 
       const itemData = (
         await this.$api.userLibrary.getItem({
-          userId: this.auth.currentUserId,
+          userId: this.$remote.auth.currentUserId.value,
           itemId: id
         })
       ).data;
