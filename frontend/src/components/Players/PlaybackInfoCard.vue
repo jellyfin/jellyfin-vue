@@ -233,7 +233,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, playbackManagerStore),
+    ...mapStores(playbackManagerStore),
     isTranscoding(): boolean {
       return !!(
         this.sessionInfo?.PlayState?.PlayMethod === 'Transcode' ||
@@ -376,7 +376,7 @@ export default defineComponent({
     async updateSession(): Promise<void> {
       this.sessionInfo = (
         await this.$api.session.getSessions({
-          deviceId: this.deviceProfile.deviceId
+          deviceId: this.$remote.sdk.deviceInfo.id
         })
       ).data?.[0];
 
