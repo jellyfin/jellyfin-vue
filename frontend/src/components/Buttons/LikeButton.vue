@@ -8,8 +8,6 @@
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { mapStores } from 'pinia';
-import { socketStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -33,9 +31,6 @@ export default defineComponent({
       isFavorite: false
     };
   },
-  computed: {
-    ...mapStores(socketStore)
-  },
   watch: {
     item: {
       immediate: true,
@@ -43,12 +38,12 @@ export default defineComponent({
         this.isFavorite = this.item.UserData?.IsFavorite || false;
       }
     },
-    socket() {
-      if (this.socket.messageData) {
-        // @ts-expect-error - No typings for WebSocket messages
-        const payloadData = this.socket.messageData.UserDataList;
+    '$remote.socket.message'() {
+      if (this.$remote.socket.messageData.value) {
+        const payloadData = this.$remote.socket.messageData.value.UserDataList;
 
         if (payloadData) {
+          // @ts-expect-error - No typings for WebSocket messages
           for (const payloadItem of payloadData) {
             if (payloadItem.ItemId === this.item.Id) {
               this.isFavorite = payloadItem.IsFavorite;
