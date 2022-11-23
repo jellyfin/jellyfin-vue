@@ -83,7 +83,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(deviceProfileStore, playbackManagerStore),
+    ...mapStores(playbackManagerStore),
     poster(): ImageUrlInfo | string {
       return this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !isNil(this.playbackManager.getCurrentItem)
@@ -280,11 +280,14 @@ export default defineComponent({
           throw new Error("This item can't be played.");
         }
 
-        if (mediaSource.SupportsDirectStream) {
+        if (
+          mediaSource.SupportsDirectStream &&
+          this.$remote.auth.currentUserToken.value
+        ) {
           const directOptions: Record<string, string> = {
             Static: String(true),
             mediaSourceId: String(mediaSource.Id),
-            deviceId: this.deviceProfile.deviceId,
+            deviceId: this.$remote.sdk.deviceInfo.id,
             api_key: this.$remote.auth.currentUserToken.value
           };
 
