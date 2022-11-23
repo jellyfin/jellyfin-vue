@@ -8,7 +8,7 @@ import {
   _ActionsTree,
   _GettersTree
 } from 'pinia';
-import { authStore, snackbarStore, taskManagerStore } from '~/store';
+import { taskManagerStore } from '~/store';
 
 const syncedStores = new Set(['clientSettings']);
 

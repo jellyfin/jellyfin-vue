@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore } from '.';
 import { getLibraryIcon } from '~/utils/items';
 
 export interface UserViewsState {

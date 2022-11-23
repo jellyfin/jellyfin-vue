@@ -4,7 +4,7 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
-import { authStore, userViewsStore, snackbarStore } from '.';
+import { userViewsStore } from '.';
 import { CardShapes } from '~/utils/items';
 
 export interface HomeSection {

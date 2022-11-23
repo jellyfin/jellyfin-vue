@@ -10,7 +10,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
 import isNil from 'lodash/isNil';
-import { authStore, itemsStore } from '.';
+import { itemsStore } from '.';
 
 export enum PlaybackStatus {
   Stopped = 0,
@@ -485,7 +485,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
           ).data.Items || [];
       } else if (item.Type === 'Episode') {
         if (
-          auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
+          auth.currentUser.Configuration?.EnableNextEpisodeAutoPlay &&
           item.SeriesId
         ) {
           /**

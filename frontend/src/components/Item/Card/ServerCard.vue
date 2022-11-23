@@ -25,8 +25,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { authStore, ServerInfo } from '~/store';
+import { ServerInfo } from '@/plugins/vue/remote/auth/types';
 
 export default defineComponent({
   props: {
@@ -40,22 +39,19 @@ export default defineComponent({
       loading: false
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   methods: {
     async setServer(): Promise<void> {
       this.loading = true;
 
       try {
-        await this.auth.connectServer(this.serverInfo.PublicAddress);
+        await this.$remote.auth.connectServer(this.serverInfo.PublicAddress);
         this.$router.push('/server/login');
       } finally {
         this.loading = false;
       }
     },
     async removeServerFromStore(): Promise<void> {
-      await this.auth.deleteServer(this.serverInfo.PublicAddress);
+      await this.$remote.auth.deleteServer(this.serverInfo.PublicAddress);
     }
   }
 });

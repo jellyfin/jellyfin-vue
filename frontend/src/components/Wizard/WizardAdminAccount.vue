@@ -50,8 +50,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { authStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -70,9 +68,6 @@ export default defineComponent({
       showPassword: false,
       loading: false
     };
-  },
-  computed: {
-    ...mapStores(authStore)
   },
   methods: {
     async createAdminAccount(): Promise<void> {
