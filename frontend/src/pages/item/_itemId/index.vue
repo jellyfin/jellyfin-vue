@@ -247,7 +247,7 @@ import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';
 import { getItemizedSelect } from '~/utils/forms';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   meta: {
@@ -258,12 +258,10 @@ export default defineComponent({
     return isValidMD5(context.route.params.itemId);
   },
   async asyncData({ params, $api }) {
-    const auth = authStore();
-
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
-        userId: auth.currentUserId,
+        userId: this.$remote.auth.currentUserId.value,
         itemId
       })
     ).data;

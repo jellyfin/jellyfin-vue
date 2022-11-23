@@ -49,10 +49,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import debounce from 'lodash/debounce';
-import { authStore } from '~/store';
 
 export default defineComponent({
   data() {
@@ -70,9 +68,8 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore),
     searchQuery(): string {
-      return this.$route.query?.q || '';
+      return this.$route.query?.q?.toString() || '';
     }
   },
   watch: {
@@ -99,7 +96,7 @@ export default defineComponent({
 
       const itemResults = (
         await this.$api.items.getItemsByUserId({
-          userId: this.auth.currentUserId,
+          userId: this.$remote.auth.currentUserId.value,
           searchTerm: this.searchQuery,
           includeItemTypes:
             'Movie,Series,Audio,MusicAlbum,Book,MusicArtist,Person',
@@ -131,7 +128,7 @@ export default defineComponent({
 
       this.personSearchResults = (
         await this.$api.persons.getPersons({
-          userId: this.auth.currentUserId,
+          userId: this.$remote.auth.currentUserId.value,
           searchTerm: this.searchQuery
         })
       ).data.Items;

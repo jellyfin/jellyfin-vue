@@ -98,13 +98,11 @@ import { mapStores } from 'pinia';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { version } from '@/../package.json';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 
 export default defineComponent({
   async asyncData({ $api }) {
-    const auth = authStore();
-
-    if (auth.currentUser?.Policy?.IsAdministrator) {
+    if (auth.currentUser.value?.Policy?.IsAdministrator) {
       const systemInfo = (await $api.system.getSystemInfo()).data;
 
       return { systemInfo };
@@ -224,7 +222,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, pageStore)
+    ...mapStores(pageStore)
   },
   mounted() {
     this.page.title = this.$t('settings.settings');

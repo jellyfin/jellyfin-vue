@@ -37,7 +37,6 @@
 <script lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { authStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 
 interface TvShowItem {
@@ -80,10 +79,9 @@ export default defineComponent({
     };
   },
   async fetch() {
-    const auth = authStore();
     const seasons = (
       await this.$api.tvShows.getSeasons({
-        userId: auth.currentUserId,
+        userId: this.$remote.auth.currentUserId.value,
         seriesId: this.item.Id
       })
     ).data.Items;
@@ -95,7 +93,7 @@ export default defineComponent({
         if (season.Id) {
           const episodes = (
             await this.$api.items.getItems({
-              userId: auth.currentUserId,
+              userId: this.$remote.auth.currentUserId.value,
               parentId: season.Id,
               fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
             })

@@ -54,7 +54,7 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore, playbackManagerStore, taskManagerStore } from '~/store';
+import { playbackManagerStore, taskManagerStore } from '~/store';
 import { TaskType, RunningTask } from '~/store/taskManager';
 import { canResume } from '~/utils/items';
 import { useSnackbar } from '@/composables';
@@ -109,7 +109,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, playbackManagerStore, taskManagerStore),
+    ...mapStores(playbackManagerStore, taskManagerStore),
     isItemRefreshing(): boolean {
       return this.taskManager.getTask(this.item.Id || '') !== undefined;
     },
@@ -225,7 +225,7 @@ export default defineComponent({
       const libraryOptions = [] as MenuOption[];
 
       if (
-        this.auth.currentUser?.Policy?.IsAdministrator &&
+        this.$remote.auth.currentUser.value?.Policy?.IsAdministrator &&
         ['Folder', 'CollectionFolder', 'UserView'].includes(
           this.item.Type || ''
         )
@@ -258,7 +258,7 @@ export default defineComponent({
         });
       }
 
-      if (this.auth.currentUser?.Policy?.IsAdministrator) {
+      if (this.$remote.auth.currentUser.value?.Policy?.IsAdministrator) {
         libraryOptions.push({
           title: this.$t('editMetadata'),
           icon: 'mdi-pencil-outline',

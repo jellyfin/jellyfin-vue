@@ -54,7 +54,6 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
-import { deviceProfileStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
