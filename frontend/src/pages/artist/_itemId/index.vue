@@ -124,7 +124,7 @@ import { Context } from '@nuxt/types';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
-import { pageStore, authStore } from '~/store';
+import { pageStore } from '~/store';
 import { msToTicks } from '~/utils/time';
 
 export default defineComponent({
@@ -140,12 +140,11 @@ export default defineComponent({
       singleMsMaxLength: 600_000,
       epMsMaxLength: 1_800_000
     };
-    const auth = authStore();
     const itemId = params.itemId;
 
     const item = (
       await $api.userLibrary.getItem({
-        userId: auth.currentUserId,
+        userId: this.auth.currentUserId.value,
         itemId
       })
     ).data;
@@ -158,7 +157,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['MusicAlbum'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId.value
       })
     ).data.Items;
 
@@ -189,7 +188,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['MusicAlbum'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId.value
       })
     ).data.Items;
 
@@ -201,7 +200,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: ['MusicVideo'],
         fields: Object.values(ItemFields),
-        userId: auth.currentUserId
+        userId: this.$remote.auth.currentUserId.value
       })
     ).data.Items;
 

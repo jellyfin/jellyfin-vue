@@ -51,7 +51,7 @@ import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
 import { isValidMD5, validLibraryTypes } from '~/utils/items';
-import { authStore, pageStore } from '~/store';
+import { pageStore } from '~/store';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -64,11 +64,9 @@ export default defineComponent({
     };
   },
   async asyncData({ params, $api }) {
-    const auth = authStore();
-
     const collectionInfo = (
       await $api.items.getItems({
-        userId: auth.currentUserId,
+        userId: this.$remote.auth.currentUserId.value,
         ids: [params.viewId]
       })
     ).data?.Items?.[0];
@@ -105,7 +103,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(authStore, pageStore),
+    ...mapStores(pageStore),
     noContent(): boolean {
       return this.loading || !this.itemsCount;
     },
@@ -224,7 +222,7 @@ export default defineComponent({
           case 'MusicArtist': {
             itemsResponse = (
               await this.$api.artists.getAlbumArtists({
-                userId: this.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -233,7 +231,7 @@ export default defineComponent({
           case 'Actor': {
             itemsResponse = (
               await this.$api.persons.getPersons({
-                userId: this.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId,
                 personTypes: 'Actor'
               })
@@ -243,7 +241,7 @@ export default defineComponent({
           case 'Genre': {
             itemsResponse = (
               await this.$api.genres.getGenres({
-                userId: this.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -252,7 +250,7 @@ export default defineComponent({
           case 'MusicGenre': {
             itemsResponse = (
               await this.$api.musicGenres.getMusicGenres({
-                userId: this.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -261,7 +259,7 @@ export default defineComponent({
           case 'Studio': {
             itemsResponse = (
               await this.$api.studios.getStudios({
-                userId: this.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -270,8 +268,8 @@ export default defineComponent({
           default: {
             itemsResponse = (
               await this.$api.items.getItems({
-                uId: this.auth.currentUserId,
-                userId: this.auth.currentUserId,
+                uId: this.$remote.auth.currentUserId.value,
+                userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
                 sortBy:
@@ -289,12 +287,10 @@ export default defineComponent({
                     ? undefined
                     : true,
                 sortOrder: 'Ascending',
-                filters: this.statusFilter ? this.statusFilter : undefined,
-                genres: this.genresFilter ? this.genresFilter : undefined,
-                years: this.yearsFilter ? this.yearsFilter : undefined,
-                officialRatings: this.ratingsFilter
-                  ? this.ratingsFilter
-                  : undefined,
+                filters: this.statusFilter || undefined,
+                genres: this.genresFilter || undefined,
+                years: this.yearsFilter || undefined,
+                officialRatings: this.ratingsFilter || undefined,
                 hasSubtitles: this.filterHasSubtitles ? true : undefined,
                 hasTrailer: this.filterHasTrailer ? true : undefined,
                 hasSpecialFeature: this.filterHasSpecialFeature

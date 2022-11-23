@@ -10,9 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { authStore } from '~/store';
 import { canMarkWatched } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
@@ -37,9 +35,6 @@ export default defineComponent({
       isPlayed: false
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   watch: {
     item: {
       immediate: true,
@@ -61,13 +56,13 @@ export default defineComponent({
         if (this.isPlayed) {
           this.isPlayed = false;
           await this.$api.playState.markUnplayedItem({
-            userId: this.auth.currentUserId,
+            userId: this.$remote.auth.currentUserId.value,
             itemId: this.item.Id
           });
         } else {
           this.isPlayed = true;
           await this.$api.playState.markPlayedItem({
-            userId: this.auth.currentUserId,
+            userId: this.$remote.auth.currentUserId.value,
             itemId: this.item.Id
           });
         }

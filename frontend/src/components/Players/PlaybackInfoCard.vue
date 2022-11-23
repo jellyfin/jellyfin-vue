@@ -221,7 +221,7 @@ import camelCase from 'lodash/camelCase';
 import isNil from 'lodash/isNil';
 // @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
-import { deviceProfileStore, playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
   data() {

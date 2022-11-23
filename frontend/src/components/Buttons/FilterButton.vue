@@ -173,11 +173,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { sanitizeHtml } from '~/utils/html';
 import { useSnackbar } from '@/composables';
-import { authStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -259,9 +257,6 @@ export default defineComponent({
       selectedYearFilters: []
     };
   },
-  computed: {
-    ...mapStores(authStore)
-  },
   watch: {
     itemsType(): void {
       this.refreshItems();
@@ -277,7 +272,7 @@ export default defineComponent({
          */
         const response = (
           await this.$api.filter.getQueryFiltersLegacy({
-            userId: this.auth.currentUserId,
+            userId: this.$remote.auth.currentUserId.value,
             parentId: sanitizeHtml(this.$route.params.viewId),
             includeItemTypes: [this.itemsType]
           })
