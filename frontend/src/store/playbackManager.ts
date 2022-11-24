@@ -110,16 +110,6 @@ export const playbackManagerStore = defineStore('playbackManager', {
     },
     /**
      * Plays an item and initializes playbackManager's state
-     *
-     * @param root0
-     * @param root0.item
-     * @param root0.audioTrackIndex
-     * @param root0.subtitleTrackIndex
-     * @param root0.videoTrackIndex
-     * @param root0.startFromIndex
-     * @param root0.startFromTime
-     * @param root0.initiator
-     * @param root0.startShuffled
      */
     async play({
       item,
