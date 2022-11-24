@@ -1,14 +1,13 @@
 import { DeviceProfile } from '@jellyfin/sdk/lib/generated-client';
-import { getCodecProfiles } from './playback-profiles/helpers/codec-profiles';
-import { getDirectPlayProfiles } from './playback-profiles/directplay-profile';
-import { getTranscodingProfiles } from './playback-profiles/transcoding-profile';
-import { getSubtitleProfiles } from './playback-profiles/subtitle-profile';
-import { getResponseProfiles } from './playback-profiles/response-profile';
+import { getCodecProfiles } from './helpers/codec-profiles';
+import { getDirectPlayProfiles } from './directplay-profile';
+import { getTranscodingProfiles } from './transcoding-profile';
+import { getSubtitleProfiles } from './subtitle-profile';
+import { getResponseProfiles } from './response-profile';
 
 /**
  * Creates a device profile containing supported codecs for the active Cast device.
  *
- * @param context - Nuxt context
  * @param videoTestElement - Dummy video element for compatibility tests
  * @returns Device profile.
  */

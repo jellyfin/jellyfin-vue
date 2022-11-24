@@ -3,7 +3,18 @@ import { RemovableRef, useStorage } from '@vueuse/core';
 import { v4 as uuidv4 } from 'uuid';
 import { DeviceState } from './types';
 import { version } from '@/../package.json';
-import { BrowserDetector } from '@/utils/browser-detection';
+import {
+  BrowserDetector,
+  isAndroid,
+  isApple,
+  isChrome,
+  isChromiumBased,
+  isEdge,
+  isFirefox,
+  isMobile,
+  isTizen,
+  isWebOS
+} from '@/utils/browser-detection';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 const state: RemovableRef<DeviceState> = useStorage(
@@ -36,27 +47,26 @@ const SDK = new Jellyfin({
  */
 function getDeviceName(): string {
   let deviceName = 'Unknown';
-  const $browser = new BrowserDetector();
 
   // TODO: Replace with pattern matching once TC39 adopts the proposal
   // See: https://github.com/tc39/proposal-pattern-matching
-  if ($browser.isChrome()) {
+  if (isChrome()) {
     deviceName = 'Chrome';
-  } else if ($browser.isEdge() && !$browser.isChromiumBased()) {
+  } else if (isEdge() && !isChromiumBased()) {
     deviceName = 'Edge (EdgeHTML)';
-  } else if ($browser.isEdge()) {
+  } else if (isEdge()) {
     deviceName = 'Edge (Chromium)';
-  } else if ($browser.isFirefox()) {
+  } else if (isFirefox()) {
     deviceName = 'Firefox';
-  } else if ($browser.isApple() && !$browser.isMobile()) {
+  } else if (isApple() && !isMobile()) {
     deviceName = 'Safari';
-  } else if ($browser.isWebOS()) {
+  } else if (isWebOS()) {
     deviceName = 'LG Smart TV';
-  } else if ($browser.isTizen()) {
+  } else if (isTizen()) {
     deviceName = 'Samsung Smart TV';
-  } else if ($browser.isApple() && $browser.isMobile()) {
+  } else if (isApple() && isMobile()) {
     deviceName = 'iPhone';
-  } else if ($browser.isAndroid()) {
+  } else if (isAndroid()) {
     deviceName = 'Android';
   }
 
