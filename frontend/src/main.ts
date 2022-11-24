@@ -1,13 +1,18 @@
+/* eslint-disable no-restricted-imports */
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
 import Root from '@/App.vue';
-import router from '@/plugins/vue/router';
-import i18n from '@/plugins/vue/i18n';
-import { vuetify } from '@/plugins/vue/vuetify';
+import {
+  createRemote,
+  createJSONConfig,
+  i18n,
+  router,
+  vuetify
+} from '@/plugins/vue';
 import { hideDirective } from '@/plugins/vue/directives';
 import piniaPlugins from '@/plugins/store';
-import { createRemote } from '@/plugins/vue/remote';
-import { createJSONConfig } from '@/plugins/vue/config';
+/* eslint-enable no-restricted-imports */
+
 /**
  * CSS Imports
  */
@@ -59,3 +64,5 @@ splashDOM?.addEventListener(
 );
 
 splashDOM?.classList.add('loadFinished');
+
+export default app;
