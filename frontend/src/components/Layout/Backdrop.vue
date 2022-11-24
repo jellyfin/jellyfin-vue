@@ -4,25 +4,18 @@
       v-if="blurhash"
       :key="`backdrop-${blurhash}`"
       class="backdrop"
-      :style="`--o:${page.backdrop.opacity}`">
+      :style="`--o:${opacity}`">
       <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
     </div>
   </v-fade-transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { pageStore } from '~/store';
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
 
-export default defineComponent({
-  computed: {
-    ...mapStores(pageStore),
-    blurhash(): string | null | undefined {
-      return this.page.backdrop.blurhash;
-    }
-  }
-});
+const route = useRoute();
+const blurhash = route.meta.backdrop?.blurhash;
+const opacity = route.meta.backdrop?.opacity || 0.75;
 </script>
 
 <style lang="scss" scoped>

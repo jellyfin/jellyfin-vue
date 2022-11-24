@@ -1,11 +1,23 @@
 import 'vue-router';
+/* eslint-disable no-restricted-imports */
 import { RemotePlugin } from './plugins/vue/remote/types';
+/* eslint-enable no-restricted-imports */
 
+/**
+ * The object that represents RouteMeta is defined at @/plugins/vue/router/middleware/meta
+ */
+interface BackdropPayload {
+  blurhash?: string;
+  opacity?: number;
+}
 declare module 'vue-router' {
   interface RouteMeta {
-    layout?: string;
+    readonly layout: string;
+    transparentLayout?: boolean;
     transition?: string;
-    admin?: boolean;
+    readonly admin: boolean;
+    title?: string | null;
+    backdrop: BackdropPayload;
   }
 }
 
