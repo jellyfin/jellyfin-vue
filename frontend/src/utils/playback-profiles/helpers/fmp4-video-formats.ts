@@ -1,34 +1,39 @@
 import { hasH264Support, hasHevcSupport } from './mp4-video-formats';
+import {
+  isApple,
+  isChrome,
+  isEdge,
+  isFirefox,
+  isTizen,
+  isWebOS
+} from '@/utils/browser-detection';
 
 /**
- * @param context - Nuxt context
+ * Gets an array of supported fmp4 video codecs
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns List of supported fmp4 video codecs
  */
 export function getSupportedFmp4VideoCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
 
   if (
-    (context.$browser.isApple() ||
-      context.$browser.isEdge() ||
-      context.$browser.isTizen() ||
-      context.$browser.isWebOS()) &&
-    hasHevcSupport(context, videoTestElement)
+    (isApple() || isEdge() || isTizen() || isWebOS()) &&
+    hasHevcSupport(videoTestElement)
   ) {
     codecs.push('hevc');
   }
 
   if (
     hasH264Support(videoTestElement) &&
-    (context.$browser.isChrome() ||
-      context.$browser.isFirefox() ||
-      context.$browser.isApple() ||
-      context.$browser.isEdge() ||
-      context.$browser.isTizen() ||
-      context.$browser.isWebOS())
+    (isChrome() ||
+      isFirefox() ||
+      isApple() ||
+      isEdge() ||
+      isTizen() ||
+      isWebOS())
   ) {
     codecs.push('h264');
   }
