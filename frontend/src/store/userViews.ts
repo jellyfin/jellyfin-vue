@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryIcon } from '~/utils/items';
+import { useRemote } from '@/composables';
 
 export interface UserViewsState {
   views: BaseItemDto[];
@@ -14,7 +15,7 @@ export const userViewsStore = defineStore('userViews', {
   },
   actions: {
     async refreshUserViews(): Promise<void> {
-      const auth = authStore();
+      const auth = useRemote().auth;
 
       try {
         const userViewsResponse = await this.$nuxt.$api.userViews.getUserViews({
