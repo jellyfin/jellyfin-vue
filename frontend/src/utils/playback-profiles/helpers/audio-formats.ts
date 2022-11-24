@@ -1,5 +1,4 @@
 import { BrowserDetector } from '@/utils/browser-detection';
-import { Context } from '@nuxt/types';
 
 const $browser = new BrowserDetector();
 /**
