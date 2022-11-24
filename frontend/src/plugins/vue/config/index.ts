@@ -8,7 +8,7 @@ const data = (await response.json()) as ExternalJSONConfig;
 /**
  * Parses external configuration file (config.json in public folder)
  */
-export function createJSONConfig(): { install: () => Promise<void> } {
+export default function createJSONConfig(): { install: () => Promise<void> } {
   return {
     install: async (): Promise<void> => {
       const auth = useRemote().auth;
