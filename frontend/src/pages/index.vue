@@ -46,7 +46,7 @@ export default defineComponent({
     const route = useRoute();
 
     route.meta.title = t('home');
-    route.meta.layout.transparent = true;
+    route.meta.transparentLayout = true;
   },
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
   // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
