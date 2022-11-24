@@ -1,3 +1,4 @@
+import { useRemote } from '@/composables';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
 
@@ -96,12 +97,12 @@ export const itemsStore = defineStore('items', {
     async fetchAndAddCollection(
       parentId: string | undefined
     ): Promise<BaseItemDto[] | undefined> {
-      const auth = authStore();
+      const auth = useRemote().auth;
 
       if (parentId && !this.getItemById(parentId)) {
         const parentItem = (
           await this.$nuxt.$api.items.getItems({
-            userId: auth.currentUserId,
+            userId: auth.currentUserId.value,
             ids: [parentId],
             fields: Object.values(ItemFields)
           })
