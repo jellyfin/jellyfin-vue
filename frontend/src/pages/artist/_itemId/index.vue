@@ -113,28 +113,18 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import {
   BaseItemDto,
   ImageType,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
-import { getItemDetailsLink, isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
+import { getItemDetailsLink } from '~/utils/items';
 import { msToTicks } from '~/utils/time';
 
 export default defineComponent({
-  meta: {
-    backdrop: true,
-    transparentLayout: true
-  },
-  validate(context: Context) {
-    return isValidMD5(context.route.params.itemId);
-  },
   async asyncData({ params, $api }) {
     const albumBreakpoints = {
       singleMsMaxLength: 600_000,
@@ -235,13 +225,7 @@ export default defineComponent({
       item: {} as BaseItemDto
     };
   },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
   computed: {
-    ...mapStores(pageStore),
     overview(): string {
       return this.item?.Overview ? sanitizeHtml(this.item.Overview) : '';
     },
@@ -254,9 +238,11 @@ export default defineComponent({
       immediate: true,
       deep: true,
       handler(value: BaseItemDto): void {
-        this.page.title = value.Name || '';
-
-        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
+        this.$route.meta.title = value.Name || '';
+        this.$route.meta.backdrop.blurhash = getBlurhash(
+          value,
+          ImageType.Backdrop
+        );
       }
     }
   },
