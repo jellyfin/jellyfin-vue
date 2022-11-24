@@ -11,6 +11,7 @@ import {
 import { defineStore } from 'pinia';
 import isNil from 'lodash/isNil';
 import { itemsStore } from '.';
+import { useRemote } from '@/composables';
 
 export enum PlaybackStatus {
   Stopped = 0,
@@ -412,7 +413,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       item: BaseItemDto,
       shuffle = false
     ): Promise<string[]> {
-      const auth = authStore();
+      const auth = useRemote().auth;
       let responseItems: BaseItemDto[] = [];
 
       if (item.Type === 'Program' && item.ChannelId) {
@@ -422,7 +423,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
               ids: [item.ChannelId],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId,
+              userId: auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -433,7 +434,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
               parentId: item.Id,
               limit: 300,
               sortBy: shuffle ? ['Random'] : undefined,
-              userId: auth.currentUserId,
+              userId: auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -447,7 +448,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
               mediaTypes: ['Audio'],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId,
+              userId: auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -461,7 +462,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
               mediaTypes: ['Audio'],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId,
+              userId: auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -479,7 +480,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
                 : ['SortName'],
               mediaTypes: ['Audio', 'Video'],
               limit: 300,
-              userId: auth.currentUserId,
+              userId: auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -498,7 +499,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
                 isMissing: false,
                 startItemId: item.Id,
                 limit: 300,
-                userId: auth.currentUserId,
+                userId: auth.currentUserId.value,
                 fields: Object.values(ItemFields)
               })
             ).data.Items || [];
