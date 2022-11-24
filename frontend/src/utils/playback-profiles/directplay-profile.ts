@@ -3,12 +3,12 @@ import {
   DlnaProfileType
 } from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
-import { getSupportedMP4VideoCodecs } from './helpers/mp4VideoFormats';
-import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
-import { hasMkvSupport } from './helpers/transcodingFormats';
-import { getSupportedWebMAudioCodecs } from './helpers/webmAudioFormats';
-import { getSupportedWebMVideoCodecs } from './helpers/webmVideoFormats';
-import { getSupportedAudioCodecs } from './helpers/audioFormats';
+import { getSupportedMP4VideoCodecs } from './helpers/mp4-video-formats';
+import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
+import { hasMkvSupport } from './helpers/transcoding-formats';
+import { getSupportedWebMAudioCodecs } from './helpers/webm-audio-formats';
+import { getSupportedWebMVideoCodecs } from './helpers/webm-video-formats';
+import { getSupportedAudioCodecs } from './helpers/audio-formats';
 
 /**
  * Returns a valid DirectPlayProfile for the current platform.
