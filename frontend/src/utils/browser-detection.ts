@@ -2,308 +2,290 @@
  * Utilities to detect the browser and get information on the current environment
  * Based on https://github.com/google/shaka-player/blob/master/lib/util/platform.js
  *
- * @class BrowserDetector
  */
-export class BrowserDetector {
-  supportsMediaSource(): boolean {
-    // Browsers that lack a media source implementation will have no reference
-    // to |window.MediaSource|.
-    return !!window.MediaSource;
+export function supportsMediaSource(): boolean {
+  // Browsers that lack a media source implementation will have no reference
+  // to |window.MediaSource|.
+  return !!window.MediaSource;
+}
+
+/**
+ * Check if the user agent of the navigator contains a key.
+ *
+ * @private
+ * @static
+ * @param key - Key for which to perform a check.
+ * @returns Determines if user agent of navigator contains a key
+ */
+function userAgentContains(key: string): boolean {
+  const userAgent = navigator.userAgent || '';
+
+  return userAgent.includes(key);
+}
+
+/* Desktop Browsers */
+
+/**
+ * Check if the current platform is Mozilla Firefox.
+ *
+ * @returns Determines if browser is Mozilla Firefox
+ */
+export function isFirefox(): boolean {
+  return userAgentContains('Firefox/');
+}
+
+/**
+ * Check if the current platform is Microsoft Edge.
+ *
+ * @static
+ * @returns Determines if browser is Microsoft Edge
+ */
+export function isEdge(): boolean {
+  return userAgentContains('Edg/') || userAgentContains('Edge/');
+}
+
+/**
+ * Check if the current platform is Chromium based.
+ *
+ * @returns Determines if browser is Chromium based
+ */
+export function isChromiumBased(): boolean {
+  return userAgentContains('Chrome');
+}
+
+/**
+ * Check if the current platform is Google Chrome.
+ *
+ * @returns Determines if browser is Google Chrome
+ */
+export function isChrome(): boolean {
+  // The Edge user agent will also contain the "Chrome" keyword, so we need
+  // to make sure this is not Edge.
+  return userAgentContains('Chrome') && !isEdge();
+}
+
+/**
+ * Check if the current platform is from Apple.
+ *
+ * Returns true on all iOS browsers and on desktop Safari.
+ *
+ * Returns false for non-Safari browsers on macOS, which are independent of
+ * Apple.
+ *
+ * @returns Determines if current platform is from Apple
+ */
+export function isApple(): boolean {
+  return navigator?.vendor.includes('Apple') && !isTizen();
+}
+
+/**
+ * Returns a major version number for Safari, or Safari-based iOS browsers.
+ *
+ * @returns The major version number for Safari
+ */
+export function safariVersion(): number | undefined {
+  // All iOS browsers and desktop Safari will return true for isApple().
+  if (!isApple()) {
+    return;
   }
 
-  /**
-   * Check if the user agent of the navigator contains a key.
-   *
-   * @private
-   * @static
-   * @param key - Key for which to perform a check.
-   * @returns Determines if user agent of navigator contains a key
-   * @memberof BrowserDetector
-   */
-  private userAgentContains(key: string): boolean {
-    const userAgent = navigator.userAgent || '';
+  let userAgent = '';
 
-    return userAgent.includes(key);
+  if (navigator.userAgent) {
+    userAgent = navigator.userAgent;
   }
 
-  /* Desktop Browsers */
+  // This works for iOS Safari and desktop Safari, which contain something
+  // like "Version/13.0" indicating the major Safari or iOS version.
+  let match = userAgent.match(/Version\/(\d+)/);
 
-  /**
-   * Check if the current platform is Mozilla Firefox.
-   *
-   * @returns Determines if browser is Mozilla Firefox
-   * @memberof BrowserDetector
-   */
-  isFirefox(): boolean {
-    return this.userAgentContains('Firefox/');
+  if (match) {
+    return Number.parseInt(match[1], /* base= */ 10);
   }
 
-  /**
-   * Check if the current platform is Microsoft Edge.
-   *
-   * @static
-   * @returns Determines if browser is Microsoft Edge
-   * @memberof BrowserDetector
-   */
-  isEdge(): boolean {
-    return this.userAgentContains('Edg/') || this.userAgentContains('Edge/');
+  // This works for all other browsers on iOS, which contain something like
+  // "OS 13_3" indicating the major & minor iOS version.
+  match = userAgent.match(/OS (\d+)(?:_\d+)?/);
+
+  if (match) {
+    return Number.parseInt(match[1], /* base= */ 10);
+  }
+}
+
+/* TV Platforms */
+
+/**
+ * Check if the current platform is Tizen.
+ *
+ * @returns Determines if current platform is Tizen
+ */
+export function isTizen(): boolean {
+  return userAgentContains('Tizen');
+}
+
+/**
+ * Check if the current platform is Tizen 2
+ *
+ * @returns Determines if current platform is Tizen 2
+ */
+export function isTizen2(): boolean {
+  return userAgentContains('Tizen 2');
+}
+
+/**
+ * Check if the current platform is Tizen 3
+ *
+ * @returns Determines if current platform is Tizen 3
+ * @memberof BrowserDetector
+ */
+export function isTizen3(): boolean {
+  return userAgentContains('Tizen 3');
+}
+
+/**
+ * Check if the current platform is Tizen 4.
+ *
+ * @returns Determines if current platform is Tizen 4
+ * @memberof BrowserDetector
+ */
+export function isTizen4(): boolean {
+  return userAgentContains('Tizen 4');
+}
+
+/**
+ * Check if the current platform is Tizen 5.
+ *
+ * @returns Determines if current platform is Tizen 5
+ * @memberof BrowserDetector
+ */
+export function isTizen5(): boolean {
+  return userAgentContains('Tizen 5');
+}
+
+/**
+ * Check if the current platform is Tizen 5.5.
+ *
+ * @returns Determines if current platform is Tizen 5.5
+ * @memberof BrowserDetector
+ */
+export function isTizen55(): boolean {
+  return userAgentContains('Tizen 5.5');
+}
+
+/**
+ * Check if the current platform is WebOS.
+ *
+ * @returns Determines if current platform is WebOS
+ * @memberof BrowserDetector
+ */
+export function isWebOS(): boolean {
+  return userAgentContains('WebOS');
+}
+
+/**
+ * Determines if current platform is WebOS1
+ */
+export function isWebOS1(): boolean {
+  return (
+    isWebOS() &&
+    userAgentContains('AppleWebKit/537') &&
+    !userAgentContains('Chrome/')
+  );
+}
+
+/**
+ * Determines if current platform is WebOS2
+ */
+export function isWebOS2(): boolean {
+  return (
+    isWebOS() &&
+    userAgentContains('AppleWebKit/538') &&
+    !userAgentContains('Chrome/')
+  );
+}
+
+/**
+ * Determines if current platform is WebOS3
+ */
+export function isWebOS3(): boolean {
+  return isWebOS() && userAgentContains('Chrome/38');
+}
+
+/**
+ * Determines if current platform is WebOS4
+ */
+export function isWebOS4(): boolean {
+  return isWebOS() && userAgentContains('Chrome/53');
+}
+
+/**
+ * Determines if current platform is WebOS5
+ */
+export function isWebOS5(): boolean {
+  return isWebOS() && userAgentContains('Chrome/68');
+}
+
+/* Platform Utilities */
+
+/**
+ * Determines if current platform is Android
+ */
+export function isAndroid(): boolean {
+  return userAgentContains('Android');
+}
+
+/**
+ * Guesses if the platform is a mobile one (iOS or Android).
+ *
+ * @returns Determines if current platform is mobile (Guess)
+ */
+export function isMobile(): boolean {
+  let userAgent = '';
+
+  if (navigator.userAgent) {
+    userAgent = navigator.userAgent;
   }
 
-  /**
-   * Check if the current platform is Chromium based.
-   *
-   * @returns Determines if browser is Chromium based
-   * @memberof BrowserDetector
-   */
-  isChromiumBased(): boolean {
-    return this.userAgentContains('Chrome');
+  if (/iPhone|iPad|iPod|Android/.test(userAgent)) {
+    // This is Android, iOS, or iPad < 13.
+    return true;
   }
 
-  /**
-   * Check if the current platform is Google Chrome.
-   *
-   * @returns Determines if browser is Google Chrome
-   * @memberof BrowserDetector
-   */
-  isChrome(): boolean {
-    // The Edge user agent will also contain the "Chrome" keyword, so we need
-    // to make sure this is not Edge.
-    return this.userAgentContains('Chrome') && !this.isEdge();
-  }
+  // Starting with iOS 13 on iPad, the user agent string no longer has the
+  // word "iPad" in it.  It looks very similar to desktop Safari.  This seems
+  // to be intentional on Apple's part.
+  // See: https://forums.developer.apple.com/thread/119186
+  //
+  // So if it's an Apple device with multi-touch support, assume it's a mobile
+  // device.  If some future iOS version starts masking their user agent on
+  // both iPhone & iPad, this clause should still work.  If a future
+  // multi-touch desktop Mac is released, this will need some adjustment.
+  return isApple() && navigator.maxTouchPoints > 1;
+}
 
-  /**
-   * Check if the current platform is from Apple.
-   *
-   * Returns true on all iOS browsers and on desktop Safari.
-   *
-   * Returns false for non-Safari browsers on macOS, which are independent of
-   * Apple.
-   *
-   * @returns Determines if current platform is from Apple
-   * @memberof BrowserDetector
-   */
-  isApple(): boolean {
-    return navigator?.vendor.includes('Apple') && !this.isTizen();
-  }
+/**
+ * Guesses if the platform is a Smart TV (Tizen or WebOS).
+ *
+ * @returns Determines if platform is a Smart TV
+ */
+export function isTv(): boolean {
+  return isTizen() || isWebOS();
+}
 
-  /**
-   * Returns a major version number for Safari, or Safari-based iOS browsers.
-   *
-   * @returns The major version number for Safari
-   * @memberof BrowserDetector
-   */
-  safariVersion(): number | null {
-    // All iOS browsers and desktop Safari will return true for isApple().
-    if (!this.isApple()) {
-      return null;
-    }
+/**
+ * Guesses if the platform is a PS4
+ *
+ * @returns Determines if the device is a PS4
+ */
+export function isPs4(): boolean {
+  return userAgentContains('playstation 4');
+}
 
-    let userAgent = '';
-
-    if (navigator.userAgent) {
-      userAgent = navigator.userAgent;
-    }
-
-    // This works for iOS Safari and desktop Safari, which contain something
-    // like "Version/13.0" indicating the major Safari or iOS version.
-    let match = userAgent.match(/Version\/(\d+)/);
-
-    if (match) {
-      return Number.parseInt(match[1], /* base= */ 10);
-    }
-
-    // This works for all other browsers on iOS, which contain something like
-    // "OS 13_3" indicating the major & minor iOS version.
-    match = userAgent.match(/OS (\d+)(?:_\d+)?/);
-
-    if (match) {
-      return Number.parseInt(match[1], /* base= */ 10);
-    }
-
-    return null;
-  }
-
-  /* TV Platforms */
-
-  /**
-   * Check if the current platform is Tizen.
-   *
-   * @returns Determines if current platform is Tizen
-   * @memberof BrowserDetector
-   */
-  isTizen(): boolean {
-    return this.userAgentContains('Tizen');
-  }
-
-  /**
-   * Check if the current platform is Tizen 2
-   *
-   * @returns Determines if current platform is Tizen 2
-   * @memberof BrowserDetector
-   */
-  isTizen2(): boolean {
-    return this.userAgentContains('Tizen 2');
-  }
-
-  /**
-   * Check if the current platform is Tizen 3
-   *
-   * @returns Determines if current platform is Tizen 3
-   * @memberof BrowserDetector
-   */
-  isTizen3(): boolean {
-    return this.userAgentContains('Tizen 3');
-  }
-
-  /**
-   * Check if the current platform is Tizen 4.
-   *
-   * @returns Determines if current platform is Tizen 4
-   * @memberof BrowserDetector
-   */
-  isTizen4(): boolean {
-    return this.userAgentContains('Tizen 4');
-  }
-
-  /**
-   * Check if the current platform is Tizen 5.
-   *
-   * @returns Determines if current platform is Tizen 5
-   * @memberof BrowserDetector
-   */
-  isTizen5(): boolean {
-    return this.userAgentContains('Tizen 5');
-  }
-
-  /**
-   * Check if the current platform is Tizen 5.5.
-   *
-   * @returns Determines if current platform is Tizen 5.5
-   * @memberof BrowserDetector
-   */
-  isTizen55(): boolean {
-    return this.userAgentContains('Tizen 5.5');
-  }
-
-  /**
-   * Check if the current platform is WebOS.
-   *
-   * @returns Determines if current platform is WebOS
-   * @memberof BrowserDetector
-   */
-  isWebOS(): boolean {
-    return this.userAgentContains('WebOS');
-  }
-
-  /**
-   * Determines if current platform is WebOS1
-   */
-  isWebOS1(): boolean {
-    return (
-      this.isWebOS() &&
-      this.userAgentContains('AppleWebKit/537') &&
-      !this.userAgentContains('Chrome/')
-    );
-  }
-
-  /**
-   * Determines if current platform is WebOS2
-   */
-  isWebOS2(): boolean {
-    return (
-      this.isWebOS() &&
-      this.userAgentContains('AppleWebKit/538') &&
-      !this.userAgentContains('Chrome/')
-    );
-  }
-
-  /**
-   * Determines if current platform is WebOS3
-   */
-  isWebOS3(): boolean {
-    return this.isWebOS() && this.userAgentContains('Chrome/38');
-  }
-
-  /**
-   * Determines if current platform is WebOS4
-   */
-  isWebOS4(): boolean {
-    return this.isWebOS() && this.userAgentContains('Chrome/53');
-  }
-
-  /**
-   * Determines if current platform is WebOS5
-   */
-  isWebOS5(): boolean {
-    return this.isWebOS() && this.userAgentContains('Chrome/68');
-  }
-
-  /* Platform Utilities */
-
-  /**
-   * Determines if current platform is Android
-   */
-  isAndroid(): boolean {
-    return this.userAgentContains('Android');
-  }
-
-  /**
-   * Guesses if the platform is a mobile one (iOS or Android).
-   *
-   * @returns Determines if current platform is mobile (Guess)
-   * @memberof BrowserDetector
-   */
-  isMobile(): boolean {
-    let userAgent = '';
-
-    if (navigator.userAgent) {
-      userAgent = navigator.userAgent;
-    }
-
-    if (/iPhone|iPad|iPod|Android/.test(userAgent)) {
-      // This is Android, iOS, or iPad < 13.
-      return true;
-    }
-
-    // Starting with iOS 13 on iPad, the user agent string no longer has the
-    // word "iPad" in it.  It looks very similar to desktop Safari.  This seems
-    // to be intentional on Apple's part.
-    // See: https://forums.developer.apple.com/thread/119186
-    //
-    // So if it's an Apple device with multi-touch support, assume it's a mobile
-    // device.  If some future iOS version starts masking their user agent on
-    // both iPhone & iPad, this clause should still work.  If a future
-    // multi-touch desktop Mac is released, this will need some adjustment.
-    return this.isApple() && navigator.maxTouchPoints > 1;
-  }
-
-  /**
-   * Guesses if the platform is a Smart TV (Tizen or WebOS).
-   *
-   * @returns Determines if platform is a Smart TV
-   * @memberof BrowserDetector
-   */
-  isTv(): boolean {
-    return this.isTizen() || this.isWebOS();
-  }
-
-  /**
-   * Guesses if the platform is a PS4
-   *
-   * @returns Determines if the device is a PS4
-   * @memberof BrowserDetector
-   */
-  isPs4(): boolean {
-    return this.userAgentContains('playstation 4');
-  }
-
-  /**
-   * Guesses if the platform is a Xbox
-   *
-   * @returns Determines if the device is a Xbox
-   * @memberof BrowserDetector
-   */
-  isXbox(): boolean {
-    return this.userAgentContains('xbox');
-  }
+/**
+ * Guesses if the platform is a Xbox
+ *
+ * @returns Determines if the device is a Xbox
+ */
+export function isXbox(): boolean {
+  return userAgentContains('xbox');
 }

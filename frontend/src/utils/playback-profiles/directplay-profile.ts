@@ -17,22 +17,15 @@ import { getSupportedAudioCodecs } from './helpers/audio-formats';
  * @returns An array of direct play profiles for the current platform.
  */
 export function getDirectPlayProfiles(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<DirectPlayProfile> {
   const DirectPlayProfiles: DirectPlayProfile[] = [];
 
-  const webmVideoCodecs = getSupportedWebMVideoCodecs(
-    context,
-    videoTestElement
-  );
-  const webmAudioCodecs = getSupportedWebMAudioCodecs(
-    context,
-    videoTestElement
-  );
+  const webmVideoCodecs = getSupportedWebMVideoCodecs(videoTestElement);
+  const webmAudioCodecs = getSupportedWebMAudioCodecs(videoTestElement);
 
-  const mp4VideoCodecs = getSupportedMP4VideoCodecs(context, videoTestElement);
-  const mp4AudioCodecs = getSupportedMP4AudioCodecs(context, videoTestElement);
+  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
 
   if (webmVideoCodecs.length > 0) {
     DirectPlayProfiles.push({
@@ -52,7 +45,7 @@ export function getDirectPlayProfiles(
     });
   }
 
-  if (hasMkvSupport(context, videoTestElement) && mp4VideoCodecs.length > 0) {
+  if (hasMkvSupport(videoTestElement) && mp4VideoCodecs.length > 0) {
     DirectPlayProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,
@@ -76,7 +69,7 @@ export function getDirectPlayProfiles(
   ];
 
   for (const audioFormat of supportedAudio.filter((format) =>
-    getSupportedAudioCodecs(context, format)
+    getSupportedAudioCodecs(format)
   )) {
     DirectPlayProfiles.push({
       Container: audioFormat,
