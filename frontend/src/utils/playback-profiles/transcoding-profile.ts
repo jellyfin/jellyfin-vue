@@ -4,19 +4,19 @@ import {
   TranscodingProfile
 } from '@jellyfin/sdk/lib/generated-client';
 import { Context } from '@nuxt/types';
-import { getSupportedAudioCodecs } from './helpers/audioFormats';
-import { getSupportedMP4AudioCodecs } from './helpers/mp4AudioFormats';
+import { getSupportedAudioCodecs } from './helpers/audio-formats';
+import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
 import {
   getSupportedMP4VideoCodecs,
   hasVp8Support
-} from './helpers/mp4VideoFormats';
+} from './helpers/mp4-video-formats';
 import {
   canPlayNativeHls,
   canPlayHlsWithMSE,
   hasMkvSupport
-} from './helpers/transcodingFormats';
-import { getSupportedTsAudioCodecs } from './helpers/tsAudioFormats';
-import { getSupportedTsVideoCodecs } from './helpers/tsVideoFormats';
+} from './helpers/transcoding-formats';
+import { getSupportedTsAudioCodecs } from './helpers/ts-audio-formats';
+import { getSupportedTsVideoCodecs } from './helpers/ts-video-formats';
 
 /**
  * Returns a valid TranscodingProfile for the current platform.
