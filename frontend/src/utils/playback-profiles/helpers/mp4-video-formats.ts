@@ -1,5 +1,3 @@
-import { Context } from '@nuxt/types';
-
 /**
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if browser has H264 support
