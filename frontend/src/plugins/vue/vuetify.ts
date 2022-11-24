@@ -24,7 +24,7 @@ const light: ThemeDefinition = {
   }
 };
 
-export const vuetify = createVuetify({
+const vuetify = createVuetify({
   blueprint: md3,
   defaults: {
     select: {
@@ -42,3 +42,5 @@ export const vuetify = createVuetify({
     }
   }
 });
+
+export default vuetify;
