@@ -94,13 +94,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { version } from '@/../package.json';
-import { pageStore } from '~/store';
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    route.meta.title = t('settings.settings');
+  },
   async asyncData({ $api }) {
     if (auth.currentUser.value?.Policy?.IsAdministrator) {
       const systemInfo = (await $api.system.getSystemInfo()).data;
@@ -220,12 +226,6 @@ export default defineComponent({
         ]
       ]
     };
-  },
-  computed: {
-    ...mapStores(pageStore)
-  },
-  mounted() {
-    this.page.title = this.$t('settings.settings');
   },
   methods: {
     isEmpty

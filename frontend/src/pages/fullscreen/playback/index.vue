@@ -27,13 +27,9 @@ import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import Swiper, { SwiperOptions } from 'swiper';
 import { getBlurhash } from '~/utils/images';
-import { pageStore, playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
-  meta: {
-    backdrop: { opacity: 0.5 },
-    transparentLayout: true
-  },
   data() {
     return {
       swiperOptions: {
@@ -55,7 +51,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(pageStore, playbackManagerStore),
+    ...mapStores(playbackManagerStore),
     backdropHash(): string | undefined {
       return this.playbackManager.getCurrentItem
         ? getBlurhash(this.playbackManager.getCurrentItem, ImageType.Primary)
@@ -65,7 +61,7 @@ export default defineComponent({
   watch: {
     'playbackManager.currentItemIndex'(newIndex: number): void {
       this.swiper?.slideTo(newIndex);
-      this.page.backdrop.blurhash = this.backdropHash;
+      this.$route.meta.backdrop.blurhash = this.backdropHash;
     },
     'playbackManager.getQueueItems'(): void {
       this.update();
@@ -83,7 +79,7 @@ export default defineComponent({
     this.swiperOptions.initialSlide =
       this.playbackManager.currentItemIndex || 0;
     requestAnimationFrame(() => {
-      this.page.backdrop.blurhash = this.backdropHash;
+      this.$route.meta.backdrop.blurhash = this.backdropHash;
     });
   },
   mounted() {
@@ -102,7 +98,7 @@ export default defineComponent({
       }
     },
     onImageError(): void {
-      this.page.clearBackdrop();
+      this.$route.meta.backdrop.blurhash = undefined;
     },
     update(): void {
       this.swiper?.update();
