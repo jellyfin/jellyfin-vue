@@ -5,7 +5,6 @@ import {
   ProfileCondition,
   ProfileConditionValue
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 
 /**
  * Gets the max video bitrate

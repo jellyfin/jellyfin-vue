@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types';
 import { hasH264Support, hasHevcSupport } from './mp4-video-formats';
 
 /**

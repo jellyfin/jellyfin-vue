@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types';
 import {
   hasAacSupport,
   hasAc3InHlsSupport,
