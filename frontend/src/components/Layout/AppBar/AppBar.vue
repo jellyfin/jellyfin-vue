@@ -72,11 +72,8 @@ export default defineComponent({
   setup() {
     const route = useRoute();
 
-    const transparentLayout = computed(() => {
-      return typeof route.meta.layout !== 'string' &&
-        route.meta.layout?.transparent
-        ? route.meta.layout.transparent
-        : false;
+    const transparentLayout = computed<boolean>(() => {
+      return route.meta.transparentLayout || false;
     });
 
     return { transparentLayout };
