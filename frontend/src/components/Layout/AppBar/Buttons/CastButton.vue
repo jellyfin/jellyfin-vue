@@ -34,11 +34,11 @@
             </v-list-item-action>
           </v-list-item>
           <v-divider />
-          <v-list-item v-if="$features.airPlay">
+          <v-list-item v-if="features.airPlay">
             <v-icon>mdi-apple-airplay</v-icon>
             {{ $t('airPlayDevices') }}
           </v-list-item>
-          <v-list-item v-if="$features.googleCast">
+          <v-list-item v-if="features.googleCast">
             <v-icon>mdi-cast</v-icon>
             {{ $t('googleCastPlaceholderDevice') }}
           </v-list-item>
@@ -52,24 +52,22 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import supportedFeatures from '@/utils/supported-features';
 
-export default defineComponent({
-  props: {
-    fab: {
-      type: Boolean,
-      required: false
-    },
-    nudgeBottom: {
-      type: Number,
-      default: 5
-    }
+defineProps({
+  fab: {
+    type: Boolean,
+    required: false
   },
-  data() {
-    return {
-      menu: false
-    };
+  nudgeBottom: {
+    type: Number,
+    default: 5
   }
 });
+
+const menu = ref(false);
+
+const features = supportedFeatures;
 </script>
