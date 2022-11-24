@@ -1,17 +1,18 @@
 import { hasH264Support, hasH265Support } from './mp4-video-formats';
 import { hasEac3Support, hasAacSupport } from './mp4-audio-formats';
 import { getSupportedAudioCodecs } from './audio-formats';
+import { isTv } from '@/utils/browser-detection';
 
 /**
- * @param context - Nuxt context
+ * Check if client supports AC3 in HLS stream
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if the browser has AC3 in HLS support
  */
 function supportsAc3InHls(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): boolean | string {
-  if (context.$browser.isTv()) {
+  if (isTv()) {
     return true;
   }
 
@@ -32,12 +33,12 @@ function supportsAc3InHls(
 }
 
 /**
- * @param context - Nuxt context
+ * Gets the supported HLS video codecs
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Array of video codecs supported in HLS
  */
 export function getHlsVideoCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const hlsVideoCodecs = [];
@@ -46,7 +47,7 @@ export function getHlsVideoCodecs(
     hlsVideoCodecs.push('h264');
   }
 
-  if (hasH265Support(context, videoTestElement) || context.$browser.isTv()) {
+  if (hasH265Support(videoTestElement) || isTv()) {
     hlsVideoCodecs.push('h265', 'hevc');
   }
 
@@ -54,20 +55,20 @@ export function getHlsVideoCodecs(
 }
 
 /**
- * @param context - Nuxt context
+ * Gets the supported HLS audio codecs
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Array of audio codecs supported in HLS
  */
 export function getHlsAudioCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const hlsVideoAudioCodecs = [];
 
-  if (supportsAc3InHls(context, videoTestElement)) {
+  if (supportsAc3InHls(videoTestElement)) {
     hlsVideoAudioCodecs.push('ac3');
 
-    if (hasEac3Support(context, videoTestElement)) {
+    if (hasEac3Support(videoTestElement)) {
       hlsVideoAudioCodecs.push('eac3');
     }
   }
@@ -76,7 +77,7 @@ export function getHlsAudioCodecs(
     hlsVideoAudioCodecs.push('aac');
   }
 
-  if (getSupportedAudioCodecs(context, 'opus')) {
+  if (getSupportedAudioCodecs('opus')) {
     hlsVideoAudioCodecs.push('opus');
   }
 

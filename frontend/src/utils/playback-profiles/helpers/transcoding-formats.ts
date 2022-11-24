@@ -1,46 +1,41 @@
+import {
+  isEdge,
+  isTizen,
+  isTv,
+  supportsMediaSource
+} from '@/utils/browser-detection';
+
 /**
- * @param context - Nuxt context
+ * Checks if the client can play native HLS
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if the browser can play native Hls
  */
-export function canPlayNativeHls(
-  context: Context,
-  videoTestElement: HTMLVideoElement
-): boolean {
-  if (context.$browser.isTizen()) {
+export function canPlayNativeHls(videoTestElement: HTMLVideoElement): boolean {
+  if (isTizen()) {
     return true;
   }
 
-  if (
+  return !!(
     videoTestElement.canPlayType('application/x-mpegURL').replace(/no/, '') ||
     videoTestElement
       .canPlayType('application/vnd.apple.mpegURL')
       .replace(/no/, '')
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
- * @param context - Nuxt context
- * @returns Determines if the browser can play Hls with Media Source Extensions
+ * Determines if the browser can play Hls with Media Source Extensions
  */
-export function canPlayHlsWithMSE(context: Context): boolean {
-  return context.$browser.supportsMediaSource();
+export function canPlayHlsWithMSE(): boolean {
+  return supportsMediaSource();
 }
 
 /**
- * @param context - Nuxt context
- * @param videoTestElement - A HTML video element for testing codecs
- * @returns Determines if the browser can play Mkvs
+ * Determines if the browser can play Mkvs
  */
-export function hasMkvSupport(
-  context: Context,
-  videoTestElement: HTMLVideoElement
-): boolean {
-  if (context.$browser.isTv()) {
+export function hasMkvSupport(videoTestElement: HTMLVideoElement): boolean {
+  if (isTv()) {
     return true;
   }
 
@@ -51,9 +46,5 @@ export function hasMkvSupport(
     return true;
   }
 
-  if (context.$browser.isEdge()) {
-    return true;
-  }
-
-  return false;
+  return !!isEdge();
 }
