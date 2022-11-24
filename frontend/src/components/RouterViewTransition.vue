@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
  */
 function getKey(route: RouteLocationNormalized): string {
   if (props.isRoot) {
-    return String(route.meta.layout) || 'default';
+    return route.meta.layout.name;
   }
 
   return String(route.name);
