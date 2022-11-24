@@ -73,15 +73,25 @@
   </v-container>
 </template>
 
+<route lang="yaml">
+meta:
+  layout:
+    name: fullpage
+</route>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { pageStore } from '~/store';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
-  layout: 'fullpage',
   setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    route.meta.title = t('wizard.setupWizard');
+
     return {
       useSnackbar
     };
@@ -92,13 +102,7 @@ export default defineComponent({
       maxWizardStage: 1
     };
   },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
   computed: {
-    ...mapStores(pageStore),
     heading(): string {
       switch (this.wizardStage) {
         case 1: {
@@ -117,9 +121,6 @@ export default defineComponent({
 
       return '';
     }
-  },
-  mounted() {
-    this.page.title = this.$t('wizard.setupWizard');
   },
   methods: {
     async completeWizard(): Promise<void> {

@@ -9,7 +9,7 @@
     clipped
     class="pa-s"
     :class="{
-      transparent: page.transparentLayout && !$vuetify.display.mobile
+      transparent: transparentLayout && !$vuetify.display.mobile
     }">
     <v-list nav>
       <v-list-item
@@ -43,9 +43,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
+import { defineComponent, computed } from 'vue';
 import { mapStores } from 'pinia';
-import { userViewsStore, pageStore } from '~/store';
+import { userViewsStore } from '~/store';
 
 interface LayoutButton {
   icon: string;
@@ -54,8 +55,20 @@ interface LayoutButton {
 }
 
 export default defineComponent({
+  setup() {
+    const route = useRoute();
+
+    const transparentLayout = computed(() => {
+      return typeof route.meta.layout !== 'string' &&
+        route.meta.layout?.transparent
+        ? route.meta.layout.transparent
+        : false;
+    });
+
+    return { transparentLayout };
+  },
   computed: {
-    ...mapStores(userViewsStore, pageStore),
+    ...mapStores(userViewsStore),
     items(): LayoutButton[] {
       return [
         {

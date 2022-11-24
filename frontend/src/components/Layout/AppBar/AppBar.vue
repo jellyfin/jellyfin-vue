@@ -7,7 +7,7 @@
     elevate-on-scroll
     elevation="3"
     :hide-on-scroll="$vuetify.display.mobile"
-    :class="{ transparent: page.transparentLayout && !page.isScrolled }">
+    :class="{ transparent: transparentLayout && !page.isScrolled }">
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile && page.navDrawer"
       @click.stop="page.openDrawer = !page.openDrawer" />
@@ -49,33 +49,45 @@
     <!-- Uncomment when some of the remote play features are fully implemented -->
     <!-- <cast-button
       :fab="
-        !(!page.transparentLayout || $vuetify.display.xsOnly) &&
+        !(!transparentLayout || $vuetify.display.xsOnly) &&
         !page.isScrolled
       "
     /> -->
     <user-button />
     <locale-switcher
       :fab="
-        !(!page.transparentLayout || $vuetify.display.xsOnly) &&
-        !page.isScrolled
+        !(!transparentLayout || $vuetify.display.xsOnly) && !page.isScrolled
       " />
   </v-app-bar>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useNetwork } from '@vueuse/core';
 import { mapStores } from 'pinia';
-import { pageStore, clientSettingsStore } from '~/store';
+import { useRoute } from 'vue-router';
+import { clientSettingsStore } from '~/store';
 
 export default defineComponent({
+  setup() {
+    const route = useRoute();
+
+    const transparentLayout = computed(() => {
+      return typeof route.meta.layout !== 'string' &&
+        route.meta.layout?.transparent
+        ? route.meta.layout.transparent
+        : false;
+    });
+
+    return { transparentLayout };
+  },
   data() {
     return {
       network: useNetwork()
     };
   },
   computed: {
-    ...mapStores(pageStore, clientSettingsStore)
+    ...mapStores(clientSettingsStore)
   },
   methods: {
     toggleDarkMode(): void {
