@@ -51,15 +51,26 @@
   </v-container>
 </template>
 
+<route lang="yaml">
+meta:
+  layout:
+    name: fullpage
+</route>
+
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import isEmpty from 'lodash/isEmpty';
-import { mapStores } from 'pinia';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { pageStore } from '~/store';
+import { RouteMeta, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
-  layout: 'fullpage',
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    route.meta.title = t('login.login');
+  },
   async asyncData({ $api }) {
     const brandingData = (await $api.branding.getBrandingOptions()).data;
 
@@ -75,17 +86,6 @@ export default defineComponent({
       publicUsers: [] as Array<UserDto>,
       disclaimer: ''
     };
-  },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
-  computed: {
-    ...mapStores(pageStore)
-  },
-  mounted() {
-    this.page.title = this.$t('login.login');
   },
   methods: {
     isEmpty(value: Record<never, never>): boolean {

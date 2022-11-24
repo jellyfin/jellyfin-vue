@@ -28,13 +28,10 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
-import {
-  clientSettingsStore,
-  pageStore,
-  userViewsStore,
-  HomeSection
-} from '~/store';
+import { clientSettingsStore, userViewsStore, HomeSection } from '~/store';
 
 const VALID_SECTIONS = new Set([
   'resume',
@@ -44,6 +41,13 @@ const VALID_SECTIONS = new Set([
 ]);
 
 export default defineComponent({
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    route.meta.title = t('home');
+    route.meta.layout.transparent = true;
+  },
   // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
   // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
   async asyncData({ $api }) {
@@ -59,22 +63,13 @@ export default defineComponent({
 
     return { carouselItems };
   },
-  meta: {
-    backdrop: true,
-    transparentLayout: true
-  },
   data() {
     return {
       carouselItems: [] as BaseItemDto[]
     };
   },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
   computed: {
-    ...mapStores(clientSettingsStore, pageStore, userViewsStore),
+    ...mapStores(clientSettingsStore, userViewsStore),
     homeSections(): HomeSection[] {
       // Filter for valid sections in Jellyfin Vue
       // TODO: Implement custom section order
@@ -178,9 +173,6 @@ export default defineComponent({
 
       return homeSections;
     }
-  },
-  mounted() {
-    this.page.title = this.$t('home');
   }
 });
 </script>
