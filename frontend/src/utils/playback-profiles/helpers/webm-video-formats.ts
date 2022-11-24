@@ -1,5 +1,9 @@
 import { Context } from '@nuxt/types';
-import { hasAv1Support, hasVp8Support, hasVp9Support } from './mp4VideoFormats';
+import {
+  hasAv1Support,
+  hasVp8Support,
+  hasVp9Support
+} from './mp4-video-formats';
 
 /**
  * @param context - Nuxt context

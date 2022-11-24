@@ -1,4 +1,4 @@
-import { hasH264Support } from './mp4VideoFormats';
+import { hasH264Support } from './mp4-video-formats';
 
 /**
  * @param videoTestElement - A HTML video element for testing codecs
