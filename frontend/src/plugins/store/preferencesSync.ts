@@ -1,3 +1,4 @@
+import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import destr from 'destr';
 import isNil from 'lodash/isNil';
@@ -46,22 +47,20 @@ function castDisplayPreferencesResponse(
 }
 
 /**
- * Fetches settings from server
+ * Fetch displayPreferences settings from server
  *
- * @param ctx
- * @param auth
- * @param store
- * @param cast
+ * @param store - Store instance which state needs to be synced to server
+ * @param cast - If the data should be provided in a format compatible with the client or as-is.
  */
 export async function fetchSettingsFromServer(
-  context: Context,
-  auth: ReturnType<typeof authStore>,
   store: Store<string, StateTree, _GettersTree<StateTree>, _ActionsTree>,
   cast = true
 ): Promise<DisplayPreferencesDto> {
+  const auth = useRemote().auth;
+
   const response = await context.$api.displayPreferences.getDisplayPreferences({
     displayPreferencesId: store.$id,
-    userId: auth.currentUserId,
+    userId: auth.currentUserId.value,
     client: 'vue'
   });
 
@@ -77,17 +76,14 @@ export async function fetchSettingsFromServer(
 }
 
 /**
- * @param ctx
- * @param auth
- * @param storeId
- * @param prefs
+ * Pushes a new displayPreferences payload to server
  */
 export async function pushSettingsToServer(
-  context: Context,
-  auth: ReturnType<typeof authStore>,
   storeId: string,
   prefs: DisplayPreferencesDto
 ): Promise<void> {
+  const auth = useRemote().auth;
+
   if (prefs.CustomPrefs) {
     for (const [key, value] of Object.entries(prefs.CustomPrefs)) {
       let string = value;
@@ -133,13 +129,13 @@ export async function pushSettingsToServer(
  */
 export default function preferencesSync({ store }: PiniaPluginContext): void {
   if (syncedStores.has(store.$id)) {
-    const auth = authStore();
-    const snackbar = snackbarStore();
+    const auth = useRemote().auth;
+    const { t } = usei18n();
     const taskManager = taskManagerStore();
 
     store.$onAction(({ after, name }) => {
       after(async () => {
-        if (name !== 'initState' && !isNil(auth.currentUser)) {
+        if (name !== 'initState' && !isNil(auth.currentUser.value)) {
           try {
             /**
              * Creates a config syncing task, so UI can show that there's a syncing in progress
@@ -155,22 +151,14 @@ export default function preferencesSync({ store }: PiniaPluginContext): void {
              * The fetch part is done because DisplayPreferences doesn't accept partial updates
              * TODO: Revisit if we ever get PATCH support
              */
-            const displayPrefs = await fetchSettingsFromServer(
-              store.$nuxt,
-              auth,
-              store,
-              false
-            );
+            const displayPrefs = await fetchSettingsFromServer(store, false);
 
             displayPrefs.CustomPrefs = {};
 
             Object.assign(displayPrefs.CustomPrefs, store.$state);
-            pushSettingsToServer(store.$nuxt, auth, store.$id, displayPrefs);
+            pushSettingsToServer(store.$id, displayPrefs);
           } catch {
-            snackbar.push(
-              store.$nuxt.i18n.t('failedSettingDisplayPreferences'),
-              'error'
-            );
+            useSnackbar(t('failedSettingDisplayPreferences'), 'error');
           } finally {
             taskManager.stopConfigSync();
           }
