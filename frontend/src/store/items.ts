@@ -1,6 +1,6 @@
-import { useRemote } from '@/composables';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
+import { useRemote } from '@/composables';
 
 export interface ItemsState {
   byId: Record<string, BaseItemDto>;

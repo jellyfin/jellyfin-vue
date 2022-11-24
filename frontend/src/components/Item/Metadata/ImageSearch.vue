@@ -174,28 +174,21 @@ export default defineComponent({
     };
   },
   computed: {
-    sources: {
-      get(): string[] {
-        const validProviders = this.providers.filter(
-          (provider: ImageProviderInfo) => {
-            if (
-              provider.Name &&
-              provider.SupportedImages?.includes(this.type)
-            ) {
-              return true;
-            }
+    sources(): string[] {
+      const validProviders = this.providers.filter(
+        (provider: ImageProviderInfo) => {
+          return !!(
+            provider.Name && provider.SupportedImages?.includes(this.type)
+          );
+        }
+      );
+      const providerNames = validProviders.map(
+        (provider: ImageProviderInfo) => {
+          return provider.Name as string;
+        }
+      );
 
-            return false;
-          }
-        );
-        const providerNames = validProviders.map(
-          (provider: ImageProviderInfo) => {
-            return provider.Name as string;
-          }
-        );
-
-        return [this.$t('metadata.sourceAll')].concat(providerNames);
-      }
+      return [this.$t('metadata.sourceAll'), ...providerNames];
     },
     ratio(): string {
       return this.type === ImageType.Backdrop ? '1.777777778' : '0.666666667';

@@ -1,4 +1,3 @@
-import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import destr from 'destr';
 import isNil from 'lodash/isNil';
@@ -9,6 +8,7 @@ import {
   _ActionsTree,
   _GettersTree
 } from 'pinia';
+import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { taskManagerStore } from '~/store';
 
 const syncedStores = new Set(['clientSettings']);

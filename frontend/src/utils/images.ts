@@ -7,6 +7,8 @@ import {
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
+import isNil from 'lodash/isNil';
+import { useRemote } from '@/composables';
 import {
   getShapeFromItemType,
   ValidCardShapes,
@@ -178,7 +180,6 @@ export function getDesiredAspect(shape: ValidCardShapes): number {
       aspectRatio = 1000 / 185;
       break;
     }
-    case CardShapes.Square:
     default: {
       aspectRatio = 1;
       break;
@@ -236,6 +237,7 @@ export function getImageInfo(
   let imgTag;
   let itemId: string | null | undefined = item.Id;
   let height;
+  const remote = useRemote();
 
   if (tag && preferBackdrop) {
     imgType = ImageType.Backdrop;
@@ -323,7 +325,7 @@ export function getImageInfo(
     height =
       width && item.PrimaryImageAspectRatio
         ? Math.round(width / item.PrimaryImageAspectRatio)
-        : null;
+        : undefined;
   } else if (item.SeriesPrimaryImageTag) {
     imgType = ImageType.Primary;
     imgTag = item.SeriesPrimaryImageTag;
@@ -339,7 +341,7 @@ export function getImageInfo(
     height =
       width && item.PrimaryImageAspectRatio
         ? Math.round(width / item.PrimaryImageAspectRatio)
-        : null;
+        : undefined;
   } else if (item.Type === 'Season' && item.ImageTags && item.ImageTags.Thumb) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
@@ -367,14 +369,14 @@ export function getImageInfo(
     itemId = item.ParentBackdropItemId;
   }
 
-  if (!itemId) {
+  if (!itemId && !item.Id) {
     itemId = item.Id;
   }
 
-  if (imgTag && imgType) {
-    url = new URL(
-      `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
-    );
+  const url_string = remote.sdk.api?.getItemImageUrl(itemId as string, imgType);
+
+  if (imgTag && imgType && itemId && url_string) {
+    url = new URL(url_string);
 
     const parameters: Record<string, string> = {
       imgTag,
