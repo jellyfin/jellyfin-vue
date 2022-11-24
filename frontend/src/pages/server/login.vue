@@ -53,8 +53,7 @@
 
 <route lang="yaml">
 meta:
-  layout:
-    name: fullpage
+  layout: fullpage
 </route>
 
 <script lang="ts">
