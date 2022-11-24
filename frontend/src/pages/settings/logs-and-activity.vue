@@ -100,16 +100,21 @@
   </settings-page>
 </template>
 
+<route lang="yaml">
+meta:
+  admin: true
+</route>
+
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+import { defineComponent, ref } from 'vue';
 import colors from 'vuetify/lib/util/colors';
 import {
   ActivityLogEntry,
   LogFile,
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
-import { pageStore } from '~/store';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -117,7 +122,12 @@ interface LoadingStatus {
 }
 
 export default defineComponent({
-  middleware: 'adminMiddleware',
+  setup() {
+    const { t } = useI18n();
+    const route = useRoute();
+
+    route.meta.title = t('settingsSections.logs.name');
+  },
   async asyncData({ $api }) {
     const minDate = new Date();
 
@@ -137,17 +147,6 @@ export default defineComponent({
       loadingLogsStatus: { status: 'error' } as LoadingStatus,
       loadingActivityStatus: { status: 'error' } as LoadingStatus
     };
-  },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
-  computed: {
-    ...mapStores(pageStore)
-  },
-  mounted() {
-    this.page.title = this.$t('settingsSections.logs.name');
   },
   methods: {
     getColorFromSeverity(severity: LogLevel): string {

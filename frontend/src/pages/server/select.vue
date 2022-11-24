@@ -25,23 +25,18 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { pageStore } from '~/store';
+<route lang="yaml">
+meta:
+  layout:
+    name: fullpage
+</route>
 
-export default defineComponent({
-  layout: 'fullpage',
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
-  computed: {
-    ...mapStores(pageStore)
-  },
-  mounted() {
-    this.page.title = this.$t('login.selectServer');
-  }
-});
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const route = useRoute();
+
+route.meta.title = t('login.selectServer');
 </script>

@@ -34,7 +34,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         moduleId: 'virtual:generated-pages'
       }),
       Layouts({
-        importMode: () => 'sync'
+        importMode: () => 'sync',
+        defaultLayout: 'default'
       }),
       // This plugin allows to autoimport vue components
       Components({
