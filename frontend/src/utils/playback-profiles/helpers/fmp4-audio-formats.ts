@@ -1,12 +1,12 @@
 import { Context } from '@nuxt/types';
-import { getSupportedAudioCodecs } from './audioFormats';
+import { getSupportedAudioCodecs } from './audio-formats';
 import {
   hasAacSupport,
   hasAc3InHlsSupport,
   hasAc3Support,
   hasEac3Support,
   hasMp3AudioSupport
-} from './mp4AudioFormats';
+} from './mp4-audio-formats';
 
 /**
  * @param context - Nuxt context

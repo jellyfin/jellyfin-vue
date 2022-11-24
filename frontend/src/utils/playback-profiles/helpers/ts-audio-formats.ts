@@ -5,7 +5,7 @@ import {
   hasAc3Support,
   hasEac3Support,
   hasMp3AudioSupport
-} from './mp4AudioFormats';
+} from './mp4-audio-formats';
 
 /**
  * @param context - Nuxt context

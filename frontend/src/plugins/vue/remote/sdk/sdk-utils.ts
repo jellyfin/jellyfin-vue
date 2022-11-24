@@ -3,7 +3,7 @@ import { RemovableRef, useStorage } from '@vueuse/core';
 import { v4 as uuidv4 } from 'uuid';
 import { DeviceState } from './types';
 import { version } from '@/../package.json';
-import { BrowserDetector } from '@/utils/browserDetection';
+import { BrowserDetector } from '@/utils/browser-detection';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 const state: RemovableRef<DeviceState> = useStorage(
