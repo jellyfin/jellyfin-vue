@@ -1,20 +1,19 @@
-import { BrowserDetector } from '@/utils/browser-detection';
+import { isApple, isTizen, isTv, isWebOS } from '@/utils/browser-detection';
 
-const $browser = new BrowserDetector();
 /**
  * Determines if audio codec is supported
  */
 export function getSupportedAudioCodecs(format: string): boolean {
   let typeString;
 
-  if (format === 'flac' && $browser.isTv()) {
+  if (format === 'flac' && isTv()) {
     return true;
-  } else if (format === 'wma' && $browser.isTizen()) {
+  } else if (format === 'wma' && isTizen()) {
     return true;
-  } else if (format === 'asf' && $browser.isTv()) {
+  } else if (format === 'asf' && isTv()) {
     return true;
   } else if (format === 'opus') {
-    if (!$browser.isWebOS()) {
+    if (!isWebOS()) {
       typeString = 'audio/ogg; codecs="opus"';
 
       return !!document
@@ -24,7 +23,7 @@ export function getSupportedAudioCodecs(format: string): boolean {
     }
 
     return false;
-  } else if (format === 'alac' && $browser.isApple()) {
+  } else if (format === 'alac' && isApple()) {
     return true;
   } else if (format === 'webma') {
     typeString = 'audio/webm';

@@ -1,16 +1,22 @@
 import { hasVp8Support } from './mp4-video-formats';
 import { getSupportedAudioCodecs } from './audio-formats';
+import {
+  isTizen,
+  isTizen4,
+  isTizen5,
+  isTizen55,
+  isTv,
+  isWebOS
+} from '@/utils/browser-detection';
 
 /**
- * @param context - Nuxt context
+ * Checks if the client can play the AC3 codec
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if the browser has AC3 support
  */
-export function hasAc3Support(
-  context: Context,
-  videoTestElement: HTMLVideoElement
-): boolean {
-  if (context.$browser.isTv()) {
+export function hasAc3Support(videoTestElement: HTMLVideoElement): boolean {
+  if (isTv()) {
     return true;
   }
 
@@ -20,15 +26,14 @@ export function hasAc3Support(
 }
 
 /**
- * @param context - Nuxt context
+ * Checks if the client can play AC3 in a HLS stream
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if the browser has AC3 support
  */
 export function hasAc3InHlsSupport(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): boolean {
-  if (context.$browser.isTizen() || context.$browser.isWebOS()) {
+  if (isTizen() || isWebOS()) {
     return true;
   }
 
@@ -49,15 +54,13 @@ export function hasAc3InHlsSupport(
 }
 
 /**
- * @param context - Nuxt context
+ * Checks if the cliemt has E-AC3 codec support
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if browser has EAC3 support
  */
-export function hasEac3Support(
-  context: Context,
-  videoTestElement: HTMLVideoElement
-): boolean {
-  if (context.$browser.isTv()) {
+export function hasEac3Support(videoTestElement: HTMLVideoElement): boolean {
+  if (isTv()) {
     return true;
   }
 
@@ -67,6 +70,8 @@ export function hasEac3Support(
 }
 
 /**
+ * Checks if the client has AAC codec support
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if browser has AAC support
  */
@@ -77,14 +82,16 @@ export function hasAacSupport(videoTestElement: HTMLVideoElement): boolean {
 }
 
 /**
- * @param context - Nuxt context
+ * Checks if the client has MP2 codec support
+ *
  * @returns Determines if browser has MP2 support
  */
-export function hasMp2AudioSupport(context: Context): boolean {
-  return context.$browser.isTv();
+export function hasMp2AudioSupport(): boolean {
+  return isTv();
 }
 
 /**
+ * Checks if the client has MP3 audio codec support
  *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if browser has Mp3 support
@@ -108,25 +115,19 @@ export function hasMp3AudioSupport(
 /**
  * Determines DTS audio support
  *
- * @param context - Nuxt context
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Determines if browserr has DTS audio support
  */
 export function hasDtsSupport(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): boolean | string {
   // DTS audio not supported in 2018 models (Tizen 4.0)
-  if (
-    context.$browser.isTizen4() ||
-    context.$browser.isTizen5() ||
-    context.$browser.isTizen55()
-  ) {
+  if (isTizen4() || isTizen5() || isTizen55()) {
     return false;
   }
 
   return (
-    context.$browser.isTv() ||
+    isTv() ||
     videoTestElement
       .canPlayType('video/mp4; codecs="dts-"')
       .replace(/no/, '') ||
@@ -135,12 +136,12 @@ export function hasDtsSupport(
 }
 
 /**
- * @param context - Nuxt context
+ * Gets an array of supported MP4 codecs
+ *
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns Array of supported MP4 audio codecs
  */
 export function getSupportedMP4AudioCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
@@ -153,43 +154,43 @@ export function getSupportedMP4AudioCodecs(
     codecs.push('mp3');
   }
 
-  if (hasAc3Support(context, videoTestElement)) {
+  if (hasAc3Support(videoTestElement)) {
     codecs.push('ac3');
 
-    if (hasEac3Support(context, videoTestElement)) {
+    if (hasEac3Support(videoTestElement)) {
       codecs.push('eac3');
     }
   }
 
-  if (hasMp2AudioSupport(context)) {
+  if (hasMp2AudioSupport()) {
     codecs.push('mp2');
   }
 
-  if (hasDtsSupport(context, videoTestElement)) {
+  if (hasDtsSupport(videoTestElement)) {
     codecs.push('dca', 'dts');
   }
 
-  if (context.$browser.isTizen() || context.$browser.isWebOS()) {
+  if (isTizen() || isWebOS()) {
     codecs.push('pcm_s16le', 'pcm_s24le');
   }
 
-  if (context.$browser.isTizen()) {
+  if (isTizen()) {
     codecs.push('aac_latm');
   }
 
-  if (getSupportedAudioCodecs(context, 'opus')) {
+  if (getSupportedAudioCodecs('opus')) {
     codecs.push('opus');
   }
 
-  if (getSupportedAudioCodecs(context, 'flac')) {
+  if (getSupportedAudioCodecs('flac')) {
     codecs.push('flac');
   }
 
-  if (getSupportedAudioCodecs(context, 'alac')) {
+  if (getSupportedAudioCodecs('alac')) {
     codecs.push('alac');
   }
 
-  if (hasVp8Support || context.$browser.isTizen()) {
+  if (hasVp8Support(videoTestElement) || isTizen()) {
     codecs.push('vorbis');
   }
 

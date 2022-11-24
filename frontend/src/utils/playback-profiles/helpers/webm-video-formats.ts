@@ -5,12 +5,9 @@ import {
 } from './mp4-video-formats';
 
 /**
- * @param context - Nuxt context
- * @param videoTestElement - A HTML video element for testing codecs
- * @returns An array of supported codecs
+ * Get an array of supported codecs WebM video codecs
  */
 export function getSupportedWebMVideoCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
@@ -23,7 +20,7 @@ export function getSupportedWebMVideoCodecs(
     codecs.push('vp9');
   }
 
-  if (hasAv1Support(context, videoTestElement)) {
+  if (hasAv1Support(videoTestElement)) {
     codecs.push('av1');
   }
 
