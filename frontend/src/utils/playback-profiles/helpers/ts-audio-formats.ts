@@ -7,12 +7,9 @@ import {
 } from './mp4-audio-formats';
 
 /**
- * @param context - Nuxt context
- * @param videoTestElement - A HTML video element for testing codecs
- * @returns List of supported Ts audio codecs
+ * List of supported Ts audio codecs
  */
 export function getSupportedTsAudioCodecs(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): string[] {
   const codecs = [];
@@ -25,13 +22,10 @@ export function getSupportedTsAudioCodecs(
     codecs.push('mp3');
   }
 
-  if (
-    hasAc3Support(context, videoTestElement) &&
-    hasAc3InHlsSupport(context, videoTestElement)
-  ) {
+  if (hasAc3Support(videoTestElement) && hasAc3InHlsSupport(videoTestElement)) {
     codecs.push('ac3');
 
-    if (hasEac3Support(context, videoTestElement)) {
+    if (hasEac3Support(videoTestElement)) {
       codecs.push('eac3');
     }
   }

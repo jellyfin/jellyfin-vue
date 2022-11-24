@@ -1,4 +1,10 @@
-import { BrowserDetector } from './browser-detection';
+import {
+  isTv,
+  isApple,
+  isChrome,
+  isEdge,
+  isChromiumBased
+} from '@/utils/browser-detection';
 
 export interface SupportedFeatures {
   pictureInPicture: boolean;
@@ -16,8 +22,6 @@ const supportedFeatures: SupportedFeatures = {
   fullScreen: false
 };
 
-const $browser = new BrowserDetector();
-
 /**
  * Detects if the current platform supports showing fullscreen videos
  *
@@ -25,7 +29,7 @@ const $browser = new BrowserDetector();
  */
 function supportsFullscreen(): boolean {
   // TVs don't support fullscreen.
-  if ($browser.isTv()) {
+  if (isTv()) {
     return false;
   }
 
@@ -68,11 +72,11 @@ if (supportsFullscreen()) {
   supportedFeatures.fullScreen = true;
 }
 
-if ($browser.isApple()) {
+if (isApple()) {
   supportedFeatures.airPlay = true;
 }
 
-if ($browser.isChrome() || ($browser.isEdge() && $browser.isChromiumBased())) {
+if (isChrome() || (isEdge() && isChromiumBased())) {
   supportedFeatures.googleCast = true;
 }
 
