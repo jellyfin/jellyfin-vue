@@ -3,7 +3,6 @@ import {
   EncodingContext,
   TranscodingProfile
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './helpers/audio-formats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
 import {
