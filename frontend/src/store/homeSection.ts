@@ -6,6 +6,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { userViewsStore } from '.';
 import { CardShapes } from '~/utils/items';
+import { useRemote, useSnackbar } from '@/composables';
 
 export interface HomeSection {
   name: string;
@@ -37,13 +38,12 @@ export const homeSectionStore = defineStore('homeSection', {
   },
   actions: {
     async getAudioResumes(): Promise<void> {
-      const auth = authStore();
-      const snackbar = snackbarStore();
+      const auth = useRemote().auth;
 
       try {
         const audioResumes = (
           await this.$nuxt.$api.items.getResumeItems({
-            userId: auth.currentUserId,
+            userId: auth.currentUserId.value,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -61,17 +61,16 @@ export const homeSectionStore = defineStore('homeSection', {
           this.audioResumes = audioResumes;
         }
       } catch (error) {
-        snackbar.push(error as string, 'error');
+        useSnackbar(error as string, 'error');
       }
     },
     async getVideoResumes(): Promise<void> {
-      const auth = authStore();
-      const snackbar = snackbarStore();
+      const auth = useRemote().auth;
 
       try {
         const videoResumes = (
           await this.$nuxt.$api.items.getResumeItems({
-            userId: auth.currentUserId,
+            userId: auth.currentUserId.value,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -89,17 +88,16 @@ export const homeSectionStore = defineStore('homeSection', {
           this.videoResumes = videoResumes;
         }
       } catch (error) {
-        snackbar.push(error as string, 'error');
+        useSnackbar(error as string, 'error');
       }
     },
     async getUpNext(libraryId: string): Promise<void> {
-      const auth = authStore();
-      const snackbar = snackbarStore();
+      const auth = useRemote().auth;
 
       try {
         const upNext = (
           await this.$nuxt.$api.tvShows.getNextUp({
-            userId: auth.currentUserId,
+            userId: auth.currentUserId.value,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -116,17 +114,16 @@ export const homeSectionStore = defineStore('homeSection', {
           this.upNext = upNext;
         }
       } catch (error) {
-        snackbar.push(error as string, 'error');
+        useSnackbar(error as string, 'error');
       }
     },
     async getLatestMedia(libraryId: string): Promise<void> {
-      const auth = authStore();
-      const snackbar = snackbarStore();
+      const auth = useRemote().auth;
 
       try {
         const latestMedia = (
           await this.$nuxt.$api.userLibrary.getLatestMedia({
-            userId: auth.currentUserId,
+            userId: auth.currentUserId.value,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -141,7 +138,7 @@ export const homeSectionStore = defineStore('homeSection', {
 
         this.latestMedia[libraryId] = latestMedia;
       } catch (error) {
-        snackbar.push(error as string, 'error');
+        useSnackbar(error as string, 'error');
       }
     }
   },
