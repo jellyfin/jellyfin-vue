@@ -7,10 +7,8 @@ import {
 } from 'vue-router';
 
 const defaultMeta: RouteMeta = {
-  layout: {
-    name: 'default',
-    transparent: false
-  },
+  layout: 'default',
+  transparentLayout: false,
   admin: false,
   backdrop: {
     opacity: 0.75
@@ -25,8 +23,7 @@ const defaultMeta: RouteMeta = {
  *
  * <route lang="yaml">
  *  meta:
- *    layout:
- *      name: fullpage
+ *    layout: fullpage
  * </route>
  *
  * That block is also needed when a property needs to be resolved before
