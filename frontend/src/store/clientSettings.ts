@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { usePreferredDark } from '@vueuse/core';
 import { fetchSettingsFromServer } from '~/plugins/store/preferencesSync';
+import { usei18n, useSnackbar } from '@/composables';
 
 /**
  * Cast typings for the CustomPrefs property of DisplayPreferencesDto
@@ -27,20 +28,16 @@ export const clientSettingsStore = defineStore('clientSettings', {
       this.locale = locale;
     },
     async initState(): Promise<void> {
-      const auth = authStore();
-      const snackbar = snackbarStore();
+      const { t } = usei18n();
 
       try {
-        const data = await fetchSettingsFromServer(this.$nuxt, auth, this);
+        const data = await fetchSettingsFromServer(this);
 
         if (data.CustomPrefs) {
           this.$patch(data.CustomPrefs);
         }
       } catch {
-        snackbar.push(
-          this.$nuxt.i18n.t('failedSettingDisplayPreferences'),
-          'error'
-        );
+        useSnackbar(t('failedSettingDisplayPreferences'), 'error');
       }
     }
   }
