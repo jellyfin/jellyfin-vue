@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types';
 import {
   hasAv1Support,
   hasVp8Support,
