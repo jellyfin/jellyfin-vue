@@ -179,7 +179,7 @@
                           @open-playback-data="playbackData = true"
                           @stretch="stretchVideo = $event" />
                         <v-btn
-                          v-if="$features.pictureInPicture"
+                          v-if="features.pictureInPicture"
                           class="align-self-center active-button"
                           icon
                           @click="togglePictureInPicture">
@@ -198,7 +198,7 @@
                           </v-icon>
                         </v-btn>
                         <v-btn
-                          v-if="$features.fullScreen"
+                          v-if="features.fullScreen"
                           class="align-self-center active-button"
                           icon
                           @click="toggleFullScreen">
@@ -223,8 +223,15 @@ import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
+import { isApple, isMobile } from '@/utils/browser-detection';
+import supportedFeatures from '@/utils/supported-features';
 
 export default defineComponent({
+  setup() {
+    const features = supportedFeatures;
+
+    return { features };
+  },
   data() {
     return {
       showFullScreenOverlay: false,
@@ -437,7 +444,7 @@ export default defineComponent({
       this.$refs.videoPlayer.togglePictureInPicture();
     },
     toggleFullScreen(): void {
-      if (this.$browser.isApple() && this.$browser.isMobile()) {
+      if (isApple() && isMobile()) {
         // Use native video fullscreen on iPhone to hide the bottom home bar
         // @ts-expect-error - `toggleNativeFullscreen` does not exist in relevant types
         this.$refs.videoPlayer.toggleNativeFullscreen();

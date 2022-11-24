@@ -53,6 +53,7 @@ import { playbackManagerStore, PlaybackStatus, PlaybackTrack } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 import { ticksToMs } from '~/utils/time';
+import playbackProfile from '@/utils/playback-profiles';
 
 declare global {
   interface Window {
@@ -109,15 +110,11 @@ export default defineComponent({
     isHls(): boolean {
       const mediaSource = this.playbackManager.currentMediaSource;
 
-      if (
+      return !!(
         !isNil(mediaSource) &&
         mediaSource.SupportsTranscoding &&
         mediaSource.TranscodingSubProtocol === 'hls'
-      ) {
-        return true;
-      }
-
-      return false;
+      );
     },
     isAssSubtitle(): boolean {
       return (
@@ -257,7 +254,7 @@ export default defineComponent({
               itemId: this.playbackManager.getCurrentItem?.Id || '',
               userId: this.$remote.auth.currentUserId.value,
               autoOpenLiveStream: true,
-              playbackInfoDto: { DeviceProfile: this.$playbackProfile },
+              playbackInfoDto: { DeviceProfile: playbackProfile },
               mediaSourceId: undefined,
               audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
               subtitleStreamIndex:

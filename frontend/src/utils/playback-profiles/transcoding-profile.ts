@@ -16,39 +16,44 @@ import {
 } from './helpers/transcoding-formats';
 import { getSupportedTsAudioCodecs } from './helpers/ts-audio-formats';
 import { getSupportedTsVideoCodecs } from './helpers/ts-video-formats';
+import {
+  isTv,
+  isApple,
+  isEdge,
+  isChromiumBased,
+  isAndroid,
+  isTizen
+} from '@/utils/browser-detection';
 
 /**
  * Returns a valid TranscodingProfile for the current platform.
  *
- * @param context - Nuxt context
  * @param videoTestElement - A HTML video element for testing codecs
  * @returns An array of transcoding profiles for the current platform.
  */
 export function getTranscodingProfiles(
-  context: Context,
   videoTestElement: HTMLVideoElement
 ): Array<TranscodingProfile> {
   const TranscodingProfiles: TranscodingProfile[] = [];
-  const physicalAudioChannels = context.$browser.isTv() ? 6 : 2;
+  const physicalAudioChannels = isTv() ? 6 : 2;
 
   const hlsBreakOnNonKeyFrames = !!(
-    context.$browser.isApple() ||
-    (context.$browser.isEdge() && !context.$browser.isChromiumBased()) ||
-    !canPlayNativeHls(context, videoTestElement)
+    isApple() ||
+    (isEdge() && !isChromiumBased()) ||
+    !canPlayNativeHls(videoTestElement)
   );
 
-  const mp4AudioCodecs = getSupportedMP4AudioCodecs(context, videoTestElement);
-  const mp4VideoCodecs = getSupportedMP4VideoCodecs(context, videoTestElement);
-  const canPlayHls =
-    canPlayNativeHls(context, videoTestElement) || canPlayHlsWithMSE(context);
+  const mp4AudioCodecs = getSupportedMP4AudioCodecs(videoTestElement);
+  const mp4VideoCodecs = getSupportedMP4VideoCodecs(videoTestElement);
+  const canPlayHls = canPlayNativeHls(videoTestElement) || canPlayHlsWithMSE();
 
   if (canPlayHls) {
     TranscodingProfiles.push({
       // hlsjs, edge, and android all seem to require ts container
       Container:
-        !canPlayNativeHls(context, videoTestElement) ||
-        (context.$browser.isEdge() && !context.$browser.isChromiumBased()) ||
-        context.$browser.isAndroid()
+        !canPlayNativeHls(videoTestElement) ||
+        (isEdge() && !isChromiumBased()) ||
+        isAndroid()
           ? 'ts'
           : 'aac',
       Type: DlnaProfileType.Audio,
@@ -56,13 +61,13 @@ export function getTranscodingProfiles(
       Context: EncodingContext.Streaming,
       Protocol: 'hls',
       MaxAudioChannels: physicalAudioChannels.toString(),
-      MinSegments: context.$browser.isApple() ? 2 : 1,
+      MinSegments: isApple() ? 2 : 1,
       BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
     });
   }
 
   for (const audioFormat of ['aac', 'mp3', 'opus', 'wav'].filter((format) =>
-    getSupportedAudioCodecs(context, format)
+    getSupportedAudioCodecs(format)
   )) {
     TranscodingProfiles.push({
       Container: audioFormat,
@@ -75,10 +80,7 @@ export function getTranscodingProfiles(
   }
 
   const hlsInTsVideoCodecs = getSupportedTsVideoCodecs(videoTestElement);
-  const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(
-    context,
-    videoTestElement
-  );
+  const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
 
   if (
     canPlayHls && // TODO
@@ -103,7 +105,7 @@ export function getTranscodingProfiles(
     //     Context: EncodingContext.Streaming,
     //     Protocol: 'hls',
     //     MaxAudioChannels: physicalAudioChannels.toString(),
-    //     MinSegments: context.$browser.isApple() ? 2 : 1,
+    //     MinSegments: isApple() ? 2 : 1,
     //     BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
     //   });
     // }
@@ -119,12 +121,12 @@ export function getTranscodingProfiles(
       Context: EncodingContext.Streaming,
       Protocol: 'hls',
       MaxAudioChannels: physicalAudioChannels.toString(),
-      MinSegments: context.$browser.isApple() ? 2 : 1,
+      MinSegments: isApple() ? 2 : 1,
       BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
     });
   }
 
-  if (hasMkvSupport(context, videoTestElement) && !context.$browser.isTizen()) {
+  if (hasMkvSupport(videoTestElement) && !isTizen()) {
     TranscodingProfiles.push({
       Container: 'mkv',
       Type: DlnaProfileType.Video,
