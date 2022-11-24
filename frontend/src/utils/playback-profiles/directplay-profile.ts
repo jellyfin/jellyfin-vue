@@ -2,7 +2,6 @@ import {
   DirectPlayProfile,
   DlnaProfileType
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 import { getSupportedMP4VideoCodecs } from './helpers/mp4-video-formats';
 import { getSupportedMP4AudioCodecs } from './helpers/mp4-audio-formats';
 import { hasMkvSupport } from './helpers/transcoding-formats';
