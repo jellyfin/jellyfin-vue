@@ -58,10 +58,10 @@ meta:
 </route>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import isEmpty from 'lodash/isEmpty';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { RouteMeta, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
