@@ -1,7 +1,7 @@
 <template>
   <v-list-item
     v-if="commit"
-    :href="'https://github.com/jellyfin/jellyfin-vue/commit/' + commit"
+    :href="url"
     target="_blank"
     rel="noopener noreferrer">
     <v-list-item-action>
@@ -13,14 +13,12 @@
   </v-list-item>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
-export default defineComponent({
-  computed: {
-    commit() {
-      return __COMMIT_HASH__;
-    }
-  }
+const commit = __COMMIT_HASH__;
+
+const url = computed(() => {
+  return `https://github.com/jellyfin/jellyfin-vue/commit/${commit}`;
 });
 </script>
