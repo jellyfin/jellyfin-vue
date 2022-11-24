@@ -64,6 +64,24 @@ module.exports = {
         bundledDependencies: false
       }
     ],
+    'import/no-nodejs-modules': 'error',
+    'no-restricted-imports': [
+      'error',
+      {
+        patterns: [
+          {
+            group: ['*/plugins*'],
+            message:
+              'Do not use Vue plugins directly. Use composables (from @/composables) instead.'
+          },
+          {
+            group: ['*/main*'],
+            message:
+              'Do not use the Vue instance directly. Use composables (from @/composables) instead.'
+          }
+        ]
+      }
+    ],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
     'jsdoc/no-types': 'error',
