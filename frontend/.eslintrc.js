@@ -64,7 +64,7 @@ module.exports = {
         bundledDependencies: false
       }
     ],
-    'import/no-nodejs-modules': 'error',
+    'import/no-nodejs-modules': ['error', { allow: ['vite.config.ts'] }],
     'no-restricted-imports': [
       'error',
       {
