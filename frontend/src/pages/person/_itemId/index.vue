@@ -143,26 +143,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import {
   BaseItemDto,
   ImageType,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
-import { isValidMD5 } from '~/utils/items';
-import { pageStore } from '~/store';
 
 export default defineComponent({
-  meta: {
-    backdrop: true,
-    transparentLayout: true
-  },
-  validate(context: Context) {
-    return isValidMD5(context.route.params.itemId);
-  },
   async asyncData({ params, $api }) {
     const itemId = params.itemId;
     const item = (
@@ -245,7 +234,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(pageStore),
     birthDate(): Date | null {
       return this.item.PremiereDate
         ? this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
@@ -273,9 +261,12 @@ export default defineComponent({
   watch: {
     item: {
       handler(value: BaseItemDto): void {
-        this.page.title = value.Name || '';
+        this.$route.meta.title = value.Name || '';
 
-        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
+        this.$route.meta.backdrop.blurhash = getBlurhash(
+          value,
+          ImageType.Backdrop
+        );
       },
       immediate: true,
       deep: true

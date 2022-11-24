@@ -236,27 +236,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import {
   BaseItemDto,
   BaseItemPerson,
   ImageType,
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
 import { getBlurhash } from '~/utils/images';
-import { getItemDetailsLink, getMediaStreams, isValidMD5 } from '~/utils/items';
+import { getItemDetailsLink, getMediaStreams } from '~/utils/items';
 import { getItemizedSelect } from '~/utils/forms';
-import { pageStore } from '~/store';
 
 export default defineComponent({
-  meta: {
-    backdrop: true,
-    transparentLayout: true
-  },
-  validate(context: Context) {
-    return isValidMD5(context.route.params.itemId);
-  },
   async asyncData({ params, $api }) {
     const itemId = params.itemId;
     const item = (
@@ -278,31 +268,15 @@ export default defineComponent({
       currentSubtitleTrack: undefined as number | undefined
     };
   },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
   computed: {
-    ...mapStores(pageStore),
-    isPlayable: {
-      get(): boolean {
-        // TODO: Move this to a mixin
-        if (
-          ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type as string)
-        ) {
-          return false;
-        } else {
-          if (
+    isPlayable(): boolean {
+      // TODO: Move this to a mixin
+      return ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type as string)
+        ? false
+        : !(
             this.item.MediaType === 'Video' &&
             (!this.item.MediaSources || this.item.MediaSources.length === 0)
-          ) {
-            return false;
-          }
-
-          return true;
-        }
-      }
+          );
     },
     crew(): BaseItemPerson[] {
       let crew: BaseItemPerson[] = [];
@@ -342,9 +316,12 @@ export default defineComponent({
   watch: {
     item: {
       handler(value: BaseItemDto): void {
-        this.page.title = value.Name || '';
+        this.$route.meta.title = value.Name || '';
 
-        this.page.backdrop.blurhash = getBlurhash(value, ImageType.Backdrop);
+        this.$route.meta.backdrop.blurhash = getBlurhash(
+          value,
+          ImageType.Backdrop
+        );
       },
       immediate: true,
       deep: true

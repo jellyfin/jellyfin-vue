@@ -49,12 +49,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
-import { pageStore } from '~/store';
 
 export default defineComponent({
   props: {
@@ -71,9 +69,6 @@ export default defineComponent({
     return {
       relatedItems: {} as { [k: number]: BaseItemDto }
     };
-  },
-  computed: {
-    ...mapStores(pageStore)
   },
   async mounted() {
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
@@ -120,7 +115,7 @@ export default defineComponent({
       if (this.pageBackdrop) {
         const hash = getBlurhash(this.items[index], ImageType.Backdrop);
 
-        this.page.backdrop.blurhash = hash;
+        this.$route.meta.backdrop = { blurhash: hash };
       }
     },
     onSlideChange(index: number): void {

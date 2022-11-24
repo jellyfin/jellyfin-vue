@@ -109,13 +109,13 @@
   "incorrectUsernameOrPassword": "Incorrect username or password",
   "item": {
     "artist": {
+      "albums": "Albums",
       "appearsOn": "Appearances",
       "discography": "Discography",
-      "information": "Information",
-      "videos": "Videos",
-      "albums": "Albums",
       "eps": "EPs",
-      "singles": "Singles"
+      "information": "Information",
+      "singles": "Singles",
+      "videos": "Videos"
     },
     "cast": "Cast",
     "composer": "Composer",
@@ -433,7 +433,8 @@
   "signIn": "Sign in",
   "snackbar": {
     "addedToQueue": "Added to queue",
-    "playNext": "The selected item will be played after the current one"
+    "playNext": "The selected item will be played after the current one",
+    "routeValidationError": "The specified routeId in route params is not correct"
   },
   "songs": "Songs",
   "sortByType": "By {type}",

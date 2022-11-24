@@ -1,7 +1,7 @@
 <template>
   <v-fab-transition>
     <v-btn
-      v-show="page.isScrolled"
+      v-show="y > 1"
       color="primary"
       fab
       dark
@@ -13,19 +13,15 @@
   </v-fab-transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
-import { pageStore } from '~/store';
+<script setup lang="ts">
+import { useWindowScroll } from '@vueuse/core';
 
-export default defineComponent({
-  computed: {
-    ...mapStores(pageStore)
-  },
-  methods: {
-    scrollToTop(): void {
-      window.scrollTo({ top: 0 });
-    }
-  }
-});
+const { y } = useWindowScroll();
+
+/**
+ * Scrolls to the top of the page
+ */
+function scrollToTop(): void {
+  window.scrollTo({ top: 0 });
+}
 </script>

@@ -9,7 +9,6 @@ declare module 'pinia' {
 setMapStoreSuffix('');
 
 export * from './clientSettings';
-export * from './page';
 export * from './userViews';
 export * from './homeSection';
 export * from './items';
