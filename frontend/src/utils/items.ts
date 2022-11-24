@@ -6,6 +6,7 @@ import {
   BaseItemPerson,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
+import { useRouter } from 'vue-router';
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -51,14 +52,10 @@ export type ValidCardShapes =
 export function isPerson(
   item: BaseItemDto | BaseItemPerson
 ): item is BaseItemPerson {
-  if (
+  return !!(
     'Role' in (item as BaseItemPerson) ||
     (item.Type && validPersonTypes.includes(item.Type))
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 
 /**
@@ -134,10 +131,6 @@ export function getShapeFromCollectionType(
     case 'music': {
       return CardShapes.Square;
     }
-    case 'boxsets':
-    case 'movies':
-    case 'tvshows':
-    case 'books':
     default: {
       return CardShapes.Portrait;
     }
@@ -170,12 +163,6 @@ export function getShapeFromItemType(
     case 'studio': {
       return CardShapes.Thumb;
     }
-    case 'book':
-    case 'boxSet':
-    case 'genre':
-    case 'movie':
-    case 'person':
-    case 'series':
     default: {
       return CardShapes.Portrait;
     }
@@ -193,7 +180,7 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
     return false;
   }
 
-  if (
+  return !!(
     [
       'Audio',
       'AudioBook',
@@ -212,14 +199,10 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
     ].includes(item.Type || '') ||
     ['Video', 'Audio'].includes(item.MediaType || '') ||
     item.IsFolder
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }
 /**
- *
+ * Check if an item can be resumed
  */
 export function canResume(item: BaseItemDto): boolean {
   return item?.UserData?.PlaybackPositionTicks &&
@@ -242,11 +225,7 @@ export function canMarkWatched(item: BaseItemDto): boolean {
     return true;
   }
 
-  if (item.MediaType === 'Video' && item.Type !== 'TvChannel') {
-    return true;
-  }
-
-  return false;
+  return !!(item.MediaType === 'Video' && item.Type !== 'TvChannel');
 }
 /**
  * Generate a link to the item's details page route
@@ -259,6 +238,7 @@ export function getItemDetailsLink(
   item: BaseItemDto,
   overrideType?: string
 ): string {
+  const router = useRouter();
   let routeName: string;
   let routeParameters: Record<never, never>;
 
@@ -302,10 +282,10 @@ export function getItemDetailsLink(
     }
   }
 
-  return window.$nuxt.$router.resolve({
+  return router.resolve({
     name: routeName,
     params: routeParameters
-  }).resolved.path;
+  }).path;
 }
 /**
  * Returns the appropiate material design icon for the BaseItemDto provided
