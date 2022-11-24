@@ -1,24 +1,21 @@
+import { BrowserDetector } from '@/utils/browser-detection';
 import { Context } from '@nuxt/types';
 
+const $browser = new BrowserDetector();
 /**
- * @param context - Nuxt context
- * @param format - Audio codec to test
- * @returns Determines if audio codec is supported
+ * Determines if audio codec is supported
  */
-export function getSupportedAudioCodecs(
-  context: Context,
-  format: string
-): boolean {
+export function getSupportedAudioCodecs(format: string): boolean {
   let typeString;
 
-  if (format === 'flac' && context.$browser.isTv()) {
+  if (format === 'flac' && $browser.isTv()) {
     return true;
-  } else if (format === 'wma' && context.$browser.isTizen()) {
+  } else if (format === 'wma' && $browser.isTizen()) {
     return true;
-  } else if (format === 'asf' && context.$browser.isTv()) {
+  } else if (format === 'asf' && $browser.isTv()) {
     return true;
   } else if (format === 'opus') {
-    if (!context.$browser.isWebOS()) {
+    if (!$browser.isWebOS()) {
       typeString = 'audio/ogg; codecs="opus"';
 
       return !!document
@@ -28,7 +25,7 @@ export function getSupportedAudioCodecs(
     }
 
     return false;
-  } else if (format === 'alac' && context.$browser.isApple()) {
+  } else if (format === 'alac' && $browser.isApple()) {
     return true;
   } else if (format === 'webma') {
     typeString = 'audio/webm';
