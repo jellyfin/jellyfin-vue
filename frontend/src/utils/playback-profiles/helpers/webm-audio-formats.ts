@@ -1,5 +1,3 @@
-import { Context } from '@nuxt/types';
-
 /**
  * @param context - Nuxt context
  * @param videoTestElement - A HTML video element for testing codecs

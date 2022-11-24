@@ -1,4 +1,3 @@
-import { Plugin } from '@nuxt/types/app';
 import { configure, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { urlRegEx } from '~/utils/servers';

@@ -1,4 +1,3 @@
-import { Context } from '@nuxt/types';
 import { getSupportedAudioCodecs } from './audio-formats';
 import {
   hasAacSupport,
