@@ -47,17 +47,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { Context } from '@nuxt/types';
-import { isValidMD5, validLibraryTypes } from '~/utils/items';
-import { pageStore } from '~/store';
+import { validLibraryTypes } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
-  validate(context: Context) {
-    return isValidMD5(context.route.params.viewId);
-  },
   setup() {
     return {
       useSnackbar
@@ -97,13 +91,7 @@ export default defineComponent({
       collectionInfo: {} as BaseItemDto
     };
   },
-  head() {
-    return {
-      title: this.page.title
-    };
-  },
   computed: {
-    ...mapStores(pageStore),
     noContent(): boolean {
       return this.loading || !this.itemsCount;
     },
@@ -144,7 +132,7 @@ export default defineComponent({
       validLibraryTypes.includes(this.collectionInfo.Type)
     ) {
       if (this.collectionInfo.Name) {
-        this.page.title = this.collectionInfo.Name;
+        this.$route.meta.title = this.collectionInfo.Name;
       }
 
       // Set default view type - This will trigger an items refresh
