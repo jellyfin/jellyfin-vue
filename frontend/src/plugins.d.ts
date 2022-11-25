@@ -22,8 +22,17 @@ declare module 'vue-router' {
 }
 
 declare module 'vue' {
-  export interface ComponentCustomProperties {
-    $remote: RemotePlugin;
+  interface ComponentCustomProperties {
+    readonly $remote: RemotePlugin;
+  }
+}
+
+declare module 'vue-i18n' {
+  interface Composer {
+    /**
+     * An array of the locale codes that matches the locale name
+     */
+    readonly localeNames: Record<string, string>;
   }
 }
 
