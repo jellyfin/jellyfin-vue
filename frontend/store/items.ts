@@ -65,11 +65,12 @@ export const itemsStore = defineStore('items', {
       }
     },
     /**
-     * Associate an item that has children with its children
+     * Moves a playlist item to another index.
      *
-     * @param parent
-     * @param children
-     * @returns - The children of the item
+     * @param parent The playlist containing the item to be moved.
+     * @param localChild The item in the playlist to be moved.
+     * @param index The new index of the item after being moved
+     * @returns A promise representing the resulting playlist after the item is moved.
      */
     async movePlaylistItem(
       parent: BaseItemDto,
@@ -101,16 +102,26 @@ export const itemsStore = defineStore('items', {
           ImageType.Thumb
         ]
       });
+
       const child = children.data.Items?.find(
-        (i) => i.Id == localChild.Id
+        (i) => i.Id === localChild.Id
       ) as BaseItemDto;
+
       await this.$nuxt.$api.playlists.moveItem({
         playlistId: parent.Id as string,
         itemId: child.PlaylistItemId as string,
         newIndex: index
       });
+
       return await this.fetchAndAddPlaylist(parent.Id as string);
     },
+    /**
+     * Adds a playlist and it's items to the local store.
+     *
+     * @param parent The playlist containing the children items.
+     * @param children The items in the playlist
+     * @returns The items in the playlist
+     */
     addPlaylist(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
       if (!parent.Id) {
         throw new Error("Parent item doesn't have an Id");
@@ -132,6 +143,12 @@ export const itemsStore = defineStore('items', {
 
       return this.getChildrenOfParentPlaylist(parent.Id) as BaseItemDto[];
     },
+    /**
+     * Fetches the items in a playlist and stores them locally.
+     *
+     * @param parentId The Item ID of the playlist
+     * @returns The items in the playlist.
+     */
     async fetchAndAddPlaylist(
       parentId: string | undefined
     ): Promise<BaseItemDto[]> {
@@ -167,15 +184,22 @@ export const itemsStore = defineStore('items', {
         })
       ).data;
 
-      if (childItems.Items) {
-        const parent = this.getItemById(parentId);
+      const parent = this.getItemById(parentId);
 
+      if (childItems.Items) {
         return this.addPlaylist(parent as BaseItemDto, childItems.Items);
       } else {
         // I think this just means it's an empty playlist...?
         return this.addPlaylist(parent as BaseItemDto, []);
       }
     },
+    /**
+     * Associate an item that has children with its children
+     *
+     * @param parent
+     * @param children
+     * @returns - The children of the item
+     */
     addCollection(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
       if (!parent.Id) {
         throw new Error("Parent item doesn't have an Id");

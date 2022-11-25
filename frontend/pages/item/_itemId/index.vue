@@ -245,7 +245,7 @@
           <collection-tabs :item="item" />
         </v-col>
         <v-col v-if="item.Type === 'Playlist'" cols="12">
-          <playlist-items :item="item" />
+          <playlist-items :playlist="item" />
         </v-col>
         <v-col cols="12">
           <related-items :id="$route.params.itemId" :item="item" />

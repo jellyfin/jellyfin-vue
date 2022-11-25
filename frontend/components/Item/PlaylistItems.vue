@@ -8,11 +8,11 @@
     <v-list v-if="!!children" color="transparent" two-line>
       <v-list-item-group class="list-group">
         <draggable
-          class="list-draggable"
-          v-bind="dragOptions"
           v-if="children.length > 0"
+          v-bind="dragOptions"
           v-model="children"
           :move="checkMove"
+          class="list-draggable"
         >
           <v-hover
             v-for="(item, index) in children"
@@ -80,42 +80,14 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapStores } from 'pinia';
+import { MoveEvent } from 'vuedraggable';
 import { itemsStore, playbackManagerStore } from '~/store';
 
 export default Vue.extend({
   props: {
-    item: {
+    playlist: {
       type: Object as () => BaseItemDto,
       required: true
-    }
-  },
-  methods: {
-    checkMove(evt: any) {
-      console.log(evt.draggedContext);
-      this.newIndex = evt.draggedContext.futureIndex;
-      this.oldIndex = evt.draggedContext.index;
-    },
-    getArtists(item: BaseItemDto): string | null {
-      if (item.Artists) {
-        return item.Artists.join(', ');
-      } else {
-        return null;
-      }
-    },
-    isPlaying(item: BaseItemDto): boolean {
-      if (this.playbackManager.getCurrentItem == undefined) {
-        return false;
-      }
-      return item.Id == (this.playbackManager.getCurrentItem as BaseItemDto).Id;
-    },
-    playQueueFrom(playFromIndex: number): void {
-      this.playbackManager
-        .play({
-          item: this.item,
-          startFromIndex: playFromIndex,
-          initiator: this.item
-        })
-        .then(() => this.items.fetchAndAddPlaylist(this.item.Id as string));
     }
   },
   data() {
@@ -138,13 +110,13 @@ export default Vue.extend({
     children: {
       get(): BaseItemDto[] {
         return this.items.getChildrenOfParentPlaylist(
-          this.item.Id
+          this.playlist.Id
         ) as BaseItemDto[];
       },
-      set(newValue: BaseItemDto[]): void {
+      set(_: BaseItemDto[]): void {
         if (this.oldIndex != null && this.newIndex != null) {
           this.items.movePlaylistItem(
-            this.item,
+            this.playlist,
             this.children[this.oldIndex],
             this.newIndex
           );
@@ -162,6 +134,36 @@ export default Vue.extend({
           this.loading = false;
         }
       }
+    }
+  },
+  methods: {
+    checkMove(evt: MoveEvent<BaseItemDto>) {
+      this.newIndex = evt.draggedContext.futureIndex;
+      this.oldIndex = evt.draggedContext.index;
+    },
+    getArtists(item: BaseItemDto): string | null {
+      if (item.Artists) {
+        return item.Artists.join(', ');
+      } else {
+        return null;
+      }
+    },
+    isPlaying(item: BaseItemDto): boolean {
+      if (this.playbackManager.getCurrentItem === undefined) {
+        return false;
+      }
+
+      return (
+        item.Id === (this.playbackManager.getCurrentItem as BaseItemDto).Id
+      );
+    },
+    async playQueueFrom(playFromIndex: number): Promise<void> {
+      await this.playbackManager.play({
+        item: this.playlist,
+        startFromIndex: playFromIndex,
+        initiator: this.playlist
+      });
+      await this.items.fetchAndAddPlaylist(this.playlist.Id as string);
     }
   }
 });
