@@ -64,7 +64,7 @@ module.exports = {
         bundledDependencies: false
       }
     ],
-    'import/no-nodejs-modules': ['error', { allow: ['vite.config.ts'] }],
+    'import/no-nodejs-modules': 'error',
     'no-restricted-imports': [
       'error',
       {
@@ -162,6 +162,7 @@ module.exports = {
     'unicorn/filename-case': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/prevent-abbreviations': 'off',
+    'unicorn/no-await-expression-member': 'off',
     'eslint-comments/no-unused-disable': 'error'
   },
   settings: {

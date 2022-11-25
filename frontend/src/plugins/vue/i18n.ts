@@ -9,13 +9,14 @@ const BROWSER_LANGUAGE = computed<string>(
 );
 
 const i18n = createI18n({
+  fallbackLocale: DEFAULT_LANGUAGE,
+  globalInjection: true,
+  legacy: false,
   locale: Object.keys(messages).includes(BROWSER_LANGUAGE.value)
     ? BROWSER_LANGUAGE.value
     : DEFAULT_LANGUAGE,
-  fallbackLocale: DEFAULT_LANGUAGE,
-  messages,
-  globalInjection: true,
-  legacy: false
+
+  messages
 });
 
 export const languageMap = {
@@ -30,6 +31,7 @@ export const languageMap = {
   eo: 'Esperanto',
   es: 'Español',
   'es-419': 'Español (América Latina)',
+  et: 'Eesti keel',
   fa: 'فارسی',
   fi: 'Suomi',
   fil: 'Pilipino',
@@ -44,7 +46,9 @@ export const languageMap = {
   ko: '한국어',
   lt: 'Lietuvių kalba',
   ml: 'മലയാളം',
+  mn: 'Монгол хэл',
   ms: 'بهاس ملايو‎',
+  my: 'မြန်မာဘာသာစကား',
   'nb-NO': 'Norsk',
   nl: 'Nederlands',
   nn: 'Norsk Nynorsk',
