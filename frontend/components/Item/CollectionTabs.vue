@@ -42,8 +42,11 @@ export default Vue.extend({
   computed: {
     ...mapStores(itemsStore),
     children(): Record<string, BaseItemDto[]> | undefined {
-      if (this.items.getChildrenOfParent(this.item.Id)?.length) {
-        return groupBy(this.items.getChildrenOfParent(this.item.Id), 'Type');
+      if (this.items.getChildrenOfParentCollection(this.item.Id)?.length) {
+        return groupBy(
+          this.items.getChildrenOfParentCollection(this.item.Id),
+          'Type'
+        );
       }
     }
   },
