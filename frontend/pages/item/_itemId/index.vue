@@ -258,7 +258,10 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-if="item.Type === 'BoxSet'" cols="12">
+        <v-col
+          v-if="item.Type === 'BoxSet' || item.Type === 'Playlist'"
+          cols="12"
+        >
           <collection-tabs :item="item" />
         </v-col>
         <v-col cols="12">
