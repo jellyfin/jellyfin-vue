@@ -1,18 +1,20 @@
 import Vue from 'vue';
-import { BaseItemDto, ItemFields } from '@jellyfin/client-axios';
+import { BaseItemDto, ImageType, ItemFields } from '@jellyfin/client-axios';
 import { defineStore } from 'pinia';
 import { authStore } from '.';
 
 export interface ItemsState {
   byId: Record<string, BaseItemDto>;
   collectionById: Record<string, string[]>;
+  playlistById: Record<string, string[]>;
 }
 
 export const itemsStore = defineStore('items', {
   state: () => {
     return {
       byId: {},
-      collectionById: {}
+      collectionById: {},
+      playlistById: {}
     } as ItemsState;
   },
   actions: {
@@ -63,6 +65,135 @@ export const itemsStore = defineStore('items', {
       }
     },
     /**
+     * Moves a playlist item to another index.
+     *
+     * @param parent The playlist containing the item to be moved.
+     * @param localChild The item in the playlist to be moved.
+     * @param index The new index of the item after being moved
+     * @returns A promise representing the resulting playlist after the item is moved.
+     */
+    async movePlaylistItem(
+      parent: BaseItemDto,
+      localChild: BaseItemDto,
+      index: number
+    ): Promise<BaseItemDto[]> {
+      const auth = authStore();
+
+      // You're probably asking "... but why?"
+
+      // Because when the Playback manager is playing these tracks,
+      // it seems to erase the PlaylistItemId from each of the items.
+      // So... I just get a new bunch of them to move things.
+
+      // Probably a better way to do it, but...
+      // ... I didn't feel like figuring that out right now.
+
+      // If you try to fix this, make sure that you can click "Play"
+      // on the playlist, then move tracks.
+
+      const children = await this.$nuxt.$api.playlists.getPlaylistItems({
+        userId: auth.currentUserId,
+        playlistId: parent.Id as string,
+        fields: [ItemFields.PrimaryImageAspectRatio],
+        enableImageTypes: [
+          ImageType.Primary,
+          ImageType.Backdrop,
+          ImageType.Banner,
+          ImageType.Thumb
+        ]
+      });
+
+      const child = children.data.Items?.find(
+        (i) => i.Id === localChild.Id
+      ) as BaseItemDto;
+
+      await this.$nuxt.$api.playlists.moveItem({
+        playlistId: parent.Id as string,
+        itemId: child.PlaylistItemId as string,
+        newIndex: index
+      });
+
+      return await this.fetchAndAddPlaylist(parent.Id as string);
+    },
+    /**
+     * Adds a playlist and it's items to the local store.
+     *
+     * @param parent The playlist containing the children items.
+     * @param children The items in the playlist
+     * @returns The items in the playlist
+     */
+    addPlaylist(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
+      if (!parent.Id) {
+        throw new Error("Parent item doesn't have an Id");
+      }
+
+      const childIds = [];
+
+      for (const child of children) {
+        if (child.Id) {
+          if (!this.getItemById(child.Id)) {
+            this.add(child);
+          }
+
+          childIds.push(child.Id);
+        }
+      }
+
+      Vue.set(this.playlistById, parent.Id, childIds);
+
+      return this.getChildrenOfParentPlaylist(parent.Id) as BaseItemDto[];
+    },
+    /**
+     * Fetches the items in a playlist and stores them locally.
+     *
+     * @param parentId The Item ID of the playlist
+     * @returns The items in the playlist.
+     */
+    async fetchAndAddPlaylist(
+      parentId: string | undefined
+    ): Promise<BaseItemDto[]> {
+      const auth = authStore();
+
+      if (parentId && !this.getItemById(parentId)) {
+        const parentItem = (
+          await this.$nuxt.$api.items.getItems({
+            userId: auth.currentUserId,
+            ids: [parentId],
+            fields: Object.values(ItemFields)
+          })
+        ).data;
+
+        if (!parentItem.Items?.[0]) {
+          throw new Error("This parent doesn't exist");
+        }
+
+        this.add(parentItem.Items[0]);
+      }
+
+      const childItems = (
+        await this.$nuxt.$api.playlists.getPlaylistItems({
+          userId: auth.currentUserId,
+          playlistId: parentId as string,
+          fields: [ItemFields.PrimaryImageAspectRatio],
+          enableImageTypes: [
+            ImageType.Primary,
+            ImageType.Backdrop,
+            ImageType.Banner,
+            ImageType.Thumb
+          ]
+        })
+      ).data;
+
+      const parent = this.getItemById(parentId);
+
+      if (childItems.Items) {
+        return this.addPlaylist(parent as BaseItemDto, childItems.Items);
+      } else {
+        // I think this just means it's an empty playlist...?
+        return this.addPlaylist(parent as BaseItemDto, []);
+      }
+    },
+    /**
      * Associate an item that has children with its children
      *
      * @param parent
@@ -88,7 +219,7 @@ export const itemsStore = defineStore('items', {
 
       Vue.set(this.collectionById, parent.Id, childIds);
 
-      return this.getChildrenOfParent(parent.Id) as BaseItemDto[];
+      return this.getChildrenOfParentCollection(parent.Id) as BaseItemDto[];
     },
     /**
      * Fetches a parent and its children and adds thecollection to the store
@@ -156,7 +287,7 @@ export const itemsStore = defineStore('items', {
         return res;
       };
     },
-    getChildrenOfParent: (state) => {
+    getChildrenOfParentCollection: (state) => {
       return (id: string | undefined): BaseItemDto[] | undefined => {
         if (!id) {
           throw new Error('No itemId provided');
@@ -164,6 +295,24 @@ export const itemsStore = defineStore('items', {
 
         const res = [] as BaseItemDto[];
         const ids = state.collectionById[id];
+
+        if (ids?.length) {
+          for (const _id of ids) {
+            res.push(state.byId[_id]);
+          }
+
+          return res;
+        }
+      };
+    },
+    getChildrenOfParentPlaylist: (state) => {
+      return (id: string | undefined): BaseItemDto[] | undefined => {
+        if (!id) {
+          throw new Error('No itemId provided');
+        }
+
+        const res = [] as BaseItemDto[];
+        const ids = state.playlistById[id];
 
         if (ids?.length) {
           for (const _id of ids) {
