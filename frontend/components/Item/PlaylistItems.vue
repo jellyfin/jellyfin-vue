@@ -143,20 +143,12 @@ export default Vue.extend({
       },
       set(newValue: BaseItemDto[]): void {
         if (this.oldIndex != null && this.newIndex != null) {
-          this.loading = true;
-          console.log(this.item);
-          console.log(this.children[this.oldIndex]);
-          console.log(this.newIndex);
-          this.items
-            .movePlaylistItem(
-              this.item,
-              this.children[this.oldIndex],
-              this.newIndex
-            )
-            .then(() => (this.loading = false));
+          this.items.movePlaylistItem(
+            this.item,
+            this.children[this.oldIndex],
+            this.newIndex
+          );
         }
-        // this.items.addCollection(this.item, newValue);
-        // setTimeout(() => (this.loading = false), 1000);
       }
     }
   },
