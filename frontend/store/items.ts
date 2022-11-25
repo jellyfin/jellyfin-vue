@@ -109,9 +109,7 @@ export const itemsStore = defineStore('items', {
         itemId: child.PlaylistItemId as string,
         newIndex: index
       });
-      return (await this.fetchAndAddPlaylist(
-        parent.Id as string
-      )) as BaseItemDto[];
+      return await this.fetchAndAddPlaylist(parent.Id as string);
     },
     addPlaylist(parent: BaseItemDto, children: BaseItemDto[]): BaseItemDto[] {
       if (!parent.Id) {
