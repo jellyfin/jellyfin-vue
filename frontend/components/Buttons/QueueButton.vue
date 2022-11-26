@@ -75,7 +75,25 @@
         <draggable-queue v-if="menu || !destroy" class="ml-4" />
       </v-list>
       <v-spacer />
-      <v-card-actions class="d-flex justify-space-between">
+      <v-card-text v-if="creatingPlaylist" class="py-1">
+        <v-form @submit.prevent="handleSubmit">
+          <v-text-field
+            single-line
+            v-model="playlistName"
+            :label="$t('name')"
+            append-outer-icon="mdi-content-save"
+            hide-details="auto"
+            prepend-icon="mdi-cancel"
+            @click:append-outer="saveQueueAsPlaylist"
+            @click:prepend="cancelSaveQueue"
+            class="py-1"
+          />
+        </v-form>
+      </v-card-text>
+      <v-card-actions
+        v-if="!creatingPlaylist"
+        class="d-flex justify-space-between"
+      >
         <v-tooltip top>
           <template #activator="{ on: tooltip }">
             <v-btn icon v-on="tooltip" @click="playbackManager.stop">
@@ -86,7 +104,7 @@
         </v-tooltip>
         <v-tooltip top>
           <template #activator="{ on: tooltip }">
-            <v-btn icon disabled v-on="tooltip">
+            <v-btn icon v-on="tooltip" @click="askForPlaylistName">
               <v-icon>mdi-content-save</v-icon>
             </v-btn>
           </template>
@@ -102,7 +120,7 @@
 import { BaseItemDto } from '@jellyfin/client-axios';
 import Vue from 'vue';
 import { mapStores } from 'pinia';
-import { playbackManagerStore } from '~/store';
+import { authStore, playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
 import { getTotalEndsAtTime } from '~/utils/time';
 
@@ -121,11 +139,13 @@ export default Vue.extend({
     return {
       menu: false,
       destroy: false,
-      timeout: undefined as undefined | number
+      timeout: undefined as undefined | number,
+      playlistName: null as string | null,
+      creatingPlaylist: false
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
+    ...mapStores(playbackManagerStore, authStore),
     sourceText: {
       get(): string {
         /**
@@ -204,7 +224,22 @@ export default Vue.extend({
     }
   },
   methods: {
-    getTotalEndsAtTime
+    getTotalEndsAtTime,
+    askForPlaylistName() {
+      this.creatingPlaylist = true;
+    },
+    saveQueueAsPlaylist() {
+      this.$nuxt.$api.playlists
+        .createPlaylist({
+          name: this.playlistName as string,
+          ids: this.playbackManager.queue,
+          userId: this.auth.currentUserId
+        })
+        .then(() => (this.creatingPlaylist = false));
+    },
+    cancelSaveQueue() {
+      this.creatingPlaylist = false;
+    }
   }
 });
 </script>
