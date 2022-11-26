@@ -125,12 +125,12 @@ export default Vue.extend({
     }
   },
   watch: {
-    item: {
+    playlist: {
       immediate: true,
-      async handler(item: BaseItemDto): Promise<void> {
+      async handler(playlist: BaseItemDto): Promise<void> {
         if (!this.children) {
           this.loading = true;
-          await this.items.fetchAndAddPlaylist(item.Id as string);
+          await this.items.fetchAndAddPlaylist(playlist.Id as string);
           this.loading = false;
         }
       }
