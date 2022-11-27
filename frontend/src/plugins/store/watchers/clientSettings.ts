@@ -1,25 +1,23 @@
-import { PiniaPluginContext } from 'pinia';
 import { useNavigatorLanguage } from '@vueuse/core';
-import { useTheme } from 'vuetify/lib/framework.mjs';
-import { useI18n } from 'vue-i18n';
 import { clientSettingsStore } from '~/store';
+import { usei18n, useVuetify } from '@/composables';
 
 /**
  * React to changes in client settings
  */
-export default function (_context: PiniaPluginContext): void {
+export default function (): void {
   const clientSettings = clientSettingsStore();
 
   clientSettings.$subscribe((_mutation, state) => {
-    const theme = useTheme();
-    const i18n = useI18n();
+    const vuetify = useVuetify();
+    const i18n = usei18n();
 
     /**
      * Theme change
      */
-
-    theme.global.name.value = state.darkMode ? 'dark' : 'light';
-
+    vuetify.theme.global.name.value = state.darkMode
+      ? 'JellyfinDark'
+      : 'JellyfinLight';
     /**
      * Locale change
      */

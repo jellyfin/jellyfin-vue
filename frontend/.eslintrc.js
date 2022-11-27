@@ -54,7 +54,7 @@ module.exports = {
     'no-restricted-globals': ['error'].concat(restrictedGlobals),
     'import/newline-after-import': 'error',
     'import/order': 'error',
-    'import/no-unresolved': ['error', { ignore: ['virtual:*'] }],
+    'import/no-unresolved': ['error', { ignore: ['virtual:*', '~icons/'] }],
     'import/no-extraneous-dependencies': [
       'error',
       {

@@ -4,12 +4,11 @@ import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import isNil from 'lodash/isNil';
 import merge from 'lodash/merge';
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
 import { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
-import { useSnackbar } from '@/composables';
+import { usei18n, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 const state: RemovableRef<AuthState> = useStorage(
@@ -82,11 +81,11 @@ class RemotePluginAuth {
     serverUrl: string,
     isDefault = false
   ): Promise<void> {
-    const i18n = useI18n();
+    const i18n = usei18n();
     const router = useRouter();
     let serv: ServerInfo;
 
-    serverUrl = serverUrl.replace(/\/$/, '');
+    serverUrl = serverUrl.replace(/\/$/, '').trim();
 
     try {
       const api = useOneTimeAPI(serverUrl);
@@ -116,6 +115,8 @@ class RemotePluginAuth {
         if (!isNil(oldServer)) {
           this.deleteServer(oldServer.PublicAddress);
           state.value.servers.push(merge(oldServer, serv));
+        } else {
+          state.value.servers.push(serv);
         }
 
         state.value.currentServerIndex = state.value.servers.indexOf(
@@ -160,7 +161,7 @@ class RemotePluginAuth {
       }
     } catch (error: unknown) {
       if (isAxiosError(error)) {
-        const { t } = useI18n();
+        const { t } = usei18n();
         let errorMessage = 'unexpectedError';
 
         if (!error.response) {
