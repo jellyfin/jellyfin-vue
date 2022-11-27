@@ -22,12 +22,13 @@
     "lint-fix": "prettier . --write --ignore-path ../.gitignore && eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore",
     "prod": "npm run build && npm run serve",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "vue-i18n-extract": "npx vue-i18n-extract",
-    "vue-i18n-extract-remove": "npx vue-i18n-extract --remove"
+    "vue-i18n-extract": "vue-i18n-extract",
+    "vue-i18n-extract-remove": "vue-i18n-extract --remove"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "0.8.0",
     "@jellyfin/sdk": "0.7.0",
+    "@mdi/font": "7.0.96",
     "@vueuse/components": "9.6.0",
     "@vueuse/core": "9.6.0",
     "axios": "0.27.2",
@@ -45,7 +46,6 @@
     "shaka-player": "4.1.1",
     "swiper": "8.3.2",
     "uuid": "8.3.2",
-    "vee-validate": "4.6.7",
     "vue": "3.2.39",
     "vue-i18n": "9.2.2",
     "vue-router": "4.1.5",

@@ -1,16 +1,15 @@
 <template>
   <v-menu offset-y>
-    <template #activator="{ on: onMenu, attrs: attrsMenu }">
+    <template #activator="{ props: menu }">
       <v-tooltip :location="bottom ? 'bottom' : 'top'">
-        <template #activator="{ on: onTooltip, attrsTooltip }">
+        <template #activator="{ props: tooltip }">
           <v-btn
-            :icon="!fab"
-            :fab="fab"
+            icon
             :size="large ? 'large' : 'small'"
-            :class="{ 'mr-n1': !fab, 'ml-1': fab }"
-            v-bind="{ ...attrsMenu, ...attrsTooltip }"
-            v-on="{ ...onMenu, ...onTooltip }">
-            <v-icon>mdi-web</v-icon>
+            v-bind="mergeProps(menu, tooltip)">
+            <Icon>
+              <i-mdi-web />
+            </Icon>
           </v-btn>
         </template>
         <span>{{ $t('tooltips.changeLanguage') }}</span>
@@ -18,42 +17,36 @@
     </template>
     <v-list class="overflow-y-auto">
       <v-list-item
-        v-for="(item, index) in $i18n.locales"
+        v-for="(item, index) in $i18n.availableLocales"
         :key="index"
-        :input-value="item.code === $i18n.locale"
-        @click="clientSettings.setLocale(item.code)">
-        <v-list-item-title>{{ item.name }}</v-list-item-title>
+        :value="item === $i18n.locale"
+        @click="clientSettings.setLocale(item)">
+        <v-list-item-title>{{ localeNames[item] }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
+import { mergeProps } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { clientSettingsStore } from '~/store';
 
-export default defineComponent({
-  props: {
-    fab: {
-      type: Boolean,
-      required: false
-    },
-    large: {
-      type: Boolean,
-      required: false
-    },
-    top: {
-      type: Boolean,
-      required: false
-    },
-    bottom: {
-      type: Boolean,
-      required: false
-    }
+const clientSettings = clientSettingsStore();
+const localeNames = useI18n().localeNames;
+
+defineProps({
+  bottom: {
+    required: false,
+    type: Boolean
   },
-  computed: {
-    ...mapStores(clientSettingsStore)
+  large: {
+    required: false,
+    type: Boolean
+  },
+  top: {
+    required: false,
+    type: Boolean
   }
 });
 </script>
