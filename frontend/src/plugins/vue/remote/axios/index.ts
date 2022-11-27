@@ -3,10 +3,9 @@
  */
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useI18n } from 'vue-i18n';
 import RemotePluginAuthInstance from '../auth';
 import { itemsStore } from '@/store';
-import { useSnackbar } from '@/composables';
+import { useSnackbar, usei18n } from '@/composables';
 
 class JellyfinInterceptors {
   /**
@@ -44,7 +43,7 @@ class JellyfinInterceptors {
       !error.config.url?.includes('/Sessions/Logout')
     ) {
       await RemotePluginAuthInstance.logoutCurrentUser(true);
-      useSnackbar(useI18n().t('login.kickedOut'), 'error');
+      useSnackbar(usei18n().t('login.kickedOut'), 'error');
     }
 
     /**

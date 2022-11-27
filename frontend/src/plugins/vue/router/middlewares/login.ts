@@ -1,6 +1,11 @@
 import isNil from 'lodash/isNil';
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
+import {
+  RouteLocationNormalized,
+  RouteLocationPathRaw,
+  RouteLocationRaw
+} from 'vue-router';
 import { useRemote } from '@/composables';
+import router from '..';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
@@ -15,16 +20,19 @@ export default function loginGuard(
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   const remote = useRemote();
+  let destinationRoute: RouteLocationPathRaw | undefined;
 
-  if (!routes.has(to.fullPath)) {
-    if (remote.auth.servers.value.length <= 0) {
-      return { path: serverAddUrl, replace: true };
-    } else if (isNil(remote.auth.currentServer.value)) {
-      return { path: serverSelectUrl, replace: true };
+  if (remote.auth.servers.value.length <= 0) {
+    destinationRoute = { path: serverAddUrl, replace: true };
+  } else if (!routes.has(to.path)) {
+    if (isNil(remote.auth.currentServer.value)) {
+      destinationRoute = { path: serverSelectUrl, replace: true };
     } else if (isNil(remote.auth.currentUser.value)) {
-      return { path: serverLoginUrl, replace: true };
+      destinationRoute = { path: serverLoginUrl, replace: true };
     }
   }
 
-  return true;
+  return destinationRoute && to.path !== destinationRoute.path
+    ? destinationRoute
+    : true;
 }

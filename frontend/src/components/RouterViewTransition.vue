@@ -1,6 +1,6 @@
 <template>
   <router-view v-if="enableTransitions" v-slot="{ Component, route }">
-    <transition :name="route.meta.transition || 'fade'" mode="out-in">
+    <transition :name="route.meta.transition || 'page'" mode="out-in">
       <!-- This div is required because <transition> requires a single children node -->
       <div
         :key="getKey(route)"
