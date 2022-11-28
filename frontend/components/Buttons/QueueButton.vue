@@ -78,15 +78,15 @@
       <v-card-text v-if="creatingPlaylist" class="py-1">
         <v-form @submit.prevent="handleSubmit">
           <v-text-field
-            single-line
             v-model="playlistName"
+            single-line
             :label="$t('name')"
             append-outer-icon="mdi-content-save"
             hide-details="auto"
             prepend-icon="mdi-cancel"
+            class="py-1"
             @click:append-outer="saveQueueAsPlaylist"
             @click:prepend="cancelSaveQueue"
-            class="py-1"
           />
         </v-form>
       </v-card-text>
@@ -228,14 +228,16 @@ export default Vue.extend({
     askForPlaylistName() {
       this.creatingPlaylist = true;
     },
-    saveQueueAsPlaylist() {
-      this.$nuxt.$api.playlists
-        .createPlaylist({
+    async saveQueueAsPlaylist() {
+      try {
+        await this.$nuxt.$api.playlists.createPlaylist({
           name: this.playlistName as string,
           ids: this.playbackManager.queue,
           userId: this.auth.currentUserId
-        })
-        .then(() => (this.creatingPlaylist = false));
+        });
+      } finally {
+        this.creatingPlaylist = false;
+      }
     },
     cancelSaveQueue() {
       this.creatingPlaylist = false;
