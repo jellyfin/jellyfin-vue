@@ -1,4 +1,4 @@
-import defaultsDeep from 'lodash/defaultsDeep';
+import { defaultsDeep } from 'lodash-es';
 
 /**
  * Merge 2 objects, excluding the keys from the destination that are not present in source
