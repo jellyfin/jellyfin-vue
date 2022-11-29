@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { DeviceState } from './types';
 import { version } from '@/../package.json';
 import {
-  BrowserDetector,
   isAndroid,
   isApple,
   isChrome,

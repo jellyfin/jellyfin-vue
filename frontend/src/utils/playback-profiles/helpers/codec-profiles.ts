@@ -178,6 +178,7 @@ export function getCodecProfiles(
 
   let maxHevcLevel = 120;
   let hevcProfiles = 'main';
+  const hevcProfilesMain10 = 'main|main 10';
 
   // HEVC Main profile, Level 4.1
   if (
@@ -201,7 +202,7 @@ export function getCodecProfiles(
       .replace(/no/, '')
   ) {
     maxHevcLevel = 123;
-    hevcProfiles = 'main|main 10';
+    hevcProfiles = hevcProfilesMain10;
   }
 
   // HEVC Main10 profile, Level 5.1
@@ -214,7 +215,7 @@ export function getCodecProfiles(
       .replace(/no/, '')
   ) {
     maxHevcLevel = 153;
-    hevcProfiles = 'main|main 10';
+    hevcProfiles = hevcProfilesMain10;
   }
 
   // HEVC Main10 profile, Level 6.1
@@ -227,7 +228,7 @@ export function getCodecProfiles(
       .replace(/no/, '')
   ) {
     maxHevcLevel = 183;
-    hevcProfiles = 'main|main 10';
+    hevcProfiles = hevcProfilesMain10;
   }
 
   const hevcCodecProfileConditions: ProfileCondition[] = [
