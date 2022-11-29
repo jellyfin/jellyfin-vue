@@ -150,6 +150,7 @@ import {
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getBlurhash } from '~/utils/images';
+import { dateFnsFormat } from '@/utils/time';
 
 export default defineComponent({
   async asyncData({ params, $api }) {
@@ -234,19 +235,15 @@ export default defineComponent({
     };
   },
   computed: {
-    birthDate(): Date | null {
+    birthDate(): string | null {
       return this.item.PremiereDate
-        ? this.$dateFns.format(new Date(this.item.PremiereDate), 'PPP', {
-            locale: this.$i18n.locale
-          })
+        ? dateFnsFormat(new Date(this.item.PremiereDate), 'PPP').value
         : null;
     },
     deathDate: {
-      get(): Date | null {
+      get(): string | null {
         return this.item.EndDate
-          ? this.$dateFns.format(new Date(this.item.EndDate), 'PPP', {
-              locale: this.$i18n.locale
-            })
+          ? dateFnsFormat(new Date(this.item.EndDate), 'PPP').value
           : null;
       }
     },
