@@ -41,16 +41,13 @@ const VALID_SECTIONS = new Set([
 ]);
 
 export default defineComponent({
-  setup() {
+  async setup() {
     const { t } = useI18n();
     const route = useRoute();
 
     route.meta.title = t('home');
     route.meta.transparentLayout = true;
-  },
-  // TODO: Merge asyncData and fetch once we have Nuxt 3, so we can have proper Vue 3 suspense support and have all the data
-  // loaded with a complete Vue instance but with the route not being rendered until the full data is loaded
-  async asyncData({ $api }) {
+
     const carouselItems = (
       await $api.userLibrary.getLatestMedia({
         userId: this.$remote.auth.currentUserId.value,
