@@ -18,7 +18,7 @@
         :lines="!!item.text.subtitle && 'two'"
         v-on="on">
         <v-avatar v-if="item.text.icon">
-          <v-icon>{{ item.text.icon }}</v-icon>
+          <v-icon :icon="item.text.icon" />
         </v-avatar>
         <v-list-item-title>{{ item.text.title }}</v-list-item-title>
         <v-list-item-subtitle v-if="item.text.subtitle">
@@ -33,11 +33,16 @@
 import { PropType, defineComponent } from 'vue';
 import langs from 'langs';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
+import IMdiSurroundSound20 from '~icons/mdi/surround-sound-2-0';
+import IMdiSurroundSound31 from '~icons/mdi/surround-sound-3-1';
+import IMdiSurroundSound51 from '~icons/mdi/surround-sound-5-1';
+import IMdiSurroundSound71 from '~icons/mdi/surround-sound-7-1';
+import IMdiSurroundSound from '~icons/mdi/surround-sound';
 
 interface SelectItems {
   selection: string;
   subtitle: string | undefined;
-  icon: string | undefined;
+  icon: typeof IMdiSurroundSound | undefined;
   title: string;
 }
 
@@ -146,16 +151,16 @@ export default defineComponent({
   },
   methods: {
     /**
-     * @param track - Track to parse
+     * Get track icons
      * @returns Optional icon to use for the track line in the v-select menu
      */
-    getTrackIcon(track: MediaStream): string | undefined {
+    getTrackIcon(track: MediaStream): typeof IMdiSurroundSound | undefined {
       if (this.type === 'Audio' && track.ChannelLayout) {
         return this.getSurroundIcon(track.ChannelLayout);
       }
     },
     /**
-     * @param track - Track to parse
+     * Parse track subtitles
      * @returns Optional subtitle to use for the track line in the v-select menu
      */
     getTrackSubtitle(track: MediaStream): string | undefined {
@@ -169,32 +174,32 @@ export default defineComponent({
       }
     },
     /**
-     * @param code - Converts a two letters language code to full word
+     * Converts a two letters language code to full word
      * @returns Full word
      */
     getLanguageName(code: string): string {
       return langs.where('2B', code)?.name || '';
     },
     /**
-     * @param layout - Audio layout to get related icon
+     * Audio layout to get related icon
      * @returns Icon name
      */
-    getSurroundIcon(layout: string): string {
+    getSurroundIcon(layout: string): typeof IMdiSurroundSound {
       switch (layout) {
         case '2.0': {
-          return 'mdi-surround-sound-2-0';
+          return IMdiSurroundSound20;
         }
         case '3.1': {
-          return 'mdi-surround-sound-3-1';
+          return IMdiSurroundSound31;
         }
         case '5.1': {
-          return 'mdi-surround-sound-5-1';
+          return IMdiSurroundSound51;
         }
         case '7.1': {
-          return 'mdi-surround-sound-7-1';
+          return IMdiSurroundSound71;
         }
         default: {
-          return 'mdi-surround-sound';
+          return IMdiSurroundSound;
         }
       }
     }

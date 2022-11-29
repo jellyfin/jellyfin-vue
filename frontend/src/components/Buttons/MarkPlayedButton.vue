@@ -1,10 +1,8 @@
 <template>
-  <v-btn
-    v-if="canMarkWatched(item)"
-    icon
-    :dark="dark"
-    @click.stop.prevent="togglePlayed">
-    <v-icon :color="isPlayed ? 'primary' : ''">mdi-check</v-icon>
+  <v-btn v-if="canMarkWatched(item)" icon @click.stop.prevent="togglePlayed">
+    <Icon :color="isPlayed ? 'primary' : ''">
+      <i-mdi-check />
+    </Icon>
   </v-btn>
 </template>
 
@@ -19,10 +17,6 @@ export default defineComponent({
     item: {
       type: Object as () => BaseItemDto,
       required: true
-    },
-    dark: {
-      type: Boolean,
-      default: false
     }
   },
   setup() {
