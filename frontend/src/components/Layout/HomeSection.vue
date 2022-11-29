@@ -13,7 +13,6 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { HomeSection, homeSectionStore } from '~/store';
 
 export default defineComponent({
@@ -23,13 +22,17 @@ export default defineComponent({
       required: true
     }
   },
+  setup() {
+    const homeSection = homeSectionStore();
+
+    return { homeSection };
+  },
   data() {
     return {
       loading: true
     };
   },
   computed: {
-    ...mapStores(homeSectionStore),
     items(): BaseItemDto[] {
       return this.homeSection.getHomeSectionContent(this.section);
     }

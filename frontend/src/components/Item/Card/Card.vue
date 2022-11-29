@@ -74,7 +74,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import {
   CardShapes,
@@ -127,8 +126,12 @@ export default defineComponent({
       }
     }
   },
+  setup() {
+    const taskManager = taskManagerStore();
+
+    return { taskManager };
+  },
   computed: {
-    ...mapStores(taskManagerStore),
     cardType: {
       get(): string {
         // Otherwise, figure out the shape based on the type of the item
