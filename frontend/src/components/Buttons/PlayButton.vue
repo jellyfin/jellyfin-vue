@@ -39,7 +39,6 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { canResume, canPlay } from '~/utils/items';
 import { ticksToMs } from '~/utils/time';
@@ -76,13 +75,15 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       loading: false
     };
-  },
-  computed: {
-    ...mapStores(playbackManagerStore)
   },
   methods: {
     async playOrResume(): Promise<void> {

@@ -23,7 +23,6 @@
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { groupBy } from 'lodash-es';
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { itemsStore } from '~/store';
 
 export default defineComponent({
@@ -33,6 +32,11 @@ export default defineComponent({
       required: true
     }
   },
+  setup() {
+    const items = itemsStore();
+
+    return { items };
+  },
   data() {
     return {
       currentTab: 0,
@@ -40,7 +44,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(itemsStore),
     children(): Record<string, BaseItemDto[]> | undefined {
       return groupBy(this.items.getChildrenOfParent(this.item.Id), 'Type');
     }

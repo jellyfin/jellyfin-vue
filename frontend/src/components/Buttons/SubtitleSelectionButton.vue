@@ -56,7 +56,6 @@
 <script lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { PlaybackTrack } from '~/store/playbackManager';
 
@@ -67,13 +66,17 @@ export default defineComponent({
       default: 0
     }
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       menu: false
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     tracks(): PlaybackTrack[] {
       const subs = this.playbackManager
         .getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
