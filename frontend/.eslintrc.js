@@ -17,7 +17,7 @@ module.exports = {
     __HISTORY_ROUTER_MODE__: 'readonly'
   },
   // Ignore test files for now
-  ignorePatterns: ['*.spec.ts', '.eslintrc.js', '*.config.js'],
+  ignorePatterns: ['*.spec.ts', '.eslintrc.js', '*.config.js', '*.d.ts'],
   extends: [
     'eslint:recommended',
     'plugin:json/recommended',
