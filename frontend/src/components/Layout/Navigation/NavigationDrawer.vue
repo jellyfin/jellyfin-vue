@@ -1,39 +1,34 @@
 <template>
   <v-navigation-drawer
-    v-if="page.navDrawer"
-    v-model="page.openDrawer"
-    app
+    v-model="model.value"
     :temporary="$vuetify.display.mobile"
     :permanent="!$vuetify.display.mobile"
     floating
-    clipped
     class="pa-s"
     :class="{
       transparent: transparentLayout && !$vuetify.display.mobile
     }">
     <v-list nav>
-      <v-list-item
-        v-for="item in items"
-        :key="item.Id"
-        :to="item.to"
-        router
-        exact>
+      <v-list-item v-for="item in items" :key="item.to" :to="item.to" exact>
         <v-list-item-action>
           <v-icon :icon="item.icon" />
         </v-list-item-action>
-        <v-list-item-title v-text="item.title" />
+        <v-list-item-title>
+          {{ item.title }}
+        </v-list-item-title>
       </v-list-item>
       <v-list-subheader>{{ $t('libraries') }}</v-list-subheader>
       <v-list-item
         v-for="library in userViews.getNavigationDrawerItems"
-        :key="library.Id"
+        :key="library.to"
         :to="library.to"
-        router
         exact>
         <v-list-item-action>
           <v-icon :icon="library.icon" />
         </v-list-item-action>
-        <v-list-item-title v-text="library.title" />
+        <v-list-item-title>
+          {{ library.title }}
+        </v-list-item-title>
       </v-list-item>
     </v-list>
     <template #append>
@@ -42,10 +37,11 @@
   </v-navigation-drawer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { defineComponent, computed } from 'vue';
-import { mapStores } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import { userViewsStore } from '~/store';
 import IMdiHome from '~icons/mdi/home';
 
@@ -55,44 +51,24 @@ interface LayoutButton {
   to: string;
 }
 
-export default defineComponent({
-  setup() {
-    const route = useRoute();
+const route = useRoute();
+const userViews = userViewsStore();
+const display = useDisplay();
+const { t } = useI18n();
+const model = computed(() => {
+  return display.mobile;
+});
 
-    const transparentLayout = computed<boolean>(() => {
-      return route.meta.transparentLayout || false;
-    });
-
-    return { transparentLayout };
-  },
-  computed: {
-    ...mapStores(userViewsStore),
-    items(): LayoutButton[] {
-      return [
-        {
-          icon: IMdiHome,
-          title: this.$t('home'),
-          to: '/'
-        }
-      ];
+const transparentLayout = computed(() => {
+  return route.meta.transparentLayout || false;
+});
+const items = computed<LayoutButton[]>(() => {
+  return [
+    {
+      icon: IMdiHome,
+      title: t('home'),
+      to: '/'
     }
-  },
-  watch: {
-    $route(to): void {
-      if (to.fullPath.includes('fullscreen')) {
-        this.page.navDrawer = false;
-      } else if (!this.page.navDrawer) {
-        this.page.navDrawer = true;
-      }
-    },
-    '$vuetify.display.mobile': {
-      immediate: true,
-      handler(newValue: boolean): void {
-        if (newValue === true) {
-          this.page.openDrawer = false;
-        }
-      }
-    }
-  }
+  ];
 });
 </script>
