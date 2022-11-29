@@ -14,7 +14,9 @@
             {{ index + 1 }}
           </v-list-item-action>
           <v-list-item-action v-else class="justify-center d-flex">
-            <v-icon>mdi-drag-horizontal</v-icon>
+            <Icon>
+              <i-mdi-drag-horizontal />
+            </Icon>
           </v-list-item-action>
           <v-avatar class="list-group-item">
             <blurhash-image :item="item" />

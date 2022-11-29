@@ -10,7 +10,9 @@
         v-bind="attrs"
         v-on="on">
         {{ items[model].name }}
-        <v-icon end>mdi-menu-down</v-icon>
+        <Icon end>
+          <i-mdi-menu-down />
+        </Icon>
       </v-btn>
       <v-btn
         v-else
@@ -19,7 +21,9 @@
         icon
         v-bind="attrs"
         v-on="on">
-        <v-icon>mdi-eye</v-icon>
+        <Icon>
+          <i-mdi-eye />
+        </Icon>
       </v-btn>
     </template>
     <v-list dense>

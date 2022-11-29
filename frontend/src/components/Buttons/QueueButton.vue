@@ -23,7 +23,9 @@
             icon
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }">
-            <v-icon>mdi-playlist-play</v-icon>
+            <Icon>
+              <i-mdi-playlist-play />
+            </Icon>
           </v-btn>
         </template>
         <span>{{ $t('queue') }}</span>
@@ -36,7 +38,7 @@
             <blurhash-image
               v-if="playbackManager.initiator"
               :item="playbackManager.initiator" />
-            <v-icon v-else>{{ modeIcon }}</v-icon>
+            <v-icon v-else :icon="modeIcon" />
           </v-avatar>
 
           <v-list-item-title>{{ sourceText }}</v-list-item-title>
@@ -72,7 +74,9 @@
         <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon v-on="tooltip" @click="playbackManager.stop">
-              <v-icon>mdi-playlist-remove</v-icon>
+              <Icon>
+                <i-mdi-playlist-remove />
+              </Icon>
             </v-btn>
           </template>
           <span>{{ $t('playback.clearQueue') }}</span>
@@ -80,7 +84,9 @@
         <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon disabled v-on="tooltip">
-              <v-icon>mdi-content-save</v-icon>
+              <Icon>
+                <i-mdi-content-save />
+              </Icon>
             </v-btn>
           </template>
           <span>{{ $t('playback.saveAsPlaylist') }}</span>
@@ -98,6 +104,8 @@ import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
 import { getTotalEndsAtTime } from '~/utils/time';
+import IMdiShuffle from '~icons/mdi/shuffle';
+import IMdiPlaylistMusic from '~icons/mdi/playlist-music';
 
 export default defineComponent({
   props: {
@@ -167,13 +175,13 @@ export default defineComponent({
       }
     },
     modeIcon: {
-      get(): string {
+      get(): typeof IMdiShuffle {
         switch (this.playbackManager.playbackInitMode) {
           case InitMode.Shuffle: {
-            return 'mdi-shuffle';
+            return IMdiShuffle;
           }
           default: {
-            return 'mdi-playlist-music';
+            return IMdiPlaylistMusic;
           }
         }
       }

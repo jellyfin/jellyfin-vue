@@ -7,16 +7,22 @@
       </v-col>
       <v-card-actions class="ml-auto mr-2">
         <v-btn icon disabled>
-          <v-icon>mdi-information-outline</v-icon>
+          <Icon>
+            <i-mdi-information-outline />
+          </Icon>
         </v-btn>
         <v-btn
           icon
           :disabled="loading || serverInfo.isDefault"
           @click="removeServerFromStore">
-          <v-icon>mdi-delete</v-icon>
+          <Icon>
+            <i-mdi-delete />
+          </Icon>
         </v-btn>
         <v-btn icon :disabled="loading" @click="setServer">
-          <v-icon>mdi-arrow-right</v-icon>
+          <Icon>
+            <i-mdi-arrow-right />
+          </Icon>
         </v-btn>
       </v-card-actions>
     </v-row>

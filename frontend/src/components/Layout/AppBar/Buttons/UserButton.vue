@@ -1,31 +1,26 @@
 <template>
-  <v-menu offset-y>
+  <v-menu v-if="auth.currentUser.value" offset-y>
     <template #activator="{ on, attrs }">
       <app-bar-button-layout :custom-listener="on" v-bind="attrs">
         <template #icon>
-          <user-image
-            v-if="auth.currentUser"
-            :user="auth.currentUser"
-            :size="40"
-            rounded />
+          <user-image :user="auth.currentUser.value" :size="40" rounded />
         </template>
       </app-bar-button-layout>
     </template>
     <v-list class="min-list-width" dense>
       <v-list-item>
         <v-avatar>
-          <user-image
-            v-if="auth.currentUser"
-            :user="auth.currentUser"
-            :size="40"
-            rounded />
+          <user-image :user="auth.currentUser.value" :size="40" rounded />
         </v-avatar>
         <v-list-item-title class="text-body-1">
-          {{ auth.currentUser.Name }}
+          {{ auth.currentUser.value.Name }}
         </v-list-item-title>
-        <v-list-item-subtitle v-if="auth.currentUser.Policy.IsAdministrator">
+        <v-list-item-subtitle
+          v-if="auth.currentUser.value?.Policy?.IsAdministrator">
           {{ $t('administrator') }}
-          <v-icon size="small">mdi-key-chain</v-icon>
+          <Icon size="small">
+            <i-mdi-key-chain />
+          </Icon>
         </v-list-item-subtitle>
       </v-list-item>
       <v-divider class="my-2" light />
@@ -33,66 +28,65 @@
         v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
         @click="item.action">
-        <v-icon size="small">{{ item.icon }}</v-icon>
+        <Icon size="small">
+          {{ item.icon }}
+        </Icon>
         <v-list-item-title>{{ item.title }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useRemote } from '@/composables';
+import IMdiCog from '~icons/mdi/cog';
+import IMdiLogout from '~icons/mdi/logout';
+import IMdiPencil from '~icons/mdi/pencil';
 
 interface MenuItem {
   title: string;
-  icon: string;
+  icon: typeof IMdiPencil;
   action: () => void;
 }
 
-export default defineComponent({
-  data() {
-    return {
-      avatarSize: 48
-    };
-  },
-  computed: {
-    menuItems(): MenuItem[] {
-      const menuItems = [];
+const router = useRouter();
+const auth = useRemote().auth;
+const { t } = useI18n();
 
-      if (this.$remote.auth.currentUser.value?.Policy?.IsAdministrator) {
-        menuItems.push({
-          title: this.$t('metadataEditor'),
-          icon: 'mdi-pencil',
-          action: (): void => {
-            this.$router.push('/metadata');
-          }
-        });
+const menuItems = computed<MenuItem[]>(() => {
+  const menuItems = [];
+
+  if (auth.currentUser.value?.Policy?.IsAdministrator) {
+    menuItems.push({
+      title: t('metadataEditor'),
+      icon: IMdiPencil,
+      action: (): void => {
+        router.push('/metadata');
       }
-
-      menuItems.push({
-        title: this.$t('settings.settings'),
-        icon: 'mdi-cog',
-        action: (): void => {
-          this.$router.push('/settings');
-        }
-      });
-
-      menuItems.push({
-        title: this.$t('logout'),
-        icon: 'mdi-logout',
-        action: (): void => {
-          this.logoutUser();
-        }
-      });
-
-      return menuItems;
-    }
-  },
-  methods: {
-    logoutUser(): void {
-      this.auth.logoutCurrentUser();
-    }
+    });
   }
+
+  menuItems.push(
+    {
+      title: t('settings.settings'),
+      icon: IMdiCog,
+      action: (): void => {
+        router.push('/settings');
+      }
+    },
+    {
+      title: t('logout'),
+      icon: IMdiLogout,
+      action: (): void => {
+        auth.logoutCurrentUser();
+      }
+    }
+  );
+
+  return menuItems;
 });
 </script>
 
