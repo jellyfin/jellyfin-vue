@@ -7,6 +7,23 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
+import IMdiMovie from '~icons/mdi/movie';
+import IMdiMusic from '~icons/mdi/music';
+import IMdiImage from '~icons/mdi/image';
+import IMdiYoutubeTV from '~icons/mdi/youtube-tv';
+import IMdiTelevisionClassic from '~icons/mdi/television-classic';
+import IMdiImageMultiple from '~icons/mdi/image-multiple';
+import IMdiMusicBox from '~icons/mdi/music-box';
+import IMdiBookOpenPageVariant from '~icons/mdi/book-open-page-variant';
+import IMdiYoutube from '~icons/mdi/youtube';
+import IMdiPlaylistPlay from '~icons/mdi/playlist-play';
+import IMdiFolder from '~icons/mdi/folder';
+import IMdiAccount from '~icons/mdi/account';
+import IMdiMusicNote from '~icons/mdi/music-note';
+import IMdiBookMusic from '~icons/mdi/book-music';
+import IMdiFolderMultiple from '~icons/mdi/folder-multiple';
+import IMdiFilmstrip from '~icons/mdi/filmstrip';
+import IMdiAlbum from '~icons/mdi/album';
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -74,40 +91,42 @@ export function isValidMD5(input: string): boolean {
  * @param libraryType - Type of the library
  * @returns Name of the Material Design Icon associated with the type
  */
-export function getLibraryIcon(libraryType: string | undefined | null): string {
+export function getLibraryIcon(
+  libraryType: string | undefined | null
+): typeof IMdiMovie {
   switch (libraryType?.toLowerCase()) {
     case 'movies': {
-      return 'mdi-movie';
+      return IMdiMovie;
     }
     case 'music': {
-      return 'mdi-music';
+      return IMdiMusic;
     }
     case 'photos': {
-      return 'mdi-image';
+      return IMdiImage;
     }
     case 'livetv': {
-      return 'mdi-youtube-tv';
+      return IMdiYoutubeTV;
     }
     case 'tvshows': {
-      return 'mdi-television-classic';
+      return IMdiTelevisionClassic;
     }
     case 'homevideos': {
-      return 'mdi-image-multiple';
+      return IMdiImageMultiple;
     }
     case 'musicvideos': {
-      return 'mdi-music-box';
+      return IMdiMusicBox;
     }
     case 'books': {
-      return 'mdi-book-open-page-variant';
+      return IMdiBookOpenPageVariant;
     }
     case 'channels': {
-      return 'mdi-youtube';
+      return IMdiYoutube;
     }
     case 'playlists': {
-      return 'mdi-playlist-play';
+      return IMdiPlaylistPlay;
     }
     default: {
-      return 'mdi-folder';
+      return IMdiFolder;
     }
   }
 }
@@ -293,58 +312,60 @@ export function getItemDetailsLink(
  * @param item - The item we want to get the icon for
  * @returns - The string that references the icon
  */
-export function getItemIcon(item: BaseItemDto | BaseItemPerson): string {
-  let itemIcon = '';
+export function getItemIcon(
+  item: BaseItemDto | BaseItemPerson
+): typeof IMdiAccount | undefined {
+  let itemIcon;
 
   if (isPerson(item)) {
-    itemIcon = 'mdi-account';
+    itemIcon = IMdiAccount;
   } else {
     switch (item.Type) {
       case 'Audio': {
-        itemIcon = 'mdi-music-note';
+        itemIcon = IMdiMusicNote;
         break;
       }
       case 'AudioBook': {
-        itemIcon = 'mdi-book-music';
+        itemIcon = IMdiBookMusic;
         break;
       }
       case 'Book': {
-        itemIcon = 'mdi-book-open-page-variant';
+        itemIcon = IMdiBookOpenPageVariant;
         break;
       }
       case 'BoxSet': {
-        itemIcon = 'mdi-folder-multiple';
+        itemIcon = IMdiFolderMultiple;
         break;
       }
       case 'Folder':
       case 'CollectionFolder': {
-        itemIcon = 'mdi-folder';
+        itemIcon = IMdiFolder;
         break;
       }
       case 'Movie': {
-        itemIcon = 'mdi-filmstrip';
+        itemIcon = IMdiFilmstrip;
         break;
       }
       case 'MusicAlbum': {
-        itemIcon = 'mdi-album';
+        itemIcon = IMdiAlbum;
         break;
       }
       case 'MusicArtist':
       case 'Person': {
-        itemIcon = 'mdi-account';
+        itemIcon = IMdiAccount;
         break;
       }
       case 'PhotoAlbum': {
-        itemIcon = 'mdi-image-multiple';
+        itemIcon = IMdiImageMultiple;
         break;
       }
       case 'Playlist': {
-        itemIcon = 'mdi-playlist-play';
+        itemIcon = IMdiPlaylistPlay;
         break;
       }
       case 'Series':
       case 'Episode': {
-        itemIcon = 'mdi-television-classic';
+        itemIcon = IMdiTelevisionClassic;
         break;
       }
     }

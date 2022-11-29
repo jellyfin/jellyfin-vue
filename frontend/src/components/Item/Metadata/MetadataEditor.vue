@@ -117,7 +117,9 @@
                   {{ $t('addNewPerson') }}
                 </v-list-item-title>
                 <v-list-item-action>
-                  <v-icon>mdi-plus-circle</v-icon>
+                  <Icon>
+                    <i-mdi-plus-circle />
+                  </Icon>
                 </v-list-item-action>
               </v-list-item>
               <v-list-item
@@ -128,7 +130,9 @@
                   <v-img
                     v-if="item.PrimaryImageTag"
                     :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
-                  <v-icon v-else class="bg-grey-darken-3">mdi-account</v-icon>
+                  <Icon v-else class="bg-grey-darken-3">
+                    <i-mdi-account />
+                  </Icon>
                 </v-avatar>
                 <v-list-item-title>
                   {{ item.Name }}
@@ -137,7 +141,9 @@
                   {{ item.Role || item.Type }}
                 </v-list-item-subtitle>
                 <v-list-item-action @click.stop="handlePersonDel(i)">
-                  <v-icon>mdi-delete</v-icon>
+                  <Icon>
+                    <i-mdi-delete />
+                  </Icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>

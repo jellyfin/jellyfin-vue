@@ -1,6 +1,8 @@
 <template>
   <v-chip color="green" class="card-chip" small>
-    <v-icon>mdi-check</v-icon>
+    <Icon>
+      <i-mdi-check />
+    </Icon>
   </v-chip>
 </template>
 

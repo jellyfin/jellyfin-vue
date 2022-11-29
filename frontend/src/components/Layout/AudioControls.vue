@@ -62,13 +62,17 @@
                   class="mx-1 active-button"
                   :color="playbackManager.isShuffling ? 'primary' : undefined"
                   @click="playbackManager.toggleShuffle">
-                  <v-icon>mdi-shuffle</v-icon>
+                  <Icon>
+                    <i-mdi-shuffle />
+                  </Icon>
                 </v-btn>
                 <v-btn
                   icon
                   class="mx-1"
                   @click="playbackManager.setPreviousTrack">
-                  <v-icon>mdi-skip-previous</v-icon>
+                  <Icon>
+                    <i-mdi-skip-previous />
+                  </Icon>
                 </v-btn>
                 <v-btn
                   icon
@@ -77,20 +81,16 @@
                   :loading="playbackManager.isBuffering"
                   class="mx-1 active-button"
                   @click="playbackManager.playPause">
-                  <v-icon size="large">
-                    {{
-                      playbackManager.isPaused
-                        ? 'mdi-play-circle-outline'
-                        : 'mdi-pause-circle-outline'
-                    }}
-                  </v-icon>
+                  <v-icon size="large" :icon="playPauseIcon" />
                 </v-btn>
                 <v-btn
                   icon
                   :disabled="!playbackManager.getNextItem"
                   class="mx-1"
                   @click="playbackManager.setNextTrack">
-                  <v-icon>mdi-skip-next</v-icon>
+                  <Icon>
+                    <i-mdi-skip-next />
+                  </Icon>
                 </v-btn>
                 <v-btn
                   icon
@@ -119,10 +119,14 @@
               icon
               nuxt
               to="/fullscreen/playback">
-              <v-icon>mdi-fullscreen</v-icon>
+              <Icon>
+                <i-mdi-fullscreen />
+              </Icon>
             </v-btn>
             <v-btn v-show="isFullScreenPlayer" icon @click="$router.back()">
-              <v-icon>mdi-fullscreen-exit</v-icon>
+              <Icon>
+                <i-mdi-fullscreen-exit />
+              </Icon>
             </v-btn>
           </v-col>
           <v-col
@@ -134,34 +138,32 @@
               rounded
               class="mx-1 active-button"
               @click="playbackManager.playPause">
-              <v-icon>
-                {{
-                  playbackManager.isPaused
-                    ? 'mdi-play-circle-outline'
-                    : 'mdi-pause-circle-outline'
-                }}
-              </v-icon>
+              <v-icon :icon="playPauseIcon" />
             </v-btn>
             <v-btn
               icon
               :disabled="!playbackManager.getNextItem"
               class="mx-1"
               @click="playbackManager.setNextTrack">
-              <v-icon>mdi-skip-next</v-icon>
+              <Icon>
+                <i-mdi-skip-next />
+              </Icon>
             </v-btn>
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
               :color="playbackManager.isRepeating ? 'primary' : undefined"
               @click="playbackManager.toggleRepeatMode">
-              <v-icon>{{ repeatIcon }}</v-icon>
+              <v-icon :icon="repeatIcon" />
             </v-btn>
             <v-btn
               icon
               class="mx-1 active-button hidden-xs-only"
               :color="playbackManager.isShuffling ? 'primary' : undefined"
               @click="playbackManager.toggleShuffle">
-              <v-icon>mdi-shuffle</v-icon>
+              <Icon>
+                <i-mdi-shuffle />
+              </Icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -186,34 +188,40 @@
   </v-slide-y-reverse-transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { playbackManagerStore } from '~/store';
 import { getItemDetailsLink } from '~/utils/items';
 import { RepeatMode } from '~/store/playbackManager';
+import IMdiPauseCircleOutline from '~icons/mdi/pause-circle-outline';
+import IMdiPlayCircleOutline from '~icons/mdi/play-circle-outline';
+import IMdiRepeatOnce from '~icons/mdi/repeat-once';
+import IMdiRepeat from '~icons/mdi/repeat';
 
-export default defineComponent({
-  computed: {
-    ...mapStores(playbackManagerStore),
-    repeatIcon(): string {
-      if (this.playbackManager.repeatMode === RepeatMode.RepeatOne) {
-        return 'mdi-repeat-once';
-      }
+const route = useRoute();
 
-      return 'mdi-repeat';
-    },
-    // Checking for route is faster to switch the controls than checking for the store
-    // TODO: Remove this as soon as we can use the fullpage layout in music player
-    // (i.e Vue 3) https://github.com/nuxt/nuxt.js/issues/8592
-    isFullScreenPlayer(): boolean {
-      return this.$route.fullPath === '/fullscreen/playback';
-    }
-  },
-  methods: {
-    getItemDetailsLink
+const playbackManager = playbackManagerStore();
+const repeatIcon = computed(() => {
+  if (playbackManager.repeatMode === RepeatMode.RepeatOne) {
+    return IMdiRepeatOnce;
   }
+
+  return IMdiRepeat;
 });
+const playPauseIcon = computed(() => {
+  if (playbackManager.isPaused) {
+    return IMdiPauseCircleOutline;
+  }
+
+  return IMdiPlayCircleOutline;
+});
+// Checking for route is faster to switch the controls than checking for the store
+// TODO: Remove this as soon as we can use the fullpage layout in music player
+// (i.e Vue 3) https://github.com/nuxt/nuxt.js/issues/8592
+const isFullScreenPlayer = computed(
+  () => route.fullPath === '/fullscreen/playback'
+);
 </script>
 
 <style lang="scss" scoped>

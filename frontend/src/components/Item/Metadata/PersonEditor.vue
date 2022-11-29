@@ -10,7 +10,9 @@
               <v-img
                 v-if="person && person.PrimaryImageTag"
                 :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`" />
-              <v-icon v-else class="bg-grey-darken-3">mdi-account</v-icon>
+              <Icon v-else class="bg-grey-darken-3">
+                <i-mdi-account />
+              </Icon>
             </v-avatar>
           </v-col>
           <v-col>

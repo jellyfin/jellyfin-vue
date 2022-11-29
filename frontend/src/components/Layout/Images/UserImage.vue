@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-avatar v-if="loading" color="primary" :size="size">
-      <v-icon :size="iconSize" dark>mdi-account</v-icon>
+      <Icon :size="iconSize" dark>
+        <i-mdi-account />
+      </Icon>
     </v-avatar>
     <div
       v-show="!loading"
