@@ -5,7 +5,6 @@ import {
   RouteLocationRaw
 } from 'vue-router';
 import { useRemote } from '@/composables';
-import router from '..';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
@@ -16,8 +15,7 @@ const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
  * Redirects to login page if there's no user logged in.
  */
 export default function loginGuard(
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized
+  to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   const remote = useRemote();
   let destinationRoute: RouteLocationPathRaw | undefined;
