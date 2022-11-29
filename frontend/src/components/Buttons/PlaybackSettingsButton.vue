@@ -100,7 +100,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
@@ -111,14 +110,18 @@ export default defineComponent({
     },
     stretchProp: Boolean
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return {
+      playbackManager
+    };
+  },
   data() {
     return {
       menu: false,
       stretch: this.stretchProp
     };
-  },
-  computed: {
-    ...mapStores(playbackManagerStore)
   },
   watch: {
     stretchProp(value) {

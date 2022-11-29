@@ -23,13 +23,17 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import Swiper, { SwiperOptions } from 'swiper';
 import { getBlurhash } from '~/utils/images';
 import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       swiperOptions: {
@@ -51,7 +55,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     backdropHash(): string | undefined {
       return this.playbackManager.getCurrentItem
         ? getBlurhash(this.playbackManager.getCurrentItem, ImageType.Primary)

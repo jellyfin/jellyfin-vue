@@ -29,11 +29,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { ticksToMs, formatTime } from '~/utils/time';
 
 export default defineComponent({
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       clicked: false,
@@ -41,7 +45,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     runtime(): number {
       return (
         ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000 || 0
