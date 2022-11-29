@@ -10,72 +10,63 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { ref, watch } from 'vue';
 import { wrap } from 'comlink';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
 
 const worker = new BlurhashWorker();
 const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
+</script>
 
-export default defineComponent({
-  props: {
-    hash: {
-      type: String,
-      required: true
-    },
-    width: {
-      type: Number,
-      default: 32
-    },
-    height: {
-      type: Number,
-      default: 32
-    },
-    punch: {
-      type: Number,
-      default: 1
-    }
+<script setup lang="ts">
+const props = defineProps({
+  hash: {
+    type: String,
+    required: true
   },
-  data() {
-    return {
-      pixels: undefined as Uint8ClampedArray | undefined
-    };
+  width: {
+    type: Number,
+    default: 32
   },
-  watch: {
-    hash(): void {
-      this.$nextTick(() => {
-        this.getPixels();
-      });
-    },
-    pixels(): void {
-      this.draw();
-    }
+  height: {
+    type: Number,
+    default: 32
   },
-  mounted() {
-    this.getPixels();
-  },
-  methods: {
-    draw(): void {
-      const context = (this.$refs.canvas as HTMLCanvasElement).getContext('2d');
-      const imageData = context?.createImageData(this.width, this.height);
+  punch: {
+    type: Number,
+    default: 1
+  }
+});
 
-      if (imageData && this.pixels) {
-        imageData.data.set(this.pixels);
-        context?.putImageData(imageData, 0, 0);
-      }
-    },
-    async getPixels(): Promise<void> {
-      try {
-        this.pixels = await pixelWorker(
-          this.hash,
-          this.width,
-          this.height,
-          this.punch
-        );
-      } catch {
-        this.pixels = undefined;
-        this.$emit('error');
-      }
+const emit = defineEmits<{
+  (e: 'error'): void;
+}>();
+
+const pixels = ref<Uint8ClampedArray | undefined>(undefined);
+const canvas = ref<HTMLCanvasElement | undefined>(undefined);
+
+watch([props, canvas], async () => {
+  if (canvas.value) {
+    try {
+      pixels.value = await pixelWorker(
+        props.hash,
+        props.width,
+        props.height,
+        props.punch
+      );
+    } catch {
+      pixels.value = undefined;
+      emit('error');
+
+      return;
+    }
+
+    const context = canvas.value.getContext('2d');
+    const imageData = context?.createImageData(props.width, props.height);
+
+    if (imageData) {
+      imageData.data.set(pixels.value);
+      context?.putImageData(imageData, 0, 0);
     }
   }
 });
