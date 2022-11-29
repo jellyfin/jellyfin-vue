@@ -236,6 +236,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -247,7 +248,8 @@ import { getItemDetailsLink, getMediaStreams } from '~/utils/items';
 import { getItemizedSelect } from '~/utils/forms';
 
 export default defineComponent({
-  async asyncData({ params, $api }) {
+  async setup() {
+    const { params } = useRoute();
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
@@ -260,7 +262,6 @@ export default defineComponent({
   },
   data() {
     return {
-      item: {} as BaseItemDto,
       backdropImageSource: '',
       currentSource: {} as MediaSourceInfo,
       currentVideoTrack: undefined as number | undefined,
