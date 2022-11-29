@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
   SortOrder,
@@ -53,8 +54,9 @@ import {
 import { itemsStore } from '~/store';
 
 export default defineComponent({
-  async asyncData({ params, $api, route }) {
+  async setup() {
     const items = itemsStore();
+    const { params } = useRoute();
 
     const itemId = params.itemId;
     const item = (

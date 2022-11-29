@@ -47,17 +47,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { validLibraryTypes } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  async asyncData({ params, $api }) {
+  async setup() {
+    const { params } = useRoute();
     const collectionInfo = (
       await $api.items.getItems({
         userId: this.$remote.auth.currentUserId.value,
@@ -65,7 +62,10 @@ export default defineComponent({
       })
     ).data?.Items?.[0];
 
-    return { collectionInfo };
+    return {
+      useSnackbar,
+      collectionInfo
+    };
   },
   data() {
     return {
@@ -87,8 +87,7 @@ export default defineComponent({
       filterHasThemeVideo: false,
       filterIsHd: undefined as boolean | undefined,
       filterIs4k: undefined as boolean | undefined,
-      filterIs3d: undefined as boolean | undefined,
-      collectionInfo: {} as BaseItemDto
+      filterIs3d: undefined as boolean | undefined
     };
   },
   computed: {

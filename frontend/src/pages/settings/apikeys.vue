@@ -39,7 +39,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
 
 interface TableHeaders {
@@ -48,19 +47,16 @@ interface TableHeaders {
 }
 
 export default defineComponent({
-  setup() {
+  async setup() {
+    const apiKeys = (await $api.apiKey.getKeys()).data.Items;
+
     return {
+      apiKeys,
       useSnackbar
     };
   },
-  async asyncData({ $api }) {
-    const apiKeys = (await $api.apiKey.getKeys()).data.Items;
-
-    return { apiKeys };
-  },
   data() {
     return {
-      apiKeys: [] as AuthenticationInfo[],
       addingNewKey: false,
       newKeyAppName: '',
       revokeKeyLoading: false
