@@ -114,13 +114,13 @@ meta:
 </route>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import colors from 'vuetify/lib/util/colors';
+import { defineComponent } from 'vue';
 import {
   ActivityLogEntry,
   LogFile,
   LogLevel
 } from '@jellyfin/sdk/lib/generated-client';
+import { parseJSON } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import IMdiLogin from '~icons/mdi/login';
@@ -129,6 +129,7 @@ import IMdiLock from '~icons/mdi/lock';
 import IMdiPlay from '~icons/mdi/play';
 import IMdiStop from '~icons/mdi/stop';
 import IMdiHelp from '~icons/mdi/help';
+import { dateFnsFormat, dateFnsFormatRelative } from '@/utils/time';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -166,46 +167,25 @@ export default defineComponent({
     getColorFromSeverity(severity: LogLevel): string {
       switch (severity) {
         case LogLevel.Trace: {
-          return (
-            this.$vuetify.theme.currentTheme.success?.toString() ||
-            colors.green.base
-          );
+          return this.$vuetify.theme.current.value.colors.success;
         }
         case LogLevel.Debug: {
-          return (
-            this.$vuetify.theme.currentTheme.accent?.toString() ||
-            colors.blue.accent1
-          );
+          return this.$vuetify.theme.current.value.colors.accent;
         }
         case LogLevel.Information: {
-          return (
-            this.$vuetify.theme.currentTheme.info?.toString() ||
-            colors.blue.base
-          );
+          return this.$vuetify.theme.current.value.colors.info;
         }
         case LogLevel.Warning: {
-          return (
-            this.$vuetify.theme.currentTheme.warning?.toString() ||
-            colors.amber.base
-          );
+          return this.$vuetify.theme.current.value.colors.warning;
         }
         case LogLevel.Error: {
-          return (
-            this.$vuetify.theme.currentTheme.error?.toString() ||
-            colors.red.accent2
-          );
+          return this.$vuetify.theme.current.value.colors.error;
         }
         case LogLevel.Critical: {
-          return (
-            this.$vuetify.theme.currentTheme.secondary?.toString() ||
-            colors.grey.darken3
-          );
+          return this.$vuetify.theme.current.value.colors.secondary;
         }
         default: {
-          return (
-            this.$vuetify.theme.currentTheme.primary?.toString() ||
-            colors.blue.darken2
-          );
+          return this.$vuetify.theme.current.value.colors.primary;
         }
       }
     },
@@ -232,16 +212,13 @@ export default defineComponent({
       }
     },
     getFormattedActivityDate(date: Date): string {
-      return this.$dateFns.formatRelative(
-        this.$dateFns.parseJSON(date),
-        new Date()
-      );
+      return dateFnsFormatRelative(parseJSON(date), new Date()).value;
     },
     getFormattedLogDate(date: Date): string {
-      return this.$dateFns.format(date, 'Ppp');
+      return dateFnsFormat(date, 'Ppp').value;
     },
     getLogFileLink(name: string): string {
-      return `${this.$axios.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
+      return `${this.$remote.axios.instance.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
     }
   }
 });
