@@ -43,12 +43,9 @@
             <v-col class="pt-0 pb-0">
               <span class="text-capitalize-first-letter">
                 {{
-                  $dateFns.formatRelative(
-                    $dateFns.parseJSON(selectedDevice.DateLastActivity),
-                    new Date(),
-                    {
-                      locale: $i18n.locale
-                    }
+                  dateFnsFormatRelative(
+                    parseJSON(selectedDevice.DateLastActivity),
+                    new Date()
                   )
                 }}
               </span>
@@ -65,24 +62,28 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
+import { parseJSON } from 'date-fns';
+import { dateFnsFormatRelative } from '@/utils/time';
 
-export default defineComponent({
-  props: {
-    selectedDevice: {
-      type: Object as () => DeviceInfo,
-      default: (): DeviceInfo => {
-        return {};
-      }
+defineProps({
+  isDialog: {
+    default: false,
+    type: Boolean
+  },
+  selectedDevice: {
+    default: (): DeviceInfo => {
+      return {};
     },
-    isDialog: {
-      default: false,
-      type: Boolean
-    }
+    type: Object as () => DeviceInfo
   }
 });
+
+defineEmits<{
+  (e: 'close-dialog'): void;
+  (e: 'delete-selected'): void;
+}>();
 </script>
 
 <style lang="scss" scoped>
