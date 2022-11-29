@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, computed } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import isEmpty from 'lodash/isEmpty';
@@ -140,16 +140,11 @@ let systemInfo = {} as SystemInfo;
 
 route.meta.title = t('settings.settings');
 
-onBeforeMount(async () => {
-  if (
-    remote.auth.currentUser.value?.Policy?.IsAdministrator &&
-    remote.sdk.api
-  ) {
-    const { data } = await getSystemApi(remote.sdk.api).getSystemInfo();
+if (remote.auth.currentUser.value?.Policy?.IsAdministrator && remote.sdk.api) {
+  const { data } = await getSystemApi(remote.sdk.api).getSystemInfo();
 
-    systemInfo = data;
-  }
-});
+  systemInfo = data;
+}
 
 const userItems = computed(() => {
   return [
