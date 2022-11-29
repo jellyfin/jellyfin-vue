@@ -100,7 +100,6 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { InitMode } from '~/store/playbackManager';
 import { getTotalEndsAtTime } from '~/utils/time';
@@ -118,6 +117,11 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       menu: false,
@@ -126,7 +130,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     sourceText: {
       get(): string {
         /**

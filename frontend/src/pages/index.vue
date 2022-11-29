@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { pickBy } from 'lodash-es';
 import {
   BaseItemDto,
@@ -58,7 +57,10 @@ export default defineComponent({
       })
     ).data;
 
-    return { carouselItems };
+    const userViews = userViewsStore();
+    const clientSettings = clientSettingsStore();
+
+    return { carouselItems, clientSettings, userViews };
   },
   data() {
     return {
@@ -66,7 +68,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(clientSettingsStore, userViewsStore),
     homeSections(): HomeSection[] {
       // Filter for valid sections in Jellyfin Vue
       // TODO: Implement custom section order
