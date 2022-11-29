@@ -34,11 +34,15 @@
               <div class="d-flex flex-column player-overlay">
                 <div class="d-flex flex-row">
                   <v-btn icon @click="playbackManager.toggleMinimized">
-                    <v-icon>mdi-arrow-expand-all</v-icon>
+                    <Icon>
+                      <i-mdi-arrow-expand-all />
+                    </Icon>
                   </v-btn>
                   <v-spacer />
                   <v-btn icon @click="stopPlayback">
-                    <v-icon>mdi-close</v-icon>
+                    <Icon>
+                      <i-mdi-close />
+                    </Icon>
                   </v-btn>
                 </div>
                 <div
@@ -48,23 +52,25 @@
                     icon
                     size="large"
                     @click="playbackManager.setPreviousTrack">
-                    <v-icon size="32">mdi-skip-previous</v-icon>
+                    <Icon size="32">
+                      <i-mdi-skip-previous />
+                    </Icon>
                   </v-btn>
                   <v-btn
                     class="pointer-events-all"
                     icon
                     size="x-large"
                     @click="playbackManager.playPause">
-                    <v-icon size="48">
-                      {{ playbackManager.isPaused ? 'mdi-play' : 'mdi-pause' }}
-                    </v-icon>
+                    <v-icon size="48" :icon="playPauseIcon" />
                   </v-btn>
                   <v-btn
                     class="pointer-events-all"
                     icon
                     size="large"
                     @click="playbackManager.setNextTrack">
-                    <v-icon size="32">mdi-skip-next</v-icon>
+                    <Icon size="32">
+                      <i-mdi-skip-next />
+                    </Icon>
                   </v-btn>
                 </div>
               </div>
@@ -86,10 +92,14 @@
                   <div class="d-flex align-center py-2 px-4">
                     <div class="d-flex">
                       <v-btn icon @click="stopPlayback">
-                        <v-icon>mdi-close</v-icon>
+                        <Icon>
+                          <i-mdi-close />
+                        </Icon>
                       </v-btn>
                       <v-btn icon @click="playbackManager.toggleMinimized">
-                        <v-icon>mdi-chevron-down</v-icon>
+                        <Icon>
+                          <i-mdi-chevron-down />
+                        </Icon>
                       </v-btn>
                     </div>
                     <div class="d-flex ml-auto">
@@ -139,25 +149,23 @@
                           icon
                           class="mx-1"
                           @click="playbackManager.setPreviousTrack">
-                          <v-icon> mdi-skip-previous </v-icon>
+                          <Icon>
+                            <i-mdi-skip-previous />
+                          </Icon>
                         </v-btn>
                         <v-btn
                           icon
                           class="mx-1 active-button"
                           @click="playbackManager.playPause">
-                          <v-icon size="large">
-                            {{
-                              playbackManager.isPaused
-                                ? 'mdi-play-circle-outline'
-                                : 'mdi-pause-circle-outline'
-                            }}
-                          </v-icon>
+                          <v-icon size="large" :icon="playPauseIconOutline" />
                         </v-btn>
                         <v-btn
                           icon
                           class="mx-1"
                           @click="playbackManager.setNextTrack">
-                          <v-icon icon> mdi-skip-next</v-icon>
+                          <Icon>
+                            <i-mdi-skip-next />
+                          </Icon>
                         </v-btn>
                       </div>
                       <div class="d-flex aligh-center ml-auto ml-md-0">
@@ -183,26 +191,30 @@
                           class="align-self-center active-button"
                           icon
                           @click="togglePictureInPicture">
-                          <v-icon>mdi-picture-in-picture-bottom-right</v-icon>
+                          <Icon>
+                            <i-mdi-picture-in-picture-bottom-right />
+                          </Icon>
                         </v-btn>
                         <v-btn
                           v-if="$vuetify.display.smAndUp"
                           class="align-self-center active-button"
                           icon
                           @click="stretchVideo = !stretchVideo">
-                          <v-icon v-if="!stretchVideo">
-                            mdi-stretch-to-page-outline
-                          </v-icon>
-                          <v-icon v-if="stretchVideo">
-                            mdi-stretch-to-page
-                          </v-icon>
+                          <Icon v-if="!stretchVideo">
+                            <i-mdi-stretch-to-page-outline />
+                          </Icon>
+                          <Icon v-if="stretchVideo">
+                            <i-mdi-stretch-to-page />
+                          </Icon>
                         </v-btn>
                         <v-btn
                           v-if="features.fullScreen"
                           class="align-self-center active-button"
                           icon
                           @click="toggleFullScreen">
-                          <v-icon>mdi-fullscreen</v-icon>
+                          <Icon>
+                            <i-mdi-fullscreen />
+                          </Icon>
                         </v-btn>
                       </div>
                     </div>
@@ -225,6 +237,10 @@ import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 import { isApple, isMobile } from '@/utils/browser-detection';
 import supportedFeatures from '@/utils/supported-features';
+import IMdiPlay from '~icons/mdi/play';
+import IMdiPlayCircleOutline from '~icons/mdi/play-circle-outline';
+import IMdiPause from '~icons/mdi/pause';
+import IMdiPauseCircleOutline from '~icons/mdi/pause-circle-outline';
 
 export default defineComponent({
   setup() {
@@ -244,7 +260,21 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore)
+    ...mapStores(playbackManagerStore),
+    playPauseIconOutline() {
+      if (this.playbackManager.isPaused) {
+        return IMdiPlayCircleOutline;
+      }
+
+      return IMdiPauseCircleOutline;
+    },
+    playPauseIcon() {
+      if (this.playbackManager.isPaused) {
+        return IMdiPlay;
+      }
+
+      return IMdiPause;
+    }
   },
   watch: {
     'playbackManager.isMinimized'(): void {

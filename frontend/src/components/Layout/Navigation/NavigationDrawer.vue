@@ -19,7 +19,7 @@
         router
         exact>
         <v-list-item-action>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-icon :icon="item.icon" />
         </v-list-item-action>
         <v-list-item-title v-text="item.title" />
       </v-list-item>
@@ -31,7 +31,7 @@
         router
         exact>
         <v-list-item-action>
-          <v-icon>{{ library.icon }}</v-icon>
+          <v-icon :icon="library.icon" />
         </v-list-item-action>
         <v-list-item-title v-text="library.title" />
       </v-list-item>
@@ -47,9 +47,10 @@ import { useRoute } from 'vue-router';
 import { defineComponent, computed } from 'vue';
 import { mapStores } from 'pinia';
 import { userViewsStore } from '~/store';
+import IMdiHome from '~icons/mdi/home';
 
 interface LayoutButton {
-  icon: string;
+  icon: typeof IMdiHome;
   title: string;
   to: string;
 }
@@ -69,7 +70,7 @@ export default defineComponent({
     items(): LayoutButton[] {
       return [
         {
-          icon: 'mdi-home',
+          icon: IMdiHome,
           title: this.$t('home'),
           to: '/'
         }
