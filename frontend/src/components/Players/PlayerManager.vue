@@ -231,7 +231,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
@@ -245,8 +244,9 @@ import IMdiPauseCircleOutline from '~icons/mdi/pause-circle-outline';
 export default defineComponent({
   setup() {
     const features = supportedFeatures;
+    const playbackManager = playbackManagerStore();
 
-    return { features };
+    return { features, playbackManager };
   },
   data() {
     return {
@@ -260,7 +260,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     playPauseIconOutline() {
       if (this.playbackManager.isPaused) {
         return IMdiPlayCircleOutline;

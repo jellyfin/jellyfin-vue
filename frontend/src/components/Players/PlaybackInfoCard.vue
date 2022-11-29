@@ -218,13 +218,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { SessionInfo } from '@jellyfin/sdk/lib/generated-client';
-import { mapStores } from 'pinia';
 import { camelCase, isNil } from 'lodash-es';
 // @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
 import { playbackManagerStore } from '~/store';
 
 export default defineComponent({
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       updateSessionInterval: null as number | null,
@@ -234,7 +238,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     isTranscoding(): boolean {
       return !!(
         this.sessionInfo?.PlayState?.PlayMethod === 'Transcode' ||
