@@ -19,13 +19,17 @@
                 target="_blank"
                 rel="noopener">
                 <v-avatar>
-                  <v-icon>mdi-file</v-icon>
+                  <Icon>
+                    <i-mdi-file />
+                  </Icon>
                 </v-avatar>
                 <v-list-item-title v-text="file.Name" />
                 <v-list-item-subtitle
                   v-text="getFormattedLogDate(file.DateModified)" />
                 <v-list-item-action>
-                  <v-icon>mdi-open-in-new</v-icon>
+                  <Icon>
+                    <i-mdi-open-in-new />
+                  </Icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list-group>
@@ -41,7 +45,9 @@
             v-else-if="loadingLogsStatus.status === 'error'"
             key="error-log-card">
             <v-card-title>
-              <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+              <Icon color="error" class="pr-2">
+                <i-mdi-alert-circle />
+              </Icon>
               {{ $t('settings.logsAndActivity.failedGetLogs') }}
             </v-card-title>
             <v-card-text v-if="loadingLogsStatus.errorMessage">
@@ -64,7 +70,7 @@
             <v-list-group>
               <v-list-item v-for="activity in activityList" :key="activity.Id">
                 <v-avatar :color="getColorFromSeverity(activity.Severity)">
-                  <v-icon dark v-text="getIconFromType(activity.Type)" />
+                  <v-icon :icon="getIconFromType(activity.Type)" />
                 </v-avatar>
                 <v-list-item-title v-text="activity.Name" />
                 <v-list-item-subtitle v-text="activity.ShortOverview" />
@@ -87,7 +93,9 @@
             v-else-if="loadingActivityStatus.status === 'error'"
             key="error-activity-card">
             <v-card-title>
-              <v-icon color="error" class="pr-2">mdi-alert-circle</v-icon>
+              <Icon color="error" class="pr-2">
+                <i-mdi-alert-circle />
+              </Icon>
               {{ $t('settings.logsAndActivity.failedGetActivity') }}
             </v-card-title>
             <v-card-text v-if="loadingActivityStatus.errorMessage">
@@ -115,6 +123,12 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import IMdiLogin from '~icons/mdi/login';
+import IMdiLogout from '~icons/mdi/logout';
+import IMdiLock from '~icons/mdi/lock';
+import IMdiPlay from '~icons/mdi/play';
+import IMdiStop from '~icons/mdi/stop';
+import IMdiHelp from '~icons/mdi/help';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -195,25 +209,25 @@ export default defineComponent({
         }
       }
     },
-    getIconFromType(type: string): string {
+    getIconFromType(type: string): typeof IMdiLogin {
       switch (type) {
         case 'SessionStarted': {
-          return 'mdi-login';
+          return IMdiLogin;
         }
         case 'SessionEnded': {
-          return 'mdi-logout';
+          return IMdiLogout;
         }
         case 'UserPasswordChanged': {
-          return 'mdi-lock';
+          return IMdiLock;
         }
         case 'VideoPlayback': {
-          return 'mdi-play';
+          return IMdiPlay;
         }
         case 'VideoPlaybackStopped': {
-          return 'mdi-stop';
+          return IMdiStop;
         }
         default: {
-          return 'mdi-help';
+          return IMdiHelp;
         }
       }
     },

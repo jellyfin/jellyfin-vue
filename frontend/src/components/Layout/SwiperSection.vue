@@ -10,10 +10,14 @@
         </h1>
         <v-spacer />
         <v-btn class="swiper-prev" icon>
-          <v-icon>mdi-arrow-left</v-icon>
+          <Icon>
+            <i-mdi-arrow-left />
+          </Icon>
         </v-btn>
         <v-btn class="swiper-next mr-2" icon>
-          <v-icon>mdi-arrow-right</v-icon>
+          <Icon>
+            <i-mdi-arrow-right />
+          </Icon>
         </v-btn>
       </div>
 
