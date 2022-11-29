@@ -7,7 +7,6 @@ import {
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
-import isNil from 'lodash/isNil';
 import { useRemote } from '@/composables';
 import {
   getShapeFromItemType,

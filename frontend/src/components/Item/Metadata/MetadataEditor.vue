@@ -189,15 +189,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import pick from 'lodash/pick';
-import set from 'lodash/set';
+import { pick, set } from 'lodash-es';
 import {
   BaseItemDto,
   BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
+import { formatISO } from 'date-fns';
 import { useSnackbar } from '@/composables';
 import { dateFnsFormat } from '@/utils/time';
-import { formatISO } from 'date-fns';
 
 export default defineComponent({
   props: {

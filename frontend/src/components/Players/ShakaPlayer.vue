@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 // @ts-expect-error - This module doesn't have typings
 import muxjs from 'mux.js';
 // @ts-expect-error - This module doesn't have typings
