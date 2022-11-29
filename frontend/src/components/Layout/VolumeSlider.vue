@@ -17,51 +17,36 @@
       max="100"
       :model-value="playbackManager.isMuted ? 0 : playbackManager.currentVolume"
       validate-on="blur"
-      @input="onVolumeChange" />
+      @input="playbackManager.setVolume" />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { playbackManagerStore } from '~/store';
 import IMdiVolumeMute from '~icons/mdi/volume-mute';
 import IMdiVolumeMedium from '~icons/mdi/volume-medium';
 import IMdiVolumeHigh from '~icons/mdi/volume-high';
 import IMdiVolumeLow from '~icons/mdi/volume-low';
 
-export default defineComponent({
-  data() {
-    return {
-      previousVolume: 0
-    };
-  },
-  computed: {
-    ...mapStores(playbackManagerStore),
-    icon(): typeof IMdiVolumeMute {
-      if (this.playbackManager.isMuted) {
-        return IMdiVolumeMute;
-      } else if (this.playbackManager.currentVolume >= 80) {
-        return IMdiVolumeHigh;
-      } else if (
-        this.playbackManager.currentVolume < 80 &&
-        this.playbackManager.currentVolume >= 25
-      ) {
-        return IMdiVolumeMedium;
-      } else if (
-        this.playbackManager.currentVolume < 25 &&
-        this.playbackManager.currentVolume >= 1
-      ) {
-        return IMdiVolumeLow;
-      } else {
-        return IMdiVolumeMute;
-      }
-    }
-  },
-  methods: {
-    onVolumeChange(value: number): void {
-      this.playbackManager.setVolume(value);
-    }
+const playbackManager = playbackManagerStore();
+const icon = computed(() => {
+  if (playbackManager.isMuted) {
+    return IMdiVolumeMute;
+  } else if (playbackManager.currentVolume >= 80) {
+    return IMdiVolumeHigh;
+  } else if (
+    playbackManager.currentVolume < 80 &&
+    playbackManager.currentVolume >= 25
+  ) {
+    return IMdiVolumeMedium;
+  } else if (
+    playbackManager.currentVolume < 25 &&
+    playbackManager.currentVolume >= 1
+  ) {
+    return IMdiVolumeLow;
+  } else {
+    return IMdiVolumeMute;
   }
 });
 </script>
