@@ -137,13 +137,12 @@ interface LoadingStatus {
 }
 
 export default defineComponent({
-  setup() {
+  async setup() {
     const { t } = useI18n();
     const route = useRoute();
 
     route.meta.title = t('settingsSections.logs.name');
-  },
-  async asyncData({ $api }) {
+
     const minDate = new Date();
 
     minDate.setDate(minDate.getDate() - 7);
@@ -157,8 +156,6 @@ export default defineComponent({
   },
   data() {
     return {
-      activityList: [] as ActivityLogEntry[],
-      logFiles: [] as LogFile[],
       loadingLogsStatus: { status: 'error' } as LoadingStatus,
       loadingActivityStatus: { status: 'error' } as LoadingStatus
     };

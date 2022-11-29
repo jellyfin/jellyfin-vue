@@ -143,6 +143,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
   ImageType,
@@ -153,7 +154,8 @@ import { getBlurhash } from '~/utils/images';
 import { dateFnsFormat } from '@/utils/time';
 
 export default defineComponent({
-  async asyncData({ params, $api }) {
+  async setup() {
+    const { params } = useRoute();
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
@@ -223,16 +225,6 @@ export default defineComponent({
     }
 
     return { activeTab, movies, series, books, photos, item };
-  },
-  data() {
-    return {
-      activeTab: 0,
-      movies: [] as BaseItemDto[],
-      series: [] as BaseItemDto[],
-      books: [] as BaseItemDto[],
-      photos: [] as BaseItemDto[],
-      item: {} as BaseItemDto
-    };
   },
   computed: {
     birthDate(): string | null {
