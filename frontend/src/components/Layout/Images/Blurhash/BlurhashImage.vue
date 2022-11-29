@@ -20,9 +20,11 @@
       </v-fade-transition>
     </div>
     <slot v-else name="placeholder">
-      <v-icon class="absolute text--disabled" :size="iconSize">
-        {{ getItemIcon(item) }}
-      </v-icon>
+      <v-icon
+        v-if="getItemIcon(item)"
+        class="absolute text--disabled"
+        :size="iconSize"
+        :icon="getItemIcon(item)" />
     </slot>
   </div>
 </template>

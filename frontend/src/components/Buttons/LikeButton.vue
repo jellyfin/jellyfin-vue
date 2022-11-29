@@ -1,7 +1,11 @@
 <template>
-  <v-btn :dark="dark" icon @click.stop.prevent="toggleFavorite">
-    <v-icon v-if="isFavorite">mdi-heart</v-icon>
-    <v-icon v-else>mdi-heart-outline</v-icon>
+  <v-btn icon @click.stop.prevent="toggleFavorite">
+    <Icon v-if="isFavorite">
+      <i-mdi-heart />
+    </Icon>
+    <Icon v-else>
+      <i-mdi-heart-outline />
+    </Icon>
   </v-btn>
 </template>
 
@@ -15,10 +19,6 @@ export default defineComponent({
     item: {
       type: Object as PropType<BaseItemDto>,
       required: true
-    },
-    dark: {
-      type: Boolean,
-      default: false
     }
   },
   setup() {

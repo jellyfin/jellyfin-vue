@@ -6,7 +6,9 @@
       fab
       size="small"
       @click="playbackManager.toggleMute">
-      <v-icon>{{ icon }}</v-icon>
+      <Icon>
+        {{ icon }}
+      </Icon>
     </v-btn>
     <v-slider
       class="volume-slider"
@@ -23,6 +25,10 @@
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
+import IMdiVolumeMute from '~icons/mdi/volume-mute';
+import IMdiVolumeMedium from '~icons/mdi/volume-medium';
+import IMdiVolumeHigh from '~icons/mdi/volume-high';
+import IMdiVolumeLow from '~icons/mdi/volume-low';
 
 export default defineComponent({
   data() {
@@ -32,23 +38,23 @@ export default defineComponent({
   },
   computed: {
     ...mapStores(playbackManagerStore),
-    icon(): string {
+    icon(): typeof IMdiVolumeMute {
       if (this.playbackManager.isMuted) {
-        return 'mdi-volume-mute';
+        return IMdiVolumeMute;
       } else if (this.playbackManager.currentVolume >= 80) {
-        return 'mdi-volume-high';
+        return IMdiVolumeHigh;
       } else if (
         this.playbackManager.currentVolume < 80 &&
         this.playbackManager.currentVolume >= 25
       ) {
-        return 'mdi-volume-medium';
+        return IMdiVolumeMedium;
       } else if (
         this.playbackManager.currentVolume < 25 &&
         this.playbackManager.currentVolume >= 1
       ) {
-        return 'mdi-volume-low';
+        return IMdiVolumeLow;
       } else {
-        return 'mdi-volume-mute';
+        return IMdiVolumeMute;
       }
     }
   },

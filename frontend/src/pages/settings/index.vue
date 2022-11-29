@@ -4,7 +4,8 @@
       <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
         <div
           v-if="
-            !isEmpty(systemInfo) && auth.currentUser.Policy.IsAdministrator
+            !isEmpty(systemInfo) &&
+            $remote.auth.currentUser.value?.Policy?.IsAdministrator
           ">
           <v-img
             class="logo"
@@ -50,18 +51,24 @@
               :to="userItem.link"
               :disabled="!userItem.link">
               <v-avatar>
-                <v-icon v-text="userItem.icon" />
+                <v-icon :icon="userItem.icon" />
               </v-avatar>
-              <v-list-item-title v-text="userItem.name" />
-              <v-list-item-subtitle v-text="userItem.description" />
+              <v-list-item-title>
+                {{ userItem.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                {{ userItem.description }}
+              </v-list-item-subtitle>
               <v-list-item-action>
-                <v-icon>mdi-chevron-right</v-icon>
+                <Icon>
+                  <i-mdi-chevron-right />
+                </Icon>
               </v-list-item-action>
             </v-list-item>
           </v-list-group>
         </v-list>
         <!-- Administrator settings -->
-        <div v-if="auth.currentUser.Policy.IsAdministrator">
+        <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
           <v-list
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
@@ -75,12 +82,18 @@
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
                 <v-avatar>
-                  <v-icon v-text="adminItem.icon" />
+                  <v-icon :icon="adminItem.icon" />
                 </v-avatar>
-                <v-list-item-title v-text="adminItem.name" />
-                <v-list-item-subtitle v-text="adminItem.description" />
+                <v-list-item-title>
+                  {{ adminItem.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ adminItem.description }}
+                </v-list-item-subtitle>
                 <v-list-item-action>
-                  <v-icon>mdi-chevron-right</v-icon>
+                  <Icon>
+                    <i-mdi-chevron-right />
+                  </Icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list-group>
@@ -92,144 +105,161 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onBeforeMount, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import isEmpty from 'lodash/isEmpty';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
-import { version } from '@/../package.json';
+import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { version as vueVersion } from '@/../package.json';
+import { useRemote } from '@/composables';
+import IMdiAccount from '~icons/mdi/account';
+import IMdiHome from '~icons/mdi/home';
+import IMdiPlayPause from '~icons/mdi/play-pause';
+import IMdiDiscPlayer from '~icons/mdi/disc-player';
+import IMdiSubtitles from '~icons/mdi/subtitles';
+import IMdiServer from '~icons/mdi/server';
+import IMdiDevices from '~icons/mdi/devices';
+import IMdiLibraryShelves from '~icons/mdi/library-shelves';
+import IMdiAccountMultiple from '~icons/mdi/account-multiple';
+import IMdiKeyChain from '~icons/mdi/key-chain';
+import IMdiPlayNetwork from '~icons/mdi/play-network';
+import IMdiDLNA from '~icons/mdi/dlna';
+import IMdiTelevisionClassic from '~icons/mdi/television-classic';
+import IMdiNetwork from '~icons/mdi/network';
+import IMdiPuzzle from '~icons/mdi/puzzle';
+import IMdiCalendarClock from '~icons/mdi/calendar-clock';
+import IMdiBell from '~icons/mdi/bell';
+import IMdiTextBox from '~icons/mdi/text-box';
 
-export default defineComponent({
-  setup() {
-    const { t } = useI18n();
-    const route = useRoute();
+const { t } = useI18n();
+const route = useRoute();
+const remote = useRemote();
+let systemInfo = {} as SystemInfo;
 
-    route.meta.title = t('settings.settings');
-  },
-  async asyncData({ $api }) {
-    if (auth.currentUser.value?.Policy?.IsAdministrator) {
-      const systemInfo = (await $api.system.getSystemInfo()).data;
+route.meta.title = t('settings.settings');
 
-      return { systemInfo };
-    }
-  },
-  data() {
-    return {
-      systemInfo: {} as SystemInfo,
-      vueVersion: version,
-      userItems: [
-        {
-          icon: 'mdi-account',
-          name: this.$t('settingsSections.account.name'),
-          description: this.$t('settingsSections.account.description')
-        },
-        {
-          icon: 'mdi-home',
-          name: this.$t('settingsSections.home.name'),
-          description: this.$t('settingsSections.home.description')
-        },
-        {
-          icon: 'mdi-play-pause',
-          name: this.$t('settingsSections.playback.name'),
-          description: this.$t('settingsSections.playback.description')
-        },
-        {
-          icon: 'mdi-disc-player',
-          name: this.$t('settingsSections.mediaPlayers.name'),
-          description: this.$t('settingsSections.mediaPlayers.description')
-        },
-        {
-          icon: 'mdi-subtitles',
-          name: this.$t('settingsSections.subtitles.name'),
-          description: this.$t('settingsSections.subtitles.description')
-        }
-      ],
-      adminSections: [
-        [
-          {
-            icon: 'mdi-server',
-            name: this.$t('settingsSections.server.name'),
-            description: this.$t('settingsSections.server.description')
-          },
-          {
-            icon: 'mdi-devices',
-            name: this.$t('settingsSections.devices.name'),
-            description: this.$t('settingsSections.devices.description'),
-            link: 'settings/devices'
-          },
-          {
-            icon: 'mdi-library-shelves',
-            name: this.$t('settingsSections.libraries.name'),
-            description: this.$t('settingsSections.libraries.description')
-          }
-        ],
-        [
-          {
-            icon: 'mdi-account-multiple',
-            name: this.$t('settingsSections.users.name'),
-            description: this.$t('settingsSections.users.description')
-          },
-          {
-            icon: 'mdi-key-chain',
-            name: this.$t('settings.apiKeys.apiKeys'),
-            description: this.$t('settings.apiKeys.description'),
-            link: '/settings/apikeys'
-          }
-        ],
-        [
-          {
-            icon: 'mdi-play-network',
-            name: this.$t('settingsSections.transcodingAndStreaming.name'),
-            description: this.$t(
-              'settingsSections.transcodingAndStreaming.description'
-            )
-          },
-          {
-            icon: 'mdi-dlna',
-            name: this.$t('settingsSections.dlna.name'),
-            description: this.$t('settingsSections.dlna.description')
-          },
-          {
-            icon: 'mdi-television-classic',
-            name: this.$t('settingsSections.liveTvAndDvr.name'),
-            description: this.$t('settingsSections.liveTvAndDvr.description')
-          },
-          {
-            icon: 'mdi-network',
-            name: this.$t('settingsSections.networking.name'),
-            description: this.$t('settingsSections.networking.description')
-          }
-        ],
-        [
-          {
-            icon: 'mdi-puzzle',
-            name: this.$t('settingsSections.plugins.name'),
-            description: this.$t('settingsSections.plugins.description')
-          },
-          {
-            icon: 'mdi-calendar-clock',
-            name: this.$t('settingsSections.scheduledTasks.name'),
-            description: this.$t('settingsSections.scheduledTasks.description')
-          },
-          {
-            icon: 'mdi-bell',
-            name: this.$t('settingsSections.notifications.name'),
-            description: this.$t('settingsSections.notifications.description')
-          },
-          {
-            icon: 'mdi-text-box',
-            name: this.$t('settingsSections.logs.name'),
-            description: this.$t('settingsSections.logs.description'),
-            link: 'settings/logs-and-activity'
-          }
-        ]
-      ]
-    };
-  },
-  methods: {
-    isEmpty
+onBeforeMount(async () => {
+  if (
+    remote.auth.currentUser.value?.Policy?.IsAdministrator &&
+    remote.sdk.api
+  ) {
+    const { data } = await getSystemApi(remote.sdk.api).getSystemInfo();
+
+    systemInfo = data;
   }
+});
+
+const userItems = computed(() => {
+  return [
+    {
+      icon: IMdiAccount,
+      name: t('settingsSections.account.name'),
+      description: t('settingsSections.account.description')
+    },
+    {
+      icon: IMdiHome,
+      name: t('settingsSections.home.name'),
+      description: t('settingsSections.home.description')
+    },
+    {
+      icon: IMdiPlayPause,
+      name: t('settingsSections.playback.name'),
+      description: t('settingsSections.playback.description')
+    },
+    {
+      icon: IMdiDiscPlayer,
+      name: t('settingsSections.mediaPlayers.name'),
+      description: t('settingsSections.mediaPlayers.description')
+    },
+    {
+      icon: IMdiSubtitles,
+      name: t('settingsSections.subtitles.name'),
+      description: t('settingsSections.subtitles.description')
+    }
+  ];
+});
+
+const adminSections = computed(() => {
+  return [
+    [
+      {
+        icon: IMdiServer,
+        name: t('settingsSections.server.name'),
+        description: t('settingsSections.server.description')
+      },
+      {
+        icon: IMdiDevices,
+        name: t('settingsSections.devices.name'),
+        description: t('settingsSections.devices.description'),
+        link: 'settings/devices'
+      },
+      {
+        icon: IMdiLibraryShelves,
+        name: t('settingsSections.libraries.name'),
+        description: t('settingsSections.libraries.description')
+      }
+    ],
+    [
+      {
+        icon: IMdiAccountMultiple,
+        name: t('settingsSections.users.name'),
+        description: t('settingsSections.users.description')
+      },
+      {
+        icon: IMdiKeyChain,
+        name: t('settings.apiKeys.apiKeys'),
+        description: t('settings.apiKeys.description'),
+        link: '/settings/apikeys'
+      }
+    ],
+    [
+      {
+        icon: IMdiPlayNetwork,
+        name: t('settingsSections.transcodingAndStreaming.name'),
+        description: t('settingsSections.transcodingAndStreaming.description')
+      },
+      {
+        icon: IMdiDLNA,
+        name: t('settingsSections.dlna.name'),
+        description: t('settingsSections.dlna.description')
+      },
+      {
+        icon: IMdiTelevisionClassic,
+        name: t('settingsSections.liveTvAndDvr.name'),
+        description: t('settingsSections.liveTvAndDvr.description')
+      },
+      {
+        icon: IMdiNetwork,
+        name: t('settingsSections.networking.name'),
+        description: t('settingsSections.networking.description')
+      }
+    ],
+    [
+      {
+        icon: IMdiPuzzle,
+        name: t('settingsSections.plugins.name'),
+        description: t('settingsSections.plugins.description')
+      },
+      {
+        icon: IMdiCalendarClock,
+        name: t('settingsSections.scheduledTasks.name'),
+        description: t('settingsSections.scheduledTasks.description')
+      },
+      {
+        icon: IMdiBell,
+        name: t('settingsSections.notifications.name'),
+        description: t('settingsSections.notifications.description')
+      },
+      {
+        icon: IMdiTextBox,
+        name: t('settingsSections.logs.name'),
+        description: t('settingsSections.logs.description'),
+        link: 'settings/logs-and-activity'
+      }
+    ]
+  ];
 });
 </script>
 

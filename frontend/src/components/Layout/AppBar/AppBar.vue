@@ -15,7 +15,9 @@
       v-hide="$route.name === 'index'"
       @click.native="$router.back()">
       <template #icon>
-        <v-icon>mdi-arrow-left</v-icon>
+        <Icon>
+          <i-mdi-arrow-left />
+        </Icon>
       </template>
     </app-bar-button-layout>
     <v-spacer />
@@ -23,7 +25,9 @@
     <v-spacer />
     <app-bar-button-layout v-if="network.isOnline" color="red">
       <template #icon>
-        <v-icon>mdi-network-off-outline</v-icon>
+        <Icon>
+          <i-mdi-network-off-outline />
+        </Icon>
       </template>
       <template #tooltip>
         <span>{{ $t('noNetworkConnection') }}</span>
@@ -32,11 +36,9 @@
     <task-manager-button />
     <app-bar-button-layout @click.native="toggleDarkMode">
       <template #icon>
-        <v-icon>
-          {{
-            clientSettings.darkMode ? 'mdi-weather-sunny' : 'mdi-weather-night'
-          }}
-        </v-icon>
+        <Icon>
+          {{ clientSettings.darkMode ? IMdiWeatherSunny : IMdiWeatherNight }}
+        </Icon>
       </template>
       <template #tooltip>
         <span>{{
@@ -54,43 +56,23 @@
       "
     /> -->
     <user-button />
-    <locale-switcher
-      :fab="
-        !(!transparentLayout || $vuetify.display.xsOnly) && !page.isScrolled
-      " />
+    <locale-switcher />
   </v-app-bar>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { useNetwork } from '@vueuse/core';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore } from '~/store';
+import IMdiWeatherSunny from '~icons/mdi/weather-sunny';
+import IMdiWeatherNight from '~icons/mdi/weather-night';
 
-export default defineComponent({
-  setup() {
-    const route = useRoute();
-
-    const transparentLayout = computed<boolean>(() => {
-      return route.meta.transparentLayout || false;
-    });
-
-    return { transparentLayout };
-  },
-  data() {
-    return {
-      network: useNetwork()
-    };
-  },
-  computed: {
-    ...mapStores(clientSettingsStore)
-  },
-  methods: {
-    toggleDarkMode(): void {
-      this.clientSettings.setDarkMode(!this.clientSettings.darkMode);
-    }
-  }
+const clientSettings = clientSettingsStore();
+const route = useRoute();
+const network = useNetwork();
+const transparentLayout = computed<boolean>(() => {
+  return route.meta.transparentLayout || false;
 });
 </script>
 
