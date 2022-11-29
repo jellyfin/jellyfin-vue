@@ -113,6 +113,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
   ImageType,
@@ -125,7 +126,9 @@ import { getItemDetailsLink } from '~/utils/items';
 import { msToTicks } from '~/utils/time';
 
 export default defineComponent({
-  async asyncData({ params, $api }) {
+  async setup() {
+    const { params } = useRoute();
+
     const albumBreakpoints = {
       singleMsMaxLength: 600_000,
       epMsMaxLength: 1_800_000
