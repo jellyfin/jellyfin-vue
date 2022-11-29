@@ -1,8 +1,7 @@
 import { RemovableRef, useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import isNil from 'lodash/isNil';
-import merge from 'lodash/merge';
+import { isNil, merge } from 'lodash-es';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
