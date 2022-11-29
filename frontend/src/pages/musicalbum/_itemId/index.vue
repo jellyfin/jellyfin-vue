@@ -78,12 +78,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
 
 export default defineComponent({
-  async asyncData({ params, $api }) {
+  async setup() {
+    const { params } = useRoute();
     const itemId = params.itemId;
     const item = (
       await $api.userLibrary.getItem({
@@ -93,11 +95,6 @@ export default defineComponent({
     ).data;
 
     return { item };
-  },
-  data() {
-    return {
-      item: {} as BaseItemDto
-    };
   },
   watch: {
     item: {

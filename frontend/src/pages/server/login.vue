@@ -64,13 +64,12 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
-  setup() {
+  async setup() {
     const { t } = useI18n();
     const route = useRoute();
 
     route.meta.title = t('login.login');
-  },
-  async asyncData({ $api }) {
+
     const brandingData = (await $api.branding.getBrandingOptions()).data;
 
     const publicUsers = (await $api.user.getPublicUsers({})).data;
@@ -81,9 +80,7 @@ export default defineComponent({
   data() {
     return {
       loginAsOther: false,
-      currentUser: {} as UserDto,
-      publicUsers: [] as Array<UserDto>,
-      disclaimer: ''
+      currentUser: {} as UserDto
     };
   },
   methods: {
