@@ -74,7 +74,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { groupBy } from 'lodash-es';
 import {
   BaseItemDto,
@@ -92,6 +91,11 @@ export default defineComponent({
       required: true
     }
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       tracks: [] as BaseItemDtoQueryResult
@@ -108,7 +112,6 @@ export default defineComponent({
     ).data;
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     tracksPerDisc(): Record<string, BaseItemDto[]> {
       return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
     }
