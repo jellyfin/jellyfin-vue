@@ -1,6 +1,6 @@
 import { useWebSocket } from '@vueuse/core';
 import destr from 'destr';
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 import { computed, watch } from 'vue';
 import auth from '../auth';
 import sdk from '../sdk';

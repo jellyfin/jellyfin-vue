@@ -4,7 +4,7 @@
  */
 import { watchEffect } from 'vue';
 import { Api } from '@jellyfin/sdk';
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 import RemotePluginAxiosInstance from '../axios';
 import RemotePluginAuthInstance from '../auth';
 import SDK, { useOneTimeAPI } from './sdk-utils';
