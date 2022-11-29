@@ -1,4 +1,4 @@
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 import { ExternalJSONConfig } from './types';
 import { useRemote } from '@/composables';
 
