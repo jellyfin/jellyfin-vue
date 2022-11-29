@@ -57,7 +57,6 @@
     "@types/he": "1.1.2",
     "@types/langs": "2.0.1",
     "@types/lodash-es": "4.17.6",
-    "@types/swiper": "5.4.3",
     "@types/tizen-tv-webapis": "2.0.1",
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.42.0",
