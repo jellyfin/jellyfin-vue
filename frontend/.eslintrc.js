@@ -40,7 +40,6 @@ module.exports = {
     'promise',
     'import',
     'vue',
-    'lodash',
     'prettier',
     'sonarjs',
     'eslint-comments',
@@ -132,7 +131,7 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
     'sonarjs/cognitive-complexity': 'warn',
-    'lodash/import-scope': ['error', 'method'],
+    'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
     curly: ['error', 'all'],
     'vue/component-name-in-template-casing': [

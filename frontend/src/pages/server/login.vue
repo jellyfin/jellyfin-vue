@@ -58,7 +58,7 @@ meta:
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';

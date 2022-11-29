@@ -1,6 +1,6 @@
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import destr from 'destr';
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 import {
   PiniaPluginContext,
   StateTree,
