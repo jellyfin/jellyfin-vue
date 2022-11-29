@@ -11,7 +11,6 @@
         :position-y="positionY"
         location="top">
         <template #activator="{ on, attrs }">
-          <!-- See comments for this in the onRightClick method -->
           <v-btn
             icon
             :variant="outlined && 'outlined'"
@@ -19,7 +18,7 @@
             v-bind="attrs"
             v-on="on"
             @click.stop.prevent="onActivatorClick"
-            @contextmenu="onRightClick">
+            @contextmenu.stop.prevent="onRightClick">
             <Icon>
               <i-mdi-dots-horizontal />
             </Icon>
@@ -52,14 +51,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
+import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import { playbackManagerStore, taskManagerStore } from '~/store';
 import { TaskType, RunningTask } from '~/store/taskManager';
 import { canResume } from '~/utils/items';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
 import IMdiPlaySpeed from '~icons/mdi/play-speed';
 import IMdiArrowExpandUp from '~icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from '~icons/mdi/arrow-expand-down';
@@ -77,254 +77,245 @@ type MenuOption = {
   disabled?: boolean;
 };
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      default: (): BaseItemDto => {
-        return {};
-      }
-    },
-    dark: {
-      type: Boolean,
-      default: false
-    },
-    outlined: {
-      type: Boolean,
-      default: false
-    },
-    zIndex: {
-      type: Number,
-      default: 1000
-    },
-    rightClick: {
-      type: Boolean,
-      default: true
-    },
-    queue: {
-      type: Boolean,
-      default: false
+const { t } = useI18n();
+const remote = useRemote();
+
+const props = defineProps({
+  item: {
+    type: Object as () => BaseItemDto,
+    default: (): BaseItemDto => {
+      return {};
     }
   },
-  setup() {
-    return {
-      useSnackbar
-    };
+  dark: {
+    type: Boolean,
+    default: false
   },
-  data() {
-    return {
-      show: false,
-      positionX: null as number | null,
-      positionY: null as number | null,
-      metadataDialog: false
-    };
+  outlined: {
+    type: Boolean,
+    default: false
   },
-  computed: {
-    ...mapStores(playbackManagerStore, taskManagerStore),
-    isItemRefreshing(): boolean {
-      return this.taskManager.getTask(this.item.Id || '') !== undefined;
-    },
-    options(): MenuOption[][] {
-      const menuOptions = [] as MenuOption[][];
+  zIndex: {
+    type: Number,
+    default: 1000
+  },
+  rightClick: {
+    type: Boolean,
+    default: true
+  },
+  queue: {
+    type: Boolean,
+    default: false
+  }
+});
 
-      const playNextAction = {
-        title: this.$t('playback.playNext'),
-        icon: IMdiPlaySpeed,
+const parent = getCurrentInstance()?.parent;
+const show = ref(false);
+const positionX = ref<number | undefined>(undefined);
+const positionY = ref<number | undefined>(undefined);
+const metadataDialog = ref(false);
+const playbackManager = playbackManagerStore();
+const taskManager = taskManagerStore();
+const isItemRefreshing = computed(
+  () => taskManager.getTask(props.item.Id || '') !== undefined
+);
+const options = computed(() => {
+  const menuOptions = [] as MenuOption[][];
+
+  const playNextAction = {
+    title: t('playback.playNext'),
+    icon: IMdiPlaySpeed,
+    action: (): void => {
+      playbackManager.playNext(props.item);
+      useSnackbar(t('snackbar.playNext'), 'success');
+    }
+  };
+
+  /**
+   * Queue options
+   */
+  const queueOptions = [] as MenuOption[];
+
+  if (props.queue && playbackManager.queue.includes(props.item.Id || '')) {
+    queueOptions.push({
+      title: t('itemMenu.pushToTop'),
+      icon: IMdiArrowExpandUp,
+      action: (): void => {
+        playbackManager.changeItemPosition(props.item.Id, 0);
+      }
+    });
+
+    if (playbackManager.getCurrentItem?.Id !== props.item.Id) {
+      queueOptions.push({
+        title: t('itemMenu.removeFromQueue'),
+        icon: IMdiPlaylistMinus,
         action: (): void => {
-          this.playbackManager.playNext(this.item);
-          this.useSnackbar(this.$t('snackbar.playNext'), 'success');
+          playbackManager.removeFromQueue(props.item.Id || '');
         }
-      };
+      });
+    }
 
-      /**
-       * Queue options
-       */
-      const queueOptions = [] as MenuOption[];
+    if (
+      playbackManager.getNextItem?.Id !== props.item.Id &&
+      playbackManager.getCurrentItem?.Id !== props.item.Id
+    ) {
+      queueOptions.push(playNextAction);
+    }
 
-      if (
-        this.queue &&
-        this.playbackManager.queue.includes(this.item.Id || '')
-      ) {
-        queueOptions.push({
-          title: this.$t('itemMenu.pushToTop'),
-          icon: IMdiArrowExpandUp,
-          action: (): void => {
-            this.playbackManager.changeItemPosition(this.item.Id, 0);
-          }
-        });
+    queueOptions.push({
+      title: t('itemMenu.pushToBottom'),
+      icon: IMdiArrowExpandDown,
+      action: (): void => {
+        playbackManager.changeItemPosition(
+          props.item.Id,
+          playbackManager.queue.length - 1
+        );
+      }
+    });
+  }
 
-        if (this.playbackManager.getCurrentItem?.Id !== this.item.Id) {
-          queueOptions.push({
-            title: this.$t('itemMenu.removeFromQueue'),
-            icon: IMdiPlaylistMinus,
-            action: (): void => {
-              this.playbackManager.removeFromQueue(this.item.Id || '');
-            }
-          });
-        }
+  /**
+   * Playback options
+   */
+  const playbackOptions = [] as MenuOption[];
 
-        if (
-          this.playbackManager.getNextItem?.Id !== this.item.Id &&
-          this.playbackManager.getCurrentItem?.Id !== this.item.Id
-        ) {
-          queueOptions.push(playNextAction);
-        }
-
-        queueOptions.push({
-          title: this.$t('itemMenu.pushToBottom'),
-          icon: IMdiArrowExpandDown,
-          action: (): void => {
-            this.playbackManager.changeItemPosition(
-              this.item.Id,
-              this.playbackManager.queue.length - 1
-            );
-          }
+  if (canResume(props.item)) {
+    playbackOptions.push({
+      title: t('playFromBeginning'),
+      icon: IMdiReplay,
+      action: (): void => {
+        playbackManager.play({
+          item: props.item
         });
       }
+    });
+  }
 
-      /**
-       * Playback options
-       */
-      const playbackOptions = [] as MenuOption[];
+  playbackOptions.push({
+    title: t('playback.shuffle'),
+    icon: IMdiShuffle,
+    action: (): void => {
+      playbackManager.play({
+        item: props.item,
+        initiator: props.item,
+        startShuffled: true
+      });
+    }
+  });
 
-      if (canResume(this.item)) {
-        playbackOptions.push({
-          title: this.$t('playFromBeginning'),
-          icon: IMdiReplay,
-          action: (): void => {
-            this.playbackManager.play({
-              item: this.item
+  if (playbackManager.getCurrentItem) {
+    if (
+      playbackManager.getNextItem?.Id !== props.item.Id &&
+      playbackManager.getCurrentItem?.Id !== props.item.Id &&
+      !props.queue
+    ) {
+      playbackOptions.push(playNextAction);
+    }
+
+    playbackOptions.push({
+      title: t('playback.addToQueue'),
+      icon: IMdiPlaylistPlus,
+      action: (): void => {
+        playbackManager.addToQueue(props.item);
+        useSnackbar(t('snackbar.addedToQueue'), 'success');
+      }
+    });
+  }
+
+  /**
+   * Library options
+   */
+  const libraryOptions = [] as MenuOption[];
+
+  if (
+    remote.auth.currentUser.value?.Policy?.IsAdministrator &&
+    ['Folder', 'CollectionFolder', 'UserView'].includes(props.item.Type || '')
+  ) {
+    libraryOptions.push({
+      title: t('refreshLibrary'),
+      icon: IMdiRefresh,
+      action: async (): Promise<void> => {
+        if (remote.sdk.api) {
+          try {
+            await getItemRefreshApi(remote.sdk.api).refreshItem({
+              itemId: props.item.Id as string,
+              replaceAllImages: false,
+              replaceAllMetadata: false
             });
-          }
-        });
-      }
 
-      playbackOptions.push({
-        title: this.$t('playback.shuffle'),
-        icon: IMdiShuffle,
-        action: (): void => {
-          this.playbackManager.play({
-            item: this.item,
-            initiator: this.item,
-            startShuffled: true
-          });
+            useSnackbar(t('libraryRefreshQueued'), 'normal');
+            taskManager.startTask({
+              type: TaskType.LibraryRefresh,
+              id: props.item.Id,
+              data: props.item.Name,
+              progress: 0
+            } as RunningTask);
+          } catch (error) {
+            console.error(error);
+
+            useSnackbar(t('unableToRefreshLibrary'), 'error');
+          }
         }
-      });
+      },
+      disabled: isItemRefreshing.value
+    });
+  }
 
-      if (this.playbackManager.getCurrentItem) {
-        if (
-          this.playbackManager.getNextItem?.Id !== this.item.Id &&
-          this.playbackManager.getCurrentItem?.Id !== this.item.Id &&
-          !this.queue
-        ) {
-          playbackOptions.push(playNextAction);
-        }
-
-        playbackOptions.push({
-          title: this.$t('playback.addToQueue'),
-          icon: IMdiPlaylistPlus,
-          action: (): void => {
-            this.playbackManager.addToQueue(this.item);
-            this.useSnackbar(this.$t('snackbar.addedToQueue'), 'success');
-          }
-        });
+  if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
+    libraryOptions.push({
+      title: t('editMetadata'),
+      icon: IMdiPencilOutline,
+      action: (): void => {
+        metadataDialog.value = true;
       }
+    });
+  }
 
-      /**
-       * Library options
-       */
-      const libraryOptions = [] as MenuOption[];
+  menuOptions.push(queueOptions, playbackOptions, libraryOptions);
 
-      if (
-        this.$remote.auth.currentUser.value?.Policy?.IsAdministrator &&
-        ['Folder', 'CollectionFolder', 'UserView'].includes(
-          this.item.Type || ''
-        )
-      ) {
-        libraryOptions.push({
-          title: this.$t('refreshLibrary'),
-          icon: IMdiRefresh,
-          action: async (): Promise<void> => {
-            try {
-              await this.$api.itemRefresh.post({
-                itemId: this.item.Id as string,
-                replaceAllImages: false,
-                replaceAllMetadata: false
-              });
+  return menuOptions;
+});
 
-              this.useSnackbar(this.$t('libraryRefreshQueued'), 'normal');
-              this.taskManager.startTask({
-                type: TaskType.LibraryRefresh,
-                id: this.item.Id,
-                data: this.item.Name,
-                progress: 0
-              } as RunningTask);
-            } catch (error) {
-              console.error(error);
+/**
+ * Right click handler for button or parent element
+ */
+function onRightClick(e: PointerEvent): void {
+  e.stopPropagation();
+  e.preventDefault();
+  positionX.value = e.clientX;
+  positionY.value = e.clientY;
+  show.value = true;
+}
 
-              this.useSnackbar(this.$t('unableToRefreshLibrary'), 'error');
-            }
-          },
-          disabled: this.isItemRefreshing
-        });
-      }
+/**
+ * Handle left click using the item menu button
+ */
+function onActivatorClick(): void {
+  positionX.value = undefined;
+  positionY.value = undefined;
+}
 
-      if (this.$remote.auth.currentUser.value?.Policy?.IsAdministrator) {
-        libraryOptions.push({
-          title: this.$t('editMetadata'),
-          icon: IMdiPencilOutline,
-          action: (): void => {
-            this.metadataDialog = true;
-          }
-        });
-      }
+onMounted(() => {
+  const parentHtml = parent?.subTree.el as HTMLElement;
 
-      menuOptions.push(queueOptions, playbackOptions, libraryOptions);
+  if (parentHtml) {
+    parentHtml.addEventListener(
+      'contextmenu',
+      // @ts-expect-error - Typings for contextmenu event are incorrect
+      onRightClick
+    );
+  }
+});
 
-      return menuOptions;
-    }
-  },
-  mounted() {
-    if (this.rightClick && this.$parent.$el) {
-      (this.$parent.$el as HTMLElement).addEventListener(
-        'contextmenu',
-        // @ts-expect-error - Typings for contextmenu event are incorrect
-        this.onRightClick
-      );
-    }
-  },
-  unmounted() {
-    if (this.$parent.$el) {
-      (this.$parent.$el as HTMLElement).removeEventListener(
-        'contextmenu',
-        // @ts-expect-error - Typings for contextmenu event are incorrect
-        this.onRightClick
-      );
-    }
-  },
-  methods: {
-    onRightClick(e: PointerEvent): void {
-      // Vue 2's API doesn't support native JavaScript events when the component's instances
-      // are referenced using refs, only custom ones (generated using $emit): https://vuejs.org/v2/api/#vm-on
-      // We get the parent's component instance using refs, so we need to add the event handler directly to
-      // the DOM, not to the Vue instance (as done in the mounted() hook)
-      //
-      // We share this callback with the parent element and the v-btn Vue instance. This is why
-      // we need to stopPropagation and preventDefault here, instead of using the @contextmenu.stop.prevent syntax.
-      //
-      // TODO: Revisit this on Vue 3, maybe this Vue API quirk is fixed
-      e.stopPropagation();
-      e.preventDefault();
-      this.positionX = e.clientX;
-      this.positionY = e.clientY;
-      this.$nextTick(() => {
-        this.show = true;
-      });
-    },
-    onActivatorClick(): void {
-      this.positionX = null;
-      this.positionY = null;
-    }
+onUnmounted(() => {
+  const parentHtml = parent?.subTree.el as HTMLElement;
+
+  if (parentHtml) {
+    parentHtml.removeEventListener(
+      'contextmenu',
+      // @ts-expect-error - Typings for contextmenu event are incorrect
+      onRightClick
+    );
   }
 });
 </script>
