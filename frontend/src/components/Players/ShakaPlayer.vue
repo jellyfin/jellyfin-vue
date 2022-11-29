@@ -43,7 +43,6 @@ import shaka from 'shaka-player/dist/shaka-player.compiled';
 // import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.data';
 // import 'libass-wasm/dist/js/subtitles-octopus-worker-legacy.js.mem';
 // import 'libass-wasm/dist/js/subtitles-octopus-worker.wasm?init';
-import { mapStores } from 'pinia';
 import {
   PlaybackInfoResponse,
   SubtitleDeliveryMethod
@@ -70,6 +69,11 @@ export default defineComponent({
       default: false
     }
   },
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       playbackInfo: {} as PlaybackInfoResponse,
@@ -84,7 +88,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     poster(): ImageUrlInfo | string {
       return this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
         !isNil(this.playbackManager.getCurrentItem)

@@ -58,7 +58,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { taskManagerStore } from '~/store';
 import { RunningTask, TaskType } from '~/store/taskManager';
 
@@ -84,6 +83,11 @@ export default defineComponent({
       default: 5000
     }
   },
+  setup() {
+    const taskManager = taskManagerStore();
+
+    return { taskManager };
+  },
   data() {
     return {
       menu: false,
@@ -93,7 +97,6 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapStores(taskManagerStore),
     buttonColor(): string | undefined {
       return this.taskList.every((task) => {
         return task.progress === 100;
