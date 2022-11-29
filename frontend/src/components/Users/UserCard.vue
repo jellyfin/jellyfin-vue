@@ -9,26 +9,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 
-export default defineComponent({
-  props: {
-    user: {
-      type: Object as () => UserDto,
-      required: true
-    }
-  },
-  methods: {
-    formatDistance(value: string): string {
-      return value
-        ? this.$dateFns.formatDistanceToNow(new Date(value), {
-            addSuffix: true,
-            locale: this.$i18n.locale
-          })
-        : this.$t('never');
-    }
+defineProps({
+  user: {
+    required: true,
+    type: Object as () => UserDto
   }
 });
+
+defineEmits<{
+  (e: 'connect', user: UserDto): void;
+}>();
 </script>
