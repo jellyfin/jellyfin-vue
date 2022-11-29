@@ -56,19 +56,16 @@ import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
-  setup() {
+  async setup() {
+    const devices = (await $api.devices.getDevices()).data.Items;
+
     return {
+      devices,
       useSnackbar
     };
   },
-  async asyncData({ $api }) {
-    const devices = (await $api.devices.getDevices()).data.Items;
-
-    return { devices };
-  },
   data() {
     return {
-      devices: [] as DeviceInfo[],
       selectedDevice: {} as DeviceInfo,
       deviceInfoDialog: false
     };
