@@ -196,6 +196,8 @@ import {
   BaseItemPerson
 } from '@jellyfin/sdk/lib/generated-client';
 import { useSnackbar } from '@/composables';
+import { dateFnsFormat } from '@/utils/time';
+import { formatISO } from 'date-fns';
 
 export default defineComponent({
   props: {
@@ -231,11 +233,8 @@ export default defineComponent({
         return '';
       }
 
-      return this.$dateFns.format(
-        new Date(this.metadata.PremiereDate),
-        'yyyy-MM-dd',
-        { locale: this.$i18n.locale }
-      );
+      return dateFnsFormat(new Date(this.metadata.PremiereDate), 'yyyy-MM-dd')
+        .value;
     },
     dateCreated: {
       get(): string {
@@ -243,11 +242,8 @@ export default defineComponent({
           return '';
         }
 
-        return this.$dateFns.format(
-          new Date(this.metadata.DateCreated),
-          'yyyy-MM-dd',
-          { locale: this.$i18n.locale }
-        );
+        return dateFnsFormat(new Date(this.metadata.DateCreated), 'yyyy-MM-dd')
+          .value;
       }
     }
   },
@@ -360,7 +356,7 @@ export default defineComponent({
     },
     saveDate(key: string, date: string): void {
       this.menu = false;
-      set(this.metadata, key, this.$dateFns.formatISO(new Date(date)));
+      set(this.metadata, key, formatISO(new Date(date)));
     },
     handlePersonEdit(item: BaseItemPerson | null = null): void {
       this.person = item;
