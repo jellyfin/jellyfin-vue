@@ -20,7 +20,9 @@
             v-on="on"
             @click.stop.prevent="onActivatorClick"
             @contextmenu="onRightClick">
-            <v-icon>mdi-dots-horizontal</v-icon>
+            <Icon>
+              <i-mdi-dots-horizontal />
+            </Icon>
           </v-btn>
         </template>
         <v-list dense nav>
@@ -34,7 +36,7 @@
               :key="`item-${item.Id}-section-${index1}-option-${index2}`"
               :disabled="menuOption.disabled"
               @click="menuOption.action">
-              <v-icon>{{ menuOption.icon }}</v-icon>
+              <v-icon :icon="menuOption.icon" />
               <v-list-item-title class="text">
                 {{ menuOption.title }}
               </v-list-item-title>
@@ -58,10 +60,19 @@ import { playbackManagerStore, taskManagerStore } from '~/store';
 import { TaskType, RunningTask } from '~/store/taskManager';
 import { canResume } from '~/utils/items';
 import { useSnackbar } from '@/composables';
+import IMdiPlaySpeed from '~icons/mdi/play-speed';
+import IMdiArrowExpandUp from '~icons/mdi/arrow-expand-up';
+import IMdiArrowExpandDown from '~icons/mdi/arrow-expand-down';
+import IMdiPlaylistMinus from '~icons/mdi/playlist-minus';
+import IMdiPlaylistPlus from '~icons/mdi/playlist-plus';
+import IMdiPencilOutline from '~icons/mdi/pencil-outline';
+import IMdiShuffle from '~icons/mdi/shuffle';
+import IMdiReplay from '~icons/mdi/replay';
+import IMdiRefresh from '~icons/mdi/refresh';
 
 type MenuOption = {
   title: string;
-  icon: string;
+  icon: typeof IMdiPlaySpeed;
   action: () => void;
   disabled?: boolean;
 };
@@ -118,7 +129,7 @@ export default defineComponent({
 
       const playNextAction = {
         title: this.$t('playback.playNext'),
-        icon: 'mdi-play-speed',
+        icon: IMdiPlaySpeed,
         action: (): void => {
           this.playbackManager.playNext(this.item);
           this.useSnackbar(this.$t('snackbar.playNext'), 'success');
@@ -136,7 +147,7 @@ export default defineComponent({
       ) {
         queueOptions.push({
           title: this.$t('itemMenu.pushToTop'),
-          icon: 'mdi-arrow-expand-up',
+          icon: IMdiArrowExpandUp,
           action: (): void => {
             this.playbackManager.changeItemPosition(this.item.Id, 0);
           }
@@ -145,7 +156,7 @@ export default defineComponent({
         if (this.playbackManager.getCurrentItem?.Id !== this.item.Id) {
           queueOptions.push({
             title: this.$t('itemMenu.removeFromQueue'),
-            icon: 'mdi-playlist-minus',
+            icon: IMdiPlaylistMinus,
             action: (): void => {
               this.playbackManager.removeFromQueue(this.item.Id || '');
             }
@@ -161,7 +172,7 @@ export default defineComponent({
 
         queueOptions.push({
           title: this.$t('itemMenu.pushToBottom'),
-          icon: 'mdi-arrow-expand-down',
+          icon: IMdiArrowExpandDown,
           action: (): void => {
             this.playbackManager.changeItemPosition(
               this.item.Id,
@@ -179,7 +190,7 @@ export default defineComponent({
       if (canResume(this.item)) {
         playbackOptions.push({
           title: this.$t('playFromBeginning'),
-          icon: 'mdi-replay',
+          icon: IMdiReplay,
           action: (): void => {
             this.playbackManager.play({
               item: this.item
@@ -190,7 +201,7 @@ export default defineComponent({
 
       playbackOptions.push({
         title: this.$t('playback.shuffle'),
-        icon: 'mdi-shuffle',
+        icon: IMdiShuffle,
         action: (): void => {
           this.playbackManager.play({
             item: this.item,
@@ -211,7 +222,7 @@ export default defineComponent({
 
         playbackOptions.push({
           title: this.$t('playback.addToQueue'),
-          icon: 'mdi-playlist-plus',
+          icon: IMdiPlaylistPlus,
           action: (): void => {
             this.playbackManager.addToQueue(this.item);
             this.useSnackbar(this.$t('snackbar.addedToQueue'), 'success');
@@ -232,7 +243,7 @@ export default defineComponent({
       ) {
         libraryOptions.push({
           title: this.$t('refreshLibrary'),
-          icon: 'mdi-refresh',
+          icon: IMdiRefresh,
           action: async (): Promise<void> => {
             try {
               await this.$api.itemRefresh.post({
@@ -261,7 +272,7 @@ export default defineComponent({
       if (this.$remote.auth.currentUser.value?.Policy?.IsAdministrator) {
         libraryOptions.push({
           title: this.$t('editMetadata'),
-          icon: 'mdi-pencil-outline',
+          icon: IMdiPencilOutline,
           action: (): void => {
             this.metadataDialog = true;
           }
