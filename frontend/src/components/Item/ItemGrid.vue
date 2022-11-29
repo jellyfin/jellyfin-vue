@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import chunk from 'lodash/chunk';
+import { chunk } from 'lodash-es';
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 

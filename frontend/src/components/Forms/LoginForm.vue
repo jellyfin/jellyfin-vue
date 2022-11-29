@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash-es';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
