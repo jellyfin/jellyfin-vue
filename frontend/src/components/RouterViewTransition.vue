@@ -9,13 +9,17 @@
             ? 'router-view-root-transition-wrapper'
             : 'router-view-transition-wrapper'
         ">
-        <component :is="Component" />
+        <Suspense>
+          <component :is="Component" />
+        </Suspense>
       </div>
     </transition>
   </router-view>
 
   <router-view v-else v-slot="{ Component }">
-    <component :is="Component" />
+    <Suspense>
+      <component :is="Component" />
+    </Suspense>
   </router-view>
 </template>
 
