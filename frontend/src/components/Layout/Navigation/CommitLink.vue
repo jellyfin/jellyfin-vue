@@ -5,7 +5,9 @@
     target="_blank"
     rel="noopener noreferrer">
     <v-list-item-action>
-      <i-mdi-github />
+      <Icon>
+        <i-mdi-github />
+      </Icon>
     </v-list-item-action>
     <v-list-item-title>
       {{ '#' + commit.slice(0, 7) }}
