@@ -1,4 +1,4 @@
-import shuffle from 'lodash/shuffle';
+import { shuffle, isNil } from 'lodash-es';
 import {
   BaseItemDto,
   ChapterInfo,
@@ -9,7 +9,6 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { defineStore } from 'pinia';
-import isNil from 'lodash/isNil';
 import { itemsStore } from '.';
 import { useRemote } from '@/composables';
 

@@ -50,7 +50,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es';
 
 export default defineComponent({
   data() {

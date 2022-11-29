@@ -75,7 +75,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import groupBy from 'lodash/groupBy';
+import { groupBy } from 'lodash-es';
 import {
   BaseItemDto,
   BaseItemDtoQueryResult,
