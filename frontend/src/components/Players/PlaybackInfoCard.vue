@@ -219,8 +219,7 @@
 import { defineComponent } from 'vue';
 import { SessionInfo } from '@jellyfin/sdk/lib/generated-client';
 import { mapStores } from 'pinia';
-import camelCase from 'lodash/camelCase';
-import isNil from 'lodash/isNil';
+import { camelCase, isNil } from 'lodash-es';
 // @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
 import { playbackManagerStore } from '~/store';

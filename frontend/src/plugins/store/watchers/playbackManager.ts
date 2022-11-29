@@ -1,4 +1,4 @@
-import isNil from 'lodash/isNil';
+import { isNil } from 'lodash-es';
 import { PiniaPluginContext } from 'pinia';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/utils/time';
