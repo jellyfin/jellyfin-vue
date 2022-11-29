@@ -8,8 +8,12 @@
       :loading="loading"
       :disabled="disabled"
       @click.prevent="playOrResume">
-      <v-icon v-if="shuffle" :size="fab ? 36 : null">mdi-shuffle</v-icon>
-      <v-icon v-else :size="fab ? 36 : null">mdi-play</v-icon>
+      <Icon v-if="shuffle" :size="fab ? 36 : null">
+        <i-mdi-shuffle />
+      </Icon>
+      <Icon v-else :size="fab ? 36 : null">
+        <i-mdi-play />
+      </Icon>
     </v-btn>
     <v-btn
       v-else-if="!fab"

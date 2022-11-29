@@ -16,7 +16,9 @@
     <template #activator="{ on: menu, attrs }">
       <app-bar-button-layout :custom-listener="menu" v-bind="attrs" disabled>
         <template #icon>
-          <v-icon>mdi-cast</v-icon>
+          <Icon>
+            <i-mdi-cast />
+          </Icon>
         </template>
         <template #tooltip>
           <span>{{ $t('remoteDevices') }}</span>
@@ -27,23 +29,33 @@
       <v-list color="transparent">
         <v-list-group>
           <v-list-item>
-            <v-icon>mdi-account-group</v-icon>
+            <Icon>
+              <i-mdi-account-group />
+            </Icon>
             {{ $t('syncPlayGroups') }}
             <v-list-item-action>
-              <v-icon>mdi-arrow-right</v-icon>
+              <Icon>
+                <i-mdi-arrow-right />
+              </Icon>
             </v-list-item-action>
           </v-list-item>
           <v-divider />
           <v-list-item v-if="features.airPlay">
-            <v-icon>mdi-apple-airplay</v-icon>
+            <Icon>
+              <i-mdi-apple-airplay />
+            </Icon>
             {{ $t('airPlayDevices') }}
           </v-list-item>
           <v-list-item v-if="features.googleCast">
-            <v-icon>mdi-cast</v-icon>
+            <Icon>
+              <i-mdi-cast />
+            </Icon>
             {{ $t('googleCastPlaceholderDevice') }}
           </v-list-item>
           <v-list-item>
-            <v-icon>$vuetify.icons.jellyfin</v-icon>
+            <Icon>
+              <i-simple-icons-jellyfin />
+            </Icon>
             {{ $t('genericJellyfinPlaceholderDevice') }}
           </v-list-item>
         </v-list-group>
