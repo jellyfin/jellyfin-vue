@@ -9,6 +9,7 @@ import Layouts from 'vite-plugin-vue-layouts';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
+import VueRouter from 'unplugin-vue-router/vite';
 import {
   VueUseComponentsResolver,
   Vuetify3Resolver,
@@ -29,6 +30,9 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       __HISTORY_ROUTER_MODE__: process.env.HISTORY_ROUTER_MODE ? true : false
     },
     plugins: [
+      VueRouter({
+        dts: './routes.d.ts'
+      }),
       vue(),
       Pages({
         routeStyle: 'nuxt',
