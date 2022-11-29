@@ -6,7 +6,7 @@
         :key="`${item.Id}-${index}`"
         v-slot="{ hover }"
         ref="listItems">
-        <v-list-item ripple @click="onClick(index)">
+        <v-list-item @click="onClick(index)">
           <v-list-item-action
             v-if="!hover"
             class="list-group-item d-flex justify-center d-flex transition"
@@ -50,51 +50,47 @@
   </v-list-group>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
+<script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { computed, onMounted, ref } from 'vue';
+import { VHover } from 'vuetify/lib/components/VHover/index';
 import { playbackManagerStore } from '~/store';
 
-export default defineComponent({
-  data() {
-    return {
-      dragOptions: {
-        animation: 500,
-        delay: 0,
-        group: false,
-        dragoverBubble: true,
-        ghostClass: 'ghost'
-      }
-    };
-  },
-  computed: {
-    ...mapStores(playbackManagerStore),
-    queue: {
-      get(): BaseItemDto[] {
-        return this.playbackManager.getQueueItems;
-      },
-      set(newValue: BaseItemDto[]): void {
-        this.playbackManager.setNewQueue(
-          newValue.map((item) => {
-            return item.Id as string;
-          })
-        );
-      }
-    }
-  },
-  /**
-   * Scroll the queue view to the currently playing item
-   */
-  mounted() {
-    const reference = this.$refs.listItems as VueElement[];
-    const currentItemId = this.playbackManager.getCurrentItem?.Id || '';
+const dragOptions = {
+  animation: 500,
+  delay: 0,
+  group: false,
+  dragoverBubble: true,
+  ghostClass: 'ghost'
+};
 
+const listItems = ref<InstanceType<typeof VHover>[] | undefined>(undefined);
+
+const playbackManager = playbackManagerStore();
+
+const queue = computed({
+  get() {
+    return playbackManager.getQueueItems;
+  },
+  set(newValue: BaseItemDto[]) {
+    playbackManager.setNewQueue(
+      newValue.map((item) => {
+        return item.Id as string;
+      })
+    );
+  }
+});
+
+onMounted(() => {
+  const reference = listItems.value;
+  const currentItemId = playbackManager.getCurrentItem?.Id || '';
+
+  if (reference) {
     const element = reference.find(
-      (v) => v.$vnode.key === `${currentItemId}-${reference.indexOf(v)}`
+      (v) => v.$.vnode.key === `${currentItemId}-${reference.indexOf(v)}`
     );
 
-    if (element?.$el) {
+    if (element && element.$el) {
       /**
        * As the queue opening has a transition effect, el.$el.scrollIntoView() doesn't work directly,
        * as the parent DOM node is not fully rendered while the transition is taking place
@@ -108,19 +104,29 @@ export default defineComponent({
         element.$el.scrollIntoView();
       });
     }
-  },
-  methods: {
-    isPlaying(index: number): boolean {
-      return index === this.playbackManager.currentItemIndex;
-    },
-    getArtists(item: BaseItemDto): string | null {
-      return item.Artists ? item.Artists.join(', ') : null;
-    },
-    onClick(index: number): void {
-      this.playbackManager.setCurrentIndex(index);
-    }
   }
 });
+
+/**
+ * Checks if the item in the current position is playing
+ */
+function isPlaying(index: number): boolean {
+  return index === playbackManager.currentItemIndex;
+}
+
+/**
+ * Gets the artists of the current item
+ */
+function getArtists(item: BaseItemDto): string | undefined {
+  return item.Artists ? item.Artists.join(', ') : undefined;
+}
+
+/**
+ * Click handler for list items
+ */
+function onClick(index: number): void {
+  playbackManager.setCurrentIndex(index);
+}
 </script>
 
 <style lang="scss" scoped>
