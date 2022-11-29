@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
-import pickBy from 'lodash/pickBy';
+import { pickBy } from 'lodash-es';
 import {
   BaseItemDto,
   ImageType,

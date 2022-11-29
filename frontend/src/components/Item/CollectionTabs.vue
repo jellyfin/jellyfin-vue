@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import groupBy from 'lodash/groupBy';
+import { groupBy } from 'lodash-es';
 import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { itemsStore } from '~/store';

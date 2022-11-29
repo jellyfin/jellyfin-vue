@@ -3,17 +3,15 @@
  */
 import {
   format,
-  formatDistanceToNow,
   formatDuration,
   formatRelative,
   intervalToDuration
 } from 'date-fns';
 import * as datefnslocales from 'date-fns/locale';
-import sumBy from 'lodash/sumBy';
+import { sumBy, merge } from 'lodash-es';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ComputedRef, isRef, Ref } from 'vue';
 import { MaybeRef } from '@vueuse/core';
-import merge from 'lodash/merge';
 import { usei18n } from '@/composables';
 
 /**
