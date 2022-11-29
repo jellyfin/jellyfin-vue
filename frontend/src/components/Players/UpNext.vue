@@ -71,18 +71,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapStores } from 'pinia';
 import { playbackManagerStore } from '~/store';
 import { ticksToMs, getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
 export default defineComponent({
+  setup() {
+    const playbackManager = playbackManagerStore();
+
+    return { playbackManager };
+  },
   data() {
     return {
       isHiddenByUser: false
     };
   },
   computed: {
-    ...mapStores(playbackManagerStore),
     currentItemDuration(): number {
       return (
         ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000
@@ -106,6 +109,8 @@ export default defineComponent({
       if (this.currentItemTimeLeft <= this.nextUpDuration) {
         return true;
       }
+
+      return undefined;
     },
     nextUpDuration(): number {
       // If longer than 5 hours, set the duration to 9 minutes
