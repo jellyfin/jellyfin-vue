@@ -53,11 +53,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
-import { useSnackbar } from '@/composables';
+import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
+import { useRemote, useSnackbar } from '@/composables';
 
 export default defineComponent({
   async setup() {
-    const devices = (await $api.devices.getDevices()).data.Items;
+    const remote = useRemote();
+
+    const devices = (await remote.sdk.newUserApi(getDevicesApi).getDevices())
+      .data.Items;
 
     return {
       devices,
@@ -90,7 +94,7 @@ export default defineComponent({
   methods: {
     async deleteDevice(item: DeviceInfo): Promise<void> {
       try {
-        await this.$api.devices.deleteDevice({
+        await this.$remote.sdk.newUserApi(getDevicesApi).deleteDevice({
           id: item.Id || ''
         });
 
@@ -98,7 +102,9 @@ export default defineComponent({
           this.$t('settings.devices.deleteDeviceSuccess'),
           'success'
         );
-        this.devices = (await this.$api.devices.getDevices()).data.Items || [];
+        this.devices =
+          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
+            .Items || [];
       } catch (error) {
         this.useSnackbar(
           this.$t('settings.devices.deleteDeviceError'),
@@ -115,7 +121,9 @@ export default defineComponent({
             return;
           }
 
-          await this.$api.devices.deleteDevice({ id: device.Id || '' });
+          await this.$remote.sdk
+            .newUserApi(getDevicesApi)
+            .deleteDevice({ id: device.Id || '' });
         });
 
         this.useSnackbar(
@@ -123,7 +131,9 @@ export default defineComponent({
           'success'
         );
 
-        this.devices = (await this.$api.devices.getDevices()).data.Items || [];
+        this.devices =
+          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
+            .Items || [];
       } catch (error) {
         this.useSnackbar(
           this.$t('settings.devices.deleteAllDevicesError'),
@@ -143,7 +153,7 @@ export default defineComponent({
     },
     async deleteSelectedDevice(): Promise<void> {
       try {
-        await this.$api.devices.deleteDevice({
+        await this.$remote.sdk.newUserApi(getDevicesApi).deleteDevice({
           id: this.selectedDevice.Id || ''
         });
 
@@ -154,7 +164,9 @@ export default defineComponent({
 
         this.selectedDevice = {};
 
-        this.devices = (await this.$api.devices.getDevices()).data.Items || [];
+        this.devices =
+          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
+            .Items || [];
       } catch (error) {
         this.useSnackbar(this.$t('deleteDeviceError'), 'error');
 

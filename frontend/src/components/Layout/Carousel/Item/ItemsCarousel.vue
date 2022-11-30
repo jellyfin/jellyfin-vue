@@ -50,6 +50,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
@@ -87,8 +88,8 @@ export default defineComponent({
       }
 
       const itemData = (
-        await this.$api.userLibrary.getItem({
-          userId: this.$remote.auth.currentUserId.value,
+        await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem({
+          userId: this.$remote.auth.currentUserId.value || '',
           itemId: id
         })
       ).data;

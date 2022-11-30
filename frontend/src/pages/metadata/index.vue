@@ -20,6 +20,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 
 type ITreeNode = {
   id: string | number | undefined;
@@ -35,8 +37,9 @@ export default defineComponent({
     };
   },
   async created() {
-    const folders = (await this.$api.library.getMediaFolders()).data
-      .Items as BaseItemDto[];
+    const folders = (
+      await this.$remote.sdk.newUserApi(getLibraryApi).getMediaFolders()
+    ).data.Items as BaseItemDto[];
 
     this.items = folders.map((dir, index) => {
       return {
@@ -50,8 +53,8 @@ export default defineComponent({
     async fetchItems(node: ITreeNode): Promise<void> {
       const libraryItems = (
         (
-          await this.$api.userLibrary.getItem(
-            { userId: this.$remote.auth.currentUserId.value, itemId: '' },
+          await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem(
+            { userId: this.$remote.auth.currentUserId.value || '', itemId: '' },
             {
               query: {
                 ParentId: node.id,
@@ -60,7 +63,7 @@ export default defineComponent({
             }
           )
         ).data as unknown as { Items: BaseItemDto[] }
-      ).Items; //
+      ).Items;
 
       (node.children as ITreeNode[]).push(
         ...libraryItems.map((item) => {

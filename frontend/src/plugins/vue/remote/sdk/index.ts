@@ -38,6 +38,15 @@ class RemotePluginSDK {
   }
 
   public oneTimeSetup = useOneTimeAPI;
+  /**
+   * Generates a Jellyfin API type with the current API instance.
+   *
+   * Make sure this is only used in places where an user is logged in
+   */
+  public newUserApi<T>(apiSec: (api: Api) => T): T {
+    // @ts-expect-error - We want to assume the user is already logged in here
+    return apiSec(this.api);
+  }
 }
 
 const RemotePluginSDKInstance = new RemotePluginSDK(RemotePluginAuthInstance);
