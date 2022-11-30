@@ -23,6 +23,16 @@
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             {{ item.OriginalTitle }}
           </h2>
+          <h3 v-if="currentSeries"
+              class="text-h6 font-weight-heavy"
+              :class="{'text-center': !$vuetify.display.mdAndUp }">
+            >
+            <RouterLink
+                class="link d-block font-weight-medium pa-0 mt-1 text-truncate"
+                :to="getItemDetailsLink(currentSeries)">
+                {{ currentSeries.Name }}
+            </RouterLink>
+          </h3>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
@@ -300,18 +310,33 @@ import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import { getItemizedSelect } from '@/utils/forms';
 import { sanitizeHtml } from '@/utils/html';
 import { useRemote } from '@/composables';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 
 const route = useRoute<'/genre/[itemId]'>();
 const remote = useRemote();
 
 const { itemId } = route.params;
 
+const libraryApi = remote.sdk.newUserApi(getUserLibraryApi);
+
 const item = (
-  await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+  await libraryApi.getItem({
     userId: remote.auth.currentUserId ?? '',
     itemId
   })
 ).data;
+
+
+
+const currentSeries = item.SeriesId ? (await libraryApi.getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId: item.SeriesId
+    })).data : undefined;
+    
+const currentSeason = item.SeasonId ? (await libraryApi.getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId: item.SeasonId
+    })).data : undefined;
 
 const currentSource = ref<MediaSourceInfo>({});
 const currentVideoTrack = ref<number>();

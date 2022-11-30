@@ -86,29 +86,28 @@ async function fetch(): Promise<void> {
   if (!props.item.Id) {
     return;
   }
-
+  
+  const tvShowApi = remote.sdk.newUserApi(getTvShowsApi);
   seasons.value = (
-    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+    await tvShowApi.getSeasons({
       userId: remote.auth.currentUserId,
       seriesId: props.item.Id
     })
   ).data.Items;
 
   if (seasons.value) {
-    for (const season of seasons.value) {
-      if (season.Id) {
-        const episodes = (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            userId: remote.auth.currentUserId,
-            parentId: season.Id,
-            fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-          })
-        ).data;
-
-        if (episodes.Items) {
-          seasonEpisodes.value[season.Id] = episodes.Items;
-        }
-      }
+    const seasonsRequests = seasons.value.filter(s => s.Id)
+        .map(s => ({
+            SeasonId: s.Id as string,
+            EpisodesPromise: tvShowApi.getEpisodes({
+                userId: remote.auth.currentUserId,
+                seriesId: props.item.Id!,
+                seasonId: s.Id,
+                fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+            })
+        }))
+    for (const seasonReq of seasonsRequests) {
+        seasonEpisodes.value[seasonReq.SeasonId] = (await seasonReq.EpisodesPromise).data.Items as BaseItemDto[];
     }
   }
 }
