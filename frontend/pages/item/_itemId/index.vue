@@ -19,6 +19,23 @@
           >
             {{ item.OriginalTitle }}
           </h2>
+          <h3
+            v-if="item.SeriesId && item.SeriesName"
+            class="text-h6 font-weight-heavy"
+            :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"
+          >
+            <nuxt-link :to="`/series/${item.SeriesId}`">
+              {{ item.SeriesName }}
+            </nuxt-link>
+            <span v-if="item.SeasonId && item.SeasonName">
+              -
+              <nuxt-link
+                :to="`/series/${item.SeriesId}?seasonId=${item.SeasonId}`"
+              >
+                {{ item.SeasonName }}
+              </nuxt-link>
+            </span>
+          </h3>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.breakpoint.mdAndUp }"

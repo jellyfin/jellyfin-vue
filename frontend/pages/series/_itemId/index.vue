@@ -136,7 +136,11 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <season-tabs v-if="item.Type === 'Series'" :item="item" />
+          <season-tabs
+            v-if="item.Type === 'Series'"
+            :item="item"
+            :seasonId="currentSeasonId"
+          />
         </v-col>
       </v-row>
     </template>
@@ -171,19 +175,24 @@ export default Vue.extend({
   validate(ctx: Context) {
     return isValidMD5(ctx.route.params.itemId);
   },
-  async asyncData({ params, $api }) {
+  async asyncData({ params, query, $api }) {
     const auth = authStore();
 
-    const itemId = params.itemId;
+    const seriesId = params.itemId;
+    const seasonId = query.seasonId;
 
     const item = (
       await $api.userLibrary.getItem({
         userId: auth.currentUserId,
-        itemId
+        itemId: seriesId
       })
     ).data;
 
-    return { item };
+    if (seasonId) {
+      return { item, currentSeasonId: seasonId };
+    } else {
+      return { item };
+    }
   },
   data() {
     return {
@@ -191,7 +200,8 @@ export default Vue.extend({
       backdropImageSource: '',
       currentVideoTrack: undefined as number | undefined,
       currentAudioTrack: undefined as number | undefined,
-      currentSubtitleTrack: undefined as number | undefined
+      currentSubtitleTrack: undefined as number | undefined,
+      currentSeasonId: undefined as string | undefined
     };
   },
   head() {

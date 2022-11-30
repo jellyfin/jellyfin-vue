@@ -60,6 +60,11 @@ export default Vue.extend({
     item: {
       type: Object,
       required: true
+    },
+    seasonId: {
+      type: String,
+      default: null,
+      required: false
     }
   },
   data() {
@@ -95,24 +100,25 @@ export default Vue.extend({
     const seasonEpisodes = {} as TvShowItem['seasonEpisodes'];
 
     if (seasons) {
-      for (const season of seasons) {
-        if (season.Id) {
-          const episodes = (
-            await this.$api.items.getItems({
-              userId: auth.currentUserId,
-              parentId: season.Id,
-              fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-            })
-          ).data;
-
-          if (episodes.Items) {
-            seasonEpisodes[season.Id] = episodes.Items;
-          }
-        }
-
-        this.seasons = seasons;
-        this.seasonEpisodes = seasonEpisodes;
+      // Parallelize the requests
+      const seasonRequests = seasons
+        .filter((s) => s.Id)
+        .map((s) => ({
+          SeasonId: s.Id as string,
+          EpisodesPromise: this.$api.items.getItems({
+            userId: auth.currentUserId,
+            parentId: s.Id,
+            fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+          })
+        }));
+      for (var seasonRequest of seasonRequests) {
+        seasonEpisodes[seasonRequest.SeasonId] = (
+          await seasonRequest.EpisodesPromise
+        ).data.Items as BaseItemDto[];
       }
+      this.seasons = seasons;
+      this.seasonEpisodes = seasonEpisodes;
+      this.currentTab = seasons.findIndex((s) => s.Id == this.seasonId);
     }
   },
   methods: {
