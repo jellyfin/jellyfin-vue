@@ -1,4 +1,5 @@
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { defineStore } from 'pinia';
 import { useRemote } from '@/composables';
 
@@ -97,12 +98,12 @@ export const itemsStore = defineStore('items', {
     async fetchAndAddCollection(
       parentId: string | undefined
     ): Promise<BaseItemDto[] | undefined> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       if (parentId && !this.getItemById(parentId)) {
         const parentItem = (
-          await this.$nuxt.$api.items.getItems({
-            userId: auth.currentUserId.value,
+          await remote.sdk.newUserApi(getItemsApi).getItems({
+            userId: remote.auth.currentUserId.value,
             ids: [parentId],
             fields: Object.values(ItemFields)
           })
@@ -116,8 +117,8 @@ export const itemsStore = defineStore('items', {
       }
 
       const childItems = (
-        await this.$nuxt.$api.items.getItems({
-          userId: auth.currentUserId,
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          userId: remote.auth.currentUserId.value,
           parentId,
           fields: Object.values(ItemFields)
         })
@@ -136,9 +137,11 @@ export const itemsStore = defineStore('items', {
      * @param itemIds - Ids of the items to update
      */
     async updateStoreItems(itemIds: string[]): Promise<void> {
+      const remote = useRemote();
+
       if (itemIds.length > 0) {
-        await context.$api.items.getItems({
-          userId: auth.currentUserId,
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          userId: remote.auth.currentUserId.value,
           ids: itemIds,
           fields: Object.keys(ItemFields) as ItemFields[]
         });

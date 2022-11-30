@@ -32,6 +32,8 @@ import {
   CultureDto,
   StartupConfigurationDto
 } from '@jellyfin/sdk/lib/generated-client';
+import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -51,22 +53,30 @@ export default defineComponent({
     };
   },
   async created() {
+    const api = this.$remote.sdk.oneTimeSetup(
+      this.$remote.auth.currentServer.value?.PublicAddress || ''
+    );
+
     this.initialConfig = (
-      await this.$api.startup.getStartupConfiguration()
+      await getStartupApi(api).getStartupConfiguration()
     ).data;
 
     this.metadataLanguage = this.initialConfig?.MetadataCountryCode || '';
     this.metadataCountry = this.initialConfig?.PreferredMetadataLanguage || '';
 
-    this.cultureOptions = (await this.$api.localization.getCultures()).data;
-    this.countryOptions = (await this.$api.localization.getCountries()).data;
+    this.cultureOptions = (await getLocalizationApi(api).getCultures()).data;
+    this.countryOptions = (await getLocalizationApi(api).getCountries()).data;
   },
   methods: {
     async setMetadata(): Promise<void> {
       this.loading = true;
 
+      const api = this.$remote.sdk.oneTimeSetup(
+        this.$remote.auth.currentServer.value?.PublicAddress || ''
+      );
+
       try {
-        await this.$api.startup.updateInitialConfiguration({
+        await getStartupApi(api).updateInitialConfiguration({
           startupConfigurationDto: {
             ...this.initialConfig,
             MetadataCountryCode: this.metadataLanguage,

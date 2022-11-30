@@ -49,7 +49,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { debounce } from 'lodash-es';
 
 export default defineComponent({
@@ -87,19 +89,27 @@ export default defineComponent({
     }
   },
   methods: {
-    performSearchDebounce: debounce(function () {
+    performSearchDebounce: debounce(
       // @ts-expect-error - TypeScript confuses the context with lodash's debounce typings
-      this.performSearch();
-    }, 500),
+      async () => await this.performSearch(),
+      500
+    ),
     async performSearch(): Promise<void> {
       this.loading = true;
 
       const itemResults = (
-        await this.$api.items.getItemsByUserId({
-          userId: this.$remote.auth.currentUserId.value,
+        await this.$remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
+          userId: this.$remote.auth.currentUserId.value || '',
           searchTerm: this.searchQuery,
-          includeItemTypes:
-            'Movie,Series,Audio,MusicAlbum,Book,MusicArtist,Person',
+          includeItemTypes: [
+            BaseItemKind.Movie,
+            BaseItemKind.Series,
+            BaseItemKind.Audio,
+            BaseItemKind.MusicAlbum,
+            BaseItemKind.Book,
+            BaseItemKind.MusicArtist,
+            BaseItemKind.Person
+          ],
           recursive: true
         })
       ).data.Items;
@@ -127,7 +137,7 @@ export default defineComponent({
       );
 
       this.personSearchResults = (
-        await this.$api.persons.getPersons({
+        await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
           userId: this.$remote.auth.currentUserId.value,
           searchTerm: this.searchQuery
         })

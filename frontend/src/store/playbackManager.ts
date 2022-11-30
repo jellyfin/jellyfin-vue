@@ -8,6 +8,8 @@ import {
   SubtitleDeliveryMethod,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { defineStore } from 'pinia';
 import { itemsStore } from '.';
 import { useRemote } from '@/composables';
@@ -44,14 +46,14 @@ export interface PlaybackTrack {
 
 interface PlaybackManagerState {
   status: PlaybackStatus;
-  lastItemIndex: number | null;
-  currentItemIndex: number | null;
-  currentMediaSource: MediaSourceInfo | null;
+  lastItemIndex: number | undefined;
+  currentItemIndex: number | undefined;
+  currentMediaSource: MediaSourceInfo | undefined;
   currentVideoStreamIndex: number | undefined;
   currentAudioStreamIndex: number | undefined;
   currentSubtitleStreamIndex: number | undefined;
-  currentItemChapters: ChapterInfo[] | null;
-  currentTime: number | null;
+  currentItemChapters: ChapterInfo[] | undefined;
+  currentTime: number | undefined;
   lastProgressUpdate: number;
   currentVolume: number;
   isMuted: boolean;
@@ -60,8 +62,8 @@ interface PlaybackManagerState {
   repeatMode: RepeatMode;
   queue: string[];
   originalQueue: string[];
-  playSessionId: string | null;
-  playbackInitiator: BaseItemDto | null;
+  playSessionId: string | undefined;
+  playbackInitiator: BaseItemDto | undefined;
   playbackInitMode: InitMode;
 }
 
@@ -69,14 +71,14 @@ export const playbackManagerStore = defineStore('playbackManager', {
   state: () => {
     return {
       status: PlaybackStatus.Stopped,
-      lastItemIndex: null,
-      currentItemIndex: null,
-      currentMediaSource: null,
+      lastItemIndex: undefined,
+      currentItemIndex: undefined,
+      currentMediaSource: undefined,
       currentVideoStreamIndex: undefined,
       currentAudioStreamIndex: undefined,
       currentSubtitleStreamIndex: undefined,
-      currentItemChapters: null,
-      currentTime: null,
+      currentItemChapters: undefined,
+      currentTime: undefined,
       lastProgressUpdate: 0,
       currentVolume: 100,
       isMuted: false,
@@ -85,8 +87,8 @@ export const playbackManagerStore = defineStore('playbackManager', {
       repeatMode: RepeatMode.RepeatNone,
       queue: [],
       originalQueue: [],
-      playSessionId: null,
-      playbackInitiator: null,
+      playSessionId: undefined,
+      playbackInitiator: undefined,
       playbackInitMode: InitMode.Unknown
     } as PlaybackManagerState;
   },
@@ -104,7 +106,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
     clearQueue(): void {
       this.queue = [];
     },
-    changeCurrentTime(time: number | null) {
+    changeCurrentTime(time: number | undefined) {
       this.currentTime = time;
     },
     /**
@@ -162,7 +164,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
           this.playbackInitMode = InitMode.Unknown;
         }
 
-        this.playbackInitiator = initiator || null;
+        this.playbackInitiator = initiator;
         this.status = PlaybackStatus.Playing;
       } catch {
         this.status = PlaybackStatus.Error;
@@ -176,7 +178,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
     async playNext(item: BaseItemDto): Promise<void> {
       const translatedItem = await this.translateItemsForPlayback(item);
 
-      if (this.currentItemIndex !== null) {
+      if (this.currentItemIndex !== undefined) {
         /**
          * Removes the elements that already exists and append the new ones next to the currently playing item
          */
@@ -209,7 +211,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       this.currentTime = 0;
     },
     resetCurrentItemIndex(): void {
-      this.currentItemIndex = null;
+      this.currentItemIndex = undefined;
     },
     setBuffering(): void {
       this.status = PlaybackStatus.Buffering;
@@ -221,7 +223,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       this.lastItemIndex = this.currentItemIndex;
     },
     resetLastItemIndex(): void {
-      this.lastItemIndex = null;
+      this.lastItemIndex = undefined;
     },
     setVolume(volume: number): void {
       this.currentVolume = volume;
@@ -239,7 +241,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
         this.currentTime = 0;
       }
     },
-    setCurrentTime(time: number | null) {
+    setCurrentTime(time: number | undefined) {
       this.currentTime = time;
     },
     setLastProgressUpdate(progress: number): void {
@@ -294,11 +296,11 @@ export const playbackManagerStore = defineStore('playbackManager', {
       let item;
       let lastItem;
 
-      if (this.currentItemIndex !== null) {
+      if (this.currentItemIndex !== undefined) {
         item = this.queue[this.currentItemIndex];
       }
 
-      if (this.lastItemIndex !== null) {
+      if (this.lastItemIndex !== undefined) {
         lastItem = this.queue[this.lastItemIndex];
       }
 
@@ -348,7 +350,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
 
           this.queue = queue;
           this.currentItemIndex = 0;
-          this.lastItemIndex = null;
+          this.lastItemIndex = undefined;
           this.isShuffling = true;
         } else {
           const item = this.queue[this.currentItemIndex];
@@ -356,7 +358,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
           this.currentItemIndex = this.originalQueue.indexOf(item);
           this.queue = this.originalQueue;
           this.originalQueue = [];
-          this.lastItemIndex = null;
+          this.lastItemIndex = undefined;
           this.isShuffling = false;
         }
       }
@@ -402,63 +404,63 @@ export const playbackManagerStore = defineStore('playbackManager', {
       item: BaseItemDto,
       shuffle = false
     ): Promise<string[]> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
       let responseItems: BaseItemDto[] = [];
 
       if (item.Type === 'Program' && item.ChannelId) {
         responseItems =
           (
-            await this.$nuxt.$api.items.getItems({
+            await remote.sdk.newUserApi(getItemsApi).getItems({
               ids: [item.ChannelId],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId.value,
+              userId: remote.auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'Playlist') {
         responseItems =
           (
-            await this.$nuxt.$api.items.getItems({
+            await remote.sdk.newUserApi(getItemsApi).getItems({
               parentId: item.Id,
               limit: 300,
               sortBy: shuffle ? ['Random'] : undefined,
-              userId: auth.currentUserId.value,
+              userId: remote.auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'MusicArtist' && item.Id) {
         responseItems =
           (
-            await this.$nuxt.$api.items.getItems({
+            await remote.sdk.newUserApi(getItemsApi).getItems({
               artistIds: [item.Id],
               filters: [ItemFilter.IsNotFolder],
               recursive: true,
               mediaTypes: ['Audio'],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId.value,
+              userId: remote.auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'MusicGenre' && item.Id) {
         responseItems =
           (
-            await this.$nuxt.$api.items.getItems({
+            await remote.sdk.newUserApi(getItemsApi).getItems({
               genreIds: [item.Id],
               filters: [ItemFilter.IsNotFolder],
               recursive: true,
               mediaTypes: ['Audio'],
               limit: 300,
               sortBy: shuffle ? ['Random'] : ['SortName'],
-              userId: auth.currentUserId.value,
+              userId: remote.auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.IsFolder) {
         responseItems =
           (
-            await this.$nuxt.$api.items.getItems({
+            await remote.sdk.newUserApi(getItemsApi).getItems({
               parentId: item.Id,
               filters: [ItemFilter.IsNotFolder],
               recursive: true,
@@ -469,13 +471,14 @@ export const playbackManagerStore = defineStore('playbackManager', {
                 : ['SortName'],
               mediaTypes: ['Audio', 'Video'],
               limit: 300,
-              userId: auth.currentUserId.value,
+              userId: remote.auth.currentUserId.value,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
       } else if (item.Type === 'Episode') {
         if (
-          auth.currentUser.Configuration?.EnableNextEpisodeAutoPlay &&
+          remote.auth.currentUser.value?.Configuration
+            ?.EnableNextEpisodeAutoPlay &&
           item.SeriesId
         ) {
           /**
@@ -483,12 +486,12 @@ export const playbackManagerStore = defineStore('playbackManager', {
            */
           responseItems =
             (
-              await this.$nuxt.$api.tvShows.getEpisodes({
+              await remote.sdk.newUserApi(getTvShowsApi).getEpisodes({
                 seriesId: item.SeriesId,
                 isMissing: false,
                 startItemId: item.Id,
                 limit: 300,
-                userId: auth.currentUserId.value,
+                userId: remote.auth.currentUserId.value,
                 fields: Object.values(ItemFields)
               })
             ).data.Items || [];
@@ -503,7 +506,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       }
 
       return responseItems.map((index) => {
-        return index.Id ? index.Id : '';
+        return index.Id || '';
       });
     }
   },
@@ -541,11 +544,11 @@ export const playbackManagerStore = defineStore('playbackManager', {
     /**
      * Get a reactive BaseItemDto object of the previous item in queue
      */
-    getPreviousItem(): BaseItemDto | null | undefined {
+    getPreviousItem(): BaseItemDto | undefined {
       const items = itemsStore();
 
       if (this.currentItemIndex === 0) {
-        return null;
+        return undefined;
       } else if (!isNil(this.lastItemIndex)) {
         return items.getItemById(this.queue?.[this.lastItemIndex]);
       }

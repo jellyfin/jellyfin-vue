@@ -22,7 +22,7 @@
             </v-btn>
           </v-col>
           <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn block to="/server/select" nuxt size="large">
+            <v-btn block to="/server/select" size="large">
               {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>
@@ -30,7 +30,10 @@
       </v-col>
       <v-col
         v-else-if="
-          !isEmpty(currentUser) || loginAsOther || publicUsers.length === 0
+          !isEmpty(currentUser) ||
+          loginAsOther ||
+          (publicUsers.length === 0 &&
+            $remote.auth.currentServer.value?.ServerName)
         "
         sm="6"
         md="6"
@@ -42,7 +45,7 @@
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ $remote.auth.currentServer.value.ServerName }}
+          {{ $remote.auth.currentServer.value?.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
@@ -60,19 +63,26 @@ meta:
 import { defineComponent } from 'vue';
 import { isEmpty } from 'lodash-es';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
+import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useRemote } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const { t } = useI18n();
     const route = useRoute();
+    const remote = useRemote();
+    const api = remote.sdk.oneTimeSetup(
+      remote.auth.currentServer.value?.PublicAddress || ''
+    );
 
     route.meta.title = t('login.login');
 
-    const brandingData = (await $api.branding.getBrandingOptions()).data;
+    const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
+    const publicUsers = (await getUserApi(api).getPublicUsers({})).data;
 
-    const publicUsers = (await $api.user.getPublicUsers({})).data;
     const disclaimer = brandingData.LoginDisclaimer;
 
     return { publicUsers, disclaimer };

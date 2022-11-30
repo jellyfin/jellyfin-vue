@@ -148,67 +148,72 @@ import {
   BaseItemDto,
   ImageType,
   ItemFields,
-  SortOrder
+  SortOrder,
+  BaseItemKind
 } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getBlurhash } from '~/utils/images';
 import { dateFnsFormat } from '@/utils/time';
+import { useRemote } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const { params } = useRoute();
     const itemId = params.itemId;
+    const remote = useRemote();
     const item = (
-      await $api.userLibrary.getItem({
-        userId: this.$remote.auth.currentUserId,
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId.value || '',
         itemId
       })
     ).data;
 
     const movies = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         personIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Movie'],
+        includeItemTypes: [BaseItemKind.Movie],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
     const series = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         personIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Series'],
+        includeItemTypes: [BaseItemKind.Series],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
     const books = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         personIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Book'],
+        includeItemTypes: [BaseItemKind.Book],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
     const photos = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         personIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['Photo'],
+        includeItemTypes: [BaseItemKind.Photo],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
