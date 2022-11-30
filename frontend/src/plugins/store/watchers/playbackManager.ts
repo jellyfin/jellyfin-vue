@@ -1,8 +1,10 @@
 import { isNil } from 'lodash-es';
 import { PiniaPluginContext } from 'pinia';
+import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { playbackManagerStore, PlaybackStatus } from '~/store';
 import { msToTicks } from '~/utils/time';
 import { getImageInfo } from '~/utils/images';
+import { useRemote } from '@/composables';
 
 /**
  * Add or remove media handlers
@@ -120,7 +122,6 @@ function updateMediaSessionMetadata(
         window.navigator.mediaSession.metadata = mediaSessionMetadata;
         break;
       }
-      case PlaybackStatus.Stopped:
       default: {
         window.navigator.mediaSession.playbackState = 'none';
         window.navigator.mediaSession.metadata = null;
@@ -141,6 +142,8 @@ export default function (context: PiniaPluginContext): void {
   playbackManager.$onAction(({ name, after }) => {
     // @ts-expect-error - Typings are not recognised properly here for some reason
     after(async () => {
+      const remote = useRemote();
+
       switch (name) {
         case 'setNextTrack':
         case 'setPreviousTrack':
@@ -159,7 +162,7 @@ export default function (context: PiniaPluginContext): void {
             /**
              * Report stop for the previous item
              */
-            await context.$api.playState.reportPlaybackStopped(
+            await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -177,7 +180,7 @@ export default function (context: PiniaPluginContext): void {
            * And then report play for the next one if it exists
            */
           if (playbackManager.getCurrentItem) {
-            await context.$api.playState.reportPlaybackStart(
+            await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStart(
               {
                 playbackStartInfo: {
                   CanSeek: true,
@@ -206,19 +209,21 @@ export default function (context: PiniaPluginContext): void {
               now - playbackManager.lastProgressUpdate >= 1250 &&
               !isNil(playbackManager.currentTime)
             ) {
-              await context.$api.playState.reportPlaybackProgress(
-                {
-                  playbackProgressInfo: {
-                    ItemId: playbackManager.getCurrentItem?.Id,
-                    PlaySessionId: playbackManager.playSessionId,
-                    IsPaused: playbackManager.isPaused,
-                    PositionTicks: Math.round(
-                      msToTicks(playbackManager.currentTime * 1000)
-                    )
-                  }
-                },
-                { progress: false }
-              );
+              await remote.sdk
+                .newUserApi(getPlaystateApi)
+                .reportPlaybackProgress(
+                  {
+                    playbackProgressInfo: {
+                      ItemId: playbackManager.getCurrentItem?.Id,
+                      PlaySessionId: playbackManager.playSessionId,
+                      IsPaused: playbackManager.isPaused,
+                      PositionTicks: Math.round(
+                        msToTicks(playbackManager.currentTime * 1000)
+                      )
+                    }
+                  },
+                  { progress: false }
+                );
 
               playbackManager.setLastProgressUpdate(Date.now());
             }
@@ -231,7 +236,7 @@ export default function (context: PiniaPluginContext): void {
           handleMediaSession(playbackManager, true);
 
           if (!isNil(playbackManager.currentTime)) {
-            await context.$api.playState.reportPlaybackStopped(
+            await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped(
               {
                 playbackStopInfo: {
                   ItemId: playbackManager.getPreviousItem?.Id,
@@ -253,7 +258,7 @@ export default function (context: PiniaPluginContext): void {
           updateMediaSessionMetadata(playbackManager);
 
           if (!isNil(playbackManager.currentTime)) {
-            await context.$api.playState.reportPlaybackProgress(
+            await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress(
               {
                 playbackProgressInfo: {
                   ItemId: playbackManager.getCurrentItem?.Id,
