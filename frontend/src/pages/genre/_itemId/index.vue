@@ -51,30 +51,34 @@ import {
   SortOrder,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { itemsStore } from '~/store';
+import { useRemote } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const items = itemsStore();
-    const { params } = useRoute();
+    const route = useRoute();
+    const remote = useRemote();
 
-    const itemId = params.itemId;
+    const itemId = route.params.itemId;
     const item = (
-      await $api.userLibrary.getItem({
-        userId: this.$remote.auth.currentUserId.value,
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId.value || '',
         itemId
       })
     ).data;
 
     let genres = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         genreIds: [item.Id as string],
         includeItemTypes: [route.query.type.toString()],
         recursive: true,
         sortBy: ['SortName'],
         sortOrder: [SortOrder.Ascending],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId
+        userId: remote.auth.currentUserId.value || ''
       })
     ).data.Items;
 

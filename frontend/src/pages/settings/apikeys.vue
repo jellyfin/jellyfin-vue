@@ -39,7 +39,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useSnackbar } from '@/composables';
+import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { useRemote, useSnackbar } from '@/composables';
 
 interface TableHeaders {
   text: string;
@@ -48,7 +49,9 @@ interface TableHeaders {
 
 export default defineComponent({
   async setup() {
-    const apiKeys = (await $api.apiKey.getKeys()).data.Items;
+    const remote = useRemote();
+    const apiKeys = (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data
+      .Items;
 
     return {
       apiKeys,
@@ -74,7 +77,7 @@ export default defineComponent({
   methods: {
     async revokeApiKey(token: string): Promise<void> {
       try {
-        await this.$api.apiKey.revokeKey({
+        await this.$remote.sdk.newUserApi(getApiKeyApi).revokeKey({
           key: token
         });
 
@@ -91,7 +94,7 @@ export default defineComponent({
 
       try {
         for (const key of this.apiKeys) {
-          await this.$api.apiKey.revokeKey({
+          await this.$remote.sdk.newUserApi(getApiKeyApi).revokeKey({
             key: key.AccessToken || ''
           });
         }
@@ -111,7 +114,9 @@ export default defineComponent({
     },
     async refreshApiKeys(): Promise<void> {
       try {
-        this.apiKeys = (await this.$api.apiKey.getKeys()).data.Items || [];
+        this.apiKeys =
+          (await this.$remote.sdk.newUserApi(getApiKeyApi).getKeys()).data
+            .Items || [];
       } catch {
         this.useSnackbar(
           this.$t('settings.apiKeys.refreshKeysFailure'),

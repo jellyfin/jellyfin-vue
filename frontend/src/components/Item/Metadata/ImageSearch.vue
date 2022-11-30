@@ -98,6 +98,7 @@ import {
   ImageType,
   BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
+import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
 
 export default defineComponent({
   filters: {
@@ -218,15 +219,17 @@ export default defineComponent({
   methods: {
     async getRemoteImageProviders(): Promise<void> {
       this.providers = (
-        await this.$api.remoteImage.getRemoteImageProviders({
-          itemId: this.metadata.Id
-        })
+        await this.$remote.sdk
+          .newUserApi(getRemoteImageApi)
+          .getRemoteImageProviders({
+            itemId: this.metadata.Id
+          })
       ).data;
     },
     async getImages(): Promise<void> {
       this.loading = true;
       this.images = (
-        await this.$api.remoteImage.getRemoteImages({
+        await this.$remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
           itemId: this.metadata.Id,
           type: this.type,
           providerName: this.source === 'All' ? undefined : this.source,
@@ -238,12 +241,12 @@ export default defineComponent({
     },
     imageFormat(url: string): string {
       return `${
-        this.$axios.defaults.baseURL
+        this.$remote.axios.instance.defaults.baseURL
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
     async handleDownload(item: RemoteImageInfo): Promise<void> {
       this.loading = true;
-      await this.$api.remoteImage.downloadRemoteImage({
+      await this.$remote.sdk.newUserApi(getRemoteImageApi).downloadRemoteImage({
         type: item.Type as ImageType,
         imageUrl: item.Url as string,
         itemId: this.metadata.Id
