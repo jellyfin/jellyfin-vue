@@ -178,6 +178,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
+import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
 import { sanitizeHtml } from '~/utils/html';
 import { useSnackbar } from '@/composables';
 
@@ -275,11 +276,13 @@ export default defineComponent({
          * First reported on https://github.com/jellyfin/jellyfin-vue/security/code-scanning/223
          */
         const response = (
-          await this.$api.filter.getQueryFiltersLegacy({
-            userId: this.$remote.auth.currentUserId.value,
-            parentId: sanitizeHtml(this.$route.params.viewId),
-            includeItemTypes: [this.itemsType]
-          })
+          await this.$remote.sdk
+            .newUserApi(getFilterApi)
+            .getQueryFiltersLegacy({
+              userId: this.$remote.auth.currentUserId.value,
+              parentId: sanitizeHtml(this.$route.params.viewId),
+              includeItemTypes: [this.itemsType]
+            })
         ).data;
 
         if (response.Genres) {

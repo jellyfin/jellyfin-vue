@@ -46,6 +46,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getItemDetailsLink } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
@@ -101,15 +102,17 @@ export default defineComponent({
       this.loading = true;
 
       if (this.item.Id) {
-        const response = await this.$api.library.getSimilarItems({
-          itemId: this.item.Id,
-          userId: this.$remote.auth.currentUserId.value,
-          limit: this.vertical ? 5 : 12,
-          excludeArtistIds: this.item.AlbumArtists?.flatMap(
-            (albumArtist: BaseItemDto) =>
-              albumArtist.Id ? [albumArtist.Id] : []
-          )
-        });
+        const response = await this.$remote.sdk
+          .newUserApi(getLibraryApi)
+          .getSimilarItems({
+            itemId: this.item.Id,
+            userId: this.$remote.auth.currentUserId.value,
+            limit: this.vertical ? 5 : 12,
+            excludeArtistIds: this.item.AlbumArtists?.flatMap(
+              (albumArtist: BaseItemDto) =>
+                albumArtist.Id ? [albumArtist.Id] : []
+            )
+          });
 
         if (response.data.Items) {
           this.relatedItems = response.data.Items;

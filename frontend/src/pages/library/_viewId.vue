@@ -49,15 +49,22 @@
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
+import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
+import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
+import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
+import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { validLibraryTypes } from '~/utils/items';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const { params } = useRoute();
+    const remote = useRemote();
     const collectionInfo = (
-      await $api.items.getItems({
-        userId: this.$remote.auth.currentUserId.value,
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        userId: remote.auth.currentUserId.value,
         ids: [params.viewId]
       })
     ).data?.Items?.[0];
@@ -122,10 +129,6 @@ export default defineComponent({
     }
   },
   async mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start();
-    });
-
     if (
       this.collectionInfo?.Type &&
       validLibraryTypes.includes(this.collectionInfo.Type)
@@ -157,10 +160,6 @@ export default defineComponent({
           break;
         }
       }
-
-      this.$nextTick(() => {
-        this.$nuxt.$loading.finish();
-      });
     }
   },
   methods: {
@@ -208,7 +207,7 @@ export default defineComponent({
         switch (this.viewType) {
           case 'MusicArtist': {
             itemsResponse = (
-              await this.$api.artists.getAlbumArtists({
+              await this.$remote.sdk.newUserApi(getArtistsApi).getAlbumArtists({
                 userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
@@ -217,17 +216,17 @@ export default defineComponent({
           }
           case 'Actor': {
             itemsResponse = (
-              await this.$api.persons.getPersons({
+              await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
                 userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId,
-                personTypes: 'Actor'
+                personTypes: ['Actor']
               })
             ).data;
             break;
           }
           case 'Genre': {
             itemsResponse = (
-              await this.$api.genres.getGenres({
+              await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
                 userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
@@ -236,16 +235,18 @@ export default defineComponent({
           }
           case 'MusicGenre': {
             itemsResponse = (
-              await this.$api.musicGenres.getMusicGenres({
-                userId: this.$remote.auth.currentUserId.value,
-                parentId: this.$route.params.viewId
-              })
+              await this.$remote.sdk
+                .newUserApi(getMusicGenresApi)
+                .getMusicGenres({
+                  userId: this.$remote.auth.currentUserId.value,
+                  parentId: this.$route.params.viewId
+                })
             ).data;
             break;
           }
           case 'Studio': {
             itemsResponse = (
-              await this.$api.studios.getStudios({
+              await this.$remote.sdk.newUserApi(getStudiosApi).getStudios({
                 userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId
               })
@@ -254,7 +255,7 @@ export default defineComponent({
           }
           default: {
             itemsResponse = (
-              await this.$api.items.getItems({
+              await this.$remote.sdk.newUserApi(getItemsApi).getItems({
                 uId: this.$remote.auth.currentUserId.value,
                 userId: this.$remote.auth.currentUserId.value,
                 parentId: this.$route.params.viewId,

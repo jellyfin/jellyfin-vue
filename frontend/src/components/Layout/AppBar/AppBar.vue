@@ -1,19 +1,11 @@
 <template>
   <v-app-bar
-    clipped-left
     class="app-bar-safe-zone"
     flat
-    app
-    elevate-on-scroll
     elevation="3"
-    :hide-on-scroll="$vuetify.display.mobile"
-    :class="{ transparent: transparentLayout && !page.isScrolled }">
-    <v-app-bar-nav-icon
-      v-if="$vuetify.display.mobile && page.navDrawer"
-      @click.stop="page.openDrawer = !page.openDrawer" />
-    <app-bar-button-layout
-      v-hide="$route.name === 'index'"
-      @click.native="$router.back()">
+    :class="{ transparent: transparentLayout }">
+    <v-app-bar-nav-icon v-if="$vuetify.display.mobile" />
+    <app-bar-button-layout v-hide="$route.path === '/'" @click="$router.back()">
       <template #icon>
         <Icon>
           <i-mdi-arrow-left />
@@ -34,7 +26,7 @@
       </template>
     </app-bar-button-layout>
     <task-manager-button />
-    <app-bar-button-layout @click.native="toggleDarkMode">
+    <app-bar-button-layout @click="toggleDarkMode">
       <template #icon>
         <Icon>
           {{ clientSettings.darkMode ? IMdiWeatherSunny : IMdiWeatherNight }}
@@ -74,6 +66,13 @@ const network = useNetwork();
 const transparentLayout = computed<boolean>(() => {
   return route.meta.transparentLayout || false;
 });
+
+/**
+ * Toggles dark mode settings
+ */
+function toggleDarkMode(): void {
+  clientSettings.setDarkMode(!clientSettings.darkMode);
+}
 </script>
 
 <style lang="scss" scoped>

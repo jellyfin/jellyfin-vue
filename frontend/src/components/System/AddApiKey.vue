@@ -27,6 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -54,8 +55,6 @@ export default defineComponent({
         case 'md': {
           return 500;
         }
-        case 'lg':
-        case 'xl':
         default: {
           return 600;
         }
@@ -67,7 +66,7 @@ export default defineComponent({
       this.loading = true;
 
       try {
-        await this.$api.apiKey.createKey({
+        await this.$remote.sdk.newUserApi(getApiKeyApi).createKey({
           app: this.newKeyAppName
         });
 

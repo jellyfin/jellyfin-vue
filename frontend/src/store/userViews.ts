@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryIcon } from '~/utils/items';
 import { useRemote } from '@/composables';
@@ -15,12 +16,14 @@ export const userViewsStore = defineStore('userViews', {
   },
   actions: {
     async refreshUserViews(): Promise<void> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       try {
-        const userViewsResponse = await this.$nuxt.$api.userViews.getUserViews({
-          userId: auth.currentUserId
-        });
+        const userViewsResponse = await remote.sdk
+          .newUserApi(getUserViewsApi)
+          .getUserViews({
+            userId: remote.auth.currentUserId.value || ''
+          });
 
         this.views = userViewsResponse.data.Items || [];
       } catch (error) {
