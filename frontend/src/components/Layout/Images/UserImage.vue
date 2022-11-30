@@ -5,101 +5,53 @@
         <i-mdi-account />
       </Icon>
     </v-avatar>
-    <div
+    <v-img
       v-show="!loading"
       ref="img"
       class="user-image"
-      :class="{ 'rounded-circle': rounded }" />
+      :src="userImage"
+      :class="{ 'rounded-circle': rounded }"
+      @load="loading = false" />
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { defineComponent } from 'vue';
+import { computed, ref } from 'vue';
+import { useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    user: {
-      type: Object as () => UserDto,
-      required: true
-    },
-    size: {
-      type: Number,
-      required: false,
-      default: 64
-    },
-    quality: {
-      type: Number,
-      required: false,
-      default: 90
-    },
-    rounded: {
-      type: Boolean,
-      default: false
-    }
+const props = defineProps({
+  user: {
+    type: Object as () => UserDto,
+    required: true
   },
-  data() {
-    return {
-      loading: true
-    };
+  size: {
+    type: Number,
+    required: false,
+    default: 64
   },
-  computed: {
-    userImage: {
-      get(): string | undefined {
-        if (this.user?.Id && this.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?tag=${this.user.PrimaryImageTag}&quality=${this.quality}`;
-        }
-      }
-    },
-    iconSize(): number {
-      return this.size * 0.75;
-    }
+  quality: {
+    type: Number,
+    required: false,
+    default: 90
   },
-  /**
-   * We need to verify that the component is mounted before setting up the div's background
-   */
-  watch: {
-    userImage() {
-      this.manageDiv();
-    },
-    size() {
-      this.manageDiv();
-    }
-  },
-  mounted() {
-    this.manageDiv();
-  },
-  methods: {
-    /**
-     * We're using a div to have a fully centered image for all kind of possible sizes, something that
-     * img doesn't allow and we couldn't do before with v-avatar and v-img.
-     *
-     * v-img also uses a div, so it can be replaced with it, but doesn't emit a 'load'
-     * event that allows us to make the switch between the image and the placeholder when v-show is true for it.
-     * TODO: This might be a bug upstream that can be reported.
-     */
-    manageDiv(): void {
-      this.loading = true;
-
-      const element = this.$refs.img as HTMLElement;
-
-      element.style.width = `${this.size}px`;
-      element.style.height = `${this.size}px`;
-
-      if (element && this.userImage) {
-        let img = new Image();
-
-        img.addEventListener('load', (): void => {
-          element.style.backgroundImage = 'url(' + img.src + ')';
-          this.loading = false;
-          // @ts-expect-error - Disposes the object
-          img = null;
-        });
-
-        img.src = this.userImage;
-      }
-    }
+  rounded: {
+    type: Boolean,
+    default: false
   }
+});
+
+const remote = useRemote();
+
+const loading = ref(true);
+const img = ref<HTMLDivElement | undefined>(undefined);
+const userImage = computed(() => {
+  return props.user?.Id && props.user?.PrimaryImageTag
+    ? `${remote.axios.instance.defaults.baseURL}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
+    : undefined;
+});
+const iconSize = computed(() => {
+  return props.size * 0.75;
 });
 </script>
 

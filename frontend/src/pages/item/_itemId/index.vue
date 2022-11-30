@@ -243,17 +243,20 @@ import {
   ImageType,
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink, getMediaStreams } from '~/utils/items';
 import { getItemizedSelect } from '~/utils/forms';
+import { useRemote } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const { params } = useRoute();
     const itemId = params.itemId;
+    const remote = useRemote();
     const item = (
-      await $api.userLibrary.getItem({
-        userId: this.$remote.auth.currentUserId.value,
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId.value || '',
         itemId
       })
     ).data;

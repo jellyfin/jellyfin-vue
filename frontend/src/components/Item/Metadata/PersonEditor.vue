@@ -9,7 +9,9 @@
             <v-avatar size="160" class="ml-2">
               <v-img
                 v-if="person && person.PrimaryImageTag"
-                :src="`${$axios.defaults.baseURL}/Items/${person.Id}/Images/Primary`" />
+                :src="
+                  $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
+                " />
               <Icon v-else class="bg-grey-darken-3">
                 <i-mdi-account />
               </Icon>
@@ -56,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { BaseItemPerson } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 
 export default defineComponent({
   props: {
@@ -72,6 +74,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     }
+  },
+  setup() {
+    return { ImageType };
   },
   data() {
     return {
