@@ -1,4 +1,5 @@
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
+import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
 import { isNil } from 'lodash-es';
 import {
@@ -56,13 +57,15 @@ export async function fetchSettingsFromServer(
   store: Store<string, StateTree, _GettersTree<StateTree>, _ActionsTree>,
   cast = true
 ): Promise<DisplayPreferencesDto> {
-  const auth = useRemote().auth;
+  const remote = useRemote();
 
-  const response = await context.$api.displayPreferences.getDisplayPreferences({
-    displayPreferencesId: store.$id,
-    userId: auth.currentUserId.value,
-    client: 'vue'
-  });
+  const response = await remote.sdk
+    .newUserApi(getDisplayPreferencesApi)
+    .getDisplayPreferences({
+      displayPreferencesId: store.$id,
+      userId: remote.auth.currentUserId.value || '',
+      client: 'vue'
+    });
 
   if (response.status !== 200) {
     throw new Error(
@@ -82,7 +85,7 @@ export async function pushSettingsToServer(
   storeId: string,
   prefs: DisplayPreferencesDto
 ): Promise<void> {
-  const auth = useRemote().auth;
+  const remote = useRemote();
 
   if (prefs.CustomPrefs) {
     for (const [key, value] of Object.entries(prefs.CustomPrefs)) {
@@ -102,10 +105,11 @@ export async function pushSettingsToServer(
       prefs.CustomPrefs[key] = string;
     }
 
-    const responseUpdate =
-      await context.$api.displayPreferences.updateDisplayPreferences({
+    const responseUpdate = await remote.sdk
+      .newUserApi(getDisplayPreferencesApi)
+      .updateDisplayPreferences({
         displayPreferencesId: storeId,
-        userId: auth.currentUserId,
+        userId: remote.auth.currentUserId.value || '',
         client: 'vue',
         displayPreferencesDto: prefs
       });

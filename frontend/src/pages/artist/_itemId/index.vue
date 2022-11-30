@@ -116,18 +116,23 @@ import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
+  BaseItemKind,
   ImageType,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { sanitizeHtml } from '~/utils/html';
 import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
 import { msToTicks } from '~/utils/time';
+import { useRemote } from '@/composables';
 
 export default defineComponent({
   async setup() {
     const { params } = useRoute();
+    const remote = useRemote();
 
     const albumBreakpoints = {
       singleMsMaxLength: 600_000,
@@ -136,21 +141,21 @@ export default defineComponent({
     const itemId = params.itemId;
 
     const item = (
-      await $api.userLibrary.getItem({
-        userId: this.auth.currentUserId.value,
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId.value || '',
         itemId
       })
     ).data;
 
     const discography = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         albumArtistIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicAlbum'],
+        includeItemTypes: [BaseItemKind.MusicAlbum],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
@@ -173,27 +178,27 @@ export default defineComponent({
     );
 
     const appearances = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         contributingArtistIds: [itemId],
         excludeItemIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicAlbum'],
+        includeItemTypes: [BaseItemKind.MusicAlbum],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
     const musicVideo = (
-      await $api.items.getItems({
+      await remote.sdk.newUserApi(getItemsApi).getItems({
         artistIds: [itemId],
         sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
         sortOrder: [SortOrder.Descending],
         recursive: true,
-        includeItemTypes: ['MusicVideo'],
+        includeItemTypes: [BaseItemKind.MusicVideo],
         fields: Object.values(ItemFields),
-        userId: this.$remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId.value
       })
     ).data.Items;
 
@@ -220,12 +225,6 @@ export default defineComponent({
       appearances,
       musicVideo,
       item
-    };
-  },
-  data() {
-    return {
-      activeTab: 0,
-      item: {} as BaseItemDto
     };
   },
   computed: {
