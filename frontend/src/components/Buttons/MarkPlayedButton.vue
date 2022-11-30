@@ -9,6 +9,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { canMarkWatched } from '~/utils/items';
 import { useSnackbar } from '@/composables';
 
@@ -49,14 +50,14 @@ export default defineComponent({
 
         if (this.isPlayed) {
           this.isPlayed = false;
-          await this.$api.playState.markUnplayedItem({
-            userId: this.$remote.auth.currentUserId.value,
+          await this.$remote.sdk.newUserApi(getPlaystateApi).markUnplayedItem({
+            userId: this.$remote.auth.currentUserId.value || '',
             itemId: this.item.Id
           });
         } else {
           this.isPlayed = true;
-          await this.$api.playState.markPlayedItem({
-            userId: this.$remote.auth.currentUserId.value,
+          await this.$remote.sdk.newUserApi(getPlaystateApi).markPlayedItem({
+            userId: this.$remote.auth.currentUserId.value || '',
             itemId: this.item.Id
           });
         }

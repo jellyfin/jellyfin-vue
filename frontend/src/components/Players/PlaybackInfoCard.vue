@@ -218,6 +218,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { SessionInfo } from '@jellyfin/sdk/lib/generated-client';
+import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import { camelCase, isNil } from 'lodash-es';
 // @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
@@ -379,7 +380,7 @@ export default defineComponent({
     },
     async updateSession(): Promise<void> {
       this.sessionInfo = (
-        await this.$api.session.getSessions({
+        await this.$remote.sdk.newUserApi(getSessionApi).getSessions({
           deviceId: this.$remote.sdk.deviceInfo.id
         })
       ).data?.[0];

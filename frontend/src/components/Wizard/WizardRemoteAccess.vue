@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -34,8 +35,12 @@ export default defineComponent({
     async setRemoteAccess(): Promise<void> {
       this.loading = true;
 
+      const api = this.$remote.sdk.oneTimeSetup(
+        this.$remote.auth.currentServer.value?.PublicAddress || ''
+      );
+
       try {
-        await this.$api.startup.setRemoteAccess({
+        await getStartupApi(api).setRemoteAccess({
           startupRemoteAccessDto: {
             EnableRemoteAccess: this.allowRemoteAccess,
             EnableAutomaticPortMapping: this.enableUPNP

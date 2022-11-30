@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="$remote.axios.instance && $remote.axios.instance.defaults.baseURL"
     class="video-container"
     :class="{ 'video-container--stretched': stretch }">
     <component
@@ -21,7 +22,7 @@
         default
         :label="subtitleTrack.label"
         :srcLang="subtitleTrack.srcLang"
-        :src="$axios.defaults.baseURL + subtitleTrack.src" />
+        :src="$remote.axios.instance.defaults.baseURL + subtitleTrack.src" />
     </component>
   </div>
 </template>
@@ -47,7 +48,7 @@ import {
   PlaybackInfoResponse,
   SubtitleDeliveryMethod
 } from '@jellyfin/sdk/lib/generated-client';
-
+import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { playbackManagerStore, PlaybackStatus, PlaybackTrack } from '~/store';
 import { RepeatMode } from '~/store/playbackManager';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
@@ -252,19 +253,21 @@ export default defineComponent({
     async getPlaybackUrl(): Promise<void> {
       if (this.playbackManager.getCurrentItem && this.shaka) {
         this.playbackInfo = (
-          await this.$api.mediaInfo.getPostedPlaybackInfo(
-            {
-              itemId: this.playbackManager.getCurrentItem?.Id || '',
-              userId: this.$remote.auth.currentUserId.value,
-              autoOpenLiveStream: true,
-              playbackInfoDto: { DeviceProfile: playbackProfile },
-              mediaSourceId: undefined,
-              audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
-              subtitleStreamIndex:
-                this.playbackManager.currentSubtitleStreamIndex
-            },
-            { progress: false }
-          )
+          await this.$remote.sdk
+            .newUserApi(getMediaInfoApi)
+            .getPostedPlaybackInfo(
+              {
+                itemId: this.playbackManager.getCurrentItem?.Id || '',
+                userId: this.$remote.auth.currentUserId.value,
+                autoOpenLiveStream: true,
+                playbackInfoDto: { DeviceProfile: playbackProfile },
+                mediaSourceId: undefined,
+                audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
+                subtitleStreamIndex:
+                  this.playbackManager.currentSubtitleStreamIndex
+              },
+              { progress: false }
+            )
         ).data;
 
         this.playbackManager.setPlaySessionId(
@@ -307,13 +310,14 @@ export default defineComponent({
             mediaType = 'Audio';
           }
 
-          this.source = `${this.$axios.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
+          this.source = `${this.$remote.axios.instance.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
         ) {
           this.source =
-            this.$axios.defaults.baseURL + mediaSource.TranscodingUrl;
+            this.$remote.axios.instance.defaults.baseURL +
+            mediaSource.TranscodingUrl;
         }
       }
     },
@@ -374,12 +378,14 @@ export default defineComponent({
               workerUrl: SubtitlesOctopusWorker,
               legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
               subUrl:
-                this.$axios.defaults.baseURL + (this.subtitleTrack.src || ''),
+                this.$remote.axios.instance.defaults.baseURL +
+                (this.subtitleTrack.src || ''),
               blendRender: true
             });
           } else {
             this.octopus.setTrackByUrl(
-              this.$axios.defaults.baseURL + (this.subtitleTrack.src || '')
+              this.$remote.axios.instance.defaults.baseURL +
+                (this.subtitleTrack.src || '')
             );
           }
         }
