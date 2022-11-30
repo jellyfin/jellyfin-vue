@@ -7,11 +7,13 @@
     </v-tabs>
     <v-tabs v-model="currentTab" class="bg-transparent">
       <v-tab v-for="season in seasons" :key="season.Id">
-        <v-list lines="two" color="transparent">
+        <v-list
+          v-if="seasonEpisodes && season.Id"
+          lines="two"
+          color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
-            nuxt
             :to="getItemDetailsLink(episode)"
             class="flex-column flex-md-row">
             <v-avatar width="20em" height="12em">
@@ -34,10 +36,13 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
-import { defineComponent } from 'vue';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { ref, watch } from 'vue';
 import { getItemDetailsLink } from '~/utils/items';
+import { useRemote } from '@/composables';
 
 interface TvShowItem {
   /**
@@ -50,67 +55,49 @@ interface TvShowItem {
   seasonEpisodes: { [key: string]: BaseItemDto[] };
 }
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      currentTab: 0,
-      breakpoints: {
-        600: {
-          visibleSlides: 2
-        },
-        960: {
-          visibleSlides: 3
-        },
-        1264: {
-          visibleSlides: 4
-        },
-        1904: {
-          visibleSlides: 5
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
+  }
+});
+const remote = useRemote();
+const currentTab = ref(0);
+const seasons = ref<BaseItemDto[] | null | undefined>([]);
+const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
+
+/**
+ * Fetch component data
+ */
+async function fetch(): Promise<void> {
+  seasons.value = (
+    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+      userId: remote.auth.currentUserId.value,
+      seriesId: props.item.Id
+    })
+  ).data.Items;
+
+  if (seasons.value) {
+    for (const season of seasons.value) {
+      if (season.Id) {
+        const episodes = (
+          await remote.sdk.newUserApi(getItemsApi).getItems({
+            userId: remote.auth.currentUserId.value,
+            parentId: season.Id,
+            fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+          })
+        ).data;
+
+        if (episodes.Items) {
+          seasonEpisodes.value[season.Id] = episodes.Items;
         }
-      },
-      seasons: [] as BaseItemDto[],
-      seasonEpisodes: {} as TvShowItem['seasonEpisodes']
-    };
-  },
-  async fetch() {
-    const seasons = (
-      await this.$api.tvShows.getSeasons({
-        userId: this.$remote.auth.currentUserId.value,
-        seriesId: this.item.Id
-      })
-    ).data.Items;
-
-    const seasonEpisodes = {} as TvShowItem['seasonEpisodes'];
-
-    if (seasons) {
-      for (const season of seasons) {
-        if (season.Id) {
-          const episodes = (
-            await this.$api.items.getItems({
-              userId: this.$remote.auth.currentUserId.value,
-              parentId: season.Id,
-              fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-            })
-          ).data;
-
-          if (episodes.Items) {
-            seasonEpisodes[season.Id] = episodes.Items;
-          }
-        }
-
-        this.seasons = seasons;
-        this.seasonEpisodes = seasonEpisodes;
       }
     }
-  },
-  methods: {
-    getItemDetailsLink
   }
+}
+
+await fetch();
+watch(props, async () => {
+  await fetch();
 });
 </script>

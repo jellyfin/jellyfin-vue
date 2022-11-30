@@ -129,7 +129,12 @@
                 <v-avatar>
                   <v-img
                     v-if="item.PrimaryImageTag"
-                    :src="`${$axios.defaults.baseURL}/Items/${item.Id}/Images/Primary`" />
+                    :src="
+                      $remote.sdk.api?.getItemImageUrl(
+                        item.Id || '',
+                        ImageType.Primary
+                      )
+                    " />
                   <Icon v-else class="bg-grey-darken-3">
                     <i-mdi-account />
                   </Icon>
@@ -192,8 +197,13 @@ import { defineComponent } from 'vue';
 import { pick, set } from 'lodash-es';
 import {
   BaseItemDto,
-  BaseItemPerson
+  BaseItemPerson,
+  ImageType
 } from '@jellyfin/sdk/lib/generated-client';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
+import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
 import { formatISO } from 'date-fns';
 import { useSnackbar } from '@/composables';
 import { dateFnsFormat } from '@/utils/time';
@@ -211,7 +221,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      useSnackbar
+      useSnackbar,
+      ImageType
     };
   },
   data() {
@@ -235,15 +246,13 @@ export default defineComponent({
       return dateFnsFormat(new Date(this.metadata.PremiereDate), 'yyyy-MM-dd')
         .value;
     },
-    dateCreated: {
-      get(): string {
-        if (!this.metadata.DateCreated) {
-          return '';
-        }
-
-        return dateFnsFormat(new Date(this.metadata.DateCreated), 'yyyy-MM-dd')
-          .value;
+    dateCreated(): string {
+      if (!this.metadata.DateCreated) {
+        return '';
       }
+
+      return dateFnsFormat(new Date(this.metadata.DateCreated), 'yyyy-MM-dd')
+        .value;
     }
   },
   watch: {
@@ -262,10 +271,12 @@ export default defineComponent({
     async getData(): Promise<void> {
       await this.fetchItemInfo();
 
-      const ancestors = await this.$api.library.getAncestors({
-        itemId: this.metadata.Id as string,
-        userId: this.$remote.auth.currentUserId.value
-      });
+      const ancestors = await this.$remote.sdk
+        .newUserApi(getLibraryApi)
+        .getAncestors({
+          itemId: this.metadata.Id as string,
+          userId: this.$remote.auth.currentUserId.value
+        });
       const libraryInfo =
         ancestors.data.find((index) => index.Type === 'CollectionFolder') || {};
 
@@ -273,8 +284,8 @@ export default defineComponent({
     },
     async fetchItemInfo(): Promise<void> {
       const itemInfo = (
-        await this.$api.userLibrary.getItem({
-          userId: this.$remote.auth.currentUserId.value,
+        await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem({
+          userId: this.$remote.auth.currentUserId.value || '',
           itemId: this.itemId
         })
       ).data;
@@ -283,7 +294,7 @@ export default defineComponent({
     },
     async getGenres(parentId = ''): Promise<void> {
       this.genders = (
-        await this.$api.genres.getGenres({
+        await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
           parentId
         })
       ).data.Items?.map((index) => index.Name) as BaseItemDto[];
@@ -331,7 +342,7 @@ export default defineComponent({
 
       try {
         this.loading = true;
-        await this.$api.itemUpdate.updateItem({
+        await this.$remote.sdk.newUserApi(getItemUpdateApi).updateItem({
           itemId: this.metadata.Id as string,
           baseItemDto: item
         });
@@ -357,7 +368,7 @@ export default defineComponent({
       this.menu = false;
       set(this.metadata, key, formatISO(new Date(date)));
     },
-    handlePersonEdit(item: BaseItemPerson | null = null): void {
+    handlePersonEdit(item: BaseItemPerson): void {
       this.person = item;
       this.dialog = true;
     },

@@ -12,6 +12,7 @@
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -63,17 +64,21 @@ export default defineComponent({
         if (!this.isFavorite) {
           this.isFavorite = true;
 
-          await this.$api.userLibrary.markFavoriteItem({
-            userId: this.$remote.auth.currentUserId.value,
-            itemId: this.item.Id
-          });
+          await this.$remote.sdk
+            .newUserApi(getUserLibraryApi)
+            .markFavoriteItem({
+              userId: this.$remote.auth.currentUserId.value || '',
+              itemId: this.item.Id
+            });
         } else {
           this.isFavorite = false;
 
-          await this.$api.userLibrary.unmarkFavoriteItem({
-            userId: this.$remote.auth.currentUserId.value,
-            itemId: this.item.Id
-          });
+          await this.$remote.sdk
+            .newUserApi(getUserLibraryApi)
+            .unmarkFavoriteItem({
+              userId: this.$remote.auth.currentUserId.value || '',
+              itemId: this.item.Id
+            });
         }
       } catch {
         this.useSnackbar(this.$t('unableToToggleLike'), 'error');

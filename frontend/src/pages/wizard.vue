@@ -82,6 +82,7 @@ meta:
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -124,7 +125,11 @@ export default defineComponent({
   methods: {
     async completeWizard(): Promise<void> {
       try {
-        await this.$api.startup.completeWizard();
+        const api = this.$remote.sdk.oneTimeSetup(
+          this.$remote.auth.currentServer.value?.PublicAddress || ''
+        );
+
+        await getStartupApi(api).completeWizard();
         // Redirect to setup complete page
         this.$router.replace('/server/login');
       } catch (error) {

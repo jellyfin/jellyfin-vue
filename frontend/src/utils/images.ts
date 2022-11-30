@@ -443,10 +443,10 @@ export function getLogo(
     itemId = item.ParentLogoItemId;
   }
 
-  if (imgTag && imgType) {
-    url = new URL(
-      `${window.$nuxt.$axios.defaults.baseURL}/Items/${itemId}/Images/${imgType}`
-    );
+  if (imgTag && imgType && itemId) {
+    const remote = useRemote();
+
+    url = new URL(remote.sdk.api?.getItemImageUrl(itemId, imgType) || '');
 
     const parameters: Record<string, string> = {
       imgTag,

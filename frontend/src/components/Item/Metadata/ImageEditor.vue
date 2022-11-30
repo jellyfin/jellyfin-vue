@@ -76,6 +76,7 @@ import {
   ImageInfo,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
+import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
 import { getImageInfo } from '~/utils/images';
 
 export default defineComponent({
@@ -93,7 +94,7 @@ export default defineComponent({
   },
   computed: {
     generalImages(): boolean {
-      return this.$data.images.filter((image: ImageInfo) => {
+      return this.images.filter((image: ImageInfo) => {
         return (
           image.ImageType !== ImageType.Screenshot &&
           image.ImageType !== ImageType.Backdrop &&
@@ -118,7 +119,7 @@ export default defineComponent({
   methods: {
     async getItemImageInfos(): Promise<void> {
       this.images = (
-        await this.$api.image.getItemImageInfos({
+        await this.$remote.sdk.newUserApi(getImageApi).getItemImageInfos({
           itemId: this.metadata.Id
         })
       ).data;
@@ -139,7 +140,7 @@ export default defineComponent({
     },
     async handleDelete(item: ImageInfo): Promise<void> {
       if (item.ImageType) {
-        await this.$api.image.deleteItemImage({
+        await this.$remote.sdk.newUserApi(getImageApi).deleteItemImage({
           itemId: this.metadata.Id,
           imageType: item.ImageType,
           imageIndex: item.ImageIndex || 0

@@ -64,7 +64,9 @@
                 <item-menu v-show="hover" :item="item" />
               </div>
             </td>
-            <td class="text-center">{{ getRuntime(track.RunTimeTicks) }}</td>
+            <td class="text-center">
+              {{ formatTicks(track.RunTimeTicks || 0) }}
+            </td>
           </tr>
         </v-hover>
       </template>
@@ -72,87 +74,69 @@
   </v-table>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { groupBy } from 'lodash-es';
-import {
-  BaseItemDto,
-  BaseItemDtoQueryResult,
-  SortOrder
-} from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto, SortOrder } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getItemDetailsLink } from '~/utils/items';
-import { ticksToMs } from '~/utils/time';
+import { formatTicks } from '~/utils/time';
 import { playbackManagerStore } from '~/store';
+import { useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    }
-  },
-  setup() {
-    const playbackManager = playbackManagerStore();
-
-    return { playbackManager };
-  },
-  data() {
-    return {
-      tracks: [] as BaseItemDtoQueryResult
-    };
-  },
-  async fetch() {
-    this.tracks = (
-      await this.$api.items.getItems({
-        userId: this.$remote.auth.currentUserId.value,
-        parentId: this.item.Id,
-        sortBy: ['SortName'],
-        sortOrder: [SortOrder.Ascending]
-      })
-    ).data;
-  },
-  computed: {
-    tracksPerDisc(): Record<string, BaseItemDto[]> {
-      return groupBy(this.$data.tracks.Items, 'ParentIndexNumber');
-    }
-  },
-  methods: {
-    /**
-     * @param ticks - The number of ticks to convert to track length
-     * @returns Returns the length of the track in the format XX:XX
-     */
-    getRuntime(ticks: number): string {
-      let seconds = ticksToMs(ticks) / 1000;
-      const minutes = Math.floor(seconds / 60);
-
-      seconds = Math.floor(seconds - minutes * 60);
-
-      /**
-       * Formats the second number
-       *
-       * @example 7 -> 07
-       * @param seconds - Number to format
-       * @returns Formatted seconds number
-       */
-      function formatSeconds(seconds: string): string {
-        return ('0' + seconds).slice(-2);
-      }
-
-      return `${minutes}:${formatSeconds(seconds.toString())}`;
-    },
-    playTracks(track: BaseItemDto): void {
-      this.playbackManager.play({
-        item: this.item,
-        startFromIndex: this.tracks.Items?.indexOf(track),
-        initiator: this.item
-      });
-    },
-    isPlaying(track: BaseItemDto): boolean {
-      return track?.Id === this.playbackManager.getCurrentItem?.Id;
-    },
-    getItemDetailsLink
+const props = defineProps({
+  item: {
+    type: Object as () => BaseItemDto,
+    required: true
   }
 });
+
+const playbackManager = playbackManagerStore();
+const remote = useRemote();
+const tracks = ref<BaseItemDto[] | null | undefined>();
+
+/**
+ * Fetch component data
+ */
+async function fetch(): Promise<void> {
+  tracks.value = (
+    await remote.sdk.newUserApi(getItemsApi).getItems({
+      userId: remote.auth.currentUserId.value || '',
+      parentId: props.item.Id,
+      sortBy: ['SortName'],
+      sortOrder: [SortOrder.Ascending]
+    })
+  ).data.Items;
+}
+
+await fetch();
+watch(props, async () => {
+  await fetch();
+});
+
+const tracksPerDisc = computed(() => {
+  return groupBy(tracks.value, 'ParentIndexNumber');
+});
+
+/**
+ * Check if a given BaseItemDto is playing
+ */
+function isPlaying(track: BaseItemDto): boolean {
+  return track.Id === playbackManager.getCurrentItem?.Id;
+}
+
+/**
+ * Play all the tracks from an item
+ */
+function playTracks(track: BaseItemDto): void {
+  if (tracks.value) {
+    playbackManager.play({
+      item: props.item,
+      startFromIndex: tracks.value.indexOf(track),
+      initiator: props.item
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -7,7 +7,6 @@
         variant="outlined"
         hide-details
         autofocus
-        autocomplete="username"
         :label="$t('username')"
         :rules="rules" />
       <v-text-field
@@ -15,7 +14,6 @@
         variant="outlined"
         hide-details
         class="mt-4"
-        autocomplete="current-password"
         :label="$t('password')"
         :append-icon="showPassword ? IconEyeOff : IconEye"
         :type="showPassword ? 'text' : 'password'"
@@ -55,6 +53,7 @@
 import { isEmpty } from 'lodash-es';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { useRemote } from '@/composables';
 import IconEyeOff from '~icons/mdi/eye-off';
@@ -69,6 +68,12 @@ const props = defineProps({
     type: Object as () => UserDto
   }
 });
+
+defineEmits<{
+  (e: 'change'): void;
+}>();
+
+const router = useRouter();
 
 const valid = ref(false);
 const login = ref({ username: '', password: '', rememberMe: true });
@@ -95,6 +100,8 @@ async function userLogin(): Promise<void> {
       login.value.password,
       login.value.rememberMe
     );
+
+    router.push('/', { replace: true });
   } finally {
     loading.value = false;
   }
