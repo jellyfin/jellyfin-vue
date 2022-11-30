@@ -22,15 +22,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { pickBy } from 'lodash-es';
-import {
-  BaseItemDto,
-  ImageType,
-  ItemFields
-} from '@jellyfin/sdk/lib/generated-client';
+import { ImageType, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
 import { clientSettingsStore, userViewsStore, HomeSection } from '~/store';
+import { useRemote } from '@/composables';
 
 const VALID_SECTIONS = new Set([
   'resume',
@@ -42,14 +40,15 @@ const VALID_SECTIONS = new Set([
 export default defineComponent({
   async setup() {
     const { t } = useI18n();
+    const remote = useRemote();
     const route = useRoute();
 
     route.meta.title = t('home');
     route.meta.transparentLayout = true;
 
     const carouselItems = (
-      await $api.userLibrary.getLatestMedia({
-        userId: this.$remote.auth.currentUserId.value,
+      await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
+        userId: remote.auth.currentUserId.value || '',
         limit: 10,
         fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
         enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
@@ -61,11 +60,6 @@ export default defineComponent({
     const clientSettings = clientSettingsStore();
 
     return { carouselItems, clientSettings, userViews };
-  },
-  data() {
-    return {
-      carouselItems: [] as BaseItemDto[]
-    };
   },
   computed: {
     homeSections(): HomeSection[] {

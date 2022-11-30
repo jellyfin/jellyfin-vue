@@ -21,6 +21,8 @@ import {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/sdk/lib/generated-client';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
+import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({
@@ -31,7 +33,7 @@ export default defineComponent({
   },
   data() {
     return {
-      UICulture: 'en-GB',
+      UICulture: 'en-US',
       culturesList: [] as LocalizationOption[],
       initialConfig: {} as StartupConfigurationDto,
       loading: false
@@ -40,15 +42,19 @@ export default defineComponent({
   async created() {
     this.loading = true;
 
+    const api = this.$remote.sdk.oneTimeSetup(
+      this.$remote.auth.currentServer.value?.PublicAddress || ''
+    );
+
     try {
       this.initialConfig = (
-        await this.$api.startup.getStartupConfiguration()
+        await getStartupApi(api).getStartupConfiguration()
       ).data;
 
       this.UICulture = this.initialConfig?.UICulture || 'en-GB';
 
       this.culturesList = (
-        await this.$api.localization.getLocalizationOptions()
+        await getLocalizationApi(api).getLocalizationOptions()
       ).data;
     } catch (error) {
       console.error(error);
@@ -60,10 +66,14 @@ export default defineComponent({
     async setLanguage(): Promise<void> {
       this.loading = true;
 
+      const api = this.$remote.sdk.oneTimeSetup(
+        this.$remote.auth.currentServer.value?.PublicAddress || ''
+      );
+
       try {
         this.$i18n.locale = this.UICulture;
         this.$i18n.fallbackLocale;
-        await this.$api.startup.updateInitialConfiguration({
+        await getStartupApi(api).updateInitialConfiguration({
           startupConfigurationDto: {
             ...this.initialConfig,
             UICulture: this.UICulture

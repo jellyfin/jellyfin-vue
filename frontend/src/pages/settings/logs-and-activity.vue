@@ -115,11 +115,9 @@ meta:
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {
-  ActivityLogEntry,
-  LogFile,
-  LogLevel
-} from '@jellyfin/sdk/lib/generated-client';
+import { LogLevel } from '@jellyfin/sdk/lib/generated-client';
+import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
+import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { parseJSON } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -130,6 +128,7 @@ import IMdiPlay from '~icons/mdi/play';
 import IMdiStop from '~icons/mdi/stop';
 import IMdiHelp from '~icons/mdi/help';
 import { dateFnsFormat, dateFnsFormatRelative } from '@/utils/time';
+import { useRemote } from '@/composables';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -140,6 +139,7 @@ export default defineComponent({
   async setup() {
     const { t } = useI18n();
     const route = useRoute();
+    const remote = useRemote();
 
     route.meta.title = t('settingsSections.logs.name');
 
@@ -148,9 +148,12 @@ export default defineComponent({
     minDate.setDate(minDate.getDate() - 7);
 
     const activityList = (
-      await $api.activityLog.getLogEntries({ minDate: minDate.toISOString() })
+      await remote.sdk
+        .newUserApi(getActivityLogApi)
+        .getLogEntries({ minDate: minDate.toISOString() })
     ).data.Items;
-    const logFiles = (await $api.system.getServerLogs()).data;
+    const logFiles = (await remote.sdk.newUserApi(getSystemApi).getServerLogs())
+      .data;
 
     return { activityList, logFiles };
   },

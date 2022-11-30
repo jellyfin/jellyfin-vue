@@ -58,7 +58,16 @@ export function msToTicks(ms: number): number {
 }
 
 /**
- * Format time in the HH:MM format
+ * Format time in the HH:MM:SS format
+ * @param ticks - Ticks to format
+ */
+export function formatTicks(ticks: number): string {
+  return formatTime(ticksToMs(ticks));
+}
+
+/**
+ * Format time in the HH:MM:SS format
+ * @param seconds - Seconds to format
  */
 export function formatTime(seconds: number): string {
   let minutes = Math.floor(seconds / 60);

@@ -4,6 +4,9 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { userViewsStore } from '.';
 import { CardShapes } from '~/utils/items';
 import { useRemote, useSnackbar } from '@/composables';
@@ -38,12 +41,12 @@ export const homeSectionStore = defineStore('homeSection', {
   },
   actions: {
     async getAudioResumes(): Promise<void> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       try {
         const audioResumes = (
-          await this.$nuxt.$api.items.getResumeItems({
-            userId: auth.currentUserId.value,
+          await remote.sdk.newUserApi(getItemsApi).getResumeItems({
+            userId: remote.auth.currentUserId.value || '',
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -65,12 +68,12 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getVideoResumes(): Promise<void> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       try {
         const videoResumes = (
-          await this.$nuxt.$api.items.getResumeItems({
-            userId: auth.currentUserId.value,
+          await remote.sdk.newUserApi(getItemsApi).getResumeItems({
+            userId: remote.auth.currentUserId.value || '',
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -92,12 +95,12 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getUpNext(libraryId: string): Promise<void> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       try {
         const upNext = (
-          await this.$nuxt.$api.tvShows.getNextUp({
-            userId: auth.currentUserId.value,
+          await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
+            userId: remote.auth.currentUserId.value,
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
@@ -118,12 +121,12 @@ export const homeSectionStore = defineStore('homeSection', {
       }
     },
     async getLatestMedia(libraryId: string): Promise<void> {
-      const auth = useRemote().auth;
+      const remote = useRemote();
 
       try {
         const latestMedia = (
-          await this.$nuxt.$api.userLibrary.getLatestMedia({
-            userId: auth.currentUserId.value,
+          await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
+            userId: remote.auth.currentUserId.value || '',
             limit: 24,
             fields: [ItemFields.PrimaryImageAspectRatio],
             imageTypeLimit: 1,
