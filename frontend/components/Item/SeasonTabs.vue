@@ -111,14 +111,16 @@ export default Vue.extend({
             fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
           })
         }));
-      for (var seasonRequest of seasonRequests) {
+
+      for (const seasonRequest of seasonRequests) {
         seasonEpisodes[seasonRequest.SeasonId] = (
           await seasonRequest.EpisodesPromise
         ).data.Items as BaseItemDto[];
       }
+
       this.seasons = seasons;
       this.seasonEpisodes = seasonEpisodes;
-      this.currentTab = seasons.findIndex((s) => s.Id == this.seasonId);
+      this.currentTab = seasons.findIndex((s) => s.Id === this.seasonId);
     }
   },
   methods: {
