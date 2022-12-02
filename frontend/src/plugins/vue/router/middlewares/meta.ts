@@ -23,7 +23,7 @@ const defaultMeta: RouteMeta = {
  *
  * <route lang="yaml">
  *  meta:
- *    layout: fullpage
+ *    layout: server
  * </route>
  *
  * That block is also needed when a property needs to be resolved before
