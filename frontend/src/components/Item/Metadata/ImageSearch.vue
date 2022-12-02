@@ -241,7 +241,7 @@ export default defineComponent({
     },
     imageFormat(url: string): string {
       return `${
-        this.$remote.axios.instance.defaults.baseURL
+        this.$remote.sdk.api?.basePath
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
     async handleDownload(item: RemoteImageInfo): Promise<void> {
