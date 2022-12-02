@@ -218,7 +218,7 @@ export default defineComponent({
       return dateFnsFormat(date, 'Ppp').value;
     },
     getLogFileLink(name: string): string {
-      return `${this.$remote.axios.instance.defaults.baseURL}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
+      return `${this.$remote.sdk.api?.basePath}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
     }
   }
 });

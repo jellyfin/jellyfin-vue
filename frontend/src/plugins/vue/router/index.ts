@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import {
   createRouter,
   createWebHashHistory,
@@ -11,6 +11,7 @@ import loginGuard from './middlewares/login';
 import adminGuard from './middlewares/admin-pages';
 import validateGuard from './middlewares/validate';
 import metaGuard from './middlewares/meta';
+import { useRemote } from '@/composables';
 
 const router = createRouter({
   history: __HISTORY_ROUTER_MODE__
@@ -37,6 +38,17 @@ const pageTitle = computed(() => {
 
 useTitle(pageTitle, {
   titleTemplate: '%s | Jellyfin Vue'
+});
+
+const remote = useRemote();
+
+/**
+ * Re-run the middleware pipeline when the user logs out
+ */
+watch(remote.auth.currentUser, () => {
+  if (!remote.auth.currentUser.value) {
+    router.go(0);
+  }
 });
 
 export default router;
