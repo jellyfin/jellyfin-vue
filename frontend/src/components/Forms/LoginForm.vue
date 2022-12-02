@@ -103,7 +103,7 @@ async function userLogin(): Promise<void> {
       login.value.rememberMe
     );
 
-    router.push('/', { replace: true });
+    router.replace('/');
   } finally {
     loading.value = false;
   }
