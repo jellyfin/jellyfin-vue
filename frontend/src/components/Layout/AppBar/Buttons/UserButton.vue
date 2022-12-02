@@ -1,7 +1,7 @@
 <template>
-  <v-menu v-if="auth.currentUser.value" offset-y>
-    <template #activator="{ on, attrs }">
-      <app-bar-button-layout :custom-listener="on" v-bind="attrs">
+  <v-menu v-if="auth.currentUser.value" location="bottom">
+    <template #activator="{ props }">
+      <app-bar-button-layout v-bind="props">
         <template #icon>
           <user-image :user="auth.currentUser.value" :size="40" rounded />
         </template>
@@ -9,30 +9,34 @@
     </template>
     <v-list class="min-list-width" dense>
       <v-list-item>
-        <v-avatar>
-          <user-image :user="auth.currentUser.value" :size="40" rounded />
-        </v-avatar>
-        <v-list-item-title class="text-body-1">
-          {{ auth.currentUser.value.Name }}
-        </v-list-item-title>
-        <v-list-item-subtitle
-          v-if="auth.currentUser.value?.Policy?.IsAdministrator">
-          {{ $t('administrator') }}
-          <Icon size="small">
-            <i-mdi-key-chain />
-          </Icon>
-        </v-list-item-subtitle>
+        <template #prepend>
+          <v-avatar>
+            <user-image :user="auth.currentUser.value" :size="40" rounded />
+          </v-avatar>
+        </template>
+        <template #title>
+          <v-list-item-title class="text-body-1">
+            {{ auth.currentUser.value.Name }}
+          </v-list-item-title>
+        </template>
+        <template
+          v-if="auth.currentUser.value?.Policy?.IsAdministrator"
+          #subtitle>
+          <v-list-item-subtitle>
+            {{ $t('administrator') }}
+            <Icon size="small">
+              <i-mdi-key-chain />
+            </Icon>
+          </v-list-item-subtitle>
+        </template>
       </v-list-item>
-      <v-divider class="my-2" light />
+      <v-divider class="my-2" />
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="`bottomMenuItems-${index}`"
-        @click="item.action">
-        <Icon size="small">
-          {{ item.icon }}
-        </Icon>
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-      </v-list-item>
+        :prepend-icon="item.icon"
+        :title="item.title"
+        @click="item.action" />
     </v-list>
   </v-menu>
 </template>
