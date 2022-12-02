@@ -6,14 +6,14 @@ import { useI18n } from 'vue-i18n';
 import { i18n } from '.';
 import 'vuetify/styles';
 
-const JellyfinDark: ThemeDefinition = {
+const dark: ThemeDefinition = {
   colors: {
     accent: '#FF4081',
     'app-bar': '#1f2937',
     background: '#111827',
     card: '#1c2331',
-    chips: '#4b5563',
-    dividers: '#374151',
+    chip: '#4b5563',
+    divider: '#374151',
     error: '#FF5252',
     info: '#0099CC',
     menus: '#374151',
@@ -27,7 +27,7 @@ const JellyfinDark: ThemeDefinition = {
   dark: true
 };
 
-const JellyfinLight: ThemeDefinition = {
+const light: ThemeDefinition = {
   colors: {
     accent: '#FF4081',
     background: '#f2f2f2',
@@ -38,7 +38,9 @@ const JellyfinLight: ThemeDefinition = {
     secondary: '#424242',
     success: '#4CAF50',
     thumb: '#000000',
-    warning: '#FB8C00'
+    warning: '#FB8C00',
+    chip: '#e4e4e4',
+    menu: '#bbb'
   },
   dark: false
 };
@@ -61,9 +63,10 @@ const vuetify = createVuetify({
     adapter: createVueI18nAdapter({ i18n, useI18n })
   },
   theme: {
+    defaultTheme: 'dark',
     themes: {
-      JellyfinDark,
-      JellyfinLight
+      dark,
+      light
     }
   },
   icons: {

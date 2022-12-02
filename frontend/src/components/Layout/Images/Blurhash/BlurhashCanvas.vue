@@ -5,7 +5,7 @@
       :key="`canvas-${hash}`"
       :width="width"
       :height="height"
-      class="absolute" />
+      class="absolute-cover" />
   </v-fade-transition>
 </template>
 
@@ -47,6 +47,9 @@ const canvas = ref<HTMLCanvasElement | undefined>(undefined);
 
 watch([props, canvas], async () => {
   if (canvas.value) {
+    const context = canvas.value.getContext('2d');
+    const imageData = context?.createImageData(props.width, props.height);
+
     try {
       pixels.value = await pixelWorker(
         props.hash,
@@ -61,12 +64,9 @@ watch([props, canvas], async () => {
       return;
     }
 
-    const context = canvas.value.getContext('2d');
-    const imageData = context?.createImageData(props.width, props.height);
-
-    if (imageData) {
+    if (imageData && context) {
       imageData.data.set(pixels.value);
-      context?.putImageData(imageData, 0, 0);
+      context.putImageData(imageData, 0, 0);
     }
   }
 });
@@ -81,15 +81,5 @@ watch([props, canvas], async () => {
 .fade-fast-enter,
 .fade-fast-leave-to {
   opacity: 0;
-}
-
-.absolute {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 </style>
