@@ -1,22 +1,17 @@
 <template>
   <div class="ma-1">
-    <v-tooltip location="bottom">
-      <template #activator="{ on, attrs }">
-        <v-btn
-          class="align-self-center active-button"
-          :icon="!fab"
-          :fab="fab"
-          :size="fab && 'small'"
-          :class="{ 'ma-n1': !fab }"
-          :color="color"
-          :disabled="disabled"
-          v-bind="attrs"
-          v-on="$slots.tooltip ? { ...on, ...customListener } : customListener">
-          <slot name="icon" />
-        </v-btn>
-      </template>
-      <slot name="tooltip" />
-    </v-tooltip>
+    <v-btn
+      class="align-self-center"
+      icon
+      size="small"
+      :color="color"
+      :disabled="disabled">
+      <slot name="icon" />
+
+      <v-tooltip location="bottom">
+        <slot name="tooltip" />
+      </v-tooltip>
+    </v-btn>
   </div>
 </template>
 
@@ -38,10 +33,6 @@ defineProps({
   disabled: {
     type: Boolean,
     default: false
-  },
-  customListener: {
-    type: Object as () => EventTarget,
-    default: undefined
   }
 });
 
