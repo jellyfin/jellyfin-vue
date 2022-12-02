@@ -130,62 +130,56 @@ export default defineComponent({
     };
   },
   computed: {
-    sourceText: {
-      get(): string {
-        /**
-         * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
-         * https://github.com/jellyfin/jellyfin-vue/pull/609
-         */
-        switch (this.playbackManager.playbackInitMode) {
-          case InitMode.Unknown: {
-            return this.$t('playback.playbackSource.unknown');
-          }
-          case InitMode.Item: {
-            return this.playbackManager.getCurrentItem?.AlbumId !==
-              this.playbackManager.playbackInitiator?.Id
-              ? this.$t('playback.playbackSource.unknown')
-              : this.$t('playback.playbackSource.item', {
-                  item: this.playbackManager.playbackInitiator?.Name
-                });
-          }
-          case InitMode.Shuffle: {
-            return this.$t('playback.playbackSource.shuffle');
-          }
-          case InitMode.ShuffleItem: {
-            return this.playbackManager.getCurrentItem?.AlbumId !==
-              this.playbackManager.playbackInitiator?.Id
-              ? this.$t('playback.playbackSource.unknown')
-              : this.$t('playback.playbackSource.shuffleItem', {
-                  item: this.playbackManager.playbackInitiator?.Name
-                });
-          }
-          default: {
-            return '';
-          }
+    sourceText(): string {
+      /**
+       * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
+       * https://github.com/jellyfin/jellyfin-vue/pull/609
+       */
+      switch (this.playbackManager.playbackInitMode) {
+        case InitMode.Unknown: {
+          return this.$t('playback.playbackSource.unknown');
+        }
+        case InitMode.Item: {
+          return this.playbackManager.getCurrentItem?.AlbumId !==
+            this.playbackManager.playbackInitiator?.Id
+            ? this.$t('playback.playbackSource.unknown')
+            : this.$t('playback.playbackSource.item', {
+                item: this.playbackManager.playbackInitiator?.Name
+              });
+        }
+        case InitMode.Shuffle: {
+          return this.$t('playback.playbackSource.shuffle');
+        }
+        case InitMode.ShuffleItem: {
+          return this.playbackManager.getCurrentItem?.AlbumId !==
+            this.playbackManager.playbackInitiator?.Id
+            ? this.$t('playback.playbackSource.unknown')
+            : this.$t('playback.playbackSource.shuffleItem', {
+                item: this.playbackManager.playbackInitiator?.Name
+              });
+        }
+        default: {
+          return '';
         }
       }
     },
-    initiator: {
-      get(): BaseItemDto | null {
-        if (
-          this.playbackManager.getCurrentItem?.AlbumId ===
-          this.playbackManager.playbackInitiator?.Id
-        ) {
-          return this.playbackManager.playbackInitiator;
-        }
+    initiator(): BaseItemDto | null {
+      if (
+        this.playbackManager.getCurrentItem?.AlbumId ===
+        this.playbackManager.playbackInitiator?.Id
+      ) {
+        return this.playbackManager.playbackInitiator;
+      }
 
-        return null;
-      }
+      return null;
     },
-    modeIcon: {
-      get(): typeof IMdiShuffle {
-        switch (this.playbackManager.playbackInitMode) {
-          case InitMode.Shuffle: {
-            return IMdiShuffle;
-          }
-          default: {
-            return IMdiPlaylistMusic;
-          }
+    modeIcon(): typeof IMdiShuffle {
+      switch (this.playbackManager.playbackInitMode) {
+        case InitMode.Shuffle: {
+          return IMdiShuffle;
+        }
+        default: {
+          return IMdiPlaylistMusic;
         }
       }
     }

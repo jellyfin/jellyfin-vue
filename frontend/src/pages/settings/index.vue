@@ -47,7 +47,6 @@
             <v-list-item
               v-for="userItem in userItems"
               :key="userItem.name"
-              nuxt
               :to="userItem.link"
               :disabled="!userItem.link">
               <v-avatar>
@@ -78,7 +77,6 @@
               <v-list-item
                 v-for="adminItem in adminSection"
                 :key="adminItem.name"
-                nuxt
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
                 <v-avatar>

@@ -237,19 +237,15 @@ export default defineComponent({
         ? dateFnsFormat(new Date(this.item.PremiereDate), 'PPP').value
         : null;
     },
-    deathDate: {
-      get(): string | null {
-        return this.item.EndDate
-          ? dateFnsFormat(new Date(this.item.EndDate), 'PPP').value
-          : null;
-      }
+    deathDate(): string | null {
+      return this.item.EndDate
+        ? dateFnsFormat(new Date(this.item.EndDate), 'PPP').value
+        : null;
     },
-    birthPlace: {
-      get(): string | null {
-        return this.item.ProductionLocations
-          ? this.item.ProductionLocations[0]
-          : null;
-      }
+    birthPlace(): string | null {
+      return this.item.ProductionLocations
+        ? this.item.ProductionLocations[0]
+        : null;
     }
   },
   watch: {
