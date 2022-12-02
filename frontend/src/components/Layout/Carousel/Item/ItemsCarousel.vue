@@ -8,7 +8,9 @@
         v-for="item in items"
         :key="item.Id"
         :virtual-index="item.Id">
-        <div class="slide-backdrop" data-swiper-parallax="-100">
+        <div
+          :class="useResponsiveClasses('slide-backdrop')"
+          data-swiper-parallax="-100">
           <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
@@ -16,7 +18,7 @@
             :type="ImageType.Backdrop"
             :icon-size="$vuetify.display.mdAndUp ? '256' : '128'" />
         </div>
-        <div class="slide-content">
+        <div :class="useResponsiveClasses('slide-content')">
           <v-container
             fill-height
             class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start">
@@ -58,10 +60,9 @@ import { useRoute } from 'vue-router';
 import { SwiperSlide } from 'swiper/vue';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
-import { useRemote } from '@/composables';
+import { useRemote, useResponsiveClasses } from '@/composables';
 
 const props = defineProps({
   items: {
@@ -78,6 +79,9 @@ const relatedItems = ref<{ [k: number]: BaseItemDto }>({});
 const route = useRoute();
 const remote = useRemote();
 
+/**
+ * Get the related item passed from the parent component
+ */
 function getRelatedItem(item: BaseItemDto): BaseItemDto {
   const rItem = relatedItems.value[props.items.indexOf(item)];
 
@@ -87,10 +91,11 @@ function getRelatedItem(item: BaseItemDto): BaseItemDto {
 
   return rItem;
 }
-function getOverview(item: BaseItemDto): string {
-  return item.Overview ? sanitizeHtml(item.Overview) : '';
-}
-function updateBackdrop(index: number) {
+
+/**
+ * Update page backdrop
+ */
+function updateBackdrop(index: number): void {
   if (props.pageBackdrop) {
     const hash = getBlurhash(props.items[index], ImageType.Backdrop);
 
@@ -98,6 +103,9 @@ function updateBackdrop(index: number) {
   }
 }
 
+/**
+ * Handle slide changes
+ */
 function onSlideChange(index: number): void {
   updateBackdrop(index);
 }
@@ -138,8 +146,4 @@ watch(
 
 <style lang="scss" scoped>
 @import '~/assets/styles/Carousel/index.scss';
-
-// .slide-backdrop {
-//   background-color: #{map-get($material-dark, 'menus')};
-// }
 </style>

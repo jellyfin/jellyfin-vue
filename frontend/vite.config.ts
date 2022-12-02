@@ -18,6 +18,7 @@ import {
 import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
@@ -92,6 +93,11 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
               : undefined
           ]
         }
+      }
+    },
+    css: {
+      postcss: {
+        plugins: [autoprefixer()]
       }
     },
     preview: {

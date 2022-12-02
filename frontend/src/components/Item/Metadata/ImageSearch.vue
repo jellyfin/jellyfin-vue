@@ -46,7 +46,7 @@
             {{ $t('noImagesFound') }}
           </v-card-title>
         </v-card>
-        <v-col v-else class="card-grid-container">
+        <v-col v-else :class="useResponsiveClasses('card-grid-container')">
           <v-card
             v-for="(item, i) in images"
             :key="`${item.Type}-${i}`"
@@ -99,6 +99,7 @@ import {
   BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
+import { useResponsiveClasses } from '@/composables';
 
 export default defineComponent({
   filters: {
@@ -119,6 +120,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     }
+  },
+  setup() {
+    return { useResponsiveClasses };
   },
   data() {
     return {
@@ -266,43 +270,35 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// .loading-bar {
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
-// }
+.loading-bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-// .card-grid-container {
-//   display: grid;
-// }
+.card-grid-container {
+  display: grid;
+}
 
-// .image-results {
-//   height: 50vh;
-//   overflow-y: scroll;
-// }
+.image-results {
+  height: 50vh;
+  overflow-y: scroll;
+}
 
-// @media #{map-get($display-breakpoints, 'sm-and-down')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-down {
+  grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'sm-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-up {
+  grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'lg-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-//   }
-// }
+.card-grid-container.lg-and-up {
+  grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'xl-only')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-//   }
-// }
+.card-grid-container.xl {
+  grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+}
 </style>
