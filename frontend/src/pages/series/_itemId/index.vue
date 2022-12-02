@@ -49,7 +49,6 @@
                       small
                       link
                       :class="{ 'ml-2': index > 0 }"
-                      nuxt
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
                     </v-chip>
@@ -75,7 +74,6 @@
                     <v-chip
                       small
                       link
-                      nuxt
                       :to="getItemDetailsLink(director, 'Person')">
                       {{ director.Name }}
                     </v-chip>
@@ -98,7 +96,6 @@
                     <v-chip
                       small
                       link
-                      nuxt
                       :to="getItemDetailsLink(writer, 'Person')">
                       {{ writer.Name }}
                     </v-chip>
@@ -185,28 +182,22 @@ export default defineComponent({
 
       return crew;
     },
-    actors: {
-      get(): BaseItemPerson[] {
-        return this.item.People
-          ? this.item.People.filter((person: BaseItemPerson) => {
-              return person.Type === 'Actor';
-            }).slice(0, 10)
-          : [];
-      }
+    actors(): BaseItemPerson[] {
+      return this.item.People
+        ? this.item.People.filter((person: BaseItemPerson) => {
+            return person.Type === 'Actor';
+          }).slice(0, 10)
+        : [];
     },
-    directors: {
-      get(): BaseItemPerson[] {
-        return this.crew.filter(
-          (person: BaseItemPerson) => person.Type === 'Director'
-        );
-      }
+    directors(): BaseItemPerson[] {
+      return this.crew.filter(
+        (person: BaseItemPerson) => person.Type === 'Director'
+      );
     },
-    writers: {
-      get(): BaseItemPerson[] {
-        return this.crew.filter(
-          (person: BaseItemPerson) => person.Type === 'Writer'
-        );
-      }
+    writers(): BaseItemPerson[] {
+      return this.crew.filter(
+        (person: BaseItemPerson) => person.Type === 'Writer'
+      );
     }
   },
   watch: {
