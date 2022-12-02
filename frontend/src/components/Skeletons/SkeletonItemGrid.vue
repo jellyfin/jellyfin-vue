@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" class="card-grid-container">
+    <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
       <skeleton-card
         v-for="n in 24"
         :key="n"
@@ -10,35 +10,20 @@
   </v-row>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
+import { useResponsiveClasses } from '@/composables';
 
-export default defineComponent({
-  props: {
-    viewType: {
-      type: String,
-      default: (): string => 'Movie'
-    }
-  },
-  data() {
-    return {
-      skeletonCardShape: CardShapes.Portrait
-    };
-  },
-  watch: {
-    viewType(): void {
-      this.setCardShape();
-    }
-  },
-  created() {
-    this.setCardShape();
-  },
-  methods: {
-    setCardShape(): void {
-      this.skeletonCardShape = getShapeFromItemType(this.viewType);
-    }
+const props = defineProps({
+  viewType: {
+    type: String,
+    default: (): string => 'Movie'
   }
+});
+
+const skeletonCardShape = computed(() => {
+  return getShapeFromItemType(props.viewType) || CardShapes.Portrait;
 });
 </script>
 
@@ -47,27 +32,19 @@ export default defineComponent({
   display: grid;
 }
 
-// @media #{map-get(settings.$display-breakpoints, 'sm-and-down')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-down {
+  grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+}
 
-// @media #{map-get(settings.$display-breakpoints, 'sm-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-up {
+  grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+}
 
-// @media #{map-get(settings.$display-breakpoints, 'lg-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-//   }
-// }
+.card-grid-container.lg-and-up {
+  grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+}
 
-// @media #{map-get(settings.$display-breakpoints, 'xl-only')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-//   }
-// }
+.card-grid-container.xl {
+  grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+}
 </style>
