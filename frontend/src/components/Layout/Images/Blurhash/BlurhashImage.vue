@@ -7,11 +7,11 @@
         :width="width"
         :height="height"
         :punch="punch"
-        class="absolute" />
+        class="absolute-cover" />
       <v-fade-transition>
         <img
           v-show="!loading"
-          class="absolute img"
+          class="absolute-cover img"
           :src="image"
           v-bind="$attrs"
           :alt="alt"
@@ -22,7 +22,7 @@
     <slot v-else name="placeholder">
       <v-icon
         v-if="getItemIcon(item)"
-        class="absolute text--disabled"
+        class="absolute-cover text--disabled"
         :size="iconSize"
         :icon="getItemIcon(item)" />
     </slot>
@@ -124,16 +124,6 @@ watch(props, () => {
 </script>
 
 <style lang="scss" scoped>
-.absolute {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .img {
   color: transparent;
   object-fit: cover;

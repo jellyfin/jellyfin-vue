@@ -11,7 +11,7 @@ const defaultMeta: RouteMeta = {
   transparentLayout: false,
   admin: false,
   backdrop: {
-    opacity: 0.75
+    opacity: 0.25
   }
 };
 

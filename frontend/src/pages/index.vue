@@ -170,12 +170,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// @media #{map-get($display-breakpoints, 'md-and-up')} {
-//   .home-header-margin {
-//     margin-top: -64px;
-//   }
-// }
-
 .top-carousel {
   margin-top: -64px;
 }
