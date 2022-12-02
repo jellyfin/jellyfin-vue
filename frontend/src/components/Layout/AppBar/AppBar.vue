@@ -3,8 +3,11 @@
     class="app-bar-safe-zone"
     flat
     elevation="3"
+    :color="transparentLayout ? 'transparent' : 'background'"
     :class="{ transparent: transparentLayout }">
-    <v-app-bar-nav-icon v-if="$vuetify.display.mobile" />
+    <v-app-bar-nav-icon
+      v-if="$vuetify.display.mobile && navigationDrawer"
+      @click="navigationDrawer = !navigationDrawer" />
     <app-bar-button-layout v-hide="$route.path === '/'" @click="$router.back()">
       <template #icon>
         <Icon>
@@ -15,7 +18,7 @@
     <v-spacer />
     <search-field />
     <v-spacer />
-    <app-bar-button-layout v-if="network.isOnline" color="red">
+    <app-bar-button-layout v-if="!network.isOnline" color="red">
       <template #icon>
         <Icon>
           <i-mdi-network-off-outline />
@@ -29,7 +32,8 @@
     <app-bar-button-layout @click="toggleDarkMode">
       <template #icon>
         <Icon>
-          {{ clientSettings.darkMode ? IMdiWeatherSunny : IMdiWeatherNight }}
+          <i-mdi-weather-sunny v-if="clientSettings.darkMode" />
+          <i-mdi-weather-night v-else />
         </Icon>
       </template>
       <template #tooltip>
@@ -53,12 +57,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore } from '~/store';
-import IMdiWeatherSunny from '~icons/mdi/weather-sunny';
-import IMdiWeatherNight from '~icons/mdi/weather-night';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
@@ -66,6 +68,8 @@ const network = useNetwork();
 const transparentLayout = computed<boolean>(() => {
   return route.meta.transparentLayout || false;
 });
+
+const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
 
 /**
  * Toggles dark mode settings
@@ -77,12 +81,16 @@ function toggleDarkMode(): void {
 
 <style lang="scss" scoped>
 .app-bar-safe-zone {
-  height: calc(56px + env(safe-area-inset-top)) !important;
+  height: calc(56px + env(safe-area-inset-top));
+}
+
+.md-and-up {
+  height: calc(64px + env(safe-area-inset-top)) !important;
 }
 
 // @media #{map-get($display-breakpoints, 'md-and-up')} {
 //   .app-bar-safe-zone {
-//     height: calc(64px + env(safe-area-inset-top)) !important;
+//
 //   }
 // }
 .v-toolbar.ml-n3 {

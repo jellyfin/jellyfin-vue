@@ -15,7 +15,7 @@
         hide-details
         class="mt-4"
         :label="$t('password')"
-        :append-icon="showPassword ? IconEyeOff : IconEye"
+        :append-inner-icon="showPassword ? IconEyeOff : IconEye"
         :type="showPassword ? 'text' : 'password'"
         @click:append="() => (showPassword = !showPassword)" />
       <v-checkbox
