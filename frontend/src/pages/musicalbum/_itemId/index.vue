@@ -50,10 +50,9 @@
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
                     <v-chip
-                      small
+                      size="small"
                       link
                       :class="{ 'ml-2': index > 0 }"
-                      nuxt
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
                     </v-chip>
