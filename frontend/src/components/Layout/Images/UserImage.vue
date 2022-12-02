@@ -1,23 +1,20 @@
 <template>
-  <div>
-    <v-avatar v-if="loading" color="primary" :size="size">
-      <Icon :size="iconSize" dark>
-        <i-mdi-account />
-      </Icon>
-    </v-avatar>
-    <v-img
-      v-show="!loading"
-      ref="img"
-      class="user-image"
-      :src="userImage"
-      :class="{ 'rounded-circle': rounded }"
-      @load="loading = false" />
-  </div>
+  <v-avatar>
+    <v-img :src="url" cover>
+      <template #placeholder>
+        <v-avatar color="primary" :size="size">
+          <Icon :size="iconSize" dark>
+            <i-mdi-account />
+          </Icon>
+        </v-avatar>
+      </template>
+    </v-img>
+  </v-avatar>
 </template>
 
 <script setup lang="ts">
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useRemote } from '@/composables';
 
 const props = defineProps({
@@ -43,11 +40,9 @@ const props = defineProps({
 
 const remote = useRemote();
 
-const loading = ref(true);
-const img = ref<HTMLDivElement | undefined>(undefined);
-const userImage = computed(() => {
+const url = computed(() => {
   return props.user?.Id && props.user?.PrimaryImageTag
-    ? `${remote.axios.instance.defaults.baseURL}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
+    ? `${remote.sdk.api?.basePath}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
     : undefined;
 });
 const iconSize = computed(() => {

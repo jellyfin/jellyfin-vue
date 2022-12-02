@@ -1,35 +1,31 @@
 <template>
   <v-navigation-drawer
-    v-model="model.value"
+    v-model="drawer"
     :temporary="$vuetify.display.mobile"
     :permanent="!$vuetify.display.mobile"
     floating
     class="pa-s"
-    :class="{
-      transparent: transparentLayout && !$vuetify.display.mobile
-    }">
+    :color="
+      transparentLayout && !$vuetify.display.mobile
+        ? 'transparent'
+        : 'background'
+    ">
     <v-list nav>
-      <v-list-item v-for="item in items" :key="item.to" :to="item.to" exact>
-        <v-list-item-action>
-          <v-icon :icon="item.icon" />
-        </v-list-item-action>
-        <v-list-item-title>
-          {{ item.title }}
-        </v-list-item-title>
-      </v-list-item>
+      <v-list-item
+        v-for="item in items"
+        :key="item.to"
+        :to="item.to"
+        exact
+        :prepend-icon="item.icon"
+        :title="item.title" />
       <v-list-subheader>{{ $t('libraries') }}</v-list-subheader>
       <v-list-item
         v-for="library in userViews.getNavigationDrawerItems"
         :key="library.to"
         :to="library.to"
-        exact>
-        <v-list-item-action>
-          <v-icon :icon="library.icon" />
-        </v-list-item-action>
-        <v-list-item-title>
-          {{ library.title }}
-        </v-list-item-title>
-      </v-list-item>
+        exact
+        :prepend-icon="library.icon"
+        :title="library.title" />
     </v-list>
     <template #append>
       <commit-link />
@@ -40,35 +36,27 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
-import { useDisplay } from 'vuetify';
+import { computed, inject, Ref } from 'vue';
 import { userViewsStore } from '~/store';
 import IMdiHome from '~icons/mdi/home';
 
-interface LayoutButton {
-  icon: typeof IMdiHome;
-  title: string;
-  to: string;
-}
-
 const route = useRoute();
 const userViews = userViewsStore();
-const display = useDisplay();
 const { t } = useI18n();
-const model = computed(() => {
-  return display.mobile;
-});
+
+userViews.refreshUserViews();
+
+const drawer = inject<Ref<boolean>>('NavigationDrawer');
 
 const transparentLayout = computed(() => {
   return route.meta.transparentLayout || false;
 });
-const items = computed<LayoutButton[]>(() => {
-  return [
-    {
-      icon: IMdiHome,
-      title: t('home'),
-      to: '/'
-    }
-  ];
-});
+
+const items = [
+  {
+    icon: IMdiHome,
+    title: t('home'),
+    to: '/'
+  }
+];
 </script>
