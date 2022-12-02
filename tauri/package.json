@@ -5,7 +5,7 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "tauri": "tauri",
-    "tauri:icon": "tauricon ../frontend/static/icon.png",
+    "tauri:icon": "tauricon ../frontend/public/icon.png",
     "tauri:build": "tauri build",
     "tauri:dev": "tauri dev"
   },
