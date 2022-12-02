@@ -16,7 +16,6 @@
           <v-list-item
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
-            nuxt
             :to="getItemDetailsLink(relatedItem)">
             <v-avatar>
               <v-avatar color="card">
