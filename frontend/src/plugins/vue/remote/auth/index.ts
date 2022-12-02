@@ -107,7 +107,7 @@ class RemotePluginAuth {
 
     if (isServerVersionSupported) {
       if (!serv.StartupWizardCompleted) {
-        router.push({ name: 'wizard' });
+        router.push({ path: '/wizard' });
       } else {
         const oldServer = this.getServerById(serv.Id);
 

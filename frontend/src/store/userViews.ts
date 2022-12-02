@@ -36,7 +36,7 @@ export const userViewsStore = defineStore('userViews', {
       return state.views.map((view: BaseItemDto) => {
         return {
           icon: getLibraryIcon(view.CollectionType),
-          title: view.Name,
+          title: view.Name || '',
           to: `/library/${view.Id}`
         };
       });

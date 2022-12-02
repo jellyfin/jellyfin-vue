@@ -16,6 +16,4 @@ for (const p of [...plugins, ...watchers]) {
   pinia.use(p);
 }
 
-pinia.state;
-
 export default pinia;
