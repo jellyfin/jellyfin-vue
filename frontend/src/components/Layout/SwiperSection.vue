@@ -67,8 +67,8 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/virtual';
 import { ref } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
 import { useDisplay, useTheme } from 'vuetify';
+import { v4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
@@ -107,7 +107,7 @@ const props = defineProps({
 const cardShape = ref<string>(
   props.shape || getShapeFromItemType(props.items?.[0]?.Type)
 );
-const uuid = uuidv4();
+const uuid = v4();
 
 /**
  * Swiper options

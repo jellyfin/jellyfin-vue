@@ -1,6 +1,6 @@
 import { Api, Jellyfin } from '@jellyfin/sdk';
 import { RemovableRef, useStorage } from '@vueuse/core';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import { DeviceState } from './types';
 import { version } from '@/../package.json';
 import {
@@ -19,7 +19,7 @@ import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 const state: RemovableRef<DeviceState> = useStorage(
   'deviceProfile',
   {
-    deviceId: uuidv4()
+    deviceId: v4()
   },
   localStorage,
   {
