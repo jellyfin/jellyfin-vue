@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense class="second-toolbar">
+    <v-app-bar fixed flat dense :class="useResponsiveClasses('second-toolbar')">
       <v-tabs v-model="searchTab" centered>
         <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
         <v-tab :key="1">{{ $t('movies') }}</v-tab>
@@ -53,8 +53,12 @@ import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { debounce } from 'lodash-es';
+import { useResponsiveClasses } from '@/composables';
 
 export default defineComponent({
+  setup() {
+    return { useResponsiveClasses };
+  },
   data() {
     return {
       loading: false,
@@ -158,17 +162,13 @@ export default defineComponent({
   top: 56px;
 }
 
-// @media #{map-get($display-breakpoints, 'md-and-up')} {
-//   .second-toolbar {
-//     top: 64px;
-//   }
-// }
+.second-toolbar.md-and-up {
+  top: 64px;
+}
 
-// @media #{map-get($display-breakpoints, 'lg-and-up')} {
-//   .second-toolbar {
-//     left: 256px !important;
-//   }
-// }
+.second-toolbar.lg-and-up {
+  left: 256px !important;
+}
 
 .after-second-toolbar {
   padding-top: 48px;

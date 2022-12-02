@@ -88,7 +88,9 @@ const rules = [
  */
 async function userLogin(): Promise<void> {
   if (!isEmpty(props.user)) {
-    // If we have a user from the public user selector, set it as login
+    /**
+     * If we have a user from the public user selector, set it as login
+     */
     login.value.username = props.user.Name || '';
   }
 
