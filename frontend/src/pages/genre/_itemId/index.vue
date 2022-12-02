@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense class="second-toolbar">
+    <v-app-bar fixed flat dense :class="useResponsiveClasses('second-toolbar')">
       <span class="text-h6 hidden-sm-and-down">
         {{ genre.Name }}
       </span>
@@ -20,7 +20,7 @@
     </v-app-bar>
     <v-container class="after-second-toolbar">
       <v-row v-if="$fetchState.pending">
-        <v-col cols="12" class="card-grid-container">
+        <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
           <skeleton-card v-for="n in 24" :key="n" text />
         </v-col>
       </v-row>
@@ -29,7 +29,11 @@
         :items="genres"
         :loading="$fetchState.pending" />
       <v-row v-else-if="!$fetchState.pending" justify="center">
-        <v-col cols="12" class="card-grid-container empty-card-container">
+        <v-col
+          cols="12"
+          :class="
+            useResponsiveClasses('card-grid-container empty-card-container')
+          ">
           <skeleton-card v-for="n in 24" :key="n" boilerplate text />
         </v-col>
         <div class="empty-message text-center">
@@ -42,53 +46,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useRoute } from 'vue-router';
-import {
-  BaseItemDto,
-  SortOrder,
-  ItemFields
-} from '@jellyfin/sdk/lib/generated-client';
+import { SortOrder, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { itemsStore } from '~/store';
-import { useRemote } from '@/composables';
+import { useRemote, useResponsiveClasses } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const items = itemsStore();
-    const route = useRoute();
-    const remote = useRemote();
+const items = itemsStore();
+const route = useRoute();
+const remote = useRemote();
 
-    const itemId = route.params.itemId;
-    const item = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId.value || '',
-        itemId
-      })
-    ).data;
+const itemId = route.params.itemId;
+const item = (
+  await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+    userId: remote.auth.currentUserId.value || '',
+    itemId
+  })
+).data;
 
-    let genres = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        genreIds: [item.Id as string],
-        includeItemTypes: [route.query.type.toString()],
-        recursive: true,
-        sortBy: ['SortName'],
-        sortOrder: [SortOrder.Ascending],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId.value || ''
-      })
-    ).data.Items;
+let genres = (
+  await remote.sdk.newUserApi(getItemsApi).getItems({
+    genreIds: [item.Id as string],
+    includeItemTypes: [route.query.type.toString()],
+    recursive: true,
+    sortBy: ['SortName'],
+    sortOrder: [SortOrder.Ascending],
+    fields: Object.values(ItemFields),
+    userId: remote.auth.currentUserId.value || ''
+  })
+).data.Items;
 
-    genres = items.addCollection(item, genres || []);
+genres = items.addCollection(item, genres || []);
 
-    return { item, genres };
-  },
-  mounted() {
-    this.$route.meta.title = this.item.Name;
-  }
-});
+route.meta.title = item.Name;
 </script>
 
 <style lang="scss" scoped>
@@ -96,17 +88,13 @@ export default defineComponent({
   top: 56px;
 }
 
-// @media #{map-get($display-breakpoints, 'md-and-up')} {
-//   .second-toolbar {
-//     top: 64px;
-//   }
-// }
+.second-toolbar.md-and-up {
+  top: 64px;
+}
 
-// @media #{map-get($display-breakpoints, 'lg-and-up')} {
-//   .second-toolbar {
-//     left: 256px !important;
-//   }
-// }
+.second-toolbar.lg-and-up {
+  left: 256px !important;
+}
 
 .after-second-toolbar {
   padding-top: 60px;
@@ -124,27 +112,19 @@ export default defineComponent({
   display: grid;
 }
 
-// @media #{map-get($display-breakpoints, 'sm-and-down')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-down {
+  grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'sm-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-//   }
-// }
+.card-grid-container.sm-and-up {
+  grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'lg-and-up')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-//   }
-// }
+.card-grid-container.lg-and-up {
+  grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+}
 
-// @media #{map-get($display-breakpoints, 'xl-only')} {
-//   .card-grid-container {
-//     grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
-//   }
-// }
+.card-grid-container.xl {
+  grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
+}
 </style>

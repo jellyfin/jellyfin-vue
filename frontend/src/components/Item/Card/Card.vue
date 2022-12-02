@@ -280,28 +280,24 @@ export default defineComponent({
   border-radius: 0.3em;
 }
 
-// .card-content {
-//   background-color: #{map-get($material-dark, 'menus')};
-//   overflow: hidden;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   margin: 0 !important;
-//   height: 100%;
-//   width: 100%;
-//   contain: strict;
-//   background-size: cover;
-//   background-repeat: no-repeat;
-//   background-clip: content-box;
-//   background-position: center center;
-//   -webkit-tap-highlight-color: transparent;
-// }
-
-// .theme--dark .card-content {
-//   background-color: #{map-get($material-dark, 'menus')};
-// }
+.card-content {
+  background-color: var(--v-theme-menus);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 !important;
+  height: 100%;
+  width: 100%;
+  contain: strict;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-position: center center;
+  -webkit-tap-highlight-color: transparent;
+}
 
 .card-image {
   width: 100%;

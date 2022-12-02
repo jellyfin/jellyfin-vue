@@ -1,10 +1,9 @@
 <template>
   <v-app-bar
-    class="app-bar-safe-zone"
+    :class="useResponsiveClasses('app-bar-safe-zone')"
     flat
     elevation="3"
-    :color="transparentLayout ? 'transparent' : 'background'"
-    :class="{ transparent: transparentLayout }">
+    :color="transparentLayout ? 'transparent' : 'background'">
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile && navigationDrawer"
       @click="navigationDrawer = !navigationDrawer" />
@@ -61,6 +60,7 @@ import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore } from '~/store';
+import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
@@ -84,15 +84,10 @@ function toggleDarkMode(): void {
   height: calc(56px + env(safe-area-inset-top));
 }
 
-.md-and-up {
+.app-bar-safe-zone.md-and-up {
   height: calc(64px + env(safe-area-inset-top)) !important;
 }
 
-// @media #{map-get($display-breakpoints, 'md-and-up')} {
-//   .app-bar-safe-zone {
-//
-//   }
-// }
 .v-toolbar.ml-n3 {
   max-width: initial !important;
 }

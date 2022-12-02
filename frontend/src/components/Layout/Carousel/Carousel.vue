@@ -6,13 +6,13 @@
       :current-index="currentIndex"
       :duration="slideDuration"
       :paused="isPaused"
-      class="px-2 px-sm-4 progress-bar"
+      :class="useResponsiveClasses('px-2 px-sm-4 progress-bar')"
       hoverable
       @on-animation-end="onAnimationEnd"
       @on-progress-clicked="onProgressClicked" />
     <swiper
       :modules="modules"
-      class="swiper"
+      :class="useResponsiveClasses('swiper')"
       :initial-slide="0"
       loop
       parallax
@@ -33,7 +33,7 @@
       :current-index="currentIndex"
       :duration="slideDuration"
       :paused="isPaused"
-      class="px-2 px-sm-4 progress-bar"
+      :class="useResponsiveClasses('px-2 px-sm-4 progress-bar')"
       hoverable
       @on-animation-end="onAnimationEnd"
       @on-progress-clicked="onProgressClicked" />
@@ -50,6 +50,7 @@ import 'swiper/css/keyboard';
 import 'swiper/css/parallax';
 import 'swiper/css/a11y';
 import { Swiper } from 'swiper/vue';
+import { useResponsiveClasses } from '@/composables';
 
 defineProps({
   slides: {

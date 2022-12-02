@@ -3,18 +3,26 @@
     <div
       v-for="i in pages"
       :key="`progress-key-${i}`"
-      class="progress-bar"
+      :class="useResponsiveClasses('progress-bar')"
       @click.capture="onProgressClicked(i)">
       <div
         ref="progress"
-        class="progress d-flex align-center justify-center"
-        :class="expand ? 'expand' : undefined" />
+        :class="
+          expand
+            ? useResponsiveClasses(
+                'progress d-flex align-center justify-center expand'
+              )
+            : useResponsiveClasses(
+                'progress d-flex align-center justify-center'
+              )
+        " />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useResponsiveClasses } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -40,6 +48,9 @@ export default defineComponent({
       required: false,
       default: false
     }
+  },
+  setup() {
+    return { useResponsiveClasses };
   },
   data() {
     return {
