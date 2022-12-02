@@ -1,13 +1,19 @@
 <template>
-  <carousel progress-bar :slides="items.length" @onSlideChange="onSlideChange">
+  <carousel
+    progress-bar
+    :slides="items.length"
+    @on-slide-change="onSlideChange">
     <template #slides>
-      <swiper-slide v-for="item in items" :key="item.Id">
+      <swiper-slide
+        v-for="item in items"
+        :key="item.Id"
+        :virtual-index="item.Id">
         <div class="slide-backdrop" data-swiper-parallax="-100">
           <div class="default-icon" />
           <blurhash-image
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
-            :type="'Backdrop'"
+            :type="ImageType.Backdrop"
             :icon-size="$vuetify.display.mdAndUp ? '256' : '128'" />
         </div>
         <div class="slide-content">
@@ -33,7 +39,6 @@
                   min-width="12em"
                   variant="outlined"
                   rounded
-                  nuxt
                   data-swiper-parallax="-100"
                   :to="getItemDetailsLink(item)">
                   {{ $t('viewDetails') }}
@@ -47,34 +52,62 @@
   </carousel>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { SwiperSlide } from 'swiper/vue';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { sanitizeHtml } from '~/utils/html';
 import { getBlurhash } from '~/utils/images';
 import { getItemDetailsLink } from '~/utils/items';
+import { useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    items: {
-      type: Array as () => BaseItemDto[],
-      required: true
-    },
-    pageBackdrop: {
-      type: Boolean,
-      default: false
-    }
+const props = defineProps({
+  items: {
+    type: Array as () => BaseItemDto[],
+    required: true
   },
-  data() {
-    return {
-      relatedItems: {} as { [k: number]: BaseItemDto }
-    };
-  },
-  async mounted() {
+  pageBackdrop: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const relatedItems = ref<{ [k: number]: BaseItemDto }>({});
+const route = useRoute();
+const remote = useRemote();
+
+function getRelatedItem(item: BaseItemDto): BaseItemDto {
+  const rItem = relatedItems.value[props.items.indexOf(item)];
+
+  if (!rItem) {
+    return item;
+  }
+
+  return rItem;
+}
+function getOverview(item: BaseItemDto): string {
+  return item.Overview ? sanitizeHtml(item.Overview) : '';
+}
+function updateBackdrop(index: number) {
+  if (props.pageBackdrop) {
+    const hash = getBlurhash(props.items[index], ImageType.Backdrop);
+
+    route.meta.backdrop = { blurhash: hash };
+  }
+}
+
+function onSlideChange(index: number): void {
+  updateBackdrop(index);
+}
+
+watch(
+  props,
+  async () => {
     // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
     // for the parent items. Revisit this once proper changes are done.
-    for (const [key, index] of this.items.entries()) {
+    for (const [key, index] of props.items.entries()) {
       let id: string;
 
       if (index.Type === 'Episode' && index?.SeriesId) {
@@ -88,43 +121,19 @@ export default defineComponent({
       }
 
       const itemData = (
-        await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem({
-          userId: this.$remote.auth.currentUserId.value || '',
+        await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+          userId: remote.auth.currentUserId.value || '',
           itemId: id
         })
       ).data;
 
-      this.relatedItems[key] = itemData;
+      relatedItems.value[key] = itemData;
     }
 
-    this.updateBackdrop(0);
+    updateBackdrop(0);
   },
-  methods: {
-    getRelatedItem(item: BaseItemDto): BaseItemDto {
-      const rItem = this.relatedItems[this.items.indexOf(item)];
-
-      if (!rItem) {
-        return item;
-      }
-
-      return rItem;
-    },
-    getOverview(item: BaseItemDto): string {
-      return item.Overview ? sanitizeHtml(item.Overview) : '';
-    },
-    updateBackdrop(index: number) {
-      if (this.pageBackdrop) {
-        const hash = getBlurhash(this.items[index], ImageType.Backdrop);
-
-        this.$route.meta.backdrop = { blurhash: hash };
-      }
-    },
-    onSlideChange(index: number): void {
-      this.updateBackdrop(index);
-    },
-    getItemDetailsLink
-  }
-});
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
