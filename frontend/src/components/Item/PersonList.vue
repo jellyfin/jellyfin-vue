@@ -4,7 +4,6 @@
       <v-list-item
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
-        nuxt
         :to="getItemDetailsLink(item, 'Person')">
         <v-avatar>
           <v-avatar color="card">

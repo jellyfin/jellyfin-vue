@@ -132,14 +132,12 @@ export default defineComponent({
     return { taskManager };
   },
   computed: {
-    cardType: {
-      get(): string {
-        // Otherwise, figure out the shape based on the type of the item
-        return getShapeFromItemType(this.item.Type);
-      }
+    cardType(): string {
+      // Otherwise, figure out the shape based on the type of the item
+      return getShapeFromItemType(this.item.Type);
     },
     /**
-     * @returns Either the item name or the series name
+     * Either the item name or the series name
      */
     cardTitle(): string {
       return this.item.Type !== 'Episode'
@@ -147,9 +145,9 @@ export default defineComponent({
         : this.item.SeriesName || '';
     },
     /**
-     * @returns Either a string representing the production year(s) for the current item
-     *                   or the episode name of an item (SX EY - Episode Name)
-     *                   or the album artist
+     * Returns either a string representing the production year(s) for the current item
+     * or the episode name of an item (SX EY - Episode Name)
+     * or the album artist
      */
     cardSubtitle(): string {
       switch (this.item.Type) {
@@ -180,9 +178,8 @@ export default defineComponent({
 
           break;
         }
-        case 'Movie':
         default: {
-          return `${this.item.ProductionYear ? this.item.ProductionYear : ''}`;
+          return `${this.item.ProductionYear || ''}`;
         }
       }
 
@@ -205,7 +202,7 @@ export default defineComponent({
      *
      * @returns A router link to the parent item or a related item
      */
-    cardSubtitleLink(): string | null {
+    cardSubtitleLink(): string | undefined {
       if (
         this.item.Type === 'MusicAlbum' &&
         this.item.AlbumArtists &&
@@ -219,12 +216,10 @@ export default defineComponent({
         return this.getItemDetailsLink(this.item);
       }
 
-      return null;
+      return undefined;
     },
-    progress: {
-      get(): number | false {
-        return this.item.UserData?.PlayedPercentage || false;
-      }
+    progress(): number | false {
+      return this.item.UserData?.PlayedPercentage || false;
     },
     getImageType(): ImageType {
       return this.shape === CardShapes.Thumb

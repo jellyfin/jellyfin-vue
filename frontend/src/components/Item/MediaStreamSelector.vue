@@ -74,51 +74,47 @@ export default defineComponent({
     return { trackIndex: -1 as number };
   },
   computed: {
-    selectItems: {
-      /**
-       * Used to model the media stream index as a value and the potential strings
-       *
-       * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
-       */
-      get(): { text: SelectItems; value: number | undefined }[] {
-        const items = this.mediaStreams.map((value, _index) => {
-          return {
-            text: {
-              selection: value.DisplayTitle ?? '',
-              subtitle: this.getTrackSubtitle(value),
-              icon: this.getTrackIcon(value),
-              title: value.DisplayTitle ?? ''
-            },
-            value: value.Index
-          };
+    /**
+     * Used to model the media stream index as a value and the potential strings
+     *
+     * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
+     */
+    selectItems(): { text: SelectItems; value: number | undefined }[] {
+      const items = this.mediaStreams.map((value, _index) => {
+        return {
+          text: {
+            selection: value.DisplayTitle ?? '',
+            subtitle: this.getTrackSubtitle(value),
+            icon: this.getTrackIcon(value),
+            title: value.DisplayTitle ?? ''
+          },
+          value: value.Index
+        };
+      });
+
+      if (this.type === 'Subtitle') {
+        items.unshift({
+          value: -1,
+          text: {
+            selection: this.$t('disabled'),
+            title: this.$t('disabled'),
+            subtitle: undefined,
+            icon: undefined
+          }
         });
-
-        if (this.type === 'Subtitle') {
-          items.unshift({
-            value: -1,
-            text: {
-              selection: this.$t('disabled'),
-              title: this.$t('disabled'),
-              subtitle: undefined,
-              icon: undefined
-            }
-          });
-        }
-
-        return items;
       }
+
+      return items;
     },
     /**
-     * @returns {number|undefined} Default index to use (undefined if none)
+     * Default index to use (undefined if none)
      */
-    defaultIndex: {
-      get(): number | undefined {
-        if (this.defaultStreamIndex !== undefined) {
-          return this.defaultStreamIndex;
-        }
-
-        return this.mediaStreams.find((track) => track.IsDefault)?.Index;
+    defaultIndex(): number | undefined {
+      if (this.defaultStreamIndex !== undefined) {
+        return this.defaultStreamIndex;
       }
+
+      return this.mediaStreams.find((track) => track.IsDefault)?.Index;
     }
   },
   watch: {
