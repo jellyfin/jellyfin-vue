@@ -2,9 +2,8 @@
   <div class="d-inline-flex">
     <v-btn
       v-if="canPlay(item) && (fab || iconOnly)"
-      :fab="fab"
-      :variant="iconOnly && 'text'"
-      :color="iconOnly ? null : 'primary'"
+      :variant="iconOnly ? 'text' : undefined"
+      :color="iconOnly ? undefined : 'primary'"
       :loading="loading"
       :disabled="disabled"
       @click.prevent="playOrResume">

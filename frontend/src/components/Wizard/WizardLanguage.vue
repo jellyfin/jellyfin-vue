@@ -72,7 +72,6 @@ export default defineComponent({
 
       try {
         this.$i18n.locale = this.UICulture;
-        this.$i18n.fallbackLocale;
         await getStartupApi(api).updateInitialConfiguration({
           startupConfigurationDto: {
             ...this.initialConfig,

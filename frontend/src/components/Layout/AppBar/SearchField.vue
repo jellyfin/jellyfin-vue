@@ -2,32 +2,32 @@
   <v-text-field
     v-model="searchQuery"
     class="search-input"
-    prepend-inner-icon="mdi-magnify"
+    :prepend-inner-icon="IMdiMagnify"
     :placeholder="$t('search.name')"
-    dense
-    flat
+    variant="solo"
     hide-details
     single-line />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import IMdiMagnify from '~icons/mdi/magnify';
 
-export default defineComponent({
-  computed: {
-    searchQuery: {
-      get(): string {
-        return this.$route.query.q?.toString();
-      },
-      set(value: string): void {
-        if (value === '' || !value) {
-          this.$router.back();
-        } else if (this.searchQuery) {
-          this.$router.replace({ path: '/search', query: { q: value } });
-        } else {
-          this.$router.push({ path: '/search', query: { q: value } });
-        }
-      }
+const route = useRoute();
+const router = useRouter();
+
+const searchQuery = computed({
+  get(): string {
+    return route.query.q?.toString() || '';
+  },
+  set(value: string) {
+    if (value === '' || !value) {
+      router.back();
+    } else if (searchQuery.value) {
+      router.replace({ path: '/search', query: { q: value } });
+    } else {
+      router.push({ path: '/search', query: { q: value } });
     }
   }
 });

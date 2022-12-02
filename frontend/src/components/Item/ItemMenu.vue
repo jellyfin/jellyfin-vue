@@ -1,49 +1,41 @@
 <template>
   <div v-if="options.length > 0">
-    <v-fade-transition>
-      <v-menu
-        v-model="show"
-        absolute
-        :persistent="false"
-        close-on-content-click
-        :z-index="zIndex"
-        :position-x="positionX"
-        :position-y="positionY"
-        location="top">
-        <template #activator="{ on, attrs }">
-          <v-btn
-            icon
-            :variant="outlined && 'outlined'"
-            :dark="dark"
-            v-bind="attrs"
-            v-on="on"
-            @click.stop.prevent="onActivatorClick"
-            @contextmenu.stop.prevent="onRightClick">
-            <Icon>
-              <i-mdi-dots-horizontal />
-            </Icon>
-          </v-btn>
+    <v-menu
+      v-model="show"
+      :persistent="false"
+      close-on-content-click
+      :z-index="zIndex"
+      :scroll-strategy="'close'"
+      location="top">
+      <template #activator="{ props }">
+        <v-btn
+          icon
+          :variant="outlined ? 'outlined' : undefined"
+          :dark="dark"
+          v-bind="props"
+          @click.stop.prevent="onActivatorClick"
+          @contextmenu.stop.prevent="onRightClick">
+          <Icon>
+            <i-mdi-dots-horizontal />
+          </Icon>
+        </v-btn>
+      </template>
+      <v-list nav>
+        <template v-for="(section, index1) in options">
+          <v-divider
+            v-if="section.length > 0 && index1 > 0"
+            :key="`item-${item.Id}-section-${index1}-divider`" />
+          <v-list-item
+            v-for="(menuOption, index2) in section"
+            :key="`item-${item.Id}-section-${index1}-option-${index2}`"
+            class="text"
+            :disabled="menuOption.disabled"
+            :title="menuOption.title"
+            :prepend-icon="menuOption.icon"
+            @click="menuOption.action" />
         </template>
-        <v-list dense nav>
-          <template v-for="(section, index1) in options">
-            <v-divider
-              v-if="section.length > 0 && index1 > 0"
-              :key="`item-${item.Id}-section-${index1}-divider`"
-              light />
-            <v-list-item
-              v-for="(menuOption, index2) in section"
-              :key="`item-${item.Id}-section-${index1}-option-${index2}`"
-              :disabled="menuOption.disabled"
-              @click="menuOption.action">
-              <v-icon :icon="menuOption.icon" />
-              <v-list-item-title class="text">
-                {{ menuOption.title }}
-              </v-list-item-title>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-menu>
-    </v-fade-transition>
+      </v-list>
+    </v-menu>
     <metadata-editor-dialog
       v-if="metadataDialog"
       v-model:dialog="metadataDialog"
@@ -52,8 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted, onUnmounted, ref } from 'vue';
+import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useEventListener } from '@vueuse/core';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import { playbackManagerStore, taskManagerStore } from '~/store';
@@ -80,7 +73,7 @@ type MenuOption = {
 const { t } = useI18n();
 const remote = useRemote();
 
-const props = defineProps({
+const menuProps = defineProps({
   item: {
     type: Object as () => BaseItemDto,
     default: (): BaseItemDto => {
@@ -117,7 +110,7 @@ const metadataDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
-  () => taskManager.getTask(props.item.Id || '') !== undefined
+  () => taskManager.getTask(menuProps.item.Id || '') !== undefined
 );
 const options = computed(() => {
   const menuOptions = [] as MenuOption[][];
@@ -126,7 +119,7 @@ const options = computed(() => {
     title: t('playback.playNext'),
     icon: IMdiPlaySpeed,
     action: (): void => {
-      playbackManager.playNext(props.item);
+      playbackManager.playNext(menuProps.item);
       useSnackbar(t('snackbar.playNext'), 'success');
     }
   };
@@ -136,28 +129,31 @@ const options = computed(() => {
    */
   const queueOptions = [] as MenuOption[];
 
-  if (props.queue && playbackManager.queue.includes(props.item.Id || '')) {
+  if (
+    menuProps.queue &&
+    playbackManager.queue.includes(menuProps.item.Id || '')
+  ) {
     queueOptions.push({
       title: t('itemMenu.pushToTop'),
       icon: IMdiArrowExpandUp,
       action: (): void => {
-        playbackManager.changeItemPosition(props.item.Id, 0);
+        playbackManager.changeItemPosition(menuProps.item.Id, 0);
       }
     });
 
-    if (playbackManager.getCurrentItem?.Id !== props.item.Id) {
+    if (playbackManager.getCurrentItem?.Id !== menuProps.item.Id) {
       queueOptions.push({
         title: t('itemMenu.removeFromQueue'),
         icon: IMdiPlaylistMinus,
         action: (): void => {
-          playbackManager.removeFromQueue(props.item.Id || '');
+          playbackManager.removeFromQueue(menuProps.item.Id || '');
         }
       });
     }
 
     if (
-      playbackManager.getNextItem?.Id !== props.item.Id &&
-      playbackManager.getCurrentItem?.Id !== props.item.Id
+      playbackManager.getNextItem?.Id !== menuProps.item.Id &&
+      playbackManager.getCurrentItem?.Id !== menuProps.item.Id
     ) {
       queueOptions.push(playNextAction);
     }
@@ -167,7 +163,7 @@ const options = computed(() => {
       icon: IMdiArrowExpandDown,
       action: (): void => {
         playbackManager.changeItemPosition(
-          props.item.Id,
+          menuProps.item.Id,
           playbackManager.queue.length - 1
         );
       }
@@ -179,13 +175,13 @@ const options = computed(() => {
    */
   const playbackOptions = [] as MenuOption[];
 
-  if (canResume(props.item)) {
+  if (canResume(menuProps.item)) {
     playbackOptions.push({
       title: t('playFromBeginning'),
       icon: IMdiReplay,
       action: (): void => {
         playbackManager.play({
-          item: props.item
+          item: menuProps.item
         });
       }
     });
@@ -196,8 +192,8 @@ const options = computed(() => {
     icon: IMdiShuffle,
     action: (): void => {
       playbackManager.play({
-        item: props.item,
-        initiator: props.item,
+        item: menuProps.item,
+        initiator: menuProps.item,
         startShuffled: true
       });
     }
@@ -205,9 +201,9 @@ const options = computed(() => {
 
   if (playbackManager.getCurrentItem) {
     if (
-      playbackManager.getNextItem?.Id !== props.item.Id &&
-      playbackManager.getCurrentItem?.Id !== props.item.Id &&
-      !props.queue
+      playbackManager.getNextItem?.Id !== menuProps.item.Id &&
+      playbackManager.getCurrentItem?.Id !== menuProps.item.Id &&
+      !menuProps.queue
     ) {
       playbackOptions.push(playNextAction);
     }
@@ -216,7 +212,7 @@ const options = computed(() => {
       title: t('playback.addToQueue'),
       icon: IMdiPlaylistPlus,
       action: (): void => {
-        playbackManager.addToQueue(props.item);
+        playbackManager.addToQueue(menuProps.item);
         useSnackbar(t('snackbar.addedToQueue'), 'success');
       }
     });
@@ -229,7 +225,9 @@ const options = computed(() => {
 
   if (
     remote.auth.currentUser.value?.Policy?.IsAdministrator &&
-    ['Folder', 'CollectionFolder', 'UserView'].includes(props.item.Type || '')
+    ['Folder', 'CollectionFolder', 'UserView'].includes(
+      menuProps.item.Type || ''
+    )
   ) {
     libraryOptions.push({
       title: t('refreshLibrary'),
@@ -238,7 +236,7 @@ const options = computed(() => {
         if (remote.sdk.api) {
           try {
             await getItemRefreshApi(remote.sdk.api).refreshItem({
-              itemId: props.item.Id as string,
+              itemId: menuProps.item.Id as string,
               replaceAllImages: false,
               replaceAllMetadata: false
             });
@@ -246,8 +244,8 @@ const options = computed(() => {
             useSnackbar(t('libraryRefreshQueued'), 'normal');
             taskManager.startTask({
               type: TaskType.LibraryRefresh,
-              id: props.item.Id,
-              data: props.item.Name,
+              id: menuProps.item.Id,
+              data: menuProps.item.Name,
               progress: 0
             } as RunningTask);
           } catch (error) {
@@ -299,23 +297,7 @@ onMounted(() => {
   const parentHtml = parent?.subTree.el as HTMLElement;
 
   if (parentHtml) {
-    parentHtml.addEventListener(
-      'contextmenu',
-      // @ts-expect-error - Typings for contextmenu event are incorrect
-      onRightClick
-    );
-  }
-});
-
-onUnmounted(() => {
-  const parentHtml = parent?.subTree.el as HTMLElement;
-
-  if (parentHtml) {
-    parentHtml.removeEventListener(
-      'contextmenu',
-      // @ts-expect-error - Typings for contextmenu event are incorrect
-      onRightClick
-    );
+    useEventListener(parentHtml, 'contextmenu', onRightClick);
   }
 });
 </script>
