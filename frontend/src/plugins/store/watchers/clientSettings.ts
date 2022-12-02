@@ -15,9 +15,7 @@ export default function (): void {
     /**
      * Theme change
      */
-    vuetify.theme.global.name.value = state.darkMode
-      ? 'JellyfinDark'
-      : 'JellyfinLight';
+    vuetify.theme.global.name.value = state.darkMode ? 'dark' : 'light';
     /**
      * Locale change
      */
