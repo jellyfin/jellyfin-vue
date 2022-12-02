@@ -11,12 +11,20 @@
       @on-animation-end="onAnimationEnd"
       @on-progress-clicked="onProgressClicked" />
     <swiper
-      ref="carousel"
+      :modules="modules"
       class="swiper"
-      :options="swiperOptions"
-      @slideChange="onSlideChange"
-      @touchStart="onTouch"
-      @touchEnd="onTouch">
+      :initial-slide="0"
+      loop
+      parallax
+      autoplay
+      effect="fade"
+      :fade-effect="{ crossFade: true }"
+      keyboard
+      a11y
+      @swiper="setControlledSwiper"
+      @slide-change="onSlideChange"
+      @touch-start="onTouch"
+      @touch-end="onTouch">
       <slot name="slides" />
     </swiper>
     <carousel-progress-bar
@@ -32,92 +40,100 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import Swiper, { SwiperOptions } from 'swiper';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { A11y, Parallax, EffectFade, Keyboard } from 'swiper';
+import type SwiperType from 'swiper';
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/keyboard';
+import 'swiper/css/parallax';
+import 'swiper/css/a11y';
+import { Swiper } from 'swiper/vue';
 
-export default defineComponent({
-  props: {
-    slides: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    slideDuration: {
-      type: Number,
-      default: 7000
-    },
-    progressBar: {
-      type: Boolean,
-      default: false
-    },
-    topProgressBar: {
-      type: Boolean,
-      default: false
-    },
-    pageBackdrop: {
-      type: Boolean,
-      default: false
-    },
-    swiperOptions: {
-      type: Object as () => SwiperOptions,
-      default: (): SwiperOptions => {
-        return {
-          initialSlide: 0,
-          loop: true,
-          parallax: true,
-          autoplay: false,
-          effect: 'fade',
-          fadeEffect: {
-            crossFade: true
-          },
-          keyboard: true,
-          a11y: true
-        };
-      }
-    }
+defineProps({
+  slides: {
+    type: Number,
+    required: true,
+    default: 0
   },
-  data() {
-    return {
-      currentIndex: 0 as number | undefined,
-      isPaused: false,
-      swiper: undefined as Swiper | undefined
-    };
+  slideDuration: {
+    type: Number,
+    default: 7000
   },
-  mounted() {
-    this.swiper = (this.$refs.carousel as Vue).$swiper as Swiper;
+  progressBar: {
+    type: Boolean,
+    default: false
   },
-  methods: {
-    // HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
-    // swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
-    // doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
-    // we force a loop reload to fix this.
-    //
-    // See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
-    onSlideChange(): void {
-      this.currentIndex = this.swiper?.realIndex;
-
-      if (this.swiper?.isBeginning || this.swiper?.isEnd) {
-        this.swiper?.updateSlides();
-      }
-
-      // Propagate events to children
-      this.$emit('onSlideChange', this.currentIndex, this.swiper);
-    },
-    onTouch(): void {
-      this.isPaused = !this.isPaused;
-
-      // Propagate events to children
-      this.$emit('onTouch', this.isPaused, this.swiper);
-    },
-    onAnimationEnd(): void {
-      this.swiper?.slideNext();
-    },
-    onProgressClicked(index: number): void {
-      this.swiper?.slideToLoop(index);
-    }
+  topProgressBar: {
+    type: Boolean,
+    default: false
+  },
+  pageBackdrop: {
+    type: Boolean,
+    default: false
   }
 });
+
+const emit = defineEmits<{
+  (e: 'on-slide-change', currentIndex: number, swiper: SwiperType): void;
+  (e: 'on-touch', isPaused: boolean, swiper: SwiperType): void;
+}>();
+
+const modules = [A11y, Parallax, EffectFade, Keyboard];
+
+const currentIndex = ref(0);
+const isPaused = ref(false);
+const swiperInstance = ref<SwiperType>();
+const setControlledSwiper = (instance: SwiperType): void => {
+  swiperInstance.value = instance;
+};
+
+/**
+ * HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
+ * swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
+ * doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
+ * we force a loop reload to fix this.
+ *
+ * See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
+ */
+function onSlideChange(): void {
+  currentIndex.value = swiperInstance.value?.realIndex || 0;
+
+  if (swiperInstance.value?.isBeginning || swiperInstance.value?.isEnd) {
+    swiperInstance.value?.updateSlides();
+  }
+
+  // Propagate events to children
+  emit(
+    'on-slide-change',
+    currentIndex.value,
+    swiperInstance.value as SwiperType
+  );
+}
+/**
+ * Handle touch events
+ */
+function onTouch(): void {
+  isPaused.value = !isPaused.value;
+
+  // Propagate events to children
+  emit('on-touch', isPaused.value, swiperInstance.value as SwiperType);
+}
+
+/**
+ * Handle animation end from progress bars
+ */
+function onAnimationEnd(): void {
+  swiperInstance.value?.slideNext();
+}
+
+/**
+ * Handle click on progress bar
+ */
+function onProgressClicked(index: number): void {
+  swiperInstance.value?.slideToLoop(index);
+}
 </script>
 
 <style lang="scss" scoped>

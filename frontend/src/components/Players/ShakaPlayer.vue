@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="$remote.axios.instance && $remote.axios.instance.defaults.baseURL"
+    v-if="$remote.sdk.api && $remote.sdk.api?.basePath"
     class="video-container"
     :class="{ 'video-container--stretched': stretch }">
     <component
@@ -21,8 +21,8 @@
         kind="subtitles"
         default
         :label="subtitleTrack.label"
-        :srcLang="subtitleTrack.srcLang"
-        :src="$remote.axios.instance.defaults.baseURL + subtitleTrack.src" />
+        :srclang="subtitleTrack.srcLang"
+        :src="$remote.sdk.api?.basePath + subtitleTrack.src" />
     </component>
   </div>
 </template>
@@ -310,14 +310,13 @@ export default defineComponent({
             mediaType = 'Audio';
           }
 
-          this.source = `${this.$remote.axios.instance.defaults.baseURL}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
+          this.source = `${this.$remote.sdk.api?.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
         } else if (
           mediaSource.SupportsTranscoding &&
           mediaSource.TranscodingUrl
         ) {
           this.source =
-            this.$remote.axios.instance.defaults.baseURL +
-            mediaSource.TranscodingUrl;
+            this.$remote.sdk.api?.basePath + mediaSource.TranscodingUrl;
         }
       }
     },
@@ -378,14 +377,12 @@ export default defineComponent({
               workerUrl: SubtitlesOctopusWorker,
               legacyWorkerUrl: SubtitlesOctopusWorkerLegacy,
               subUrl:
-                this.$remote.axios.instance.defaults.baseURL +
-                (this.subtitleTrack.src || ''),
+                this.$remote.sdk.api?.basePath + (this.subtitleTrack.src || ''),
               blendRender: true
             });
           } else {
             this.octopus.setTrackByUrl(
-              this.$remote.axios.instance.defaults.baseURL +
-                (this.subtitleTrack.src || '')
+              this.$remote.sdk.api?.basePath + (this.subtitleTrack.src || '')
             );
           }
         }
