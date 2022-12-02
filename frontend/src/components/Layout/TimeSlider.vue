@@ -50,14 +50,12 @@ export default defineComponent({
         ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000 || 0
       );
     },
-    sliderValue: {
-      get(): number {
-        if (!this.clicked) {
-          return this.playbackManager.currentTime || 0;
-        }
-
-        return this.currentInput;
+    sliderValue(): number {
+      if (!this.clicked) {
+        return this.playbackManager.currentTime || 0;
       }
+
+      return this.currentInput;
     }
   },
   methods: {
