@@ -54,6 +54,7 @@ import { RepeatMode } from '~/store/playbackManager';
 import { getImageInfo, ImageUrlInfo } from '~/utils/images';
 import { ticksToMs } from '~/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
+import { useSnackbar } from '@/composables';
 
 declare global {
   interface Window {
@@ -218,15 +219,10 @@ export default defineComponent({
         await this.getPlaybackUrl();
         this.startPlayback();
       } else {
-        this.$nuxt.error({
-          message: this.$t('browserNotSupported')
-        });
+        useSnackbar(this.$t('browserNotSupported'), 'error');
       }
     } catch (error) {
-      this.$nuxt.error({
-        statusCode: 404,
-        message: error as string
-      });
+      console.error(error);
     }
   },
   beforeUnmount() {
