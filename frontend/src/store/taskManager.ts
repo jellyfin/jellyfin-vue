@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 
 /**
  *
@@ -81,7 +81,7 @@ export const taskManagerStore = defineStore('taskManager', {
       if (!this.tasks.some((task) => task.type === TaskType.ConfigSync)) {
         const payload = {
           type: TaskType.ConfigSync,
-          id: uuidv4()
+          id: v4()
         };
 
         this.startTask(payload);

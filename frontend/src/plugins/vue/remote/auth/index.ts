@@ -112,8 +112,10 @@ class RemotePluginAuth {
         const oldServer = this.getServerById(serv.Id);
 
         if (!isNil(oldServer)) {
-          this.deleteServer(oldServer.PublicAddress);
-          state.value.servers.push(merge(oldServer, serv));
+          this.servers.value[this.servers.value.indexOf(oldServer)] = merge(
+            oldServer,
+            serv
+          );
         } else {
           state.value.servers.push(serv);
         }

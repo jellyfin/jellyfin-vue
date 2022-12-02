@@ -14,7 +14,7 @@
         <v-btn
           icon
           :disabled="loading || serverInfo.isDefault"
-          @click="removeServerFromStore">
+          @click="removeServer">
           <Icon>
             <i-mdi-delete />
           </Icon>
@@ -29,36 +29,41 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+// eslint-disable-next-line no-restricted-imports
 import { ServerInfo } from '@/plugins/vue/remote/auth/types';
+import { useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    serverInfo: {
-      type: Object as () => ServerInfo,
-      required: true
-    }
-  },
-  data() {
-    return {
-      loading: false
-    };
-  },
-  methods: {
-    async setServer(): Promise<void> {
-      this.loading = true;
-
-      try {
-        await this.$remote.auth.connectServer(this.serverInfo.PublicAddress);
-        this.$router.push('/server/login');
-      } finally {
-        this.loading = false;
-      }
-    },
-    async removeServerFromStore(): Promise<void> {
-      await this.$remote.auth.deleteServer(this.serverInfo.PublicAddress);
-    }
+const props = defineProps({
+  serverInfo: {
+    type: Object as () => ServerInfo,
+    required: true
   }
 });
+
+const loading = ref(false);
+const remote = useRemote();
+const router = useRouter();
+
+/**
+ * Set the current server in the app
+ */
+async function setServer(): Promise<void> {
+  loading.value = true;
+
+  try {
+    await remote.auth.connectServer(props.serverInfo.PublicAddress);
+    router.push('/server/login');
+  } finally {
+    loading.value = false;
+  }
+}
+/**
+ * Deletes the server from the app
+ */
+async function removeServer(): Promise<void> {
+  await remote.auth.deleteServer(props.serverInfo.PublicAddress);
+}
 </script>
