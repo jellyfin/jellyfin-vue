@@ -114,11 +114,7 @@
               <volume-slider />
             </div>
             <item-menu :item="playbackManager.getCurrentItem" />
-            <v-btn
-              v-show="!isFullScreenPlayer"
-              icon
-              nuxt
-              to="/fullscreen/playback">
+            <v-btn v-show="!isFullScreenPlayer" icon to="/fullscreen/playback">
               <Icon>
                 <i-mdi-fullscreen />
               </Icon>

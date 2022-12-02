@@ -14,7 +14,6 @@
         min-width="8em"
         variant="outlined"
         rounded
-        nuxt
         :to="`./${genre.Id}/shuffle`">
         {{ $t('playback.shuffleAll') }}
       </v-btn>
@@ -85,12 +84,6 @@ export default defineComponent({
     genres = items.addCollection(item, genres || []);
 
     return { item, genres };
-  },
-  data() {
-    return {
-      item: {} as BaseItemDto,
-      genres: [] as BaseItemDto[]
-    };
   },
   mounted() {
     this.$route.meta.title = this.item.Name;
