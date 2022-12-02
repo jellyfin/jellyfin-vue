@@ -8,7 +8,7 @@
         <div>
           <server-card
             v-for="server in $remote.auth.servers.value"
-            :key="server.Id"
+            :key="server.Id || v4()"
             class="mt-2"
             :server-info="server" />
         </div>
@@ -33,6 +33,7 @@ meta:
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { v4 } from 'uuid';
 
 const { t } = useI18n();
 const route = useRoute();

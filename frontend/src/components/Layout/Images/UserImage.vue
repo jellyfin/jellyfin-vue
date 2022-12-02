@@ -1,6 +1,6 @@
 <template>
-  <v-avatar>
-    <v-img :src="url" cover>
+  <v-avatar :size="size">
+    <v-img :src="url" :width="size" cover>
       <template #placeholder>
         <v-avatar color="primary" :size="size">
           <Icon :size="iconSize" dark>
