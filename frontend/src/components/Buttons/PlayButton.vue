@@ -98,7 +98,9 @@ export default defineComponent({
             ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
         });
       } else if (this.shuffle) {
-        // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
+        /**
+         * We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
+         */
         await this.playbackManager.play({
           item: this.item,
           audioTrackIndex: this.audioTrackIndex,
