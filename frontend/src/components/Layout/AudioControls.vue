@@ -16,7 +16,7 @@
       <v-container fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-            <router-link :to="'/fullscreen/playback'">
+            <router-link :to="'/playback/music'">
               <v-avatar
                 v-if="!isFullScreenPlayer"
                 :size="$vuetify.display.xs ? 50 : 85"
@@ -114,7 +114,7 @@
               <volume-slider />
             </div>
             <item-menu :item="playbackManager.getCurrentItem" />
-            <v-btn v-show="!isFullScreenPlayer" icon to="/fullscreen/playback">
+            <v-btn v-show="!isFullScreenPlayer" icon to="/playback/music">
               <Icon>
                 <i-mdi-fullscreen />
               </Icon>
@@ -215,9 +215,7 @@ const playPauseIcon = computed(() => {
 // Checking for route is faster to switch the controls than checking for the store
 // TODO: Remove this as soon as we can use the fullpage layout in music player
 // (i.e Vue 3) https://github.com/nuxt/nuxt.js/issues/8592
-const isFullScreenPlayer = computed(
-  () => route.fullPath === '/fullscreen/playback'
-);
+const isFullScreenPlayer = computed(() => route.fullPath === '/playback/music');
 </script>
 
 <style lang="scss" scoped>
