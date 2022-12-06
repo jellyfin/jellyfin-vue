@@ -25,7 +25,7 @@ jobs:
           path: dist
 
       - name: Publish to Cloudflare Pages 📃
-        uses: cloudflare/pages-action@v1.1.0
+        uses: cloudflare/pages-action@v1.2.0
         id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
