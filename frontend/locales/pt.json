@@ -52,10 +52,11 @@
       "startNow": "Começar agora"
     }
   },
+  "directing": "Direccionando",
   "director": "Diretor",
   "disabled": "Desativado",
   "discNumber": "Disco {discNumber}",
-  "dislikes": "Dislikes",
+  "dislikes": "Desgostados",
   "edit": "Editar",
   "editMetadata": "Editar metadados",
   "editPerson": "Editar pessoa",
@@ -93,6 +94,7 @@
   "imageType": {
     "art": "Arte",
     "backdrop": "Plano de Fundo",
+    "banner": "Banner",
     "box": "Caixa",
     "boxRear": "Caixa (traseira)",
     "disc": "Disco",
@@ -111,6 +113,7 @@
       "information": "Informação",
       "videos": "Vídeos"
     },
+    "cast": "Elenco",
     "composer": "Compositor",
     "crew": "Equipa",
     "person": {
@@ -120,7 +123,423 @@
       "death": "Faleceu em",
       "information": "Informação",
       "movies": "Filmes",
-      "person": "Pessoa"
+      "person": "Pessoa",
+      "photos": "Fotografias",
+      "shows": "Programas"
+    },
+    "tracklist": {
+      "title": "Título"
     }
-  }
+  },
+  "itemMenu": {
+    "pushToBottom": "Mover para o fim",
+    "pushToTop": "Mover para o princípio",
+    "removeFromQueue": "Remover da fila"
+  },
+  "itemNotFound": "Itém não encontrado",
+  "jellyfinLogo": "Logo da Jellyfin",
+  "latestLibrary": "{libraryName} mais recente",
+  "libraries": "Librarias",
+  "libraryEmpty": "Esta libraria está vazia",
+  "libraryEmptyFilters": "Sem correspondências. Remova alguns filtros para mostrar mais itens",
+  "libraryNotFound": "Libraria não encontrada",
+  "libraryRefreshQueued": "Refrescamento de Librarias em fila de espera",
+  "liked": "Apreciado",
+  "likes": "Apreciações",
+  "links": {
+    "helpTranslate": "Traduza o Jellyfin para a sua linguagem",
+    "poweredByJellyfin": "Este servidor é propulsionado por Jellyfin",
+    "readTheDocumentation": "Ler a documentação",
+    "reportAnIssue": "Reportar um problema com este cliente"
+  },
+  "login": {
+    "addServer": "Adicionar servidor",
+    "changeServer": "Modificar servidor",
+    "changeUser": "Mudar de utilizador",
+    "connect": "Conectar",
+    "kickedOut": "A Autorização foi revogada e a sessão não se encontra mais válida. Por favor faça Login novamente",
+    "login": "Login",
+    "loginAs": "Fazer Login como {name}",
+    "manualLogin": "Login Manual",
+    "rememberMe": "Lembrar-se de mim",
+    "selectServer": "Selecionar servidor",
+    "selectUser": "Selecionar Servidor",
+    "serverAddress": "Endereço de Servidor",
+    "serverAddressMustBeUrl": "Endereço de Servidor tem de ser um endereço URL válido",
+    "serverAddressRequired": "Endereço de Servidor é exigido",
+    "serverDashboard": "Painél de controlo do Servidor",
+    "serverNotFound": "Servidor não encontrado",
+    "serverVersionTooLow": "Versão de Servidor tem de ser 10.7.0 ou superior"
+  },
+  "logout": "Sair",
+  "logsAndActivity": {
+    "activity": "Actividade",
+    "failedGetActivity": "Não foi possível obter a actividade",
+    "failedGetLogs": "Não foi possível obter os registos",
+    "logs": "Registos",
+    "noActivityFound": "Actividades não encontradas",
+    "noLogsFound": "Registos não encontrados"
+  },
+  "manualLogin": "Login Manual",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "Canais de Audio:"
+    },
+    "audioCodec": {
+      "name": "codec de áudio:"
+    },
+    "bitrate": {
+      "name": "taxa de bits:"
+    },
+    "container": {
+      "name": "Recipiente:"
+    },
+    "name": "Multimédia",
+    "subtitleCodec": {
+      "name": "codec de Legendas:"
+    },
+    "videoCodec": {
+      "name": "codec de Vídeo:"
+    }
+  },
+  "menu": "Menu",
+  "metadata": {
+    "source": "Fonte",
+    "sourceAll": "Todos",
+    "title": "Título",
+    "type": "Tipo"
+  },
+  "metadataEditor": "editor de Metadados",
+  "metadataNoResultsMatching": "Sem resultados correspondentes a \"{search}\". Pressione Enter para criar um novo.",
+  "more": "Mais",
+  "moreLikeArtist": "Mais como {artist}",
+  "moreLikeThis": "Mais como este",
+  "movies": "Filmes",
+  "name": "Nome",
+  "networks": "Redes",
+  "nextUp": "Próximo",
+  "noImagesFound": "Nenhuma imagem encontrada",
+  "noInformationAvailable": "Sem informação disponível",
+  "noNetworkConnection": "Sem ligação à rede",
+  "noResultsFound": "Sem nada aqui",
+  "numberTracks": "{number} faixas",
+  "operatingSystem": "Sistema operativo",
+  "originalAspectRatio": "Releção de aspecto original",
+  "originalTitle": "Título original",
+  "overview": "Visão geral",
+  "parentalRating": "Classificação parental",
+  "parentalRatings": "Classificações parentais",
+  "password": "palavra-passe",
+  "people": "Pessoas",
+  "person": "Pessoa",
+  "play": "Reproduzir",
+  "playFromBeginning": "Reproduzir do início",
+  "playback": {
+    "addToQueue": "Adicionar à fila",
+    "clearQueue": "Limpar fila e parar reprodução",
+    "playAll": "Reproduzir todos",
+    "playNext": "Reproduzir próximo",
+    "playbackSource": {
+      "item": "A reproduzir desde {item}",
+      "shuffle": "A repoduzir misturado",
+      "shuffleItem": "A reproduzir {item} misturado",
+      "unknown": "A reproduzir da fila"
+    },
+    "queueItems": "{items} faixas",
+    "saveAsPlaylist": "Guardar fila como playlist",
+    "shuffle": "Misturar",
+    "shuffleAll": "Misturar tudo"
+  },
+  "playbackData": "Informação de reprodução",
+  "playbackInfo": {
+    "name": "Reprodução",
+    "playMethod": {
+      "direct": "Directo",
+      "name": "Método:",
+      "remux": "Remux",
+      "transcode": "Transcodificar"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "Tipo de stream:",
+      "unknown": "Desconhecido",
+      "video": "Vídeo"
+    }
+  },
+  "playbackSettings": "Definições de reprodução",
+  "played": "Reproduzido",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Quadros corrupidos:"
+    },
+    "decodedFrames": {
+      "name": "Quadros descodificados:"
+    },
+    "droppedFrames": {
+      "name": "Quadros perdidos:"
+    },
+    "name": "Reproductor",
+    "playbackResolution": {
+      "name": "Resolução de janela de exibição:"
+    },
+    "videoResolution": {
+      "name": "Resulução de Vídeo:",
+      "value": "{width}✕{height}"
+    }
+  },
+  "present": "Actual",
+  "producer": "Productor(a)",
+  "quality": "Qualidade",
+  "queue": "Fila",
+  "rating": "Classificação",
+  "refreshLibrary": "Actualizar Libraria",
+  "releaseDate": "Data de lançamento",
+  "remoteDevices": "Dispositivos remotos",
+  "resumable": "Retomável",
+  "resume": "Retomar",
+  "role": "Função",
+  "save": "Guardar",
+  "saved": "Guardado",
+  "search": {
+    "name": "Procurar",
+    "topResults": "Top de resultados"
+  },
+  "seasonEpisode": "Temporada {seasonNumber}, Episódio {episodeNumber}",
+  "seasonEpisodeAbbrev": "T{seasonNumber}, E{episodeNumber}",
+  "series": "Séries",
+  "server": "Servidor",
+  "serverVersion": "Versão de Servidor",
+  "serverVersionTooLow": "Versão de Servidor tem de ser 10.7.0 ou superior",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "Token de acesso",
+      "addApiKey": "Adicionar chave de API",
+      "addNewKey": "Adicionar nova chave de API",
+      "apiKeys": "Chaves de APIs",
+      "appName": "Nome da aplicação",
+      "createKeyFailure": "Erro ao criar nova chave de API",
+      "createKeySuccess": "Chave de API criada com sucesso",
+      "dateCreated": "Data de criação",
+      "description": "Adicionar e revogar chaves de APIs para acesso externo ao seu servidor",
+      "refreshKeysFailure": "Erro ao actualizar chaves de APIs",
+      "revokeAll": "Revogar todas as chaves de APIs",
+      "revokeAllFailure": "Erro ao revogar todas as chaves de APIs",
+      "revokeAllSuccess": "Todas as chaves de APIs revogadas com sucesso",
+      "revokeFailure": "Erro a revogar chave de API",
+      "revokeSuccess": "Chave de API revogada com sucesso"
+    },
+    "devices": {
+      "appName": "Nome da aplicação",
+      "appVersion": "Versão da aplicação",
+      "delete": "Apagar",
+      "deleteAll": "Apagar tudo",
+      "deleteAllDevicesError": "Erro a apagar todos os dispositivos",
+      "deleteAllDevicesSuccess": "Todos os dispositivos apagados com sucesso",
+      "deleteDeviceError": "Erro a apagar ddispositivo",
+      "deleteDeviceSuccess": "Dispositivo apagado com sucesso",
+      "deviceName": "Nome do dispositivo",
+      "devices": "Dispositivos",
+      "lastActive": "Último activo",
+      "noDevicesFound": "Nenhum dispositivo encontrado",
+      "userName": "Nome de Utilizador"
+    },
+    "help": "Ajuda",
+    "logsAndActivity": {
+      "activity": "Actividade",
+      "failedGetActivity": "Não foi possível obter actividade",
+      "failedGetLogs": "Não foi possível obter os registos",
+      "logs": "Registos",
+      "noActivityFound": "Actividades não encontradas",
+      "noLogsFound": "Registos não encontrados"
+    },
+    "settings": "Definições"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "Editar informação de utilizador",
+      "name": "Conta"
+    },
+    "devices": {
+      "description": "Ver e gerir dispositivos conectados ao seu servidor",
+      "name": "Dispositivos"
+    },
+    "dlna": {
+      "description": "Configurar definições e perfil de DLNA",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "Configurar secções e disposição do ecrã incial",
+      "name": "Ecrã incial"
+    },
+    "libraries": {
+      "description": "Gerir librarias e metadados",
+      "name": "Librarias"
+    },
+    "liveTvAndDvr": {
+      "description": "Gerir definições de sintonizaddores de TV, providenciadores de dados de guias e DVR",
+      "name": "TV em directo & DVR"
+    },
+    "logs": {
+      "description": "Ler e procurar registos de servidor e actividade de utilizador",
+      "name": "Registos e actividade"
+    },
+    "mediaPlayers": {
+      "description": "Configurar comportamento de reprodutores de multimédia para este dispositivo",
+      "name": "Reprodutores de Multimédia"
+    },
+    "networking": {
+      "description": "Gerir definições de rede deste servidor",
+      "name": "Rede"
+    },
+    "notifications": {
+      "description": "Gerir e configurar notificações enviadas deste servidor",
+      "name": "Notificações"
+    },
+    "playback": {
+      "description": "Editar preferências de reprodução deste servidor",
+      "name": "Reprodução"
+    },
+    "plugins": {
+      "description": "Adicionar e configurar novas funcionalidades deste servidor",
+      "name": "Plugins"
+    },
+    "scheduledTasks": {
+      "description": "Gerir tarefas agendadas em execução neste servidor",
+      "name": "Tarefas agendadas"
+    },
+    "server": {
+      "description": "Configurar liguagem e identidade de marca deste servidor",
+      "name": "Servidor"
+    },
+    "subtitles": {
+      "description": "Controlar disposição de legendas neste dispositivo",
+      "name": "Legendas"
+    },
+    "transcodingAndStreaming": {
+      "description": "Gerir como o servidor lida com a transcodificação e a transmissão para os clientes",
+      "name": "Transcodificação e transmissão"
+    },
+    "users": {
+      "description": "Gerir utilizadores e permissões",
+      "name": "Utilizadores"
+    }
+  },
+  "shows": "Programas",
+  "signIn": "Entrar",
+  "snackbar": {
+    "addedToQueue": "Adicionar à fila",
+    "playNext": "O item selecionado será reproduzido após o actualmente em reprodução"
+  },
+  "songs": "Músicas",
+  "sortByType": "Ordenar por {type}",
+  "sortTitle": "Titulo de ordenação",
+  "specialFeatures": "Características especiais",
+  "speed": "Velocidade",
+  "startNow": "Começar agora",
+  "status": "Estado",
+  "stretch": "Esticar",
+  "studios": "Estúdios",
+  "subtitles": "Legendas",
+  "syncPlayGroups": "Grupoes de SyncPlay",
+  "syncingInProgress": "Sincronização em progresso",
+  "tagline": "Slogan",
+  "tags": "Etiquetas",
+  "themeVideo": "Vídeo temático",
+  "tooltips": {
+    "changeLanguage": "Linguagem",
+    "switchToDarkMode": "Mudar para modo escuro",
+    "switchToLightMode": "Mudar para modo claro"
+  },
+  "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Transcodificação",
+    "transcodingFramerate": {
+      "name": "Fotogramas por segundo:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Progresso:",
+    "transcodingReason": {
+      "name": "Razão: | Razões:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Vídeo Anamórfico não suportado",
+        "audioBitDepthNotSupported": "A densidade de bits de audio não é suportada",
+        "audioBitrateNotSupported": "A taxa de bits de audio não é suportada",
+        "audioChannelsNotSupported": "O número de canais de aúdio não é suportado",
+        "audioCodecNotSupported": "O codec de aúdio não é suportado",
+        "audioProfileNotSupported": "O perfil de codec's não é suportado",
+        "audioSampleRateNotSupported": "A taxa de amostra de aúdio não é suportada",
+        "containerBitrateExceedsLimit": "O rácio de bits do recipiente excede o limit definido",
+        "containerNotSupported": "O recipiente não é suportado",
+        "interlacedVideoNotSupported": "Vídeo interlaçado não é suportado",
+        "refFramesNotSupported": "Fotogramas de referência não são suportados",
+        "secondaryAudioNotSupported": "Faixas de aúdio secundárias não são suportadas",
+        "subtitleCodecNotSupported": "O codec de legendas não é suportado",
+        "videoBitDepthNotSupported": "O rácio de bits de vídeo não é suportado",
+        "videoCodecNotSupported": "O codec de vídeo não é suportado",
+        "videoFramerateNotSupported": "A taxa de fotogramas por segundo não é suportada",
+        "videoLevelNotSupported": "O nível de codec de vídeo não é suportado",
+        "videoProfileNotSupported": "O perfil de codec de vídeo não é suportado",
+        "videoResolutionNotSupported": "A resolução de vídeo não é suportada"
+      }
+    }
+  },
+  "type": "Tipo",
+  "unableGetPublicUsers": "Incapaz de obter os utilizadores",
+  "unableGetRelated": "Incapaz de obter items relacionados",
+  "unableGetServerConfiguration": "Incapaz de obter a configuração do servidor",
+  "unableToRefreshLibrary": "Incapaz de actualizar a Libraria",
+  "unableToToggleLike": "Incapaz de modificar o estado de apreciações do elemento",
+  "unableToTogglePlayed": "Incapaz de actualizar o estado de visualização",
+  "undefined": "Indefinido",
+  "unexpectedError": "Erro inesperado",
+  "unhandledException": "Excepção não controlada",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} segundo | {count} segundos"
+    }
+  },
+  "unliked": "Desgostado",
+  "unplayed": "Não reproduzido",
+  "upNext": "A seguir",
+  "upNextName": "A seguir: {upNextItemName}",
+  "username": "Nome de Utilizador",
+  "validation": {
+    "bothPasswordsSame": "Ambas as palavras-passe devem ser iguais",
+    "mustBeUrl": "Este campo deve conter um endereço URL válido",
+    "required": "Este campo é obrigatório"
+  },
+  "version": "Versão",
+  "video": "Vídeo",
+  "videoTypes": "Tipos de Vídeo",
+  "viewDetails": "Ver detalhes",
+  "vueClientVersion": "Versão de cliente",
+  "wizard": {
+    "administratorAccount": "Conta de administrador",
+    "allowRemoteAccess": "Permitir acesso remoto ao servidor",
+    "completeError": "Incapaz de concluir o assistente de inicialização.",
+    "confirmPassword": "Confirmar a palavra-passe",
+    "languageLocale": "Linguagem e localização",
+    "languageSuccessfullySet": "Linguagem definida com sucesso.",
+    "metadataLanguagesSet": "Linguagem de Metadados definida.",
+    "preferedLanguage": "Linguagem preferêncial",
+    "preferredMetadataLanguage": "Linguagem de Metadados preferêncial",
+    "remoteAccess": "Acesso Remoto",
+    "remoteAccessSet": "Acesso Remoto definido.",
+    "setAdminError": "Incapaz de criar uma conta de administrador.",
+    "setLanguageError": "Incapaz de definir a linguagem do cliente.",
+    "setMetadataError": "Incapaz de definir as linguagens de metadados.",
+    "setRemoteError": "Incapaz de definir as definições de acesso remoto.",
+    "setupWizard": "Assistente de instalação",
+    "userSuccessfullySet": "Utilizador definido com sucesso."
+  },
+  "writer": "Escritor",
+  "writing": "Escrita",
+  "year": "Ano",
+  "years": "Anos",
+  "youMayAlsoLike": "Também poderá gostar"
 }
