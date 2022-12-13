@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Virheellinen käyttäjätunnus tai salasana",
   "item": {
     "artist": {
+      "albums": "Albumit",
       "appearsOn": "Esiintymiset",
       "discography": "Diskografia",
+      "eps": "EP:t",
       "information": "Tietoja",
+      "singles": "Singlet",
       "videos": "Videot"
     },
     "cast": "Näyttelijät",
