@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Nesprávné uživatelské jméno nebo heslo",
   "item": {
     "artist": {
+      "albums": "Alba",
       "appearsOn": "Viz také",
       "discography": "Diskografie",
+      "eps": "EP",
       "information": "Informace",
+      "singles": "Singly",
       "videos": "Videa"
     },
     "cast": "Obsazení",
