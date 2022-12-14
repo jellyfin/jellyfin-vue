@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Hibás felhasználónév vagy jelszó",
   "item": {
     "artist": {
+      "albums": "Albumok",
       "appearsOn": "Megjelenések",
       "discography": "Diszkográfia",
+      "eps": "EP-k",
       "information": "Infromáció",
+      "singles": "Kislemez",
       "videos": "Videók"
     },
     "cast": "Szereplő(k)",

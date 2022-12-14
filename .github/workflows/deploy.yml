@@ -86,9 +86,9 @@ jobs:
 
     steps:
       - name: Update job summary in PR comment
-        uses: thollander/actions-comment-pull-request@v1.6.0
+        uses: thollander/actions-comment-pull-request@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
           pr_number: ${{ needs.pr-context.outputs.pr_number }}
-          comment_includes: ${{ needs.compose-comment.outputs.marker }}
+          comment_tag: ${{ needs.compose-comment.outputs.marker }}

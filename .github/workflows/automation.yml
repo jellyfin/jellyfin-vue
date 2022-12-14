@@ -35,11 +35,11 @@ jobs:
 
     steps:
       - name: Create comment
-        uses: thollander/actions-comment-pull-request@v1.6.0
+        uses: thollander/actions-comment-pull-request@v2.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
-          comment_includes: ${{ needs.compose-comment.outputs.marker }}
+          comment_tag: ${{ needs.compose-comment.outputs.marker }}
 
   project:
     name: Project board 📊
