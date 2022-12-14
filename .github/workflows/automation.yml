@@ -40,6 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
           comment_tag: ${{ needs.compose-comment.outputs.marker }}
+          mode: recreate
 
   project:
     name: Project board 📊

@@ -92,3 +92,4 @@ jobs:
           message: ${{ needs.compose-comment.outputs.msg }}
           pr_number: ${{ needs.pr-context.outputs.pr_number }}
           comment_tag: ${{ needs.compose-comment.outputs.marker }}
+          mode: recreate
