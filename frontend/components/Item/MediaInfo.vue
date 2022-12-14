@@ -15,7 +15,7 @@
       {{ item.CommunityRating }}
     </span>
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
-      {{ $t('numberTracks', { number: item.ChildCount }) }}
+      {{ $tc('numberTracks', item.ChildCount, { number: item.ChildCount }) }}
     </span>
     <span v-if="item.RunTimeTicks && runtime">{{
       getRuntimeTime(item.RunTimeTicks)

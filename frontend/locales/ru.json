@@ -222,7 +222,7 @@
   "noInformationAvailable": "Нет доступной информации",
   "noNetworkConnection": "Нет сетевого подключения",
   "noResultsFound": "Здесь ничего нет",
-  "numberTracks": "{number} дорож[ка/ки/ек]",
+  "numberTracks": "{n} дорожек|{n} дорожка|{n} дорожки|{n} дорожек",
   "operatingSystem": "Операционная система",
   "originalAspectRatio": "Исходное соотношение сторон",
   "originalTitle": "Оригинальное название",
@@ -245,7 +245,7 @@
       "shuffleItem": "Воспроизвести {item} в случайном порядке",
       "unknown": "Воспроизвести из очереди"
     },
-    "queueItems": "{items} дорожки",
+    "queueItems": "{n} дорожек|{n} дорожка|{n} дорожки|{n} дорожек",
     "saveAsPlaylist": "Сохранить очередь как плей-лист",
     "shuffle": "Перемешать",
     "shuffleAll": "Перемешать все"
@@ -497,11 +497,11 @@
   "unhandledException": "Необработанное исключение",
   "units": {
     "bitrate": {
-      "kbps": "{value} Kibit/s",
-      "mbps": "{value} Mibit/s"
+      "kbps": "{value} Кибит/c",
+      "mbps": "{value} Мибит/c"
     },
     "time": {
-      "seconds": "{count} секунда | {count} секунд"
+      "seconds": "{n} секунд|{n} секунда|{n} секунды|{n} секунд"
     }
   },
   "unliked": "Не нравится",

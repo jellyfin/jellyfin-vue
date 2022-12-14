@@ -210,7 +210,7 @@ const config: NuxtConfig = {
         file: 'pt_BR.json'
       },
       { code: 'ro', iso: 'ro', name: 'Română', file: 'ro.json' },
-      { code: 'ru', iso: 'ru', name: 'русский', file: 'ru.json' },
+      { code: 'ru', iso: 'ru', name: 'Русский', file: 'ru.json' },
       { code: 'sk', iso: 'sk', name: 'Slovenčina', file: 'sk.json' },
       { code: 'sl', iso: 'sl', name: 'Slovenščina', file: 'sl.json' },
       {
@@ -233,9 +233,7 @@ const config: NuxtConfig = {
     langDir: 'locales/',
     strategy: 'no_prefix',
     defaultLocale: 'en-US',
-    vueI18n: {
-      fallbackLocale: 'en-US'
-    }
+    vueI18n: '~/plugins/vue/vue-i18n.ts',
   },
   dateFns: {
     locales: [

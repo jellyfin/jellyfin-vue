@@ -47,7 +47,7 @@
             <v-list-item-subtitle>
               {{ getTotalEndsAtTime(playbackManager.getQueueItems) }} -
               {{
-                $t('playback.queueItems', {
+                $tc('playback.queueItems', playbackManager.getQueueItems.length, {
                   items: playbackManager.getQueueItems.length
                 })
               }}
