@@ -1,19 +1,28 @@
 {
   "packageRules": [
     {
-      "matchDepTypes": ["devDependencies", "build-dependencies"],
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
       "groupName": "development dependencies",
       "groupSlug": "dev-deps"
     },
     {
+      "matchManagers": ["npm"],
       "matchDepTypes": ["dependencies"],
       "groupName": "dependencies",
       "groupSlug": "deps"
     },
     {
-      "matchDepTypes": ["action"],
+      "matchManagers": ["github-actions"],
       "groupName": "CI dependencies",
-      "groupSlug": "ci-deps"
+      "groupSlug": "ci-deps",
+      "separateMajorMinor": false
+    },
+    {
+      "matchManagers": ["cargo"],
+      "groupName": "Tauri dependencies",
+      "groupSlug": "tauri-deps",
+      "separateMajorMinor": false
     }
   ],
   "dependencyDashboard": false,
