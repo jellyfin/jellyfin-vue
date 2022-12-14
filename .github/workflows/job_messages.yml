@@ -27,17 +27,14 @@ on:
         value: ${{ jobs.msg.outputs.msg }}
       marker:
         description: Hidden marker to detect PR comments composed by the bot
-        value: ${{ jobs.msg.outputs.comment_marker }}
+        value: 'CFPages-deployment'
 
 jobs:
   msg:
     name: Deployment status
     runs-on: ubuntu-latest
-    env:
-      COMMENT_MARKER: '<!--- CFPages deployment marker --->'
     outputs:
       msg: ${{ env.msg }}
-      comment_marker: ${{ env.COMMENT_MARKER }}
 
     steps:
       - name: Compose message 📃
@@ -62,8 +59,6 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "$BUILD_WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
           echo "$COMMENTING_WORKFLOW_RUN" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "$COMMENT_MARKER" >> $GITHUB_STEP_SUMMARY
           COMPOSED_MSG=$(cat $GITHUB_STEP_SUMMARY)
           echo "msg<<EOF" >> $GITHUB_ENV
           echo "$COMPOSED_MSG" >> $GITHUB_ENV
