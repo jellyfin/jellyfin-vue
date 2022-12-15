@@ -21,11 +21,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
+import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
+import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
+import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
 import { playbackManagerStore } from '~/store';
-import IMdiVolumeMute from '~icons/mdi/volume-mute';
-import IMdiVolumeMedium from '~icons/mdi/volume-medium';
-import IMdiVolumeHigh from '~icons/mdi/volume-high';
-import IMdiVolumeLow from '~icons/mdi/volume-low';
 
 const playbackManager = playbackManagerStore();
 const icon = computed(() => {

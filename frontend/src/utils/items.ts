@@ -7,23 +7,23 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
-import IMdiMovie from '~icons/mdi/movie';
-import IMdiMusic from '~icons/mdi/music';
-import IMdiImage from '~icons/mdi/image';
-import IMdiYoutubeTV from '~icons/mdi/youtube-tv';
-import IMdiTelevisionClassic from '~icons/mdi/television-classic';
-import IMdiImageMultiple from '~icons/mdi/image-multiple';
-import IMdiMusicBox from '~icons/mdi/music-box';
-import IMdiBookOpenPageVariant from '~icons/mdi/book-open-page-variant';
-import IMdiYoutube from '~icons/mdi/youtube';
-import IMdiPlaylistPlay from '~icons/mdi/playlist-play';
-import IMdiFolder from '~icons/mdi/folder';
-import IMdiAccount from '~icons/mdi/account';
-import IMdiMusicNote from '~icons/mdi/music-note';
-import IMdiBookMusic from '~icons/mdi/book-music';
-import IMdiFolderMultiple from '~icons/mdi/folder-multiple';
-import IMdiFilmstrip from '~icons/mdi/filmstrip';
-import IMdiAlbum from '~icons/mdi/album';
+import IMdiMovie from 'virtual:icons/mdi/movie';
+import IMdiMusic from 'virtual:icons/mdi/music';
+import IMdiImage from 'virtual:icons/mdi/image';
+import IMdiYoutubeTV from 'virtual:icons/mdi/youtube-tv';
+import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
+import IMdiImageMultiple from 'virtual:icons/mdi/image-multiple';
+import IMdiMusicBox from 'virtual:icons/mdi/music-box';
+import IMdiBookOpenPageVariant from 'virtual:icons/mdi/book-open-page-variant';
+import IMdiYoutube from 'virtual:icons/mdi/youtube';
+import IMdiPlaylistPlay from 'virtual:icons/mdi/playlist-play';
+import IMdiFolder from 'virtual:icons/mdi/folder';
+import IMdiAccount from 'virtual:icons/mdi/account';
+import IMdiMusicNote from 'virtual:icons/mdi/music-note';
+import IMdiBookMusic from 'virtual:icons/mdi/book-music';
+import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
+import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
+import IMdiAlbum from 'virtual:icons/mdi/album';
 
 /**
  * A list of valid collections that should be treated as folders.

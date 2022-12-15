@@ -33,7 +33,7 @@
               </tr>
               <tr>
                 <td>{{ $t('vueClientVersion') }}</td>
-                <td>{{ vueVersion }}</td>
+                <td>{{ clientVersion }}</td>
               </tr>
             </tbody>
           </v-table>
@@ -110,26 +110,26 @@ import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash-es';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { version as vueVersion } from '@/../package.json';
+import IMdiAccount from 'virtual:icons/mdi/account';
+import IMdiHome from 'virtual:icons/mdi/home';
+import IMdiPlayPause from 'virtual:icons/mdi/play-pause';
+import IMdiDiscPlayer from 'virtual:icons/mdi/disc-player';
+import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
+import IMdiServer from 'virtual:icons/mdi/server';
+import IMdiDevices from 'virtual:icons/mdi/devices';
+import IMdiLibraryShelves from 'virtual:icons/mdi/library-shelves';
+import IMdiAccountMultiple from 'virtual:icons/mdi/account-multiple';
+import IMdiKeyChain from 'virtual:icons/mdi/key-chain';
+import IMdiPlayNetwork from 'virtual:icons/mdi/play-network';
+import IMdiDLNA from 'virtual:icons/mdi/dlna';
+import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
+import IMdiNetwork from 'virtual:icons/mdi/network';
+import IMdiPuzzle from 'virtual:icons/mdi/puzzle';
+import IMdiCalendarClock from 'virtual:icons/mdi/calendar-clock';
+import IMdiBell from 'virtual:icons/mdi/bell';
+import IMdiTextBox from 'virtual:icons/mdi/text-box';
 import { useRemote } from '@/composables';
-import IMdiAccount from '~icons/mdi/account';
-import IMdiHome from '~icons/mdi/home';
-import IMdiPlayPause from '~icons/mdi/play-pause';
-import IMdiDiscPlayer from '~icons/mdi/disc-player';
-import IMdiSubtitles from '~icons/mdi/subtitles';
-import IMdiServer from '~icons/mdi/server';
-import IMdiDevices from '~icons/mdi/devices';
-import IMdiLibraryShelves from '~icons/mdi/library-shelves';
-import IMdiAccountMultiple from '~icons/mdi/account-multiple';
-import IMdiKeyChain from '~icons/mdi/key-chain';
-import IMdiPlayNetwork from '~icons/mdi/play-network';
-import IMdiDLNA from '~icons/mdi/dlna';
-import IMdiTelevisionClassic from '~icons/mdi/television-classic';
-import IMdiNetwork from '~icons/mdi/network';
-import IMdiPuzzle from '~icons/mdi/puzzle';
-import IMdiCalendarClock from '~icons/mdi/calendar-clock';
-import IMdiBell from '~icons/mdi/bell';
-import IMdiTextBox from '~icons/mdi/text-box';
+import { version as clientVersion } from '@/../package.json';
 
 const { t } = useI18n();
 const route = useRoute();
