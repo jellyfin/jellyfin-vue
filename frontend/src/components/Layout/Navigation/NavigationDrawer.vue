@@ -6,9 +6,7 @@
     floating
     class="pa-s"
     :color="
-      transparentLayout && !$vuetify.display.mobile
-        ? 'transparent'
-        : 'background'
+      transparentLayout && !$vuetify.display.mobile ? 'transparent' : undefined
     ">
     <v-list nav>
       <v-list-item

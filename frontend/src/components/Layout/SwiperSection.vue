@@ -9,24 +9,12 @@
           <span class="pl-4">{{ title }}</span>
         </h1>
         <v-spacer />
-        <v-btn
-          class="swiper-prev"
-          icon
-          variant="plain"
-          :disabled="
-            !swiperInstance || (swiperInstance && swiperInstance.isBeginning)
-          ">
+        <v-btn class="swiper-prev" icon variant="plain">
           <Icon>
             <i-mdi-arrow-left />
           </Icon>
         </v-btn>
-        <v-btn
-          class="swiper-next"
-          icon
-          variant="plain"
-          :disabled="
-            !swiperInstance || (swiperInstance && swiperInstance.isEnd)
-          ">
+        <v-btn class="swiper-next" icon variant="plain">
           <Icon>
             <i-mdi-arrow-right />
           </Icon>
@@ -43,9 +31,7 @@
         :slides-per-view="slidesPerView"
         :slides-per-group="slidesPerGroup"
         :breakpoints="breakpoints"
-        a11y
-        virtual
-        @swiper="setControlledSwiper">
+        a11y>
         <swiper-slide
           v-for="item in items"
           :key="item.Id"
@@ -59,13 +45,15 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, FreeMode, A11y, Virtual } from 'swiper';
-import type SwiperType from 'swiper';
+/**
+ * Virtual mode is not enabled as it worsens performance in this situation
+ * There are not many slides in SwiperSection, so this should be fine
+ */
+import { Navigation, FreeMode, A11y } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
-import 'swiper/css/virtual';
 import { ref } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { v4 } from 'uuid';
@@ -74,10 +62,6 @@ import { CardShapes, getShapeFromItemType } from '~/utils/items';
 
 const display = useDisplay();
 const theme = useTheme();
-const swiperInstance = ref<SwiperType>();
-const setControlledSwiper = (swiper: SwiperType): void => {
-  swiperInstance.value = swiper;
-};
 
 const props = defineProps({
   loading: {
@@ -112,8 +96,9 @@ const uuid = v4();
 /**
  * Swiper options
  */
-const modules = [Navigation, FreeMode, A11y, Virtual];
+const modules = [Navigation, FreeMode, A11y];
 const navigation = {
+  hideOnClick: true,
   nextEl: `.swiper-section-${uuid} .swiper-next`,
   prevEl: `.swiper-section-${uuid} .swiper-prev`
 };

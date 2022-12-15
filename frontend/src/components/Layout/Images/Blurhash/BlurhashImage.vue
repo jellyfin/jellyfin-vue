@@ -1,6 +1,6 @@
 <template>
   <div ref="imageElement">
-    <div v-if="!error">
+    <div>
       <blurhash-canvas
         v-if="hash"
         :hash="hash"
@@ -15,17 +15,17 @@
           :src="image"
           v-bind="$attrs"
           :alt="alt"
-          @error="onError"
           @load="loading = false" />
       </v-fade-transition>
+      <slot v-if="$slots.placeholder" name="placeholder" />
+      <v-avatar
+        v-else-if="getItemIcon(item)"
+        :rounded="false"
+        size="100%"
+        class="absolute-cover d-flex justify-center align-center align-self-center icon">
+        <v-icon class="text--disabled" size="50%" :icon="getItemIcon(item)" />
+      </v-avatar>
     </div>
-    <slot v-else name="placeholder">
-      <v-icon
-        v-if="getItemIcon(item)"
-        class="absolute-cover text--disabled"
-        :size="iconSize"
-        :icon="getItemIcon(item)" />
-    </slot>
   </div>
 </template>
 
@@ -60,32 +60,14 @@ const props = defineProps({
   alt: {
     type: String,
     default: ''
-  },
-  iconSize: {
-    type: String || Number,
-    required: false,
-    default: '7em'
   }
 });
 
-const emit = defineEmits<{
-  (e: 'error'): void;
-}>();
-
 const display = useDisplay();
 const image = ref<string | undefined>('');
+const loading = ref(false);
 const imageElement = ref<HTMLDivElement | undefined>(undefined);
-const loading = ref(true);
-const error = ref(false);
 const hash = computed(() => getBlurhash(props.item, props.type));
-
-/**
- * Error handler
- */
-function onError(): void {
-  emit('error');
-  error.value = true;
-}
 
 /**
  * Gets the image URL
@@ -103,21 +85,17 @@ function getImage(): void {
   });
 
   image.value = imageInfo.url;
-
-  if (!image.value) {
-    onError();
-  }
 }
 
-watch([display.width, display.height, imageElement], () => {
+watch([imageElement, props], () => {
   if (imageElement.value) {
+    loading.value = true;
     getImage();
   }
 });
 
-watch(props, () => {
+watch([display.width, display.height], () => {
   if (imageElement.value) {
-    loading.value = true;
     getImage();
   }
 });
@@ -127,5 +105,10 @@ watch(props, () => {
 .img {
   color: transparent;
   object-fit: cover;
+  z-index: 1;
+}
+
+.icon {
+  z-index: -10;
 }
 </style>
