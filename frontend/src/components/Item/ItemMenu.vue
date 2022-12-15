@@ -11,7 +11,6 @@
         <v-btn
           icon
           :variant="outlined ? 'outlined' : undefined"
-          :dark="dark"
           v-bind="props"
           @click.stop.prevent="onActivatorClick"
           @contextmenu.stop.prevent="onRightClick">
@@ -80,10 +79,6 @@ const menuProps = defineProps({
       return {};
     }
   },
-  dark: {
-    type: Boolean,
-    default: false
-  },
   outlined: {
     type: Boolean,
     default: false
@@ -112,21 +107,20 @@ const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id || '') !== undefined
 );
-const options = computed(() => {
-  const menuOptions = [] as MenuOption[][];
 
-  const playNextAction = {
-    title: t('playback.playNext'),
-    icon: IMdiPlaySpeed,
-    action: (): void => {
-      playbackManager.playNext(menuProps.item);
-      useSnackbar(t('snackbar.playNext'), 'success');
-    }
-  };
+const playNextAction = {
+  title: t('playback.playNext'),
+  icon: IMdiPlaySpeed,
+  action: (): void => {
+    playbackManager.playNext(menuProps.item);
+    useSnackbar(t('snackbar.playNext'), 'success');
+  }
+};
 
-  /**
-   * Queue options
-   */
+/**
+ * Options to show when the item menu is invoked in a queue item
+ */
+function getQueueOptions(): MenuOption[] {
   const queueOptions = [] as MenuOption[];
 
   if (
@@ -170,9 +164,13 @@ const options = computed(() => {
     });
   }
 
-  /**
-   * Playback options
-   */
+  return queueOptions;
+}
+
+/**
+ * Playback options for the items
+ */
+function getPlaybackOptions(): MenuOption[] {
   const playbackOptions = [] as MenuOption[];
 
   if (canResume(menuProps.item)) {
@@ -218,9 +216,13 @@ const options = computed(() => {
     });
   }
 
-  /**
-   * Library options
-   */
+  return playbackOptions;
+}
+
+/**
+ * Library options for libraries
+ */
+function getLibraryOptions(): MenuOption[] {
   const libraryOptions = [] as MenuOption[];
 
   if (
@@ -269,9 +271,11 @@ const options = computed(() => {
     });
   }
 
-  menuOptions.push(queueOptions, playbackOptions, libraryOptions);
+  return libraryOptions;
+}
 
-  return menuOptions;
+const options = computed(() => {
+  return [getQueueOptions(), getPlaybackOptions(), getLibraryOptions()];
 });
 
 /**
@@ -282,7 +286,7 @@ function onRightClick(e: PointerEvent): void {
   e.preventDefault();
   positionX.value = e.clientX;
   positionY.value = e.clientY;
-  show.value = true;
+  show.value = !show.value;
 }
 
 /**

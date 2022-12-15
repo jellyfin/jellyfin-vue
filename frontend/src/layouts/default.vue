@@ -1,8 +1,7 @@
 <template>
   <v-app>
-    <backdrop />
-    <navigation-drawer />
     <app-bar />
+    <navigation-drawer />
     <v-main>
       <div class="pa-s">
         <router-view-transition />
