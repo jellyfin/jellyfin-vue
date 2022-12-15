@@ -121,12 +121,12 @@ import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { parseJSON } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import IMdiLogin from '~icons/mdi/login';
-import IMdiLogout from '~icons/mdi/logout';
-import IMdiLock from '~icons/mdi/lock';
-import IMdiPlay from '~icons/mdi/play';
-import IMdiStop from '~icons/mdi/stop';
-import IMdiHelp from '~icons/mdi/help';
+import IMdiLogin from 'virtual:icons/mdi/login';
+import IMdiLogout from 'virtual:icons/mdi/logout';
+import IMdiLock from 'virtual:icons/mdi/lock';
+import IMdiPlay from 'virtual:icons/mdi/play';
+import IMdiStop from 'virtual:icons/mdi/stop';
+import IMdiHelp from 'virtual:icons/mdi/help';
 import { dateFnsFormat, dateFnsFormatRelative } from '@/utils/time';
 import { useRemote } from '@/composables';
 

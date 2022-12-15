@@ -55,9 +55,9 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
+import IconEyeOff from 'virtual:icons/mdi/eye-off';
+import IconEye from 'virtual:icons/mdi/eye';
 import { useRemote } from '@/composables';
-import IconEyeOff from '~icons/mdi/eye-off';
-import IconEye from '~icons/mdi/eye';
 
 const remote = useRemote();
 const { t } = useI18n();
