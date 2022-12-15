@@ -45,10 +45,10 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import IMdiCog from 'virtual:icons/mdi/cog';
+import IMdiLogout from 'virtual:icons/mdi/logout';
+import IMdiPencil from 'virtual:icons/mdi/pencil';
 import { useRemote } from '@/composables';
-import IMdiCog from '~icons/mdi/cog';
-import IMdiLogout from '~icons/mdi/logout';
-import IMdiPencil from '~icons/mdi/pencil';
 
 interface MenuItem {
   title: string;

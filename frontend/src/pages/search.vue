@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-app-bar
-      fixed
-      flat
-      dense
-      :class="useResponsiveClasses('second-toolbar')">
+    <v-app-bar fixed flat dense :class="useResponsiveClasses('second-toolbar')">
       <v-tabs v-model="searchTab" centered>
         <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
         <v-tab :key="1">{{ $t('movies') }}</v-tab>
