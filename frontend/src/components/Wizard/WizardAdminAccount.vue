@@ -41,9 +41,9 @@
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import IconEyeOff from 'virtual:icons/mdi/eye-off';
+import IconEye from 'virtual:icons/mdi/eye';
 import { useRemote, useSnackbar } from '@/composables';
-import IconEyeOff from '~icons/mdi/eye-off';
-import IconEye from '~icons/mdi/eye';
 
 interface StepEvent {
   step: number;

@@ -33,11 +33,11 @@
 import { PropType, defineComponent } from 'vue';
 import langs from 'langs';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
-import IMdiSurroundSound20 from '~icons/mdi/surround-sound-2-0';
-import IMdiSurroundSound31 from '~icons/mdi/surround-sound-3-1';
-import IMdiSurroundSound51 from '~icons/mdi/surround-sound-5-1';
-import IMdiSurroundSound71 from '~icons/mdi/surround-sound-7-1';
-import IMdiSurroundSound from '~icons/mdi/surround-sound';
+import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
+import IMdiSurroundSound31 from 'virtual:icons/mdi/surround-sound-3-1';
+import IMdiSurroundSound51 from 'virtual:icons/mdi/surround-sound-5-1';
+import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
+import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 
 interface SelectItems {
   selection: string;

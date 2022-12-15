@@ -26,10 +26,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import IMdiBook from '~icons/mdi/book';
-import IMdiBug from '~icons/mdi/bug';
-import IMdiRocketLaunch from '~icons/mdi/rocket-launch';
-import IMdiTranslate from '~icons/mdi/translate';
+import IMdiBook from 'virtual:icons/mdi/book';
+import IMdiBug from 'virtual:icons/mdi/bug';
+import IMdiRocketLaunch from 'virtual:icons/mdi/rocket-launch';
+import IMdiTranslate from 'virtual:icons/mdi/translate';
 
 const { t } = useI18n();
 
