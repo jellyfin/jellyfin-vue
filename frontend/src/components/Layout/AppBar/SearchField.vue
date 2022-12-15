@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import IMdiMagnify from '~icons/mdi/magnify';
+import IMdiMagnify from 'virtual:icons/mdi/magnify';
 
 const route = useRoute();
 const router = useRouter();
