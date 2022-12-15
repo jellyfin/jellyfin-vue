@@ -1,34 +1,43 @@
 <template>
-  <backdrop />
   <v-main>
+    <v-app-bar
+      :class="useResponsiveClasses('app-bar-safe-zone')"
+      elevation="0"
+      color="transparent">
+      <app-bar-button-layout @click="$router.back()">
+        <template #icon>
+          <Icon>
+            <i-mdi-arrow-left />
+          </Icon>
+        </template>
+      </app-bar-button-layout>
+    </v-app-bar>
     <v-col class="px-0">
-      <v-scale-transition>
-        <swiper
-          v-if="playbackManager.getQueueItems"
-          class="d-flex justify-center align-center"
-          :modules="modules"
-          :slides-per-view="4"
-          centered-slides
-          :initial-slide="playbackManager.currentItemIndex || 0"
-          :autoplay="false"
-          effect="coverflow"
-          :coverflow-effect="coverflowEffect"
-          keyboard
-          a11y
-          virtual
-          @slide-change="onSlideChange"
-          @swiper="setControlledSwiper">
-          <swiper-slide
-            v-for="(item, index) in playbackManager.getQueueItems"
-            :key="`${item.Id}-${index}`"
-            :virtual-index="`${item.Id}-${index}`"
-            class="d-flex justify-center">
-            <div class="album-cover">
-              <blurhash-image :item="item" @error="onImageError" />
-            </div>
-          </swiper-slide>
-        </swiper>
-      </v-scale-transition>
+      <swiper
+        v-if="playbackManager.getQueueItems"
+        class="d-flex justify-center align-center"
+        :modules="modules"
+        :slides-per-view="4"
+        centered-slides
+        :initial-slide="playbackManager.currentItemIndex || 0"
+        :autoplay="false"
+        effect="coverflow"
+        :coverflow-effect="coverflowEffect"
+        keyboard
+        a11y
+        virtual
+        @slide-change="onSlideChange"
+        @swiper="setControlledSwiper">
+        <swiper-slide
+          v-for="(item, index) in playbackManager.getQueueItems"
+          :key="`${item.Id}-${index}`"
+          :virtual-index="`${item.Id}-${index}`"
+          class="d-flex justify-center">
+          <div class="album-cover">
+            <blurhash-image :item="item" @error="onImageError" />
+          </div>
+        </swiper-slide>
+      </swiper>
       <audio-controls />
     </v-col>
   </v-main>
@@ -39,6 +48,7 @@ meta:
   layout: fullpage
   backdrop:
     opacity: 0.75
+  transition: slideUp
 </route>
 
 <script setup lang="ts">
@@ -63,6 +73,7 @@ import { isNil } from 'lodash-es';
 import { useRoute, useRouter } from 'vue-router';
 import { getBlurhash } from '~/utils/images';
 import { playbackManagerStore } from '~/store';
+import { useResponsiveClasses } from '@/composables';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
@@ -92,10 +103,12 @@ watch(
     if (swiperInstance.value && playbackManager.currentItemIndex) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
       route.meta.backdrop.blurhash = backdropHash.value;
+      route.meta.title = playbackManager.getCurrentItem?.Name || '';
     } else if (isNil(playbackManager.currentItemIndex)) {
       router.back();
     }
-  }
+  },
+  { immediate: true }
 );
 
 onBeforeMount(() => {
