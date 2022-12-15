@@ -6,9 +6,7 @@
       fab
       size="small"
       @click="playbackManager.toggleMute">
-      <Icon>
-        {{ icon }}
-      </Icon>
+      <v-icon :icon="icon" />
     </v-btn>
     <v-slider
       class="volume-slider"

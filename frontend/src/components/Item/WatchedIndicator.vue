@@ -1,5 +1,5 @@
 <template>
-  <v-chip color="green" class="card-chip" small>
+  <v-chip color="success" class="card-chip" small>
     <Icon>
       <i-mdi-check />
     </Icon>
