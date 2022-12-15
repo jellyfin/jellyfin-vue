@@ -24,12 +24,14 @@ class RemotePluginSDK {
       const server = auth.currentServer;
       const accessToken = auth.currentUserToken;
 
-      if (!isNil(server.value) && !isNil(accessToken.value)) {
+      if (!isNil(server.value)) {
         this.api = this.sdk.createApi(
           server.value.PublicAddress,
           accessToken.value,
           RemotePluginAxiosInstance.instance
         );
+        RemotePluginAxiosInstance.instance.defaults.baseURL =
+          server.value.PublicAddress;
       } else {
         RemotePluginAxiosInstance.resetDefaults();
         this.api = undefined;
@@ -41,10 +43,10 @@ class RemotePluginSDK {
   /**
    * Generates a Jellyfin API type with the current API instance.
    *
-   * Make sure this is only used in places where an user is logged in
+   * USE WITH CAUTION. Make sure this is only used in places where an user is logged in
    */
   public newUserApi<T>(apiSec: (api: Api) => T): T {
-    // @ts-expect-error - We want to assume the user is already logged in here
+    // @ts-expect-error - We want to explicitly assume the user is already logged in here
     return apiSec(this.api);
   }
 }

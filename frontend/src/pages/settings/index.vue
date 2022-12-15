@@ -261,6 +261,6 @@ const adminSections = computed(() => {
 }
 
 .logo {
-  background: var(--v-card-base);
+  background: rgb(var(--v-card-base));
 }
 </style>

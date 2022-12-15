@@ -20,7 +20,7 @@
                 </router-link>
               </v-col>
             </v-row>
-            <v-row v-if="$vuetify.breakpoint.mdAndUp" class="my-2">
+            <v-row v-if="$vuetify.display.mdAndUp" class="my-2">
               <v-col>
                 <track-list :item="release" />
               </v-col>
@@ -32,23 +32,17 @@
   </v-row>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '~/utils/items';
 
-export default defineComponent({
-  props: {
-    releases: {
-      type: Array,
-      required: true,
-      default: (): BaseItemDto[] => {
-        return [];
-      }
+defineProps({
+  releases: {
+    type: Array<BaseItemDto>,
+    required: true,
+    default: (): BaseItemDto[] => {
+      return [];
     }
-  },
-  methods: {
-    getItemDetailsLink
   }
 });
 </script>

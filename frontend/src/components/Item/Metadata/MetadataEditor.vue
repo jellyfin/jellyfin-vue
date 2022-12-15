@@ -399,7 +399,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .person-icon {
-  background-color: var(--v-secondary-darken1);
+  background-color: rgb(var(--v-secondary-darken1));
 }
 
 :deep(.v-card__text) {

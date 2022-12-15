@@ -11,7 +11,7 @@
           <blurhash-image
             :item="item"
             :type="getImageType"
-            :alt="item.Name"
+            :alt="item.Name || ''"
             class="card-image" />
           <v-progress-circular
             v-if="refreshProgress !== undefined"
@@ -46,9 +46,9 @@
           <div
             v-if="overlay"
             class="card-lower-buttons d-flex justify-center align-center">
-            <mark-played-button :item="item" dark />
-            <like-button v-if="canPlay(item)" :item="item" dark />
-            <item-menu :item="item" dark />
+            <mark-played-button :item="item" />
+            <like-button v-if="canPlay(item)" :item="item" />
+            <item-menu :item="item" />
           </div>
         </div>
       </div>
@@ -281,7 +281,7 @@ export default defineComponent({
 }
 
 .card-content {
-  background-color: var(--v-theme-menus);
+  background-color: rgb(var(--v-theme-menu));
   overflow: hidden;
   position: absolute;
   top: 0;
