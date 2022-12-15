@@ -19,46 +19,40 @@
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
       {{ $t('numberTracks', { number: item.ChildCount }) }}
     </span>
-    <span v-if="item.RunTimeTicks && runtime">{{
-      getRuntimeTime(item.RunTimeTicks)
-    }}</span>
+    <!-- TODO: Track https://github.com/vuejs/core/pull/7306 -->
+    <span v-if="item.RunTimeTicks && runtime">
+      {{ getRuntimeTime(item.RunTimeTicks).value }}
+    </span>
     <span v-if="item.RunTimeTicks && endsAt">
-      {{ getEndsAtTime(item.RunTimeTicks, true) }}
+      {{ getEndsAtTime(item.RunTimeTicks).value }}
     </span>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getEndsAtTime, getRuntimeTime } from '~/utils/time';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    },
-    year: {
-      type: Boolean
-    },
-    rating: {
-      type: Boolean
-    },
-    runtime: {
-      type: Boolean
-    },
-    tracks: {
-      type: Boolean
-    },
-    endsAt: {
-      type: Boolean,
-      default: false
-    }
+defineProps({
+  item: {
+    type: Object as () => BaseItemDto,
+    required: true
   },
-  methods: {
-    getEndsAtTime,
-    getRuntimeTime
+  year: {
+    type: Boolean
+  },
+  rating: {
+    type: Boolean
+  },
+  runtime: {
+    type: Boolean
+  },
+  tracks: {
+    type: Boolean
+  },
+  endsAt: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
