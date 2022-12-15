@@ -232,14 +232,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import screenfull from 'screenfull';
+import IMdiPlay from 'virtual:icons/mdi/play';
+import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
+import IMdiPause from 'virtual:icons/mdi/pause';
+import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
 import { isApple, isMobile } from '@/utils/browser-detection';
 import supportedFeatures from '@/utils/supported-features';
-import IMdiPlay from '~icons/mdi/play';
-import IMdiPlayCircleOutline from '~icons/mdi/play-circle-outline';
-import IMdiPause from '~icons/mdi/pause';
-import IMdiPauseCircleOutline from '~icons/mdi/pause-circle-outline';
 
 export default defineComponent({
   setup() {
