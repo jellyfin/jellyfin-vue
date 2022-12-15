@@ -5,6 +5,7 @@
       icon
       size="small"
       :color="color"
+      variant="elevated"
       :disabled="disabled">
       <slot name="icon" />
 

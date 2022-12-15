@@ -59,8 +59,8 @@ meta:
   layout: server
 </route>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { isEmpty } from 'lodash-es';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
@@ -69,46 +69,40 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useRemote } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const { t } = useI18n();
-    const route = useRoute();
-    const remote = useRemote();
-    const api = remote.sdk.oneTimeSetup(
-      remote.auth.currentServer.value?.PublicAddress || ''
-    );
+const { t } = useI18n();
+const route = useRoute();
+const remote = useRemote();
+const api = remote.sdk.oneTimeSetup(
+  remote.auth.currentServer.value?.PublicAddress || ''
+);
 
-    route.meta.title = t('login.login');
+route.meta.title = t('login.login');
 
-    const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
-    const publicUsers = (await getUserApi(api).getPublicUsers({})).data;
+const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
+const publicUsers = (await getUserApi(api).getPublicUsers({})).data;
 
-    const disclaimer = brandingData.LoginDisclaimer;
+const disclaimer = brandingData.LoginDisclaimer;
 
-    return { publicUsers, disclaimer };
-  },
-  data() {
-    return {
-      loginAsOther: false,
-      currentUser: {} as UserDto
-    };
-  },
-  methods: {
-    isEmpty(value: Record<never, never>): boolean {
-      return isEmpty(value);
-    },
-    async setCurrentUser(user: UserDto): Promise<void> {
-      if (!user.HasPassword && user.Name) {
-        // If the user doesn't have a password, avoid showing the password form
-        await this.$remote.auth.loginUser(user.Name, '', true);
-      } else {
-        this.currentUser = user;
-      }
-    },
-    resetCurrentUser(): void {
-      this.currentUser = {};
-      this.loginAsOther = false;
-    }
+const loginAsOther = ref(false);
+const currentUser = ref<UserDto>({});
+
+/**
+ * Sets the current user for public user login
+ */
+async function setCurrentUser(user: UserDto): Promise<void> {
+  if (!user.HasPassword && user.Name) {
+    // If the user doesn't have a password, avoid showing the password form
+    await remote.auth.loginUser(user.Name, '', true);
+  } else {
+    currentUser.value = user;
   }
-});
+}
+
+/**
+ * Resets the currently selected user
+ */
+function resetCurrentUser(): void {
+  currentUser.value = {};
+  loginAsOther.value = false;
+}
 </script>
