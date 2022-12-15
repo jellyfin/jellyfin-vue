@@ -99,7 +99,7 @@
                   class="mx-1 active-button"
                   :color="playbackManager.isRepeating ? 'primary' : undefined"
                   @click="playbackManager.toggleRepeatMode">
-                  <v-icon>{{ repeatIcon }}</v-icon>
+                  <v-icon :icon="repeatIcon" />
                 </v-btn>
               </div>
               <time-slider v-if="!isFullScreenPlayer" />
@@ -113,7 +113,9 @@
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
-            <item-menu :item="playbackManager.getCurrentItem" />
+            <item-menu
+              :item="playbackManager.getCurrentItem"
+              :z-index="99999" />
             <v-btn v-show="!isFullScreenPlayer" icon to="/playback/music">
               <Icon>
                 <i-mdi-fullscreen />

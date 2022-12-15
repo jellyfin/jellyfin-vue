@@ -1,13 +1,12 @@
 <template>
   <v-app-bar
     :class="useResponsiveClasses('app-bar-safe-zone')"
-    flat
-    elevation="3"
-    :color="transparentLayout ? 'transparent' : 'background'">
+    :elevation="transparentAppBar ? 0 : 3"
+    :color="transparentAppBar ? 'transparent' : undefined">
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile && navigationDrawer"
       @click="navigationDrawer = !navigationDrawer" />
-    <app-bar-button-layout v-hide="$route.path === '/'" @click="$router.back()">
+    <app-bar-button-layout @click="$router.back()">
       <template #icon>
         <Icon>
           <i-mdi-arrow-left />
@@ -51,22 +50,23 @@
       "
     /> -->
     <user-button />
-    <locale-switcher />
+    <locale-switcher app-bar />
   </v-app-bar>
 </template>
 
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useNetwork } from '@vueuse/core';
+import { useNetwork, useWindowScroll } from '@vueuse/core';
 import { clientSettingsStore } from '~/store';
 import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
 const network = useNetwork();
-const transparentLayout = computed<boolean>(() => {
-  return route.meta.transparentLayout || false;
+const { y } = useWindowScroll();
+const transparentAppBar = computed<boolean>(() => {
+  return (route.meta.transparentLayout || false) && y.value < 10;
 });
 
 const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');

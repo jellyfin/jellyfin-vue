@@ -1,4 +1,5 @@
 * {
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -22,19 +23,10 @@
   border: 3px solid var(--v-card-base);
 }
 
-.nuxt-progress {
-  /* Override the color with the dynamic color from Vuetify */
-  background-color: var(--v-primary-base);
-}
-
 /* Vuetify overrides */
 
 .v-app-bar.v-app-bar--fixed {
   z-index: 100 !important;
-}
-
-.theme--light.v-navigation-drawer {
-  background-color: #f5f5f5;
 }
 
 .v-btn {
@@ -58,15 +50,15 @@
 //   opacity: 0 !important;
 // }
 
-.v-navigation-drawer--fixed,
-.v-footer--fixed {
-  z-index: 100 !important;
-}
+// .v-navigation-drawer--fixed,
+// .v-footer--fixed {
+//   z-index: 100 !important;
+// }
 
-// It's important for this to be after the rule for .v-navigation-drawer--fixed
-.v-navigation-drawer--temporary {
-  z-index: 105 !important;
-}
+// // It's important for this to be after the rule for .v-navigation-drawer--fixed
+// .v-navigation-drawer--temporary {
+//   z-index: 105 !important;
+// }
 
 .v-data-table tr {
   transition: 0.2s !important;
@@ -134,15 +126,6 @@
 .pb-s {
   padding-bottom: env(safe-area-inset-bottom);
 }
-
-/* Customized Vuetify components */
-// .v-menu__content .v-list {
-//   background: map-get($material-light, 'cards') !important;
-// }
-
-// .theme--dark .v-menu__content .v-list {
-//   background: map-get($material-dark, 'menus') !important;
-// }
 
 .text-capitalize-first-letter::first-letter {
   text-transform: uppercase;
