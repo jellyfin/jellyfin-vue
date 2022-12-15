@@ -19,7 +19,7 @@ const opacity = computed(() => route.meta.backdrop?.opacity || 0.25);
 
 <style lang="scss" scoped>
 .backdrop {
-  background-color: var(--v-theme-background);
+  background-color: rgb(var(--v-theme-background));
   opacity: v-bind(opacity);
 
   & canvas {

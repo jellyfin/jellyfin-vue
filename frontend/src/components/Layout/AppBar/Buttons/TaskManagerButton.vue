@@ -101,7 +101,7 @@ export default defineComponent({
       return this.taskList.every((task) => {
         return task.progress === 100;
       })
-        ? 'green'
+        ? 'success'
         : undefined;
     }
   },
