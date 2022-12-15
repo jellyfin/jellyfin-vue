@@ -35,8 +35,8 @@
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { computed, inject, Ref } from 'vue';
+import IMdiHome from 'virtual:icons/mdi/home';
 import { userViewsStore } from '~/store';
-import IMdiHome from '~icons/mdi/home';
 
 const route = useRoute();
 const userViews = userViewsStore();
