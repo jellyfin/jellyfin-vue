@@ -1,11 +1,13 @@
 <template>
-  <v-menu offset-y>
+  <v-menu>
     <template #activator="{ props: menu }">
       <v-tooltip :location="bottom ? 'bottom' : 'top'">
         <template #activator="{ props: tooltip }">
           <v-btn
             icon
+            :variant="appBar ? 'elevated' : undefined"
             :size="large ? 'large' : 'small'"
+            :color="appBar ? undefined : 'primary'"
             v-bind="mergeProps(menu, tooltip)">
             <Icon>
               <i-mdi-web />
@@ -45,6 +47,10 @@ defineProps({
     type: Boolean
   },
   top: {
+    required: false,
+    type: Boolean
+  },
+  appBar: {
     required: false,
     type: Boolean
   }
