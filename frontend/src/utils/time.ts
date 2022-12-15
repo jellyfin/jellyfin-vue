@@ -2,6 +2,7 @@
  * Utility for converting time between ticks and milliseconds
  */
 import {
+  addMilliseconds,
   format,
   formatDuration,
   formatRelative,
@@ -11,7 +12,7 @@ import * as datefnslocales from 'date-fns/locale';
 import { sumBy, merge } from 'lodash-es';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ComputedRef, isRef, Ref } from 'vue';
-import { MaybeRef } from '@vueuse/core';
+import { MaybeRef, useNow } from '@vueuse/core';
 import { usei18n } from '@/composables';
 
 /**
@@ -82,23 +83,33 @@ export function formatTime(seconds: number): string {
 }
 
 /**
- * Returns the end time of an item
+ * Returns the end date of an item
+ * @param ticks - Ticks of the item to calculate
+ * @returns The resulting date object
+ */
+function getEndsAtDate(ticks: MaybeRef<number>): ComputedRef<Date> {
+  return computed(() => {
+    const ms = ticksToMs(isRef(ticks) ? ticks.value : ticks);
+
+    return addMilliseconds(useNow().value, ms);
+  });
+}
+
+/**
+ * Returns the end time of an item as an string.
+ * Changes in real time
  *
  * @param ticks - Ticks of the item to calculate
  * @returns The resulting string
  */
 export function getEndsAtTime(ticks: MaybeRef<number>): ComputedRef<string> {
   return computed(() => {
-    ticks = isRef(ticks) ? ticks.value : ticks;
-
     const i18n = usei18n();
-    const ms = ticksToMs(ticks);
 
-    const form = format(Date.now() + ms, 'p', {
+    const form = format(getEndsAtDate(ticks).value, 'p', {
       locale: getDateFnsLocale(i18n.locale.value)
     });
 
-    // TODO: Use a Date object
     return i18n.t('endsAt', {
       time: form
     });
