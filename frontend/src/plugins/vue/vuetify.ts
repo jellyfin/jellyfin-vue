@@ -9,15 +9,14 @@ import 'vuetify/styles';
 const dark: ThemeDefinition = {
   colors: {
     accent: '#FF4081',
-    'app-bar': '#1f2937',
     background: '#111827',
     card: '#1c2331',
     chip: '#4b5563',
     divider: '#374151',
     error: '#FF5252',
     info: '#0099CC',
-    menus: '#374151',
-    'navigation-drawer': '#1f2937',
+    menu: '#374151',
+    surface: '#1f2937',
     primary: '#9d37c2',
     secondary: '#2f3951',
     success: '#4CAF50',
@@ -40,7 +39,7 @@ const light: ThemeDefinition = {
     thumb: '#000000',
     warning: '#FB8C00',
     chip: '#e4e4e4',
-    menu: '#bbb'
+    surface: '#f5f5f5'
   },
   dark: false
 };
@@ -52,11 +51,15 @@ const light: ThemeDefinition = {
 const vuetify = createVuetify({
   blueprint: md3,
   defaults: {
-    select: {
+    VSelect: {
       variant: 'outlined'
     },
-    textfield: {
-      variant: 'outlined'
+    VTextField: {
+      variant: 'outlined',
+      color: 'primary'
+    },
+    VBtn: {
+      color: ''
     }
   },
   locale: {
