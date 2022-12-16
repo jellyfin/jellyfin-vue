@@ -9,9 +9,9 @@ import { isValidMD5 } from '@/utils/items';
 export default function validateGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  if (to.params.itemId) {
+  if (to.params.itemId && typeof to.params.itemId === 'string') {
     const { t } = usei18n();
-    const check = isValidMD5(to.params.itemId as string);
+    const check = isValidMD5(to.params.itemId);
 
     if (!check) {
       useSnackbar(t('snackbar.routeValidationError'), 'error');
