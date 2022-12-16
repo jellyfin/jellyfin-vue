@@ -130,7 +130,6 @@ module.exports = {
       // Always require blank lines before return statements
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
-    'sonarjs/cognitive-complexity': 'warn',
     'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
     curly: ['error', 'all'],
@@ -141,11 +140,6 @@ module.exports = {
         ignores: []
       }
     ],
-    'vue/order-in-components': 'error',
-    'vue/v-bind-style': 'error',
-    'vue/v-on-style': 'error',
-    'vue/v-slot-style': 'error',
-    'vue/attributes-order': 'error',
     'vue/no-unused-refs': 'error',
     'vue/html-self-closing': [
       'error',
@@ -162,7 +156,8 @@ module.exports = {
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/no-await-expression-member': 'off',
-    'eslint-comments/no-unused-disable': 'error'
+    'eslint-comments/no-unused-disable': 'error',
+    'no-multiple-empty-lines': 'error'
   },
   settings: {
     'import/resolver': {
