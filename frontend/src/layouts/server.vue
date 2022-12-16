@@ -1,10 +1,8 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view-transition />
-    </v-main>
-    <v-footer app color="background">
-      <locale-switcher top />
-    </v-footer>
-  </v-app>
+  <v-main>
+    <router-view-transition />
+  </v-main>
+  <v-footer app color="transparent">
+    <locale-switcher top />
+  </v-footer>
 </template>

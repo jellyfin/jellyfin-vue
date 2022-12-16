@@ -48,21 +48,23 @@ await router.isReady();
 OverlayScrollbars.plugin(ClickScrollPlugin);
 
 const appElement = document.querySelector('#app') as HTMLDivElement;
-const osInstance = OverlayScrollbars(
-  document.querySelector('body') as HTMLElement,
-  {
-    update: {
-      debounce: 0
-    },
-    scrollbars: {
-      autoHide: 'move',
-      autoHideDelay: 1000,
-      clickScroll: true
-    }
-  }
-);
 
-app.provide('os-instance', osInstance);
+OverlayScrollbars(document.querySelector('body') as HTMLElement, {
+  update: {
+    debounce: 0
+  },
+  scrollbars: {
+    autoHide: 'move',
+    autoHideDelay: 1000,
+    clickScroll: true
+  }
+});
+
+/**
+ * This ensures the transition plays: https://router.vuejs.org/guide/migration/#all-navigations-are-now-always-asynchronous
+ * Also ensures Suspense component's content has loaded on first navigation (refer to RouterViewTransition component)
+ */
+await router.isReady();
 
 window.requestIdleCallback(() => {
   app.mount(appElement);

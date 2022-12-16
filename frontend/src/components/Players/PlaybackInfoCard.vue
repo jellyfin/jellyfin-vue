@@ -232,8 +232,8 @@ export default defineComponent({
   },
   data() {
     return {
-      updateSessionInterval: null as number | null,
-      sessionInfo: null as SessionInfo | null,
+      updateSessionInterval: undefined as number | undefined,
+      sessionInfo: undefined as SessionInfo | undefined,
       playerStats: {} as shaka.extern.Stats,
       videoDimensions: { width: 0, height: 0 }
     };
@@ -299,7 +299,7 @@ export default defineComponent({
         return this.playbackManager.getCurrentVideoTrack.Codec;
       }
 
-      return null;
+      return undefined;
     },
     mediaAudioCodec(): string | null | undefined {
       if (this.playbackManager.getCurrentAudioTrack) {
@@ -315,7 +315,7 @@ export default defineComponent({
         return this.playbackManager.getCurrentAudioTrack.Codec;
       }
 
-      return null;
+      return undefined;
     },
     mediaSubtitleCodec(): string | null | undefined {
       return this.playbackManager.getCurrentSubtitleTrack?.Codec;
@@ -333,7 +333,7 @@ export default defineComponent({
         return this.playbackManager.getCurrentAudioTrack?.Channels?.toString();
       }
 
-      return null;
+      return undefined;
     },
     mediaTotalBitrate(): string | null | undefined {
       if (
@@ -353,7 +353,7 @@ export default defineComponent({
         );
       }
 
-      return null;
+      return undefined;
     }
   },
   beforeMount() {
