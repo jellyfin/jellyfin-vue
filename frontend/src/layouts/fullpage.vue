@@ -1,5 +1,3 @@
 <template>
-  <v-app>
-    <router-view-transition />
-  </v-app>
+  <router-view-transition />
 </template>
