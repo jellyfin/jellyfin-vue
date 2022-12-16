@@ -38,8 +38,9 @@
               :key="`status-${statusIndex}`">
               <v-list-item :value="status.name">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="status.label" />
-
+                  <v-list-item-title>
+                    {{ status.label }}
+                  </v-list-item-title>
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />
                   </v-list-item-action>
@@ -65,8 +66,9 @@
               :key="`feature-${featureIndex}`">
               <v-list-item :value="feature.name">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="feature.label" />
-
+                  <v-list-item-title>
+                    {{ feature.label }}
+                  </v-list-item-title>
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />
                   </v-list-item-action>
@@ -87,8 +89,9 @@
               :key="`genre-${genreIndex}`">
               <v-list-item :value="genre">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="genre" />
-
+                  <v-list-item-title>
+                    {{ genre }}
+                  </v-list-item-title>
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />
                   </v-list-item-action>
@@ -111,8 +114,9 @@
               :key="`rating-${ratingIndex}`">
               <v-list-item :value="rating">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="rating" />
-
+                  <v-list-item-title>
+                    {{ rating }}
+                  </v-list-item-title>
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />
                   </v-list-item-action>
@@ -138,8 +142,9 @@
               :key="`type-${typeIndex}`">
               <v-list-item :value="type.name">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="type.label" />
-
+                  <v-list-item-title>
+                    {{ type.label }}
+                  </v-list-item-title>
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />
                   </v-list-item-action>
@@ -160,7 +165,9 @@
               :key="`year-${yearIndex}`">
               <v-list-item :value="year">
                 <template #default="{ active }">
-                  <v-list-item-title v-text="year" />
+                  <v-list-item-title>
+                    {{ year }}
+                  </v-list-item-title>
 
                   <v-list-item-action>
                     <v-checkbox :model-value="active" />

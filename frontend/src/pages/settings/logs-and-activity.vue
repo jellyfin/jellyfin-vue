@@ -23,9 +23,12 @@
                     <i-mdi-file />
                   </Icon>
                 </v-avatar>
-                <v-list-item-title v-text="file.Name" />
-                <v-list-item-subtitle
-                  v-text="getFormattedLogDate(file.DateModified)" />
+                <v-list-item-title>
+                  {{ file.Name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ getFormattedLogDate(file.DateModified) }}
+                </v-list-item-subtitle>
                 <v-list-item-action>
                   <Icon>
                     <i-mdi-open-in-new />
@@ -72,12 +75,16 @@
                 <v-avatar :color="getColorFromSeverity(activity.Severity)">
                   <v-icon :icon="getIconFromType(activity.Type)" />
                 </v-avatar>
-                <v-list-item-title v-text="activity.Name" />
-                <v-list-item-subtitle v-text="activity.ShortOverview" />
+                <v-list-item-title>
+                  {{ activity.Name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ activity.ShortOverview }}
+                </v-list-item-subtitle>
                 <v-list-item-action>
-                  <v-list-item-subtitle
-                    class="text-capitalize-first-letter"
-                    v-text="getFormattedActivityDate(activity.Date)" />
+                  <v-list-item-subtitle class="text-capitalize-first-letter">
+                    {{ getFormattedActivityDate(activity.Date) }}
+                  </v-list-item-subtitle>
                 </v-list-item-action>
               </v-list-item>
             </v-list-group>
@@ -98,7 +105,7 @@
               </Icon>
               {{ $t('settings.logsAndActivity.failedGetActivity') }}
             </v-card-title>
-            <v-card-text v-if="loadingActivityStatus.errorMessage">
+            <v-card-text>
               {{ loadingActivityStatus.errorMessage }}
             </v-card-text>
           </v-card>
@@ -164,32 +171,32 @@ export default defineComponent({
     };
   },
   methods: {
-    getColorFromSeverity(severity: LogLevel): string {
+    getColorFromSeverity(severity: LogLevel | undefined): string {
       switch (severity) {
         case LogLevel.Trace: {
-          return this.$vuetify.theme.current.value.colors.success;
+          return this.$vuetify.theme.current.colors.success;
         }
         case LogLevel.Debug: {
-          return this.$vuetify.theme.current.value.colors.accent;
+          return this.$vuetify.theme.current.colors.accent;
         }
         case LogLevel.Information: {
-          return this.$vuetify.theme.current.value.colors.info;
+          return this.$vuetify.theme.current.colors.info;
         }
         case LogLevel.Warning: {
-          return this.$vuetify.theme.current.value.colors.warning;
+          return this.$vuetify.theme.current.colors.warning;
         }
         case LogLevel.Error: {
-          return this.$vuetify.theme.current.value.colors.error;
+          return this.$vuetify.theme.current.colors.error;
         }
         case LogLevel.Critical: {
-          return this.$vuetify.theme.current.value.colors.secondary;
+          return this.$vuetify.theme.current.colors.secondary;
         }
         default: {
-          return this.$vuetify.theme.current.value.colors.primary;
+          return this.$vuetify.theme.current.colors.primary;
         }
       }
     },
-    getIconFromType(type: string): typeof IMdiLogin {
+    getIconFromType(type: string | undefined | null): typeof IMdiLogin {
       switch (type) {
         case 'SessionStarted': {
           return IMdiLogin;
@@ -211,11 +218,13 @@ export default defineComponent({
         }
       }
     },
-    getFormattedActivityDate(date: Date): string {
-      return dateFnsFormatRelative(parseJSON(date), new Date()).value;
+    getFormattedActivityDate(date: string | undefined): string {
+      return date
+        ? dateFnsFormatRelative(parseJSON(date), new Date()).value
+        : '';
     },
-    getFormattedLogDate(date: Date): string {
-      return dateFnsFormat(date, 'Ppp').value;
+    getFormattedLogDate(date: string | undefined): string {
+      return date ? dateFnsFormat(parseJSON(date), 'Ppp').value : '';
     },
     getLogFileLink(name: string): string {
       return `${this.$remote.sdk.api?.basePath}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
