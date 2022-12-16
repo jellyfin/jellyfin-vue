@@ -7,7 +7,7 @@
         :width="width"
         :height="height"
         :punch="punch"
-        class="absolute-cover" />
+        class="absolute-cover canvas" />
       <v-fade-transition>
         <img
           v-show="!loading"
@@ -17,12 +17,12 @@
           :alt="alt"
           @load="loading = false" />
       </v-fade-transition>
-      <slot v-if="$slots.placeholder" name="placeholder" />
+      <slot v-if="$slots.placeholder && !hash" name="placeholder" />
       <v-avatar
-        v-else-if="getItemIcon(item)"
+        v-else-if="getItemIcon(item) && !hash"
         :rounded="false"
         size="100%"
-        class="absolute-cover d-flex justify-center align-center align-self-center icon">
+        class="absolute-cover d-flex justify-center align-center align-self-center">
         <v-icon class="text--disabled" size="50%" :icon="getItemIcon(item)" />
       </v-avatar>
     </div>
@@ -31,14 +31,18 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  ImageType
+} from '@jellyfin/sdk/lib/generated-client';
 import { useDisplay } from 'vuetify';
 import { getBlurhash, getImageInfo } from '~/utils/images';
 import { getItemIcon } from '~/utils/items';
 
 const props = defineProps({
   item: {
-    type: Object as () => BaseItemDto,
+    type: Object as () => BaseItemDto | BaseItemPerson,
     required: true
   },
   width: {
@@ -106,9 +110,5 @@ watch([display.width, display.height], () => {
   color: transparent;
   object-fit: cover;
   z-index: 1;
-}
-
-.icon {
-  z-index: -10;
 }
 </style>

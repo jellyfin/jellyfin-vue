@@ -254,7 +254,7 @@ export function canMarkWatched(item: BaseItemDto): boolean {
  * @returns A valid route to the item's details page
  */
 export function getItemDetailsLink(
-  item: BaseItemDto,
+  item: BaseItemDto | BaseItemPerson,
   overrideType?: string
 ): string {
   const router = useRouter();

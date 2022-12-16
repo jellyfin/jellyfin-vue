@@ -1,7 +1,10 @@
 <template>
   <div>
     <div v-if="!vertical" class="related-items">
-      <swiper-section :title="title" :items="relatedItems" :loading="loading" />
+      <swiper-section
+        :title="$t('youMayAlsoLike')"
+        :items="relatedItems"
+        :loading="loading" />
     </div>
     <div v-else-if="vertical">
       <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
@@ -19,7 +22,7 @@
             :to="getItemDetailsLink(relatedItem)">
             <v-avatar>
               <v-avatar color="card">
-                <blurhash-image :item="relatedItem" icon-size="16" />
+                <blurhash-image :item="relatedItem" />
               </v-avatar>
             </v-avatar>
             <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
@@ -42,87 +45,69 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { useI18n } from 'vue-i18n';
 import { getItemDetailsLink } from '~/utils/items';
-import { useSnackbar } from '@/composables';
+import { useSnackbar, useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    /**
-     * item.Id To be used to get related items
-     */
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    },
-    vertical: {
-      type: Boolean,
-      default: false
-    },
-    skeletonLength: {
-      type: Number,
-      default: 5
-    },
-    title: {
-      type: String,
-      default(): string {
-        return this.$t('youMayAlsoLike').toString();
-      }
-    }
-  },
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      relatedItems: [] as BaseItemDto[],
-      loading: true
-    };
-  },
-  watch: {
-    item(): void {
-      this.refreshItems();
-    }
-  },
-  beforeMount() {
-    try {
-      this.refreshItems();
-    } catch {
-      this.useSnackbar(this.$t('unableGetRelated'), 'error');
-    }
-  },
-  methods: {
-    async refreshItems(): Promise<void> {
-      this.loading = true;
+const remote = useRemote();
+const { t } = useI18n();
 
-      if (this.item.Id) {
-        const response = await this.$remote.sdk
+const props = defineProps({
+  /**
+   * item.Id To be used to get related items
+   */
+  item: {
+    type: Object as () => BaseItemDto,
+    required: true
+  },
+  vertical: {
+    type: Boolean,
+    default: false
+  },
+  skeletonLength: {
+    type: Number,
+    default: 5
+  }
+});
+
+const relatedItems = ref<BaseItemDto[]>([]);
+const loading = ref(true);
+
+watch(
+  props.item,
+  async () => {
+    loading.value = true;
+
+    if (props.item.Id) {
+      try {
+        const response = await remote.sdk
           .newUserApi(getLibraryApi)
           .getSimilarItems({
-            itemId: this.item.Id,
-            userId: this.$remote.auth.currentUserId.value,
-            limit: this.vertical ? 5 : 12,
-            excludeArtistIds: this.item.AlbumArtists?.flatMap(
+            itemId: props.item.Id,
+            userId: remote.auth.currentUserId.value,
+            limit: props.vertical ? 5 : 12,
+            excludeArtistIds: props.item.AlbumArtists?.flatMap(
               (albumArtist: BaseItemDto) =>
                 albumArtist.Id ? [albumArtist.Id] : []
             )
           });
 
         if (response.data.Items) {
-          this.relatedItems = response.data.Items;
+          relatedItems.value = response.data.Items;
         }
+      } catch {
+        useSnackbar(t('unableGetRelated'), 'error');
       }
+    }
 
-      this.loading = false;
-    },
-    getItemDetailsLink
-  }
-});
+    loading.value = false;
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
