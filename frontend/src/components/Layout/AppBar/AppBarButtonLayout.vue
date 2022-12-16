@@ -17,15 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core';
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useDisplay } from 'vuetify';
-
-const route = useRoute();
-const display = useDisplay();
-const { y } = useWindowScroll();
-
 defineProps({
   color: {
     type: String,
@@ -35,13 +26,5 @@ defineProps({
     type: Boolean,
     default: false
   }
-});
-
-const transparentLayout = computed<boolean>(() => {
-  return route.meta.transparentLayout || false;
-});
-
-const fab = computed(() => {
-  return !(!transparentLayout.value || display.xs) && y.value > 1;
 });
 </script>

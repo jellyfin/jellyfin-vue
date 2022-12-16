@@ -1,19 +1,17 @@
 <template>
-  <v-list color="transparent" lines="two">
+  <v-list bg-color="transparent" lines="two">
     <div v-if="items.length > 0">
       <v-list-item
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
+        :title="item.Name || ''"
+        :subtitle="item.Role || item.Type || ''"
         :to="getItemDetailsLink(item, 'Person')">
-        <v-avatar>
+        <template #prepend>
           <v-avatar color="card">
-            <blurhash-image :item="item" icon-size="16" />
+            <blurhash-image :item="item" />
           </v-avatar>
-        </v-avatar>
-        <v-list-item-title>{{ item.Name }}</v-list-item-title>
-        <v-list-item-subtitle>
-          {{ item.Role || item.Type }}
-        </v-list-item-subtitle>
+        </template>
       </v-list-item>
     </div>
     <div
@@ -28,26 +26,20 @@
   </v-list>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { BaseItemPerson } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '~/utils/items';
 
-export default defineComponent({
-  props: {
-    items: {
-      type: Array,
-      default: (): BaseItemPerson[] => {
-        return [];
-      }
-    },
-    skeletonLength: {
-      type: Number,
-      default: 0
+defineProps({
+  items: {
+    type: Array<BaseItemPerson>,
+    default: (): BaseItemPerson[] => {
+      return [];
     }
   },
-  methods: {
-    getItemDetailsLink
+  skeletonLength: {
+    type: Number,
+    default: 0
   }
 });
 </script>

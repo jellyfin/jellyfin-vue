@@ -1,14 +1,12 @@
 <template>
-  <v-app>
-    <app-bar />
-    <navigation-drawer />
-    <v-main>
-      <div class="pa-s">
-        <router-view-transition />
-      </div>
-    </v-main>
-    <audio-controls />
-  </v-app>
+  <app-bar />
+  <navigation-drawer />
+  <v-main>
+    <div class="pa-s">
+      <router-view-transition />
+    </div>
+  </v-main>
+  <audio-controls />
 </template>
 
 <script setup lang="ts">

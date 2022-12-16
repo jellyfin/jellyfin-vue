@@ -221,11 +221,11 @@
     <template #right>
       <div v-if="crew.length > 0">
         <h2 class="text-h6 text-sm-h5">{{ $t('item.crew') }}</h2>
-        <person-list :items="crew" />
+        <people-list :items="crew" />
       </div>
       <div v-if="actors.length > 0">
         <h2 class="text-h6 text-sm-h5">{{ $t('item.cast') }}</h2>
-        <person-list :items="actors" />
+        <people-list :items="actors" />
       </div>
     </template>
   </item-cols>
