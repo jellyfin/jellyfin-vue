@@ -6,68 +6,60 @@
         : $t(section.name, { libraryName: section.libraryName })
     "
     :items="items"
-    :shape="section.shape"
-    :loading="loading" />
+    :shape="section.shape" />
 </template>
 
-<script lang="ts">
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { defineComponent } from 'vue';
-import { HomeSection, homeSectionStore } from '~/store';
+<script setup lang="ts">
+import { watch, computed } from 'vue';
+import { homeSectionStore } from '~/store';
+import type { HomeSection } from '~/store/homeSection';
 
-export default defineComponent({
-  props: {
-    section: {
-      type: Object as () => HomeSection,
-      required: true
-    }
-  },
-  setup() {
-    const homeSection = homeSectionStore();
-
-    return { homeSection };
-  },
-  data() {
-    return {
-      loading: true
-    };
-  },
-  computed: {
-    items(): BaseItemDto[] {
-      return this.homeSection.getHomeSectionContent(this.section);
-    }
-  },
-  async beforeMount() {
-    if (this.homeSection.getHomeSectionContent(this.section)) {
-      this.loading = false;
-    }
-
-    switch (this.section.type) {
-      case 'libraries': {
-        break;
-      }
-      case 'resume': {
-        await this.homeSection.getVideoResumes();
-        break;
-      }
-      case 'resumeaudio': {
-        await this.homeSection.getAudioResumes();
-        break;
-      }
-      case 'upnext': {
-        await this.homeSection.getUpNext(this.section.libraryId);
-        break;
-      }
-      case 'latestmedia': {
-        await this.homeSection.getLatestMedia(this.section.libraryId);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    this.loading = false;
+const props = defineProps({
+  section: {
+    type: Object as () => HomeSection,
+    required: true
   }
+});
+
+const homeSection = homeSectionStore();
+
+/**
+ * Fetch home sections
+ */
+async function fetchHomeSections(): Promise<void> {
+  switch (props.section.type) {
+    case 'libraries': {
+      break;
+    }
+    case 'resume': {
+      await homeSection.getVideoResumes();
+      break;
+    }
+    case 'resumeaudio': {
+      await homeSection.getAudioResumes();
+      break;
+    }
+    case 'upnext': {
+      await homeSection.getUpNext(props.section.libraryId);
+      break;
+    }
+    case 'latestmedia': {
+      await homeSection.getLatestMedia(props.section.libraryId);
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+await fetchHomeSections();
+
+watch(props.section, async () => {
+  await fetchHomeSections();
+});
+
+const items = computed(() => {
+  return homeSection.getHomeSectionContent(props.section);
 });
 </script>
