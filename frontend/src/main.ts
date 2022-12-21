@@ -1,3 +1,14 @@
+/**
+ * Top-level await requires ES2022 as target and module for TypeScript compiler (check tsconfig.json)
+ * https://caniuse.com/mdn-javascript_operators_await_top_level
+ *
+ * It's also needed in vite.config.ts at the build.target property.
+ * The specification is not yet finished (although it has been in draft for a long time),
+ * so it's still called ESNEXT
+ *
+ * TODO: Pin to an specific ES version when possible and remove this warning (but not the explanation of why top-level await requires ES2022)
+ */
+
 import { createApp } from 'vue';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import Root from '@/App.vue';
@@ -14,51 +25,28 @@ import { hideDirective } from '@/plugins/vue/directives';
 /* eslint-enable no-restricted-imports */
 
 /**
- * CSS Imports
+ * - GLOBAL STYLES -
  */
 import '@/assets/styles/global.scss';
 import '@/assets/styles/transitions.scss';
 import 'overlayscrollbars/overlayscrollbars.css';
 
+/**
+ * - VUE PLUGINS, STORE AND DIRECTIVE -
+ * The order of statements IS IMPORTANT
+ */
+
 const app = createApp(Root);
 const remote = createRemote();
 const config = createJSONConfig();
 
-/**
- * The order of statements IS IMPORTANT
- */
 app.use(i18n);
 app.use(router);
 app.use(remote);
 app.use(pinia);
 app.use(config);
 app.use(vuetify);
-
-/**
- * Vue directives
- */
 app.directive('hide', hideDirective);
-
-/**
- * Top-level await requires ES2022 as target and module for TypeScript compiler (check tsconfig.json)
- * https://caniuse.com/mdn-javascript_operators_await_top_level
- */
-
-await router.isReady();
-OverlayScrollbars.plugin(ClickScrollPlugin);
-
-const appElement = document.querySelector('#app') as HTMLDivElement;
-
-OverlayScrollbars(document.querySelector('body') as HTMLElement, {
-  update: {
-    debounce: 0
-  },
-  scrollbars: {
-    autoHide: 'move',
-    autoHideDelay: 1000,
-    clickScroll: true
-  }
-});
 
 /**
  * This ensures the transition plays: https://router.vuejs.org/guide/migration/#all-navigations-are-now-always-asynchronous
@@ -66,24 +54,62 @@ OverlayScrollbars(document.querySelector('body') as HTMLElement, {
  */
 await router.isReady();
 
+/**
+ * - DOM POPULATION -
+ *
+ * Without window.requestIdleCallback and window.requestAnimationFrame, the
+ * splash screen gets frozen an small (but noticeable) amount of time.
+ */
+const appDOM = document.querySelector('#app') as HTMLDivElement;
+const bodyDOM = document.querySelector('body') as HTMLBodyElement;
+const splashDOM = document.querySelector('.splashBackground') as HTMLDivElement;
+
+OverlayScrollbars.plugin(ClickScrollPlugin);
 window.requestIdleCallback(() => {
-  app.mount(appElement);
+  window.requestAnimationFrame(() => {
+    OverlayScrollbars(
+      {
+        target: bodyDOM
+      },
+      {
+        update: {
+          debounce: 0
+        },
+        scrollbars: {
+          autoHide: 'move',
+          autoHideDelay: 1000,
+          clickScroll: true,
+          dragScroll: true
+        }
+      }
+    );
+  });
+});
+
+window.requestIdleCallback(() => {
+  window.requestAnimationFrame(() => {
+    app.mount(appDOM);
+  });
 });
 
 /**
- * Once we reach this point, the bundle will be completely loaded,
- * so we can fire a fade out transition and mount the app when that transition ends to give a nice effect
+ * Once we reach this point, the bundle and the app will be completely loaded and mounted,
+ * so we add a loadFinished class (defined in index.html) that fires the defined transition
+ * in the HTML markup to give a nice effect.
  */
-const splashDOM = document.querySelector('.splashBackground');
-
-splashDOM?.addEventListener(
-  'transitionend',
-  () => {
-    splashDOM.remove();
-  },
-  { once: true }
-);
-
-window.requestAnimationFrame(() => {
-  splashDOM?.classList.add('loadFinished');
+window.requestIdleCallback(() => {
+  window.requestAnimationFrame(() => {
+    splashDOM.addEventListener(
+      'transitionend',
+      () => {
+        window.requestIdleCallback(() => {
+          window.requestAnimationFrame(() => {
+            splashDOM.remove();
+          });
+        });
+      },
+      { once: true }
+    );
+    splashDOM.classList.add('loadFinished');
+  });
 });
