@@ -25,7 +25,7 @@ jobs:
           path: dist
 
       - name: Publish to Cloudflare Pages 📃
-        uses: cloudflare/pages-action@v1.2.0
+        uses: cloudflare/pages-action@v1.3.0
         id: cf
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -86,7 +86,7 @@ jobs:
 
     steps:
       - name: Update job summary in PR comment
-        uses: thollander/actions-comment-pull-request@v2.2.0
+        uses: thollander/actions-comment-pull-request@v2.3.0
         with:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
