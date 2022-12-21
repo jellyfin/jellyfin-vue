@@ -4,6 +4,7 @@
   "actor": "Aktor",
   "actors": "Aktorzy",
   "addNewPerson": "Dodaj nową osobę",
+  "administrator": "Administrator",
   "airPlayDevices": "Urządzenia AirPlay",
   "albums": "Albumy",
   "allLanguages": "Wszystkie języki",
@@ -107,9 +108,12 @@
   "incorrectUsernameOrPassword": "Błędna nazwa użytkownika lub hasło",
   "item": {
     "artist": {
+      "albums": "Albumy",
       "appearsOn": "Występy",
       "discography": "Dyskografia",
+      "eps": "EP",
       "information": "Informacja",
+      "singles": "Single",
       "videos": "Wideo"
     },
     "cast": "Obsada",
