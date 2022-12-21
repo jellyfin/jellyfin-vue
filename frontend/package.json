@@ -18,17 +18,15 @@
     "check": "npm run lint && npm run typecheck",
     "start": "vite",
     "serve": "vite preview",
-    "lint": "prettier . '!{components.d.ts,routes.d.ts}' --check --ignore-path ../.gitignore && eslint . --ext .ts,.js,.json,.vue --ignore-path ../.gitignore",
-    "lint-fix": "prettier . '!{components.d.ts,routes.d.ts}' --write --ignore-path ../.gitignore && eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore",
+    "lint": "prettier . '!types/global/{components.d.ts,routes.d.ts}' --check --ignore-path ../.gitignore && eslint . --ext .ts,.js,.json,.vue --ignore-path ../.gitignore --max-warnings=0",
+    "lint-fix": "prettier . '!types/global/{components.d.ts,routes.d.ts}' --write --ignore-path ../.gitignore && eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore --max-warnings=0",
     "prod": "npm run build && npm run serve",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "vue-i18n-extract": "vue-i18n-extract",
     "vue-i18n-extract-remove": "vue-i18n-extract --remove"
   },
   "dependencies": {
-    "@intlify/unplugin-vue-i18n": "0.8.0",
     "@jellyfin/sdk": "0.7.0",
-    "@mdi/font": "7.0.96",
     "@vueuse/components": "9.6.0",
     "@vueuse/core": "9.6.0",
     "axios": "0.27.2",
@@ -50,10 +48,11 @@
     "vue": "3.2.39",
     "vue-i18n": "9.2.2",
     "vue-router": "4.1.5",
-    "vuetify": "3.0.5"
+    "vuetify": "3.0.6"
   },
   "devDependencies": {
     "@iconify/json": "2.1.104",
+    "@intlify/unplugin-vue-i18n": "0.8.1",
     "@types/dompurify": "2.3.3",
     "@types/he": "1.1.2",
     "@types/langs": "2.0.1",
