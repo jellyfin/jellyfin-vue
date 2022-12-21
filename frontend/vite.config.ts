@@ -32,7 +32,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     },
     plugins: [
       VueRouter({
-        dts: './routes.d.ts'
+        dts: './types/global/routes.d.ts'
       }),
       vue(),
       Pages({
@@ -46,6 +46,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       }),
       // This plugin allows to autoimport vue components
       Components({
+        dts: './types/global/components.d.ts',
         /**
          * The icons resolver finds icons components from 'unplugin-icons' using this convenction:
          * {prefix}-{collection}-{icon} e.g. <i-mdi-thumb-up />
@@ -84,7 +85,11 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       })
     ],
     build: {
+      /**
+       * See main.ts for an explanation of this target
+       */
       target: 'esnext',
+      reportCompressedSize: false,
       rollupOptions: {
         output: {
           plugins: [
