@@ -9,6 +9,7 @@ import { useDisplay } from 'vuetify';
  * * xl, xl-and-down, xl-and-up
  * * xs
  * * xxl
+ * * mobile
  *
  * Additionally to all the classes stated above, a mobile class is also added
  * when the mobile breakpoint is active.
