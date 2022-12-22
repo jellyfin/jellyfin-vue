@@ -108,8 +108,10 @@
   "incorrectUsernameOrPassword": "用户名或密码错误",
   "item": {
     "artist": {
+      "albums": "专辑",
       "appearsOn": "外观",
       "discography": "唱片目录",
+      "eps": "剧集",
       "information": "信息",
       "videos": "视频"
     },
