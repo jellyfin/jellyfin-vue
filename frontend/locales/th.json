@@ -1,19 +1,12 @@
 {
-  "general": "",
   "login": {
     "login": ""
-  },
-  "playback": {
-    "playbackSource": {
-      "unknown": ""
-    }
   },
   "settings": {
     "devices": {
       "deleteAll": ""
     }
   },
-  "studios": "",
   "wizard": {
     "completeError": ""
   }
