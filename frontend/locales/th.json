@@ -1,1 +1,549 @@
-{}
+{
+  "3DFormat": "แบบ 3 มิติ",
+  "NoMediaSourcesAvailable": "ไม่พบแหล่งที่มาของสื่อ",
+  "actor": "นักแสดง",
+  "actors": "นักแสดง",
+  "addNewPerson": "เพิ่มบุคคลใหม่",
+  "administrator": "ผู้ดูแล",
+  "airPlayDevices": "อุปกรณ์ AirPlay",
+  "albums": "อัลบั้ม",
+  "allLanguages": "ภาษาทั้งหมด",
+  "alphabetically": "ตามตัวอักษร",
+  "appbar": {
+    "tasks": {
+      "configSync": "กำลังชิงค์การตั้งค่า…",
+      "scanningLibrary": "กำลังแสกนคลัง '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "กำลังทำงาน"
+    }
+  },
+  "architecture": "สถาปัตยกรรม",
+  "artist": "ศิลปิน",
+  "artists": "ศิลปิน",
+  "aspectRatio": "อัตตราส่วนภาพ",
+  "audio": "เสียง",
+  "audioCodecNotSupported": "ไม่รองรับการเข้ารหัสไฟล์เสียงนี้",
+  "badRequest": "คำขอผิดพลาด, ลองอีกครั้ง",
+  "books": "หนังสือ",
+  "browserNotSupported": "เบราว์เซอร์ของคุณไม่รองรับการเล่นไฟล์นี้",
+  "buttons": {
+    "ok": "ตกลง"
+  },
+  "byArtist": "โดย {artist}",
+  "cancel": "ยกเลิก",
+  "castAndCrew": "นักแสดงและทีมงาน",
+  "collectionEmpty": "คลังนี้ว่างปล่าว",
+  "collections": "คลัง",
+  "communityRating": "เรทติ้ง",
+  "confirm": "ยืนยัน",
+  "connect": "เชื่อมต่อ",
+  "continueListening": "ฟังต่อ",
+  "continueWatching": "รับชมต่อ",
+  "criticRating": "คะแนนวิจารณ์",
+  "customRating": "คะแนนที่กำหนดเอง",
+  "darkModeToggle": "สลับโหมดสีมืด",
+  "dateAdded": "วันที่เพิ่ม",
+  "details": "รายละเอียด",
+  "dialog": {
+    "upNext": {
+      "hide": "ช่อน",
+      "nextItemPlayingIn": "กำลังเริ่มใน {time}",
+      "startNow": "เริ่มตอนนี้"
+    }
+  },
+  "directing": "ผู้กำกับ",
+  "director": "ผู้กำกับ",
+  "disabled": "ปิดใช้งานใว้",
+  "discNumber": "แผ่นที่ {discNumber}",
+  "dislikes": "ไม่ชอบ",
+  "edit": "แก้ใข",
+  "editMetadata": "แก้ใขข้อมูล",
+  "editPerson": "แก้ใขบุคคล",
+  "endDate": "วันที่จบ",
+  "endsAt": "จบที่เวลา {time}",
+  "episodeNumber": "ตอนที่ {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "เกิดข้อผิดพลาด",
+    "messages": {
+      "errorCode": "รหัสข้อผิดพลาด: {errorCode}",
+      "videoPlayerError": "ตัวเล่นพบปัญหาที่ไม่สามารถแก้ใขได้"
+    }
+  },
+  "failedRetrievingDisplayPreferences": "ไม่สามารถรับการตั้งค่าหน้าจอได้, กำลังใช้การตั้งค่าล่าสุด",
+  "failedSettingDisplayPreferences": "ไม่สามารถบันทึกการตั้งค่าหน้าจอได้",
+  "failedToRefreshItems": "ไม่สามารถรีเฟรชรายการได้",
+  "favorite": "ชื่นชอบ",
+  "features": "ฟีเจอร์",
+  "filter": "ตัวกรอง",
+  "filtersNotFound": "ไม่สามารถโหลดตัวกรองได้",
+  "fullScreen": "เต็มจอ",
+  "general": "ทั่วไป",
+  "genericJellyfinPlaceholderDevice": "อุปกรณ์ Jellyfin ทั่วไป",
+  "genres": "ประเภท",
+  "googleCastPlaceholderDevice": "อุปกรณ์ Google Cast",
+  "guestStar": "ดารารับเชิญ",
+  "headerExternalIds": "ID ภายนอก",
+  "headerPaths": "เส้นทาง",
+  "home": "บ้าน",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "เพิ่มมาเร็วๆนี้"
+    }
+  },
+  "imageType": {
+    "art": "ศิลปะ",
+    "backdrop": "พื้นหลัง",
+    "banner": "แบนเนอร์",
+    "box": "กล่อง",
+    "boxRear": "กล่อง (หลัง)",
+    "disc": "แผ่น",
+    "logo": "โลโก้",
+    "menu": "เมนู",
+    "primary": "หลัก",
+    "screenshot": "ภาพถ่ายหน้าจอ",
+    "thumb": "ปก"
+  },
+  "images": "รูปภาพ",
+  "incorrectUsernameOrPassword": "ชื่อผู้ใช้งานหรือรหัสผ่านผิด",
+  "item": {
+    "artist": {
+      "albums": "อัลบั้ม",
+      "appearsOn": "ปรากฎใน",
+      "discography": "รายชื่อจานเสียง",
+      "eps": "ตอน",
+      "information": "ข้อมูล",
+      "singles": "ชิงเกิ้ล",
+      "videos": "วีดีโอ"
+    },
+    "cast": "นักแสดง",
+    "composer": "ผู้เรียบเรียง",
+    "crew": "ทีมงาน",
+    "person": {
+      "birth": "เกิด",
+      "birthPlace": "เกิดที่",
+      "books": "หนังสือ",
+      "death": "เสียชีวิตแล้ว",
+      "information": "ข้อมูล",
+      "movies": "ภาพยนต์",
+      "person": "บุคคล",
+      "photos": "รูปภาพ",
+      "shows": "แสดง"
+    },
+    "tracklist": {
+      "title": "ชื่อ"
+    }
+  },
+  "itemMenu": {
+    "pushToBottom": "ข้ามไปตอนจบ",
+    "pushToTop": "ข้ามไปตอนต้น",
+    "removeFromQueue": "ลบออกจากคิว"
+  },
+  "itemNotFound": "ไม่พบรายการ",
+  "jellyfinLogo": "โลโก้ Jellyfin",
+  "latestLibrary": "{libraryName} ล่าสุด",
+  "libraries": "คลัง",
+  "libraryEmpty": "คลังนี้ว่าง",
+  "libraryEmptyFilters": "ไม่พบผลลัพธ์, ลองลบตัวกรองเพื่อเสดงรายการ",
+  "libraryNotFound": "ไม่พบคลัง",
+  "libraryRefreshQueued": "กำลังรีเฟรชคลัง",
+  "liked": "ชอบ",
+  "likes": "ชอบ",
+  "links": {
+    "helpTranslate": "แปล Jellyfin เป็นภาษาของคุณ",
+    "poweredByJellyfin": "เชิฟเวอร์นี้ขับเคลื่อนโดย Jellyfin",
+    "readTheDocumentation": "อ่านคู่มือ",
+    "reportAnIssue": "รายงานข้อผิดพลาด"
+  },
+  "login": {
+    "addServer": "เพิ่มเชิฟเวอร์",
+    "changeServer": "เปลี่ยนเชิฟเวอร์",
+    "changeUser": "เปลี่ยนผู้ใช้",
+    "connect": "เชื่อมต่อ",
+    "kickedOut": "สิทธ์ถูกเพิกถอนแล้ว, กรุณาเข้าสู่ระบบอีกครั้ง",
+    "login": "เข้าสู่ระบบ",
+    "loginAs": "เข้าสู่ระบบในชื่อ {name}",
+    "manualLogin": "เข้าสู่ระบบด้วยตนเอง",
+    "rememberMe": "จดจำผู้ใช้",
+    "selectServer": "เลือกเชิฟเวอร์",
+    "selectUser": "เลือกผู้ใช้",
+    "serverAddress": "ที่อยู่เชิฟเวอร์",
+    "serverAddressMustBeUrl": "ที่อยู่เชิฟเวอร์ต้องเป็น URL",
+    "serverAddressRequired": "ต้องมีข้อมูลที่อยู่เชิฟเวอร์",
+    "serverDashboard": "แผงควบคุมเชิฟเวอร์",
+    "serverNotFound": "ไม่พบเชิฟเวอร์",
+    "serverVersionTooLow": "เชิฟเวอร์ต้องเป็นเวอร์ชั่น 10.7.0 หรือใหม่กว่า"
+  },
+  "logout": "ออกจากระบบ",
+  "logsAndActivity": {
+    "activity": "กิจกรรม",
+    "failedGetActivity": "ไม่สามารถรับข้อมูลกิจกรรมได้",
+    "failedGetLogs": "ไม่สามารถรับข้อมูลบันทึกได้",
+    "logs": "บันทึก",
+    "noActivityFound": "ไม่พบกิจกรรม",
+    "noLogsFound": "ไม่พบบันทีก"
+  },
+  "manualLogin": "เข้าสุ่ระบบด้วยตนเอง",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "ช่องเสียง :"
+    },
+    "audioCodec": {
+      "name": "การเข้ารหัสเสียง:"
+    },
+    "bitrate": {
+      "name": "Bitrate:"
+    },
+    "container": {
+      "name": "คอนเทนเนอร์:"
+    },
+    "name": "สื่อ",
+    "subtitleCodec": {
+      "name": "การเข้ารหัส ชัพไตเติ้ล:"
+    },
+    "videoCodec": {
+      "name": "การเข้ารหัสวีดีโอ:"
+    }
+  },
+  "menu": "เมนู",
+  "metadata": {
+    "source": "แหล่งที่มา",
+    "sourceAll": "ทั้งหมด",
+    "title": "หัวข้อ",
+    "type": "ประเภท"
+  },
+  "metadataEditor": "ตัวแก้ใข Metadata",
+  "metadataNoResultsMatching": "ไม่พบข้อมูลที่ตรงกับ \"{search}\". กด Enter เพื่อสร้างใหม่",
+  "more": "เพิ่มเติม",
+  "moreLikeArtist": "เหมือนกับ {artist}",
+  "moreLikeThis": "เหมือนกัน",
+  "movies": "ภาพยนต์",
+  "name": "ชื่อ",
+  "networks": "เครือข่าย",
+  "nextUp": "ถัดไป",
+  "noImagesFound": "ไม่พบรูป",
+  "noInformationAvailable": "ไม่พบข้อมูล",
+  "noNetworkConnection": "ไม่มีการเชื่อมต่อเครือข่าย",
+  "noResultsFound": "ไม่มีอะไรตรงนี้",
+  "numberTracks": "เทรกที่ {number}",
+  "operatingSystem": "ระบบปฏิบัติการ",
+  "originalAspectRatio": "อัตราส่วนเดิม",
+  "originalTitle": "ชื่อเดิม",
+  "overview": "ภาพรวม",
+  "parentalRating": "เรทติ้ง",
+  "parentalRatings": "เรทติ้ง",
+  "password": "รหัสผ่าน",
+  "people": "ผู้คน",
+  "person": "ผู้คน",
+  "play": "เล่น",
+  "playFromBeginning": "เล่นจากต้นเรื่อง",
+  "playback": {
+    "addToQueue": "เพิ่มเข้าคิว",
+    "clearQueue": "ล้างคิวและหยุดเล่น",
+    "playAll": "เล่นทั้งหมด",
+    "playNext": "เล่นต่อ",
+    "playbackSource": {
+      "item": "เล่นจาก {item}",
+      "shuffle": "กำลังเล่นแบบสุ่ม",
+      "shuffleItem": "กำลังเล่น {item} แบบสุ่ม",
+      "unknown": "กำลังเล่นจากคิว"
+    },
+    "queueItems": "แทรก {items}",
+    "saveAsPlaylist": "บันทึกคิวเป็น playlist",
+    "shuffle": "สุ่ม",
+    "shuffleAll": "สุ่มทั้งหมด"
+  },
+  "playbackData": "ข้อมูลการเล่น",
+  "playbackInfo": {
+    "name": "การเล่น",
+    "playMethod": {
+      "direct": "ตรง",
+      "name": "วิธีการ:",
+      "remux": "รีมิกส์",
+      "transcode": "แปลงรหัส"
+    },
+    "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
+      "name": "ประเภทการสตรีม:",
+      "unknown": "ไม่พบ",
+      "video": "วีดีโอ"
+    }
+  },
+  "playbackSettings": "ตั้งค่าการเล่น",
+  "played": "เล่นไปแล้ว",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "เฟรมที่เสียหาย:"
+    },
+    "decodedFrames": {
+      "name": "เฟรมที่ถอกรหัสแล้ว:"
+    },
+    "droppedFrames": {
+      "name": "เฟรมที่ตก:"
+    },
+    "name": "ตัวเล่น",
+    "playbackResolution": {
+      "name": "ความละเอียดของวิวพอร์ต:"
+    },
+    "videoResolution": {
+      "name": "ความละเอียดวิดีโอ:",
+      "value": "{width}✕{height}"
+    }
+  },
+  "present": "ปัจจุบัน",
+  "producer": "ผู้กำกับ",
+  "quality": "คุณภาพ",
+  "queue": "คิว",
+  "rating": "เรทติ้ง",
+  "refreshLibrary": "รีเฟรชคลัง",
+  "releaseDate": "วันที่วางจำหน่าย",
+  "remoteDevices": "อุปกรณ์ระยะไกล",
+  "resumable": "รับชมต่อ",
+  "resume": "รับชมต่อ",
+  "role": "บทบาท",
+  "save": "บันทึก",
+  "saved": "บันทึกแล้ว",
+  "search": {
+    "name": "ค้นหา",
+    "topResults": "ผลลัพทต้นๆ"
+  },
+  "seasonEpisode": "ชีชั่น {seasonNumber}, ตอน {episodeNumber}",
+  "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "series": "ชีรีย์",
+  "server": "เชิฟเวอร์",
+  "serverVersion": "เวอร์ชั่นเขิฟเวอร์",
+  "serverVersionTooLow": "เชิฟเวอร์ต้องเป็นเวอร์ชั่น 10.7.0 หรือใหม่กว่า",
+  "settings": {
+    "apiKeys": {
+      "accessToken": "โทเคนสำหรับเข้าถึง",
+      "addApiKey": "เพิ่ม API Key",
+      "addNewKey": "เพิ่ม API Key ใหม่",
+      "apiKeys": "คีย์ API",
+      "appName": "ชื่อแอป",
+      "createKeyFailure": "เกิดข้อผิดพลาดขณะสร้างคีย์ API ใหม่",
+      "createKeySuccess": "สร้างตีย์ API ใหม่เสร็จสิ้น",
+      "dateCreated": "วันที่สร้าง",
+      "description": "เพิ่มหรือลบ API Key สำหรับการเข้าถึงจากภายนอก",
+      "refreshKeysFailure": "เกิดข้อผิดพลาดขณะกำลังรีเฟรชคีย์ API",
+      "revokeAll": "ลบ API Key ทั้งหมด",
+      "revokeAllFailure": "เกิดข้อผิดพลากขณะกำลังลบ API Key",
+      "revokeAllSuccess": "ลบ API Key ทั้งหมดเสร็จสิ้น",
+      "revokeFailure": "เกิดข้อผิดพลาดขณะลบ API Key",
+      "revokeSuccess": "ลบ API Key เสร็จสิ้น"
+    },
+    "devices": {
+      "appName": "ชื่อแอป",
+      "appVersion": "เวอร์ชั่นแอป",
+      "delete": "ลบ",
+      "deleteAll": "ลบทั้งหมด",
+      "deleteAllDevicesError": "เกิดข้อผิดพลากขณะลบแอปทั้งหมด",
+      "deleteAllDevicesSuccess": "ลบอุปกรณ์ทั้งหมดเสร็จสิ้น",
+      "deleteDeviceError": "เกิดข้อผิดพลาดขณะลบอุปกรณ์",
+      "deleteDeviceSuccess": "ลบอุปกรณ์เสร็จสิ้น",
+      "deviceName": "ชื่ออุปกรณ์",
+      "devices": "อุปกรณ์",
+      "lastActive": "พบล่าสุด",
+      "noDevicesFound": "ไปเจอุปกรณ์",
+      "userName": "ชื่อผู้ใช้"
+    },
+    "help": "ช่วยเหลือ",
+    "logsAndActivity": {
+      "activity": "กิจกรรม",
+      "failedGetActivity": "ไม่สามารถรับกิจกรรมได้",
+      "failedGetLogs": "ไม่สามารถรับบันทึกได้",
+      "logs": "บันทึก",
+      "noActivityFound": "ไม่พบกิจกรรม",
+      "noLogsFound": "ไม่พบบันทึก"
+    },
+    "settings": "การตั้งค่า"
+  },
+  "settingsSections": {
+    "account": {
+      "description": "แก้ใขข้อมูลผู้ใช้",
+      "name": "บัญชี"
+    },
+    "devices": {
+      "description": "ดูและจัดการอุปกรณ์ที่เชื่อมต่อกับเลิฟเวอร์ของคุณอยู่",
+      "name": "อุปกรณ์"
+    },
+    "dlna": {
+      "description": "ตั้งค่า DLNA และโปรไฟล์",
+      "name": "DLNA"
+    },
+    "home": {
+      "description": "ตั้งค่าหน้าหลักของคุณ",
+      "name": "หน้าหลัก"
+    },
+    "libraries": {
+      "description": "จัดการคลังและข้อมูลเมต้า",
+      "name": "คลัง"
+    },
+    "liveTvAndDvr": {
+      "description": "จัดการ TV Tuner, ตัวให้บริการข้อมูลและตั้งค่า DVR",
+      "name": "TV สด และ DVR"
+    },
+    "logs": {
+      "description": "อ่านและค้าหาบันทึกเชิฟเวอร์และกิจกรรม",
+      "name": "บันทึก และ กิจกรรม"
+    },
+    "mediaPlayers": {
+      "description": "ตั้งค่าการทำงานตัวเล่นของอุปกรณ์นี้",
+      "name": "ตัวเล่นสื่อ"
+    },
+    "networking": {
+      "description": "จัดการการตั้งค่าเครือข่ายเชิฟเวอร์นี้",
+      "name": "เครื่อข่าย"
+    },
+    "notifications": {
+      "description": "จัดการและตั้งค่าการแจ้งเตือนที่ถูกส่งโดยเชิฟเวอร์นี้",
+      "name": "การแจ้งเตือน"
+    },
+    "playback": {
+      "description": "แก้ใขการตั้งค่าการเล่นสำหรับอุปกรณ์นี้",
+      "name": "การเล่น"
+    },
+    "plugins": {
+      "description": "เพิ่มและตั้งค่าฟีเจอร์สำหรับเชิฟเวอร์นี้",
+      "name": "ปลั้กอิน"
+    },
+    "scheduledTasks": {
+      "description": "จัดการงานตามกำหนดเวลาที่ทำงานบนเซิร์ฟเวอร์นี้",
+      "name": "งานที่กำหนดเวลาไว้"
+    },
+    "server": {
+      "description": "กำหนดค่าภาษาและตราสินค้าของเซิร์ฟเวอร์นี้",
+      "name": "เชิฟเวอร์"
+    },
+    "subtitles": {
+      "description": "ควบคุมการแสดงคำบรรยายบนอุปกรณ์นี้",
+      "name": "คำบรรยาย"
+    },
+    "transcodingAndStreaming": {
+      "description": "จัดการวิธีที่เซิร์ฟเวอร์นี้จัดการการแปลงรหัสและการสตรีมไปยังไคลเอนต์",
+      "name": "การแปลงรหัสและสตรีม"
+    },
+    "users": {
+      "description": "จัดการผู้ใช้และสิทธ์",
+      "name": "ผู้ใช้"
+    }
+  },
+  "shows": "แสดง",
+  "signIn": "เข้าสู่ระบบ",
+  "snackbar": {
+    "addedToQueue": "เพิ่มเข้าคิวเสร็จสิ้น",
+    "playNext": "รายการที่เลือกใว้จะถูกเล่นหลังรายการปัจจุบัน"
+  },
+  "songs": "เพลง",
+  "sortByType": "โดย {type}",
+  "sortTitle": "เรียงชื่อ",
+  "specialFeatures": "คุณสมบัติพิเศษ",
+  "speed": "ความเร็ว",
+  "startNow": "เริ่มตอนนี้",
+  "status": "สภานะ",
+  "stretch": "ยืด",
+  "studios": "สตูดิโอ",
+  "subtitles": "คำบรรยาย",
+  "syncPlayGroups": "กลุ่ม SyncPlay",
+  "syncingInProgress": "กำลังชิงค์",
+  "tagline": "สโลแกน",
+  "tags": "แท็ก",
+  "themeSong": "บทเพลง",
+  "themeVideo": "วีดีโอ",
+  "tooltips": {
+    "changeLanguage": "ภาษา",
+    "switchToDarkMode": "กลับไปใช้โดนสีมืด",
+    "switchToLightMode": "กลับไปใช้โดนสีสว่าง"
+  },
+  "trailer": "ตัวอย่าง",
+  "transcodingInfo": {
+    "name": "การแปลงรหัส",
+    "transcodingFramerate": {
+      "name": "เฟรมเรท:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "ความคืบหน้า:",
+    "transcodingReason": {
+      "name": "เหตุผล: | เหตุผล:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "ไม่รองรับวิดีโออนามอร์ฟิค",
+        "audioBitDepthNotSupported": "ไม่รองรับความลึกบิตของเสียง",
+        "audioBitrateNotSupported": "ไม่รองรับบิตเรตของไฟล์เสียงนี้",
+        "audioChannelsNotSupported": "ไม่รองรับจำนวนช่องเสียงนี้",
+        "audioCodecNotSupported": "ไม่รองรับการเข้ารหัสเสียงนี้",
+        "audioProfileNotSupported": "ไม่รองรับโปรไฟล์เสียงนี้",
+        "audioSampleRateNotSupported": "ไม่รองรับ sample rate นี้",
+        "containerBitrateExceedsLimit": "bitrate ของ container นี้สูงเกิน",
+        "containerNotSupported": "ไม่รองรับคอนเทนเนอร์นี้",
+        "interlacedVideoNotSupported": "ไม่รองรับวิดีโอแบบอินเทอร์เลซ",
+        "refFramesNotSupported": "ไม่รองรับเฟรมอ้างอิงนี้",
+        "secondaryAudioNotSupported": "ไม่รองรับช่องเสียงรอง",
+        "subtitleCodecNotSupported": "ไม่รองรับการเข้ารหัสคำอธิบายนี้",
+        "videoBitDepthNotSupported": "ไม่รองรับความลึกบิตของวิดีโอ",
+        "videoCodecNotSupported": "ไม่รองรับการเข้ารหัสวีดีโอนี้",
+        "videoFramerateNotSupported": "ไม่รองรับ frame rate วีดีโอนี้",
+        "videoLevelNotSupported": "ไม่รองรับระดับของตัวแปลงสัญญาณวิดีโอ",
+        "videoProfileNotSupported": "ไม่สนับสนุนโปรไฟล์ของตัวแปลงสัญญาณวิดีโอ",
+        "videoResolutionNotSupported": "ไม่รองรับความละเอียดของวิดีโอ"
+      }
+    }
+  },
+  "type": "ประเภท",
+  "unableGetPublicUsers": "ไม่สามารถรับข้อมูลผู้ใช้ได้",
+  "unableGetRelated": "ไม่สามารถรับข้อมูลที่เกี๋ยวข้องได้",
+  "unableGetServerConfiguration": "ไม่สามารถรับข้อมูลการตั้งค่าเชิฟเวอร์ได้",
+  "unableToRefreshLibrary": "ไม่สามารถชีเฟรชคลังได้",
+  "unableToToggleLike": "ไม่สามารถแก้ใขสถานะชอบของรายการได้",
+  "unableToTogglePlayed": "ไม่สามารถอับเดตสถานะการรับชมได้",
+  "undefined": "ไม่ได้กำหนด",
+  "unexpectedError": "ข้อผิดพลาดที่ไม่คาดคิด",
+  "unhandledException": "ข้อยกเว้นที่ไม่สามารถจัดการได้",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} วินาที | {count} วินาที"
+    }
+  },
+  "unliked": "ยกเลิกชอบ",
+  "unplayed": "ไม่ได้เล่น",
+  "upNext": "ต่อไป",
+  "upNextName": "ต่อไป: {upNextItemName}",
+  "username": "ชื่อผู้ใช้",
+  "validation": {
+    "bothPasswordsSame": "รหัสผ่านทั้ง 2 ต้องเหมือนกัน",
+    "mustBeUrl": "ช่องนี้ต้องเป็น URL",
+    "required": "ต้องมีข้อมูลในช่องนี้"
+  },
+  "version": "เวอร์ชั่น",
+  "video": "วีดีโอ",
+  "videoTypes": "ประเภทวีดีโอ",
+  "viewDetails": "ดูรายละเอียด",
+  "vueClientVersion": "เวอร์ชั่นไคลเอนต์",
+  "wizard": {
+    "administratorAccount": "บัญชีผู้ดูแล",
+    "allowRemoteAccess": "อณุญาติการเชื่อมต่อจากภายนอก",
+    "completeError": "ไม่สามารถดำเนินการตัวช่วยสร้างการเริ่มต้นให้เสร็จสมบูรณ์",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "languageLocale": "ภาษาและสถานที่",
+    "languageSuccessfullySet": "ตั้งค่าภาษาเรียบร้อย",
+    "metadataLanguagesSet": "ตั้งค่าภาษาเมต้าดาต้าเรียบร้อย",
+    "preferedLanguage": "ภาษาที่ต้องการ",
+    "preferredMetadataLanguage": "ภาษาที่ต้องการ",
+    "remoteAccess": "การเข้าถึงจากภายนอก",
+    "remoteAccessSet": "ตั้งค่าการเข้าถึงจากภายนอก",
+    "setAdminError": "ไม่สามารถสร้างบัญชีผู้ดูแลได้",
+    "setLanguageError": "ไม่สามารถตั้งค่าภาษาได้",
+    "setMetadataError": "ไม่สามารถตังค่าภาษาเมต้าดาต้าได้",
+    "setRemoteError": "ไม่สามารถตั้งค่าการเข้าถึงระยไกลได้",
+    "setupWizard": "ตัวช่วยการตั่งค่า",
+    "userSuccessfullySet": "ตั้งค่าผู้ใช้เรียบร้อย"
+  },
+  "writer": "ผู้เขียน",
+  "writing": "กำลังเขียน",
+  "year": "ปี",
+  "years": "ปี",
+  "youMayAlsoLike": "คุณอาจจะชอบ"
+}
