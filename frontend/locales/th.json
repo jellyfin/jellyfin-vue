@@ -1,333 +1,194 @@
 {
-  "NoMediaSourcesAvailable": "",
   "actors": "",
-  "administrator": "",
   "albums": "",
-  "alphabetically": "",
   "appbar": {
     "tasks": {
       "scanningLibrary": ""
     }
   },
-  "architecture": "",
   "artists": "",
-  "audio": "",
   "badRequest": "",
-  "browserNotSupported": "",
   "byArtist": "",
-  "castAndCrew": "",
   "collections": "",
-  "confirm": "",
   "continueListening": "",
-  "criticRating": "",
   "darkModeToggle": "",
-  "details": "",
   "dialog": {
     "upNext": {
       "nextItemPlayingIn": ""
     }
   },
-  "directing": "",
   "disabled": "",
-  "dislikes": "",
   "editMetadata": "",
-  "endDate": "",
   "episodeNumber": "",
-  "errors": {
-    "messages": {
-      "errorCode": ""
-    }
-  },
   "failedRetrievingDisplayPreferences": "",
-  "failedToRefreshItems": "",
   "features": "",
-  "filtersNotFound": "",
   "general": "",
-  "genres": "",
   "guestStar": "",
-  "headerPaths": "",
   "homeHeader": {
     "items": {
       "recentlyAdded": ""
     }
   },
   "imageType": {
-    "backdrop": "",
     "box": "",
-    "disc": "",
-    "menu": "",
-    "screenshot": ""
+    "menu": ""
   },
   "images": "",
   "item": {
     "artist": {
-      "albums": "",
       "discography": "",
-      "information": "",
       "videos": ""
     },
-    "composer": "",
     "person": {
       "birth": "",
-      "books": "",
       "information": "",
-      "person": "",
       "shows": ""
     }
   },
   "itemMenu": {
-    "pushToBottom": "",
     "removeFromQueue": ""
   },
-  "jellyfinLogo": "",
   "libraries": "",
-  "libraryEmptyFilters": "",
   "libraryRefreshQueued": "",
-  "likes": "",
   "links": {
-    "poweredByJellyfin": "",
-    "reportAnIssue": ""
+    "poweredByJellyfin": ""
   },
   "login": {
     "changeServer": "",
-    "connect": "",
     "login": "",
-    "manualLogin": "",
     "selectServer": "",
-    "serverAddress": "",
-    "serverAddressRequired": "",
-    "serverNotFound": ""
+    "serverAddressRequired": ""
   },
   "logout": "",
   "logsAndActivity": {
-    "failedGetActivity": "",
-    "logs": "",
-    "noLogsFound": ""
+    "logs": ""
   },
   "mediaInfo": {
     "audioChannels": {
       "name": ""
     },
-    "bitrate": {
-      "name": ""
-    },
-    "name": "",
-    "videoCodec": {
-      "name": ""
-    }
+    "name": ""
   },
   "metadata": {
-    "source": "",
-    "title": ""
+    "source": ""
   },
   "metadataEditor": "",
-  "more": "",
   "moreLikeThis": "",
-  "name": "",
   "nextUp": "",
-  "noInformationAvailable": "",
   "noResultsFound": "",
-  "operatingSystem": "",
   "originalTitle": "",
-  "parentalRating": "",
   "password": "",
-  "person": "",
   "playFromBeginning": "",
   "playback": {
-    "clearQueue": "",
     "playNext": "",
     "playbackSource": {
-      "shuffle": "",
       "unknown": ""
     },
-    "saveAsPlaylist": "",
     "shuffleAll": ""
   },
   "playbackInfo": {
-    "name": "",
     "playMethod": {
-      "name": "",
-      "transcode": ""
+      "name": ""
     },
     "streamType": {
-      "hls": "",
-      "unknown": ""
+      "hls": ""
     }
   },
   "playbackSettings": "",
   "playerInfo": {
-    "corruptedFrames": {
-      "name": ""
-    },
     "droppedFrames": {
-      "name": ""
-    },
-    "playbackResolution": {
       "name": ""
     },
     "videoResolution": {
       "value": ""
     }
   },
-  "producer": "",
   "queue": "",
-  "refreshLibrary": "",
   "remoteDevices": "",
-  "resume": "",
   "save": "",
-  "search": {
-    "name": ""
-  },
   "seasonEpisode": "",
-  "series": "",
   "serverVersion": "",
   "settings": {
     "apiKeys": {
-      "accessToken": "",
       "addNewKey": "",
-      "appName": "",
       "createKeySuccess": "",
-      "description": "",
       "revokeAll": "",
-      "revokeAllSuccess": "",
       "revokeSuccess": ""
     },
     "devices": {
-      "appVersion": "",
       "deleteAll": "",
-      "deleteAllDevicesSuccess": "",
       "deleteDeviceSuccess": "",
-      "devices": "",
       "noDevicesFound": ""
     },
-    "help": "",
     "logsAndActivity": {
       "failedGetActivity": "",
-      "logs": "",
       "noLogsFound": ""
     }
   },
   "settingsSections": {
-    "account": {
-      "description": ""
-    },
     "devices": {
-      "description": ""
-    },
-    "dlna": {
       "description": ""
     },
     "home": {
       "description": ""
     },
-    "libraries": {
-      "description": ""
-    },
     "liveTvAndDvr": {
-      "description": ""
-    },
-    "logs": {
       "description": ""
     },
     "mediaPlayers": {
       "description": ""
     },
-    "networking": {
-      "description": ""
-    },
     "notifications": {
-      "description": ""
-    },
-    "playback": {
       "description": ""
     },
     "plugins": {
       "description": ""
     },
-    "scheduledTasks": {
-      "description": ""
-    },
     "server": {
-      "description": ""
-    },
-    "subtitles": {
       "description": ""
     },
     "transcodingAndStreaming": {
       "description": ""
-    },
-    "users": {
-      "description": ""
     }
   },
   "shows": "",
-  "snackbar": {
-    "addedToQueue": ""
-  },
   "songs": "",
-  "sortTitle": "",
   "speed": "",
-  "status": "",
   "studios": "",
-  "syncPlayGroups": "",
   "tagline": "",
-  "themeSong": "",
   "tooltips": {
-    "changeLanguage": "",
-    "switchToLightMode": ""
+    "changeLanguage": ""
   },
   "transcodingInfo": {
     "name": "",
-    "transcodingFramerate": {
-      "value": ""
-    },
     "transcodingReason": {
       "name": "",
       "reasons": {
-        "audioBitDepthNotSupported": "",
         "audioChannelsNotSupported": "",
-        "audioProfileNotSupported": "",
         "containerBitrateExceedsLimit": "",
-        "interlacedVideoNotSupported": "",
         "secondaryAudioNotSupported": "",
-        "videoBitDepthNotSupported": "",
-        "videoFramerateNotSupported": "",
-        "videoProfileNotSupported": ""
+        "videoFramerateNotSupported": ""
       }
     }
   },
   "type": "",
-  "unableGetRelated": "",
   "unableToRefreshLibrary": "",
-  "unableToTogglePlayed": "",
   "unexpectedError": "",
   "units": {
-    "bitrate": {
-      "kbps": ""
-    },
     "time": {
       "seconds": ""
     }
   },
-  "unplayed": "",
   "upNextName": "",
   "validation": {
-    "bothPasswordsSame": "",
     "required": ""
   },
-  "video": "",
   "viewDetails": "",
   "wizard": {
-    "administratorAccount": "",
     "completeError": "",
-    "languageLocale": "",
     "metadataLanguagesSet": "",
-    "preferredMetadataLanguage": "",
     "remoteAccessSet": "",
-    "setLanguageError": "",
-    "setRemoteError": "",
-    "userSuccessfullySet": ""
+    "setRemoteError": ""
   },
-  "writing": "",
-  "years": ""
+  "writing": ""
 }
