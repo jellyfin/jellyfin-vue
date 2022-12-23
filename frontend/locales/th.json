@@ -1,13 +1,7 @@
 {
-  "login": {
-    "login": ""
-  },
   "settings": {
     "devices": {
       "deleteAll": ""
     }
-  },
-  "wizard": {
-    "completeError": ""
   }
 }
