@@ -1,122 +1,67 @@
 {
-  "albums": "",
   "artists": "",
-  "byArtist": "",
   "continueListening": "",
-  "dialog": {
-    "upNext": {
-      "nextItemPlayingIn": ""
-    }
-  },
   "editMetadata": "",
-  "failedRetrievingDisplayPreferences": "",
   "general": "",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": ""
-    }
-  },
   "imageType": {
     "menu": ""
   },
   "item": {
-    "artist": {
-      "discography": ""
-    },
     "person": {
-      "birth": "",
-      "shows": ""
+      "birth": ""
     }
   },
   "libraries": "",
-  "links": {
-    "poweredByJellyfin": ""
-  },
   "login": {
-    "login": "",
-    "serverAddressRequired": ""
+    "login": ""
   },
   "logsAndActivity": {
     "logs": ""
   },
-  "mediaInfo": {
-    "name": ""
-  },
   "metadataEditor": "",
-  "nextUp": "",
   "originalTitle": "",
-  "playFromBeginning": "",
   "playback": {
     "playbackSource": {
       "unknown": ""
     }
   },
-  "playbackInfo": {
-    "playMethod": {
-      "name": ""
-    }
-  },
   "playbackSettings": "",
-  "playerInfo": {
-    "videoResolution": {
-      "value": ""
-    }
-  },
   "remoteDevices": "",
-  "seasonEpisode": "",
   "settings": {
     "apiKeys": {
-      "addNewKey": "",
-      "revokeAll": ""
+      "addNewKey": ""
     },
     "devices": {
-      "deleteAll": "",
-      "noDevicesFound": ""
+      "deleteAll": ""
     },
     "logsAndActivity": {
       "noLogsFound": ""
     }
   },
   "settingsSections": {
-    "home": {
-      "description": ""
-    },
     "mediaPlayers": {
-      "description": ""
-    },
-    "plugins": {
       "description": ""
     },
     "transcodingAndStreaming": {
       "description": ""
     }
   },
-  "songs": "",
   "studios": "",
-  "tooltips": {
-    "changeLanguage": ""
-  },
   "transcodingInfo": {
     "transcodingReason": {
       "name": "",
       "reasons": {
-        "containerBitrateExceedsLimit": "",
         "videoFramerateNotSupported": ""
       }
     }
   },
-  "unableToRefreshLibrary": "",
   "units": {
     "time": {
       "seconds": ""
     }
   },
-  "validation": {
-    "required": ""
-  },
   "wizard": {
-    "completeError": "",
-    "remoteAccessSet": ""
+    "completeError": ""
   },
   "writing": ""
 }
