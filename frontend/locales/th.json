@@ -1,67 +1,40 @@
 {
-  "artists": "",
   "continueListening": "",
-  "editMetadata": "",
   "general": "",
-  "imageType": {
-    "menu": ""
-  },
   "item": {
     "person": {
       "birth": ""
     }
   },
-  "libraries": "",
   "login": {
     "login": ""
   },
-  "logsAndActivity": {
-    "logs": ""
-  },
   "metadataEditor": "",
-  "originalTitle": "",
   "playback": {
     "playbackSource": {
       "unknown": ""
     }
   },
-  "playbackSettings": "",
   "remoteDevices": "",
   "settings": {
-    "apiKeys": {
-      "addNewKey": ""
-    },
     "devices": {
       "deleteAll": ""
-    },
-    "logsAndActivity": {
-      "noLogsFound": ""
     }
   },
   "settingsSections": {
     "mediaPlayers": {
-      "description": ""
-    },
-    "transcodingAndStreaming": {
       "description": ""
     }
   },
   "studios": "",
   "transcodingInfo": {
     "transcodingReason": {
-      "name": "",
       "reasons": {
         "videoFramerateNotSupported": ""
       }
     }
   },
-  "units": {
-    "time": {
-      "seconds": ""
-    }
-  },
   "wizard": {
     "completeError": ""
-  },
-  "writing": ""
+  }
 }
