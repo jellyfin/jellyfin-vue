@@ -1,194 +1,122 @@
 {
-  "actors": "",
   "albums": "",
-  "appbar": {
-    "tasks": {
-      "scanningLibrary": ""
-    }
-  },
   "artists": "",
-  "badRequest": "",
   "byArtist": "",
-  "collections": "",
   "continueListening": "",
-  "darkModeToggle": "",
   "dialog": {
     "upNext": {
       "nextItemPlayingIn": ""
     }
   },
-  "disabled": "",
   "editMetadata": "",
-  "episodeNumber": "",
   "failedRetrievingDisplayPreferences": "",
-  "features": "",
   "general": "",
-  "guestStar": "",
   "homeHeader": {
     "items": {
       "recentlyAdded": ""
     }
   },
   "imageType": {
-    "box": "",
     "menu": ""
   },
-  "images": "",
   "item": {
     "artist": {
-      "discography": "",
-      "videos": ""
+      "discography": ""
     },
     "person": {
       "birth": "",
-      "information": "",
       "shows": ""
     }
   },
-  "itemMenu": {
-    "removeFromQueue": ""
-  },
   "libraries": "",
-  "libraryRefreshQueued": "",
   "links": {
     "poweredByJellyfin": ""
   },
   "login": {
-    "changeServer": "",
     "login": "",
-    "selectServer": "",
     "serverAddressRequired": ""
   },
-  "logout": "",
   "logsAndActivity": {
     "logs": ""
   },
   "mediaInfo": {
-    "audioChannels": {
-      "name": ""
-    },
     "name": ""
   },
-  "metadata": {
-    "source": ""
-  },
   "metadataEditor": "",
-  "moreLikeThis": "",
   "nextUp": "",
-  "noResultsFound": "",
   "originalTitle": "",
-  "password": "",
   "playFromBeginning": "",
   "playback": {
-    "playNext": "",
     "playbackSource": {
       "unknown": ""
-    },
-    "shuffleAll": ""
+    }
   },
   "playbackInfo": {
     "playMethod": {
       "name": ""
-    },
-    "streamType": {
-      "hls": ""
     }
   },
   "playbackSettings": "",
   "playerInfo": {
-    "droppedFrames": {
-      "name": ""
-    },
     "videoResolution": {
       "value": ""
     }
   },
-  "queue": "",
   "remoteDevices": "",
-  "save": "",
   "seasonEpisode": "",
-  "serverVersion": "",
   "settings": {
     "apiKeys": {
       "addNewKey": "",
-      "createKeySuccess": "",
-      "revokeAll": "",
-      "revokeSuccess": ""
+      "revokeAll": ""
     },
     "devices": {
       "deleteAll": "",
-      "deleteDeviceSuccess": "",
       "noDevicesFound": ""
     },
     "logsAndActivity": {
-      "failedGetActivity": "",
       "noLogsFound": ""
     }
   },
   "settingsSections": {
-    "devices": {
-      "description": ""
-    },
     "home": {
-      "description": ""
-    },
-    "liveTvAndDvr": {
       "description": ""
     },
     "mediaPlayers": {
       "description": ""
     },
-    "notifications": {
-      "description": ""
-    },
     "plugins": {
-      "description": ""
-    },
-    "server": {
       "description": ""
     },
     "transcodingAndStreaming": {
       "description": ""
     }
   },
-  "shows": "",
   "songs": "",
-  "speed": "",
   "studios": "",
-  "tagline": "",
   "tooltips": {
     "changeLanguage": ""
   },
   "transcodingInfo": {
-    "name": "",
     "transcodingReason": {
       "name": "",
       "reasons": {
-        "audioChannelsNotSupported": "",
         "containerBitrateExceedsLimit": "",
-        "secondaryAudioNotSupported": "",
         "videoFramerateNotSupported": ""
       }
     }
   },
-  "type": "",
   "unableToRefreshLibrary": "",
-  "unexpectedError": "",
   "units": {
     "time": {
       "seconds": ""
     }
   },
-  "upNextName": "",
   "validation": {
     "required": ""
   },
-  "viewDetails": "",
   "wizard": {
     "completeError": "",
-    "metadataLanguagesSet": "",
-    "remoteAccessSet": "",
-    "setRemoteError": ""
+    "remoteAccessSet": ""
   },
   "writing": ""
 }
