@@ -1,39 +1,19 @@
 {
-  "continueListening": "",
   "general": "",
-  "item": {
-    "person": {
-      "birth": ""
-    }
-  },
   "login": {
     "login": ""
   },
-  "metadataEditor": "",
   "playback": {
     "playbackSource": {
       "unknown": ""
     }
   },
-  "remoteDevices": "",
   "settings": {
     "devices": {
       "deleteAll": ""
     }
   },
-  "settingsSections": {
-    "mediaPlayers": {
-      "description": ""
-    }
-  },
   "studios": "",
-  "transcodingInfo": {
-    "transcodingReason": {
-      "reasons": {
-        "videoFramerateNotSupported": ""
-      }
-    }
-  },
   "wizard": {
     "completeError": ""
   }
