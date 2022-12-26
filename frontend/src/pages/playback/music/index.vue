@@ -98,7 +98,7 @@ const setControlledSwiper = (swiper: SwiperType): void => {
 };
 
 watch(
-  computed(() => playbackManager.currentItemIndex),
+  () => playbackManager.currentItemIndex,
   () => {
     if (swiperInstance.value && playbackManager.currentItemIndex) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
