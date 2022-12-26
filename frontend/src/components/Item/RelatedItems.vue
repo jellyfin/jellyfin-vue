@@ -78,7 +78,7 @@ const relatedItems = ref<BaseItemDto[]>([]);
 const loading = ref(true);
 
 watch(
-  props.item,
+  () => props.item,
   async () => {
     loading.value = true;
 
