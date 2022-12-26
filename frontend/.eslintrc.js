@@ -158,6 +158,7 @@ module.exports = {
     'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
     'vue/multiline-html-element-content-newline': 'error',
     'vue/multi-word-component-names': 'off',
+    'vue/return-in-computed-property': 'off',
     'unicorn/filename-case': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/prevent-abbreviations': 'off',
