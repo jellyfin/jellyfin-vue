@@ -55,9 +55,12 @@ async function fetchHomeSections(): Promise<void> {
 
 await fetchHomeSections();
 
-watch(props.section, async () => {
-  await fetchHomeSections();
-});
+watch(
+  () => props.section,
+  async () => {
+    await fetchHomeSections();
+  }
+);
 
 const items = computed(() => {
   return homeSection.getHomeSectionContent(props.section);
