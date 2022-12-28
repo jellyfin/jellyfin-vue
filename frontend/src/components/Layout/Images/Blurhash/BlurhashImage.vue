@@ -7,7 +7,8 @@
         :width="width"
         :height="height"
         :punch="punch"
-        class="absolute-cover canvas" />
+        class="absolute-cover canvas"
+        @error="error = true" />
       <v-fade-transition>
         <img
           v-show="!loading"
@@ -15,14 +16,18 @@
           :src="image"
           v-bind="$attrs"
           :alt="alt"
-          @load="loading = false" />
+          @load="loading = false"
+          @error="error = true" />
       </v-fade-transition>
-      <slot v-if="$slots.placeholder && !hash" name="placeholder" />
+      <slot
+        v-if="$slots.placeholder && (!hash || error)"
+        name="placeholder"
+        class="placeholder" />
       <v-avatar
-        v-else-if="getItemIcon(item) && !hash"
+        v-else-if="getItemIcon(item) && (!hash || error)"
         :rounded="false"
         size="100%"
-        class="absolute-cover d-flex justify-center align-center align-self-center">
+        class="absolute-cover d-flex justify-center align-center align-self-center placeholder">
         <v-icon class="text--disabled" size="50%" :icon="getItemIcon(item)" />
       </v-avatar>
     </div>
@@ -69,7 +74,8 @@ const props = defineProps({
 
 const display = useDisplay();
 const image = ref<string | undefined>('');
-const loading = ref(false);
+const loading = ref(true);
+const error = ref(false);
 const imageElement = ref<HTMLDivElement | undefined>(undefined);
 const hash = computed(() => getBlurhash(props.item, props.type));
 
@@ -91,16 +97,29 @@ function getImage(): void {
   image.value = imageInfo.url;
 }
 
+watch(hash, () => {
+  if (hash.value && !error.value) {
+    error.value = false;
+  }
+});
+
 watch([imageElement, props], () => {
   if (imageElement.value) {
-    loading.value = true;
-    getImage();
+    window.requestAnimationFrame(() => {
+      error.value = false;
+      getImage();
+    });
   }
 });
 
 watch([display.width, display.height], () => {
   if (imageElement.value) {
-    getImage();
+    window.requestIdleCallback(() => {
+      window.requestAnimationFrame(() => {
+        error.value = false;
+        getImage();
+      });
+    });
   }
 });
 </script>
@@ -109,6 +128,9 @@ watch([display.width, display.height], () => {
 .img {
   color: transparent;
   object-fit: cover;
-  z-index: 1;
+}
+
+.placeholder {
+  z-index: -1;
 }
 </style>
