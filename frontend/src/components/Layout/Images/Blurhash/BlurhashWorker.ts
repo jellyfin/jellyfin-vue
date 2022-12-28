@@ -1,6 +1,8 @@
 import { decode } from 'blurhash';
 import { expose } from 'comlink';
 
+const cache = new WeakMap<Parameters<typeof getPixels>, Uint8ClampedArray>();
+
 /**
  * Decodes blurhash outside the main thread, in a web worker
  *
@@ -17,7 +19,14 @@ export default function getPixels(
   punch: number
 ): Uint8ClampedArray {
   try {
-    return decode(hash, width, height, punch);
+    let canvas = cache.get([hash, width, height, punch]);
+
+    if (!canvas) {
+      canvas = decode(hash, width, height, punch);
+      cache.set([hash, width, height, punch], canvas);
+    }
+
+    return canvas;
   } catch {
     throw new TypeError(`Blurhash ${hash} is not valid`);
   }
