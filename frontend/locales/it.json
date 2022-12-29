@@ -3,7 +3,7 @@
   "NoMediaSourcesAvailable": "Nessuna sorgente disponibile",
   "actor": "Attore",
   "actors": "Attori",
-  "addNewPerson": "Aggiungi una altra persona",
+  "addNewPerson": "Aggiungi un'altra persona",
   "administrator": "Amministratore",
   "airPlayDevices": "Dispositivi AirPlay",
   "albums": "Albums",
@@ -35,13 +35,13 @@
   "castAndCrew": "Cast",
   "collectionEmpty": "Questa collezione è vuota",
   "collections": "Collezioni",
-  "communityRating": "Valutazione della community",
+  "communityRating": "Voto della community",
   "confirm": "Conferma",
   "connect": "Connetti",
   "continueListening": "Continua ad ascoltare",
   "continueWatching": "Continua a guardare",
-  "criticRating": "Valutazione dei critici",
-  "customRating": "Valutazione personale",
+  "criticRating": "Voto della critica",
+  "customRating": "Voto personale",
   "darkModeToggle": "Attiva/Disattiva modalità scura",
   "dateAdded": "Data di aggiunta",
   "details": "Dettagli",
@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Utente o password errati",
   "item": {
     "artist": {
+      "albums": "Album",
       "appearsOn": "Apparizioni",
       "discography": "Discografia",
+      "eps": "EP",
       "information": "Informationi",
+      "singles": "Singoli",
       "videos": "Video"
     },
     "cast": "Cast",
@@ -227,7 +230,7 @@
   "originalAspectRatio": "Proporzioni originali",
   "originalTitle": "Titolo originale",
   "overview": "Panoramica",
-  "parentalRating": "Valutazione dei genitori",
+  "parentalRating": "Classificazione per età",
   "parentalRatings": "Valutazioni dei genitori",
   "password": "Password",
   "people": "Persone",
@@ -268,7 +271,7 @@
     }
   },
   "playbackSettings": "Impostazioni di riproduzione",
-  "played": "Ascoltato",
+  "played": "Visto",
   "playerInfo": {
     "corruptedFrames": {
       "name": "Fotogrammi corrotti:"
