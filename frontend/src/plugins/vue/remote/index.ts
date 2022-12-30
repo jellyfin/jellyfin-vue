@@ -7,10 +7,12 @@
  * - WebSocket ($remote.socket)
  */
 import { App } from 'vue';
+import { isNil } from 'lodash-es';
 import RemotePluginAxiosInstance from './axios';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
+import { getJSONConfig } from '@/utils/external-config';
 
 class RemotePlugin {
   public axios = RemotePluginAxiosInstance;
@@ -27,8 +29,23 @@ export const remoteInstance = new RemotePlugin();
  */
 export default function createRemote(): { install: (app: App) => void } {
   return {
-    install: (app: App): void => {
+    install: async (app: App): Promise<void> => {
       app.config.globalProperties.$remote = remoteInstance;
+
+      const auth = remoteInstance.auth;
+      const config = await getJSONConfig();
+      const defaultServers = config.defaultServerURLs;
+      const missingServers = defaultServers.filter((serverUrl) => {
+        const server = auth.servers.value.find(
+          (lsServer) => lsServer.PublicAddress === serverUrl
+        );
+
+        return isNil(server);
+      });
+
+      for (const serverUrl of missingServers) {
+        await auth.connectServer(serverUrl, true);
+      }
     }
   };
 }
