@@ -212,7 +212,7 @@
     "title": "Titolo",
     "type": "Tipo"
   },
-  "metadataEditor": "Modificatore dei Metadati",
+  "metadataEditor": "Modifica metadati",
   "metadataNoResultsMatching": "La ricerca per \"{search}\" non ha dato risultati. Premere Enter per crearne una nuova.",
   "more": "Altro",
   "moreLikeArtist": "Altri come {artist}",
@@ -231,7 +231,7 @@
   "originalTitle": "Titolo originale",
   "overview": "Panoramica",
   "parentalRating": "Classificazione per età",
-  "parentalRatings": "Valutazioni dei genitori",
+  "parentalRatings": "Classificazione per età",
   "password": "Password",
   "people": "Persone",
   "person": "Persona",
@@ -299,7 +299,7 @@
   "refreshLibrary": "Aggiorna Libreria",
   "releaseDate": "Data di rilascio",
   "remoteDevices": "Dispositivi remoti",
-  "resumable": "Riprendibili",
+  "resumable": "Riprendibile",
   "resume": "Riprendi",
   "role": "Ruolo",
   "save": "Salva",
@@ -446,7 +446,7 @@
   "subtitles": "Sottotitoli",
   "syncPlayGroups": "Gruppi SyncPlay",
   "syncingInProgress": "Sincronizzazione in corso",
-  "tagline": "Slogan",
+  "tagline": "Citazione",
   "tags": "Tags",
   "themeSong": "Sigla",
   "themeVideo": "Video Sigla",
@@ -544,6 +544,6 @@
   "writer": "Sceneggiatore",
   "writing": "Scrittura",
   "year": "Anno",
-  "years": "Anni",
+  "years": "Anno",
   "youMayAlsoLike": "Potrebbe piacerti anche"
 }
