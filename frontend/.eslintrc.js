@@ -13,8 +13,7 @@ module.exports = {
     sourceType: 'module'
   },
   globals: {
-    __COMMIT_HASH__: 'readonly',
-    __HISTORY_ROUTER_MODE__: 'readonly'
+    __COMMIT_HASH__: 'readonly'
   },
   // Ignore test files for now
   ignorePatterns: [
