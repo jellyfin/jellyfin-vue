@@ -11,12 +11,14 @@ import loginGuard from './middlewares/login';
 import adminGuard from './middlewares/admin-pages';
 import validateGuard from './middlewares/validate';
 import metaGuard from './middlewares/meta';
+import { getJSONConfig } from '@/utils/external-config';
 import { useRemote } from '@/composables';
 
 const router = createRouter({
-  history: __HISTORY_ROUTER_MODE__
-    ? createWebHistory()
-    : createWebHashHistory(),
+  history:
+    (await getJSONConfig()).historyMode === 'history'
+      ? createWebHistory()
+      : createWebHashHistory(),
   routes: setupLayouts(generatedRoutes)
 });
 
@@ -33,12 +35,12 @@ router.beforeEach(validateGuard);
  * Handle page title changes
  */
 const pageTitle = computed(() => {
-  return router.currentRoute.value.meta.title;
+  const title = router.currentRoute.value.meta.title?.trim();
+
+  return title ? `${title} | Jellyfin Vue` : 'Jellyfin Vue';
 });
 
-useTitle(pageTitle, {
-  titleTemplate: '%s | Jellyfin Vue'
-});
+useTitle(pageTitle);
 
 /**
  * Re-run the middleware pipeline when the user logs out
