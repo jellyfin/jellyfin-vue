@@ -13,14 +13,7 @@ import { createApp } from 'vue';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import Root from '@/App.vue';
 /* eslint-disable no-restricted-imports */
-import {
-  createRemote,
-  createJSONConfig,
-  pinia,
-  i18n,
-  router,
-  vuetify
-} from '@/plugins/vue';
+import { createRemote, pinia, i18n, router, vuetify } from '@/plugins/vue';
 import { hideDirective } from '@/plugins/vue/directives';
 /* eslint-enable no-restricted-imports */
 
@@ -38,13 +31,11 @@ import 'overlayscrollbars/overlayscrollbars.css';
 
 const app = createApp(Root);
 const remote = createRemote();
-const config = createJSONConfig();
 
 app.use(i18n);
 app.use(router);
 app.use(remote);
 app.use(pinia);
-app.use(config);
 app.use(vuetify);
 app.directive('hide', hideDirective);
 
@@ -86,12 +77,6 @@ window.requestIdleCallback(() => {
   });
 });
 
-window.requestIdleCallback(() => {
-  window.requestAnimationFrame(() => {
-    app.mount(appDOM);
-  });
-});
-
 /**
  * Once we reach this point, the bundle and the app will be completely loaded and mounted,
  * so we add a loadFinished class (defined in index.html) that fires the defined transition
@@ -110,6 +95,8 @@ window.requestIdleCallback(() => {
       },
       { once: true }
     );
+
+    app.mount(appDOM);
     splashDOM.classList.add('loadFinished');
   });
 });
