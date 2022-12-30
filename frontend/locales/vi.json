@@ -4,10 +4,20 @@
   "actor": "Diễn viên",
   "actors": "Diễn viên",
   "addNewPerson": "Thêm người mới",
+  "administrator": "Quản trị viên",
   "airPlayDevices": "Thiết bị AirPlay",
   "albums": "Tuyển Tập",
   "allLanguages": "Tất cả ngôn ngữ",
   "alphabetically": "Theo bảng chữ cái",
+  "appbar": {
+    "tasks": {
+      "configSync": "Đang đồng bộ hóa cài đặt…",
+      "scanningLibrary": "Đang quét thư viện '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Đang chạy tác vụ"
+    }
+  },
   "architecture": "Kiến trúc",
   "artist": "Nghệ sĩ",
   "artists": "Nghệ sĩ",
@@ -121,6 +131,11 @@
       "title": "Tiêu đề"
     }
   },
+  "itemMenu": {
+    "pushToBottom": "Di chuyển đến cuối",
+    "pushToTop": "Di chuyển đến đầu",
+    "removeFromQueue": "Xóa khỏi hàng đợi"
+  },
   "itemNotFound": "Không tìm thấy mục",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Gần nhất {libraryName}",
@@ -142,6 +157,7 @@
     "changeServer": "Thay đổi máy chủ",
     "changeUser": "Thay đổi người sử dụng",
     "connect": "Kết nối",
+    "kickedOut": "Ủy quyền đã bị thu hồi và phiên này không còn hiệu lực. Xin vui lòng đăng nhập lại",
     "login": "Đăng nhập",
     "loginAs": "Đăng nhập bằng {name}",
     "manualLogin": "Đăng nhập thủ công",
@@ -411,6 +427,10 @@
   },
   "shows": "Chương Trình",
   "signIn": "Đăng nhập",
+  "snackbar": {
+    "addedToQueue": "Được thêm vào hàng đợi",
+    "playNext": "Mục đã chọn sẽ được phát sau mục hiện tại"
+  },
   "songs": "Bài hát",
   "sortByType": "Theo {type}",
   "sortTitle": "Sắp xếp tiêu đề",
