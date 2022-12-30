@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import '@vue/runtime-dom';
 
 declare module '@vue/runtime-dom' {
