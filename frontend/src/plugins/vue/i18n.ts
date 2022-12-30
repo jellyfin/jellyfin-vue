@@ -1,4 +1,5 @@
 import { createI18n } from 'vue-i18n';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import messages from '@intlify/unplugin-vue-i18n/messages';
 import { useNavigatorLanguage } from '@vueuse/core';
 import { computed } from 'vue';
@@ -19,6 +20,7 @@ const i18n = createI18n({
   messages
 });
 
+/* eslint sort-keys: "error" */
 export const languageMap = {
   am: 'አማርኛ',
   ar: 'العربية',
@@ -64,6 +66,7 @@ export const languageMap = {
   sv: 'Svenska',
   sw: 'Kiswahili',
   ta: 'தமிழ்',
+  th: 'ภาษาไทย',
   tr: 'Türkçe',
   uk: 'Українська',
   ur: 'اردو',
@@ -71,6 +74,7 @@ export const languageMap = {
   'zh-CN': '简体中文',
   'zh-TW': '繁體中文'
 };
+/* eslint sort-keys: "off" */
 
 // @ts-expect-error - This is the only place where we need to assign the localeNames variable.
 // Assigning it somewhere else should be completely restricted
