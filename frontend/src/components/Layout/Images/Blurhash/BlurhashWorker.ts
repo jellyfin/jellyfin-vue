@@ -1,7 +1,7 @@
 import { decode } from 'blurhash';
 import { expose } from 'comlink';
 
-const cache = new Map<Parameters<typeof getPixels>, Uint8ClampedArray>();
+const cache = new WeakMap<Parameters<typeof getPixels>, Uint8ClampedArray>();
 
 /**
  * Decodes blurhash outside the main thread, in a web worker
