@@ -108,6 +108,7 @@
   "incorrectUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
   "item": {
     "artist": {
+      "albums": "Albums",
       "appearsOn": "Apparitions",
       "discography": "Discographie",
       "information": "Informations",
