@@ -1,0 +1,21 @@
+#! /usr/bin/make -f
+export DH_VERBOSE=1
+
+%:
+	dh $@
+
+# disable "make check"
+override_dh_auto_test:
+
+# disable stripping debugging symbols
+override_dh_clistrip:
+
+override_dh_auto_build:
+	npm install
+	npm run build
+	mv $(CURDIR)/frontend/dist $(CURDIR)/vue
+
+override_dh_auto_clean:
+	test -d $(CURDIR)/frontend/dist && rm -rf '$(CURDIR)/frontend/dist' || true
+	test -d $(CURDIR)/vue && rm -rf '$(CURDIR)/vue' || true
+	test -d $(CURDIR)/node_modules && rm -rf '$(CURDIR)/node_modules' || true
