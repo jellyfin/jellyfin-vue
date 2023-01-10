@@ -4,6 +4,11 @@
   "actors": "الممثلون",
   "albums": "الألبومات",
   "allLanguages": "كل اللغات",
+  "appbar": {
+    "tasks": {
+      "configSync": "إعدادات المزامنة…"
+    }
+  },
   "artist": "الفنان",
   "artists": "الفنانون",
   "books": "الكتب",
@@ -36,5 +41,9 @@
     "screenshot": "لقطة الشاشة"
   },
   "images": "الصور",
-  "password": "كلمة المرور"
+  "password": "كلمة المرور",
+  "syncingInProgress": "قيد المزامنة",
+  "transcodingInfo": {
+    "transcodingProgress": "التقدم:"
+  }
 }
