@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Ungültiger Benutzername oder Passwort",
   "item": {
     "artist": {
+      "albums": "Alben",
       "appearsOn": "Auftritte",
       "discography": "Diskografie",
+      "eps": "EPs",
       "information": "Informationen",
+      "singles": "Singles",
       "videos": "Videos"
     },
     "cast": "Besetzung",
