@@ -12,7 +12,7 @@
     <span v-if="item.OfficialRating && rating">{{ item.OfficialRating }}</span>
     <span v-if="item.CommunityRating && rating">
       <v-icon class="rating-icon" size="16">mdi-star</v-icon>
-      {{ item.CommunityRating }}
+      {{ item.CommunityRating.toFixed(1) }}
     </span>
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
       {{ $t('numberTracks', { number: item.ChildCount }) }}
