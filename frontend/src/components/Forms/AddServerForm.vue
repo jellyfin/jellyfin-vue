@@ -57,21 +57,21 @@ const rules = [
  */
 async function connectToServer(): Promise<void> {
   loading.value = true;
-  serverUrl.value.trim();
+  serverUrl.value = serverUrl.value.trim();
 
   try {
     let candidates = await remote.sdk.discovery.getRecommendedServerCandidates(
       serverUrl.value
     );
 
-    candidates = candidates.filter((c) => c.issues.length === 0);
+    const best = remote.sdk.discovery.findBestServer(candidates);
 
-    if (candidates.length === 0) {
+    if (!best) {
       useSnackbar(i18n.t('login.serverNotFound'), 'error');
       throw new Error('No server matches wanted criteria');
     }
 
-    await remote.auth.connectServer(candidates[0].address);
+    await remote.auth.connectServer(best.address);
 
     if (previousServerLength === 0) {
       router.push('/server/login');
