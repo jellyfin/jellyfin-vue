@@ -26,7 +26,7 @@
     "vue-i18n-extract-remove": "vue-i18n-extract --remove"
   },
   "dependencies": {
-    "@jellyfin/sdk": "0.7.0",
+    "@jellyfin/sdk": "0.0.0-unstable.202301101857",
     "@vueuse/components": "9.6.0",
     "@vueuse/core": "9.6.0",
     "axios": "0.27.2",
