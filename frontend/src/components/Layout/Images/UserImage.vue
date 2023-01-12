@@ -3,9 +3,9 @@
     <v-img :src="url" :width="size" cover>
       <template #placeholder>
         <v-avatar color="primary" :size="size">
-          <Icon :size="iconSize" dark>
+          <v-icon :size="iconSize" dark>
             <i-mdi-account />
-          </Icon>
+          </v-icon>
         </v-avatar>
       </template>
     </v-img>

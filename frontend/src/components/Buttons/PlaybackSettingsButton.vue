@@ -21,9 +21,9 @@
             icon
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }">
-            <Icon>
+            <v-icon>
               <i-mdi-cog />
-            </Icon>
+            </v-icon>
           </v-btn>
         </template>
         <span>{{ $t('playbackSettings') }}</span>

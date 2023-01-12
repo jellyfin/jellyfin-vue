@@ -34,15 +34,15 @@
               <div class="d-flex flex-column player-overlay">
                 <div class="d-flex flex-row">
                   <v-btn icon @click="playbackManager.toggleMinimized">
-                    <Icon>
+                    <v-icon>
                       <i-mdi-arrow-expand-all />
-                    </Icon>
+                    </v-icon>
                   </v-btn>
                   <v-spacer />
                   <v-btn icon @click="stopPlayback">
-                    <Icon>
+                    <v-icon>
                       <i-mdi-close />
-                    </Icon>
+                    </v-icon>
                   </v-btn>
                 </div>
                 <div
@@ -52,9 +52,9 @@
                     icon
                     size="large"
                     @click="playbackManager.setPreviousTrack">
-                    <Icon size="32">
+                    <v-icon size="32">
                       <i-mdi-skip-previous />
-                    </Icon>
+                    </v-icon>
                   </v-btn>
                   <v-btn
                     class="pointer-events-all"
@@ -68,9 +68,9 @@
                     icon
                     size="large"
                     @click="playbackManager.setNextTrack">
-                    <Icon size="32">
+                    <v-icon size="32">
                       <i-mdi-skip-next />
-                    </Icon>
+                    </v-icon>
                   </v-btn>
                 </div>
               </div>
@@ -92,14 +92,14 @@
                   <div class="d-flex align-center py-2 px-4">
                     <div class="d-flex">
                       <v-btn icon @click="stopPlayback">
-                        <Icon>
+                        <v-icon>
                           <i-mdi-close />
-                        </Icon>
+                        </v-icon>
                       </v-btn>
                       <v-btn icon @click="playbackManager.toggleMinimized">
-                        <Icon>
+                        <v-icon>
                           <i-mdi-chevron-down />
-                        </Icon>
+                        </v-icon>
                       </v-btn>
                     </div>
                     <div class="d-flex ml-auto">
@@ -149,9 +149,9 @@
                           icon
                           class="mx-1"
                           @click="playbackManager.setPreviousTrack">
-                          <Icon>
+                          <v-icon>
                             <i-mdi-skip-previous />
-                          </Icon>
+                          </v-icon>
                         </v-btn>
                         <v-btn
                           icon
@@ -163,9 +163,9 @@
                           icon
                           class="mx-1"
                           @click="playbackManager.setNextTrack">
-                          <Icon>
+                          <v-icon>
                             <i-mdi-skip-next />
-                          </Icon>
+                          </v-icon>
                         </v-btn>
                       </div>
                       <div class="d-flex aligh-center ml-auto ml-md-0">
@@ -191,30 +191,30 @@
                           class="align-self-center active-button"
                           icon
                           @click="togglePictureInPicture">
-                          <Icon>
+                          <v-icon>
                             <i-mdi-picture-in-picture-bottom-right />
-                          </Icon>
+                          </v-icon>
                         </v-btn>
                         <v-btn
                           v-if="$vuetify.display.smAndUp"
                           class="align-self-center active-button"
                           icon
                           @click="stretchVideo = !stretchVideo">
-                          <Icon v-if="!stretchVideo">
+                          <v-icon v-if="!stretchVideo">
                             <i-mdi-stretch-to-page-outline />
-                          </Icon>
-                          <Icon v-if="stretchVideo">
+                          </v-icon>
+                          <v-icon v-if="stretchVideo">
                             <i-mdi-stretch-to-page />
-                          </Icon>
+                          </v-icon>
                         </v-btn>
                         <v-btn
                           v-if="features.fullScreen"
                           class="align-self-center active-button"
                           icon
                           @click="toggleFullScreen">
-                          <Icon>
+                          <v-icon>
                             <i-mdi-fullscreen />
-                          </Icon>
+                          </v-icon>
                         </v-btn>
                       </div>
                     </div>

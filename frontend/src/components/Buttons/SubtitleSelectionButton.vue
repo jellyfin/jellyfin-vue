@@ -26,9 +26,9 @@
             "
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }">
-            <Icon>
+            <v-icon>
               <i-mdi-closed-caption />
-            </Icon>
+            </v-icon>
           </v-btn>
         </template>
         <span>{{ $t('subtitles') }}</span>
@@ -40,12 +40,12 @@
           v-for="track of tracks"
           :key="track.srcIndex"
           @click="playbackManager.currentSubtitleStreamIndex = track.srcIndex">
-          <Icon
+          <v-icon
             v-if="
               track.srcIndex === playbackManager.currentSubtitleStreamIndex
             ">
             <i-mdi-check />
-          </Icon>
+          </v-icon>
           {{ track.label }}
         </v-list-item>
       </v-list>

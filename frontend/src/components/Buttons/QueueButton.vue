@@ -23,9 +23,9 @@
             icon
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }">
-            <Icon>
+            <v-icon>
               <i-mdi-playlist-play />
-            </Icon>
+            </v-icon>
           </v-btn>
         </template>
         <span>{{ $t('queue') }}</span>
@@ -74,9 +74,9 @@
         <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon v-on="tooltip" @click="playbackManager.stop">
-              <Icon>
+              <v-icon>
                 <i-mdi-playlist-remove />
-              </Icon>
+              </v-icon>
             </v-btn>
           </template>
           <span>{{ $t('playback.clearQueue') }}</span>
@@ -84,9 +84,9 @@
         <v-tooltip location="top">
           <template #activator="{ on: tooltip }">
             <v-btn icon disabled v-on="tooltip">
-              <Icon>
+              <v-icon>
                 <i-mdi-content-save />
-              </Icon>
+              </v-icon>
             </v-btn>
           </template>
           <span>{{ $t('playback.saveAsPlaylist') }}</span>

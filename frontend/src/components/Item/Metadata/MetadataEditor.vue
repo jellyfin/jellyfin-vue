@@ -117,9 +117,9 @@
                   {{ $t('addNewPerson') }}
                 </v-list-item-title>
                 <v-list-item-action>
-                  <Icon>
+                  <v-icon>
                     <i-mdi-plus-circle />
-                  </Icon>
+                  </v-icon>
                 </v-list-item-action>
               </v-list-item>
               <v-list-item
@@ -135,9 +135,9 @@
                         ImageType.Primary
                       )
                     " />
-                  <Icon v-else class="bg-grey-darken-3">
+                  <v-icon v-else class="bg-grey-darken-3">
                     <i-mdi-account />
-                  </Icon>
+                  </v-icon>
                 </v-avatar>
                 <v-list-item-title>
                   {{ item.Name }}
@@ -146,9 +146,9 @@
                   {{ item.Role || item.Type }}
                 </v-list-item-subtitle>
                 <v-list-item-action @click.stop="handlePersonDel(i)">
-                  <Icon>
+                  <v-icon>
                     <i-mdi-delete />
-                  </Icon>
+                  </v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list>
