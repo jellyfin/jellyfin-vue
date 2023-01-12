@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Fel användarnamn eller lösenord",
   "item": {
     "artist": {
+      "albums": "Album",
       "appearsOn": "Framträdanden",
       "discography": "Diskografi",
+      "eps": "EP",
       "information": "Information",
+      "singles": "Singlar",
       "videos": "Videor"
     },
     "cast": "Roller",
