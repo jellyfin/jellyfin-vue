@@ -3,9 +3,9 @@
     <v-row v-if="isDialog" class="ma-0 justify-space-between align-center">
       <v-card-title>{{ selectedDevice.Name }}</v-card-title>
       <v-btn icon class="mr-2" @click="$emit('close-dialog')">
-        <Icon>
+        <v-icon>
           <i-mdi-close />
-        </Icon>
+        </v-icon>
       </v-btn>
     </v-row>
     <v-card-title v-else>{{ selectedDevice.Name }}</v-card-title>

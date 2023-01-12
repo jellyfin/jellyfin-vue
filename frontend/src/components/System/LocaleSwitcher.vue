@@ -9,9 +9,9 @@
             :size="large ? 'large' : 'small'"
             :color="appBar ? undefined : 'primary'"
             v-bind="mergeProps(menu, tooltip)">
-            <Icon>
+            <v-icon>
               <i-mdi-web />
-            </Icon>
+            </v-icon>
           </v-btn>
         </template>
         <span>{{ $t('tooltips.changeLanguage') }}</span>
