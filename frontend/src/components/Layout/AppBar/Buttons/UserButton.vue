@@ -24,9 +24,9 @@
           #subtitle>
           <v-list-item-subtitle>
             {{ $t('administrator') }}
-            <Icon size="small">
+            <v-icon size="small">
               <i-mdi-key-chain />
-            </Icon>
+            </v-icon>
           </v-list-item-subtitle>
         </template>
       </v-list-item>

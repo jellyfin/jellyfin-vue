@@ -62,17 +62,17 @@
                   class="mx-1 active-button"
                   :color="playbackManager.isShuffling ? 'primary' : undefined"
                   @click="playbackManager.toggleShuffle">
-                  <Icon>
+                  <v-icon>
                     <i-mdi-shuffle />
-                  </Icon>
+                  </v-icon>
                 </v-btn>
                 <v-btn
                   icon
                   class="mx-1"
                   @click="playbackManager.setPreviousTrack">
-                  <Icon>
+                  <v-icon>
                     <i-mdi-skip-previous />
-                  </Icon>
+                  </v-icon>
                 </v-btn>
                 <v-btn
                   icon
@@ -88,9 +88,9 @@
                   :disabled="!playbackManager.getNextItem"
                   class="mx-1"
                   @click="playbackManager.setNextTrack">
-                  <Icon>
+                  <v-icon>
                     <i-mdi-skip-next />
-                  </Icon>
+                  </v-icon>
                 </v-btn>
                 <v-btn
                   icon
@@ -117,14 +117,14 @@
               :item="playbackManager.getCurrentItem"
               :z-index="99999" />
             <v-btn v-show="!isFullScreenPlayer" icon to="/playback/music">
-              <Icon>
+              <v-icon>
                 <i-mdi-fullscreen />
-              </Icon>
+              </v-icon>
             </v-btn>
             <v-btn v-show="isFullScreenPlayer" icon @click="$router.back()">
-              <Icon>
+              <v-icon>
                 <i-mdi-fullscreen-exit />
-              </Icon>
+              </v-icon>
             </v-btn>
           </v-col>
           <v-col
@@ -143,9 +143,9 @@
               :disabled="!playbackManager.getNextItem"
               class="mx-1"
               @click="playbackManager.setNextTrack">
-              <Icon>
+              <v-icon>
                 <i-mdi-skip-next />
-              </Icon>
+              </v-icon>
             </v-btn>
             <v-btn
               icon
@@ -159,9 +159,9 @@
               class="mx-1 active-button hidden-xs-only"
               :color="playbackManager.isShuffling ? 'primary' : undefined"
               @click="playbackManager.toggleShuffle">
-              <Icon>
+              <v-icon>
                 <i-mdi-shuffle />
-              </Icon>
+              </v-icon>
             </v-btn>
           </v-col>
         </v-row>

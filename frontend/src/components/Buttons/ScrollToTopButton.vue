@@ -8,9 +8,9 @@
       location="bottom right"
       fixed
       @click="scrollToTop">
-      <Icon>
+      <v-icon>
         <i-mdi-chevron-up />
-      </Icon>
+      </v-icon>
     </v-btn>
   </v-fab-transition>
 </template>

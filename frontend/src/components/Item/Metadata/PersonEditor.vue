@@ -12,9 +12,9 @@
                 :src="
                   $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
                 " />
-              <Icon v-else class="bg-grey-darken-3">
+              <v-icon v-else class="bg-grey-darken-3">
                 <i-mdi-account />
-              </Icon>
+              </v-icon>
             </v-avatar>
           </v-col>
           <v-col>
