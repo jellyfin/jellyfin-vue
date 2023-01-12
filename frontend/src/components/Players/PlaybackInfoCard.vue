@@ -12,9 +12,9 @@
               class="pointer-events-all"
               icon
               @click="$emit('close-playback-data')">
-              <Icon>
+              <v-icon>
                 <i-mdi-close />
-              </Icon>
+              </v-icon>
             </v-btn>
           </v-card-title>
           <v-card-text class="py-0">

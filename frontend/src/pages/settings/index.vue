@@ -59,9 +59,9 @@
                 {{ userItem.description }}
               </v-list-item-subtitle>
               <v-list-item-action>
-                <Icon>
+                <v-icon>
                   <i-mdi-chevron-right />
-                </Icon>
+                </v-icon>
               </v-list-item-action>
             </v-list-item>
           </v-list-group>
@@ -89,9 +89,9 @@
                   {{ adminItem.description }}
                 </v-list-item-subtitle>
                 <v-list-item-action>
-                  <Icon>
+                  <v-icon>
                     <i-mdi-chevron-right />
-                  </Icon>
+                  </v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list-group>
