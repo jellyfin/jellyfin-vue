@@ -4,21 +4,38 @@
   "actors": "الممثلون",
   "albums": "الألبومات",
   "allLanguages": "كل اللغات",
+  "alphabetically": "أبجديّا",
   "appbar": {
     "tasks": {
-      "configSync": "إعدادات المزامنة…"
+      "configSync": "إعدادات المزامنة…",
+      "scanningLibrary": "يمسح المكتبة '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "المهام المشغّلة"
     }
   },
+  "architecture": "المعمارية",
   "artist": "الفنان",
   "artists": "الفنانون",
+  "aspectRatio": "النسبة البعدينية",
+  "audio": "الصوت",
+  "audioCodecNotSupported": "ترميز الصوت غير مدعوم",
+  "badRequest": "يتعذر على الخادم فهم الطلب، حاول مرة أخرى",
   "books": "الكتب",
+  "browserNotSupported": "لا يتدعم متصفحك عرض مثل هذا النوع من الملفات.",
   "buttons": {
     "ok": "موافق"
   },
+  "byArtist": "الترتيب بـ {artist}",
   "cancel": "إلغاء",
+  "castAndCrew": "الممثلون والطاقم",
+  "communityRating": "تقييم الجمهور",
   "confirm": "تأكيد",
   "connect": "اتصال",
+  "continueListening": "استئناف الاستماع",
   "continueWatching": "متابعة المشاهدة",
+  "criticRating": "تقييم النقاد",
+  "darkModeToggle": "تبديل الوضع الداكن",
   "details": "التفاصيل",
   "dialog": {
     "upNext": {
@@ -27,8 +44,20 @@
     }
   },
   "director": "المخرج",
+  "disabled": "معطل",
   "edit": "تعديل",
   "editMetadata": "تعديل البيانات التعريفية",
+  "endsAt": "ينهي في تمام الساعة {time}",
+  "episodeNumber": "الحلقة {episodeNumber}",
+  "errors": {
+    "messages": {
+      "errorCode": "رمز الخطأ: {errorCode}"
+    }
+  },
+  "failedRetrievingDisplayPreferences": "فشل الوصول إلى خيارات العرض، ستُطبق آخر خيارات مُخزنة.",
+  "failedSettingDisplayPreferences": "فشل تحديث خيارات العرض.",
+  "failedToRefreshItems": "فشل تحديث العناصر",
+  "favorite": "المفضلة",
   "features": "الميزات",
   "fullScreen": "ملء الشاشة",
   "guestStar": "ضيف الشرف",
@@ -41,7 +70,16 @@
     "screenshot": "لقطة الشاشة"
   },
   "images": "الصور",
+  "originalAspectRatio": "النسبة البعدينية الأصلية",
   "password": "كلمة المرور",
+  "playback": {
+    "shuffle": "عشوائي"
+  },
+  "settingsSections": {
+    "scheduledTasks": {
+      "description": "إدارة المهام المجدولة التي تعمل على هذا الخادم"
+    }
+  },
   "syncingInProgress": "قيد المزامنة",
   "transcodingInfo": {
     "transcodingProgress": "التقدم:"
