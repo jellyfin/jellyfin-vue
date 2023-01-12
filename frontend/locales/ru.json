@@ -108,9 +108,11 @@
   "incorrectUsernameOrPassword": "Неверные имя пользователя или пароль",
   "item": {
     "artist": {
+      "albums": "Альбомы",
       "appearsOn": "Вид",
       "discography": "Дискография",
       "information": "Информация",
+      "singles": "Синглы",
       "videos": "Видео"
     },
     "cast": "В ролях",
