@@ -78,9 +78,9 @@
             <v-spacer />
             <v-card-actions class="justify-center">
               <v-btn icon :disabled="loading" @click="handleDownload(item)">
-                <Icon>
+                <v-icon>
                   <i-mdi-cloud-download />
-                </Icon>
+                </v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>

@@ -22,9 +22,9 @@
         v-bind="attrs">
         <template #icon>
           <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
-          <Icon v-else>
+          <v-icon v-else>
             <i-mdi-check />
-          </Icon>
+          </v-icon>
         </template>
         <template #tooltip>
           <span>{{ $t('appbar.tooltips.tasks') }}</span>
@@ -45,9 +45,9 @@
                 :model-value="task.progress"
                 rotate="-90"
                 size="24" />
-              <Icon v-else>
+              <v-icon v-else>
                 <i-mdi-check />
-              </Icon>
+              </v-icon>
             </v-list-item-action>
           </v-list-item>
         </v-list-group>

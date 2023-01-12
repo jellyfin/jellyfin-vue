@@ -1,8 +1,8 @@
 <template>
   <v-btn v-if="canMarkWatched(item)" icon @click.stop.prevent="togglePlayed">
-    <Icon :color="isPlayed ? 'primary' : ''">
+    <v-icon :color="isPlayed ? 'primary' : ''">
       <i-mdi-check />
-    </Icon>
+    </v-icon>
   </v-btn>
 </template>
 
