@@ -1,11 +1,11 @@
 <template>
   <v-btn icon @click.stop.prevent="toggleFavorite">
-    <Icon v-if="isFavorite">
+    <v-icon v-if="isFavorite">
       <i-mdi-heart />
-    </Icon>
-    <Icon v-else>
+    </v-icon>
+    <v-icon v-else>
       <i-mdi-heart-outline />
-    </Icon>
+    </v-icon>
   </v-btn>
 </template>
 
