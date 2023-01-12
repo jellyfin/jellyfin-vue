@@ -6,9 +6,9 @@
       color="transparent">
       <app-bar-button-layout @click="$router.back()">
         <template #icon>
-          <Icon>
+          <v-icon>
             <i-mdi-arrow-left />
-          </Icon>
+          </v-icon>
         </template>
       </app-bar-button-layout>
     </v-app-bar>

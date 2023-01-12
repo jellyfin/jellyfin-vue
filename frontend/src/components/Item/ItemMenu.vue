@@ -14,9 +14,9 @@
           v-bind="props"
           @click.stop.prevent="onActivatorClick"
           @contextmenu.stop.prevent="onRightClick">
-          <Icon>
+          <v-icon>
             <i-mdi-dots-horizontal />
-          </Icon>
+          </v-icon>
         </v-btn>
       </template>
       <v-list nav>
