@@ -1,30 +1,34 @@
 <template>
-  <v-card :loading="loading" class="d-flex justify-center">
-    <v-row>
-      <v-col>
+  <v-card :loading="loading">
+    <v-row no-gutters align="center">
+      <v-col class="mb-2">
         <v-card-title>{{ serverInfo.ServerName }}</v-card-title>
-        <v-card-subtitle>{{ serverInfo.PublicAddress }}</v-card-subtitle>
+        <v-card-subtitle class="mt-n2">
+          {{ serverInfo.PublicAddress }}
+        </v-card-subtitle>
       </v-col>
-      <v-card-actions class="ml-auto mr-2">
-        <v-btn icon disabled>
-          <Icon>
-            <i-mdi-information-outline />
-          </Icon>
-        </v-btn>
-        <v-btn
-          icon
-          :disabled="loading || serverInfo.isDefault"
-          @click="removeServer">
-          <Icon>
-            <i-mdi-delete />
-          </Icon>
-        </v-btn>
-        <v-btn icon :disabled="loading" @click="setServer">
-          <Icon>
-            <i-mdi-arrow-right />
-          </Icon>
-        </v-btn>
-      </v-card-actions>
+      <v-col cols="auto">
+        <v-card-actions>
+          <v-btn icon disabled>
+            <v-icon>
+              <i-mdi-information-outline />
+            </v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            :disabled="loading || serverInfo.isDefault"
+            @click="removeServer">
+            <v-icon>
+              <i-mdi-delete />
+            </v-icon>
+          </v-btn>
+          <v-btn icon :disabled="loading" @click="setServer">
+            <v-icon>
+              <i-mdi-arrow-right />
+            </v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-col>
     </v-row>
   </v-card>
 </template>
