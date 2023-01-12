@@ -17,14 +17,14 @@
             </div>
             <v-card-actions class="justify-center">
               <v-btn icon @click="handleSearch">
-                <Icon>
+                <v-icon>
                   <i-mdi-magnify />
-                </Icon>
+                </v-icon>
               </v-btn>
               <v-btn icon class="ml-3" @click="handleDelete(item)">
-                <Icon>
+                <v-icon>
                   <i-mdi-delete />
-                </Icon>
+                </v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -48,14 +48,14 @@
             </div>
             <v-card-actions class="justify-center">
               <v-btn icon @click="handleSearch">
-                <Icon>
+                <v-icon>
                   <i-mdi-magnify />
-                </Icon>
+                </v-icon>
               </v-btn>
               <v-btn icon class="ml-3" @click="handleDelete(item)">
-                <Icon>
+                <v-icon>
                   <i-mdi-delete />
-                </Icon>
+                </v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>

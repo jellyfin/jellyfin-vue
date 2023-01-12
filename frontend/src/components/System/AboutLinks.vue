@@ -14,9 +14,9 @@
           {{ linkItem.name }}
         </v-list-item-title>
         <v-list-item-action>
-          <Icon>
+          <v-icon>
             <i-mdi-open-in-new />
-          </Icon>
+          </v-icon>
         </v-list-item-action>
       </v-list-item>
     </v-list-group>

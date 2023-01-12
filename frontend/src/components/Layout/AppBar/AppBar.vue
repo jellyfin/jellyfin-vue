@@ -8,9 +8,9 @@
       @click="navigationDrawer = !navigationDrawer" />
     <app-bar-button-layout @click="$router.back()">
       <template #icon>
-        <Icon>
+        <v-icon>
           <i-mdi-arrow-left />
-        </Icon>
+        </v-icon>
       </template>
     </app-bar-button-layout>
     <v-spacer />
@@ -18,9 +18,9 @@
     <v-spacer />
     <app-bar-button-layout v-if="!network.isOnline" color="red">
       <template #icon>
-        <Icon>
+        <v-icon>
           <i-mdi-network-off-outline />
-        </Icon>
+        </v-icon>
       </template>
       <template #tooltip>
         <span>{{ $t('noNetworkConnection') }}</span>
@@ -29,10 +29,10 @@
     <task-manager-button />
     <app-bar-button-layout @click="toggleDarkMode">
       <template #icon>
-        <Icon>
+        <v-icon>
           <i-mdi-weather-sunny v-if="clientSettings.darkMode" />
           <i-mdi-weather-night v-else />
-        </Icon>
+        </v-icon>
       </template>
       <template #tooltip>
         <span>{{
