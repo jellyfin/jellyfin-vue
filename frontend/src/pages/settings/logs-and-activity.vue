@@ -19,9 +19,9 @@
                 target="_blank"
                 rel="noopener">
                 <v-avatar>
-                  <Icon>
+                  <v-icon>
                     <i-mdi-file />
-                  </Icon>
+                  </v-icon>
                 </v-avatar>
                 <v-list-item-title>
                   {{ file.Name }}
@@ -30,9 +30,9 @@
                   {{ getFormattedLogDate(file.DateModified) }}
                 </v-list-item-subtitle>
                 <v-list-item-action>
-                  <Icon>
+                  <v-icon>
                     <i-mdi-open-in-new />
-                  </Icon>
+                  </v-icon>
                 </v-list-item-action>
               </v-list-item>
             </v-list-group>
@@ -48,9 +48,9 @@
             v-else-if="loadingLogsStatus.status === 'error'"
             key="error-log-card">
             <v-card-title>
-              <Icon color="error" class="pr-2">
+              <v-icon color="error" class="pr-2">
                 <i-mdi-alert-circle />
-              </Icon>
+              </v-icon>
               {{ $t('settings.logsAndActivity.failedGetLogs') }}
             </v-card-title>
             <v-card-text v-if="loadingLogsStatus.errorMessage">
@@ -100,9 +100,9 @@
             v-else-if="loadingActivityStatus.status === 'error'"
             key="error-activity-card">
             <v-card-title>
-              <Icon color="error" class="pr-2">
+              <v-icon color="error" class="pr-2">
                 <i-mdi-alert-circle />
-              </Icon>
+              </v-icon>
               {{ $t('settings.logsAndActivity.failedGetActivity') }}
             </v-card-title>
             <v-card-text>

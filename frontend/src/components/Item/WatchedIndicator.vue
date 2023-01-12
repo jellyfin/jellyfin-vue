@@ -1,8 +1,8 @@
 <template>
   <v-chip color="success" class="card-chip" small>
-    <Icon>
+    <v-icon>
       <i-mdi-check />
-    </Icon>
+    </v-icon>
   </v-chip>
 </template>
 

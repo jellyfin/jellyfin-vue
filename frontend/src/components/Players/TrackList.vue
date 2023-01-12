@@ -6,9 +6,9 @@
         <th style="width: 3em" class="pr-0 pl-0" scope="col" />
         <th scope="col">{{ $t('item.tracklist.title') }}</th>
         <th style="width: 6.5em" class="text-center" scope="col">
-          <Icon class="text--primary" size="16">
+          <v-icon class="text--primary" size="16">
             <i-mdi-clock-outline />
-          </Icon>
+          </v-icon>
         </th>
       </tr>
     </thead>
@@ -19,9 +19,9 @@
           :key="discNumber"
           class="disc-header">
           <td colspan="4" class="text--secondary">
-            <Icon class="text--secondary">
+            <v-icon class="text--secondary">
               <i-mdi-disc />
-            </Icon>
+            </v-icon>
             {{ $t('discNumber', { discNumber }) }}
           </td>
         </tr>
@@ -35,9 +35,9 @@
             <td style="width: 4em" class="pr-0 text-center">
               <span v-if="hover && !isPlaying(track)">
                 <v-btn small icon @click="playTracks(track)">
-                  <Icon>
+                  <v-icon>
                     <i-mdi-play-circle-outline />
-                  </Icon>
+                  </v-icon>
                 </v-btn>
               </span>
               <span v-else>{{ track.IndexNumber }}</span>
