@@ -13,7 +13,7 @@ import { createApp } from 'vue';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import Root from '@/App.vue';
 /* eslint-disable no-restricted-imports */
-import { createRemote, pinia, i18n, router, vuetify } from '@/plugins/vue';
+import { createRemote, i18n, router, vuetify } from '@/plugins/vue';
 import { hideDirective } from '@/plugins/vue/directives';
 /* eslint-enable no-restricted-imports */
 
@@ -35,7 +35,6 @@ const remote = createRemote();
 app.use(i18n);
 app.use(router);
 app.use(remote);
-app.use(pinia);
 app.use(vuetify);
 app.directive('hide', hideDirective);
 
