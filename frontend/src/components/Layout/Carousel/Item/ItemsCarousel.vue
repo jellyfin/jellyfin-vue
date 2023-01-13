@@ -60,8 +60,8 @@ import { useRoute } from 'vue-router';
 import { SwiperSlide } from 'swiper/vue';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getBlurhash } from '~/utils/images';
-import { getItemDetailsLink } from '~/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { getItemDetailsLink } from '@/utils/items';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
 const props = defineProps({
@@ -145,5 +145,5 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/styles/Carousel/index.scss';
+@import '@/assets/styles/Carousel/index.scss';
 </style>

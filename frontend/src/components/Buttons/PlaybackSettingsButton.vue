@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '@/store';
 
 export default defineComponent({
   props: {

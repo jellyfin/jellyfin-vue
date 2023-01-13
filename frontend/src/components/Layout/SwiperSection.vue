@@ -58,7 +58,7 @@ import { ref } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { v4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { CardShapes, getShapeFromItemType } from '~/utils/items';
+import { CardShapes, getShapeFromItemType } from '@/utils/items';
 
 const display = useDisplay();
 const theme = useTheme();

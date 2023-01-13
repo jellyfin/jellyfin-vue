@@ -186,7 +186,7 @@
 import { defineComponent } from 'vue';
 import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
-import { sanitizeHtml } from '~/utils/html';
+import { sanitizeHtml } from '@/utils/html';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({

@@ -121,10 +121,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         '@/': `${path.resolve(
           path.dirname(fileURLToPath(import.meta.url)),
           './src'
-        )}/`,
-        '~/': `${path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          './src'
         )}/`
       }
     }
