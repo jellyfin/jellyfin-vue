@@ -59,7 +59,7 @@
 import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNetwork, useWindowScroll } from '@vueuse/core';
-import { clientSettingsStore } from '~/store';
+import { clientSettingsStore } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();

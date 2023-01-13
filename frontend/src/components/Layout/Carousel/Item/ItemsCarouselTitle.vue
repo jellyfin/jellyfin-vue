@@ -34,8 +34,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getLogo, ImageUrlInfo } from '~/utils/images';
-import { getItemDetailsLink } from '~/utils/items';
+import { getLogo, ImageUrlInfo } from '@/utils/images';
+import { getItemDetailsLink } from '@/utils/items';
 
 export default defineComponent({
   props: {

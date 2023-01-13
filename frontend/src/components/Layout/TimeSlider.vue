@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { playbackManagerStore } from '~/store';
-import { ticksToMs, formatTime } from '~/utils/time';
+import { playbackManagerStore } from '@/store';
+import { ticksToMs, formatTime } from '@/utils/time';
 
 export default defineComponent({
   setup() {

@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { mergeProps } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { clientSettingsStore } from '~/store';
+import { clientSettingsStore } from '@/store';
 
 const clientSettings = clientSettingsStore();
 const localeNames = useI18n().localeNames;

@@ -49,10 +49,10 @@ import {
   SubtitleDeliveryMethod
 } from '@jellyfin/sdk/lib/generated-client';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
-import { playbackManagerStore, PlaybackStatus, PlaybackTrack } from '~/store';
-import { RepeatMode } from '~/store/playbackManager';
-import { getImageInfo, ImageUrlInfo } from '~/utils/images';
-import { ticksToMs } from '~/utils/time';
+import { playbackManagerStore, PlaybackStatus, PlaybackTrack } from '@/store';
+import { RepeatMode } from '@/store/playbackManager';
+import { getImageInfo, ImageUrlInfo } from '@/utils/images';
+import { ticksToMs } from '@/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
 import { useSnackbar } from '@/composables';
 

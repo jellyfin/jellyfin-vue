@@ -241,9 +241,9 @@ import {
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getBlurhash } from '~/utils/images';
-import { getItemDetailsLink, getMediaStreams } from '~/utils/items';
-import { getItemizedSelect } from '~/utils/forms';
+import { getBlurhash } from '@/utils/images';
+import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
+import { getItemizedSelect } from '@/utils/forms';
 import { useRemote } from '@/composables';
 
 export default defineComponent({

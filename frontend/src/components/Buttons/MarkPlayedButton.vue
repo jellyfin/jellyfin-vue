@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
-import { canMarkWatched } from '~/utils/items';
+import { canMarkWatched } from '@/utils/items';
 import { useSnackbar } from '@/composables';
 
 export default defineComponent({

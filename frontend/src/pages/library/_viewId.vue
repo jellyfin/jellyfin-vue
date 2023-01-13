@@ -55,7 +55,7 @@ import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
-import { validLibraryTypes } from '~/utils/items';
+import { validLibraryTypes } from '@/utils/items';
 import { useRemote, useSnackbar } from '@/composables';
 
 export default defineComponent({

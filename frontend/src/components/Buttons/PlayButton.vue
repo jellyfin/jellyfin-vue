@@ -38,9 +38,9 @@
 <script lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { playbackManagerStore } from '~/store';
-import { canResume, canPlay } from '~/utils/items';
-import { ticksToMs } from '~/utils/time';
+import { playbackManagerStore } from '@/store';
+import { canResume, canPlay } from '@/utils/items';
+import { ticksToMs } from '@/utils/time';
 
 export default defineComponent({
   props: {
