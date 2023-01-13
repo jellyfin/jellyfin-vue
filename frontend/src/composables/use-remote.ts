@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { remoteInstance } from '@/plugins/vue/remote';
+import { remoteInstance } from '@/plugins/remote';
 /* eslint-enable no-restricted-imports */
 
 /**
