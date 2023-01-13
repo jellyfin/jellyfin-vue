@@ -22,7 +22,8 @@
             class="align-self-center active-button"
             icon
             :disabled="
-              playbackManager.getCurrentItemParsedSubtitleTracks.length === 0
+              !playbackManager.currentItemParsedSubtitleTracks ||
+              playbackManager.currentItemParsedSubtitleTracks.length === 0
             "
             v-bind="attrs"
             v-on="{ ...tooltip, ...menu }">
@@ -79,15 +80,16 @@ export default defineComponent({
   computed: {
     tracks(): PlaybackTrack[] {
       const subs = this.playbackManager
-        .getCurrentItemParsedSubtitleTracks as PlaybackTrack[];
+        .currentItemParsedSubtitleTracks as PlaybackTrack[];
 
       return [
         {
           label: this.$t('disabled'),
           srcIndex: -1,
           type: SubtitleDeliveryMethod.External
-        }
-      ].concat(subs) as PlaybackTrack[];
+        },
+        ...subs
+      ];
     }
   }
 });

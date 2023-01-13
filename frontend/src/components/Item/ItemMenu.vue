@@ -125,7 +125,7 @@ function getQueueOptions(): MenuOption[] {
 
   if (
     menuProps.queue &&
-    playbackManager.queue.includes(menuProps.item.Id || '')
+    playbackManager.queueIds.includes(menuProps.item.Id || '')
   ) {
     queueOptions.push({
       title: t('itemMenu.pushToTop'),
@@ -135,7 +135,7 @@ function getQueueOptions(): MenuOption[] {
       }
     });
 
-    if (playbackManager.getCurrentItem?.Id !== menuProps.item.Id) {
+    if (playbackManager.currentItem?.Id !== menuProps.item.Id) {
       queueOptions.push({
         title: t('itemMenu.removeFromQueue'),
         icon: IMdiPlaylistMinus,
@@ -146,8 +146,8 @@ function getQueueOptions(): MenuOption[] {
     }
 
     if (
-      playbackManager.getNextItem?.Id !== menuProps.item.Id &&
-      playbackManager.getCurrentItem?.Id !== menuProps.item.Id
+      playbackManager.nextItem?.Id !== menuProps.item.Id &&
+      playbackManager.currentItem?.Id !== menuProps.item.Id
     ) {
       queueOptions.push(playNextAction);
     }
@@ -197,10 +197,10 @@ function getPlaybackOptions(): MenuOption[] {
     }
   });
 
-  if (playbackManager.getCurrentItem) {
+  if (playbackManager.currentItem) {
     if (
-      playbackManager.getNextItem?.Id !== menuProps.item.Id &&
-      playbackManager.getCurrentItem?.Id !== menuProps.item.Id &&
+      playbackManager.nextItem?.Id !== menuProps.item.Id &&
+      playbackManager.currentItem?.Id !== menuProps.item.Id &&
       !menuProps.queue
     ) {
       playbackOptions.push(playNextAction);

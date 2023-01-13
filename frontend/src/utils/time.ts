@@ -11,7 +11,7 @@ import {
 import * as datefnslocales from 'date-fns/locale';
 import { sumBy, merge } from 'lodash-es';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { computed, ComputedRef, isRef, Ref } from 'vue';
+import { computed, ComputedRef, isRef } from 'vue';
 import { MaybeRef, useNow } from '@vueuse/core';
 import { usei18n } from '@/composables';
 
@@ -143,10 +143,10 @@ export function getRuntimeTime(ticks: MaybeRef<number>): ComputedRef<string> {
  * @returns The resulting string
  */
 export function getTotalEndsAtTime(
-  items: Ref<BaseItemDto[]>
+  items: MaybeRef<BaseItemDto[]>
 ): ComputedRef<string> {
   return computed(() => {
-    const ticks = sumBy(items.value, 'RunTimeTicks');
+    const ticks = sumBy(isRef(items) ? items.value : items, 'RunTimeTicks');
 
     return getEndsAtTime(ticks).value;
   });
