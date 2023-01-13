@@ -18,7 +18,7 @@
         :title="item.title" />
       <v-list-subheader>{{ $t('libraries') }}</v-list-subheader>
       <v-list-item
-        v-for="library in userViews.getNavigationDrawerItems"
+        v-for="library in drawerItems"
         :key="library.to"
         :to="library.to"
         exact
@@ -32,22 +32,32 @@
 </template>
 
 <script setup lang="ts">
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { computed, inject, Ref } from 'vue';
 import IMdiHome from 'virtual:icons/mdi/home';
-import { userViewsStore } from '~/store';
+import { userLibrariesStore } from '~/store';
+import { getLibraryIcon } from '@/utils/items';
 
 const route = useRoute();
-const userViews = userViewsStore();
+const userLibraries = userLibrariesStore();
 const { t } = useI18n();
-
-userViews.refreshUserViews();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
 
 const transparentLayout = computed(() => {
   return route.meta.transparentLayout || false;
+});
+
+const drawerItems = computed(() => {
+  return userLibraries.libraries.map((view: BaseItemDto) => {
+    return {
+      icon: getLibraryIcon(view.CollectionType),
+      title: view.Name || '',
+      to: `/library/${view.Id}`
+    };
+  });
 });
 
 const items = [
