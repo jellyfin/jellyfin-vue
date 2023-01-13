@@ -50,7 +50,7 @@ import { ref, watch } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useI18n } from 'vue-i18n';
-import { getItemDetailsLink } from '~/utils/items';
+import { getItemDetailsLink } from '@/utils/items';
 import { useSnackbar, useRemote } from '@/composables';
 
 const remote = useRemote();

@@ -3,7 +3,7 @@ import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-pr
 import destr from 'destr';
 import { isNil } from 'lodash-es';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
-import { taskManagerStore } from '~/store';
+import { taskManagerStore } from '@/store';
 
 /**
  * Cast custom preferences returned from the server from strings to the correct Javascript type

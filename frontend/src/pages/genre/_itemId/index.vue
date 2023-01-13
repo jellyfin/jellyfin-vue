@@ -51,7 +51,7 @@ import { useRoute } from 'vue-router';
 import { SortOrder, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { itemsStore } from '~/store';
+import { itemsStore } from '@/store';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
 const items = itemsStore();

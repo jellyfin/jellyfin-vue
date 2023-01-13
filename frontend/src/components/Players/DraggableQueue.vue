@@ -54,7 +54,7 @@
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, onMounted, ref } from 'vue';
 import { VHover } from 'vuetify/lib/components/VHover/index';
-import { playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '@/store';
 
 const dragOptions = {
   animation: 500,

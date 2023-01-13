@@ -102,9 +102,9 @@ import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
-import { playbackManagerStore } from '~/store';
-import { InitMode } from '~/store/playbackManager';
-import { getTotalEndsAtTime } from '~/utils/time';
+import { playbackManagerStore } from '@/store';
+import { InitMode } from '@/store/playbackManager';
+import { getTotalEndsAtTime } from '@/utils/time';
 
 export default defineComponent({
   props: {

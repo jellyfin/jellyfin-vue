@@ -26,9 +26,9 @@ import { ImageType, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
-import { clientSettingsStore, userLibrariesStore } from '~/store';
-import type { HomeSection } from '~/store';
+import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
+import { clientSettingsStore, userLibrariesStore } from '@/store';
+import type { HomeSection } from '@/store';
 import { useRemote } from '@/composables';
 
 const VALID_SECTIONS = new Set([
