@@ -12,7 +12,7 @@
     @mouseup="onClick"
     @input="onInputChange">
     <template #prepend>
-      <span class="mt-1">
+      <span v-if="playbackManager.currentTime" class="mt-1">
         {{ formatTime(playbackManager.currentTime) }}
       </span>
     </template>
@@ -47,7 +47,7 @@ export default defineComponent({
   computed: {
     runtime(): number {
       return (
-        ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000 || 0
+        ticksToMs(this.playbackManager.currentItem?.RunTimeTicks) / 1000 || 0
       );
     },
     sliderValue(): number {
