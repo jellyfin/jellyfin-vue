@@ -45,8 +45,8 @@ export default Vue.extend({
   computed: {
     userImage: {
       get(): string | undefined {
-        if (this.user?.Id && this.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?tag=${this.user.PrimaryImageTag}&quality=${this.quality}`;
+        if (this.user?.Id) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?quality=${this.quality}`;
         }
       }
     },
