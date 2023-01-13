@@ -15,8 +15,7 @@
     "removeComments": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "~/*": ["src/*"]
+      "@/*": ["src/*"]
     },
     "types": [
       "axios",

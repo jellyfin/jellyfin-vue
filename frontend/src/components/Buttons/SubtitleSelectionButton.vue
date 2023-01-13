@@ -56,8 +56,8 @@
 <script lang="ts">
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { defineComponent } from 'vue';
-import { playbackManagerStore } from '~/store';
-import { PlaybackTrack } from '~/store/playbackManager';
+import { playbackManagerStore } from '@/store';
+import { PlaybackTrack } from '@/store/playbackManager';
 
 export default defineComponent({
   props: {

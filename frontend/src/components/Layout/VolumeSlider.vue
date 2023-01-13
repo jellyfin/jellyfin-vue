@@ -25,7 +25,7 @@ import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
 import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
 import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
 import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
-import { playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '@/store';
 
 const playbackManager = playbackManagerStore();
 const icon = computed(() => {

@@ -80,8 +80,8 @@ import {
   getShapeFromItemType,
   getItemDetailsLink,
   canPlay
-} from '~/utils/items';
-import { taskManagerStore } from '~/store';
+} from '@/utils/items';
+import { taskManagerStore } from '@/store';
 
 export default defineComponent({
   props: {

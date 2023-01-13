@@ -13,7 +13,7 @@ import {
   ValidCardShapes,
   isPerson,
   CardShapes
-} from '~/utils/items';
+} from '@/utils/items';
 
 export interface ImageUrlInfo {
   url: string | undefined;

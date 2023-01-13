@@ -236,8 +236,8 @@ import IMdiPlay from 'virtual:icons/mdi/play';
 import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
 import IMdiPause from 'virtual:icons/mdi/pause';
 import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
-import { playbackManagerStore } from '~/store';
-import { PlaybackStatus } from '~/store/playbackManager';
+import { playbackManagerStore } from '@/store';
+import { PlaybackStatus } from '@/store/playbackManager';
 import { isApple, isMobile } from '@/utils/browser-detection';
 import supportedFeatures from '@/utils/supported-features';
 

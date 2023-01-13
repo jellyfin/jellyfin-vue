@@ -143,8 +143,8 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getBlurhash } from '~/utils/images';
-import { getItemDetailsLink } from '~/utils/items';
+import { getBlurhash } from '@/utils/images';
+import { getItemDetailsLink } from '@/utils/items';
 import { useRemote } from '@/composables';
 
 export default defineComponent({
