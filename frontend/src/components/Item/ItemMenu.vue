@@ -58,9 +58,9 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { useRemote, useSnackbar } from '@/composables';
-import { canResume } from '~/utils/items';
-import { TaskType, RunningTask } from '~/store/taskManager';
-import { playbackManagerStore, taskManagerStore } from '~/store';
+import { canResume } from '@/utils/items';
+import { TaskType, RunningTask } from '@/store/taskManager';
+import { playbackManagerStore, taskManagerStore } from '@/store';
 
 type MenuOption = {
   title: string;

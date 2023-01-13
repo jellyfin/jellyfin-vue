@@ -222,7 +222,7 @@ import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import { camelCase, isNil } from 'lodash-es';
 // @ts-expect-error - This module doesn't have typings
 import type shaka from 'shaka-player/dist/shaka-player.compiled';
-import { playbackManagerStore } from '~/store';
+import { playbackManagerStore } from '@/store';
 
 export default defineComponent({
   setup() {

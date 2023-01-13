@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { CardShapes, getShapeFromItemType } from '~/utils/items';
+import { CardShapes, getShapeFromItemType } from '@/utils/items';
 import { useResponsiveClasses } from '@/composables';
 
 const props = defineProps({

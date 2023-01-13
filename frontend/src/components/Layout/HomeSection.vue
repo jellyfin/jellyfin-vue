@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { HomeSection, userLibrariesStore } from '~/store';
+import { HomeSection, userLibrariesStore } from '@/store';
 
 const props = defineProps({
   section: {

@@ -37,7 +37,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { computed, inject, Ref } from 'vue';
 import IMdiHome from 'virtual:icons/mdi/home';
-import { userLibrariesStore } from '~/store';
+import { userLibrariesStore } from '@/store';
 import { getLibraryIcon } from '@/utils/items';
 
 const route = useRoute();

@@ -79,9 +79,9 @@ import { computed, ref, watch } from 'vue';
 import { groupBy } from 'lodash-es';
 import { BaseItemDto, SortOrder } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getItemDetailsLink } from '~/utils/items';
-import { formatTicks } from '~/utils/time';
-import { playbackManagerStore } from '~/store';
+import { getItemDetailsLink } from '@/utils/items';
+import { formatTicks } from '@/utils/time';
+import { playbackManagerStore } from '@/store';
 import { useRemote } from '@/composables';
 
 const props = defineProps({
