@@ -123,10 +123,10 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { sanitizeHtml } from '~/utils/html';
-import { getImageInfo, getBlurhash, ImageUrlInfo } from '~/utils/images';
-import { getItemDetailsLink } from '~/utils/items';
-import { msToTicks } from '~/utils/time';
+import { sanitizeHtml } from '@/utils/html';
+import { getImageInfo, getBlurhash, ImageUrlInfo } from '@/utils/images';
+import { getItemDetailsLink } from '@/utils/items';
+import { msToTicks } from '@/utils/time';
 import { useRemote } from '@/composables';
 
 export default defineComponent({

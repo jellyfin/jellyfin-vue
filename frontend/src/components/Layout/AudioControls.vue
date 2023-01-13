@@ -193,9 +193,9 @@ import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
 import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
 import IMdiRepeatOnce from 'virtual:icons/mdi/repeat-once';
 import IMdiRepeat from 'virtual:icons/mdi/repeat';
-import { RepeatMode } from '~/store/playbackManager';
-import { getItemDetailsLink } from '~/utils/items';
-import { playbackManagerStore } from '~/store';
+import { RepeatMode } from '@/store/playbackManager';
+import { getItemDetailsLink } from '@/utils/items';
+import { playbackManagerStore } from '@/store';
 
 const route = useRoute();
 

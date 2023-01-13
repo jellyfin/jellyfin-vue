@@ -77,7 +77,7 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
-import { getImageInfo } from '~/utils/images';
+import { getImageInfo } from '@/utils/images';
 
 export default defineComponent({
   props: {

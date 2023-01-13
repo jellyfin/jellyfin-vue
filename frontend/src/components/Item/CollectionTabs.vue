@@ -23,7 +23,7 @@
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { groupBy } from 'lodash-es';
 import { defineComponent } from 'vue';
-import { itemsStore } from '~/store';
+import { itemsStore } from '@/store';
 
 export default defineComponent({
   props: {
