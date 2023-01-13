@@ -37,7 +37,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 // eslint-disable-next-line no-restricted-imports
-import { ServerInfo } from '@/plugins/vue/remote/auth/types';
+import { ServerInfo } from '@/plugins/remote/auth/types';
 import { useRemote } from '@/composables';
 
 const props = defineProps({
