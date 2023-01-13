@@ -7,14 +7,15 @@ import {
   ItemFilter,
   MediaSourceInfo,
   SubtitleDeliveryMethod,
-  MediaStream
+  MediaStream,
+  BaseItemKind
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { itemsStore } from '.';
 import { useRemote } from '@/composables';
 import { getImageInfo } from '@/utils/images';
-import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { msToTicks } from '@/utils/time';
 
 /**
@@ -109,46 +110,79 @@ class PlaybackManagerStore {
   public get status(): typeof state.status {
     return state.status;
   }
-  public isBuffering = computed(
+  /**
+   * Get if playback is buffering
+   */
+  private _isBuffering = computed(
     () => state.status === PlaybackStatus.Buffering
   );
-  public isPlaying = computed(() => state.status !== PlaybackStatus.Stopped);
-  public isRepeating = computed(
+  public get isBuffering(): boolean {
+    return this._isBuffering.value;
+  }
+  /**
+   * Get if an item is being played at this moment
+   */
+  private _isPlaying = computed(() => state.status !== PlaybackStatus.Stopped);
+  public get isPlaying(): boolean {
+    return this._isPlaying.value;
+  }
+  /**
+   * Get if an item is repeating at this moment
+   */
+  private _isRepeating = computed(
     () => state.repeatMode !== RepeatMode.RepeatNone
   );
-  public isPaused = computed(() => state.status === PlaybackStatus.Paused);
+  public get isRepeating(): boolean {
+    return this._isRepeating.value;
+  }
+  /**
+   * Get if an item is paused at this moment
+   */
+  private _isPaused = computed(() => state.status === PlaybackStatus.Paused);
+  public get isPaused(): boolean {
+    return this._isPaused.value;
+  }
   /**
    * Get reactive BaseItemDto's objects of the queue
    */
-  public queue = computed(() => {
+  private _queue = computed(() => {
     const items = itemsStore();
 
     return items.getItemsById(state.queue);
   });
+  public get queue(): BaseItemDto[] {
+    return this._queue.value;
+  }
   /**
    * Get a reactive BaseItemDto object of the currently playing item
    */
-  public currentItem = computed(() => {
+  private _currentItem = computed(() => {
     const items = itemsStore();
 
     if (!isNil(state.currentItemIndex)) {
       return items.getItemById(state.queue[state.currentItemIndex]);
     }
   });
+  public get currentItem(): BaseItemDto | undefined {
+    return this._currentItem.value;
+  }
   /**
    * Get a reactive BaseItemDto object of the previous item in queue
    */
-  public previousItem = computed(() => {
+  private _previousItem = computed(() => {
     const items = itemsStore();
 
     if (!isNil(state.lastItemIndex)) {
       return items.getItemById(state.queue[state.lastItemIndex]);
     }
   });
+  public get previousItem(): BaseItemDto | undefined {
+    return this._previousItem.value;
+  }
   /**
    * Get a reactive BaseItemDto object of the next item in queue
    */
-  public nextItem = computed(() => {
+  private _nextItem = computed(() => {
     const items = itemsStore();
 
     if (
@@ -160,48 +194,65 @@ class PlaybackManagerStore {
       return items.getItemById(state.queue[0]);
     }
   });
+  public get nextItem(): BaseItemDto | undefined {
+    return this._nextItem.value;
+  }
   /**
    * Get the type of the currently playing item
    */
-  public currentlyPlayingType = computed(() => {
+  private _currentlyPlayingType = computed(() => {
     const items = itemsStore();
 
     if (!isNil(state.currentItemIndex)) {
       return items.getItemById(state.queue[state.currentItemIndex])?.Type;
     }
   });
+  public get currentlyPlayingType(): BaseItemKind | undefined {
+    return this._currentlyPlayingType.value;
+  }
   /**
    * Get the media type of the currently playing item
    */
-  public currentlyPlayingMediaType = computed(() => {
+  private _currentlyPlayingMediaType = computed(() => {
     const items = itemsStore();
 
     if (!isNil(state.currentItemIndex)) {
       return items.getItemById(state.queue[state.currentItemIndex])?.MediaType;
     }
   });
+  public get currentlyPlayingMediaType(): string | null | undefined {
+    return this._currentlyPlayingMediaType.value;
+  }
   /**
    * Get current's item audio tracks
    */
-  public currentItemAudioTracks = computed<MediaStream[] | undefined>(() => {
+  private _currentItemAudioTracks = computed<MediaStream[] | undefined>(() => {
     if (!isNil(state.currentMediaSource?.MediaStreams)) {
       return state.currentMediaSource?.MediaStreams.filter((stream) => {
         return stream.Type === 'Audio';
       });
     }
   });
+  public get currentItemAudioTracks(): MediaStream[] | undefined {
+    return this._currentItemAudioTracks.value;
+  }
   /**
    * Get current's item subtitle tracks
    */
-  public currentItemSubtitleTracks = computed<MediaStream[] | undefined>(() => {
-    if (!isNil(state.currentMediaSource?.MediaStreams)) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
-        return stream.Type === 'Subtitle';
-      });
+  private _currentItemSubtitleTracks = computed<MediaStream[] | undefined>(
+    () => {
+      if (!isNil(state.currentMediaSource?.MediaStreams)) {
+        return state.currentMediaSource?.MediaStreams.filter((stream) => {
+          return stream.Type === 'Subtitle';
+        });
+      }
     }
-  });
+  );
+  public get currentItemSubtitleTracks(): MediaStream[] | undefined {
+    return this._currentItemSubtitleTracks.value;
+  }
 
-  public currentItemParsedSubtitleTracks = computed<
+  private _currentItemParsedSubtitleTracks = computed<
     PlaybackTrack[] | undefined
   >(() => {
     if (!isNil(state.currentMediaSource)) {
@@ -228,17 +279,24 @@ class PlaybackManagerStore {
         })) || []) as PlaybackTrack[];
     }
   });
+  public get currentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
+    return this._currentItemParsedSubtitleTracks.value;
+  }
 
-  public currentItemAssParsedSubtitleTracks = computed<PlaybackTrack[]>(() => {
-    const subs = this.currentItemParsedSubtitleTracks;
+  private _currentItemAssParsedSubtitleTracks = computed<PlaybackTrack[]>(
+    () => {
+      const subs = this.currentItemParsedSubtitleTracks;
 
-    return (
-      subs.value?.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') ||
-      []
-    );
-  });
+      return (
+        subs?.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') || []
+      );
+    }
+  );
+  public get currentItemAssParsedSubtitleTracks(): PlaybackTrack[] {
+    return this._currentItemAssParsedSubtitleTracks.value;
+  }
 
-  public currentVideoTrack = computed<MediaStream | undefined>(() => {
+  private _currentVideoTrack = computed<MediaStream | undefined>(() => {
     if (
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentVideoStreamIndex)
@@ -248,8 +306,11 @@ class PlaybackManagerStore {
       })[state.currentVideoStreamIndex];
     }
   });
+  public get currentVideoTrack(): MediaStream | undefined {
+    return this._currentVideoTrack.value;
+  }
 
-  public currentAudioTrack = computed<MediaStream | undefined>(() => {
+  private _currentAudioTrack = computed<MediaStream | undefined>(() => {
     if (
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentAudioStreamIndex)
@@ -259,8 +320,11 @@ class PlaybackManagerStore {
       })[state.currentAudioStreamIndex];
     }
   });
+  public get currentAudioTrack(): MediaStream | undefined {
+    return this._currentAudioTrack.value;
+  }
 
-  public currentSubtitleTrack = computed<MediaStream | undefined>(() => {
+  private _currentSubtitleTrack = computed<MediaStream | undefined>(() => {
     if (
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentSubtitleStreamIndex)
@@ -270,6 +334,70 @@ class PlaybackManagerStore {
       })[state.currentSubtitleStreamIndex];
     }
   });
+  public get currentSubtitleTrack(): MediaStream | undefined {
+    return this._currentSubtitleTrack.value;
+  }
+
+  public get currentSubtitleStreamIndex(): number | undefined {
+    return state.currentSubtitleStreamIndex;
+  }
+  public set currentSubtitleStreamIndex(newIndex: number | undefined) {
+    state.currentSubtitleStreamIndex = newIndex;
+  }
+
+  public get currentAudioStreamIndex(): number | undefined {
+    return state.currentAudioStreamIndex;
+  }
+  public set currentAudioStreamIndex(newIndex: number | undefined) {
+    state.currentAudioStreamIndex = newIndex;
+  }
+
+  public get initiator(): BaseItemDto | undefined {
+    return state.playbackInitiator;
+  }
+
+  public get playbackInitMode(): InitMode {
+    return state.playbackInitMode;
+  }
+
+  public get queueIds(): string[] {
+    return state.queue;
+  }
+
+  public get isShuffling(): boolean {
+    return state.isShuffling;
+  }
+
+  public get repeatMode(): RepeatMode {
+    return state.repeatMode;
+  }
+
+  public get currentTime(): number | undefined {
+    return state.currentTime;
+  }
+
+  public get currentItemIndex(): number | undefined {
+    return state.currentItemIndex;
+  }
+
+  public get currentMediaSource(): MediaSourceInfo | undefined {
+    return state.currentMediaSource;
+  }
+
+  public get isMuted(): boolean {
+    return state.isMuted;
+  }
+
+  public get isMinimized(): boolean {
+    return state.isMinimized;
+  }
+
+  public get currentVolume(): number {
+    return state.currentVolume;
+  }
+  public set currentVolume(newVolume: number) {
+    state.currentVolume = newVolume;
+  }
 
   /**
    * == ACTIONS ==
@@ -531,8 +659,8 @@ class PlaybackManagerStore {
 
   public async stop(): Promise<void> {
     try {
-      if (!isNil(this.currentItem.value) && !isNil(this.currentItem.value.Id)) {
-        await reportPlaybackStopped(this.currentItem.value.Id);
+      if (!isNil(this.currentItem) && !isNil(this.currentItem.Id)) {
+        await reportPlaybackStopped(this.currentItem.Id);
       }
     } finally {
       const volume = state.currentVolume;
@@ -784,50 +912,50 @@ function handleMediaSession(remove = false): void {
  * Updates mediasession metadata based on the currently playing item
  */
 const mediaSessionMetadata = computed(() => {
-  if (!isNil(playbackManager.currentItem.value)) {
+  if (!isNil(playbackManager.currentItem)) {
     return new MediaMetadata({
-      title: playbackManager.currentItem.value.Name || '',
-      artist: playbackManager.currentItem.value.AlbumArtist || '',
-      album: playbackManager.currentItem.value.Album || '',
+      title: playbackManager.currentItem.Name || '',
+      artist: playbackManager.currentItem.AlbumArtist || '',
+      album: playbackManager.currentItem.Album || '',
       artwork: [
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 96
             }).url || '',
           sizes: '96x96'
         },
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 128
             }).url || '',
           sizes: '128x128'
         },
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 192
             }).url || '',
           sizes: '192x192'
         },
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 256
             }).url || '',
           sizes: '256x256'
         },
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 384
             }).url || '',
           sizes: '384x384'
         },
         {
           src:
-            getImageInfo(playbackManager.currentItem.value, {
+            getImageInfo(playbackManager.currentItem, {
               width: 512
             }).url || '',
           sizes: '512x512'
@@ -869,12 +997,12 @@ function updateMediaSessionMetadata(): void {
 async function reportPlaybackProgress(): Promise<void> {
   const remote = useRemote();
 
-  if (!isNil(state.currentTime) && !isNil(playbackManager.currentItem.value)) {
+  if (!isNil(state.currentTime) && !isNil(playbackManager.currentItem)) {
     await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
       playbackProgressInfo: {
-        ItemId: playbackManager.currentItem.value.Id,
+        ItemId: playbackManager.currentItem.Id,
         PlaySessionId: state.playSessionId,
-        IsPaused: playbackManager.isPaused.value,
+        IsPaused: playbackManager.isPaused,
         PositionTicks: Math.round(msToTicks(state.currentTime * 1000))
       }
     });
@@ -948,18 +1076,18 @@ watch(
   async () => {
     updateMediaSessionMetadata();
 
-    if (playbackManager.previousItem.value?.Id) {
-      await reportPlaybackStopped(playbackManager.previousItem.value.Id);
+    if (playbackManager.previousItem?.Id) {
+      await reportPlaybackStopped(playbackManager.previousItem.Id);
     }
 
     /**
      * And then report play for the next one if it exists
      */
     if (
-      !isNil(playbackManager.currentItem.value) &&
-      !isNil(playbackManager.currentItem.value.Id)
+      !isNil(playbackManager.currentItem) &&
+      !isNil(playbackManager.currentItem.Id)
     ) {
-      await reportPlaybackStart(playbackManager.currentItem.value.Id);
+      await reportPlaybackStart(playbackManager.currentItem.Id);
     }
   }
 );
@@ -971,7 +1099,7 @@ watch(
       const now = Date.now();
 
       if (
-        playbackManager.currentItem.value &&
+        playbackManager.currentItem &&
         now - state.lastProgressUpdate >= 1250 &&
         !isNil(state.currentTime)
       ) {

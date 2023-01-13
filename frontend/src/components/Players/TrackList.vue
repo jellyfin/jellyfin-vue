@@ -49,7 +49,12 @@
               <div class="d-flex align-center">
                 <span>{{ track.Name }}</span>
                 <div
-                  v-if="!track.Artists.includes(track.AlbumArtist)"
+                  v-if="
+                    track &&
+                    track.Artists &&
+                    track.AlbumArtist &&
+                    !track.Artists.includes(track.AlbumArtist)
+                  "
                   class="ml-3">
                   <router-link
                     v-for="artist of track.ArtistItems"
@@ -122,7 +127,7 @@ const tracksPerDisc = computed(() => {
  * Check if a given BaseItemDto is playing
  */
 function isPlaying(track: BaseItemDto): boolean {
-  return track.Id === playbackManager.getCurrentItem?.Id;
+  return track.Id === playbackManager.currentItem?.Id;
 }
 
 /**
