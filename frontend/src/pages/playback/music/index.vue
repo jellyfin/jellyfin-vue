@@ -14,7 +14,7 @@
     </v-app-bar>
     <v-col class="px-0">
       <swiper
-        v-if="playbackManager.getQueueItems"
+        v-if="playbackManager.queue"
         class="d-flex justify-center align-center"
         :modules="modules"
         :slides-per-view="4"
@@ -29,7 +29,7 @@
         @slide-change="onSlideChange"
         @swiper="setControlledSwiper">
         <swiper-slide
-          v-for="(item, index) in playbackManager.getQueueItems"
+          v-for="(item, index) in playbackManager.queue"
           :key="`${item.Id}-${index}`"
           :virtual-index="`${item.Id}-${index}`"
           class="d-flex justify-center">
@@ -88,8 +88,8 @@ const coverflowEffect = {
 };
 
 const backdropHash = computed(() => {
-  return playbackManager.getCurrentItem
-    ? getBlurhash(playbackManager.getCurrentItem, ImageType.Primary)
+  return playbackManager.currentItem
+    ? getBlurhash(playbackManager.currentItem, ImageType.Primary)
     : '';
 });
 const swiperInstance = ref<SwiperType>();
@@ -103,7 +103,7 @@ watch(
     if (swiperInstance.value && playbackManager.currentItemIndex) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
       route.meta.backdrop.blurhash = backdropHash.value;
-      route.meta.title = playbackManager.getCurrentItem?.Name || '';
+      route.meta.title = playbackManager.currentItem?.Name || '';
     } else if (isNil(playbackManager.currentItemIndex)) {
       router.back();
     }
@@ -123,7 +123,7 @@ onBeforeMount(() => {
 function onSlideChange(): void {
   const index = swiperInstance.value?.realIndex || 0;
 
-  if (playbackManager.getQueueItems[index]) {
+  if (playbackManager.queue[index]) {
     playbackManager.setCurrentIndex(index);
   }
 }

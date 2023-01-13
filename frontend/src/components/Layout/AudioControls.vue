@@ -3,7 +3,8 @@
     <v-footer
       v-if="
         playbackManager.isPlaying &&
-        playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+        playbackManager.currentlyPlayingMediaType === 'Audio' &&
+        playbackManager.currentItem
       "
       key="audioControls-footer"
       app
@@ -21,7 +22,7 @@
                 v-if="!isFullScreenPlayer"
                 :size="$vuetify.display.xs ? 50 : 85"
                 color="primary">
-                <blurhash-image :item="playbackManager.getCurrentItem" />
+                <blurhash-image :item="playbackManager.currentItem" />
               </v-avatar>
             </router-link>
             <v-col class="d-flex flex-column justify-center ml-4">
@@ -29,15 +30,15 @@
                 <router-link
                   tag="span"
                   class="text-truncate link height-fit-content"
-                  :to="getItemDetailsLink(playbackManager.getCurrentItem)">
-                  {{ playbackManager.getCurrentItem.Name }}
+                  :to="getItemDetailsLink(playbackManager.currentItem)">
+                  {{ playbackManager.currentItem.Name }}
                 </router-link>
               </v-row>
               <v-row
-                v-if="playbackManager.getCurrentItem?.ArtistItems"
+                v-if="playbackManager.currentItem.ArtistItems"
                 class="align-start">
                 <span
-                  v-for="artist in playbackManager.getCurrentItem.ArtistItems"
+                  v-for="artist in playbackManager.currentItem.ArtistItems"
                   :key="`artist-${artist.Id}`"
                   :to="getItemDetailsLink(artist, 'MusicArtist')">
                   <p class="mb-0 mr-2">
@@ -85,7 +86,7 @@
                 </v-btn>
                 <v-btn
                   icon
-                  :disabled="!playbackManager.getNextItem"
+                  :disabled="!playbackManager.nextItem"
                   class="mx-1"
                   @click="playbackManager.setNextTrack">
                   <v-icon>
@@ -107,15 +108,13 @@
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
             <like-button
-              :item="playbackManager.getCurrentItem"
+              :item="playbackManager.currentItem"
               class="active-button" />
             <queue-button nudge-top="35" />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
-            <item-menu
-              :item="playbackManager.getCurrentItem"
-              :z-index="99999" />
+            <item-menu :item="playbackManager.currentItem" :z-index="99999" />
             <v-btn v-show="!isFullScreenPlayer" icon to="/playback/music">
               <v-icon>
                 <i-mdi-fullscreen />
@@ -140,7 +139,7 @@
             </v-btn>
             <v-btn
               icon
-              :disabled="!playbackManager.getNextItem"
+              :disabled="!playbackManager.nextItem"
               class="mx-1"
               @click="playbackManager.setNextTrack">
               <v-icon>
@@ -171,9 +170,9 @@
           <div>
             <h4 class="text-overline font-italic">
               {{
-                !!playbackManager.getNextItem
+                !!playbackManager.nextItem
                   ? $t('upNextName', {
-                      upNextItemName: playbackManager.getNextItem.Name
+                      upNextItemName: playbackManager.nextItem.Name
                     })
                   : ''
               }}
