@@ -58,8 +58,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { taskManagerStore } from '~/store';
-import { RunningTask, TaskType } from '~/store/taskManager';
+import { taskManagerStore } from '@/store';
+import { RunningTask, TaskType } from '@/store/taskManager';
 
 interface TaskInfo {
   progress: undefined | number;

@@ -71,8 +71,8 @@ import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { isNil } from 'lodash-es';
 import { useRoute, useRouter } from 'vue-router';
-import { getBlurhash } from '~/utils/images';
-import { playbackManagerStore } from '~/store';
+import { getBlurhash } from '@/utils/images';
+import { playbackManagerStore } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];

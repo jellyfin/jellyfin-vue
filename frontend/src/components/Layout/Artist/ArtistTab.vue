@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getItemDetailsLink } from '~/utils/items';
+import { getItemDetailsLink } from '@/utils/items';
 
 defineProps({
   releases: {

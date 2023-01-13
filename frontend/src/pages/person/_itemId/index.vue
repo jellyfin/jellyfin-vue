@@ -153,7 +153,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getBlurhash } from '~/utils/images';
+import { getBlurhash } from '@/utils/images';
 import { dateFnsFormat } from '@/utils/time';
 import { useRemote } from '@/composables';
 
