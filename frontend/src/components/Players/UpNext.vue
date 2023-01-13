@@ -1,6 +1,6 @@
 <template>
   <v-container
-    v-if="visible"
+    v-if="visible && playbackManager.currentItem && playbackManager.nextItem"
     class="up-next-dialog pointer-events-none pa-lg-6">
     <v-row>
       <v-col
@@ -22,30 +22,28 @@
             </i18n>
           </v-card-title>
           <v-card-subtitle class="text-truncate text-subtitle-1">
-            <span v-if="playbackManager.getCurrentItem.Type === 'Episode'">
-              {{ playbackManager.getNextItem.SeriesName }} -
+            <span v-if="playbackManager.currentItem.Type === 'Episode'">
+              {{ playbackManager.nextItem.SeriesName }} -
               {{
                 $t('seasonEpisodeAbbrev', {
-                  seasonNumber: playbackManager.getNextItem.ParentIndexNumber,
-                  episodeNumber: playbackManager.getNextItem.IndexNumber
+                  seasonNumber: playbackManager.nextItem.ParentIndexNumber,
+                  episodeNumber: playbackManager.nextItem.IndexNumber
                 })
               }}
               <span v-if="$vuetify.display.smAndUp"> - </span> <br v-else />
-              {{ playbackManager.getNextItem.Name }}
+              {{ playbackManager.nextItem.Name }}
             </span>
-            <span v-if="playbackManager.getCurrentItem.Type === 'Movie'">
-              {{ playbackManager.getNextItem.Name }}
+            <span v-if="playbackManager.currentItem.Type === 'Movie'">
+              {{ playbackManager.nextItem.Name }}
             </span>
           </v-card-subtitle>
-          <v-card-text>
+          <v-card-text v-if="playbackManager.nextItem?.RunTimeTicks">
             <span>
-              {{ getRuntimeTime(playbackManager.getNextItem.RunTimeTicks) }}
-              <span class="pl-4"
-                >{{
+              {{ getRuntimeTime(playbackManager.nextItem.RunTimeTicks) }}
+              <span class="pl-4">
+                {{
                   $t('endsAt', {
-                    time: getEndsAtTime(
-                      playbackManager.getNextItem.RunTimeTicks
-                    )
+                    time: getEndsAtTime(playbackManager.nextItem.RunTimeTicks)
                   })
                 }}
               </span>
@@ -87,9 +85,7 @@ export default defineComponent({
   },
   computed: {
     currentItemDuration(): number {
-      return (
-        ticksToMs(this.playbackManager.getCurrentItem?.RunTimeTicks) / 1000
-      );
+      return ticksToMs(this.playbackManager.currentItem?.RunTimeTicks) / 1000;
     },
     currentItemTimeLeft(): number {
       return Math.round(
@@ -100,8 +96,7 @@ export default defineComponent({
       if (
         this.playbackManager.isMinimized ||
         this.isHiddenByUser ||
-        this.playbackManager.getCurrentlyPlayingMediaType !== 'Video' ||
-        !this.playbackManager.getNextItem
+        this.playbackManager.currentlyPlayingMediaType !== 'Video'
       ) {
         return false;
       }

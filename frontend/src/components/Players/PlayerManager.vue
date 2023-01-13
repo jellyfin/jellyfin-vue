@@ -3,13 +3,14 @@
     <shaka-player
       v-if="
         playbackManager.isPlaying &&
-        playbackManager.getCurrentlyPlayingMediaType === 'Audio'
+        playbackManager.currentlyPlayingMediaType === 'Audio'
       "
       class="d-none" />
     <player-dialog
       v-if="
         playbackManager.isPlaying &&
-        playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        playbackManager.currentItem &&
+        playbackManager.currentlyPlayingMediaType === 'Video'
       "
       dark
       persistent
@@ -116,31 +117,28 @@
                         v-if="$vuetify.display.mdAndUp"
                         class="d-flex flex-column align-start justify-center mr-auto video-title">
                         <template
-                          v-if="
-                            playbackManager.getCurrentItem.Type === 'Episode'
-                          ">
+                          v-if="playbackManager.currentItem.Type === 'Episode'">
                           <span class="mt-1 text-subtitle-1 text-truncate">
-                            {{ playbackManager.getCurrentItem.Name }}
+                            {{ playbackManager.currentItem.Name }}
                           </span>
                           <span
                             class="text-subtitle-2 text--secondary text-truncate">
-                            {{ playbackManager.getCurrentItem.SeriesName }}
+                            {{ playbackManager.currentItem.SeriesName }}
                           </span>
                           <span
                             class="text-subtitle-2 text--secondary text-truncate">
                             {{
                               $t('seasonEpisode', {
                                 seasonNumber:
-                                  playbackManager.getCurrentItem
-                                    .ParentIndexNumber,
+                                  playbackManager.currentItem.ParentIndexNumber,
                                 episodeNumber:
-                                  playbackManager.getCurrentItem.IndexNumber
+                                  playbackManager.currentItem.IndexNumber
                               })
                             }}
                           </span>
                         </template>
                         <template v-else>
-                          <span>{{ playbackManager.getCurrentItem.Name }}</span>
+                          <span>{{ playbackManager.currentItem.Name }}</span>
                         </template>
                       </div>
                       <div
@@ -288,7 +286,7 @@ export default defineComponent({
       if (
         this.playbackManager.isPlaying &&
         !this.playbackManager.isMinimized &&
-        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        this.playbackManager.currentlyPlayingMediaType === 'Video'
       ) {
         document.documentElement.classList.add('overflow-hidden');
       } else {
@@ -298,7 +296,7 @@ export default defineComponent({
     'playbackManager.status'(): void {
       switch (this.playbackManager.status) {
         case PlaybackStatus.Playing: {
-          if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+          if (this.playbackManager.currentlyPlayingMediaType === 'Video') {
             window.addEventListener('mousemove', this.handleMouseMove);
             window.addEventListener('keyup', this.handleKeyPress);
             window.addEventListener('click', this.handleVideoClick);
@@ -344,7 +342,7 @@ export default defineComponent({
     handleMouseMove(): void {
       if (
         this.playbackManager.isPlaying &&
-        this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
+        this.playbackManager.currentlyPlayingMediaType === 'Video' &&
         !this.playbackManager.isMinimized
       ) {
         if (this.fullScreenOverlayTimer) {
@@ -413,7 +411,7 @@ export default defineComponent({
             break;
           }
           case 'f': {
-            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+            if (this.playbackManager.currentlyPlayingMediaType === 'Video') {
               this.toggleFullScreen();
             }
 
@@ -427,7 +425,7 @@ export default defineComponent({
       } else {
         switch (e.key) {
           case 'f': {
-            if (this.playbackManager.getCurrentlyPlayingMediaType === 'Video') {
+            if (this.playbackManager.currentlyPlayingMediaType === 'Video') {
               this.playbackManager.toggleMinimized();
             }
 
@@ -447,7 +445,7 @@ export default defineComponent({
         if (
           target &&
           target.classList.contains('player-overlay') &&
-          this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+          this.playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
           this.playbackManager.playPause();
         }
@@ -463,7 +461,7 @@ export default defineComponent({
       if (
         target &&
         target.classList.contains('player-overlay') &&
-        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
+        this.playbackManager.currentlyPlayingMediaType === 'Video'
       ) {
         this.toggleFullScreen();
       }
