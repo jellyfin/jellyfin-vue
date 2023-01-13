@@ -9,7 +9,7 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
-import { CardShapes } from '~/utils/items';
+import { CardShapes } from '@/utils/items';
 import { useRemote, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 

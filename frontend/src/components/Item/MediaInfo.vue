@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getEndsAtTime, getRuntimeTime } from '~/utils/time';
+import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
 defineProps({
   item: {
