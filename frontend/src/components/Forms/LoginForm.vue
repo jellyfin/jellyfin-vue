@@ -58,6 +58,7 @@ import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import IconEye from 'virtual:icons/mdi/eye';
 import { useRemote } from '@/composables';
+import { userLibrariesStore } from '@/store';
 
 const remote = useRemote();
 const { t } = useI18n();
@@ -74,6 +75,7 @@ defineEmits<{
 }>();
 
 const router = useRouter();
+const userLibraries = userLibrariesStore();
 
 const valid = ref(false);
 const login = ref({ username: '', password: '', rememberMe: true });
@@ -102,6 +104,8 @@ async function userLogin(): Promise<void> {
       login.value.password,
       login.value.rememberMe
     );
+
+    await userLibraries.refresh();
 
     router.replace('/');
   } finally {

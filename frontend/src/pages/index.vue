@@ -13,7 +13,7 @@
       <v-row
         v-for="(homeSection, index) in homeSections"
         :key="`homeSection-${index}`">
-        <home-section :section="homeSection" :index="index" />
+        <home-section :section="homeSection" />
       </v-row>
     </v-container>
   </div>
@@ -27,8 +27,8 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '~/utils/items';
-import { clientSettingsStore, userViewsStore } from '~/store';
-import type { HomeSection } from '~/store/homeSection';
+import { clientSettingsStore, userLibrariesStore } from '~/store';
+import type { HomeSection } from '~/store';
 import { useRemote } from '@/composables';
 
 const VALID_SECTIONS = new Set([
@@ -55,12 +55,8 @@ const carouselItems = (
   })
 ).data;
 
-const userViews = userViewsStore();
+const userLibraries = userLibrariesStore();
 const clientSettings = clientSettingsStore();
-
-if (userViews.views.length === 0) {
-  await userViews.refreshUserViews();
-}
 
 const homeSections = computed<HomeSection[]>(() => {
   // Filter for valid sections in Jellyfin Vue
@@ -111,7 +107,7 @@ const homeSections = computed<HomeSection[]>(() => {
             'channels'
           ]);
 
-          for (const userView of userViews.views) {
+          for (const userView of userLibraries.libraries) {
             if (excludeViewTypes.has(userView.CollectionType as string)) {
               continue;
             }
