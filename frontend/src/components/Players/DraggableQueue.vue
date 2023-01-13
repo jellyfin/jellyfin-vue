@@ -70,7 +70,7 @@ const playbackManager = playbackManagerStore();
 
 const queue = computed({
   get() {
-    return playbackManager.getQueueItems;
+    return playbackManager.queue;
   },
   set(newValue: BaseItemDto[]) {
     playbackManager.setNewQueue(
@@ -83,7 +83,7 @@ const queue = computed({
 
 onMounted(() => {
   const reference = listItems.value;
-  const currentItemId = playbackManager.getCurrentItem?.Id || '';
+  const currentItemId = playbackManager.currentItem?.Id || '';
 
   if (reference) {
     const element = reference.find(
