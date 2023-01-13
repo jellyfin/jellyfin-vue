@@ -24,6 +24,7 @@ import autoprefixer from 'autoprefixer';
 export default defineConfig(async ({ mode }): Promise<UserConfig> => {
   const config: UserConfig = {
     server: {
+      host: '0.0.0.0',
       port: 3000
     },
     define: {
