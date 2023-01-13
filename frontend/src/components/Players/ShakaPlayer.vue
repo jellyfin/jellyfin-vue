@@ -91,19 +91,17 @@ export default defineComponent({
   },
   computed: {
     poster(): ImageUrlInfo | string {
-      return this.playbackManager.getCurrentlyPlayingMediaType === 'Video' &&
-        !isNil(this.playbackManager.getCurrentItem)
-        ? getImageInfo(this.playbackManager.getCurrentItem, {
+      return this.playbackManager.currentlyPlayingMediaType === 'Video' &&
+        !isNil(this.playbackManager.currentItem)
+        ? getImageInfo(this.playbackManager.currentItem, {
             preferBackdrop: true
           })
         : '';
     },
     mediaElement(): string {
-      if (this.playbackManager.getCurrentlyPlayingMediaType === 'Audio') {
+      if (this.playbackManager.currentlyPlayingMediaType === 'Audio') {
         return 'audio';
-      } else if (
-        this.playbackManager.getCurrentlyPlayingMediaType === 'Video'
-      ) {
+      } else if (this.playbackManager.currentlyPlayingMediaType === 'Video') {
         return 'video';
       } else {
         return '';
@@ -125,7 +123,7 @@ export default defineComponent({
       return (
         (
           this.playbackManager
-            .getCurrentItemAssParsedSubtitleTracks as PlaybackTrack[]
+            .currentItemAssParsedSubtitleTracks as PlaybackTrack[]
         ).findIndex(
           (element) =>
             this.subtitleTrack &&
@@ -247,23 +245,20 @@ export default defineComponent({
   },
   methods: {
     async getPlaybackUrl(): Promise<void> {
-      if (this.playbackManager.getCurrentItem && this.shaka) {
+      if (this.playbackManager.currentItem && this.shaka) {
         this.playbackInfo = (
           await this.$remote.sdk
             .newUserApi(getMediaInfoApi)
-            .getPostedPlaybackInfo(
-              {
-                itemId: this.playbackManager.getCurrentItem?.Id || '',
-                userId: this.$remote.auth.currentUserId.value,
-                autoOpenLiveStream: true,
-                playbackInfoDto: { DeviceProfile: playbackProfile },
-                mediaSourceId: undefined,
-                audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
-                subtitleStreamIndex:
-                  this.playbackManager.currentSubtitleStreamIndex
-              },
-              { progress: false }
-            )
+            .getPostedPlaybackInfo({
+              itemId: this.playbackManager.currentItem?.Id || '',
+              userId: this.$remote.auth.currentUserId.value,
+              autoOpenLiveStream: true,
+              playbackInfoDto: { DeviceProfile: playbackProfile },
+              mediaSourceId: undefined,
+              audioStreamIndex: this.playbackManager.currentAudioStreamIndex,
+              subtitleStreamIndex:
+                this.playbackManager.currentSubtitleStreamIndex
+            })
         ).data;
 
         this.playbackManager.setPlaySessionId(
@@ -302,7 +297,7 @@ export default defineComponent({
 
           let mediaType = 'Videos';
 
-          if (this.playbackManager.getCurrentlyPlayingMediaType === 'Audio') {
+          if (this.playbackManager.currentlyPlayingMediaType === 'Audio') {
             mediaType = 'Audio';
           }
 
@@ -319,8 +314,7 @@ export default defineComponent({
     async changeSubtitle(newsrcIndex: number): Promise<void> {
       // Find new sub
       const newSub = (
-        this.playbackManager
-          .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+        this.playbackManager.currentItemParsedSubtitleTracks as PlaybackTrack[]
       ).find((element) => element.srcIndex === newsrcIndex);
 
       // If we currently have a sub burned in or will have, a change implies to always fetch a new video stream
@@ -391,14 +385,14 @@ export default defineComponent({
         this.player.currentTime =
           this.restartTime ||
           ticksToMs(
-            this.playbackManager.getCurrentItem?.UserData
-              ?.PlaybackPositionTicks || 0
+            this.playbackManager.currentItem?.UserData?.PlaybackPositionTicks ||
+              0
           ) / 1000;
         this.restartTime = undefined;
 
         this.subtitleTrack = (
           this.playbackManager
-            .getCurrentItemParsedSubtitleTracks as PlaybackTrack[]
+            .currentItemParsedSubtitleTracks as PlaybackTrack[]
         ).find(
           (sub) =>
             sub.srcIndex === this.playbackManager.currentSubtitleStreamIndex

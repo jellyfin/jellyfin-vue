@@ -141,6 +141,7 @@
               v-if="
                 isTranscoding &&
                 sessionInfo.TranscodingInfo &&
+                sessionInfo.TranscodingInfo.TranscodeReasons &&
                 sessionInfo.TranscodingInfo.TranscodeReasons.length > 0
               "
               class="d-flex">
@@ -286,51 +287,51 @@ export default defineComponent({
       return this.sessionInfo?.NowPlayingItem?.Container;
     },
     mediaVideoCodec(): string | null | undefined {
-      if (this.playbackManager.getCurrentVideoTrack) {
+      if (this.playbackManager.currentVideoTrack) {
         if (
           (this.sessionInfo?.TranscodingInfo?.VideoCodec &&
-            this.playbackManager.getCurrentVideoTrack.Codec !==
+            this.playbackManager.currentVideoTrack.Codec !==
               this.sessionInfo.TranscodingInfo.VideoCodec) ||
           !this.sessionInfo?.TranscodingInfo?.IsAudioDirect
         ) {
-          return `${this.playbackManager.getCurrentVideoTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.VideoCodec}`;
+          return `${this.playbackManager.currentVideoTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.VideoCodec}`;
         }
 
-        return this.playbackManager.getCurrentVideoTrack.Codec;
+        return this.playbackManager.currentVideoTrack.Codec;
       }
 
       return undefined;
     },
     mediaAudioCodec(): string | null | undefined {
-      if (this.playbackManager.getCurrentAudioTrack) {
+      if (this.playbackManager.currentAudioTrack) {
         if (
           (this.sessionInfo?.TranscodingInfo?.AudioCodec &&
-            this.playbackManager.getCurrentAudioTrack?.Codec !==
+            this.playbackManager.currentAudioTrack?.Codec !==
               this.sessionInfo?.TranscodingInfo?.AudioCodec) ||
           !this.sessionInfo?.TranscodingInfo?.IsAudioDirect
         ) {
-          return `${this.playbackManager.getCurrentAudioTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioCodec}`;
+          return `${this.playbackManager.currentAudioTrack.Codec} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioCodec}`;
         }
 
-        return this.playbackManager.getCurrentAudioTrack.Codec;
+        return this.playbackManager.currentAudioTrack.Codec;
       }
 
       return undefined;
     },
     mediaSubtitleCodec(): string | null | undefined {
-      return this.playbackManager.getCurrentSubtitleTrack?.Codec;
+      return this.playbackManager.currentSubtitleTrack?.Codec;
     },
     mediaAudioChannels(): string | null | undefined {
-      if (this.playbackManager.getCurrentAudioTrack) {
+      if (this.playbackManager.currentAudioTrack) {
         if (
           this.sessionInfo?.TranscodingInfo?.AudioChannels &&
-          this.playbackManager.getCurrentAudioTrack?.Channels !==
+          this.playbackManager.currentAudioTrack?.Channels !==
             this.sessionInfo?.TranscodingInfo?.AudioChannels
         ) {
-          return `${this.playbackManager.getCurrentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
+          return `${this.playbackManager.currentAudioTrack.Channels} ➞ ${this.sessionInfo?.TranscodingInfo?.AudioChannels}`;
         }
 
-        return this.playbackManager.getCurrentAudioTrack?.Channels?.toString();
+        return this.playbackManager.currentAudioTrack?.Channels?.toString();
       }
 
       return undefined;
