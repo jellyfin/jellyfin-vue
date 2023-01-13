@@ -13,8 +13,8 @@ import { createApp } from 'vue';
 import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import Root from '@/App.vue';
 /* eslint-disable no-restricted-imports */
-import { createRemote, i18n, router, vuetify } from '@/plugins/vue';
-import { hideDirective } from '@/plugins/vue/directives';
+import { createRemote, i18n, router, vuetify } from '@/plugins';
+import { hideDirective } from '@/plugins/directives';
 /* eslint-enable no-restricted-imports */
 
 /**

@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import i18n from '@/plugins/vue/i18n';
+import i18n from '@/plugins/i18n';
 /* eslint-enable no-restricted-imports */
 
 /**
