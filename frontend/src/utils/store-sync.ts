@@ -2,17 +2,8 @@ import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
 import { isNil } from 'lodash-es';
-import {
-  PiniaPluginContext,
-  StateTree,
-  Store,
-  _ActionsTree,
-  _GettersTree
-} from 'pinia';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { taskManagerStore } from '~/store';
-
-const syncedStores = new Set(['clientSettings']);
 
 /**
  * Cast custom preferences returned from the server from strings to the correct Javascript type
@@ -20,11 +11,12 @@ const syncedStores = new Set(['clientSettings']);
  * @param data - Response from the server
  * @param store
  */
-function castDisplayPreferencesResponse(
+function castDisplayPreferencesResponse<T>(
   data: DisplayPreferencesDto,
-  store: Store<string, StateTree, _GettersTree<StateTree>, _ActionsTree>
+  target: T
 ): DisplayPreferencesDto {
-  const storeKeys = Object.keys(store.$state);
+  // @ts-expect-error - We need loose types here since all this logic is about properly casting the data
+  const storeKeys = Object.keys(target);
 
   if (data.CustomPrefs) {
     for (const [key, value] of Object.entries(data.CustomPrefs)) {
@@ -40,49 +32,50 @@ function castDisplayPreferencesResponse(
         delete data.CustomPrefs[key];
       }
     }
-
-    return data;
   }
 
-  return {};
+  return data.CustomPrefs || {};
 }
 
 /**
  * Fetch displayPreferences settings from server
  *
- * @param store - Store instance which state needs to be synced to server
- * @param cast - If the data should be provided in a format compatible with the client or as-is.
+ * @param key - Key used to save the store's state
+ * @param target - Object that serves as a model for the store's state
  */
-export async function fetchSettingsFromServer(
-  store: Store<string, StateTree, _GettersTree<StateTree>, _ActionsTree>,
+export async function fetchSettingsFromServer<T>(
+  key: string,
+  target: T,
   cast = true
-): Promise<DisplayPreferencesDto> {
+): Promise<T | DisplayPreferencesDto> {
   const remote = useRemote();
 
   const response = await remote.sdk
     .newUserApi(getDisplayPreferencesApi)
     .getDisplayPreferences({
-      displayPreferencesId: store.$id,
+      displayPreferencesId: key,
       userId: remote.auth.currentUserId.value || '',
       client: 'vue'
     });
 
   if (response.status !== 200) {
     throw new Error(
-      `Unexpected API response code while fetching displayPreferences with id: ${store.$id} (${response.status})`
+      `Unexpected API response code while fetching displayPreferences with id: ${key} (${response.status})`
     );
   }
 
+  const data = response.data;
+
   return cast
-    ? castDisplayPreferencesResponse(response.data, store)
-    : response.data;
+    ? (castDisplayPreferencesResponse<T>(data, target) as T)
+    : (response.data as DisplayPreferencesDto);
 }
 
 /**
  * Pushes a new displayPreferences payload to server
  */
 export async function pushSettingsToServer(
-  storeId: string,
+  key: string,
   prefs: DisplayPreferencesDto
 ): Promise<void> {
   const remote = useRemote();
@@ -108,7 +101,7 @@ export async function pushSettingsToServer(
     const responseUpdate = await remote.sdk
       .newUserApi(getDisplayPreferencesApi)
       .updateDisplayPreferences({
-        displayPreferencesId: storeId,
+        displayPreferencesId: key,
         userId: remote.auth.currentUserId.value || '',
         client: 'vue',
         displayPreferencesDto: prefs
@@ -116,11 +109,11 @@ export async function pushSettingsToServer(
 
     if (responseUpdate.status !== 204) {
       throw new Error(
-        `Unexpected API response code while pushing displayPreferences with id: ${storeId} (${responseUpdate.status})`
+        `Unexpected API response code while pushing displayPreferences with id: ${key} (${responseUpdate.status})`
       );
     }
   } else {
-    throw new Error(`Data is malformed or there is no user logged in`);
+    throw new Error(`DisplayPreferences data is malformed`);
   }
 }
 
@@ -129,45 +122,40 @@ export async function pushSettingsToServer(
  * Make sure your store implements a 'lastSync' property of type 'number | null'
  *
  * It will automatically be synced when a property changes.
- *
  */
-export default function preferencesSync({ store }: PiniaPluginContext): void {
-  if (syncedStores.has(store.$id)) {
-    const auth = useRemote().auth;
-    const { t } = usei18n();
-    const taskManager = taskManagerStore();
+export default async function preferencesSync<T>(
+  key: string,
+  state: T
+): Promise<void> {
+  const auth = useRemote().auth;
+  const { t } = usei18n();
+  const taskManager = taskManagerStore();
 
-    store.$onAction(({ after, name }) => {
-      after(async () => {
-        if (name !== 'initState' && !isNil(auth.currentUser.value)) {
-          try {
-            /**
-             * Creates a config syncing task, so UI can show that there's a syncing in progress
-             */
-            taskManager.startConfigSync();
-            /**
-             * We set a new last sync date at the start, so if the push fails, we still have the last attempt's
-             * date and we can compare with the server when we're back online
-             */
-            store.$state.lastSync = Date.now();
+  if (!isNil(auth.currentUser.value)) {
+    try {
+      /**
+       * Creates a config syncing task, so UI can show that there's a syncing in progress
+       */
+      taskManager.startConfigSync();
 
-            /**
-             * The fetch part is done because DisplayPreferences doesn't accept partial updates
-             * TODO: Revisit if we ever get PATCH support
-             */
-            const displayPrefs = await fetchSettingsFromServer(store, false);
+      /**
+       * The fetch part is done because DisplayPreferences doesn't accept partial updates
+       * TODO: Revisit if we ever get PATCH support
+       */
+      const displayPrefs = (await fetchSettingsFromServer(
+        key,
+        state,
+        false
+      )) as DisplayPreferencesDto;
 
-            displayPrefs.CustomPrefs = {};
+      displayPrefs.CustomPrefs = {};
 
-            Object.assign(displayPrefs.CustomPrefs, store.$state);
-            pushSettingsToServer(store.$id, displayPrefs);
-          } catch {
-            useSnackbar(t('failedSettingDisplayPreferences'), 'error');
-          } finally {
-            taskManager.stopConfigSync();
-          }
-        }
-      });
-    });
+      Object.assign(displayPrefs.CustomPrefs, state);
+      await pushSettingsToServer(key, displayPrefs);
+    } catch {
+      useSnackbar(t('failedSettingDisplayPreferences'), 'error');
+    } finally {
+      taskManager.stopConfigSync();
+    }
   }
 }
