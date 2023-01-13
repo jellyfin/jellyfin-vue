@@ -6,7 +6,7 @@
     <div
       v-show="!loading"
       ref="img"
-      class="user-image"
+      class="user-image ma-auto"
       :class="{ 'rounded-circle': rounded }"
     />
   </div>
