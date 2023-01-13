@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { CardShapes } from '~/utils/items';
+import { CardShapes } from '@/utils/items';
 
 export default defineComponent({
   props: {

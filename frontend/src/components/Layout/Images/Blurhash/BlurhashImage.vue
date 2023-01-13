@@ -42,8 +42,8 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { useDisplay } from 'vuetify';
-import { getBlurhash, getImageInfo } from '~/utils/images';
-import { getItemIcon } from '~/utils/items';
+import { getBlurhash, getImageInfo } from '@/utils/images';
+import { getItemIcon } from '@/utils/items';
 
 const props = defineProps({
   item: {
