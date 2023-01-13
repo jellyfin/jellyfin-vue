@@ -49,8 +49,8 @@
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue';
 import { taskManagerStore } from '@/store';
 import { RunningTask, TaskType } from '@/store/taskManager';
 
@@ -61,124 +61,113 @@ interface TaskInfo {
   id: string;
 }
 
-export default defineComponent({
-  props: {
-    fab: {
-      type: Boolean,
-      required: false
-    },
-    timeout: {
-      type: Number,
-      default: 5000
+const props = withDefaults(
+  defineProps<{
+    fab?: boolean;
+    timeout: number;
+  }>(),
+  { timeout: 5000 }
+);
+
+const menu = ref(false);
+const taskList = ref<TaskInfo[]>([]);
+const scheduledTimeout = ref(0);
+const taskManager = taskManagerStore();
+
+const buttonColor = computed(() => {
+  return taskList.value.every((task) => {
+    return task.progress === 100;
+  })
+    ? 'success'
+    : undefined;
+});
+
+const showButton = computed(() => taskList.value.length > 0);
+
+/**
+ *  Clear the tasks list
+ */
+function clearState(): void {
+  taskList.value = [];
+}
+
+/**
+ * Set a timeout to hide the button
+ */
+function setTimeout(): void {
+  scheduledTimeout.value = window.setTimeout(clearState, props.timeout);
+}
+
+/**
+ * Locally retrieve and parse the tasks list
+ */
+function getTaskList(): void {
+  const list: Array<TaskInfo> = [];
+
+  for (const task of taskManager.tasks as RunningTask[]) {
+    switch (task.type) {
+      case TaskType.ConfigSync: {
+        list.push({
+          progress: undefined,
+          textKey: 'appbar.tasks.configSync',
+          id: task.id
+        });
+
+        break;
+      }
+      case TaskType.LibraryRefresh: {
+        list.push({
+          progress: task.progress,
+          textKey: 'appbar.tasks.scanningLibrary',
+          textParams: {
+            library: task.data || ''
+          },
+          id: task.id
+        });
+
+        break;
+      }
     }
-  },
-  setup() {
-    const taskManager = taskManagerStore();
+  }
 
-    return { taskManager };
-  },
-  data() {
-    return {
-      menu: false,
-      showButton: false,
-      taskList: [] as TaskInfo[],
-      scheduledTimeout: 0
-    };
-  },
-  computed: {
-    buttonColor(): string | undefined {
-      return this.taskList.every((task) => {
-        return task.progress === 100;
-      })
-        ? 'success'
-        : undefined;
+  const taskIds = new Set(
+    (list as TaskInfo[]).map((task) => {
+      return task.id;
+    })
+  );
+  const finishedTasks: Array<TaskInfo> = [];
+
+  for (const task of taskList.value) {
+    if (!taskIds.has(task.id)) {
+      task.progress = 100;
+      finishedTasks.push(task);
     }
+  }
+
+  taskList.value = [...list, ...finishedTasks];
+}
+
+watch(
+  taskManager.tasks,
+  () => {
+    getTaskList();
   },
-  watch: {
-    'taskManager.tasks': {
-      immediate: true,
-      handler(): void {
-        this.getTaskList();
+  { immediate: true }
+);
 
-        if (this.taskList.length > 0) {
-          this.showButton = true;
-        }
-      }
-    },
-    /**
-     * Handles all tasks completion
-     */
-    buttonColor() {
-      window.clearTimeout(this.scheduledTimeout);
+watch(buttonColor, () => {
+  window.clearTimeout(scheduledTimeout.value);
 
-      if (this.buttonColor && !this.menu) {
-        this.setTimeout();
-      }
-    },
-    /**
-     * Don't remove the menu if the user has it opened
-     */
-    menu() {
-      if (this.menu) {
-        window.clearTimeout(this.scheduledTimeout);
-      } else if (this.buttonColor) {
-        this.setTimeout();
-      }
-    }
-  },
-  methods: {
-    clearState(): void {
-      this.showButton = false;
-      this.taskList = [];
-    },
-    setTimeout(): void {
-      this.scheduledTimeout = window.setTimeout(this.clearState, this.timeout);
-    },
-    getTaskList(): void {
-      const list: Array<TaskInfo> = [];
+  if (buttonColor.value && !menu.value) {
+    setTimeout();
+  }
+});
 
-      for (const task of this.taskManager.tasks as RunningTask[]) {
-        switch (task.type) {
-          case TaskType.ConfigSync: {
-            list.push({
-              progress: undefined,
-              textKey: 'appbar.tasks.configSync',
-              id: task.id
-            });
-
-            break;
-          }
-          case TaskType.LibraryRefresh: {
-            list.push({
-              progress: task.progress,
-              textKey: 'appbar.tasks.scanningLibrary',
-              textParams: {
-                library: task.data || ''
-              },
-              id: task.id
-            });
-
-            break;
-          }
-        }
-      }
-
-      const taskIds = new Set(
-        (list as TaskInfo[]).map((task) => {
-          return task.id;
-        })
-      );
-      const finishedTasks: Array<TaskInfo> = [];
-
-      for (const task of this.taskList) {
-        if (!taskIds.has(task.id)) {
-          task.progress = 100;
-          finishedTasks.push(task);
-        }
-      }
-
-      this.taskList = [...list, ...finishedTasks];
-    }
+watch(menu, () => {
+  if (menu.value) {
+    window.clearTimeout(scheduledTimeout.value);
+  } else if (buttonColor.value) {
+    setTimeout();
   }
 });
 </script>
