@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { vuetify } from '@/plugins/vue';
+import { vuetify } from '@/plugins';
 /* eslint-enable no-restricted-imports */
 
 /**
