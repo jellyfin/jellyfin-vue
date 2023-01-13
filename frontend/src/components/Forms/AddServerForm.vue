@@ -68,7 +68,8 @@ async function connectToServer(): Promise<void> {
 
     if (!best) {
       useSnackbar(i18n.t('login.serverNotFound'), 'error');
-      throw new Error('No server matches wanted criteria');
+
+      return;
     }
 
     await remote.auth.connectServer(best.address);

@@ -10,9 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { watch, computed } from 'vue';
-import { homeSectionStore } from '~/store';
-import type { HomeSection } from '~/store/homeSection';
+import { computed } from 'vue';
+import { HomeSection, userLibrariesStore } from '~/store';
 
 const props = defineProps({
   section: {
@@ -21,48 +20,8 @@ const props = defineProps({
   }
 });
 
-const homeSection = homeSectionStore();
-
-/**
- * Fetch home sections
- */
-async function fetchHomeSections(): Promise<void> {
-  switch (props.section.type) {
-    case 'libraries': {
-      break;
-    }
-    case 'resume': {
-      await homeSection.getVideoResumes();
-      break;
-    }
-    case 'resumeaudio': {
-      await homeSection.getAudioResumes();
-      break;
-    }
-    case 'upnext': {
-      await homeSection.getUpNext(props.section.libraryId);
-      break;
-    }
-    case 'latestmedia': {
-      await homeSection.getLatestMedia(props.section.libraryId);
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
-await fetchHomeSections();
-
-watch(
-  () => props.section,
-  async () => {
-    await fetchHomeSections();
-  }
-);
-
+const userLibraries = userLibrariesStore();
 const items = computed(() => {
-  return homeSection.getHomeSectionContent(props.section);
+  return userLibraries.getHomeSectionContent(props.section);
 });
 </script>
