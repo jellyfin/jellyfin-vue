@@ -2,6 +2,7 @@ import 'vue-router';
 /* eslint-disable no-restricted-imports */
 import { RemotePlugin } from '@/plugins/vue/remote/types';
 /* eslint-enable no-restricted-imports */
+import 'vue-i18n';
 
 /**
  * The object that represents RouteMeta is defined at @/plugins/vue/router/middleware/meta

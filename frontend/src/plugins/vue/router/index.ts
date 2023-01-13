@@ -47,26 +47,19 @@ useTitle(pageTitle);
  */
 const remote = useRemote();
 
-watch(
-  [remote.auth.currentUser, remote.auth.servers],
-  () => {
-    if (
-      !remote.auth.currentUser.value ||
-      remote.auth.servers.value.length <= 0
-    ) {
-      /**
-       * We run the redirect to /server/add as it's the first page in the login flow
-       *
-       * In case the whole localStorage is gone at runtime, if we're at the login
-       * page, redirecting to /server/login wouldn't work, as we're in that same page.
-       * /server/add doesn't depend on the state of localStorage, so it's always safe to
-       * redirect there and leave the middleware take care of the final destination
-       * (when servers are already available, for example)
-       */
-      router.replace('/server/add');
-    }
-  },
-  { deep: true }
-);
+watch([remote.auth.currentUser, remote.auth.servers], () => {
+  if (!remote.auth.currentUser.value || remote.auth.servers.value.length <= 0) {
+    /**
+     * We run the redirect to /server/add as it's the first page in the login flow
+     *
+     * In case the whole localStorage is gone at runtime, if we're at the login
+     * page, redirecting to /server/login wouldn't work, as we're in that same page.
+     * /server/add doesn't depend on the state of localStorage, so it's always safe to
+     * redirect there and leave the middleware take care of the final destination
+     * (when servers are already available, for example)
+     */
+    router.replace('/server/add');
+  }
+});
 
 export default router;

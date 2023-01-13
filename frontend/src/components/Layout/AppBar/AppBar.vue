@@ -27,7 +27,8 @@
       </template>
     </app-bar-button-layout>
     <task-manager-button />
-    <app-bar-button-layout @click="toggleDarkMode">
+    <app-bar-button-layout
+      @click="clientSettings.darkMode = !clientSettings.darkMode">
       <template #icon>
         <v-icon>
           <i-mdi-weather-sunny v-if="clientSettings.darkMode" />
@@ -70,13 +71,6 @@ const transparentAppBar = computed<boolean>(() => {
 });
 
 const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
-
-/**
- * Toggles dark mode settings
- */
-function toggleDarkMode(): void {
-  clientSettings.setDarkMode(!clientSettings.darkMode);
-}
 </script>
 
 <style lang="scss" scoped>
