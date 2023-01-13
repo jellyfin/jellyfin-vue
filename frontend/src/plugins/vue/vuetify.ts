@@ -66,7 +66,6 @@ const vuetify = createVuetify({
     adapter: createVueI18nAdapter({ i18n, useI18n })
   },
   theme: {
-    defaultTheme: 'dark',
     themes: {
       dark,
       light
