@@ -43,23 +43,23 @@
 
           <v-list-item-title>{{ sourceText }}</v-list-item-title>
           <v-list-item-subtitle>
-            {{ getTotalEndsAtTime(playbackManager.getQueueItems) }} -
+            {{ getTotalEndsAtTime(playbackManager.queue) }} -
             {{
               $t('playback.queueItems', {
-                items: playbackManager.getQueueItems.length
+                items: playbackManager.queue.length
               })
             }}
           </v-list-item-subtitle>
 
           <v-list-item-action>
             <like-button
-              v-if="playbackManager.initiator"
-              :item="playbackManager.getCurrentItem" />
+              v-if="playbackManager.initiator && playbackManager.currentItem"
+              :item="playbackManager.currentItem" />
           </v-list-item-action>
           <v-list-item-action class="mr-1">
             <item-menu
-              v-if="playbackManager.initiator"
-              :item="playbackManager.getCurrentItem" />
+              v-if="playbackManager.initiator && playbackManager.currentItem"
+              :item="playbackManager.currentItem" />
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -135,27 +135,29 @@ export default defineComponent({
        * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
        * https://github.com/jellyfin/jellyfin-vue/pull/609
        */
+      const unknownSource = this.$t('playback.playbackSource.unknown');
+
       switch (this.playbackManager.playbackInitMode) {
         case InitMode.Unknown: {
-          return this.$t('playback.playbackSource.unknown');
+          return unknownSource;
         }
         case InitMode.Item: {
-          return this.playbackManager.getCurrentItem?.AlbumId !==
-            this.playbackManager.playbackInitiator?.Id
-            ? this.$t('playback.playbackSource.unknown')
+          return this.playbackManager.currentItem?.AlbumId !==
+            this.playbackManager.initiator?.Id
+            ? unknownSource
             : this.$t('playback.playbackSource.item', {
-                item: this.playbackManager.playbackInitiator?.Name
+                item: this.playbackManager.initiator?.Name
               });
         }
         case InitMode.Shuffle: {
           return this.$t('playback.playbackSource.shuffle');
         }
         case InitMode.ShuffleItem: {
-          return this.playbackManager.getCurrentItem?.AlbumId !==
-            this.playbackManager.playbackInitiator?.Id
-            ? this.$t('playback.playbackSource.unknown')
+          return this.playbackManager.currentItem?.AlbumId !==
+            this.playbackManager.initiator?.Id
+            ? unknownSource
             : this.$t('playback.playbackSource.shuffleItem', {
-                item: this.playbackManager.playbackInitiator?.Name
+                item: this.playbackManager.initiator?.Name
               });
         }
         default: {
@@ -163,25 +165,20 @@ export default defineComponent({
         }
       }
     },
-    initiator(): BaseItemDto | null {
+    initiator(): BaseItemDto | undefined {
       if (
-        this.playbackManager.getCurrentItem?.AlbumId ===
-        this.playbackManager.playbackInitiator?.Id
+        this.playbackManager.currentItem?.AlbumId ===
+        this.playbackManager.initiator?.Id
       ) {
-        return this.playbackManager.playbackInitiator;
+        return this.playbackManager.initiator;
       }
-
-      return null;
     },
     modeIcon(): typeof IMdiShuffle {
-      switch (this.playbackManager.playbackInitMode) {
-        case InitMode.Shuffle: {
-          return IMdiShuffle;
-        }
-        default: {
-          return IMdiPlaylistMusic;
-        }
+      if (this.playbackManager.playbackInitMode === InitMode.Shuffle) {
+        return IMdiShuffle;
       }
+
+      return IMdiPlaylistMusic;
     }
   },
   /**

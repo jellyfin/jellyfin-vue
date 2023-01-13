@@ -48,8 +48,8 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="playbackManager.getCurrentItemAudioTrack"
-                :media-streams="playbackManager.getCurrentItemAudioTrack"
+                v-if="playbackManager.currentItemAudioTracks"
+                :media-streams="playbackManager.currentItemAudioTracks"
                 type="Audio"
                 :default-stream-index="playbackManager.currentAudioStreamIndex"
                 @input="setAudio($event)" />
@@ -63,8 +63,8 @@
             </v-col>
             <v-col :cols="8">
               <media-stream-selector
-                v-if="playbackManager.getCurrentItemSubtitleTracks"
-                :media-streams="playbackManager.getCurrentItemSubtitleTracks"
+                v-if="playbackManager.currentItemSubtitleTracks"
+                :media-streams="playbackManager.currentItemSubtitleTracks"
                 type="Subtitle"
                 :default-stream-index="
                   playbackManager.currentSubtitleStreamIndex
