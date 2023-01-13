@@ -6,20 +6,13 @@
     :persistent="false"
     :transition="'slide-y-transition'"
     location="bottom"
-    :nudge-bottom="nudgeBottom"
-    offset-y
-    min-width="25em"
-    max-width="25em"
-    min-height="25em"
-    max-height="25em"
-    :z-index="500"
-    class="menu">
+    :z-index="500">
     <!-- eslint-disable-next-line vue/no-template-shadow -->
-    <template #activator="{ on: menu, attrs }">
+    <template #activator="{ props }">
       <app-bar-button-layout
         :custom-listener="taskList.length > 0 ? menu : undefined"
         :color="buttonColor"
-        v-bind="attrs">
+        v-bind="props">
         <template #icon>
           <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
           <v-icon v-else>
@@ -31,26 +24,26 @@
         </template>
       </app-bar-button-layout>
     </template>
-    <v-card>
-      <v-list color="transparent">
-        <v-list-group>
-          <v-list-item v-for="task in taskList" :key="`${task.id}`">
-            {{ $t(task.textKey, { ...task.textParams }) }}
-            <v-list-item-action>
-              <v-progress-circular
-                v-if="task.progress !== 100"
-                :indeterminate="
-                  task.progress === undefined || task.progress === 0
-                "
-                :model-value="task.progress"
-                rotate="-90"
-                size="24" />
-              <v-icon v-else>
-                <i-mdi-check />
-              </v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-group>
+    <v-card min-width="25em">
+      <v-list>
+        <v-list-item
+          v-for="task in taskList"
+          :key="`${task.id}`"
+          :title="$t(task.textKey, { ...task.textParams })">
+          <template #append>
+            <v-progress-circular
+              v-if="task.progress !== 100"
+              :indeterminate="
+                task.progress === undefined || task.progress === 0
+              "
+              :model-value="task.progress"
+              rotate="-90"
+              size="24" />
+            <v-icon v-else>
+              <i-mdi-check />
+            </v-icon>
+          </template>
+        </v-list-item>
       </v-list>
     </v-card>
   </v-menu>
@@ -73,10 +66,6 @@ export default defineComponent({
     fab: {
       type: Boolean,
       required: false
-    },
-    nudgeBottom: {
-      type: Number,
-      default: 5
     },
     timeout: {
       type: Number,
