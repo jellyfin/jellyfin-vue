@@ -149,7 +149,7 @@ watch(usePreferredDark(), () => {
 watch(
   () => state.value.darkMode,
   () => {
-    window.requestIdleCallback(() => {
+    window.setTimeout(() => {
       window.requestAnimationFrame(() => {
         const vuetify = useVuetify();
 

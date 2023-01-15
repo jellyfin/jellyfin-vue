@@ -97,10 +97,10 @@ onMounted(() => {
        * (so scrollIntoView() doesn't know exactly what to scroll).
        *
        * The browser always give full priority to the DOM manipulation and painting process,
-       * while the idle callback runs with lower priority. This assures us that the view will be scrolled to
+       * while the setTimeout runs with lower priority. This assures us that the view will be scrolled to
        * the currently playing element as soon as all the DOM operations and transitions are over.
        */
-      window.requestIdleCallback(() => {
+      window.setTimeout(() => {
         element.$el.scrollIntoView();
       });
     }
