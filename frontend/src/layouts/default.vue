@@ -1,6 +1,6 @@
 <template>
   <app-bar />
-  <navigation-drawer />
+  <navigation-drawer :order="display.mobile.value ? -1 : undefined" />
   <v-main>
     <div class="pa-s">
       <router-view-transition />
