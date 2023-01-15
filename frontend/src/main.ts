@@ -47,7 +47,7 @@ await router.isReady();
 /**
  * - DOM POPULATION -
  *
- * Without window.requestIdleCallback and window.requestAnimationFrame, the
+ * Without window.setTimeout and window.requestAnimationFrame, the
  * splash screen gets frozen an small (but noticeable) amount of time.
  */
 const appDOM = document.querySelector('#app') as HTMLDivElement;
@@ -55,7 +55,7 @@ const bodyDOM = document.querySelector('body') as HTMLBodyElement;
 const splashDOM = document.querySelector('.splashBackground') as HTMLDivElement;
 
 OverlayScrollbars.plugin(ClickScrollPlugin);
-window.requestIdleCallback(() => {
+window.setTimeout(() => {
   window.requestAnimationFrame(() => {
     OverlayScrollbars(
       {
@@ -81,12 +81,12 @@ window.requestIdleCallback(() => {
  * so we add a loadFinished class (defined in index.html) that fires the defined transition
  * in the HTML markup to give a nice effect.
  */
-window.requestIdleCallback(() => {
+window.setTimeout(() => {
   window.requestAnimationFrame(() => {
     splashDOM.addEventListener(
       'transitionend',
       () => {
-        window.requestIdleCallback(() => {
+        window.setTimeout(() => {
           window.requestAnimationFrame(() => {
             splashDOM.remove();
           });
