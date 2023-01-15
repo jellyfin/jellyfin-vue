@@ -105,11 +105,15 @@ watch(
 /**
  * Sync data with server
  */
-watch(state, async () => {
-  if (remote.auth.currentUser.value) {
-    await preferencesSync(key, state.value);
-  }
-});
+watch(
+  state,
+  async () => {
+    if (remote.auth.currentUser.value) {
+      await preferencesSync(key, state.value);
+    }
+  },
+  { deep: true }
+);
 
 /**
  * Locale change
