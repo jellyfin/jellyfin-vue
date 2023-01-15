@@ -114,7 +114,7 @@ watch([imageElement, props], () => {
 
 watch([display.width, display.height], () => {
   if (imageElement.value) {
-    window.requestIdleCallback(() => {
+    window.setTimeout(() => {
       window.requestAnimationFrame(() => {
         error.value = false;
         getImage();
