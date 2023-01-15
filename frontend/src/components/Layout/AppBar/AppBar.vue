@@ -4,7 +4,7 @@
     :elevation="transparentAppBar ? 0 : 3"
     :color="transparentAppBar ? 'transparent' : undefined">
     <v-app-bar-nav-icon
-      v-if="$vuetify.display.mobile && navigationDrawer"
+      v-if="$vuetify.display.mobile"
       @click="navigationDrawer = !navigationDrawer" />
     <app-bar-button-layout @click="$router.back()">
       <template #icon>
@@ -58,12 +58,14 @@
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useDisplay } from 'vuetify';
 import { useNetwork, useWindowScroll } from '@vueuse/core';
 import { clientSettingsStore } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
+const display = useDisplay();
 const network = useNetwork();
 const { y } = useWindowScroll();
 const transparentAppBar = computed<boolean>(() => {
