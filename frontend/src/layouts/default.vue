@@ -16,7 +16,7 @@ import { userLibrariesStore } from '@/store';
 
 const display = useDisplay();
 const userLibraries = userLibrariesStore();
-const navDrawer = ref(true);
+const navDrawer = ref(!display.mobile.value);
 
 if (!userLibraries.isReady) {
   await userLibraries.refresh();
