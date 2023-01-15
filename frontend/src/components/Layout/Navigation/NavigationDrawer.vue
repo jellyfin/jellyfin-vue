@@ -3,6 +3,7 @@
     v-model="drawer"
     :temporary="$vuetify.display.mobile"
     :permanent="!$vuetify.display.mobile"
+    :order="props.order"
     floating
     class="pa-s"
     :color="
@@ -43,6 +44,10 @@ import { getLibraryIcon } from '@/utils/items';
 const route = useRoute();
 const userLibraries = userLibrariesStore();
 const { t } = useI18n();
+
+const props = defineProps<{
+  order?: number;
+}>();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
 
