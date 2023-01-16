@@ -1,9 +1,10 @@
-import { computed, watch } from 'vue';
+import { computed, watch, nextTick } from 'vue';
 import {
   RemovableRef,
   useNavigatorLanguage,
   usePreferredDark,
-  useStorageAsync
+  useStorage,
+  watchPausable
 } from '@vueuse/core';
 import preferencesSync, { fetchSettingsFromServer } from '@/utils/store-sync';
 import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
@@ -28,7 +29,7 @@ const defaultState = {
 
 const key = 'clientSettings';
 
-const state: RemovableRef<ClientSettingsState> = useStorageAsync(
+const state: RemovableRef<ClientSettingsState> = useStorage(
   key,
   defaultState,
   localStorage,
@@ -90,7 +91,10 @@ watch(
         );
 
         if (data) {
+          syncDataWatcher.pause();
           Object.assign(state.value, data);
+          await nextTick();
+          syncDataWatcher.resume();
         }
       } catch {
         const { t } = usei18n();
@@ -105,7 +109,7 @@ watch(
 /**
  * Sync data with server
  */
-watch(
+const syncDataWatcher = watchPausable(
   state,
   async () => {
     if (remote.auth.currentUser.value) {
