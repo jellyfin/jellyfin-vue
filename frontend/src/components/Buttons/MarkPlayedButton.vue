@@ -1,72 +1,55 @@
 <template>
-  <v-btn v-if="canMarkWatched(item)" icon @click.stop.prevent="togglePlayed">
-    <v-icon :color="isPlayed ? 'primary' : ''">
-      <i-mdi-check />
-    </v-icon>
-  </v-btn>
+  <v-btn
+    v-if="canMarkWatched(item)"
+    :color="isPlayed ? 'primary' : ''"
+    :icon="IMdiCheck"
+    size="small"
+    @click.stop.prevent="togglePlayed" />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
+import IMdiCheck from 'virtual:icons/mdi/check';
 import { canMarkWatched } from '@/utils/items';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    }
-  },
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      isPlayed: false
-    };
-  },
-  watch: {
-    item: {
-      immediate: true,
-      handler(): void {
-        this.isPlayed = this.item.UserData?.Played || false;
-      }
-    }
-  },
-  created() {
-    this.isPlayed = this.item.UserData?.Played || false;
-  },
-  methods: {
-    async togglePlayed(): Promise<void> {
-      try {
-        if (!this.item.Id) {
-          throw new Error('Item has no Id');
-        }
+const props = defineProps<{
+  item: BaseItemDto;
+}>();
 
-        if (this.isPlayed) {
-          this.isPlayed = false;
-          await this.$remote.sdk.newUserApi(getPlaystateApi).markUnplayedItem({
-            userId: this.$remote.auth.currentUserId.value || '',
-            itemId: this.item.Id
-          });
-        } else {
-          this.isPlayed = true;
-          await this.$remote.sdk.newUserApi(getPlaystateApi).markPlayedItem({
-            userId: this.$remote.auth.currentUserId.value || '',
-            itemId: this.item.Id
-          });
-        }
-      } catch {
-        this.useSnackbar(this.$t('unableToTogglePlayed'), 'error');
-        this.isPlayed = !this.isPlayed;
-      }
-    },
-    canMarkWatched
+const isPlayed = ref(props.item.UserData?.Played || false);
+
+const remote = useRemote();
+const { t } = useI18n();
+
+/**
+ * Toggles the played state of the given item
+ */
+async function togglePlayed(): Promise<void> {
+  try {
+    if (!props.item.Id) {
+      throw new Error('Item has no Id');
+    }
+
+    if (isPlayed.value) {
+      isPlayed.value = false;
+      await remote.sdk.newUserApi(getPlaystateApi).markUnplayedItem({
+        userId: remote.auth.currentUserId.value || '',
+        itemId: props.item.Id
+      });
+    } else {
+      isPlayed.value = true;
+      await remote.sdk.newUserApi(getPlaystateApi).markPlayedItem({
+        userId: remote.auth.currentUserId.value || '',
+        itemId: props.item.Id
+      });
+    }
+  } catch {
+    useSnackbar(t('unableToTogglePlayed'), 'error');
+    isPlayed.value = !isPlayed.value;
   }
-});
+}
 </script>
