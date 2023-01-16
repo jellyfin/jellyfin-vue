@@ -250,11 +250,6 @@ export default defineComponent({
   bottom: 0.5em;
 }
 
-.card-box {
-  cursor: pointer;
-  padding: 0;
-}
-
 .card-margin {
   margin: 0.6em;
 }
@@ -302,12 +297,6 @@ export default defineComponent({
 .card-image {
   width: 100%;
   height: 100%;
-}
-
-.card-chip {
-  position: absolute;
-  top: 1em;
-  right: 1em;
 }
 
 .card-progress {
