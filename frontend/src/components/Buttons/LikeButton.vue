@@ -1,91 +1,76 @@
 <template>
-  <v-btn icon @click.stop.prevent="toggleFavorite">
-    <v-icon v-if="isFavorite">
-      <i-mdi-heart />
-    </v-icon>
-    <v-icon v-else>
-      <i-mdi-heart-outline />
-    </v-icon>
-  </v-btn>
+  <v-btn
+    :icon="isFavorite ? IMdiHeart : IMdiHeartOutline"
+    size="small"
+    @click.stop.prevent="toggleFavorite" />
 </template>
 
-<script lang="ts">
-import { PropType, defineComponent } from 'vue';
+<script lang="ts" setup>
+import { ref, watch } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { useSnackbar } from '@/composables';
+import IMdiHeart from 'virtual:icons/mdi/heart';
+import IMdiHeartOutline from 'virtual:icons/mdi/heart-outline';
+import { useI18n } from 'vue-i18n';
+import { useRemote, useSnackbar } from '@/composables';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as PropType<BaseItemDto>,
-      required: true
-    }
-  },
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      isFavorite: false
-    };
-  },
-  watch: {
-    item: {
-      immediate: true,
-      handler(): void {
-        this.isFavorite = this.item.UserData?.IsFavorite || false;
-      }
-    },
-    '$remote.socket.message'() {
-      if (this.$remote.socket.messageData.value) {
-        const payloadData = this.$remote.socket.messageData.value.UserDataList;
+const props = defineProps<{ item: BaseItemDto }>();
 
-        if (payloadData) {
-          // @ts-expect-error - No typings for WebSocket messages
-          for (const payloadItem of payloadData) {
-            if (payloadItem.ItemId === this.item.Id) {
-              this.isFavorite = payloadItem.IsFavorite;
-            }
-          }
+const isFavorite = ref(false);
+const remote = useRemote();
+const { t } = useI18n();
+
+watch(
+  props.item,
+  () => {
+    isFavorite.value = props.item.UserData?.IsFavorite || false;
+  },
+  { immediate: true }
+);
+
+watch(remote.socket.message, () => {
+  if (remote.socket.messageData.value) {
+    const payloadData = remote.socket.messageData.value.UserDataList;
+
+    if (payloadData) {
+      // @ts-expect-error - No typings for WebSocket messages
+      for (const payloadItem of payloadData) {
+        if (payloadItem.ItemId === props.item.Id) {
+          isFavorite.value = payloadItem.IsFavorite;
         }
-      }
-    }
-  },
-  methods: {
-    async toggleFavorite(): Promise<void> {
-      try {
-        if (!this.item.Id) {
-          throw new Error('Item has no Id');
-        }
-
-        if (!this.isFavorite) {
-          this.isFavorite = true;
-
-          await this.$remote.sdk
-            .newUserApi(getUserLibraryApi)
-            .markFavoriteItem({
-              userId: this.$remote.auth.currentUserId.value || '',
-              itemId: this.item.Id
-            });
-        } else {
-          this.isFavorite = false;
-
-          await this.$remote.sdk
-            .newUserApi(getUserLibraryApi)
-            .unmarkFavoriteItem({
-              userId: this.$remote.auth.currentUserId.value || '',
-              itemId: this.item.Id
-            });
-        }
-      } catch {
-        this.useSnackbar(this.$t('unableToToggleLike'), 'error');
-
-        this.isFavorite = !this.isFavorite;
       }
     }
   }
 });
+
+/**
+ * Toggles the favorite on the server
+ */
+async function toggleFavorite(): Promise<void> {
+  try {
+    if (!props.item.Id) {
+      throw new Error('Item has no Id');
+    }
+
+    if (!isFavorite.value) {
+      isFavorite.value = true;
+
+      await remote.sdk.newUserApi(getUserLibraryApi).markFavoriteItem({
+        userId: remote.auth.currentUserId.value || '',
+        itemId: props.item.Id
+      });
+    } else {
+      isFavorite.value = false;
+
+      await remote.sdk.newUserApi(getUserLibraryApi).unmarkFavoriteItem({
+        userId: remote.auth.currentUserId.value || '',
+        itemId: props.item.Id
+      });
+    }
+  } catch {
+    useSnackbar(t('unableToToggleLike'), 'error');
+
+    isFavorite.value = !isFavorite.value;
+  }
+}
 </script>

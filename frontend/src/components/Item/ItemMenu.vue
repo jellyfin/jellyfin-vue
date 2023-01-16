@@ -9,15 +9,12 @@
       location="top">
       <template #activator="{ props }">
         <v-btn
-          icon
+          :icon="IMdiDotsHorizontal"
           :variant="outlined ? 'outlined' : undefined"
           v-bind="props"
+          size="small"
           @click.stop.prevent="onActivatorClick"
-          @contextmenu.stop.prevent="onRightClick">
-          <v-icon>
-            <i-mdi-dots-horizontal />
-          </v-icon>
-        </v-btn>
+          @contextmenu.stop.prevent="onRightClick" />
       </template>
       <v-list nav>
         <template v-for="(section, index1) in options">
@@ -57,6 +54,7 @@ import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
+import IMdiDotsHorizontal from 'virtual:icons/mdi/dots-horizontal';
 import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
 import { TaskType, RunningTask } from '@/store/taskManager';
