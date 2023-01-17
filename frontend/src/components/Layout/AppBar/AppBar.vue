@@ -58,14 +58,12 @@
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useDisplay } from 'vuetify';
 import { useNetwork, useWindowScroll } from '@vueuse/core';
 import { clientSettingsStore } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
-const display = useDisplay();
 const network = useNetwork();
 const { y } = useWindowScroll();
 const transparentAppBar = computed<boolean>(() => {
