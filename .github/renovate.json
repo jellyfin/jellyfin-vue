@@ -31,6 +31,10 @@
   "labels": ["dependencies"],
   "rebaseWhen": "behind-base-branch",
   "rangeStrategy": "pin",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["every 2 months on the first day of the month"]
+  },
   "assignees": ["ferferga", "ThibaultNocchi"],
   "reviewers": ["ferferga", "ThibaultNocchi"]
 }
