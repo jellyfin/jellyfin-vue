@@ -42,59 +42,66 @@
       </v-col>
       <v-col cols="12" md="6" lg="5" class="py-4">
         <!-- User settings -->
-        <v-list lines="two" class="mb-4">
-          <v-list-group>
+        <v-list lines="two" class="mb-4 overflow-y-hidden">
+          <v-item-group>
             <v-list-item
               v-for="userItem in userItems"
               :key="userItem.name"
               :to="userItem.link"
               :disabled="!userItem.link">
-              <v-avatar>
-                <v-icon :icon="userItem.icon" />
-              </v-avatar>
+              <template #prepend>
+                <v-avatar>
+                  <v-icon :icon="userItem.icon" />
+                </v-avatar>
+              </template>
               <v-list-item-title>
                 {{ userItem.name }}
               </v-list-item-title>
               <v-list-item-subtitle>
                 {{ userItem.description }}
               </v-list-item-subtitle>
-              <v-list-item-action>
-                <v-icon>
-                  <i-mdi-chevron-right />
-                </v-icon>
-              </v-list-item-action>
+              <template #append>
+                <v-list-item-action>
+                  <v-icon>
+                    <i-mdi-chevron-right />
+                  </v-icon>
+                </v-list-item-action>
+              </template>
             </v-list-item>
-          </v-list-group>
+          </v-item-group>
         </v-list>
         <!-- Administrator settings -->
         <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
           <v-list
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
-            lines="two"
-            class="mb-4">
-            <v-list-group>
+            class="mb-4 overflow-y-hidden">
+            <v-item-group>
               <v-list-item
                 v-for="adminItem in adminSection"
                 :key="adminItem.name"
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
-                <v-avatar>
-                  <v-icon :icon="adminItem.icon" />
-                </v-avatar>
+                <template #prepend>
+                  <v-avatar>
+                    <v-icon :icon="adminItem.icon" />
+                  </v-avatar>
+                </template>
                 <v-list-item-title>
                   {{ adminItem.name }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   {{ adminItem.description }}
                 </v-list-item-subtitle>
-                <v-list-item-action>
-                  <v-icon>
-                    <i-mdi-chevron-right />
-                  </v-icon>
-                </v-list-item-action>
+                <template #append>
+                  <v-list-item-action>
+                    <v-icon>
+                      <i-mdi-chevron-right />
+                    </v-icon>
+                  </v-list-item-action>
+                </template>
               </v-list-item>
-            </v-list-group>
+            </v-item-group>
           </v-list>
         </div>
         <about-links v-if="$vuetify.display.mobile" />
