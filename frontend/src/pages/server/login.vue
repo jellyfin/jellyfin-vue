@@ -1,6 +1,6 @@
 <template>
-  <v-container class="full-height d-flex" fluid>
-    <v-row align="center" justify="center">
+  <v-container class="fill-height" fluid>
+    <v-row justify="center">
       <v-col
         v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
         sm="10"
