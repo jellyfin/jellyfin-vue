@@ -1,25 +1,29 @@
 <template>
   <v-list>
-    <v-list-group>
+    <v-item-group>
       <v-list-item
         v-for="linkItem in linkItems"
         :key="linkItem.name"
         rel="noreferrer noopener"
         :href="linkItem.link"
         target="_blank">
-        <v-avatar>
-          <v-icon :icon="linkItem.icon" />
-        </v-avatar>
+        <template v-slot:prepend>
+          <v-avatar>
+            <v-icon :icon="linkItem.icon" />
+          </v-avatar>
+        </template>
         <v-list-item-title>
           {{ linkItem.name }}
         </v-list-item-title>
-        <v-list-item-action>
-          <v-icon>
-            <i-mdi-open-in-new />
-          </v-icon>
-        </v-list-item-action>
+        <template v-slot:append>
+          <v-list-item-action>
+            <v-icon>
+              <i-mdi-open-in-new />
+            </v-icon>
+          </v-list-item-action>
+        </template>
       </v-list-item>
-    </v-list-group>
+    </v-item-group>
   </v-list>
 </template>
 
