@@ -4,6 +4,7 @@
       <!-- This div is required because <transition> requires a single children node -->
       <div
         :key="getKey(route)"
+        class="h-100"
         :class="
           isRoot
             ? 'router-view-root-transition-wrapper'
