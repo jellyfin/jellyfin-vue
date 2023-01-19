@@ -1,6 +1,6 @@
 <template>
-  <v-container class="full-height d-flex" fluid>
-    <v-row align="center" justify="center">
+  <v-container class="fill-height" fluid>
+    <v-row justify="center">
       <v-col sm="6" md="6" lg="5">
         <h1 class="text-h4 mb-6 text-center">
           {{ $t('login.addServer') }}
