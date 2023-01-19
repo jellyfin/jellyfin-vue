@@ -49,7 +49,7 @@
               :key="userItem.name"
               :to="userItem.link"
               :disabled="!userItem.link">
-              <template v-slot:prepend>
+              <template #prepend>
                 <v-avatar>
                   <v-icon :icon="userItem.icon" />
                 </v-avatar>
@@ -60,7 +60,7 @@
               <v-list-item-subtitle>
                 {{ userItem.description }}
               </v-list-item-subtitle>
-              <template v-slot:append>
+              <template #append>
                 <v-list-item-action>
                   <v-icon>
                     <i-mdi-chevron-right />
@@ -82,7 +82,7 @@
                 :key="adminItem.name"
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
-                <template v-slot:prepend>
+                <template #prepend>
                   <v-avatar>
                     <v-icon :icon="adminItem.icon" />
                   </v-avatar>
@@ -93,7 +93,7 @@
                 <v-list-item-subtitle>
                   {{ adminItem.description }}
                 </v-list-item-subtitle>
-                <template v-slot:append>
+                <template #append>
                   <v-list-item-action>
                     <v-icon>
                       <i-mdi-chevron-right />

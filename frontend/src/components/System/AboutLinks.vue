@@ -7,7 +7,7 @@
         rel="noreferrer noopener"
         :href="linkItem.link"
         target="_blank">
-        <template v-slot:prepend>
+        <template #prepend>
           <v-avatar>
             <v-icon :icon="linkItem.icon" />
           </v-avatar>
@@ -15,7 +15,7 @@
         <v-list-item-title>
           {{ linkItem.name }}
         </v-list-item-title>
-        <template v-slot:append>
+        <template #append>
           <v-list-item-action>
             <v-icon>
               <i-mdi-open-in-new />
