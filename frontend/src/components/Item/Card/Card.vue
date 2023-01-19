@@ -26,7 +26,7 @@
             v-if="item.UserData && item.UserData.UnplayedItemCount"
             color="primary"
             class="card-chip"
-            small>
+            size="small">
             {{ item.UserData.UnplayedItemCount }}
           </v-chip>
           <v-progress-linear
@@ -37,10 +37,11 @@
             "
             v-model="progress"
             color="primary-accent-4"
-            class="card-progress" />
+            absolute
+            location="bottom" />
         </div>
         <div
-          v-if="overlay && isFinePointer()"
+          v-if="overlay && isFinePointer"
           class="card-overlay d-flex justify-center align-center">
           <play-button fab :item="item" />
           <div
@@ -55,26 +56,32 @@
     </component>
     <div v-if="text" class="card-text">
       <router-link
-        class="link d-block card-title mt-1 text-truncate"
+        class="link d-block font-weight-medium pa-0 mt-1 text-truncate"
         :to="cardTitleLink">
         {{ cardTitle }}
       </router-link>
       <router-link
         v-if="cardSubtitleLink"
-        class="link d-block card-subtitle text--secondary text-truncate"
+        class="link d-block v-card-subtitle text-truncate"
         :to="cardSubtitleLink">
         {{ cardSubtitle }}
       </router-link>
-      <div v-else class="card-subtitle text--secondary text-truncate">
+      <div v-else class="v-card-subtitle text-truncate">
         {{ cardSubtitle }}
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+<script lang="ts" setup>
+import { computed } from 'vue';
+import {
+  BaseItemDto,
+  BaseItemKind,
+  ImageType
+} from '@jellyfin/sdk/lib/generated-client';
+import { useI18n } from 'vue-i18n';
+import { useMediaQuery } from '@vueuse/core';
 import {
   CardShapes,
   getShapeFromItemType,
@@ -83,164 +90,124 @@ import {
 } from '@/utils/items';
 import { taskManagerStore } from '@/store';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    },
-    shape: {
-      type: [String, Boolean],
-      default: (): string | boolean => {
-        return false;
-      }
-    },
-    episode: {
-      type: Boolean,
-      default: (): boolean => {
-        return false;
-      }
-    },
-    overlay: {
-      type: Boolean,
-      default: (): boolean => {
-        return false;
-      }
-    },
-    text: {
-      type: Boolean,
-      default: (): boolean => {
-        return false;
-      }
-    },
-    margin: {
-      type: Boolean,
-      default: (): boolean => {
-        return false;
-      }
-    },
-    link: {
-      type: Boolean,
-      default: (): boolean => {
-        return false;
-      }
+const props = withDefaults(
+  defineProps<{
+    item: BaseItemDto;
+    shape: string | boolean;
+    episode: boolean;
+    overlay: boolean;
+    text: boolean;
+    margin: false;
+    link: false;
+  }>(),
+  {
+    shape: false,
+    episode: false,
+    overlay: false,
+    text: false,
+    margin: false,
+    link: false
+  }
+);
+
+const taskManager = taskManagerStore();
+const { t } = useI18n();
+
+const cardType = computed(() => getShapeFromItemType(props.item.Type));
+
+const cardTitle = computed(() =>
+  props.item.Type !== BaseItemKind.Episode
+    ? props.item.Name || ''
+    : props.item.SeriesName || ''
+);
+
+/**
+ * Returns either a string representing the production year(s) for the current item
+ * or the episode name of an item (SX EY - Episode Name)
+ * or the album artist
+ */
+const cardSubtitle = computed(() => {
+  switch (props.item.Type) {
+    case BaseItemKind.Episode: {
+      return `${t('seasonEpisodeAbbrev', {
+        seasonNumber: props.item.ParentIndexNumber,
+        episodeNumber: props.item.IndexNumber
+      })} - ${props.item.Name}`;
     }
-  },
-  setup() {
-    const taskManager = taskManagerStore();
-
-    return { taskManager };
-  },
-  computed: {
-    cardType(): string {
-      // Otherwise, figure out the shape based on the type of the item
-      return getShapeFromItemType(this.item.Type);
-    },
-    /**
-     * Either the item name or the series name
-     */
-    cardTitle(): string {
-      return this.item.Type !== 'Episode'
-        ? this.item.Name || ''
-        : this.item.SeriesName || '';
-    },
-    /**
-     * Returns either a string representing the production year(s) for the current item
-     * or the episode name of an item (SX EY - Episode Name)
-     * or the album artist
-     */
-    cardSubtitle(): string {
-      switch (this.item.Type) {
-        case 'Episode': {
-          return `${this.$t('seasonEpisodeAbbrev', {
-            seasonNumber: this.item.ParentIndexNumber,
-            episodeNumber: this.item.IndexNumber
-          })} - ${this.item.Name}`;
-        }
-        case 'MusicAlbum': {
-          return `${this.item.AlbumArtist || ''}`;
-        }
-        case 'Series': {
-          if (this.item.Status === 'Continuing') {
-            return `${this.item.ProductionYear} - ${this.$t('present')}`;
-          } else if (this.item.EndDate) {
-            const endYear = new Date(this.item?.EndDate).toLocaleString(
-              'en-us',
-              { year: 'numeric' }
-            );
-
-            if (this.item.ProductionYear?.toString() === endYear) {
-              return this.item.ProductionYear.toString();
-            }
-
-            return `${this.item.ProductionYear} - ${endYear}`;
-          }
-
-          break;
-        }
-        default: {
-          return `${this.item.ProductionYear || ''}`;
-        }
-      }
-
-      return '';
-    },
-    /**
-     * Gets a link to be applied to the card title
-     *
-     * @returns A router link to the item or a related item
-     */
-    cardTitleLink(): string {
-      if (this.item.Type === 'Episode' && this.item.SeriesId) {
-        return this.getItemDetailsLink({ Id: this.item.SeriesId }, 'Series');
-      }
-
-      return this.getItemDetailsLink(this.item);
-    },
-    /**
-     * Gets a link to be applied to the card subtitle
-     *
-     * @returns A router link to the parent item or a related item
-     */
-    cardSubtitleLink(): string | undefined {
-      if (
-        this.item.Type === 'MusicAlbum' &&
-        this.item.AlbumArtists &&
-        this.item.AlbumArtists.length > 0
-      ) {
-        return this.getItemDetailsLink(
-          this.item.AlbumArtists[0],
-          'MusicArtist'
-        );
-      } else if (this.item.Type === 'Episode') {
-        return this.getItemDetailsLink(this.item);
-      }
-
-      return undefined;
-    },
-    progress(): number | false {
-      return this.item.UserData?.PlayedPercentage || false;
-    },
-    getImageType(): ImageType {
-      return this.shape === CardShapes.Thumb
-        ? ImageType.Thumb
-        : ImageType.Primary;
-    },
-    /**
-     * Gets the library update progress
-     */
-    refreshProgress(): number | undefined {
-      return this.taskManager.getTask(this.item.Id || '')?.progress;
+    case BaseItemKind.MusicAlbum: {
+      return `${props.item.AlbumArtist || ''}`;
     }
-  },
-  methods: {
-    isFinePointer(): boolean {
-      return window.matchMedia('(pointer:fine)').matches;
-    },
-    getItemDetailsLink,
-    canPlay
+    case BaseItemKind.Series: {
+      if (props.item.Status === 'Continuing') {
+        return `${props.item.ProductionYear} - ${t('present')}`;
+      } else if (props.item.EndDate) {
+        const endYear = new Date(props.item?.EndDate).toLocaleString('en-us', {
+          year: 'numeric'
+        });
+
+        if (props.item.ProductionYear?.toString() === endYear) {
+          return props.item.ProductionYear.toString();
+        }
+
+        return `${props.item.ProductionYear} - ${endYear}`;
+      }
+
+      break;
+    }
+    default: {
+      return `${props.item.ProductionYear || ''}`;
+    }
+  }
+
+  return '';
+});
+
+/**
+ * Gets a link to be applied to the card title
+ *
+ * @returns A router link to the item or a related item
+ */
+const cardTitleLink = computed(() => {
+  if (props.item.Type === BaseItemKind.Episode && props.item.SeriesId) {
+    return getItemDetailsLink({ Id: props.item.SeriesId }, 'Series');
+  }
+
+  return getItemDetailsLink(props.item);
+});
+
+/**
+ * Gets a link to be applied to the card subtitle
+ *
+ * @returns A router link to the parent item or a related item
+ */
+const cardSubtitleLink = computed(() => {
+  if (
+    props.item.Type === BaseItemKind.MusicAlbum &&
+    props.item.AlbumArtists &&
+    props.item.AlbumArtists.length > 0
+  ) {
+    return getItemDetailsLink(props.item.AlbumArtists[0], 'MusicArtist');
+  } else if (props.item.Type === BaseItemKind.Episode) {
+    return getItemDetailsLink(props.item);
   }
 });
+
+const progress = computed(
+  () => props.item.UserData?.PlayedPercentage || undefined
+);
+
+const getImageType = computed(() =>
+  props.shape === CardShapes.Thumb ? ImageType.Thumb : ImageType.Primary
+);
+
+/**
+ * Gets the library update progress
+ */
+const refreshProgress = computed(
+  () => taskManager.getTask(props.item.Id || '')?.progress
+);
+
+const isFinePointer = useMediaQuery('(pointer:fine)');
 </script>
 
 <style lang="scss" scoped>
@@ -248,6 +215,7 @@ export default defineComponent({
   position: absolute;
   right: 0.5em;
   bottom: 0.5em;
+  gap: 0.3em;
 }
 
 .card-margin {
@@ -297,13 +265,6 @@ export default defineComponent({
 .card-image {
   width: 100%;
   height: 100%;
-}
-
-.card-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 .card-overlay {
