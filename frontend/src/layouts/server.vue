@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main class="h-100">
     <router-view-transition />
   </v-main>
   <v-footer app color="transparent">
