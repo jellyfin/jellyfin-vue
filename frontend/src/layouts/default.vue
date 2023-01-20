@@ -19,6 +19,7 @@ const userLibraries = userLibrariesStore();
 const navDrawer = ref(!display.mobile.value);
 
 if (!userLibraries.isReady) {
+  // Loading recent items from libraries can take a long time from server. To improve UX, we block navigation to the default layout when loading the client, so all the content is present when the page is finally rendered, avoiding content jumping.
   await userLibraries.refresh();
 }
 
