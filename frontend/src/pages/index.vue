@@ -58,6 +58,11 @@ const carouselItems = (
 const userLibraries = userLibrariesStore();
 const clientSettings = clientSettingsStore();
 
+if (userLibraries.isReady) {
+  // We trigger a refresh on every load of the index page, provided the library has already been fetched by the default layout. This avoid fetching the info twice when loading / the first time
+  await userLibraries.refresh();
+}
+
 const homeSections = computed<HomeSection[]>(() => {
   // Filter for valid sections in Jellyfin Vue
   // TODO: Implement custom section order
