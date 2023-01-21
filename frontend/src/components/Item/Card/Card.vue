@@ -97,8 +97,8 @@ const props = withDefaults(
     episode: boolean;
     overlay: boolean;
     text: boolean;
-    margin: false;
-    link: false;
+    margin: boolean;
+    link: boolean;
   }>(),
   {
     shape: false,
