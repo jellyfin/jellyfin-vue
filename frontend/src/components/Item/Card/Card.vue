@@ -93,12 +93,12 @@ import { taskManagerStore } from '@/store';
 const props = withDefaults(
   defineProps<{
     item: BaseItemDto;
-    shape: string | boolean;
-    episode: boolean;
-    overlay: boolean;
-    text: boolean;
-    margin: false;
-    link: false;
+    shape?: string | boolean;
+    episode?: boolean;
+    overlay?: boolean;
+    text?: boolean;
+    margin?: boolean;
+    link?: boolean;
   }>(),
   {
     shape: false,

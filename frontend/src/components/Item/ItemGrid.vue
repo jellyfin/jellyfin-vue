@@ -12,13 +12,7 @@
       :throttle-scroll="300"
       :class="useResponsiveClasses('card-grid-container scroller')">
       <template #default="{ item, style }">
-        <card
-          :style="style"
-          :item="(item as BaseItemDto)"
-          margin
-          text
-          overlay
-          link />
+        <card :style="style" :item="item" margin text overlay link />
       </template>
     </virtual-grid>
     <v-row v-else-if="!loading && items.length === 0" justify="center">
