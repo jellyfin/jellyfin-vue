@@ -64,7 +64,7 @@ interface TaskInfo {
 const props = withDefaults(
   defineProps<{
     fab?: boolean;
-    timeout: number;
+    timeout?: number;
   }>(),
   { timeout: 5000 }
 );
