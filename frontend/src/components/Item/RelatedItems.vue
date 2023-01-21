@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="relatedItems.length > 0">
     <div v-if="!vertical" class="related-items">
       <swiper-section
         :title="$t('youMayAlsoLike')"
