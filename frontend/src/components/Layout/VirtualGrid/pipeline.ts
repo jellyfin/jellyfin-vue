@@ -294,15 +294,29 @@ export function getVisibleItems<T>(
   const { bufferedOffset, bufferedLength } = bufferMeta;
 
   /**
-   * Ensure always bufferedLength = the amount of visible items
+   * When approaching the end of the VirtualGrid, we want to always be sure that
+   * bufferedLength = the amount of visible items,
+   * so no DOM nodes are destroyed (which would be a waste of resources if the user reverses the scroll),
+   * so we need to change the slice values depending on the current offset.
+   *
+   * OffsetPlusLength is the length ahead that we have DOM nodes available for rendering.
+   *
+   * We initialize 'first' to 0 and 'last' to allItems.length to take into account those cases
+   * where the available buffer is bigger than the real amount of items we need to display,
+   * the if statement is where we really take into account a real virtual scrolling scenario
    */
   const offsetPlusLength = bufferedOffset + bufferedLength;
-  const first =
-    allItems.length < offsetPlusLength
-      ? allItems.length - bufferedLength
-      : bufferedOffset;
-  const last =
-    allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
+  let first = 0;
+  let last = allItems.length;
+
+  if (allItems.length > bufferedLength) {
+    first =
+      allItems.length < offsetPlusLength
+        ? allItems.length - bufferedLength
+        : bufferedOffset;
+    last =
+      allItems.length < offsetPlusLength ? allItems.length : offsetPlusLength;
+  }
 
   return allItems.slice(first, last).map((value, localIndex) => {
     const index = first + localIndex;
