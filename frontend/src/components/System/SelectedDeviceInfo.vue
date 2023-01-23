@@ -41,9 +41,12 @@
               <span>{{ $t('settings.devices.lastActive') }}</span>
             </v-col>
             <v-col class="pt-0 pb-0">
-              <span class="text-capitalize-first-letter">
+              <span
+                v-if="selectedDevice.DateLastActivity"
+                class="text-capitalize-first-letter">
                 {{
-                  dateFnsFormatRelative(
+                  useDateFns(
+                    formatRelative,
                     parseJSON(selectedDevice.DateLastActivity),
                     new Date()
                   )
@@ -64,8 +67,8 @@
 
 <script setup lang="ts">
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
-import { parseJSON } from 'date-fns';
-import { dateFnsFormatRelative } from '@/utils/time';
+import { parseJSON, formatRelative } from 'date-fns';
+import { useDateFns } from '@/composables';
 
 defineProps({
   isDialog: {
