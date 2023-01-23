@@ -13,10 +13,10 @@
         <img
           v-show="!loading"
           class="absolute-cover img"
-          :src="image"
+          :src="imageUrl"
           v-bind="$attrs"
           :alt="alt"
-          @load="loading = false"
+          @load="onLoad"
           @error="error = true" />
       </v-fade-transition>
       <slot
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, nextTick } from 'vue';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -73,54 +73,52 @@ const props = defineProps({
 });
 
 const display = useDisplay();
-const image = ref<string | undefined>('');
 const loading = ref(true);
 const error = ref(false);
 const imageElement = ref<HTMLDivElement | undefined>(undefined);
+const imageUrl = computed(() => {
+  const element = imageElement.value;
+
+  /**
+   * We want to track the state of those dependencies
+   */
+  if (element && display.width && display.height) {
+    const imageInfo = getImageInfo(props.item, {
+      preferThumb: props.type === ImageType.Thumb,
+      preferBanner: props.type === ImageType.Banner,
+      preferLogo: props.type === ImageType.Logo,
+      preferBackdrop: props.type === ImageType.Backdrop,
+      width: element?.clientWidth,
+      ratio: window.devicePixelRatio || 1
+    });
+
+    return imageInfo.url;
+  }
+});
 const hash = computed(() => getBlurhash(props.item, props.type));
 
 /**
- * Gets the image URL
+ * load event handler
  */
-function getImage(): void {
-  const element = imageElement.value;
-
-  const imageInfo = getImageInfo(props.item, {
-    preferThumb: props.type === ImageType.Thumb,
-    preferBanner: props.type === ImageType.Banner,
-    preferLogo: props.type === ImageType.Logo,
-    preferBackdrop: props.type === ImageType.Backdrop,
-    width: element?.clientWidth,
-    ratio: window.devicePixelRatio || 1
-  });
-
-  image.value = imageInfo.url;
-}
-
-watch(hash, () => {
-  if (hash.value && !error.value) {
-    error.value = false;
-  }
-});
-
-watch([imageElement, props], () => {
-  if (imageElement.value) {
-    window.requestAnimationFrame(() => {
-      error.value = false;
-      getImage();
-    });
-  }
-});
-
-watch([display.width, display.height], () => {
-  if (imageElement.value) {
-    window.setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        error.value = false;
-        getImage();
+function onLoad(): void {
+  window.setTimeout(() => {
+    window.requestAnimationFrame(async () => {
+      await nextTick(() => {
+        loading.value = false;
       });
     });
+  });
+}
+
+watch(
+  () => props.item,
+  () => {
+    loading.value = true;
   }
+);
+
+watch([hash, imageUrl], () => {
+  error.value = false;
 });
 </script>
 
