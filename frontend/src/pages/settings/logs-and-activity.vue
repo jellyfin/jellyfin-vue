@@ -125,7 +125,7 @@ import { defineComponent } from 'vue';
 import { LogLevel } from '@jellyfin/sdk/lib/generated-client';
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { parseJSON } from 'date-fns';
+import { format, formatRelative, parseJSON } from 'date-fns';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import IMdiLogin from 'virtual:icons/mdi/login';
@@ -134,8 +134,7 @@ import IMdiLock from 'virtual:icons/mdi/lock';
 import IMdiPlay from 'virtual:icons/mdi/play';
 import IMdiStop from 'virtual:icons/mdi/stop';
 import IMdiHelp from 'virtual:icons/mdi/help';
-import { dateFnsFormat, dateFnsFormatRelative } from '@/utils/time';
-import { useRemote } from '@/composables';
+import { useDateFns, useRemote } from '@/composables';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
@@ -220,11 +219,11 @@ export default defineComponent({
     },
     getFormattedActivityDate(date: string | undefined): string {
       return date
-        ? dateFnsFormatRelative(parseJSON(date), new Date()).value
+        ? useDateFns(formatRelative, parseJSON(date), new Date()).value
         : '';
     },
     getFormattedLogDate(date: string | undefined): string {
-      return date ? dateFnsFormat(parseJSON(date), 'Ppp').value : '';
+      return date ? useDateFns(format, parseJSON(date), 'Ppp').value : '';
     },
     getLogFileLink(name: string): string {
       return `${this.$remote.sdk.api?.basePath}/System/Logs/Log?name=${name}&api_key=${this.$remote.auth.currentUserToken}`;
