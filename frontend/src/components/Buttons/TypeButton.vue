@@ -1,94 +1,83 @@
 <template>
-  <v-menu offset-y>
-    <template #activator="{ on, attrs }">
+  <v-menu>
+    <template #activator="{ props: menuProps }">
       <v-btn
-        v-if="!$vuetify.display.smAndDown && items[model]"
+        v-if="!$vuetify.display.smAndDown && (model.length === 0 || model[0])"
         class="my-2"
         variant="text"
         rounded
-        :disabled="disabled"
-        v-bind="attrs"
-        v-on="on">
-        {{ items[model].name }}
+        v-bind="mergeProps(props, menuProps)">
+        {{
+          model.length === 0
+            ? items[0].title
+            : items.find((x) => x.value == model[0])?.title
+        }}
         <v-icon end>
           <i-mdi-menu-down />
         </v-icon>
       </v-btn>
-      <v-btn
-        v-else
-        :disabled="disabled"
-        class="my-2"
-        icon
-        v-bind="attrs"
-        v-on="on">
+      <v-btn v-else class="my-2" icon v-bind="mergeProps(props, menuProps)">
         <v-icon>
           <i-mdi-eye />
         </v-icon>
       </v-btn>
     </template>
-    <v-list dense>
-      <v-list-group
-        v-model="model"
-        @change="$emit('change', items[model].value)">
-        <v-list-item v-for="item in items" :key="item.value">
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
+    <v-list
+      v-model:selected="model"
+      :items="items"
+      @update:selected="emit('change', model[0])" />
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, mergeProps } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  props: {
-    type: {
-      type: String,
-      required: true
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false
+const { t } = useI18n();
+const props = defineProps({
+  type: {
+    type: String,
+    required: true
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
+});
+const emit = defineEmits<{
+  (e: 'change', types: Record<string, string>): void;
+}>();
+const model = ref([]);
+
+const items = computed(() => {
+  switch (props.type) {
+    case 'movies': {
+      return [
+        { title: t('movies'), value: 'Movie' },
+        { title: t('collections'), value: 'BoxSet' },
+        { title: t('actors'), value: 'Actor' },
+        { title: t('genres'), value: 'Genre' },
+        { title: t('studios'), value: 'Studio' }
+      ];
     }
-  },
-  data() {
-    return {
-      model: 0
-    };
-  },
-  computed: {
-    items(): Array<Record<string, string>> {
-      switch (this.type) {
-        case 'movies': {
-          return [
-            { name: this.$t('movies'), value: 'Movie' },
-            { name: this.$t('collections'), value: 'BoxSet' },
-            { name: this.$t('actors'), value: 'Actor' },
-            { name: this.$t('genres'), value: 'Genre' },
-            { name: this.$t('studios'), value: 'Studio' }
-          ];
-        }
-        case 'music': {
-          return [
-            { name: this.$t('albums'), value: 'MusicAlbum' },
-            { name: this.$t('artists'), value: 'MusicArtist' },
-            { name: this.$t('genres'), value: 'MusicGenre' }
-          ];
-        }
-        case 'tvshows': {
-          return [
-            { name: this.$t('series'), value: 'Series' },
-            { name: this.$t('actors'), value: 'Actor' },
-            { name: this.$t('genres'), value: 'Genre' },
-            { name: this.$t('networks'), value: 'Studio' }
-          ];
-        }
-        default: {
-          return [];
-        }
-      }
+    case 'music': {
+      return [
+        { title: t('albums'), value: 'MusicAlbum' },
+        { title: t('artists'), value: 'MusicArtist' },
+        { title: t('genres'), value: 'MusicGenre' }
+      ];
+    }
+    case 'tvshows': {
+      return [
+        { title: t('series'), value: 'Series' },
+        { title: t('actors'), value: 'Actor' },
+        { title: t('genres'), value: 'Genre' },
+        { title: t('networks'), value: 'Studio' }
+      ];
+    }
+    default: {
+      return [];
     }
   }
 });
