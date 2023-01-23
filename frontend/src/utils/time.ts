@@ -5,23 +5,13 @@ import {
   addMilliseconds,
   format,
   formatDuration,
-  formatRelative,
   intervalToDuration
 } from 'date-fns';
-import * as datefnslocales from 'date-fns/locale';
-import { sumBy, merge } from 'lodash-es';
+import { sumBy } from 'lodash-es';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ComputedRef, isRef } from 'vue';
 import { MaybeRef, useNow } from '@vueuse/core';
-import { usei18n } from '@/composables';
-
-/**
- * Get dateFns locale
- */
-function getDateFnsLocale(locale: string): Locale | undefined {
-  //@ts-expect-error - Some of our locales are not present in datefns.
-  return datefnslocales[locale];
-}
+import { useDateFns, usei18n } from '@/composables';
 
 /**
  * Formats Time
@@ -106,12 +96,10 @@ export function getEndsAtTime(ticks: MaybeRef<number>): ComputedRef<string> {
   return computed(() => {
     const i18n = usei18n();
 
-    const form = format(getEndsAtDate(ticks).value, 'p', {
-      locale: getDateFnsLocale(i18n.locale.value)
-    });
+    const form = useDateFns(format, getEndsAtDate(ticks).value, 'p');
 
     return i18n.t('endsAt', {
-      time: form
+      time: form.value
     });
   });
 }
@@ -127,13 +115,15 @@ export function getRuntimeTime(ticks: MaybeRef<number>): ComputedRef<string> {
     ticks = isRef(ticks) ? ticks.value : ticks;
 
     const ms = ticksToMs(ticks);
-    const i18n = usei18n();
 
-    return formatDuration(intervalToDuration({ start: 0, end: ms }), {
-      format: ['hours', 'minutes'],
-      locale: getDateFnsLocale(i18n.locale.value)
-    });
-  });
+    return useDateFns(
+      formatDuration,
+      intervalToDuration({ start: 0, end: ms }),
+      {
+        format: ['hours', 'minutes']
+      }
+    );
+  }).value;
 }
 
 /**
@@ -149,39 +139,5 @@ export function getTotalEndsAtTime(
     const ticks = sumBy(isRef(items) ? items.value : items, 'RunTimeTicks');
 
     return getEndsAtTime(ticks).value;
-  });
-}
-
-/**
- * Invokes datefns format function with locale reactivity
- */
-export function dateFnsFormat(
-  ...args: Parameters<typeof format>
-): ComputedRef<string> {
-  return computed(() => {
-    const i18n = usei18n();
-
-    args[args.length - 1] = merge(args, {
-      locale: getDateFnsLocale(i18n.locale.value)
-    });
-
-    return format(...args);
-  });
-}
-
-/**
- * Invokes datefns formatRelative function with locale reactivity
- */
-export function dateFnsFormatRelative(
-  ...args: Parameters<typeof formatRelative>
-): ComputedRef<string> {
-  return computed(() => {
-    const i18n = usei18n();
-
-    args[args.length - 1] = merge(args, {
-      locale: getDateFnsLocale(i18n.locale.value)
-    });
-
-    return formatRelative(...args);
   });
 }
