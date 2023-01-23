@@ -204,9 +204,8 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
-import { formatISO } from 'date-fns';
-import { useSnackbar } from '@/composables';
-import { dateFnsFormat } from '@/utils/time';
+import { format, formatISO } from 'date-fns';
+import { useDateFns, useSnackbar } from '@/composables';
 
 export default defineComponent({
   props: {
@@ -243,16 +242,22 @@ export default defineComponent({
         return '';
       }
 
-      return dateFnsFormat(new Date(this.metadata.PremiereDate), 'yyyy-MM-dd')
-        .value;
+      return useDateFns(
+        format,
+        new Date(this.metadata.PremiereDate),
+        'yyyy-MM-dd'
+      ).value;
     },
     dateCreated(): string {
       if (!this.metadata.DateCreated) {
         return '';
       }
 
-      return dateFnsFormat(new Date(this.metadata.DateCreated), 'yyyy-MM-dd')
-        .value;
+      return useDateFns(
+        format,
+        new Date(this.metadata.DateCreated),
+        'yyyy-MM-dd'
+      ).value;
     }
   },
   watch: {
