@@ -151,11 +151,11 @@ import {
   SortOrder,
   BaseItemKind
 } from '@jellyfin/sdk/lib/generated-client';
+import { format } from 'date-fns';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getBlurhash } from '@/utils/images';
-import { dateFnsFormat } from '@/utils/time';
-import { useRemote } from '@/composables';
+import { useRemote, useDateFns } from '@/composables';
 
 export default defineComponent({
   async setup() {
@@ -232,20 +232,20 @@ export default defineComponent({
     return { activeTab, movies, series, books, photos, item };
   },
   computed: {
-    birthDate(): string | null {
+    birthDate(): string | undefined {
       return this.item.PremiereDate
-        ? dateFnsFormat(new Date(this.item.PremiereDate), 'PPP').value
-        : null;
+        ? useDateFns(format, new Date(this.item.PremiereDate), 'PPP').value
+        : undefined;
     },
-    deathDate(): string | null {
+    deathDate(): string | undefined {
       return this.item.EndDate
-        ? dateFnsFormat(new Date(this.item.EndDate), 'PPP').value
-        : null;
+        ? useDateFns(format, new Date(this.item.EndDate), 'PPP').value
+        : undefined;
     },
-    birthPlace(): string | null {
+    birthPlace(): string | undefined {
       return this.item.ProductionLocations
         ? this.item.ProductionLocations[0]
-        : null;
+        : undefined;
     }
   },
   watch: {
