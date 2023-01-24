@@ -1,63 +1,87 @@
 <template>
-  <v-menu offset-y>
-    <template #activator="{ on, attrs }">
+  <v-btn @click="changeOrder">
+    <v-icon v-if="ascendingOrder">
+      <i-mdi-sort-ascending />
+    </v-icon>
+    <v-icon v-else>
+      <i-mdi-sort-descending />
+    </v-icon>
+  </v-btn>
+  <v-menu>
+    <template #activator="{ props: menuProps }">
       <v-btn
         v-if="!$vuetify.display.smAndDown"
         class="my-2"
         variant="text"
         rounded
-        :disabled="disabled"
-        v-bind="attrs"
-        v-on="on">
-        {{ $t('sortByType', { type: items[model].name }) }}
+        v-bind="mergeProps(menuProps, props)">
+        {{
+          $t('sortByType', {
+            type:
+              model.length === 0
+                ? items[0].title
+                : items.find((x) => x.value === model[0])?.title
+          })
+        }}
         <v-icon end>
           <i-mdi-menu-down />
         </v-icon>
       </v-btn>
-      <v-btn
-        v-else
-        :disabled="disabled"
-        class="my-2"
-        icon
-        v-bind="attrs"
-        v-on="on">
-        <v-icon>
-          <i-mdi-sort-alphabetical-ascending />
+      <v-btn v-else class="my-2" icon v-bind="mergeProps(menuProps, props)">
+        <v-icon v-if="model.length === 0 || model[0] == items[0].value">
+          <i-mdi-sort-alphabetical-variant />
+        </v-icon>
+        <v-icon v-else-if="model[0] == items[1].value">
+          <i-mdi-numeric-9-plus-box-outline />
+        </v-icon>
+        <v-icon v-else-if="model[0] == items[2].value">
+          <i-mdi-calendar-range />
         </v-icon>
       </v-btn>
     </template>
-    <v-list dense>
-      <v-list-group
-        v-model="model"
-        @change="$emit('change', items[model].value)">
-        <v-list-item v-for="item in items" :key="item.value">
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
+    <v-list
+      v-model:selected="model"
+      :items="items"
+      class="filter-content"
+      @update:selected="emit('change', model[0], ascendingOrder)" />
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, mergeProps } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  props: {
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  data() {
-    return {
-      items: [
-        { name: this.$t('name'), value: 'SortName', order: false },
-        { name: this.$t('rating'), value: 'CommunityRating', order: false },
-        { name: this.$t('releaseDate'), value: 'PremiereDate', order: false }
-      ],
-      model: 0
-    };
+const { t } = useI18n();
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
+const emit = defineEmits<{
+  (e: 'change', types: Record<string, string>, ascendingOrder: boolean): void;
+}>();
+const model = ref([]);
+const ascendingOrder = ref(true);
+
+const items = computed<Array<Record<string, string>>>(() => [
+  { title: t('name'), value: 'SortName' },
+  { title: t('rating'), value: 'CommunityRating' },
+  { title: t('releaseDate'), value: 'PremiereDate' }
+]);
+
+/**
+ * Change the sort order
+ * ascending <-> descending
+ */
+function changeOrder(): void {
+  ascendingOrder.value = !ascendingOrder.value;
+
+  emit(
+    'change',
+    model.value.length === 0 ? items.value[0] : model.value[0],
+    ascendingOrder.value
+  );
+}
 </script>
