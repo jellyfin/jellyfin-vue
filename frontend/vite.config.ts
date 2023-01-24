@@ -88,7 +88,8 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       /**
        * See main.ts for an explanation of this target
        */
-      target: 'esnext',
+      target: 'es2022',
+      modulePreload: false,
       reportCompressedSize: false,
       rollupOptions: {
         output: {
