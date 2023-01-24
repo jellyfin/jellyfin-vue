@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue';
+import { cloneDeep } from 'lodash-es';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { useRemote } from '@/composables';
@@ -19,12 +20,62 @@ const defaultState: ItemsState = {
   collectionById: {}
 };
 
-const state = ref<ItemsState>(defaultState);
+const state = ref<ItemsState>(cloneDeep(defaultState));
 
 /**
  * == CLASS CONSTRUCTOR ==
  */
 class ItemsStore {
+  /**
+   * == GETTERS ==
+   */
+  public getItemById = (id: string | undefined): BaseItemDto | undefined => {
+    return computed(() => {
+      if (id) {
+        return state.value.byId[id];
+      }
+    }).value;
+  };
+
+  public getItemsById = (ids: string[]): BaseItemDto[] => {
+    return computed(() => {
+      const res = [] as BaseItemDto[];
+
+      for (const index of ids) {
+        const item = state.value.byId[index];
+
+        if (!item) {
+          throw new Error(`Item ${index} doesn't exist in the store`);
+        }
+
+        res.push(item);
+      }
+
+      return res;
+    }).value;
+  };
+
+  public getChildrenOfParent = (
+    id: string | undefined
+  ): BaseItemDto[] | undefined => {
+    return computed(() => {
+      if (!id) {
+        throw new Error('No itemId provided');
+      }
+
+      const res = [] as BaseItemDto[];
+      const ids = state.value.collectionById[id];
+
+      if (ids?.length) {
+        for (const _id of ids) {
+          res.push(state.value.byId[_id]);
+        }
+
+        return res;
+      }
+    }).value;
+  };
+
   /**
    * == ACTIONS ==
    */
@@ -34,9 +85,9 @@ class ItemsStore {
    * @param payload
    * @returns - The reactive references
    */
-  public add(
+  public add = (
     payload: BaseItemDto | BaseItemDto[]
-  ): BaseItemDto | BaseItemDto[] {
+  ): BaseItemDto | BaseItemDto[] => {
     const isArray = Array.isArray(payload);
 
     if (!isArray) {
@@ -59,14 +110,14 @@ class ItemsStore {
     }
 
     return res;
-  }
+  };
 
   /**
    * Deletes a single or multiple items from the store
    *
    * @param payload
    */
-  public delete(payload: string | string[]): void {
+  public delete = (payload: string | string[]): void => {
     if (!Array.isArray(payload)) {
       payload = [payload];
     }
@@ -74,7 +125,7 @@ class ItemsStore {
     for (const id of payload) {
       delete state.value.byId[id];
     }
-  }
+  };
 
   /**
    * Associate an item that has children with its children
@@ -83,10 +134,10 @@ class ItemsStore {
    * @param children
    * @returns - The children of the item
    */
-  public addCollection(
+  public addCollection = (
     parent: BaseItemDto,
     children: BaseItemDto[]
-  ): BaseItemDto[] {
+  ): BaseItemDto[] => {
     if (!parent.Id) {
       throw new Error("Parent item doesn't have an Id");
     }
@@ -106,16 +157,16 @@ class ItemsStore {
     state.value.collectionById[parent.Id] = childIds;
 
     return this.getChildrenOfParent(parent.Id) as BaseItemDto[];
-  }
+  };
 
   /**
    * Fetches a parent and its children and adds thecollection to the store
    *
    * @param parentId
    */
-  public async fetchAndAddCollection(
+  public fetchAndAddCollection = async (
     parentId: string | undefined
-  ): Promise<BaseItemDto[] | undefined> {
+  ): Promise<BaseItemDto[] | undefined> => {
     const remote = useRemote();
 
     if (parentId && !this.getItemById(parentId)) {
@@ -147,7 +198,7 @@ class ItemsStore {
 
       return this.addCollection(parent as BaseItemDto, childItems.Items);
     }
-  }
+  };
 
   /**
    * Updates the items in the store. Just a request is enough, as the Axios
@@ -155,7 +206,7 @@ class ItemsStore {
    *
    * @param itemIds - Ids of the items to update
    */
-  public async updateStoreItems(itemIds: string[]): Promise<void> {
+  public updateStoreItems = async (itemIds: string[]): Promise<void> => {
     const remote = useRemote();
 
     if (itemIds.length > 0) {
@@ -165,57 +216,7 @@ class ItemsStore {
         fields: Object.keys(ItemFields) as ItemFields[]
       });
     }
-  }
-
-  /**
-   * == GETTERS ==
-   */
-  public getItemById(id: string | undefined): BaseItemDto | undefined {
-    return computed(() => {
-      if (id) {
-        return state.value.byId[id];
-      }
-    }).value;
-  }
-
-  public getItemsById(ids: string[]): BaseItemDto[] {
-    return computed(() => {
-      const res = [] as BaseItemDto[];
-
-      for (const index of ids) {
-        const item = state.value.byId[index];
-
-        if (!item) {
-          throw new Error(`Item ${index} doesn't exist in the store`);
-        }
-
-        res.push(item);
-      }
-
-      return res;
-    }).value;
-  }
-
-  public getChildrenOfParent(
-    id: string | undefined
-  ): BaseItemDto[] | undefined {
-    return computed(() => {
-      if (!id) {
-        throw new Error('No itemId provided');
-      }
-
-      const res = [] as BaseItemDto[];
-      const ids = state.value.collectionById[id];
-
-      if (ids?.length) {
-        for (const _id of ids) {
-          res.push(state.value.byId[_id]);
-        }
-
-        return res;
-      }
-    }).value;
-  }
+  };
 }
 
 const items = new ItemsStore();

@@ -25,55 +25,54 @@
             {{ $t('discNumber', { discNumber }) }}
           </td>
         </tr>
-        <v-hover
-          v-for="track in tracksOnDisc"
-          v-slot="{ hover }"
-          :key="track.Id">
-          <tr
-            :class="{ 'primary--text': isPlaying(track) }"
-            @dblclick="playTracks(track)">
-            <td style="width: 4em" class="pr-0 text-center">
-              <span v-if="hover && !isPlaying(track)">
-                <v-btn small icon @click="playTracks(track)">
-                  <v-icon>
-                    <i-mdi-play-circle-outline />
-                  </v-icon>
-                </v-btn>
-              </span>
-              <span v-else>{{ track.IndexNumber }}</span>
-            </td>
-            <td style="width: 3em" class="pr-0 pl-0 text-center">
-              <like-button :item="track" />
-            </td>
-            <td>
-              <div class="d-flex align-center">
-                <span>{{ track.Name }}</span>
-                <div
-                  v-if="
-                    track &&
-                    track.Artists &&
-                    track.AlbumArtist &&
-                    !track.Artists.includes(track.AlbumArtist)
-                  "
-                  class="ml-3">
-                  <router-link
-                    v-for="artist of track.ArtistItems"
-                    :key="artist.Id"
-                    tag="span"
-                    class="link text--secondary"
-                    :to="getItemDetailsLink(artist, 'MusicArtist')">
-                    {{ artist.Name }}
-                  </router-link>
+        <template v-for="track in tracksOnDisc" :key="track.Id">
+          <v-hover v-slot="{ hover }">
+            <tr
+              :class="{ 'text-primary': isPlaying(track) }"
+              @dblclick="playTracks(track)">
+              <td style="width: 4em" class="pr-0 text-center">
+                <span v-if="hover && !isPlaying(track)">
+                  <v-btn small icon @click="playTracks(track)">
+                    <v-icon>
+                      <i-mdi-play-circle-outline />
+                    </v-icon>
+                  </v-btn>
+                </span>
+                <span v-else>{{ track.IndexNumber }}</span>
+              </td>
+              <td style="width: 3em" class="pr-0 pl-0 text-center">
+                <like-button :item="track" />
+              </td>
+              <td>
+                <div class="d-flex align-center">
+                  <span>{{ track.Name }}</span>
+                  <div
+                    v-if="
+                      track &&
+                      track.Artists &&
+                      track.AlbumArtist &&
+                      !track.Artists.includes(track.AlbumArtist)
+                    "
+                    class="ml-3">
+                    <router-link
+                      v-for="artist of track.ArtistItems"
+                      :key="artist.Id"
+                      tag="span"
+                      class="link text--secondary"
+                      :to="getItemDetailsLink(artist, 'MusicArtist')">
+                      {{ artist.Name }}
+                    </router-link>
+                  </div>
+                  <v-spacer />
+                  <item-menu v-show="hover" :item="item" />
                 </div>
-                <v-spacer />
-                <item-menu v-show="hover" :item="item" />
-              </div>
-            </td>
-            <td class="text-center">
-              {{ formatTicks(track.RunTimeTicks || 0) }}
-            </td>
-          </tr>
-        </v-hover>
+              </td>
+              <td class="text-center">
+                {{ formatTicks(track.RunTimeTicks || 0) }}
+              </td>
+            </tr>
+          </v-hover>
+        </template>
       </template>
     </tbody>
   </v-table>

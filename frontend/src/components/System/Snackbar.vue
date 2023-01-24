@@ -27,7 +27,7 @@ export function useSnackbar(message: string, color: string): void {
 </script>
 
 <script setup lang="ts">
-const model = computed<boolean>({
+const model = computed({
   get() {
     return state.message !== '';
   },
