@@ -1,4 +1,4 @@
-import { RemovableRef, useStorageAsync } from '@vueuse/core';
+import { RemovableRef, useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { isNil, merge } from 'lodash-es';
@@ -10,7 +10,7 @@ import type { AuthState, ServerInfo } from './types';
 import { usei18n, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
-const state: RemovableRef<AuthState> = useStorageAsync(
+const state: RemovableRef<AuthState> = useStorage(
   'auth',
   {
     servers: [],

@@ -6,6 +6,7 @@ import {
   useStorage,
   watchPausable
 } from '@vueuse/core';
+import { cloneDeep } from 'lodash-es';
 import preferencesSync, { fetchSettingsFromServer } from '@/utils/store-sync';
 import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -27,11 +28,11 @@ const defaultState = {
   locale: 'auto'
 };
 
-const key = 'clientSettings';
+const storeKey = 'clientSettings';
 
 const state: RemovableRef<ClientSettingsState> = useStorage(
-  key,
-  defaultState,
+  storeKey,
+  cloneDeep(defaultState),
   localStorage,
   {
     mergeDefaults: (storageValue, defaults) =>
@@ -86,7 +87,7 @@ watch(
     if (remote.auth.currentUser.value) {
       try {
         const data = await fetchSettingsFromServer<ClientSettingsState>(
-          key,
+          storeKey,
           state.value
         );
 
@@ -113,7 +114,7 @@ const syncDataWatcher = watchPausable(
   state,
   async () => {
     if (remote.auth.currentUser.value) {
-      await preferencesSync(key, state.value);
+      await preferencesSync(storeKey, state.value);
     }
   },
   { deep: true }
