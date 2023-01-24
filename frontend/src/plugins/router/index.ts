@@ -48,7 +48,7 @@ useTitle(pageTitle);
 const remote = useRemote();
 
 watch([remote.auth.currentUser, remote.auth.servers], () => {
-  if (!remote.auth.currentUser.value || remote.auth.servers.value.length <= 0) {
+  if (!remote.auth.currentUser.value && remote.auth.servers.value.length <= 0) {
     /**
      * We run the redirect to /server/add as it's the first page in the login flow
      *
@@ -59,6 +59,18 @@ watch([remote.auth.currentUser, remote.auth.servers], () => {
      * (when servers are already available, for example)
      */
     router.replace('/server/add');
+  } else if (
+    !remote.auth.currentUser.value &&
+    remote.auth.servers.value.length > 0 &&
+    remote.auth.currentServer
+  ) {
+    router.replace('/server/login');
+  } else if (
+    !remote.auth.currentUser.value &&
+    remote.auth.servers.value.length > 0 &&
+    !remote.auth.currentServer
+  ) {
+    router.replace('/server/select');
   }
 });
 

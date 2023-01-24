@@ -1,4 +1,5 @@
-import { RemovableRef, useStorageAsync } from '@vueuse/core';
+import { RemovableRef, useStorage } from '@vueuse/core';
+import { cloneDeep } from 'lodash-es';
 import { v4 } from 'uuid';
 import { computed } from 'vue';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -51,13 +52,14 @@ function checkTaskIndex(index: number | undefined): void {
 /**
  * == STATE VARIABLES ==
  */
+const storeKey = 'taskManager';
 const defaultState: TaskManagerState = {
   tasks: []
 };
 
-const state: RemovableRef<TaskManagerState> = useStorageAsync(
-  'taskManager',
-  defaultState,
+const state: RemovableRef<TaskManagerState> = useStorage(
+  storeKey,
+  cloneDeep(defaultState),
   sessionStorage,
   {
     mergeDefaults: (storageValue, defaults) =>
@@ -75,17 +77,17 @@ class TaskManagerStore {
   public get tasks(): typeof state.value.tasks {
     return state.value.tasks;
   }
-  public getTask(id: string): RunningTask | undefined {
+  public getTask = (id: string): RunningTask | undefined => {
     return computed(() => {
       return state.value.tasks.find((payload) => {
         return payload.id === id;
       });
     }).value;
-  }
+  };
   /**
    * == ACTIONS ==
    */
-  public startTask(task: RunningTask): void {
+  public startTask = (task: RunningTask): void => {
     if (task.progress && (task.progress < 0 || task.progress > 100)) {
       throw new TypeError(
         "[taskManager]: Progress can't be below 0 or above 100"
@@ -97,9 +99,9 @@ class TaskManagerStore {
     } else {
       state.value.tasks.push(task);
     }
-  }
+  };
 
-  public updateTask(updatedTask: RunningTask): void {
+  public updateTask = (updatedTask: RunningTask): void => {
     const taskIndex = state.value.tasks.findIndex(
       (task) => task.id === updatedTask.id
     );
@@ -110,16 +112,16 @@ class TaskManagerStore {
 
     newArray[taskIndex] = updatedTask;
     state.value.tasks = newArray;
-  }
+  };
 
-  public finishTask(id: string): void {
+  public finishTask = (id: string): void => {
     const taskIndex = state.value.tasks.findIndex((task) => task.id === id);
 
     checkTaskIndex(taskIndex);
     state.value.tasks.splice(taskIndex);
-  }
+  };
 
-  public startConfigSync(): void {
+  public startConfigSync = (): void => {
     if (!state.value.tasks.some((task) => task.type === TaskType.ConfigSync)) {
       const payload = {
         type: TaskType.ConfigSync,
@@ -128,15 +130,15 @@ class TaskManagerStore {
 
       this.startTask(payload);
     }
-  }
+  };
 
-  public stopConfigSync(): void {
+  public stopConfigSync = (): void => {
     state.value.tasks.splice(
       state.value.tasks.findIndex(
         (payload) => payload.type === TaskType.ConfigSync
       )
     );
-  }
+  };
 }
 
 const taskManager = new TaskManagerStore();
