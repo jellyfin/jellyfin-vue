@@ -1,5 +1,5 @@
 import { computed, watch } from 'vue';
-import { RemovableRef, useStorageAsync } from '@vueuse/core';
+import { RemovableRef, useStorage } from '@vueuse/core';
 import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
@@ -9,6 +9,7 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
+import { cloneDeep } from 'lodash-es';
 import { CardShapes } from '@/utils/items';
 import { useRemote, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -41,6 +42,7 @@ interface UserLibrariesState {
 /**
  * == STATE VARIABLES ==
  */
+const storeKey = 'userLibraries';
 const defaultState: UserLibrariesState = {
   views: [],
   homeSections: {
@@ -52,9 +54,9 @@ const defaultState: UserLibrariesState = {
   isReady: false
 };
 
-const state: RemovableRef<UserLibrariesState> = useStorageAsync(
-  'userLibraries',
-  defaultState,
+const state: RemovableRef<UserLibrariesState> = useStorage(
+  storeKey,
+  cloneDeep(defaultState),
   sessionStorage,
   {
     mergeDefaults: (storageValue, defaults) =>
@@ -72,7 +74,7 @@ class UserLibrariesStore {
   public get isReady(): typeof state.value.isReady {
     return state.value.isReady;
   }
-  public getHomeSectionContent(section: HomeSection): BaseItemDto[] {
+  public getHomeSectionContent = (section: HomeSection): BaseItemDto[] => {
     return computed<BaseItemDto[]>(() => {
       switch (section.type) {
         case 'libraries': {
@@ -95,11 +97,11 @@ class UserLibrariesStore {
         }
       }
     }).value;
-  }
+  };
   /**
    * == ACTIONS ==
    */
-  private async fetchUserViews(): Promise<void> {
+  private fetchUserViews = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -113,9 +115,9 @@ class UserLibrariesStore {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  private async fetchAudioResumes(): Promise<void> {
+  private fetchAudioResumes = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -141,9 +143,9 @@ class UserLibrariesStore {
     } catch (error) {
       useSnackbar(error as string, 'error');
     }
-  }
+  };
 
-  private async fetchVideoResumes(): Promise<void> {
+  private fetchVideoResumes = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -169,9 +171,9 @@ class UserLibrariesStore {
     } catch (error) {
       useSnackbar(error as string, 'error');
     }
-  }
+  };
 
-  private async fetchUpNext(libraryId: string): Promise<void> {
+  private fetchUpNext = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -196,9 +198,9 @@ class UserLibrariesStore {
     } catch (error) {
       useSnackbar(error as string, 'error');
     }
-  }
+  };
 
-  private async fetchLatestMedia(libraryId: string): Promise<void> {
+  private fetchLatestMedia = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -221,9 +223,9 @@ class UserLibrariesStore {
     } catch (error) {
       useSnackbar(error as string, 'error');
     }
-  }
+  };
 
-  public async refresh(): Promise<void> {
+  public refresh = async (): Promise<void> => {
     await this.fetchUserViews();
     await this.fetchAudioResumes();
     await this.fetchVideoResumes();
@@ -236,14 +238,14 @@ class UserLibrariesStore {
     }
 
     state.value.isReady = true;
-  }
+  };
 
-  public clear(): void {
+  public clear = (): void => {
     Object.assign(state.value, defaultState);
-  }
+  };
 }
 
-const userViews = new UserLibrariesStore();
+const userLibraries = new UserLibrariesStore();
 
 /**
  * == WATCHERS ==
@@ -255,9 +257,9 @@ watch(
   () => remote.auth.currentUser,
   () => {
     if (!remote.auth.currentUser.value) {
-      userViews.clear();
+      userLibraries.clear();
     }
   }
 );
 
-export default userViews;
+export default userLibraries;
