@@ -56,6 +56,7 @@ module.exports = {
   rules: {
     'file-progress/activate': 1,
     'no-restricted-globals': ['error'].concat(restrictedGlobals),
+    'no-empty': ['error', { allowEmptyCatch: true }],
     'import/newline-after-import': 'error',
     'import/order': 'error',
     'import/no-unresolved': ['error', { ignore: ['virtual:*'] }],
