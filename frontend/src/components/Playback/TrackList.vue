@@ -27,13 +27,14 @@
           </td>
         </tr>
         <template v-for="track in tracksOnDisc" :key="track.Id">
-          <v-hover v-slot="{ hover }">
+          <v-hover v-slot="{ isHovering, props: hoverProps }">
             <tr
               :class="{ 'text-primary': isPlaying(track) }"
+              v-bind="hoverProps"
               @dblclick="playTracks(track)">
               <td style="width: 4em" class="pr-0 text-center">
-                <span v-if="hover && !isPlaying(track)">
-                  <v-btn small icon @click="playTracks(track)">
+                <span v-if="isHovering && !isPlaying(track)">
+                  <v-btn size="small" icon @click="playTracks(track)">
                     <v-icon>
                       <i-mdi-play-circle-outline />
                     </v-icon>
@@ -69,7 +70,7 @@
                     </template>
                   </div>
                   <v-spacer />
-                  <item-menu v-show="hover" :item="item" />
+                  <item-menu v-show="isHovering" :item="item" />
                 </div>
               </td>
               <td class="text-center">

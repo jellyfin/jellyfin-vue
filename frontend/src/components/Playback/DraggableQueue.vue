@@ -1,51 +1,49 @@
 <template>
   <v-list-group class="list-group">
     <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
-      <v-hover
-        v-for="(item, index) in queue"
-        :key="`${item.Id}-${index}`"
-        v-slot="{ hover }"
-        ref="listItems">
-        <v-list-item @click="onClick(index)">
-          <v-list-item-action
-            v-if="!hover"
-            class="list-group-item d-flex justify-center d-flex transition"
-            :class="{ 'text-primary font-weight-bold': isPlaying(index) }">
-            {{ index + 1 }}
-          </v-list-item-action>
-          <v-list-item-action v-else class="justify-center d-flex">
-            <v-icon>
-              <i-mdi-drag-horizontal />
-            </v-icon>
-          </v-list-item-action>
-          <v-avatar class="list-group-item">
-            <blurhash-image :item="item" />
-          </v-avatar>
+      <template v-for="(item, index) in queue" :key="`${item.Id}-${index}`">
+        <v-hover v-slot="{ isHovering, props: hoverProps }" ref="listItems">
+          <v-list-item v-bind="hoverProps" @click="onClick(index)">
+            <v-list-item-action
+              v-if="!isHovering"
+              class="list-group-item d-flex justify-center d-flex transition"
+              :class="{ 'text-primary font-weight-bold': isPlaying(index) }">
+              {{ index + 1 }}
+            </v-list-item-action>
+            <v-list-item-action v-else class="justify-center d-flex">
+              <v-icon>
+                <i-mdi-drag-horizontal />
+              </v-icon>
+            </v-list-item-action>
+            <v-avatar class="list-group-item">
+              <blurhash-image :item="item" />
+            </v-avatar>
 
-          <v-list-item-title
-            :class="{
-              'text-primary font-weight-bold': isPlaying(index)
-            }"
-            class="text-truncate ml-2 list-group-item transition">
-            {{ item.Name }}
-          </v-list-item-title>
-          <v-list-item-subtitle
-            v-if="getArtists(item)"
-            class="ml-2 list-group-item transition"
-            :class="{
-              'text-primary font-weight-bold': isPlaying(index)
-            }">
-            {{ getArtists(item) }}
-          </v-list-item-subtitle>
+            <v-list-item-title
+              :class="{
+                'text-primary font-weight-bold': isPlaying(index)
+              }"
+              class="text-truncate ml-2 list-group-item transition">
+              {{ item.Name }}
+            </v-list-item-title>
+            <v-list-item-subtitle
+              v-if="getArtists(item)"
+              class="ml-2 list-group-item transition"
+              :class="{
+                'text-primary font-weight-bold': isPlaying(index)
+              }">
+              {{ getArtists(item) }}
+            </v-list-item-subtitle>
 
-          <v-list-item-action v-hide="isPlaying(index)">
-            <like-button :item="item" />
-          </v-list-item-action>
-          <v-list-item-action class="mr-2">
-            <item-menu :item="item" queue />
-          </v-list-item-action>
-        </v-list-item>
-      </v-hover>
+            <v-list-item-action v-hide="isPlaying(index)">
+              <like-button :item="item" />
+            </v-list-item-action>
+            <v-list-item-action class="mr-2">
+              <item-menu :item="item" queue />
+            </v-list-item-action>
+          </v-list-item>
+        </v-hover>
+      </template>
     </draggable>
   </v-list-group>
 </template>

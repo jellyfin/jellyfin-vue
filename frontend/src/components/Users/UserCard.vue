@@ -1,8 +1,8 @@
 <template>
-  <v-hover v-slot="{ isHovering, props }">
+  <v-hover v-slot="{ isHovering, props: hoverProps }">
     <div
       class="ma-2 d-flex flex-column pointer"
-      v-bind="props"
+      v-bind="hoverProps"
       @click="$emit('connect', user)">
       <v-btn
         :active="isHovering"
