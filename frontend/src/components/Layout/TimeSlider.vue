@@ -1,85 +1,51 @@
 <template>
   <v-slider
-    :model-value="sliderValue"
+    v-model="sliderValue"
     hide-details
     :max="runtime"
-    validate-on="blur"
     thumb-label
-    :step="0"
-    class="time-slider"
-    @change="onPositionChange"
-    @mousedown="onClick"
-    @mouseup="onClick"
-    @input="onInputChange">
+    @mouseup="releaseMouse"
+    @mousedown="clicked = true">
     <template #prepend>
-      <span v-if="playbackManager.currentTime" class="mt-1">
-        {{ formatTime(playbackManager.currentTime) }}
-      </span>
+      {{ formatTime(playbackManager.currentTime) }}
     </template>
     <template #thumb-label>
       {{ formatTime(sliderValue) }}
     </template>
     <template #append>
-      <span class="mt-1">
-        {{ formatTime(runtime) }}
-      </span>
+      {{ formatTime(runtime) }}
     </template>
   </v-slider>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import { playbackManagerStore } from '@/store';
 import { ticksToMs, formatTime } from '@/utils/time';
 
-export default defineComponent({
-  setup() {
-    const playbackManager = playbackManagerStore();
-
-    return { playbackManager };
+const playbackManager = playbackManagerStore();
+const currentInput = ref(0);
+const clicked = ref(false);
+const runtime = computed(() => {
+  return ticksToMs(playbackManager.currentItem?.RunTimeTicks) / 1000;
+});
+const sliderValue = computed({
+  get() {
+    return clicked.value ? currentInput.value : playbackManager.currentTime;
   },
-  data() {
-    return {
-      clicked: false,
-      currentInput: 0
-    };
-  },
-  computed: {
-    runtime(): number {
-      return (
-        ticksToMs(this.playbackManager.currentItem?.RunTimeTicks) / 1000 || 0
-      );
-    },
-    sliderValue(): number {
-      if (!this.clicked) {
-        return this.playbackManager.currentTime || 0;
-      }
-
-      return this.currentInput;
-    }
-  },
-  methods: {
-    onPositionChange(value: number): void {
-      if (!this.clicked) {
-        this.playbackManager.changeCurrentTime(value);
-      }
-    },
-    onInputChange(value: number): void {
-      this.currentInput = value;
-    },
-    onClick(): void {
-      this.currentInput = this.playbackManager.currentTime || 0;
-      this.clicked = !this.clicked;
-    },
-    formatTime
+  set(newValue) {
+    currentInput.value = newValue;
   }
 });
-</script>
 
-<style lang="scss">
-.time-slider .v-slider__thumb-container,
-.time-slider .v-slider__track-background,
-.time-slider .v-slider__track-fill {
-  transition: none !important;
+/**
+ * onMouseUp event handler
+ *
+ * Once the user releases the slider, change the time of the playbackManager with whatever
+ * input value was provided by the user
+ */
+function releaseMouse(): void {
+  playbackManager.currentTime = currentInput.value;
+  clicked.value = false;
 }
-</style>
+</script>
