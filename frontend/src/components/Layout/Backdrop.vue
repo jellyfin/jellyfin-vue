@@ -19,6 +19,12 @@ const opacity = computed(() => route.meta.backdrop?.opacity || 0.25);
 .backdrop {
   background-color: rgb(var(--v-theme-background));
   opacity: v-bind(opacity);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
 
   & canvas {
     position: fixed;
