@@ -1,27 +1,18 @@
-// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.134.1/containers/typescript-node
 {
-  "name": "Node.js & TypeScript",
-  "build": {
-    "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 10, 12, 14...
-    "args": {
-      "VARIANT": "18"
+  "name": "jellyfin-vue Codespace (with support for Tauri development)",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
+  "features": {
+    "ghcr.io/devcontainers/features/rust:1": {}
+  },
+  "containerEnv": { "SHELL": "/bin/bash" },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Vite server",
+      "onAutoForward": "notify"
     }
   },
-  // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "octref.vetur",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "lokalise.i18n-ally",
-    "ryanluker.vscode-coverage-gutters"
-  ],
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000],
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install",
-  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-  // "remoteUser": "node"
-  "mounts": ["source=jellyfin-vue-history,target=/commandhistory,type=volume"]
+  "postCreateCommand": "npm ci",
+  "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
+  "hostRequirements": { "cpus": 4, "memory": "8gb" }
 }
