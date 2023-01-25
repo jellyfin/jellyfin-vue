@@ -3,6 +3,6 @@
     <backdrop />
     <router-view-transition is-root />
     <snackbar />
-    <player-manager />
+    <player-element />
   </v-app>
 </template>

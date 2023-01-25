@@ -21,7 +21,7 @@ const remote = useRemote();
 const { t } = useI18n();
 
 watch(
-  props.item,
+  () => props.item,
   () => {
     isFavorite.value = props.item.UserData?.IsFavorite || false;
   },

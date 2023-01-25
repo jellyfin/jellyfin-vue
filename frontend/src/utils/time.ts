@@ -53,7 +53,7 @@ export function msToTicks(ms: number): number {
  * @param ticks - Ticks to format
  */
 export function formatTicks(ticks: number): string {
-  return formatTime(ticksToMs(ticks));
+  return formatTime(ticksToMs(ticks) / 1000);
 }
 
 /**
