@@ -9,13 +9,15 @@
       <v-icon :icon="icon" />
     </v-btn>
     <v-slider
+      v-model="sliderValue"
       class="volume-slider"
       hide-details
       thumb-label
-      max="100"
-      :model-value="playbackManager.isMuted ? 0 : playbackManager.currentVolume"
-      validate-on="blur"
-      @input="playbackManager.setVolume" />
+      max="100">
+      <template #thumb-label>
+        {{ Math.round(sliderValue) }}
+      </template>
+    </v-slider>
   </div>
 </template>
 
@@ -28,6 +30,16 @@ import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
 import { playbackManagerStore } from '@/store';
 
 const playbackManager = playbackManagerStore();
+
+const sliderValue = computed({
+  get() {
+    return playbackManager.currentVolume;
+  },
+  set(newValue) {
+    playbackManager.currentVolume = newValue;
+  }
+});
+
 const icon = computed(() => {
   if (playbackManager.isMuted) {
     return IMdiVolumeMute;

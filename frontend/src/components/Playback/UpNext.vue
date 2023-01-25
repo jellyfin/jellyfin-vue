@@ -94,7 +94,6 @@ export default defineComponent({
     },
     visible(): boolean | undefined {
       if (
-        this.playbackManager.isMinimized ||
         this.isHiddenByUser ||
         this.playbackManager.currentlyPlayingMediaType !== 'Video'
       ) {
