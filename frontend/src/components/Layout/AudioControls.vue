@@ -208,10 +208,10 @@ const repeatIcon = computed(() => {
 });
 const playPauseIcon = computed(() => {
   if (playbackManager.isPaused) {
-    return IMdiPauseCircleOutline;
+    return IMdiPlayCircleOutline;
   }
 
-  return IMdiPlayCircleOutline;
+  return IMdiPauseCircleOutline;
 });
 // Checking for route is faster to switch the controls than checking for the store
 // TODO: Remove this as soon as we can use the fullpage layout in music player

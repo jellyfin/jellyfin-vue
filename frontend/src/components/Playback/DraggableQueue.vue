@@ -10,7 +10,7 @@
           <v-list-item-action
             v-if="!hover"
             class="list-group-item d-flex justify-center d-flex transition"
-            :class="{ 'primary--text font-weight-bold': isPlaying(index) }">
+            :class="{ 'text-primary font-weight-bold': isPlaying(index) }">
             {{ index + 1 }}
           </v-list-item-action>
           <v-list-item-action v-else class="justify-center d-flex">
@@ -24,7 +24,7 @@
 
           <v-list-item-title
             :class="{
-              'primary--text font-weight-bold': isPlaying(index)
+              'text-primary font-weight-bold': isPlaying(index)
             }"
             class="text-truncate ml-2 list-group-item transition">
             {{ item.Name }}
@@ -33,7 +33,7 @@
             v-if="getArtists(item)"
             class="ml-2 list-group-item transition"
             :class="{
-              'primary--text font-weight-bold': isPlaying(index)
+              'text-primary font-weight-bold': isPlaying(index)
             }">
             {{ getArtists(item) }}
           </v-list-item-subtitle>
@@ -125,7 +125,7 @@ function getArtists(item: BaseItemDto): string | undefined {
  * Click handler for list items
  */
 function onClick(index: number): void {
-  playbackManager.setCurrentIndex(index);
+  playbackManager.currentItemIndex = index;
 }
 </script>
 

@@ -52,14 +52,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import {
-  computed,
-  onBeforeMount,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch
-} from 'vue';
+import { computed, onBeforeMount, ref, watch } from 'vue';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper';
 import type SwiperType from 'swiper';
@@ -93,14 +86,18 @@ const backdropHash = computed(() => {
     : '';
 });
 const swiperInstance = ref<SwiperType>();
-const setControlledSwiper = (swiper: SwiperType): void => {
+
+/**
+ * Sets the swiper Instance
+ */
+function setControlledSwiper(swiper: SwiperType): void {
   swiperInstance.value = swiper;
-};
+}
 
 watch(
   () => playbackManager.currentItemIndex,
   () => {
-    if (swiperInstance.value && playbackManager.currentItemIndex) {
+    if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
       route.meta.backdrop.blurhash = backdropHash.value;
       route.meta.title = playbackManager.currentItem?.Name || '';
@@ -121,11 +118,9 @@ onBeforeMount(() => {
  * Handle slide changes
  */
 function onSlideChange(): void {
-  const index = swiperInstance.value?.realIndex || 0;
+  const index = swiperInstance.value?.activeIndex || 0;
 
-  if (playbackManager.queue[index]) {
-    playbackManager.setCurrentIndex(index);
-  }
+  playbackManager.currentItemIndex = index;
 }
 /**
  * Handle image errors
@@ -133,14 +128,6 @@ function onSlideChange(): void {
 function onImageError(): void {
   route.meta.backdrop.blurhash = undefined;
 }
-
-onMounted(() => {
-  playbackManager.setMinimized(false);
-});
-
-onUnmounted(() => {
-  playbackManager.setMinimized(true);
-});
 </script>
 
 <style lang="scss" scoped>
