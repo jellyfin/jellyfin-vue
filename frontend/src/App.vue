@@ -1,6 +1,6 @@
 <template>
+  <backdrop />
   <v-app>
-    <backdrop />
     <router-view-transition is-root />
     <snackbar />
     <player-element />
