@@ -13,10 +13,14 @@
                   {{ release.ProductionYear }}
                 </div>
                 <router-link
-                  class="link font-weight-bold text-h6 text-md-h4"
-                  tag="h2"
-                  :to="getItemDetailsLink(release)">
-                  {{ release.Name }}
+                  v-slot="{ navigate }"
+                  :to="getItemDetailsLink(release)"
+                  custom>
+                  <h2
+                    class="link font-weight-bold text-h6 text-md-h4"
+                    @click="navigate">
+                    {{ release.Name }}
+                  </h2>
                 </router-link>
               </v-col>
             </v-row>
