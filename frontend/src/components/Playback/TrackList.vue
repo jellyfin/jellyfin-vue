@@ -55,14 +55,18 @@
                       !track.Artists.includes(track.AlbumArtist)
                     "
                     class="ml-3">
-                    <router-link
+                    <template
                       v-for="artist of track.ArtistItems"
-                      :key="artist.Id"
-                      tag="span"
-                      class="link text--secondary"
-                      :to="getItemDetailsLink(artist, 'MusicArtist')">
-                      {{ artist.Name }}
-                    </router-link>
+                      :key="artist.Id">
+                      <router-link
+                        v-slot="{ navigate }"
+                        :to="getItemDetailsLink(artist, 'MusicArtist')"
+                        custom>
+                        <span class="link text--secondary" @click="navigate">
+                          {{ artist.Name }}
+                        </span>
+                      </router-link>
+                    </template>
                   </div>
                   <v-spacer />
                   <item-menu v-show="hover" :item="item" />
