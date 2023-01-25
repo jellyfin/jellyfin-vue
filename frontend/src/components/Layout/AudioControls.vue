@@ -28,10 +28,14 @@
             <v-col class="d-flex flex-column justify-center ml-4">
               <v-row class="align-end">
                 <router-link
-                  tag="span"
-                  class="text-truncate link height-fit-content"
-                  :to="getItemDetailsLink(playbackManager.currentItem)">
-                  {{ playbackManager.currentItem.Name }}
+                  v-slot="{ navigate }"
+                  :to="getItemDetailsLink(playbackManager.currentItem)"
+                  custom>
+                  <span
+                    class="text-truncate link height-fit-content"
+                    @click="navigate">
+                    {{ playbackManager.currentItem.Name }}
+                  </span>
                 </router-link>
               </v-row>
               <v-row
@@ -39,14 +43,17 @@
                 class="align-start">
                 <span
                   v-for="artist in playbackManager.currentItem.ArtistItems"
-                  :key="`artist-${artist.Id}`"
-                  :to="getItemDetailsLink(artist, 'MusicArtist')">
+                  :key="`artist-${artist.Id}`">
                   <p class="mb-0 mr-2">
                     <router-link
-                      tag="span"
-                      class="text--secondary text-caption text-truncate link"
-                      :to="getItemDetailsLink(artist, 'MusicArtist')">
-                      {{ artist.Name }}
+                      v-slot="{ navigate }"
+                      :to="getItemDetailsLink(artist, 'MusicArtist')"
+                      custom>
+                      <span
+                        class="text--secondary text-caption text-truncate link"
+                        @click="navigate">
+                        {{ artist.Name }}
+                      </span>
                     </router-link>
                   </p>
                 </span>
