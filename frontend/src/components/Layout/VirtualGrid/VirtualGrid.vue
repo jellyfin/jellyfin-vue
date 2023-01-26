@@ -23,7 +23,8 @@
         :key="visibleItems[i].index"
         :item="visibleItems[i].value"
         :index="visibleItems[i].index"
-        :style="visibleItems[i].style" />
+        :style="visibleItems[i].style"
+        data-virtualized-grid />
     </template>
   </component>
 </template>
@@ -203,22 +204,32 @@ function destroyEventListeners(): void {
   }
 }
 
-watch(fromScrollParent(rootRef), (newValue) => {
-  destroyEventListeners();
+watch(
+  [fromScrollParent(rootRef), (): number => props.throttleScroll],
+  (newValue) => {
+    destroyEventListeners();
 
-  if (!isNil(newValue)) {
-    for (const parent of newValue) {
-      const cleanup = useEventListener(
-        parent,
-        'scroll',
-        useThrottleFn(() => scrollEvents.value++, props.throttleScroll),
-        { passive: true, capture: true }
-      );
+    if (!isNil(newValue[0])) {
+      const fn =
+        props.throttleScroll > 0
+          ? useThrottleFn(() => {
+              scrollEvents.value++;
+            }, props.throttleScroll)
+          : (): void => {
+              scrollEvents.value++;
+            };
 
-      eventCleanups.push(cleanup);
+      for (const parent of newValue[0]) {
+        const cleanup = useEventListener(parent, 'scroll', fn, {
+          passive: true,
+          capture: true
+        });
+
+        eventCleanups.push(cleanup);
+      }
     }
   }
-});
+);
 
 onUnmounted(() => {
   destroyEventListeners();
