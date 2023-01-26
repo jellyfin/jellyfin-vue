@@ -1,17 +1,14 @@
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /**
-   * Remove native scrollbars: we're using OverlayScrollbars for that
-   * That also removes the need for scroll-behaviour: smooth
-   */
-  /* W3C standard scrollbars (Firefox-only for now) */
-  scrollbar-width: none;
 }
-/* Reproduce something similar on Chrome/Edge/Safari */
+
 *::-webkit-scrollbar {
-  display: none;
+  width: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #666;
 }
 
 /* Vuetify overrides */
