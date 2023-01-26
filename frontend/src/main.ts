@@ -10,7 +10,6 @@
  */
 
 import { createApp } from 'vue';
-import { OverlayScrollbars, ClickScrollPlugin } from 'overlayscrollbars';
 import Root from '@/App.vue';
 /* eslint-disable no-restricted-imports */
 import { createRemote, i18n, router, vuetify } from '@/plugins';
@@ -22,7 +21,6 @@ import { hideDirective } from '@/plugins/directives';
  */
 import '@/assets/styles/global.scss';
 import '@/assets/styles/transitions.scss';
-import 'overlayscrollbars/overlayscrollbars.css';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -
@@ -51,30 +49,7 @@ await router.isReady();
  * splash screen gets frozen an small (but noticeable) amount of time.
  */
 const appDOM = document.querySelector('#app') as HTMLDivElement;
-const bodyDOM = document.querySelector('body') as HTMLBodyElement;
 const splashDOM = document.querySelector('.splashBackground') as HTMLDivElement;
-
-OverlayScrollbars.plugin(ClickScrollPlugin);
-window.setTimeout(() => {
-  window.requestAnimationFrame(() => {
-    OverlayScrollbars(
-      {
-        target: bodyDOM
-      },
-      {
-        update: {
-          debounce: 0
-        },
-        scrollbars: {
-          autoHide: 'move',
-          autoHideDelay: 1000,
-          clickScroll: true,
-          dragScroll: true
-        }
-      }
-    );
-  });
-});
 
 /**
  * Once we reach this point, the bundle and the app will be completely loaded and mounted,
