@@ -82,7 +82,11 @@ const imageUrl = computed(() => {
   /**
    * We want to track the state of those dependencies
    */
-  if (element && display.width && display.height) {
+  if (
+    element &&
+    display.width.value !== undefined &&
+    display.height.value !== undefined
+  ) {
     const imageInfo = getImageInfo(props.item, {
       preferThumb: props.type === ImageType.Thumb,
       preferBanner: props.type === ImageType.Banner,
@@ -110,12 +114,9 @@ function onLoad(): void {
   });
 }
 
-watch(
-  () => props.item,
-  () => {
-    loading.value = true;
-  }
-);
+watch(imageUrl, () => {
+  loading.value = true;
+});
 
 watch([hash, imageUrl], () => {
   error.value = false;
