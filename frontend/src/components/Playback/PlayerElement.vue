@@ -48,17 +48,17 @@ const mediaElement = computed<'audio' | 'video' | undefined>(() => {
 /**
  * If the player is a video element and we're
  */
-const teleportTarget = computed<'body' | '.video-container'>(() => {
-  return mediaElement.value === 'audio' ? 'body' : '.video-container';
-});
+const teleportTarget = computed<'body' | '.video-container'>(() =>
+  mediaElement.value === 'audio' ? 'body' : '.video-container'
+);
 
-const posterUrl = computed<string>(() => {
-  return !isNil(playbackManager.currentItem) && mediaElement.value === 'video'
+const posterUrl = computed<string>(() =>
+  !isNil(playbackManager.currentItem) && mediaElement.value === 'video'
     ? getImageInfo(playbackManager.currentItem, {
         preferBackdrop: true
       }).url || ''
-    : '';
-});
+    : ''
+);
 
 const isLoopingOnce = computed(
   () => playbackManager.repeatMode === RepeatMode.RepeatOne
