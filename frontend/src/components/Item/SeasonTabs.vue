@@ -5,34 +5,41 @@
         {{ season.Name }}
       </v-tab>
     </v-tabs>
-    <v-tabs v-model="currentTab" class="bg-transparent">
-      <v-tab v-for="season in seasons" :key="season.Id">
+    <v-window v-model="currentTab" class="bg-transparent">
+      <v-window-item v-for="season in seasons" :key="season.Id">
         <v-list
           v-if="seasonEpisodes && season.Id"
-          lines="two"
-          color="transparent">
+          :lines="false"
+          bg-color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
-            :to="getItemDetailsLink(episode)"
-            class="flex-column flex-md-row">
-            <v-avatar width="20em" height="12em">
-              <blurhash-image
-                v-if="episode.ImageTags && episode.ImageTags.Primary"
-                :item="episode"
-                :alt="episode.Name" />
-              <watched-indicator v-if="episode.UserData.Played" />
-            </v-avatar>
-            <v-list-item-title class="text-wrap">
-              {{ episode.IndexNumber }}. {{ episode.Name }}
-            </v-list-item-title>
-            <v-list-item-subtitle class="text-wrap">
-              {{ episode.Overview }}
-            </v-list-item-subtitle>
+            :to="getItemDetailsLink(episode)">
+            <v-row align="center" class="my-4">
+              <v-col
+                :class="{ 'py-1': $vuetify.display.smAndDown }"
+                cols="12"
+                md="4">
+                <card
+                  :class="{ 'mx-8 mt-8': $vuetify.display.smAndDown }"
+                  :item="episode" />
+              </v-col>
+              <v-col
+                :class="{ 'py-1': $vuetify.display.smAndDown }"
+                cols="12"
+                md="8">
+                <v-list-item-title class="text-wrap">
+                  {{ episode.IndexNumber }}. {{ episode.Name }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="text-wrap">
+                  {{ episode.Overview }}
+                </v-list-item-subtitle>
+              </v-col>
+            </v-row>
           </v-list-item>
         </v-list>
-      </v-tab>
-    </v-tabs>
+      </v-window-item>
+    </v-window>
   </div>
 </template>
 
