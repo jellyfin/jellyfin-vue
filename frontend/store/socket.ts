@@ -31,14 +31,14 @@ export interface SocketState {
 }
 
 export const socketStore = defineStore('socket', {
-  state: () => {
+  state: (): SocketState => {
     return {
       instance: null,
       isConnected: false,
       messageType: '',
       messageData: undefined,
       isConnecting: false
-    } as SocketState;
+    };
   },
   actions: {
     /**

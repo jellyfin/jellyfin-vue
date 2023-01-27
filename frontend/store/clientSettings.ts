@@ -13,7 +13,7 @@ export interface ClientSettingsState {
 }
 
 export const clientSettingsStore = defineStore('clientSettings', {
-  state: () => {
+  state: (): ClientSettingsState => {
     return {
       darkMode:
         nuxtConfig.vuetify?.theme?.dark !== undefined
@@ -21,7 +21,7 @@ export const clientSettingsStore = defineStore('clientSettings', {
           : true,
       locale: 'auto',
       lastSync: null
-    } as ClientSettingsState;
+    };
   },
   actions: {
     setDarkMode(darkMode: boolean): void {

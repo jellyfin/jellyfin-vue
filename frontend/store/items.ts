@@ -9,11 +9,11 @@ export interface ItemsState {
 }
 
 export const itemsStore = defineStore('items', {
-  state: () => {
+  state: (): ItemsState => {
     return {
       byId: {},
       collectionById: {}
-    } as ItemsState;
+    };
   },
   actions: {
     /**

@@ -8,10 +8,10 @@ export interface UserViewsState {
 }
 
 export const userViewsStore = defineStore('userViews', {
-  state: () => {
+  state: (): UserViewsState => {
     return {
       views: []
-    } as UserViewsState;
+    };
   },
   actions: {
     async refreshUserViews(): Promise<void> {

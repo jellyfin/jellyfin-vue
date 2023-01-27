@@ -51,10 +51,7 @@ export type ValidCardShapes =
 export function isPerson(
   item: BaseItemDto | BaseItemPerson
 ): item is BaseItemPerson {
-  if (
-    'Role' in (item as BaseItemPerson) ||
-    (item.Type && validPersonTypes.includes(item.Type))
-  ) {
+  if ('Role' in item || (item.Type && validPersonTypes.includes(item.Type))) {
     return true;
   }
 

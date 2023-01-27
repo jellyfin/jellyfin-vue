@@ -37,10 +37,10 @@ export interface TaskManagerState {
 }
 
 export const taskManagerStore = defineStore('taskManager', {
-  state: () => {
+  state: (): TaskManagerState => {
     return {
       tasks: []
-    } as TaskManagerState;
+    };
   },
   actions: {
     startTask(task: RunningTask): void {

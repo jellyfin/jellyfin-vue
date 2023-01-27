@@ -72,13 +72,13 @@ export interface DeviceState {
 }
 
 export const deviceProfileStore = defineStore('deviceProfile', {
-  state: () => {
+  state: (): DeviceState => {
     return {
       deviceId: '',
       deviceName: '',
       clientVersion: '',
       clientName: ''
-    } as DeviceState;
+    };
   },
   actions: {
     setDeviceProfile(): void {

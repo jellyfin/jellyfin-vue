@@ -24,13 +24,13 @@ export interface HomeSectionState {
 }
 
 export const homeSectionStore = defineStore('homeSection', {
-  state: () => {
+  state: (): HomeSectionState => {
     return {
       audioResumes: [],
       videoResumes: [],
       upNext: [],
       latestMedia: {}
-    } as HomeSectionState;
+    };
   },
   actions: {
     async getAudioResumes(): Promise<void> {

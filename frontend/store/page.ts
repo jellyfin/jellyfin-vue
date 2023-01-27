@@ -19,7 +19,7 @@ export interface PageState {
 export const defaultBackdropOpacity = 0.75;
 
 export const pageStore = defineStore('page', {
-  state: () => {
+  state: (): PageState => {
     return {
       title: 'Jellyfin',
       transparentLayout: false,
@@ -30,7 +30,7 @@ export const pageStore = defineStore('page', {
         blurhash: '',
         opacity: defaultBackdropOpacity
       }
-    } as PageState;
+    };
   },
   actions: {
     resetBackdropOpacity(): void {

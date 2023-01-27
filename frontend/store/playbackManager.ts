@@ -66,7 +66,7 @@ interface PlaybackManagerState {
 }
 
 export const playbackManagerStore = defineStore('playbackManager', {
-  state: () => {
+  state: (): PlaybackManagerState => {
     return {
       status: PlaybackStatus.Stopped,
       lastItemIndex: null,
@@ -88,7 +88,7 @@ export const playbackManagerStore = defineStore('playbackManager', {
       playSessionId: null,
       playbackInitiator: null,
       playbackInitMode: InitMode.Unknown
-    } as PlaybackManagerState;
+    };
   },
   actions: {
     async addToQueue(item: BaseItemDto) {

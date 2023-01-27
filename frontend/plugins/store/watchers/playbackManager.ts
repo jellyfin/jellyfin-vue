@@ -12,7 +12,9 @@ function handleMediaSession(
   remove = false
 ): void {
   if (window.navigator.mediaSession) {
-    const actionHandlers = {
+    const actionHandlers: {
+      [key in MediaSessionAction]?: MediaSessionActionHandler;
+    } = {
       play: (): void => {
         playbackManager.unpause();
       },
@@ -37,7 +39,7 @@ function handleMediaSession(
       seekto: (action): void => {
         playbackManager.changeCurrentTime(action.seekTime || 1);
       }
-    } as { [key in MediaSessionAction]?: MediaSessionActionHandler };
+    };
 
     for (const [action, handler] of Object.entries(actionHandlers)) {
       try {

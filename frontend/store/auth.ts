@@ -23,7 +23,7 @@ export interface AuthState {
 }
 
 export const authStore = defineStore('auth', {
-  state: () => {
+  state: (): AuthState => {
     return {
       servers: [],
       currentServerIndex: -1,
@@ -31,7 +31,7 @@ export const authStore = defineStore('auth', {
       users: [],
       rememberMe: true,
       accessTokens: {}
-    } as AuthState;
+    };
   },
   actions: {
     /**

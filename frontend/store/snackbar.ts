@@ -6,11 +6,11 @@ export interface SnackbarState {
 }
 
 export const snackbarStore = defineStore('snackbar', {
-  state: () => {
+  state: (): SnackbarState => {
     return {
       message: '',
       color: ''
-    } as SnackbarState;
+    };
   },
   actions: {
     /**

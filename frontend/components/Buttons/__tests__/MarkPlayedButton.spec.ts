@@ -1,4 +1,3 @@
-import { BaseItemDto } from '@jellyfin/client-axios';
 import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import Vue from 'vue';
@@ -15,7 +14,7 @@ describe('component: MarkPlayedButton', () => {
       localVue,
       vuetify,
       propsData: {
-        item: { Type: 'Series' } as BaseItemDto
+        item: { Type: 'Series' }
       }
     });
   });
@@ -27,7 +26,7 @@ describe('component: MarkPlayedButton', () => {
 
   it('check color is primary when the item has been watched', async (): Promise<void> => {
     await wrapper.setProps({
-      item: { UserData: { Played: true }, Type: 'Series' } as BaseItemDto
+      item: { UserData: { Played: true }, Type: 'Series' }
     });
 
     expect(wrapper.find('.primary--text').exists()).toBe(true);
@@ -35,7 +34,7 @@ describe('component: MarkPlayedButton', () => {
 
   it('check color is unset when the item has been watched', async (): Promise<void> => {
     await wrapper.setProps({
-      item: { UserData: { Played: false }, Type: 'Series' } as BaseItemDto
+      item: { UserData: { Played: false }, Type: 'Series' }
     });
 
     expect(wrapper.find('.primary--text').exists()).toBe(false);
@@ -43,13 +42,13 @@ describe('component: MarkPlayedButton', () => {
 
   it('check color changes, when the props are updated', async (): Promise<void> => {
     await wrapper.setProps({
-      item: { UserData: { Played: true }, Type: 'Series' } as BaseItemDto
+      item: { UserData: { Played: true }, Type: 'Series' }
     });
 
     expect(wrapper.find('.primary--text').exists()).toBe(true);
 
     await wrapper.setProps({
-      item: { UserData: { Played: false }, Type: 'Series' } as BaseItemDto
+      item: { UserData: { Played: false }, Type: 'Series' }
     });
 
     expect(wrapper.find('.primary--text').exists()).toBe(false);
