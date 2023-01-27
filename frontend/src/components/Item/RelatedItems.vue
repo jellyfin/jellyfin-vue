@@ -14,17 +14,19 @@
       </h2>
       <!-- TODO: Wait for Vuetify 3.1 -->
       <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
-      <v-list color="transparent" lines="two">
+      <v-list bg-color="transparent" lines="two">
         <div v-if="!loading && relatedItems.length > 0">
           <v-list-item
             v-for="relatedItem in relatedItems"
             :key="relatedItem.Id"
             :to="getItemDetailsLink(relatedItem)">
-            <v-avatar>
-              <v-avatar color="card">
-                <blurhash-image :item="relatedItem" />
+            <template #prepend>
+              <v-avatar>
+                <v-avatar color="card">
+                  <blurhash-image :item="relatedItem" />
+                </v-avatar>
               </v-avatar>
-            </v-avatar>
+            </template>
             <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
             <v-list-item-subtitle>
               {{ relatedItem.ProductionYear }}
