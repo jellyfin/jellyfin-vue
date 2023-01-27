@@ -30,11 +30,7 @@ class ItemsStore {
    * == GETTERS ==
    */
   public getItemById = (id: string | undefined): BaseItemDto | undefined => {
-    return computed(() => {
-      if (id) {
-        return state.value.byId[id];
-      }
-    }).value;
+    return computed(() => (id ? state.value.byId[id] : undefined)).value;
   };
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {

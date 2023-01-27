@@ -26,9 +26,9 @@ import { ticksToMs, formatTime } from '@/utils/time';
 const playbackManager = playbackManagerStore();
 const currentInput = ref(0);
 const clicked = ref(false);
-const runtime = computed(() => {
-  return ticksToMs(playbackManager.currentItem?.RunTimeTicks) / 1000;
-});
+const runtime = computed(
+  () => ticksToMs(playbackManager.currentItem?.RunTimeTicks) / 1000
+);
 const sliderValue = computed({
   get() {
     return clicked.value ? currentInput.value : playbackManager.currentTime;
