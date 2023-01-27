@@ -96,6 +96,7 @@ module.exports = {
     'promise/prefer-await-to-then': 'error',
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
+    '@typescript-eslint/explicit-member-accessibility': 'error',
     'prefer-arrow-callback': 'error',
     'padding-line-between-statements': [
       'error',
