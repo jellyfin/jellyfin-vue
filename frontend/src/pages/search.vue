@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense :class="useResponsiveClasses('second-toolbar')">
-      <v-tabs v-model="searchTab" centered>
+    <v-app-bar flat :class="useResponsiveClasses('second-toolbar')">
+      <v-tabs class="mx-auto" v-model="searchTab">
         <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
         <v-tab :key="1">{{ $t('movies') }}</v-tab>
         <v-tab :key="2">{{ $t('shows') }}</v-tab>
@@ -15,146 +15,146 @@
     <v-container class="after-second-toolbar">
       <v-row>
         <v-col>
-          <v-tabs v-model="searchTab" class="bg-transparent">
-            <v-tab :key="0">
+          <v-window v-model="searchTab" class="bg-transparent">
+            <v-window-item :key="0">
               <item-grid :items="topSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="1">
+            </v-window-item>
+            <v-window-item :key="1">
               <item-grid :items="movieSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="2">
+            </v-window-item>
+            <v-window-item :key="2">
               <item-grid :items="showSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="3">
+            </v-window-item>
+            <v-window-item :key="3">
               <item-grid :items="albumSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="4">
+            </v-window-item>
+            <v-window-item :key="4">
               <item-grid :items="trackSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="5">
+            </v-window-item>
+            <v-window-item :key="5">
               <item-grid :items="bookSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="6">
+            </v-window-item>
+            <v-window-item :key="6">
               <item-grid :items="personSearchResults" :loading="loading" />
-            </v-tab>
-            <v-tab :key="7">
+            </v-window-item>
+            <v-window-item :key="7">
               <item-grid :items="artistSearchResults" :loading="loading" />
-            </v-tab>
-          </v-tabs>
+            </v-window-item>
+          </v-window>
         </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onBeforeMount, watch, computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { debounce } from 'lodash-es';
-import { useResponsiveClasses } from '@/composables';
+import { useRemote, useResponsiveClasses } from '@/composables';
 
-export default defineComponent({
-  setup() {
-    return { useResponsiveClasses };
-  },
-  data() {
-    return {
-      loading: false,
-      searchTab: 0,
-      topSearchResults: [] as BaseItemDto[],
-      movieSearchResults: [] as BaseItemDto[],
-      showSearchResults: [] as BaseItemDto[],
-      albumSearchResults: [] as BaseItemDto[],
-      trackSearchResults: [] as BaseItemDto[],
-      bookSearchResults: [] as BaseItemDto[],
-      personSearchResults: [] as BaseItemDto[],
-      artistSearchResults: [] as BaseItemDto[]
-    };
-  },
-  computed: {
-    searchQuery(): string {
-      return this.$route.query?.q?.toString() || '';
-    }
-  },
-  watch: {
-    searchQuery(newQuery: string): void {
-      if (newQuery !== '') {
-        this.performSearchDebounce();
-      }
-    }
-  },
-  async beforeMount() {
-    if (this.searchQuery === '') {
-      this.$router.back();
-    } else {
-      await this.performSearch();
-    }
-  },
-  methods: {
-    performSearchDebounce: debounce(
-      // @ts-expect-error - TypeScript confuses the context with lodash's debounce typings
-      async () => await this.performSearch(),
-      500
-    ),
-    async performSearch(): Promise<void> {
-      this.loading = true;
+const route = useRoute();
+const router = useRouter();
+const remote = useRemote();
 
-      const itemResults = (
-        await this.$remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
-          userId: this.$remote.auth.currentUserId || '',
-          searchTerm: this.searchQuery,
-          includeItemTypes: [
-            BaseItemKind.Movie,
-            BaseItemKind.Series,
-            BaseItemKind.Audio,
-            BaseItemKind.MusicAlbum,
-            BaseItemKind.Book,
-            BaseItemKind.MusicArtist,
-            BaseItemKind.Person
-          ],
-          recursive: true
-        })
-      ).data.Items;
+const loading = ref(false);
+const searchTab = ref(0);
+const topSearchResults = ref<BaseItemDto[]>([]);
+const movieSearchResults = ref<BaseItemDto[]>([]);
+const showSearchResults = ref<BaseItemDto[]>([]);
+const albumSearchResults = ref<BaseItemDto[]>([]);
+const trackSearchResults = ref<BaseItemDto[]>([]);
+const bookSearchResults = ref<BaseItemDto[]>([]);
+const personSearchResults = ref<BaseItemDto[]>([]);
+const artistSearchResults = ref<BaseItemDto[]>([]);
 
-      this.topSearchResults = itemResults.slice(0, 24);
+const searchQuery = computed(() => {
+  return route.query?.q?.toString() || '';
+});
 
-      this.movieSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'Movie'
-      );
-
-      this.showSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'Series'
-      );
-
-      this.albumSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'MusicAlbum'
-      );
-
-      this.trackSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'Audio'
-      );
-
-      this.bookSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'Book'
-      );
-
-      this.personSearchResults = (
-        await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
-          userId: this.$remote.auth.currentUserId,
-          searchTerm: this.searchQuery
-        })
-      ).data.Items;
-
-      this.artistSearchResults = itemResults.filter(
-        (item: BaseItemDto) => item.Type === 'MusicArtist'
-      );
-
-      this.loading = false;
+watch(
+  () => searchQuery,
+  (newQuery) => {
+    if (newQuery.value !== '') {
+      performSearchDebounce();
     }
   }
+);
+
+onBeforeMount(async () => {
+  if (searchQuery.value === '') {
+    router.back();
+  } else {
+    await performSearch();
+  }
 });
+
+const performSearchDebounce = debounce(async () => await performSearch(), 500);
+
+/**
+ * Search in Jellyfin
+ */
+async function performSearch(): Promise<void> {
+  loading.value = true;
+
+  const itemResults = (
+    await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
+      userId: remote.auth.currentUserId || '',
+      searchTerm: searchQuery.value,
+      includeItemTypes: [
+        BaseItemKind.Movie,
+        BaseItemKind.Series,
+        BaseItemKind.Audio,
+        BaseItemKind.MusicAlbum,
+        BaseItemKind.Book,
+        BaseItemKind.MusicArtist,
+        BaseItemKind.Person
+      ],
+      recursive: true
+    })
+  ).data.Items;
+
+  if (itemResults) {
+    topSearchResults.value = itemResults.slice(0, 24);
+
+    movieSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === BaseItemKind.Movie
+    );
+
+    showSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === BaseItemKind.Series
+    );
+
+    albumSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === BaseItemKind.MusicAlbum
+    );
+
+    trackSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === BaseItemKind.Audio
+    );
+
+    bookSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === BaseItemKind.Book
+    );
+
+    personSearchResults.value =
+      (
+        await remote.sdk.newUserApi(getPersonsApi).getPersons({
+          userId: remote.auth.currentUserId,
+          searchTerm: searchQuery.value
+        })
+      ).data.Items || [];
+
+    artistSearchResults.value = itemResults.filter(
+      (item: BaseItemDto) => item.Type === 'MusicArtist'
+    );
+  }
+
+  loading.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
