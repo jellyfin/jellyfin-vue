@@ -85,20 +85,24 @@ class ItemsStore {
     payload: BaseItemDto | BaseItemDto[]
   ): BaseItemDto | BaseItemDto[] => {
     const isArray = Array.isArray(payload);
+    const itemArray = isArray ? payload : [payload];
 
-    if (!isArray) {
-      payload = [payload as BaseItemDto];
-    }
+    const res: BaseItemDto[] = [];
 
-    const res = [];
-
-    for (const item of payload as BaseItemDto[]) {
+    for (const item of itemArray) {
       if (!item.Id) {
         throw new Error("One item doesn't have an id");
       }
 
       state.value.byId[item.Id] = item;
-      res.push(this.getItemById(item.Id) as BaseItemDto);
+
+      const fetched = this.getItemById(item.Id);
+
+      if (!fetched) {
+        throw new Error('Expected to receive newly added item to store');
+      }
+
+      res.push(fetched);
     }
 
     if (res.length === 1 && !isArray) {
