@@ -248,27 +248,27 @@ class PlaybackManagerStore {
 
   public get currentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
     if (!isNil(state.currentMediaSource)) {
-      return (state.currentMediaSource.MediaStreams?.map((element, index) => ({
+      return state.currentMediaSource.MediaStreams?.map((stream, index) => ({
         srcIndex: index,
-        el: element
+        ...stream
       }))
         .filter(
           (sub) =>
-            (sub.el.Type === 'Subtitle' &&
-              sub.el.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
-            sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
+            (sub.Type === 'Subtitle' &&
+              sub.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
+            sub.DeliveryMethod === SubtitleDeliveryMethod.External
         )
         .map((sub) => ({
-          label: sub.el.DisplayTitle || 'Undefined',
+          label: sub.DisplayTitle ?? 'Undefined',
           src:
-            sub.el.DeliveryMethod === SubtitleDeliveryMethod.External
-              ? sub.el.DeliveryUrl
+            sub.DeliveryMethod === SubtitleDeliveryMethod.External
+              ? sub.DeliveryUrl ?? undefined
               : undefined,
-          srcLang: sub.el.Language || undefined,
-          type: sub.el.DeliveryMethod as SubtitleDeliveryMethod,
+          srcLang: sub.Language ?? undefined,
+          type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
           srcIndex: sub.srcIndex,
-          codec: sub.el.Codec
-        })) || []) as PlaybackTrack[];
+          codec: sub.Codec || undefined
+        }));
     }
   }
 
@@ -422,7 +422,9 @@ class PlaybackManagerStore {
    */
   private _handleMediaSession = (remove = false): void => {
     if (window.navigator.mediaSession) {
-      const actionHandlers = {
+      const actionHandlers: {
+        [key in MediaSessionAction]?: MediaSessionActionHandler;
+      } = {
         play: (): void => {
           this.unpause();
         },
@@ -447,7 +449,7 @@ class PlaybackManagerStore {
         seekto: (action): void => {
           this.currentTime = action.seekTime || 1;
         }
-      } as { [key in MediaSessionAction]?: MediaSessionActionHandler };
+      };
 
       for (const [action, handler] of Object.entries(actionHandlers)) {
         try {

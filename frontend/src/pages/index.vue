@@ -66,31 +66,31 @@ if (userLibraries.isReady) {
 const homeSections = computed<HomeSection[]>(() => {
   // Filter for valid sections in Jellyfin Vue
   // TODO: Implement custom section order
-  let homeSectionsArray = pickBy(
+  const homeSectionPrefs = pickBy(
     // @ts-expect-error - No typings for this
-    clientSettings.CustomPrefs,
-    (value: string, key: string) => {
+    clientSettings.CustomPrefs as { [key: string]: string },
+    (value, key) => {
       return (
         value && VALID_SECTIONS.has(value) && key.startsWith('homesection')
       );
     }
   );
 
-  if (Object.keys(homeSectionsArray).length === 0) {
-    homeSectionsArray = {
-      homeSection0: 'librarytiles',
-      homeSection1: 'resume',
-      homeSection2: 'resumeaudio',
-      homeSection3: 'upnext',
-      homeSection4: 'latestmedia'
-    };
-  }
+  const homeSectionKeys = Object.keys(homeSectionPrefs);
 
-  homeSectionsArray = Object.values(homeSectionsArray);
+  if (homeSectionKeys.length === 0) {
+    homeSectionKeys.push(
+      'librarytiles',
+      'resume',
+      'resumeaudio',
+      'upnext',
+      'latestmedia'
+    );
+  }
 
   const homeSections: HomeSection[] = [];
 
-  for (const homeSection of homeSectionsArray as Array<string>) {
+  for (const homeSection of homeSectionKeys) {
     switch (homeSection) {
       case 'librarytiles': {
         homeSections.push({
@@ -113,7 +113,10 @@ const homeSections = computed<HomeSection[]>(() => {
           ]);
 
           for (const userView of userLibraries.libraries) {
-            if (excludeViewTypes.has(userView.CollectionType as string)) {
+            if (
+              userView.CollectionType &&
+              excludeViewTypes.has(userView.CollectionType)
+            ) {
               continue;
             }
 
