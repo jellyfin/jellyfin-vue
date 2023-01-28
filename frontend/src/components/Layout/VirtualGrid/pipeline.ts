@@ -111,8 +111,8 @@ export function fromScrollParent(
   return computed(() => {
     const el = unrefElement(elRef);
 
-    if (el) {
-      const { vertical, horizontal } = getScrollParents(el as HTMLElement);
+    if (el && el instanceof HTMLElement) {
+      const { vertical, horizontal } = getScrollParents(el);
 
       /**
        * If the scrolling parent is the doc root, use window instead as using
@@ -320,10 +320,7 @@ export function getVisibleItems<T>(
 
   return allItems.slice(first, last).map((value, localIndex) => {
     const index = first + localIndex;
-    const { x, y } = getItemOffsetByIndex(
-      index,
-      resizeMeasurement
-    ) as ItemOffset;
+    const { x, y } = getItemOffsetByIndex(index, resizeMeasurement);
 
     return {
       index,

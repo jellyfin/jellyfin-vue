@@ -94,7 +94,7 @@ export default defineComponent({
   },
   computed: {
     generalImages(): boolean {
-      return this.images.filter((image: ImageInfo) => {
+      return this.images.filter((image) => {
         return (
           image.ImageType !== ImageType.Screenshot &&
           image.ImageType !== ImageType.Backdrop &&
