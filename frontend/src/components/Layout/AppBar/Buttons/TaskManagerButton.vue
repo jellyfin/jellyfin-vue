@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { taskManagerStore } from '@/store';
-import { RunningTask, TaskType } from '@/store/taskManager';
+import { TaskType } from '@/store/taskManager';
 
 interface TaskInfo {
   progress: undefined | number;
@@ -104,7 +104,7 @@ function setTimeout(): void {
 function getTaskList(): void {
   const list: Array<TaskInfo> = [];
 
-  for (const task of taskManager.tasks as RunningTask[]) {
+  for (const task of taskManager.tasks) {
     switch (task.type) {
       case TaskType.ConfigSync: {
         list.push({
@@ -131,7 +131,7 @@ function getTaskList(): void {
   }
 
   const taskIds = new Set(
-    (list as TaskInfo[]).map((task) => {
+    list.map((task) => {
       return task.id;
     })
   );

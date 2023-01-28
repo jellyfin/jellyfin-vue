@@ -70,7 +70,7 @@ export function isPerson(
   item: BaseItemDto | BaseItemPerson
 ): item is BaseItemPerson {
   return !!(
-    'Role' in (item as BaseItemPerson) ||
+    'Role' in item ||
     (item.Type && validPersonTypes.includes(item.Type))
   );
 }
