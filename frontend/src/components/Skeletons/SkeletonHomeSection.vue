@@ -21,7 +21,7 @@ export default defineComponent({
   props: {
     cardShape: {
       type: String,
-      validator: (value): boolean =>
+      validator: (value: string): boolean =>
         Object.values(CardShapes).includes(value as CardShapes),
       default: CardShapes.Thumb
     }

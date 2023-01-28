@@ -28,7 +28,7 @@ export default defineComponent({
     cardShape: {
       type: String,
       default: (): string => CardShapes.Portrait,
-      validator: (value): boolean =>
+      validator: (value: string): boolean =>
         Object.values(CardShapes).includes(value as CardShapes)
     }
   }
