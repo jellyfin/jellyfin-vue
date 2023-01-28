@@ -272,7 +272,8 @@ export default defineComponent({
   computed: {
     isPlayable(): boolean {
       // TODO: Move this to a mixin
-      return ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type as string)
+      return this.item.Type &&
+        ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type)
         ? false
         : !(
             this.item.MediaType === 'Video' &&

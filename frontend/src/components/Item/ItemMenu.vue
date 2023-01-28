@@ -57,7 +57,7 @@ import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import IMdiDotsHorizontal from 'virtual:icons/mdi/dots-horizontal';
 import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
-import { TaskType, RunningTask } from '@/store/taskManager';
+import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 
 type MenuOption = {
@@ -119,7 +119,7 @@ const playNextAction = {
  * Options to show when the item menu is invoked in a queue item
  */
 function getQueueOptions(): MenuOption[] {
-  const queueOptions = [] as MenuOption[];
+  const queueOptions: MenuOption[] = [];
 
   if (
     menuProps.queue &&
@@ -169,7 +169,7 @@ function getQueueOptions(): MenuOption[] {
  * Playback options for the items
  */
 function getPlaybackOptions(): MenuOption[] {
-  const playbackOptions = [] as MenuOption[];
+  const playbackOptions: MenuOption[] = [];
 
   if (canResume(menuProps.item)) {
     playbackOptions.push({
@@ -221,7 +221,7 @@ function getPlaybackOptions(): MenuOption[] {
  * Library options for libraries
  */
 function getLibraryOptions(): MenuOption[] {
-  const libraryOptions = [] as MenuOption[];
+  const libraryOptions: MenuOption[] = [];
 
   if (
     remote.auth.currentUser?.Policy?.IsAdministrator &&
@@ -244,10 +244,10 @@ function getLibraryOptions(): MenuOption[] {
             useSnackbar(t('libraryRefreshQueued'), 'normal');
             taskManager.startTask({
               type: TaskType.LibraryRefresh,
-              id: menuProps.item.Id,
-              data: menuProps.item.Name,
+              id: menuProps.item.Id || '',
+              data: menuProps.item.Name || '',
               progress: 0
-            } as RunningTask);
+            });
           } catch (error) {
             console.error(error);
 

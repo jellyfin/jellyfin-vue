@@ -7,12 +7,12 @@ import { defaultsDeep } from 'lodash-es';
  * @param defaultObject - Sample/default representation of the object that should be used to detect which keys
  * should/shouldn't exist in the target.
  */
-export function mergeExcludingUnknown<T, K extends keyof T>(
+export function mergeExcludingUnknown<T extends object, K extends keyof T>(
   object: T,
   defaultObject: T
 ): T {
-  const defaultKeys = new Set(Object.keys(defaultObject as object) as K[]);
-  const missingKeys = (Object.keys(object as object) as K[]).filter(
+  const defaultKeys = new Set(Object.keys(defaultObject) as K[]);
+  const missingKeys = (Object.keys(object) as K[]).filter(
     (key) => !defaultKeys.has(key)
   );
 
