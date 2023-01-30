@@ -61,7 +61,7 @@ const remote = useRemote();
 const itemId = route.params.itemId;
 const item = (
   await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-    userId: remote.auth.currentUserId.value || '',
+    userId: remote.auth.currentUserId || '',
     itemId
   })
 ).data;
@@ -74,7 +74,7 @@ let genres = (
     sortBy: ['SortName'],
     sortOrder: [SortOrder.Ascending],
     fields: Object.values(ItemFields),
-    userId: remote.auth.currentUserId.value || ''
+    userId: remote.auth.currentUserId || ''
   })
 ).data.Items;
 

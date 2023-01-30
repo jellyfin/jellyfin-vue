@@ -2,7 +2,6 @@ import { RemovableRef, useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { isNil, merge } from 'lodash-es';
-import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
 import { useOneTimeAPI } from '../sdk/sdk-utils';
@@ -38,19 +37,21 @@ class RemotePluginAuth {
   /**
    * Getters
    */
-  public readonly servers = computed<ServerInfo[]>(() => state.value.servers);
-  public readonly currentServer = computed<ServerInfo | undefined>(
-    () => state.value.servers[state.value.currentServerIndex]
-  );
-  public readonly currentUser = computed<UserDto | undefined>(
-    () => state.value.users[state.value.currentUserIndex]
-  );
-  public readonly currentUserId = computed<string | undefined>(
-    () => this.currentUser.value?.Id
-  );
-  public readonly currentUserToken = computed<string | undefined>(() =>
-    this.getUserAccessToken(this.currentUser.value)
-  );
+  public get servers(): ServerInfo[] {
+    return state.value.servers;
+  }
+  public get currentServer(): ServerInfo | undefined {
+    return state.value.servers[state.value.currentServerIndex];
+  }
+  public get currentUser(): UserDto | undefined {
+    return state.value.users[state.value.currentUserIndex];
+  }
+  public get currentUserId(): string | undefined {
+    return this.currentUser?.Id;
+  }
+  public get currentUserToken(): string | undefined {
+    return this.getUserAccessToken(this.currentUser);
+  }
   public readonly getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
@@ -112,7 +113,7 @@ class RemotePluginAuth {
         const oldServer = this.getServerById(serv.Id);
 
         if (!isNil(oldServer)) {
-          this.servers.value[this.servers.value.indexOf(oldServer)] = merge(
+          this.servers[this.servers.indexOf(oldServer)] = merge(
             oldServer,
             serv
           );
@@ -143,13 +144,13 @@ class RemotePluginAuth {
     password: string,
     rememberMe: boolean
   ): Promise<void> {
-    if (!this.currentServer.value) {
+    if (!this.currentServer) {
       throw new Error('There is no server in use');
     }
 
     try {
       const { data } = await useOneTimeAPI(
-        this.currentServer.value.PublicAddress
+        this.currentServer.PublicAddress
       ).authenticateUserByName(username, password);
 
       state.value.rememberMe = rememberMe;
@@ -186,12 +187,8 @@ class RemotePluginAuth {
    * @param skipRequest - Skips the request and directly removes the user from the store
    */
   public async logoutCurrentUser(skipRequest = false): Promise<void> {
-    if (!isNil(this.currentUser.value) && !isNil(this.currentServer.value)) {
-      await this.logoutUser(
-        this.currentUser.value,
-        this.currentServer.value,
-        skipRequest
-      );
+    if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
+      await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
 
       state.value.currentUserIndex = -1;
     }

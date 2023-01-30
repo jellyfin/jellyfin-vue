@@ -103,7 +103,7 @@ export default defineComponent({
 
       const itemResults = (
         await this.$remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
-          userId: this.$remote.auth.currentUserId.value || '',
+          userId: this.$remote.auth.currentUserId || '',
           searchTerm: this.searchQuery,
           includeItemTypes: [
             BaseItemKind.Movie,
@@ -142,7 +142,7 @@ export default defineComponent({
 
       this.personSearchResults = (
         await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
-          userId: this.$remote.auth.currentUserId.value,
+          userId: this.$remote.auth.currentUserId,
           searchTerm: this.searchQuery
         })
       ).data.Items;

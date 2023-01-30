@@ -44,7 +44,7 @@ const remote = useRemote();
 const router = useRouter();
 const i18n = useI18n();
 const valid = ref(false);
-const previousServerLength = unref(remote.auth.servers.value.length);
+const previousServerLength = unref(remote.auth.servers.length);
 const serverUrl = ref('');
 const loading = ref(false);
 

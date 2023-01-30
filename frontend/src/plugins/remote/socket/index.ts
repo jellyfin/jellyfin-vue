@@ -25,13 +25,13 @@ function formatSocketMessage(
 
 const socketUrl = computed(() => {
   if (
-    auth.currentUserToken.value &&
-    auth.currentServer.value &&
+    auth.currentUserToken &&
+    auth.currentServer &&
     sdk.deviceInfo.id &&
     sdk.api?.basePath
   ) {
     const socketParameters = new URLSearchParams({
-      api_key: auth.currentUserToken.value,
+      api_key: auth.currentUserToken,
       deviceId: sdk.deviceInfo.id
     }).toString();
 
@@ -72,7 +72,7 @@ class RemotePluginSocket {
     send(formatSocketMessage(...arguments_));
   }
 
-  constructor() {
+  public constructor() {
     watch(this.message, () => {
       const items = itemsStore();
       const taskManager = taskManagerStore();

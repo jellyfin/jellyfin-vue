@@ -79,7 +79,7 @@ const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
 async function fetch(): Promise<void> {
   seasons.value = (
     await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
-      userId: remote.auth.currentUserId.value,
+      userId: remote.auth.currentUserId,
       seriesId: props.item.Id
     })
   ).data.Items;
@@ -89,7 +89,7 @@ async function fetch(): Promise<void> {
       if (season.Id) {
         const episodes = (
           await remote.sdk.newUserApi(getItemsApi).getItems({
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             parentId: season.Id,
             fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
           })
