@@ -1,11 +1,20 @@
 {
   "3DFormat": "3D format",
+  "NoMediaSourcesAvailable": "Medijski viri niso na voljo",
   "actor": "Igralec",
   "actors": "Igralci",
   "addNewPerson": "Dodaj osebo",
+  "administrator": "Administrator",
+  "airPlayDevices": "AirPlay naprave",
   "albums": "Albumi",
   "allLanguages": "Vsi jeziki",
   "alphabetically": "Po abecedi",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sinhroniziram nastavitve…",
+      "scanningLibrary": "Skeniram knjižnico '{library}'…"
+    }
+  },
   "architecture": "Arhitektura",
   "artist": "Izvajalec",
   "artists": "Izvajalci",
