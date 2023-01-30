@@ -131,7 +131,7 @@ const remote = useRemote();
 
 const item = (
   await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-    userId: remote.auth.currentUserId.value || '',
+    userId: remote.auth.currentUserId || '',
     itemId
   })
 ).data;
@@ -145,7 +145,7 @@ const movies =
       recursive: true,
       includeItemTypes: [BaseItemKind.Movie],
       fields: Object.values(ItemFields),
-      userId: remote.auth.currentUserId.value
+      userId: remote.auth.currentUserId
     })
   ).data.Items || [];
 
@@ -158,7 +158,7 @@ const series =
       recursive: true,
       includeItemTypes: [BaseItemKind.Series],
       fields: Object.values(ItemFields),
-      userId: remote.auth.currentUserId.value
+      userId: remote.auth.currentUserId
     })
   ).data.Items || [];
 
@@ -171,7 +171,7 @@ const books =
       recursive: true,
       includeItemTypes: [BaseItemKind.Book],
       fields: Object.values(ItemFields),
-      userId: remote.auth.currentUserId.value
+      userId: remote.auth.currentUserId
     })
   ).data.Items || [];
 
@@ -184,7 +184,7 @@ const photos =
       recursive: true,
       includeItemTypes: [BaseItemKind.Photo],
       fields: Object.values(ItemFields),
-      userId: remote.auth.currentUserId.value
+      userId: remote.auth.currentUserId
     })
   ).data.Items || [];
 

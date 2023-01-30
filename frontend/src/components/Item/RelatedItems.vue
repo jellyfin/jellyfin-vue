@@ -90,7 +90,7 @@ watch(
           .newUserApi(getLibraryApi)
           .getSimilarItems({
             itemId: props.item.Id,
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             limit: props.vertical ? 5 : 12,
             excludeArtistIds: props.item.AlbumArtists?.flatMap(
               (albumArtist: BaseItemDto) =>

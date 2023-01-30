@@ -168,7 +168,7 @@ class ItemsStore {
     if (parentId && !this.getItemById(parentId)) {
       const parentItem = (
         await remote.sdk.newUserApi(getItemsApi).getItems({
-          userId: remote.auth.currentUserId.value,
+          userId: remote.auth.currentUserId,
           ids: [parentId],
           fields: Object.values(ItemFields)
         })
@@ -183,7 +183,7 @@ class ItemsStore {
 
     const childItems = (
       await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId.value,
+        userId: remote.auth.currentUserId,
         parentId,
         fields: Object.values(ItemFields)
       })
@@ -207,7 +207,7 @@ class ItemsStore {
 
     if (itemIds.length > 0) {
       await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId.value,
+        userId: remote.auth.currentUserId,
         ids: itemIds,
         fields: Object.keys(ItemFields) as ItemFields[]
       });

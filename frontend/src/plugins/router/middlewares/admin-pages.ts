@@ -11,7 +11,7 @@ export default function adminGuard(
   const remote = useRemote();
   const { t } = usei18n();
 
-  if (to.meta.admin && remote.auth.currentUser.value?.Policy?.IsAdministrator) {
+  if (to.meta.admin && remote.auth.currentUser?.Policy?.IsAdministrator) {
     useSnackbar(t('errors.unauthorized'), 'error');
 
     return { path: '/', replace: true };

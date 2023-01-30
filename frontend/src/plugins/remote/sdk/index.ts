@@ -16,7 +16,7 @@ class RemotePluginSDK {
   public discovery = this.sdk.discovery;
   public api: Api | undefined;
 
-  constructor(auth: typeof RemotePluginAuthInstance) {
+  public constructor(auth: typeof RemotePluginAuthInstance) {
     /**
      * Configure app's axios instance to perform requests to the given Jellyfin server.
      */
@@ -24,14 +24,14 @@ class RemotePluginSDK {
       const server = auth.currentServer;
       const accessToken = auth.currentUserToken;
 
-      if (!isNil(server.value)) {
+      if (!isNil(server)) {
         this.api = this.sdk.createApi(
-          server.value.PublicAddress,
-          accessToken.value,
+          server.PublicAddress,
+          accessToken,
           RemotePluginAxiosInstance.instance
         );
         RemotePluginAxiosInstance.instance.defaults.baseURL =
-          server.value.PublicAddress;
+          server.PublicAddress;
       } else {
         RemotePluginAxiosInstance.resetDefaults();
         this.api = undefined;

@@ -21,12 +21,12 @@ export default function loginGuard(
   let destinationRoute: RouteLocationPathRaw | undefined;
 
   if (to) {
-    if (remote.auth.servers.value.length <= 0) {
+    if (remote.auth.servers.length <= 0) {
       destinationRoute = { path: serverAddUrl, replace: true };
     } else if (!routes.has(to.path)) {
-      if (isNil(remote.auth.currentServer.value)) {
+      if (isNil(remote.auth.currentServer)) {
         destinationRoute = { path: serverSelectUrl, replace: true };
-      } else if (isNil(remote.auth.currentUser.value)) {
+      } else if (isNil(remote.auth.currentUser)) {
         destinationRoute = { path: serverLoginUrl, replace: true };
       }
     }
