@@ -539,7 +539,7 @@
     "setMetadataError": "Konnte Metadata-Sprache nicht setzen.",
     "setRemoteError": "Konnte Fernzugriff Einstellungen nicht setzen.",
     "setupWizard": "Einrichtungsassistent",
-    "userSuccessfullySet": "Benutzer erfolgreich gesetzt."
+    "userSuccessfullySet": "Benutzer erfolgreich eingestellt."
   },
   "writer": "Drehbuchautor",
   "writing": "Drehbuchautoren",
