@@ -155,7 +155,7 @@ export default defineComponent({
 
     const item = (
       await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId.value || '',
+        userId: remote.auth.currentUserId || '',
         itemId
       })
     ).data;

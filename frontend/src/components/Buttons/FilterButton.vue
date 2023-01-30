@@ -259,7 +259,7 @@ async function refreshItems(): Promise<void> {
      */
     const response = (
       await remote.sdk.newUserApi(getFilterApi).getQueryFiltersLegacy({
-        userId: remote.auth.currentUserId.value,
+        userId: remote.auth.currentUserId,
         // @ts-expect-error - We don't have typings for routes - TODO: Fix
         parentId: sanitizeHtml(route.params.viewId),
         includeItemTypes: [props.itemsType]

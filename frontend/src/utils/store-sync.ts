@@ -54,7 +54,7 @@ export async function fetchSettingsFromServer<T>(
     .newUserApi(getDisplayPreferencesApi)
     .getDisplayPreferences({
       displayPreferencesId: key,
-      userId: remote.auth.currentUserId.value || '',
+      userId: remote.auth.currentUserId || '',
       client: 'vue'
     });
 
@@ -102,7 +102,7 @@ export async function pushSettingsToServer(
       .newUserApi(getDisplayPreferencesApi)
       .updateDisplayPreferences({
         displayPreferencesId: key,
-        userId: remote.auth.currentUserId.value || '',
+        userId: remote.auth.currentUserId || '',
         client: 'vue',
         displayPreferencesDto: prefs
       });
@@ -131,7 +131,7 @@ export default async function preferencesSync<T>(
   const { t } = usei18n();
   const taskManager = taskManagerStore();
 
-  if (!isNil(auth.currentUser.value)) {
+  if (!isNil(auth.currentUser)) {
     try {
       /**
        * Creates a config syncing task, so UI can show that there's a syncing in progress
