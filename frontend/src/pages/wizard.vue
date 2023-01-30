@@ -126,7 +126,7 @@ export default defineComponent({
     async completeWizard(): Promise<void> {
       try {
         const api = this.$remote.sdk.oneTimeSetup(
-          this.$remote.auth.currentServer.value?.PublicAddress || ''
+          this.$remote.auth.currentServer?.PublicAddress || ''
         );
 
         await getStartupApi(api).completeWizard();

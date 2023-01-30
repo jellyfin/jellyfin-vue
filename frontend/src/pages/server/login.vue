@@ -32,8 +32,7 @@
         v-else-if="
           !isEmpty(currentUser) ||
           loginAsOther ||
-          (publicUsers.length === 0 &&
-            $remote.auth.currentServer.value?.ServerName)
+          (publicUsers.length === 0 && $remote.auth.currentServer?.ServerName)
         "
         sm="6"
         md="6"
@@ -45,7 +44,7 @@
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
-          {{ $remote.auth.currentServer.value?.ServerName }}
+          {{ $remote.auth.currentServer?.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
         <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
@@ -73,7 +72,7 @@ const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
 const api = remote.sdk.oneTimeSetup(
-  remote.auth.currentServer.value?.PublicAddress || ''
+  remote.auth.currentServer?.PublicAddress || ''
 );
 
 route.meta.title = t('login.login');

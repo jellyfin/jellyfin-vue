@@ -56,14 +56,14 @@ async function toggleFavorite(): Promise<void> {
       isFavorite.value = true;
 
       await remote.sdk.newUserApi(getUserLibraryApi).markFavoriteItem({
-        userId: remote.auth.currentUserId.value || '',
+        userId: remote.auth.currentUserId || '',
         itemId: props.item.Id
       });
     } else {
       isFavorite.value = false;
 
       await remote.sdk.newUserApi(getUserLibraryApi).unmarkFavoriteItem({
-        userId: remote.auth.currentUserId.value || '',
+        userId: remote.auth.currentUserId || '',
         itemId: props.item.Id
       });
     }

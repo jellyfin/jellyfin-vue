@@ -20,9 +20,9 @@ class JellyfinInterceptors {
       if (data.Items && Array.isArray(data.Items)) {
         response.data.Items = items.add(data.Items as BaseItemDto[]);
       } else if (
-        RemotePluginAuthInstance.currentUser.value &&
+        RemotePluginAuthInstance.currentUser &&
         response.config.url?.includes(
-          `/Users/${RemotePluginAuthInstance.currentUser.value}/Items/`
+          `/Users/${RemotePluginAuthInstance.currentUser}/Items/`
         )
       ) {
         response.data = items.add(data);
@@ -39,7 +39,7 @@ class JellyfinInterceptors {
   public async logoutInterceptor(error: AxiosError): Promise<never | void> {
     if (
       error.response?.status === 401 &&
-      RemotePluginAuthInstance.currentUser.value &&
+      RemotePluginAuthInstance.currentUser &&
       !error.config.url?.includes('/Sessions/Logout')
     ) {
       await RemotePluginAuthInstance.logoutCurrentUser(true);
@@ -60,7 +60,7 @@ class RemotePluginAxios {
   private reactiveInterceptor = -1;
   private logoutInterceptor = -1;
 
-  constructor() {
+  public constructor() {
     this.setReactiveItemsInterceptor();
     this.setLogoutInteceptor();
   }
