@@ -64,7 +64,7 @@ export default defineComponent({
     const remote = useRemote();
     const collectionInfo = (
       await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId.value,
+        userId: remote.auth.currentUserId,
         ids: [params.viewId]
       })
     ).data?.Items?.[0];
@@ -208,7 +208,7 @@ export default defineComponent({
           case 'MusicArtist': {
             itemsResponse = (
               await this.$remote.sdk.newUserApi(getArtistsApi).getAlbumArtists({
-                userId: this.$remote.auth.currentUserId.value,
+                userId: this.$remote.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -217,7 +217,7 @@ export default defineComponent({
           case 'Actor': {
             itemsResponse = (
               await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
-                userId: this.$remote.auth.currentUserId.value,
+                userId: this.$remote.auth.currentUserId,
                 parentId: this.$route.params.viewId,
                 personTypes: ['Actor']
               })
@@ -227,7 +227,7 @@ export default defineComponent({
           case 'Genre': {
             itemsResponse = (
               await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
-                userId: this.$remote.auth.currentUserId.value,
+                userId: this.$remote.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -238,7 +238,7 @@ export default defineComponent({
               await this.$remote.sdk
                 .newUserApi(getMusicGenresApi)
                 .getMusicGenres({
-                  userId: this.$remote.auth.currentUserId.value,
+                  userId: this.$remote.auth.currentUserId,
                   parentId: this.$route.params.viewId
                 })
             ).data;
@@ -247,7 +247,7 @@ export default defineComponent({
           case 'Studio': {
             itemsResponse = (
               await this.$remote.sdk.newUserApi(getStudiosApi).getStudios({
-                userId: this.$remote.auth.currentUserId.value,
+                userId: this.$remote.auth.currentUserId,
                 parentId: this.$route.params.viewId
               })
             ).data;
@@ -256,8 +256,8 @@ export default defineComponent({
           default: {
             itemsResponse = (
               await this.$remote.sdk.newUserApi(getItemsApi).getItems({
-                uId: this.$remote.auth.currentUserId.value,
-                userId: this.$remote.auth.currentUserId.value,
+                uId: this.$remote.auth.currentUserId,
+                userId: this.$remote.auth.currentUserId,
                 parentId: this.$route.params.viewId,
                 includeItemTypes: this.viewType,
                 sortBy:

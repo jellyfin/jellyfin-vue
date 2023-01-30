@@ -47,7 +47,7 @@ route.meta.transparentLayout = true;
 
 const carouselItems = (
   await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
-    userId: remote.auth.currentUserId.value || '',
+    userId: remote.auth.currentUserId || '',
     limit: 10,
     fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
     enableImageTypes: [ImageType.Backdrop, ImageType.Logo],

@@ -280,7 +280,7 @@ export default defineComponent({
         .newUserApi(getLibraryApi)
         .getAncestors({
           itemId: this.metadata.Id as string,
-          userId: this.$remote.auth.currentUserId.value
+          userId: this.$remote.auth.currentUserId
         });
       const libraryInfo =
         ancestors.data.find((index) => index.Type === 'CollectionFolder') || {};
@@ -290,7 +290,7 @@ export default defineComponent({
     async fetchItemInfo(): Promise<void> {
       const itemInfo = (
         await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem({
-          userId: this.$remote.auth.currentUserId.value || '',
+          userId: this.$remote.auth.currentUserId || '',
           itemId: this.itemId
         })
       ).data;

@@ -5,7 +5,7 @@
         <div
           v-if="
             !isEmpty(systemInfo) &&
-            $remote.auth.currentUser.value?.Policy?.IsAdministrator
+            $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
           <v-img
             class="logo"
@@ -71,7 +71,7 @@
           </v-item-group>
         </v-list>
         <!-- Administrator settings -->
-        <div v-if="$remote.auth.currentUser.value?.Policy?.IsAdministrator">
+        <div v-if="$remote.auth.currentUser?.Policy?.IsAdministrator">
           <v-list
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
@@ -145,7 +145,7 @@ let systemInfo = {} as SystemInfo;
 
 route.meta.title = t('settings.settings');
 
-if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
+if (remote.auth.currentUser?.Policy?.IsAdministrator) {
   systemInfo = (await remote.sdk.newUserApi(getSystemApi).getSystemInfo()).data;
 }
 
@@ -154,27 +154,32 @@ const userItems = computed(() => {
     {
       icon: IMdiAccount,
       name: t('settingsSections.account.name'),
-      description: t('settingsSections.account.description')
+      description: t('settingsSections.account.description'),
+      link: undefined
     },
     {
       icon: IMdiHome,
       name: t('settingsSections.home.name'),
-      description: t('settingsSections.home.description')
+      description: t('settingsSections.home.description'),
+      link: undefined
     },
     {
       icon: IMdiPlayPause,
       name: t('settingsSections.playback.name'),
-      description: t('settingsSections.playback.description')
+      description: t('settingsSections.playback.description'),
+      link: undefined
     },
     {
       icon: IMdiDiscPlayer,
       name: t('settingsSections.mediaPlayers.name'),
-      description: t('settingsSections.mediaPlayers.description')
+      description: t('settingsSections.mediaPlayers.description'),
+      link: undefined
     },
     {
       icon: IMdiSubtitles,
       name: t('settingsSections.subtitles.name'),
-      description: t('settingsSections.subtitles.description')
+      description: t('settingsSections.subtitles.description'),
+      link: undefined
     }
   ];
 });
@@ -185,7 +190,8 @@ const adminSections = computed(() => {
       {
         icon: IMdiServer,
         name: t('settingsSections.server.name'),
-        description: t('settingsSections.server.description')
+        description: t('settingsSections.server.description'),
+        link: undefined
       },
       {
         icon: IMdiDevices,
@@ -196,14 +202,16 @@ const adminSections = computed(() => {
       {
         icon: IMdiLibraryShelves,
         name: t('settingsSections.libraries.name'),
-        description: t('settingsSections.libraries.description')
+        description: t('settingsSections.libraries.description'),
+        link: undefined
       }
     ],
     [
       {
         icon: IMdiAccountMultiple,
         name: t('settingsSections.users.name'),
-        description: t('settingsSections.users.description')
+        description: t('settingsSections.users.description'),
+        link: undefined
       },
       {
         icon: IMdiKeyChain,
@@ -216,39 +224,46 @@ const adminSections = computed(() => {
       {
         icon: IMdiPlayNetwork,
         name: t('settingsSections.transcodingAndStreaming.name'),
-        description: t('settingsSections.transcodingAndStreaming.description')
+        description: t('settingsSections.transcodingAndStreaming.description'),
+        link: undefined
       },
       {
         icon: IMdiDLNA,
         name: t('settingsSections.dlna.name'),
-        description: t('settingsSections.dlna.description')
+        description: t('settingsSections.dlna.description'),
+        link: undefined
       },
       {
         icon: IMdiTelevisionClassic,
         name: t('settingsSections.liveTvAndDvr.name'),
-        description: t('settingsSections.liveTvAndDvr.description')
+        description: t('settingsSections.liveTvAndDvr.description'),
+        link: undefined
       },
       {
         icon: IMdiNetwork,
         name: t('settingsSections.networking.name'),
-        description: t('settingsSections.networking.description')
+        description: t('settingsSections.networking.description'),
+        link: undefined
       }
     ],
     [
       {
         icon: IMdiPuzzle,
         name: t('settingsSections.plugins.name'),
-        description: t('settingsSections.plugins.description')
+        description: t('settingsSections.plugins.description'),
+        link: undefined
       },
       {
         icon: IMdiCalendarClock,
         name: t('settingsSections.scheduledTasks.name'),
-        description: t('settingsSections.scheduledTasks.description')
+        description: t('settingsSections.scheduledTasks.description'),
+        link: undefined
       },
       {
         icon: IMdiBell,
         name: t('settingsSections.notifications.name'),
-        description: t('settingsSections.notifications.description')
+        description: t('settingsSections.notifications.description'),
+        link: undefined
       },
       {
         icon: IMdiTextBox,

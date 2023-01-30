@@ -108,7 +108,7 @@ class UserLibrariesStore {
       const userViewsResponse = await remote.sdk
         .newUserApi(getUserViewsApi)
         .getUserViews({
-          userId: remote.auth.currentUserId.value || ''
+          userId: remote.auth.currentUserId || ''
         });
 
       state.value.views = userViewsResponse.data.Items || [];
@@ -123,7 +123,7 @@ class UserLibrariesStore {
     try {
       const audioResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
-          userId: remote.auth.currentUserId.value || '',
+          userId: remote.auth.currentUserId || '',
           limit: 24,
           fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
@@ -151,7 +151,7 @@ class UserLibrariesStore {
     try {
       const videoResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
-          userId: remote.auth.currentUserId.value || '',
+          userId: remote.auth.currentUserId || '',
           limit: 24,
           fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
@@ -179,7 +179,7 @@ class UserLibrariesStore {
     try {
       const upNext = (
         await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
-          userId: remote.auth.currentUserId.value,
+          userId: remote.auth.currentUserId,
           limit: 24,
           fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
@@ -206,7 +206,7 @@ class UserLibrariesStore {
     try {
       const latestMedia = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
-          userId: remote.auth.currentUserId.value || '',
+          userId: remote.auth.currentUserId || '',
           limit: 24,
           fields: [ItemFields.PrimaryImageAspectRatio],
           imageTypeLimit: 1,
@@ -256,7 +256,7 @@ const remote = useRemote();
 watch(
   () => remote.auth.currentUser,
   () => {
-    if (!remote.auth.currentUser.value) {
+    if (!remote.auth.currentUser) {
       userLibraries.clear();
     }
   }
