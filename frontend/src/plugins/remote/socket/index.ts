@@ -23,7 +23,7 @@ function formatSocketMessage(
   return JSON.stringify(message);
 }
 
-const socketUrl = computed<string>(() => {
+const socketUrl = computed(() => {
   if (
     auth.currentUserToken.value &&
     auth.currentServer.value &&
@@ -39,8 +39,6 @@ const socketUrl = computed<string>(() => {
       .replace('https:', 'wss:')
       .replace('http:', 'ws:');
   }
-
-  return `wss://${window.location.host}/`;
 });
 
 const { data, send } = useWebSocket(socketUrl, {

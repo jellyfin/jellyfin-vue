@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@jellyfin/sdk": "0.0.0-unstable.202301101857",
-    "@vueuse/components": "9.6.0",
-    "@vueuse/core": "9.6.0",
+    "@vueuse/components": "9.12.0",
+    "@vueuse/core": "9.12.0",
     "axios": "0.27.2",
     "blurhash": "1.1.5",
     "comlink": "4.3.1",
