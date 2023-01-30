@@ -43,7 +43,7 @@ export default defineComponent({
     this.loading = true;
 
     const api = this.$remote.sdk.oneTimeSetup(
-      this.$remote.auth.currentServer.value?.PublicAddress || ''
+      this.$remote.auth.currentServer?.PublicAddress || ''
     );
 
     try {
@@ -67,7 +67,7 @@ export default defineComponent({
       this.loading = true;
 
       const api = this.$remote.sdk.oneTimeSetup(
-        this.$remote.auth.currentServer.value?.PublicAddress || ''
+        this.$remote.auth.currentServer?.PublicAddress || ''
       );
 
       try {

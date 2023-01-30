@@ -54,7 +54,7 @@ export default defineComponent({
       const libraryItems = (
         (
           await this.$remote.sdk.newUserApi(getUserLibraryApi).getItem(
-            { userId: this.$remote.auth.currentUserId.value || '', itemId: '' },
+            { userId: this.$remote.auth.currentUserId || '', itemId: '' },
             {
               query: {
                 ParentId: node.id,

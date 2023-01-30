@@ -1,9 +1,9 @@
 <template>
-  <v-menu v-if="auth.currentUser.value" location="bottom">
+  <v-menu v-if="auth.currentUser" location="bottom">
     <template #activator="{ props }">
       <app-bar-button-layout v-bind="props">
         <template #icon>
-          <user-image :user="auth.currentUser.value" :size="40" rounded />
+          <user-image :user="auth.currentUser" :size="40" rounded />
         </template>
       </app-bar-button-layout>
     </template>
@@ -11,17 +11,15 @@
       <v-list-item>
         <template #prepend>
           <v-avatar>
-            <user-image :user="auth.currentUser.value" :size="40" rounded />
+            <user-image :user="auth.currentUser" :size="40" rounded />
           </v-avatar>
         </template>
         <template #title>
           <v-list-item-title class="text-body-1">
-            {{ auth.currentUser.value.Name }}
+            {{ auth.currentUser.Name }}
           </v-list-item-title>
         </template>
-        <template
-          v-if="auth.currentUser.value?.Policy?.IsAdministrator"
-          #subtitle>
+        <template v-if="auth.currentUser?.Policy?.IsAdministrator" #subtitle>
           <v-list-item-subtitle>
             {{ $t('administrator') }}
             <v-icon size="small">
@@ -63,7 +61,7 @@ const { t } = useI18n();
 const menuItems = computed<MenuItem[]>(() => {
   const menuItems = [];
 
-  if (auth.currentUser.value?.Policy?.IsAdministrator) {
+  if (auth.currentUser?.Policy?.IsAdministrator) {
     menuItems.push({
       title: t('metadataEditor'),
       icon: IMdiPencil,

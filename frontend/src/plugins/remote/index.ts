@@ -36,7 +36,7 @@ export default function createRemote(): { install: (app: App) => void } {
       const config = await getJSONConfig();
       const defaultServers = config.defaultServerURLs;
       const missingServers = defaultServers.filter((serverUrl) => {
-        const server = auth.servers.value.find(
+        const server = auth.servers.find(
           (lsServer) => lsServer.PublicAddress === serverUrl
         );
 

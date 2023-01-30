@@ -82,9 +82,9 @@ const clientSettings = new ClientSettingsStore();
 const remote = useRemote();
 
 watch(
-  remote.auth.currentUser,
+  () => remote.auth.currentUser,
   async () => {
-    if (remote.auth.currentUser.value) {
+    if (remote.auth.currentUser) {
       try {
         const data = await fetchSettingsFromServer<ClientSettingsState>(
           storeKey,
@@ -113,7 +113,7 @@ watch(
 const syncDataWatcher = watchPausable(
   state,
   async () => {
-    if (remote.auth.currentUser.value) {
+    if (remote.auth.currentUser) {
       await preferencesSync(storeKey, state.value);
     }
   },

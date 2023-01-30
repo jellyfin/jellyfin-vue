@@ -224,7 +224,7 @@ function getLibraryOptions(): MenuOption[] {
   const libraryOptions = [] as MenuOption[];
 
   if (
-    remote.auth.currentUser.value?.Policy?.IsAdministrator &&
+    remote.auth.currentUser?.Policy?.IsAdministrator &&
     ['Folder', 'CollectionFolder', 'UserView'].includes(
       menuProps.item.Type || ''
     )
@@ -259,7 +259,7 @@ function getLibraryOptions(): MenuOption[] {
     });
   }
 
-  if (remote.auth.currentUser.value?.Policy?.IsAdministrator) {
+  if (remote.auth.currentUser?.Policy?.IsAdministrator) {
     libraryOptions.push({
       title: t('editMetadata'),
       icon: IMdiPencilOutline,

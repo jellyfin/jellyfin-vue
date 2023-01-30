@@ -142,7 +142,7 @@ export default defineComponent({
 
     const item = (
       await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId.value || '',
+        userId: remote.auth.currentUserId || '',
         itemId
       })
     ).data;
@@ -155,7 +155,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: [BaseItemKind.MusicAlbum],
         fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId
       })
     ).data.Items;
 
@@ -186,7 +186,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: [BaseItemKind.MusicAlbum],
         fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId
       })
     ).data.Items;
 
@@ -198,7 +198,7 @@ export default defineComponent({
         recursive: true,
         includeItemTypes: [BaseItemKind.MusicVideo],
         fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId.value
+        userId: remote.auth.currentUserId
       })
     ).data.Items;
 

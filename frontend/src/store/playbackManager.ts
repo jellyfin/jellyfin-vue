@@ -791,7 +791,7 @@ class PlaybackManagerStore {
         if (
           !isNil(this.currentItem) &&
           !isNil(this.currentItem.Id) &&
-          !isNil(remote.auth.currentUser.value)
+          !isNil(remote.auth.currentUser)
         ) {
           await this._reportPlaybackStopped(this.currentItem.Id);
         }
@@ -884,7 +884,7 @@ class PlaybackManagerStore {
       return (
         await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
           itemId: item?.Id || '',
-          userId: remote.auth.currentUserId.value,
+          userId: remote.auth.currentUserId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
           mediaSourceId: undefined,
@@ -903,13 +903,13 @@ class PlaybackManagerStore {
     if (
       mediaSource?.SupportsDirectStream &&
       mediaSource.Type &&
-      remote.auth.currentUserToken.value
+      remote.auth.currentUserToken
     ) {
       const directOptions: Record<string, string> = {
         Static: String(true),
         mediaSourceId: String(mediaSource.Id),
         deviceId: remote.sdk.deviceInfo.id,
-        api_key: remote.auth.currentUserToken.value,
+        api_key: remote.auth.currentUserToken,
         Tag: mediaSource.ETag || '',
         LiveStreamId: mediaSource.LiveStreamId || ''
       };
@@ -945,7 +945,7 @@ class PlaybackManagerStore {
             ids: [item.ChannelId],
             limit: 300,
             sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             fields: Object.values(ItemFields)
           })
         ).data.Items || [];
@@ -956,7 +956,7 @@ class PlaybackManagerStore {
             parentId: item.Id,
             limit: 300,
             sortBy: shuffle ? ['Random'] : undefined,
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             fields: Object.values(ItemFields)
           })
         ).data.Items || [];
@@ -970,7 +970,7 @@ class PlaybackManagerStore {
             mediaTypes: ['Audio'],
             limit: 300,
             sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             fields: Object.values(ItemFields)
           })
         ).data.Items || [];
@@ -984,7 +984,7 @@ class PlaybackManagerStore {
             mediaTypes: ['Audio'],
             limit: 300,
             sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             fields: Object.values(ItemFields)
           })
         ).data.Items || [];
@@ -1002,14 +1002,13 @@ class PlaybackManagerStore {
               : ['SortName'],
             mediaTypes: ['Audio', 'Video'],
             limit: 300,
-            userId: remote.auth.currentUserId.value,
+            userId: remote.auth.currentUserId,
             fields: Object.values(ItemFields)
           })
         ).data.Items || [];
     } else if (item.Type === 'Episode') {
       if (
-        remote.auth.currentUser.value?.Configuration
-          ?.EnableNextEpisodeAutoPlay &&
+        remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
         item.SeriesId
       ) {
         /**
@@ -1022,7 +1021,7 @@ class PlaybackManagerStore {
               isMissing: false,
               startItemId: item.Id,
               limit: 300,
-              userId: remote.auth.currentUserId.value,
+              userId: remote.auth.currentUserId,
               fields: Object.values(ItemFields)
             })
           ).data.Items || [];
@@ -1041,7 +1040,7 @@ class PlaybackManagerStore {
     });
   };
 
-  constructor() {
+  public constructor() {
     watch(
       () => this.status,
       async (newValue, oldValue) => {
@@ -1133,11 +1132,14 @@ const remote = useRemote();
 /**
  * Dispose on logout
  */
-watch(remote.auth.currentUser, () => {
-  if (isNil(remote.auth.currentUser.value)) {
-    playbackManager.stop();
+watch(
+  () => remote.auth.currentUser,
+  () => {
+    if (isNil(remote.auth.currentUser)) {
+      playbackManager.stop();
+    }
   }
-});
+);
 
 watch(mediaControls.playing, () => {
   if (playbackManager.status !== PlaybackStatus.Buffering) {
