@@ -4,10 +4,20 @@
   "actor": "Herec",
   "actors": "Herci",
   "addNewPerson": "Pridať novú osobu",
+  "administrator": "Administrátor",
   "airPlayDevices": "AirPlay zariadenia",
   "albums": "Albumy",
   "allLanguages": "Všetky jazyky",
   "alphabetically": "Abecedne",
+  "appbar": {
+    "tasks": {
+      "configSync": "Synchronizácia nastavení…",
+      "scanningLibrary": "Skenuje sa knižnica '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Prebiehajúce úlohy"
+    }
+  },
   "architecture": "Architektúra",
   "artist": "Interpret",
   "artists": "Interpreti",
@@ -98,8 +108,12 @@
   "incorrectUsernameOrPassword": "Nesprávne používateľské meno alebo heslo",
   "item": {
     "artist": {
+      "albums": "Albumy",
+      "appearsOn": "Vystúpenia",
       "discography": "Diskografia",
+      "eps": "EP",
       "information": "Informácie",
+      "singles": "Single",
       "videos": "Videá"
     },
     "cast": "Obsadenie",
@@ -406,6 +420,7 @@
       "name": "Titulky"
     },
     "transcodingAndStreaming": {
+      "description": "Spravovať, ako tento server spracováva prekódovanie a streamovanie klientom",
       "name": "Prekódovanie a streamovanie"
     },
     "users": {
@@ -447,6 +462,7 @@
       "name": "Snímky za sekundu:",
       "value": "{value} snímkov/s"
     },
+    "transcodingProgress": "Pokrok:",
     "transcodingReason": {
       "name": "Dôvod: | Dôvody:",
       "reasons": {
@@ -456,11 +472,18 @@
         "audioChannelsNotSupported": "Počet zvukových kanálov nie je podporovaný",
         "audioCodecNotSupported": "Zvukový kodek nie je podporovaný",
         "audioProfileNotSupported": "Profil zvukového kodeku nie je podporovaný",
+        "audioSampleRateNotSupported": "Vzorkovacia frekvencia zvuku nie je podporovaná",
+        "containerBitrateExceedsLimit": "Bitová rýchlosť kontajnera prekračuje nastavený limit",
         "containerNotSupported": "Kontajner nie je podporovaný",
+        "interlacedVideoNotSupported": "Prekladané video nie je podporované",
         "refFramesNotSupported": "Referenčné snímky nie su podporované",
         "secondaryAudioNotSupported": "Sekundárne zvukové stopy nie su podporované",
         "subtitleCodecNotSupported": "Titulkový kodek nie je podporovaný",
+        "videoBitDepthNotSupported": "Bitová hĺbka videa nie je podporovaná",
         "videoCodecNotSupported": "Video kodek nie je podporovaný",
+        "videoFramerateNotSupported": "Snímková frekvencia videa nie je podporovaná",
+        "videoLevelNotSupported": "Úroveň video kodeku nie je podporovaná",
+        "videoProfileNotSupported": "Profil video kodeku nie je podporovaný",
         "videoResolutionNotSupported": "Rozlíšenie videa nie je podporované"
       }
     }
