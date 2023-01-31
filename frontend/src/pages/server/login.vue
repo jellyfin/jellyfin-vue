@@ -17,12 +17,16 @@
         </v-row>
         <v-row align="center" justify="center" dense class="mt-6">
           <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn block size="large" @click="loginAsOther = true">
+            <v-btn
+              block
+              size="large"
+              variant="elevated"
+              @click="loginAsOther = true">
               {{ $t('login.manualLogin') }}
             </v-btn>
           </v-col>
           <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn block to="/server/select" size="large">
+            <v-btn block to="/server/select" size="large" variant="elevated">
               {{ $t('login.changeServer') }}
             </v-btn>
           </v-col>

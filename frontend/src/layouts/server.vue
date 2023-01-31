@@ -3,6 +3,6 @@
     <router-view-transition />
   </v-main>
   <v-footer app color="transparent">
-    <locale-switcher top />
+    <locale-switcher top elevated />
   </v-footer>
 </template>
