@@ -3,7 +3,6 @@
     <v-btn
       class="active-button"
       icon
-      fab
       size="small"
       @click="playbackManager.toggleMute">
       <v-icon :icon="icon" />

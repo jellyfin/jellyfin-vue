@@ -5,9 +5,9 @@
         <template #activator="{ props: tooltip }">
           <v-btn
             icon
-            :variant="appBar ? 'elevated' : undefined"
+            :variant="elevated ? 'elevated' : undefined"
             :size="large ? 'large' : 'small'"
-            :color="appBar ? undefined : 'primary'"
+            :color="elevated ? undefined : 'primary'"
             v-bind="mergeProps(menu, tooltip)">
             <v-icon>
               <i-mdi-web />
@@ -50,7 +50,7 @@ defineProps({
     required: false,
     type: Boolean
   },
-  appBar: {
+  elevated: {
     required: false,
     type: Boolean
   }

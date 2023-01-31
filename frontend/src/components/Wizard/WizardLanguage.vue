@@ -9,7 +9,7 @@
       item-title="Name"
       item-value="Value"
       :items="culturesList" />
-    <v-btn color="primary" @click="setLanguage">
+    <v-btn color="primary" variant="elevated" @click="setLanguage">
       {{ $t('next') }}
     </v-btn>
   </div>

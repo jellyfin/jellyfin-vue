@@ -17,6 +17,7 @@
           block
           size="large"
           color="primary"
+          variant="elevated"
           @click="$router.push('/server/add')">
           {{ $t('login.addServer') }}
         </v-btn>

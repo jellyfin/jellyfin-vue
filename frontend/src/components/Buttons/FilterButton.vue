@@ -4,8 +4,6 @@
       <v-btn
         v-if="!$vuetify.display.smAndDown"
         class="ma-2"
-        variant="text"
-        rounded
         v-bind="mergeProps(menuProps, props)">
         {{ $t('filter') }}
         <v-icon end>

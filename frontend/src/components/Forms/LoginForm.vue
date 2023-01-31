@@ -26,10 +26,20 @@
         :label="$t('login.rememberMe')" />
       <v-row align="center" no-gutters>
         <v-col class="mr-2">
-          <v-btn v-if="isEmpty(user)" to="/server/select" block size="large">
+          <v-btn
+            v-if="isEmpty(user)"
+            to="/server/select"
+            block
+            size="large"
+            variant="elevated">
             {{ $t('login.changeServer') }}
           </v-btn>
-          <v-btn v-else block size="large" @click="$emit('change')">
+          <v-btn
+            v-else
+            block
+            size="large"
+            variant="elevated"
+            @click="$emit('change')">
             {{ $t('login.changeUser') }}
           </v-btn>
         </v-col>
@@ -40,6 +50,7 @@
             block
             size="large"
             color="primary"
+            variant="elevated"
             type="submit">
             {{ $t('signIn') }}
           </v-btn>

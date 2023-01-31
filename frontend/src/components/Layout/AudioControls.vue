@@ -65,7 +65,6 @@
               <div class="d-flex align-center justify-center">
                 <v-btn
                   icon
-                  fab
                   size="small"
                   class="mx-1 active-button"
                   :color="playbackManager.isShuffling ? 'primary' : undefined"
@@ -84,8 +83,6 @@
                 </v-btn>
                 <v-btn
                   icon
-                  raised
-                  rounded
                   :loading="playbackManager.isBuffering"
                   class="mx-1 active-button"
                   @click="playbackManager.playPause">
@@ -102,7 +99,6 @@
                 </v-btn>
                 <v-btn
                   icon
-                  fab
                   size="small"
                   class="mx-1 active-button"
                   :color="playbackManager.isRepeating ? 'primary' : undefined"
@@ -138,8 +134,6 @@
             class="d-flex d-md-none pa-0 align-center justify-end">
             <v-btn
               icon
-              raised
-              rounded
               class="mx-1 active-button"
               @click="playbackManager.playPause">
               <v-icon :icon="playPauseIcon" />

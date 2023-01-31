@@ -13,7 +13,6 @@
         class="play-button mr-2"
         min-width="8em"
         variant="outlined"
-        rounded
         :to="`./${genre.Id}/shuffle`">
         {{ $t('playback.shuffleAll') }}
       </v-btn>

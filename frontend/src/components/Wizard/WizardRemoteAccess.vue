@@ -4,10 +4,14 @@
       v-model="allowRemoteAccess"
       :label="$t('wizard.allowRemoteAccess')" />
     <v-checkbox v-model="enableUPNP" :label="$t('enableUPNP')" />
-    <v-btn color="secondary" @click="$emit('previous-step')">
+    <v-btn color="secondary" variant="elevated" @click="$emit('previous-step')">
       {{ $t('previous') }}
     </v-btn>
-    <v-btn :loading="loading" color="primary" @click="setRemoteAccess">
+    <v-btn
+      :loading="loading"
+      color="primary"
+      variant="elevated"
+      @click="setRemoteAccess">
       {{ $t('finish') }}
     </v-btn>
   </div>
