@@ -4,16 +4,26 @@
   "actor": "Autor",
   "actors": "Autores",
   "addNewPerson": "Adicionar nova pessoa",
+  "administrator": "Administrator",
   "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Álbuns",
   "allLanguages": "Todas as Línguas",
   "alphabetically": "Alfabeticamente",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sincronizando configurações…",
+      "scanningLibrary": "Escaneando biblioteca '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Executando tarefas"
+    }
+  },
   "architecture": "Arquitetura",
   "artist": "Artista",
   "artists": "Artistas",
   "aspectRatio": "Proporção da tela",
   "audio": "Áudio",
-  "audioCodecNotSupported": "O codec do áudio não é suportado",
+  "audioCodecNotSupported": "O codec de aúdio não é suportado",
   "badRequest": "Requisição ruim. Tente Novamente",
   "books": "Livros",
   "browserNotSupported": "Seu navegador não suporta a execução deste arquivo.",
@@ -22,7 +32,7 @@
   },
   "byArtist": "Por {artist}",
   "cancel": "Cancelar",
-  "castAndCrew": "Elenco & Equipe",
+  "castAndCrew": "Elenco & equipe",
   "collectionEmpty": "Esta coleção está vazia",
   "collections": "Coleções",
   "communityRating": "Avaliação da comunidade",
@@ -38,7 +48,7 @@
   "dialog": {
     "upNext": {
       "hide": "Esconder",
-      "nextItemPlayingIn": "Iniciando em {time}",
+      "nextItemPlayingIn": "Começando em {time}",
       "startNow": "Começar agora"
     }
   },
@@ -98,9 +108,11 @@
   "incorrectUsernameOrPassword": "Usuário ou senha incorreto",
   "item": {
     "artist": {
+      "albums": "Álbuns",
       "appearsOn": "Aparições",
       "discography": "Discografia",
       "information": "Informações",
+      "singles": "Músicas",
       "videos": "Vídeos"
     },
     "cast": "Elenco",
@@ -120,6 +132,11 @@
     "tracklist": {
       "title": "Título"
     }
+  },
+  "itemMenu": {
+    "pushToBottom": "Mover para o fim",
+    "pushToTop": "Mover para o início",
+    "removeFromQueue": "Remover da fila"
   },
   "itemNotFound": "Item não encontrado",
   "jellyfinLogo": "Jellyfin logo",
@@ -160,10 +177,10 @@
   "logsAndActivity": {
     "activity": "Atividade",
     "failedGetActivity": "Não foi possível obter atividade",
-    "failedGetLogs": "Não foi possível obter logs",
+    "failedGetLogs": "Não foi possível obter os relatórios",
     "logs": "Histórico",
     "noActivityFound": "Nenhuma atividade encontrada",
-    "noLogsFound": "Sem logs encontrados"
+    "noLogsFound": "Sem relatórios encontrados"
   },
   "manualLogin": "Login manual",
   "mediaInfo": {
@@ -176,7 +193,16 @@
     "bitrate": {
       "name": "Taxa de bits:"
     },
-    "name": "Mídia"
+    "container": {
+      "name": "Contêiner:"
+    },
+    "name": "Mídia",
+    "subtitleCodec": {
+      "name": "Codec de Legenda:"
+    },
+    "videoCodec": {
+      "name": "Codec de Vídeo:"
+    }
   },
   "menu": "Menu",
   "metadata": {
@@ -222,18 +248,23 @@
       "unknown": "Reproduzindo da fila"
     },
     "queueItems": "{items} faixas",
-    "shuffle": "Ordem aleatória"
+    "saveAsPlaylist": "Salvar fila como playlist",
+    "shuffle": "Ordem aleatória",
+    "shuffleAll": "Misturar todos"
   },
   "playbackData": "Informação da reprodução",
   "playbackInfo": {
     "name": "Reprodução",
     "playMethod": {
       "direct": "Direto",
-      "name": "Método:"
+      "name": "Método:",
+      "remux": "Remux",
+      "transcode": "Transcodificar"
     },
     "streamType": {
       "dash": "DASH",
       "hls": "HLS",
+      "name": "Tipo de Transmissão:",
       "unknown": "Desconhecido",
       "video": "Vídeo"
     }
@@ -247,12 +278,19 @@
     "decodedFrames": {
       "name": "Frames decodificados:"
     },
+    "droppedFrames": {
+      "name": "Quadros perdidos:"
+    },
     "name": "Reprodutor",
+    "playbackResolution": {
+      "name": "Resolução da janela:"
+    },
     "videoResolution": {
       "name": "Resolução de vídeo:",
       "value": "{width}✕{height}"
     }
   },
+  "present": "Atual",
   "producer": "Produtor",
   "quality": "Qualidade",
   "queue": "Fila",
@@ -260,10 +298,15 @@
   "refreshLibrary": "Recarregar biblioteca",
   "releaseDate": "Data de lançamento",
   "remoteDevices": "Dispositivos remotos",
+  "resumable": "Retomável",
   "resume": "Continuar",
   "role": "Papel",
   "save": "Salvar",
   "saved": "Salvo",
+  "search": {
+    "name": "Pesquisa",
+    "topResults": "Melhores resultados"
+  },
   "seasonEpisode": "Temporada {seasonNumber}, Episódio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Série",
@@ -306,8 +349,11 @@
     "help": "Ajuda",
     "logsAndActivity": {
       "activity": "Atividade",
+      "failedGetActivity": "Não foi possível obter a atividade",
+      "failedGetLogs": "Não foi possível obter os relatórios",
       "logs": "Logs",
-      "noActivityFound": "Nenhuma atividade encontrada"
+      "noActivityFound": "Nenhuma atividade encontrada",
+      "noLogsFound": "Sem relatórios encontrados"
     },
     "settings": "Configurações"
   },
@@ -337,6 +383,7 @@
       "name": "TV ao vivo e DVR"
     },
     "logs": {
+      "description": "Ler e pesquisar relatórios do servidor e de atividade de usuário",
       "name": "Logs e atividade"
     },
     "mediaPlayers": {
@@ -372,7 +419,8 @@
       "name": "Legendas"
     },
     "transcodingAndStreaming": {
-      "description": "Gerencia como esse servidor lida com transcodificação e streaming para os clientes"
+      "description": "Gerencia como esse servidor lida com transcodificação e streaming para os clientes",
+      "name": "Transcodificar & transmitir"
     },
     "users": {
       "description": "Gerencie usuários e suas permissões",
@@ -381,10 +429,18 @@
   },
   "shows": "Séries",
   "signIn": "Entrar",
+  "snackbar": {
+    "addedToQueue": "Adicionar à fila",
+    "playNext": "O item selecionado será reproduzido após o atual"
+  },
+  "songs": "Músicas",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar título",
+  "specialFeatures": "Recursos Especiais",
   "speed": "Velocidade",
+  "startNow": "Começar agora",
   "status": "Estado",
+  "stretch": "Estender",
   "studios": "Estúdios",
   "subtitles": "Legendas",
   "syncPlayGroups": "Grupos SyncPlay",
@@ -400,7 +456,9 @@
   },
   "trailer": "Trailer",
   "transcodingInfo": {
+    "name": "Transcodificação",
     "transcodingFramerate": {
+      "name": "Taxa de quadros:",
       "value": "{value} fps"
     },
     "transcodingProgress": "Progresso:",
@@ -408,17 +466,37 @@
       "name": "Razão: | Razões:",
       "reasons": {
         "anamorphicVideoNotSupported": "Vídeo anamórfico não é suportado",
+        "audioBitDepthNotSupported": "A profundidade de bits do áudio não é suportada",
+        "audioBitrateNotSupported": "A taxa de bits do áudio não é suportada",
         "audioChannelsNotSupported": "O número de canais de aúdo não é suportado",
         "audioCodecNotSupported": "O codec do áudio não é suportado",
         "audioProfileNotSupported": "O perfil do codec do áudio não é suportado",
         "audioSampleRateNotSupported": "A taxa de amostra do áudio não é suportado",
+        "containerBitrateExceedsLimit": "A taxa de bits do contêiner excede o limite definido",
+        "containerNotSupported": "O contêiner não é suportado",
         "interlacedVideoNotSupported": "Vídeo entrelaçado não é suportado",
+        "refFramesNotSupported": "Quadros de referência não são suportados",
         "secondaryAudioNotSupported": "Faixas de áudio secundárias não são suportadas",
-        "subtitleCodecNotSupported": "O codec da legenda não é suportado"
+        "subtitleCodecNotSupported": "O codec da legenda não é suportado",
+        "videoBitDepthNotSupported": "A profundidade de bits do vídeo não é suportada",
+        "videoCodecNotSupported": "O codec de vídeo não é suportado",
+        "videoFramerateNotSupported": "A taxa de quadros do vídeo não é suportada",
+        "videoLevelNotSupported": "O nível do codec de vídeo não é suportado",
+        "videoProfileNotSupported": "O perfil do codec de vídeo não é suportado",
+        "videoResolutionNotSupported": "A resolução do vídeo não é suportada"
       }
     }
   },
   "type": "Tipo",
+  "unableGetPublicUsers": "Não foi possível obter usuários",
+  "unableGetRelated": "Não é possível obter itens relacionados",
+  "unableGetServerConfiguration": "Não foi possível obter a configuração do servidor",
+  "unableToRefreshLibrary": "Não foi possível atualizar a biblioteca",
+  "unableToToggleLike": "Não é possível alterar o status de curtida do elemento",
+  "unableToTogglePlayed": "Não foi possível atualizar o status de assistido",
+  "undefined": "Indefinido",
+  "unexpectedError": "Erro inesperado",
+  "unhandledException": "Exceção sem tratamento",
   "units": {
     "bitrate": {
       "kbps": "{value} kbps",
@@ -428,6 +506,8 @@
       "seconds": "{count} segundo | {count} segundos"
     }
   },
+  "unliked": "Não gostei",
+  "unplayed": "Não reproduzido",
   "upNext": "A seguir",
   "upNextName": "A seguir: {upNextItemName}",
   "username": "Nome de usuário",
@@ -444,13 +524,24 @@
   "wizard": {
     "administratorAccount": "Conta de administrador",
     "allowRemoteAccess": "Permitir acesso remoto ao servidor",
+    "completeError": "Não foi possível concluir o assistente de inicialização.",
     "confirmPassword": "Confirmar senha",
     "languageLocale": "Idioma e local",
     "languageSuccessfullySet": "Idioma definido com êxito.",
+    "metadataLanguagesSet": "Idiomas de metadados definidos.",
     "preferedLanguage": "Idioma preferido",
+    "preferredMetadataLanguage": "Idioma de metadados preferido",
     "remoteAccess": "Acesso remoto",
-    "setupWizard": "Assistente de configuração"
+    "remoteAccessSet": "Acesso remoto definido.",
+    "setAdminError": "Não é possível criar uma conta de administrador.",
+    "setLanguageError": "Não é possível definir o idioma do cliente.",
+    "setMetadataError": "Não é possível definir idiomas de metadados.",
+    "setRemoteError": "Não é possível definir as configurações de acesso remoto.",
+    "setupWizard": "Assistente de configuração",
+    "userSuccessfullySet": "Usuário definido com sucesso."
   },
+  "writer": "Escritor",
+  "writing": "Escrevendo",
   "year": "Ano",
   "years": "Anos",
   "youMayAlsoLike": "Você também pode gostar"
