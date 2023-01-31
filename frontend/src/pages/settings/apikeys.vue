@@ -1,12 +1,16 @@
 <template>
   <settings-page page-title="settings.apiKeys.apiKeys">
     <template #actions>
-      <v-btn color="primary" @click="() => $refs.addKeyDialog.openDialog()">
+      <v-btn
+        color="primary"
+        variant="elevated"
+        @click="() => $refs.addKeyDialog.openDialog()">
         {{ $t('settings.apiKeys.addNewKey') }}
       </v-btn>
       <v-btn
         v-if="apiKeys.length > 0"
         color="error"
+        variant="elevated"
         :loading="revokeKeyLoading"
         @click="revokeAllApiKeys">
         {{ $t('settings.apiKeys.revokeAll') }}

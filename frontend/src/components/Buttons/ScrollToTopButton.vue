@@ -2,11 +2,12 @@
   <v-fab-transition>
     <v-btn
       v-show="y > 1"
+      class="ma-4"
       color="primary"
-      fab
-      dark
+      icon
       location="bottom right"
-      fixed
+      position="fixed"
+      variant="elevated"
       @click="scrollToTop">
       <v-icon>
         <i-mdi-chevron-up />

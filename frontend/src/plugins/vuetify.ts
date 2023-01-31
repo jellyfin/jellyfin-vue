@@ -59,7 +59,8 @@ const vuetify = createVuetify({
       color: 'primary'
     },
     VBtn: {
-      color: ''
+      color: '',
+      variant: 'text'
     }
   },
   locale: {
