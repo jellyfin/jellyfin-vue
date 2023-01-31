@@ -1,5 +1,5 @@
 <template>
-  <v-btn @click="changeOrder">
+  <v-btn icon v-bind="props" @click="changeOrder">
     <v-icon v-if="ascendingOrder">
       <i-mdi-sort-ascending />
     </v-icon>
@@ -12,8 +12,6 @@
       <v-btn
         v-if="!$vuetify.display.smAndDown"
         class="my-2"
-        variant="text"
-        rounded
         v-bind="mergeProps(menuProps, props)">
         {{
           $t('sortByType', {
