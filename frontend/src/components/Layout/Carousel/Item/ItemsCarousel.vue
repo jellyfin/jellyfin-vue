@@ -40,7 +40,6 @@
                 <v-btn
                   min-width="12em"
                   variant="outlined"
-                  rounded
                   data-swiper-parallax="-100"
                   :to="getItemDetailsLink(item)">
                   {{ $t('viewDetails') }}

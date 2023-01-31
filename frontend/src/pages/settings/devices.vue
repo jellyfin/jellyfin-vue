@@ -4,12 +4,14 @@
       <v-btn
         v-if="devices"
         color="error"
+        variant="elevated"
         class="ml-a"
         @click="deleteAllDevices">
         {{ $t('settings.devices.deleteAll') }}
       </v-btn>
       <v-btn
         rel="noreferrer noopener"
+        variant="elevated"
         href="https://jellyfin.org/docs/general/server/devices.html"
         target="_blank">
         {{ $t('settings.help') }}
