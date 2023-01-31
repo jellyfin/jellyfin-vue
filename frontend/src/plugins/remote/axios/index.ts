@@ -28,7 +28,7 @@ class JellyfinInterceptors {
       } else if (
         RemotePluginAuthInstance.currentUser &&
         response.config.url?.includes(
-          `/Users/${RemotePluginAuthInstance.currentUser}/Items/`
+          `/Users/${RemotePluginAuthInstance.currentUser?.Id}/Items/`
         )
       ) {
         response.data = items.add(data);
