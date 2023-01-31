@@ -108,6 +108,7 @@
   "incorrectUsernameOrPassword": "Onjuiste gebruikersnaam en/of wachtwoord",
   "item": {
     "artist": {
+      "albums": "Albums",
       "appearsOn": "Uiterlijk",
       "discography": "Discografie",
       "information": "Informatie",
@@ -131,6 +132,9 @@
       "title": "Titel"
     }
   },
+  "itemMenu": {
+    "removeFromQueue": "Verwijder uit wachtrij"
+  },
   "itemNotFound": "Item niet gevonden",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Nieuwste {libraryName}",
@@ -152,6 +156,7 @@
     "changeServer": "Verander de server",
     "changeUser": "Verander gebruiker",
     "connect": "Verbind",
+    "kickedOut": "Autorisatie is ingetrokken en deze sessie is niet langer geldig. Gelieve opnieuw in te loggen",
     "login": "Log in",
     "loginAs": "Log in als {name}",
     "manualLogin": "Handmatig inloggen",
@@ -421,6 +426,10 @@
   },
   "shows": "Series",
   "signIn": "Inloggen",
+  "snackbar": {
+    "addedToQueue": "Toegevoegd aan wachtrij",
+    "playNext": "Het geselecteerde item wordt als volgende afgespeeld"
+  },
   "songs": "Liedjes",
   "sortByType": "Op {type}",
   "sortTitle": "Sorteer de titel",
