@@ -4,8 +4,6 @@
       <v-btn
         v-if="!$vuetify.display.smAndDown && (model.length === 0 || model[0])"
         class="my-2"
-        variant="text"
-        rounded
         v-bind="mergeProps(props, menuProps)">
         {{
           model.length === 0

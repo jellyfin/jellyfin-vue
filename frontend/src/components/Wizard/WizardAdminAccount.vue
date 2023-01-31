@@ -24,11 +24,15 @@
       :rules="SamePasswordRules"
       @click:append="() => (showPassword = !showPassword)" />
 
-    <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">
+    <v-btn
+      color="secondary"
+      variant="elevated"
+      @click="$emit('previous-step', { step: 2 })">
       {{ $t('previous') }}
     </v-btn>
     <v-btn
       color="primary"
+      variant="elevated"
       :disabled="!valid"
       :loading="loading"
       @click="createAdminAccount">

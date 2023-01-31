@@ -51,7 +51,7 @@
       "
     /> -->
     <user-button />
-    <locale-switcher app-bar />
+    <locale-switcher elevated />
   </v-app-bar>
 </template>
 

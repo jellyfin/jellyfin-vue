@@ -2,8 +2,9 @@
   <div class="d-inline-flex">
     <v-btn
       v-if="canPlay(item) && (fab || iconOnly)"
-      :variant="iconOnly ? 'text' : undefined"
+      :variant="iconOnly ? undefined : 'elevated'"
       :color="iconOnly ? undefined : 'primary'"
+      icon
       :loading="loading"
       :disabled="disabled"
       @click.prevent="playOrResume">
@@ -22,7 +23,6 @@
       color="primary"
       min-width="8em"
       variant="flat"
-      rounded
       @click="playOrResume">
       {{
         shuffle

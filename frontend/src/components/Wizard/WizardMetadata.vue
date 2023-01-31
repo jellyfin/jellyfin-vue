@@ -16,10 +16,17 @@
       item-title="DisplayName"
       item-value="TwoLetterISORegionName"
       :items="countryOptions" />
-    <v-btn color="secondary" @click="$emit('previous-step', { step: 2 })">
+    <v-btn
+      color="secondary"
+      variant="elevated"
+      @click="$emit('previous-step', { step: 2 })">
       {{ $t('previous') }}
     </v-btn>
-    <v-btn :loading="loading" color="primary" @click="setMetadata">
+    <v-btn
+      :loading="loading"
+      color="primary"
+      variant="elevated"
+      @click="setMetadata">
       {{ $t('next') }}
     </v-btn>
   </div>
