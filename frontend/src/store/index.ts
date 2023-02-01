@@ -3,6 +3,7 @@ import items from './items';
 import taskManager from './taskManager';
 import userLibraries from './userLibraries';
 import playbackManager from './playbackManager';
+import playerElement from './playerElement';
 
 /**
  * Get global instance of clientSettings store
@@ -37,6 +38,13 @@ export function userLibrariesStore(): typeof userLibraries {
  */
 export function playbackManagerStore(): typeof playbackManager {
   return playbackManager;
+}
+
+/**
+ * Get global instance of playerElement store
+ */
+export function playerElementStore(): typeof playerElement {
+  return playerElement;
 }
 
 export type { HomeSection } from './userLibraries';

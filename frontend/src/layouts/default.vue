@@ -7,16 +7,28 @@
     </div>
   </v-main>
   <audio-controls />
+  <pi-p-video-player
+    v-if="
+      playbackManager.currentlyPlayingMediaType === 'Video' &&
+      playerElement.isMinimized
+    " />
 </template>
 
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';
 import { useDisplay } from 'vuetify';
-import { userLibrariesStore } from '@/store';
+import {
+  playbackManagerStore,
+  playerElementStore,
+  userLibrariesStore
+} from '@/store';
 
 const display = useDisplay();
 const userLibraries = userLibrariesStore();
 const navDrawer = ref(!display.mobile.value);
+
+const playbackManager = playbackManagerStore();
+const playerElement = playerElementStore();
 
 /**
  * We block the navigation to the layout at login to improve UX, so content doesn't pop up or jumps while rendering the page.
