@@ -68,7 +68,7 @@ async function playOrResume(): Promise<void> {
     await playbackManager.play({
       item: props.item,
       audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      subtitleTrackIndex: props.subtitleTrackIndex,
       videoTrackIndex: props.videoTrackIndex,
       startFromTime:
         ticksToMs(props.item.UserData?.PlaybackPositionTicks) / 1000
@@ -78,7 +78,7 @@ async function playOrResume(): Promise<void> {
     await playbackManager.play({
       item: props.item,
       audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      subtitleTrackIndex: props.subtitleTrackIndex,
       videoTrackIndex: props.videoTrackIndex,
       startShuffled: true
     });
@@ -86,7 +86,7 @@ async function playOrResume(): Promise<void> {
     await playbackManager.play({
       item: props.item,
       audioTrackIndex: props.audioTrackIndex,
-      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      subtitleTrackIndex: props.subtitleTrackIndex,
       videoTrackIndex: props.videoTrackIndex
     });
   }
