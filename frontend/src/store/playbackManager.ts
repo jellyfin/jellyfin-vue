@@ -1,4 +1,4 @@
-import { reactive, watch, ref } from 'vue';
+import { reactive, Ref, ref, watch } from 'vue';
 import { shuffle, isNil, cloneDeep } from 'lodash-es';
 import {
   BaseItemDto,
@@ -9,7 +9,8 @@ import {
   SubtitleDeliveryMethod,
   MediaStream,
   BaseItemKind,
-  PlaybackInfoResponse
+  PlaybackInfoResponse,
+  MediaStreamType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
@@ -17,10 +18,24 @@ import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { useMediaControls, useNow } from '@vueuse/core';
 import { itemsStore } from '.';
-import { usei18n, useRemote, useSnackbar } from '@/composables';
+import { usei18n, useRemote, useRouter, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
+
+export let mediaElementRef = ref<HTMLMediaElement>();
+export let mediaControls = useMediaControls(mediaElementRef);
+
+/**
+ * Temporary function to set new media element ref until https://github.com/vuejs/core/pull/7593 is fixed
+ */
+export function setNewMediaElementRef(
+  newMediaElementRef: Ref<HTMLMediaElement | undefined>
+): void {
+  // eslint-disable-next-line vue/no-ref-as-operand
+  mediaElementRef = newMediaElementRef;
+  mediaControls = useMediaControls(mediaElementRef);
+}
 
 /**
  * == INTERFACES ==
@@ -54,6 +69,11 @@ export interface PlaybackTrack {
   srcIndex: number;
   type: SubtitleDeliveryMethod;
   codec?: string;
+}
+
+export interface PlaybackExternalTrack extends PlaybackTrack {
+  src: string;
+  codec: string;
 }
 
 interface PlaybackManagerState {
@@ -111,9 +131,7 @@ const defaultState: PlaybackManagerState = {
   playbackInitMode: InitMode.Unknown
 };
 
-export const mediaElementRef = ref<HTMLMediaElement>();
 const state = reactive<PlaybackManagerState>(cloneDeep(defaultState));
-const mediaControls = useMediaControls(mediaElementRef);
 const reactiveDate = useNow();
 /**
  * Previously, we created a new MediaMetadata every time the item changed. However,
@@ -266,15 +284,15 @@ class PlaybackManagerStore {
       }))
         .filter(
           (sub) =>
-            (sub.Type === 'Subtitle' &&
-              sub.DeliveryMethod === SubtitleDeliveryMethod.Encode) ||
-            sub.DeliveryMethod === SubtitleDeliveryMethod.External
+            sub.Type === MediaStreamType.Subtitle &&
+            (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode ||
+              sub.DeliveryMethod === SubtitleDeliveryMethod.External)
         )
         .map((sub) => ({
           label: sub.DisplayTitle ?? 'Undefined',
           src:
             sub.DeliveryMethod === SubtitleDeliveryMethod.External
-              ? sub.DeliveryUrl ?? undefined
+              ? `${remote.sdk.api?.basePath}${sub.DeliveryUrl}`
               : undefined,
           srcLang: sub.Language ?? undefined,
           type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
@@ -284,11 +302,30 @@ class PlaybackManagerStore {
     }
   }
 
-  public get currentItemAssParsedSubtitleTracks(): PlaybackTrack[] {
-    const subs = this.currentItemParsedSubtitleTracks;
-
+  /**
+   * Filters the native subtitles
+   *
+   * As our profile requires either SSA or VTT, if it's not SSA it'll be VTT.
+   * This is done this way as server sends as "Codec" the initial value of the track, so it can be webvtt, subrip, srt...
+   * This is easier to filter out the SSA subs
+   */
+  public get currentItemVttParsedSubtitleTracks(): PlaybackExternalTrack[] {
     return (
-      subs?.filter((sub) => sub.codec === 'ass' || sub.codec === 'ssa') || []
+      this.currentItemParsedSubtitleTracks?.filter(
+        (sub): sub is PlaybackExternalTrack =>
+          !!sub.codec && sub.codec !== 'ass' && sub.codec !== 'ssa' && !!sub.src
+      ) ?? []
+    );
+  }
+
+  public get currentItemAssParsedSubtitleTracks(): PlaybackExternalTrack[] {
+    return (
+      this.currentItemParsedSubtitleTracks?.filter(
+        (sub): sub is PlaybackExternalTrack =>
+          !!sub.codec &&
+          (sub.codec === 'ass' || sub.codec === 'ssa') &&
+          !!sub.src
+      ) ?? []
     );
   }
 
@@ -297,9 +334,11 @@ class PlaybackManagerStore {
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentVideoStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
-        return stream.Type === 'Video';
-      })[state.currentVideoStreamIndex];
+      return state.currentMediaSource?.MediaStreams.find(
+        (stream) =>
+          stream.Type === 'Video' &&
+          stream.Index === state.currentVideoStreamIndex
+      );
     }
   }
 
@@ -308,9 +347,11 @@ class PlaybackManagerStore {
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentAudioStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
-        return stream.Type === 'Audio';
-      })[state.currentAudioStreamIndex];
+      return state.currentMediaSource?.MediaStreams.find(
+        (stream) =>
+          stream.Type === 'Audio' &&
+          stream.Index === state.currentAudioStreamIndex
+      );
     }
   }
 
@@ -319,9 +360,11 @@ class PlaybackManagerStore {
       !isNil(state.currentMediaSource?.MediaStreams) &&
       !isNil(state.currentSubtitleStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
-        return stream.Type === 'Subtitle';
-      })[state.currentSubtitleStreamIndex];
+      return state.currentMediaSource?.MediaStreams.find(
+        (stream) =>
+          stream.Type === 'Subtitle' &&
+          stream.Index === state.currentSubtitleStreamIndex
+      );
     }
   }
 
@@ -809,7 +852,7 @@ class PlaybackManagerStore {
           !isNil(this.currentItem.Id) &&
           !isNil(remote.auth.currentUser)
         ) {
-          await this._reportPlaybackStopped(this.currentItem.Id);
+          this._reportPlaybackStopped(this.currentItem.Id);
         }
       } catch {
       } finally {
@@ -903,7 +946,7 @@ class PlaybackManagerStore {
           userId: remote.auth.currentUserId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
-          mediaSourceId: undefined,
+          mediaSourceId: item.Id,
           audioStreamIndex,
           subtitleStreamIndex
         })
@@ -1056,6 +1099,26 @@ class PlaybackManagerStore {
     });
   };
 
+  public fetchCurrentMediaSource = async (): Promise<void> => {
+    const playbackInfo = await this.getItemPlaybackInfo();
+
+    if (playbackInfo) {
+      const mediaSource = playbackInfo.MediaSources?.[0];
+
+      if (!mediaSource) {
+        const { t } = usei18n();
+
+        useSnackbar(t('errors.cantPlayItem'), 'error');
+      } else {
+        state.playSessionId = playbackInfo?.PlaySessionId || '';
+        state.currentMediaSource = mediaSource;
+        state.currentSourceUrl = this.getItemPlaybackUrl();
+      }
+    }
+
+    this._updateMediaSessionMetadata();
+  };
+
   public constructor() {
     watch(
       () => this.status,
@@ -1094,24 +1157,32 @@ class PlaybackManagerStore {
      */
     watch(
       () => this.currentItemIndex,
-      async () => {
-        const playbackInfo = await this.getItemPlaybackInfo();
+      async (newIndex, oldIndex) => {
+        await this.fetchCurrentMediaSource();
 
-        if (playbackInfo) {
-          const mediaSource = playbackInfo.MediaSources?.[0];
+        const router = useRouter();
 
-          if (!mediaSource) {
-            const { t } = usei18n();
+        if (newIndex && !state.currentSourceUrl) {
+          const { t } = usei18n();
 
-            useSnackbar(t('errors.cantPlayItem'), 'error');
-          } else {
-            state.playSessionId = playbackInfo?.PlaySessionId || '';
-            state.currentMediaSource = mediaSource;
-            state.currentSourceUrl = this.getItemPlaybackUrl();
-          }
+          useSnackbar(t('errors.cantPlayItem'), 'error');
+          this.stop();
+        } else if (
+          this.currentlyPlayingMediaType === 'Video' &&
+          oldIndex === undefined &&
+          newIndex !== undefined
+        ) {
+          router.push('/playback/video');
+        } else if (
+          router.currentRoute.value.fullPath === '/playback/video' &&
+          newIndex === undefined
+        ) {
+          router.replace(
+            typeof router.options.history.state.back === 'string'
+              ? router.options.history.state.back
+              : '/'
+          );
         }
-
-        this._updateMediaSessionMetadata();
 
         if (this.previousItem?.Id) {
           await this._reportPlaybackStopped(this.previousItem.Id);
@@ -1122,6 +1193,38 @@ class PlaybackManagerStore {
          */
         if (!isNil(this.currentItem) && !isNil(this.currentItem.Id)) {
           await this._reportPlaybackStart(this.currentItem.Id);
+        }
+      }
+    );
+
+    watch(
+      () => this.currentAudioStreamIndex,
+      (newVal, oldVal) => {
+        if (oldVal !== undefined && newVal !== undefined && oldVal !== newVal) {
+          this.fetchCurrentMediaSource();
+        }
+      }
+    );
+
+    watch(
+      () => ({
+        currentSubtitleStreamIndex: this.currentSubtitleStreamIndex,
+        currentSubtitleTrack: this.currentSubtitleTrack
+      }),
+      (oldVal, newVal) => {
+        if (
+          oldVal.currentSubtitleStreamIndex !==
+            newVal.currentSubtitleStreamIndex &&
+          (oldVal.currentSubtitleTrack?.DeliveryMethod ===
+            SubtitleDeliveryMethod.Encode ||
+            newVal.currentSubtitleTrack?.DeliveryMethod ===
+              SubtitleDeliveryMethod.Encode)
+        ) {
+          /**
+           * This is the case when you go from or to a situation where subs are burnt in.
+           * In that case, we always need to fetch a new media source.
+           */
+          this.fetchCurrentMediaSource();
         }
       }
     );
