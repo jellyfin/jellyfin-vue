@@ -1,31 +1,76 @@
 <template>
-  <template v-if="mediaElement">
-    <Teleport :to="teleportTarget">
+  <template v-if="mediaElementType">
+    <Teleport :to="teleportTarget" :disabled="!teleportTarget">
       <component
-        :is="mediaElement"
+        :is="mediaElementType"
+        v-show="mediaElementType === 'video' && teleportTarget"
         ref="mediaElementRef"
         :poster="posterUrl"
         autoplay
         crossorigin="anonymous"
         playsinline
-        :loop="playbackManager.isRepeatingOnce" />
+        :loop="playbackManager.isRepeatingOnce"
+        :class="{ stretched: playerElement.isStretched }"
+        @canplay="onCanPlay">
+        <track
+          v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
+          :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
+          kind="subtitles"
+          :label="sub.label"
+          :srclang="sub.srcLang"
+          :src="sub.src" />
+      </component>
     </Teleport>
   </template>
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, watch, ref, nextTick } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { playbackManagerStore } from '@/store';
-import { mediaElementRef } from '@/store/playbackManager';
+import Hls, { ErrorData, ErrorTypes, Events, HlsConfig } from 'hls.js';
+import { playbackManagerStore, playerElementStore } from '@/store';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
+import { setNewMediaElementRef } from '@/store/playbackManager';
+
+/**
+ * Playback won't work in development until https://github.com/vuejs/core/pull/7593 is fixed
+ */
+const mediaElementRef = ref<HTMLMediaElement>();
+
+setNewMediaElementRef(mediaElementRef);
 
 const playbackManager = playbackManagerStore();
+const playerElement = playerElementStore();
+
 const { t } = useI18n();
 
-const mediaElement = computed<'audio' | 'video' | undefined>(() => {
+/**
+ * Safari iOS doesn't support hls.js, so we need to handle the cases where we don't need hls.js
+ */
+const isNativeHlsSupported = document
+  .createElement('video')
+  .canPlayType('application/vnd.apple.mpegurl');
+const isHlsSupported = Hls.isSupported();
+
+let hls: Hls | undefined;
+
+const defaultHlsConfig: Partial<HlsConfig> = {
+  testBandwidth: false
+};
+
+/**
+ * Destroy HLS instance after playback is done
+ */
+function destroyHls(): void {
+  if (hls) {
+    hls.destroy();
+    hls = undefined;
+  }
+}
+
+const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
   if (playbackManager.currentlyPlayingMediaType === 'Audio') {
     return 'audio';
   } else if (playbackManager.currentlyPlayingMediaType === 'Video') {
@@ -36,31 +81,133 @@ const mediaElement = computed<'audio' | 'video' | undefined>(() => {
 /**
  * If the player is a video element and we're in the PiP player or fullscreen video playback, we need to ensure the DOM elements are mounted before the teleport target is ready
  */
-const teleportTarget = computed<'body' | '.video-container'>(() =>
-  mediaElement.value === 'audio' ? 'body' : '.video-container'
-);
+const teleportTarget = computed<
+  '.fullscreen-video-container' | '.minimized-video-container' | undefined
+>(() => {
+  if (playbackManager.currentlyPlayingMediaType === 'Video') {
+    if (playerElement.isFullscreenMounted) {
+      return '.fullscreen-video-container';
+    } else if (playerElement.isPiPMounted) {
+      return '.minimized-video-container';
+    }
+  }
+});
 
 const posterUrl = computed<string>(() =>
-  !isNil(playbackManager.currentItem) && mediaElement.value === 'video'
+  !isNil(playbackManager.currentItem) &&
+  playbackManager.currentlyPlayingMediaType === 'Video'
     ? getImageInfo(playbackManager.currentItem, {
         preferBackdrop: true
       }).url || ''
     : ''
 );
 
+/**
+ * Called by the media element when the playback is ready
+ */
+async function onCanPlay(): Promise<void> {
+  if (playbackManager.currentlyPlayingMediaType === 'Video') {
+    await playerElement.applyCurrentSubtitle();
+  }
+}
+
+/**
+ * Callback for when HLS.js gets an error
+ */
+function onHlsEror(_event: Events.ERROR, data: ErrorData): void {
+  if (data.fatal && hls) {
+    switch (data.type) {
+      case ErrorTypes.NETWORK_ERROR: {
+        // try to recover network error
+        console.error('fatal network error encountered, try to recover');
+        hls.startLoad();
+        break;
+      }
+      case ErrorTypes.MEDIA_ERROR: {
+        console.error('fatal media error encountered, try to recover');
+        hls.recoverMediaError();
+        break;
+      }
+      default: {
+        /**
+         * Can't recover from unknown errors
+         */
+        useSnackbar(t('errors.cantPlayItem'), 'error');
+        playbackManager.stop();
+        break;
+      }
+    }
+  }
+}
+
 watch(
   () => playbackManager.currentSourceUrl,
-  () => {
-    if (
-      mediaElementRef.value &&
-      playbackManager.currentSourceUrl &&
-      playbackManager.currentMediaSource?.SupportsDirectPlay &&
-      playbackManager.currentlyPlayingMediaType === 'Audio'
-    ) {
-      mediaElementRef.value.src = playbackManager.currentSourceUrl;
-    } else {
+  async () => {
+    if (!playbackManager.currentSourceUrl) {
+      destroyHls();
+      playerElement.freeSsaTrack();
+
+      return;
+    }
+
+    /**
+     * Wait for nextTick to have the DOM updated accordingly
+     */
+    await nextTick();
+
+    try {
+      if (!mediaElementRef.value) {
+        throw new Error('No media element found');
+      }
+
+      if (
+        (playbackManager.currentMediaSource?.SupportsDirectPlay &&
+          playbackManager.currentlyPlayingMediaType === 'Audio') ||
+        ((isNativeHlsSupported ||
+          playbackManager.currentMediaSource?.SupportsDirectPlay) &&
+          playbackManager.currentlyPlayingMediaType === 'Video')
+      ) {
+        /**
+         * For the video case, Safari iOS doesn't support hls.js but supports native HLS
+         */
+        mediaElementRef.value.src = playbackManager.currentSourceUrl;
+        mediaElementRef.value.currentTime = playbackManager.currentTime;
+      } else if (
+        isHlsSupported &&
+        playbackManager.currentlyPlayingMediaType === 'Video'
+      ) {
+        if (!hls) {
+          hls = new Hls({
+            ...defaultHlsConfig,
+            startPosition: playbackManager.currentTime
+          });
+          hls.attachMedia(mediaElementRef.value);
+        } else {
+          hls.config.startPosition = playbackManager.currentTime;
+        }
+
+        hls.on(Events.ERROR, onHlsEror);
+
+        hls.loadSource(playbackManager.currentSourceUrl);
+      } else {
+        throw new Error('No playable case');
+      }
+    } catch {
       useSnackbar(t('errors.cantPlayItem'), 'error');
       playbackManager.stop();
+    }
+  }
+);
+
+watch(
+  () => [
+    playbackManager.currentSubtitleStreamIndex,
+    playerElement.isFullscreenMounted,
+    playerElement.isPiPMounted
+  ],
+  (newVal) => {
+    if (newVal[1] || newVal[2]) {
+      playerElement.applyCurrentSubtitle();
     }
   }
 );

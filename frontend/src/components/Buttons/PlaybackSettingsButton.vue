@@ -1,143 +1,100 @@
 <template>
   <v-menu
-    v-model="menu"
+    v-model="menuModel"
     :close-on-content-click="false"
-    :persistent="!true"
     :transition="'slide-y-transition'"
-    location="top"
-    :nudge-top="nudgeTop"
-    offset-y
-    min-width="25em"
-    max-width="25em"
-    :z-index="500"
-    class="menu"
-    @input="$emit('input', $event)">
-    <!-- eslint-disable-next-line vue/no-template-shadow -->
-    <template #activator="{ on: menu, attrs }">
-      <v-tooltip location="top">
-        <template #activator="{ on: tooltip }">
-          <v-btn
-            class="align-self-center active-button"
-            icon
-            v-bind="attrs"
-            v-on="{ ...tooltip, ...menu }">
-            <v-icon>
-              <i-mdi-cog />
-            </v-icon>
-          </v-btn>
-        </template>
-        <span>{{ $t('playbackSettings') }}</span>
-      </v-tooltip>
+    location="top">
+    <template #activator="{ props: menu }">
+      <tooltip-button
+        class="align-self-center active-button"
+        v-bind="menu"
+        :tooltip="{ text: $t('playbackSettings'), location: 'top' }"
+        :icon="{ icon: true }">
+        <v-icon>
+          <i-mdi-cog />
+        </v-icon>
+      </tooltip-button>
     </template>
-    <v-card>
-      <v-list color="transparent">
-        <v-list-item disabled>
-          <v-row align="center">
-            <v-col :cols="4">
-              <label>{{ $t('quality') }}</label>
-            </v-col>
-            <v-col :cols="8">
-              <v-select />
-            </v-col>
-          </v-row>
-        </v-list-item>
-        <v-list-item>
-          <v-row align="center">
-            <v-col :cols="4">
-              <label>{{ $t('audio') }}</label>
-            </v-col>
-            <v-col :cols="8">
-              <media-stream-selector
-                v-if="playbackManager.currentItemAudioTracks"
-                :media-streams="playbackManager.currentItemAudioTracks"
-                type="Audio"
-                :default-stream-index="playbackManager.currentAudioStreamIndex"
-                @input="setAudio($event)" />
-            </v-col>
-          </v-row>
-        </v-list-item>
-        <v-list-item v-show="!$vuetify.display.smAndUp">
-          <v-row align="center">
-            <v-col :cols="4">
-              <label>{{ $t('subtitles') }}</label>
-            </v-col>
-            <v-col :cols="8">
-              <media-stream-selector
-                v-if="playbackManager.currentItemSubtitleTracks"
-                :media-streams="playbackManager.currentItemSubtitleTracks"
-                type="Subtitle"
-                :default-stream-index="
-                  playbackManager.currentSubtitleStreamIndex
-                "
-                @input="setSubtitle($event)" />
-            </v-col>
-          </v-row>
-        </v-list-item>
-        <v-list-item disabled>
-          <v-row align="center">
-            <v-col :cols="4">
-              <label>{{ $t('speed') }}</label>
-            </v-col>
-            <v-col :cols="8">
-              <v-select />
-            </v-col>
-          </v-row>
-        </v-list-item>
-        <v-list-item>
-          <v-row align="center">
-            <v-col :cols="4">
-              <label>{{ $t('stretch') }}</label>
-            </v-col>
-            <v-col :cols="8">
-              <v-switch v-model="stretch" />
-            </v-col>
-          </v-row>
-        </v-list-item>
-      </v-list>
+    <v-card min-width="300">
+      <v-card-text>
+        <v-row align="center">
+          <v-col :cols="4">
+            <label>{{ $t('quality') }}</label>
+          </v-col>
+          <v-col :cols="8">
+            <v-select density="comfortable" hide-details disabled />
+          </v-col>
+        </v-row>
+        <v-row align="center">
+          <v-col :cols="4">
+            <label>{{ $t('audio') }}</label>
+          </v-col>
+          <v-col :cols="8">
+            <media-stream-selector
+              v-if="playbackManager.currentItemAudioTracks"
+              :media-streams="playbackManager.currentItemAudioTracks"
+              type="Audio"
+              :default-stream-index="playbackManager.currentAudioStreamIndex"
+              @input="playbackManager.currentAudioStreamIndex = $event" />
+          </v-col>
+        </v-row>
+        <v-row v-if="!$vuetify.display.smAndUp" align="center">
+          <v-col :cols="4">
+            <label>{{ $t('subtitles') }}</label>
+          </v-col>
+          <v-col :cols="8">
+            <media-stream-selector
+              v-if="playbackManager.currentItemSubtitleTracks"
+              :media-streams="playbackManager.currentItemSubtitleTracks"
+              type="Subtitle"
+              :default-stream-index="playbackManager.currentSubtitleStreamIndex"
+              @input="playbackManager.currentSubtitleStreamIndex = $event" />
+          </v-col>
+        </v-row>
+        <v-row align="center">
+          <v-col :cols="4">
+            <label>{{ $t('speed') }}</label>
+          </v-col>
+          <v-col :cols="8">
+            <v-select density="comfortable" disabled hide-details />
+          </v-col>
+        </v-row>
+        <v-row align="center">
+          <v-col :cols="4">
+            <label>{{ $t('stretch') }}</label>
+          </v-col>
+          <v-col :cols="8" class="text-right">
+            <v-switch v-model="stretched" color="primary" hide-details />
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
   </v-menu>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { playbackManagerStore } from '@/store';
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { useVModel } from '@vueuse/core';
+import { playbackManagerStore, playerElementStore } from '@/store';
 
-export default defineComponent({
-  props: {
-    nudgeTop: {
-      type: [Number, String],
-      default: 0
-    },
-    stretchProp: Boolean
-  },
-  setup() {
-    const playbackManager = playbackManagerStore();
+const props = defineProps<{
+  modelValue: boolean;
+}>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', val: boolean): void;
+}>();
 
-    return {
-      playbackManager
-    };
+const menuModel = useVModel(props, 'modelValue', emit);
+
+const playbackManager = playbackManagerStore();
+const playerElement = playerElementStore();
+
+const stretched = computed({
+  get() {
+    return playerElement.isStretched;
   },
-  data() {
-    return {
-      menu: false,
-      stretch: this.stretchProp
-    };
-  },
-  watch: {
-    stretchProp(value) {
-      this.stretch = value;
-    },
-    stretch(value) {
-      this.$emit('stretch', value);
-    }
-  },
-  methods: {
-    setAudio(audioStreamIndex: number) {
-      this.playbackManager.currentAudioStreamIndex = audioStreamIndex;
-    },
-    setSubtitle(subtitleStreamIndex: number) {
-      this.playbackManager.currentSubtitleStreamIndex = subtitleStreamIndex;
-    }
+  set(v: boolean) {
+    playerElement.isStretched = v;
   }
 });
 </script>
