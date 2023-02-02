@@ -142,17 +142,23 @@ const trackIndex = ref<number | undefined>(
 );
 
 /**
- * Check if Type is Video and trackIndex is -1 then set trackIndex as this.selectItems[0].value
+ * Check if Type is Video or Audio and trackIndex is -1 then set trackIndex as this.selectItems[0].value
  */
 if (
-  props.type === 'Video' &&
+  (props.type === 'Video' || props.type === 'Audio') &&
   trackIndex.value === -1 &&
   selectItems.value[0] !== undefined
 ) {
   trackIndex.value = selectItems.value[0].value;
 }
 
-emits('input', trackIndex.value);
+watch(
+  trackIndex,
+  (newValue) => {
+    emits('input', newValue);
+  },
+  { immediate: true }
+);
 
 watch(
   () => props.defaultStreamIndex,
