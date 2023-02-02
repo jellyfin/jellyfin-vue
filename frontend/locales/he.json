@@ -1,1 +1,143 @@
-{}
+{
+  "3DFormat": "פורמט תלת מימד",
+  "NoMediaSourcesAvailable": "אין מקור מדיה זמין",
+  "actor": "שחקן",
+  "actors": "שחקנים",
+  "addNewPerson": "הוסף אדם חדש",
+  "administrator": "מנהל",
+  "airPlayDevices": "מכשירי AirPlay",
+  "albums": "אלבומים",
+  "allLanguages": "כל השפות",
+  "alphabetically": "אלף בית",
+  "appbar": {
+    "tasks": {
+      "configSync": "מסנכרן הגדרות…",
+      "scanningLibrary": "סורק תיקיה '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "משימות רצות"
+    }
+  },
+  "architecture": "ארכיטקטורה",
+  "artist": "אמן",
+  "artists": "אמנים",
+  "aspectRatio": "יחס תצוגה",
+  "audio": "שמע",
+  "audioCodecNotSupported": "מקודד השמע אינו נתמך",
+  "badRequest": "בקשה נכשלה. נסה שוב",
+  "books": "ספרים",
+  "browserNotSupported": "הדפדפן שלך איתו נתמך בהפעלת קובץ זה.",
+  "buttons": {
+    "ok": "אוקיי"
+  },
+  "byArtist": "לפי {artist}",
+  "cancel": "ביטול",
+  "castAndCrew": "שחקנים וצוות",
+  "collectionEmpty": "האוסף ריק",
+  "collections": "אוספים",
+  "communityRating": "רייטינג קהילה",
+  "confirm": "אישור",
+  "connect": "התחבר",
+  "continueListening": "המשך להאזין",
+  "continueWatching": "המשך לצפות",
+  "criticRating": "דירוג מבקר",
+  "customRating": "דירוג מותאם אישית",
+  "darkModeToggle": "החלף מצב כהה",
+  "dateAdded": "תאריך הוספה",
+  "details": "פרטים",
+  "dialog": {
+    "upNext": {
+      "hide": "הסתר",
+      "nextItemPlayingIn": "מתחיל ב{time}",
+      "startNow": "התחל עכשיו"
+    }
+  },
+  "directing": "בימוי",
+  "director": "במאי",
+  "disabled": "מבוטל",
+  "discNumber": "דיסק {discNumber}",
+  "dislikes": "לא אהבתי",
+  "edit": "ערוך",
+  "editMetadata": "ערוך מטא נתונים",
+  "editPerson": "ערוך אדם",
+  "endDate": "תאריך סיום",
+  "endsAt": "מסתיים ב{time}",
+  "episodeNumber": "פרק {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "קרתה תקלה",
+    "messages": {
+      "errorCode": "קוד תקלה: {errorCode}",
+      "videoPlayerError": "נגן הוידאו נתקל בשגיאה שאינה ברת-התאוששות."
+    }
+  },
+  "failedRetrievingDisplayPreferences": "לא ניתן להשיג הגדרות תצוגה. משתמש בהגדרות אחרונות שנשמרו",
+  "failedSettingDisplayPreferences": "לא ניתן לעדכן הגדרות תצוגה.",
+  "failedToRefreshItems": "נכשל ברענון פריטים",
+  "favorite": "מועדף",
+  "features": "תכונות",
+  "filter": "סינון",
+  "filtersNotFound": "לא ניתן לטעון מסננים",
+  "fullScreen": "מסך מלא",
+  "general": "כללי",
+  "genericJellyfinPlaceholderDevice": "מכשיר ג'ליפין כללי",
+  "genres": "ז'אנרים",
+  "googleCastPlaceholderDevice": "מכשיר הזרמה של גוגל",
+  "guestStar": "כוכב אורח",
+  "headerExternalIds": "מזהה חיצוני",
+  "headerPaths": "נתיב",
+  "home": "בית",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "נוסף לאחרונה"
+    }
+  },
+  "imageType": {
+    "art": "אומנות",
+    "backdrop": "תפאורה",
+    "banner": "באנר",
+    "box": "קופסא",
+    "boxRear": "קופסא (אחורי)",
+    "disc": "דיסק",
+    "logo": "סמל",
+    "menu": "תפריט",
+    "primary": "ראשי",
+    "screenshot": "צילום מסך",
+    "thumb": "ממוזער"
+  },
+  "images": "תמונות",
+  "incorrectUsernameOrPassword": "שם משתמש או סיסמא לא נכונים",
+  "item": {
+    "artist": {
+      "albums": "אלבומים",
+      "appearsOn": "משתתף/ת",
+      "discography": "דיסקוגרפיה",
+      "information": "מידע",
+      "singles": "סינגלים",
+      "videos": "סרטונים"
+    },
+    "cast": "שחקנים/ות",
+    "composer": "מלחין",
+    "crew": "צוות הפקה",
+    "person": {
+      "birth": "נולד/ה",
+      "birthPlace": "מקום לידה",
+      "books": "ספרים",
+      "death": "נפטר/ה",
+      "information": "מידע",
+      "movies": "סרטים",
+      "person": "אדם",
+      "photos": "תמונות",
+      "shows": "סדרות"
+    },
+    "tracklist": {
+      "title": "כותרת"
+    }
+  },
+  "itemMenu": {
+    "pushToTop": "עבור להתחלה"
+  },
+  "itemNotFound": "פריט לא נמצא",
+  "jellyfinLogo": "סמל של ג'ליפין",
+  "libraries": "ספריות",
+  "libraryEmpty": "הספריה ריקה"
+}
