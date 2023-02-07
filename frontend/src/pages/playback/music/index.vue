@@ -19,7 +19,6 @@
         :modules="modules"
         :slides-per-view="4"
         centered-slides
-        :initial-slide="playbackManager.currentItemIndex || 0"
         :autoplay="false"
         effect="coverflow"
         :coverflow-effect="coverflowEffect"
@@ -34,7 +33,7 @@
           :virtual-index="`${item.Id}-${index}`"
           class="d-flex justify-center">
           <div class="album-cover">
-            <blurhash-image :item="item" @error="onImageError" />
+            <blurhash-image :item="item" />
           </div>
         </swiper-slide>
       </swiper>
@@ -52,7 +51,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper';
 import type SwiperType from 'swiper';
@@ -91,15 +90,30 @@ const swiperInstance = ref<SwiperType>();
  * Sets the swiper Instance
  */
 function setControlledSwiper(swiper: SwiperType): void {
+  /**
+   * Setting the index using initial-slide prop doesn't work properly and triggers
+   * the above watcher incorrectly. We set the initial slide here to avoid that.
+   */
+  if (!isNil(playbackManager.currentItemIndex)) {
+    swiper.activeIndex = playbackManager.currentItemIndex;
+  }
+
   swiperInstance.value = swiper;
 }
+
+watch(
+  backdropHash,
+  () => {
+    route.meta.backdrop.blurhash = backdropHash.value;
+  },
+  { immediate: true }
+);
 
 watch(
   () => playbackManager.currentItemIndex,
   () => {
     if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
-      route.meta.backdrop.blurhash = backdropHash.value;
       route.meta.title = playbackManager.currentItem?.Name || '';
     } else if (isNil(playbackManager.currentItemIndex)) {
       router.back();
@@ -108,12 +122,6 @@ watch(
   { immediate: true }
 );
 
-onBeforeMount(() => {
-  if (isNil(playbackManager.currentItemIndex)) {
-    router.replace('/');
-  }
-});
-
 /**
  * Handle slide changes
  */
@@ -121,12 +129,6 @@ function onSlideChange(): void {
   const index = swiperInstance.value?.activeIndex || 0;
 
   playbackManager.currentItemIndex = index;
-}
-/**
- * Handle image errors
- */
-function onImageError(): void {
-  route.meta.backdrop.blurhash = undefined;
 }
 </script>
 

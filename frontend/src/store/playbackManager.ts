@@ -142,10 +142,22 @@ class PlaybackManagerStore {
     return this.status !== PlaybackStatus.Stopped;
   }
   /**
-   * Get if an item is repeating at this moment
+   * Get if the repeat status is not set to none
    */
   public get isRepeating(): boolean {
     return state.repeatMode !== RepeatMode.RepeatNone;
+  }
+  /**
+   * Get if the queue is being repeated
+   */
+  public get isRepeatingAll(): boolean {
+    return state.repeatMode === RepeatMode.RepeatAll;
+  }
+  /**
+   * Get if an item is being repeated
+   */
+  public get isRepeatingOnce(): boolean {
+    return state.repeatMode === RepeatMode.RepeatOne;
   }
   /**
    * Get if an item is paused at this moment

@@ -8,7 +8,7 @@
         autoplay
         crossorigin="anonymous"
         playsinline
-        :loop="isLoopingOnce" />
+        :loop="playbackManager.isRepeatingOnce" />
     </Teleport>
   </template>
 </template>
@@ -17,7 +17,7 @@
 import { computed, watch } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import { playbackManagerStore, RepeatMode } from '@/store';
+import { playbackManagerStore } from '@/store';
 import { mediaElementRef } from '@/store/playbackManager';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
@@ -46,10 +46,6 @@ const posterUrl = computed<string>(() =>
         preferBackdrop: true
       }).url || ''
     : ''
-);
-
-const isLoopingOnce = computed(
-  () => playbackManager.repeatMode === RepeatMode.RepeatOne
 );
 
 watch(
