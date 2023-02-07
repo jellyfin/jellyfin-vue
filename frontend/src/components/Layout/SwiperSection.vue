@@ -98,9 +98,9 @@ const uuid = v4();
  */
 const modules = [Navigation, FreeMode, A11y];
 const navigation = {
-  hideOnClick: true,
   nextEl: `.swiper-section-${uuid} .swiper-next`,
-  prevEl: `.swiper-section-${uuid} .swiper-prev`
+  prevEl: `.swiper-section-${uuid} .swiper-prev`,
+  disabledClass: 'swiper-button-disabled v-btn--disabled'
 };
 const slidesPerView = props.shape === CardShapes.Thumb ? 2 : 3;
 const slidesPerGroup = props.shape === CardShapes.Thumb ? 2 : 3;
