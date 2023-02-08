@@ -1,6 +1,5 @@
-/* eslint-disable no-restricted-imports */
+// eslint-disable-next-line no-restricted-imports
 import i18n from '@/plugins/i18n';
-/* eslint-enable no-restricted-imports */
 
 /**
  * Returns the global vue-i18n instance. Needed when used outside setup

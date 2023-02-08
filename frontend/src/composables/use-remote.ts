@@ -1,6 +1,5 @@
-/* eslint-disable no-restricted-imports */
+// eslint-disable-next-line no-restricted-imports
 import { remoteInstance } from '@/plugins/remote';
-/* eslint-enable no-restricted-imports */
 
 /**
  * Returns the remote plugin instance. Equivalent to using `$remote` inside
