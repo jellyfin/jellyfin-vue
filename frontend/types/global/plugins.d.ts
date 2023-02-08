@@ -1,7 +1,6 @@
 import 'vue-router';
-/* eslint-disable no-restricted-imports */
+// eslint-disable-next-line no-restricted-imports
 import { RemotePlugin } from '@/plugins/remote/types';
-/* eslint-enable no-restricted-imports */
 import 'vue-i18n';
 
 /**
