@@ -27,7 +27,9 @@
         :title="library.title" />
     </v-list>
     <template #append>
-      <commit-link />
+      <v-list nav>
+        <commit-link />
+      </v-list>
     </template>
   </v-navigation-drawer>
 </template>
