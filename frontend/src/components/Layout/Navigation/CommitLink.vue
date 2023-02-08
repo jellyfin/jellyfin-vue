@@ -1,22 +1,16 @@
 <template>
   <v-list-item
     v-if="commit"
+    :title="'#' + commit.slice(0, 7)"
+    :prepend-icon="IMdiGithub"
     :href="url"
     target="_blank"
-    rel="noopener noreferrer">
-    <v-list-item-action>
-      <v-icon>
-        <i-mdi-github />
-      </v-icon>
-    </v-list-item-action>
-    <v-list-item-title>
-      {{ '#' + commit.slice(0, 7) }}
-    </v-list-item-title>
-  </v-list-item>
+    rel="noopener noreferrer" />
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import IMdiGithub from 'virtual:icons/mdi/github';
 
 const commit = __COMMIT_HASH__;
 
