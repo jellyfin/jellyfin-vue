@@ -1,6 +1,5 @@
-/* eslint-disable no-restricted-imports */
+// eslint-disable-next-line no-restricted-imports
 import { vuetify } from '@/plugins';
-/* eslint-enable no-restricted-imports */
 
 /**
  * Returns the global vuetify instance. Needed when used outside setup
