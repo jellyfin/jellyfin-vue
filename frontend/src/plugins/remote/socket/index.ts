@@ -5,7 +5,8 @@ import { computed, watch } from 'vue';
 import auth from '../auth';
 import sdk from '../sdk';
 import { WebSocketMessage } from './types';
-import { itemsStore, RunningTask, taskManagerStore, TaskType } from '@/store';
+import { RunningTask, TaskType } from '@/store/taskManager';
+import { itemsStore, taskManagerStore } from '@/store';
 
 /**
  * Formats the message to be sent to the socket
