@@ -309,7 +309,7 @@ export function getCodecProfiles(
   }
 
   // On iOS 12.x, for TS container max h264 level is 4.2
-  if (isApple() && isMobile() && (safariVersion() as number) < 13) {
+  if (isApple() && isMobile() && Number(safariVersion()) < 13) {
     const codecProfile = {
       Type: CodecType.Video,
       Codec: 'h264',
