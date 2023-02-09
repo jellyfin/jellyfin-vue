@@ -11,7 +11,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { cloneDeep } from 'lodash-es';
 import { CardShapes } from '@/utils/items';
-import { useRemote, useSnackbar } from '@/composables';
+import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 interface LatestMedia {
@@ -103,6 +103,7 @@ class UserLibrariesStore {
    */
   private fetchUserViews = async (): Promise<void> => {
     const remote = useRemote();
+    const { t } = usei18n();
 
     try {
       const userViewsResponse = await remote.sdk
@@ -114,11 +115,13 @@ class UserLibrariesStore {
       state.value.views = userViewsResponse.data.Items || [];
     } catch (error) {
       console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
     }
   };
 
   private fetchAudioResumes = async (): Promise<void> => {
     const remote = useRemote();
+    const { t } = usei18n();
 
     try {
       const audioResumes = (
@@ -141,12 +144,14 @@ class UserLibrariesStore {
         state.value.homeSections.audioResumes = audioResumes;
       }
     } catch (error) {
-      useSnackbar(error as string, 'error');
+      console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
     }
   };
 
   private fetchVideoResumes = async (): Promise<void> => {
     const remote = useRemote();
+    const { t } = usei18n();
 
     try {
       const videoResumes = (
@@ -169,12 +174,14 @@ class UserLibrariesStore {
         state.value.homeSections.videoResumes = videoResumes;
       }
     } catch (error) {
-      useSnackbar(error as string, 'error');
+      console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
     }
   };
 
   private fetchUpNext = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
+    const { t } = usei18n();
 
     try {
       const upNext = (
@@ -196,12 +203,14 @@ class UserLibrariesStore {
         state.value.homeSections.upNext = upNext;
       }
     } catch (error) {
-      useSnackbar(error as string, 'error');
+      console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
     }
   };
 
   private fetchLatestMedia = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
+    const { t } = usei18n();
 
     try {
       const latestMedia = (
@@ -221,7 +230,8 @@ class UserLibrariesStore {
 
       state.value.homeSections.latestMedia[libraryId] = latestMedia;
     } catch (error) {
-      useSnackbar(error as string, 'error');
+      console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
     }
   };
 
