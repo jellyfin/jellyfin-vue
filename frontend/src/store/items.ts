@@ -35,7 +35,7 @@ class ItemsStore {
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {
     return computed(() => {
-      const res = [] as BaseItemDto[];
+      const res: BaseItemDto[] = [];
 
       for (const index of ids) {
         const item = state.value.byId[index];
@@ -59,7 +59,7 @@ class ItemsStore {
         throw new Error('No itemId provided');
       }
 
-      const res = [] as BaseItemDto[];
+      const res: BaseItemDto[] = [];
       const ids = state.value.collectionById[id];
 
       if (ids?.length) {
