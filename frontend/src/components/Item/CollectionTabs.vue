@@ -19,46 +19,33 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { groupBy } from 'lodash-es';
-import { defineComponent } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { itemsStore } from '@/store';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    }
-  },
-  setup() {
-    const items = itemsStore();
+const items = itemsStore();
 
-    return { items };
-  },
-  data() {
-    return {
-      currentTab: 0,
-      loading: false
-    };
-  },
-  computed: {
-    children(): Record<string, BaseItemDto[]> | undefined {
-      return groupBy(this.items.getChildrenOfParent(this.item.Id), 'Type');
-    }
-  },
-  watch: {
-    item: {
-      immediate: true,
-      async handler(item: BaseItemDto): Promise<void> {
-        if (!this.children) {
-          this.loading = true;
-          await this.items.fetchAndAddCollection(item.Id);
-          this.loading = false;
-        }
-      }
-    }
-  }
+const props = defineProps<{
+  item: BaseItemDto;
+}>();
+
+const currentTab = ref(0);
+const loading = ref(false);
+const children = computed(() => {
+  return groupBy(items.getChildrenOfParent(props.item.Id), 'Type');
 });
+
+watch(
+  () => props.item,
+  async (item) => {
+    if (!children.value) {
+      loading.value = true;
+      await items.fetchAndAddCollection(item.Id);
+      loading.value = false;
+    }
+  },
+  { immediate: true }
+);
 </script>
