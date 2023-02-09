@@ -35,92 +35,62 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { defineComponent } from 'vue';
+import { ref } from 'vue';
 import { playbackManagerStore } from '@/store';
 import { canResume, canPlay } from '@/utils/items';
 import { ticksToMs } from '@/utils/time';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    },
-    iconOnly: {
-      type: Boolean
-    },
-    fab: {
-      type: Boolean
-    },
-    shuffle: {
-      type: Boolean
-    },
-    videoTrackIndex: {
-      type: Number,
-      default: undefined
-    },
-    audioTrackIndex: {
-      type: Number,
-      default: undefined
-    },
-    subtitleTrackIndex: {
-      type: Number,
-      default: undefined
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
-  },
-  setup() {
-    const playbackManager = playbackManagerStore();
+const props = withDefaults(
+  defineProps<{
+    item: BaseItemDto;
+    iconOnly?: boolean;
+    fab?: boolean;
+    shuffle?: boolean;
+    videoTrackIndex?: number;
+    audioTrackIndex?: number;
+    subtitleTrackIndex?: number;
+    disabled?: boolean;
+  }>(),
+  { disabled: false }
+);
 
-    return { playbackManager };
-  },
-  data() {
-    return {
-      loading: false
-    };
-  },
-  methods: {
-    async playOrResume(): Promise<void> {
-      this.loading = true;
+const playbackManager = playbackManagerStore();
 
-      if (this.item && canResume(this.item)) {
-        await this.playbackManager.play({
-          item: this.item,
-          audioTrackIndex: this.audioTrackIndex,
-          subtitleTrackIndex: this.subtitleTrackIndex || -1,
-          videoTrackIndex: this.videoTrackIndex,
-          startFromTime:
-            ticksToMs(this.item.UserData?.PlaybackPositionTicks) / 1000
-        });
-      } else if (this.shuffle) {
-        /**
-         * We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
-         */
-        await this.playbackManager.play({
-          item: this.item,
-          audioTrackIndex: this.audioTrackIndex,
-          subtitleTrackIndex: this.subtitleTrackIndex || -1,
-          videoTrackIndex: this.videoTrackIndex,
-          startShuffled: true
-        });
-      } else {
-        await this.playbackManager.play({
-          item: this.item,
-          audioTrackIndex: this.audioTrackIndex,
-          subtitleTrackIndex: this.subtitleTrackIndex || -1,
-          videoTrackIndex: this.videoTrackIndex
-        });
-      }
+const loading = ref(false);
 
-      this.loading = false;
-    },
-    canPlay,
-    canResume
+/** Begins or resumes playing of the item */
+async function playOrResume(): Promise<void> {
+  loading.value = true;
+
+  if (props.item && canResume(props.item)) {
+    await playbackManager.play({
+      item: props.item,
+      audioTrackIndex: props.audioTrackIndex,
+      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      videoTrackIndex: props.videoTrackIndex,
+      startFromTime:
+        ticksToMs(props.item.UserData?.PlaybackPositionTicks) / 1000
+    });
+  } else if (props.shuffle) {
+    // We force playback from the start when shuffling, since you wouldn't resume AND shuffle at the same time
+    await playbackManager.play({
+      item: props.item,
+      audioTrackIndex: props.audioTrackIndex,
+      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      videoTrackIndex: props.videoTrackIndex,
+      startShuffled: true
+    });
+  } else {
+    await playbackManager.play({
+      item: props.item,
+      audioTrackIndex: props.audioTrackIndex,
+      subtitleTrackIndex: props.subtitleTrackIndex || -1,
+      videoTrackIndex: props.videoTrackIndex
+    });
   }
-});
+
+  loading.value = false;
+}
 </script>
