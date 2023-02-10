@@ -65,40 +65,24 @@ import {
 
 const display = useDisplay();
 
-const props = defineProps({
-  /**
-   * Items that will be displayed
-   */
-  items: {
-    type: Array<BaseItemDto>,
-    default: () => {
-      return [];
-    }
-  },
-  tag: {
-    type: String,
-    required: false,
-    default: 'div'
-  },
-  probeTag: {
-    type: String,
-    required: false,
-    default: 'div'
-  },
-  bufferMultiplier: {
-    type: Number,
-    required: false,
-    default: 1
-  },
-  /**
-   * Amount of time to throttle scroll events
-   */
-  throttleScroll: {
-    type: Number,
-    required: false,
-    default: 250
+const props = withDefaults(
+  defineProps<{
+    items: BaseItemDto[];
+    tag?: string;
+    probeTag?: string;
+    bufferMultiplier?: number;
+    /**
+     * Amount of time to throttle scroll events
+     */
+    throttleScroll?: number;
+  }>(),
+  {
+    tag: 'div',
+    probeTag: 'div',
+    bufferMultiplier: 1,
+    throttleScroll: 250
   }
-});
+);
 
 /**
  * == TEMPLATE REFS ==

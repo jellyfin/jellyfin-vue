@@ -63,30 +63,15 @@ import { CardShapes, getShapeFromItemType } from '@/utils/items';
 const display = useDisplay();
 const theme = useTheme();
 
-const props = defineProps({
-  loading: {
-    type: Boolean,
-    default(): boolean {
-      return false;
-    }
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  items: {
-    type: Array as () => BaseItemDto[],
-    default(): BaseItemDto[] {
-      return [];
-    }
-  },
-  shape: {
-    type: String,
-    default(): string {
-      return '';
-    }
-  }
-});
+const props = withDefaults(
+  defineProps<{
+    loading?: boolean;
+    title: string;
+    items?: BaseItemDto[];
+    shape: string;
+  }>(),
+  { loading: false, items: () => [], shape: '' }
+);
 
 const cardShape = ref<string>(
   props.shape || getShapeFromItemType(props.items?.[0]?.Type)

@@ -19,24 +19,15 @@ const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
 </script>
 
 <script setup lang="ts">
-const props = defineProps({
-  hash: {
-    type: String,
-    required: true
-  },
-  width: {
-    type: Number,
-    default: 32
-  },
-  height: {
-    type: Number,
-    default: 32
-  },
-  punch: {
-    type: Number,
-    default: 1
-  }
-});
+const props = withDefaults(
+  defineProps<{
+    hash: string;
+    width?: number;
+    height?: number;
+    punch?: number;
+  }>(),
+  { width: 32, height: 32, punch: 1 }
+);
 
 const emit = defineEmits<{
   (e: 'error'): void;
