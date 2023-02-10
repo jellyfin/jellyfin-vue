@@ -50,12 +50,8 @@ import { computed, ref, mergeProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    required: false,
-    default: false
-  }
+const props = withDefaults(defineProps<{ disabled?: boolean }>(), {
+  disabled: false
 });
 const emit = defineEmits<{
   (e: 'change', types: Record<string, string>, ascendingOrder: boolean): void;
