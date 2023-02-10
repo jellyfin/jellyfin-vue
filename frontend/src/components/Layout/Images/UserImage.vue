@@ -17,26 +17,15 @@ import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useRemote } from '@/composables';
 
-const props = defineProps({
-  user: {
-    type: Object as () => UserDto,
-    required: true
-  },
-  size: {
-    type: Number,
-    required: false,
-    default: 64
-  },
-  quality: {
-    type: Number,
-    required: false,
-    default: 90
-  },
-  rounded: {
-    type: Boolean,
-    default: false
-  }
-});
+const props = withDefaults(
+  defineProps<{
+    user: UserDto;
+    size?: number;
+    quality?: number;
+    rounded?: boolean;
+  }>(),
+  { size: 64, quality: 90, rounded: false }
+);
 
 const remote = useRemote();
 

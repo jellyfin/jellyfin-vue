@@ -15,11 +15,8 @@ import { computed } from 'vue';
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
 import { useResponsiveClasses } from '@/composables';
 
-const props = defineProps({
-  viewType: {
-    type: String,
-    default: (): string => 'Movie'
-  }
+const props = withDefaults(defineProps<{ viewType?: string }>(), {
+  viewType: 'Movie'
 });
 
 const skeletonCardShape = computed(() => {

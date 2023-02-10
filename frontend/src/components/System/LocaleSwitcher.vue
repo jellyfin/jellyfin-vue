@@ -37,24 +37,12 @@ import { clientSettingsStore } from '@/store';
 const clientSettings = clientSettingsStore();
 const localeNames = useI18n().localeNames;
 
-defineProps({
-  bottom: {
-    required: false,
-    type: Boolean
-  },
-  large: {
-    required: false,
-    type: Boolean
-  },
-  top: {
-    required: false,
-    type: Boolean
-  },
-  elevated: {
-    required: false,
-    type: Boolean
-  }
-});
+defineProps<{
+  bottom?: boolean;
+  large?: boolean;
+  top?: boolean;
+  elevated?: boolean;
+}>();
 </script>
 
 <style lang="scss" scoped>

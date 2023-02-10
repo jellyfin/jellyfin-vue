@@ -70,18 +70,13 @@ import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { parseJSON, formatRelative } from 'date-fns';
 import { useDateFns } from '@/composables';
 
-defineProps({
-  isDialog: {
-    default: false,
-    type: Boolean
-  },
-  selectedDevice: {
-    default: (): DeviceInfo => {
-      return {};
-    },
-    type: Object as () => DeviceInfo
-  }
-});
+withDefaults(
+  defineProps<{
+    isDialog?: boolean;
+    selectedDevice?: DeviceInfo;
+  }>(),
+  { isDialog: false, selectedDevice: () => ({}) }
+);
 
 defineEmits<{
   (e: 'close-dialog'): void;

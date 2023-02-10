@@ -52,29 +52,21 @@ import 'swiper/css/a11y';
 import { Swiper } from 'swiper/vue';
 import { useResponsiveClasses } from '@/composables';
 
-defineProps({
-  slides: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  slideDuration: {
-    type: Number,
-    default: 7000
-  },
-  progressBar: {
-    type: Boolean,
-    default: false
-  },
-  topProgressBar: {
-    type: Boolean,
-    default: false
-  },
-  pageBackdrop: {
-    type: Boolean,
-    default: false
+withDefaults(
+  defineProps<{
+    slides: number;
+    slideDuration?: number;
+    progressBar?: boolean;
+    topProgressBar?: boolean;
+    pageBackdrop?: boolean;
+  }>(),
+  {
+    slideDuration: 7000,
+    progressBar: false,
+    topProgressBar: false,
+    pageBackdrop: false
   }
-});
+);
 
 const emit = defineEmits<{
   (e: 'on-slide-change', currentIndex: number, swiper: SwiperType): void;

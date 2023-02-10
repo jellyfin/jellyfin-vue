@@ -45,32 +45,17 @@ import { useDisplay } from 'vuetify';
 import { getBlurhash, getImageInfo } from '@/utils/images';
 import { getItemIcon } from '@/utils/items';
 
-const props = defineProps({
-  item: {
-    type: Object as () => BaseItemDto | BaseItemPerson,
-    required: true
-  },
-  width: {
-    type: Number,
-    default: 32
-  },
-  height: {
-    type: Number,
-    default: 32
-  },
-  punch: {
-    type: Number,
-    default: 1
-  },
-  type: {
-    type: String as () => ImageType,
-    default: ImageType.Primary
-  },
-  alt: {
-    type: String,
-    default: ''
-  }
-});
+const props = withDefaults(
+  defineProps<{
+    item: BaseItemDto | BaseItemPerson;
+    width?: number;
+    height?: number;
+    punch?: number;
+    type?: ImageType;
+    alt?: string;
+  }>(),
+  { width: 32, height: 32, punch: 1, type: ImageType.Primary, alt: '' }
+);
 
 const display = useDisplay();
 const loading = ref(true);

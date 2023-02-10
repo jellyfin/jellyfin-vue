@@ -40,12 +40,7 @@ import { useRouter } from 'vue-router';
 import { ServerInfo } from '@/plugins/remote/auth/types';
 import { useRemote } from '@/composables';
 
-const props = defineProps({
-  serverInfo: {
-    type: Object as () => ServerInfo,
-    required: true
-  }
-});
+const props = defineProps<{ serverInfo: ServerInfo }>();
 
 const loading = ref(false);
 const remote = useRemote();

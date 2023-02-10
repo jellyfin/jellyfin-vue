@@ -63,16 +63,13 @@ import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
-const props = defineProps({
-  items: {
-    type: Array as () => BaseItemDto[],
-    required: true
-  },
-  pageBackdrop: {
-    type: Boolean,
-    default: false
-  }
-});
+const props = withDefaults(
+  defineProps<{
+    items: BaseItemDto[];
+    pageBackdrop?: boolean;
+  }>(),
+  { pageBackdrop: false }
+);
 
 const relatedItems = ref<{ [k: number]: BaseItemDto }>({});
 const route = useRoute();
