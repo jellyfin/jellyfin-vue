@@ -68,16 +68,15 @@
 import { ref } from 'vue';
 import supportedFeatures from '@/utils/supported-features';
 
-defineProps({
-  fab: {
-    type: Boolean,
-    required: false
-  },
-  nudgeBottom: {
-    type: Number,
-    default: 5
+withDefaults(
+  defineProps<{
+    fab?: boolean;
+    nudgeBottom?: number;
+  }>(),
+  {
+    nudgeBottom: 5
   }
-});
+);
 
 const menu = ref(false);
 

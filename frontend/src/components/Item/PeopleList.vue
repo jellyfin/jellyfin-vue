@@ -30,16 +30,11 @@
 import { BaseItemPerson } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
-defineProps({
-  items: {
-    type: Array<BaseItemPerson>,
-    default: (): BaseItemPerson[] => {
-      return [];
-    }
-  },
-  skeletonLength: {
-    type: Number,
-    default: 0
-  }
-});
+withDefaults(
+  defineProps<{
+    items?: BaseItemPerson[];
+    skeletonLength?: number;
+  }>(),
+  { items: () => [], skeletonLength: 0 }
+);
 </script>

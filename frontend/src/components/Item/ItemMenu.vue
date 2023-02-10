@@ -70,30 +70,22 @@ type MenuOption = {
 const { t } = useI18n();
 const remote = useRemote();
 
-const menuProps = defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    default: (): BaseItemDto => {
-      return {};
-    }
-  },
-  outlined: {
-    type: Boolean,
-    default: false
-  },
-  zIndex: {
-    type: Number,
-    default: 1000
-  },
-  rightClick: {
-    type: Boolean,
-    default: true
-  },
-  queue: {
-    type: Boolean,
-    default: false
+const menuProps = withDefaults(
+  defineProps<{
+    item?: BaseItemDto;
+    outlined?: boolean;
+    zIndex?: number;
+    rightClick?: boolean;
+    queue?: boolean;
+  }>(),
+  {
+    item: () => ({}),
+    outlined: false,
+    zIndex: 1000,
+    rightClick: true,
+    queue: false
   }
-});
+);
 
 const parent = getCurrentInstance()?.parent;
 const show = ref(false);

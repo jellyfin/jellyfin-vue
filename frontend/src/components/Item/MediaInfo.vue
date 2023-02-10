@@ -33,28 +33,19 @@
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
-defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
-  },
-  year: {
-    type: Boolean
-  },
-  rating: {
-    type: Boolean
-  },
-  runtime: {
-    type: Boolean
-  },
-  tracks: {
-    type: Boolean
-  },
-  endsAt: {
-    type: Boolean,
-    default: false
+withDefaults(
+  defineProps<{
+    item: BaseItemDto;
+    year?: boolean;
+    rating?: boolean;
+    runtime?: boolean;
+    tracks?: boolean;
+    endsAt?: boolean;
+  }>(),
+  {
+    endsAt: false
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>

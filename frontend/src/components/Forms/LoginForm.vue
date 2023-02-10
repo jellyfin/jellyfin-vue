@@ -74,12 +74,7 @@ import { userLibrariesStore } from '@/store';
 const remote = useRemote();
 const { t } = useI18n();
 
-const props = defineProps({
-  user: {
-    required: true,
-    type: Object as () => UserDto
-  }
-});
+const props = defineProps<{ user: UserDto }>();
 
 defineEmits<{
   (e: 'change'): void;

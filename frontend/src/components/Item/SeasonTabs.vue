@@ -62,12 +62,7 @@ interface TvShowItem {
   seasonEpisodes: { [key: string]: BaseItemDto[] };
 }
 
-const props = defineProps({
-  item: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{ item: BaseItemDto }>();
 const remote = useRemote();
 const currentTab = ref(0);
 const seasons = ref<BaseItemDto[] | null | undefined>([]);

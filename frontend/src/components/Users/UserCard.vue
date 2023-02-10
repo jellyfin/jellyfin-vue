@@ -22,12 +22,7 @@
 <script setup lang="ts">
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 
-defineProps({
-  user: {
-    required: true,
-    type: Object as () => UserDto
-  }
-});
+defineProps<{ user: UserDto }>();
 
 defineEmits<{
   (e: 'connect', user: UserDto): void;
