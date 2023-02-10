@@ -13,12 +13,7 @@
 import { computed } from 'vue';
 import { HomeSection, userLibrariesStore } from '@/store';
 
-const props = defineProps({
-  section: {
-    type: Object as () => HomeSection,
-    required: true
-  }
-});
+const props = defineProps<{ section: HomeSection }>();
 
 const userLibraries = userLibrariesStore();
 const items = computed(() => {

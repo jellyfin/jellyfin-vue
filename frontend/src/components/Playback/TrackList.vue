@@ -94,12 +94,7 @@ import { formatTicks } from '@/utils/time';
 import { playbackManagerStore } from '@/store';
 import { useRemote } from '@/composables';
 
-const props = defineProps({
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
-  }
-});
+const props = defineProps<{ item: BaseItemDto }>();
 
 const playbackManager = playbackManagerStore();
 const remote = useRemote();

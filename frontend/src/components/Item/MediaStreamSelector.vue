@@ -33,7 +33,7 @@ import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
 
 const props = withDefaults(
   defineProps<{
-    mediaStreams: MediaStream[];
+    mediaStreams?: MediaStream[];
     type: string;
     defaultStreamIndex?: number;
   }>(),

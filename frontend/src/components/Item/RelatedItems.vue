@@ -58,23 +58,17 @@ import { useSnackbar, useRemote } from '@/composables';
 const remote = useRemote();
 const { t } = useI18n();
 
-const props = defineProps({
-  /**
-   * item.Id To be used to get related items
-   */
-  item: {
-    type: Object as () => BaseItemDto,
-    required: true
-  },
-  vertical: {
-    type: Boolean,
-    default: false
-  },
-  skeletonLength: {
-    type: Number,
-    default: 5
+const props = withDefaults(
+  defineProps<{
+    item: BaseItemDto;
+    vertical?: boolean;
+    skeletonLength?: number;
+  }>(),
+  {
+    vertical: false,
+    skeletonLength: 5
   }
-});
+);
 
 const relatedItems = ref<BaseItemDto[]>([]);
 const loading = ref(true);

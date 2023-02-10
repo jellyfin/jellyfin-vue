@@ -17,14 +17,11 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  color: {
-    type: String,
-    default: ''
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  }
-});
+withDefaults(
+  defineProps<{
+    color?: string;
+    disabled?: boolean;
+  }>(),
+  { color: '', disabled: false }
+);
 </script>
