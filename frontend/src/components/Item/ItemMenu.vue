@@ -226,8 +226,12 @@ function getLibraryOptions(): MenuOption[] {
       action: async (): Promise<void> => {
         if (remote.sdk.api) {
           try {
+            if (!menuProps.item.Id) {
+              throw new Error('Expected item to have id');
+            }
+
             await getItemRefreshApi(remote.sdk.api).refreshItem({
-              itemId: menuProps.item.Id as string,
+              itemId: menuProps.item.Id,
               replaceAllImages: false,
               replaceAllMetadata: false
             });

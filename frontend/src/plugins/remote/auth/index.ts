@@ -93,16 +93,18 @@ class RemotePluginAuth {
       const { data } = await getSystemApi(api).getPublicSystemInfo();
 
       delete data.LocalAddress;
-      serv = data as ServerInfo;
-      serv.PublicAddress = serverUrl;
-      serv.isDefault = isDefault;
+      serv = {
+        ...data,
+        PublicAddress: serverUrl,
+        isDefault: isDefault
+      };
     } catch (error) {
       useSnackbar(i18n.t('login.serverNotFound'), 'error');
-      throw new Error(error as string);
+      throw error;
     }
 
-    const semverMajor = Number.parseInt(serv.Version?.split('.')[0] as string);
-    const semverMinor = Number.parseInt(serv.Version?.split('.')[1] as string);
+    const semverMajor = Number(serv.Version?.split('.')[0]);
+    const semverMinor = Number(serv.Version?.split('.')[1]);
     const isServerVersionSupported =
       semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
 
@@ -121,11 +123,15 @@ class RemotePluginAuth {
           state.value.servers.push(serv);
         }
 
-        state.value.currentServerIndex = state.value.servers.indexOf(
-          state.value.servers.find(
-            (serv) => serv.PublicAddress === serverUrl
-          ) as ServerInfo
+        const serverInfo = state.value.servers.find(
+          (serv) => serv.PublicAddress === serverUrl
         );
+        if (!serverInfo) {
+          throw new Error('expected to find server by url');
+        }
+
+        state.value.currentServerIndex =
+          state.value.servers.indexOf(serverInfo);
       }
     } else {
       useSnackbar(i18n.t('login.serverVersionTooLow'), 'error');
@@ -219,7 +225,11 @@ class RemotePluginAuth {
         state.value.users.splice(state.value.users.indexOf(storeUser), 1);
       }
 
-      delete state.value.accessTokens[user.Id as string];
+      if (!user.Id) {
+        throw new Error('expected user to have id');
+      }
+
+      delete state.value.accessTokens[user.Id];
     }
   }
   /**

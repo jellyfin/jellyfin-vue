@@ -97,12 +97,10 @@ function onSlideChange(): void {
     swiperInstance.value?.updateSlides();
   }
 
-  // Propagate events to children
-  emit(
-    'on-slide-change',
-    currentIndex.value,
-    swiperInstance.value as SwiperType
-  );
+  if (swiperInstance.value) {
+    // Propagate events to children
+    emit('on-slide-change', currentIndex.value, swiperInstance.value);
+  }
 }
 /**
  * Handle touch events
@@ -111,7 +109,9 @@ function onTouch(): void {
   isPaused.value = !isPaused.value;
 
   // Propagate events to children
-  emit('on-touch', isPaused.value, swiperInstance.value as SwiperType);
+  if (swiperInstance.value) {
+    emit('on-touch', isPaused.value, swiperInstance.value);
+  }
 }
 
 /**
