@@ -62,12 +62,13 @@ export default defineComponent({
   async setup() {
     const { params } = useRoute();
     const remote = useRemote();
-    const collectionInfo = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        userId: remote.auth.currentUserId,
-        ids: [params.viewId]
-      })
-    ).data?.Items?.[0];
+    const collectionInfo =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          userId: remote.auth.currentUserId,
+          ids: [params.viewId]
+        })
+      ).data?.Items?.[0] ?? {};
 
     return {
       useSnackbar,
@@ -102,9 +103,10 @@ export default defineComponent({
       return this.loading || !this.itemsCount;
     },
     hasViewTypes(): boolean {
-      return !(
-        ['homevideos'].includes(this.collectionInfo.CollectionType || '') ||
-        this.collectionInfo.CollectionType === undefined
+      return (
+        this.collectionInfo.CollectionType !== undefined &&
+        this.collectionInfo.CollectionType !== null &&
+        this.collectionInfo.CollectionType !== 'homevideos'
       );
     },
     isSortable(): boolean {
@@ -295,8 +297,8 @@ export default defineComponent({
           }
         }
 
-        this.items = itemsResponse.Items;
-        this.itemsCount = itemsResponse.TotalRecordCount;
+        this.items = itemsResponse.Items ?? [];
+        this.itemsCount = itemsResponse.TotalRecordCount ?? 0;
       } catch {
         this.items = [];
         this.itemsCount = 0;

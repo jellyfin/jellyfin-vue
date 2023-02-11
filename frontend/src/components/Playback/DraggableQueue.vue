@@ -72,9 +72,7 @@ const queue = computed({
   },
   set(newValue: BaseItemDto[]) {
     playbackManager.setNewQueue(
-      newValue.map((item) => {
-        return item.Id as string;
-      })
+      newValue.map((item) => item.Id).filter((id): id is string => !!id)
     );
   }
 });
