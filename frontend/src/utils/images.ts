@@ -372,9 +372,17 @@ export function getImageInfo(
     itemId = item.Id;
   }
 
-  const url_string = remote.sdk.api?.getItemImageUrl(itemId as string, imgType);
+  if (!itemId) {
+    return {
+      url: undefined,
+      tag: undefined,
+      blurhash: undefined
+    };
+  }
 
-  if (imgTag && imgType && itemId && url_string) {
+  const url_string = remote.sdk.api?.getItemImageUrl(itemId, imgType);
+
+  if (imgTag && imgType && url_string) {
     url = new URL(url_string);
 
     const parameters: Record<string, string> = {
