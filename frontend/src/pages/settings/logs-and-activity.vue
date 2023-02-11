@@ -138,7 +138,7 @@ import { useDateFns, useRemote } from '@/composables';
 
 interface LoadingStatus {
   status: 'loading' | 'loaded' | 'error';
-  errorMessage: string;
+  errorMessage?: string;
 }
 
 export default defineComponent({

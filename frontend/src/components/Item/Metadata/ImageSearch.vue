@@ -182,7 +182,7 @@ export default defineComponent({
       );
       const providerNames = validProviders.map(
         (provider: ImageProviderInfo) => {
-          return provider.Name as string;
+          return provider.Name ?? '';
         }
       );
 
@@ -223,14 +223,15 @@ export default defineComponent({
     },
     async getImages(): Promise<void> {
       this.loading = true;
-      this.images = (
-        await this.$remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
-          itemId: this.metadata.Id,
-          type: this.type,
-          providerName: this.source === 'All' ? undefined : this.source,
-          includeAllLanguages: this.allLanguages
-        })
-      ).data.Images as RemoteImageInfo[];
+      this.images =
+        (
+          await this.$remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
+            itemId: this.metadata.Id,
+            type: this.type,
+            providerName: this.source === 'All' ? undefined : this.source,
+            includeAllLanguages: this.allLanguages
+          })
+        ).data.Images ?? [];
 
       this.loading = false;
     },
@@ -240,10 +241,14 @@ export default defineComponent({
       }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
     },
     async handleDownload(item: RemoteImageInfo): Promise<void> {
+      if (!item.Type || !item.Url) {
+        throw new Error('Expected image type and url to be present');
+      }
+
       this.loading = true;
       await this.$remote.sdk.newUserApi(getRemoteImageApi).downloadRemoteImage({
-        type: item.Type as ImageType,
-        imageUrl: item.Url as string,
+        type: item.Type,
+        imageUrl: item.Url,
         itemId: this.metadata.Id
       });
       this.loading = false;

@@ -34,17 +34,15 @@ function supportsFullscreen(): boolean {
   }
 
   const element = document.documentElement;
+  const video = document.createElement('video');
 
   return !!(
     element.requestFullscreen ||
-    // @ts-expect-error -- Non-standard property
-    element.mozRequestFullScreen ||
-    // @ts-expect-error -- Non-standard property
-    element.webkitRequestFullscreen ||
-    // @ts-expect-error -- Non-standard property
-    element.msRequestFullscreen ||
-    // @ts-expect-error -- Non-standard property
-    document.createElement('video').webkitEnterFullscreen
+    // check properties that are not recorded on the element type
+    ('mozRequestFullScreen' in element && element.mozRequestFullScreen) ||
+    ('webkitRequestFullscreen' in element && element.webkitRequestFullscreen) ||
+    ('msRequestFullscreen' in element && element.msRequestFullscreen) ||
+    ('webkitEnterFullscreen' in video && video.webkitEnterFullscreen)
   );
 }
 
@@ -52,11 +50,10 @@ const video = document.createElement('video');
 
 if (
   // Check non-standard Safari PiP support
-  // @ts-expect-error - Non-standard functions doesn't have typings
-  (typeof video.webkitSupportsPresentationMode === 'function' &&
-    // @ts-expect-error - Non-standard functions doesn't have typings
+  ('webkitSupportsPresentationMode' in video &&
+    typeof video.webkitSupportsPresentationMode === 'function' &&
     video.webkitSupportsPresentationMode('picture-in-picture') &&
-    // @ts-expect-error - Non-standard functions doesn't have typings
+    'webkitSetPresentationMode' in video &&
     typeof video.webkitSetPresentationMode === 'function') ||
   // Check standard PiP support
   document.pictureInPictureEnabled

@@ -78,7 +78,7 @@
             <v-combobox
               v-model="metadata.Genres"
               v-model:search-input="search"
-              :items="genders"
+              :items="genres"
               :label="$t('genres')"
               hide-selected
               multiple
@@ -95,7 +95,7 @@
             <v-combobox
               v-model="metadata.Tags"
               v-model:search-input="search"
-              :items="genders"
+              :items="genres"
               :label="$t('tags')"
               hide-selected
               multiple
@@ -231,7 +231,7 @@ export default defineComponent({
       menu: false,
       dialog: false,
       person: null as BaseItemPerson | null,
-      genders: [] as BaseItemDto[] | null | undefined,
+      genres: [] as BaseItemDto[] | null | undefined,
       search: '',
       loading: false,
       tabName: null
@@ -277,14 +277,23 @@ export default defineComponent({
     async getData(): Promise<void> {
       await this.fetchItemInfo();
 
+      if (!this.metadata.Id) {
+        return;
+      }
+
       const ancestors = await this.$remote.sdk
         .newUserApi(getLibraryApi)
         .getAncestors({
-          itemId: this.metadata.Id as string,
+          itemId: this.metadata.Id,
           userId: this.$remote.auth.currentUserId
         });
-      const libraryInfo =
-        ancestors.data.find((index) => index.Type === 'CollectionFolder') || {};
+      const libraryInfo = ancestors.data.find(
+        (index) => index.Type === 'CollectionFolder'
+      );
+
+      if (!libraryInfo || !libraryInfo.Id) {
+        return;
+      }
 
       this.getGenres(libraryInfo.Id);
     },
@@ -298,12 +307,15 @@ export default defineComponent({
 
       this.$data.metadata = itemInfo;
     },
-    async getGenres(parentId = ''): Promise<void> {
-      this.genders = (
-        await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
-          parentId
-        })
-      ).data.Items?.map((index) => index.Name) as BaseItemDto[];
+    async getGenres(parentId: string): Promise<void> {
+      this.genres =
+        (
+          await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
+            parentId
+          })
+        ).data.Items?.map((index) => index.Name).filter(
+          (genre): genre is string => !!genre
+        ) ?? [];
     },
     async saveMetadata(): Promise<void> {
       const item = pick(this.metadata, [
@@ -348,8 +360,13 @@ export default defineComponent({
 
       try {
         this.loading = true;
+
+        if (!this.metadata.Id) {
+          throw new Error('Expected metadata to have id');
+        }
+
         await this.$remote.sdk.newUserApi(getItemUpdateApi).updateItem({
-          itemId: this.metadata.Id as string,
+          itemId: this.metadata.Id,
           baseItemDto: item
         });
         this.$emit('save');
@@ -395,7 +412,7 @@ export default defineComponent({
       this.dialog = result;
     },
     handlePersonDel(index: number): void {
-      (this.metadata.People as BaseItemPerson[]).splice(index, 1);
+      (this.metadata.People ?? []).splice(index, 1);
     }
   }
 });

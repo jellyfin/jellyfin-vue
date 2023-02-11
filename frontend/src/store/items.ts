@@ -156,7 +156,7 @@ class ItemsStore {
 
     state.value.collectionById[parent.Id] = childIds;
 
-    return this.getChildrenOfParent(parent.Id) as BaseItemDto[];
+    return this.getChildrenOfParent(parent.Id) ?? [];
   };
 
   /**
@@ -196,7 +196,11 @@ class ItemsStore {
     if (childItems.Items) {
       const parent = this.getItemById(parentId);
 
-      return this.addCollection(parent as BaseItemDto, childItems.Items);
+      if (!parent) {
+        throw new Error('expected item to be found');
+      }
+
+      return this.addCollection(parent, childItems.Items);
     }
   };
 
