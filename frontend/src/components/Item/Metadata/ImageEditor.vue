@@ -93,7 +93,7 @@ export default defineComponent({
     };
   },
   computed: {
-    generalImages(): boolean {
+    generalImages(): ImageInfo[] {
       return this.images.filter((image) => {
         return (
           image.ImageType !== ImageType.Screenshot &&
