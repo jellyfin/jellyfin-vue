@@ -224,10 +224,10 @@ function getLibraryOptions(): MenuOption[] {
       title: t('refreshLibrary'),
       icon: IMdiRefresh,
       action: async (): Promise<void> => {
-        if (remote.sdk.api) {
+        if (remote.sdk.api && menuProps.item.Id) {
           try {
             await getItemRefreshApi(remote.sdk.api).refreshItem({
-              itemId: menuProps.item.Id as string,
+              itemId: menuProps.item.Id,
               replaceAllImages: false,
               replaceAllMetadata: false
             });

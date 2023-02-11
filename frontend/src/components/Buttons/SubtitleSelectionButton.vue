@@ -79,8 +79,7 @@ export default defineComponent({
   },
   computed: {
     tracks(): PlaybackTrack[] {
-      const subs = this.playbackManager
-        .currentItemParsedSubtitleTracks as PlaybackTrack[];
+      const subs = this.playbackManager.currentItemParsedSubtitleTracks ?? [];
 
       return [
         {

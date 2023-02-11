@@ -141,9 +141,10 @@ import { version as clientVersion } from '@/../package.json';
 const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
-let systemInfo = {} as SystemInfo;
 
 route.meta.title = t('settings.settings');
+
+let systemInfo: SystemInfo = {};
 
 if (remote.auth.currentUser?.Policy?.IsAdministrator) {
   systemInfo = (await remote.sdk.newUserApi(getSystemApi).getSystemInfo()).data;
