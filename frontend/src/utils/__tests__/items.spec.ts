@@ -46,23 +46,23 @@ describe('getShapeFromCollectionType', () => {
 describe('getShapeFromItemType', () => {
   it('returns the correct card shape based on item type', () => {
     expect(getShapeFromItemType('Audio')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('folder')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('musicalbum')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('musicartist')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('musicgenre')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('photoalbum')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('playlist')).toEqual(CardShapes.Square);
-    expect(getShapeFromItemType('video')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('Folder')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('MusicAlbum')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('MusicArtist')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('MusicGenre')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('PhotoAlbum')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('Playlist')).toEqual(CardShapes.Square);
+    expect(getShapeFromItemType('Video')).toEqual(CardShapes.Square);
 
     expect(getShapeFromItemType('Episode')).toEqual(CardShapes.Thumb);
     expect(getShapeFromItemType('Studio')).toEqual(CardShapes.Thumb);
 
     expect(getShapeFromItemType('Book')).toEqual(CardShapes.Portrait);
-    expect(getShapeFromItemType('boxSet')).toEqual(CardShapes.Portrait);
-    expect(getShapeFromItemType('genre')).toEqual(CardShapes.Portrait);
-    expect(getShapeFromItemType('movie')).toEqual(CardShapes.Portrait);
-    expect(getShapeFromItemType('person')).toEqual(CardShapes.Portrait);
-    expect(getShapeFromItemType('series')).toEqual(CardShapes.Portrait);
+    expect(getShapeFromItemType('BoxSet')).toEqual(CardShapes.Portrait);
+    expect(getShapeFromItemType('Genre')).toEqual(CardShapes.Portrait);
+    expect(getShapeFromItemType('Movie')).toEqual(CardShapes.Portrait);
+    expect(getShapeFromItemType('Person')).toEqual(CardShapes.Portrait);
+    expect(getShapeFromItemType('Series')).toEqual(CardShapes.Portrait);
     expect(getShapeFromItemType(undefined)).toEqual(CardShapes.Portrait);
     expect(getShapeFromItemType(null)).toEqual(CardShapes.Portrait);
   });
