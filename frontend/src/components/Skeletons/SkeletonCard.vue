@@ -11,28 +11,21 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { CardShapes } from '@/utils/items';
 
-export default defineComponent({
-  props: {
-    boilerplate: {
-      type: Boolean,
-      default: false
-    },
-    text: {
-      type: Boolean,
-      default: false
-    },
-    cardShape: {
-      type: String,
-      default: (): string => CardShapes.Portrait,
-      validator: (value: string): boolean =>
-        Object.values(CardShapes).includes(value as CardShapes)
-    }
+withDefaults(
+  defineProps<{
+    boilerplate?: boolean;
+    text?: boolean;
+    cardShape?: CardShapes;
+  }>(),
+  {
+    boilerplate: false,
+    text: false,
+    cardShape: CardShapes.Portrait
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>
