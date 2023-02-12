@@ -47,13 +47,12 @@ import { useResponsiveClasses } from '@/composables';
 
 withDefaults(
   defineProps<{
-    items?: BaseItemDto[];
+    items: BaseItemDto[];
     loading?: boolean;
     large?: boolean;
     noVirtual?: boolean;
   }>(),
   {
-    items: () => [],
     noVirtual: false
   }
 );

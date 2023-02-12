@@ -40,10 +40,7 @@
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getItemDetailsLink } from '@/utils/items';
 
-withDefaults(
-  defineProps<{
-    releases?: BaseItemDto[];
-  }>(),
-  { releases: () => [] }
-);
+defineProps<{
+  releases: BaseItemDto[];
+}>();
 </script>
