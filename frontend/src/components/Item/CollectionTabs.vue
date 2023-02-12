@@ -11,7 +11,7 @@
     <v-tabs v-model="currentTab" class="bg-transparent">
       <v-tab v-for="(items, type) in children" :key="type">
         <v-container>
-          <skeleton-item-grid v-if="loading" :view-type="''" />
+          <skeleton-item-grid v-if="loading" :view-type="item.Type" />
           <item-grid :loading="loading" :items="items" />
         </v-container>
       </v-tab>
