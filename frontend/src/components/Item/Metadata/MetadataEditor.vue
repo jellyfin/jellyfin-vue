@@ -195,6 +195,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { pick, set } from 'lodash-es';
+import { AxiosError } from 'axios';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -360,9 +361,7 @@ export default defineComponent({
         // TODO: Revise similar blocks like this through the entire codebase.
         let errorMessage = this.$t('unexpectedError');
 
-        // @ts-expect-error - AxiosError can't be imported from @nuxtjs/axios for some reason. Revisit this to have proper error typing
-        // for axios responses.
-        if (error?.response?.status === 400) {
+        if (error instanceof AxiosError && error.response?.status === 400) {
           errorMessage = this.$t('badRequest');
         }
 
