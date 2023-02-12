@@ -2,17 +2,17 @@
   <div>
     <v-app-bar dense flat>
       <span class="text-h6 hidden-sm-and-down">
-        {{ collectionInfo.Name }}
+        {{ library?.Name }}
       </span>
       <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
-        <template v-if="!loading">{{ itemsCount }}</template>
+        <template v-if="!loading">{{ items?.length ?? 0 }}</template>
         <v-progress-circular v-else width="2" indeterminate size="16" />
       </v-chip>
       <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
       <type-button
         v-if="hasViewTypes"
-        :type="collectionInfo.CollectionType"
-        :disabled="noContent"
+        :type="library?.CollectionType ?? undefined"
+        :disabled="loading"
         @change="onChangeType" />
       <v-divider
         v-if="isSortable && hasViewTypes"
@@ -21,23 +21,30 @@
         class="mx-2" />
       <sort-button
         v-if="isSortable"
-        :disabled="noContent"
+        :disabled="loading"
+        :ascending="sortAscending"
         @change="onChangeSort" />
       <filter-button
-        v-if="isSortable"
-        :collection-info="collectionInfo"
-        :disabled="loading || (items.length === 0 && !hasFilters)"
-        :items-type="viewType"
+        v-if="library && viewType && isSortable"
+        :item="library"
+        :disabled="loading"
         @change="onChangeFilter" />
       <v-spacer />
-      <play-button :item="collectionInfo" shuffle :disabled="noContent" />
-      <play-button :item="collectionInfo" :disabled="noContent" />
+      <play-button
+        v-if="library"
+        :item="library"
+        shuffle
+        :disabled="playButtonDisabled" />
+      <play-button
+        v-if="library"
+        :item="library"
+        :disabled="playButtonDisabled" />
     </v-app-bar>
     <v-container>
       <skeleton-item-grid v-if="loading" :view-type="viewType" />
-      <item-grid :loading="loading" :items="items">
-        <h1 v-if="!hasFilters && isDefaultView" class="text-h5">
-          {{ hasFilters ? $t('libraryEmptyFilters') : $t('libraryEmpty') }}
+      <item-grid v-else :items="items">
+        <h1 v-if="!hasFilters" class="text-h5">
+          {{ hasFilters ? t('libraryEmptyFilters') : t('libraryEmpty') }}
         </h1>
       </item-grid>
     </v-container>
@@ -45,269 +52,261 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
-import { validLibraryTypes } from '@/utils/items';
+import { isNil } from 'lodash-es';
 import { useRemote, useSnackbar } from '@/composables';
+import type { Filters } from '@/components/Buttons/FilterButton.vue';
 
-export default defineComponent({
-  async setup() {
-    const { params } = useRoute();
-    const remote = useRemote();
-    const collectionInfo =
+const { t } = useI18n();
+const route = useRoute();
+const remote = useRemote();
+
+const library = ref<BaseItemDto>();
+const loadingLibrary = ref(false);
+const items = ref<BaseItemDto[]>([]);
+const loadingItems = ref(false);
+const viewType = ref<BaseItemKind>();
+const sortBy = ref<string>();
+const sortAscending = ref(true);
+const filters = ref<Filters>({
+  status: [],
+  features: [],
+  genres: [],
+  ratings: [],
+  types: [],
+  years: []
+});
+
+/** Updates viewType value when it's changed */
+function onChangeType(type?: BaseItemKind): void {
+  viewType.value = type;
+}
+
+/** Updates sort value when it's changed */
+function onChangeSort(sort: string, ascending: boolean): void {
+  sortBy.value = sort;
+  sortAscending.value = ascending;
+}
+
+/** Updates filters when it's changed */
+function onChangeFilter(changedFilters: Filters): void {
+  filters.value = changedFilters;
+}
+
+const loading = computed(() => loadingLibrary.value || loadingItems.value);
+const playButtonDisabled = computed(
+  () => loading.value || items.value.length === 0
+);
+const hasFilters = computed(() =>
+  Object.values(filters.value).some(({ length }) => length > 0)
+);
+const hasViewTypes = computed(
+  () =>
+    library.value &&
+    library.value.CollectionType !== undefined &&
+    library.value.CollectionType !== null &&
+    library.value.CollectionType !== 'homevideos'
+);
+const isSortable = computed(
+  () =>
+    viewType.value &&
+    /**
+     * Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
+     * Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
+     */
+    ![
+      'MusicArtist',
+      'Person',
+      'Genre',
+      'MusicGenre',
+      'MusicGenre',
+      'Studio'
+    ].includes(viewType.value)
+);
+
+/** Fetch the library information when it's changed */
+async function fetchLibrary(itemId: string): Promise<void> {
+  loadingLibrary.value = true;
+
+  try {
+    library.value =
       (
         await remote.sdk.newUserApi(getItemsApi).getItems({
           userId: remote.auth.currentUserId,
-          ids: [params.viewId]
+          ids: [itemId]
         })
-      ).data?.Items?.[0] ?? {};
+      ).data?.Items?.[0] ?? undefined;
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('failedToRefreshItems'), 'error');
+  } finally {
+    loadingLibrary.value = false;
+  }
 
-    return {
-      useSnackbar,
-      collectionInfo
-    };
-  },
-  data() {
-    return {
-      items: [] as BaseItemDto[],
-      itemsCount: 0,
-      loading: false,
-      viewType: '',
-      sortBy: 'SortName',
-      hasFilters: false,
-      isDefaultView: true, // Movie view, not Collection. Music view, not Genres...
-      statusFilter: [] as string[],
-      genresFilter: [] as string[],
-      yearsFilter: [] as string[],
-      ratingsFilter: [] as string[],
-      filterHasSubtitles: false,
-      filterHasTrailer: false,
-      filterHasSpecialFeature: false,
-      filterHasThemeSong: false,
-      filterHasThemeVideo: false,
-      filterIsHd: undefined as boolean | undefined,
-      filterIs4k: undefined as boolean | undefined,
-      filterIs3d: undefined as boolean | undefined
-    };
-  },
-  computed: {
-    noContent(): boolean {
-      return this.loading || !this.itemsCount;
-    },
-    hasViewTypes(): boolean {
-      return (
-        this.collectionInfo.CollectionType !== undefined &&
-        this.collectionInfo.CollectionType !== null &&
-        this.collectionInfo.CollectionType !== 'homevideos'
-      );
-    },
-    isSortable(): boolean {
-      // Not everything is sortable, so depending on what we're showing, we need to hide the sort menu.
-      // Reusing this as "isFilterable" too, since these seem to go hand in hand for now.
-      return ![
-        'MusicArtist',
-        'Actor',
-        'Genre',
-        'MusicGenre',
-        'MusicGenre',
-        'Studio'
-      ].includes(this.viewType);
-    }
-  },
-  watch: {
-    async viewType(): Promise<void> {
-      await this.refreshItems();
-    },
-    async sortBy(): Promise<void> {
-      await this.refreshItems();
-    }
-  },
-  async mounted() {
-    if (
-      this.collectionInfo?.Type &&
-      validLibraryTypes.includes(this.collectionInfo.Type)
-    ) {
-      if (this.collectionInfo.Name) {
-        this.$route.meta.title = this.collectionInfo.Name;
+  // reset all filters and display views since they may not be applicable to the new library
+  viewType.value = undefined;
+  sortBy.value = undefined;
+  sortAscending.value = true;
+  filters.value = {
+    status: [],
+    features: [],
+    genres: [],
+    ratings: [],
+    types: [],
+    years: []
+  };
+}
+
+/** Refresh the items displayed based on filter changes */
+async function refreshItems(): Promise<void> {
+  loadingItems.value = true;
+
+  const parentId = library.value?.Id;
+  const userId = remote.auth.currentUserId;
+
+  if (isNil(parentId)) {
+    return;
+  }
+
+  try {
+    let itemsResponse;
+
+    switch (viewType.value) {
+      case 'MusicArtist': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getArtistsApi).getAlbumArtists({
+            userId,
+            parentId
+          })
+        ).data;
+        break;
       }
-
-      // Set default view type - This will trigger an items refresh
-      switch (this.collectionInfo.CollectionType) {
-        case 'tvshows': {
-          this.viewType = 'Series';
-          break;
-        }
-        case 'movies': {
-          this.viewType = 'Movie';
-          break;
-        }
-        case 'books': {
-          this.viewType = 'Book';
-          break;
-        }
-        case 'music': {
-          this.viewType = 'MusicAlbum';
-          break;
-        }
-        default: {
-          await this.refreshItems();
-          break;
-        }
+      case 'Person': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getPersonsApi).getPersons({
+            userId,
+            personTypes: ['Actor']
+            // TODO: this doesn't actually filter by library id because that's not an option
+          })
+        ).data;
+        break;
+      }
+      case 'Genre': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getGenresApi).getGenres({
+            userId,
+            parentId
+          })
+        ).data;
+        break;
+      }
+      case 'MusicGenre': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getMusicGenresApi).getMusicGenres({
+            userId,
+            parentId
+          })
+        ).data;
+        break;
+      }
+      case 'Studio': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getStudiosApi).getStudios({
+            userId,
+            parentId
+          })
+        ).data;
+        break;
+      }
+      default: {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getItemsApi).getItems({
+            userId,
+            parentId,
+            includeItemTypes: viewType.value ? [viewType.value] : undefined,
+            sortOrder: [sortAscending.value ? 'Ascending' : 'Descending'],
+            sortBy: [sortBy.value ?? 'SortName'],
+            filters: filters.value.status,
+            genres: filters.value.genres,
+            years: filters.value.years,
+            officialRatings: filters.value.ratings,
+            hasSubtitles:
+              filters.value.features.includes('HasSubtitles') || undefined,
+            hasTrailer:
+              filters.value.features.includes('HasTrailer') || undefined,
+            hasSpecialFeature:
+              filters.value.features.includes('HasSpecialFeature') || undefined,
+            hasThemeSong:
+              filters.value.features.includes('HasThemeSong') || undefined,
+            hasThemeVideo:
+              filters.value.features.includes('HasThemeVideo') || undefined,
+            isHd: filters.value.types.includes('isHD') || undefined,
+            is4K: filters.value.types.includes('is4K') || undefined,
+            is3D: filters.value.types.includes('is3D') || undefined
+          })
+        ).data;
+        break;
       }
     }
-  },
-  methods: {
-    onChangeType(type: string): void {
-      const defaultViews = ['Series', 'Movie', 'Book', 'MusicAlbum'];
 
-      this.viewType = type;
-      this.isDefaultView = defaultViews.includes(this.viewType);
-    },
-    onChangeSort(sort: string): void {
-      this.sortBy = sort;
-    },
-    onChangeFilter(filter: Record<string, [string]>): boolean | void {
-      this.hasFilters = Object.values(filter).some((value) => {
-        return value.length > 0;
-      });
+    items.value = itemsResponse.Items ?? [];
+  } catch (error) {
+    items.value = [];
+    console.error(error);
+    useSnackbar(t('failedToRefreshItems'), 'error');
+  } finally {
+    loadingItems.value = false;
+  }
+}
 
-      this.genresFilter = filter.genres;
-      this.statusFilter = filter.status;
-      this.yearsFilter = filter.years;
-      this.ratingsFilter = filter.ratings;
-      this.filterHasSubtitles = filter.features.includes('HasSubtitles');
-      this.filterHasTrailer = filter.features.includes('HasTrailer');
-      this.filterHasSpecialFeature =
-        filter.features.includes('HasSpecialFeature');
-      this.filterHasThemeSong = filter.features.includes('HasThemeSong');
-      this.filterHasThemeVideo = filter.features.includes('HasThemeVideo');
+watch(() => (route.params as { viewId: string }).viewId, fetchLibrary, {
+  immediate: true
+});
 
-      // The following technically have a "false" state for excluding them.
-      // TODO: Maybe add exclusion to the filters
-      this.filterIsHd = filter.types.includes('isHD') ? true : undefined;
+watch(library, (lib) => {
+  route.meta.title = lib?.Name;
+});
 
-      this.filterIs4k = filter.types.includes('is4K') ? true : undefined;
-
-      this.filterIs3d = filter.types.includes('is3D') ? true : undefined;
-
-      this.refreshItems();
-    },
-    async refreshItems(): Promise<void> {
-      this.loading = true;
-
-      try {
-        let itemsResponse;
-
-        switch (this.viewType) {
-          case 'MusicArtist': {
-            itemsResponse = (
-              await this.$remote.sdk.newUserApi(getArtistsApi).getAlbumArtists({
-                userId: this.$remote.auth.currentUserId,
-                parentId: this.$route.params.viewId
-              })
-            ).data;
-            break;
-          }
-          case 'Actor': {
-            itemsResponse = (
-              await this.$remote.sdk.newUserApi(getPersonsApi).getPersons({
-                userId: this.$remote.auth.currentUserId,
-                parentId: this.$route.params.viewId,
-                personTypes: ['Actor']
-              })
-            ).data;
-            break;
-          }
-          case 'Genre': {
-            itemsResponse = (
-              await this.$remote.sdk.newUserApi(getGenresApi).getGenres({
-                userId: this.$remote.auth.currentUserId,
-                parentId: this.$route.params.viewId
-              })
-            ).data;
-            break;
-          }
-          case 'MusicGenre': {
-            itemsResponse = (
-              await this.$remote.sdk
-                .newUserApi(getMusicGenresApi)
-                .getMusicGenres({
-                  userId: this.$remote.auth.currentUserId,
-                  parentId: this.$route.params.viewId
-                })
-            ).data;
-            break;
-          }
-          case 'Studio': {
-            itemsResponse = (
-              await this.$remote.sdk.newUserApi(getStudiosApi).getStudios({
-                userId: this.$remote.auth.currentUserId,
-                parentId: this.$route.params.viewId
-              })
-            ).data;
-            break;
-          }
-          default: {
-            itemsResponse = (
-              await this.$remote.sdk.newUserApi(getItemsApi).getItems({
-                uId: this.$remote.auth.currentUserId,
-                userId: this.$remote.auth.currentUserId,
-                parentId: this.$route.params.viewId,
-                includeItemTypes: this.viewType,
-                sortBy:
-                  this.collectionInfo.CollectionType === 'homevideos' ||
-                  this.collectionInfo.Type === 'Folder' ||
-                  (this.collectionInfo.Type === 'CollectionFolder' &&
-                    !('CollectionType' in this.collectionInfo))
-                    ? 'IsFolder,SortName'
-                    : this.sortBy,
-                recursive:
-                  this.collectionInfo.CollectionType === 'homevideos' ||
-                  this.collectionInfo.Type === 'Folder' ||
-                  (this.collectionInfo.Type === 'CollectionFolder' &&
-                    !('CollectionType' in this.collectionInfo))
-                    ? undefined
-                    : true,
-                sortOrder: 'Ascending',
-                filters: this.statusFilter || undefined,
-                genres: this.genresFilter || undefined,
-                years: this.yearsFilter || undefined,
-                officialRatings: this.ratingsFilter || undefined,
-                hasSubtitles: this.filterHasSubtitles ? true : undefined,
-                hasTrailer: this.filterHasTrailer ? true : undefined,
-                hasSpecialFeature: this.filterHasSpecialFeature
-                  ? true
-                  : undefined,
-                hasThemeSong: this.filterHasThemeSong ? true : undefined,
-                hasThemeVideo: this.filterHasThemeVideo ? true : undefined,
-                isHd: this.filterIsHd ? true : undefined,
-                is4K: this.filterIs4k ? true : undefined,
-                is3D: this.filterIs3d ? true : undefined
-              })
-            ).data;
-            break;
-          }
-        }
-
-        this.items = itemsResponse.Items ?? [];
-        this.itemsCount = itemsResponse.TotalRecordCount ?? 0;
-      } catch {
-        this.items = [];
-        this.itemsCount = 0;
-        this.useSnackbar(this.$t('failedToRefreshItems'), 'error');
+watch(
+  () => library.value?.CollectionType,
+  (type) => {
+    switch (type) {
+      case 'tvshows': {
+        viewType.value = BaseItemKind.Series;
+        break;
       }
-
-      this.loading = false;
+      case 'movies': {
+        viewType.value = BaseItemKind.Movie;
+        break;
+      }
+      case 'books': {
+        viewType.value = BaseItemKind.Book;
+        break;
+      }
+      case 'music': {
+        viewType.value = BaseItemKind.MusicAlbum;
+        break;
+      }
+      default: {
+        viewType.value = undefined;
+        break;
+      }
     }
   }
+);
+
+watch([library, sortBy, sortAscending, viewType, filters], refreshItems, {
+  immediate: true
 });
 </script>
 
