@@ -72,14 +72,13 @@ const remote = useRemote();
 
 const menuProps = withDefaults(
   defineProps<{
-    item?: BaseItemDto;
+    item: BaseItemDto;
     outlined?: boolean;
     zIndex?: number;
     rightClick?: boolean;
     queue?: boolean;
   }>(),
   {
-    item: () => ({}),
     outlined: false,
     zIndex: 1000,
     rightClick: true,

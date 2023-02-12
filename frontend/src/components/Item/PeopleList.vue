@@ -32,9 +32,9 @@ import { getItemDetailsLink } from '@/utils/items';
 
 withDefaults(
   defineProps<{
-    items?: BaseItemPerson[];
+    items: BaseItemPerson[];
     skeletonLength?: number;
   }>(),
-  { items: () => [], skeletonLength: 0 }
+  { skeletonLength: 0 }
 );
 </script>
