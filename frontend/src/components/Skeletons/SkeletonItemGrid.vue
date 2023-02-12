@@ -11,11 +11,12 @@
 </template>
 
 <script setup lang="ts">
+import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
 import { useResponsiveClasses } from '@/composables';
 
-const props = withDefaults(defineProps<{ viewType?: string }>(), {
+const props = withDefaults(defineProps<{ viewType?: BaseItemKind }>(), {
   viewType: 'Movie'
 });
 

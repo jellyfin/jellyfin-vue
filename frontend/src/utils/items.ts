@@ -29,11 +29,11 @@ import IMdiAlbum from 'virtual:icons/mdi/album';
 /**
  * A list of valid collections that should be treated as folders.
  */
-export const validLibraryTypes = [
+export const validLibraryTypes: string[] = [
   'CollectionFolder',
   'Folder',
   'UserView',
-  'playlists',
+  'Playlist',
   'PhotoAlbum'
 ];
 
@@ -164,23 +164,26 @@ export function getShapeFromCollectionType(
  * @returns CSS class to use as the shape of the card
  */
 export function getShapeFromItemType(
-  itemType: string | null | undefined
+  itemType: BaseItemKind | null | undefined
 ): ValidCardShapes {
-  // TODO: Refactor to take a BaseItemDto or BaseItemPerson instead
-  switch (itemType?.toLowerCase()) {
-    case 'audio':
-    case 'folder':
-    case 'musicalbum':
-    case 'musicartist':
-    case 'musicgenre':
-    case 'photoalbum':
-    case 'playlist':
-    case 'video': {
+  if (!itemType) {
+    return CardShapes.Portrait;
+  }
+
+  switch (itemType) {
+    case 'Audio':
+    case 'Folder':
+    case 'MusicAlbum':
+    case 'MusicArtist':
+    case 'MusicGenre':
+    case 'PhotoAlbum':
+    case 'Playlist':
+    case 'Video': {
       return CardShapes.Square;
     }
-    case 'episode':
-    case 'musicvideo':
-    case 'studio': {
+    case 'Episode':
+    case 'MusicVideo':
+    case 'Studio': {
       return CardShapes.Thumb;
     }
     default: {

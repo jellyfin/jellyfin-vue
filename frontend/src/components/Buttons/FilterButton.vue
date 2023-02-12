@@ -1,11 +1,14 @@
 <template>
-  <v-menu :close-on-content-click="false" max-width="250px">
+  <v-menu
+    :disabled="disabled"
+    :close-on-content-click="false"
+    max-width="250px">
     <template #activator="{ props: menuProps }">
       <v-btn
         v-if="!$vuetify.display.smAndDown"
         class="ma-2"
         v-bind="mergeProps(menuProps, props)">
-        {{ $t('filter') }}
+        {{ t('filter') }}
         <v-icon end>
           <i-mdi-menu-down />
         </v-icon>
@@ -17,7 +20,7 @@
       </v-btn>
     </template>
     <v-expansion-panels variant="accordion" class="dropdown">
-      <v-expansion-panel :title="$t('status')">
+      <v-expansion-panel :title="t('status')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedStatusFilters"
@@ -38,12 +41,7 @@
           </v-list>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <v-expansion-panel
-        v-if="
-          collectionInfo.CollectionType === 'movies' ||
-          collectionInfo.CollectionType === 'tvshows'
-        "
-        :title="$t('features')">
+      <v-expansion-panel v-if="isMovieOrTvShow" :title="t('features')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedFeatureFilters"
@@ -64,7 +62,7 @@
           </v-list>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <v-expansion-panel v-if="genreFilters.length > 0" :title="$t('genres')">
+      <v-expansion-panel v-if="genreFilters.length > 0" :title="t('genres')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedGenreFilters"
@@ -87,7 +85,7 @@
       </v-expansion-panel>
       <v-expansion-panel
         v-if="ratingFilters.length > 0"
-        :title="$t('parentalRatings')">
+        :title="t('parentalRatings')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedRatingFilters"
@@ -108,12 +106,7 @@
           </v-list>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <v-expansion-panel
-        v-if="
-          collectionInfo.CollectionType === 'movies' ||
-          collectionInfo.CollectionType === 'tvshows'
-        "
-        :title="$t('videoTypes')">
+      <v-expansion-panel v-if="isMovieOrTvShow" :title="t('videoTypes')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedTypeFilters"
@@ -134,7 +127,7 @@
           </v-list>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <v-expansion-panel v-if="yearFilters.length > 0" :title="$t('years')">
+      <v-expansion-panel v-if="yearFilters.length > 0" :title="t('years')">
         <v-expansion-panel-text>
           <v-list
             v-model:selected="selectedYearFilters"
@@ -162,40 +155,57 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { computed, ref, watch, mergeProps } from 'vue';
-import { useRoute } from 'vue-router';
-import {
-  BaseItemDto,
-  BaseItemKind,
-  ItemFilter
-} from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
-import { sanitizeHtml } from '@/utils/html';
 import { useRemote, useSnackbar } from '@/composables';
 
-const route = useRoute();
-const remote = useRemote();
-const { t } = useI18n();
-const emit = defineEmits<{
-  (e: 'change', filters: Record<string, string[]>): void;
-}>();
+export type FeatureFilters =
+  | 'HasSubtitles'
+  | 'HasTrailer'
+  | 'HasSpecialFeature'
+  | 'HasThemeSong'
+  | 'HasThemeVideo';
+
+export type TypeFilters = 'Bluray' | 'Dvd' | 'isHD' | 'is4K' | 'is3D';
+
+export interface Filters {
+  features: FeatureFilters[];
+  status: ItemFilter[];
+  genres: string[];
+  ratings: string[];
+  types: TypeFilters[];
+  years: number[];
+}
 
 const props = defineProps<{
-  collectionInfo: BaseItemDto;
-  itemsType: BaseItemKind;
+  item: BaseItemDto;
   disabled?: boolean;
 }>();
 
-const selectedFeatureFilters = ref([]);
-const selectedGenreFilters = ref([]);
-const selectedRatingFilters = ref([]);
-const selectedStatusFilters = ref([]);
-const selectedTypeFilters = ref([]);
-const selectedYearFilters = ref([]);
+const emit = defineEmits<{
+  (e: 'change', filters: Filters): void;
+}>();
+
+const remote = useRemote();
+const { t } = useI18n();
+
+const selectedFeatureFilters = ref<FeatureFilters[]>([]);
+const selectedGenreFilters = ref<string[]>([]);
+const selectedRatingFilters = ref<string[]>([]);
+const selectedStatusFilters = ref<ItemFilter[]>([]);
+const selectedTypeFilters = ref<TypeFilters[]>([]);
+const selectedYearFilters = ref<number[]>([]);
 const ratingFilters = ref<string[]>([]);
 const genreFilters = ref<string[]>([]);
 const yearFilters = ref<number[]>([]);
 
-const statusFilters = computed(() => [
+const isMovieOrTvShow = computed(
+  () =>
+    props.item.CollectionType === 'movies' ||
+    props.item.CollectionType === 'tvshows'
+);
+
+const statusFilters = computed((): { label: string; name: ItemFilter }[] => [
   {
     label: t('played'),
     name: ItemFilter.IsPlayed
@@ -216,27 +226,32 @@ const statusFilters = computed(() => [
   { label: t('unliked'), name: ItemFilter.Dislikes }
 ]);
 
-const featureFilters = computed(() => [
-  {
-    label: t('subtitles'),
-    name: 'HasSubtitles'
-  },
-  { label: t('trailer'), value: 'hasTrailer' },
-  {
-    label: t('specialFeatures'),
-    name: 'HasSpecialFeature'
-  },
-  {
-    label: t('themeSong'),
-    name: 'HasThemeSong'
-  },
-  {
-    label: t('themeVideo'),
-    name: 'HasThemeVideo'
-  }
-]);
+const featureFilters = computed(
+  (): { label: string; name: FeatureFilters }[] => [
+    {
+      label: t('subtitles'),
+      name: 'HasSubtitles'
+    },
+    {
+      label: t('trailer'),
+      name: 'HasTrailer'
+    },
+    {
+      label: t('specialFeatures'),
+      name: 'HasSpecialFeature'
+    },
+    {
+      label: t('themeSong'),
+      name: 'HasThemeSong'
+    },
+    {
+      label: t('themeVideo'),
+      name: 'HasThemeVideo'
+    }
+  ]
+);
 
-const typeFilters = [
+const typeFilters: { label: string; name: TypeFilters }[] = [
   { label: 'Blu-Ray', name: 'Bluray' },
   { label: 'DVD', name: 'Dvd' },
   { label: 'HD', name: 'isHD' },
@@ -245,22 +260,20 @@ const typeFilters = [
 ];
 
 /**
- * refesh the list of items that are displayed in the grid,
+ * Refresh the list of items that are displayed in the grid,
  * applying filters and sorting
  */
 async function refreshItems(): Promise<void> {
+  if (!props.item.Id || !props.item.Type) {
+    return;
+  }
+
   try {
-    /**
-     * Sanitization of route params to avoid XSS injection attacks.
-     *
-     * First reported on https://github.com/jellyfin/jellyfin-vue/security/code-scanning/223
-     */
     const response = (
       await remote.sdk.newUserApi(getFilterApi).getQueryFiltersLegacy({
         userId: remote.auth.currentUserId,
-        // @ts-expect-error - We don't have typings for routes - TODO: Fix
-        parentId: sanitizeHtml(route.params.viewId),
-        includeItemTypes: [props.itemsType]
+        parentId: props.item.Id,
+        includeItemTypes: [props.item.Type]
       })
     ).data;
 
@@ -292,12 +305,7 @@ function emitFilterChange(): void {
     years: selectedYearFilters.value
   });
 }
-watch(
-  () => props.itemsType,
-  () => {
-    refreshItems();
-  }
-);
+watch(() => props.item, refreshItems);
 </script>
 
 <style lang="scss" scoped>
