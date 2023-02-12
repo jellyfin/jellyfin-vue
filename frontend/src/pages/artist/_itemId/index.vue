@@ -147,60 +147,63 @@ export default defineComponent({
       })
     ).data;
 
-    const discography = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        albumArtistIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicAlbum],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items;
+    const discography =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          albumArtistIds: [itemId],
+          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+          sortOrder: [SortOrder.Descending],
+          recursive: true,
+          includeItemTypes: [BaseItemKind.MusicAlbum],
+          fields: Object.values(ItemFields),
+          userId: remote.auth.currentUserId
+        })
+      ).data.Items ?? [];
 
-    const singles = discography?.filter(
+    const singles = discography.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
         msToTicks(albumBreakpoints.singleMsMaxLength)
     );
-    const eps = discography?.filter(
+    const eps = discography.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
           msToTicks(albumBreakpoints.singleMsMaxLength) &&
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
           msToTicks(albumBreakpoints.epMsMaxLength)
     );
-    const albums = discography?.filter(
+    const albums = discography.filter(
       (album: BaseItemDto) =>
         (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
         msToTicks(albumBreakpoints.epMsMaxLength)
     );
 
-    const appearances = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        contributingArtistIds: [itemId],
-        excludeItemIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicAlbum],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items;
+    const appearances =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          contributingArtistIds: [itemId],
+          excludeItemIds: [itemId],
+          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+          sortOrder: [SortOrder.Descending],
+          recursive: true,
+          includeItemTypes: [BaseItemKind.MusicAlbum],
+          fields: Object.values(ItemFields),
+          userId: remote.auth.currentUserId
+        })
+      ).data.Items ?? [];
 
-    const musicVideo = (
-      await remote.sdk.newUserApi(getItemsApi).getItems({
-        artistIds: [itemId],
-        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-        sortOrder: [SortOrder.Descending],
-        recursive: true,
-        includeItemTypes: [BaseItemKind.MusicVideo],
-        fields: Object.values(ItemFields),
-        userId: remote.auth.currentUserId
-      })
-    ).data.Items;
+    const musicVideo =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          artistIds: [itemId],
+          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+          sortOrder: [SortOrder.Descending],
+          recursive: true,
+          includeItemTypes: [BaseItemKind.MusicVideo],
+          fields: Object.values(ItemFields),
+          userId: remote.auth.currentUserId
+        })
+      ).data.Items ?? [];
 
     let activeTab = 3;
 
