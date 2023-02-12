@@ -67,10 +67,10 @@ const props = withDefaults(
   defineProps<{
     loading?: boolean;
     title: string;
-    items?: BaseItemDto[];
+    items: BaseItemDto[];
     shape: string;
   }>(),
-  { loading: false, items: () => [], shape: '' }
+  { loading: false, shape: '' }
 );
 
 const cardShape = ref<string>(

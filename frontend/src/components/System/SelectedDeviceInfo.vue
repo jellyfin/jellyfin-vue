@@ -72,10 +72,10 @@ import { useDateFns } from '@/composables';
 
 withDefaults(
   defineProps<{
+    selectedDevice: DeviceInfo;
     isDialog?: boolean;
-    selectedDevice?: DeviceInfo;
   }>(),
-  { isDialog: false, selectedDevice: () => ({}) }
+  { isDialog: false }
 );
 
 defineEmits<{
