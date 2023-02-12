@@ -13,33 +13,33 @@
   </v-col>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import { CardShapes } from '@/utils/items';
 
-export default defineComponent({
-  props: {
-    cardShape: {
-      type: String,
-      validator: (value: string): boolean =>
-        Object.values(CardShapes).includes(value as CardShapes),
-      default: CardShapes.Thumb
-    }
-  },
-  computed: {
-    cardNumber(): number {
-      if (this.$vuetify.display.width < 600) {
-        return this.cardShape === CardShapes.Thumb ? 2 : 3;
-      } else if (this.$vuetify.display.width < 960) {
-        return this.cardShape === CardShapes.Thumb ? 3 : 4;
-      } else if (this.$vuetify.display.width < 1264) {
-        return this.cardShape === CardShapes.Thumb ? 3 : 6;
-      } else if (this.$vuetify.display.width < 1904) {
-        return this.cardShape === CardShapes.Thumb ? 4 : 8;
-      }
-
-      return 4;
-    }
+const props = withDefaults(
+  defineProps<{
+    cardShape?: CardShapes;
+  }>(),
+  {
+    cardShape: CardShapes.Thumb
   }
+);
+
+const cardNumber = computed((): number => {
+  const { width } = useDisplay();
+
+  if (width.value < 600) {
+    return props.cardShape === CardShapes.Thumb ? 2 : 3;
+  } else if (width.value < 960) {
+    return props.cardShape === CardShapes.Thumb ? 3 : 4;
+  } else if (width.value < 1264) {
+    return props.cardShape === CardShapes.Thumb ? 3 : 6;
+  } else if (width.value < 1904) {
+    return props.cardShape === CardShapes.Thumb ? 4 : 8;
+  }
+
+  return 4;
 });
 </script>
