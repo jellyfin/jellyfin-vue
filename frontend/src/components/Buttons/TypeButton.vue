@@ -1,5 +1,5 @@
 <template>
-  <v-menu>
+  <v-menu :disabled="disabled">
     <template #activator="{ props: menuProps }">
       <v-btn
         v-if="!$vuetify.display.smAndDown && (model.length === 0 || model[0])"
@@ -28,29 +28,33 @@
 </template>
 
 <script setup lang="ts">
+import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ref, mergeProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
 const props = withDefaults(
   defineProps<{
-    type: string;
+    /** CollectionType */
+    type: string | undefined;
     disabled?: boolean;
   }>(),
   { disabled: false }
 );
 const emit = defineEmits<{
-  (e: 'change', types: Record<string, string>): void;
+  (e: 'change', types: BaseItemKind | undefined): void;
 }>();
-const model = ref([]);
 
-const items = computed(() => {
+const { t } = useI18n();
+
+const model = ref<BaseItemKind[]>([]);
+
+const items = computed((): { title: string; value: BaseItemKind }[] => {
   switch (props.type) {
     case 'movies': {
       return [
         { title: t('movies'), value: 'Movie' },
         { title: t('collections'), value: 'BoxSet' },
-        { title: t('actors'), value: 'Actor' },
+        { title: t('actors'), value: 'Person' },
         { title: t('genres'), value: 'Genre' },
         { title: t('studios'), value: 'Studio' }
       ];
@@ -65,7 +69,7 @@ const items = computed(() => {
     case 'tvshows': {
       return [
         { title: t('series'), value: 'Series' },
-        { title: t('actors'), value: 'Actor' },
+        { title: t('actors'), value: 'Person' },
         { title: t('genres'), value: 'Genre' },
         { title: t('networks'), value: 'Studio' }
       ];
