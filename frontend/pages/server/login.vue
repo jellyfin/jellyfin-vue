@@ -46,7 +46,10 @@
           {{ auth.currentServer.ServerName }}
         </h5>
         <login-form :user="currentUser" @change="resetCurrentUser" />
-        <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
+        <p
+          class="text-p mt-6 text-center"
+          v-html="cleanDisclaimer(disclaimer)"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -55,6 +58,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import isEmpty from 'lodash/isEmpty';
+import DOMPurify from 'dompurify';
 import { mapStores } from 'pinia';
 import { UserDto } from '@jellyfin/client-axios';
 import { authStore, deviceProfileStore, pageStore } from '~/store';
@@ -103,6 +107,12 @@ export default Vue.extend({
     resetCurrentUser(): void {
       this.currentUser = {};
       this.loginAsOther = false;
+    },
+    cleanDisclaimer: function (disclaimer: string): string {
+      return DOMPurify.sanitize(disclaimer, {
+        ALLOWED_TAGS: ['b', 'i', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'p'],
+        ALLOWED_ATTR: ['href', 'target']
+      });
     }
   }
 });
