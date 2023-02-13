@@ -108,7 +108,7 @@ export default Vue.extend({
       this.currentUser = {};
       this.loginAsOther = false;
     },
-    cleanDisclaimer: function (disclaimer: string): string {
+    cleanDisclaimer(disclaimer: string): string {
       return DOMPurify.sanitize(disclaimer, {
         ALLOWED_TAGS: ['b', 'i', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'p'],
         ALLOWED_ATTR: ['href', 'target']
