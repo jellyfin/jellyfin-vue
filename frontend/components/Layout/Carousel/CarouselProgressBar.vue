@@ -1,5 +1,5 @@
 <template>
-  <div class="progress-bar-container">
+  <div class="progress-bar-container d-none d-md-flex">
     <div
       v-for="i in pages"
       :key="`progress-key-${i}`"
