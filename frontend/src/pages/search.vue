@@ -80,7 +80,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { watchThrottled } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
