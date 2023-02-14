@@ -69,7 +69,7 @@
             </div>
             <div class="text-center text-body-2 text-grey-darken-2 info-box">
               <template v-if="item.CommunityRating">
-                {{ item.CommunityRating | fixed }}
+                {{ item.CommunityRating.toFixed(1) }}
                 <template v-if="item.VoteCount">
                   &middot; {{ item.VoteCount }} votes
                 </template>
@@ -102,15 +102,6 @@ import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api'
 import { useResponsiveClasses } from '@/composables';
 
 export default defineComponent({
-  filters: {
-    fixed(value: number): string | number {
-      if (!value) {
-        return value;
-      }
-
-      return value.toFixed(1);
-    }
-  },
   props: {
     metadata: {
       type: Object,
