@@ -22,12 +22,22 @@ const searchQuery = computed({
     return route.query.q?.toString() || '';
   },
   set(value: string) {
-    if (value === '' || !value) {
-      router.back();
-    } else if (searchQuery.value) {
-      router.replace({ path: '/search', query: { q: value } });
-    } else {
-      router.push({ path: '/search', query: { q: value } });
+    // @ts-expect-error - Typechecking error from Vue typed Router
+    if (value && route.name !== 'search') {
+      router.push({
+        path: '/search',
+        query: {
+          q: value
+        }
+      });
+      // @ts-expect-error - Typechecking error from Vue typed Router
+    } else if (route.name === 'search') {
+      router.replace({
+        ...router.currentRoute,
+        query: {
+          q: value || undefined
+        }
+      });
     }
   }
 });
