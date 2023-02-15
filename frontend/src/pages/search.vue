@@ -2,14 +2,27 @@
   <div>
     <v-app-bar flat :class="useResponsiveClasses('second-toolbar')">
       <v-tabs class="mx-auto" v-model="searchTab">
-        <v-tab :key="0">{{ $t('search.topResults') }}</v-tab>
-        <v-tab :key="1">{{ $t('movies') }}</v-tab>
-        <v-tab :key="2">{{ $t('shows') }}</v-tab>
-        <v-tab :key="3">{{ $t('albums') }}</v-tab>
-        <v-tab :key="4">{{ $t('songs') }}</v-tab>
-        <v-tab :key="5">{{ $t('books') }}</v-tab>
-        <v-tab :key="6">{{ $t('people') }}</v-tab>
-        <v-tab :key="7">{{ $t('artists') }}</v-tab>
+        <v-tab :key="0" :disabled="movieSearchResults.length <= 0">
+          {{ $t('movies') }}
+        </v-tab>
+        <v-tab :key="1" :disabled="showSearchResults.length <= 0">
+          {{ $t('shows') }}
+        </v-tab>
+        <v-tab :key="2" :disabled="albumSearchResults.length <= 0">
+          {{ $t('albums') }}
+        </v-tab>
+        <v-tab :key="3" :disabled="trackSearchResults.length <= 0">
+          {{ $t('songs') }}
+        </v-tab>
+        <v-tab :key="4" :disabled="bookSearchResults.length <= 0">
+          {{ $t('books') }}
+        </v-tab>
+        <v-tab :key="5" :disabled="personSearchResults.length <= 0">
+          {{ $t('people') }}
+        </v-tab>
+        <v-tab :key="6" :disabled="artistSearchResults.length <= 0">
+          {{ $t('artists') }}
+        </v-tab>
       </v-tabs>
     </v-app-bar>
     <v-container class="after-second-toolbar">
@@ -17,28 +30,46 @@
         <v-col>
           <v-window v-model="searchTab" class="bg-transparent">
             <v-window-item :key="0">
-              <item-grid :items="topSearchResults" :loading="loading" />
+              <item-grid
+                :items="movieSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="1">
-              <item-grid :items="movieSearchResults" :loading="loading" />
+              <item-grid
+                :items="showSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="2">
-              <item-grid :items="showSearchResults" :loading="loading" />
+              <item-grid
+                :items="albumSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="3">
-              <item-grid :items="albumSearchResults" :loading="loading" />
+              <item-grid
+                :items="trackSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="4">
-              <item-grid :items="trackSearchResults" :loading="loading" />
+              <item-grid
+                :items="bookSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="5">
-              <item-grid :items="bookSearchResults" :loading="loading" />
+              <item-grid
+                :items="personSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
             <v-window-item :key="6">
-              <item-grid :items="personSearchResults" :loading="loading" />
-            </v-window-item>
-            <v-window-item :key="7">
-              <item-grid :items="artistSearchResults" :loading="loading" />
+              <item-grid
+                :items="artistSearchResults"
+                :loading="loading"
+                no-virtual />
             </v-window-item>
           </v-window>
         </v-col>
@@ -48,12 +79,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, watch, computed, ref } from 'vue';
+import { watch, computed, ref } from 'vue';
+import { useDebounceFn } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { debounce } from 'lodash-es';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
 const route = useRoute();
@@ -62,7 +93,6 @@ const remote = useRemote();
 
 const loading = ref(false);
 const searchTab = ref(0);
-const topSearchResults = ref<BaseItemDto[]>([]);
 const movieSearchResults = ref<BaseItemDto[]>([]);
 const showSearchResults = ref<BaseItemDto[]>([]);
 const albumSearchResults = ref<BaseItemDto[]>([]);
@@ -75,24 +105,25 @@ const searchQuery = computed(() => {
   return route.query?.q?.toString() || '';
 });
 
-watch(
-  () => searchQuery,
-  (newQuery) => {
-    if (newQuery.value !== '') {
-      performSearchDebounce();
-    }
-  }
+const performSearchDebounce = useDebounceFn(
+  async () => await performSearch(),
+  500,
+  { maxWait: 2000 }
 );
 
-onBeforeMount(async () => {
-  if (searchQuery.value === '') {
-    router.back();
-  } else {
-    await performSearch();
+watch(
+  searchQuery,
+  async () => {
+    if (searchQuery.value !== '') {
+      await performSearchDebounce();
+    } else {
+      router.back();
+    }
+  },
+  {
+    immediate: true
   }
-});
-
-const performSearchDebounce = debounce(async () => await performSearch(), 500);
+);
 
 /**
  * Search in Jellyfin
@@ -118,26 +149,24 @@ async function performSearch(): Promise<void> {
   ).data.Items;
 
   if (itemResults) {
-    topSearchResults.value = itemResults.slice(0, 24);
-
     movieSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === BaseItemKind.Movie
+      (item) => item.Type === BaseItemKind.Movie
     );
 
     showSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === BaseItemKind.Series
+      (item) => item.Type === BaseItemKind.Series
     );
 
     albumSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === BaseItemKind.MusicAlbum
+      (item) => item.Type === BaseItemKind.MusicAlbum
     );
 
     trackSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === BaseItemKind.Audio
+      (item) => item.Type === BaseItemKind.Audio
     );
 
     bookSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === BaseItemKind.Book
+      (item) => item.Type === BaseItemKind.Book
     );
 
     personSearchResults.value =
@@ -149,7 +178,7 @@ async function performSearch(): Promise<void> {
       ).data.Items || [];
 
     artistSearchResults.value = itemResults.filter(
-      (item: BaseItemDto) => item.Type === 'MusicArtist'
+      (item) => item.Type === BaseItemKind.MusicArtist
     );
   }
 
