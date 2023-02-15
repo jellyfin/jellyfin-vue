@@ -6,7 +6,8 @@
     :placeholder="$t('search.name')"
     :density="'comfortable'"
     hide-details
-    single-line />
+    single-line
+    @update:focused="onFocus" />
 </template>
 
 <script setup lang="ts">
@@ -22,23 +23,23 @@ const searchQuery = computed({
     return route.query.q?.toString() || '';
   },
   set(value: string) {
-    // @ts-expect-error - Typechecking error from Vue typed Router
-    if (value && route.name !== 'search') {
-      router.push({
-        path: '/search',
-        query: {
-          q: value
-        }
-      });
-      // @ts-expect-error - Typechecking error from Vue typed Router
-    } else if (route.name === 'search') {
-      router.replace({
-        ...router.currentRoute,
-        query: {
-          q: value || undefined
-        }
-      });
-    }
+    router.replace({
+      ...router.currentRoute,
+      query: {
+        q: value || undefined
+      }
+    });
   }
 });
+
+/**
+ * Handle page redirects depending on the focus state of the component
+ */
+function onFocus(focused: boolean): void {
+  if (!searchQuery.value && !focused && window.history.length > 0) {
+    router.back();
+  } else if (focused && !searchQuery.value) {
+    router.push({ path: '/search' });
+  }
+}
 </script>
