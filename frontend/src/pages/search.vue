@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-app-bar flat :class="useResponsiveClasses('second-toolbar')">
-      <v-tabs class="mx-auto" v-model="searchTab">
+      <v-tabs v-model="searchTab" class="mx-auto">
         <v-tab :key="0" :disabled="movieSearchResults.length <= 0">
           {{ $t('movies') }}
         </v-tab>
@@ -79,16 +79,15 @@
 </template>
 
 <script setup lang="ts">
-import { watch, computed, ref } from 'vue';
-import { useDebounceFn } from '@vueuse/core';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, ref, watch } from 'vue';
+import { watchThrottled } from '@vueuse/core';
+import { useRoute } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
 const route = useRoute();
-const router = useRouter();
 const remote = useRemote();
 
 const loading = ref(false);
@@ -105,19 +104,13 @@ const searchQuery = computed(() => {
   return route.query?.q?.toString() || '';
 });
 
-const performSearchDebounce = useDebounceFn(
-  async () => await performSearch(),
-  500,
-  { maxWait: 2000 }
-);
-
 watch(
   searchQuery,
   async () => {
     if (searchQuery.value !== '') {
-      await performSearchDebounce();
+      await performSearch();
     } else {
-      router.back();
+      clearResults();
     }
   },
   {
@@ -180,9 +173,24 @@ async function performSearch(): Promise<void> {
     artistSearchResults.value = itemResults.filter(
       (item) => item.Type === BaseItemKind.MusicArtist
     );
+  } else {
+    clearResults();
   }
 
   loading.value = false;
+}
+
+/**
+ * Clear the search results. Useful when the user clears the text field.
+ */
+function clearResults(): void {
+  movieSearchResults.value = [];
+  showSearchResults.value = [];
+  albumSearchResults.value = [];
+  trackSearchResults.value = [];
+  bookSearchResults.value = [];
+  personSearchResults.value = [];
+  artistSearchResults.value = [];
 }
 </script>
 
