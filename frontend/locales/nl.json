@@ -111,7 +111,9 @@
       "albums": "Albums",
       "appearsOn": "Uiterlijk",
       "discography": "Discografie",
+      "eps": "EP's",
       "information": "Informatie",
+      "singles": "Singles",
       "videos": "Videos"
     },
     "cast": "Cast",
@@ -133,6 +135,8 @@
     }
   },
   "itemMenu": {
+    "pushToBottom": "Ga naar het einde",
+    "pushToTop": "Ga naar het begin",
     "removeFromQueue": "Verwijder uit wachtrij"
   },
   "itemNotFound": "Item niet gevonden",
@@ -221,7 +225,7 @@
   "noInformationAvailable": "Geen informatie beschikbaar",
   "noNetworkConnection": "Geen netwerk verbinding",
   "noResultsFound": "Er is hier niets",
-  "numberTracks": "{number} tracks",
+  "numberTracks": "{number} nummers",
   "operatingSystem": "Besturingssysteem",
   "originalAspectRatio": "Originele aspect ratio",
   "originalTitle": "Originele titel",
@@ -261,7 +265,7 @@
     "streamType": {
       "dash": "DASH",
       "hls": "HLS",
-      "name": "Stream type:",
+      "name": "Streamtype:",
       "unknown": "Onbekend",
       "video": "Video"
     }
@@ -437,6 +441,7 @@
   "speed": "Snelheid",
   "startNow": "Start nu",
   "status": "Status",
+  "stretch": "Uitrekken",
   "studios": "Studio's",
   "subtitles": "Ondertiteling",
   "syncPlayGroups": "SyncPlay groepen",
@@ -454,7 +459,7 @@
   "transcodingInfo": {
     "name": "Transcodering",
     "transcodingFramerate": {
-      "name": "Framerate:",
+      "name": "Beeldsnelheid:",
       "value": "{value} fps"
     },
     "transcodingProgress": "Vooruitgang:",
@@ -514,7 +519,7 @@
   },
   "version": "Versie",
   "video": "Video",
-  "videoTypes": "Video Types",
+  "videoTypes": "Videotypes",
   "viewDetails": "Bekijk details",
   "vueClientVersion": "Client versie",
   "wizard": {
