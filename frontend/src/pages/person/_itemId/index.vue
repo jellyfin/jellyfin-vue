@@ -49,16 +49,16 @@
           </v-tabs>
           <v-window v-model="activeTab" class="bg-transparent">
             <v-window-item :value="0">
-              <item-grid :items="movies" large />
+              <item-grid :items="movies" large no-virtual />
             </v-window-item>
             <v-window-item :value="1">
-              <item-grid :items="series" large />
+              <item-grid :items="series" large no-virtual />
             </v-window-item>
             <v-window-item :value="2">
-              <item-grid :items="books" large />
+              <item-grid :items="books" large no-virtual />
             </v-window-item>
             <v-window-item :value="3">
-              <item-grid :items="photos" large />
+              <item-grid :items="photos" large no-virtual />
             </v-window-item>
             <v-window-item :value="4">
               <v-row>

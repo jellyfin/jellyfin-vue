@@ -6,15 +6,22 @@
       </v-col>
     </v-row>
     <virtual-grid
-      v-else-if="!loading && items.length > 0"
+      v-else-if="!loading && items.length > 0 && !noVirtual"
       :items="items"
       :buffer-multiplier="4"
       :throttle-scroll="300"
-      :class="useResponsiveClasses('card-grid-container scroller')">
+      :class="useResponsiveClasses('card-grid-container')">
       <template #default="{ item, style }">
         <card :style="style" :item="item" margin text overlay link />
       </template>
     </virtual-grid>
+    <div
+      v-else-if="!loading && items.length > 0 && noVirtual"
+      :class="useResponsiveClasses('card-grid-container')">
+      <template v-for="item of items" :key="item.Id">
+        <card :item="item" margin text overlay link />
+      </template>
+    </div>
     <v-row v-else-if="!loading && items.length === 0" justify="center">
       <v-col
         cols="12"
@@ -53,15 +60,16 @@ defineProps({
   large: {
     type: Boolean,
     required: false
+  },
+  noVirtual: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.scroller {
-  max-height: 100%;
-}
-
 .empty-card-container {
   max-height: 90vh;
   overflow: hidden;

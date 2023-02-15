@@ -74,7 +74,7 @@
               <v-container>
                 <v-row>
                   <v-col>
-                    <item-grid :items="appearances" large />
+                    <item-grid :items="appearances" large no-virtual />
                   </v-col>
                 </v-row>
               </v-container>
@@ -83,7 +83,7 @@
               <v-container>
                 <v-row>
                   <v-col>
-                    <item-grid :items="musicVideos" large />
+                    <item-grid :items="musicVideos" large no-virtual />
                   </v-col>
                 </v-row>
               </v-container>
