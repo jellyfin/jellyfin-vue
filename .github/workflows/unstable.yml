@@ -9,7 +9,7 @@ on:
     branches:
       - master
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
 
 jobs:
   docker:
@@ -78,9 +78,9 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - 'macos-latest'
-          - 'ubuntu-latest'
-          - 'windows-latest'
+          - "macos-latest"
+          - "ubuntu-latest"
+          - "windows-latest"
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -91,7 +91,6 @@ jobs:
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 18
-          cache: 'npm'
           check-latest: true
 
       - name: Install dependencies 📦
@@ -104,10 +103,10 @@ jobs:
           sudo apt-get install -y webkit2gtk-4.0
 
       - name: Generate Tauri icons 🖌️
-        run: 'npm run tauri:icon -w tauri'
+        run: "npm run tauri:icon -w tauri"
 
       - name: Build Tauri 🛠️
-        run: 'npm run tauri:build -w tauri'
+        run: "npm run tauri:build -w tauri"
 
       - name: Upload artifact (Linux) ⬆️🐧
         uses: actions/upload-artifact@v3.1.1

@@ -27,7 +27,7 @@ on:
         value: ${{ jobs.msg.outputs.msg }}
       marker:
         description: Hidden marker to detect PR comments composed by the bot
-        value: 'CFPages-deployment'
+        value: "CFPages-deployment"
 
 jobs:
   msg:
