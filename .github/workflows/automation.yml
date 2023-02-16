@@ -9,7 +9,7 @@ on:
     branches:
       - master
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
   pull_request_target:
 
 jobs:
@@ -63,10 +63,10 @@ jobs:
         if: ${{ github.event_name == 'pull_request_target' }}
         continue-on-error: true
         with:
-          repo-token: '${{ secrets.JF_BOT_TOKEN }}'
+          repo-token: "${{ secrets.JF_BOT_TOKEN }}"
 
       - name: Check all PRs for merge conflicts ⛔
         uses: eps1lon/actions-label-merge-conflict@v2.1.0
         with:
-          dirtyLabel: 'merge conflict'
+          dirtyLabel: "merge conflict"
           repoToken: ${{ secrets.JF_BOT_TOKEN }}
