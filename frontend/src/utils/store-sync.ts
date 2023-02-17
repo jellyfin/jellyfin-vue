@@ -1,161 +1,192 @@
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
 import destr from 'destr';
-import { isNil } from 'lodash-es';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { taskManagerStore } from '@/store';
 
-/**
- * Cast custom preferences returned from the server from strings to the correct Javascript type
- *
- * @param data - Response from the server
- * @param store
- */
-function castDisplayPreferencesResponse<T>(
-  data: DisplayPreferencesDto,
-  target: T
-): DisplayPreferencesDto {
-  // @ts-expect-error - We need loose types here since all this logic is about properly casting the data
-  const storeKeys = Object.keys(target);
+const CLIENT = 'vue';
 
-  if (data.CustomPrefs) {
-    for (const [key, value] of Object.entries(data.CustomPrefs)) {
-      /**
-       * destr does proper conversion for all the types, even undefined
-       */
-      if (storeKeys.includes(key)) {
-        data.CustomPrefs[key] = destr(value);
-      } else {
-        /**
-         * Remove properties that are automatically present in the server but are not present in the store.
-         */
-        delete data.CustomPrefs[key];
-      }
-    }
+/**
+ * Serializes custom pref values for storage as string
+ */
+function serializeCustomPref(value: unknown): string | undefined {
+  if (value === undefined) {
+    return undefined;
   }
 
-  return data.CustomPrefs || {};
+  return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
 /**
- * Fetch displayPreferences settings from server
- *
- * @param key - Key used to save the store's state
- * @param target - Object that serves as a model for the store's state
+ * De-serializes custom pref values from string to a value
  */
-export async function fetchSettingsFromServer<T>(
-  key: string,
-  target: T,
-  cast = true
-): Promise<T | DisplayPreferencesDto> {
+function deserializeCustomPref(value: string): unknown {
+  return destr(value);
+}
+
+/**
+ * Fetches server display preferences
+ */
+export async function fetchDisplayPreferences(
+  displayPreferencesId: string
+): Promise<DisplayPreferencesDto> {
   const remote = useRemote();
 
   const response = await remote.sdk
     .newUserApi(getDisplayPreferencesApi)
     .getDisplayPreferences({
-      displayPreferencesId: key,
-      userId: remote.auth.currentUserId || '',
-      client: 'vue'
+      displayPreferencesId,
+      userId: remote.auth.currentUserId ?? '',
+      client: CLIENT
     });
 
   if (response.status !== 200) {
     throw new Error(
-      `Unexpected API response code while fetching displayPreferences with id: ${key} (${response.status})`
+      `Unexpected API response code while fetching displayPreferences with id: ${displayPreferencesId} (${response.status})`
     );
   }
 
-  const data = response.data;
-
-  return cast
-    ? (castDisplayPreferencesResponse<T>(data, target) as T)
-    : (response.data as DisplayPreferencesDto);
+  return response.data;
 }
 
 /**
- * Pushes a new displayPreferences payload to server
+ * Display preferences must be merged based on latest state before being updated.
+ * For some reason Jellyfin does not allow partial updates for display preferences.
  */
-export async function pushSettingsToServer(
-  key: string,
-  prefs: DisplayPreferencesDto
+export async function updateDisplayPreferences(
+  displayPreferencesId: string,
+  displayPreferences: DisplayPreferencesDto
 ): Promise<void> {
   const remote = useRemote();
 
-  if (prefs.CustomPrefs) {
-    for (const [key, value] of Object.entries(prefs.CustomPrefs)) {
-      let string = value;
+  const currentDisplayPreferences = await fetchDisplayPreferences(
+    displayPreferencesId
+  );
 
-      if (typeof value !== 'string') {
-        string = JSON.stringify(value);
-      }
+  const newDisplayPreferences = Object.assign(
+    {},
+    currentDisplayPreferences,
+    displayPreferences
+  );
 
-      /**
-       * Undefined can't be converted to string using JSON.stringify so we add this safeguard
-       */
-      if (typeof string !== 'string') {
-        string = String(string);
-      }
+  // if either old or new preferences have custom settings, merge them
+  if (
+    currentDisplayPreferences.CustomPrefs !== undefined ||
+    newDisplayPreferences.CustomPrefs !== undefined
+  ) {
+    const mergedCustomPrefs = Object.assign(
+      {},
+      currentDisplayPreferences.CustomPrefs ?? {},
+      displayPreferences.CustomPrefs ?? {}
+    );
 
-      prefs.CustomPrefs[key] = string;
-    }
+    newDisplayPreferences.CustomPrefs = Object.fromEntries(
+      Object.entries(mergedCustomPrefs)
+        .map(([key, value]) => [key, serializeCustomPref(value)])
+        .filter(([, value]) => value !== undefined)
+    );
+  }
 
-    const responseUpdate = await remote.sdk
-      .newUserApi(getDisplayPreferencesApi)
-      .updateDisplayPreferences({
-        displayPreferencesId: key,
-        userId: remote.auth.currentUserId || '',
-        client: 'vue',
-        displayPreferencesDto: prefs
-      });
+  const response = await remote.sdk
+    .newUserApi(getDisplayPreferencesApi)
+    .updateDisplayPreferences({
+      displayPreferencesId,
+      userId: remote.auth.currentUserId ?? '',
+      client: CLIENT,
+      displayPreferencesDto: newDisplayPreferences
+    });
 
-    if (responseUpdate.status !== 204) {
-      throw new Error(
-        `Unexpected API response code while pushing displayPreferences with id: ${key} (${responseUpdate.status})`
-      );
-    }
-  } else {
-    throw new Error(`DisplayPreferences data is malformed`);
+  if (response.status !== 204) {
+    throw new Error(
+      `Unexpected API response code while pushing displayPreferences with id: ${displayPreferencesId} (${response.status})`
+    );
   }
 }
 
 /**
- * This watcher provides a generic way to sync stores' state to the server.
- * Make sure your store implements a 'lastSync' property of type 'number | null'
- *
- * It will automatically be synced when a property changes.
+ * Uses the keys on `defaults` to extract values from the Server's CustomPrefs
+ * and de-serializes them to a value.
+ * All keys needed for default should exist on the defaults parameter.
+ * Warning: No runtime checking is performed and de-serialized data could vary in shape from what is expected.
  */
-export default async function preferencesSync<T>(
-  key: string,
-  state: T
+export async function fetchDefaultedCustomPrefs<T extends object>(
+  displayPreferencesId: string,
+  defaults: T
+): Promise<T> {
+  const displayPreferences = await fetchDisplayPreferences(
+    displayPreferencesId
+  );
+
+  return Object.fromEntries(
+    Object.entries(defaults).map(([k, v]) => [
+      k,
+      displayPreferences.CustomPrefs && k in displayPreferences.CustomPrefs
+        ? deserializeCustomPref(displayPreferences.CustomPrefs?.[k])
+        : v
+    ])
+  ) as T;
+}
+
+/**
+ * Updates CustomPrefs by merging passed in value with existing custom prefs
+ */
+export async function updateCustomPrefs<T extends object>(
+  displayPreferencesId: string,
+  customPrefs: T
 ): Promise<void> {
-  const auth = useRemote().auth;
+  const remote = useRemote();
+
+  const displayPreferences = await fetchDisplayPreferences(
+    displayPreferencesId
+  );
+
+  displayPreferences.CustomPrefs = Object.assign(
+    displayPreferences.CustomPrefs ?? {},
+    customPrefs
+  );
+
+  displayPreferences.CustomPrefs = Object.fromEntries(
+    Object.entries(displayPreferences.CustomPrefs)
+      .map(([key, value]) => [key, serializeCustomPref(value)])
+      .filter(([, value]) => value !== undefined)
+  );
+
+  const response = await remote.sdk
+    .newUserApi(getDisplayPreferencesApi)
+    .updateDisplayPreferences({
+      displayPreferencesId,
+      userId: remote.auth.currentUserId ?? '',
+      client: CLIENT,
+      displayPreferencesDto: displayPreferences
+    });
+
+  if (response.status !== 204) {
+    throw new Error(
+      `Unexpected API response code while pushing displayPreferences with id: ${displayPreferencesId} (${response.status})`
+    );
+  }
+}
+
+/**
+ * Wraps custom pref syncing in a task with error handling
+ */
+export async function syncCustomPrefs<T extends object>(
+  displayPreferencesId: string,
+  customPrefs: T
+): Promise<void> {
   const { t } = usei18n();
   const taskManager = taskManagerStore();
 
-  if (!isNil(auth.currentUser)) {
-    /**
-     * Creates a config syncing task, so UI can show that there's a syncing in progress
-     */
-    const syncTaskId = taskManager.startConfigSync();
+  /**
+   * Creates a config syncing task, so UI can show that there's a syncing in progress
+   */
+  const syncTaskId = taskManager.startConfigSync();
 
-    try {
-      /**
-       * The fetch part is done because DisplayPreferences doesn't accept partial updates
-       * TODO: Revisit if we ever get PATCH support
-       */
-      const displayPrefs = (await fetchSettingsFromServer(
-        key,
-        state,
-        false
-      )) as DisplayPreferencesDto;
-
-      displayPrefs.CustomPrefs = {};
-
-      Object.assign(displayPrefs.CustomPrefs, state);
-      await pushSettingsToServer(key, displayPrefs);
-    } catch {
-      useSnackbar(t('failedSettingDisplayPreferences'), 'error');
-    } finally {
-      taskManager.finishTask(syncTaskId);
-    }
+  try {
+    await updateCustomPrefs(displayPreferencesId, customPrefs);
+  } catch {
+    useSnackbar(t('failedSettingDisplayPreferences'), 'error');
+  } finally {
+    taskManager.finishTask(syncTaskId);
   }
 }
