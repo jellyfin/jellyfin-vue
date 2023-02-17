@@ -7,7 +7,7 @@ import {
   watchPausable
 } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
-import preferencesSync, { fetchSettingsFromServer } from '@/utils/store-sync';
+import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
@@ -131,7 +131,7 @@ class ClientSettingsStore {
      */
     const syncDataWatcher = watchPausable(this._state, async () => {
       if (remote.auth.currentUser) {
-        await preferencesSync(storeKey, this._state.value);
+        await syncCustomPrefs(storeKey, this._state.value);
       }
     });
 
@@ -143,7 +143,7 @@ class ClientSettingsStore {
       async () => {
         if (remote.auth.currentUser) {
           try {
-            const data = await fetchSettingsFromServer<ClientSettingsState>(
+            const data = await fetchDefaultedCustomPrefs(
               storeKey,
               this._state.value
             );

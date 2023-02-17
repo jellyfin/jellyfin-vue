@@ -21,19 +21,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { pickBy } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
-import { clientSettingsStore, userLibrariesStore } from '@/store';
+import { userLibrariesStore } from '@/store';
 import type { HomeSection } from '@/store/userLibraries';
-
-const VALID_SECTIONS = new Set([
-  'resume',
-  'resumeaudio',
-  'upnext',
-  'latestmedia'
-]);
 
 const { t } = useI18n();
 const route = useRoute();
@@ -42,7 +34,6 @@ route.meta.title = t('home');
 route.meta.transparentLayout = true;
 
 const userLibraries = userLibrariesStore();
-const clientSettings = clientSettingsStore();
 
 /**
  * Items are fetched at logon when switching between the 'fullpage' and 'default' layout. With the help of the
@@ -62,29 +53,13 @@ onMounted(async () => {
 });
 
 const homeSections = computed<HomeSection[]>(() => {
-  // Filter for valid sections in Jellyfin Vue
-  // TODO: Implement custom section order
-  const homeSectionPrefs = pickBy(
-    // @ts-expect-error - No typings for this
-    clientSettings.CustomPrefs as { [key: string]: string },
-    (value, key) => {
-      return (
-        value && VALID_SECTIONS.has(value) && key.startsWith('homesection')
-      );
-    }
-  );
-
-  const homeSectionKeys = Object.keys(homeSectionPrefs);
-
-  if (homeSectionKeys.length === 0) {
-    homeSectionKeys.push(
-      'librarytiles',
-      'resume',
-      'resumeaudio',
-      'upnext',
-      'latestmedia'
-    );
-  }
+  const homeSectionKeys = [
+    'librarytiles',
+    'resume',
+    'resumeaudio',
+    'upnext',
+    'latestmedia'
+  ];
 
   const homeSections: HomeSection[] = [];
 
