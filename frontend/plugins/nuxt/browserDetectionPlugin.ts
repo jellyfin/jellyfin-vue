@@ -102,7 +102,9 @@ export class BrowserDetector {
   isChrome(): boolean {
     // The Edge user agent will also contain the "Chrome" keyword, so we need
     // to make sure this is not Edge. Same happens for webos.
-    return this.userAgentContains('Chrome') && !this.isEdge() && !this.isWebOS();
+    return (
+      this.userAgentContains('Chrome') && !this.isEdge() && !this.isWebOS()
+    );
   }
 
   /**

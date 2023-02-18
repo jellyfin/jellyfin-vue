@@ -236,6 +236,8 @@
               </div>
             </v-overlay>
           </v-fade-transition>
+          <!--          Skip Intro-->
+          <skip-intro-button v-if="intro" :intro="intro" />
         </v-card>
       </v-hover>
     </player-dialog>
@@ -248,6 +250,7 @@ import { mapStores } from 'pinia';
 import screenfull from 'screenfull';
 import { playbackManagerStore } from '~/store';
 import { PlaybackStatus } from '~/store/playbackManager';
+import { IntroSkipperResponse } from '~/plugins/nuxt/apiPlugin';
 
 export default Vue.extend({
   data() {
@@ -258,7 +261,8 @@ export default Vue.extend({
       keepOpen: false,
       playbackData: false,
       isUpNextVisible: false,
-      stretchVideo: true
+      stretchVideo: true,
+      intro: null as IntroSkipperResponse | null
     };
   },
   computed: {
@@ -272,6 +276,9 @@ export default Vue.extend({
       } else {
         document.documentElement.classList.add('overflow-hidden');
       }
+    },
+    'playbackManager.getCurrentItem'(): void {
+      this.fetchIntroTimestamps();
     },
     'playbackManager.isPlaying'(): void {
       if (
@@ -473,6 +480,17 @@ export default Vue.extend({
         this.fullScreenOverlayTimer = null;
       } else if (!value) {
         this.setFullscreenTimeout();
+      }
+    },
+    async fetchIntroTimestamps(): Promise<void> {
+      if (this.playbackManager?.getCurrentItem?.Type === 'Episode') {
+        try {
+          const introResponse = await this.$axios.get(
+            `/Episode/${this.playbackManager?.getCurrentItem?.Id}/IntroTimestamps`
+          );
+
+          this.intro = introResponse.data;
+        } catch (e) {}
       }
     }
   }
