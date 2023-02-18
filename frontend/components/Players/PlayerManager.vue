@@ -237,7 +237,11 @@
             </v-overlay>
           </v-fade-transition>
           <!--          Skip Intro-->
-          <skip-intro-button v-if="intro" :intro="intro" />
+          <skip-intro-button
+            v-if="intro"
+            :intro="intro"
+            :large="!playbackManager.isMinimized"
+          />
         </v-card>
       </v-hover>
     </player-dialog>

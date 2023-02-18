@@ -1,26 +1,22 @@
 <template>
   <v-slide-y-reverse-transition>
-    <div
+    <v-btn
       v-if="show"
-      class="d-flex flex-row justify-center skip-intro-button-container"
+      ref="skipIntro"
+      outlined
+      :large="large"
+      :small="!large"
+      :style="{
+        '--transition-duration': `${visibleDuration}s`
+      }"
+      class="skip-intro"
+      :class="{ 'mr-10': large, 'ma-4': large, 'ma-1': !large }"
+      @click="skipIntro()"
+      @mouseenter="onMouseEnter()"
+      @mouseleave="onMouseLeave()"
     >
-      <div class="pa-4 pl-s pr-s">
-        <v-btn
-          ref="skipIntro"
-          outlined
-          large
-          :style="{
-            '--transition-duration': `${visibleDuration}s`
-          }"
-          class="skip-intro my-2 py-2"
-          @click="skipIntro()"
-          @mouseenter="onMouseEnter()"
-          @mouseleave="onMouseLeave()"
-        >
-          Skip Intro <v-icon size="32">mdi-skip-next</v-icon>
-        </v-btn>
-      </div>
-    </div>
+      Skip Intro <v-icon v-if="large" size="32">mdi-skip-next</v-icon>
+    </v-btn>
   </v-slide-y-reverse-transition>
 </template>
 
@@ -35,6 +31,11 @@ export default Vue.extend({
     intro: {
       type: Object as PropType<IntroSkipperResponse>,
       required: true
+    },
+    large: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   data() {
@@ -90,13 +91,6 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {
-    // console.log('mounting');
-    //
-    // if (this.intro && this.intro.ShowSkipPromptAt < 2) {
-    //   this.animate();
-    // }
-  },
   methods: {
     skipIntro() {
       this.skipIntroClicked = true;
@@ -126,9 +120,11 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .skip-intro {
-  position: relative;
   overflow: hidden;
   z-index: 9999;
+  right: 0;
+  position: absolute;
+  bottom: 23%;
 }
 
 .skip-intro::before {
@@ -148,20 +144,10 @@ export default Vue.extend({
   transition-duration: var(--transition-duration);
 }
 
-.skip-intro-button-container {
-  position: absolute;
-  bottom: 18%;
-  width: 100%;
-  z-index: 9999;
-}
-.skip-intro-button-container > div {
-  width: calc(100vh * 1.77 - 2vh);
-}
-
 /* Media query for screen sizes up to 600px (sm) */
 @media (max-width: 600px) {
-  .skip-intro-button-container {
-    bottom: 20%;
+  .skip-intro {
+    bottom: 25%;
   }
 }
 </style>
