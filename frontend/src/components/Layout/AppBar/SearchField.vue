@@ -26,7 +26,7 @@ const searchQuery = computed({
     router.replace({
       ...router.currentRoute,
       query: {
-        q: value || undefined
+        q: value.trim() || undefined
       }
     });
   }
