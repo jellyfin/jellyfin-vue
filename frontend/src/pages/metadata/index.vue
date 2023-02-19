@@ -1,7 +1,7 @@
 <template>
   <v-row class="pa-4 metadata">
     <v-col cols="3" class="tree-view-container">
-      <!-- TODO: Wait for tree view to be implemented in Vuetify 3 (https://github.com/vuetifyjs/vuetify/issues/13518) -->
+      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13518) -->
       <!-- <v-treeview
         :items="items"
         :load-children="fetchItems"
