@@ -2,9 +2,8 @@
   <v-menu
     v-model="menu"
     :close-on-content-click="false"
-    transition="scale-transition"
-    offset-y>
-    <template #:activator="{ on, attrs }">
+    transition="scale-transition">
+    <template #activator="{ on, attrs }">
       <v-text-field
         :model-value="value"
         :label="label"
@@ -17,30 +16,22 @@
     <!-- <v-date-picker :value="value" @change="handleChange" /> -->
   </v-menu>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default defineComponent({
-  props: {
-    value: {
-      type: String,
-      default: ''
-    },
-    label: {
-      type: String,
-      default: null
-    }
-  },
-  data() {
-    return {
-      menu: false
-    };
-  },
-  methods: {
-    handleChange(value: string): void {
-      this.menu = false;
-      this.$emit('update:date', value);
-    }
-  }
-});
+defineProps<{
+  value: string;
+  label: string;
+}>();
+
+defineEmits<{
+  (e: 'update:date', value: string): void;
+}>();
+
+const menu = ref(false);
+
+// const handleChange = (value: string): void => {
+//   menu.value = false;
+//   emit('update:date', value);
+// };
 </script>
