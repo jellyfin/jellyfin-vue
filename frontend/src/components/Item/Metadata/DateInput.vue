@@ -12,7 +12,7 @@
         v-bind="attrs"
         v-on="on" />
     </template>
-    <!-- TODO: Wait for Vuetify 3.1 -->
+    <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13480) -->
     <!-- <v-date-picker :value="value" @change="handleChange" /> -->
   </v-menu>
 </template>
