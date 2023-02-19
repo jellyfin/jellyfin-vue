@@ -19,7 +19,7 @@
     </template>
     <template #content>
       <v-col>
-        <!-- TODO: Wait for Vuetify 3.1 -->
+        <!-- TODO: Wait for Vuetify implementation (https://github.com/vuetifyjs/vuetify/issues/13479) -->
         <!-- <v-data-table
           :headers="headers"
           :items="devices"

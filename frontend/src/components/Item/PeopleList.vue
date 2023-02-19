@@ -19,7 +19,7 @@
       v-else
       :key="index"
       class="d-flex align-center mt-5 mb-5">
-      <!-- TODO: Wait for Vuetify 3.1 -->
+      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
       <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
       <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
     </div>
