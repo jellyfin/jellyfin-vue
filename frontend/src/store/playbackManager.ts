@@ -1,4 +1,4 @@
-import { reactive, Ref, ref, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { shuffle, isNil, cloneDeep } from 'lodash-es';
 import {
   BaseItemDto,
@@ -22,20 +22,6 @@ import { usei18n, useRemote, useRouter, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
-
-export let mediaElementRef = ref<HTMLMediaElement>();
-export let mediaControls = useMediaControls(mediaElementRef);
-
-/**
- * Temporary function to set new media element ref until https://github.com/vuejs/core/pull/7593 is fixed
- */
-export function setNewMediaElementRef(
-  newMediaElementRef: Ref<HTMLMediaElement | undefined>
-): void {
-  // eslint-disable-next-line vue/no-ref-as-operand
-  mediaElementRef = newMediaElementRef;
-  mediaControls = useMediaControls(mediaElementRef);
-}
 
 /**
  * == INTERFACES ==
@@ -133,6 +119,8 @@ const defaultState: PlaybackManagerState = {
 
 const state = reactive<PlaybackManagerState>(cloneDeep(defaultState));
 const reactiveDate = useNow();
+export const mediaElementRef = ref<HTMLMediaElement>();
+export const mediaControls = useMediaControls(mediaElementRef);
 /**
  * Previously, we created a new MediaMetadata every time the item changed. However,
  * that made the MediaSession controls disappear for a second. Keeping the metadata
