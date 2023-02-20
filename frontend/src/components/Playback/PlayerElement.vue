@@ -11,7 +11,7 @@
         playsinline
         :loop="playbackManager.isRepeatingOnce"
         :class="{ stretched: playerElement.isStretched }"
-        @canplay="onCanPlay">
+        @loadeddata="onLoadedData">
         <track
           v-for="sub in playbackManager.currentItemVttParsedSubtitleTracks"
           :key="`${playbackManager.currentSourceUrl}-${sub.srcIndex}`"
@@ -25,48 +25,42 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, ref, nextTick } from 'vue';
+import { computed, watch, nextTick } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import Hls, { ErrorData, ErrorTypes, Events, HlsConfig } from 'hls.js';
+import Hls, { ErrorData, ErrorTypes, Events } from 'hls.js';
 import { playbackManagerStore, playerElementStore } from '@/store';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
-import { setNewMediaElementRef } from '@/store/playbackManager';
-
 /**
  * Playback won't work in development until https://github.com/vuejs/core/pull/7593 is fixed
  */
-const mediaElementRef = ref<HTMLMediaElement>();
-
-setNewMediaElementRef(mediaElementRef);
+import { mediaElementRef } from '@/store/playbackManager';
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 
 const { t } = useI18n();
-
 /**
  * Safari iOS doesn't support hls.js, so we need to handle the cases where we don't need hls.js
  */
 const isNativeHlsSupported = document
   .createElement('video')
   .canPlayType('application/vnd.apple.mpegurl');
-const isHlsSupported = Hls.isSupported();
-
-let hls: Hls | undefined;
-
-const defaultHlsConfig: Partial<HlsConfig> = {
-  testBandwidth: false
-};
+const hls =
+  Hls.isSupported() && !isNativeHlsSupported
+    ? new Hls({
+        testBandwidth: false
+      })
+    : undefined;
 
 /**
- * Destroy HLS instance after playback is done
+ * Detaches HLS instance after playback is done
  */
-function destroyHls(): void {
+function detachHls(): void {
   if (hls) {
-    hls.destroy();
-    hls = undefined;
+    hls.detachMedia();
+    hls.off(Events.ERROR, onHlsEror);
   }
 }
 
@@ -79,7 +73,8 @@ const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
 });
 
 /**
- * If the player is a video element and we're in the PiP player or fullscreen video playback, we need to ensure the DOM elements are mounted before the teleport target is ready
+ * If the player is a video element and we're in the PiP player or fullscreen video playback,
+ * we need to ensure the DOM elements are mounted before the teleport target is ready
  */
 const teleportTarget = computed<
   '.fullscreen-video-container' | '.minimized-video-container' | undefined
@@ -105,8 +100,12 @@ const posterUrl = computed<string>(() =>
 /**
  * Called by the media element when the playback is ready
  */
-async function onCanPlay(): Promise<void> {
+async function onLoadedData(): Promise<void> {
   if (playbackManager.currentlyPlayingMediaType === 'Video') {
+    if (mediaElementRef.value) {
+      mediaElementRef.value.currentTime = playbackManager.currentTime;
+    }
+
     await playerElement.applyCurrentSubtitle();
   }
 }
@@ -141,65 +140,6 @@ function onHlsEror(_event: Events.ERROR, data: ErrorData): void {
 }
 
 watch(
-  () => playbackManager.currentSourceUrl,
-  async () => {
-    if (!playbackManager.currentSourceUrl) {
-      destroyHls();
-      playerElement.freeSsaTrack();
-
-      return;
-    }
-
-    /**
-     * Wait for nextTick to have the DOM updated accordingly
-     */
-    await nextTick();
-
-    try {
-      if (!mediaElementRef.value) {
-        throw new Error('No media element found');
-      }
-
-      if (
-        (playbackManager.currentMediaSource?.SupportsDirectPlay &&
-          playbackManager.currentlyPlayingMediaType === 'Audio') ||
-        ((isNativeHlsSupported ||
-          playbackManager.currentMediaSource?.SupportsDirectPlay) &&
-          playbackManager.currentlyPlayingMediaType === 'Video')
-      ) {
-        /**
-         * For the video case, Safari iOS doesn't support hls.js but supports native HLS
-         */
-        mediaElementRef.value.src = playbackManager.currentSourceUrl;
-        mediaElementRef.value.currentTime = playbackManager.currentTime;
-      } else if (
-        isHlsSupported &&
-        playbackManager.currentlyPlayingMediaType === 'Video'
-      ) {
-        if (!hls) {
-          hls = new Hls({
-            ...defaultHlsConfig,
-            startPosition: playbackManager.currentTime
-          });
-          hls.attachMedia(mediaElementRef.value);
-        } else {
-          hls.config.startPosition = playbackManager.currentTime;
-        }
-
-        hls.on(Events.ERROR, onHlsEror);
-
-        hls.loadSource(playbackManager.currentSourceUrl);
-      } else {
-        throw new Error('No playable case');
-      }
-    } catch {
-      useSnackbar(t('errors.cantPlayItem'), 'error');
-      playbackManager.stop();
-    }
-  }
-);
-
-watch(
   () => [
     playbackManager.currentSubtitleStreamIndex,
     playerElement.isFullscreenMounted,
@@ -208,6 +148,45 @@ watch(
   (newVal) => {
     if (newVal[1] || newVal[2]) {
       playerElement.applyCurrentSubtitle();
+    }
+  }
+);
+
+watch(mediaElementRef, async () => {
+  await nextTick();
+  detachHls();
+
+  if (mediaElementRef.value && mediaElementType.value === 'video' && hls) {
+    hls.attachMedia(mediaElementRef.value);
+    hls.on(Events.ERROR, onHlsEror);
+  }
+});
+
+watch(
+  () => playbackManager.currentSourceUrl,
+  (newUrl) => {
+    if (hls) {
+      hls.stopLoad();
+    }
+
+    if (!newUrl) {
+      return;
+    }
+
+    if (
+      mediaElementRef.value &&
+      (playbackManager.currentMediaSource?.SupportsDirectPlay ||
+        isNativeHlsSupported)
+    ) {
+      /**
+       * For the video case, Safari iOS doesn't support hls.js but supports native HLS
+       */
+      mediaElementRef.value.src = newUrl;
+    } else if (hls && playbackManager.currentlyPlayingMediaType === 'Video') {
+      /**
+       * We need to check if HLS.js can handle transcoded audio to remove the video check
+       */
+      hls.loadSource(newUrl);
     }
   }
 );
