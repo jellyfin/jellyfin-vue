@@ -87,8 +87,6 @@ class PlayerElementStore {
   };
 
   private _setSsaTrack = async (trackSrc: string): Promise<void> => {
-    this.freeSsaTrack();
-
     if (!subtitlesOctopus) {
       subtitlesOctopus = new SubtitlesOctopus({
         video: mediaElementRef.value,
@@ -104,7 +102,10 @@ class PlayerElementStore {
 
   public freeSsaTrack = (): void => {
     if (subtitlesOctopus) {
-      subtitlesOctopus.dispose();
+      try {
+        subtitlesOctopus.dispose();
+      } catch {}
+
       subtitlesOctopus = undefined;
     }
   };
