@@ -31,96 +31,59 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getLogo, ImageUrlInfo } from '@/utils/images';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { getLogo } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 
-export default defineComponent({
-  props: {
-    item: {
-      type: Object as () => BaseItemDto,
-      required: true
-    }
-  },
-  data() {
-    return {
-      itemLink: '',
-      titleString: '',
-      logoLink: '',
-      subtitle: ''
-    };
-  },
-  computed: {
-    logo(): ImageUrlInfo {
-      return getLogo(this.item);
-    }
-  },
-  watch: {
-    item: {
-      immediate: true,
-      handler(): void {
-        switch (this.item.Type) {
-          case 'MusicAlbum': {
-            if (this.item.AlbumArtists?.length) {
-              this.logoLink = getItemDetailsLink(
-                this.item.AlbumArtists[0],
-                'MusicArtist'
-              );
-            }
+const props = defineProps<{ item: BaseItemDto }>();
+const { t } = useI18n();
 
-            if (this.item.AlbumArtist) {
-              this.titleString = this.item.AlbumArtist;
-            }
+const logo = computed(() => getLogo(props.item));
+const itemLink = computed(() => getItemDetailsLink(props.item));
+const titleString = computed(() => {
+  if (props.item.Type === BaseItemKind.MusicAlbum && props.item.AlbumArtist) {
+    return props.item.AlbumArtist;
+  } else if (
+    props.item.Type === BaseItemKind.Episode &&
+    props.item.SeriesName
+  ) {
+    return props.item.SeriesName;
+  } else {
+    return props.item.Name;
+  }
+});
 
-            if (this.item.Name) {
-              this.subtitle = this.item.Name;
-            }
+const logoLink = computed(() => {
+  if (
+    props.item.Type === BaseItemKind.MusicAlbum &&
+    props.item.AlbumArtists?.length
+  ) {
+    return getItemDetailsLink(
+      props.item.AlbumArtists[0],
+      BaseItemKind.MusicArtist
+    );
+  } else if (props.item.Type === BaseItemKind.Episode && props.item.SeriesId) {
+    return getItemDetailsLink({ Id: props.item.SeriesId }, BaseItemKind.Series);
+  }
+});
 
-            break;
-          }
-          case 'Episode': {
-            if (this.item.SeriesId) {
-              this.logoLink = getItemDetailsLink(
-                { Id: this.item.SeriesId },
-                'Series'
-              );
-            }
+const subtitle = computed(() => {
+  if (props.item.Type === BaseItemKind.MusicAlbum) {
+    return props.item.Name;
+  } else if (
+    props.item.Type === BaseItemKind.Episode &&
+    props.item.SeasonName &&
+    props.item.IndexNumber &&
+    props.item.Name
+  ) {
+    const episodeString = t('episodeNumber', {
+      episodeNumber: props.item.IndexNumber
+    });
 
-            if (
-              this.item.SeasonName &&
-              this.item.IndexNumber &&
-              this.item.Name
-            ) {
-              const episodeString = this.$t('episodeNumber', {
-                episodeNumber: this.item.IndexNumber
-              });
-
-              this.subtitle = `${this.item.SeasonName} - ${episodeString}\n${this.item.Name}`;
-            }
-
-            if (this.item.SeriesName) {
-              this.titleString = this.item.SeriesName;
-            }
-
-            break;
-          }
-        }
-
-        /**
-         * Instead of using 'default', we need this additional extra check
-         * in case an Album doesn't have artists, for example.
-         */
-        if (this.itemLink === '') {
-          this.itemLink = getItemDetailsLink(this.item);
-        }
-
-        if (this.titleString === '' && this.item.Name) {
-          this.titleString = this.item.Name;
-        }
-      }
-    }
+    return `${props.item.SeasonName} - ${episodeString}\n${props.item.Name}`;
   }
 });
 </script>
