@@ -18,8 +18,16 @@ const display = useDisplay();
 const userLibraries = userLibrariesStore();
 const navDrawer = ref(!display.mobile.value);
 
+/**
+ * We block the navigation to the layout at login to improve UX, so content doesn't pop up or jumps while rendering the page.
+ * The data fetched at logon is used for the entire lifecycle of the user session. Changing layouts
+ * (which happens when going to the fullscreen playback pages, for example) and going back to this one doesn't block the navigation again,
+ * since 'isReady' will be only set to false again at user logout.
+ *
+ * For the rest of the user's session lifecycle, data will be refetched when the user navigates to index.
+ * Refer to the documentation added to the pages/index.vue for more information
+ */
 if (!userLibraries.isReady) {
-  // Loading recent items from libraries can take a long time from server. To improve UX, we block navigation to the default layout when loading the client, so all the content is present when the page is finally rendered, avoiding content jumping.
   await userLibraries.refresh();
 }
 

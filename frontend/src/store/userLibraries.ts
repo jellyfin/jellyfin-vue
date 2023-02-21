@@ -36,6 +36,7 @@ interface HomeSections {
 interface UserLibrariesState {
   views: BaseItemDto[];
   homeSections: HomeSections;
+  carouselItems: BaseItemDto[];
   isReady: boolean;
 }
 
@@ -51,6 +52,7 @@ const defaultState: UserLibrariesState = {
     upNext: [],
     latestMedia: {}
   },
+  carouselItems: [],
   isReady: false
 };
 
@@ -74,6 +76,10 @@ class UserLibrariesStore {
   public get isReady(): typeof state.value.isReady {
     return state.value.isReady;
   }
+  public get carouselItems(): typeof state.value.carouselItems {
+    return state.value.carouselItems;
+  }
+
   public getHomeSectionContent = (section: HomeSection): BaseItemDto[] => {
     return computed<BaseItemDto[]>(() => {
       switch (section.type) {
@@ -101,7 +107,7 @@ class UserLibrariesStore {
   /**
    * == ACTIONS ==
    */
-  private fetchUserViews = async (): Promise<void> => {
+  private _fetchUserViews = async (): Promise<void> => {
     const remote = useRemote();
     const { t } = usei18n();
 
@@ -119,7 +125,7 @@ class UserLibrariesStore {
     }
   };
 
-  private fetchAudioResumes = async (): Promise<void> => {
+  private _fetchAudioResumes = async (): Promise<void> => {
     const remote = useRemote();
     const { t } = usei18n();
 
@@ -149,7 +155,7 @@ class UserLibrariesStore {
     }
   };
 
-  private fetchVideoResumes = async (): Promise<void> => {
+  private _fetchVideoResumes = async (): Promise<void> => {
     const remote = useRemote();
     const { t } = usei18n();
 
@@ -179,7 +185,7 @@ class UserLibrariesStore {
     }
   };
 
-  private fetchUpNext = async (libraryId: string): Promise<void> => {
+  private _fetchUpNext = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
     const { t } = usei18n();
 
@@ -208,7 +214,7 @@ class UserLibrariesStore {
     }
   };
 
-  private fetchLatestMedia = async (libraryId: string): Promise<void> => {
+  private _fetchLatestMedia = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
     const { t } = usei18n();
 
@@ -235,15 +241,40 @@ class UserLibrariesStore {
     }
   };
 
+  private _fetchIndexCarouselItems = async (): Promise<void> => {
+    const remote = useRemote();
+    const { t } = usei18n();
+
+    try {
+      const carouselItems = (
+        await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
+          userId: remote.auth.currentUserId || '',
+          limit: 10,
+          fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
+          enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
+          imageTypeLimit: 1
+        })
+      ).data;
+
+      if (carouselItems) {
+        state.value.carouselItems = carouselItems;
+      }
+    } catch (error) {
+      console.error(error);
+      useSnackbar(t('errors.anErrorHappened'), 'error');
+    }
+  };
+
   public refresh = async (): Promise<void> => {
-    await this.fetchUserViews();
-    await this.fetchAudioResumes();
-    await this.fetchVideoResumes();
+    await this._fetchUserViews();
+    await this._fetchAudioResumes();
+    await this._fetchVideoResumes();
+    await this._fetchIndexCarouselItems();
 
     for (const library of this.libraries) {
       if (library.Id) {
-        await this.fetchUpNext(library.Id);
-        await this.fetchLatestMedia(library.Id);
+        await this._fetchUpNext(library.Id);
+        await this._fetchLatestMedia(library.Id);
       }
     }
 
