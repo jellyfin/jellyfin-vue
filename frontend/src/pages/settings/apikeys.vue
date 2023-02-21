@@ -19,20 +19,41 @@
     </template>
     <template #content>
       <v-col>
-        <!-- TODO: Wait for Vuetify implementation (https://github.com/vuetifyjs/vuetify/issues/13479) -->
-        <!-- <v-data-table :headers="headers" :items="apiKeys" class="elevation-2">
-          <template #item.DateCreated="{ item }">
-            <p class="text-capitalize-first-letter mb-0">
-              {{
-                useDateFns(
-                  formatRelative,
-                  parseJSON(item.DateCreated),
-                  new Date()
-                ).value
-              }}
-            </p>
-          </template>
-        </v-data-table> -->
+        <v-table>
+          <thead>
+            <tr>
+              <th v-for="{ text, value } in headers" :key="value">
+                {{ text }}
+              </th>
+              <th><!-- delete column --></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="apiKey in apiKeys" :key="apiKey.AppName ?? undefined">
+              <td v-for="{ value } in headers" :key="value">
+                {{
+                  value !== 'DateCreated'
+                    ? apiKey[value]
+                    : useDateFns(
+                        formatRelative,
+                        parseJSON(apiKey[value] ?? 'unknown'),
+                        new Date()
+                      ).value
+                }}
+              </td>
+              <td>
+                <v-btn
+                  color="error"
+                  :loading="loading"
+                  @click="
+                    apiKey.AccessToken && revokeApiKey(apiKey.AccessToken)
+                  ">
+                  {{ t('settings.apiKeys.revoke') }}
+                </v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-col>
       <!-- Add API key dialog -->
       <add-api-key

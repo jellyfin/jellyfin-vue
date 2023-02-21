@@ -333,6 +333,7 @@
       "dateCreated": "Date created",
       "description": "Add and revoke API keys for external access to your server",
       "refreshKeysFailure": "Error refreshing API keys",
+      "revoke": "Revoke",
       "revokeAll": "Revoke all API keys",
       "revokeAllFailure": "Error revoking all API keys",
       "revokeAllSuccess": "Successfully revoked all API keys",
