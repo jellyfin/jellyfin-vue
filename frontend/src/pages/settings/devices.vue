@@ -37,6 +37,33 @@
             </p>
           </template>
         </v-data-table> -->
+        <v-table>
+          <thead>
+            <tr>
+              <th v-for="{ text, value } in headers" :key="value">
+                {{ text }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="device in devices"
+              :key="device.Id ?? undefined"
+              @click="selectedDevice = device">
+              <td v-for="{ value } in headers" :key="value">
+                {{
+                  value !== 'DateLastActivity'
+                    ? device[value]
+                    : useDateFns(
+                        formatRelative,
+                        parseJSON(device[value] ?? 'unknown'),
+                        new Date()
+                      ).value
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-col>
       <v-dialog
         :model-value="selectedDevice !== undefined"
