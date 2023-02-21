@@ -3,6 +3,7 @@
  */
 import {
   BaseItemDto,
+  BaseItemKind,
   BaseItemPerson,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
@@ -255,7 +256,7 @@ export function canMarkWatched(item: BaseItemDto): boolean {
  */
 export function getItemDetailsLink(
   item: BaseItemDto | BaseItemPerson,
-  overrideType?: string
+  overrideType?: BaseItemKind
 ): string {
   const router = useRouter();
   let routeName: string;
