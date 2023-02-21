@@ -4,148 +4,65 @@
       v-for="i in pages"
       :key="`progress-key-${i}`"
       :class="useResponsiveClasses('progress-bar')"
-      @click.capture="onProgressClicked(i)">
+      @click.capture="emit('progressClicked', i - 1)">
       <div
-        ref="progress"
-        :class="
-          expand
-            ? useResponsiveClasses(
-                'progress d-flex align-center justify-center expand'
-              )
-            : useResponsiveClasses(
-                'progress d-flex align-center justify-center'
-              )
-        " />
+        :class="useResponsiveClasses(barClasses[i - 1])"
+        @animationend="emit('animationEnd')" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useDisplay } from 'vuetify';
 import { useResponsiveClasses } from '@/composables';
 
-export default defineComponent({
-  props: {
-    pages: {
-      type: Number,
-      required: true
-    },
-    currentIndex: {
-      type: Number,
-      required: true
-    },
-    duration: {
-      type: Number,
-      required: true
-    },
-    paused: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    hoverable: {
-      type: Boolean,
-      required: false,
-      default: false
+const props = withDefaults(
+  defineProps<{
+    pages: number;
+    currentIndex: number;
+    duration: number;
+    paused: boolean;
+    hoverable?: boolean;
+  }>(),
+  { hoverable: false }
+);
+const emit = defineEmits<{
+  (e: 'animationEnd'): void;
+  (e: 'progressClicked', index: number): void;
+}>();
+
+const display = useDisplay();
+
+const defaultBarClasses = Object.freeze([
+  'progress',
+  'd-flex',
+  'align-center',
+  'justify-center'
+]);
+const expand = computed(() => props.hoverable && !display.mobile.value);
+const animDuration = computed(() => (props.duration / 1000).toString() + 's');
+const barClasses = computed(() =>
+  Array.from({ length: props.pages }).map((_, i) => {
+    const classes = [...defaultBarClasses];
+
+    if (expand.value) {
+      classes.push('expand');
     }
-  },
-  setup() {
-    return { useResponsiveClasses };
-  },
-  data() {
-    return {
-      bars: [] as HTMLElement[]
-    };
-  },
-  computed: {
-    expand(): boolean {
-      return this.hoverable && !this.$vuetify.display.mobile;
+
+    if (i === props.currentIndex) {
+      classes.push('active');
+
+      if (props.paused) {
+        classes.push('paused');
+      }
+    } else if (i < props.currentIndex) {
+      classes.push('passed');
     }
-  },
-  watch: {
-    currentIndex(): void {
-      this.$nextTick(() => {
-        window.requestAnimationFrame(this.updateBars);
-      });
-    },
-    paused(): void {
-      this.$nextTick(() => {
-        window.requestAnimationFrame(this.togglePause);
-      });
-    },
-    duration(): void {
-      this.$nextTick(() => {
-        window.requestAnimationFrame(this.setAnimationDuration);
-      });
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.bars = this.$refs.progress as Array<HTMLElement>;
-      window.requestAnimationFrame(this.setAnimationDuration);
-      window.requestAnimationFrame(this.updateBars);
-    });
-  },
-  unmounted() {
-    const animEndFunction = this.onAnimationEnd;
 
-    this.bars.forEach((element: HTMLElement) => {
-      element.removeEventListener('animationend', animEndFunction);
-    });
-  },
-  methods: {
-    updateBars(): void {
-      const followingBars = this.bars.slice(this.currentIndex + 1);
-      const previousBars = this.bars.slice(0, this.currentIndex);
-      const activeBar = this.bars[this.currentIndex];
-      const animEndFunction = this.onAnimationEnd;
-
-      if (activeBar) {
-        activeBar.classList.add('active');
-        activeBar.addEventListener('animationend', animEndFunction);
-      }
-
-      if (previousBars) {
-        window.requestAnimationFrame(() => {
-          previousBars.forEach((element: HTMLElement) => {
-            element.classList.remove('active', 'paused');
-            element.removeEventListener('animationend', animEndFunction);
-            element.classList.add('passed');
-          });
-        });
-      }
-
-      if (followingBars) {
-        window.requestAnimationFrame(() => {
-          followingBars.forEach((element: HTMLElement) => {
-            element.classList.remove('active', 'passed', 'paused');
-            element.removeEventListener('animationend', animEndFunction);
-          });
-        });
-      }
-    },
-    onAnimationEnd(): void {
-      this.$emit('on-animation-end');
-    },
-    onProgressClicked(index: number): void {
-      this.$emit('on-progress-clicked', index - 1);
-    },
-    togglePause(): void {
-      if (this.paused) {
-        this.bars[this.currentIndex].classList.add('paused');
-      } else {
-        this.bars[this.currentIndex].classList.remove('paused');
-      }
-    },
-    setAnimationDuration(): void {
-      const newDuration = (this.duration / 1000).toString() + 's';
-
-      this.bars.forEach((element: HTMLElement) => {
-        element.style.animationDuration = newDuration;
-      });
-    }
-  }
-});
+    return classes.join(' ');
+  })
+);
 </script>
 
 <style lang="scss" scoped>
@@ -196,6 +113,7 @@ export default defineComponent({
   animation-timing-function: linear;
   animation-delay: 0s;
   animation-fill-mode: forwards;
+  animation-duration: v-bind(animDuration);
 }
 
 .progress.active {
