@@ -18,16 +18,6 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  props: {
-    pageTitle: {
-      type: String || undefined,
-      required: false,
-      default: undefined
-    }
-  }
-});
+<script setup lang="ts">
+defineProps<{ pageTitle?: string }>();
 </script>
