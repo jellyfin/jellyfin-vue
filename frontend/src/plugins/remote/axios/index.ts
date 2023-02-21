@@ -18,7 +18,13 @@ class JellyfinInterceptors {
 
     if (data) {
       if (data.Items && Array.isArray(data.Items)) {
-        response.data.Items = items.add(data.Items as BaseItemDto[]);
+        // TODO: Implement a proper check for reponses that are BaseItemDto.
+        // This currently will try to cache the values for all response types.
+        // The likelyhood of an id cache collision is low but this is caching a lot
+        // in memory currently.
+        response.data.Items = (data.Items as BaseItemDto[]).map((i) =>
+          items.add(i)
+        );
       } else if (
         RemotePluginAuthInstance.currentUser &&
         response.config.url?.includes(
