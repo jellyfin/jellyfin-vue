@@ -2,19 +2,19 @@
   <settings-page page-title="settings.devices.devices">
     <template #actions>
       <v-btn
-        v-if="devices"
+        v-if="devices.length > 0"
         color="error"
         variant="elevated"
         class="ml-a"
         @click="deleteAllDevices">
-        {{ $t('settings.devices.deleteAll') }}
+        {{ t('settings.devices.deleteAll') }}
       </v-btn>
       <v-btn
         rel="noreferrer noopener"
         variant="elevated"
         href="https://jellyfin.org/docs/general/server/devices.html"
         target="_blank">
-        {{ $t('settings.help') }}
+        {{ t('settings.help') }}
       </v-btn>
     </template>
     <template #content>
@@ -28,155 +28,123 @@
           <template #item.DateLastActivity="{ item }">
             <p class="text-capitalize-first-letter mb-0">
               {{
-                $dateFns.formatRelative(
-                  $dateFns.parseJSON(item.DateLastActivity),
-                  new Date(),
-                  {
-                    locale: $i18n.locale
-                  }
-                )
+                useDateFns(
+                  formatRelative,
+                  parseJSON(item.DateCreated),
+                  new Date()
+                ).value
               }}
             </p>
           </template>
         </v-data-table> -->
       </v-col>
-      <v-dialog v-model="deviceInfoDialog" width="fit-content">
+      <v-dialog
+        :model-value="selectedDevice !== undefined"
+        width="fit-content"
+        @update:model-value="selectedDevice = undefined">
         <selected-device-info
-          v-if="selectedDevice.Name"
+          v-if="selectedDevice"
           :selected-device="selectedDevice"
-          :is-dialog="true"
-          @close-dialog="closeDialog"
-          @delete-selected="deleteSelectedDevice" />
+          @close-dialog="selectedDevice = undefined"
+          @delete-selected="deleteSelectedDevice()" />
       </v-dialog>
     </template>
   </settings-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<route lang="yaml">
+meta:
+  admin: true
+</route>
+
+<script setup lang="ts">
+import { parseJSON, formatRelative } from 'date-fns';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getDevicesApi } from '@jellyfin/sdk/lib/utils/api/devices-api';
-import { useRemote, useSnackbar } from '@/composables';
+import { useDateFns, useRemote, useSnackbar } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const remote = useRemote();
+const { t } = useI18n();
+const remote = useRemote();
 
-    const devices = (await remote.sdk.newUserApi(getDevicesApi).getDevices())
-      .data.Items;
+const devices = ref(
+  (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ?? []
+);
 
-    return {
-      devices,
-      useSnackbar
-    };
+const selectedDevice = ref<DeviceInfo>();
+
+const headers = computed((): { text: string; value: keyof DeviceInfo }[] => [
+  {
+    text: t('settings.devices.userName'),
+    value: 'LastUserName'
   },
-  data() {
-    return {
-      selectedDevice: {} as DeviceInfo,
-      deviceInfoDialog: false
-    };
-  },
-  computed: {
-    headers(): { text: string; value: string }[] {
-      return [
-        {
-          text: this.$t('settings.devices.userName'),
-          value: 'LastUserName'
-        },
-        { text: this.$t('settings.devices.deviceName'), value: 'Name' },
-        { text: this.$t('settings.devices.appName'), value: 'AppName' },
-        { text: this.$t('settings.devices.appVersion'), value: 'AppVersion' },
-        {
-          text: this.$t('settings.devices.lastActive'),
-          value: 'DateLastActivity'
-        }
-      ];
-    }
-  },
-  methods: {
-    async deleteDevice(item: DeviceInfo): Promise<void> {
-      try {
-        await this.$remote.sdk.newUserApi(getDevicesApi).deleteDevice({
-          id: item.Id || ''
-        });
-
-        this.useSnackbar(
-          this.$t('settings.devices.deleteDeviceSuccess'),
-          'success'
-        );
-        this.devices =
-          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
-            .Items || [];
-      } catch (error) {
-        this.useSnackbar(
-          this.$t('settings.devices.deleteDeviceError'),
-          'error'
-        );
-
-        console.error(error);
-      }
-    },
-    async deleteAllDevices(): Promise<void> {
-      try {
-        for (const device of this.devices ?? []) {
-          if (this.$remote.sdk.deviceInfo.id === device.Id) {
-            return;
-          }
-
-          await this.$remote.sdk
-            .newUserApi(getDevicesApi)
-            .deleteDevice({ id: device.Id || '' });
-        }
-
-        this.useSnackbar(
-          this.$t('settings.devices.deleteAllDevicesSuccess'),
-          'success'
-        );
-
-        this.devices =
-          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
-            .Items || [];
-      } catch (error) {
-        this.useSnackbar(
-          this.$t('settings.devices.deleteAllDevicesError'),
-          'error'
-        );
-
-        console.error(error);
-      }
-    },
-    setSelectedDevice(device: DeviceInfo): void {
-      this.selectedDevice = device;
-      this.deviceInfoDialog = true;
-    },
-    closeDialog(): void {
-      this.deviceInfoDialog = false;
-      this.selectedDevice = {};
-    },
-    async deleteSelectedDevice(): Promise<void> {
-      try {
-        await this.$remote.sdk.newUserApi(getDevicesApi).deleteDevice({
-          id: this.selectedDevice.Id || ''
-        });
-
-        this.useSnackbar(
-          this.$t('settings.devices.deleteDeviceSuccess'),
-          'success'
-        );
-
-        this.selectedDevice = {};
-
-        this.devices =
-          (await this.$remote.sdk.newUserApi(getDevicesApi).getDevices()).data
-            .Items || [];
-      } catch (error) {
-        this.useSnackbar(this.$t('deleteDeviceError'), 'error');
-
-        console.error(error);
-      }
-
-      this.deviceInfoDialog = false;
-    }
+  { text: t('settings.devices.deviceName'), value: 'Name' },
+  { text: t('settings.devices.appName'), value: 'AppName' },
+  { text: t('settings.devices.appVersion'), value: 'AppVersion' },
+  {
+    text: t('settings.devices.lastActive'),
+    value: 'DateLastActivity'
   }
-});
+]);
+
+/** deletes all remembered devices */
+async function deleteAllDevices(): Promise<void> {
+  try {
+    for (const device of devices.value) {
+      if (!device.Id || remote.sdk.deviceInfo.id === device.Id) {
+        return;
+      }
+
+      await remote.sdk
+        .newUserApi(getDevicesApi)
+        .deleteDevice({ id: device.Id || '' });
+    }
+
+    useSnackbar(t('settings.devices.deleteAllDevicesSuccess'), 'success');
+
+    devices.value =
+      (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ??
+      [];
+  } catch (error) {
+    useSnackbar(t('settings.devices.deleteAllDevicesError'), 'error');
+    console.error(error);
+  }
+}
+
+/** sets the device that the user currently has focused */
+function setSelectedDevice(device: DeviceInfo): void {
+  selectedDevice.value = device;
+}
+
+/** unsets the device  */
+function closeDialog(): void {
+  selectedDevice.value = undefined;
+}
+
+/** deletes the selected device */
+async function deleteSelectedDevice(): Promise<void> {
+  if (!selectedDevice.value?.Id) {
+    return;
+  }
+
+  try {
+    await remote.sdk
+      .newUserApi(getDevicesApi)
+      .deleteDevice({ id: selectedDevice.value.Id });
+
+    useSnackbar(t('settings.devices.deleteDeviceSuccess'), 'success');
+
+    selectedDevice.value = undefined;
+
+    devices.value =
+      (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ??
+      [];
+  } catch (error) {
+    useSnackbar(t('deleteDeviceError'), 'error');
+    console.error(error);
+  }
+
+  selectedDevice.value = undefined;
+}
 </script>

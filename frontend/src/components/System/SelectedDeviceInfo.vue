@@ -1,6 +1,6 @@
 <template>
   <v-card class="selected-device-card">
-    <v-row v-if="isDialog" class="ma-0 justify-space-between align-center">
+    <v-row class="ma-0 justify-space-between align-center">
       <v-card-title>{{ selectedDevice.Name }}</v-card-title>
       <v-btn icon class="mr-2" @click="$emit('close-dialog')">
         <v-icon>
@@ -8,7 +8,6 @@
         </v-icon>
       </v-btn>
     </v-row>
-    <v-card-title v-else>{{ selectedDevice.Name }}</v-card-title>
     <v-card-text>
       <v-row>
         <v-col>
@@ -49,7 +48,7 @@
                     formatRelative,
                     parseJSON(selectedDevice.DateLastActivity),
                     new Date()
-                  )
+                  ).value
                 }}
               </span>
             </v-col>
@@ -70,13 +69,7 @@ import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { parseJSON, formatRelative } from 'date-fns';
 import { useDateFns } from '@/composables';
 
-withDefaults(
-  defineProps<{
-    selectedDevice: DeviceInfo;
-    isDialog?: boolean;
-  }>(),
-  { isDialog: false }
-);
+defineProps<{ selectedDevice: DeviceInfo }>();
 
 defineEmits<{
   (e: 'close-dialog'): void;
