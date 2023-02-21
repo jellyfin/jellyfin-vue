@@ -1,8 +1,8 @@
 <template>
   <div>
     <items-carousel
-      v-if="carouselItems.length > 0"
-      :items="carouselItems"
+      v-if="userLibraries.carouselItems.length > 0"
+      :items="userLibraries.carouselItems"
       page-backdrop
       class="top-carousel">
       <template #referenceText>
@@ -20,16 +20,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { pickBy } from 'lodash-es';
-import { ImageType, ItemFields } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { clientSettingsStore, userLibrariesStore } from '@/store';
 import type { HomeSection } from '@/store';
-import { useRemote } from '@/composables';
 
 const VALID_SECTIONS = new Set([
   'resume',
@@ -39,29 +36,30 @@ const VALID_SECTIONS = new Set([
 ]);
 
 const { t } = useI18n();
-const remote = useRemote();
 const route = useRoute();
 
 route.meta.title = t('home');
 route.meta.transparentLayout = true;
 
-const carouselItems = (
-  await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
-    userId: remote.auth.currentUserId || '',
-    limit: 10,
-    fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
-    enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
-    imageTypeLimit: 1
-  })
-).data;
-
 const userLibraries = userLibrariesStore();
 const clientSettings = clientSettingsStore();
 
-if (userLibraries.isReady) {
-  // We trigger a refresh on every load of the index page, provided the library has already been fetched by the default layout. This avoid fetching the info twice when loading / the first time
-  await userLibraries.refresh();
-}
+/**
+ * Items are fetched at logon when switching between the 'fullpage' and 'default' layout. With the help of the
+ * Suspense component at RouterView, we block navigation until the promise at the root level of the 'default' layout resolves.
+ * This means that at login we have 2 promises: The one from here and the one from the default layout. Both are fired at the same time,
+ * but only the result from one is enough. The 'isReady' checks wether the data is populated or not. If it's not populated,
+ * we know the Promise of the default layout is still pending, so we can skip this one.
+ *
+ * We use onMounted so data gets updated on the fly as soon as possible without blocking navigation.
+ * The disadvantage of this is that the content might change in front of the user,
+ * but that's better UX than content jumping or blocking navigation.
+ */
+onMounted(async () => {
+  if (userLibraries.isReady) {
+    await userLibraries.refresh();
+  }
+});
 
 const homeSections = computed<HomeSection[]>(() => {
   // Filter for valid sections in Jellyfin Vue
