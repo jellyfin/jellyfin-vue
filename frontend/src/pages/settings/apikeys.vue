@@ -4,130 +4,191 @@
       <v-btn
         color="primary"
         variant="elevated"
-        @click="() => $refs.addKeyDialog.openDialog()">
-        {{ $t('settings.apiKeys.addNewKey') }}
+        :loading="loading"
+        @click="addingNewKey = true">
+        {{ t('settings.apiKeys.addNewKey') }}
       </v-btn>
       <v-btn
         v-if="apiKeys.length > 0"
         color="error"
         variant="elevated"
-        :loading="revokeKeyLoading"
-        @click="revokeAllApiKeys">
-        {{ $t('settings.apiKeys.revokeAll') }}
+        :loading="loading"
+        @click="confirmRevoke = 'all'">
+        {{ t('settings.apiKeys.revokeAll') }}
       </v-btn>
     </template>
     <template #content>
       <v-col>
-        <!-- TODO: Wait for Vuetify implementation (https://github.com/vuetifyjs/vuetify/issues/13479) -->
-        <!-- <v-data-table :headers="headers" :items="apiKeys" class="elevation-2">
-          <template #item.DateCreated="{ item }">
-            <p class="text-capitalize-first-letter mb-0">
-              {{
-                $dateFns.formatRelative(
-                  $dateFns.parseJSON(item.DateCreated),
-                  new Date(),
-                  {
-                    locale: $i18n.locale
-                  }
-                )
-              }}
-            </p>
-          </template>
-        </v-data-table> -->
+        <v-table>
+          <thead>
+            <tr>
+              <th v-for="{ text, value } in headers" :key="value">
+                {{ text }}
+              </th>
+              <th><!-- delete column --></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="apiKey in apiKeys" :key="apiKey.AppName ?? undefined">
+              <td v-for="{ value } in headers" :key="value">
+                {{
+                  value !== 'DateCreated'
+                    ? apiKey[value]
+                    : useDateFns(
+                        formatRelative,
+                        parseJSON(apiKey[value] ?? 'unknown'),
+                        new Date()
+                      ).value
+                }}
+              </td>
+              <td>
+                <v-btn
+                  color="error"
+                  :loading="loading"
+                  @click="confirmRevoke = apiKey.AccessToken ?? undefined">
+                  {{ t('settings.apiKeys.revoke') }}
+                </v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
       </v-col>
-      <!-- Add API key dialog -->
-      <add-api-key ref="addKeyDialog" @key-added="refreshApiKeys" />
+      <add-api-key
+        :adding-new-key="addingNewKey"
+        @close="addingNewKey = false"
+        @key-added="
+          addingNewKey = false;
+          refreshApiKeys();
+        " />
+      <v-dialog
+        width="auto"
+        :model-value="confirmRevoke !== undefined"
+        @update:model-value="confirmRevoke = undefined">
+        <v-card>
+          <v-card-text>
+            {{ t('settings.apiKeys.revokeConfirm') }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              :loading="loading"
+              @click="confirmRevocation">
+              {{ t('confirm') }}
+            </v-btn>
+            <v-btn :loading="loading" @click="confirmRevoke = undefined">
+              {{ t('cancel') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
   </settings-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
-import { useRemote, useSnackbar } from '@/composables';
+<route lang="yaml">
+meta:
+  admin: true
+</route>
 
-interface TableHeaders {
-  text: string;
-  value: string;
+<script setup lang="ts">
+import { parseJSON, formatRelative } from 'date-fns';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
+import { useDateFns, useRemote, useSnackbar } from '@/composables';
+
+const { t } = useI18n();
+const remote = useRemote();
+
+const apiKeys = ref<AuthenticationInfo[]>([]);
+const addingNewKey = ref(false);
+/** The key to confirm revocation (will be 'all' if revoking all keys) */
+const confirmRevoke = ref<string>();
+const loading = ref(false);
+
+const headers = computed(
+  (): { text: string; value: keyof AuthenticationInfo }[] => [
+    { text: t('settings.apiKeys.appName'), value: 'AppName' },
+    { text: t('settings.apiKeys.accessToken'), value: 'AccessToken' },
+    { text: t('settings.apiKeys.dateCreated'), value: 'DateCreated' }
+  ]
+);
+
+/**
+ * Confirms revocation and closes the confirmation modal
+ */
+async function confirmRevocation(): Promise<void> {
+  if (!confirmRevoke.value) {
+    return;
+  }
+
+  await (confirmRevoke.value === 'all'
+    ? revokeAllApiKeys()
+    : revokeApiKey(confirmRevoke.value));
+
+  confirmRevoke.value = undefined;
 }
 
-export default defineComponent({
-  async setup() {
-    const remote = useRemote();
-    const apiKeys = (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data
-      .Items;
+/**
+ * Revokes an api key
+ */
+async function revokeApiKey(token: string): Promise<void> {
+  loading.value = true;
 
-    return {
-      apiKeys,
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      addingNewKey: false,
-      newKeyAppName: '',
-      revokeKeyLoading: false
-    };
-  },
-  computed: {
-    headers(): TableHeaders[] {
-      return [
-        { text: this.$t('settings.apiKeys.appName'), value: 'AppName' },
-        { text: this.$t('settings.apiKeys.accessToken'), value: 'AccessToken' },
-        { text: this.$t('settings.apiKeys.dateCreated'), value: 'DateCreated' }
-      ];
-    }
-  },
-  methods: {
-    async revokeApiKey(token: string): Promise<void> {
-      try {
-        await this.$remote.sdk.newUserApi(getApiKeyApi).revokeKey({
-          key: token
-        });
+  try {
+    await remote.sdk.newUserApi(getApiKeyApi).revokeKey({
+      key: token
+    });
 
-        this.apiKeys.filter((item) => token !== item.AccessToken);
-        this.useSnackbar(this.$t('settings.apiKeys.revokeSuccess'), 'success');
-        this.refreshApiKeys();
-      } catch (error) {
-        console.error(error);
-        this.useSnackbar(this.$t('settings.apiKeys.revokeFailure'), 'error');
-      }
-    },
-    async revokeAllApiKeys(): Promise<void> {
-      this.revokeKeyLoading = true;
-
-      try {
-        for (const key of this.apiKeys) {
-          await this.$remote.sdk.newUserApi(getApiKeyApi).revokeKey({
-            key: key.AccessToken || ''
-          });
-        }
-
-        this.apiKeys = [];
-        this.useSnackbar(
-          this.$t('settings.apiKeys.revokeAllSuccess'),
-          'success'
-        );
-        this.refreshApiKeys();
-      } catch (error) {
-        console.error(error);
-        this.useSnackbar(this.$t('settings.apiKeys.revokeAllFailure'), 'error');
-      }
-
-      this.revokeKeyLoading = false;
-    },
-    async refreshApiKeys(): Promise<void> {
-      try {
-        this.apiKeys =
-          (await this.$remote.sdk.newUserApi(getApiKeyApi).getKeys()).data
-            .Items || [];
-      } catch {
-        this.useSnackbar(
-          this.$t('settings.apiKeys.refreshKeysFailure'),
-          'error'
-        );
-      }
-    }
+    useSnackbar(t('settings.apiKeys.revokeSuccess'), 'success');
+    refreshApiKeys();
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('settings.apiKeys.revokeFailure'), 'error');
+  } finally {
+    loading.value = false;
   }
-});
+}
+
+/**
+ * Revokes all api keys
+ */
+async function revokeAllApiKeys(): Promise<void> {
+  loading.value = true;
+
+  try {
+    for (const key of apiKeys.value) {
+      if (key.AccessToken) {
+        await remote.sdk.newUserApi(getApiKeyApi).revokeKey({
+          key: key.AccessToken
+        });
+      }
+    }
+
+    useSnackbar(t('settings.apiKeys.revokeAllSuccess'), 'success');
+    refreshApiKeys();
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('settings.apiKeys.revokeAllFailure'), 'error');
+  } finally {
+    loading.value = false;
+  }
+}
+
+/**
+ * Refreshes the list of api keys
+ */
+async function refreshApiKeys(): Promise<void> {
+  try {
+    apiKeys.value =
+      (await remote.sdk.newUserApi(getApiKeyApi).getKeys()).data.Items ?? [];
+  } catch (error) {
+    apiKeys.value = [];
+    console.error(error);
+    useSnackbar(t('settings.apiKeys.refreshKeysFailure'), 'error');
+  }
+}
+
+await refreshApiKeys();
 </script>
