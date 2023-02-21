@@ -81,35 +81,19 @@ class ItemsStore {
    * @param payload
    * @returns - The reactive references
    */
-  public add = (
-    payload: BaseItemDto | BaseItemDto[]
-  ): BaseItemDto | BaseItemDto[] => {
-    const isArray = Array.isArray(payload);
-    const itemArray = isArray ? payload : [payload];
-
-    const res: BaseItemDto[] = [];
-
-    for (const item of itemArray) {
-      if (!item.Id) {
-        throw new Error("One item doesn't have an id");
-      }
-
-      state.value.byId[item.Id] = item;
-
-      const fetched = this.getItemById(item.Id);
-
-      if (!fetched) {
-        throw new Error('Expected to receive newly added item to store');
-      }
-
-      res.push(fetched);
+  public add = (item: BaseItemDto): BaseItemDto => {
+    // Without an id this cannot be cached so return a non-reactive version
+    if (!item.Id) {
+      return item;
     }
 
-    if (res.length === 1 && !isArray) {
-      return res[0];
+    state.value.byId[item.Id] = item;
+    const fetched = this.getItemById(item.Id);
+    if (!fetched) {
+      throw new Error('Expected to retrieve newly added item to store');
     }
 
-    return res;
+    return fetched;
   };
 
   /**
