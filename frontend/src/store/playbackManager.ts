@@ -743,9 +743,11 @@ class PlaybackManagerStore {
     ) {
       state.lastItemIndex = state.currentItemIndex;
       state.currentItemIndex += 1;
+      this.currentTime = 0;
     } else if (state.repeatMode === RepeatMode.RepeatAll) {
       state.lastItemIndex = state.currentItemIndex;
       state.currentItemIndex = 0;
+      this.currentTime = 0;
     } else {
       this.stop();
     }
