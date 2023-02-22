@@ -1219,47 +1219,43 @@ class PlaybackManagerStore {
         }
       }
     );
+
+    const remote = useRemote();
+
+    /**
+     * Dispose on logout
+     */
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (isNil(remote.auth.currentUser)) {
+          playbackManager.stop();
+        }
+      }
+    );
+
+    watch(mediaControls.playing, () => {
+      if (playbackManager.status !== PlaybackStatus.Buffering) {
+        state.status = mediaControls.playing.value
+          ? PlaybackStatus.Playing
+          : PlaybackStatus.Paused;
+      }
+    });
+
+    watch(mediaControls.waiting, () => {
+      state.status = mediaControls.waiting.value
+        ? PlaybackStatus.Buffering
+        : PlaybackStatus.Playing;
+    });
+
+    watch(mediaControls.ended, () => {
+      if (mediaControls.ended.value) {
+        playbackManager.setNextTrack();
+      }
+    });
   }
 }
 
 const playbackManager = new PlaybackManagerStore();
-
-/**
- * == WATCHERS ==
- */
-
-const remote = useRemote();
-
-/**
- * Dispose on logout
- */
-watch(
-  () => remote.auth.currentUser,
-  () => {
-    if (isNil(remote.auth.currentUser)) {
-      playbackManager.stop();
-    }
-  }
-);
-
-watch(mediaControls.playing, () => {
-  if (playbackManager.status !== PlaybackStatus.Buffering) {
-    state.status = mediaControls.playing.value
-      ? PlaybackStatus.Playing
-      : PlaybackStatus.Paused;
-  }
-});
-
-watch(mediaControls.waiting, () => {
-  state.status = mediaControls.waiting.value
-    ? PlaybackStatus.Buffering
-    : PlaybackStatus.Playing;
-});
-
-watch(mediaControls.ended, () => {
-  if (mediaControls.ended.value) {
-    playbackManager.setNextTrack();
-  }
-});
 
 export default playbackManager;

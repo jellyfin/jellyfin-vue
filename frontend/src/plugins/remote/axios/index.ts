@@ -3,7 +3,7 @@
  */
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import RemotePluginAuthInstance from '../auth';
+import remote from '../auth';
 import { itemsStore } from '@/store';
 import { useSnackbar, usei18n } from '@/composables';
 
@@ -26,10 +26,8 @@ class JellyfinInterceptors {
           items.add(i)
         );
       } else if (
-        RemotePluginAuthInstance.currentUser &&
-        response.config.url?.includes(
-          `/Users/${RemotePluginAuthInstance.currentUser?.Id}/Items/`
-        )
+        remote.currentUser &&
+        response.config.url?.includes(`/Users/${remote.currentUser?.Id}/Items/`)
       ) {
         response.data = items.add(data);
       }
@@ -45,10 +43,10 @@ class JellyfinInterceptors {
   public async logoutInterceptor(error: AxiosError): Promise<never | void> {
     if (
       error.response?.status === 401 &&
-      RemotePluginAuthInstance.currentUser &&
+      remote.currentUser &&
       !error.config.url?.includes('/Sessions/Logout')
     ) {
-      await RemotePluginAuthInstance.logoutCurrentUser(true);
+      await remote.logoutCurrentUser(true);
       useSnackbar(usei18n().t('login.kickedOut'), 'error');
     }
 
