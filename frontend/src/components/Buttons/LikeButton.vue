@@ -21,27 +21,12 @@ const remote = useRemote();
 const { t } = useI18n();
 
 watch(
-  () => props.item,
+  () => props.item.UserData?.IsFavorite,
   () => {
     isFavorite.value = props.item.UserData?.IsFavorite || false;
   },
   { immediate: true }
 );
-
-watch(remote.socket.message, () => {
-  if (remote.socket.messageData.value) {
-    const payloadData = remote.socket.messageData.value.UserDataList;
-
-    if (payloadData) {
-      // @ts-expect-error - No typings for WebSocket messages
-      for (const payloadItem of payloadData) {
-        if (payloadItem.ItemId === props.item.Id) {
-          isFavorite.value = payloadItem.IsFavorite;
-        }
-      }
-    }
-  }
-});
 
 /**
  * Toggles the favorite on the server

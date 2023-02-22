@@ -1,8 +1,9 @@
 import { RemovableRef, useStorage } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
 import { v4 } from 'uuid';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { useRemote } from '@/composables';
 
 /**
  * == INTERFACES ==
@@ -139,6 +140,41 @@ class TaskManagerStore {
       )
     );
   };
+
+  public constructor() {
+    const remote = useRemote();
+
+    watch(
+      () => remote.socket.message,
+      () => {
+        if (remote.socket.messageType === 'RefreshProgress') {
+          // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+
+          const messageData = remote.socket.messageData;
+          // @ts-expect-error - No typings for this
+          const progress = Number(messageData.Progress);
+          // @ts-expect-error - No typings for this
+          const taskPayload = taskManager.getTask(messageData.ItemId || '');
+          const payload: RunningTask = {
+            type: TaskType.LibraryRefresh,
+            // @ts-expect-error - No typings for this
+            id: messageData.ItemId as string,
+            progress
+          };
+
+          if (taskPayload !== undefined) {
+            if (progress >= 0 && progress < 100) {
+              payload.data = taskPayload.data;
+              taskManager.updateTask(payload);
+            } else if (progress >= 0) {
+              // @ts-expect-error - No typings for this
+              taskManager.finishTask(messageData.ItemId);
+            }
+          }
+        }
+      }
+    );
+  }
 }
 
 const taskManager = new TaskManagerStore();

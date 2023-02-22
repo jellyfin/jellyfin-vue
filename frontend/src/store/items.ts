@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -20,7 +20,7 @@ const defaultState: ItemsState = {
   collectionById: {}
 };
 
-const state = ref<ItemsState>(cloneDeep(defaultState));
+const state = reactive<ItemsState>(cloneDeep(defaultState));
 
 /**
  * == CLASS CONSTRUCTOR ==
@@ -30,7 +30,7 @@ class ItemsStore {
    * == GETTERS ==
    */
   public getItemById = (id: string | undefined): BaseItemDto | undefined => {
-    return computed(() => (id ? state.value.byId[id] : undefined)).value;
+    return computed(() => (id ? state.byId[id] : undefined)).value;
   };
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {
@@ -38,7 +38,7 @@ class ItemsStore {
       const res: BaseItemDto[] = [];
 
       for (const index of ids) {
-        const item = state.value.byId[index];
+        const item = state.byId[index];
 
         if (!item) {
           throw new Error(`Item ${index} doesn't exist in the store`);
@@ -60,11 +60,11 @@ class ItemsStore {
       }
 
       const res: BaseItemDto[] = [];
-      const ids = state.value.collectionById[id];
+      const ids = state.collectionById[id];
 
       if (ids?.length) {
         for (const _id of ids) {
-          res.push(state.value.byId[_id]);
+          res.push(state.byId[_id]);
         }
 
         return res;
@@ -89,7 +89,7 @@ class ItemsStore {
       return item;
     }
 
-    state.value.byId[item.Id] = item;
+    state.byId[item.Id] = item;
 
     const fetched = this.getItemById(item.Id);
 
@@ -111,7 +111,7 @@ class ItemsStore {
     }
 
     for (const id of payload) {
-      delete state.value.byId[id];
+      delete state.byId[id];
     }
   };
 
@@ -142,7 +142,7 @@ class ItemsStore {
       }
     }
 
-    state.value.collectionById[parent.Id] = childIds;
+    state.collectionById[parent.Id] = childIds;
 
     return this.getChildrenOfParent(parent.Id) ?? [];
   };
@@ -209,6 +209,46 @@ class ItemsStore {
       });
     }
   };
+
+  public constructor() {
+    const remote = useRemote();
+
+    watch(
+      () => remote.socket.message,
+      () => {
+        const messageData = remote.socket.messageData;
+        const messageType = remote.socket.messageType;
+
+        if (messageType === 'LibraryChanged') {
+          // Update items when metadata changes
+          // @ts-expect-error -- The Data property doesn't describe its content
+          const itemsToUpdate = messageData.ItemsUpdated.filter(
+            (itemId: string) => {
+              return Object.keys(state.byId).includes(itemId);
+            }
+          );
+
+          this.updateStoreItems(itemsToUpdate);
+        } else if (messageType === 'UserDataChanged') {
+          // Update items when their userdata is changed (like, mark as watched, etc)
+          // @ts-expect-error -- The Data property doesn't describe its content
+          const itemsToUpdate = messageData.UserDataList.filter(
+            (updatedData: never) => {
+              // @ts-expect-error -- There are no typings for websocket returned data.
+              const itemId = updatedData.ItemId as string;
+
+              return Object.keys(state.byId).includes(itemId);
+            }
+          ).map((updatedData: never) => {
+            // @ts-expect-error -- There are no typings for websocket returned data.
+            return updatedData.ItemId as string;
+          });
+
+          this.updateStoreItems(itemsToUpdate);
+        }
+      }
+    );
+  }
 }
 
 const items = new ItemsStore();
