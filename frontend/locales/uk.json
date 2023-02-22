@@ -108,9 +108,12 @@
   "incorrectUsernameOrPassword": "Неправильний логін чи пароль",
   "item": {
     "artist": {
+      "albums": "Альбоми",
       "appearsOn": "Види",
       "discography": "Дискографія",
+      "eps": "Мініальбоми",
       "information": "Інфо",
+      "singles": "Сингли",
       "videos": "Відео"
     },
     "cast": "Акторський склад",
