@@ -16,7 +16,6 @@
           <v-progress-circular
             v-if="refreshProgress !== undefined"
             class="card-chip"
-            rotate="-90"
             :model-value="refreshProgress"
             :indeterminate="refreshProgress === 0"
             color="white"

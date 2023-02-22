@@ -37,7 +37,6 @@
                 task.progress === undefined || task.progress === 0
               "
               :model-value="task.progress"
-              rotate="-90"
               size="24" />
             <v-icon v-else>
               <i-mdi-check />
