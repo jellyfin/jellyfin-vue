@@ -4,10 +4,20 @@
   "actor": "Actor",
   "actors": "Actores",
   "addNewPerson": "Añadir una persona",
+  "administrator": "Administrador",
   "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Álbumes",
   "allLanguages": "Todos los idiomas",
   "alphabetically": "Alfabéticamente",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sincronizando ajustes…",
+      "scanningLibrary": "Escaneando Librería '{library}'…"
+    },
+    "tooltips": {
+      "tasks": "Ejecutando tareas"
+    }
+  },
   "architecture": "Arquitectura",
   "artist": "Artista",
   "artists": "Artistas",
@@ -98,6 +108,7 @@
   "incorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos",
   "item": {
     "artist": {
+      "albums": "Álbumes",
       "appearsOn": "Apariencias",
       "discography": "Discografía",
       "information": "Información",
