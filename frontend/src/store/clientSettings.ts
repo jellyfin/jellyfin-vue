@@ -21,10 +21,25 @@ interface ClientSettingsState {
 }
 
 /**
+ * == UTILITY VARIABLES ==
+ */
+const languageCodes = new Set(Object.keys(usei18n().localeNames)).add('auto');
+const BROWSER_LANGUAGE = computed<string>(() => {
+  const rawString = useNavigatorLanguage().language.value || '';
+  /**
+   * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
+   */
+  const cleanString = rawString.split('-');
+
+  return cleanString[0];
+});
+const browserPrefersDark = usePreferredDark();
+
+/**
  * == STATE VARIABLES ==
  */
 const defaultState = {
-  darkMode: usePreferredDark().value,
+  darkMode: browserPrefersDark.value,
   locale: 'auto'
 };
 
@@ -41,20 +56,18 @@ const state: RemovableRef<ClientSettingsState> = useStorage(
 );
 
 /**
- * == UTILITY VARIABLES ==
- */
-const languageCodes = new Set(Object.keys(usei18n().localeNames)).add('auto');
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class ClientSettingsStore {
   public set locale(newVal: string) {
     if (!languageCodes.has(newVal)) {
-      throw new TypeError('This locale is not registered yet');
-    }
+      const i18n = usei18n();
 
-    state.value.locale = newVal;
+      console.error('This locale is not registered yet:', newVal);
+      state.value.locale = String(i18n.fallbackLocale.value);
+    } else {
+      state.value.locale = newVal;
+    }
   }
 
   public get locale(): string {
@@ -68,107 +81,93 @@ class ClientSettingsStore {
   public get darkMode(): boolean {
     return state.value.darkMode;
   }
+
+  public constructor() {
+    const remote = useRemote();
+    /**
+     * == WATCHERS ==
+     */
+
+    /**
+     * Sync data with server
+     */
+    const syncDataWatcher = watchPausable(state, async () => {
+      if (remote.auth.currentUser) {
+        await preferencesSync(storeKey, state.value);
+      }
+    });
+
+    /**
+     * Fetch data when the user logs in
+     */
+    watch(
+      () => remote.auth.currentUser,
+      async () => {
+        if (remote.auth.currentUser) {
+          try {
+            const data = await fetchSettingsFromServer<ClientSettingsState>(
+              storeKey,
+              state.value
+            );
+
+            if (data) {
+              syncDataWatcher.pause();
+              Object.assign(state.value, data);
+              await nextTick();
+              syncDataWatcher.resume();
+            }
+          } catch {
+            const { t } = usei18n();
+
+            useSnackbar(t('failedSettingDisplayPreferences'), 'error');
+          }
+        }
+      },
+      { immediate: true }
+    );
+
+    /**
+     * Locale change
+     */
+
+    watch(BROWSER_LANGUAGE, () => (this.locale = BROWSER_LANGUAGE.value));
+
+    watch(
+      () => this.locale,
+      () => {
+        const i18n = usei18n();
+
+        i18n.locale.value =
+          this.locale !== 'auto'
+            ? this.locale
+            : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
+      },
+      { immediate: true }
+    );
+
+    /**
+     * Vuetify theme change
+     */
+    watch(browserPrefersDark, () => {
+      state.value.darkMode = browserPrefersDark.value;
+    });
+
+    watch(
+      () => this.darkMode,
+      () => {
+        window.setTimeout(() => {
+          window.requestAnimationFrame(() => {
+            const vuetify = useVuetify();
+
+            vuetify.theme.global.name.value = this.darkMode ? 'dark' : 'light';
+          });
+        });
+      },
+      { immediate: true }
+    );
+  }
 }
 
 const clientSettings = new ClientSettingsStore();
-
-/**
- * == WATCHERS ==
- */
-
-/**
- * Fetch data when the user logs in
- */
-const remote = useRemote();
-
-watch(
-  () => remote.auth.currentUser,
-  async () => {
-    if (remote.auth.currentUser) {
-      try {
-        const data = await fetchSettingsFromServer<ClientSettingsState>(
-          storeKey,
-          state.value
-        );
-
-        if (data) {
-          syncDataWatcher.pause();
-          Object.assign(state.value, data);
-          await nextTick();
-          syncDataWatcher.resume();
-        }
-      } catch {
-        const { t } = usei18n();
-
-        useSnackbar(t('failedSettingDisplayPreferences'), 'error');
-      }
-    }
-  },
-  { immediate: true }
-);
-
-/**
- * Sync data with server
- */
-const syncDataWatcher = watchPausable(
-  state,
-  async () => {
-    if (remote.auth.currentUser) {
-      await preferencesSync(storeKey, state.value);
-    }
-  },
-  { deep: true }
-);
-
-/**
- * Locale change
- */
-const BROWSER_LANGUAGE = computed<string>(() => {
-  const rawString = useNavigatorLanguage().language.value || '';
-  /**
-   * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
-   */
-  const cleanString = rawString.split('-');
-
-  return cleanString[0];
-});
-
-watch(BROWSER_LANGUAGE, () => (clientSettings.locale = BROWSER_LANGUAGE.value));
-
-watch(
-  () => state.value.locale,
-  () => {
-    const i18n = usei18n();
-
-    i18n.locale.value =
-      state.value.locale !== 'auto'
-        ? state.value.locale
-        : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
-  },
-  { immediate: true }
-);
-
-/**
- * Vuetify theme change
- */
-watch(usePreferredDark(), () => {
-  state.value.darkMode = usePreferredDark().value;
-});
-
-watch(
-  () => state.value.darkMode,
-  () => {
-    window.setTimeout(() => {
-      window.requestAnimationFrame(() => {
-        const vuetify = useVuetify();
-
-        vuetify.theme.global.name.value = state.value.darkMode
-          ? 'dark'
-          : 'light';
-      });
-    });
-  },
-  { immediate: true }
-);
 
 export default clientSettings;

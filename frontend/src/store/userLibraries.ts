@@ -280,23 +280,21 @@ class UserLibrariesStore {
   public clear = (): void => {
     Object.assign(state.value, defaultState);
   };
+
+  public constructor() {
+    const remote = useRemote();
+
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (!remote.auth.currentUser) {
+          userLibraries.clear();
+        }
+      }
+    );
+  }
 }
 
 const userLibraries = new UserLibrariesStore();
-
-/**
- * == WATCHERS ==
- */
-
-const remote = useRemote();
-
-watch(
-  () => remote.auth.currentUser,
-  () => {
-    if (!remote.auth.currentUser) {
-      userLibraries.clear();
-    }
-  }
-);
 
 export default userLibraries;
