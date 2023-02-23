@@ -1,4 +1,4 @@
-import { computed, reactive, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
@@ -30,46 +30,42 @@ class ItemsStore {
    * == GETTERS ==
    */
   public getItemById = (id: string | undefined): BaseItemDto | undefined => {
-    return computed(() => (id ? state.byId[id] : undefined)).value;
+    return id ? state.byId[id] : undefined;
   };
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {
-    return computed(() => {
-      const res: BaseItemDto[] = [];
+    const res: BaseItemDto[] = [];
 
-      for (const index of ids) {
-        const item = state.byId[index];
+    for (const index of ids) {
+      const item = state.byId[index];
 
-        if (!item) {
-          throw new Error(`Item ${index} doesn't exist in the store`);
-        }
-
-        res.push(item);
+      if (!item) {
+        throw new Error(`Item ${index} doesn't exist in the store`);
       }
 
-      return res;
-    }).value;
+      res.push(item);
+    }
+
+    return res;
   };
 
   public getChildrenOfParent = (
     id: string | undefined
   ): BaseItemDto[] | undefined => {
-    return computed(() => {
-      if (!id) {
-        throw new Error('No itemId provided');
+    if (!id) {
+      throw new Error('No itemId provided');
+    }
+
+    const res: BaseItemDto[] = [];
+    const ids = state.collectionById[id];
+
+    if (ids?.length) {
+      for (const _id of ids) {
+        res.push(state.byId[_id]);
       }
 
-      const res: BaseItemDto[] = [];
-      const ids = state.collectionById[id];
-
-      if (ids?.length) {
-        for (const _id of ids) {
-          res.push(state.byId[_id]);
-        }
-
-        return res;
-      }
-    }).value;
+      return res;
+    }
   };
 
   /**
