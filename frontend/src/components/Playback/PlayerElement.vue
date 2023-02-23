@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { computed, watch, nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import Hls, { ErrorData, ErrorTypes, Events } from 'hls.js';
@@ -41,6 +42,7 @@ const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 
 const { t } = useI18n();
+const router = useRouter();
 /**
  * Safari iOS doesn't support hls.js, so we need to handle the cases where we don't need hls.js
  */
@@ -118,11 +120,13 @@ function onHlsEror(_event: Events.ERROR, data: ErrorData): void {
     switch (data.type) {
       case ErrorTypes.NETWORK_ERROR: {
         // try to recover network error
+        useSnackbar(t('errors.playback.networkError'), 'error');
         console.error('fatal network error encountered, try to recover');
         hls.startLoad();
         break;
       }
       case ErrorTypes.MEDIA_ERROR: {
+        useSnackbar(t('errors.playback.mediaError'), 'error');
         console.error('fatal media error encountered, try to recover');
         hls.recoverMediaError();
         break;
@@ -150,6 +154,27 @@ watch(
       playerElement.applyCurrentSubtitle();
     }
   }
+);
+
+watch(
+  () => ({ currentItem: playbackManager.currentItem }),
+  (newValue, oldValue) => {
+    if (
+      (!newValue.currentItem &&
+        router.currentRoute.value.fullPath === '/playback/video') ||
+      (newValue.currentItem &&
+        !oldValue?.currentItem &&
+        playbackManager.currentlyPlayingMediaType === 'Video')
+    ) {
+      /**
+       * If no item is present, we either manually loaded this or playback is stopped
+       * OR
+       * If there was no item and there's now a video, default to going FS
+       */
+      playerElement.toggleFullscreenVideoPlayer();
+    }
+  },
+  { immediate: true }
 );
 
 watch(mediaElementRef, async () => {

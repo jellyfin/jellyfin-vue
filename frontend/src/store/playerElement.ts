@@ -60,14 +60,14 @@ class PlayerElementStore {
     state.isStretched = newisStretched;
   }
 
-  public get isMinimized(): boolean {
-    return useRouter().currentRoute.value.fullPath !== '/playback/video';
+  public get isFullscreenVideoPlayer(): boolean {
+    return useRouter().currentRoute.value.fullPath === '/playback/video';
   }
 
   /**
    * == ACTIONS ==
    */
-  public toggleMinimize = (): void => {
+  public toggleFullscreenVideoPlayer = (): void => {
     /**
      * Destroys SSO before chaning view cause the canvas needs to be destroyed to be recreated in the other view
      */
@@ -75,7 +75,7 @@ class PlayerElementStore {
 
     const router = useRouter();
 
-    if (this.isMinimized) {
+    if (!this.isFullscreenVideoPlayer) {
       router.push('/playback/video');
     } else {
       router.replace(

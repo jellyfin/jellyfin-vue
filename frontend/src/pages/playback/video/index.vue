@@ -16,12 +16,10 @@ meta:
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useFullscreen } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';
 import { mediaElementRef } from '@/store/playbackManager';
 
-const router = useRouter();
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 
@@ -49,16 +47,12 @@ function toggleFullscreen(): void {
   }
 }
 
-if (!playbackManager.currentItem) {
-  router.replace('/');
-}
-
 onBeforeUnmount(() => {
   if (fullscreen.isFullscreen.value) {
     fullscreen.exit();
   }
 
-  if (!playerElement.isMinimized) {
+  if (playerElement.isFullscreenVideoPlayer) {
     playbackManager.stop();
   }
 
