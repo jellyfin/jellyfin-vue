@@ -64,7 +64,7 @@
               </v-btn>
               <v-btn
                 icon
-                class="mx-1 active-button"
+                class="mx-1 active"
                 @click="playbackManager.playPause">
                 <v-icon size="large">
                   <i-mdi-play-circle-outline v-if="playbackManager.isPaused" />
@@ -87,7 +87,7 @@
                 v-model="playbackSettingsButtonOpened" />
               <v-btn
                 v-if="mediaControls.supportsPictureInPicture"
-                class="align-self-center active-button"
+                class="align-self-center"
                 icon
                 @click="mediaControls.togglePictureInPicture">
                 <v-icon>
@@ -95,7 +95,7 @@
                 </v-icon>
               </v-btn>
               <tooltip-button
-                class="align-self-center active-button"
+                class="align-self-center"
                 :tooltip="{ text: $t('fullScreen'), location: 'top' }"
                 :btn="{ icon: true }"
                 @click="$emit('toggleFullscreen')">
@@ -192,56 +192,9 @@ useEventListener(document, 'mousemove', handleMouseMove);
 useEventListener(document, 'touchend', handleMouseMove);
 </script>
 
-<style lang="scss">
-// These don't work when scoped, for some reason.
-
-.player {
-  overflow-y: hidden;
-}
-
-.player--fullscreen {
-  position: relative;
-  width: 100vw !important;
-  height: 100vh !important;
-  max-height: 100% !important;
-  margin: 0 !important;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.player--minimized {
-  justify-self: end !important;
-  position: relative;
-  margin: 0 !important;
-  margin-left: auto !important;
-  top: auto;
-  left: auto;
-  bottom: 2em;
-  right: 2em;
-}
-</style>
-
 <style lang="scss" scoped>
-.playback-data-dialog {
-  position: absolute;
-  z-index: 999;
-}
-
-.v-card.player-card {
-  background-color: black !important;
-}
-
 .controls-wrapper {
   position: relative;
-}
-
-/* stylelint-disable-next-line */
-.v-overlay::v-deep .v-overlay__content {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
 }
 
 .player-overlay {
@@ -317,14 +270,5 @@ useEventListener(document, 'touchend', handleMouseMove);
 .video-title {
   max-width: 40vw;
   height: 6em;
-}
-
-// HACK: https://github.com/vuetifyjs/vuetify/issues/8436.
-// https://vuetifyjs.com/en/api/v-btn/#retain-focus-on-click prop was added
-// but it seems we're using a prop combination that it's incompatible with it: NaN;
-
-// SO link: https://stackoverflow.com/questions/57830767/is-it-default-for-vuetify-to-keep-active-state-on-buttons-after-click-how-do-yo/57831256#57831256
-.active-button:focus::before {
-  opacity: 0 !important;
 }
 </style>
