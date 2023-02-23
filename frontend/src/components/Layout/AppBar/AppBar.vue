@@ -3,6 +3,7 @@
     :class="useResponsiveClasses('app-bar-safe-zone')"
     :elevation="transparentAppBar ? 0 : 3"
     :color="transparentAppBar ? 'transparent' : undefined">
+    <loading-indicator />
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile"
       @click="navigationDrawer = !navigationDrawer" />
