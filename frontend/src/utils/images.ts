@@ -4,6 +4,7 @@
  */
 import {
   BaseItemDto,
+  BaseItemKind,
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
@@ -21,7 +22,9 @@ export interface ImageUrlInfo {
   blurhash: string | undefined;
 }
 
-const excludedBlurhashTypes = new Set([ImageType.Logo]);
+const excludedBlurhashTypes = Object.freeze(
+  new Set<ImageType>([ImageType.Logo])
+);
 
 /**
  * Gets the tag of the image of an specific item and type.
@@ -38,10 +41,6 @@ export function getImageTag(
   index = 0,
   checkParent = true
 ): string | undefined {
-  if (!item) {
-    return;
-  }
-
   if (isPerson(item)) {
     return item.PrimaryImageTag && type === ImageType.Primary
       ? item.PrimaryImageTag
@@ -57,46 +56,24 @@ export function getImageTag(
   if (checkParent) {
     switch (type) {
       case ImageType.Primary: {
-        if (item.AlbumPrimaryImageTag) {
-          return item.AlbumPrimaryImageTag;
-        } else if (item.ChannelPrimaryImageTag) {
-          return item.ChannelPrimaryImageTag;
-        } else if (item.ParentPrimaryImageTag) {
-          return item.ParentPrimaryImageTag;
-        }
-
-        break;
+        return (
+          item.AlbumPrimaryImageTag ||
+          item.ChannelPrimaryImageTag ||
+          item.ParentPrimaryImageTag ||
+          undefined
+        );
       }
       case ImageType.Art: {
-        if (item.ParentArtImageTag) {
-          return item.ParentArtImageTag;
-        }
-
-        break;
+        return item.ParentArtImageTag ?? undefined;
       }
       case ImageType.Backdrop: {
-        if (item.ParentBackdropImageTags?.[index]) {
-          return item.ParentBackdropImageTags[index];
-        }
-
-        break;
+        return item.ParentBackdropImageTags?.[index] ?? undefined;
       }
       case ImageType.Logo: {
-        if (item.ParentLogoImageTag) {
-          return item.ParentLogoImageTag;
-        }
-
-        break;
+        return item.ParentLogoImageTag ?? undefined;
       }
       case ImageType.Thumb: {
-        if (item.ParentThumbImageTag) {
-          return item.ParentThumbImageTag;
-        }
-
-        break;
-      }
-      default: {
-        return undefined;
+        return item.ParentThumbImageTag ?? undefined;
       }
     }
   }
@@ -309,7 +286,7 @@ export function getImageInfo(
     item.ParentBackdropImageTags &&
     item.ParentBackdropImageTags.length > 0 &&
     inheritThumb &&
-    item.Type === 'Episode'
+    item.Type === BaseItemKind.Episode
   ) {
     imgType = ImageType.Backdrop;
     imgTag = item.ParentBackdropImageTags[0];
@@ -317,7 +294,7 @@ export function getImageInfo(
   } else if (
     item.ImageTags &&
     item.ImageTags.Primary &&
-    (item.Type !== 'Episode' || item.ChildCount !== 0)
+    (item.Type !== BaseItemKind.Episode || item.ChildCount !== 0)
   ) {
     imgType = ImageType.Primary;
     imgTag = item.ImageTags.Primary;
@@ -341,7 +318,11 @@ export function getImageInfo(
       width && item.PrimaryImageAspectRatio
         ? Math.round(width / item.PrimaryImageAspectRatio)
         : undefined;
-  } else if (item.Type === 'Season' && item.ImageTags && item.ImageTags.Thumb) {
+  } else if (
+    item.Type === BaseItemKind.Season &&
+    item.ImageTags &&
+    item.ImageTags.Thumb
+  ) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
   } else if (item.BackdropImageTags && item.BackdropImageTags.length > 0) {
@@ -368,7 +349,7 @@ export function getImageInfo(
     itemId = item.ParentBackdropItemId;
   }
 
-  if (!itemId && !item.Id) {
+  if (!itemId && item.Id) {
     itemId = item.Id;
   }
 
