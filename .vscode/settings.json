@@ -10,5 +10,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "eslint.validate": ["vue"],
-  "eslint.workingDirectories": [{ "mode": "auto" }]
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "emmet.includeLanguages": {
+    "vue": "html"
+  },
+  "volar.autoCompleteRefs": true,
+  "volar.vueserver.fullCompletionList": true
 }
