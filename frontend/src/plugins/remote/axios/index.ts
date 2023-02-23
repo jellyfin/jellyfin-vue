@@ -2,12 +2,41 @@
  * Instantiates the Axios instance used for the SDK and requests
  */
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import remote from '../auth';
 import { itemsStore } from '@/store';
-import { useSnackbar, usei18n } from '@/composables';
+import { useSnackbar, usei18n, useLoading } from '@/composables';
+import { excludedProgressEndpoints } from '@/composables/use-loading';
 
 class JellyfinInterceptors {
+  public startLoadInterceptor(config: AxiosRequestConfig): AxiosRequestConfig {
+    if (config.url) {
+      const loading = useLoading();
+      const isExcluded = excludedProgressEndpoints.some((i) =>
+        config.url?.includes(i)
+      );
+
+      if (!isExcluded) {
+        loading.start();
+      }
+    }
+
+    return config;
+  }
+  public stopLoadInterceptor(response: AxiosResponse): AxiosResponse {
+    if (response.config.url) {
+      const loading = useLoading();
+      const isExcluded = excludedProgressEndpoints.some((i) =>
+        response.config.url?.includes(i)
+      );
+
+      if (!isExcluded) {
+        loading.finish();
+      }
+    }
+
+    return response;
+  }
   /**
    * Intercepts each request that has BaseItemDto, adding the objects to the item store, so they can
    * be reactive and updated using the WebSocket connection
@@ -26,8 +55,8 @@ class JellyfinInterceptors {
           items.add(i)
         );
       } else if (
-        remote.currentUser &&
-        response.config.url?.includes(`/Users/${remote.currentUser?.Id}/Items/`)
+        remote.currentUserId &&
+        response.config.url?.includes(`/Users/${remote.currentUserId}/Items/`)
       ) {
         response.data = items.add(data);
       }
@@ -59,40 +88,59 @@ class JellyfinInterceptors {
 
 class RemotePluginAxios {
   public readonly instance = axios.create();
-  private readonly interceptors = new JellyfinInterceptors();
-  private readonly defaults = this.instance.defaults;
-  private reactiveInterceptor = -1;
-  private logoutInterceptor = -1;
+  private readonly _interceptors = new JellyfinInterceptors();
+  private readonly _defaults = this.instance.defaults;
+  private _reactiveInterceptor = -1;
+  private _logoutInterceptor = -1;
+  private _startLoadInterceptor = -1;
+  private _stopLoadInterceptor = -1;
 
   public constructor() {
+    this.setLoadInterceptor();
     this.setReactiveItemsInterceptor();
     this.setLogoutInteceptor();
   }
 
   public resetDefaults(): void {
-    this.instance.defaults = this.defaults;
+    this.instance.defaults = this._defaults;
+  }
+
+  public setLoadInterceptor(): void {
+    this._startLoadInterceptor = this.instance.interceptors.request.use(
+      this._interceptors.startLoadInterceptor
+    );
+    this._stopLoadInterceptor = this.instance.interceptors.response.use(
+      this._interceptors.stopLoadInterceptor
+    );
+  }
+
+  public removeLoadInterceptor(): void {
+    this.instance.interceptors.request.eject(this._startLoadInterceptor);
+    this.instance.interceptors.response.eject(this._stopLoadInterceptor);
+    this._startLoadInterceptor = -1;
+    this._stopLoadInterceptor = -1;
   }
 
   public setReactiveItemsInterceptor(): void {
-    this.reactiveInterceptor = this.instance.interceptors.response.use(
-      this.interceptors.reactiveItemsInterceptor
+    this._reactiveInterceptor = this.instance.interceptors.response.use(
+      this._interceptors.reactiveItemsInterceptor
     );
   }
 
   public removeReactiveItemsInterceptor(): void {
-    this.instance.interceptors.response.eject(this.reactiveInterceptor);
-    this.reactiveInterceptor = -1;
+    this.instance.interceptors.response.eject(this._reactiveInterceptor);
+    this._reactiveInterceptor = -1;
   }
 
   public setLogoutInteceptor(): void {
-    this.logoutInterceptor = this.instance.interceptors.response.use(
+    this._logoutInterceptor = this.instance.interceptors.response.use(
       undefined,
-      this.interceptors.logoutInterceptor
+      this._interceptors.logoutInterceptor
     );
   }
 
   public removeLogoutInterceptor(): void {
-    this.instance.interceptors.response.eject(this.logoutInterceptor);
+    this.instance.interceptors.response.eject(this._logoutInterceptor);
   }
 }
 
