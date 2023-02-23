@@ -10,7 +10,7 @@
   <pi-p-video-player
     v-if="
       playbackManager.currentlyPlayingMediaType === 'Video' &&
-      playerElement.isMinimized
+      !playerElement.isFullscreenVideoPlayer
     " />
 </template>
 
