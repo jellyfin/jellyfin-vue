@@ -104,12 +104,19 @@ class UserLibrariesStore {
       }
     }).value;
   };
+
   /**
    * == ACTIONS ==
    */
+  private _onError = (error: unknown): void => {
+    const { t } = usei18n();
+
+    console.error(error);
+    useSnackbar(t('errors.anErrorHappened'), 'error');
+  };
+
   private _fetchUserViews = async (): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const userViewsResponse = await remote.sdk
@@ -120,14 +127,12 @@ class UserLibrariesStore {
 
       state.value.views = userViewsResponse.data.Items || [];
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 
   private _fetchAudioResumes = async (): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const audioResumes = (
@@ -150,14 +155,12 @@ class UserLibrariesStore {
         state.value.homeSections.audioResumes = audioResumes;
       }
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 
   private _fetchVideoResumes = async (): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const videoResumes = (
@@ -180,14 +183,12 @@ class UserLibrariesStore {
         state.value.homeSections.videoResumes = videoResumes;
       }
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 
   private _fetchUpNext = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const upNext = (
@@ -209,14 +210,12 @@ class UserLibrariesStore {
         state.value.homeSections.upNext = upNext;
       }
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 
   private _fetchLatestMedia = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const latestMedia = (
@@ -236,14 +235,12 @@ class UserLibrariesStore {
 
       state.value.homeSections.latestMedia[libraryId] = latestMedia;
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 
   private _fetchIndexCarouselItems = async (): Promise<void> => {
     const remote = useRemote();
-    const { t } = usei18n();
 
     try {
       const carouselItems = (
@@ -260,8 +257,7 @@ class UserLibrariesStore {
         state.value.carouselItems = carouselItems;
       }
     } catch (error) {
-      console.error(error);
-      useSnackbar(t('errors.anErrorHappened'), 'error');
+      this._onError(error);
     }
   };
 

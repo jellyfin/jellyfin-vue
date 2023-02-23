@@ -118,7 +118,7 @@ export default defineComponent({
     },
     async deleteAllDevices(): Promise<void> {
       try {
-        this.devices?.forEach(async (device) => {
+        for (const device of this.devices ?? []) {
           if (this.$remote.sdk.deviceInfo.id === device.Id) {
             return;
           }
@@ -126,7 +126,7 @@ export default defineComponent({
           await this.$remote.sdk
             .newUserApi(getDevicesApi)
             .deleteDevice({ id: device.Id || '' });
-        });
+        }
 
         this.useSnackbar(
           this.$t('settings.devices.deleteAllDevicesSuccess'),
