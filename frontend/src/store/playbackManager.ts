@@ -18,7 +18,7 @@ import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 import { useMediaControls, useNow } from '@vueuse/core';
 import { itemsStore } from '.';
-import { usei18n, useRemote, useRouter, useSnackbar } from '@/composables';
+import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
@@ -1145,31 +1145,14 @@ class PlaybackManagerStore {
      */
     watch(
       () => this.currentItemIndex,
-      async (newIndex, oldIndex) => {
+      async (newIndex) => {
         await this.fetchCurrentMediaSource();
-
-        const router = useRouter();
 
         if (newIndex && !state.currentSourceUrl) {
           const { t } = usei18n();
 
           useSnackbar(t('errors.cantPlayItem'), 'error');
           this.stop();
-        } else if (
-          this.currentlyPlayingMediaType === 'Video' &&
-          oldIndex === undefined &&
-          newIndex !== undefined
-        ) {
-          router.push('/playback/video');
-        } else if (
-          router.currentRoute.value.fullPath === '/playback/video' &&
-          newIndex === undefined
-        ) {
-          router.replace(
-            typeof router.options.history.state.back === 'string'
-              ? router.options.history.state.back
-              : '/'
-          );
         }
 
         if (this.previousItem?.Id) {
