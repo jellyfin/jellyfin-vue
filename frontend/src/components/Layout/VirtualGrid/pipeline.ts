@@ -80,13 +80,15 @@ export function getScrollParents(
   while (parent && !vertical && !horizontal) {
     const parentStyle = getComputedStyle(parent);
 
-    if (!horizontal && overflowRegex.test(parentStyle.overflowX)) {
-      horizontal = parent;
-    }
+    horizontal =
+      overflowRegex.test(parentStyle.overflowX) && !horizontal
+        ? parent
+        : undefined;
 
-    if (!vertical && overflowRegex.test(parentStyle.overflowY)) {
-      vertical = parent;
-    }
+    vertical =
+      overflowRegex.test(parentStyle.overflowY) && !vertical
+        ? parent
+        : undefined;
 
     /**
      * parent.assignedSlot.parentElement find the correct parent if the grid is inside a native web component
