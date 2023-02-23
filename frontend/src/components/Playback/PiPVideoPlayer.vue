@@ -20,7 +20,7 @@
           width="100%">
           <div class="d-flex flex-column">
             <div class="d-flex flex-row">
-              <v-btn icon @click="playerElement.toggleMinimize">
+              <v-btn icon @click="playerElement.toggleFullscreenVideoPlayer">
                 <v-icon>
                   <i-mdi-arrow-expand-all />
                 </v-icon>
@@ -80,7 +80,7 @@ const playbackManager = playbackManagerStore();
 
 const keys = useMagicKeys();
 
-whenever(keys.f, () => playerElement.toggleMinimize);
+whenever(keys.f, () => playerElement.toggleFullscreenVideoPlayer);
 
 onMounted(() => {
   playerElement.isPiPMounted = true;

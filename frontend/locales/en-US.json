@@ -70,6 +70,10 @@
       "errorCode": "Error code: {errorCode}",
       "videoPlayerError": "The video player encountered an unrecoverable error."
     },
+    "playback": {
+      "mediaError": "Fatal media error encountered, trying to recover",
+      "networkError": "Fatal network error encountered, trying to recover"
+    },
     "unauthorized": "You're not authorized to access this page"
   },
   "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
