@@ -6,7 +6,7 @@
       @before-enter="(el: HTMLElement) => el.style.transformOrigin = 'center center'">
       <!-- This div is required because <transition> requires a single children node -->
       <div :key="isRoot ? route.meta.layout : String(route.path)" class="h-100">
-        <Suspense>
+        <Suspense @pending="useLoading().start" @resolve="useLoading().finish">
           <component :is="Component" />
         </Suspense>
       </div>
@@ -17,6 +17,7 @@
 <script lang="ts">
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { useMediaQuery } from '@vueuse/core';
+import { useLoading } from '@/composables';
 
 const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
 </script>
