@@ -14,7 +14,6 @@
           :model-value="isHovering"
           v-bind="props"
           contained
-          eager
           scrim
           height="100%"
           width="100%">
