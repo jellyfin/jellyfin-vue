@@ -1,5 +1,11 @@
+/**
+ * This store handles the state of the local player.
+ *
+ * In the other part, playbackManager is suited to handle the playback state in
+ * an agnostic way, regardless of where the media is being played (remotely or locally)
+ */
 import { cloneDeep } from 'lodash-es';
-import { nextTick, reactive } from 'vue';
+import { nextTick, reactive, watch } from 'vue';
 // @ts-expect-error - No types on libass-wasm
 import SubtitlesOctopus from '@jellyfin/libass-wasm';
 import subtitlesOctopusWorkerUrl from '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.js?url';
@@ -8,6 +14,7 @@ import { useRouter } from '@/composables';
 
 const playbackManager = playbackManagerStore();
 let subtitlesOctopus: SubtitlesOctopus | undefined;
+const fullscreenRoute = '/playback/video';
 
 /**
  * == INTERFACES ==
@@ -56,12 +63,12 @@ class PlayerElementStore {
     return state.isStretched;
   }
 
-  public set isStretched(newisStretched: boolean) {
-    state.isStretched = newisStretched;
+  public set isStretched(newIsStretched: boolean) {
+    state.isStretched = newIsStretched;
   }
 
   public get isFullscreenVideoPlayer(): boolean {
-    return useRouter().currentRoute.value.fullPath === '/playback/video';
+    return useRouter().currentRoute.value.fullPath === fullscreenRoute;
   }
 
   /**
@@ -76,7 +83,7 @@ class PlayerElementStore {
     const router = useRouter();
 
     if (!this.isFullscreenVideoPlayer) {
-      router.push('/playback/video');
+      router.push(fullscreenRoute);
     } else {
       router.replace(
         typeof router.options.history.state.back === 'string'
@@ -162,6 +169,31 @@ class PlayerElementStore {
       }
     }
   };
+
+  public constructor() {
+    watch(
+      () => playbackManager.currentItem,
+      (newValue, oldValue) => {
+        const router = useRouter();
+
+        if (
+          (!newValue &&
+            router.currentRoute.value.fullPath === fullscreenRoute) ||
+          (newValue &&
+            !oldValue &&
+            playbackManager.currentlyPlayingMediaType === 'Video')
+        ) {
+          /**
+           * If no item is present, we either manually loaded this or playback is stopped
+           * OR
+           * If there was no item and there's now a video, default to going FS
+           */
+          playerElement.toggleFullscreenVideoPlayer();
+        }
+      },
+      { immediate: true }
+    );
+  }
 }
 
 const playerElement = new PlayerElementStore();
