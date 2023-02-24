@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
 import { computed, watch, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import Hls, { ErrorData, ErrorTypes, Events } from 'hls.js';
@@ -40,9 +39,8 @@ import { mediaElementRef } from '@/store/playbackManager';
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
-
 const { t } = useI18n();
-const router = useRouter();
+
 /**
  * Safari iOS doesn't support hls.js, so we need to handle the cases where we don't need hls.js
  */
@@ -154,27 +152,6 @@ watch(
       playerElement.applyCurrentSubtitle();
     }
   }
-);
-
-watch(
-  () => ({ currentItem: playbackManager.currentItem }),
-  (newValue, oldValue) => {
-    if (
-      (!newValue.currentItem &&
-        router.currentRoute.value.fullPath === '/playback/video') ||
-      (newValue.currentItem &&
-        !oldValue?.currentItem &&
-        playbackManager.currentlyPlayingMediaType === 'Video')
-    ) {
-      /**
-       * If no item is present, we either manually loaded this or playback is stopped
-       * OR
-       * If there was no item and there's now a video, default to going FS
-       */
-      playerElement.toggleFullscreenVideoPlayer();
-    }
-  },
-  { immediate: true }
 );
 
 watch(mediaElementRef, async () => {
