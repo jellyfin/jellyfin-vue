@@ -25,7 +25,7 @@ const playerElement = playerElementStore();
 
 const osd = ref(true);
 
-let fullscreen = useFullscreen(document.body);
+const fullscreen = useFullscreen(document.body);
 
 /**
  * Toggles the fullscreen view, based on browsers supporting it or not (basically iOS or the others)
