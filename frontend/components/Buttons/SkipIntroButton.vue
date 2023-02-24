@@ -7,7 +7,8 @@
       :large="large"
       :small="!large"
       :style="{
-        '--transition-duration': `${visibleDuration}s`
+        '--transition-duration': `${visibleDuration}s`,
+        '--fade-duration': `1s`
       }"
       class="skip-intro"
       :class="{ 'mr-10': large, 'ma-4': large, 'ma-1': !large }"
@@ -99,19 +100,21 @@ export default Vue.extend({
     animate() {
       setTimeout(() => {
         const button = (this.$refs.skipIntro as Vue).$el;
-
+        button?.classList?.remove('deanimate');
         button?.classList?.add('animate');
       }, 500);
     },
     unanimate() {
       const button = (this.$refs.skipIntro as Vue).$el;
-
       button?.classList?.remove('animate');
+      button?.classList?.add('deanimate');
     },
     onMouseEnter() {
+      this.unanimate();
       this.hover = true;
     },
     onMouseLeave() {
+      this.animate();
       this.hover = false;
     }
   }
@@ -142,6 +145,11 @@ export default Vue.extend({
 .skip-intro.animate::before {
   width: 100%;
   transition-duration: var(--transition-duration);
+}
+
+.skip-intro.deanimate::before {
+  width: 0%;
+  transition-duration: var(--fade-duration);
 }
 
 /* Media query for screen sizes up to 600px (sm) */
