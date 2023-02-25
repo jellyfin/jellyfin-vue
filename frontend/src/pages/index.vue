@@ -51,7 +51,7 @@ const clientSettings = clientSettingsStore();
  * but only the result from one is enough. The 'isReady' checks wether the data is populated or not. If it's not populated,
  * we know the Promise of the default layout is still pending, so we can skip this one.
  *
- * We use a requestAnimationFrame so data gets updated on the fly as soon as possible without blocking navigation.
+ * We use onMounted so data gets updated on the fly as soon as possible without blocking navigation.
  * The disadvantage of this is that the content might change in front of the user,
  * but that's better UX than content jumping or blocking navigation.
  */
