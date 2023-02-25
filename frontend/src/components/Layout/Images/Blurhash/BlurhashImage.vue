@@ -16,7 +16,7 @@
           :src="imageUrl"
           v-bind="$attrs"
           :alt="alt"
-          @load="onLoad"
+          @load="loading = false"
           @error="error = true" />
       </v-fade-transition>
       <slot
@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue';
+import { computed, ref, watch } from 'vue';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -85,19 +85,6 @@ const imageUrl = computed(() => {
   }
 });
 const hash = computed(() => getBlurhash(props.item, props.type));
-
-/**
- * load event handler
- */
-function onLoad(): void {
-  window.setTimeout(() => {
-    window.requestAnimationFrame(async () => {
-      await nextTick(() => {
-        loading.value = false;
-      });
-    });
-  });
-}
 
 watch(imageUrl, () => {
   loading.value = true;
