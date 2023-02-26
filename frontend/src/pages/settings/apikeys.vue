@@ -13,7 +13,7 @@
         color="error"
         variant="elevated"
         :loading="loading"
-        @click="revokeAllApiKeys">
+        @click="confirmRevoke = 'all'">
         {{ t('settings.apiKeys.revokeAll') }}
       </v-btn>
     </template>
@@ -45,9 +45,7 @@
                 <v-btn
                   color="error"
                   :loading="loading"
-                  @click="
-                    apiKey.AccessToken && revokeApiKey(apiKey.AccessToken)
-                  ">
+                  @click="confirmRevoke = apiKey.AccessToken ?? undefined">
                   {{ t('settings.apiKeys.revoke') }}
                 </v-btn>
               </td>
@@ -55,7 +53,6 @@
           </tbody>
         </v-table>
       </v-col>
-      <!-- Add API key dialog -->
       <add-api-key
         :adding-new-key="addingNewKey"
         @close="addingNewKey = false"
@@ -63,6 +60,27 @@
           addingNewKey = false;
           refreshApiKeys();
         " />
+      <v-dialog
+        width="auto"
+        :model-value="confirmRevoke !== undefined"
+        @update:model-value="confirmRevoke = undefined">
+        <v-card>
+          <v-card-text>
+            {{ t('settings.apiKeys.revokeConfirm') }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              :loading="loading"
+              @click="confirmRevocation">
+              {{ t('confirm') }}
+            </v-btn>
+            <v-btn :loading="loading" @click="confirmRevoke = undefined">
+              {{ t('cancel') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
   </settings-page>
 </template>
@@ -85,6 +103,8 @@ const remote = useRemote();
 
 const apiKeys = ref<AuthenticationInfo[]>([]);
 const addingNewKey = ref(false);
+/** The key to confirm revocation (will be 'all' if revoking all keys) */
+const confirmRevoke = ref<string>();
 const loading = ref(false);
 
 const headers = computed(
@@ -95,7 +115,24 @@ const headers = computed(
   ]
 );
 
-/** Revokes an api key */
+/**
+ * Confirms revocation and closes the confirmation modal
+ */
+async function confirmRevocation(): Promise<void> {
+  if (!confirmRevoke.value) {
+    return;
+  }
+
+  await (confirmRevoke.value === 'all'
+    ? revokeAllApiKeys()
+    : revokeApiKey(confirmRevoke.value));
+
+  confirmRevoke.value = undefined;
+}
+
+/**
+ * Revokes an api key
+ */
 async function revokeApiKey(token: string): Promise<void> {
   loading.value = true;
 
@@ -114,7 +151,9 @@ async function revokeApiKey(token: string): Promise<void> {
   }
 }
 
-/** revokes all api keys */
+/**
+ * Revokes all api keys
+ */
 async function revokeAllApiKeys(): Promise<void> {
   loading.value = true;
 
@@ -137,7 +176,9 @@ async function revokeAllApiKeys(): Promise<void> {
   }
 }
 
-/** refreshes the list of api keys */
+/**
+ * Refreshes the list of api keys
+ */
 async function refreshApiKeys(): Promise<void> {
   try {
     apiKeys.value =
