@@ -57,7 +57,10 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="error" @click="$emit('delete-selected')">
+      <v-btn
+        color="error"
+        :disabled="disabled"
+        @click="$emit('delete-selected')">
         {{ $t('settings.devices.delete') }}
       </v-btn>
     </v-card-actions>
@@ -69,7 +72,10 @@ import { DeviceInfo } from '@jellyfin/sdk/lib/generated-client';
 import { parseJSON, formatRelative } from 'date-fns';
 import { useDateFns } from '@/composables';
 
-defineProps<{ selectedDevice: DeviceInfo }>();
+defineProps<{
+  selectedDevice: DeviceInfo;
+  disabled: boolean;
+}>();
 
 defineEmits<{
   (e: 'close-dialog'): void;

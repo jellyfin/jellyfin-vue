@@ -6,6 +6,7 @@
         color="error"
         variant="elevated"
         class="ml-a"
+        :loading="loading"
         @click="deleteAllDevices">
         {{ t('settings.devices.deleteAll') }}
       </v-btn>
@@ -71,9 +72,28 @@
         @update:model-value="selectedDevice = undefined">
         <selected-device-info
           v-if="selectedDevice"
+          :disabled="loading"
           :selected-device="selectedDevice"
           @close-dialog="selectedDevice = undefined"
-          @delete-selected="deleteSelectedDevice()" />
+          @delete-selected="confirmDelete = selectedDevice?.Id ?? undefined" />
+      </v-dialog>
+      <v-dialog
+        width="auto"
+        :model-value="confirmDelete !== undefined"
+        @update:model-value="confirmDelete = undefined">
+        <v-card>
+          <v-card-text>
+            {{ t('settings.devices.deleteConfirm') }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" :loading="loading" @click="confirmDeletion">
+              {{ t('confirm') }}
+            </v-btn>
+            <v-btn :loading="loading" @click="confirmDelete = undefined">
+              {{ t('cancel') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-dialog>
     </template>
   </settings-page>
@@ -100,6 +120,9 @@ const devices = ref(
 );
 
 const selectedDevice = ref<DeviceInfo>();
+const loading = ref(false);
+/** the device id to confirm being deleted (will be 'all' if all are being deleted) */
+const confirmDelete = ref<string>();
 
 const headers = computed((): { text: string; value: keyof DeviceInfo }[] => [
   {
@@ -117,15 +140,17 @@ const headers = computed((): { text: string; value: keyof DeviceInfo }[] => [
 
 /** deletes all remembered devices */
 async function deleteAllDevices(): Promise<void> {
+  loading.value = true;
+
   try {
     for (const device of devices.value) {
       if (!device.Id || remote.sdk.deviceInfo.id === device.Id) {
-        return;
+        continue;
       }
 
       await remote.sdk
         .newUserApi(getDevicesApi)
-        .deleteDevice({ id: device.Id || '' });
+        .deleteDevice({ id: device.Id });
     }
 
     useSnackbar(t('settings.devices.deleteAllDevicesSuccess'), 'success');
@@ -136,24 +161,18 @@ async function deleteAllDevices(): Promise<void> {
   } catch (error) {
     useSnackbar(t('settings.devices.deleteAllDevicesError'), 'error');
     console.error(error);
+  } finally {
+    loading.value = false;
   }
-}
-
-/** sets the device that the user currently has focused */
-function setSelectedDevice(device: DeviceInfo): void {
-  selectedDevice.value = device;
-}
-
-/** unsets the device  */
-function closeDialog(): void {
-  selectedDevice.value = undefined;
 }
 
 /** deletes the selected device */
-async function deleteSelectedDevice(): Promise<void> {
+async function deleteDevice(id: string): Promise<void> {
   if (!selectedDevice.value?.Id) {
     return;
   }
+
+  loading.value = true;
 
   try {
     await remote.sdk
@@ -170,8 +189,21 @@ async function deleteSelectedDevice(): Promise<void> {
   } catch (error) {
     useSnackbar(t('deleteDeviceError'), 'error');
     console.error(error);
+  } finally {
+    loading.value = false;
+  }
+}
+
+/** confirms deleteion of a single device or all */
+async function confirmDeletion(): Promise<void> {
+  if (!confirmDelete.value) {
+    return;
   }
 
-  selectedDevice.value = undefined;
+  await (confirmDelete.value === 'all'
+    ? deleteAllDevices()
+    : deleteDevice(confirmDelete.value));
+
+  confirmDelete.value = undefined;
 }
 </script>

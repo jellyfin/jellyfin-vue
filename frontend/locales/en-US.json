@@ -346,6 +346,7 @@
       "appVersion": "App version",
       "delete": "Delete",
       "deleteAll": "Delete all",
+      "deleteConfirm": "Confirm device deletion",
       "deleteAllDevicesError": "Error deleting all devices",
       "deleteAllDevicesSuccess": "All devices deleted successfully",
       "deleteDeviceError": "Error deleting device",
