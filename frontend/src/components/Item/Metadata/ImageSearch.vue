@@ -3,10 +3,9 @@
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
-    width="60%"
-    @click:outside="$emit('update:dialog', false)">
+    @update:model-value="(value) => emit('update:dialog', value)">
     <v-card height="100%" class="image-search-card">
-      <v-card-title>{{ $t('search.name') }}</v-card-title>
+      <v-card-title>{{ t('search.name') }}</v-card-title>
       <v-divider />
       <v-row align="center" class="mx-16 my-4">
         <v-select
@@ -14,48 +13,56 @@
           class="mx-4"
           :items="sources"
           :disabled="loading"
-          :label="$t('metadata.source')"
+          :label="t('metadata.source')"
+          :placeholder="t('metadata.sourceAll')"
+          persistent-placeholder
           variant="outlined"
-          hide-details />
+          hide-details
+          clearable />
         <v-select
           v-model="type"
           class="mx-4"
           :items="types"
+          item-title="text"
+          item-value="value"
           :disabled="loading"
-          :label="$t('metadata.type')"
+          :label="t('metadata.type')"
           variant="outlined"
           hide-details />
         <v-checkbox
           v-model="allLanguages"
           class="mt-0 mx-4"
-          :label="$t('allLanguages')"
+          :label="t('allLanguages')"
           :disabled="loading"
           hide-details />
       </v-row>
       <v-divider />
-      <v-row class="image-results">
-        <v-progress-circular
-          v-if="loading"
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate
-          class="loading-bar" />
-        <v-card v-else-if="images.length === 0" class="mx-auto">
-          <v-card-title>
-            {{ $t('noImagesFound') }}
-          </v-card-title>
-        </v-card>
-        <v-col v-else :class="useResponsiveClasses('card-grid-container')">
-          <v-card
-            v-for="(item, i) in images"
-            :key="`${item.Type}-${i}`"
-            class="ma-2 d-flex flex-column">
+      <v-progress-circular
+        v-if="loading"
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+        class="loading-bar" />
+      <v-card v-else-if="images.length === 0" class="mx-auto">
+        <v-card-title>
+          {{ t('noImagesFound') }}
+        </v-card-title>
+      </v-card>
+      <v-row v-else class="image-results">
+        <v-col
+          v-for="(item, i) in images"
+          :key="`${item.Type}-${i}`"
+          xl="1"
+          lg="3"
+          md="4"
+          sm="6"
+          xs="12">
+          <v-card class="ma-2">
             <v-img
-              :src="imageFormat(item.Url)"
-              :aspect-ratio="ratio"
-              position="top center"
-              contain />
+              v-if="item.Url"
+              :src="item.Url"
+              :aspect-ratio="getContainerAspectRatioForImageType(item.Type)" />
             <div class="text-center text-truncate text-subtitle-1 mt-2">
               {{ item.ProviderName }}
             </div>
@@ -77,7 +84,7 @@
             </div>
             <v-spacer />
             <v-card-actions class="justify-center">
-              <v-btn icon :disabled="loading" @click="handleDownload(item)">
+              <v-btn icon :disabled="loading" @click="onDownload(item)">
                 <v-icon>
                   <i-mdi-cloud-download />
                 </v-icon>
@@ -90,8 +97,9 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   ImageProviderInfo,
   RemoteImageInfo,
@@ -99,170 +107,169 @@ import {
   BaseItemDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
-import { useResponsiveClasses } from '@/composables';
+import { getContainerAspectRatioForImageType } from '@/utils/images';
+import { useRemote } from '@/composables';
 
-export default defineComponent({
-  props: {
-    metadata: {
-      type: Object,
-      default: (): BaseItemDto => ({})
-    },
-    dialog: {
-      type: Boolean,
-      default: false
-    }
-  },
-  setup() {
-    return { useResponsiveClasses };
-  },
-  data() {
-    return {
-      providers: [] as ImageProviderInfo[],
-      type: ImageType.Primary,
-      source: 'All',
-      allLanguages: false,
-      types: [
-        {
-          value: ImageType.Primary,
-          text: this.$t('imageType.primary')
-        },
-        {
-          value: ImageType.Art,
-          text: this.$t('imageType.art')
-        },
-        {
-          value: ImageType.Backdrop,
-          text: this.$t('imageType.backdrop')
-        },
-        {
-          value: ImageType.Banner,
-          text: this.$t('imageType.banner')
-        },
-        {
-          value: ImageType.Box,
-          text: this.$t('imageType.box')
-        },
-        {
-          value: ImageType.BoxRear,
-          text: this.$t('imageType.boxRear')
-        },
-        {
-          value: ImageType.Disc,
-          text: this.$t('imageType.disc')
-        },
-        {
-          value: ImageType.Logo,
-          text: this.$t('imageType.logo')
-        },
-        {
-          value: ImageType.Menu,
-          text: this.$t('imageType.menu')
-        },
-        {
-          value: ImageType.Screenshot,
-          text: this.$t('imageType.screenshot')
-        },
-        {
-          value: ImageType.Thumb,
-          text: this.$t('imageType.thumb')
-        }
-      ],
-      images: [] as RemoteImageInfo[],
-      loading: true
-    };
-  },
-  computed: {
-    sources(): string[] {
-      const validProviders = this.providers.filter(
-        (provider: ImageProviderInfo) => {
-          return !!(
-            provider.Name && provider.SupportedImages?.includes(this.type)
-          );
-        }
-      );
-      const providerNames = validProviders.map(
-        (provider: ImageProviderInfo) => {
-          return provider.Name ?? '';
-        }
-      );
+const props = defineProps<{
+  metadata: BaseItemDto;
+  dialog: boolean;
+}>();
 
-      return [this.$t('metadata.sourceAll'), ...providerNames];
-    },
-    ratio(): string {
-      return this.type === ImageType.Backdrop ? '1.777777778' : '0.666666667';
-    }
-  },
-  watch: {
-    type(): void {
-      this.getImages();
-    },
-    source(): void {
-      this.getImages();
-    },
-    allLanguages(): void {
-      this.getImages();
-    },
-    dialog(value): void {
-      if (value) {
-        this.getRemoteImageProviders();
-        this.getImages();
-      } else {
-        this.reset();
-      }
-    }
-  },
-  methods: {
-    async getRemoteImageProviders(): Promise<void> {
-      this.providers = (
-        await this.$remote.sdk
-          .newUserApi(getRemoteImageApi)
-          .getRemoteImageProviders({
-            itemId: this.metadata.Id
-          })
-      ).data;
-    },
-    async getImages(): Promise<void> {
-      this.loading = true;
-      this.images =
-        (
-          await this.$remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
-            itemId: this.metadata.Id,
-            type: this.type,
-            providerName: this.source === 'All' ? undefined : this.source,
-            includeAllLanguages: this.allLanguages
-          })
-        ).data.Images ?? [];
+const emit = defineEmits<{
+  (e: 'update:dialog', isOpen: boolean): void;
+  (e: 'download-success', someting: boolean): void;
+}>();
 
-      this.loading = false;
-    },
-    imageFormat(url: string): string {
-      return `${
-        this.$remote.sdk.api?.basePath
-      }/Images/Remote?imageUrl=${encodeURIComponent(url)}`;
-    },
-    async handleDownload(item: RemoteImageInfo): Promise<void> {
-      if (!item.Type || !item.Url) {
-        throw new Error('Expected image type and url to be present');
-      }
+const { t } = useI18n();
+const remote = useRemote();
 
-      this.loading = true;
-      await this.$remote.sdk.newUserApi(getRemoteImageApi).downloadRemoteImage({
-        type: item.Type,
-        imageUrl: item.Url,
-        itemId: this.metadata.Id
-      });
-      this.loading = false;
-      this.$emit('update:dialog', false);
-      this.$emit('download-success', false);
-    },
-    reset(): void {
-      this.providers = [];
-      this.type = ImageType.Primary;
-      this.source = 'All';
-      this.allLanguages = false;
+const providers = ref<ImageProviderInfo[]>([]);
+const type = ref<ImageType>(ImageType.Primary);
+// eslint-disable-next-line unicorn/no-null -- the v-select component uses null to represent no value
+const source = ref<ImageProviderInfo['Name'] | null>(null);
+const allLanguages = ref(false);
+const images = ref<RemoteImageInfo[]>([]);
+const loading = ref(false);
+
+const types = computed(() => [
+  {
+    value: ImageType.Primary,
+    text: t('imageType.primary')
+  },
+  {
+    value: ImageType.Art,
+    text: t('imageType.art')
+  },
+  {
+    value: ImageType.Backdrop,
+    text: t('imageType.backdrop')
+  },
+  {
+    value: ImageType.Banner,
+    text: t('imageType.banner')
+  },
+  {
+    value: ImageType.Box,
+    text: t('imageType.box')
+  },
+  {
+    value: ImageType.BoxRear,
+    text: t('imageType.boxRear')
+  },
+  {
+    value: ImageType.Disc,
+    text: t('imageType.disc')
+  },
+  {
+    value: ImageType.Logo,
+    text: t('imageType.logo')
+  },
+  {
+    value: ImageType.Menu,
+    text: t('imageType.menu')
+  },
+  {
+    value: ImageType.Screenshot,
+    text: t('imageType.screenshot')
+  },
+  {
+    value: ImageType.Thumb,
+    text: t('imageType.thumb')
+  }
+]);
+
+const sources = computed(() =>
+  providers.value
+    .filter(
+      (provider) =>
+        provider.Name &&
+        provider.SupportedImages &&
+        provider.SupportedImages.includes(type.value)
+    )
+    .map((provider) => provider.Name ?? '')
+);
+
+/**
+ * Returns a list of image providers for the current item
+ */
+async function getRemoteImageProviders(): Promise<void> {
+  if (!props.metadata.Id) {
+    return;
+  }
+
+  providers.value = (
+    await remote.sdk.newUserApi(getRemoteImageApi).getRemoteImageProviders({
+      itemId: props.metadata.Id
+    })
+  ).data;
+}
+
+/**
+ * Fetches the image information for the currently selected item given the filters
+ */
+async function getImages(): Promise<void> {
+  if (!props.metadata.Id) {
+    return;
+  }
+
+  loading.value = true;
+  images.value =
+    (
+      await remote.sdk.newUserApi(getRemoteImageApi).getRemoteImages({
+        itemId: props.metadata.Id,
+        type: type.value,
+        providerName: source.value ?? undefined,
+        includeAllLanguages: allLanguages.value
+      })
+    ).data.Images ?? [];
+
+  loading.value = false;
+}
+
+/**
+ * Handles downloading an image given the image info
+ */
+async function onDownload(item: RemoteImageInfo): Promise<void> {
+  if (!item.Type || !item.Url || !props.metadata.Id) {
+    return;
+  }
+
+  loading.value = true;
+  await remote.sdk.newUserApi(getRemoteImageApi).downloadRemoteImage({
+    itemId: props.metadata.Id,
+    type: item.Type,
+    imageUrl: item.Url
+  });
+  loading.value = false;
+
+  emit('update:dialog', false);
+  emit('download-success', false);
+}
+
+/**
+ * Resets the image search filters and results
+ */
+function reset(): void {
+  providers.value = [];
+  type.value = ImageType.Primary;
+  // eslint-disable-next-line unicorn/no-null -- the v-select component uses null to represent no value
+  source.value = null;
+  allLanguages.value = false;
+  images.value = [];
+}
+
+watch([type, source, allLanguages], getImages);
+watch(
+  () => props.dialog,
+  (dialog) => {
+    if (dialog) {
+      getRemoteImageProviders();
+      getImages();
+    } else {
+      reset();
     }
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>
@@ -280,21 +287,5 @@ export default defineComponent({
 .image-results {
   height: 50vh;
   overflow-y: scroll;
-}
-
-.card-grid-container.sm-and-down {
-  grid-template-columns: repeat(3, minmax(calc(100% / 3), 1fr));
-}
-
-.card-grid-container.sm-and-up {
-  grid-template-columns: repeat(4, minmax(calc(100% / 4), 1fr));
-}
-
-.card-grid-container.lg-and-up {
-  grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
-}
-
-.card-grid-container.xl {
-  grid-template-columns: repeat(8, minmax(calc(100% / 8), 1fr));
 }
 </style>
