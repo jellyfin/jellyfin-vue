@@ -4,7 +4,9 @@
       <span class="text-h6 hidden-sm-and-down">
         {{ library?.Name }}
       </span>
-      <v-chip :small="!loading" class="ma-2 hidden-sm-and-down">
+      <v-chip
+        :size="!loading ? 'small' : undefined"
+        class="ma-2 hidden-sm-and-down">
         <template v-if="!loading">{{ items?.length ?? 0 }}</template>
         <v-progress-circular v-else width="2" indeterminate size="16" />
       </v-chip>
