@@ -136,6 +136,19 @@ export function getBlurhash(
   }
 }
 /**
+ * Returns the aspect ratio that should be use
+ */
+export function getContainerAspectRatioForImageType(
+  imageType?: ImageType
+): number {
+  if (imageType === ImageType.Backdrop) {
+    return 1.777_777_778;
+  }
+
+  return 0.666_666_667;
+}
+
+/**
  * Gets the desired aspect ratio based on card shape
  * @param shape
  * @returns
