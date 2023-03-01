@@ -33,7 +33,7 @@
       </v-list>
     </v-menu>
     <metadata-editor-dialog
-      v-if="metadataDialog"
+      v-if="item.Id"
       v-model:dialog="metadataDialog"
       :item-id="item.Id" />
   </div>

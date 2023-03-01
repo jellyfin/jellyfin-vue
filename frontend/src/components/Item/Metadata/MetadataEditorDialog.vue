@@ -3,42 +3,24 @@
     content-class="metadata-dialog"
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
-    width="50vw"
-    @click:outside="$emit('update:dialog', false)">
-    <metadata-editor
-      v-model:force-refresh="forceRefresh"
-      :item-id="itemId"
-      @cancel="close"
-      @save="close" />
+    @update:model-value="close">
+    <metadata-editor :item-id="itemId" @cancel="close" @save="close" />
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+defineProps<{ dialog: boolean; itemId: string }>();
 
-export default defineComponent({
-  props: {
-    dialog: {
-      type: Boolean,
-      required: true
-    },
-    itemId: {
-      type: String,
-      default: ''
-    }
-  },
-  data() {
-    return {
-      forceRefresh: false
-    };
-  },
-  methods: {
-    close(): void {
-      this.forceRefresh = true;
-      this.$emit('update:dialog', false);
-    }
-  }
-});
+const emit = defineEmits<{
+  (e: 'update:dialog', isOpen: boolean): void;
+}>();
+
+/**
+ * Close the dialog
+ */
+function close(): void {
+  emit('update:dialog', false);
+}
 </script>
 
 <style lang="scss" scoped>
