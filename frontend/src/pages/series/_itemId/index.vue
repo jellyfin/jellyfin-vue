@@ -46,7 +46,7 @@
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
                     <v-chip
-                      small
+                      size="small"
                       link
                       :class="{ 'ml-2': index > 0 }"
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
@@ -72,7 +72,7 @@
                     :key="director.Id"
                     cols="auto">
                     <v-chip
-                      small
+                      size="small"
                       link
                       :to="getItemDetailsLink(director, 'Person')">
                       {{ director.Name }}
@@ -94,7 +94,7 @@
                 <v-row dense>
                   <v-col v-for="writer in writers" :key="writer.Id" cols="auto">
                     <v-chip
-                      small
+                      size="small"
                       link
                       :to="getItemDetailsLink(writer, 'Person')">
                       {{ writer.Name }}
