@@ -1,92 +1,99 @@
 <template>
   <div>
     <v-select
-      v-model="UICulture"
+      v-model="uiCulture"
       :loading="loading"
       variant="outlined"
-      :label="$t('wizard.preferedLanguage')"
-      required
+      :label="t('wizard.preferedLanguage')"
+      :rules="SomeItemSelectedRule"
       item-title="Name"
       item-value="Value"
-      :items="culturesList" />
-    <v-btn color="primary" variant="elevated" @click="setLanguage">
-      {{ $t('next') }}
+      :items="culturesList"
+      :disabled="loading" />
+    <v-btn
+      color="primary"
+      variant="elevated"
+      :loading="loading"
+      @click="setLanguage">
+      {{ t('next') }}
     </v-btn>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
+import { SomeItemSelectedRule } from '@/utils/validation';
 
-export default defineComponent({
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      UICulture: 'en-US',
-      culturesList: [] as LocalizationOption[],
-      initialConfig: {} as StartupConfigurationDto,
-      loading: false
-    };
-  },
-  async created() {
-    this.loading = true;
+const emit = defineEmits<{ (e: 'step-complete'): void }>();
 
-    const api = this.$remote.sdk.oneTimeSetup(
-      this.$remote.auth.currentServer?.PublicAddress || ''
-    );
+const remote = useRemote();
+const { locale, t } = useI18n();
 
-    try {
-      this.initialConfig = (
-        await getStartupApi(api).getStartupConfiguration()
-      ).data;
+const uiCulture = ref('en-US');
+const culturesList = ref<LocalizationOption[]>([]);
+const initialConfig = ref<StartupConfigurationDto>();
+const loading = ref(false);
 
-      this.UICulture = this.initialConfig?.UICulture || 'en-GB';
+/**
+ * Load the intiial server information
+ */
+onMounted(async () => {
+  loading.value = true;
 
-      this.culturesList = (
-        await getLocalizationApi(api).getLocalizationOptions()
-      ).data;
-    } catch (error) {
-      console.error(error);
-    }
+  const api = remote.sdk.oneTimeSetup(
+    remote.auth.currentServer?.PublicAddress ?? ''
+  );
 
-    this.loading = false;
-  },
-  methods: {
-    async setLanguage(): Promise<void> {
-      this.loading = true;
+  try {
+    initialConfig.value = (
+      await getStartupApi(api).getStartupConfiguration()
+    ).data;
 
-      const api = this.$remote.sdk.oneTimeSetup(
-        this.$remote.auth.currentServer?.PublicAddress || ''
-      );
+    uiCulture.value = initialConfig.value.UICulture ?? 'en-US';
 
-      try {
-        this.$i18n.locale = this.UICulture;
-        await getStartupApi(api).updateInitialConfiguration({
-          startupConfigurationDto: {
-            ...this.initialConfig,
-            UICulture: this.UICulture
-          }
-        });
-
-        this.$emit('step-complete', { step: 1 });
-      } catch (error) {
-        console.error(error);
-        this.useSnackbar(this.$t('wizard.setLanguageError'), 'error');
-      }
-
-      this.loading = false;
-    }
+    culturesList.value = (
+      await getLocalizationApi(api).getLocalizationOptions()
+    ).data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
   }
 });
+
+/**
+ * Set the language locale of the server
+ */
+async function setLanguage(): Promise<void> {
+  loading.value = true;
+
+  const api = remote.sdk.oneTimeSetup(
+    remote.auth.currentServer?.PublicAddress ?? ''
+  );
+
+  try {
+    locale.value = uiCulture.value;
+    await getStartupApi(api).updateInitialConfiguration({
+      startupConfigurationDto: {
+        ...initialConfig.value,
+        UICulture: uiCulture.value
+      }
+    });
+
+    emit('step-complete');
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('wizard.setLanguageError'), 'error');
+  }
+
+  loading.value = false;
+}
 </script>

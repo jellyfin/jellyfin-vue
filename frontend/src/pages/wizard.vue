@@ -10,7 +10,7 @@
               :complete="wizardStage > 1"
               step="1"
               :editable="maxWizardStage > 0">
-              {{ $t('wizard.languageLocale') }}
+              {{ t('wizard.languageLocale') }}
             </v-stepper-step>
 
             <v-divider />
@@ -19,7 +19,7 @@
               :complete="wizardStage > 2"
               step="2"
               :editable="maxWizardStage > 1">
-              {{ $t('wizard.administratorAccount') }}
+              {{ t('wizard.administratorAccount') }}
             </v-stepper-step>
 
             <v-divider />
@@ -28,7 +28,7 @@
               :complete="wizardStage > 3"
               step="3"
               :editable="maxWizardStage > 2">
-              {{ $t('wizard.preferredMetadataLanguage') }}
+              {{ t('wizard.preferredMetadataLanguage') }}
             </v-stepper-step>
 
             <v-divider />
@@ -37,33 +37,33 @@
               :complete="wizardStage > 4"
               step="4"
               :editable="maxWizardStage > 3">
-              {{ $t('wizard.remoteAccess') }}
+              {{ t('wizard.remoteAccess') }}
             </v-stepper-step>
           </v-stepper-header>
 
           <v-stepper-items>
             <v-stepper-content step="1">
-              <wizard-language class="pt-4" @step-complete="changeStep" />
+              <wizard-language class="pt-4" @step-complete="nextStep" />
             </v-stepper-content>
 
             <v-stepper-content step="2">
               <wizard-admin-account
                 class="pt-4"
-                @step-complete="changeStep"
+                @step-complete="nextStep"
                 @previous-step="previousStep" />
             </v-stepper-content>
 
             <v-stepper-content step="3">
               <wizard-metadata
                 class="pt-4"
-                @step-complete="changeStep"
+                @step-complete="nextStep"
                 @previous-step="previousStep" />
             </v-stepper-content>
 
             <v-stepper-content step="4">
               <wizard-remote-access
                 class="pt-4"
-                @step-complete="changeStep"
+                @step-complete="nextStep"
                 @previous-step="previousStep" />
             </v-stepper-content>
           </v-stepper-items>
@@ -78,82 +78,79 @@ meta:
   layout: server
 </route>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { useRoute } from 'vue-router';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
 
-export default defineComponent({
-  setup() {
-    const { t } = useI18n();
-    const route = useRoute();
+const { t } = useI18n();
+const router = useRouter();
+const remote = useRemote();
 
-    route.meta.title = t('wizard.setupWizard');
+const wizardStage = ref(1);
+const maxWizardStage = ref(1);
 
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      wizardStage: 1,
-      maxWizardStage: 1
-    };
-  },
-  computed: {
-    heading(): string {
-      switch (this.wizardStage) {
-        case 1: {
-          return this.$t('wizard.languageLocale');
-        }
-        case 2: {
-          return this.$t('wizard.administratorAccount');
-        }
-        case 3: {
-          return this.$t('wizard.preferredMetadataLanguage');
-        }
-        case 4: {
-          return this.$t('wizard.remoteAccess');
-        }
-      }
-
-      return '';
+const heading = computed(() => {
+  switch (wizardStage.value) {
+    case 1: {
+      return t('wizard.languageLocale');
     }
-  },
-  methods: {
-    async completeWizard(): Promise<void> {
-      try {
-        const api = this.$remote.sdk.oneTimeSetup(
-          this.$remote.auth.currentServer?.PublicAddress || ''
-        );
-
-        await getStartupApi(api).completeWizard();
-        // Redirect to setup complete page
-        this.$router.replace('/server/login');
-      } catch (error) {
-        console.error(error);
-        this.useSnackbar(this.$t('wizard.completeError'), 'success');
-      }
-    },
-    changeStep({ step }: { step: number }): void {
-      if (step === 4) {
-        this.completeWizard();
-      } else {
-        this.wizardStage += 1;
-      }
-
-      // This allows the return to previous steps, but not going forward past incomplete steps
-      if (this.wizardStage > this.maxWizardStage) {
-        this.maxWizardStage = this.wizardStage;
-      }
-    },
-    previousStep(): void {
-      this.wizardStage -= 1;
+    case 2: {
+      return t('wizard.administratorAccount');
+    }
+    case 3: {
+      return t('wizard.preferredMetadataLanguage');
+    }
+    case 4: {
+      return t('wizard.remoteAccess');
     }
   }
+
+  return '';
 });
+
+/**
+ * Completes server setup
+ */
+async function completeWizard(): Promise<void> {
+  try {
+    const api = remote.sdk.oneTimeSetup(
+      remote.auth.currentServer?.PublicAddress || ''
+    );
+
+    await getStartupApi(api).completeWizard();
+    // Redirect to setup complete page
+    router.replace('/server/login');
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('wizard.completeError'), 'success');
+  }
+}
+
+/**
+ * Change wizard step forward
+ */
+function nextStep(): void {
+  if (wizardStage.value === 4) {
+    completeWizard();
+  } else {
+    wizardStage.value += 1;
+  }
+
+  // This allows the return to previous steps, but not going forward past incomplete steps
+  if (wizardStage.value > maxWizardStage.value) {
+    maxWizardStage.value = wizardStage.value;
+  }
+}
+
+/**
+ * Change wizard step backwards
+ */
+function previousStep(): void {
+  wizardStage.value -= 1;
+}
 </script>
 
 <style lang="scss" scoped>

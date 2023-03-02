@@ -3,37 +3,41 @@
     <v-select
       v-model="metadataLanguage"
       variant="outlined"
-      :label="$t('metadataLanguage')"
-      required
+      :label="t('metadataLanguage')"
+      :rules="SomeItemSelectedRule"
       item-title="DisplayName"
       item-value="TwoLetterISOLanguageName"
-      :items="cultureOptions" />
+      :items="cultureOptions"
+      :disabled="loading" />
     <v-select
       v-model="metadataCountry"
       variant="outlined"
-      :label="$t('metadataCountry')"
-      required
+      :label="t('metadataCountry')"
+      :rules="SomeItemSelectedRule"
       item-title="DisplayName"
       item-value="TwoLetterISORegionName"
-      :items="countryOptions" />
+      :items="countryOptions"
+      :disabled="loading" />
     <v-btn
       color="secondary"
       variant="elevated"
-      @click="$emit('previous-step', { step: 2 })">
-      {{ $t('previous') }}
+      :disabled="loading"
+      @click="emit('previous-step')">
+      {{ t('previous') }}
     </v-btn>
     <v-btn
       :loading="loading"
       color="primary"
       variant="elevated"
       @click="setMetadata">
-      {{ $t('next') }}
+      {{ t('next') }}
     </v-btn>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   CountryInfo,
   CultureDto,
@@ -41,64 +45,65 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
-import { useSnackbar } from '@/composables';
+import { useRemote, useSnackbar } from '@/composables';
+import { SomeItemSelectedRule } from '@/utils/validation';
 
-export default defineComponent({
-  setup() {
-    return {
-      useSnackbar
-    };
-  },
-  data() {
-    return {
-      metadataLanguage: '',
-      metadataCountry: '',
-      initialConfig: {} as StartupConfigurationDto,
-      cultureOptions: [] as CultureDto[],
-      countryOptions: [] as CountryInfo[],
-      loading: false
-    };
-  },
-  async created() {
-    const api = this.$remote.sdk.oneTimeSetup(
-      this.$remote.auth.currentServer?.PublicAddress || ''
-    );
+const emit = defineEmits<{
+  (e: 'step-complete'): void;
+  (e: 'previous-step'): void;
+}>();
 
-    this.initialConfig = (
-      await getStartupApi(api).getStartupConfiguration()
-    ).data;
+const { t } = useI18n();
+const remote = useRemote();
 
-    this.metadataLanguage = this.initialConfig?.MetadataCountryCode || '';
-    this.metadataCountry = this.initialConfig?.PreferredMetadataLanguage || '';
+const metadataLanguage = ref('');
+const metadataCountry = ref('');
+const initialConfig = ref<StartupConfigurationDto>({});
+const cultureOptions = ref<CultureDto[]>([]);
+const countryOptions = ref<CountryInfo[]>([]);
+const loading = ref(false);
 
-    this.cultureOptions = (await getLocalizationApi(api).getCultures()).data;
-    this.countryOptions = (await getLocalizationApi(api).getCountries()).data;
-  },
-  methods: {
-    async setMetadata(): Promise<void> {
-      this.loading = true;
+onMounted(async () => {
+  const api = remote.sdk.oneTimeSetup(
+    remote.auth.currentServer?.PublicAddress ?? ''
+  );
 
-      const api = this.$remote.sdk.oneTimeSetup(
-        this.$remote.auth.currentServer?.PublicAddress || ''
-      );
+  initialConfig.value = (
+    await getStartupApi(api).getStartupConfiguration()
+  ).data;
 
-      try {
-        await getStartupApi(api).updateInitialConfiguration({
-          startupConfigurationDto: {
-            ...this.initialConfig,
-            MetadataCountryCode: this.metadataLanguage,
-            PreferredMetadataLanguage: this.metadataCountry
-          }
-        });
+  metadataLanguage.value = initialConfig.value?.MetadataCountryCode ?? '';
+  metadataCountry.value = initialConfig.value?.PreferredMetadataLanguage ?? '';
 
-        this.$emit('step-complete', { step: 3 });
-      } catch (error) {
-        console.error(error);
-        this.useSnackbar(this.$t('wizard.setMetadataError'), 'error');
-      }
-
-      this.loading = false;
-    }
-  }
+  cultureOptions.value = (await getLocalizationApi(api).getCultures()).data;
+  countryOptions.value = (await getLocalizationApi(api).getCountries()).data;
 });
+
+/**
+ * Update metadata preferences and continue to next step
+ */
+async function setMetadata(): Promise<void> {
+  loading.value = true;
+
+  const api = remote.sdk.oneTimeSetup(
+    remote.auth.currentServer?.PublicAddress ?? ''
+  );
+
+  try {
+    await getStartupApi(api).updateInitialConfiguration({
+      startupConfigurationDto: {
+        ...initialConfig.value,
+        MetadataCountryCode: metadataLanguage.value,
+        PreferredMetadataLanguage: metadataCountry.value
+      }
+    });
+
+    emit('step-complete');
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('wizard.setMetadataError'), 'error');
+  } finally {
+    loading.value = false;
+  }
+}
 </script>
