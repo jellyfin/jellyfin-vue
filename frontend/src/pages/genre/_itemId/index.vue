@@ -6,10 +6,10 @@
       </span>
       <v-spacer />
       <v-fade-transition>
-        <play-button v-if="!$fetchState.pending" :item="genre" />
+        <play-button v-if="!loading" :item="genre" />
       </v-fade-transition>
       <v-btn
-        v-if="!$fetchState.pending"
+        v-if="!loading"
         class="play-button mr-2"
         min-width="8em"
         variant="outlined"
@@ -18,16 +18,13 @@
       </v-btn>
     </v-app-bar>
     <v-container class="after-second-toolbar">
-      <v-row v-if="$fetchState.pending">
+      <v-row v-if="loading">
         <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
           <skeleton-card v-for="n in 24" :key="n" text />
         </v-col>
       </v-row>
-      <item-grid
-        v-if="genres.length > 0"
-        :items="genres"
-        :loading="$fetchState.pending" />
-      <v-row v-else-if="!$fetchState.pending" justify="center">
+      <item-grid v-if="genres.length > 0" :items="genres" :loading="loading" />
+      <v-row v-else-if="!loading" justify="center">
         <v-col
           cols="12"
           :class="
@@ -46,8 +43,14 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { SortOrder, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { ref, watch } from 'vue';
+import { LocationQueryValue, useRoute } from 'vue-router';
+import {
+  SortOrder,
+  ItemFields,
+  BaseItemKind,
+  BaseItemDto
+} from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { itemsStore } from '@/store';
@@ -57,29 +60,58 @@ const items = itemsStore();
 const route = useRoute();
 const remote = useRemote();
 
-const itemId = route.params.itemId;
-const item = (
-  await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-    userId: remote.auth.currentUserId || '',
-    itemId
-  })
-).data;
+const loading = ref(false);
+const genre = ref<BaseItemDto>({});
+const genres = ref<BaseItemDto[]>([]);
 
-let genres = (
-  await remote.sdk.newUserApi(getItemsApi).getItems({
-    genreIds: [item.Id as string],
-    includeItemTypes: [route.query.type.toString()],
-    recursive: true,
-    sortBy: ['SortName'],
-    sortOrder: [SortOrder.Ascending],
-    fields: Object.values(ItemFields),
-    userId: remote.auth.currentUserId || ''
-  })
-).data.Items;
+watch(
+  [
+    (): string => (route.params as { itemId: string }).itemId,
+    (): LocationQueryValue | LocationQueryValue[] => route.query.type
+  ],
+  async ([itemId, typesQuery]) => {
+    const includeItemTypes = (
+      typesQuery == undefined
+        ? []
+        : typeof typesQuery === 'string'
+        ? [typesQuery]
+        : typesQuery
+    ) as BaseItemKind[];
 
-genres = items.addCollection(item, genres || []);
+    loading.value = true;
 
-route.meta.title = item.Name;
+    try {
+      genre.value = (
+        await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+          userId: remote.auth.currentUserId ?? '',
+          itemId
+        })
+      ).data;
+
+      route.meta.title = genre.value.Name;
+
+      genres.value =
+        (
+          await remote.sdk.newUserApi(getItemsApi).getItems({
+            genreIds: [itemId],
+            includeItemTypes: includeItemTypes,
+            recursive: true,
+            sortBy: ['SortName'],
+            sortOrder: [SortOrder.Ascending],
+            fields: Object.values(ItemFields),
+            userId: remote.auth.currentUserId ?? ''
+          })
+        ).data.Items ?? [];
+
+      genres.value = items.addCollection(genre.value, genres.value);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      loading.value = false;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>

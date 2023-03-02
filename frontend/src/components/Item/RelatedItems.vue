@@ -1,49 +1,45 @@
 <template>
-  <div v-if="relatedItems.length > 0">
-    <div v-if="!vertical" class="related-items">
-      <swiper-section
-        :title="$t('youMayAlsoLike')"
-        :items="relatedItems"
-        :loading="loading" />
-    </div>
-    <div v-else-if="vertical">
-      <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
-        <slot>
-          {{ $t('youMayAlsoLike') }}
-        </slot>
-      </h2>
-      <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
-      <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
-      <v-list bg-color="transparent" lines="two">
-        <div v-if="!loading && relatedItems.length > 0">
-          <v-list-item
-            v-for="relatedItem in relatedItems"
-            :key="relatedItem.Id"
-            :to="getItemDetailsLink(relatedItem)">
-            <template #prepend>
-              <v-avatar>
-                <v-avatar color="card">
-                  <blurhash-image :item="relatedItem" />
-                </v-avatar>
+  <div v-if="!vertical">
+    <swiper-section
+      :title="t('youMayAlsoLike')"
+      :items="relatedItems"
+      :loading="loading" />
+  </div>
+  <div v-else-if="vertical">
+    <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
+      <slot>
+        {{ t('youMayAlsoLike') }}
+      </slot>
+    </h2>
+    <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
+    <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
+    <v-list bg-color="transparent" lines="two">
+      <div v-if="!loading && relatedItems.length > 0">
+        <v-list-item
+          v-for="relatedItem in relatedItems"
+          :key="relatedItem.Id"
+          :to="getItemDetailsLink(relatedItem)"
+          :title="relatedItem.Name ?? ''"
+          :subtitle="relatedItem.ProductionYear ?? ''">
+          <template #prepend>
+            <v-avatar>
+              <v-avatar color="card">
+                <blurhash-image :item="relatedItem" />
               </v-avatar>
-            </template>
-            <v-list-item-title>{{ relatedItem.Name }}</v-list-item-title>
-            <v-list-item-subtitle>
-              {{ relatedItem.ProductionYear }}
-            </v-list-item-subtitle>
-          </v-list-item>
-        </div>
-        <div
-          v-for="index in skeletonLength"
-          v-else-if="loading"
-          :key="index"
-          class="d-flex align-center mt-5 mb-5">
-          <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
-          <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
-          <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
-        </div>
-      </v-list>
-    </div>
+            </v-avatar>
+          </template>
+        </v-list-item>
+      </div>
+      <div
+        v-for="index in skeletonLength"
+        v-else-if="loading"
+        :key="index"
+        class="d-flex align-center mt-5 mb-5">
+        <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
+        <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
+        <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
+      </div>
+    </v-list>
   </div>
 </template>
 
@@ -76,31 +72,32 @@ const loading = ref(true);
 watch(
   () => props.item,
   async () => {
-    loading.value = true;
-
-    if (props.item.Id) {
-      try {
-        const response = await remote.sdk
-          .newUserApi(getLibraryApi)
-          .getSimilarItems({
-            itemId: props.item.Id,
-            userId: remote.auth.currentUserId,
-            limit: props.vertical ? 5 : 12,
-            excludeArtistIds: props.item.AlbumArtists?.flatMap(
-              (albumArtist: BaseItemDto) =>
-                albumArtist.Id ? [albumArtist.Id] : []
-            )
-          });
-
-        if (response.data.Items) {
-          relatedItems.value = response.data.Items;
-        }
-      } catch {
-        useSnackbar(t('unableGetRelated'), 'error');
-      }
+    if (!props.item.Id) {
+      return;
     }
 
-    loading.value = false;
+    loading.value = true;
+
+    try {
+      const response = await remote.sdk
+        .newUserApi(getLibraryApi)
+        .getSimilarItems({
+          itemId: props.item.Id,
+          userId: remote.auth.currentUserId,
+          limit: props.vertical ? 5 : 12,
+          excludeArtistIds: props.item.AlbumArtists?.flatMap(
+            (albumArtist: BaseItemDto) =>
+              albumArtist.Id ? [albumArtist.Id] : []
+          )
+        });
+
+      relatedItems.value = response.data.Items ?? [];
+    } catch (error) {
+      console.error(error);
+      useSnackbar(t('unableGetRelated'), 'error');
+    } finally {
+      loading.value = false;
+    }
   },
   { immediate: true }
 );
