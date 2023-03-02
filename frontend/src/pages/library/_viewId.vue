@@ -89,18 +89,24 @@ const filters = ref<Filters>({
   years: []
 });
 
-/** Updates viewType value when it's changed */
+/**
+ * Updates viewType value when it is changed
+ */
 function onChangeType(type?: BaseItemKind): void {
   viewType.value = type;
 }
 
-/** Updates sort value when it's changed */
+/**
+ * Updates sort value when it is changed
+ */
 function onChangeSort(sort: string, ascending: boolean): void {
   sortBy.value = sort;
   sortAscending.value = ascending;
 }
 
-/** Updates filters when it's changed */
+/**
+ * Updates filters when they are changed
+ */
 function onChangeFilter(changedFilters: Filters): void {
   filters.value = changedFilters;
 }
@@ -145,7 +151,9 @@ const recursive = computed(() =>
     : true
 );
 
-/** Fetch the library information when it's changed */
+/**
+ * Fetch the library information when it's changed
+ */
 async function fetchLibrary(itemId: string): Promise<void> {
   loadingLibrary.value = true;
 
@@ -164,7 +172,9 @@ async function fetchLibrary(itemId: string): Promise<void> {
     loadingLibrary.value = false;
   }
 
-  // reset all filters and display views since they may not be applicable to the new library
+  /**
+   * Reset all filters and display views since they may not be applicable to the new library
+   */
   viewType.value = undefined;
   sortBy.value = undefined;
   sortAscending.value = true;
@@ -178,7 +188,9 @@ async function fetchLibrary(itemId: string): Promise<void> {
   };
 }
 
-/** Refresh the items displayed based on filter changes */
+/**
+ * Refresh the items displayed based on filter changes
+ */
 async function refreshItems(): Promise<void> {
   loadingItems.value = true;
 

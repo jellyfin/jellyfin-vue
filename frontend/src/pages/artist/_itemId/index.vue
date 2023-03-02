@@ -4,17 +4,13 @@
       <v-row justify="center" justify-sm="start">
         <v-col cols="6" sm="3" class="d-flex flex-row">
           <v-responsive aspect-ratio="1" class="overflow-visible">
-            <v-avatar
-              color="card"
-              width="100%"
-              height="100%"
-              class="elevation-2">
+            <v-avatar color="card" class="elevation-2">
               <blurhash-image :item="item" />
             </v-avatar>
           </v-responsive>
         </v-col>
         <v-col cols="12" sm="7">
-          <v-row justify="d-flex flex-column">
+          <v-row class="d-flex flex-column">
             <div class="ml-sm-4 d-flex flex-column">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
@@ -35,42 +31,42 @@
       <v-row>
         <v-col>
           <v-tabs v-model="activeTab" bg-color="transparent">
-            <v-tab :key="0" :disabled="discography.length === 0">
+            <v-tab :value="0" :disabled="discography.length === 0">
               {{ $t('item.artist.discography') }}
             </v-tab>
-            <v-tab :key="1" :disabled="albums.length === 0">
+            <v-tab :value="1" :disabled="albums.length === 0">
               {{ $t('item.artist.albums') }}
             </v-tab>
-            <v-tab :key="2" :disabled="eps.length === 0">
+            <v-tab :value="2" :disabled="eps.length === 0">
               {{ $t('item.artist.eps') }}
             </v-tab>
-            <v-tab :key="3" :disabled="singles.length === 0">
+            <v-tab :value="3" :disabled="singles.length === 0">
               {{ $t('item.artist.singles') }}
             </v-tab>
-            <v-tab :key="4" :disabled="appearances.length === 0">
+            <v-tab :value="4" :disabled="appearances.length === 0">
               {{ $t('item.artist.appearsOn') }}
             </v-tab>
-            <v-tab :key="5" :disabled="musicVideo.length === 0">
+            <v-tab :value="5" :disabled="musicVideos.length === 0">
               {{ $t('item.artist.videos') }}
             </v-tab>
-            <v-tab :key="6" :disabled="!artistBackdrop.tag && !overview">
+            <v-tab :value="6" :disabled="!artistBackdrop.tag && !item.Overview">
               {{ $t('item.artist.information') }}
             </v-tab>
           </v-tabs>
-          <v-tabs v-model="activeTab" class="bg-transparent">
-            <v-tab :key="0">
+          <v-window v-model="activeTab" class="bg-transparent">
+            <v-window-item :value="0">
               <artist-tab :releases="discography" />
-            </v-tab>
-            <v-tab :key="1">
+            </v-window-item>
+            <v-window-item :value="1">
               <artist-tab :releases="albums" />
-            </v-tab>
-            <v-tab :key="2">
+            </v-window-item>
+            <v-window-item :value="2">
               <artist-tab :releases="eps" />
-            </v-tab>
-            <v-tab :key="3">
+            </v-window-item>
+            <v-window-item :value="3">
               <artist-tab :releases="singles" />
-            </v-tab>
-            <v-tab :key="4">
+            </v-window-item>
+            <v-window-item :value="4">
               <v-container>
                 <v-row>
                   <v-col>
@@ -78,8 +74,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab>
-            <v-tab :key="5">
+            </v-window-item>
+            <v-window-item :value="5">
               <v-container>
                 <v-row>
                   <v-col>
@@ -87,8 +83,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab>
-            <v-tab :key="6">
+            </v-window-item>
+            <v-window-item :value="6">
               <v-container>
                 <v-row>
                   <v-col>
@@ -98,8 +94,8 @@
                   </v-col>
                 </v-row>
               </v-container>
-            </v-tab>
-          </v-tabs>
+            </v-window-item>
+          </v-window>
         </v-col>
       </v-row>
     </template>
@@ -111,8 +107,8 @@
   </item-cols>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
@@ -123,31 +119,66 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { sanitizeHtml } from '@/utils/html';
-import { getImageInfo, getBlurhash, ImageUrlInfo } from '@/utils/images';
-import { getItemDetailsLink } from '@/utils/items';
+import { getImageInfo, getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import { useRemote } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const { params } = useRoute();
-    const remote = useRemote();
+const SINGLE_MAX_LENGTH_MS = 600_000;
+const EP_MAX_LENGTH_MS = 1_800_000;
 
-    const albumBreakpoints = {
-      singleMsMaxLength: 600_000,
-      epMsMaxLength: 1_800_000
-    };
-    const itemId = params.itemId;
+const route = useRoute();
+const remote = useRemote();
 
-    const item = (
+const item = ref<BaseItemDto>({});
+const discography = ref<BaseItemDto[]>([]);
+const appearances = ref<BaseItemDto[]>([]);
+const musicVideos = ref<BaseItemDto[]>([]);
+const activeTab = ref(0);
+
+const artistBackdrop = computed(() =>
+  getImageInfo(item.value, { preferBackdrop: true })
+);
+
+const singles = computed<BaseItemDto[]>(() =>
+  discography.value.filter(
+    (album) =>
+      (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) <=
+      msToTicks(SINGLE_MAX_LENGTH_MS)
+  )
+);
+
+const eps = computed(() =>
+  discography.value.filter(
+    (album) =>
+      (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) >
+        msToTicks(SINGLE_MAX_LENGTH_MS) &&
+      (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) <=
+        msToTicks(EP_MAX_LENGTH_MS)
+  )
+);
+
+const albums = computed(() =>
+  discography.value.filter(
+    (album) =>
+      (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) >
+      msToTicks(EP_MAX_LENGTH_MS)
+  )
+);
+
+watch(
+  () => (route.params as { itemId: string }).itemId,
+  async (itemId) => {
+    item.value = (
       await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId || '',
+        userId: remote.auth.currentUserId ?? '',
         itemId
       })
     ).data;
 
-    const discography =
+    route.meta.title = item.value.Name;
+    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+
+    discography.value =
       (
         await remote.sdk.newUserApi(getItemsApi).getItems({
           albumArtistIds: [itemId],
@@ -160,25 +191,7 @@ export default defineComponent({
         })
       ).data.Items ?? [];
 
-    const singles = discography.filter(
-      (album: BaseItemDto) =>
-        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
-        msToTicks(albumBreakpoints.singleMsMaxLength)
-    );
-    const eps = discography.filter(
-      (album: BaseItemDto) =>
-        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
-          msToTicks(albumBreakpoints.singleMsMaxLength) &&
-        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) <=
-          msToTicks(albumBreakpoints.epMsMaxLength)
-    );
-    const albums = discography.filter(
-      (album: BaseItemDto) =>
-        (album?.RunTimeTicks || album?.CumulativeRunTimeTicks || 0) >
-        msToTicks(albumBreakpoints.epMsMaxLength)
-    );
-
-    const appearances =
+    appearances.value =
       (
         await remote.sdk.newUserApi(getItemsApi).getItems({
           contributingArtistIds: [itemId],
@@ -192,7 +205,7 @@ export default defineComponent({
         })
       ).data.Items ?? [];
 
-    const musicVideo =
+    musicVideos.value =
       (
         await remote.sdk.newUserApi(getItemsApi).getItems({
           artistIds: [itemId],
@@ -205,56 +218,25 @@ export default defineComponent({
         })
       ).data.Items ?? [];
 
-    let activeTab = 3;
-
-    if (discography?.length) {
-      activeTab = 0;
-
-      if (albums?.length) {
-        activeTab = 1;
-      }
-    } else if (appearances?.length) {
-      activeTab = 4;
-    } else if (musicVideo?.length) {
-      activeTab = 5;
-    }
-
-    return {
-      activeTab,
-      discography,
-      albums,
-      eps,
-      singles,
-      appearances,
-      musicVideo,
-      item
-    };
-  },
-  computed: {
-    overview(): string {
-      return this.item?.Overview ? sanitizeHtml(this.item.Overview) : '';
-    },
-    artistBackdrop(): ImageUrlInfo {
-      return getImageInfo(this.item, { preferBackdrop: true });
+    if (discography.value.length > 0) {
+      activeTab.value = 0;
+    } else if (albums.value.length > 0) {
+      activeTab.value = 1;
+    } else if (eps.value.length > 0) {
+      activeTab.value = 2;
+    } else if (singles.value.length > 0) {
+      activeTab.value = 3;
+    } else if (appearances.value.length > 0) {
+      activeTab.value = 4;
+    } else if (musicVideos.value.length > 0) {
+      activeTab.value = 5;
+    } else {
+      // overview
+      activeTab.value = 6;
     }
   },
-  watch: {
-    item: {
-      immediate: true,
-      deep: true,
-      handler(value: BaseItemDto): void {
-        this.$route.meta.title = value.Name || '';
-        this.$route.meta.backdrop.blurhash = getBlurhash(
-          value,
-          ImageType.Backdrop
-        );
-      }
-    }
-  },
-  methods: {
-    getItemDetailsLink
-  }
-});
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
