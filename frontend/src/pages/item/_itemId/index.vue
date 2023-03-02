@@ -123,8 +123,6 @@
                   <v-select
                     v-model="currentSource"
                     :items="getItemizedSelect(item.MediaSources)"
-                    flat
-                    dense
                     single-line
                     hide-details
                     class="text-truncate">
@@ -151,7 +149,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Video')
                     "
                     type="Video"
-                    @input="currentVideoTrack = $event" />
+                    @input="(trackIndex) => (currentVideoTrack = trackIndex)" />
                 </v-col>
               </v-row>
               <v-row align="center">
@@ -168,7 +166,7 @@
                       getMediaStreams(currentSource.MediaStreams, 'Audio')
                     "
                     type="Audio"
-                    @input="currentAudioTrack = $event" />
+                    @input="(trackIndex) => (currentAudioTrack = trackIndex)" />
                 </v-col>
               </v-row>
               <v-row align="center">
@@ -185,7 +183,9 @@
                       getMediaStreams(currentSource.MediaStreams, 'Subtitle')
                     "
                     type="Subtitle"
-                    @input="currentSubtitleTrack = $event" />
+                    @input="
+                      (trackIndex) => (currentSubtitleTrack = trackIndex)
+                    " />
                 </v-col>
               </v-row>
             </div>
@@ -214,7 +214,7 @@
           <collection-tabs :item="item" />
         </v-col>
         <v-col cols="12">
-          <related-items :id="$route.params.itemId" :item="item" />
+          <related-items :item="item" />
         </v-col>
       </v-row>
     </template>
@@ -231,8 +231,8 @@
   </item-cols>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
@@ -246,94 +246,54 @@ import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import { getItemizedSelect } from '@/utils/forms';
 import { useRemote } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const { params } = useRoute();
-    const itemId = params.itemId;
-    const remote = useRemote();
-    const item = (
+const route = useRoute();
+const remote = useRemote();
+
+const item = ref<BaseItemDto>({});
+const currentSource = ref<MediaSourceInfo>({});
+const currentVideoTrack = ref<number>();
+const currentAudioTrack = ref<number>();
+const currentSubtitleTrack = ref<number>();
+
+const crew = computed<BaseItemPerson[]>(() =>
+  (item.value?.People ?? []).filter((person) =>
+    ['Director', 'Writer'].includes(person?.Type ?? '')
+  )
+);
+
+const actors = computed<BaseItemPerson[]>(() =>
+  (item.value?.People ?? [])
+    .filter((person) => person.Type === 'Actor')
+    .slice(0, 10)
+);
+
+const directors = computed<BaseItemPerson[]>(() =>
+  crew.value.filter((person) => person.Type === 'Director')
+);
+
+const writers = computed<BaseItemPerson[]>(() =>
+  crew.value.filter((person) => person.Type === 'Writer')
+);
+
+watch(
+  () => (route.params as { itemId: string }).itemId,
+  async (itemId) => {
+    item.value = (
       await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId || '',
+        userId: remote.auth.currentUserId ?? '',
         itemId
       })
     ).data;
 
-    return { item };
-  },
-  data() {
-    return {
-      backdropImageSource: '',
-      currentSource: {} as MediaSourceInfo,
-      currentVideoTrack: undefined as number | undefined,
-      currentAudioTrack: undefined as number | undefined,
-      currentSubtitleTrack: undefined as number | undefined
-    };
-  },
-  computed: {
-    isPlayable(): boolean {
-      // TODO: Move this to a mixin
-      return this.item.Type &&
-        ['PhotoAlbum', 'Photo', 'Book'].includes(this.item.Type)
-        ? false
-        : !(
-            this.item.MediaType === 'Video' &&
-            (!this.item.MediaSources || this.item.MediaSources.length === 0)
-          );
-    },
-    crew(): BaseItemPerson[] {
-      let crew: BaseItemPerson[] = [];
+    route.meta.title = item.value.Name;
+    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
 
-      if (this.item.People) {
-        crew = this.item.People.filter((person: BaseItemPerson) => {
-          return ['Director', 'Writer'].includes(person.Type || '');
-        });
-      }
-
-      return crew;
-    },
-    actors(): BaseItemPerson[] {
-      return this.item.People
-        ? this.item.People.filter((person: BaseItemPerson) => {
-            return person.Type === 'Actor';
-          }).slice(0, 10)
-        : [];
-    },
-    directors(): BaseItemPerson[] {
-      return this.crew.filter(
-        (person: BaseItemPerson) => person.Type === 'Director'
-      );
-    },
-    writers(): BaseItemPerson[] {
-      return this.crew.filter(
-        (person: BaseItemPerson) => person.Type === 'Writer'
-      );
+    if (item.value?.MediaSources && item.value.MediaSources.length > 0) {
+      currentSource.value = item.value.MediaSources[0];
     }
   },
-  watch: {
-    item: {
-      handler(value: BaseItemDto): void {
-        this.$route.meta.title = value.Name || '';
-
-        this.$route.meta.backdrop.blurhash = getBlurhash(
-          value,
-          ImageType.Backdrop
-        );
-      },
-      immediate: true,
-      deep: true
-    }
-  },
-  mounted() {
-    if (this.item.MediaSources && this.item.MediaSources.length > 0) {
-      this.currentSource = this.item.MediaSources[0];
-    }
-  },
-  methods: {
-    getItemDetailsLink,
-    getMediaStreams,
-    getItemizedSelect
-  }
-});
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>

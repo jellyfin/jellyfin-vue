@@ -12,7 +12,7 @@
             {{ item.Name }}
           </h1>
           <h2
-            v-if="item.AlbumArtist"
+            v-if="item.AlbumArtist && item?.AlbumArtists?.[0]"
             class="text-subtitle-1 text-truncate mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
             <router-link
@@ -75,8 +75,8 @@
   </item-cols>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
@@ -84,36 +84,24 @@ import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 import { useRemote } from '@/composables';
 
-export default defineComponent({
-  async setup() {
-    const { params } = useRoute();
-    const itemId = params.itemId;
-    const remote = useRemote();
-    const item = (
+const route = useRoute();
+const remote = useRemote();
+
+const item = ref<BaseItemDto>({});
+
+watch(
+  () => (route.params as { itemId: string }).itemId,
+  async (itemId) => {
+    item.value = (
       await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId || '',
+        userId: remote.auth.currentUserId ?? '',
         itemId
       })
     ).data;
 
-    return { item };
+    route.meta.title = item.value.Name;
+    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
   },
-  watch: {
-    item: {
-      handler(value: BaseItemDto): void {
-        this.$route.meta.title = value.Name || '';
-
-        this.$route.meta.backdrop.blurhash = getBlurhash(
-          value,
-          ImageType.Backdrop
-        );
-      },
-      immediate: true,
-      deep: true
-    }
-  },
-  methods: {
-    getItemDetailsLink
-  }
-});
+  { immediate: true }
+);
 </script>
