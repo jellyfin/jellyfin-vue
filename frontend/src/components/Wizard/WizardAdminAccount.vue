@@ -3,66 +3,66 @@
     <v-text-field
       v-model="admin.Name"
       variant="outlined"
-      :label="$t('username')"
+      :label="t('username')"
       type="username"
       :rules="RequiredRule"
-      required />
+      :disabled="loading" />
     <v-text-field
       v-model="admin.Password"
       variant="outlined"
-      :label="$t('password')"
+      :label="t('password')"
       :append-icon="showPassword ? IconEyeOff : IconEye"
       :type="showPassword ? 'text' : 'password'"
+      :disabled="loading"
       @click:append="() => (showPassword = !showPassword)" />
 
     <v-text-field
       v-model="passwordCheck"
       variant="outlined"
-      :label="$t('wizard.confirmPassword')"
+      :label="t('wizard.confirmPassword')"
       :append-icon="showPassword ? IconEyeOff : IconEye"
       :type="showPassword ? 'text' : 'password'"
       :rules="SamePasswordRules"
+      :disabled="loading"
       @click:append="() => (showPassword = !showPassword)" />
 
     <v-btn
       color="secondary"
       variant="elevated"
-      @click="$emit('previous-step', { step: 2 })">
-      {{ $t('previous') }}
+      :disabled="loading"
+      @click="emit('previous-step')">
+      {{ t('previous') }}
     </v-btn>
     <v-btn
       color="primary"
       variant="elevated"
-      :disabled="!valid"
+      :disabled="!valid || loading"
       :loading="loading"
       @click="createAdminAccount">
-      {{ $t('next') }}
+      {{ t('next') }}
     </v-btn>
   </v-form>
 </template>
 
 <script setup lang="ts">
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
+import { StartupUserDto } from '@jellyfin/sdk/lib/generated-client';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import IconEye from 'virtual:icons/mdi/eye';
 import { useRemote, useSnackbar } from '@/composables';
 
-interface StepEvent {
-  step: number;
-}
-
-const { t } = useI18n();
-const api = useRemote().sdk.api;
-
 const emit = defineEmits<{
-  (e: 'previous-step', value: StepEvent): void;
-  (e: 'step-complete', value: StepEvent): void;
+  (e: 'previous-step'): void;
+  (e: 'step-complete'): void;
 }>();
 
+const { t } = useI18n();
+const remote = useRemote();
+
 const valid = ref(false);
-const admin = ref({
+const admin = ref<StartupUserDto>({
   Name: '',
   Password: ''
 });
@@ -84,19 +84,23 @@ const RequiredRule = [
 async function createAdminAccount(): Promise<void> {
   loading.value = true;
 
-  if (api) {
-    try {
-      await getStartupApi(api).updateStartupUser({
-        startupUserDto: admin.value
-      });
+  const api = remote.sdk.api;
 
-      emit('step-complete', { step: 2 });
-    } catch (error) {
-      console.error(error);
-      useSnackbar(t('wizard.setAdminError'), 'error');
-    }
+  if (!api) {
+    return;
   }
 
-  loading.value = false;
+  try {
+    await getStartupApi(api).updateStartupUser({
+      startupUserDto: admin.value
+    });
+
+    emit('step-complete');
+  } catch (error) {
+    console.error(error);
+    useSnackbar(t('wizard.setAdminError'), 'error');
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
