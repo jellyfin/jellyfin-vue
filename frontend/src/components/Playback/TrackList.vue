@@ -1,6 +1,5 @@
-<!-- TODO: Make this component work -->
 <template>
-  <v-table dense class="track-table user-select-none">
+  <v-table density="compact" class="track-table user-select-none">
     <thead>
       <tr>
         <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
