@@ -67,75 +67,55 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
 import { playbackManagerStore } from '@/store';
 import { ticksToMs, getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
-export default defineComponent({
-  setup() {
-    const playbackManager = playbackManagerStore();
+const emit = defineEmits<{
+  (e: 'change', isVisible: boolean): void;
+}>();
 
-    return { playbackManager };
-  },
-  data() {
-    return {
-      isHiddenByUser: false
-    };
-  },
-  computed: {
-    currentItemDuration(): number {
-      return ticksToMs(this.playbackManager.currentItem?.RunTimeTicks) / 1000;
-    },
-    currentItemTimeLeft(): number {
-      return Math.round(
-        this.currentItemDuration - (this.playbackManager.currentTime || 0)
-      );
-    },
-    visible(): boolean | undefined {
-      if (
-        this.isHiddenByUser ||
-        this.playbackManager.currentlyPlayingMediaType !== 'Video'
-      ) {
-        return false;
-      }
+const playbackManager = playbackManagerStore();
 
-      if (this.currentItemTimeLeft <= this.nextUpDuration) {
-        return true;
-      }
+const isHiddenByUser = ref(false);
 
-      return undefined;
-    },
-    nextUpDuration(): number {
-      // If longer than 5 hours, set the duration to 9 minutes
-      if (this.currentItemDuration >= 5 * 60 * 60) {
-        return 540;
-      }
-      // If longer than 2 hours, set the duration to 3.5 minutes
-      else if (this.currentItemDuration >= 2 * 60 * 60) {
-        return 210;
-      }
-      // If longer than 45 minutes, set the duration to 2 minutes
-      else if (this.currentItemDuration >= 45 * 60) {
-        return 120;
-      }
-
-      return 45;
-    }
-  },
-  watch: {
-    'playbackManager.currentItemIndex'(): void {
-      this.isHiddenByUser = false;
-    },
-    visible(): void {
-      this.$emit('change', this.visible);
-    }
-  },
-  methods: {
-    getEndsAtTime,
-    getRuntimeTime
+const currentItemDuration = computed(
+  (): number => ticksToMs(playbackManager.currentItem?.RunTimeTicks) / 1000
+);
+const currentItemTimeLeft = computed(() =>
+  Math.round(currentItemDuration.value - (playbackManager.currentTime || 0))
+);
+const nextUpDuration = computed(() => {
+  // If longer than 5 hours, set the duration to 9 minutes
+  if (currentItemDuration.value >= 5 * 60 * 60) {
+    return 540;
   }
+  // If longer than 2 hours, set the duration to 3.5 minutes
+  else if (currentItemDuration.value >= 2 * 60 * 60) {
+    return 210;
+  }
+  // If longer than 45 minutes, set the duration to 2 minutes
+  else if (currentItemDuration.value >= 45 * 60) {
+    return 120;
+  }
+
+  return 45;
 });
+const visible = computed(
+  () =>
+    !isHiddenByUser.value &&
+    playbackManager.currentlyPlayingMediaType === 'Video' &&
+    currentItemTimeLeft.value <= nextUpDuration.value
+);
+
+watch(
+  () => playbackManager.currentItemIndex,
+  () => {
+    isHiddenByUser.value = false;
+  }
+);
+watch(visible, () => emit('change', visible.value));
 </script>
 <style lang="scss" scoped>
 .up-next-dialog {
