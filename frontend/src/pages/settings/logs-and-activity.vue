@@ -15,24 +15,22 @@
               v-for="file in logs.data"
               :key="file.Name ?? undefined"
               :href="getLogFileLink(file.Name ?? '')"
+              :title="file.Name ?? undefined"
+              :subtitle="getFormattedLogDate(file.DateModified)"
               target="_blank"
               rel="noopener">
-              <v-avatar>
-                <v-icon>
-                  <i-mdi-file />
-                </v-icon>
-              </v-avatar>
-              <v-list-item-title>
-                {{ file.Name }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                {{ getFormattedLogDate(file.DateModified) }}
-              </v-list-item-subtitle>
-              <v-list-item-action>
+              <template #prepend>
+                <v-avatar>
+                  <v-icon>
+                    <i-mdi-file />
+                  </v-icon>
+                </v-avatar>
+              </template>
+              <template #append>
                 <v-icon>
                   <i-mdi-open-in-new />
                 </v-icon>
-              </v-list-item-action>
+              </template>
             </v-list-item>
           </v-list>
           <v-card v-else-if="logs.status === 'loaded'" key="no-log-card">
@@ -64,25 +62,22 @@
             "
             key="activity-list"
             lines="two"
-            class="mb-2"
-            disabled>
+            class="mb-2">
             <v-list-item
               v-for="activity in activityList.data"
-              :key="activity.Id">
-              <v-avatar :color="getColorFromSeverity(activity.Severity)">
-                <v-icon :icon="getIconFromActivityType(activity.Type)" />
-              </v-avatar>
-              <v-list-item-title>
-                {{ activity.Name }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
-                {{ activity.ShortOverview }}
-              </v-list-item-subtitle>
-              <v-list-item-action>
+              :key="activity.Id"
+              :title="activity.Name"
+              :subtitle="activity.ShortOverview ?? undefined">
+              <template #prepend>
+                <v-avatar :color="getColorFromSeverity(activity.Severity)">
+                  <v-icon :icon="getIconFromActivityType(activity.Type)" />
+                </v-avatar>
+              </template>
+              <template #append>
                 <v-list-item-subtitle class="text-capitalize-first-letter">
                   {{ getFormattedActivityDate(activity.Date) }}
                 </v-list-item-subtitle>
-              </v-list-item-action>
+              </template>
             </v-list-item>
           </v-list>
           <v-card
