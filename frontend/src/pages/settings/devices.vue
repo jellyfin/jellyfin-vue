@@ -20,37 +20,17 @@
     </template>
     <template #content>
       <v-col>
-        <!-- TODO: Wait for Vuetify implementation (https://github.com/vuetifyjs/vuetify/issues/13479) -->
-        <!-- <v-data-table
-          :headers="headers"
-          :items="devices"
-          @click:row="setSelectedDevice"
-        >
-          <template #item.DateLastActivity="{ item }">
-            <p class="text-capitalize-first-letter mb-0">
-              {{
-                useDateFns(
-                  formatRelative,
-                  parseJSON(item.DateCreated),
-                  new Date()
-                ).value
-              }}
-            </p>
-          </template>
-        </v-data-table> -->
         <v-table>
           <thead>
             <tr>
               <th v-for="{ text, value } in headers" :key="value">
                 {{ text }}
               </th>
+              <th><!--for delete button--></th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="device in devices"
-              :key="device.Id ?? undefined"
-              @click="selectedDevice = device">
+            <tr v-for="device in devices" :key="device.Id ?? undefined">
               <td v-for="{ value } in headers" :key="value">
                 {{
                   value !== 'DateLastActivity'
@@ -62,21 +42,18 @@
                       ).value
                 }}
               </td>
+              <td>
+                <v-btn
+                  color="error"
+                  :disabled="loading"
+                  @click="confirmDelete = device.Id ?? undefined">
+                  {{ t('settings.devices.delete') }}
+                </v-btn>
+              </td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
-      <v-dialog
-        :model-value="selectedDevice !== undefined"
-        width="fit-content"
-        @update:model-value="selectedDevice = undefined">
-        <selected-device-info
-          v-if="selectedDevice"
-          :disabled="loading"
-          :selected-device="selectedDevice"
-          @close-dialog="selectedDevice = undefined"
-          @delete-selected="confirmDelete = selectedDevice?.Id ?? undefined" />
-      </v-dialog>
       <v-dialog
         width="auto"
         :model-value="confirmDelete !== undefined"
@@ -119,12 +96,11 @@ const devices = ref(
   (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ?? []
 );
 
-const selectedDevice = ref<DeviceInfo>();
 const loading = ref(false);
-/** the device id to confirm being deleted (will be 'all' if all are being deleted) */
+/** The device id to confirm being deleted (will be 'all' if all are being deleted) */
 const confirmDelete = ref<string>();
 
-const headers = computed((): { text: string; value: keyof DeviceInfo }[] => [
+const headers = computed<{ text: string; value: keyof DeviceInfo }[]>(() => [
   {
     text: t('settings.devices.userName'),
     value: 'LastUserName'
@@ -138,7 +114,9 @@ const headers = computed((): { text: string; value: keyof DeviceInfo }[] => [
   }
 ]);
 
-/** deletes all remembered devices */
+/**
+ * Deletes all remembered devices
+ */
 async function deleteAllDevices(): Promise<void> {
   loading.value = true;
 
@@ -166,22 +144,16 @@ async function deleteAllDevices(): Promise<void> {
   }
 }
 
-/** deletes the selected device */
-async function deleteDevice(id: string): Promise<void> {
-  if (!selectedDevice.value?.Id) {
-    return;
-  }
-
+/**
+ * Deletes the selected device
+ */
+async function deleteDevice(deviceId: string): Promise<void> {
   loading.value = true;
 
   try {
-    await remote.sdk
-      .newUserApi(getDevicesApi)
-      .deleteDevice({ id: selectedDevice.value.Id });
+    await remote.sdk.newUserApi(getDevicesApi).deleteDevice({ id: deviceId });
 
     useSnackbar(t('settings.devices.deleteDeviceSuccess'), 'success');
-
-    selectedDevice.value = undefined;
 
     devices.value =
       (await remote.sdk.newUserApi(getDevicesApi).getDevices()).data.Items ??
@@ -194,7 +166,9 @@ async function deleteDevice(id: string): Promise<void> {
   }
 }
 
-/** confirms deleteion of a single device or all */
+/**
+ * Confirms deleteion of a single device or all
+ */
 async function confirmDeletion(): Promise<void> {
   if (!confirmDelete.value) {
     return;
