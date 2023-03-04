@@ -64,7 +64,7 @@ export default Vue.extend({
         (this.playbackManager?.currentTime || 0) <= this.intro.HideSkipPromptAt
       );
     },
-    visibleDurationLeft() {
+    visibleDurationLeft(): number {
       return (
         this.intro.HideSkipPromptAt - (this.playbackManager?.currentTime || 0)
       );
