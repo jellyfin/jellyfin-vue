@@ -6,14 +6,16 @@
  */
 import { cloneDeep } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
-// @ts-expect-error - No types on libass-wasm
-import SubtitlesOctopus from '@jellyfin/libass-wasm';
-import subtitlesOctopusWorkerUrl from '@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.js?url';
+import JASSUB from 'jassub';
+import jassubWorker from 'jassub/dist/jassub-worker.js?url';
+import jassubLegacyWorker from 'jassub/dist/jassub-worker-legacy.js?url';
+import 'jassub/dist/jassub-worker.wasm?url';
+import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import { mediaElementRef, playbackManagerStore } from '@/store';
 import { useRouter } from '@/composables';
 
 const playbackManager = playbackManagerStore();
-let subtitlesOctopus: SubtitlesOctopus | undefined;
+let jassub: JASSUB | undefined;
 const fullscreenRoute = '/playback/video';
 
 /**
@@ -94,26 +96,33 @@ class PlayerElementStore {
   };
 
   private _setSsaTrack = async (trackSrc: string): Promise<void> => {
-    if (!subtitlesOctopus) {
-      subtitlesOctopus = new SubtitlesOctopus({
+    if (
+      !jassub &&
+      mediaElementRef.value &&
+      mediaElementRef.value instanceof HTMLVideoElement
+    ) {
+      jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
-        workerUrl: subtitlesOctopusWorkerUrl,
-        prescaleFactor: 0.5,
-        renderAhead: 90
+        workerUrl: jassubWorker,
+        legacyWorkerUrl: jassubLegacyWorker,
+        availableFonts: { 'liberation sans': jassubDefaultFont },
+        // Both parameters needed for subs to work on iOS
+        prescaleFactor: 0.8,
+        onDemandRender: false
       });
-    } else {
-      subtitlesOctopus.setTrackByUrl(trackSrc);
+    } else if (jassub) {
+      jassub.setTrackByUrl(trackSrc);
     }
   };
 
   public freeSsaTrack = (): void => {
-    if (subtitlesOctopus) {
+    if (jassub) {
       try {
-        subtitlesOctopus.dispose();
+        jassub.destroy();
       } catch {}
 
-      subtitlesOctopus = undefined;
+      jassub = undefined;
     }
   };
 

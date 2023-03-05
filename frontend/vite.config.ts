@@ -6,7 +6,6 @@ import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Pages from 'vite-plugin-pages';
 import Layouts from 'vite-plugin-vue-layouts';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
@@ -83,22 +82,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           dirname(fileURLToPath(import.meta.url)),
           './locales/**'
         )
-      }),
-      viteStaticCopy({
-        targets: [
-          {
-            src: resolve(
-              '../node_modules/@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.data'
-            ),
-            dest: 'assets/'
-          },
-          {
-            src: resolve(
-              '../node_modules/@jellyfin/libass-wasm/dist/js/subtitles-octopus-worker.wasm'
-            ),
-            dest: 'assets/'
-          }
-        ]
       })
     ],
     build: {
@@ -110,6 +93,13 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       reportCompressedSize: false,
       rollupOptions: {
         output: {
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name?.endsWith('jassub-worker.wasm')) {
+              return 'assets/jassub-worker.wasm';
+            }
+
+            return 'assets/[name]-[hash][extname]';
+          },
           plugins: [
             mode === 'analyze'
               ? // rollup-plugin-visualizer
