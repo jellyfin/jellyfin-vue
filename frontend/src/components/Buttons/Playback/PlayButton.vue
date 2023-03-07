@@ -48,12 +48,20 @@ const props = withDefaults(
     iconOnly?: boolean;
     fab?: boolean;
     shuffle?: boolean;
-    videoTrackIndex: number;
-    audioTrackIndex: number;
-    subtitleTrackIndex: number;
+    videoTrackIndex?: number;
+    audioTrackIndex?: number;
+    subtitleTrackIndex?: number;
     disabled?: boolean;
   }>(),
-  { iconOnly: false, fab: false, shuffle: false, disabled: false }
+  {
+    iconOnly: false,
+    fab: false,
+    shuffle: false,
+    disabled: false,
+    videoTrackIndex: undefined,
+    audioTrackIndex: undefined,
+    subtitleTrackIndex: undefined
+  }
 );
 
 const playbackManager = playbackManagerStore();
