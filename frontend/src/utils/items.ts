@@ -266,8 +266,8 @@ export function getItemDetailsLink(
   let routeParameters: Record<never, never>;
 
   if (item.Type && validLibraryTypes.includes(item.Type)) {
-    routeName = 'library-viewId';
-    routeParameters = { viewId: item.Id };
+    routeName = 'library-itemId';
+    routeParameters = { itemId: item.Id };
   } else {
     const type = overrideType || item.Type;
 

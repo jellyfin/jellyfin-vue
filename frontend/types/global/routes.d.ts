@@ -39,7 +39,7 @@ declare module 'vue-router/auto/routes' {
     '/artist/_itemId/': RouteRecordInfo<'/artist/_itemId/', '/artist/_itemId', Record<never, never>, Record<never, never>>,
     '/genre/_itemId/': RouteRecordInfo<'/genre/_itemId/', '/genre/_itemId', Record<never, never>, Record<never, never>>,
     '/item/_itemId/': RouteRecordInfo<'/item/_itemId/', '/item/_itemId', Record<never, never>, Record<never, never>>,
-    '/library/_viewId': RouteRecordInfo<'/library/_viewId', '/library/_viewId', Record<never, never>, Record<never, never>>,
+    '/library/_itemId/': RouteRecordInfo<'/library/_itemId/', '/library/_itemId', Record<never, never>, Record<never, never>>,
     '/metadata/': RouteRecordInfo<'/metadata/', '/metadata', Record<never, never>, Record<never, never>>,
     '/musicalbum/_itemId/': RouteRecordInfo<'/musicalbum/_itemId/', '/musicalbum/_itemId', Record<never, never>, Record<never, never>>,
     '/person/_itemId/': RouteRecordInfo<'/person/_itemId/', '/person/_itemId', Record<never, never>, Record<never, never>>,
