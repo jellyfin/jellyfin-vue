@@ -134,6 +134,15 @@ const isSortable = computed(
     ].includes(viewType.value)
 );
 
+const recursive = computed(() =>
+  library.value?.CollectionType === 'homevideos' ||
+  library.value?.Type === 'Folder' ||
+  (library.value?.Type === 'CollectionFolder' &&
+    !('CollectionType' in library.value))
+    ? undefined
+    : true
+);
+
 /** Fetch the library information when it's changed */
 async function fetchLibrary(itemId: string): Promise<void> {
   loadingLibrary.value = true;
@@ -174,7 +183,7 @@ async function refreshItems(): Promise<void> {
   const parentId = library.value?.Id;
   const userId = remote.auth.currentUserId;
 
-  if (isNil(parentId)) {
+  if (isNil(parentId) || !viewType.value) {
     return;
   }
 
@@ -236,6 +245,7 @@ async function refreshItems(): Promise<void> {
             includeItemTypes: viewType.value ? [viewType.value] : undefined,
             sortOrder: [sortAscending.value ? 'Ascending' : 'Descending'],
             sortBy: [sortBy.value ?? 'SortName'],
+            recursive: recursive.value,
             filters: filters.value.status,
             genres: filters.value.genres,
             years: filters.value.years,
