@@ -293,7 +293,7 @@ async function refreshItems(): Promise<void> {
   }
 }
 
-watch(() => (route.params as { viewId: string }).viewId, fetchLibrary, {
+watch(() => (route.params as { itemId: string }).itemId, fetchLibrary, {
   immediate: true
 });
 
