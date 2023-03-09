@@ -52,12 +52,10 @@ class RemotePluginSocket {
     return destr(data.value) as WebSocketMessage | null;
   }
   public get messageType(): WebSocketMessage['MessageType'] | undefined {
-    return this.message && this.message.MessageType
-      ? this.message.MessageType
-      : undefined;
+    return this.message?.MessageType ?? undefined;
   }
   public get messageData(): WebSocketMessage['Data'] | undefined {
-    return this.message && this.message.Data ? this.message.Data : undefined;
+    return this.message?.Data ?? undefined;
   }
 
   /**
