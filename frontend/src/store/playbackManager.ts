@@ -127,6 +127,7 @@ const state = reactive<PlaybackManagerState>(cloneDeep(defaultState));
 const reactiveDate = useNow();
 export const mediaElementRef = ref<HTMLMediaElement>();
 export const mediaControls = useMediaControls(mediaElementRef);
+const remote = useRemote();
 /**
  * Previously, we created a new MediaMetadata every time the item changed. However,
  * that made the MediaSession controls disappear for a second. Keeping the metadata
@@ -602,8 +603,6 @@ class PlaybackManagerStore {
    * Report current item playback progress to server
    */
   private _reportPlaybackProgress = async (): Promise<void> => {
-    const remote = useRemote();
-
     if (!isNil(this.currentTime) && !isNil(this.currentItem)) {
       await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
         playbackProgressInfo: {
@@ -627,8 +626,6 @@ class PlaybackManagerStore {
     currentTime = this.currentTime,
     updateState = true
   ): Promise<void> => {
-    const remote = useRemote();
-
     await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStopped({
       playbackStopInfo: {
         ItemId: itemId,
@@ -646,8 +643,6 @@ class PlaybackManagerStore {
    * Report playback start to the server. Used by the "Now playing" statistics in other clients.
    */
   private _reportPlaybackStart = async (itemId: string): Promise<void> => {
-    const remote = useRemote();
-
     await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackStart({
       playbackStartInfo: {
         CanSeek: true,
@@ -853,8 +848,6 @@ class PlaybackManagerStore {
     this.currentVolume = volume;
 
     window.setTimeout(async () => {
-      const remote = useRemote();
-
       try {
         if (sessionId && itemId && time && remote.auth.currentUser) {
           await this._reportPlaybackStopped(itemId, sessionId, time, false);
@@ -936,8 +929,6 @@ class PlaybackManagerStore {
     audioStreamIndex = this.currentAudioStreamIndex,
     subtitleStreamIndex = this.currentSubtitleStreamIndex
   ): Promise<PlaybackInfoResponse | undefined> => {
-    const remote = useRemote();
-
     if (item) {
       return (
         await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
@@ -956,8 +947,6 @@ class PlaybackManagerStore {
   public getItemPlaybackUrl = (
     mediaSource = this.currentMediaSource
   ): string | undefined => {
-    const remote = useRemote();
-
     if (
       mediaSource?.SupportsDirectStream &&
       mediaSource.Type &&
@@ -993,7 +982,6 @@ class PlaybackManagerStore {
     item: BaseItemDto,
     shuffle = false
   ): Promise<string[]> => {
-    const remote = useRemote();
     let responseItems: BaseItemDto[] = [];
 
     if (item.Type === 'Program' && item.ChannelId) {
@@ -1219,8 +1207,6 @@ class PlaybackManagerStore {
         }
       }
     );
-
-    const remote = useRemote();
 
     /**
      * Dispose on logout
