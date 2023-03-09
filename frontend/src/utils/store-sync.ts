@@ -132,12 +132,12 @@ export default async function preferencesSync<T>(
   const taskManager = taskManagerStore();
 
   if (!isNil(auth.currentUser)) {
-    try {
-      /**
-       * Creates a config syncing task, so UI can show that there's a syncing in progress
-       */
-      taskManager.startConfigSync();
+    /**
+     * Creates a config syncing task, so UI can show that there's a syncing in progress
+     */
+    const syncTaskId = taskManager.startConfigSync();
 
+    try {
       /**
        * The fetch part is done because DisplayPreferences doesn't accept partial updates
        * TODO: Revisit if we ever get PATCH support
@@ -155,7 +155,7 @@ export default async function preferencesSync<T>(
     } catch {
       useSnackbar(t('failedSettingDisplayPreferences'), 'error');
     } finally {
-      taskManager.stopConfigSync();
+      taskManager.finishTask(syncTaskId);
     }
   }
 }
