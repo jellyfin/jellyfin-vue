@@ -6,7 +6,7 @@
     location="top">
     <template #activator="{ props: menu }">
       <tooltip-button
-        class="align-self-center active-button"
+        class="align-self-center"
         v-bind="menu"
         :btn="{
           icon: true,

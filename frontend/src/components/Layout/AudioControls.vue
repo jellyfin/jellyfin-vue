@@ -81,13 +81,7 @@
                     <i-mdi-skip-previous />
                   </v-icon>
                 </v-btn>
-                <v-btn
-                  icon
-                  :loading="playbackManager.isBuffering"
-                  class="mx-1 active-button"
-                  @click="playbackManager.playPause">
-                  <v-icon size="large" :icon="playPauseIcon" />
-                </v-btn>
+                <play-pause-button class="mx-1" />
                 <v-btn
                   icon
                   :disabled="!playbackManager.nextItem"
@@ -132,12 +126,7 @@
           <v-col
             cols="3"
             class="d-flex d-md-none pa-0 align-center justify-end">
-            <v-btn
-              icon
-              class="mx-1 active-button"
-              @click="playbackManager.playPause">
-              <v-icon :icon="playPauseIcon" />
-            </v-btn>
+            <play-pause-button class="mx-1" />
             <v-btn
               icon
               :disabled="!playbackManager.nextItem"
@@ -189,8 +178,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import IMdiPauseCircleOutline from 'virtual:icons/mdi/pause-circle-outline';
-import IMdiPlayCircleOutline from 'virtual:icons/mdi/play-circle-outline';
 import IMdiRepeatOnce from 'virtual:icons/mdi/repeat-once';
 import IMdiRepeat from 'virtual:icons/mdi/repeat';
 import { RepeatMode } from '@/store/playbackManager';
@@ -206,13 +193,6 @@ const repeatIcon = computed(() => {
   }
 
   return IMdiRepeat;
-});
-const playPauseIcon = computed(() => {
-  if (playbackManager.isPaused) {
-    return IMdiPlayCircleOutline;
-  }
-
-  return IMdiPauseCircleOutline;
 });
 // Checking for route is faster to switch the controls than checking for the store
 // TODO: Remove this as soon as we can use the fullpage layout in music player
