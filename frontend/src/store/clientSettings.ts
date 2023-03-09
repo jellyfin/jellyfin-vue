@@ -1,4 +1,4 @@
-import { computed, watch, nextTick } from 'vue';
+import { computed, watch, nextTick, toRaw } from 'vue';
 import {
   RemovableRef,
   useNavigatorLanguage,
@@ -24,8 +24,9 @@ interface ClientSettingsState {
  * == UTILITY VARIABLES ==
  */
 const languageCodes = new Set(Object.keys(usei18n().localeNames)).add('auto');
+const navigatorLanguage = useNavigatorLanguage();
 const BROWSER_LANGUAGE = computed<string>(() => {
-  const rawString = useNavigatorLanguage().language.value || '';
+  const rawString = navigatorLanguage.language.value || '';
   /**
    * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
    */
@@ -39,7 +40,7 @@ const browserPrefersDark = usePreferredDark();
  * == STATE VARIABLES ==
  */
 const defaultState = {
-  darkMode: browserPrefersDark.value,
+  darkMode: toRaw(browserPrefersDark.value),
   locale: 'auto'
 };
 
@@ -81,6 +82,15 @@ class ClientSettingsStore {
   public get darkMode(): boolean {
     return state.value.darkMode;
   }
+
+  private _updateLocale = (): void => {
+    const i18n = usei18n();
+
+    i18n.locale.value =
+      this.locale !== 'auto'
+        ? this.locale
+        : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
+  };
 
   public constructor() {
     const remote = useRemote();
@@ -130,20 +140,8 @@ class ClientSettingsStore {
      * Locale change
      */
 
-    watch(BROWSER_LANGUAGE, () => (this.locale = BROWSER_LANGUAGE.value));
-
-    watch(
-      () => this.locale,
-      () => {
-        const i18n = usei18n();
-
-        i18n.locale.value =
-          this.locale !== 'auto'
-            ? this.locale
-            : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
-      },
-      { immediate: true }
-    );
+    watch(BROWSER_LANGUAGE, this._updateLocale);
+    watch(() => this.locale, this._updateLocale, { immediate: true });
 
     /**
      * Vuetify theme change
