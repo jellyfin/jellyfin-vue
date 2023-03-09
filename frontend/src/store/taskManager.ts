@@ -1,7 +1,7 @@
 import { RemovableRef, useStorage } from '@vueuse/core';
 import { cloneDeep } from 'lodash-es';
 import { v4 } from 'uuid';
-import { computed, watch } from 'vue';
+import { watch } from 'vue';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { useRemote } from '@/composables';
 
@@ -34,20 +34,10 @@ export interface RunningTask {
 
 export interface TaskManagerState {
   tasks: Array<RunningTask>;
-}
-
-/**
- * == HELPER FUNCTIONS ==
- */
-/**
- * Type guard function for checking that the given task exists
- */
-function checkTaskIndex(index: number | undefined): void {
-  if (typeof index !== 'number') {
-    throw new TypeError(
-      '[taskManager]: This task does not exist in taskManager. Did you start it?'
-    );
-  }
+  /**
+   * The number of seconds to keep a finished task in the task list
+   */
+  finishedTasksTimeout: number;
 }
 
 /**
@@ -55,7 +45,8 @@ function checkTaskIndex(index: number | undefined): void {
  */
 const storeKey = 'taskManager';
 const defaultState: TaskManagerState = {
-  tasks: []
+  tasks: [],
+  finishedTasksTimeout: 0
 };
 
 const state: RemovableRef<TaskManagerState> = useStorage(
@@ -78,12 +69,13 @@ class TaskManagerStore {
   public get tasks(): typeof state.value.tasks {
     return state.value.tasks;
   }
+  public set timeout(newTimeout: number) {
+    state.value.finishedTasksTimeout = newTimeout;
+  }
   public getTask = (id: string): RunningTask | undefined => {
-    return computed(() => {
-      return state.value.tasks.find((payload) => {
-        return payload.id === id;
-      });
-    }).value;
+    return state.value.tasks.find((payload) => {
+      return payload.id === id;
+    });
   };
   /**
    * == ACTIONS ==
@@ -107,38 +99,39 @@ class TaskManagerStore {
       (task) => task.id === updatedTask.id
     );
 
-    checkTaskIndex(taskIndex);
-
-    const newArray = [...state.value.tasks];
-
-    newArray[taskIndex] = updatedTask;
-    state.value.tasks = newArray;
-  };
-
-  public finishTask = (id: string): void => {
-    const taskIndex = state.value.tasks.findIndex((task) => task.id === id);
-
-    checkTaskIndex(taskIndex);
-    state.value.tasks.splice(taskIndex);
-  };
-
-  public startConfigSync = (): void => {
-    if (!state.value.tasks.some((task) => task.type === TaskType.ConfigSync)) {
-      const payload = {
-        type: TaskType.ConfigSync,
-        id: v4()
-      };
-
-      this.startTask(payload);
+    if (taskIndex >= 0) {
+      state.value.tasks[taskIndex] = updatedTask;
     }
   };
 
-  public stopConfigSync = (): void => {
-    state.value.tasks.splice(
-      state.value.tasks.findIndex(
-        (payload) => payload.type === TaskType.ConfigSync
-      )
-    );
+  public finishTask = (id: string): void => {
+    const clearTask = (): void => {
+      const taskIndex = state.value.tasks.findIndex((task) => task.id === id);
+
+      state.value.tasks.splice(taskIndex, 1);
+    };
+
+    const task = this.getTask(id);
+
+    if (task) {
+      if (state.value.finishedTasksTimeout > 0) {
+        task.progress = 100;
+        window.setTimeout(clearTask, state.value.finishedTasksTimeout);
+      } else {
+        clearTask();
+      }
+    }
+  };
+
+  public startConfigSync = (): string => {
+    const payload = {
+      type: TaskType.ConfigSync,
+      id: v4()
+    };
+
+    this.startTask(payload);
+
+    return payload.id;
   };
 
   public constructor() {
