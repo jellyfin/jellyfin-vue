@@ -11,6 +11,7 @@ import loginGuard from './middlewares/login';
 import adminGuard from './middlewares/admin-pages';
 import validateGuard from './middlewares/validate';
 import metaGuard from './middlewares/meta';
+import playbackGuard from './middlewares/playback';
 import { getJSONConfig } from '@/utils/external-config';
 import { useRemote } from '@/composables';
 
@@ -30,6 +31,7 @@ router.beforeEach(metaGuard);
 router.beforeEach(loginGuard);
 router.beforeEach(adminGuard);
 router.beforeEach(validateGuard);
+router.beforeEach(playbackGuard);
 
 /**
  * Replaces the 'back' function, taking into account if there's a previous page or not.
