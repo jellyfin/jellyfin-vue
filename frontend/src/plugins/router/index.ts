@@ -32,6 +32,18 @@ router.beforeEach(adminGuard);
 router.beforeEach(validateGuard);
 
 /**
+ * Replaces the 'back' function, taking into account if there's a previous page or not.
+ * If there's no previous page in history, we ensure we want to go home
+ */
+router.back = (): ReturnType<typeof router.back> => {
+  router.replace(
+    typeof router.options.history.state.back === 'string'
+      ? router.options.history.state.back
+      : '/'
+  );
+};
+
+/**
  * Handle page title changes
  */
 const pageTitle = computed(() => {
