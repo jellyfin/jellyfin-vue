@@ -29,9 +29,8 @@ class ItemsStore {
   /**
    * == GETTERS ==
    */
-  public getItemById = (id: string | undefined): BaseItemDto | undefined => {
-    return id ? state.byId[id] : undefined;
-  };
+  public getItemById = (id: string | undefined): BaseItemDto | undefined =>
+    id ? state.byId[id] : undefined;
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {
     const res: BaseItemDto[] = [];
@@ -212,35 +211,40 @@ class ItemsStore {
     watch(
       () => remote.socket.message,
       () => {
-        const messageData = remote.socket.messageData;
-        const messageType = remote.socket.messageType;
+        if (!remote.socket.message) {
+          return;
+        }
 
-        if (messageType === 'LibraryChanged') {
-          // Update items when metadata changes
-          // @ts-expect-error -- The Data property doesn't describe its content
-          const itemsToUpdate = messageData.ItemsUpdated.filter(
-            (itemId: string) => {
+        const { MessageType, Data } = remote.socket.message;
+
+        if (Data) {
+          if (
+            MessageType === 'LibraryChanged' &&
+            Array.isArray(Data.ItemsUpdated)
+          ) {
+            // Update items when metadata changes
+            const itemsToUpdate = Data.ItemsUpdated.filter((itemId: string) => {
               return Object.keys(state.byId).includes(itemId);
-            }
-          );
+            });
 
-          this.updateStoreItems(itemsToUpdate);
-        } else if (messageType === 'UserDataChanged') {
-          // Update items when their userdata is changed (like, mark as watched, etc)
-          // @ts-expect-error -- The Data property doesn't describe its content
-          const itemsToUpdate = messageData.UserDataList.filter(
-            (updatedData: never) => {
-              // @ts-expect-error -- There are no typings for websocket returned data.
-              const itemId = updatedData.ItemId as string;
+            this.updateStoreItems(itemsToUpdate);
+          } else if (
+            MessageType === 'UserDataChanged' &&
+            Array.isArray(Data.UserDataList)
+          ) {
+            // Update items when their userdata is changed (like, mark as watched, etc)
+            const itemsToUpdate = Data.UserDataList.filter(
+              (updatedData: any) => {
+                const itemId = updatedData.ItemId ?? '';
 
-              return Object.keys(state.byId).includes(itemId);
-            }
-          ).map((updatedData: never) => {
-            // @ts-expect-error -- There are no typings for websocket returned data.
-            return updatedData.ItemId as string;
-          });
+                return Object.keys(state.byId).includes(itemId);
+              }
+            ).map((updatedData: any) => {
+              return updatedData.ItemId;
+            });
 
-          this.updateStoreItems(itemsToUpdate);
+            this.updateStoreItems(itemsToUpdate);
+          }
         }
       }
     );
