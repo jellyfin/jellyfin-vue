@@ -112,7 +112,9 @@
 <route lang="yaml">
 meta:
   layout: fullpage
-  transition: slideUp
+  transition:
+    enter: 'scroll-y-reverse-transition'
+    leave: 'scroll-y-transition'
 </route>
 
 <script lang="ts" setup>
