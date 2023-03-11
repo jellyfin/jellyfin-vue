@@ -93,19 +93,6 @@ const menuItems = computed<MenuItem[]>(() => {
 </script>
 
 <style lang="scss" scoped>
-.space-evenly {
-  flex: 1 !important;
-  justify-content: space-evenly !important;
-}
-
-.no-overflow {
-  max-width: 100%;
-}
-
-.user-select-none {
-  user-select: none;
-}
-
 .min-list-width {
   min-width: 200px;
 }
