@@ -196,6 +196,10 @@ onBeforeUnmount(() => {
     playbackManager.stop();
   }
 
+  /**
+   * We need to destroy JASSUB so the canvas can be recreated in the other view
+   */
+  playerElement.freeSsaTrack();
   playerElement.isFullscreenMounted = false;
 });
 
