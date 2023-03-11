@@ -15,7 +15,7 @@
     <v-col class="px-0">
       <swiper
         v-if="playbackManager.queue"
-        class="d-flex justify-center align-center"
+        class="d-flex justify-center align-center user-select-none"
         :modules="modules"
         :slides-per-view="4"
         centered-slides
@@ -164,6 +164,5 @@ function onSlideChange(): void {
   height: 65vh;
   min-width: 65vh;
   width: 65vh;
-  user-select: none;
 }
 </style>
