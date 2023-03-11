@@ -20,7 +20,6 @@ import { hideDirective } from '@/plugins/directives';
  * - GLOBAL STYLES -
  */
 import '@/assets/styles/global.scss';
-import '@/assets/styles/transitions.scss';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -

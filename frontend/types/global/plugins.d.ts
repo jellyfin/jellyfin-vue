@@ -12,11 +12,15 @@ interface BackdropPayload {
   blurhash?: string;
   opacity?: number;
 }
+interface RouteTransition {
+  enter: string;
+  leave?: string;
+}
 declare module 'vue-router' {
   interface RouteMeta {
     readonly layout: string;
     transparentLayout?: boolean;
-    transition?: string;
+    transition?: RouteTransition;
     readonly admin: boolean;
     title?: string | null;
     backdrop: BackdropPayload;
