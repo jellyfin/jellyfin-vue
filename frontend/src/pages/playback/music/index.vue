@@ -87,14 +87,13 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { isNil } from 'lodash-es';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
-const router = useRouter();
 
 const playbackManager = playbackManagerStore();
 const coverflowEffect = {
@@ -144,8 +143,6 @@ watch(
     if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
       route.meta.title = playbackManager.currentItem?.Name || '';
-    } else if (isNil(playbackManager.currentItemIndex)) {
-      router.back();
     }
   },
   { immediate: true }
