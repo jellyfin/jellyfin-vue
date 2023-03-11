@@ -1,5 +1,5 @@
 <template>
-  <div class="swiperContainer">
+  <div class="swiperContainer user-select-none">
     <carousel-progress-bar
       v-if="progressBar && topProgressBar && slides > 0"
       :pages="slides"

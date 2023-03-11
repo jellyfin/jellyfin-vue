@@ -1,6 +1,6 @@
 <!-- TODO: Make this component work -->
 <template>
-  <v-table dense class="track-table no-select">
+  <v-table dense class="track-table user-select-none">
     <thead>
       <tr>
         <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
@@ -151,9 +151,5 @@ function playTracks(track: BaseItemDto): void {
 
 .v-data-table tr.disc-header:hover {
   background: transparent !important;
-}
-
-.no-select {
-  user-select: none;
 }
 </style>
