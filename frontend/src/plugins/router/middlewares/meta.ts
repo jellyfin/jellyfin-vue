@@ -38,9 +38,18 @@ const defaultMeta: RouteMeta = {
  * present at the plugins.d.ts file
  */
 export default function metaGuard(
-  to: RouteLocationNormalized
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   to.meta = reactive<RouteMeta>(defaultsDeep(to.meta, defaultMeta));
+
+  if (from.meta.transition?.leave) {
+    if (!to.meta.transition) {
+      to.meta.transition = { enter: from.meta.transition.leave };
+    } else {
+      to.meta.transition.enter = from.meta.transition.leave;
+    }
+  }
 
   return true;
 }
