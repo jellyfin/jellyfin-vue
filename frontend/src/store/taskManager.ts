@@ -46,7 +46,7 @@ export interface TaskManagerState {
 const storeKey = 'taskManager';
 const defaultState: TaskManagerState = {
   tasks: [],
-  finishedTasksTimeout: 0
+  finishedTasksTimeout: 5000
 };
 
 const state: RemovableRef<TaskManagerState> = useStorage(
@@ -72,11 +72,8 @@ class TaskManagerStore {
   public set timeout(newTimeout: number) {
     state.value.finishedTasksTimeout = newTimeout;
   }
-  public getTask = (id: string): RunningTask | undefined => {
-    return state.value.tasks.find((payload) => {
-      return payload.id === id;
-    });
-  };
+  public getTask = (id: string): RunningTask | undefined =>
+    state.value.tasks.find((payload) => payload.id === id);
   /**
    * == ACTIONS ==
    */
@@ -140,18 +137,20 @@ class TaskManagerStore {
     watch(
       () => remote.socket.message,
       () => {
-        if (remote.socket.messageType === 'RefreshProgress') {
+        const messageData = remote.socket.message?.Data;
+
+        if (
+          remote.socket.message?.MessageType === 'RefreshProgress' &&
+          messageData &&
+          typeof messageData.ItemId === 'string'
+        ) {
           // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
-          const messageData = remote.socket.messageData;
-          // @ts-expect-error - No typings for this
           const progress = Number(messageData.Progress);
-          // @ts-expect-error - No typings for this
-          const taskPayload = taskManager.getTask(messageData.ItemId || '');
+          const taskPayload = taskManager.getTask(messageData.ItemId);
           const payload: RunningTask = {
             type: TaskType.LibraryRefresh,
-            // @ts-expect-error - No typings for this
-            id: messageData.ItemId as string,
+            id: messageData.ItemId,
             progress
           };
 
@@ -160,7 +159,6 @@ class TaskManagerStore {
               payload.data = taskPayload.data;
               taskManager.updateTask(payload);
             } else if (progress >= 0) {
-              // @ts-expect-error - No typings for this
               taskManager.finishTask(messageData.ItemId);
             }
           }

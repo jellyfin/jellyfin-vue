@@ -59,13 +59,7 @@ interface TaskInfo {
   id: string;
 }
 
-const props = withDefaults(
-  defineProps<{
-    fab?: boolean;
-    timeout?: number;
-  }>(),
-  { timeout: 5000 }
-);
+defineProps<{ fab?: boolean }>();
 
 const menu = ref(false);
 const taskManager = taskManagerStore();
@@ -85,7 +79,7 @@ const runningTaskList = computed<TaskInfo[]>(() => {
           progress: t.progress,
           textKey: 'appbar.tasks.scanningLibrary',
           textParams: {
-            library: t.data || ''
+            library: t.data ?? ''
           },
           id: t.id
         };
@@ -98,23 +92,15 @@ const allCompleted = computed(() =>
   runningTaskList.value.every((t) => t.progress === 100)
 );
 
-const buttonColor = computed(() => {
-  return allCompleted.value ? 'success' : undefined;
-});
+const buttonColor = computed(() =>
+  allCompleted.value ? 'success' : undefined
+);
 
-const taskList = computed(() => {
-  return menu.value && allCompleted.value
-    ? frozenTaskList
-    : runningTaskList.value;
-});
+const taskList = computed(() =>
+  menu.value && allCompleted.value ? frozenTaskList : runningTaskList.value
+);
 
 const showButton = computed(() => taskList.value.length > 0);
-
-watch(
-  () => props.timeout,
-  () => (taskManager.timeout = props.timeout),
-  { immediate: true }
-);
 
 watch([menu, allCompleted], () => {
   if (menu.value && allCompleted.value) {
