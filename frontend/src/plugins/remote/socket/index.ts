@@ -11,7 +11,7 @@ import { WebSocketMessage } from './types';
  */
 function formatSocketMessage(
   name: string,
-  data?: Record<string, never>
+  data?: Record<string, unknown>
 ): string {
   const message: WebSocketMessage = { MessageType: name };
 
@@ -51,12 +51,6 @@ class RemotePluginSocket {
   public get message(): WebSocketMessage | null {
     return destr(data.value) as WebSocketMessage | null;
   }
-  public get messageType(): WebSocketMessage['MessageType'] | undefined {
-    return this.message?.MessageType ?? undefined;
-  }
-  public get messageData(): WebSocketMessage['Data'] | undefined {
-    return this.message?.Data ?? undefined;
-  }
 
   /**
    * Send message to socket
@@ -73,7 +67,7 @@ class RemotePluginSocket {
     watch(
       () => this.message,
       () => {
-        if (this.messageType === 'ForceKeepAlive') {
+        if (this.message?.MessageType === 'ForceKeepAlive') {
           this.sendToSocket('KeepAlive');
         }
       }

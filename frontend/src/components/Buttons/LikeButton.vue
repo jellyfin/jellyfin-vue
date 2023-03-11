@@ -32,14 +32,13 @@ const isFavorite = computed({
 
       await (newValue
         ? remote.sdk.newUserApi(getUserLibraryApi).markFavoriteItem({
-            userId: remote.auth.currentUserId || '',
+            userId: remote.auth.currentUserId ?? '',
             itemId: props.item.Id
           })
         : remote.sdk.newUserApi(getUserLibraryApi).unmarkFavoriteItem({
-            userId: remote.auth.currentUserId || '',
+            userId: remote.auth.currentUserId ?? '',
             itemId: props.item.Id
           }));
-      loading.value = false;
     } catch {
     } finally {
       loading.value = false;
