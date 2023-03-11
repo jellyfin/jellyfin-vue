@@ -1,6 +1,9 @@
 <template>
   <v-list-group class="list-group">
-    <draggable v-model="queue" v-bind="dragOptions" class="list-draggable">
+    <draggable
+      v-model="queue"
+      v-bind="dragOptions"
+      class="list-draggable user-select-none">
       <template v-for="(item, index) in queue" :key="`${item.Id}-${index}`">
         <v-hover v-slot="{ isHovering, props: hoverProps }" ref="listItems">
           <v-list-item v-bind="hoverProps" @click="onClick(index)">
@@ -139,7 +142,6 @@ function onClick(index: number): void {
 }
 
 .list-draggable {
-  user-select: none;
   min-height: 20px;
 }
 
