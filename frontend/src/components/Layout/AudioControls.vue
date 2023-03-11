@@ -7,7 +7,7 @@
         playbackManager.currentItem
       "
       app
-      class="audioControls pa-0">
+      class="user-select-none pa-0">
       <v-container fluid>
         <v-row class="ma-0">
           <v-col cols="9" md="3" class="d-flex flex-row pa-0">
@@ -100,10 +100,6 @@ const playbackManager = playbackManagerStore();
 </script>
 
 <style lang="scss" scoped>
-.audioControls {
-  user-select: none;
-}
-
 .height-fit-content {
   height: fit-content;
 }
