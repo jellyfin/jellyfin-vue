@@ -15,26 +15,22 @@ const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
  * Redirects to login page if there's no user logged in.
  */
 export default function loginGuard(
-  to?: RouteLocationNormalized
+  to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   const remote = useRemote();
   let destinationRoute: RouteLocationPathRaw | undefined;
 
-  if (to) {
-    if (remote.auth.servers.length <= 0) {
-      destinationRoute = { path: serverAddUrl, replace: true };
-    } else if (!routes.has(to.path)) {
-      if (isNil(remote.auth.currentServer)) {
-        destinationRoute = { path: serverSelectUrl, replace: true };
-      } else if (isNil(remote.auth.currentUser)) {
-        destinationRoute = { path: serverLoginUrl, replace: true };
-      }
+  if (remote.auth.servers.length <= 0) {
+    destinationRoute = { path: serverAddUrl, replace: true };
+  } else if (!routes.has(to.path)) {
+    if (isNil(remote.auth.currentServer)) {
+      destinationRoute = { path: serverSelectUrl, replace: true };
+    } else if (isNil(remote.auth.currentUser)) {
+      destinationRoute = { path: serverLoginUrl, replace: true };
     }
-
-    return destinationRoute && to.path !== destinationRoute.path
-      ? destinationRoute
-      : true;
-  } else {
-    return false;
   }
+
+  return destinationRoute && to.path !== destinationRoute.path
+    ? destinationRoute
+    : true;
 }

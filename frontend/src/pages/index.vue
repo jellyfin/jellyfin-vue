@@ -170,10 +170,6 @@ const homeSections = computed<HomeSection[]>(() => {
 </script>
 
 <style lang="scss" scoped>
-.top-carousel {
-  margin-top: -64px;
-}
-
 .sections-after-header {
   position: relative;
   z-index: 4;
