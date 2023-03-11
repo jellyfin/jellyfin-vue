@@ -15,7 +15,8 @@ import { useRemote, useRouter } from '@/composables';
 
 const playbackManager = playbackManagerStore();
 let jassub: JASSUB | undefined;
-const fullscreenRoute = '/playback/video';
+const fullscreenVideoRoute = '/playback/video';
+const fullscreenMusicRoute = '/playback/music';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -68,28 +69,19 @@ class PlayerElementStore {
   }
 
   public get isFullscreenVideoPlayer(): boolean {
-    return useRouter().currentRoute.value.fullPath === fullscreenRoute;
+    return useRouter().currentRoute.value.fullPath === fullscreenVideoRoute;
   }
 
   /**
    * == ACTIONS ==
    */
   public toggleFullscreenVideoPlayer = (): void => {
-    /**
-     * Destroys SSO before chaning view cause the canvas needs to be destroyed to be recreated in the other view
-     */
-    playerElement.freeSsaTrack();
-
     const router = useRouter();
 
     if (!this.isFullscreenVideoPlayer) {
-      router.push(fullscreenRoute);
+      router.push(fullscreenVideoRoute);
     } else {
-      router.replace(
-        typeof router.options.history.state.back === 'string'
-          ? router.options.history.state.back
-          : '/'
-      );
+      router.back();
     }
   };
 
@@ -183,27 +175,30 @@ class PlayerElementStore {
   public constructor() {
     const remote = useRemote();
 
+    /**
+     * * Move user to the fullscreen page when starting video playback by default
+     * * Move user out of the fullscreen pages when playback is over
+     */
     watch(
       () => playbackManager.currentItem,
       (newValue, oldValue) => {
         const router = useRouter();
+        const currentFullPath = router.currentRoute.value.fullPath;
 
         if (
-          (!newValue &&
-            router.currentRoute.value.fullPath === fullscreenRoute) ||
-          (newValue &&
-            !oldValue &&
-            playbackManager.currentlyPlayingMediaType === 'Video')
+          !newValue &&
+          (currentFullPath.includes(fullscreenMusicRoute) ||
+            currentFullPath.includes(fullscreenVideoRoute))
         ) {
-          /**
-           * If no item is present, we either manually loaded this or playback is stopped
-           * OR
-           * If there was no item and there's now a video, default to going FS
-           */
-          playerElement.toggleFullscreenVideoPlayer();
+          router.back();
+        } else if (
+          newValue &&
+          !oldValue &&
+          playbackManager.currentlyPlayingMediaType === 'Video'
+        ) {
+          this.toggleFullscreenVideoPlayer();
         }
-      },
-      { immediate: true }
+      }
     );
 
     watch(

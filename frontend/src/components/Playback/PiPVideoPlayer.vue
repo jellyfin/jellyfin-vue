@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';
 
@@ -85,7 +85,11 @@ onMounted(() => {
   playerElement.isPiPMounted = true;
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
+  /**
+   * We need to destroy JASSUB so the canvas can be recreated in the other view
+   */
+  playerElement.freeSsaTrack();
   playerElement.isPiPMounted = false;
 });
 </script>
