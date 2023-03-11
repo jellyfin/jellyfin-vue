@@ -1,33 +1,28 @@
 <template>
-  <router-view v-if="enableTransitions" v-slot="{ Component, route }">
-    <transition :name="route.meta.transition || 'page'" mode="out-in">
+  <router-view v-slot="{ Component, route }">
+    <transition
+      :name="!prefersNoMotion ? getTransitionName(route) : undefined"
+      mode="out-in"
+      @before-enter="(el: HTMLElement) => el.style.transformOrigin = 'center center'">
       <!-- This div is required because <transition> requires a single children node -->
-      <div
-        :key="getKey(route)"
-        class="h-100"
-        :class="
-          isRoot
-            ? 'router-view-root-transition-wrapper'
-            : 'router-view-transition-wrapper'
-        ">
+      <div :key="isRoot ? route.meta.layout : String(route.name)" class="h-100">
         <Suspense>
           <component :is="Component" />
         </Suspense>
       </div>
     </transition>
   </router-view>
-
-  <router-view v-else v-slot="{ Component }">
-    <Suspense>
-      <component :is="Component" />
-    </Suspense>
-  </router-view>
 </template>
 
-<script setup lang="ts">
-import { RouteLocationNormalized } from 'vue-router';
+<script lang="ts">
+import { RouteLocationNormalizedLoaded } from 'vue-router';
+import { useMediaQuery } from '@vueuse/core';
 
-interface Props {
+const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');
+</script>
+
+<script setup lang="ts">
+defineProps<{
   /**
    * Root transitions happen between layout changes. e.g. from `default` layout to `main` and viceversa.
    * This should be "true" for the App.vue component
@@ -35,22 +30,18 @@ interface Props {
    * layout
    */
   isRoot?: boolean;
-  enableTransitions?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  isRoot: false,
-  enableTransitions: true
-});
+}>();
 
 /**
- * Gets the key to re-render the component tree of the current page
+ * Get transition name
  */
-function getKey(route: RouteLocationNormalized): string {
-  if (props.isRoot) {
-    return route.meta.layout;
+function getTransitionName(
+  route: RouteLocationNormalizedLoaded
+): undefined | string {
+  if (route.meta.transition?.enter) {
+    return route.meta.transition.enter;
   }
 
-  return String(route.name);
+  return 'scroll-x-reverse-transition';
 }
 </script>

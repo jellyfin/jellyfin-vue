@@ -70,7 +70,9 @@ meta:
   layout: fullpage
   backdrop:
     opacity: 0.75
-  transition: slideUp
+  transition:
+    enter: 'scroll-y-reverse-transition'
+    leave: 'scroll-y-transition'
 </route>
 
 <script setup lang="ts">
