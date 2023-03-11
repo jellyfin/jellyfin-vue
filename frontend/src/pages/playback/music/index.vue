@@ -37,7 +37,30 @@
           </div>
         </swiper-slide>
       </swiper>
-      <audio-controls />
+      <v-row class="justify-center align-center mt-3">
+        <v-col cols="6">
+          <v-row class="justify-center align-center">
+            <h1 class="text-h4">
+              {{ playbackManager.currentItem?.Name }}
+            </h1>
+          </v-row>
+          <v-row class="justify-center align-center">
+            <span class="text-subtitle">
+              {{ artistString }}
+            </span>
+          </v-row>
+          <v-row class="justify-center align-center mt-3">
+            <time-slider />
+          </v-row>
+          <v-row class="justify-center align-center">
+            <shuffle-button size="x-large" />
+            <previous-track-button size="x-large" />
+            <play-pause-button size="x-large" />
+            <next-track-button size="x-large" />
+            <repeat-button size="x-large" />
+          </v-row>
+        </v-col>
+      </v-row>
     </v-col>
   </v-main>
 </template>
@@ -84,6 +107,10 @@ const backdropHash = computed(() => {
     ? getBlurhash(playbackManager.currentItem, ImageType.Primary)
     : '';
 });
+const artistString = computed(() =>
+  playbackManager.currentItem?.Artists?.join(', ')
+);
+
 const swiperInstance = ref<SwiperType>();
 
 /**
