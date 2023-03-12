@@ -48,7 +48,7 @@ const { t } = useI18n();
 
 const model = ref<BaseItemKind[]>([]);
 
-const items = computed((): { title: string; value: BaseItemKind }[] => {
+const items = computed<{ title: string; value: BaseItemKind }[]>(() => {
   switch (props.type) {
     case 'movies': {
       return [
