@@ -9,12 +9,7 @@ import {
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRemote } from '@/composables';
-import {
-  getShapeFromItemType,
-  ValidCardShapes,
-  isPerson,
-  CardShapes
-} from '@/utils/items';
+import { getShapeFromItemType, isPerson, CardShapes } from '@/utils/items';
 
 export interface ImageUrlInfo {
   url: string | undefined;
@@ -108,6 +103,7 @@ export function getParentId(item: BaseItemDto): string | undefined {
     return item.ParentId;
   }
 }
+
 /**
  * Gets the blurhash string of an image given the item and the image type desired.
  *
@@ -135,6 +131,7 @@ export function getBlurhash(
     }
   }
 }
+
 /**
  * Returns the aspect ratio that should be use
  */
@@ -153,7 +150,7 @@ export function getContainerAspectRatioForImageType(
  * @param shape
  * @returns
  */
-export function getDesiredAspect(shape: ValidCardShapes): number {
+export function getDesiredAspect(shape: CardShapes): number {
   let aspectRatio;
 
   switch (shape) {
@@ -177,6 +174,7 @@ export function getDesiredAspect(shape: ValidCardShapes): number {
 
   return aspectRatio;
 }
+
 /**
  * Generates the image information for a BaseItemDto or a BasePersonDto according to set priorities.
  *
@@ -208,7 +206,7 @@ export function getImageInfo(
     ratio = 1,
     tag
   }: {
-    shape?: ValidCardShapes;
+    shape?: CardShapes;
     preferThumb?: boolean;
     preferBanner?: boolean;
     preferLogo?: boolean;
@@ -403,6 +401,7 @@ export function getImageInfo(
     blurhash: imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : ''
   };
 }
+
 /**
  * Generates the logo information for a BaseItemDto or a BasePersonDto according to set priorities.
  *
