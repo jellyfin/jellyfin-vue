@@ -27,7 +27,7 @@ const props = withDefaults(
   }
 );
 
-const cardNumber = computed((): number => {
+const cardNumber = computed(() => {
   const { width } = useDisplay();
 
   if (width.value < 600) {

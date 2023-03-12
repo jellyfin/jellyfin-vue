@@ -205,7 +205,7 @@ const isMovieOrTvShow = computed(
     props.item.CollectionType === 'tvshows'
 );
 
-const statusFilters = computed((): { label: string; name: ItemFilter }[] => [
+const statusFilters = computed<{ label: string; name: ItemFilter }[]>(() => [
   {
     label: t('played'),
     name: ItemFilter.IsPlayed

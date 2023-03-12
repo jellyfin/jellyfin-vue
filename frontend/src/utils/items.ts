@@ -55,12 +55,6 @@ export enum CardShapes {
   Banner = 'banner-card'
 }
 
-export type ValidCardShapes =
-  | CardShapes.Portrait
-  | CardShapes.Thumb
-  | CardShapes.Square
-  | CardShapes.Banner;
-
 /**
  * Determines if the item is a person
  *
@@ -140,7 +134,7 @@ export function getLibraryIcon(
  */
 export function getShapeFromCollectionType(
   collectionType: string | null | undefined
-): ValidCardShapes {
+): CardShapes {
   switch (collectionType?.toLowerCase()) {
     case 'livetv':
     case 'musicvideos': {
@@ -165,7 +159,7 @@ export function getShapeFromCollectionType(
  */
 export function getShapeFromItemType(
   itemType: BaseItemKind | null | undefined
-): ValidCardShapes {
+): CardShapes {
   if (!itemType) {
     return CardShapes.Portrait;
   }
