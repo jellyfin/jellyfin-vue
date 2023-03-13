@@ -12,7 +12,7 @@ import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 /**
- * == INTERFACES ==
+ * == INTERFACES AND TYPES ==
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
 export type LocaleStateValues =
@@ -43,51 +43,52 @@ const BROWSER_LANGUAGE = computed<string>(() => {
   return cleanString[0];
 });
 const browserPrefersDark = usePreferredDark();
-
-/**
- * == STATE VARIABLES ==
- */
-const defaultState: ClientSettingsState = {
-  darkMode: 'auto',
-  locale: 'auto'
-};
-
 const storeKey = 'clientSettings';
-
-const state: RemovableRef<ClientSettingsState> = useStorage(
-  storeKey,
-  cloneDeep(defaultState),
-  localStorage,
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
-  }
-);
 
 /**
  * == CLASS CONSTRUCTOR ==
  */
 class ClientSettingsStore {
+  /**
+   * == STATE ==
+   */
+  private _defaultState: ClientSettingsState = {
+    darkMode: 'auto',
+    locale: 'auto'
+  };
+
+  private _state: RemovableRef<ClientSettingsState> = useStorage(
+    storeKey,
+    cloneDeep(this._defaultState),
+    localStorage,
+    {
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
+    }
+  );
+  /**
+   * == GETTERS AND SETTERS ==
+   */
   public set locale(newVal: LocaleStateValues) {
     if (newVal === 'auto') {
       const i18n = usei18n();
 
-      state.value.locale = i18n.fallbackLocale.value as LocaleStateValues;
+      this._state.value.locale = i18n.fallbackLocale.value as LocaleStateValues;
     } else {
-      state.value.locale = newVal;
+      this._state.value.locale = newVal;
     }
   }
 
   public get locale(): LocaleStateValues {
-    return state.value.locale;
+    return this._state.value.locale;
   }
 
   public set darkMode(newVal: 'auto' | boolean) {
-    state.value.darkMode = newVal;
+    this._state.value.darkMode = newVal;
   }
 
   public get darkMode(): 'auto' | boolean {
-    return state.value.darkMode;
+    return this._state.value.darkMode;
   }
 
   private _updateLocale = (): void => {
@@ -115,6 +116,10 @@ class ClientSettingsStore {
     });
   };
 
+  private _clear = (): void => {
+    Object.assign(this._state.value, this._defaultState);
+  };
+
   public constructor() {
     const remote = useRemote();
     /**
@@ -124,9 +129,9 @@ class ClientSettingsStore {
     /**
      * Sync data with server
      */
-    const syncDataWatcher = watchPausable(state, async () => {
+    const syncDataWatcher = watchPausable(this._state, async () => {
       if (remote.auth.currentUser) {
-        await preferencesSync(storeKey, state.value);
+        await preferencesSync(storeKey, this._state.value);
       }
     });
 
@@ -140,12 +145,12 @@ class ClientSettingsStore {
           try {
             const data = await fetchSettingsFromServer<ClientSettingsState>(
               storeKey,
-              state.value
+              this._state.value
             );
 
             if (data) {
               syncDataWatcher.pause();
-              Object.assign(state.value, data);
+              Object.assign(this._state.value, data);
               await nextTick();
               syncDataWatcher.resume();
             }
@@ -176,6 +181,15 @@ class ClientSettingsStore {
       [browserPrefersDark, (): typeof this.darkMode => this.darkMode],
       this._updateTheme,
       { immediate: true }
+    );
+
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (!remote.auth.currentUser) {
+          this._clear();
+        }
+      }
     );
   }
 }
