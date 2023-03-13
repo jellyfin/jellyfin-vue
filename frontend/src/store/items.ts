@@ -5,7 +5,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { useRemote } from '@/composables';
 
 /**
- * == INTERFACES ==
+ * == INTERFACES AND TYPES ==
  */
 interface ItemsState {
   byId: Record<string, BaseItemDto>;
@@ -13,30 +13,29 @@ interface ItemsState {
 }
 
 /**
- * == STATE VARIABLES ==
- */
-const defaultState: ItemsState = {
-  byId: {},
-  collectionById: {}
-};
-
-const state = reactive<ItemsState>(cloneDeep(defaultState));
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class ItemsStore {
   /**
-   * == GETTERS ==
+   * == STATE ==
+   */
+  private _defaultState: ItemsState = {
+    byId: {},
+    collectionById: {}
+  };
+
+  private _state = reactive<ItemsState>(cloneDeep(this._defaultState));
+  /**
+   * == GETTERS AND SETTERS ==
    */
   public getItemById = (id: string | undefined): BaseItemDto | undefined =>
-    id ? state.byId[id] : undefined;
+    id ? this._state.byId[id] : undefined;
 
   public getItemsById = (ids: string[]): BaseItemDto[] => {
     const res: BaseItemDto[] = [];
 
     for (const index of ids) {
-      const item = state.byId[index];
+      const item = this._state.byId[index];
 
       if (!item) {
         throw new Error(`Item ${index} doesn't exist in the store`);
@@ -56,11 +55,11 @@ class ItemsStore {
     }
 
     const res: BaseItemDto[] = [];
-    const ids = state.collectionById[id];
+    const ids = this._state.collectionById[id];
 
     if (ids?.length) {
       for (const _id of ids) {
-        res.push(state.byId[_id]);
+        res.push(this._state.byId[_id]);
       }
 
       return res;
@@ -84,7 +83,7 @@ class ItemsStore {
       return item;
     }
 
-    state.byId[item.Id] = item;
+    this._state.byId[item.Id] = item;
 
     const fetched = this.getItemById(item.Id);
 
@@ -106,7 +105,7 @@ class ItemsStore {
     }
 
     for (const id of payload) {
-      delete state.byId[id];
+      delete this._state.byId[id];
     }
   };
 
@@ -137,7 +136,7 @@ class ItemsStore {
       }
     }
 
-    state.collectionById[parent.Id] = childIds;
+    this._state.collectionById[parent.Id] = childIds;
 
     return this.getChildrenOfParent(parent.Id) ?? [];
   };
@@ -205,6 +204,10 @@ class ItemsStore {
     }
   };
 
+  private _clear = (): void => {
+    Object.assign(this._state, this._defaultState);
+  };
+
   public constructor() {
     const remote = useRemote();
 
@@ -224,7 +227,7 @@ class ItemsStore {
           ) {
             // Update items when metadata changes
             const itemsToUpdate = Data.ItemsUpdated.filter((itemId: string) => {
-              return Object.keys(state.byId).includes(itemId);
+              return Object.keys(this._state.byId).includes(itemId);
             });
 
             this.updateStoreItems(itemsToUpdate);
@@ -237,7 +240,7 @@ class ItemsStore {
               (updatedData: any) => {
                 const itemId = updatedData.ItemId ?? '';
 
-                return Object.keys(state.byId).includes(itemId);
+                return Object.keys(this._state.byId).includes(itemId);
               }
             ).map((updatedData: any) => {
               return updatedData.ItemId;
@@ -245,6 +248,15 @@ class ItemsStore {
 
             this.updateStoreItems(itemsToUpdate);
           }
+        }
+      }
+    );
+
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (!remote.auth.currentUser) {
+          this._clear();
         }
       }
     );

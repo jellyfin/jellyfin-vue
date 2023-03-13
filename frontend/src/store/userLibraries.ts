@@ -14,6 +14,9 @@ import { CardShapes } from '@/utils/items';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
+/**
+ * == INTERFACES AND TYPES ==
+ */
 interface LatestMedia {
   [key: string]: BaseItemDto[];
 }
@@ -41,43 +44,49 @@ interface UserLibrariesState {
 }
 
 /**
- * == STATE VARIABLES ==
+ * == UTILITY VARIABLES ==
  */
 const storeKey = 'userLibraries';
-const defaultState: UserLibrariesState = {
-  views: [],
-  homeSections: {
-    audioResumes: [],
-    videoResumes: [],
-    upNext: [],
-    latestMedia: {}
-  },
-  carouselItems: [],
-  isReady: false
-};
 
-const state: RemovableRef<UserLibrariesState> = useStorage(
-  storeKey,
-  cloneDeep(defaultState),
-  sessionStorage,
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
-  }
-);
-
+/**
+ * == CLASS CONSTRUCTOR ==
+ */
 class UserLibrariesStore {
   /**
-   * == GETTERS ==
+   * == STATE ==
    */
-  public get libraries(): typeof state.value.views {
-    return state.value.views;
+  private _defaultState: UserLibrariesState = {
+    views: [],
+    homeSections: {
+      audioResumes: [],
+      videoResumes: [],
+      upNext: [],
+      latestMedia: {}
+    },
+    carouselItems: [],
+    isReady: false
+  };
+
+  private _state: RemovableRef<UserLibrariesState> = useStorage(
+    storeKey,
+    cloneDeep(this._defaultState),
+    sessionStorage,
+    {
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
+    }
+  );
+  /**
+   * == GETTERS AND SETTERS==
+   */
+  public get libraries(): typeof this._state.value.views {
+    return this._state.value.views;
   }
-  public get isReady(): typeof state.value.isReady {
-    return state.value.isReady;
+  public get isReady(): typeof this._state.value.isReady {
+    return this._state.value.isReady;
   }
-  public get carouselItems(): typeof state.value.carouselItems {
-    return state.value.carouselItems;
+  public get carouselItems(): typeof this._state.value.carouselItems {
+    return this._state.value.carouselItems;
   }
 
   public getHomeSectionContent = (section: HomeSection): BaseItemDto[] => {
@@ -87,16 +96,16 @@ class UserLibrariesStore {
           return this.libraries;
         }
         case 'resume': {
-          return state.value.homeSections.videoResumes;
+          return this._state.value.homeSections.videoResumes;
         }
         case 'resumeaudio': {
-          return state.value.homeSections.audioResumes;
+          return this._state.value.homeSections.audioResumes;
         }
         case 'upnext': {
-          return state.value.homeSections.upNext;
+          return this._state.value.homeSections.upNext;
         }
         case 'latestmedia': {
-          return state.value.homeSections.latestMedia[section.libraryId];
+          return this._state.value.homeSections.latestMedia[section.libraryId];
         }
         default: {
           return [];
@@ -125,7 +134,7 @@ class UserLibrariesStore {
           userId: remote.auth.currentUserId || ''
         });
 
-      state.value.views = userViewsResponse.data.Items || [];
+      this._state.value.views = userViewsResponse.data.Items || [];
     } catch (error) {
       this._onError(error);
     }
@@ -152,7 +161,7 @@ class UserLibrariesStore {
       ).data.Items;
 
       if (audioResumes) {
-        state.value.homeSections.audioResumes = audioResumes;
+        this._state.value.homeSections.audioResumes = audioResumes;
       }
     } catch (error) {
       this._onError(error);
@@ -180,7 +189,7 @@ class UserLibrariesStore {
       ).data.Items;
 
       if (videoResumes) {
-        state.value.homeSections.videoResumes = videoResumes;
+        this._state.value.homeSections.videoResumes = videoResumes;
       }
     } catch (error) {
       this._onError(error);
@@ -207,7 +216,7 @@ class UserLibrariesStore {
       ).data.Items;
 
       if (upNext) {
-        state.value.homeSections.upNext = upNext;
+        this._state.value.homeSections.upNext = upNext;
       }
     } catch (error) {
       this._onError(error);
@@ -233,7 +242,7 @@ class UserLibrariesStore {
         })
       ).data;
 
-      state.value.homeSections.latestMedia[libraryId] = latestMedia;
+      this._state.value.homeSections.latestMedia[libraryId] = latestMedia;
     } catch (error) {
       this._onError(error);
     }
@@ -254,7 +263,7 @@ class UserLibrariesStore {
       ).data;
 
       if (carouselItems) {
-        state.value.carouselItems = carouselItems;
+        this._state.value.carouselItems = carouselItems;
       }
     } catch (error) {
       this._onError(error);
@@ -274,11 +283,11 @@ class UserLibrariesStore {
       }
     }
 
-    state.value.isReady = true;
+    this._state.value.isReady = true;
   };
 
-  public clear = (): void => {
-    Object.assign(state.value, defaultState);
+  private _clear = (): void => {
+    Object.assign(this._state.value, this._defaultState);
   };
 
   public constructor() {
@@ -288,7 +297,7 @@ class UserLibrariesStore {
       () => remote.auth.currentUser,
       () => {
         if (!remote.auth.currentUser) {
-          userLibraries.clear();
+          this._clear();
         }
       }
     );

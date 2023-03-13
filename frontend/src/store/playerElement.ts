@@ -11,14 +11,14 @@ import jassubWorker from 'jassub/dist/jassub-worker.js?url';
 import 'jassub/dist/jassub-worker.wasm?url';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import { mediaElementRef, playbackManagerStore } from '@/store';
-import { useRouter } from '@/composables';
+import { useRemote, useRouter } from '@/composables';
 
 const playbackManager = playbackManagerStore();
 let jassub: JASSUB | undefined;
 const fullscreenRoute = '/playback/video';
 
 /**
- * == INTERFACES ==
+ * == INTERFACES AND TYPES ==
  */
 interface PlayerElementState {
   isFullscreenMounted: boolean;
@@ -27,45 +27,44 @@ interface PlayerElementState {
 }
 
 /**
- * == STATE VARIABLES ==
- */
-const defaultState: PlayerElementState = {
-  isFullscreenMounted: false,
-  isPiPMounted: false,
-  isStretched: true
-};
-
-const state = reactive<PlayerElementState>(cloneDeep(defaultState));
-
-/**
  * == CLASS CONSTRUCTOR ==
  */
 class PlayerElementStore {
   /**
-   * == GETTERS ==
+   * == STATE ==
+   */
+  private _defaultState: PlayerElementState = {
+    isFullscreenMounted: false,
+    isPiPMounted: false,
+    isStretched: true
+  };
+
+  private _state = reactive<PlayerElementState>(cloneDeep(this._defaultState));
+  /**
+   * == GETTERS AND SETTERS ==
    */
   public get isFullscreenMounted(): boolean {
-    return state.isFullscreenMounted;
+    return this._state.isFullscreenMounted;
   }
 
   public set isFullscreenMounted(newIsMounted: boolean) {
-    state.isFullscreenMounted = newIsMounted;
+    this._state.isFullscreenMounted = newIsMounted;
   }
 
   public get isPiPMounted(): boolean {
-    return state.isPiPMounted;
+    return this._state.isPiPMounted;
   }
 
   public set isPiPMounted(newIsPipMounted: boolean) {
-    state.isPiPMounted = newIsPipMounted;
+    this._state.isPiPMounted = newIsPipMounted;
   }
 
   public get isStretched(): boolean {
-    return state.isStretched;
+    return this._state.isStretched;
   }
 
   public set isStretched(newIsStretched: boolean) {
-    state.isStretched = newIsStretched;
+    this._state.isStretched = newIsStretched;
   }
 
   public get isFullscreenVideoPlayer(): boolean {
@@ -177,7 +176,13 @@ class PlayerElementStore {
     }
   };
 
+  private _clear = (): void => {
+    Object.assign(this._state, this._defaultState);
+  };
+
   public constructor() {
+    const remote = useRemote();
+
     watch(
       () => playbackManager.currentItem,
       (newValue, oldValue) => {
@@ -199,6 +204,15 @@ class PlayerElementStore {
         }
       },
       { immediate: true }
+    );
+
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (!remote.auth.currentUser) {
+          this._clear();
+        }
+      }
     );
   }
 }
