@@ -5,7 +5,7 @@
       mode="out-in"
       @before-enter="(el: HTMLElement) => el.style.transformOrigin = 'center center'">
       <!-- This div is required because <transition> requires a single children node -->
-      <div :key="isRoot ? route.meta.layout : String(route.name)" class="h-100">
+      <div :key="isRoot ? route.meta.layout : String(route.path)" class="h-100">
         <Suspense>
           <component :is="Component" />
         </Suspense>
