@@ -27,20 +27,24 @@
       </template>
     </app-bar-button-layout>
     <task-manager-button />
-    <app-bar-button-layout
-      @click="clientSettings.darkMode = !clientSettings.darkMode">
+    <app-bar-button-layout @click="switchColorTheme">
       <template #icon>
         <v-icon>
-          <i-mdi-weather-sunny v-if="clientSettings.darkMode" />
+          <i-mdi-brightness-auto v-if="clientSettings.darkMode === 'auto'" />
+          <i-mdi-weather-sunny v-else-if="clientSettings.darkMode" />
           <i-mdi-weather-night v-else />
         </v-icon>
       </template>
       <template #tooltip>
-        <span>{{
-          clientSettings.darkMode
-            ? $t('tooltips.switchToLightMode')
-            : $t('tooltips.switchToDarkMode')
-        }}</span>
+        <span v-if="clientSettings.darkMode === 'auto'">
+          {{ $t('tooltips.switchToDarkMode') }}
+        </span>
+        <span v-else-if="clientSettings.darkMode">
+          {{ $t('tooltips.switchToLightMode') }}
+        </span>
+        <span v-else>
+          {{ $t('tooltips.switchToAuto') }}
+        </span>
       </template>
     </app-bar-button-layout>
     <!-- Uncomment when some of the remote play features are fully implemented -->
@@ -69,6 +73,19 @@ const { y } = useWindowScroll();
 const transparentAppBar = computed<boolean>(() => {
   return (route.meta.transparentLayout || false) && y.value < 10;
 });
+
+/**
+ * Cycle between the different color schemas
+ */
+function switchColorTheme(): void {
+  if (clientSettings.darkMode === 'auto') {
+    clientSettings.darkMode = true;
+  } else if (clientSettings.darkMode) {
+    clientSettings.darkMode = false;
+  } else {
+    clientSettings.darkMode = 'auto';
+  }
+}
 
 const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
 </script>
