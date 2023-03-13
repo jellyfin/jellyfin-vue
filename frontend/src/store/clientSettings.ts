@@ -1,4 +1,4 @@
-import { computed, watch, nextTick, toRaw } from 'vue';
+import { computed, watch, nextTick } from 'vue';
 import {
   RemovableRef,
   useNavigatorLanguage,
@@ -15,15 +15,23 @@ import { mergeExcludingUnknown } from '@/utils/data-manipulation';
  * == INTERFACES ==
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
+export type LocaleStateValues =
+  | keyof ReturnType<typeof usei18n>['localeNames']
+  | 'auto';
+
 interface ClientSettingsState {
-  darkMode: boolean;
-  locale: string;
+  darkMode: 'auto' | boolean;
+  locale: LocaleStateValues;
 }
 
 /**
  * == UTILITY VARIABLES ==
  */
-const languageCodes = new Set(Object.keys(usei18n().localeNames)).add('auto');
+export const languageCodes = Object.freeze(
+  new Set(Object.keys(usei18n().localeNames)).add(
+    'auto'
+  ) as Set<LocaleStateValues>
+);
 const navigatorLanguage = useNavigatorLanguage();
 const BROWSER_LANGUAGE = computed<string>(() => {
   const rawString = navigatorLanguage.language.value || '';
@@ -39,8 +47,8 @@ const browserPrefersDark = usePreferredDark();
 /**
  * == STATE VARIABLES ==
  */
-const defaultState = {
-  darkMode: toRaw(browserPrefersDark.value),
+const defaultState: ClientSettingsState = {
+  darkMode: 'auto',
   locale: 'auto'
 };
 
@@ -60,26 +68,25 @@ const state: RemovableRef<ClientSettingsState> = useStorage(
  * == CLASS CONSTRUCTOR ==
  */
 class ClientSettingsStore {
-  public set locale(newVal: string) {
-    if (!languageCodes.has(newVal)) {
+  public set locale(newVal: LocaleStateValues) {
+    if (newVal === 'auto') {
       const i18n = usei18n();
 
-      console.error('This locale is not registered yet:', newVal);
-      state.value.locale = String(i18n.fallbackLocale.value);
+      state.value.locale = i18n.fallbackLocale.value as LocaleStateValues;
     } else {
       state.value.locale = newVal;
     }
   }
 
-  public get locale(): string {
+  public get locale(): LocaleStateValues {
     return state.value.locale;
   }
 
-  public set darkMode(newVal: boolean) {
+  public set darkMode(newVal: 'auto' | boolean) {
     state.value.darkMode = newVal;
   }
 
-  public get darkMode(): boolean {
+  public get darkMode(): 'auto' | boolean {
     return state.value.darkMode;
   }
 
@@ -90,6 +97,22 @@ class ClientSettingsStore {
       this.locale !== 'auto'
         ? this.locale
         : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
+  };
+
+  private _updateTheme = (): void => {
+    window.setTimeout(() => {
+      window.requestAnimationFrame(() => {
+        const vuetify = useVuetify();
+        const dark = 'dark';
+        const light = 'light';
+        const browserColor = browserPrefersDark.value ? dark : light;
+        const userColor =
+          this.darkMode !== 'auto' && this.darkMode ? dark : light;
+
+        vuetify.theme.global.name.value =
+          this.darkMode === 'auto' ? browserColor : userColor;
+      });
+    });
   };
 
   public constructor() {
@@ -140,27 +163,18 @@ class ClientSettingsStore {
      * Locale change
      */
 
-    watch(BROWSER_LANGUAGE, this._updateLocale);
-    watch(() => this.locale, this._updateLocale, { immediate: true });
+    watch(
+      [BROWSER_LANGUAGE, (): typeof this.locale => this.locale],
+      this._updateLocale,
+      { immediate: true }
+    );
 
     /**
      * Vuetify theme change
      */
-    watch(browserPrefersDark, () => {
-      state.value.darkMode = browserPrefersDark.value;
-    });
-
     watch(
-      () => this.darkMode,
-      () => {
-        window.setTimeout(() => {
-          window.requestAnimationFrame(() => {
-            const vuetify = useVuetify();
-
-            vuetify.theme.global.name.value = this.darkMode ? 'dark' : 'light';
-          });
-        });
-      },
+      [browserPrefersDark, (): typeof this.darkMode => this.darkMode],
+      this._updateTheme,
       { immediate: true }
     );
   }
