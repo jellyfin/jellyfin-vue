@@ -6,7 +6,7 @@ import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { useRemote } from '@/composables';
 
 /**
- * == INTERFACES ==
+ * == INTERFACES AND TYPES ==
  */
 
 export enum TaskType {
@@ -41,39 +41,42 @@ export interface TaskManagerState {
 }
 
 /**
- * == STATE VARIABLES ==
+ * == UTILITY VARIABLES ==
  */
 const storeKey = 'taskManager';
-const defaultState: TaskManagerState = {
-  tasks: [],
-  finishedTasksTimeout: 5000
-};
-
-const state: RemovableRef<TaskManagerState> = useStorage(
-  storeKey,
-  cloneDeep(defaultState),
-  sessionStorage,
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
-  }
-);
 
 /**
  * == CLASS CONSTRUCTOR ==
  */
 class TaskManagerStore {
   /**
-   * == GETTERS ==
+   * == STATE ==
    */
-  public get tasks(): typeof state.value.tasks {
-    return state.value.tasks;
+  private _defaultState: TaskManagerState = {
+    tasks: [],
+    finishedTasksTimeout: 5000
+  };
+
+  private _state: RemovableRef<TaskManagerState> = useStorage(
+    storeKey,
+    cloneDeep(this._defaultState),
+    sessionStorage,
+    {
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
+    }
+  );
+  /**
+   * == GETTERS AND SETTERS ==
+   */
+  public get tasks(): typeof this._state.value.tasks {
+    return this._state.value.tasks;
   }
   public set timeout(newTimeout: number) {
-    state.value.finishedTasksTimeout = newTimeout;
+    this._state.value.finishedTasksTimeout = newTimeout;
   }
   public getTask = (id: string): RunningTask | undefined =>
-    state.value.tasks.find((payload) => payload.id === id);
+    this._state.value.tasks.find((payload) => payload.id === id);
   /**
    * == ACTIONS ==
    */
@@ -87,33 +90,35 @@ class TaskManagerStore {
     if (this.getTask(task.id)) {
       this.updateTask(task);
     } else {
-      state.value.tasks.push(task);
+      this._state.value.tasks.push(task);
     }
   };
 
   public updateTask = (updatedTask: RunningTask): void => {
-    const taskIndex = state.value.tasks.findIndex(
+    const taskIndex = this._state.value.tasks.findIndex(
       (task) => task.id === updatedTask.id
     );
 
     if (taskIndex >= 0) {
-      state.value.tasks[taskIndex] = updatedTask;
+      this._state.value.tasks[taskIndex] = updatedTask;
     }
   };
 
   public finishTask = (id: string): void => {
     const clearTask = (): void => {
-      const taskIndex = state.value.tasks.findIndex((task) => task.id === id);
+      const taskIndex = this._state.value.tasks.findIndex(
+        (task) => task.id === id
+      );
 
-      state.value.tasks.splice(taskIndex, 1);
+      this._state.value.tasks.splice(taskIndex, 1);
     };
 
     const task = this.getTask(id);
 
     if (task) {
-      if (state.value.finishedTasksTimeout > 0) {
+      if (this._state.value.finishedTasksTimeout > 0) {
         task.progress = 100;
-        window.setTimeout(clearTask, state.value.finishedTasksTimeout);
+        window.setTimeout(clearTask, this._state.value.finishedTasksTimeout);
       } else {
         clearTask();
       }
@@ -129,6 +134,10 @@ class TaskManagerStore {
     this.startTask(payload);
 
     return payload.id;
+  };
+
+  private _clear = (): void => {
+    Object.assign(this._state.value, this._defaultState);
   };
 
   public constructor() {
@@ -162,6 +171,15 @@ class TaskManagerStore {
               taskManager.finishTask(messageData.ItemId);
             }
           }
+        }
+      }
+    );
+
+    watch(
+      () => remote.auth.currentUser,
+      () => {
+        if (!remote.auth.currentUser) {
+          this._clear();
         }
       }
     );
