@@ -6,15 +6,6 @@ import messages from '@intlify/unplugin-vue-i18n/messages';
  * See @/store/clientSettings to check where the current user language is initialised
  */
 
-const DEFAULT_LANGUAGE = 'en-US';
-
-const i18n = createI18n({
-  fallbackLocale: DEFAULT_LANGUAGE,
-  globalInjection: true,
-  legacy: false,
-  messages
-});
-
 /* eslint sort-keys: "error" */
 export const languageMap = {
   am: 'አማርኛ',
@@ -70,6 +61,15 @@ export const languageMap = {
   'zh-TW': '繁體中文'
 };
 /* eslint sort-keys: "off" */
+
+const DEFAULT_LANGUAGE = 'en-US';
+
+const i18n = createI18n({
+  fallbackLocale: DEFAULT_LANGUAGE,
+  globalInjection: true,
+  legacy: false,
+  messages
+});
 
 // @ts-expect-error - This is the only place where we need to assign the localeNames variable.
 // Assigning it somewhere else should be completely restricted

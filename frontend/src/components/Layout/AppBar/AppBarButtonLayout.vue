@@ -2,14 +2,13 @@
   <div class="ma-1">
     <v-btn
       class="align-self-center"
+      v-bind="$props"
       icon
       size="small"
-      :color="color"
-      variant="elevated"
-      :disabled="disabled">
+      variant="elevated">
       <slot name="icon" />
 
-      <v-tooltip location="bottom">
+      <v-tooltip v-if="$slots.tooltip" activator="parent" location="bottom">
         <slot name="tooltip" />
       </v-tooltip>
     </v-btn>
