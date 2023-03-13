@@ -1,6 +1,8 @@
 import 'vue-router';
 // eslint-disable-next-line no-restricted-imports
 import { RemotePlugin } from '@/plugins/remote/types';
+// eslint-disable-next-line no-restricted-imports
+import { languageMap } from '@/plugins/i18n';
 import 'vue-i18n';
 
 /**
@@ -32,7 +34,7 @@ declare module 'vue-i18n' {
     /**
      * An array of the locale codes that matches the locale name
      */
-    readonly localeNames: Record<string, string>;
+    readonly localeNames: typeof languageMap;
   }
 }
 
