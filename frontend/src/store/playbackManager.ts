@@ -30,7 +30,7 @@ import { msToTicks } from '@/utils/time';
 import playbackProfile from '@/utils/playback-profiles';
 
 /**
- * == INTERFACES ==
+ * == INTERFACES AND TYPES ==
  */
 
 export enum PlaybackStatus {
@@ -93,37 +93,12 @@ interface PlaybackManagerState {
 }
 
 /**
- * == STATE VARIABLES
+ * == UTILITY VARIABLES ==
  */
 /**
  * Amount of time to wait between playback reports
  */
 const progressReportInterval = 3500;
-const defaultState: PlaybackManagerState = {
-  status: PlaybackStatus.Stopped,
-  currentSourceUrl: undefined,
-  isRemotePlayer: false,
-  lastItemIndex: undefined,
-  currentItemIndex: undefined,
-  currentMediaSource: undefined,
-  currentVideoStreamIndex: undefined,
-  currentAudioStreamIndex: undefined,
-  currentSubtitleStreamIndex: undefined,
-  currentItemChapters: undefined,
-  remotePlaybackTime: 0,
-  lastProgressUpdate: 0,
-  remoteCurrentVolume: 100,
-  isRemoteMuted: false,
-  isShuffling: false,
-  repeatMode: RepeatMode.RepeatNone,
-  queue: [],
-  originalQueue: [],
-  playSessionId: undefined,
-  playbackInitiator: undefined,
-  playbackInitMode: InitMode.Unknown
-};
-
-const state = reactive<PlaybackManagerState>(cloneDeep(defaultState));
 const reactiveDate = useNow();
 export const mediaElementRef = ref<HTMLMediaElement>();
 export const mediaControls = useMediaControls(mediaElementRef);
@@ -135,12 +110,45 @@ const remote = useRemote();
  */
 const mediaMetadata = new MediaMetadata();
 
+/**
+ * == CLASS CONSTRUCTOR ==
+ */
 class PlaybackManagerStore {
   /**
-   * == GETTERS ==
+   * == STATE ==
+   */
+  private _defaultState: PlaybackManagerState = {
+    status: PlaybackStatus.Stopped,
+    currentSourceUrl: undefined,
+    isRemotePlayer: false,
+    lastItemIndex: undefined,
+    currentItemIndex: undefined,
+    currentMediaSource: undefined,
+    currentVideoStreamIndex: undefined,
+    currentAudioStreamIndex: undefined,
+    currentSubtitleStreamIndex: undefined,
+    currentItemChapters: undefined,
+    remotePlaybackTime: 0,
+    lastProgressUpdate: 0,
+    remoteCurrentVolume: 100,
+    isRemoteMuted: false,
+    isShuffling: false,
+    repeatMode: RepeatMode.RepeatNone,
+    queue: [],
+    originalQueue: [],
+    playSessionId: undefined,
+    playbackInitiator: undefined,
+    playbackInitMode: InitMode.Unknown
+  };
+
+  private _state = reactive<PlaybackManagerState>(
+    cloneDeep(this._defaultState)
+  );
+  /**
+   * == GETTERS AND SETTERS ==
    */
   public get status(): PlaybackStatus {
-    return state.status;
+    return this._state.status;
   }
   /**
    * Get if playback is buffering
@@ -158,19 +166,19 @@ class PlaybackManagerStore {
    * Get if the repeat status is not set to none
    */
   public get isRepeating(): boolean {
-    return state.repeatMode !== RepeatMode.RepeatNone;
+    return this._state.repeatMode !== RepeatMode.RepeatNone;
   }
   /**
    * Get if the queue is being repeated
    */
   public get isRepeatingAll(): boolean {
-    return state.repeatMode === RepeatMode.RepeatAll;
+    return this._state.repeatMode === RepeatMode.RepeatAll;
   }
   /**
    * Get if an item is being repeated
    */
   public get isRepeatingOnce(): boolean {
-    return state.repeatMode === RepeatMode.RepeatOne;
+    return this._state.repeatMode === RepeatMode.RepeatOne;
   }
   /**
    * Get if an item is paused at this moment
@@ -182,7 +190,7 @@ class PlaybackManagerStore {
    * Get if the current playback session is remote or local
    */
   public get isRemotePlayer(): boolean {
-    return state.isRemotePlayer;
+    return this._state.isRemotePlayer;
   }
   /**
    * Get reactive BaseItemDto's objects of the queue
@@ -190,7 +198,7 @@ class PlaybackManagerStore {
   public get queue(): BaseItemDto[] {
     const items = itemsStore();
 
-    return items.getItemsById(state.queue);
+    return items.getItemsById(this._state.queue);
   }
   /**
    * Get a reactive BaseItemDto object of the currently playing item
@@ -198,12 +206,12 @@ class PlaybackManagerStore {
   public get currentItem(): BaseItemDto | undefined {
     const items = itemsStore();
 
-    if (!isNil(state.currentItemIndex)) {
-      return items.getItemById(state.queue[state.currentItemIndex]);
+    if (!isNil(this._state.currentItemIndex)) {
+      return items.getItemById(this._state.queue[this._state.currentItemIndex]);
     }
   }
   public get currentSourceUrl(): string | undefined {
-    return state.currentSourceUrl;
+    return this._state.currentSourceUrl;
   }
   /**
    * Get a reactive BaseItemDto object of the previous item in queue
@@ -211,8 +219,8 @@ class PlaybackManagerStore {
   public get previousItem(): BaseItemDto | undefined {
     const items = itemsStore();
 
-    if (!isNil(state.lastItemIndex)) {
-      return items.getItemById(state.queue[state.lastItemIndex]);
+    if (!isNil(this._state.lastItemIndex)) {
+      return items.getItemById(this._state.queue[this._state.lastItemIndex]);
     }
   }
   /**
@@ -222,12 +230,14 @@ class PlaybackManagerStore {
     const items = itemsStore();
 
     if (
-      !isNil(state.currentItemIndex) &&
-      state.currentItemIndex + 1 < state.queue.length
+      !isNil(this._state.currentItemIndex) &&
+      this._state.currentItemIndex + 1 < this._state.queue.length
     ) {
-      return items.getItemById(state.queue[state.currentItemIndex + 1]);
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      return items.getItemById(state.queue[0]);
+      return items.getItemById(
+        this._state.queue[this._state.currentItemIndex + 1]
+      );
+    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
+      return items.getItemById(this._state.queue[0]);
     }
   }
   /**
@@ -236,8 +246,9 @@ class PlaybackManagerStore {
   public get currentlyPlayingType(): BaseItemKind | undefined {
     const items = itemsStore();
 
-    if (!isNil(state.currentItemIndex)) {
-      return items.getItemById(state.queue[state.currentItemIndex])?.Type;
+    if (!isNil(this._state.currentItemIndex)) {
+      return items.getItemById(this._state.queue[this._state.currentItemIndex])
+        ?.Type;
     }
   }
   /**
@@ -246,16 +257,17 @@ class PlaybackManagerStore {
   public get currentlyPlayingMediaType(): string | null | undefined {
     const items = itemsStore();
 
-    if (!isNil(state.currentItemIndex)) {
-      return items.getItemById(state.queue[state.currentItemIndex])?.MediaType;
+    if (!isNil(this._state.currentItemIndex)) {
+      return items.getItemById(this._state.queue[this._state.currentItemIndex])
+        ?.MediaType;
     }
   }
   /**
    * Get current's item audio tracks
    */
   public get currentItemAudioTracks(): MediaStream[] | undefined {
-    if (!isNil(state.currentMediaSource?.MediaStreams)) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
+    if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
+      return this._state.currentMediaSource?.MediaStreams.filter((stream) => {
         return stream.Type === 'Audio';
       });
     }
@@ -264,19 +276,21 @@ class PlaybackManagerStore {
    * Get current's item subtitle tracks
    */
   public get currentItemSubtitleTracks(): MediaStream[] | undefined {
-    if (!isNil(state.currentMediaSource?.MediaStreams)) {
-      return state.currentMediaSource?.MediaStreams.filter((stream) => {
+    if (!isNil(this._state.currentMediaSource?.MediaStreams)) {
+      return this._state.currentMediaSource?.MediaStreams.filter((stream) => {
         return stream.Type === 'Subtitle';
       });
     }
   }
 
   public get currentItemParsedSubtitleTracks(): PlaybackTrack[] | undefined {
-    if (!isNil(state.currentMediaSource)) {
-      return state.currentMediaSource.MediaStreams?.map((stream, index) => ({
-        srcIndex: index,
-        ...stream
-      }))
+    if (!isNil(this._state.currentMediaSource)) {
+      return this._state.currentMediaSource.MediaStreams?.map(
+        (stream, index) => ({
+          srcIndex: index,
+          ...stream
+        })
+      )
         .filter(
           (sub) =>
             sub.Type === MediaStreamType.Subtitle &&
@@ -326,121 +340,121 @@ class PlaybackManagerStore {
 
   public get currentVideoTrack(): MediaStream | undefined {
     if (
-      !isNil(state.currentMediaSource?.MediaStreams) &&
-      !isNil(state.currentVideoStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams) &&
+      !isNil(this._state.currentVideoStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.find(
+      return this._state.currentMediaSource?.MediaStreams.find(
         (stream) =>
           stream.Type === 'Video' &&
-          stream.Index === state.currentVideoStreamIndex
+          stream.Index === this._state.currentVideoStreamIndex
       );
     }
   }
 
   public get currentAudioTrack(): MediaStream | undefined {
     if (
-      !isNil(state.currentMediaSource?.MediaStreams) &&
-      !isNil(state.currentAudioStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams) &&
+      !isNil(this._state.currentAudioStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.find(
+      return this._state.currentMediaSource?.MediaStreams.find(
         (stream) =>
           stream.Type === 'Audio' &&
-          stream.Index === state.currentAudioStreamIndex
+          stream.Index === this._state.currentAudioStreamIndex
       );
     }
   }
 
   public get currentSubtitleTrack(): MediaStream | undefined {
     if (
-      !isNil(state.currentMediaSource?.MediaStreams) &&
-      !isNil(state.currentSubtitleStreamIndex)
+      !isNil(this._state.currentMediaSource?.MediaStreams) &&
+      !isNil(this._state.currentSubtitleStreamIndex)
     ) {
-      return state.currentMediaSource?.MediaStreams.find(
+      return this._state.currentMediaSource?.MediaStreams.find(
         (stream) =>
           stream.Type === 'Subtitle' &&
-          stream.Index === state.currentSubtitleStreamIndex
+          stream.Index === this._state.currentSubtitleStreamIndex
       );
     }
   }
 
   public get currentSubtitleStreamIndex(): number | undefined {
-    return state.currentSubtitleStreamIndex;
+    return this._state.currentSubtitleStreamIndex;
   }
   public set currentSubtitleStreamIndex(newIndex: number | undefined) {
-    state.currentSubtitleStreamIndex = newIndex;
+    this._state.currentSubtitleStreamIndex = newIndex;
   }
 
   public get currentAudioStreamIndex(): number | undefined {
-    return state.currentAudioStreamIndex;
+    return this._state.currentAudioStreamIndex;
   }
   public set currentAudioStreamIndex(newIndex: number | undefined) {
-    state.currentAudioStreamIndex = newIndex;
+    this._state.currentAudioStreamIndex = newIndex;
   }
 
   public get initiator(): BaseItemDto | undefined {
-    return state.playbackInitiator;
+    return this._state.playbackInitiator;
   }
 
   public get playbackInitMode(): InitMode {
-    return state.playbackInitMode;
+    return this._state.playbackInitMode;
   }
 
   public get queueIds(): string[] {
-    return state.queue;
+    return this._state.queue;
   }
 
   public get isShuffling(): boolean {
-    return state.isShuffling;
+    return this._state.isShuffling;
   }
 
   public get repeatMode(): RepeatMode {
-    return state.repeatMode;
+    return this._state.repeatMode;
   }
 
   public get currentTime(): number {
     return !this.isRemotePlayer
       ? mediaControls.currentTime.value
-      : state.remotePlaybackTime;
+      : this._state.remotePlaybackTime;
   }
   public set currentTime(newValue: number) {
     if (this.isRemotePlayer) {
-      state.remotePlaybackTime = newValue;
+      this._state.remotePlaybackTime = newValue;
     } else {
       mediaControls.currentTime.value = newValue;
     }
   }
 
   public get currentItemIndex(): number | undefined {
-    return state.currentItemIndex;
+    return this._state.currentItemIndex;
   }
   public set currentItemIndex(index: number | undefined) {
-    if (state.currentItemIndex !== index) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex = index;
+    if (this._state.currentItemIndex !== index) {
+      this._state.lastItemIndex = this._state.currentItemIndex;
+      this._state.currentItemIndex = index;
       this.currentTime = 0;
     }
   }
 
   public get currentMediaSource(): MediaSourceInfo | undefined {
-    return state.currentMediaSource;
+    return this._state.currentMediaSource;
   }
 
   public get isMuted(): boolean {
-    return state.isRemotePlayer
-      ? state.isRemoteMuted
+    return this._state.isRemotePlayer
+      ? this._state.isRemoteMuted
       : mediaControls.muted.value;
   }
   private set isMuted(newValue: boolean) {
-    if (state.isRemotePlayer) {
-      state.isRemoteMuted = newValue;
+    if (this._state.isRemotePlayer) {
+      this._state.isRemoteMuted = newValue;
     } else {
       mediaControls.muted.value = newValue;
     }
   }
 
   public get currentVolume(): number {
-    return state.isRemotePlayer
-      ? state.remoteCurrentVolume
+    return this._state.isRemotePlayer
+      ? this._state.remoteCurrentVolume
       : mediaControls.volume.value * 100;
   }
   public set currentVolume(newVolume: number) {
@@ -448,8 +462,8 @@ class PlaybackManagerStore {
     newVolume = newVolume < 0 ? 0 : newVolume;
     this.isMuted = newVolume === 0 ? true : false;
 
-    if (state.isRemotePlayer) {
-      state.remoteCurrentVolume = newVolume;
+    if (this._state.isRemotePlayer) {
+      this._state.remoteCurrentVolume = newVolume;
     } else {
       mediaControls.volume.value = newVolume / 100;
     }
@@ -457,7 +471,7 @@ class PlaybackManagerStore {
 
   private get _pendingProgressReport(): boolean {
     return (
-      reactiveDate.value.valueOf() - state.lastProgressUpdate >=
+      reactiveDate.value.valueOf() - this._state.lastProgressUpdate >=
         progressReportInterval &&
       this.status !== PlaybackStatus.Stopped &&
       this.status !== PlaybackStatus.Error
@@ -607,13 +621,13 @@ class PlaybackManagerStore {
       await remote.sdk.newUserApi(getPlaystateApi).reportPlaybackProgress({
         playbackProgressInfo: {
           ItemId: this.currentItem.Id,
-          PlaySessionId: state.playSessionId,
+          PlaySessionId: this._state.playSessionId,
           IsPaused: this.isPaused,
           PositionTicks: Math.round(msToTicks(this.currentTime * 1000))
         }
       });
 
-      state.lastProgressUpdate = Date.now();
+      this._state.lastProgressUpdate = Date.now();
     }
   };
 
@@ -622,7 +636,7 @@ class PlaybackManagerStore {
    */
   private _reportPlaybackStopped = async (
     itemId: string,
-    sessionId = state.playSessionId,
+    sessionId = this._state.playSessionId,
     currentTime = this.currentTime,
     updateState = true
   ): Promise<void> => {
@@ -635,7 +649,7 @@ class PlaybackManagerStore {
     });
 
     if (updateState) {
-      state.lastProgressUpdate = Date.now();
+      this._state.lastProgressUpdate = Date.now();
     }
   };
 
@@ -647,29 +661,29 @@ class PlaybackManagerStore {
       playbackStartInfo: {
         CanSeek: true,
         ItemId: itemId,
-        PlaySessionId: state.playSessionId,
-        MediaSourceId: state.currentMediaSource?.Id,
-        AudioStreamIndex: state.currentAudioStreamIndex,
-        SubtitleStreamIndex: state.currentSubtitleStreamIndex
+        PlaySessionId: this._state.playSessionId,
+        MediaSourceId: this._state.currentMediaSource?.Id,
+        AudioStreamIndex: this._state.currentAudioStreamIndex,
+        SubtitleStreamIndex: this._state.currentSubtitleStreamIndex
       }
     });
 
-    state.lastProgressUpdate = Date.now();
+    this._state.lastProgressUpdate = Date.now();
   };
   public addToQueue = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
-    state.queue.push(...translatedItem);
+    this._state.queue.push(...translatedItem);
   };
 
   public removeFromQueue = (itemId: string): void => {
-    if (state.queue.includes(itemId)) {
-      state.queue.splice(state.queue.indexOf(itemId), 1);
+    if (this._state.queue.includes(itemId)) {
+      this._state.queue.splice(this._state.queue.indexOf(itemId), 1);
     }
   };
 
   public clearQueue = (): void => {
-    state.queue = [];
+    this._state.queue = [];
   };
 
   /**
@@ -695,42 +709,45 @@ class PlaybackManagerStore {
     startShuffled?: boolean;
   }): Promise<void> => {
     try {
-      if (state.status !== PlaybackStatus.Stopped) {
+      if (this._state.status !== PlaybackStatus.Stopped) {
         this.stop();
       }
 
-      state.status = PlaybackStatus.Buffering;
-      state.queue = await this.translateItemsForPlayback(item, startShuffled);
+      this._state.status = PlaybackStatus.Buffering;
+      this._state.queue = await this.translateItemsForPlayback(
+        item,
+        startShuffled
+      );
 
       if (videoTrackIndex !== undefined) {
-        state.currentVideoStreamIndex = videoTrackIndex;
+        this._state.currentVideoStreamIndex = videoTrackIndex;
       }
 
       if (audioTrackIndex !== undefined) {
-        state.currentAudioStreamIndex = audioTrackIndex;
+        this._state.currentAudioStreamIndex = audioTrackIndex;
       }
 
       if (subtitleTrackIndex !== undefined) {
-        state.currentSubtitleStreamIndex = subtitleTrackIndex;
+        this._state.currentSubtitleStreamIndex = subtitleTrackIndex;
       }
 
-      state.currentItemIndex = startFromIndex;
+      this._state.currentItemIndex = startFromIndex;
       this.currentTime = startFromTime;
 
       if (!startShuffled && initiator) {
-        state.playbackInitMode = InitMode.Item;
+        this._state.playbackInitMode = InitMode.Item;
       } else if (startShuffled && !initiator) {
-        state.playbackInitMode = InitMode.Shuffle;
+        this._state.playbackInitMode = InitMode.Shuffle;
       } else if (startShuffled && initiator) {
-        state.playbackInitMode = InitMode.ShuffleItem;
+        this._state.playbackInitMode = InitMode.ShuffleItem;
       } else {
-        state.playbackInitMode = InitMode.Unknown;
+        this._state.playbackInitMode = InitMode.Unknown;
       }
 
-      state.playbackInitiator = initiator;
-      state.status = PlaybackStatus.Playing;
+      this._state.playbackInitiator = initiator;
+      this._state.status = PlaybackStatus.Playing;
     } catch {
-      state.status = PlaybackStatus.Error;
+      this._state.status = PlaybackStatus.Error;
     }
   };
 
@@ -742,50 +759,50 @@ class PlaybackManagerStore {
   public playNext = async (item: BaseItemDto): Promise<void> => {
     const translatedItem = await this.translateItemsForPlayback(item);
 
-    if (state.currentItemIndex !== undefined) {
+    if (this._state.currentItemIndex !== undefined) {
       /**
        * Removes the elements that already exists and append the new ones next to the currently playing item
        */
-      const newQueue = state.queue.filter(
+      const newQueue = this._state.queue.filter(
         (index) => !translatedItem.includes(index)
       );
 
-      newQueue.splice(state.currentItemIndex + 1, 0, ...translatedItem);
+      newQueue.splice(this._state.currentItemIndex + 1, 0, ...translatedItem);
       this.setNewQueue(newQueue);
     }
   };
 
   public pause = (): void => {
-    if (state.status === PlaybackStatus.Playing) {
-      state.status = PlaybackStatus.Paused;
+    if (this._state.status === PlaybackStatus.Playing) {
+      this._state.status = PlaybackStatus.Paused;
     }
   };
 
   public unpause = (): void => {
-    if (state.status === PlaybackStatus.Paused) {
-      state.status = PlaybackStatus.Playing;
+    if (this._state.status === PlaybackStatus.Paused) {
+      this._state.status = PlaybackStatus.Playing;
     }
   };
 
   public playPause = (): void => {
-    if (state.status === PlaybackStatus.Playing) {
+    if (this._state.status === PlaybackStatus.Playing) {
       this.pause();
-    } else if (state.status === PlaybackStatus.Paused) {
+    } else if (this._state.status === PlaybackStatus.Paused) {
       this.unpause();
     }
   };
 
   public setNextTrack = (): void => {
     if (
-      !isNil(state.currentItemIndex) &&
-      state.currentItemIndex + 1 < state.queue.length
+      !isNil(this._state.currentItemIndex) &&
+      this._state.currentItemIndex + 1 < this._state.queue.length
     ) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex += 1;
+      this._state.lastItemIndex = this._state.currentItemIndex;
+      this._state.currentItemIndex += 1;
       this.currentTime = 0;
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex = 0;
+    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
+      this._state.lastItemIndex = this._state.currentItemIndex;
+      this._state.currentItemIndex = 0;
       this.currentTime = 0;
     } else {
       this.stop();
@@ -794,13 +811,13 @@ class PlaybackManagerStore {
 
   public setPreviousTrack = (): void => {
     if (
-      !isNil(state.currentItemIndex) &&
-      state.currentItemIndex > 0 &&
+      !isNil(this._state.currentItemIndex) &&
+      this._state.currentItemIndex > 0 &&
       !isNil(this.currentTime) &&
       this.currentTime < 2
     ) {
-      state.lastItemIndex = state.currentItemIndex;
-      state.currentItemIndex -= 1;
+      this._state.lastItemIndex = this._state.currentItemIndex;
+      this._state.currentItemIndex -= 1;
     }
 
     this.currentTime = 0;
@@ -810,28 +827,28 @@ class PlaybackManagerStore {
     let item;
     let lastItem;
 
-    if (state.currentItemIndex !== undefined) {
-      item = state.queue[state.currentItemIndex];
+    if (this._state.currentItemIndex !== undefined) {
+      item = this._state.queue[this._state.currentItemIndex];
     }
 
-    if (state.lastItemIndex !== undefined) {
-      lastItem = state.queue[state.lastItemIndex];
+    if (this._state.lastItemIndex !== undefined) {
+      lastItem = this._state.queue[this._state.lastItemIndex];
     }
 
     const newIndex = queue?.indexOf(item || '');
     const lastItemNewIndex = queue?.indexOf(lastItem || '');
 
-    state.queue = queue;
-    state.lastItemIndex = lastItemNewIndex;
-    state.currentItemIndex = newIndex;
+    this._state.queue = queue;
+    this._state.lastItemIndex = lastItemNewIndex;
+    this._state.currentItemIndex = newIndex;
   };
 
   public changeItemPosition = (
     itemId: string | undefined,
     newIndex: number
   ): void => {
-    if (itemId && state.queue.includes(itemId)) {
-      const newQueue = state.queue.filter((index) => index !== itemId);
+    if (itemId && this._state.queue.includes(itemId)) {
+      const newQueue = this._state.queue.filter((index) => index !== itemId);
 
       newQueue.splice(newIndex, 0, itemId);
       this.setNewQueue(newQueue);
@@ -839,12 +856,12 @@ class PlaybackManagerStore {
   };
 
   public stop = (): void => {
-    const sessionId = String(state.playSessionId || '');
+    const sessionId = String(this._state.playSessionId || '');
     const time = Number(this.currentTime);
     const itemId = String(this.currentItem?.Id || '');
     const volume = Number(this.currentVolume);
 
-    Object.assign(state, defaultState);
+    Object.assign(this._state, this._defaultState);
     this.currentVolume = volume;
 
     window.setTimeout(async () => {
@@ -866,30 +883,30 @@ class PlaybackManagerStore {
   };
 
   public toggleShuffle = (): void => {
-    if (state.queue && !isNil(state.currentItemIndex)) {
-      if (!state.isShuffling) {
-        const queue = shuffle(state.queue);
+    if (this._state.queue && !isNil(this._state.currentItemIndex)) {
+      if (!this._state.isShuffling) {
+        const queue = shuffle(this._state.queue);
 
-        state.originalQueue = state.queue;
+        this._state.originalQueue = this._state.queue;
 
-        const item = state.queue[state.currentItemIndex];
+        const item = this._state.queue[this._state.currentItemIndex];
         const itemIndex = queue.indexOf(item);
 
         queue.splice(itemIndex, 1);
         queue.unshift(item);
 
-        state.queue = queue;
-        state.currentItemIndex = 0;
-        state.lastItemIndex = undefined;
-        state.isShuffling = true;
+        this._state.queue = queue;
+        this._state.currentItemIndex = 0;
+        this._state.lastItemIndex = undefined;
+        this._state.isShuffling = true;
       } else {
-        const item = state.queue[state.currentItemIndex];
+        const item = this._state.queue[this._state.currentItemIndex];
 
-        state.currentItemIndex = state.originalQueue.indexOf(item);
-        state.queue = state.originalQueue;
-        state.originalQueue = [];
-        state.lastItemIndex = undefined;
-        state.isShuffling = false;
+        this._state.currentItemIndex = this._state.originalQueue.indexOf(item);
+        this._state.queue = this._state.originalQueue;
+        this._state.originalQueue = [];
+        this._state.lastItemIndex = undefined;
+        this._state.isShuffling = false;
       }
     }
   };
@@ -900,14 +917,18 @@ class PlaybackManagerStore {
    * If there's only one item in queue, we only switch between RepeatOne and RepeatNone
    */
   public toggleRepeatMode = (): void => {
-    if (state.repeatMode === RepeatMode.RepeatNone) {
-      state.repeatMode =
-        state.queue.length > 1 ? RepeatMode.RepeatAll : RepeatMode.RepeatOne;
-    } else if (state.repeatMode === RepeatMode.RepeatAll) {
-      state.repeatMode =
-        state.queue.length > 1 ? RepeatMode.RepeatOne : RepeatMode.RepeatNone;
+    if (this._state.repeatMode === RepeatMode.RepeatNone) {
+      this._state.repeatMode =
+        this._state.queue.length > 1
+          ? RepeatMode.RepeatAll
+          : RepeatMode.RepeatOne;
+    } else if (this._state.repeatMode === RepeatMode.RepeatAll) {
+      this._state.repeatMode =
+        this._state.queue.length > 1
+          ? RepeatMode.RepeatOne
+          : RepeatMode.RepeatNone;
     } else {
-      state.repeatMode = RepeatMode.RepeatNone;
+      this._state.repeatMode = RepeatMode.RepeatNone;
     }
   };
 
@@ -1097,9 +1118,9 @@ class PlaybackManagerStore {
 
         useSnackbar(t('errors.cantPlayItem'), 'error');
       } else {
-        state.playSessionId = playbackInfo?.PlaySessionId || '';
-        state.currentMediaSource = mediaSource;
-        state.currentSourceUrl = this.getItemPlaybackUrl();
+        this._state.playSessionId = playbackInfo?.PlaySessionId || '';
+        this._state.currentMediaSource = mediaSource;
+        this._state.currentSourceUrl = this.getItemPlaybackUrl();
       }
     }
 
@@ -1147,7 +1168,7 @@ class PlaybackManagerStore {
       async (newIndex) => {
         await this.fetchCurrentMediaSource();
 
-        if (newIndex && !state.currentSourceUrl) {
+        if (newIndex && !this._state.currentSourceUrl) {
           const { t } = usei18n();
 
           useSnackbar(t('errors.cantPlayItem'), 'error');
@@ -1222,14 +1243,14 @@ class PlaybackManagerStore {
 
     watch(mediaControls.playing, () => {
       if (playbackManager.status !== PlaybackStatus.Buffering) {
-        state.status = mediaControls.playing.value
+        this._state.status = mediaControls.playing.value
           ? PlaybackStatus.Playing
           : PlaybackStatus.Paused;
       }
     });
 
     watch(mediaControls.waiting, () => {
-      state.status = mediaControls.waiting.value
+      this._state.status = mediaControls.waiting.value
         ? PlaybackStatus.Buffering
         : PlaybackStatus.Playing;
     });
