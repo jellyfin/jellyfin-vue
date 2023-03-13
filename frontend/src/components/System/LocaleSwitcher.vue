@@ -19,23 +19,33 @@
     </template>
     <v-list class="overflow-y-auto">
       <v-list-item
-        v-for="(item, index) in $i18n.availableLocales"
+        :value="clientSettings.locale === 'auto'"
+        :title="$t('auto')"
+        @click="clientSettings.locale = 'auto'" />
+      <v-divider />
+      <v-list-item
+        v-for="(item, index) in availableLocales"
         :key="index"
-        :value="item === $i18n.locale"
-        @click="clientSettings.locale = item">
-        <v-list-item-title>{{ localeNames[item] }}</v-list-item-title>
-      </v-list-item>
+        :value="item === i18n.locale.value"
+        :title="languageMap[item]"
+        @click="clientSettings.locale = item" />
     </v-list>
   </v-menu>
 </template>
 
 <script setup lang="ts">
-import { mergeProps } from 'vue';
+import { mergeProps, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { clientSettingsStore } from '@/store';
 
+type Locales = keyof ReturnType<typeof useI18n>['localeNames'];
+
+const i18n = useI18n();
+const languageMap = i18n.localeNames;
 const clientSettings = clientSettingsStore();
-const localeNames = useI18n().localeNames;
+const availableLocales = computed<Locales[]>(
+  () => Object.keys(languageMap) as Array<Locales>
+);
 
 defineProps<{
   bottom?: boolean;

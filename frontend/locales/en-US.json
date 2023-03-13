@@ -1,4 +1,5 @@
 {
+  "auto": "Automatic",
   "3DFormat": "3D format",
   "NoMediaSourcesAvailable": "No media sources available",
   "actor": "Actor",
@@ -460,7 +461,8 @@
   "tooltips": {
     "changeLanguage": "Language",
     "switchToDarkMode": "Switch to dark mode",
-    "switchToLightMode": "Switch to light mode"
+    "switchToLightMode": "Switch to light mode",
+    "switchToAuto": "Follow system theme"
   },
   "trailer": "Trailer",
   "transcodingInfo": {
