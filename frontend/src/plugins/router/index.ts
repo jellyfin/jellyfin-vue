@@ -36,6 +36,22 @@ router.beforeEach(validateGuard);
  * If there's no previous page in history, we ensure we want to go home
  */
 router.back = (): ReturnType<typeof router.back> => {
+  const route = router.currentRoute;
+  const leaveTransition = 'scroll-x-transition';
+
+  /**
+   * Play the same transition we do at RouterViewTransition.vue (scroll-x-reverse-transition)
+   * but reversed, to play a different effect when going to the previous page.
+   */
+  if (!route.value.meta.transition) {
+    route.value.meta.transition = {
+      enter: 'scroll-x-reverse-transition',
+      leave: leaveTransition
+    };
+  } else if (!route.value.meta.transition.leave) {
+    route.value.meta.transition.leave = leaveTransition;
+  }
+
   router.replace(
     typeof router.options.history.state.back === 'string'
       ? router.options.history.state.back
