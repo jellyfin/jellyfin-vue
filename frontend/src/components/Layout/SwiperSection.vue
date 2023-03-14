@@ -45,15 +45,12 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
-/**
- * Virtual mode is not enabled as it worsens performance in this situation
- * There are not many slides in SwiperSection, so this should be fine
- */
-import { Navigation, FreeMode, A11y } from 'swiper';
+import { Navigation, FreeMode, A11y, Virtual } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
+import 'swiper/css/virtual';
 import { ref } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { v4 } from 'uuid';
@@ -81,7 +78,7 @@ const uuid = v4();
 /**
  * Swiper options
  */
-const modules = [Navigation, FreeMode, A11y];
+const modules = [Navigation, FreeMode, A11y, Virtual];
 const navigation = {
   nextEl: `.swiper-section-${uuid} .swiper-next`,
   prevEl: `.swiper-section-${uuid} .swiper-prev`,
