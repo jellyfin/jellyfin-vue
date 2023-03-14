@@ -10,7 +10,8 @@ import {
 import { sumBy } from 'lodash-es';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { computed, ComputedRef, isRef } from 'vue';
-import { MaybeRef, useNow } from '@vueuse/core';
+import { MaybeRef } from '@vueuse/core';
+import { now } from '@/store';
 import { useDateFns, usei18n } from '@/composables';
 
 /**
@@ -81,7 +82,7 @@ function getEndsAtDate(ticks: MaybeRef<number>): ComputedRef<Date> {
   return computed(() => {
     const ms = ticksToMs(isRef(ticks) ? ticks.value : ticks);
 
-    return addMilliseconds(useNow().value, ms);
+    return addMilliseconds(now.value, ms);
   });
 }
 

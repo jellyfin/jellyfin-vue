@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { clientSettingsStore, userLibrariesStore } from '@/store';
-import type { HomeSection } from '@/store';
+import type { HomeSection } from '@/store/userLibraries';
 
 const VALID_SECTIONS = new Set([
   'resume',
