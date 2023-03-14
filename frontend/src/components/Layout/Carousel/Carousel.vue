@@ -42,13 +42,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { A11y, Parallax, EffectFade, Keyboard } from 'swiper';
+import { A11y, Parallax, EffectFade, Keyboard, Virtual } from 'swiper';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/keyboard';
 import 'swiper/css/parallax';
 import 'swiper/css/a11y';
+import 'swiper/css/virtual';
 import { Swiper } from 'swiper/vue';
 import { useResponsiveClasses } from '@/composables';
 
@@ -73,7 +74,7 @@ const emit = defineEmits<{
   (e: 'on-touch', isPaused: boolean, swiper: SwiperType): void;
 }>();
 
-const modules = [A11y, Parallax, EffectFade, Keyboard];
+const modules = [A11y, Parallax, EffectFade, Keyboard, Virtual];
 
 const currentIndex = ref(0);
 const isPaused = ref(false);
