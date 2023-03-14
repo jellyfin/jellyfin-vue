@@ -3,6 +3,7 @@
     <div>
       <blurhash-canvas
         v-if="hash"
+        v-show="!error"
         :hash="hash"
         :width="width"
         :height="height"
@@ -11,13 +12,24 @@
         @error="error = true" />
       <v-fade-transition>
         <img
-          v-show="!loading"
+          v-show="!loading && !error"
           class="absolute-cover img"
           :src="imageUrl"
           v-bind="$attrs"
           :alt="alt"
+          @loadstart="
+            () => {
+              loading = true;
+              error = false;
+            }
+          "
           @load="loading = false"
-          @error="error = true" />
+          @error="
+            () => {
+              error = true;
+              loading = true;
+            }
+          " />
       </v-fade-transition>
       <slot
         v-if="$slots.placeholder && (!hash || error)"
@@ -34,17 +46,27 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+<script lang="ts">
+import { computed, ref } from 'vue';
+import { refDebounced } from '@vueuse/core';
 import {
   BaseItemDto,
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
-import { useDisplay } from 'vuetify';
+import { useVuetify } from '@/composables';
 import { getBlurhash, getImageInfo } from '@/utils/images';
 import { getItemIcon } from '@/utils/items';
 
+/**
+ * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
+ */
+const display = useVuetify().display;
+const displayWidth = refDebounced(display.width, 2000);
+const displayHeight = refDebounced(display.height, 2000);
+</script>
+
+<script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     item: BaseItemDto | BaseItemPerson;
@@ -57,7 +79,6 @@ const props = withDefaults(
   { width: 32, height: 32, punch: 1, type: ImageType.Primary, alt: '' }
 );
 
-const display = useDisplay();
 const loading = ref(true);
 const error = ref(false);
 const imageElement = ref<HTMLDivElement | undefined>(undefined);
@@ -69,8 +90,8 @@ const imageUrl = computed(() => {
    */
   if (
     element &&
-    display.width.value !== undefined &&
-    display.height.value !== undefined
+    displayWidth.value !== undefined &&
+    displayHeight.value !== undefined
   ) {
     const imageInfo = getImageInfo(props.item, {
       preferThumb: props.type === ImageType.Thumb,
@@ -84,15 +105,8 @@ const imageUrl = computed(() => {
     return imageInfo.url;
   }
 });
+
 const hash = computed(() => getBlurhash(props.item, props.type));
-
-watch(imageUrl, () => {
-  loading.value = true;
-});
-
-watch([hash, imageUrl], () => {
-  error.value = false;
-});
 </script>
 
 <style lang="scss" scoped>

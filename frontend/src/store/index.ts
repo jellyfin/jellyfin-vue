@@ -47,6 +47,10 @@ export function playerElementStore(): typeof playerElement {
   return playerElement;
 }
 
-export type { HomeSection } from './userLibraries';
-export { TaskType } from './taskManager';
-export * from './playbackManager';
+/**
+ * Please, leave this export as the only wildcard export
+ *
+ * Properties and types relevant to each store should be imported from the store
+ * directly to avoid polluting the global store namespace.
+ */
+export * from './globals';
