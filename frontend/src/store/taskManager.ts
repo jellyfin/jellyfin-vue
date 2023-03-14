@@ -146,20 +146,28 @@ class TaskManagerStore {
     watch(
       () => remote.socket.message,
       () => {
-        const messageData = remote.socket.message?.Data;
+        if (!remote.socket.message) {
+          return;
+        }
+
+        const { MessageType, Data } = remote.socket.message;
+
+        if (!Data || typeof Data !== 'object') {
+          return;
+        }
 
         if (
-          remote.socket.message?.MessageType === 'RefreshProgress' &&
-          messageData &&
-          typeof messageData.ItemId === 'string'
+          MessageType === 'RefreshProgress' &&
+          Data.ItemId &&
+          typeof Data.ItemId === 'string'
         ) {
           // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
-          const progress = Number(messageData.Progress);
-          const taskPayload = taskManager.getTask(messageData.ItemId);
+          const progress = Number(Data.Progress);
+          const taskPayload = taskManager.getTask(Data.ItemId);
           const payload: RunningTask = {
             type: TaskType.LibraryRefresh,
-            id: messageData.ItemId,
+            id: Data.ItemId,
             progress
           };
 
@@ -168,7 +176,7 @@ class TaskManagerStore {
               payload.data = taskPayload.data;
               taskManager.updateTask(payload);
             } else if (progress >= 0) {
-              taskManager.finishTask(messageData.ItemId);
+              taskManager.finishTask(Data.ItemId);
             }
           }
         }
