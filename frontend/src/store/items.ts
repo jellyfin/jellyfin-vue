@@ -220,34 +220,34 @@ class ItemsStore {
 
         const { MessageType, Data } = remote.socket.message;
 
-        if (Data) {
-          if (
-            MessageType === 'LibraryChanged' &&
-            Array.isArray(Data.ItemsUpdated)
-          ) {
-            // Update items when metadata changes
-            const itemsToUpdate = Data.ItemsUpdated.filter((itemId: string) => {
-              return Object.keys(this._state.byId).includes(itemId);
-            });
+        if (!Data) {
+          return;
+        }
 
-            this.updateStoreItems(itemsToUpdate);
-          } else if (
-            MessageType === 'UserDataChanged' &&
-            Array.isArray(Data.UserDataList)
-          ) {
-            // Update items when their userdata is changed (like, mark as watched, etc)
-            const itemsToUpdate = Data.UserDataList.filter(
-              (updatedData: any) => {
-                const itemId = updatedData.ItemId ?? '';
+        if (
+          MessageType === 'LibraryChanged' &&
+          Array.isArray(Data.ItemsUpdated)
+        ) {
+          // Update items when metadata changes
+          const itemsToUpdate = Data.ItemsUpdated.filter((itemId: string) => {
+            return Object.keys(this._state.byId).includes(itemId);
+          });
 
-                return Object.keys(this._state.byId).includes(itemId);
-              }
-            ).map((updatedData: any) => {
-              return updatedData.ItemId;
-            });
+          this.updateStoreItems(itemsToUpdate);
+        } else if (
+          MessageType === 'UserDataChanged' &&
+          Array.isArray(Data.UserDataList)
+        ) {
+          // Update items when their userdata is changed (like, mark as watched, etc)
+          const itemsToUpdate = Data.UserDataList.filter((updatedData: any) => {
+            const itemId = updatedData.ItemId ?? '';
 
-            this.updateStoreItems(itemsToUpdate);
-          }
+            return Object.keys(this._state.byId).includes(itemId);
+          }).map((updatedData: any) => {
+            return updatedData.ItemId;
+          });
+
+          this.updateStoreItems(itemsToUpdate);
         }
       }
     );

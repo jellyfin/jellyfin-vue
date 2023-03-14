@@ -11,7 +11,7 @@ import { WebSocketMessage } from './types';
  */
 function formatSocketMessage(
   name: string,
-  data?: Record<string, unknown>
+  data?: WebSocketMessage['Data']
 ): string {
   const message: WebSocketMessage = { MessageType: name };
 
