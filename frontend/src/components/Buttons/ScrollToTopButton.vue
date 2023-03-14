@@ -17,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core';
+import { windowScroll } from '@/store';
 
-const { y } = useWindowScroll();
+const { y } = windowScroll;
 
 /**
  * Scrolls to the top of the page

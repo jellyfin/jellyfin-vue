@@ -29,13 +29,16 @@ import { computed, watch, nextTick } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import Hls, { ErrorData, ErrorTypes, Events } from 'hls.js';
-import { playbackManagerStore, playerElementStore } from '@/store';
+import {
+  playbackManagerStore,
+  playerElementStore,
+  mediaElementRef
+} from '@/store';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
 /**
  * Playback won't work in development until https://github.com/vuejs/core/pull/7593 is fixed
  */
-import { mediaElementRef } from '@/store/playbackManager';
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();

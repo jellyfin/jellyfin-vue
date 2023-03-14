@@ -17,8 +17,11 @@ meta:
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useFullscreen } from '@vueuse/core';
-import { playbackManagerStore, playerElementStore } from '@/store';
-import { mediaElementRef } from '@/store/playbackManager';
+import {
+  playbackManagerStore,
+  playerElementStore,
+  mediaElementRef
+} from '@/store';
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
