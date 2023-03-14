@@ -65,12 +65,10 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       Icons({
         compiler: 'vue3',
         /**
-         * We set this very high, so icons are not scaled down by the compiler, but by
-         * the layout we're using
-         *
-         * TODO: Remove the need of this by committing upstream that undefined should not set any height or width values
+         * Don't hardcode any size to the icons, let Vuetify or whatever CSS styles
+         * we have applied to the object do the job instead.
          */
-        scale: 100
+        scale: 0
       }),
       VitePWA(),
       VueI18nPlugin({
