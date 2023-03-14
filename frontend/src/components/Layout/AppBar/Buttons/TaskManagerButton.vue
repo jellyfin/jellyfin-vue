@@ -3,15 +3,12 @@
     v-if="showButton"
     v-model="menu"
     :close-on-content-click="false"
-    :persistent="false"
+    persistent
     :transition="'slide-y-transition'"
     location="bottom"
     :z-index="500">
     <template #activator="{ props: menuProps }">
-      <app-bar-button-layout
-        :custom-listener="taskList.length > 0 ? menu : undefined"
-        :color="buttonColor"
-        v-bind="menuProps">
+      <app-bar-button-layout :color="buttonColor" v-bind="menuProps">
         <template #icon>
           <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
           <v-icon v-else>
@@ -26,7 +23,7 @@
     <v-card min-width="25em">
       <v-list>
         <v-list-item
-          v-for="task in taskList"
+          v-for="task in UITaskList"
           :key="`${task.id}`"
           :title="$t(task.textKey, { ...task.textParams })">
           <template #append>
@@ -48,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, toRaw } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 
@@ -63,8 +60,9 @@ defineProps<{ fab?: boolean }>();
 
 const menu = ref(false);
 const taskManager = taskManagerStore();
-let frozenTaskList: readonly TaskInfo[] = [];
-const runningTaskList = computed<TaskInfo[]>(() => {
+const completedTaskList = ref<TaskInfo[]>([]);
+
+const mappedTaskList = computed<TaskInfo[]>(() => {
   return taskManager.tasks.map((t) => {
     switch (t.type) {
       case TaskType.ConfigSync: {
@@ -88,23 +86,37 @@ const runningTaskList = computed<TaskInfo[]>(() => {
   });
 });
 
-const allCompleted = computed(() =>
-  runningTaskList.value.every((t) => t.progress === 100)
+const mappedCompleted = computed(() =>
+  mappedTaskList.value.filter((t) => t.progress === 100)
 );
-
+const allCompleted = computed(
+  () => mappedCompleted.value.length === mappedTaskList.value.length
+);
 const buttonColor = computed(() =>
   allCompleted.value ? 'success' : undefined
 );
-
-const taskList = computed(() =>
-  menu.value && allCompleted.value ? frozenTaskList : runningTaskList.value
+const UITaskList = computed(
+  () =>
+    new Set([
+      ...mappedTaskList.value.filter((t) => t.progress !== 100),
+      ...completedTaskList.value
+    ])
 );
+const showButton = computed(() => UITaskList.value.size > 0);
 
-const showButton = computed(() => taskList.value.length > 0);
+watch(
+  [menu, mappedCompleted],
+  () => {
+    if (menu.value) {
+      const ids = new Set(completedTaskList.value.map((t) => t.id));
 
-watch([menu, allCompleted], () => {
-  if (menu.value && allCompleted.value) {
-    frozenTaskList = Object.freeze([...toRaw(runningTaskList.value)]);
-  }
-});
+      completedTaskList.value.push(
+        ...mappedCompleted.value.filter((t) => !ids.has(t.id))
+      );
+    } else {
+      completedTaskList.value = [];
+    }
+  },
+  { flush: 'post' }
+);
 </script>
