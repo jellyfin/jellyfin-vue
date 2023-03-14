@@ -29,7 +29,7 @@
   </component>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 /**
  * BASED ON VUE-VIRTUAL-SCROLL-GRID: https://github.com/rocwang/vue-virtual-scroll-grid
  *
@@ -47,12 +47,12 @@ import { ref, watch, StyleValue, onMounted, onUnmounted, computed } from 'vue';
 import {
   computedEager,
   Fn,
+  refDebounced,
   useEventListener,
   useResizeObserver,
   useThrottleFn
 } from '@vueuse/core';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { useDisplay } from 'vuetify';
 import { isNil } from 'lodash-es';
 import {
   fromScrollParent,
@@ -62,9 +62,17 @@ import {
   getVisibleItems,
   SpaceAroundWindow
 } from './pipeline';
+import { useVuetify } from '@/composables';
 
-const display = useDisplay();
+/**
+ * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
+ */
+const display = useVuetify().display;
+const displayWidth = refDebounced(display.width, 250);
+const displayHeight = refDebounced(display.height, 250);
+</script>
 
+<script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     items: BaseItemDto[];
@@ -107,12 +115,17 @@ const eventCleanups: Fn[] = [];
  * Vue to track.
  */
 const resizeMeasurement = computedEager(() => {
-  return rootRef.value && itemRect.value && display.width && display.height
+  return rootRef.value &&
+    itemRect.value &&
+    displayWidth.value !== undefined &&
+    displayHeight.value !== undefined
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
 const contentSize = computedEager(() => {
-  return resizeMeasurement.value && display.width && display.height
+  return resizeMeasurement.value &&
+    displayWidth.value !== undefined &&
+    displayHeight.value !== undefined
     ? getContentSize(resizeMeasurement.value, props.items.length)
     : undefined;
 });
@@ -130,8 +143,8 @@ const spaceAroundWindow = computed<SpaceAroundWindow | undefined>(() => {
    * We use Vuetify measurements as they're debounced by default.
    */
   if (
-    !isNil(display.width) &&
-    !isNil(display.height) &&
+    displayWidth.value !== undefined &&
+    displayHeight.value !== undefined &&
     !isNil(rootRef.value) &&
     !isNil(scrollEvents.value) &&
     !isNil(props.items)

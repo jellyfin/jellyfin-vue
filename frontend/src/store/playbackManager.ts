@@ -4,7 +4,7 @@
  * It must be used in an agnostic way to cover both local and remote playback.
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
-import { reactive, ref, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import { shuffle, isNil, cloneDeep } from 'lodash-es';
 import {
   BaseItemDto,
@@ -22,7 +22,10 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
-import { useMediaControls, useNow } from '@vueuse/core';
+/**
+ * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
+ */
+import { now as reactiveDate, mediaControls } from './globals';
 import { itemsStore } from '.';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
@@ -99,9 +102,6 @@ interface PlaybackManagerState {
  * Amount of time to wait between playback reports
  */
 const progressReportInterval = 3500;
-const reactiveDate = useNow();
-export const mediaElementRef = ref<HTMLMediaElement>();
-export const mediaControls = useMediaControls(mediaElementRef);
 const remote = useRemote();
 /**
  * Previously, we created a new MediaMetadata every time the item changed. However,

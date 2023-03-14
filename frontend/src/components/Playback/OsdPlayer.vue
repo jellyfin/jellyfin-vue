@@ -123,8 +123,11 @@ import {
   useMagicKeys,
   whenever
 } from '@vueuse/core';
-import { playbackManagerStore, playerElementStore } from '@/store';
-import { mediaControls } from '@/store/playbackManager';
+import {
+  playbackManagerStore,
+  playerElementStore,
+  mediaControls
+} from '@/store';
 
 const emit = defineEmits<{
   (e: 'toggleFullscreen'): void;

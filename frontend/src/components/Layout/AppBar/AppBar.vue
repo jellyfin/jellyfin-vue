@@ -62,14 +62,14 @@
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useNetwork, useWindowScroll } from '@vueuse/core';
-import { clientSettingsStore } from '@/store';
+import { useNetwork } from '@vueuse/core';
+import { clientSettingsStore, windowScroll } from '@/store';
 import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
 const network = useNetwork();
-const { y } = useWindowScroll();
+const { y } = windowScroll;
 const transparentAppBar = computed<boolean>(() => {
   return (route.meta.transparentLayout || false) && y.value < 10;
 });
