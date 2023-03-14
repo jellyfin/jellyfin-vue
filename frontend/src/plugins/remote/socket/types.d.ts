@@ -1,6 +1,4 @@
 export interface WebSocketMessage {
   MessageType: string;
-  Data?: Record<string, unknown>;
+  Data?: Record<string, unknown> | number;
 }
-
-export type WebSocketMessageData = Record<string, unknown> | number | undefined;

@@ -103,12 +103,6 @@ interface PlaybackManagerState {
  */
 const progressReportInterval = 3500;
 const remote = useRemote();
-/**
- * Previously, we created a new MediaMetadata every time the item changed. However,
- * that made the MediaSession controls disappear for a second. Keeping the metadata
- * as a global variable and updating it solves this problem.
- */
-const mediaMetadata = new MediaMetadata();
 
 /**
  * == CLASS CONSTRUCTOR ==
@@ -147,6 +141,12 @@ class PlaybackManagerStore {
   /**
    * == GETTERS AND SETTERS ==
    */
+  /**
+   * Previously, we created a new MediaMetadata every time the item changed. However,
+   * that made the MediaSession controls disappear for a second. Keeping the metadata
+   * as a global variable and updating it solves this problem.
+   */
+  private _mediaMetadata = new MediaMetadata();
   public get status(): PlaybackStatus {
     return this._state.status;
   }
@@ -532,7 +532,7 @@ class PlaybackManagerStore {
       window.navigator.mediaSession.metadata = remove
         ? // eslint-disable-next-line unicorn/no-null
           null
-        : mediaMetadata;
+        : this._mediaMetadata;
     }
   };
 
@@ -541,10 +541,10 @@ class PlaybackManagerStore {
    */
   private _updateMediaSessionMetadata = (): void => {
     if (this.status !== PlaybackStatus.Stopped && !isNil(this.currentItem)) {
-      mediaMetadata.title = this.currentItem.Name || '';
-      mediaMetadata.artist = this.currentItem.AlbumArtist || '';
-      mediaMetadata.album = this.currentItem.Album || '';
-      mediaMetadata.artwork = [
+      this._mediaMetadata.title = this.currentItem.Name || '';
+      this._mediaMetadata.artist = this.currentItem.AlbumArtist || '';
+      this._mediaMetadata.album = this.currentItem.Album || '';
+      this._mediaMetadata.artwork = [
         {
           src:
             getImageInfo(this.currentItem, {
@@ -589,10 +589,10 @@ class PlaybackManagerStore {
         }
       ];
     } else {
-      mediaMetadata.title = '';
-      mediaMetadata.artist = '';
-      mediaMetadata.album = '';
-      mediaMetadata.artwork = [];
+      this._mediaMetadata.title = '';
+      this._mediaMetadata.artist = '';
+      this._mediaMetadata.album = '';
+      this._mediaMetadata.artwork = [];
     }
   };
 
