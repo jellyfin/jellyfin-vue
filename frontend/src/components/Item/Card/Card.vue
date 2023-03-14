@@ -72,15 +72,15 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import { computed } from 'vue';
+import { useMediaQuery } from '@vueuse/core';
 import {
   BaseItemDto,
   BaseItemKind,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
-import { useMediaQuery } from '@vueuse/core';
 import {
   CardShapes,
   getShapeFromItemType,
@@ -89,6 +89,13 @@ import {
 } from '@/utils/items';
 import { taskManagerStore } from '@/store';
 
+/**
+ * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
+ */
+const isFinePointer = useMediaQuery('(pointer:fine)');
+</script>
+
+<script lang="ts" setup>
 const props = withDefaults(
   defineProps<{
     item: BaseItemDto;
@@ -205,8 +212,6 @@ const getImageType = computed(() =>
 const refreshProgress = computed(
   () => taskManager.getTask(props.item.Id || '')?.progress
 );
-
-const isFinePointer = useMediaQuery('(pointer:fine)');
 </script>
 
 <style lang="scss" scoped>
