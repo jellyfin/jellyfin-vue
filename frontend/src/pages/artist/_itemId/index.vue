@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
@@ -165,78 +165,76 @@ const albums = computed(() =>
   )
 );
 
-watch(
-  () => (route.params as { itemId: string }).itemId,
-  async (itemId) => {
-    item.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
+
+  item.value = (
+    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId
+    })
+  ).data;
+
+  route.meta.title = item.value.Name;
+  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+
+  discography.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        albumArtistIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.MusicAlbum],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
       })
-    ).data;
+    ).data.Items ?? [];
 
-    route.meta.title = item.value.Name;
-    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+  appearances.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        contributingArtistIds: [itemId],
+        excludeItemIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.MusicAlbum],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
+      })
+    ).data.Items ?? [];
 
-    discography.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          albumArtistIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.MusicAlbum],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
+  musicVideos.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        artistIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.MusicVideo],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
+      })
+    ).data.Items ?? [];
 
-    appearances.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          contributingArtistIds: [itemId],
-          excludeItemIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.MusicAlbum],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
-
-    musicVideos.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          artistIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.MusicVideo],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
-
-    if (discography.value.length > 0) {
-      activeTab.value = 0;
-    } else if (albums.value.length > 0) {
-      activeTab.value = 1;
-    } else if (eps.value.length > 0) {
-      activeTab.value = 2;
-    } else if (singles.value.length > 0) {
-      activeTab.value = 3;
-    } else if (appearances.value.length > 0) {
-      activeTab.value = 4;
-    } else if (musicVideos.value.length > 0) {
-      activeTab.value = 5;
-    } else {
-      // overview
-      activeTab.value = 6;
-    }
-  },
-  { immediate: true }
-);
+  if (discography.value.length > 0) {
+    activeTab.value = 0;
+  } else if (albums.value.length > 0) {
+    activeTab.value = 1;
+  } else if (eps.value.length > 0) {
+    activeTab.value = 2;
+  } else if (singles.value.length > 0) {
+    activeTab.value = 3;
+  } else if (appearances.value.length > 0) {
+    activeTab.value = 4;
+  } else if (musicVideos.value.length > 0) {
+    activeTab.value = 5;
+  } else {
+    // overview
+    activeTab.value = 6;
+  }
+});
 </script>
 
 <style lang="scss" scoped>

@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
@@ -172,19 +172,17 @@ const writers = computed(() =>
   crew.value.filter((person) => person.Type === 'Writer')
 );
 
-watch(
-  () => (route.params as { itemId: string }).itemId,
-  async (itemId) => {
-    item.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
-      })
-    ).data;
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
 
-    route.meta.title = item.value.Name;
-    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
-  },
-  { immediate: true }
-);
+  item.value = (
+    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId
+    })
+  ).data;
+
+  route.meta.title = item.value.Name;
+  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+});
 </script>
