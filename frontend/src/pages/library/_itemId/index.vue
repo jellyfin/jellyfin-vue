@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
@@ -293,9 +293,7 @@ async function refreshItems(): Promise<void> {
   }
 }
 
-watch(() => (route.params as { itemId: string }).itemId, fetchLibrary, {
-  immediate: true
-});
+onMounted(() => fetchLibrary((route.params as { itemId: string }).itemId));
 
 watch(library, (lib) => {
   route.meta.title = lib?.Name;

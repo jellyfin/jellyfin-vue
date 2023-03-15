@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   ImageType,
@@ -141,84 +141,82 @@ const birthPlace = computed(
   () => item.value.ProductionLocations?.[0] ?? undefined
 );
 
-watch(
-  () => (route.params as { itemId: string }).itemId,
-  async (itemId) => {
-    item.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
+
+  item.value = (
+    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId
+    })
+  ).data;
+
+  route.meta.title = item.value.Name;
+  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+
+  movies.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.Movie],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
       })
-    ).data;
+    ).data.Items ?? [];
 
-    route.meta.title = item.value.Name;
-    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+  series.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.Series],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
+      })
+    ).data.Items ?? [];
 
-    movies.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          personIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.Movie],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
+  books.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.Book],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
+      })
+    ).data.Items ?? [];
 
-    series.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          personIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.Series],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
+  photos.value =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        personIds: [itemId],
+        sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
+        sortOrder: [SortOrder.Descending],
+        recursive: true,
+        includeItemTypes: [BaseItemKind.Photo],
+        fields: Object.values(ItemFields),
+        userId: remote.auth.currentUserId
+      })
+    ).data.Items ?? [];
 
-    books.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          personIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.Book],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
-
-    photos.value =
-      (
-        await remote.sdk.newUserApi(getItemsApi).getItems({
-          personIds: [itemId],
-          sortBy: ['PremiereDate', 'ProductionYear', 'SortName'],
-          sortOrder: [SortOrder.Descending],
-          recursive: true,
-          includeItemTypes: [BaseItemKind.Photo],
-          fields: Object.values(ItemFields),
-          userId: remote.auth.currentUserId
-        })
-      ).data.Items ?? [];
-
-    // Used to pick the first tab with content to display
-    if (movies.value.length > 0) {
-      activeTab.value = 0;
-    } else if (series.value.length > 0) {
-      activeTab.value = 1;
-    } else if (books.value.length > 0) {
-      activeTab.value = 2;
-    } else if (photos.value.length > 0) {
-      activeTab.value = 3;
-    } else {
-      activeTab.value = 4;
-    }
-  },
-  { immediate: true }
-);
+  // Used to pick the first tab with content to display
+  if (movies.value.length > 0) {
+    activeTab.value = 0;
+  } else if (series.value.length > 0) {
+    activeTab.value = 1;
+  } else if (books.value.length > 0) {
+    activeTab.value = 2;
+  } else if (photos.value.length > 0) {
+    activeTab.value = 3;
+  } else {
+    activeTab.value = 4;
+  }
+});
 </script>
