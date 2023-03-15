@@ -232,7 +232,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   BaseItemDto,
@@ -275,25 +275,23 @@ const writers = computed<BaseItemPerson[]>(() =>
   crew.value.filter((person) => person.Type === 'Writer')
 );
 
-watch(
-  () => (route.params as { itemId: string }).itemId,
-  async (itemId) => {
-    item.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
-      })
-    ).data;
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
 
-    route.meta.title = item.value.Name;
-    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+  item.value = (
+    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId
+    })
+  ).data;
 
-    if (item.value?.MediaSources && item.value.MediaSources.length > 0) {
-      currentSource.value = item.value.MediaSources[0];
-    }
-  },
-  { immediate: true }
-);
+  route.meta.title = item.value.Name;
+  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+
+  if (item.value?.MediaSources && item.value.MediaSources.length > 0) {
+    currentSource.value = item.value.MediaSources[0];
+  }
+});
 </script>
 
 <style lang="scss" scoped>

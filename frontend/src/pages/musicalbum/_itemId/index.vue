@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
@@ -89,19 +89,17 @@ const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 
-watch(
-  () => (route.params as { itemId: string }).itemId,
-  async (itemId) => {
-    item.value = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId
-      })
-    ).data;
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
 
-    route.meta.title = item.value.Name;
-    route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
-  },
-  { immediate: true }
-);
+  item.value = (
+    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+      userId: remote.auth.currentUserId ?? '',
+      itemId
+    })
+  ).data;
+
+  route.meta.title = item.value.Name;
+  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+});
 </script>
