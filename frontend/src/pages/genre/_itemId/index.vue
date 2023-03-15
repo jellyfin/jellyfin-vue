@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { LocationQueryValue, useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import {
   SortOrder,
   ItemFields,
@@ -64,54 +64,50 @@ const loading = ref(false);
 const genre = ref<BaseItemDto>({});
 const genres = ref<BaseItemDto[]>([]);
 
-watch(
-  [
-    (): string => (route.params as { itemId: string }).itemId,
-    (): LocationQueryValue | LocationQueryValue[] => route.query.type
-  ],
-  async ([itemId, typesQuery]) => {
-    const includeItemTypes = (
-      typesQuery == undefined
-        ? []
-        : typeof typesQuery === 'string'
-        ? [typesQuery]
-        : typesQuery
-    ) as BaseItemKind[];
+onMounted(async () => {
+  const { itemId } = route.params as { itemId: string };
+  const typesQuery = route.query.type;
 
-    loading.value = true;
+  const includeItemTypes = (
+    typesQuery == undefined
+      ? []
+      : typeof typesQuery === 'string'
+      ? [typesQuery]
+      : typesQuery
+  ) as BaseItemKind[];
 
-    try {
-      genre.value = (
-        await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-          userId: remote.auth.currentUserId ?? '',
-          itemId
+  loading.value = true;
+
+  try {
+    genre.value = (
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId ?? '',
+        itemId
+      })
+    ).data;
+
+    route.meta.title = genre.value.Name;
+
+    genres.value =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItems({
+          genreIds: [itemId],
+          includeItemTypes: includeItemTypes,
+          recursive: true,
+          sortBy: ['SortName'],
+          sortOrder: [SortOrder.Ascending],
+          fields: Object.values(ItemFields),
+          userId: remote.auth.currentUserId ?? ''
         })
-      ).data;
+      ).data.Items ?? [];
 
-      route.meta.title = genre.value.Name;
-
-      genres.value =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            genreIds: [itemId],
-            includeItemTypes: includeItemTypes,
-            recursive: true,
-            sortBy: ['SortName'],
-            sortOrder: [SortOrder.Ascending],
-            fields: Object.values(ItemFields),
-            userId: remote.auth.currentUserId ?? ''
-          })
-        ).data.Items ?? [];
-
-      genres.value = items.addCollection(genre.value, genres.value);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      loading.value = false;
-    }
-  },
-  { immediate: true }
-);
+    genres.value = items.addCollection(genre.value, genres.value);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <style lang="scss" scoped>
