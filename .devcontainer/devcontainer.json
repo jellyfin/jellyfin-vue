@@ -1,8 +1,14 @@
 {
-  "name": "jellyfin-vue Codespace (with support for Tauri development)",
+  "name": "jellyfin-vue Codespace (with support for Tauri and Docker development)",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
   "features": {
-    "ghcr.io/devcontainers/features/rust:1": {}
+    "ghcr.io/devcontainers/features/rust:1": {
+      "profile": "default"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "containerEnv": { "SHELL": "/bin/bash" },
   "forwardPorts": [3000],
