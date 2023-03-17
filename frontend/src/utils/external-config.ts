@@ -3,7 +3,7 @@ import { isNil } from 'lodash-es';
 
 interface ExternalJSONConfig {
   defaultServerURLs: Array<string>;
-  historyMode: 'hash' | 'history';
+  routerMode: 'hash' | 'history';
 }
 
 let externalConfig: ExternalJSONConfig | undefined;
@@ -15,7 +15,7 @@ let externalConfig: ExternalJSONConfig | undefined;
 export async function getJSONConfig(): Promise<ExternalJSONConfig> {
   if (isNil(externalConfig)) {
     externalConfig = destr(
-      JSON.stringify(await (await fetch('./config.json')).json())
+      JSON.stringify(await (await fetch('/config.json')).json())
     ) as ExternalJSONConfig;
   }
 
