@@ -7,12 +7,12 @@
             {{ t('settings.logsAndActivity.logs') }}
           </h2>
           <v-list
-            v-if="logs.status === 'loaded' && logs.data.length > 0"
+            v-if="logs.length > 0"
             key="log-list"
             lines="two"
             class="mb-2">
             <v-list-item
-              v-for="file in logs.data"
+              v-for="file in logs"
               :key="file.Name ?? undefined"
               :href="getLogFileLink(file.Name ?? '')"
               :title="file.Name ?? undefined"
@@ -33,21 +33,10 @@
               </template>
             </v-list-item>
           </v-list>
-          <v-card v-else-if="logs.status === 'loaded'" key="no-log-card">
+          <v-card v-else>
             <v-card-title>
               {{ t('settings.logsAndActivity.noLogsFound') }}
             </v-card-title>
-          </v-card>
-          <v-card v-else-if="logs.status === 'error'" key="error-log-card">
-            <v-card-title>
-              <v-icon color="error" class="pr-2">
-                <i-mdi-alert-circle />
-              </v-icon>
-              {{ t('settings.logsAndActivity.failedGetLogs') }}
-            </v-card-title>
-            <v-card-text v-if="logs.message">
-              {{ logs.message }}
-            </v-card-text>
           </v-card>
         </v-fade-transition>
       </v-col>
@@ -57,14 +46,12 @@
             {{ t('settings.logsAndActivity.activity') }}
           </h2>
           <v-list
-            v-if="
-              activityList.status === 'loaded' && activityList.data.length > 0
-            "
+            v-if="activityList.length > 0"
             key="activity-list"
             lines="two"
             class="mb-2">
             <v-list-item
-              v-for="activity in activityList.data"
+              v-for="activity in activityList"
               :key="activity.Id"
               :title="activity.Name"
               :subtitle="activity.ShortOverview ?? undefined">
@@ -80,25 +67,10 @@
               </template>
             </v-list-item>
           </v-list>
-          <v-card
-            v-else-if="activityList.status === 'loaded'"
-            key="no-activity-card">
+          <v-card v-else>
             <v-card-title>
               {{ t('settings.logsAndActivity.noActivityFound') }}
             </v-card-title>
-          </v-card>
-          <v-card
-            v-else-if="activityList.status === 'error'"
-            key="error-activity-card">
-            <v-card-title>
-              <v-icon color="error" class="pr-2">
-                <i-mdi-alert-circle />
-              </v-icon>
-              {{ t('settings.logsAndActivity.failedGetActivity') }}
-            </v-card-title>
-            <v-card-text v-if="activityList.message">
-              {{ activityList.message }}
-            </v-card-text>
           </v-card>
         </v-fade-transition>
       </v-col>
@@ -132,11 +104,6 @@ import IMdiStop from 'virtual:icons/mdi/stop';
 import IMdiHelp from 'virtual:icons/mdi/help';
 import { useDateFns, useRemote } from '@/composables';
 
-type LoadingStatus<T> =
-  | { status: 'loading' }
-  | { status: 'loaded'; data: T }
-  | { status: 'error'; message?: string };
-
 const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
@@ -144,10 +111,8 @@ const theme = useTheme();
 
 route.meta.title = t('settingsSections.logs.name');
 
-const logs = ref<LoadingStatus<LogFile[]>>({ status: 'loading' });
-const activityList = ref<LoadingStatus<ActivityLogEntry[]>>({
-  status: 'loading'
-});
+const logs = ref<LogFile[]>([]);
+const activityList = ref<ActivityLogEntry[]>([]);
 
 /**
  * Return a UI colour given log severity
@@ -233,15 +198,12 @@ function getLogFileLink(name: string): string {
  * Fetches logs
  */
 async function fetchLogs(): Promise<void> {
-  logs.value = { status: 'loading' };
-
   try {
-    const logFiles = (await remote.sdk.newUserApi(getSystemApi).getServerLogs())
-      .data;
-
-    logs.value = { status: 'loaded', data: logFiles };
-  } catch {
-    logs.value = { status: 'error' };
+    logs.value = (
+      await remote.sdk.newUserApi(getSystemApi).getServerLogs()
+    ).data;
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -252,19 +214,16 @@ async function fetchActivity(): Promise<void> {
   const minDate = new Date();
 
   minDate.setDate(minDate.getDate() - 7);
-  activityList.value = { status: 'loading' };
 
   try {
-    const activityListEntries =
+    activityList.value =
       (
         await remote.sdk
           .newUserApi(getActivityLogApi)
           .getLogEntries({ minDate: minDate.toISOString() })
       ).data.Items ?? [];
-
-    activityList.value = { status: 'loaded', data: activityListEntries };
-  } catch {
-    activityList.value = { status: 'error' };
+  } catch (error) {
+    console.error(error);
   }
 }
 
