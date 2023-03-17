@@ -17,7 +17,7 @@ import { useRemote } from '@/composables';
 
 const router = createRouter({
   history:
-    (await getJSONConfig()).historyMode === 'history'
+    (await getJSONConfig()).routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
   routes: setupLayouts(generatedRoutes)
