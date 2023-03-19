@@ -293,10 +293,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style lang="scss" scoped>
-:deep(.v-slide-group__prev--disabled),
-:deep(.v-slide-group__next--disabled) {
-  display: none !important;
-}
-</style>
