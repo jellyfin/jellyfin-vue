@@ -23,10 +23,10 @@
         <v-table>
           <thead>
             <tr>
-              <th v-for="{ text, value } in headers" :key="value">
+              <th v-for="{ text, value } in headers" :id="value" :key="value">
                 {{ text }}
               </th>
-              <th><!--for delete button--></th>
+              <th scope="col"><!--for delete button--></th>
             </tr>
           </thead>
           <tbody>

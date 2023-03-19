@@ -22,10 +22,10 @@
         <v-table>
           <thead>
             <tr>
-              <th v-for="{ text, value } in headers" :key="value">
+              <th v-for="{ text, value } in headers" :id="value" :key="value">
                 {{ text }}
               </th>
-              <th><!-- delete column --></th>
+              <th scope="col"><!-- delete column --></th>
             </tr>
           </thead>
           <tbody>
