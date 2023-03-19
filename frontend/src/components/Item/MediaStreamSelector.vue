@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import langs from 'langs';
+import { getName } from 'all-iso-language-codes';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
@@ -42,7 +42,7 @@ const props = withDefaults(
 const emits = defineEmits<{
   (e: 'input', newIndex?: number): void;
 }>();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 /**
  * Audio layout to get related icon
@@ -69,14 +69,6 @@ function getSurroundIcon(layout: string): typeof IMdiSurroundSound {
 }
 
 /**
- * Converts a two letters language code to full word
- * @returns Full word
- */
-function getLanguageName(code: string): string {
-  return langs.where('2B', code)?.name || '';
-}
-
-/**
  * Get track icons
  * @returns Optional icon to use for the track line in the v-select menu
  */
@@ -94,7 +86,7 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
-    return getLanguageName(track.Language);
+    return getName(track.Language, locale.value) ?? t('undefined');
   } else if (props.type === 'Audio' || props.type === 'Subtitle') {
     return t('undefined');
   }

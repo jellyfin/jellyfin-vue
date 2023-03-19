@@ -3,7 +3,6 @@
  *
  */
 import DOMPurify from 'dompurify';
-import { decode } from 'he';
 
 /**
  * Sanitizes a string containing HTML tags and replaces newlines with the proper HTML tag.
@@ -13,12 +12,10 @@ import { decode } from 'he';
  */
 export function sanitizeHtml(input: string): string {
   // Some providers have newlines, replace them with the proper tag.
-  let cleanString = decode(input).replace(/\r\n|\r|\n/g, '<br>');
+  const cleanString = input.replace(/\r\n|\r|\n/g, '<br>');
 
-  cleanString = DOMPurify.sanitize(cleanString, {
+  return DOMPurify.sanitize(cleanString, {
     ALLOWED_TAGS: ['br', 'b', 'strong', 'i', 'em'],
     KEEP_CONTENT: true
   });
-
-  return cleanString;
 }
