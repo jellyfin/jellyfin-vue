@@ -3,7 +3,7 @@
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
-    @update:model-value="(value) => emit('update:dialog', value)">
+    @update:model-value="(value: boolean) => emit('update:dialog', value)">
     <v-card height="100%" class="image-search-card">
       <v-card-title>{{ t('search.name') }}</v-card-title>
       <v-divider />

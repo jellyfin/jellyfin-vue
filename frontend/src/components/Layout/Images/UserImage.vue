@@ -3,7 +3,7 @@
     <v-img :src="url" :width="size" cover>
       <template #placeholder>
         <v-avatar color="primary" :size="size">
-          <v-icon :size="iconSize" dark>
+          <v-icon :size="iconSize">
             <i-mdi-account />
           </v-icon>
         </v-avatar>

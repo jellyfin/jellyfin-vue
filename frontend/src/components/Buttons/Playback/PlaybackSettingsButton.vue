@@ -8,8 +8,7 @@
       <tooltip-button
         class="align-self-center"
         v-bind="menu"
-        :tooltip="{ text: $t('playbackSettings'), location: 'top' }"
-        :icon="{ icon: true }">
+        :tooltip="{ text: $t('playbackSettings'), location: 'top' }">
         <v-icon>
           <i-mdi-cog />
         </v-icon>

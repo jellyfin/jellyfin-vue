@@ -20,7 +20,7 @@ class RemotePluginSDK {
     /**
      * Configure app's axios instance to perform requests to the given Jellyfin server.
      */
-    watchEffect(async () => {
+    watchEffect(() => {
       const server = auth.currentServer;
       const accessToken = auth.currentUserToken;
 
