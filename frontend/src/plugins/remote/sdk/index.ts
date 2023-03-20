@@ -46,8 +46,8 @@ class RemotePluginSDK {
    * USE WITH CAUTION. Make sure this is only used in places where an user is logged in
    */
   public newUserApi<T>(apiSec: (api: Api) => T): T {
-    // @ts-expect-error - We want to explicitly assume the user is already logged in here
-    return apiSec(this.api);
+    // We want to explicitly assume the user is already logged in here
+    return apiSec(this.api as Api);
   }
 }
 
