@@ -16,7 +16,7 @@
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="ImageType.Backdrop"
-            :icon-size="$vuetify.display.mdAndUp ? '256' : '128'" />
+            :width="$vuetify.display.mdAndUp ? 256 : 128" />
         </div>
         <div :class="useResponsiveClasses('slide-content')">
           <v-container

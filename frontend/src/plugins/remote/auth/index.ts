@@ -40,28 +40,35 @@ class RemotePluginAuth {
   public get servers(): ServerInfo[] {
     return state.value.servers;
   }
+
   public get currentServer(): ServerInfo | undefined {
     return state.value.servers[state.value.currentServerIndex];
   }
+
   public get currentUser(): UserDto | undefined {
     return state.value.users[state.value.currentUserIndex];
   }
+
   public get currentUserId(): string | undefined {
     return this.currentUser?.Id;
   }
+
   public get currentUserToken(): string | undefined {
     return this.getUserAccessToken(this.currentUser);
   }
+
   public readonly getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
     return user?.Id ? state.value.accessTokens[user.Id] : undefined;
   };
+
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
     return state.value.servers.find((server) => server.Id === serverId);
   };
+
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
@@ -139,6 +146,7 @@ class RemotePluginAuth {
       throw new Error('Server version is too low');
     }
   }
+
   /**
    * Logs the user to the current server
    *
@@ -188,6 +196,7 @@ class RemotePluginAuth {
       }
     }
   }
+
   /**
    * Logs out the user from the server using the current base url and access token parameters.
    *
@@ -200,6 +209,7 @@ class RemotePluginAuth {
       state.value.currentUserIndex = -1;
     }
   }
+
   /**
    * Logs out an user from its server
    *
@@ -214,23 +224,26 @@ class RemotePluginAuth {
   ): Promise<void> {
     try {
       if (!skipRequest) {
-        useOneTimeAPI(
+        await useOneTimeAPI(
           server.PublicAddress,
           this.getUserAccessToken(user)
         ).logout();
       }
-    } finally {
-      const storeUser = state.value.users.find((u) => u.Id === user.Id);
+    } catch (error) {
+      console.error(error);
+    }
 
-      if (!isNil(storeUser)) {
-        state.value.users.splice(state.value.users.indexOf(storeUser), 1);
-      }
+    const storeUser = state.value.users.find((u) => u.Id === user.Id);
 
-      if (!isNil(user.Id)) {
-        delete state.value.accessTokens[user.Id];
-      }
+    if (!isNil(storeUser)) {
+      state.value.users.splice(state.value.users.indexOf(storeUser), 1);
+    }
+
+    if (!isNil(user.Id)) {
+      delete state.value.accessTokens[user.Id];
     }
   }
+
   /**
    * Logs out all the user sessions from the provided server and removes it from the store
    *

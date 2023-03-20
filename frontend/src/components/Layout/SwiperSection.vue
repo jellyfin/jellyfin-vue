@@ -65,9 +65,9 @@ const props = withDefaults(
     loading?: boolean;
     title: string;
     items: BaseItemDto[];
-    shape: string;
+    shape?: CardShapes;
   }>(),
-  { loading: false, shape: '' }
+  { loading: false, shape: undefined }
 );
 
 const cardShape = ref<string>(

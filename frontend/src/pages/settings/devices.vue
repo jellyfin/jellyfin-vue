@@ -11,9 +11,9 @@
         {{ t('settings.devices.deleteAll') }}
       </v-btn>
       <v-btn
-        rel="noreferrer noopener"
         variant="elevated"
         href="https://jellyfin.org/docs/general/server/devices.html"
+        rel="noreferrer noopener"
         target="_blank">
         {{ t('settings.help') }}
       </v-btn>

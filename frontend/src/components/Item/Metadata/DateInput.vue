@@ -3,14 +3,13 @@
     v-model="menu"
     :close-on-content-click="false"
     transition="scale-transition">
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-text-field
         :model-value="value"
         :label="label"
+        v-bind="props"
         readonly
-        variant="outlined"
-        v-bind="attrs"
-        v-on="on" />
+        variant="outlined" />
     </template>
     <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13480) -->
     <!-- <v-date-picker :value="value" @change="handleChange" /> -->

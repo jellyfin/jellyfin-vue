@@ -26,7 +26,17 @@ import {
 function getGlobalMaxVideoBitrate(): number | undefined {
   let isTizenFhd = false;
 
-  if (isTizen() && window.webapis) {
+  if (
+    isTizen() &&
+    'webapis' in window &&
+    typeof window.webapis === 'object' &&
+    window.webapis &&
+    'productinfo' in window.webapis &&
+    typeof window.webapis.productinfo === 'object' &&
+    window.webapis.productinfo &&
+    'isUdPanelSupported' in window.webapis.productinfo &&
+    typeof window.webapis.productinfo.isUdPanelSupported === 'function'
+  ) {
     isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }
 

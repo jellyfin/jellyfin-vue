@@ -67,7 +67,7 @@
             <like-button
               :item="playbackManager.currentItem"
               class="active-button" />
-            <queue-button nudge-top="35" />
+            <queue-button />
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
