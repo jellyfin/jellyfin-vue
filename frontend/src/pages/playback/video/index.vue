@@ -175,15 +175,16 @@ function toggleFullscreen(): void {
     fullscreen.toggle();
   } else if (
     !fullscreen.isSupported.value &&
-    // @ts-expect-error - Property 'webkitEnterFullScreen' does not exist on type 'HTMLMediaElement'
-    mediaElementRef.value?.webkitEnterFullScreen
+    // webkit properties do not exist in all browsers
+    mediaElementRef.value &&
+    'webkitEnterFullScreen' in mediaElementRef.value &&
+    typeof mediaElementRef.value.webkitEnterFullScreen === 'function'
   ) {
     /**
      * Use case for iOS where the fullscreen methods on non <video> elements aren't supported
      */
     // TODO - if entering FS this way, SSA subs won't display. So we should trigger a new encode
-    // @ts-expect-error - Property 'webkitEnterFullScreen' does not exist on type 'HTMLMediaElement'
-    mediaElementRef.value?.webkitEnterFullScreen();
+    mediaElementRef.value.webkitEnterFullScreen();
   }
 }
 
