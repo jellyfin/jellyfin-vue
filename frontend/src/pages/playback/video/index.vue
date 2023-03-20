@@ -91,10 +91,11 @@
                   </v-icon>
                 </v-btn>
                 <tooltip-button
+                  v-if="fullscreen.isSupported"
                   class="align-self-center"
                   :tooltip="{ text: $t('fullScreen'), location: 'top' }"
                   :btn="{ icon: true }"
-                  @click="toggleFullscreen">
+                  @click="fullscreen.toggle">
                   <v-icon>
                     <i-mdi-fullscreen v-if="fullscreen.isFullscreen" />
                     <i-mdi-fullscreen-exit v-else />
@@ -136,8 +137,13 @@ import {
 } from '@/store';
 import { getEndsAtTime } from '@/utils/time';
 
+/**
+ * - iOS's Safari fullscreen API is only available for the video element
+ */
+const fullscreen = useFullscreen().isSupported.value
+  ? useFullscreen(undefined, { autoExit: true })
+  : useFullscreen(mediaElementRef, { autoExit: true });
 const keys = useMagicKeys();
-const fullscreen = useFullscreen(document.body);
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 const osd = ref(true);
@@ -167,32 +173,7 @@ function handleMouseMove(): void {
   timeout.start();
 }
 
-/**
- * Toggles the fullscreen view, based on browsers supporting it or not (basically iOS or the others)
- */
-function toggleFullscreen(): void {
-  if (fullscreen.isSupported.value) {
-    fullscreen.toggle();
-  } else if (
-    !fullscreen.isSupported.value &&
-    // webkit properties do not exist in all browsers
-    mediaElementRef.value &&
-    'webkitEnterFullScreen' in mediaElementRef.value &&
-    typeof mediaElementRef.value.webkitEnterFullScreen === 'function'
-  ) {
-    /**
-     * Use case for iOS where the fullscreen methods on non <video> elements aren't supported
-     */
-    // TODO - if entering FS this way, SSA subs won't display. So we should trigger a new encode
-    mediaElementRef.value.webkitEnterFullScreen();
-  }
-}
-
 onBeforeUnmount(() => {
-  if (fullscreen.isFullscreen.value) {
-    fullscreen.exit();
-  }
-
   if (playerElement.isFullscreenVideoPlayer) {
     playbackManager.stop();
   }
@@ -214,7 +195,7 @@ whenever(keys.right, playbackManager.skipForward);
 whenever(keys.l, playbackManager.skipForward);
 whenever(keys.left, playbackManager.skipBackward);
 whenever(keys.j, playbackManager.skipBackward);
-whenever(keys.f, toggleFullscreen);
+whenever(keys.f, fullscreen.toggle);
 whenever(keys.m, playbackManager.toggleMute);
 
 watch(staticOverlay, (val) => {
