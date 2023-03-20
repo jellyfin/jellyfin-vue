@@ -95,6 +95,15 @@ module.exports = {
     'promise/no-return-in-finally': 'error',
     'promise/prefer-await-to-callbacks': 'error',
     'promise/prefer-await-to-then': 'error',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {
+        'ts-expect-error': true,
+        'ts-ignore': true,
+        'ts-nocheck': true,
+        'ts-check': true
+      }
+    ],
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',

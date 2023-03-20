@@ -287,9 +287,9 @@ function onActivatorClick(): void {
 }
 
 onMounted(() => {
-  const parentHtml = parent?.subTree.el as HTMLElement;
+  const parentHtml = parent?.subTree.el;
 
-  if (parentHtml) {
+  if (parentHtml instanceof HTMLElement) {
     useEventListener(parentHtml, 'contextmenu', onRightClick);
   }
 });

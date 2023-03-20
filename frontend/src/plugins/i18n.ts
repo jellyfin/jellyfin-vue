@@ -71,8 +71,7 @@ const i18n = createI18n({
   messages
 });
 
-// @ts-expect-error - This is the only place where we need to assign the localeNames variable.
-// Assigning it somewhere else should be completely restricted
-i18n.global.localeNames = languageMap;
+// `localeNames` is readonly but this is the one place it should actually be set
+(i18n.global.localeNames as typeof languageMap) = languageMap;
 
 export default i18n;
