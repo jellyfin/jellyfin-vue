@@ -7,12 +7,7 @@
             !isEmpty(systemInfo) &&
             $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
-          <v-img
-            class="logo"
-            contain
-            src="/icon.png"
-            height="100px"
-            :alt="$t('jellyfinLogo')" />
+          <v-img class="logo" src="/icon.png" :alt="$t('jellyfinLogo')" />
           <v-table class="mb-4 pb-2 information">
             <tbody>
               <tr>
@@ -285,5 +280,6 @@ const adminSections = computed(() => {
 
 .logo {
   background: rgb(var(--v-theme-card));
+  height: 100px;
 }
 </style>

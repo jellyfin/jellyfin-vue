@@ -3,10 +3,11 @@
     <router-link v-if="logo && logo.tag && logoLink" :to="logoLink">
       <v-img
         class="mb-2"
-        :max-width="$vuetify.display.mdAndUp ? '50%' : '40%'"
-        :max-height="$vuetify.display.smAndUp ? '7.5em' : '4em'"
-        contain
         data-swiper-parallax="-300"
+        :style="{
+          'max-width': $vuetify.display.mdAndUp ? '50%' : '40%',
+          'max-height': $vuetify.display.smAndUp ? '7.5em' : '4em'
+        }"
         :src="logo.url" />
     </router-link>
     <router-link

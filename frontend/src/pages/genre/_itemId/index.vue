@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-app-bar fixed flat dense :class="useResponsiveClasses('second-toolbar')">
+    <v-app-bar
+      flat
+      density="compact"
+      :class="useResponsiveClasses('second-toolbar')">
       <span class="text-h6 hidden-sm-and-down">
         {{ genre.Name }}
       </span>

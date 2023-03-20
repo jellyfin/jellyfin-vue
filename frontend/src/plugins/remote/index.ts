@@ -27,7 +27,9 @@ export const remoteInstance = new RemotePlugin();
  * Installs the remote plugin into the Vue instance to enable the usage of
  * $remote to access all the tools for handling a Jellyfin server connection.
  */
-export default function createRemote(): { install: (app: App) => void } {
+export default function createRemote(): {
+  install: (app: App) => Promise<void>;
+} {
   return {
     install: async (app: App): Promise<void> => {
       app.config.globalProperties.$remote = remoteInstance;

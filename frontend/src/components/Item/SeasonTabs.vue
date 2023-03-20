@@ -72,6 +72,10 @@ const seasonEpisodes = ref<TvShowItem['seasonEpisodes']>({});
  * Fetch component data
  */
 async function fetch(): Promise<void> {
+  if (!props.item.Id) {
+    return;
+  }
+
   seasons.value = (
     await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
       userId: remote.auth.currentUserId,

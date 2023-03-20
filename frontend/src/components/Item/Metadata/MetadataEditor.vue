@@ -96,7 +96,7 @@
             hide-selected
             multiple
             variant="outlined"
-            @update:search="(s) => (search = s)">
+            @update:search="(s: string) => (search = s)">
             <template #no-data>
               <v-list-item>
                 <v-list-item-title>
@@ -112,7 +112,7 @@
             hide-selected
             multiple
             variant="outlined"
-            @update:search="(s) => (search = s)">
+            @update:search="(s: string) => (search = s)">
             <template #no-data>
               <v-list-item>
                 <v-list-item-title>

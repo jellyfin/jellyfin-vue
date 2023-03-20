@@ -4,8 +4,8 @@
       <v-list-item
         v-for="linkItem in linkItems"
         :key="linkItem.name"
-        rel="noreferrer noopener"
         :href="linkItem.link"
+        rel="noreferrer noopener"
         target="_blank">
         <template #prepend>
           <v-avatar>

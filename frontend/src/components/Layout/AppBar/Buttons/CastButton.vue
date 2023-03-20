@@ -4,17 +4,14 @@
     :close-on-content-click="false"
     :transition="'slide-y-transition'"
     location="bottom"
-    :nudge-bottom="nudgeBottom"
-    offset-y
     min-width="25em"
     max-width="25em"
     min-height="25em"
     max-height="25em"
     :z-index="500"
     class="menu">
-    <!-- eslint-disable-next-line vue/no-template-shadow -->
-    <template #activator="{ on: menu, attrs }">
-      <app-bar-button-layout :custom-listener="menu" v-bind="attrs" disabled>
+    <template #activator="{ props }">
+      <app-bar-button-layout v-bind="props" disabled>
         <template #icon>
           <v-icon>
             <i-mdi-cast />
@@ -67,16 +64,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import supportedFeatures from '@/utils/supported-features';
-
-withDefaults(
-  defineProps<{
-    fab?: boolean;
-    nudgeBottom?: number;
-  }>(),
-  {
-    nudgeBottom: 5
-  }
-);
 
 const menu = ref(false);
 
