@@ -28,8 +28,8 @@
   "dependencies": {
     "@fontsource/roboto": "4.5.8",
     "@jellyfin/sdk": "0.0.0-unstable.202303210502",
-    "@vueuse/components": "9.12.0",
-    "@vueuse/core": "9.12.0",
+    "@vueuse/components": "9.13.0",
+    "@vueuse/core": "9.13.0",
     "all-iso-language-codes": "1.0.12",
     "axios": "1.3.4",
     "blurhash": "1.1.5",
