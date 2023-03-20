@@ -49,7 +49,7 @@ const { data, send } = useWebSocket(socketUrl, {
 
 class RemotePluginSocket {
   public get message(): WebSocketMessage | null {
-    return destr(data.value) as WebSocketMessage | null;
+    return destr(data.value);
   }
 
   /**

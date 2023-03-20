@@ -158,8 +158,10 @@ class TaskManagerStore {
 
         if (
           MessageType === 'RefreshProgress' &&
-          Data.ItemId &&
-          typeof Data.ItemId === 'string'
+          'ItemId' in Data &&
+          typeof Data.ItemId === 'string' &&
+          'Progress' in Data &&
+          typeof Data.Progress === 'number'
         ) {
           // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
