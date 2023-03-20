@@ -85,7 +85,7 @@ class PlayerElementStore {
     }
   };
 
-  private _setSsaTrack = async (trackSrc: string): Promise<void> => {
+  private _setSsaTrack = (trackSrc: string): void => {
     if (
       !jassub &&
       mediaElementRef.value &&

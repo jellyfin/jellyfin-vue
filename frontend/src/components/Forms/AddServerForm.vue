@@ -10,15 +10,14 @@
         autofocus
         :label="$t('login.serverAddress')"
         type="url"
-        :rules="rules"
-        required />
+        :rules="rules" />
       <v-row align="center" no-gutters>
         <v-col v-if="previousServerLength" class="mr-2">
           <v-btn
             block
             size="large"
             variant="elevated"
-            @click="$router.push('/server/select')">
+            @click="router.push('/server/select')">
             {{ $t('login.changeServer') }}
           </v-btn>
         </v-col>

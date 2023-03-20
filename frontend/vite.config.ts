@@ -21,7 +21,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import autoprefixer from 'autoprefixer';
 
 // https://vitejs.dev/config/
-export default defineConfig(async ({ mode }): Promise<UserConfig> => {
+export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
     server: {
       host: '0.0.0.0',

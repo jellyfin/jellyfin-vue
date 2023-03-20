@@ -48,8 +48,12 @@ await router.isReady();
  * Without window.setTimeout and window.requestAnimationFrame, the
  * splash screen gets frozen an small (but noticeable) amount of time.
  */
-const appDOM = document.querySelector('#app') as HTMLDivElement;
-const splashDOM = document.querySelector('.splashBackground') as HTMLDivElement;
+const appDOM = document.querySelector('#app');
+const splashDOM = document.querySelector('.splashBackground');
+
+if (!appDOM || !splashDOM) {
+  throw new Error('could not locate app div or splash div in DOM');
+}
 
 /**
  * Once we reach this point, the bundle and the app will be completely loaded and mounted,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar dense flat>
+    <v-app-bar density="compact" flat>
       <span class="text-h6 hidden-sm-and-down">
         {{ library?.Name }}
       </span>

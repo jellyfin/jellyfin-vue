@@ -49,12 +49,7 @@
       </template>
     </app-bar-button-layout>
     <!-- Uncomment when some of the remote play features are fully implemented -->
-    <!-- <cast-button
-      :fab="
-        !(!transparentLayout || $vuetify.display.xsOnly) &&
-        !page.isScrolled
-      "
-    /> -->
+    <!-- <cast-button /> -->
     <user-button />
     <locale-switcher elevated />
   </v-app-bar>
