@@ -220,30 +220,43 @@ class ItemsStore {
 
         const { MessageType, Data } = remote.socket.message;
 
-        if (!Data) {
+        if (!Data || typeof Data !== 'object') {
           return;
         }
 
         if (
           MessageType === 'LibraryChanged' &&
+          'ItemsUpdated' in Data &&
           Array.isArray(Data.ItemsUpdated)
         ) {
           // Update items when metadata changes
-          const itemsToUpdate = Data.ItemsUpdated.filter((itemId: string) => {
-            return Object.keys(this._state.byId).includes(itemId);
-          });
+          const itemsToUpdate = Data.ItemsUpdated.filter(
+            (item: unknown): item is string => typeof item === 'string'
+          ).filter((itemId) => Object.keys(this._state.byId).includes(itemId));
 
           this.updateStoreItems(itemsToUpdate);
         } else if (
           MessageType === 'UserDataChanged' &&
+          'UserDataList' in Data &&
           Array.isArray(Data.UserDataList)
         ) {
           // Update items when their userdata is changed (like, mark as watched, etc)
-          const itemsToUpdate = Data.UserDataList.filter((updatedData: any) => {
-            const itemId = updatedData.ItemId ?? '';
+          const itemsToUpdate = Data.UserDataList.filter(
+            (updatedData: unknown): updatedData is { ItemId: string } => {
+              if (
+                typeof updatedData === 'object' &&
+                updatedData &&
+                'ItemId' in updatedData &&
+                typeof updatedData.ItemId === 'string'
+              ) {
+                return Object.keys(this._state.byId).includes(
+                  updatedData.ItemId
+                );
+              }
 
-            return Object.keys(this._state.byId).includes(itemId);
-          }).map((updatedData: any) => {
+              return false;
+            }
+          ).map((updatedData) => {
             return updatedData.ItemId;
           });
 
