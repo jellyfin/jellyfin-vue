@@ -4,6 +4,7 @@
     :close-on-content-click="false"
     :persistent="!closeOnClick"
     :transition="'slide-y-transition'"
+    :width="listWidth"
     location="top">
     <template #activator="{ props: menu }">
       <tooltip-button
@@ -27,7 +28,6 @@
               <v-icon v-else :icon="modeIcon" />
             </v-avatar>
           </template>
-
           <template #subtitle>
             {{ getTotalEndsAtTime(playbackManager.queue).value }} -
             {{
@@ -36,22 +36,11 @@
               })
             }}
           </template>
-
-          <template #append>
-            <like-button
-              v-if="playbackManager.initiator && playbackManager.currentItem"
-              :item="playbackManager.currentItem" />
-            <item-menu
-              v-if="playbackManager.initiator && playbackManager.currentItem"
-              :item="playbackManager.currentItem" />
-          </template>
         </v-list-item>
       </v-list>
       <v-divider />
-      <v-list class="overflow">
-        <!-- We set an special property to destroy the element so it doesn't take resources while it's not being used.
-        This is especially useful for really huge queues. -->
-        <draggable-queue v-if="menuModel || !destroy" class="ml-4" />
+      <v-list class="queue-area">
+        <draggable-queue />
       </v-list>
       <v-spacer />
       <v-card-actions>
@@ -70,37 +59,34 @@
             <i-mdi-content-save />
           </v-icon>
         </tooltip-button>
-        <v-spacer />
       </v-card-actions>
     </v-card>
   </v-menu>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useTimeoutFn } from '@vueuse/core';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
 import { playbackManagerStore } from '@/store';
 import { InitMode } from '@/store/playbackManager';
 import { getTotalEndsAtTime } from '@/utils/time';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     closeOnClick?: boolean;
+    size?: number;
   }>(),
-  { closeOnClick: false }
+  { closeOnClick: false, size: 40 }
 );
 
 const playbackManager = playbackManagerStore();
 const { t } = useI18n();
 
 const menuModel = ref(false);
-const destroy = ref(false);
-const timeout = useTimeoutFn(() => {
-  destroy.value = true;
-}, 500);
+const listWidth = computed(() => `${props.size}vw`);
+// const listHeight = computed(() => `${props.size}vh`);
 
 const sourceText = computed(() => {
   /**
@@ -143,21 +129,16 @@ const modeIcon = computed(() =>
     ? IMdiShuffle
     : IMdiPlaylistMusic
 );
-
-watch(menuModel, (val) => {
-  if (!val) {
-    timeout.start();
-  } else {
-    timeout.stop();
-    destroy.value = false;
-  }
-});
 </script>
 
 <style lang="scss" scoped>
-.overflow {
-  overflow-y: scroll;
-  overflow-x: hidden;
+/**
+For some reason, v-bind doesn't work with this, so we must manually update this
+if we ever want to change the size
+
+TODO: Investigate why
+ */
+.queue-area {
   min-height: 40vh;
   max-height: 40vh;
 }
