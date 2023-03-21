@@ -123,4 +123,4 @@ The project also contains recommended extensions for [Visual Studio Code](https:
 
 Finally, we try to follow the [ConventionalCommits Guidelines](https://www.conventionalcommits.org/en/v1.0.0/#summary) when writing commit messages.
 
-For more information about how to contribute to this project, see [CONTRIBUTING.md](https://github.com/jellyfin/jellyfin-vue/blob/master/CONTRIBUTING.md)
+For more information about how to contribute to this project, see [our contributing guide](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing)
