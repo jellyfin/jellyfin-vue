@@ -26,6 +26,7 @@
     "vue-i18n-extract-remove": "vue-i18n-extract --remove"
   },
   "dependencies": {
+    "@fontsource/roboto": "4.5.8",
     "@jellyfin/sdk": "0.0.0-unstable.202303210502",
     "@vueuse/components": "9.12.0",
     "@vueuse/core": "9.12.0",
