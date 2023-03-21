@@ -2,14 +2,20 @@
  * Instantiates the Axios instance used for the SDK and requests
  */
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios';
 import remote from '../auth';
 import { itemsStore } from '@/store';
 import { useSnackbar, usei18n, useLoading } from '@/composables';
 import { excludedProgressEndpoints } from '@/composables/use-loading';
 
 class JellyfinInterceptors {
-  public startLoadInterceptor(config: AxiosRequestConfig): AxiosRequestConfig {
+  public startLoadInterceptor(
+    config: InternalAxiosRequestConfig
+  ): InternalAxiosRequestConfig {
     if (config.url) {
       const loading = useLoading();
       const isExcluded = excludedProgressEndpoints.some((i) =>
@@ -73,7 +79,7 @@ class JellyfinInterceptors {
     if (
       error.response?.status === 401 &&
       remote.currentUser &&
-      !error.config.url?.includes('/Sessions/Logout')
+      !error.config?.url?.includes('/Sessions/Logout')
     ) {
       await remote.logoutCurrentUser(true);
       useSnackbar(usei18n().t('login.kickedOut'), 'error');
