@@ -20,6 +20,7 @@ import { hideDirective } from '@/plugins/directives';
  * - GLOBAL STYLES -
  */
 import '@/assets/styles/global.scss';
+import '@fontsource/roboto';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -
