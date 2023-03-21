@@ -8,8 +8,8 @@
     <virtual-grid
       v-else-if="!loading && items.length > 0 && !noVirtual"
       :items="items"
-      :buffer-multiplier="4"
-      :throttle-scroll="300"
+      :buffer-multiplier="2"
+      :throttle-scroll="175"
       :class="useResponsiveClasses('card-grid-container')">
       <template #default="{ item, style }">
         <card :style="style" :item="item" margin text overlay link />
