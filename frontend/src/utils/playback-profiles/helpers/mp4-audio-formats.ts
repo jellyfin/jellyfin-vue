@@ -1,3 +1,7 @@
+/**
+ * @deprecated - Check @/utils/playback-profiles/index
+ */
+
 import { hasVp8Support } from './mp4-video-formats';
 import { getSupportedAudioCodecs } from './audio-formats';
 import {

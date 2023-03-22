@@ -1,3 +1,7 @@
+/**
+ * @deprecated - Check @/utils/playback-profiles/index
+ */
+
 import {
   isEdge,
   isTizen,

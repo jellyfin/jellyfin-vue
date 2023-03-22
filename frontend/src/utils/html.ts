@@ -1,5 +1,5 @@
 /**
- * Helper for image manipulation and image-related utility functions
+ * Helper for HTML manipulation and sanitization
  *
  */
 import DOMPurify from 'dompurify';

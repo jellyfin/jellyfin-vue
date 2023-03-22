@@ -2,6 +2,19 @@
  * Utilities to detect the browser and get information on the current environment
  * Based on https://github.com/google/shaka-player/blob/master/lib/util/platform.js
  *
+ * @deprecated - Parsing User Agent is a maintenance burden and
+ * should rely on external libraries only. It's also going to be replaced with Client-Hints.
+ * Migration paths:
+ * * Check for platform-specific features *where needed*
+ * directly (i.e Chromecast/AirPlay/MSE) instead of a per-browser basis.
+ * This will always be 100% fault free.
+ *
+ * * Use something like https://www.npmjs.com/package/unique-names-generator to
+ * distinguish between instances. Instance names could be shown and be modified by the user
+ * at settings. This would make user instances distinguishable in a 100% fault-tolerant way
+ * and solve incongruencies like how a device is named. For instance,
+ * an instance running in an Android Auto headset will be recognised as Android only, which is less
+ * than ideal.
  */
 export function supportsMediaSource(): boolean {
   // Browsers that lack a media source implementation will have no reference
