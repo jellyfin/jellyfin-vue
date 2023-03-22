@@ -1,3 +1,7 @@
+/**
+ * @deprecated - Check @/utils/playback-profiles/index
+ */
+
 import { getSupportedAudioCodecs } from './audio-formats';
 import {
   hasAacSupport,
