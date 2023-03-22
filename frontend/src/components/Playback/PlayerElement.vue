@@ -44,18 +44,11 @@ const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 const { t } = useI18n();
 
-/**
- * Safari iOS doesn't support hls.js, so we need to handle the cases where we don't need hls.js
- */
-const isNativeHlsSupported = document
-  .createElement('video')
-  .canPlayType('application/vnd.apple.mpegurl');
-const hls =
-  Hls.isSupported() && !isNativeHlsSupported
-    ? new Hls({
-        testBandwidth: false
-      })
-    : undefined;
+const hls = Hls.isSupported()
+  ? new Hls({
+      testBandwidth: false
+    })
+  : undefined;
 
 /**
  * Detaches HLS instance after playback is done
@@ -180,8 +173,7 @@ watch(
 
     if (
       mediaElementRef.value &&
-      (playbackManager.currentMediaSource?.SupportsDirectPlay ||
-        isNativeHlsSupported)
+      (playbackManager.currentMediaSource?.SupportsDirectPlay || !hls)
     ) {
       /**
        * For the video case, Safari iOS doesn't support hls.js but supports native HLS
