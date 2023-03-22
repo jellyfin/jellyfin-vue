@@ -37,13 +37,13 @@
             </v-list-item-action>
           </v-list-item>
           <v-divider />
-          <v-list-item v-if="features.airPlay">
+          <v-list-item>
             <v-icon>
               <i-mdi-apple-airplay />
             </v-icon>
             {{ $t('airPlayDevices') }}
           </v-list-item>
-          <v-list-item v-if="features.googleCast">
+          <v-list-item>
             <v-icon>
               <i-mdi-cast />
             </v-icon>
@@ -63,9 +63,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import supportedFeatures from '@/utils/supported-features';
 
 const menu = ref(false);
-
-const features = supportedFeatures;
 </script>

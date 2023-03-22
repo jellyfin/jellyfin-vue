@@ -1,3 +1,7 @@
+/**
+ * @deprecated - Check @/utils/playback-profiles/index
+ */
+
 import { hasH264Support, hasHevcSupport } from './mp4-video-formats';
 import {
   isApple,
