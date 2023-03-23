@@ -83,33 +83,7 @@ export function getTranscodingProfiles(
   const hlsInTsAudioCodecs = getSupportedTsAudioCodecs(videoTestElement);
 
   if (
-    canPlayHls && // TODO
-    // Disabled for now as HLS.js has troubles seeking in it
-    // We should enable it for platforms supporting it natively
-
-    // const hlsInFmp4VideoCodecs = getSupportedFmp4VideoCodecs(
-    //   context,
-    //   videoTestElement
-    // );
-    // const hlsInFmp4AudioCodecs = getSupportedFmp4AudioCodecs(
-    //   context,
-    //   videoTestElement
-    // );
-
-    // if (hlsInFmp4VideoCodecs.length && hlsInFmp4AudioCodecs.length) {
-    //   TranscodingProfiles.push({
-    //     Container: 'mp4',
-    //     Type: DlnaProfileType.Video,
-    //     AudioCodec: hlsInFmp4AudioCodecs.join(','),
-    //     VideoCodec: hlsInFmp4VideoCodecs.join(','),
-    //     Context: EncodingContext.Streaming,
-    //     Protocol: 'hls',
-    //     MaxAudioChannels: physicalAudioChannels.toString(),
-    //     MinSegments: isApple() ? 2 : 1,
-    //     BreakOnNonKeyFrames: hlsBreakOnNonKeyFrames
-    //   });
-    // }
-
+    canPlayHls &&
     hlsInTsVideoCodecs.length > 0 &&
     hlsInTsAudioCodecs.length > 0
   ) {
