@@ -123,12 +123,8 @@ import { onBeforeUnmount, onMounted, ref, computed, watch } from 'vue';
 import IMdiClose from 'virtual:icons/mdi/close';
 import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import {
-  useFullscreen,
-  useTimeoutFn,
-  useMagicKeys,
-  whenever
-} from '@vueuse/core';
+import { useTimeoutFn, useMagicKeys, whenever } from '@vueuse/core';
+import useFullscreen from './use-fullscreen';
 import {
   playbackManagerStore,
   playerElementStore,
