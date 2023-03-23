@@ -2,12 +2,8 @@
   <item-cols>
     <template #left>
       <v-row justify="center" justify-sm="start">
-        <v-col cols="6" sm="3" class="d-flex flex-row">
-          <v-responsive aspect-ratio="1" class="overflow-visible">
-            <v-avatar color="card" class="elevation-2">
-              <blurhash-image :item="item" />
-            </v-avatar>
-          </v-responsive>
+        <v-col cols="6" sm="3">
+          <card :item="item" />
         </v-col>
         <v-col cols="12" sm="7">
           <v-row class="d-flex flex-column">
