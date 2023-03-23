@@ -15,9 +15,7 @@ module.exports = {
   globals: {
     __COMMIT_HASH__: 'readonly'
   },
-  // Ignore test files for now
   ignorePatterns: [
-    '*.spec.ts',
     '.eslintrc.js',
     '*.config.js',
     'types/global/routes.d.ts',
@@ -63,7 +61,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['vite.config.ts', '**/**/*.spec.ts'],
+        devDependencies: ['vite.config.ts'],
         optionalDependencies: false,
         peerDependencies: false,
         bundledDependencies: false
