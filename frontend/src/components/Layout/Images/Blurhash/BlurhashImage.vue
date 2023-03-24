@@ -109,6 +109,13 @@ const imageUrl = computed(() => {
 const hash = computed(() => getBlurhash(props.item, props.type));
 </script>
 
+<style lang="scss">
+.placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+</style>
+
 <style lang="scss" scoped>
 .img {
   color: transparent;
