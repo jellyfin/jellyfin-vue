@@ -1,47 +1,44 @@
 <template>
-  <v-menu
-    v-if="showButton"
-    v-model="menu"
-    :close-on-content-click="false"
-    persistent
-    :transition="'slide-y-transition'"
-    location="bottom"
-    :z-index="500">
-    <template #activator="{ props: menuProps }">
-      <app-bar-button-layout :color="buttonColor" v-bind="menuProps">
-        <template #icon>
-          <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
-          <v-icon v-else>
-            <i-mdi-check />
-          </v-icon>
-        </template>
-        <template #tooltip>
-          <span>{{ $t('appbar.tooltips.tasks') }}</span>
-        </template>
-      </app-bar-button-layout>
+  <app-bar-button-layout v-if="showButton" :color="buttonColor">
+    <template #icon>
+      <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
+      <v-icon v-else>
+        <i-mdi-check />
+      </v-icon>
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        persistent
+        :transition="'slide-y-transition'"
+        location="bottom"
+        :z-index="500">
+        <v-card min-width="25em">
+          <v-list>
+            <v-list-item
+              v-for="task in UITaskList"
+              :key="`${task.id}`"
+              :title="$t(task.textKey, { ...task.textParams })">
+              <template #append>
+                <v-progress-circular
+                  v-if="task.progress !== 100"
+                  :indeterminate="
+                    task.progress === undefined || task.progress === 0
+                  "
+                  :model-value="task.progress"
+                  size="24" />
+                <v-icon v-else>
+                  <i-mdi-check />
+                </v-icon>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
     </template>
-    <v-card min-width="25em">
-      <v-list>
-        <v-list-item
-          v-for="task in UITaskList"
-          :key="`${task.id}`"
-          :title="$t(task.textKey, { ...task.textParams })">
-          <template #append>
-            <v-progress-circular
-              v-if="task.progress !== 100"
-              :indeterminate="
-                task.progress === undefined || task.progress === 0
-              "
-              :model-value="task.progress"
-              size="24" />
-            <v-icon v-else>
-              <i-mdi-check />
-            </v-icon>
-          </template>
-        </v-list-item>
-      </v-list>
-    </v-card>
-  </v-menu>
+    <template #tooltip>
+      <span>{{ $t('appbar.tooltips.tasks') }}</span>
+    </template>
+  </app-bar-button-layout>
 </template>
 
 <script setup lang="ts">

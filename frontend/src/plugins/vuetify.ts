@@ -61,6 +61,12 @@ const vuetify = createVuetify({
     VBtn: {
       color: '',
       variant: 'text'
+    },
+    VTooltip: {
+      activator: 'parent'
+    },
+    VMenu: {
+      activator: 'parent'
     }
   },
   locale: {
