@@ -1,67 +1,60 @@
 <template>
-  <v-menu
-    v-model="menuModel"
-    :close-on-content-click="false"
-    :persistent="!closeOnClick"
-    :transition="'slide-y-transition'"
-    :width="listWidth"
-    location="top">
-    <template #activator="{ props: menu }">
-      <tooltip-button
-        class="align-self-center"
-        v-bind="menu"
-        :tooltip="{ text: $t('queue'), location: 'top' }"
-        :btn="{ icon: true }">
-        <v-icon>
-          <i-mdi-playlist-play />
-        </v-icon>
-      </tooltip-button>
-    </template>
-    <v-card>
-      <v-list>
-        <v-list-item :title="sourceText">
-          <template #prepend>
-            <v-avatar>
-              <blurhash-image
-                v-if="playbackManager.initiator"
-                :item="playbackManager.initiator" />
-              <v-icon v-else :icon="modeIcon" />
-            </v-avatar>
-          </template>
-          <template #subtitle>
-            {{ getTotalEndsAtTime(playbackManager.queue).value }} -
-            {{
-              $t('playback.queueItems', {
-                items: playbackManager.queue.length
-              })
-            }}
-          </template>
-        </v-list-item>
-      </v-list>
-      <v-divider />
-      <v-list class="queue-area">
-        <draggable-queue />
-      </v-list>
-      <v-spacer />
-      <v-card-actions>
-        <tooltip-button
-          :tooltip="{ text: $t('playback.clearQueue'), location: 'top' }"
-          :btn="{ icon: true }"
-          @click="playbackManager.stop">
-          <v-icon>
-            <i-mdi-playlist-remove />
-          </v-icon>
-        </tooltip-button>
-        <tooltip-button
-          :tooltip="{ text: $t('playback.saveAsPlaylist'), location: 'top' }"
-          :btn="{ icon: true, disabled: true }">
-          <v-icon>
-            <i-mdi-content-save />
-          </v-icon>
-        </tooltip-button>
-      </v-card-actions>
-    </v-card>
-  </v-menu>
+  <v-btn icon class="align-self-center">
+    <v-icon>
+      <i-mdi-playlist-play />
+    </v-icon>
+    <v-tooltip :text="$t('queue')" location="top" />
+    <v-menu
+      v-model="menuModel"
+      :close-on-content-click="false"
+      :persistent="!closeOnClick"
+      :transition="'slide-y-transition'"
+      :width="listWidth"
+      location="top">
+      <v-card>
+        <v-list>
+          <v-list-item :title="sourceText">
+            <template #prepend>
+              <v-avatar>
+                <blurhash-image
+                  v-if="playbackManager.initiator"
+                  :item="playbackManager.initiator" />
+                <v-icon v-else :icon="modeIcon" />
+              </v-avatar>
+            </template>
+            <template #subtitle>
+              {{ getTotalEndsAtTime(playbackManager.queue).value }} -
+              {{
+                $t('playback.queueItems', {
+                  items: playbackManager.queue.length
+                })
+              }}
+            </template>
+          </v-list-item>
+        </v-list>
+        <v-divider />
+        <v-list class="queue-area">
+          <draggable-queue />
+        </v-list>
+        <v-spacer />
+        <v-card-actions>
+          <v-btn icon @click="playbackManager.stop">
+            <v-icon>
+              <i-mdi-playlist-remove />
+            </v-icon>
+            <v-tooltip :text="$t('playback.clearQueue')" location="top" />
+          </v-btn>
+          <v-btn icon disabled>
+            <v-icon>
+              <i-mdi-content-save />
+            </v-icon>
+            <v-tooltip :text="$t('playback.saveAsPlaylist')" location="top" />
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-menu>
+  </v-btn>
 </template>
 
 <script setup lang="ts">
