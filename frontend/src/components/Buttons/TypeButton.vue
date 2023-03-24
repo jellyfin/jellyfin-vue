@@ -1,35 +1,28 @@
 <template>
-  <v-menu :disabled="disabled">
-    <template #activator="{ props: menuProps }">
-      <v-btn
-        v-if="!$vuetify.display.smAndDown && (model.length === 0 || model[0])"
-        class="my-2"
-        v-bind="mergeProps(props, menuProps)">
-        {{
-          model.length === 0
-            ? items[0].title
-            : items.find((x) => x.value == model[0])?.title
-        }}
-        <v-icon end>
-          <i-mdi-menu-down />
-        </v-icon>
-      </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="mergeProps(props, menuProps)">
-        <v-icon>
-          <i-mdi-eye />
-        </v-icon>
-      </v-btn>
-    </template>
-    <v-list
-      v-model:selected="model"
-      :items="items"
-      @update:selected="emit('change', model[0])" />
-  </v-menu>
+  <v-btn :icon="$vuetify.display.smAndDown" class="my-2">
+    {{
+      $vuetify.display.smAndDown
+        ? undefined
+        : model.length === 0
+        ? items[0].title
+        : items.find((i) => i.value == model[0])?.title
+    }}
+    <v-icon :end="!$vuetify.display.smAndDown">
+      <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
+      <i-mdi-eye v-else />
+    </v-icon>
+    <v-menu :disabled="disabled">
+      <v-list
+        v-model:selected="model"
+        :items="items"
+        @update:selected="emit('change', model[0])" />
+    </v-menu>
+  </v-btn>
 </template>
 
 <script setup lang="ts">
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import { computed, ref, mergeProps } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = withDefaults(
