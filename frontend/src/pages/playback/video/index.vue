@@ -90,17 +90,20 @@
                     <i-mdi-picture-in-picture-bottom-right />
                   </v-icon>
                 </v-btn>
-                <tooltip-button
+                <v-btn
                   v-if="fullscreen.isSupported"
                   class="align-self-center"
-                  :tooltip="{ text: $t('fullScreen'), location: 'top' }"
-                  :btn="{ icon: true }"
+                  icon
                   @click="fullscreen.toggle">
                   <v-icon>
                     <i-mdi-fullscreen v-if="fullscreen.isFullscreen" />
                     <i-mdi-fullscreen-exit v-else />
                   </v-icon>
-                </tooltip-button>
+                  <v-tooltip
+                    :text="$t('fullScreen')"
+                    location="top"
+                    activator="parent" />
+                </v-btn>
               </div>
             </div>
           </div>
