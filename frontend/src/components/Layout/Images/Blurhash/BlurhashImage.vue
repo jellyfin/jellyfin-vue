@@ -19,11 +19,16 @@
           :alt="alt"
           @loadstart="
             () => {
-              loading = true;
               error = false;
+              loading = true;
             }
           "
-          @load="loading = false"
+          @load="
+            () => {
+              error = false;
+              loading = false;
+            }
+          "
           @error="
             () => {
               error = true;
