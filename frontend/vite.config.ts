@@ -63,12 +63,7 @@ export default defineConfig(({ mode }): UserConfig => {
        * See: https://github.com/antfu/unplugin-icons
        */
       Icons({
-        compiler: 'vue3',
-        /**
-         * Don't hardcode any size to the icons, let Vuetify or whatever CSS styles
-         * we have applied to the object do the job instead.
-         */
-        scale: 0
+        compiler: 'vue3'
       }),
       VitePWA(),
       VueI18nPlugin({
