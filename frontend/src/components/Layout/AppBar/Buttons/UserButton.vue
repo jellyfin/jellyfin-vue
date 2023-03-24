@@ -1,42 +1,42 @@
 <template>
-  <v-menu v-if="auth.currentUser" location="bottom">
-    <template #activator="{ props }">
-      <app-bar-button-layout v-bind="props">
-        <template #icon>
-          <user-image :user="auth.currentUser" :size="40" rounded />
-        </template>
-      </app-bar-button-layout>
+  <app-bar-button-layout v-if="auth.currentUser">
+    <template #icon>
+      <user-image :user="auth.currentUser" :size="40" rounded />
+      <v-menu location="bottom">
+        <v-list class="min-list-width" dense>
+          <v-list-item>
+            <template #prepend>
+              <v-avatar>
+                <user-image :user="auth.currentUser" :size="40" rounded />
+              </v-avatar>
+            </template>
+            <template #title>
+              <v-list-item-title class="text-body-1">
+                {{ auth.currentUser.Name }}
+              </v-list-item-title>
+            </template>
+            <template
+              v-if="auth.currentUser?.Policy?.IsAdministrator"
+              #subtitle>
+              <v-list-item-subtitle>
+                {{ $t('administrator') }}
+                <v-icon size="small">
+                  <i-mdi-key-chain />
+                </v-icon>
+              </v-list-item-subtitle>
+            </template>
+          </v-list-item>
+          <v-divider class="my-2" />
+          <v-list-item
+            v-for="(item, index) in menuItems"
+            :key="`bottomMenuItems-${index}`"
+            :prepend-icon="item.icon"
+            :title="item.title"
+            @click="item.action" />
+        </v-list>
+      </v-menu>
     </template>
-    <v-list class="min-list-width" dense>
-      <v-list-item>
-        <template #prepend>
-          <v-avatar>
-            <user-image :user="auth.currentUser" :size="40" rounded />
-          </v-avatar>
-        </template>
-        <template #title>
-          <v-list-item-title class="text-body-1">
-            {{ auth.currentUser.Name }}
-          </v-list-item-title>
-        </template>
-        <template v-if="auth.currentUser?.Policy?.IsAdministrator" #subtitle>
-          <v-list-item-subtitle>
-            {{ $t('administrator') }}
-            <v-icon size="small">
-              <i-mdi-key-chain />
-            </v-icon>
-          </v-list-item-subtitle>
-        </template>
-      </v-list-item>
-      <v-divider class="my-2" />
-      <v-list-item
-        v-for="(item, index) in menuItems"
-        :key="`bottomMenuItems-${index}`"
-        :prepend-icon="item.icon"
-        :title="item.title"
-        @click="item.action" />
-    </v-list>
-  </v-menu>
+  </app-bar-button-layout>
 </template>
 
 <script setup lang="ts">
