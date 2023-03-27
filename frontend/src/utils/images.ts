@@ -12,9 +12,8 @@ import { useRemote } from '@/composables';
 import { getShapeFromItemType, isPerson, CardShapes } from '@/utils/items';
 
 export interface ImageUrlInfo {
-  url: string | undefined;
-  tag: string | null | undefined;
-  blurhash: string | undefined;
+  url?: string;
+  blurhash?: string;
 }
 
 const excludedBlurhashTypes = Object.freeze(
@@ -190,12 +189,14 @@ export function getDesiredAspect(shape: CardShapes): number {
  * @param [options.width] - Sets the requested width of the image
  * @param [options.ratio=1] - Sets the device pixel ratio for the image, used for computing the real image size
  * @param [options.tag] - Sets a specific image tag to get, bypassing the automatic priorities.
- * @returns Information for the item, containing the full URL, image tag and blurhash.
+ * @returns Information for the item, containing the full URL and blurhash.
  */
 export function getImageInfo(
   item: BaseItemDto | BaseItemPerson,
   {
-    shape = getShapeFromItemType(item.Type),
+    shape = isPerson(item)
+      ? CardShapes.Portrait
+      : getShapeFromItemType(item.Type),
     preferThumb = false,
     preferBanner = false,
     preferLogo = false,
@@ -367,7 +368,6 @@ export function getImageInfo(
   if (!itemId) {
     return {
       url: undefined,
-      tag: undefined,
       blurhash: undefined
     };
   }
@@ -397,8 +397,8 @@ export function getImageInfo(
 
   return {
     url: url?.href,
-    tag: imgTag,
-    blurhash: imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : ''
+    blurhash:
+      imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : undefined
   };
 }
 
@@ -464,7 +464,7 @@ export function getLogo(
 
   return {
     url: url?.href,
-    tag: imgTag,
-    blurhash: imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : ''
+    blurhash:
+      imgType && imgTag ? item.ImageBlurHashes?.[imgType]?.[imgTag] : undefined
   };
 }
