@@ -195,7 +195,9 @@ export function getDesiredAspect(shape: CardShapes): number {
 export function getImageInfo(
   item: BaseItemDto | BaseItemPerson,
   {
-    shape = getShapeFromItemType(item.Type),
+    shape = isPerson(item)
+      ? CardShapes.Portrait
+      : getShapeFromItemType(item.Type),
     preferThumb = false,
     preferBanner = false,
     preferLogo = false,
