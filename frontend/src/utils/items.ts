@@ -304,6 +304,7 @@ export function getItemDetailsLink(
     params: routeParameters
   }).path;
 }
+
 /**
  * Returns the appropiate material design icon for the BaseItemDto provided
  *

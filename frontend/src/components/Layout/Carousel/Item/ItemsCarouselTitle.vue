@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link v-if="logo && logo.tag && logoLink" :to="logoLink">
+    <router-link v-if="logo && logoLink" :to="logoLink">
       <v-img
         class="mb-2"
         data-swiper-parallax="-300"
