@@ -45,7 +45,7 @@
             <v-tab :value="5" :disabled="musicVideos.length === 0">
               {{ $t('item.artist.videos') }}
             </v-tab>
-            <v-tab :value="6" :disabled="!artistBackdrop.tag && !item.Overview">
+            <v-tab :value="6" :disabled="!item.Overview">
               {{ $t('item.artist.information') }}
             </v-tab>
           </v-tabs>
@@ -115,7 +115,7 @@ import {
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getImageInfo, getBlurhash } from '@/utils/images';
+import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
 import { useRemote } from '@/composables';
 
@@ -130,10 +130,6 @@ const discography = ref<BaseItemDto[]>([]);
 const appearances = ref<BaseItemDto[]>([]);
 const musicVideos = ref<BaseItemDto[]>([]);
 const activeTab = ref(0);
-
-const artistBackdrop = computed(() =>
-  getImageInfo(item.value, { preferBackdrop: true })
-);
 
 const singles = computed<BaseItemDto[]>(() =>
   discography.value.filter(
