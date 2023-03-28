@@ -11,6 +11,10 @@
   background: #666;
 }
 
+html.no-forced-scrollbar {
+  overflow-y: unset !important;
+}
+
 /* Custom utility classes */
 
 .user-select-none {
