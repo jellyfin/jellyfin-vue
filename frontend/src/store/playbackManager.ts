@@ -540,7 +540,7 @@ class PlaybackManagerStore {
    * Updates mediasession metadata based on the currently playing item
    */
   private _updateMediaSessionMetadata = (): void => {
-    if (this.status !== PlaybackStatus.Stopped && !isNil(this.currentItem)) {
+    if (!isNil(this.currentItem)) {
       this._mediaMetadata.title = this.currentItem.Name || '';
       this._mediaMetadata.artist = this.currentItem.AlbumArtist || '';
       this._mediaMetadata.album = this.currentItem.Album || '';
@@ -1126,16 +1126,12 @@ class PlaybackManagerStore {
         this._state.currentSourceUrl = this.getItemPlaybackUrl();
       }
     }
-
-    this._updateMediaSessionMetadata();
   };
 
   public constructor() {
     watch(
       () => this.status,
       async (newValue, oldValue) => {
-        const remove = this.status === PlaybackStatus.Stopped;
-
         if (
           this.status === PlaybackStatus.Playing &&
           !mediaControls.playing.value
@@ -1150,16 +1146,18 @@ class PlaybackManagerStore {
 
         if (
           newValue === PlaybackStatus.Stopped ||
-          oldValue === PlaybackStatus.Error ||
-          oldValue === PlaybackStatus.Stopped
+          newValue === PlaybackStatus.Error
         ) {
-          this._handleMediaSession(remove);
+          this._handleMediaSession(true);
+        } else if (
+          oldValue === PlaybackStatus.Stopped ||
+          oldValue === PlaybackStatus.Error
+        ) {
+          this._handleMediaSession();
         }
 
-        if (!remove) {
-          this._updateMediaSessionStatus();
-          await this._reportPlaybackProgress();
-        }
+        this._updateMediaSessionStatus();
+        await this._reportPlaybackProgress();
       }
     );
 
@@ -1169,6 +1167,7 @@ class PlaybackManagerStore {
     watch(
       () => this.currentItemIndex,
       async (newIndex) => {
+        this._updateMediaSessionMetadata();
         await this.fetchCurrentMediaSource();
 
         if (newIndex && !this._state.currentSourceUrl) {

@@ -72,9 +72,6 @@ class TaskManagerStore {
   public get tasks(): typeof this._state.value.tasks {
     return this._state.value.tasks;
   }
-  public set timeout(newTimeout: number) {
-    this._state.value.finishedTasksTimeout = newTimeout;
-  }
   public getTask = (id: string): RunningTask | undefined =>
     this._state.value.tasks.find((payload) => payload.id === id);
   /**
