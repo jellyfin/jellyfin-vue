@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide } from 'vue';
+import { ref, watch, provide, onBeforeMount, onUnmounted } from 'vue';
 import { useDisplay } from 'vuetify';
 import {
   playbackManagerStore,
@@ -48,4 +48,10 @@ watch(display.mobile, () => {
 });
 
 provide('NavigationDrawer', navDrawer);
+onBeforeMount(() => {
+  document.documentElement.classList.remove('no-forced-scrollbar');
+});
+onUnmounted(() => {
+  document.documentElement.classList.add('no-forced-scrollbar');
+});
 </script>
