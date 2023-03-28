@@ -98,25 +98,23 @@ const buttonColor = computed(() =>
 const UITaskList = computed(
   () =>
     new Set([
-      ...mappedTaskList.value.filter((t) => t.progress !== 100),
+      ...(menu.value
+        ? mappedTaskList.value.filter((t) => t.progress !== 100)
+        : mappedTaskList.value),
       ...completedTaskList.value
     ])
 );
 const showButton = computed(() => UITaskList.value.size > 0);
 
-watch(
-  [menu, mappedCompleted],
-  () => {
-    if (menu.value) {
-      const ids = new Set(completedTaskList.value.map((t) => t.id));
+watch([menu, mappedCompleted], () => {
+  if (menu.value) {
+    const ids = new Set(completedTaskList.value.map((t) => t.id));
 
-      completedTaskList.value.push(
-        ...mappedCompleted.value.filter((t) => !ids.has(t.id))
-      );
-    } else {
-      completedTaskList.value = [];
-    }
-  },
-  { flush: 'post' }
-);
+    completedTaskList.value.push(
+      ...mappedCompleted.value.filter((t) => !ids.has(t.id))
+    );
+  } else {
+    completedTaskList.value = [];
+  }
+});
 </script>
