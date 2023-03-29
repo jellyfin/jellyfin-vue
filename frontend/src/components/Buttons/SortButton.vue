@@ -11,39 +11,28 @@
       <i-mdi-sort-descending />
     </v-icon>
   </v-btn>
-  <v-menu :disabled="disabled">
-    <template #activator="{ props: menuProps }">
-      <v-btn
-        v-if="!$vuetify.display.smAndDown"
-        class="my-2"
-        v-bind="mergeProps(menuProps, props)">
-        {{ sortingLabel }}
-        <v-icon end>
-          <i-mdi-menu-down />
-        </v-icon>
-      </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="mergeProps(menuProps, props)">
-        <v-icon v-if="model.length === 0 || model[0] == items[0].value">
-          <i-mdi-sort-alphabetical-variant />
-        </v-icon>
-        <v-icon v-else-if="model[0] == items[1].value">
-          <i-mdi-numeric-9-plus-box-outline />
-        </v-icon>
-        <v-icon v-else-if="model[0] == items[2].value">
-          <i-mdi-calendar-range />
-        </v-icon>
-      </v-btn>
-    </template>
-    <v-list
-      v-model:selected="model"
-      :items="items"
-      class="filter-content"
-      @update:selected="emit('change', model[0], props.ascending)" />
-  </v-menu>
+  <v-btn class="my-2">
+    {{ !$vuetify.display.smAndDown ? sortingLabel : undefined }}
+    <v-icon :end="!$vuetify.display.smAndDown">
+      <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
+      <i-mdi-sort-alphabetical-variant
+        v-else-if="model.length === 0 || model[0] == items[0].value" />
+      <i-mdi-numeric-9-plus-box-outline
+        v-else-if="model[0] == items[1].value" />
+      <i-mdi-calendar-range v-else-if="model[0] == items[2].value" />
+    </v-icon>
+    <v-menu :disabled="disabled" activator="parent">
+      <v-list
+        v-model:selected="model"
+        :items="items"
+        class="filter-content"
+        @update:selected="emit('change', model[0], props.ascending)" />
+    </v-menu>
+  </v-btn>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, mergeProps } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = withDefaults(

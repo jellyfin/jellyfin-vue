@@ -1,21 +1,21 @@
 <template>
-  <div v-if="options.length > 0">
+  <v-btn
+    v-if="options.length > 0"
+    :variant="outlined ? 'outlined' : undefined"
+    size="small"
+    @click.stop.prevent="onActivatorClick"
+    @contextmenu.stop.prevent="onRightClick">
+    <v-icon>
+      <i-mdi-dots-horizontal />
+    </v-icon>
     <v-menu
       v-model="show"
       :persistent="false"
       close-on-content-click
       :z-index="zIndex"
       :scroll-strategy="'close'"
-      location="top">
-      <template #activator="{ props }">
-        <v-btn
-          :icon="IMdiDotsHorizontal"
-          :variant="outlined ? 'outlined' : undefined"
-          v-bind="props"
-          size="small"
-          @click.stop.prevent="onActivatorClick"
-          @contextmenu.stop.prevent="onRightClick" />
-      </template>
+      location="top"
+      activator="parent">
       <v-list nav>
         <template v-for="(section, index1) in options">
           <v-divider
@@ -32,11 +32,11 @@
         </template>
       </v-list>
     </v-menu>
-    <metadata-editor-dialog
-      v-if="item.Id"
-      v-model:dialog="metadataDialog"
-      :item-id="item.Id" />
-  </div>
+  </v-btn>
+  <metadata-editor-dialog
+    v-if="item.Id"
+    v-model:dialog="metadataDialog"
+    :item-id="item.Id" />
 </template>
 
 <script setup lang="ts">
@@ -54,7 +54,6 @@ import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
-import IMdiDotsHorizontal from 'virtual:icons/mdi/dots-horizontal';
 import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';

@@ -1,160 +1,152 @@
 <template>
-  <v-menu
-    :disabled="disabled"
-    :close-on-content-click="false"
-    max-width="250px">
-    <template #activator="{ props: menuProps }">
-      <v-btn
-        v-if="!$vuetify.display.smAndDown"
-        class="ma-2"
-        v-bind="mergeProps(menuProps, props)">
-        {{ t('filter') }}
-        <v-icon end>
-          <i-mdi-menu-down />
-        </v-icon>
-      </v-btn>
-      <v-btn v-else class="my-2" icon v-bind="mergeProps(menuProps, props)">
-        <v-icon>
-          <i-mdi-filter-variant />
-        </v-icon>
-      </v-btn>
-    </template>
-    <v-expansion-panels variant="accordion" class="dropdown">
-      <v-expansion-panel :title="t('status')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedStatusFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(status, statusIndex) in statusFilters"
-              :key="`status-${statusIndex}`">
-              <v-list-item :value="status.name" :title="status.label">
-                <template #append="{ isActive }">
-                  <v-list-item-action end>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-      <v-expansion-panel v-if="isMovieOrTvShow" :title="t('features')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedFeatureFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(feature, featureIndex) in featureFilters"
-              :key="`feature-${featureIndex}`">
-              <v-list-item :value="feature.name" :title="feature.label">
-                <template #append="{ isActive }">
-                  <v-list-item-action end>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-      <v-expansion-panel v-if="genreFilters.length > 0" :title="t('genres')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedGenreFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(genre, genreIndex) in genreFilters"
-              :key="`genre-${genreIndex}`">
-              <v-list-item :value="genre" :title="genre">
-                <template #append="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-      <v-expansion-panel
-        v-if="ratingFilters.length > 0"
-        :title="t('parentalRatings')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedRatingFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(rating, ratingIndex) in ratingFilters"
-              :key="`rating-${ratingIndex}`">
-              <v-list-item :value="rating" :title="rating">
-                <template #append="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-      <v-expansion-panel v-if="isMovieOrTvShow" :title="t('videoTypes')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedTypeFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(type, typeIndex) in typeFilters"
-              :key="`type-${typeIndex}`">
-              <v-list-item :value="type.name" :title="type.label">
-                <template #append="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-      <v-expansion-panel v-if="yearFilters.length > 0" :title="t('years')">
-        <v-expansion-panel-text>
-          <v-list
-            v-model:selected="selectedYearFilters"
-            select-strategy="leaf"
-            class="filter-content"
-            @update:selected="emitFilterChange">
-            <template
-              v-for="(year, yearIndex) in yearFilters"
-              :key="`year-${yearIndex}`">
-              <v-list-item :value="year" :title="year">
-                <template #append="{ isActive }">
-                  <v-list-item-action>
-                    <v-checkbox-btn :model-value="isActive" />
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-            </template>
-          </v-list>
-        </v-expansion-panel-text>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </v-menu>
+  <v-btn class="ma-2" :icon="$vuetify.display.smAndDown">
+    {{ !$vuetify.display.smAndDown ? t('filter') : undefined }}
+    <v-icon :end="!$vuetify.display.smAndDown">
+      <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
+      <i-mdi-filter-variant v-else />
+    </v-icon>
+    <v-menu
+      :disabled="disabled"
+      :close-on-content-click="false"
+      max-width="250px"
+      activator="parent">
+      <v-expansion-panels variant="accordion" class="dropdown">
+        <v-expansion-panel :title="t('status')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedStatusFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(status, statusIndex) in statusFilters"
+                :key="`status-${statusIndex}`">
+                <v-list-item :value="status.name" :title="status.label">
+                  <template #append="{ isActive }">
+                    <v-list-item-action end>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel v-if="isMovieOrTvShow" :title="t('features')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedFeatureFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(feature, featureIndex) in featureFilters"
+                :key="`feature-${featureIndex}`">
+                <v-list-item :value="feature.name" :title="feature.label">
+                  <template #append="{ isActive }">
+                    <v-list-item-action end>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel v-if="genreFilters.length > 0" :title="t('genres')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedGenreFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(genre, genreIndex) in genreFilters"
+                :key="`genre-${genreIndex}`">
+                <v-list-item :value="genre" :title="genre">
+                  <template #append="{ isActive }">
+                    <v-list-item-action>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel
+          v-if="ratingFilters.length > 0"
+          :title="t('parentalRatings')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedRatingFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(rating, ratingIndex) in ratingFilters"
+                :key="`rating-${ratingIndex}`">
+                <v-list-item :value="rating" :title="rating">
+                  <template #append="{ isActive }">
+                    <v-list-item-action>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel v-if="isMovieOrTvShow" :title="t('videoTypes')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedTypeFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(type, typeIndex) in typeFilters"
+                :key="`type-${typeIndex}`">
+                <v-list-item :value="type.name" :title="type.label">
+                  <template #append="{ isActive }">
+                    <v-list-item-action>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel v-if="yearFilters.length > 0" :title="t('years')">
+          <v-expansion-panel-text>
+            <v-list
+              v-model:selected="selectedYearFilters"
+              select-strategy="leaf"
+              class="filter-content"
+              @update:selected="emitFilterChange">
+              <template
+                v-for="(year, yearIndex) in yearFilters"
+                :key="`year-${yearIndex}`">
+                <v-list-item :value="year" :title="year">
+                  <template #append="{ isActive }">
+                    <v-list-item-action>
+                      <v-checkbox-btn :model-value="isActive" />
+                    </v-list-item-action>
+                  </template>
+                </v-list-item>
+              </template>
+            </v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-menu>
+  </v-btn>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { computed, ref, watch, mergeProps } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { BaseItemDto, ItemFilter } from '@jellyfin/sdk/lib/generated-client';
 import { getFilterApi } from '@jellyfin/sdk/lib/utils/api/filter-api';
 import { useRemote, useSnackbar } from '@/composables';
