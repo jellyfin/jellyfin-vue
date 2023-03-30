@@ -67,6 +67,9 @@ const vuetify = createVuetify({
     },
     VMenu: {
       activator: 'parent'
+    },
+    VChip: {
+      rounded: true
     }
   },
   locale: {
