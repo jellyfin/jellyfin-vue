@@ -4,10 +4,17 @@
   "actor": "Artist",
   "actors": "Actori",
   "addNewPerson": "Adăugați o persoană nouă",
+  "administrator": "Administrator",
   "airPlayDevices": "Dizpozitive AirPlay",
   "albums": "Albume",
   "allLanguages": "Toate limbile",
   "alphabetically": "Alfabetic",
+  "appbar": {
+    "tasks": {
+      "configSync": "Se sincronizează setările…",
+      "scanningLibrary": "Se scanează biblioteca '{library}'…"
+    }
+  },
   "architecture": "Arhitectura",
   "artist": "Artist",
   "artists": "Artiști",
@@ -98,6 +105,7 @@
   "incorrectUsernameOrPassword": "Numele de utilizator sau parola incorectă",
   "item": {
     "artist": {
+      "albums": "Albume",
       "appearsOn": "Apariții",
       "discography": "Discografie",
       "information": "Informație",
