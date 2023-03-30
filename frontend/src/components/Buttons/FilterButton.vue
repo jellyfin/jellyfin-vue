@@ -8,8 +8,7 @@
     <v-menu
       :disabled="disabled"
       :close-on-content-click="false"
-      max-width="250px"
-      activator="parent">
+      max-width="250px">
       <v-expansion-panels variant="accordion" class="dropdown">
         <v-expansion-panel :title="t('status')">
           <v-expansion-panel-text>

@@ -11,7 +11,7 @@
       <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
       <i-mdi-eye v-else />
     </v-icon>
-    <v-menu :disabled="disabled" activator="parent">
+    <v-menu :disabled="disabled">
       <v-list
         v-model:selected="model"
         :items="items"

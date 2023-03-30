@@ -3,15 +3,14 @@
     <v-icon>
       <i-mdi-playlist-play />
     </v-icon>
-    <v-tooltip :text="$t('queue')" activator="parent" location="top" />
+    <v-tooltip :text="$t('queue')" location="top" />
     <v-menu
       v-model="menuModel"
       :close-on-content-click="false"
       :persistent="!closeOnClick"
       :transition="'slide-y-transition'"
       :width="listWidth"
-      location="top"
-      activator="parent">
+      location="top">
       <v-card>
         <v-list>
           <v-list-item :title="sourceText">
@@ -43,19 +42,13 @@
             <v-icon>
               <i-mdi-playlist-remove />
             </v-icon>
-            <v-tooltip
-              :text="$t('playback.clearQueue')"
-              location="top"
-              activator="parent" />
+            <v-tooltip :text="$t('playback.clearQueue')" location="top" />
           </v-btn>
           <v-btn icon disabled>
             <v-icon>
               <i-mdi-content-save />
             </v-icon>
-            <v-tooltip
-              :text="$t('playback.saveAsPlaylist')"
-              location="top"
-              activator="parent" />
+            <v-tooltip :text="$t('playback.saveAsPlaylist')" location="top" />
           </v-btn>
           <v-spacer />
         </v-card-actions>

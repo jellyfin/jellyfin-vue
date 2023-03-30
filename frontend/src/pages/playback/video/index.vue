@@ -99,10 +99,7 @@
                     <i-mdi-fullscreen v-if="fullscreen.isFullscreen" />
                     <i-mdi-fullscreen-exit v-else />
                   </v-icon>
-                  <v-tooltip
-                    :text="$t('fullScreen')"
-                    location="top"
-                    activator="parent" />
+                  <v-tooltip :text="$t('fullScreen')" location="top" />
                 </v-btn>
               </div>
             </div>

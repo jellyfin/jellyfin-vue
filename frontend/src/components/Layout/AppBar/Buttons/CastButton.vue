@@ -9,8 +9,7 @@
         :close-on-content-click="false"
         :transition="'slide-y-transition'"
         location="bottom"
-        :z-index="500"
-        activator="parent">
+        :z-index="500">
         <v-card>
           <v-list color="transparent">
             <v-list-item>

@@ -10,13 +10,12 @@
       <i-mdi-closed-caption v-if="playbackManager.currentSubtitleTrack" />
       <i-mdi-closed-caption-outline v-else />
     </v-icon>
-    <v-tooltip :text="$t('subtitles')" location="top" activator="parent" />
+    <v-tooltip :text="$t('subtitles')" location="top" />
     <v-menu
       v-model="menuModel"
       :close-on-content-click="false"
       transition="slide-y-transition"
-      location="top"
-      activator="parent">
+      location="top">
       <v-list class="overflow-hidden">
         <v-list-item
           v-for="track of tracks"

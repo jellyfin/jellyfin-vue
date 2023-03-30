@@ -3,16 +3,12 @@
     <v-icon>
       <i-mdi-cog />
     </v-icon>
-    <v-tooltip
-      :text="$t('playbackSettings')"
-      location="top"
-      activator="parent" />
+    <v-tooltip :text="$t('playbackSettings')" location="top" />
     <v-menu
       v-model="menuModel"
       :close-on-content-click="false"
       :transition="'slide-y-transition'"
-      location="top"
-      activator="parent">
+      location="top">
       <v-card min-width="300">
         <v-card-text>
           <v-row align="center">

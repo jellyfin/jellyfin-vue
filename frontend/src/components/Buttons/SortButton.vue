@@ -21,7 +21,7 @@
         v-else-if="model[0] == items[1].value" />
       <i-mdi-calendar-range v-else-if="model[0] == items[2].value" />
     </v-icon>
-    <v-menu :disabled="disabled" activator="parent">
+    <v-menu :disabled="disabled">
       <v-list
         v-model:selected="model"
         :items="items"

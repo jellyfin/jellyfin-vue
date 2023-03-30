@@ -9,9 +9,8 @@
     </v-icon>
     <v-tooltip
       :text="$t('tooltips.changeLanguage')"
-      :location="bottom ? 'bottom' : 'top'"
-      activator="parent" />
-    <v-menu activator="parent">
+      :location="bottom ? 'bottom' : 'top'" />
+    <v-menu>
       <v-list class="overflow-y-auto">
         <v-list-item
           :value="clientSettings.locale === 'auto'"

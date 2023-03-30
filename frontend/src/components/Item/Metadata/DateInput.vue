@@ -3,8 +3,7 @@
     <v-menu
       v-model="menu"
       :close-on-content-click="false"
-      transition="scale-transition"
-      activator="parent">
+      transition="scale-transition">
       <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13480) -->
       <!-- <v-date-picker :value="value" @change="handleChange" /> -->
     </v-menu>

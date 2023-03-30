@@ -2,7 +2,7 @@
   <app-bar-button-layout v-if="auth.currentUser">
     <template #icon>
       <user-image :user="auth.currentUser" :size="40" rounded />
-      <v-menu location="bottom" activator="parent">
+      <v-menu location="bottom">
         <v-list class="min-list-width" dense>
           <v-list-item>
             <template #prepend>

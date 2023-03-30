@@ -14,8 +14,7 @@
       close-on-content-click
       :z-index="zIndex"
       :scroll-strategy="'close'"
-      location="top"
-      activator="parent">
+      location="top">
       <v-list nav>
         <template v-for="(section, index1) in options">
           <v-divider
