@@ -24,6 +24,7 @@
           <v-chip
             v-if="item.UserData && item.UserData.UnplayedItemCount"
             color="primary"
+            variant="elevated"
             class="card-chip"
             size="small">
             {{ item.UserData.UnplayedItemCount }}
