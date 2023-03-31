@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@fontsource/roboto": "4.5.8",
-    "@jellyfin/sdk": "0.0.0-unstable.202303210502",
+    "@jellyfin/sdk": "0.8.1",
     "@vueuse/components": "9.12.0",
     "@vueuse/core": "9.12.0",
     "all-iso-language-codes": "1.0.12",
