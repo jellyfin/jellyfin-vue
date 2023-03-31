@@ -73,6 +73,14 @@ const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
 
+const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
+  tvshows: BaseItemKind.Series,
+  movies: BaseItemKind.Movie,
+  books: BaseItemKind.Book,
+  music: BaseItemKind.MusicAlbum,
+  boxsets: BaseItemKind.BoxSet
+};
+
 const library = ref<BaseItemDto>();
 const loadingLibrary = ref(false);
 const items = ref<BaseItemDto[]>([]);
@@ -120,10 +128,9 @@ const hasFilters = computed(() =>
 );
 const hasViewTypes = computed(
   () =>
-    library.value &&
-    library.value.CollectionType !== undefined &&
-    library.value.CollectionType !== null &&
-    library.value.CollectionType !== 'homevideos'
+    library.value?.CollectionType === 'movies' ||
+    library.value?.CollectionType === 'music' ||
+    library.value?.CollectionType === 'tvshows'
 );
 const isSortable = computed(
   () =>
@@ -302,28 +309,7 @@ watch(library, (lib) => {
 watch(
   () => library.value?.CollectionType,
   (type) => {
-    switch (type) {
-      case 'tvshows': {
-        viewType.value = BaseItemKind.Series;
-        break;
-      }
-      case 'movies': {
-        viewType.value = BaseItemKind.Movie;
-        break;
-      }
-      case 'books': {
-        viewType.value = BaseItemKind.Book;
-        break;
-      }
-      case 'music': {
-        viewType.value = BaseItemKind.MusicAlbum;
-        break;
-      }
-      default: {
-        viewType.value = undefined;
-        break;
-      }
-    }
+    viewType.value = type ? COLLECTION_TYPES_MAPPINGS[type] : undefined;
   }
 );
 
