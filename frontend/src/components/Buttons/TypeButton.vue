@@ -1,7 +1,7 @@
 <template>
   <v-btn :icon="$vuetify.display.smAndDown" class="my-2">
     {{
-      $vuetify.display.smAndDown
+      $vuetify.display.smAndDown || items.length === 0
         ? undefined
         : model.length === 0
         ? items[0].title
