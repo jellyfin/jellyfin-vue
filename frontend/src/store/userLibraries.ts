@@ -124,7 +124,7 @@ class UserLibrariesStore {
     useSnackbar(t('errors.anErrorHappened'), 'error');
   };
 
-  private _fetchUserViews = async (): Promise<void> => {
+  private _updateUserViews = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -134,13 +134,13 @@ class UserLibrariesStore {
           userId: remote.auth.currentUserId || ''
         });
 
-      this._state.value.views = userViewsResponse.data.Items || [];
+      this._state.value.views = userViewsResponse.data.Items ?? [];
     } catch (error) {
       this._onError(error);
     }
   };
 
-  private _fetchAudioResumes = async (): Promise<void> => {
+  private _updateAudioResumes = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -160,15 +160,13 @@ class UserLibrariesStore {
         })
       ).data.Items;
 
-      if (audioResumes) {
-        this._state.value.homeSections.audioResumes = audioResumes;
-      }
+      this._state.value.homeSections.audioResumes = audioResumes ?? [];
     } catch (error) {
       this._onError(error);
     }
   };
 
-  private _fetchVideoResumes = async (): Promise<void> => {
+  private _updateVideoResumes = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -188,15 +186,13 @@ class UserLibrariesStore {
         })
       ).data.Items;
 
-      if (videoResumes) {
-        this._state.value.homeSections.videoResumes = videoResumes;
-      }
+      this._state.value.homeSections.videoResumes = videoResumes ?? [];
     } catch (error) {
       this._onError(error);
     }
   };
 
-  private _fetchUpNext = async (libraryId: string): Promise<void> => {
+  private _updateUpNext = async (libraryId?: string): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -215,15 +211,16 @@ class UserLibrariesStore {
         })
       ).data.Items;
 
-      if (upNext) {
-        this._state.value.homeSections.upNext = upNext;
-      }
+      this._state.value.homeSections.upNext = [
+        ...this._state.value.homeSections.upNext,
+        ...(upNext ?? [])
+      ];
     } catch (error) {
       this._onError(error);
     }
   };
 
-  private _fetchLatestMedia = async (libraryId: string): Promise<void> => {
+  private _updateLatestMedia = async (libraryId: string): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -248,7 +245,7 @@ class UserLibrariesStore {
     }
   };
 
-  private _fetchIndexCarouselItems = async (): Promise<void> => {
+  private _updateIndexCarouselItems = async (): Promise<void> => {
     const remote = useRemote();
 
     try {
@@ -262,26 +259,30 @@ class UserLibrariesStore {
         })
       ).data;
 
-      if (carouselItems) {
-        this._state.value.carouselItems = carouselItems;
-      }
+      this._state.value.carouselItems = carouselItems;
     } catch (error) {
       this._onError(error);
     }
   };
 
   public refresh = async (): Promise<void> => {
-    await this._fetchUserViews();
-    await this._fetchAudioResumes();
-    await this._fetchVideoResumes();
-    await this._fetchIndexCarouselItems();
+    this._state.value.homeSections.upNext = [];
+
+    const promises: Promise<void>[] = [
+      this._updateUserViews(),
+      this._updateAudioResumes(),
+      this._updateVideoResumes(),
+      this._updateIndexCarouselItems(),
+      this._updateUpNext()
+    ];
 
     for (const library of this.libraries) {
       if (library.Id) {
-        await this._fetchUpNext(library.Id);
-        await this._fetchLatestMedia(library.Id);
+        promises.push(this._updateLatestMedia(library.Id));
       }
     }
+
+    await Promise.all(promises);
 
     this._state.value.isReady = true;
   };
