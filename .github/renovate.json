@@ -1,40 +1,69 @@
 {
   "packageRules": [
     {
-      "matchManagers": ["npm"],
-      "matchDepTypes": ["devDependencies"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
       "groupName": "development dependencies",
       "groupSlug": "dev-deps"
     },
     {
-      "matchManagers": ["npm"],
-      "matchDepTypes": ["dependencies"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchDepTypes": [
+        "dependencies"
+      ],
       "groupName": "dependencies",
       "groupSlug": "deps"
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "CI dependencies",
       "groupSlug": "ci-deps",
       "separateMajorMinor": false
     },
     {
-      "matchManagers": ["cargo"],
+      "matchManagers": [
+        "cargo"
+      ],
       "groupName": "Tauri dependencies",
       "groupSlug": "tauri-deps",
       "separateMajorMinor": false
     }
   ],
   "dependencyDashboard": false,
-  "ignoreDeps": ["npm", "swiper", "node"],
-  "enabledManagers": ["npm", "github-actions", "cargo"],
-  "labels": ["dependencies"],
+  "ignoreDeps": [
+    "npm",
+    "node"
+  ],
+  "enabledManagers": [
+    "npm",
+    "github-actions",
+    "cargo"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "rebaseWhen": "behind-base-branch",
   "rangeStrategy": "pin",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["every 2 months on the first day of the month"]
+    "schedule": [
+      "every 2 months on the first day of the month"
+    ]
   },
-  "assignees": ["ferferga", "ThibaultNocchi"],
-  "reviewers": ["ferferga", "ThibaultNocchi"]
+  "assignees": [
+    "ferferga",
+    "ThibaultNocchi"
+  ],
+  "reviewers": [
+    "ferferga",
+    "ThibaultNocchi"
+  ]
 }
