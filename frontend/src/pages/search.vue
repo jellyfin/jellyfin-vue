@@ -2,25 +2,25 @@
   <div>
     <v-app-bar flat :class="useResponsiveClasses('second-toolbar')">
       <v-tabs v-model="searchTab" class="mx-auto">
-        <v-tab :key="0" :disabled="movieSearchResults.length <= 0">
+        <v-tab :key="0" :disabled="movies.length <= 0">
           {{ $t('movies') }}
         </v-tab>
-        <v-tab :key="1" :disabled="showSearchResults.length <= 0">
+        <v-tab :key="1" :disabled="series.length <= 0">
           {{ $t('shows') }}
         </v-tab>
-        <v-tab :key="2" :disabled="albumSearchResults.length <= 0">
+        <v-tab :key="2" :disabled="albums.length <= 0">
           {{ $t('albums') }}
         </v-tab>
-        <v-tab :key="3" :disabled="trackSearchResults.length <= 0">
+        <v-tab :key="3" :disabled="tracks.length <= 0">
           {{ $t('songs') }}
         </v-tab>
-        <v-tab :key="4" :disabled="bookSearchResults.length <= 0">
+        <v-tab :key="4" :disabled="books.length <= 0">
           {{ $t('books') }}
         </v-tab>
-        <v-tab :key="5" :disabled="personSearchResults.length <= 0">
+        <v-tab :key="5" :disabled="people.length <= 0">
           {{ $t('people') }}
         </v-tab>
-        <v-tab :key="6" :disabled="artistSearchResults.length <= 0">
+        <v-tab :key="6" :disabled="artists.length <= 0">
           {{ $t('artists') }}
         </v-tab>
       </v-tabs>
@@ -30,46 +30,25 @@
         <v-col>
           <v-window v-model="searchTab" class="bg-transparent">
             <v-window-item :key="0">
-              <item-grid
-                :items="movieSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="movies" />
             </v-window-item>
             <v-window-item :key="1">
-              <item-grid
-                :items="showSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="series" />
             </v-window-item>
             <v-window-item :key="2">
-              <item-grid
-                :items="albumSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="albums" />
             </v-window-item>
             <v-window-item :key="3">
-              <item-grid
-                :items="trackSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="tracks" />
             </v-window-item>
             <v-window-item :key="4">
-              <item-grid
-                :items="bookSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="books" />
             </v-window-item>
             <v-window-item :key="5">
-              <item-grid
-                :items="personSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="people" />
             </v-window-item>
             <v-window-item :key="6">
-              <item-grid
-                :items="artistSearchResults"
-                :loading="loading"
-                no-virtual />
+              <item-grid :items="artists" />
             </v-window-item>
           </v-window>
         </v-col>
@@ -79,7 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, reactive, watch } from 'vue';
+import { useDebounceFn } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
@@ -89,108 +69,69 @@ import { useRemote, useResponsiveClasses } from '@/composables';
 const route = useRoute();
 const remote = useRemote();
 
-const loading = ref(false);
 const searchTab = ref(0);
-const movieSearchResults = ref<BaseItemDto[]>([]);
-const showSearchResults = ref<BaseItemDto[]>([]);
-const albumSearchResults = ref<BaseItemDto[]>([]);
-const trackSearchResults = ref<BaseItemDto[]>([]);
-const bookSearchResults = ref<BaseItemDto[]>([]);
-const personSearchResults = ref<BaseItemDto[]>([]);
-const artistSearchResults = ref<BaseItemDto[]>([]);
-
-const searchQuery = computed(() => {
-  return route.query?.q?.toString() || '';
-});
-
-watch(
-  searchQuery,
-  async () => {
-    if (searchQuery.value !== '') {
-      await performSearch();
-    } else {
-      clearResults();
-    }
-  },
-  {
-    immediate: true
-  }
+const memo = reactive(
+  new Map<string, { items: BaseItemDto[]; people: BaseItemDto[] }>([
+    ['', { items: [], people: [] }]
+  ])
 );
 
-/**
- * Search in Jellyfin
- */
-async function performSearch(): Promise<void> {
-  loading.value = true;
+const searchQuery = computed(() => route.query?.q?.toString() || '');
+const items = computed(() => memo.get(searchQuery.value)?.items ?? []);
+const people = computed(() => memo.get(searchQuery.value)?.people ?? []);
+const movies = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.Movie)
+);
+const series = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.Series)
+);
+const albums = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.MusicAlbum)
+);
+const tracks = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.Audio)
+);
+const books = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.Book)
+);
+const artists = computed(() =>
+  items.value.filter((item) => item.Type === BaseItemKind.MusicArtist)
+);
 
-  const itemResults = (
-    await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
-      userId: remote.auth.currentUserId || '',
-      searchTerm: searchQuery.value,
-      includeItemTypes: [
-        BaseItemKind.Movie,
-        BaseItemKind.Series,
-        BaseItemKind.Audio,
-        BaseItemKind.MusicAlbum,
-        BaseItemKind.Book,
-        BaseItemKind.MusicArtist,
-        BaseItemKind.Person
-      ],
-      recursive: true
-    })
-  ).data.Items;
-
-  if (itemResults) {
-    movieSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.Movie
-    );
-
-    showSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.Series
-    );
-
-    albumSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.MusicAlbum
-    );
-
-    trackSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.Audio
-    );
-
-    bookSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.Book
-    );
-
-    personSearchResults.value =
+const performDebouncedSearch = useDebounceFn(async (searchTerm: string) => {
+  if (!memo.has(searchTerm)) {
+    const itemSearch =
+      (
+        await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
+          userId: remote.auth.currentUserId || '',
+          searchTerm,
+          includeItemTypes: [
+            BaseItemKind.Movie,
+            BaseItemKind.Series,
+            BaseItemKind.Audio,
+            BaseItemKind.MusicAlbum,
+            BaseItemKind.Book,
+            BaseItemKind.MusicArtist,
+            BaseItemKind.Person
+          ],
+          recursive: true
+        })
+      ).data.Items ?? [];
+    const peopleSearch =
       (
         await remote.sdk.newUserApi(getPersonsApi).getPersons({
           userId: remote.auth.currentUserId,
-          searchTerm: searchQuery.value
+          searchTerm
         })
-      ).data.Items || [];
+      ).data.Items ?? [];
 
-    artistSearchResults.value = itemResults.filter(
-      (item) => item.Type === BaseItemKind.MusicArtist
-    );
-  } else {
-    clearResults();
+    memo.set(searchTerm, { items: itemSearch, people: peopleSearch });
   }
+}, 400);
 
-  loading.value = false;
-}
-
-/**
- * Clear the search results. Useful when the user clears the text field.
- */
-function clearResults(): void {
-  movieSearchResults.value = [];
-  showSearchResults.value = [];
-  albumSearchResults.value = [];
-  trackSearchResults.value = [];
-  bookSearchResults.value = [];
-  personSearchResults.value = [];
-  artistSearchResults.value = [];
-}
+watch(searchQuery, async (q) => await performDebouncedSearch(q), {
+  immediate: true
+});
 </script>
 
 <style lang="scss" scoped>
