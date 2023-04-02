@@ -27,11 +27,6 @@ interface ClientSettingsState {
 /**
  * == UTILITY VARIABLES ==
  */
-export const languageCodes = Object.freeze(
-  new Set(Object.keys(usei18n().localeNames)).add(
-    'auto'
-  ) as Set<LocaleStateValues>
-);
 const navigatorLanguage = useNavigatorLanguage();
 const BROWSER_LANGUAGE = computed<string>(() => {
   const rawString = navigatorLanguage.language.value || '';
