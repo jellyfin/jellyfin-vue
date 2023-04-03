@@ -13,8 +13,8 @@
     "@jellyfin-vue/frontend": "*"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "1.0.0-rc.11",
-    "@tauri-apps/tauricon": "1.0.2"
+    "@tauri-apps/cli": "1.2.3",
+    "@tauri-apps/tauricon": "1.0.3"
   },
   "engines": {
     "node": ">=18.12.0 <19.0.0",
