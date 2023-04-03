@@ -38,6 +38,13 @@
     }
   ],
   "dependencyDashboard": false,
+  "vulnerabilityAlerts": {
+    "groupName": "vuln-alerts",
+    "labels": [
+      "security",
+      "dependencies"
+    ]
+  },
   "ignoreDeps": [
     "npm",
     "node"
