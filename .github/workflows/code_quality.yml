@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Scan
-        uses: actions/dependency-review-action@v3.0.2
+        uses: actions/dependency-review-action@v3.0.4
 
   lint:
     name: Lint 🔬
@@ -29,10 +29,10 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 18
           check-latest: true
@@ -49,10 +49,10 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 18
           check-latest: true
@@ -76,16 +76,16 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v2.1.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v2.2.1
+        uses: docker/setup-buildx-action@v2.5.0
 
       - name: Build Docker images 🛠️
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v4.0.0
         with:
           context: .
           platforms: ${{ matrix.platform }}
@@ -103,7 +103,7 @@ jobs:
           docker rm jf
 
       - name: Upload artifact (Docker image) ⬆️📦
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           name: docker_image
@@ -111,7 +111,7 @@ jobs:
             docker_image.tar
 
       - name: Upload artifact (Client) ⬆️💻
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           name: frontend
@@ -131,10 +131,10 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 18
           check-latest: true
@@ -155,7 +155,7 @@ jobs:
         run: "npm run tauri:build -w tauri"
 
       - name: Upload artifact (Linux) ⬆️🐧
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         if: matrix.platform == 'ubuntu-latest'
         with:
           name: jellyfin-vue_linux-amd64
@@ -164,7 +164,7 @@ jobs:
             tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         if: matrix.platform == 'macos-latest'
         with:
           name: jellyfin-vue_macOS
@@ -173,7 +173,7 @@ jobs:
             tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         if: matrix.platform == 'windows-latest'
         with:
           name: jellyfin-vue_windows_amd64
@@ -200,7 +200,7 @@ jobs:
           echo $PR_SHA > PR_sha
 
       - name: Upload PR number as artifact
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: PR_context
           path: |
@@ -214,7 +214,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.5.0
 
       - name: Check if all commits comply with the specification
         uses: webiny/action-conventional-commits@v1.1.0

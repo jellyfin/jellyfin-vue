@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Create comment
-        uses: thollander/actions-comment-pull-request@v2.3.0
+        uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
@@ -46,7 +46,7 @@ jobs:
     name: Project board 📊
     runs-on: ubuntu-latest
     steps:
-      - uses: alex-page/github-project-automation-plus@v0.8.2
+      - uses: alex-page/github-project-automation-plus@v0.8.3
         if: ${{ github.event_name == 'pull_request_target' }}
         continue-on-error: true
         with:
