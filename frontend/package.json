@@ -51,7 +51,7 @@
   "devDependencies": {
     "@iconify/json": "2.2.44",
     "@intlify/unplugin-vue-i18n": "0.10.0",
-    "@types/dompurify": "3.0.0",
+    "@types/dompurify": "3.0.1",
     "@types/lodash-es": "4.17.7",
     "@types/sortablejs": "1.15.1",
     "@types/uuid": "9.0.1",
