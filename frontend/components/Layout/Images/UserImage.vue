@@ -6,7 +6,7 @@
     <div
       v-show="!loading"
       ref="img"
-      class="user-image"
+      class="user-image ma-auto"
       :class="{ 'rounded-circle': rounded }"
     />
   </div>
@@ -45,8 +45,8 @@ export default Vue.extend({
   computed: {
     userImage: {
       get(): string | undefined {
-        if (this.user?.Id && this.user?.PrimaryImageTag) {
-          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?tag=${this.user.PrimaryImageTag}&quality=${this.quality}`;
+        if (this.user?.Id) {
+          return `${this.$axios.defaults.baseURL}/Users/${this.user.Id}/Images/Primary/?quality=${this.quality}`;
         }
       }
     },

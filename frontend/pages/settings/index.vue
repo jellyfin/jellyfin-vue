@@ -125,7 +125,8 @@ export default Vue.extend({
         {
           icon: 'mdi-account',
           name: this.$t('settingsSections.account.name'),
-          description: this.$t('settingsSections.account.description')
+          description: this.$t('settingsSections.account.description'),
+          link: 'settings/account'
         },
         {
           icon: 'mdi-home',

@@ -315,6 +315,18 @@
   "serverVersion": "Server version",
   "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
   "settings": {
+    "account": {
+      "account": "Account",
+      "updateImage": "Update image",
+      "removeImage": "Remove Image",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "updatePassword": "Update password",
+      "deleteImageSuccess": "Image deleted successfully",
+      "deleteImageError": "Error deleting image",
+      "updateImageSuccess": "Image updated successfully",
+      "updateImageError": "Error updating image"
+    },
     "apiKeys": {
       "accessToken": "Access token",
       "addApiKey": "Add an API key",
