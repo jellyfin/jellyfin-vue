@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jellyfin/jellyfin-vue/"
+    "url": "git+https://github.com/jellyfin/jellyfin-vue.git"
   },
   "license": "GPL-3.0-only",
   "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
