@@ -24,6 +24,7 @@
   "aspectRatio": "Poměr stran",
   "audio": "Zvuk",
   "audioCodecNotSupported": "Zvukový kodek není podporován",
+  "auto": "Automatický",
   "badRequest": "Špatný požadavek. Zkuste to znovu",
   "books": "Knihy",
   "browserNotSupported": "Přehrávání tohoto souboru není ve vašem prohlížeči podporováno.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Epizoda {episodeNumber}",
   "errors": {
     "anErrorHappened": "Došlo k chybě",
+    "cantPlayItem": "Tuto položku nelze přehrát",
     "messages": {
       "errorCode": "Kód chyby: {errorCode}",
       "videoPlayerError": "Ve video přehrávači došlo k nezvratné chybě."
-    }
+    },
+    "playback": {
+      "mediaError": "Došlo k fatální chybě média, provádí se pokus o zotavení",
+      "networkError": "Došlo k fatální chybě sítě, provádí se pokus o zotavení"
+    },
+    "unauthorized": "Nemáte přístup k zobrazení této stránky"
   },
   "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
   "failedSettingDisplayPreferences": "Nelze aktualizovat nastavení zobrazení.",
@@ -326,9 +333,11 @@
       "dateCreated": "Datum vytvoření",
       "description": "Přidat či zrušit klíče k API pro externí přístup k serveru",
       "refreshKeysFailure": "Chyba při aktualizaci klíčů k API",
+      "revoke": "Odvolat",
       "revokeAll": "Zrušit všechny klíče k API",
       "revokeAllFailure": "Chyba při rušení všech klíčů k API",
       "revokeAllSuccess": "Všechny klíče k API úspěšně zrušeny",
+      "revokeConfirm": "Potvrdit odvolání klíče k API",
       "revokeFailure": "Chyba při rušení klíče k API",
       "revokeSuccess": "Klíč k API úspěšně zrušen"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Odstranit vše",
       "deleteAllDevicesError": "Při odstraňování všech zařízení došlo k chybě",
       "deleteAllDevicesSuccess": "Všechna zařízení byla úspěšně odstraněna",
+      "deleteConfirm": "Potvrdit odstranění zařízení",
       "deleteDeviceError": "Při odstranění zařízení došlo k chybě",
       "deleteDeviceSuccess": "Zařízení bylo úspěšně odstraněno",
       "deviceName": "Název zařízení",
@@ -432,7 +442,8 @@
   "signIn": "Přihlásit se",
   "snackbar": {
     "addedToQueue": "Přidáno do fronty",
-    "playNext": "Vybraná položka bude přehrána jako další"
+    "playNext": "Vybraná položka bude přehrána jako další",
+    "routeValidationError": "Zadané routeId v parametrech cesty není správné"
   },
   "songs": "Skladby",
   "sortByType": "Řazení: {type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Úvodní video",
   "tooltips": {
     "changeLanguage": "Jazyk",
+    "switchToAuto": "Podle vzhledu systému",
     "switchToDarkMode": "Přepnout do tmavého režimu",
     "switchToLightMode": "Přepnout do světlého režimu"
   },
