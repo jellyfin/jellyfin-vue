@@ -1,8 +1,11 @@
 {
   "3DFormat": "صيغة ثلاثية الابعاد",
+  "NoMediaSourcesAvailable": "لا توجد مصادر متاحة",
   "actor": "الممثل",
   "actors": "الممثلون",
   "addNewPerson": "أضف شخصا جديدا",
+  "administrator": "المدير",
+  "airPlayDevices": "أجهزة AirPlay",
   "albums": "الألبومات",
   "allLanguages": "كل اللغات",
   "alphabetically": "أبجديّا",
@@ -30,29 +33,40 @@
   "byArtist": "الترتيب بـ {artist}",
   "cancel": "إلغاء",
   "castAndCrew": "الممثلون والطاقم",
+  "collectionEmpty": "هذه المجموعة فارغة",
+  "collections": "المجموعات",
   "communityRating": "تقييم الجمهور",
   "confirm": "تأكيد",
   "connect": "اتصال",
   "continueListening": "استئناف الاستماع",
   "continueWatching": "استئناف المشاهدة",
   "criticRating": "تقييم النقاد",
+  "customRating": "تصنيف مخصص",
   "darkModeToggle": "تبديل الوضع الداكن",
+  "dateAdded": "تاريخ الإضافة",
   "details": "التفاصيل",
   "dialog": {
     "upNext": {
       "hide": "إخفاء",
+      "nextItemPlayingIn": "تبدأ في {time}",
       "startNow": "شغل الآن"
     }
   },
+  "directing": "الإخراج",
   "director": "المخرج",
   "disabled": "معطل",
+  "discNumber": "القرص {discNumber}",
   "edit": "تعديل",
   "editMetadata": "تعديل البيانات التعريفية",
+  "editPerson": "تعديل الشخص",
+  "endDate": "تاريخ الانتهاء",
   "endsAt": "ينهي في تمام الساعة {time}",
   "episodeNumber": "الحلقة {episodeNumber}",
   "errors": {
+    "anErrorHappened": "حدث خطأ",
     "messages": {
-      "errorCode": "رمز الخطأ: {errorCode}"
+      "errorCode": "رمز الخطأ: {errorCode}",
+      "videoPlayerError": "واجه مشغل الفيديو خطأ غير قابل للإصلاح."
     }
   },
   "failedRetrievingDisplayPreferences": "فشل الوصول إلى خيارات العرض، ستُطبق آخر خيارات مُخزنة.",
@@ -60,10 +74,22 @@
   "failedToRefreshItems": "فشل تحديث العناصر",
   "favorite": "المفضلة",
   "features": "الميزات",
+  "filter": "التصفية",
+  "filtersNotFound": "غير قادر على تحميل التصفيات",
   "fullScreen": "ملء الشاشة",
+  "general": "عام",
+  "genericJellyfinPlaceholderDevice": "جهاز Jellyfin عام",
+  "genres": "التصنيفات",
+  "googleCastPlaceholderDevice": "جهاز Google Cast",
   "guestStar": "ضيف الشرف",
+  "headerExternalIds": "المعرفات الخارجية",
   "headerPaths": "المسار",
   "home": "الرئيسية",
+  "homeHeader": {
+    "items": {
+      "recentlyAdded": "أضيف مؤخرا"
+    }
+  },
   "imageType": {
     "art": "فن",
     "banner": "اللافتة",
