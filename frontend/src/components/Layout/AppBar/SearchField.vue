@@ -4,7 +4,7 @@
     class="search-input"
     :prepend-inner-icon="IMdiMagnify"
     :placeholder="$t('search.name')"
-    :density="'comfortable'"
+    density="compact"
     hide-details
     single-line
     @update:focused="onFocus" />

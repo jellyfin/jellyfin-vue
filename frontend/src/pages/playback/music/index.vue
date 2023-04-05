@@ -1,9 +1,6 @@
 <template>
   <v-main>
-    <v-app-bar
-      :class="useResponsiveClasses('app-bar-safe-zone')"
-      elevation="0"
-      color="transparent">
+    <v-app-bar color="transparent">
       <app-bar-button-layout @click="$router.back()">
         <template #icon>
           <v-icon>
@@ -90,7 +87,6 @@ import { isNil } from 'lodash-es';
 import { useRoute } from 'vue-router';
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
-import { useResponsiveClasses } from '@/composables';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
