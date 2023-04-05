@@ -61,6 +61,7 @@ class ClientSettingsStore {
         mergeExcludingUnknown(storageValue, defaults)
     }
   );
+
   /**
    * == GETTERS AND SETTERS ==
    */
