@@ -23,6 +23,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
 import { getName } from 'all-iso-language-codes';
+import { startCase } from 'lodash-es';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
@@ -86,7 +87,9 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
-    return getName(track.Language, locale.value) ?? t('undefined');
+    return startCase(
+      getName(track.Language, locale.value.split('-')[0]) ?? t('undefined')
+    );
   } else if (props.type === 'Audio' || props.type === 'Subtitle') {
     return t('undefined');
   }
@@ -125,12 +128,12 @@ const selectItems = computed(() => {
  * Default index to use (undefined if none)
  */
 const defaultIndex =
-  props.defaultStreamIndex !== undefined
-    ? props.defaultStreamIndex
-    : props.mediaStreams.find((track) => track.IsDefault)?.Index;
+  props.defaultStreamIndex === undefined
+    ? props.mediaStreams.find((track) => track.IsDefault)?.Index
+    : props.defaultStreamIndex;
 
 const trackIndex = ref<number | undefined>(
-  defaultIndex !== undefined ? defaultIndex : -1
+  defaultIndex === undefined ? -1 : defaultIndex
 );
 
 /**
