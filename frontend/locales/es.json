@@ -24,6 +24,7 @@
   "aspectRatio": "Relación de aspecto",
   "audio": "Audio",
   "audioCodecNotSupported": "El formato de audio no está soportado",
+  "auto": "Automático",
   "badRequest": "Solicitud incorrecta. Intente de nuevo",
   "books": "Libros",
   "browserNotSupported": "Tu navegador no es compatible con este archivo.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Episodio {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ha ocurrido un error",
+    "cantPlayItem": "Este elemento no se puede reproducir",
     "messages": {
       "errorCode": "Código de error: {errorCode}",
       "videoPlayerError": "El reproductor de vídeo encontró un error irrecuperable."
-    }
+    },
+    "playback": {
+      "mediaError": "Error fatal en los medios encontrado, intentando recuperar",
+      "networkError": "Error fatal de red encontrado, intentando recuperar"
+    },
+    "unauthorized": "No estas autorizado para acceder a esta página"
   },
   "failedRetrievingDisplayPreferences": "Error al cargar las preferencias. Utilizando los valores por defecto.",
   "failedSettingDisplayPreferences": "Error al actualizar las preferencias.",
@@ -111,7 +118,9 @@
       "albums": "Álbumes",
       "appearsOn": "Apariencias",
       "discography": "Discografía",
+      "eps": "LPs",
       "information": "Información",
+      "singles": "Sencillos",
       "videos": "Vídeos"
     },
     "cast": "Reparto",
@@ -324,9 +333,11 @@
       "dateCreated": "Fecha de creación",
       "description": "Añade y borra claves API para acceso externo a tu servidor",
       "refreshKeysFailure": "Error al actualizar claves API",
+      "revoke": "Revocar",
       "revokeAll": "Revocar todas las claves API",
       "revokeAllFailure": "Error al revocar todas las claves API",
       "revokeAllSuccess": "Revocó con éxito todas las claves API",
+      "revokeConfirm": "Confirmar la revocación de la clave API",
       "revokeFailure": "Error al revocar la clave API",
       "revokeSuccess": "Clave API revocada con éxito"
     },
@@ -337,6 +348,7 @@
       "deleteAll": "Eliminar todos",
       "deleteAllDevicesError": "Error al eliminar todos los dispositivos",
       "deleteAllDevicesSuccess": "Todos los dispositivos se han eliminado correctamente",
+      "deleteConfirm": "Confirmar la eliminación del dispositivo",
       "deleteDeviceError": "Error al eliminar el dispositivo",
       "deleteDeviceSuccess": "Dispositivo eliminado correctamente",
       "deviceName": "Nombre del dispositivo",
@@ -430,7 +442,8 @@
   "signIn": "Iniciar sesión",
   "snackbar": {
     "addedToQueue": "Añadido a la cola de reproducción",
-    "playNext": "El elemento seleccionado se reproducirá a continuación"
+    "playNext": "El elemento seleccionado se reproducirá a continuación",
+    "routeValidationError": "El routeId especificado en los parámetros de ruta no es correcto"
   },
   "songs": "Canciones",
   "sortByType": "Por {type}",
@@ -450,6 +463,7 @@
   "themeVideo": "Vídeo temático",
   "tooltips": {
     "changeLanguage": "Idioma",
+    "switchToAuto": "Seguir el tema del sistema",
     "switchToDarkMode": "Cambiar al tema oscuro",
     "switchToLightMode": "Cambiar al tema claro"
   },
