@@ -24,6 +24,7 @@
   "aspectRatio": "Kuvasuhde",
   "audio": "Ääni",
   "audioCodecNotSupported": "Äänikoodekkia ei tueta",
+  "auto": "Automaattinen",
   "badRequest": "Virheellinen pyyntö. Yritä uudelleen",
   "books": "Kirjat",
   "browserNotSupported": "Tämän tiedoston toistoa selaimessasi ei tueta.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Jakso {episodeNumber}",
   "errors": {
     "anErrorHappened": "Tapahtui virhe",
+    "cantPlayItem": "Tätä kohdetta ei voida toistaa",
     "messages": {
       "errorCode": "Virhekoodi: {errorCode}",
       "videoPlayerError": "Videosoitin kohtasi peruuttamattoman virheen."
-    }
+    },
+    "playback": {
+      "mediaError": "Kohdattiin kriittinen mediavirhe. Pyritään palautumaan",
+      "networkError": "Kohdattiin kriittinen verkkovirhe. Pyritään palautumaan"
+    },
+    "unauthorized": "Sinulla ei ole oikeutta avata tätä sivua"
   },
   "failedRetrievingDisplayPreferences": "Näyttöasetuksia ei saatu. Käytetään viimeisiä tunnettuja asetuksia.",
   "failedSettingDisplayPreferences": "Näyttöasetuksia ei voitu muuttaa.",
@@ -326,9 +333,11 @@
       "dateCreated": "Lisäyspäivä",
       "description": "Lisää ja peru palvelimen etäkäytön API-avaimia",
       "refreshKeysFailure": "Virhe päivittäessä API-avaimia",
+      "revoke": "Mitätöi",
       "revokeAll": "Peru kaikki API-avaimet",
       "revokeAllFailure": "Virhe peruttaessa kaikkia API-avaimia",
       "revokeAllSuccess": "Kaikki API-avaimet peruttiin",
+      "revokeConfirm": "Vahvista API-avaimen mitätöinti",
       "revokeFailure": "Virhe peruttaessa API-avainta",
       "revokeSuccess": "API-avain peruttiin"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Poista kaikki",
       "deleteAllDevicesError": "Virhe poistaessa kaikkia laitteita",
       "deleteAllDevicesSuccess": "Kaikki laitteet poistettiin",
+      "deleteConfirm": "Vahvista laitteen poisto",
       "deleteDeviceError": "Virhe poistaessa laitetta",
       "deleteDeviceSuccess": "Laite poistettiin",
       "deviceName": "Laitteen nimi",
@@ -432,7 +442,8 @@
   "signIn": "Kirjaudu",
   "snackbar": {
     "addedToQueue": "Lisättiin jonoon",
-    "playNext": "Valittu kohde toistetaan seuraavaksi nykyisen jälkeen"
+    "playNext": "Valittu kohde toistetaan seuraavaksi nykyisen jälkeen",
+    "routeValidationError": "Reittiparametreissa määritetty routeId-arvo on virheellinen"
   },
   "songs": "Kappaleet",
   "sortByType": "{type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Tunnusvideo",
   "tooltips": {
     "changeLanguage": "Kieli",
+    "switchToAuto": "Seuraa järjestelmän teemaa",
     "switchToDarkMode": "Vaihda tummaan tilaan",
     "switchToLightMode": "Vaihda vaaleaan tilaan"
   },
