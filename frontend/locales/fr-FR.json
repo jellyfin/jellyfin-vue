@@ -24,6 +24,7 @@
   "aspectRatio": "Format d'image",
   "audio": "Audio",
   "audioCodecNotSupported": "Le codec audio n'est pas supporté",
+  "auto": "Automatique",
   "badRequest": "Mauvaise requête. Réessayez",
   "books": "Livres",
   "browserNotSupported": "Votre navigateur n'est pas pris en charge pour la lecture de ce fichier.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Épisode {episodeNumber}",
   "errors": {
     "anErrorHappened": "Une erreur est survenue",
+    "cantPlayItem": "Cet élément ne peut pas être lu",
     "messages": {
       "errorCode": "Code erreur : {errorCode}",
       "videoPlayerError": "Le lecteur vidéo a rencontré une erreur irrécupérable."
-    }
+    },
+    "playback": {
+      "mediaError": "Une erreur fatale de média est survenue, tentative de récupération",
+      "networkError": "Une erreur fatale réseau est survenue, tentative de récupération"
+    },
+    "unauthorized": "Vous n'êtes pas autorisé à accéder à cette page"
   },
   "failedRetrievingDisplayPreferences": "Impossible de lire les préférences d'affichage. Les valeurs par défaut seront utilisées.",
   "failedSettingDisplayPreferences": "Impossible de modifier les préférences d'affichage.",
@@ -326,9 +333,11 @@
       "dateCreated": "Date de création",
       "description": "Ajouter et révoquer des clés API pour un accès externe à votre serveur",
       "refreshKeysFailure": "Erreur lors de l'actualisation des clés API",
+      "revoke": "Révoquer",
       "revokeAll": "Révoquer toutes les clés API",
       "revokeAllFailure": "Erreur lors de la révocation de toutes les clés API",
       "revokeAllSuccess": "Révocation réussie de toutes les clés API",
+      "revokeConfirm": "Confirmer la révocation de la clé d'API",
       "revokeFailure": "Erreur lors de la révocation de la clé API",
       "revokeSuccess": "Clé API révoquée avec succès"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Tout supprimer",
       "deleteAllDevicesError": "Erreur lors de la suppression de tous les appareils",
       "deleteAllDevicesSuccess": "Tous les appareils ont été supprimés avec succès",
+      "deleteConfirm": "Confirmer la suppression de l'appareil",
       "deleteDeviceError": "Erreur lors de suppression de l'appareil",
       "deleteDeviceSuccess": "Appareil supprimé avec succès",
       "deviceName": "Nom de l'appareil",
@@ -432,7 +442,8 @@
   "signIn": "Se connecter",
   "snackbar": {
     "addedToQueue": "Ajouté en file d'attente",
-    "playNext": "L'élément sélectionné sera lancé après l'élément actuel"
+    "playNext": "L'élément sélectionné sera lancé après l'élément actuel",
+    "routeValidationError": "Le routeId fourni dans les paramètres de route est incorrect"
   },
   "songs": "Musiques",
   "sortByType": "Par {type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Vidéo du générique",
   "tooltips": {
     "changeLanguage": "Langue",
+    "switchToAuto": "Respecter le thème système",
     "switchToDarkMode": "Basculer en mode sombre",
     "switchToLightMode": "Basculer en mode clair"
   },
