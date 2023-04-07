@@ -34,13 +34,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getLogo } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 
 const props = defineProps<{ item: BaseItemDto }>();
-const { t } = useI18n();
 
 const logo = computed(() => getLogo(props.item));
 const itemLink = computed(() => getItemDetailsLink(props.item));
@@ -72,19 +70,11 @@ const logoLink = computed(() => {
 });
 
 const subtitle = computed(() => {
-  if (props.item.Type === BaseItemKind.MusicAlbum) {
-    return props.item.Name;
-  } else if (
-    props.item.Type === BaseItemKind.Episode &&
-    props.item.SeasonName &&
-    props.item.IndexNumber &&
-    props.item.Name
+  if (
+    props.item.Type === BaseItemKind.MusicAlbum ||
+    props.item.Type === BaseItemKind.Episode
   ) {
-    const episodeString = t('episodeNumber', {
-      episodeNumber: props.item.IndexNumber
-    });
-
-    return `${props.item.SeasonName} - ${episodeString}\n${props.item.Name}`;
+    return props.item.Name;
   }
 });
 </script>
