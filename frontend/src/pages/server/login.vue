@@ -68,18 +68,26 @@ import { isEmpty } from 'lodash-es';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { useRoute } from 'vue-router';
+import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useRemote } from '@/composables';
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const remote = useRemote();
 const api = remote.sdk.oneTimeSetup(
   remote.auth.currentServer?.PublicAddress || ''
 );
 
 route.meta.title = t('login.login');
+
+try {
+  await getSystemApi(api).getPublicSystemInfo();
+} catch {
+  router.replace('/server/select');
+}
 
 const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
 const publicUsers = (await getUserApi(api).getPublicUsers({})).data;
