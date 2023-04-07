@@ -24,7 +24,10 @@ class RemotePluginSDK {
       const server = auth.currentServer;
       const accessToken = auth.currentUserToken;
 
-      if (!isNil(server)) {
+      if (isNil(server)) {
+        RemotePluginAxiosInstance.resetDefaults();
+        this.api = undefined;
+      } else {
         this.api = this.sdk.createApi(
           server.PublicAddress,
           accessToken,
@@ -32,9 +35,6 @@ class RemotePluginSDK {
         );
         RemotePluginAxiosInstance.instance.defaults.baseURL =
           server.PublicAddress;
-      } else {
-        RemotePluginAxiosInstance.resetDefaults();
-        this.api = undefined;
       }
     });
   }

@@ -412,13 +412,13 @@ function onPersonSave(item: BaseItemPerson): void {
     return;
   }
 
-  if (!item.Id) {
-    // undefined id means that the person was newly added
-    metadata.value.People.push(item);
-  } else {
+  if (item.Id) {
     metadata.value.People = metadata.value.People.map((p) =>
       p.Id === item.Id ? item : p
     );
+  } else {
+    // undefined id means that the person was newly added
+    metadata.value.People.push(item);
   }
 
   person.value = undefined;

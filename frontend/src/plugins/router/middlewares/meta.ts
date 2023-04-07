@@ -44,10 +44,10 @@ export default function metaGuard(
   to.meta = reactive<RouteMeta>(defaultsDeep(to.meta, defaultMeta));
 
   if (from.meta.transition?.leave) {
-    if (!to.meta.transition) {
-      to.meta.transition = { enter: from.meta.transition.leave };
-    } else {
+    if (to.meta.transition) {
       to.meta.transition.enter = from.meta.transition.leave;
+    } else {
+      to.meta.transition = { enter: from.meta.transition.leave };
     }
   }
 

@@ -95,9 +95,9 @@ class ClientSettingsStore {
     const i18n = usei18n();
 
     i18n.locale.value =
-      this.locale !== 'auto'
-        ? this.locale
-        : BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value);
+      this.locale === 'auto'
+        ? BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
+        : this.locale;
   };
 
   private _updateTheme = (): void => {
