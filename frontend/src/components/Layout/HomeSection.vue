@@ -1,10 +1,6 @@
 <template>
   <SwiperSection
-    :title="
-      section.libraryName === undefined
-        ? $t(section.name)
-        : $t(section.name, { libraryName: section.libraryName })
-    "
+    :title="section.title"
     :items="items"
     :shape="section.shape" />
 </template>
