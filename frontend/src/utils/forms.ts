@@ -3,8 +3,8 @@
  *
  */
 
-interface VSelectItem {
-  value: unknown;
+export interface VSelectItem<T> {
+  value: T;
 }
 
 /**
@@ -13,7 +13,7 @@ interface VSelectItem {
  * @param values - list of values to use for the v-select
  * @returns list ready to be used in the :item property of a v-select
  */
-export function getItemizedSelect(values: unknown[]): VSelectItem[] {
+export function getItemizedSelect<T>(values: T[]): VSelectItem<T>[] {
   return values.map((value) => {
     return { value };
   });

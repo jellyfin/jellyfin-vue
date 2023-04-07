@@ -78,6 +78,7 @@ interface PlaybackManagerState {
   lastItemIndex: number | undefined;
   currentItemIndex: number | undefined;
   currentMediaSource: MediaSourceInfo | undefined;
+  currentMediaSourceIndex: number | undefined;
   currentVideoStreamIndex: number | undefined;
   currentAudioStreamIndex: number | undefined;
   currentSubtitleStreamIndex: number | undefined;
@@ -118,6 +119,7 @@ class PlaybackManagerStore {
     lastItemIndex: undefined,
     currentItemIndex: undefined,
     currentMediaSource: undefined,
+    currentMediaSourceIndex: undefined,
     currentVideoStreamIndex: undefined,
     currentAudioStreamIndex: undefined,
     currentSubtitleStreamIndex: undefined,
@@ -689,6 +691,7 @@ class PlaybackManagerStore {
     audioTrackIndex,
     subtitleTrackIndex,
     videoTrackIndex,
+    mediaSourceIndex,
     startFromIndex = 0,
     startFromTime = 0,
     initiator,
@@ -698,6 +701,7 @@ class PlaybackManagerStore {
     audioTrackIndex?: number;
     subtitleTrackIndex?: number;
     videoTrackIndex?: number;
+    mediaSourceIndex?: number;
     startFromIndex?: number;
     startFromTime?: number;
     initiator?: BaseItemDto;
@@ -713,6 +717,10 @@ class PlaybackManagerStore {
         item,
         startShuffled
       );
+
+      if (mediaSourceIndex !== undefined) {
+        this._state.currentMediaSourceIndex = mediaSourceIndex;
+      }
 
       if (videoTrackIndex !== undefined) {
         this._state.currentVideoStreamIndex = videoTrackIndex;
@@ -942,6 +950,7 @@ class PlaybackManagerStore {
 
   public getItemPlaybackInfo = async (
     item = this.currentItem,
+    mediaSourceIndex = this._state.currentMediaSourceIndex,
     audioStreamIndex = this.currentAudioStreamIndex,
     subtitleStreamIndex = this.currentSubtitleStreamIndex
   ): Promise<PlaybackInfoResponse | undefined> => {
@@ -952,7 +961,8 @@ class PlaybackManagerStore {
           userId: remote.auth.currentUserId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
-          mediaSourceId: item.Id,
+          mediaSourceId:
+            item.MediaSources?.[mediaSourceIndex ?? 0].Id ?? item?.Id,
           audioStreamIndex,
           subtitleStreamIndex
         })

@@ -51,6 +51,7 @@ const props = withDefaults(
     videoTrackIndex?: number;
     audioTrackIndex?: number;
     subtitleTrackIndex?: number;
+    mediaSourceIndex?: number;
     disabled?: boolean;
   }>(),
   {
@@ -60,7 +61,8 @@ const props = withDefaults(
     disabled: false,
     videoTrackIndex: undefined,
     audioTrackIndex: undefined,
-    subtitleTrackIndex: undefined
+    subtitleTrackIndex: undefined,
+    mediaSourceIndex: undefined
   }
 );
 
@@ -78,6 +80,7 @@ async function playOrResume(): Promise<void> {
       audioTrackIndex: props.audioTrackIndex,
       subtitleTrackIndex: props.subtitleTrackIndex,
       videoTrackIndex: props.videoTrackIndex,
+      mediaSourceIndex: props.mediaSourceIndex,
       startFromTime:
         ticksToMs(props.item.UserData?.PlaybackPositionTicks) / 1000
     });
@@ -88,6 +91,7 @@ async function playOrResume(): Promise<void> {
       audioTrackIndex: props.audioTrackIndex,
       subtitleTrackIndex: props.subtitleTrackIndex,
       videoTrackIndex: props.videoTrackIndex,
+      mediaSourceIndex: props.mediaSourceIndex,
       startShuffled: true
     });
   } else {
@@ -95,7 +99,8 @@ async function playOrResume(): Promise<void> {
       item: props.item,
       audioTrackIndex: props.audioTrackIndex,
       subtitleTrackIndex: props.subtitleTrackIndex,
-      videoTrackIndex: props.videoTrackIndex
+      videoTrackIndex: props.videoTrackIndex,
+      mediaSourceIndex: props.mediaSourceIndex
     });
   }
 
