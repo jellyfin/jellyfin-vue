@@ -31,6 +31,7 @@
             <play-button
               class="mr-2"
               :item="item"
+              :media-source-index="currentSourceIndex"
               :video-track-index="currentVideoTrack"
               :audio-track-index="currentAudioTrack"
               :subtitle-track-index="currentSubtitleTrack" />
@@ -122,7 +123,7 @@
                 <v-col class="px-0" :cols="12" :sm="10">
                   <v-select
                     v-model="currentSource"
-                    :items="getItemizedSelect(item.MediaSources)"
+                    :items="selectSources"
                     single-line
                     hide-details
                     class="text-truncate">
@@ -235,10 +236,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
-  BaseItemDto,
   BaseItemPerson,
   ImageType,
   MediaSourceInfo
@@ -252,22 +252,28 @@ import { useRemote } from '@/composables';
 const route = useRoute();
 const remote = useRemote();
 
-const item = ref<BaseItemDto>({});
+const { itemId } = route.params as { itemId: string };
+
+const item = (
+  await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+    userId: remote.auth.currentUserId ?? '',
+    itemId
+  })
+).data;
+
 const currentSource = ref<MediaSourceInfo>({});
 const currentVideoTrack = ref<number>();
 const currentAudioTrack = ref<number>();
 const currentSubtitleTrack = ref<number>();
 
 const crew = computed<BaseItemPerson[]>(() =>
-  (item.value?.People ?? []).filter((person) =>
+  (item.People ?? []).filter((person) =>
     ['Director', 'Writer'].includes(person?.Type ?? '')
   )
 );
 
 const actors = computed<BaseItemPerson[]>(() =>
-  (item.value?.People ?? [])
-    .filter((person) => person.Type === 'Actor')
-    .slice(0, 10)
+  (item.People ?? []).filter((person) => person.Type === 'Actor').slice(0, 10)
 );
 
 const directors = computed<BaseItemPerson[]>(() =>
@@ -278,21 +284,18 @@ const writers = computed<BaseItemPerson[]>(() =>
   crew.value.filter((person) => person.Type === 'Writer')
 );
 
-onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+const selectSources = computed(() =>
+  getItemizedSelect(item.MediaSources ?? [])
+);
 
-  item.value = (
-    await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-      userId: remote.auth.currentUserId ?? '',
-      itemId
-    })
-  ).data;
+const currentSourceIndex = computed(() =>
+  selectSources.value.findIndex((el) => el.value.Id === currentSource.value.Id)
+);
 
-  route.meta.title = item.value.Name;
-  route.meta.backdrop.blurhash = getBlurhash(item.value, ImageType.Backdrop);
+route.meta.title = item.Name;
+route.meta.backdrop.blurhash = getBlurhash(item, ImageType.Backdrop);
 
-  if (item.value?.MediaSources && item.value.MediaSources.length > 0) {
-    currentSource.value = item.value.MediaSources[0];
-  }
-});
+if (item.MediaSources && item.MediaSources.length > 0) {
+  currentSource.value = item.MediaSources[0];
+}
 </script>
