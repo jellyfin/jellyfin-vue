@@ -129,8 +129,8 @@
                     <template #selection="{ item: i }">
                       {{ i.value.Name }}
                     </template>
-                    <template #item="{ item: i }">
-                      {{ i.value.Name }}
+                    <template #item="{ item: i, props }">
+                      <v-list-item v-bind="props" :title="i.value.Name" />
                     </template>
                   </v-select>
                 </v-col>
