@@ -67,7 +67,7 @@ const homeSections = computed<HomeSection[]>(() => {
     switch (homeSection) {
       case 'librarytiles': {
         homeSections.push({
-          name: 'libraries',
+          title: t('libraries'),
           libraryId: '',
           shape: CardShapes.Thumb,
           type: 'libraries'
@@ -94,8 +94,7 @@ const homeSections = computed<HomeSection[]>(() => {
             }
 
             latestMediaSections.push({
-              name: 'latestLibrary',
-              libraryName: userView.Name,
+              title: t('latestLibrary', { libraryName: userView.Name }),
               libraryId: userView.Id ?? '',
               shape: getShapeFromCollectionType(userView.CollectionType),
               type: 'latestmedia'
@@ -109,7 +108,7 @@ const homeSections = computed<HomeSection[]>(() => {
       }
       case 'resume': {
         homeSections.push({
-          name: 'continueWatching',
+          title: t('continueWatching'),
           libraryId: '',
           shape: CardShapes.Thumb,
           type: 'resume'
@@ -118,7 +117,7 @@ const homeSections = computed<HomeSection[]>(() => {
       }
       case 'resumeaudio': {
         homeSections.push({
-          name: 'continueListening',
+          title: t('continueListening'),
           libraryId: '',
           shape: CardShapes.Square,
           type: 'resumeaudio'
@@ -127,7 +126,7 @@ const homeSections = computed<HomeSection[]>(() => {
       }
       case 'upnext': {
         homeSections.push({
-          name: 'nextUp',
+          title: t('nextUp'),
           libraryId: '',
           shape: CardShapes.Thumb,
           type: 'upnext'

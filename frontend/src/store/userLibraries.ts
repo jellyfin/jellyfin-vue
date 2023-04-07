@@ -21,8 +21,7 @@ interface LatestMedia {
 }
 
 export interface HomeSection {
-  name: string;
-  libraryName?: string | null;
+  title: string;
   libraryId: string;
   shape: CardShapes;
   type: string;

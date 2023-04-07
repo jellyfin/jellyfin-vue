@@ -22,7 +22,7 @@
             <VListItem
               v-for="task in UITaskList"
               :key="`${task.id}`"
-              :title="$t(task.textKey, { ...task.textParams })">
+              :title="task.text">
               <template #append>
                 <VProgressCircular
                   v-if="task.progress !== 100"
@@ -48,13 +48,13 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 
 interface TaskInfo {
   progress: undefined | number;
-  textKey: string;
-  textParams?: Record<string, string>;
+  text: string;
   id: string;
 }
 
@@ -63,25 +63,25 @@ defineProps<{ fab?: boolean }>();
 const menu = ref(false);
 const taskManager = taskManagerStore();
 const completedTaskList = ref<TaskInfo[]>([]);
+const { t } = useI18n();
 
 const mappedTaskList = computed<TaskInfo[]>(() => {
-  return taskManager.tasks.map((t) => {
-    switch (t.type) {
+  return taskManager.tasks.map((tsk) => {
+    switch (tsk.type) {
       case TaskType.ConfigSync: {
         return {
-          progress: t.progress,
-          textKey: 'appbar.tasks.configSync',
-          id: t.id
+          progress: tsk.progress,
+          text: t('appbar.tasks.configSync'),
+          id: tsk.id
         };
       }
       case TaskType.LibraryRefresh: {
         return {
-          progress: t.progress,
-          textKey: 'appbar.tasks.scanningItem',
-          textParams: {
-            item: t.data ?? ''
-          },
-          id: t.id
+          progress: tsk.progress,
+          text: t('appbar.tasks.scanningItem', {
+            library: tsk.data ?? ''
+          }),
+          id: tsk.id
         };
       }
     }
