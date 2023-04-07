@@ -90,6 +90,17 @@ class JellyfinInterceptors {
      */
     throw error;
   }
+
+  public async serverUnreachableInterceptor(
+    error: AxiosError
+  ): Promise<never | void> {
+    if (error.code === 'ERR_NETWORK') {
+      await remote.logoutCurrentUser(true);
+      useSnackbar(usei18n().t('login.serverNotFound'), 'error');
+    }
+
+    throw error;
+  }
 }
 
 class RemotePluginAxios {
@@ -98,13 +109,15 @@ class RemotePluginAxios {
   private readonly _defaults = this.instance.defaults;
   private _reactiveInterceptor = -1;
   private _logoutInterceptor = -1;
+  private _serverUnreachableInterceptor = -1;
   private _startLoadInterceptor = -1;
   private _stopLoadInterceptor = -1;
 
   public constructor() {
     this.setLoadInterceptor();
     this.setReactiveItemsInterceptor();
-    this.setLogoutInteceptor();
+    this.setLogoutInterceptor();
+    this.setServerUnreachableInterceptor();
   }
 
   public resetDefaults(): void {
@@ -138,7 +151,7 @@ class RemotePluginAxios {
     this._reactiveInterceptor = -1;
   }
 
-  public setLogoutInteceptor(): void {
+  public setLogoutInterceptor(): void {
     this._logoutInterceptor = this.instance.interceptors.response.use(
       undefined,
       this._interceptors.logoutInterceptor
@@ -147,6 +160,20 @@ class RemotePluginAxios {
 
   public removeLogoutInterceptor(): void {
     this.instance.interceptors.response.eject(this._logoutInterceptor);
+  }
+
+  public setServerUnreachableInterceptor(): void {
+    this._serverUnreachableInterceptor =
+      this.instance.interceptors.response.use(
+        undefined,
+        this._interceptors.serverUnreachableInterceptor
+      );
+  }
+
+  public removeServerUnreachableInterceptor(): void {
+    this.instance.interceptors.response.eject(
+      this._serverUnreachableInterceptor
+    );
   }
 }
 
