@@ -116,18 +116,16 @@ class RemotePluginAuth {
       semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
 
     if (isServerVersionSupported) {
-      if (!serv.StartupWizardCompleted) {
-        router.push({ path: '/wizard' });
-      } else {
+      if (serv.StartupWizardCompleted) {
         const oldServer = this.getServerById(serv.Id);
 
-        if (!isNil(oldServer)) {
+        if (isNil(oldServer)) {
+          state.value.servers.push(serv);
+        } else {
           this.servers[this.servers.indexOf(oldServer)] = merge(
             oldServer,
             serv
           );
-        } else {
-          state.value.servers.push(serv);
         }
 
         const serverInfo = state.value.servers.find(
@@ -140,6 +138,8 @@ class RemotePluginAuth {
 
         state.value.currentServerIndex =
           state.value.servers.indexOf(serverInfo);
+      } else {
+        router.push({ path: '/wizard' });
       }
     } else {
       useSnackbar(i18n.t('login.serverVersionTooLow'), 'error');

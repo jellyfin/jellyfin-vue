@@ -78,10 +78,10 @@ class PlayerElementStore {
   public toggleFullscreenVideoPlayer = (): void => {
     const router = useRouter();
 
-    if (!this.isFullscreenVideoPlayer) {
-      router.push(fullscreenVideoRoute);
-    } else {
+    if (this.isFullscreenVideoPlayer) {
       router.back();
+    } else {
+      router.push(fullscreenVideoRoute);
     }
   };
 

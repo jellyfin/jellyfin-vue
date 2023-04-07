@@ -123,9 +123,9 @@ const { t } = useI18n();
 const cardType = computed(() => getShapeFromItemType(props.item.Type));
 
 const cardTitle = computed(() =>
-  props.item.Type !== BaseItemKind.Episode
-    ? props.item.Name || ''
-    : props.item.SeriesName || ''
+  props.item.Type === BaseItemKind.Episode
+    ? props.item.SeriesName || ''
+    : props.item.Name || ''
 );
 
 /**

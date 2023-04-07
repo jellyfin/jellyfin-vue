@@ -412,9 +412,9 @@ class PlaybackManagerStore {
   }
 
   public get currentTime(): number {
-    return !this.isRemotePlayer
-      ? mediaControls.currentTime.value
-      : this._state.remotePlaybackTime;
+    return this.isRemotePlayer
+      ? this._state.remotePlaybackTime
+      : mediaControls.currentTime.value;
   }
   public set currentTime(newValue: number) {
     if (this.isRemotePlayer) {
@@ -540,60 +540,55 @@ class PlaybackManagerStore {
    * Updates mediasession metadata based on the currently playing item
    */
   private _updateMediaSessionMetadata = (): void => {
-    if (!isNil(this.currentItem)) {
-      this._mediaMetadata.title = this.currentItem.Name || '';
-      this._mediaMetadata.artist = this.currentItem.AlbumArtist || '';
-      this._mediaMetadata.album = this.currentItem.Album || '';
-      this._mediaMetadata.artwork = [
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 96
-            }).url || '',
-          sizes: '96x96'
-        },
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 128
-            }).url || '',
-          sizes: '128x128'
-        },
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 192
-            }).url || '',
-          sizes: '192x192'
-        },
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 256
-            }).url || '',
-          sizes: '256x256'
-        },
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 384
-            }).url || '',
-          sizes: '384x384'
-        },
-        {
-          src:
-            getImageInfo(this.currentItem, {
-              width: 512
-            }).url || '',
-          sizes: '512x512'
-        }
-      ];
-    } else {
-      this._mediaMetadata.title = '';
-      this._mediaMetadata.artist = '';
-      this._mediaMetadata.album = '';
-      this._mediaMetadata.artwork = [];
-    }
+    this._mediaMetadata.title = this.currentItem?.Name ?? '';
+    this._mediaMetadata.artist = this.currentItem?.AlbumArtist ?? '';
+    this._mediaMetadata.album = this.currentItem?.Album ?? '';
+    this._mediaMetadata.artwork = this.currentItem
+      ? [
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 96
+              }).url || '',
+            sizes: '96x96'
+          },
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 128
+              }).url || '',
+            sizes: '128x128'
+          },
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 192
+              }).url || '',
+            sizes: '192x192'
+          },
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 256
+              }).url || '',
+            sizes: '256x256'
+          },
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 384
+              }).url || '',
+            sizes: '384x384'
+          },
+          {
+            src:
+              getImageInfo(this.currentItem, {
+                width: 512
+              }).url || '',
+            sizes: '512x512'
+          }
+        ]
+      : [];
   };
 
   /**
@@ -884,7 +879,15 @@ class PlaybackManagerStore {
 
   public toggleShuffle = (): void => {
     if (this._state.queue && !isNil(this._state.currentItemIndex)) {
-      if (!this._state.isShuffling) {
+      if (this._state.isShuffling) {
+        const item = this._state.queue[this._state.currentItemIndex];
+
+        this._state.currentItemIndex = this._state.originalQueue.indexOf(item);
+        this._state.queue = this._state.originalQueue;
+        this._state.originalQueue = [];
+        this._state.lastItemIndex = undefined;
+        this._state.isShuffling = false;
+      } else {
         const queue = shuffle(this._state.queue);
 
         this._state.originalQueue = this._state.queue;
@@ -899,14 +902,6 @@ class PlaybackManagerStore {
         this._state.currentItemIndex = 0;
         this._state.lastItemIndex = undefined;
         this._state.isShuffling = true;
-      } else {
-        const item = this._state.queue[this._state.currentItemIndex];
-
-        this._state.currentItemIndex = this._state.originalQueue.indexOf(item);
-        this._state.queue = this._state.originalQueue;
-        this._state.originalQueue = [];
-        this._state.lastItemIndex = undefined;
-        this._state.isShuffling = false;
       }
     }
   };
@@ -1116,14 +1111,14 @@ class PlaybackManagerStore {
     if (playbackInfo) {
       const mediaSource = playbackInfo.MediaSources?.[0];
 
-      if (!mediaSource) {
-        const { t } = usei18n();
-
-        useSnackbar(t('errors.cantPlayItem'), 'error');
-      } else {
+      if (mediaSource) {
         this._state.playSessionId = playbackInfo?.PlaySessionId || '';
         this._state.currentMediaSource = mediaSource;
         this._state.currentSourceUrl = this.getItemPlaybackUrl();
+      } else {
+        const { t } = usei18n();
+
+        useSnackbar(t('errors.cantPlayItem'), 'error');
       }
     }
   };

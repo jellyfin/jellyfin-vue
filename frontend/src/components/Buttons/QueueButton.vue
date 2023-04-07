@@ -93,23 +93,23 @@ const sourceText = computed(() => {
       return unknownSource;
     }
     case InitMode.Item: {
-      return playbackManager.currentItem?.AlbumId !==
+      return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
-        ? unknownSource
-        : t('playback.playbackSource.item', {
+        ? t('playback.playbackSource.item', {
             item: playbackManager.initiator?.Name
-          });
+          })
+        : unknownSource;
     }
     case InitMode.Shuffle: {
       return t('playback.playbackSource.shuffle');
     }
     case InitMode.ShuffleItem: {
-      return playbackManager.currentItem?.AlbumId !==
+      return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
-        ? unknownSource
-        : t('playback.playbackSource.shuffleItem', {
+        ? t('playback.playbackSource.shuffleItem', {
             item: playbackManager.initiator?.Name
-          });
+          })
+        : unknownSource;
     }
     default: {
       return '';
