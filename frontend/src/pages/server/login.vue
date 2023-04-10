@@ -103,7 +103,8 @@ const currentUser = ref<UserDto>({});
 async function setCurrentUser(user: UserDto): Promise<void> {
   if (!user.HasPassword && user.Name) {
     // If the user doesn't have a password, avoid showing the password form
-    await remote.auth.loginUser(user.Name, '', true);
+    await remote.auth.loginUser(user.Name, '');
+    router.replace('/');
   } else {
     currentUser.value = user;
   }

@@ -158,7 +158,7 @@ class RemotePluginAuth {
   public async loginUser(
     username: string,
     password: string,
-    rememberMe: boolean
+    rememberMe = true
   ): Promise<void> {
     if (!this.currentServer) {
       throw new Error('There is no server in use');
