@@ -13,13 +13,12 @@
         xl="3">
         <v-card class="pointer-events-all">
           <v-card-title class="text-h6">
-            <i18n path="dialog.upNext.nextItemPlayingIn" tag="span">
-              <template #time>
-                <span class="text-primary darken-2">
-                  {{ $tc('units.time.seconds', currentItemTimeLeft) }}
-                </span>
-              </template>
-            </i18n>
+            <span>
+              {{ $t('dialog.upNext.nextItemPlayingIn') }}
+              <span class="text-primary darken-2">
+                {{ $tc('units.time.seconds', currentItemTimeLeft) }}
+              </span>
+            </span>
           </v-card-title>
           <v-card-subtitle class="text-truncate text-subtitle-1">
             <span v-if="playbackManager.currentItem.Type === 'Episode'">

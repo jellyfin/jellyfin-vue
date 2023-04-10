@@ -32,7 +32,11 @@ export default function createRemote(): {
 } {
   return {
     install: async (app: App): Promise<void> => {
-      app.config.globalProperties.$remote = remoteInstance;
+      /**
+       * `remote` is readonly but this is the one place it should actually be set
+       */
+      (app.config.globalProperties.$remote as typeof remoteInstance) =
+        remoteInstance;
 
       const auth = remoteInstance.auth;
       const config = await getJSONConfig();
