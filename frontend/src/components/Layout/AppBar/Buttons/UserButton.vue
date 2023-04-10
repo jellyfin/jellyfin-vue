@@ -3,7 +3,7 @@
     <template #icon>
       <user-image :user="auth.currentUser" :size="40" rounded />
       <v-menu location="bottom">
-        <v-list class="min-list-width" dense>
+        <v-list class="min-list-width" density="compact">
           <v-list-item>
             <template #prepend>
               <v-avatar>

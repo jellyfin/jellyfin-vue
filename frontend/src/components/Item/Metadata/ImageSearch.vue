@@ -57,7 +57,7 @@
           lg="3"
           md="4"
           sm="6"
-          xs="12">
+          cols="12">
           <v-card class="ma-2">
             <v-img
               v-if="item.Url"

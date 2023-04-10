@@ -3,6 +3,7 @@ import 'vue-router';
 import { RemotePlugin } from '@/plugins/remote/types';
 // eslint-disable-next-line no-restricted-imports
 import { languageMap } from '@/plugins/i18n';
+import enUS from '@/../locales/en-US.json';
 import 'vue-i18n';
 
 /**
@@ -40,6 +41,10 @@ declare module 'vue-i18n' {
      */
     readonly localeNames: typeof languageMap;
   }
+
+  type messages = typeof enUS;
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface DefineLocaleMessage extends messages {}
 }
 
 /**

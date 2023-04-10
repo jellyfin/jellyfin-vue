@@ -1,4 +1,4 @@
-import { createI18n } from 'vue-i18n';
+import { createI18n, I18nOptions } from 'vue-i18n';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import messages from '@intlify/unplugin-vue-i18n/messages';
 
@@ -68,7 +68,7 @@ const i18n = createI18n({
   fallbackLocale: DEFAULT_LANGUAGE,
   globalInjection: true,
   legacy: false,
-  messages
+  messages: messages as I18nOptions['messages']
 });
 
 // `localeNames` is readonly but this is the one place it should actually be set
