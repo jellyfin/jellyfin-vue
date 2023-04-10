@@ -1,6 +1,7 @@
 import { RemovableRef, useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isNil, merge } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
@@ -198,6 +199,22 @@ class RemotePluginAuth {
   }
 
   /**
+   * Refreshes the current user infos, to fetch a new picture for instance
+   */
+  public async refreshCurrentUserInfo(): Promise<void> {
+    if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
+      const api = useOneTimeAPI(
+        this.currentServer.PublicAddress,
+        this.getUserAccessToken(this.currentUser)
+      );
+
+      state.value.users[state.value.currentUserIndex] = (
+        await getUserApi(api).getCurrentUser()
+      ).data;
+    }
+  }
+
+  /**
    * Logs out the user from the server using the current base url and access token parameters.
    *
    * @param skipRequest - Skips the request and directly removes the user from the store
@@ -267,6 +284,10 @@ class RemotePluginAuth {
     }
 
     state.value.servers.splice(state.value.servers.indexOf(server), 1);
+  }
+
+  public constructor() {
+    this.refreshCurrentUserInfo();
   }
 }
 
