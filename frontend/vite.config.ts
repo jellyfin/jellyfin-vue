@@ -15,7 +15,6 @@ import {
   Vuetify3Resolver,
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
-import { VitePWA } from 'vite-plugin-pwa';
 import visualizer from 'rollup-plugin-visualizer';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import autoprefixer from 'autoprefixer';
@@ -65,7 +64,6 @@ export default defineConfig(({ mode }): UserConfig => {
       Icons({
         compiler: 'vue3'
       }),
-      VitePWA(),
       VueI18nPlugin({
         runtimeOnly: true,
         compositionOnly: true,
