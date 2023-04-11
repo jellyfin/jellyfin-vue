@@ -1,8 +1,9 @@
 <template>
   <v-app-bar
-    :class="useResponsiveClasses('app-bar-safe-zone')"
-    :elevation="transparentAppBar ? 0 : 3"
-    :color="transparentAppBar ? 'transparent' : undefined">
+    class="app-bar-safe-zone"
+    :color="transparentAppBar ? 'transparent' : undefined"
+    density="compact"
+    flat>
     <loading-indicator />
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mobile"
@@ -60,7 +61,6 @@ import { computed, inject, Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore, windowScroll } from '@/store';
-import { useResponsiveClasses } from '@/composables';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();
@@ -88,11 +88,7 @@ const navigationDrawer = inject<Ref<boolean>>('NavigationDrawer');
 
 <style lang="scss" scoped>
 .app-bar-safe-zone {
-  height: calc(56px + env(safe-area-inset-top));
-}
-
-.app-bar-safe-zone.md-and-up {
-  height: calc(64px + env(safe-area-inset-top)) !important;
+  height: calc(48px + env(safe-area-inset-top)) !important;
 }
 
 .v-toolbar.ml-n3 {
