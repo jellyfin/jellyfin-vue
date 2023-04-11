@@ -1,8 +1,6 @@
 import 'vue-router';
 // eslint-disable-next-line no-restricted-imports
 import { RemotePlugin } from '@/plugins/remote/types';
-// eslint-disable-next-line no-restricted-imports
-import { languageMap } from '@/plugins/i18n';
 import enUS from '@/../locales/en-US.json';
 import 'vue-i18n';
 
@@ -35,13 +33,6 @@ declare module 'vue' {
 }
 
 declare module 'vue-i18n' {
-  interface Composer {
-    /**
-     * An array of the locale codes that matches the locale name
-     */
-    readonly localeNames: typeof languageMap;
-  }
-
   type messages = typeof enUS;
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface DefineLocaleMessage extends messages {}

@@ -18,10 +18,12 @@
           @click="clientSettings.locale = 'auto'" />
         <v-divider />
         <v-list-item
-          v-for="(item, index) in availableLocales"
+          v-for="(item, index) in i18n.availableLocales"
           :key="index"
           :value="item === i18n.locale.value"
-          :title="languageMap[item]"
+          :title="
+            startCase(getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`)
+          "
           @click="clientSettings.locale = item" />
       </v-list>
     </v-menu>
@@ -29,18 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { startCase } from 'lodash-es';
 import { clientSettingsStore } from '@/store';
-
-type Locales = keyof ReturnType<typeof useI18n>['localeNames'];
-
-const i18n = useI18n();
-const languageMap = i18n.localeNames;
-const clientSettings = clientSettingsStore();
-const availableLocales = computed<Locales[]>(
-  () => Object.keys(languageMap) as Array<Locales>
-);
+import { getLocaleNativeName } from '@/utils/i18n';
 
 defineProps<{
   bottom?: boolean;
@@ -48,6 +42,9 @@ defineProps<{
   top?: boolean;
   elevated?: boolean;
 }>();
+
+const i18n = useI18n();
+const clientSettings = clientSettingsStore();
 </script>
 
 <style lang="scss" scoped>
