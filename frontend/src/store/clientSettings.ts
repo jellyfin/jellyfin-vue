@@ -15,13 +15,10 @@ import { mergeExcludingUnknown } from '@/utils/data-manipulation';
  * == INTERFACES AND TYPES ==
  * Casted typings for the CustomPrefs property of DisplayPreferencesDto
  */
-export type LocaleStateValues =
-  | keyof ReturnType<typeof usei18n>['localeNames']
-  | 'auto';
 
 interface ClientSettingsState {
   darkMode: 'auto' | boolean;
-  locale: LocaleStateValues;
+  locale: 'auto' | string;
 }
 
 /**
@@ -65,17 +62,16 @@ class ClientSettingsStore {
   /**
    * == GETTERS AND SETTERS ==
    */
-  public set locale(newVal: LocaleStateValues) {
-    if (newVal === 'auto') {
-      const i18n = usei18n();
+  public set locale(newVal: string) {
+    const i18n = usei18n();
 
-      this._state.value.locale = i18n.fallbackLocale.value as LocaleStateValues;
-    } else {
-      this._state.value.locale = newVal;
-    }
+    this._state.value.locale =
+      newVal === 'auto' || !(newVal in i18n.availableLocales)
+        ? String(i18n.fallbackLocale.value)
+        : newVal;
   }
 
-  public get locale(): LocaleStateValues {
+  public get locale(): string {
     return this._state.value.locale;
   }
 
