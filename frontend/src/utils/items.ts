@@ -8,6 +8,7 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
+import type { RouteNamedMap } from 'vue-router/auto/routes';
 import IMdiMovie from 'virtual:icons/mdi/movie';
 import IMdiMusic from 'virtual:icons/mdi/music';
 import IMdiImage from 'virtual:icons/mdi/image';
@@ -256,7 +257,7 @@ export function getItemDetailsLink(
   overrideType?: BaseItemKind
 ): string {
   const router = useRouter();
-  let routeName: string;
+  let routeName: keyof RouteNamedMap;
   let routeParameters: Record<never, never>;
 
   if (item.Type && validLibraryTypes.includes(item.Type)) {
