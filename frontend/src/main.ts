@@ -1,12 +1,7 @@
 /**
- * Top-level await requires ES2022 as target and module for TypeScript compiler (check tsconfig.json)
+ * Top-level await requires ES2022 (at least) as target and module
+ * for TypeScript compiler (check tsconfig.json)
  * https://caniuse.com/mdn-javascript_operators_await_top_level
- *
- * It's also needed in vite.config.ts at the build.target property.
- * The specification is not yet finished (although it has been in draft for a long time),
- * so it's still called ESNEXT
- *
- * TODO: Pin to an specific ES version when possible and remove this warning (but not the explanation of why top-level await requires ES2022)
  */
 
 import { createApp } from 'vue';
