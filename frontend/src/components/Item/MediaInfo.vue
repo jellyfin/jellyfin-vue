@@ -1,5 +1,5 @@
 <template>
-  <div class="text--secondary">
+  <div>
     <span v-if="item.Type === 'Episode'">
       {{
         $t('seasonEpisodeAbbrev', {
