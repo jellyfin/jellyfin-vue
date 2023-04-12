@@ -20,7 +20,7 @@
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"
-      class="text-truncate text-subtitle-2">
+      class="text-truncate text-h6">
       {{ subtitle }}
     </p>
     <h2

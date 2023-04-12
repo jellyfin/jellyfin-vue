@@ -107,4 +107,12 @@ withDefaults(
 .large-grid.xl .card-grid-container.xl {
   grid-template-columns: repeat(5, minmax(calc(100% / 5), 1fr));
 }
+
+.card-grid-container.xxl {
+  grid-template-columns: repeat(12, minmax(calc(100% / 12), 1fr));
+}
+
+.large-grid.xxl .card-grid-container.xxl {
+  grid-template-columns: repeat(6, minmax(calc(100% / 6), 1fr));
+}
 </style>
