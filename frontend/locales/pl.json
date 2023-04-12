@@ -24,6 +24,7 @@
   "aspectRatio": "Proporcje obrazu",
   "audio": "Dźwięk",
   "audioCodecNotSupported": "Kodek audio nie jest wspierany",
+  "auto": "Automatycznie",
   "badRequest": "Błędne żądanie. Spróbuj ponownie",
   "books": "Książki",
   "browserNotSupported": "Twoja przeglądarka nie wspiera odtwarzania tego pliku.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Odcinek {episodeNumber}",
   "errors": {
     "anErrorHappened": "Wystąpił błąd",
+    "cantPlayItem": "Ten element nie może zostać odtworzony",
     "messages": {
       "errorCode": "Kod błędu: {errorCode}",
       "videoPlayerError": "Odtwarzacz wideo napotkał nieodwracalny błąd."
-    }
+    },
+    "playback": {
+      "mediaError": "Napotkano krytyczny błąd multimediów, próba odzyskania",
+      "networkError": "Napotkano krytyczny błąd sieci, próba odzyskania"
+    },
+    "unauthorized": "Nie otrzymano autoryzacji do dostępu do tej strony"
   },
   "failedRetrievingDisplayPreferences": "Nie udało się odczytać ustawień ekranu. Korzystanie z ostatnich znanych ustawień.",
   "failedSettingDisplayPreferences": "Nie udało się odświeżyć ustawień ekranu.",
@@ -326,9 +333,11 @@
       "dateCreated": "Data utworzenia",
       "description": "Dodaj i unieważnij klucze API, aby uzyskać zewnętrzny dostęp do serwera",
       "refreshKeysFailure": "Błąd podczas odświeżania kluczy API",
+      "revoke": "Odwołaj",
       "revokeAll": "Unieważnij wszystkie klucze API",
       "revokeAllFailure": "Błąd podczas unieważniania wszystkich kluczy API",
       "revokeAllSuccess": "Pomyślnie odwołano wszystkie klucze API",
+      "revokeConfirm": "Potwierdź odwołanie klucza API",
       "revokeFailure": "Błąd podczas unieważniania klucza API",
       "revokeSuccess": "Pomyślnie odwołano klucz API"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Usuń wszystko",
       "deleteAllDevicesError": "Błąd podczas usuwania wszystkich urządzeń",
       "deleteAllDevicesSuccess": "Wszystkie urządzenia zostały pomyślnie usunięte",
+      "deleteConfirm": "Potwierdź usunięcie urządzenia",
       "deleteDeviceError": "Błąd podczas usuwania urządzenia",
       "deleteDeviceSuccess": "Urządzenie zostało pomyślnie usunięte",
       "deviceName": "Nazwa urządzenia",
@@ -432,7 +442,8 @@
   "signIn": "Zaloguj",
   "snackbar": {
     "addedToQueue": "Dodane do kolejki",
-    "playNext": "Wybrany element zostanie odtworzony po aktualnym"
+    "playNext": "Wybrany element zostanie odtworzony po aktualnym",
+    "routeValidationError": "Podane parametry routeld w trasowaniu nie są prawidłowe"
   },
   "songs": "Utwory",
   "sortByType": "Według {type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Motyw wideo",
   "tooltips": {
     "changeLanguage": "Język",
+    "switchToAuto": "Stosuj motyw systemu",
     "switchToDarkMode": "Przełącz na tryb ciemny",
     "switchToLightMode": "Przełącz na tryb jasny"
   },
