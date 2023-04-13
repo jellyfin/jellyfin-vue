@@ -386,3 +386,21 @@ export function getMediaStreams(
 ): MediaStream[] {
   return mediaStreams.filter((mediaStream) => mediaStream.Type === streamType);
 }
+
+/**
+ * Format a number of bytes into a human readable string
+ *
+ * @param size - The number of bytes to format
+ * @returns - A human readable string
+ */
+export function formatFileSize(size: number): string {
+  if (size === 0) {
+    return '0 B';
+  }
+
+  const i = Math.floor(Math.log(size) / Math.log(1024));
+
+  return `${(size / Math.pow(1024, i)).toFixed(2)} ${
+    ['B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB'][i]
+  }`;
+}

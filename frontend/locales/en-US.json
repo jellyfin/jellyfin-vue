@@ -1,5 +1,4 @@
 {
-  "auto": "Automatic",
   "3DFormat": "3D format",
   "NoMediaSourcesAvailable": "No media sources available",
   "actor": "Actor",
@@ -25,6 +24,7 @@
   "aspectRatio": "Aspect ratio",
   "audio": "Audio",
   "audioCodecNotSupported": "The audio codec is not supported",
+  "auto": "Automatic",
   "badRequest": "Bad request. Try again",
   "books": "Books",
   "browserNotSupported": "Your browser is not supported for playing this file.",
@@ -34,6 +34,9 @@
   "byArtist": "By {artist}",
   "cancel": "Cancel",
   "castAndCrew": "Cast & crew",
+  "clipboardFail": "Failed to copy to clipboard",
+  "clipboardSuccess": "Copied to clipboard",
+  "close": "Close",
   "collectionEmpty": "This collection is empty",
   "collections": "Collections",
   "communityRating": "Community rating",
@@ -196,7 +199,10 @@
       "name": "Audio channels:"
     },
     "audioCodec": {
-      "name": "Audio codec:"
+      "channels": "Channels:",
+      "layout": "Layout:",
+      "name": "Audio codec:",
+      "sampleRate": "Sample rate:"
     },
     "bitrate": {
       "name": "Bitrate:"
@@ -204,16 +210,70 @@
     "container": {
       "name": "Container:"
     },
+    "generic": {
+      "bitrate": "Bitrate:",
+      "codec": "Codec:",
+      "codecTag": "Codec tag:",
+      "default": "Default:",
+      "external": "External:",
+      "forced": "Forced:",
+      "language": "Language:",
+      "profile": "Profile:",
+      "title": "Title:"
+    },
     "name": "Media",
+    "noMediaSources": "No available media sources",
+    "path": {
+      "name": "Path:"
+    },
+    "size": {
+      "name": "Size:"
+    },
     "subtitleCodec": {
       "name": "Subtitle codec:"
     },
+    "title": "Media Info",
     "videoCodec": {
-      "name": "Video codec:"
+      "DoVi": {
+        "blPresent": "DV bl preset flag:",
+        "blSignalCompatibilityId": "DV bl signal compatibility ID",
+        "elPresent": "DV el preset flag",
+        "level": "DV level:",
+        "majorLevel": "DV version major:",
+        "minorLevel": "DV version minor:",
+        "profile": "DV profile:",
+        "rpuPresent": "DV rpu preset flag",
+        "title": "DV title:"
+      },
+      "aspectRatio": "Aspect ratio:",
+      "bitdepth": "Bit depth:",
+      "colorPrimaries": "Color primaries:",
+      "colorRange": "Color range:",
+      "colorSpace": "Color space:",
+      "colorTransfer": "Color transfer:",
+      "frameRate": "Framerate:",
+      "isAnamorphic": "Anamorphic:",
+      "isAvc": "AVC:",
+      "isInterlaced": "Interlaced:",
+      "level": "Level:",
+      "name": "Video codec:",
+      "pixelFormat": "Pixel format:",
+      "resolution": "Resolution:",
+      "videoRange": "Video range:",
+      "videoRangeType": "Video range type:"
     }
   },
   "menu": "Menu",
   "metadata": {
+    "refresh": {
+      "all": "Replace all metadata",
+      "methodHint": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard.",
+      "missing": "Search for missing metadata",
+      "replaceImage": "Replace existing images",
+      "scan": "Scan for new and updated files",
+      "success": "Metadata refresh enqueued",
+      "title": "Refresh metadata"
+    },
     "source": "Source",
     "sourceAll": "All",
     "title": "Title",
@@ -303,6 +363,7 @@
   "quality": "Quality",
   "queue": "Queue",
   "rating": "Rating",
+  "refresh": "Refresh",
   "refreshLibrary": "Refresh library",
   "releaseDate": "Release date",
   "remoteDevices": "Remote devices",
@@ -335,9 +396,9 @@
       "refreshKeysFailure": "Error refreshing API keys",
       "revoke": "Revoke",
       "revokeAll": "Revoke all API keys",
-      "revokeConfirm": "Confirm API key revocation",
       "revokeAllFailure": "Error revoking all API keys",
       "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeConfirm": "Confirm API key revocation",
       "revokeFailure": "Error revoking API key",
       "revokeSuccess": "Successfully revoked API key"
     },
@@ -346,9 +407,9 @@
       "appVersion": "App version",
       "delete": "Delete",
       "deleteAll": "Delete all",
-      "deleteConfirm": "Confirm device deletion",
       "deleteAllDevicesError": "Error deleting all devices",
       "deleteAllDevicesSuccess": "All devices deleted successfully",
+      "deleteConfirm": "Confirm device deletion",
       "deleteDeviceError": "Error deleting device",
       "deleteDeviceSuccess": "Device deleted successfully",
       "deviceName": "Device name",
@@ -463,9 +524,9 @@
   "themeVideo": "Theme Video",
   "tooltips": {
     "changeLanguage": "Language",
+    "switchToAuto": "Follow system theme",
     "switchToDarkMode": "Switch to dark mode",
-    "switchToLightMode": "Switch to light mode",
-    "switchToAuto": "Follow system theme"
+    "switchToLightMode": "Switch to light mode"
   },
   "trailer": "Trailer",
   "transcodingInfo": {
