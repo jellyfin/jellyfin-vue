@@ -45,18 +45,27 @@
     v-if="item.Id"
     v-model:dialog="mediaInfoDialog"
     :item-id="item.Id" />
+  <confirm-dialog
+    v-if="item.Id"
+    v-model:dialog="deleteDialog"
+    :title="t('deleteItem')"
+    :text="t('deleteItemDescription')"
+    :confirm-text="t('delete')"
+    @on-confirm="onDeleteConfirmed" />
   <textarea ref="fallbackCopy" :value="fallbackCopyContent" class="d-none" />
 </template>
 
 <script setup lang="ts">
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useEventListener } from '@vueuse/core';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
 import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
+import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDownload from 'virtual:icons/mdi/download';
 import IMdiDownloadMultiple from 'virtual:icons/mdi/download-multiple';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
@@ -67,6 +76,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
@@ -91,6 +101,7 @@ type MenuOption = {
 
 const { t } = useI18n();
 const remote = useRemote();
+const router = useRouter();
 
 const menuProps = withDefaults(
   defineProps<{
@@ -117,6 +128,7 @@ const fallbackCopyContent = ref('');
 const mediaInfoDialog = ref(false);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
+const deleteDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
@@ -476,6 +488,16 @@ function getLibraryOptions(): MenuOption[] {
     });
   }
 
+  if (menuProps.item.CanDelete) {
+    libraryOptions.push({
+      title: t('deleteItem'),
+      icon: IMdiDelete,
+      action: (): void => {
+        deleteDialog.value = true;
+      }
+    });
+  }
+
   return libraryOptions;
 }
 
@@ -522,6 +544,27 @@ function onRefreshExecuted(): void {
       data: menuProps.item.Name || 'ID ' + menuProps.item.Id,
       progress: 0
     });
+  }
+}
+
+/**
+ * Handle deletion of the item
+ */
+async function onDeleteConfirmed(): Promise<void> {
+  if (!menuProps.item.Id) {
+    useSnackbar(t('failedToDeleteItem'), 'error');
+
+    return;
+  }
+
+  try {
+    await remote.sdk.newUserApi(getLibraryApi).deleteItem({
+      itemId: menuProps.item.Id
+    });
+    router.replace('/');
+  } catch {
+    // failure
+    useSnackbar(t('failedToDeleteItem'), 'error');
   }
 }
 

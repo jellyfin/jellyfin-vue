@@ -25,6 +25,7 @@ declare module '@vue/runtime-core' {
     CastButton: typeof import('./../../src/components/Layout/AppBar/Buttons/CastButton.vue')['default']
     CollectionTabs: typeof import('./../../src/components/Item/CollectionTabs.vue')['default']
     CommitLink: typeof import('./../../src/components/Layout/Navigation/CommitLink.vue')['default']
+    ConfirmDialog: typeof import('./../../src/components/Item/ConfirmDialog.vue')['default']
     DateInput: typeof import('./../../src/components/Item/Metadata/DateInput.vue')['default']
     DraggableQueue: typeof import('./../../src/components/Playback/DraggableQueue.vue')['default']
     FilterButton: typeof import('./../../src/components/Buttons/FilterButton.vue')['default']
