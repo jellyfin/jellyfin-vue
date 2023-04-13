@@ -307,6 +307,8 @@
   "playback": {
     "addToQueue": "Add to queue",
     "clearQueue": "Clear queue and stop playback",
+    "copyStreamUrl": "Copy Stream URL",
+    "download": "Download",
     "playAll": "Play all",
     "playNext": "Play next",
     "playbackSource": {

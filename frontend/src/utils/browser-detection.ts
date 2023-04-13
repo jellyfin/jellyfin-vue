@@ -28,10 +28,16 @@ export function supportsMediaSource(): boolean {
  * @private
  * @static
  * @param key - Key for which to perform a check.
+ * @param caseSensitive - Whether the check should be case sensitive.
  * @returns Determines if user agent of navigator contains a key
  */
-function userAgentContains(key: string): boolean {
-  const userAgent = navigator.userAgent || '';
+function userAgentContains(key: string, caseSensitive = true): boolean {
+  let userAgent = navigator.userAgent || '';
+
+  if (!caseSensitive) {
+    key = key.toLowerCase();
+    userAgent = userAgent.toLowerCase();
+  }
 
   return userAgent.includes(key);
 }
@@ -55,6 +61,22 @@ export function isFirefox(): boolean {
  */
 export function isEdge(): boolean {
   return userAgentContains('Edg/') || userAgentContains('Edge/');
+}
+
+/**
+ * Check if the current platform is Microsoft Edge UWP.
+ *
+ * @static
+ * @returns Determines if browser is Microsoft Edge UWP.
+ */
+export function isEdgeUWP(): boolean {
+  if (!isEdge()) {
+    return false;
+  }
+
+  return (
+    userAgentContains('msapphost', false) || userAgentContains('webview', false)
+  );
 }
 
 /**
@@ -274,6 +296,30 @@ export function isMobile(): boolean {
   // both iPhone & iPad, this clause should still work.  If a future
   // multi-touch desktop Mac is released, this will need some adjustment.
   return isApple() && navigator.maxTouchPoints > 1;
+}
+
+/**
+ * Get iOS version.
+ */
+export function getIOSVersion(): number[] {
+  if (!isApple()) {
+    return [];
+  }
+
+  // MacIntel: Apple iPad Pro 11 iOS 13.1
+  // Use the User-Agent to determine the version.
+  if (navigator.userAgent) {
+    const match = navigator.userAgent.match(/OS (\d+)_(\d+)?/);
+
+    if (match) {
+      return [
+        Number.parseInt(match[1], 10),
+        match[2] ? Number.parseInt(match[2], 10) : 0
+      ];
+    }
+  }
+
+  return [];
 }
 
 /**

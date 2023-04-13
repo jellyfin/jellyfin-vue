@@ -45,6 +45,7 @@
     v-if="item.Id"
     v-model:dialog="mediaInfoDialog"
     :item-id="item.Id" />
+  <textarea ref="fallbackCopy" :value="fallbackCopyContent" class="d-none" />
 </template>
 
 <script setup lang="ts">
@@ -55,6 +56,8 @@ import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
+import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
+import IMdiDownload from 'virtual:icons/mdi/download';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
@@ -66,6 +69,15 @@ import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
+import {
+  isEdgeUWP,
+  isTv,
+  isXbox,
+  isPs4,
+  getIOSVersion,
+  isApple
+} from '@/utils/browser-detection';
+import downloadFiles from '@/utils/file-download';
 
 type MenuOption = {
   title: string;
@@ -97,6 +109,8 @@ const parent = getCurrentInstance()?.parent;
 const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
+const fallbackCopy = ref<HTMLTextAreaElement>();
+const fallbackCopyContent = ref('');
 const mediaInfoDialog = ref(false);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
@@ -218,6 +232,59 @@ function getPlaybackOptions(): MenuOption[] {
 }
 
 /**
+ * Create item download url
+ */
+function getItemDownloadUrl(itemId: string): string {
+  if (remote.sdk.api === undefined) {
+    return '';
+  }
+
+  const userToken = remote.sdk.api.accessToken as string;
+  const serverAddress = remote.sdk.api.basePath as string;
+
+  return `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`;
+}
+
+/**
+ * Copy action for the current selected item
+ */
+function getCopyDownloadActions(): MenuOption[] {
+  const copyDownloadActions: MenuOption[] = [];
+
+  console.log('copy action is downloadable?', menuProps.item);
+
+  if (menuProps.item.CanDownload && menuProps.item.Type !== 'Book') {
+    if (!isEdgeUWP() && !isTv() && !isXbox() && !isPs4()) {
+      copyDownloadActions.push({
+        title: t('playback.download'),
+        icon: IMdiDownload,
+        action: async () => {
+          if (menuProps.item.Id) {
+            const downloadHref = getItemDownloadUrl(menuProps.item.Id);
+
+            downloadFiles(downloadHref);
+          }
+        }
+      });
+    }
+
+    copyDownloadActions.push({
+      title: t('playback.copyStreamUrl'),
+      icon: IMdiContentCopy,
+      action: async () => {
+        if (menuProps.item.Id) {
+          const downloadHref = getItemDownloadUrl(menuProps.item.Id);
+
+          await copyToClipboard(downloadHref);
+        }
+      }
+    });
+  }
+
+  return copyDownloadActions;
+}
+
+/**
  * Check if the item and user can refresh the library/metadata.
  */
 function canRefreshLibrary(): boolean {
@@ -307,7 +374,12 @@ function getLibraryOptions(): MenuOption[] {
 }
 
 const options = computed(() => {
-  return [getQueueOptions(), getPlaybackOptions(), getLibraryOptions()];
+  return [
+    getQueueOptions(),
+    getPlaybackOptions(),
+    getCopyDownloadActions(),
+    getLibraryOptions()
+  ];
 });
 
 /**
@@ -344,6 +416,60 @@ function onRefreshExecuted(): void {
       data: menuProps.item.Name || 'ID ' + menuProps.item.Id,
       progress: 0
     });
+  }
+}
+
+/**
+ * A fallback method to copy to clipboard.
+ */
+function fallbackCopyClipboard(): void {
+  // Maybe remove if we decide to drop support for legacy system.
+
+  const textArea = fallbackCopy.value;
+
+  if (textArea) {
+    // iOS 13.4 supports Clipboard.writeText (https://stackoverflow.com/a/61868028)
+    if (isApple() && getIOSVersion() < [13, 4]) {
+      const range = document.createRange();
+
+      range.selectNodeContents(textArea);
+
+      const selection = window.getSelection();
+
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      textArea.setSelectionRange(0, 999_999);
+    } else {
+      textArea.select();
+    }
+  }
+
+  try {
+    if (document.execCommand('copy')) {
+      useSnackbar(t('clipboardSuccess'), 'success');
+    } else {
+      useSnackbar(t('clipboardFail'), 'error');
+    }
+  } catch {
+    useSnackbar(t('clipboardFail'), 'error');
+  }
+}
+
+/**
+ * Copy to clipboard.
+ */
+async function copyToClipboard(clipboardText: string): Promise<void> {
+  fallbackCopyContent.value = clipboardText;
+
+  if (navigator.clipboard) {
+    try {
+      await navigator.clipboard.writeText(clipboardText);
+      useSnackbar(t('clipboardSuccess'), 'success');
+    } catch {
+      fallbackCopyClipboard();
+    }
+  } else {
+    fallbackCopyClipboard();
   }
 }
 
