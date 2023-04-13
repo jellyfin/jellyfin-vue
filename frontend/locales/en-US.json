@@ -82,6 +82,7 @@
   },
   "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
   "failedSettingDisplayPreferences": "Unable to update display preferences.",
+  "failedToGetDownloadUrl": "Failed to get URL for selected Item",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
@@ -309,6 +310,7 @@
     "clearQueue": "Clear queue and stop playback",
     "copyStreamUrl": "Copy Stream URL",
     "download": "Download",
+    "downloadAll": "Download all",
     "playAll": "Play all",
     "playNext": "Play next",
     "playbackSource": {

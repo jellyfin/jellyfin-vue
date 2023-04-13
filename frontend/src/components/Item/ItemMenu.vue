@@ -52,12 +52,13 @@
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEventListener } from '@vueuse/core';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
 import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
 import IMdiDownload from 'virtual:icons/mdi/download';
+import IMdiDownloadMultiple from 'virtual:icons/mdi/download-multiple';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
@@ -65,6 +66,8 @@ import IMdiInformation from 'virtual:icons/mdi/information';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
@@ -246,39 +249,142 @@ function getItemDownloadUrl(itemId: string): string {
 }
 
 /**
+ * Check if the browser can download the item
+ */
+function browserCanDownload(): boolean {
+  return (
+    !isEdgeUWP() &&
+    !isTv() &&
+    !isXbox() &&
+    !isPs4() &&
+    menuProps.item.Type !== 'Book'
+  );
+}
+
+/**
+ * Get download URLs for seasons.
+ */
+async function getSeasonURLs(seasonId: string): Promise<string[]> {
+  if (remote.sdk.api === undefined) {
+    return [];
+  }
+
+  const episodes = (
+    await remote.sdk.newUserApi(getItemsApi).getItems({
+      userId: remote.auth.currentUserId,
+      parentId: seasonId,
+      fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
+    })
+  ).data;
+
+  const results = episodes.Items?.map((r) => r.Id && getItemDownloadUrl(r.Id));
+
+  if (Array.isArray(results)) {
+    return results.filter((r) => r !== undefined && r.length > 0) as string[];
+  }
+
+  return [];
+}
+
+/**
+ * Get download URLs for series.
+ */
+async function getSeasonURLsBySeries(seriesId: string): Promise<string[]> {
+  let mergedStreamURLs: string[] = [];
+
+  if (remote.sdk.api === undefined) {
+    return [];
+  }
+
+  const seasons = (
+    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+      userId: remote.auth.currentUserId,
+      seriesId: seriesId
+    })
+  ).data;
+
+  for (const season of seasons.Items || []) {
+    const seasonURLs = await getSeasonURLs(season.Id || '');
+
+    mergedStreamURLs = [...mergedStreamURLs, ...seasonURLs];
+  }
+
+  return mergedStreamURLs;
+}
+
+/**
+ * Download action for the currently selected item
+ */
+async function downloadAction(): Promise<void> {
+  if (menuProps.item.Id && menuProps.item.Type) {
+    let downloadURLs: string[] = [];
+
+    switch (menuProps.item.Type) {
+      case 'Season': {
+        downloadURLs = await getSeasonURLs(menuProps.item.Id);
+        break;
+      }
+      case 'Series': {
+        downloadURLs = await getSeasonURLsBySeries(menuProps.item.Id);
+        break;
+      }
+      default: {
+        const url = getItemDownloadUrl(menuProps.item.Id);
+
+        if (url) {
+          downloadURLs = [url];
+        }
+
+        break;
+      }
+    }
+
+    if (downloadURLs) {
+      downloadFiles(downloadURLs);
+    } else {
+      useSnackbar(t('failedToGetDownloadUrl'), 'error');
+    }
+  }
+}
+
+/**
  * Copy action for the current selected item
  */
 function getCopyDownloadActions(): MenuOption[] {
   const copyDownloadActions: MenuOption[] = [];
 
-  console.log('copy action is downloadable?', menuProps.item);
-
-  if (menuProps.item.CanDownload && menuProps.item.Type !== 'Book') {
-    if (!isEdgeUWP() && !isTv() && !isXbox() && !isPs4()) {
-      copyDownloadActions.push({
-        title: t('playback.download'),
-        icon: IMdiDownload,
-        action: async () => {
-          if (menuProps.item.Id) {
-            const downloadHref = getItemDownloadUrl(menuProps.item.Id);
-
-            downloadFiles(downloadHref);
-          }
-        }
-      });
-    }
-
+  if (menuProps.item.CanDownload) {
     copyDownloadActions.push({
       title: t('playback.copyStreamUrl'),
       icon: IMdiContentCopy,
-      action: async () => {
+      action: async (): Promise<void> => {
         if (menuProps.item.Id) {
           const downloadHref = getItemDownloadUrl(menuProps.item.Id);
 
-          await copyToClipboard(downloadHref);
+          if (downloadHref) {
+            await copyToClipboard(downloadHref);
+          } else {
+            useSnackbar(t('failedToGetDownloadUrl'), 'error');
+          }
         }
       }
     });
+
+    if (browserCanDownload()) {
+      copyDownloadActions.push({
+        title: t('playback.download'),
+        icon: IMdiDownload,
+        action: downloadAction
+      });
+
+      if (['Season', 'Series'].includes(menuProps.item.Type || '')) {
+        copyDownloadActions.push({
+          title: t('playback.downloadAll'),
+          icon: IMdiDownloadMultiple,
+          action: downloadAction
+        });
+      }
+    }
   }
 
   return copyDownloadActions;
