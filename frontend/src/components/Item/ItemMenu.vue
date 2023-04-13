@@ -66,6 +66,7 @@ import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
 import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
 import IMdiDelete from 'virtual:icons/mdi/delete';
+import IMdiDisc from 'virtual:icons/mdi/disc';
 import IMdiDownload from 'virtual:icons/mdi/download';
 import IMdiDownloadMultiple from 'virtual:icons/mdi/download-multiple';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
@@ -195,6 +196,23 @@ function getQueueOptions(): MenuOption[] {
 }
 
 /**
+ * Check if the
+ */
+function canInstantMix(): boolean {
+  const localItem =
+    typeof menuProps.item.Id === 'string' &&
+    menuProps.item.Id.indexOf('local') === 0;
+
+  return (
+    ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
+      menuProps.item.Type || ''
+    ) &&
+    !localItem &&
+    playbackManager.currentItem !== undefined
+  );
+}
+
+/**
  * Playback options for the items
  */
 function getPlaybackOptions(): MenuOption[] {
@@ -239,6 +257,23 @@ function getPlaybackOptions(): MenuOption[] {
       action: (): void => {
         playbackManager.addToQueue(menuProps.item);
         useSnackbar(t('snackbar.addedToQueue'), 'success');
+      }
+    });
+  }
+
+  if (canInstantMix()) {
+    playbackOptions.push({
+      title: t('playback.instantMix'),
+      icon: IMdiDisc,
+      action: async (): Promise<void> => {
+        if (menuProps.item.Id) {
+          try {
+            await playbackManager.instantMixFromItem(menuProps.item.Id);
+            useSnackbar(t('snackbar.instantMixQueued'), 'success');
+          } catch {
+            useSnackbar(t('snackbar.instantMixFailed'), 'error');
+          }
+        }
       }
     });
   }

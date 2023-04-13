@@ -315,6 +315,7 @@
     "copyStreamUrl": "Copy Stream URL",
     "download": "Download",
     "downloadAll": "Download all",
+    "instantMix": "Instant mix",
     "playAll": "Play all",
     "playNext": "Play next",
     "playbackSource": {
@@ -511,6 +512,8 @@
   "signIn": "Sign in",
   "snackbar": {
     "addedToQueue": "Added to queue",
+    "instantMixFailed": "Failed to add Instant mix to queue",
+    "instantMixQueued": "Instant mix added to queue",
     "playNext": "The selected item will be played after the current one",
     "routeValidationError": "The specified routeId in route params is not correct"
   },
