@@ -299,7 +299,6 @@ function canRefreshLibrary(): boolean {
   const status = menuProps.item.Status || '';
 
   const incompleteRecording = type === 'Recording' && status !== 'Completed';
-  // return item && item.Id && typeof item.Id === 'string' && item.Id.indexOf('local') === 0;
   const localItem =
     typeof menuProps.item.Id === 'string' &&
     menuProps.item.Id.indexOf('local') === 0;
@@ -348,6 +347,7 @@ function getLibraryOptions(): MenuOption[] {
       menuProps.item.Type || ''
     );
 
+    // XXX: Maybe just merge it together?
     const title = isLibrary ? t('refreshLibrary') : t('metadata.refresh.title');
 
     libraryOptions.push({

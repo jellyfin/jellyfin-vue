@@ -17,12 +17,12 @@
       persistent-hint
       return-object />
 
+    <v-spacer v-if="refreshMethod.value !== 'scan'" />
+
     <v-checkbox
       v-if="refreshMethod.value !== 'scan'"
       v-model="replace"
       :label="t('metadata.refresh.replaceImage')" />
-
-    <v-spacer />
 
     <v-divider />
 
