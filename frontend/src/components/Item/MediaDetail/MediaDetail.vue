@@ -68,8 +68,6 @@ const mediaSource = ref<MediaSourceInfo[]>([]);
  * Fetches the item data from the server
  */
 async function getData(): Promise<void> {
-  console.info('Fetching item data for', props.itemId);
-
   const itemInfo = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
       userId: remote.auth.currentUserId ?? '',
@@ -81,7 +79,6 @@ async function getData(): Promise<void> {
   isLoading.value = false;
 }
 
-console.info('Attached MediaDetail component to', props.itemId);
 watch(() => props.itemId, getData, { immediate: true });
 </script>
 

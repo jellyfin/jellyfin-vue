@@ -136,7 +136,6 @@ async function refreshMetadata(): Promise<void> {
       replaceAllMetadata: replaceMetadata,
       replaceAllImages: replace.value
     });
-    console.log('Refreshed metadata for item', props.itemId);
     emit('refresh');
 
     useSnackbar(t('metadata.refresh.success'), 'success');
