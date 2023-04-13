@@ -52,7 +52,6 @@
     :text="t('deleteItemDescription')"
     :confirm-text="t('delete')"
     @on-confirm="onDeleteConfirmed" />
-  <textarea ref="fallbackCopy" :value="fallbackCopyContent" class="d-none" />
 </template>
 
 <script setup lang="ts">
@@ -83,14 +82,7 @@ import { useRemote, useSnackbar } from '@/composables';
 import { canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
-import {
-  isEdgeUWP,
-  isTv,
-  isXbox,
-  isPs4,
-  getIOSVersion,
-  isApple
-} from '@/utils/browser-detection';
+import { isEdgeUWP, isTv, isXbox, isPs4 } from '@/utils/browser-detection';
 import downloadFiles from '@/utils/file-download';
 
 type MenuOption = {
@@ -124,8 +116,6 @@ const parent = getCurrentInstance()?.parent;
 const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
-const fallbackCopy = ref<HTMLTextAreaElement>();
-const fallbackCopyContent = ref('');
 const mediaInfoDialog = ref(false);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
@@ -402,7 +392,7 @@ function getCopyDownloadActions(): MenuOption[] {
 
   if (menuProps.item.CanDownload) {
     copyDownloadActions.push({
-      title: t('playback.copyStreamUrl'),
+      title: t('download.copyStreamUrl'),
       icon: IMdiContentCopy,
       action: async (): Promise<void> => {
         if (menuProps.item.Id) {
@@ -419,14 +409,14 @@ function getCopyDownloadActions(): MenuOption[] {
 
     if (browserCanDownload()) {
       copyDownloadActions.push({
-        title: t('playback.download'),
+        title: t('download.download'),
         icon: IMdiDownload,
         action: downloadAction
       });
 
       if (['Season', 'Series'].includes(menuProps.item.Type || '')) {
         copyDownloadActions.push({
-          title: t('playback.downloadAll'),
+          title: t('download.downloadAll'),
           icon: IMdiDownloadMultiple,
           action: downloadAction
         });
@@ -604,56 +594,18 @@ async function onDeleteConfirmed(): Promise<void> {
 }
 
 /**
- * A fallback method to copy to clipboard.
- */
-function fallbackCopyClipboard(): void {
-  // Maybe remove if we decide to drop support for legacy system.
-
-  const textArea = fallbackCopy.value;
-
-  if (textArea) {
-    // iOS 13.4 supports Clipboard.writeText (https://stackoverflow.com/a/61868028)
-    if (isApple() && getIOSVersion() < [13, 4]) {
-      const range = document.createRange();
-
-      range.selectNodeContents(textArea);
-
-      const selection = window.getSelection();
-
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-      textArea.setSelectionRange(0, 999_999);
-    } else {
-      textArea.select();
-    }
-  }
-
-  try {
-    if (document.execCommand('copy')) {
-      useSnackbar(t('clipboardSuccess'), 'success');
-    } else {
-      useSnackbar(t('clipboardFail'), 'error');
-    }
-  } catch {
-    useSnackbar(t('clipboardFail'), 'error');
-  }
-}
-
-/**
  * Copy to clipboard.
  */
 async function copyToClipboard(clipboardText: string): Promise<void> {
-  fallbackCopyContent.value = clipboardText;
-
   if (navigator.clipboard) {
     try {
       await navigator.clipboard.writeText(clipboardText);
       useSnackbar(t('clipboardSuccess'), 'success');
     } catch {
-      fallbackCopyClipboard();
+      useSnackbar(t('clipboardFail'), 'error');
     }
   } else {
-    fallbackCopyClipboard();
+    useSnackbar(t('clipboardUnavailable'), 'error');
   }
 }
 

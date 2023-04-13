@@ -36,6 +36,7 @@
   "castAndCrew": "Cast & crew",
   "clipboardFail": "Failed to copy to clipboard",
   "clipboardSuccess": "Copied to clipboard",
+  "clipboardUnavailable": "Unable to get clipboard, update your browser",
   "close": "Close",
   "collectionEmpty": "This collection is empty",
   "collections": "Collections",
@@ -64,6 +65,11 @@
   "disabled": "Disabled",
   "discNumber": "Disc {discNumber}",
   "dislikes": "Dislikes",
+  "download": {
+    "copyStreamUrl": "Copy Stream URL",
+    "download": "Download",
+    "downloadAll": "Download all"
+  },
   "edit": "Edit",
   "editMetadata": "Edit metadata",
   "editPerson": "Edit person",
@@ -209,31 +215,22 @@
       "name": "Audio codec:",
       "sampleRate": "Sample rate:"
     },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
-    "container": {
-      "name": "Container:"
-    },
     "generic": {
       "bitrate": "Bitrate:",
       "codec": "Codec:",
       "codecTag": "Codec tag:",
+      "container": "Container:",
       "default": "Default:",
       "external": "External:",
       "forced": "Forced:",
       "language": "Language:",
+      "path": "Path:",
       "profile": "Profile:",
+      "size": "Size:",
       "title": "Title:"
     },
     "name": "Media",
     "noMediaSources": "No available media sources",
-    "path": {
-      "name": "Path:"
-    },
-    "size": {
-      "name": "Size:"
-    },
     "subtitleCodec": {
       "name": "Subtitle codec:"
     },
@@ -312,9 +309,6 @@
   "playback": {
     "addToQueue": "Add to queue",
     "clearQueue": "Clear queue and stop playback",
-    "copyStreamUrl": "Copy Stream URL",
-    "download": "Download",
-    "downloadAll": "Download all",
     "instantMix": "Instant mix",
     "playAll": "Play all",
     "playNext": "Play next",

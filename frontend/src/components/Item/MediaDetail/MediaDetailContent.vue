@@ -8,31 +8,31 @@
   <div class="d-flex flex-column mt-2">
     <media-detail-attr
       v-if="media.Container"
-      :label="t('mediaInfo.container.name')"
+      :label="t('mediaInfo.generic.container')"
       :value="media.Container" />
     <media-detail-attr
       v-if="media.Path"
-      :label="t('mediaInfo.path.name')"
+      :label="t('mediaInfo.generic.path')"
       :value="media.Path" />
     <media-detail-attr
       v-if="media.Size"
-      :label="t('mediaInfo.size.name')"
+      :label="t('mediaInfo.generic.size')"
       :value="formatFileSize(media.Size)" />
     <media-detail-attr
       v-if="media.Bitrate"
-      :label="t('mediaInfo.bitrate.name')"
+      :label="t('mediaInfo.generic.bitrate')"
       :value="(media.Bitrate / 1000).toFixed(2) + ' kbps'" />
   </div>
 
   <div class="d-flex flex-row flex-wrap mt-5">
     <div
       v-for="(stream, idx) in videoStreams"
-      :key="'mmd-vid-' + stream.Index ?? idx"
+      :key="'mdinfo-video-' + stream.Index ?? idx"
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
-        <span class="mr-1">{{
-          videoStreams.length > 1 ? `Video ${idx + 1}` : 'Video'
-        }}</span>
+        <span class="mr-1">
+          {{ videoStreams.length > 1 ? `Video ${idx + 1}` : 'Video' }}
+        </span>
         <media-detail-copy
           :text="
             makeCopyableStreamInfo(stream, idx + 1, videoStreams.length > 1)
@@ -149,12 +149,12 @@
     </div>
     <div
       v-for="(stream, idx) in audioStreams"
-      :key="'mmd-aud-' + stream.Index ?? idx"
+      :key="'mdinfo-audio-' + stream.Index ?? idx"
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
-        <span class="mr-1">{{
-          audioStreams.length > 1 ? `Audio ${idx + 1}` : 'Audio'
-        }}</span>
+        <span class="mr-1">
+          {{ audioStreams.length > 1 ? `Audio ${idx + 1}` : 'Audio' }}
+        </span>
         <media-detail-copy
           :text="
             makeCopyableStreamInfo(stream, idx + 1, audioStreams.length > 1)
@@ -185,12 +185,12 @@
     </div>
     <div
       v-for="(stream, idx) in subsStreams"
-      :key="'mmd-subs-' + stream.Index ?? idx"
+      :key="'mdinfo-subs-' + stream.Index ?? idx"
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
-        <span class="mr-1">{{
-          subsStreams.length > 1 ? `Subtitle ${idx + 1}` : 'Subtitle'
-        }}</span>
+        <span class="mr-1">
+          {{ subsStreams.length > 1 ? `Subtitle ${idx + 1}` : 'Subtitle' }}
+        </span>
         <media-detail-copy
           :text="
             makeCopyableStreamInfo(stream, idx + 1, subsStreams.length > 1)
