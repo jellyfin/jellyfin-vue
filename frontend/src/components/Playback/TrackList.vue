@@ -69,7 +69,7 @@
                     </template>
                   </div>
                   <v-spacer />
-                  <item-menu v-show="isHovering" :item="item" />
+                  <item-menu v-show="isHovering" :item="track" />
                 </div>
               </td>
               <td class="text-center">
