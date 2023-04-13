@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { startCase } from 'lodash-es';
+import { upperFirst } from 'lodash-es';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
@@ -87,7 +87,7 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
-    return startCase(
+    return upperFirst(
       getLocaleName(track.Language, locale.value) ??
         `${t('unknown')} (${track.Language})`
     );

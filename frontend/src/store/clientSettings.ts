@@ -65,10 +65,12 @@ class ClientSettingsStore {
   public set locale(newVal: string) {
     const i18n = usei18n();
 
+    if (!i18n.availableLocales.includes(newVal) && newVal !== 'auto') {
+      throw new TypeError('This locale has not been registered');
+    }
+
     this._state.value.locale =
-      newVal === 'auto' || !(newVal in i18n.availableLocales)
-        ? String(i18n.fallbackLocale.value)
-        : newVal;
+      newVal === 'auto' ? String(i18n.fallbackLocale.value) : newVal;
   }
 
   public get locale(): string {
