@@ -22,7 +22,9 @@
           :key="index"
           :value="item === i18n.locale.value"
           :title="
-            startCase(getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`)
+            upperFirst(
+              getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`
+            )
           "
           @click="clientSettings.locale = item" />
       </v-list>
@@ -32,7 +34,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { startCase } from 'lodash-es';
+import { upperFirst } from 'lodash-es';
 import { clientSettingsStore } from '@/store';
 import { getLocaleNativeName } from '@/utils/i18n';
 
