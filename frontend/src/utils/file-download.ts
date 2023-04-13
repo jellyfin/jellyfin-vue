@@ -1,4 +1,4 @@
-// https://github.com/noaione/jellyfin-web/blob/nao/src/scripts/multiDownload.js
+// https://github.com/jellyfin/jellyfin-web/blob/master/src/scripts/multiDownload.js
 
 import { isFirefox } from './browser-detection';
 
