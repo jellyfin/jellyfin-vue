@@ -241,8 +241,8 @@
         "blSignalCompatibilityId": "DV bl signal compatibility ID",
         "elPresent": "DV el preset flag",
         "level": "DV level:",
-        "majorLevel": "DV version major:",
-        "minorLevel": "DV version minor:",
+        "majorVersion": "DV version major:",
+        "minorVersion": "DV version minor:",
         "profile": "DV profile:",
         "rpuPresent": "DV rpu preset flag",
         "title": "DV title:"

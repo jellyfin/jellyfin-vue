@@ -41,7 +41,7 @@
       <media-detail-generic :stream="stream" />
       <media-detail-attr
         :label="t('mediaInfo.videoCodec.isAvc')"
-        :value="yesOrNo(stream.IsAVC)" />
+        :value="formatYesOrNo(stream.IsAVC)" />
       <media-detail-attr
         v-if="stream.Profile"
         :label="t('mediaInfo.generic.profile')"
@@ -55,13 +55,13 @@
         :label="t('mediaInfo.videoCodec.resolution')"
         :value="`${stream.Width}x${stream.Height}`" />
       <media-detail-attr
-        v-if="isBool(stream.IsAnamorphic)"
+        v-if="isBoolean(stream.IsAnamorphic)"
         :label="t('mediaInfo.videoCodec.isAnamorphic')"
-        :value="yesOrNo(stream.IsAnamorphic)" />
+        :value="formatYesOrNo(stream.IsAnamorphic)" />
       <media-detail-attr
         v-if="stream.IsInterlaced"
         :label="t('mediaInfo.videoCodec.isInterlaced')"
-        :value="yesOrNo(stream.IsInterlaced)" />
+        :value="formatYesOrNo(stream.IsInterlaced)" />
       <media-detail-attr
         v-if="stream.AverageFrameRate || stream.RealFrameRate"
         :label="t('mediaInfo.videoCodec.frameRate')"
@@ -75,7 +75,7 @@
       <media-detail-attr
         v-if="stream.BitDepth"
         :label="t('mediaInfo.videoCodec.bitdepth')"
-        :value="stream.BitDepth" />
+        :value="stream.BitDepth + ' bits'" />
       <media-detail-attr
         v-if="stream.VideoRange"
         :label="t('mediaInfo.videoCodec.videoRange')"
@@ -90,11 +90,11 @@
         :value="stream.VideoDoViTitle" />
       <media-detail-attr
         v-if="stream.VideoDoViTitle && isNumber(stream.DvVersionMajor)"
-        :label="t('mediaInfo.videoCodec.DoVi.majorLevel')"
+        :label="t('mediaInfo.videoCodec.DoVi.majorVersion')"
         :value="stream.DvVersionMajor" />
       <media-detail-attr
         v-if="stream.VideoDoViTitle && isNumber(stream.DvVersionMinor)"
-        :label="t('mediaInfo.videoCodec.DoVi.minorLevel')"
+        :label="t('mediaInfo.videoCodec.DoVi.minorVersion')"
         :value="stream.DvVersionMinor" />
       <media-detail-attr
         v-if="stream.VideoDoViTitle && isNumber(stream.DvProfile)"
@@ -209,7 +209,15 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
+import { isNumber, isBoolean } from 'lodash-es';
 import { formatFileSize, getMediaStreams } from '@/utils/items';
+import {
+  formatYesOrNo,
+  createVideoInformation,
+  createAudioInformation,
+  createSubsInformation,
+  createContainerInformation
+} from '@/utils/mediainfo';
 
 const props = defineProps<{
   media: MediaSourceInfo;
@@ -227,287 +235,6 @@ const subsStreams = computed<MediaStream[]>(() =>
   getMediaStreams(props.media.MediaStreams ?? [], 'Subtitle')
 );
 
-const isNumber = (value: unknown): value is number => typeof value === 'number';
-
-const isString = (value: unknown): value is string => typeof value === 'string';
-
-const isBool = (value: unknown): value is boolean => typeof value === 'boolean';
-
-/**
- * Create generic information about the media stream.
- */
-function fmtGenericInfo(stream: MediaStream): string {
-  let mediaInfo = '';
-
-  if (stream.DisplayTitle) {
-    mediaInfo +=
-      t('mediaInfo.generic.title') + ' ' + stream.DisplayTitle + '\n';
-  }
-
-  if (stream.Language) {
-    mediaInfo += t('mediaInfo.generic.language') + ' ' + stream.Language + '\n';
-  }
-
-  if (stream.Codec) {
-    mediaInfo +=
-      t('mediaInfo.generic.codec') + ' ' + stream.Codec.toUpperCase() + '\n';
-  }
-
-  if (stream.CodecTag) {
-    mediaInfo += t('mediaInfo.generic.codecTag') + ' ' + stream.CodecTag + '\n';
-  }
-
-  return mediaInfo;
-}
-
-/**
- * Format a boolean value into a Yes/No string.
- */
-function yesOrNo(value: boolean | null | undefined): string {
-  return value ? 'Yes' : 'No';
-}
-
-/**
- * Create generic information about the Default/Forced/External status of a stream.
- */
-function fmtDefaultForcedExt(stream: MediaStream): string {
-  let mediaInfo = '';
-
-  mediaInfo +=
-    t('mediaInfo.generic.default') + ' ' + yesOrNo(stream.IsDefault) + '\n';
-  mediaInfo +=
-    t('mediaInfo.generic.forced') + ' ' + yesOrNo(stream.IsForced) + '\n';
-  mediaInfo +=
-    t('mediaInfo.generic.external') + ' ' + yesOrNo(stream.IsExternal) + '\n';
-
-  return mediaInfo;
-}
-
-/**
- * Create information about Dolby Vision if exist.
- */
-function fmtVideoDoViInfo(stream: MediaStream): string {
-  let mediaInfo = '';
-
-  if (!isString(stream.VideoDoViTitle)) {
-    return mediaInfo;
-  }
-
-  mediaInfo +=
-    t('mediaInfo.videoCodec.DoVi.title') + ` ${stream.VideoDoViTitle}\n`;
-
-  if (isNumber(stream.DvVersionMajor)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.majorLevel') + ` ${stream.DvVersionMajor}\n`;
-  }
-
-  if (isNumber(stream.DvVersionMinor)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.minorLevel') + ` ${stream.DvVersionMinor}\n`;
-  }
-
-  if (isNumber(stream.DvProfile)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.profile') + ` ${stream.DvProfile}\n`;
-  }
-
-  if (isNumber(stream.DvLevel)) {
-    mediaInfo += t('mediaInfo.videoCodec.DoVi.level') + ` ${stream.DvLevel}\n`;
-  }
-
-  if (isNumber(stream.RpuPresentFlag)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.rpuPresent') + ` ${stream.RpuPresentFlag}\n`;
-  }
-
-  if (isNumber(stream.ElPresentFlag)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.elPresent') + ` ${stream.ElPresentFlag}\n`;
-  }
-
-  if (isNumber(stream.BlPresentFlag)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.blPresent') + ` ${stream.BlPresentFlag}\n`;
-  }
-
-  if (isNumber(stream.DvBlSignalCompatibilityId)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.DoVi.blSignalCompatibilityId') +
-      ` ${stream.DvBlSignalCompatibilityId}\n`;
-  }
-
-  return mediaInfo;
-}
-
-/**
- * Create information about the color space used in the video stream.
- */
-function fmtVideoColorInfo(stream: MediaStream): string {
-  let mediaInfo = '';
-
-  if (stream.ColorSpace) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.colorSpace') + ' ' + stream.ColorSpace + '\n';
-  }
-
-  if (stream.ColorTransfer) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.colorTransfer') +
-      ' ' +
-      stream.ColorTransfer +
-      '\n';
-  }
-
-  if (stream.ColorPrimaries) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.colorPrimaries') +
-      ' ' +
-      stream.ColorPrimaries +
-      '\n';
-  }
-
-  if (stream.ColorRange) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.colorRange') + ' ' + stream.ColorRange + '\n';
-  }
-
-  if (stream.PixelFormat) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.pixelFormat') + ' ' + stream.PixelFormat + '\n';
-  }
-
-  return mediaInfo;
-}
-
-/**
- * Format video media info into a text format
- */
-function fmtVideoMediaInfo(stream: MediaStream): string {
-  let mediaInfo = fmtGenericInfo(stream);
-
-  mediaInfo +=
-    t('mediaInfo.videoCodec.isAvc') + ' ' + yesOrNo(stream.IsAVC) + '\n';
-
-  if (stream.Profile) {
-    mediaInfo += t('mediaInfo.generic.profile') + ' ' + stream.Profile + '\n';
-  }
-
-  if (stream.Level) {
-    mediaInfo += t('mediaInfo.videoCodec.level') + ' ' + stream.Level + '\n';
-  }
-
-  if (stream.Width || stream.Height) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.resolution') +
-      ` ${stream.Width}x${stream.Height}\n`;
-  }
-
-  if (stream.AspectRatio && stream.Codec !== 'mjpeg') {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.aspectRatio') + ' ' + stream.AspectRatio + '\n';
-  }
-
-  if (isBool(stream.IsAnamorphic)) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.isAnamorphic') +
-      ' ' +
-      yesOrNo(stream.IsAnamorphic) +
-      '\n';
-  }
-
-  mediaInfo +=
-    t('mediaInfo.videoCodec.isInterlaced') +
-    ' ' +
-    yesOrNo(stream.IsInterlaced) +
-    '\n';
-
-  if (stream.AverageFrameRate || stream.RealFrameRate) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.frameRate') +
-      ` ${stream.AverageFrameRate || stream.RealFrameRate} fps\n`;
-  }
-
-  if (stream.BitRate) {
-    mediaInfo +=
-      t('mediaInfo.generic.bitrate') +
-      ` ${(stream.BitRate / 1000).toFixed(2)} kbps\n`;
-  }
-
-  if (stream.BitDepth) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.bitdepth') + ` ${stream.BitDepth} bit\n`;
-  }
-
-  if (stream.VideoRange) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.videoRange') + ' ' + stream.VideoRange + '\n';
-  }
-
-  if (stream.VideoRangeType) {
-    mediaInfo +=
-      t('mediaInfo.videoCodec.videoRangeType') +
-      ' ' +
-      stream.VideoRangeType +
-      '\n';
-  }
-
-  mediaInfo += fmtVideoDoViInfo(stream);
-  mediaInfo += fmtVideoColorInfo(stream);
-
-  if (stream.NalLengthSize) {
-    mediaInfo += `NAL: ${stream.NalLengthSize}\n`;
-  }
-
-  return mediaInfo;
-}
-
-/**
- * Format audio media info into a text format
- */
-function fmtAudioMediaInfo(stream: MediaStream): string {
-  let mediaInfo = fmtGenericInfo(stream);
-
-  if (stream.Profile) {
-    mediaInfo += t('mediaInfo.generic.profile') + ' ' + stream.Profile + '\n';
-  }
-
-  if (stream.ChannelLayout) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.layout') + ' ' + stream.ChannelLayout + '\n';
-  }
-
-  if (stream.Channels) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.channels') + ` ${stream.Channels} ch\n`;
-  }
-
-  if (stream.BitRate) {
-    mediaInfo +=
-      t('mediaInfo.generic.bitrate') +
-      ` ${(stream.BitRate / 1000).toFixed(2)} kbps\n`;
-  }
-
-  if (stream.SampleRate) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.sampleRate') + ` ${stream.SampleRate} Hz\n`;
-  }
-
-  mediaInfo += fmtDefaultForcedExt(stream);
-
-  return mediaInfo;
-}
-
-/**
- * Format subtitle media info into a text format
- */
-function fmtSubsMediaInfo(stream: MediaStream): string {
-  let mediaInfo = fmtGenericInfo(stream);
-
-  mediaInfo += fmtDefaultForcedExt(stream);
-
-  return mediaInfo;
-}
-
 const videoMediaInfo = computed<string>(() => {
   let mergedStream = '';
   const more = videoStreams.value.length > 1;
@@ -516,7 +243,7 @@ const videoMediaInfo = computed<string>(() => {
     const stream = videoStreams.value[idx - 1];
 
     mergedStream += more ? `Video ${idx}\n` : 'Video\n';
-    mergedStream += fmtVideoMediaInfo(stream) + '\n';
+    mergedStream += createVideoInformation(stream) + '\n';
   }
 
   if (mergedStream) {
@@ -534,7 +261,7 @@ const audioMediaInfo = computed<string>(() => {
     const stream = audioStreams.value[idx - 1];
 
     mergedStream += more ? `Audio ${idx}\n` : 'Audio\n';
-    mergedStream += fmtAudioMediaInfo(stream) + '\n';
+    mergedStream += createAudioInformation(stream) + '\n';
   }
 
   if (mergedStream) {
@@ -552,7 +279,7 @@ const subsMediaInfo = computed<string>(() => {
     const stream = subsStreams.value[idx - 1];
 
     mergedStream += more ? `Subtitle ${idx}\n` : 'Subtitle\n';
-    mergedStream += fmtSubsMediaInfo(stream) + '\n';
+    mergedStream += createSubsInformation(stream) + '\n';
   }
 
   if (mergedStream) {
@@ -566,22 +293,7 @@ const completeMediainfo = computed<string>(() => {
   let mediaInfo = '';
   const { media } = props;
 
-  if (media.Name) {
-    mediaInfo += media.Name + '\n';
-  }
-
-  if (media.Container) {
-    mediaInfo += t('mediaInfo.container.name') + ' ' + media.Container + '\n';
-  }
-
-  if (media.Path) {
-    mediaInfo += t('mediaInfo.path.name') + ' ' + media.Path + '\n';
-  }
-
-  if (media.Size) {
-    mediaInfo +=
-      t('mediaInfo.size.name') + ' ' + formatFileSize(media.Size) + '\n';
-  }
+  mediaInfo += createContainerInformation(media);
 
   if (mediaInfo) {
     mediaInfo += '\n';
@@ -594,10 +306,6 @@ const completeMediainfo = computed<string>(() => {
   }
 
   mediaInfo += audioMediaInfo.value;
-
-  if (mediaInfo) {
-    mediaInfo += '\n';
-  }
 
   if (mediaInfo) {
     mediaInfo += '\n';
@@ -620,17 +328,17 @@ function makeCopyableStreamInfo(
     case 'Video': {
       let prefix = hasMore ? `Video ${streamIndex}\n` : 'Video\n';
 
-      return prefix + fmtVideoMediaInfo(stream);
+      return prefix + createVideoInformation(stream);
     }
     case 'Audio': {
       let prefix = hasMore ? `Audio ${streamIndex}\n` : 'Audio\n';
 
-      return prefix + fmtAudioMediaInfo(stream);
+      return prefix + createAudioInformation(stream);
     }
     case 'Subtitle': {
       let prefix = hasMore ? `Subtitle ${streamIndex}\n` : 'Subtitle\n';
 
-      return prefix + fmtSubsMediaInfo(stream);
+      return prefix + createSubsInformation(stream);
     }
     default: {
       return '';
