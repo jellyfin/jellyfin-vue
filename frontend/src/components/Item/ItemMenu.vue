@@ -419,7 +419,7 @@ function getCopyDownloadActions(): MenuOption[] {
           const downloadHref = getItemDownloadObject(menuProps.item.Id);
 
           if (downloadHref) {
-            await writeToClipboard(downloadHref.url);
+            await copy(downloadHref.url);
           } else {
             useSnackbar(t('failedToGetDownloadUrl'), 'error');
           }
@@ -612,6 +612,15 @@ async function onDeleteConfirmed(): Promise<void> {
     useSnackbar(t('failedToDeleteItem'), 'error');
   }
 }
+
+const copy = async (text: string): Promise<void> => {
+  try {
+    await writeToClipboard(text);
+    useSnackbar(t('clipboardSuccess'), 'success');
+  } catch {
+    useSnackbar(t('clipboardFail'), 'error');
+  }
+};
 
 onMounted(() => {
   const parentHtml = parent?.subTree.el;
