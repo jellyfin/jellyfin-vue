@@ -280,15 +280,12 @@ function getItemDownloadObject(
   itemId: string,
   itemPath?: string
 ): DownloadableFile | undefined {
-  if (remote.sdk.api === undefined) {
-    return;
+  const serverAddress = remote.sdk.api?.basePath;
+  const userToken = remote.sdk.api?.accessToken;
+
+  if (!serverAddress || !userToken) {
+    return undefined;
   }
-
-  const userToken = remote.sdk.api.accessToken as string;
-  const serverAddress = remote.sdk.api.basePath as string;
-
-  // extract the file name from the path
-  // Check if it's Windows or Unix based
 
   const fileName = itemPath?.includes('\\')
     ? itemPath?.split('\\').pop()
@@ -329,21 +326,16 @@ async function getSeasonURLs(seasonId: string): Promise<DownloadableFile[]> {
     })
   ).data;
 
-  const results = episodes.Items?.map(
-    (r) => r.Id && r.Path && getItemDownloadObject(r.Id, r.Path)
-  );
-
-  if (Array.isArray(results)) {
-    return results.filter((r) => {
-      if (r) {
-        return r.url.length > 0 && r.fileName.length > 0;
+  return (
+    episodes.Items?.map((r) => {
+      if (r.Id && r.Path) {
+        return getItemDownloadObject(r.Id, r.Path);
       }
-
-      return false;
-    }) as DownloadableFile[];
-  }
-
-  return [];
+    }).filter(
+      (r): r is DownloadableFile =>
+        r !== undefined && r.url.length > 0 && r.fileName.length > 0
+    ) ?? []
+  );
 }
 
 /**
