@@ -85,7 +85,7 @@ class PlayerElementStore {
     }
   };
 
-  private _setSsaTrack = (trackSrc: string, loadedFonts?: string[]): void => {
+  private _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
     if (
       !jassub &&
       mediaElementRef.value &&
@@ -94,7 +94,7 @@ class PlayerElementStore {
       jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
-        fonts: loadedFonts,
+        fonts: attachedFonts,
         workerUrl: jassubWorker,
         availableFonts: { 'liberation sans': jassubDefaultFont },
         // Both parameters needed for subs to work on iOS
@@ -102,12 +102,6 @@ class PlayerElementStore {
         onDemandRender: false
       });
     } else if (jassub) {
-      if (Array.isArray(loadedFonts)) {
-        for (const font of loadedFonts) {
-          jassub.addFont(font);
-        }
-      }
-
       jassub.setTrackByUrl(trackSrc);
     }
   };
@@ -123,8 +117,6 @@ class PlayerElementStore {
   };
 
   private _isSupportedFonts = (mimeType: string): boolean => {
-    // ttf,otf,woff,woff2
-
     return (
       mimeType.startsWith('font/') &&
       (mimeType.includes('ttf') ||
@@ -146,6 +138,8 @@ class PlayerElementStore {
    * If embedded, a new transcode is automatically fetched from the playbackManager watchers.
    */
   public applyCurrentSubtitle = async (): Promise<void> => {
+    const remote = useRemote();
+
     await nextTick();
 
     if (mediaElementRef.value) {
@@ -158,13 +152,7 @@ class PlayerElementStore {
         }
       }
 
-      const remote = useRemote();
-
-      let serverAddress = '';
-
-      if (remote.sdk.api) {
-        serverAddress = remote.sdk.api.basePath as string;
-      }
+      const serverAddress = remote.sdk.api?.basePath;
 
       playerElement.freeSsaTrack();
 
@@ -181,17 +169,15 @@ class PlayerElementStore {
       );
 
       const attachedFonts =
-        playbackManager.currentMediaSource?.MediaAttachments?.filter((attach) =>
-          this._isSupportedFonts(attach.MimeType || '')
+        playbackManager.currentMediaSource?.MediaAttachments?.filter((a) =>
+          a.MimeType ? this._isSupportedFonts(a.MimeType) : false
         )
-          .map((attach): string | undefined => {
-            if (attach.DeliveryUrl && serverAddress) {
-              return `${serverAddress}${attach.DeliveryUrl}`;
+          .map((a) => {
+            if (a.DeliveryUrl && serverAddress) {
+              return `${serverAddress}${a.DeliveryUrl}`;
             }
           })
-          .filter((attach) => attach !== undefined && attach !== null) as
-          | string[]
-          | undefined;
+          .filter((a): a is string => a !== undefined && a !== null) ?? [];
 
       if (vttIdx !== -1 && mediaElementRef.value.textTracks[vttIdx]) {
         /**
