@@ -2,7 +2,7 @@ import {
   MediaSourceInfo,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
-import { isString } from '@vueuse/core';
+import { isNil } from 'lodash-es';
 import { formatFileSize } from './items';
 import { usei18n } from '@/composables';
 
@@ -10,14 +10,6 @@ const { t } = usei18n();
 
 type MediaItem = string | number | boolean;
 type NoneType = null | undefined;
-
-/**
- * Check if a value is null or undefined.
- * @param value - The value to check.
- */
-function isNone(value: unknown): value is NoneType {
-  return value === null || value === undefined;
-}
 
 /**
  * Format a boolean value into a Yes/No string.
@@ -31,11 +23,11 @@ export function formatYesOrNo(value: boolean | NoneType): string {
  * Check if a value is a valid media item.
  */
 function checkValidValue(value: MediaItem | NoneType): value is MediaItem {
-  if (isNone(value)) {
+  if (isNil(value)) {
     return false;
   }
 
-  if (isString(value)) {
+  if (typeof value === 'string') {
     return value.trim().length > 0;
   }
 
@@ -115,7 +107,7 @@ function createExtraInformation(stream: MediaStream): string {
 function createVideoDoViInformation(stream: MediaStream): string {
   let mediaInfo = '';
 
-  if (!isString(stream.VideoDoViTitle)) {
+  if (typeof stream.VideoDoViTitle !== 'string') {
     return mediaInfo;
   }
 

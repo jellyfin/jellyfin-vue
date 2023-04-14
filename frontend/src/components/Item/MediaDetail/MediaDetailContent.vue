@@ -55,7 +55,7 @@
         :label="t('mediaInfo.videoCodec.resolution')"
         :value="`${stream.Width}x${stream.Height}`" />
       <media-detail-attr
-        v-if="isBoolean(stream.IsAnamorphic)"
+        v-if="typeof stream.IsAnamorphic === 'boolean'"
         :label="t('mediaInfo.videoCodec.isAnamorphic')"
         :value="formatYesOrNo(stream.IsAnamorphic)" />
       <media-detail-attr
@@ -209,7 +209,6 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
-import { isNumber, isBoolean } from 'lodash-es';
 import { formatFileSize, getMediaStreams } from '@/utils/items';
 import {
   formatYesOrNo,
@@ -315,6 +314,10 @@ const completeMediainfo = computed<string>(() => {
 
   return mediaInfo;
 });
+
+const isNumber = (value: unknown): value is number => {
+  return typeof value === 'number' && !Number.isNaN(value);
+};
 
 /**
  * Make a copyable stream information data
