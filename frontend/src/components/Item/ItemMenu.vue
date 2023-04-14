@@ -84,6 +84,8 @@ import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 import { isEdgeUWP, isTv, isXbox, isPs4 } from '@/utils/browser-detection';
 import downloadFiles from '@/utils/file-download';
+import type { DownloadableFile } from '@/utils/file-download';
+import { writeToClipboard } from '@/utils/clipboard';
 
 type MenuOption = {
   title: string;
@@ -274,15 +276,28 @@ function getPlaybackOptions(): MenuOption[] {
 /**
  * Create item download url
  */
-function getItemDownloadUrl(itemId: string): string {
+function getItemDownloadObject(
+  itemId: string,
+  itemPath?: string
+): DownloadableFile | undefined {
   if (remote.sdk.api === undefined) {
-    return '';
+    return;
   }
 
   const userToken = remote.sdk.api.accessToken as string;
   const serverAddress = remote.sdk.api.basePath as string;
 
-  return `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`;
+  // extract the file name from the path
+  // Check if it's Windows or Unix based
+
+  const fileName = itemPath?.includes('\\')
+    ? itemPath?.split('\\').pop()
+    : itemPath?.split('/').pop();
+
+  return {
+    url: `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`,
+    fileName: fileName || ''
+  };
 }
 
 /**
@@ -301,7 +316,7 @@ function browserCanDownload(): boolean {
 /**
  * Get download URLs for seasons.
  */
-async function getSeasonURLs(seasonId: string): Promise<string[]> {
+async function getSeasonURLs(seasonId: string): Promise<DownloadableFile[]> {
   if (remote.sdk.api === undefined) {
     return [];
   }
@@ -314,10 +329,18 @@ async function getSeasonURLs(seasonId: string): Promise<string[]> {
     })
   ).data;
 
-  const results = episodes.Items?.map((r) => r.Id && getItemDownloadUrl(r.Id));
+  const results = episodes.Items?.map(
+    (r) => r.Id && r.Path && getItemDownloadObject(r.Id, r.Path)
+  );
 
   if (Array.isArray(results)) {
-    return results.filter((r) => r !== undefined && r.length > 0) as string[];
+    return results.filter((r) => {
+      if (r) {
+        return r.url.length > 0 && r.fileName.length > 0;
+      }
+
+      return false;
+    }) as DownloadableFile[];
   }
 
   return [];
@@ -326,8 +349,10 @@ async function getSeasonURLs(seasonId: string): Promise<string[]> {
 /**
  * Get download URLs for series.
  */
-async function getSeasonURLsBySeries(seriesId: string): Promise<string[]> {
-  let mergedStreamURLs: string[] = [];
+async function getSeasonURLsBySeries(
+  seriesId: string
+): Promise<DownloadableFile[]> {
+  let mergedStreamURLs: DownloadableFile[] = [];
 
   if (remote.sdk.api === undefined) {
     return [];
@@ -353,8 +378,8 @@ async function getSeasonURLsBySeries(seriesId: string): Promise<string[]> {
  * Download action for the currently selected item
  */
 async function downloadAction(): Promise<void> {
-  if (menuProps.item.Id && menuProps.item.Type) {
-    let downloadURLs: string[] = [];
+  if (menuProps.item.Id && menuProps.item.Type && menuProps.item.Path) {
+    let downloadURLs: DownloadableFile[] = [];
 
     switch (menuProps.item.Type) {
       case 'Season': {
@@ -366,7 +391,10 @@ async function downloadAction(): Promise<void> {
         break;
       }
       default: {
-        const url = getItemDownloadUrl(menuProps.item.Id);
+        const url = getItemDownloadObject(
+          menuProps.item.Id,
+          menuProps.item.Path
+        );
 
         if (url) {
           downloadURLs = [url];
@@ -377,7 +405,7 @@ async function downloadAction(): Promise<void> {
     }
 
     if (downloadURLs) {
-      downloadFiles(downloadURLs);
+      await downloadFiles(downloadURLs);
     } else {
       useSnackbar(t('failedToGetDownloadUrl'), 'error');
     }
@@ -396,10 +424,10 @@ function getCopyDownloadActions(): MenuOption[] {
       icon: IMdiContentCopy,
       action: async (): Promise<void> => {
         if (menuProps.item.Id) {
-          const downloadHref = getItemDownloadUrl(menuProps.item.Id);
+          const downloadHref = getItemDownloadObject(menuProps.item.Id);
 
           if (downloadHref) {
-            await copyToClipboard(downloadHref);
+            await writeToClipboard(downloadHref.url);
           } else {
             useSnackbar(t('failedToGetDownloadUrl'), 'error');
           }
@@ -590,22 +618,6 @@ async function onDeleteConfirmed(): Promise<void> {
   } catch {
     // failure
     useSnackbar(t('failedToDeleteItem'), 'error');
-  }
-}
-
-/**
- * Copy to clipboard.
- */
-async function copyToClipboard(clipboardText: string): Promise<void> {
-  if (navigator.clipboard) {
-    try {
-      await navigator.clipboard.writeText(clipboardText);
-      useSnackbar(t('clipboardSuccess'), 'success');
-    } catch {
-      useSnackbar(t('clipboardFail'), 'error');
-    }
-  } else {
-    useSnackbar(t('clipboardUnavailable'), 'error');
   }
 }
 

@@ -20,6 +20,7 @@ tauri-build = { version = "1.2.1", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
 tauri = { version = "1.2.4", features = ["api-all"] }
+tauri-plugin-upload = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "dev" }
 
 [features]
 default = [ "custom-protocol" ]

@@ -151,7 +151,8 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDownload,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.Path
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -181,7 +182,8 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDownload,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.Path
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -211,7 +213,8 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDownload,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.Path
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -243,7 +246,8 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDownload,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.Path
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -273,7 +277,8 @@ class UserLibrariesStore {
             ItemFields.Overview,
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDownload,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.Path
           ],
           enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
           imageTypeLimit: 1

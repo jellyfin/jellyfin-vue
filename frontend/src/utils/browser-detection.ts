@@ -299,30 +299,6 @@ export function isMobile(): boolean {
 }
 
 /**
- * Get iOS version.
- */
-export function getIOSVersion(): number[] {
-  if (!isApple()) {
-    return [];
-  }
-
-  // MacIntel: Apple iPad Pro 11 iOS 13.1
-  // Use the User-Agent to determine the version.
-  if (navigator.userAgent) {
-    const match = navigator.userAgent.match(/OS (\d+)_(\d+)?/);
-
-    if (match) {
-      return [
-        Number.parseInt(match[1], 10),
-        match[2] ? Number.parseInt(match[2], 10) : 0
-      ];
-    }
-  }
-
-  return [];
-}
-
-/**
  * Guesses if the platform is a Smart TV (Tizen or WebOS).
  *
  * @returns Determines if platform is a Smart TV
@@ -347,4 +323,17 @@ export function isPs4(): boolean {
  */
 export function isXbox(): boolean {
   return userAgentContains('xbox');
+}
+
+/**
+ * Guesses if the platform is running on Tauri
+ *
+ * Refer to: https://github.com/tauri-apps/tauri/discussions/2725
+ * @returns Determines if the platform is running on Tauri
+ */
+export function isTauri(): boolean {
+  return (
+    window &&
+    (window.__TAURI__ !== undefined || window.__TAURI_METADATA__ !== undefined)
+  );
 }

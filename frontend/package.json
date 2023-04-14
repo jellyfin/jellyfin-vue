@@ -28,6 +28,7 @@
   "dependencies": {
     "@fontsource/roboto": "4.5.8",
     "@jellyfin/sdk": "0.8.1",
+    "@tauri-apps/api": "1.2.0",
     "@vueuse/components": "9.13.0",
     "@vueuse/core": "9.13.0",
     "all-iso-language-codes": "1.0.12",
@@ -42,6 +43,7 @@
     "lodash-es": "4.17.21",
     "sortablejs": "1.15.0",
     "swiper": "9.2.0",
+    "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload",
     "uuid": "9.0.0",
     "vue": "3.2.47",
     "vue-i18n": "9.2.2",
