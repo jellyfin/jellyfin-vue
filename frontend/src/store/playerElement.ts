@@ -85,7 +85,7 @@ class PlayerElementStore {
     }
   };
 
-  private _setSsaTrack = (trackSrc: string): void => {
+  private _setSsaTrack = (trackSrc: string, loadedFonts?: string[]): void => {
     if (
       !jassub &&
       mediaElementRef.value &&
@@ -94,6 +94,7 @@ class PlayerElementStore {
       jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
+        fonts: loadedFonts,
         workerUrl: jassubWorker,
         availableFonts: { 'liberation sans': jassubDefaultFont },
         // Both parameters needed for subs to work on iOS
@@ -101,6 +102,12 @@ class PlayerElementStore {
         onDemandRender: false
       });
     } else if (jassub) {
+      if (Array.isArray(loadedFonts)) {
+        for (const font of loadedFonts) {
+          jassub.addFont(font);
+        }
+      }
+
       jassub.setTrackByUrl(trackSrc);
     }
   };
@@ -113,6 +120,17 @@ class PlayerElementStore {
 
       jassub = undefined;
     }
+  };
+
+  private _isSupportedFonts = (mimeType: string): boolean => {
+    // ttf,otf,woff,woff2
+
+    return (
+      mimeType.startsWith('font/') &&
+      (mimeType.includes('ttf') ||
+        mimeType.includes('otf') ||
+        mimeType.includes('woff'))
+    );
   };
 
   /**
@@ -140,6 +158,14 @@ class PlayerElementStore {
         }
       }
 
+      const remote = useRemote();
+
+      let serverAddress = '';
+
+      if (remote.sdk.api) {
+        serverAddress = remote.sdk.api.basePath as string;
+      }
+
       playerElement.freeSsaTrack();
 
       /**
@@ -154,6 +180,19 @@ class PlayerElementStore {
         (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
       );
 
+      const attachedFonts =
+        playbackManager.currentMediaSource?.MediaAttachments?.filter((attach) =>
+          this._isSupportedFonts(attach.MimeType || '')
+        )
+          .map((attach): string | undefined => {
+            if (attach.DeliveryUrl && serverAddress) {
+              return `${serverAddress}${attach.DeliveryUrl}`;
+            }
+          })
+          .filter((attach) => attach !== undefined && attach !== null) as
+          | string[]
+          | undefined;
+
       if (vttIdx !== -1 && mediaElementRef.value.textTracks[vttIdx]) {
         /**
          * If VTT found, applying it
@@ -163,7 +202,7 @@ class PlayerElementStore {
         /**
          * If SSA, using Subtitle Opctopus
          */
-        playerElement._setSsaTrack(ass.src);
+        playerElement._setSsaTrack(ass.src, attachedFonts);
       }
     }
   };
