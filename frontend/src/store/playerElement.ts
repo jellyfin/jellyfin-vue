@@ -4,7 +4,7 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, isNil } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
@@ -85,7 +85,7 @@ class PlayerElementStore {
     }
   };
 
-  private _setSsaTrack = (trackSrc: string): void => {
+  private _setSsaTrack = (trackSrc: string, attachedFonts?: string[]): void => {
     if (
       !jassub &&
       mediaElementRef.value &&
@@ -94,6 +94,7 @@ class PlayerElementStore {
       jassub = new JASSUB({
         video: mediaElementRef.value,
         subUrl: trackSrc,
+        fonts: attachedFonts,
         workerUrl: jassubWorker,
         availableFonts: { 'liberation sans': jassubDefaultFont },
         // Both parameters needed for subs to work on iOS
@@ -101,6 +102,12 @@ class PlayerElementStore {
         onDemandRender: false
       });
     } else if (jassub) {
+      if (Array.isArray(attachedFonts)) {
+        for (const font of attachedFonts) {
+          jassub.addFont(font);
+        }
+      }
+
       jassub.setTrackByUrl(trackSrc);
     }
   };
@@ -113,6 +120,16 @@ class PlayerElementStore {
 
       jassub = undefined;
     }
+  };
+
+  private _isSupportedFont = (mimeType: string | undefined | null): boolean => {
+    return (
+      !isNil(mimeType) &&
+      mimeType.startsWith('font/') &&
+      (mimeType.includes('ttf') ||
+        mimeType.includes('otf') ||
+        mimeType.includes('woff'))
+    );
   };
 
   /**
@@ -128,43 +145,55 @@ class PlayerElementStore {
    * If embedded, a new transcode is automatically fetched from the playbackManager watchers.
    */
   public applyCurrentSubtitle = async (): Promise<void> => {
+    const remote = useRemote();
+    const serverAddress = remote.sdk.api?.basePath;
+    /**
+     * Finding (if it exists) the VTT or SSA track associated to the newly picked subtitle
+     */
+    const vttIdx = playbackManager.currentItemVttParsedSubtitleTracks.findIndex(
+      (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+    );
+    const ass = playbackManager.currentItemAssParsedSubtitleTracks.find(
+      (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
+    );
+    const attachedFonts =
+      playbackManager.currentMediaSource?.MediaAttachments?.filter((a) =>
+        this._isSupportedFont(a.MimeType)
+      )
+        .map((a) => {
+          if (a.DeliveryUrl && serverAddress) {
+            return `${serverAddress}${a.DeliveryUrl}`;
+          }
+        })
+        .filter((a): a is string => a !== undefined) ?? [];
+
+    if (!mediaElementRef.value) {
+      return;
+    }
+
     await nextTick();
 
-    if (mediaElementRef.value) {
-      /**
-       * Disabling VTT and SSA subs at first
-       */
-      for (const textTrack of mediaElementRef.value.textTracks) {
-        if (textTrack.mode !== 'disabled') {
-          textTrack.mode = 'disabled';
-        }
+    /**
+     * Disabling VTT and SSA subs at first
+     */
+    for (const textTrack of mediaElementRef.value.textTracks) {
+      if (textTrack.mode !== 'disabled') {
+        textTrack.mode = 'disabled';
       }
+    }
 
-      playerElement.freeSsaTrack();
+    playerElement.freeSsaTrack();
 
+    if (vttIdx !== -1 && mediaElementRef.value.textTracks[vttIdx]) {
       /**
-       * Finding (if it exists) the VTT or SSA track associated to the newly picked subtitle
+       * If VTT found, applying it
        */
-      const vttIdx =
-        playbackManager.currentItemVttParsedSubtitleTracks.findIndex(
-          (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
-        );
-
-      const ass = playbackManager.currentItemAssParsedSubtitleTracks.find(
-        (sub) => sub.srcIndex === playbackManager.currentSubtitleStreamIndex
-      );
-
-      if (vttIdx !== -1 && mediaElementRef.value.textTracks[vttIdx]) {
-        /**
-         * If VTT found, applying it
-         */
-        mediaElementRef.value.textTracks[vttIdx].mode = 'showing';
-      } else if (ass !== undefined && ass.src) {
-        /**
-         * If SSA, using Subtitle Opctopus
-         */
-        playerElement._setSsaTrack(ass.src);
-      }
+      mediaElementRef.value.textTracks[vttIdx].mode = 'showing';
+    } else if (ass !== undefined && ass.src) {
+      /**
+       * If SSA, using Subtitle Opctopus
+       */
+      playerElement._setSsaTrack(ass.src, attachedFonts);
     }
   };
 
