@@ -1,6 +1,12 @@
 <template>
   <div class="poster-block" title="Poster Image">
-    <div class="img-contain">
+    <div
+      class="img-contain"
+      :class="{
+        'square-m': shape === CardShapes.Square,
+        'portrait-m': shape === CardShapes.Portrait,
+        'thumb-m': shape === CardShapes.Thumb || shape === CardShapes.Banner
+      }">
       <div
         class="d-flex justify-center align-center img-poster"
         :style="{
@@ -11,24 +17,30 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ url?: string }>();
+import { computed } from 'vue';
+import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import { CardShapes, getShapeFromItemType } from '@/utils/items';
+
+const props = defineProps<{ url?: string; itemType?: string }>();
+
+const shape = computed(() =>
+  getShapeFromItemType((props.itemType as BaseItemKind) ?? undefined)
+);
 </script>
 
 <style lang="scss" scoped>
+$maxW: 220px;
+
 .poster-block {
   contain: layout style;
   position: relative;
 
-  & .img-contain {
-    display: block;
+  > .img-contain {
     width: 100%;
-
-    max-height: 300px;
-    height: 300px;
-    aspect-ratio: 2 / 3;
+    display: block;
     cursor: pointer;
 
-    & .img-poster {
+    > .img-poster {
       contain: strict;
       height: 100%;
       width: 100%;
@@ -39,5 +51,29 @@ defineProps<{ url?: string }>();
       position: relative;
     }
   }
+}
+
+.square-m {
+  $ar: 1;
+
+  aspect-ratio: $ar;
+  max-height: calc($maxW / $ar);
+  height: calc($maxW / $ar);
+}
+
+.portrait-m {
+  $ar: calc(2 / 3);
+
+  aspect-ratio: $ar;
+  max-height: calc($maxW / $ar);
+  height: calc($maxW / $ar);
+}
+
+.thumb-m {
+  $ar: calc(16 / 9);
+
+  aspect-ratio: $ar;
+  max-height: calc($maxW / $ar);
+  height: calc($maxW / $ar);
 }
 </style>

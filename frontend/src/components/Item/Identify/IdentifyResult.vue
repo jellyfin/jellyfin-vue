@@ -3,7 +3,7 @@
     class="identify-result-block"
     variant="outlined"
     @click="$emit('select', item)">
-    <poster-block :url="item.ImageUrl ?? undefined" />
+    <poster-block :url="item.ImageUrl ?? undefined" :item-type="itemType" />
     <div class="text-center text-subtitle-1 font-weight-bold mt-2 mx-2">
       {{ item.Name }}
     </div>
@@ -25,6 +25,7 @@ import { RemoteSearchResult } from '@jellyfin/sdk/lib/generated-client';
 
 defineProps<{
   item: RemoteSearchResult;
+  itemType?: string;
 }>();
 
 defineEmits<{
@@ -46,6 +47,6 @@ defineEmits<{
   cursor: pointer;
 
   /* 2/3 ratio */
-  max-width: 260px;
+  max-width: 220px;
 }
 </style>

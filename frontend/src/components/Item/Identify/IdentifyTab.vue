@@ -56,10 +56,15 @@
               'justify-center': $vuetify.display.mobile
             }">
             <template v-for="(result, idx) in searchResults" :key="idx">
-              <identify-result :item="result" @select="applySelectedSearch" />
+              <identify-result
+                :item="result"
+                :item-type="item.Type"
+                @select="applySelectedSearch" />
             </template>
           </div>
-          <h3 v-if="!searchResults" class="text-center my-4">
+          <h3
+            v-if="Array.isArray(searchResults) && searchResults.length === 0"
+            class="text-center my-4">
             {{ $t('search.noResults') }}
           </h3>
         </v-window-item>
