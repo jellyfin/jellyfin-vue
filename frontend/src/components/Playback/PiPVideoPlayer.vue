@@ -69,7 +69,7 @@
   </v-overlay>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onMounted, onBeforeUnmount } from 'vue';
 import { useMagicKeys, whenever } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';

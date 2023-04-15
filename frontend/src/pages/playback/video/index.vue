@@ -118,7 +118,7 @@ meta:
     leave: 'scroll-y-transition'
 </route>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, computed, watch } from 'vue';
 import IMdiClose from 'virtual:icons/mdi/close';
 import IMdiChevronDown from 'virtual:icons/mdi/chevron-down';

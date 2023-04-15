@@ -69,7 +69,7 @@
   </v-btn>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useVModel } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';

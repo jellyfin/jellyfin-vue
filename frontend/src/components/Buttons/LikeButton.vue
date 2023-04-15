@@ -6,7 +6,7 @@
     @click.stop.prevent="isFavorite = !isFavorite" />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
