@@ -369,7 +369,7 @@ async function getSeasonURLsBySeries(
  * Download action for the currently selected item
  */
 async function downloadAction(): Promise<void> {
-  if (menuProps.item.Id && menuProps.item.Type) {
+  if (menuProps.item.Id && menuProps.item.Type && menuProps.item.Path) {
     let downloadURLs: DownloadableFile[] = [];
 
     switch (menuProps.item.Type) {
@@ -382,7 +382,10 @@ async function downloadAction(): Promise<void> {
         break;
       }
       default: {
-        const url = getItemDownloadObject(menuProps.item.Id);
+        const url = getItemDownloadObject(
+          menuProps.item.Id,
+          menuProps.item.Path
+        );
 
         if (url) {
           downloadURLs = [url];
@@ -393,7 +396,7 @@ async function downloadAction(): Promise<void> {
     }
 
     if (downloadURLs) {
-      downloadFiles(downloadURLs);
+      await downloadFiles(downloadURLs);
     } else {
       useSnackbar(t('failedToGetDownloadUrl'), 'error');
     }
