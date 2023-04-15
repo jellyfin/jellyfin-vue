@@ -55,6 +55,10 @@
         :label="t('mediaInfo.videoCodec.resolution')"
         :value="`${stream.Width}x${stream.Height}`" />
       <media-detail-attr
+        v-if="stream.AspectRatio"
+        :label="t('mediaInfo.videoCodec.aspectRatio')"
+        :value="stream.AspectRatio" />
+      <media-detail-attr
         v-if="typeof stream.IsAnamorphic === 'boolean'"
         :label="t('mediaInfo.videoCodec.isAnamorphic')"
         :value="formatYesOrNo(stream.IsAnamorphic)" />
@@ -122,26 +126,7 @@
         "
         :label="t('mediaInfo.videoCodec.DoVi.blSignalCompatibilityId')"
         :value="stream.DvBlSignalCompatibilityId" />
-      <media-detail-attr
-        v-if="stream.ColorSpace"
-        :label="t('mediaInfo.videoCodec.colorSpace')"
-        :value="stream.ColorSpace" />
-      <media-detail-attr
-        v-if="stream.ColorTransfer"
-        :label="t('mediaInfo.videoCodec.colorTransfer')"
-        :value="stream.ColorTransfer" />
-      <media-detail-attr
-        v-if="stream.ColorPrimaries"
-        :label="t('mediaInfo.videoCodec.colorPrimaries')"
-        :value="stream.ColorPrimaries" />
-      <media-detail-attr
-        v-if="stream.ColorRange"
-        :label="t('mediaInfo.videoCodec.colorRange')"
-        :value="stream.ColorRange" />
-      <media-detail-attr
-        v-if="stream.PixelFormat"
-        :label="t('mediaInfo.videoCodec.pixelFormat')"
-        :value="stream.PixelFormat" />
+      <media-detail-color-space :stream="stream" />
       <media-detail-attr
         v-if="stream.NalLengthSize"
         label="NAL"
@@ -199,6 +184,38 @@
       <media-detail-generic :stream="stream" />
       <media-detail-extras :stream="stream" />
     </div>
+    <div
+      v-for="(stream, idx) in embeddedStreams"
+      :key="'mdinfo-embedImg-' + stream.Index ?? idx"
+      class="stream-info">
+      <h3 v-if="media.Name" class="d-block my-2">
+        <span class="mr-1">
+          {{ embeddedStreams.length > 1 ? `Image ${idx + 1}` : 'Image' }}
+        </span>
+        <media-detail-copy
+          :text="
+            makeCopyableStreamInfo(stream, idx + 1, embeddedStreams.length > 1)
+          " />
+      </h3>
+      <media-detail-generic :stream="stream" />
+      <media-detail-attr
+        v-if="stream.Profile"
+        :label="t('mediaInfo.generic.profile')"
+        :value="stream.Profile" />
+      <media-detail-attr
+        v-if="stream.Width || stream.Height"
+        :label="t('mediaInfo.videoCodec.resolution')"
+        :value="`${stream.Width}x${stream.Height}`" />
+      <media-detail-attr
+        v-if="stream.BitDepth"
+        :label="t('mediaInfo.videoCodec.bitdepth')"
+        :value="stream.BitDepth + ' bits'" />
+      <media-detail-color-space :stream="stream" />
+      <media-detail-attr
+        v-if="stream.RefFrames"
+        :label="t('mediaInfo.videoCodec.refFrames')"
+        :value="stream.RefFrames" />
+    </div>
   </div>
 </template>
 
@@ -215,7 +232,8 @@ import {
   createVideoInformation,
   createAudioInformation,
   createSubsInformation,
-  createContainerInformation
+  createContainerInformation,
+  createEmbeddedInformation
 } from '@/utils/mediainfo';
 
 const props = defineProps<{
@@ -233,60 +251,34 @@ const audioStreams = computed<MediaStream[]>(() =>
 const subsStreams = computed<MediaStream[]>(() =>
   getMediaStreams(props.media.MediaStreams ?? [], 'Subtitle')
 );
+const embeddedStreams = computed<MediaStream[]>(() =>
+  getMediaStreams(props.media.MediaStreams ?? [], 'EmbeddedImage')
+);
 
-const videoMediaInfo = computed<string>(() => {
+/**
+ * Creates a Media info string from a collection of `MediaStream`.
+ *
+ * @param streams - The collection of `MediaStream` to create the string from.
+ * @param type - The type of the stream.
+ * @param stringfier - The function that creates the string for each stream.
+ */
+function makeMediaStreamInfo(
+  streams: MediaStream[],
+  type: string,
+  stringfier: (stream: MediaStream) => string
+): string {
   let mergedStream = '';
-  const more = videoStreams.value.length > 1;
+  const more = streams.length > 1;
 
-  for (let idx = 1; idx <= videoStreams.value.length; idx++) {
-    const stream = videoStreams.value[idx - 1];
+  for (let idx = 1; idx <= streams.length; idx++) {
+    const stream = streams[idx - 1];
 
-    mergedStream += more ? `Video ${idx}\n` : 'Video\n';
-    mergedStream += createVideoInformation(stream) + '\n';
-  }
-
-  if (mergedStream) {
-    mergedStream = mergedStream.slice(0, -1);
+    mergedStream += more ? `${type} ${idx}\n` : `${type}\n`;
+    mergedStream += stringfier(stream) + '\n';
   }
 
   return mergedStream;
-});
-
-const audioMediaInfo = computed<string>(() => {
-  let mergedStream = '';
-  const more = audioStreams.value.length > 1;
-
-  for (let idx = 1; idx <= audioStreams.value.length; idx++) {
-    const stream = audioStreams.value[idx - 1];
-
-    mergedStream += more ? `Audio ${idx}\n` : 'Audio\n';
-    mergedStream += createAudioInformation(stream) + '\n';
-  }
-
-  if (mergedStream) {
-    mergedStream = mergedStream.slice(0, -1);
-  }
-
-  return mergedStream;
-});
-
-const subsMediaInfo = computed<string>(() => {
-  let mergedStream = '';
-  const more = subsStreams.value.length > 1;
-
-  for (let idx = 1; idx <= subsStreams.value.length; idx++) {
-    const stream = subsStreams.value[idx - 1];
-
-    mergedStream += more ? `Subtitle ${idx}\n` : 'Subtitle\n';
-    mergedStream += createSubsInformation(stream) + '\n';
-  }
-
-  if (mergedStream) {
-    mergedStream = mergedStream.slice(0, -1);
-  }
-
-  return mergedStream;
-});
+}
 
 const completeMediainfo = computed<string>(() => {
   let mediaInfo = '';
@@ -298,19 +290,26 @@ const completeMediainfo = computed<string>(() => {
     mediaInfo += '\n';
   }
 
-  mediaInfo += videoMediaInfo.value;
-
-  if (mediaInfo) {
-    mediaInfo += '\n';
-  }
-
-  mediaInfo += audioMediaInfo.value;
-
-  if (mediaInfo) {
-    mediaInfo += '\n';
-  }
-
-  mediaInfo += subsMediaInfo.value;
+  mediaInfo += makeMediaStreamInfo(
+    videoStreams.value,
+    'Video',
+    createVideoInformation
+  );
+  mediaInfo += makeMediaStreamInfo(
+    audioStreams.value,
+    'Audio',
+    createAudioInformation
+  );
+  mediaInfo += makeMediaStreamInfo(
+    subsStreams.value,
+    'Subtitle',
+    createSubsInformation
+  );
+  mediaInfo += makeMediaStreamInfo(
+    embeddedStreams.value,
+    'Image',
+    createEmbeddedInformation
+  );
 
   return mediaInfo;
 });
@@ -342,6 +341,11 @@ function makeCopyableStreamInfo(
       let prefix = hasMore ? `Subtitle ${streamIndex}\n` : 'Subtitle\n';
 
       return prefix + createSubsInformation(stream);
+    }
+    case 'EmbeddedImage': {
+      let prefix = hasMore ? `Image ${streamIndex}\n` : 'Image\n';
+
+      return prefix + createEmbeddedInformation(stream);
     }
     default: {
       return '';

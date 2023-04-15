@@ -2,11 +2,12 @@ import {
   MediaSourceInfo,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
-import { isNil } from 'lodash-es';
+import { isBoolean, isNil } from 'lodash-es';
 import { formatFileSize } from './items';
 import { usei18n } from '@/composables';
 
 const { t } = usei18n();
+const profileT = t('mediaInfo.generic.profile');
 
 type MediaItem = string | number | boolean;
 type NoneType = null | undefined;
@@ -193,7 +194,7 @@ export function createVideoInformation(stream: MediaStream): string {
     t('mediaInfo.videoCodec.isAvc'),
     formatYesOrNo(stream.IsAVC)
   );
-  mediaInfo += formatMediaAttr(t('mediaInfo.generic.profile'), stream.Profile);
+  mediaInfo += formatMediaAttr(profileT, stream.Profile);
   mediaInfo += formatMediaAttr(t('mediaInfo.videoCodec.level'), stream.Level);
 
   if (stream.Width || stream.Height) {
@@ -203,7 +204,7 @@ export function createVideoInformation(stream: MediaStream): string {
     );
   }
 
-  if (stream.AspectRatio && stream.Codec !== 'mjpeg') {
+  if (stream.AspectRatio) {
     mediaInfo += formatMediaAttr(
       t('mediaInfo.videoCodec.aspectRatio'),
       stream.AspectRatio
@@ -211,12 +212,14 @@ export function createVideoInformation(stream: MediaStream): string {
   }
 
   mediaInfo += formatMediaAttr(
-    t('mediaInfo.videoCodec.isInterlaced'),
-    formatYesOrNo(stream.IsInterlaced)
+    t('mediaInfo.videoCodec.isAnamorphic'),
+    isBoolean(stream.IsAnamorphic)
+      ? formatYesOrNo(stream.IsAnamorphic)
+      : undefined
   );
   mediaInfo += formatMediaAttr(
-    t('mediaInfo.videoCodec.isAnamorphic'),
-    formatYesOrNo(stream.IsAnamorphic)
+    t('mediaInfo.videoCodec.isInterlaced'),
+    formatYesOrNo(stream.IsInterlaced)
   );
 
   if (stream.AverageFrameRate || stream.RealFrameRate) {
@@ -262,30 +265,26 @@ export function createVideoInformation(stream: MediaStream): string {
 export function createAudioInformation(stream: MediaStream): string {
   let mediaInfo = createGenericInfo(stream);
 
-  if (stream.Profile) {
-    mediaInfo += t('mediaInfo.generic.profile') + ' ' + stream.Profile + '\n';
-  }
-
-  if (stream.ChannelLayout) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.layout') + ' ' + stream.ChannelLayout + '\n';
-  }
-
-  if (stream.Channels) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.channels') + ` ${stream.Channels} ch\n`;
-  }
-
-  if (stream.BitRate) {
-    mediaInfo +=
-      t('mediaInfo.generic.bitrate') +
-      ` ${(stream.BitRate / 1000).toFixed(2)} kbps\n`;
-  }
-
-  if (stream.SampleRate) {
-    mediaInfo +=
-      t('mediaInfo.audioCodec.sampleRate') + ` ${stream.SampleRate} Hz\n`;
-  }
+  mediaInfo += formatMediaAttr(profileT, stream.Profile);
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.audioCodec.layout'),
+    stream.ChannelLayout
+  );
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.audioCodec.channels'),
+    stream.Channels,
+    'ch'
+  );
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.generic.bitrate'),
+    stream.BitRate ? (stream.BitRate / 1000).toFixed(2) : '',
+    'kbps'
+  );
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.audioCodec.sampleRate'),
+    stream.SampleRate,
+    'Hz'
+  );
 
   mediaInfo += createExtraInformation(stream);
 
@@ -300,6 +299,36 @@ export function createSubsInformation(stream: MediaStream): string {
   let mediaInfo = createGenericInfo(stream);
 
   mediaInfo += createExtraInformation(stream);
+
+  return mediaInfo;
+}
+
+/**
+ * Format embbedded media info into a mediainfo text format
+ * @param stream - The media stream to create information for.
+ */
+export function createEmbeddedInformation(stream: MediaStream): string {
+  let mediaInfo = createGenericInfo(stream);
+
+  mediaInfo += formatMediaAttr(profileT, stream.Profile);
+
+  if (stream.Width || stream.Height) {
+    mediaInfo += formatMediaAttr(
+      t('mediaInfo.videoCodec.resolution'),
+      `${stream.Width}x${stream.Height}`
+    );
+  }
+
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.videoCodec.bitdepth'),
+    stream.BitDepth,
+    'bits'
+  );
+  mediaInfo += createVideoColorInformation(stream);
+  mediaInfo += formatMediaAttr(
+    t('mediaInfo.videoCodec.refFrames'),
+    stream.RefFrames
+  );
 
   return mediaInfo;
 }

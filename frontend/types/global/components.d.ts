@@ -98,6 +98,7 @@ declare module '@vue/runtime-core' {
     MarkPlayedButton: typeof import('./../../src/components/Buttons/MarkPlayedButton.vue')['default']
     MediaDetail: typeof import('./../../src/components/Item/MediaDetail/MediaDetail.vue')['default']
     MediaDetailAttr: typeof import('./../../src/components/Item/MediaDetail/MediaDetailAttr.vue')['default']
+    MediaDetailColorSpace: typeof import('./../../src/components/Item/MediaDetail/MediaDetailColorSpace.vue')['default']
     MediaDetailContent: typeof import('./../../src/components/Item/MediaDetail/MediaDetailContent.vue')['default']
     MediaDetailCopy: typeof import('./../../src/components/Item/MediaDetail/MediaDetailCopy.vue')['default']
     MediaDetailDialog: typeof import('./../../src/components/Item/MediaDetail/MediaDetailDialog.vue')['default']

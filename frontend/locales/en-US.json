@@ -259,6 +259,7 @@
       "level": "Level:",
       "name": "Video codec:",
       "pixelFormat": "Pixel format:",
+      "refFrames": "Ref frames:",
       "resolution": "Resolution:",
       "videoRange": "Video range:",
       "videoRangeType": "Video range type:"
