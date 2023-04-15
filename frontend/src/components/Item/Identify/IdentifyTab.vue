@@ -271,13 +271,16 @@ watch(
         key: 'search-item-Name',
         title: t('name'),
         type: 'string'
-      },
-      {
+      }
+    ];
+
+    if (!['BoxSet', 'Person'].includes(itemResult.Type || '')) {
+      initSearch.push({
         key: 'search-item-Year',
         title: t('year'),
         type: 'number'
-      }
-    ];
+      });
+    }
 
     const prefilledSearch = getFilledSearchData(itemResult, results);
 
