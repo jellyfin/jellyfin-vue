@@ -12,8 +12,9 @@
       v-model="show"
       :persistent="false"
       close-on-content-click
+      close-on-back
       :z-index="zIndex"
-      :scroll-strategy="'close'"
+      scroll-strategy="close"
       location="top">
       <v-list nav>
         <template v-for="(section, index1) in options">
@@ -42,7 +43,7 @@
     @close="refreshDialog = false" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEventListener } from '@vueuse/core';
@@ -71,6 +72,13 @@ type MenuOption = {
   disabled?: boolean;
 };
 
+/**
+ * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
+ */
+const openItemId = ref<string>();
+</script>
+
+<script setup lang="ts">
 const { t } = useI18n();
 const remote = useRemote();
 const router = useRouter();
@@ -93,7 +101,14 @@ const menuProps = withDefaults(
 );
 
 const parent = getCurrentInstance()?.parent;
-const show = ref(false);
+const show = computed({
+  get() {
+    return openItemId.value === menuProps.item.Id;
+  },
+  set(newVal: boolean) {
+    openItemId.value = newVal ? menuProps.item.Id : undefined;
+  }
+});
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
