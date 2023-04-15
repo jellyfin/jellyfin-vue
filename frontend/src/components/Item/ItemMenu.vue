@@ -63,7 +63,7 @@ import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { useEventListener } from '@vueuse/core';
-import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
@@ -80,11 +80,16 @@ import IMdiInformation from 'virtual:icons/mdi/information';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useRemote, useSnackbar } from '@/composables';
-import { canIdentify, canResume } from '@/utils/items';
+import {
+  canIdentify,
+  canInstantMix,
+  canResume,
+  getItemSeriesDownloadObjects,
+  getItemSeasonDownloadObjects,
+  getItemDownloadObject
+} from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 import { isEdgeUWP, isTv, isXbox, isPs4 } from '@/utils/browser-detection';
@@ -193,21 +198,6 @@ function getQueueOptions(): MenuOption[] {
 }
 
 /**
- * Check if the
- */
-function canInstantMix(): boolean {
-  const localItem = menuProps.item?.Id?.indexOf('local') === 0;
-
-  return (
-    ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
-      menuProps.item.Type || ''
-    ) &&
-    !localItem &&
-    playbackManager.currentItem !== undefined
-  );
-}
-
-/**
  * Playback options for the items
  */
 function getPlaybackOptions(): MenuOption[] {
@@ -256,7 +246,7 @@ function getPlaybackOptions(): MenuOption[] {
     });
   }
 
-  if (canInstantMix()) {
+  if (canInstantMix(menuProps.item) && playbackManager.currentItem) {
     playbackOptions.push({
       title: t('playback.instantMix'),
       icon: IMdiDisc,
@@ -277,30 +267,6 @@ function getPlaybackOptions(): MenuOption[] {
 }
 
 /**
- * Create item download url
- */
-function getItemDownloadObject(
-  itemId: string,
-  itemPath?: string
-): DownloadableFile | undefined {
-  const serverAddress = remote.sdk.api?.basePath;
-  const userToken = remote.sdk.api?.accessToken;
-
-  if (!serverAddress || !userToken) {
-    return undefined;
-  }
-
-  const fileName = itemPath?.includes('\\')
-    ? itemPath?.split('\\').pop()
-    : itemPath?.split('/').pop();
-
-  return {
-    url: `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`,
-    fileName: fileName || ''
-  };
-}
-
-/**
  * Check if the browser can download the item
  */
 function browserCanDownload(): boolean {
@@ -314,62 +280,6 @@ function browserCanDownload(): boolean {
 }
 
 /**
- * Get download URLs for seasons.
- */
-async function getSeasonURLs(seasonId: string): Promise<DownloadableFile[]> {
-  if (remote.sdk.api === undefined) {
-    return [];
-  }
-
-  const episodes = (
-    await remote.sdk.newUserApi(getItemsApi).getItems({
-      userId: remote.auth.currentUserId,
-      parentId: seasonId,
-      fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
-    })
-  ).data;
-
-  return (
-    episodes.Items?.map((r) => {
-      if (r.Id && r.Path) {
-        return getItemDownloadObject(r.Id, r.Path);
-      }
-    }).filter(
-      (r): r is DownloadableFile =>
-        r !== undefined && r.url.length > 0 && r.fileName.length > 0
-    ) ?? []
-  );
-}
-
-/**
- * Get download URLs for series.
- */
-async function getSeasonURLsBySeries(
-  seriesId: string
-): Promise<DownloadableFile[]> {
-  let mergedStreamURLs: DownloadableFile[] = [];
-
-  if (remote.sdk.api === undefined) {
-    return [];
-  }
-
-  const seasons = (
-    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
-      userId: remote.auth.currentUserId,
-      seriesId: seriesId
-    })
-  ).data;
-
-  for (const season of seasons.Items || []) {
-    const seasonURLs = await getSeasonURLs(season.Id || '');
-
-    mergedStreamURLs = [...mergedStreamURLs, ...seasonURLs];
-  }
-
-  return mergedStreamURLs;
-}
-
-/**
  * Download action for the currently selected item
  */
 async function downloadAction(): Promise<void> {
@@ -378,11 +288,11 @@ async function downloadAction(): Promise<void> {
 
     switch (menuProps.item.Type) {
       case 'Season': {
-        downloadURLs = await getSeasonURLs(menuProps.item.Id);
+        downloadURLs = await getItemSeasonDownloadObjects(menuProps.item.Id);
         break;
       }
       case 'Series': {
-        downloadURLs = await getSeasonURLsBySeries(menuProps.item.Id);
+        downloadURLs = await getItemSeriesDownloadObjects(menuProps.item.Id);
         break;
       }
       default: {

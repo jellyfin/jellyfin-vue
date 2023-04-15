@@ -5,6 +5,7 @@ import {
   BaseItemDto,
   BaseItemKind,
   BaseItemPerson,
+  ItemFields,
   MediaStream,
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
@@ -28,6 +29,9 @@ import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
 import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
 import IMdiAlbum from 'virtual:icons/mdi/album';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { DownloadableFile } from './file-download';
 import { useRemote } from '@/composables';
 
 export interface IdentifySearchItem {
@@ -280,6 +284,19 @@ export function canIdentify(item: BaseItemDto): boolean {
 }
 
 /**
+ * Determine if an item can be instant mixed.
+ */
+export function canInstantMix(item: BaseItemDto): boolean {
+  const localItem = item?.Id?.indexOf('local') === 0;
+
+  return (
+    ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
+      item.Type || ''
+    ) && !localItem
+  );
+}
+
+/**
  * Generate a link to the item's details page route
  *
  * @param item - The item used to generate the route
@@ -419,6 +436,104 @@ export function getMediaStreams(
   streamType: string
 ): MediaStream[] {
   return mediaStreams.filter((mediaStream) => mediaStream.Type === streamType);
+}
+
+/**
+ * Create an item download object that contains the URL and filename.
+ *
+ * @param itemId - The item ID.
+ * @package itemPath - The item path.
+ */
+export function getItemDownloadObject(
+  itemId: string,
+  itemPath?: string
+): DownloadableFile | undefined {
+  const remote = useRemote();
+
+  const serverAddress = remote.sdk.api?.basePath;
+  const userToken = remote.sdk.api?.accessToken;
+
+  if (!serverAddress || !userToken) {
+    return undefined;
+  }
+
+  const fileName = itemPath?.includes('\\')
+    ? itemPath?.split('\\').pop()
+    : itemPath?.split('/').pop();
+
+  return {
+    url: `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`,
+    fileName: fileName || ''
+  };
+}
+
+/**
+ * Get multiple download object for seasons.
+ *
+ * @param seasonId - The season ID.
+ * @returns - An array of download objects.
+ */
+export async function getItemSeasonDownloadObjects(
+  seasonId: string
+): Promise<DownloadableFile[]> {
+  const remote = useRemote();
+
+  if (remote.sdk.api === undefined) {
+    return [];
+  }
+
+  const episodes = (
+    await remote.sdk.newUserApi(getItemsApi).getItems({
+      userId: remote.auth.currentUserId,
+      parentId: seasonId,
+      fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
+    })
+  ).data;
+
+  return (
+    episodes.Items?.map((r) => {
+      if (r.Id && r.Path) {
+        return getItemDownloadObject(r.Id, r.Path);
+      }
+    }).filter(
+      (r): r is DownloadableFile =>
+        r !== undefined && r.url.length > 0 && r.fileName.length > 0
+    ) ?? []
+  );
+}
+
+/**
+ * Get download object for a series.
+ * This will fetch every season for all the episodes.
+ *
+ * @param seriesId - The series ID.
+ * @returns - An array of download objects.
+ */
+export async function getItemSeriesDownloadObjects(
+  seriesId: string
+): Promise<DownloadableFile[]> {
+  const remote = useRemote();
+
+  let mergedStreamURLs: DownloadableFile[] = [];
+
+  if (remote.sdk.api === undefined) {
+    return [];
+  }
+
+  const seasons = (
+    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+      userId: remote.auth.currentUserId,
+      seriesId: seriesId
+    })
+  ).data;
+
+  for (const season of seasons.Items || []) {
+    const seasonURLs = await getItemSeasonDownloadObjects(season.Id || '');
+
+    mergedStreamURLs = [...mergedStreamURLs, ...seasonURLs];
+  }
+
+  return mergedStreamURLs;
 }
 
 interface SearchBuilder {
