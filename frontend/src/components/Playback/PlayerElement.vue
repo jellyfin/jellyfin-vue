@@ -28,7 +28,7 @@
 import { computed, watch, nextTick } from 'vue';
 import { isNil } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
-import Hls, { ErrorData, ErrorTypes, Events } from 'hls.js';
+import Hls, { ErrorData } from 'hls.js';
 import {
   playbackManagerStore,
   playerElementStore,
@@ -56,7 +56,7 @@ const hls = Hls.isSupported()
 function detachHls(): void {
   if (hls) {
     hls.detachMedia();
-    hls.off(Events.ERROR, onHlsEror);
+    hls.off(Hls.Events.ERROR, onHlsEror);
   }
 }
 
@@ -109,17 +109,17 @@ async function onLoadedData(): Promise<void> {
 /**
  * Callback for when HLS.js gets an error
  */
-function onHlsEror(_event: Events.ERROR, data: ErrorData): void {
+function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   if (data.fatal && hls) {
     switch (data.type) {
-      case ErrorTypes.NETWORK_ERROR: {
+      case Hls.ErrorTypes.NETWORK_ERROR: {
         // try to recover network error
         useSnackbar(t('errors.playback.networkError'), 'error');
         console.error('fatal network error encountered, try to recover');
         hls.startLoad();
         break;
       }
-      case ErrorTypes.MEDIA_ERROR: {
+      case Hls.ErrorTypes.MEDIA_ERROR: {
         useSnackbar(t('errors.playback.mediaError'), 'error');
         console.error('fatal media error encountered, try to recover');
         hls.recoverMediaError();
@@ -156,7 +156,7 @@ watch(mediaElementRef, async () => {
 
   if (mediaElementRef.value && mediaElementType.value === 'video' && hls) {
     hls.attachMedia(mediaElementRef.value);
-    hls.on(Events.ERROR, onHlsEror);
+    hls.on(Hls.Events.ERROR, onHlsEror);
   }
 });
 
