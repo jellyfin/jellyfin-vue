@@ -1030,108 +1030,70 @@ class PlaybackManagerStore {
     item: BaseItemDto,
     shuffle = false
   ): Promise<string[]> => {
-    let responseItems: BaseItemDto[] = [];
-
-    if (item.Type === 'Program' && item.ChannelId) {
-      responseItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            ids: [item.ChannelId],
-            limit: 300,
-            sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId,
-            fields: Object.values(ItemFields)
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'Playlist') {
-      responseItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            parentId: item.Id,
-            limit: 300,
-            sortBy: shuffle ? ['Random'] : undefined,
-            userId: remote.auth.currentUserId,
-            fields: Object.values(ItemFields)
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'MusicArtist' && item.Id) {
-      responseItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            artistIds: [item.Id],
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            mediaTypes: ['Audio'],
-            limit: 300,
-            sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId,
-            fields: Object.values(ItemFields)
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'MusicGenre' && item.Id) {
-      responseItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            genreIds: [item.Id],
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            mediaTypes: ['Audio'],
-            limit: 300,
-            sortBy: shuffle ? ['Random'] : ['SortName'],
-            userId: remote.auth.currentUserId,
-            fields: Object.values(ItemFields)
-          })
-        ).data.Items || [];
-    } else if (item.IsFolder) {
-      responseItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            parentId: item.Id,
-            filters: [ItemFilter.IsNotFolder],
-            recursive: true,
-            sortBy: ['BoxSet'].includes(item.Type || '')
-              ? undefined
-              : shuffle
-              ? ['Random']
-              : ['SortName'],
-            mediaTypes: ['Audio', 'Video'],
-            limit: 300,
-            userId: remote.auth.currentUserId,
-            fields: Object.values(ItemFields)
-          })
-        ).data.Items || [];
-    } else if (item.Type === 'Episode') {
-      if (
-        remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
-        item.SeriesId
-      ) {
-        /**
-         * If autoplay is enabled and we have a seriesId, get the rest of the episodes
-         */
-        responseItems =
-          (
-            await remote.sdk.newUserApi(getTvShowsApi).getEpisodes({
-              seriesId: item.SeriesId,
-              isMissing: false,
-              startItemId: item.Id,
-              limit: 300,
-              userId: remote.auth.currentUserId,
-              fields: Object.values(ItemFields)
-            })
-          ).data.Items || [];
-      } else {
-        responseItems.push(item);
-      }
-    } else {
-      /**
-       * This type of item doesn't require any special processing
-       */
-      return [item.Id || ''];
+    if (!item.Id) {
+      return [];
     }
 
-    return responseItems.map((index) => {
-      return index.Id || '';
-    });
+    const sortOrder =
+      item.Type === BaseItemKind.Playlist || item.Type === BaseItemKind.BoxSet
+        ? undefined
+        : ['SortName'];
+    const sortBy = shuffle ? ['Random'] : sortOrder;
+    const ids =
+      item.Type === BaseItemKind.Program && item.ChannelId
+        ? [item.ChannelId]
+        : undefined;
+    const artistIds =
+      item.Type === BaseItemKind.MusicArtist ? [item.Id] : undefined;
+    const parentId = item.Type === BaseItemKind.Playlist ? item.Id : undefined;
+    let request;
+
+    if (
+      item.Type === BaseItemKind.Program ||
+      item.Type === BaseItemKind.Playlist ||
+      item.Type === BaseItemKind.MusicArtist ||
+      item.Type === BaseItemKind.MusicGenre ||
+      item.IsFolder
+    ) {
+      request = await remote.sdk.newUserApi(getItemsApi).getItems({
+        ids,
+        artistIds,
+        filters: [ItemFilter.IsNotFolder],
+        parentId,
+        recursive: true,
+        limit: 300,
+        sortBy,
+        userId: remote.auth.currentUserId,
+        fields: Object.values(ItemFields)
+      });
+    } else if (
+      item.Type === BaseItemKind.Episode &&
+      remote.auth.currentUser?.Configuration?.EnableNextEpisodeAutoPlay &&
+      item.SeriesId
+    ) {
+      /**
+       * If autoplay is enabled and we have a seriesId, get the rest of the episodes
+       */
+      request = await remote.sdk.newUserApi(getTvShowsApi).getEpisodes({
+        seriesId: item.SeriesId,
+        isMissing: false,
+        startItemId: item.Id,
+        limit: 300,
+        userId: remote.auth.currentUserId,
+        fields: Object.values(ItemFields)
+      });
+    }
+
+    /**
+     * When no extra processing was needed, we add the item itself
+     */
+    const responseItems = request ? request.data.Items : [item];
+
+    return (
+      responseItems
+        ?.filter((i): i is { Id: string } => i.Id !== undefined)
+        .map((i) => i.Id) ?? []
+    );
   };
 
   public fetchCurrentMediaSource = async (): Promise<void> => {
