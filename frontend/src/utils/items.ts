@@ -595,9 +595,7 @@ export async function getItemRemoteSearch(
   }
 
   for (const search of queryProviderIDs) {
-    if (search.value) {
-      buildSearch.ProviderIds[search.key] = (search.value as string) || '';
-    }
+    buildSearch.ProviderIds[search.key] = (search.value as string) || '';
   }
 
   const searcher = remote.sdk.newUserApi(getItemLookupApi);
