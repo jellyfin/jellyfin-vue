@@ -83,8 +83,7 @@ import { canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 import { isEdgeUWP, isTv, isXbox, isPs4 } from '@/utils/browser-detection';
-import downloadFiles from '@/utils/file-download';
-import type { DownloadableFile } from '@/utils/file-download';
+import downloadFiles, { DownloadableFile } from '@/utils/file-download';
 import { writeToClipboard } from '@/utils/clipboard';
 
 type MenuOption = {
@@ -370,7 +369,7 @@ async function getSeasonURLsBySeries(
  * Download action for the currently selected item
  */
 async function downloadAction(): Promise<void> {
-  if (menuProps.item.Id && menuProps.item.Type && menuProps.item.Path) {
+  if (menuProps.item.Id && menuProps.item.Type) {
     let downloadURLs: DownloadableFile[] = [];
 
     switch (menuProps.item.Type) {
@@ -383,10 +382,7 @@ async function downloadAction(): Promise<void> {
         break;
       }
       default: {
-        const url = getItemDownloadObject(
-          menuProps.item.Id,
-          menuProps.item.Path
-        );
+        const url = getItemDownloadObject(menuProps.item.Id);
 
         if (url) {
           downloadURLs = [url];
@@ -397,7 +393,7 @@ async function downloadAction(): Promise<void> {
     }
 
     if (downloadURLs) {
-      await downloadFiles(downloadURLs);
+      downloadFiles(downloadURLs);
     } else {
       useSnackbar(t('failedToGetDownloadUrl'), 'error');
     }

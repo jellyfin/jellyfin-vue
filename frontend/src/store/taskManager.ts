@@ -11,8 +11,7 @@ import { useRemote } from '@/composables';
 
 export enum TaskType {
   ConfigSync = 1,
-  LibraryRefresh = 2,
-  FileDownload = 3
+  LibraryRefresh = 2
 }
 
 /**
