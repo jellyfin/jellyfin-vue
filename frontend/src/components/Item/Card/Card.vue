@@ -96,7 +96,7 @@ import { taskManagerStore } from '@/store';
 const isFinePointer = useMediaQuery('(pointer:fine)');
 </script>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 const props = withDefaults(
   defineProps<{
     item: BaseItemDto;

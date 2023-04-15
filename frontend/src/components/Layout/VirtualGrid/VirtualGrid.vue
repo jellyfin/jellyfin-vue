@@ -45,7 +45,6 @@
  */
 import { ref, watch, StyleValue, onMounted, onUnmounted, computed } from 'vue';
 import {
-  computedEager,
   Fn,
   refDebounced,
   useEventListener,
@@ -107,14 +106,10 @@ const eventCleanups: Fn[] = [];
 
 /**
  * == MEASUREMENTS OF THE GRID AREA AND STYLING ==
- *
- * We use Vuetify measurements as they're debounced by default. Thus, provides
- * a better performance.
- *
  * In the if check of each computed property we add all the objects that we want
  * Vue to track.
  */
-const resizeMeasurement = computedEager(() => {
+const resizeMeasurement = computed(() => {
   return rootRef.value &&
     itemRect.value &&
     displayWidth.value !== undefined &&
@@ -122,14 +117,14 @@ const resizeMeasurement = computedEager(() => {
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
-const contentSize = computedEager(() => {
+const contentSize = computed(() => {
   return resizeMeasurement.value &&
     displayWidth.value !== undefined &&
     displayHeight.value !== undefined
     ? getContentSize(resizeMeasurement.value, props.items.length)
     : undefined;
 });
-const rootStyles = computedEager<StyleValue>(() =>
+const rootStyles = computed<StyleValue>(() =>
   Object.fromEntries([
     ...Object.entries(contentSize.value || {}).map(([property, value]) => [
       property,
@@ -139,9 +134,6 @@ const rootStyles = computedEager<StyleValue>(() =>
   ])
 );
 const spaceAroundWindow = computed<SpaceAroundWindow | undefined>(() => {
-  /**
-   * We use Vuetify measurements as they're debounced by default.
-   */
   if (
     displayWidth.value !== undefined &&
     displayHeight.value !== undefined &&
@@ -157,7 +149,7 @@ const spaceAroundWindow = computed<SpaceAroundWindow | undefined>(() => {
     };
   }
 });
-const bufferMeta = computedEager(() => {
+const bufferMeta = computed(() => {
   if (!isNil(spaceAroundWindow.value) && !isNil(resizeMeasurement.value)) {
     return getBufferMeta(
       spaceAroundWindow.value,
@@ -166,7 +158,7 @@ const bufferMeta = computedEager(() => {
     );
   }
 });
-const visibleItems = computedEager(() => {
+const visibleItems = computed(() => {
   if (!isNil(bufferMeta.value) && !isNil(resizeMeasurement.value)) {
     return getVisibleItems(
       bufferMeta.value,
@@ -192,8 +184,8 @@ onMounted(() => {
  * However, since we're dynamically adding events based on the scroll parent (see watcher below),
  * we must control the cleanup of those manually when the scroll parent changes.
  *
- * As we have already this cleanup logic implemented, it doesn't hurt anybody to perform the
- * manual cleanup in the onUnmounted hook to make sure everything is properly disposed.
+ * As the event listener is added inside a watcher (a different effect scope),
+ * we need to dispose on onUnmounted as well
  */
 function destroyEventListeners(): void {
   for (const cleanup of eventCleanups) {

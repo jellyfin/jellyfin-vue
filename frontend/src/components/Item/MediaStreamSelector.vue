@@ -20,7 +20,7 @@
   </v-select>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { upperFirst } from 'lodash-es';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';

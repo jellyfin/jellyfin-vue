@@ -12,7 +12,7 @@ interface SnackbarState {
   color: string;
 }
 
-let state: SnackbarState = reactive({
+const state = reactive<SnackbarState>({
   message: '',
   color: ''
 });
