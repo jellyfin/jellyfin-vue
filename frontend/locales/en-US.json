@@ -111,6 +111,12 @@
       "recentlyAdded": "Recently added"
     }
   },
+  "identify": {
+    "applyError": "Failed to apply selected search result",
+    "instructResult": "You can click on one of these cards to apply the result",
+    "searchError": "Failed to search to remote providers",
+    "title": "Identify"
+  },
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",
@@ -377,6 +383,8 @@
   "saved": "Saved",
   "search": {
     "name": "Search",
+    "noResults": "No results found",
+    "results": "Results",
     "topResults": "Top results"
   },
   "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",

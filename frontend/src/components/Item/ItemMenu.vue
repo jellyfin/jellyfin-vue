@@ -45,6 +45,10 @@
     v-if="item.Id"
     v-model:dialog="mediaInfoDialog"
     :item-id="item.Id" />
+  <identify-dialog
+    v-if="item.Id"
+    v-model:dialog="identifyItemDialog"
+    :item-id="item.Id" />
   <confirm-dialog
     v-if="item.Id"
     v-model:dialog="deleteDialog"
@@ -63,6 +67,7 @@ import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
+import IMdiCloudSearch from 'virtual:icons/mdi/cloud-search-outline';
 import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
 import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDisc from 'virtual:icons/mdi/disc';
@@ -79,7 +84,7 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useRemote, useSnackbar } from '@/composables';
-import { canResume } from '@/utils/items';
+import { canIdentify, canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
 import { isEdgeUWP, isTv, isXbox, isPs4 } from '@/utils/browser-detection';
@@ -121,6 +126,7 @@ const mediaInfoDialog = ref(false);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
 const deleteDialog = ref(false);
+const identifyItemDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
@@ -190,9 +196,7 @@ function getQueueOptions(): MenuOption[] {
  * Check if the
  */
 function canInstantMix(): boolean {
-  const localItem =
-    typeof menuProps.item.Id === 'string' &&
-    menuProps.item.Id.indexOf('local') === 0;
+  const localItem = menuProps.item?.Id?.indexOf('local') === 0;
 
   return (
     ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
@@ -461,9 +465,7 @@ function canRefreshLibrary(): boolean {
   const status = menuProps.item.Status || '';
 
   const incompleteRecording = type === 'Recording' && status !== 'Completed';
-  const localItem =
-    typeof menuProps.item.Id === 'string' &&
-    menuProps.item.Id.indexOf('local') === 0;
+  const localItem = menuProps.item?.Id?.indexOf('local') === 0;
 
   const IsAdministrator =
     remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
@@ -530,6 +532,16 @@ function getLibraryOptions(): MenuOption[] {
         metadataDialog.value = true;
       }
     });
+
+    if (canIdentify(menuProps.item)) {
+      libraryOptions.push({
+        title: t('identify.title'),
+        icon: IMdiCloudSearch,
+        action: (): void => {
+          identifyItemDialog.value = true;
+        }
+      });
+    }
   }
 
   if (menuProps.item.CanDelete) {
