@@ -218,7 +218,12 @@
       "channels": "Channels:",
       "layout": "Layout:",
       "name": "Audio codec:",
-      "sampleRate": "Sample rate:"
+      "sampleRate": "Sample rate:",
+      "titles": "Audio | Audio {0}"
+    },
+    "embeddedImageCodec": {
+      "name": "Image codec:",
+      "titles": "Image | Image {0}"
     },
     "generic": {
       "bitrate": "Bitrate:",
@@ -237,7 +242,8 @@
     "name": "Media",
     "noMediaSources": "No available media sources",
     "subtitleCodec": {
-      "name": "Subtitle codec:"
+      "name": "Subtitle codec:",
+      "titles": "Subtitle | Subtitle {0}"
     },
     "title": "Media Info",
     "videoCodec": {
@@ -267,6 +273,7 @@
       "pixelFormat": "Pixel format:",
       "refFrames": "Ref frames:",
       "resolution": "Resolution:",
+      "titles": "Video | Video {0}",
       "videoRange": "Video range:",
       "videoRangeType": "Video range type:"
     }

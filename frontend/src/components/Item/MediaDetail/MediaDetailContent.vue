@@ -31,11 +31,11 @@
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
         <span class="mr-1">
-          {{ videoStreams.length > 1 ? `Video ${idx + 1}` : 'Video' }}
+          {{ t('mediaInfo.videoCodec.titles', [idx + 1], videoStreams.length) }}
         </span>
         <media-detail-copy
           :text="
-            makeCopyableStreamInfo(stream, idx + 1, videoStreams.length > 1)
+            makeCopyableStreamInfo(stream, idx + 1, videoStreams.length)
           " />
       </h3>
       <media-detail-generic :stream="stream" />
@@ -138,11 +138,11 @@
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
         <span class="mr-1">
-          {{ audioStreams.length > 1 ? `Audio ${idx + 1}` : 'Audio' }}
+          {{ t('mediaInfo.audioCodec.titles', [idx + 1], audioStreams.length) }}
         </span>
         <media-detail-copy
           :text="
-            makeCopyableStreamInfo(stream, idx + 1, audioStreams.length > 1)
+            makeCopyableStreamInfo(stream, idx + 1, audioStreams.length)
           " />
       </h3>
       <media-detail-generic :stream="stream" />
@@ -174,12 +174,12 @@
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
         <span class="mr-1">
-          {{ subsStreams.length > 1 ? `Subtitle ${idx + 1}` : 'Subtitle' }}
+          {{
+            t('mediaInfo.subtitleCodec.titles', [idx + 1], subsStreams.length)
+          }}
         </span>
         <media-detail-copy
-          :text="
-            makeCopyableStreamInfo(stream, idx + 1, subsStreams.length > 1)
-          " />
+          :text="makeCopyableStreamInfo(stream, idx + 1, subsStreams.length)" />
       </h3>
       <media-detail-generic :stream="stream" />
       <media-detail-extras :stream="stream" />
@@ -190,11 +190,17 @@
       class="stream-info">
       <h3 v-if="media.Name" class="d-block my-2">
         <span class="mr-1">
-          {{ embeddedStreams.length > 1 ? `Image ${idx + 1}` : 'Image' }}
+          {{
+            t(
+              'mediaInfo.embeddedImageCodec.titles',
+              [idx + 1],
+              embeddedStreams.length
+            )
+          }}
         </span>
         <media-detail-copy
           :text="
-            makeCopyableStreamInfo(stream, idx + 1, embeddedStreams.length > 1)
+            makeCopyableStreamInfo(stream, idx + 1, embeddedStreams.length)
           " />
       </h3>
       <media-detail-generic :stream="stream" />
@@ -268,12 +274,13 @@ function makeMediaStreamInfo(
   stringfier: (stream: MediaStream) => string
 ): string {
   let mergedStream = '';
-  const more = streams.length > 1;
 
   for (let idx = 1; idx <= streams.length; idx++) {
     const stream = streams[idx - 1];
 
-    mergedStream += more ? `${type} ${idx}\n` : `${type}\n`;
+    const title = t(`mediaInfo.${type}.titles`, [idx], streams.length);
+
+    mergedStream += `${title}\n`;
     mergedStream += stringfier(stream) + '\n';
   }
 
@@ -292,22 +299,22 @@ const completeMediainfo = computed<string>(() => {
 
   mediaInfo += makeMediaStreamInfo(
     videoStreams.value,
-    'Video',
+    'videoCodec',
     createVideoInformation
   );
   mediaInfo += makeMediaStreamInfo(
     audioStreams.value,
-    'Audio',
+    'audioCodec',
     createAudioInformation
   );
   mediaInfo += makeMediaStreamInfo(
     subsStreams.value,
-    'Subtitle',
+    'subtitleCodec',
     createSubsInformation
   );
   mediaInfo += makeMediaStreamInfo(
     embeddedStreams.value,
-    'Image',
+    'embeddedImageCodec',
     createEmbeddedInformation
   );
 
@@ -324,28 +331,36 @@ const isNumber = (value: unknown): value is number => {
 function makeCopyableStreamInfo(
   stream: MediaStream,
   streamIndex: number,
-  hasMore: boolean
+  totalLength: number
 ): string {
   switch (stream.Type) {
     case 'Video': {
-      let prefix = hasMore ? `Video ${streamIndex}\n` : 'Video\n';
-
-      return prefix + createVideoInformation(stream);
+      return (
+        t('mediaInfo.videoCodec.titles', [streamIndex], totalLength) +
+        '\n' +
+        createVideoInformation(stream)
+      );
     }
     case 'Audio': {
-      let prefix = hasMore ? `Audio ${streamIndex}\n` : 'Audio\n';
-
-      return prefix + createAudioInformation(stream);
+      return (
+        t('mediaInfo.audioCodec.titles', [streamIndex], totalLength) +
+        '\n' +
+        createAudioInformation(stream)
+      );
     }
     case 'Subtitle': {
-      let prefix = hasMore ? `Subtitle ${streamIndex}\n` : 'Subtitle\n';
-
-      return prefix + createSubsInformation(stream);
+      return (
+        t('mediaInfo.subtitleCodec.titles', [streamIndex], totalLength) +
+        '\n' +
+        createSubsInformation(stream)
+      );
     }
     case 'EmbeddedImage': {
-      let prefix = hasMore ? `Image ${streamIndex}\n` : 'Image\n';
-
-      return prefix + createEmbeddedInformation(stream);
+      return (
+        t('mediaInfo.embeddedImageCodec.titles', [streamIndex], totalLength) +
+        '\n' +
+        createEmbeddedInformation(stream)
+      );
     }
     default: {
       return '';
