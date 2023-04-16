@@ -5,7 +5,8 @@ import {
   BaseItemDto,
   BaseItemKind,
   BaseItemPerson,
-  MediaStream
+  MediaStream,
+  RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
@@ -26,7 +27,23 @@ import IMdiBookMusic from 'virtual:icons/mdi/book-music';
 import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
 import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
 import IMdiAlbum from 'virtual:icons/mdi/album';
+import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { useRemote } from '@/composables';
+
+export interface IdentifySearchItem {
+  key: string;
+  value?: string | number;
+  title: string;
+  type: string;
+}
+
+interface SearchBuilder {
+  Name?: string;
+  Year?: number;
+  ProviderIds: {
+    [key: string]: string;
+  };
+}
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -193,6 +210,28 @@ export function getShapeFromItemType(
       return CardShapes.Portrait;
     }
   }
+}
+
+/**
+ * Determine if an item can be identified.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be identified or not.
+ */
+export function canIdentify(item: BaseItemDto): boolean {
+  const valid = [
+    'Book',
+    'BoxSet',
+    'Movie',
+    'MusicAlbum',
+    'MusicArtist',
+    'MusicVideo',
+    'Person',
+    'Series',
+    'Trailer'
+  ];
+
+  return valid.includes(item.Type || '');
 }
 
 /**
@@ -430,4 +469,155 @@ export function getMediaStreams(
   streamType: string
 ): MediaStream[] {
   return mediaStreams.filter((mediaStream) => mediaStream.Type === streamType);
+}
+
+/**
+ * Get the remote search results for an item and search params.
+ *
+ * @param item - The item to search for.
+ * @param searches - The search params to use.
+ * @returns - An array of remote search results.
+ */
+export async function getItemRemoteSearch(
+  item: BaseItemDto,
+  searches: IdentifySearchItem[]
+): Promise<RemoteSearchResult[] | undefined> {
+  const remote = useRemote();
+
+  const itemId = item.Id;
+
+  if (remote.sdk.api === undefined) {
+    return;
+  }
+
+  if (itemId === undefined) {
+    return;
+  }
+
+  // Split the query to `search-item-` and the rest to provider IDs.
+
+  const queryProviderIDs = searches
+    .map((search) => {
+      if (!search.key.startsWith('search-item-')) {
+        return search;
+      }
+    })
+    .filter((s): s is IdentifySearchItem => s !== undefined);
+  const nameSearch = searches.find(
+    (search) => search.key === 'search-item-Name'
+  );
+  const yearSearch = searches.find(
+    (search) => search.key === 'search-item-Year'
+  );
+
+  const buildSearch: SearchBuilder = {
+    ProviderIds: {}
+  };
+
+  if (nameSearch && nameSearch.value) {
+    buildSearch.Name = nameSearch.value as string;
+  }
+
+  if (yearSearch && yearSearch.value) {
+    buildSearch.Year = yearSearch.value as number;
+  }
+
+  for (const search of queryProviderIDs) {
+    buildSearch.ProviderIds[search.key] = (search.value as string) || '';
+  }
+
+  const searcher = remote.sdk.newUserApi(getItemLookupApi);
+
+  switch (item.Type) {
+    case 'Book': {
+      return (
+        await searcher.getBookRemoteSearchResults({
+          bookInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'BoxSet': {
+      return (
+        await searcher.getBoxSetRemoteSearchResults({
+          boxSetInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'Movie': {
+      return (
+        await searcher.getMovieRemoteSearchResults({
+          movieInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'MusicAlbum': {
+      return (
+        await searcher.getMusicAlbumRemoteSearchResults({
+          albumInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'MusicArtist': {
+      return (
+        await searcher.getMusicArtistRemoteSearchResults({
+          artistInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'MusicVideo': {
+      return (
+        await searcher.getMusicVideoRemoteSearchResults({
+          musicVideoInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'Person': {
+      return (
+        await searcher.getPersonRemoteSearchResults({
+          personLookupInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'Series': {
+      return (
+        await searcher.getSeriesRemoteSearchResults({
+          seriesInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+    case 'Trailer': {
+      return (
+        await searcher.getTrailerRemoteSearchResults({
+          trailerInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: buildSearch
+          }
+        })
+      ).data;
+    }
+  }
 }
