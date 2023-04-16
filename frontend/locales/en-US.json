@@ -45,6 +45,9 @@
   "customRating": "Custom rating",
   "darkModeToggle": "Toggle dark mode",
   "dateAdded": "Date added",
+  "delete": "Delete",
+  "deleteItem": "Delete media",
+  "deleteItemDescription": "Deleting this item will delete it from both the file system and your media library. Are you sure you wish to continue?",
   "details": "Details",
   "dialog": {
     "upNext": {
@@ -79,6 +82,7 @@
   },
   "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
   "failedSettingDisplayPreferences": "Unable to update display preferences.",
+  "failedToDeleteItem": "Failed to delete item",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",
