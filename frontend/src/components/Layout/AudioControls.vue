@@ -71,7 +71,10 @@
             <div class="hidden-lg-and-down">
               <volume-slider />
             </div>
-            <item-menu :item="playbackManager.currentItem" :z-index="99999" />
+            <item-menu
+              :item="playbackManager.currentItem"
+              :media-source-index="playbackManager.currentMediaSourceIndex"
+              :z-index="99999" />
             <v-btn icon to="/playback/music">
               <v-icon>
                 <i-mdi-fullscreen />

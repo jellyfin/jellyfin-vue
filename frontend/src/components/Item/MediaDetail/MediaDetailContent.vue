@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2 v-if="media.Name" class="d-block my-2">
-      <span class="mr-1">{{ media.Name }}</span>
+      <span class="mr-1">{{ displayName }}</span>
       <media-detail-copy :text="completeMediainfo" />
     </h2>
   </div>
@@ -244,6 +244,7 @@ import {
 
 const props = defineProps<{
   media: MediaSourceInfo;
+  parentName?: string;
 }>();
 
 const { t } = useI18n();
@@ -260,6 +261,13 @@ const subsStreams = computed<MediaStream[]>(() =>
 const embeddedStreams = computed<MediaStream[]>(() =>
   getMediaStreams(props.media.MediaStreams ?? [], 'EmbeddedImage')
 );
+const displayName = computed(() => {
+  if (props.parentName) {
+    return `${props.parentName} - ${props.media.Name}`;
+  }
+
+  return props.media.Name;
+});
 
 /**
  * Creates a Media info string from a collection of `MediaStream`.
@@ -290,6 +298,10 @@ function makeMediaStreamInfo(
 const completeMediainfo = computed<string>(() => {
   let mediaInfo = '';
   const { media } = props;
+
+  if (displayName.value) {
+    mediaInfo += `${displayName.value}\n`;
+  }
 
   mediaInfo += createContainerInformation(media);
 

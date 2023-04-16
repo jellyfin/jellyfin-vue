@@ -4,12 +4,16 @@
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     @update:model-value="close">
-    <metadata-editor :item-id="itemId" @cancel="close" @save="close" />
+    <metadata-editor
+      :item-id="itemId"
+      :media-source-index="mediaSourceIndex"
+      @cancel="close"
+      @save="close" />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-defineProps<{ dialog: boolean; itemId: string }>();
+defineProps<{ dialog: boolean; itemId: string; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
   (e: 'update:dialog', isOpen: boolean): void;

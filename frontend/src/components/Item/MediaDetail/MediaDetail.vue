@@ -6,16 +6,18 @@
 
     <v-card-text
       v-if="mediaSource.length > 0"
-      class="pa-0 flex-grow-1"
-      :class="{
-        'd-flex': !$vuetify.display.mobile,
-        'flex-row': !$vuetify.display.mobile
-      }">
+      class="d-flex flex-column flex-grow-1">
       <div
-        v-for="media in mediaSource"
+        v-for="(media, idx) in mediaSource"
         :key="'mediaInfo' + media.Id!!"
         class="ps-4">
-        <media-detail-content :media="media" />
+        <media-detail-content
+          v-if="
+            mediaSourceIndex !== undefined ? mediaSourceIndex === idx : true
+          "
+          :media="media"
+          :parent-name="parentName" />
+        <v-divider v-if="idx < mediaSource.length - 1" class="mt-4 mb-2" />
       </div>
     </v-card-text>
     <v-card-text
@@ -26,7 +28,7 @@
         'flex-row': !$vuetify.display.mobile
       }">
       <h2 class="no-media">
-        {{ t('mediaInfo.noMediaSources') }}
+        {{ t('NoMediaSourcesAvailable') }}
       </h2>
     </v-card-text>
 
@@ -52,6 +54,7 @@ import { useRemote } from '@/composables';
 
 const props = defineProps<{
   itemId: string;
+  mediaSourceIndex?: number;
 }>();
 
 const emit = defineEmits<{
@@ -62,6 +65,7 @@ const { t } = useI18n();
 const remote = useRemote();
 
 const isLoading = ref(true);
+const parentName = ref<string>();
 const mediaSource = ref<MediaSourceInfo[]>([]);
 
 /**
@@ -76,6 +80,11 @@ async function getData(): Promise<void> {
   ).data;
 
   mediaSource.value = itemInfo.MediaSources || [];
+
+  if (mediaSource.value.length > 1) {
+    parentName.value = itemInfo.Name ?? undefined;
+  }
+
   isLoading.value = false;
 }
 

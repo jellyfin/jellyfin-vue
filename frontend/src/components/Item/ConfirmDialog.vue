@@ -9,6 +9,9 @@
       <v-card-title class="text-center font-weight-light mt-4">
         {{ title }}
       </v-card-title>
+      <v-card-subtitle v-if="subtitle" class="pb-3 text-center">
+        {{ subtitle }}
+      </v-card-subtitle>
 
       <v-divider />
 
@@ -43,6 +46,7 @@ defineProps<{
   title: string;
   text: string;
   confirmText: string;
+  subtitle?: string;
   confirmColor?: string;
 }>();
 

@@ -4,6 +4,9 @@
     height="100%"
     class="d-flex flex-column identify-tab">
     <v-card-title>{{ $t('identify.title') }}</v-card-title>
+    <v-card-subtitle class="pb-3">
+      {{ itemPath }}
+    </v-card-subtitle>
 
     <v-divider />
 
@@ -107,14 +110,19 @@ import {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { useRemote, useSnackbar } from '@/composables';
-import { IdentifySearchItem, getItemRemoteSearch } from '@/utils/items';
+import {
+  IdentifySearchItem,
+  getItemIdFromSourceIndex,
+  getItemRemoteSearch
+} from '@/utils/items';
 
 const props = defineProps<{
   itemId: string;
+  mediaSourceIndex?: number;
 }>();
 
 const emit = defineEmits<{
@@ -139,6 +147,18 @@ const externalInfos = ref<ExternalIdInfo[]>();
 const searchData = ref<IdentifySearchItem[]>();
 const searchResults = ref<RemoteSearchResult[]>();
 const replaceImage = ref(false);
+
+const itemPath = computed(() => {
+  if (!item.value) {
+    return '';
+  }
+
+  if (props.mediaSourceIndex !== undefined) {
+    return item.value.MediaSources?.[props.mediaSourceIndex]?.Path ?? '';
+  }
+
+  return item.value.Path ?? '';
+});
 
 /**
  * Do a search for information on the item.
@@ -170,13 +190,17 @@ async function searchInformation(): Promise<void> {
 /**
  * Apply the selected search result to the item.
  */
-async function applySelectedSearch(item: RemoteSearchResult): Promise<void> {
+async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
   isSaving.value = true;
+
+  if (!item.value) {
+    return;
+  }
 
   try {
     await remote.sdk.newUserApi(getItemLookupApi).applySearchCriteria({
-      itemId: props.itemId,
-      remoteSearchResult: item,
+      itemId: getItemIdFromSourceIndex(item.value, props.mediaSourceIndex),
+      remoteSearchResult: result,
       replaceAllImages: replaceImage.value
     });
   } catch (error) {
@@ -260,7 +284,7 @@ watch(
 
     const results = (
       await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
-        itemId: props.itemId
+        itemId: getItemIdFromSourceIndex(itemResult, props.mediaSourceIndex)
       })
     ).data;
 

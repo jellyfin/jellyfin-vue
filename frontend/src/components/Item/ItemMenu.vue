@@ -35,7 +35,8 @@
   <metadata-editor-dialog
     v-if="item.Id"
     v-model:dialog="metadataDialog"
-    :item-id="item.Id" />
+    :item-id="item.Id"
+    :media-source-index="mediaSourceIndex" />
   <refresh-metadata-dialog
     v-if="item.Id"
     v-model:dialog="refreshDialog"
@@ -44,15 +45,18 @@
   <media-detail-dialog
     v-if="item.Id"
     v-model:dialog="mediaInfoDialog"
-    :item-id="item.Id" />
+    :item-id="item.Id"
+    :media-source-index="mediaSourceIndex" />
   <identify-dialog
     v-if="item.Id"
     v-model:dialog="identifyItemDialog"
-    :item-id="item.Id" />
+    :item-id="item.Id"
+    :media-source-index="mediaSourceIndex" />
   <confirm-dialog
     v-if="item.Id"
     v-model:dialog="deleteDialog"
     :title="t('deleteItem')"
+    :subtitle="itemDeletionName"
     :text="t('deleteItemDescription')"
     :confirm-text="t('delete')"
     @on-confirm="onDeleteConfirmed" />
@@ -89,7 +93,8 @@ import {
   getItemSeriesDownloadObjects,
   getItemSeasonDownloadObjects,
   getItemDownloadObject,
-  isLocalItem
+  isLocalItem,
+  getItemIdFromSourceIndex
 } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
@@ -115,12 +120,14 @@ const menuProps = withDefaults(
     zIndex?: number;
     rightClick?: boolean;
     queue?: boolean;
+    mediaSourceIndex?: number;
   }>(),
   {
     outlined: false,
     zIndex: 1000,
     rightClick: true,
-    queue: false
+    queue: false,
+    mediaSourceIndex: undefined
   }
 );
 
@@ -138,6 +145,24 @@ const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id || '') !== undefined
 );
+
+const itemDeletionName = computed(() => {
+  const parentName = menuProps.item.Name ?? undefined;
+  const mediaSource =
+    menuProps.item.MediaSources?.[menuProps.mediaSourceIndex ?? -1];
+
+  if (mediaSource?.Name) {
+    let name = mediaSource.Name;
+
+    if (parentName) {
+      name = `${parentName} - ${name}`;
+    }
+
+    return name;
+  }
+
+  return parentName;
+});
 
 const playNextAction = {
   title: t('playback.playNext'),
@@ -298,7 +323,7 @@ async function downloadAction(): Promise<void> {
       }
       default: {
         const url = getItemDownloadObject(
-          menuProps.item.Id,
+          getItemIdFromSourceIndex(menuProps.item, menuProps.mediaSourceIndex),
           menuProps.item.Path
         );
 
@@ -330,7 +355,9 @@ function getCopyDownloadActions(): MenuOption[] {
       icon: IMdiContentCopy,
       action: async (): Promise<void> => {
         if (menuProps.item.Id) {
-          const downloadHref = getItemDownloadObject(menuProps.item.Id);
+          const downloadHref = getItemDownloadObject(
+            getItemIdFromSourceIndex(menuProps.item, menuProps.mediaSourceIndex)
+          );
 
           if (downloadHref) {
             await copy(downloadHref.url);
@@ -509,9 +536,14 @@ async function onDeleteConfirmed(): Promise<void> {
     return;
   }
 
+  const itemId = getItemIdFromSourceIndex(
+    menuProps.item,
+    menuProps.mediaSourceIndex
+  );
+
   try {
     await remote.sdk.newUserApi(getLibraryApi).deleteItem({
-      itemId: menuProps.item.Id
+      itemId: itemId
     });
     router.replace('/');
   } catch {

@@ -26,6 +26,14 @@
       </v-tabs>
       <v-window v-model="tabName" class="pa-2 flex-fill">
         <v-window-item value="general">
+          <v-select
+            v-if="contentOptions.length > 1"
+            v-model="contentOption"
+            :items="contentOptions"
+            :label="t('contentType')"
+            item-title="key"
+            item-value="value"
+            return-object />
           <v-text-field
             v-model="metadata.Name"
             variant="outlined"
@@ -217,14 +225,20 @@ import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
 import { format, formatISO } from 'date-fns';
 import { useDateFns, useRemote, useSnackbar } from '@/composables';
+import { getItemIdFromSourceIndex } from '@/utils/items';
 
-const props = defineProps<{ itemId: string }>();
+const props = defineProps<{ itemId: string; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
   (e: 'save'): void;
   (e: 'update:forceRefresh'): void;
   (e: 'cancel'): void;
 }>();
+
+interface ContentOption {
+  value: string;
+  key: string;
+}
 
 const { t } = useI18n();
 const remote = useRemote();
@@ -236,6 +250,9 @@ const genres = ref<string[]>([]);
 const search = ref('');
 const loading = ref(false);
 const tabName = ref<string>();
+const contentOptions = ref<ContentOption[]>([]);
+const contentOption = ref<ContentOption>();
+const contentType = ref<string>();
 
 const premiereDate = computed(() => {
   if (!metadata.value?.PremiereDate) {
@@ -259,12 +276,48 @@ const dateCreated = computed(() => {
  * Fetch data ancestors for the current item
  */
 async function getData(): Promise<void> {
-  const itemInfo = (
+  let itemInfo = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
       userId: remote.auth.currentUserId ?? '',
       itemId: props.itemId
     })
   ).data;
+
+  const sourceId = getItemIdFromSourceIndex(itemInfo, props.mediaSourceIndex);
+
+  if (sourceId !== props.itemId) {
+    // This is another version of the same item, fetch the actual metadata for this.
+    itemInfo = (
+      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
+        userId: remote.auth.currentUserId ?? '',
+        itemId: sourceId
+      })
+    ).data;
+
+    // Fetch metadata editor info for ContentTypeOptions
+
+    const options = (
+      await remote.sdk.newUserApi(getItemUpdateApi).getMetadataEditorInfo({
+        itemId: sourceId
+      })
+    ).data;
+
+    contentOptions.value =
+      options?.ContentTypeOptions?.map((r) => {
+        if (r.Name) {
+          return {
+            // the option name
+            key: r.Name,
+            // the one that will be sent
+            value: r.Value ?? ''
+          };
+        }
+      }).filter((r): r is ContentOption => r !== undefined) ?? [];
+    contentOption.value =
+      contentOptions.value.find((r) => r.value === options.ContentType) ??
+      contentOptions.value[0];
+    contentType.value = options.ContentType ?? contentOption.value.value;
+  }
 
   metadata.value = itemInfo;
 
@@ -299,6 +352,26 @@ async function getGenres(parentId: string): Promise<void> {
     ).data.Items?.map((index) => index.Name).filter(
       (genre): genre is string => !!genre
     ) ?? [];
+}
+
+/**
+ * Save metadata content type for the current item
+ */
+async function saveContentType(): Promise<void> {
+  if (!contentOption.value) {
+    return;
+  }
+
+  if (!metadata.value?.Id) {
+    return;
+  }
+
+  if (contentOption.value.value !== contentType.value) {
+    await remote.sdk.newUserApi(getItemUpdateApi).updateItemContentType({
+      itemId: metadata.value.Id,
+      contentType: contentOption.value.value
+    });
+  }
 }
 
 /**
@@ -360,6 +433,7 @@ async function saveMetadata(): Promise<void> {
       itemId: metadata.value?.Id,
       baseItemDto: item
     });
+    await saveContentType();
     emit('save');
     useSnackbar(t('saved'), 'success');
   } catch (error) {

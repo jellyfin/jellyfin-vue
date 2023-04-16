@@ -340,10 +340,6 @@ export function createEmbeddedInformation(stream: MediaStream): string {
 export function createContainerInformation(media: MediaSourceInfo): string {
   let mediaInfo = '';
 
-  if (media.Name) {
-    mediaInfo += `${media.Name}\n`;
-  }
-
   mediaInfo += formatMediaAttr(
     t('mediaInfo.generic.container'),
     media.Container

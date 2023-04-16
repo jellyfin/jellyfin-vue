@@ -42,6 +42,7 @@
   "communityRating": "Community rating",
   "confirm": "Confirm",
   "connect": "Connect",
+  "contentType": "Content type",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
   "criticRating": "Critic rating",
@@ -240,7 +241,6 @@
       "title": "Title:"
     },
     "name": "Media",
-    "noMediaSources": "No available media sources",
     "subtitleCodec": {
       "name": "Subtitle codec:",
       "titles": "Subtitle | Subtitle {0}"

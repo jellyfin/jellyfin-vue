@@ -37,7 +37,7 @@
               :subtitle-track-index="currentSubtitleTrack" />
             <like-button :item="item" class="mr-2" />
             <mark-played-button :item="item" class="mr-2" />
-            <item-menu :item="item" />
+            <item-menu :item="item" :media-source-index="currentSourceIndex" />
           </v-row>
           <v-col cols="12" md="10">
             <v-row

@@ -106,6 +106,26 @@ export function isLocalItem(item: BaseItemDto): boolean {
 }
 
 /**
+ * Get the item ID either from the item itself or from the MediaSource
+ *
+ * @param item - The item to get the ID from
+ * @param sourceIndex - The index of the MediaSource to get the ID from (optional)
+ * @returns The ID of the item or the MediaSource
+ */
+export function getItemIdFromSourceIndex(
+  item: BaseItemDto,
+  sourceIndex?: number
+): string {
+  if (sourceIndex === undefined) {
+    return item.Id ?? '';
+  }
+
+  const mediaSource = item.MediaSources?.[sourceIndex];
+
+  return (mediaSource ? mediaSource.Id : item.Id) ?? '';
+}
+
+/**
  * Get the Material Design Icon name associated with a type of library
  *
  * @param libraryType - Type of the library

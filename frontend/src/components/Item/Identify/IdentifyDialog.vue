@@ -4,12 +4,15 @@
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     @update:model-value="close">
-    <identify-tab :item-id="itemId" @close="close" />
+    <identify-tab
+      :item-id="itemId"
+      :media-source-index="mediaSourceIndex"
+      @close="close" />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-defineProps<{ dialog: boolean; itemId: string }>();
+defineProps<{ dialog: boolean; itemId: string; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
   (e: 'update:dialog', isOpen: boolean): void;
