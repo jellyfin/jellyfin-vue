@@ -34,6 +34,9 @@
   "byArtist": "By {artist}",
   "cancel": "Cancel",
   "castAndCrew": "Cast & crew",
+  "clipboardFail": "Failed to copy to clipboard",
+  "clipboardSuccess": "Copied to clipboard",
+  "close": "Close",
   "collectionEmpty": "This collection is empty",
   "collections": "Collections",
   "communityRating": "Community rating",
@@ -41,6 +44,7 @@
   "connect": "Connect",
   "continueListening": "Continue listening",
   "continueWatching": "Continue watching",
+  "copyStreamURL": "Copy Stream URL",
   "criticRating": "Critic rating",
   "customRating": "Custom rating",
   "darkModeToggle": "Toggle dark mode",
@@ -62,6 +66,7 @@
   "disabled": "Disabled",
   "discNumber": "Disc {discNumber}",
   "dislikes": "Dislikes",
+  "downloadItem": "Download | Download all",
   "edit": "Edit",
   "editMetadata": "Edit metadata",
   "editPerson": "Edit person",
@@ -202,27 +207,52 @@
     "noLogsFound": "No logs found"
   },
   "manualLogin": "Manual login",
-  "mediaInfo": {
-    "audioChannels": {
-      "name": "Audio channels:"
-    },
-    "audioCodec": {
-      "name": "Audio codec:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
-    "container": {
-      "name": "Container:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Subtitle codec:"
-    },
-    "videoCodec": {
-      "name": "Video codec:"
-    }
-  },
+  "mediaInfo": "Media Info",
+  "mediaInfoAudioChannelLayout": "Layout:",
+  "mediaInfoAudioChannels": "Channels:",
+  "mediaInfoAudioSampleRate": "Sample rate:",
+  "mediaInfoFileContainer": "Container:",
+  "mediaInfoFilePath": "Path:",
+  "mediaInfoFileSize": "Size:",
+  "mediaInfoFileTitle": "Title:",
+  "mediaInfoGenericBitrate": "Bitrate:",
+  "mediaInfoGenericCodec": "Codec:",
+  "mediaInfoGenericCodecTag": "Codec tag:",
+  "mediaInfoGenericIsDefault": "Default:",
+  "mediaInfoGenericIsExternal": "External:",
+  "mediaInfoGenericIsForced": "Forced:",
+  "mediaInfoGenericLanguage": "Language:",
+  "mediaInfoGenericProfile": "Profile:",
+  "mediaInfoTitlesAudioCodec": "Audio | Audio {0}",
+  "mediaInfoTitlesEmbeddedImageCodec": "Image | Image {0}",
+  "mediaInfoTitlesSubtitleCodec": "Subtitle | Subtitle {0}",
+  "mediaInfoTitlesVideoCodec": "Video | Video {0}",
+  "mediaInfoVideoAspectRatio": "Aspect ratio:",
+  "mediaInfoVideoBitDepth": "Bit depth:",
+  "mediaInfoVideoBitrate": "Bitrate:",
+  "mediaInfoVideoColorPrimaries": "Color primaries:",
+  "mediaInfoVideoColorRange": "Color range:",
+  "mediaInfoVideoColorSpace": "Color space:",
+  "mediaInfoVideoColorTransfer": "Color transfer:",
+  "mediaInfoVideoDoViBlPresent": "DoVi BL present:",
+  "mediaInfoVideoDoViBlSignalCompatId": "DV bl signal compatibility ID:",
+  "mediaInfoVideoDoViElPresent": "DV el preset flag:",
+  "mediaInfoVideoDoViLevel": "DV level:",
+  "mediaInfoVideoDoViMajorVersion": "DV version major:",
+  "mediaInfoVideoDoViMinorVersion": "DV version minor:",
+  "mediaInfoVideoDoViProfile": "DV profile:",
+  "mediaInfoVideoDoViRpuPresent": "DV rpu preset flag:",
+  "mediaInfoVideoDoViTitle": "DV title:",
+  "mediaInfoVideoFrameRate": "Framerate:",
+  "mediaInfoVideoIsAnamorphic": "Anamorphic:",
+  "mediaInfoVideoIsAvc": "AVC:",
+  "mediaInfoVideoIsInterlaced": "Interlaced:",
+  "mediaInfoVideoLevel": "Level:",
+  "mediaInfoVideoPixelFormat": "Pixel format:",
+  "mediaInfoVideoRange": "Video range:",
+  "mediaInfoVideoRangeType": "Video range type:",
+  "mediaInfoVideoRefFrames": "Ref frames:",
+  "mediaInfoVideoResolution": "Resolution:",
   "menu": "Menu",
   "metadata": {
     "source": "Source",

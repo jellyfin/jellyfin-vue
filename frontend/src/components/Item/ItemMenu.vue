@@ -46,6 +46,10 @@
     v-if="identifyItemDialog && item.Id"
     :item="menuProps.item"
     @close="identifyItemDialog = false" />
+  <media-detail-dialog
+    v-if="mediaInfoDialog && item.Id"
+    :item="menuProps.item"
+    @close="mediaInfoDialog = false" />
 </template>
 
 <script lang="ts">
@@ -57,8 +61,12 @@ import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
 import IMdiCloudSearch from 'virtual:icons/mdi/cloud-search-outline';
+import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
 import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDisc from 'virtual:icons/mdi/disc';
+import IMdiDownload from 'virtual:icons/mdi/download';
+import IMdiDownloadMultiple from 'virtual:icons/mdi/download-multiple';
+import IMdiInformation from 'virtual:icons/mdi/information';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
@@ -73,9 +81,18 @@ import {
   canIdentify,
   canInstantMix,
   canRefreshMetadata,
-  canResume
+  canResume,
+  getItemDownloadObject,
+  getItemSeasonDownloadObjects,
+  getItemSeriesDownloadObjects
 } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
+import {
+  DownloadableFile,
+  canBrowserDownloadItem,
+  downloadFiles
+} from '@/utils/file-download';
+import { useClipboardWrite } from '@/composables/use-clipboard';
 
 type MenuOption = {
   title: string;
@@ -131,6 +148,7 @@ const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
 const identifyItemDialog = ref(false);
+const mediaInfoDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const errorMessage = t('errors.anErrorHappened');
@@ -221,6 +239,13 @@ const instantMixAction = {
 /**
  * Item related actions
  */
+const mediaInfoAction = {
+  title: t('mediaInfo'),
+  icon: IMdiInformation,
+  action: (): void => {
+    mediaInfoDialog.value = true;
+  }
+};
 const refreshAction = {
   title: t('refreshMetadata'),
   icon: IMdiRefresh,
@@ -273,6 +298,75 @@ const identifyItemAction = {
   icon: IMdiCloudSearch,
   action: (): void => {
     identifyItemDialog.value = true;
+  }
+};
+const sharedDownloadAction = async (): Promise<void> => {
+  if (menuProps.item.Id && menuProps.item.Type && menuProps.item.Path) {
+    let downloadURLs: DownloadableFile[] = [];
+
+    switch (menuProps.item.Type) {
+      case 'Season': {
+        downloadURLs = await getItemSeasonDownloadObjects(menuProps.item.Id);
+        break;
+      }
+      case 'Series': {
+        downloadURLs = await getItemSeriesDownloadObjects(menuProps.item.Id);
+        break;
+      }
+      default: {
+        const url = getItemDownloadObject(
+          menuProps.item.Id,
+          menuProps.item.Path
+        );
+
+        if (url) {
+          downloadURLs = [url];
+        }
+
+        break;
+      }
+    }
+
+    if (downloadURLs) {
+      try {
+        await downloadFiles(downloadURLs);
+      } catch (error) {
+        console.error(error);
+
+        useSnackbar(errorMessage, 'error');
+      }
+    } else {
+      console.error(
+        'Unable to get download URL for selected item/series/season'
+      );
+      useSnackbar(errorMessage, 'error');
+    }
+  }
+};
+const singleDownloadAction = {
+  title: t('downloadItem', 1),
+  icon: IMdiDownload,
+  action: sharedDownloadAction
+};
+const multiDownloadAction = {
+  title: t('downloadItem', 2),
+  icon: IMdiDownloadMultiple,
+  action: sharedDownloadAction
+};
+const copyStreamURLAction = {
+  title: t('copyStreamURL'),
+  icon: IMdiContentCopy,
+  action: async (): Promise<void> => {
+    if (menuProps.item.Id) {
+      const downloadHref = getItemDownloadObject(menuProps.item.Id);
+
+      if (downloadHref?.url) {
+        await useClipboardWrite(downloadHref.url);
+      } else {
+        console.error('Unable to get stream URL for selected item');
+        useSnackbar(errorMessage, 'error');
+      }
+    }
   }
 };
 /**
@@ -340,10 +434,35 @@ function getPlaybackOptions(): MenuOption[] {
 }
 
 /**
+ * Copy and download action for the current selected item
+ */
+function getCopyDownloadOptions(): MenuOption[] {
+  const copyDownloadActions: MenuOption[] = [];
+
+  if (menuProps.item.CanDownload) {
+    copyDownloadActions.push(copyStreamURLAction);
+
+    if (canBrowserDownloadItem(menuProps.item)) {
+      copyDownloadActions.push(singleDownloadAction);
+
+      if (['Season', 'Series'].includes(menuProps.item.Type || '')) {
+        copyDownloadActions.push(multiDownloadAction);
+      }
+    }
+  }
+
+  return copyDownloadActions;
+}
+
+/**
  * Library options for libraries
  */
 function getLibraryOptions(): MenuOption[] {
   const libraryOptions: MenuOption[] = [];
+
+  if (menuProps.item.MediaSources) {
+    libraryOptions.push(mediaInfoAction);
+  }
 
   if (canRefreshMetadata(menuProps.item)) {
     libraryOptions.push(refreshAction);
@@ -365,7 +484,12 @@ function getLibraryOptions(): MenuOption[] {
 }
 
 const options = computed(() => {
-  return [getQueueOptions(), getPlaybackOptions(), getLibraryOptions()];
+  return [
+    getQueueOptions(),
+    getPlaybackOptions(),
+    getCopyDownloadOptions(),
+    getLibraryOptions()
+  ];
 });
 
 /**
