@@ -113,7 +113,12 @@ async function fetch(): Promise<void> {
       parentId: props.item.Id,
       sortBy: ['SortName'],
       sortOrder: [SortOrder.Ascending],
-      fields: [ItemFields.CanDelete, ItemFields.CanDownload, ItemFields.Path]
+      fields: [
+        ItemFields.CanDelete,
+        ItemFields.CanDownload,
+        ItemFields.MediaSources,
+        ItemFields.Path
+      ]
     })
   ).data.Items;
 }

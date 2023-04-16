@@ -394,19 +394,7 @@ function canRefreshLibrary(): boolean {
 function getLibraryOptions(): MenuOption[] {
   const libraryOptions: MenuOption[] = [];
 
-  const validMediaDetailTypes = [
-    'Audio',
-    'AudioBook',
-    'Book',
-    'Episode',
-    'Movie',
-    'MusicVideo',
-    'Photo',
-    'Video',
-    'Recording'
-  ];
-
-  if (validMediaDetailTypes.includes(menuProps.item.Type || '')) {
+  if (menuProps.item.MediaSources) {
     libraryOptions.push({
       title: t('mediaInfo.title'),
       icon: IMdiInformation,
