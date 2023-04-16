@@ -1,7 +1,13 @@
 <template>
   <div>
-    <v-tabs v-model="currentTab" class="mb-3" bg-color="transparent">
-      <v-tab v-for="season in seasons" :key="season.Id">
+    <v-tabs
+      v-model="currentTab"
+      v-focus-section:season-tab="{
+        leaveFor: { down: '@season-episodes', left: '@nav' }
+      }"
+      class="mb-3"
+      bg-color="transparent">
+      <v-tab v-for="season in seasons" :key="season.Id" v-focus>
         {{ season.Name }}
       </v-tab>
     </v-tabs>
@@ -9,11 +15,15 @@
       <v-window-item v-for="season in seasons" :key="season.Id">
         <v-list
           v-if="seasonEpisodes && season.Id"
+          v-focus-section:season-episodes="{
+            leaveFor: { up: '@season-tab', down: '@season-tab', left: '@nav' }
+          }"
           :lines="false"
           bg-color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
+            v-focus
             :to="getItemDetailsLink(episode)">
             <v-row align="center" class="my-4">
               <v-col
@@ -107,3 +117,11 @@ watch(props, async () => {
   await fetch();
 });
 </script>
+<style lang="scss" scoped>
+button.v-tab:focus,
+button.v-tab:focus-visible {
+  outline: none !important;
+  color: white !important;
+  background-color: rgb(var(--v-theme-primary)) !important;
+}
+</style>

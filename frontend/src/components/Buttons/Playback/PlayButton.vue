@@ -2,6 +2,7 @@
   <div class="d-inline-flex">
     <v-btn
       v-if="canPlay(item) && (fab || iconOnly)"
+      v-focus
       :variant="iconOnly ? undefined : 'elevated'"
       :color="iconOnly ? undefined : 'primary'"
       icon
@@ -17,6 +18,7 @@
     </v-btn>
     <v-btn
       v-else-if="!fab"
+      v-focus
       :disabled="disabled || !canPlay(item)"
       :loading="loading"
       class="mr-2"

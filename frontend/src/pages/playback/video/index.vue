@@ -127,7 +127,8 @@ import {
   useFullscreen,
   useTimeoutFn,
   useMagicKeys,
-  whenever
+  whenever,
+  useEventListener
 } from '@vueuse/core';
 import {
   playbackManagerStore,
@@ -186,6 +187,7 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
+  useEventListener(document, 'keyup', handleKeyUp);
   playerElement.isFullscreenMounted = true;
 });
 
@@ -197,6 +199,35 @@ whenever(keys.left, playbackManager.skipBackward);
 whenever(keys.j, playbackManager.skipBackward);
 whenever(keys.f, fullscreen.toggle);
 whenever(keys.m, playbackManager.toggleMute);
+
+/**
+ * Used to detect media keys (play, pause, ff,rw). these media keys either show up as 'unidentifed' or '' when using useMagicKeys
+ */
+function handleKeyUp(event: KeyboardEvent): void {
+  const keyCode = event.keyCode;
+
+  // LGTV media key codes. May not be same on other platforms
+  const pauseKey = 19;
+  const playKey = 415;
+  const fastForwardKey = 417;
+  const rewindKey = 412;
+
+  switch (keyCode) {
+    case playKey:
+    case pauseKey: {
+      playbackManager.playPause();
+      break;
+    }
+    case fastForwardKey: {
+      playbackManager.skipForward();
+      break;
+    }
+    case rewindKey: {
+      playbackManager.skipBackward();
+      break;
+    }
+  }
+}
 
 watch(staticOverlay, (val) => {
   if (val) {
