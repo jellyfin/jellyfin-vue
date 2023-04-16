@@ -82,6 +82,16 @@ export function isValidMD5(input: string): boolean {
 }
 
 /**
+ * Checks if an item is a local item.
+ *
+ * @param item - The item to be checked.
+ * @returns - A boolean representing whether the item is a local item
+ */
+export function isLocalItem(item: BaseItemDto): boolean {
+  return item?.Id?.indexOf('local') === 0;
+}
+
+/**
  * Get the Material Design Icon name associated with a type of library
  *
  * @param libraryType - Type of the library
@@ -245,6 +255,21 @@ export function canMarkWatched(item: BaseItemDto): boolean {
 
   return !!(item.MediaType === 'Video' && item.Type !== 'TvChannel');
 }
+
+/**
+ * Determine if an item can be instant mixed.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be instant mixed or not.
+ */
+export function canInstantMix(item: BaseItemDto): boolean {
+  return (
+    ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
+      item.Type || ''
+    ) && !isLocalItem(item)
+  );
+}
+
 /**
  * Generate a link to the item's details page route
  *

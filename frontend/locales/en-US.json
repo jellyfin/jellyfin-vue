@@ -247,6 +247,7 @@
   "playback": {
     "addToQueue": "Add to queue",
     "clearQueue": "Clear queue and stop playback",
+    "instantMix": "Instant mix",
     "playAll": "Play all",
     "playNext": "Play next",
     "playbackSource": {
@@ -442,6 +443,8 @@
   "signIn": "Sign in",
   "snackbar": {
     "addedToQueue": "Added to queue",
+    "instantMixFailed": "Failed to add Instant mix to queue",
+    "instantMixQueued": "Instant mix added to queue",
     "playNext": "The selected item will be played after the current one",
     "routeValidationError": "The specified routeId in route params is not correct"
   },
