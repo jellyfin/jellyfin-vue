@@ -24,6 +24,7 @@
   "aspectRatio": "Rapporto d'aspetto",
   "audio": "Audio",
   "audioCodecNotSupported": "Il codec audio non è supportato",
+  "auto": "Automatico",
   "badRequest": "Errore nella richiesta. Riprova",
   "books": "Libri",
   "browserNotSupported": "La riproduzione non è supportata per il tuo browser.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Episodio {episodeNumber}",
   "errors": {
     "anErrorHappened": "Si è verificato un errore",
+    "cantPlayItem": "Questo articolo non può essere riprodotto",
     "messages": {
       "errorCode": "Codice errore: {errorCode}",
       "videoPlayerError": "Si è verificato un errore fatale nel video player."
-    }
+    },
+    "playback": {
+      "mediaError": "Errore multimediale fatale, tentativo di ripristino in corso",
+      "networkError": "Errore di rete fatale, tentativo di ripristino in corso"
+    },
+    "unauthorized": "Non sei autorizzato ad accedere a questa pagina"
   },
   "failedRetrievingDisplayPreferences": "Impossibile ottenere le configurazioni di display. Si utilizzeranno le ultime configurazioni salvate.",
   "failedSettingDisplayPreferences": "Impossibile aggiornare le impostazioni del display.",
@@ -326,9 +333,11 @@
       "dateCreated": "Data di creazione",
       "description": "Aggiungi e revoca chiavi API per accesso esterno al tuo server",
       "refreshKeysFailure": "Errore durante il refresh delle chiavi API",
+      "revoke": "Revoca",
       "revokeAll": "Revoca tutte le chiavi API",
       "revokeAllFailure": "Errore durante la revoca di tutte le chiavi API",
       "revokeAllSuccess": "La revoca di tutte le chiavi API ha avuto successo",
+      "revokeConfirm": "Conferma la revoca della chiave API",
       "revokeFailure": "Errore durante la revoca della chiave API",
       "revokeSuccess": "Chiave API revocata con successo"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Cancella tutto",
       "deleteAllDevicesError": "Errore durante l'eliminazione di tutti i dispositivi",
       "deleteAllDevicesSuccess": "Tutti i dispositivi rimossi con successo",
+      "deleteConfirm": "Conferma l'eliminazione del dispositivo",
       "deleteDeviceError": "Errore durante l'eliminazione del dispositivo",
       "deleteDeviceSuccess": "Dispositivo eliminato con successo",
       "deviceName": "Nome Dispositivo",
@@ -432,7 +442,8 @@
   "signIn": "Accedi",
   "snackbar": {
     "addedToQueue": "Aggiunto alla coda",
-    "playNext": "L'elemento selezionato sarà riprodotto dopo quello corrente"
+    "playNext": "L'elemento selezionato sarà riprodotto dopo quello corrente",
+    "routeValidationError": "Il routeId specificato nei parametri del percorso non è corretto"
   },
   "songs": "Brani",
   "sortByType": "Per {type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Video Sigla",
   "tooltips": {
     "changeLanguage": "Lingua",
+    "switchToAuto": "Segui il tema di sistema",
     "switchToDarkMode": "Passa a modalità scura",
     "switchToLightMode": "Passa a modalità chiara"
   },
