@@ -148,7 +148,10 @@ class PlaybackManagerStore {
    * that made the MediaSession controls disappear for a second. Keeping the metadata
    * as a global variable and updating it solves this problem.
    */
-  private _mediaMetadata = new MediaMetadata();
+  private _mediaMetadata = window.navigator.mediaSession
+    ? new MediaMetadata()
+    : undefined;
+
   public get status(): PlaybackStatus {
     return this._state.status;
   }
@@ -542,55 +545,57 @@ class PlaybackManagerStore {
    * Updates mediasession metadata based on the currently playing item
    */
   private _updateMediaSessionMetadata = (): void => {
-    this._mediaMetadata.title = this.currentItem?.Name ?? '';
-    this._mediaMetadata.artist = this.currentItem?.AlbumArtist ?? '';
-    this._mediaMetadata.album = this.currentItem?.Album ?? '';
-    this._mediaMetadata.artwork = this.currentItem
-      ? [
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 96
-              }).url || '',
-            sizes: '96x96'
-          },
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 128
-              }).url || '',
-            sizes: '128x128'
-          },
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 192
-              }).url || '',
-            sizes: '192x192'
-          },
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 256
-              }).url || '',
-            sizes: '256x256'
-          },
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 384
-              }).url || '',
-            sizes: '384x384'
-          },
-          {
-            src:
-              getImageInfo(this.currentItem, {
-                width: 512
-              }).url || '',
-            sizes: '512x512'
-          }
-        ]
-      : [];
+    if (window.navigator.mediaSession) {
+      this._mediaMetadata.title = this.currentItem?.Name ?? '';
+      this._mediaMetadata.artist = this.currentItem?.AlbumArtist ?? '';
+      this._mediaMetadata.album = this.currentItem?.Album ?? '';
+      this._mediaMetadata.artwork = this.currentItem
+        ? [
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 96
+                }).url || '',
+              sizes: '96x96'
+            },
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 128
+                }).url || '',
+              sizes: '128x128'
+            },
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 192
+                }).url || '',
+              sizes: '192x192'
+            },
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 256
+                }).url || '',
+              sizes: '256x256'
+            },
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 384
+                }).url || '',
+              sizes: '384x384'
+            },
+            {
+              src:
+                getImageInfo(this.currentItem, {
+                  width: 512
+                }).url || '',
+              sizes: '512x512'
+            }
+          ]
+        : [];
+    }
   };
 
   /**

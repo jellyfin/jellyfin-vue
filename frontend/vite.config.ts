@@ -19,10 +19,14 @@ import {
 import visualizer from 'rollup-plugin-visualizer';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import autoprefixer from 'autoprefixer';
+// Browser compatibility
+import legacy from '@vitejs/plugin-legacy';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
+    base: process.env.BUILD_JELLYFIN_WEB ? '/web/' : '/',
     server: {
       host: '0.0.0.0',
       port: 3000
@@ -160,6 +164,28 @@ export default defineConfig(({ mode }): UserConfig => {
       }
     }
   };
+
+  /**
+   * Enable support for legacy webview app wrapper like LG WebOS 5
+   * Overwrites: build.target
+   * Build with 'npm run build-jellyfin-web'
+   */
+  if (process.env.BUILD_JELLYFIN_WEB) {
+    config.plugins?.push(
+      legacy({
+        targets: ['chrome >=68'],
+        modernPolyfills: true
+      })
+    );
+    config.plugins?.push(
+      topLevelAwait({
+        // The export name of top-level await promise for each chunk module
+        promiseExportName: '__tla',
+        // The function to generate import names of top-level await promise in each chunk module
+        promiseImportName: (i) => `__tla_${i}`
+      })
+    );
+  }
 
   return config;
 });
