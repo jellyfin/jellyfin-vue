@@ -243,13 +243,13 @@
     "videoCodec": {
       "DoVi": {
         "blPresent": "DV bl preset flag:",
-        "blSignalCompatibilityId": "DV bl signal compatibility ID",
-        "elPresent": "DV el preset flag",
+        "blSignalCompatibilityId": "DV bl signal compatibility ID:",
+        "elPresent": "DV el preset flag:",
         "level": "DV level:",
         "majorVersion": "DV version major:",
         "minorVersion": "DV version minor:",
         "profile": "DV profile:",
-        "rpuPresent": "DV rpu preset flag",
+        "rpuPresent": "DV rpu preset flag:",
         "title": "DV title:"
       },
       "aspectRatio": "Aspect ratio:",

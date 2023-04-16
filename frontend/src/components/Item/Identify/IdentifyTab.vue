@@ -55,12 +55,12 @@
             :class="{
               'justify-center': $vuetify.display.mobile
             }">
-            <template v-for="(result, idx) in searchResults" :key="idx">
-              <identify-result
-                :item="result"
-                :item-type="item.Type"
-                @select="applySelectedSearch" />
-            </template>
+            <identify-result
+              v-for="(result, idx) in searchResults"
+              :key="idx"
+              :item="result"
+              :item-type="item.Type"
+              @select="applySelectedSearch" />
           </div>
           <h3
             v-if="Array.isArray(searchResults) && searchResults.length === 0"
