@@ -148,7 +148,7 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio],
+          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -174,7 +174,7 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio],
+          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -200,7 +200,7 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
           userId: remote.auth.currentUserId,
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio],
+          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -228,7 +228,7 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio],
+          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -253,7 +253,11 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
           userId: remote.auth.currentUserId || '',
           limit: 10,
-          fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio],
+          fields: [
+            ItemFields.Overview,
+            ItemFields.PrimaryImageAspectRatio,
+            ItemFields.CanDelete
+          ],
           enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
           imageTypeLimit: 1
         })

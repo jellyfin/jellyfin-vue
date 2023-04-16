@@ -36,6 +36,13 @@
     v-if="item.Id"
     v-model:dialog="metadataDialog"
     :item-id="item.Id" />
+  <confirm-dialog
+    v-if="item.Id"
+    v-model:dialog="deleteDialog"
+    :title="t('deleteItem')"
+    :text="t('deleteItemDescription')"
+    :confirm-text="t('delete')"
+    @on-confirm="onDeleteConfirmed" />
 </template>
 
 <script setup lang="ts">
@@ -47,6 +54,7 @@ import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api'
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
+import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDisc from 'virtual:icons/mdi/disc';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
@@ -54,7 +62,8 @@ import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
-import { useRemote, useSnackbar } from '@/composables';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { useRemote, useRouter, useSnackbar } from '@/composables';
 import { canInstantMix, canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
@@ -68,6 +77,7 @@ type MenuOption = {
 
 const { t } = useI18n();
 const remote = useRemote();
+const router = useRouter();
 
 const menuProps = withDefaults(
   defineProps<{
@@ -90,6 +100,7 @@ const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
+const deleteDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
@@ -276,6 +287,16 @@ function getLibraryOptions(): MenuOption[] {
     });
   }
 
+  if (menuProps.item.CanDelete) {
+    libraryOptions.push({
+      title: t('deleteItem'),
+      icon: IMdiDelete,
+      action: (): void => {
+        deleteDialog.value = true;
+      }
+    });
+  }
+
   return libraryOptions;
 }
 
@@ -300,6 +321,26 @@ function onRightClick(e: PointerEvent): void {
 function onActivatorClick(): void {
   positionX.value = undefined;
   positionY.value = undefined;
+}
+
+/**
+ * Handle deletion of the item
+ */
+async function onDeleteConfirmed(): Promise<void> {
+  if (!menuProps.item.Id) {
+    useSnackbar(t('failedToDeleteItem'), 'error');
+
+    return;
+  }
+
+  try {
+    await remote.sdk.newUserApi(getLibraryApi).deleteItem({
+      itemId: menuProps.item.Id
+    });
+    router.replace('/');
+  } catch {
+    useSnackbar(t('failedToDeleteItem'), 'error');
+  }
 }
 
 onMounted(() => {
