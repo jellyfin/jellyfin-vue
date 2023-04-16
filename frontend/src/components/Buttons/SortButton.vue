@@ -50,7 +50,12 @@ const model = ref<string[]>([]);
 const items = computed<Array<Record<string, string>>>(() => [
   { title: t('name'), value: 'SortName' },
   { title: t('rating'), value: 'CommunityRating' },
-  { title: t('releaseDate'), value: 'PremiereDate' }
+  { title: t('releaseDate'), value: 'PremiereDate' },
+  { title: t('dateAdded'), value: 'DateCreated' },
+  { title: t('datePlayed'), value: 'DatePlayed' },
+  { title: t('parentalRating'), value: 'OfficialRating' },
+  { title: t('playCount'), value: 'PlayCount' },
+  { title: t('runtime'), value: 'Runtime' }
 ]);
 
 const sortingLabel = computed(() =>

@@ -45,6 +45,7 @@
   "customRating": "Custom rating",
   "darkModeToggle": "Toggle dark mode",
   "dateAdded": "Date added",
+  "datePlayed": "Date played",
   "delete": "Delete",
   "deleteItem": "Delete media",
   "deleteItemDescription": "Deleting this item will delete it from both the file system and your media library. Are you sure you wish to continue?",
@@ -104,8 +105,8 @@
     }
   },
   "identify": "Identify",
-  "identifyInstructResult": "You can click on one of these cards to apply the result",
   "identifyConfirmChanges": "Are you sure do you want to change '{originalItem}' with '{newIdentifiedItem}'?",
+  "identifyInstructResult": "You can click on one of these cards to apply the result",
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",
@@ -254,6 +255,7 @@
   "people": "People",
   "person": "Person",
   "play": "Play",
+  "playCount": "Play count",
   "playFromBeginning": "Play from the beginning",
   "playback": {
     "addToQueue": "Add to queue",
@@ -326,6 +328,7 @@
   "resumable": "Resumable",
   "resume": "Resume",
   "role": "Role",
+  "runtime": "Duration",
   "save": "Save",
   "saved": "Saved",
   "scanForNewAndUpdatedFiles": "Scan for new and updated files",
@@ -540,9 +543,9 @@
     }
   },
   "unknown": "Unknown",
-  "unknownTitle": "Unknown title",
-  "unknownArtist": "Unknown artist",
   "unknownAlbum": "Unknown album",
+  "unknownArtist": "Unknown artist",
+  "unknownTitle": "Unknown title",
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",
