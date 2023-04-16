@@ -24,7 +24,7 @@
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
             v-focus
-            :to="getItemDetailsLink(episode)">
+            @click="viewDetails($router, episode)">
             <v-row align="center" class="my-4">
               <v-col
                 :class="{ 'py-1': $vuetify.display.smAndDown }"
@@ -54,10 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  ItemFields
+} from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ref, watch } from 'vue';
+import { Router } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
 import { useRemote } from '@/composables';
 
@@ -110,6 +115,13 @@ async function fetch(): Promise<void> {
       }
     }
   }
+}
+
+/**
+ * Navigates to the episode details.
+ */
+function viewDetails(router: Router, item: BaseItemDto | BaseItemPerson): void {
+  router.push(getItemDetailsLink(item));
 }
 
 await fetch();

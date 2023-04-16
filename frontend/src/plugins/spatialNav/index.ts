@@ -13,7 +13,6 @@ const vueSpatialNavigation = {
     Object.assign(globalConfig, config);
     SpatialNavigation.init();
     SpatialNavigation.set(globalConfig);
-    // Vue.prototype.$SpatialNavigation = SpatialNavigation;
     Vue.config.globalProperties.$SpatialNavigation = SpatialNavigation;
 
     const assignConfig = (
@@ -33,7 +32,7 @@ const vueSpatialNavigation = {
 
     const focusSectionDirective: Directive<HTMLElement, vjsnOptions> = {
       beforeMount(el: HTMLElement, binding: DirectiveBinding<vjsnOptions>) {
-        let sectionId = null;
+        let sectionId;
 
         if (binding.arg) {
           sectionId = binding.arg;

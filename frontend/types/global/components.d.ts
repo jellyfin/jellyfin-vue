@@ -173,7 +173,6 @@ declare module '@vue/runtime-core' {
     VListSubheader: typeof import('vuetify/components')['VListSubheader']
     VMain: typeof import('vuetify/components')['VMain']
     VMenu: typeof import('vuetify/components')['VMenu']
-    VNavigationDrawer: typeof import('vuetify/components')['VNavigationDrawer']
     VolumeSlider: typeof import('./../../src/components/Layout/VolumeSlider.vue')['default']
     VOverlay: typeof import('vuetify/components')['VOverlay']
     VProgressCircular: typeof import('vuetify/components')['VProgressCircular']

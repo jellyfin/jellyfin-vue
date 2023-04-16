@@ -94,7 +94,7 @@ export interface vjsnOptions {
    A callback function that accepts a DOM element as the first argument.
    SpatialNavigation calls this function every time when it tries to traverse every single candidate. You can ignore arbitrary elements by returning `false`.
    */
-  navigableFilter?: any;
+  navigableFilter?: (element: HTMLElement) => boolean | null;
 
   /**
    * scrollIntoViewOptions https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView

@@ -30,7 +30,7 @@ var GlobalConfig = {
   restrict: 'self-first', // 'self-first', 'self-only', 'none'
   tabIndexIgnoreList:
     'a, input, select, textarea, button, iframe, [contentEditable=true]',
-  navigableFilter: undefined,
+  navigableFilter: null,
   scrollOptions: null // scrollIntoViewOptions https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 };
 
@@ -113,9 +113,6 @@ function getRect(elem) {
   return rect;
 }
 
-/**
- *
- */
 function partition(rects, targetRect, straightOverlapThreshold) {
   var groups = [[], [], [], [], [], [], [], [], []];
 
@@ -532,7 +529,7 @@ function matchSelector(elem, selector) {
 }
 
 /**
- * Takes the suggested current focuessed element. This is useful if the current focused element is known. (see usage for explanation)
+ * Takes the suggested current foccused element. This is useful if the current focused element is known. (see usage for explanation)
  */
 function getCurrentFocusedElement(eventElement) {
   var activeElement = eventElement || document.activeElement;
@@ -826,8 +823,8 @@ function focusChanged(elem, sectionId) {
  *
  */
 function focusExtendedSelector(selector, direction) {
-  if (selector.charAt(0) == '@') {
-    if (selector.length == 1) {
+  if (selector.charAt(0) === '@') {
+    if (selector.length === 1) {
       return focusSection();
     } else {
       var selectors = selector.split(',');
@@ -865,7 +862,6 @@ function focusSection(sectionId) {
       range.push(id);
     }
   };
-
   if (sectionId) {
     addRange(sectionId);
   } else {
@@ -878,7 +874,7 @@ function focusSection(sectionId) {
     var next;
 
     next =
-      _sections[id].enterTo == 'last-focused'
+      _sections[id].enterTo === 'last-focused'
         ? getSectionLastFocusedElement(id) ||
           getSectionDefaultElement(id) ||
           getSectionNavigableElements(id)[0]
@@ -922,7 +918,6 @@ function gotoLeaveFor(sectionId, direction) {
       if (next === '') {
         return null;
       }
-
       return focusExtendedSelector(next, direction);
     }
 
@@ -956,20 +951,20 @@ function focusNext(direction, currentFocusedElement, currentSectionId) {
     return true;
   }
 
-  var sectionNavigableElements = {};
-  var allNavigableElements = [];
+  const sectionNavigableElements = {};
+  let allNavigableElements = [];
 
-  for (var id in _sections) {
+  for (const id in _sections) {
     sectionNavigableElements[id] = getSectionNavigableElements(id);
     allNavigableElements = allNavigableElements.concat(
       sectionNavigableElements[id]
     );
   }
 
-  var config = extend({}, GlobalConfig, _sections[currentSectionId]);
-  var next;
+  const config = extend({}, GlobalConfig, _sections[currentSectionId]);
+  let next;
 
-  if (config.restrict == 'self-only' || config.restrict == 'self-first') {
+  if (config.restrict === 'self-only' || config.restrict === 'self-first') {
     var currentSectionNavigableElements =
       sectionNavigableElements[currentSectionId];
 
@@ -980,7 +975,7 @@ function focusNext(direction, currentFocusedElement, currentSectionId) {
       config
     );
 
-    if (!next && config.restrict == 'self-first') {
+    if (!next && config.restrict === 'self-first') {
       next = navigate(
         currentFocusedElement,
         direction,
@@ -1006,7 +1001,7 @@ function focusNext(direction, currentFocusedElement, currentSectionId) {
 
     var nextSectionId = getSectionId(next);
 
-    if (currentSectionId != nextSectionId) {
+    if (currentSectionId !== nextSectionId) {
       var result = gotoLeaveFor(currentSectionId, direction);
 
       if (result) {
@@ -1129,7 +1124,7 @@ function onKeyDown(evt) {
 /**
  * Keyup event listener to grab
  */
-function onKeyUp(evt): void {
+function onKeyUp(evt) {
   if (evt.altKey || evt.ctrlKey || evt.metaKey || evt.shiftKey) {
     return;
   }
@@ -1152,7 +1147,7 @@ function onKeyUp(evt): void {
 /**
  * Fire spatial navigation event when an element is focussed
  */
-function onFocus(evt): void {
+function onFocus(evt) {
   var target = evt.target;
 
   if (
@@ -1190,7 +1185,7 @@ function onFocus(evt): void {
 /**
  *
  */
-function onBlur(evt): void {
+function onBlur(evt) {
   var target = evt.target;
 
   if (
@@ -1220,7 +1215,7 @@ function onBlur(evt): void {
 /**
  * Focus when body is clicked
  */
-function onBodyClick(): void {
+function onBodyClick() {
   if (
     document.activeElement === document.body &&
     _lastSectionId &&
@@ -1247,7 +1242,7 @@ function onBodyClick(): void {
 /* Public Function */
 /*******************/
 var SpatialNavigation = {
-  init: function (): void {
+  init: function () {
     if (!_ready) {
       window.addEventListener('keydown', onKeyDown);
       window.addEventListener('keyup', onKeyUp);
@@ -1259,7 +1254,7 @@ var SpatialNavigation = {
     }
   },
 
-  uninit: function (): void {
+  uninit: function () {
     window.removeEventListener('blur', onBlur, true);
     window.removeEventListener('focus', onFocus, true);
     window.removeEventListener('keyup', onKeyUp);
@@ -1271,7 +1266,7 @@ var SpatialNavigation = {
     _ready = false;
   },
 
-  clear: function (): void {
+  clear: function () {
     _sections = {};
     _sectionCount = 0;
     _defaultSectionId = '';
@@ -1279,7 +1274,7 @@ var SpatialNavigation = {
     _duringFocusChange = false;
   },
 
-  reset: function (sectionId): void {
+  reset: function (sectionId) {
     if (sectionId) {
       _sections[sectionId].lastFocusedElement = undefined;
       _sections[sectionId].previous = undefined;
@@ -1295,9 +1290,8 @@ var SpatialNavigation = {
 
   // set(<config>);
   // set(<sectionId>, <config>);
-  set: function (): void {
+  set: function () {
     var sectionId, config;
-
     if (typeof arguments[0] === 'object') {
       config = arguments[0];
     } else if (
@@ -1315,10 +1309,10 @@ var SpatialNavigation = {
     }
 
     for (var key in config) {
-      if (GlobalConfig[key] !== undefined) {
+      if (typeof GlobalConfig[key] !== 'undefined') {
         if (sectionId) {
           _sections[sectionId][key] = config[key];
-        } else if (config[key] !== undefined) {
+        } else if (typeof config[key] !== 'undefined') {
           GlobalConfig[key] = config[key];
         }
       }
@@ -1332,7 +1326,7 @@ var SpatialNavigation = {
 
   // add(<config>);
   // add(<sectionId>, <config>);
-  add: function (): string {
+  add: function () {
     var sectionId;
     var config = {};
 
@@ -1362,7 +1356,7 @@ var SpatialNavigation = {
     return sectionId;
   },
 
-  remove: function (sectionId): boolean {
+  remove: function (sectionId) {
     if (!sectionId || typeof sectionId !== 'string') {
       throw new Error('Please assign the "sectionId"!');
     }
@@ -1382,7 +1376,7 @@ var SpatialNavigation = {
     return false;
   },
 
-  disable: function (sectionId): boolean {
+  disable: function (sectionId) {
     if (_sections[sectionId]) {
       _sections[sectionId].disabled = true;
 
@@ -1392,7 +1386,7 @@ var SpatialNavigation = {
     return false;
   },
 
-  enable: function (sectionId): boolean {
+  enable: function (sectionId) {
     if (_sections[sectionId]) {
       _sections[sectionId].disabled = false;
 
@@ -1402,11 +1396,11 @@ var SpatialNavigation = {
     return false;
   },
 
-  pause: function (): void {
+  pause: function () {
     _pause = true;
   },
 
-  resume: function (): void {
+  resume: function () {
     _pause = false;
   },
 
@@ -1414,7 +1408,7 @@ var SpatialNavigation = {
   // focus(<sectionId>, [silent])
   // focus(<extSelector>, [silent])
   // Note: "silent" is optional and default to false
-  focus: function (elem, silent): void {
+  focus: function (elem, silent) {
     var result = false;
 
     if (silent === undefined && typeof elem === 'boolean') {
@@ -1493,8 +1487,8 @@ var SpatialNavigation = {
 
   // makeFocusable()
   // makeFocusable(<sectionId>)
-  makeFocusable: function (sectionId): void {
-    var doMakeFocusable = function (section): void {
+  makeFocusable: function (sectionId) {
+    var doMakeFocusable = function (section) {
       var tabIndexIgnoreList =
         section.tabIndexIgnoreList === undefined
           ? GlobalConfig.tabIndexIgnoreList
@@ -1523,7 +1517,7 @@ var SpatialNavigation = {
     }
   },
 
-  setDefaultSection: function (sectionId): void {
+  setDefaultSection: function (sectionId) {
     if (!sectionId) {
       _defaultSectionId = '';
     } else if (_sections[sectionId]) {

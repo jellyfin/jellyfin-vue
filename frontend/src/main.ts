@@ -16,7 +16,7 @@ import { hideDirective } from '@/plugins/directives';
  */
 import '@/assets/styles/global.scss';
 import '@fontsource/roboto';
-import vueSpatialNavigation from '@/plugins/spatialNav';
+import vueSpatialNavigation, { vjsnOptions } from '@/plugins/spatialNav';
 
 /**
  * - VUE PLUGINS, STORE AND DIRECTIVE -
@@ -30,6 +30,8 @@ app.use(i18n);
 app.use(router);
 app.use(remote);
 app.use(vuetify);
+
+app.directive('hide', hideDirective);
 app.use(vueSpatialNavigation, {
   straightOnly: false,
   straightOverlapThreshold: 0.5,
@@ -64,9 +66,7 @@ app.use(vueSpatialNavigation, {
     return true;
   },
   scrollOptions: { behavior: 'smooth', block: 'nearest' }
-});
-
-app.directive('hide', hideDirective);
+} as vjsnOptions);
 
 /**
  * This ensures the transition plays: https://router.vuejs.org/guide/migration/#all-navigations-are-now-always-asynchronous
