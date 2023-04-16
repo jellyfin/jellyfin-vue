@@ -58,6 +58,9 @@ const vuetify = createVuetify({
       variant: 'outlined',
       color: 'primary'
     },
+    VCheckbox: {
+      color: 'primary'
+    },
     VBtn: {
       color: '',
       variant: 'text'

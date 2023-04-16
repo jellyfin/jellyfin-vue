@@ -110,6 +110,7 @@ declare module '@vue/runtime-core' {
     PlayPauseButton: typeof import('./../../src/components/Buttons/Playback/PlayPauseButton.vue')['default']
     PreviousTrackButton: typeof import('./../../src/components/Buttons/Playback/PreviousTrackButton.vue')['default']
     QueueButton: typeof import('./../../src/components/Buttons/QueueButton.vue')['default']
+    RefreshMetadataDialog: typeof import('./../../src/components/Item/Metadata/RefreshMetadataDialog.vue')['default']
     RelatedItems: typeof import('./../../src/components/Item/RelatedItems.vue')['default']
     RepeatButton: typeof import('./../../src/components/Buttons/Playback/RepeatButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

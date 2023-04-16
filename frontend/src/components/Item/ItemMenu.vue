@@ -33,9 +33,13 @@
     </v-menu>
   </v-btn>
   <metadata-editor-dialog
-    v-if="item.Id"
+    v-if="metadataDialog && item.Id"
     v-model:dialog="metadataDialog"
     :item-id="item.Id" />
+  <refresh-metadata-dialog
+    v-if="refreshDialog && item.Id"
+    :item="menuProps.item"
+    @close="refreshDialog = false" />
 </template>
 
 <script setup lang="ts">
@@ -43,7 +47,6 @@ import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEventListener } from '@vueuse/core';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
@@ -58,8 +61,7 @@ import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useRoute, useRouter } from 'vue-router';
 import { useRemote, useSnackbar, useConfirmDialog } from '@/composables';
-import { canInstantMix, canResume } from '@/utils/items';
-import { TaskType } from '@/store/taskManager';
+import { canInstantMix, canRefreshMetadata, canResume } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 
 type MenuOption = {
@@ -95,6 +97,7 @@ const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
+const refreshDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const errorMessage = t('errors.anErrorHappened');
@@ -185,31 +188,11 @@ const instantMixAction = {
 /**
  * Item related actions
  */
-const refreshLibraryAction = {
-  title: t('refreshLibrary'),
+const refreshAction = {
+  title: t('refreshMetadata'),
   icon: IMdiRefresh,
-  action: async (): Promise<void> => {
-    if (remote.sdk.api && menuProps.item.Id) {
-      try {
-        await getItemRefreshApi(remote.sdk.api).refreshItem({
-          itemId: menuProps.item.Id,
-          replaceAllImages: false,
-          replaceAllMetadata: false
-        });
-
-        useSnackbar(t('libraryRefreshQueued'), 'normal');
-        taskManager.startTask({
-          type: TaskType.LibraryRefresh,
-          id: menuProps.item.Id || '',
-          data: menuProps.item.Name || '',
-          progress: 0
-        });
-      } catch (error) {
-        console.error(error);
-
-        useSnackbar(t('unableToRefreshLibrary'), 'error');
-      }
-    }
+  action: (): void => {
+    refreshDialog.value = true;
   },
   disabled: isItemRefreshing.value
 };
@@ -322,13 +305,8 @@ function getPlaybackOptions(): MenuOption[] {
 function getLibraryOptions(): MenuOption[] {
   const libraryOptions: MenuOption[] = [];
 
-  if (
-    remote.auth.currentUser?.Policy?.IsAdministrator &&
-    ['Folder', 'CollectionFolder', 'UserView'].includes(
-      menuProps.item.Type || ''
-    )
-  ) {
-    libraryOptions.push(refreshLibraryAction);
+  if (canRefreshMetadata(menuProps.item)) {
+    libraryOptions.push(refreshAction);
   }
 
   if (remote.auth.currentUser?.Policy?.IsAdministrator) {

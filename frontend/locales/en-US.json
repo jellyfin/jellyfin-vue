@@ -1,5 +1,4 @@
 {
-  "auto": "Automatic",
   "3DFormat": "3D format",
   "NoMediaSourcesAvailable": "No media sources available",
   "actor": "Actor",
@@ -13,7 +12,7 @@
   "appbar": {
     "tasks": {
       "configSync": "Syncing settings…",
-      "scanningLibrary": "Scanning library '{library}'…"
+      "scanningItem": "Scanning '{item}'…"
     },
     "tooltips": {
       "tasks": "Running tasks"
@@ -25,6 +24,7 @@
   "aspectRatio": "Aspect ratio",
   "audio": "Audio",
   "audioCodecNotSupported": "The audio codec is not supported",
+  "auto": "Automatic",
   "badRequest": "Bad request. Try again",
   "books": "Books",
   "browserNotSupported": "Your browser is not supported for playing this file.",
@@ -218,6 +218,13 @@
     }
   },
   "menu": "Menu",
+  "refreshMetadata": "Refresh metadata",
+  "replaceAllMetadata": "Replace all metadata",
+  "refreshMetadataHint": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard",
+  "searchMissingMetadata": "Search for missing metadata",
+  "replaceExistingImages": "Replace existing images",
+  "scanForNewAndUpdatedFiles": "Scan for new and updated files",
+  "metadataRefreshQueued": "Metadata refresh enqueued",
   "metadata": {
     "source": "Source",
     "sourceAll": "All",
@@ -308,6 +315,7 @@
   "quality": "Quality",
   "queue": "Queue",
   "rating": "Rating",
+  "refresh": "Refresh",
   "refreshLibrary": "Refresh library",
   "releaseDate": "Release date",
   "remoteDevices": "Remote devices",
@@ -340,9 +348,9 @@
       "refreshKeysFailure": "Error refreshing API keys",
       "revoke": "Revoke",
       "revokeAll": "Revoke all API keys",
-      "revokeConfirm": "Confirm API key revocation",
       "revokeAllFailure": "Error revoking all API keys",
       "revokeAllSuccess": "Successfully revoked all API keys",
+      "revokeConfirm": "Confirm API key revocation",
       "revokeFailure": "Error revoking API key",
       "revokeSuccess": "Successfully revoked API key"
     },
@@ -351,9 +359,9 @@
       "appVersion": "App version",
       "delete": "Delete",
       "deleteAll": "Delete all",
-      "deleteConfirm": "Confirm device deletion",
       "deleteAllDevicesError": "Error deleting all devices",
       "deleteAllDevicesSuccess": "All devices deleted successfully",
+      "deleteConfirm": "Confirm device deletion",
       "deleteDeviceError": "Error deleting device",
       "deleteDeviceSuccess": "Device deleted successfully",
       "deviceName": "Device name",
@@ -468,9 +476,9 @@
   "themeVideo": "Theme Video",
   "tooltips": {
     "changeLanguage": "Language",
+    "switchToAuto": "Follow system theme",
     "switchToDarkMode": "Switch to dark mode",
-    "switchToLightMode": "Switch to light mode",
-    "switchToAuto": "Follow system theme"
+    "switchToLightMode": "Switch to light mode"
   },
   "trailer": "Trailer",
   "transcodingInfo": {
@@ -515,7 +523,6 @@
   "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
-  "unknown": "Unknown",
   "units": {
     "bitrate": {
       "kbps": "{value} kbps",
@@ -525,6 +532,7 @@
       "seconds": "{count} second | {count} seconds"
     }
   },
+  "unknown": "Unknown",
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",

@@ -72,9 +72,9 @@ const mappedTaskList = computed<TaskInfo[]>(() => {
       case TaskType.LibraryRefresh: {
         return {
           progress: t.progress,
-          textKey: 'appbar.tasks.scanningLibrary',
+          textKey: 'appbar.tasks.scanningItem',
           textParams: {
-            library: t.data ?? ''
+            item: t.data ?? ''
           },
           id: t.id
         };

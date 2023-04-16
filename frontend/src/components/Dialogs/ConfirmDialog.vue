@@ -14,11 +14,11 @@
         {{ state.text }}
       </v-card-text>
       <v-card-actions class="align-center justify-center">
-        <v-btn variant="elevated" color="secondary" @click="cancel">
+        <v-btn variant="elevated" color="secondary" width="8em" @click="cancel">
           {{ t('cancel') }}
         </v-btn>
         <v-btn
-          max-width="100%"
+          width="8em"
           variant="elevated"
           :color="state.confirmColor ?? 'error'"
           @click="confirm">
