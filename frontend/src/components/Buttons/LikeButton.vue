@@ -17,10 +17,13 @@ import { useRemote } from '@/composables';
 const props = defineProps<{ item: BaseItemDto }>();
 const remote = useRemote();
 const loading = ref(false);
+const isFavoriteOverride = ref<boolean | undefined>(undefined);
 
 const isFavorite = computed({
   get() {
-    return props.item.UserData?.IsFavorite ?? false;
+    return isFavoriteOverride.value === undefined
+      ? props.item.UserData?.IsFavorite ?? false
+      : isFavoriteOverride.value;
   },
   async set(newValue) {
     try {
@@ -39,6 +42,8 @@ const isFavorite = computed({
             userId: remote.auth.currentUserId ?? '',
             itemId: props.item.Id
           }));
+
+      isFavoriteOverride.value = newValue;
     } catch {
     } finally {
       loading.value = false;
