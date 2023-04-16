@@ -96,6 +96,16 @@ export function isValidMD5(input: string): boolean {
 }
 
 /**
+ * Checks if an item is a local item.
+ *
+ * @param item - The item to be checked.
+ * @returns - A boolean representing whether the item is a local item
+ */
+export function isLocalItem(item: BaseItemDto): boolean {
+  return item?.Id?.indexOf('local') === 0;
+}
+
+/**
  * Get the Material Design Icon name associated with a type of library
  *
  * @param libraryType - Type of the library
@@ -278,21 +288,83 @@ export function canIdentify(item: BaseItemDto): boolean {
     'Series',
     'Trailer'
   ];
-  const localItem = item?.Id?.indexOf('local') === 0;
 
-  return valid.includes((item.Type as BaseItemKind) || '') && !localItem;
+  return (
+    valid.includes((item.Type as BaseItemKind) || '') && !isLocalItem(item)
+  );
 }
 
 /**
  * Determine if an item can be instant mixed.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be instant mixed or not.
  */
 export function canInstantMix(item: BaseItemDto): boolean {
-  const localItem = item?.Id?.indexOf('local') === 0;
-
   return (
     ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
       item.Type || ''
-    ) && !localItem
+    ) && !isLocalItem(item)
+  );
+}
+
+/**
+ * Determine if an item can be added to a playlist.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be added to a playlist or not.
+ */
+export function canBeAddedToPlaylist(item: BaseItemDto): boolean {
+  if (item.CollectionType === 'livetv') {
+    return false;
+  }
+
+  if (item.Type === 'Recording' && item.Status !== 'Completed') {
+    return false;
+  }
+
+  if (item.MediaType === 'Photo') {
+    return false;
+  }
+
+  const validItems = ['Genre', 'MusicGenre', 'MusicArtist'];
+
+  return (
+    !isLocalItem(item) &&
+    (Boolean(item.MediaType) ||
+      (item.IsFolder ?? false) ||
+      validItems.includes(item.Type || ''))
+  );
+}
+
+/**
+ * Determine if an item can be added to a collection.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be added to a collection or not.
+ */
+export function canBeAddedToCollection(item: BaseItemDto): boolean {
+  const invalidTypes = [
+    'Genre',
+    'MusicGenre',
+    'Studio',
+    'UserView',
+    'CollectionFolder',
+    'Audio',
+    'Program',
+    'Timer',
+    'SeriesTimer'
+  ];
+
+  if (item.Type === 'Recording' && item.Status !== 'Completed') {
+    return false;
+  }
+
+  return (
+    !item.CollectionType &&
+    !isLocalItem(item) &&
+    item.MediaType !== 'Photo' &&
+    !invalidTypes.includes(item.Type || '')
   );
 }
 
@@ -442,7 +514,8 @@ export function getMediaStreams(
  * Create an item download object that contains the URL and filename.
  *
  * @param itemId - The item ID.
- * @package itemPath - The item path.
+ * @param itemPath - The item path.
+ * @returns - A download object.
  */
 export function getItemDownloadObject(
   itemId: string,
@@ -549,6 +622,7 @@ interface SearchBuilder {
  *
  * @param item - The item to search for.
  * @param searches - The search params to use.
+ * @returns - An array of remote search results.
  */
 export async function getItemRemoteSearch(
   item: BaseItemDto,

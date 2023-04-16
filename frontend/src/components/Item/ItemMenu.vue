@@ -88,7 +88,8 @@ import {
   canResume,
   getItemSeriesDownloadObjects,
   getItemSeasonDownloadObjects,
-  getItemDownloadObject
+  getItemDownloadObject,
+  isLocalItem
 } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
@@ -365,26 +366,23 @@ function getCopyDownloadActions(): MenuOption[] {
  */
 function canRefreshLibrary(): boolean {
   const invalidRefreshType = ['Timer', 'SeriesTimer', 'Program', 'TvChannel'];
-  const collectionType = menuProps.item.CollectionType || '';
 
-  if (collectionType === 'livetv') {
+  if (menuProps.item.CollectionType === 'livetv') {
     return false;
   }
 
-  const type = menuProps.item.Type || '';
-  const status = menuProps.item.Status || '';
-
-  const incompleteRecording = type === 'Recording' && status !== 'Completed';
-  const localItem = menuProps.item?.Id?.indexOf('local') === 0;
+  const incompleteRecording =
+    menuProps.item.Type === 'Recording' &&
+    menuProps.item.Status !== 'Completed';
 
   const IsAdministrator =
     remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
 
   return (
     IsAdministrator &&
-    !localItem &&
+    !isLocalItem(menuProps.item) &&
     !incompleteRecording &&
-    !invalidRefreshType.includes(type)
+    !invalidRefreshType.includes(menuProps.item.Type || '')
   );
 }
 
