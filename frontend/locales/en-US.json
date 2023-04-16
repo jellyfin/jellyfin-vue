@@ -101,6 +101,11 @@
       "recentlyAdded": "Recently added"
     }
   },
+  "identify": "Identify",
+  "identifyApplyError": "Failed to apply selected search result",
+  "identifyInstructResult": "You can click on one of these cards to apply the result",
+  "identifyReplaceImages": "Replace all images",
+  "identifySearchError": "Failed to search to remote providers",
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",
@@ -116,8 +121,8 @@
   },
   "images": "Images",
   "incorrectUsernameOrPassword": "Incorrect username or password",
-  "instantMixQueued": "Instant mix added to queue",
   "instantMix": "Instant mix",
+  "instantMixQueued": "Instant mix added to queue",
   "item": {
     "artist": {
       "albums": "Albums",
@@ -218,13 +223,6 @@
     }
   },
   "menu": "Menu",
-  "refreshMetadata": "Refresh metadata",
-  "replaceAllMetadata": "Replace all metadata",
-  "refreshMetadataHint": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard",
-  "searchMissingMetadata": "Search for missing metadata",
-  "replaceExistingImages": "Replace existing images",
-  "scanForNewAndUpdatedFiles": "Scan for new and updated files",
-  "metadataRefreshQueued": "Metadata refresh enqueued",
   "metadata": {
     "source": "Source",
     "sourceAll": "All",
@@ -233,6 +231,7 @@
   },
   "metadataEditor": "Metadata editor",
   "metadataNoResultsMatching": "No results matching \"{search}\". Press enter to create a new one.",
+  "metadataRefreshQueued": "Metadata refresh enqueued",
   "more": "More",
   "moreLikeArtist": "More like {artist}",
   "moreLikeThis": "More like this",
@@ -317,17 +316,25 @@
   "rating": "Rating",
   "refresh": "Refresh",
   "refreshLibrary": "Refresh library",
+  "refreshMetadata": "Refresh metadata",
+  "refreshMetadataHint": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard",
   "releaseDate": "Release date",
   "remoteDevices": "Remote devices",
+  "replaceAllMetadata": "Replace all metadata",
+  "replaceExistingImages": "Replace existing images",
+  "results": "Results",
   "resumable": "Resumable",
   "resume": "Resume",
   "role": "Role",
   "save": "Save",
   "saved": "Saved",
+  "scanForNewAndUpdatedFiles": "Scan for new and updated files",
   "search": {
     "name": "Search",
     "topResults": "Top results"
   },
+  "searchMissingMetadata": "Search for missing metadata",
+  "searchNoResults": "No results found",
   "seasonEpisode": "Season {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",

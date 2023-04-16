@@ -41,6 +41,10 @@
     v-if="refreshDialog && item.Id"
     :item="menuProps.item"
     @close="refreshDialog = false" />
+  <identify-dialog
+    v-if="identifyItemDialog && item.Id"
+    :item="menuProps.item"
+    @close="identifyItemDialog = false" />
 </template>
 
 <script lang="ts">
@@ -51,6 +55,7 @@ import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
+import IMdiCloudSearch from 'virtual:icons/mdi/cloud-search-outline';
 import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDisc from 'virtual:icons/mdi/disc';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
@@ -62,7 +67,12 @@ import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useRoute, useRouter } from 'vue-router';
 import { useRemote, useSnackbar, useConfirmDialog } from '@/composables';
-import { canInstantMix, canRefreshMetadata, canResume } from '@/utils/items';
+import {
+  canIdentify,
+  canInstantMix,
+  canRefreshMetadata,
+  canResume
+} from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 
 type MenuOption = {
@@ -113,6 +123,7 @@ const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
 const refreshDialog = ref(false);
+const identifyItemDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const errorMessage = t('errors.anErrorHappened');
@@ -250,6 +261,13 @@ const deleteItemAction = {
     );
   }
 };
+const identifyItemAction = {
+  title: t('identify'),
+  icon: IMdiCloudSearch,
+  action: (): void => {
+    identifyItemDialog.value = true;
+  }
+};
 /**
  * == END OF ACTIONS ==
  */
@@ -326,6 +344,10 @@ function getLibraryOptions(): MenuOption[] {
 
   if (remote.auth.currentUser?.Policy?.IsAdministrator) {
     libraryOptions.push(editMetadataAction);
+
+    if (canIdentify(menuProps.item)) {
+      libraryOptions.push(identifyItemAction);
+    }
   }
 
   if (menuProps.item.CanDelete) {
