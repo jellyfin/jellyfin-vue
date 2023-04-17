@@ -519,6 +519,7 @@
       "seconds": "{count} segundo | {count} segundos"
     }
   },
+  "unknown": "Desconocido",
   "unliked": "No me gusta",
   "unplayed": "No reproducido",
   "upNext": "A continuación",
