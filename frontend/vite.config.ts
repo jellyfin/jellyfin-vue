@@ -21,6 +21,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import virtual from '@rollup/plugin-virtual';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import autoprefixer from 'autoprefixer';
+import { VitePWA } from 'vite-plugin-pwa';
 /**
  * We need to match our locales to the date-fns ones for proper localization of dates.
  * In order to reduce bundle size, we calculate here (at build time) only the locales that we
@@ -152,6 +153,40 @@ export default defineConfig(({ mode }): UserConfig => {
         fullInstall: false,
         forceStringify: true,
         include: localeFilesFolder
+      }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,json,wasm,woff,woff2,png,ico,svg}'],
+          maximumFileSizeToCacheInBytes: 6_000_000
+        },
+        manifestFilename: 'jellyfin.webmanifest',
+        manifest: {
+          name: 'Jellyfin Media Center',
+          short_name: 'Jellyfin',
+          description: 'The Free Software Media System',
+          lang: 'en-US',
+          theme_color: '#101010',
+          background_color: '#101010',
+          icons: [
+            {
+              src: 'android-chrome-192x192.png',
+              sizes: '192x192',
+              type: 'image/png'
+            },
+            {
+              src: 'android-chrome-192x192.png',
+              sizes: '512x512',
+              type: 'image/png'
+            },
+            {
+              src: 'android-chrome-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable'
+            }
+          ]
+        }
       })
     ],
     build: {

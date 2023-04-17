@@ -88,6 +88,7 @@
     "unplugin-vue-router": "0.5.4",
     "vite": "4.2.1",
     "vite-plugin-pages": "0.29.0",
+    "vite-plugin-pwa": "0.14.7",
     "vite-plugin-vue-layouts": "0.8.0",
     "vue-eslint-parser": "9.1.1",
     "vue-i18n-extract": "2.0.7",
