@@ -39,7 +39,7 @@
             variant="outlined"
             :label="t('sortTitle')" />
           <v-text-field
-            v-model="metadata.Taglines"
+            v-model="tagLine"
             variant="outlined"
             :label="t('tagline')" />
           <v-textarea
@@ -253,6 +253,19 @@ const dateCreated = computed(() => {
 
   return useDateFns(format, new Date(metadata.value.DateCreated), 'yyyy-MM-dd')
     .value;
+});
+
+const tagLine = computed({
+  get: () => metadata.value?.Taglines?.[0] ?? '',
+  set: (v) => {
+    if (metadata.value) {
+      if (!metadata.value?.Taglines) {
+        metadata.value.Taglines = [];
+      }
+
+      metadata.value.Taglines[0] = v;
+    }
+  }
 });
 
 /**
