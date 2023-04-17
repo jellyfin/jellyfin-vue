@@ -24,6 +24,7 @@
   "aspectRatio": "Seitenverhältnis",
   "audio": "Ton",
   "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
+  "auto": "Automatisch",
   "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
   "books": "Bücher",
   "browserNotSupported": "Dein Browser wird für die Wiedergabe dieser Datei nicht unterstützt.",
@@ -65,6 +66,7 @@
   "episodeNumber": "Episode {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ein Fehler ist aufgetreten",
+    "cantPlayItem": "Dieser Eintrag kann nicht abgespielt werden",
     "messages": {
       "errorCode": "Fehlercode: {errorCode}",
       "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt."
