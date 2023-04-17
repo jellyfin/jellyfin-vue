@@ -22,8 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { getName } from 'all-iso-language-codes';
-import { startCase } from 'lodash-es';
+import { upperFirst } from 'lodash-es';
 import { MediaStream } from '@jellyfin/sdk/lib/generated-client';
 import { useI18n } from 'vue-i18n';
 import IMdiSurroundSound20 from 'virtual:icons/mdi/surround-sound-2-0';
@@ -31,6 +30,7 @@ import IMdiSurroundSound31 from 'virtual:icons/mdi/surround-sound-3-1';
 import IMdiSurroundSound51 from 'virtual:icons/mdi/surround-sound-5-1';
 import IMdiSurroundSound71 from 'virtual:icons/mdi/surround-sound-7-1';
 import IMdiSurroundSound from 'virtual:icons/mdi/surround-sound';
+import { getLocaleName } from '@/utils/i18n';
 
 const props = withDefaults(
   defineProps<{
@@ -87,8 +87,9 @@ function getTrackIcon(
  */
 function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
-    return startCase(
-      getName(track.Language, locale.value.split('-')[0]) ?? t('undefined')
+    return upperFirst(
+      getLocaleName(track.Language, locale.value) ??
+        `${t('unknown')} (${track.Language})`
     );
   } else if (props.type === 'Audio' || props.type === 'Subtitle') {
     return t('undefined');

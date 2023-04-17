@@ -510,6 +510,7 @@
   "undefined": "Undefined",
   "unexpectedError": "Unexpected error",
   "unhandledException": "Unhandled exception",
+  "unknown": "Unknown",
   "units": {
     "bitrate": {
       "kbps": "{value} kbps",
