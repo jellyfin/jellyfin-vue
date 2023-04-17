@@ -25,7 +25,7 @@ import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
-import { now as reactiveDate, mediaControls } from './globals';
+import { now as reactiveDate, mediaControls, mediaElementRef } from './globals';
 import { itemsStore } from '.';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
@@ -1265,6 +1265,12 @@ class PlaybackManagerStore {
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value) {
         playbackManager.setNextTrack();
+      }
+    });
+
+    watch(mediaElementRef, () => {
+      if (!isNil(mediaElementRef.value)) {
+        mediaElementRef.value.volume = this.currentVolume / 100;
       }
     });
   }
