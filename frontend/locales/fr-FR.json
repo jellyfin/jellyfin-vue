@@ -115,12 +115,12 @@
   "incorrectUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
   "item": {
     "artist": {
-      "albums": "Les Albums",
+      "albums": "Albums",
       "appearsOn": "Apparitions",
       "discography": "Discographie",
       "eps": "EP",
       "information": "Informations",
-      "singles": "Simple",
+      "singles": "Singles",
       "videos": "Vidéos"
     },
     "cast": "Distribution",
