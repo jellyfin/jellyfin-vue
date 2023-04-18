@@ -519,6 +519,7 @@
       "seconds": "{count} 秒 | {count} 秒"
     }
   },
+  "unknown": "未知",
   "unliked": "不喜欢",
   "unplayed": "未播放",
   "upNext": "下一个",
