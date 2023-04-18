@@ -519,6 +519,7 @@
       "seconds": "{count} sekunti | {count} sekuntia"
     }
   },
+  "unknown": "Tuntematon",
   "unliked": "Ei tykätty",
   "unplayed": "Toistamaton",
   "upNext": "Seuraavaksi",
