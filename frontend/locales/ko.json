@@ -4,16 +4,27 @@
   "actor": "배우",
   "actors": "배우",
   "addNewPerson": "새로운 인물 추가",
+  "administrator": "관리자",
   "airPlayDevices": "AirPlay 장치",
   "albums": "앨범",
   "allLanguages": "모든 언어",
   "alphabetically": "알파벳순",
+  "appbar": {
+    "tasks": {
+      "configSync": "설정 동기화 중…",
+      "scanningLibrary": "라이브러리 '{library}' 스캔 중…"
+    },
+    "tooltips": {
+      "tasks": "처리 중인 작업들"
+    }
+  },
   "architecture": "시스템 구조",
   "artist": "아티스트",
   "artists": "아티스트",
   "aspectRatio": "종횡비",
   "audio": "오디오",
   "audioCodecNotSupported": "오디오 코덱이 지원되지 않습니다",
+  "auto": "자동",
   "badRequest": "잘못된 요청입니다. 다시 시도해주세요",
   "books": "도서",
   "browserNotSupported": "사용하시고 계신 브라우저에서는 이 파일을 재생할 수 없습니다.",
@@ -55,10 +66,16 @@
   "episodeNumber": "{episodeNumber}화",
   "errors": {
     "anErrorHappened": "오류가 발생했습니다",
+    "cantPlayItem": "재생할 수 없습니다",
     "messages": {
       "errorCode": "에러 코드: {errorCode}",
       "videoPlayerError": "비디오 플레이어에서 복구 불가능한 오류가 발생했습니다."
-    }
+    },
+    "playback": {
+      "mediaError": "미디어 오류가 발생했습니다. 복구를 시도합니다...",
+      "networkError": "네트워크 오류가 발생했습니다. 복구를 시도합니다..."
+    },
+    "unauthorized": "이 페이지에 대한 접근 권한이 없습니다"
   },
   "failedRetrievingDisplayPreferences": "디스플레이 설정을 가져올 수 없습니다. 기본값을 사용합니다.",
   "failedSettingDisplayPreferences": "디스플레이 설정을 업데이트할 수 없습니다.",
@@ -98,8 +115,10 @@
   "incorrectUsernameOrPassword": "사용자 이름 또는 비밀번호가 잘못되었습니다",
   "item": {
     "artist": {
+      "albums": "앨범",
       "appearsOn": "출연",
       "discography": "디스코그래피",
+      "eps": "",
       "information": "정보",
       "videos": "비디오"
     },
@@ -120,6 +139,11 @@
     "tracklist": {
       "title": "제목"
     }
+  },
+  "itemMenu": {
+    "pushToBottom": "맨 끝으로 가기",
+    "pushToTop": "맨 처음으로 가기",
+    "removeFromQueue": "큐에서 제거"
   },
   "itemNotFound": "항목을 찾을 수 없습니다",
   "jellyfinLogo": "Jellyfin 로고",
@@ -142,6 +166,7 @@
     "changeServer": "서버 변경",
     "changeUser": "사용자 변경",
     "connect": "연결",
+    "kickedOut": "인증 값이 더 이상 유효하지 않아 세션이 종료되었습니다. 다시 로그인 해 주세요",
     "login": "로그인",
     "loginAs": "{name}님으로 로그인",
     "manualLogin": "수동 로그인",
