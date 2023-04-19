@@ -197,6 +197,21 @@ class PlayerElementStore {
     }
   };
 
+  /**
+   * Apply initial volume to the media element directly.
+   * The element is recreated every time we changed item
+   * so the volume is resetted.
+   *
+   * @param volume - Volume to be set on
+   */
+  public applyInitialVolume = (
+    volume: number = playbackManager.mediaCurrentVolume
+  ): void => {
+    if (mediaElementRef.value) {
+      mediaElementRef.value.volume = volume;
+    }
+  };
+
   private _clear = (): void => {
     Object.assign(this._state, this._defaultState);
   };
@@ -227,6 +242,8 @@ class PlayerElementStore {
         ) {
           this.toggleFullscreenVideoPlayer();
         }
+
+        this.applyInitialVolume();
       }
     );
 

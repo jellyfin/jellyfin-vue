@@ -22,10 +22,11 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
+import { syncRef, toRef } from '@vueuse/core';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
-import { now as reactiveDate, mediaControls, mediaElementRef } from './globals';
+import { now as reactiveDate, mediaControls } from './globals';
 import { itemsStore } from '.';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { getImageInfo } from '@/utils/images';
@@ -149,6 +150,11 @@ class PlaybackManagerStore {
    * as a global variable and updating it solves this problem.
    */
   private _mediaMetadata = new MediaMetadata();
+  public syncVolume = syncRef(
+    toRef(this.mediaCurrentVolume),
+    toRef(this.remoteCurrentVolume)
+  );
+
   public get status(): PlaybackStatus {
     return this._state.status;
   }
@@ -454,21 +460,28 @@ class PlaybackManagerStore {
     }
   }
 
-  public get currentVolume(): number {
-    return this._state.isRemotePlayer
-      ? this._state.remoteCurrentVolume
-      : mediaControls.volume.value * 100;
+  public get remoteCurrentVolume(): number {
+    return this._state.remoteCurrentVolume;
   }
-  public set currentVolume(newVolume: number) {
+
+  public set remoteCurrentVolume(newVolume: number) {
     newVolume = newVolume > 100 ? 100 : newVolume;
     newVolume = newVolume < 0 ? 0 : newVolume;
     this.isMuted = newVolume === 0 ? true : false;
 
-    if (this._state.isRemotePlayer) {
-      this._state.remoteCurrentVolume = newVolume;
-    } else {
-      mediaControls.volume.value = newVolume / 100;
-    }
+    this._state.remoteCurrentVolume = newVolume;
+  }
+
+  public get mediaCurrentVolume(): number {
+    return mediaControls.volume.value * 100;
+  }
+
+  public set mediaCurrentVolume(newVolume: number) {
+    newVolume = newVolume > 100 ? 100 : newVolume;
+    newVolume = newVolume < 0 ? 0 : newVolume;
+    this.isMuted = newVolume === 0 ? true : false;
+
+    mediaControls.volume.value = newVolume / 100;
   }
 
   private get _pendingProgressReport(): boolean {
@@ -862,10 +875,10 @@ class PlaybackManagerStore {
     const sessionId = String(this._state.playSessionId || '');
     const time = Number(this.currentTime);
     const itemId = String(this.currentItem?.Id || '');
-    const volume = Number(this.currentVolume);
+    const volumeRemote = Number(this.remoteCurrentVolume);
 
     Object.assign(this._state, this._defaultState);
-    this.currentVolume = volume;
+    this.remoteCurrentVolume = volumeRemote;
 
     window.setTimeout(async () => {
       try {
@@ -941,8 +954,8 @@ class PlaybackManagerStore {
    * If the volume is zero and isMuted is true, the volume returns to 100 when it is reactivated
    */
   public toggleMute = (): void => {
-    if (this.currentVolume === 0 && this.isMuted) {
-      this.currentVolume = 100;
+    if (this.mediaCurrentVolume === 0 && this.isMuted) {
+      this.mediaCurrentVolume = 100;
     }
 
     this.isMuted = !this.isMuted;
@@ -1265,12 +1278,6 @@ class PlaybackManagerStore {
     watch(mediaControls.ended, () => {
       if (mediaControls.ended.value) {
         playbackManager.setNextTrack();
-      }
-    });
-
-    watch(mediaElementRef, () => {
-      if (!isNil(mediaElementRef.value)) {
-        mediaElementRef.value.volume = this.currentVolume / 100;
       }
     });
   }

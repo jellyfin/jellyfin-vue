@@ -102,6 +102,7 @@ async function onLoadedData(): Promise<void> {
       mediaElementRef.value.currentTime = playbackManager.currentTime;
     }
 
+    playerElement.applyInitialVolume();
     await playerElement.applyCurrentSubtitle();
   }
 }
