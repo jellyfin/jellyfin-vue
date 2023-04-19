@@ -24,6 +24,7 @@
   "aspectRatio": "Співвідношення",
   "audio": "Аудіо",
   "audioCodecNotSupported": "Аудіокодек не підтримується",
+  "auto": "Автоматично",
   "badRequest": "Помилка запиту. Спробуйте ще раз",
   "books": "Книги",
   "browserNotSupported": "Ваш браузер не підтримує відтворення цього файлу.",
@@ -65,10 +66,16 @@
   "episodeNumber": "Епізод {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ой, сталась помилка",
+    "cantPlayItem": "Цей елемент не може бути відтворений",
     "messages": {
       "errorCode": "Код помилки: {errorCode}",
       "videoPlayerError": "Відеопрогравач зіткнувся з невиправною помилкою."
-    }
+    },
+    "playback": {
+      "mediaError": "Виникла фатальна помилка медіа, виконується спроба відновлення",
+      "networkError": "Виникла фатальна помилка мережі, виконується спроба відновлення"
+    },
+    "unauthorized": "Ви не авторизовані для доступу до цієї сторінки"
   },
   "failedRetrievingDisplayPreferences": "Не вдається отримати налаштування відображення. Використовую останні відомі налаштування.",
   "failedSettingDisplayPreferences": "Не вдається оновити параметри відображення.",
@@ -160,7 +167,7 @@
     "changeServer": "Змінити сервер",
     "changeUser": "Змінити користувача",
     "connect": "Приєднатись",
-    "kickedOut": "Авторизація була відібрана і сесія більше не є дійсною. Будь ласка, увійдіть знову",
+    "kickedOut": "Авторизація була відкликана і сесія більше не є дійсною. Будь ласка, увійдіть знову",
     "login": "Ввійти",
     "loginAs": "Ввійти як {name}",
     "manualLogin": "Ввійти вручну",
@@ -326,9 +333,11 @@
       "dateCreated": "Дата створення",
       "description": "Додати і відкликати ключі API для зовнішнього доступу до вашого сервера",
       "refreshKeysFailure": "Помилка при оновленні ключів API",
+      "revoke": "Відкликати",
       "revokeAll": "Відкликати всі ключі API",
       "revokeAllFailure": "Помилка при відкликанні всіх ключів API",
       "revokeAllSuccess": "Успішно відкликано всі ключі API",
+      "revokeConfirm": "Підтвердити відкликання API-ключа",
       "revokeFailure": "Помилка при відкликанні ключа API",
       "revokeSuccess": "Успішно відкликано ключ API"
     },
@@ -339,6 +348,7 @@
       "deleteAll": "Видалити все",
       "deleteAllDevicesError": "Помилка при видаленні усіх пристроїв",
       "deleteAllDevicesSuccess": "Всі пристрої видалено успішно",
+      "deleteConfirm": "Підтвердити видалення пристрою",
       "deleteDeviceError": "Помилка при видалені пристрою",
       "deleteDeviceSuccess": "Пристрій видалено успішно",
       "deviceName": "Назва пристрою",
@@ -432,7 +442,8 @@
   "signIn": "Увійти",
   "snackbar": {
     "addedToQueue": "Додано до черги",
-    "playNext": "Обраний елемент відтворюватиметься після поточного"
+    "playNext": "Обраний елемент відтворюватиметься після поточного",
+    "routeValidationError": "Неправильно вказано routeId у параметрах маршруту"
   },
   "songs": "Пісні",
   "sortByType": "За {type}",
@@ -452,6 +463,7 @@
   "themeVideo": "Тематичне відео",
   "tooltips": {
     "changeLanguage": "Мова",
+    "switchToAuto": "Наслідувати тему системи",
     "switchToDarkMode": "Переключити в темний режим",
     "switchToLightMode": "Переключити в світлий режим"
   },
@@ -467,7 +479,7 @@
       "name": "Причина: | Причини:",
       "reasons": {
         "anamorphicVideoNotSupported": "Анаморфічне відео не підтримується",
-        "audioBitDepthNotSupported": "Ця бітова глибина звуку не підтримується",
+        "audioBitDepthNotSupported": "Розрядність аудіо не підтримується",
         "audioBitrateNotSupported": "Цей бітрейт звуку не підтримується",
         "audioChannelsNotSupported": "Ця кількість аудіоканалів не підтримується",
         "audioCodecNotSupported": "Цей аудіокодек не підтримується",
@@ -479,7 +491,7 @@
         "refFramesNotSupported": "Відео з референтними кадрами не підтримується",
         "secondaryAudioNotSupported": "Вторинні аудіодоріжки не підтримуються",
         "subtitleCodecNotSupported": "Цей кодек субтитрів не підтримується",
-        "videoBitDepthNotSupported": "Ця бітова глибина відео не підтримується",
+        "videoBitDepthNotSupported": "Розрядність відео не підтримується",
         "videoCodecNotSupported": "Цей відеокодек не підтримується",
         "videoFramerateNotSupported": "Ця частота кадрів не підтримується",
         "videoLevelNotSupported": "Цей рівень відеокодеку не підтримується",
@@ -507,6 +519,7 @@
       "seconds": "{count} секунда | {count} секунд"
     }
   },
+  "unknown": "Невідомо",
   "unliked": "Не улюблене",
   "unplayed": "Не відтворене",
   "upNext": "Наступне",
