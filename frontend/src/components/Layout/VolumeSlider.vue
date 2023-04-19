@@ -8,13 +8,13 @@
       <v-icon :icon="icon" />
     </v-btn>
     <v-slider
-      v-model="sliderValue"
+      v-model="mediaVolume"
       class="volume-slider"
       hide-details
       thumb-label
       max="100">
       <template #thumb-label>
-        {{ Math.round(sliderValue) }}
+        {{ Math.round(mediaVolume) }}
       </template>
     </v-slider>
   </div>
@@ -26,33 +26,38 @@ import IMdiVolumeMute from 'virtual:icons/mdi/volume-mute';
 import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
 import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
 import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
+import { syncRef, toRef } from '@vueuse/core';
 import { playbackManagerStore } from '@/store';
 
 const playbackManager = playbackManagerStore();
 
-const sliderValue = computed({
-  get() {
-    return playbackManager.mediaCurrentVolume;
-  },
-  set(value: number) {
-    playbackManager.mediaCurrentVolume = value;
+const mediaVolumeComputed = computed({
+  get: () => playbackManager.mediaCurrentVolume,
+  set: (newValue: number) => {
+    playbackManager.mediaCurrentVolume = newValue;
   }
 });
+
+const remoteVolumeComputed = computed({
+  get: () => playbackManager.remoteCurrentVolume,
+  set: (newValue: number) => {
+    playbackManager.remoteCurrentVolume = newValue;
+  }
+});
+
+const mediaVolume = toRef(mediaVolumeComputed);
+const remoteVolume = toRef(remoteVolumeComputed);
+
+syncRef(mediaVolume, remoteVolume);
 
 const icon = computed(() => {
   if (playbackManager.isMuted) {
     return IMdiVolumeMute;
-  } else if (playbackManager.mediaCurrentVolume >= 80) {
+  } else if (mediaVolume.value >= 80) {
     return IMdiVolumeHigh;
-  } else if (
-    playbackManager.mediaCurrentVolume < 80 &&
-    playbackManager.mediaCurrentVolume >= 25
-  ) {
+  } else if (mediaVolume.value < 80 && mediaVolume.value >= 25) {
     return IMdiVolumeMedium;
-  } else if (
-    playbackManager.mediaCurrentVolume < 25 &&
-    playbackManager.mediaCurrentVolume >= 1
-  ) {
+  } else if (mediaVolume.value < 25 && mediaVolume.value >= 1) {
     return IMdiVolumeLow;
   } else {
     return IMdiVolumeMute;

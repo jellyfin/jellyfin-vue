@@ -208,7 +208,7 @@ class PlayerElementStore {
     volume: number = playbackManager.mediaCurrentVolume
   ): void => {
     if (mediaElementRef.value) {
-      mediaElementRef.value.volume = volume;
+      mediaElementRef.value.volume = volume / 100;
     }
   };
 
@@ -242,8 +242,6 @@ class PlayerElementStore {
         ) {
           this.toggleFullscreenVideoPlayer();
         }
-
-        this.applyInitialVolume();
       }
     );
 
@@ -254,6 +252,14 @@ class PlayerElementStore {
           this._clear();
         }
       }
+    );
+
+    watch(
+      mediaElementRef,
+      () => {
+        this.applyInitialVolume();
+      },
+      { immediate: true }
     );
   }
 }

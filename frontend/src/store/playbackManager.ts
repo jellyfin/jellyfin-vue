@@ -22,7 +22,6 @@ import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
-import { syncRef, toRef } from '@vueuse/core';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
@@ -150,10 +149,6 @@ class PlaybackManagerStore {
    * as a global variable and updating it solves this problem.
    */
   private _mediaMetadata = new MediaMetadata();
-  public syncVolume = syncRef(
-    toRef(this.mediaCurrentVolume),
-    toRef(this.remoteCurrentVolume)
-  );
 
   public get status(): PlaybackStatus {
     return this._state.status;
@@ -875,10 +870,10 @@ class PlaybackManagerStore {
     const sessionId = String(this._state.playSessionId || '');
     const time = Number(this.currentTime);
     const itemId = String(this.currentItem?.Id || '');
-    const volumeRemote = Number(this.remoteCurrentVolume);
+    const volumeMedia = Number(this.mediaCurrentVolume);
 
     Object.assign(this._state, this._defaultState);
-    this.remoteCurrentVolume = volumeRemote;
+    this.mediaCurrentVolume = volumeMedia;
 
     window.setTimeout(async () => {
       try {
