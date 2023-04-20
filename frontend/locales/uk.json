@@ -148,7 +148,7 @@
   },
   "itemNotFound": "Елемент не знайдено",
   "jellyfinLogo": "Лого Jellyfin",
-  "latestLibrary": "Остання {libraryName}",
+  "latestLibrary": "Останні {libraryName}",
   "libraries": "Медіатеки",
   "libraryEmpty": "Ця медіатека порожня",
   "libraryEmptyFilters": "Немає збігів. Видаліть деякі фільтри, щоб показати більше елементів",
@@ -533,7 +533,7 @@
   "version": "Версія",
   "video": "Відео",
   "videoTypes": "Типи відео",
-  "viewDetails": "Деталі перегляду",
+  "viewDetails": "Переглянути деталі",
   "vueClientVersion": "Версія клієнта",
   "wizard": {
     "administratorAccount": "Обліковий запис адміністратора",
