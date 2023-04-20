@@ -1045,7 +1045,7 @@ class PlaybackManagerStore {
         : undefined;
     const artistIds =
       item.Type === BaseItemKind.MusicArtist ? [item.Id] : undefined;
-    const parentId = item.Type === BaseItemKind.Playlist ? item.Id : undefined;
+    const parentId = item.IsFolder ? item.Id : undefined;
     let request;
 
     if (
@@ -1096,7 +1096,14 @@ class PlaybackManagerStore {
     );
   };
 
-  public fetchCurrentMediaSource = async (): Promise<void> => {
+  public setCurrentMediaSource = async (): Promise<void> => {
+    /**
+     * Set values to undefined so the next item doesn't play the previous one while the requests are in progress
+     */
+    this._state.playSessionId = undefined;
+    this._state.currentMediaSource = undefined;
+    this._state.currentSourceUrl = undefined;
+
     const playbackInfo = await this.getItemPlaybackInfo();
 
     if (playbackInfo) {
@@ -1154,7 +1161,7 @@ class PlaybackManagerStore {
       () => this.currentItemIndex,
       async (newIndex) => {
         this._updateMediaSessionMetadata();
-        await this.fetchCurrentMediaSource();
+        await this.setCurrentMediaSource();
 
         if (newIndex && !this._state.currentSourceUrl) {
           const { t } = usei18n();
@@ -1180,7 +1187,7 @@ class PlaybackManagerStore {
       () => this.currentAudioStreamIndex,
       (newVal, oldVal) => {
         if (oldVal !== undefined && newVal !== undefined && oldVal !== newVal) {
-          this.fetchCurrentMediaSource();
+          this.setCurrentMediaSource();
         }
       }
     );
@@ -1203,7 +1210,7 @@ class PlaybackManagerStore {
            * This is the case when you go from or to a situation where subs are burnt in.
            * In that case, we always need to fetch a new media source.
            */
-          this.fetchCurrentMediaSource();
+          this.setCurrentMediaSource();
         }
       }
     );
