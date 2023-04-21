@@ -2,75 +2,99 @@
   <v-dialog
     class="confirm-dialog"
     content-class="confirm-dialog"
-    :model-value="dialog"
+    :model-value="isRevealed"
     :fullscreen="$vuetify.display.mobile"
-    @update:model-value="close">
-    <v-card height="100%" class="d-flex width-90">
-      <v-card-title class="text-center font-weight-light mt-4">
-        {{ title }}
-      </v-card-title>
-      <v-card-subtitle v-if="subtitle" class="pb-3 text-center">
-        {{ subtitle }}
-      </v-card-subtitle>
-
+    @update:model-value="cancel">
+    <v-card
+      height="100%"
+      class="d-flex width-90"
+      :title="state.title"
+      :subtitle="state.subtitle">
       <v-divider />
 
       <v-card-text class="text-center font-weight-normal px-4">
-        {{ text }}
+        {{ state.text }}
       </v-card-text>
 
       <v-divider />
 
       <v-card-actions class="d-flex flex-row align-center justify-center mb-4">
-        <v-btn variant="flat" width="8em" color="secondary" @click="close">
+        <v-btn variant="flat" width="8em" color="secondary" @click="cancel">
           {{ t('cancel') }}
         </v-btn>
 
         <v-btn
           variant="flat"
           width="8em"
-          :color="confirmColor ?? 'error'"
-          @click="closeAndConfirm">
-          {{ confirmText }}
+          :color="state.confirmColor ?? 'error'"
+          @click="confirm">
+          {{ state.confirmText }}
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+<script lang="ts">
+import { reactive } from 'vue';
+import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
 
-defineProps<{
-  dialog: boolean;
+interface ConfirmDialogState {
   title: string;
   text: string;
   confirmText: string;
   subtitle?: string;
   confirmColor?: string;
-}>();
+  callback?: () => Promise<void>;
+}
 
-const emit = defineEmits<{
-  (e: 'update:dialog', isOpen: boolean): void;
-  (e: 'onConfirm'): void;
-}>();
+let state: ConfirmDialogState = reactive({
+  title: '',
+  text: '',
+  confirmText: '',
+  subtitle: '',
+  confirmColor: ''
+});
+
+const { isRevealed, reveal, confirm, cancel } = vUseConfirmDialog();
+
+const openDialog = async (): Promise<void> => {
+  const { isCanceled } = await reveal();
+
+  if (!isCanceled && state.callback) {
+    await state.callback();
+  }
+};
+
+interface UseConfirmDialogReturn {
+  openDialog: () => Promise<void>;
+  onConfirm: (cb: () => Promise<void>) => void;
+}
+
+/**
+ * Composable for invoking confirm dialog
+ */
+export function useConfirmDialog(
+  params: Omit<ConfirmDialogState, 'callback'>
+): UseConfirmDialogReturn {
+  state.title = params.title || '';
+  state.text = params.text || '';
+  state.confirmText = params.confirmText || '';
+  state.subtitle = params.subtitle;
+  state.confirmColor = params.confirmColor;
+
+  return {
+    openDialog,
+    // eslint-disable-next-line promise/prefer-await-to-callbacks
+    onConfirm: (cb: () => Promise<void>) => (state.callback = cb)
+  };
+}
+</script>
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-
-/**
- * Close the dialog
- */
-function close(): void {
-  emit('update:dialog', false);
-}
-
-/**
- * Close the dialog and send confirmation event
- */
-function closeAndConfirm(): void {
-  close();
-  emit('onConfirm');
-}
 </script>
 
 <style lang="scss" scoped>
