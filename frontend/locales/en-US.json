@@ -82,7 +82,6 @@
   },
   "failedRetrievingDisplayPreferences": "Unable to get display preferences. Using last known settings.",
   "failedSettingDisplayPreferences": "Unable to update display preferences.",
-  "failedToDeleteItem": "Failed to delete item",
   "failedToRefreshItems": "Failed to refresh items",
   "favorite": "Favorite",
   "features": "Features",

@@ -36,13 +36,6 @@
     v-if="item.Id"
     v-model:dialog="metadataDialog"
     :item-id="item.Id" />
-  <confirm-dialog
-    v-if="item.Id"
-    v-model:dialog="deleteDialog"
-    :title="t('deleteItem')"
-    :text="t('deleteItemDescription')"
-    :confirm-text="t('delete')"
-    @on-confirm="onDeleteConfirmed" />
 </template>
 
 <script setup lang="ts">
@@ -67,6 +60,7 @@ import { useRemote, useRouter, useSnackbar } from '@/composables';
 import { canInstantMix, canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 
 type MenuOption = {
   title: string;
@@ -95,12 +89,16 @@ const menuProps = withDefaults(
   }
 );
 
+const deleteDialog = useConfirmDialog({
+  title: t('deleteItem'),
+  text: t('deleteItemDescription'),
+  confirmText: t('delete')
+});
 const parent = getCurrentInstance()?.parent;
 const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
-const deleteDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
 const isItemRefreshing = computed(
@@ -115,6 +113,8 @@ const playNextAction = {
     useSnackbar(t('snackbar.playNext'), 'success');
   }
 };
+
+const errorsT = t('errors.anErrorHappened');
 
 /**
  * Options to show when the item menu is invoked in a queue item
@@ -225,7 +225,7 @@ function getPlaybackOptions(): MenuOption[] {
             await playbackManager.instantMixFromItem(menuProps.item.Id);
             useSnackbar(t('instantMixQueued'), 'success');
           } catch {
-            useSnackbar(t('errors.anErrorHappened'), 'error');
+            useSnackbar(t(errorsT), 'error');
           }
         }
       }
@@ -291,8 +291,8 @@ function getLibraryOptions(): MenuOption[] {
     libraryOptions.push({
       title: t('deleteItem'),
       icon: IMdiDelete,
-      action: (): void => {
-        deleteDialog.value = true;
+      action: async (): Promise<void> => {
+        await deleteDialog.openDialog();
       }
     });
   }
@@ -326,9 +326,9 @@ function onActivatorClick(): void {
 /**
  * Handle deletion of the item
  */
-async function onDeleteConfirmed(): Promise<void> {
+deleteDialog.onConfirm(async () => {
   if (!menuProps.item.Id) {
-    useSnackbar(t('failedToDeleteItem'), 'error');
+    useSnackbar(t(errorsT), 'error');
 
     return;
   }
@@ -338,10 +338,12 @@ async function onDeleteConfirmed(): Promise<void> {
       itemId: menuProps.item.Id
     });
     router.replace('/');
-  } catch {
-    useSnackbar(t('failedToDeleteItem'), 'error');
+  } catch (error) {
+    console.error(error);
+
+    useSnackbar(t(errorsT), 'error');
   }
-}
+});
 
 onMounted(() => {
   const parentHtml = parent?.subTree.el;
