@@ -55,7 +55,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { useRemote, useSnackbar } from '@/composables';
-import { canResume } from '@/utils/items';
+import { canInstantMix, canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 
@@ -204,14 +204,9 @@ function getPlaybackOptions(): MenuOption[] {
     });
   }
 
-  if (
-    ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
-      menuProps.item.Type || ''
-    ) &&
-    playbackManager.currentItem
-  ) {
+  if (canInstantMix(menuProps.item) && playbackManager.currentItem) {
     playbackOptions.push({
-      title: t('playback.instantMix'),
+      title: t('instantMix'),
       icon: IMdiDisc,
       action: async (): Promise<void> => {
         if (menuProps.item.Id) {
