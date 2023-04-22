@@ -245,6 +245,19 @@ export function canMarkWatched(item: BaseItemDto): boolean {
 
   return !!(item.MediaType === 'Video' && item.Type !== 'TvChannel');
 }
+
+/**
+ * Determine if an item can be instant mixed.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be instant mixed or not.
+ */
+export function canInstantMix(item: BaseItemDto): boolean {
+  return ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
+    item.Type || ''
+  );
+}
+
 /**
  * Generate a link to the item's details page route
  *
@@ -373,6 +386,7 @@ export function getItemIcon(
 
   return itemIcon;
 }
+
 /**
  * Filters the media streams based on the wanted type
  *

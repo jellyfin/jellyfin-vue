@@ -113,6 +113,8 @@
   },
   "images": "Images",
   "incorrectUsernameOrPassword": "Incorrect username or password",
+  "instantMixQueued": "Instant mix added to queue",
+  "instantMix": "Instant mix",
   "item": {
     "artist": {
       "albums": "Albums",

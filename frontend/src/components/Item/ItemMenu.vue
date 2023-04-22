@@ -47,6 +47,7 @@ import { getItemRefreshApi } from '@jellyfin/sdk/lib/utils/api/item-refresh-api'
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
 import IMdiArrowExpandDown from 'virtual:icons/mdi/arrow-expand-down';
+import IMdiDisc from 'virtual:icons/mdi/disc';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
 import IMdiPencilOutline from 'virtual:icons/mdi/pencil-outline';
@@ -54,7 +55,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { useRemote, useSnackbar } from '@/composables';
-import { canResume } from '@/utils/items';
+import { canInstantMix, canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
 
@@ -199,6 +200,23 @@ function getPlaybackOptions(): MenuOption[] {
       action: (): void => {
         playbackManager.addToQueue(menuProps.item);
         useSnackbar(t('snackbar.addedToQueue'), 'success');
+      }
+    });
+  }
+
+  if (canInstantMix(menuProps.item) && playbackManager.currentItem) {
+    playbackOptions.push({
+      title: t('instantMix'),
+      icon: IMdiDisc,
+      action: async (): Promise<void> => {
+        if (menuProps.item.Id) {
+          try {
+            await playbackManager.instantMixFromItem(menuProps.item.Id);
+            useSnackbar(t('instantMixQueued'), 'success');
+          } catch {
+            useSnackbar(t('errors.anErrorHappened'), 'error');
+          }
+        }
       }
     });
   }

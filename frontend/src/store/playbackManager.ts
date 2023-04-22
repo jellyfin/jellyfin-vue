@@ -19,6 +19,7 @@ import {
   MediaStreamType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
@@ -946,6 +947,24 @@ class PlaybackManagerStore {
     }
 
     this.isMuted = !this.isMuted;
+  };
+
+  public instantMixFromItem = async (itemId: string): Promise<void> => {
+    const items = (
+      await remote.sdk.newUserApi(getInstantMixApi).getInstantMixFromItem({
+        id: itemId,
+        userId: remote.auth.currentUserId,
+        limit: 50
+      })
+    ).data.Items;
+
+    if (!items) {
+      throw new Error('No items found');
+    }
+
+    for (const item of items) {
+      this.addToQueue(item);
+    }
   };
 
   public getItemPlaybackInfo = async (
