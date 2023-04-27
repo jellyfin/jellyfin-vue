@@ -1,7 +1,7 @@
 <template>
   <v-btn
     class="align-self-center ma-1"
-    v-bind="$props"
+    v-bind="mergeProps($props)"
     icon
     size="small"
     variant="elevated">
@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { mergeProps } from 'vue';
+
 withDefaults(
   defineProps<{
     color?: string;

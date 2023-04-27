@@ -125,8 +125,7 @@ const remote = useRemote();
 
 const providers = ref<ImageProviderInfo[]>([]);
 const type = ref<ImageType>(ImageType.Primary);
-// eslint-disable-next-line unicorn/no-null -- the v-select component uses null to represent no value
-const source = ref<ImageProviderInfo['Name'] | null>(null);
+const source = ref<ImageProviderInfo['Name']>();
 const allLanguages = ref(false);
 const images = ref<RemoteImageInfo[]>([]);
 const loading = ref(false);
@@ -252,8 +251,7 @@ async function onDownload(item: RemoteImageInfo): Promise<void> {
 function reset(): void {
   providers.value = [];
   type.value = ImageType.Primary;
-  // eslint-disable-next-line unicorn/no-null -- the v-select component uses null to represent no value
-  source.value = null;
+  source.value = undefined;
   allLanguages.value = false;
   images.value = [];
 }

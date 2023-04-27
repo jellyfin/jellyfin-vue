@@ -90,7 +90,7 @@
             variant="outlined"
             :label="t('customRating')" />
           <v-combobox
-            v-model="metadata.Genres"
+            v-model="genresModel"
             :items="genres"
             :label="t('genres')"
             hide-selected
@@ -106,7 +106,7 @@
             </template>
           </v-combobox>
           <v-combobox
-            v-model="metadata.Tags"
+            v-model="tagsModel"
             :items="genres"
             :label="t('tags')"
             hide-selected
@@ -236,6 +236,12 @@ const genres = ref<string[]>([]);
 const search = ref('');
 const loading = ref(false);
 const tabName = ref<string>();
+const genresModel = computed(() =>
+  metadata.value?.Genres === null ? undefined : metadata.value?.Genres
+);
+const tagsModel = computed(() =>
+  metadata.value?.Tags === null ? undefined : metadata.value?.Tags
+);
 
 const premiereDate = computed(() => {
   if (!metadata.value?.PremiereDate) {
