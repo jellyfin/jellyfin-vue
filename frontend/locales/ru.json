@@ -3,7 +3,7 @@
   "NoMediaSourcesAvailable": "Нет доступных источников медиаданных",
   "actor": "Актёр",
   "actors": "Актёры",
-  "addNewPerson": "Добавить персону",
+  "addNewPerson": "Добавить нового человека",
   "administrator": "Администратор",
   "airPlayDevices": "Устройства AirPlay",
   "albums": "Альбомы",
@@ -24,6 +24,7 @@
   "aspectRatio": "Соотношение сторон",
   "audio": "Аудио",
   "audioCodecNotSupported": "Аудиокодек не поддерживается",
+  "auto": "Автоматически",
   "badRequest": "Недопустимый запрос. Попробуйте снова",
   "books": "Книги",
   "browserNotSupported": "Ваш браузер не поддерживает воспроизведение этого файла.",
@@ -48,8 +49,8 @@
   "dialog": {
     "upNext": {
       "hide": "Скрыть",
-      "nextItemPlayingIn": "Начиная с {time}",
-      "startNow": "Запустить немедленно"
+      "nextItemPlayingIn": "Начало через {time}",
+      "startNow": "Запустить сейчас"
     }
   },
   "directing": "Режиссура",
@@ -65,18 +66,24 @@
   "episodeNumber": "Эпизод {episodeNumber}",
   "errors": {
     "anErrorHappened": "Произошла ошибка",
+    "cantPlayItem": "Это не может быть воспроизведено",
     "messages": {
       "errorCode": "Код ошибки: {errorCode}",
       "videoPlayerError": "В видео проигрывателе произошла неустранимая ошибка."
-    }
+    },
+    "playback": {
+      "mediaError": "Возникла критическая ошибка носителя, попытка восстановления",
+      "networkError": "Возникла критическая сетевая ошибка, попытка восстановления"
+    },
+    "unauthorized": "Вы не авторизованы для доступа к этой странице"
   },
-  "failedRetrievingDisplayPreferences": "Невозможно получить настройки отображения. Используются значения по умолчанию.",
-  "failedSettingDisplayPreferences": "Невозможно обновить настройки отображения.",
+  "failedRetrievingDisplayPreferences": "Не удаётся получить настройки отображения. Используются прошлые настройки.",
+  "failedSettingDisplayPreferences": "Не удаётся обновить настройки отображения.",
   "failedToRefreshItems": "Не удалось обновить элементы",
   "favorite": "Избранное",
   "features": "Материалы",
   "filter": "Фильтр",
-  "filtersNotFound": "Невозможно загрузить фильтры",
+  "filtersNotFound": "Не удалось загрузить фильтры",
   "fullScreen": "Полный экран",
   "general": "Общие",
   "genericJellyfinPlaceholderDevice": "Общее устройство Jellyfin",
@@ -92,7 +99,7 @@
     }
   },
   "imageType": {
-    "art": "Виньетка",
+    "art": "Рисунок",
     "backdrop": "Задник",
     "banner": "Баннер",
     "box": "Коробка",
@@ -100,29 +107,30 @@
     "disc": "Диск",
     "logo": "Логотип",
     "menu": "Меню",
-    "primary": "Головной",
+    "primary": "Главный",
     "screenshot": "Снимок экрана",
     "thumb": "Бегунок"
   },
-  "images": "Рисунки",
+  "images": "Изображения",
   "incorrectUsernameOrPassword": "Неверные имя пользователя или пароль",
   "item": {
     "artist": {
       "albums": "Альбомы",
       "appearsOn": "Вид",
       "discography": "Дискография",
+      "eps": "Эпизоды",
       "information": "Информация",
       "singles": "Синглы",
       "videos": "Видео"
     },
     "cast": "В ролях",
     "composer": "Композитор",
-    "crew": "Съёмки",
+    "crew": "Снимались",
     "person": {
-      "birth": "Рождение",
+      "birth": "Дата рождения",
       "birthPlace": "Место рождения",
       "books": "Книги",
-      "death": "Кончина",
+      "death": "Дата смерти",
       "information": "Информация",
       "movies": "Фильмы",
       "person": "Персона",
@@ -176,8 +184,8 @@
   "logout": "Выход",
   "logsAndActivity": {
     "activity": "Действия",
-    "failedGetActivity": "Невозможно получить действия",
-    "failedGetLogs": "Невозможно получить журналы",
+    "failedGetActivity": "Невозможно получить данные активности",
+    "failedGetLogs": "Невозможно получить логи",
     "logs": "Журналы",
     "noActivityFound": "Действий не найдено",
     "noLogsFound": "Журналов не найдено"
@@ -191,7 +199,7 @@
       "name": "Аудиокодек:"
     },
     "bitrate": {
-      "name": "Поток. ск-ть:"
+      "name": "Поток. скорость:"
     },
     "container": {
       "name": "Контейнер:"
@@ -325,9 +333,11 @@
       "dateCreated": "Дата создания",
       "description": "Добавлять и отзывать API-ключи внешнего доступа к серверу",
       "refreshKeysFailure": "Ошибка обновления ключей API",
+      "revoke": "Отозвать",
       "revokeAll": "Отозвать все API-ключи",
       "revokeAllFailure": "Ошибка при отзыве всех API-ключей",
       "revokeAllSuccess": "Все API-ключи отозваны успешно",
+      "revokeConfirm": "Подтвердите отзыв ключа API",
       "revokeFailure": "Ошибка при отзыве API-ключа",
       "revokeSuccess": "API-ключ отозван успешно"
     },
@@ -338,6 +348,7 @@
       "deleteAll": "Удалить все",
       "deleteAllDevicesError": "Ошибка удаления всех устройств",
       "deleteAllDevicesSuccess": "Все устройства удалены успешно",
+      "deleteConfirm": "Подтвердите удаление устройства",
       "deleteDeviceError": "Ошибка удаления устройства",
       "deleteDeviceSuccess": "Устройство удалено успешно",
       "deviceName": "Имя устройства",
@@ -349,8 +360,8 @@
     "help": "Справка",
     "logsAndActivity": {
       "activity": "Действия",
-      "failedGetActivity": "Невозможно получить действия",
-      "failedGetLogs": "Невозможно получить журналы",
+      "failedGetActivity": "Невозможно получить данные активности",
+      "failedGetLogs": "Невозможно получить логи",
       "logs": "Журналы",
       "noActivityFound": "Действий не найдено",
       "noLogsFound": "Журналов не найдено"
@@ -363,7 +374,7 @@
       "name": "Учётная запись"
     },
     "devices": {
-      "description": "Видеть и управлять устройствами подсоединёнными к серверу",
+      "description": "Просмотреть и изменить устройства подсоединённых к серверу",
       "name": "Устройства"
     },
     "dlna": {
@@ -403,7 +414,7 @@
       "name": "Воспроизведение"
     },
     "plugins": {
-      "description": "Добавлять и конфигурировать новые функциональности для этого сервера",
+      "description": "Добавить и изменить новые функции для этого сервера",
       "name": "Плагины"
     },
     "scheduledTasks": {
@@ -431,7 +442,8 @@
   "signIn": "Вход",
   "snackbar": {
     "addedToQueue": "Добавить в очередь",
-    "playNext": "Выбранный элемент будет воспроизводиться после текущего"
+    "playNext": "Выбранный элемент будет воспроизводиться после текущего",
+    "routeValidationError": "Указанный routeId в параметрах маршрута некорректен"
   },
   "songs": "Композиции",
   "sortByType": "По {type}",
@@ -451,6 +463,7 @@
   "themeVideo": "Тематическое видео",
   "tooltips": {
     "changeLanguage": "Язык",
+    "switchToAuto": "Системная тема",
     "switchToDarkMode": "Перейти на тёмный режим",
     "switchToLightMode": "Перейти на светлый режим"
   },
@@ -458,7 +471,7 @@
   "transcodingInfo": {
     "name": "Перекодируется",
     "transcodingFramerate": {
-      "name": "Ч-та кадров:",
+      "name": "Частота кадров:",
       "value": "{value} кадр/с"
     },
     "transcodingProgress": "Прогресс:",
@@ -506,6 +519,7 @@
       "seconds": "{count} секунда | {count} секунд"
     }
   },
+  "unknown": "Неизвестно",
   "unliked": "Не нравится",
   "unplayed": "Невоспроизведено",
   "upNext": "Очередное",
