@@ -1,31 +1,25 @@
 <template>
-  <v-dialog
-    class="confirm-dialog"
-    content-class="confirm-dialog"
-    :model-value="isRevealed"
-    :fullscreen="$vuetify.display.mobile"
-    @update:model-value="cancel">
-    <v-card
-      height="100%"
-      class="d-flex width-90"
-      :title="state.title"
-      :subtitle="state.subtitle">
+  <v-dialog v-model="model" width="auto" :fullscreen="$vuetify.display.mobile">
+    <v-card>
+      <v-card-title v-if="state.title" class="text-center">
+        {{ state.title }}
+      </v-card-title>
+      <v-card-subtitle v-if="state.subtitle" class="text-center">
+        {{ state.subtitle }}
+      </v-card-subtitle>
+
       <v-divider />
 
-      <v-card-text class="text-center font-weight-normal px-4">
+      <v-card-text class="d-flex text-center align-center justify-center">
         {{ state.text }}
       </v-card-text>
-
-      <v-divider />
-
-      <v-card-actions class="d-flex flex-row align-center justify-center mb-4">
-        <v-btn variant="flat" width="8em" color="secondary" @click="cancel">
+      <v-card-actions class="align-center justify-center">
+        <v-btn variant="elevated" color="secondary" @click="cancel">
           {{ t('cancel') }}
         </v-btn>
-
         <v-btn
-          variant="flat"
-          width="8em"
+          max-width="100%"
+          variant="elevated"
           :color="state.confirmColor ?? 'error'"
           @click="confirm">
           {{ state.confirmText }}
@@ -36,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
 
 interface ConfirmDialogState {
@@ -45,49 +39,52 @@ interface ConfirmDialogState {
   confirmText: string;
   subtitle?: string;
   confirmColor?: string;
-  callback?: () => Promise<void>;
 }
 
-let state: ConfirmDialogState = reactive({
+const state = reactive<ConfirmDialogState>({
   title: '',
   text: '',
   confirmText: '',
-  subtitle: '',
-  confirmColor: ''
+  subtitle: undefined,
+  confirmColor: undefined
 });
 
 const { isRevealed, reveal, confirm, cancel } = vUseConfirmDialog();
-
-const openDialog = async (): Promise<void> => {
-  const { isCanceled } = await reveal();
-
-  if (!isCanceled && state.callback) {
-    await state.callback();
+const model = computed({
+  get() {
+    return isRevealed.value;
+  },
+  set(newVal) {
+    if (newVal === false) {
+      cancel();
+    }
   }
-};
-
-interface UseConfirmDialogReturn {
-  openDialog: () => Promise<void>;
-  onConfirm: (cb: () => Promise<void>) => void;
-}
+});
 
 /**
  * Composable for invoking confirm dialog
+ * @param raiseError - If you want the cancel action to trigger a promise reject
  */
-export function useConfirmDialog(
-  params: Omit<ConfirmDialogState, 'callback'>
-): UseConfirmDialogReturn {
+export async function useConfirmDialog<T>(
+  func: () => T | Promise<T>,
+  params: ConfirmDialogState,
+  raiseError = false
+): Promise<T | void> {
   state.title = params.title || '';
   state.text = params.text || '';
   state.confirmText = params.confirmText || '';
   state.subtitle = params.subtitle;
   state.confirmColor = params.confirmColor;
 
-  return {
-    openDialog,
-    // eslint-disable-next-line promise/prefer-await-to-callbacks
-    onConfirm: (cb: () => Promise<void>) => (state.callback = cb)
-  };
+  const { isCanceled } = await reveal();
+
+  if (isCanceled) {
+    if (raiseError) {
+      throw new EvalError('Cancelled action by the user');
+    }
+  } else {
+    return await func();
+  }
 }
 </script>
 
@@ -96,15 +93,3 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 </script>
-
-<style lang="scss" scoped>
-.confirm-dialog {
-  max-width: 100vw;
-}
-
-@media screen and (min-width: 600px) {
-  .confirm-dialog {
-    max-width: 70vw;
-  }
-}
-</style>
