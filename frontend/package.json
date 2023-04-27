@@ -37,7 +37,7 @@
     "destr": "1.2.2",
     "dompurify": "3.0.2",
     "hls.js": "1.4.0",
-    "jassub": "1.5.12",
+    "jassub": "1.5.13",
     "lodash-es": "4.17.21",
     "sortablejs": "1.15.0",
     "swiper": "9.2.4",
@@ -45,7 +45,7 @@
     "vue": "3.2.47",
     "vue-i18n": "9.2.2",
     "vue-router": "4.1.6",
-    "vuetify": "3.1.15"
+    "vuetify": "3.2.1"
   },
   "devDependencies": {
     "@iconify/json": "2.2.56",
