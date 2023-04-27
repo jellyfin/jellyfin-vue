@@ -14,6 +14,6 @@
   "emmet.includeLanguages": {
     "vue": "html"
   },
-  "volar.autoCompleteRefs": true,
-  "volar.vueserver.fullCompletionList": true
+  "vue.autoInsert.dotValue": true,
+  "vue.server.fullCompletionList": true
 }
