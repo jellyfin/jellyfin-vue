@@ -70,7 +70,12 @@
     "messages": {
       "errorCode": "Fehlercode: {errorCode}",
       "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt."
-    }
+    },
+    "playback": {
+      "mediaError": "Schwerwiegender Medienfehler aufgetreten, Versuche Wiederherstellung",
+      "networkError": "Schwerwiegender Medienfehler aufgetreten, Versuche Wiederherstellung"
+    },
+    "unauthorized": "Sie sind nicht berechtigt, auf diese Seite zuzugreifen"
   },
   "failedRetrievingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu lesen. Die zuletzt verwendeten Einstellungen werden angewendet.",
   "failedSettingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu ändern.",
@@ -113,7 +118,7 @@
       "albums": "Alben",
       "appearsOn": "Auftritte",
       "discography": "Diskografie",
-      "eps": "EPs",
+      "eps": "EP’s",
       "information": "Informationen",
       "singles": "Singles",
       "videos": "Videos"
@@ -328,9 +333,11 @@
       "dateCreated": "Erstellungsdatum",
       "description": "Hinzufügen und Widerrufen von API-Schlüsseln für externen Zugriff auf deinen Server",
       "refreshKeysFailure": "Fehler beim Aktualisieren von API-Schlüsseln",
+      "revoke": "Widerruf",
       "revokeAll": "Alle API-Schlüssel widerrufen",
       "revokeAllFailure": "Fehler beim Widerrufen aller API-Schlüssel",
       "revokeAllSuccess": "Alle API Schlüssel erfolgreich widerrufen",
+      "revokeConfirm": "Bestätigen Sie den Widerruf des API-Schlüssels",
       "revokeFailure": "Fehler beim Widerrufen des API-Schlüssels",
       "revokeSuccess": "API-Schlüssel erfolgreich widerrufen"
     },
@@ -341,6 +348,7 @@
       "deleteAll": "Alles löschen",
       "deleteAllDevicesError": "Fehler beim Löschen aller Geräte",
       "deleteAllDevicesSuccess": "Alle Geräte erfolgreich gelöscht",
+      "deleteConfirm": "Bestätigen Sie die Löschung des Geräts",
       "deleteDeviceError": "Fehler beim Löschen des Geräts",
       "deleteDeviceSuccess": "Gerät erfolgreich gelöscht",
       "deviceName": "Gerätename",
@@ -434,7 +442,8 @@
   "signIn": "Anmelden",
   "snackbar": {
     "addedToQueue": "Zur Warteschlange hinzugefügt",
-    "playNext": "Das ausgewählte Element wird nach dem derzeitigen abgespielt"
+    "playNext": "Das ausgewählte Element wird nach dem derzeitigen abgespielt",
+    "routeValidationError": "Die angegebene routeId in route params ist nicht korrekt"
   },
   "songs": "Lieder",
   "sortByType": "Nach {type}",
@@ -454,12 +463,13 @@
   "themeVideo": "Titelvideo",
   "tooltips": {
     "changeLanguage": "Sprache",
+    "switchToAuto": "Folgen des Systemthemas",
     "switchToDarkMode": "In den dunklen Modus wechseln",
     "switchToLightMode": "In den hellen Modus wechseln"
   },
   "trailer": "Trailer",
   "transcodingInfo": {
-    "name": "Transcodierung",
+    "name": "Transkodierung",
     "transcodingFramerate": {
       "name": "Bildrate:",
       "value": "{value} fps"
@@ -469,7 +479,7 @@
       "name": "Grund: | Gründe:",
       "reasons": {
         "anamorphicVideoNotSupported": "Anamorphotisches Videomaterial wird nicht unterstützt",
-        "audioBitDepthNotSupported": "Die Bittiefe des Audios wird nicht unterstützt",
+        "audioBitDepthNotSupported": "Die Bit-Tiefe des Audios wird nicht unterstützt",
         "audioBitrateNotSupported": "Die Bitrate des Audios wird nicht unterstützt",
         "audioChannelsNotSupported": "Die Anzahl der Audiokanäle wird nicht unterstützt",
         "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
@@ -509,6 +519,7 @@
       "seconds": "{count} Sekunde | {count} Sekunden"
     }
   },
+  "unknown": "Unbekannt",
   "unliked": "Gefällt mir nicht",
   "unplayed": "Ungespielt",
   "upNext": "Als nächstes",
