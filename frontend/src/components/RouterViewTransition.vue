@@ -3,7 +3,7 @@
     <transition
       :name="!prefersNoMotion ? getTransitionName(route) : undefined"
       mode="out-in"
-      @before-enter="(el: HTMLElement) => el.style.transformOrigin = 'center center'">
+      @before-enter="beforeTransition">
       <!-- This div is required because <transition> requires a single children node -->
       <div :key="isRoot ? route.meta.layout : String(route.path)" class="h-100">
         <Suspense @pending="useLoading().start" @resolve="useLoading().finish">
@@ -44,5 +44,14 @@ function getTransitionName(
   }
 
   return 'scroll-x-reverse-transition';
+}
+
+/**
+ * Sets the transition origin to the center of the page
+ */
+function beforeTransition(el: Element): void {
+  if (el instanceof HTMLElement) {
+    el.style.transformOrigin = 'center center';
+  }
 }
 </script>
