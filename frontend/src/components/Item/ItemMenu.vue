@@ -56,11 +56,11 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { useRemote, useRouter, useSnackbar } from '@/composables';
+import { useRoute, useRouter } from 'vue-router';
+import { useRemote, useSnackbar, useConfirmDialog } from '@/composables';
 import { canInstantMix, canResume } from '@/utils/items';
 import { TaskType } from '@/store/taskManager';
 import { playbackManagerStore, taskManagerStore } from '@/store';
-import { useConfirmDialog } from '@/composables/use-confirm-dialog';
 
 type MenuOption = {
   title: string;
@@ -72,6 +72,7 @@ type MenuOption = {
 const { t } = useI18n();
 const remote = useRemote();
 const router = useRouter();
+const route = useRoute();
 
 const menuProps = withDefaults(
   defineProps<{
@@ -89,11 +90,6 @@ const menuProps = withDefaults(
   }
 );
 
-const deleteDialog = useConfirmDialog({
-  title: t('deleteItem'),
-  text: t('deleteItemDescription'),
-  confirmText: t('delete')
-});
 const parent = getCurrentInstance()?.parent;
 const show = ref(false);
 const positionX = ref<number | undefined>(undefined);
@@ -101,10 +97,17 @@ const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
 const playbackManager = playbackManagerStore();
 const taskManager = taskManagerStore();
+const errorMessage = t('errors.anErrorHappened');
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id || '') !== undefined
 );
 
+/**
+ * == ACTIONS ==
+ */
+/**
+ * Playback related actions
+ */
 const playNextAction = {
   title: t('playback.playNext'),
   icon: IMdiPlaySpeed,
@@ -113,8 +116,145 @@ const playNextAction = {
     useSnackbar(t('snackbar.playNext'), 'success');
   }
 };
+const pushToTopOfQueueAction = {
+  title: t('itemMenu.pushToTop'),
+  icon: IMdiArrowExpandUp,
+  action: (): void => {
+    playbackManager.changeItemPosition(menuProps.item.Id, 0);
+  }
+};
+const removeFromQueueAction = {
+  title: t('itemMenu.removeFromQueue'),
+  icon: IMdiPlaylistMinus,
+  action: (): void => {
+    playbackManager.removeFromQueue(menuProps.item.Id || '');
+  }
+};
+const pushToBottomOfQueueAction = {
+  title: t('itemMenu.pushToBottom'),
+  icon: IMdiArrowExpandDown,
+  action: (): void => {
+    playbackManager.changeItemPosition(
+      menuProps.item.Id,
+      playbackManager.queue.length - 1
+    );
+  }
+};
+const playFromBeginningAction = {
+  title: t('playFromBeginning'),
+  icon: IMdiReplay,
+  action: (): void => {
+    playbackManager.play({
+      item: menuProps.item
+    });
+  }
+};
+const shuffleAction = {
+  title: t('playback.shuffle'),
+  icon: IMdiShuffle,
+  action: (): void => {
+    playbackManager.play({
+      item: menuProps.item,
+      initiator: menuProps.item,
+      startShuffled: true
+    });
+  }
+};
+const addToQueueAction = {
+  title: t('playback.addToQueue'),
+  icon: IMdiPlaylistPlus,
+  action: (): void => {
+    playbackManager.addToQueue(menuProps.item);
+    useSnackbar(t('snackbar.addedToQueue'), 'success');
+  }
+};
+const instantMixAction = {
+  title: t('instantMix'),
+  icon: IMdiDisc,
+  action: async (): Promise<void> => {
+    if (menuProps.item.Id) {
+      try {
+        await playbackManager.instantMixFromItem(menuProps.item.Id);
+        useSnackbar(t('instantMixQueued'), 'success');
+      } catch {
+        useSnackbar(errorMessage, 'error');
+      }
+    }
+  }
+};
+/**
+ * Item related actions
+ */
+const refreshLibraryAction = {
+  title: t('refreshLibrary'),
+  icon: IMdiRefresh,
+  action: async (): Promise<void> => {
+    if (remote.sdk.api && menuProps.item.Id) {
+      try {
+        await getItemRefreshApi(remote.sdk.api).refreshItem({
+          itemId: menuProps.item.Id,
+          replaceAllImages: false,
+          replaceAllMetadata: false
+        });
 
-const errorsT = t('errors.anErrorHappened');
+        useSnackbar(t('libraryRefreshQueued'), 'normal');
+        taskManager.startTask({
+          type: TaskType.LibraryRefresh,
+          id: menuProps.item.Id || '',
+          data: menuProps.item.Name || '',
+          progress: 0
+        });
+      } catch (error) {
+        console.error(error);
+
+        useSnackbar(t('unableToRefreshLibrary'), 'error');
+      }
+    }
+  },
+  disabled: isItemRefreshing.value
+};
+const editMetadataAction = {
+  title: t('editMetadata'),
+  icon: IMdiPencilOutline,
+  action: (): void => {
+    metadataDialog.value = true;
+  }
+};
+const deleteItemAction = {
+  title: t('deleteItem'),
+  icon: IMdiDelete,
+  action: async (): Promise<void> => {
+    await useConfirmDialog(
+      async () => {
+        if (!menuProps.item.Id) {
+          return;
+        }
+
+        try {
+          await remote.sdk.newUserApi(getLibraryApi).deleteItem({
+            itemId: menuProps.item.Id
+          });
+
+          if (route.fullPath.includes(menuProps.item.Id)) {
+            router.replace('/');
+          }
+        } catch (error) {
+          console.error(error);
+
+          useSnackbar(errorMessage, 'error');
+        }
+      },
+      {
+        title: t('deleteItem'),
+        text: t('deleteItemDescription'),
+        confirmText: t('delete')
+      }
+    );
+  }
+};
+/**
+ * == END OF ACTIONS ==
+ */
 
 /**
  * Options to show when the item menu is invoked in a queue item
@@ -126,22 +266,10 @@ function getQueueOptions(): MenuOption[] {
     menuProps.queue &&
     playbackManager.queueIds.includes(menuProps.item.Id || '')
   ) {
-    queueOptions.push({
-      title: t('itemMenu.pushToTop'),
-      icon: IMdiArrowExpandUp,
-      action: (): void => {
-        playbackManager.changeItemPosition(menuProps.item.Id, 0);
-      }
-    });
+    queueOptions.push(pushToTopOfQueueAction);
 
     if (playbackManager.currentItem?.Id !== menuProps.item.Id) {
-      queueOptions.push({
-        title: t('itemMenu.removeFromQueue'),
-        icon: IMdiPlaylistMinus,
-        action: (): void => {
-          playbackManager.removeFromQueue(menuProps.item.Id || '');
-        }
-      });
+      queueOptions.push(removeFromQueueAction);
     }
 
     if (
@@ -151,16 +279,7 @@ function getQueueOptions(): MenuOption[] {
       queueOptions.push(playNextAction);
     }
 
-    queueOptions.push({
-      title: t('itemMenu.pushToBottom'),
-      icon: IMdiArrowExpandDown,
-      action: (): void => {
-        playbackManager.changeItemPosition(
-          menuProps.item.Id,
-          playbackManager.queue.length - 1
-        );
-      }
-    });
+    queueOptions.push(pushToBottomOfQueueAction);
   }
 
   return queueOptions;
@@ -173,28 +292,10 @@ function getPlaybackOptions(): MenuOption[] {
   const playbackOptions: MenuOption[] = [];
 
   if (canResume(menuProps.item)) {
-    playbackOptions.push({
-      title: t('playFromBeginning'),
-      icon: IMdiReplay,
-      action: (): void => {
-        playbackManager.play({
-          item: menuProps.item
-        });
-      }
-    });
+    playbackOptions.push(playFromBeginningAction);
   }
 
-  playbackOptions.push({
-    title: t('playback.shuffle'),
-    icon: IMdiShuffle,
-    action: (): void => {
-      playbackManager.play({
-        item: menuProps.item,
-        initiator: menuProps.item,
-        startShuffled: true
-      });
-    }
-  });
+  playbackOptions.push(shuffleAction);
 
   if (playbackManager.currentItem) {
     if (
@@ -205,31 +306,11 @@ function getPlaybackOptions(): MenuOption[] {
       playbackOptions.push(playNextAction);
     }
 
-    playbackOptions.push({
-      title: t('playback.addToQueue'),
-      icon: IMdiPlaylistPlus,
-      action: (): void => {
-        playbackManager.addToQueue(menuProps.item);
-        useSnackbar(t('snackbar.addedToQueue'), 'success');
-      }
-    });
+    playbackOptions.push(addToQueueAction);
   }
 
   if (canInstantMix(menuProps.item) && playbackManager.currentItem) {
-    playbackOptions.push({
-      title: t('instantMix'),
-      icon: IMdiDisc,
-      action: async (): Promise<void> => {
-        if (menuProps.item.Id) {
-          try {
-            await playbackManager.instantMixFromItem(menuProps.item.Id);
-            useSnackbar(t('instantMixQueued'), 'success');
-          } catch {
-            useSnackbar(t(errorsT), 'error');
-          }
-        }
-      }
-    });
+    playbackOptions.push(instantMixAction);
   }
 
   return playbackOptions;
@@ -247,54 +328,15 @@ function getLibraryOptions(): MenuOption[] {
       menuProps.item.Type || ''
     )
   ) {
-    libraryOptions.push({
-      title: t('refreshLibrary'),
-      icon: IMdiRefresh,
-      action: async (): Promise<void> => {
-        if (remote.sdk.api && menuProps.item.Id) {
-          try {
-            await getItemRefreshApi(remote.sdk.api).refreshItem({
-              itemId: menuProps.item.Id,
-              replaceAllImages: false,
-              replaceAllMetadata: false
-            });
-
-            useSnackbar(t('libraryRefreshQueued'), 'normal');
-            taskManager.startTask({
-              type: TaskType.LibraryRefresh,
-              id: menuProps.item.Id || '',
-              data: menuProps.item.Name || '',
-              progress: 0
-            });
-          } catch (error) {
-            console.error(error);
-
-            useSnackbar(t('unableToRefreshLibrary'), 'error');
-          }
-        }
-      },
-      disabled: isItemRefreshing.value
-    });
+    libraryOptions.push(refreshLibraryAction);
   }
 
   if (remote.auth.currentUser?.Policy?.IsAdministrator) {
-    libraryOptions.push({
-      title: t('editMetadata'),
-      icon: IMdiPencilOutline,
-      action: (): void => {
-        metadataDialog.value = true;
-      }
-    });
+    libraryOptions.push(editMetadataAction);
   }
 
   if (menuProps.item.CanDelete) {
-    libraryOptions.push({
-      title: t('deleteItem'),
-      icon: IMdiDelete,
-      action: async (): Promise<void> => {
-        await deleteDialog.openDialog();
-      }
-    });
+    libraryOptions.push(deleteItemAction);
   }
 
   return libraryOptions;
@@ -322,28 +364,6 @@ function onActivatorClick(): void {
   positionX.value = undefined;
   positionY.value = undefined;
 }
-
-/**
- * Handle deletion of the item
- */
-deleteDialog.onConfirm(async () => {
-  if (!menuProps.item.Id) {
-    useSnackbar(t(errorsT), 'error');
-
-    return;
-  }
-
-  try {
-    await remote.sdk.newUserApi(getLibraryApi).deleteItem({
-      itemId: menuProps.item.Id
-    });
-    router.replace('/');
-  } catch (error) {
-    console.error(error);
-
-    useSnackbar(t(errorsT), 'error');
-  }
-});
 
 onMounted(() => {
   const parentHtml = parent?.subTree.el;
