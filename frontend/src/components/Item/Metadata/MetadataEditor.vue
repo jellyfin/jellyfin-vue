@@ -96,31 +96,16 @@
             hide-selected
             multiple
             variant="outlined"
-            @update:search="(s: string) => (search = s)">
-            <template #no-data>
-              <v-list-item>
-                <v-list-item-title>
-                  {{ t('metadataNoResultsMatching', { search: search }) }}
-                </v-list-item-title>
-              </v-list-item>
-            </template>
-          </v-combobox>
+            :hide-no-data="false"
+            chips
+            closable-chips />
           <v-combobox
             v-model="tagsModel"
-            :items="genres"
             :label="t('tags')"
-            hide-selected
             multiple
             variant="outlined"
-            @update:search="(s: string) => (search = s)">
-            <template #no-data>
-              <v-list-item>
-                <v-list-item-title>
-                  {{ t('metadataNoResultsMatching', { search: search }) }}
-                </v-list-item-title>
-              </v-list-item>
-            </template>
-          </v-combobox>
+            chips
+            closable-chips />
         </v-window-item>
         <v-window-item value="castAndCrew">
           <v-list lines="two">
@@ -233,15 +218,28 @@ const metadata = ref<BaseItemDto>();
 const menu = ref(false);
 const person = ref<BaseItemPerson>();
 const genres = ref<string[]>([]);
-const search = ref('');
 const loading = ref(false);
 const tabName = ref<string>();
-const genresModel = computed(() =>
-  metadata.value?.Genres === null ? undefined : metadata.value?.Genres
-);
-const tagsModel = computed(() =>
-  metadata.value?.Tags === null ? undefined : metadata.value?.Tags
-);
+const genresModel = computed({
+  get() {
+    return metadata.value?.Genres === null ? undefined : metadata.value?.Genres;
+  },
+  set(newVal) {
+    if (Array.isArray(newVal) && metadata.value) {
+      metadata.value.Genres = newVal;
+    }
+  }
+});
+const tagsModel = computed({
+  get() {
+    return metadata.value?.Tags === null ? undefined : metadata.value?.Tags;
+  },
+  set(newVal) {
+    if (Array.isArray(newVal) && metadata.value) {
+      metadata.value.Tags = newVal;
+    }
+  }
+});
 
 const premiereDate = computed(() => {
   if (!metadata.value?.PremiereDate) {
