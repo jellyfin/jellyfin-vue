@@ -18,6 +18,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     '*.config.js',
+    'spatialNavigation.js',
     'types/global/routes.d.ts',
     'types/global/components.d.ts'
   ],

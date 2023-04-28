@@ -1,7 +1,13 @@
 <template>
   <div>
-    <v-tabs v-model="currentTab" class="mb-3" bg-color="transparent">
-      <v-tab v-for="season in seasons" :key="season.Id">
+    <v-tabs
+      v-model="currentTab"
+      v-focus-section:season-tab="{
+        leaveFor: { down: '@season-episodes', left: '@nav' }
+      }"
+      class="mb-3"
+      bg-color="transparent">
+      <v-tab v-for="season in seasons" :key="season.Id" v-focus>
         {{ season.Name }}
       </v-tab>
     </v-tabs>
@@ -9,12 +15,16 @@
       <v-window-item v-for="season in seasons" :key="season.Id">
         <v-list
           v-if="seasonEpisodes && season.Id"
+          v-focus-section:season-episodes="{
+            leaveFor: { up: '@season-tab', down: '@season-tab', left: '@nav' }
+          }"
           :lines="false"
           bg-color="transparent">
           <v-list-item
             v-for="episode in seasonEpisodes[season.Id]"
             :key="episode.Id"
-            :to="getItemDetailsLink(episode)">
+            v-focus
+            @click="viewDetails($router, episode)">
             <v-row align="center" class="my-4">
               <v-col
                 :class="{ 'py-1': $vuetify.display.smAndDown }"
@@ -44,10 +54,15 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import {
+  BaseItemDto,
+  BaseItemPerson,
+  ItemFields
+} from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ref, watch } from 'vue';
+import { Router } from 'vue-router';
 import { getItemDetailsLink } from '@/utils/items';
 import { useRemote } from '@/composables';
 
@@ -102,8 +117,23 @@ async function fetch(): Promise<void> {
   }
 }
 
+/**
+ * Navigates to the episode details.
+ */
+function viewDetails(router: Router, item: BaseItemDto | BaseItemPerson): void {
+  router.push(getItemDetailsLink(item));
+}
+
 await fetch();
 watch(props, async () => {
   await fetch();
 });
 </script>
+<style lang="scss" scoped>
+button.v-tab:focus,
+button.v-tab:focus-visible {
+  outline: none !important;
+  color: white !important;
+  background-color: rgb(var(--v-theme-primary)) !important;
+}
+</style>

@@ -99,3 +99,9 @@ html.no-forced-scrollbar {
   top: 1em;
   right: 1em;
 }
+
+button.bg-primary:focus,
+button.bg-primary:focus-visible {
+  box-shadow: 0 0 0 5px white !important;
+  outline: none !important;
+}

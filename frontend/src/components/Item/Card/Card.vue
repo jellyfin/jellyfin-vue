@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'card-margin': margin }">
+  <div
+    v-focus="!!link"
+    :class="{ 'card-margin': margin }"
+    @keyup.enter="cardClicked($router)">
     <component
       :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
@@ -97,6 +100,8 @@ const isFinePointer = useMediaQuery('(pointer:fine)');
 </script>
 
 <script lang="ts" setup>
+import { Router } from 'vue-router';
+
 const props = withDefaults(
   defineProps<{
     item: BaseItemDto;
@@ -127,6 +132,15 @@ const cardTitle = computed(() =>
     ? props.item.SeriesName || ''
     : props.item.Name || ''
 );
+
+/**
+ * Takes you to subtitle link or cardlink if no subtitle link
+ */
+function cardClicked(router: Router): void {
+  if (props.link && (cardTitleLink.value || cardSubtitleLink.value)) {
+    router.push(cardSubtitleLink.value || cardTitleLink.value);
+  }
+}
 
 /**
  * Returns either a string representing the production year(s) for the current item
@@ -307,5 +321,13 @@ const refreshProgress = computed(
 
 .absolute {
   position: absolute;
+}
+
+.card-margin:focus-within,
+.card-margin:focus {
+  box-shadow: 0 0 0 5px rgb(var(--v-theme-primary));
+  border-radius: 5px;
+  outline: none;
+  background-color: rgb(var(--v-theme-primary));
 }
 </style>
