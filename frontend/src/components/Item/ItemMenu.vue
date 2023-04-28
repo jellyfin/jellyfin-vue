@@ -35,8 +35,8 @@
   </v-btn>
   <metadata-editor-dialog
     v-if="metadataDialog && item.Id"
-    v-model:dialog="metadataDialog"
-    :item-id="item.Id" />
+    :item-id="item.Id"
+    @close="metadataDialog = false" />
   <refresh-metadata-dialog
     v-if="refreshDialog && item.Id"
     :item="menuProps.item"
