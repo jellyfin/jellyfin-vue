@@ -186,7 +186,9 @@ class TaskManagerStore {
           // Finish refresh tasks for items that have been updated
           Data.ItemsUpdated.filter(
             (item: unknown): item is string => typeof item === 'string'
-          ).map((itemId) => taskManager.finishTask(itemId));
+            // Either complexity error or eslint error
+            // eslint-disable-next-line unicorn/no-array-for-each
+          ).forEach((itemId) => taskManager.finishTask(itemId));
         }
       }
     );
