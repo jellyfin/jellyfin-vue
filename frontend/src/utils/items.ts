@@ -26,6 +26,7 @@ import IMdiBookMusic from 'virtual:icons/mdi/book-music';
 import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
 import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
 import IMdiAlbum from 'virtual:icons/mdi/album';
+import { useRemote } from '@/composables';
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -79,6 +80,13 @@ export function isPerson(
  */
 export function isValidMD5(input: string): boolean {
   return /[\dA-Fa-f]{32}/.test(input);
+}
+
+/**
+ * Checks if the item is a library
+ */
+export function isLibrary(item: BaseItemDto): boolean {
+  return validLibraryTypes.includes(item.Type ?? '');
 }
 
 /**
@@ -255,6 +263,29 @@ export function canMarkWatched(item: BaseItemDto): boolean {
 export function canInstantMix(item: BaseItemDto): boolean {
   return ['Audio', 'MusicAlbum', 'MusicArtist', 'MusicGenre'].includes(
     item.Type || ''
+  );
+}
+
+/**
+ * Check if an item's metadata can be refreshed.
+ */
+export function canRefreshMetadata(item: BaseItemDto): boolean {
+  const remote = useRemote();
+  const invalidRefreshType = ['Timer', 'SeriesTimer', 'Program', 'TvChannel'];
+
+  if (item.CollectionType === 'livetv') {
+    return false;
+  }
+
+  const incompleteRecording =
+    item.Type === BaseItemKind.Recording && item.Status !== 'Completed';
+  const IsAdministrator =
+    remote.auth.currentUser?.Policy?.IsAdministrator ?? false;
+
+  return (
+    IsAdministrator &&
+    !incompleteRecording &&
+    !invalidRefreshType.includes(item.Type ?? '')
   );
 }
 
