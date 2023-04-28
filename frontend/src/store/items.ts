@@ -2,6 +2,7 @@ import { reactive, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { taskManagerStore } from '@/store';
 import { useRemote } from '@/composables';
 
 /**
@@ -210,6 +211,7 @@ class ItemsStore {
 
   public constructor() {
     const remote = useRemote();
+    const taskManager = taskManagerStore();
 
     watch(
       () => remote.socket.message,
@@ -235,6 +237,11 @@ class ItemsStore {
           ).filter((itemId) => Object.keys(this._state.byId).includes(itemId));
 
           this.updateStoreItems(itemsToUpdate);
+
+          // Finish refresh tasks for items that have been updated
+          for (const item of Data.ItemsUpdated) {
+            taskManager.finishTask(item);
+          }
         } else if (
           MessageType === 'UserDataChanged' &&
           'UserDataList' in Data &&
