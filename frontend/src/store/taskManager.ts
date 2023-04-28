@@ -147,6 +147,8 @@ class TaskManagerStore {
           return;
         }
 
+        console.log(remote.socket.message);
+
         const { MessageType, Data } = remote.socket.message;
 
         if (!Data || typeof Data !== 'object') {
@@ -157,8 +159,7 @@ class TaskManagerStore {
           MessageType === 'RefreshProgress' &&
           'ItemId' in Data &&
           typeof Data.ItemId === 'string' &&
-          'Progress' in Data &&
-          typeof Data.Progress === 'number'
+          'Progress' in Data
         ) {
           // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
 
@@ -183,12 +184,9 @@ class TaskManagerStore {
           'ItemsUpdated' in Data &&
           Array.isArray(Data.ItemsUpdated)
         ) {
-          // Finish refresh tasks for items that have been updated
           Data.ItemsUpdated.filter(
             (item: unknown): item is string => typeof item === 'string'
-            // Either complexity error or eslint error
-            // eslint-disable-next-line unicorn/no-array-for-each
-          ).forEach((itemId) => taskManager.finishTask(itemId));
+          ).map((id) => taskManager.finishTask(id));
         }
       }
     );
