@@ -11,8 +11,7 @@
   "alphabetically": "Po abecedi",
   "appbar": {
     "tasks": {
-      "configSync": "Sinhroniziram nastavitve…",
-      "scanningLibrary": "Skeniram knjižnico '{library}'…"
+      "configSync": "Sinhroniziram nastavitve…"
     }
   },
   "architecture": "Arhitektura",

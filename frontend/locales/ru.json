@@ -11,8 +11,7 @@
   "alphabetically": "Алфавитный",
   "appbar": {
     "tasks": {
-      "configSync": "Синхронизируются параметры…",
-      "scanningLibrary": "Сканируется медиатека \"{library}\"…"
+      "configSync": "Синхронизируются параметры…"
     },
     "tooltips": {
       "tasks": "Исполняющиеся задачи"

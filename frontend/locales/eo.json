@@ -10,8 +10,7 @@
   "alphabetically": "Alfabete",
   "appbar": {
     "tasks": {
-      "configSync": "Sinkronigado de parametroj…",
-      "scanningLibrary": "Skanante bibliotekon '{library}'…"
+      "configSync": "Sinkronigado de parametroj…"
     },
     "tooltips": {
       "tasks": "Kurantaj taskoj"

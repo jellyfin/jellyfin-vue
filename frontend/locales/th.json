@@ -11,8 +11,7 @@
   "alphabetically": "ตามตัวอักษร",
   "appbar": {
     "tasks": {
-      "configSync": "กำลังชิงค์การตั้งค่า…",
-      "scanningLibrary": "กำลังแสกนคลัง '{library}'…"
+      "configSync": "กำลังชิงค์การตั้งค่า…"
     },
     "tooltips": {
       "tasks": "กำลังทำงาน"

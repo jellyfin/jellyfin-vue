@@ -11,8 +11,7 @@
   "alphabetically": "Abecedně",
   "appbar": {
     "tasks": {
-      "configSync": "Synchronizují se nastavení…",
-      "scanningLibrary": "Skenuje se knihovna '{library}'…"
+      "configSync": "Synchronizují se nastavení…"
     },
     "tooltips": {
       "tasks": "Probíhají úlohy"

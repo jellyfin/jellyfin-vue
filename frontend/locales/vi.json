@@ -11,8 +11,7 @@
   "alphabetically": "Theo bảng chữ cái",
   "appbar": {
     "tasks": {
-      "configSync": "Đang đồng bộ hóa cài đặt…",
-      "scanningLibrary": "Đang quét thư viện '{library}'…"
+      "configSync": "Đang đồng bộ hóa cài đặt…"
     },
     "tooltips": {
       "tasks": "Đang chạy tác vụ"

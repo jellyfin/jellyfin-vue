@@ -11,8 +11,7 @@
   "alphabetically": "אלף בית",
   "appbar": {
     "tasks": {
-      "configSync": "מסנכרן הגדרות…",
-      "scanningLibrary": "סורק תיקיה '{library}'…"
+      "configSync": "מסנכרן הגדרות…"
     },
     "tooltips": {
       "tasks": "משימות רצות"

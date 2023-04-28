@@ -11,8 +11,7 @@
   "alphabetically": "Alfabeticamente",
   "appbar": {
     "tasks": {
-      "configSync": "Sincronizar definições…",
-      "scanningLibrary": "A scanear a biblioteca '{library}'…"
+      "configSync": "Sincronizar definições…"
     },
     "tooltips": {
       "tasks": "Tarefas a decorrer"

@@ -11,8 +11,7 @@
   "alphabetically": "أبجديّا",
   "appbar": {
     "tasks": {
-      "configSync": "إعدادات المزامنة…",
-      "scanningLibrary": "يمسح المكتبة '{library}'…"
+      "configSync": "إعدادات المزامنة…"
     },
     "tooltips": {
       "tasks": "المهام المشغّلة"

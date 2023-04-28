@@ -11,8 +11,7 @@
   "alphabetically": "Alfabetic",
   "appbar": {
     "tasks": {
-      "configSync": "Se sincronizează setările…",
-      "scanningLibrary": "Se scanează biblioteca '{library}'…"
+      "configSync": "Se sincronizează setările…"
     }
   },
   "architecture": "Arhitectura",

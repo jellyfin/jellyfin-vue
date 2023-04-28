@@ -11,8 +11,7 @@
   "alphabetically": "За алфавітом",
   "appbar": {
     "tasks": {
-      "configSync": "Синхронізація налаштувань…",
-      "scanningLibrary": "Сканування бібліотеки \"{library}\"…"
+      "configSync": "Синхронізація налаштувань…"
     },
     "tooltips": {
       "tasks": "Запущені завдання"
