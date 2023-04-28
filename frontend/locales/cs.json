@@ -45,6 +45,9 @@
   "customRating": "Vlastní hodnocení",
   "darkModeToggle": "Přepnout do tmavého režimu",
   "dateAdded": "Datum přidání",
+  "delete": "Odstranit",
+  "deleteItem": "Odstranit média",
+  "deleteItemDescription": "Smazáním položky odstraníte soubor jak z knihovny médií tak ze souborového systému. Jste si jisti, že chcete pokračovat?",
   "details": "Podrobnosti",
   "dialog": {
     "upNext": {
@@ -113,6 +116,8 @@
   },
   "images": "Obrázky",
   "incorrectUsernameOrPassword": "Nesprávné uživatelské jméno nebo heslo",
+  "instantMix": "Rychlý mix",
+  "instantMixQueued": "Okamžitý mix přidán do fronty",
   "item": {
     "artist": {
       "albums": "Alba",
