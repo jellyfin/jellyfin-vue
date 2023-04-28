@@ -140,6 +140,59 @@ class TaskManagerStore {
   public constructor() {
     const remote = useRemote();
 
+    /**
+     * Handle refresh progress update for library items
+     */
+    const refreshProgressAction = (type: string, data: object): void => {
+      if (
+        type === 'RefreshProgress' &&
+        'ItemId' in data &&
+        typeof data.ItemId === 'string' &&
+        'Progress' in data
+      ) {
+        // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
+
+        const progress = Number(data.Progress);
+        const taskPayload = this.getTask(data.ItemId);
+        const payload: RunningTask = {
+          type: TaskType.LibraryRefresh,
+          id: data.ItemId,
+          progress
+        };
+
+        /**
+         * Start task if update its received and it doesn't exist in the store.
+         * Usually when a running task is started somewhere else and the client is accssed later
+         */
+        if (taskPayload === undefined) {
+          this.startTask(payload);
+        } else {
+          if (progress >= 0 && progress < 100) {
+            payload.data = taskPayload.data;
+            this.updateTask(payload);
+          } else if (progress >= 0) {
+            this.finishTask(data.ItemId);
+          }
+        }
+      }
+    };
+    /**
+     * Handle refresh progress update for items that are not libraries
+     */
+    const libraryChangedAction = (type: string, data: object): void => {
+      if (
+        type === 'LibraryChanged' &&
+        'ItemsUpdated' in data &&
+        Array.isArray(data.ItemsUpdated)
+      ) {
+        for (const id of data.ItemsUpdated) {
+          if (id) {
+            this.finishTask(id);
+          }
+        }
+      }
+    };
+
     watch(
       () => remote.socket.message,
       () => {
@@ -153,32 +206,8 @@ class TaskManagerStore {
           return;
         }
 
-        if (
-          MessageType === 'RefreshProgress' &&
-          'ItemId' in Data &&
-          typeof Data.ItemId === 'string' &&
-          'Progress' in Data &&
-          typeof Data.Progress === 'number'
-        ) {
-          // TODO: Verify all the different tasks that this message may belong to - here we assume libraries.
-
-          const progress = Number(Data.Progress);
-          const taskPayload = taskManager.getTask(Data.ItemId);
-          const payload: RunningTask = {
-            type: TaskType.LibraryRefresh,
-            id: Data.ItemId,
-            progress
-          };
-
-          if (taskPayload !== undefined) {
-            if (progress >= 0 && progress < 100) {
-              payload.data = taskPayload.data;
-              taskManager.updateTask(payload);
-            } else if (progress >= 0) {
-              taskManager.finishTask(Data.ItemId);
-            }
-          }
-        }
+        refreshProgressAction(MessageType, Data);
+        libraryChangedAction(MessageType, Data);
       }
     );
 
