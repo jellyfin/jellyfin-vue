@@ -45,6 +45,9 @@
   "customRating": "Індивідуальний рейтинг",
   "darkModeToggle": "Увімкнути темний режим",
   "dateAdded": "Додано",
+  "delete": "Видалити",
+  "deleteItem": "Видалити медіа",
+  "deleteItemDescription": "Видалення цього елемента видалить його як з файлової системи, так і з медіатеки. Ви впевнені, що хочете продовжити?",
   "details": "Деталі",
   "dialog": {
     "upNext": {
@@ -113,6 +116,8 @@
   },
   "images": "Зображення",
   "incorrectUsernameOrPassword": "Неправильний логін чи пароль",
+  "instantMix": "Миттєвий мікс",
+  "instantMixQueued": "Миттєвий мікс додано до черги",
   "item": {
     "artist": {
       "albums": "Альбоми",
