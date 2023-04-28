@@ -178,6 +178,15 @@ class TaskManagerStore {
               taskManager.finishTask(Data.ItemId);
             }
           }
+        } else if (
+          MessageType === 'LibraryChanged' &&
+          'ItemsUpdated' in Data &&
+          Array.isArray(Data.ItemsUpdated)
+        ) {
+          // Finish refresh tasks for items that have been updated
+          Data.ItemsUpdated.filter(
+            (item: unknown): item is string => typeof item === 'string'
+          ).map((itemId) => taskManager.finishTask(itemId));
         }
       }
     );
