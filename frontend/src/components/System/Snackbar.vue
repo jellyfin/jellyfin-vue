@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="model" :color="state.color" location="bottom left">
+  <v-snackbar v-model="model" :color="state.color" location="bottom left" eager>
     {{ state.message }}
   </v-snackbar>
 </template>
