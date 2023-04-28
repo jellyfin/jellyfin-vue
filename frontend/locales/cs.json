@@ -11,7 +11,8 @@
   "alphabetically": "Abecedně",
   "appbar": {
     "tasks": {
-      "configSync": "Synchronizují se nastavení…"
+      "configSync": "Synchronizují se nastavení…",
+      "scanningItem": "Skenování položky '{item}'…"
     },
     "tooltips": {
       "tasks": "Probíhají úlohy"
@@ -225,6 +226,7 @@
   },
   "metadataEditor": "Editor metadat",
   "metadataNoResultsMatching": "Žádné výsledky pro \"{search}\". Stisknutím klávesy Enter vytvořte nový.",
+  "metadataRefreshQueued": "Aktualizace metadat zařazena do fronty",
   "more": "Více",
   "moreLikeArtist": "Podobné jako {artist}",
   "moreLikeThis": "Podobné",
@@ -307,18 +309,25 @@
   "quality": "Kvalita",
   "queue": "Fronta",
   "rating": "Hodnocení",
+  "refresh": "Aktualizovat",
   "refreshLibrary": "Aktualizovat knihovnu",
+  "refreshMetadata": "Aktualizovat metadata",
+  "refreshMetadataHint": "Metadata se aktualizují na základě nastavení a internetových služeb, které jsou povoleny na nástěnce",
   "releaseDate": "Datum vydání",
   "remoteDevices": "Vzdálená zařízení",
+  "replaceAllMetadata": "Přepsat všechna metadata",
+  "replaceExistingImages": "Nahradit existující obrázky",
   "resumable": "Rozdívané",
   "resume": "Pokračovat",
   "role": "Role",
   "save": "Uložit",
   "saved": "Uloženo",
+  "scanForNewAndUpdatedFiles": "Vyhledat nové a aktualizované soubory",
   "search": {
     "name": "Hledat",
     "topResults": "Nejlepší výsledky"
   },
+  "searchMissingMetadata": "Vyhledat chybějící metadata",
   "seasonEpisode": "Řada {seasonNumber}, díl {episodeNumber}",
   "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "series": "Seriály",
