@@ -1,26 +1,26 @@
 <template>
   <v-dialog
     content-class="metadata-dialog"
-    :model-value="dialog"
+    :model-value="model"
     :fullscreen="$vuetify.display.mobile"
-    @update:model-value="close">
-    <metadata-editor :item-id="itemId" @cancel="close" @save="close" />
+    @after-leave="emit('close')">
+    <metadata-editor
+      :item-id="itemId"
+      @cancel="model = false"
+      @save="model = false" />
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-defineProps<{ dialog: boolean; itemId: string }>();
+import { ref } from 'vue';
+
+defineProps<{ itemId: string }>();
+
+const model = ref(true);
 
 const emit = defineEmits<{
-  (e: 'update:dialog', isOpen: boolean): void;
+  (e: 'close'): void;
 }>();
-
-/**
- * Close the dialog
- */
-function close(): void {
-  emit('update:dialog', false);
-}
 </script>
 
 <style lang="scss" scoped>
