@@ -11,7 +11,8 @@
   "alphabetically": "За алфавітом",
   "appbar": {
     "tasks": {
-      "configSync": "Синхронізація налаштувань…"
+      "configSync": "Синхронізація налаштувань…",
+      "scanningItem": "Сканування '{item}'…"
     },
     "tooltips": {
       "tasks": "Запущені завдання"
@@ -225,6 +226,7 @@
   },
   "metadataEditor": "Редактор метаданих",
   "metadataNoResultsMatching": "Не знайшлось результатів, відповідних \"{search}\". Натисніть Enter аби створити новий.",
+  "metadataRefreshQueued": "Очікується оновлення метаданих",
   "more": "Більше",
   "moreLikeArtist": "Більше схожих на {artist}",
   "moreLikeThis": "Більше схожих на це",
@@ -307,18 +309,25 @@
   "quality": "Якість",
   "queue": "Черга",
   "rating": "Рейтинг",
+  "refresh": "Оновити",
   "refreshLibrary": "Оновити медіатеку",
+  "refreshMetadata": "Оновити метадані",
+  "refreshMetadataHint": "Метадані оновлюються на основі налаштувань та інтернет-сервісів, увімкнених на інформаційній панелі",
   "releaseDate": "Дата виходу",
   "remoteDevices": "Віддалені пристрої",
+  "replaceAllMetadata": "Замінити всі метадані",
+  "replaceExistingImages": "Замінити наявні зображення",
   "resumable": "Відновлюване",
   "resume": "Відновити",
   "role": "Роль",
   "save": "Зберегти",
   "saved": "Збережене",
+  "scanForNewAndUpdatedFiles": "Виявлення нових та оновлених файлів",
   "search": {
     "name": "Пошук",
     "topResults": "Найкращі результати"
   },
+  "searchMissingMetadata": "Пошук відсутніх метаданих",
   "seasonEpisode": "Сезон {seasonNumber}, Епізод {episodeNumber}",
   "seasonEpisodeAbbrev": "С{seasonNumber}Е{episodeNumber}",
   "series": "Серіал",
