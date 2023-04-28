@@ -4,8 +4,9 @@
     hide-details
     :max="runtime"
     thumb-label
-    @mouseup="releaseMouse"
-    @mousedown="clicked = true">
+    validate-on="input"
+    @start="clicked = true"
+    @end="onRelease">
     <template #prepend>
       {{ formatTime(playbackManager.currentTime) }}
     </template>
@@ -39,12 +40,10 @@ const sliderValue = computed({
 });
 
 /**
- * onMouseUp event handler
- *
  * Once the user releases the slider, change the time of the playbackManager with whatever
  * input value was provided by the user
  */
-function releaseMouse(): void {
+function onRelease(): void {
   playbackManager.currentTime = currentInput.value;
   clicked.value = false;
 }
