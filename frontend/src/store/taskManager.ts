@@ -147,8 +147,6 @@ class TaskManagerStore {
           return;
         }
 
-        console.log(remote.socket.message);
-
         const { MessageType, Data } = remote.socket.message;
 
         if (!Data || typeof Data !== 'object') {
@@ -171,7 +169,13 @@ class TaskManagerStore {
             progress
           };
 
-          if (taskPayload !== undefined) {
+          /**
+           * Start task if update its received and it doesn't exist in the store.
+           * Usually when a running task is started somewhere else and the client is accssed later
+           */
+          if (taskPayload === undefined) {
+            taskManager.startTask(payload);
+          } else {
             if (progress >= 0 && progress < 100) {
               payload.data = taskPayload.data;
               taskManager.updateTask(payload);
@@ -179,6 +183,9 @@ class TaskManagerStore {
               taskManager.finishTask(Data.ItemId);
             }
           }
+          /**
+           * Handle refresh progress update for items that are not libraries
+           */
         } else if (
           MessageType === 'LibraryChanged' &&
           'ItemsUpdated' in Data &&
