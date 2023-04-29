@@ -11,7 +11,8 @@
   "alphabetically": "按字母排序",
   "appbar": {
     "tasks": {
-      "configSync": "正在同步设置…"
+      "configSync": "正在同步设置…",
+      "scanningItem": "正在扫描“{item}”…"
     },
     "tooltips": {
       "tasks": "运行中的任务"
@@ -44,6 +45,9 @@
   "customRating": "自定义评级",
   "darkModeToggle": "切换深色模式",
   "dateAdded": "加入日期",
+  "delete": "删除",
+  "deleteItem": "删除媒体",
+  "deleteItemDescription": "这将同时在磁盘和媒体库中删除此项目。确认删除？",
   "details": "细节",
   "dialog": {
     "upNext": {
@@ -112,6 +116,8 @@
   },
   "images": "图片",
   "incorrectUsernameOrPassword": "用户名或密码错误",
+  "instantMix": "速成合辑",
+  "instantMixQueued": "速成合辑已添加至队列",
   "item": {
     "artist": {
       "albums": "专辑",
@@ -220,6 +226,7 @@
   },
   "metadataEditor": "元数据编辑器",
   "metadataNoResultsMatching": "没有与“{search}”匹配的结果。按回车键来创建一个新的。",
+  "metadataRefreshQueued": "刷新元数据已排队",
   "more": "更多",
   "moreLikeArtist": "更多相似的 {artist}",
   "moreLikeThis": "更多相关",
@@ -302,18 +309,25 @@
   "quality": "质量",
   "queue": "队列",
   "rating": "评价",
+  "refresh": "刷新",
   "refreshLibrary": "刷新媒体库",
+  "refreshMetadata": "刷新元数据",
+  "refreshMetadataHint": "元数据根据设置和仪表盘中启用的网络服务进行刷新",
   "releaseDate": "发布日期",
   "remoteDevices": "远程设备",
+  "replaceAllMetadata": "覆盖所有元数据",
+  "replaceExistingImages": "替换现有图片",
   "resumable": "可恢复的",
   "resume": "恢复播放",
   "role": "角色",
   "save": "保存",
   "saved": "已保存",
+  "scanForNewAndUpdatedFiles": "扫描新的和有修改的文件",
   "search": {
     "name": "搜索",
     "topResults": "最佳结果"
   },
+  "searchMissingMetadata": "搜索缺少的元数据",
   "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
   "seasonEpisodeAbbrev": "第 {seasonNumber}季第 {episodeNumber}集",
   "series": "系列",
