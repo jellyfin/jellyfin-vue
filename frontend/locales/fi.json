@@ -11,7 +11,8 @@
   "alphabetically": "Aakkosjärjestyksessä",
   "appbar": {
     "tasks": {
-      "configSync": "Synkronoidaan asetuksia…"
+      "configSync": "Synkronoidaan asetuksia…",
+      "scanningItem": "Tarkistetaan kohdetta \"{item}\"…"
     },
     "tooltips": {
       "tasks": "Käynnissä olevat tehtävät"
@@ -44,6 +45,9 @@
   "customRating": "Oma arvio",
   "darkModeToggle": "Tumma tila",
   "dateAdded": "Lisäysaika",
+  "delete": "Poista",
+  "deleteItem": "Poista media",
+  "deleteItemDescription": "Kohde poistetaan mediakirjastosi lisäksi myös tiedostojärjestelmästä. Haluatko varmasti jatkaa?",
   "details": "Tiedot",
   "dialog": {
     "upNext": {
@@ -112,6 +116,8 @@
   },
   "images": "Kuvat",
   "incorrectUsernameOrPassword": "Virheellinen käyttäjätunnus tai salasana",
+  "instantMix": "Pikasekoitus",
+  "instantMixQueued": "Pikasekoitus lisättiin jonoon",
   "item": {
     "artist": {
       "albums": "Albumit",
@@ -220,6 +226,7 @@
   },
   "metadataEditor": "Metatietoeditori",
   "metadataNoResultsMatching": "Haku \"{search}\" ei tuottanut tuloksia. Luo uusi painamalla Enter.",
+  "metadataRefreshQueued": "Päivitä metatiedot jonotetusti",
   "more": "Lisää",
   "moreLikeArtist": "Lisää esittäjän {artist} kaltaisia",
   "moreLikeThis": "Lisää tämänkaltaisia",
@@ -302,18 +309,25 @@
   "quality": "Laatu",
   "queue": "Jono",
   "rating": "Arvio",
+  "refresh": "Päivitä",
   "refreshLibrary": "Päivitä kirjasto",
+  "refreshMetadata": "Päivitä metatiedot",
+  "refreshMetadataHint": "Metatiedot päivitetään asetusten ja Hallintapaneelista käyttöön otettujen Internet-palveluiden perusteella",
   "releaseDate": "Julkaisupäivä",
   "remoteDevices": "Etälaitteet",
+  "replaceAllMetadata": "Korvaa kaikki metatiedot",
+  "replaceExistingImages": "Korvaa nykyiset kuvat",
   "resumable": "Keskeneräinen",
   "resume": "Jatka",
   "role": "Rooli",
   "save": "Tallenna",
   "saved": "Tallennettu",
+  "scanForNewAndUpdatedFiles": "Etsi uusia ja muuttuneita tiedostoja",
   "search": {
     "name": "Haku",
     "topResults": "Parhaat tulokset"
   },
+  "searchMissingMetadata": "Etsi puuttuvia metatietoja",
   "seasonEpisode": "Kausi {seasonNumber}, jakso {episodeNumber}",
   "seasonEpisodeAbbrev": "K{seasonNumber} J{episodeNumber}",
   "series": "Sarjat",
