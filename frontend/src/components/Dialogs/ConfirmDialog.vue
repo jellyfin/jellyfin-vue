@@ -63,6 +63,13 @@ const model = computed({
 
 /**
  * Composable for invoking confirm dialog
+ * @param func - Function to run if the action is confirmed
+ * @param [params] - Set the state of the component for the function invocation
+ * @param [params.title] - Dialog title
+ * @param [params.subtitle] - Dialog subtitle
+ * @param [params.text] - Dialog's body
+ * @param [params.confirmText] - Confirm's button text
+ * @param [params.confirmColor] - Vuetify's color for the confirm button
  * @param raiseError - If you want the cancel action to trigger a promise reject
  */
 export async function useConfirmDialog<T>(
@@ -71,9 +78,9 @@ export async function useConfirmDialog<T>(
   raiseError = false
 ): Promise<T | void> {
   state.title = params.title || '';
+  state.subtitle = params.subtitle;
   state.text = params.text || '';
   state.confirmText = params.confirmText || '';
-  state.subtitle = params.subtitle;
   state.confirmColor = params.confirmColor;
 
   const { isCanceled } = await reveal();
