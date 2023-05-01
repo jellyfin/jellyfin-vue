@@ -48,7 +48,7 @@
     "vuetify": "3.2.1"
   },
   "devDependencies": {
-    "@iconify/json": "2.2.56",
+    "@iconify/json": "2.2.58",
     "@intlify/unplugin-vue-i18n": "0.10.0",
     "@rollup/plugin-virtual": "3.0.1",
     "@types/dompurify": "3.0.2",
@@ -85,7 +85,7 @@
     "typescript": "5.0.4",
     "unplugin-icons": "0.16.1",
     "unplugin-vue-components": "0.24.1",
-    "unplugin-vue-router": "0.5.5",
+    "unplugin-vue-router": "0.6.1",
     "vite": "4.3.3",
     "vite-plugin-pages": "0.29.0",
     "vite-plugin-vue-layouts": "0.8.0",
