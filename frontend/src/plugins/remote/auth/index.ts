@@ -5,7 +5,8 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isNil, merge } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
-import { useOneTimeAPI } from '../sdk/sdk-utils';
+import { VersionOutdatedIssue, VersionUnsupportedIssue } from '@jellyfin/sdk';
+import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 import { usei18n, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -80,7 +81,28 @@ class RemotePluginAuth {
    * Methods
    */
   /**
-   * Adds a new server to the store and sets it as the active server
+   * Adds or refresh the information of a server
+   *
+   * @param server - Payload of the
+   * @returns - Index of the server
+   */
+  private _addOrRefreshServer(server: ServerInfo): number {
+    const oldServer = this.getServerById(server.Id);
+
+    if (isNil(oldServer)) {
+      state.value.servers.push(server);
+
+      return this.servers.indexOf(this.getServerById(server.Id) as ServerInfo);
+    } else {
+      const servIndex = this.servers.indexOf(oldServer);
+
+      this.servers[servIndex] = merge(oldServer, server);
+
+      return servIndex;
+    }
+  }
+  /**
+   * Connects to a server
    *
    * @param serverUrl
    * @param isDefault
@@ -89,62 +111,54 @@ class RemotePluginAuth {
     serverUrl: string,
     isDefault = false
   ): Promise<void> {
-    const i18n = usei18n();
+    const { t } = usei18n();
     const router = useRouter();
-    let serv: ServerInfo;
 
     serverUrl = serverUrl.replace(/\/$/, '').trim();
 
-    try {
-      const api = useOneTimeAPI(serverUrl);
+    const candidates = await SDK.discovery.getRecommendedServerCandidates(
+      serverUrl
+    );
+    const best = SDK.discovery.findBestServer(candidates);
 
-      const { data } = await getSystemApi(api).getPublicSystemInfo();
+    if (best) {
+      const issues = candidates.flatMap((s) => s.issues);
 
-      delete data.LocalAddress;
-      serv = {
-        ...data,
-        PublicAddress: serverUrl,
-        isDefault: isDefault
-      };
-    } catch (error) {
-      useSnackbar(i18n.t('login.serverNotFound'), 'error');
-      throw error;
-    }
+      if (
+        issues.some(
+          (i) =>
+            i instanceof VersionOutdatedIssue ||
+            i instanceof VersionUnsupportedIssue
+        )
+      ) {
+        useSnackbar(t('login.serverVersionTooLow'), 'error');
+        throw new Error('Server version is too low');
+      }
 
-    const semverMajor = Number(serv.Version?.split('.')[0]);
-    const semverMinor = Number(serv.Version?.split('.')[1]);
-    const isServerVersionSupported =
-      semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
+      try {
+        const api = useOneTimeAPI(best.address);
+        const { data } = await getSystemApi(api).getPublicSystemInfo();
 
-    if (isServerVersionSupported) {
-      if (serv.StartupWizardCompleted) {
-        const oldServer = this.getServerById(serv.Id);
+        delete data.LocalAddress;
 
-        if (isNil(oldServer)) {
-          state.value.servers.push(serv);
+        const serv = {
+          ...data,
+          PublicAddress: best.address,
+          isDefault: isDefault
+        };
+
+        if (serv.StartupWizardCompleted) {
+          state.value.currentServerIndex = this._addOrRefreshServer(serv);
         } else {
-          this.servers[this.servers.indexOf(oldServer)] = merge(
-            oldServer,
-            serv
-          );
+          await router.push({ path: '/wizard' });
         }
-
-        const serverInfo = state.value.servers.find(
-          (serv) => serv.PublicAddress === serverUrl
-        );
-
-        if (!serverInfo) {
-          throw new Error('expected to find server by url');
-        }
-
-        state.value.currentServerIndex =
-          state.value.servers.indexOf(serverInfo);
-      } else {
-        await router.push({ path: '/wizard' });
+      } catch (error) {
+        useSnackbar(t('errors.anErrorHappened'), 'error');
+        console.error(error);
+        throw error;
       }
     } else {
-      useSnackbar(i18n.t('login.serverVersionTooLow'), 'error');
-      throw new Error('Server version is too low');
+      useSnackbar(t('login.serverNotFound'), 'error');
     }
   }
 
