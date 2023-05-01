@@ -1,4 +1,4 @@
-import { RemovableRef, useStorage } from '@vueuse/core';
+import { useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
@@ -11,23 +11,6 @@ import type { AuthState, ServerInfo } from './types';
 import { usei18n, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
-const state: RemovableRef<AuthState> = useStorage(
-  'auth',
-  {
-    servers: [],
-    currentServerIndex: -1,
-    currentUserIndex: -1,
-    users: [],
-    rememberMe: true,
-    accessTokens: {}
-  },
-  localStorage,
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
-  }
-);
-
 /**
  * TypeScript type guard for AxiosError
  */
@@ -37,18 +20,37 @@ function isAxiosError(object: unknown): object is AxiosError {
 
 class RemotePluginAuth {
   /**
+   * == STATE ==
+   */
+  private _state = useStorage<AuthState>(
+    'auth',
+    {
+      servers: [],
+      currentServerIndex: -1,
+      currentUserIndex: -1,
+      users: [],
+      rememberMe: true,
+      accessTokens: {}
+    },
+    localStorage,
+    {
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
+    }
+  );
+  /**
    * Getters
    */
   public get servers(): ServerInfo[] {
-    return state.value.servers;
+    return this._state.value.servers;
   }
 
   public get currentServer(): ServerInfo | undefined {
-    return state.value.servers[state.value.currentServerIndex];
+    return this._state.value.servers[this._state.value.currentServerIndex];
   }
 
   public get currentUser(): UserDto | undefined {
-    return state.value.users[state.value.currentUserIndex];
+    return this._state.value.users[this._state.value.currentUserIndex];
   }
 
   public get currentUserId(): string | undefined {
@@ -62,19 +64,21 @@ class RemotePluginAuth {
   public readonly getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
-    return user?.Id ? state.value.accessTokens[user.Id] : undefined;
+    return user?.Id ? this._state.value.accessTokens[user.Id] : undefined;
   };
 
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
-    return state.value.servers.find((server) => server.Id === serverId);
+    return this._state.value.servers.find((server) => server.Id === serverId);
   };
 
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
-    return state.value.users.filter((user) => user.ServerId === server?.Id);
+    return this._state.value.users.filter(
+      (user) => user.ServerId === server?.Id
+    );
   };
 
   /**
@@ -90,7 +94,7 @@ class RemotePluginAuth {
     const oldServer = this.getServerById(server.Id);
 
     if (isNil(oldServer)) {
-      state.value.servers.push(server);
+      this._state.value.servers.push(server);
 
       return this.servers.indexOf(this.getServerById(server.Id) as ServerInfo);
     } else {
@@ -148,7 +152,7 @@ class RemotePluginAuth {
         };
 
         if (serv.StartupWizardCompleted) {
-          state.value.currentServerIndex = this._addOrRefreshServer(serv);
+          this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
         } else {
           await router.push({ path: '/wizard' });
         }
@@ -183,13 +187,15 @@ class RemotePluginAuth {
         this.currentServer.PublicAddress
       ).authenticateUserByName(username, password);
 
-      state.value.rememberMe = rememberMe;
+      this._state.value.rememberMe = rememberMe;
 
       if (data.User?.Id && data.AccessToken) {
-        state.value.accessTokens[data.User.Id] = data.AccessToken;
+        this._state.value.accessTokens[data.User.Id] = data.AccessToken;
 
-        state.value.users.push(data.User);
-        state.value.currentUserIndex = state.value.users.indexOf(data.User);
+        this._state.value.users.push(data.User);
+        this._state.value.currentUserIndex = this._state.value.users.indexOf(
+          data.User
+        );
       }
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -222,7 +228,7 @@ class RemotePluginAuth {
         this.getUserAccessToken(this.currentUser)
       );
 
-      state.value.users[state.value.currentUserIndex] = (
+      this._state.value.users[this._state.value.currentUserIndex] = (
         await getUserApi(api).getCurrentUser()
       ).data;
     }
@@ -237,7 +243,7 @@ class RemotePluginAuth {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
 
-      state.value.currentUserIndex = -1;
+      this._state.value.currentUserIndex = -1;
     }
   }
 
@@ -264,14 +270,17 @@ class RemotePluginAuth {
       console.error(error);
     }
 
-    const storeUser = state.value.users.find((u) => u.Id === user.Id);
+    const storeUser = this._state.value.users.find((u) => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
-      state.value.users.splice(state.value.users.indexOf(storeUser), 1);
+      this._state.value.users.splice(
+        this._state.value.users.indexOf(storeUser),
+        1
+      );
     }
 
     if (!isNil(user.Id)) {
-      delete state.value.accessTokens[user.Id];
+      delete this._state.value.accessTokens[user.Id];
     }
   }
 
@@ -281,7 +290,7 @@ class RemotePluginAuth {
    * @param serverUrl
    */
   public async deleteServer(serverUrl: string): Promise<void> {
-    const server = state.value.servers.find(
+    const server = this._state.value.servers.find(
       (s) => s.PublicAddress === serverUrl
     );
 
@@ -297,7 +306,10 @@ class RemotePluginAuth {
       }
     }
 
-    state.value.servers.splice(state.value.servers.indexOf(server), 1);
+    this._state.value.servers.splice(
+      this._state.value.servers.indexOf(server),
+      1
+    );
   }
 
   public constructor() {
