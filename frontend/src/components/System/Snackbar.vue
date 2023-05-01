@@ -18,7 +18,8 @@ const state = reactive<SnackbarState>({
 });
 
 /**
- * Composable for invoking snackbar message
+ * Display a notification to the user using a snackbar message located at
+ * the bottom left of the frontend
  */
 export function useSnackbar(message: string, color: string): void {
   state.color = color;
