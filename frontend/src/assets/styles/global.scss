@@ -3,14 +3,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*::-webkit-scrollbar {
-  width: 5px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #666;
-}
-
 html.no-forced-scrollbar {
   overflow-y: unset !important;
 }
