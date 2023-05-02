@@ -215,18 +215,7 @@ const refreshProgress = computed(
 );
 </script>
 
-<style lang="scss" scoped>
-.card-lower-buttons {
-  position: absolute;
-  right: 0.5em;
-  bottom: 0.5em;
-  gap: 0.3em;
-}
-
-.card-margin {
-  margin: 0.6em;
-}
-
+<style lang="scss">
 .portrait-card {
   position: relative;
   padding-bottom: 150%;
@@ -248,6 +237,24 @@ const refreshProgress = computed(
   border-radius: 0.3em;
 }
 
+.card-image {
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<style lang="scss" scoped>
+.card-lower-buttons {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+  gap: 0.3em;
+}
+
+.card-margin {
+  margin: 0.6em;
+}
+
 .card-content {
   background-color: rgb(var(--v-theme-menu));
   overflow: hidden;
@@ -265,11 +272,6 @@ const refreshProgress = computed(
   background-clip: content-box;
   background-position: center center;
   -webkit-tap-highlight-color: transparent;
-}
-
-.card-image {
-  width: 100%;
-  height: 100%;
 }
 
 .card-overlay {
