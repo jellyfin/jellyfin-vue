@@ -42,21 +42,20 @@ await router.isReady();
  *
  * Without window.setTimeout and window.requestAnimationFrame, the
  * splash screen gets frozen an small (but noticeable) amount of time.
- */
-const appDOM = document.querySelector('#app');
-const splashDOM = document.querySelector('.splashBackground');
-
-if (!appDOM || !splashDOM) {
-  throw new Error('could not locate app div or splash div in DOM');
-}
-
-/**
+ *
  * Once we reach this point, the bundle and the app will be completely loaded and mounted,
  * so we add a loadFinished class (defined in index.html) that fires the defined transition
  * in the HTML markup to give a nice effect.
  */
 window.setTimeout(() => {
   window.requestAnimationFrame(() => {
+    const appDOM = document.querySelector('#app');
+    const splashDOM = document.querySelector('.splashBackground');
+
+    if (!appDOM || !splashDOM) {
+      throw new Error('could not locate app div or splash div in DOM');
+    }
+
     splashDOM.addEventListener(
       'transitionend',
       () => {
