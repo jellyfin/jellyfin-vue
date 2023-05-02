@@ -21,11 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { RemoteSearchResult } from '@jellyfin/sdk/lib/generated-client';
+import {
+  BaseItemKind,
+  RemoteSearchResult
+} from '@jellyfin/sdk/lib/generated-client';
 
 defineProps<{
   item: RemoteSearchResult;
-  itemType?: string;
+  itemType?: BaseItemKind;
 }>();
 
 defineEmits<{

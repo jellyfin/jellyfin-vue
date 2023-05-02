@@ -198,6 +198,8 @@ declare module '@vue/runtime-core' {
     VTabs: typeof import('vuetify/components')['VTabs']
     VTextarea: typeof import('vuetify/components')['VTextarea']
     VTextField: typeof import('vuetify/components')['VTextField']
+    VToolbar: typeof import('vuetify/components')['VToolbar']
+    VToolbarTitle: typeof import('vuetify/components')['VToolbarTitle']
     VTooltip: typeof import('vuetify/components')['VTooltip']
     VWindow: typeof import('vuetify/components')['VWindow']
     VWindowItem: typeof import('vuetify/components')['VWindowItem']

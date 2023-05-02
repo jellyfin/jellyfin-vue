@@ -61,8 +61,11 @@ const vuetify = createVuetify({
     VCheckbox: {
       color: 'primary'
     },
+    VProgressLinear: {
+      color: 'primary'
+    },
     VBtn: {
-      color: '',
+      color: undefined,
       variant: 'text'
     },
     VTooltip: {
