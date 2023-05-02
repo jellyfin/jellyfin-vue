@@ -64,7 +64,7 @@
               class="d-flex mt-2"
               color="primary">
               <template #append>
-                {{ $t('identifyReplaceImages') }}
+                {{ $t('replaceExistingImages') }}
               </template>
             </v-checkbox>
             <v-divider />
@@ -146,6 +146,7 @@ const externalInfos = ref<ExternalIdInfo[]>([]);
 const searchData = ref<IdentifySearchItem[]>([]);
 const searchResults = ref<RemoteSearchResult[]>();
 const replaceImage = ref(false);
+const errorMessage = t('errors.anErrorHappened');
 const tabName = computed(() =>
   searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
 );
@@ -184,15 +185,11 @@ async function searchInformation(): Promise<void> {
     try {
       const results = await getItemRemoteSearch(props.item, searchData.value);
 
-      if (Array.isArray(results)) {
-        searchResults.value = results;
-      } else {
-        useSnackbar(t('identifySearchError'), 'error');
-      }
+      searchResults.value = Array.isArray(results) ? results : [];
     } catch (error) {
       console.error(error);
 
-      useSnackbar(t('identifySearchError'), 'error');
+      useSnackbar(errorMessage, 'error');
     } finally {
       isLoading.value = false;
     }
@@ -218,7 +215,7 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
   } catch (error) {
     console.error(error);
 
-    useSnackbar(t('identifyApplyError'), 'error');
+    useSnackbar(errorMessage, 'error');
   } finally {
     isLoading.value = false;
     model.value = false;
@@ -299,7 +296,8 @@ watch(
         {
           key: 'search-item-Name',
           title: t('name'),
-          type: 'string'
+          type: 'string',
+          value: props.item.Name ?? undefined
         }
       ];
 
@@ -307,7 +305,8 @@ watch(
         initSearch.push({
           key: 'search-item-Year',
           title: t('year'),
-          type: 'number'
+          type: 'number',
+          value: props.item.ProductionYear ?? undefined
         });
       }
 
