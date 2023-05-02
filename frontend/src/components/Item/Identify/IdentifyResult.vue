@@ -7,14 +7,10 @@
     <div class="text-center text-subtitle-1 font-weight-bold mt-2 mx-2">
       {{ item.Name }}
     </div>
-    <div
-      class="text-center text-body-2 mt-1 mx-2"
-      :class="{
-        'mb-2': typeof item.ProductionYear !== 'number'
-      }">
+    <div class="text-center text-body-2 mt-1 mx-2">
       {{ item.SearchProviderName }}
     </div>
-    <div v-if="item.ProductionYear" class="text-center text-body-2 mb-2 mx-2">
+    <div v-if="item.ProductionYear" class="text-center text-body-2 my-2 mx-2">
       {{ item.ProductionYear }}
     </div>
   </v-card>
@@ -38,7 +34,8 @@ defineEmits<{
 
 <style lang="scss" scoped>
 .identify-result-block {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   vertical-align: top;
   justify-items: center;
 
@@ -49,7 +46,8 @@ defineEmits<{
 
   cursor: pointer;
 
-  /* 2/3 ratio */
-  max-width: 220px;
+  /* 220px width */
+  width: 13.75rem;
+  max-width: 13.75rem;
 }
 </style>

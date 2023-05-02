@@ -37,7 +37,7 @@ export interface IdentifySearchItem {
   type: string;
 }
 
-// We need to redefine this interface because the generated one
+// TODO: We need to redefine this interface because the generated one
 // does not have any parent interface that we can use.
 interface SearchBuilder {
   Name?: string;
@@ -485,7 +485,6 @@ export async function getItemRemoteSearch(
   searches: IdentifySearchItem[]
 ): Promise<RemoteSearchResult[] | undefined> {
   const remote = useRemote();
-
   const itemId = item.Id;
 
   if (itemId === undefined) {
@@ -520,11 +519,11 @@ export async function getItemRemoteSearch(
     ProviderIds: {}
   };
 
-  if (nameSearch && nameSearch.value) {
+  if (nameSearch?.value) {
     buildSearch.Name = String(nameSearch.value);
   }
 
-  if (yearSearch && yearSearch.value) {
+  if (yearSearch?.value) {
     buildSearch.Year = Number(yearSearch.value);
   }
 

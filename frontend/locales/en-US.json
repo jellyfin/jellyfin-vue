@@ -104,10 +104,7 @@
     }
   },
   "identify": "Identify",
-  "identifyApplyError": "Failed to apply selected search result",
   "identifyInstructResult": "You can click on one of these cards to apply the result",
-  "identifyReplaceImages": "Replace all images",
-  "identifySearchError": "Failed to search to remote providers",
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",

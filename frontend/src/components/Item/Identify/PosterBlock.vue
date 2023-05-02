@@ -5,10 +5,8 @@
       'portrait-card': shape === CardShapes.Portrait,
       'square-card': shape === CardShapes.Square
     }">
-    <div class="card-content">
-      <div class="card-image">
-        <v-img :src="url" alt="Poster Image" />
-      </div>
+    <div class="h-auto w-100">
+      <v-img :src="url" alt="Poster Image" />
     </div>
   </div>
 </template>
