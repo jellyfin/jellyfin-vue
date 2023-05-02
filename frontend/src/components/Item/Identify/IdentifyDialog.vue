@@ -1,15 +1,16 @@
 <template>
   <v-dialog
-    content-class="identify-dialog"
+    height="60vh"
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
     @after-leave="emit('close')">
     <v-card
       v-if="externalInfos && searchData && item"
       height="100%"
-      class="d-flex flex-column identify-tab">
+      class="d-flex flex-column identify-tab"
+      :loading="isLoading">
       <v-card-title>{{ $t('identify') }}</v-card-title>
-      <v-card-subtitle class="pb-3">
+      <v-card-subtitle v-if="itemPath" class="pb-3">
         {{ itemPath }}
       </v-card-subtitle>
 
@@ -25,7 +26,9 @@
           v-model="tabName"
           :direction="$vuetify.display.mobile ? 'horizontal' : 'vertical'">
           <v-tab value="searchMenu">{{ $t('search.name') }}</v-tab>
-          <v-tab :disabled="isSearching || firstTime" value="resultsMenu">
+          <v-tab
+            :disabled="isLoading || searchResults === undefined"
+            value="resultsMenu">
             {{ $t('results') }}
           </v-tab>
         </v-tabs>
@@ -38,7 +41,7 @@
                 v-model="searchData[idx].value"
                 variant="outlined"
                 class="mb-2"
-                :disabled="isSearching"
+                :disabled="isLoading"
                 :type="data.type"
                 :label="data.title" />
             </v-col>
@@ -91,7 +94,7 @@
           width="8em"
           color="secondary"
           class="mr-1"
-          :disabled="isSearching || isSaving"
+          :loading="isLoading"
           @click="emit('close')">
           {{ t('cancel') }}
         </v-btn>
@@ -100,7 +103,7 @@
           variant="flat"
           width="8em"
           color="primary"
-          :loading="isSearching || isSaving"
+          :loading="isLoading"
           @click="searchInformation">
           {{ t('search.name') }}
         </v-btn>
@@ -121,6 +124,16 @@ import { useI18n } from 'vue-i18n';
 import { useRemote, useSnackbar } from '@/composables';
 import { IdentifySearchItem, getItemRemoteSearch } from '@/utils/items';
 
+type PrefilledSearch = {
+  key: string;
+  value: string;
+};
+
+type MatchPattern = {
+  key: string;
+  pattern: RegExp;
+};
+
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
@@ -129,33 +142,25 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const remote = useRemote();
-const tabName = ref<string>('searchMenu');
+const tabName = ref<'searchMenu' | 'resultsMenu'>('searchMenu');
 const model = ref(true);
-// Block user from going to Results tab when no search has been done
-const firstTime = ref(true);
-const isSearching = ref(false);
-const isSaving = ref(false);
-
-type PrefilledSearch = {
-  key: string;
-  value: string;
-};
+const isLoading = ref(false);
 
 const externalInfos = ref<ExternalIdInfo[]>();
 const searchData = ref<IdentifySearchItem[]>();
 const searchResults = ref<RemoteSearchResult[]>();
 const replaceImage = ref(false);
 
-const itemPath = computed(() => {
+const itemPath = computed<string | undefined>(() => {
   if (!props.item) {
-    return '';
+    return;
   }
 
   if (props.mediaSourceIndex !== undefined) {
-    return props.item.MediaSources?.[props.mediaSourceIndex]?.Path ?? '';
+    return props.item.MediaSources?.[props.mediaSourceIndex]?.Path ?? undefined;
   }
 
-  return props.item.Path ?? '';
+  return props.item.Path ?? undefined;
 });
 
 /**
@@ -163,8 +168,7 @@ const itemPath = computed(() => {
  */
 async function searchInformation(): Promise<void> {
   if (props.item !== undefined && searchData.value !== undefined) {
-    isSearching.value = true;
-    firstTime.value = false;
+    isLoading.value = true;
 
     try {
       const results = await getItemRemoteSearch(props.item, searchData.value);
@@ -180,7 +184,7 @@ async function searchInformation(): Promise<void> {
 
       useSnackbar(t('identifySearchError'), 'error');
     } finally {
-      isSearching.value = false;
+      isLoading.value = false;
     }
   }
 }
@@ -189,7 +193,7 @@ async function searchInformation(): Promise<void> {
  * Apply the selected search result to the item.
  */
 async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
-  isSaving.value = true;
+  isLoading.value = true;
 
   if (!props.item) {
     return;
@@ -206,15 +210,10 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
 
     useSnackbar(t('identifyApplyError'), 'error');
   } finally {
-    isSaving.value = false;
+    isLoading.value = false;
     emit('close');
     tabName.value = 'searchMenu';
   }
-}
-
-interface MatchPattern {
-  key: string;
-  pattern: RegExp;
 }
 
 /**
@@ -321,9 +320,3 @@ watch(
   { immediate: true }
 );
 </script>
-
-<style lang="scss" scoped>
-.identify-dialog {
-  height: 60vh;
-}
-</style>
