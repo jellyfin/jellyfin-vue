@@ -91,6 +91,8 @@
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Generic Jellyfin device",
   "genres": "Genres",
+  "goBack": "Go back",
+  "goNext": "Go next",
   "googleCastPlaceholderDevice": "Google Cast device",
   "guestStar": "Guest Star",
   "headerExternalIds": "External IDs",
