@@ -1,17 +1,14 @@
 <template>
-  <div class="poster-block" title="Poster Image">
-    <div
-      class="img-contain"
-      :class="{
-        'square-m': shape === CardShapes.Square,
-        'portrait-m': shape === CardShapes.Portrait,
-        'thumb-m': shape === CardShapes.Thumb || shape === CardShapes.Banner
-      }">
-      <div
-        class="d-flex justify-center align-center img-poster"
-        :style="{
-          backgroundImage: url ? `url(${url})` : undefined
-        }" />
+  <div
+    :class="{
+      'thumb-card': shape === CardShapes.Thumb || shape == CardShapes.Banner,
+      'portrait-card': shape === CardShapes.Portrait,
+      'square-card': shape === CardShapes.Square
+    }">
+    <div class="card-content">
+      <div class="card-image">
+        <v-img :src="url" alt="Poster Image" />
+      </div>
     </div>
   </div>
 </template>
@@ -27,53 +24,3 @@ const shape = computed(() =>
   getShapeFromItemType((props.itemType as BaseItemKind) ?? undefined)
 );
 </script>
-
-<style lang="scss" scoped>
-$maxW: 220px;
-
-.poster-block {
-  contain: layout style;
-  position: relative;
-
-  > .img-contain {
-    width: 100%;
-    display: block;
-    cursor: pointer;
-
-    > .img-poster {
-      contain: strict;
-      height: 100%;
-      width: 100%;
-      background-position: 50%;
-      background-size: cover;
-      background-clip: content-box;
-      background-repeat: no-repeat;
-      position: relative;
-    }
-  }
-}
-
-.square-m {
-  $ar: 1;
-
-  aspect-ratio: $ar;
-  max-height: calc($maxW / $ar);
-  height: calc($maxW / $ar);
-}
-
-.portrait-m {
-  $ar: calc(2 / 3);
-
-  aspect-ratio: $ar;
-  max-height: calc($maxW / $ar);
-  height: calc($maxW / $ar);
-}
-
-.thumb-m {
-  $ar: calc(16 / 9);
-
-  aspect-ratio: $ar;
-  max-height: calc($maxW / $ar);
-  height: calc($maxW / $ar);
-}
-</style>
