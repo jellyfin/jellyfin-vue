@@ -2,28 +2,36 @@
   <v-dialog
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
-    :height="!$vuetify.display.mobile ? '60vh' : undefined"
+    :height="$vuetify.display.mobile ? undefined : 'auto'"
     @after-leave="emit('close')">
     <v-card
       v-if="externalInfos && searchData && item"
       height="100%"
       class="d-flex flex-column identify-tab"
-      :loading="isLoading">
-      <v-card-title>{{ $t('identify') }}</v-card-title>
+      loading>
+      <template #loader>
+        <v-progress-linear v-model="progress" :indeterminate="isLoading" />
+      </template>
+      <v-toolbar color="transparent">
+        <template #prepend>
+          <v-btn icon :disabled="tabName === 'searchMenu'" @click="clear">
+            <i-mdi-arrow-left />
+          </v-btn>
+        </template>
+        <template #append>
+          <v-btn icon @click="model = false">
+            <i-mdi-close />
+          </v-btn>
+        </template>
+        <v-toolbar-title>
+          {{ $t('identify') }}
+        </v-toolbar-title>
+      </v-toolbar>
       <v-card-subtitle v-if="itemPath" class="pb-3">
         {{ itemPath }}
       </v-card-subtitle>
 
       <v-divider />
-
-      <!-- Somehow this will only show if display is table? -->
-      <v-progress-linear
-        v-model="progress"
-        height="4"
-        class="mb-2 d-inline-table"
-        :style="{
-          display: 'inline-table'
-        }" />
 
       <v-card-text
         class="pa-0 px-2 flex-grow-1"
@@ -89,34 +97,6 @@
           'justify-center': $vuetify.display.mobile
         }">
         <v-btn
-          v-if="
-            (tabName === 'searchMenu' && searchResults !== undefined) ||
-            tabName === 'resultsMenu'
-          "
-          variant="flat"
-          width="8em"
-          color="secondary"
-          class="mr-1"
-          :loading="isLoading"
-          @click="
-            [
-              tabName === 'resultsMenu'
-                ? (tabName = 'searchMenu')
-                : (tabName = 'resultsMenu')
-            ]
-          ">
-          {{ tabName === 'resultsMenu' ? t('goBack') : t('goNext') }}
-        </v-btn>
-        <v-btn
-          variant="flat"
-          width="8em"
-          color="secondary"
-          class="mr-1"
-          :loading="isLoading"
-          @click="emit('close')">
-          {{ t('cancel') }}
-        </v-btn>
-        <v-btn
           v-if="tabName === 'searchMenu'"
           variant="flat"
           width="8em"
@@ -160,9 +140,15 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const remote = useRemote();
-const tabName = ref<'searchMenu' | 'resultsMenu'>('searchMenu');
 const model = ref(true);
 const isLoading = ref(false);
+const externalInfos = ref<ExternalIdInfo[]>([]);
+const searchData = ref<IdentifySearchItem[]>([]);
+const searchResults = ref<RemoteSearchResult[]>();
+const replaceImage = ref(false);
+const tabName = computed(() =>
+  searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
+);
 const progress = computed(() => {
   switch (tabName.value) {
     case 'searchMenu': {
@@ -176,12 +162,6 @@ const progress = computed(() => {
     }
   }
 });
-
-const externalInfos = ref<ExternalIdInfo[]>();
-const searchData = ref<IdentifySearchItem[]>();
-const searchResults = ref<RemoteSearchResult[]>();
-const replaceImage = ref(false);
-
 const itemPath = computed<string | undefined>(() => {
   if (!props.item) {
     return;
@@ -206,7 +186,6 @@ async function searchInformation(): Promise<void> {
 
       if (Array.isArray(results)) {
         searchResults.value = results;
-        tabName.value = 'resultsMenu';
       } else {
         useSnackbar(t('identifySearchError'), 'error');
       }
@@ -242,9 +221,15 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
     useSnackbar(t('identifyApplyError'), 'error');
   } finally {
     isLoading.value = false;
-    emit('close');
-    tabName.value = 'searchMenu';
+    model.value = false;
   }
+}
+
+/**
+ * Clear search results
+ */
+function clear(): void {
+  searchResults.value = undefined;
 }
 
 /**
@@ -299,65 +284,60 @@ function getFilledSearchData(
 watch(
   () => props.item,
   async () => {
-    tabName.value = 'searchMenu';
+    try {
+      isLoading.value = true;
 
-    const results = (
-      await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
-        itemId: props.item.Id ?? ''
-      })
-    ).data;
+      const results = (
+        await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
+          itemId: props.item.Id ?? ''
+        })
+      ).data;
 
-    externalInfos.value = results;
+      externalInfos.value = results;
 
-    const initSearch: IdentifySearchItem[] = [
-      {
-        key: 'search-item-Name',
-        title: t('name'),
-        type: 'string'
+      const initSearch: IdentifySearchItem[] = [
+        {
+          key: 'search-item-Name',
+          title: t('name'),
+          type: 'string'
+        }
+      ];
+
+      if (!['BoxSet', 'Person'].includes(props.item.Type || '')) {
+        initSearch.push({
+          key: 'search-item-Year',
+          title: t('year'),
+          type: 'number'
+        });
       }
-    ];
 
-    if (!['BoxSet', 'Person'].includes(props.item.Type || '')) {
-      initSearch.push({
-        key: 'search-item-Year',
-        title: t('year'),
-        type: 'number'
+      const prefilledSearch = getFilledSearchData(props.item, results);
+
+      const webCrawlSearch: IdentifySearchItem[] = results.map((info) => {
+        let title = info.Name ?? '';
+
+        if (info.Type) {
+          title += ` ${info.Type.split(/(?=[A-Z])/).join(' ')}`;
+        }
+
+        const prefillValue = prefilledSearch.find(
+          (e) => e.key === info.Key
+        )?.value;
+
+        return {
+          key: info.Key ?? '',
+          value: prefillValue,
+          title: `${title} ID`,
+          type: 'string'
+        };
       });
+
+      searchData.value = [...initSearch, ...webCrawlSearch];
+    } catch {
+    } finally {
+      isLoading.value = false;
     }
-
-    const prefilledSearch = getFilledSearchData(props.item, results);
-
-    const webCrawlSearch: IdentifySearchItem[] = results.map((info) => {
-      let title = info.Name ?? '';
-
-      if (info.Type) {
-        title += ` ${info.Type.split(/(?=[A-Z])/).join(' ')}`;
-      }
-
-      const prefillValue = prefilledSearch.find(
-        (e) => e.key === info.Key
-      )?.value;
-
-      return {
-        key: info.Key ?? '',
-        value: prefillValue,
-        title: `${title} ID`,
-        type: 'string'
-      };
-    });
-
-    searchData.value = [...initSearch, ...webCrawlSearch];
   },
   { immediate: true }
 );
 </script>
-
-<style>
-/*
-  Force the progress bar background height
-  Only apply if the .v-progress-linear has a .d-inline-table class
-*/
-.v-progress-linear.d-inline-table > .v-progress-linear__background {
-  height: var(--v-progress-linear-height);
-}
-</style>
