@@ -37,6 +37,8 @@ export interface IdentifySearchItem {
   type: string;
 }
 
+// We need to redefine this interface because the generated one
+// does not have any parent interface that we can use.
 interface SearchBuilder {
   Name?: string;
   Year?: number;
@@ -486,16 +488,20 @@ export async function getItemRemoteSearch(
 
   const itemId = item.Id;
 
-  if (remote.sdk.api === undefined) {
-    return;
-  }
-
   if (itemId === undefined) {
     return;
   }
 
-  // Split the query to `search-item-` and the rest to provider IDs.
-
+  /**
+   * Split the query to `search-item-` and the rest to provider IDs.
+   *
+   * Our search item is formatted with key that denotes what
+   * they should be used for in the query search later.
+   * The `search-item-` prefix are used as the "information" that will be submitted
+   * to the providers when searching (usually Name and Year).
+   * While every other key is the provider IDs that either prefilled or provided by user.
+   * This provider IDs are basically directly use to pull information from said provider.
+   */
   const queryProviderIDs = searches
     .map((search) => {
       if (!search.key.startsWith('search-item-')) {
@@ -515,15 +521,15 @@ export async function getItemRemoteSearch(
   };
 
   if (nameSearch && nameSearch.value) {
-    buildSearch.Name = nameSearch.value as string;
+    buildSearch.Name = String(nameSearch.value);
   }
 
   if (yearSearch && yearSearch.value) {
-    buildSearch.Year = yearSearch.value as number;
+    buildSearch.Year = Number(yearSearch.value);
   }
 
   for (const search of queryProviderIDs) {
-    buildSearch.ProviderIds[search.key] = (search.value as string) || '';
+    buildSearch.ProviderIds[search.key] = String(search.value);
   }
 
   const searcher = remote.sdk.newUserApi(getItemLookupApi);
