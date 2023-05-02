@@ -1,8 +1,8 @@
 <template>
   <v-dialog
-    height="60vh"
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
+    :height="!$vuetify.display.mobile ? '60vh' : undefined"
     @after-leave="emit('close')">
     <v-card
       v-if="externalInfos && searchData && item"
@@ -16,22 +16,21 @@
 
       <v-divider />
 
+      <!-- Somehow this will only show if display is table? -->
+      <v-progress-linear
+        v-model="progress"
+        height="4"
+        class="mb-2 d-inline-table"
+        :style="{
+          display: 'inline-table'
+        }" />
+
       <v-card-text
-        class="pa-0 flex-grow-1"
+        class="pa-0 px-2 flex-grow-1"
         :class="{
           'd-flex': !$vuetify.display.mobile,
           'flex-row': !$vuetify.display.mobile
         }">
-        <v-tabs
-          v-model="tabName"
-          :direction="$vuetify.display.mobile ? 'horizontal' : 'vertical'">
-          <v-tab value="searchMenu">{{ $t('search.name') }}</v-tab>
-          <v-tab
-            :disabled="isLoading || searchResults === undefined"
-            value="resultsMenu">
-            {{ $t('results') }}
-          </v-tab>
-        </v-tabs>
         <v-window v-model="tabName" class="pa-2 flex-fill">
           <v-window-item value="searchMenu">
             <v-col>
@@ -47,7 +46,7 @@
             </v-col>
           </v-window-item>
           <v-window-item value="resultsMenu">
-            <h3>Results</h3>
+            <h3>{{ $t('results') }}</h3>
             <div class="mt-2 text-subtitle-1">
               {{ $t('identifyInstructResult') }}
             </div>
@@ -89,6 +88,25 @@
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile
         }">
+        <v-btn
+          v-if="
+            (tabName === 'searchMenu' && searchResults !== undefined) ||
+            tabName === 'resultsMenu'
+          "
+          variant="flat"
+          width="8em"
+          color="secondary"
+          class="mr-1"
+          :loading="isLoading"
+          @click="
+            [
+              tabName === 'resultsMenu'
+                ? (tabName = 'searchMenu')
+                : (tabName = 'resultsMenu')
+            ]
+          ">
+          {{ tabName === 'resultsMenu' ? t('goBack') : t('goNext') }}
+        </v-btn>
         <v-btn
           variant="flat"
           width="8em"
@@ -145,6 +163,19 @@ const remote = useRemote();
 const tabName = ref<'searchMenu' | 'resultsMenu'>('searchMenu');
 const model = ref(true);
 const isLoading = ref(false);
+const progress = computed(() => {
+  switch (tabName.value) {
+    case 'searchMenu': {
+      return 50;
+    }
+    case 'resultsMenu': {
+      return 100;
+    }
+    default: {
+      return 0;
+    }
+  }
+});
 
 const externalInfos = ref<ExternalIdInfo[]>();
 const searchData = ref<IdentifySearchItem[]>();
@@ -320,3 +351,13 @@ watch(
   { immediate: true }
 );
 </script>
+
+<style>
+/*
+  Force the progress bar background height
+  Only apply if the .v-progress-linear has a .d-inline-table class
+*/
+.v-progress-linear.d-inline-table > .v-progress-linear__background {
+  height: var(--v-progress-linear-height);
+}
+</style>
