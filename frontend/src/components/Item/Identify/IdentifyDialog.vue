@@ -3,6 +3,7 @@
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
     :height="$vuetify.display.mobile ? undefined : 'auto'"
+    :width="$vuetify.display.mobile ? undefined : '70vw'"
     @after-leave="emit('close')">
     <v-card height="100%" class="d-flex flex-column" loading>
       <template #loader>
@@ -44,7 +45,9 @@
                 v-model="fieldsInputs[idx].value"
                 variant="outlined"
                 class="mb-2"
-                :placeholder="field.value"
+                :placeholder="field.value ?? undefined"
+                persistent-placeholder
+                clearable
                 :disabled="isLoading"
                 :type="field.type"
                 :label="field.title" />
@@ -65,21 +68,12 @@
               </template>
             </v-checkbox>
             <v-divider />
-            <div
-              class="d-flex flex-row flex-wrap mt-4"
-              :class="{
-                'justify-center': $vuetify.display.mobile
-              }">
-              <identify-result
-                v-for="(result, idx) in searchResults"
-                :key="idx"
-                :item="result"
-                :item-type="item.Type"
-                @select="applySelectedSearch" />
-            </div>
-            <h3
-              v-if="Array.isArray(searchResults) && searchResults.length === 0"
-              class="text-center my-4">
+            <identify-results
+              v-if="Array.isArray(searchResults) && searchResults.length > 0"
+              :items="searchResults"
+              :item-type="item.Type"
+              @select="applySelectedSearch" />
+            <h3 v-else class="text-center my-4">
               {{ $t('searchNoResults') }}
             </h3>
           </v-window-item>
@@ -113,15 +107,16 @@ import {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
+import { cloneDeep } from 'lodash-es';
 import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRemote, useSnackbar } from '@/composables';
+import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
 
 interface IdentifyField {
   key: string;
   title: string;
   type: string;
-  value: string;
+  value?: string | null;
 }
 
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
@@ -169,7 +164,7 @@ const searchFields = computed<IdentifyField[]>(() => {
 
   return result;
 });
-const fieldsInputs = ref<IdentifyField[]>(toRaw(searchFields.value));
+const fieldsInputs = ref<IdentifyField[]>(cloneDeep(toRaw(searchFields.value)));
 const tabName = computed(() =>
   searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
 );
@@ -212,7 +207,7 @@ async function getItemRemoteSearch(
   interface Query {
     Name?: string;
     Year?: number;
-    ProviderIds: { [key: string]: string };
+    ProviderIds: { [key: string]: string | null | undefined };
   }
 
   const remote = useRemote();
@@ -240,7 +235,8 @@ async function getItemRemoteSearch(
    * These provider IDs are basically directly use to pull information from said provider.
    */
   for (const field of fields) {
-    const value = field.value.trim();
+    const value =
+      typeof field.value === 'string' ? field.value.trim() : field.value;
 
     if (field.key === 'search-name' && value) {
       searchQuery.Name = value;
@@ -368,26 +364,34 @@ async function performSearch(): Promise<void> {
  * Apply the selected search result to the item.
  */
 async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
-  isLoading.value = true;
+  await useConfirmDialog(
+    async () => {
+      isLoading.value = true;
 
-  if (!props.item) {
-    return;
-  }
+      try {
+        await remote.sdk.newUserApi(getItemLookupApi).applySearchCriteria({
+          itemId: props.item.Id ?? '',
+          remoteSearchResult: result,
+          replaceAllImages: replaceImage.value
+        });
+      } catch (error) {
+        console.error(error);
 
-  try {
-    await remote.sdk.newUserApi(getItemLookupApi).applySearchCriteria({
-      itemId: props.item.Id ?? '',
-      remoteSearchResult: result,
-      replaceAllImages: replaceImage.value
-    });
-  } catch (error) {
-    console.error(error);
-
-    useSnackbar(errorMessage, 'error');
-  } finally {
-    isLoading.value = false;
-    model.value = false;
-  }
+        useSnackbar(errorMessage, 'error');
+      } finally {
+        isLoading.value = false;
+        model.value = false;
+      }
+    },
+    {
+      title: '',
+      text: t('identifyConfirmChanges', {
+        originalItem: props.item.Name,
+        newIdentifiedItem: result.Name
+      }),
+      confirmText: t('confirm')
+    }
+  );
 }
 
 /**
