@@ -151,7 +151,7 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
-            ItemFields.ExternalUrls
+            ItemFields.ProviderIds
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -181,7 +181,7 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
-            ItemFields.ExternalUrls
+            ItemFields.ProviderIds
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -211,7 +211,7 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
-            ItemFields.ExternalUrls
+            ItemFields.ProviderIds
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -243,7 +243,7 @@ class UserLibrariesStore {
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
-            ItemFields.ExternalUrls
+            ItemFields.ProviderIds
           ],
           imageTypeLimit: 1,
           enableImageTypes: [
@@ -273,7 +273,7 @@ class UserLibrariesStore {
             ItemFields.Overview,
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
-            ItemFields.ExternalUrls
+            ItemFields.ProviderIds
           ],
           enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
           imageTypeLimit: 1
