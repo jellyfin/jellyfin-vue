@@ -5,8 +5,7 @@ import {
   BaseItemDto,
   BaseItemKind,
   BaseItemPerson,
-  MediaStream,
-  RemoteSearchResult
+  MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
@@ -27,25 +26,7 @@ import IMdiBookMusic from 'virtual:icons/mdi/book-music';
 import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
 import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
 import IMdiAlbum from 'virtual:icons/mdi/album';
-import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { useRemote } from '@/composables';
-
-export interface IdentifySearchItem {
-  key: string;
-  value?: string | number;
-  title: string;
-  type: string;
-}
-
-// TODO: We need to redefine this interface because the generated one
-// does not have any parent interface that we can use.
-interface SearchBuilder {
-  Name?: string;
-  Year?: number;
-  ProviderIds: {
-    [key: string]: string;
-  };
-}
 
 /**
  * A list of valid collections that should be treated as folders.
@@ -471,158 +452,4 @@ export function getMediaStreams(
   streamType: string
 ): MediaStream[] {
   return mediaStreams.filter((mediaStream) => mediaStream.Type === streamType);
-}
-
-/**
- * Get the remote search results for an item and search params.
- *
- * @param item - The item to search for.
- * @param searches - The search params to use.
- * @returns - An array of remote search results.
- */
-export async function getItemRemoteSearch(
-  item: BaseItemDto,
-  searches: IdentifySearchItem[]
-): Promise<RemoteSearchResult[] | undefined> {
-  const remote = useRemote();
-  const itemId = item.Id;
-
-  if (itemId === undefined) {
-    return;
-  }
-
-  /**
-   * Split the query to `search-item-` and the rest to provider IDs.
-   *
-   * Our search item is formatted with key that denotes what
-   * they should be used for in the query search later.
-   * The `search-item-` prefix are used as the "information" that will be submitted
-   * to the providers when searching (usually Name and Year).
-   * While every other key is the provider IDs that either prefilled or provided by user.
-   * This provider IDs are basically directly use to pull information from said provider.
-   */
-  const queryProviderIDs = searches
-    .map((search) => {
-      if (!search.key.startsWith('search-item-')) {
-        return search;
-      }
-    })
-    .filter((s): s is IdentifySearchItem => s !== undefined);
-  const nameSearch = searches.find(
-    (search) => search.key === 'search-item-Name'
-  );
-  const yearSearch = searches.find(
-    (search) => search.key === 'search-item-Year'
-  );
-
-  const buildSearch: SearchBuilder = {
-    ProviderIds: {}
-  };
-
-  if (nameSearch?.value) {
-    buildSearch.Name = String(nameSearch.value);
-  }
-
-  if (yearSearch?.value) {
-    buildSearch.Year = Number(yearSearch.value);
-  }
-
-  for (const search of queryProviderIDs) {
-    buildSearch.ProviderIds[search.key] = search.value;
-  }
-
-  const searcher = remote.sdk.newUserApi(getItemLookupApi);
-
-  switch (item.Type) {
-    case 'Book': {
-      return (
-        await searcher.getBookRemoteSearchResults({
-          bookInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'BoxSet': {
-      return (
-        await searcher.getBoxSetRemoteSearchResults({
-          boxSetInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'Movie': {
-      return (
-        await searcher.getMovieRemoteSearchResults({
-          movieInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'MusicAlbum': {
-      return (
-        await searcher.getMusicAlbumRemoteSearchResults({
-          albumInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'MusicArtist': {
-      return (
-        await searcher.getMusicArtistRemoteSearchResults({
-          artistInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'MusicVideo': {
-      return (
-        await searcher.getMusicVideoRemoteSearchResults({
-          musicVideoInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'Person': {
-      return (
-        await searcher.getPersonRemoteSearchResults({
-          personLookupInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'Series': {
-      return (
-        await searcher.getSeriesRemoteSearchResults({
-          seriesInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-    case 'Trailer': {
-      return (
-        await searcher.getTrailerRemoteSearchResults({
-          trailerInfoRemoteSearchQuery: {
-            ItemId: itemId,
-            SearchInfo: buildSearch
-          }
-        })
-      ).data;
-    }
-  }
 }

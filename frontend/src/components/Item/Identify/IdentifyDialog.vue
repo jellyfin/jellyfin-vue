@@ -4,11 +4,7 @@
     :fullscreen="$vuetify.display.mobile"
     :height="$vuetify.display.mobile ? undefined : 'auto'"
     @after-leave="emit('close')">
-    <v-card
-      v-if="externalInfos && searchData && item"
-      height="100%"
-      class="d-flex flex-column identify-tab"
-      loading>
+    <v-card height="100%" class="d-flex flex-column" loading>
       <template #loader>
         <v-progress-linear v-model="progress" :indeterminate="isLoading" />
       </template>
@@ -43,14 +39,15 @@
           <v-window-item value="searchMenu">
             <v-col>
               <v-text-field
-                v-for="(data, idx) in searchData"
-                :key="data.key"
-                v-model="searchData[idx].value"
+                v-for="(field, idx) in searchFields"
+                :key="field.key"
+                v-model="fieldsInputs[idx].value"
                 variant="outlined"
                 class="mb-2"
+                :placeholder="field.value"
                 :disabled="isLoading"
-                :type="data.type"
-                :label="data.title" />
+                :type="field.type"
+                :label="field.title" />
             </v-col>
           </v-window-item>
           <v-window-item value="resultsMenu">
@@ -102,7 +99,7 @@
           width="8em"
           color="primary"
           :loading="isLoading"
-          @click="searchInformation">
+          @click="performSearch">
           {{ t('search.name') }}
         </v-btn>
       </v-card-actions>
@@ -113,24 +110,19 @@
 <script setup lang="ts">
 import {
   BaseItemDto,
-  ExternalIdInfo,
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRemote, useSnackbar } from '@/composables';
-import { IdentifySearchItem, getItemRemoteSearch } from '@/utils/items';
 
-type PrefilledSearch = {
+interface IdentifyField {
   key: string;
+  title: string;
+  type: string;
   value: string;
-};
-
-type MatchPattern = {
-  key: string;
-  pattern: RegExp;
-};
+}
 
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 
@@ -142,11 +134,42 @@ const { t } = useI18n();
 const remote = useRemote();
 const model = ref(true);
 const isLoading = ref(false);
-const externalInfos = ref<ExternalIdInfo[]>([]);
-const searchData = ref<IdentifySearchItem[]>([]);
 const searchResults = ref<RemoteSearchResult[]>();
 const replaceImage = ref(false);
 const errorMessage = t('errors.anErrorHappened');
+const searchFields = computed<IdentifyField[]>(() => {
+  const result = [
+    {
+      key: 'search-name',
+      title: t('name'),
+      type: 'string',
+      value: props.item.Name ?? ''
+    }
+  ];
+
+  if (!['BoxSet', 'Person'].includes(props.item.Type || '')) {
+    result.push({
+      key: 'search-year',
+      title: t('year'),
+      type: 'number',
+      value: props.item.ProductionYear ? String(props.item.ProductionYear) : ''
+    });
+  }
+
+  if (props.item.ProviderIds) {
+    for (const key in props.item.ProviderIds) {
+      result.push({
+        key,
+        value: props.item.ProviderIds[key],
+        title: `${key} ID`,
+        type: 'string'
+      });
+    }
+  }
+
+  return result;
+});
+const fieldsInputs = ref<IdentifyField[]>(toRaw(searchFields.value));
 const tabName = computed(() =>
   searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
 );
@@ -176,23 +199,168 @@ const itemPath = computed<string | undefined>(() => {
 });
 
 /**
+ * Get the remote search results for an item and search params.
+ *
+ * @param item - The item to search for.
+ * @param searches - The search params to use.
+ * @returns - An array of remote search results.
+ */
+async function getItemRemoteSearch(
+  item: BaseItemDto,
+  fields: IdentifyField[]
+): Promise<RemoteSearchResult[] | undefined> {
+  interface Query {
+    Name?: string;
+    Year?: number;
+    ProviderIds: { [key: string]: string };
+  }
+
+  const remote = useRemote();
+  const searcher = remote.sdk.newUserApi(getItemLookupApi);
+  const itemId = item.Id;
+
+  if (itemId === undefined) {
+    return;
+  }
+
+  const searchQuery: Query = {
+    Name: undefined,
+    Year: undefined,
+    ProviderIds: {}
+  };
+
+  /**
+   * Our search fields are formatted with a key that denotes what
+   * they should be used for in the query search.
+   *
+   * The `search-` prefix are used as the "information" that will be submitted
+   * to the providers when searching (usually Name and Year).
+   *
+   * Every other key are the provider IDs, either prefilled or provided by user.
+   * These provider IDs are basically directly use to pull information from said provider.
+   */
+  for (const field of fields) {
+    const value = field.value.trim();
+
+    if (field.key === 'search-name' && value) {
+      searchQuery.Name = value;
+    } else if (field.key === 'search-year' && value) {
+      searchQuery.Year = Number(value);
+    } else {
+      searchQuery.ProviderIds[field.key] = value;
+    }
+  }
+
+  switch (item.Type) {
+    case 'Book': {
+      return (
+        await searcher.getBookRemoteSearchResults({
+          bookInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'BoxSet': {
+      return (
+        await searcher.getBoxSetRemoteSearchResults({
+          boxSetInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'Movie': {
+      return (
+        await searcher.getMovieRemoteSearchResults({
+          movieInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'MusicAlbum': {
+      return (
+        await searcher.getMusicAlbumRemoteSearchResults({
+          albumInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'MusicArtist': {
+      return (
+        await searcher.getMusicArtistRemoteSearchResults({
+          artistInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'MusicVideo': {
+      return (
+        await searcher.getMusicVideoRemoteSearchResults({
+          musicVideoInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'Person': {
+      return (
+        await searcher.getPersonRemoteSearchResults({
+          personLookupInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'Series': {
+      return (
+        await searcher.getSeriesRemoteSearchResults({
+          seriesInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+    case 'Trailer': {
+      return (
+        await searcher.getTrailerRemoteSearchResults({
+          trailerInfoRemoteSearchQuery: {
+            ItemId: itemId,
+            SearchInfo: searchQuery
+          }
+        })
+      ).data;
+    }
+  }
+}
+
+/**
  * Do a search for information on the item.
  */
-async function searchInformation(): Promise<void> {
-  if (props.item !== undefined && searchData.value !== undefined) {
-    isLoading.value = true;
+async function performSearch(): Promise<void> {
+  isLoading.value = true;
 
-    try {
-      const results = await getItemRemoteSearch(props.item, searchData.value);
+  try {
+    const results = await getItemRemoteSearch(props.item, fieldsInputs.value);
 
-      searchResults.value = Array.isArray(results) ? results : [];
-    } catch (error) {
-      console.error(error);
+    searchResults.value = Array.isArray(results) ? results : [];
+  } catch (error) {
+    console.error(error);
 
-      useSnackbar(errorMessage, 'error');
-    } finally {
-      isLoading.value = false;
-    }
+    useSnackbar(errorMessage, 'error');
+  } finally {
+    isLoading.value = false;
   }
 }
 
@@ -228,115 +396,4 @@ async function applySelectedSearch(result: RemoteSearchResult): Promise<void> {
 function clear(): void {
   searchResults.value = undefined;
 }
-
-/**
- * Get a pre-filled search data object.
- */
-function getFilledSearchData(
-  item: BaseItemDto,
-  externals: ExternalIdInfo[]
-): PrefilledSearch[] {
-  const urls = item.ExternalUrls ?? [];
-
-  if (!urls) {
-    return [];
-  }
-
-  const matcher = externals
-    .map((e) => {
-      if (e.UrlFormatString && e.Key) {
-        const pattern = e.UrlFormatString.replace(
-          /{\d+}/g,
-          '([\\w\\d_\\-+.]+)'
-        );
-
-        return {
-          key: e.Key,
-          pattern: new RegExp(`^${pattern}$`)
-        };
-      }
-    })
-    .filter((e): e is MatchPattern => e !== undefined);
-
-  return urls
-    .map((url) => {
-      if (url.Url) {
-        for (const match of matcher) {
-          const result = match.pattern.exec(url.Url);
-
-          if (result) {
-            const last = result[result.length - 1];
-
-            return {
-              key: match.key,
-              value: last
-            };
-          }
-        }
-      }
-    })
-    .filter((e): e is PrefilledSearch => e !== undefined);
-}
-
-watch(
-  () => props.item,
-  async () => {
-    try {
-      isLoading.value = true;
-
-      const results = (
-        await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
-          itemId: props.item.Id ?? ''
-        })
-      ).data;
-
-      externalInfos.value = results;
-
-      const initSearch: IdentifySearchItem[] = [
-        {
-          key: 'search-item-Name',
-          title: t('name'),
-          type: 'string',
-          value: props.item.Name ?? undefined
-        }
-      ];
-
-      if (!['BoxSet', 'Person'].includes(props.item.Type || '')) {
-        initSearch.push({
-          key: 'search-item-Year',
-          title: t('year'),
-          type: 'number',
-          value: props.item.ProductionYear ?? undefined
-        });
-      }
-
-      const prefilledSearch = getFilledSearchData(props.item, results);
-
-      const webCrawlSearch: IdentifySearchItem[] = results.map((info) => {
-        let title = info.Name ?? '';
-
-        if (info.Type) {
-          title += ` ${info.Type.split(/(?=[A-Z])/).join(' ')}`;
-        }
-
-        const prefillValue = prefilledSearch.find(
-          (e) => e.key === info.Key
-        )?.value;
-
-        return {
-          key: info.Key ?? '',
-          value: prefillValue,
-          title: `${title} ID`,
-          type: 'string'
-        };
-      });
-
-      searchData.value = [...initSearch, ...webCrawlSearch];
-    } catch {
-    } finally {
-      isLoading.value = false;
-    }
-  },
-  { immediate: true }
-);
 </script>
