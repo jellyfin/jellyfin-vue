@@ -105,6 +105,7 @@
   },
   "identify": "Identify",
   "identifyInstructResult": "You can click on one of these cards to apply the result",
+  "identifyConfirmChanges": "Are you sure do you want to change '{originalItem}' with '{newIdentifiedItem}'?",
   "imageType": {
     "art": "Art",
     "backdrop": "Backdrop",
