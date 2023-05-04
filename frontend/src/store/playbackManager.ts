@@ -974,14 +974,26 @@ class PlaybackManagerStore {
     subtitleStreamIndex = this.currentSubtitleStreamIndex
   ): Promise<PlaybackInfoResponse | undefined> => {
     if (item) {
+      const { MediaSources, Id, Type } = item;
+      const { currentUserId: userId } = remote.auth;
+
+      let mediaSourceId = MediaSources?.[mediaSourceIndex ?? 0]?.Id ?? Id;
+
+      /*
+       * If the item is a TvChannel, passing the mediaSourceId will result in the Jellyfin
+       * server returning "NoCompatibleStream"
+       */
+      if (Type === 'TvChannel') {
+        mediaSourceId = undefined;
+      }
+
       return (
         await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-          itemId: item?.Id || '',
-          userId: remote.auth.currentUserId,
+          itemId: Id || '',
+          userId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
-          mediaSourceId:
-            item.MediaSources?.[mediaSourceIndex ?? 0].Id ?? item?.Id,
+          mediaSourceId,
           audioStreamIndex,
           subtitleStreamIndex
         })
