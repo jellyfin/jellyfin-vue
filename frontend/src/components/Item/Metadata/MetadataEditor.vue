@@ -301,7 +301,7 @@ async function getData(): Promise<void> {
     return;
   }
 
-  getGenres(libraryInfo.Id);
+  await getGenres(libraryInfo.Id);
 }
 
 /**

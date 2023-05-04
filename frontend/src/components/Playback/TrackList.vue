@@ -137,9 +137,9 @@ function isPlaying(track: BaseItemDto): boolean {
 /**
  * Play all the tracks from an item
  */
-function playTracks(track: BaseItemDto): void {
+async function playTracks(track: BaseItemDto): Promise<void> {
   if (tracks.value) {
-    playbackManager.play({
+    await playbackManager.play({
       item: props.item,
       startFromIndex: tracks.value.indexOf(track),
       initiator: props.item
