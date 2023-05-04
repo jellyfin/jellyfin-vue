@@ -287,7 +287,7 @@ class RemotePluginAuth {
   }
 
   public constructor() {
-    this.refreshCurrentUserInfo();
+    window.setTimeout(async () => await this.refreshCurrentUserInfo());
   }
 }
 

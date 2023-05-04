@@ -963,7 +963,7 @@ class PlaybackManagerStore {
     }
 
     for (const item of items) {
-      this.addToQueue(item);
+      await this.addToQueue(item);
     }
   };
 
@@ -1185,9 +1185,9 @@ class PlaybackManagerStore {
 
     watch(
       () => this.currentAudioStreamIndex,
-      (newVal, oldVal) => {
+      async (newVal, oldVal) => {
         if (oldVal !== undefined && newVal !== undefined && oldVal !== newVal) {
-          this.setCurrentMediaSource();
+          await this.setCurrentMediaSource();
         }
       }
     );
@@ -1197,7 +1197,7 @@ class PlaybackManagerStore {
         currentSubtitleStreamIndex: this.currentSubtitleStreamIndex,
         currentSubtitleTrack: this.currentSubtitleTrack
       }),
-      (oldVal, newVal) => {
+      async (oldVal, newVal) => {
         if (
           oldVal.currentSubtitleStreamIndex !==
             newVal.currentSubtitleStreamIndex &&
@@ -1210,7 +1210,7 @@ class PlaybackManagerStore {
            * This is the case when you go from or to a situation where subs are burnt in.
            * In that case, we always need to fetch a new media source.
            */
-          this.setCurrentMediaSource();
+          await this.setCurrentMediaSource();
         }
       }
     );

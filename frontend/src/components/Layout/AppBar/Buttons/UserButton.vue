@@ -82,8 +82,8 @@ const menuItems = computed<MenuItem[]>(() => {
     {
       title: t('logout'),
       icon: IMdiLogout,
-      action: (): void => {
-        auth.logoutCurrentUser();
+      action: async (): Promise<void> => {
+        await auth.logoutCurrentUser();
       }
     }
   );

@@ -57,8 +57,10 @@
         :adding-new-key="addingNewKey"
         @close="addingNewKey = false"
         @key-added="
-          addingNewKey = false;
-          refreshApiKeys();
+          async () => {
+            addingNewKey = false;
+            await refreshApiKeys();
+          }
         " />
       <v-dialog
         width="auto"
@@ -142,7 +144,7 @@ async function revokeApiKey(token: string): Promise<void> {
     });
 
     useSnackbar(t('settings.apiKeys.revokeSuccess'), 'success');
-    refreshApiKeys();
+    await refreshApiKeys();
   } catch (error) {
     console.error(error);
     useSnackbar(t('settings.apiKeys.revokeFailure'), 'error');
@@ -167,7 +169,7 @@ async function revokeAllApiKeys(): Promise<void> {
     }
 
     useSnackbar(t('settings.apiKeys.revokeAllSuccess'), 'success');
-    refreshApiKeys();
+    await refreshApiKeys();
   } catch (error) {
     console.error(error);
     useSnackbar(t('settings.apiKeys.revokeAllFailure'), 'error');
