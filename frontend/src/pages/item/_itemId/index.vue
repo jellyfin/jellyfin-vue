@@ -111,7 +111,12 @@
               </v-col>
             </v-row>
             <div
-              v-if="item && item.MediaSources && item.MediaSources.length > 0"
+              v-if="
+                item &&
+                item.MediaSources &&
+                item.MediaSources.length > 0 &&
+                item.Type !== 'TvChannel'
+              "
               class="mt-2">
               <v-row v-if="item.MediaSources.length > 1" align="center">
                 <v-col
