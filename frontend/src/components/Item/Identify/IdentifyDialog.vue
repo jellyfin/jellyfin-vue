@@ -46,7 +46,7 @@
                 variant="outlined"
                 class="mb-2"
                 :placeholder="field.value ?? undefined"
-                persistent-placeholder
+                :persistent-placeholder="field.value ? true : false"
                 clearable
                 :disabled="isLoading"
                 :type="field.type"
@@ -127,6 +127,13 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const remote = useRemote();
+
+const availableProviders = (
+  await remote.sdk.newUserApi(getItemLookupApi).getExternalIdInfos({
+    itemId: props.item.Id ?? ''
+  })
+).data;
+
 const model = ref(true);
 const isLoading = ref(false);
 const searchResults = ref<RemoteSearchResult[]>();
@@ -151,6 +158,9 @@ const searchFields = computed<IdentifyField[]>(() => {
     });
   }
 
+  /**
+   * Providers that the item already has
+   */
   if (props.item.ProviderIds) {
     for (const key in props.item.ProviderIds) {
       result.push({
@@ -160,6 +170,24 @@ const searchFields = computed<IdentifyField[]>(() => {
         type: 'string'
       });
     }
+  }
+
+  /**
+   * Providers available for the item type, but not assigned to it
+   */
+  const populatedKeys = Object.keys(props.item.ProviderIds ?? {});
+  const missingProviders = availableProviders
+    .filter((p) => !populatedKeys.includes(p.Key ?? ''))
+    .map((p) => p.Key)
+    .filter((p): p is string => p !== undefined);
+
+  for (const key of missingProviders) {
+    result.push({
+      key,
+      value: '',
+      title: `${key} ID`,
+      type: 'string'
+    });
   }
 
   return result;
@@ -207,7 +235,7 @@ async function getItemRemoteSearch(
   interface Query {
     Name?: string;
     Year?: number;
-    ProviderIds: { [key: string]: string | null | undefined };
+    ProviderIds: { [key: string]: string };
   }
 
   const remote = useRemote();
@@ -242,7 +270,7 @@ async function getItemRemoteSearch(
       searchQuery.Name = value;
     } else if (field.key === 'search-year' && value) {
       searchQuery.Year = Number(value);
-    } else {
+    } else if (value) {
       searchQuery.ProviderIds[field.key] = value;
     }
   }
