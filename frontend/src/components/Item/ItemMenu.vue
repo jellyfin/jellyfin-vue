@@ -140,8 +140,8 @@ const isItemRefreshing = computed(
 const playNextAction = {
   title: t('playback.playNext'),
   icon: IMdiPlaySpeed,
-  action: (): void => {
-    playbackManager.playNext(menuProps.item);
+  action: async (): Promise<void> => {
+    await playbackManager.playNext(menuProps.item);
     useSnackbar(t('snackbar.playNext'), 'success');
   }
 };
@@ -172,8 +172,8 @@ const pushToBottomOfQueueAction = {
 const playFromBeginningAction = {
   title: t('playFromBeginning'),
   icon: IMdiReplay,
-  action: (): void => {
-    playbackManager.play({
+  action: async (): Promise<void> => {
+    await playbackManager.play({
       item: menuProps.item
     });
   }
@@ -181,8 +181,8 @@ const playFromBeginningAction = {
 const shuffleAction = {
   title: t('playback.shuffle'),
   icon: IMdiShuffle,
-  action: (): void => {
-    playbackManager.play({
+  action: async (): Promise<void> => {
+    await playbackManager.play({
       item: menuProps.item,
       initiator: menuProps.item,
       startShuffled: true
@@ -192,8 +192,8 @@ const shuffleAction = {
 const addToQueueAction = {
   title: t('playback.addToQueue'),
   icon: IMdiPlaylistPlus,
-  action: (): void => {
-    playbackManager.addToQueue(menuProps.item);
+  action: async (): Promise<void> => {
+    await playbackManager.addToQueue(menuProps.item);
     useSnackbar(t('snackbar.addedToQueue'), 'success');
   }
 };
@@ -245,7 +245,7 @@ const deleteItemAction = {
           });
 
           if (route.fullPath.includes(menuProps.item.Id)) {
-            router.replace('/');
+            await router.replace('/');
           }
         } catch (error) {
           console.error(error);

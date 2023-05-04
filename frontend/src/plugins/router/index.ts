@@ -54,10 +54,13 @@ router.back = (): ReturnType<typeof router.back> => {
     route.value.meta.transition.leave = leaveTransition;
   }
 
-  router.replace(
-    typeof router.options.history.state.back === 'string'
-      ? router.options.history.state.back
-      : '/'
+  window.setTimeout(
+    async () =>
+      await router.replace(
+        typeof router.options.history.state.back === 'string'
+          ? router.options.history.state.back
+          : '/'
+      )
   );
 };
 
@@ -82,7 +85,7 @@ watch(
     (): typeof remote.auth.currentUser => remote.auth.currentUser,
     (): typeof remote.auth.servers => remote.auth.servers
   ],
-  () => {
+  async () => {
     if (!remote.auth.currentUser && remote.auth.servers.length <= 0) {
       /**
        * We run the redirect to /server/add as it's the first page in the login flow
@@ -93,19 +96,19 @@ watch(
        * redirect there and leave the middleware take care of the final destination
        * (when servers are already available, for example)
        */
-      router.replace('/server/add');
+      await router.replace('/server/add');
     } else if (
       !remote.auth.currentUser &&
       remote.auth.servers.length > 0 &&
       remote.auth.currentServer
     ) {
-      router.replace('/server/login');
+      await router.replace('/server/login');
     } else if (
       !remote.auth.currentUser &&
       remote.auth.servers.length > 0 &&
       !remote.auth.currentServer
     ) {
-      router.replace('/server/select');
+      await router.replace('/server/select');
     }
   }
 );

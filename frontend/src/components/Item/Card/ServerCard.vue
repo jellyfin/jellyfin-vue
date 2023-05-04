@@ -54,7 +54,7 @@ async function setServer(): Promise<void> {
 
   try {
     await remote.auth.connectServer(props.serverInfo.PublicAddress);
-    router.push('/server/login');
+    await router.push('/server/login');
   } finally {
     loading.value = false;
   }

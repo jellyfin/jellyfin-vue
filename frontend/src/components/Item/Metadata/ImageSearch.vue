@@ -259,10 +259,10 @@ function reset(): void {
 watch([type, source, allLanguages], getImages);
 watch(
   () => props.dialog,
-  (dialog) => {
+  async (dialog) => {
     if (dialog) {
-      getRemoteImageProviders();
-      getImages();
+      await getRemoteImageProviders();
+      await getImages();
     } else {
       reset();
     }

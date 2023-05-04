@@ -79,9 +79,9 @@ async function connectToServer(): Promise<void> {
     await remote.auth.connectServer(best.address);
 
     if (previousServerLength === 0) {
-      router.push('/server/login');
+      await router.push('/server/login');
     } else {
-      router.push('/server/select');
+      await router.push('/server/select');
     }
   } finally {
     loading.value = false;

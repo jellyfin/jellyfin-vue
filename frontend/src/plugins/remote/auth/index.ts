@@ -140,7 +140,7 @@ class RemotePluginAuth {
         state.value.currentServerIndex =
           state.value.servers.indexOf(serverInfo);
       } else {
-        router.push({ path: '/wizard' });
+        await router.push({ path: '/wizard' });
       }
     } else {
       useSnackbar(i18n.t('login.serverVersionTooLow'), 'error');
@@ -287,7 +287,7 @@ class RemotePluginAuth {
   }
 
   public constructor() {
-    this.refreshCurrentUserInfo();
+    window.setTimeout(async () => await this.refreshCurrentUserInfo());
   }
 }
 

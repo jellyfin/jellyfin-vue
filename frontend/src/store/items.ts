@@ -213,7 +213,7 @@ class ItemsStore {
 
     watch(
       () => remote.socket.message,
-      () => {
+      async () => {
         if (!remote.socket.message) {
           return;
         }
@@ -234,7 +234,7 @@ class ItemsStore {
             (item: unknown): item is string => typeof item === 'string'
           ).filter((itemId) => Object.keys(this._state.byId).includes(itemId));
 
-          this.updateStoreItems(itemsToUpdate);
+          await this.updateStoreItems(itemsToUpdate);
         } else if (
           MessageType === 'UserDataChanged' &&
           'UserDataList' in Data &&
@@ -260,7 +260,7 @@ class ItemsStore {
             return updatedData.ItemId;
           });
 
-          this.updateStoreItems(itemsToUpdate);
+          await this.updateStoreItems(itemsToUpdate);
         }
       }
     );

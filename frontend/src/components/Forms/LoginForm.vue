@@ -113,7 +113,7 @@ async function userLogin(): Promise<void> {
 
     await userLibraries.refresh();
 
-    router.replace('/');
+    await router.replace('/');
   } finally {
     loading.value = false;
   }

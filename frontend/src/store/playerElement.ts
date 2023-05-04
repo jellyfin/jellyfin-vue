@@ -75,13 +75,13 @@ class PlayerElementStore {
   /**
    * == ACTIONS ==
    */
-  public toggleFullscreenVideoPlayer = (): void => {
+  public toggleFullscreenVideoPlayer = async (): Promise<void> => {
     const router = useRouter();
 
     if (this.isFullscreenVideoPlayer) {
       router.back();
     } else {
-      router.push(fullscreenVideoRoute);
+      await router.push(fullscreenVideoRoute);
     }
   };
 
@@ -210,7 +210,7 @@ class PlayerElementStore {
      */
     watch(
       () => playbackManager.currentItem,
-      (newValue, oldValue) => {
+      async (newValue, oldValue) => {
         const router = useRouter();
         const currentFullPath = router.currentRoute.value.fullPath;
 
@@ -225,7 +225,7 @@ class PlayerElementStore {
           !oldValue &&
           playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
-          this.toggleFullscreenVideoPlayer();
+          await this.toggleFullscreenVideoPlayer();
         }
       }
     );

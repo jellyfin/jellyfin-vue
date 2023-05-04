@@ -122,7 +122,7 @@ async function completeWizard(): Promise<void> {
 
     await getStartupApi(api).completeWizard();
     // Redirect to setup complete page
-    router.replace('/server/login');
+    await router.replace('/server/login');
   } catch (error) {
     console.error(error);
     useSnackbar(t('wizard.completeError'), 'success');
@@ -132,9 +132,9 @@ async function completeWizard(): Promise<void> {
 /**
  * Change wizard step forward
  */
-function nextStep(): void {
+async function nextStep(): void {
   if (wizardStage.value === 4) {
-    completeWizard();
+    await completeWizard();
   } else {
     wizardStage.value += 1;
   }
