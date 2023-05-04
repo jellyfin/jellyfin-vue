@@ -13,7 +13,10 @@
       <v-fade-transition>
         <img
           v-show="!loading && !error"
-          class="absolute-cover img"
+          :class="
+            'absolute-cover img ' +
+            (item.Type === 'TvChannel' ? 'tv-channel' : '')
+          "
           :src="imageUrl"
           v-bind="$attrs"
           :alt="alt"
@@ -125,6 +128,11 @@ const hash = computed(() => getBlurhash(props.item, props.type));
 .img {
   color: transparent;
   object-fit: cover;
+}
+
+.img.tv-channel {
+  object-fit: contain;
+  padding: 10%;
 }
 
 .placeholder {
