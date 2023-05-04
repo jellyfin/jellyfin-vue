@@ -158,7 +158,7 @@ async function onDelete(item: ImageInfo): Promise<void> {
     imageIndex: item.ImageIndex ?? undefined
   });
 
-  getItemImageInfos();
+  await getItemImageInfos();
 }
 
 watch(() => props.metadata, getItemImageInfos, { immediate: true });

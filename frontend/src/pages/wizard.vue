@@ -132,9 +132,9 @@ async function completeWizard(): Promise<void> {
 /**
  * Change wizard step forward
  */
-function nextStep(): void {
+async function nextStep(): void {
   if (wizardStage.value === 4) {
-    completeWizard();
+    await completeWizard();
   } else {
     wizardStage.value += 1;
   }

@@ -143,9 +143,9 @@ watch(
     playerElement.isFullscreenMounted,
     playerElement.isPiPMounted
   ],
-  (newVal) => {
+  async (newVal) => {
     if (newVal[1] || newVal[2]) {
-      playerElement.applyCurrentSubtitle();
+      await playerElement.applyCurrentSubtitle();
     }
   }
 );
