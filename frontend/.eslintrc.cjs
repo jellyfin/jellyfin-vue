@@ -13,7 +13,9 @@ module.exports = {
     sourceType: 'module',
     vueFeatures: {
       customMacros: ['defineModel']
-    }
+    },
+    project: './tsconfig.json',
+    extraFileExtensions: ['.json', '.vue']
   },
   globals: {
     __COMMIT_HASH__: 'readonly'
@@ -21,6 +23,7 @@ module.exports = {
   ignorePatterns: [
     '.eslintrc.js',
     '*.config.js',
+    'tsconfig.json',
     'types/global/routes.d.ts',
     'types/global/components.d.ts'
   ],
@@ -32,6 +35,7 @@ module.exports = {
     'plugin:optimize-regex/recommended',
     'plugin:no-use-extend-native/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:promise/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
