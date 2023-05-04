@@ -65,6 +65,7 @@ import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
+import { getLiveTvApi } from '@jellyfin/sdk/lib/utils/api/live-tv-api';
 import { isNil } from 'lodash-es';
 import { useRemote, useSnackbar } from '@/composables';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
@@ -78,7 +79,8 @@ const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
   movies: BaseItemKind.Movie,
   books: BaseItemKind.Book,
   music: BaseItemKind.MusicAlbum,
-  boxsets: BaseItemKind.BoxSet
+  boxsets: BaseItemKind.BoxSet,
+  livetv: BaseItemKind.LiveTvChannel
 };
 
 const library = ref<BaseItemDto>();
@@ -254,6 +256,16 @@ async function refreshItems(): Promise<void> {
           await remote.sdk.newUserApi(getStudiosApi).getStudios({
             userId,
             parentId
+          })
+        ).data;
+        break;
+      }
+      case 'LiveTvChannel': {
+        itemsResponse = (
+          await remote.sdk.newUserApi(getLiveTvApi).getLiveTvChannels({
+            userId,
+            sortBy: [sortBy.value ?? 'SortName'],
+            sortOrder: sortAscending.value ? 'Ascending' : 'Descending'
           })
         ).data;
         break;
