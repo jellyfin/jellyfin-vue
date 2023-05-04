@@ -148,7 +148,11 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
+          fields: [
+            ItemFields.PrimaryImageAspectRatio,
+            ItemFields.CanDelete,
+            ItemFields.ProviderIds
+          ],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -174,7 +178,11 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
+          fields: [
+            ItemFields.PrimaryImageAspectRatio,
+            ItemFields.CanDelete,
+            ItemFields.ProviderIds
+          ],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -200,7 +208,11 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
           userId: remote.auth.currentUserId,
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
+          fields: [
+            ItemFields.PrimaryImageAspectRatio,
+            ItemFields.CanDelete,
+            ItemFields.ProviderIds
+          ],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -228,7 +240,11 @@ class UserLibrariesStore {
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
           userId: remote.auth.currentUserId || '',
           limit: 24,
-          fields: [ItemFields.PrimaryImageAspectRatio, ItemFields.CanDelete],
+          fields: [
+            ItemFields.PrimaryImageAspectRatio,
+            ItemFields.CanDelete,
+            ItemFields.ProviderIds
+          ],
           imageTypeLimit: 1,
           enableImageTypes: [
             ImageType.Primary,
@@ -256,7 +272,8 @@ class UserLibrariesStore {
           fields: [
             ItemFields.Overview,
             ItemFields.PrimaryImageAspectRatio,
-            ItemFields.CanDelete
+            ItemFields.CanDelete,
+            ItemFields.ProviderIds
           ],
           enableImageTypes: [ImageType.Backdrop, ImageType.Logo],
           imageTypeLimit: 1

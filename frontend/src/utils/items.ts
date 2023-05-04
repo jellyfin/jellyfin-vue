@@ -196,6 +196,28 @@ export function getShapeFromItemType(
 }
 
 /**
+ * Determine if an item can be identified.
+ *
+ * @param item - The item to be checked.
+ * @returns Whether the item can be identified or not.
+ */
+export function canIdentify(item: BaseItemDto): boolean {
+  const valid = [
+    'Book',
+    'BoxSet',
+    'Movie',
+    'MusicAlbum',
+    'MusicArtist',
+    'MusicVideo',
+    'Person',
+    'Series',
+    'Trailer'
+  ];
+
+  return valid.includes(item.Type || '');
+}
+
+/**
  * Test if the passed item can be played by one of the players in the client.
  *
  * @param item - The item to be tested for playback support
