@@ -22,8 +22,8 @@ const searchQuery = computed({
   get(): string {
     return route.query.q?.toString() || '';
   },
-  set(value: string) {
-    router.replace({
+  async set(value) {
+    await router.replace({
       ...router.currentRoute,
       query: {
         q: value.trim() || undefined
@@ -35,11 +35,11 @@ const searchQuery = computed({
 /**
  * Handle page redirects depending on the focus state of the component
  */
-function onFocus(focused: boolean): void {
+async function onFocus(focused: boolean): Promise<void> {
   if (!searchQuery.value && !focused && window.history.length > 0) {
     router.back();
   } else if (focused && !searchQuery.value) {
-    router.push({ path: '/search' });
+    await router.push({ path: '/search' });
   }
 }
 </script>

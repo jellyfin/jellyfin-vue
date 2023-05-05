@@ -65,8 +65,8 @@ const menuItems = computed<MenuItem[]>(() => {
     menuItems.push({
       title: t('metadataEditor'),
       icon: IMdiPencil,
-      action: (): void => {
-        router.push('/metadata');
+      action: async (): Promise<void> => {
+        await router.push('/metadata');
       }
     });
   }
@@ -75,8 +75,8 @@ const menuItems = computed<MenuItem[]>(() => {
     {
       title: t('settings.settings'),
       icon: IMdiCog,
-      action: (): void => {
-        router.push('/settings');
+      action: async (): Promise<void> => {
+        await router.push('/settings');
       }
     },
     {

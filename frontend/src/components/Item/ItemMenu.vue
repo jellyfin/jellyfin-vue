@@ -172,8 +172,8 @@ const pushToBottomOfQueueAction = {
 const playFromBeginningAction = {
   title: t('playFromBeginning'),
   icon: IMdiReplay,
-  action: (): void => {
-    playbackManager.play({
+  action: async (): Promise<void> => {
+    await playbackManager.play({
       item: menuProps.item
     });
   }
@@ -245,7 +245,7 @@ const deleteItemAction = {
           });
 
           if (route.fullPath.includes(menuProps.item.Id)) {
-            router.replace('/');
+            await router.replace('/');
           }
         } catch (error) {
           console.error(error);

@@ -1,31 +1,15 @@
-import { RemovableRef, useStorage } from '@vueuse/core';
+import { useStorage } from '@vueuse/core';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isNil, merge } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
-import { useOneTimeAPI } from '../sdk/sdk-utils';
+import { VersionOutdatedIssue, VersionUnsupportedIssue } from '@jellyfin/sdk';
+import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 import { usei18n, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
-
-const state: RemovableRef<AuthState> = useStorage(
-  'auth',
-  {
-    servers: [],
-    currentServerIndex: -1,
-    currentUserIndex: -1,
-    users: [],
-    rememberMe: true,
-    accessTokens: {}
-  },
-  localStorage,
-  {
-    mergeDefaults: (storageValue, defaults) =>
-      mergeExcludingUnknown(storageValue, defaults)
-  }
-);
 
 /**
  * TypeScript type guard for AxiosError
@@ -36,18 +20,37 @@ function isAxiosError(object: unknown): object is AxiosError {
 
 class RemotePluginAuth {
   /**
+   * == STATE ==
+   */
+  private _state = useStorage<AuthState>(
+    'auth',
+    {
+      servers: [],
+      currentServerIndex: -1,
+      currentUserIndex: -1,
+      users: [],
+      rememberMe: true,
+      accessTokens: {}
+    },
+    localStorage,
+    {
+      mergeDefaults: (storageValue, defaults) =>
+        mergeExcludingUnknown(storageValue, defaults)
+    }
+  );
+  /**
    * Getters
    */
   public get servers(): ServerInfo[] {
-    return state.value.servers;
+    return this._state.value.servers;
   }
 
   public get currentServer(): ServerInfo | undefined {
-    return state.value.servers[state.value.currentServerIndex];
+    return this._state.value.servers[this._state.value.currentServerIndex];
   }
 
   public get currentUser(): UserDto | undefined {
-    return state.value.users[state.value.currentUserIndex];
+    return this._state.value.users[this._state.value.currentUserIndex];
   }
 
   public get currentUserId(): string | undefined {
@@ -61,26 +64,49 @@ class RemotePluginAuth {
   public readonly getUserAccessToken = (
     user: UserDto | undefined
   ): string | undefined => {
-    return user?.Id ? state.value.accessTokens[user.Id] : undefined;
+    return user?.Id ? this._state.value.accessTokens[user.Id] : undefined;
   };
 
   public readonly getServerById = (
     serverId: string | undefined | null
   ): ServerInfo | undefined => {
-    return state.value.servers.find((server) => server.Id === serverId);
+    return this._state.value.servers.find((server) => server.Id === serverId);
   };
 
   public readonly getUsersFromServer = (
     server: ServerInfo | undefined
   ): UserDto[] | undefined => {
-    return state.value.users.filter((user) => user.ServerId === server?.Id);
+    return this._state.value.users.filter(
+      (user) => user.ServerId === server?.Id
+    );
   };
 
   /**
    * Methods
    */
   /**
-   * Adds a new server to the store and sets it as the active server
+   * Adds or refresh the information of a server
+   *
+   * @param server - Payload of the
+   * @returns - Index of the server
+   */
+  private _addOrRefreshServer(server: ServerInfo): number {
+    const oldServer = this.getServerById(server.Id);
+
+    if (isNil(oldServer)) {
+      this._state.value.servers.push(server);
+
+      return this.servers.indexOf(this.getServerById(server.Id) as ServerInfo);
+    } else {
+      const servIndex = this.servers.indexOf(oldServer);
+
+      this.servers[servIndex] = merge(oldServer, server);
+
+      return servIndex;
+    }
+  }
+  /**
+   * Connects to a server
    *
    * @param serverUrl
    * @param isDefault
@@ -89,62 +115,54 @@ class RemotePluginAuth {
     serverUrl: string,
     isDefault = false
   ): Promise<void> {
-    const i18n = usei18n();
+    const { t } = usei18n();
     const router = useRouter();
-    let serv: ServerInfo;
 
     serverUrl = serverUrl.replace(/\/$/, '').trim();
 
-    try {
-      const api = useOneTimeAPI(serverUrl);
+    const candidates = await SDK.discovery.getRecommendedServerCandidates(
+      serverUrl
+    );
+    const best = SDK.discovery.findBestServer(candidates);
 
-      const { data } = await getSystemApi(api).getPublicSystemInfo();
+    if (best) {
+      const issues = candidates.flatMap((s) => s.issues);
 
-      delete data.LocalAddress;
-      serv = {
-        ...data,
-        PublicAddress: serverUrl,
-        isDefault: isDefault
-      };
-    } catch (error) {
-      useSnackbar(i18n.t('login.serverNotFound'), 'error');
-      throw error;
-    }
+      if (
+        issues.some(
+          (i) =>
+            i instanceof VersionOutdatedIssue ||
+            i instanceof VersionUnsupportedIssue
+        )
+      ) {
+        useSnackbar(t('login.serverVersionTooLow'), 'error');
+        throw new Error('Server version is too low');
+      }
 
-    const semverMajor = Number(serv.Version?.split('.')[0]);
-    const semverMinor = Number(serv.Version?.split('.')[1]);
-    const isServerVersionSupported =
-      semverMajor > 10 || (semverMajor === 10 && semverMinor >= 7);
+      try {
+        const api = useOneTimeAPI(best.address);
+        const { data } = await getSystemApi(api).getPublicSystemInfo();
 
-    if (isServerVersionSupported) {
-      if (serv.StartupWizardCompleted) {
-        const oldServer = this.getServerById(serv.Id);
+        delete data.LocalAddress;
 
-        if (isNil(oldServer)) {
-          state.value.servers.push(serv);
+        const serv = {
+          ...data,
+          PublicAddress: best.address,
+          isDefault: isDefault
+        };
+
+        if (serv.StartupWizardCompleted) {
+          this._state.value.currentServerIndex = this._addOrRefreshServer(serv);
         } else {
-          this.servers[this.servers.indexOf(oldServer)] = merge(
-            oldServer,
-            serv
-          );
+          await router.push({ path: '/wizard' });
         }
-
-        const serverInfo = state.value.servers.find(
-          (serv) => serv.PublicAddress === serverUrl
-        );
-
-        if (!serverInfo) {
-          throw new Error('expected to find server by url');
-        }
-
-        state.value.currentServerIndex =
-          state.value.servers.indexOf(serverInfo);
-      } else {
-        router.push({ path: '/wizard' });
+      } catch (error) {
+        useSnackbar(t('errors.anErrorHappened'), 'error');
+        console.error(error);
+        throw error;
       }
     } else {
-      useSnackbar(i18n.t('login.serverVersionTooLow'), 'error');
-      throw new Error('Server version is too low');
+      useSnackbar(t('login.serverNotFound'), 'error');
     }
   }
 
@@ -169,13 +187,15 @@ class RemotePluginAuth {
         this.currentServer.PublicAddress
       ).authenticateUserByName(username, password);
 
-      state.value.rememberMe = rememberMe;
+      this._state.value.rememberMe = rememberMe;
 
       if (data.User?.Id && data.AccessToken) {
-        state.value.accessTokens[data.User.Id] = data.AccessToken;
+        this._state.value.accessTokens[data.User.Id] = data.AccessToken;
 
-        state.value.users.push(data.User);
-        state.value.currentUserIndex = state.value.users.indexOf(data.User);
+        this._state.value.users.push(data.User);
+        this._state.value.currentUserIndex = this._state.value.users.indexOf(
+          data.User
+        );
       }
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -208,7 +228,7 @@ class RemotePluginAuth {
         this.getUserAccessToken(this.currentUser)
       );
 
-      state.value.users[state.value.currentUserIndex] = (
+      this._state.value.users[this._state.value.currentUserIndex] = (
         await getUserApi(api).getCurrentUser()
       ).data;
     }
@@ -223,7 +243,7 @@ class RemotePluginAuth {
     if (!isNil(this.currentUser) && !isNil(this.currentServer)) {
       await this.logoutUser(this.currentUser, this.currentServer, skipRequest);
 
-      state.value.currentUserIndex = -1;
+      this._state.value.currentUserIndex = -1;
     }
   }
 
@@ -250,14 +270,17 @@ class RemotePluginAuth {
       console.error(error);
     }
 
-    const storeUser = state.value.users.find((u) => u.Id === user.Id);
+    const storeUser = this._state.value.users.find((u) => u.Id === user.Id);
 
     if (!isNil(storeUser)) {
-      state.value.users.splice(state.value.users.indexOf(storeUser), 1);
+      this._state.value.users.splice(
+        this._state.value.users.indexOf(storeUser),
+        1
+      );
     }
 
     if (!isNil(user.Id)) {
-      delete state.value.accessTokens[user.Id];
+      delete this._state.value.accessTokens[user.Id];
     }
   }
 
@@ -267,7 +290,7 @@ class RemotePluginAuth {
    * @param serverUrl
    */
   public async deleteServer(serverUrl: string): Promise<void> {
-    const server = state.value.servers.find(
+    const server = this._state.value.servers.find(
       (s) => s.PublicAddress === serverUrl
     );
 
@@ -283,7 +306,10 @@ class RemotePluginAuth {
       }
     }
 
-    state.value.servers.splice(state.value.servers.indexOf(server), 1);
+    this._state.value.servers.splice(
+      this._state.value.servers.indexOf(server),
+      1
+    );
   }
 
   public constructor() {

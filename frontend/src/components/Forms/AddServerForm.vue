@@ -42,7 +42,7 @@
 import { ref, unref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useRemote, useSnackbar } from '@/composables';
+import { useRemote } from '@/composables';
 
 const remote = useRemote();
 const router = useRouter();
@@ -61,27 +61,14 @@ const rules = [
  */
 async function connectToServer(): Promise<void> {
   loading.value = true;
-  serverUrl.value = serverUrl.value.trim();
 
   try {
-    let candidates = await remote.sdk.discovery.getRecommendedServerCandidates(
-      serverUrl.value
-    );
-
-    const best = remote.sdk.discovery.findBestServer(candidates);
-
-    if (!best) {
-      useSnackbar(i18n.t('login.serverNotFound'), 'error');
-
-      return;
-    }
-
-    await remote.auth.connectServer(best.address);
+    await remote.auth.connectServer(serverUrl.value);
 
     if (previousServerLength === 0) {
-      router.push('/server/login');
+      await router.push('/server/login');
     } else {
-      router.push('/server/select');
+      await router.push('/server/select');
     }
   } finally {
     loading.value = false;

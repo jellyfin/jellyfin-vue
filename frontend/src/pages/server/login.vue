@@ -86,7 +86,7 @@ route.meta.title = t('login.login');
 try {
   await getSystemApi(api).getPublicSystemInfo();
 } catch {
-  router.replace('/server/select');
+  await router.replace('/server/select');
 }
 
 const brandingData = (await getBrandingApi(api).getBrandingOptions()).data;
@@ -104,7 +104,7 @@ async function setCurrentUser(user: UserDto): Promise<void> {
   if (!user.HasPassword && user.Name) {
     // If the user doesn't have a password, avoid showing the password form
     await remote.auth.loginUser(user.Name, '');
-    router.replace('/');
+    await router.replace('/');
   } else {
     currentUser.value = user;
   }
