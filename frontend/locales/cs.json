@@ -47,7 +47,7 @@
   "dateAdded": "Datum přidání",
   "delete": "Odstranit",
   "deleteItem": "Odstranit média",
-  "deleteItemDescription": "Smazáním položky odstraníte soubor jak z knihovny médií tak ze souborového systému. Jste si jisti, že chcete pokračovat?",
+  "deleteItemDescription": "Smazáním položky odstraníte soubor z knihovny médií i ze souborového systému. Opravdu chcete pokračovat?",
   "details": "Podrobnosti",
   "dialog": {
     "upNext": {
@@ -91,6 +91,8 @@
   "general": "Obecné",
   "genericJellyfinPlaceholderDevice": "Nespecifikované zařízení Jellyfin",
   "genres": "Žánry",
+  "goBack": "Zpět",
+  "goNext": "Vpřed",
   "googleCastPlaceholderDevice": "Zařízení Google Cast",
   "guestStar": "Vedlejší role",
   "headerExternalIds": "Externí ID",
@@ -101,6 +103,9 @@
       "recentlyAdded": "Nově přidáno"
     }
   },
+  "identify": "Identifikovat",
+  "identifyConfirmChanges": "Opravdu chcete změnit '{originalItem}' na '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Kliknutím na jednu z těchto karet aplikujete výsledek",
   "imageType": {
     "art": "Obrázky",
     "backdrop": "Pozadí",
@@ -317,6 +322,7 @@
   "remoteDevices": "Vzdálená zařízení",
   "replaceAllMetadata": "Přepsat všechna metadata",
   "replaceExistingImages": "Nahradit existující obrázky",
+  "results": "Výsledky",
   "resumable": "Rozdívané",
   "resume": "Pokračovat",
   "role": "Role",
@@ -328,6 +334,7 @@
     "topResults": "Nejlepší výsledky"
   },
   "searchMissingMetadata": "Vyhledat chybějící metadata",
+  "searchNoResults": "Žádné výsledky",
   "seasonEpisode": "Řada {seasonNumber}, díl {episodeNumber}",
   "seasonEpisodeAbbrev": "Řada {seasonNumber} díl {episodeNumber}",
   "series": "Seriály",
