@@ -26,6 +26,7 @@ import IMdiBookMusic from 'virtual:icons/mdi/book-music';
 import IMdiFolderMultiple from 'virtual:icons/mdi/folder-multiple';
 import IMdiFilmstrip from 'virtual:icons/mdi/filmstrip';
 import IMdiAlbum from 'virtual:icons/mdi/album';
+import { ticksToMs } from './time';
 import { useRemote } from '@/composables';
 
 /**
@@ -438,6 +439,13 @@ export function getItemIcon(
   }
 
   return itemIcon;
+}
+
+/**
+ * Get the runtime of an item in milliseconds
+ */
+export function getItemRuntime(item: BaseItemDto): number {
+  return ticksToMs(item.RunTimeTicks);
 }
 
 /**

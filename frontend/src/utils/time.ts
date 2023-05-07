@@ -32,11 +32,7 @@ function formatDigits(number: number): string {
  * @returns The converted value in milliseconds
  */
 export function ticksToMs(ticks: number | null | undefined): number {
-  if (!ticks) {
-    ticks = 0;
-  }
-
-  return Math.round(ticks / 10_000);
+  return ticks ? Math.round(ticks / 10_000) : 0;
 }
 
 /**
