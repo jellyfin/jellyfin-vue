@@ -13,9 +13,23 @@
 import { shallowRef, ref, watch } from 'vue';
 import { wrap } from 'comlink';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
+import { useRemote } from '@/composables/use-remote';
 
+const remote = useRemote();
 const worker = new BlurhashWorker();
 const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
+
+/**
+ * Clear cached blurhashes on logout
+ */
+watch(
+  () => remote.auth.currentUser,
+  async () => {
+    if (remote.auth.currentUser === undefined) {
+      await pixelWorker.clearCache();
+    }
+  }
+);
 </script>
 
 <script setup lang="ts">
@@ -42,7 +56,7 @@ watch([props, canvas], async () => {
     const imageData = context?.createImageData(props.width, props.height);
 
     try {
-      pixels.value = await pixelWorker(
+      pixels.value = await pixelWorker.getPixels(
         props.hash,
         props.width,
         props.height,
