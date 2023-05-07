@@ -65,7 +65,7 @@
   "editMetadata": "Редагувати метадані",
   "editPerson": "Редагувати персону",
   "endDate": "Дата закінчення",
-  "endsAt": "Закінчується о {time}",
+  "endsAt": "Закінчиться о {time}",
   "episodeNumber": "Епізод {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ой, сталась помилка",
@@ -91,6 +91,8 @@
   "general": "Загальне",
   "genericJellyfinPlaceholderDevice": "Стандартний пристрій Jellyfin",
   "genres": "Жанри",
+  "goBack": "Назад",
+  "goNext": "Наступний",
   "googleCastPlaceholderDevice": "Пристрої Google Cast",
   "guestStar": "Запрошені зірки",
   "headerExternalIds": "Зовнішні ID",
@@ -101,6 +103,9 @@
       "recentlyAdded": "Недавно додане"
     }
   },
+  "identify": "Ідентифікувати",
+  "identifyConfirmChanges": "Ви впевнені, що хочете змінити '{originalItem}' на '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Ви можете натиснути на одну з цих карток, щоб застосувати результат",
   "imageType": {
     "art": "Обкладинка",
     "backdrop": "Фон",
@@ -147,8 +152,8 @@
     }
   },
   "itemMenu": {
-    "pushToBottom": "Перейти до кінця",
-    "pushToTop": "Перейти до початку",
+    "pushToBottom": "Перемістити в кінець",
+    "pushToTop": "Перемістити на початок",
     "removeFromQueue": "Видалити з черги"
   },
   "itemNotFound": "Елемент не знайдено",
@@ -317,6 +322,7 @@
   "remoteDevices": "Віддалені пристрої",
   "replaceAllMetadata": "Замінити всі метадані",
   "replaceExistingImages": "Замінити наявні зображення",
+  "results": "Результати",
   "resumable": "Відновлюване",
   "resume": "Відновити",
   "role": "Роль",
@@ -328,6 +334,7 @@
     "topResults": "Найкращі результати"
   },
   "searchMissingMetadata": "Пошук відсутніх метаданих",
+  "searchNoResults": "Результатів не знайдено",
   "seasonEpisode": "Сезон {seasonNumber}, Епізод {episodeNumber}",
   "seasonEpisodeAbbrev": "С{seasonNumber}Е{episodeNumber}",
   "series": "Серіал",
