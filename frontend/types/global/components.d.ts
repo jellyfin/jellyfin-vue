@@ -53,7 +53,7 @@ declare module 'vue' {
     IMdiContentSave: typeof import('~icons/mdi/content-save')['default']
     IMdiDelete: typeof import('~icons/mdi/delete')['default']
     IMdiDisc: typeof import('~icons/mdi/disc')['default']
-    IMdiDotsHorizontal: typeof import('~icons/mdi/dots-horizontal')['default']
+    IMdiDotsVertical: typeof import('~icons/mdi/dots-vertical')['default']
     IMdiDragHorizontal: typeof import('~icons/mdi/drag-horizontal')['default']
     IMdiEye: typeof import('~icons/mdi/eye')['default']
     IMdiFile: typeof import('~icons/mdi/file')['default']
