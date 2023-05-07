@@ -167,19 +167,24 @@ watch(
       hls.stopLoad();
     }
 
-    if (!newUrl) {
-      return;
-    }
-
     if (
       mediaElementRef.value &&
-      (playbackManager.currentMediaSource?.SupportsDirectPlay || !hls)
+      (!newUrl ||
+        playbackManager.currentMediaSource?.SupportsDirectPlay ||
+        !hls)
     ) {
       /**
-       * For the video case, Safari iOS doesn't support hls.js but supports native HLS
+       * For the video case, Safari iOS doesn't support hls.js but supports native HLS.
+       *
+       * We stringify undefined instead of skipping this block when there's no new source url,
+       * so the player doesn't restart playback of the previous item
        */
-      mediaElementRef.value.src = newUrl;
-    } else if (hls && playbackManager.currentlyPlayingMediaType === 'Video') {
+      mediaElementRef.value.src = String(newUrl);
+    } else if (
+      hls &&
+      playbackManager.currentlyPlayingMediaType === 'Video' &&
+      newUrl
+    ) {
       /**
        * We need to check if HLS.js can handle transcoded audio to remove the video check
        */
