@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { playbackManagerStore } from '@/store';
-import { ticksToMs, getEndsAtTime, getRuntimeTime } from '@/utils/time';
+import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
 const emit = defineEmits<{
   change: [isVisible: boolean];
@@ -80,7 +80,7 @@ const playbackManager = playbackManagerStore();
 const isHiddenByUser = ref(false);
 
 const currentItemDuration = computed(
-  (): number => ticksToMs(playbackManager.currentItem?.RunTimeTicks) / 1000
+  () => playbackManager.currentItemRuntime / 1000
 );
 const currentItemTimeLeft = computed(() =>
   Math.round(currentItemDuration.value - (playbackManager.currentTime || 0))
