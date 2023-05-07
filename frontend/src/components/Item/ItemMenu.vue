@@ -6,7 +6,7 @@
     @click.stop.prevent="onActivatorClick"
     @contextmenu.stop.prevent="onRightClick">
     <v-icon>
-      <i-mdi-dots-horizontal />
+      <i-mdi-dots-vertical />
     </v-icon>
     <v-menu
       v-model="show"
@@ -66,6 +66,7 @@ import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useRoute, useRouter } from 'vue-router';
+import { v4 } from 'uuid';
 import { useRemote, useSnackbar, useConfirmDialog } from '@/composables';
 import {
   canIdentify,
@@ -85,11 +86,12 @@ type MenuOption = {
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
  */
-const openItemId = ref<string>();
+const openMenu = ref<string>();
 </script>
 
 <script setup lang="ts">
 const { t } = useI18n();
+const instanceId = v4();
 const remote = useRemote();
 const router = useRouter();
 const route = useRoute();
@@ -111,12 +113,16 @@ const menuProps = withDefaults(
 );
 
 const parent = getCurrentInstance()?.parent;
+/**
+ * Ensure only one item menu is always open at a time, regardless if there are duplicated ones in
+ * the same screen
+ */
 const show = computed({
   get() {
-    return openItemId.value === menuProps.item.Id;
+    return instanceId === openMenu.value;
   },
   set(newVal: boolean) {
-    openItemId.value = newVal ? menuProps.item.Id : undefined;
+    openMenu.value = newVal ? instanceId : undefined;
   }
 });
 const positionX = ref<number | undefined>(undefined);
