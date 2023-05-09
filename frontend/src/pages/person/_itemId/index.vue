@@ -61,7 +61,13 @@
         <v-window-item :value="4">
           <v-row>
             <v-col cols="12" md="7">
-              <span class="item-overview" v-text="item.Overview" />
+              <!-- eslint-disable vue/no-v-html -
+                Output is properly sanitized using sanitizeHtml -->
+              <span
+                v-if="item.Overview"
+                class="item-overview"
+                v-html="sanitizeHtml(item.Overview, true)" />
+              <!-- eslint-enable vue/no-v-html -->
             </v-col>
             <v-col cols="12" md="5">
               <v-row v-if="birthDate || birthPlace" no-gutters>
@@ -113,6 +119,7 @@ import { format } from 'date-fns';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getBlurhash } from '@/utils/images';
+import { sanitizeHtml } from '@/utils/html';
 import { useRemote, useDateFns } from '@/composables';
 
 const route = useRoute();

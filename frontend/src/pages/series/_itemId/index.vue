@@ -110,7 +110,13 @@
               class="text-subtitle-1 text-truncate">
               {{ item.Taglines[0] }}
             </p>
-            <p class="item-overview">{{ item.Overview }}</p>
+            <!-- eslint-disable vue/no-v-html -
+              Output is properly sanitized using sanitizeHtml -->
+            <p
+              v-if="item.Overview"
+              class="item-overview"
+              v-html="sanitizeHtml(item.Overview, true)" />
+            <!-- eslint-enable vue/no-v-html -->
           </div>
         </v-col>
       </v-row>
@@ -145,6 +151,7 @@ import {
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
+import { sanitizeHtml } from '@/utils/html';
 import { useRemote } from '@/composables';
 
 const route = useRoute();

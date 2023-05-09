@@ -85,7 +85,13 @@
                 <v-row>
                   <v-col>
                     <v-col cols="12" md="7">
-                      <span class="item-overview" v-text="item.Overview" />
+                      <!-- eslint-disable vue/no-v-html -
+                        Output is properly sanitized using sanitizeHtml -->
+                      <span
+                        v-if="item.Overview"
+                        class="item-overview"
+                        v-html="sanitizeHtml(item.Overview, true)" />
+                      <!-- eslint-enable vue/no-v-html -->
                     </v-col>
                   </v-col>
                 </v-row>
@@ -117,6 +123,7 @@ import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api'
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
+import { sanitizeHtml } from '@/utils/html';
 import { useRemote } from '@/composables';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
