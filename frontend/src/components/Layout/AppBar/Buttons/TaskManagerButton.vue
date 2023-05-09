@@ -92,16 +92,13 @@ const allCompleted = computed(
 const buttonColor = computed(() =>
   allCompleted.value ? 'success' : undefined
 );
-const UITaskList = computed(
-  () =>
-    new Set([
-      ...(menu.value
-        ? mappedTaskList.value.filter((t) => t.progress !== 100)
-        : mappedTaskList.value),
-      ...completedTaskList.value
-    ])
-);
-const showButton = computed(() => UITaskList.value.size > 0);
+const UITaskList = computed(() => [
+  ...(menu.value
+    ? mappedTaskList.value.filter((t) => t.progress !== 100)
+    : mappedTaskList.value),
+  ...completedTaskList.value
+]);
+const showButton = computed(() => UITaskList.value.length > 0);
 
 watch([menu, mappedCompleted], () => {
   if (menu.value) {
