@@ -252,22 +252,22 @@ watch(staticOverlay, (val) => {
   padding-bottom: 5em;
   background: linear-gradient(
     to bottom,
-    hsla(0, 0%, 0%, 0.75) 0%,
-    hsla(0, 0%, 0%, 0.74) 8.1%,
-    hsla(0, 0%, 0%, 0.714) 15.5%,
-    hsla(0, 0%, 0%, 0.672) 22.5%,
-    hsla(0, 0%, 0%, 0.618) 29%,
-    hsla(0, 0%, 0%, 0.556) 35.3%,
-    hsla(0, 0%, 0%, 0.486) 41.2%,
-    hsla(0, 0%, 0%, 0.412) 47.1%,
-    hsla(0, 0%, 0%, 0.338) 52.9%,
-    hsla(0, 0%, 0%, 0.264) 58.8%,
-    hsla(0, 0%, 0%, 0.194) 64.7%,
-    hsla(0, 0%, 0%, 0.132) 71%,
-    hsla(0, 0%, 0%, 0.078) 77.5%,
-    hsla(0, 0%, 0%, 0.036) 84.5%,
-    hsla(0, 0%, 0%, 0.01) 91.9%,
-    hsla(0, 0%, 0%, 0) 100%
+    rgb(var(--v-theme-background), 0.75) 0%,
+    rgb(var(--v-theme-background), 0.74) 8.1%,
+    rgb(var(--v-theme-background), 0.714) 15.5%,
+    rgb(var(--v-theme-background), 0.672) 22.5%,
+    rgb(var(--v-theme-background), 0.618) 29%,
+    rgb(var(--v-theme-background), 0.556) 35.3%,
+    rgb(var(--v-theme-background), 0.486) 41.2%,
+    rgb(var(--v-theme-background), 0.412) 47.1%,
+    rgb(var(--v-theme-background), 0.338) 52.9%,
+    rgb(var(--v-theme-background), 0.264) 58.8%,
+    rgb(var(--v-theme-background), 0.194) 64.7%,
+    rgb(var(--v-theme-background), 0.132) 71%,
+    rgb(var(--v-theme-background), 0.078) 77.5%,
+    rgb(var(--v-theme-background), 0.036) 84.5%,
+    rgb(var(--v-theme-background), 0.01) 91.9%,
+    rgb(var(--v-theme-background), 0) 100%
   );
 }
 
@@ -275,22 +275,22 @@ watch(staticOverlay, (val) => {
   padding-top: 6em;
   background: linear-gradient(
     to top,
-    hsla(0, 0%, 0%, 0.75) 0%,
-    hsla(0, 0%, 0%, 0.74) 8.1%,
-    hsla(0, 0%, 0%, 0.714) 15.5%,
-    hsla(0, 0%, 0%, 0.672) 22.5%,
-    hsla(0, 0%, 0%, 0.618) 29%,
-    hsla(0, 0%, 0%, 0.556) 35.3%,
-    hsla(0, 0%, 0%, 0.486) 41.2%,
-    hsla(0, 0%, 0%, 0.412) 47.1%,
-    hsla(0, 0%, 0%, 0.338) 52.9%,
-    hsla(0, 0%, 0%, 0.264) 58.8%,
-    hsla(0, 0%, 0%, 0.194) 64.7%,
-    hsla(0, 0%, 0%, 0.132) 71%,
-    hsla(0, 0%, 0%, 0.078) 77.5%,
-    hsla(0, 0%, 0%, 0.036) 84.5%,
-    hsla(0, 0%, 0%, 0.01) 91.9%,
-    hsla(0, 0%, 0%, 0) 100%
+    rgb(var(--v-theme-background), 0.75) 0%,
+    rgb(var(--v-theme-background), 0.74) 8.1%,
+    rgb(var(--v-theme-background), 0.714) 15.5%,
+    rgb(var(--v-theme-background), 0.672) 22.5%,
+    rgb(var(--v-theme-background), 0.618) 29%,
+    rgb(var(--v-theme-background), 0.556) 35.3%,
+    rgb(var(--v-theme-background), 0.486) 41.2%,
+    rgb(var(--v-theme-background), 0.412) 47.1%,
+    rgb(var(--v-theme-background), 0.338) 52.9%,
+    rgb(var(--v-theme-background), 0.264) 58.8%,
+    rgb(var(--v-theme-background), 0.194) 64.7%,
+    rgb(var(--v-theme-background), 0.132) 71%,
+    rgb(var(--v-theme-background), 0.078) 77.5%,
+    rgb(var(--v-theme-background), 0.036) 84.5%,
+    rgb(var(--v-theme-background), 0.01) 91.9%,
+    rgb(var(--v-theme-background), 0) 100%
   );
 }
 

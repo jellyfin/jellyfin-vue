@@ -2,6 +2,7 @@
   <v-btn
     v-if="options.length > 0"
     :variant="outlined ? 'outlined' : undefined"
+    icon
     size="small"
     @click.stop.prevent="onActivatorClick"
     @contextmenu.stop.prevent="onRightClick">
