@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ref } from 'vue';
+import { computed, shallowRef, ref } from 'vue';
 import { refDebounced } from '@vueuse/core';
 import {
   BaseItemDto,
@@ -86,7 +86,7 @@ const props = withDefaults(
 
 const loading = ref(true);
 const error = ref(false);
-const imageElement = ref<HTMLDivElement | undefined>(undefined);
+const imageElement = shallowRef<HTMLDivElement>();
 const imageUrl = computed(() => {
   const element = imageElement.value;
 
