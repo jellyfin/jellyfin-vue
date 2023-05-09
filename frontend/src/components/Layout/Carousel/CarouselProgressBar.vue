@@ -101,10 +101,10 @@ const barClasses = computed(() =>
   display: block;
   background-image: linear-gradient(
     to right,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0.3) 50.001%,
-    rgba(255, 255, 255, 0.3) 100%
+    rgba(var(--v-border-color), 1) 0%,
+    rgba(var(--v-border-color), 1) 50%,
+    rgba(var(--v-border-color), 0.3) 50.001%,
+    rgba(var(--v-border-color), 0.3) 100%
   );
   background-repeat: no-repeat;
   background-size: 200%;

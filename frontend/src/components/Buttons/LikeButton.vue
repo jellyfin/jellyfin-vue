@@ -2,6 +2,7 @@
   <v-btn
     :icon="isFavorite ? IMdiHeart : IMdiHeartOutline"
     size="small"
+    :color="isFavorite ? 'primary' : undefined"
     :loading="loading"
     @click.stop.prevent="isFavorite = !isFavorite" />
 </template>
