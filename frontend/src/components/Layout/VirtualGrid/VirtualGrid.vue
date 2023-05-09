@@ -43,7 +43,15 @@
  * - Types for BaseItemDto
  * - Improved documentation and comments
  */
-import { ref, watch, StyleValue, onMounted, onUnmounted, computed } from 'vue';
+import {
+  shallowRef,
+  ref,
+  watch,
+  StyleValue,
+  onMounted,
+  onUnmounted,
+  computed
+} from 'vue';
 import {
   Fn,
   refDebounced,
@@ -94,14 +102,14 @@ const props = withDefaults(
 /**
  * == TEMPLATE REFS ==
  */
-const rootRef = ref<HTMLElement>();
-const probeRef = ref<HTMLElement>();
+const rootRef = shallowRef<HTMLElement>();
+const probeRef = shallowRef<HTMLElement>();
 
 /**
  * == STATE REFS ==
  */
 const itemRect = ref<DOMRectReadOnly>();
-const scrollEvents = ref(0);
+const scrollEvents = shallowRef(0);
 const eventCleanups: Fn[] = [];
 
 /**

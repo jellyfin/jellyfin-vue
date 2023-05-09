@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { ref, watch } from 'vue';
+import { shallowRef, ref, watch } from 'vue';
 import { wrap } from 'comlink';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
 
@@ -33,8 +33,8 @@ const emit = defineEmits<{
   (e: 'error'): void;
 }>();
 
-const pixels = ref<Uint8ClampedArray | undefined>(undefined);
-const canvas = ref<HTMLCanvasElement | undefined>(undefined);
+const pixels = ref<Uint8ClampedArray>();
+const canvas = shallowRef<HTMLCanvasElement>();
 
 watch([props, canvas], async () => {
   if (canvas.value) {

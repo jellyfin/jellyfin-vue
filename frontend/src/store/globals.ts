@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 import { useMediaControls, useNow, useScroll } from '@vueuse/core';
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
@@ -17,7 +17,7 @@ export const windowScroll = useScroll(window);
 /**
  * Ref to the local media player
  */
-export const mediaElementRef = ref<HTMLMediaElement>();
+export const mediaElementRef = shallowRef<HTMLMediaElement>();
 /**
  * Reactive media controls of the local media player
  */
