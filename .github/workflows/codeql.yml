@@ -12,11 +12,23 @@ on:
     paths-ignore:
       - "**/*.md"
   workflow_call:
+  schedule:
+    - cron: "0 0 * * MON,FRI"
 
 jobs:
   analyze:
     name: Analyze 🔬
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - "javascript"
 
     steps:
       - name: Checkout repository ⬇️
@@ -25,10 +37,13 @@ jobs:
       - name: Initialize CodeQL 🛠️
         uses: github/codeql-action/init@v2
         with:
-          queries: +security-and-quality
+          queries: security-and-quality
+          languages: ${{ matrix.language }}
 
       - name: Autobuild 📦
         uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis 🧪
         uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
