@@ -6,11 +6,21 @@
   "albums": "Albümler",
   "allLanguages": "Tüm diller",
   "alphabetically": "Alfabetik",
+  "appbar": {
+    "tasks": {
+      "configSync": "Ayarlar senkronize ediliyor…",
+      "scanningItem": "'{item}' Taranıyor…"
+    }
+  },
   "architecture": "Mimari",
   "artist": "Sanatçı",
   "artists": "Sanatçı",
+  "aspectRatio": "En boy oranı",
   "audio": "Ses",
+  "audioCodecNotSupported": "Bu ses codec'i desteklenmiyor",
+  "auto": "Otomatik",
   "badRequest": "Hatalı istek. Tekrar deneyin",
+  "books": "Kitaplar",
   "browserNotSupported": "Tarayıcınız bu dosya formatını oynatmak için desteklenmiyor.",
   "buttons": {
     "ok": "Tamam"
@@ -25,16 +35,30 @@
   "continueWatching": "İzlemeye devam et",
   "criticRating": "Eleştirmen puanı",
   "dateAdded": "Ekleme Tarihi",
+  "delete": "Sil",
   "details": "Detaylar",
+  "dialog": {
+    "upNext": {
+      "hide": "Gizle"
+    }
+  },
   "director": "Yönetmen",
+  "discNumber": "Disk {discNumber}",
   "dislikes": "Beğenilmeyenler",
   "edit": "Düzenle",
   "endDate": "Bitiş tarihi",
   "endsAt": "{time}'de bitiyor",
   "episodeNumber": "Bölüm {episodeNumber}",
+  "errors": {
+    "anErrorHappened": "Bir hata oluştu",
+    "messages": {
+      "errorCode": "Hata kodu: {errorCode}"
+    }
+  },
   "favorite": "Favori",
   "features": "Özellikleri",
   "filter": "Filtre",
+  "filtersNotFound": "Filtreler yüklenemedi",
   "fullScreen": "Tam ekran",
   "general": "Genel",
   "genres": "Türler",
