@@ -1,104 +1,82 @@
 <template>
-  <v-dialog
+  <generic-dialog
     :model-value="model"
-    :fullscreen="$vuetify.display.mobile"
-    :height="$vuetify.display.mobile ? undefined : 'auto'"
-    :width="$vuetify.display.mobile ? undefined : '70vw'"
-    @after-leave="emit('close')">
-    <v-card height="100%" class="d-flex flex-column" loading>
-      <template #loader>
-        <v-progress-linear v-model="progress" :indeterminate="isLoading" />
-      </template>
-      <v-toolbar color="transparent">
-        <template #prepend>
-          <v-btn icon :disabled="tabName === 'searchMenu'" @click="clear">
-            <i-mdi-arrow-left />
-          </v-btn>
-        </template>
-        <template #append>
-          <v-btn icon @click="model = false">
-            <i-mdi-close />
-          </v-btn>
-        </template>
-        <v-toolbar-title>
-          {{ $t('identify') }}
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-card-subtitle v-if="itemPath" class="pb-3">
-        {{ itemPath }}
-      </v-card-subtitle>
+    :title="$t('identify')"
+    :subtitle="itemPath"
+    loading
+    @close="wrapClose">
+    <template #loader>
+      <v-progress-linear v-model="progress" :indeterminate="isLoading" />
+    </template>
 
-      <v-divider />
+    <template #toolbarPrepend>
+      <v-btn icon :disabled="tabName === 'searchMenu'" @click="clear">
+        <i-mdi-arrow-left />
+      </v-btn>
+    </template>
 
-      <v-card-text
-        class="pa-0 px-2 flex-grow-1"
-        :class="{
-          'd-flex': !$vuetify.display.mobile,
-          'flex-row': !$vuetify.display.mobile
-        }">
-        <v-window v-model="tabName" class="pa-2 flex-fill">
-          <v-window-item value="searchMenu">
-            <v-col>
-              <v-text-field
-                v-for="(field, idx) in searchFields"
-                :key="field.key"
-                v-model="fieldsInputs[idx].value"
-                variant="outlined"
-                class="mb-2"
-                :placeholder="field.value ?? undefined"
-                :persistent-placeholder="field.value ? true : false"
-                clearable
-                :disabled="isLoading"
-                :type="field.type"
-                :label="field.title" />
-            </v-col>
-          </v-window-item>
-          <v-window-item value="resultsMenu">
-            <h3>{{ $t('results') }}</h3>
-            <div class="mt-2 text-subtitle-1">
-              {{ $t('identifyInstructResult') }}
-            </div>
-            <v-checkbox
-              v-if="searchResults"
-              v-model="replaceImage"
-              class="d-flex mt-2"
-              color="primary">
-              <template #append>
-                {{ $t('replaceExistingImages') }}
-              </template>
-            </v-checkbox>
-            <v-divider />
-            <identify-results
-              v-if="Array.isArray(searchResults) && searchResults.length > 0"
-              :items="searchResults"
-              :item-type="item.Type"
-              @select="applySelectedSearch" />
-            <h3 v-else class="text-center my-4">
-              {{ $t('searchNoResults') }}
-            </h3>
-          </v-window-item>
-        </v-window>
-      </v-card-text>
+    <v-card-text
+      class="pa-0 px-2 flex-grow-1"
+      :class="{
+        'd-flex': !$vuetify.display.mobile,
+        'flex-row': !$vuetify.display.mobile
+      }">
+      <v-window v-model="tabName" class="pa-2 flex-fill">
+        <v-window-item value="searchMenu">
+          <v-col>
+            <v-text-field
+              v-for="(field, idx) in searchFields"
+              :key="field.key"
+              v-model="fieldsInputs[idx].value"
+              variant="outlined"
+              class="mb-2"
+              :placeholder="field.value ?? undefined"
+              :persistent-placeholder="field.value ? true : false"
+              clearable
+              :disabled="isLoading"
+              :type="field.type"
+              :label="field.title" />
+          </v-col>
+        </v-window-item>
+        <v-window-item value="resultsMenu">
+          <h3>{{ $t('results') }}</h3>
+          <div class="mt-2 text-subtitle-1">
+            {{ $t('identifyInstructResult') }}
+          </div>
+          <v-checkbox
+            v-if="searchResults"
+            v-model="replaceImage"
+            class="d-flex mt-2"
+            color="primary">
+            <template #append>
+              {{ $t('replaceExistingImages') }}
+            </template>
+          </v-checkbox>
+          <v-divider />
+          <identify-results
+            v-if="Array.isArray(searchResults) && searchResults.length > 0"
+            :items="searchResults"
+            :item-type="item.Type"
+            @select="applySelectedSearch" />
+          <h3 v-else class="text-center my-4">
+            {{ $t('searchNoResults') }}
+          </h3>
+        </v-window-item>
+      </v-window>
+    </v-card-text>
 
-      <v-divider />
-      <v-card-actions
-        class="d-flex align-center pa-3"
-        :class="{
-          'justify-end': !$vuetify.display.mobile,
-          'justify-center': $vuetify.display.mobile
-        }">
-        <v-btn
-          v-if="tabName === 'searchMenu'"
-          variant="flat"
-          width="8em"
-          color="primary"
-          :loading="isLoading"
-          @click="performSearch">
-          {{ t('search.name') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <template #actions>
+      <v-btn
+        v-if="tabName === 'searchMenu'"
+        variant="flat"
+        width="8em"
+        color="primary"
+        :loading="isLoading"
+        @click="performSearch">
+        {{ t('search.name') }}
+      </v-btn>
+    </template>
+  </generic-dialog>
 </template>
 
 <script setup lang="ts">
@@ -123,6 +101,11 @@ const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 const emit = defineEmits<{
   close: [];
 }>();
+
+const wrapClose = (): void => {
+  model.value = false;
+  emit('close');
+};
 
 const { t } = useI18n();
 const remote = useRemote();

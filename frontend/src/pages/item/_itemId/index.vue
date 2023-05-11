@@ -121,19 +121,13 @@
                   <label class="text--secondary">{{ $t('version') }}</label>
                 </v-col>
                 <v-col class="px-0" :cols="12" :sm="10">
-                  <v-select
-                    v-model="currentSource"
-                    :items="selectSources"
-                    single-line
-                    hide-details
-                    class="text-truncate">
-                    <template #selection="{ item: i }">
-                      {{ i.value.Name }}
-                    </template>
-                    <template #item="{ item: i, props }">
-                      <v-list-item v-bind="props" :title="i.value.Name" />
-                    </template>
-                  </v-select>
+                  <media-source-selector
+                    :sources="item.MediaSources"
+                    :default-source-index="currentSourceIndex"
+                    @input="
+                      (index) =>
+                        (currentSource = item.MediaSources?.[index] ?? {})
+                    " />
                 </v-col>
               </v-row>
               <v-row align="center">
