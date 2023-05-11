@@ -66,10 +66,7 @@ const dfnsExports = localeFiles
 
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
-    server: {
-      host: '0.0.0.0',
-      port: 3000
-    },
+    appType: 'spa',
     define: {
       __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
     },
@@ -163,6 +160,7 @@ export default defineConfig(({ mode }): UserConfig => {
        * See main.ts for an explanation of this target
        */
       target: 'es2022',
+      cssCodeSplit: false,
       modulePreload: false,
       reportCompressedSize: false,
       rollupOptions: {
@@ -192,6 +190,10 @@ export default defineConfig(({ mode }): UserConfig => {
       strictPort: true,
       host: '0.0.0.0',
       cors: true
+    },
+    server: {
+      host: '0.0.0.0',
+      port: 3000
     },
     resolve: {
       alias: {
