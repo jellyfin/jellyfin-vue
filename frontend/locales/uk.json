@@ -253,18 +253,18 @@
   "password": "Пароль",
   "people": "Люди",
   "person": "Людина",
-  "play": "Грати",
-  "playFromBeginning": "Грати спочатку",
+  "play": "Відтворити",
+  "playFromBeginning": "Відтворити спочатку",
   "playback": {
     "addToQueue": "Додати до черги",
     "clearQueue": "Очистити чергу і зупинити відтворення",
-    "playAll": "Грати все",
-    "playNext": "Грати наступне",
+    "playAll": "Відтворити все",
+    "playNext": "Відтворити наступне",
     "playbackSource": {
-      "item": "Грати з {item}",
-      "shuffle": "Грати впереміш",
-      "shuffleItem": "Грати {item} впереміш",
-      "unknown": "Грати з черги"
+      "item": "Відтворити з {item}",
+      "shuffle": "Відтворюється впереміш",
+      "shuffleItem": "Відтворити {item} впереміш",
+      "unknown": "Відтворюється з черги"
     },
     "queueItems": "{items} треків",
     "saveAsPlaylist": "Зберегти чергу як список відтворення",
@@ -309,7 +309,7 @@
       "value": "{width}✕{height}"
     }
   },
-  "present": "Поточне",
+  "present": "Наш час",
   "producer": "Продюсер",
   "quality": "Якість",
   "queue": "Черга",
