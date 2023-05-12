@@ -91,6 +91,8 @@
   "general": "Ogólne",
   "genericJellyfinPlaceholderDevice": "Ogólne urządzenie Jellyfin",
   "genres": "Gatunki",
+  "goBack": "Wstecz",
+  "goNext": "Dalej",
   "googleCastPlaceholderDevice": "Urządzenie Google Cast",
   "guestStar": "Gość",
   "headerExternalIds": "Zewnętrzne ID",
@@ -101,6 +103,9 @@
       "recentlyAdded": "Niedawno dodane"
     }
   },
+  "identify": "Identyfikuj",
+  "identifyConfirmChanges": "Na pewno chcesz zamienić '{originalItem}' na '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Możesz kliknąć jedną z tych kart by zatwierdzić wynik",
   "imageType": {
     "art": "Przezrocze",
     "backdrop": "Fototapeta",
@@ -317,6 +322,7 @@
   "remoteDevices": "Urządzenia zdalne",
   "replaceAllMetadata": "Zastępuj wszystkie metadane",
   "replaceExistingImages": "Zastępuj istniejące obrazy",
+  "results": "Wyniki",
   "resumable": "Do wznowienia",
   "resume": "Wznów",
   "role": "Rola",
@@ -328,6 +334,7 @@
     "topResults": "Najlepsze wyniki"
   },
   "searchMissingMetadata": "Wyszukuj brakujące metadane",
+  "searchNoResults": "Brak wyników",
   "seasonEpisode": "Sezon {seasonNumber}, Odcinek {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seriale",
