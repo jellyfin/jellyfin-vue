@@ -47,7 +47,9 @@ function validateJsonConfig(
  */
 export async function getJSONConfig(): Promise<ExternalJSONConfig> {
   if (isNil(externalConfig)) {
-    const loadedConfig = await (await fetch('/config.json')).json();
+    const loadedConfig = await (
+      await fetch('/config.json', { cache: 'no-store' })
+    ).json();
 
     validateJsonConfig(loadedConfig);
 
