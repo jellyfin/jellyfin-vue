@@ -91,6 +91,8 @@
   "general": "一般",
   "genericJellyfinPlaceholderDevice": "通用 Jellyfin 设备",
   "genres": "类型",
+  "goBack": "上一步",
+  "goNext": "下一步",
   "googleCastPlaceholderDevice": "Google Cast 设备",
   "guestStar": "特邀明星",
   "headerExternalIds": "额外编号",
@@ -101,6 +103,9 @@
       "recentlyAdded": "最近添加"
     }
   },
+  "identify": "确认",
+  "identifyConfirmChanges": "您确定要将“{originalItem}”更改为“{newIdentifiedItem}”吗？",
+  "identifyInstructResult": "您可以单击其中一张卡片来应用结果",
   "imageType": {
     "art": "艺术",
     "backdrop": "背景",
@@ -317,6 +322,7 @@
   "remoteDevices": "远程设备",
   "replaceAllMetadata": "覆盖所有元数据",
   "replaceExistingImages": "替换现有图片",
+  "results": "结果",
   "resumable": "可恢复的",
   "resume": "恢复播放",
   "role": "角色",
@@ -328,6 +334,7 @@
     "topResults": "最佳结果"
   },
   "searchMissingMetadata": "搜索缺少的元数据",
+  "searchNoResults": "未找到结果",
   "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
   "seasonEpisodeAbbrev": "第 {seasonNumber}季第 {episodeNumber}集",
   "series": "系列",
