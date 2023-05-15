@@ -11,7 +11,8 @@
   "alphabetically": "Alfabetisch",
   "appbar": {
     "tasks": {
-      "configSync": "Instellingen synchroniseren…"
+      "configSync": "Instellingen synchroniseren…",
+      "scanningItem": "'{item}' aan het scannen…"
     },
     "tooltips": {
       "tasks": "Taken uitvoeren"
@@ -23,6 +24,7 @@
   "aspectRatio": "Beeldverhouding",
   "audio": "Geluid",
   "audioCodecNotSupported": "De audio codec wordt niet ondersteund",
+  "auto": "Automatisch",
   "badRequest": "Onjuist verzoek. Probeer het opnieuw",
   "books": "Boeken",
   "browserNotSupported": "Uw browser kan dit bestandstype niet afspelen.",
@@ -43,6 +45,8 @@
   "customRating": "Aangepaste beoordeling",
   "darkModeToggle": "Schakel tussen donkere modus",
   "dateAdded": "Datum toegevoegd",
+  "delete": "Verwijder",
+  "deleteItem": "Verwijder media",
   "details": "Details",
   "dialog": {
     "upNext": {
@@ -64,10 +68,16 @@
   "episodeNumber": "Aflevering {episodeNumber}",
   "errors": {
     "anErrorHappened": "Er is een fout opgetreden",
+    "cantPlayItem": "Dit item kan niet worden afgespeeld",
     "messages": {
       "errorCode": "Foutcode: {errorCode}",
       "videoPlayerError": "Er is een onherstelbare fout opgetreden in de videospeler."
-    }
+    },
+    "playback": {
+      "mediaError": "Er is een fatale mediafout opgetreden, Er wordt een poging gedaan om dit te herstellen",
+      "networkError": "Er is een fatale netwerk fout opgetreden, er wordt een poging gedaan om dit te herstellen"
+    },
+    "unauthorized": "Je hebt onvoldoende rechten om deze pagina te bekijken"
   },
   "failedRetrievingDisplayPreferences": "De weergavevoorkeuren kunnen niet worden verkregen. De laatst gebruikte instellingen worden gebruikt.",
   "failedSettingDisplayPreferences": "Kan de weergavevoorkeuren niet bijwerken.",
@@ -80,6 +90,8 @@
   "general": "Algemeen",
   "genericJellyfinPlaceholderDevice": "Generiek Jellyfin apparaat",
   "genres": "Genres",
+  "goBack": "Ga terug",
+  "goNext": "Ga verder",
   "googleCastPlaceholderDevice": "Google Cast apparaat",
   "guestStar": "Gast Ster",
   "headerExternalIds": "Externe ID's",
@@ -90,6 +102,9 @@
       "recentlyAdded": "Recent toegevoegd"
     }
   },
+  "identify": "Identificeren",
+  "identifyConfirmChanges": "Weet je zeker dat je '{originalItem}' wilt veranderen naar '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Je kan op één van deze kaarten klikken om het resultaat toe te passen",
   "imageType": {
     "art": "Kunst",
     "backdrop": "Achtergrond",
