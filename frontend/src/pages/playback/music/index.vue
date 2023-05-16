@@ -10,30 +10,33 @@
       </app-bar-button-layout>
     </v-app-bar>
     <v-col class="px-0">
-      <swiper
-        v-if="playbackManager.queue"
-        class="d-flex justify-center align-center user-select-none"
-        :modules="modules"
-        :slides-per-view="4"
-        centered-slides
-        :autoplay="false"
-        effect="coverflow"
-        :coverflow-effect="coverflowEffect"
-        keyboard
-        a11y
-        virtual
-        @slide-change="onSlideChange"
-        @swiper="setControlledSwiper">
-        <swiper-slide
-          v-for="(item, index) in playbackManager.queue"
-          :key="`${item.Id}-${index}`"
-          :virtual-index="`${item.Id}-${index}`"
-          class="d-flex justify-center">
-          <div class="album-cover">
-            <blurhash-image :item="item" />
-          </div>
-        </swiper-slide>
-      </swiper>
+      <transition v-if="playbackManager.queue">
+        <swiper
+          v-if="!isVisualizing"
+          class="d-flex justify-center align-center user-select-none"
+          :modules="modules"
+          :slides-per-view="4"
+          centered-slides
+          :autoplay="false"
+          effect="coverflow"
+          :coverflow-effect="coverflowEffect"
+          keyboard
+          a11y
+          virtual
+          @slide-change="onSlideChange"
+          @swiper="setControlledSwiper">
+          <swiper-slide
+            v-for="(item, index) in playbackManager.queue"
+            :key="`${item.Id}-${index}`"
+            :virtual-index="`${item.Id}-${index}`"
+            class="d-flex justify-center">
+            <div class="album-cover">
+              <blurhash-image :item="item" />
+            </div>
+          </swiper-slide>
+        </swiper>
+        <music-visualizer v-else class="visualizer" />
+      </transition>
       <v-row class="justify-center align-center mt-3">
         <v-col cols="6">
           <v-row class="justify-center align-center">
@@ -50,11 +53,25 @@
             <time-slider />
           </v-row>
           <v-row class="justify-center align-center">
+            <v-btn
+              icon
+              size="x-large"
+              :color="isVisualizing ? 'primary' : undefined"
+              @click.stop.prevent="isVisualizing = !isVisualizing">
+              <v-icon size="x-large">
+                <i-mdi-chart-bar />
+              </v-icon>
+            </v-btn>
             <shuffle-button size="x-large" />
             <previous-track-button size="x-large" />
             <play-pause-button size="x-large" />
             <next-track-button size="x-large" />
             <repeat-button size="x-large" />
+            <like-button
+              v-if="playbackManager.currentItem"
+              :item="playbackManager?.currentItem"
+              size="x-large"
+              class="active-button" />
           </v-row>
         </v-col>
       </v-row>
@@ -92,12 +109,15 @@ const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
 
 const playbackManager = playbackManagerStore();
+
 const coverflowEffect = {
   depth: 500,
   slideShadows: false,
   rotate: 0,
   stretch: -400
 };
+
+const isVisualizing = ref(false);
 
 const backdropHash = computed(() => {
   return playbackManager.currentItem
@@ -160,5 +180,14 @@ function onSlideChange(): void {
   height: 65vh;
   min-width: 65vh;
   width: 65vh;
+}
+
+.visualizer {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  user-select: none;
+  height: 65vh;
+  padding: 1vh;
 }
 </style>
