@@ -4,6 +4,7 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
+import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { cloneDeep, isNil } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
 import JASSUB from 'jassub';
@@ -17,6 +18,7 @@ const playbackManager = playbackManagerStore();
 let jassub: JASSUB | undefined;
 const fullscreenVideoRoute = '/playback/video';
 const fullscreenMusicRoute = '/playback/music';
+let visualiser: AudioMotionAnalyzer | undefined;
 
 /**
  * == INTERFACES AND TYPES ==
@@ -25,6 +27,7 @@ interface PlayerElementState {
   isFullscreenMounted: boolean;
   isPiPMounted: boolean;
   isStretched: boolean;
+  isVisualising: boolean;
 }
 
 /**
@@ -37,7 +40,8 @@ class PlayerElementStore {
   private _defaultState: PlayerElementState = {
     isFullscreenMounted: false,
     isPiPMounted: false,
-    isStretched: true
+    isStretched: true,
+    isVisualising: false
   };
 
   private _state = reactive<PlayerElementState>(cloneDeep(this._defaultState));
@@ -68,6 +72,14 @@ class PlayerElementStore {
     this._state.isStretched = newIsStretched;
   }
 
+  public get isVisualising(): boolean {
+    return this._state.isVisualising;
+  }
+
+  public set isVisualising(newIsVisualising: boolean) {
+    this._state.isVisualising = newIsVisualising;
+  }
+
   public get isFullscreenVideoPlayer(): boolean {
     return useRouter().currentRoute.value.fullPath === fullscreenVideoRoute;
   }
@@ -82,6 +94,39 @@ class PlayerElementStore {
       router.back();
     } else {
       await router.push(fullscreenVideoRoute);
+    }
+  };
+
+  public toggleVisualiser = (): void => {
+    const visualiserContainer =
+      document.querySelectorAll<HTMLElement>('.visualiser')[0];
+    const audioElement = document.querySelector<HTMLMediaElement>('audio');
+
+    if (this.isVisualising && visualiser != undefined) {
+      this.isVisualising = false;
+      visualiser.toggleAnalyzer();
+    } else {
+      this.isVisualising = true;
+
+      if (
+        (visualiser == undefined ||
+          visualiserContainer.querySelectorAll('canvas').length === 0) &&
+        audioElement != undefined
+      ) {
+        visualiser = new AudioMotionAnalyzer(visualiserContainer, {
+          source: audioElement,
+          mode: 2,
+          gradient: 'prism',
+          reflexRatio: 0.025,
+          overlay: true,
+          showBgColor: true,
+          bgAlpha: 0,
+          frequencyScale: 'bark',
+          showScaleX: false
+        });
+      } else if (visualiser != undefined) {
+        visualiser.toggleAnalyzer();
+      }
     }
   };
 

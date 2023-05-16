@@ -11,7 +11,7 @@
     </v-app-bar>
     <v-col class="px-0">
       <swiper
-        v-if="playbackManager.queue"
+        v-if="playbackManager.queue && !playerElement.isVisualising"
         class="d-flex justify-center align-center user-select-none"
         :modules="modules"
         :slides-per-view="4"
@@ -34,6 +34,7 @@
           </div>
         </swiper-slide>
       </swiper>
+      <div v-show="playerElement.isVisualising" class="visualiser" />
       <v-row class="justify-center align-center mt-3">
         <v-col cols="6">
           <v-row class="justify-center align-center">
@@ -50,11 +51,17 @@
             <time-slider />
           </v-row>
           <v-row class="justify-center align-center">
+            <audio-visualise-button size="x-large" />
             <shuffle-button size="x-large" />
             <previous-track-button size="x-large" />
             <play-pause-button size="x-large" />
             <next-track-button size="x-large" />
             <repeat-button size="x-large" />
+            <like-button
+              v-if="playbackManager.currentItem"
+              :item="playbackManager?.currentItem"
+              size="x-large"
+              class="active-button" />
           </v-row>
         </v-col>
       </v-row>
@@ -85,13 +92,16 @@ import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { isNil } from 'lodash-es';
 import { useRoute } from 'vue-router';
+import { onMounted } from 'vue'; //TODO
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
+import { playerElementStore } from '@/store';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
 
 const playbackManager = playbackManagerStore();
+const playerElement = playerElementStore();
 const coverflowEffect = {
   depth: 500,
   slideShadows: false,
@@ -152,6 +162,14 @@ function onSlideChange(): void {
 
   playbackManager.currentItemIndex = index;
 }
+
+onMounted(() => {
+  // if visualising was previously enabled we need to turn it off then on again to reinitialise it.
+  if (playerElement.isVisualising) {
+    playerElement.toggleVisualiser();
+    playerElement.toggleVisualiser();
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -160,5 +178,14 @@ function onSlideChange(): void {
   height: 65vh;
   min-width: 65vh;
   width: 65vh;
+}
+
+.visualiser {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  user-select: none;
+  height: 65vh;
+  padding: 1vh;
 }
 </style>
