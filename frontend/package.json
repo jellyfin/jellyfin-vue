@@ -30,6 +30,7 @@
     "@jellyfin/sdk": "0.8.2",
     "@vueuse/components": "10.1.2",
     "@vueuse/core": "10.1.2",
+    "audiomotion-analyzer": "4.0.0",
     "axios": "1.4.0",
     "blurhash": "2.0.5",
     "comlink": "4.4.1",
