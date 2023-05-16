@@ -1,9 +1,14 @@
 <template>
   <v-btn
-    :icon="isFavorite ? IMdiHeart : IMdiHeartOutline"
-    size="small"
+    icon
+    :size="size"
     :loading="loading"
-    @click.stop.prevent="isFavorite = !isFavorite" />
+    @click.stop.prevent="isFavorite = !isFavorite">
+    <v-icon v-if="isFavorite" :size="size">
+      <i-mdi-heart />
+    </v-icon>
+    <v-icon v-else :size="size"> <i-mdi-heart-outline /> </v-icon>
+  </v-btn>
 </template>
 
 <script setup lang="ts">
@@ -14,7 +19,12 @@ import IMdiHeart from 'virtual:icons/mdi/heart';
 import IMdiHeartOutline from 'virtual:icons/mdi/heart-outline';
 import { useRemote } from '@/composables';
 
-const props = defineProps<{ item: BaseItemDto }>();
+const props = withDefaults(
+  defineProps<{ item: BaseItemDto; size?: string }>(),
+  {
+    size: 'small'
+  }
+);
 const remote = useRemote();
 const loading = ref(false);
 
