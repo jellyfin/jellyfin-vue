@@ -11,7 +11,8 @@
   "alphabetically": "Alfabéticamente",
   "appbar": {
     "tasks": {
-      "configSync": "Sincronizando ajustes…"
+      "configSync": "Sincronizando ajustes…",
+      "scanningItem": "Escaneando '{item}'…"
     },
     "tooltips": {
       "tasks": "Tareas en ejecución"
@@ -23,7 +24,8 @@
   "aspectRatio": "Relación de aspecto",
   "audio": "Audio",
   "audioCodecNotSupported": "Este codec de audio no esta soportado",
-  "badRequest": "Solicitud incorrecta. Reintente",
+  "auto": "Automático",
+  "badRequest": "Solicitud incorrecta. Intente de nuevo",
   "books": "Libros",
   "browserNotSupported": "Tu navegador no soporta la reproducción de este archivo.",
   "buttons": {
@@ -43,6 +45,9 @@
   "customRating": "Calificación personalizada",
   "darkModeToggle": "Activar modo oscuro",
   "dateAdded": "Fecha agregada",
+  "delete": "Eliminar",
+  "deleteItem": "Eliminar medios",
+  "deleteItemDescription": "Al eliminar este elemento será eliminado del sistema de archivos y tu librería de medios. Está seguro que desea continuar?",
   "details": "Detalles",
   "dialog": {
     "upNext": {
@@ -53,7 +58,7 @@
   },
   "directing": "Dirigente",
   "director": "Director",
-  "disabled": "Deshabilitado",
+  "disabled": "Desactivado",
   "discNumber": "Disco {discNumber}",
   "dislikes": "No me gusta",
   "edit": "Editar",
@@ -64,10 +69,16 @@
   "episodeNumber": "Episodio {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ha ocurrido un error",
+    "cantPlayItem": "Este elemento no puede ser reproducido",
     "messages": {
       "errorCode": "Código de error: {errorCode}",
       "videoPlayerError": "El reproductor de video ha encontrado un error irrecuperable."
-    }
+    },
+    "playback": {
+      "mediaError": "Error fatal de medios encontrado, intentando recuperar",
+      "networkError": "Error fatal de red encontrado, intentando recuperar"
+    },
+    "unauthorized": "No estás autorizado para acceder a esta página"
   },
   "failedRetrievingDisplayPreferences": "No se pueden obtener las preferencias de visualizacion. Usando valores predeterminados.",
   "failedSettingDisplayPreferences": "No se pueden actualizar las preferencias de visualización.",
@@ -80,6 +91,8 @@
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Dispositivo Jellyfin Genérico",
   "genres": "Géneros",
+  "goBack": "Regresar",
+  "goNext": "Continuar",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Estrella invitada",
   "headerExternalIds": "IDs externos",
@@ -90,6 +103,9 @@
       "recentlyAdded": "Agregado recientemente"
     }
   },
+  "identify": "Identificar",
+  "identifyConfirmChanges": "Estás seguro que deseas cambiar '{originalItem}' por '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Puedes hacer clic en una de estas tarjetas para aplicar los resultados",
   "imageType": {
     "art": "Arte",
     "backdrop": "Fondo",
@@ -105,6 +121,8 @@
   },
   "images": "Imagenes",
   "incorrectUsernameOrPassword": "Usuario o contraseña incorrecta",
+  "instantMix": "Mezcla instantánea",
+  "instantMixQueued": "Mezcla instantánea agregada a la cola",
   "item": {
     "artist": {
       "albums": "Álbumes",
@@ -212,6 +230,7 @@
   },
   "metadataEditor": "Editor de metadata",
   "metadataNoResultsMatching": "No hay resultados que coincidan con \"{search}\". Pulsa enter para crear uno nuevo.",
+  "metadataRefreshQueued": "Actualización de metadatos puesta en cola",
   "more": "Más",
   "moreLikeArtist": "Más como {artist}",
   "moreLikeThis": "Más como esto",
@@ -294,18 +313,27 @@
   "quality": "Calidad",
   "queue": "Cola",
   "rating": "Calificación",
+  "refresh": "Refrescar",
   "refreshLibrary": "Actualizar biblioteca",
+  "refreshMetadata": "Refrescar metadatos",
+  "refreshMetadataHint": "Los metadatos son refrescados basado en la configuración y los servicios de internet que fueron habilitados en panel",
   "releaseDate": "Fecha de estreno",
   "remoteDevices": "Dispositivos Remotos",
+  "replaceAllMetadata": "Reemplazar todos los metadatos",
+  "replaceExistingImages": "Reemplazar imágenes existentes",
+  "results": "Resultados",
   "resumable": "Reanudable",
   "resume": "Reanudar",
   "role": "Rol",
   "save": "Guardar",
   "saved": "Guardado",
+  "scanForNewAndUpdatedFiles": "Escanear por archivos nuevos y actualizados",
   "search": {
     "name": "Buscar",
     "topResults": "Primeros resultados"
   },
+  "searchMissingMetadata": "Buscar metadatos faltantes",
+  "searchNoResults": "Sin resultados",
   "seasonEpisode": "Temporada {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Series",
@@ -324,9 +352,11 @@
       "dateCreated": "Fecha de creacion",
       "description": "Agregue y revoque claves API para el acceso externo a su servidor",
       "refreshKeysFailure": "Error al actualizar claves API",
+      "revoke": "Revocar",
       "revokeAll": "Revocar todas las claves de API",
       "revokeAllFailure": "Error al revocar todas las claves de API",
       "revokeAllSuccess": "Se ha revocado con exito todas las claves de API",
+      "revokeConfirm": "Confirmar revocación de llave de API",
       "revokeFailure": "Error revocando la clave API",
       "revokeSuccess": "Clave de API revocada con éxito"
     },
@@ -337,6 +367,7 @@
       "deleteAll": "Eliminar Todo",
       "deleteAllDevicesError": "Error eliminando todos los dispositivos",
       "deleteAllDevicesSuccess": "Todos los dispositivos eliminados correctamente",
+      "deleteConfirm": "Confirmar eliminación del dispositivo",
       "deleteDeviceError": "Error eliminando dispositivo",
       "deleteDeviceSuccess": "Dispositivo eliminado correctamente",
       "deviceName": "Nombre del Dispositivo",
@@ -430,7 +461,8 @@
   "signIn": "Ingresar",
   "snackbar": {
     "addedToQueue": "Añadido a la cola",
-    "playNext": "El elemento seleccionado se reproducirá después del actual"
+    "playNext": "El elemento seleccionado se reproducirá después del actual",
+    "routeValidationError": "El ID de ruta especificado en los parámetros de ruta no es correcto"
   },
   "songs": "Canciones",
   "sortByType": "Por {type}",
@@ -439,7 +471,7 @@
   "speed": "Velocidad",
   "startNow": "Comenzar ahora",
   "status": "Estado",
-  "stretch": "Estirar",
+  "stretch": "Alargar",
   "studios": "Estudios",
   "subtitles": "Subtítulos",
   "syncPlayGroups": "Grupos de SyncPlay",
@@ -505,6 +537,7 @@
       "seconds": "{count} segundo | {count} segundos"
     }
   },
+  "unknown": "Desconocido",
   "unliked": "No te gusta",
   "unplayed": "No reproducido",
   "upNext": "Siguiente",
