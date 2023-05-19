@@ -44,6 +44,8 @@
   "customRating": "Note personnalisée",
   "darkModeToggle": "Activer le mode sombre",
   "dateAdded": "Date d'ajout",
+  "delete": "Effacer",
+  "deleteItem": "Suppression du média",
   "details": "Détails",
   "dialog": {
     "upNext": {
@@ -87,6 +89,8 @@
   "general": "Général",
   "genericJellyfinPlaceholderDevice": "Appareil Jellyfin générique",
   "genres": "Genres",
+  "goBack": "Retourner",
+  "goNext": "Suivant",
   "googleCastPlaceholderDevice": "Appareil Google Cast",
   "guestStar": "Vedette invitée",
   "headerExternalIds": "Identifiants externes",
@@ -97,6 +101,8 @@
       "recentlyAdded": "Récemment ajouté"
     }
   },
+  "identify": "Identifier",
+  "identifyConfirmChanges": "Êtes-vous sûr que vous voulez remplacer '{originalItem}' par '{newIdentifiedItem}' ?",
   "imageType": {
     "art": "Illustration",
     "backdrop": "Arrière-plan",
@@ -302,9 +308,13 @@
   "quality": "Qualité",
   "queue": "File d'attente",
   "rating": "Critique",
+  "refresh": "Rafraîchir",
   "refreshLibrary": "Actualiser la médiathèque",
   "releaseDate": "Date de sortie",
   "remoteDevices": "Appareils à distance",
+  "replaceAllMetadata": "Remplacer toutes les métadonnées",
+  "replaceExistingImages": "Remplacer les images existantes",
+  "results": "Résultats",
   "resumable": "Reprise possible",
   "resume": "Reprendre",
   "role": "Rôle",
@@ -314,6 +324,7 @@
     "name": "Recherche",
     "topResults": "Meilleurs résultats"
   },
+  "searchNoResults": "Aucun résultat trouvé",
   "seasonEpisode": "Saison {seasonNumber}, Épisode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Séries",
@@ -518,6 +529,7 @@
       "seconds": "{count} secondes | {count} secondes"
     }
   },
+  "unknown": "Inconnu",
   "unliked": "Je n'aime pas",
   "unplayed": "Non lu",
   "upNext": "À suivre",
