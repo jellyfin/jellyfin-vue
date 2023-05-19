@@ -20,7 +20,7 @@
     "serve": "vite preview",
     "lint": "prettier . '!types/global/{components.d.ts,routes.d.ts}|index.html' --check --ignore-path ../.gitignore && eslint . --ext .ts,.js,.json,.vue --ignore-path ../.gitignore --max-warnings=0",
     "lint-fix": "prettier . '!types/global/{components.d.ts,routes.d.ts}|index.html' --write --ignore-path ../.gitignore && eslint . --fix --ext .ts,.js,.json,.vue --ignore-path ../.gitignore --max-warnings=0",
-    "prod": "npm run build && npm run serve",
+    "prod": "vite build && vite preview",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "vue-i18n-extract": "vue-i18n-extract",
     "vue-i18n-extract-remove": "vue-i18n-extract --remove"
