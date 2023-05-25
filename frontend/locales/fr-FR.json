@@ -46,6 +46,7 @@
   "dateAdded": "Date d'ajout",
   "delete": "Effacer",
   "deleteItem": "Suppression du média",
+  "deleteItemDescription": "Supprimer cet élément l'effacera à la fois du système de fichiers et de votre médiathèque. Voulez-vous vraiment continuer ?",
   "details": "Détails",
   "dialog": {
     "upNext": {
@@ -118,6 +119,8 @@
   },
   "images": "Images",
   "incorrectUsernameOrPassword": "Nom d'utilisateur ou mot de passe incorrect",
+  "instantMix": "Mix instantané",
+  "instantMixQueued": "Ajouter le mix instantané à la file de lecture",
   "item": {
     "artist": {
       "albums": "Albums",
@@ -310,6 +313,8 @@
   "rating": "Critique",
   "refresh": "Rafraîchir",
   "refreshLibrary": "Actualiser la médiathèque",
+  "refreshMetadata": "Rafraîchir les métadonnées",
+  "refreshMetadataHint": "Les métadonnées sont actualisées en fonction des paramètres et des services Internet activés dans le tableau de bord",
   "releaseDate": "Date de sortie",
   "remoteDevices": "Appareils à distance",
   "replaceAllMetadata": "Remplacer toutes les métadonnées",
@@ -320,10 +325,12 @@
   "role": "Rôle",
   "save": "Sauvegarder",
   "saved": "Enregistré",
+  "scanForNewAndUpdatedFiles": "Actualiser pour détecter les nouveaux fichiers et les modifications",
   "search": {
     "name": "Recherche",
     "topResults": "Meilleurs résultats"
   },
+  "searchMissingMetadata": "Rechercher les métadonnées manquantes",
   "searchNoResults": "Aucun résultat trouvé",
   "seasonEpisode": "Saison {seasonNumber}, Épisode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
