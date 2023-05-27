@@ -11,7 +11,8 @@
   "alphabetically": "Alfabeticamente",
   "appbar": {
     "tasks": {
-      "configSync": "Sincronizando configurações…"
+      "configSync": "Sincronizando configurações…",
+      "scanningItem": "Escaneando '{item}'…"
     },
     "tooltips": {
       "tasks": "Executando tarefas"
@@ -23,6 +24,7 @@
   "aspectRatio": "Proporção da tela",
   "audio": "Áudio",
   "audioCodecNotSupported": "O codec de aúdio não é suportado",
+  "auto": "Automático",
   "badRequest": "Requisição ruim. Tente Novamente",
   "books": "Livros",
   "browserNotSupported": "Seu navegador não suporta a execução deste arquivo.",
@@ -43,6 +45,9 @@
   "customRating": "Avaliação customizada",
   "darkModeToggle": "Alternar modo escuro",
   "dateAdded": "Data de Adição",
+  "delete": "Excluir",
+  "deleteItem": "Excluir mídia",
+  "deleteItemDescription": "Apagar esse item irá apaga-lo tanto do sistema de arquivos quanto da sua biblioteca. Tem certeza que deseja prosseguir?",
   "details": "Detalhes",
   "dialog": {
     "upNext": {
@@ -64,10 +69,16 @@
   "episodeNumber": "Episódio {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ocorreu um erro",
+    "cantPlayItem": "Este item não pode ser reproduzido",
     "messages": {
       "errorCode": "Código de erro: {errorCode}",
       "videoPlayerError": "O reprodutor de vídeo encontrou um erro irrecuperável."
-    }
+    },
+    "playback": {
+      "mediaError": "Ocorreu um erro fatal de mídia, tentando recuperar",
+      "networkError": "Ocorreu um erro fatal de rede, tentando recuperar"
+    },
+    "unauthorized": "Você não está autorizado a acessar esta página"
   },
   "failedRetrievingDisplayPreferences": "Incapaz de obter as preferências de exibição. Usando últimas configurações conhecidas.",
   "failedSettingDisplayPreferences": "Incapaz de atualizar as preferências do display.",
@@ -80,6 +91,8 @@
   "general": "Geral",
   "genericJellyfinPlaceholderDevice": "Dispositivo genérico Jellyfin",
   "genres": "Gêneros",
+  "goBack": "Voltar",
+  "goNext": "Avançar para o próximo",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Participação especial",
   "headerExternalIds": "IDs externos",
@@ -90,6 +103,9 @@
       "recentlyAdded": "Adicionado recentemente"
     }
   },
+  "identify": "Identificar",
+  "identifyConfirmChanges": "Você tem certeza que deseja alterar o '{originalItem}' para '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Você pode clicar em um desses cartões para aplicar o resultado",
   "imageType": {
     "art": "Arte",
     "backdrop": "Imagem de fundo",
@@ -110,6 +126,7 @@
       "albums": "Álbuns",
       "appearsOn": "Aparições",
       "discography": "Discografia",
+      "eps": "EPs",
       "information": "Informações",
       "singles": "Músicas",
       "videos": "Vídeos"
@@ -212,6 +229,7 @@
   },
   "metadataEditor": "Editor de metadata",
   "metadataNoResultsMatching": "Nenhum resultado para \"{search}\". Pressione enter para criar um novo.",
+  "metadataRefreshQueued": "Atualização de metadados adicionada a fila",
   "more": "Mais",
   "moreLikeArtist": "Mais como {artist}",
   "moreLikeThis": "Mais como isso",
@@ -294,18 +312,27 @@
   "quality": "Qualidade",
   "queue": "Fila",
   "rating": "Avaliação",
+  "refresh": "Atualizar",
   "refreshLibrary": "Recarregar biblioteca",
+  "refreshMetadata": "Atualizar metadados",
+  "refreshMetadataHint": "Os metadados são atualizados com base nas configurações e serviços de internet que são habilitados no Dashboard",
   "releaseDate": "Data de lançamento",
   "remoteDevices": "Dispositivos remotos",
+  "replaceAllMetadata": "Atualizar todos os metadados",
+  "replaceExistingImages": "Atualizar todas as imagens existentes",
+  "results": "Resultados",
   "resumable": "Retomável",
   "resume": "Continuar",
   "role": "Papel",
   "save": "Salvar",
   "saved": "Salvo",
+  "scanForNewAndUpdatedFiles": "Procurar por arquivos novos e atualizados",
   "search": {
     "name": "Pesquisa",
     "topResults": "Melhores resultados"
   },
+  "searchMissingMetadata": "Procurar metadados faltantes",
+  "searchNoResults": "Nenhum resultado encontrado",
   "seasonEpisode": "Temporada {seasonNumber}, Episódio {episodeNumber}",
   "seasonEpisodeAbbrev": "T{seasonNumber} E{episodeNumber}",
   "series": "Série",
@@ -324,9 +351,11 @@
       "dateCreated": "Data de criação",
       "description": "Adicione e revogue chaves de API para acesso externo ao seu servidor",
       "refreshKeysFailure": "Erro ao recarregar chaves de API",
+      "revoke": "Revogar",
       "revokeAll": "Revogar todas as chaves de API",
       "revokeAllFailure": "Erro ao revogar todas as chaves de API",
       "revokeAllSuccess": "Todas as chaves de API foram revogadas com êxito",
+      "revokeConfirm": "Confirme a revogação da chave da API",
       "revokeFailure": "Erro ao revogar chave de API",
       "revokeSuccess": "Chave de API revogada com êxito"
     },
@@ -337,6 +366,7 @@
       "deleteAll": "Remover todos",
       "deleteAllDevicesError": "Erro ao remover todos os dispositivos",
       "deleteAllDevicesSuccess": "Todos os dispositivos foram removidos com êxito",
+      "deleteConfirm": "Confirme a exclusão do dispositivo",
       "deleteDeviceError": "Erro ao remover dispositivo",
       "deleteDeviceSuccess": "Dispositivo removido com êxito",
       "deviceName": "Nome do dispositivo",
@@ -430,7 +460,8 @@
   "signIn": "Entrar",
   "snackbar": {
     "addedToQueue": "Adicionar à fila",
-    "playNext": "O item selecionado será reproduzido após o atual"
+    "playNext": "O item selecionado será reproduzido após o atual",
+    "routeValidationError": "O routeId especificado no parâmetro de rotas não está correto"
   },
   "songs": "Músicas",
   "sortByType": "Por {type}",
@@ -450,6 +481,7 @@
   "themeVideo": "Vídeo-tema",
   "tooltips": {
     "changeLanguage": "Idioma",
+    "switchToAuto": "Usar tema do sistema",
     "switchToDarkMode": "Trocar para modo escuro",
     "switchToLightMode": "Trocar para modo claro"
   },
@@ -505,6 +537,7 @@
       "seconds": "{count} segundo | {count} segundos"
     }
   },
+  "unknown": "Desconhecido",
   "unliked": "Não gostei",
   "unplayed": "Não reproduzido",
   "upNext": "A seguir",
