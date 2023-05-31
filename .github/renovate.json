@@ -38,6 +38,9 @@
     }
   ],
   "dependencyDashboard": false,
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "transitiveRemediation": true,
   "vulnerabilityAlerts": {
     "groupName": "vuln-alerts",
     "labels": [
