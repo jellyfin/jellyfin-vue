@@ -13,7 +13,7 @@ import { marked } from 'marked';
  */
 export function sanitizeHtml(input: string, isMarkdown = false): string {
   // Some providers have newlines, replace them with the proper tag.
-  const cleanString = input.replace(/\r\n|\r|\n/g, '<br>');
+  const cleanString = input.replaceAll(/\r\n|\r|\n/g, '<br>');
 
   return DOMPurify.sanitize(
     isMarkdown ? marked.parse(cleanString) : cleanString,
