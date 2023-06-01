@@ -40,7 +40,7 @@
  * - Full virtual scroll, no virtual + infinite scroll (as all the items are fetched from the server and we don't have pagination)
  * - Vue instance reuse
  * - No need for probe slot, default to first default slot
- * - Types for BaseItemDto
+ * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
 import {
@@ -59,7 +59,6 @@ import {
   useResizeObserver,
   useThrottleFn
 } from '@vueuse/core';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { isNil } from 'lodash-es';
 import {
   fromScrollParent,
@@ -79,10 +78,10 @@ const displayWidth = refDebounced(display.width, 250);
 const displayHeight = refDebounced(display.height, 250);
 </script>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 const props = withDefaults(
   defineProps<{
-    items: BaseItemDto[];
+    items: T[];
     tag?: string;
     probeTag?: string;
     bufferMultiplier?: number;
