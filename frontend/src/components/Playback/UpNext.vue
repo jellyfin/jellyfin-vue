@@ -72,7 +72,7 @@ import { playbackManagerStore } from '@/store';
 import { ticksToMs, getEndsAtTime, getRuntimeTime } from '@/utils/time';
 
 const emit = defineEmits<{
-  (e: 'change', isVisible: boolean): void;
+  change: [isVisible: boolean];
 }>();
 
 const playbackManager = playbackManagerStore();

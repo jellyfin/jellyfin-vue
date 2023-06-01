@@ -174,7 +174,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'change', filters: Filters): void;
+  change: [filters: Filters];
 }>();
 
 const remote = useRemote();

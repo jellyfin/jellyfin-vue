@@ -39,8 +39,8 @@ import { useRemote, useSnackbar } from '@/composables';
 defineProps<{ addingNewKey: boolean }>();
 
 const emit = defineEmits<{
-  (e: 'keyAdded'): void;
-  (e: 'close'): void;
+  keyAdded: [];
+  close: [];
 }>();
 
 const { t } = useI18n();

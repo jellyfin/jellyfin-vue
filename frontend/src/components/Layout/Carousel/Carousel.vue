@@ -70,8 +70,8 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'on-slide-change', currentIndex: number, swiper: SwiperType): void;
-  (e: 'on-touch', isPaused: boolean, swiper: SwiperType): void;
+  'on-slide-change': [currentIndex: number, swiper: SwiperType];
+  'on-touch': [isPaused: boolean, swiper: SwiperType];
 }>();
 
 const modules = [A11y, Parallax, EffectFade, Keyboard, Virtual];

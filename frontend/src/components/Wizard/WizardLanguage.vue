@@ -32,7 +32,9 @@ import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api
 import { useRemote, useSnackbar } from '@/composables';
 import { SomeItemSelectedRule } from '@/utils/validation';
 
-const emit = defineEmits<{ (e: 'step-complete'): void }>();
+const emit = defineEmits<{
+  'step-complete': [];
+}>();
 
 const remote = useRemote();
 const { locale, t } = useI18n();

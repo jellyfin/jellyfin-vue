@@ -30,7 +30,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (e: 'error'): void;
+  error: [];
 }>();
 
 const pixels = ref<Uint8ClampedArray>();

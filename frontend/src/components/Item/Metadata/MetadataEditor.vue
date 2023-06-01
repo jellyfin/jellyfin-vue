@@ -206,9 +206,9 @@ import { useDateFns, useRemote, useSnackbar } from '@/composables';
 const props = defineProps<{ itemId: string }>();
 
 const emit = defineEmits<{
-  (e: 'save'): void;
-  (e: 'update:forceRefresh'): void;
-  (e: 'cancel'): void;
+  save: [];
+  'update:forceRefresh': [];
+  cancel: [];
 }>();
 
 const { t } = useI18n();

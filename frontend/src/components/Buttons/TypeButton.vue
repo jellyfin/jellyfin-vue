@@ -34,7 +34,7 @@ const props = withDefaults(
   { disabled: false }
 );
 const emit = defineEmits<{
-  (e: 'change', types: BaseItemKind | undefined): void;
+  change: [types: BaseItemKind | undefined];
 }>();
 
 const { t } = useI18n();

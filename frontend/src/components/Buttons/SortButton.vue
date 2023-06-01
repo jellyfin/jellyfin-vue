@@ -40,7 +40,7 @@ const props = withDefaults(
   { disabled: false }
 );
 const emit = defineEmits<{
-  (e: 'change', sortBy: string, ascendingOrder: boolean): void;
+  change: [sortBy: string, ascendingOrder: boolean];
 }>();
 
 const { t } = useI18n();
