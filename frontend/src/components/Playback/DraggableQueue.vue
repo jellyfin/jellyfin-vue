@@ -36,7 +36,6 @@
 import Sortable from 'sortablejs';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { onMounted, onBeforeUnmount } from 'vue';
-import { VHover } from 'vuetify/lib/components/VHover/index';
 import { playbackManagerStore } from '@/store';
 
 let sortable: Sortable | undefined;

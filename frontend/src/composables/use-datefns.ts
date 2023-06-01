@@ -25,8 +25,8 @@ export function useDateFns<T extends (...a: any[]) => any>(
      */
     const importCode = i18n.locale.value.replace('-', '');
 
-    if (typeof params[params.length - 1] === 'object') {
-      params[params.length - 1].locale = datefnslocales[importCode];
+    if (typeof params.at(-1) === 'object') {
+      params.at(-1).locale = datefnslocales[importCode];
     } else {
       params.push({ locale: datefnslocales[importCode] });
     }

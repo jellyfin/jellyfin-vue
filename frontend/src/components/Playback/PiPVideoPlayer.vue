@@ -79,7 +79,7 @@ const playbackManager = playbackManagerStore();
 
 const keys = useMagicKeys();
 
-whenever(keys.f, () => playerElement.toggleFullscreenVideoPlayer);
+whenever(keys.f, playerElement.toggleFullscreenVideoPlayer);
 
 onMounted(() => {
   playerElement.isPiPMounted = true;
