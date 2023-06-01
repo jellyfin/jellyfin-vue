@@ -1,4 +1,5 @@
 {
+  "timezone": "Europe/Madrid",
   "packageRules": [
     {
       "matchManagers": [
@@ -7,8 +8,8 @@
       "matchDepTypes": [
         "devDependencies"
       ],
-      "groupName": "development dependencies",
-      "groupSlug": "dev-deps"
+      "groupName": "npm development dependencies",
+      "groupSlug": "npm-dev"
     },
     {
       "matchManagers": [
@@ -17,24 +18,26 @@
       "matchDepTypes": [
         "dependencies"
       ],
-      "groupName": "dependencies",
-      "groupSlug": "deps"
+      "groupName": "npm dependencies",
+      "groupSlug": "npm"
     },
     {
-      "matchManagers": [
-        "github-actions"
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
       ],
-      "groupName": "CI dependencies",
-      "groupSlug": "ci-deps",
-      "separateMajorMinor": false
+      "groupSlug": "lockfiles"
     },
     {
       "matchManagers": [
         "cargo"
       ],
-      "groupName": "Tauri dependencies",
-      "groupSlug": "tauri-deps",
-      "separateMajorMinor": false
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "major"
+      ],
+      "groupName": "cargo dependencies",
+      "groupSlug": "cargo"
     }
   ],
   "dependencyDashboard": false,
@@ -42,7 +45,9 @@
   "prHourlyLimit": 0,
   "transitiveRemediation": true,
   "vulnerabilityAlerts": {
-    "groupName": "vuln-alerts",
+    "enabled": true,
+    "groupName": "vulnerable dependencies",
+    "groupSlug": "vulnerabilities",
     "labels": [
       "security",
       "dependencies"
