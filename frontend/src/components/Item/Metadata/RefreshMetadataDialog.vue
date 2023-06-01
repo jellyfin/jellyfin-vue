@@ -77,7 +77,7 @@ const model = ref(true);
 const loading = ref(false);
 const replace = ref(false);
 const emit = defineEmits<{
-  (e: 'close'): void;
+  close: [];
 }>();
 const { t } = useI18n();
 const selectedMethod = ref<RefreshMethod>({

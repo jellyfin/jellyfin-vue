@@ -54,8 +54,8 @@ import IconEye from 'virtual:icons/mdi/eye';
 import { useRemote, useSnackbar } from '@/composables';
 
 const emit = defineEmits<{
-  (e: 'previous-step'): void;
-  (e: 'step-complete'): void;
+  'previous-step': [];
+  'step-complete': [];
 }>();
 
 const { t } = useI18n();

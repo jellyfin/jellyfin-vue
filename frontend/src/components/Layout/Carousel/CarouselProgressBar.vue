@@ -28,8 +28,8 @@ const props = withDefaults(
   { hoverable: false }
 );
 const emit = defineEmits<{
-  (e: 'animationEnd'): void;
-  (e: 'progressClicked', index: number): void;
+  animationEnd: [];
+  progressClicked: [index: number];
 }>();
 
 const display = useDisplay();

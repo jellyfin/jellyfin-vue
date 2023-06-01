@@ -77,7 +77,7 @@ const { t } = useI18n();
 const props = defineProps<{ user: UserDto }>();
 
 defineEmits<{
-  (e: 'change'): void;
+  change: [];
 }>();
 
 const router = useRouter();

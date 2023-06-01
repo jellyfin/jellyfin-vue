@@ -49,8 +49,8 @@ import { useRemote, useSnackbar } from '@/composables';
 import { SomeItemSelectedRule } from '@/utils/validation';
 
 const emit = defineEmits<{
-  (e: 'step-complete'): void;
-  (e: 'previous-step'): void;
+  'step-complete': [];
+  'previous-step': [];
 }>();
 
 const { t } = useI18n();

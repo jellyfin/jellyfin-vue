@@ -69,8 +69,8 @@ import { BaseItemPerson, ImageType } from '@jellyfin/sdk/lib/generated-client';
 const props = defineProps<{ person: BaseItemPerson | undefined }>();
 
 const emit = defineEmits<{
-  (e: 'update:person', person: BaseItemPerson): void;
-  (e: 'close'): void;
+  'update:person': [person: BaseItemPerson];
+  close: [];
 }>();
 
 const { t } = useI18n();

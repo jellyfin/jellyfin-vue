@@ -18,7 +18,7 @@ defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'update:date', value: string): void;
+  'update:date': [value: string];
 }>();
 
 const menu = ref(false);

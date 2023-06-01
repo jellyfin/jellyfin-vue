@@ -56,7 +56,7 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'select', item: RemoteSearchResult): void;
+  select: [item: RemoteSearchResult];
 }>();
 
 const shape = computed(() => getShapeFromItemType(props.itemType));

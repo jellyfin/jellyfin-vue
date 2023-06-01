@@ -41,7 +41,7 @@ const props = withDefaults(
   { defaultStreamIndex: undefined }
 );
 const emits = defineEmits<{
-  (e: 'input', newIndex?: number): void;
+  input: [newIndex?: number];
 }>();
 const { t, locale } = useI18n();
 

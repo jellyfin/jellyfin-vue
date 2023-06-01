@@ -122,7 +122,7 @@ interface IdentifyField {
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
-  (e: 'close'): void;
+  close: [];
 }>();
 
 const { t } = useI18n();

@@ -19,7 +19,7 @@ defineProps<{ itemId: string }>();
 const model = ref(true);
 
 const emit = defineEmits<{
-  (e: 'close'): void;
+  close: [];
 }>();
 </script>
 

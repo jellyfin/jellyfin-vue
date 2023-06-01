@@ -29,8 +29,8 @@ import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useRemote, useSnackbar } from '@/composables';
 
 const emit = defineEmits<{
-  (e: 'step-complete'): void;
-  (e: 'previous-step'): void;
+  'step-complete': [];
+  'previous-step': [];
 }>();
 
 const { t } = useI18n();

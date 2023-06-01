@@ -116,8 +116,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:dialog', isOpen: boolean): void;
-  (e: 'download-success', someting: boolean): void;
+  'update:dialog': [isOpen: boolean];
+  'download-success': [someting: boolean];
 }>();
 
 const { t } = useI18n();
