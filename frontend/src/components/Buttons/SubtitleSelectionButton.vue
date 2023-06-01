@@ -38,18 +38,10 @@
 import { SubtitleDeliveryMethod } from '@jellyfin/sdk/lib/generated-client';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useVModel } from '@vueuse/core';
 import IMdiCheck from 'virtual:icons/mdi/check';
 import { playbackManagerStore } from '@/store';
 
-const props = defineProps<{
-  modelValue: boolean;
-}>();
-const emit = defineEmits<{
-  (e: 'update:modelValue', val: boolean): void;
-}>();
-
-const menuModel = useVModel(props, 'modelValue', emit);
+const menuModel = defineModel<boolean>();
 
 const { t } = useI18n();
 const playbackManager = playbackManagerStore();

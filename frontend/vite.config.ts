@@ -120,7 +120,11 @@ export default defineConfig(({ mode }): UserConfig => {
                 .replace('_', '');
         }
       }),
-      vue(),
+      vue({
+        script: {
+          defineModel: true
+        }
+      }),
       Layouts({
         importMode: () => 'sync',
         defaultLayout: 'default'

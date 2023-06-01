@@ -71,17 +71,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useVModel } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';
 
-const props = defineProps<{
-  modelValue: boolean;
-}>();
-const emit = defineEmits<{
-  (e: 'update:modelValue', val: boolean): void;
-}>();
-
-const menuModel = useVModel(props, 'modelValue', emit);
+const menuModel = defineModel<boolean>();
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
