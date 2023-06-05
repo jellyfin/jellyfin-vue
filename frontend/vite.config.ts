@@ -207,6 +207,9 @@ export default defineConfig(({ mode }): UserConfig => {
           './src'
         )}/`
       }
+    },
+    worker: {
+      format: 'es'
     }
   };
 
