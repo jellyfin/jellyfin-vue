@@ -1206,9 +1206,20 @@ class PlaybackManagerStore {
      * == Server interaction ==
      */
     /**
-     * Update media source
+     * Update media source, taking into account that currentItemIndex updates
+     * that occur when shuffling must be skipped
      */
-    watch(() => this.currentItemIndex, this._setCurrentMediaSource);
+    watch(
+      [
+        (): typeof this.currentItemIndex => this.currentItemIndex,
+        (): typeof this.isShuffling => this.isShuffling
+      ],
+      async (newValue, oldValue) => {
+        if (newValue[1] === oldValue[1]) {
+          await this._setCurrentMediaSource();
+        }
+      }
+    );
     /**
      * Report stop for the old item and start for the new one
      */
