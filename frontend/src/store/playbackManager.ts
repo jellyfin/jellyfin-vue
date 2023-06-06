@@ -485,61 +485,6 @@ class PlaybackManagerStore {
     );
   }
 
-  private get _mediaSessionMetadata(): MediaMetadata | null {
-    return this.currentItem && window.navigator.mediaSession
-      ? new MediaMetadata({
-          title: this.currentItem.Name ?? undefined,
-          artist: this.currentItem.AlbumArtist ?? undefined,
-          album: this.currentItem.Album ?? undefined,
-          artwork: [
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 96
-                }).url || '',
-              sizes: '96x96'
-            },
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 128
-                }).url || '',
-              sizes: '128x128'
-            },
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 192
-                }).url || '',
-              sizes: '192x192'
-            },
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 256
-                }).url || '',
-              sizes: '256x256'
-            },
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 384
-                }).url || '',
-              sizes: '384x384'
-            },
-            {
-              src:
-                getImageInfo(this.currentItem, {
-                  width: 512
-                }).url || '',
-              sizes: '512x512'
-            }
-          ]
-        })
-      : // eslint-disable-next-line unicorn/no-null
-        null;
-  }
-
   /**
    * == ACTIONS ==
    */
@@ -776,16 +721,17 @@ class PlaybackManagerStore {
   };
 
   public setNewQueue = (queue: string[]): void => {
-    let item;
+    const item =
+      this._state.currentItemIndex === undefined
+        ? undefined
+        : this._state.queue[this._state.currentItemIndex];
 
-    if (this._state.currentItemIndex !== undefined) {
-      item = this._state.queue[this._state.currentItemIndex];
+    if (item) {
+      const newIndex = queue?.indexOf(item);
+
+      this._state.queue = queue;
+      this._state.currentItemIndex = newIndex;
     }
-
-    const newIndex = queue?.indexOf(item || '');
-
-    this._state.queue = queue;
-    this._state.currentItemIndex = newIndex;
   };
 
   public changeItemPosition = (
@@ -1005,7 +951,8 @@ class PlaybackManagerStore {
   };
 
   public getItemPlaybackUrl = (
-    mediaSource = this.currentMediaSource
+    mediaSource = this.currentMediaSource,
+    mediaType = this.currentlyPlayingMediaType
   ): string | undefined => {
     if (
       mediaSource?.SupportsDirectStream &&
@@ -1023,19 +970,13 @@ class PlaybackManagerStore {
 
       const parameters = new URLSearchParams(directOptions).toString();
 
-      const mediaType = (mediaSource.MediaStreams ?? []).every(
-        (stream) => stream?.Type === 'Audio'
-      )
-        ? 'Audio'
-        : 'Videos';
-
       return `${remote.sdk.api?.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
     } else if (mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
       return remote.sdk.api?.basePath + mediaSource.TranscodingUrl;
     }
   };
 
-  public setCurrentMediaSource = async (): Promise<void> => {
+  private _setCurrentMediaSource = async (): Promise<void> => {
     /**
      * Generate an identifier that can be compared with the class' one.
      * If they don't match, we assume the playing item has been changed while this function
@@ -1109,7 +1050,60 @@ class PlaybackManagerStore {
      */
     watchEffect(() => {
       if (window.navigator.mediaSession) {
-        window.navigator.mediaSession.metadata = this._mediaSessionMetadata;
+        const unknownString = usei18n().t('unknown');
+
+        window.navigator.mediaSession.metadata = this.currentItem
+          ? new MediaMetadata({
+              title: this.currentItem.Name ?? unknownString,
+              artist: this.currentItem.AlbumArtist ?? unknownString,
+              album: this.currentItem.Album ?? unknownString,
+              artwork: [
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 96
+                    }).url || '',
+                  sizes: '96x96'
+                },
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 128
+                    }).url || '',
+                  sizes: '128x128'
+                },
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 192
+                    }).url || '',
+                  sizes: '192x192'
+                },
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 256
+                    }).url || '',
+                  sizes: '256x256'
+                },
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 384
+                    }).url || '',
+                  sizes: '384x384'
+                },
+                {
+                  src:
+                    getImageInfo(this.currentItem, {
+                      width: 512
+                    }).url || '',
+                  sizes: '512x512'
+                }
+              ]
+            })
+          : // eslint-disable-next-line unicorn/no-null
+            null;
       }
     });
     watchEffect(() => {
@@ -1166,7 +1160,7 @@ class PlaybackManagerStore {
               this.skipForward();
             },
             seekto: (action): void => {
-              this.currentTime = action.seekTime || 0;
+              this.currentTime = action.seekTime ?? 0;
             }
           };
 
@@ -1214,7 +1208,7 @@ class PlaybackManagerStore {
     /**
      * Update media source
      */
-    watch(() => this.currentItemIndex, this.setCurrentMediaSource);
+    watch(() => this.currentItemIndex, this._setCurrentMediaSource);
     /**
      * Report stop for the old item and start for the new one
      */
@@ -1243,7 +1237,7 @@ class PlaybackManagerStore {
          * - Going from or to a situation where subs are burnt in.
          * - The audio stream index changes
          */
-        await this.setCurrentMediaSource();
+        await this._setCurrentMediaSource();
       }
     });
 
