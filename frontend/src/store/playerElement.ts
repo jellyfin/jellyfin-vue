@@ -8,7 +8,7 @@ import { cloneDeep, isNil } from 'lodash-es';
 import { nextTick, reactive, watch } from 'vue';
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
-import 'jassub/dist/jassub-worker.wasm?url';
+import jassubWasmUrl from 'jassub/dist/jassub-worker.wasm?url';
 import jassubDefaultFont from 'jassub/dist/default.woff2?url';
 import { mediaElementRef, playbackManagerStore } from '@/store';
 import { useRemote, useRouter } from '@/composables';
@@ -96,6 +96,7 @@ class PlayerElementStore {
         subUrl: trackSrc,
         fonts: attachedFonts,
         workerUrl: jassubWorker,
+        wasmUrl: jassubWasmUrl,
         availableFonts: { 'liberation sans': jassubDefaultFont },
         // Both parameters needed for subs to work on iOS
         prescaleFactor: 0.8,
