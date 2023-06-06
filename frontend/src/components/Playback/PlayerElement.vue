@@ -40,6 +40,8 @@ import {
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
 
+let subtitleDisplay: HTMLDivElement | null = null;
+
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
 const { t } = useI18n();
@@ -152,15 +154,88 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   }
 }
 
+
 watch(
   () => [
     playbackManager.currentSubtitleStreamIndex,
     playerElement.isFullscreenMounted,
     playerElement.isPiPMounted
   ],
-  async (newVal) => {
+  async (newVal, oldVal) => {
     if (newVal[1] || newVal[2]) {
       await playerElement.applyCurrentSubtitle();
+    }
+
+    if (newVal[0] !== oldVal[0] && mediaElementRef.value) {
+      // Remove the existing subtitle display element if it exists
+      if (subtitleDisplay) {
+        subtitleDisplay.remove();
+        subtitleDisplay = null;
+      }
+
+      // Get the video element
+      var video = mediaElementRef.value;
+
+      // Create a new element to display the subtitles
+	  	subtitleDisplay = document.createElement('div');
+		  subtitleDisplay.style.position = 'absolute';
+		  subtitleDisplay.style.bottom = '15%';
+      subtitleDisplay.style.maxWidth = '100%';
+      subtitleDisplay.style.left = '50%';
+      subtitleDisplay.style.transform = 'translateX(-50%)';
+      subtitleDisplay.style.textAlign = 'center';
+      subtitleDisplay.style.color = 'white';
+      subtitleDisplay.style.textShadow = '2px 2px 3px black';
+      subtitleDisplay.style.backgroundColor = 'transparent';
+      video.parentNode.append(subtitleDisplay);
+
+      // Function to adjust font size
+      /**
+       *
+       */
+      function adjustFontSize() {
+ 		 // Set the base font size (in pixels)
+ 		 let baseFontSize = 3 * window.innerWidth / 100;
+
+		  // Set the minimum and maximum font size (in pixels)
+ 		 let minFontSize = 16;
+ 		 let maxFontSize = 48;
+
+ 		 // Adjust the base font size if it's below the minimum or above the maximum
+  		if (baseFontSize < minFontSize) {
+  		  baseFontSize = minFontSize;
+ 		 } else if (baseFontSize > maxFontSize) {
+  		  baseFontSize = maxFontSize;
+		  }
+
+ 		 // Apply the adjusted font size
+ 		 subtitleDisplay.style.fontSize = baseFontSize + 'px';
+      }
+
+      // Adjust font size initially
+      adjustFontSize();
+
+      // Adjust font size whenever the window is resized
+      window.addEventListener('resize', adjustFontSize);
+
+      // Get the track element
+      if (video.textTracks && video.textTracks.length > newVal[0]) {
+        var track = video.textTracks[newVal[0]];
+
+        // Hide the default subtitles
+        	track.mode = 'hidden';
+
+        // Update the subtitle display when the cue changes
+        track.oncuechange = function() {
+          var cue = this.activeCues[0];
+
+          if (cue) {
+            subtitleDisplay.innerHTML = cue.text;
+          } else {
+            subtitleDisplay.textContent = '';
+          }
+        };
+      }
     }
   }
 );
