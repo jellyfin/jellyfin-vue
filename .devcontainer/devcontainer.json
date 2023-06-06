@@ -18,7 +18,7 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "npm ci",
+  "postCreateCommand": "npm ci --no-audit",
   "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
   "hostRequirements": { "cpus": 4, "memory": "8gb" }
 }
