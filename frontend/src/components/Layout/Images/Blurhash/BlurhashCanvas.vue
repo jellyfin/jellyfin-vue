@@ -24,8 +24,8 @@ const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
  */
 watch(
   () => remote.auth.currentUser,
-  async () => {
-    if (remote.auth.currentUser === undefined) {
+  async (newVal) => {
+    if (newVal === undefined) {
       await pixelWorker.clearCache();
     }
   }
