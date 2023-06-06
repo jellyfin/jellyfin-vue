@@ -167,13 +167,6 @@ export default defineConfig(({ mode }): UserConfig => {
       reportCompressedSize: false,
       rollupOptions: {
         output: {
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name?.endsWith('jassub-worker.wasm')) {
-              return 'assets/jassub-worker.wasm';
-            }
-
-            return 'assets/[name]-[hash][extname]';
-          },
           plugins: [
             mode === 'analyze'
               ? // rollup-plugin-visualizer
