@@ -2,6 +2,7 @@
   "name": "@jellyfin-vue/frontend",
   "version": "0.3.1",
   "private": true,
+  "type": "module",
   "homepage": "https://jellyfin.org/",
   "bugs": {
     "url": "https://github.com/jellyfin/jellyfin-vue/issues"

@@ -86,11 +86,13 @@ class ClientSettingsStore {
 
   private _updateLocale = (): void => {
     const i18n = usei18n();
+    const vuetify = useVuetify();
 
     i18n.locale.value =
       this.locale === 'auto'
         ? BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
         : this.locale;
+    vuetify.locale.current.value = i18n.locale.value;
   };
 
   private _updateTheme = (): void => {
