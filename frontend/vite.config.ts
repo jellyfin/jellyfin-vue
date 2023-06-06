@@ -1,8 +1,3 @@
-/* eslint-disable import/no-nodejs-modules */
-import path, { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { readdirSync } from 'node:fs';
-/* eslint-enable import/no-nodejs-modules */
 import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Pages from 'vite-plugin-pages';
@@ -21,48 +16,8 @@ import visualizer from 'rollup-plugin-visualizer';
 import virtual from '@rollup/plugin-virtual';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import autoprefixer from 'autoprefixer';
-/**
- * We need to match our locales to the date-fns ones for proper localization of dates.
- * In order to reduce bundle size, we calculate here (at build time) only the locales that we
- * have in our client, to include only those, instead of importing all of them.
- *
- * We expose them later as 'virtual:date-fns/locales' using @rollup/plugin-virtual
- */
-import * as datefnslocales from 'date-fns/locale';
-
-const dfnskeys = Object.keys(datefnslocales);
-const localeFilesFolder = resolve(
-  dirname(fileURLToPath(import.meta.url)),
-  './locales/**'
-);
-const localeFiles = readdirSync(localeFilesFolder.replace('**', ''));
-/**
- * We need this due to the differences between the vue i18n and date-fns locales.
- */
-const dfnsExports = localeFiles
-  .map((l) => l.replace('.json', ''))
-  .map((l) => {
-    const testStrings = l.split('-');
-    const lang = testStrings.join('');
-
-    /**
-     * - If the i18n locale exactly matches the date-fns one
-     * - Removes the potential dash to match for instance "en-US" from i18n to "enUS" for date-fns.
-     * We also need to remove all the hyphens, as using named exports with them is not valid JS syntax
-     */
-    if (dfnskeys.includes(l) || dfnskeys.includes(lang)) {
-      return lang;
-      /**
-       * Takes the part before the potential hyphen to try, for instance "fr-FR" in i18n to "fr"
-       */
-    } else if (dfnskeys.includes(testStrings[0])) {
-      return `${testStrings[0]} as ${lang}`;
-    }
-  })
-  .filter((l): l is string => typeof l === 'string');
-/**
- * End of date-fns locale parsing
- */
+import virtualModules from './scripts/virtual-modules';
+import { localeFilesFolder, srcRoot } from './scripts/paths';
 
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
@@ -71,11 +26,7 @@ export default defineConfig(({ mode }): UserConfig => {
       __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
     },
     plugins: [
-      virtual({
-        'virtual:date-fns/locales': `export { ${dfnsExports.join(
-          ', '
-        )} } from 'date-fns/locale'`
-      }),
+      virtual(virtualModules),
       /**
        * We're mixing both vite-plugin-pages and unplugin-vue-router because
        * there are issues with layouts and unplugin-vue-router is experimental:
@@ -176,7 +127,15 @@ export default defineConfig(({ mode }): UserConfig => {
                   brotliSize: true
                 })
               : undefined
-          ]
+          ],
+          manualChunks(id) {
+            if (
+              id.includes('virtual:locales') ||
+              id.includes('@intlify/unplugin-vue-i18n/messages')
+            ) {
+              return 'localization';
+            }
+          }
         }
       }
     },
@@ -197,10 +156,7 @@ export default defineConfig(({ mode }): UserConfig => {
     },
     resolve: {
       alias: {
-        '@/': `${path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          './src'
-        )}/`
+        '@/': srcRoot
       }
     },
     worker: {

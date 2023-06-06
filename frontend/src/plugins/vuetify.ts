@@ -1,9 +1,11 @@
 import { createVuetify, ThemeDefinition } from 'vuetify';
-import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { md3 } from 'vuetify/blueprints';
-import { useI18n } from 'vue-i18n';
-import { i18n } from '.';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error - No type definition for this
+import * as vuetifyLocales from 'virtual:locales/vuetify';
+// @ts-expect-error - No type definition for this
+import { defaultRtl } from 'virtual:locales/vuetify/rtl';
 import 'vuetify/styles';
 
 const dark: ThemeDefinition = {
@@ -79,7 +81,9 @@ const vuetify = createVuetify({
     }
   },
   locale: {
-    adapter: createVueI18nAdapter({ i18n, useI18n })
+    fallback: 'en',
+    messages: vuetifyLocales,
+    rtl: defaultRtl
   },
   theme: {
     themes: {

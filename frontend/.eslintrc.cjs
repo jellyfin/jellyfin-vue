@@ -73,7 +73,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['vite.config.ts'],
+        devDependencies: ['vite.config.ts', 'scripts/**/*.ts'],
         optionalDependencies: false,
         peerDependencies: false,
         bundledDependencies: false
@@ -186,6 +186,14 @@ module.exports = {
     'eslint-comments/no-unused-disable': 'error',
     'no-multiple-empty-lines': 'error'
   },
+  overrides: [
+    {
+      files: ['vite.config.ts', 'scripts/**/*.ts'],
+      rules: {
+        'import/no-nodejs-modules': 'off'
+      }
+    }
+  ],
   settings: {
     'import/resolver': {
       typescript: true,
