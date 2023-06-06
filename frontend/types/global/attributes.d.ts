@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import '@vue/runtime-dom';
-
-declare module '@vue/runtime-dom' {
+declare module 'vue' {
   export interface HTMLAttributes {
     // allow any data-* attr on HTML elements
     [key: `data${string}`]: string;
@@ -12,3 +9,5 @@ declare module '@vue/runtime-dom' {
     [key: `data${string}`]: string;
   }
 }
+
+export {};
