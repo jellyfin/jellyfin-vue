@@ -154,7 +154,6 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   }
 }
 
-
 watch(
   () => [
     playbackManager.currentSubtitleStreamIndex,
