@@ -340,7 +340,7 @@
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server version",
-  "serverVersionTooLow": "Server version needs to be 10.7.0 or higher",
+  "serverVersionTooLow": "Server version needs to be {version} or higher",
   "settings": {
     "apiKeys": {
       "accessToken": "Access token",
