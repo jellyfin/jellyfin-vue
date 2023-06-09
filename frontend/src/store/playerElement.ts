@@ -121,8 +121,10 @@ class PlayerElementStore {
           overlay: true,
           showBgColor: true,
           bgAlpha: 0,
+          fftSize: 16_384,
           frequencyScale: 'bark',
-          showScaleX: false
+          showScaleX: false,
+          smoothing: 0.9
         });
       } else if (visualiser != undefined) {
         visualiser.toggleAnalyzer();
