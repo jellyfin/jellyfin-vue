@@ -5,7 +5,11 @@ import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { isNil, merge } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
-import { VersionOutdatedIssue, VersionUnsupportedIssue } from '@jellyfin/sdk';
+import {
+  VersionOutdatedIssue,
+  VersionUnsupportedIssue,
+  API_VERSION
+} from '@jellyfin/sdk';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
 import { usei18n, useSnackbar } from '@/composables';
@@ -135,8 +139,11 @@ class RemotePluginAuth {
             i instanceof VersionUnsupportedIssue
         )
       ) {
-        useSnackbar(t('login.serverVersionTooLow'), 'error');
-        throw new Error('Server version is too low');
+        useSnackbar(
+          t('serverVersionTooLow', { version: API_VERSION }),
+          'error'
+        );
+        throw new Error(`Server version needs to be at least ${API_VERSION}`);
       }
 
       try {
