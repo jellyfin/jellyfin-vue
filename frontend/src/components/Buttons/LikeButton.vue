@@ -1,14 +1,9 @@
 <template>
   <v-btn
-    icon
+    :icon="isFavorite ? IMdiHeart : IMdiHeartOutline"
     :size="size"
     :loading="loading"
-    @click.stop.prevent="isFavorite = !isFavorite">
-    <v-icon v-if="isFavorite" :size="size">
-      <i-mdi-heart />
-    </v-icon>
-    <v-icon v-else :size="size"> <i-mdi-heart-outline /> </v-icon>
-  </v-btn>
+    @click.stop.prevent="isFavorite = !isFavorite" />
 </template>
 
 <script setup lang="ts">
