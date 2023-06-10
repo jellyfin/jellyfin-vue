@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Get current date ⌛
         id: date
@@ -48,7 +48,7 @@ jobs:
           password: ${{ secrets.JF_BOT_TOKEN }}
 
       - name: Build and push Docker images 🛠️
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.0
         with:
           context: .
           push: true
@@ -85,7 +85,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v3.6.0
