@@ -10,31 +10,33 @@
       </app-bar-button-layout>
     </v-app-bar>
     <v-col class="px-0">
-      <swiper
-        v-if="playbackManager.queue && !playerElement.isVisualising"
-        class="d-flex justify-center align-center user-select-none"
-        :modules="modules"
-        :slides-per-view="4"
-        centered-slides
-        :autoplay="false"
-        effect="coverflow"
-        :coverflow-effect="coverflowEffect"
-        keyboard
-        a11y
-        virtual
-        @slide-change="onSlideChange"
-        @swiper="setControlledSwiper">
-        <swiper-slide
-          v-for="(item, index) in playbackManager.queue"
-          :key="`${item.Id}-${index}`"
-          :virtual-index="`${item.Id}-${index}`"
-          class="d-flex justify-center">
-          <div class="album-cover">
-            <blurhash-image :item="item" />
-          </div>
-        </swiper-slide>
-      </swiper>
-      <div v-show="playerElement.isVisualising" class="visualiser" />
+      <transition v-if="playbackManager.queue">
+        <swiper
+          v-if="!isVisualising"
+          class="d-flex justify-center align-center user-select-none"
+          :modules="modules"
+          :slides-per-view="4"
+          centered-slides
+          :autoplay="false"
+          effect="coverflow"
+          :coverflow-effect="coverflowEffect"
+          keyboard
+          a11y
+          virtual
+          @slide-change="onSlideChange"
+          @swiper="setControlledSwiper">
+          <swiper-slide
+            v-for="(item, index) in playbackManager.queue"
+            :key="`${item.Id}-${index}`"
+            :virtual-index="`${item.Id}-${index}`"
+            class="d-flex justify-center">
+            <div class="album-cover">
+              <blurhash-image :item="item" />
+            </div>
+          </swiper-slide>
+        </swiper>
+        <music-visualiser v-else class="visualiser" />
+      </transition>
       <v-row class="justify-center align-center mt-3">
         <v-col cols="6">
           <v-row class="justify-center align-center">
@@ -51,7 +53,15 @@
             <time-slider />
           </v-row>
           <v-row class="justify-center align-center">
-            <audio-visualise-button size="x-large" />
+            <v-btn
+              icon
+              size="x-large"
+              :color="isVisualising ? 'primary' : undefined"
+              @click.stop.prevent="isVisualising = !isVisualising">
+              <v-icon size="x-large">
+                <i-mdi-chart-bar />
+              </v-icon>
+            </v-btn>
             <shuffle-button size="x-large" />
             <previous-track-button size="x-large" />
             <play-pause-button size="x-large" />
@@ -162,14 +172,16 @@ function onSlideChange(): void {
 
   playbackManager.currentItemIndex = index;
 }
+</script>
 
-onMounted(() => {
-  // if visualising was previously enabled we need to turn it off then on again to reinitialise it.
-  if (playerElement.isVisualising) {
-    playerElement.toggleVisualiser();
-    playerElement.toggleVisualiser();
+<script lang="ts">
+export default {
+  data(): object {
+    return {
+      isVisualising: false
+    };
   }
-});
+};
 </script>
 
 <style lang="scss" scoped>
