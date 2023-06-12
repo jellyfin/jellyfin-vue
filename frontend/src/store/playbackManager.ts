@@ -953,14 +953,14 @@ class PlaybackManagerStore {
    * Increase volume by 5
    */
   public volumeUp = (): void => {
-    this.currentVolume = Math.min(this.currentVolume + 5, 100);
+    this.currentVolume = this.currentVolume + 5;
   };
 
   /**
    * Decrease volume by 5
    */
   public volumeDown = (): void => {
-    this.currentVolume = Math.max(this.currentVolume - 5, 0);
+    this.currentVolume = this.currentVolume - 5;
   };
 
   public instantMixFromItem = async (itemId: string): Promise<void> => {
