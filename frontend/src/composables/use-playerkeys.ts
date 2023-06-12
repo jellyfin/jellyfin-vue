@@ -2,7 +2,8 @@ import {
   onKeyStroke,
   whenever,
   useMagicKeys,
-  useThrottleFn
+  useThrottleFn,
+  noop
 } from '@vueuse/core';
 import playbackManager from '@/store/playbackManager';
 
@@ -12,8 +13,7 @@ import { isTizen, isWebOS } from '@/utils/browser-detection';
  * Register keyboard player control.
  * @param osdHandler - show the player osd for a short period whenever a suitable action is called
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export function usePlayerKeys(osdHandler = (): void => {}): void {
+export function usePlayerKeys(osdHandler = noop): void {
   const keys = useMagicKeys();
 
   whenever(keys.mediapause, playbackManager.pause);
