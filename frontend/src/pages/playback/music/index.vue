@@ -87,6 +87,7 @@ import { isNil } from 'lodash-es';
 import { useRoute } from 'vue-router';
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
+import { usePlayerKeys } from '@/composables/use-playerkeys';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
@@ -98,6 +99,8 @@ const coverflowEffect = {
   rotate: 0,
   stretch: -400
 };
+
+usePlayerKeys();
 
 const backdropHash = computed(() => {
   return playbackManager.currentItem

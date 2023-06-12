@@ -129,6 +129,7 @@ import {
   useMagicKeys,
   whenever
 } from '@vueuse/core';
+import { usePlayerKeys } from '@/composables/use-playerkeys';
 import {
   playbackManagerStore,
   playerElementStore,
@@ -173,6 +174,8 @@ function handleMouseMove(): void {
   timeout.start();
 }
 
+usePlayerKeys(handleMouseMove);
+
 onBeforeUnmount(() => {
   if (playerElement.isFullscreenVideoPlayer) {
     playbackManager.stop();
@@ -189,14 +192,7 @@ onMounted(() => {
   playerElement.isFullscreenMounted = true;
 });
 
-whenever(keys.space, playbackManager.playPause);
-whenever(keys.k, playbackManager.playPause);
-whenever(keys.right, playbackManager.skipForward);
-whenever(keys.l, playbackManager.skipForward);
-whenever(keys.left, playbackManager.skipBackward);
-whenever(keys.j, playbackManager.skipBackward);
 whenever(keys.f, fullscreen.toggle);
-whenever(keys.m, playbackManager.toggleMute);
 
 watch(staticOverlay, (val) => {
   if (val) {
