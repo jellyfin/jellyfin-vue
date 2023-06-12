@@ -97,7 +97,7 @@ import { getItemDetailsLink } from '@/utils/items';
 import { playbackManagerStore } from '@/store';
 import { usePlayerKeys } from '@/composables/use-playerkeys';
 
-usePlayerKeys();
+usePlayerKeys(false);
 
 const playbackManager = playbackManagerStore();
 </script>

@@ -100,7 +100,7 @@ const coverflowEffect = {
   stretch: -400
 };
 
-usePlayerKeys();
+usePlayerKeys(true);
 
 const backdropHash = computed(() => {
   return playbackManager.currentItem

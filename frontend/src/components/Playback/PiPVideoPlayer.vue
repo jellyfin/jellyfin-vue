@@ -71,15 +71,10 @@
 
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from 'vue';
-import { useMagicKeys, whenever } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';
 
 const playerElement = playerElementStore();
 const playbackManager = playbackManagerStore();
-
-const keys = useMagicKeys();
-
-whenever(keys.f, playerElement.toggleFullscreenVideoPlayer);
 
 onMounted(() => {
   playerElement.isPiPMounted = true;

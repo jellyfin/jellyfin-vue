@@ -174,7 +174,7 @@ function handleMouseMove(): void {
   timeout.start();
 }
 
-usePlayerKeys(handleMouseMove);
+usePlayerKeys(true, handleMouseMove);
 
 onBeforeUnmount(() => {
   if (playerElement.isFullscreenVideoPlayer) {
