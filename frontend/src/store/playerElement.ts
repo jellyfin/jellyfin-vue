@@ -4,7 +4,8 @@
  * In the other part, playbackManager is suited to handle the playback state in
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
-import { cloneDeep, isNil } from 'lodash-es';
+import { isNil } from 'lodash-es';
+import { klona } from 'klona';
 import { nextTick, reactive, watch } from 'vue';
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
@@ -40,7 +41,7 @@ class PlayerElementStore {
     isStretched: true
   };
 
-  private _state = reactive<PlayerElementState>(cloneDeep(this._defaultState));
+  private _state = reactive<PlayerElementState>(klona(this._defaultState));
   /**
    * == GETTERS AND SETTERS ==
    */

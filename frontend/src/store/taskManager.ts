@@ -1,5 +1,5 @@
 import { RemovableRef, useStorage } from '@vueuse/core';
-import { cloneDeep } from 'lodash-es';
+import { klona } from 'klona';
 import { v4 } from 'uuid';
 import { watch } from 'vue';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -59,7 +59,7 @@ class TaskManagerStore {
 
   private _state: RemovableRef<TaskManagerState> = useStorage(
     storeKey,
-    cloneDeep(this._defaultState),
+    klona(this._defaultState),
     sessionStorage,
     {
       mergeDefaults: (storageValue, defaults) =>

@@ -6,7 +6,7 @@ import {
   useStorage,
   watchPausable
 } from '@vueuse/core';
-import { cloneDeep } from 'lodash-es';
+import { klona } from 'klona';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import { usei18n, useSnackbar, useRemote, useVuetify } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -51,7 +51,7 @@ class ClientSettingsStore {
 
   private _state: RemovableRef<ClientSettingsState> = useStorage(
     storeKey,
-    cloneDeep(this._defaultState),
+    klona(this._defaultState),
     localStorage,
     {
       mergeDefaults: (storageValue, defaults) =>
