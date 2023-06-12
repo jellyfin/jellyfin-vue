@@ -9,7 +9,7 @@ import {
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
-import { cloneDeep } from 'lodash-es';
+import { klona } from 'klona';
 import { CardShapes } from '@/utils/items';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
@@ -69,7 +69,7 @@ class UserLibrariesStore {
 
   private _state: RemovableRef<UserLibrariesState> = useStorage(
     storeKey,
-    cloneDeep(this._defaultState),
+    klona(this._defaultState),
     sessionStorage,
     {
       mergeDefaults: (storageValue, defaults) =>

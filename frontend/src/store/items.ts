@@ -1,5 +1,5 @@
 import { reactive, watch } from 'vue';
-import { cloneDeep } from 'lodash-es';
+import { klona } from 'klona';
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { useRemote } from '@/composables';
@@ -24,7 +24,7 @@ class ItemsStore {
     collectionById: {}
   };
 
-  private _state = reactive<ItemsState>(cloneDeep(this._defaultState));
+  private _state = reactive<ItemsState>(klona(this._defaultState));
   /**
    * == GETTERS AND SETTERS ==
    */

@@ -5,7 +5,8 @@
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
 import { reactive, watch } from 'vue';
-import { shuffle, isNil, cloneDeep } from 'lodash-es';
+import { shuffle, isNil } from 'lodash-es';
+import { klona } from 'klona';
 import {
   BaseItemDto,
   ChapterInfo,
@@ -138,9 +139,7 @@ class PlaybackManagerStore {
     playbackInitMode: InitMode.Unknown
   };
 
-  private _state = reactive<PlaybackManagerState>(
-    cloneDeep(this._defaultState)
-  );
+  private _state = reactive<PlaybackManagerState>(klona(this._defaultState));
   /**
    * == GETTERS AND SETTERS ==
    */
