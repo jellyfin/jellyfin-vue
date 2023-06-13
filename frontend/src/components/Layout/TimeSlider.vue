@@ -5,8 +5,10 @@
     :max="runtime"
     thumb-label
     validate-on="input"
+    :focused="focusedTimeSlider"
     @start="clicked = true"
-    @end="onRelease">
+    @end="onRelease"
+    @blur="focusedTimeSlider = false">
     <template #prepend>
       {{ formatTime(playbackManager.currentTime) }}
     </template>
@@ -23,6 +25,7 @@
 import { computed, ref } from 'vue';
 import { playbackManagerStore } from '@/store';
 import { ticksToMs, formatTime } from '@/utils/time';
+import { focusedTimeSlider } from '@/composables/use-playerkeys';
 
 const playbackManager = playbackManagerStore();
 const currentInput = ref(0);
