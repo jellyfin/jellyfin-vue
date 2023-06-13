@@ -85,7 +85,7 @@ import { isNil } from 'lodash-es';
 import { useRoute } from 'vue-router';
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
-import { usePlayerKeys } from '@/composables/use-playerkeys';
+import { usePlayerKeys } from '@/composables';
 
 const modules = [A11y, Virtual, EffectCoverflow];
 const route = useRoute();

@@ -129,7 +129,7 @@ import {
   useMagicKeys,
   whenever
 } from '@vueuse/core';
-import { usePlayerKeys } from '@/composables/use-playerkeys';
+import { usePlayerKeys } from '@/composables';
 import {
   playbackManagerStore,
   playerElementStore,

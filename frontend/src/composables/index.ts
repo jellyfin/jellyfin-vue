@@ -4,6 +4,7 @@ export { useRemote } from './use-remote';
 export { useVuetify } from './use-vuetify';
 export { useResponsiveClasses } from './use-responsive-classes';
 export { useDateFns } from './use-datefns';
+export { usePlayerKeys } from './use-playerkeys';
 export { useRouter } from './use-router';
 /**
  * == COMPONENT COMPOSABLES ==
