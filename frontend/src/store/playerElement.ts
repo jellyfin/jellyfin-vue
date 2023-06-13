@@ -243,7 +243,7 @@ class PlayerElementStore {
           !oldValue &&
           playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
-          await this.toggleFullscreenVideoPlayer();
+          await this.toggleFullscreenPlayer();
         }
       }
     );

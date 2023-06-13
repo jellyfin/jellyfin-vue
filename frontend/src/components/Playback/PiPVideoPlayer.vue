@@ -19,7 +19,7 @@
           width="100%">
           <div class="d-flex flex-column">
             <div class="d-flex flex-row">
-              <v-btn icon @click="playerElement.toggleFullscreenVideoPlayer">
+              <v-btn icon @click="playerElement.toggleFullscreenPlayer">
                 <v-icon>
                   <i-mdi-arrow-expand-all />
                 </v-icon>

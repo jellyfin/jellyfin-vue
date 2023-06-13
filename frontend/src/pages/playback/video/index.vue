@@ -18,7 +18,7 @@
               <v-btn :icon="IMdiClose" @click="playbackManager.stop" />
               <v-btn
                 :icon="IMdiChevronDown"
-                @click="playerElement.toggleFullscreenVideoPlayer" />
+                @click="playerElement.toggleFullscreenPlayer" />
             </div>
             <div class="d-flex ml-auto">
               <cast-button />
