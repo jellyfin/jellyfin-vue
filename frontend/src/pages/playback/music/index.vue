@@ -19,7 +19,6 @@
         :autoplay="false"
         effect="coverflow"
         :coverflow-effect="coverflowEffect"
-        keyboard
         a11y
         virtual
         @slide-change="onSlideChange"
@@ -75,11 +74,10 @@ meta:
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper';
+import { A11y, Virtual, EffectCoverflow } from 'swiper';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
-import 'swiper/css/keyboard';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -89,7 +87,7 @@ import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
 import { usePlayerKeys } from '@/composables/use-playerkeys';
 
-const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
+const modules = [A11y, Virtual, EffectCoverflow];
 const route = useRoute();
 
 const playbackManager = playbackManagerStore();
