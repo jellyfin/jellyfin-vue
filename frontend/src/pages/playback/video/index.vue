@@ -138,6 +138,8 @@ import {
 } from '@/store';
 import { getEndsAtTime } from '@/utils/time';
 
+usePlayerKeys();
+
 /**
  * - iOS's Safari fullscreen API is only available for the video element
  */
@@ -173,8 +175,6 @@ function handleMouseMove(): void {
   overlay.value = true;
   timeout.start();
 }
-
-usePlayerKeys();
 
 onBeforeUnmount(() => {
   if (playerElement.isFullscreenVideoPlayer) {
