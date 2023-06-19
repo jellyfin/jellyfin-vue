@@ -107,7 +107,6 @@ import {
   RemoteSearchResult
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
-import { klona } from 'klona';
 import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
@@ -192,7 +191,9 @@ const searchFields = computed<IdentifyField[]>(() => {
 
   return result;
 });
-const fieldsInputs = ref<IdentifyField[]>(klona(toRaw(searchFields.value)));
+const fieldsInputs = ref<IdentifyField[]>(
+  structuredClone(toRaw(searchFields.value))
+);
 const tabName = computed(() =>
   searchResults.value === undefined ? 'searchMenu' : 'resultsMenu'
 );

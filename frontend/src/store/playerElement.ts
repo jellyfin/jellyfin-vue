@@ -5,7 +5,6 @@
  * an agnostic way, regardless of where the media is being played (remotely or locally)
  */
 import { isNil } from 'lodash-es';
-import { klona } from 'klona';
 import { nextTick, reactive, watch } from 'vue';
 import JASSUB from 'jassub';
 import jassubWorker from 'jassub/dist/jassub-worker.js?url';
@@ -41,7 +40,9 @@ class PlayerElementStore {
     isStretched: true
   };
 
-  private _state = reactive<PlayerElementState>(klona(this._defaultState));
+  private _state = reactive<PlayerElementState>(
+    structuredClone(this._defaultState)
+  );
   /**
    * == GETTERS AND SETTERS ==
    */
