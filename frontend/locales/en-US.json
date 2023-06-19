@@ -540,6 +540,9 @@
     }
   },
   "unknown": "Unknown",
+  "unknownTitle": "Unknown title",
+  "unknownArtist": "Unknown artist",
+  "unknownAlbum": "Unknown album",
   "unliked": "Unliked",
   "unplayed": "Unplayed",
   "upNext": "Up next",
