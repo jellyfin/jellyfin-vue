@@ -12,7 +12,9 @@
       class="volume-slider"
       hide-details
       thumb-label
-      max="100">
+      max="100"
+      :focused="focusedVolumeSlider"
+      @blur="focusedVolumeSlider = false">
       <template #thumb-label>
         {{ Math.round(sliderValue) }}
       </template>
@@ -27,6 +29,7 @@ import IMdiVolumeMedium from 'virtual:icons/mdi/volume-medium';
 import IMdiVolumeHigh from 'virtual:icons/mdi/volume-high';
 import IMdiVolumeLow from 'virtual:icons/mdi/volume-low';
 import { playbackManagerStore } from '@/store';
+import { focusedVolumeSlider } from '@/composables/use-playerkeys';
 
 const playbackManager = playbackManagerStore();
 

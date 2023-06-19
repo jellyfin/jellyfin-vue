@@ -18,7 +18,7 @@
               <v-btn :icon="IMdiClose" @click="playbackManager.stop" />
               <v-btn
                 :icon="IMdiChevronDown"
-                @click="playerElement.toggleFullscreenVideoPlayer" />
+                @click="playerElement.toggleFullscreenPlayer" />
             </div>
             <div class="d-flex ml-auto">
               <cast-button />
@@ -129,6 +129,7 @@ import {
   useMagicKeys,
   whenever
 } from '@vueuse/core';
+import { usePlayerKeys } from '@/composables';
 import {
   playbackManagerStore,
   playerElementStore,
@@ -136,6 +137,8 @@ import {
   mediaControls
 } from '@/store';
 import { getEndsAtTime } from '@/utils/time';
+
+usePlayerKeys();
 
 /**
  * - iOS's Safari fullscreen API is only available for the video element
@@ -189,14 +192,7 @@ onMounted(() => {
   playerElement.isFullscreenMounted = true;
 });
 
-whenever(keys.space, playbackManager.playPause);
-whenever(keys.k, playbackManager.playPause);
-whenever(keys.right, playbackManager.skipForward);
-whenever(keys.l, playbackManager.skipForward);
-whenever(keys.left, playbackManager.skipBackward);
-whenever(keys.j, playbackManager.skipBackward);
 whenever(keys.f, fullscreen.toggle);
-whenever(keys.m, playbackManager.toggleMute);
 
 watch(staticOverlay, (val) => {
   if (val) {

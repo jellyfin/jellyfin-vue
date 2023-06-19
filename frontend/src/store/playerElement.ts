@@ -74,16 +74,33 @@ class PlayerElementStore {
     return useRouter().currentRoute.value.fullPath === fullscreenVideoRoute;
   }
 
+  public get isFullscreenMusicPlayer(): boolean {
+    return useRouter().currentRoute.value.fullPath === fullscreenMusicRoute;
+  }
+
+  public get isFullscreenPlayer(): boolean {
+    return this.isFullscreenMusicPlayer || this.isFullscreenVideoPlayer;
+  }
+
   /**
    * == ACTIONS ==
    */
-  public toggleFullscreenVideoPlayer = async (): Promise<void> => {
+  public toggleFullscreenPlayer = async (): Promise<void> => {
     const router = useRouter();
 
-    if (this.isFullscreenVideoPlayer) {
+    if (this.isFullscreenPlayer) {
       router.back();
     } else {
-      await router.push(fullscreenVideoRoute);
+      switch (playbackManager.currentlyPlayingMediaType) {
+        case 'Video': {
+          await router.push(fullscreenVideoRoute);
+          break;
+        }
+        case 'Audio': {
+          await router.push(fullscreenMusicRoute);
+          break;
+        }
+      }
     }
   };
 
@@ -228,7 +245,7 @@ class PlayerElementStore {
           !oldValue &&
           playbackManager.currentlyPlayingMediaType === 'Video'
         ) {
-          await this.toggleFullscreenVideoPlayer();
+          await this.toggleFullscreenPlayer();
         }
       }
     );

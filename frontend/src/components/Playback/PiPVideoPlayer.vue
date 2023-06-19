@@ -19,7 +19,7 @@
           width="100%">
           <div class="d-flex flex-column">
             <div class="d-flex flex-row">
-              <v-btn icon @click="playerElement.toggleFullscreenVideoPlayer">
+              <v-btn icon @click="playerElement.toggleFullscreenPlayer">
                 <v-icon>
                   <i-mdi-arrow-expand-all />
                 </v-icon>
@@ -71,15 +71,10 @@
 
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount } from 'vue';
-import { useMagicKeys, whenever } from '@vueuse/core';
 import { playbackManagerStore, playerElementStore } from '@/store';
 
 const playerElement = playerElementStore();
 const playbackManager = playbackManagerStore();
-
-const keys = useMagicKeys();
-
-whenever(keys.f, playerElement.toggleFullscreenVideoPlayer);
 
 onMounted(() => {
   playerElement.isPiPMounted = true;

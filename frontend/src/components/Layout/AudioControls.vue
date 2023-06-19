@@ -95,6 +95,9 @@
 <script setup lang="ts">
 import { getItemDetailsLink } from '@/utils/items';
 import { playbackManagerStore } from '@/store';
+import { usePlayerKeys } from '@/composables';
+
+usePlayerKeys();
 
 const playbackManager = playbackManagerStore();
 </script>

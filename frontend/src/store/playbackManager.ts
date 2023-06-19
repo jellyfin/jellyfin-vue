@@ -949,6 +949,20 @@ class PlaybackManagerStore {
     this.isMuted = !this.isMuted;
   };
 
+  /**
+   * Increase volume by 5
+   */
+  public volumeUp = (): void => {
+    this.currentVolume = this.currentVolume + 5;
+  };
+
+  /**
+   * Decrease volume by 5
+   */
+  public volumeDown = (): void => {
+    this.currentVolume = this.currentVolume - 5;
+  };
+
   public instantMixFromItem = async (itemId: string): Promise<void> => {
     const items = (
       await remote.sdk.newUserApi(getInstantMixApi).getInstantMixFromItem({
