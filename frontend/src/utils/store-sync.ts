@@ -1,6 +1,6 @@
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
-import destr from 'destr';
+import { destr } from 'destr';
 import { usei18n, useRemote, useSnackbar } from '@/composables';
 import { taskManagerStore } from '@/store';
 
