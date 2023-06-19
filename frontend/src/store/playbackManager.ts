@@ -6,7 +6,6 @@
  */
 import { reactive, watch } from 'vue';
 import { shuffle, isNil } from 'lodash-es';
-import { klona } from 'klona';
 import {
   BaseItemDto,
   ChapterInfo,
@@ -139,7 +138,9 @@ class PlaybackManagerStore {
     playbackInitMode: InitMode.Unknown
   };
 
-  private _state = reactive<PlaybackManagerState>(klona(this._defaultState));
+  private _state = reactive<PlaybackManagerState>(
+    structuredClone(this._defaultState)
+  );
   /**
    * == GETTERS AND SETTERS ==
    */
