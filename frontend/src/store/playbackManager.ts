@@ -1050,13 +1050,13 @@ class PlaybackManagerStore {
      */
     watchEffect(() => {
       if (window.navigator.mediaSession) {
-        const unknownString = usei18n().t('unknown');
+        const { t } = usei18n();
 
         window.navigator.mediaSession.metadata = this.currentItem
           ? new MediaMetadata({
-              title: this.currentItem.Name ?? unknownString,
-              artist: this.currentItem.AlbumArtist ?? unknownString,
-              album: this.currentItem.Album ?? unknownString,
+              title: this.currentItem.Name ?? t('unknownTitle'),
+              artist: this.currentItem.AlbumArtist ?? t('unknownArtist'),
+              album: this.currentItem.Album ?? t('unknownAlbum'),
               artwork: [
                 {
                   src:
