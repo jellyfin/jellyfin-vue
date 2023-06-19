@@ -146,7 +146,6 @@ class UserLibrariesStore {
       const audioResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
-          limit: 24,
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
@@ -176,7 +175,6 @@ class UserLibrariesStore {
       const videoResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
           userId: remote.auth.currentUserId || '',
-          limit: 24,
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
@@ -206,7 +204,6 @@ class UserLibrariesStore {
       const upNext = (
         await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
           userId: remote.auth.currentUserId,
-          limit: 24,
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
@@ -238,7 +235,6 @@ class UserLibrariesStore {
       const latestMedia = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
           userId: remote.auth.currentUserId || '',
-          limit: 24,
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.CanDelete,
@@ -267,7 +263,6 @@ class UserLibrariesStore {
       const carouselItems = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
           userId: remote.auth.currentUserId || '',
-          limit: 10,
           fields: [
             ItemFields.Overview,
             ItemFields.PrimaryImageAspectRatio,

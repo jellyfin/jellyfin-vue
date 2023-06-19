@@ -838,8 +838,7 @@ class PlaybackManagerStore {
     const items = (
       await remote.sdk.newUserApi(getInstantMixApi).getInstantMixFromItem({
         id: itemId,
-        userId: remote.auth.currentUserId,
-        limit: 50
+        userId: remote.auth.currentUserId
       })
     ).data.Items;
 
@@ -915,7 +914,6 @@ class PlaybackManagerStore {
         filters: [ItemFilter.IsNotFolder],
         parentId,
         recursive: true,
-        limit: 300,
         sortBy,
         userId: remote.auth.currentUserId,
         fields: Object.values(ItemFields)
@@ -932,7 +930,6 @@ class PlaybackManagerStore {
         seriesId: item.SeriesId,
         isMissing: false,
         startItemId: item.Id,
-        limit: 300,
         userId: remote.auth.currentUserId,
         fields: Object.values(ItemFields)
       });
