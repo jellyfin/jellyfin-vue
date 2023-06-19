@@ -11,7 +11,8 @@
   "alphabetically": "Alfabeticamente",
   "appbar": {
     "tasks": {
-      "configSync": "Impostazioni di sincronizzazione…"
+      "configSync": "Impostazioni di sincronizzazione…",
+      "scanningItem": "Scansione '{item}'…"
     },
     "tooltips": {
       "tasks": "Compiti in esecuzione"
@@ -44,6 +45,9 @@
   "customRating": "Voto personale",
   "darkModeToggle": "Attiva/Disattiva modalità scura",
   "dateAdded": "Data di aggiunta",
+  "delete": "Elimina",
+  "deleteItem": "Elimina media",
+  "deleteItemDescription": "L'eliminazione di questo elemento lo eliminerà sia dal file system che dalla libreria multimediale. Sei sicuro di voler continuare?",
   "details": "Dettagli",
   "dialog": {
     "upNext": {
@@ -87,6 +91,8 @@
   "general": "Generali",
   "genericJellyfinPlaceholderDevice": "Dispositivo Jellyfin generico",
   "genres": "Generi",
+  "goBack": "Indietro",
+  "goNext": "Vai avanti",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Ospite d'onore",
   "headerExternalIds": "ID Esterni",
@@ -97,6 +103,9 @@
       "recentlyAdded": "Aggiunti di recente"
     }
   },
+  "identify": "Identifica",
+  "identifyConfirmChanges": "Sei sicuro di voler cambiare '{originalItem}' con '{newIdentifiedItem}'?",
+  "identifyInstructResult": "È possibile fare clic su una di queste carte per applicare il risultato",
   "imageType": {
     "art": "Arte",
     "backdrop": "Sfondo",
@@ -112,6 +121,8 @@
   },
   "images": "Immagini",
   "incorrectUsernameOrPassword": "Utente o password errati",
+  "instantMix": "Mix istantaneo",
+  "instantMixQueued": "Mix istantaneo aggiunto alla coda",
   "item": {
     "artist": {
       "albums": "Album",
@@ -220,6 +231,7 @@
   },
   "metadataEditor": "Modifica metadati",
   "metadataNoResultsMatching": "La ricerca per \"{search}\" non ha dato risultati. Premere Enter per crearne una nuova.",
+  "metadataRefreshQueued": "Aggiornamento dei metadati in coda",
   "more": "Altro",
   "moreLikeArtist": "Altri come {artist}",
   "moreLikeThis": "Altri come questo",
@@ -302,18 +314,27 @@
   "quality": "Qualità",
   "queue": "Coda",
   "rating": "Valutazione",
+  "refresh": "Aggiorna",
   "refreshLibrary": "Aggiorna Libreria",
+  "refreshMetadata": "Aggiorna i metadati",
+  "refreshMetadataHint": "I metadati vengono aggiornati in base alle impostazioni e ai servizi Internet abilitati nel Pannello di Controllo",
   "releaseDate": "Data di rilascio",
   "remoteDevices": "Dispositivi remoti",
+  "replaceAllMetadata": "Sostituisci tutti i metadati",
+  "replaceExistingImages": "Sostituisci immagini esistenti",
+  "results": "Risultati",
   "resumable": "Riprendibile",
   "resume": "Riprendi",
   "role": "Ruolo",
   "save": "Salva",
   "saved": "Salvati",
+  "scanForNewAndUpdatedFiles": "Cerca file nuovi e aggiornati",
   "search": {
     "name": "Cerca",
     "topResults": "Risultati principali"
   },
+  "searchMissingMetadata": "Cerca i metadati mancanti",
+  "searchNoResults": "Nessun risultato trovato",
   "seasonEpisode": "Stagione {seasonNumber}, Episodio {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serie",
@@ -531,7 +552,7 @@
   },
   "version": "Versione",
   "video": "Video",
-  "videoTypes": "Tipi Video",
+  "videoTypes": "Tipi di video",
   "viewDetails": "Dettagli video",
   "vueClientVersion": "Versione client",
   "wizard": {
