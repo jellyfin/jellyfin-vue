@@ -340,7 +340,7 @@
   "series": "Серіал",
   "server": "Сервер",
   "serverVersion": "Версія серверу",
-  "serverVersionTooLow": "Версія серверу має бути 10.7.0 або вища",
+  "serverVersionTooLow": "Версія серверу має бути {version} або вища",
   "settings": {
     "apiKeys": {
       "accessToken": "Токен доступу",
@@ -540,6 +540,9 @@
     }
   },
   "unknown": "Невідомо",
+  "unknownAlbum": "Невідомий альбом",
+  "unknownArtist": "Невідомий виконавець",
+  "unknownTitle": "Невідома назва",
   "unliked": "Не улюблене",
   "unplayed": "Не відтворене",
   "upNext": "Наступне",

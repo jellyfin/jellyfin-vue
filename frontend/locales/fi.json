@@ -91,6 +91,8 @@
   "general": "Yleiset",
   "genericJellyfinPlaceholderDevice": "Yleinen Jellyfin-laite",
   "genres": "Lajityypit",
+  "goBack": "Palaa takaisin",
+  "goNext": "Siirry seuraavaan",
   "googleCastPlaceholderDevice": "Google Cast -laite",
   "guestStar": "Vieraileva pääosa",
   "headerExternalIds": "Ulkoiset ID:t",
@@ -101,6 +103,9 @@
       "recentlyAdded": "Viimeksi lisätyt"
     }
   },
+  "identify": "Tunnista",
+  "identifyConfirmChanges": "Haluatko varmasti korvata kohteen \"{originalItem}\" kohteella \"{newIdentifiedItem}\"?",
+  "identifyInstructResult": "Voit käyttää tulosta painamalla valitsemalla yhden näistä korteista",
   "imageType": {
     "art": "Taide",
     "backdrop": "Tausta",
@@ -317,6 +322,7 @@
   "remoteDevices": "Etälaitteet",
   "replaceAllMetadata": "Korvaa kaikki metatiedot",
   "replaceExistingImages": "Korvaa nykyiset kuvat",
+  "results": "Tulokset",
   "resumable": "Keskeneräinen",
   "resume": "Jatka",
   "role": "Rooli",
@@ -328,12 +334,13 @@
     "topResults": "Parhaat tulokset"
   },
   "searchMissingMetadata": "Etsi puuttuvia metatietoja",
+  "searchNoResults": "Tuloksia ei löytynyt",
   "seasonEpisode": "Kausi {seasonNumber}, jakso {episodeNumber}",
   "seasonEpisodeAbbrev": "K{seasonNumber} J{episodeNumber}",
   "series": "Sarjat",
   "server": "Palvelin",
   "serverVersion": "Palvelimen versio",
-  "serverVersionTooLow": "Palvelimen version on oltava vähintään 10.7.0",
+  "serverVersionTooLow": "Palvelimen version on oltava {version} tai uudempi",
   "settings": {
     "apiKeys": {
       "accessToken": "Käyttöoikeustunniste",
@@ -533,6 +540,9 @@
     }
   },
   "unknown": "Tuntematon",
+  "unknownAlbum": "Tuntematon albumi",
+  "unknownArtist": "Tuntematon esittäjä",
+  "unknownTitle": "Tuntematon nimike",
   "unliked": "Ei tykätty",
   "unplayed": "Toistamaton",
   "upNext": "Seuraavaksi",
