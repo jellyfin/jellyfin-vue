@@ -82,7 +82,7 @@ jobs:
         uses: docker/setup-qemu-action@v2.2.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v2.7.0
+        uses: docker/setup-buildx-action@v2.8.0
 
       - name: Build Docker images 🛠️
         uses: docker/build-push-action@v4.1.1
