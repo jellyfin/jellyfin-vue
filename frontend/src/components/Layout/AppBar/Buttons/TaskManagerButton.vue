@@ -11,7 +11,7 @@
         persistent
         :transition="'slide-y-transition'"
         location="bottom"
-        :z-index="500">
+        :z-index="1006">
         <v-card min-width="25em">
           <v-list>
             <v-list-item
