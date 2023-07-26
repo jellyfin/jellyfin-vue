@@ -11,7 +11,8 @@
   "alphabetically": "Alphabetisch",
   "appbar": {
     "tasks": {
-      "configSync": "Einstellungen synchronisieren…"
+      "configSync": "Einstellungen synchronisieren…",
+      "scanningItem": "Scanne '{item}'…"
     },
     "tooltips": {
       "tasks": "Laufende Aufgaben"
@@ -35,7 +36,7 @@
   "castAndCrew": "Schauspieler & Crew",
   "collectionEmpty": "Diese Sammlung ist leer",
   "collections": "Kollektionen",
-  "communityRating": "Community Bewertungen",
+  "communityRating": "Communitybewertungen",
   "confirm": "Bestätigen",
   "connect": "Verbinden",
   "continueListening": "Weiter zuhören",
@@ -44,6 +45,9 @@
   "customRating": "Benutzerdefinierte Bewertungen",
   "darkModeToggle": "Dunkelmodus umschalten",
   "dateAdded": "Datum hinzugefügt",
+  "delete": "Löschen",
+  "deleteItem": "Medium löschen",
+  "deleteItemDescription": "Das Löschen dieses Mediums hat zur Folge, dass es sowohl im Dateisystem gelöscht wird als auch aus der Medienbibliothek. Sind sie sicher, dass sie fortfahren wollen?",
   "details": "Details",
   "dialog": {
     "upNext": {
@@ -71,10 +75,10 @@
       "videoPlayerError": "Der Videoplayer hat einen unwiederherstellbaren Fehler entdeckt."
     },
     "playback": {
-      "mediaError": "Schwerwiegender Medienfehler aufgetreten, Versuche Wiederherstellung",
+      "mediaError": "Schwerwiegender Medienfehler aufgetreten, versuche Wiederherstellung",
       "networkError": "Schwerwiegender Medienfehler aufgetreten, Versuche Wiederherstellung"
     },
-    "unauthorized": "Sie sind nicht berechtigt, auf diese Seite zuzugreifen"
+    "unauthorized": "Du bist nicht berechtigt, auf diese Seite zuzugreifen"
   },
   "failedRetrievingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu lesen. Die zuletzt verwendeten Einstellungen werden angewendet.",
   "failedSettingDisplayPreferences": "Es war nicht möglich die Anzeigeeinstellungen zu ändern.",
@@ -87,6 +91,8 @@
   "general": "Allgemeines",
   "genericJellyfinPlaceholderDevice": "Generisches Jellyfin-Gerät",
   "genres": "Genres",
+  "goBack": "Zurück",
+  "goNext": "Weiter",
   "googleCastPlaceholderDevice": "Google Cast-Gerät",
   "guestStar": "Gastauftritte",
   "headerExternalIds": "Externe IDs",
@@ -97,6 +103,9 @@
       "recentlyAdded": "Zuletzt hinzugefügt"
     }
   },
+  "identify": "Identifizieren",
+  "identifyConfirmChanges": "Sind Sie sicher, dass Sie '{originalItem}' durch '{newIdentifiedItem}' ersetzen wollen?",
+  "identifyInstructResult": "Sie können auf eine dieser Karten klicken, um das Ergebnis zu übernehmen",
   "imageType": {
     "art": "Kunst",
     "backdrop": "Hintergrund",
@@ -112,6 +121,8 @@
   },
   "images": "Bilder",
   "incorrectUsernameOrPassword": "Ungültiger Benutzername oder Passwort",
+  "instantMix": "Instant-Mix",
+  "instantMixQueued": "Instant-Mix zur Warteschlange hinzugefügt",
   "item": {
     "artist": {
       "albums": "Alben",
@@ -220,13 +231,14 @@
   },
   "metadataEditor": "Metadaten-Editor",
   "metadataNoResultsMatching": "Nichts passendes gefunden \"{search}\". drücke \"Enter\" um eine neue Suche zu starten.",
+  "metadataRefreshQueued": "Metadaten-Aktualisierung eingereiht",
   "more": "Mehr",
   "moreLikeArtist": "Mehr wie {artist}",
   "moreLikeThis": "Eher so",
   "movies": "Filme",
   "name": "Name",
   "networks": "Netzwerke",
-  "nextUp": "Als nächstes",
+  "nextUp": "Als Nächstes",
   "noImagesFound": "Keine Bilder gefunden",
   "noInformationAvailable": "Keine Informationen verfügbar",
   "noNetworkConnection": "Keine Netzwerkverbindung",
@@ -302,24 +314,33 @@
   "quality": "Qualität",
   "queue": "Warteschlange",
   "rating": "Bewertung",
+  "refresh": "Aktualisieren",
   "refreshLibrary": "Bibliothek aktualisieren",
+  "refreshMetadata": "Metadaten aktualisieren",
+  "refreshMetadataHint": "Metadaten werden auf Basis der Einstellungen und Internet Services, die im Dashboard aktiviert sind, aktualisiert",
   "releaseDate": "Erscheinungsdatum",
   "remoteDevices": "Externe Geräte",
+  "replaceAllMetadata": "Alle Metadaten ersetzen",
+  "replaceExistingImages": "Vorhandene Bilder ersetzen",
+  "results": "Ergebnisse",
   "resumable": "Wiederaufnehmbar",
   "resume": "Fortsetzen",
   "role": "Rolle",
   "save": "Speichern",
   "saved": "Gespeichert",
+  "scanForNewAndUpdatedFiles": "Nach neuen und aktualisierten Dateien scannen",
   "search": {
     "name": "Suche",
     "topResults": "Beste Ergebnisse"
   },
+  "searchMissingMetadata": "Nach fehlenden Metadaten suchen",
+  "searchNoResults": "Keine Ergebnisse gefunden",
   "seasonEpisode": "Staffel {seasonNumber}, Folge {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} F{episodeNumber}",
   "series": "Serie",
   "server": "Server",
   "serverVersion": "Serverversion",
-  "serverVersionTooLow": "Server-Version muss 10.7.0 oder höher sein",
+  "serverVersionTooLow": "Server-Version muss {version} oder höher sein",
   "settings": {
     "apiKeys": {
       "accessToken": "Zugriffstoken",
@@ -519,9 +540,12 @@
     }
   },
   "unknown": "Unbekannt",
+  "unknownAlbum": "Unbekanntes Album",
+  "unknownArtist": "Unbekannter Künstler",
+  "unknownTitle": "Unbekannter Titel",
   "unliked": "Gefällt mir nicht",
   "unplayed": "Ungespielt",
-  "upNext": "Als nächstes",
+  "upNext": "Als Nächstes",
   "upNextName": "Als nächstes: {upNextItemName}",
   "username": "Benutzername",
   "validation": {

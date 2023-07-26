@@ -340,7 +340,7 @@
   "series": "Seriály",
   "server": "Server",
   "serverVersion": "Verze serveru",
-  "serverVersionTooLow": "Verze serveru musí být 10.7.0 nebo novější",
+  "serverVersionTooLow": "Verze serveru musí být {version} nebo novější",
   "settings": {
     "apiKeys": {
       "accessToken": "Přístupový token",
@@ -540,6 +540,9 @@
     }
   },
   "unknown": "Neznámý",
+  "unknownAlbum": "Neznáme album",
+  "unknownArtist": "Neznámý umělec",
+  "unknownTitle": "Neznámý název",
   "unliked": "Nelíbilo se",
   "unplayed": "Nepřehrané",
   "upNext": "Následující",

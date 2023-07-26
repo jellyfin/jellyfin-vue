@@ -11,7 +11,8 @@
   "alphabetically": "אלף בית",
   "appbar": {
     "tasks": {
-      "configSync": "מסנכרן הגדרות…"
+      "configSync": "מסנכרן הגדרות…",
+      "scanningItem": "‚{item}’ נסרק…"
     },
     "tooltips": {
       "tasks": "משימות רצות"
@@ -23,6 +24,7 @@
   "aspectRatio": "יחס תצוגה",
   "audio": "שמע",
   "audioCodecNotSupported": "מקודד השמע אינו נתמך",
+  "auto": "אוטומטי",
   "badRequest": "בקשה נכשלה. נסה שוב",
   "books": "ספרים",
   "browserNotSupported": "הדפדפן שלך איתו נתמך בהפעלת קובץ זה.",
@@ -43,6 +45,8 @@
   "customRating": "דירוג מותאם אישית",
   "darkModeToggle": "החלף מצב כהה",
   "dateAdded": "תאריך הוספה",
+  "delete": "מחיקה",
+  "deleteItem": "מחיקת מדיה",
   "details": "פרטים",
   "dialog": {
     "upNext": {

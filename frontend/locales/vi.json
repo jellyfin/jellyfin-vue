@@ -102,6 +102,8 @@
       "recentlyAdded": "Được thêm gần đây"
     }
   },
+  "identify": "Nhận dạng",
+  "identifyInstructResult": "Bạn có thể nhấp vào một trong các thẻ này để áp dụng kết quả",
   "imageType": {
     "art": "Nghệ thuật",
     "backdrop": "Phông nền",
