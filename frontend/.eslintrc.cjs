@@ -211,9 +211,9 @@ module.exports = {
       rules: {
         'vue/component-name-in-template-casing': [
           'error',
-          'kebab-case',
+          'PascalCase',
           {
-            ignores: [],
+            registeredComponentsOnly: false
           },
         ],
         'vue/html-self-closing': [
@@ -221,13 +221,13 @@ module.exports = {
           {
             html: {
               void: 'always',
+              normal: 'always'
             },
           },
         ],
         'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
         'vue/multiline-html-element-content-newline': 'error',
-        'vue/multi-word-component-names': 'off',
-        'vue/return-in-computed-property': 'off',
+        'vue/multi-word-component-names': 'off'
       }
     },
     // TODO: Review once ESLint config is ESM
