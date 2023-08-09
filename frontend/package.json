@@ -55,7 +55,6 @@
     "@rollup/plugin-virtual": "3.0.1",
     "@types/dompurify": "3.0.2",
     "@types/lodash-es": "4.17.7",
-    "@types/marked": "5.0.0",
     "@types/sortablejs": "1.15.1",
     "@types/uuid": "9.0.2",
     "@typescript-eslint/eslint-plugin": "5.61.0",
