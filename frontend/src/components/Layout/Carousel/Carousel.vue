@@ -42,7 +42,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { A11y, Parallax, EffectFade, Keyboard, Virtual } from 'swiper';
+import { A11y, Parallax, EffectFade, Keyboard, Virtual } from 'swiper/modules';
+import { Swiper } from 'swiper/vue';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -50,7 +51,6 @@ import 'swiper/css/keyboard';
 import 'swiper/css/parallax';
 import 'swiper/css/a11y';
 import 'swiper/css/virtual';
-import { Swiper } from 'swiper/vue';
 import { useResponsiveClasses } from '@/composables';
 
 withDefaults(

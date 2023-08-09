@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, FreeMode, A11y, Virtual } from 'swiper';
+import { Navigation, FreeMode, A11y, Virtual } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/free-mode';

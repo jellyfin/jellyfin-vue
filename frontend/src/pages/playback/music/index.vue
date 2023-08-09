@@ -100,14 +100,14 @@ meta:
 <script setup lang="ts">
 import { computed, ref, watch, nextTick } from 'vue';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper';
+import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/keyboard';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/virtual';
-import { Swiper, SwiperSlide } from 'swiper/vue';
 import { isNil } from 'lodash-es';
 import { useRoute } from 'vue-router';
 import { getBlurhash } from '@/utils/images';
