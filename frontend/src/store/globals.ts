@@ -22,3 +22,10 @@ export const mediaElementRef = shallowRef<HTMLMediaElement>();
  * Reactive media controls of the local media player
  */
 export const mediaControls = useMediaControls(mediaElementRef);
+/**
+ * WebAudio instance of the local media player
+ */
+export const mediaWebAudio = {
+  context: new AudioContext(),
+  sourceNode: undefined as undefined | MediaElementAudioSourceNode
+};
