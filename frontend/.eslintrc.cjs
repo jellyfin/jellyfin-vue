@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires -- The ESLint config expects Node modules
 var restrictedGlobals = require('confusing-browser-globals');
 
+const CI_environment = process.env.CI ? 0 : 1;
+
 module.exports = {
   root: true,
   env: {
@@ -65,6 +67,7 @@ module.exports = {
     'file-progress',
   ],
   rules: {
+    'file-progress/activate': CI_environment,
     semi: ['error', 'always'],
     quotes: ['error', 'single', { 'avoidEscape': true }],
     'comma-dangle': ['error', 'only-multiline'],
@@ -85,7 +88,6 @@ module.exports = {
     'unicode-bom': ['error', 'never'],
     'no-trailing-spaces': ['error'],
     'eol-last': ['error', 'always'],
-    'file-progress/activate': 1,
     'no-restricted-globals': ['error', ...restrictedGlobals],
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-secrets/no-secrets': 'error',
