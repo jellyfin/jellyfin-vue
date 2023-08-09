@@ -32,7 +32,8 @@ import Hls, { ErrorData } from 'hls.js';
 import {
   playbackManagerStore,
   playerElementStore,
-  mediaElementRef
+  mediaElementRef,
+  mediaWebAudio
 } from '@/store';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
@@ -58,6 +59,18 @@ function detachHls(): void {
     hls.detachMedia();
     hls.off(Hls.Events.ERROR, onHlsEror);
   }
+}
+
+/**
+ * Suspends WebAudio when no playback is in place
+ */
+async function detachWebAudio(): Promise<void> {
+  if (mediaWebAudio.sourceNode) {
+    mediaWebAudio.sourceNode.disconnect();
+    mediaWebAudio.sourceNode = undefined;
+  }
+
+  await mediaWebAudio.context.suspend();
 }
 
 const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
@@ -153,10 +166,19 @@ watch(
 watch(mediaElementRef, async () => {
   await nextTick();
   detachHls();
+  await detachWebAudio();
 
-  if (mediaElementRef.value && mediaElementType.value === 'video' && hls) {
-    hls.attachMedia(mediaElementRef.value);
-    hls.on(Hls.Events.ERROR, onHlsEror);
+  if (mediaElementRef.value) {
+    if (mediaElementType.value === 'video' && hls) {
+      hls.attachMedia(mediaElementRef.value);
+      hls.on(Hls.Events.ERROR, onHlsEror);
+    }
+
+    await mediaWebAudio.context.resume();
+    mediaWebAudio.sourceNode = mediaWebAudio.context.createMediaElementSource(
+      mediaElementRef.value
+    );
+    mediaWebAudio.sourceNode.connect(mediaWebAudio.context.destination);
   }
 });
 
