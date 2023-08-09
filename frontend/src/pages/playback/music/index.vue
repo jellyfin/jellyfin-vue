@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main v-if="playbackManager.queue">
     <v-app-bar color="transparent">
       <app-bar-button-layout @click="$router.back()">
         <template #icon>
@@ -19,7 +19,7 @@
       </app-bar-button-layout>
     </v-app-bar>
     <v-col class="px-0">
-      <transition v-if="playbackManager.queue">
+      <v-fade-transition mode="out-in">
         <swiper
           v-if="!isVisualizing"
           class="d-flex justify-center align-center user-select-none"
