@@ -30,7 +30,6 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:jsonc/recommended-with-json',
-    'plugin:jsonc/prettier',
     'plugin:no-unsanitized/DOM',
     'plugin:optimize-regex/recommended',
     'plugin:no-use-extend-native/recommended',
@@ -44,8 +43,7 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:css/recommended',
     'plugin:unicorn/recommended',
-    'plugin:you-dont-need-lodash-underscore/compatible',
-    'plugin:prettier/recommended'
+    'plugin:you-dont-need-lodash-underscore/compatible'
   ],
   plugins: [
     'jsdoc',
@@ -58,7 +56,6 @@ module.exports = {
     'promise',
     'import',
     'vue',
-    'prettier',
     'sonarjs',
     'eslint-comments',
     'css',
