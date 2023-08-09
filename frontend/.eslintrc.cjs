@@ -2,31 +2,28 @@
 var restrictedGlobals = require('confusing-browser-globals');
 
 module.exports = {
-  root: false,
+  root: true,
   env: {
     node: false,
-    browser: true
+    browser: true,
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
     vueFeatures: {
-      customMacros: ['defineModel']
+      customMacros: ['defineModel'],
     },
-    project: './tsconfig.json',
-    extraFileExtensions: ['.json', '.vue']
-  },
-  globals: {
-    __COMMIT_HASH__: 'readonly'
+    project: 'tsconfig.json',
+    extraFileExtensions: ['.json', '.vue'],
   },
   ignorePatterns: [
-    '.eslintrc.js',
-    '*.config.js',
-    'tsconfig.json',
     'types/global/routes.d.ts',
     'types/global/components.d.ts'
   ],
+  globals: {
+    __COMMIT_HASH__: 'readonly',
+  },
   extends: [
     'eslint:recommended',
     'plugin:jsonc/recommended-with-json',
@@ -43,7 +40,7 @@ module.exports = {
     'plugin:eslint-comments/recommended',
     'plugin:css/recommended',
     'plugin:unicorn/recommended',
-    'plugin:you-dont-need-lodash-underscore/compatible'
+    'plugin:you-dont-need-lodash-underscore/compatible',
   ],
   plugins: [
     'jsdoc',
@@ -61,11 +58,31 @@ module.exports = {
     'css',
     'unicorn',
     'you-dont-need-lodash-underscore',
-    'file-progress'
+    'file-progress',
   ],
   rules: {
+    semi: ['error', 'always'],
+    quotes: ['error', 'single', { 'avoidEscape': true }],
+    'comma-dangle': ['error', 'only-multiline'],
+    indent: ['error', 2, {
+      'SwitchCase': 1,
+      'VariableDeclarator': 2,
+      'CallExpression': { arguments: 'first' },
+      'ArrayExpression': 'first',
+      'ObjectExpression': 'first',
+      'ImportDeclaration': 'first',
+      flatTernaryExpressions: true,
+      offsetTernaryExpressions: true
+    }],
+    'no-multi-spaces': ['error'],
+    'block-spacing': ['error', 'always'],
+    'linebreak-style': ['error', 'unix'],
+    'brace-style': ['error'],
+    'unicode-bom': ['error', 'never'],
+    'no-trailing-spaces': ['error'],
+    'eol-last': ['error', 'always'],
     'file-progress/activate': 1,
-    'no-restricted-globals': ['error'].concat(restrictedGlobals),
+    'no-restricted-globals': ['error', ...restrictedGlobals],
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-secrets/no-secrets': 'error',
     'import/newline-after-import': 'error',
@@ -77,8 +94,8 @@ module.exports = {
         devDependencies: ['vite.config.ts', 'scripts/**/*.ts'],
         optionalDependencies: false,
         peerDependencies: false,
-        bundledDependencies: false
-      }
+        bundledDependencies: false,
+      },
     ],
     'import/no-nodejs-modules': 'error',
     'no-restricted-imports': [
@@ -88,15 +105,15 @@ module.exports = {
           {
             group: ['*/plugins*'],
             message:
-              'Do not use Vue plugins directly. Use composables (from @/composables) instead.'
+              'Do not use Vue plugins directly. Use composables (from @/composables) instead.',
           },
           {
             group: ['*/main*'],
             message:
-              'Do not use the Vue instance directly. Use composables (from @/composables) instead.'
-          }
-        ]
-      }
+              'Do not use the Vue instance directly. Use composables (from @/composables) instead.',
+          },
+        ],
+      },
     ],
     'jsdoc/require-hyphen-before-param-description': 'error',
     'jsdoc/require-description': 'error',
@@ -112,8 +129,8 @@ module.exports = {
         'ts-expect-error': true,
         'ts-ignore': true,
         'ts-nocheck': true,
-        'ts-check': true
-      }
+        'ts-check': true,
+      },
     ],
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
@@ -131,80 +148,109 @@ module.exports = {
       {
         blankLine: 'always',
         prev: '*',
-        next: ['const', 'let', 'var', 'export']
+        next: ['const', 'let', 'var', 'export'],
       },
       {
         blankLine: 'always',
         prev: ['const', 'let', 'var', 'export'],
-        next: '*'
+        next: '*',
       },
       {
         blankLine: 'any',
         prev: ['const', 'let', 'var', 'export'],
-        next: ['const', 'let', 'var', 'export']
+        next: ['const', 'let', 'var', 'export'],
       },
       // Always require blank lines before and after class declaration, if, do/while, switch, try
       {
         blankLine: 'always',
         prev: '*',
-        next: ['if', 'class', 'for', 'do', 'while', 'switch', 'try']
+        next: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
       },
       {
         blankLine: 'always',
         prev: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
-        next: '*'
+        next: '*',
       },
       // Always require blank lines before return statements
-      { blankLine: 'always', prev: '*', next: 'return' }
+      { blankLine: 'always', prev: '*', next: 'return' },
     ],
     'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
     curly: ['error', 'all'],
-    'vue/component-name-in-template-casing': [
-      'error',
-      'kebab-case',
-      {
-        ignores: []
-      }
-    ],
-    'vue/no-unused-refs': 'error',
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'always'
-        }
-      }
-    ],
-    'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
-    'vue/multiline-html-element-content-newline': 'error',
-    'vue/multi-word-component-names': 'off',
-    'vue/return-in-computed-property': 'off',
     'unicorn/filename-case': 'off',
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/no-await-expression-member': 'off',
     'eslint-comments/no-unused-disable': 'error',
-    'no-multiple-empty-lines': 'error'
+    'no-multiple-empty-lines': 'error',
   },
   overrides: [
+    {
+      files: ['*.md'],
+      rules: {
+        'no-trailing-spaces': ['off'],
+      },
+    },
+    {
+      files: ['*.json'],
+      rules: {
+        quotes: ['error', 'double'],
+        semi: 'off'
+      }
+    },
+    {
+      files: ['*.vue'],
+      rules: {
+        'vue/component-name-in-template-casing': [
+          'error',
+          'kebab-case',
+          {
+            ignores: [],
+          },
+        ],
+        'vue/html-self-closing': [
+          'error',
+          {
+            html: {
+              void: 'always',
+            },
+          },
+        ],
+        'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
+        'vue/multiline-html-element-content-newline': 'error',
+        'vue/multi-word-component-names': 'off',
+        'vue/return-in-computed-property': 'off',
+      }
+    },
+    // TODO: Review once ESLint config is ESM
+    {
+      files: ['.eslintrc.js'],
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'unicorn/prefer-module': 'off',
+        'no-undef': 'off'
+      }
+    },
     {
       files: ['vite.config.ts', 'scripts/**/*.ts'],
       rules: {
         'import/no-nodejs-modules': 'off'
       }
+    },
+    // This override allows us to omit the --ext CLI argument, simplifying package.json
+    {
+      files: ['*.ts', '*.js']
     }
   ],
   settings: {
     'import/resolver': {
       typescript: true,
-      node: true
+      node: true,
     },
-    settings: {
-      progress: {
-        hide: false,
-        successMessage: 'Linting done!'
-      }
-    }
-  }
+    progress: {
+      hide: false,
+      successMessage: 'Linting done!',
+    },
+  },
 };
