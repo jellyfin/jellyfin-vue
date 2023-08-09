@@ -1,16 +1,38 @@
 {
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": true, 
+  "editor.codeActionsOnSave": { 
+    "source.fixAll.eslint": true 
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sortKeys": true,
   "i18n-ally.sourceLanguage": "en-US",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "i18n-ally.localesPaths": ["frontend/locales"],
-  "i18n-ally.enabledFrameworks": ["vue"],
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "eslint.validate": ["vue"],
-  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "i18n-ally.localesPaths": [
+    "frontend/locales"
+  ],
+  "i18n-ally.enabledFrameworks": [
+    "vue"
+  ],
+  "eslint.validate": [
+    "vue",
+    "javascript",
+    "typescript"
+  ],
+  "eslint.format.enable": true,
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
   "emmet.includeLanguages": {
     "vue": "html"
   },
