@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <v-main v-if="playbackManager.queue">
     <v-app-bar color="transparent">
       <app-bar-button-layout @click="$router.back()">
         <template #icon>
@@ -19,7 +19,7 @@
       </app-bar-button-layout>
     </v-app-bar>
     <v-col class="px-0">
-      <transition v-if="playbackManager.queue">
+      <v-fade-transition mode="out-in">
         <swiper
           v-if="!isVisualizing"
           class="d-flex justify-center align-center user-select-none"
@@ -46,7 +46,12 @@
         </swiper>
         <music-visualizer
           v-else
+<<<<<<< HEAD
           class="d-flex justify-center align-center user-select-none presentation-height" />
+=======
+          class="d-flex justify-center align-center user-select-none"
+          style="height: 65vh" />
+>>>>>>> 1b7be01f (fix: music visualizer transitions and music hangs)
       </v-fade-transition>
       <v-row class="justify-center align-center mt-3">
         <v-col cols="6">
