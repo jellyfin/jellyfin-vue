@@ -28,6 +28,7 @@ declare module 'vue' {
     DraggableQueue: typeof import('./../../src/components/Playback/DraggableQueue.vue')['default']
     FilterButton: typeof import('./../../src/components/Buttons/FilterButton.vue')['default']
     HomeSection: typeof import('./../../src/components/Layout/HomeSection.vue')['default']
+    IDashiconsAlbum: typeof import('~icons/dashicons/album')['default']
     IdentifyDialog: typeof import('./../../src/components/Item/Identify/IdentifyDialog.vue')['default']
     IdentifyResults: typeof import('./../../src/components/Item/Identify/IdentifyResults.vue')['default']
     ImageEditor: typeof import('./../../src/components/Item/Metadata/ImageEditor.vue')['default']

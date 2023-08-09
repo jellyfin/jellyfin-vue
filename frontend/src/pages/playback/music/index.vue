@@ -8,6 +8,15 @@
           </v-icon>
         </template>
       </app-bar-button-layout>
+      <v-spacer />
+      <app-bar-button-layout @click="isVisualizing = !isVisualizing">
+        <template #icon>
+          <v-icon>
+            <i-dashicons-album v-if="isVisualizing" />
+            <i-mdi-chart-bar v-else />
+          </v-icon>
+        </template>
+      </app-bar-button-layout>
     </v-app-bar>
     <v-col class="px-0">
       <transition v-if="playbackManager.queue">
@@ -30,48 +39,47 @@
             :key="`${item.Id}-${index}`"
             :virtual-index="`${item.Id}-${index}`"
             class="d-flex justify-center">
-            <div class="album-cover">
+            <div class="album-cover presentation-height">
               <blurhash-image :item="item" />
             </div>
           </swiper-slide>
         </swiper>
-        <music-visualizer v-else class="visualizer" />
-      </transition>
+        <music-visualizer
+          v-else
+          class="d-flex justify-center align-center user-select-none presentation-height" />
+      </v-fade-transition>
       <v-row class="justify-center align-center mt-3">
         <v-col cols="6">
           <v-row class="justify-center align-center">
-            <h1 class="text-h4">
-              {{ playbackManager.currentItem?.Name }}
-            </h1>
-          </v-row>
-          <v-row class="justify-center align-center">
-            <span class="text-subtitle">
-              {{ artistString }}
-            </span>
+            <v-col>
+              <v-row>
+                <h1 class="text-h4">
+                  {{ playbackManager.currentItem?.Name }}
+                </h1>
+              </v-row>
+              <v-row>
+                <span class="text-subtitle">
+                  {{ artistString }}
+                </span>
+              </v-row>
+            </v-col>
+            <!-- TODO: Fix alignment with the end time of TimeSlider -->
+            <v-col class="d-flex justify-end">
+              <like-button
+                v-if="playbackManager.currentItem"
+                :item="playbackManager?.currentItem"
+                size="x-large" />
+            </v-col>
           </v-row>
           <v-row class="justify-center align-center mt-3">
             <time-slider />
           </v-row>
           <v-row class="justify-center align-center">
-            <v-btn
-              icon
-              size="x-large"
-              :color="isVisualizing ? 'primary' : undefined"
-              @click.stop.prevent="isVisualizing = !isVisualizing">
-              <v-icon size="x-large">
-                <i-mdi-chart-bar />
-              </v-icon>
-            </v-btn>
             <shuffle-button size="x-large" />
             <previous-track-button size="x-large" />
             <play-pause-button size="x-large" />
             <next-track-button size="x-large" />
             <repeat-button size="x-large" />
-            <like-button
-              v-if="playbackManager.currentItem"
-              :item="playbackManager?.currentItem"
-              size="x-large"
-              class="active-button" />
           </v-row>
         </v-col>
       </v-row>
@@ -90,7 +98,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, nextTick } from 'vue';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
 import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper';
 import type SwiperType from 'swiper';
@@ -164,6 +172,13 @@ watch(
   { immediate: true }
 );
 
+watch(isVisualizing, async () => {
+  if (!isVisualizing.value) {
+    await nextTick();
+    swiperInstance.value?.update();
+  }
+});
+
 /**
  * Handle slide changes
  */
@@ -177,17 +192,11 @@ function onSlideChange(): void {
 <style lang="scss" scoped>
 .album-cover {
   position: relative;
-  height: 65vh;
   min-width: 65vh;
   width: 65vh;
 }
 
-.visualizer {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  user-select: none;
+.presentation-height {
   height: 65vh;
-  padding: 1vh;
 }
 </style>

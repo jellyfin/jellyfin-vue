@@ -1,10 +1,6 @@
 <template>
   <div class="volume-slider d-flex align-center justify-center">
-    <v-btn
-      class="active-button"
-      icon
-      size="small"
-      @click="playbackManager.toggleMute">
+    <v-btn icon size="small" @click="playbackManager.toggleMute">
       <v-icon :icon="icon" />
     </v-btn>
     <v-slider

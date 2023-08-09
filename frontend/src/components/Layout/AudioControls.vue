@@ -64,9 +64,7 @@
             </div>
           </v-col>
           <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <like-button
-              :item="playbackManager.currentItem"
-              class="active-button" />
+            <like-button :item="playbackManager.currentItem" />
             <queue-button />
             <div class="hidden-lg-and-down">
               <volume-slider />
