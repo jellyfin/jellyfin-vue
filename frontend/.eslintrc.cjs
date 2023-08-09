@@ -41,6 +41,8 @@ module.exports = {
     'plugin:css/recommended',
     'plugin:unicorn/recommended',
     'plugin:you-dont-need-lodash-underscore/compatible',
+    'plugin:@intlify/vue-i18n/recommended',
+    'plugin:vue-scoped-css/vue3-recommended'
   ],
   plugins: [
     'jsdoc',
@@ -58,6 +60,8 @@ module.exports = {
     'css',
     'unicorn',
     'you-dont-need-lodash-underscore',
+    'vue-scoped-css',
+    '@intlify/vue-i18n',
     'file-progress',
   ],
   rules: {
@@ -183,6 +187,8 @@ module.exports = {
     'unicorn/no-await-expression-member': 'off',
     'eslint-comments/no-unused-disable': 'error',
     'no-multiple-empty-lines': 'error',
+    '@intlify/vue-i18n/no-unused-keys': 'error',
+    '@intlify/vue-i18n/no-raw-text': 'off'
   },
   overrides: [
     {
@@ -252,5 +258,9 @@ module.exports = {
       hide: false,
       successMessage: 'Linting done!',
     },
+    'vue-i18n': {
+      localeDir: 'locales/*.json',
+      messageSyntaxVersion: '^9.0.0'
+    }
   },
 };
