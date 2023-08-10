@@ -1,10 +1,7 @@
 import { createVuetify, ThemeDefinition } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { md3 } from 'vuetify/blueprints';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error - No type definition for this
 import * as vuetifyLocales from 'virtual:locales/vuetify';
-// @ts-expect-error - No type definition for this
 import { defaultRtl } from 'virtual:locales/vuetify/rtl';
 import 'vuetify/styles';
 
