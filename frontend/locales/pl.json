@@ -58,7 +58,7 @@
   },
   "directing": "Reżyseria",
   "director": "Reżyser",
-  "disabled": "Wyłaczone",
+  "disabled": "Wyłączone",
   "discNumber": "Dysk {discNumber}",
   "dislikes": "Niepolubione",
   "edit": "Edycja",
@@ -161,7 +161,7 @@
   "latestLibrary": "Najnowsze {libraryName}",
   "libraries": "Biblioteki",
   "libraryEmpty": "Ta biblioteka jest pusta",
-  "libraryEmptyFilters": "Brak wyników. Usuń kilka filtrów by zobaczyć więcej",
+  "libraryEmptyFilters": "Brak wyników. Usuń kilka filtrów, aby zobaczyć więcej",
   "libraryNotFound": "Biblioteka nie została znaleziona",
   "libraryRefreshQueued": "Odświeżenie biblioteki w kolejce",
   "liked": "Polubione",
@@ -347,7 +347,7 @@
       "addApiKey": "Dodaj klucz API",
       "addNewKey": "Dodaj nowy klucz API",
       "apiKeys": "Klucze API",
-      "appName": "Nazwa Aplikacji",
+      "appName": "Nazwa aplikacji",
       "createKeyFailure": "Błąd podczas tworzenia nowego klucza API",
       "createKeySuccess": "Pomyślnie utworzono nowy klucz API",
       "dateCreated": "Data utworzenia",
@@ -362,7 +362,7 @@
       "revokeSuccess": "Pomyślnie odwołano klucz API"
     },
     "devices": {
-      "appName": "Nazwa Aplikacji",
+      "appName": "Nazwa aplikacji",
       "appVersion": "Wersja aplikacji",
       "delete": "Usuń",
       "deleteAll": "Usuń wszystko",
@@ -423,7 +423,7 @@
     },
     "networking": {
       "description": "Zarządzaj ustawieniami sieci serwera",
-      "name": "Łączność Sieciowa"
+      "name": "Łączność sieciowa"
     },
     "notifications": {
       "description": "Konfiguruj i zarządzaj powiadomieniami wysyłanymi przez ten serwer",
@@ -468,7 +468,7 @@
   "songs": "Utwory",
   "sortByType": "Według {type}",
   "sortTitle": "Tytuł sortowania",
-  "specialFeatures": "Cechy specjalne",
+  "specialFeatures": "Dodatki specjalne",
   "speed": "Szybkość",
   "startNow": "Zacznij teraz",
   "status": "Status",
@@ -541,7 +541,7 @@
   },
   "unknown": "Nieznane",
   "unknownAlbum": "Nieznany album",
-  "unknownArtist": "Nieznany artysta",
+  "unknownArtist": "Nieznany wykonawca",
   "unknownTitle": "Nieznany tytuł",
   "unliked": "Nie lubię",
   "unplayed": "Nieodtworzone",
@@ -555,7 +555,7 @@
   },
   "version": "Wersja",
   "video": "Wideo",
-  "videoTypes": "Typy Wideo",
+  "videoTypes": "Typy wideo",
   "viewDetails": "Zobacz szczegóły",
   "vueClientVersion": "Wersja klienta",
   "wizard": {

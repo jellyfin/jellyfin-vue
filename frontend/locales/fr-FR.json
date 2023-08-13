@@ -11,7 +11,8 @@
   "alphabetically": "Alphabétiquement",
   "appbar": {
     "tasks": {
-      "configSync": "Synchronisation des paramètres…"
+      "configSync": "Synchronisation des paramètres…",
+      "scanningItem": "Scan'{item}'…"
     },
     "tooltips": {
       "tasks": "Tâches en cours"
@@ -104,6 +105,7 @@
   },
   "identify": "Identifier",
   "identifyConfirmChanges": "Êtes-vous sûr que vous voulez remplacer '{originalItem}' par '{newIdentifiedItem}' ?",
+  "identifyInstructResult": "Vous pouvez cliquer sur l'une de ces cartes pour appliquer le résultat",
   "imageType": {
     "art": "Illustration",
     "backdrop": "Arrière-plan",

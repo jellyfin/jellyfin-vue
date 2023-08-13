@@ -340,7 +340,7 @@
   "series": "Serie",
   "server": "Server",
   "serverVersion": "Versione del server",
-  "serverVersionTooLow": "Versione del server deve essere 10.7.0 o più recente",
+  "serverVersionTooLow": "La versione del server deve essere {version} o più recente",
   "settings": {
     "apiKeys": {
       "accessToken": "Token di accesso",
@@ -540,6 +540,9 @@
     }
   },
   "unknown": "Sconosciuto",
+  "unknownAlbum": "Album sconosciuto",
+  "unknownArtist": "Artista sconosciuto",
+  "unknownTitle": "Titolo sconosciuto",
   "unliked": "Non mi piace più",
   "unplayed": "Non visto",
   "upNext": "Prossimo",

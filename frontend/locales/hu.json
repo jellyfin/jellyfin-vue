@@ -11,7 +11,8 @@
   "alphabetically": "Abc sorrend",
   "appbar": {
     "tasks": {
-      "configSync": "Szinkronizálási beállítások…"
+      "configSync": "Szinkronizálási beállítások…",
+      "scanningItem": "'{item}' szkennelése…"
     },
     "tooltips": {
       "tasks": "Futó folyamatok"
@@ -23,6 +24,7 @@
   "aspectRatio": "Képarány",
   "audio": "Hang",
   "audioCodecNotSupported": "Az audiókodek nem támogatott",
+  "auto": "Automatikus",
   "badRequest": "Hibás lekérdezés. Próbáld újra",
   "books": "Könyvek",
   "browserNotSupported": "A böngésződ nem támogatja a fájl lejátszását.",
@@ -43,6 +45,9 @@
   "customRating": "Egyedi értékelés",
   "darkModeToggle": "Váltás sötét módra",
   "dateAdded": "Hozzáadás dátuma",
+  "delete": "Törlés",
+  "deleteItem": "Média törlése",
+  "deleteItemDescription": "Az elem törlése törli azt a fájlrendszerből és a médiatárból is. Biztos, hogy folytatni szeretné?",
   "details": "Részletek",
   "dialog": {
     "upNext": {
@@ -64,10 +69,16 @@
   "episodeNumber": "{episodeNumber}. epizód",
   "errors": {
     "anErrorHappened": "Hiba történt",
+    "cantPlayItem": "Ezt az elemet nem lehet lejátszani",
     "messages": {
       "errorCode": "Hibakód: {errorCode}",
       "videoPlayerError": "A videolejátszó helyrehozhatatlan hibát észlelt."
-    }
+    },
+    "playback": {
+      "mediaError": "Súlyos médiahiba lépett fel, megpróbálom helyreállítani",
+      "networkError": "Súlyos hálózati hiba lépett fel, próbálom helyreállítani"
+    },
+    "unauthorized": "Ön nem jogosult hozzáférni ehhez az oldalhoz"
   },
   "failedRetrievingDisplayPreferences": "Nem sikerült lekérni a megjelenítési beállításokat. Az utolsó ismert beállítások lesznek alkamazva.",
   "failedSettingDisplayPreferences": "Nem sikerült frissíteni a megjelenítési beállításokat.",
@@ -80,6 +91,8 @@
   "general": "Általános",
   "genericJellyfinPlaceholderDevice": "Általános Jellyfin eszköz",
   "genres": "Műfaj",
+  "goBack": "Vissza",
+  "goNext": "Tovább",
   "googleCastPlaceholderDevice": "Google Cast-eszköz",
   "guestStar": "Vendégsztár",
   "headerExternalIds": "Külső azonosítók",
@@ -90,6 +103,9 @@
       "recentlyAdded": "Nemrég hozzáadott"
     }
   },
+  "identify": "Azonosítás",
+  "identifyConfirmChanges": "Biztos vagy benne, hogy a '{originalItem}'-et '{newIdentifiedItem}'-re akarod cserélni?",
+  "identifyInstructResult": "Az eredmény alkalmazásához kattintson az egyik kártyára",
   "imageType": {
     "art": "Borító",
     "backdrop": "Háttér",
@@ -105,6 +121,8 @@
   },
   "images": "Képek",
   "incorrectUsernameOrPassword": "Hibás felhasználónév vagy jelszó",
+  "instantMix": "Azonnali mix",
+  "instantMixQueued": "Instant mix hozzáadva a várólistához",
   "item": {
     "artist": {
       "albums": "Albumok",
@@ -213,6 +231,7 @@
   },
   "metadataEditor": "Metaadat-szerkesztő",
   "metadataNoResultsMatching": "A keresett kifejezés ({search}) nem található. Nyomj enter-t, hogy létrehozz egy újat.",
+  "metadataRefreshQueued": "Metaadat-frissítés sorba állítva",
   "more": "Több",
   "moreLikeArtist": "Hozzá hasonlóak {artist}",
   "moreLikeThis": "Több ehhez hasonló",
@@ -295,24 +314,33 @@
   "quality": "Minőség",
   "queue": "Sor",
   "rating": "Értékelés",
+  "refresh": "Frissítés",
   "refreshLibrary": "Könyvtár frissítése",
+  "refreshMetadata": "Metaadatok frissítése",
+  "refreshMetadataHint": "A metaadatok a vezérlőpulton engedélyezett beállítások és internetes szolgáltatások alapján frissülnek",
   "releaseDate": "Megjelenés dátuma",
   "remoteDevices": "Távoli eszközök",
+  "replaceAllMetadata": "Minden metaadat cseréje",
+  "replaceExistingImages": "Meglévő képek cseréje",
+  "results": "Eredmények",
   "resumable": "Folytatható",
   "resume": "Folytatás",
   "role": "Szerep",
   "save": "Mentés",
   "saved": "Mentve",
+  "scanForNewAndUpdatedFiles": "Új és frissített fájlok keresése",
   "search": {
     "name": "Keresés",
     "topResults": "Legjobb eredmények"
   },
+  "searchMissingMetadata": "Hiányzó metaadatok keresése",
+  "searchNoResults": "Nincs találat",
   "seasonEpisode": "Évad {seasonNumber}, Epizód {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Sorozatok",
   "server": "Szerver",
   "serverVersion": "Szerver verzió",
-  "serverVersionTooLow": "A szerver verziójának legalább 10.7.0-nak kell lennie",
+  "serverVersionTooLow": "A szerver verziójának legalább {version}-nak kell lennie",
   "settings": {
     "apiKeys": {
       "accessToken": "Hozzáférési token",
@@ -325,9 +353,11 @@
       "dateCreated": "Létrehozás dátuma",
       "description": "API-kulcsok hozzáadása és visszavonása a kiszolgálóhoz való külső hozzáféréshez",
       "refreshKeysFailure": "API-kulcsok frissítése sikertelen",
+      "revoke": "Visszavonás",
       "revokeAll": "API-kulcsok visszavonása",
       "revokeAllFailure": "API-kulcsok visszavonása sikertelen",
       "revokeAllSuccess": "API-kulcsok visszavonása sikeres",
+      "revokeConfirm": "API-kulcs visszavonásának megerősítése",
       "revokeFailure": "API-kulcs visszavonása sikertelen",
       "revokeSuccess": "API-kulcs visszavonásra került"
     },
@@ -338,6 +368,7 @@
       "deleteAll": "Összes törlése",
       "deleteAllDevicesError": "Hiba történt az összes eszköz törlésekor",
       "deleteAllDevicesSuccess": "Minden eszköz sikeresen törölve",
+      "deleteConfirm": "Az eszköz törlésének megerősítése",
       "deleteDeviceError": "Hiba történt az eszköz törlésekor",
       "deleteDeviceSuccess": "Az eszköz sikeresen törölve",
       "deviceName": "Eszköz neve",
@@ -431,7 +462,8 @@
   "signIn": "Bejelentkezés",
   "snackbar": {
     "addedToQueue": "Hozzáadva a sorhoz",
-    "playNext": "A kiválasztott elem az aktuális után kerül lejátszásra"
+    "playNext": "A kiválasztott elem az aktuális után kerül lejátszásra",
+    "routeValidationError": "Az útvonalparaméterekben megadott routeId nem helyes"
   },
   "songs": "Dalok",
   "sortByType": "{type} szerint",
@@ -451,6 +483,7 @@
   "themeVideo": "Főcím",
   "tooltips": {
     "changeLanguage": "Nyelv",
+    "switchToAuto": "Rendszer témájának követése",
     "switchToDarkMode": "Váltás sötét módra",
     "switchToLightMode": "Váltás világos módra"
   },
@@ -506,6 +539,10 @@
       "seconds": "{count} másodperc | {count} másodperc(ek)"
     }
   },
+  "unknown": "Ismeretlen",
+  "unknownAlbum": "Ismeretlen album",
+  "unknownArtist": "Ismeretlen művész",
+  "unknownTitle": "Ismeretlen cím",
   "unliked": "Nem tetszett",
   "unplayed": "Lejátszatlan",
   "upNext": "Következik",

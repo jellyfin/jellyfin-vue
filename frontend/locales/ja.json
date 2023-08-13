@@ -1,1 +1,47 @@
-{}
+{
+  "3DFormat": "3Dフォーマット",
+  "NoMediaSourcesAvailable": "メディアソースなし",
+  "actor": "役者",
+  "actors": "役者",
+  "addNewPerson": "新しい役者を追加",
+  "administrator": "管理者",
+  "airPlayDevices": "AirPlayデバイス",
+  "albums": "アルバム",
+  "allLanguages": "全ての言語",
+  "alphabetically": "アルファベット順",
+  "appbar": {
+    "tasks": {
+      "configSync": "設定を同期中…",
+      "scanningItem": "「{item}」をスキャン中…"
+    },
+    "tooltips": {
+      "tasks": "実行中のタスク"
+    }
+  },
+  "architecture": "アーキテクチャ",
+  "artist": "アーティスト",
+  "artists": "アーティスト",
+  "aspectRatio": "アスペクト比",
+  "audio": "オーディオ",
+  "audioCodecNotSupported": "音声コーデックがサポートされていない",
+  "auto": "オートマティック",
+  "badRequest": "リクエストが正しくありません。再試行してください",
+  "books": "本",
+  "browserNotSupported": "お使いのブラウザはこのファイルの再生に対応していません。",
+  "buttons": {
+    "ok": "はい"
+  },
+  "cancel": "キャンセル",
+  "collectionEmpty": "このコレクションは空です",
+  "collections": "コレクション",
+  "communityRating": "コミュウニティーの評価",
+  "confirm": "確認する",
+  "connect": "接続",
+  "continueListening": "聞き続ける",
+  "continueWatching": "見続ける",
+  "criticRating": "評論家の評価",
+  "darkModeToggle": "ダークモードの切り替え",
+  "dateAdded": "追加日",
+  "delete": "削除",
+  "deleteItem": "メディアを削除する"
+}

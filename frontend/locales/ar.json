@@ -11,7 +11,8 @@
   "alphabetically": "أبجديّا",
   "appbar": {
     "tasks": {
-      "configSync": "إعدادات المزامنة…"
+      "configSync": "مزامنة الإعدادات جارية…",
+      "scanningItem": "جاري مسح '{item}'…"
     },
     "tooltips": {
       "tasks": "المهام المشغّلة"
@@ -26,7 +27,7 @@
   "auto": "تلقائي",
   "badRequest": "يتعذر على الخادم فهم الطلب، حاول مرة أخرى",
   "books": "الكتب",
-  "browserNotSupported": "لا يتدعم متصفحك عرض مثل هذا النوع من الملفات.",
+  "browserNotSupported": "لا يدعم متصفحك عرض مثل هذا النوع من الملفات.",
   "buttons": {
     "ok": "موافق"
   },
@@ -44,6 +45,7 @@
   "customRating": "تصنيف مخصص",
   "darkModeToggle": "تبديل الوضع الداكن",
   "dateAdded": "تاريخ الإضافة",
+  "delete": "حذف",
   "details": "التفاصيل",
   "dialog": {
     "upNext": {
@@ -70,9 +72,10 @@
       "videoPlayerError": "واجه مشغل الفيديو خطأ غير قابل للإصلاح."
     },
     "playback": {
-      "networkError": "تمت مصادفة خطأ في الشبكة، محاولة الاسترداد"
+      "mediaError": "تمت مصادفة خطأ فادح في الوسائط. محاولة الاسترداد جارية",
+      "networkError": "تمت مصادفة خطأ في الشبكة. محاولة الاسترداد جارية"
     },
-    "unauthorized": "أنت غير مصرح لك للوصول إلى هذه الصفحة"
+    "unauthorized": "غير مصرح لك للوصول إلى هذه الصفحة"
   },
   "failedRetrievingDisplayPreferences": "فشل الوصول إلى خيارات العرض، ستُطبق آخر خيارات مُخزنة.",
   "failedSettingDisplayPreferences": "فشل تحديث خيارات العرض.",
@@ -154,6 +157,7 @@
     "changeServer": "غيّر الخادم",
     "changeUser": "غيّر المستخدم",
     "connect": "اتصل",
+    "kickedOut": "تم إلغاء التصريح لهذه الجلسة فلم تعد صالحة. يرجى تسجيل الدخول مجدداً",
     "login": "تسجيل الدخول",
     "loginAs": "سجل الدخول باعتبارك {name}",
     "manualLogin": "تسجيل الدخول اليدوي",
@@ -168,6 +172,24 @@
     "serverVersionTooLow": "يجب أن يكون إصدار الخادم 10.7.0 أو أحدث"
   },
   "logout": "سجل الخروج",
+  "logsAndActivity": {
+    "logs": "السجلات",
+    "noActivityFound": "لم يتم العثور على أي نشاطات",
+    "noLogsFound": "لم يتم العثور على اي سجلات"
+  },
+  "manualLogin": "تسجيل الدخول اليدوي",
+  "mediaInfo": {
+    "audioChannels": {
+      "name": "قنوات الصوت:"
+    }
+  },
+  "more": "المزيد",
+  "moreLikeArtist": "مزيداً مثل{artist}",
+  "movies": "الأفلام",
+  "name": "الاسم",
+  "networks": "الشبكات",
+  "nextUp": "التالي",
+  "noImagesFound": "لم يتم العثور على صور",
   "originalAspectRatio": "النسبة البعدينية الأصلية",
   "password": "كلمة المرور",
   "playback": {

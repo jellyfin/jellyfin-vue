@@ -4,16 +4,27 @@
   "actor": "Skuespiller",
   "actors": "Skuespillere",
   "addNewPerson": "Legg til ny person",
+  "administrator": "Administrator",
   "airPlayDevices": "AirPlay enheter",
   "albums": "Album",
   "allLanguages": "Alle språk",
   "alphabetically": "Alfabetisk",
+  "appbar": {
+    "tasks": {
+      "configSync": "Synkroniserer instillinger…",
+      "scanningItem": "Skanner '{item}'…"
+    },
+    "tooltips": {
+      "tasks": "Kjører oppgaver"
+    }
+  },
   "architecture": "Systemarkitektur",
   "artist": "Artist",
   "artists": "Artister",
   "aspectRatio": "Størrelsesforhold",
   "audio": "Lyd",
   "audioCodecNotSupported": "Lydkodeken støttes ikke",
+  "auto": "Automatisk",
   "badRequest": "Feil i forespørselen. Prøv igjen",
   "books": "Bøker",
   "browserNotSupported": "Din nettleser kan ikke spille av denne filen.",
@@ -23,6 +34,7 @@
   "byArtist": "Av {artist}",
   "cancel": "Avbryt",
   "castAndCrew": "Rollebesetning og mannskap",
+  "collectionEmpty": "Denne samlingen er tom",
   "collections": "Samlinger",
   "communityRating": "Fellesskapets vurdering",
   "confirm": "Bekreft",
@@ -33,15 +45,20 @@
   "customRating": "Egendefinert vurdering",
   "darkModeToggle": "Veksle mørk modus",
   "dateAdded": "Dato lagt til",
+  "delete": "Slett",
+  "deleteItem": "Slett media",
+  "deleteItemDescription": "Hvis du sletter dette elementet, slettes det fra både filsystemet og mediebiblioteket ditt. Er du sikker på at du vil fortsette?",
   "details": "Detaljer",
   "dialog": {
     "upNext": {
       "hide": "Skjul",
+      "nextItemPlayingIn": "Starter om {time}",
       "startNow": "Start nå"
     }
   },
   "directing": "Regi",
   "director": "Regissør",
+  "disabled": "Avslått",
   "discNumber": "Plate {discNumber}",
   "dislikes": "Liker ikke",
   "edit": "Rediger",
@@ -52,10 +69,16 @@
   "episodeNumber": "Episode {episodeNumber}",
   "errors": {
     "anErrorHappened": "En feil har oppstått",
+    "cantPlayItem": "Dette elementet kan ikke spilles",
     "messages": {
       "errorCode": "Feilkode: {errorCode}",
       "videoPlayerError": "Avspilleren har truffet på en ukorrigerbar feil."
-    }
+    },
+    "playback": {
+      "mediaError": "Kritisk mediefeil oppstått, prøver å fikse",
+      "networkError": "Kritisk nettverksfeil oppstått, prøver å fikse"
+    },
+    "unauthorized": "Du er ikke autorisert til å få tilgang til denne siden"
   },
   "failedRetrievingDisplayPreferences": "Kunne ikke hente visningsinnstillinger. Bruker standardinnstillinger.",
   "failedSettingDisplayPreferences": "Kunne ikke oppdatere visningsinnstillinger.",
@@ -66,7 +89,10 @@
   "filtersNotFound": "Kan ikke laste filtre",
   "fullScreen": "Fullskjerm",
   "general": "Generelt",
+  "genericJellyfinPlaceholderDevice": "Generisk Jellyfin enhet",
   "genres": "Sjangere",
+  "goBack": "Gå tilbake",
+  "goNext": "Gå til neste",
   "googleCastPlaceholderDevice": "Google Cast enhet",
   "guestStar": "Gjesterolle",
   "headerExternalIds": "Eksterne IDer",
@@ -77,6 +103,9 @@
       "recentlyAdded": "Nylig lagt til"
     }
   },
+  "identify": "Identifiser",
+  "identifyConfirmChanges": "Er du sikker på at du vil endre '{originalItem}' til '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Du kan trykke på en av disse kortene for å bruke resultatet",
   "imageType": {
     "art": "Kunst",
     "backdrop": "Bakgrunn",
@@ -92,11 +121,16 @@
   },
   "images": "Bilder",
   "incorrectUsernameOrPassword": "Feil brukernavn eller passord",
+  "instantMix": "Øyeblikkelig blanding",
+  "instantMixQueued": "Øyeblikkelig blanding lagt til i køen",
   "item": {
     "artist": {
+      "albums": "Albumer",
       "appearsOn": "Opptredener",
       "discography": "Diskografi",
+      "eps": "EP-er",
       "information": "Informasjon",
+      "singles": "Singler",
       "videos": "Videoer"
     },
     "cast": "Stab",
@@ -116,6 +150,11 @@
     "tracklist": {
       "title": "Tittel"
     }
+  },
+  "itemMenu": {
+    "pushToBottom": "Flytt til slutten",
+    "pushToTop": "Flytt til starten",
+    "removeFromQueue": "Fjern fra køen"
   },
   "itemNotFound": "Gjenstand ikke funnet",
   "jellyfinLogo": "Jellyfin-logo",
@@ -138,6 +177,7 @@
     "changeServer": "Bytt server",
     "changeUser": "Bytt bruker",
     "connect": "Koble til",
+    "kickedOut": "Tilgang har blitt opphevet og denne sesjonen er ikke lenger gyldig. Vennligst logg inn igjen",
     "login": "Logg inn",
     "loginAs": "Logg inn som {name}",
     "manualLogin": "Manuell innlogging",
@@ -171,6 +211,10 @@
     "bitrate": {
       "name": "Bitrate:"
     },
+    "container": {
+      "name": "Beholder:"
+    },
+    "name": "Medie",
     "subtitleCodec": {
       "name": "Undertekstkodek:"
     },
@@ -187,6 +231,7 @@
   },
   "metadataEditor": "Metadataredigerer",
   "metadataNoResultsMatching": "Ingen resultater for \"{search}\". Trykk enter for å lage et nytt.",
+  "metadataRefreshQueued": "Metadata-oppdatering lagt til i køen",
   "more": "Mer",
   "moreLikeArtist": "Mer liknende {artist}",
   "moreLikeThis": "Mer som dette",
@@ -230,9 +275,14 @@
   "playbackInfo": {
     "name": "Avspilling",
     "playMethod": {
-      "direct": "Direkte"
+      "direct": "Direkte",
+      "name": "Metode:",
+      "remux": "Remux",
+      "transcode": "Omkode"
     },
     "streamType": {
+      "dash": "DASH",
+      "hls": "HLS",
       "name": "Strømmetype:",
       "unknown": "Ukjent",
       "video": "Video"
@@ -240,22 +290,57 @@
   },
   "playbackSettings": "Avspillingsinnstillinger",
   "played": "Avspilt",
+  "playerInfo": {
+    "corruptedFrames": {
+      "name": "Ødelagte bilder:"
+    },
+    "decodedFrames": {
+      "name": "Dekodede bilder:"
+    },
+    "droppedFrames": {
+      "name": "Tapte bilder:"
+    },
+    "name": "Avspiller",
+    "playbackResolution": {
+      "name": "Viewport-oppløsning:"
+    },
+    "videoResolution": {
+      "name": "Videooppløsning:",
+      "value": "{width}x{height}"
+    }
+  },
   "present": "Tilstede",
   "producer": "Produsent",
+  "quality": "Kvalitet",
   "queue": "Spilleliste",
   "rating": "Vurdering",
+  "refresh": "Oppdater",
   "refreshLibrary": "Oppdater bibliotek",
+  "refreshMetadata": "Oppdater metadata",
+  "refreshMetadataHint": "Metadata er oppdatert basert på innstillinger og internett-tjenester som er påskrudd i dashbordet",
   "releaseDate": "Slippdato",
+  "remoteDevices": "Eksterne enheter",
+  "replaceAllMetadata": "Bytt ut all metadata",
+  "replaceExistingImages": "Bytt ut eksisterende bilder",
+  "results": "Resultater",
   "resumable": "Gjenopptakbar",
   "resume": "Gjenoppta",
   "role": "Rolle",
   "save": "Lagre",
   "saved": "Lagret",
+  "scanForNewAndUpdatedFiles": "Søk etter nye og oppdaterte filer",
+  "search": {
+    "name": "Søk",
+    "topResults": "Toppresultater"
+  },
+  "searchMissingMetadata": "Søk etter manglende metadata",
+  "searchNoResults": "Ingen resultater funnet",
+  "seasonEpisode": "Sesong {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serier",
   "server": "Server",
   "serverVersion": "Serverversjon",
-  "serverVersionTooLow": "Serveren må være versjon 10.7.0 eller høyere",
+  "serverVersionTooLow": "Serveren må være versjon {version} eller høyere",
   "settings": {
     "apiKeys": {
       "accessToken": "Tilgangspollett",
@@ -268,9 +353,11 @@
       "dateCreated": "Dato opprettet",
       "description": "Legg til og tilbakekall API-nøkler for ekstern tilgang til serveren din",
       "refreshKeysFailure": "Feil oppstod under lasting av API-nøkler",
+      "revoke": "Opphev",
       "revokeAll": "Tilbakekall alle API-nøkler",
       "revokeAllFailure": "Feil oppstod under tilbakekalling av API-nøklene",
       "revokeAllSuccess": "Alle API-nøklene ble tilbakekalt",
+      "revokeConfirm": "Bekreft API-nøkkel opphevelse",
       "revokeFailure": "Feil oppstod under tilbakekalling av API-nøkkelen",
       "revokeSuccess": "API-nøkkelen ble tilbakekalt"
     },
@@ -281,6 +368,7 @@
       "deleteAll": "Slett alle",
       "deleteAllDevicesError": "Kunne ikke slette alle enheter",
       "deleteAllDevicesSuccess": "Alle enheter slettet",
+      "deleteConfirm": "Bekreft sletting av enhet",
       "deleteDeviceError": "Kunne ikke slette enhet",
       "deleteDeviceSuccess": "Enhet slettet",
       "deviceName": "Enhetsnavn",
@@ -372,12 +460,22 @@
   },
   "shows": "Serier",
   "signIn": "Logg inn",
+  "snackbar": {
+    "addedToQueue": "Lagt til i køen",
+    "playNext": "Det valgte elementet vil spilles etter det gjeldende elementet",
+    "routeValidationError": "Den spesifiserte rute-IDen i rute-parameterene er feil"
+  },
+  "songs": "Sanger",
   "sortByType": "Etter {type}",
   "sortTitle": "Sorterbar tittel",
   "specialFeatures": "Spesial Innhold",
+  "speed": "Fart",
+  "startNow": "Start nå",
   "status": "Status",
+  "stretch": "Strekk",
   "studios": "Studioer",
   "subtitles": "Undertekster",
+  "syncPlayGroups": "SyncPlay grupper",
   "syncingInProgress": "Synkronisering pågår",
   "tagline": "Slagord",
   "tags": "Etiketter",
@@ -385,13 +483,46 @@
   "themeVideo": "Kjenningsvideo",
   "tooltips": {
     "changeLanguage": "Språk",
+    "switchToAuto": "Følg systemtema",
     "switchToDarkMode": "Bytt til mørk modus",
     "switchToLightMode": "Bytt til lys modus"
   },
   "trailer": "Trailer",
+  "transcodingInfo": {
+    "name": "Omkoding",
+    "transcodingFramerate": {
+      "name": "Bildefrekvens:",
+      "value": "{value} fps"
+    },
+    "transcodingProgress": "Framgang:",
+    "transcodingReason": {
+      "name": "Grunn: | Grunner:",
+      "reasons": {
+        "anamorphicVideoNotSupported": "Anamorfisk video støttes ikke",
+        "audioBitDepthNotSupported": "Lyden's bit-dybde støttes ikke",
+        "audioBitrateNotSupported": "Lyden's bitfrekvens støttes ikke",
+        "audioChannelsNotSupported": "Antallet lydkanaler støttes ikke",
+        "audioCodecNotSupported": "Lydkodeken støttes ikke",
+        "audioProfileNotSupported": "Lydkodeken's profil støttes ikke",
+        "audioSampleRateNotSupported": "Lyden's prøvefrekvens støttes ikke",
+        "containerBitrateExceedsLimit": "Beholderen's bithastighet går over den satte grensen",
+        "containerNotSupported": "Beholderen støttes ikke",
+        "interlacedVideoNotSupported": "Interlaced video støttes ikke",
+        "refFramesNotSupported": "Referansebilder støttes ikke",
+        "secondaryAudioNotSupported": "Sekundere lydspor støttes ikke",
+        "subtitleCodecNotSupported": "Tekstingkodeken støttes ikke",
+        "videoBitDepthNotSupported": "Videoen's bit-dybde støttes ikke",
+        "videoCodecNotSupported": "Videokodeken støttes ikke",
+        "videoFramerateNotSupported": "Videoens bildefrekvens støttes ikke",
+        "videoLevelNotSupported": "Videokodekens nivå støttes ikke",
+        "videoProfileNotSupported": "Videokodekens profil støttes ikke",
+        "videoResolutionNotSupported": "Videooppløsningen støttes ikke"
+      }
+    }
+  },
   "type": "Type",
-  "unableGetPublicUsers": "Kunne ikke hente brukerliste",
-  "unableGetRelated": "Kunne ikke hente relaterte artikler",
+  "unableGetPublicUsers": "Kunne ikke hente brukere",
+  "unableGetRelated": "Kunne ikke hente relaterte objekter",
   "unableGetServerConfiguration": "Kunne ikke hente serverkonfigurasjon",
   "unableToRefreshLibrary": "Kunne ikke oppdatere biblioteket",
   "unableToToggleLike": "Kunne ikke endre likerstatusen til elementet",
@@ -399,7 +530,20 @@
   "undefined": "Udefinert",
   "unexpectedError": "Uventet feil",
   "unhandledException": "Uhåndtert feil",
-  "unliked": "Ikke likt",
+  "units": {
+    "bitrate": {
+      "kbps": "{value} kbps",
+      "mbps": "{value} Mbps"
+    },
+    "time": {
+      "seconds": "{count} sekund | {count} sekunder"
+    }
+  },
+  "unknown": "Ukjent",
+  "unknownAlbum": "Ukjent album",
+  "unknownArtist": "Ukjent artist",
+  "unknownTitle": "Ukjent tittel",
+  "unliked": "Avlikt",
   "unplayed": "Uspilt",
   "upNext": "Neste",
   "upNextName": "Neste: {upNextItemName}",
@@ -411,7 +555,7 @@
   },
   "version": "Versjon",
   "video": "Video",
-  "videoTypes": "Videoformat",
+  "videoTypes": "Videotyper",
   "viewDetails": "Vis detaljer",
   "vueClientVersion": "Klientversjon",
   "wizard": {
@@ -419,7 +563,7 @@
     "allowRemoteAccess": "Tillat fjerntilgang til serveren",
     "completeError": "Kunne ikke fullføre oppstartsguiden.",
     "confirmPassword": "Bekreft passord",
-    "languageLocale": "Språk",
+    "languageLocale": "Språk og lokalitet",
     "languageSuccessfullySet": "Språket ble satt.",
     "metadataLanguagesSet": "Metadataspråkene ble satt.",
     "preferedLanguage": "Foretrukket språk",

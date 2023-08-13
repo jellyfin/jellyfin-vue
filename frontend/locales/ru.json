@@ -11,7 +11,8 @@
   "alphabetically": "Алфавитный",
   "appbar": {
     "tasks": {
-      "configSync": "Синхронизируются параметры…"
+      "configSync": "Синхронизируются параметры…",
+      "scanningItem": "Сканирую '{item}'…"
     },
     "tooltips": {
       "tasks": "Исполняющиеся задачи"
@@ -44,6 +45,8 @@
   "customRating": "Произвольная возрастная категория",
   "darkModeToggle": "Переключение тёмного режима",
   "dateAdded": "Дата добавления",
+  "delete": "Удалить",
+  "deleteItem": "Удалить элемент",
   "details": "Подробности",
   "dialog": {
     "upNext": {
@@ -87,6 +90,8 @@
   "general": "Общие",
   "genericJellyfinPlaceholderDevice": "Общее устройство Jellyfin",
   "genres": "Жанры",
+  "goBack": "Назад",
+  "goNext": "Вперёд",
   "googleCastPlaceholderDevice": "Устройство Google Cast",
   "guestStar": "Приглашенный актёр",
   "headerExternalIds": "Внешние идентификаторы",
@@ -97,6 +102,8 @@
       "recentlyAdded": "Недавно добавленное"
     }
   },
+  "identify": "Определить",
+  "identifyConfirmChanges": "Вы уверенны что хотите заменить '{originalItem}' на '{newIdentifiedItem}'?",
   "imageType": {
     "art": "Рисунок",
     "backdrop": "Задник",
@@ -112,6 +119,8 @@
   },
   "images": "Изображения",
   "incorrectUsernameOrPassword": "Неверные имя пользователя или пароль",
+  "instantMix": "Мгновенный микс",
+  "instantMixQueued": "Мгновенный микс добавлен в очередь",
   "item": {
     "artist": {
       "albums": "Альбомы",
@@ -143,7 +152,7 @@
   "itemMenu": {
     "pushToBottom": "Перейти к концу",
     "pushToTop": "Перейти к началу",
-    "removeFromQueue": "Изъять из очереди"
+    "removeFromQueue": "Удалить из очереди"
   },
   "itemNotFound": "Элемент не найден",
   "jellyfinLogo": "Логотип Jellyfin",
@@ -220,6 +229,7 @@
   },
   "metadataEditor": "Редактор метаданных",
   "metadataNoResultsMatching": "Нет результатов по запросу \"{search}\". Нажмите Enter, чтобы создать новый.",
+  "metadataRefreshQueued": "Обновление метаданных добавлено в очередь",
   "more": "Ещё",
   "moreLikeArtist": "Ещё подобные {artist}",
   "moreLikeThis": "Ещё подобное",
@@ -302,18 +312,27 @@
   "quality": "Качество",
   "queue": "Очередь",
   "rating": "Оценка",
+  "refresh": "Обновить",
   "refreshLibrary": "Обновить медиатеку",
+  "refreshMetadata": "Обновить метаданные",
+  "refreshMetadataHint": "Метаданные обновлены в соответствии с сервисами включёнными в панели управления",
   "releaseDate": "Дата выпуска",
   "remoteDevices": "Удалённые устройства",
+  "replaceAllMetadata": "Заменить все метаданные",
+  "replaceExistingImages": "Заменить существующие изображения",
+  "results": "Результаты",
   "resumable": "Возобновимое",
   "resume": "Возобновить",
   "role": "Роль",
   "save": "Сохранить",
   "saved": "Сохранено",
+  "scanForNewAndUpdatedFiles": "Найти новые и обновлеые файлы",
   "search": {
     "name": "Поиск",
     "topResults": "Высшие результаты"
   },
+  "searchMissingMetadata": "Найти отсутствующие метаданные",
+  "searchNoResults": "Ничего не найдено",
   "seasonEpisode": "Сезон {seasonNumber}, Эпизод {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Сериал",
