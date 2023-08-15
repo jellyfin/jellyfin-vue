@@ -4,7 +4,7 @@
     :title="$t('identify')"
     :subtitle="itemPath"
     loading
-    @close="wrapClose">
+    @close="close">
     <template #loader>
       <v-progress-linear v-model="progress" :indeterminate="isLoading" />
     </template>
@@ -102,7 +102,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const wrapClose = (): void => {
+const close = (): void => {
   model.value = false;
   emit('close');
 };

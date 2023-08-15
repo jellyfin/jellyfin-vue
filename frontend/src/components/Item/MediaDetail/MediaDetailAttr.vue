@@ -1,39 +1,29 @@
 <template>
-  <div class="d-flex flex-row">
-    <span class="mdinfo-label">{{ name + ' ' }}</span>
-    <span class="mdinfo-value">{{ parsedValue }}</span>
-  </div>
+  <p>
+    <b>{{ `${name}: ` }}</b>
+    <template v-if="!icon">
+      {{ value }}
+    </template>
+    <v-icon v-else :icon="icon" />
+  </p>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import IMdiCheck from 'virtual:icons/mdi/check';
+import IMdiClose from 'virtual:icons/mdi/close';
+import IMdiHelp from 'virtual:icons/mdi/help';
 
-export interface MediaDetailAttribute {
+const props = defineProps<{
   name: string;
   value?: string | number | boolean;
-}
+}>();
 
-const props = defineProps<MediaDetailAttribute>();
-const { t } = useI18n();
-
-const parsedValue = computed(() => {
+const icon = computed(() => {
   if (typeof props.value === 'boolean') {
-    return props.value ? t('yes') : t('no');
+    return props.value ? IMdiCheck : IMdiClose;
   }
 
-  return props.value ?? 'Unknown';
+  return props.value === 'undefined' ? IMdiHelp : undefined;
 });
 </script>
-
-<style lang="scss" scoped>
-.mdinfo-label {
-  display: inline-block;
-  font-weight: 600;
-}
-.mdinfo-value {
-  display: inline-block;
-  margin-left: 0.5rem;
-  font-weight: 400;
-}
-</style>

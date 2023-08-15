@@ -582,3 +582,11 @@ export function formatFileSize(size: number): string {
     ['B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB'][i]
   }`;
 }
+
+/**
+ * Format an item's bitrate into an standard human-readable format
+ * Eg: 18112.27 kbps
+ */
+export function formatBitRate(bitrate: number): string {
+  return `${(bitrate / 1000).toFixed(2)} kbps`;
+}
