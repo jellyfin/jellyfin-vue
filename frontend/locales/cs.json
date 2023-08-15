@@ -45,6 +45,7 @@
   "customRating": "Vlastní hodnocení",
   "darkModeToggle": "Přepnout do tmavého režimu",
   "dateAdded": "Datum přidání",
+  "datePlayed": "Datum přehrání",
   "delete": "Odstranit",
   "deleteItem": "Odstranit média",
   "deleteItemDescription": "Smazáním položky odstraníte soubor z knihovny médií i ze souborového systému. Opravdu chcete pokračovat?",
@@ -254,6 +255,7 @@
   "people": "Lidé",
   "person": "Osoba",
   "play": "Přehrát",
+  "playCount": "Počet přehrání",
   "playFromBeginning": "Přehrát od začátku",
   "playback": {
     "addToQueue": "Přidat do fronty",
@@ -326,6 +328,7 @@
   "resumable": "Rozdívané",
   "resume": "Pokračovat",
   "role": "Role",
+  "runtime": "Délka",
   "save": "Uložit",
   "saved": "Uloženo",
   "scanForNewAndUpdatedFiles": "Vyhledat nové a aktualizované soubory",

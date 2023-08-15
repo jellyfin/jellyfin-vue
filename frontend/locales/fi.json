@@ -45,6 +45,7 @@
   "customRating": "Oma arvio",
   "darkModeToggle": "Tumma tila",
   "dateAdded": "Lisäysaika",
+  "datePlayed": "Toistopäivä",
   "delete": "Poista",
   "deleteItem": "Poista media",
   "deleteItemDescription": "Kohde poistetaan mediakirjastosi lisäksi myös tiedostojärjestelmästä. Haluatko varmasti jatkaa?",
@@ -254,6 +255,7 @@
   "people": "Henkilöt",
   "person": "Henkilö",
   "play": "Toista",
+  "playCount": "Toistomäärä",
   "playFromBeginning": "Toista alusta",
   "playback": {
     "addToQueue": "Lisää jonoon",
@@ -326,6 +328,7 @@
   "resumable": "Keskeneräinen",
   "resume": "Jatka",
   "role": "Rooli",
+  "runtime": "Kesto",
   "save": "Tallenna",
   "saved": "Tallennettu",
   "scanForNewAndUpdatedFiles": "Etsi uusia ja muuttuneita tiedostoja",

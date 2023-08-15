@@ -45,6 +45,7 @@
   "customRating": "Egendefinert vurdering",
   "darkModeToggle": "Veksle mørk modus",
   "dateAdded": "Dato lagt til",
+  "datePlayed": "Dato avspilt",
   "delete": "Slett",
   "deleteItem": "Slett media",
   "deleteItemDescription": "Hvis du sletter dette elementet, slettes det fra både filsystemet og mediebiblioteket ditt. Er du sikker på at du vil fortsette?",
@@ -254,6 +255,7 @@
   "people": "Personer",
   "person": "Person",
   "play": "Spill av",
+  "playCount": "Avspillingsantall",
   "playFromBeginning": "Spill av fra starten",
   "playback": {
     "addToQueue": "Legg i kø",
@@ -326,6 +328,7 @@
   "resumable": "Gjenopptakbar",
   "resume": "Gjenoppta",
   "role": "Rolle",
+  "runtime": "Lengde",
   "save": "Lagre",
   "saved": "Lagret",
   "scanForNewAndUpdatedFiles": "Søk etter nye og oppdaterte filer",

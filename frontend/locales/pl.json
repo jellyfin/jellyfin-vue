@@ -45,6 +45,7 @@
   "customRating": "Własna ocena",
   "darkModeToggle": "Przełącz tryb ciemny",
   "dateAdded": "Data dodania",
+  "datePlayed": "Data odtwarzania",
   "delete": "Usuń",
   "deleteItem": "Usuń multimedia",
   "deleteItemDescription": "Usunięcie tego elementu spowoduje usunięcie go zarówno z systemu plików, jak i biblioteki multimediów. Czy na pewno chcesz kontynuować?",
@@ -254,6 +255,7 @@
   "people": "Osoby",
   "person": "Osoba",
   "play": "Odtwarzaj",
+  "playCount": "Liczba odtworzeń",
   "playFromBeginning": "Odtwarzaj od początku",
   "playback": {
     "addToQueue": "Dodaj do kolejki",
@@ -326,6 +328,7 @@
   "resumable": "Do wznowienia",
   "resume": "Wznów",
   "role": "Rola",
+  "runtime": "Czas trwania",
   "save": "Zapisz",
   "saved": "Zapisano",
   "scanForNewAndUpdatedFiles": "Skanuj w poszukiwaniu nowych lub zaktualizowanych plików",
