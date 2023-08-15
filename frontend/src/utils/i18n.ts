@@ -5,7 +5,9 @@ export function getLocaleName(
   fromCode: string,
   toCode = 'en-US'
 ): string | undefined {
-  return new Intl.DisplayNames([toCode], { type: 'language' }).of(fromCode);
+  const r = new Intl.DisplayNames([toCode], { type: 'language' }).of(fromCode);
+
+  return r ? r.charAt(0).toUpperCase() + r.slice(1) : undefined;
 }
 
 /**

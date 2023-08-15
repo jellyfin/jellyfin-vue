@@ -21,11 +21,7 @@
           v-for="(item, index) in i18n.availableLocales"
           :key="index"
           :value="item === i18n.locale.value"
-          :title="
-            upperFirst(
-              getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`
-            )
-          "
+          :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
           @click="clientSettings.locale = item" />
       </v-list>
     </v-menu>
@@ -34,7 +30,6 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { upperFirst } from 'lodash-es';
 import { clientSettingsStore } from '@/store';
 import { getLocaleNativeName } from '@/utils/i18n';
 
