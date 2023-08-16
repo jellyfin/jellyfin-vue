@@ -27,7 +27,7 @@ const selectProps = defineProps<{
 }>();
 
 const emits = defineEmits<{
-  (e: 'input', newIndex: number): void;
+  input: [newIndex: number];
 }>();
 
 const currentSource = ref(

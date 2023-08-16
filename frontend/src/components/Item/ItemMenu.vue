@@ -324,13 +324,12 @@ const copyDownloadURLAction = {
       /**
        * The Map is mapped to an string like: EpisodeName: DownloadUrl
        */
-      const text = streamUrls
-        ? typeof streamUrls === 'string'
-          ? streamUrls
-          : [...streamUrls.entries()]
+      const text =
+        streamUrls instanceof Map
+          ? [...streamUrls.entries()]
               .map(([k, v]) => `(${k}) - ${v}`)
               .join('\n')
-        : undefined;
+          : streamUrls;
 
       const copyAction = async (txt: string): Promise<void> => {
         await clipboard.copy(txt);

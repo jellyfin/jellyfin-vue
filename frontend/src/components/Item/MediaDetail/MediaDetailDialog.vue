@@ -145,7 +145,7 @@ import { getLocaleName } from '@/utils/i18n';
 const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
 
 const emit = defineEmits<{
-  (e: 'close'): void;
+  close: [];
 }>();
 
 const { t, locale } = useI18n();
