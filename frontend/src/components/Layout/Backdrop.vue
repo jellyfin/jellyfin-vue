@@ -1,9 +1,15 @@
 <template>
-  <v-fade-transition>
-    <div v-if="blurhash" :key="`backdrop-${blurhash}`" class="backdrop">
-      <blurhash-canvas :hash="blurhash" :width="32" :height="32" />
+  <VFadeTransition>
+    <div
+      v-if="blurhash"
+      :key="`backdrop-${blurhash}`"
+      class="backdrop">
+      <BlurhashCanvas
+        :hash="blurhash"
+        :width="32"
+        :height="32" />
     </div>
-  </v-fade-transition>
+  </VFadeTransition>
 </template>
 
 <script setup lang="ts">

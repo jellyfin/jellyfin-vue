@@ -1,5 +1,5 @@
 <template>
-  <swiper-section
+  <SwiperSection
     :title="
       section.libraryName === undefined
         ? $t(section.name)

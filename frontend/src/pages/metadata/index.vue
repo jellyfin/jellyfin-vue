@@ -1,6 +1,8 @@
 <template>
-  <v-row class="pa-4 metadata">
-    <v-col cols="3" class="tree-view-container">
+  <VRow class="pa-4 metadata">
+    <VCol
+      cols="3"
+      class="tree-view-container">
       <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13518) -->
       <!-- <v-treeview
         :items="items"
@@ -9,12 +11,15 @@
         transition
         @update:active="onExpandItems"
       /> -->
-    </v-col>
+    </VCol>
 
-    <v-col v-if="itemId" cols="9" class="metadata-card">
-      <metadata-editor :item-id="itemId" />
-    </v-col>
-  </v-row>
+    <VCol
+      v-if="itemId"
+      cols="9"
+      class="metadata-card">
+      <MetadataEditor :item-id="itemId" />
+    </VCol>
+  </VRow>
 </template>
 
 <script setup lang="ts">

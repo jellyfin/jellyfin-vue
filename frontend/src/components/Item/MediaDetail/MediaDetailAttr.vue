@@ -4,7 +4,9 @@
     <template v-if="!icon">
       {{ value }}
     </template>
-    <v-icon v-else :icon="icon" />
+    <VIcon
+      v-else
+      :icon="icon" />
   </p>
 </template>
 

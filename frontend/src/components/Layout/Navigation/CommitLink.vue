@@ -1,5 +1,5 @@
 <template>
-  <v-list-item
+  <VListItem
     v-if="commit"
     :title="'#' + commit.slice(0, 7)"
     :prepend-icon="IMdiGithub"

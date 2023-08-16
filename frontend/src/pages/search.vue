@@ -1,59 +1,79 @@
 <template>
   <div>
-    <v-app-bar flat :class="useResponsiveClasses('second-toolbar')">
-      <v-tabs v-model="searchTab" class="mx-auto">
-        <v-tab :key="0" :disabled="movies.length <= 0">
+    <VAppBar
+      flat
+      :class="useResponsiveClasses('second-toolbar')">
+      <VTabs
+        v-model="searchTab"
+        class="mx-auto">
+        <VTab
+          :key="0"
+          :disabled="movies.length <= 0">
           {{ $t('movies') }}
-        </v-tab>
-        <v-tab :key="1" :disabled="series.length <= 0">
+        </VTab>
+        <VTab
+          :key="1"
+          :disabled="series.length <= 0">
           {{ $t('shows') }}
-        </v-tab>
-        <v-tab :key="2" :disabled="albums.length <= 0">
+        </VTab>
+        <VTab
+          :key="2"
+          :disabled="albums.length <= 0">
           {{ $t('albums') }}
-        </v-tab>
-        <v-tab :key="3" :disabled="tracks.length <= 0">
+        </VTab>
+        <VTab
+          :key="3"
+          :disabled="tracks.length <= 0">
           {{ $t('songs') }}
-        </v-tab>
-        <v-tab :key="4" :disabled="books.length <= 0">
+        </VTab>
+        <VTab
+          :key="4"
+          :disabled="books.length <= 0">
           {{ $t('books') }}
-        </v-tab>
-        <v-tab :key="5" :disabled="people.length <= 0">
+        </VTab>
+        <VTab
+          :key="5"
+          :disabled="people.length <= 0">
           {{ $t('people') }}
-        </v-tab>
-        <v-tab :key="6" :disabled="artists.length <= 0">
+        </VTab>
+        <VTab
+          :key="6"
+          :disabled="artists.length <= 0">
           {{ $t('artists') }}
-        </v-tab>
-      </v-tabs>
-    </v-app-bar>
-    <v-container class="after-second-toolbar">
-      <v-row>
-        <v-col>
-          <v-window v-model="searchTab" class="bg-transparent">
-            <v-window-item :key="0">
-              <item-grid :items="movies" />
-            </v-window-item>
-            <v-window-item :key="1">
-              <item-grid :items="series" />
-            </v-window-item>
-            <v-window-item :key="2">
-              <item-grid :items="albums" />
-            </v-window-item>
-            <v-window-item :key="3">
-              <item-grid :items="tracks" />
-            </v-window-item>
-            <v-window-item :key="4">
-              <item-grid :items="books" />
-            </v-window-item>
-            <v-window-item :key="5">
-              <item-grid :items="people" />
-            </v-window-item>
-            <v-window-item :key="6">
-              <item-grid :items="artists" />
-            </v-window-item>
-          </v-window>
-        </v-col>
-      </v-row>
-    </v-container>
+        </VTab>
+      </VTabs>
+    </VAppBar>
+    <VContainer class="after-second-toolbar">
+      <VRow>
+        <VCol>
+          <VWindow
+            v-model="searchTab"
+            class="bg-transparent">
+            <VWindowItem :key="0">
+              <ItemGrid :items="movies" />
+            </VWindowItem>
+            <VWindowItem :key="1">
+              <ItemGrid :items="series" />
+            </VWindowItem>
+            <VWindowItem :key="2">
+              <ItemGrid :items="albums" />
+            </VWindowItem>
+            <VWindowItem :key="3">
+              <ItemGrid :items="tracks" />
+            </VWindowItem>
+            <VWindowItem :key="4">
+              <ItemGrid :items="books" />
+            </VWindowItem>
+            <VWindowItem :key="5">
+              <ItemGrid :items="people" />
+            </VWindowItem>
+            <VWindowItem :key="6">
+              <ItemGrid :items="artists" />
+            </VWindowItem>
+          </VWindow>
+        </VCol>
+      </VRow>
+    </VContainer>
   </div>
 </template>
 

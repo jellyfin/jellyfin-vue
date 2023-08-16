@@ -1,5 +1,5 @@
 <template>
-  <v-progress-linear
+  <VProgressLinear
     :active="isLoading"
     indeterminate
     absolute

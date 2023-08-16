@@ -1,11 +1,17 @@
 <template>
-  <item-cols>
+  <ItemCols>
     <template #left>
-      <v-row justify="center" justify-md="start">
-        <v-col cols="7" md="3">
-          <card :item="item" />
-        </v-col>
-        <v-col cols="12" md="9">
+      <VRow
+        justify="center"
+        justify-md="start">
+        <VCol
+          cols="7"
+          md="3">
+          <Card :item="item" />
+        </VCol>
+        <VCol
+          cols="12"
+          md="9">
           <h1
             class="text-h4 font-weight-light"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
@@ -20,90 +26,116 @@
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
-            <media-info :item="item" year runtime rating ends-at />
+            <MediaInfo
+              :item="item"
+              year
+              runtime
+              rating
+              ends-at />
           </div>
-          <v-row
+          <VRow
             class="my-4 align-center"
             :class="{
               'justify-center': !$vuetify.display.mdAndUp,
               'ml-0': $vuetify.display.mdAndUp
             }">
-            <play-button class="mr-2" :item="item" />
-            <like-button :item="item" class="mr-2" />
-            <mark-played-button :item="item" class="mr-2" />
-            <item-menu :item="item" />
-          </v-row>
-          <v-col cols="12" md="10">
-            <v-row
+            <PlayButton
+              class="mr-2"
+              :item="item" />
+            <LikeButton
+              :item="item"
+              class="mr-2" />
+            <MarkPlayedButton
+              :item="item"
+              class="mr-2" />
+            <ItemMenu :item="item" />
+          </VRow>
+          <VCol
+            cols="12"
+            md="10">
+            <VRow
               v-if="item && item.GenreItems && item.GenreItems.length > 0"
               align="center">
-              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
+              <VCol
+                :cols="12"
+                :sm="2"
+                class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
-              </v-col>
-              <v-col class="px-0" :cols="12" :sm="10">
-                <v-slide-group>
-                  <v-slide-group-item
+              </VCol>
+              <VCol
+                class="px-0"
+                :cols="12"
+                :sm="10">
+                <VSlideGroup>
+                  <VSlideGroupItem
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :class="{ 'ml-2': index > 0 }"
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
-                    </v-chip>
-                  </v-slide-group-item>
-                </v-slide-group>
-              </v-col>
-            </v-row>
-            <v-row
+                    </VChip>
+                  </VSlideGroupItem>
+                </VSlideGroup>
+              </VCol>
+            </VRow>
+            <VRow
               v-if="item && directors.length > 0 && !$vuetify.display.smAndUp"
               align="center">
-              <v-col
+              <VCol
                 :cols="12"
                 :sm="2"
                 class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('directing') }}</label>
-              </v-col>
-              <v-col :cols="12" :sm="10">
-                <v-row dense>
-                  <v-col
+              </VCol>
+              <VCol
+                :cols="12"
+                :sm="10">
+                <VRow dense>
+                  <VCol
                     v-for="director in directors"
                     :key="director.Id"
                     cols="auto">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :to="getItemDetailsLink(director, 'Person')">
                       {{ director.Name }}
-                    </v-chip>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-            <v-row
+                    </VChip>
+                  </VCol>
+                </VRow>
+              </VCol>
+            </VRow>
+            <VRow
               v-if="item && writers.length > 0 && !$vuetify.display.smAndUp"
               align="center">
-              <v-col
+              <VCol
                 :cols="12"
                 :sm="2"
                 class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('writing') }}</label>
-              </v-col>
-              <v-col :cols="12" :sm="10">
-                <v-row dense>
-                  <v-col v-for="writer in writers" :key="writer.Id" cols="auto">
-                    <v-chip
+              </VCol>
+              <VCol
+                :cols="12"
+                :sm="10">
+                <VRow dense>
+                  <VCol
+                    v-for="writer in writers"
+                    :key="writer.Id"
+                    cols="auto">
+                    <VChip
                       size="small"
                       link
                       :to="getItemDetailsLink(writer, 'Person')">
                       {{ writer.Name }}
-                    </v-chip>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-col>
+                    </VChip>
+                  </VCol>
+                </VRow>
+              </VCol>
+            </VRow>
+          </VCol>
           <div>
             <p
               v-if="item.Taglines && item.Taglines.length > 0"
@@ -118,26 +150,34 @@
               v-html="sanitizeHtml(item.Overview, true)" />
             <!-- eslint-enable vue/no-v-html -->
           </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <season-tabs v-if="item.Type === 'Series'" :item="item" />
-        </v-col>
-      </v-row>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="12">
+          <SeasonTabs
+            v-if="item.Type === 'Series'"
+            :item="item" />
+        </VCol>
+      </VRow>
     </template>
     <template #right>
       <div v-if="crew.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.crew') }}</h2>
-        <people-list :items="crew" />
+        <h2 class="text-h6 text-sm-h5">
+          {{ $t('item.crew') }}
+        </h2>
+        <PeopleList :items="crew" />
       </div>
       <div v-if="actors.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.cast') }}</h2>
-        <people-list :items="actors" />
+        <h2 class="text-h6 text-sm-h5">
+          {{ $t('item.cast') }}
+        </h2>
+        <PeopleList :items="actors" />
       </div>
-      <related-items :item="item" vertical />
+      <RelatedItems
+        :item="item"
+        vertical />
     </template>
-  </item-cols>
+  </ItemCols>
 </template>
 
 <script setup lang="ts">

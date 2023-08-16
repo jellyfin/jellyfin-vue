@@ -1,26 +1,26 @@
 <template>
-  <v-main v-if="playbackManager.queue">
-    <v-app-bar color="transparent">
-      <app-bar-button-layout @click="$router.back()">
+  <VMain v-if="playbackManager.queue">
+    <VAppBar color="transparent">
+      <AppBarButtonLayout @click="$router.back()">
         <template #icon>
-          <v-icon>
-            <i-mdi-arrow-left />
-          </v-icon>
+          <VIcon>
+            <IMdiArrowLeft />
+          </VIcon>
         </template>
-      </app-bar-button-layout>
-      <v-spacer />
-      <app-bar-button-layout @click="isVisualizing = !isVisualizing">
+      </AppBarButtonLayout>
+      <VSpacer />
+      <AppBarButtonLayout @click="isVisualizing = !isVisualizing">
         <template #icon>
-          <v-icon>
-            <i-dashicons-album v-if="isVisualizing" />
-            <i-mdi-chart-bar v-else />
-          </v-icon>
+          <VIcon>
+            <IDashiconsAlbum v-if="isVisualizing" />
+            <IMdiChartBar v-else />
+          </VIcon>
         </template>
-      </app-bar-button-layout>
-    </v-app-bar>
-    <v-col class="px-0">
-      <v-fade-transition mode="out-in">
-        <swiper
+      </AppBarButtonLayout>
+    </VAppBar>
+    <VCol class="px-0">
+      <VFadeTransition mode="out-in">
+        <Swiper
           v-if="!isVisualizing"
           class="d-flex justify-center align-center user-select-none"
           :modules="modules"
@@ -34,57 +34,57 @@
           virtual
           @slide-change="onSlideChange"
           @swiper="setControlledSwiper">
-          <swiper-slide
+          <SwiperSlide
             v-for="(item, index) in playbackManager.queue"
             :key="`${item.Id}-${index}`"
             :virtual-index="`${item.Id}-${index}`"
             class="d-flex justify-center">
             <div class="album-cover presentation-height">
-              <blurhash-image :item="item" />
+              <BlurhashImage :item="item" />
             </div>
-          </swiper-slide>
-        </swiper>
-        <music-visualizer
+          </SwiperSlide>
+        </Swiper>
+        <MusicVisualizer
           v-else
           class="d-flex justify-center align-center user-select-none presentation-height" />
-      </v-fade-transition>
-      <v-row class="justify-center align-center mt-3">
-        <v-col cols="6">
-          <v-row class="justify-center align-center">
-            <v-col>
-              <v-row>
+      </VFadeTransition>
+      <VRow class="justify-center align-center mt-3">
+        <VCol cols="6">
+          <VRow class="justify-center align-center">
+            <VCol>
+              <VRow>
                 <h1 class="text-h4">
                   {{ playbackManager.currentItem?.Name }}
                 </h1>
-              </v-row>
-              <v-row>
+              </VRow>
+              <VRow>
                 <span class="text-subtitle">
                   {{ artistString }}
                 </span>
-              </v-row>
-            </v-col>
+              </VRow>
+            </VCol>
             <!-- TODO: Fix alignment with the end time of TimeSlider -->
-            <v-col class="d-flex justify-end">
-              <like-button
+            <VCol class="d-flex justify-end">
+              <LikeButton
                 v-if="playbackManager.currentItem"
                 :item="playbackManager?.currentItem"
                 size="x-large" />
-            </v-col>
-          </v-row>
-          <v-row class="justify-center align-center mt-3">
-            <time-slider />
-          </v-row>
-          <v-row class="justify-center align-center">
-            <shuffle-button size="x-large" />
-            <previous-track-button size="x-large" />
-            <play-pause-button size="x-large" />
-            <next-track-button size="x-large" />
-            <repeat-button size="x-large" />
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-main>
+            </VCol>
+          </VRow>
+          <VRow class="justify-center align-center mt-3">
+            <TimeSlider />
+          </VRow>
+          <VRow class="justify-center align-center">
+            <ShuffleButton size="x-large" />
+            <PreviousTrackButton size="x-large" />
+            <PlayPauseButton size="x-large" />
+            <NextTrackButton size="x-large" />
+            <RepeatButton size="x-large" />
+          </VRow>
+        </VCol>
+      </VRow>
+    </VCol>
+  </VMain>
 </template>
 
 <route lang="yaml">

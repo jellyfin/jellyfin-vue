@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <VSelect
     v-model="currentSource"
     :items="selectSources"
     :label="selectProps.label"
@@ -10,9 +10,11 @@
       {{ i.value.Name }}
     </template>
     <template #item="{ item: i, props }">
-      <v-list-item v-bind="props" :title="i.value.Name" />
+      <VListItem
+        v-bind="props"
+        :title="i.value.Name" />
     </template>
-  </v-select>
+  </VSelect>
 </template>
 
 <script setup lang="ts">

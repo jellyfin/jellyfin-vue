@@ -1,14 +1,19 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row justify="center">
-      <v-col sm="6" md="6" lg="5">
+  <VContainer
+    class="fill-height"
+    fluid>
+    <VRow justify="center">
+      <VCol
+        sm="6"
+        md="6"
+        lg="5">
         <h1 class="text-h4 mb-6 text-center">
           {{ $t('login.addServer') }}
         </h1>
-        <add-server-form />
-      </v-col>
-    </v-row>
-  </v-container>
+        <AddServerForm />
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <route lang="yaml">

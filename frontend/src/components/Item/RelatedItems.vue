@@ -1,34 +1,38 @@
 <template>
   <div v-if="!vertical">
-    <swiper-section
+    <SwiperSection
       :title="t('youMayAlsoLike')"
       :items="relatedItems"
       :loading="loading" />
   </div>
   <div v-else-if="vertical">
-    <h2 v-if="!loading && relatedItems.length > 0" class="text-h6 text-sm-h5">
+    <h2
+      v-if="!loading && relatedItems.length > 0"
+      class="text-h6 text-sm-h5">
       <slot>
         {{ t('youMayAlsoLike') }}
       </slot>
     </h2>
     <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
     <!-- <v-skeleton-loader v-else-if="loading" type="heading" /> -->
-    <v-list bg-color="transparent" lines="two">
+    <VList
+      bg-color="transparent"
+      lines="two">
       <div v-if="!loading && relatedItems.length > 0">
-        <v-list-item
+        <VListItem
           v-for="relatedItem in relatedItems"
           :key="relatedItem.Id"
           :to="getItemDetailsLink(relatedItem)"
           :title="relatedItem.Name ?? ''"
           :subtitle="relatedItem.ProductionYear ?? ''">
           <template #prepend>
-            <v-avatar>
-              <v-avatar color="card">
-                <blurhash-image :item="relatedItem" />
-              </v-avatar>
-            </v-avatar>
+            <VAvatar>
+              <VAvatar color="card">
+                <BlurhashImage :item="relatedItem" />
+              </VAvatar>
+            </VAvatar>
           </template>
-        </v-list-item>
+        </VListItem>
       </div>
       <div
         v-for="index in skeletonLength"
@@ -39,7 +43,7 @@
         <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
         <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
       </div>
-    </v-list>
+    </VList>
   </div>
 </template>
 
@@ -50,9 +54,6 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useI18n } from 'vue-i18n';
 import { getItemDetailsLink } from '@/utils/items';
 import { useSnackbar, useRemote } from '@/composables';
-
-const remote = useRemote();
-const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
@@ -65,6 +66,8 @@ const props = withDefaults(
     skeletonLength: 5
   }
 );
+const remote = useRemote();
+const { t } = useI18n();
 
 const relatedItems = ref<BaseItemDto[]>([]);
 const loading = ref(true);

@@ -1,16 +1,28 @@
 <template>
-  <item-cols>
+  <ItemCols>
     <template #left>
-      <v-row justify="center" justify-sm="start" align="center">
-        <v-col cols="6" sm="3">
-          <v-responsive aspect-ratio="1">
-            <v-avatar color="card" size="100%" class="elevation-2">
-              <blurhash-image :item="item" />
-            </v-avatar>
-          </v-responsive>
-        </v-col>
-        <v-col cols="12" sm="7">
-          <v-row justify="center" justify-sm="start">
+      <VRow
+        justify="center"
+        justify-sm="start"
+        align="center">
+        <VCol
+          cols="6"
+          sm="3">
+          <VResponsive aspect-ratio="1">
+            <VAvatar
+              color="card"
+              size="100%"
+              class="elevation-2">
+              <BlurhashImage :item="item" />
+            </VAvatar>
+          </VResponsive>
+        </VCol>
+        <VCol
+          cols="12"
+          sm="7">
+          <VRow
+            justify="center"
+            justify-sm="start">
             <div class="ml-sm-4 d-flex flex-column">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
@@ -21,46 +33,74 @@
               </h1>
             </div>
             <div class="d-flex align-center ml-sm-4 my-2">
-              <play-button :item="item" />
-              <item-menu :item="item" />
-              <like-button :item="item" />
+              <PlayButton :item="item" />
+              <ItemMenu :item="item" />
+              <LikeButton :item="item" />
             </div>
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-tabs v-model="activeTab" bg-color="transparent">
-        <v-tab :value="0" :disabled="movies.length === 0">
+          </VRow>
+        </VCol>
+      </VRow>
+      <VTabs
+        v-model="activeTab"
+        bg-color="transparent">
+        <VTab
+          :value="0"
+          :disabled="movies.length === 0">
           {{ $t('item.person.movies') }}
-        </v-tab>
-        <v-tab :value="1" :disabled="series.length === 0">
+        </VTab>
+        <VTab
+          :value="1"
+          :disabled="series.length === 0">
           {{ $t('item.person.shows') }}
-        </v-tab>
-        <v-tab :value="2" :disabled="books.length === 0">
+        </VTab>
+        <VTab
+          :value="2"
+          :disabled="books.length === 0">
           {{ $t('item.person.books') }}
-        </v-tab>
-        <v-tab :value="3" :disabled="photos.length === 0">
+        </VTab>
+        <VTab
+          :value="3"
+          :disabled="photos.length === 0">
           {{ $t('item.person.photos') }}
-        </v-tab>
-        <v-tab :value="4" :disabled="!item.Overview">
+        </VTab>
+        <VTab
+          :value="4"
+          :disabled="!item.Overview">
           {{ $t('item.person.information') }}
-        </v-tab>
-      </v-tabs>
-      <v-window v-model="activeTab" class="bg-transparent">
-        <v-window-item :value="0">
-          <item-grid :items="movies" large no-virtual />
-        </v-window-item>
-        <v-window-item :value="1">
-          <item-grid :items="series" large no-virtual />
-        </v-window-item>
-        <v-window-item :value="2">
-          <item-grid :items="books" large no-virtual />
-        </v-window-item>
-        <v-window-item :value="3">
-          <item-grid :items="photos" large no-virtual />
-        </v-window-item>
-        <v-window-item :value="4">
-          <v-row>
-            <v-col cols="12" md="7">
+        </VTab>
+      </VTabs>
+      <VWindow
+        v-model="activeTab"
+        class="bg-transparent">
+        <VWindowItem :value="0">
+          <ItemGrid
+            :items="movies"
+            large
+            no-virtual />
+        </VWindowItem>
+        <VWindowItem :value="1">
+          <ItemGrid
+            :items="series"
+            large
+            no-virtual />
+        </VWindowItem>
+        <VWindowItem :value="2">
+          <ItemGrid
+            :items="books"
+            large
+            no-virtual />
+        </VWindowItem>
+        <VWindowItem :value="3">
+          <ItemGrid
+            :items="photos"
+            large
+            no-virtual />
+        </VWindowItem>
+        <VWindowItem :value="4">
+          <VRow>
+            <VCol
+              cols="12"
+              md="7">
               <!-- eslint-disable vue/no-v-html -
                 Output is properly sanitized using sanitizeHtml -->
               <span
@@ -68,41 +108,61 @@
                 class="item-overview"
                 v-html="sanitizeHtml(item.Overview, true)" />
               <!-- eslint-enable vue/no-v-html -->
-            </v-col>
-            <v-col cols="12" md="5">
-              <v-row v-if="birthDate || birthPlace" no-gutters>
-                <v-col cols="2" md="5" class="text--secondary">
+            </VCol>
+            <VCol
+              cols="12"
+              md="5">
+              <VRow
+                v-if="birthDate || birthPlace"
+                no-gutters>
+                <VCol
+                  cols="2"
+                  md="5"
+                  class="text--secondary">
                   {{ $t('item.person.birth') }}
-                </v-col>
-                <v-col cols="9" md="7">
+                </VCol>
+                <VCol
+                  cols="9"
+                  md="7">
                   <p>{{ birthDate }}</p>
                   <p>{{ birthPlace }}</p>
-                </v-col>
-              </v-row>
-              <v-row v-if="deathDate" no-gutters>
-                <v-col cols="2" md="5" class="text--secondary">
+                </VCol>
+              </VRow>
+              <VRow
+                v-if="deathDate"
+                no-gutters>
+                <VCol
+                  cols="2"
+                  md="5"
+                  class="text--secondary">
                   {{ $t('item.person.death') }}
-                </v-col>
-                <v-col cols="9" md="7">
+                </VCol>
+                <VCol
+                  cols="9"
+                  md="7">
                   {{ deathDate }}
-                </v-col>
-              </v-row>
-              <v-row v-if="!deathDate && !birthDate && !birthPlace" no-gutters>
-                <v-col cols="12">
+                </VCol>
+              </VRow>
+              <VRow
+                v-if="!deathDate && !birthDate && !birthPlace"
+                no-gutters>
+                <VCol cols="12">
                   {{ $t('noInformationAvailable') }}
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-window-item>
-      </v-window>
+                </VCol>
+              </VRow>
+            </VCol>
+          </VRow>
+        </VWindowItem>
+      </VWindow>
     </template>
     <template #right>
-      <related-items :item="item" vertical>
+      <RelatedItems
+        :item="item"
+        vertical>
         {{ $t('moreLikeArtist', { artist: item.Name }) }}
-      </related-items>
+      </RelatedItems>
     </template>
-  </item-cols>
+  </ItemCols>
 </template>
 
 <script setup lang="ts">

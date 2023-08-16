@@ -1,5 +1,5 @@
 <template>
-  <v-slider
+  <VSlider
     v-model="sliderValue"
     hide-details
     :max="runtime"
@@ -16,7 +16,7 @@
     <template #append>
       {{ formatTime(runtime) }}
     </template>
-  </v-slider>
+  </VSlider>
 </template>
 
 <script setup lang="ts">

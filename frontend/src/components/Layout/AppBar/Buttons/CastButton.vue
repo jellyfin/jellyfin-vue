@@ -1,55 +1,55 @@
 <template>
-  <app-bar-button-layout disabled>
+  <AppBarButtonLayout disabled>
     <template #icon>
-      <v-icon>
-        <i-mdi-cast />
-      </v-icon>
-      <v-menu
+      <VIcon>
+        <IMdiCast />
+      </VIcon>
+      <VMenu
         v-model="menu"
         :close-on-content-click="false"
         :transition="'slide-y-transition'"
         location="bottom"
         :z-index="500">
-        <v-card>
-          <v-list color="transparent">
-            <v-list-item>
-              <v-icon>
-                <i-mdi-account-group />
-              </v-icon>
+        <VCard>
+          <VList color="transparent">
+            <VListItem>
+              <VIcon>
+                <IMdiAccountGroup />
+              </VIcon>
               {{ $t('syncPlayGroups') }}
-              <v-list-item-action>
-                <v-icon>
-                  <i-mdi-arrow-right />
-                </v-icon>
-              </v-list-item-action>
-            </v-list-item>
-            <v-divider />
-            <v-list-item>
-              <v-icon>
-                <i-mdi-apple-airplay />
-              </v-icon>
+              <VListItemAction>
+                <VIcon>
+                  <IMdiArrowRight />
+                </VIcon>
+              </VListItemAction>
+            </VListItem>
+            <VDivider />
+            <VListItem>
+              <VIcon>
+                <IMdiAppleAirplay />
+              </VIcon>
               {{ $t('airPlayDevices') }}
-            </v-list-item>
-            <v-list-item>
-              <v-icon>
-                <i-mdi-cast />
-              </v-icon>
+            </VListItem>
+            <VListItem>
+              <VIcon>
+                <IMdiCast />
+              </VIcon>
               {{ $t('googleCastPlaceholderDevice') }}
-            </v-list-item>
-            <v-list-item>
-              <v-icon>
-                <i-simple-icons-jellyfin />
-              </v-icon>
+            </VListItem>
+            <VListItem>
+              <VIcon>
+                <ISimpleIconsJellyfin />
+              </VIcon>
               {{ $t('genericJellyfinPlaceholderDevice') }}
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
+            </VListItem>
+          </VList>
+        </VCard>
+      </VMenu>
     </template>
     <template #tooltip>
       <span>{{ $t('remoteDevices') }}</span>
     </template>
-  </app-bar-button-layout>
+  </AppBarButtonLayout>
 </template>
 
 <script setup lang="ts">

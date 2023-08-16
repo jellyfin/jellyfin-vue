@@ -2,6 +2,8 @@ import { computed, ComputedRef } from 'vue';
 import * as datefnslocales from 'virtual:locales/date-fns';
 import { usei18n } from './use-i18n';
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+
 /**
  * Use any date fns function with proper localization, based on the current locale.
  * Pass the date-fns function to invoke as the first parameter,
@@ -10,7 +12,6 @@ import { usei18n } from './use-i18n';
  * @param func - date-fns function to invoke
  * @param params - Parameters to pass to the date-fns function
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useDateFns<T extends (...a: any[]) => any>(
   func: T,
   ...params: Parameters<T>
@@ -34,3 +35,5 @@ export function useDateFns<T extends (...a: any[]) => any>(
     return func(...params);
   });
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */

@@ -1,56 +1,73 @@
 <template>
   <div>
-    <v-app-bar density="compact" flat>
+    <VAppBar
+      density="compact"
+      flat>
       <span class="text-h6 hidden-sm-and-down">
         {{ library?.Name }}
       </span>
-      <v-chip
+      <VChip
         :size="!loading ? 'small' : undefined"
         class="ma-2 hidden-sm-and-down">
-        <template v-if="!loading">{{ items?.length ?? 0 }}</template>
-        <v-progress-circular v-else width="2" indeterminate size="16" />
-      </v-chip>
-      <v-divider inset vertical class="mx-2 hidden-sm-and-down" />
-      <type-button
+        <template v-if="!loading">
+          {{ items?.length ?? 0 }}
+        </template>
+        <VProgressCircular
+          v-else
+          width="2"
+          indeterminate
+          size="16" />
+      </VChip>
+      <VDivider
+        inset
+        vertical
+        class="mx-2 hidden-sm-and-down" />
+      <TypeButton
         v-if="hasViewTypes"
         :type="library?.CollectionType ?? undefined"
         :disabled="loading"
         @change="onChangeType" />
-      <v-divider
+      <VDivider
         v-if="isSortable && hasViewTypes"
         inset
         vertical
         class="mx-2" />
-      <sort-button
+      <SortButton
         v-if="isSortable"
         :disabled="loading"
         :ascending="sortAscending"
         @change="onChangeSort" />
-      <filter-button
+      <FilterButton
         v-if="library && viewType && isSortable"
         :item="library"
         :disabled="loading"
         @change="onChangeFilter" />
-      <v-spacer />
-      <play-button
+      <VSpacer />
+      <PlayButton
         v-if="library"
         :item="library"
         shuffle
         :disabled="playButtonDisabled" />
-      <play-button
+      <PlayButton
         v-if="library"
         :item="library"
         :disabled="playButtonDisabled" />
-    </v-app-bar>
-    <v-container>
-      <skeleton-item-grid v-if="loading" :view-type="viewType" />
-      <item-grid v-else :items="items">
-        <h1 v-if="!hasFilters" class="text-h5">
+    </VAppBar>
+    <VContainer>
+      <SkeletonItemGrid
+        v-if="loading"
+        :view-type="viewType" />
+      <ItemGrid
+        v-else
+        :items="items">
+        <h1
+          v-if="!hasFilters"
+          class="text-h5">
           {{ hasFilters ? t('libraryEmptyFilters') : t('libraryEmpty') }}
         </h1>
-      </item-grid>
-    </v-container>
-    <scroll-to-top-button />
+      </ItemGrid>
+    </VContainer>
+    <ScrollToTopButton />
   </div>
 </template>
 

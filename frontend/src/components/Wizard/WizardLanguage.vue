@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-select
+    <VSelect
       v-model="uiCulture"
       :loading="loading"
       variant="outlined"
@@ -10,13 +10,13 @@
       item-value="Value"
       :items="culturesList"
       :disabled="loading" />
-    <v-btn
+    <VBtn
       color="primary"
       variant="elevated"
       :loading="loading"
       @click="setLanguage">
       {{ t('next') }}
-    </v-btn>
+    </VBtn>
   </div>
 </template>
 

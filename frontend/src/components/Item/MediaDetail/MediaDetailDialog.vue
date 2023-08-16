@@ -1,35 +1,41 @@
 <template>
-  <generic-dialog :model-value="model" :title="displayName" @close="close">
+  <GenericDialog
+    :model-value="model"
+    :title="displayName"
+    @close="close">
     <template v-if="mediaSources.length > 1">
-      <v-card-text>
-        <media-source-selector
+      <VCardText>
+        <MediaSourceSelector
           class="pt-2"
           :default-source-index="selectedMediaSourceIndex"
           :sources="mediaSources"
           :label="t('selectVersion')"
           @input="selectedMediaSourceIndex = $event" />
-      </v-card-text>
-      <v-divider />
+      </VCardText>
+      <VDivider />
     </template>
 
     <template v-if="generalProperties">
-      <v-container>
+      <VContainer>
         <template v-for="[key, val] of generalProperties">
-          <media-detail-attr
+          <MediaDetailAttr
             v-if="!isNil(val)"
             :key="key"
             :name="key"
             :value="val" />
         </template>
-      </v-container>
+      </VContainer>
     </template>
 
-    <v-card-text
+    <VCardText
       v-if="selectedMediaSource"
       class="pa-3 d-flex flex-column flex-grow-1">
       <template v-if="(selectedMediaSource.MediaStreams?.length ?? 0) > 0">
-        <v-tabs v-model="currentTab" direction="horizontal" center-active>
-          <v-tab
+        <VTabs
+          v-model="currentTab"
+          direction="horizontal"
+          center-active>
+          <VTab
             v-for="(_, idx) in selectedMediaStreamsVideo"
             :key="`mediaStreamTabVideo-${idx}-${String(_)}`"
             :value="`video-${idx}`">
@@ -40,8 +46,8 @@
                 selectedMediaStreamsVideo.length
               )
             }}
-          </v-tab>
-          <v-tab
+          </VTab>
+          <VTab
             v-for="(_, idx) in selectedMediaStreamsAudio"
             :key="`mediaStreamTabAudio-${idx}-${String(_)}`"
             :value="`audio-${idx}`">
@@ -54,8 +60,8 @@
                 selectedMediaStreamsAudio[idx]?.Language
               )})`
             }}
-          </v-tab>
-          <v-tab
+          </VTab>
+          <VTab
             v-for="(_, idx) in selectedMediaStreamsSubs"
             :key="`mediaStreamTabSubs-${idx}-${String(_)}`"
             :value="`subs-${idx}`">
@@ -68,8 +74,8 @@
                 selectedMediaStreamsSubs[idx]?.Language
               )})`
             }}
-          </v-tab>
-          <v-tab
+          </VTab>
+          <VTab
             v-for="(_, idx) in selectedMediaStreamsImage"
             :key="`mediaStreamTabEmbedImage-${idx}-${String(_)}`"
             :value="`image-${idx}`">
@@ -80,42 +86,46 @@
                 selectedMediaStreamsImage.length
               )
             }}
-          </v-tab>
-        </v-tabs>
-        <v-window v-model="currentTab" class="pa-2 flex-fill">
-          <v-window-item
+          </VTab>
+        </VTabs>
+        <VWindow
+          v-model="currentTab"
+          class="pa-2 flex-fill">
+          <VWindowItem
             v-for="(mediaStream, idx) in selectedMediaStreamsVideo"
             :key="`mediaStreamTabWVideo-${idx}-${String(mediaStream)}`"
             :value="`video-${idx}`">
-            <media-detail-content
+            <MediaDetailContent
               :stream="mediaStream"
               :video-timestamp="selectedMediaSource.Timestamp" />
-          </v-window-item>
-          <v-window-item
+          </VWindowItem>
+          <VWindowItem
             v-for="(mediaStream, idx) in selectedMediaStreamsAudio"
             :key="`mediaStreamTabWAudio-${idx}-${String(mediaStream)}`"
             :value="`audio-${idx}`">
-            <media-detail-content :stream="mediaStream" />
-          </v-window-item>
-          <v-window-item
+            <MediaDetailContent :stream="mediaStream" />
+          </VWindowItem>
+          <VWindowItem
             v-for="(mediaStream, idx) in selectedMediaStreamsSubs"
             :key="`mediaStreamTabWSubs-${idx}-${String(mediaStream)}`"
             :value="`subs-${idx}`">
-            <media-detail-content :stream="mediaStream" />
-          </v-window-item>
-          <v-window-item
+            <MediaDetailContent :stream="mediaStream" />
+          </VWindowItem>
+          <VWindowItem
             v-for="(mediaStream, idx) in selectedMediaStreamsImage"
             :key="`mediaStreamTabWEmbedImage-${idx}-${String(mediaStream)}`"
             :value="`image-${idx}`">
-            <media-detail-content :stream="mediaStream" />
-          </v-window-item>
-        </v-window>
+            <MediaDetailContent :stream="mediaStream" />
+          </VWindowItem>
+        </VWindow>
       </template>
-      <h2 v-else class="no-media text-center">
+      <h2
+        v-else
+        class="no-media text-center">
         {{ t('NoMediaStreamsAvailable') }}
       </h2>
-    </v-card-text>
-    <v-card-text
+    </VCardText>
+    <VCardText
       v-else
       class="pa-0 pb-8 flex-grow-1"
       :class="{
@@ -125,8 +135,8 @@
       <h2 class="no-media">
         {{ t('NoMediaSourcesAvailable') }}
       </h2>
-    </v-card-text>
-  </generic-dialog>
+    </VCardText>
+  </GenericDialog>
 </template>
 
 <script setup lang="ts">
@@ -153,10 +163,13 @@ const { t, locale } = useI18n();
 const model = ref(true);
 const currentTab = ref<string>();
 
-const close = (): void => {
+/**
+ *
+ */
+function close (): void {
   model.value = false;
   emit('close');
-};
+}
 
 const mediaSources = computed<MediaSourceInfo[]>(() => {
   return props.item.MediaSources ?? [];

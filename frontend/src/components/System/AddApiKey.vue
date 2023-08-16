@@ -1,32 +1,34 @@
 <template>
-  <v-dialog
+  <VDialog
     :model-value="addingNewKey"
     :width="width"
     @update:model-value="emit('close')">
-    <v-col class="pa-0 add-key-dialog">
-      <v-card>
-        <v-card-title>{{ t('settings.apiKeys.addApiKey') }}</v-card-title>
-        <v-card-actions>
-          <v-form class="add-key-form" @submit.prevent="addApiKey">
-            <v-text-field
+    <VCol class="pa-0 add-key-dialog">
+      <VCard>
+        <VCardTitle>{{ t('settings.apiKeys.addApiKey') }}</VCardTitle>
+        <VCardActions>
+          <VForm
+            class="add-key-form"
+            @submit.prevent="addApiKey">
+            <VTextField
               v-model="newKeyAppName"
               variant="outlined"
               :label="t('settings.apiKeys.appName')" />
-            <v-btn
+            <VBtn
               color="primary"
               :loading="loading"
               :disabled="newKeyAppName === ''"
               @click="addApiKey">
               {{ $t('confirm') }}
-            </v-btn>
-            <v-btn @click="emit('close')">
+            </VBtn>
+            <VBtn @click="emit('close')">
               {{ $t('cancel') }}
-            </v-btn>
-          </v-form>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-dialog>
+            </VBtn>
+          </VForm>
+        </VCardActions>
+      </VCard>
+    </VCol>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -67,7 +69,7 @@ const width = computed(() => {
   }
 });
 
-/** adds a new api key */
+/** Adds a new api key */
 async function addApiKey(): Promise<void> {
   loading.value = true;
 

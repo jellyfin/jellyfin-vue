@@ -1,14 +1,18 @@
 <template>
-  <v-dialog
+  <VDialog
     :model-value="dialog"
     :fullscreen="$vuetify.display.mobile"
     content-class="image-search-dialog-content"
     @update:model-value="(value: boolean) => emit('update:dialog', value)">
-    <v-card height="100%" class="image-search-card">
-      <v-card-title>{{ t('search.name') }}</v-card-title>
-      <v-divider />
-      <v-row align="center" class="mx-16 my-4">
-        <v-select
+    <VCard
+      height="100%"
+      class="image-search-card">
+      <VCardTitle>{{ t('search.name') }}</VCardTitle>
+      <VDivider />
+      <VRow
+        align="center"
+        class="mx-16 my-4">
+        <VSelect
           v-model="source"
           class="mx-4"
           :items="sources"
@@ -19,7 +23,7 @@
           variant="outlined"
           hide-details
           clearable />
-        <v-select
+        <VSelect
           v-model="type"
           class="mx-4"
           :items="types"
@@ -29,28 +33,32 @@
           :label="t('metadata.type')"
           variant="outlined"
           hide-details />
-        <v-checkbox
+        <VCheckbox
           v-model="allLanguages"
           class="mt-0 mx-4"
           :label="t('allLanguages')"
           :disabled="loading"
           hide-details />
-      </v-row>
-      <v-divider />
-      <v-progress-circular
+      </VRow>
+      <VDivider />
+      <VProgressCircular
         v-if="loading"
         :size="70"
         :width="7"
         color="primary"
         indeterminate
         class="loading-bar" />
-      <v-card v-else-if="images.length === 0" class="mx-auto">
-        <v-card-title>
+      <VCard
+        v-else-if="images.length === 0"
+        class="mx-auto">
+        <VCardTitle>
           {{ t('noImagesFound') }}
-        </v-card-title>
-      </v-card>
-      <v-row v-else class="image-results">
-        <v-col
+        </VCardTitle>
+      </VCard>
+      <VRow
+        v-else
+        class="image-results">
+        <VCol
           v-for="(item, i) in images"
           :key="`${item.Type}-${i}`"
           xl="1"
@@ -58,8 +66,8 @@
           md="4"
           sm="6"
           cols="12">
-          <v-card class="ma-2">
-            <v-img
+          <VCard class="ma-2">
+            <VImg
               v-if="item.Url"
               :src="item.Url"
               :aspect-ratio="getContainerAspectRatioForImageType(item.Type)" />
@@ -82,19 +90,22 @@
                 </template>
               </template>
             </div>
-            <v-spacer />
-            <v-card-actions class="justify-center">
-              <v-btn icon :disabled="loading" @click="onDownload(item)">
-                <v-icon>
-                  <i-mdi-cloud-download />
-                </v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-dialog>
+            <VSpacer />
+            <VCardActions class="justify-center">
+              <VBtn
+                icon
+                :disabled="loading"
+                @click="onDownload(item)">
+                <VIcon>
+                  <IMdiCloudDownload />
+                </VIcon>
+              </VBtn>
+            </VCardActions>
+          </VCard>
+        </VCol>
+      </VRow>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">

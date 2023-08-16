@@ -1,14 +1,22 @@
 <template>
-  <v-container>
-    <v-row class="pt-4">
-      <v-col cols="12" offset-lg="1" md="5" lg="4" class="py-4">
+  <VContainer>
+    <VRow class="pt-4">
+      <VCol
+        cols="12"
+        offset-lg="1"
+        md="5"
+        lg="4"
+        class="py-4">
         <div
           v-if="
             !isEmpty(systemInfo) &&
-            $remote.auth.currentUser?.Policy?.IsAdministrator
+              $remote.auth.currentUser?.Policy?.IsAdministrator
           ">
-          <v-img class="logo" src="/icon.png" :alt="$t('jellyfinLogo')" />
-          <v-table class="mb-4 pb-2 information">
+          <VImg
+            class="logo"
+            src="/icon.png"
+            :alt="$t('jellyfinLogo')" />
+          <VTable class="mb-4 pb-2 information">
             <tbody>
               <tr>
                 <td>{{ $t('server') }}</td>
@@ -31,78 +39,84 @@
                 <td>{{ clientVersion }}</td>
               </tr>
             </tbody>
-          </v-table>
+          </VTable>
         </div>
-        <about-links v-if="!$vuetify.display.mobile" />
-      </v-col>
-      <v-col cols="12" md="6" lg="5" class="py-4">
+        <AboutLinks v-if="!$vuetify.display.mobile" />
+      </VCol>
+      <VCol
+        cols="12"
+        md="6"
+        lg="5"
+        class="py-4">
         <!-- User settings -->
-        <v-list lines="two" class="mb-4 overflow-y-hidden">
-          <v-item-group>
-            <v-list-item
+        <VList
+          lines="two"
+          class="mb-4 overflow-y-hidden">
+          <VItemGroup>
+            <VListItem
               v-for="userItem in userItems"
               :key="userItem.name"
               :to="userItem.link"
               :disabled="!userItem.link">
               <template #prepend>
-                <v-avatar>
-                  <v-icon :icon="userItem.icon" />
-                </v-avatar>
+                <VAvatar>
+                  <VIcon :icon="userItem.icon" />
+                </VAvatar>
               </template>
-              <v-list-item-title>
+              <VListItemTitle>
                 {{ userItem.name }}
-              </v-list-item-title>
-              <v-list-item-subtitle>
+              </VListItemTitle>
+              <VListItemSubtitle>
                 {{ userItem.description }}
-              </v-list-item-subtitle>
+              </VListItemSubtitle>
               <template #append>
-                <v-list-item-action>
-                  <v-icon>
-                    <i-mdi-chevron-right />
-                  </v-icon>
-                </v-list-item-action>
+                <VListItemAction>
+                  <VIcon>
+                    <IMdiChevronRight />
+                  </VIcon>
+                </VListItemAction>
               </template>
-            </v-list-item>
-          </v-item-group>
-        </v-list>
+            </VListItem>
+          </VItemGroup>
+        </VList>
         <!-- Administrator settings -->
         <div v-if="$remote.auth.currentUser?.Policy?.IsAdministrator">
-          <v-list
+          <VList
             v-for="(adminSection, index) in adminSections"
             :key="`admin-section-${index}`"
             class="mb-4 overflow-y-hidden">
-            <v-item-group>
-              <v-list-item
+            <VItemGroup>
+              <VListItem
                 v-for="adminItem in adminSection"
                 :key="adminItem.name"
                 :to="adminItem.link"
                 :disabled="!adminItem.link">
                 <template #prepend>
-                  <v-avatar>
-                    <v-icon :icon="adminItem.icon" />
-                  </v-avatar>
+                  <VAvatar>
+                    <VIcon :icon="adminItem.icon" />
+                  </VAvatar>
                 </template>
-                <v-list-item-title>
+                <VListItemTitle>
                   {{ adminItem.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
+                </VListItemTitle>
+                <VListItemSubtitle>
                   {{ adminItem.description }}
-                </v-list-item-subtitle>
+                </VListItemSubtitle>
                 <template #append>
-                  <v-list-item-action>
-                    <v-icon>
-                      <i-mdi-chevron-right />
-                    </v-icon>
-                  </v-list-item-action>
+                  <VListItemAction>
+                    <VIcon>
+                      <IMdiChevronRight />
+                    </VIcon>
+                  </VListItemAction>
                 </template>
-              </v-list-item>
-            </v-item-group>
-          </v-list>
+              </VListItem>
+            </VItemGroup>
+          </VList>
         </div>
-        <about-links v-if="$vuetify.display.mobile" />
-      </v-col>
-    </v-row>
-  </v-container>
+        <AboutLinks v-if="$vuetify.display.mobile" />
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <script setup lang="ts">

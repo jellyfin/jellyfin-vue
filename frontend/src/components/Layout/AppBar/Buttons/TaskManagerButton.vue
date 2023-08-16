@@ -1,44 +1,49 @@
 <template>
-  <app-bar-button-layout v-if="showButton" :color="buttonColor">
+  <AppBarButtonLayout
+    v-if="showButton"
+    :color="buttonColor">
     <template #icon>
-      <v-progress-circular v-if="!buttonColor" indeterminate size="24" />
-      <v-icon v-else>
-        <i-mdi-check />
-      </v-icon>
-      <v-menu
+      <VProgressCircular
+        v-if="!buttonColor"
+        indeterminate
+        size="24" />
+      <VIcon v-else>
+        <IMdiCheck />
+      </VIcon>
+      <VMenu
         v-model="menu"
         :close-on-content-click="false"
         persistent
         :transition="'slide-y-transition'"
         location="bottom"
         :z-index="1006">
-        <v-card min-width="25em">
-          <v-list>
-            <v-list-item
+        <VCard min-width="25em">
+          <VList>
+            <VListItem
               v-for="task in UITaskList"
               :key="`${task.id}`"
               :title="$t(task.textKey, { ...task.textParams })">
               <template #append>
-                <v-progress-circular
+                <VProgressCircular
                   v-if="task.progress !== 100"
                   :indeterminate="
                     task.progress === undefined || task.progress === 0
                   "
                   :model-value="task.progress"
                   size="24" />
-                <v-icon v-else>
-                  <i-mdi-check />
-                </v-icon>
+                <VIcon v-else>
+                  <IMdiCheck />
+                </VIcon>
               </template>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-menu>
+            </VListItem>
+          </VList>
+        </VCard>
+      </VMenu>
     </template>
     <template #tooltip>
       <span>{{ $t('appbar.tooltips.tasks') }}</span>
     </template>
-  </app-bar-button-layout>
+  </AppBarButtonLayout>
 </template>
 
 <script setup lang="ts">

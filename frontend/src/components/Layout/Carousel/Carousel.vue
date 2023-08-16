@@ -1,6 +1,6 @@
 <template>
   <div class="swiperContainer user-select-none">
-    <carousel-progress-bar
+    <CarouselProgressBar
       v-if="progressBar && topProgressBar && slides > 0"
       :pages="slides"
       :current-index="currentIndex"
@@ -10,7 +10,7 @@
       hoverable
       @animation-end="onAnimationEnd"
       @progress-clicked="onProgressClicked" />
-    <swiper
+    <Swiper
       :modules="modules"
       :class="useResponsiveClasses('swiper')"
       :initial-slide="0"
@@ -26,8 +26,8 @@
       @touch-start="onTouch"
       @touch-end="onTouch">
       <slot name="slides" />
-    </swiper>
-    <carousel-progress-bar
+    </Swiper>
+    <CarouselProgressBar
       v-if="progressBar && !topProgressBar && slides > 0"
       :pages="slides"
       :current-index="currentIndex"
@@ -79,9 +79,13 @@ const modules = [A11y, Parallax, EffectFade, Keyboard, Virtual];
 const currentIndex = ref(0);
 const isPaused = ref(false);
 const swiperInstance = ref<SwiperType>();
-const setControlledSwiper = (instance: SwiperType): void => {
+
+/**
+ *
+ */
+function setControlledSwiper (instance: SwiperType): void {
   swiperInstance.value = instance;
-};
+}
 
 /**
  * HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,

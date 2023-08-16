@@ -1,13 +1,13 @@
 <template>
-  <v-btn
+  <VBtn
     icon
     :size="props.size"
     :disabled="!playbackManager.nextItem"
     @click="playbackManager.setNextTrack">
-    <v-icon :size="size">
-      <i-mdi-skip-next />
-    </v-icon>
-  </v-btn>
+    <VIcon :size="size">
+      <IMdiSkipNext />
+    </VIcon>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

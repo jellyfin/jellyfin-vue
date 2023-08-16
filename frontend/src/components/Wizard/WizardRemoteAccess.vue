@@ -1,24 +1,26 @@
 <template>
   <div>
-    <v-checkbox
+    <VCheckbox
       v-model="allowRemoteAccess"
       :label="t('wizard.allowRemoteAccess')"
       :disabled="loading" />
-    <v-checkbox v-model="enableUPNP" :label="t('enableUPNP')" />
-    <v-btn
+    <VCheckbox
+      v-model="enableUPNP"
+      :label="t('enableUPNP')" />
+    <VBtn
       color="secondary"
       variant="elevated"
       :disabled="loading"
       @click="emit('previous-step')">
       {{ t('previous') }}
-    </v-btn>
-    <v-btn
+    </VBtn>
+    <VBtn
       :loading="loading"
       color="primary"
       variant="elevated"
       @click="setRemoteAccess">
       {{ t('finish') }}
-    </v-btn>
+    </VBtn>
   </div>
 </template>
 

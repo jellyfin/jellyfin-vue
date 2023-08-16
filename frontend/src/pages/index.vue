@@ -1,6 +1,6 @@
 <template>
   <div>
-    <items-carousel
+    <ItemsCarousel
       v-if="userLibraries.carouselItems.length > 0"
       :items="userLibraries.carouselItems"
       page-backdrop
@@ -8,14 +8,14 @@
       <template #referenceText>
         {{ $t('homeHeader.items.recentlyAdded') }}
       </template>
-    </items-carousel>
-    <v-container class="sections-after-header">
-      <v-row
+    </ItemsCarousel>
+    <VContainer class="sections-after-header">
+      <VRow
         v-for="(homeSection, index) in homeSections"
         :key="`homeSection-${index}`">
-        <home-section :section="homeSection" />
-      </v-row>
-    </v-container>
+        <HomeSection :section="homeSection" />
+      </VRow>
+    </VContainer>
   </div>
 </template>
 

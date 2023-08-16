@@ -1,42 +1,50 @@
 <template>
-  <app-bar-button-layout v-if="auth.currentUser">
+  <AppBarButtonLayout v-if="auth.currentUser">
     <template #icon>
-      <user-image :user="auth.currentUser" :size="40" rounded />
-      <v-menu location="bottom">
-        <v-list class="min-list-width" density="compact">
-          <v-list-item>
+      <UserImage
+        :user="auth.currentUser"
+        :size="40"
+        rounded />
+      <VMenu location="bottom">
+        <VList
+          class="min-list-width"
+          density="compact">
+          <VListItem>
             <template #prepend>
-              <v-avatar>
-                <user-image :user="auth.currentUser" :size="40" rounded />
-              </v-avatar>
+              <VAvatar>
+                <UserImage
+                  :user="auth.currentUser"
+                  :size="40"
+                  rounded />
+              </VAvatar>
             </template>
             <template #title>
-              <v-list-item-title class="text-body-1">
+              <VListItemTitle class="text-body-1">
                 {{ auth.currentUser.Name }}
-              </v-list-item-title>
+              </VListItemTitle>
             </template>
             <template
               v-if="auth.currentUser?.Policy?.IsAdministrator"
               #subtitle>
-              <v-list-item-subtitle>
+              <VListItemSubtitle>
                 {{ $t('administrator') }}
-                <v-icon size="small">
-                  <i-mdi-key-chain />
-                </v-icon>
-              </v-list-item-subtitle>
+                <VIcon size="small">
+                  <IMdiKeyChain />
+                </VIcon>
+              </VListItemSubtitle>
             </template>
-          </v-list-item>
-          <v-divider class="my-2" />
-          <v-list-item
+          </VListItem>
+          <VDivider class="my-2" />
+          <VListItem
             v-for="(item, index) in menuItems"
             :key="`bottomMenuItems-${index}`"
             :prepend-icon="item.icon"
             :title="item.title"
             @click="item.action" />
-        </v-list>
-      </v-menu>
+        </VList>
+      </VMenu>
     </template>
-  </app-bar-button-layout>
+  </AppBarButtonLayout>
 </template>
 
 <script setup lang="ts">

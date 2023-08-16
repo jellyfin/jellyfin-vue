@@ -1,12 +1,18 @@
 <template>
-  <item-cols>
+  <ItemCols>
     <template #left>
-      <v-row justify="center" justify-sm="start">
-        <v-col cols="6" sm="3">
-          <card :item="item" />
-        </v-col>
-        <v-col cols="12" sm="7">
-          <v-row class="d-flex flex-column">
+      <VRow
+        justify="center"
+        justify-sm="start">
+        <VCol
+          cols="6"
+          sm="3">
+          <Card :item="item" />
+        </VCol>
+        <VCol
+          cols="12"
+          sm="7">
+          <VRow class="d-flex flex-column">
             <div class="ml-sm-4 d-flex flex-column">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
@@ -17,74 +23,100 @@
               </h1>
             </div>
             <div class="d-flex align-center ml-sm-4 my-2">
-              <play-button :item="item" />
-              <item-menu :item="item" />
-              <like-button :item="item" />
+              <PlayButton :item="item" />
+              <ItemMenu :item="item" />
+              <LikeButton :item="item" />
             </div>
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-tabs v-model="activeTab" bg-color="transparent">
-            <v-tab :value="0" :disabled="discography.length === 0">
+          </VRow>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol>
+          <VTabs
+            v-model="activeTab"
+            bg-color="transparent">
+            <VTab
+              :value="0"
+              :disabled="discography.length === 0">
               {{ $t('item.artist.discography') }}
-            </v-tab>
-            <v-tab :value="1" :disabled="albums.length === 0">
+            </VTab>
+            <VTab
+              :value="1"
+              :disabled="albums.length === 0">
               {{ $t('item.artist.albums') }}
-            </v-tab>
-            <v-tab :value="2" :disabled="eps.length === 0">
+            </VTab>
+            <VTab
+              :value="2"
+              :disabled="eps.length === 0">
               {{ $t('item.artist.eps') }}
-            </v-tab>
-            <v-tab :value="3" :disabled="singles.length === 0">
+            </VTab>
+            <VTab
+              :value="3"
+              :disabled="singles.length === 0">
               {{ $t('item.artist.singles') }}
-            </v-tab>
-            <v-tab :value="4" :disabled="appearances.length === 0">
+            </VTab>
+            <VTab
+              :value="4"
+              :disabled="appearances.length === 0">
               {{ $t('item.artist.appearsOn') }}
-            </v-tab>
-            <v-tab :value="5" :disabled="musicVideos.length === 0">
+            </VTab>
+            <VTab
+              :value="5"
+              :disabled="musicVideos.length === 0">
               {{ $t('item.artist.videos') }}
-            </v-tab>
-            <v-tab :value="6" :disabled="!item.Overview">
+            </VTab>
+            <VTab
+              :value="6"
+              :disabled="!item.Overview">
               {{ $t('item.artist.information') }}
-            </v-tab>
-          </v-tabs>
-          <v-window v-model="activeTab" class="bg-transparent">
-            <v-window-item :value="0">
-              <artist-tab :releases="discography" />
-            </v-window-item>
-            <v-window-item :value="1">
-              <artist-tab :releases="albums" />
-            </v-window-item>
-            <v-window-item :value="2">
-              <artist-tab :releases="eps" />
-            </v-window-item>
-            <v-window-item :value="3">
-              <artist-tab :releases="singles" />
-            </v-window-item>
-            <v-window-item :value="4">
-              <v-container>
-                <v-row>
-                  <v-col>
-                    <item-grid :items="appearances" large no-virtual />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-window-item>
-            <v-window-item :value="5">
-              <v-container>
-                <v-row>
-                  <v-col>
-                    <item-grid :items="musicVideos" large no-virtual />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-window-item>
-            <v-window-item :value="6">
-              <v-container>
-                <v-row>
-                  <v-col>
-                    <v-col cols="12" md="7">
+            </VTab>
+          </VTabs>
+          <VWindow
+            v-model="activeTab"
+            class="bg-transparent">
+            <VWindowItem :value="0">
+              <ArtistTab :releases="discography" />
+            </VWindowItem>
+            <VWindowItem :value="1">
+              <ArtistTab :releases="albums" />
+            </VWindowItem>
+            <VWindowItem :value="2">
+              <ArtistTab :releases="eps" />
+            </VWindowItem>
+            <VWindowItem :value="3">
+              <ArtistTab :releases="singles" />
+            </VWindowItem>
+            <VWindowItem :value="4">
+              <VContainer>
+                <VRow>
+                  <VCol>
+                    <ItemGrid
+                      :items="appearances"
+                      large
+                      no-virtual />
+                  </VCol>
+                </VRow>
+              </VContainer>
+            </VWindowItem>
+            <VWindowItem :value="5">
+              <VContainer>
+                <VRow>
+                  <VCol>
+                    <ItemGrid
+                      :items="musicVideos"
+                      large
+                      no-virtual />
+                  </VCol>
+                </VRow>
+              </VContainer>
+            </VWindowItem>
+            <VWindowItem :value="6">
+              <VContainer>
+                <VRow>
+                  <VCol>
+                    <VCol
+                      cols="12"
+                      md="7">
                       <!-- eslint-disable vue/no-v-html -
                         Output is properly sanitized using sanitizeHtml -->
                       <span
@@ -92,21 +124,23 @@
                         class="item-overview"
                         v-html="sanitizeHtml(item.Overview, true)" />
                       <!-- eslint-enable vue/no-v-html -->
-                    </v-col>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-window-item>
-          </v-window>
-        </v-col>
-      </v-row>
+                    </VCol>
+                  </VCol>
+                </VRow>
+              </VContainer>
+            </VWindowItem>
+          </VWindow>
+        </VCol>
+      </VRow>
     </template>
     <template #right>
-      <related-items :item="item" vertical>
+      <RelatedItems
+        :item="item"
+        vertical>
         {{ $t('moreLikeArtist', { artist: item.Name }) }}
-      </related-items>
+      </RelatedItems>
     </template>
-  </item-cols>
+  </ItemCols>
 </template>
 
 <script setup lang="ts">
@@ -230,7 +264,7 @@ onMounted(async () => {
   } else if (musicVideos.value.length > 0) {
     activeTab.value = 5;
   } else {
-    // overview
+    // Overview
     activeTab.value = 6;
   }
 });

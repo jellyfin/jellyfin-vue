@@ -1,23 +1,25 @@
 <template>
-  <v-btn :icon="$vuetify.display.smAndDown" class="my-2">
+  <VBtn
+    :icon="$vuetify.display.smAndDown"
+    class="my-2">
     {{
       $vuetify.display.smAndDown || items.length === 0
         ? undefined
         : model.length === 0
-        ? items[0].title
-        : items.find((i) => i.value == model[0])?.title
+          ? items[0].title
+          : items.find((i) => i.value == model[0])?.title
     }}
-    <v-icon :end="!$vuetify.display.smAndDown">
-      <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
-      <i-mdi-eye v-else />
-    </v-icon>
-    <v-menu :disabled="disabled">
-      <v-list
+    <VIcon :end="!$vuetify.display.smAndDown">
+      <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
+      <IMdiEye v-else />
+    </VIcon>
+    <VMenu :disabled="disabled">
+      <VList
         v-model:selected="model"
         :items="items"
         @update:selected="emit('change', model[0])" />
-    </v-menu>
-  </v-btn>
+    </VMenu>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

@@ -1,11 +1,13 @@
 <template>
-  <v-btn
+  <VBtn
     icon
     :size="size"
     :loading="playbackManager.isBuffering"
     @click="playbackManager.playPause">
-    <v-icon :size="size" :icon="playPauseIcon" />
-  </v-btn>
+    <VIcon
+      :size="size"
+      :icon="playPauseIcon" />
+  </VBtn>
 </template>
 
 <script setup lang="ts">

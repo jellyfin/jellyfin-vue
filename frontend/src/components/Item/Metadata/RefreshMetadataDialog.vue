@@ -1,16 +1,16 @@
 <template>
-  <v-dialog
+  <VDialog
     width="auto"
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
     @after-leave="emit('close')">
-    <v-card class="pa-3">
-      <v-card-title class="text-center">
+    <VCard class="pa-3">
+      <VCardTitle class="text-center">
         {{ t('refreshMetadata') }}
-      </v-card-title>
-      <v-divider />
+      </VCardTitle>
+      <VDivider />
       <!-- TODO: Investigate why style is needed for mobile breakpoint -->
-      <v-select
+      <VSelect
         v-model="selectedMethod"
         :items="refreshMethods"
         :hint="t('refreshMetadataHint')"
@@ -21,36 +21,36 @@
         return-object
         style="display: unset" />
 
-      <v-spacer v-if="selectedMethod.value !== 'scan'" />
-      <v-checkbox
+      <VSpacer v-if="selectedMethod.value !== 'scan'" />
+      <VCheckbox
         v-if="selectedMethod.value !== 'scan'"
         v-model="replace"
         :label="t('replaceExistingImages')" />
 
-      <v-card-actions
+      <VCardActions
         class="d-flex align-center"
         :class="{
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile
         }">
-        <v-btn
+        <VBtn
           variant="flat"
           width="8em"
           color="secondary"
           @click="model = false">
           {{ t('cancel') }}
-        </v-btn>
-        <v-btn
+        </VBtn>
+        <VBtn
           variant="flat"
           width="8em"
           color="primary"
           :loading="loading"
           @click="refreshMetadata">
           {{ t('refresh') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -73,12 +73,12 @@ const props = defineProps<{
   item: BaseItemDto;
 }>();
 
-const model = ref(true);
-const loading = ref(false);
-const replace = ref(false);
 const emit = defineEmits<{
   close: [];
 }>();
+const model = ref(true);
+const loading = ref(false);
+const replace = ref(false);
 const { t } = useI18n();
 const selectedMethod = ref<RefreshMethod>({
   title: t('scanForNewAndUpdatedFiles'),

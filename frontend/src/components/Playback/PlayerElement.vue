@@ -1,7 +1,9 @@
 <template>
   <template v-if="mediaElementType">
-    <Teleport :to="teleportTarget" :disabled="!teleportTarget">
-      <component
+    <Teleport
+      :to="teleportTarget"
+      :disabled="!teleportTarget">
+      <Component
         :is="mediaElementType"
         v-show="mediaElementType === 'video' && teleportTarget"
         ref="mediaElementRef"
@@ -19,7 +21,7 @@
           :label="sub.label"
           :srclang="sub.srcLang"
           :src="sub.src" />
-      </component>
+      </Component>
     </Teleport>
   </template>
 </template>
@@ -47,8 +49,8 @@ const { t } = useI18n();
 
 const hls = Hls.isSupported()
   ? new Hls({
-      testBandwidth: false
-    })
+    testBandwidth: false
+  })
   : undefined;
 
 /**
@@ -86,7 +88,7 @@ const mediaElementType = computed<'audio' | 'video' | undefined>(() => {
  * we need to ensure the DOM elements are mounted before the teleport target is ready
  */
 const teleportTarget = computed<
-  '.fullscreen-video-container' | '.minimized-video-container' | undefined
+'.fullscreen-video-container' | '.minimized-video-container' | undefined
 >(() => {
   if (playbackManager.currentlyPlayingMediaType === 'Video') {
     if (playerElement.isFullscreenMounted) {
@@ -101,8 +103,8 @@ const posterUrl = computed<string>(() =>
   !isNil(playbackManager.currentItem) &&
   playbackManager.currentlyPlayingMediaType === 'Video'
     ? getImageInfo(playbackManager.currentItem, {
-        preferBackdrop: true
-      }).url || ''
+      preferBackdrop: true
+    }).url || ''
     : ''
 );
 
@@ -126,7 +128,7 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
   if (data.fatal && hls) {
     switch (data.type) {
       case Hls.ErrorTypes.NETWORK_ERROR: {
-        // try to recover network error
+        // Try to recover network error
         useSnackbar(t('errors.playback.networkError'), 'error');
         console.error('fatal network error encountered, try to recover');
         hls.startLoad();
