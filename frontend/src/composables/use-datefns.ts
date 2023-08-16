@@ -16,7 +16,7 @@ export function useDateFns<T extends (...a: any[]) => any>(
   func: T,
   ...params: Parameters<T>
 ): ComputedRef<ReturnType<T>> {
-  return computed(() => {
+  return computed<ReturnType<T>>(() => {
     const i18n = usei18n();
     /**
      * We need to remove the hyphen of our locale codes, as using named exports with them is not valid JS syntax

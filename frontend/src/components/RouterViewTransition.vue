@@ -39,7 +39,7 @@ defineProps<{
 }>();
 
 /**
- * Get transition name
+ * Based on a route's meta.transition properties, return the transition name to use
  */
 function getTransitionName(
   route: RouteLocationNormalizedLoaded

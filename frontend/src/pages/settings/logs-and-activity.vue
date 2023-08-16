@@ -198,8 +198,9 @@ function getFormattedLogDate(date: string | undefined): string {
 /**
  * Creates a link to the given type of log file
  */
-function getLogFileLink(name: string): string {
-  return `${remote.sdk.api?.basePath}/System/Logs/Log?name=${name}&api_key=${remote.auth.currentUserToken}`;
+function getLogFileLink(name: string): string | undefined {
+  return remote.sdk.api?.basePath && remote.auth.currentUserToken ?
+    `${remote.sdk.api?.basePath}/System/Logs/Log?name=${name}&api_key=${remote.auth.currentUserToken}` : undefined;
 }
 
 /**

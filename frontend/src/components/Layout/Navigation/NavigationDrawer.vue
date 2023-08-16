@@ -18,13 +18,15 @@
         :prepend-icon="item.icon"
         :title="item.title" />
       <VListSubheader>{{ $t('libraries') }}</VListSubheader>
-      <VListItem
-        v-for="library in drawerItems"
-        :key="library.to"
-        :to="library.to"
-        exact
-        :prepend-icon="library.icon"
-        :title="library.title" />
+      <template v-for="library in drawerItems">
+        <VListItem
+          v-if="library"
+          :key="library.to"
+          :to="library.to"
+          exact
+          :prepend-icon="library.icon"
+          :title="library.title" />
+      </template>
     </VList>
     <template #append>
       <VList nav>
@@ -58,11 +60,13 @@ const transparentLayout = computed(() => {
 
 const drawerItems = computed(() => {
   return userLibraries.libraries.map((view: BaseItemDto) => {
-    return {
-      icon: getLibraryIcon(view.CollectionType),
-      title: view.Name || '',
-      to: `/library/${view.Id}`
-    };
+    if (view.Id) {
+      return {
+        icon: getLibraryIcon(view.CollectionType),
+        title: view.Name || '',
+        to: `/library/${view.Id}`
+      };
+    }
   });
 });
 

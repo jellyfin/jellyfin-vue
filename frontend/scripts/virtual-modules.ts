@@ -12,7 +12,7 @@ const localeFiles = readdirSync(localeFilesFolder.replace('**', ''));
 const localeNames = localeFiles.map((l) => l.replace('.json', ''));
 
 /**
- *
+ * Normalizes the locale names from the JSON files to ESM-compatible exports
  */
 function localeTransform (keys: string[], l: string): string | undefined {
   const testStrings = l.split('-');
@@ -56,14 +56,14 @@ const vuetifyExports = localeNames
 /**
  * Map the RTL value of the mapped locales
  */
-const transformedVuetifyRtl = {};
+const transformedVuetifyRtl: Record<string, boolean> = {};
 
 for (const e of vuetifyExports) {
   const localeSplitted = e.includes(' as ') ? e.split(' as ') : e;
   const originalLocale = Array.isArray(localeSplitted) ? localeSplitted[0] : e;
   const targetLocale = Array.isArray(localeSplitted) ? localeSplitted[1] : e;
 
-  transformedVuetifyRtl[targetLocale] = vuetify.defaultRtl[originalLocale];
+  transformedVuetifyRtl[targetLocale] = vuetify.defaultRtl[originalLocale as keyof typeof vuetify.defaultRtl];
 }
 
 export default {

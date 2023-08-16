@@ -297,7 +297,7 @@ class PlaybackManagerStore {
         .map((sub) => ({
           label: sub.DisplayTitle ?? 'Undefined',
           src:
-            sub.DeliveryMethod === SubtitleDeliveryMethod.External
+            sub.DeliveryMethod === SubtitleDeliveryMethod.External && remote.sdk.api?.basePath && sub.DeliveryUrl
               ? `${remote.sdk.api?.basePath}${sub.DeliveryUrl}`
               : undefined,
           srcLang: sub.Language ?? undefined,
@@ -952,13 +952,17 @@ class PlaybackManagerStore {
     mediaType = this.currentlyPlayingMediaType
   ): string | undefined => {
     if (
+      remote.sdk.api?.basePath &&
+      remote.auth.currentUserToken &&
+      mediaType &&
       mediaSource?.SupportsDirectStream &&
       mediaSource.Type &&
-      remote.auth.currentUserToken
+      mediaSource.Id &&
+      mediaSource.Container
     ) {
       const directOptions: Record<string, string> = {
         Static: String(true),
-        mediaSourceId: String(mediaSource.Id),
+        mediaSourceId: mediaSource.Id,
         deviceId: remote.sdk.deviceInfo.id,
         api_key: remote.auth.currentUserToken,
         Tag: mediaSource.ETag || '',
@@ -967,9 +971,9 @@ class PlaybackManagerStore {
 
       const parameters = new URLSearchParams(directOptions).toString();
 
-      return `${remote.sdk.api?.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
-    } else if (mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
-      return remote.sdk.api?.basePath + mediaSource.TranscodingUrl;
+      return `${remote.sdk.api.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
+    } else if (remote.sdk.api?.basePath && mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
+      return `${remote.sdk.api.basePath}${mediaSource.TranscodingUrl}`;
     }
   };
 

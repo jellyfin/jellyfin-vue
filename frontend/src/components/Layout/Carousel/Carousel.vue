@@ -81,7 +81,7 @@ const isPaused = ref(false);
 const swiperInstance = ref<SwiperType>();
 
 /**
- *
+ * Create a reference to the swiper instance
  */
 function setControlledSwiper (instance: SwiperType): void {
   swiperInstance.value = instance;

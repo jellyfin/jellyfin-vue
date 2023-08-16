@@ -138,7 +138,7 @@ const rootStyles = computed<StyleValue>(() =>
   Object.fromEntries([
     ...Object.entries(contentSize.value || {}).map(([property, value]) => [
       property,
-      value + 'px'
+      `${value}px`
     ]),
     ['placeContent', 'start']
   ])
