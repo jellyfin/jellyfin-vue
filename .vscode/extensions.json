@@ -8,12 +8,12 @@
     "vue.volar",
     "vue.vscode-typescript-vue-plugin",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
     "lokalise.i18n-ally",
     "ryanluker.vscode-coverage-gutters",
     "yoavbls.pretty-ts-errors"
   ],
   "unwantedRecommendations": [
-    "octref.vetur"
+    "octref.vetur",
+    "esbenp.prettier-vscode"
   ]
 }
