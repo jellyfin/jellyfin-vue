@@ -41,7 +41,7 @@ const storeKey = 'clientSettings';
  */
 class ClientSettingsStore {
   /**
-   * == STATE ==
+   * == STATE SECTION ==
    */
   private _defaultState: ClientSettingsState = {
     darkMode: 'auto',

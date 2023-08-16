@@ -16,7 +16,7 @@ interface ItemsState {
  */
 class ItemsStore {
   /**
-   * == STATE ==
+   * == STATE SECTION ==
    */
   private _defaultState: ItemsState = {
     byId: {},

@@ -69,12 +69,12 @@
         v-if="cardSubtitleLink"
         class="link d-block v-card-subtitle text-truncate"
         :to="cardSubtitleLink">
-        {{ cardSubtitle }}
+        {{ cardSubtitle ?? '' }}
       </RouterLink>
       <div
         v-else
         class="v-card-subtitle text-truncate">
-        {{ cardSubtitle }}
+        {{ cardSubtitle ?? '' }}
       </div>
     </div>
   </div>
@@ -82,6 +82,7 @@
 
 <script lang="ts">
 import { computed } from 'vue';
+import { isNil } from 'lodash-es';
 import { useMediaQuery } from '@vueuse/core';
 import {
   BaseItemDto,
@@ -143,37 +144,35 @@ const cardTitle = computed(() =>
 const cardSubtitle = computed(() => {
   switch (props.item.Type) {
     case BaseItemKind.Episode: {
-      return `${t('seasonEpisodeAbbrev', {
+      return !isNil(props.item.ParentIndexNumber) && !isNil(props.item.IndexNumber) && !isNil(props.item.Name) ? `${t('seasonEpisodeAbbrev', {
         seasonNumber: props.item.ParentIndexNumber,
         episodeNumber: props.item.IndexNumber
-      })} - ${props.item.Name}`;
+      })} - ${props.item.Name}` : undefined;
     }
     case BaseItemKind.MusicAlbum: {
-      return `${props.item.AlbumArtist || ''}`;
+      return props.item.AlbumArtist;
     }
     case BaseItemKind.Series: {
-      if (props.item.Status === 'Continuing') {
+      if (props.item.Status === 'Continuing' && !isNil(props.item.ProductionYear)) {
         return `${props.item.ProductionYear} - ${t('present')}`;
       } else if (props.item.EndDate) {
         const endYear = new Date(props.item?.EndDate).toLocaleString('en-us', {
           year: 'numeric'
         });
 
-        if (props.item.ProductionYear?.toString() === endYear) {
-          return props.item.ProductionYear.toString();
+        if (String(props.item.ProductionYear) === endYear) {
+          return String(props.item.ProductionYear);
         }
 
-        return `${props.item.ProductionYear} - ${endYear}`;
+        return isNil(props.item.ProductionYear) ? undefined: `${props.item.ProductionYear} - ${endYear}`;
       }
 
       break;
     }
     default: {
-      return `${props.item.ProductionYear || ''}`;
+      return props.item.ProductionYear;
     }
   }
-
-  return '';
 });
 
 /**

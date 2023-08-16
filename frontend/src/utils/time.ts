@@ -22,7 +22,7 @@ import { useDateFns, usei18n } from '@/composables';
  * @returns Formated seconds number
  */
 function formatDigits(number: number): string {
-  return ('0' + number).slice(-2);
+  return `0${number}`.slice(-2);
 }
 
 /**

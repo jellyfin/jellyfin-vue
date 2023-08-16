@@ -36,7 +36,6 @@ import { getResponseProfiles } from './response-profile';
  * Creates a device profile containing supported codecs for the active Cast device.
  *
  * @param videoTestElement - Dummy video element for compatibility tests
- * @returns Device profile.
  */
 function getDeviceProfile(videoTestElement: HTMLVideoElement): DeviceProfile {
   // MaxStaticBitrate seems to be for offline sync only

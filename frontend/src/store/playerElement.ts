@@ -32,7 +32,7 @@ interface PlayerElementState {
  */
 class PlayerElementStore {
   /**
-   * == STATE ==
+   * == STATE SECTION ==
    */
   private _defaultState: PlayerElementState = {
     isFullscreenMounted: false,

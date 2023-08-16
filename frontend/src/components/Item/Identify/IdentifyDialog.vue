@@ -112,7 +112,7 @@ const emit = defineEmits<{
 }>();
 
 /**
- *
+ * Closes the dialog and kills the DOM element.
  */
 function close (): void {
   model.value = false;

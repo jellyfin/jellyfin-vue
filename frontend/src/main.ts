@@ -21,6 +21,7 @@ import '@fontsource/roboto';
  * - VUE PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
+/* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
 const app = createApp(Root);
 const remote = createRemote();
 

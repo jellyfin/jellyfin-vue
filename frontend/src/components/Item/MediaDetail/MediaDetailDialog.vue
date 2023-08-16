@@ -164,7 +164,7 @@ const model = ref(true);
 const currentTab = ref<string>();
 
 /**
- *
+ * Closes the dialog and kills the DOM element.
  */
 function close (): void {
   model.value = false;
