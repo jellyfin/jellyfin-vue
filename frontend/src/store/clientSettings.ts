@@ -17,7 +17,7 @@ import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 interface ClientSettingsState {
   darkMode: 'auto' | boolean;
-  locale: 'auto' | string;
+  locale: 'auto';
 }
 
 /**
