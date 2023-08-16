@@ -1,26 +1,32 @@
 <template>
-  <v-btn icon class="align-self-center">
-    <v-icon>
-      <i-mdi-playlist-play />
-    </v-icon>
-    <v-tooltip :text="$t('queue')" location="top" />
-    <v-menu
+  <VBtn
+    icon
+    class="align-self-center">
+    <VIcon>
+      <IMdiPlaylistPlay />
+    </VIcon>
+    <VTooltip
+      :text="$t('queue')"
+      location="top" />
+    <VMenu
       v-model="menuModel"
       :close-on-content-click="false"
       :persistent="!closeOnClick"
       :transition="'slide-y-transition'"
       :width="listWidth"
       location="top">
-      <v-card>
-        <v-list>
-          <v-list-item :title="sourceText">
+      <VCard>
+        <VList>
+          <VListItem :title="sourceText">
             <template #prepend>
-              <v-avatar>
-                <blurhash-image
+              <VAvatar>
+                <BlurhashImage
                   v-if="playbackManager.initiator"
                   :item="playbackManager.initiator" />
-                <v-icon v-else :icon="modeIcon" />
-              </v-avatar>
+                <VIcon
+                  v-else
+                  :icon="modeIcon" />
+              </VAvatar>
             </template>
             <template #subtitle>
               {{ getTotalEndsAtTime(playbackManager.queue).value }} -
@@ -30,31 +36,39 @@
                 })
               }}
             </template>
-          </v-list-item>
-        </v-list>
-        <v-divider />
-        <v-list class="queue-area">
-          <draggable-queue />
-        </v-list>
-        <v-spacer />
-        <v-card-actions>
-          <v-btn icon @click="playbackManager.stop">
-            <v-icon>
-              <i-mdi-playlist-remove />
-            </v-icon>
-            <v-tooltip :text="$t('playback.clearQueue')" location="top" />
-          </v-btn>
-          <v-btn icon disabled>
-            <v-icon>
-              <i-mdi-content-save />
-            </v-icon>
-            <v-tooltip :text="$t('playback.saveAsPlaylist')" location="top" />
-          </v-btn>
-          <v-spacer />
-        </v-card-actions>
-      </v-card>
-    </v-menu>
-  </v-btn>
+          </VListItem>
+        </VList>
+        <VDivider />
+        <VList class="queue-area">
+          <DraggableQueue />
+        </VList>
+        <VSpacer />
+        <VCardActions>
+          <VBtn
+            icon
+            @click="playbackManager.stop">
+            <VIcon>
+              <IMdiPlaylistRemove />
+            </VIcon>
+            <VTooltip
+              :text="$t('playback.clearQueue')"
+              location="top" />
+          </VBtn>
+          <VBtn
+            icon
+            disabled>
+            <VIcon>
+              <IMdiContentSave />
+            </VIcon>
+            <VTooltip
+              :text="$t('playback.saveAsPlaylist')"
+              location="top" />
+          </VBtn>
+          <VSpacer />
+        </VCardActions>
+      </VCard>
+    </VMenu>
+  </VBtn>
 </template>
 
 <script setup lang="ts">
@@ -79,7 +93,7 @@ const { t } = useI18n();
 
 const menuModel = ref(false);
 const listWidth = computed(() => `${props.size}vw`);
-// const listHeight = computed(() => `${props.size}vh`);
+// Const listHeight = computed(() => `${props.size}vh`);
 
 const sourceText = computed(() => {
   /**
@@ -96,8 +110,8 @@ const sourceText = computed(() => {
       return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
         ? t('playback.playbackSource.item', {
-            item: playbackManager.initiator?.Name
-          })
+          item: playbackManager.initiator?.Name
+        })
         : unknownSource;
     }
     case InitMode.Shuffle: {
@@ -107,8 +121,8 @@ const sourceText = computed(() => {
       return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
         ? t('playback.playbackSource.shuffleItem', {
-            item: playbackManager.initiator?.Name
-          })
+          item: playbackManager.initiator?.Name
+        })
         : unknownSource;
     }
     default: {

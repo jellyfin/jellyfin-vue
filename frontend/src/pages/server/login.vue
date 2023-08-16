@@ -1,60 +1,90 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row justify="center">
-      <v-col
+  <VContainer
+    class="fill-height"
+    fluid>
+    <VRow justify="center">
+      <VCol
         v-if="isEmpty(currentUser) && !loginAsOther && publicUsers.length > 0"
         sm="10"
         md="7"
         lg="5">
-        <h1 class="text-h4 mb-6 text-center">{{ $t('login.selectUser') }}</h1>
-        <v-row align="center" justify="center">
-          <v-col
+        <h1 class="text-h4 mb-6 text-center">
+          {{ $t('login.selectUser') }}
+        </h1>
+        <VRow
+          align="center"
+          justify="center">
+          <VCol
             v-for="publicUser in publicUsers"
             :key="publicUser.Id"
             cols="auto">
-            <user-card :user="publicUser" @connect="setCurrentUser" />
-          </v-col>
-        </v-row>
-        <v-row align="center" justify="center" dense class="mt-6">
-          <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn
+            <UserCard
+              :user="publicUser"
+              @connect="setCurrentUser" />
+          </VCol>
+        </VRow>
+        <VRow
+          align="center"
+          justify="center"
+          dense
+          class="mt-6">
+          <VCol
+            cols="11"
+            sm="6"
+            class="d-flex justify-center">
+            <VBtn
               block
               size="large"
               variant="elevated"
               @click="loginAsOther = true">
               {{ $t('login.manualLogin') }}
-            </v-btn>
-          </v-col>
-          <v-col cols="11" sm="6" class="d-flex justify-center">
-            <v-btn block to="/server/select" size="large" variant="elevated">
+            </VBtn>
+          </VCol>
+          <VCol
+            cols="11"
+            sm="6"
+            class="d-flex justify-center">
+            <VBtn
+              block
+              to="/server/select"
+              size="large"
+              variant="elevated">
               {{ $t('login.changeServer') }}
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col
+            </VBtn>
+          </VCol>
+        </VRow>
+      </VCol>
+      <VCol
         v-else-if="
           !isEmpty(currentUser) ||
-          loginAsOther ||
-          (publicUsers.length === 0 && $remote.auth.currentServer?.ServerName)
+            loginAsOther ||
+            (publicUsers.length === 0 && $remote.auth.currentServer?.ServerName)
         "
         sm="6"
         md="6"
         lg="5">
-        <h1 v-if="!isEmpty(currentUser)" class="text-h4 mb-3 text-center">
+        <h1
+          v-if="!isEmpty(currentUser)"
+          class="text-h4 mb-3 text-center">
           {{ $t('login.loginAs', { name: currentUser.Name }) }}
         </h1>
-        <h1 v-else class="text-h4 text-center">
+        <h1
+          v-else
+          class="text-h4 text-center">
           {{ $t('login.login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
           {{ $remote.auth.currentServer?.ServerName }}
         </h5>
-        <login-form :user="currentUser" @change="resetCurrentUser" />
-        <p class="text-p mt-6 text-center">{{ disclaimer }}</p>
-      </v-col>
-    </v-row>
-  </v-container>
+        <LoginForm
+          :user="currentUser"
+          @change="resetCurrentUser" />
+        <p class="text-p mt-6 text-center">
+          {{ disclaimer }}
+        </p>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <route lang="yaml">

@@ -1,36 +1,45 @@
 <template>
-  <v-dialog
+  <VDialog
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
     :height="$vuetify.display.mobile ? undefined : 'auto'"
     :width="$vuetify.display.mobile ? undefined : '70vw'"
     @after-leave="emit('close')">
-    <v-card :loading="loading" height="100%" class="d-flex flex-column">
+    <VCard
+      :loading="loading"
+      height="100%"
+      class="d-flex flex-column">
       <slot name="loader" />
-      <v-toolbar color="transparent">
-        <template v-if="slots.toolbarPrepend" #prepend>
+      <VToolbar color="transparent">
+        <template
+          v-if="slots.toolbarPrepend"
+          #prepend>
           <slot name="toolbarPrepend" />
         </template>
         <template #append>
-          <v-btn icon @click="model = false">
-            <i-mdi-close />
-          </v-btn>
+          <VBtn
+            icon
+            @click="model = false">
+            <IMdiClose />
+          </VBtn>
         </template>
-        <v-toolbar-title>
+        <VToolbarTitle>
           {{ title }}
-        </v-toolbar-title>
-      </v-toolbar>
+        </VToolbarTitle>
+      </VToolbar>
 
-      <v-card-subtitle v-if="subtitle" class="pb-3">
+      <VCardSubtitle
+        v-if="subtitle"
+        class="pb-3">
         {{ subtitle }}
-      </v-card-subtitle>
+      </VCardSubtitle>
 
-      <v-divider />
+      <VDivider />
 
       <slot />
 
-      <v-divider v-if="slots.actions" />
-      <v-card-actions
+      <VDivider v-if="slots.actions" />
+      <VCardActions
         v-if="slots.actions"
         class="d-flex align-center pa-3"
         :class="{
@@ -38,9 +47,9 @@
           'justify-center': $vuetify.display.mobile
         }">
         <slot name="actions" />
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">

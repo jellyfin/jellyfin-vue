@@ -1,6 +1,6 @@
 <template>
-  <router-view v-slot="{ Component, route }">
-    <transition
+  <RouterView v-slot="{ Component, route }">
+    <Transition
       :name="!prefersNoMotion ? getTransitionName(route) : undefined"
       mode="out-in">
       <!-- This div is required because <transition> requires a single children node -->
@@ -12,11 +12,11 @@
           :suspensible="!isRoot"
           @pending="isRoot ? useLoading().start : undefined"
           @resolve="isRoot ? useLoading().finish : undefined">
-          <component :is="Component" />
+          <Component :is="Component" />
         </Suspense>
       </div>
-    </transition>
-  </router-view>
+    </Transition>
+  </RouterView>
 </template>
 
 <script lang="ts">

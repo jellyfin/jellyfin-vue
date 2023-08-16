@@ -1,12 +1,12 @@
 <template>
-  <v-fade-transition>
+  <VFadeTransition>
     <canvas
       ref="canvas"
       :key="`canvas-${hash}`"
       :width="width"
       :height="height"
       class="absolute-cover" />
-  </v-fade-transition>
+  </VFadeTransition>
 </template>
 
 <script lang="ts">

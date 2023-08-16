@@ -1,9 +1,12 @@
 <template>
-  <v-chip color="success" size="small" variant="elevated">
-    <v-icon>
-      <i-mdi-check />
-    </v-icon>
-  </v-chip>
+  <VChip
+    color="success"
+    size="small"
+    variant="elevated">
+    <VIcon>
+      <IMdiCheck />
+    </VIcon>
+  </VChip>
 </template>
 
 <script setup lang="ts" />

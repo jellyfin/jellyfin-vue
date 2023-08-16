@@ -1,14 +1,31 @@
 <template>
-  <v-table density="compact" class="track-table user-select-none">
+  <VTable
+    density="compact"
+    class="track-table user-select-none">
     <thead>
       <tr>
-        <th style="width: 4em" class="pr-0 text-center" scope="col">#</th>
-        <th style="width: 3em" class="pr-0 pl-0" scope="col" />
-        <th scope="col">{{ $t('item.tracklist.title') }}</th>
-        <th style="width: 6.5em" class="text-center" scope="col">
-          <v-icon class="text--primary" size="16">
-            <i-mdi-clock-outline />
-          </v-icon>
+        <th
+          style="width: 4em"
+          class="pr-0 text-center"
+          scope="col">
+          #
+        </th>
+        <th
+          style="width: 3em"
+          class="pr-0 pl-0"
+          scope="col" />
+        <th scope="col">
+          {{ $t('item.tracklist.title') }}
+        </th>
+        <th
+          style="width: 6.5em"
+          class="text-center"
+          scope="col">
+          <VIcon
+            class="text--primary"
+            size="16">
+            <IMdiClockOutline />
+          </VIcon>
         </th>
       </tr>
     </thead>
@@ -18,31 +35,42 @@
           v-if="Object.keys(tracksPerDisc).length > 1"
           :key="discNumber"
           class="disc-header">
-          <td colspan="4" class="text--secondary">
-            <v-icon class="text--secondary">
-              <i-mdi-disc />
-            </v-icon>
+          <td
+            colspan="4"
+            class="text--secondary">
+            <VIcon class="text--secondary">
+              <IMdiDisc />
+            </VIcon>
             {{ $t('discNumber', { discNumber }) }}
           </td>
         </tr>
-        <template v-for="track in tracksOnDisc" :key="track.Id">
-          <v-hover v-slot="{ isHovering, props: hoverProps }">
+        <template
+          v-for="track in tracksOnDisc"
+          :key="track.Id">
+          <VHover v-slot="{ isHovering, props: hoverProps }">
             <tr
               :class="{ 'text-primary': isPlaying(track) }"
               v-bind="hoverProps"
               @dblclick="playTracks(track)">
-              <td style="width: 4em" class="pr-0 text-center">
+              <td
+                style="width: 4em"
+                class="pr-0 text-center">
                 <span v-if="isHovering && !isPlaying(track)">
-                  <v-btn size="small" icon @click="playTracks(track)">
-                    <v-icon>
-                      <i-mdi-play-circle-outline />
-                    </v-icon>
-                  </v-btn>
+                  <VBtn
+                    size="small"
+                    icon
+                    @click="playTracks(track)">
+                    <VIcon>
+                      <IMdiPlayCircleOutline />
+                    </VIcon>
+                  </VBtn>
                 </span>
                 <span v-else>{{ track.IndexNumber }}</span>
               </td>
-              <td style="width: 3em" class="pr-0 pl-0 text-center">
-                <like-button :item="track" />
+              <td
+                style="width: 3em"
+                class="pr-0 pl-0 text-center">
+                <LikeButton :item="track" />
               </td>
               <td>
                 <div class="d-flex align-center">
@@ -50,37 +78,41 @@
                   <div
                     v-if="
                       track &&
-                      track.Artists &&
-                      track.AlbumArtist &&
-                      !track.Artists.includes(track.AlbumArtist)
+                        track.Artists &&
+                        track.AlbumArtist &&
+                        !track.Artists.includes(track.AlbumArtist)
                     "
                     class="ml-3">
                     <template
                       v-for="artist of track.ArtistItems"
                       :key="artist.Id">
-                      <router-link
+                      <RouterLink
                         v-slot="{ navigate }"
                         :to="getItemDetailsLink(artist, 'MusicArtist')"
                         custom>
-                        <span class="link text--secondary" @click="navigate">
+                        <span
+                          class="link text--secondary"
+                          @click="navigate">
                           {{ artist.Name }}
                         </span>
-                      </router-link>
+                      </RouterLink>
                     </template>
                   </div>
-                  <v-spacer />
-                  <item-menu v-show="isHovering" :item="track" />
+                  <VSpacer />
+                  <ItemMenu
+                    v-show="isHovering"
+                    :item="track" />
                 </div>
               </td>
               <td class="text-center">
                 {{ formatTicks(track.RunTimeTicks || 0) }}
               </td>
             </tr>
-          </v-hover>
+          </VHover>
         </template>
       </template>
     </tbody>
-  </v-table>
+  </VTable>
 </template>
 
 <script setup lang="ts">

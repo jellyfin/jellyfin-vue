@@ -1,16 +1,16 @@
 <template>
-  <app-bar />
-  <navigation-drawer :order="display.mobile.value ? -1 : undefined" />
-  <v-main>
+  <AppBar />
+  <NavigationDrawer :order="display.mobile.value ? -1 : undefined" />
+  <VMain>
     <div class="pa-s">
-      <router-view-transition />
+      <RouterViewTransition />
     </div>
-  </v-main>
-  <audio-controls />
-  <pi-p-video-player
+  </VMain>
+  <AudioControls />
+  <PiPVideoPlayer
     v-if="
       playbackManager.currentlyPlayingMediaType === 'Video' &&
-      !playerElement.isFullscreenVideoPlayer
+        !playerElement.isFullscreenVideoPlayer
     " />
 </template>
 

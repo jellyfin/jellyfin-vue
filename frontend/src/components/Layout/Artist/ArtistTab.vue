@@ -1,16 +1,25 @@
 <template>
-  <v-row v-for="release in releases" :key="release.Id" no-gutters class="my-6">
-    <v-col cols="12">
+  <VRow
+    v-for="release in releases"
+    :key="release.Id"
+    no-gutters
+    class="my-6">
+    <VCol cols="12">
       <div class="d-flex flex-column">
-        <v-row>
-          <v-col lg="2" sm="1">
-            <card :item="release" overlay link />
-          </v-col>
-          <v-col class="py-2">
+        <VRow>
+          <VCol
+            lg="2"
+            sm="1">
+            <Card
+              :item="release"
+              overlay
+              link />
+          </VCol>
+          <VCol class="py-2">
             <div class="text-subtitle-1 text--secondary font-weight-medium">
               {{ release.ProductionYear }}
             </div>
-            <router-link
+            <RouterLink
               v-slot="{ navigate }"
               :to="getItemDetailsLink(release)"
               custom>
@@ -19,17 +28,19 @@
                 @click="navigate">
                 {{ release.Name }}
               </h2>
-            </router-link>
-          </v-col>
-        </v-row>
-        <v-row v-if="$vuetify.display.mdAndUp" class="my-2">
-          <v-col>
-            <track-list :item="release" />
-          </v-col>
-        </v-row>
+            </RouterLink>
+          </VCol>
+        </VRow>
+        <VRow
+          v-if="$vuetify.display.mdAndUp"
+          class="my-2">
+          <VCol>
+            <TrackList :item="release" />
+          </VCol>
+        </VRow>
       </div>
-    </v-col>
-  </v-row>
+    </VCol>
+  </VRow>
 </template>
 
 <script setup lang="ts">

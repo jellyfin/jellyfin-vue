@@ -1,10 +1,10 @@
 <template>
-  <carousel
+  <Carousel
     progress-bar
     :slides="items.length"
     @on-slide-change="onSlideChange">
     <template #slides>
-      <swiper-slide
+      <SwiperSlide
         v-for="item in items"
         :key="item.Id"
         :virtual-index="item.Id">
@@ -12,22 +12,27 @@
           :class="useResponsiveClasses('slide-backdrop')"
           data-swiper-parallax="-100">
           <div class="default-icon" />
-          <blurhash-image
+          <BlurhashImage
             :key="`${item.Id}-image`"
             :item="getRelatedItem(item)"
             :type="ImageType.Backdrop"
             :width="$vuetify.display.mdAndUp ? 256 : 128" />
         </div>
         <div :class="useResponsiveClasses('slide-content')">
-          <v-container
+          <VContainer
             class="mx-md-10 mt-md-5 py-md-4 align-end align-sm-center align-md-start">
-            <v-row>
-              <v-col cols="12" sm="8" md="6" xl="5" class="py-0 py-md-4">
+            <VRow>
+              <VCol
+                cols="12"
+                sm="8"
+                md="6"
+                xl="5"
+                class="py-0 py-md-4">
                 <p class="text-overline text-truncate mb-2 my-2">
                   <slot name="referenceText" />
                 </p>
-                <items-carousel-title :item="item" />
-                <media-info
+                <ItemsCarouselTitle :item="item" />
+                <MediaInfo
                   :item="item"
                   year
                   tracks
@@ -35,21 +40,23 @@
                   rating
                   class="mb-3"
                   data-swiper-parallax="-100" />
-                <play-button :item="item" data-swiper-parallax="-100" />
-                <v-btn
+                <PlayButton
+                  :item="item"
+                  data-swiper-parallax="-100" />
+                <VBtn
                   min-width="12em"
                   variant="outlined"
                   data-swiper-parallax="-100"
                   :to="getItemDetailsLink(item)">
                   {{ $t('viewDetails') }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
+                </VBtn>
+              </VCol>
+            </VRow>
+          </VContainer>
         </div>
-      </swiper-slide>
+      </SwiperSlide>
     </template>
-  </carousel>
+  </Carousel>
 </template>
 
 <script setup lang="ts">
@@ -108,8 +115,10 @@ function onSlideChange(index: number): void {
 watch(
   props,
   async () => {
-    // TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
-    // for the parent items. Revisit this once proper changes are done.
+    /*
+     * TODO: Server should include a ParentImageBlurhashes property, so we don't need to do a call
+     * for the parent items. Revisit this once proper changes are done.
+     */
     for (const [key, index] of props.items.entries()) {
       let id: string;
 

@@ -1,6 +1,6 @@
 <template>
   <template v-for="[key, val] of properties">
-    <media-detail-attr
+    <MediaDetailAttr
       v-if="(isNumber(val) && val > 0) || isBool(val) || val"
       :key="key"
       :name="key"

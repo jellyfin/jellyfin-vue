@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline-flex">
-    <v-btn
+    <VBtn
       v-if="canPlay(item) && (fab || iconOnly)"
       :variant="iconOnly ? undefined : 'elevated'"
       :color="iconOnly ? undefined : 'primary'"
@@ -8,14 +8,18 @@
       :loading="loading"
       :disabled="disabled"
       @click.prevent="playOrResume">
-      <v-icon v-if="shuffle" :size="fab ? 36 : undefined">
-        <i-mdi-shuffle />
-      </v-icon>
-      <v-icon v-else :size="fab ? 36 : undefined">
-        <i-mdi-play />
-      </v-icon>
-    </v-btn>
-    <v-btn
+      <VIcon
+        v-if="shuffle"
+        :size="fab ? 36 : undefined">
+        <IMdiShuffle />
+      </VIcon>
+      <VIcon
+        v-else
+        :size="fab ? 36 : undefined">
+        <IMdiPlay />
+      </VIcon>
+    </VBtn>
+    <VBtn
       v-else-if="!fab"
       :disabled="disabled || !canPlay(item)"
       :loading="loading"
@@ -28,10 +32,10 @@
         shuffle
           ? $t('playback.shuffle')
           : canResume(item)
-          ? $t('resume')
-          : $t('play')
+            ? $t('resume')
+            : $t('play')
       }}
-    </v-btn>
+    </VBtn>
   </div>
 </template>
 

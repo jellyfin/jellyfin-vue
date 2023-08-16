@@ -1,10 +1,10 @@
 <template>
-  <component
+  <Component
     :is="tag"
     v-show="items.length > 0"
     ref="rootRef"
     :style="rootStyles">
-    <component
+    <Component
       :is="probeTag"
       ref="probeRef"
       :style="{
@@ -15,8 +15,11 @@
         zIndex: -1,
         placeSelf: 'stretch'
       }">
-      <slot :item="items[0]" :index="0" :style="undefined" />
-    </component>
+      <slot
+        :item="items[0]"
+        :index="0"
+        :style="undefined" />
+    </Component>
     <template v-if="visibleItems && visibleItems.length > 0">
       <slot
         v-for="(_n, i) in visibleItems.length"
@@ -26,7 +29,7 @@
         :style="visibleItems[i].style"
         data-virtualized-grid />
     </template>
-  </component>
+  </Component>
 </template>
 
 <script lang="ts">
@@ -209,8 +212,8 @@ watch(
       const fn =
         props.throttleScroll > 0
           ? useThrottleFn(() => {
-              scrollEvents.value++;
-            }, props.throttleScroll)
+            scrollEvents.value++;
+          }, props.throttleScroll)
           : (): void => {
               scrollEvents.value++;
             };

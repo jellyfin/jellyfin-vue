@@ -1,11 +1,13 @@
 <template>
-  <v-btn
+  <VBtn
     icon
     :size="size"
     :color="playbackManager.isRepeating ? 'primary' : undefined"
     @click="playbackManager.toggleRepeatMode">
-    <v-icon :size="size" :icon="repeatIcon" />
-  </v-btn>
+    <VIcon
+      :size="size"
+      :icon="repeatIcon" />
+  </VBtn>
 </template>
 
 <script setup lang="ts">

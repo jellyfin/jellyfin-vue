@@ -43,7 +43,7 @@ export default defineConfig(({ mode }): UserConfig => {
       VueRouter({
         dts: './types/global/routes.d.ts',
         /**
-         * unplugin-vue-router generates the route names differently
+         * Unplugin-vue-router generates the route names differently
          * from vite-plugin-pages.
          *
          * We overwrite the name generation function so they match and TypeScript types
@@ -55,17 +55,17 @@ export default defineConfig(({ mode }): UserConfig => {
           return name === '/'
             ? 'index'
             : name
-                /**
-                 * Remove first and trailing / character
-                 */
-                .replace(/^./, '')
-                .replace(/\/$/, '')
-                /**
-                 * Routes with params have its types generated as
-                 * _itemId, while vite-plugin-pages just use hyphens for everything
-                 */
-                .replace('/', '-')
-                .replace('_', '');
+            /**
+             * Remove first and trailing / character
+             */
+              .replace(/^./, '')
+              .replace(/\/$/, '')
+            /**
+             * Routes with params have its types generated as
+             * _itemId, while vite-plugin-pages just use hyphens for everything
+             */
+              .replace('/', '-')
+              .replace('_', '');
         }
       }),
       vue({
@@ -118,14 +118,13 @@ export default defineConfig(({ mode }): UserConfig => {
         output: {
           plugins: [
             mode === 'analyze'
-              ? // rollup-plugin-visualizer
-                // https://github.com/btd/rollup-plugin-visualizer
-                visualizer({
-                  open: true,
-                  filename: 'dist/stats.html',
-                  gzipSize: true,
-                  brotliSize: true
-                })
+              ?
+              visualizer({
+                open: true,
+                filename: 'dist/stats.html',
+                gzipSize: true,
+                brotliSize: true
+              })
               : undefined
           ],
           manualChunks(id) {

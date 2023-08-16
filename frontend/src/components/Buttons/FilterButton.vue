@@ -1,18 +1,22 @@
 <template>
-  <v-btn class="ma-2" :icon="$vuetify.display.smAndDown">
+  <VBtn
+    class="ma-2"
+    :icon="$vuetify.display.smAndDown">
     {{ !$vuetify.display.smAndDown ? t('filter') : undefined }}
-    <v-icon :end="!$vuetify.display.smAndDown">
-      <i-mdi-menu-down v-if="!$vuetify.display.smAndDown" />
-      <i-mdi-filter-variant v-else />
-    </v-icon>
-    <v-menu
+    <VIcon :end="!$vuetify.display.smAndDown">
+      <IMdiMenuDown v-if="!$vuetify.display.smAndDown" />
+      <IMdiFilterVariant v-else />
+    </VIcon>
+    <VMenu
       :disabled="disabled"
       :close-on-content-click="false"
       max-width="250px">
-      <v-expansion-panels variant="accordion" class="dropdown">
-        <v-expansion-panel :title="t('status')">
-          <v-expansion-panel-text>
-            <v-list
+      <VExpansionPanels
+        variant="accordion"
+        class="dropdown">
+        <VExpansionPanel :title="t('status')">
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedStatusFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -20,20 +24,24 @@
               <template
                 v-for="(status, statusIndex) in statusFilters"
                 :key="`status-${statusIndex}`">
-                <v-list-item :value="status.name" :title="status.label">
+                <VListItem
+                  :value="status.name"
+                  :title="status.label">
                   <template #append="{ isActive }">
-                    <v-list-item-action end>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction end>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel v-if="isMovieOrTvShow" :title="t('features')">
-          <v-expansion-panel-text>
-            <v-list
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+        <VExpansionPanel
+          v-if="isMovieOrTvShow"
+          :title="t('features')">
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedFeatureFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -41,20 +49,24 @@
               <template
                 v-for="(feature, featureIndex) in featureFilters"
                 :key="`feature-${featureIndex}`">
-                <v-list-item :value="feature.name" :title="feature.label">
+                <VListItem
+                  :value="feature.name"
+                  :title="feature.label">
                   <template #append="{ isActive }">
-                    <v-list-item-action end>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction end>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel v-if="genreFilters.length > 0" :title="t('genres')">
-          <v-expansion-panel-text>
-            <v-list
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+        <VExpansionPanel
+          v-if="genreFilters.length > 0"
+          :title="t('genres')">
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedGenreFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -62,22 +74,24 @@
               <template
                 v-for="(genre, genreIndex) in genreFilters"
                 :key="`genre-${genreIndex}`">
-                <v-list-item :value="genre" :title="genre">
+                <VListItem
+                  :value="genre"
+                  :title="genre">
                   <template #append="{ isActive }">
-                    <v-list-item-action>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+        <VExpansionPanel
           v-if="ratingFilters.length > 0"
           :title="t('parentalRatings')">
-          <v-expansion-panel-text>
-            <v-list
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedRatingFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -85,20 +99,24 @@
               <template
                 v-for="(rating, ratingIndex) in ratingFilters"
                 :key="`rating-${ratingIndex}`">
-                <v-list-item :value="rating" :title="rating">
+                <VListItem
+                  :value="rating"
+                  :title="rating">
                   <template #append="{ isActive }">
-                    <v-list-item-action>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel v-if="isMovieOrTvShow" :title="t('videoTypes')">
-          <v-expansion-panel-text>
-            <v-list
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+        <VExpansionPanel
+          v-if="isMovieOrTvShow"
+          :title="t('videoTypes')">
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedTypeFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -106,20 +124,24 @@
               <template
                 v-for="(type, typeIndex) in typeFilters"
                 :key="`type-${typeIndex}`">
-                <v-list-item :value="type.name" :title="type.label">
+                <VListItem
+                  :value="type.name"
+                  :title="type.label">
                   <template #append="{ isActive }">
-                    <v-list-item-action>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel v-if="yearFilters.length > 0" :title="t('years')">
-          <v-expansion-panel-text>
-            <v-list
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+        <VExpansionPanel
+          v-if="yearFilters.length > 0"
+          :title="t('years')">
+          <VExpansionPanelText>
+            <VList
               v-model:selected="selectedYearFilters"
               select-strategy="leaf"
               class="filter-content"
@@ -127,20 +149,22 @@
               <template
                 v-for="(year, yearIndex) in yearFilters"
                 :key="`year-${yearIndex}`">
-                <v-list-item :value="year" :title="year">
+                <VListItem
+                  :value="year"
+                  :title="year">
                   <template #append="{ isActive }">
-                    <v-list-item-action>
-                      <v-checkbox-btn :model-value="isActive" />
-                    </v-list-item-action>
+                    <VListItemAction>
+                      <VCheckboxBtn :model-value="isActive" />
+                    </VListItemAction>
                   </template>
-                </v-list-item>
+                </VListItem>
               </template>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </v-menu>
-  </v-btn>
+            </VList>
+          </VExpansionPanelText>
+        </VExpansionPanel>
+      </VExpansionPanels>
+    </VMenu>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

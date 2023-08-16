@@ -1,24 +1,29 @@
 <template>
-  <v-slide-y-reverse-transition mode="out-in">
-    <v-footer
+  <VSlideYReverseTransition mode="out-in">
+    <VFooter
       v-if="
         playbackManager.isPlaying &&
-        playbackManager.currentlyPlayingMediaType === 'Audio' &&
-        playbackManager.currentItem
+          playbackManager.currentlyPlayingMediaType === 'Audio' &&
+          playbackManager.currentItem
       "
       app
       class="user-select-none pa-0">
-      <v-container fluid>
-        <v-row class="ma-0">
-          <v-col cols="9" md="3" class="d-flex flex-row pa-0">
-            <router-link :to="'/playback/music'">
-              <v-avatar :size="$vuetify.display.xs ? 50 : 85" color="primary">
-                <blurhash-image :item="playbackManager.currentItem" />
-              </v-avatar>
-            </router-link>
-            <v-col class="d-flex flex-column justify-center ml-4">
-              <v-row class="align-end">
-                <router-link
+      <VContainer fluid>
+        <VRow class="ma-0">
+          <VCol
+            cols="9"
+            md="3"
+            class="d-flex flex-row pa-0">
+            <RouterLink :to="'/playback/music'">
+              <VAvatar
+                :size="$vuetify.display.xs ? 50 : 85"
+                color="primary">
+                <BlurhashImage :item="playbackManager.currentItem" />
+              </VAvatar>
+            </RouterLink>
+            <VCol class="d-flex flex-column justify-center ml-4">
+              <VRow class="align-end">
+                <RouterLink
                   v-slot="{ navigate }"
                   :to="getItemDetailsLink(playbackManager.currentItem)"
                   custom>
@@ -27,16 +32,16 @@
                     @click="navigate">
                     {{ playbackManager.currentItem.Name }}
                   </span>
-                </router-link>
-              </v-row>
-              <v-row
+                </RouterLink>
+              </VRow>
+              <VRow
                 v-if="playbackManager.currentItem.ArtistItems"
                 class="align-start">
                 <span
                   v-for="artist in playbackManager.currentItem.ArtistItems"
                   :key="`artist-${artist.Id}`">
                   <p class="mb-0 mr-2">
-                    <router-link
+                    <RouterLink
                       v-slot="{ navigate }"
                       :to="getItemDetailsLink(artist, 'MusicArtist')"
                       custom>
@@ -45,49 +50,61 @@
                         @click="navigate">
                         {{ artist.Name }}
                       </span>
-                    </router-link>
+                    </RouterLink>
                   </p>
                 </span>
-              </v-row>
-            </v-col>
-          </v-col>
-          <v-col cols="6" class="pa-0 d-none d-md-inline">
+              </VRow>
+            </VCol>
+          </VCol>
+          <VCol
+            cols="6"
+            class="pa-0 d-none d-md-inline">
             <div class="d-flex flex-column justify-center">
               <div class="d-flex align-center justify-center">
-                <shuffle-button class="mx-1" />
-                <previous-track-button class="mx-1" />
-                <play-pause-button class="mx-1" />
-                <next-track-button class="mx-1" />
-                <repeat-button class="mx-1" />
+                <ShuffleButton class="mx-1" />
+                <PreviousTrackButton class="mx-1" />
+                <PlayPauseButton class="mx-1" />
+                <NextTrackButton class="mx-1" />
+                <RepeatButton class="mx-1" />
               </div>
-              <time-slider />
+              <TimeSlider />
             </div>
-          </v-col>
-          <v-col cols="3" class="d-none d-md-flex align-center justify-end">
-            <like-button :item="playbackManager.currentItem" />
-            <queue-button />
+          </VCol>
+          <VCol
+            cols="3"
+            class="d-none d-md-flex align-center justify-end">
+            <LikeButton :item="playbackManager.currentItem" />
+            <QueueButton />
             <div class="hidden-lg-and-down">
-              <volume-slider />
+              <VolumeSlider />
             </div>
-            <item-menu :item="playbackManager.currentItem" :z-index="99999" />
-            <v-btn icon to="/playback/music">
-              <v-icon>
-                <i-mdi-fullscreen />
-              </v-icon>
-            </v-btn>
-          </v-col>
-          <v-col
+            <ItemMenu
+              :item="playbackManager.currentItem"
+              :z-index="99999" />
+            <VBtn
+              icon
+              to="/playback/music">
+              <VIcon>
+                <IMdiFullscreen />
+              </VIcon>
+            </VBtn>
+          </VCol>
+          <VCol
             cols="3"
             class="d-flex d-md-none pa-0 align-center justify-end">
-            <play-pause-button class="mx-1" />
-            <next-track-button class="mx-1" />
-            <repeat-button v-if="!$vuetify.display.xs" class="mx-1" />
-            <shuffle-button v-if="!$vuetify.display.xs" class="mx-1" />
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-footer>
-  </v-slide-y-reverse-transition>
+            <PlayPauseButton class="mx-1" />
+            <NextTrackButton class="mx-1" />
+            <RepeatButton
+              v-if="!$vuetify.display.xs"
+              class="mx-1" />
+            <ShuffleButton
+              v-if="!$vuetify.display.xs"
+              class="mx-1" />
+          </VCol>
+        </VRow>
+      </VContainer>
+    </VFooter>
+  </VSlideYReverseTransition>
 </template>
 
 <script setup lang="ts">

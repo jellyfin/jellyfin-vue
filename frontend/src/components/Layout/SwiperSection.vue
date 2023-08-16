@@ -1,27 +1,39 @@
 <template>
-  <div :class="`swiper-section-${uuid}`" style="width: 100%">
-    <skeleton-home-section v-if="loading" :card-shape="shape" />
-    <v-col v-show="items && items.length > 0" class="swiper-section">
+  <div
+    :class="`swiper-section-${uuid}`"
+    style="width: 100%">
+    <SkeletonHomeSection
+      v-if="loading"
+      :card-shape="shape" />
+    <VCol
+      v-show="items && items.length > 0"
+      class="swiper-section">
       <div class="d-flex ma-2">
         <h1
           class="text-h6 text-sm-h5 font-weight-light header"
           :class="{ 'header-white-mode': !theme.current.value.dark }">
           <span class="pl-4">{{ title }}</span>
         </h1>
-        <v-spacer />
-        <v-btn class="swiper-prev" icon variant="plain">
-          <v-icon>
-            <i-mdi-arrow-left />
-          </v-icon>
-        </v-btn>
-        <v-btn class="swiper-next" icon variant="plain">
-          <v-icon>
-            <i-mdi-arrow-right />
-          </v-icon>
-        </v-btn>
+        <VSpacer />
+        <VBtn
+          class="swiper-prev"
+          icon
+          variant="plain">
+          <VIcon>
+            <IMdiArrowLeft />
+          </VIcon>
+        </VBtn>
+        <VBtn
+          class="swiper-next"
+          icon
+          variant="plain">
+          <VIcon>
+            <IMdiArrowRight />
+          </VIcon>
+        </VBtn>
       </div>
 
-      <swiper
+      <Swiper
         :modules="modules"
         class="swiper"
         :initial-slide="0"
@@ -32,14 +44,20 @@
         :slides-per-group="slidesPerGroup"
         :breakpoints="breakpoints"
         a11y>
-        <swiper-slide
+        <SwiperSlide
           v-for="item in items"
           :key="item.Id"
           :virtual-index="item.Id">
-          <card :shape="cardShape" :item="item" margin text overlay link />
-        </swiper-slide>
-      </swiper>
-    </v-col>
+          <Card
+            :shape="cardShape"
+            :item="item"
+            margin
+            text
+            overlay
+            link />
+        </SwiperSlide>
+      </Swiper>
+    </VCol>
   </div>
 </template>
 
@@ -57,9 +75,6 @@ import { v4 } from 'uuid';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { CardShapes, getShapeFromItemType } from '@/utils/items';
 
-const display = useDisplay();
-const theme = useTheme();
-
 const props = withDefaults(
   defineProps<{
     loading?: boolean;
@@ -69,6 +84,8 @@ const props = withDefaults(
   }>(),
   { loading: false, shape: undefined }
 );
+const display = useDisplay();
+const theme = useTheme();
 
 const cardShape = ref<string>(
   props.shape || getShapeFromItemType(props.items?.[0]?.Type)

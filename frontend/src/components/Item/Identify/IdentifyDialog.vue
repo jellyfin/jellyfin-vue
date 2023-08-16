@@ -1,30 +1,37 @@
 <template>
-  <generic-dialog
+  <GenericDialog
     :model-value="model"
     :title="$t('identify')"
     :subtitle="itemPath"
     loading
     @close="close">
     <template #loader>
-      <v-progress-linear v-model="progress" :indeterminate="isLoading" />
+      <VProgressLinear
+        v-model="progress"
+        :indeterminate="isLoading" />
     </template>
 
     <template #toolbarPrepend>
-      <v-btn icon :disabled="tabName === 'searchMenu'" @click="clear">
-        <i-mdi-arrow-left />
-      </v-btn>
+      <VBtn
+        icon
+        :disabled="tabName === 'searchMenu'"
+        @click="clear">
+        <IMdiArrowLeft />
+      </VBtn>
     </template>
 
-    <v-card-text
+    <VCardText
       class="pa-0 px-2 flex-grow-1"
       :class="{
         'd-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
       }">
-      <v-window v-model="tabName" class="pa-2 flex-fill">
-        <v-window-item value="searchMenu">
-          <v-col>
-            <v-text-field
+      <VWindow
+        v-model="tabName"
+        class="pa-2 flex-fill">
+        <VWindowItem value="searchMenu">
+          <VCol>
+            <VTextField
               v-for="(field, idx) in searchFields"
               :key="field.key"
               v-model="fieldsInputs[idx].value"
@@ -36,14 +43,14 @@
               :disabled="isLoading"
               :type="field.type"
               :label="field.title" />
-          </v-col>
-        </v-window-item>
-        <v-window-item value="resultsMenu">
+          </VCol>
+        </VWindowItem>
+        <VWindowItem value="resultsMenu">
           <h3>{{ $t('results') }}</h3>
           <div class="mt-2 text-subtitle-1">
             {{ $t('identifyInstructResult') }}
           </div>
-          <v-checkbox
+          <VCheckbox
             v-if="searchResults"
             v-model="replaceImage"
             class="d-flex mt-2"
@@ -51,22 +58,24 @@
             <template #append>
               {{ $t('replaceExistingImages') }}
             </template>
-          </v-checkbox>
-          <v-divider />
-          <identify-results
+          </VCheckbox>
+          <VDivider />
+          <IdentifyResults
             v-if="Array.isArray(searchResults) && searchResults.length > 0"
             :items="searchResults"
             :item-type="item.Type"
             @select="applySelectedSearch" />
-          <h3 v-else class="text-center my-4">
+          <h3
+            v-else
+            class="text-center my-4">
             {{ $t('searchNoResults') }}
           </h3>
-        </v-window-item>
-      </v-window>
-    </v-card-text>
+        </VWindowItem>
+      </VWindow>
+    </VCardText>
 
     <template #actions>
-      <v-btn
+      <VBtn
         v-if="tabName === 'searchMenu'"
         variant="flat"
         width="8em"
@@ -74,9 +83,9 @@
         :loading="isLoading"
         @click="performSearch">
         {{ t('search.name') }}
-      </v-btn>
+      </VBtn>
     </template>
-  </generic-dialog>
+  </GenericDialog>
 </template>
 
 <script setup lang="ts">
@@ -102,10 +111,13 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-const close = (): void => {
+/**
+ *
+ */
+function close (): void {
   model.value = false;
   emit('close');
-};
+}
 
 const { t } = useI18n();
 const remote = useRemote();

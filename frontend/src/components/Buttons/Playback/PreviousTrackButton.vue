@@ -1,9 +1,12 @@
 <template>
-  <v-btn icon :size="size" @click="playbackManager.setPreviousTrack">
-    <v-icon :size="size">
-      <i-mdi-skip-previous />
-    </v-icon>
-  </v-btn>
+  <VBtn
+    icon
+    :size="size"
+    @click="playbackManager.setPreviousTrack">
+    <VIcon :size="size">
+      <IMdiSkipPrevious />
+    </VIcon>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

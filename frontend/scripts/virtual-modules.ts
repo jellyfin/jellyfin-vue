@@ -10,7 +10,11 @@ import { localeFilesFolder } from './paths';
 
 const localeFiles = readdirSync(localeFilesFolder.replace('**', ''));
 const localeNames = localeFiles.map((l) => l.replace('.json', ''));
-const localeTransform = (keys: string[], l: string): string | undefined => {
+
+/**
+ *
+ */
+function localeTransform (keys: string[], l: string): string | undefined {
   const testStrings = l.split('-');
   const lang = testStrings.join('');
 
@@ -27,10 +31,10 @@ const localeTransform = (keys: string[], l: string): string | undefined => {
   } else if (keys.includes(testStrings[0])) {
     return `${testStrings[0]} as ${lang}`;
   }
-};
+}
 
 /**
- * date-fns locale parsing
+ * Date-fns locale parsing
  */
 const dfnskeys = Object.keys(await import('date-fns/locale'));
 /**

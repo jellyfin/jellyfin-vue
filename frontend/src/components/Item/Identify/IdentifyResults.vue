@@ -1,16 +1,19 @@
 <template>
-  <v-row dense>
-    <v-col v-for="(item, idx) in items" :key="idx" :cols="2">
-      <v-card
+  <VRow dense>
+    <VCol
+      v-for="(item, idx) in items"
+      :key="idx"
+      :cols="2">
+      <VCard
         variant="tonal"
         class="flex-grow-0 h-100"
         :class="cardClass"
         @click="$emit('select', item)">
-        <v-tooltip location="top">
+        <VTooltip location="top">
           {{ item.Name }}
-        </v-tooltip>
-        <v-hover v-slot="{ isHovering, props: hoverProps }">
-          <v-img
+        </VTooltip>
+        <VHover v-slot="{ isHovering, props: hoverProps }">
+          <VImg
             :src="item.ImageUrl ?? undefined"
             v-bind="hoverProps"
             aspect-ratio="0.75"
@@ -21,25 +24,27 @@
             class="absolute-cover">
             <template #placeholder>
               <div class="d-flex justify-center align-center h-100">
-                <v-progress-circular v-if="item.ImageUrl" indeterminate />
-                <v-icon v-else>
-                  <i-mdi-image-broken-variant />
-                </v-icon>
+                <VProgressCircular
+                  v-if="item.ImageUrl"
+                  indeterminate />
+                <VIcon v-else>
+                  <IMdiImageBrokenVariant />
+                </VIcon>
               </div>
             </template>
-            <v-fade-transition group>
-              <v-card-title v-if="!isHovering">
+            <VFadeTransition group>
+              <VCardTitle v-if="!isHovering">
                 {{ item.Name }}
-              </v-card-title>
-              <v-card-subtitle v-if="!isHovering && getSubtitle(item)">
+              </VCardTitle>
+              <VCardSubtitle v-if="!isHovering && getSubtitle(item)">
                 {{ getSubtitle(item) }}
-              </v-card-subtitle>
-            </v-fade-transition>
-          </v-img>
-        </v-hover>
-      </v-card>
-    </v-col>
-  </v-row>
+              </VCardSubtitle>
+            </VFadeTransition>
+          </VImg>
+        </VHover>
+      </VCard>
+    </VCol>
+  </VRow>
 </template>
 
 <script setup lang="ts">
@@ -61,7 +66,7 @@ defineEmits<{
 
 const shape = computed(() => getShapeFromItemType(props.itemType));
 const cardClass = computed<
-  'thumb-card' | 'portrait-card' | 'square-card' | undefined
+'thumb-card' | 'portrait-card' | 'square-card' | undefined
 >(() => {
   switch (shape.value) {
     case CardShapes.Thumb:

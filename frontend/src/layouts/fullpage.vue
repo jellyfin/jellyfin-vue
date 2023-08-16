@@ -1,3 +1,3 @@
 <template>
-  <router-view-transition />
+  <RouterViewTransition />
 </template>

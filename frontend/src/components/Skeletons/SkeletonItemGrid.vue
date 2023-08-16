@@ -1,13 +1,15 @@
 <template>
-  <v-row>
-    <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
-      <skeleton-card
+  <VRow>
+    <VCol
+      cols="12"
+      :class="useResponsiveClasses('card-grid-container')">
+      <SkeletonCard
         v-for="n in 24"
         :key="n"
         :card-shape="skeletonCardShape"
         text />
-    </v-col>
-  </v-row>
+    </VCol>
+  </VRow>
 </template>
 
 <script setup lang="ts">

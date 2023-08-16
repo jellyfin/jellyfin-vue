@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <VSelect
     v-model="trackIndex"
     density="comfortable"
     single-line
@@ -11,13 +11,13 @@
     </template>
 
     <template #item="{ item, props: templateProps }">
-      <v-list-item
+      <VListItem
         v-bind="templateProps"
         :title="item.raw.title"
         :subtitle="item.raw.subtitle"
         :prepend-icon="item.raw.icon" />
     </template>
-  </v-select>
+  </VSelect>
 </template>
 
 <script setup lang="ts">

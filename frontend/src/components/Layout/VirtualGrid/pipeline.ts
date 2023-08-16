@@ -91,7 +91,7 @@ export function getScrollParents(
         : undefined;
 
     /**
-     * parent.assignedSlot.parentElement find the correct parent if the grid is inside a native web component
+     * Parent.assignedSlot.parentElement find the correct parent if the grid is inside a native web component
      */
     parent = parent.assignedSlot?.parentElement || parent.parentElement;
   }

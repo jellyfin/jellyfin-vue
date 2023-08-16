@@ -1,18 +1,20 @@
 <template>
-  <v-list bg-color="transparent" lines="two">
+  <VList
+    bg-color="transparent"
+    lines="two">
     <div v-if="items.length > 0">
-      <v-list-item
+      <VListItem
         v-for="(item, index) in items"
         :key="`${item.Id}-${index}`"
         :title="item.Name || ''"
         :subtitle="item.Role || item.Type || ''"
         :to="getItemDetailsLink(item, 'Person')">
         <template #prepend>
-          <v-avatar color="card">
-            <blurhash-image :item="item" />
-          </v-avatar>
+          <VAvatar color="card">
+            <BlurhashImage :item="item" />
+          </VAvatar>
         </template>
-      </v-list-item>
+      </VListItem>
     </div>
     <div
       v-for="index in skeletonLength"
@@ -23,7 +25,7 @@
       <!-- <v-skeleton-loader type="avatar" class="ml-3 mr-3" />
       <v-skeleton-loader type="sentences" width="10em" class="pr-5" /> -->
     </div>
-  </v-list>
+  </VList>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer
+  <VNavigationDrawer
     v-model="drawer"
     :temporary="$vuetify.display.mobile"
     :permanent="!$vuetify.display.mobile"
@@ -9,29 +9,29 @@
     :color="
       transparentLayout && !$vuetify.display.mobile ? 'transparent' : undefined
     ">
-    <v-list nav>
-      <v-list-item
+    <VList nav>
+      <VListItem
         v-for="item in items"
         :key="item.to"
         :to="item.to"
         exact
         :prepend-icon="item.icon"
         :title="item.title" />
-      <v-list-subheader>{{ $t('libraries') }}</v-list-subheader>
-      <v-list-item
+      <VListSubheader>{{ $t('libraries') }}</VListSubheader>
+      <VListItem
         v-for="library in drawerItems"
         :key="library.to"
         :to="library.to"
         exact
         :prepend-icon="library.icon"
         :title="library.title" />
-    </v-list>
+    </VList>
     <template #append>
-      <v-list nav>
-        <commit-link />
-      </v-list>
+      <VList nav>
+        <CommitLink />
+      </VList>
     </template>
-  </v-navigation-drawer>
+  </VNavigationDrawer>
 </template>
 
 <script setup lang="ts">
@@ -43,13 +43,12 @@ import IMdiHome from 'virtual:icons/mdi/home';
 import { userLibrariesStore } from '@/store';
 import { getLibraryIcon } from '@/utils/items';
 
-const route = useRoute();
-const userLibraries = userLibrariesStore();
-const { t } = useI18n();
-
 const props = defineProps<{
   order?: number;
 }>();
+const route = useRoute();
+const userLibraries = userLibrariesStore();
+const { t } = useI18n();
 
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
 

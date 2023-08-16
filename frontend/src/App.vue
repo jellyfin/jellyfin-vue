@@ -1,9 +1,9 @@
 <template>
-  <backdrop />
-  <v-app>
-    <router-view-transition is-root />
-    <snackbar />
-    <confirm-dialog />
-  </v-app>
-  <player-element />
+  <Backdrop />
+  <VApp>
+    <RouterViewTransition is-root />
+    <Snackbar />
+    <ConfirmDialog />
+  </VApp>
+  <PlayerElement />
 </template>
