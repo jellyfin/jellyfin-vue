@@ -96,7 +96,7 @@ function setControlledSwiper (instance: SwiperType): void {
  * See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
  */
 function onSlideChange(): void {
-  currentIndex.value = swiperInstance.value?.realIndex || 0;
+  currentIndex.value = swiperInstance.value?.realIndex ?? 0;
 
   if (swiperInstance.value?.isBeginning || swiperInstance.value?.isEnd) {
     swiperInstance.value?.updateSlides();

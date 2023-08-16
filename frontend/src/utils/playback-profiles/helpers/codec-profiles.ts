@@ -300,7 +300,7 @@ export function getCodecProfiles(
     );
   }
 
-  const globalMaxVideoBitrate = (getGlobalMaxVideoBitrate() || '').toString();
+  const globalMaxVideoBitrate = (getGlobalMaxVideoBitrate() ?? '').toString();
 
   if (globalMaxVideoBitrate) {
     h264CodecProfileConditions.push(

@@ -18,9 +18,8 @@ import {
  */
 export function hasH264Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    videoTestElement.canPlayType &&
     videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
+      .canPlayType?.('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')
       .replace(/no/, '')
   );
 }
@@ -96,9 +95,8 @@ export function hasAv1Support(videoTestElement: HTMLVideoElement): boolean {
   }
 
   return !!(
-    videoTestElement.canPlayType &&
     videoTestElement
-      .canPlayType('video/webm; codecs="av01.0.15M.10"')
+      .canPlayType?.('video/webm; codecs="av01.0.15M.10"')
       .replace(/no/, '')
   );
 }
@@ -124,8 +122,7 @@ function hasVc1Support(videoTestElement: HTMLVideoElement): boolean {
  */
 export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    videoTestElement.canPlayType &&
-    videoTestElement.canPlayType('video/webm; codecs="vp8"').replace(/no/, '')
+    videoTestElement.canPlayType?.('video/webm; codecs="vp8"').replace(/no/, '')
   );
 }
 
@@ -137,8 +134,7 @@ export function hasVp8Support(videoTestElement: HTMLVideoElement): boolean {
  */
 export function hasVp9Support(videoTestElement: HTMLVideoElement): boolean {
   return !!(
-    videoTestElement.canPlayType &&
-    videoTestElement.canPlayType('video/webm; codecs="vp9"').replace(/no/, '')
+    videoTestElement.canPlayType?.('video/webm; codecs="vp9"').replace(/no/, '')
   );
 }
 

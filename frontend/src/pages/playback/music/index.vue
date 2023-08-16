@@ -166,7 +166,7 @@ watch(
   () => {
     if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
       swiperInstance.value.slideTo(playbackManager.currentItemIndex);
-      route.meta.title = playbackManager.currentItem?.Name || '';
+      route.meta.title = playbackManager.currentItem?.Name ?? '';
     }
   },
   { immediate: true }
@@ -183,7 +183,7 @@ watch(isVisualizing, async () => {
  * Handle slide changes
  */
 function onSlideChange(): void {
-  const index = swiperInstance.value?.activeIndex || 0;
+  const index = swiperInstance.value?.activeIndex ?? 0;
 
   playbackManager.currentItemIndex = index;
 }

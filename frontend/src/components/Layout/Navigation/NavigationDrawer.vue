@@ -55,7 +55,7 @@ const { t } = useI18n();
 const drawer = inject<Ref<boolean>>('NavigationDrawer');
 
 const transparentLayout = computed(() => {
-  return route.meta.transparentLayout || false;
+  return route.meta.transparentLayout ?? false;
 });
 
 const drawerItems = computed(() => {
@@ -63,7 +63,7 @@ const drawerItems = computed(() => {
     if (view.Id) {
       return {
         icon: getLibraryIcon(view.CollectionType),
-        title: view.Name || '',
+        title: view.Name ?? '',
         to: `/library/${view.Id}`
       };
     }

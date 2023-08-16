@@ -140,7 +140,7 @@ async function refreshMetadata(): Promise<void> {
     taskManager.startTask({
       type: TaskType.LibraryRefresh,
       id: props.item.Id || '',
-      data: props.item.Name || 'ID ' + props.item.Id,
+      data: props.item.Name ?? `ID ${props.item.Id}`,
       progress: 0
     });
 

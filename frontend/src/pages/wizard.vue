@@ -125,7 +125,7 @@ const heading = computed(() => {
 async function completeWizard(): Promise<void> {
   try {
     const api = remote.sdk.oneTimeSetup(
-      remote.auth.currentServer?.PublicAddress || ''
+      remote.auth.currentServer?.PublicAddress ?? ''
     );
 
     await getStartupApi(api).completeWizard();

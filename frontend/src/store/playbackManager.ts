@@ -303,7 +303,7 @@ class PlaybackManagerStore {
           srcLang: sub.Language ?? undefined,
           type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
           srcIndex: sub.srcIndex,
-          codec: sub.Codec || undefined
+          codec: sub.Codec
         }));
     }
   }
@@ -466,7 +466,7 @@ class PlaybackManagerStore {
   public set currentVolume(newVolume: number) {
     newVolume = newVolume > 100 ? 100 : newVolume;
     newVolume = newVolume < 0 ? 0 : newVolume;
-    this.isMuted = newVolume === 0 ? true : false;
+    this.isMuted = newVolume === 0;
 
     if (this._state.isRemotePlayer) {
       this._state.remoteCurrentVolume = newVolume;
@@ -747,9 +747,9 @@ class PlaybackManagerStore {
   };
 
   public stop = (): void => {
-    const sessionId = String(this._state.playSessionId || '');
+    const sessionId = String(this._state.playSessionId ?? '');
     const time = Number(this.currentTime);
-    const itemId = String(this.currentItem?.Id || '');
+    const itemId = String(this.currentItem?.Id ?? '');
     const volume = Number(this.currentVolume);
 
     Object.assign(this._state, this._defaultState);
@@ -860,7 +860,7 @@ class PlaybackManagerStore {
     if (item) {
       return (
         await remote.sdk.newUserApi(getMediaInfoApi).getPostedPlaybackInfo({
-          itemId: item?.Id || '',
+          itemId: item?.Id ?? '',
           userId: remote.auth.currentUserId,
           autoOpenLiveStream: true,
           playbackInfoDto: { DeviceProfile: playbackProfile },
@@ -965,8 +965,8 @@ class PlaybackManagerStore {
         mediaSourceId: mediaSource.Id,
         deviceId: remote.sdk.deviceInfo.id,
         api_key: remote.auth.currentUserToken,
-        Tag: mediaSource.ETag || '',
-        LiveStreamId: mediaSource.LiveStreamId || ''
+        Tag: mediaSource.ETag ?? '',
+        LiveStreamId: mediaSource.LiveStreamId ?? ''
       };
 
       const parameters = new URLSearchParams(directOptions).toString();
@@ -1063,42 +1063,42 @@ class PlaybackManagerStore {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 96
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '96x96'
               },
               {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 128
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '128x128'
               },
               {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 192
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '192x192'
               },
               {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 256
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '256x256'
               },
               {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 384
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '384x384'
               },
               {
                 src:
                     getImageInfo(this.currentItem, {
                       width: 512
-                    }).url || '',
+                    }).url ?? '',
                 sizes: '512x512'
               }
             ]

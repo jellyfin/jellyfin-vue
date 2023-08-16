@@ -96,7 +96,7 @@ const homeSections = computed<HomeSection[]>(() => {
             latestMediaSections.push({
               name: 'latestLibrary',
               libraryName: userView.Name,
-              libraryId: userView.Id || '',
+              libraryId: userView.Id ?? '',
               shape: getShapeFromCollectionType(userView.CollectionType),
               type: 'latestmedia'
             });

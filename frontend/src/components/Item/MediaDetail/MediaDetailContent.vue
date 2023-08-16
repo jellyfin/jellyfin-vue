@@ -36,7 +36,7 @@ const properties = computed(() => {
     props.stream.Width && props.stream.Height
       ? `${props.stream.Width}x${props.stream.Height}`
       : undefined;
-  const framerate = props.stream.AverageFrameRate || props.stream.RealFrameRate;
+  const framerate = props.stream.AverageFrameRate ?? props.stream.RealFrameRate;
   const language = props.stream.Language
     ? getLocaleName(props.stream.Language, locale.value)
     : undefined;

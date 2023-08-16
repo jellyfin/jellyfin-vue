@@ -340,7 +340,7 @@ async function getGenres(parentId: string): Promise<void> {
  * Save metadata for the current item
  */
 async function saveMetadata(): Promise<void> {
-  if (!metadata.value || !metadata.value.Id) {
+  if (!metadata.value?.Id) {
     return;
   }
 

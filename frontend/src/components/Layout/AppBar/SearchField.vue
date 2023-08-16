@@ -20,7 +20,7 @@ const router = useRouter();
 
 const searchQuery = computed({
   get(): string {
-    return route.query.q?.toString() || '';
+    return route.query.q?.toString() ?? '';
   },
   async set(value) {
     await router.replace({
