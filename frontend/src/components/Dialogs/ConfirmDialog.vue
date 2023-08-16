@@ -9,10 +9,11 @@
       </v-card-subtitle>
 
       <v-divider />
-
-      <v-card-text class="d-flex text-center align-center justify-center">
-        {{ state.text }}
-      </v-card-text>
+      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <v-card-text
+        class="d-flex text-center align-center justify-center"
+        v-html="sanitizeHtml(innerHtml)" />
+      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
       <v-card-actions class="align-center justify-center">
         <v-btn variant="elevated" color="secondary" width="8em" @click="cancel">
           {{ t('cancel') }}
@@ -31,12 +32,14 @@
 
 <script lang="ts">
 import { reactive, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useConfirmDialog as vUseConfirmDialog } from '@vueuse/core';
+import { sanitizeHtml } from '@/utils/html';
 
 interface ConfirmDialogState {
   title: string;
   text: string;
-  confirmText: string;
+  confirmText?: string;
   subtitle?: string;
   confirmColor?: string;
 }
@@ -44,7 +47,7 @@ interface ConfirmDialogState {
 const state = reactive<ConfirmDialogState>({
   title: '',
   text: '',
-  confirmText: '',
+  confirmText: undefined,
   subtitle: undefined,
   confirmColor: undefined
 });
@@ -80,7 +83,7 @@ export async function useConfirmDialog<T>(
   state.title = params.title || '';
   state.subtitle = params.subtitle;
   state.text = params.text || '';
-  state.confirmText = params.confirmText || '';
+  state.confirmText = params.confirmText;
   state.confirmColor = params.confirmColor;
 
   const { isCanceled } = await reveal();
@@ -96,7 +99,7 @@ export async function useConfirmDialog<T>(
 </script>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
+
+const innerHtml = computed(() => state.text ?? t('accept'));
 </script>
