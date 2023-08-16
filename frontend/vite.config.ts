@@ -15,7 +15,8 @@ import {
 import visualizer from 'rollup-plugin-visualizer';
 import virtual from '@rollup/plugin-virtual';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import autoprefixer from 'autoprefixer';
+import browserslist from 'browserslist';
+import { browserslistToTargets } from 'lightningcss';
 import virtualModules from './scripts/virtual-modules';
 import { localeFilesFolder, srcRoot } from './scripts/paths';
 
@@ -112,6 +113,7 @@ export default defineConfig(({ mode }): UserConfig => {
        */
       target: 'es2022',
       cssCodeSplit: false,
+      cssMinify: 'lightningcss',
       modulePreload: false,
       reportCompressedSize: false,
       rollupOptions: {
@@ -139,8 +141,11 @@ export default defineConfig(({ mode }): UserConfig => {
       }
     },
     css: {
-      postcss: {
-        plugins: [autoprefixer()]
+      lightningcss: {
+        nonStandard: {
+          deepSelectorCombinator: true
+        },
+        targets: browserslistToTargets(browserslist())
       }
     },
     preview: {
