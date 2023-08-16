@@ -30,19 +30,16 @@ const emits = defineEmits<{
   (e: 'input', newIndex: number): void;
 }>();
 
-const defaultIndex = selectProps.defaultSourceIndex ?? 0;
-
-const currentSource = ref<MediaSourceInfo>(selectProps.sources[defaultIndex]);
+const currentSource = ref(
+  selectProps.sources[selectProps.defaultSourceIndex ?? 0]
+);
 const selectSources = computed(() => getItemizedSelect(selectProps.sources));
 
-watch(
-  () => currentSource.value,
-  (newSource) => {
-    const newIndex = selectProps.sources.findIndex(
-      (s) => s.Id === newSource.Id
-    );
+watch(currentSource, () => {
+  const newIndex = selectProps.sources.findIndex(
+    (s) => s.Id === currentSource.value.Id
+  );
 
-    emits('input', newIndex);
-  }
-);
+  emits('input', newIndex);
+});
 </script>

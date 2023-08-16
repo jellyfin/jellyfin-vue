@@ -11,7 +11,7 @@ export { useRouter } from './use-router';
  * The definition of these composables are in the relevant components themselves,
  * so the code that tracks the sate of the component are alongside the component itself.
  *
- * We could re-define these functrions in this folder as well, but we would lose access to the
+ * We could re-define these functions in this folder as well, but we would lose access to the
  * JSDoc of the original functions
  */
 export { useConfirmDialog } from '@/components/Dialogs/ConfirmDialog.vue';
