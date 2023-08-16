@@ -245,7 +245,7 @@ export function getImageInfo(
   } else if (isPerson(item)) {
     imgType = ImageType.Primary;
     imgTag = item.PrimaryImageTag;
-  } else if (preferThumb && item.ImageTags && item.ImageTags.Thumb) {
+  } else if (preferThumb && item.ImageTags?.Thumb) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
   } else if (
@@ -255,7 +255,7 @@ export function getImageInfo(
   ) {
     imgType = ImageType.Banner;
     imgTag = item.ImageTags.Banner;
-  } else if (preferLogo && item.ImageTags && item.ImageTags.Logo) {
+  } else if (preferLogo && item.ImageTags?.Logo) {
     imgType = ImageType.Logo;
     imgTag = item.ImageTags.Logo;
   } else if (preferBackdrop && item.BackdropImageTags?.[0]) {
@@ -303,11 +303,7 @@ export function getImageInfo(
     imgType = ImageType.Backdrop;
     imgTag = item.ParentBackdropImageTags[0];
     itemId = item.ParentBackdropItemId;
-  } else if (
-    item.ImageTags &&
-    item.ImageTags.Primary &&
-    (item.Type !== BaseItemKind.Episode || item.ChildCount !== 0)
-  ) {
+  } else if (item.ImageTags?.Primary && (item.Type !== BaseItemKind.Episode || item.ChildCount !== 0)) {
     imgType = ImageType.Primary;
     imgTag = item.ImageTags.Primary;
     height =
@@ -332,15 +328,14 @@ export function getImageInfo(
         : undefined;
   } else if (
     item.Type === BaseItemKind.Season &&
-    item.ImageTags &&
-    item.ImageTags.Thumb
+    item.ImageTags?.Thumb
   ) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
   } else if (item.BackdropImageTags && item.BackdropImageTags.length > 0) {
     imgType = ImageType.Backdrop;
     imgTag = item.BackdropImageTags[0];
-  } else if (item.ImageTags && item.ImageTags.Thumb) {
+  } else if (item.ImageTags?.Thumb) {
     imgType = ImageType.Thumb;
     imgTag = item.ImageTags.Thumb;
   } else if (item.SeriesThumbImageTag && inheritThumb !== false) {
@@ -435,7 +430,7 @@ export function getLogo(
   if (tag) {
     imgType = ImageType.Logo;
     imgTag = tag;
-  } else if (item.ImageTags && item.ImageTags.Logo) {
+  } else if (item.ImageTags?.Logo) {
     imgType = ImageType.Logo;
     imgTag = item.ImageTags.Logo;
   } else if (item.ParentLogoImageTag && item.ParentLogoItemId) {
@@ -447,7 +442,7 @@ export function getLogo(
   if (imgTag && imgType && itemId) {
     const remote = useRemote();
 
-    url = new URL(remote.sdk.api?.getItemImageUrl(itemId, imgType) || '');
+    url = new URL(remote.sdk.api?.getItemImageUrl(itemId, imgType) ?? '');
 
     const parameters: Record<string, string> = {
       imgTag,

@@ -141,7 +141,7 @@ const tracks = ref<BaseItemDto[] | null | undefined>();
 async function fetch(): Promise<void> {
   tracks.value = (
     await remote.sdk.newUserApi(getItemsApi).getItems({
-      userId: remote.auth.currentUserId || '',
+      userId: remote.auth.currentUserId ?? '',
       parentId: props.item.Id,
       sortBy: ['SortName'],
       sortOrder: [SortOrder.Ascending],

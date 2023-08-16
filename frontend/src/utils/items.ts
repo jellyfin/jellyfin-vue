@@ -255,10 +255,7 @@ export function canPlay(item: BaseItemDto | undefined): boolean {
  * Check if an item can be resumed
  */
 export function canResume(item: BaseItemDto): boolean {
-  return item?.UserData?.PlaybackPositionTicks &&
-    item.UserData.PlaybackPositionTicks > 0
-    ? true
-    : false;
+  return Boolean(item?.UserData?.PlaybackPositionTicks && item.UserData.PlaybackPositionTicks > 0);
 }
 /**
  * Determine if an item can be mark as played

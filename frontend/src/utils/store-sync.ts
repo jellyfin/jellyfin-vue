@@ -63,22 +63,20 @@ export async function updateDisplayPreferences(
     displayPreferencesId
   );
 
-  const newDisplayPreferences = Object.assign(
-    {},
-    currentDisplayPreferences,
-    displayPreferences
-  );
+  const newDisplayPreferences = {
+    ...currentDisplayPreferences,
+    ...displayPreferences
+  };
 
   // If either old or new preferences have custom settings, merge them
   if (
     currentDisplayPreferences.CustomPrefs !== undefined ||
     newDisplayPreferences.CustomPrefs !== undefined
   ) {
-    const mergedCustomPrefs = Object.assign(
-      {},
-      currentDisplayPreferences.CustomPrefs ?? {},
-      displayPreferences.CustomPrefs ?? {}
-    );
+    const mergedCustomPrefs = {
+      ...currentDisplayPreferences.CustomPrefs,
+      ...displayPreferences.CustomPrefs
+    };
 
     newDisplayPreferences.CustomPrefs = Object.fromEntries(
       Object.entries(mergedCustomPrefs)

@@ -25,7 +25,7 @@ interface ClientSettingsState {
  */
 const navigatorLanguage = useNavigatorLanguage();
 const BROWSER_LANGUAGE = computed<string>(() => {
-  const rawString = navigatorLanguage.language.value || '';
+  const rawString = navigatorLanguage.language.value ?? '';
   /**
    * Removes the culture info from the language string, so 'es-ES' is recognised as 'es'
    */

@@ -85,15 +85,11 @@ const genres = ref<BaseItemDto[]>([]);
 
 onMounted(async () => {
   const { itemId } = route.params as { itemId: string };
-  const typesQuery = route.query.type;
+  const typesQuery = route.query.type as BaseItemKind ?? [];
 
-  const includeItemTypes = (
-    typesQuery == undefined
-      ? []
-      : (typeof typesQuery === 'string'
-          ? [typesQuery]
-          : typesQuery)
-  ) as BaseItemKind[];
+  const includeItemTypes: BaseItemKind[] = typeof typesQuery === 'string'
+    ? [typesQuery]
+    : typesQuery;
 
   loading.value = true;
 

@@ -108,7 +108,7 @@ const route = useRoute();
 const router = useRouter();
 const remote = useRemote();
 const api = remote.sdk.oneTimeSetup(
-  remote.auth.currentServer?.PublicAddress || ''
+  remote.auth.currentServer?.PublicAddress ?? ''
 );
 
 route.meta.title = t('login.login');

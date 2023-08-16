@@ -57,7 +57,7 @@ const tracks = computed(() => {
       srcIndex: -1,
       type: SubtitleDeliveryMethod.External
     },
-    ...(subs || [])
+    ...(subs ?? [])
   ];
 });
 </script>

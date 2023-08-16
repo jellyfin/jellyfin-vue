@@ -116,7 +116,7 @@ export function safariVersion(): number | undefined {
    * This works for iOS Safari and desktop Safari, which contain something
    * like "Version/13.0" indicating the major Safari or iOS version.
    */
-  let match = userAgent.match(/Version\/(\d+)/);
+  let match = /Version\/(\d+)/.exec(userAgent);
 
   if (match) {
     return Number.parseInt(match[1], /* Base= */ 10);
@@ -126,7 +126,7 @@ export function safariVersion(): number | undefined {
    * This works for all other browsers on iOS, which contain something like
    * "OS 13_3" indicating the major & minor iOS version.
    */
-  match = userAgent.match(/OS (\d+)(?:_\d+)?/);
+  match = /OS (\d+)(?:_\d+)?/.exec(userAgent);
 
   if (match) {
     return Number.parseInt(match[1], /* Base= */ 10);

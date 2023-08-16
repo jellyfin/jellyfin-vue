@@ -192,7 +192,7 @@ class PlayerElementStore {
        * If VTT found, applying it
        */
       mediaElementRef.value.textTracks[vttIdx].mode = 'showing';
-    } else if (ass !== undefined && ass.src) {
+    } else if (ass?.src) {
       /**
        * If SSA, using Subtitle Opctopus
        */

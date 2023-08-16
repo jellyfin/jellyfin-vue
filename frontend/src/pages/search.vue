@@ -96,7 +96,7 @@ const memo = reactive(
   ])
 );
 
-const searchQuery = computed(() => route.query?.q?.toString() || '');
+const searchQuery = computed(() => route.query?.q?.toString() ?? '');
 const items = computed(() => memo.get(searchQuery.value)?.items ?? []);
 const people = computed(() => memo.get(searchQuery.value)?.people ?? []);
 const movies = computed(() =>
@@ -123,7 +123,7 @@ const performDebouncedSearch = useDebounceFn(async (searchTerm: string) => {
     const itemSearch =
       (
         await remote.sdk.newUserApi(getItemsApi).getItemsByUserId({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           searchTerm,
           includeItemTypes: [
             BaseItemKind.Movie,

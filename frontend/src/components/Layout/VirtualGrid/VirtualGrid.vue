@@ -136,7 +136,7 @@ const contentSize = computed(() => {
 });
 const rootStyles = computed<StyleValue>(() =>
   Object.fromEntries([
-    ...Object.entries(contentSize.value || {}).map(([property, value]) => [
+    ...Object.entries(contentSize.value ?? {}).map(([property, value]) => [
       property,
       `${value}px`
     ]),

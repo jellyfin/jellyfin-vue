@@ -7,7 +7,7 @@
         :is="mediaElementType"
         v-show="mediaElementType === 'video' && teleportTarget"
         ref="mediaElementRef"
-        :poster="posterUrl"
+        :poster="String(posterUrl)"
         autoplay
         crossorigin="anonymous"
         playsinline
@@ -99,13 +99,13 @@ const teleportTarget = computed<
   }
 });
 
-const posterUrl = computed<string>(() =>
+const posterUrl = computed(() =>
   !isNil(playbackManager.currentItem) &&
   playbackManager.currentlyPlayingMediaType === 'Video'
     ? getImageInfo(playbackManager.currentItem, {
       preferBackdrop: true
-    }).url || ''
-    : ''
+    }).url
+    : undefined
 );
 
 /**

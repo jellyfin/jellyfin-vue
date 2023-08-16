@@ -38,5 +38,11 @@
     "vue": "html"
   },
   "vue.autoInsert.dotValue": true,
-  "vue.server.fullCompletionList": true
+  "vue.server.fullCompletionList": true,
+  "sonarlint.output.showAnalyzerLogs": true,
+  "sonarlint.output.showVerboseLogs": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "jellyfin-vue",
+    "projectKey": "jellyfin_jellyfin-vue"
+  }
 }

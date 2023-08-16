@@ -69,7 +69,7 @@ onMounted(() => {
       if (typeof oldIndex === 'number') {
         const item = playbackManager.queue[oldIndex];
 
-        if (item && item.Id && typeof e.newIndex === 'number') {
+        if (item?.Id && typeof e.newIndex === 'number') {
           playbackManager.changeItemPosition(item.Id, e.newIndex);
         }
       }

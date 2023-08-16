@@ -158,12 +158,10 @@ class TaskManagerStore {
               progress
             });
           }
-        } else {
-          if (progress >= 0 && progress < 100) {
-            taskPayload.progress = progress;
-          } else if (progress >= 0) {
-            this.finishTask(data.ItemId);
-          }
+        } else if (progress >= 0 && progress < 100) {
+          taskPayload.progress = progress;
+        } else if (progress >= 0) {
+          this.finishTask(data.ItemId);
         }
       }
     };

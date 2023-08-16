@@ -93,14 +93,14 @@ export function getScrollParents(
     /**
      * Parent.assignedSlot.parentElement find the correct parent if the grid is inside a native web component
      */
-    parent = parent.assignedSlot?.parentElement || parent.parentElement;
+    parent = parent.assignedSlot?.parentElement ?? parent.parentElement;
   }
 
-  const fallback = document.scrollingElement || document.documentElement;
+  const fallback = document.scrollingElement ?? document.documentElement;
 
   return {
-    vertical: vertical || fallback,
-    horizontal: horizontal || fallback
+    vertical: vertical ?? fallback,
+    horizontal: horizontal ?? fallback
   };
 }
 

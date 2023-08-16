@@ -130,7 +130,7 @@ class UserLibrariesStore {
       const userViewsResponse = await remote.sdk
         .newUserApi(getUserViewsApi)
         .getUserViews({
-          userId: remote.auth.currentUserId || ''
+          userId: remote.auth.currentUserId ?? ''
         });
 
       this._state.value.views = userViewsResponse.data.Items ?? [];
@@ -145,7 +145,7 @@ class UserLibrariesStore {
     try {
       const audioResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.MediaSources,
@@ -174,7 +174,7 @@ class UserLibrariesStore {
     try {
       const videoResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.MediaSources,
@@ -234,7 +234,7 @@ class UserLibrariesStore {
     try {
       const latestMedia = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           fields: [
             ItemFields.PrimaryImageAspectRatio,
             ItemFields.MediaSources,
@@ -262,7 +262,7 @@ class UserLibrariesStore {
     try {
       const carouselItems = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           fields: [
             ItemFields.Overview,
             ItemFields.PrimaryImageAspectRatio,

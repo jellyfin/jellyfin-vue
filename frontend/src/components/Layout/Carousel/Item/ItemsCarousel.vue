@@ -134,7 +134,7 @@ watch(
 
       const itemData = (
         await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-          userId: remote.auth.currentUserId || '',
+          userId: remote.auth.currentUserId ?? '',
           itemId: id
         })
       ).data;
