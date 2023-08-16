@@ -97,7 +97,6 @@ export function isLibrary(item: BaseItemDto): boolean {
 /**
  * Get the Material Design Icon name associated with a type of library
  *
- * @param libraryType - Type of the library
  * @returns Name of the Material Design Icon associated with the type
  */
 export function getLibraryIcon(
@@ -143,7 +142,6 @@ export function getLibraryIcon(
 /**
  * Get the card shape associated with a collection type
  *
- * @param collectionType - Type of the collection
  * @returns CSS class to use as the shape of the card
  */
 export function getShapeFromCollectionType(
@@ -168,7 +166,6 @@ export function getShapeFromCollectionType(
 /**
  * Gets the card shape associated with a collection type
  *
- * @param itemType - type of item
  * @returns CSS class to use as the shape of the card
  */
 export function getShapeFromItemType(
@@ -469,8 +466,6 @@ export function getMediaStreams(
 /**
  * Create an item download object that contains the URL and filename.
  *
- * @param itemId - The item ID.
- * @param itemPath - The item path.
  * @returns - A download object.
  */
 export function getItemDownloadUrl(itemId: string): string | undefined {
@@ -489,7 +484,6 @@ export function getItemDownloadUrl(itemId: string): string | undefined {
 /**
  * Get a map of an episode name and its download url, given a season.
  *
- * @param seasonId - The season ID.
  * @returns - A map: [EpisodeName, DownloadUrl].
  */
 export async function getItemSeasonDownloadMap(
@@ -523,7 +517,6 @@ export async function getItemSeasonDownloadMap(
 /**
  * Get a map of an episode name and its download url, given a series.
  *
- * @param seasonId - The season ID.
  * @returns - A map: [EpisodeName, DownloadUrl].
  */
 export async function getItemSeriesDownloadMap(

@@ -35,8 +35,8 @@ const props = withDefaults(
 const remote = useRemote();
 
 const url = computed(() => {
-  return props.user?.Id && props.user?.PrimaryImageTag
-    ? `${remote.sdk.api?.basePath}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
+  return props.user?.Id && props.user?.PrimaryImageTag && remote.sdk.api?.basePath
+    ? `${remote.sdk.api.basePath}/Users/${props.user.Id}/Images/Primary/?tag=${props.user.PrimaryImageTag}&quality=${props.quality}`
     : undefined;
 });
 const iconSize = computed(() => {

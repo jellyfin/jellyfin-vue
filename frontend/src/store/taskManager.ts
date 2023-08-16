@@ -50,7 +50,7 @@ const storeKey = 'taskManager';
  */
 class TaskManagerStore {
   /**
-   * == STATE ==
+   * == STATE SECTION ==
    */
   private _defaultState: TaskManagerState = {
     tasks: [],
@@ -177,7 +177,7 @@ class TaskManagerStore {
         Array.isArray(data.ItemsUpdated)
       ) {
         for (const id of data.ItemsUpdated) {
-          if (id) {
+          if (typeof id === 'string') {
             this.finishTask(id);
           }
         }

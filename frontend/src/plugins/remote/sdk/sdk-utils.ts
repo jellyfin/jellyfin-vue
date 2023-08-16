@@ -40,9 +40,7 @@ const SDK = new Jellyfin({
 });
 
 /**
- * Gets the device's name
- *
- * @returns Device name
+ * Gets the device's name based on the browser's user agent.
  */
 function getDeviceName(): string {
   let deviceName = 'Unknown';

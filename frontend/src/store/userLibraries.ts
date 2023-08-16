@@ -52,7 +52,7 @@ const storeKey = 'userLibraries';
  */
 class UserLibrariesStore {
   /**
-   * == STATE ==
+   * == STATE SECTION ==
    */
   private _defaultState: UserLibrariesState = {
     views: [],
