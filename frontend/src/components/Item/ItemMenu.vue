@@ -55,7 +55,7 @@
 <script lang="ts">
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useEventListener } from '@vueuse/core';
+import { useEventListener, useClipboard } from '@vueuse/core';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import IMdiPlaySpeed from 'virtual:icons/mdi/play-speed';
 import IMdiArrowExpandUp from 'virtual:icons/mdi/arrow-expand-up';
@@ -92,7 +92,6 @@ import {
   canBrowserDownloadItem,
   downloadFiles
 } from '@/utils/file-download';
-import { useClipboardWrite } from '@/composables/use-clipboard';
 
 type MenuOption = {
   title: string;
@@ -359,12 +358,20 @@ const copyStreamURLAction = {
   action: async (): Promise<void> => {
     if (menuProps.item.Id) {
       const downloadHref = getItemDownloadObject(menuProps.item.Id);
+      const clipboard = useClipboard();
 
-      if (downloadHref?.url) {
-        await useClipboardWrite(downloadHref.url);
-      } else {
-        console.error('Unable to get stream URL for selected item');
-        useSnackbar(errorMessage, 'error');
+      try {
+        if (clipboard.isSupported.value) {
+          if (downloadHref?.url) {
+            await clipboard.copy(downloadHref.url);
+          }
+        } else {
+          throw new ReferenceError('Unsupported clipboard operation');
+        }
+      } catch (error) {
+        error instanceof ReferenceError
+          ? useSnackbar(t('clipboardUnsupported'), 'error')
+          : useSnackbar(errorMessage, 'error');
       }
     }
   }
