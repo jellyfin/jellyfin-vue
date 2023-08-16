@@ -2,8 +2,8 @@
   <v-main
     class="fullscreen-video-container fill-height"
     :class="{ 'cursor-none': !overlay }"
-    @mousemove="handleMouseMove"
-    @touchend="handleMouseMove">
+    @mousemove="showOsdWithTimeout"
+    @touchend="showOsdWithTimeout">
     <v-overlay
       v-model="overlay"
       contained
@@ -28,11 +28,10 @@
         <div class="osd-bottom pb-s pl-s pr-s">
           <div class="pa-4">
             <time-slider />
-            <div
-              class="controls-wrapper d-flex align-stretch justify-space-between">
+            <div class="controls-wrapper d-flex align-stretch">
               <div
                 v-if="$vuetify.display.mdAndUp"
-                class="d-flex flex-column align-start justify-center mr-auto video-title">
+                class="d-flex flex-column align-start mr-auto video-title">
                 <template
                   v-if="
                     playbackManager.currentlyPlayingType ===
@@ -57,10 +56,9 @@
                 <template v-else>
                   <span>{{ playbackManager.currentItem?.Name }}</span>
                 </template>
-                <br />
                 <span
                   v-if="playbackManager.currentItem?.RunTimeTicks"
-                  class="text-subtitle-2 text--secondary text-truncate">
+                  class="text-subtitle-2 text--secondary text-truncate mt-auto">
                   {{
                     getEndsAtTime(playbackManager.currentItem.RunTimeTicks)
                       .value
@@ -168,9 +166,12 @@ const timeout = useTimeoutFn(() => {
 /**
  * Shows the overlay on mouse move and starts the timeout to hide it, unless the overlay must stay static
  */
-function handleMouseMove(): void {
+function showOsdWithTimeout(): void {
   overlay.value = true;
-  timeout.start();
+
+  if (!staticOverlay.value) {
+    timeout.start();
+  }
 }
 
 onBeforeUnmount(() => {
