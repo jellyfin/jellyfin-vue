@@ -33,7 +33,6 @@ declare module 'vue' {
 
 declare module 'vue-i18n' {
   type messages = typeof enUS;
-  /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
   export interface DefineLocaleMessage extends messages {}
 }
 

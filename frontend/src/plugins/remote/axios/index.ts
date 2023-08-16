@@ -77,7 +77,7 @@ class JellyfinInterceptors {
    * Intercepts 401 (Unathorized) error code and logs out the user inmmediately,
    * as the session probably has been revoked remotely.
    */
-  public async logoutInterceptor(error: AxiosError): Promise<never | void> {
+  public async logoutInterceptor(error: AxiosError): Promise<void> {
     if (
       error.response?.status === 401 &&
       remote.currentUser &&
@@ -95,7 +95,7 @@ class JellyfinInterceptors {
 
   public async serverUnreachableInterceptor(
     error: AxiosError
-  ): Promise<never | void> {
+  ): Promise<void> {
     if (error.code === 'ERR_NETWORK') {
       await remote.logoutCurrentUser(true);
       useSnackbar(usei18n().t('login.serverNotFound'), 'error');
