@@ -1,13 +1,15 @@
 <template>
   <div :class="{ 'card-margin': margin }">
-    <component
+    <Component
       :is="link ? 'router-link' : 'div'"
       :to="link ? getItemDetailsLink(item) : null"
       :class="{ 'card-box': link }">
-      <div :class="shape || cardType" class="elevation-2">
+      <div
+        :class="shape || cardType"
+        class="elevation-2">
         <div
           class="absolute-cover card-content d-flex justify-center align-center">
-          <blurhash-image
+          <BlurhashImage
             :item="item"
             :type="getImageType"
             :alt="item.Name || ''"
@@ -17,53 +19,61 @@
           class="absolute-cover card-overlay d-flex justify-center align-center"
           :class="{ 'card-overlay-hover': overlay && isFinePointer }">
           <div class="card-upper-content d-flex justify-center align-center">
-            <v-progress-circular
+            <VProgressCircular
               v-if="refreshProgress !== undefined"
               :model-value="refreshProgress"
               :indeterminate="refreshProgress === 0"
               size="24" />
-            <watched-indicator v-if="item.UserData && item.UserData.Played" />
-            <v-chip
+            <WatchedIndicator v-if="item.UserData && item.UserData.Played" />
+            <VChip
               v-if="item.UserData && item.UserData.UnplayedItemCount"
               color="primary"
               variant="elevated"
               size="small">
               {{ item.UserData.UnplayedItemCount }}
-            </v-chip>
+            </VChip>
           </div>
           <div class="card-overlay-hover-hidden">
-            <play-button fab :item="item" />
+            <PlayButton
+              fab
+              :item="item" />
             <div class="card-lower-content d-flex justify-center align-center">
-              <mark-played-button :item="item" />
-              <like-button v-if="canPlay(item)" :item="item" />
-              <item-menu :item="item" />
+              <MarkPlayedButton :item="item" />
+              <LikeButton
+                v-if="canPlay(item)"
+                :item="item" />
+              <ItemMenu :item="item" />
             </div>
           </div>
-          <v-progress-linear
+          <VProgressLinear
             v-if="
               item.UserData &&
-              item.UserData.PlayedPercentage &&
-              item.UserData.PlayedPercentage > 0
+                item.UserData.PlayedPercentage &&
+                item.UserData.PlayedPercentage > 0
             "
             v-model="progress"
             absolute
             location="bottom" />
         </div>
       </div>
-    </component>
-    <div v-if="text" class="card-text">
-      <router-link
+    </Component>
+    <div
+      v-if="text"
+      class="card-text">
+      <RouterLink
         class="link d-block font-weight-medium pa-0 mt-1 text-truncate"
         :to="cardTitleLink">
         {{ cardTitle }}
-      </router-link>
-      <router-link
+      </RouterLink>
+      <RouterLink
         v-if="cardSubtitleLink"
         class="link d-block v-card-subtitle text-truncate"
         :to="cardSubtitleLink">
         {{ cardSubtitle }}
-      </router-link>
-      <div v-else class="v-card-subtitle text-truncate">
+      </RouterLink>
+      <div
+        v-else
+        class="v-card-subtitle text-truncate">
         {{ cardSubtitle }}
       </div>
     </div>

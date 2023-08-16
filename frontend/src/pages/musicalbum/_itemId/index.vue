@@ -1,11 +1,17 @@
 <template>
-  <item-cols>
+  <ItemCols>
     <template #left>
-      <v-row justify="center" justify-md="start">
-        <v-col cols="7" md="3">
-          <card :item="item" />
-        </v-col>
-        <v-col cols="12" md="9">
+      <VRow
+        justify="center"
+        justify-md="start">
+        <VCol
+          cols="7"
+          md="3">
+          <Card :item="item" />
+        </VCol>
+        <VCol
+          cols="12"
+          md="9">
           <h1
             class="text-h4 font-weight-light"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
@@ -15,64 +21,85 @@
             v-if="item.AlbumArtist && item?.AlbumArtists?.[0]"
             class="text-subtitle-1 text-truncate mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
-            <router-link
+            <RouterLink
               class="link"
               :to="getItemDetailsLink(item.AlbumArtists[0], 'MusicArtist')">
               {{ $t('byArtist', { artist: item.AlbumArtist }) }}
-            </router-link>
+            </RouterLink>
           </h2>
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
-            <media-info :item="item" year runtime rating ends-at />
+            <MediaInfo
+              :item="item"
+              year
+              runtime
+              rating
+              ends-at />
           </div>
-          <v-row
+          <VRow
             class="my-4 align-center"
             :class="{
               'justify-center': !$vuetify.display.mdAndUp,
               'ml-0': $vuetify.display.mdAndUp
             }">
-            <play-button :item="item" />
-            <like-button :item="item" class="mr-2" />
-            <mark-played-button :item="item" class="mr-2" />
-            <item-menu :item="item" />
-          </v-row>
-          <v-col cols="12" md="10">
-            <v-row
+            <PlayButton :item="item" />
+            <LikeButton
+              :item="item"
+              class="mr-2" />
+            <MarkPlayedButton
+              :item="item"
+              class="mr-2" />
+            <ItemMenu :item="item" />
+          </VRow>
+          <VCol
+            cols="12"
+            md="10">
+            <VRow
               v-if="item && item.GenreItems && item.GenreItems.length > 0"
               align="center">
-              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
+              <VCol
+                :cols="12"
+                :sm="2"
+                class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
-              </v-col>
-              <v-col class="px-0" :cols="12" :sm="10">
-                <v-slide-group>
-                  <v-slide-group-item
+              </VCol>
+              <VCol
+                class="px-0"
+                :cols="12"
+                :sm="10">
+                <VSlideGroup>
+                  <VSlideGroupItem
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :class="{ 'ml-2': index > 0 }"
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
-                    </v-chip>
-                  </v-slide-group-item>
-                </v-slide-group>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <track-list v-if="item.Type === 'MusicAlbum'" :item="item" />
-        </v-col>
-      </v-row>
+                    </VChip>
+                  </VSlideGroupItem>
+                </VSlideGroup>
+              </VCol>
+            </VRow>
+          </VCol>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="12">
+          <TrackList
+            v-if="item.Type === 'MusicAlbum'"
+            :item="item" />
+        </VCol>
+      </VRow>
     </template>
     <template #right>
-      <related-items :item="item" vertical />
+      <RelatedItems
+        :item="item"
+        vertical />
     </template>
-  </item-cols>
+  </ItemCols>
 </template>
 
 <script setup lang="ts">

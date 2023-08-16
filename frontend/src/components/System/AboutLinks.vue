@@ -1,30 +1,30 @@
 <template>
-  <v-list>
-    <v-item-group>
-      <v-list-item
+  <VList>
+    <VItemGroup>
+      <VListItem
         v-for="linkItem in linkItems"
         :key="linkItem.name"
         :href="linkItem.link"
         rel="noreferrer noopener"
         target="_blank">
         <template #prepend>
-          <v-avatar>
-            <v-icon :icon="linkItem.icon" />
-          </v-avatar>
+          <VAvatar>
+            <VIcon :icon="linkItem.icon" />
+          </VAvatar>
         </template>
-        <v-list-item-title>
+        <VListItemTitle>
           {{ linkItem.name }}
-        </v-list-item-title>
+        </VListItemTitle>
         <template #append>
-          <v-list-item-action>
-            <v-icon>
-              <i-mdi-open-in-new />
-            </v-icon>
-          </v-list-item-action>
+          <VListItemAction>
+            <VIcon>
+              <IMdiOpenInNew />
+            </VIcon>
+          </VListItemAction>
         </template>
-      </v-list-item>
-    </v-item-group>
-  </v-list>
+      </VListItem>
+    </VItemGroup>
+  </VList>
 </template>
 
 <script setup lang="ts">

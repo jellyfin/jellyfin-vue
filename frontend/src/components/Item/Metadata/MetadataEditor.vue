@@ -1,95 +1,109 @@
 <template>
-  <v-card
+  <VCard
     v-if="metadata"
     height="100%"
     class="d-flex flex-column metadata-editor">
-    <v-card-title>{{ t('editMetadata') }}</v-card-title>
-    <v-card-subtitle class="pb-3">
+    <VCardTitle>{{ t('editMetadata') }}</VCardTitle>
+    <VCardSubtitle class="pb-3">
       {{ metadata.Path }}
-    </v-card-subtitle>
+    </VCardSubtitle>
 
-    <v-divider />
+    <VDivider />
 
-    <v-card-text
+    <VCardText
       class="pa-0 flex-grow-1"
       :class="{
         'd-flex': !$vuetify.display.mobile,
         'flex-row': !$vuetify.display.mobile
       }">
-      <v-tabs
+      <VTabs
         v-model="tabName"
         :direction="$vuetify.display.mobile ? 'horizontal' : 'vertical'">
-        <v-tab value="general">{{ t('general') }}</v-tab>
-        <v-tab value="details">{{ t('details') }}</v-tab>
-        <v-tab value="castAndCrew">{{ t('castAndCrew') }}</v-tab>
-        <v-tab value="images">{{ t('images') }}</v-tab>
-      </v-tabs>
-      <v-window v-model="tabName" class="pa-2 flex-fill">
-        <v-window-item value="general">
-          <v-text-field
+        <VTab value="general">
+          {{ t('general') }}
+        </VTab>
+        <VTab value="details">
+          {{ t('details') }}
+        </VTab>
+        <VTab value="castAndCrew">
+          {{ t('castAndCrew') }}
+        </VTab>
+        <VTab value="images">
+          {{ t('images') }}
+        </VTab>
+      </VTabs>
+      <VWindow
+        v-model="tabName"
+        class="pa-2 flex-fill">
+        <VWindowItem value="general">
+          <VTextField
             v-model="metadata.Name"
             variant="outlined"
             :label="t('metadata.title')" />
-          <v-text-field
+          <VTextField
             v-model="metadata.OriginalTitle"
             variant="outlined"
             :label="t('originalTitle')" />
-          <v-text-field
+          <VTextField
             v-model="metadata.ForcedSortName"
             variant="outlined"
             :label="t('sortTitle')" />
-          <v-text-field
+          <VTextField
             v-model="tagLine"
             variant="outlined"
             :label="t('tagline')" />
-          <v-textarea
+          <VTextarea
             v-model="metadata.Overview"
             variant="outlined"
             no-resize
             rows="4"
             :label="t('overview')" />
-        </v-window-item>
-        <v-window-item value="details">
-          <date-input
+        </VWindowItem>
+        <VWindowItem value="details">
+          <DateInput
             :value="dateCreated"
             :label="t('dateAdded')"
             @update:date="
               (value) => formatAndAssignDate('DateCreated', value)
             " />
-          <v-row>
-            <v-col sm="6" cols="12">
-              <v-text-field
+          <VRow>
+            <VCol
+              sm="6"
+              cols="12">
+              <VTextField
                 v-model="metadata.CommunityRating"
                 variant="outlined"
                 :label="t('communityRating')" />
-            </v-col>
-            <v-col sm="6" cols="12">
-              <v-text-field
+            </VCol>
+            <VCol
+              sm="6"
+              cols="12">
+              <VTextField
                 v-model="metadata.CriticRating"
                 variant="outlined"
                 :label="t('criticRating')" />
-            </v-col>
-          </v-row>
+            </VCol>
+          </VRow>
 
-          <date-input
+          <DateInput
             :value="premiereDate"
             :label="t('releaseDate')"
             @update:date="
               (value) => formatAndAssignDate('PremiereDate', value)
             " />
-          <v-text-field
+          <VTextField
             v-model="metadata.ProductionYear"
             variant="outlined"
             :label="t('year')" />
-          <v-text-field
+          <VTextField
             v-model="metadata.OfficialRating"
             variant="outlined"
             :label="t('parentalRating')" />
-          <v-text-field
+          <VTextField
             v-model="metadata.CustomRating"
             variant="outlined"
             :label="t('customRating')" />
-          <v-combobox
+          <VCombobox
             v-model="genresModel"
             :items="genres"
             :label="t('genres')"
@@ -99,34 +113,36 @@
             :hide-no-data="false"
             chips
             closable-chips />
-          <v-combobox
+          <VCombobox
             v-model="tagsModel"
             :label="t('tags')"
             multiple
             variant="outlined"
             chips
             closable-chips />
-        </v-window-item>
-        <v-window-item value="castAndCrew">
-          <v-list lines="two">
-            <v-list-item :title="t('addNewPerson')" @click="onPersonAdd">
+        </VWindowItem>
+        <VWindowItem value="castAndCrew">
+          <VList lines="two">
+            <VListItem
+              :title="t('addNewPerson')"
+              @click="onPersonAdd">
               <template #append>
-                <v-avatar>
-                  <v-icon>
-                    <i-mdi-plus-circle />
-                  </v-icon>
-                </v-avatar>
+                <VAvatar>
+                  <VIcon>
+                    <IMdiPlusCircle />
+                  </VIcon>
+                </VAvatar>
               </template>
-            </v-list-item>
-            <v-list-item
+            </VListItem>
+            <VListItem
               v-for="(item, i) in metadata.People"
               :key="`${item.Id}-${i}`"
               :title="item.Name ?? undefined"
               :subtitle="(item.Role || item.Type) ?? undefined"
               @click="onPersonEdit(item)">
               <template #prepend>
-                <v-avatar>
-                  <v-img
+                <VAvatar>
+                  <VImg
                     v-if="item.Id && item.PrimaryImageTag"
                     :src="
                       remote.sdk.api?.getItemImageUrl(
@@ -134,56 +150,58 @@
                         ImageType.Primary
                       )
                     " />
-                  <v-icon v-else class="bg-grey-darken-3">
-                    <i-mdi-account />
-                  </v-icon>
-                </v-avatar>
+                  <VIcon
+                    v-else
+                    class="bg-grey-darken-3">
+                    <IMdiAccount />
+                  </VIcon>
+                </VAvatar>
               </template>
               <template #append>
-                <v-avatar @click.stop="onPersonDel(i)">
-                  <v-icon>
-                    <i-mdi-delete />
-                  </v-icon>
-                </v-avatar>
+                <VAvatar @click.stop="onPersonDel(i)">
+                  <VIcon>
+                    <IMdiDelete />
+                  </VIcon>
+                </VAvatar>
               </template>
-            </v-list-item>
-          </v-list>
-          <person-editor
+            </VListItem>
+          </VList>
+          <PersonEditor
             :person="person"
             @update:person="onPersonSave"
             @close="person = undefined" />
-        </v-window-item>
-        <v-window-item value="images">
-          <image-editor :metadata="metadata" />
-        </v-window-item>
-      </v-window>
-    </v-card-text>
+        </VWindowItem>
+        <VWindowItem value="images">
+          <ImageEditor :metadata="metadata" />
+        </VWindowItem>
+      </VWindow>
+    </VCardText>
 
-    <v-divider />
-    <v-card-actions
+    <VDivider />
+    <VCardActions
       class="d-flex align-center pa-3"
       :class="{
         'justify-end': !$vuetify.display.mobile,
         'justify-center': $vuetify.display.mobile
       }">
-      <v-btn
+      <VBtn
         variant="flat"
         width="8em"
         color="secondary"
         class="mr-1"
         @click="emit('cancel')">
         {{ t('cancel') }}
-      </v-btn>
-      <v-btn
+      </VBtn>
+      <VBtn
         variant="flat"
         width="8em"
         color="primary"
         :loading="loading"
         @click="saveMetadata">
         {{ t('save') }}
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+      </VBtn>
+    </VCardActions>
+  </VCard>
 </template>
 
 <script setup lang="ts">
@@ -380,9 +398,11 @@ async function saveMetadata(): Promise<void> {
     emit('save');
     useSnackbar(t('saved'), 'success');
   } catch (error) {
-    // TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
-    // not expecting bad request messages.
-    // TODO: Revise similar blocks like this through the entire codebase.
+    /*
+     * TODO: This whole block should be removed - we should verify that the data is correct client-side before posting to server
+     * not expecting bad request messages.
+     * TODO: Revise similar blocks like this through the entire codebase.
+     */
     let errorMessage = t('unexpectedError');
 
     if (error instanceof AxiosError && error.response?.status === 400) {
@@ -434,7 +454,7 @@ function onPersonSave(item: BaseItemPerson): void {
       p.Id === item.Id ? item : p
     );
   } else {
-    // undefined id means that the person was newly added
+    // Undefined id means that the person was newly added
     metadata.value.People.push(item);
   }
 

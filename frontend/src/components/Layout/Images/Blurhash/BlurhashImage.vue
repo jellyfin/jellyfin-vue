@@ -1,7 +1,7 @@
 <template>
   <div ref="imageElement">
     <div>
-      <blurhash-canvas
+      <BlurhashCanvas
         v-if="hash"
         v-show="!error"
         :hash="hash"
@@ -10,7 +10,7 @@
         :punch="punch"
         class="absolute-cover canvas"
         @error="error = true" />
-      <v-fade-transition>
+      <VFadeTransition>
         <img
           v-show="!loading && !error"
           class="absolute-cover img"
@@ -35,18 +35,21 @@
               loading = true;
             }
           " />
-      </v-fade-transition>
+      </VFadeTransition>
       <slot
         v-if="$slots.placeholder && (!hash || error)"
         name="placeholder"
         class="placeholder" />
-      <v-avatar
+      <VAvatar
         v-else-if="getItemIcon(item) && (!hash || error)"
         :rounded="false"
         size="100%"
         class="absolute-cover d-flex justify-center align-center align-self-center placeholder">
-        <v-icon class="text--disabled" size="50%" :icon="getItemIcon(item)" />
-      </v-avatar>
+        <VIcon
+          class="text--disabled"
+          size="50%"
+          :icon="getItemIcon(item)" />
+      </VAvatar>
     </div>
   </div>
 </template>

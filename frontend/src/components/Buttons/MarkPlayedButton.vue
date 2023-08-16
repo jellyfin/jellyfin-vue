@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <VBtn
     v-if="canMarkWatched(item)"
     :color="isPlayed ? 'primary' : undefined"
     :icon="IMdiCheck"

@@ -1,22 +1,25 @@
 <template>
-  <v-hover v-slot="{ isHovering, props: hoverProps }">
+  <VHover v-slot="{ isHovering, props: hoverProps }">
     <div
       class="ma-2 d-flex flex-column pointer"
       v-bind="hoverProps"
       @click="$emit('connect', user)">
-      <v-btn
+      <VBtn
         :active="isHovering"
         variant="plain"
         :height="128"
         :width="128"
         icon>
-        <user-image :user="user" rounded :size="128" />
-      </v-btn>
+        <UserImage
+          :user="user"
+          rounded
+          :size="128" />
+      </VBtn>
       <a class="text-subtitle-1 text-center mt-2 link">
         {{ user.Name }}
       </a>
     </div>
-  </v-hover>
+  </VHover>
 </template>
 
 <script setup lang="ts">

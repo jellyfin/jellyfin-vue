@@ -6,10 +6,10 @@
 
 import { createApp } from 'vue';
 import Root from '@/App.vue';
-/* eslint-disable no-restricted-imports */
+/* eslint-disable @typescript-eslint/no-restricted-imports */
 import { createRemote, i18n, router, vuetify } from '@/plugins';
 import { hideDirective } from '@/plugins/directives';
-/* eslint-enable no-restricted-imports */
+/* eslint-enable @typescript-eslint/no-restricted-imports */
 
 /**
  * - GLOBAL STYLES -
@@ -21,7 +21,6 @@ import '@fontsource/roboto';
  * - VUE PLUGINS, STORE AND DIRECTIVE -
  * The order of statements IS IMPORTANT
  */
-
 const app = createApp(Root);
 const remote = createRemote();
 

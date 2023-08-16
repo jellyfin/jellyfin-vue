@@ -1,35 +1,59 @@
 <template>
   <div :class="large ? useResponsiveClasses('large-grid') : undefined">
-    <v-row v-if="loading">
-      <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
-        <skeleton-card v-for="n in 24" :key="n" text />
-      </v-col>
-    </v-row>
-    <virtual-grid
+    <VRow v-if="loading">
+      <VCol
+        cols="12"
+        :class="useResponsiveClasses('card-grid-container')">
+        <SkeletonCard
+          v-for="n in 24"
+          :key="n"
+          text />
+      </VCol>
+    </VRow>
+    <VirtualGrid
       v-else-if="!loading && items.length > 0 && !noVirtual"
       :items="items"
       :buffer-multiplier="2"
       :throttle-scroll="175"
       :class="useResponsiveClasses('card-grid-container')">
       <template #default="{ item, style }">
-        <card :style="style" :item="item" margin text overlay link />
+        <Card
+          :style="style"
+          :item="item"
+          margin
+          text
+          overlay
+          link />
       </template>
-    </virtual-grid>
+    </VirtualGrid>
     <div
       v-else-if="!loading && items.length > 0 && noVirtual"
       :class="useResponsiveClasses('card-grid-container')">
-      <template v-for="item of items" :key="item.Id">
-        <card :item="item" margin text overlay link />
+      <template
+        v-for="item of items"
+        :key="item.Id">
+        <Card
+          :item="item"
+          margin
+          text
+          overlay
+          link />
       </template>
     </div>
-    <v-row v-else-if="!loading && items.length === 0" justify="center">
-      <v-col
+    <VRow
+      v-else-if="!loading && items.length === 0"
+      justify="center">
+      <VCol
         cols="12"
         :class="
           useResponsiveClasses('card-grid-container empty-card-container')
         ">
-        <skeleton-card v-for="n in 24" :key="n" text boilerplate />
-      </v-col>
+        <SkeletonCard
+          v-for="n in 24"
+          :key="n"
+          text
+          boilerplate />
+      </VCol>
       <div class="empty-message text-center">
         <slot>
           <h1 class="text-h5">
@@ -37,7 +61,7 @@
           </h1>
         </slot>
       </div>
-    </v-row>
+    </VRow>
   </div>
 </template>
 

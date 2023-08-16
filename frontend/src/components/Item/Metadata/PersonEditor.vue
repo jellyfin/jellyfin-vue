@@ -1,64 +1,78 @@
 <template>
-  <v-dialog
+  <VDialog
     max-width="30%"
     :model-value="person !== undefined"
     @update:model-value="emit('close')">
-    <v-card>
-      <v-card-title>{{ t('editPerson') }}</v-card-title>
-      <v-divider />
-      <v-card-text class="pa-3">
-        <v-row>
-          <v-col cols="4">
-            <v-avatar size="160" class="ml-2">
-              <v-img
+    <VCard>
+      <VCardTitle>{{ t('editPerson') }}</VCardTitle>
+      <VDivider />
+      <VCardText class="pa-3">
+        <VRow>
+          <VCol cols="4">
+            <VAvatar
+              size="160"
+              class="ml-2">
+              <VImg
                 v-if="person?.Id && person?.PrimaryImageTag"
                 :src="
                   $remote.sdk.api?.getItemImageUrl(person.Id, ImageType.Primary)
                 " />
-              <v-icon v-else class="bg-grey-darken-3">
-                <i-mdi-account />
-              </v-icon>
-            </v-avatar>
-          </v-col>
-          <v-col>
-            <v-form v-if="editState" @submit.prevent="onSubmit">
-              <v-text-field
+              <VIcon
+                v-else
+                class="bg-grey-darken-3">
+                <IMdiAccount />
+              </VIcon>
+            </VAvatar>
+          </VCol>
+          <VCol>
+            <VForm
+              v-if="editState"
+              @submit.prevent="onSubmit">
+              <VTextField
                 v-model="editState.Name"
                 variant="outlined"
                 :label="t('name')" />
-              <v-select
+              <VSelect
                 v-model="editState.Type"
                 :items="options"
                 :label="t('type')"
                 item-title="text"
                 item-value="value"
                 variant="outlined" />
-              <v-text-field
+              <VTextField
                 v-if="editState.Type === 'Actor'"
                 v-model="editState.Role"
                 variant="outlined"
                 :label="t('role')" />
-            </v-form>
-          </v-col>
-        </v-row>
-      </v-card-text>
-      <v-divider />
-      <v-card-actions
+            </VForm>
+          </VCol>
+        </VRow>
+      </VCardText>
+      <VDivider />
+      <VCardActions
         class="d-flex align-center pa-3"
         :class="{
           'justify-end': !$vuetify.display.mobile,
           'justify-center': $vuetify.display.mobile
         }">
-        <v-spacer />
-        <v-btn variant="flat" width="8em" class="mr-1" @click="emit('close')">
+        <VSpacer />
+        <VBtn
+          variant="flat"
+          width="8em"
+          class="mr-1"
+          @click="emit('close')">
           {{ t('cancel') }}
-        </v-btn>
-        <v-btn variant="flat" width="8em" color="primary" @click="onSubmit">
+        </VBtn>
+        <VBtn
+          variant="flat"
+          width="8em"
+          color="primary"
+          @click="onSubmit">
           {{ t('save') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script setup lang="ts">

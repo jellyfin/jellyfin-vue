@@ -1,47 +1,63 @@
 <template>
   <div>
-    <v-app-bar
+    <VAppBar
       flat
       density="compact"
       :class="useResponsiveClasses('second-toolbar')">
       <span class="text-h6 hidden-sm-and-down">
         {{ genre.Name }}
       </span>
-      <v-spacer />
-      <v-fade-transition>
-        <play-button v-if="!loading" :item="genre" />
-      </v-fade-transition>
-      <v-btn
+      <VSpacer />
+      <VFadeTransition>
+        <PlayButton
+          v-if="!loading"
+          :item="genre" />
+      </VFadeTransition>
+      <VBtn
         v-if="!loading"
         class="play-button mr-2"
         min-width="8em"
         variant="outlined"
         :to="`./${genre.Id}/shuffle`">
         {{ $t('playback.shuffleAll') }}
-      </v-btn>
-    </v-app-bar>
-    <v-container class="after-second-toolbar">
-      <v-row v-if="loading">
-        <v-col cols="12" :class="useResponsiveClasses('card-grid-container')">
-          <skeleton-card v-for="n in 24" :key="n" text />
-        </v-col>
-      </v-row>
-      <item-grid v-if="genres.length > 0" :items="genres" :loading="loading" />
-      <v-row v-else-if="!loading" justify="center">
-        <v-col
+      </VBtn>
+    </VAppBar>
+    <VContainer class="after-second-toolbar">
+      <VRow v-if="loading">
+        <VCol
+          cols="12"
+          :class="useResponsiveClasses('card-grid-container')">
+          <SkeletonCard
+            v-for="n in 24"
+            :key="n"
+            text />
+        </VCol>
+      </VRow>
+      <ItemGrid
+        v-if="genres.length > 0"
+        :items="genres"
+        :loading="loading" />
+      <VRow
+        v-else-if="!loading"
+        justify="center">
+        <VCol
           cols="12"
           :class="
             useResponsiveClasses('card-grid-container empty-card-container')
           ">
-          <skeleton-card v-for="n in 24" :key="n" boilerplate text />
-        </v-col>
+          <SkeletonCard
+            v-for="n in 24"
+            :key="n"
+            boilerplate
+            text />
+        </VCol>
         <div class="empty-message text-center">
           <h1 class="text-h5">
             {{ $t('libraryEmpty') }}
           </h1>
         </div>
-      </v-row>
-    </v-container>
+      </VRow>
+    </VContainer>
   </div>
 </template>
 
@@ -74,9 +90,9 @@ onMounted(async () => {
   const includeItemTypes = (
     typesQuery == undefined
       ? []
-      : typeof typesQuery === 'string'
-      ? [typesQuery]
-      : typesQuery
+      : (typeof typesQuery === 'string'
+          ? [typesQuery]
+          : typesQuery)
   ) as BaseItemKind[];
 
   loading.value = true;

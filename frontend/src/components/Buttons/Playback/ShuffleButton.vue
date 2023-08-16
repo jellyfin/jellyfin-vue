@@ -1,13 +1,13 @@
 <template>
-  <v-btn
+  <VBtn
     icon
     :size="size"
     :color="playbackManager.isShuffling ? 'primary' : undefined"
     @click="playbackManager.toggleShuffle">
-    <v-icon :size="size">
-      <i-mdi-shuffle />
-    </v-icon>
-  </v-btn>
+    <VIcon :size="size">
+      <IMdiShuffle />
+    </VIcon>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

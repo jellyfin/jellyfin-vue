@@ -1,41 +1,43 @@
 <template>
-  <v-app-bar
+  <VAppBar
     class="app-bar-safe-zone"
     :color="transparentAppBar ? 'transparent' : undefined"
     density="compact"
     flat>
-    <loading-indicator />
-    <v-app-bar-nav-icon
+    <LoadingIndicator />
+    <VAppBarNavIcon
       v-if="$vuetify.display.mobile"
       @click="navigationDrawer = !navigationDrawer" />
-    <app-bar-button-layout @click="$router.back()">
+    <AppBarButtonLayout @click="$router.back()">
       <template #icon>
-        <v-icon>
-          <i-mdi-arrow-left />
-        </v-icon>
+        <VIcon>
+          <IMdiArrowLeft />
+        </VIcon>
       </template>
-    </app-bar-button-layout>
-    <v-spacer />
-    <search-field />
-    <v-spacer />
-    <app-bar-button-layout v-if="!network.isOnline" color="red">
+    </AppBarButtonLayout>
+    <VSpacer />
+    <SearchField />
+    <VSpacer />
+    <AppBarButtonLayout
+      v-if="!network.isOnline"
+      color="red">
       <template #icon>
-        <v-icon>
-          <i-mdi-network-off-outline />
-        </v-icon>
+        <VIcon>
+          <IMdiNetworkOffOutline />
+        </VIcon>
       </template>
       <template #tooltip>
         <span>{{ $t('noNetworkConnection') }}</span>
       </template>
-    </app-bar-button-layout>
-    <task-manager-button />
-    <app-bar-button-layout @click="switchColorTheme">
+    </AppBarButtonLayout>
+    <TaskManagerButton />
+    <AppBarButtonLayout @click="switchColorTheme">
       <template #icon>
-        <v-icon>
-          <i-mdi-brightness-auto v-if="clientSettings.darkMode === 'auto'" />
-          <i-mdi-weather-sunny v-else-if="clientSettings.darkMode" />
-          <i-mdi-weather-night v-else />
-        </v-icon>
+        <VIcon>
+          <IMdiBrightnessAuto v-if="clientSettings.darkMode === 'auto'" />
+          <IMdiWeatherSunny v-else-if="clientSettings.darkMode" />
+          <IMdiWeatherNight v-else />
+        </VIcon>
       </template>
       <template #tooltip>
         <span v-if="clientSettings.darkMode === 'auto'">
@@ -48,12 +50,12 @@
           {{ $t('tooltips.switchToAuto') }}
         </span>
       </template>
-    </app-bar-button-layout>
+    </AppBarButtonLayout>
     <!-- Uncomment when some of the remote play features are fully implemented -->
     <!-- <cast-button /> -->
-    <user-button />
-    <locale-switcher elevated />
-  </v-app-bar>
+    <UserButton />
+    <LocaleSwitcher elevated />
+  </VAppBar>
 </template>
 
 <script setup lang="ts">

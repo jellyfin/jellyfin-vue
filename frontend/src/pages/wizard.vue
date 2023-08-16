@@ -1,8 +1,16 @@
 <template>
-  <v-container class="fill-height" fluid>
-    <v-row justify="center">
-      <v-col cols="12" sm="12" md="12" xl="8">
-        <h1 class="text-h4 mb-6 text-center">{{ heading }}</h1>
+  <VContainer
+    class="fill-height"
+    fluid>
+    <VRow justify="center">
+      <VCol
+        cols="12"
+        sm="12"
+        md="12"
+        xl="8">
+        <h1 class="text-h4 mb-6 text-center">
+          {{ heading }}
+        </h1>
         <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13509) -->
         <!-- <v-stepper v-model="wizardStage" class="transparent-background">
           <v-stepper-header>
@@ -68,9 +76,9 @@
             </v-stepper-content>
           </v-stepper-items>
         </v-stepper> -->
-      </v-col>
-    </v-row>
-  </v-container>
+      </VCol>
+    </VRow>
+  </VContainer>
 </template>
 
 <route lang="yaml">

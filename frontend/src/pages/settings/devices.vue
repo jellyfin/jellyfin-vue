@@ -1,7 +1,7 @@
 <template>
-  <settings-page page-title="settings.devices.devices">
+  <SettingsPage page-title="settings.devices.devices">
     <template #actions>
-      <v-btn
+      <VBtn
         v-if="devices.length > 0"
         color="error"
         variant="elevated"
@@ -9,71 +9,85 @@
         :loading="loading"
         @click="deleteAllDevices">
         {{ t('settings.devices.deleteAll') }}
-      </v-btn>
-      <v-btn
+      </VBtn>
+      <VBtn
         variant="elevated"
         href="https://jellyfin.org/docs/general/server/devices.html"
         rel="noreferrer noopener"
         target="_blank">
         {{ t('settings.help') }}
-      </v-btn>
+      </VBtn>
     </template>
     <template #content>
-      <v-col>
-        <v-table>
+      <VCol>
+        <VTable>
           <thead>
             <tr>
-              <th v-for="{ text, value } in headers" :id="value" :key="value">
+              <th
+                v-for="{ text, value } in headers"
+                :id="value"
+                :key="value">
                 {{ text }}
               </th>
-              <th scope="col"><!--for delete button--></th>
+              <th scope="col">
+                <!--for delete button-->
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="device in devices" :key="device.Id ?? undefined">
-              <td v-for="{ value } in headers" :key="value">
+            <tr
+              v-for="device in devices"
+              :key="device.Id ?? undefined">
+              <td
+                v-for="{ value } in headers"
+                :key="value">
                 {{
                   value !== 'DateLastActivity'
                     ? device[value]
                     : useDateFns(
-                        formatRelative,
-                        parseJSON(device[value] ?? 'unknown'),
-                        new Date()
-                      ).value
+                      formatRelative,
+                      parseJSON(device[value] ?? 'unknown'),
+                      new Date()
+                    ).value
                 }}
               </td>
               <td>
-                <v-btn
+                <VBtn
                   color="error"
                   :disabled="loading"
                   @click="confirmDelete = device.Id ?? undefined">
                   {{ t('settings.devices.delete') }}
-                </v-btn>
+                </VBtn>
               </td>
             </tr>
           </tbody>
-        </v-table>
-      </v-col>
-      <v-dialog
+        </VTable>
+      </VCol>
+      <VDialog
         width="auto"
         :model-value="confirmDelete !== undefined"
         @update:model-value="confirmDelete = undefined">
-        <v-card>
-          <v-card-text>
+        <VCard>
+          <VCardText>
             {{ t('settings.devices.deleteConfirm') }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" :loading="loading" @click="confirmDeletion">
+          </VCardText>
+          <VCardActions>
+            <VBtn
+              color="primary"
+              :loading="loading"
+              @click="confirmDeletion">
               {{ t('confirm') }}
-            </v-btn>
-            <v-btn :loading="loading" @click="confirmDelete = undefined">
+            </VBtn>
+            <VBtn
+              :loading="loading"
+              @click="confirmDelete = undefined">
               {{ t('cancel') }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VDialog>
     </template>
-  </settings-page>
+  </SettingsPage>
 </template>
 
 <route lang="yaml">

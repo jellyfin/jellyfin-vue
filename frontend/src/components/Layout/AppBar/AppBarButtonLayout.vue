@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <VBtn
     class="align-self-center ma-1"
     v-bind="mergeProps($props)"
     icon
@@ -7,10 +7,12 @@
     variant="elevated">
     <slot name="icon" />
 
-    <v-tooltip v-if="$slots.tooltip" location="bottom">
+    <VTooltip
+      v-if="$slots.tooltip"
+      location="bottom">
       <slot name="tooltip" />
-    </v-tooltip>
-  </v-btn>
+    </VTooltip>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

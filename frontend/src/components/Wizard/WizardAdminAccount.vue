@@ -1,13 +1,13 @@
 <template>
-  <v-form v-model="valid">
-    <v-text-field
+  <VForm v-model="valid">
+    <VTextField
       v-model="admin.Name"
       variant="outlined"
       :label="t('username')"
       type="username"
       :rules="RequiredRule"
       :disabled="loading" />
-    <v-text-field
+    <VTextField
       v-model="admin.Password"
       variant="outlined"
       :label="t('password')"
@@ -16,7 +16,7 @@
       :disabled="loading"
       @click:append="() => (showPassword = !showPassword)" />
 
-    <v-text-field
+    <VTextField
       v-model="passwordCheck"
       variant="outlined"
       :label="t('wizard.confirmPassword')"
@@ -26,22 +26,22 @@
       :disabled="loading"
       @click:append="() => (showPassword = !showPassword)" />
 
-    <v-btn
+    <VBtn
       color="secondary"
       variant="elevated"
       :disabled="loading"
       @click="emit('previous-step')">
       {{ t('previous') }}
-    </v-btn>
-    <v-btn
+    </VBtn>
+    <VBtn
       color="primary"
       variant="elevated"
       :disabled="!valid || loading"
       :loading="loading"
       @click="createAdminAccount">
       {{ t('next') }}
-    </v-btn>
-  </v-form>
+    </VBtn>
+  </VForm>
 </template>
 
 <script setup lang="ts">

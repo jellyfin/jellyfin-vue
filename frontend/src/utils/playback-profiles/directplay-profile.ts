@@ -87,7 +87,7 @@ export function getDirectPlayProfiles(
       });
     }
 
-    // aac also appears in the m4a and m4b container
+    // Aac also appears in the m4a and m4b container
     if (audioFormat === 'aac' || audioFormat === 'alac') {
       DirectPlayProfiles.push(
         {

@@ -1,8 +1,10 @@
 <template>
   <span id="draggable-queue">
-    <template v-for="(item, index) of playbackManager.queue" :key="item.Id">
-      <v-hover v-slot="{ isHovering, props: hoverProps }">
-        <v-list-item
+    <template
+      v-for="(item, index) of playbackManager.queue"
+      :key="item.Id">
+      <VHover v-slot="{ isHovering, props: hoverProps }">
+        <VListItem
           v-bind="hoverProps"
           :title="item.Name ?? ''"
           :subtitle="getArtists(item)"
@@ -10,24 +12,31 @@
           :class="{ 'text-primary font-weight-bold': isPlaying(index) }"
           @click="playbackManager.currentItemIndex = index">
           <template #prepend>
-            <v-list-item-action :key="index" start>
-              <v-icon>
+            <VListItemAction
+              :key="index"
+              start>
+              <VIcon>
                 <template v-if="!isHovering">
                   {{ index + 1 }}
                 </template>
-                <i-mdi-drag-horizontal v-else />
-              </v-icon>
-            </v-list-item-action>
-            <v-avatar>
-              <blurhash-image :item="item" />
-            </v-avatar>
+                <IMdiDragHorizontal v-else />
+              </VIcon>
+            </VListItemAction>
+            <VAvatar>
+              <BlurhashImage :item="item" />
+            </VAvatar>
           </template>
           <template #append>
-            <like-button v-hide="isPlaying(index)" :item="item" />
-            <item-menu v-hide="isPlaying(index)" :item="item" queue />
+            <LikeButton
+              v-hide="isPlaying(index)"
+              :item="item" />
+            <ItemMenu
+              v-hide="isPlaying(index)"
+              :item="item"
+              queue />
           </template>
-        </v-list-item>
-      </v-hover>
+        </VListItem>
+      </VHover>
     </template>
   </span>
 </template>

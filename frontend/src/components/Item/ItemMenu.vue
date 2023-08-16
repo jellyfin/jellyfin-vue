@@ -1,15 +1,15 @@
 <template>
-  <v-btn
+  <VBtn
     v-if="options.length > 0"
     :variant="outlined ? 'outlined' : undefined"
     icon
     size="small"
     @click.stop.prevent="onActivatorClick"
     @contextmenu.stop.prevent="onRightClick">
-    <v-icon>
-      <i-mdi-dots-vertical />
-    </v-icon>
-    <v-menu
+    <VIcon>
+      <IMdiDotsVertical />
+    </VIcon>
+    <VMenu
       v-model="show"
       :persistent="false"
       close-on-content-click
@@ -17,12 +17,12 @@
       :z-index="zIndex"
       scroll-strategy="close"
       location="top">
-      <v-list nav>
+      <VList nav>
         <template v-for="(section, index1) in options">
-          <v-divider
+          <VDivider
             v-if="section.length > 0 && index1 > 0"
             :key="`item-${item.Id}-section-${index1}-divider`" />
-          <v-list-item
+          <VListItem
             v-for="(menuOption, index2) in section"
             :key="`item-${item.Id}-section-${index1}-option-${index2}`"
             class="text"
@@ -31,22 +31,22 @@
             :prepend-icon="menuOption.icon"
             @click="menuOption.action" />
         </template>
-      </v-list>
-    </v-menu>
-  </v-btn>
-  <metadata-editor-dialog
+      </VList>
+    </VMenu>
+  </VBtn>
+  <MetadataEditorDialog
     v-if="metadataDialog && item.Id"
     :item-id="item.Id"
     @close="metadataDialog = false" />
-  <refresh-metadata-dialog
+  <RefreshMetadataDialog
     v-if="refreshDialog && item.Id"
     :item="menuProps.item"
     @close="refreshDialog = false" />
-  <identify-dialog
+  <IdentifyDialog
     v-if="identifyItemDialog && item.Id"
     :item="menuProps.item"
     @close="identifyItemDialog = false" />
-  <media-detail-dialog
+  <MediaDetailDialog
     v-if="mediaInfoDialog && item.Id"
     :item="menuProps.item"
     @close="mediaInfoDialog = false" />
@@ -100,12 +100,6 @@ const openMenu = ref<string>();
 </script>
 
 <script setup lang="ts">
-const { t } = useI18n();
-const instanceId = v4();
-const remote = useRemote();
-const router = useRouter();
-const route = useRoute();
-
 const menuProps = withDefaults(
   defineProps<{
     item: BaseItemDto;
@@ -121,6 +115,11 @@ const menuProps = withDefaults(
     queue: false
   }
 );
+const { t } = useI18n();
+const instanceId = v4();
+const remote = useRemote();
+const router = useRouter();
+const route = useRoute();
 
 const parent = getCurrentInstance()?.parent;
 /**
@@ -340,10 +339,10 @@ const copyDownloadURLAction = {
         await (typeof streamUrls === 'string'
           ? copyAction(text)
           : useConfirmDialog(async () => await copyAction(text), {
-              title: t('copyPrompt'),
-              text: text,
-              confirmText: t('accept')
-            }));
+            title: t('copyPrompt'),
+            text: text,
+            confirmText: t('accept')
+          }));
       } else {
         useSnackbar(errorMessage, 'error');
       }

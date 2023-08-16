@@ -53,7 +53,7 @@ export function getTranscodingProfiles(
 
   if (canPlayHls) {
     TranscodingProfiles.push({
-      // hlsjs, edge, and android all seem to require ts container
+      // Hlsjs, edge, and android all seem to require ts container
       Container:
         !canPlayNativeHls(videoTestElement) ||
         (isEdge() && !isChromiumBased()) ||
@@ -124,8 +124,10 @@ export function getTranscodingProfiles(
       VideoCodec: 'vpx',
       Context: EncodingContext.Streaming,
       Protocol: 'http',
-      // If audio transcoding is needed, limit channels to number of physical audio channels
-      // Trying to transcode to 5 channels when there are only 2 speakers generally does not sound good
+      /*
+       * If audio transcoding is needed, limit channels to number of physical audio channels
+       * Trying to transcode to 5 channels when there are only 2 speakers generally does not sound good
+       */
       MaxAudioChannels: physicalAudioChannels.toString()
     });
   }

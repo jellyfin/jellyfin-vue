@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-select
+    <VSelect
       v-model="metadataLanguage"
       variant="outlined"
       :label="t('metadataLanguage')"
@@ -9,7 +9,7 @@
       item-value="TwoLetterISOLanguageName"
       :items="cultureOptions"
       :disabled="loading" />
-    <v-select
+    <VSelect
       v-model="metadataCountry"
       variant="outlined"
       :label="t('metadataCountry')"
@@ -18,20 +18,20 @@
       item-value="TwoLetterISORegionName"
       :items="countryOptions"
       :disabled="loading" />
-    <v-btn
+    <VBtn
       color="secondary"
       variant="elevated"
       :disabled="loading"
       @click="emit('previous-step')">
       {{ t('previous') }}
-    </v-btn>
-    <v-btn
+    </VBtn>
+    <VBtn
       :loading="loading"
       color="primary"
       variant="elevated"
       @click="setMetadata">
       {{ t('next') }}
-    </v-btn>
+    </VBtn>
   </div>
 </template>
 

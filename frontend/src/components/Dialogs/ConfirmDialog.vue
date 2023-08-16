@@ -1,33 +1,44 @@
 <template>
-  <v-dialog v-model="model" width="auto" :fullscreen="$vuetify.display.mobile">
-    <v-card>
-      <v-card-title v-if="state.title" class="text-center">
+  <VDialog
+    v-model="model"
+    width="auto"
+    :fullscreen="$vuetify.display.mobile">
+    <VCard>
+      <VCardTitle
+        v-if="state.title"
+        class="text-center">
         {{ state.title }}
-      </v-card-title>
-      <v-card-subtitle v-if="state.subtitle" class="text-center">
+      </VCardTitle>
+      <VCardSubtitle
+        v-if="state.subtitle"
+        class="text-center">
         {{ state.subtitle }}
-      </v-card-subtitle>
+      </VCardSubtitle>
 
-      <v-divider />
+      <VDivider />
       <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <v-card-text
+      <VCardText
         class="d-flex text-center align-center justify-center"
         v-html="sanitizeHtml(innerHtml)" />
       <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <v-card-actions class="align-center justify-center">
-        <v-btn variant="elevated" color="secondary" width="8em" @click="cancel">
+      <VCardActions class="align-center justify-center">
+        <VBtn
+          variant="elevated"
+          color="secondary"
+          width="8em"
+          @click="cancel">
           {{ t('cancel') }}
-        </v-btn>
-        <v-btn
+        </VBtn>
+        <VBtn
           width="8em"
           variant="elevated"
           :color="state.confirmColor ?? 'error'"
           @click="confirm">
           {{ state.confirmText }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        </VBtn>
+      </VCardActions>
+    </VCard>
+  </VDialog>
 </template>
 
 <script lang="ts">

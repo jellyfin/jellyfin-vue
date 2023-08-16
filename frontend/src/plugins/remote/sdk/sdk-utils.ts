@@ -47,8 +47,10 @@ const SDK = new Jellyfin({
 function getDeviceName(): string {
   let deviceName = 'Unknown';
 
-  // TODO: Replace with pattern matching once TC39 adopts the proposal
-  // See: https://github.com/tc39/proposal-pattern-matching
+  /*
+   * TODO: Replace with pattern matching once TC39 adopts the proposal
+   * See: https://github.com/tc39/proposal-pattern-matching
+   */
   if (isChrome()) {
     deviceName = 'Chrome';
   } else if (isEdge() && !isChromiumBased()) {

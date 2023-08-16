@@ -1,43 +1,49 @@
 <template>
-  <v-card :loading="loading">
-    <v-row no-gutters align="center">
-      <v-col class="mb-2">
-        <v-card-title>{{ serverInfo.ServerName }}</v-card-title>
-        <v-card-subtitle class="mt-n2">
+  <VCard :loading="loading">
+    <VRow
+      no-gutters
+      align="center">
+      <VCol class="mb-2">
+        <VCardTitle>{{ serverInfo.ServerName }}</VCardTitle>
+        <VCardSubtitle class="mt-n2">
           {{ serverInfo.PublicAddress }}
-        </v-card-subtitle>
-      </v-col>
-      <v-col cols="auto">
-        <v-card-actions>
-          <v-btn icon disabled>
-            <v-icon>
-              <i-mdi-information-outline />
-            </v-icon>
-          </v-btn>
-          <v-btn
+        </VCardSubtitle>
+      </VCol>
+      <VCol cols="auto">
+        <VCardActions>
+          <VBtn
+            icon
+            disabled>
+            <VIcon>
+              <IMdiInformationOutline />
+            </VIcon>
+          </VBtn>
+          <VBtn
             icon
             :disabled="loading || serverInfo.isDefault"
             @click="removeServer">
-            <v-icon>
-              <i-mdi-delete />
-            </v-icon>
-          </v-btn>
-          <v-btn icon :disabled="loading" @click="setServer">
-            <v-icon>
-              <i-mdi-arrow-right />
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-col>
-    </v-row>
-  </v-card>
+            <VIcon>
+              <IMdiDelete />
+            </VIcon>
+          </VBtn>
+          <VBtn
+            icon
+            :disabled="loading"
+            @click="setServer">
+            <VIcon>
+              <IMdiArrowRight />
+            </VIcon>
+          </VBtn>
+        </VCardActions>
+      </VCol>
+    </VRow>
+  </VCard>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-// eslint-disable-next-line no-restricted-imports
-import { ServerInfo } from '@/plugins/remote/auth/types';
+import type { ServerInfo } from '@/plugins/remote/auth/types';
 import { useRemote } from '@/composables';
 
 const props = defineProps<{ serverInfo: ServerInfo }>();

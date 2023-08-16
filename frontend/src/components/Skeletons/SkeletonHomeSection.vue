@@ -1,16 +1,16 @@
 <template>
-  <v-col>
+  <VCol>
     <!-- TODO: Wait for Vuetify 3 implementation (https://github.com/vuetifyjs/vuetify/issues/13504) -->
     <!-- <v-skeleton-loader type="heading" max-width="25em" class="ml-2" /> -->
-    <v-row class="space-around ma-0">
-      <skeleton-card
+    <VRow class="space-around ma-0">
+      <SkeletonCard
         v-for="i in cardNumber"
         :key="i"
         :card-shape="cardShape"
         :style="`width: ${100 / cardNumber}%`"
         text />
-    </v-row>
-  </v-col>
+    </VRow>
+  </VCol>
 </template>
 
 <script setup lang="ts">

@@ -1,14 +1,14 @@
 <template>
-  <v-dialog
+  <VDialog
     content-class="metadata-dialog"
     :model-value="model"
     :fullscreen="$vuetify.display.mobile"
     @after-leave="emit('close')">
-    <metadata-editor
+    <MetadataEditor
       :item-id="itemId"
       @cancel="model = false"
       @save="model = false" />
-  </v-dialog>
+  </VDialog>
 </template>
 
 <script setup lang="ts">
@@ -16,11 +16,12 @@ import { ref } from 'vue';
 
 defineProps<{ itemId: string }>();
 
-const model = ref(true);
-
 const emit = defineEmits<{
   close: [];
 }>();
+
+const model = ref(true);
+
 </script>
 
 <style lang="scss" scoped>

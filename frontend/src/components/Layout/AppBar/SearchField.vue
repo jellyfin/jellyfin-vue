@@ -1,5 +1,5 @@
 <template>
-  <v-text-field
+  <VTextField
     v-model="searchQuery"
     class="search-input"
     :prepend-inner-icon="IMdiMagnify"

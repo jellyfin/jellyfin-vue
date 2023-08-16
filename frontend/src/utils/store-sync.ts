@@ -69,7 +69,7 @@ export async function updateDisplayPreferences(
     displayPreferences
   );
 
-  // if either old or new preferences have custom settings, merge them
+  // If either old or new preferences have custom settings, merge them
   if (
     currentDisplayPreferences.CustomPrefs !== undefined ||
     newDisplayPreferences.CustomPrefs !== undefined

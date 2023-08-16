@@ -1,7 +1,9 @@
 <template>
   <div>
-    <router-link v-if="logo && logoLink" :to="logoLink">
-      <v-img
+    <RouterLink
+      v-if="logo && logoLink"
+      :to="logoLink">
+      <VImg
         class="mb-2"
         data-swiper-parallax="-300"
         :style="{
@@ -9,14 +11,14 @@
           'max-height': $vuetify.display.smAndUp ? '7.5em' : '4em'
         }"
         :src="logo.url" />
-    </router-link>
-    <router-link
+    </RouterLink>
+    <RouterLink
       v-else-if="itemLink && titleString"
       data-swiper-parallax="-300"
       class="link d-block text-h4 text-sm-h3 text-sm-h2 text-truncate"
       :to="itemLink">
       {{ titleString }}
-    </router-link>
+    </RouterLink>
     <p
       v-if="subtitle"
       data-swiper-parallax="-200"

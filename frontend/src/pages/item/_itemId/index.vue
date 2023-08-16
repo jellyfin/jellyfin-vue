@@ -1,11 +1,17 @@
 <template>
-  <item-cols>
+  <ItemCols>
     <template #left>
-      <v-row justify="center" justify-md="start">
-        <v-col cols="6" md="3">
-          <card :item="item" />
-        </v-col>
-        <v-col cols="12" md="9">
+      <VRow
+        justify="center"
+        justify-md="start">
+        <VCol
+          cols="6"
+          md="3">
+          <Card :item="item" />
+        </VCol>
+        <VCol
+          cols="12"
+          md="9">
           <h1
             class="text-h5 text-sm-h4 font-weight-light"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
@@ -20,125 +26,156 @@
           <div
             class="text-caption text-h4 font-weight-medium mt-2"
             :class="{ 'text-center': !$vuetify.display.mdAndUp }">
-            <media-info :item="item" year runtime rating ends-at />
+            <MediaInfo
+              :item="item"
+              year
+              runtime
+              rating
+              ends-at />
           </div>
-          <v-row
+          <VRow
             class="my-4 align-center"
             :class="{
               'justify-center': !$vuetify.display.mdAndUp,
               'ml-0': $vuetify.display.mdAndUp
             }">
-            <play-button
+            <PlayButton
               class="mr-2"
               :item="item"
               :media-source-index="currentSourceIndex"
               :video-track-index="currentVideoTrack"
               :audio-track-index="currentAudioTrack"
               :subtitle-track-index="currentSubtitleTrack" />
-            <like-button :item="item" class="mr-2" />
-            <mark-played-button :item="item" class="mr-2" />
-            <item-menu :item="item" />
-          </v-row>
-          <v-col cols="12" md="10">
-            <v-row
+            <LikeButton
+              :item="item"
+              class="mr-2" />
+            <MarkPlayedButton
+              :item="item"
+              class="mr-2" />
+            <ItemMenu :item="item" />
+          </VRow>
+          <VCol
+            cols="12"
+            md="10">
+            <VRow
               v-if="item && item.GenreItems && item.GenreItems.length > 0"
               align="center">
-              <v-col :cols="12" :sm="2" class="px-0 text-truncate">
+              <VCol
+                :cols="12"
+                :sm="2"
+                class="px-0 text-truncate">
                 <label class="text--secondary">{{ $t('genres') }}</label>
-              </v-col>
-              <v-col class="px-0" :cols="12" :sm="10">
-                <v-slide-group>
-                  <v-slide-group-item
+              </VCol>
+              <VCol
+                class="px-0"
+                :cols="12"
+                :sm="10">
+                <VSlideGroup>
+                  <VSlideGroupItem
                     v-for="(genre, index) in item.GenreItems"
                     :key="`genre-${genre.Id}`">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :class="{ 'ml-2': index > 0 }"
                       :to="`/genre/${genre.Id}?type=${item.Type}`">
                       {{ genre.Name }}
-                    </v-chip>
-                  </v-slide-group-item>
-                </v-slide-group>
-              </v-col>
-            </v-row>
-            <v-row
+                    </VChip>
+                  </VSlideGroupItem>
+                </VSlideGroup>
+              </VCol>
+            </VRow>
+            <VRow
               v-if="item && directors.length > 0 && !$vuetify.display.smAndUp"
               align="center">
-              <v-col
+              <VCol
                 :cols="12"
                 :sm="2"
                 class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('directing') }}</label>
-              </v-col>
-              <v-col class="px-0" :cols="12" :sm="10">
-                <v-slide-group>
-                  <v-slide-group-item
+              </VCol>
+              <VCol
+                class="px-0"
+                :cols="12"
+                :sm="10">
+                <VSlideGroup>
+                  <VSlideGroupItem
                     v-for="director in directors"
                     :key="director.Id">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :to="getItemDetailsLink(director, 'Person')">
                       {{ director.Name }}
-                    </v-chip>
-                  </v-slide-group-item>
-                </v-slide-group>
-              </v-col>
-            </v-row>
-            <v-row
+                    </VChip>
+                  </VSlideGroupItem>
+                </VSlideGroup>
+              </VCol>
+            </VRow>
+            <VRow
               v-if="item && writers.length > 0 && !$vuetify.display.smAndUp"
               align="center">
-              <v-col
+              <VCol
                 :cols="12"
                 :sm="2"
                 class="mt-sm-3 py-sm-0 px-0 text-truncate">
                 <label class="text--secondary">{{ $t('writing') }}</label>
-              </v-col>
-              <v-col class="px-0" :cols="12" :sm="10">
-                <v-slide-group>
-                  <v-slide-group-item
+              </VCol>
+              <VCol
+                class="px-0"
+                :cols="12"
+                :sm="10">
+                <VSlideGroup>
+                  <VSlideGroupItem
                     v-for="writer in writers"
                     :key="writer.Id">
-                    <v-chip
+                    <VChip
                       size="small"
                       link
                       :to="getItemDetailsLink(writer, 'Person')">
                       {{ writer.Name }}
-                    </v-chip>
-                  </v-slide-group-item>
-                </v-slide-group>
-              </v-col>
-            </v-row>
+                    </VChip>
+                  </VSlideGroupItem>
+                </VSlideGroup>
+              </VCol>
+            </VRow>
             <div
               v-if="item && item.MediaSources && item.MediaSources.length > 0"
               class="mt-2">
-              <v-row v-if="item.MediaSources.length > 1" align="center">
-                <v-col
+              <VRow
+                v-if="item.MediaSources.length > 1"
+                align="center">
+                <VCol
                   :cols="12"
                   :sm="2"
                   class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('version') }}</label>
-                </v-col>
-                <v-col class="px-0" :cols="12" :sm="10">
-                  <media-source-selector
+                </VCol>
+                <VCol
+                  class="px-0"
+                  :cols="12"
+                  :sm="10">
+                  <MediaSourceSelector
                     :sources="item.MediaSources"
                     :default-source-index="currentSourceIndex"
                     @input="
                       (index) =>
                         (currentSource = item.MediaSources?.[index] ?? {})
                     " />
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
+                </VCol>
+              </VRow>
+              <VRow align="center">
+                <VCol
                   :cols="12"
                   :sm="2"
                   class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('video') }}</label>
-                </v-col>
-                <v-col class="px-0" :cols="12" :sm="10">
-                  <media-stream-selector
+                </VCol>
+                <VCol
+                  class="px-0"
+                  :cols="12"
+                  :sm="10">
+                  <MediaStreamSelector
                     v-if="currentSource.MediaStreams"
                     :key="currentSource.Id || ''"
                     :media-streams="
@@ -146,17 +183,20 @@
                     "
                     type="Video"
                     @input="(trackIndex) => (currentVideoTrack = trackIndex)" />
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
+                </VCol>
+              </VRow>
+              <VRow align="center">
+                <VCol
                   :cols="12"
                   :sm="2"
                   class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('audio') }}</label>
-                </v-col>
-                <v-col class="px-0" :cols="12" :sm="10">
-                  <media-stream-selector
+                </VCol>
+                <VCol
+                  class="px-0"
+                  :cols="12"
+                  :sm="10">
+                  <MediaStreamSelector
                     v-if="currentSource.MediaStreams"
                     :key="currentSource.Id || ''"
                     :media-streams="
@@ -164,17 +204,20 @@
                     "
                     type="Audio"
                     @input="(trackIndex) => (currentAudioTrack = trackIndex)" />
-                </v-col>
-              </v-row>
-              <v-row align="center">
-                <v-col
+                </VCol>
+              </VRow>
+              <VRow align="center">
+                <VCol
                   :cols="12"
                   :sm="2"
                   class="mt-sm-3 py-sm-0 px-0 text-truncate">
                   <label class="text--secondary">{{ $t('subtitles') }}</label>
-                </v-col>
-                <v-col class="px-0" :cols="12" :sm="10">
-                  <media-stream-selector
+                </VCol>
+                <VCol
+                  class="px-0"
+                  :cols="12"
+                  :sm="10">
+                  <MediaStreamSelector
                     v-if="currentSource.MediaStreams"
                     :key="currentSource.Id || ''"
                     :media-streams="
@@ -184,19 +227,19 @@
                     @input="
                       (trackIndex) => (currentSubtitleTrack = trackIndex)
                     " />
-                </v-col>
-              </v-row>
+                </VCol>
+              </VRow>
             </div>
             <div
               v-else-if="
                 item &&
-                item.MediaType === 'Video' &&
-                (!item.MediaSources || item.MediaSources.length === 0)
+                  item.MediaType === 'Video' &&
+                  (!item.MediaSources || item.MediaSources.length === 0)
               "
               class="text-h5 my-4">
               {{ $t('NoMediaSourcesAvailable') }}
             </div>
-          </v-col>
+          </VCol>
           <div>
             <p
               v-if="item.Taglines && item.Taglines.length > 0"
@@ -211,28 +254,34 @@
               v-html="sanitizeHtml(item.Overview, true)" />
             <!-- eslint-enable vue/no-v-html -->
           </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col v-if="item.Type === 'BoxSet'" cols="12">
-          <collection-tabs :item="item" />
-        </v-col>
-        <v-col cols="12">
-          <related-items :item="item" />
-        </v-col>
-      </v-row>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol
+          v-if="item.Type === 'BoxSet'"
+          cols="12">
+          <CollectionTabs :item="item" />
+        </VCol>
+        <VCol cols="12">
+          <RelatedItems :item="item" />
+        </VCol>
+      </VRow>
     </template>
     <template #right>
       <div v-if="crew.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.crew') }}</h2>
-        <people-list :items="crew" />
+        <h2 class="text-h6 text-sm-h5">
+          {{ $t('item.crew') }}
+        </h2>
+        <PeopleList :items="crew" />
       </div>
       <div v-if="actors.length > 0">
-        <h2 class="text-h6 text-sm-h5">{{ $t('item.cast') }}</h2>
-        <people-list :items="actors" />
+        <h2 class="text-h6 text-sm-h5">
+          {{ $t('item.cast') }}
+        </h2>
+        <PeopleList :items="actors" />
       </div>
     </template>
-  </item-cols>
+  </ItemCols>
 </template>
 
 <script setup lang="ts">

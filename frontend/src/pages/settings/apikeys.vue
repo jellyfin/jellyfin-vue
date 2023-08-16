@@ -1,59 +1,68 @@
 <template>
-  <settings-page page-title="settings.apiKeys.apiKeys">
+  <SettingsPage page-title="settings.apiKeys.apiKeys">
     <template #actions>
-      <v-btn
+      <VBtn
         color="primary"
         variant="elevated"
         :loading="loading"
         @click="addingNewKey = true">
         {{ t('settings.apiKeys.addNewKey') }}
-      </v-btn>
-      <v-btn
+      </VBtn>
+      <VBtn
         v-if="apiKeys.length > 0"
         color="error"
         variant="elevated"
         :loading="loading"
         @click="confirmRevoke = 'all'">
         {{ t('settings.apiKeys.revokeAll') }}
-      </v-btn>
+      </VBtn>
     </template>
     <template #content>
-      <v-col>
-        <v-table>
+      <VCol>
+        <VTable>
           <thead>
             <tr>
-              <th v-for="{ text, value } in headers" :id="value" :key="value">
+              <th
+                v-for="{ text, value } in headers"
+                :id="value"
+                :key="value">
                 {{ text }}
               </th>
-              <th scope="col"><!-- delete column --></th>
+              <th scope="col">
+                <!-- delete column -->
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="apiKey in apiKeys" :key="apiKey.AppName ?? undefined">
-              <td v-for="{ value } in headers" :key="value">
+            <tr
+              v-for="apiKey in apiKeys"
+              :key="apiKey.AppName ?? undefined">
+              <td
+                v-for="{ value } in headers"
+                :key="value">
                 {{
                   value !== 'DateCreated'
                     ? apiKey[value]
                     : useDateFns(
-                        formatRelative,
-                        parseJSON(apiKey[value] ?? 'unknown'),
-                        new Date()
-                      ).value
+                      formatRelative,
+                      parseJSON(apiKey[value] ?? 'unknown'),
+                      new Date()
+                    ).value
                 }}
               </td>
               <td>
-                <v-btn
+                <VBtn
                   color="error"
                   :loading="loading"
                   @click="confirmRevoke = apiKey.AccessToken ?? undefined">
                   {{ t('settings.apiKeys.revoke') }}
-                </v-btn>
+                </VBtn>
               </td>
             </tr>
           </tbody>
-        </v-table>
-      </v-col>
-      <add-api-key
+        </VTable>
+      </VCol>
+      <AddApiKey
         :adding-new-key="addingNewKey"
         @close="addingNewKey = false"
         @key-added="
@@ -62,29 +71,31 @@
             await refreshApiKeys();
           }
         " />
-      <v-dialog
+      <VDialog
         width="auto"
         :model-value="confirmRevoke !== undefined"
         @update:model-value="confirmRevoke = undefined">
-        <v-card>
-          <v-card-text>
+        <VCard>
+          <VCardText>
             {{ t('settings.apiKeys.revokeConfirm') }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
+          </VCardText>
+          <VCardActions>
+            <VBtn
               color="primary"
               :loading="loading"
               @click="confirmRevocation">
               {{ t('confirm') }}
-            </v-btn>
-            <v-btn :loading="loading" @click="confirmRevoke = undefined">
+            </VBtn>
+            <VBtn
+              :loading="loading"
+              @click="confirmRevoke = undefined">
               {{ t('cancel') }}
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            </VBtn>
+          </VCardActions>
+        </VCard>
+      </VDialog>
     </template>
-  </settings-page>
+  </SettingsPage>
 </template>
 
 <route lang="yaml">

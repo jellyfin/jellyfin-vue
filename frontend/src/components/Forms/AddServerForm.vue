@@ -1,28 +1,32 @@
 <template>
   <div>
-    <v-form
+    <VForm
       v-model="valid"
       :disabled="loading"
       @submit.prevent="connectToServer">
-      <v-text-field
+      <VTextField
         v-model="serverUrl"
         variant="outlined"
         autofocus
         :label="$t('login.serverAddress')"
         type="url"
         :rules="rules" />
-      <v-row align="center" no-gutters>
-        <v-col v-if="previousServerLength" class="mr-2">
-          <v-btn
+      <VRow
+        align="center"
+        no-gutters>
+        <VCol
+          v-if="previousServerLength"
+          class="mr-2">
+          <VBtn
             block
             size="large"
             variant="elevated"
             @click="router.push('/server/select')">
             {{ $t('login.changeServer') }}
-          </v-btn>
-        </v-col>
-        <v-col class="mr-2">
-          <v-btn
+          </VBtn>
+        </VCol>
+        <VCol class="mr-2">
+          <VBtn
             :disabled="!valid"
             :loading="loading"
             block
@@ -31,10 +35,10 @@
             variant="elevated"
             type="submit">
             {{ $t('login.connect') }}
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
+          </VBtn>
+        </VCol>
+      </VRow>
+    </VForm>
   </div>
 </template>
 

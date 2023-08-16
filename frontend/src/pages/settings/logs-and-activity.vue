@@ -1,17 +1,21 @@
 <template>
-  <settings-page page-title="settingsSections.logs.name">
+  <SettingsPage page-title="settingsSections.logs.name">
     <template #content>
-      <v-col md="6" class="pt-0 pb-4">
-        <v-fade-transition group>
-          <h2 key="logs-title" class="text-h6 mb-2">
+      <VCol
+        md="6"
+        class="pt-0 pb-4">
+        <VFadeTransition group>
+          <h2
+            key="logs-title"
+            class="text-h6 mb-2">
             {{ t('settings.logsAndActivity.logs') }}
           </h2>
-          <v-list
+          <VList
             v-if="logs.length > 0"
             key="log-list"
             lines="two"
             class="mb-2">
-            <v-list-item
+            <VListItem
               v-for="file in logs"
               :key="file.Name ?? undefined"
               :href="getLogFileLink(file.Name ?? '')"
@@ -20,62 +24,66 @@
               target="_blank"
               rel="noopener">
               <template #prepend>
-                <v-avatar>
-                  <v-icon>
-                    <i-mdi-file />
-                  </v-icon>
-                </v-avatar>
+                <VAvatar>
+                  <VIcon>
+                    <IMdiFile />
+                  </VIcon>
+                </VAvatar>
               </template>
               <template #append>
-                <v-icon>
-                  <i-mdi-open-in-new />
-                </v-icon>
+                <VIcon>
+                  <IMdiOpenInNew />
+                </VIcon>
               </template>
-            </v-list-item>
-          </v-list>
-          <v-card v-else>
-            <v-card-title>
+            </VListItem>
+          </VList>
+          <VCard v-else>
+            <VCardTitle>
               {{ t('settings.logsAndActivity.noLogsFound') }}
-            </v-card-title>
-          </v-card>
-        </v-fade-transition>
-      </v-col>
-      <v-col md="6" class="pt-0 pb-4">
-        <v-fade-transition group>
-          <h2 key="activity-title" class="text-h6 mb-2">
+            </VCardTitle>
+          </VCard>
+        </VFadeTransition>
+      </VCol>
+      <VCol
+        md="6"
+        class="pt-0 pb-4">
+        <VFadeTransition group>
+          <h2
+            key="activity-title"
+            class="text-h6 mb-2">
             {{ t('settings.logsAndActivity.activity') }}
           </h2>
-          <v-list
+          <VList
             v-if="activityList.length > 0"
             key="activity-list"
             lines="two"
             class="mb-2">
-            <v-list-item
+            <VListItem
               v-for="activity in activityList"
               :key="activity.Id"
               :title="activity.Name"
               :subtitle="activity.ShortOverview ?? undefined">
               <template #prepend>
-                <v-avatar :color="getColorFromSeverity(activity.Severity)">
-                  <v-icon :icon="getIconFromActivityType(activity.Type)" />
-                </v-avatar>
+                <VAvatar :color="getColorFromSeverity(activity.Severity)">
+                  <VIcon :icon="getIconFromActivityType(activity.Type)" />
+                </VAvatar>
               </template>
               <template #append>
-                <v-list-item-subtitle class="text-capitalize-first-letter">
+                <VListItemSubtitle class="text-capitalize-first-letter">
                   {{ getFormattedActivityDate(activity.Date) }}
-                </v-list-item-subtitle>
+                </VListItemSubtitle>
               </template>
-            </v-list-item>
-          </v-list>
-          <v-card v-else>
-            <v-card-title>
+            </VListItem>
+          </VList>
+          <VCard v-else>
+            <VCardTitle>
               {{ t('settings.logsAndActivity.noActivityFound') }}
-            </v-card-title>
-          </v-card>
-        </v-fade-transition>
-      </v-col>
+            </VCardTitle>
+          </VCard>
+        </VFadeTransition>
+      </VCol>
     </template>
-  </settings-page>
+  </SettingsPage>
 </template>
 
 <route lang="yaml">

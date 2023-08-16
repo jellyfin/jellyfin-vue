@@ -1,31 +1,31 @@
 <template>
-  <v-btn
+  <VBtn
     icon
     :variant="elevated ? 'elevated' : undefined"
     :size="large ? 'large' : 'small'"
     :color="elevated ? undefined : 'primary'">
-    <v-icon>
-      <i-mdi-web />
-    </v-icon>
-    <v-tooltip
+    <VIcon>
+      <IMdiWeb />
+    </VIcon>
+    <VTooltip
       :text="$t('tooltips.changeLanguage')"
       :location="bottom ? 'bottom' : 'top'" />
-    <v-menu>
-      <v-list class="overflow-y-auto">
-        <v-list-item
+    <VMenu>
+      <VList class="overflow-y-auto">
+        <VListItem
           :value="clientSettings.locale === 'auto'"
           :title="$t('auto')"
           @click="clientSettings.locale = 'auto'" />
-        <v-divider />
-        <v-list-item
+        <VDivider />
+        <VListItem
           v-for="(item, index) in i18n.availableLocales"
           :key="index"
           :value="item === i18n.locale.value"
           :title="getLocaleNativeName(item) ?? `${$t('unknown')} (${item})`"
           @click="clientSettings.locale = item" />
-      </v-list>
-    </v-menu>
-  </v-btn>
+      </VList>
+    </VMenu>
+  </VBtn>
 </template>
 
 <script setup lang="ts">

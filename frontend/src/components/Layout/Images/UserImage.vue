@@ -1,15 +1,20 @@
 <template>
-  <v-avatar :size="size">
-    <v-img :src="url" :width="size" cover>
+  <VAvatar :size="size">
+    <VImg
+      :src="url"
+      :width="size"
+      cover>
       <template #placeholder>
-        <v-avatar color="primary" :size="size">
-          <v-icon :size="iconSize">
-            <i-mdi-account />
-          </v-icon>
-        </v-avatar>
+        <VAvatar
+          color="primary"
+          :size="size">
+          <VIcon :size="iconSize">
+            <IMdiAccount />
+          </VIcon>
+        </VAvatar>
       </template>
-    </v-img>
-  </v-avatar>
+    </VImg>
+  </VAvatar>
 </template>
 
 <script setup lang="ts">

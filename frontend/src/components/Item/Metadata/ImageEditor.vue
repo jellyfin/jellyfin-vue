@@ -1,7 +1,9 @@
 <template>
-  <h2 class="text-h6">{{ $t('images') }}</h2>
-  <v-row>
-    <v-col
+  <h2 class="text-h6">
+    {{ $t('images') }}
+  </h2>
+  <VRow>
+    <VCol
       v-for="(item, i) in generalImages"
       :key="`${item.ImageTag}-${i}`"
       xl="1"
@@ -9,34 +11,45 @@
       md="4"
       sm="6"
       cols="12">
-      <v-card class="ma-2" variant="outlined">
-        <v-img
+      <VCard
+        class="ma-2"
+        variant="outlined">
+        <VImg
           :src="imageFormat(item)"
           :aspect-ratio="getContainerAspectRatioForImageType(item.ImageType)" />
-        <div class="text-center text-subtitle-1">{{ item.ImageType }}</div>
+        <div class="text-center text-subtitle-1">
+          {{ item.ImageType }}
+        </div>
         <div class="text-center text-body-2 text--secondary">
           {{ item.Width }} x {{ item.Height }}
         </div>
-        <v-card-actions class="justify-center">
-          <v-btn icon @click="onSearch">
-            <v-icon>
-              <i-mdi-magnify />
-            </v-icon>
-          </v-btn>
-          <v-btn icon class="ml-3" @click="onDelete(item)">
-            <v-icon>
-              <i-mdi-delete />
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
-  <h2 v-if="backdropImages.length > 0" class="text-h6">
+        <VCardActions class="justify-center">
+          <VBtn
+            icon
+            @click="onSearch">
+            <VIcon>
+              <IMdiMagnify />
+            </VIcon>
+          </VBtn>
+          <VBtn
+            icon
+            class="ml-3"
+            @click="onDelete(item)">
+            <VIcon>
+              <IMdiDelete />
+            </VIcon>
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VCol>
+  </VRow>
+  <h2
+    v-if="backdropImages.length > 0"
+    class="text-h6">
     {{ $t('imageType.backdrop') }}
   </h2>
-  <v-row v-if="backdropImages.length > 0">
-    <v-col
+  <VRow v-if="backdropImages.length > 0">
+    <VCol
       v-for="(item, i) in backdropImages"
       :key="`${item.ImageTag}-${i}`"
       xl="1"
@@ -44,30 +57,39 @@
       md="4"
       sm="6"
       cols="12">
-      <v-card class="ma-2" variant="outlined">
-        <v-img
+      <VCard
+        class="ma-2"
+        variant="outlined">
+        <VImg
           :src="imageFormat(item)"
           :aspect-ratio="getContainerAspectRatioForImageType(item.ImageType)" />
-        <div class="text-center text-subtitle-1">{{ item.ImageType }}</div>
+        <div class="text-center text-subtitle-1">
+          {{ item.ImageType }}
+        </div>
         <div class="text-center text-body-2 text--secondary">
           {{ item.Width }} &times; {{ item.Height }}
         </div>
-        <v-card-actions class="justify-center">
-          <v-btn icon @click="onSearch">
-            <v-icon>
-              <i-mdi-magnify />
-            </v-icon>
-          </v-btn>
-          <v-btn icon class="ml-3" @click="onDelete(item)">
-            <v-icon>
-              <i-mdi-delete />
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
-  <image-search
+        <VCardActions class="justify-center">
+          <VBtn
+            icon
+            @click="onSearch">
+            <VIcon>
+              <IMdiMagnify />
+            </VIcon>
+          </VBtn>
+          <VBtn
+            icon
+            class="ml-3"
+            @click="onDelete(item)">
+            <VIcon>
+              <IMdiDelete />
+            </VIcon>
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VCol>
+  </VRow>
+  <ImageSearch
     v-model:dialog="dialog"
     :metadata="metadata"
     @download-success="getItemImageInfos" />

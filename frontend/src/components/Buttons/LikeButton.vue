@@ -1,5 +1,5 @@
 <template>
-  <v-btn
+  <VBtn
     :icon="isFavorite ? IMdiHeart : IMdiHeartOutline"
     :size="size"
     :color="isFavorite ? 'primary' : undefined"
@@ -38,15 +38,14 @@ const isFavorite = computed({
 
       await (newValue
         ? remote.sdk.newUserApi(getUserLibraryApi).markFavoriteItem({
-            userId: remote.auth.currentUserId ?? '',
-            itemId: props.item.Id
-          })
+          userId: remote.auth.currentUserId ?? '',
+          itemId: props.item.Id
+        })
         : remote.sdk.newUserApi(getUserLibraryApi).unmarkFavoriteItem({
-            userId: remote.auth.currentUserId ?? '',
-            itemId: props.item.Id
-          }));
-    } catch {
-    } finally {
+          userId: remote.auth.currentUserId ?? '',
+          itemId: props.item.Id
+        }));
+    } catch {} finally {
       loading.value = false;
     }
   }

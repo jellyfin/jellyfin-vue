@@ -1,7 +1,11 @@
 <template>
-  <v-snackbar v-model="model" :color="state.color" location="bottom left" eager>
+  <VSnackbar
+    v-model="model"
+    :color="state.color"
+    location="bottom left"
+    eager>
     {{ state.message }}
-  </v-snackbar>
+  </VSnackbar>
 </template>
 
 <script lang="ts">

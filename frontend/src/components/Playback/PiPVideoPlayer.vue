@@ -1,5 +1,5 @@
 <template>
-  <v-overlay
+  <VOverlay
     :model-value="true"
     persistent
     no-click-animation
@@ -7,10 +7,12 @@
     scroll-strategy="none"
     content-class="minimized-overlay"
     :width="$vuetify.display.mobile ? '60vw' : '25vw'">
-    <v-hover>
+    <VHover>
       <template #default="{ isHovering, props }">
-        <div v-bind="props" class="minimized-video-container" />
-        <v-overlay
+        <div
+          v-bind="props"
+          class="minimized-video-container" />
+        <VOverlay
           :model-value="isHovering"
           v-bind="props"
           contained
@@ -19,54 +21,58 @@
           width="100%">
           <div class="d-flex flex-column">
             <div class="d-flex flex-row">
-              <v-btn icon @click="playerElement.toggleFullscreenVideoPlayer">
-                <v-icon>
-                  <i-mdi-arrow-expand-all />
-                </v-icon>
-              </v-btn>
-              <v-spacer />
-              <v-btn icon @click="playbackManager.stop">
-                <v-icon>
-                  <i-mdi-close />
-                </v-icon>
-              </v-btn>
+              <VBtn
+                icon
+                @click="playerElement.toggleFullscreenVideoPlayer">
+                <VIcon>
+                  <IMdiArrowExpandAll />
+                </VIcon>
+              </VBtn>
+              <VSpacer />
+              <VBtn
+                icon
+                @click="playbackManager.stop">
+                <VIcon>
+                  <IMdiClose />
+                </VIcon>
+              </VBtn>
             </div>
             <div
               class="absolute-cover pointer-events-none d-flex flex-row justify-center align-center">
-              <v-btn
+              <VBtn
                 class="pointer-events-all"
                 icon
                 size="large"
                 @click="playbackManager.setPreviousTrack">
-                <v-icon size="32">
-                  <i-mdi-skip-previous />
-                </v-icon>
-              </v-btn>
-              <v-btn
+                <VIcon size="32">
+                  <IMdiSkipPrevious />
+                </VIcon>
+              </VBtn>
+              <VBtn
                 class="pointer-events-all"
                 icon
                 size="x-large"
                 @click="playbackManager.playPause">
-                <v-icon size="48">
-                  <i-mdi-play v-if="playbackManager.isPaused" />
-                  <i-mdi-pause v-else />
-                </v-icon>
-              </v-btn>
-              <v-btn
+                <VIcon size="48">
+                  <IMdiPlay v-if="playbackManager.isPaused" />
+                  <IMdiPause v-else />
+                </VIcon>
+              </VBtn>
+              <VBtn
                 class="pointer-events-all"
                 icon
                 size="large"
                 @click="playbackManager.setNextTrack">
-                <v-icon size="32">
-                  <i-mdi-skip-next />
-                </v-icon>
-              </v-btn>
+                <VIcon size="32">
+                  <IMdiSkipNext />
+                </VIcon>
+              </VBtn>
             </div>
           </div>
-        </v-overlay>
+        </VOverlay>
       </template>
-    </v-hover>
-  </v-overlay>
+    </VHover>
+  </VOverlay>
 </template>
 
 <script setup lang="ts">

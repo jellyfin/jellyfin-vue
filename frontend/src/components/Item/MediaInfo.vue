@@ -11,9 +11,11 @@
     <span v-if="item.ProductionYear && year">{{ item.ProductionYear }}</span>
     <span v-if="item.OfficialRating && rating">{{ item.OfficialRating }}</span>
     <span v-if="item.CommunityRating && rating">
-      <v-icon class="rating-icon" size="16">
-        <i-mdi-star />
-      </v-icon>
+      <VIcon
+        class="rating-icon"
+        size="16">
+        <IMdiStar />
+      </VIcon>
       {{ item.CommunityRating.toFixed(1) }}
     </span>
     <span v-if="item.Type === 'MusicAlbum' && item.ChildCount && tracks">
