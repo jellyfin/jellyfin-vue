@@ -64,8 +64,6 @@ import IMdiCloudSearch from 'virtual:icons/mdi/cloud-search-outline';
 import IMdiContentCopy from 'virtual:icons/mdi/content-copy';
 import IMdiDelete from 'virtual:icons/mdi/delete';
 import IMdiDisc from 'virtual:icons/mdi/disc';
-import IMdiDownload from 'virtual:icons/mdi/download';
-import IMdiDownloadMultiple from 'virtual:icons/mdi/download-multiple';
 import IMdiInformation from 'virtual:icons/mdi/information';
 import IMdiPlaylistMinus from 'virtual:icons/mdi/playlist-minus';
 import IMdiPlaylistPlus from 'virtual:icons/mdi/playlist-plus';
@@ -82,16 +80,11 @@ import {
   canInstantMix,
   canRefreshMetadata,
   canResume,
-  getItemDownloadObject,
-  getItemSeasonDownloadObjects,
-  getItemSeriesDownloadObjects
+  getItemDownloadUrl,
+  getItemSeasonDownloadMap,
+  getItemSeriesDownloadMap
 } from '@/utils/items';
 import { playbackManagerStore, taskManagerStore } from '@/store';
-import {
-  DownloadableFile,
-  canBrowserDownloadItem,
-  downloadFiles
-} from '@/utils/file-download';
 
 type MenuOption = {
   title: string;
@@ -299,79 +292,61 @@ const identifyItemAction = {
     identifyItemDialog.value = true;
   }
 };
-const sharedDownloadAction = async (): Promise<void> => {
-  if (menuProps.item.Id && menuProps.item.Type && menuProps.item.Path) {
-    let downloadURLs: DownloadableFile[] = [];
-
-    switch (menuProps.item.Type) {
-      case 'Season': {
-        downloadURLs = await getItemSeasonDownloadObjects(menuProps.item.Id);
-        break;
-      }
-      case 'Series': {
-        downloadURLs = await getItemSeriesDownloadObjects(menuProps.item.Id);
-        break;
-      }
-      default: {
-        const url = getItemDownloadObject(
-          menuProps.item.Id,
-          menuProps.item.Path
-        );
-
-        if (url) {
-          downloadURLs = [url];
-        }
-
-        break;
-      }
-    }
-
-    if (downloadURLs) {
-      try {
-        await downloadFiles(downloadURLs);
-      } catch (error) {
-        console.error(error);
-
-        useSnackbar(errorMessage, 'error');
-      }
-    } else {
-      console.error(
-        'Unable to get download URL for selected item/series/season'
-      );
-      useSnackbar(errorMessage, 'error');
-    }
-  }
-};
-const singleDownloadAction = {
-  title: t('downloadItem', 1),
-  icon: IMdiDownload,
-  action: sharedDownloadAction
-};
-const multiDownloadAction = {
-  title: t('downloadItem', 2),
-  icon: IMdiDownloadMultiple,
-  action: sharedDownloadAction
-};
-const copyStreamURLAction = {
+const copyDownloadURLAction = {
   title: t('copyStreamURL'),
   icon: IMdiContentCopy,
   action: async (): Promise<void> => {
-    if (menuProps.item.Id) {
-      const downloadHref = getItemDownloadObject(menuProps.item.Id);
-      const clipboard = useClipboard();
+    const clipboard = useClipboard();
+    let streamUrls: Map<string, string> | string | undefined;
 
-      try {
-        if (clipboard.isSupported.value) {
-          if (downloadHref?.url) {
-            await clipboard.copy(downloadHref.url);
-          }
-        } else {
-          throw new ReferenceError('Unsupported clipboard operation');
+    if (!clipboard.isSupported.value) {
+      useSnackbar(t('clipboardUnsupported'), 'error');
+
+      return;
+    }
+
+    if (menuProps.item.Id) {
+      switch (menuProps.item.Type) {
+        case 'Season': {
+          streamUrls = await getItemSeasonDownloadMap(menuProps.item.Id);
+          break;
         }
-      } catch (error) {
-        error instanceof ReferenceError
-          ? useSnackbar(t('clipboardUnsupported'), 'error')
-          : useSnackbar(errorMessage, 'error');
+        case 'Series': {
+          streamUrls = await getItemSeriesDownloadMap(menuProps.item.Id);
+          break;
+        }
+        default: {
+          streamUrls = getItemDownloadUrl(menuProps.item.Id);
+          break;
+        }
+      }
+
+      /**
+       * The Map is mapped to an string like: EpisodeName: DownloadUrl
+       */
+      const text = streamUrls
+        ? typeof streamUrls === 'string'
+          ? streamUrls
+          : [...streamUrls.entries()]
+              .map(([k, v]) => `(${k}) - ${v}`)
+              .join('\n')
+        : undefined;
+
+      const copyAction = async (txt: string): Promise<void> => {
+        await clipboard.copy(txt);
+        useSnackbar(t('clipboardSuccess'), 'success');
+      };
+
+      if (text) {
+        await (typeof streamUrls === 'string'
+          ? copyAction(text)
+          : useConfirmDialog(async () => await copyAction(text), {
+              title: t('copyPrompt'),
+              text: text,
+              confirmText: t('accept')
+            }));
+      } else {
+        useSnackbar(errorMessage, 'error');
       }
     }
   }
@@ -443,22 +418,15 @@ function getPlaybackOptions(): MenuOption[] {
 /**
  * Copy and download action for the current selected item
  */
-function getCopyDownloadOptions(): MenuOption[] {
-  const copyDownloadActions: MenuOption[] = [];
+function getCopyOptions(): MenuOption[] {
+  const copyActions: MenuOption[] = [];
+  const remote = useRemote();
 
-  if (menuProps.item.CanDownload) {
-    copyDownloadActions.push(copyStreamURLAction);
-
-    if (canBrowserDownloadItem(menuProps.item)) {
-      copyDownloadActions.push(singleDownloadAction);
-
-      if (['Season', 'Series'].includes(menuProps.item.Type || '')) {
-        copyDownloadActions.push(multiDownloadAction);
-      }
-    }
+  if (remote.auth.currentUser?.Policy?.EnableContentDownloading) {
+    copyActions.push(copyDownloadURLAction);
   }
 
-  return copyDownloadActions;
+  return copyActions;
 }
 
 /**
@@ -483,7 +451,10 @@ function getLibraryOptions(): MenuOption[] {
     }
   }
 
-  if (menuProps.item.CanDelete) {
+  if (
+    remote.auth.currentUser?.Policy?.EnableContentDeletion ||
+    remote.auth.currentUser?.Policy?.EnableContentDeletionFromFolders
+  ) {
     libraryOptions.push(deleteItemAction);
   }
 
@@ -494,7 +465,7 @@ const options = computed(() => {
   return [
     getQueueOptions(),
     getPlaybackOptions(),
-    getCopyDownloadOptions(),
+    getCopyOptions(),
     getLibraryOptions()
   ];
 });

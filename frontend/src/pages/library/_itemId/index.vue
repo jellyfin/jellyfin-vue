@@ -58,7 +58,11 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
+import {
+  BaseItemDto,
+  BaseItemKind,
+  ItemFields
+} from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
@@ -283,7 +287,8 @@ async function refreshItems(): Promise<void> {
               filters.value.features.includes('HasThemeVideo') || undefined,
             isHd: filters.value.types.includes('isHD') || undefined,
             is4K: filters.value.types.includes('is4K') || undefined,
-            is3D: filters.value.types.includes('is3D') || undefined
+            is3D: filters.value.types.includes('is3D') || undefined,
+            fields: Object.values(ItemFields)
           })
         ).data;
         break;

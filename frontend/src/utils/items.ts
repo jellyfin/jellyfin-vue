@@ -9,6 +9,7 @@ import {
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
 import { useRouter } from 'vue-router';
+import { isNil } from 'lodash-es';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 import IMdiMovie from 'virtual:icons/mdi/movie';
 import IMdiMusic from 'virtual:icons/mdi/music';
@@ -30,7 +31,6 @@ import IMdiAlbum from 'virtual:icons/mdi/album';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ticksToMs } from './time';
-import { DownloadableFile } from './file-download';
 import { useRemote } from '@/composables';
 
 /**
@@ -473,10 +473,7 @@ export function getMediaStreams(
  * @param itemPath - The item path.
  * @returns - A download object.
  */
-export function getItemDownloadObject(
-  itemId: string,
-  itemPath?: string
-): DownloadableFile | undefined {
+export function getItemDownloadUrl(itemId: string): string | undefined {
   const remote = useRemote();
 
   const serverAddress = remote.sdk.api?.basePath;
@@ -486,83 +483,72 @@ export function getItemDownloadObject(
     return undefined;
   }
 
-  const fileName = itemPath?.includes('\\')
-    ? itemPath?.split('\\').pop()
-    : itemPath?.split('/').pop();
-
-  return {
-    url: `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`,
-    fileName: fileName ?? ''
-  };
+  return `${serverAddress}/Items/${itemId}/Download?api_key=${userToken}`;
 }
 
 /**
- * Get multiple download object for seasons.
+ * Get a map of an episode name and its download url, given a season.
  *
  * @param seasonId - The season ID.
- * @returns - An array of download objects.
+ * @returns - A map: [EpisodeName, DownloadUrl].
  */
-export async function getItemSeasonDownloadObjects(
+export async function getItemSeasonDownloadMap(
   seasonId: string
-): Promise<DownloadableFile[]> {
+): Promise<Map<string, string>> {
   const remote = useRemote();
+  const result = new Map<string, string>();
 
-  if (remote.sdk.api === undefined) {
-    return [];
+  const episodes =
+    (
+      await remote.sdk.newUserApi(getItemsApi).getItems({
+        userId: remote.auth.currentUserId,
+        parentId: seasonId,
+        fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
+      })
+    ).data.Items ?? [];
+
+  for (const episode of episodes) {
+    if (episode.Id && !isNil(episode.Name)) {
+      const url = getItemDownloadUrl(episode.Id);
+
+      if (url) {
+        result.set(episode.Name, url);
+      }
+    }
   }
 
-  const episodes = (
-    await remote.sdk.newUserApi(getItemsApi).getItems({
-      userId: remote.auth.currentUserId,
-      parentId: seasonId,
-      fields: [ItemFields.Overview, ItemFields.CanDownload, ItemFields.Path]
-    })
-  ).data;
-
-  return (
-    episodes.Items?.map((r) => {
-      if (r.Id && r.Path) {
-        return getItemDownloadObject(r.Id, r.Path);
-      }
-    }).filter(
-      (r): r is DownloadableFile =>
-        r !== undefined && r.url.length > 0 && r.fileName.length > 0
-    ) ?? []
-  );
+  return result;
 }
 
 /**
- * Get download object for a series.
- * This will fetch every season for all the episodes.
+ * Get a map of an episode name and its download url, given a series.
  *
- * @param seriesId - The series ID.
- * @returns - An array of download objects.
+ * @param seasonId - The season ID.
+ * @returns - A map: [EpisodeName, DownloadUrl].
  */
-export async function getItemSeriesDownloadObjects(
+export async function getItemSeriesDownloadMap(
   seriesId: string
-): Promise<DownloadableFile[]> {
+): Promise<Map<string, string>> {
   const remote = useRemote();
+  let result = new Map<string, string>();
 
-  let mergedStreamURLs: DownloadableFile[] = [];
+  const seasons =
+    (
+      await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
+        userId: remote.auth.currentUserId,
+        seriesId: seriesId
+      })
+    ).data.Items ?? [];
 
-  if (remote.sdk.api === undefined) {
-    return [];
+  for (const season of seasons) {
+    if (season.Id) {
+      const map = await getItemSeasonDownloadMap(season.Id);
+
+      result = new Map([...result, ...map]);
+    }
   }
 
-  const seasons = (
-    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
-      userId: remote.auth.currentUserId,
-      seriesId: seriesId
-    })
-  ).data;
-
-  for (const season of seasons.Items || []) {
-    const seasonURLs = await getItemSeasonDownloadObjects(season.Id || '');
-
-    mergedStreamURLs = [...mergedStreamURLs, ...seasonURLs];
-  }
-
-  return mergedStreamURLs;
+  return result;
 }
 
 /**
