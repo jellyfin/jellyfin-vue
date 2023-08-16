@@ -33,7 +33,6 @@ onBeforeUnmount(() => {
   if (visualizerInstance) {
     visualizerInstance.disconnectInput();
     visualizerInstance.disconnectOutput();
-    visualizerInstance = undefined;
   }
 });
 </script>
