@@ -19,7 +19,7 @@ COPY . .
 RUN npm ci --no-audit
 
 # Build client
-RUN if [[ $IS_STABLE == "0" ]] ; then export COMMIT_HASH=$(git rev-parse HEAD) ; fi && npm run build
+RUN if [ $IS_STABLE = "0" ] ; then export COMMIT_HASH=$(git rev-parse HEAD) ; fi && npm run build
 
 # Deploy built distribution to nginx
 FROM nginx:stable-alpine-slim
