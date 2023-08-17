@@ -1265,8 +1265,8 @@ class PlaybackManagerStore {
       }
     );
 
-    watchEffect(async () => {
-      if (!isNil(this.currentAudioStreamIndex)) {
+    watch(() => this.currentAudioStreamIndex, async (oldVal, newVal) => {
+      if (!isNil(newVal) && oldVal !== newVal) {
         /**
          * We need to set a new media source when:
          * - The audio stream index changes
