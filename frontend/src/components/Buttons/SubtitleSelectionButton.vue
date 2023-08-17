@@ -54,7 +54,7 @@ const tracks = computed(() => {
   return [
     {
       label: t('disabled'),
-      srcIndex: -1,
+      srcIndex: undefined,
       type: SubtitleDeliveryMethod.External
     },
     ...(subs ?? [])
