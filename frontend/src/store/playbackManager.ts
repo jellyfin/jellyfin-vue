@@ -445,6 +445,10 @@ class PlaybackManagerStore {
     return this._state.currentMediaSource;
   }
 
+  public get currentMediaSourceIndex(): number | undefined {
+    return this._state.currentMediaSourceIndex;
+  }
+
   public get isMuted(): boolean {
     return this._state.isRemotePlayer
       ? this._state.isRemoteMuted

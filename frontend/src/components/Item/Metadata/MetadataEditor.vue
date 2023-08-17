@@ -36,6 +36,14 @@
         v-model="tabName"
         class="pa-2 flex-fill">
         <VWindowItem value="general">
+          <VSelect
+            v-if="contentOptions.length > 0"
+            v-model="contentOption"
+            :items="contentOptions"
+            :label="t('contentType')"
+            item-title="key"
+            item-value="value"
+            return-object />
           <VTextField
             v-model="metadata.Name"
             variant="outlined"
@@ -221,6 +229,11 @@ import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
 import { format, formatISO } from 'date-fns';
 import { useDateFns, useRemote, useSnackbar } from '@/composables';
 
+type ContentOption = {
+  value: string;
+  key: string;
+};
+
 const props = defineProps<{ itemId: string }>();
 
 const emit = defineEmits<{
@@ -238,6 +251,9 @@ const person = ref<BaseItemPerson>();
 const genres = ref<string[]>([]);
 const loading = ref(false);
 const tabName = ref<string>();
+const contentOptions = ref<ContentOption[]>([]);
+const contentOption = ref<ContentOption>();
+const contentType = ref<string>();
 const genresModel = computed({
   get() {
     return metadata.value?.Genres === null ? undefined : metadata.value?.Genres;
@@ -294,12 +310,34 @@ const tagLine = computed({
  * Fetch data ancestors for the current item
  */
 async function getData(): Promise<void> {
-  const itemInfo = (
+  let itemInfo = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
       userId: remote.auth.currentUserId ?? '',
       itemId: props.itemId
     })
   ).data;
+
+  const options = (
+    await remote.sdk.newUserApi(getItemUpdateApi).getMetadataEditorInfo({
+      itemId: props.itemId
+    })
+  ).data;
+
+  contentOptions.value =
+    options?.ContentTypeOptions?.map((r) => {
+      if (r.Name) {
+        return {
+          // The option name
+          key: r.Name,
+          // The one that will be sent
+          value: r.Value ?? ''
+        };
+      }
+    }).filter((r): r is ContentOption => r !== undefined) ?? [];
+  contentOption.value =
+    contentOptions.value.find((r) => r.value === options.ContentType) ??
+    contentOptions.value[0];
+  contentType.value = options.ContentType ?? contentOption.value?.value;
 
   metadata.value = itemInfo;
 
@@ -334,6 +372,26 @@ async function getGenres(parentId: string): Promise<void> {
     ).data.Items?.map((index) => index.Name).filter(
       (genre): genre is string => !!genre
     ) ?? [];
+}
+
+/**
+ * Save metadata content type for the current item
+ */
+async function saveContentType(): Promise<void> {
+  if (!contentOption.value) {
+    return;
+  }
+
+  if (!metadata.value?.Id) {
+    return;
+  }
+
+  if (contentOption.value.value !== contentType.value) {
+    await remote.sdk.newUserApi(getItemUpdateApi).updateItemContentType({
+      itemId: metadata.value.Id,
+      contentType: contentOption.value.value
+    });
+  }
 }
 
 /**
@@ -395,6 +453,7 @@ async function saveMetadata(): Promise<void> {
       itemId: metadata.value?.Id,
       baseItemDto: item
     });
+    await saveContentType();
     emit('save');
     useSnackbar(t('saved'), 'success');
   } catch (error) {

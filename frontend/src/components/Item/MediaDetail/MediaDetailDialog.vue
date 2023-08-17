@@ -3,7 +3,7 @@
     :model-value="model"
     :title="displayName"
     @close="close">
-    <template v-if="mediaSources.length > 1">
+    <template v-if="mediaSources.length > 1 && isNil(mediaSourceIndex)">
       <VCardText>
         <MediaSourceSelector
           class="pt-2"

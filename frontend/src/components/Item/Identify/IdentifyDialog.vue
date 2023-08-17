@@ -105,7 +105,7 @@ interface IdentifyField {
   value?: string | null;
 }
 
-const props = defineProps<{ item: BaseItemDto; mediaSourceIndex?: number }>();
+const props = defineProps<{ item: BaseItemDto }>();
 
 const emit = defineEmits<{
   close: [];
@@ -208,10 +208,6 @@ const progress = computed(() => {
 const itemPath = computed<string | undefined>(() => {
   if (!props.item) {
     return;
-  }
-
-  if (props.mediaSourceIndex !== undefined) {
-    return props.item.MediaSources?.[props.mediaSourceIndex]?.Path ?? undefined;
   }
 
   return props.item.Path ?? undefined;
