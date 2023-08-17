@@ -105,7 +105,7 @@ interface IdentifyField {
   value?: string | null;
 }
 
-const props = defineProps<{ item: BaseItemDto; }>();
+const props = defineProps<{ item: BaseItemDto }>();
 
 const emit = defineEmits<{
   close: [];
