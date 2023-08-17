@@ -1,6 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:18-alpine AS build
+FROM node:18 AS build
 
 # Set build arguments
 ARG DEFAULT_SERVERS
@@ -12,8 +12,6 @@ ENV DEFAULT_SERVERS=$DEFAULT_SERVERS
 ENV HISTORY_ROUTER_MODE=$HISTORY_ROUTER_MODE
 ENV IS_STABLE=$IS_STABLE
 
-# Prepare environment. git is needed for fetching the latest commit
-RUN apk add --no-cache git
 WORKDIR /app
 COPY . .
 
@@ -24,7 +22,7 @@ RUN npm ci --no-audit
 RUN if [[ $IS_STABLE == "0" ]] ; then export COMMIT_HASH=$(git rev-parse HEAD) ; fi && npm run build
 
 # Deploy built distribution to nginx
-FROM nginx:alpine-slim
+FROM nginx:stable-alpine-slim
 
 COPY --from=build /app/frontend/dist/ /usr/share/nginx/html/
 COPY .docker/nginx.conf /etc/nginx/conf.d/default.conf
