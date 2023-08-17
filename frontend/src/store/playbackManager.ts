@@ -1241,16 +1241,34 @@ class PlaybackManagerStore {
       }
     );
 
+    watch(
+      () => ({
+        currentSubtitleStreamIndex: this.currentSubtitleStreamIndex,
+        currentSubtitleTrack: this.currentSubtitleTrack
+      }),
+      async (oldVal, newVal) => {
+        if (
+          oldVal.currentSubtitleStreamIndex !==
+            newVal.currentSubtitleStreamIndex &&
+          (oldVal.currentSubtitleTrack?.DeliveryMethod ===
+            SubtitleDeliveryMethod.Encode ||
+            newVal.currentSubtitleTrack?.DeliveryMethod ===
+              SubtitleDeliveryMethod.Encode)
+        ) {
+          /**
+           * We need to set a new media source when:
+           * - Subs change and
+           * - Going from or to a situation where subs are burnt in.
+           */
+          await this._setCurrentMediaSource();
+        }
+      }
+    );
+
     watchEffect(async () => {
-      if (
-        (this.currentSubtitleTrack?.DeliveryMethod ===
-          SubtitleDeliveryMethod.Encode &&
-          !isNil(this.currentSubtitleStreamIndex)) ||
-        !isNil(this.currentAudioStreamIndex)
-      ) {
+      if (!isNil(this.currentAudioStreamIndex)) {
         /**
          * We need to set a new media source when:
-         * - Going from or to a situation where subs are burnt in.
          * - The audio stream index changes
          */
         await this._setCurrentMediaSource();
@@ -1265,6 +1283,7 @@ class PlaybackManagerStore {
         await this._reportPlaybackProgress();
       }
     });
+
     /**
      * Report playback stop when closing the tab
      */
