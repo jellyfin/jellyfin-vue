@@ -1,6 +1,8 @@
 <template>
   <VSelect
     v-model="trackIndex"
+    :clearable="$props.type === 'Subtitle'"
+    :placeholder="$props.type === 'Subtitle' ? t('disabled') : undefined"
     density="comfortable"
     single-line
     hide-details
@@ -101,57 +103,38 @@ function getTrackSubtitle(track: MediaStream): string | undefined {
  *
  * @returns List of objects prepared for Vuetify v-select with the strings to display as "text" and index number as "value".
  */
-const selectItems = computed(() => {
-  const items = props.mediaStreams.map((value) => {
-    return {
-      icon: getTrackIcon(value),
-      selection: value.DisplayTitle ?? '',
-      subtitle: getTrackSubtitle(value),
-      title: value.DisplayTitle ?? '',
-      value: value.Index
-    };
-  });
-
-  if (props.type === 'Subtitle') {
-    items.unshift({
-      icon: undefined,
-      selection: t('disabled'),
-      subtitle: undefined,
-      value: -1,
-      title: t('disabled')
-    });
-  }
-
-  return items;
-});
-
-/**
- * Default index to use (undefined if none)
- */
-const defaultIndex =
-  props.defaultStreamIndex === undefined
-    ? props.mediaStreams.find((track) => track.IsDefault)?.Index
-    : props.defaultStreamIndex;
-
-const trackIndex = ref<number | undefined>(
-  defaultIndex === undefined ? -1 : defaultIndex
+const selectItems = computed(() =>
+  props.mediaStreams.map((value) => ({
+    icon: getTrackIcon(value),
+    selection: value.DisplayTitle ?? '',
+    subtitle: getTrackSubtitle(value),
+    title: value.DisplayTitle ?? '',
+    value: value.Index
+  }))
 );
 
 /**
- * Check if Type is Video or Audio and trackIndex is -1 then set trackIndex as this.selectItems[0].value
+ * Default index to use (null if none because of V-Select empty value)
+ */
+// eslint-disable-next-line unicorn/no-null
+const trackIndex = ref<number | null>(props.defaultStreamIndex ?? props.mediaStreams.find((track) => track.IsDefault)?.Index ?? null);
+
+/**
+ * Check if Type is Video or Audio and trackIndex is null then set trackIndex as this.selectItems[0].value
  */
 if (
   (props.type === 'Video' || props.type === 'Audio') &&
-  trackIndex.value === -1 &&
+  trackIndex.value === null &&
   selectItems.value[0] !== undefined
 ) {
-  trackIndex.value = selectItems.value[0].value;
+  // eslint-disable-next-line unicorn/no-null
+  trackIndex.value = selectItems.value[0].value ?? null;
 }
 
 watch(
   trackIndex,
   (newValue) => {
-    emits('input', newValue);
+    emits('input', newValue ?? undefined);
   },
   { immediate: true }
 );
@@ -160,7 +143,8 @@ watch(
   () => props.defaultStreamIndex,
   (newValue) => {
     if (newValue !== trackIndex.value) {
-      trackIndex.value = newValue;
+      // eslint-disable-next-line unicorn/no-null
+      trackIndex.value = newValue ?? null;
     }
   }
 );
