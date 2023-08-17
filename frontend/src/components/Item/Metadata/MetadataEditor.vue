@@ -228,14 +228,13 @@ import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
 import { format, formatISO } from 'date-fns';
 import { useDateFns, useRemote, useSnackbar } from '@/composables';
-import { getItemIdFromSourceIndex } from '@/utils/items';
 
 type ContentOption = {
   value: string;
   key: string;
 };
 
-const props = defineProps<{ itemId: string; mediaSourceIndex?: number }>();
+const props = defineProps<{ itemId: string; }>();
 
 const emit = defineEmits<{
   save: [];
@@ -318,40 +317,27 @@ async function getData(): Promise<void> {
     })
   ).data;
 
-  const sourceId = getItemIdFromSourceIndex(itemInfo, props.mediaSourceIndex);
+  const options = (
+    await remote.sdk.newUserApi(getItemUpdateApi).getMetadataEditorInfo({
+      itemId: props.itemId
+    })
+  ).data;
 
-  if (sourceId !== props.itemId) {
-    // This is another version of the same item, fetch the actual metadata for this.
-    itemInfo = (
-      await remote.sdk.newUserApi(getUserLibraryApi).getItem({
-        userId: remote.auth.currentUserId ?? '',
-        itemId: sourceId
-      })
-    ).data;
-
-    // Fetch metadata editor info for ContentTypeOptions
-    const options = (
-      await remote.sdk.newUserApi(getItemUpdateApi).getMetadataEditorInfo({
-        itemId: sourceId
-      })
-    ).data;
-
-    contentOptions.value =
-      options?.ContentTypeOptions?.map((r) => {
-        if (r.Name) {
-          return {
-            // The option name
-            key: r.Name,
-            // The one that will be sent
-            value: r.Value ?? ''
-          };
-        }
-      }).filter((r): r is ContentOption => r !== undefined) ?? [];
-    contentOption.value =
-      contentOptions.value.find((r) => r.value === options.ContentType) ??
-      contentOptions.value[0];
-    contentType.value = options.ContentType ?? contentOption.value.value;
-  }
+  contentOptions.value =
+    options?.ContentTypeOptions?.map((r) => {
+      if (r.Name) {
+        return {
+          // The option name
+          key: r.Name,
+          // The one that will be sent
+          value: r.Value ?? ''
+        };
+      }
+    }).filter((r): r is ContentOption => r !== undefined) ?? [];
+  contentOption.value =
+    contentOptions.value.find((r) => r.value === options.ContentType) ??
+    contentOptions.value[0];
+  contentType.value = options.ContentType ?? contentOption.value?.value;
 
   metadata.value = itemInfo;
 
@@ -402,7 +388,7 @@ async function saveContentType(): Promise<void> {
 
   if (contentOption.value.value !== contentType.value) {
     await remote.sdk.newUserApi(getItemUpdateApi).updateItemContentType({
-      itemId: metadata.value?.Id,
+      itemId: metadata.value.Id,
       contentType: contentOption.value.value
     });
   }

@@ -35,9 +35,8 @@
     </VMenu>
   </VBtn>
   <MetadataEditorDialog
-    v-if="metadataDialog && item.Id"
-    :item-id="item.Id"
-    :media-source-index="mediaSourceIndex"
+    v-if="metadataDialog && itemId"
+    :item-id="itemId"
     @close="metadataDialog = false" />
   <RefreshMetadataDialog
     v-if="refreshDialog && item.Id"
@@ -139,6 +138,11 @@ const show = computed({
     openMenu.value = newVal ? instanceId : undefined;
   }
 });
+const itemId = computed(
+  () => getItemIdFromSourceIndex(
+    menuProps.item, menuProps.mediaSourceIndex
+  )
+);
 const positionX = ref<number | undefined>(undefined);
 const positionY = ref<number | undefined>(undefined);
 const metadataDialog = ref(false);
@@ -280,21 +284,16 @@ const deleteItemAction = {
   action: async (): Promise<void> => {
     await useConfirmDialog(
       async () => {
-        const itemDeletionId = getItemIdFromSourceIndex(
-          menuProps.item,
-          menuProps.mediaSourceIndex
-        );
-
-        if (!itemDeletionId) {
+        if (!itemId.value) {
           return;
         }
 
         try {
           await remote.sdk.newUserApi(getLibraryApi).deleteItem({
-            itemId: itemDeletionId
+            itemId: itemId.value
           });
 
-          if (itemDeletionId === menuProps.item.Id && route.fullPath.includes(itemDeletionId)) {
+          if (itemId.value === menuProps.item.Id && route.fullPath.includes(itemId.value)) {
             await router.replace('/');
           }
         } catch (error) {
@@ -343,9 +342,7 @@ const copyDownloadURLAction = {
           break;
         }
         default: {
-          streamUrls = getItemDownloadUrl(
-            getItemIdFromSourceIndex(menuProps.item, menuProps.mediaSourceIndex)
-          );
+          streamUrls = getItemDownloadUrl(itemId.value);
           break;
         }
       }

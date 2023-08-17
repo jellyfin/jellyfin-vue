@@ -6,7 +6,6 @@
     @after-leave="emit('close')">
     <MetadataEditor
       :item-id="itemId"
-      :media-source-index="mediaSourceIndex"
       @cancel="model = false"
       @save="model = false" />
   </VDialog>
@@ -15,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-defineProps<{ itemId: string, mediaSourceIndex?: number }>();
+defineProps<{ itemId: string; }>();
 
 const emit = defineEmits<{
   close: [];
