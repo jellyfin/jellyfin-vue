@@ -3,10 +3,6 @@
 </template>
 
 <script setup lang="ts">
-/**
- * TODO: When the WebAudio node is connected to audiomotion-analyzer, the volume
- * of the media increases abruptly. Investigate why and fix.
- */
 import { shallowRef, onMounted, onBeforeUnmount } from 'vue';
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import { mediaWebAudio } from '@/store';
@@ -17,6 +13,7 @@ const visualizerElement = shallowRef<HTMLDivElement>();
 onMounted(() => {
   visualizerInstance = new AudioMotionAnalyzer(visualizerElement.value, {
     source: mediaWebAudio.sourceNode,
+    connectSpeakers: false,
     mode: 2,
     gradient: 'prism',
     reflexRatio: 0.025,
