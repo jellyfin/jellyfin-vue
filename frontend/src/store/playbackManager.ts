@@ -303,7 +303,7 @@ class PlaybackManagerStore {
           srcLang: sub.Language ?? undefined,
           type: sub.DeliveryMethod ?? SubtitleDeliveryMethod.Drop,
           srcIndex: sub.srcIndex,
-          codec: sub.Codec !== null ? sub.Codec : undefined
+          codec: sub.Codec === null ? undefined : sub.Codec
         }));
     }
   }
