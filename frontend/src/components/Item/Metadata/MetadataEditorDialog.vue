@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-defineProps<{ itemId: string; }>();
+defineProps<{ itemId: string }>();
 
 const emit = defineEmits<{
   close: [];
