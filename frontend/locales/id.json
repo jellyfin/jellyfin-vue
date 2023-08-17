@@ -166,24 +166,8 @@
   },
   "manualLogin": "Login manual",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Kanal audio:"
-    },
-    "audioCodec": {
-      "name": "Kode audio:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
     "container": {
       "name": "Kontainer:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Kode subtitel:"
-    },
-    "videoCodec": {
-      "name": "Kode video:"
     }
   },
   "menu": "Menu",

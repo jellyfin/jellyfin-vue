@@ -181,24 +181,8 @@
   },
   "manualLogin": "Qolmen kıru",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Dybys arnalary:"
-    },
-    "audioCodec": {
-      "name": "Dybys kodegı:"
-    },
-    "bitrate": {
-      "name": "Qarqyny:"
-    },
     "container": {
       "name": "Konteinerı:"
-    },
-    "name": "Tasyğyşderekter",
-    "subtitleCodec": {
-      "name": "Subtitr kodegı:"
-    },
-    "videoCodec": {
-      "name": "Beine kodegı:"
     }
   },
   "menu": "Mäzır",

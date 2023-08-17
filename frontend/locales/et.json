@@ -163,24 +163,8 @@
   },
   "manualLogin": "Käsitsi sisselogimine",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Helikanalid:"
-    },
-    "audioCodec": {
-      "name": "Helikoodek:"
-    },
-    "bitrate": {
-      "name": "Bitikiirus:"
-    },
     "container": {
       "name": "Konteiner:"
-    },
-    "name": "Meedia",
-    "subtitleCodec": {
-      "name": "Subtiitrite koodek:"
-    },
-    "videoCodec": {
-      "name": "Videokoodek:"
     }
   },
   "menu": "Menüü",

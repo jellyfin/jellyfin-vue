@@ -203,24 +203,8 @@
   },
   "manualLogin": "Manuell innlogging",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Lydkanaler:"
-    },
-    "audioCodec": {
-      "name": "Lydkodek:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
     "container": {
       "name": "Beholder:"
-    },
-    "name": "Medie",
-    "subtitleCodec": {
-      "name": "Undertekstkodek:"
-    },
-    "videoCodec": {
-      "name": "Videokodek:"
     }
   },
   "menu": "Meny",

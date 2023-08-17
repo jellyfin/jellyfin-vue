@@ -202,24 +202,8 @@
   },
   "manualLogin": "手动登录",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "音频通道："
-    },
-    "audioCodec": {
-      "name": "音频编码："
-    },
-    "bitrate": {
-      "name": "比特率："
-    },
     "container": {
       "name": "容器："
-    },
-    "name": "媒体",
-    "subtitleCodec": {
-      "name": "字幕编码："
-    },
-    "videoCodec": {
-      "name": "视频编码："
     }
   },
   "menu": "菜单",

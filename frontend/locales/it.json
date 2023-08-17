@@ -202,24 +202,8 @@
   },
   "manualLogin": "Accesso Manuale",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Canali audio:"
-    },
-    "audioCodec": {
-      "name": "Codec audio:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
     "container": {
       "name": "Contenitore:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Codec dei sottotitoli:"
-    },
-    "videoCodec": {
-      "name": "Codec dei video:"
     }
   },
   "menu": "Menu",

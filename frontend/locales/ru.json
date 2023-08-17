@@ -200,24 +200,8 @@
   },
   "manualLogin": "Войти вручную",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Аудиоканалы:"
-    },
-    "audioCodec": {
-      "name": "Аудиокодек:"
-    },
-    "bitrate": {
-      "name": "Поток. скорость:"
-    },
     "container": {
       "name": "Контейнер:"
-    },
-    "name": "Медиаданные",
-    "subtitleCodec": {
-      "name": "Кодек субтитров:"
-    },
-    "videoCodec": {
-      "name": "Видеокодек:"
     }
   },
   "menu": "Меню",

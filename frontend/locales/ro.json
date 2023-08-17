@@ -173,24 +173,8 @@
   },
   "manualLogin": "Autentificare manuală",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Canale audio:"
-    },
-    "audioCodec": {
-      "name": "Codec audio:"
-    },
-    "bitrate": {
-      "name": "Rată de biți:"
-    },
     "container": {
       "name": "Container:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Codec subtitrări:"
-    },
-    "videoCodec": {
-      "name": "Codec video:"
     }
   },
   "menu": "Meniu",

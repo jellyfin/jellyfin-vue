@@ -184,24 +184,8 @@
   },
   "manualLogin": "เข้าสุ่ระบบด้วยตนเอง",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "ช่องเสียง :"
-    },
-    "audioCodec": {
-      "name": "การเข้ารหัสเสียง:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
     "container": {
       "name": "คอนเทนเนอร์:"
-    },
-    "name": "สื่อ",
-    "subtitleCodec": {
-      "name": "การเข้ารหัส ชัพไตเติ้ล:"
-    },
-    "videoCodec": {
-      "name": "การเข้ารหัสวีดีโอ:"
     }
   },
   "menu": "เมนู",

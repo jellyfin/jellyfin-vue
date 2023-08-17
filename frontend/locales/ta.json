@@ -167,24 +167,8 @@
   },
   "manualLogin": "கையேடு உள்நுழைவு",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "ஆடியோ சேனல்கள்:"
-    },
-    "audioCodec": {
-      "name": "ஆடியோ கோடெக்:"
-    },
-    "bitrate": {
-      "name": "பிட்ரேட்:"
-    },
     "container": {
       "name": "கொள்கலன்:"
-    },
-    "name": "மீடியா",
-    "subtitleCodec": {
-      "name": "வசன வரி கோடெக்:"
-    },
-    "videoCodec": {
-      "name": "வீடியோ கோடெக்:"
     }
   },
   "menu": "பட்டியல்",

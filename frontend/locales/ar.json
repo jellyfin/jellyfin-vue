@@ -178,11 +178,6 @@
     "noLogsFound": "لم يتم العثور على اي سجلات"
   },
   "manualLogin": "تسجيل الدخول اليدوي",
-  "mediaInfo": {
-    "audioChannels": {
-      "name": "قنوات الصوت:"
-    }
-  },
   "more": "المزيد",
   "moreLikeArtist": "مزيداً مثل{artist}",
   "movies": "الأفلام",

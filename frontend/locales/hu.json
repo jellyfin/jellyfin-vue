@@ -202,24 +202,8 @@
   },
   "manualLogin": "Manuális bejelentkezés",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Audio csatornák:"
-    },
-    "audioCodec": {
-      "name": "Audio kodek:"
-    },
-    "bitrate": {
-      "name": "Bitráta:"
-    },
     "container": {
       "name": "Konténer:"
-    },
-    "name": "Média",
-    "subtitleCodec": {
-      "name": "Felirat kodekje:"
-    },
-    "videoCodec": {
-      "name": "Videókodek:"
     }
   },
   "menu": "Menü",

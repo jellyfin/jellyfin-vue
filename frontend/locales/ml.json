@@ -164,24 +164,8 @@
   },
   "manualLogin": "സ്വമേധയാലുള്ള ലോഗിൻ",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "ഓഡിയോ ചാനലുകൾ:"
-    },
-    "audioCodec": {
-      "name": "ഓഡിയോ കോഡെക്:"
-    },
-    "bitrate": {
-      "name": "ബിട്രേറ്റ്:"
-    },
     "container": {
       "name": "കണ്ടെയ്നർ:"
-    },
-    "name": "മീഡിയ",
-    "subtitleCodec": {
-      "name": "സബ്‌ടൈറ്റിൽ കോഡെക്:"
-    },
-    "videoCodec": {
-      "name": "വീഡിയോ കോഡെക്:"
     }
   },
   "menu": "മെനു",

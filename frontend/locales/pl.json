@@ -203,24 +203,8 @@
   },
   "manualLogin": "Logowanie ręczne",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Kanały audio:"
-    },
-    "audioCodec": {
-      "name": "Kodek audio:"
-    },
-    "bitrate": {
-      "name": "Szybkość transmisji:"
-    },
     "container": {
       "name": "Kontener:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Kodek napisów:"
-    },
-    "videoCodec": {
-      "name": "Kodek wideo:"
     }
   },
   "menu": "Menu",

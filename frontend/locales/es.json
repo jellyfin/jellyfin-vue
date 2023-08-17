@@ -191,24 +191,8 @@
   },
   "manualLogin": "Inicio de sesión manual",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Canales de audio:"
-    },
-    "audioCodec": {
-      "name": "Códec de audio:"
-    },
-    "bitrate": {
-      "name": "Bitrate:"
-    },
     "container": {
       "name": "Contenedor:"
-    },
-    "name": "Medio",
-    "subtitleCodec": {
-      "name": "Códec de subtítulos:"
-    },
-    "videoCodec": {
-      "name": "Códec de vídeo:"
     }
   },
   "menu": "Menú",

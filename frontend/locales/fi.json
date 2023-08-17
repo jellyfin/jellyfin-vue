@@ -203,24 +203,8 @@
   },
   "manualLogin": "Manuaalinen kirjautuminen",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Äänikanavat:"
-    },
-    "audioCodec": {
-      "name": "Äänikoodekki:"
-    },
-    "bitrate": {
-      "name": "Bittinopeus:"
-    },
     "container": {
       "name": "Säiliö:"
-    },
-    "name": "Media",
-    "subtitleCodec": {
-      "name": "Tekstityskoodekki:"
-    },
-    "videoCodec": {
-      "name": "Videokoodekki:"
     }
   },
   "menu": "Valikko",

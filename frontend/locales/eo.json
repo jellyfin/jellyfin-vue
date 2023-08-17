@@ -180,24 +180,8 @@
   },
   "manualLogin": "Mana ensaluto",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Aŭdiokanaloj:"
-    },
-    "audioCodec": {
-      "name": "Aŭdiokodeko:"
-    },
-    "bitrate": {
-      "name": "Bitrapido:"
-    },
     "container": {
       "name": "Ujo:"
-    },
-    "name": "Plurmedio",
-    "subtitleCodec": {
-      "name": "Subteksta kodeko:"
-    },
-    "videoCodec": {
-      "name": "Videa kodeko:"
     }
   },
   "menu": "Menuo",

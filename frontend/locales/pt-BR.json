@@ -200,24 +200,8 @@
   },
   "manualLogin": "Login manual",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Canais de áudio:"
-    },
-    "audioCodec": {
-      "name": "Codec de áudio:"
-    },
-    "bitrate": {
-      "name": "Taxa de bits:"
-    },
     "container": {
       "name": "Contêiner:"
-    },
-    "name": "Mídia",
-    "subtitleCodec": {
-      "name": "Codec de Legenda:"
-    },
-    "videoCodec": {
-      "name": "Codec de Vídeo:"
     }
   },
   "menu": "Menu",

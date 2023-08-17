@@ -202,24 +202,8 @@
   },
   "manualLogin": "수동 로그인",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "오디오 채널:"
-    },
-    "audioCodec": {
-      "name": "오디오 코덱:"
-    },
-    "bitrate": {
-      "name": "비트레이트:"
-    },
     "container": {
       "name": "컨테이너:"
-    },
-    "name": "미디어",
-    "subtitleCodec": {
-      "name": "자막 코덱:"
-    },
-    "videoCodec": {
-      "name": "비디오 코덱:"
     }
   },
   "menu": "메뉴",

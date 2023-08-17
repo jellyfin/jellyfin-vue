@@ -197,24 +197,8 @@
   },
   "manualLogin": "Đăng nhập thủ công",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Các kênh âm thanh:"
-    },
-    "audioCodec": {
-      "name": "Mã hóa âm thanh:"
-    },
-    "bitrate": {
-      "name": "Tốc độ bit:"
-    },
     "container": {
       "name": "Vùng chứa:"
-    },
-    "name": "Phương tiện",
-    "subtitleCodec": {
-      "name": "Mã hóa phụ đề:"
-    },
-    "videoCodec": {
-      "name": "Mã hóa video:"
     }
   },
   "menu": "Menu",

@@ -184,24 +184,8 @@
   },
   "manualLogin": "Manuálne prihlásenie",
   "mediaInfo": {
-    "audioChannels": {
-      "name": "Zvukové kanály:"
-    },
-    "audioCodec": {
-      "name": "Zvukový kodek:"
-    },
-    "bitrate": {
-      "name": "Dátový tok:"
-    },
     "container": {
       "name": "Kontajner:"
-    },
-    "name": "Médiá",
-    "subtitleCodec": {
-      "name": "Titulkový kodek:"
-    },
-    "videoCodec": {
-      "name": "Video kodek:"
     }
   },
   "menu": "Menu",
