@@ -114,6 +114,9 @@ const posterUrl = computed(() =>
 async function onLoadedData(): Promise<void> {
   if (playbackManager.currentlyPlayingMediaType === 'Video') {
     if (mediaElementRef.value) {
+      /**
+       * Makes the resume start from the correct time
+       */
       mediaElementRef.value.currentTime = playbackManager.currentTime;
     }
 
