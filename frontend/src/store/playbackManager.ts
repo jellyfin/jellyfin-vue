@@ -989,6 +989,11 @@ class PlaybackManagerStore {
      */
     const requestId = v4();
 
+    /**
+     * Saves the current playback time because it gets reset when changing audio source / burnt in subs.
+     */
+    const currentTime = this.currentTime;
+
     this._mediaSourceRequestId = requestId;
     this._state.status = PlaybackStatus.Buffering;
     /**
@@ -1008,6 +1013,7 @@ class PlaybackManagerStore {
         this._state.playSessionId = playbackInfo.PlaySessionId;
         this._state.currentMediaSource = mediaSource;
         this._state.currentSourceUrl = playbackUrl;
+        this.currentTime = currentTime;
       } else {
         const { t } = usei18n();
 
