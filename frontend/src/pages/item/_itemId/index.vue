@@ -52,7 +52,9 @@
             <MarkPlayedButton
               :item="item"
               class="mr-2" />
-            <ItemMenu :item="item" />
+            <ItemMenu
+              :item="item"
+              :media-source-index="currentSourceIndex" />
           </VRow>
           <VCol
             cols="12"

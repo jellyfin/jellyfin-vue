@@ -80,6 +80,7 @@
             </div>
             <ItemMenu
               :item="playbackManager.currentItem"
+              :media-source-index="playbackManager.currentMediaSourceIndex"
               :z-index="99999" />
             <VBtn
               icon

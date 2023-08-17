@@ -37,6 +37,7 @@
   <MetadataEditorDialog
     v-if="metadataDialog && item.Id"
     :item-id="item.Id"
+    :media-source-index="mediaSourceIndex"
     @close="metadataDialog = false" />
   <RefreshMetadataDialog
     v-if="refreshDialog && item.Id"
@@ -49,6 +50,7 @@
   <MediaDetailDialog
     v-if="mediaInfoDialog && item.Id"
     :item="menuProps.item"
+    :media-source-index="mediaSourceIndex"
     @close="mediaInfoDialog = false" />
 </template>
 
@@ -80,6 +82,7 @@ import {
   canInstantMix,
   canRefreshMetadata,
   canResume,
+  getItemIdFromSourceIndex,
   getItemDownloadUrl,
   getItemSeasonDownloadMap,
   getItemSeriesDownloadMap
@@ -107,12 +110,14 @@ const menuProps = withDefaults(
     zIndex?: number;
     rightClick?: boolean;
     queue?: boolean;
+    mediaSourceIndex?: number;
   }>(),
   {
     outlined: false,
     zIndex: 1000,
     rightClick: true,
-    queue: false
+    queue: false,
+    mediaSourceIndex: undefined
   }
 );
 const { t } = useI18n();
@@ -146,6 +151,23 @@ const errorMessage = t('errors.anErrorHappened');
 const isItemRefreshing = computed(
   () => taskManager.getTask(menuProps.item.Id || '') !== undefined
 );
+const itemDeletionName = computed(() => {
+  const parentName = menuProps.item.Name ?? undefined;
+  const mediaSource =
+    menuProps.item.MediaSources?.[menuProps.mediaSourceIndex ?? -1];
+
+  if (mediaSource?.Name) {
+    let name = mediaSource.Name;
+
+    if (parentName) {
+      name = `${parentName} - ${name}`;
+    }
+
+    return name;
+  }
+
+  return parentName;
+});
 
 /**
  * == ACTIONS ==
@@ -258,16 +280,21 @@ const deleteItemAction = {
   action: async (): Promise<void> => {
     await useConfirmDialog(
       async () => {
-        if (!menuProps.item.Id) {
+        const itemDeletionId = getItemIdFromSourceIndex(
+          menuProps.item,
+          menuProps.mediaSourceIndex
+        );
+
+        if (!itemDeletionId) {
           return;
         }
 
         try {
           await remote.sdk.newUserApi(getLibraryApi).deleteItem({
-            itemId: menuProps.item.Id
+            itemId: itemDeletionId
           });
 
-          if (route.fullPath.includes(menuProps.item.Id)) {
+          if (itemDeletionId === menuProps.item.Id && route.fullPath.includes(itemDeletionId)) {
             await router.replace('/');
           }
         } catch (error) {
@@ -279,6 +306,7 @@ const deleteItemAction = {
       {
         title: t('deleteItem'),
         text: t('deleteItemDescription'),
+        subtitle: itemDeletionName.value,
         confirmText: t('delete')
       }
     );
@@ -315,7 +343,9 @@ const copyDownloadURLAction = {
           break;
         }
         default: {
-          streamUrls = getItemDownloadUrl(menuProps.item.Id);
+          streamUrls = getItemDownloadUrl(
+            getItemIdFromSourceIndex(menuProps.item, menuProps.mediaSourceIndex)
+          );
           break;
         }
       }
