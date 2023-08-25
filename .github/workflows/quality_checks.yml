@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Scan
         uses: actions/dependency-review-action@v3.0.8
@@ -29,10 +29,10 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.8.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: 18
           check-latest: true
@@ -49,10 +49,10 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.8.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: 18
           check-latest: true
@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v2.2.0
@@ -131,10 +131,10 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Setup node environment ⚙️
-        uses: actions/setup-node@v3.8.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: 18
           check-latest: true
@@ -214,7 +214,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v3.5.3
+        uses: actions/checkout@v3.6.0
 
       - name: Check if all commits comply with the specification
         uses: webiny/action-conventional-commits@v1.1.0
