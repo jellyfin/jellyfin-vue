@@ -202,11 +202,6 @@
     "noLogsFound": "Ingen logger funnet"
   },
   "manualLogin": "Manuell innlogging",
-  "mediaInfo": {
-    "container": {
-      "name": "Beholder:"
-    }
-  },
   "menu": "Meny",
   "metadata": {
     "source": "Kilde",

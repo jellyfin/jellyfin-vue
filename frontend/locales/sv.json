@@ -183,11 +183,6 @@
     "noLogsFound": "Inga loggar hittades"
   },
   "manualLogin": "Manuell inloggning",
-  "mediaInfo": {
-    "container": {
-      "name": "Container:"
-    }
-  },
   "menu": "Meny",
   "metadata": {
     "source": "Källa",

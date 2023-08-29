@@ -202,11 +202,6 @@
     "noLogsFound": "Не знайдено логів"
   },
   "manualLogin": "Вхід вручну",
-  "mediaInfo": {
-    "container": {
-      "name": "Контейнер:"
-    }
-  },
   "menu": "Меню",
   "metadata": {
     "source": "Джерело",

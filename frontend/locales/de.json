@@ -201,11 +201,6 @@
     "noLogsFound": "Keine Protokolle gefunden"
   },
   "manualLogin": "Manueller Login",
-  "mediaInfo": {
-    "container": {
-      "name": "Container:"
-    }
-  },
   "menu": "Menü",
   "metadata": {
     "source": "Quelle",

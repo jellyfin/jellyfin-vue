@@ -199,11 +199,6 @@
     "noLogsFound": "Журналов не найдено"
   },
   "manualLogin": "Войти вручную",
-  "mediaInfo": {
-    "container": {
-      "name": "Контейнер:"
-    }
-  },
   "menu": "Меню",
   "metadata": {
     "source": "Источник",

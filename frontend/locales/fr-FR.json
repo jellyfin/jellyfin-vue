@@ -201,11 +201,6 @@
     "noLogsFound": "Aucun journal trouvé"
   },
   "manualLogin": "Connexion manuelle",
-  "mediaInfo": {
-    "container": {
-      "name": "Container :"
-    }
-  },
   "menu": "Menu",
   "metadata": {
     "source": "Source",

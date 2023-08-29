@@ -201,11 +201,6 @@
     "noLogsFound": "로그가 없습니다"
   },
   "manualLogin": "수동 로그인",
-  "mediaInfo": {
-    "container": {
-      "name": "컨테이너:"
-    }
-  },
   "menu": "메뉴",
   "metadata": {
     "source": "소스",

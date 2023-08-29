@@ -202,11 +202,6 @@
     "noLogsFound": "Lokitietoja ei löytynyt"
   },
   "manualLogin": "Manuaalinen kirjautuminen",
-  "mediaInfo": {
-    "container": {
-      "name": "Säiliö:"
-    }
-  },
   "menu": "Valikko",
   "metadata": {
     "source": "Lähde",

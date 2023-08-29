@@ -202,11 +202,6 @@
     "noLogsFound": "Žádný protokol nenalezen"
   },
   "manualLogin": "Ruční přihlášení",
-  "mediaInfo": {
-    "container": {
-      "name": "Kontejner:"
-    }
-  },
   "menu": "Nabídka",
   "metadata": {
     "source": "Zdroj",
