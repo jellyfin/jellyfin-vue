@@ -79,8 +79,11 @@
       "recentlyAdded": "Son eklenen"
     }
   },
+  "imageType": {
+    "backdrop": "Arka Plan"
+  },
   "images": "Resimler",
-  "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya şifre",
+  "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya parola",
   "itemNotFound": "Öğe bulunamadı",
   "jellyfinLogo": "Jellyfin logo",
   "libraries": "Kütüphaneler",
@@ -103,7 +106,7 @@
   "overview": "Özet",
   "parentalRating": "Yaş derecelendirmesi",
   "parentalRatings": "Yaş Derecelendirmeleri",
-  "password": "Şifre",
+  "password": "Parola",
   "play": "Oynat",
   "present": "Mevcut",
   "rating": "İzlenme oranı",
@@ -111,7 +114,7 @@
   "save": "Kaydet",
   "server": "Sunucu",
   "serverVersion": "Sunucu sürümü",
-  "serverVersionTooLow": "Sunucu versiyonu 10.7.0 veya daha üstü olmalıdır",
+  "serverVersionTooLow": "Sunucu sürümünün {version} veya daha üstü olması gerekir",
   "settingsSections": {
     "devices": {
       "name": "Cihazlar"
@@ -120,6 +123,7 @@
       "name": "Kütüphaneler"
     },
     "notifications": {
+      "description": "Bu sunucu tarafından gönderilen bildirimi yönetin ve yapılandırın",
       "name": "Bildirimler"
     },
     "plugins": {
@@ -134,5 +138,11 @@
   "unexpectedError": "Beklenmedik hata",
   "upNext": "Sonraki",
   "username": "Kullanıcı Adı",
+  "validation": {
+    "bothPasswordsSame": "Her iki parola da aynı olmalıdır"
+  },
+  "wizard": {
+    "confirmPassword": "Parolayı onayla"
+  },
   "youMayAlsoLike": "Şunlar da ilginizi çekebilir"
 }
