@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Scan
         uses: actions/dependency-review-action@v3.0.8
@@ -30,6 +32,8 @@ jobs:
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v3.8.1
@@ -50,6 +54,8 @@ jobs:
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v3.8.1
@@ -77,6 +83,8 @@ jobs:
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Configure QEMU ⚙️
         uses: docker/setup-qemu-action@v2.2.0
@@ -132,6 +140,8 @@ jobs:
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v3.8.1
@@ -215,6 +225,8 @@ jobs:
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@v4.0.0
+        with:
+          show-progress: false
 
       - name: Check if all commits comply with the specification
         uses: webiny/action-conventional-commits@v1.1.0
