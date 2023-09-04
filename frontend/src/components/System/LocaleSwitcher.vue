@@ -13,7 +13,6 @@
     <VMenu>
       <VList class="overflow-y-auto">
         <VListItem
-          :value="clientSettings.locale === 'auto'"
           :title="$t('auto')"
           @click="clientSettings.locale = 'auto'" />
         <VDivider />
