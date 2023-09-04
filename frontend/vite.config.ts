@@ -101,6 +101,8 @@ export default defineConfig(({ mode }): UserConfig => {
       }),
       VueI18nPlugin({
         runtimeOnly: true,
+        dropMessageCompiler: true,
+        jitCompilation: true,
         compositionOnly: true,
         fullInstall: false,
         forceStringify: true,
