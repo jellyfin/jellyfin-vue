@@ -87,13 +87,13 @@ jobs:
           show-progress: false
 
       - name: Configure QEMU ⚙️
-        uses: docker/setup-qemu-action@v2.2.0
+        uses: docker/setup-qemu-action@v3.0.0
 
       - name: Configure Docker Buildx ⚙️
-        uses: docker/setup-buildx-action@v2.10.0
+        uses: docker/setup-buildx-action@v3.0.0
 
       - name: Build Docker images 🛠️
-        uses: docker/build-push-action@v4.1.1
+        uses: docker/build-push-action@v5.0.0
         with:
           context: .
           platforms: ${{ matrix.platform }}
