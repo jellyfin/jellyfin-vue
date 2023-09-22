@@ -17,7 +17,7 @@
       "scanningItem": "'{item}' aan het scannen…"
     },
     "tooltips": {
-      "tasks": "Taken uitvoeren"
+      "tasks": "Lopende taken"
     }
   },
   "architecture": "Architectuur",
@@ -72,7 +72,7 @@
   "discNumber": "Schijf {discNumber}",
   "dislikes": "Niet leuk",
   "downloadItem": "Download | Download alle",
-  "edit": "Bewerken",
+  "edit": "Wijzig",
   "editMetadata": "Metadata wijzigen",
   "editPerson": "Persoon wijzigen",
   "endDate": "Einddatum",
@@ -137,7 +137,7 @@
   "item": {
     "artist": {
       "albums": "Albums",
-      "appearsOn": "Komt voor op",
+      "appearsOn": "Te zien op",
       "discography": "Discografie",
       "eps": "EP's",
       "information": "Informatie",
