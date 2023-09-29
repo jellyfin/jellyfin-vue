@@ -240,7 +240,7 @@
   "mediaInfoVideoColorRange": "Kleurbereik",
   "mediaInfoVideoColorSpace": "Kleurruimte",
   "mediaInfoVideoColorTransfer": "Kleuroverdracht",
-  "mediaInfoVideoDoViBlPresent": "DoVi BL present",
+  "mediaInfoVideoDoViBlPresent": "DoVi BL aanwezig",
   "mediaInfoVideoDoViBlSignalCompatId": "DV bl signaal compatibiliteits ID",
   "mediaInfoVideoDoViElPresent": "DV el standaardinstelling",
   "mediaInfoVideoDoViLevel": "DV level",
@@ -383,7 +383,7 @@
   "series": "Series",
   "server": "Server",
   "serverVersion": "Server versie",
-  "serverVersionTooLow": "De server versie moet 10.7.0 of hoger zijn",
+  "serverVersionTooLow": "De server versie moet {version} of hoger zijn",
   "settings": {
     "apiKeys": {
       "accessToken": "Toegangstoken",
