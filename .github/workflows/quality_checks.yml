@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
@@ -53,7 +53,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
@@ -139,7 +139,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
@@ -224,7 +224,7 @@ jobs:
 
     steps:
       - name: Checkout ⬇️
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4.1.0
         with:
           show-progress: false
 
