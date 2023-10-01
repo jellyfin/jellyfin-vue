@@ -36,7 +36,10 @@
               </tr>
               <tr>
                 <td>{{ $t('vueClientVersion') }}</td>
-                <td>{{ clientVersion }}</td>
+                <CommitLink v-if="commit" />
+                <td v-else>
+                  {{ clientVersion }}
+                </td>
               </tr>
             </tbody>
           </VTable>
@@ -150,6 +153,7 @@ import { version as clientVersion } from '@/../package.json';
 const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
+const commit = __COMMIT_HASH__;
 
 route.meta.title = t('settings.settings');
 
