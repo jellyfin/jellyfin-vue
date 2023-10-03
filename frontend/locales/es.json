@@ -1,6 +1,8 @@
 {
   "3DFormat": "Formato 3D",
   "NoMediaSourcesAvailable": "No hay ninguna pista disponible",
+  "NoMediaStreamsAvailable": "No hay ninguna transmisión disponible para la fuente seleccionada",
+  "accept": "Aceptar",
   "actor": "Actor",
   "actors": "Actores",
   "addNewPerson": "Añadir una persona",
@@ -11,7 +13,8 @@
   "alphabetically": "Alfabéticamente",
   "appbar": {
     "tasks": {
-      "configSync": "Sincronizando ajustes…"
+      "configSync": "Sincronizando ajustes…",
+      "scanningItem": "Escaneando '{item}'…"
     },
     "tooltips": {
       "tasks": "Ejecutando tareas"
@@ -33,17 +36,27 @@
   "byArtist": "Por {artist}",
   "cancel": "Cancelar",
   "castAndCrew": "Reparto y equipo",
+  "clipboardFail": "No se ha podido copiar al portapapeles",
+  "clipboardSuccess": "Copiado en el portapapeles",
+  "clipboardUnsupported": "Copiar al portapapeles no es posible en este navegador",
+  "close": "Cerrar",
   "collectionEmpty": "Esta colección está vacía",
   "collections": "Colecciones",
   "communityRating": "Puntuación de la comunidad",
   "confirm": "Confirmar",
   "connect": "Conectar",
+  "contentType": "Tipo de contenido",
   "continueListening": "Seguir escuchando",
   "continueWatching": "Seguir viendo",
+  "copyPrompt": "¿Copiar este texto en el portapapeles?",
   "criticRating": "Valoración de la crítica",
   "customRating": "Valoración personal",
   "darkModeToggle": "Cambiar a modo oscuro",
   "dateAdded": "Añadido el",
+  "datePlayed": "Fecha de reproducción",
+  "delete": "Eliminar",
+  "deleteItem": "Eliminar media",
+  "deleteItemDescription": "Eliminar este elemento lo borrará tanto del sistema de archivos como de tu librería de medios. ¿Seguro que deseas continuar?",
   "details": "Detalles",
   "dialog": {
     "upNext": {
@@ -57,6 +70,7 @@
   "disabled": "Deshabilitado",
   "discNumber": "Disco {discNumber}",
   "dislikes": "No me gusta",
+  "downloadItem": "Descargar | Descargar todos",
   "edit": "Editar",
   "editMetadata": "Editar etiquetas",
   "editPerson": "Editar persona",
@@ -87,6 +101,7 @@
   "general": "General",
   "genericJellyfinPlaceholderDevice": "Dispositivo Jellyfin genérico",
   "genres": "Géneros",
+  "goBack": "Volver",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Estrella invitada",
   "headerExternalIds": "IDs externas",
@@ -97,6 +112,8 @@
       "recentlyAdded": "Añadido recientemente"
     }
   },
+  "identify": "Identificar",
+  "identifyConfirmChanges": "¿Seguro que quieres cambiar '{originalItem}' por '{newIdentifiedItem}'?",
   "imageType": {
     "art": "Arte",
     "backdrop": "Fondo",
@@ -190,6 +207,30 @@
     "noLogsFound": "No hay registros"
   },
   "manualLogin": "Inicio de sesión manual",
+  "mediaInfoAspectRatio": "Relación de aspecto",
+  "mediaInfoAudioChannelLayout": "Disposición",
+  "mediaInfoAudioChannels": "Canales",
+  "mediaInfoFileContainer": "Contenedor",
+  "mediaInfoFileFormats": "Formato",
+  "mediaInfoFilePath": "Ruta",
+  "mediaInfoFileSize": "Tamaño",
+  "mediaInfoFileTitle": "Título",
+  "mediaInfoGenericBitrate": "Bitrate",
+  "mediaInfoGenericCodec": "Codec",
+  "mediaInfoGenericIsDefault": "Por defecto",
+  "mediaInfoGenericIsExternal": "Externo",
+  "mediaInfoGenericIsForced": "Forzado",
+  "mediaInfoGenericLanguage": "Idioma",
+  "mediaInfoGenericProfile": "Perfil",
+  "mediaInfoTitlesAudioCodec": "Audio | Audio {0}",
+  "mediaInfoTitlesEmbeddedImageCodec": "Imagen | Imagen {0}",
+  "mediaInfoTitlesSubtitleCodec": "Subtítulo | Subtítulo {0}",
+  "mediaInfoTitlesVideoCodec": "Video | Video {0}",
+  "mediaInfoVideoBitDepth": "Profundidad de bit",
+  "mediaInfoVideoBitrate": "Bitrate",
+  "mediaInfoVideoColorRange": "Rango de Color",
+  "mediaInfoVideoColorSpace": "Espacio de color",
+  "mediaInfoVideoColorTransfer": "Transferencia de color",
   "menu": "Menú",
   "metadata": {
     "source": "Fuente",
