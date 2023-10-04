@@ -20,10 +20,6 @@ interface LatestMedia {
   [key: string]: BaseItemDto[];
 }
 
-interface UserLibraryItems {
-  [key: string]: BaseItemDto[];
-}
-
 export interface HomeSection {
   name: string;
   libraryName?: string | null;
@@ -41,7 +37,6 @@ interface HomeSections {
 
 interface UserLibrariesState {
   views: BaseItemDto[];
-  viewItems: UserLibraryItems;
   homeSections: HomeSections;
   carouselItems: BaseItemDto[];
   isReady: boolean;
@@ -61,7 +56,6 @@ class UserLibrariesStore {
    */
   private _defaultState: UserLibrariesState = {
     views: [],
-    viewItems: {},
     homeSections: {
       audioResumes: [],
       videoResumes: [],
@@ -127,25 +121,6 @@ class UserLibrariesStore {
 
     console.error(error);
     useSnackbar(t('errors.anErrorHappened'), 'error');
-  };
-
-  private _updateLibraryItems = async (libraryId: string): Promise<void> => {
-    const remote = useRemote();
-
-    try {
-      const libraryItems =
-        (
-          await remote.sdk.newUserApi(getItemsApi).getItems({
-            userId: remote.auth.currentUserId ?? '',
-            parentId: libraryId,
-            fields: Object.values(ItemFields)
-          })
-        ).data;
-
-      this._state.value.viewItems[libraryId] = libraryItems.Items ?? [];
-    } catch (error) {
-      this._onError(error);
-    }
   };
 
   private _updateUserViews = async (): Promise<void> => {
@@ -318,7 +293,7 @@ class UserLibrariesStore {
 
     for (const library of this.libraries) {
       if (library.Id) {
-        promises.push(this._updateLatestMedia(library.Id), this._updateLibraryItems(library.Id));
+        promises.push(this._updateLatestMedia(library.Id));
       }
     }
 
