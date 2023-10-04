@@ -1,6 +1,8 @@
 {
   "3DFormat": "3D-format",
   "NoMediaSourcesAvailable": "Inga mediekällor tillgängliga",
+  "NoMediaStreamsAvailable": "Inga mediekällor tillgängliga för den valda källan",
+  "accept": "Acceptera",
   "actor": "Skådespelare",
   "actors": "Skådespelare",
   "addNewPerson": "Lägg till en ny person",
@@ -11,7 +13,8 @@
   "alphabetically": "Alfabetiskt",
   "appbar": {
     "tasks": {
-      "configSync": "Synkar inställningar…"
+      "configSync": "Synkar inställningar…",
+      "scanningItem": "Skannar '{item}'…"
     },
     "tooltips": {
       "tasks": "Pågående aktiviteter"
@@ -23,6 +26,7 @@
   "aspectRatio": "Bildformat",
   "audio": "Ljud",
   "audioCodecNotSupported": "Ljudkodeken stöds ej",
+  "auto": "Automatisk",
   "badRequest": "Felaktigt anrop. Försök igen",
   "books": "Böcker",
   "browserNotSupported": "Din webbläsare stöds inte för att spela upp den här filen.",
@@ -32,17 +36,28 @@
   "byArtist": "Av {artist}",
   "cancel": "Avbryt",
   "castAndCrew": "Skådespelare och filmmedarbetare",
+  "clipboardFail": "Misslyckades att kopiera till urklipp",
+  "clipboardSuccess": "Kopierade till urklipp",
+  "clipboardUnsupported": "Kopiering till urklipp stöds inte i denna webbläsare",
+  "close": "Stäng",
   "collectionEmpty": "Den här samlingen är tom",
   "collections": "Samlingar",
   "communityRating": "Gemenskapsomdöme",
   "confirm": "Bekräfta",
   "connect": "Anslut",
+  "contentType": "Typ av innehåll",
   "continueListening": "Fortsätt lyssna",
   "continueWatching": "Fortsätt titta",
+  "copyPrompt": "Kopiera följande text till urklipp?",
+  "copyStreamURL": "Kopiera ström URL",
   "criticRating": "Kritikerbetyg",
   "customRating": "Eget omdöme",
   "darkModeToggle": "Växla mörkt läge",
   "dateAdded": "Datum tillagt",
+  "datePlayed": "Uppspelnings datum",
+  "delete": "Radera",
+  "deleteItem": "Radera media",
+  "deleteItemDescription": "Radering av detta objekt kommer radera det från både filsystem och ditt media bibliotek. Är du säker på att du vill fortsätta?",
   "details": "Detaljer",
   "dialog": {
     "upNext": {
@@ -56,6 +71,7 @@
   "disabled": "Inaktiverad",
   "discNumber": "Disk {discNumber}",
   "dislikes": "Ogillningar",
+  "downloadItem": "Ladda ner| Ladda ner allt",
   "edit": "Redigera",
   "editMetadata": "Redigera metadata",
   "editPerson": "Redigera person",
@@ -64,10 +80,16 @@
   "episodeNumber": "Avsnitt {episodeNumber}",
   "errors": {
     "anErrorHappened": "Ett fel inträffade",
+    "cantPlayItem": "Det här objektet kan inte spelas upp",
     "messages": {
       "errorCode": "Felkod: {errorCode}",
       "videoPlayerError": "Videospelaren stötte på ett kritiskt fel."
-    }
+    },
+    "playback": {
+      "mediaError": "Katastrofalt media fel påträffades, försöker återhämta",
+      "networkError": "Katastrofalt nätverks fel påträffades, försöker återhämta"
+    },
+    "unauthorized": "Du saknar behörighet för att se denna sida"
   },
   "failedRetrievingDisplayPreferences": "Det går inte att få visningsinställningar. Använder de senaste kända inställningarna.",
   "failedSettingDisplayPreferences": "Det går inte att få visningsinställningar.",
@@ -80,6 +102,8 @@
   "general": "Allmän",
   "genericJellyfinPlaceholderDevice": "Generisk Jellyfin enhet",
   "genres": "Genrer",
+  "goBack": "Gå tillbaka",
+  "goNext": "Gå till nästa",
   "googleCastPlaceholderDevice": "Google Cast-enhet",
   "guestStar": "Gäststjärna",
   "headerExternalIds": "Externa ID",
@@ -90,6 +114,9 @@
       "recentlyAdded": "Nyligen tillagda"
     }
   },
+  "identify": "Identifiera",
+  "identifyConfirmChanges": "Är du säker på att du vill byta '{originalItem}' med '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Du kan klicka på en av dessa kort för att applicera resultatet",
   "imageType": {
     "art": "Konst",
     "backdrop": "Backgrund",
@@ -105,6 +132,8 @@
   },
   "images": "Bilder",
   "incorrectUsernameOrPassword": "Fel användarnamn eller lösenord",
+  "instantMix": "Omedelbar mix",
+  "instantMixQueued": "Omedelbar mix tillagd i kö",
   "item": {
     "artist": {
       "albums": "Album",
@@ -183,6 +212,33 @@
     "noLogsFound": "Inga loggar hittades"
   },
   "manualLogin": "Manuell inloggning",
+  "mediaInfo": "Media information",
+  "mediaInfoAspectRatio": "Bildförhållande",
+  "mediaInfoAudioChannelLayout": "Layout",
+  "mediaInfoAudioChannels": "Kanaler",
+  "mediaInfoAudioSampleRate": "Samplingshastighet",
+  "mediaInfoFileContainer": "Behållare",
+  "mediaInfoFileFormats": "Format",
+  "mediaInfoFilePath": "Sökväg",
+  "mediaInfoFileSize": "Storlek",
+  "mediaInfoFileTitle": "Title",
+  "mediaInfoGenericBitrate": "Bithastighet",
+  "mediaInfoGenericCodec": "Kodek",
+  "mediaInfoGenericCodecTag": "Kodex tagg",
+  "mediaInfoGenericIsDefault": "Standard",
+  "mediaInfoGenericIsExternal": "Extern",
+  "mediaInfoGenericIsForced": "Forcerad",
+  "mediaInfoGenericLanguage": "Språk",
+  "mediaInfoGenericProfile": "Profil",
+  "mediaInfoTitlesAudioCodec": "Audio | Audio {0}",
+  "mediaInfoTitlesEmbeddedImageCodec": "Bild | Bild {0}",
+  "mediaInfoTitlesSubtitleCodec": "Undertext| Undertext {0}",
+  "mediaInfoTitlesVideoCodec": "Video| Video {0}",
+  "mediaInfoVideoBitDepth": "Bitdjup",
+  "mediaInfoVideoBitrate": "Bithastighet",
+  "mediaInfoVideoColorPrimaries": "Primärfärger",
+  "mediaInfoVideoColorRange": "Färgskala",
+  "mediaInfoVideoColorSpace": "Färg rymd",
   "menu": "Meny",
   "metadata": {
     "source": "Källa",
