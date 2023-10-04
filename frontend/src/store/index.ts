@@ -4,6 +4,7 @@ import taskManager from './taskManager';
 import userLibraries from './userLibraries';
 import playbackManager from './playbackManager';
 import playerElement from './playerElement';
+import userItems from './userItems';
 
 /**
  * Get global instance of clientSettings store
@@ -31,6 +32,13 @@ export function taskManagerStore(): typeof taskManager {
  */
 export function userLibrariesStore(): typeof userLibraries {
   return userLibraries;
+}
+
+/**
+ * Get global instance of userItems store
+ */
+export function userItemsStore(): typeof userItems {
+  return userItems;
 }
 
 /**
