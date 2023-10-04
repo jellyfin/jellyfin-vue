@@ -20,11 +20,13 @@ import { useDisplay } from 'vuetify';
 import {
   playbackManagerStore,
   playerElementStore,
-  userLibrariesStore
+  userLibrariesStore,
+  userItemsStore
 } from '@/store';
 
 const display = useDisplay();
 const userLibraries = userLibrariesStore();
+const userItems = userItemsStore();
 const navDrawer = ref(!display.mobile.value);
 
 const playbackManager = playbackManagerStore();
@@ -41,6 +43,10 @@ const playerElement = playerElementStore();
  */
 if (!userLibraries.isReady) {
   await userLibraries.refresh();
+}
+
+if (!userItems.isReady) {
+  await userItems.refresh();
 }
 
 watch(display.mobile, () => {
