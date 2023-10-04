@@ -89,6 +89,11 @@ import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { isNil } from 'lodash-es';
 import { useRemote, useSnackbar } from '@/composables';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
+import {
+  userItemsStore
+} from '@/store';
+
+const userItems = userItemsStore();
 
 const { t } = useI18n();
 const route = useRoute();
@@ -178,6 +183,26 @@ const recursive = computed(() =>
     ? undefined
     : true
 );
+
+/**
+ * Check to see if the store has the items we want
+ */
+async function fetchLibraryOnMounted(itemId: string): Promise<void> {
+  loadingLibrary.value = true;
+
+  if ((!userItems.isReady) || (!userItems.getLibraryItems(itemId))) {
+    console.log('Library isnt loaded, just grab it');
+    await fetchLibrary(itemId);
+
+    return;
+  }
+
+  console.log('Library is loaded, hand it over!!');
+  loadingLibrary.value = false;
+  loadingItems.value = false;
+  items.value = userItems.getLibraryItems(itemId);
+  console.log(items.value);
+}
 
 /**
  * Fetch the library information when it's changed
@@ -322,7 +347,8 @@ async function refreshItems(): Promise<void> {
   }
 }
 
-onMounted(() => fetchLibrary((route.params as { itemId: string }).itemId));
+
+onMounted(() => fetchLibraryOnMounted((route.params as { itemId: string }).itemId));
 
 watch(library, (lib) => {
   route.meta.title = lib?.Name;
