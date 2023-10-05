@@ -36,6 +36,7 @@
   "byArtist": "By {artist}",
   "cancel": "Cancel",
   "castAndCrew": "Cast & crew",
+  "channels": "Channels",
   "clipboardFail": "Failed to copy to clipboard",
   "clipboardSuccess": "Copied to clipboard",
   "clipboardUnsupported": "Copying to clipboard is unsupported in this browser",
@@ -183,6 +184,7 @@
     "readTheDocumentation": "Read the documentation",
     "reportAnIssue": "Report an issue with this client"
   },
+  "liveTv": "Live TV",
   "login": {
     "addServer": "Add server",
     "changeServer": "Change server",
@@ -275,6 +277,7 @@
   "moreLikeArtist": "More like {artist}",
   "moreLikeThis": "More like this",
   "movies": "Movies",
+  "music": "Music",
   "name": "Name",
   "networks": "Networks",
   "nextUp": "Next up",
@@ -429,7 +432,46 @@
       "noActivityFound": "No activities found",
       "noLogsFound": "No logs found"
     },
-    "settings": "Settings"
+    "settings": "Settings",
+    "users": {
+      "avatar": "Avatar",
+      "edit": "Edit user",
+      "lastActivityDate": "Last seen",
+      "libraryAccess": "Library access",
+      "libraryAccessNote": "Select the libraries to share with this user. Administrators will be able to edit all folders using the metadata manager.",
+      "new": "Create user",
+      "tabs": {
+        "profile": {
+          "allowRemoteConnections": "Allow remote connections to this server",
+          "deleteUser": "Delete user",
+          "deleteUserConfirm": "Are you sure you want to delete this user?",
+          "name": "Name",
+          "profile": "Profile"
+        },
+        "access": {
+          "access": "Access",
+          "allLibraries": "Enable access to all libraries"
+        },
+        "parentalControl": {
+          "addBlockedTag": "Add blocked tag",
+          "blockUnratedItems": "Block items with no or unregocnized rating information:",
+          "blockTags": "Block items with tags:",
+          "maxAllowedRating": "Maximum allowed parental rating",
+          "maxAllowedRatingSubtitle": "Content with a higher rating will be hidden from this user.",
+          "parentalControl": "Parental Control",
+          "tagName": "Tag name",
+          "unblockTag": "Unblock tag"
+        },
+        "password": {
+          "confirmPassword": "Confirm new password",
+          "currentPassword": "Current password",
+          "newPassword": "New password", 
+          "password": "Password",
+          "resetPassword": "Reset password"
+        }
+      },
+      "users": "Users"
+    }
   },
   "settingsSections": {
     "account": {
