@@ -225,7 +225,7 @@ const adminSections = computed(() => {
         icon: IMdiAccountMultiple,
         name: t('settingsSections.users.name'),
         description: t('settingsSections.users.description'),
-        link: undefined
+        link: '/settings/users'
       },
       {
         icon: IMdiKeyChain,
