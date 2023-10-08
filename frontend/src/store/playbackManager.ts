@@ -975,7 +975,9 @@ class PlaybackManagerStore {
 
       const parameters = new URLSearchParams(directOptions).toString();
 
-      if (mediaType === 'Video') mediaType = 'Videos';
+      if (mediaType === 'Video') {
+        mediaType = 'Videos';
+      }
 
       return `${remote.sdk.api.basePath}/${mediaType}/${mediaSource.Id}/stream.${mediaSource.Container}?${parameters}`;
     } else if (remote.sdk.api?.basePath && mediaSource?.SupportsTranscoding && mediaSource.TranscodingUrl) {
