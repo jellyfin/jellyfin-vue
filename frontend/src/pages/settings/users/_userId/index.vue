@@ -48,19 +48,20 @@
                   <VCol>
                     <VBtn
                       :loading="loading"
-                      color="primary"
+                      color="error"
                       variant="elevated"
-                      @click="saveProfile">
-                      {{ t('save') }}
+                      @click="deleteUser">
+                      {{ t('settings.users.tabs.profile.deleteUser') }}
                     </VBtn>
                   </VCol>
                   <VCol>
                     <VBtn
                       :loading="loading"
-                      color="error"
+                      color="primary"
                       variant="elevated"
-                      @click="deleteUser">
-                      {{ t('settings.users.tabs.profile.deleteUser') }}
+                      class="float-right"
+                      @click="saveProfile">
+                      {{ t('save') }}
                     </VBtn>
                   </VCol>
                 </VRow>
@@ -104,6 +105,7 @@
                       :loading="loading"
                       color="primary"
                       variant="elevated"
+                      class="float-right"
                       @click="saveAccess">
                       {{ t('save') }}
                     </VBtn>
@@ -215,7 +217,10 @@
                       </div>
                     </VCol>
                     <VCol>
-                      <VBtn @click="addTagDialogOpen = true">
+                      <VBtn
+                        color="secondary"
+                        variant="elevated"
+                        @click="addTagDialogOpen = true">
                         {{ t('settings.users.tabs.parentalControl.addBlockedTag') }}
                       </VBtn>
                     </VCol>
@@ -245,6 +250,7 @@
                       :loading="loading"
                       color="primary"
                       variant="elevated"
+                      class="float-right"
                       @click="saveParentalControl">
                       {{ t('save') }}
                     </VBtn>
@@ -303,6 +309,7 @@
                       :disabled="loading"
                       variant="elevated"
                       color="primary"
+                      class="float-right"
                       @click="submitPassword">
                       {{ t('save') }}
                     </VBtn>
