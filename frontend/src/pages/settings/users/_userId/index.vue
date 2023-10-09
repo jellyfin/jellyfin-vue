@@ -144,66 +144,15 @@
                   </VCol>
                 </VRow>
                 <VContainer>
-                  <VRow dense>
+                  <VRow
+                    v-for="cat of blockingCategories"
+                    :key="cat.value"
+                    dense>
                     <VCol>
                       <VCheckbox
                         v-model="initializedUser.BlockUnratedItems"
-                        :label="t('books')"
-                        value="Book"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('channels')"
-                        value="ChannelContent"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('liveTv')"
-                        value="LiveTvChannel"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('movies')"
-                        value="Movie"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('music')"
-                        value="Music"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('trailer')"
-                        value="Trailer"
-                        density="compact" />
-                    </VCol>
-                  </VRow>
-                  <VRow dense>
-                    <VCol>
-                      <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
-                        :label="t('shows')"
-                        value="Series"
+                        :label="cat.label"
+                        :value="cat.value"
                         density="compact" />
                     </VCol>
                   </VRow>
@@ -385,6 +334,7 @@ const libraries = ref<BaseItemDtoQueryResult>();
 const parentalCategories = ref<{ label: string, id: number | undefined }[]>([]);
 const initializedUser = ref<{ Name: string, CurrentPassword: string, Password: string, ConfirmPassword: string, CanAccessAllLibraries: boolean, Folders: string[], maxParentalRating: number | undefined, BlockUnratedItems: UnratedItem[], BlockedTags: string[] }>({Name: '', CurrentPassword: '', Password: '', ConfirmPassword: '', CanAccessAllLibraries: false, Folders: [], maxParentalRating: undefined, BlockUnratedItems: [], BlockedTags: []});
 const tab = ref<number>(1);
+const blockingCategories = [{label: t('books'), value: 'Book'}, {label: t('channels'), value: 'ChannelContent'}, {label: t('liveTv'), value: 'LiveTvChannel'}, {label: t('movies'), value: 'Movie'}, {label: t('music'), value: 'Music'}, {label: t('trailer'), value: 'Trailer'}, {label: t('shows'), value: 'Series'}];
 
 onMounted(async () => {
   const { userId } = route.params as { userId: string };
