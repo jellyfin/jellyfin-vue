@@ -1,19 +1,32 @@
 {
   "3DFormat": "3D ഫോർമാറ്റ്",
   "NoMediaSourcesAvailable": "മീഡിയ ഉറവിടങ്ങളൊന്നും ലഭ്യമല്ല",
+  "NoMediaStreamsAvailable": "തിരഞ്ഞെടുത്ത ഉറവിടത്തിന് മീഡിയ സ്ട്രീമുകളൊന്നും തന്നെ ലഭ്യമല്ല",
+  "accept": "സമ്മതിക്കുക",
   "actor": "നടൻ",
   "actors": "അഭിനേതാക്കൾ",
   "addNewPerson": "ഒരു പുതിയ വ്യക്തിയെ ചേർക്കുക",
+  "administrator": "കാര്യനിർവാഹകൻ",
   "airPlayDevices": "എയർപ്ലേ ഉപകരണങ്ങൾ",
   "albums": "ആൽബങ്ങൾ",
   "allLanguages": "എല്ലാ ഭാഷകളും",
   "alphabetically": "അക്ഷരമാലാക്രമത്തിൽ",
+  "appbar": {
+    "tasks": {
+      "configSync": "ക്രമീകരണങ്ങൾ സമന്വയിപ്പിക്കുന്നു…",
+      "scanningItem": "'{item}' സ്കാൻ ചെയ്യുന്നു…"
+    },
+    "tooltips": {
+      "tasks": "പ്രവർത്തിക്കുന്ന ജോലികൾ"
+    }
+  },
   "architecture": "വാസ്തുവിദ്യ",
   "artist": "ആർട്ടിസ്റ്റ്",
   "artists": "കലാകാരന്മാർ",
   "aspectRatio": "വീക്ഷണാനുപാതം",
   "audio": "ഓഡിയോ",
   "audioCodecNotSupported": "ഓഡിയോ കോഡെക് പിന്തുണയ്‌ക്കുന്നില്ല",
+  "auto": "ഓട്ടോമാറ്റിക്",
   "badRequest": "മോശം അഭ്യർത്ഥന. വീണ്ടും ശ്രമിക്ക്",
   "books": "പുസ്തകങ്ങൾ",
   "browserNotSupported": "ഈ ഫയൽ പ്ലേ ചെയ്യുന്നതിന് നിങ്ങളുടെ ബ്ര browser സറിനെ പിന്തുണയ്ക്കുന്നില്ല.",
@@ -23,6 +36,7 @@
   "byArtist": "എഴുതിയത് {artist}",
   "cancel": "റദ്ദാക്കുക",
   "castAndCrew": "കാസ്റ്റ് & ക്രൂ",
+  "clipboardFail": "ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്താൻ സാധിച്ചില്ല",
   "collections": "ശേഖരങ്ങൾ",
   "communityRating": "കമ്മ്യൂണിറ്റി റേറ്റിംഗ്",
   "confirm": "സ്ഥിരീകരിക്കുക",

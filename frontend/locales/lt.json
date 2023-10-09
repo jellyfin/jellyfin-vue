@@ -1,5 +1,22 @@
 {
+  "3DFormat": "3D formatu",
+  "accept": "Priimti",
+  "actor": "Aktorius/ė",
+  "actors": "Aktoriai",
+  "addNewPerson": "Pridėti naują asmenį",
+  "administrator": "Administratorius/ė",
+  "airPlayDevices": "AirPlay įrenginiai",
+  "albums": "Albumai",
+  "allLanguages": "Visos kalbos",
   "alphabetically": "Paraidžiui",
+  "appbar": {
+    "tasks": {
+      "configSync": "Sinchronizuojami nustatymai…",
+      "scanningItem": "Nuskaitoma '{item}'…"
+    }
+  },
+  "architecture": "Architektūra",
+  "audio": "Garsas",
   "badRequest": "Bloga užklausa. Bandykite iš naujo",
   "continueListening": "Tęsti klausymą",
   "continueWatching": "Tęsti žiūrėjimą",
