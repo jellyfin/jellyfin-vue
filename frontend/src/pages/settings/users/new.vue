@@ -59,13 +59,16 @@
             </VCol>
           </VRow>
           <VRow>
-            <VBtn
-              color="primary"
-              variant="elevated"
-              :loading="loading"
-              @click="createUser">
-              {{ t('settings.users.new') }}
-            </VBtn>
+            <VCol>
+              <VBtn
+                color="primary"
+                variant="elevated"
+                :loading="loading"
+                class="float-right"
+                @click="createUser">
+                {{ t('settings.users.new') }}
+              </VBtn>
+            </VCol>
           </VRow>
         </VForm>
       </VCard>
