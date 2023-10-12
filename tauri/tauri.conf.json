@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "jellyfin-vue",
-    "version": "0.0.0"
+    "version": "../frontend/package.json"
   },
   "build": {
     "distDir": "../frontend/dist",
@@ -52,7 +52,7 @@
       }
     ],
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'",
+      "csp": null,
       "dangerousUseHttpScheme": true
     }
   }
