@@ -127,62 +127,7 @@ once loaded, only connections to fetch its own assets are made to the original s
 
 # For developers 🛠
 
-## Dependencies
-
-- [Node.js LTS](https://nodejs.org/en/download) `>=18.12.0 <19.0.0`
-- npm `>=8.19.2` (included in Node.js)
-- Jellyfin Server `>=10.7.0`
-
-## Getting Started
-
-1. Clone or download this repository:
-
-   ```bash
-   git clone https://github.com/jellyfin/jellyfin-vue.git
-   cd jellyfin-vue
-   ```
-
-2. Install the build dependencies in the project directory:
-
-   ```bash
-   npm install
-   ```
-
-3. Run development build:
-
-   ```bash
-   npm start
-   ```
-
-   The client will be available at <http://127.0.0.1:3000> by default.
-
-### Build for production 🏗️
-
-When you're ready to deploy the client, you must build it for production specifically:
-
-```bash
-npm run build
-```
-
-Build output will be available under the `src/dist` folder.
-
-## Other build features 🗜️
-
-### Running a production build
-
-After building the client, you can serve it directly:
-
-```bash
-npm run serve
-```
-
-There's also a shortcut for building the production version of the client and serving it afterwards:
-
-```bash
-npm run prod
-```
-
-⚠️ _Although the build of the client is production-ready, the internal HTTP server should never be exposed directly to the internet and a proper webserver like Nginx should always be used instead._
+See [development setup](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing#development-setup).
 
 ## Contributing 🤝
 
