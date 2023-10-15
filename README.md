@@ -74,11 +74,13 @@
 
 This is an alternative client for Jellyfin based on Vue.js. It might not be feature complete and it's constantly evolving.
 
-# For end users 👨‍👩‍👧‍👦
+# Usage instructions for end users 👨‍👩‍👧‍👦
 
 ## [Hosted instance 🌍](https://jf-vue.pages.dev/)
 
 Our hosted instance points to a version built from the current `master` branch. Hosted by CloudFlare Pages.
+
+⚠️ **This only works for Jellyfin servers that [are behind a reverse proxy and has HTTPS correctly set up](https://jellyfin.org/docs/general/networking/#running-jellyfin-behind-a-reverse-proxy)**. If your server runs over HTTP, you must use another deployment type.
 
 ## Docker Container 📦
 
@@ -97,7 +99,10 @@ Check [our wiki page](https://github.com/jellyfin/jellyfin-vue/wiki/Deployment-m
 
 ## Privacy disclaimer 🕵🏻
 
-Jellyfin Vue is just a GUI _frontend_ for a Jellyfin server. It only establishes connection to the Jellyfin server that you point it to, **nothing else**.
+Jellyfin Vue is just a GUI *(Graphical User Interface)* for a Jellyfin server. It only establishes connection to the Jellyfin server that you point it to, **nothing else**.
+
+<details>
+<summary><strong>Read more</strong></summary>
 
 - **Local instances** _Examples: Our Windows/Mac/Linux application, a local web server, etc_: All the necessary assets for the frontend to work
   are available locally (in your device) or bundled into the underlying environment (Tauri, Electron, etc) where it is running.
@@ -118,37 +123,20 @@ and you trust the person/people behind it to not have done so_.
 
 ³ _We assume standard networks here, no special configurations or policies that your ISP/Workplace/University/etc might apply._
 
-For your interest, [Jellyfin Web](https://github.com/jellyfin/jellyfin-web) (our main frontend) works in a similar way:
+[Jellyfin Web](https://github.com/jellyfin/jellyfin-web) (our main frontend) works in a similar way:
 It connects by default to the Jellyfin server that is running alongside,
-but it's also capable to connect to other Jellyfin servers [like can be tested in our demo](https://demo.jellyfin.org/) and,
-once loaded, only connections to fetch its own assets are made to the original server. Jellyfin Web can also be hosted standalone like Jellyfin Vue.
+but it's also capable to connect to other Jellyfin servers [like can be tested in our demo](https://demo.jellyfin.org/) and [the hosted instance](https://jellyfin-web.pages.dev/).
+By inspecting the network requests, you will find that only connections to fetch its own assets are made to the server distributing the client, but connections to your own Jellyfin server will not go through it.
+
+The same principel applies to Jellyfin Vue. Note that Jellyfin Web can also be hosted standalone, just like Jellyfin Vue.
 
 - _Relevant links_: [Community standards](https://jellyfin.org/docs/general/community-standards) and [Social Contract](https://github.com/jellyfin/jellyfin-meta/blob/master/policies-and-procedures/jellyfin-social-contract.md)
+</details>
 
-# For developers 🛠
+# Usage instructions for developers 🛠
 
-See [development setup](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing#development-setup).
+See [development setup](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing#development-setup) from our *Contributing* guides.
 
 ## Contributing 🤝
 
-### Translations 🌐
-
-Head over [our translation platform](https://translate.jellyfin.org/projects/jellyfin-vue/jellyfin-vue/)
-
-### Code 🧮
-
-We follow the **[fork and PR](https://docs.github.com/en/get-started/quickstart/contributing-to-projects)** paradigm.
-We welcome all contributions and pull requests!
-
-If you have larger changes in mind, split them up in smaller PRs as much as possible.
-You can also open a GitHub Discussion or reach with us in Matrix to talk about the implementation details or the review process.
-
-For more information, see [our contributing guide](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing)
-
-### Donations 💰
-
-You can help the Jellyfin project as a whole pay for server and API expenses through our [OpenCollective](https://opencollective.com/jellyfin).
-
-If you want to strictly donate to the developers of Jellyfin Vue, check [our top contributors](https://github.com/jellyfin/jellyfin-vue/graphs/contributors) and sponsor whoever you want.
-
-The maintainers/leaders of the development of every Jellyfin project (including Jellyfin Vue) are listed [here](https://github.com/jellyfin/jellyfin-meta/blob/master/jellyfin-team.md#subproject-leaders).
+See [Contributing](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing) guide.
