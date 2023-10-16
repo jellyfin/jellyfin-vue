@@ -436,7 +436,7 @@
     "users": {
       "avatar": "Avatar",
       "edit": "Edit user",
-      "lastActivityDate": "Last seen",
+      "lastActivityDate": "Last seen {value} ago",
       "libraryAccess": "Library access",
       "libraryAccessNote": "Select the libraries to share with this user. Administrators will be able to edit all folders using the metadata manager.",
       "new": "Create user",

@@ -17,58 +17,35 @@
       </VBtn>
     </template>
     <template #content>
-      <VCol>
-        <VTable>
-          <thead>
-            <tr>
-              <th
-                v-for="{ text, value } in headers"
-                :id="value"
-                :key="value">
-                {{ text }}
-              </th>
-              <th scope="col">
-              <!--for avatar-->
-              </th>
-              <th scope="col">
-              <!--for edit btn-->
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="user in users"
-              :key="user.Id ?? undefined">
-              <td
-                v-for="{ value } in headers"
-                :key="value">
-                {{
-                  value !== 'LastActivityDate'
-                    ? user[value]
-                    : useDateFns(
-                      formatRelative,
-                      parseJSON(user[value] ?? "2023-02-02T02:02:02Z"), //FIXME: using 'unknown' doesnt work here? its used somewhere else in the code as well, does that even work there?
-                      new Date()
-                    ).value
-                }}
-              </td>
-              <td>
-                <VImg
-                  :src="`${remote.sdk.api?.basePath}/Users/${user['Id']}/Images/Primary?height=50&tag=${user['PrimaryImageTag']}&quality=90`"
-                  height="50px"
-                  width="auto" />
-              </td>
-              <td>
-                <VBtn
-                  color="primary"
-                  @click="$router.push(`/settings/users/${user['Id']}`)">
-                  {{ t('settings.users.edit') }}
-                </VBtn>
-              </td>
-            </tr>
-          </tbody>
-        </VTable>
-      </VCol>
+      <VContainer>
+        <VRow class="space">
+          <VCard
+            v-for="user in users"
+            :key="user.Id"
+            class="pa-2"
+            @click="$router.push(`/settings/users/${user['Id']}`)">
+            <VRow>
+              <VCol>
+                <UserImage
+                  :user="user"
+                  :size="48" />
+              </VCol>
+              <VCol>
+                <VCardTitle class="pa-0 fixed-width">
+                  {{ user.Name }}
+                </VCardTitle>
+                <VCardSubtitle
+                  v-if="user.LastActivityDate"
+                  class="pa-0 fixed-width">
+                  {{ $t('settings.users.lastActivityDate', {
+                    value: getRelativeTime(new Date(user.LastActivityDate))})
+                  }}
+                </VCardSubtitle>
+              </VCol>
+            </VRow>
+          </VCard>
+        </VRow>
+      </VContainer>
     </template>
   </SettingsPage>
 </template>
@@ -79,11 +56,10 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { formatRelative, parseJSON } from 'date-fns';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { formatDistanceToNow } from 'date-fns';
 import { useDateFns, useRemote } from '@/composables';
 
 const { t } = useI18n();
@@ -93,14 +69,25 @@ const users = ref(
   (await remote.sdk.newUserApi(getUserApi).getUsers()).data ?? []
 );
 
-const headers = computed<{ text: string; value: keyof UserDto }[]>(() => [
-  {
-    text: t('username'),
-    value: 'Name'
-  },
-  {
-    text: t('settings.users.lastActivityDate'),
-    value: 'LastActivityDate'
-  }
-]);
+/**
+ * Calculates a relative timestamp for a given date
+ * Example: 1 hour ago, 2 days ago, 3 months ago
+ * @param date - Date to calculate
+ */
+function getRelativeTime(date: Date): string {
+  return useDateFns(formatDistanceToNow, date).value;
+}
+
 </script>
+
+<style scoped>
+.space {
+  gap: 0.5rem;
+}
+
+.fixed-width {
+  width: 200px;
+  text-overflow: ellipsis;
+}
+</style>
+
