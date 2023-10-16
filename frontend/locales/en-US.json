@@ -465,7 +465,7 @@
         "password": {
           "confirmPassword": "Confirm new password",
           "currentPassword": "Current password",
-          "newPassword": "New password", 
+          "newPassword": "New password",
           "password": "Password",
           "resetPassword": "Reset password"
         }

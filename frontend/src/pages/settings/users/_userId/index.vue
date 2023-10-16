@@ -336,7 +336,10 @@ const initializedUser = ref<{ Name: string, CurrentPassword: string, Password: s
 const tab = ref<number>(1);
 const blockingCategories = [{label: t('books'), value: 'Book'}, {label: t('channels'), value: 'ChannelContent'}, {label: t('liveTv'), value: 'LiveTvChannel'}, {label: t('movies'), value: 'Movie'}, {label: t('music'), value: 'Music'}, {label: t('trailer'), value: 'Trailer'}, {label: t('shows'), value: 'Series'}];
 
-onMounted(async () => {
+/**
+ * Loads all data required for this page
+ */
+async function load(): Promise<void> {
   const { userId } = route.params as { userId: string };
 
   user.value = (await remote.sdk.newUserApi(getUserApi).getUserById({
@@ -360,7 +363,9 @@ onMounted(async () => {
       parentalCategories.value.push({label: cat.Name!, id: cat.Value!});
     }
   }
-});
+}
+
+await load();
 
 /**
  * Saves the changed user access
