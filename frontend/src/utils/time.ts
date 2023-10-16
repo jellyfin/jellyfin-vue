@@ -1,6 +1,8 @@
 /**
  * Utility for converting time between ticks and milliseconds
  */
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
+import { MaybeRef } from '@vueuse/core';
 import {
   addMilliseconds,
   format,
@@ -8,9 +10,7 @@ import {
   intervalToDuration
 } from 'date-fns';
 import { sumBy } from 'lodash-es';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { computed, ComputedRef, isRef } from 'vue';
-import { MaybeRef } from '@vueuse/core';
+import { ComputedRef, computed, isRef } from 'vue';
 import { now } from '@/store';
 import { useDateFns, usei18n } from '@/composables';
 
