@@ -291,7 +291,7 @@
   "series": "Seriály",
   "server": "Server",
   "serverVersion": "Verzia serveru",
-  "serverVersionTooLow": "Verzia serveru musí byt 10.7.0 nebo novšia",
+  "serverVersionTooLow": "Verzia serveru musí byt {version} nebo novšia",
   "settings": {
     "apiKeys": {
       "accessToken": "Prístupový token",
