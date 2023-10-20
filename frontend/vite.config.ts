@@ -23,6 +23,7 @@ import { localeFilesFolder, srcRoot } from './scripts/paths';
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
     appType: 'spa',
+    base: './',
     define: {
       __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
     },
