@@ -48,10 +48,10 @@
     "sortablejs": "1.15.0",
     "swiper": "10.3.1",
     "uuid": "9.0.1",
-    "vue": "3.3.4",
+    "vue": "3.3.5",
     "vue-i18n": "9.5.0",
     "vue-router": "4.2.5",
-    "vuetify": "3.3.21"
+    "vuetify": "3.3.22"
   },
   "devDependencies": {
     "@iconify/json": "2.2.128",
