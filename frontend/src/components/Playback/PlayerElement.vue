@@ -39,9 +39,6 @@ import {
 } from '@/store';
 import { getImageInfo } from '@/utils/images';
 import { useSnackbar } from '@/composables';
-/**
- * Playback won't work in development until https://github.com/vuejs/core/pull/7593 is fixed
- */
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
