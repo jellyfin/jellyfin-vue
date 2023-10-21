@@ -1,0 +1,9 @@
+debian/.debhelper
+debian/debhelper-build-stamp
+debian/files
+debian/jellyfin-vue*
+dist/
+frontend
+package-lock.json
+package.json
+.npmrc

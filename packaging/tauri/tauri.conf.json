@@ -1,13 +1,13 @@
 {
   "package": {
     "productName": "jellyfin-vue",
-    "version": "../frontend/package.json"
+    "version": "../../frontend/package.json"
   },
   "build": {
-    "distDir": "../frontend/dist",
+    "distDir": "../../frontend/dist",
     "devPath": "http://127.0.0.1:3000",
-    "beforeDevCommand": "cd .. && npm start -w frontend",
-    "beforeBuildCommand": "cd .. && npm run build -w frontend"
+    "beforeDevCommand": "cd ../../frontend && npm start",
+    "beforeBuildCommand": "cd ../../frontend && npm run build"
   },
   "tauri": {
     "bundle": {

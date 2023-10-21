@@ -41,6 +41,7 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: .
+          file: packaging/docker/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm
           build-args: |
@@ -58,6 +59,7 @@ jobs:
         uses: docker/build-push-action@v5.0.0
         with:
           context: .
+          file: packaging/docker/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm
           build-args: |
@@ -77,6 +79,9 @@ jobs:
           - "macos-latest"
           - "ubuntu-latest"
           - "windows-latest"
+    defaults:
+      run:
+        working-directory: packaging/tauri
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -92,19 +97,19 @@ jobs:
           check-latest: true
 
       - name: Install dependencies 📦
-        run: npm ci --no-audit -w tauri
+        run: npm ci --no-audit
 
       - name: Install webkit2gtk (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.0
+          sudo apt update
+          sudo apt install -y webkit2gtk-4.0
 
       - name: Generate Tauri icons 🖌️
-        run: "npm run tauri:icon -w tauri"
+        run: "npm run tauri:icon"
 
       - name: Build Tauri 🛠️
-        run: "npm run tauri:build -w tauri"
+        run: "npm run tauri:build"
 
       - name: Upload artifact (Linux) ⬆️🐧
         uses: actions/upload-artifact@v3.1.3
@@ -112,8 +117,8 @@ jobs:
         with:
           name: jellyfin-vue_linux-amd64
           path: |
-            tauri/target/release/bundle/deb/*.deb
-            tauri/target/release/bundle/appimage_deb
+            packaging/tauri/target/release/bundle/deb/*.deb
+            packaging/tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
         uses: actions/upload-artifact@v3.1.3
@@ -121,12 +126,12 @@ jobs:
         with:
           name: jellyfin-vue_macOS
           path: |
-            tauri/target/release/bundle/macos
-            tauri/target/release/bundle/dmg/*.dmg
+            packaging/tauri/target/release/bundle/macos
+            packaging/tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
         uses: actions/upload-artifact@v3.1.3
         if: matrix.platform == 'windows-latest'
         with:
           name: jellyfin-vue_windows_amd64
-          path: tauri/target/release/jellyfin-vue.exe
+          path: packaging/tauri/target/release/jellyfin-vue.exe
