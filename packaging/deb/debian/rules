@@ -1,0 +1,26 @@
+#! /usr/bin/make -f
+export DH_VERBOSE=1
+
+%:
+	dh $@
+
+# disable "make check"
+override_dh_auto_test:
+
+# disable stripping debugging symbols
+override_dh_clistrip:
+
+override_dh_auto_build:
+	cp -ra root/{package.json,package-lock.json,.npmrc,frontend} $(CURDIR)/
+	npm ci --no-audit -w frontend
+	npm run build -w frontend
+	mv $(CURDIR)/frontend/dist $(CURDIR)/dist
+	rm -rf $(CURDIR)/frontend rm -rf $(CURDIR)/node_modules $(CURDIR)/package.json $(CURDIR)/package-lock.json $(CURDIR)/.npmrc
+
+override_dh_auto_clean:
+	test -d $(CURDIR)/frontend && rm -rf '$(CURDIR)/frontend' || true
+	test -d $(CURDIR)/dist && rm -rf '$(CURDIR)/dist' || true
+	test -d $(CURDIR)/node_modules && rm -rf '$(CURDIR)/node_modules' || true
+	test -d $(CURDIR)/package.json && rm -rf '$(CURDIR)/package.json' || true
+	test -d $(CURDIR)/package-lock.json && rm -rf '$(CURDIR)/package-lock.json' || true
+	test -d $(CURDIR)/.npmrc && rm -rf '$(CURDIR)/.npmrc' || true

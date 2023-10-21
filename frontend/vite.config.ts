@@ -24,6 +24,7 @@ export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
     appType: 'spa',
     base: './',
+    cacheDir: '../node_modules/.cache/vite',
     define: {
       __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
     },

@@ -3,7 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Jellyfin Team <team@jellyfin.org>
 Build-Depends:  debhelper (>= 10),
-                npm | nodejs
+                nodejs
 Standards-Version: 3.9.4
 Homepage: https://jellyfin.org/
 Vcs-Git: https://github.org/jellyfin/jellyfin-vue.git
