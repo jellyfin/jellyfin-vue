@@ -57,7 +57,7 @@
   "datePlayed": "Date de lecture",
   "delete": "Effacer",
   "deleteItem": "Suppression du média",
-  "deleteItemDescription": "Supprimer cet élément l'effacera à la fois du système de fichiers et de votre médiathèque. Voulez-vous vraiment continuer ?",
+  "deleteItemDescription": "Supprimer cet élément l'effacera à la fois du système de fichiers et de votre médiathèque. Voulez-vous vraiment continuer?",
   "details": "Détails",
   "dialog": {
     "upNext": {
@@ -537,9 +537,9 @@
       "name": "Taux de rafraîchissement :",
       "value": "fps {value}"
     },
-    "transcodingProgress": "Progression :",
+    "transcodingProgress": "Progression:",
     "transcodingReason": {
-      "name": "Raison : | Raisons :",
+      "name": "Raison: | Raisons:",
       "reasons": {
         "anamorphicVideoNotSupported": "Les vidéos anamorphiques ne sont pas supportées",
         "audioBitDepthNotSupported": "La résolution audio n'est pas supportée",
@@ -589,7 +589,7 @@
   "unliked": "Je n'aime pas",
   "unplayed": "Non lu",
   "upNext": "À suivre",
-  "upNextName": "À suivre : {upNextItemName}",
+  "upNextName": "À suivre: {upNextItemName}",
   "username": "Nom d'utilisateur",
   "validation": {
     "bothPasswordsSame": "Les deux mots de passe doivent être identiques",
