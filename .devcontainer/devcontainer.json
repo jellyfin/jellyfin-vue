@@ -1,6 +1,6 @@
 {
   "name": "jellyfin-vue Codespace (with support for Tauri and Docker development)",
-  "image": "node:18-slim",
+  "image": "node:20-slim",
   "features": {
     "ghcr.io/devcontainers/features/rust:1": {
       "profile": "default"

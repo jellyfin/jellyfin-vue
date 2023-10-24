@@ -101,10 +101,5 @@
     "vue-eslint-parser": "9.3.2",
     "vue-i18n-extract": "2.0.7",
     "vue-tsc": "1.8.19"
-  },
-  "engines": {
-    "node": ">=18.12.0 <19.0.0",
-    "npm": ">=8.19.2",
-    "yarn": "Yarn is not supported. Please use NPM."
   }
 }
