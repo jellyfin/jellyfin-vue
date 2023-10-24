@@ -93,7 +93,7 @@ jobs:
       - name: Setup node environment ⚙️
         uses: actions/setup-node@v3.8.1
         with:
-          node-version: 18
+          node-version: 20
           check-latest: true
 
       - name: Install dependencies 📦

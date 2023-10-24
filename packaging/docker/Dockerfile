@@ -1,6 +1,6 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:18 AS build
+FROM node:20-slim AS build
 
 # Set build arguments
 ARG DEFAULT_SERVERS
