@@ -17,7 +17,12 @@
       "onAutoForward": "notify"
     }
   },
-  "onCreateCommand": "unset YARN_VERSION && rm -rf /bin/sh /opt/yarn* && ln -s /bin/bash /bin/sh && apt update && apt install -y --no-install-recommends jq && apt clean && apt autoclean && rm -rf /var/lib/apt/lists /var/cache/apt/archives",
+  "onCreateCommand": {
+    "rmyarn": "unset YARN_VERSION && rm -rf /opt/yarn*",
+    "envprepare": "rm -rf /bin/sh && ln -s /bin/bash /bin/sh",
+    "gitconf": "git config --global core.editor 'code --wait'",
+    "jqinst": "apt update && apt install -y --no-install-recommends jq && apt clean && apt autoclean && rm -rf /var/lib/apt/lists /var/cache/apt/archives"
+  },
   "postCreateCommand": "npm ci --no-audit",
   "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
   "hostRequirements": { "cpus": 4, "memory": "8gb" }
