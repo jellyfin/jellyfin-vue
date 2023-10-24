@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "license": "GPL-3.0-only",
   "scripts": {
-    "tauri": "tauri",
-    "tauri:icon": "tauri icon ../../frontend/public/icon.png",
-    "tauri:build": "tauri build",
-    "tauri:dev": "tauri dev"
+    "start": "npm run gen-icon && tauri dev",
+    "gen-icon": "tauri icon ../../frontend/public/icon.png",
+    "build": "npm run gen-icon && tauri build"
   },
   "dependencies": {
     "@jellyfin-vue/frontend": "*"
