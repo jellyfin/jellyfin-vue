@@ -29,9 +29,9 @@ FROM nginx:stable-alpine-slim
 COPY --from=build /app/frontend/dist/ /usr/share/nginx/html/
 COPY packaging/docker/contents/nginx.conf /etc/nginx/conf.d/default.conf
 COPY packaging/docker/contents/*.sh /
-RUN apk add --no-cache jq && \
- rm -rf /docker-entrypoint.d /.dockerenv /usr/sbin/nginx-debug && \
- chmod +x /*.sh
+COPY LICENSE /usr/share/licenses/jellyfin-vue.LICENSE
+RUN chmod +x /*.sh && /postunpack.sh && rm /postunpack.sh
+USER nginx
 
 EXPOSE 80
 
