@@ -25,11 +25,7 @@
       "matchManagers": [
         "github-actions"
       ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor",
-        "major"
-      ],
+      "separateMajorMinor": false,
       "groupName": "CI dependencies",
       "groupSlug": "ci-deps"
     },
@@ -56,6 +52,7 @@
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "transitiveRemediation": true,
+  "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "enabled": true,
     "groupName": "vulnerable dependencies",
