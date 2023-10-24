@@ -96,14 +96,14 @@ jobs:
           node-version: 20
           check-latest: true
 
-      - name: Install dependencies 📦
+      - name: Install npm dependencies 📦
         run: npm ci --no-audit
 
-      - name: Install webkit2gtk (ubuntu only)
+      - name: Install Linux dependencies 📦🐧
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.0
+          sudo apt update -qq
+          sudo apt install -y --no-install-recommends $(cat apt_packages)
 
       - name: Generate Tauri icons 🖌️
         run: "npm run tauri:icon"
