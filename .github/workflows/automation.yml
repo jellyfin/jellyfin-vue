@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Create comment
-        uses: thollander/actions-comment-pull-request@v2.4.2
+        uses: thollander/actions-comment-pull-request@v2.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
           message: ${{ needs.compose-comment.outputs.msg }}
