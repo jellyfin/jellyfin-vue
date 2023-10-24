@@ -137,6 +137,6 @@ The same principel applies to Jellyfin Vue. Note that Jellyfin Web can also be h
 
 See [development setup](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing#development-setup) from our *Contributing* guides.
 
-## Contributing 🤝
+# Contributing 🤝
 
 See [Contributing](https://github.com/jellyfin/jellyfin-vue/wiki/Contributing) guide.
