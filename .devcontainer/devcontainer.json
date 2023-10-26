@@ -17,8 +17,11 @@
       "onAutoForward": "notify"
     }
   },
-  "onCreateCommand": ".devcontainer/postunpack.sh",
-  "postCreateCommand": "npm ci --no-audit",
+  "onCreateCommand": "apt update -qq && apt install -y --no-install-recommends jq",
+  "postCreateCommand": {
+    "npm": "npm ci --no-audit",
+    "postunpack": ".devcontainer/postunpack.sh"
+  },
   "postAttachCommand": "cat .vscode/extensions.json | jq -r .recommendations[] | xargs -n 1 code --install-extension",
   "hostRequirements": { "cpus": 4, "memory": "8gb" }
 }
