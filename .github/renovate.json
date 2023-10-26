@@ -45,10 +45,11 @@
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
-      "groupSlug": "lockfiles"
+      "groupSlug": "lockfiles",
+      "dependencyDashboardApproval": true
     }
   ],
-  "dependencyDashboard": false,
+  "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
   "transitiveRemediation": true,
@@ -79,7 +80,7 @@
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": [
-      "every 2 months on the first day of the month"
+      "every month"
     ]
   },
   "assignees": [
