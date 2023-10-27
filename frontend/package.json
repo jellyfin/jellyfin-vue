@@ -25,9 +25,7 @@
     "lint": "eslint . --ignore-path ../.gitignore --max-warnings=0 --cache --cache-location ../node_modules/.cache/eslint",
     "lint-fix": "eslint . --fix --ignore-path ../.gitignore --max-warnings=0 --cache --cache-location ../node_modules/.cache/eslint",
     "prod": "npm run build && npm run serve",
-    "typecheck": "vue-tsc --noEmit --skipLibCheck",
-    "vue-i18n-extract": "vue-i18n-extract",
-    "vue-i18n-extract-remove": "vue-i18n-extract --remove"
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@fontsource/roboto": "5.0.8",
@@ -99,7 +97,6 @@
     "vite-plugin-pages": "0.31.0",
     "vite-plugin-vue-layouts": "0.8.0",
     "vue-eslint-parser": "9.3.2",
-    "vue-i18n-extract": "2.0.7",
     "vue-tsc": "1.8.20"
   }
 }
