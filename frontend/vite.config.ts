@@ -12,7 +12,7 @@ import {
   Vuetify3Resolver,
   VueUseDirectiveResolver
 } from 'unplugin-vue-components/resolvers';
-import visualizer from 'rollup-plugin-visualizer';
+import { visualizer } from 'rollup-plugin-visualizer';
 import virtual from '@rollup/plugin-virtual';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import browserslist from 'browserslist';
