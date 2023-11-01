@@ -1,6 +1,8 @@
 {
   "3DFormat": "3D formát",
   "NoMediaSourcesAvailable": "Nie sú k dispozícií žiadne zdroje médií",
+  "NoMediaStreamsAvailable": "Pre vybraný zdroj nie sú k dispozícii žiadne streamy medií",
+  "accept": "Prijať",
   "actor": "Herec",
   "actors": "Herci",
   "addNewPerson": "Pridať novú osobu",
@@ -11,7 +13,8 @@
   "alphabetically": "Abecedne",
   "appbar": {
     "tasks": {
-      "configSync": "Synchronizácia nastavení…"
+      "configSync": "Synchronizácia nastavení…",
+      "scanningItem": "Skenovanie položky '{item}'…"
     },
     "tooltips": {
       "tasks": "Prebiehajúce úlohy"
@@ -23,6 +26,7 @@
   "aspectRatio": "Pomer strán",
   "audio": "Zvuk",
   "audioCodecNotSupported": "Zvukový kodek nie je podporovaný",
+  "auto": "Automaticky",
   "badRequest": "Zlá požiadavka. Skúste to znova",
   "books": "Knihy",
   "browserNotSupported": "Prehrávanie tohto súboru nie je podporované vo vašom prehliadači.",
@@ -32,17 +36,28 @@
   "byArtist": "Od {artist}",
   "cancel": "Zrušiť",
   "castAndCrew": "Obsadenie & štáb",
+  "clipboardFail": "Kopírovanie do schránky sa nepodarilo",
+  "clipboardSuccess": "Skopírované do schránky",
+  "clipboardUnsupported": "Kopírovanie do schránky nie je v tomto prehliadači podporované",
+  "close": "Zatvoriť",
   "collectionEmpty": "Táto kolekcia je prázdna",
   "collections": "Kolekcie",
   "communityRating": "Hodnotenie komunity",
   "confirm": "Potvrdiť",
   "connect": "Pripojiť",
+  "contentType": "Typ obsahu",
   "continueListening": "Pokračovať v počúvaní",
   "continueWatching": "Pokračovať v pozeraní",
+  "copyPrompt": "Skopírovať nasledujúci text do schránky?",
+  "copyStreamURL": "Kopírovať URL adresu streamu",
   "criticRating": "Hodnotenie kritikov",
   "customRating": "Vlastné hodnotenie",
   "darkModeToggle": "Prepnúť na tmavý režim",
   "dateAdded": "Dátum pridania",
+  "datePlayed": "Dátum prehrávania",
+  "delete": "Vymazať",
+  "deleteItem": "Vymazať médiá",
+  "deleteItemDescription": "Vymazaním tejto položky sa odstráni zo systému súborov aj z knižnice médií. Ste si istí, že chcete pokračovať?",
   "details": "Podrobnosti",
   "dialog": {
     "upNext": {
@@ -56,6 +71,7 @@
   "disabled": "Zakázané",
   "discNumber": "Disk {discNumber}",
   "dislikes": "Nepáči sa mi",
+  "downloadItem": "Stiahnuť | Stiahnuť všetko",
   "edit": "Upraviť",
   "editMetadata": "Upraviť metadáta",
   "editPerson": "Upraviť osobu",
@@ -64,10 +80,16 @@
   "episodeNumber": "Epizóda {episodeNumber}",
   "errors": {
     "anErrorHappened": "Nastala chyba",
+    "cantPlayItem": "Túto položku nie je možné prehrať",
     "messages": {
       "errorCode": "Kód chyby: {errorCode}",
       "videoPlayerError": "Vo video prehrávači sa vyskytla neodstrániteľná chyba."
-    }
+    },
+    "playback": {
+      "mediaError": "Vyskytla sa fatálna chyba média, prebieha pokus o obnovenie",
+      "networkError": "Vyskytla sa fatálna chyba siete, prebieha pokus o obnovenie"
+    },
+    "unauthorized": "Nemáte oprávnenie na prístup k tejto stránke"
   },
   "failedRetrievingDisplayPreferences": "Nepodarilo sa získať nastavenia zobrazenia. Budú použité pôvodné nastavenia.",
   "failedSettingDisplayPreferences": "Nebolo možné aktualizovať nastavenia zobrazenia.",
@@ -80,6 +102,8 @@
   "general": "Všeobecné",
   "genericJellyfinPlaceholderDevice": "Nešpecifikované Jellyfin zariadenie",
   "genres": "Žánre",
+  "goBack": "Späť",
+  "goNext": "Ďalej",
   "googleCastPlaceholderDevice": "Zariadenie Google Cast",
   "guestStar": "Hosťujúca hviezda",
   "headerExternalIds": "Externé ID",
@@ -90,6 +114,9 @@
       "recentlyAdded": "Nedávno pridané"
     }
   },
+  "identify": "Identifikovať",
+  "identifyConfirmChanges": "Ste si istí, že chcete zmeniť '{originalItem}' na '{newIdentifiedItem}'?",
+  "identifyInstructResult": "Kliknutím na jednu z týchto kariet aplikujete výsledok",
   "imageType": {
     "art": "Umenie",
     "backdrop": "Pozadie",
@@ -105,6 +132,8 @@
   },
   "images": "Obrázky",
   "incorrectUsernameOrPassword": "Nesprávne používateľské meno alebo heslo",
+  "instantMix": "Okamžitý mix",
+  "instantMixQueued": "Okamžitý mix pridaný do fronty",
   "item": {
     "artist": {
       "albums": "Albumy",
@@ -183,6 +212,55 @@
     "noLogsFound": "Neboli nájdené žiadne logy"
   },
   "manualLogin": "Manuálne prihlásenie",
+  "mediaInfo": "Informácie o médiu",
+  "mediaInfoAspectRatio": "Pomer strán",
+  "mediaInfoAudioChannelLayout": "Rozloženie",
+  "mediaInfoAudioChannels": "Kanály",
+  "mediaInfoAudioSampleRate": "Vzorkovacia frekvencia",
+  "mediaInfoFileContainer": "Kontajner",
+  "mediaInfoFileFormats": "Formát",
+  "mediaInfoFilePath": "Cesta",
+  "mediaInfoFileSize": "Veľkosť",
+  "mediaInfoFileTitle": "Názov",
+  "mediaInfoGenericBitrate": "Dátový tok",
+  "mediaInfoGenericCodec": "Kodek",
+  "mediaInfoGenericCodecTag": "Tag kodeku",
+  "mediaInfoGenericIsDefault": "Predvolené",
+  "mediaInfoGenericIsExternal": "Externé",
+  "mediaInfoGenericIsForced": "Vynútené",
+  "mediaInfoGenericLanguage": "Jazyk",
+  "mediaInfoGenericProfile": "Profil",
+  "mediaInfoTitlesAudioCodec": "Zvuk | Zvuk {0}",
+  "mediaInfoTitlesEmbeddedImageCodec": "Obrázok | Obrázok {0}",
+  "mediaInfoTitlesSubtitleCodec": "Titulky | Titulky {0}",
+  "mediaInfoTitlesVideoCodec": "Video | Video {0}",
+  "mediaInfoVideoBitDepth": "Bitová hĺbka",
+  "mediaInfoVideoBitrate": "Dátový tok",
+  "mediaInfoVideoColorPrimaries": "Primárne farby",
+  "mediaInfoVideoColorRange": "Farebný rozsah",
+  "mediaInfoVideoColorSpace": "Farebný priestor",
+  "mediaInfoVideoColorTransfer": "Farebný prenos",
+  "mediaInfoVideoDoViBlPresent": "DoVi BL prítomné",
+  "mediaInfoVideoDoViBlSignalCompatId": "ID kompatibility signálu DV bl",
+  "mediaInfoVideoDoViElPresent": "Predvolené nastavenie DV el",
+  "mediaInfoVideoDoViLevel": "Úroveň DV",
+  "mediaInfoVideoDoViMajorVersion": "Hlavná verzia DV",
+  "mediaInfoVideoDoViMinorVersion": "Vedľajšia verzia DV",
+  "mediaInfoVideoDoViProfile": "Profil DV",
+  "mediaInfoVideoDoViRpuPresent": "Predvolené nastavenie DV rpu",
+  "mediaInfoVideoDoViTitle": "Názov DV",
+  "mediaInfoVideoFrameRate": "Snímková frekvencia",
+  "mediaInfoVideoIsAnamorphic": "Anamorfný",
+  "mediaInfoVideoLevel": "Úroveň",
+  "mediaInfoVideoPixelFormat": "Formát pixelov",
+  "mediaInfoVideoRange": "Rozsah videa",
+  "mediaInfoVideoRangeType": "Typ rozsahu videa",
+  "mediaInfoVideoRefFrames": "Ref snímky",
+  "mediaInfoVideoResolution": "Rozlíšenie",
+  "mediaInfoVideoScanInterlaced": "Prekladané",
+  "mediaInfoVideoScanProgressive": "Progresívne",
+  "mediaInfoVideoScanType": "Typ skenovania",
+  "mediaInfoVideoTimestamp": "Časová značka",
   "menu": "Menu",
   "metadata": {
     "source": "Zdroj",
@@ -192,6 +270,7 @@
   },
   "metadataEditor": "Editor metadát",
   "metadataNoResultsMatching": "Žiadne výsledky pre \"{search}\". Stlačte enter pre vytvorenie nového.",
+  "metadataRefreshQueued": "Obnovenie metadát bolo zaradené do fronty",
   "more": "Viac",
   "moreLikeArtist": "Podobné ako {artist}",
   "moreLikeThis": "Podobné ako toto",
@@ -199,6 +278,7 @@
   "name": "Názov",
   "networks": "Siete",
   "nextUp": "Nasleduje",
+  "no": "Nie",
   "noImagesFound": "Neboli nájdené žiadne obrázky",
   "noInformationAvailable": "Informácie nie sú dostupné",
   "noNetworkConnection": "Žiadne pripojenie k sieti",
@@ -214,6 +294,7 @@
   "people": "Ľudia",
   "person": "Osoba",
   "play": "Prehrať",
+  "playCount": "Počet prehratí",
   "playFromBeginning": "Prehrať od začiatku",
   "playback": {
     "addToQueue": "Pridať do fronty",
@@ -274,20 +355,31 @@
   "quality": "Kvalita",
   "queue": "Fronta",
   "rating": "Hodnotenie",
+  "refresh": "Obnoviť",
   "refreshLibrary": "Obnoviť knižnicu",
+  "refreshMetadata": "Obnoviť metadáta",
+  "refreshMetadataHint": "Metadáta sa obnovujú na základe nastavení a internetových služieb, ktoré sú povolené na Dashboarde",
   "releaseDate": "Dátum vydania",
   "remoteDevices": "Vzdialené zariadenia",
+  "replaceAllMetadata": "Nahradiť všetky metadáta",
+  "replaceExistingImages": "Nahradiť existujúce obrázky",
+  "results": "Výsledky",
   "resumable": "Pozastaviteľný",
   "resume": "Pokračovať",
   "role": "Rola",
+  "runtime": "Trvanie",
   "save": "Uložiť",
   "saved": "Uložené",
+  "scanForNewAndUpdatedFiles": "Vyhľadávať nové a aktualizované súbory",
   "search": {
     "name": "Hľadať",
     "topResults": "Najlepšie výsledky"
   },
+  "searchMissingMetadata": "Vyhľadať chýbajúce metadáta",
+  "searchNoResults": "Nenašli sa žiadne výsledky",
   "seasonEpisode": "Séria {seasonNumber}, epizóda {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
+  "selectVersion": "Vybrať verziu",
   "series": "Seriály",
   "server": "Server",
   "serverVersion": "Verzia serveru",
@@ -304,9 +396,11 @@
       "dateCreated": "Dátum vytvorenia",
       "description": "Pridať alebo odvolať API kľúče pre externý prístup k vášmu serveru",
       "refreshKeysFailure": "Chyba pre obnove API kľúčov",
+      "revoke": "Odvolať",
       "revokeAll": "Odvolať všetky API kľúče",
       "revokeAllFailure": "Chyba pri odvolávaní všetkých API kľúčov",
       "revokeAllSuccess": "Všetky API kľúče boli úspešne odvolané",
+      "revokeConfirm": "Potvrdiť odvolanie API kľúča",
       "revokeFailure": "Chyba pri odvolaní API kľúča",
       "revokeSuccess": "API kľúč bol úspešne odvolaný"
     },
@@ -317,6 +411,7 @@
       "deleteAll": "Odstrániť všetko",
       "deleteAllDevicesError": "Chyba pri odstraňovaní všetkých zariadení",
       "deleteAllDevicesSuccess": "Všetky zariadenia boli úspešne odstránené",
+      "deleteConfirm": "Potvrdiť vymazanie zariadenia",
       "deleteDeviceError": "Chyba pri odstraňovaní zariadenia",
       "deleteDeviceSuccess": "Odstránenie zariadenia bolo úspešné",
       "deviceName": "Názov zariadenia",
@@ -410,7 +505,8 @@
   "signIn": "Prihlásiť sa",
   "snackbar": {
     "addedToQueue": "Pridané do fronty",
-    "playNext": "Vybraná položka bude prehrávaná ako ďalšia"
+    "playNext": "Vybraná položka bude prehrávaná ako ďalšia",
+    "routeValidationError": "Zadané routeId v paramentoch trasy nie je správne"
   },
   "songs": "Skladby",
   "sortByType": "Podľa {type}",
@@ -430,6 +526,7 @@
   "themeVideo": "Tématické video",
   "tooltips": {
     "changeLanguage": "Jazyk",
+    "switchToAuto": "Podľa systémovej témy",
     "switchToDarkMode": "Prepnúť na tmavý režim",
     "switchToLightMode": "Prepnúť na svetlý režim"
   },
@@ -485,6 +582,10 @@
       "seconds": "{count} sekunda | {count} sekundy"
     }
   },
+  "unknown": "Neznáme",
+  "unknownAlbum": "Neznámy album",
+  "unknownArtist": "Neznámy interpret",
+  "unknownTitle": "Neznámy názov",
   "unliked": "Nepáči sa mi to",
   "unplayed": "Neprehrané",
   "upNext": "Nasleduje",
@@ -523,5 +624,6 @@
   "writing": "Scénar",
   "year": "Rok",
   "years": "Roky",
+  "yes": "Áno",
   "youMayAlsoLike": "Mohlo by sa vám páčiť"
 }
