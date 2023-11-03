@@ -147,7 +147,7 @@ jobs:
       matrix:
         platform:
           - "macos-latest"
-          - "ubuntu-latest"
+          - "ubuntu-20.04"
           - "windows-latest"
     defaults:
       run:
@@ -170,7 +170,7 @@ jobs:
         run: npm ci --no-audit
 
       - name: Install Linux dependencies 📦🐧
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-20.04'
         run: |
           sudo apt update -qq
           sudo apt install -y --no-install-recommends $(cat apt_packages)
@@ -180,13 +180,13 @@ jobs:
 
       - name: Upload artifact (Linux) ⬆️🐧
         uses: actions/upload-artifact@v4.3.1
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-20.04'
         with:
           compression-level: 0
           name: jellyfin-vue_linux-amd64
           path: |
             packaging/tauri/target/release/bundle/deb/*.deb
-            packaging/tauri/target/release/bundle/appimage_deb
+            packaging/tauri/target/release/bundle/appimage/*.AppImage
 
       - name: Upload artifact (MacOS) ⬆️🍎
         uses: actions/upload-artifact@v4.3.1
@@ -195,7 +195,7 @@ jobs:
           compression-level: 0
           name: jellyfin-vue_macOS
           path: |
-            packaging/tauri/target/release/bundle/macos
+            packaging/tauri/target/release/bundle/macos/*.app
             packaging/tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
