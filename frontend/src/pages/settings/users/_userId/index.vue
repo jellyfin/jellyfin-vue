@@ -1,5 +1,5 @@
 <template>
-  <SettingsPage page-title="settings.users.users">
+  <SettingsPage page-title="users">
     <template #actions>
       <VBtn
         variant="elevated"
@@ -18,16 +18,16 @@
           color="deep-purple-accent-4"
           align-tabs="center">
           <VTab :value="1">
-            {{ t("settings.users.tabs.profile.profile") }}
+            {{ t("profile") }}
           </VTab>
           <VTab :value="2">
-            {{ t("settings.users.tabs.access.access") }}
+            {{ t("access") }}
           </VTab>
           <VTab :value="3">
-            {{ t("settings.users.tabs.parentalControl.parentalControl") }}
+            {{ t("parentalControl") }}
           </VTab>
           <VTab :value="4">
-            {{ t("settings.users.tabs.password.password") }}
+            {{ t("password") }}
           </VTab>
         </VTabs>
         <VWindow v-model="tab">
@@ -40,7 +40,7 @@
                   <VCol>
                     <VTextField
                       v-model="initializedUser.Name"
-                      :label="t('settings.users.tabs.profile.name')"
+                      :label="t('name')"
                       hide-details />
                   </VCol>
                 </VRow>
@@ -51,7 +51,7 @@
                       color="error"
                       variant="elevated"
                       @click="deleteUser">
-                      {{ t('settings.users.tabs.profile.deleteUser') }}
+                      {{ t('deleteUser') }}
                     </VBtn>
                   </VCol>
                   <VCol>
@@ -77,7 +77,7 @@
                   <VCol>
                     <VCheckbox
                       v-model="initializedUser.CanAccessAllLibraries"
-                      :label="t('settings.users.tabs.access.allLibraries')" />
+                      :label="t('allLibraries')" />
                     <VCol />
                   </vcol>
                 </VRow>
@@ -123,7 +123,7 @@
                   <VCol>
                     <VSelect
                       v-model="initializedUser.maxParentalRating"
-                      :label="t('settings.users.tabs.parentalControl.maxAllowedRating')"
+                      :label="t('maxAllowedRating')"
                       :items="parentalCategories"
                       item-title="label"
                       item-value="id"
@@ -131,7 +131,7 @@
                       clearable />
                     <div
                       class="text-subtitle-1 text-warning font-weight-medium">
-                      {{ $t('settings.users.tabs.parentalControl.maxAllowedRatingSubtitle') }}
+                      {{ $t('maxAllowedRatingSubtitle') }}
                     </div>
                   </VCol>
                 </VRow>
@@ -139,7 +139,7 @@
                   <VCol>
                     <div
                       class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
-                      {{ $t('settings.users.tabs.parentalControl.blockUnratedItems') }}
+                      {{ $t('blockUnratedItems') }}
                     </div>
                   </VCol>
                 </VRow>
@@ -162,7 +162,7 @@
                     <VCol>
                       <div
                         class="text-title font-weight-medium text-capitalize">
-                        {{ t('settings.users.tabs.parentalControl.blockTags') }}
+                        {{ t('blockTags') }}
                       </div>
                     </VCol>
                     <VCol>
@@ -170,7 +170,7 @@
                         color="secondary"
                         variant="elevated"
                         @click="addTagDialogOpen = true">
-                        {{ t('settings.users.tabs.parentalControl.addBlockedTag') }}
+                        {{ t('addBlockedTag') }}
                       </VBtn>
                     </VCol>
                   </VRow>
@@ -188,7 +188,7 @@
                         :disabled="loading"
                         color="error"
                         @click="() => initializedUser.BlockedTags = initializedUser.BlockedTags.filter(tag => tag !== blockedTag)">
-                        {{ t('settings.users.tabs.parentalControl.unblockTag') }}
+                        {{ t('unblockTag') }}
                       </VBtn>
                     </VCol>
                   </VRow>
@@ -219,7 +219,7 @@
                       v-if="user.HasPassword"
                       v-model="initializedUser.CurrentPassword"
                       :disabled="loading"
-                      :label="t('settings.users.tabs.password.currentPassword')"
+                      :label="t('currentPassword')"
                       hide-details />
                   </VCol>
                 </VRow>
@@ -228,7 +228,7 @@
                     <VTextField
                       v-model="initializedUser.Password"
                       :disabled="loading"
-                      :label="t('settings.users.tabs.password.newPassword')"
+                      :label="t('newPassword')"
                       hide-details />
                   </VCol>
                 </VRow>
@@ -237,7 +237,7 @@
                     <VTextField
                       v-model="initializedUser.ConfirmPassword"
                       :disabled="loading"
-                      :label="t('settings.users.tabs.password.confirmPassword')"
+                      :label="t('confirmPassword')"
                       hide-details />
                   </VCol>
                 </VRow>
@@ -250,7 +250,7 @@
                       variant="elevated"
                       color="error"
                       @click="resetPassword">
-                      {{ t('settings.users.tabs.password.resetPassword') }}
+                      {{ t('resetPassword') }}
                     </VBtn>
                   </VCol>
                   <VCol>
@@ -274,7 +274,7 @@
         width="auto">
         <VCol class="pa-0 add-key-dialog">
           <VCard>
-            <VCardTitle>{{ t('settings.users.tabs.parentalControl.addBlockedTag') }}</VCardTitle>
+            <VCardTitle>{{ t('addBlockedTag') }}</VCardTitle>
             <VCardActions>
               <VForm
                 class="add-key-form"
@@ -282,7 +282,7 @@
                 <VTextField
                   v-model="newTagValue"
                   variant="outlined"
-                  :label="t('settings.users.tabs.parentalControl.tagName')" />
+                  :label="t('tagName')" />
                 <VBtn
                   color="primary"
                   :loading="loading"
@@ -463,8 +463,8 @@ async function deleteUser():Promise<void> {
     await remote.sdk.newUserApi(getUserApi).deleteUser({userId: user.value.Id!});
     await router.push('/settings/users');
   }, {
-    title: t('settings.users.tabs.profile.deleteUser'),
-    text: t('settings.users.tabs.profile.deleteUserConfirm'),
+    title: t('deleteUser'),
+    text: t('deleteUserConfirm'),
     confirmText: t('delete')
   });
 }

@@ -1,5 +1,5 @@
 <template>
-  <SettingsPage page-title="settings.users.new">
+  <SettingsPage page-title="newUser">
     <template #actions>
       <VBtn
         variant="elevated"
@@ -33,11 +33,11 @@
           <VRow>
             <VCol>
               <div class="text-subtitle-1 font-weight-medium text-capitalize">
-                {{ t('settings.users.libraryAccess') }}
+                {{ t('libraryAccess') }}
               </div>
               <VCheckbox
                 v-model="canAccessAllLibraries"
-                :label="t('settings.users.tabs.access.allLibraries')" />
+                :label="t('allLibraries')" />
               <VCard
                 v-if="!canAccessAllLibraries"
                 :title="t('libraries')"
@@ -53,7 +53,7 @@
                   </VCol>
                 </VRow>
                 <div class="text-capitalize text-warning ml-2">
-                  {{ t('settings.users.libraryAccessNote') }}
+                  {{ t('libraryAccessNote') }}
                 </div>
               </VCard>
             </VCol>
@@ -66,7 +66,7 @@
                 :loading="loading"
                 class="float-right"
                 @click="createUser">
-                {{ t('settings.users.new') }}
+                {{ t('newUser') }}
               </VBtn>
             </VCol>
           </VRow>
