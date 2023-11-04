@@ -432,46 +432,7 @@
       "noActivityFound": "No activities found",
       "noLogsFound": "No logs found"
     },
-    "settings": "Settings",
-    "users": {
-      "avatar": "Avatar",
-      "edit": "Edit user",
-      "lastActivityDate": "Last seen {value} ago",
-      "libraryAccess": "Library access",
-      "libraryAccessNote": "Select the libraries to share with this user. Administrators will be able to edit all folders using the metadata manager.",
-      "new": "Create user",
-      "tabs": {
-        "profile": {
-          "allowRemoteConnections": "Allow remote connections to this server",
-          "deleteUser": "Delete user",
-          "deleteUserConfirm": "Are you sure you want to delete this user?",
-          "name": "Name",
-          "profile": "Profile"
-        },
-        "access": {
-          "access": "Access",
-          "allLibraries": "Enable access to all libraries"
-        },
-        "parentalControl": {
-          "addBlockedTag": "Add blocked tag",
-          "blockUnratedItems": "Block items with no or unregocnized rating information:",
-          "blockTags": "Block items with tags:",
-          "maxAllowedRating": "Maximum allowed parental rating",
-          "maxAllowedRatingSubtitle": "Content with a higher rating will be hidden from this user.",
-          "parentalControl": "Parental Control",
-          "tagName": "Tag name",
-          "unblockTag": "Unblock tag"
-        },
-        "password": {
-          "confirmPassword": "Confirm new password",
-          "currentPassword": "Current password",
-          "newPassword": "New password",
-          "password": "Password",
-          "resetPassword": "Reset password"
-        }
-      },
-      "users": "Users"
-    }
+    "settings": "Settings"
   },
   "settingsSections": {
     "account": {
@@ -550,6 +511,31 @@
     "playNext": "The selected item will be played after the current one",
     "routeValidationError": "The specified routeId in route params is not correct"
   },
+  "addBlockedTag": "Add blocked tag",
+  "blockUnratedItems": "Block items with no or unrecognized rating information:",
+  "blockTags": "Block items with tags:",
+  "maxAllowedRating": "Maximum allowed parental rating",
+  "maxAllowedRatingSubtitle": "Content with a higher rating will be hidden from this user.",
+  "parentalControl": "Parental Control",
+  "tagName": "Tag name",
+  "unblockTag": "Unblock tag",
+  "access": "Access",
+  "allLibraries": "Enable access to all libraries",
+  "allowRemoteConnections": "Allow remote connections to this server",
+  "deleteUser": "Delete user",
+  "deleteUserConfirm": "Are you sure you want to delete this user?",
+  "profile": "Profile",
+  "confirmPassword": "Confirm new password",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "resetPassword": "Reset password",
+  "users": "Users",
+  "avatar": "Avatar",
+  "editUser": "Edit user",
+  "lastActivityDate": "Last seen {value} ago",
+  "libraryAccess": "Library access",
+  "libraryAccessNote": "Select the libraries to share with this user. Administrators will be able to edit all folders using the metadata manager.",
+  "newUser": "Create user",
   "songs": "Songs",
   "sortByType": "By {type}",
   "sortTitle": "Sort title",

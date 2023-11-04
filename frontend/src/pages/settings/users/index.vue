@@ -1,12 +1,12 @@
 <template>
-  <SettingsPage page-title="settings.users.users">
+  <SettingsPage page-title="newUser">
     <template #actions>
       <VBtn
         color="primary"
         variant="elevated"
         class="ml-a"
         @click="$router.push('/settings/users/new')">
-        {{ t('settings.users.new') }}
+        {{ t('new') }}
       </VBtn>
       <VBtn
         variant="elevated"
@@ -37,7 +37,7 @@
                 <VCardSubtitle
                   v-if="user.LastActivityDate"
                   class="pa-0 fixed-width">
-                  {{ $t('settings.users.lastActivityDate', {
+                  {{ $t('lastActivityDate', {
                     value: getRelativeTime(new Date(user.LastActivityDate))})
                   }}
                 </VCardSubtitle>
