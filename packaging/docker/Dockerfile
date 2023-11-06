@@ -1,6 +1,7 @@
 ## This dockerfile builds the client entirely in a Docker context
 
-FROM node:20-slim AS build
+# slim image can't be used since we need git to fetch the commit hash
+FROM node:20 AS build
 
 # Set build arguments
 ARG DEFAULT_SERVERS
@@ -21,7 +22,7 @@ WORKDIR /app/frontend
 RUN npm ci --no-audit --ignore-scripts
 
 # Build client
-RUN if [ $"IS_STABLE" = "0" ] ; then export COMMIT_HASH=$(git rev-parse HEAD) ; fi && npm run build
+RUN COMMIT_HASH=$(git rev-parse HEAD) npm run build
 
 # Deploy built distribution to nginx
 FROM nginx:stable-alpine-slim
