@@ -1,6 +1,8 @@
 {
   "3DFormat": "Định dạng 3D",
   "NoMediaSourcesAvailable": "Không có sẵn nguồn phương tiện",
+  "NoMediaStreamsAvailable": "Không có luồng phương tiện nào cho nguồn đã chọn",
+  "accept": "Chấp nhận",
   "actor": "Diễn viên",
   "actors": "Diễn viên",
   "addNewPerson": "Thêm người mới",
@@ -34,6 +36,7 @@
   "byArtist": "Bởi {artist}",
   "cancel": "Hủy",
   "castAndCrew": "Diễn viên & Đoàn làm phim",
+  "clipboardFail": "Không sao chép được vào bảng nhớ tạm",
   "collectionEmpty": "Bộ sưu tập này còn đang trống",
   "collections": "Bộ sưu tập",
   "communityRating": "Đánh giá cộng đồng",

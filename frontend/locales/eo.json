@@ -1,16 +1,20 @@
 {
   "3DFormat": "3D-formato",
   "NoMediaSourcesAvailable": "Neniuj plurmediaj fontoj haveblaj",
+  "NoMediaStreamsAvailable": "Neniuj plurmediaj fluoj haveblaj por la elektita fonto",
+  "accept": "Akceptu",
   "actor": "Aktoro",
   "actors": "Aktoroj",
   "addNewPerson": "Aldoni novan personon",
+  "administrator": "Administranto",
   "airPlayDevices": "Aparatoj de AirPlay",
   "albums": "Albumoj",
   "allLanguages": "Ĉiuj lingvoj",
   "alphabetically": "Alfabete",
   "appbar": {
     "tasks": {
-      "configSync": "Sinkronigado de parametroj…"
+      "configSync": "Sinkronigado de parametroj…",
+      "scanningItem": "Skananta '{item}'…"
     },
     "tooltips": {
       "tasks": "Kurantaj taskoj"
@@ -22,6 +26,7 @@
   "aspectRatio": "Proporcio",
   "audio": "Aŭdio",
   "audioCodecNotSupported": "La aŭdkodeko ne subtenatas",
+  "auto": "Aŭtomata",
   "badRequest": "Malbona peto. Provi denove",
   "books": "Libroj",
   "browserNotSupported": "Via foliumilo ne subtenatas por ludi ĉi tiun dosieron.",
