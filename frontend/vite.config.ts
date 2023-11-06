@@ -20,13 +20,16 @@ import { browserslistToTargets } from 'lightningcss';
 import virtualModules from './scripts/virtual-modules';
 import { localeFilesFolder, srcRoot } from './scripts/paths';
 
+const is_stable = !Number(process.env.IS_STABLE);
+const commit_hash = is_stable && process.env.COMMIT_HASH;
+
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
     appType: 'spa',
     base: './',
     cacheDir: '../node_modules/.cache/vite',
     define: {
-      __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_HASH || '')
+      ...(commit_hash && { __COMMIT_HASH__: JSON.stringify(commit_hash)})
     },
     plugins: [
       virtual(virtualModules),
