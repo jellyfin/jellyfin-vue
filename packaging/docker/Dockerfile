@@ -4,13 +4,8 @@
 FROM node:20 AS build
 
 # Set build arguments
-ARG DEFAULT_SERVERS
-ARG HISTORY_ROUTER_MODE=1
 ARG IS_STABLE=0
-
 # Set environment variables
-ENV DEFAULT_SERVERS=$DEFAULT_SERVERS
-ENV HISTORY_ROUTER_MODE=$HISTORY_ROUTER_MODE
 ENV IS_STABLE=$IS_STABLE
 
 COPY package.json package-lock.json .npmrc /app/
