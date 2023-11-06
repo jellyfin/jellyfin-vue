@@ -1,5 +1,5 @@
 <template>
-  <span id="draggable-queue">
+  <span ref="container">
     <template
       v-for="(item, index) of playbackManager.queue"
       :key="item.Id">
@@ -44,45 +44,22 @@
 <script setup lang="ts">
 import Sortable from 'sortablejs';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onUnmounted, shallowRef, watch } from 'vue';
 import { playbackManagerStore } from '@/store';
 
 let sortable: Sortable | undefined;
+const container = shallowRef<HTMLSpanElement>();
 const playbackManager = playbackManagerStore();
 
-onMounted(() => {
-  const target = document.querySelector('#draggable-queue');
-
-  if (!target || !(target instanceof HTMLElement)) {
-    throw new Error(
-      'The expected DOM tree for the sortable queue has been changed'
-    );
-  }
-
-  sortable = new Sortable(target, {
-    animation: 500,
-    delay: 0,
-    dragoverBubble: true,
-    onUpdate(e): void {
-      const oldIndex = e.oldIndex;
-
-      if (typeof oldIndex === 'number') {
-        const item = playbackManager.queue[oldIndex];
-
-        if (item?.Id && typeof e.newIndex === 'number') {
-          playbackManager.changeItemPosition(item.Id, e.newIndex);
-        }
-      }
-    }
-  });
-});
-
-onBeforeUnmount(() => {
+/**
+ * Destroys the sortable instance
+ */
+function destroy(): void {
   if (sortable) {
     sortable.destroy();
     sortable = undefined;
   }
-});
+}
 
 /**
  * Checks if the item in the current position is playing
@@ -97,6 +74,31 @@ function isPlaying(index: number): boolean {
 function getArtists(item: BaseItemDto): string | undefined {
   return item.Artists ? item.Artists.join(', ') : undefined;
 }
+
+watch(container, () => {
+  destroy();
+
+  if (container.value) {
+    sortable = new Sortable(container.value, {
+      animation: 500,
+      delay: 0,
+      dragoverBubble: true,
+      onUpdate(e): void {
+        const oldIndex = e.oldIndex;
+
+        if (typeof oldIndex === 'number') {
+          const item = playbackManager.queue[oldIndex];
+
+          if (item?.Id && typeof e.newIndex === 'number') {
+            playbackManager.changeItemPosition(item.Id, e.newIndex);
+          }
+        }
+      }
+    });
+  }
+});
+
+onUnmounted(destroy);
 </script>
 
 <style lang="scss" scoped>
