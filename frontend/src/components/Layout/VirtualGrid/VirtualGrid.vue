@@ -52,7 +52,7 @@ import {
   watch,
   StyleValue,
   onMounted,
-  onUnmounted,
+  onBeforeUnmount,
   computed
 } from 'vue';
 import {
@@ -195,7 +195,7 @@ onMounted(() => {
  * we must control the cleanup of those manually when the scroll parent changes.
  *
  * As the event listener is added inside a watcher (a different effect scope),
- * we need to dispose on onUnmounted as well
+ * we need to dispose on onBeforeUnmount as well
  */
 function destroyEventListeners(): void {
   for (const cleanup of eventCleanups) {
@@ -230,7 +230,5 @@ watch(
   }
 );
 
-onUnmounted(() => {
-  destroyEventListeners();
-});
+onBeforeUnmount(destroyEventListeners);
 </script>
