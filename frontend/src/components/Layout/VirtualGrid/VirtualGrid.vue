@@ -230,7 +230,5 @@ watch(
   }
 );
 
-onUnmounted(() => {
-  destroyEventListeners();
-});
+onUnmounted(destroyEventListeners);
 </script>
