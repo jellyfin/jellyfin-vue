@@ -3,6 +3,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  overscroll-behavior: none;
+}
+
 html.no-forced-scrollbar {
   overflow-y: unset !important;
 }
