@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore, windowScroll } from '@/store';
 

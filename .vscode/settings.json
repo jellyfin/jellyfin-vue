@@ -44,5 +44,6 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "jellyfin-vue",
     "projectKey": "jellyfin_jellyfin-vue"
-  }
+  },
+  "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"]
 }

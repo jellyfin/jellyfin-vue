@@ -73,7 +73,7 @@ import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiReplay from 'virtual:icons/mdi/replay';
 import IMdiRefresh from 'virtual:icons/mdi/refresh';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router/auto';
 import { v4 } from 'uuid';
 import { useRemote, useSnackbar, useConfirmDialog } from '@/composables';
 import {

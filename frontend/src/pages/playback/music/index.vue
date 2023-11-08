@@ -109,7 +109,7 @@ import 'swiper/css/keyboard';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/virtual';
 import { isNil } from 'lodash-es';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { getBlurhash } from '@/utils/images';
 import { playbackManagerStore } from '@/store';
 

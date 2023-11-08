@@ -88,7 +88,7 @@ meta:
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useRemote, useSnackbar } from '@/composables';

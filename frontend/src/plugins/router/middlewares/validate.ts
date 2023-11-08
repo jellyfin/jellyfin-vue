@@ -1,4 +1,4 @@
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
+import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { useSnackbar } from '@/components/System/Snackbar.vue';
 import { usei18n } from '@/composables';
 import { isValidMD5 } from '@/utils/items';

@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { computed, ref, reactive, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
 import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';

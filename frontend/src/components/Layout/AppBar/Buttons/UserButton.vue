@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
 import IMdiCog from 'virtual:icons/mdi/cog';
 import IMdiLogout from 'virtual:icons/mdi/logout';

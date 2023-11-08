@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
 import { computed, inject, Ref } from 'vue';
 import IMdiHome from 'virtual:icons/mdi/home';

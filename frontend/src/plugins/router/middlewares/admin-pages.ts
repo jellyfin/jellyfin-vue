@@ -1,4 +1,4 @@
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
+import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { useRemote, useSnackbar, usei18n } from '@/composables';
 
 /**

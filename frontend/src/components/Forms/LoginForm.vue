@@ -69,7 +69,7 @@
 import { isEmpty } from 'lodash-es';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import IconEyeOff from 'virtual:icons/mdi/eye-off';
 import IconEye from 'virtual:icons/mdi/eye';
