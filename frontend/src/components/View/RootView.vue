@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import DefaultLayout from '@/layouts/default.vue';
 import FullPageLayout from '@/layouts/fullpage.vue';
 import ServerLayout from '@/layouts/server.vue';

@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { userLibrariesStore } from '@/store';
 import type { HomeSection } from '@/store/userLibraries';

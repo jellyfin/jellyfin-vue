@@ -1,5 +1,5 @@
 import { isNil } from 'lodash-es';
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
+import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { playbackManagerStore } from '@/store';
 
 /**

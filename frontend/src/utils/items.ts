@@ -8,7 +8,7 @@ import {
   ItemFields,
   MediaStream
 } from '@jellyfin/sdk/lib/generated-client';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import { isNil } from 'lodash-es';
 import type { RouteNamedMap } from 'vue-router/auto/routes';
 import IMdiMovie from 'virtual:icons/mdi/movie';

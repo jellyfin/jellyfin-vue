@@ -103,7 +103,7 @@ import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api'
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import IMdiLogin from 'virtual:icons/mdi/login';
 import IMdiLogout from 'virtual:icons/mdi/logout';
 import IMdiLock from 'virtual:icons/mdi/lock';

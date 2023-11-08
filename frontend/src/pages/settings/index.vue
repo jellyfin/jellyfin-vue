@@ -124,7 +124,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash-es';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';

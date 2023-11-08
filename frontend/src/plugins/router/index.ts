@@ -3,7 +3,7 @@ import {
   createRouter,
   createWebHashHistory,
   createWebHistory
-} from 'vue-router';
+} from 'vue-router/auto';
 import { useTitle } from '@vueuse/core';
 import generatedRoutes from 'virtual:generated-pages';
 import loginGuard from './middlewares/login';

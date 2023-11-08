@@ -132,7 +132,8 @@ module.exports = {
     'no-secrets/no-secrets': 'error',
     'import/newline-after-import': 'error',
     'import/order': 'error',
-    'import/no-unresolved': ['error', { ignore: ['virtual:*'] }],
+    // It's better to use TypeScript for this, since it leverages the real bundler environment
+    'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {

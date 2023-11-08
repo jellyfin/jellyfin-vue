@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router/auto';
 import {
   SortOrder,
   ItemFields,

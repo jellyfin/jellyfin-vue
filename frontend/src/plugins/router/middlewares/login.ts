@@ -3,7 +3,7 @@ import {
   RouteLocationNormalized,
   RouteLocationPathRaw,
   RouteLocationRaw
-} from 'vue-router';
+} from 'vue-router/auto';
 import { useRemote } from '@/composables';
 
 const serverAddUrl = '/server/add';

@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router/auto';
 import type { ServerInfo } from '@/plugins/remote/auth/types';
 import { useRemote } from '@/composables';
 
