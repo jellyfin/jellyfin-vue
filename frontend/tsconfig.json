@@ -21,7 +21,6 @@
       "axios",
       "@intlify/unplugin-vue-i18n/messages",
       "unplugin-icons/types/vue",
-      "vite-plugin-vue-layouts/client",
       "vite/client",
       "vuetify",
       "vue"
