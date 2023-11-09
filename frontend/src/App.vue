@@ -1,7 +1,7 @@
 <template>
   <Backdrop />
   <VApp>
-    <RouterViewTransition is-root />
+    <RootView />
     <Snackbar />
     <ConfirmDialog />
   </VApp>

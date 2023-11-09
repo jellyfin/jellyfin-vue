@@ -1,7 +1,7 @@
 <template>
   <LoadingIndicator />
   <VMain class="h-100">
-    <RouterViewTransition />
+    <PageView />
   </VMain>
   <VFooter
     app

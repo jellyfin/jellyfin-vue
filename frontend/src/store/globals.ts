@@ -1,5 +1,5 @@
 import { shallowRef } from 'vue';
-import { useMediaControls, useNow, useScroll } from '@vueuse/core';
+import { useMediaControls, useNow, useScroll, useMediaQuery } from '@vueuse/core';
 /**
  * This file contains global variables (specially VueUse refs) that are used multiple times across the client.
  * VueUse composables will set new event handlers, so it's more
@@ -29,3 +29,7 @@ export const mediaWebAudio = {
   context: new AudioContext(),
   sourceNode: undefined as undefined | MediaElementAudioSourceNode
 };
+/**
+ * Reactively tracks if the user wants animations (false) or not (true).
+ */
+export const prefersNoMotion = useMediaQuery('(prefers-reduced-motion)');

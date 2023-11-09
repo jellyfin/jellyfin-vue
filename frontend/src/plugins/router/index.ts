@@ -5,7 +5,6 @@ import {
   createWebHistory
 } from 'vue-router';
 import { useTitle } from '@vueuse/core';
-import { setupLayouts } from 'virtual:generated-layouts';
 import generatedRoutes from 'virtual:generated-pages';
 import loginGuard from './middlewares/login';
 import adminGuard from './middlewares/admin-pages';
@@ -20,7 +19,7 @@ const router = createRouter({
     (await getJSONConfig()).routerMode === 'history'
       ? createWebHistory()
       : createWebHashHistory(),
-  routes: setupLayouts(generatedRoutes)
+  routes: generatedRoutes
 });
 
 /**

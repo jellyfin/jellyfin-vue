@@ -3,7 +3,7 @@
   <NavigationDrawer :order="display.mobile.value ? -1 : undefined" />
   <VMain>
     <div class="pa-s">
-      <RouterViewTransition />
+      <PageView />
     </div>
   </VMain>
   <AudioControls />
