@@ -37,7 +37,6 @@
     "**/**/*.json",
     "types/**/*.d.ts",
     ".eslintrc.cjs",
-    "vue-i18n-extract.config.js",
     "vite.config.ts"
   ],
   "exclude": ["node_modules"]
