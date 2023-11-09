@@ -23,7 +23,7 @@ jobs:
           show-progress: false
 
       - name: Scan
-        uses: actions/dependency-review-action@v3.1.0
+        uses: actions/dependency-review-action@v3.1.2
 
   lint:
     name: Lint 🔬
