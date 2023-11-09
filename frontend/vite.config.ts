@@ -29,7 +29,7 @@ export default defineConfig(({ mode }): UserConfig => {
     base: './',
     cacheDir: '../node_modules/.cache/vite',
     define: {
-      ...(commit_hash && { __COMMIT_HASH__: JSON.stringify(commit_hash)})
+      __COMMIT_HASH__: JSON.stringify(commit_hash)
     },
     plugins: [
       virtual(virtualModules),
