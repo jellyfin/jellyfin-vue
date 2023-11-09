@@ -1,7 +1,6 @@
 import { defineConfig, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import Pages from 'vite-plugin-pages';
-import Layouts from 'vite-plugin-vue-layouts';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
@@ -78,10 +77,6 @@ export default defineConfig(({ mode }): UserConfig => {
         script: {
           defineModel: true
         }
-      }),
-      Layouts({
-        importMode: () => 'sync',
-        defaultLayout: 'default'
       }),
       // This plugin allows to autoimport vue components
       Components({
