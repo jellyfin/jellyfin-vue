@@ -33,7 +33,7 @@
     "@vueuse/components": "10.5.0",
     "@vueuse/core": "10.5.0",
     "audiomotion-analyzer": "4.3.0",
-    "axios": "1.5.1",
+    "axios": "1.6.0",
     "blurhash": "2.0.5",
     "comlink": "4.4.1",
     "date-fns": "2.30.0",
