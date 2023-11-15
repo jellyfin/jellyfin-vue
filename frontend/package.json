@@ -3,16 +3,6 @@
   "version": "0.3.1",
   "private": true,
   "type": "module",
-  "homepage": "https://jellyfin.org/",
-  "bugs": {
-    "url": "https://github.com/jellyfin/jellyfin-vue/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jellyfin/jellyfin-vue/"
-  },
-  "license": "GPL-3.0-only",
-  "author": "jellyfin-vue Contributors (https://github.com/jellyfin/jellyfin-vue/graphs/contributors)",
   "browserslist": [
     "defaults and supports es6-module"
   ],
