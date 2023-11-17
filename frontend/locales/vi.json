@@ -37,13 +37,16 @@
   "cancel": "Hủy",
   "castAndCrew": "Diễn viên & Đoàn làm phim",
   "clipboardFail": "Không sao chép được vào bảng nhớ tạm",
+  "close": "Đóng",
   "collectionEmpty": "Bộ sưu tập này còn đang trống",
   "collections": "Bộ sưu tập",
   "communityRating": "Đánh giá cộng đồng",
   "confirm": "Xác nhận",
   "connect": "Kết nối",
+  "contentType": "Loại nội dung",
   "continueListening": "Tiếp tục nghe",
   "continueWatching": "Tiếp tục xem",
+  "copyStreamURL": "Sao chép URL luồng",
   "criticRating": "Đánh giá phê bình",
   "customRating": "Xếp hạng tùy chỉnh",
   "darkModeToggle": "Chuyển đổi chế độ tối",
@@ -64,6 +67,7 @@
   "disabled": "Đã Tắt",
   "discNumber": "Đĩa {discNumber}",
   "dislikes": "Không Thích",
+  "downloadItem": "Tải xuống | Tải xuống tất cả",
   "edit": "Sửa",
   "editMetadata": "Sửa dữ liệu mô tả",
   "editPerson": "Sửa người",
@@ -106,6 +110,7 @@
     }
   },
   "identify": "Nhận dạng",
+  "identifyConfirmChanges": "Bạn có chắc chắn muốn thay đổi '{originalItem}' với '{newIdentifiedItem}'?",
   "identifyInstructResult": "Bạn có thể nhấp vào một trong các thẻ này để áp dụng kết quả",
   "imageType": {
     "art": "Nghệ thuật",
@@ -199,6 +204,10 @@
     "noLogsFound": "Không tìm thấy nhật ký nào"
   },
   "manualLogin": "Đăng nhập thủ công",
+  "mediaInfo": "Thông tin phương tiện",
+  "mediaInfoAspectRatio": "Tỷ lệ khung hình",
+  "mediaInfoAudioSampleRate": "Tỷ lệ mẫu",
+  "mediaInfoFileFormats": "Định dạng",
   "menu": "Menu",
   "metadata": {
     "source": "Nguồn",
