@@ -38,7 +38,7 @@ jobs:
 
       - name: Build and push stable images 🛠️⬆️
         if: github.event.action == 'released'
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         with:
           context: .
           file: packaging/docker/Dockerfile
@@ -56,7 +56,7 @@ jobs:
 
       - name: Build and push release candidate images 🛠️⬆️
         if: github.event.action == 'prereleased'
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         with:
           context: .
           file: packaging/docker/Dockerfile
