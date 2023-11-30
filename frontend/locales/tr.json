@@ -80,7 +80,8 @@
     }
   },
   "imageType": {
-    "backdrop": "Arka Plan"
+    "backdrop": "Arka Plan",
+    "banner": "Afiş"
   },
   "images": "Resimler",
   "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya parola",
