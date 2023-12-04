@@ -57,6 +57,7 @@
   "discNumber": "Disk {discNumber}",
   "dislikes": "Beğenilmeyenler",
   "edit": "Düzenle",
+  "editMetadata": "Meta veriyi düzenle",
   "endDate": "Bitiş tarihi",
   "endsAt": "{time}'de bitiyor",
   "episodeNumber": "Bölüm {episodeNumber}",
@@ -73,7 +74,7 @@
   "fullScreen": "Tam ekran",
   "general": "Genel",
   "genres": "Türler",
-  "home": "Anasayfa",
+  "home": "Ana Ekran",
   "homeHeader": {
     "items": {
       "recentlyAdded": "Son eklenen"
@@ -85,6 +86,11 @@
   },
   "images": "Resimler",
   "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya parola",
+  "item": {
+    "artist": {
+      "albums": "Albümler"
+    }
+  },
   "itemNotFound": "Öğe bulunamadı",
   "jellyfinLogo": "Jellyfin logo",
   "libraries": "Kütüphaneler",
@@ -92,11 +98,20 @@
   "libraryNotFound": "Kütüphane bulunamadı",
   "liked": "Beğenildi",
   "likes": "Beğenilenler",
+  "login": {
+    "manualLogin": "El ile oturum aç",
+    "serverDashboard": "Sunucu kontrol paneli"
+  },
   "logout": "Çıkış",
   "logsAndActivity": {
     "activity": "Aktivite"
   },
+  "manualLogin": "El ile oturum aç",
+  "mediaInfoFileContainer": "Kapsayıcı",
   "menu": "Menü",
+  "metadata": {
+    "source": "Kaynak"
+  },
   "metadataEditor": "Meta veri düzenleyici",
   "more": "Dahası",
   "moreLikeThis": "Buna Benzer Daha Fazla",
@@ -111,6 +126,8 @@
   "play": "Oynat",
   "present": "Mevcut",
   "rating": "İzlenme oranı",
+  "refreshMetadata": "Meta veriyi yenile",
+  "refreshMetadataHint": "Meta veriler, Kontrol Panelinden etkinleştirilen ayarlara ve internet hizmetlerine göre yenilenir",
   "releaseDate": "Yayın tarihi",
   "save": "Kaydet",
   "server": "Sunucu",
@@ -119,6 +136,10 @@
   "settingsSections": {
     "devices": {
       "name": "Cihazlar"
+    },
+    "home": {
+      "description": "Ana ekran bölümlerinizi ve ana ekran düzeninizi yapılandırın",
+      "name": "Ana ekran"
     },
     "libraries": {
       "name": "Kütüphaneler"
@@ -135,7 +156,8 @@
     }
   },
   "shows": "Göster",
-  "signIn": "Giriş yap",
+  "signIn": "Oturum aç",
+  "syncPlayGroups": "SyncPlay grupları",
   "unexpectedError": "Beklenmedik hata",
   "upNext": "Sonraki",
   "username": "Kullanıcı Adı",

@@ -274,7 +274,7 @@
   "series": "தொடர்",
   "server": "சேவையகம்",
   "serverVersion": "சேவையக பதிப்பு",
-  "serverVersionTooLow": "சேவையக பதிப்பு 10.7.0 அல்லது அதற்கு மேற்பட்டதாக இருக்க வேண்டும்",
+  "serverVersionTooLow": "சேவையகப் பதிப்பு {version} அல்லது அதற்கு மேற்பட்டதாக இருக்க வேண்டும்",
   "settings": {
     "apiKeys": {
       "accessToken": "அணுகல் டோக்கன்",
