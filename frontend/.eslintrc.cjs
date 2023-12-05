@@ -1,17 +1,11 @@
 const restrictedGlobals = require('confusing-browser-globals');
-const antfuRules = Object.assign({}, ...Object.keys(require('eslint-plugin-antfu').rules).map((r) => {
-  return { [`antfu/${r}`]: 'error' };
-}));
 
 const CI_environment = process.env.CI ? 0 : 1;
 const commonTSAndVueConfig = {
   extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
   rules: {
-    ...antfuRules,
     // TODO: Investigate why this rule reports false positives
-    '@typescript-eslint/no-misused-promises': 'off',
-    'antfu/prefer-inline-type-import': 'off',
-    'antfu/no-ts-export-equal': 'off'
+    '@typescript-eslint/no-misused-promises': 'off'
   }
 };
 
@@ -44,10 +38,11 @@ module.exports = {
     'plugin:unicorn/recommended',
     'plugin:you-dont-need-lodash-underscore/compatible',
     'plugin:@intlify/vue-i18n/recommended',
-    'plugin:vue-scoped-css/vue3-recommended'
+    'plugin:vue-scoped-css/vue3-recommended',
+    'plugin:@stylistic/disable-legacy'
   ],
   plugins: [
-    'antfu',
+    '@stylistic',
     'jsdoc',
     'jsonc',
     'no-unsanitized',
@@ -66,17 +61,10 @@ module.exports = {
     'file-progress'
   ],
   rules: {
-    'no-extend-native': 'error',
-    'file-progress/activate': CI_environment,
-    'semi': 'off',
-    'capitalized-comments': 'error',
-    'multiline-comment-style': 'error',
-    '@typescript-eslint/semi': ['error', 'always'],
-    'quotes': 'off',
-    '@typescript-eslint/quotes': ['error', 'single', { 'avoidEscape': true }],
-    'comma-dangle': 'error',
-    'indent': 'off',
-    '@typescript-eslint/indent': ['error', 2, {
+    '@stylistic/semi': ['error', 'always'],
+    '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true }],
+    '@stylistic/comma-dangle': 'error',
+    '@stylistic/indent': ['error', 2, {
       'SwitchCase': 1,
       'VariableDeclarator': 2,
       'CallExpression': { arguments: 'first' },
@@ -86,15 +74,56 @@ module.exports = {
       flatTernaryExpressions: true,
       offsetTernaryExpressions: true
     }],
-    'no-multi-spaces': ['error'],
-    'block-spacing': 'off',
-    '@typescript-eslint/block-spacing': ['error', 'always'],
-    'linebreak-style': ['error', 'unix'],
-    'brace-style': 'off',
-    '@typescript-eslint/brace-style': ['error'],
+    '@stylistic/no-multi-spaces': ['error'],
+    '@stylistic/block-spacing': ['error', 'always'],
+    '@stylistic/linebreak-style': ['error', 'unix'],
+    '@stylistic/brace-style': ['error'],
+    '@stylistic/no-trailing-spaces': ['error'],
+    '@stylistic/eol-last': ['error', 'always'],
+    '@stylistic/padding-line-between-statements': [
+      'error',
+      // Always require blank lines after directives (like 'use-strict'), except between directives
+      { blankLine: 'always', prev: 'directive', next: '*' },
+      { blankLine: 'any', prev: 'directive', next: 'directive' },
+      // Always require blank lines after import, except between imports
+      { blankLine: 'always', prev: 'import', next: '*' },
+      { blankLine: 'any', prev: 'import', next: 'import' },
+      // Always require blank lines before and after every sequence of variable declarations and export
+      {
+        blankLine: 'always',
+        prev: '*',
+        next: ['const', 'let', 'var', 'export']
+      },
+      {
+        blankLine: 'always',
+        prev: ['const', 'let', 'var', 'export'],
+        next: '*'
+      },
+      {
+        blankLine: 'any',
+        prev: ['const', 'let', 'var', 'export'],
+        next: ['const', 'let', 'var', 'export']
+      },
+      // Always require blank lines before and after class declaration, if, do/while, switch, try
+      {
+        blankLine: 'always',
+        prev: '*',
+        next: ['if', 'class', 'for', 'do', 'while', 'switch', 'try']
+      },
+      {
+        blankLine: 'always',
+        prev: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
+        next: '*'
+      },
+      // Always require blank lines before return statements
+      { blankLine: 'always', prev: '*', next: 'return' }
+    ],
+    '@stylistic/no-multiple-empty-lines': 'error',
+    'no-extend-native': 'error',
+    'file-progress/activate': CI_environment,
+    'capitalized-comments': 'error',
+    'multiline-comment-style': 'error',
     'unicode-bom': ['error', 'never'],
-    'no-trailing-spaces': ['error'],
-    'eol-last': ['error', 'always'],
     'no-restricted-globals': ['error', ...restrictedGlobals],
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-secrets/no-secrets': 'error',
@@ -153,44 +182,6 @@ module.exports = {
     '@typescript-eslint/prefer-ts-expect-error': 'error',
     '@typescript-eslint/explicit-member-accessibility': 'error',
     'prefer-arrow-callback': 'error',
-    'padding-line-between-statements': [
-      'error',
-      // Always require blank lines after directives (like 'use-strict'), except between directives
-      { blankLine: 'always', prev: 'directive', next: '*' },
-      { blankLine: 'any', prev: 'directive', next: 'directive' },
-      // Always require blank lines after import, except between imports
-      { blankLine: 'always', prev: 'import', next: '*' },
-      { blankLine: 'any', prev: 'import', next: 'import' },
-      // Always require blank lines before and after every sequence of variable declarations and export
-      {
-        blankLine: 'always',
-        prev: '*',
-        next: ['const', 'let', 'var', 'export']
-      },
-      {
-        blankLine: 'always',
-        prev: ['const', 'let', 'var', 'export'],
-        next: '*'
-      },
-      {
-        blankLine: 'any',
-        prev: ['const', 'let', 'var', 'export'],
-        next: ['const', 'let', 'var', 'export']
-      },
-      // Always require blank lines before and after class declaration, if, do/while, switch, try
-      {
-        blankLine: 'always',
-        prev: '*',
-        next: ['if', 'class', 'for', 'do', 'while', 'switch', 'try']
-      },
-      {
-        blankLine: 'always',
-        prev: ['if', 'class', 'for', 'do', 'while', 'switch', 'try'],
-        next: '*'
-      },
-      // Always require blank lines before return statements
-      { blankLine: 'always', prev: '*', next: 'return' }
-    ],
     'you-dont-need-lodash-underscore/is-nil': 'off',
     // Force some component order stuff, formatting and such, for consistency
     'curly': ['error', 'all'],
@@ -198,7 +189,6 @@ module.exports = {
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/no-await-expression-member': 'off',
-    'no-multiple-empty-lines': 'error',
     // TODO: Reenable once vue-i18n-extract is completely refactored
     '@intlify/vue-i18n/no-unused-keys': 'off',
     '@intlify/vue-i18n/no-raw-text': 'error',
@@ -233,15 +223,15 @@ module.exports = {
     {
       files: ['*.md'],
       rules: {
-        'no-trailing-spaces': ['off']
+        '@stylistic/no-trailing-spaces': ['off']
       }
     },
     {
       files: ['*.json'],
       parser: 'jsonc-eslint-parser',
       rules: {
-        quotes: ['error', 'double'],
-        semi: 'off'
+        '@stylistic/quotes': ['error', 'double'],
+        '@stylistic/semi': 'off'
       }
     },
     {
@@ -297,7 +287,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       typescript: true,
-      node: true
+      node: false
     },
     progress: {
       hide: false,
