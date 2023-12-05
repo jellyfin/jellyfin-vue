@@ -17,7 +17,10 @@ const router = createRouter({
   history:
     (await getJSONConfig()).routerMode === 'history'
       ? createWebHistory()
-      : createWebHashHistory()
+      : createWebHashHistory(),
+  scrollBehavior(_to, _from, savedPosition) {
+    return savedPosition ?? { top: 0 };
+  }
 });
 
 /**
