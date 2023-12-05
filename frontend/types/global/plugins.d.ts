@@ -33,6 +33,7 @@ declare module 'vue' {
 
 declare module 'vue-i18n' {
   type messages = typeof enUS;
+
   export interface DefineLocaleMessage extends messages {}
 }
 
