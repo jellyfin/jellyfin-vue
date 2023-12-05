@@ -11,12 +11,12 @@ import { marked } from 'marked';
  * @param input - string to sanitize
  * @returns a cleaned up string
  */
-export function sanitizeHtml(input: string, isMarkdown = false): string {
+export async function sanitizeHtml(input: string, isMarkdown = false): Promise<string> {
   // Some providers have newlines, replace them with the proper tag.
   const cleanString = input.replaceAll(/\r\n|\r|\n/g, '<br>');
 
   return DOMPurify.sanitize(
-    isMarkdown ? marked.parse(cleanString) : cleanString,
+    isMarkdown ? await marked.parse(cleanString) : cleanString,
     {
       USE_PROFILES: { html: true }
     }

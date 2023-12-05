@@ -3,7 +3,7 @@
     v-if="commit"
     :title="'#' + commit.slice(0, 7)"
     :prepend-icon="IMdiGithub"
-    :href="sanitizeHtml(`https://github.com/jellyfin/jellyfin-vue/commit/${commit}`)"
+    :href="link"
     target="_blank"
     rel="noopener noreferrer" />
 </template>
@@ -13,4 +13,5 @@ import IMdiGithub from 'virtual:icons/mdi/github';
 import { sanitizeHtml } from '@/utils/html';
 
 const commit = __COMMIT_HASH__;
+const link = commit ? await sanitizeHtml(`https://github.com/jellyfin/jellyfin-vue/commit/${commit}`) : undefined;
 </script>
