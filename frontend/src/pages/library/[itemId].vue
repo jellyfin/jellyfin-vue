@@ -91,7 +91,7 @@ import { useRemote, useSnackbar } from '@/composables';
 import type { Filters } from '@/components/Buttons/FilterButton.vue';
 
 const { t } = useI18n();
-const route = useRoute();
+const route = useRoute<'/library/[itemId]'>();
 const remote = useRemote();
 
 const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
@@ -322,7 +322,7 @@ async function refreshItems(): Promise<void> {
   }
 }
 
-onMounted(() => fetchLibrary((route.params as { itemId: string }).itemId));
+onMounted(() => fetchLibrary((route.params.itemId)));
 
 watch(library, (lib) => {
   route.meta.title = lib?.Name;

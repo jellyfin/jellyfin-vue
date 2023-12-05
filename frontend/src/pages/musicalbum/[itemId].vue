@@ -111,13 +111,13 @@ import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
 import { useRemote } from '@/composables';
 
-const route = useRoute();
+const route = useRoute<'/musicalbum/[itemId]'>();
 const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 
 onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+  const { itemId } = route.params;
 
   item.value = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({

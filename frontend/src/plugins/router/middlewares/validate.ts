@@ -9,7 +9,7 @@ import { isValidMD5 } from '@/utils/items';
 export default function validateGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  if (to.params.itemId && typeof to.params.itemId === 'string') {
+  if (('itemId' in to.params) && typeof to.params.itemId === 'string') {
     const { t } = usei18n();
     const check = isValidMD5(to.params.itemId);
 

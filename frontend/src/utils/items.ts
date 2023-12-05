@@ -322,44 +322,37 @@ export function getItemDetailsLink(
   overrideType?: BaseItemKind
 ): string {
   const router = useRouter();
+  const itemId = String(item.Id);
   let routeName: keyof RouteNamedMap;
-  let routeParameters: Record<never, never>;
 
   if (item.Type && validLibraryTypes.includes(item.Type)) {
     routeName = '/library/[itemId]';
-    routeParameters = { itemId: item.Id };
   } else {
     const type = overrideType || item.Type;
 
     switch (type) {
       case 'Series': {
         routeName = '/series/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
       case 'Person': {
         routeName = '/person/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
       case 'MusicArtist': {
         routeName = '/artist/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
       case 'MusicAlbum': {
         routeName = '/musicalbum/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
       case 'Genre': {
         routeName = '/genre/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
       default: {
         routeName = '/item/[itemId]';
-        routeParameters = { itemId: item.Id };
         break;
       }
     }
@@ -367,7 +360,7 @@ export function getItemDetailsLink(
 
   return router.resolve({
     name: routeName,
-    params: routeParameters
+    params: { itemId }
   }).path;
 }
 
