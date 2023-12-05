@@ -20,8 +20,8 @@
   "dependencies": {
     "@fontsource/roboto": "5.0.8",
     "@jellyfin/sdk": "0.8.2",
-    "@vueuse/components": "10.6.1",
-    "@vueuse/core": "10.6.1",
+    "@vueuse/components": "10.7.0",
+    "@vueuse/core": "10.7.0",
     "audiomotion-analyzer": "4.3.0",
     "axios": "1.6.2",
     "blurhash": "2.0.5",
