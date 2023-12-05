@@ -20,9 +20,6 @@ module.exports = {
     'types/global/routes.d.ts',
     'types/global/components.d.ts'
   ],
-  globals: {
-    __COMMIT_HASH__: 'readonly'
-  },
   extends: [
     'eslint:recommended',
     'plugin:jsonc/recommended-with-json',

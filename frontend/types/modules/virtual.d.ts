@@ -15,3 +15,7 @@ declare module 'virtual:locales/vuetify' {
 declare module 'virtual:locales/vuetify/rtl' {
   export { defaultRtl } from 'vuetify/locale';
 }
+
+declare module 'virtual:commit' {
+  export const commit_hash: string | undefined;
+}

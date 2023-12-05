@@ -66,6 +66,12 @@ for (const e of vuetifyExports) {
   transformedVuetifyRtl[targetLocale] = vuetify.defaultRtl[originalLocale as keyof typeof vuetify.defaultRtl];
 }
 
+/**
+ * Get commit hash
+ */
+const commit_available = !Number(process.env.IS_STABLE) && Boolean(process.env.COMMIT_HASH);
+const commit_hash = commit_available && `'${process.env.COMMIT_HASH}'` || undefined;
+
 export default {
   'virtual:locales/date-fns': `export { ${dfnsExports.join(
     ', '
@@ -75,5 +81,6 @@ export default {
   )} } from 'vuetify/locale'`,
   'virtual:locales/vuetify/rtl': `export const defaultRtl = ${JSON.stringify(
     transformedVuetifyRtl
-  )}`
+  )}`,
+  'virtual:commit': `export const commit_hash = ${commit_hash}`
 };

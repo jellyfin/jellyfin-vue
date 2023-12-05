@@ -36,7 +36,7 @@
               </tr>
               <tr>
                 <td>{{ $t('vueClientVersion') }}</td>
-                <CommitLink v-if="commit" />
+                <CommitLink v-if="commit_hash" />
                 <td v-else>
                   {{ clientVersion }}
                 </td>
@@ -129,6 +129,7 @@ import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash-es';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { commit_hash } from 'virtual:commit';
 import IMdiAccount from 'virtual:icons/mdi/account';
 import IMdiHome from 'virtual:icons/mdi/home';
 import IMdiPlayPause from 'virtual:icons/mdi/play-pause';
@@ -153,7 +154,6 @@ import { version as clientVersion } from '@/../package.json';
 const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
-const commit = __COMMIT_HASH__;
 
 route.meta.title = t('settings.settings');
 
