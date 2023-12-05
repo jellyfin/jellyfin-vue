@@ -14,7 +14,7 @@ COPY frontend /app/frontend
 WORKDIR /app/frontend
 
 # Install dependencies
-RUN npm ci --no-audit --ignore-scripts
+RUN npm ci --no-audit
 
 # Build client
 RUN COMMIT_HASH=$(git rev-parse HEAD) npm run build
