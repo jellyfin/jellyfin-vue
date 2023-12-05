@@ -130,8 +130,8 @@ class PlayerElementStore {
       !isNil(mimeType) &&
       mimeType.startsWith('font/') &&
       (mimeType.includes('ttf') ||
-        mimeType.includes('otf') ||
-        mimeType.includes('woff'))
+      mimeType.includes('otf') ||
+      mimeType.includes('woff'))
     );
   };
 
@@ -220,7 +220,7 @@ class PlayerElementStore {
         if (
           !newValue &&
           (currentFullPath.includes(fullscreenMusicRoute) ||
-            currentFullPath.includes(fullscreenVideoRoute))
+          currentFullPath.includes(fullscreenVideoRoute))
         ) {
           router.back();
         } else if (

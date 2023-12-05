@@ -244,9 +244,9 @@ class ItemsStore {
             (updatedData: unknown): updatedData is { ItemId: string } => {
               if (
                 typeof updatedData === 'object' &&
-                updatedData &&
-                'ItemId' in updatedData &&
-                typeof updatedData.ItemId === 'string'
+                  updatedData &&
+                  'ItemId' in updatedData &&
+                  typeof updatedData.ItemId === 'string'
               ) {
                 return Object.keys(this._state.byId).includes(
                   updatedData.ItemId

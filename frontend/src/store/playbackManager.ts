@@ -292,7 +292,7 @@ class PlaybackManagerStore {
           (sub) =>
             sub.Type === MediaStreamType.Subtitle &&
             (sub.DeliveryMethod === SubtitleDeliveryMethod.Encode ||
-              sub.DeliveryMethod === SubtitleDeliveryMethod.External)
+            sub.DeliveryMethod === SubtitleDeliveryMethod.External)
         )
         .map((sub) => ({
           label: sub.DisplayTitle ?? 'Undefined',
@@ -483,9 +483,9 @@ class PlaybackManagerStore {
     return (
       !this._isProgressUpdating &&
       reactiveDate.value.valueOf() - this._state.lastProgressUpdate >=
-        progressReportInterval &&
+      progressReportInterval &&
       this.status !== PlaybackStatus.Stopped &&
-      this.status !== PlaybackStatus.Error
+        this.status !== PlaybackStatus.Error
     );
   }
 
@@ -715,8 +715,8 @@ class PlaybackManagerStore {
     if (
       !isNil(this._state.currentItemIndex) &&
       this._state.currentItemIndex > 0 &&
-      !isNil(this.currentTime) &&
-      this.currentTime < 2
+        !isNil(this.currentTime) &&
+        this.currentTime < 2
     ) {
       this._state.currentItemIndex -= 1;
     }
@@ -1048,12 +1048,12 @@ class PlaybackManagerStore {
       () => {
         if (
           this.status === PlaybackStatus.Playing &&
-          !mediaControls.playing.value
+            !mediaControls.playing.value
         ) {
           mediaControls.playing.value = true;
         } else if (
           this.status === PlaybackStatus.Paused &&
-          mediaControls.playing.value
+            mediaControls.playing.value
         ) {
           mediaControls.playing.value = false;
         }
@@ -1198,7 +1198,7 @@ class PlaybackManagerStore {
     watchEffect(() => {
       const remove =
         this.status === PlaybackStatus.Error ||
-        this.status === PlaybackStatus.Stopped;
+          this.status === PlaybackStatus.Stopped;
 
       if (
         window.navigator.mediaSession &&
@@ -1259,11 +1259,11 @@ class PlaybackManagerStore {
       async (oldVal, newVal) => {
         if (
           oldVal.currentSubtitleStreamIndex !==
-            newVal.currentSubtitleStreamIndex &&
+          newVal.currentSubtitleStreamIndex &&
           (oldVal.currentSubtitleTrack?.DeliveryMethod ===
-            SubtitleDeliveryMethod.Encode ||
-            newVal.currentSubtitleTrack?.DeliveryMethod ===
-              SubtitleDeliveryMethod.Encode)
+          SubtitleDeliveryMethod.Encode ||
+          newVal.currentSubtitleTrack?.DeliveryMethod ===
+          SubtitleDeliveryMethod.Encode)
         ) {
           /**
            * We need to set a new media source when:
@@ -1288,7 +1288,7 @@ class PlaybackManagerStore {
     watchEffect(async () => {
       if (
         this._pendingProgressReport &&
-        this.status !== PlaybackStatus.Buffering
+          this.status !== PlaybackStatus.Buffering
       ) {
         await this._reportPlaybackProgress();
       }

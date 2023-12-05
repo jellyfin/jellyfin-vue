@@ -91,7 +91,7 @@ function getTrackSubtitle(track: MediaStream): string | undefined {
   if ((props.type === 'Audio' || props.type === 'Subtitle') && track.Language) {
     return upperFirst(
       getLocaleName(track.Language, locale.value) ??
-        `${t('unknown')} (${track.Language})`
+      `${t('unknown')} (${track.Language})`
     );
   } else if (props.type === 'Audio' || props.type === 'Subtitle') {
     return t('undefined');

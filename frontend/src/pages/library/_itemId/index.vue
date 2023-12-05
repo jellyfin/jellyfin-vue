@@ -174,7 +174,7 @@ const recursive = computed(() =>
   library.value?.CollectionType === 'homevideos' ||
   library.value?.Type === 'Folder' ||
   (library.value?.Type === 'CollectionFolder' &&
-    !('CollectionType' in library.value))
+  !('CollectionType' in library.value))
     ? undefined
     : true
 );

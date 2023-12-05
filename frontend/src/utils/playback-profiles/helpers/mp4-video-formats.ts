@@ -43,12 +43,12 @@ export function hasH265Support(videoTestElement: HTMLVideoElement): boolean {
       videoTestElement
         .canPlayType('video/mp4; codecs="hev1.1.L120"')
         .replace(/no/, '') ||
-      videoTestElement
-        .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
-        .replace(/no/, '') ||
-      videoTestElement
-        .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
-        .replace(/no/, ''))
+        videoTestElement
+          .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
+          .replace(/no/, '') ||
+          videoTestElement
+            .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
+            .replace(/no/, ''))
   );
 }
 
@@ -71,12 +71,12 @@ export function hasHevcSupport(videoTestElement: HTMLVideoElement): boolean {
       videoTestElement
         .canPlayType('video/mp4; codecs="hev1.1.L120"')
         .replace(/no/, '') ||
-      videoTestElement
-        .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
-        .replace(/no/, '') ||
-      videoTestElement
-        .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
-        .replace(/no/, ''))
+        videoTestElement
+          .canPlayType('video/mp4; codecs="hvc1.1.0.L120"')
+          .replace(/no/, '') ||
+          videoTestElement
+            .canPlayType('video/mp4; codecs="hev1.1.0.L120"')
+            .replace(/no/, ''))
   );
 }
 

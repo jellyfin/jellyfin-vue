@@ -35,7 +35,7 @@ function validateJsonConfig(
   if (
     !('routerMode' in config) ||
     typeof config.routerMode !== 'string' ||
-    !['hash', 'history'].includes(config.routerMode)
+      !['hash', 'history'].includes(config.routerMode)
   ) {
     throw new Error('Expected router mode to be either hash or history');
   }

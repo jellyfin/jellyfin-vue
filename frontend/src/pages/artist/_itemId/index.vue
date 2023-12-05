@@ -184,9 +184,9 @@ const eps = computed(() =>
   discography.value.filter(
     (album) =>
       (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) >
-        msToTicks(SINGLE_MAX_LENGTH_MS) &&
+      msToTicks(SINGLE_MAX_LENGTH_MS) &&
       (album?.RunTimeTicks ?? album?.CumulativeRunTimeTicks ?? 0) <=
-        msToTicks(EP_MAX_LENGTH_MS)
+      msToTicks(EP_MAX_LENGTH_MS)
   )
 );
 

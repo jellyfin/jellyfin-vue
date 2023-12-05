@@ -34,12 +34,12 @@ function getGlobalMaxVideoBitrate(): number | undefined {
     isTizen() &&
     'webapis' in window &&
     typeof window.webapis === 'object' &&
-    window.webapis &&
-    'productinfo' in window.webapis &&
-    typeof window.webapis.productinfo === 'object' &&
-    window.webapis.productinfo &&
-    'isUdPanelSupported' in window.webapis.productinfo &&
-    typeof window.webapis.productinfo.isUdPanelSupported === 'function'
+      window.webapis &&
+      'productinfo' in window.webapis &&
+      typeof window.webapis.productinfo === 'object' &&
+        window.webapis.productinfo &&
+        'isUdPanelSupported' in window.webapis.productinfo &&
+        typeof window.webapis.productinfo.isUdPanelSupported === 'function'
   ) {
     isTizenFhd = !window.webapis.productinfo.isUdPanelSupported();
   }
@@ -184,10 +184,10 @@ export function getCodecProfiles(
 
   if (
     (isTizen() ||
-      videoTestElement
-        .canPlayType('video/mp4; codecs="avc1.6e0033"')
-        .replace(/no/, '')) && // TODO: These tests are passing in Safari, but playback is failing
-    (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
+    videoTestElement
+      .canPlayType('video/mp4; codecs="avc1.6e0033"')
+      .replace(/no/, '')) && // TODO: These tests are passing in Safari, but playback is failing
+      (!isApple() || !isWebOS() || !(isEdge() && !isChromiumBased()))
   ) {
     h264Profiles += '|high 10';
   }
@@ -201,9 +201,9 @@ export function getCodecProfiles(
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.1.4.L123"')
       .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="hev1.1.4.L123"')
-      .replace(/no/, '')
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.1.4.L123"')
+        .replace(/no/, '')
   ) {
     maxHevcLevel = 123;
   }
@@ -213,9 +213,9 @@ export function getCodecProfiles(
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L123"')
       .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="hev1.2.4.L123"')
-      .replace(/no/, '')
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.2.4.L123"')
+        .replace(/no/, '')
   ) {
     maxHevcLevel = 123;
     hevcProfiles = hevcProfilesMain10;
@@ -226,9 +226,9 @@ export function getCodecProfiles(
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L153"')
       .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="hev1.2.4.L153"')
-      .replace(/no/, '')
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.2.4.L153"')
+        .replace(/no/, '')
   ) {
     maxHevcLevel = 153;
     hevcProfiles = hevcProfilesMain10;
@@ -239,9 +239,9 @@ export function getCodecProfiles(
     videoTestElement
       .canPlayType('video/mp4; codecs="hvc1.2.4.L183"')
       .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="hev1.2.4.L183"')
-      .replace(/no/, '')
+      videoTestElement
+        .canPlayType('video/mp4; codecs="hev1.2.4.L183"')
+        .replace(/no/, '')
   ) {
     maxHevcLevel = 183;
     hevcProfiles = hevcProfilesMain10;

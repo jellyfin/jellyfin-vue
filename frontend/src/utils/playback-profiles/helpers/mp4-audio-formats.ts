@@ -46,11 +46,11 @@ export function hasAc3InHlsSupport(
       videoTestElement
         .canPlayType('application/x-mpegurl; codecs="avc1.42E01E, ac-3"')
         .replace(/no/, '') ||
-      videoTestElement
-        .canPlayType(
-          'application/vnd.apple.mpegURL; codecs="avc1.42E01E, ac-3"'
-        )
-        .replace(/no/, '')
+        videoTestElement
+          .canPlayType(
+            'application/vnd.apple.mpegURL; codecs="avc1.42E01E, ac-3"'
+          )
+          .replace(/no/, '')
     );
   }
 
@@ -107,12 +107,12 @@ export function hasMp3AudioSupport(
     videoTestElement
       .canPlayType('video/mp4; codecs="avc1.640029, mp4a.69"')
       .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.640029, mp4a.6B"')
-      .replace(/no/, '') ||
-    videoTestElement
-      .canPlayType('video/mp4; codecs="avc1.640029, mp3"')
-      .replace(/no/, '')
+      videoTestElement
+        .canPlayType('video/mp4; codecs="avc1.640029, mp4a.6B"')
+        .replace(/no/, '') ||
+        videoTestElement
+          .canPlayType('video/mp4; codecs="avc1.640029, mp3"')
+          .replace(/no/, '')
   );
 }
 
@@ -135,7 +135,7 @@ export function hasDtsSupport(
     videoTestElement
       .canPlayType('video/mp4; codecs="dts-"')
       .replace(/no/, '') ||
-    videoTestElement.canPlayType('video/mp4; codecs="dts+"').replace(/no/, '')
+      videoTestElement.canPlayType('video/mp4; codecs="dts+"').replace(/no/, '')
   );
 }
 
