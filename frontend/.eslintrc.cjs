@@ -119,6 +119,9 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
     '@stylistic/no-multiple-empty-lines': 'error',
+    '@stylistic/indent-binary-ops': ['error', 2],
+    '@stylistic/type-generic-spacing': 'error',
+    '@stylistic/type-named-tuple-spacing': 'error',
     'no-extend-native': 'error',
     'file-progress/activate': CI_environment,
     'capitalized-comments': 'error',
