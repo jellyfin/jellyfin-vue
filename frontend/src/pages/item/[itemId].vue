@@ -301,10 +301,10 @@ import { getItemizedSelect } from '@/utils/forms';
 import { sanitizeHtml } from '@/utils/html';
 import { useRemote } from '@/composables';
 
-const route = useRoute();
+const route = useRoute<'/genre/[itemId]'>();
 const remote = useRemote();
 
-const { itemId } = route.params as { itemId: string };
+const { itemId } = route.params;
 
 const item = (
   await remote.sdk.newUserApi(getUserLibraryApi).getItem({

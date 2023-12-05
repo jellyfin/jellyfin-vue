@@ -76,7 +76,7 @@ import { itemsStore } from '@/store';
 import { useRemote, useResponsiveClasses } from '@/composables';
 
 const items = itemsStore();
-const route = useRoute();
+const route = useRoute<'/genre/[itemId]'>();
 const remote = useRemote();
 
 const loading = ref(false);
@@ -84,7 +84,7 @@ const genre = ref<BaseItemDto>({});
 const genres = ref<BaseItemDto[]>([]);
 
 onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+  const { itemId } = route.params;
   const typesQuery = route.query.type as BaseItemKind ?? [];
 
   const includeItemTypes: BaseItemKind[] = typeof typesQuery === 'string'

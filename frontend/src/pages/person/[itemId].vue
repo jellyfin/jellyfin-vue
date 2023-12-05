@@ -182,7 +182,7 @@ import { getBlurhash } from '@/utils/images';
 import { sanitizeHtml } from '@/utils/html';
 import { useRemote, useDateFns } from '@/composables';
 
-const route = useRoute();
+const route = useRoute<'/person/[itemId]'>();
 const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
@@ -209,7 +209,7 @@ const birthPlace = computed(
 );
 
 onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+  const { itemId } = route.params;
 
   item.value = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({

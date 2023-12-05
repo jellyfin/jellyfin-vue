@@ -163,7 +163,7 @@ import { useRemote } from '@/composables';
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
-const route = useRoute();
+const route = useRoute<'/artist/[itemId]'>();
 const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
@@ -199,7 +199,7 @@ const albums = computed(() =>
 );
 
 onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+  const { itemId } = route.params;
 
   item.value = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({

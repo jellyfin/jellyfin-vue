@@ -194,7 +194,7 @@ import { getItemDetailsLink } from '@/utils/items';
 import { sanitizeHtml } from '@/utils/html';
 import { useRemote } from '@/composables';
 
-const route = useRoute();
+const route = useRoute<'/series/[itemId]'>();
 const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
@@ -220,7 +220,7 @@ const writers = computed(() =>
 );
 
 onMounted(async () => {
-  const { itemId } = route.params as { itemId: string };
+  const { itemId } = route.params;
 
   item.value = (
     await remote.sdk.newUserApi(getUserLibraryApi).getItem({
