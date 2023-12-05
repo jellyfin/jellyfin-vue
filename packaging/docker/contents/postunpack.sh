@@ -15,15 +15,9 @@ rm -rf /usr/lib/libcrypto* /usr/lib/libintl* /usr/lib/libssl* \
     /usr/lib/engines-3 /usr/lib/modules-load.d /usr/lib/nginx /usr/lib/ossl-modules
 
 # CONTAINER ROOTLESS SETUP
-## Adding a nginx user that will manage the daemon
-cat /etc/passwd
-adduser --system --shell /bin/false --no-create-home --disabled-password --gecos "nginx user" vue vue
-## Set correct permissions
-chown nginx:nginx -R /var/cache/nginx
+### Set correct permissions and make frontend config.json file editable for the runtime user
 mkdir -p /run/nginx
-chown nginx:nginx -R /run/nginx
+chown nginx:nginx -R /run/nginx /usr/share/nginx/html/config.json
 sed -i 's|/var/run|/var/run/nginx|g' $NGINX_CONFIG_FILE
-## Make frontend config.json file editable for the runtime user
-chown nginx:nginx -R /usr/share/nginx/html/config.json
 ## The 'user' config option is useless when running rootless and gives a warning
 sed -i '/^user /d' $NGINX_CONFIG_FILE
