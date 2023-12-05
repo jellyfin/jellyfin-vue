@@ -17,7 +17,7 @@ rm -rf /usr/lib/libcrypto* /usr/lib/libintl* /usr/lib/libssl* \
 # CONTAINER ROOTLESS SETUP
 ### Set correct permissions and make frontend config.json file editable for the runtime user
 mkdir -p /run/nginx
-chown nginx:nginx -R /run/nginx /usr/share/nginx/html/config.json
+chown nginx:nginx -R /run/nginx /var/cache/nginx /usr/share/nginx/html/config.json
 sed -i 's|/var/run|/var/run/nginx|g' $NGINX_CONFIG_FILE
 ## The 'user' config option is useless when running rootless and gives a warning
 sed -i '/^user /d' $NGINX_CONFIG_FILE
