@@ -326,39 +326,39 @@ export function getItemDetailsLink(
   let routeParameters: Record<never, never>;
 
   if (item.Type && validLibraryTypes.includes(item.Type)) {
-    routeName = 'library-itemId';
+    routeName = '/library/[itemId]';
     routeParameters = { itemId: item.Id };
   } else {
     const type = overrideType || item.Type;
 
     switch (type) {
       case 'Series': {
-        routeName = 'series-itemId';
+        routeName = '/series/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
       case 'Person': {
-        routeName = 'person-itemId';
+        routeName = '/person/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
       case 'MusicArtist': {
-        routeName = 'artist-itemId';
+        routeName = '/artist/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
       case 'MusicAlbum': {
-        routeName = 'musicalbum-itemId';
+        routeName = '/musicalbum/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
       case 'Genre': {
-        routeName = 'genre-itemId';
+        routeName = '/genre/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
       default: {
-        routeName = 'item-itemId';
+        routeName = '/item/[itemId]';
         routeParameters = { itemId: item.Id };
         break;
       }
