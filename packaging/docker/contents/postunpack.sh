@@ -16,6 +16,7 @@ rm -rf /usr/lib/libcrypto* /usr/lib/libintl* /usr/lib/libssl* \
 
 # CONTAINER ROOTLESS SETUP
 ## Adding a nginx user that will manage the daemon
+cat /etc/passwd
 adduser --system --shell /bin/false --no-create-home --disabled-password --gecos "nginx user" vue vue
 ## Set correct permissions
 chown nginx:nginx -R /var/cache/nginx
