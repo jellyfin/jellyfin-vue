@@ -16,7 +16,7 @@ rm -rf /usr/lib/libcrypto* /usr/lib/libintl* /usr/lib/libssl* \
 
 # CONTAINER ROOTLESS SETUP
 ## Adding a nginx user that will manage the daemon
-adduser --system --shell /bin/false --no-create-home --disabled-login --disabled-password --gecos "nginx user" --group nginx
+adduser --system --shell /bin/false --no-create-home --disabled-password --gecos "nginx user" --group nginx
 ## Set correct permissions
 chown nginx:nginx -R /var/cache/nginx
 mkdir -p /run/nginx
