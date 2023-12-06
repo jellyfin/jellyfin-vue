@@ -123,8 +123,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { Component, computed } from 'vue';
+import { useRoute, RouteLocationRaw } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
 import { isEmpty } from 'lodash-es';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
@@ -155,6 +155,13 @@ const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
 
+interface MenuOptions {
+  icon: Component;
+  name: string;
+  description: string;
+  link?: RouteLocationRaw
+}
+
 route.meta.title = t('settings.settings');
 
 let systemInfo: SystemInfo = {};
@@ -163,7 +170,7 @@ if (remote.auth.currentUser?.Policy?.IsAdministrator) {
   systemInfo = (await remote.sdk.newUserApi(getSystemApi).getSystemInfo()).data;
 }
 
-const userItems = computed(() => {
+const userItems = computed<MenuOptions[]>(() => {
   return [
     {
       icon: IMdiAccount,
@@ -198,7 +205,7 @@ const userItems = computed(() => {
   ];
 });
 
-const adminSections = computed(() => {
+const adminSections = computed<MenuOptions[][]>(() => {
   return [
     [
       {
@@ -211,7 +218,7 @@ const adminSections = computed(() => {
         icon: IMdiDevices,
         name: t('settingsSections.devices.name'),
         description: t('settingsSections.devices.description'),
-        link: 'settings/devices'
+        link: '/settings/devices'
       },
       {
         icon: IMdiLibraryShelves,
@@ -283,7 +290,7 @@ const adminSections = computed(() => {
         icon: IMdiTextBox,
         name: t('settingsSections.logs.name'),
         description: t('settingsSections.logs.description'),
-        link: 'settings/logs-and-activity'
+        link: '/settings/logs-and-activity'
       }
     ]
   ];
