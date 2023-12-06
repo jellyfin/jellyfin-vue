@@ -46,32 +46,29 @@
  * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
-import {
-  shallowRef,
-  ref,
-  watch,
-  StyleValue,
-  onMounted,
-  onBeforeUnmount,
-  computed
-} from 'vue';
+import { useVuetify } from '@/composables';
 import {
   Fn,
   refDebounced,
   useEventListener,
-  useResizeObserver,
-  useThrottleFn
+  useResizeObserver
 } from '@vueuse/core';
 import { isNil } from 'lodash-es';
+import {
+  StyleValue,
+  computed,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  watch
+} from 'vue';
 import {
   fromScrollParent,
   getBufferMeta,
   getContentSize,
   getResizeMeasurement,
-  getVisibleItems,
-  SpaceAroundWindow
+  getVisibleItems
 } from './pipeline';
-import { useVuetify } from '@/composables';
 
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
@@ -88,16 +85,11 @@ const props = withDefaults(
     tag?: string;
     probeTag?: string;
     bufferMultiplier?: number;
-    /**
-     * Amount of time to throttle scroll events
-     */
-    throttleScroll?: number;
   }>(),
   {
     tag: 'div',
     probeTag: 'div',
-    bufferMultiplier: 1,
-    throttleScroll: 250
+    bufferMultiplier: 1
   }
 );
 
@@ -123,27 +115,31 @@ const resizeMeasurement = computed(() => {
   return rootRef.value &&
     itemRect.value &&
     displayWidth.value !== undefined &&
-    displayHeight.value !== undefined
+    displayHeight.value !== undefined &&
+    !isNil(props.items)
     ? getResizeMeasurement(rootRef.value, itemRect.value)
     : undefined;
 });
 const contentSize = computed(() => {
   return resizeMeasurement.value &&
     displayWidth.value !== undefined &&
-    displayHeight.value !== undefined
+    displayHeight.value !== undefined &&
+    !isNil(props.items)
     ? getContentSize(resizeMeasurement.value, props.items.length)
     : undefined;
 });
-const rootStyles = computed<StyleValue>(() =>
-  Object.fromEntries([
-    ...Object.entries(contentSize.value ?? {}).map(([property, value]) => [
-      property,
-      `${value}px`
-    ]),
-    ['placeContent', 'start']
-  ])
-);
-const spaceAroundWindow = computed<SpaceAroundWindow | undefined>(() => {
+const rootStyles = computed<StyleValue>(() => {
+  return {
+    ...(contentSize.value?.height && { height: `${contentSize.value.height}px` }),
+    ...(contentSize.value?.width && { width: `${contentSize.value.width}px` }),
+    placeContent: 'start'
+  };
+});
+/**
+ * Cache internal properties instead of passing them as objects, as using the objects directly will lead to firing the computed properties' effects
+ * even if they haven't changed (since returning a object is always a new object and there's no proper way in Javascript to compare objects).
+ */
+const boundingClientRect = computed(() => {
   if (
     displayWidth.value !== undefined &&
     displayHeight.value !== undefined &&
@@ -151,27 +147,29 @@ const spaceAroundWindow = computed<SpaceAroundWindow | undefined>(() => {
     !isNil(scrollEvents.value) &&
     !isNil(props.items)
   ) {
-    const { left, top } = rootRef.value.getBoundingClientRect();
-
-    return {
-      left: Math.abs(Math.min(left, 0)),
-      top: Math.abs(Math.min(top, 0))
-    };
+    return rootRef.value.getBoundingClientRect();
   }
 });
+const leftSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.left ?? 0, 0)));
+const topSpaceAroundWindow = computed(() => Math.abs(Math.min(boundingClientRect.value?.top ?? 0, 0)));
 const bufferMeta = computed(() => {
-  if (!isNil(spaceAroundWindow.value) && !isNil(resizeMeasurement.value)) {
+  if (!isNil(leftSpaceAroundWindow.value) && !isNil(topSpaceAroundWindow.value) && !isNil(resizeMeasurement.value)) {
     return getBufferMeta(
-      spaceAroundWindow.value,
+      {
+        left: leftSpaceAroundWindow.value,
+        top: topSpaceAroundWindow.value
+      },
       resizeMeasurement.value,
       props.bufferMultiplier
     );
   }
 });
+const bufferLength = computed(() => bufferMeta.value?.bufferedLength);
+const bufferOffset = computed(() => bufferMeta.value?.bufferedOffset);
 const visibleItems = computed(() => {
-  if (!isNil(bufferMeta.value) && !isNil(resizeMeasurement.value)) {
+  if (!isNil(bufferLength.value) && !isNil(bufferOffset.value) && !isNil(resizeMeasurement.value)) {
     return getVisibleItems(
-      bufferMeta.value,
+      { bufferedLength: bufferLength.value, bufferedOffset: bufferOffset.value },
       resizeMeasurement.value,
       props.items
     );
@@ -181,10 +179,8 @@ const visibleItems = computed(() => {
 /**
  * == VIRTUAL SCROLLING LOGIC ==
  */
-onMounted(() => {
-  useResizeObserver(probeRef, (entries) => {
-    itemRect.value = entries[0].contentRect;
-  });
+useResizeObserver(probeRef, (entries) => {
+  itemRect.value = entries[0].contentRect;
 });
 
 /**
@@ -204,22 +200,15 @@ function destroyEventListeners(): void {
 }
 
 watch(
-  [fromScrollParent(rootRef), (): number => props.throttleScroll],
+  fromScrollParent(rootRef),
   (newValue) => {
     destroyEventListeners();
 
-    if (!isNil(newValue[0])) {
-      const fn =
-        props.throttleScroll > 0
-          ? useThrottleFn(() => {
-            scrollEvents.value++;
-          }, props.throttleScroll)
-          : (): void => {
-              scrollEvents.value++;
-            };
-
-      for (const parent of newValue[0]) {
-        const cleanup = useEventListener(parent, 'scroll', fn, {
+    if (!isNil(newValue)) {
+      for (const parent of newValue) {
+        const cleanup = useEventListener(parent, 'scroll', (): void => {
+          scrollEvents.value++;
+        }, {
           passive: true,
           capture: true
         });
