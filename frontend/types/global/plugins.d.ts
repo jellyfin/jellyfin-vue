@@ -16,7 +16,7 @@ interface RouteTransition {
 }
 declare module 'vue-router' {
   interface RouteMeta {
-    readonly layout: string;
+    readonly layout: 'default' | 'fullpage' | 'server';
     transparentLayout?: boolean;
     transition?: RouteTransition;
     readonly admin: boolean;
