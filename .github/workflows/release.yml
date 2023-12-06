@@ -43,7 +43,7 @@ jobs:
           context: .
           file: packaging/docker/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64,linux/arm64
           build-args: |
             IS_STABLE=1
           tags: |
@@ -61,7 +61,7 @@ jobs:
           context: .
           file: packaging/docker/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64,linux/arm
+          platforms: linux/amd64,linux/arm64
           build-args: |
             IS_STABLE=1
           tags: |
