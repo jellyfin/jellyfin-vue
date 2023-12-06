@@ -13,5 +13,5 @@ import IMdiGithub from 'virtual:icons/mdi/github';
 import { commit_hash } from 'virtual:commit';
 import { sanitizeHtml } from '@/utils/html';
 
-const link = commit_hash ? await sanitizeHtml(`https://github.com/jellyfin/jellyfin-vue/commit/${commit_hash}`) : undefined;
+const link = commit_hash ? sanitizeHtml(`https://github.com/jellyfin/jellyfin-vue/commit/${commit_hash}`) : undefined;
 </script>
