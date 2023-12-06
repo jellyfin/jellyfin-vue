@@ -11,3 +11,6 @@
       elevated />
   </VFooter>
 </template>
+
+<script setup lang="ts">
+</script>
