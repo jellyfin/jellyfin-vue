@@ -52,7 +52,7 @@
                       :value="library.Id" />
                   </VCol>
                 </VRow>
-                <div class="text-capitalize text-warning ml-2">
+                <div class="text-warning ml-2">
                   {{ t('libraryAccessNote') }}
                 </div>
               </VCard>
@@ -85,7 +85,6 @@ meta:
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { BaseItemDtoQueryResult } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { useRouter } from 'vue-router';
 import { useRemote } from '@/composables';
@@ -97,37 +96,40 @@ const name = ref('');
 const password = ref('');
 const canAccessAllLibraries = ref(true);
 const accessableLibraries = ref<string[]>([]);
-const libraries = ref<BaseItemDtoQueryResult>();
 const loading = ref(false);
 
-libraries.value = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({isHidden: false})).data;
+const libraries = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({isHidden: false})).data;
 
 /**
  * Creates a new user
  */
 async function createUser(): Promise<void> {
-  loading.value = true;
+  try {
+    loading.value = true;
 
-  // Create the user
-  const res = (await remote.sdk.newUserApi(getUserApi).createUserByName({
-    createUserByName: {
-      Name: name.value
-    }
-  })).data;
+    // Create the user
+    const res = (await remote.sdk.newUserApi(getUserApi).createUserByName({
+      createUserByName: {
+        Name: name.value
+      }
+    })).data;
 
-  // Set the library access policy
-  await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
-    userId: res.Id!,
-    userPolicy: {
-      ...res.Policy,
-      EnableAllFolders: canAccessAllLibraries.value,
-      ...(!canAccessAllLibraries.value && {
-        EnabledFolders: accessableLibraries.value
-      })
-    }
-  });
-  loading.value = false;
-  await router.push(`/settings/users/${res.Id}`);
+    // Set the library access policy
+    await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
+      userId: res.Id ?? '',
+      userPolicy: {
+        ...res.Policy,
+        EnableAllFolders: canAccessAllLibraries.value,
+        ...(!canAccessAllLibraries.value && {
+          EnabledFolders: accessableLibraries.value
+        })
+      }
+    });
+
+    await router.push(`/settings/users/${res.Id}`);
+  } catch {} finally {
+    loading.value = false;
+  }
 }
 
 </script>

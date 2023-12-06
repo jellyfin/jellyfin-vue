@@ -37,8 +37,10 @@
                 <VCardSubtitle
                   v-if="user.LastActivityDate"
                   class="pa-0 fixed-width">
-                  {{ $t('lastActivityDate', {
-                    value: getRelativeTime(new Date(user.LastActivityDate))})
+                  {{ 
+                    $t('lastActivityDate', {
+                      value: useDateFns(formatDistanceToNow, new Date(user.LastActivityDate)).value
+                    })
                   }}
                 </VCardSubtitle>
               </VCol>
@@ -68,16 +70,6 @@ const remote = useRemote();
 const users = ref(
   (await remote.sdk.newUserApi(getUserApi).getUsers()).data ?? []
 );
-
-/**
- * Calculates a relative timestamp for a given date
- * Example: 1 hour ago, 2 days ago, 3 months ago
- * @param date - Date to calculate
- */
-function getRelativeTime(date: Date): string {
-  return useDateFns(formatDistanceToNow, date).value;
-}
-
 </script>
 
 <style scoped>

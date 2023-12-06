@@ -39,7 +39,7 @@
                 <VRow>
                   <VCol>
                     <VTextField
-                      v-model="initializedUser.Name"
+                      v-model="model.Name"
                       :label="t('name')"
                       hide-details />
                   </VCol>
@@ -76,12 +76,12 @@
                 <VRow>
                   <VCol>
                     <VCheckbox
-                      v-model="initializedUser.CanAccessAllLibraries"
+                      v-model="model.CanAccessAllLibraries"
                       :label="t('allLibraries')" />
                     <VCol />
                   </vcol>
                 </VRow>
-                <div v-if="!initializedUser.CanAccessAllLibraries && libraries">
+                <div v-if="!model.CanAccessAllLibraries && libraries">
                   <VRow>
                     <div
                       class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
@@ -93,7 +93,7 @@
                     :key="library.Id">
                     <VCol>
                       <VCheckbox
-                        v-model="initializedUser.Folders"
+                        v-model="model.Folders"
                         :value="library.Id"
                         :label="library.Name!" />
                     </VCol>
@@ -122,7 +122,7 @@
                 <VRow>
                   <VCol>
                     <VSelect
-                      v-model="initializedUser.maxParentalRating"
+                      v-model="model.maxParentalRating"
                       :label="t('maxAllowedRating')"
                       :items="parentalCategories"
                       item-title="label"
@@ -150,7 +150,7 @@
                     dense>
                     <VCol>
                       <VCheckbox
-                        v-model="initializedUser.BlockUnratedItems"
+                        v-model="model.BlockUnratedItems"
                         :label="cat.label"
                         :value="cat.value"
                         density="compact" />
@@ -175,7 +175,7 @@
                     </VCol>
                   </VRow>
                   <VRow
-                    v-for="blockedTag of initializedUser.BlockedTags"
+                    v-for="blockedTag of model.BlockedTags"
                     :key="blockedTag">
                     <VCol>
                       <div
@@ -187,7 +187,7 @@
                       <VBtn
                         :disabled="loading"
                         color="error"
-                        @click="() => initializedUser.BlockedTags = initializedUser.BlockedTags.filter(tag => tag !== blockedTag)">
+                        @click="() => model.BlockedTags = model.BlockedTags.filter(tag => tag !== blockedTag)">
                         {{ t('unblockTag') }}
                       </VBtn>
                     </VCol>
@@ -217,7 +217,7 @@
                   <VCol>
                     <VTextField
                       v-if="user.HasPassword"
-                      v-model="initializedUser.CurrentPassword"
+                      v-model="model.CurrentPassword"
                       :disabled="loading"
                       :label="t('currentPassword')"
                       hide-details />
@@ -226,7 +226,7 @@
                 <VRow>
                   <VCol>
                     <VTextField
-                      v-model="initializedUser.Password"
+                      v-model="model.Password"
                       :disabled="loading"
                       :label="t('newPassword')"
                       hide-details />
@@ -235,7 +235,7 @@
                 <VRow>
                   <VCol>
                     <VTextField
-                      v-model="initializedUser.ConfirmPassword"
+                      v-model="model.ConfirmPassword"
                       :disabled="loading"
                       :label="t('confirmPassword')"
                       hide-details />
@@ -278,7 +278,7 @@
             <VCardActions>
               <VForm
                 class="add-key-form"
-                @submit.prevent="initializedUser.BlockedTags.push(newTagValue); addTagDialogOpen = false; newTagValue = '';">
+                @submit.prevent="model.BlockedTags.push(newTagValue); addTagDialogOpen = false; newTagValue = '';">
                 <VTextField
                   v-model="newTagValue"
                   variant="outlined"
@@ -287,7 +287,7 @@
                   color="primary"
                   :loading="loading"
                   :disabled="newTagValue === ''"
-                  @click="initializedUser.BlockedTags.push(newTagValue); addTagDialogOpen = false; newTagValue = '';">
+                  @click="model.BlockedTags.push(newTagValue); addTagDialogOpen = false; newTagValue = '';">
                   {{ $t('confirm') }}
                 </VBtn>
                 <VBtn @click="() => {addTagDialogOpen = false}">
@@ -314,15 +314,27 @@ import {
   UserDto
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute , useRouter } from 'vue-router';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { useConfirmDialog, useRemote } from '@/composables';
 
+interface CurrentUser {
+  Name: string;
+  CurrentPassword: string;
+  Password: string;
+  ConfirmPassword: string;
+  CanAccessAllLibraries: boolean;
+  Folders: string[];
+  maxParentalRating?: number;
+  BlockUnratedItems: UnratedItem[];
+  BlockedTags: string[];
+}
+
 const { t } = useI18n();
-const route = useRoute();
+const route = useRoute<'/settings/users/[id]'>();
 const router = useRouter();
 const remote = useRemote();
 
@@ -332,18 +344,30 @@ const newTagValue = ref<string>('');
 const user = ref<UserDto>({});
 const libraries = ref<BaseItemDtoQueryResult>();
 const parentalCategories = ref<{ label: string, id: number | undefined }[]>([]);
-const initializedUser = ref<{ Name: string, CurrentPassword: string, Password: string, ConfirmPassword: string, CanAccessAllLibraries: boolean, Folders: string[], maxParentalRating: number | undefined, BlockUnratedItems: UnratedItem[], BlockedTags: string[] }>({Name: '', CurrentPassword: '', Password: '', ConfirmPassword: '', CanAccessAllLibraries: false, Folders: [], maxParentalRating: undefined, BlockUnratedItems: [], BlockedTags: []});
+const model = ref<CurrentUser>({
+  Name: '',
+  CurrentPassword: '',
+  Password: '',
+  ConfirmPassword: '',
+  CanAccessAllLibraries: false,
+  Folders: [],
+  maxParentalRating: undefined,
+  BlockUnratedItems: [],
+  BlockedTags: []
+});
 const tab = ref<number>(1);
-const blockingCategories = [{label: t('books'), value: 'Book'}, {label: t('channels'), value: 'ChannelContent'}, {label: t('liveTv'), value: 'LiveTvChannel'}, {label: t('movies'), value: 'Movie'}, {label: t('music'), value: 'Music'}, {label: t('trailer'), value: 'Trailer'}, {label: t('shows'), value: 'Series'}];
+const blockingCategories = computed(() => {
+  return [{label: t('books'), value: 'Book'}, {label: t('channels'), value: 'ChannelContent'}, {label: t('liveTv'), value: 'LiveTvChannel'}, {label: t('movies'), value: 'Movie'}, {label: t('music'), value: 'Music'}, {label: t('trailer'), value: 'Trailer'}, {label: t('shows'), value: 'Series'}];
+});
 
 /**
  * Loads all data required for this page
  */
 async function load(): Promise<void> {
-  const { userId } = route.params as { userId: string };
+  const { id } = route.params;
 
   user.value = (await remote.sdk.newUserApi(getUserApi).getUserById({
-    userId: userId
+    userId: id
   })).data;
   initializeUser();
   libraries.value = (await remote.sdk.newUserApi(getLibraryApi).getMediaFolders({isHidden: false})).data;
@@ -376,10 +400,9 @@ async function saveAccess(): Promise<void> {
   }
 
   loading.value = true;
-  console.log(initializedUser.value.Folders);
   await remote.sdk.newUserApi(getUserApi).updateUserPolicy({
     userId: user.value.Id,
-    userPolicy: {...user.value.Policy, EnableAllFolders: initializedUser.value.CanAccessAllLibraries, EnabledFolders: initializedUser.value.Folders}
+    userPolicy: {...user.value.Policy, EnableAllFolders: model.value.CanAccessAllLibraries, EnabledFolders: model.value.Folders}
   });
   await refreshData();
   loading.value = false;
@@ -396,7 +419,7 @@ async function saveProfile(): Promise<void> {
   loading.value = true;
   await remote.sdk.newUserApi(getUserApi).updateUser({
     userId: user.value.Id,
-    userDto: {...user.value, Name: initializedUser.value.Name}
+    userDto: {...user.value, Name: model.value.Name}
   });
   await refreshData();
   loading.value = false;
@@ -415,8 +438,8 @@ async function saveParentalControl(): Promise<void> {
     userId: user.value.Id,
     userPolicy: {
       ...user.value.Policy,
-      MaxParentalRating: initializedUser.value.maxParentalRating,
-      BlockUnratedItems: initializedUser.value.BlockUnratedItems
+      MaxParentalRating: model.value.maxParentalRating,
+      BlockUnratedItems: model.value.BlockUnratedItems
     }
   });
   loading.value = false;
@@ -430,13 +453,13 @@ async function submitPassword(): Promise<void> {
     return;
   }
 
-  if (!initializedUser.value.Password || initializedUser.value.Password !== initializedUser.value.ConfirmPassword) {
+  if (!model.value.Password || model.value.Password !== model.value.ConfirmPassword) {
     return;
   }
 
   loading.value = true;
-  await remote.sdk.newUserApi(getUserApi).updateUserPassword({userId: user.value.Id, updateUserPassword: {NewPw: initializedUser.value.Password, ...(user.value.HasPassword && {CurrentPw: initializedUser.value.ConfirmPassword})}});
-  initializedUser.value = {...initializedUser.value, CurrentPassword: '',Password: '', ConfirmPassword: ''};
+  await remote.sdk.newUserApi(getUserApi).updateUserPassword({userId: user.value.Id, updateUserPassword: {NewPw: model.value.Password, ...(user.value.HasPassword && {CurrentPw: model.value.ConfirmPassword})}});
+  model.value = {...model.value, CurrentPassword: '',Password: '', ConfirmPassword: ''};
   await refreshData();
   loading.value = false;
 }
@@ -489,6 +512,14 @@ async function resetPassword(): Promise<void> {
  * This function makes sure that all properties are defined
  */
 function initializeUser(): void {
-  initializedUser.value = {...initializedUser.value, CanAccessAllLibraries:user.value.Policy?.EnableAllFolders ?? false, Name: user.value.Name ?? '', Folders: user.value.Policy?.EnabledFolders ?? [], maxParentalRating: user.value.Policy?.MaxParentalRating ?? undefined, BlockUnratedItems: user.value.Policy?.BlockUnratedItems?? [], BlockedTags: user.value.Policy?.BlockedTags ?? []};
+  model.value = {
+    ...model.value,
+    CanAccessAllLibraries: user.value.Policy?.EnableAllFolders ?? false,
+    Name: user.value.Name ?? '',
+    Folders: user.value.Policy?.EnabledFolders ?? [],
+    maxParentalRating: user.value.Policy?.MaxParentalRating ?? undefined,
+    BlockUnratedItems: user.value.Policy?.BlockUnratedItems ?? [],
+    BlockedTags: user.value.Policy?.BlockedTags ?? []
+  };
 }
 </script>
