@@ -319,7 +319,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute , useRouter } from 'vue-router';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
-import { useConfirmDialog, useRemote } from '@/composables';
+import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
 
 interface CurrentUser {
   Name: string;
@@ -454,6 +454,7 @@ async function submitPassword(): Promise<void> {
   }
 
   if (!model.value.Password || model.value.Password !== model.value.ConfirmPassword) {
+    useSnackbar(t('validation.bothPasswordsSame'), 'error');
     return;
   }
 
