@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { BaseItemDto, ItemFields } from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ref, watch } from 'vue';
 import { getItemDetailsLink } from '@/utils/items';
@@ -86,29 +87,28 @@ async function fetch(): Promise<void> {
     return;
   }
 
-  const tvShowApi = remote.sdk.newUserApi(getTvShowsApi);
-
   seasons.value = (
-    await tvShowApi.getSeasons({
+    await remote.sdk.newUserApi(getTvShowsApi).getSeasons({
       userId: remote.auth.currentUserId,
       seriesId: props.item.Id
     })
   ).data.Items;
 
   if (seasons.value) {
-    const seasonsRequests = seasons.value.filter(s => s.Id)
-      .map(s => ({
-        SeasonId: s.Id as string,
-        EpisodesPromise: tvShowApi.getEpisodes({
-          userId: remote.auth.currentUserId,
-          seriesId: props.item.Id!,
-          seasonId: s.Id,
-          fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
-        })
-      }));
+    for (const season of seasons.value) {
+      if (season.Id) {
+        const episodes = (
+          await remote.sdk.newUserApi(getItemsApi).getItems({
+            userId: remote.auth.currentUserId,
+            parentId: season.Id,
+            fields: [ItemFields.Overview, ItemFields.PrimaryImageAspectRatio]
+          })
+        ).data;
 
-    for (const seasonReq of seasonsRequests) {
-      seasonEpisodes.value[seasonReq.SeasonId] = (await seasonReq.EpisodesPromise).data.Items as BaseItemDto[];
+        if (episodes.Items) {
+          seasonEpisodes.value[season.Id] = episodes.Items;
+        }
+      }
     }
   }
 }
