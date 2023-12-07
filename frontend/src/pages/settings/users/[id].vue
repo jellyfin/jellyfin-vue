@@ -455,6 +455,7 @@ async function submitPassword(): Promise<void> {
 
   if (!model.value.Password || model.value.Password !== model.value.ConfirmPassword) {
     useSnackbar(t('validation.bothPasswordsSame'), 'error');
+
     return;
   }
 

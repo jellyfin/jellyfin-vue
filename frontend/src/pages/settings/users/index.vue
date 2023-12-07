@@ -37,7 +37,7 @@
                 <VCardSubtitle
                   v-if="user.LastActivityDate"
                   class="pa-0 fixed-width">
-                  {{ 
+                  {{
                     $t('lastActivityDate', {
                       value: useDateFns(formatDistanceToNow, new Date(user.LastActivityDate)).value
                     })
