@@ -36,6 +36,7 @@
   "byArtist": "Od {artist}",
   "cancel": "Zrušit",
   "castAndCrew": "Obsazení a personál",
+  "channels": "Kanály",
   "clipboardFail": "Kopírování do schránky se nezdařilo",
   "clipboardSuccess": "Zkopírováno do schránky",
   "clipboardUnsupported": "Kopírování do schránky není podporováno tímto prohlížečem",
@@ -183,6 +184,7 @@
     "readTheDocumentation": "Přečíst si dokumentaci",
     "reportAnIssue": "Nahlásit problém s tímto klientem"
   },
+  "liveTv": "Živý přenos",
   "login": {
     "addServer": "Přidat server",
     "changeServer": "Změnit server",
@@ -275,6 +277,7 @@
   "moreLikeArtist": "Podobné jako {artist}",
   "moreLikeThis": "Podobné",
   "movies": "Filmy",
+  "music": "Hudba",
   "name": "Název",
   "networks": "Stanice",
   "nextUp": "Další díly",
