@@ -8,6 +8,7 @@ on:
   pull_request:
     paths-ignore:
       - "**/*.md"
+  merge_group:
   schedule:
     - cron: "30 7 * * 6"
   workflow_dispatch:
@@ -24,6 +25,11 @@ jobs:
 
       - name: Scan
         uses: actions/dependency-review-action@v3.1.4
+        with:
+          ## Workaround from https://github.com/actions/dependency-review-action/issues/456
+          ## TODO: Remove when necessary
+          base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
+          head-ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
   lint:
     name: Lint 🔬
@@ -225,7 +231,7 @@ jobs:
 
   conventional_commits:
     name: Conventional commits check 💬
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
     runs-on: ubuntu-latest
 
     steps:

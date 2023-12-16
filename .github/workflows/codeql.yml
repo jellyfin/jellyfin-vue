@@ -11,6 +11,7 @@ on:
   pull_request:
     paths-ignore:
       - "**/*.md"
+  merge_group:
   workflow_call:
   schedule:
     - cron: "0 0 * * MON,FRI"
