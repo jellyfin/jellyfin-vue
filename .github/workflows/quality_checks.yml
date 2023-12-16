@@ -123,7 +123,7 @@ jobs:
           docker rm jf
 
       - name: Upload artifact (Docker image) ⬆️📦
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           name: docker_image
@@ -131,7 +131,7 @@ jobs:
             docker_image.tar
 
       - name: Upload artifact (Client) ⬆️💻
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         if: ${{ matrix.platform == 'linux/amd64' }}
         with:
           name: frontend
@@ -177,7 +177,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifact (Linux) ⬆️🐧
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'ubuntu-latest'
         with:
           name: jellyfin-vue_linux-amd64
@@ -186,7 +186,7 @@ jobs:
             packaging/tauri/target/release/bundle/appimage_deb
 
       - name: Upload artifact (MacOS) ⬆️🍎
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'macos-latest'
         with:
           name: jellyfin-vue_macOS
@@ -195,7 +195,7 @@ jobs:
             packaging/tauri/target/release/bundle/dmg/*.dmg
 
       - name: Upload artifact (Windows) ⬆️🪟
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'windows-latest'
         with:
           name: jellyfin-vue_windows_amd64
@@ -222,7 +222,7 @@ jobs:
           echo $PR_SHA > PR_sha
 
       - name: Upload PR number as artifact
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.0.0
         with:
           name: PR_context
           path: |
