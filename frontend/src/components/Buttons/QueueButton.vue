@@ -72,13 +72,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
-import { playbackManagerStore } from '@/store';
-import { InitMode } from '@/store/playbackManager';
+import IMdiShuffle from 'virtual:icons/mdi/shuffle';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getTotalEndsAtTime } from '@/utils/time';
+import { InitMode } from '@/store/playbackManager';
+import { playbackManagerStore } from '@/store';
 
 const props = withDefaults(
   defineProps<{
@@ -93,7 +93,7 @@ const { t } = useI18n();
 
 const menuModel = ref(false);
 const listWidth = computed(() => `${props.size}vw`);
-// Const listHeight = computed(() => `${props.size}vh`);
+const listHeight = computed(() => `${props.size}vh`);
 
 const sourceText = computed(() => {
   /**
@@ -139,14 +139,8 @@ const modeIcon = computed(() =>
 </script>
 
 <style lang="scss" scoped>
-/**
-For some reason, v-bind doesn't work with this, so we must manually update this
-if we ever want to change the size
-
-TODO: Investigate why
- */
 .queue-area {
-  min-height: 40vh;
-  max-height: 40vh;
+  min-height: v-bind(listHeight);
+  max-height: v-bind(listHeight);
 }
 </style>
