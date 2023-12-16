@@ -308,18 +308,18 @@ meta:
 </route>
 
 <script setup lang="ts">
+import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
 import {
   BaseItemDtoQueryResult,
   UnratedItem,
   UserDto
 } from '@jellyfin/sdk/lib/generated-client';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute , useRouter } from 'vue-router';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
-import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
+import { useRoute, useRouter } from 'vue-router/auto';
 
 interface CurrentUser {
   Name: string;

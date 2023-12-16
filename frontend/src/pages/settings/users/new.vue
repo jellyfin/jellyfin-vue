@@ -82,12 +82,12 @@ meta:
 </route>
 
 <script setup lang="ts">
+import { useRemote } from '@/composables';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { useRouter } from 'vue-router';
-import { useRemote } from '@/composables';
+import { useRouter } from 'vue-router/auto';
 
 const { t } = useI18n();
 const remote = useRemote();

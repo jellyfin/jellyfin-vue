@@ -1,7 +1,5 @@
-import 'vue-router';
-import type { RemotePlugin } from '@/plugins/remote/types';
 import enUS from '@/../locales/en-US.json';
-import 'vue-i18n';
+import type { RemotePlugin } from '@/plugins/remote/types';
 
 /**
  * The object that represents RouteMeta is defined at @/plugins/vue/router/middleware/meta
@@ -42,4 +40,5 @@ declare module 'vue-i18n' {
  * https://www.typescriptlang.org/docs/handbook/modules.html
  */
 
-export {};
+export { };
+
