@@ -112,6 +112,7 @@ jobs:
         uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'ubuntu-latest'
         with:
+          compression-level: 0
           name: jellyfin-vue_linux-amd64
           path: |
             packaging/tauri/target/release/bundle/deb/*.deb
@@ -121,6 +122,7 @@ jobs:
         uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'macos-latest'
         with:
+          compression-level: 0
           name: jellyfin-vue_macOS
           path: |
             packaging/tauri/target/release/bundle/macos
@@ -130,5 +132,6 @@ jobs:
         uses: actions/upload-artifact@v4.0.0
         if: matrix.platform == 'windows-latest'
         with:
+          compression-level: 0
           name: jellyfin-vue_windows_amd64
           path: packaging/tauri/target/release/jellyfin-vue.exe
