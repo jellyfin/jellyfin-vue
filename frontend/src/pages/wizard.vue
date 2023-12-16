@@ -87,11 +87,11 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router/auto';
-import { useI18n } from 'vue-i18n';
-import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { useRemote, useSnackbar } from '@/composables';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router/auto';
 
 const { t } = useI18n();
 const router = useRouter();
