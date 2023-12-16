@@ -128,7 +128,6 @@ module.exports = {
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-secrets/no-secrets': 'error',
     'import/newline-after-import': 'error',
-    'import/order': 'error',
     // It's better to use TypeScript for this, since it leverages the real bundler environment
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': [
