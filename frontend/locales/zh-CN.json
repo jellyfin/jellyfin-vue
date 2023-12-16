@@ -36,6 +36,7 @@
   "byArtist": "来自{artist}",
   "cancel": "取消",
   "castAndCrew": "演员表",
+  "channels": "频道",
   "clipboardFail": "复制到剪贴板失败",
   "clipboardSuccess": "复制到剪贴板",
   "clipboardUnsupported": "本浏览器不支持复制到剪贴板",
@@ -183,6 +184,7 @@
     "readTheDocumentation": "阅读文档",
     "reportAnIssue": "报告这个客户端的问题"
   },
+  "liveTv": "电视直播",
   "login": {
     "addServer": "添加服务器",
     "changeServer": "切换服务器",
@@ -241,9 +243,12 @@
   "mediaInfoVideoColorSpace": "色彩空间",
   "mediaInfoVideoColorTransfer": "色彩映射",
   "mediaInfoVideoDoViBlPresent": "杜比视界基础层（BL）可用性",
+  "mediaInfoVideoDoViBlSignalCompatId": "杜比视界基础层（BL）信号兼容性标识",
+  "mediaInfoVideoDoViElPresent": "杜比视界加强层（EL）标识",
   "mediaInfoVideoDoViLevel": "杜比视界等级",
   "mediaInfoVideoDoViMajorVersion": "杜比视界主要版本",
   "mediaInfoVideoDoViMinorVersion": "杜比视界次要版本",
+  "mediaInfoVideoDoViProfile": "杜比视界配置文件",
   "mediaInfoVideoFrameRate": "帧率",
   "mediaInfoVideoLevel": "等级",
   "mediaInfoVideoPixelFormat": "像素格式",
