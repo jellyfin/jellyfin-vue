@@ -27,18 +27,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch, nextTick } from 'vue';
-import { isNil } from 'lodash-es';
-import { useI18n } from 'vue-i18n';
-import Hls, { ErrorData } from 'hls.js';
+import { useSnackbar } from '@/composables';
 import {
-  playbackManagerStore,
-  playerElementStore,
   mediaElementRef,
-  mediaWebAudio
+  mediaWebAudio,
+  playbackManagerStore,
+  playerElementStore
 } from '@/store';
 import { getImageInfo } from '@/utils/images';
-import { useSnackbar } from '@/composables';
+import Hls, { ErrorData } from 'hls.js';
+import { isNil } from 'lodash-es';
+import { computed, nextTick, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const playbackManager = playbackManagerStore();
 const playerElement = playerElementStore();
@@ -129,13 +129,13 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
     switch (data.type) {
       case Hls.ErrorTypes.NETWORK_ERROR: {
         // Try to recover network error
-        useSnackbar(t('errors.playback.networkError'), 'error');
+        useSnackbar(t('networkError'), 'error');
         console.error('fatal network error encountered, try to recover');
         hls.startLoad();
         break;
       }
       case Hls.ErrorTypes.MEDIA_ERROR: {
-        useSnackbar(t('errors.playback.mediaError'), 'error');
+        useSnackbar(t('mediaError'), 'error');
         console.error('fatal media error encountered, try to recover');
         hls.recoverMediaError();
         break;
@@ -144,7 +144,7 @@ function onHlsEror(_event: typeof Hls.Events.ERROR, data: ErrorData): void {
         /**
          * Can't recover from unknown errors
          */
-        useSnackbar(t('errors.cantPlayItem'), 'error');
+        useSnackbar(t('cantPlayItem'), 'error');
         playbackManager.stop();
         break;
       }

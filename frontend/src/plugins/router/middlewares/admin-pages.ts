@@ -1,5 +1,5 @@
-import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 import { useRemote, useSnackbar, usei18n } from '@/composables';
+import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 
 /**
  * Redirect the user to index page when attempting to access
@@ -12,7 +12,7 @@ export default function adminGuard(
   const { t } = usei18n();
 
   if (to.meta.admin && !remote.auth.currentUser?.Policy?.IsAdministrator) {
-    useSnackbar(t('errors.unauthorized'), 'error');
+    useSnackbar(t('unauthorized'), 'error');
 
     return { path: '/', replace: true };
   }

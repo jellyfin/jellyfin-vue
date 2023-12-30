@@ -19,7 +19,7 @@
         min-width="8em"
         variant="outlined"
         :to="`./${genre.Id}/shuffle`">
-        {{ $t('playback.shuffleAll') }}
+        {{ $t('shuffleAll') }}
       </VBtn>
     </VAppBar>
     <VContainer class="after-second-toolbar">
@@ -62,18 +62,18 @@
 </template>
 
 <script setup lang="ts">
+import { useRemote, useResponsiveClasses } from '@/composables';
+import { itemsStore } from '@/store';
+import {
+  BaseItemDto,
+  BaseItemKind,
+  ItemFields,
+  SortOrder
+} from '@jellyfin/sdk/lib/generated-client';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
-import {
-  SortOrder,
-  ItemFields,
-  BaseItemKind,
-  BaseItemDto
-} from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { itemsStore } from '@/store';
-import { useRemote, useResponsiveClasses } from '@/composables';
 
 const items = itemsStore();
 const route = useRoute<'/genre/[itemId]'>();

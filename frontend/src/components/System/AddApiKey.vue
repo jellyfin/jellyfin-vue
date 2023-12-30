@@ -5,7 +5,7 @@
     @update:model-value="emit('close')">
     <VCol class="pa-0 add-key-dialog">
       <VCard>
-        <VCardTitle>{{ t('settings.apiKeys.addApiKey') }}</VCardTitle>
+        <VCardTitle>{{ t('addApiKey') }}</VCardTitle>
         <VCardActions>
           <VForm
             class="add-key-form"
@@ -13,7 +13,7 @@
             <VTextField
               v-model="newKeyAppName"
               variant="outlined"
-              :label="t('settings.apiKeys.appName')" />
+              :label="t('appName')" />
             <VBtn
               color="primary"
               :loading="loading"
@@ -32,11 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useDisplay } from 'vuetify';
-import { useI18n } from 'vue-i18n';
-import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { useRemote, useSnackbar } from '@/composables';
+import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify';
 
 defineProps<{ addingNewKey: boolean }>();
 
@@ -78,14 +78,14 @@ async function addApiKey(): Promise<void> {
       app: newKeyAppName.value
     });
 
-    useSnackbar(t('settings.apiKeys.createKeySuccess'), 'success');
+    useSnackbar(t('createKeySuccess'), 'success');
 
     newKeyAppName.value = '';
     emit('keyAdded');
     emit('close');
   } catch (error) {
     console.error(error);
-    useSnackbar(t('settings.apiKeys.createKeyFailure'), 'error');
+    useSnackbar(t('createKeyFailure'), 'error');
   }
 
   loading.value = false;

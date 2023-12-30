@@ -7,7 +7,7 @@
     <VCard
       height="100%"
       class="image-search-card">
-      <VCardTitle>{{ t('search.name') }}</VCardTitle>
+      <VCardTitle>{{ t('search') }}</VCardTitle>
       <VDivider />
       <VRow
         align="center"
@@ -17,8 +17,8 @@
           class="mx-4"
           :items="sources"
           :disabled="loading"
-          :label="t('metadata.source')"
-          :placeholder="t('metadata.sourceAll')"
+          :label="t('source')"
+          :placeholder="t('all')"
           persistent-placeholder
           variant="outlined"
           hide-details
@@ -30,7 +30,7 @@
           item-title="text"
           item-value="value"
           :disabled="loading"
-          :label="t('metadata.type')"
+          :label="t('type')"
           variant="outlined"
           hide-details />
         <VCheckbox
@@ -149,47 +149,47 @@ const loading = ref(false);
 const types = computed(() => [
   {
     value: ImageType.Primary,
-    text: t('imageType.primary')
+    text: t('primary')
   },
   {
     value: ImageType.Art,
-    text: t('imageType.art')
+    text: t('art')
   },
   {
     value: ImageType.Backdrop,
-    text: t('imageType.backdrop')
+    text: t('backdrop')
   },
   {
     value: ImageType.Banner,
-    text: t('imageType.banner')
+    text: t('banner')
   },
   {
     value: ImageType.Box,
-    text: t('imageType.box')
+    text: t('box')
   },
   {
     value: ImageType.BoxRear,
-    text: t('imageType.boxRear')
+    text: t('boxRear')
   },
   {
     value: ImageType.Disc,
-    text: t('imageType.disc')
+    text: t('disc')
   },
   {
     value: ImageType.Logo,
-    text: t('imageType.logo')
+    text: t('logo')
   },
   {
     value: ImageType.Menu,
-    text: t('imageType.menu')
+    text: t('menu')
   },
   {
     value: ImageType.Screenshot,
-    text: t('imageType.screenshot')
+    text: t('screenshot')
   },
   {
     value: ImageType.Thumb,
-    text: t('imageType.thumb')
+    text: t('thumb')
   }
 ]);
 

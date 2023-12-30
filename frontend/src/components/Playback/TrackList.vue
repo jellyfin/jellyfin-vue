@@ -15,7 +15,7 @@
           class="pr-0 pl-0"
           scope="col" />
         <th scope="col">
-          {{ $t('item.tracklist.title') }}
+          {{ $t('title') }}
         </th>
         <th
           style="width: 6.5em"
@@ -116,18 +116,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { groupBy } from 'lodash-es';
+import { useRemote } from '@/composables';
+import { playbackManagerStore } from '@/store';
+import { getItemDetailsLink } from '@/utils/items';
+import { formatTicks } from '@/utils/time';
 import {
   BaseItemDto,
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getItemDetailsLink } from '@/utils/items';
-import { formatTicks } from '@/utils/time';
-import { playbackManagerStore } from '@/store';
-import { useRemote } from '@/composables';
+import { groupBy } from 'lodash-es';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{ item: BaseItemDto }>();
 

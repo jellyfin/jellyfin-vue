@@ -9,7 +9,7 @@
         md="7"
         lg="5">
         <h1 class="text-h4 mb-6 text-center">
-          {{ $t('login.selectUser') }}
+          {{ $t('selectUser') }}
         </h1>
         <VRow
           align="center"
@@ -37,7 +37,7 @@
               size="large"
               variant="elevated"
               @click="loginAsOther = true">
-              {{ $t('login.manualLogin') }}
+              {{ $t('manualLogin') }}
             </VBtn>
           </VCol>
           <VCol
@@ -49,7 +49,7 @@
               to="/server/select"
               size="large"
               variant="elevated">
-              {{ $t('login.changeServer') }}
+              {{ $t('changeServer') }}
             </VBtn>
           </VCol>
         </VRow>
@@ -66,12 +66,12 @@
         <h1
           v-if="!isEmpty(currentUser)"
           class="text-h4 mb-3 text-center">
-          {{ $t('login.loginAs', { name: currentUser.Name }) }}
+          {{ $t('loginAs', { name: currentUser.Name }) }}
         </h1>
         <h1
           v-else
           class="text-h4 text-center">
-          {{ $t('login.login') }}
+          {{ $t('login') }}
         </h1>
         <h5 class="text-center mb-3 text--disabled">
           {{ $remote.auth.currentServer?.ServerName }}
@@ -93,15 +93,15 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { isEmpty } from 'lodash-es';
+import { useRemote } from '@/composables';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
-import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
-import { useRoute, useRouter } from 'vue-router/auto';
+import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
+import { isEmpty } from 'lodash-es';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRemote } from '@/composables';
+import { useRoute, useRouter } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -111,7 +111,7 @@ const api = remote.sdk.oneTimeSetup(
   remote.auth.currentServer?.PublicAddress ?? ''
 );
 
-route.meta.title = t('login.login');
+route.meta.title = t('login');
 
 try {
   await getSystemApi(api).getPublicSystemInfo();

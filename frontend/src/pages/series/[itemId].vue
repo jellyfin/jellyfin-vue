@@ -163,13 +163,13 @@
     <template #right>
       <div v-if="crew.length > 0">
         <h2 class="text-h6 text-sm-h5">
-          {{ $t('item.crew') }}
+          {{ $t('crew') }}
         </h2>
         <PeopleList :items="crew" />
       </div>
       <div v-if="actors.length > 0">
         <h2 class="text-h6 text-sm-h5">
-          {{ $t('item.cast') }}
+          {{ $t('cast') }}
         </h2>
         <PeopleList :items="actors" />
       </div>

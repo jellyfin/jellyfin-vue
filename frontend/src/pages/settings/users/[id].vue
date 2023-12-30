@@ -6,7 +6,7 @@
         href="https://jellyfin.org/docs/general/server/users/"
         rel="noreferrer noopener"
         target="_blank">
-        {{ t('settings.help') }}
+        {{ t('help') }}
       </VBtn>
     </template>
     <template #content>
@@ -85,7 +85,7 @@
                   <VRow>
                     <div
                       class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
-                      {{ $t('settingsSections.libraries.name') }}
+                      {{ $t('libraries') }}
                     </div>
                   </VRow>
                   <VRow
@@ -454,7 +454,7 @@ async function submitPassword(): Promise<void> {
   }
 
   if (!model.value.Password || model.value.Password !== model.value.ConfirmPassword) {
-    useSnackbar(t('validation.bothPasswordsSame'), 'error');
+    useSnackbar(t('bothPasswordsSame'), 'error');
 
     return;
   }

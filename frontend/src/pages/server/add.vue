@@ -8,7 +8,7 @@
         md="6"
         lg="5">
         <h1 class="text-h4 mb-6 text-center">
-          {{ $t('login.addServer') }}
+          {{ $t('addServer') }}
         </h1>
         <AddServerForm />
       </VCol>
@@ -22,11 +22,11 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router/auto';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
 
-route.meta.title = t('login.addServer');
+route.meta.title = t('addServer');
 </script>

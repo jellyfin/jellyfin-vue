@@ -8,7 +8,7 @@
         md="6"
         lg="5">
         <h1 class="text-h4 mb-6 text-center">
-          {{ $t('login.selectServer') }}
+          {{ $t('selectServer') }}
         </h1>
         <div>
           <ServerCard
@@ -24,7 +24,7 @@
           color="primary"
           variant="elevated"
           @click="$router.push('/server/add')">
-          {{ $t('login.addServer') }}
+          {{ $t('addServer') }}
         </VBtn>
       </VCol>
     </VRow>
@@ -37,12 +37,12 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router/auto';
-import { useI18n } from 'vue-i18n';
 import { v4 } from 'uuid';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
 
-route.meta.title = t('login.selectServer');
+route.meta.title = t('selectServer');
 </script>

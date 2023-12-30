@@ -6,7 +6,7 @@
       page-backdrop
       class="top-carousel">
       <template #referenceText>
-        {{ $t('homeHeader.items.recentlyAdded') }}
+        {{ $t('recentlyAdded') }}
       </template>
     </ItemsCarousel>
     <VContainer class="sections-after-header">
@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
+import { userLibrariesStore } from '@/store';
+import type { HomeSection } from '@/store/userLibraries';
+import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router/auto';
-import { CardShapes, getShapeFromCollectionType } from '@/utils/items';
-import { userLibrariesStore } from '@/store';
-import type { HomeSection } from '@/store/userLibraries';
 
 const { t } = useI18n();
 const route = useRoute();

@@ -103,16 +103,16 @@ const maxWizardStage = ref(1);
 const heading = computed(() => {
   switch (wizardStage.value) {
     case 1: {
-      return t('wizard.languageLocale');
+      return t('languageLocale');
     }
     case 2: {
-      return t('wizard.administratorAccount');
+      return t('administratorAccount');
     }
     case 3: {
-      return t('wizard.preferredMetadataLanguage');
+      return t('preferredMetadataLanguage');
     }
     case 4: {
-      return t('wizard.remoteAccess');
+      return t('remoteAccess');
     }
   }
 
@@ -133,7 +133,7 @@ async function completeWizard(): Promise<void> {
     await router.replace('/server/login');
   } catch (error) {
     console.error(error);
-    useSnackbar(t('wizard.completeError'), 'success');
+    useSnackbar(t('completeError'), 'success');
   }
 }
 

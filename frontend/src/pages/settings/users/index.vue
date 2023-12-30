@@ -13,7 +13,7 @@
         href="https://jellyfin.org/docs/general/server/users/adding-managing-users"
         rel="noreferrer noopener"
         target="_blank">
-        {{ t('settings.help') }}
+        {{ t('help') }}
       </VBtn>
     </template>
     <template #content>

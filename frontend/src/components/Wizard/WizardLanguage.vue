@@ -4,7 +4,7 @@
       v-model="uiCulture"
       :loading="loading"
       variant="outlined"
-      :label="t('wizard.preferedLanguage')"
+      :label="t('preferredLanguage')"
       :rules="SomeItemSelectedRule"
       item-title="Name"
       item-value="Value"
@@ -21,16 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useRemote, useSnackbar } from '@/composables';
+import { SomeItemSelectedRule } from '@/utils/validation';
 import {
   LocalizationOption,
   StartupConfigurationDto
 } from '@jellyfin/sdk/lib/generated-client';
-import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { getLocalizationApi } from '@jellyfin/sdk/lib/utils/api/localization-api';
-import { useRemote, useSnackbar } from '@/composables';
-import { SomeItemSelectedRule } from '@/utils/validation';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
+import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const emit = defineEmits<{
   'step-complete': [];
@@ -93,7 +93,7 @@ async function setLanguage(): Promise<void> {
     emit('step-complete');
   } catch (error) {
     console.error(error);
-    useSnackbar(t('wizard.setLanguageError'), 'error');
+    useSnackbar(t('setLanguageError'), 'error');
   }
 
   loading.value = false;
