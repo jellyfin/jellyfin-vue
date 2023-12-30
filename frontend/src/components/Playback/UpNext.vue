@@ -14,9 +14,9 @@
         <VCard class="pointer-events-all">
           <VCardTitle class="text-h6">
             <span>
-              {{ $t('dialog.upNext.nextItemPlayingIn') }}
+              {{ $t('nextItemPlayingIn') }}
               <span class="text-primary darken-2">
-                {{ $tc('units.time.seconds', currentItemTimeLeft) }}
+                {{ $tc('seconds', currentItemTimeLeft) }}
               </span>
             </span>
           </VCardTitle>
@@ -29,7 +29,8 @@
                   episodeNumber: playbackManager.nextItem.IndexNumber
                 })
               }}
-              <span v-if="$vuetify.display.smAndUp"> - </span> <br v-else />
+              <span v-if="$vuetify.display.smAndUp"> - </span>
+              <br v-else />
               {{ playbackManager.nextItem.Name }}
             </span>
             <span v-if="playbackManager.currentItem.Type === 'Movie'">
@@ -54,10 +55,10 @@
               class="bg-primary-darken-2"
               variant="flat"
               @click="playbackManager.setNextTrack">
-              {{ $t('dialog.upNext.startNow') }}
+              {{ $t('startNow') }}
             </VBtn>
             <VBtn @click="isHiddenByUser = true">
-              {{ $t('dialog.upNext.hide') }}
+              {{ $t('hide') }}
             </VBtn>
           </VCardActions>
         </VCard>
@@ -67,9 +68,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { playbackManagerStore } from '@/store';
 import { getEndsAtTime, getRuntimeTime } from '@/utils/time';
+import { computed, ref, watch } from 'vue';
 
 const emit = defineEmits<{
   change: [isVisible: boolean];

@@ -282,13 +282,13 @@
     <template #right>
       <div v-if="crew.length > 0">
         <h2 class="text-h6 text-sm-h5">
-          {{ $t('item.crew') }}
+          {{ $t('crew') }}
         </h2>
         <PeopleList :items="crew" />
       </div>
       <div v-if="actors.length > 0">
         <h2 class="text-h6 text-sm-h5">
-          {{ $t('item.cast') }}
+          {{ $t('cast') }}
         </h2>
         <PeopleList :items="actors" />
       </div>
@@ -297,19 +297,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRemote } from '@/composables';
+import { getItemizedSelect } from '@/utils/forms';
+import { sanitizeHtml } from '@/utils/html';
+import { getBlurhash } from '@/utils/images';
+import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
 import {
   BaseItemPerson,
   ImageType,
   MediaSourceInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
-import { getBlurhash } from '@/utils/images';
-import { getItemDetailsLink, getMediaStreams } from '@/utils/items';
-import { getItemizedSelect } from '@/utils/forms';
-import { sanitizeHtml } from '@/utils/html';
-import { useRemote } from '@/composables';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/genre/[itemId]'>();
 const remote = useRemote();

@@ -41,13 +41,13 @@
       </template>
       <template #tooltip>
         <span v-if="clientSettings.darkMode === 'auto'">
-          {{ $t('tooltips.switchToDarkMode') }}
+          {{ $t('switchToDarkMode') }}
         </span>
         <span v-else-if="clientSettings.darkMode">
-          {{ $t('tooltips.switchToLightMode') }}
+          {{ $t('switchToLightMode') }}
         </span>
         <span v-else>
-          {{ $t('tooltips.switchToAuto') }}
+          {{ $t('followSystemTheme') }}
         </span>
       </template>
     </AppBarButtonLayout>
@@ -59,10 +59,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, Ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
-import { useNetwork } from '@vueuse/core';
 import { clientSettingsStore, windowScroll } from '@/store';
+import { useNetwork } from '@vueuse/core';
+import { Ref, computed, inject } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const clientSettings = clientSettingsStore();
 const route = useRoute();

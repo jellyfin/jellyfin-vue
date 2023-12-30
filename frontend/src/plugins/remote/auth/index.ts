@@ -1,18 +1,18 @@
-import { useStorage } from '@vueuse/core';
+import { useRouter, useSnackbar, usei18n } from '@/composables';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import {
+  API_VERSION,
+  VersionOutdatedIssue,
+  VersionUnsupportedIssue
+} from '@jellyfin/sdk';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
-import { isNil, merge } from 'lodash-es';
+import { useStorage } from '@vueuse/core';
 import { AxiosError } from 'axios';
-import {
-  VersionOutdatedIssue,
-  VersionUnsupportedIssue,
-  API_VERSION
-} from '@jellyfin/sdk';
+import { isNil, merge } from 'lodash-es';
 import SDK, { useOneTimeAPI } from '../sdk/sdk-utils';
 import type { AuthState, ServerInfo } from './types';
-import { usei18n, useSnackbar, useRouter } from '@/composables';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 
 /**
  * TypeScript type guard for AxiosError
@@ -163,12 +163,12 @@ class RemotePluginAuth {
           await router.push({ path: '/wizard' });
         }
       } catch (error) {
-        useSnackbar(t('errors.anErrorHappened'), 'error');
+        useSnackbar(t('anErrorHappened'), 'error');
         console.error(error);
         throw error;
       }
     } else {
-      useSnackbar(t('login.serverNotFound'), 'error');
+      useSnackbar(t('serverNotFound'), 'error');
     }
   }
 
@@ -206,10 +206,10 @@ class RemotePluginAuth {
     } catch (error: unknown) {
       if (isAxiosError(error)) {
         const { t } = usei18n();
-        let errorMessage = 'unexpectedError';
+        let errorMessage = t('unexpectedError');
 
         if (!error.response) {
-          errorMessage = error.message || t('login.serverNotFound');
+          errorMessage = error.message || t('serverNotFound');
         } else if (
           error.response.status === 500 ||
           error.response.status === 401

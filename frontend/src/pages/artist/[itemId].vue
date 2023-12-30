@@ -38,37 +38,37 @@
             <VTab
               :value="0"
               :disabled="discography.length === 0">
-              {{ $t('item.artist.discography') }}
+              {{ $t('discography') }}
             </VTab>
             <VTab
               :value="1"
               :disabled="albums.length === 0">
-              {{ $t('item.artist.albums') }}
+              {{ $t('albums') }}
             </VTab>
             <VTab
               :value="2"
               :disabled="eps.length === 0">
-              {{ $t('item.artist.eps') }}
+              {{ $t('eps') }}
             </VTab>
             <VTab
               :value="3"
               :disabled="singles.length === 0">
-              {{ $t('item.artist.singles') }}
+              {{ $t('singles') }}
             </VTab>
             <VTab
               :value="4"
               :disabled="appearances.length === 0">
-              {{ $t('item.artist.appearsOn') }}
+              {{ $t('appearsOn') }}
             </VTab>
             <VTab
               :value="5"
               :disabled="musicVideos.length === 0">
-              {{ $t('item.artist.videos') }}
+              {{ $t('videos') }}
             </VTab>
             <VTab
               :value="6"
               :disabled="!item.Overview">
-              {{ $t('item.artist.information') }}
+              {{ $t('information') }}
             </VTab>
           </VTabs>
           <VWindow
@@ -144,8 +144,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useRemote } from '@/composables';
+import { sanitizeHtml } from '@/utils/html';
+import { getBlurhash } from '@/utils/images';
+import { msToTicks } from '@/utils/time';
 import {
   BaseItemDto,
   BaseItemKind,
@@ -153,12 +155,10 @@ import {
   ItemFields,
   SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getBlurhash } from '@/utils/images';
-import { msToTicks } from '@/utils/time';
-import { sanitizeHtml } from '@/utils/html';
-import { useRemote } from '@/composables';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;

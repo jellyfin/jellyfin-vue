@@ -47,7 +47,7 @@
           <VTextField
             v-model="metadata.Name"
             variant="outlined"
-            :label="t('metadata.title')" />
+            :label="t('title')" />
           <VTextField
             v-model="metadata.OriginalTitle"
             variant="outlined"

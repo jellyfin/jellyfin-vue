@@ -41,16 +41,16 @@
       </VMenu>
     </template>
     <template #tooltip>
-      <span>{{ $t('appbar.tooltips.tasks') }}</span>
+      <span>{{ $t('runningTasks') }}</span>
     </template>
   </AppBarButtonLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { taskManagerStore } from '@/store';
 import { TaskType } from '@/store/taskManager';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface TaskInfo {
   progress: undefined | number;
@@ -71,14 +71,14 @@ const mappedTaskList = computed<TaskInfo[]>(() => {
       case TaskType.ConfigSync: {
         return {
           progress: tsk.progress,
-          text: t('appbar.tasks.configSync'),
+          text: t('syncingSettingsInProgress'),
           id: tsk.id
         };
       }
       case TaskType.LibraryRefresh: {
         return {
           progress: tsk.progress,
-          text: t('appbar.tasks.scanningItem', {
+          text: t('scanningItemInProgress', {
             library: tsk.data ?? ''
           }),
           id: tsk.id

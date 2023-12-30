@@ -26,7 +26,7 @@
             <div class="ml-sm-4 d-flex flex-column">
               <div
                 class="text-subtitle-1 text--secondary font-weight-medium text-capitalize">
-                {{ $t('item.person.person') }}
+                {{ $t('person') }}
               </div>
               <h1 class="text-h4 text-md-h2 font-weight-light">
                 {{ item.Name }}
@@ -46,27 +46,27 @@
         <VTab
           :value="0"
           :disabled="movies.length === 0">
-          {{ $t('item.person.movies') }}
+          {{ $t('movies') }}
         </VTab>
         <VTab
           :value="1"
           :disabled="series.length === 0">
-          {{ $t('item.person.shows') }}
+          {{ $t('shows') }}
         </VTab>
         <VTab
           :value="2"
           :disabled="books.length === 0">
-          {{ $t('item.person.books') }}
+          {{ $t('books') }}
         </VTab>
         <VTab
           :value="3"
           :disabled="photos.length === 0">
-          {{ $t('item.person.photos') }}
+          {{ $t('photos') }}
         </VTab>
         <VTab
           :value="4"
           :disabled="!item.Overview">
-          {{ $t('item.person.information') }}
+          {{ $t('information') }}
         </VTab>
       </VTabs>
       <VWindow
@@ -119,7 +119,7 @@
                   cols="2"
                   md="5"
                   class="text--secondary">
-                  {{ $t('item.person.birth') }}
+                  {{ $t('birth') }}
                 </VCol>
                 <VCol
                   cols="9"
@@ -135,7 +135,7 @@
                   cols="2"
                   md="5"
                   class="text--secondary">
-                  {{ $t('item.person.death') }}
+                  {{ $t('death') }}
                 </VCol>
                 <VCol
                   cols="9"
@@ -166,21 +166,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
+import { useDateFns, useRemote } from '@/composables';
+import { sanitizeHtml } from '@/utils/html';
+import { getBlurhash } from '@/utils/images';
 import {
+  BaseItemDto,
+  BaseItemKind,
   ImageType,
   ItemFields,
-  SortOrder,
-  BaseItemKind,
-  BaseItemDto
+  SortOrder
 } from '@jellyfin/sdk/lib/generated-client';
-import { format } from 'date-fns';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getBlurhash } from '@/utils/images';
-import { sanitizeHtml } from '@/utils/html';
-import { useRemote, useDateFns } from '@/composables';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { format } from 'date-fns';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/person/[itemId]'>();
 const remote = useRemote();

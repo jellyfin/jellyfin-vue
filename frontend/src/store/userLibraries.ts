@@ -1,17 +1,17 @@
-import { computed, watch } from 'vue';
-import { RemovableRef, useStorage } from '@vueuse/core';
-import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { useRemote, useSnackbar, usei18n } from '@/composables';
+import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { CardShapes } from '@/utils/items';
 import {
   BaseItemDto,
   ImageType,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
-import { CardShapes } from '@/utils/items';
-import { usei18n, useRemote, useSnackbar } from '@/composables';
-import { mergeExcludingUnknown } from '@/utils/data-manipulation';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { getUserViewsApi } from '@jellyfin/sdk/lib/utils/api/user-views-api';
+import { RemovableRef, useStorage } from '@vueuse/core';
+import { computed, watch } from 'vue';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -119,7 +119,7 @@ class UserLibrariesStore {
     const { t } = usei18n();
 
     console.error(error);
-    useSnackbar(t('errors.anErrorHappened'), 'error');
+    useSnackbar(t('anErrorHappened'), 'error');
   };
 
   private _updateUserViews = async (): Promise<void> => {

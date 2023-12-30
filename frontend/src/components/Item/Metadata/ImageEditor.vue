@@ -48,7 +48,7 @@
   <h2
     v-if="backdropImages.length > 0"
     class="text-h6">
-    {{ $t('imageType.backdrop') }}
+    {{ $t('backdrop') }}
   </h2>
   <VRow v-if="backdropImages.length > 0">
     <VCol

@@ -63,7 +63,7 @@ async function setRemoteAccess(): Promise<void> {
     emit('step-complete');
   } catch (error) {
     console.error(error);
-    useSnackbar(t('wizard.setRemoteError'), 'error');
+    useSnackbar(t('setRemoteError'), 'error');
   } finally {
     loading.value = false;
   }

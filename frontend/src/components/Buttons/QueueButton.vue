@@ -31,7 +31,7 @@
             <template #subtitle>
               {{ getTotalEndsAtTime(playbackManager.queue).value }} -
               {{
-                $t('playback.queueItems', {
+                $t('queueItems', {
                   items: playbackManager.queue.length
                 })
               }}
@@ -51,7 +51,7 @@
               <IMdiPlaylistRemove />
             </VIcon>
             <VTooltip
-              :text="$t('playback.clearQueue')"
+              :text="$t('clearQueue')"
               location="top" />
           </VBtn>
           <VBtn
@@ -61,7 +61,7 @@
               <IMdiContentSave />
             </VIcon>
             <VTooltip
-              :text="$t('playback.saveAsPlaylist')"
+              :text="$t('saveAsPlaylist')"
               location="top" />
           </VBtn>
           <VSpacer />
@@ -72,13 +72,13 @@
 </template>
 
 <script setup lang="ts">
+import { playbackManagerStore } from '@/store';
+import { InitMode } from '@/store/playbackManager';
+import { getTotalEndsAtTime } from '@/utils/time';
 import IMdiPlaylistMusic from 'virtual:icons/mdi/playlist-music';
 import IMdiShuffle from 'virtual:icons/mdi/shuffle';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getTotalEndsAtTime } from '@/utils/time';
-import { InitMode } from '@/store/playbackManager';
-import { playbackManagerStore } from '@/store';
 
 const props = withDefaults(
   defineProps<{
@@ -100,7 +100,7 @@ const sourceText = computed(() => {
    * TODO: Properly refactor this once search and other missing features are implemented, as discussed in
    * https://github.com/jellyfin/jellyfin-vue/pull/609
    */
-  const unknownSource = t('playback.playbackSource.unknown');
+  const unknownSource = t('unknown');
 
   switch (playbackManager.playbackInitMode) {
     case InitMode.Unknown: {
@@ -109,18 +109,18 @@ const sourceText = computed(() => {
     case InitMode.Item: {
       return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
-        ? t('playback.playbackSource.item', {
+        ? t('playingFrom', {
           item: playbackManager.initiator?.Name
         })
         : unknownSource;
     }
     case InitMode.Shuffle: {
-      return t('playback.playbackSource.shuffle');
+      return t('playinginShuffle');
     }
     case InitMode.ShuffleItem: {
       return playbackManager.currentItem?.AlbumId ===
         playbackManager.initiator?.Id
-        ? t('playback.playbackSource.shuffleItem', {
+        ? t('playingItemInShuffle', {
           item: playbackManager.initiator?.Name
         })
         : unknownSource;

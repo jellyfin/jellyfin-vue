@@ -4,36 +4,36 @@
  * It must be used in an agnostic way to cover both local and remote playback.
  * If you want to handle the state of the local player element, use playerElement store instead.
  */
-import { reactive, watch, watchEffect } from 'vue';
-import { shuffle, isNil } from 'lodash-es';
-import { v4 } from 'uuid';
 import {
   BaseItemDto,
+  BaseItemKind,
   ItemFields,
   ItemFilter,
   MediaSourceInfo,
-  SubtitleDeliveryMethod,
   MediaStream,
-  BaseItemKind,
+  MediaStreamType,
   PlaybackInfoResponse,
-  MediaStreamType
+  SubtitleDeliveryMethod
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getInstantMixApi } from '@jellyfin/sdk/lib/utils/api/instant-mix-api';
-import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
-import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
+import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
+import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { useEventListener } from '@vueuse/core';
+import { isNil, shuffle } from 'lodash-es';
+import { v4 } from 'uuid';
+import { reactive, watch, watchEffect } from 'vue';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
-import { now as reactiveDate, mediaControls } from './globals';
-import { itemsStore } from '.';
-import { usei18n, useRemote, useSnackbar } from '@/composables';
+import { useRemote, useSnackbar, usei18n } from '@/composables';
 import { getImageInfo } from '@/utils/images';
-import { msToTicks } from '@/utils/time';
-import playbackProfile from '@/utils/playback-profiles';
 import { getItemRuntime } from '@/utils/items';
+import playbackProfile from '@/utils/playback-profiles';
+import { msToTicks } from '@/utils/time';
+import { itemsStore } from '.';
+import { mediaControls, now as reactiveDate } from './globals';
 
 /**
  * == INTERFACES AND TYPES ==
@@ -1022,7 +1022,7 @@ class PlaybackManagerStore {
         const { t } = usei18n();
 
         this._state.status = PlaybackStatus.Error;
-        useSnackbar(t('errors.cantPlayItem'), 'error');
+        useSnackbar(t('cantPlayItem'), 'error');
       }
 
       this._mediaSourceRequestId = undefined;

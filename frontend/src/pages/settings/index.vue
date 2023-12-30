@@ -123,33 +123,33 @@
 </template>
 
 <script setup lang="ts">
-import { Component, computed } from 'vue';
-import { useRoute, RouteLocationRaw } from 'vue-router/auto';
-import { useI18n } from 'vue-i18n';
-import { isEmpty } from 'lodash-es';
+import { version as clientVersion } from '@/../package.json';
+import { useRemote } from '@/composables';
 import { SystemInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
+import { isEmpty } from 'lodash-es';
 import { commit_hash } from 'virtual:commit';
 import IMdiAccount from 'virtual:icons/mdi/account';
-import IMdiHome from 'virtual:icons/mdi/home';
-import IMdiPlayPause from 'virtual:icons/mdi/play-pause';
-import IMdiDiscPlayer from 'virtual:icons/mdi/disc-player';
-import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
-import IMdiServer from 'virtual:icons/mdi/server';
-import IMdiDevices from 'virtual:icons/mdi/devices';
-import IMdiLibraryShelves from 'virtual:icons/mdi/library-shelves';
 import IMdiAccountMultiple from 'virtual:icons/mdi/account-multiple';
-import IMdiKeyChain from 'virtual:icons/mdi/key-chain';
-import IMdiPlayNetwork from 'virtual:icons/mdi/play-network';
-import IMdiDLNA from 'virtual:icons/mdi/dlna';
-import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
-import IMdiNetwork from 'virtual:icons/mdi/network';
-import IMdiPuzzle from 'virtual:icons/mdi/puzzle';
-import IMdiCalendarClock from 'virtual:icons/mdi/calendar-clock';
 import IMdiBell from 'virtual:icons/mdi/bell';
+import IMdiCalendarClock from 'virtual:icons/mdi/calendar-clock';
+import IMdiDevices from 'virtual:icons/mdi/devices';
+import IMdiDiscPlayer from 'virtual:icons/mdi/disc-player';
+import IMdiDLNA from 'virtual:icons/mdi/dlna';
+import IMdiHome from 'virtual:icons/mdi/home';
+import IMdiKeyChain from 'virtual:icons/mdi/key-chain';
+import IMdiLibraryShelves from 'virtual:icons/mdi/library-shelves';
+import IMdiNetwork from 'virtual:icons/mdi/network';
+import IMdiPlayNetwork from 'virtual:icons/mdi/play-network';
+import IMdiPlayPause from 'virtual:icons/mdi/play-pause';
+import IMdiPuzzle from 'virtual:icons/mdi/puzzle';
+import IMdiServer from 'virtual:icons/mdi/server';
+import IMdiSubtitles from 'virtual:icons/mdi/subtitles';
+import IMdiTelevisionClassic from 'virtual:icons/mdi/television-classic';
 import IMdiTextBox from 'virtual:icons/mdi/text-box';
-import { useRemote } from '@/composables';
-import { version as clientVersion } from '@/../package.json';
+import { Component, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { RouteLocationRaw, useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -162,7 +162,7 @@ interface MenuOptions {
   link?: RouteLocationRaw
 }
 
-route.meta.title = t('settings.settings');
+route.meta.title = t('settings');
 
 let systemInfo: SystemInfo = {};
 
@@ -174,32 +174,32 @@ const userItems = computed<MenuOptions[]>(() => {
   return [
     {
       icon: IMdiAccount,
-      name: t('settingsSections.account.name'),
-      description: t('settingsSections.account.description'),
+      name: t('account'),
+      description: t('accountSettingsDescription'),
       link: undefined
     },
     {
       icon: IMdiHome,
-      name: t('settingsSections.home.name'),
-      description: t('settingsSections.home.description'),
+      name: t('homeScreen'),
+      description: t('homeScreenSettingsDescription'),
       link: undefined
     },
     {
       icon: IMdiPlayPause,
-      name: t('settingsSections.playback.name'),
-      description: t('settingsSections.playback.description'),
+      name: t('playback'),
+      description: t('playbackSettingsDescription'),
       link: undefined
     },
     {
       icon: IMdiDiscPlayer,
-      name: t('settingsSections.mediaPlayers.name'),
-      description: t('settingsSections.mediaPlayers.description'),
+      name: t('mediaPlayers'),
+      description: t('mediaPlayersSettingsDescription'),
       link: undefined
     },
     {
       icon: IMdiSubtitles,
-      name: t('settingsSections.subtitles.name'),
-      description: t('settingsSections.subtitles.description'),
+      name: t('subtitles'),
+      description: t('subtitlesSettingsDescription'),
       link: undefined
     }
   ];
@@ -210,86 +210,86 @@ const adminSections = computed<MenuOptions[][]>(() => {
     [
       {
         icon: IMdiServer,
-        name: t('settingsSections.server.name'),
-        description: t('settingsSections.server.description'),
+        name: t('server'),
+        description: t('serverSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiDevices,
-        name: t('settingsSections.devices.name'),
-        description: t('settingsSections.devices.description'),
+        name: t('devices'),
+        description: t('devicesSettingsDescription'),
         link: '/settings/devices'
       },
       {
         icon: IMdiLibraryShelves,
-        name: t('settingsSections.libraries.name'),
-        description: t('settingsSections.libraries.description'),
+        name: t('libraries'),
+        description: t('librariesSettingsDescription'),
         link: undefined
       }
     ],
     [
       {
         icon: IMdiAccountMultiple,
-        name: t('settingsSections.users.name'),
-        description: t('settingsSections.users.description'),
+        name: t('users'),
+        description: t('userSettingsDescription'),
         link: '/settings/users'
       },
       {
         icon: IMdiKeyChain,
-        name: t('settings.apiKeys.apiKeys'),
-        description: t('settings.apiKeys.description'),
+        name: t('apiKeys'),
+        description: t('apiKeysSettingsDescription'),
         link: '/settings/apikeys'
       }
     ],
     [
       {
         icon: IMdiPlayNetwork,
-        name: t('settingsSections.transcodingAndStreaming.name'),
-        description: t('settingsSections.transcodingAndStreaming.description'),
+        name: t('transcodingAndStreaming'),
+        description: t('transcodingSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiDLNA,
-        name: t('settingsSections.dlna.name'),
-        description: t('settingsSections.dlna.description'),
+        name: t('dlna'),
+        description: t('dlnaSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiTelevisionClassic,
-        name: t('settingsSections.liveTvAndDvr.name'),
-        description: t('settingsSections.liveTvAndDvr.description'),
+        name: t('liveTv'),
+        description: t('liveTvSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiNetwork,
-        name: t('settingsSections.networking.name'),
-        description: t('settingsSections.networking.description'),
+        name: t('networking'),
+        description: t('networkingSettingsDescription'),
         link: undefined
       }
     ],
     [
       {
         icon: IMdiPuzzle,
-        name: t('settingsSections.plugins.name'),
-        description: t('settingsSections.plugins.description'),
+        name: t('plugins'),
+        description: t('pluginsSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiCalendarClock,
-        name: t('settingsSections.scheduledTasks.name'),
-        description: t('settingsSections.scheduledTasks.description'),
+        name: t('scheduledTasks'),
+        description: t('scheduledTasksSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiBell,
-        name: t('settingsSections.notifications.name'),
-        description: t('settingsSections.notifications.description'),
+        name: t('notifications'),
+        description: t('notificationsSettingsDescription'),
         link: undefined
       },
       {
         icon: IMdiTextBox,
-        name: t('settingsSections.logs.name'),
-        description: t('settingsSections.logs.description'),
+        name: t('logsAndActivity'),
+        description: t('logsAndActivitySettingsDescription'),
         link: '/settings/logs-and-activity'
       }
     ]

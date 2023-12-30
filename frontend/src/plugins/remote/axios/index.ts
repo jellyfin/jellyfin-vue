@@ -1,6 +1,9 @@
 /**
  * Instantiates the Axios instance used for the SDK and requests
  */
+import { useLoading, useSnackbar, usei18n } from '@/composables';
+import { excludedProgressEndpoints } from '@/composables/use-loading';
+import { itemsStore } from '@/store';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import axios, {
   AxiosError,
@@ -8,9 +11,6 @@ import axios, {
   InternalAxiosRequestConfig
 } from 'axios';
 import remote from '../auth';
-import { itemsStore } from '@/store';
-import { useSnackbar, usei18n, useLoading } from '@/composables';
-import { excludedProgressEndpoints } from '@/composables/use-loading';
 
 class JellyfinInterceptors {
   public startLoadInterceptor(
@@ -84,7 +84,7 @@ class JellyfinInterceptors {
       !error.config?.url?.includes('/Sessions/Logout')
     ) {
       await remote.logoutCurrentUser(true);
-      useSnackbar(usei18n().t('login.kickedOut'), 'error');
+      useSnackbar(usei18n().t('kickedOut'), 'error');
     }
 
     /**
@@ -98,7 +98,7 @@ class JellyfinInterceptors {
   ): Promise<void> {
     if (error.code === 'ERR_NETWORK') {
       await remote.logoutCurrentUser(true);
-      useSnackbar(usei18n().t('login.serverNotFound'), 'error');
+      useSnackbar(usei18n().t('serverNotFound'), 'error');
     }
 
     throw error;

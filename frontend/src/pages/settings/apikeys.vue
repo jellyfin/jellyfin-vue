@@ -1,12 +1,12 @@
 <template>
-  <SettingsPage page-title="settings.apiKeys.apiKeys">
+  <SettingsPage page-title="apiKeys">
     <template #actions>
       <VBtn
         color="primary"
         variant="elevated"
         :loading="loading"
         @click="addingNewKey = true">
-        {{ t('settings.apiKeys.addNewKey') }}
+        {{ t('addNewKey') }}
       </VBtn>
       <VBtn
         v-if="apiKeys.length > 0"
@@ -14,7 +14,7 @@
         variant="elevated"
         :loading="loading"
         @click="confirmRevoke = 'all'">
-        {{ t('settings.apiKeys.revokeAll') }}
+        {{ t('revokeAll') }}
       </VBtn>
     </template>
     <template #content>
@@ -55,7 +55,7 @@
                   color="error"
                   :loading="loading"
                   @click="confirmRevoke = apiKey.AccessToken ?? undefined">
-                  {{ t('settings.apiKeys.revoke') }}
+                  {{ t('revoke') }}
                 </VBtn>
               </td>
             </tr>
@@ -77,7 +77,7 @@
         @update:model-value="confirmRevoke = undefined">
         <VCard>
           <VCardText>
-            {{ t('settings.apiKeys.revokeConfirm') }}
+            {{ t('revokeConfirm') }}
           </VCardText>
           <VCardActions>
             <VBtn
@@ -104,12 +104,12 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { parseJSON, formatRelative } from 'date-fns';
+import { useDateFns, useRemote, useSnackbar } from '@/composables';
+import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
+import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
+import { formatRelative, parseJSON } from 'date-fns';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
-import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
-import { useDateFns, useRemote, useSnackbar } from '@/composables';
 
 const { t } = useI18n();
 const remote = useRemote();
@@ -122,9 +122,9 @@ const loading = ref(false);
 
 const headers = computed(
   (): { text: string; value: keyof AuthenticationInfo }[] => [
-    { text: t('settings.apiKeys.appName'), value: 'AppName' },
-    { text: t('settings.apiKeys.accessToken'), value: 'AccessToken' },
-    { text: t('settings.apiKeys.dateCreated'), value: 'DateCreated' }
+    { text: t('appName'), value: 'AppName' },
+    { text: t('accessToken'), value: 'AccessToken' },
+    { text: t('dateCreated'), value: 'DateCreated' }
   ]
 );
 
@@ -154,11 +154,11 @@ async function revokeApiKey(token: string): Promise<void> {
       key: token
     });
 
-    useSnackbar(t('settings.apiKeys.revokeSuccess'), 'success');
+    useSnackbar(t('revokeSuccess'), 'success');
     await refreshApiKeys();
   } catch (error) {
     console.error(error);
-    useSnackbar(t('settings.apiKeys.revokeFailure'), 'error');
+    useSnackbar(t('revokeFailure'), 'error');
   } finally {
     loading.value = false;
   }
@@ -179,11 +179,11 @@ async function revokeAllApiKeys(): Promise<void> {
       }
     }
 
-    useSnackbar(t('settings.apiKeys.revokeAllSuccess'), 'success');
+    useSnackbar(t('revokeAllSuccess'), 'success');
     await refreshApiKeys();
   } catch (error) {
     console.error(error);
-    useSnackbar(t('settings.apiKeys.revokeAllFailure'), 'error');
+    useSnackbar(t('revokeAllFailure'), 'error');
   } finally {
     loading.value = false;
   }
@@ -199,7 +199,7 @@ async function refreshApiKeys(): Promise<void> {
   } catch (error) {
     apiKeys.value = [];
     console.error(error);
-    useSnackbar(t('settings.apiKeys.refreshKeysFailure'), 'error');
+    useSnackbar(t('refreshKeysFailure'), 'error');
   }
 }
 

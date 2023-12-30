@@ -1,5 +1,5 @@
 <template>
-  <SettingsPage page-title="settingsSections.logs.name">
+  <SettingsPage page-title="logs">
     <template #content>
       <VCol
         md="6"
@@ -8,7 +8,7 @@
           <h2
             key="logs-title"
             class="text-h6 mb-2">
-            {{ t('settings.logsAndActivity.logs') }}
+            {{ t('logs') }}
           </h2>
           <VList
             v-if="logs.length > 0"
@@ -39,7 +39,7 @@
           </VList>
           <VCard v-else>
             <VCardTitle>
-              {{ t('settings.logsAndActivity.noLogsFound') }}
+              {{ t('noLogsFound') }}
             </VCardTitle>
           </VCard>
         </VFadeTransition>
@@ -51,7 +51,7 @@
           <h2
             key="activity-title"
             class="text-h6 mb-2">
-            {{ t('settings.logsAndActivity.activity') }}
+            {{ t('activity') }}
           </h2>
           <VList
             v-if="activityList.length > 0"
@@ -77,7 +77,7 @@
           </VList>
           <VCard v-else>
             <VCardTitle>
-              {{ t('settings.logsAndActivity.noActivityFound') }}
+              {{ t('noActivityFound') }}
             </VCardTitle>
           </VCard>
         </VFadeTransition>
@@ -92,8 +92,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useTheme } from 'vuetify';
+import { useDateFns, useRemote } from '@/composables';
 import {
   ActivityLogEntry,
   LogFile,
@@ -102,22 +101,23 @@ import {
 import { getActivityLogApi } from '@jellyfin/sdk/lib/utils/api/activity-log-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
 import { format, formatRelative, parseJSON } from 'date-fns';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import IMdiHelp from 'virtual:icons/mdi/help';
+import IMdiLock from 'virtual:icons/mdi/lock';
 import IMdiLogin from 'virtual:icons/mdi/login';
 import IMdiLogout from 'virtual:icons/mdi/logout';
-import IMdiLock from 'virtual:icons/mdi/lock';
 import IMdiPlay from 'virtual:icons/mdi/play';
 import IMdiStop from 'virtual:icons/mdi/stop';
-import IMdiHelp from 'virtual:icons/mdi/help';
-import { useDateFns, useRemote } from '@/composables';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router/auto';
+import { useTheme } from 'vuetify';
 
 const { t } = useI18n();
 const route = useRoute();
 const remote = useRemote();
 const theme = useTheme();
 
-route.meta.title = t('settingsSections.logs.name');
+route.meta.title = t('logsAndActivity');
 
 const logs = ref<LogFile[]>([]);
 const activityList = ref<ActivityLogEntry[]>([]);

@@ -82,13 +82,14 @@
         color="primary"
         :loading="isLoading"
         @click="performSearch">
-        {{ t('search.name') }}
+        {{ t('search') }}
       </VBtn>
     </template>
   </GenericDialog>
 </template>
 
 <script setup lang="ts">
+import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
 import {
   BaseItemDto,
   RemoteSearchResult
@@ -96,7 +97,6 @@ import {
 import { getItemLookupApi } from '@jellyfin/sdk/lib/utils/api/item-lookup-api';
 import { computed, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
 
 interface IdentifyField {
   key: string;
@@ -132,7 +132,7 @@ const model = ref(true);
 const isLoading = ref(false);
 const searchResults = ref<RemoteSearchResult[]>();
 const replaceImage = ref(false);
-const errorMessage = t('errors.anErrorHappened');
+const errorMessage = t('anErrorHappened');
 const searchFields = computed<IdentifyField[]>(() => {
   const result = [
     {

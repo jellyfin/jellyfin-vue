@@ -8,7 +8,7 @@
       <IMdiWeb />
     </VIcon>
     <VTooltip
-      :text="$t('tooltips.changeLanguage')"
+      :text="$t('language')"
       :location="bottom ? 'bottom' : 'top'" />
     <VMenu>
       <VList class="overflow-y-auto">
@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import { clientSettingsStore } from '@/store';
 import { getLocaleNativeName } from '@/utils/i18n';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
   bottom?: boolean;
