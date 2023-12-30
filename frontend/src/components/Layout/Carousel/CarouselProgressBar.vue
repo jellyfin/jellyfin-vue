@@ -13,14 +13,17 @@
 </template>
 
 <script setup lang="ts">
+import { useResponsiveClasses } from '@/composables';
 import { computed } from 'vue';
 import { useDisplay } from 'vuetify';
-import { useResponsiveClasses } from '@/composables';
 
 const props = withDefaults(
   defineProps<{
     pages: number;
     currentIndex: number;
+    /**
+     * In milliseconds
+     */
     duration: number;
     paused: boolean;
     hoverable?: boolean;

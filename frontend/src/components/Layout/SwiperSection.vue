@@ -62,18 +62,17 @@
 </template>
 
 <script setup lang="ts">
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, FreeMode, A11y, Virtual } from 'swiper/modules';
+import { CardShapes, getShapeFromItemType } from '@/utils/items';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import 'swiper/css';
 import 'swiper/css/a11y';
 import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
 import 'swiper/css/virtual';
+import { A11y, FreeMode, Navigation, Virtual } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { v4 } from 'uuid';
 import { ref } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
-import { v4 } from 'uuid';
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
-import { CardShapes, getShapeFromItemType } from '@/utils/items';
 
 const props = withDefaults(
   defineProps<{
