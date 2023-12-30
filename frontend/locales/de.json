@@ -31,6 +31,7 @@
   "audio": "Ton",
   "audioCodecNotSupported": "Der Audio-Codec wird nicht unterstützt",
   "auto": "Automatisch",
+  "avatar": "Avatar",
   "badRequest": "Fehlerhafte Anfrage. Erneut versuchen",
   "blockTags": "Elemente mit Tags blockieren:",
   "blockUnratedItems": "Elemente ohne oder mit unbekannter Altersbewertung blockieren:",
@@ -198,6 +199,7 @@
     "readTheDocumentation": "Lese die Dokumentation",
     "reportAnIssue": "Ein Problem mit diesem Client melden"
   },
+  "liveTv": "Live-TV",
   "login": {
     "addServer": "Server hinzufügen",
     "changeServer": "Server wechseln",

@@ -36,6 +36,7 @@
   "byArtist": "Av {artist}",
   "cancel": "Avbryt",
   "castAndCrew": "Skådespelare och filmmedarbetare",
+  "channels": "Kanaler",
   "clipboardFail": "Misslyckades att kopiera till urklipp",
   "clipboardSuccess": "Kopierade till urklipp",
   "clipboardUnsupported": "Kopiering till urklipp stöds inte i denna webbläsare",
@@ -183,6 +184,7 @@
     "readTheDocumentation": "Läs dokumentationen",
     "reportAnIssue": "Rapportera ett problem med denna klient"
   },
+  "liveTv": "Direktsänd TV",
   "login": {
     "addServer": "Lägg till server",
     "changeServer": "Byt server",
@@ -239,6 +241,7 @@
   "mediaInfoVideoColorPrimaries": "Primärfärger",
   "mediaInfoVideoColorRange": "Färgskala",
   "mediaInfoVideoColorSpace": "Färg rymd",
+  "mediaInfoVideoColorTransfer": "Färg överförning",
   "menu": "Meny",
   "metadata": {
     "source": "Källa",
@@ -347,7 +350,7 @@
   "series": "Serie",
   "server": "Server",
   "serverVersion": "Serverversion",
-  "serverVersionTooLow": "Serverversion behöver vara 10.7.0 eller högre",
+  "serverVersionTooLow": "Serverversion behöver vara {version} eller högre",
   "settings": {
     "apiKeys": {
       "accessToken": "Åtkomsttoken",

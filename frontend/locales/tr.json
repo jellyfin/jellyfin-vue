@@ -1,5 +1,5 @@
 {
-  "3DFormat": "3B format",
+  "3DFormat": "3D biçimi",
   "NoMediaSourcesAvailable": "Medya kaynağı bulunamadı",
   "NoMediaStreamsAvailable": "Seçilen kaynak için medya akışı yok",
   "actor": "Aktör",
@@ -28,7 +28,7 @@
   "auto": "Otomatik",
   "badRequest": "Hatalı istek. Tekrar deneyin",
   "books": "Kitaplar",
-  "browserNotSupported": "Tarayıcınız bu dosya formatını oynatmak için desteklenmiyor.",
+  "browserNotSupported": "Tarayıcınız bu dosyayı oynatmayı desteklemiyor.",
   "buttons": {
     "ok": "Tamam"
   },
@@ -51,10 +51,13 @@
   "details": "Detaylar",
   "dialog": {
     "upNext": {
-      "hide": "Gizle"
+      "hide": "Gizle",
+      "nextItemPlayingIn": "{time} saniye içinda başlıyor",
+      "startNow": "Şimdi başlat"
     }
   },
   "director": "Yönetmen",
+  "disabled": "Devre dışı",
   "discNumber": "Disk {discNumber}",
   "dislikes": "Beğenilmeyenler",
   "edit": "Düzenle",
@@ -91,9 +94,15 @@
   },
   "images": "Resimler",
   "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya parola",
+  "instantMix": "Anlık mix",
+  "instantMixQueued": "Anlık mix kuyruğa eklendi",
   "item": {
     "artist": {
-      "albums": "Albümler"
+      "albums": "Albümler",
+      "information": "Bilgi"
+    },
+    "person": {
+      "information": "Bilgi"
     }
   },
   "itemMenu": {
@@ -126,7 +135,9 @@
   "manualLogin": "El ile oturum aç",
   "maxAllowedRating": "İzin verilen maksimum yaş derecelendirmesi",
   "mediaInfo": "Medya Bilgisi",
+  "mediaInfoAspectRatio": "En boy oranı",
   "mediaInfoFileContainer": "Kapsayıcı",
+  "mediaInfoFileFormats": "Biçim",
   "mediaInfoFilePath": "Yol",
   "mediaInfoFileSize": "Boyut",
   "mediaInfoFileTitle": "Başlık",
@@ -169,25 +180,29 @@
     "source": "Kaynak"
   },
   "metadataEditor": "Meta veri düzenleyici",
+  "metadataRefreshQueued": "Meta veri yenilemesi kuyruğa alındı",
   "more": "Dahası",
-  "moreLikeThis": "Buna Benzer Daha Fazla",
+  "moreLikeThis": "Benzerleri",
   "movies": "Filmler",
   "name": "Ad",
   "networks": "Ağlar",
-  "nextUp": "Sonraki bölümler",
+  "nextUp": "Sıradaki bölümler",
   "operatingSystem": "İşletim sistemi",
+  "originalAspectRatio": "Orijinal en boy oranı",
   "overview": "Özet",
   "parentalControl": "Ebeveyn Kontrolü",
   "parentalRating": "Yaş derecelendirmesi",
   "parentalRatings": "Yaş Derecelendirmeleri",
   "password": "Parola",
+  "people": "Kişiler",
   "play": "Oynat",
   "playback": {
     "addToQueue": "Kuyruğa ekle",
     "clearQueue": "Oynatmayı durdur ve kuyruğu temizle",
     "playbackSource": {
       "unknown": "Kuyruktan oynatılıyor"
-    }
+    },
+    "saveAsPlaylist": "Kuyruğu çalma listesi olarak kaydet"
   },
   "playbackInfo": {
     "playMethod": {
@@ -213,12 +228,14 @@
     }
   },
   "present": "Mevcut",
+  "queue": "Kuyruk",
   "rating": "Puan",
   "refreshLibrary": "Kütüphaneyi yenile",
   "refreshMetadata": "Meta veriyi yenile",
   "refreshMetadataHint": "Meta veriler, Kontrol Panelinden etkinleştirilen ayarlara ve internet hizmetlerine göre yenilenir",
   "releaseDate": "Yayın tarihi",
   "resume": "Sürdür",
+  "runtime": "Süre",
   "save": "Kaydet",
   "search": {
     "name": "Ara"
@@ -228,6 +245,9 @@
   "serverVersion": "Sunucu sürümü",
   "serverVersionTooLow": "Sunucu sürümünün {version} veya daha üstü olması gerekir",
   "settings": {
+    "devices": {
+      "userName": "Kullanıcı adı"
+    },
     "logsAndActivity": {
       "activity": "Etkinlik",
       "failedGetActivity": "Etkinlik alınamıyor",
@@ -305,7 +325,8 @@
       "mbps": "{value} Mbps"
     }
   },
-  "upNext": "Sonraki",
+  "upNext": "Sıradaki",
+  "upNextName": "Sıradaki: {upNextItemName}",
   "username": "Kullanıcı Adı",
   "validation": {
     "bothPasswordsSame": "Her iki parola da aynı olmalıdır"
