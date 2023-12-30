@@ -19,5 +19,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ pageTitle?: string }>();
+import type { messages } from 'vue-i18n';
+
+defineProps<{ pageTitle?: keyof messages }>();
 </script>
