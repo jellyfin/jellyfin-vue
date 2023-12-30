@@ -15,7 +15,7 @@ LICENSE         text
 *.jpg           binary
 *.js            text
 *.json          text
-*.lock          text -diff
+*.lock          text
 *.map           text -diff
 *.md            text
 *.otf           binary
@@ -35,5 +35,6 @@ LICENSE         text
 .gitignore      export-ignore
 
 *.gitattributes linguist-language=gitattributes
-api/* linguist-generated=true
+package-lock.json linguist-generated=true linguist-language=JSON
+packaging/tauri/Cargo.lock text linguist-generated=true linguist-language=TOML
 locales/*.json merge=union
