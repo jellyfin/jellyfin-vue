@@ -14,7 +14,6 @@
       v-else-if="!loading && items.length > 0 && !noVirtual"
       :items="items"
       :buffer-multiplier="2"
-      :throttle-scroll="175"
       :class="useResponsiveClasses('card-grid-container')">
       <template #default="{ item, style }">
         <Card
@@ -66,8 +65,8 @@
 </template>
 
 <script setup lang="ts">
-import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { useResponsiveClasses } from '@/composables';
+import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 
 withDefaults(
   defineProps<{
