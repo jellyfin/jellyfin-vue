@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D 포맷",
   "NoMediaSourcesAvailable": "사용 가능한 미디어 소스 없음",
   "actor": "배우",
   "actors": "배우",
@@ -8,29 +7,13 @@
   "airPlayDevices": "AirPlay 장치",
   "albums": "앨범",
   "allLanguages": "모든 언어",
-  "alphabetically": "알파벳순",
-  "appbar": {
-    "tasks": {
-      "configSync": "설정 동기화 중…",
-      "scanningItem": "'{item}' 스캔 중…"
-    },
-    "tooltips": {
-      "tasks": "처리 중인 작업들"
-    }
-  },
   "architecture": "시스템 구조",
   "artist": "아티스트",
   "artists": "아티스트",
-  "aspectRatio": "종횡비",
   "audio": "오디오",
-  "audioCodecNotSupported": "오디오 코덱이 지원되지 않습니다",
   "auto": "자동",
   "badRequest": "잘못된 요청입니다. 다시 시도해주세요",
   "books": "도서",
-  "browserNotSupported": "브라우저에서 이 파일의 재생이 지원되지 않습니다.",
-  "buttons": {
-    "ok": "확인"
-  },
   "byArtist": "By {artist}",
   "cancel": "취소",
   "castAndCrew": "출연진 및 제작진",
@@ -43,44 +26,18 @@
   "continueWatching": "이어 시청하기",
   "criticRating": "평론가 평점",
   "customRating": "사용자 평점",
-  "darkModeToggle": "다크 모드 토글",
   "dateAdded": "추가된 날짜",
   "delete": "삭제",
   "deleteItem": "미디어 삭제",
   "deleteItemDescription": "이 항목을 삭제하면 파일 시스템과 미디어 라이브러리 모두에서 삭제됩니다. 계속하시겠습니까?",
   "details": "상세 정보",
-  "dialog": {
-    "upNext": {
-      "hide": "닫기",
-      "nextItemPlayingIn": "{time} 후에 재생",
-      "startNow": "지금 재생"
-    }
-  },
   "directing": "감독",
   "director": "감독",
   "disabled": "비활성화",
   "discNumber": "디스크 {discNumber}",
-  "dislikes": "싫어요",
-  "edit": "편집",
   "editMetadata": "메타데이터 편집",
   "editPerson": "인물 편집",
-  "endDate": "종료일",
   "endsAt": "{time}에 끝남",
-  "episodeNumber": "{episodeNumber}화",
-  "errors": {
-    "anErrorHappened": "오류가 발생했습니다",
-    "cantPlayItem": "재생할 수 없습니다",
-    "messages": {
-      "errorCode": "에러 코드: {errorCode}",
-      "videoPlayerError": "비디오 플레이어에서 복구할 수 없는 오류가 발생했습니다."
-    },
-    "playback": {
-      "mediaError": "치명적인 미디어 오류가 발생했습니다. 복구를 시도합니다",
-      "networkError": "치명적인 네트워크 오류가 발생했습니다. 복구를 시도합니다"
-    },
-    "unauthorized": "이 페이지에 대한 접근 권한이 없습니다"
-  },
-  "failedRetrievingDisplayPreferences": "디스플레이 설정을 가져올 수 없습니다. 마지막으로 사용한 설정을 사용합니다.",
   "failedSettingDisplayPreferences": "디스플레이 설정을 업데이트할 수 없습니다.",
   "failedToRefreshItems": "항목을 새로고침하는데 실패하였습니다",
   "favorite": "즐겨찾기",
@@ -91,129 +48,28 @@
   "general": "일반",
   "genericJellyfinPlaceholderDevice": "일반 Jellyfin 장치",
   "genres": "장르",
-  "goBack": "돌아가기",
-  "goNext": "넘어가기",
   "googleCastPlaceholderDevice": "Google Cast 장치",
   "guestStar": "게스트 출연",
-  "headerExternalIds": "외부 ID",
-  "headerPaths": "경로",
   "home": "홈",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "최근 추가됨"
-    }
-  },
   "identify": "식별",
   "identifyConfirmChanges": "정말로 '{originalItem}'을(를) '{newIdentifiedItem}'(으)로 변경하시겠습니까?",
   "identifyInstructResult": "이 카드 중 하나를 클릭하여 결과를 적용할 수 있습니다",
-  "imageType": {
-    "art": "아트",
-    "backdrop": "배경",
-    "banner": "배너",
-    "box": "박스",
-    "boxRear": "박스 (후면)",
-    "disc": "디스크",
-    "logo": "로고",
-    "menu": "메뉴",
-    "primary": "기본",
-    "screenshot": "스크린샷",
-    "thumb": "미리보기"
-  },
   "images": "이미지",
   "incorrectUsernameOrPassword": "사용자 이름 또는 비밀번호가 잘못되었습니다",
   "instantMix": "인스턴트 믹스",
   "instantMixQueued": "인스턴트 믹스가 대기열에 추가되었습니다",
-  "item": {
-    "artist": {
-      "albums": "앨범",
-      "appearsOn": "출연",
-      "discography": "디스코그래피",
-      "eps": "EP",
-      "information": "정보",
-      "singles": "싱글",
-      "videos": "비디오"
-    },
-    "cast": "출연진",
-    "composer": "작곡가",
-    "crew": "제작진",
-    "person": {
-      "birth": "생일",
-      "birthPlace": "출생지",
-      "books": "도서",
-      "death": "사망일",
-      "information": "정보",
-      "movies": "영화",
-      "person": "인물",
-      "photos": "사진",
-      "shows": "쇼"
-    },
-    "tracklist": {
-      "title": "제목"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "맨 끝으로 가기",
-    "pushToTop": "맨 처음으로 가기",
-    "removeFromQueue": "대기열에서 제거"
-  },
-  "itemNotFound": "항목을 찾을 수 없습니다",
   "jellyfinLogo": "Jellyfin 로고",
   "latestLibrary": "최근 {libraryName}",
   "libraries": "라이브러리",
   "libraryEmpty": "이 라이브러리는 비어 있습니다",
   "libraryEmptyFilters": "선택한 필터에 해당되는 항목이 없습니다. 더 많은 항목을 찾기 위해 필터를 줄여보세요",
-  "libraryNotFound": "라이브러리를 찾을 수 없습니다",
-  "libraryRefreshQueued": "라이브러리 새로고침 대기 중",
   "liked": "좋아요 표시함",
-  "likes": "좋아요",
-  "links": {
-    "helpTranslate": "Jellyfin을 여러분의 언어로 번역하는 것을 도와주세요",
-    "poweredByJellyfin": "이 서버는 Jellyfin으로 구동되고 있습니다",
-    "readTheDocumentation": "이 곳에서 설명서를 읽으실 수 있습니다",
-    "reportAnIssue": "이 클라이언트의 문제와 개선사항을 제보해주세요"
-  },
-  "login": {
-    "addServer": "서버 추가",
-    "changeServer": "서버 변경",
-    "changeUser": "사용자 변경",
-    "connect": "연결",
-    "kickedOut": "인증 값이 더 이상 유효하지 않아 세션이 종료되었습니다. 다시 로그인 해 주세요",
-    "login": "로그인",
-    "loginAs": "{name}님으로 로그인",
-    "manualLogin": "수동 로그인",
-    "rememberMe": "로그인 상태 유지하기",
-    "selectServer": "서버 선택",
-    "selectUser": "사용자 선택",
-    "serverAddress": "서버 주소",
-    "serverAddressMustBeUrl": "서버 주소는 유효한 URL이어야 합니다",
-    "serverAddressRequired": "서버 주소 입력란을 작성해주세요",
-    "serverDashboard": "서버 대시보드",
-    "serverNotFound": "서버를 찾을 수 없습니다",
-    "serverVersionTooLow": "서버 버전이 10.7.0 이상이어야 합니다"
-  },
   "logout": "로그아웃",
-  "logsAndActivity": {
-    "activity": "활동",
-    "failedGetActivity": "활동을 가져올 수 없습니다",
-    "failedGetLogs": "로그를 가져올 수 없습니다",
-    "logs": "로그",
-    "noActivityFound": "활동이 없습니다",
-    "noLogsFound": "로그가 없습니다"
-  },
   "manualLogin": "수동 로그인",
   "menu": "메뉴",
-  "metadata": {
-    "source": "소스",
-    "sourceAll": "전체",
-    "title": "제목",
-    "type": "유형"
-  },
   "metadataEditor": "메타데이터 편집기",
-  "metadataNoResultsMatching": "\"{search}\"에 해당하는 검색결과가 없습니다. 엔터를 눌러 새로 만드실 수 있습니다.",
   "metadataRefreshQueued": "메타데이터 새로고침이 대기열에 추가되었습니다",
-  "more": "더 보기",
   "moreLikeArtist": "{artist}와 비슷한 아티스트",
-  "moreLikeThis": "비슷한 작품",
   "movies": "영화",
   "name": "이름",
   "networks": "네트워크",
@@ -224,7 +80,6 @@
   "noResultsFound": "여기에는 아무것도 없습니다",
   "numberTracks": "{number}개 트랙",
   "operatingSystem": "운영 체제",
-  "originalAspectRatio": "원본 종횡비",
   "originalTitle": "원본 제목",
   "overview": "줄거리",
   "parentalRating": "자녀 보호 등급",
@@ -234,67 +89,14 @@
   "person": "인물",
   "play": "재생",
   "playFromBeginning": "처음부터 재생",
-  "playback": {
-    "addToQueue": "대기열에 추가",
-    "clearQueue": "대기열을 지우고 재생 중지",
-    "playAll": "모두 재생",
-    "playNext": "다음 재생",
-    "playbackSource": {
-      "item": "{item}에서 재생 중",
-      "shuffle": "셔플 재생 중",
-      "shuffleItem": "{item}에서 셔플 재생 중",
-      "unknown": "대기열에서 재생 중"
-    },
-    "queueItems": "{items}개 트랙",
-    "saveAsPlaylist": "대기열을 재생목록으로 저장",
-    "shuffle": "셔플",
-    "shuffleAll": "전체 셔플"
-  },
-  "playbackData": "재생 정보",
-  "playbackInfo": {
-    "name": "재생",
-    "playMethod": {
-      "direct": "직접 재생",
-      "name": "재생 방식:",
-      "remux": "리먹스",
-      "transcode": "트랜스코드"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "스트림 유형:",
-      "unknown": "알 수 없음",
-      "video": "비디오"
-    }
-  },
   "playbackSettings": "재생 설정",
   "played": "재생함",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "손상된 프레임:"
-    },
-    "decodedFrames": {
-      "name": "디코딩된 프레임:"
-    },
-    "droppedFrames": {
-      "name": "드롭된 프레임:"
-    },
-    "name": "플레이어",
-    "playbackResolution": {
-      "name": "보는 영역 해상도:"
-    },
-    "videoResolution": {
-      "name": "비디오 해상도:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "현재",
   "producer": "프로듀서",
   "quality": "품질",
   "queue": "대기열",
   "rating": "평점",
   "refresh": "새로고침",
-  "refreshLibrary": "라이브러리 새로고침",
   "refreshMetadata": "메타데이터 새로고침",
   "refreshMetadataHint": "대시보드에서 활성화된 설정과 인터넷 서비스에 기반해서 메타데이터가 새로고침됩니다",
   "releaseDate": "개봉일",
@@ -308,10 +110,6 @@
   "save": "저장",
   "saved": "저장됨",
   "scanForNewAndUpdatedFiles": "새 파일 및 업데이트된 파일 스캔",
-  "search": {
-    "name": "검색",
-    "topResults": "상위 결과"
-  },
   "searchMissingMetadata": "누락된 메타데이터 검색",
   "searchNoResults": "결과를 찾을 수 없습니다",
   "seasonEpisode": "시즌 {seasonNumber}, {episodeNumber}화",
@@ -320,130 +118,8 @@
   "server": "서버",
   "serverVersion": "서버 버전",
   "serverVersionTooLow": "서버 버전이 {version} 이상이어야 합니다",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "액세스 토큰",
-      "addApiKey": "API 키 추가",
-      "addNewKey": "새 API 키 추가",
-      "apiKeys": "API 키",
-      "appName": "앱 이름",
-      "createKeyFailure": "API 키 생성 과정에서 오류가 발생했습니다",
-      "createKeySuccess": "새 API 키를 성공적으로 만들었습니다",
-      "dateCreated": "생성된 날짜",
-      "description": "서버 외부 액세스에 필요한 API 키를 추가 및 삭제",
-      "refreshKeysFailure": "API 키를 새로고침하는 과정에서 오류가 발생했습니다",
-      "revoke": "삭제",
-      "revokeAll": "모든 API 키 삭제",
-      "revokeAllFailure": "모든 API 키를 삭제하는 과정에서 오류가 발생했습니다",
-      "revokeAllSuccess": "성공적으로 모든 API 키를 삭제했습니다",
-      "revokeConfirm": "API 키 삭제 확인",
-      "revokeFailure": "API 키를 삭제하는 과정에서 오류가 발생했습니다",
-      "revokeSuccess": "성공적으로 API 키를 삭제했습니다"
-    },
-    "devices": {
-      "appName": "앱 이름",
-      "appVersion": "앱 버전",
-      "delete": "제거",
-      "deleteAll": "모두 제거",
-      "deleteAllDevicesError": "모든 장치를 제거하는 과정에서 오류가 발생했습니다",
-      "deleteAllDevicesSuccess": "모든 장치가 성공적으로 제거되었습니다",
-      "deleteConfirm": "장치 제거 확인",
-      "deleteDeviceError": "장치를 제거하는 과정에서 오류가 발생했습니다",
-      "deleteDeviceSuccess": "장치를 성공적으로 제거하였습니다",
-      "deviceName": "장치 이름",
-      "devices": "장치",
-      "lastActive": "최근 활동",
-      "noDevicesFound": "장치가 없습니다",
-      "userName": "사용자 이름"
-    },
-    "help": "도움말",
-    "logsAndActivity": {
-      "activity": "활동",
-      "failedGetActivity": "활동을 가져올 수 없습니다",
-      "failedGetLogs": "로그를 가져올 수 없습니다",
-      "logs": "로그",
-      "noActivityFound": "활동이 없습니다",
-      "noLogsFound": "로그가 없습니다"
-    },
-    "settings": "설정"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "이 사용자의 정보를 수정합니다",
-      "name": "계정"
-    },
-    "devices": {
-      "description": "서버에 연결된 장치들을 확인하고 관리합니다",
-      "name": "장치"
-    },
-    "dlna": {
-      "description": "DLNA 세팅과 프로파일을 설정합니다",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "홈 섹션과 홈 화면 레이아웃을 설정합니다",
-      "name": "홈 화면"
-    },
-    "libraries": {
-      "description": "라이브러리와 메타데이터를 관리합니다",
-      "name": "라이브러리"
-    },
-    "liveTvAndDvr": {
-      "description": "TV 튜너, 가이드 데이터 제공자와 DVR 설정을 관리합니다",
-      "name": "라이브 TV & DVR"
-    },
-    "logs": {
-      "description": "서버 로그와 사용자 활동을 읽고 검색합니다",
-      "name": "로그 & 활동"
-    },
-    "mediaPlayers": {
-      "description": "이 장치에서 미디어 플레이어가 동작하는 방식을 설정합니다",
-      "name": "미디어 플레이어"
-    },
-    "networking": {
-      "description": "이 서버의 네트워크 설정을 관리합니다",
-      "name": "네트워킹"
-    },
-    "notifications": {
-      "description": "이 서버에서 보내는 알림을 설정 및 관리합니다",
-      "name": "알림"
-    },
-    "playback": {
-      "description": "이 장치의 재생 설정을 편집합니다",
-      "name": "재생"
-    },
-    "plugins": {
-      "description": "이 서버에 새로운 기능을 추가하고 설정합니다",
-      "name": "플러그인"
-    },
-    "scheduledTasks": {
-      "description": "이 서버에서 실행되는 예약 작업을 관리합니다",
-      "name": "예약 작업"
-    },
-    "server": {
-      "description": "이 서버의 언어와 브랜딩을 설정합니다",
-      "name": "서버"
-    },
-    "subtitles": {
-      "description": "이 장치에서 자막이 표시되는 방식을 제어합니다",
-      "name": "자막"
-    },
-    "transcodingAndStreaming": {
-      "description": "이 서버가 클라이언트에 대한 트랜스코딩과 스트리밍을 처리하는 방법을 관리합니다",
-      "name": "트랜스코딩 & 스트리밍"
-    },
-    "users": {
-      "description": "사용자와 사용자의 권한을 관리합니다",
-      "name": "사용자"
-    }
-  },
   "shows": "쇼",
   "signIn": "로그인",
-  "snackbar": {
-    "addedToQueue": "대기열에 추가되었습니다",
-    "playNext": "선택된 항목이 현재 항목 다음에 재생됩니다",
-    "routeValidationError": "route 매개변수에 지정된 routeId가 올바르지 않습니다"
-  },
   "songs": "노래",
   "sortByType": "{type}순 정렬",
   "sortTitle": "제목 정렬",
@@ -454,107 +130,28 @@
   "studios": "스튜디오",
   "subtitles": "자막",
   "syncPlayGroups": "SyncPlay 그룹",
-  "syncingInProgress": "동기화 진행 중",
   "tagline": "태그라인",
   "tags": "태그",
   "themeSong": "테마 곡",
   "themeVideo": "테마 비디오",
-  "tooltips": {
-    "changeLanguage": "언어",
-    "switchToAuto": "시스템 테마에 따르기",
-    "switchToDarkMode": "다크 모드로 전환",
-    "switchToLightMode": "라이트 모드로 전환"
-  },
   "trailer": "트레일러",
-  "transcodingInfo": {
-    "name": "트랜스코딩",
-    "transcodingFramerate": {
-      "name": "프레임레이트:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "진행률:",
-    "transcodingReason": {
-      "name": "원인:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "아나모픽 비디오가 지원되지 않습니다",
-        "audioBitDepthNotSupported": "오디오의 비트뎁스가 지원되지 않습니다",
-        "audioBitrateNotSupported": "오디오의 비트레이트가 지원되지 않습니다",
-        "audioChannelsNotSupported": "오디오의 채널 수가 지원되지 않습니다",
-        "audioCodecNotSupported": "오디오 코덱이 지원되지 않습니다",
-        "audioProfileNotSupported": "오디오 코덱의 프로파일이 지원되지 않습니다",
-        "audioSampleRateNotSupported": "오디오의 샘플레이트가 지원되지 않습니다",
-        "containerBitrateExceedsLimit": "컨테이너의 비트레이트가 설정된 제한을 초과합니다",
-        "containerNotSupported": "컨테이너가 지원되지 않습니다",
-        "interlacedVideoNotSupported": "인터레이스 비디오가 지원되지 않습니다",
-        "refFramesNotSupported": "레퍼런스 프레임이 지원되지 않습니다",
-        "secondaryAudioNotSupported": "보조 오디오 트랙이 지원되지 않습니다",
-        "subtitleCodecNotSupported": "자막 코덱이 지원되지 않습니다",
-        "videoBitDepthNotSupported": "비디오의 비트뎁스가 지원되지 않습니다",
-        "videoCodecNotSupported": "비디오 코덱이 지원되지 않습니다",
-        "videoFramerateNotSupported": "비디오의 프레임레이트가 지원되지 않습니다",
-        "videoLevelNotSupported": "비디오 코덱의 레벨이 지원되지 않습니다",
-        "videoProfileNotSupported": "비디오 코덱의 프로파일이 지원되지 않습니다",
-        "videoResolutionNotSupported": "비디오의 해상도가 지원되지 않습니다"
-      }
-    }
-  },
   "type": "유형",
-  "unableGetPublicUsers": "사용자를 가져올 수 없습니다",
   "unableGetRelated": "연관 항목을 가져올 수 없습니다",
-  "unableGetServerConfiguration": "서버 설정을 가져올 수 없습니다",
-  "unableToRefreshLibrary": "라이브러리를 새로고침할 수 없습니다",
-  "unableToToggleLike": "항목의 좋아요 상태를 바꿀 수 없습니다",
   "unableToTogglePlayed": "감상 상태를 업데이트할 수 없습니다",
   "undefined": "정의되지 않음",
   "unexpectedError": "예기치 못한 오류",
-  "unhandledException": "처리되지 않은 예외",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} 초"
-    }
-  },
   "unknown": "알 수 없음",
   "unknownAlbum": "알 수 없는 앨범",
   "unknownArtist": "알 수 없는 아티스트",
   "unknownTitle": "알 수 없는 제목",
   "unliked": "좋아요 표시 안함",
   "unplayed": "재생하지 않음",
-  "upNext": "다음",
-  "upNextName": "다음: {upNextItemName}",
   "username": "사용자명",
-  "validation": {
-    "bothPasswordsSame": "비밀번호가 서로 일치해야 합니다",
-    "mustBeUrl": "이 입력란의 값은 유효한 URL이어야 합니다",
-    "required": "이 입력란은 비워둘 수 없습니다"
-  },
   "version": "버전",
   "video": "비디오",
   "videoTypes": "비디오 유형",
   "viewDetails": "세부 정보 보기",
   "vueClientVersion": "클라이언트 버전",
-  "wizard": {
-    "administratorAccount": "관리자 계정",
-    "allowRemoteAccess": "이 서버로의 원격 접속을 허용합니다",
-    "completeError": "설치 마법사를 완료할 수 없습니다.",
-    "confirmPassword": "비밀번호 확인",
-    "languageLocale": "언어와 지역",
-    "languageSuccessfullySet": "언어가 성공적으로 설정되었습니다.",
-    "metadataLanguagesSet": "메타데이터 언어가 설정되었습니다.",
-    "preferedLanguage": "선호하는 언어",
-    "preferredMetadataLanguage": "선호하는 메타데이터 언어",
-    "remoteAccess": "원격 접속",
-    "remoteAccessSet": "원격 접속 여부가 설정되었습니다.",
-    "setAdminError": "관리자 계정을 만들 수 없습니다.",
-    "setLanguageError": "클라이언트 언어를 설정할 수 없습니다.",
-    "setMetadataError": "메타데이터 언어를 설정할 수 없습니다.",
-    "setRemoteError": "원격 접속 여부를 설정할 수 없습니다.",
-    "setupWizard": "설치 마법사",
-    "userSuccessfullySet": "사용자가 성공적으로 설정되었습니다."
-  },
   "writer": "작가",
   "writing": "집필",
   "year": "연도",

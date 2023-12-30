@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D格式",
   "NoMediaSourcesAvailable": "没有可用的媒体源",
   "NoMediaStreamsAvailable": "所选媒体源种无可用媒体流",
   "accept": "接受",
@@ -10,37 +9,19 @@
   "airPlayDevices": "AirPlay 设备",
   "albums": "专辑",
   "allLanguages": "全部语言",
-  "alphabetically": "按字母排序",
-  "appbar": {
-    "tasks": {
-      "configSync": "正在同步设置…",
-      "scanningItem": "正在扫描“{item}”…"
-    },
-    "tooltips": {
-      "tasks": "运行中的任务"
-    }
-  },
   "architecture": "架构",
   "artist": "艺术家",
   "artists": "艺术家",
-  "aspectRatio": "纵横比",
   "audio": "音频",
-  "audioCodecNotSupported": "音频编码不支持",
   "auto": "自动",
   "badRequest": "错误的请求。请重试",
   "books": "书籍",
-  "browserNotSupported": "您的浏览器不支持播放此文件。",
-  "buttons": {
-    "ok": "确认"
-  },
   "byArtist": "来自{artist}",
   "cancel": "取消",
   "castAndCrew": "演员表",
   "channels": "频道",
-  "clipboardFail": "复制到剪贴板失败",
   "clipboardSuccess": "复制到剪贴板",
   "clipboardUnsupported": "本浏览器不支持复制到剪贴板",
-  "close": "关闭",
   "collectionEmpty": "此集合为空",
   "collections": "收藏",
   "communityRating": "社区评分",
@@ -53,46 +34,19 @@
   "copyStreamURL": "复制流URL",
   "criticRating": "评论家评级",
   "customRating": "自定义评级",
-  "darkModeToggle": "切换深色模式",
   "dateAdded": "加入日期",
   "datePlayed": "播放日期",
   "delete": "删除",
   "deleteItem": "删除媒体",
   "deleteItemDescription": "这将同时在磁盘和媒体库中删除此项目。确认删除？",
   "details": "细节",
-  "dialog": {
-    "upNext": {
-      "hide": "隐藏",
-      "nextItemPlayingIn": "开始于 {time}",
-      "startNow": "现在开始"
-    }
-  },
   "directing": "导演",
   "director": "导演",
   "disabled": "禁用",
   "discNumber": "碟片 {discNumber}",
-  "dislikes": "不喜欢",
-  "downloadItem": "下载 | 全部下载",
-  "edit": "编辑",
   "editMetadata": "编辑元数据",
   "editPerson": "编辑人物",
-  "endDate": "结束日期",
   "endsAt": "结束于 {time}",
-  "episodeNumber": "章节 {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "发生了一个错误",
-    "cantPlayItem": "此项目不能播放",
-    "messages": {
-      "errorCode": "错误代码：{errorCode}",
-      "videoPlayerError": "视频播放器遇到了一个不可恢复的错误。"
-    },
-    "playback": {
-      "mediaError": "遇到了致命的媒体错误，正在尝试恢复",
-      "networkError": "遇到了致命的网络错误，正在尝试恢复"
-    },
-    "unauthorized": "您未被授权访问此页面"
-  },
-  "failedRetrievingDisplayPreferences": "无法获取显示设置首选项。使用默认值。",
   "failedSettingDisplayPreferences": "无法更新显示设置首选项。",
   "failedToRefreshItems": "无法刷新项目",
   "favorite": "最喜爱的",
@@ -103,122 +57,27 @@
   "general": "一般",
   "genericJellyfinPlaceholderDevice": "通用 Jellyfin 设备",
   "genres": "类型",
-  "goBack": "上一步",
-  "goNext": "下一步",
   "googleCastPlaceholderDevice": "Google Cast 设备",
   "guestStar": "特邀明星",
-  "headerExternalIds": "额外编号",
-  "headerPaths": "路径",
   "home": "首页",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "最近添加"
-    }
-  },
   "identify": "确认",
   "identifyConfirmChanges": "您确定要将“{originalItem}”更改为“{newIdentifiedItem}”吗？",
   "identifyInstructResult": "您可以单击其中一张卡片来应用结果",
-  "imageType": {
-    "art": "艺术",
-    "backdrop": "背景",
-    "banner": "横幅",
-    "box": "盒子",
-    "boxRear": "盒子（背面）",
-    "disc": "光盘",
-    "logo": "商标",
-    "menu": "菜单",
-    "primary": "封面图",
-    "screenshot": "截图",
-    "thumb": "缩略图"
-  },
   "images": "图片",
   "incorrectUsernameOrPassword": "用户名或密码错误",
   "instantMix": "速成合辑",
   "instantMixQueued": "速成合辑已添加至队列",
-  "item": {
-    "artist": {
-      "albums": "专辑",
-      "appearsOn": "外观",
-      "discography": "唱片目录",
-      "eps": "剧集",
-      "information": "信息",
-      "singles": "单曲",
-      "videos": "视频"
-    },
-    "cast": "演员",
-    "composer": "作曲家",
-    "crew": "工作人员",
-    "person": {
-      "birth": "出生",
-      "birthPlace": "出生地",
-      "books": "书籍",
-      "death": "去世",
-      "information": "信息",
-      "movies": "电影",
-      "person": "人物",
-      "photos": "相片",
-      "shows": "节目"
-    },
-    "tracklist": {
-      "title": "标题"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "置底",
-    "pushToTop": "置顶",
-    "removeFromQueue": "移出队列"
-  },
-  "itemNotFound": "未找到项目",
   "jellyfinLogo": "Jellyfin 图标",
   "latestLibrary": "最新{libraryName}",
   "libraries": "媒体库",
   "libraryEmpty": "这个库是空的",
   "libraryEmptyFilters": "未找到匹配项。请去掉一些过滤器以显示更多项目",
-  "libraryNotFound": "未找到媒体库",
-  "libraryRefreshQueued": "媒体库将会被更新",
   "liked": "喜欢",
-  "likes": "喜欢的",
-  "links": {
-    "helpTranslate": "帮助我们使用您使用的语言翻译 Jellyfin",
-    "poweredByJellyfin": "此服务器由 Jellyfin 提供支持",
-    "readTheDocumentation": "阅读文档",
-    "reportAnIssue": "报告这个客户端的问题"
-  },
   "liveTv": "电视直播",
-  "login": {
-    "addServer": "添加服务器",
-    "changeServer": "切换服务器",
-    "changeUser": "切换用户",
-    "connect": "连接",
-    "kickedOut": "授权已被撤销，此会话不再有效。请重新登录",
-    "login": "登录",
-    "loginAs": "登录为 {name}",
-    "manualLogin": "手动登录",
-    "rememberMe": "记住我",
-    "selectServer": "选择服务器",
-    "selectUser": "选择用户",
-    "serverAddress": "服务器地址",
-    "serverAddressMustBeUrl": "服务器地址必须是有效的 URL",
-    "serverAddressRequired": "服务器地址为必填项",
-    "serverDashboard": "服务器仪表盘",
-    "serverNotFound": "找不到服务器",
-    "serverVersionTooLow": "服务器版本必须为 10.7.0 或更高"
-  },
   "logout": "注销",
-  "logsAndActivity": {
-    "activity": "活动",
-    "failedGetActivity": "无法获取到活动",
-    "failedGetLogs": "无法获取到日志",
-    "logs": "日志",
-    "noActivityFound": "未找到活动",
-    "noLogsFound": "找不到日志"
-  },
   "manualLogin": "手动登录",
   "mediaInfo": "媒体信息",
   "mediaInfoAspectRatio": "长宽比",
-  "mediaInfoAudioChannelLayout": "布局",
-  "mediaInfoAudioChannels": "声道",
-  "mediaInfoAudioSampleRate": "采样率",
   "mediaInfoFileContainer": "容器",
   "mediaInfoFileFormats": "格式",
   "mediaInfoFilePath": "路径",
@@ -237,7 +96,6 @@
   "mediaInfoTitlesSubtitleCodec": "副标题 | 副标题 {0}",
   "mediaInfoTitlesVideoCodec": "视频 | 视频 {0}",
   "mediaInfoVideoBitDepth": "位深度",
-  "mediaInfoVideoBitrate": "比特率",
   "mediaInfoVideoColorPrimaries": "原色",
   "mediaInfoVideoColorRange": "色彩范围",
   "mediaInfoVideoColorSpace": "色彩空间",
@@ -260,18 +118,9 @@
   "mediaInfoVideoScanType": "扫描类型",
   "mediaInfoVideoTimestamp": "时间戳",
   "menu": "菜单",
-  "metadata": {
-    "source": "来源",
-    "sourceAll": "全部",
-    "title": "标题",
-    "type": "类型"
-  },
   "metadataEditor": "元数据编辑器",
-  "metadataNoResultsMatching": "没有与“{search}”匹配的结果。按回车键来创建一个新的。",
   "metadataRefreshQueued": "刷新元数据已排队",
-  "more": "更多",
   "moreLikeArtist": "更多相似的 {artist}",
-  "moreLikeThis": "更多相关",
   "movies": "电影",
   "name": "名称",
   "networks": "网络",
@@ -282,7 +131,6 @@
   "noResultsFound": "这里空空如也",
   "numberTracks": "{number} 轨道",
   "operatingSystem": "操作系统",
-  "originalAspectRatio": "原始长宽比",
   "originalTitle": "原始标题",
   "overview": "总览",
   "parentalRating": "家长评级",
@@ -293,67 +141,14 @@
   "play": "播放",
   "playCount": "播放次数",
   "playFromBeginning": "从头开始播放",
-  "playback": {
-    "addToQueue": "添加到队列",
-    "clearQueue": "清除队列并停止播放",
-    "playAll": "全部播放",
-    "playNext": "播放下一个",
-    "playbackSource": {
-      "item": "从 {item} 开始播放",
-      "shuffle": "随机播放",
-      "shuffleItem": "从 {item} 开始随机播放",
-      "unknown": "从队列播放"
-    },
-    "queueItems": "{items} 轨道",
-    "saveAsPlaylist": "将队列另存为播放列表",
-    "shuffle": "随机",
-    "shuffleAll": "全部随机播放"
-  },
-  "playbackData": "播放信息",
-  "playbackInfo": {
-    "name": "回放",
-    "playMethod": {
-      "direct": "直接",
-      "name": "方法：",
-      "remux": "Remux",
-      "transcode": "转码"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "流类型：",
-      "unknown": "未知",
-      "video": "视频"
-    }
-  },
   "playbackSettings": "播放设置",
   "played": "已播放",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "错误帧："
-    },
-    "decodedFrames": {
-      "name": "解码帧："
-    },
-    "droppedFrames": {
-      "name": "丢弃帧："
-    },
-    "name": "播放器",
-    "playbackResolution": {
-      "name": "视窗分辨率："
-    },
-    "videoResolution": {
-      "name": "视频分辨率：",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "现在",
   "producer": "制作者",
   "quality": "质量",
   "queue": "队列",
   "rating": "评价",
   "refresh": "刷新",
-  "refreshLibrary": "刷新媒体库",
   "refreshMetadata": "刷新元数据",
   "refreshMetadataHint": "元数据根据设置和仪表盘中启用的网络服务进行刷新",
   "releaseDate": "发布日期",
@@ -368,10 +163,6 @@
   "save": "保存",
   "saved": "已保存",
   "scanForNewAndUpdatedFiles": "扫描新的和有修改的文件",
-  "search": {
-    "name": "搜索",
-    "topResults": "最佳结果"
-  },
   "searchMissingMetadata": "搜索缺少的元数据",
   "searchNoResults": "未找到结果",
   "seasonEpisode": "第{seasonNumber}季，第{episodeNumber}集",
@@ -381,130 +172,8 @@
   "server": "服务器",
   "serverVersion": "服务器版本",
   "serverVersionTooLow": "服务器版本必须为 {version} 或更高",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "访问密钥",
-      "addApiKey": "添加一个 API 密钥",
-      "addNewKey": "添加新的 API 密钥",
-      "apiKeys": "API 密钥",
-      "appName": "应用名称",
-      "createKeyFailure": "创建新 API 密钥时发生错误",
-      "createKeySuccess": "成功地创建了一个新的 API 密钥",
-      "dateCreated": "创建日期",
-      "description": "添加或撤销 API 密钥以便从外部访问你的服务器",
-      "refreshKeysFailure": "刷新 API 密钥时发生错误",
-      "revoke": "撤销",
-      "revokeAll": "撤销所有的 API 密钥",
-      "revokeAllFailure": "撤销所有 API 密钥时发生错误",
-      "revokeAllSuccess": "成功地撤销了所有的 API 密钥",
-      "revokeConfirm": "确认撤销 API 密钥",
-      "revokeFailure": "撤销 API 密钥时发生错误",
-      "revokeSuccess": "成功地撤销了 API 密钥"
-    },
-    "devices": {
-      "appName": "应用名称",
-      "appVersion": "应用版本",
-      "delete": "删除",
-      "deleteAll": "删除全部",
-      "deleteAllDevicesError": "删除所有设备时出错",
-      "deleteAllDevicesSuccess": "所有设备删除成功",
-      "deleteConfirm": "确认删除设备",
-      "deleteDeviceError": "删除设备时出错",
-      "deleteDeviceSuccess": "设备已成功删除",
-      "deviceName": "设备名称",
-      "devices": "设备",
-      "lastActive": "上次活动",
-      "noDevicesFound": "未找到设备",
-      "userName": "用户名"
-    },
-    "help": "帮助",
-    "logsAndActivity": {
-      "activity": "活动",
-      "failedGetActivity": "无法获取活动",
-      "failedGetLogs": "无法获取日志",
-      "logs": "日志",
-      "noActivityFound": "未找到活动",
-      "noLogsFound": "未找到日志"
-    },
-    "settings": "设置"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "编辑您的用户信息",
-      "name": "账户"
-    },
-    "devices": {
-      "description": "查看和管理连接到服务器的设备",
-      "name": "设备"
-    },
-    "dlna": {
-      "description": "配置 DLNA 设置和配置文件",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "设置主页和主屏幕布局",
-      "name": "主屏幕"
-    },
-    "libraries": {
-      "description": "管理媒体库及其元数据",
-      "name": "媒体库"
-    },
-    "liveTvAndDvr": {
-      "description": "管理电视调谐器，节目表数据提供商和 DVR 设置",
-      "name": "直播电视和 DVR"
-    },
-    "logs": {
-      "description": "读取和搜索服务器日志和用户活动",
-      "name": "日志和活动"
-    },
-    "mediaPlayers": {
-      "description": "设置媒体播放器对此设备的行为",
-      "name": "媒体播放器"
-    },
-    "networking": {
-      "description": "管理此服务器的网络设置",
-      "name": "网络"
-    },
-    "notifications": {
-      "description": "管理和配置此服务器发送的通知",
-      "name": "通知"
-    },
-    "playback": {
-      "description": "编辑此设备的播放首选项",
-      "name": "播放"
-    },
-    "plugins": {
-      "description": "添加和配置此服务器的新功能",
-      "name": "插件"
-    },
-    "scheduledTasks": {
-      "description": "管理在此服务器上运行的计划任务",
-      "name": "计划任务"
-    },
-    "server": {
-      "description": "配置此服务器的语言和商标",
-      "name": "服务器"
-    },
-    "subtitles": {
-      "description": "控制字幕在此设备上的显示方式",
-      "name": "字幕"
-    },
-    "transcodingAndStreaming": {
-      "description": "管理此服务器如何处理转码和流式传输到客户端",
-      "name": "转码和流式传输"
-    },
-    "users": {
-      "description": "管理用户及其权限",
-      "name": "用户"
-    }
-  },
   "shows": "电视剧",
   "signIn": "登录",
-  "snackbar": {
-    "addedToQueue": "添加到队列中",
-    "playNext": "所选项会在当前项目结束后播放",
-    "routeValidationError": "路由参数中指定的 routeId 不正确"
-  },
   "songs": "歌曲",
   "sortByType": "根据 {type}",
   "sortTitle": "排序标题",
@@ -516,107 +185,28 @@
   "studios": "工作室",
   "subtitles": "字幕",
   "syncPlayGroups": "SyncPlay 组",
-  "syncingInProgress": "正在同步",
   "tagline": "标语",
   "tags": "标签",
   "themeSong": "主题曲",
   "themeVideo": "主题视频",
-  "tooltips": {
-    "changeLanguage": "语言",
-    "switchToAuto": "跟随系统主题",
-    "switchToDarkMode": "切换到深色模式",
-    "switchToLightMode": "切换到浅色模式"
-  },
   "trailer": "预告片",
-  "transcodingInfo": {
-    "name": "转码",
-    "transcodingFramerate": {
-      "name": "帧率 ：",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "进度：",
-    "transcodingReason": {
-      "name": "原因：| 原因：",
-      "reasons": {
-        "anamorphicVideoNotSupported": "变形视频不支持",
-        "audioBitDepthNotSupported": "音频比特深度不支持",
-        "audioBitrateNotSupported": "音频比特率不支持",
-        "audioChannelsNotSupported": "音频通道数不支持",
-        "audioCodecNotSupported": "音频编码不支持",
-        "audioProfileNotSupported": "音频编码的配置文件不支持",
-        "audioSampleRateNotSupported": "音频采样率不支持",
-        "containerBitrateExceedsLimit": "容器比特率超过设定的限制",
-        "containerNotSupported": "容器不支持",
-        "interlacedVideoNotSupported": "隔行扫描视频不支持",
-        "refFramesNotSupported": "参考帧不支持",
-        "secondaryAudioNotSupported": "二级音轨不支持",
-        "subtitleCodecNotSupported": "字幕编码不支持",
-        "videoBitDepthNotSupported": "视频的比特深度不支持",
-        "videoCodecNotSupported": "视频编码不支持",
-        "videoFramerateNotSupported": "视频帧率不支持",
-        "videoLevelNotSupported": "视频编码的级别不支持",
-        "videoProfileNotSupported": "视频编码的配置文件不支持",
-        "videoResolutionNotSupported": "视频的分辨率不支持"
-      }
-    }
-  },
   "type": "类型",
-  "unableGetPublicUsers": "无法获取用户",
   "unableGetRelated": "无法获取相关项目",
-  "unableGetServerConfiguration": "无法获取服务器配置",
-  "unableToRefreshLibrary": "无法刷新媒体库",
-  "unableToToggleLike": "无法更改此元素的收藏状态",
   "unableToTogglePlayed": "无法更新观看状态",
   "undefined": "未定义",
   "unexpectedError": "意外的错误",
-  "unhandledException": "未处理的异常",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} 秒 | {count} 秒"
-    }
-  },
   "unknown": "未知",
   "unknownAlbum": "未知专辑",
   "unknownArtist": "未知艺术家",
   "unknownTitle": "未知标题",
   "unliked": "不喜欢",
   "unplayed": "未播放",
-  "upNext": "下一个",
-  "upNextName": "接下来：{upNextItemName}",
   "username": "用户名",
-  "validation": {
-    "bothPasswordsSame": "两次密码必须相同",
-    "mustBeUrl": "该字段必须是有效的 URL",
-    "required": "这是必填栏"
-  },
   "version": "版本号",
   "video": "视频",
   "videoTypes": "视频类型",
   "viewDetails": "查看详情",
   "vueClientVersion": "客户端版本",
-  "wizard": {
-    "administratorAccount": "管理员账户",
-    "allowRemoteAccess": "允许远程访问此服务器",
-    "completeError": "无法完成设置向导。",
-    "confirmPassword": "确认密码",
-    "languageLocale": "语言和本地化",
-    "languageSuccessfullySet": "语言设置成功。",
-    "metadataLanguagesSet": "元数据语言已设置。",
-    "preferedLanguage": "首选的语言",
-    "preferredMetadataLanguage": "首选的元数据语言",
-    "remoteAccess": "远程访问",
-    "remoteAccessSet": "远程访问设置成功。",
-    "setAdminError": "无法创建一个管理员账户。",
-    "setLanguageError": "无法设置客户端语言。",
-    "setMetadataError": "无法设置元数据语言。",
-    "setRemoteError": "无法设置远程访问设定。",
-    "setupWizard": "设置向导",
-    "userSuccessfullySet": "用户设置成功。"
-  },
   "writer": "编剧",
   "writing": "写作",
   "year": "年份",

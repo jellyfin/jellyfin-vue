@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D pışımı",
   "NoMediaSourcesAvailable": "Qatynauly tasyğyşderekterdıñ közderı joq",
   "actor": "Aktör",
   "actors": "Aktörler",
@@ -8,27 +7,12 @@
   "airPlayDevices": "AirPlay qūrylğylary",
   "albums": "Älbomdar",
   "allLanguages": "Barlyq tılder",
-  "alphabetically": "Älıpbi boiynşa",
-  "appbar": {
-    "tasks": {
-      "configSync": "Parametrler ündestırilude…"
-    },
-    "tooltips": {
-      "tasks": "Oryndalyp jatqan tapsyrmalar"
-    }
-  },
   "architecture": "Arhitekturasy",
   "artist": "Oryndauşy",
   "artists": "Oryndauşylar",
-  "aspectRatio": "Pışımdık araqatynasy",
   "audio": "Dybys",
-  "audioCodecNotSupported": "Dybys kodegıne qoldau körsetılmeidı",
   "badRequest": "Jaramsyz saual. Ärekettı qaitalañyz",
   "books": "Kıtaptar",
-  "browserNotSupported": "Būl faildy oinatu üşın şolğyşyñyz qoldau körsetpeidı.",
-  "buttons": {
-    "ok": "Jaraidy"
-  },
   "byArtist": "{artist} arqyly",
   "cancel": "Boldyrmau",
   "castAndCrew": "Röldegıler men qyzmetkerler",
@@ -41,35 +25,15 @@
   "continueWatching": "Qaraudy jalğastyru",
   "criticRating": "Synşylar bağalauy",
   "customRating": "Teñşelgen sanat",
-  "darkModeToggle": "Qarañğy rejımdı qosu",
   "dateAdded": "Üstelgen künı",
   "details": "Egjeiler",
-  "dialog": {
-    "upNext": {
-      "hide": "Jasyru",
-      "nextItemPlayingIn": "{time} kezınde bastau",
-      "startNow": "Qazır bastau"
-    }
-  },
   "directing": "Rejısör",
   "director": "Rejisör",
   "disabled": "Öşırılgen",
   "discNumber": "Diskı {discNumber}",
-  "dislikes": "Ūnatpaular",
-  "edit": "Öñdeu",
   "editMetadata": "Metaderekterdı öñdeu",
   "editPerson": "Tūlğany öñdeu",
-  "endDate": "Aiaqtalu künı",
   "endsAt": "Soñy {time} kezınde",
-  "episodeNumber": "Telebölım {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Qate oryn aldy",
-    "messages": {
-      "errorCode": "Qate kody: {errorCode}",
-      "videoPlayerError": "Beine oinatqyş qalpyna keltіrіlmeitіn qatege tap boldy."
-    }
-  },
-  "failedRetrievingDisplayPreferences": "Beineleu teñşelımderın alu mümkın emes. Ädepkı mağynalaryn paidalanuda.",
   "failedSettingDisplayPreferences": "Beineleu teñşelımderın jañartu mümkın emes.",
   "failedToRefreshItems": "jañartu sätsız aiaqtaldy",
   "favorite": "Tañdauly",
@@ -82,116 +46,20 @@
   "genres": "Janrlar",
   "googleCastPlaceholderDevice": "Google Cast qūrylğysy",
   "guestStar": "Şaqyrylğan aktör",
-  "headerExternalIds": "Syrtqy säikestendırgışter",
-  "headerPaths": "Joly",
   "home": "Basqy",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Juyqta üstelgen"
-    }
-  },
-  "imageType": {
-    "art": "Oiu suret",
-    "backdrop": "Artqy suret",
-    "banner": "Baner",
-    "box": "Qorap",
-    "boxRear": "Qorap arty",
-    "disc": "Diskı",
-    "logo": "Logotip",
-    "menu": "Mäzır",
-    "primary": "Negızgı",
-    "screenshot": "Ekran suretı",
-    "thumb": "Nobai"
-  },
   "images": "Suretter",
   "incorrectUsernameOrPassword": "Jaramsyz paidalanuşy aty ne paröl",
-  "item": {
-    "artist": {
-      "appearsOn": "Körınıster",
-      "discography": "Diskografia",
-      "information": "Aqparat",
-      "videos": "Beineler"
-    },
-    "cast": "Röldegiler",
-    "composer": "Kompozitor",
-    "crew": "Qyzmetkerler",
-    "person": {
-      "birth": "Tuğany",
-      "birthPlace": "Tuğan orny",
-      "books": "Kıtaptar",
-      "death": "Qaitysy",
-      "information": "Aqparat",
-      "movies": "Filmder",
-      "person": "Tūlğa",
-      "photos": "Fotosuretter",
-      "shows": "Körsetımder"
-    },
-    "tracklist": {
-      "title": "Atauy"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "Soñyna jyljytu",
-    "pushToTop": "Basyna jyljytu",
-    "removeFromQueue": "Kezekten alastau"
-  },
-  "itemNotFound": "Tarmaq tabylmady",
   "jellyfinLogo": "Jellyfin logotipı",
   "latestLibrary": "Eñ keiıngı {libraryName}",
   "libraries": "Tasyğyşhanalar",
   "libraryEmpty": "Būl tasyğyşhana bos",
   "libraryEmptyFilters": "Säikester joq. Basqa tarmaqtardy körsetu üşın keibır süzgılerdı alastañyz",
-  "libraryNotFound": "Tasyğyşhana tabylmady",
-  "libraryRefreshQueued": "Tasyğyşhana jañğyrtu kezekte",
   "liked": "Ūnaidy",
-  "likes": "Ūnatular",
-  "links": {
-    "helpTranslate": "Jellyfin-dı öz tılıñızge tärjımeleñiz",
-    "poweredByJellyfin": "Būl server Jellyfin arqyly ısteidı",
-    "readTheDocumentation": "Qūjattamany oqu",
-    "reportAnIssue": "Osy tūtynğyş mäselesı turaly habarlau"
-  },
-  "login": {
-    "addServer": "Server üsteu",
-    "changeServer": "Serverdı auystyru",
-    "changeUser": "Paidalanuşyny auystyru",
-    "connect": "Qosylu",
-    "kickedOut": "Rastau qaytarylyp alyndy jäne būl seans endı jaramsyz. Jüiege qaita kırıñız",
-    "login": "Kıru",
-    "loginAs": "{name} atynan kıru",
-    "manualLogin": "Qolmen kıru",
-    "rememberMe": "Este saqtau",
-    "selectServer": "Serverdı tañdau",
-    "selectUser": "Paidalanuşyny tañdau",
-    "serverAddress": "Server mekenjaiy",
-    "serverAddressMustBeUrl": "Server mekenjaiynda jaramdy URL qajet",
-    "serverAddressRequired": "Server mekenjaiy qajet",
-    "serverDashboard": "Taqta",
-    "serverNotFound": "Server tabylmady",
-    "serverVersionTooLow": "Server nūsqasy 10.7.0 nemese odan joğary boluy kerek"
-  },
   "logout": "Şyğu",
-  "logsAndActivity": {
-    "activity": "Äreketter",
-    "failedGetActivity": "Äreketterdı alu mümkın emes",
-    "failedGetLogs": "Jūrnaldardy alu mümkın emes",
-    "logs": "Jūrnaldar",
-    "noActivityFound": "Äreketter tabylmady",
-    "noLogsFound": "Jūrnaldar tabylmady"
-  },
   "manualLogin": "Qolmen kıru",
   "menu": "Mäzır",
-  "metadata": {
-    "source": "Qainar közı",
-    "sourceAll": "Bärı",
-    "title": "Atauy",
-    "type": "Türı"
-  },
   "metadataEditor": "Metaderekter öñdegışı",
-  "metadataNoResultsMatching": "\"{search}\" saualyna säikes keletіn nätijeler tabylmady. Jañasyn jasau üşіn Enter pernesın basyñyz.",
-  "more": "Köbırek",
   "moreLikeArtist": "{artist} siaqty ūqsastar",
-  "moreLikeThis": "Osy siaqty köbırek",
   "movies": "Filmder",
   "name": "Aty",
   "networks": "Jelıler",
@@ -202,7 +70,6 @@
   "noResultsFound": "Mūnda eşteñe joq",
   "numberTracks": "{number} jolşyq",
   "operatingSystem": "Operasialyq jüie",
-  "originalAspectRatio": "Bastapqy pışımdık araqatynasy",
   "originalTitle": "Bastapqy atauy",
   "overview": "Jalpy şolu",
   "parentalRating": "Jastas sanaty",
@@ -212,66 +79,13 @@
   "person": "Tūlğa",
   "play": "Oinatu",
   "playFromBeginning": "Basynan oinatu",
-  "playback": {
-    "addToQueue": "Kezekke üsteu",
-    "clearQueue": "Kezektı tazalap, oinatudy toqtatu",
-    "playAll": "Bärın oinatu",
-    "playNext": "Kelesını oinatu",
-    "playbackSource": {
-      "item": "{item} oinatu",
-      "shuffle": "Aralastyryp oinatu",
-      "shuffleItem": "Aralastyryp {item} oinatu",
-      "unknown": "Kezekten oinatu"
-    },
-    "queueItems": "{items} jolşyqtar",
-    "saveAsPlaylist": "Kezektı oinatu tızımı retınde saqtau",
-    "shuffle": "Aralastyru",
-    "shuffleAll": "Barlyğyn aralastyru"
-  },
-  "playbackData": "Oinatu derekterı",
-  "playbackInfo": {
-    "name": "Oinatu",
-    "playMethod": {
-      "direct": "Tıkelei",
-      "name": "Ädısı:",
-      "remux": "Remuks",
-      "transcode": "Qaita kodtau"
-    },
-    "streamType": {
-      "dash": "DASH tehnologiasy",
-      "hls": "HLS tehnologiasy",
-      "name": "Ağyn türı:",
-      "unknown": "Belgısız",
-      "video": "Beine"
-    }
-  },
   "playbackSettings": "Oinatu parametrlerı",
   "played": "Oinatylğan",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Bülıngen kadrlar:"
-    },
-    "decodedFrames": {
-      "name": "Kodtaudan şesilgen kadrlar:"
-    },
-    "droppedFrames": {
-      "name": "Ötkızılgen kadrlar:"
-    },
-    "name": "Oinatqyş",
-    "playbackResolution": {
-      "name": "Qarau terezesıniñ ajyratymdylyǵy:"
-    },
-    "videoResolution": {
-      "name": "Beine ajyratymdylyğy:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "Ağymda",
   "producer": "Prodüser",
   "quality": "Sapasy",
   "queue": "Kezek",
   "rating": "Bağalau",
-  "refreshLibrary": "Tasyğyşhanany jañğyrtu",
   "releaseDate": "Şyğaru künı",
   "remoteDevices": "Qaşyqtağy qūrylğylar",
   "resumable": "Jalğastyra alatyn",
@@ -279,136 +93,14 @@
   "role": "Rölı",
   "save": "Saqtau",
   "saved": "Saqtalğan",
-  "search": {
-    "name": "Izdeu",
-    "topResults": "Töbelık nätijeler"
-  },
   "seasonEpisode": "Mausym {seasonNumber}, Telebölım {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Telehikaia",
   "server": "Server",
   "serverVersion": "Server nūsqasy",
   "serverVersionTooLow": "Server nusqasy 10.7.0 ne odan joǵary qajet",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Qatynau tokenı",
-      "addApiKey": "API-kılttı üsteu",
-      "addNewKey": "Jaña API-kılttı üsteu",
-      "apiKeys": "API-kıltter",
-      "appName": "Qoldanba aty",
-      "createKeyFailure": "Jaña API-kılt jasau kezınde qate",
-      "createKeySuccess": "Jaña API-kılt sättı üstelındı",
-      "dateCreated": "Jasalu künı",
-      "description": "Serverge syrttan qatynau üşın API-kıltterın qosu jäne joiy",
-      "refreshKeysFailure": "API-kıltterdı jañartu kezınde qate",
-      "revokeAll": "Barlyq API-kıltterdı qaitaryp alu",
-      "revokeAllFailure": "Barlyq API-kıltterdı qaitaryp alu kezınde qate",
-      "revokeAllSuccess": "barlyq API-kıltter sättı qaitaryp alyndy",
-      "revokeFailure": "API-kılttı qaitaryp alu kezınde qate",
-      "revokeSuccess": "API-kılt sättı qaitaryp alyndy"
-    },
-    "devices": {
-      "appName": "Qoldanba aty",
-      "appVersion": "Qoldanba nūsqasy",
-      "delete": "Joiu",
-      "deleteAll": "Barlyğyn joiu",
-      "deleteAllDevicesError": "Barlyq qūrylğylardy joiu qatesı",
-      "deleteAllDevicesSuccess": "Barlyq qūrylğylar sättı joiyldy",
-      "deleteDeviceError": "Qūrylğy joiu qatesı",
-      "deleteDeviceSuccess": "Qūrylğy sättı joiyldy",
-      "deviceName": "Qūrylğy aty",
-      "devices": "Qūrylğylar",
-      "lastActive": "Soñğy äreket",
-      "noDevicesFound": "Qūrylūylar tabylmady",
-      "userName": "Paidalanuşy aty"
-    },
-    "help": "Anyqtama",
-    "logsAndActivity": {
-      "activity": "Äreketter",
-      "failedGetActivity": "Äreketterdı alu mümkın emes",
-      "failedGetLogs": "Jūrnaldardy alu mümkın emes",
-      "logs": "Jūrnaldar",
-      "noActivityFound": "Äreketter tabylmady",
-      "noLogsFound": "Jūrnaldar tabylmady"
-    },
-    "settings": "Parametrler"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Paıdalanuşy mälımetterın öñdeu",
-      "name": "Tırkelgı"
-    },
-    "devices": {
-      "description": "Serverge qosylğan qūrylğylardy qarau jäne basqaru",
-      "name": "Qūrylğylar"
-    },
-    "dlna": {
-      "description": "DLNA parametrlerı men profaildy teñşeu",
-      "name": "DLNA qyzmetı"
-    },
-    "home": {
-      "description": "Basqy bölіmderdі jäne basqy ekrannyñ ornalasuyn teñşeu",
-      "name": "Basqy ekran"
-    },
-    "libraries": {
-      "description": "Tasyğyşhanalar men olardyñ metaderekterіn basqaru",
-      "name": "Tasyğyşhanalar"
-    },
-    "liveTvAndDvr": {
-      "description": "TD-tünerlerdı, telegid derekterın jetkızuşılerdı jäne DVR parametrlerın basqaru",
-      "name": "Efir ben DVR"
-    },
-    "logs": {
-      "description": "Server jūrnaldaryn jäne paidalanuşy äreketterіn oqu jäne ızdeu",
-      "name": "Jūrnaldar men äreketter"
-    },
-    "mediaPlayers": {
-      "description": "Tasyğyşderekter oinatqyştardyñ osy qūrylğy üşın qalai äreket etuın teñşeu",
-      "name": "Tasyğyşderekter oinatqyştary"
-    },
-    "networking": {
-      "description": "Osy serverdіñ jelі parametrlerın basqaru",
-      "name": "Jelılık jūmys"
-    },
-    "notifications": {
-      "description": "Osy server jіbergen habarlandyrulardy basqaru jäne teñşeu",
-      "name": "Habarlandyrular"
-    },
-    "playback": {
-      "description": "Osy qūrylğy üşın oinatu teñşelіmderın öñdeu",
-      "name": "Oinatu"
-    },
-    "plugins": {
-      "description": "Osy serverge jaña mümkındıkterdı qosu jäne teñşeu",
-      "name": "Plaginder"
-    },
-    "scheduledTasks": {
-      "description": "Osy serverde oryndalatyn josparlanğan tapsyrmalardy basqaru",
-      "name": "Josparlauşy"
-    },
-    "server": {
-      "description": "Osy serverdegı tıldı jäne brendiñdі teñşeu",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Osy qūrylğyda subtitrlerdіñ qalai beinelenetіnіn basqaru",
-      "name": "Subtitrler"
-    },
-    "transcodingAndStreaming": {
-      "description": "Qaita kodtaudy jäne tūtynğyştarğa taratudy būl server qalay öñdeitının basqaru",
-      "name": "Qaita kodtau men taratu"
-    },
-    "users": {
-      "description": "Paidalanuşylardy jäne olardyñ rūqsattaryn basqaru",
-      "name": "Paidalanuşylar"
-    }
-  },
   "shows": "Körsetımder",
   "signIn": "Kıru",
-  "snackbar": {
-    "addedToQueue": "Kezekke üstelındı",
-    "playNext": "Tañdalğan tarmaq ağymdağydan keiın oınatylady"
-  },
   "songs": "Äuender",
   "sortByType": "{type} boiynşa",
   "sortTitle": "Sūryptau atauy",
@@ -420,102 +112,24 @@
   "studios": "Studialar",
   "subtitles": "Subtitrler",
   "syncPlayGroups": "SyncPlay toptary",
-  "syncingInProgress": "Ündestıru oryndaluda",
   "tagline": "Ūrany",
   "tags": "Tegter",
   "themeSong": "Taqyryptyq äuen",
   "themeVideo": "Taqyryptyq beine",
-  "tooltips": {
-    "changeLanguage": "Tılı",
-    "switchToDarkMode": "Qarañğy rejımge auysu",
-    "switchToLightMode": "Jaryq rejımge auysu"
-  },
   "trailer": "Treiler",
-  "transcodingInfo": {
-    "name": "Qaita kodtauda",
-    "transcodingFramerate": {
-      "name": "Kadr jyld-ğy:",
-      "value": "{value} kadr/s"
-    },
-    "transcodingProgress": "Barysy:",
-    "transcodingReason": {
-      "name": "Sebebı: | Sebepterı:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Anamorftyq beinege qoldau körsetılmeidı",
-        "audioBitDepthNotSupported": "Dybystyñ bittık tereñdıgıne qoldau körsetılmeidı",
-        "audioBitrateNotSupported": "Dybys jyldamdyğyna qoldau körsetılmeidı",
-        "audioChannelsNotSupported": "Dybys arnalardyñ sanyna qoldau körsetılmeidı",
-        "audioCodecNotSupported": "Dybys kodegıne qoldau körsetılmeidı",
-        "audioProfileNotSupported": "Dybys kodegıniñ profailyna qoldau körsetılmeidı",
-        "audioSampleRateNotSupported": "Dybystyñ ülgı jiılıgıne qoldau körsetılmeidı",
-        "containerBitrateExceedsLimit": "Konteynerdiñ qarqyny belgilengen şekten asadı",
-        "containerNotSupported": "Konteinerge qoldau körsetılmeidı",
-        "interlacedVideoNotSupported": "Kezektesulık beinege qoldau körsetılmeidı",
-        "refFramesNotSupported": "Anyqtamalyq kadrlarğa qoldau körsetılmeidı",
-        "secondaryAudioNotSupported": "Qosymşa dybys jolşyqtarğa qoldau körsetılmeidı",
-        "subtitleCodecNotSupported": "Subtitr kodegıne qoldau körsetılmeidı",
-        "videoBitDepthNotSupported": "Beinenıñ bittık tereñdıgıne qoldau körsetılmeidı",
-        "videoCodecNotSupported": "Beine kodegine qoldau körsetılmeidı",
-        "videoFramerateNotSupported": "Beinenıñ kadr jiılıgıne qoldau körsetılmeidı",
-        "videoLevelNotSupported": "Beine kodek deñgeiıne qoldau körsetılmeidı",
-        "videoProfileNotSupported": "Beine kodegınıñ profailyna qoldau körsetılmeidı",
-        "videoResolutionNotSupported": "Beine ajyratymdylyğyna qoldau körsetılmeidı"
-      }
-    }
-  },
   "type": "Türı",
-  "unableGetPublicUsers": "Paidalanuşylardy alu mümkın emes",
   "unableGetRelated": "Qatysty tarmaqtardy alu mümkın emes",
-  "unableGetServerConfiguration": "Server teñşelımderın alu mümkın emes",
-  "unableToRefreshLibrary": "Tasyğyşhanany jañğyrtu mümkın emes",
-  "unableToToggleLike": "Tarmaqtyñ \"ūnaidy\" statusyn özgertu mümkın emes",
   "unableToTogglePlayed": "Qarau statusyn jañartu mümkın emes",
   "undefined": "Anyqtalmady",
   "unexpectedError": "Kütpegen qate",
-  "unhandledException": "Öñdelmeitın qiys",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} Kibit/s",
-      "mbps": "{value} Mibit/s"
-    },
-    "time": {
-      "seconds": "{count} sekund | {count} sekund"
-    }
-  },
   "unliked": "Ūnamaidy",
   "unplayed": "Oinatylmağan",
-  "upNext": "Kezektı",
-  "upNextName": "Kezektı: {upNextItemName}",
   "username": "Paidalanuşy aty",
-  "validation": {
-    "bothPasswordsSame": "Paröldın ekeuı de bırdei boluy qajet",
-    "mustBeUrl": "Būl örıste jaramdy URL qajet",
-    "required": "Būl örıs qajet"
-  },
   "version": "Nūsqasy",
   "video": "Beine",
   "videoTypes": "Beine türlerı",
   "viewDetails": "Egjeilerdı qarau",
   "vueClientVersion": "Tūtynğyş nūsqasy",
-  "wizard": {
-    "administratorAccount": "Äkımşılık tırkelgı",
-    "allowRemoteAccess": "Serverge syrtqy qosylymdar üşın rūqsat etu",
-    "completeError": "İske qosu şeberı aıaqtalmady.",
-    "confirmPassword": "Paröldı rastau",
-    "languageLocale": "Tıl men jergılıktı parametrler",
-    "languageSuccessfullySet": "Tıl sättı ornatyldy.",
-    "metadataLanguagesSet": "Metaderekter tılderı ornatyldy.",
-    "preferedLanguage": "Tıl teñşelımı",
-    "preferredMetadataLanguage": "Metaderekter tılınıñ teñşelımı",
-    "remoteAccess": "Qaşyqtan qatynau",
-    "remoteAccessSet": "Qaşyqtan qatynau ornatyldy.",
-    "setAdminError": "Äkımşılık tırkelgını jasau mümkın emes.",
-    "setLanguageError": "Tūtynğyş tılın ornatu mümkın emes.",
-    "setMetadataError": "Metaderekter tılderın ornatu mümkın emes.",
-    "setRemoteError": "Qaşyqtan qatynau parametrlerı ornatylmady.",
-    "setupWizard": "Ornatu şeberı",
-    "userSuccessfullySet": "Paidalanuşy sättı ornatyldy."
-  },
   "writer": "Senarişy",
   "writing": "Senari",
   "year": "Jyl",

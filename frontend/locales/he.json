@@ -1,5 +1,4 @@
 {
-  "3DFormat": "תסדיר תלת ממד",
   "NoMediaSourcesAvailable": "אין מקור מדיה זמין",
   "NoMediaStreamsAvailable": "אין תזרימי מדיה זמינים למקור הנבחר",
   "accept": "אישור",
@@ -10,37 +9,19 @@
   "airPlayDevices": "מכשירי AirPlay",
   "albums": "אלבומים",
   "allLanguages": "כל השפות",
-  "alphabetically": "אלף בית",
-  "appbar": {
-    "tasks": {
-      "configSync": "הגדרות מסונכרנות…",
-      "scanningItem": "‚{item}’ נסרק…"
-    },
-    "tooltips": {
-      "tasks": "משימות רצות"
-    }
-  },
   "architecture": "ארכיטקטורה",
   "artist": "אומן",
   "artists": "אומנים",
-  "aspectRatio": "יחס תצוגה",
   "audio": "שמע",
-  "audioCodecNotSupported": "מפענח השמע אינו נתמך",
   "auto": "אוטומטי",
   "badRequest": "בקשה נכשלה. נא לנסות שוב",
   "books": "ספרים",
-  "browserNotSupported": "הדפדפן שלך אינו נתמך בהפעלת קובץ זה.",
-  "buttons": {
-    "ok": "בסדר"
-  },
   "byArtist": "לפי {artist}",
   "cancel": "ביטול",
   "castAndCrew": "שחקנים וצוות",
   "channels": "ערוצים",
-  "clipboardFail": "ההעתקה ללוח הגזירים נכשלה",
   "clipboardSuccess": "הועתק ללוח הגזירים",
   "clipboardUnsupported": "אין תמיכה בהעתקה ללוח הגזירים בדפדפן הזה",
-  "close": "סגירה",
   "collectionEmpty": "האוסף ריק",
   "collections": "אוספים",
   "communityRating": "דירוג קהילה",
@@ -53,46 +34,19 @@
   "copyStreamURL": "העתקת כתובת תזרים",
   "criticRating": "דירוג מבקר",
   "customRating": "דירוג מותאם אישית",
-  "darkModeToggle": "החלפת מצב כהה",
   "dateAdded": "תאריך הוספה",
   "datePlayed": "תאריך נגינה",
   "delete": "מחיקה",
   "deleteItem": "מחיקת מדיה",
   "deleteItemDescription": "מחיקת הפריט הזה תמחק אותו ממערכת הקבצים ומספריית המדיה שלך. להמשיך?",
   "details": "פרטים",
-  "dialog": {
-    "upNext": {
-      "hide": "הסתרה",
-      "nextItemPlayingIn": "מתחיל בעוד {time}",
-      "startNow": "להתחיל עכשיו"
-    }
-  },
   "directing": "בימוי",
   "director": "במאי",
   "disabled": "מושבת",
   "discNumber": "תקליטור {discNumber}",
-  "dislikes": "לא אהבתי",
-  "downloadItem": "הורדה | הורדה של הכול",
-  "edit": "עריכה",
   "editMetadata": "עריכת נתוני־על",
   "editPerson": "עריכת אדם",
-  "endDate": "תאריך סיום",
   "endsAt": "מסתיים בעוד {time}",
-  "episodeNumber": "פרק {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "קרתה תקלה",
-    "cantPlayItem": "אי אפשר לנגן את הפריט הזה",
-    "messages": {
-      "errorCode": "קוד תקלה: {errorCode}",
-      "videoPlayerError": "נגן הווידאו נתקל בשגיאה מכרעת."
-    },
-    "playback": {
-      "mediaError": "אירעה שגיאת מדיה חמורה, מתבצע ניסיון שיקום",
-      "networkError": "אירעה שגיאת רשת חמורה, מתבצע ניסיון שיקום"
-    },
-    "unauthorized": "אסור לך לגשת לעמוד הזה"
-  },
-  "failedRetrievingDisplayPreferences": "לא ניתן למשוך הגדרות תצוגה. ייעשה שימוש בהגדרות אחרונות שנשמרו.",
   "failedSettingDisplayPreferences": "לא ניתן לעדכן הגדרות תצוגה.",
   "failedToRefreshItems": "נכשל ברענון פריטים",
   "favorite": "מועדף",
@@ -103,104 +57,20 @@
   "general": "כללי",
   "genericJellyfinPlaceholderDevice": "מכשיר ג'ליפין כללי",
   "genres": "ז'אנרים",
-  "goBack": "חזרה",
-  "goNext": "הבא",
   "googleCastPlaceholderDevice": "מכשיר הזרמה של גוגל",
   "guestStar": "כוכב אורח",
-  "headerExternalIds": "מזהה חיצוני",
-  "headerPaths": "נתיב",
   "home": "בית",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "נוסף לאחרונה"
-    }
-  },
   "identify": "זהות",
-  "imageType": {
-    "art": "אומנות",
-    "backdrop": "תפאורה",
-    "banner": "באנר",
-    "box": "קופסא",
-    "boxRear": "קופסא (אחורי)",
-    "disc": "דיסק",
-    "logo": "סמל",
-    "menu": "תפריט",
-    "primary": "ראשי",
-    "screenshot": "צילום מסך",
-    "thumb": "ממוזער"
-  },
   "images": "תמונות",
   "incorrectUsernameOrPassword": "שם משתמש או סיסמא לא נכונים",
-  "item": {
-    "artist": {
-      "albums": "אלבומים",
-      "appearsOn": "משתתף/ת",
-      "discography": "דיסקוגרפיה",
-      "information": "מידע",
-      "singles": "סינגלים",
-      "videos": "סרטונים"
-    },
-    "cast": "שחקנים/ות",
-    "composer": "מלחין",
-    "crew": "צוות הפקה",
-    "person": {
-      "birth": "נולד/ה",
-      "birthPlace": "מקום לידה",
-      "books": "ספרים",
-      "death": "נפטר/ה",
-      "information": "מידע",
-      "movies": "סרטים",
-      "person": "אדם",
-      "photos": "תמונות",
-      "shows": "סדרות"
-    },
-    "tracklist": {
-      "title": "כותרת"
-    }
-  },
-  "itemMenu": {
-    "pushToTop": "עבור להתחלה",
-    "removeFromQueue": "הסרה מהתור"
-  },
-  "itemNotFound": "פריט לא נמצא",
   "jellyfinLogo": "סמל של ג'ליפין",
   "latestLibrary": "{libraryName} העדכני ביותר",
   "libraries": "ספריות",
   "libraryEmpty": "הספריה ריקה",
-  "libraryNotFound": "לא נמצא ספרייה",
-  "login": {
-    "addServer": "הוספת שרת",
-    "changeServer": "החלפת שרת",
-    "changeUser": "החלפת משתמש",
-    "connect": "חיבור",
-    "login": "כניסה",
-    "loginAs": "כניסה בתור {name}",
-    "manualLogin": "כניסה ידנית",
-    "rememberMe": "לזכור אותי",
-    "selectServer": "נא לבחור שרת",
-    "selectUser": "נא לבחור משתמש",
-    "serverAddress": "כתובת שרת",
-    "serverAddressMustBeUrl": "כתובת השרת חייבת להיות כתובת תקפה",
-    "serverAddressRequired": "כתובת השרת היא חובה",
-    "serverDashboard": "לוח בקרה של השרת",
-    "serverNotFound": "השרת לא נמצא",
-    "serverVersionTooLow": "גרסת השרת חייבת להיות 10.7.0 ומעלה"
-  },
   "logout": "יציאה",
-  "logsAndActivity": {
-    "activity": "פעילות",
-    "failedGetActivity": "לא ניתן לקבל פעילות",
-    "failedGetLogs": "לא ניתן לקבל יומנים",
-    "logs": "יומנים",
-    "noActivityFound": "לא נמצאו פעילויות",
-    "noLogsFound": "לא נמצאו יומנים"
-  },
   "manualLogin": "כניסה ידנית",
   "mediaInfo": "פרטי מדיה",
   "mediaInfoAspectRatio": "יחס תצוגה",
-  "mediaInfoAudioChannelLayout": "פריסה",
-  "mediaInfoAudioChannels": "ערוצים",
-  "mediaInfoAudioSampleRate": "קצב דגימה",
   "mediaInfoFileContainer": "מכולה",
   "mediaInfoFileFormats": "תסדיר",
   "mediaInfoFilePath": "נתיב",
@@ -219,7 +89,6 @@
   "mediaInfoTitlesSubtitleCodec": "כתובית | כתובית {0}",
   "mediaInfoTitlesVideoCodec": "סרטון | סרטון {0}",
   "mediaInfoVideoBitDepth": "עומק סיביות",
-  "mediaInfoVideoBitrate": "קצב סיביות",
   "mediaInfoVideoColorRange": "טווח צבעים",
   "mediaInfoVideoColorSpace": "מרחב צבעים",
   "mediaInfoVideoColorTransfer": "העברת צבעים",
@@ -230,24 +99,14 @@
   "mediaInfoVideoScanType": "סוג סריקה",
   "mediaInfoVideoTimestamp": "חותמת זמן",
   "menu": "תפריט",
-  "metadata": {
-    "source": "מקור",
-    "sourceAll": "הכול",
-    "title": "כותרת",
-    "type": "סוג"
-  },
   "metadataEditor": "עורך נתוני־על",
-  "metadataNoResultsMatching": "אין תוצאות לחיפוש אחר „{search}”. נא ליצור חיפוש חדש.",
   "metadataRefreshQueued": "רענון נתוני־על ממתין בתור",
-  "more": "עוד",
   "moreLikeArtist": "עוד כמו {artist}",
-  "moreLikeThis": "עוד כמו זה",
   "movies": "סרטים",
   "music": "מוזיקה",
   "name": "שם",
   "networks": "רשתות",
   "nextUp": "הבא בתור",
-  "no": "לא",
   "noImagesFound": "לא נמצאו תמונות",
   "noInformationAvailable": "אין מידע זמין",
   "noNetworkConnection": "אין חיבור לרשת",

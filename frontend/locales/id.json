@@ -1,5 +1,4 @@
 {
-  "3DFormat": "Format 3D",
   "NoMediaSourcesAvailable": "Tidak ada sumber media yang tersedia",
   "actor": "Aktor",
   "actors": "Aktor",
@@ -7,19 +6,12 @@
   "airPlayDevices": "Perangkat AirPlay",
   "albums": "Album",
   "allLanguages": "Semua bahasa",
-  "alphabetically": "Menurut abjad",
   "architecture": "Arsitektur",
   "artist": "Artis",
   "artists": "Artis",
-  "aspectRatio": "Aspek rasio",
   "audio": "Audio",
-  "audioCodecNotSupported": "Kode audio tidak didukung",
   "badRequest": "Permintaan salah. Coba lagi",
   "books": "Buku",
-  "browserNotSupported": "Browser Anda tidak didukung untuk memutar file ini.",
-  "buttons": {
-    "ok": "Oke"
-  },
   "byArtist": "Oleh {artist}",
   "cancel": "Batalkan",
   "castAndCrew": "Pemeran & Kru",
@@ -32,35 +24,15 @@
   "continueWatching": "Lanjut menonton",
   "criticRating": "Peringkat kritikus",
   "customRating": "Peringkat khusus",
-  "darkModeToggle": "Ubah mode gelap",
   "dateAdded": "Tanggal ditambahkan",
   "details": "Detail",
-  "dialog": {
-    "upNext": {
-      "hide": "Sembunyikan",
-      "nextItemPlayingIn": "Mulai dalam {time}",
-      "startNow": "Mulai sekarang"
-    }
-  },
   "directing": "Mengarahkan",
   "director": "Sutradara",
   "disabled": "Matikan",
   "discNumber": "Disc {discNumber}",
-  "dislikes": "Tidak suka",
-  "edit": "Sunting",
   "editMetadata": "Sunting metadata",
   "editPerson": "Sunting orang",
-  "endDate": "Tanggal berakhir",
   "endsAt": "Berakhir pada {time}",
-  "episodeNumber": "Episode {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Terjadi kesalahan",
-    "messages": {
-      "errorCode": "Kode kesalahan: {errorCode}",
-      "videoPlayerError": "Pemutar video mengalami kesalahan yang tidak dapat dipulihkan."
-    }
-  },
-  "failedRetrievingDisplayPreferences": "Tak bisa mendapatkan preferensi tampilan. Menggunakan default.",
   "failedSettingDisplayPreferences": "Tidak dapat memperbarui preferensi tampilan.",
   "failedToRefreshItems": "Gagal menyegarkan item",
   "favorite": "Favorit",
@@ -73,110 +45,20 @@
   "genres": "Genre",
   "googleCastPlaceholderDevice": "Perangkat Google Cast",
   "guestStar": "Bintang tamu",
-  "headerExternalIds": "ID Eksternal",
-  "headerPaths": "Lokasi",
   "home": "Beranda",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Baru ditambahkan"
-    }
-  },
-  "imageType": {
-    "art": "Seni",
-    "backdrop": "Latar belakang",
-    "banner": "Spanduk",
-    "box": "Kotak",
-    "boxRear": "Kotak (belakang)",
-    "disc": "CD",
-    "logo": "Logo",
-    "menu": "Menu",
-    "primary": "Utama",
-    "screenshot": "Screenshot",
-    "thumb": "Thumb"
-  },
   "images": "Gambar",
   "incorrectUsernameOrPassword": "Username atau kata sandi salah",
-  "item": {
-    "artist": {
-      "appearsOn": "Penampilan",
-      "discography": "Diskografi",
-      "information": "Informasi",
-      "videos": "Video"
-    },
-    "cast": "Pemeran",
-    "composer": "Komposer",
-    "crew": "Kru",
-    "person": {
-      "birth": "Lahir",
-      "birthPlace": "Tempat lahir",
-      "books": "Buku",
-      "death": "Wafat",
-      "information": "Informasi",
-      "movies": "Film",
-      "person": "Orang",
-      "photos": "Foto",
-      "shows": "Sinetron"
-    },
-    "tracklist": {
-      "title": "Judul"
-    }
-  },
-  "itemNotFound": "Item tidak ditemukan",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "{libraryName} terbaru",
   "libraries": "Pustaka",
   "libraryEmpty": "Pustaka ini kosong",
   "libraryEmptyFilters": "Tidak ada kecocokan. Hapus beberapa filter untuk menampilkan item lebih banyak",
-  "libraryNotFound": "Pustaka tidak ditemukan",
-  "libraryRefreshQueued": "Penyegaran pustaka diantrikan",
   "liked": "Disukai",
-  "likes": "Suka",
-  "links": {
-    "helpTranslate": "Bantu terjemahkan Jellyfin dalam bahasa mu",
-    "poweredByJellyfin": "Server ini didukung oleh Jellyfin",
-    "readTheDocumentation": "Bacalah dokumentasinya",
-    "reportAnIssue": "Laporkan masalah dengan klien Vue"
-  },
-  "login": {
-    "addServer": "Tambahkan server",
-    "changeServer": "Ubah server",
-    "changeUser": "Ganti pengguna",
-    "connect": "Sambung",
-    "login": "Masuk",
-    "loginAs": "Masuk sebagai {name}",
-    "manualLogin": "Login manual",
-    "rememberMe": "Ingat saya",
-    "selectServer": "Pilih server",
-    "selectUser": "Pilih Pengguna",
-    "serverAddress": "Alamat server",
-    "serverAddressMustBeUrl": "Alamat server harus berupa URL yang valid",
-    "serverAddressRequired": "Alamat server wajib diisi",
-    "serverDashboard": "Dasbor server",
-    "serverNotFound": "Server tidak ditemukan",
-    "serverVersionTooLow": "Versi server harus 10.7.0 atau lebih tinggi"
-  },
   "logout": "Keluar",
-  "logsAndActivity": {
-    "activity": "Aktivitas",
-    "failedGetActivity": "Tak bisa mendapatkan aktivitas",
-    "failedGetLogs": "Tidak bisa mendapatkan log",
-    "logs": "Logs",
-    "noActivityFound": "Tidak ada aktivitas yang ditemukan",
-    "noLogsFound": "Tidak ada log yang ditemukan"
-  },
   "manualLogin": "Login manual",
   "menu": "Menu",
-  "metadata": {
-    "source": "Sumber",
-    "sourceAll": "Semua",
-    "title": "Judul",
-    "type": "Jenis"
-  },
   "metadataEditor": "Editor metadata",
-  "metadataNoResultsMatching": "Tidak ada hasil yang cocok dengan \"{search}\". Tekan enter untuk membuat yang baru.",
-  "more": "Lebih banyak",
   "moreLikeArtist": "Lainnya dari {artist}",
-  "moreLikeThis": "Lainnya seperti ini",
   "movies": "Film",
   "name": "Nama",
   "networks": "Jaringan",
@@ -187,7 +69,6 @@
   "noResultsFound": "Tidak ada apa-apa di sini",
   "numberTracks": "{number} trek",
   "operatingSystem": "Sistem operasi",
-  "originalAspectRatio": "Rasio aspek asli",
   "originalTitle": "Judul asli",
   "overview": "Gambaran",
   "parentalRating": "Rating film",
@@ -197,66 +78,13 @@
   "person": "Orang",
   "play": "Putar",
   "playFromBeginning": "Putar dari awal",
-  "playback": {
-    "addToQueue": "Tambahkan ke antrian",
-    "clearQueue": "Hapus antrian dan hentikan pemutaran",
-    "playAll": "Putar semua",
-    "playNext": "Putar selanjutnya",
-    "playbackSource": {
-      "item": "Memutar dari {item}",
-      "shuffle": "Memutar secara acak",
-      "shuffleItem": "Memutar {item} secara acak",
-      "unknown": "Memutar dari antrian"
-    },
-    "queueItems": "{items} trek",
-    "saveAsPlaylist": "Simpan antrian sebagai playlist",
-    "shuffle": "Acak",
-    "shuffleAll": "Acak semua"
-  },
-  "playbackData": "Informasi pemutaran",
-  "playbackInfo": {
-    "name": "Pemutaran",
-    "playMethod": {
-      "direct": "Langsung",
-      "name": "Metode:",
-      "remux": "Remux",
-      "transcode": "Transkode"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Tipe stream:",
-      "unknown": "Tidak diketahui",
-      "video": "Video"
-    }
-  },
   "playbackSettings": "Pengaturan pemutaran",
   "played": "Sudah diputar",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Frame rusak:"
-    },
-    "decodedFrames": {
-      "name": "Frame didekodekan:"
-    },
-    "droppedFrames": {
-      "name": "Frame dibuang:"
-    },
-    "name": "Pemutar",
-    "playbackResolution": {
-      "name": "Resolusi ditampilkan:"
-    },
-    "videoResolution": {
-      "name": "Resolusi video:",
-      "value": "{width} x {height}"
-    }
-  },
   "present": "Mempersembahkan",
   "producer": "Produser",
   "quality": "Kualitas",
   "queue": "Antrian",
   "rating": "Rating",
-  "refreshLibrary": "Segarkan pustaka",
   "releaseDate": "Tanggal rilis",
   "remoteDevices": "Perangkat jauh",
   "resumable": "Dapat dilanjutkan",
@@ -264,130 +92,12 @@
   "role": "Peran",
   "save": "Simpan",
   "saved": "Sudah disimpan",
-  "search": {
-    "name": "Cari",
-    "topResults": "Hasil paling atas"
-  },
   "seasonEpisode": "Musim {seasonNumber}, Episode {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Seri",
   "server": "Server",
   "serverVersion": "Versi server",
   "serverVersionTooLow": "Versi server harus 10.7.0 atau lebih tinggi",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Token akses",
-      "addApiKey": "Tambahkan kunci API",
-      "addNewKey": "Tambahkan kunci API baru",
-      "apiKeys": "Kunci API",
-      "appName": "Nama aplikasi",
-      "createKeyFailure": "Terjadi kesalahan saat membuat kunci API baru",
-      "createKeySuccess": "Berhasil membuat kunci API baru",
-      "dateCreated": "Tanggal dibuat",
-      "description": "Tambahkan dan cabut kunci API untuk akses eksternal ke server Anda",
-      "refreshKeysFailure": "Terjadi kesalahan saat menyegarkan kunci API",
-      "revokeAll": "Cabut semua kunci API",
-      "revokeAllFailure": "Terjadi kesalahan saat mencabut semua kunci API",
-      "revokeAllSuccess": "Berhasil mencabut semua kunci API",
-      "revokeFailure": "Terjadi kesalahan saat mencabut kunci API",
-      "revokeSuccess": "Berhasil mencabut kunci API"
-    },
-    "devices": {
-      "appName": "Nama aplikasi",
-      "appVersion": "Versi aplikasi",
-      "delete": "Hapus",
-      "deleteAll": "Hapus semua",
-      "deleteAllDevicesError": "Terjadi kesalahan saat menghapus semua perangkat",
-      "deleteAllDevicesSuccess": "Semua perangkat berhasil dihapus",
-      "deleteDeviceError": "Terjadi kesalahan saat menghapus perangkat",
-      "deleteDeviceSuccess": "Perangkat berhasil dihapus",
-      "deviceName": "Nama perangkat",
-      "devices": "Perangkat",
-      "lastActive": "Terakhir aktif",
-      "noDevicesFound": "Tidak ada perangkat yang ditemukan",
-      "userName": "Nama pengguna"
-    },
-    "help": "Bantuan",
-    "logsAndActivity": {
-      "activity": "Aktivitas",
-      "failedGetActivity": "Tak bisa mendapatkan aktivitas",
-      "failedGetLogs": "Tidak bisa mendapatkan log",
-      "logs": "Log",
-      "noActivityFound": "Tidak ada aktivitas yang ditemukan",
-      "noLogsFound": "Tidak ada log yang ditemukan"
-    },
-    "settings": "Pengaturan"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Edit informasi pengguna Anda",
-      "name": "Akun"
-    },
-    "devices": {
-      "description": "Lihat dan kelola perangkat yang terhubung ke server Anda",
-      "name": "Perangkat"
-    },
-    "dlna": {
-      "description": "Konfigurasikan pengaturan dan profil DLNA",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Konfigurasikan bagian beranda dan tata letak layar beranda Anda",
-      "name": "Layar beranda"
-    },
-    "libraries": {
-      "description": "Kelola pustaka dan metadatanya",
-      "name": "Perpustakaan"
-    },
-    "liveTvAndDvr": {
-      "description": "Kelola TV tuner, penyedia data panduan, dan setelan DVR",
-      "name": "TV & DVR"
-    },
-    "logs": {
-      "description": "Baca dan telusuri log server dan aktivitas pengguna",
-      "name": "Log & aktivitas"
-    },
-    "mediaPlayers": {
-      "description": "Konfigurasi bagaimana pemutar media berperilaku untuk perangkat ini",
-      "name": "Pemutar media"
-    },
-    "networking": {
-      "description": "Kelola pengaturan jaringan server ini",
-      "name": "Jaringan"
-    },
-    "notifications": {
-      "description": "Kelola dan konfigurasikan pemberitahuan yang dikirim oleh server ini",
-      "name": "Pemberitahuan"
-    },
-    "playback": {
-      "description": "Edit preferensi pemutaran Anda untuk perangkat ini",
-      "name": "Pemutaran"
-    },
-    "plugins": {
-      "description": "Tambahkan dan konfigurasikan fitur baru untuk server ini",
-      "name": "Plugin"
-    },
-    "scheduledTasks": {
-      "description": "Kelola tugas terjadwal yang berjalan di server ini",
-      "name": "Tugas terjadwal"
-    },
-    "server": {
-      "description": "Konfigurasikan bahasa dan merek server ini",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Kontrol bagaimana subtitle ditampilkan di perangkat ini",
-      "name": "Subtitles"
-    },
-    "transcodingAndStreaming": {
-      "description": "Kelola cara server ini menangani transcoding dan streaming ke klien",
-      "name": "Transcoding & streaming"
-    },
-    "users": {
-      "description": "Kelola pengguna dan izin mereka",
-      "name": "Pengguna"
-    }
-  },
   "shows": "Pertunjukkan",
   "signIn": "Masuk",
   "songs": "Lagu",
@@ -401,102 +111,24 @@
   "studios": "Studio",
   "subtitles": "Subtitles",
   "syncPlayGroups": "Grup SyncPlay",
-  "syncingInProgress": "Penyambungan sedang berlangsung",
   "tagline": "Slogan",
   "tags": "Tag",
   "themeSong": "Lagu Tema",
   "themeVideo": "Video Tema",
-  "tooltips": {
-    "changeLanguage": "Bahasa",
-    "switchToDarkMode": "Beralih ke mode gelap",
-    "switchToLightMode": "Beralih ke mode terang"
-  },
   "trailer": "Cuplikan",
-  "transcodingInfo": {
-    "name": "Transkode",
-    "transcodingFramerate": {
-      "name": "Kecepatan frame:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "Perkembangan:",
-    "transcodingReason": {
-      "name": "Penyebab: | Penyebab:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Video anamorphic tidak didukung",
-        "audioBitDepthNotSupported": "Kedalaman bit audio tidak didukung",
-        "audioBitrateNotSupported": "Kecepatan bit audio tidak didukung",
-        "audioChannelsNotSupported": "Jumlah saluran audio tidak didukung",
-        "audioCodecNotSupported": "Codec audio tidak didukung",
-        "audioProfileNotSupported": "Profil codec audio tidak didukung",
-        "audioSampleRateNotSupported": "Tingkat sampel audio tidak didukung",
-        "containerBitrateExceedsLimit": "Kecepatan bit kontainer melebihi batas yang ditetapkan",
-        "containerNotSupported": "Kontainer tidak didukung",
-        "interlacedVideoNotSupported": "Video yang saling terkait tidak didukung",
-        "refFramesNotSupported": "Frame referensi tidak didukung",
-        "secondaryAudioNotSupported": "Trek audio sekunder tidak didukung",
-        "subtitleCodecNotSupported": "Codec takarir tidak didukung",
-        "videoBitDepthNotSupported": "Kedalaman bit video tidak didukung",
-        "videoCodecNotSupported": "Codec video tidak didukung",
-        "videoFramerateNotSupported": "Kecepatan frame video tidak didukung",
-        "videoLevelNotSupported": "Level codec video tidak didukung",
-        "videoProfileNotSupported": "Profil codec video tidak didukung",
-        "videoResolutionNotSupported": "Resolusi video tidak didukung"
-      }
-    }
-  },
   "type": "Tipe",
-  "unableGetPublicUsers": "Tidak bisa mendapatkan pengguna",
   "unableGetRelated": "Tak bisa mendapatkan item terkait",
-  "unableGetServerConfiguration": "Tidak bisa mendapatkan konfigurasi server",
-  "unableToRefreshLibrary": "Tidak dapat menyegarkan pustaka",
-  "unableToToggleLike": "Tak dapat mengubah status suka dari elemen tersebut",
   "unableToTogglePlayed": "Tidak dapat memperbarui status tontonan",
   "undefined": "Tidak terdefinisi",
   "unexpectedError": "Kesalahan yang tidak terduga",
-  "unhandledException": "Pengecualian tidak tertangani",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} detik | {count} detik"
-    }
-  },
   "unliked": "Tidak disukai",
   "unplayed": "Belum dimainkan",
-  "upNext": "Selanjutnya",
-  "upNextName": "Selanjutnya: {upNextItemName}",
   "username": "Nama pengguna",
-  "validation": {
-    "bothPasswordsSame": "Kedua kata sandi harus sama",
-    "mustBeUrl": "Bagian ini harus berupa URL yang valid",
-    "required": "Bagian ini diperlukan"
-  },
   "version": "Versi",
   "video": "Video",
   "videoTypes": "Jenis Video",
   "viewDetails": "Lihat rincian",
   "vueClientVersion": "Versi klien Vue",
-  "wizard": {
-    "administratorAccount": "Akun administrator",
-    "allowRemoteAccess": "Izinkan akses jarak jauh ke server",
-    "completeError": "Tidak dapat menyelesaikan wizard startup.",
-    "confirmPassword": "Konfirmasi kata sandi",
-    "languageLocale": "Bahasa dan lokal",
-    "languageSuccessfullySet": "Bahasa berhasil disetel.",
-    "metadataLanguagesSet": "Bahasa metadata disetel.",
-    "preferedLanguage": "Bahasa pilihan",
-    "preferredMetadataLanguage": "Bahasa metadata pilihan",
-    "remoteAccess": "Akses Jarak Jauh",
-    "remoteAccessSet": "Akses jarak jauh disetel.",
-    "setAdminError": "Tidak dapat membuat akun admin.",
-    "setLanguageError": "Tidak dapat menyetel bahasa klien.",
-    "setMetadataError": "Tidak dapat menyetel bahasa metadata.",
-    "setRemoteError": "Tidak dapat menyetel setelan akses jarak jauh.",
-    "setupWizard": "Petunjuk penggunaan",
-    "userSuccessfullySet": "Pengguna berhasil disetel."
-  },
   "writer": "Penulis",
   "writing": "Penulisan",
   "year": "Tahun",

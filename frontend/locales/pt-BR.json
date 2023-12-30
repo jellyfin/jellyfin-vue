@@ -1,5 +1,4 @@
 {
-  "3DFormat": "Formato 3D",
   "NoMediaSourcesAvailable": "Nenhuma fonte de mídia disponível",
   "actor": "Autor",
   "actors": "Autores",
@@ -8,29 +7,13 @@
   "airPlayDevices": "Dispositivos AirPlay",
   "albums": "Álbuns",
   "allLanguages": "Todas as Línguas",
-  "alphabetically": "Alfabeticamente",
-  "appbar": {
-    "tasks": {
-      "configSync": "Sincronizando configurações…",
-      "scanningItem": "Escaneando '{item}'…"
-    },
-    "tooltips": {
-      "tasks": "Executando tarefas"
-    }
-  },
   "architecture": "Arquitetura",
   "artist": "Artista",
   "artists": "Artistas",
-  "aspectRatio": "Proporção da tela",
   "audio": "Áudio",
-  "audioCodecNotSupported": "O codec de aúdio não é suportado",
   "auto": "Automático",
   "badRequest": "Requisição ruim. Tente Novamente",
   "books": "Livros",
-  "browserNotSupported": "Seu navegador não suporta a execução deste arquivo.",
-  "buttons": {
-    "ok": "Ok"
-  },
   "byArtist": "Por {artist}",
   "cancel": "Cancelar",
   "castAndCrew": "Elenco & equipe",
@@ -43,44 +26,18 @@
   "continueWatching": "Continue assistindo",
   "criticRating": "Avaliação da Critica",
   "customRating": "Avaliação customizada",
-  "darkModeToggle": "Alternar modo escuro",
   "dateAdded": "Data de Adição",
   "delete": "Excluir",
   "deleteItem": "Excluir mídia",
   "deleteItemDescription": "Apagar esse item irá apaga-lo tanto do sistema de arquivos quanto da sua biblioteca. Tem certeza que deseja prosseguir?",
   "details": "Detalhes",
-  "dialog": {
-    "upNext": {
-      "hide": "Esconder",
-      "nextItemPlayingIn": "Começando em {time}",
-      "startNow": "Começar agora"
-    }
-  },
   "directing": "Diretor",
   "director": "Diretor",
   "disabled": "Desabilitado",
   "discNumber": "Disco {discNumber}",
-  "dislikes": "Não curtidos",
-  "edit": "Editar",
   "editMetadata": "Editar Metadata",
   "editPerson": "Editar pessoa",
-  "endDate": "Data de encerramento",
   "endsAt": "Termina em {time}",
-  "episodeNumber": "Episódio {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Ocorreu um erro",
-    "cantPlayItem": "Este item não pode ser reproduzido",
-    "messages": {
-      "errorCode": "Código de erro: {errorCode}",
-      "videoPlayerError": "O reprodutor de vídeo encontrou um erro irrecuperável."
-    },
-    "playback": {
-      "mediaError": "Ocorreu um erro fatal de mídia, tentando recuperar",
-      "networkError": "Ocorreu um erro fatal de rede, tentando recuperar"
-    },
-    "unauthorized": "Você não está autorizado a acessar esta página"
-  },
-  "failedRetrievingDisplayPreferences": "Incapaz de obter as preferências de exibição. Usando últimas configurações conhecidas.",
   "failedSettingDisplayPreferences": "Incapaz de atualizar as preferências do display.",
   "failedToRefreshItems": "Falha ao recarregar os itens",
   "favorite": "Favorito",
@@ -91,127 +48,26 @@
   "general": "Geral",
   "genericJellyfinPlaceholderDevice": "Dispositivo genérico Jellyfin",
   "genres": "Gêneros",
-  "goBack": "Voltar",
-  "goNext": "Avançar para o próximo",
   "googleCastPlaceholderDevice": "Dispositivo Google Cast",
   "guestStar": "Participação especial",
-  "headerExternalIds": "IDs externos",
-  "headerPaths": "Caminho",
   "home": "Home",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Adicionado recentemente"
-    }
-  },
   "identify": "Identificar",
   "identifyConfirmChanges": "Você tem certeza que deseja alterar o '{originalItem}' para '{newIdentifiedItem}'?",
   "identifyInstructResult": "Você pode clicar em um desses cartões para aplicar o resultado",
-  "imageType": {
-    "art": "Arte",
-    "backdrop": "Imagem de fundo",
-    "banner": "Cartaz",
-    "box": "Caixa",
-    "boxRear": "Caixa (traseira)",
-    "disc": "Disco",
-    "logo": "Logo",
-    "menu": "Menu",
-    "primary": "Principal",
-    "screenshot": "Captura de tela",
-    "thumb": "Miniatura"
-  },
   "images": "Imagens",
   "incorrectUsernameOrPassword": "Usuário ou senha incorreto",
-  "item": {
-    "artist": {
-      "albums": "Álbuns",
-      "appearsOn": "Aparições",
-      "discography": "Discografia",
-      "eps": "EPs",
-      "information": "Informações",
-      "singles": "Músicas",
-      "videos": "Vídeos"
-    },
-    "cast": "Elenco",
-    "composer": "Compositor",
-    "crew": "Equipe",
-    "person": {
-      "birth": "Nascimento",
-      "birthPlace": "Local de nascimento",
-      "books": "Livros",
-      "death": "Morte",
-      "information": "Informação",
-      "movies": "Filmes",
-      "person": "Pessoa",
-      "photos": "Fotos",
-      "shows": "Shows"
-    },
-    "tracklist": {
-      "title": "Título"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "Mover para o fim",
-    "pushToTop": "Mover para o início",
-    "removeFromQueue": "Remover da fila"
-  },
-  "itemNotFound": "Item não encontrado",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Mais recentes {libraryName}",
   "libraries": "Bibliotecas",
   "libraryEmpty": "Essa biblioteca está vazia",
   "libraryEmptyFilters": "Nenhuma correspondência. Remove alguns filtros para mostrar mais itens",
-  "libraryNotFound": "Biblioteca não encontrada",
-  "libraryRefreshQueued": "Atualização da biblioteca na fila",
   "liked": "Gostou",
-  "likes": "Gosta",
-  "links": {
-    "helpTranslate": "Ajude a traduzir o Jellyfin para seu idioma",
-    "poweredByJellyfin": "Este servidor é operado por Jellyfin",
-    "readTheDocumentation": "Leia a documentação",
-    "reportAnIssue": "Reportar um problema com o cliente Vue"
-  },
-  "login": {
-    "addServer": "Adicionar servidor",
-    "changeServer": "Trocar servidor",
-    "changeUser": "Trocar usuário",
-    "connect": "Conectar",
-    "kickedOut": "A autorização foi revogada e essa sessão não é mais válida. Por favor, faça login novamente",
-    "login": "Entrar",
-    "loginAs": "Entrar como {name}",
-    "manualLogin": "Entrar manualmente",
-    "rememberMe": "Manter-me conectado",
-    "selectServer": "Selecione o servidor",
-    "selectUser": "Selecione um usuário",
-    "serverAddress": "Endereço do servidor",
-    "serverAddressMustBeUrl": "O endereço do servidor deve ser uma URL válida",
-    "serverAddressRequired": "Endereço do servidor é obrigatório",
-    "serverDashboard": "Painel do servidor",
-    "serverNotFound": "Servidor não encontrado",
-    "serverVersionTooLow": "A versão do servidor precisa ser 10.7.0 ou superior"
-  },
   "logout": "Logout",
-  "logsAndActivity": {
-    "activity": "Atividade",
-    "failedGetActivity": "Não foi possível obter atividade",
-    "failedGetLogs": "Não foi possível obter os relatórios",
-    "logs": "Histórico",
-    "noActivityFound": "Nenhuma atividade encontrada",
-    "noLogsFound": "Sem relatórios encontrados"
-  },
   "manualLogin": "Login manual",
   "menu": "Menu",
-  "metadata": {
-    "source": "Origem",
-    "sourceAll": "Todos",
-    "title": "Título",
-    "type": "Tipo"
-  },
   "metadataEditor": "Editor de metadata",
-  "metadataNoResultsMatching": "Nenhum resultado para \"{search}\". Pressione enter para criar um novo.",
   "metadataRefreshQueued": "Atualização de metadados adicionada a fila",
-  "more": "Mais",
   "moreLikeArtist": "Mais como {artist}",
-  "moreLikeThis": "Mais como isso",
   "movies": "Filmes",
   "name": "Nome",
   "networks": "Redes",
@@ -222,7 +78,6 @@
   "noResultsFound": "Não tem nada aqui",
   "numberTracks": "{number} faixas",
   "operatingSystem": "Sistema operacional",
-  "originalAspectRatio": "Razão de aspecto original",
   "originalTitle": "Titulo original",
   "overview": "Visão geral",
   "parentalRating": "Classificação etária",
@@ -232,67 +87,14 @@
   "person": "Pessoa",
   "play": "Reproduzir",
   "playFromBeginning": "Reproduzir do começo",
-  "playback": {
-    "addToQueue": "Adicionar à fila",
-    "clearQueue": "Limpar fila e parar reprodução",
-    "playAll": "Reproduzir tudo",
-    "playNext": "Reproduzir próximo",
-    "playbackSource": {
-      "item": "Reproduzindo de {item}",
-      "shuffle": "Reproduzindo em ordem aleatória",
-      "shuffleItem": "Reproduzindo {item} em ordem aleatória",
-      "unknown": "Reproduzindo da fila"
-    },
-    "queueItems": "{items} faixas",
-    "saveAsPlaylist": "Salvar fila como playlist",
-    "shuffle": "Ordem aleatória",
-    "shuffleAll": "Misturar todos"
-  },
-  "playbackData": "Informação da reprodução",
-  "playbackInfo": {
-    "name": "Reprodução",
-    "playMethod": {
-      "direct": "Direto",
-      "name": "Método:",
-      "remux": "Remux",
-      "transcode": "Transcodificar"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Tipo de Transmissão:",
-      "unknown": "Desconhecido",
-      "video": "Vídeo"
-    }
-  },
   "playbackSettings": "Configurações de reprodução",
   "played": "Reproduzido",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Frames corrompidos:"
-    },
-    "decodedFrames": {
-      "name": "Frames decodificados:"
-    },
-    "droppedFrames": {
-      "name": "Quadros perdidos:"
-    },
-    "name": "Reprodutor",
-    "playbackResolution": {
-      "name": "Resolução da janela:"
-    },
-    "videoResolution": {
-      "name": "Resolução de vídeo:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "Atual",
   "producer": "Produtor",
   "quality": "Qualidade",
   "queue": "Fila",
   "rating": "Avaliação",
   "refresh": "Atualizar",
-  "refreshLibrary": "Recarregar biblioteca",
   "refreshMetadata": "Atualizar metadados",
   "refreshMetadataHint": "Os metadados são atualizados com base nas configurações e serviços de internet que são habilitados no Dashboard",
   "releaseDate": "Data de lançamento",
@@ -306,10 +108,6 @@
   "save": "Salvar",
   "saved": "Salvo",
   "scanForNewAndUpdatedFiles": "Procurar por arquivos novos e atualizados",
-  "search": {
-    "name": "Pesquisa",
-    "topResults": "Melhores resultados"
-  },
   "searchMissingMetadata": "Procurar metadados faltantes",
   "searchNoResults": "Nenhum resultado encontrado",
   "seasonEpisode": "Temporada {seasonNumber}, Episódio {episodeNumber}",
@@ -318,130 +116,8 @@
   "server": "Servidor",
   "serverVersion": "Versão do servidor",
   "serverVersionTooLow": "A versão do servidor deve ser 10.7.0 ou superior",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Token de acesso",
-      "addApiKey": "Adicionar uma chave de API",
-      "addNewKey": "Adicionar uma chave de API",
-      "apiKeys": "Chaves de API",
-      "appName": "Nome do aplicativo",
-      "createKeyFailure": "Erro ao criar chave de API",
-      "createKeySuccess": "Chave de API criada com sucesso",
-      "dateCreated": "Data de criação",
-      "description": "Adicione e revogue chaves de API para acesso externo ao seu servidor",
-      "refreshKeysFailure": "Erro ao recarregar chaves de API",
-      "revoke": "Revogar",
-      "revokeAll": "Revogar todas as chaves de API",
-      "revokeAllFailure": "Erro ao revogar todas as chaves de API",
-      "revokeAllSuccess": "Todas as chaves de API foram revogadas com êxito",
-      "revokeConfirm": "Confirme a revogação da chave da API",
-      "revokeFailure": "Erro ao revogar chave de API",
-      "revokeSuccess": "Chave de API revogada com êxito"
-    },
-    "devices": {
-      "appName": "Nome do aplicativo",
-      "appVersion": "Versão do aplicativo",
-      "delete": "Remover",
-      "deleteAll": "Remover todos",
-      "deleteAllDevicesError": "Erro ao remover todos os dispositivos",
-      "deleteAllDevicesSuccess": "Todos os dispositivos foram removidos com êxito",
-      "deleteConfirm": "Confirme a exclusão do dispositivo",
-      "deleteDeviceError": "Erro ao remover dispositivo",
-      "deleteDeviceSuccess": "Dispositivo removido com êxito",
-      "deviceName": "Nome do dispositivo",
-      "devices": "Dispositivos",
-      "lastActive": "Última atividade",
-      "noDevicesFound": "Nenhum dispositivo encontrado",
-      "userName": "Nome de usuário"
-    },
-    "help": "Ajuda",
-    "logsAndActivity": {
-      "activity": "Atividade",
-      "failedGetActivity": "Não foi possível obter a atividade",
-      "failedGetLogs": "Não foi possível obter os relatórios",
-      "logs": "Logs",
-      "noActivityFound": "Nenhuma atividade encontrada",
-      "noLogsFound": "Sem relatórios encontrados"
-    },
-    "settings": "Configurações"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Edite as informações do seu usuário",
-      "name": "Conta"
-    },
-    "devices": {
-      "description": "Veja e gerencie os dispositivos conectados ao seu servidor",
-      "name": "Dispositivos"
-    },
-    "dlna": {
-      "description": "Configure ajustes de DLNA e perfil",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Configure as seções e a disposição da sua tela inicial",
-      "name": "Tela inicial"
-    },
-    "libraries": {
-      "description": "Gerencie bibliotecas e seus metadados",
-      "name": "Bibliotecas"
-    },
-    "liveTvAndDvr": {
-      "description": "Gerencie sintonizadores de TV, provedores de guias e configurações de DVR",
-      "name": "TV ao vivo e DVR"
-    },
-    "logs": {
-      "description": "Ler e pesquisar relatórios do servidor e de atividade de usuário",
-      "name": "Logs e atividade"
-    },
-    "mediaPlayers": {
-      "description": "Configure o comportamento dos reprodutores de mídia para este dispositivo",
-      "name": "Reprodutores de mídia"
-    },
-    "networking": {
-      "description": "Gerencie os ajustes de rede deste servidor",
-      "name": "Rede"
-    },
-    "notifications": {
-      "description": "Gerencie e configure as notificações enviadas por este servidor",
-      "name": "Notificações"
-    },
-    "playback": {
-      "description": "Edite suas preferências de reprodução para este dispositivo",
-      "name": "Reprodução"
-    },
-    "plugins": {
-      "description": "Adicione e configure novas funcionalidades para este servidor",
-      "name": "Plugins"
-    },
-    "scheduledTasks": {
-      "description": "Gerencie tarefas agendadas executadas neste servidor",
-      "name": "Tarefas agendadas"
-    },
-    "server": {
-      "description": "Configure o idioma e a identidade visual deste servidor",
-      "name": "Servidor"
-    },
-    "subtitles": {
-      "description": "Controle como legendas são exibidas neste dispositivo",
-      "name": "Legendas"
-    },
-    "transcodingAndStreaming": {
-      "description": "Gerencia como esse servidor lida com transcodificação e streaming para os clientes",
-      "name": "Transcodificar & transmitir"
-    },
-    "users": {
-      "description": "Gerencie usuários e suas permissões",
-      "name": "Usuários"
-    }
-  },
   "shows": "Séries",
   "signIn": "Entrar",
-  "snackbar": {
-    "addedToQueue": "Adicionar à fila",
-    "playNext": "O item selecionado será reproduzido após o atual",
-    "routeValidationError": "O routeId especificado no parâmetro de rotas não está correto"
-  },
   "songs": "Músicas",
   "sortByType": "Por {type}",
   "sortTitle": "Ordenar título",
@@ -453,104 +129,24 @@
   "studios": "Estúdios",
   "subtitles": "Legendas",
   "syncPlayGroups": "Grupos SyncPlay",
-  "syncingInProgress": "Sincronização em andamento",
   "tagline": "Slogan",
   "tags": "Etiquetas",
   "themeSong": "Música-tema",
   "themeVideo": "Vídeo-tema",
-  "tooltips": {
-    "changeLanguage": "Idioma",
-    "switchToAuto": "Usar tema do sistema",
-    "switchToDarkMode": "Trocar para modo escuro",
-    "switchToLightMode": "Trocar para modo claro"
-  },
-  "trailer": "Trailer",
-  "transcodingInfo": {
-    "name": "Transcodificação",
-    "transcodingFramerate": {
-      "name": "Taxa de quadros:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "Progresso:",
-    "transcodingReason": {
-      "name": "Razão: | Razões:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Vídeo anamórfico não é suportado",
-        "audioBitDepthNotSupported": "A profundidade de bits do áudio não é suportada",
-        "audioBitrateNotSupported": "A taxa de bits do áudio não é suportada",
-        "audioChannelsNotSupported": "O número de canais de aúdo não é suportado",
-        "audioCodecNotSupported": "O codec do áudio não é suportado",
-        "audioProfileNotSupported": "O perfil do codec do áudio não é suportado",
-        "audioSampleRateNotSupported": "A taxa de amostra do áudio não é suportado",
-        "containerBitrateExceedsLimit": "A taxa de bits do contêiner excede o limite definido",
-        "containerNotSupported": "O contêiner não é suportado",
-        "interlacedVideoNotSupported": "Vídeo entrelaçado não é suportado",
-        "refFramesNotSupported": "Quadros de referência não são suportados",
-        "secondaryAudioNotSupported": "Faixas de áudio secundárias não são suportadas",
-        "subtitleCodecNotSupported": "O codec da legenda não é suportado",
-        "videoBitDepthNotSupported": "A profundidade de bits do vídeo não é suportada",
-        "videoCodecNotSupported": "O codec de vídeo não é suportado",
-        "videoFramerateNotSupported": "A taxa de quadros do vídeo não é suportada",
-        "videoLevelNotSupported": "O nível do codec de vídeo não é suportado",
-        "videoProfileNotSupported": "O perfil do codec de vídeo não é suportado",
-        "videoResolutionNotSupported": "A resolução do vídeo não é suportada"
-      }
-    }
-  },
   "type": "Tipo",
-  "unableGetPublicUsers": "Não foi possível obter usuários",
   "unableGetRelated": "Não é possível obter itens relacionados",
-  "unableGetServerConfiguration": "Não foi possível obter a configuração do servidor",
-  "unableToRefreshLibrary": "Não foi possível atualizar a biblioteca",
-  "unableToToggleLike": "Não é possível alterar o status de curtida do elemento",
   "unableToTogglePlayed": "Não foi possível atualizar o status de assistido",
   "undefined": "Indefinido",
   "unexpectedError": "Erro inesperado",
-  "unhandledException": "Exceção sem tratamento",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} segundo | {count} segundos"
-    }
-  },
   "unknown": "Desconhecido",
   "unliked": "Não gostei",
   "unplayed": "Não reproduzido",
-  "upNext": "A seguir",
-  "upNextName": "A seguir: {upNextItemName}",
   "username": "Nome de usuário",
-  "validation": {
-    "bothPasswordsSame": "As duas senhas devem ser iguais",
-    "mustBeUrl": "Este campo deve ser uma URL válida",
-    "required": "Este campo é obrigatório"
-  },
   "version": "Versão",
   "video": "Vídeo",
   "videoTypes": "Tipos de vídeo",
   "viewDetails": "Ver detalhes",
   "vueClientVersion": "Versão do cliente Vue",
-  "wizard": {
-    "administratorAccount": "Conta de administrador",
-    "allowRemoteAccess": "Permitir acesso remoto ao servidor",
-    "completeError": "Não foi possível concluir o assistente de inicialização.",
-    "confirmPassword": "Confirmar senha",
-    "languageLocale": "Idioma e local",
-    "languageSuccessfullySet": "Idioma definido com êxito.",
-    "metadataLanguagesSet": "Idiomas de metadados definidos.",
-    "preferedLanguage": "Idioma preferido",
-    "preferredMetadataLanguage": "Idioma de metadados preferido",
-    "remoteAccess": "Acesso remoto",
-    "remoteAccessSet": "Acesso remoto definido.",
-    "setAdminError": "Não é possível criar uma conta de administrador.",
-    "setLanguageError": "Não é possível definir o idioma do cliente.",
-    "setMetadataError": "Não é possível definir idiomas de metadados.",
-    "setRemoteError": "Não é possível definir as configurações de acesso remoto.",
-    "setupWizard": "Assistente de configuração",
-    "userSuccessfullySet": "Usuário definido com sucesso."
-  },
   "writer": "Escritor",
   "writing": "Escrevendo",
   "year": "Ano",

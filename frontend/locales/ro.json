@@ -1,5 +1,4 @@
 {
-  "3DFormat": "Format 3D",
   "NoMediaSourcesAvailable": "Nu există surse media disponibile",
   "actor": "Artist",
   "actors": "Actori",
@@ -8,24 +7,12 @@
   "airPlayDevices": "Dizpozitive AirPlay",
   "albums": "Albume",
   "allLanguages": "Toate limbile",
-  "alphabetically": "Alfabetic",
-  "appbar": {
-    "tasks": {
-      "configSync": "Se sincronizează setările…"
-    }
-  },
   "architecture": "Arhitectura",
   "artist": "Artist",
   "artists": "Artiști",
-  "aspectRatio": "Raport de aspect",
   "audio": "Audio",
-  "audioCodecNotSupported": "Acest codec audio nu este suportat",
   "badRequest": "Cerere greșită. Încearcă din nou",
   "books": "Carți",
-  "browserNotSupported": "Browserul dvs. nu este acceptat pentru redarea acestui fișier.",
-  "buttons": {
-    "ok": "Ok"
-  },
   "byArtist": "De {artist}",
   "cancel": "Anulează",
   "castAndCrew": "Distribuție și echipă",
@@ -38,35 +25,15 @@
   "continueWatching": "Continuă vizionarea",
   "criticRating": "Evaluare critici",
   "customRating": "Evaluare personalizată",
-  "darkModeToggle": "Comutați modul întunecat",
   "dateAdded": "Data adăugării",
   "details": "Detalii",
-  "dialog": {
-    "upNext": {
-      "hide": "Ascunde",
-      "nextItemPlayingIn": "Începe in {time}",
-      "startNow": "Începe acum"
-    }
-  },
   "directing": "Regie",
   "director": "Regizor",
   "disabled": "Dezactivat",
   "discNumber": "Placă {discNumber}",
-  "dislikes": "Dislike-uri",
-  "edit": "Editare",
   "editMetadata": "Editare metadate",
   "editPerson": "Editare persoană",
-  "endDate": "Data încheierii",
   "endsAt": "Se termină la {time}",
-  "episodeNumber": "Episod {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "A apărut o eroare",
-    "messages": {
-      "errorCode": "Cod de eroare: {errorCode}",
-      "videoPlayerError": "Playerul video a întâmpinat o eroare nerecuperabilă."
-    }
-  },
-  "failedRetrievingDisplayPreferences": "Nu se pot obține preferințele de afișare. Folosesc ultimile valori cunoscute.",
   "failedSettingDisplayPreferences": "Nu se pot actualiza preferințele de afișare.",
   "failedToRefreshItems": "Nu s-au reîmprospătat articolele",
   "favorite": "Favorit",
@@ -79,111 +46,20 @@
   "genres": "Genuri",
   "googleCastPlaceholderDevice": "Dispozitiv Google Cast",
   "guestStar": "Vedetă invitată",
-  "headerExternalIds": "ID-uri externe",
-  "headerPaths": "Cale",
   "home": "Acasă",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Adăugat recent"
-    }
-  },
-  "imageType": {
-    "art": "Artă",
-    "backdrop": "Fundal",
-    "banner": "Bandieră",
-    "box": "Cutie",
-    "boxRear": "Cutie (spate)",
-    "disc": "Placă",
-    "logo": "Siglă",
-    "menu": "Meniu",
-    "primary": "Primar",
-    "screenshot": "Captură de ecran",
-    "thumb": "Miniatură"
-  },
   "images": "Imagini",
   "incorrectUsernameOrPassword": "Numele de utilizator sau parola incorectă",
-  "item": {
-    "artist": {
-      "albums": "Albume",
-      "appearsOn": "Apariții",
-      "discography": "Discografie",
-      "information": "Informație",
-      "videos": "Videoclipuri"
-    },
-    "cast": "Proiectează",
-    "composer": "Compozitor",
-    "crew": "Echipă",
-    "person": {
-      "birth": "Naștere",
-      "birthPlace": "Locul nașterii",
-      "books": "Cărți",
-      "death": "Decedat",
-      "information": "Informații",
-      "movies": "Filme",
-      "person": "Persoană",
-      "photos": "Poze",
-      "shows": "Show-uri"
-    },
-    "tracklist": {
-      "title": "Titlu"
-    }
-  },
-  "itemNotFound": "Articolul nu a fost găsit",
   "jellyfinLogo": "Logo Jellyfin",
   "latestLibrary": "Ultimul {libraryName}",
   "libraries": "Biblioteci",
   "libraryEmpty": "Această bibliotecă este goală",
   "libraryEmptyFilters": "Nici o potrivire. Eliminați câteva filtre pentru a afișa mai multe articole",
-  "libraryNotFound": "Biblioteca nu a fost găsită",
-  "libraryRefreshQueued": "Actualizarea bibliotecii în așteptare",
   "liked": "Mi-a plăcut",
-  "likes": "Like-uri",
-  "links": {
-    "helpTranslate": "Ajutați la traducerea Jellyfin în limba dvs",
-    "poweredByJellyfin": "Acest server rulează Jellyfin",
-    "readTheDocumentation": "Citiți documentația",
-    "reportAnIssue": "Raportați o problemă cu clientul Vue"
-  },
-  "login": {
-    "addServer": "Adaugă server",
-    "changeServer": "Schimbă server",
-    "changeUser": "Schimbă utilizatorul",
-    "connect": "Conectare",
-    "login": "Autentificare",
-    "loginAs": "Autentificare ca {name}",
-    "manualLogin": "Autentificare manuală",
-    "rememberMe": "Ține-mă Minte",
-    "selectServer": "Selectează server",
-    "selectUser": "Selectează un utilizator",
-    "serverAddress": "Adresa serverului",
-    "serverAddressMustBeUrl": "Adresa serverului trebuie să fie un URL valid",
-    "serverAddressRequired": "Adresa serverului este necesară",
-    "serverDashboard": "Tabloul de bord al serverului",
-    "serverNotFound": "Serverul nu a fost găsit",
-    "serverVersionTooLow": "Versiunea serverului trebuie să fie 10.7.0 sau mai mare"
-  },
   "logout": "Deconectare",
-  "logsAndActivity": {
-    "activity": "Activitate",
-    "failedGetActivity": "Nu se poate obține activitatea",
-    "failedGetLogs": "Nu se pot obține jurnalele",
-    "logs": "Jurnal",
-    "noActivityFound": "Nu s-au găsit activități",
-    "noLogsFound": "Nu s-au găsit loguri"
-  },
   "manualLogin": "Autentificare manuală",
   "menu": "Meniu",
-  "metadata": {
-    "source": "Sursă",
-    "sourceAll": "Toate",
-    "title": "Titlu",
-    "type": "Tip"
-  },
   "metadataEditor": "Editor de metadate",
-  "metadataNoResultsMatching": "Nu există rezultate care să se potrivească cu \"{search}\". Apăsați Enter pentru a crea una nouă.",
-  "more": "Mai mult",
   "moreLikeArtist": "Mai multe ca {artist}",
-  "moreLikeThis": "Similare",
   "movies": "Filme",
   "name": "Nume",
   "networks": "Rețele TV",
@@ -194,7 +70,6 @@
   "noResultsFound": "Nu este nimic aici",
   "numberTracks": "{number} piese",
   "operatingSystem": "Sistem de operare",
-  "originalAspectRatio": "Raport de aspect original",
   "originalTitle": "Titlu original",
   "overview": "Prezentare generală",
   "parentalRating": "Parental Rating",
@@ -204,66 +79,13 @@
   "person": "Persoană",
   "play": "Rulează",
   "playFromBeginning": "Rulează de la început",
-  "playback": {
-    "addToQueue": "Adaugă la coada de redare",
-    "clearQueue": "Curăță lista de redat și oprește redarea",
-    "playAll": "Redare tot",
-    "playNext": "Rulează următorul",
-    "playbackSource": {
-      "item": "Redare de la {item}",
-      "shuffle": "Redare amestecată",
-      "shuffleItem": "Redare {item} din lista amestecată",
-      "unknown": "Redare din listă"
-    },
-    "queueItems": "{items} piese",
-    "saveAsPlaylist": "Salvează coada ca listă de redare",
-    "shuffle": "Amestecă",
-    "shuffleAll": "Amestecă tot"
-  },
-  "playbackData": "Informații redare",
-  "playbackInfo": {
-    "name": "Redare",
-    "playMethod": {
-      "direct": "Direcție",
-      "name": "Metodă:",
-      "remux": "Remux",
-      "transcode": "Transcodare"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Tip de transmitere:",
-      "unknown": "Necunoscut",
-      "video": "Video"
-    }
-  },
   "playbackSettings": "Setări de redare",
   "played": "Rulat",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Cadre corupte:"
-    },
-    "decodedFrames": {
-      "name": "Cadre decodificate:"
-    },
-    "droppedFrames": {
-      "name": "Cadre scăpate:"
-    },
-    "name": "Player",
-    "playbackResolution": {
-      "name": "Rezoluție viewport:"
-    },
-    "videoResolution": {
-      "name": "Rezoluție video:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "Acum",
   "producer": "Producător",
   "quality": "Calitate",
   "queue": "Rând",
   "rating": "Evaluare",
-  "refreshLibrary": "Actualizați biblioteca",
   "releaseDate": "Data lansării",
   "remoteDevices": "Dizpozitive la distanță",
   "resumable": "Poate fi continuat",
@@ -271,130 +93,12 @@
   "role": "Rol",
   "save": "Salvează",
   "saved": "Salvat",
-  "search": {
-    "name": "Cautare",
-    "topResults": "Rezultate de top"
-  },
   "seasonEpisode": "Sezonul {seasonNumber}, Episodul {episodeNumber}",
   "seasonEpisodeAbbrev": "S{seasonNumber} E{episodeNumber}",
   "series": "Serial",
   "server": "Server",
   "serverVersion": "Versiunea serverului",
   "serverVersionTooLow": "Versiunea serverului trebuie să fie 10.7.0 sau mai mare",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Token de acces",
-      "addApiKey": "Adaugă o cheie API",
-      "addNewKey": "Adaugă o nouă cheie API",
-      "apiKeys": "Chei API",
-      "appName": "Nume app",
-      "createKeyFailure": "Eroare în crearea unei noi chei API",
-      "createKeySuccess": "Creare cu succes a unei noi chei API",
-      "dateCreated": "Data creării",
-      "description": "Adăugați și revocați chei API pentru acces extern la serverul dvs",
-      "refreshKeysFailure": "Eroare la reîmprospătarea cheilor API",
-      "revokeAll": "Revocați toate cheile API",
-      "revokeAllFailure": "Eroare la revocarea tuturor cheilor API",
-      "revokeAllSuccess": "Revocare cu succes a tuturor cheilor API",
-      "revokeFailure": "Eroare la revocarea cheii API",
-      "revokeSuccess": "Revocare cu succes a cheii API"
-    },
-    "devices": {
-      "appName": "Nume app",
-      "appVersion": "Versiunea app",
-      "delete": "Șterge",
-      "deleteAll": "Șterge tot",
-      "deleteAllDevicesError": "Eroare la ștergerea tuturor dispozitivelor",
-      "deleteAllDevicesSuccess": "Toate dispozitivele șterse cu succes",
-      "deleteDeviceError": "Eroare la ștergerea dispozitivului",
-      "deleteDeviceSuccess": "Dispozitiv șters cu succes",
-      "deviceName": "Numele dispozitivului",
-      "devices": "Dispozitive",
-      "lastActive": "Activ ultima oară",
-      "noDevicesFound": "Nu s-au găsit dispozitive",
-      "userName": "Utilizator"
-    },
-    "help": "Ajutor",
-    "logsAndActivity": {
-      "activity": "Activitate",
-      "failedGetActivity": "Nu se poate obține activitatea",
-      "failedGetLogs": "Nu se pot obține jurnalele",
-      "logs": "Jurnal",
-      "noActivityFound": "Nu s-au găsit activități",
-      "noLogsFound": "Nu s-au găsit loguri"
-    },
-    "settings": "Setări"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Editați informațiile utilizatorului",
-      "name": "Cont"
-    },
-    "devices": {
-      "description": "Vedeți și gestionați dispozitivele conectate la serverul dvs",
-      "name": "Dispozitive"
-    },
-    "dlna": {
-      "description": "Configurați setările și profilul DLNA",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Configurați secțiunile de pornire și aspectul ecranului de pornire",
-      "name": "Ecranul de start"
-    },
-    "libraries": {
-      "description": "Gestionați bibliotecile și metadatele acestora",
-      "name": "Biblioteci"
-    },
-    "liveTvAndDvr": {
-      "description": "Gestionați tunerele TV, furnizorii datelor ghid TV și setările DVR",
-      "name": "TV în direct & DVR"
-    },
-    "logs": {
-      "description": "Citiți și căutați în jurnalele serverului și activitatea utilizatorului",
-      "name": "Jurnale & Activitate"
-    },
-    "mediaPlayers": {
-      "description": "Configurați cum se comportă playerele media pentru acest dispozitiv",
-      "name": "Playere media"
-    },
-    "networking": {
-      "description": "Gestionați setările de rețea ale acestui server",
-      "name": "Rețele"
-    },
-    "notifications": {
-      "description": "Gestionați și configurați notificări trimise de acest server",
-      "name": "Notificări"
-    },
-    "playback": {
-      "description": "Editați preferințele de redare pentru acest dispozitiv",
-      "name": "Redare"
-    },
-    "plugins": {
-      "description": "Adăugați și configurați caracteristici noi pentru acest server",
-      "name": "Pluginuri"
-    },
-    "scheduledTasks": {
-      "description": "Gestionați activitățile programate care rulează pe acest server",
-      "name": "Activități programate"
-    },
-    "server": {
-      "description": "Configurați limba și marca acestui server",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Controlați modul în care sunt afișate subtitrările pe acest dispozitiv",
-      "name": "Subtitrări"
-    },
-    "transcodingAndStreaming": {
-      "description": "Gestionați modul în care acest server tratează transcodarea și transmiterea către clienți",
-      "name": "Transcodare & streaming"
-    },
-    "users": {
-      "description": "Gestionați utilizatorii și permisiunile acestora",
-      "name": "Utilizatori"
-    }
-  },
   "shows": "Spectacole",
   "signIn": "Autentificare",
   "songs": "Melodii",
@@ -408,102 +112,24 @@
   "studios": "Studiouri",
   "subtitles": "Subtitrări",
   "syncPlayGroups": "Grupuri SyncPlay",
-  "syncingInProgress": "Sincronizare în curs",
   "tagline": "Slogan",
   "tags": "Etichete",
   "themeSong": "Audio de Fundal",
   "themeVideo": "Video de Fundal",
-  "tooltips": {
-    "changeLanguage": "Limba",
-    "switchToDarkMode": "Treceți la modul întunecat",
-    "switchToLightMode": "Treceți la modul luminos"
-  },
   "trailer": "Trailer",
-  "transcodingInfo": {
-    "name": "Transcodare",
-    "transcodingFramerate": {
-      "name": "Frecvența cadre:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "Progres:",
-    "transcodingReason": {
-      "name": "Motiv: | Motive:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Video anamorfic nu este suportat",
-        "audioBitDepthNotSupported": "Adâncimea de biți audio nu este suportată",
-        "audioBitrateNotSupported": "Rata de biți audio nu este suportat",
-        "audioChannelsNotSupported": "Numărul de canale audio nu este suportat",
-        "audioCodecNotSupported": "Codec audio nu este suportat",
-        "audioProfileNotSupported": "Profilul codecului audio nu este suportat",
-        "audioSampleRateNotSupported": "Rata de eșantionare audio nu e suportată",
-        "containerBitrateExceedsLimit": "Rata de biți al containerului depașeste limita stabilită",
-        "containerNotSupported": "Containerul nu este suportat",
-        "interlacedVideoNotSupported": "Video întrepătruns nu este suportat",
-        "refFramesNotSupported": "Cadrele de referință nu sunt suportate",
-        "secondaryAudioNotSupported": "Pistele audio secundare nu sunt suportate",
-        "subtitleCodecNotSupported": "Codecul subtitrarii nu este suportat",
-        "videoBitDepthNotSupported": "Adâncimea de biți a videoului nu e suportată",
-        "videoCodecNotSupported": "Codecul video nu este suportat",
-        "videoFramerateNotSupported": "Viteza de cadre a videoclipului nu este suportată",
-        "videoLevelNotSupported": "Nivelul codecului a videoclipului nu este suportat",
-        "videoProfileNotSupported": "Profilul codecului a videoclipului nu este suportat",
-        "videoResolutionNotSupported": "Rezoluția videoclipului nu este suportată"
-      }
-    }
-  },
   "type": "Tip",
-  "unableGetPublicUsers": "Nu se pot obține utilizatorii",
   "unableGetRelated": "Nu se pot obține articole conexe",
-  "unableGetServerConfiguration": "Nu se poate obține configurarea serverului",
-  "unableToRefreshLibrary": "Imposibil de reîmprospătat biblioteca",
-  "unableToToggleLike": "Imposibil de modificat starea de apreciere a elementului",
   "unableToTogglePlayed": "Imposibil de actualizat starea de vizionare",
   "undefined": "Nedefinit",
   "unexpectedError": "Eroare neașteptată",
-  "unhandledException": "Excepție netratată",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} secundă | {count} secunde"
-    }
-  },
   "unliked": "Neplăcut",
   "unplayed": "Nerulat",
-  "upNext": "Urmează",
-  "upNextName": "Următorul: {upNextItemName}",
   "username": "Utilizator",
-  "validation": {
-    "bothPasswordsSame": "Ambele parole trebuie să fie aceleași",
-    "mustBeUrl": "Acest câmp trebuie să fie un URL valid",
-    "required": "Acest câmp este obligatoriu"
-  },
   "version": "Versiune",
   "video": "Video",
   "videoTypes": "Tipuri video",
   "viewDetails": "Vezi detalii",
   "vueClientVersion": "Versiunea clientului Vue",
-  "wizard": {
-    "administratorAccount": "Cont de administrator",
-    "allowRemoteAccess": "Permiteți acces extern către acest server",
-    "completeError": "Imposibil de finalizat procesul de pornire.",
-    "confirmPassword": "Confirmă parola",
-    "languageLocale": "Limbă și localizare",
-    "languageSuccessfullySet": "Limba setată cu succes.",
-    "metadataLanguagesSet": "Limbi pentru metadate setate.",
-    "preferedLanguage": "Limba preferată",
-    "preferredMetadataLanguage": "Limba preferata pentru metadata",
-    "remoteAccess": "Acces distant",
-    "remoteAccessSet": "Acces distant configurat.",
-    "setAdminError": "Imposibil de creat un cont de administrator.",
-    "setLanguageError": "Nu se poate seta limba clientului.",
-    "setMetadataError": "Nu se pot seta limbile pentru metadate.",
-    "setRemoteError": "Nu se pot seta setările de acces la distanță.",
-    "setupWizard": "Asistentul de configurare",
-    "userSuccessfullySet": "Utilizator setat cu succes."
-  },
   "writer": "Scriitor",
   "writing": "Scris",
   "year": "Anul",

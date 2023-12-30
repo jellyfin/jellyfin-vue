@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D format",
   "NoMediaSourcesAvailable": "Ingen tilgængelige mediekilder",
   "NoMediaStreamsAvailable": "Ingen mediestreams tilgængelige for den valgte kilde",
   "accept": "Godkend",
@@ -10,33 +9,17 @@
   "airPlayDevices": "AirPlay enheder",
   "albums": "Albummer",
   "allLanguages": "Alle sprog",
-  "alphabetically": "Alfabetisk",
-  "appbar": {
-    "tasks": {
-      "configSync": "Synkroniserer indstillinger…",
-      "scanningItem": "Skanner '{item}'…"
-    },
-    "tooltips": {
-      "tasks": "Kører opgaver"
-    }
-  },
   "architecture": "Arkitektur",
   "artist": "Kunstner",
   "artists": "Kunstnere",
   "audio": "Lyd",
   "auto": "Automatisk",
   "badRequest": "Forkert anmodning. Prøv igen",
-  "browserNotSupported": "Din browser er ikke understøttet til at afspille denne fil.",
-  "buttons": {
-    "ok": "Ok"
-  },
   "byArtist": "Af {artist}",
   "cancel": "Annuller",
   "castAndCrew": "Medvirkende og hold",
-  "clipboardFail": "Kunne ikke kopiere til udklipsholderen",
   "clipboardSuccess": "Kopieret til udklipsholderen",
   "clipboardUnsupported": "Kopiering til udklipsholder understøttes ikke i denne browser",
-  "close": "Luk",
   "collectionEmpty": "Denne samling er tom",
   "collections": "Samlinger",
   "communityRating": "Fællesskabsvurdering",
@@ -47,44 +30,18 @@
   "copyStreamURL": "Kopier stream URL",
   "criticRating": "Kritiker bedømmelse",
   "customRating": "Brugerdefineret bedømmelse",
-  "darkModeToggle": "Skift til mørk tilstand",
   "dateAdded": "Dato for tilføjelse",
   "datePlayed": "Dato for afspilning",
   "deleteItem": "Slet medie",
   "deleteItemDescription": "Hvis dette element slettes, fjernes det både fra dit filsystem samt din mediebibliotek. Er du sikker på du ønsker at fortsætte?",
   "details": "Detaljer",
-  "dialog": {
-    "upNext": {
-      "hide": "Skjul",
-      "nextItemPlayingIn": "Starter om {time}"
-    }
-  },
   "directing": "Instruktion",
   "director": "Instruktør",
   "disabled": "Deaktiveret",
   "discNumber": "Disk {discNumber}",
-  "dislikes": "Kan ikke lide",
-  "downloadItem": "Download | Download alle",
-  "edit": "Rediger",
   "editMetadata": "Redigér metadata",
   "editPerson": "Redigér person",
-  "endDate": "Slutdato",
   "endsAt": "Slutter ved {time}",
-  "episodeNumber": "Afsnit {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Der opstod en fejl",
-    "cantPlayItem": "Denne genstand kan ikke afspilles",
-    "messages": {
-      "errorCode": "Fejlkode: {errorCode}",
-      "videoPlayerError": "Videoafspilleren oplevede en uoprettelig fejl."
-    },
-    "playback": {
-      "mediaError": "Fatal mediefejl opstået, forsøger at gendanne",
-      "networkError": "Fatal netværksfejl opstået, forsøger at gendanne"
-    },
-    "unauthorized": "Du er ikke autoriseret til at tilgå denne side"
-  },
-  "failedRetrievingDisplayPreferences": "Kan ikke hente skærmpræferencer. Bruger sidst kendte indstillinger.",
   "failedSettingDisplayPreferences": "Kan ikke opdatere skærmindstillingerne.",
   "failedToRefreshItems": "Kunne ikke opdatere elementer",
   "favorite": "Favoritter",
@@ -95,104 +52,25 @@
   "general": "Generelt",
   "genericJellyfinPlaceholderDevice": "Generisk Jellyfin-enhed",
   "genres": "Genrer",
-  "goBack": "Gå tilbage",
-  "goNext": "Gå til næste",
   "googleCastPlaceholderDevice": "Google Cast-enhed",
   "guestStar": "Gæstestjerne",
-  "headerExternalIds": "Eksterne ID'er",
-  "headerPaths": "Sti",
   "home": "Hjem",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Senest tilføjede"
-    }
-  },
   "identify": "Identificer",
   "identifyConfirmChanges": "Er du sikker på, at du vil ændre '{originalItem}' med '{newIdentifiedItem}'?",
   "identifyInstructResult": "Du kan klikke på et af disse kort for at anvende resultatet",
-  "imageType": {
-    "art": "Kunst",
-    "backdrop": "Baggrundsbillede",
-    "banner": "Banner",
-    "box": "Boks",
-    "boxRear": "Boks (bagside)",
-    "disc": "Disk",
-    "logo": "Logo",
-    "menu": "Menu",
-    "primary": "Primær",
-    "screenshot": "Skærmbillede",
-    "thumb": "Miniature"
-  },
   "images": "Billeder",
   "incorrectUsernameOrPassword": "Forkert brugernavn eller adgangskode",
   "instantMix": "Øjeblikkelig blanding",
   "instantMixQueued": "Øjeblikkelig blanding tilføjet til køen",
-  "item": {
-    "artist": {
-      "albums": "Albummer",
-      "appearsOn": "Udseende",
-      "discography": "Diskografi",
-      "eps": "EP'er",
-      "singles": "Singler",
-      "videos": "Videoer"
-    },
-    "cast": "Medvirkende",
-    "composer": "Komponist",
-    "crew": "Mandskab",
-    "person": {
-      "birth": "Født",
-      "birthPlace": "Fødested",
-      "books": "Bøger",
-      "death": "Død",
-      "information": "Information",
-      "photos": "Fotos"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "Gå til slutningen",
-    "pushToTop": "Gå til begyndelsen",
-    "removeFromQueue": "Fjern fra kø"
-  },
-  "itemNotFound": "Genstand blev ikke fundet",
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Seneste {libraryName}",
   "libraryEmpty": "Dette bibliotek er tomt",
   "libraryEmptyFilters": "Ingen match. Fjern nogle filtre for at vise flere genstande",
-  "libraryNotFound": "Bibliotek ikke fundet",
-  "libraryRefreshQueued": "Biblioteksopdatering i kø",
   "liked": "Kan lide",
-  "likes": "Kan lide",
-  "links": {
-    "helpTranslate": "Oversæt Jellyfin til dit sprog",
-    "poweredByJellyfin": "Denne server er drevet af Jellyfin",
-    "readTheDocumentation": "Læs dokumentationen",
-    "reportAnIssue": "Rapporter et problem med denne klient"
-  },
-  "login": {
-    "addServer": "Tilføj server",
-    "changeServer": "Skift server",
-    "changeUser": "Skift bruger",
-    "connect": "Forbind",
-    "kickedOut": "Autorisationen er blevet tilbagekaldt, og denne session er ikke længere gyldig. Log venligst ind igen",
-    "login": "Log Ind",
-    "loginAs": "Log ind som {name}",
-    "rememberMe": "Husk mig",
-    "selectServer": "Vælg server",
-    "selectUser": "Vælg brugere",
-    "serverAddress": "Server adresse",
-    "serverAddressMustBeUrl": "Serveradressen skal være en gyldig URL",
-    "serverAddressRequired": "Serveradresse er påkrævet",
-    "serverDashboard": "Server-Kontrolpanel",
-    "serverNotFound": "Serveren blev ikke fundet",
-    "serverVersionTooLow": "Serverversionen skal være 10.7.0 eller højere"
-  },
   "logout": "Log ud",
   "manualLogin": "Manuel log ind",
   "mediaInfo": "Medieinfo",
   "mediaInfoAspectRatio": "Størrelsesforhold",
-  "mediaInfoAudioChannelLayout": "Udlæg",
-  "mediaInfoAudioChannels": "Kanaler",
-  "mediaInfoAudioSampleRate": "Samplingshastighed",
   "mediaInfoFileContainer": "Beholder",
   "mediaInfoFileFormats": "Format",
   "mediaInfoFilePath": "Sti",
@@ -208,7 +86,6 @@
   "mediaInfoTitlesSubtitleCodec": "Undertekst | Undertekst {0}",
   "mediaInfoTitlesVideoCodec": "Video | Video {0}",
   "mediaInfoVideoBitDepth": "Bit dybde",
-  "mediaInfoVideoBitrate": "Bithastighed",
   "mediaInfoVideoColorPrimaries": "Primære farver",
   "mediaInfoVideoColorRange": "Farveområde",
   "mediaInfoVideoColorSpace": "Farverum",
@@ -233,29 +110,19 @@
   "mediaInfoVideoScanType": "Scanningstype",
   "mediaInfoVideoTimestamp": "Tidsstempel",
   "menu": "Menu",
-  "metadata": {
-    "source": "Kilde",
-    "sourceAll": "Alle",
-    "title": "Titel"
-  },
   "metadataEditor": "Metadata editor",
-  "metadataNoResultsMatching": "Ingen resultater matcher \"{search}\". Tryk på enter for at oprette en ny.",
   "metadataRefreshQueued": "Opdatering af metadata i kø",
-  "more": "Mere",
   "moreLikeArtist": "Mere som {artist}",
-  "moreLikeThis": "Mere som dette",
   "movies": "Film",
   "name": "Navn",
   "networks": "Netværk",
   "nextUp": "Næste",
-  "no": "Nej",
   "noImagesFound": "Ingen billeder fundet",
   "noInformationAvailable": "Ingen information tilgængelig",
   "noNetworkConnection": "Ingen netværksforbindelse",
   "noResultsFound": "Der er ikke noget her",
   "numberTracks": "{number} spor",
   "operatingSystem": "Operativ System",
-  "originalAspectRatio": "Oprindeligt billedformat",
   "originalTitle": "Original titel",
   "overview": "Overblik",
   "parentalRating": "Aldersgrænse",
@@ -266,64 +133,14 @@
   "play": "Afspil",
   "playCount": "Afspilninger",
   "playFromBeginning": "Afspil fra begyndelsen",
-  "playback": {
-    "addToQueue": "Tilføj til kø",
-    "clearQueue": "Ryd køen og stop afspilningen",
-    "playAll": "Afspil alle",
-    "playNext": "Afspil næste",
-    "playbackSource": {
-      "item": "Spiller fra {item}",
-      "shuffle": "Afspilning i blandingstilstand",
-      "shuffleItem": "Afspiller {item} i blanding",
-      "unknown": "Afspiller fra kø"
-    },
-    "queueItems": "{items} spor",
-    "saveAsPlaylist": "Gem køen som en playliste",
-    "shuffle": "Bland",
-    "shuffleAll": "Bland alle"
-  },
-  "playbackData": "Afspilningsoplysninger",
-  "playbackInfo": {
-    "playMethod": {
-      "direct": "Direkte",
-      "name": "Metode:",
-      "remux": "Remux",
-      "transcode": "Omkode"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Streamtype:"
-    }
-  },
   "playbackSettings": "Afspilningsindstillinger",
   "played": "Afspillet",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Beskadigede frames:"
-    },
-    "decodedFrames": {
-      "name": "Afkodede frames:"
-    },
-    "droppedFrames": {
-      "name": "Tabte frames:"
-    },
-    "name": "Afspiller",
-    "playbackResolution": {
-      "name": "Viewport-opløsning:"
-    },
-    "videoResolution": {
-      "name": "Videoopløsning:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "Tilstede",
   "producer": "Producent",
   "quality": "Kvalitet",
   "queue": "Kø",
   "rating": "Vurdering",
   "refresh": "Opdater",
-  "refreshLibrary": "Opdater biblioteket",
   "refreshMetadata": "Genopfrisk metadata",
   "refreshMetadataHint": "Metadata opdateres alt efter hvilke indstillinger og internet-services der er aktiveret i kontrolpanelet",
   "releaseDate": "Udgivelsesdato",
@@ -338,10 +155,6 @@
   "save": "Gem",
   "saved": "Gemt",
   "scanForNewAndUpdatedFiles": "Skan for nye og opdaterede filer",
-  "search": {
-    "name": "Søg",
-    "topResults": "Topresultater"
-  },
   "searchMissingMetadata": "Søg efter manglende metadata",
   "searchNoResults": "Ingen resultater fundet",
   "seasonEpisode": "Sæson {seasonNumber}, Afsnit {episodeNumber}",
@@ -350,124 +163,8 @@
   "series": "Serier",
   "serverVersion": "Server-version",
   "serverVersionTooLow": "Serverversionen skal være {version} eller højere",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Adgangstoken",
-      "addApiKey": "Tilføj en API-nøgle",
-      "addNewKey": "Tilføj ny API-nøgle",
-      "apiKeys": "API-nøgler",
-      "createKeyFailure": "Fejl ved oprettelse af en ny API-nøgle",
-      "createKeySuccess": "Det lykkedes at oprette en ny API-nøgle",
-      "dateCreated": "Dato for oprettelse",
-      "description": "Tilføj og tilbagekald API-nøgler til ekstern adgang til din server",
-      "refreshKeysFailure": "Fejl ved opdatering af API-nøgler",
-      "revoke": "Tilbagekald",
-      "revokeAll": "Tilbagekald alle API-nøgler",
-      "revokeAllFailure": "Fejl ved tilbagekaldelse af alle API-nøgler",
-      "revokeAllSuccess": "Alle API-nøgler er blevet tilbagekaldt",
-      "revokeConfirm": "Bekræft tilbagekaldelse af API-nøgle",
-      "revokeFailure": "Fejl ved tilbagekaldelse af API-nøgle",
-      "revokeSuccess": "API-nøgle tilbagekaldt med succes"
-    },
-    "devices": {
-      "appName": "App navn",
-      "delete": "Slet",
-      "deleteAll": "Slet alt",
-      "deleteAllDevicesError": "Fejl ved sletning af alle enheder",
-      "deleteAllDevicesSuccess": "Alle enheder slettet med succes",
-      "deleteConfirm": "Bekræft sletning af enhed",
-      "deleteDeviceError": "Fejl ved sletning af enhed",
-      "deleteDeviceSuccess": "Enheden er slettet med succes",
-      "deviceName": "Enhedsnavn",
-      "lastActive": "Sidst aktiv",
-      "noDevicesFound": "Ingen enheder fundet"
-    },
-    "help": "Hjælp",
-    "logsAndActivity": {
-      "activity": "Aktivitet",
-      "failedGetActivity": "Kan ikke hente aktivitet",
-      "failedGetLogs": "Kan ikke hente logfiler",
-      "logs": "Logfiler",
-      "noActivityFound": "Ingen aktiviteter fundet",
-      "noLogsFound": "Ingen logfiler fundet"
-    },
-    "settings": "Indstillinger"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Rediger din brugers oplysninger",
-      "name": "Konto"
-    },
-    "devices": {
-      "description": "Se og administrer de enheder, der er forbundet til din server",
-      "name": "Enheder"
-    },
-    "dlna": {
-      "description": "Konfigurer DLNA-indstillinger og -profil",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Konfigurer dine hjemmesektioner og hjemmeskærmens layout",
-      "name": "Hjemmeskærm"
-    },
-    "libraries": {
-      "description": "Administrer biblioteker og deres metadata",
-      "name": "Biblioteker"
-    },
-    "liveTvAndDvr": {
-      "description": "Administrer tv-tunere, udbydere af guide-data og DVR-indstillinger"
-    },
-    "logs": {
-      "description": "Læs og søg i serverlogfiler og brugeraktivitet",
-      "name": "Logfiler og aktivitet"
-    },
-    "mediaPlayers": {
-      "description": "Konfigurer, hvordan medieafspillerne opfører sig for denne enhed",
-      "name": "Medieafspillere"
-    },
-    "networking": {
-      "description": "Administrer netværksindstillingerne for denne server",
-      "name": "Netværk"
-    },
-    "notifications": {
-      "description": "Administrer og konfigurer notifikationer sendt af denne server",
-      "name": "Notifikationer"
-    },
-    "playback": {
-      "description": "Rediger dine afspilningspræferencer for denne enhed",
-      "name": "Afspilning"
-    },
-    "plugins": {
-      "description": "Tilføj og konfigurer nye funktioner til denne server",
-      "name": "Tilføjelser"
-    },
-    "scheduledTasks": {
-      "description": "Administrer planlagte opgaver, der kører på denne server",
-      "name": "Planlagte opgaver"
-    },
-    "server": {
-      "description": "Konfigurer denne servers sprog og branding",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Kontroller, hvordan undertekster vises på denne enhed"
-    },
-    "transcodingAndStreaming": {
-      "description": "Administrer, hvordan denne server håndterer omkodning og streaming til klienter",
-      "name": "Omkodning og streaming"
-    },
-    "users": {
-      "description": "Administrer brugere og deres tilladelser",
-      "name": "Brugere"
-    }
-  },
   "shows": "Serier",
   "signIn": "Log ind",
-  "snackbar": {
-    "addedToQueue": "Tilføj til kø",
-    "playNext": "Det valgte element afspilles efter det aktuelle",
-    "routeValidationError": "Det angivne routeId i ruteparams er ikke korrekt"
-  },
   "songs": "Sange",
   "sortByType": "Af {type}",
   "sortTitle": "Sortér titel",
@@ -479,110 +176,30 @@
   "studios": "Studier",
   "subtitles": "Undertekster",
   "syncPlayGroups": "SyncPlay-grupper",
-  "syncingInProgress": "Synkronisering er i gang",
   "tagline": "Taglinje",
   "tags": "Mærker",
   "themeSong": "Tema sang",
   "themeVideo": "Tema video",
-  "tooltips": {
-    "changeLanguage": "Sprog",
-    "switchToAuto": "Følg systemets tema",
-    "switchToDarkMode": "Skift til mørk tilstand",
-    "switchToLightMode": "Skift til lys tilstand"
-  },
   "trailer": "Forfilm",
-  "transcodingInfo": {
-    "name": "Omkodning",
-    "transcodingFramerate": {
-      "name": "Billedhastighed:",
-      "value": "{value} fps"
-    },
-    "transcodingProgress": "Fremskridt:",
-    "transcodingReason": {
-      "name": "Årsag: | Årsager:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Anamorfisk video er ikke understøttet",
-        "audioBitDepthNotSupported": "Lydens bit dybde er ikke understøtte",
-        "audioBitrateNotSupported": "Lydens bithastighed understøttes ikke",
-        "audioChannelsNotSupported": "Antallet af lydkanaler er ikke understøttet",
-        "audioCodecNotSupported": "Lyd-codec er ikke understøttet",
-        "audioProfileNotSupported": "Lydcodec-profilen understøttes ikke",
-        "audioSampleRateNotSupported": "Lydens samplingshastighed understøttes ikke",
-        "containerBitrateExceedsLimit": "Containerens bitrate overskrider den indstillede grænse",
-        "containerNotSupported": "Containeren er ikke understøttet",
-        "interlacedVideoNotSupported": "Interlaced video er ikke understøttet",
-        "refFramesNotSupported": "Referencebilleder er ikke understøttet",
-        "secondaryAudioNotSupported": "Sekundære lydspor er ikke understøttet",
-        "subtitleCodecNotSupported": "Undertekst-codec understøttes ikke",
-        "videoBitDepthNotSupported": "Videoens bit dybde er ikke understøttet",
-        "videoCodecNotSupported": "Video-codec understøttes ikke",
-        "videoFramerateNotSupported": "Videoens billedhastighed understøttes ikke",
-        "videoLevelNotSupported": "Video-codec-niveauet understøttes ikke",
-        "videoProfileNotSupported": "Videoens kodeks profil er ikke understøttet",
-        "videoResolutionNotSupported": "Videoens opløsning er ikke understøttet"
-      }
-    }
-  },
   "type": "Type",
-  "unableGetPublicUsers": "Kan ikke hente brugere",
   "unableGetRelated": "Kan ikke hente relaterede elementer",
-  "unableGetServerConfiguration": "Kan ikke hente serverkonfiguration",
-  "unableToRefreshLibrary": "Kan ikke opdatere biblioteket",
-  "unableToToggleLike": "Kan ikke ændre elementets liked-status",
   "unableToTogglePlayed": "Kan ikke opdatere status for set",
   "undefined": "Udefineret",
   "unexpectedError": "Uventet fejl",
-  "unhandledException": "Ubehandlet undtagelse",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} sekunder | {count} sekunder"
-    }
-  },
   "unknown": "Ukendt",
   "unknownAlbum": "Ukendt album",
   "unknownArtist": "Ukendt kunstner",
   "unknownTitle": "Ukendt titel",
   "unplayed": "Uafspillet",
-  "upNext": "Næste",
-  "upNextName": "Næste: {upNextItemName}",
   "username": "Brugernavn",
-  "validation": {
-    "bothPasswordsSame": "Begge adgangskoder skal være de samme",
-    "mustBeUrl": "Dette felt skal være en gyldig URL",
-    "required": "Dette felt er påkrævet"
-  },
   "version": "Version",
   "video": "Video",
   "videoTypes": "Videotyper",
   "viewDetails": "Se detaljer",
   "vueClientVersion": "Klient-version",
-  "wizard": {
-    "administratorAccount": "Administratorkonto",
-    "allowRemoteAccess": "Tillad fjernadgang til serveren",
-    "completeError": "Kan ikke fuldføre opstartsguiden.",
-    "confirmPassword": "Bekræft adgangskode",
-    "languageLocale": "Sprog og lokalitet",
-    "languageSuccessfullySet": "Sprog indstillet korrekt.",
-    "metadataLanguagesSet": "Sprog for Metadata er sat.",
-    "preferedLanguage": "Foretrukket sprog",
-    "preferredMetadataLanguage": "Foretrukket sprog for metadata",
-    "remoteAccess": "Fjernadgang",
-    "remoteAccessSet": "Fjernadgang indstillet.",
-    "setAdminError": "Kan ikke oprette en administratorkonto.",
-    "setLanguageError": "Kan ikke indstille klientsprog.",
-    "setMetadataError": "Kan ikke indstille metadatasprog.",
-    "setRemoteError": "Kan ikke angive indstillinger for fjernadgang.",
-    "setupWizard": "Opsætningsguide",
-    "userSuccessfullySet": "Bruger indstillet med succes."
-  },
   "writer": "Forfatter",
   "writing": "Skrivning",
   "year": "År",
   "years": "År",
-  "yes": "Ja",
   "youMayAlsoLike": "Du kan måske også lide"
 }

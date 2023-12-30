@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D format",
   "NoMediaSourcesAvailable": "Medijski viri niso na voljo",
   "actor": "Igralec",
   "actors": "Igralci",
@@ -8,23 +7,12 @@
   "airPlayDevices": "AirPlay naprave",
   "albums": "Albumi",
   "allLanguages": "Vsi jeziki",
-  "alphabetically": "Po abecedi",
-  "appbar": {
-    "tasks": {
-      "configSync": "Sinhroniziram nastavitve…"
-    }
-  },
   "architecture": "Arhitektura",
   "artist": "Izvajalec",
   "artists": "Izvajalci",
   "audio": "Zvok",
-  "audioCodecNotSupported": "Avdio kodek ni podport",
   "badRequest": "Slaba zahteva. Poskusite znova",
   "books": "Knjige",
-  "browserNotSupported": "Brskalnik ne podpira predvajanja te datoteke.",
-  "buttons": {
-    "ok": "Ok"
-  },
   "byArtist": "Od {artist}",
   "cancel": "Prekliči",
   "castAndCrew": "Igralci in ekipa",
@@ -36,33 +24,14 @@
   "continueWatching": "Nadaljuj ogled",
   "criticRating": "Ocena kritikov",
   "customRating": "Ocena po meri",
-  "darkModeToggle": "Preklopi temen način",
   "dateAdded": "Dodano",
   "details": "Podrobnosti",
-  "dialog": {
-    "upNext": {
-      "hide": "Skrij",
-      "startNow": "Začni zdaj"
-    }
-  },
   "directing": "Režija",
   "director": "Režiser",
   "discNumber": "Disk {discNumber}",
-  "dislikes": "ni mi všeč",
-  "edit": "Uredi",
   "editMetadata": "Uredi metapodatke",
   "editPerson": "Uredi osebo",
-  "endDate": "Datum zaključka",
   "endsAt": "Konča se ob {time}",
-  "episodeNumber": "Epizoda {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Prišlo je do napake",
-    "messages": {
-      "errorCode": "Koda napake: {errorCode}",
-      "videoPlayerError": "Video predvajalnik je naletel na nepopravljivo napako."
-    }
-  },
-  "failedRetrievingDisplayPreferences": "Ni mogoče pridobiti zaslonskih nastavitev. Uporabljam zadnje znane nastavitve.",
   "favorite": "Priljubljen",
   "filter": "Filter",
   "filtersNotFound": "Ni mogoče naložiti filtrov",
@@ -70,105 +39,20 @@
   "general": "Splošno",
   "genres": "Zvrsti",
   "googleCastPlaceholderDevice": "Naprava Google Cast",
-  "headerPaths": "Pot",
   "home": "Domov",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Nedavno dodano"
-    }
-  },
-  "imageType": {
-    "art": "Poster",
-    "backdrop": "Ozadje",
-    "banner": "Pasica",
-    "box": "Ovitek",
-    "boxRear": "Ovitek (zadnja stran)",
-    "disc": "Disk",
-    "logo": "Logotip",
-    "menu": "Meni",
-    "screenshot": "Posnetek zaslona",
-    "thumb": "Sličica"
-  },
   "images": "Slike",
   "incorrectUsernameOrPassword": "Napačno uporabniško ime ali geslo",
-  "item": {
-    "artist": {
-      "appearsOn": "Pojavitve",
-      "discography": "Diskografija",
-      "information": "Informacije",
-      "videos": "Videi"
-    },
-    "cast": "Zasedba",
-    "composer": "Skladatelj",
-    "crew": "Ekipa",
-    "person": {
-      "birth": "Rojstvo",
-      "birthPlace": "Rojstno Kraj",
-      "books": "Knjige",
-      "death": "Smrt",
-      "information": "Informacije",
-      "movies": "Filmi",
-      "person": "Oseba",
-      "photos": "Fotografije"
-    },
-    "tracklist": {
-      "title": "Naslov"
-    }
-  },
   "jellyfinLogo": "Jellyfin logo",
   "latestLibrary": "Najnovejše {libraryName}",
   "libraries": "Knjižnice",
   "libraryEmpty": "Knjižnica je prazna",
-  "libraryNotFound": "Knjižnice ni najdena",
-  "links": {
-    "helpTranslate": "Prevedite Jellyfin v svoj jezik",
-    "readTheDocumentation": "Preberi dokumentacijo"
-  },
-  "login": {
-    "addServer": "Dodaj strežnik",
-    "changeServer": "Zamenjaj strežnik",
-    "changeUser": "Zamenjaj uporabnika",
-    "connect": "Poveži",
-    "login": "Prijava",
-    "loginAs": "Prijava kot {name}",
-    "manualLogin": "Ročna prijava",
-    "rememberMe": "Zapomni se me",
-    "selectServer": "Izberi strežnik",
-    "selectUser": "Izberi uporabnika",
-    "serverAddress": "Naslov strežnika",
-    "serverAddressMustBeUrl": "Naslov strežnika mora biti veljaven URL",
-    "serverNotFound": "Strežnika ni mogoče najti",
-    "serverVersionTooLow": "Različica strežnika mora biti 10.7.0 ali višja"
-  },
   "logout": "Odjava",
-  "logsAndActivity": {
-    "activity": "Aktivnost"
-  },
-  "more": "Več",
   "password": "Geslo",
   "play": "Predvajaj",
   "signIn": "Prijavite se",
   "unexpectedError": "Nepričakovana napaka",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} sekunda | {count} sekund"
-    }
-  },
-  "upNext": "Naslednje",
   "username": "Uporabniško ime",
   "version": "Verzija",
-  "wizard": {
-    "administratorAccount": "Administratorski račun",
-    "allowRemoteAccess": "Dovoli oddaljen dostop do strežnika",
-    "preferedLanguage": "Privzeti jezik",
-    "remoteAccess": "Oddaljen dostop",
-    "setupWizard": "Namestitveni čarovnik",
-    "userSuccessfullySet": "Uporabnik je bil uspešno nastavljen."
-  },
   "year": "Leto",
   "years": "Leta"
 }

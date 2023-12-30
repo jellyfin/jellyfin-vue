@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D formatu",
   "accept": "Priimti",
   "actor": "Aktorius/ė",
   "actors": "Aktoriai",
@@ -8,29 +7,16 @@
   "airPlayDevices": "AirPlay įrenginiai",
   "albums": "Albumai",
   "allLanguages": "Visos kalbos",
-  "alphabetically": "Paraidžiui",
-  "appbar": {
-    "tasks": {
-      "configSync": "Sinchronizuojami nustatymai…",
-      "scanningItem": "Nuskaitoma '{item}'…"
-    }
-  },
   "architecture": "Architektūra",
   "audio": "Garsas",
   "badRequest": "Bloga užklausa. Bandykite iš naujo",
   "continueListening": "Tęsti klausymą",
   "continueWatching": "Tęsti žiūrėjimą",
-  "endDate": "Pabaigos data",
   "endsAt": "Baigiasi {time}",
-  "episodeNumber": "Epizodas nr. {episodeNumber}",
   "home": "Pradžia",
   "incorrectUsernameOrPassword": "Neteisingas vartotojo vardas arba slaptažodis",
-  "itemNotFound": "Elementas nerastas",
   "libraryEmpty": "Tuščia mediateka",
-  "libraryNotFound": "Mediateka nerasta",
   "logout": "Atsijungti",
-  "more": "Daugiau",
-  "moreLikeThis": "Daugiau panašių",
   "password": "Slaptažodis",
   "play": "Leisti",
   "present": "Dabar",
@@ -38,6 +24,5 @@
   "releaseDate": "Išleidimo data",
   "signIn": "Prisijungti",
   "unexpectedError": "Netikėta klaida",
-  "upNext": "Toliau",
   "username": "Vartotojo vardas"
 }

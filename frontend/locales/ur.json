@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D فارمیٹ",
   "NoMediaSourcesAvailable": "میڈیا ذرائع دستیاب نہیں ہیں",
   "actor": "اداکار",
   "actors": "اداکار",
@@ -7,19 +6,12 @@
   "airPlayDevices": "ایئر پلے ڈیوائسز",
   "albums": "البمز",
   "allLanguages": "تمام زبانیں",
-  "alphabetically": "حروف تہجی کے مطابق",
   "architecture": "فن تعمیر",
   "artist": "فنکار",
   "artists": "فنکار",
-  "aspectRatio": "پہلو کا تناسب",
   "audio": "آڈیو",
-  "audioCodecNotSupported": "آڈیو کوڈیک کی حمایت نہیں ہے",
   "badRequest": "غلط ریکویسٹ. دوبارہ کوشش کریں",
   "books": "کتابیں",
-  "browserNotSupported": "آپ کا براؤزر اس فائل کو چلانے کے لیے معاون نہیں ہے.",
-  "buttons": {
-    "ok": "ٹھیک"
-  },
   "byArtist": "{artist} کی طرف سے",
   "cancel": "منسوخ",
   "castAndCrew": "کاسٹ اور عملہ",

@@ -1,5 +1,4 @@
 {
-  "3DFormat": "Формат 3D",
   "NoMediaSourcesAvailable": "Нет доступных источников медиаданных",
   "actor": "Актёр",
   "actors": "Актёры",
@@ -8,29 +7,13 @@
   "airPlayDevices": "Устройства AirPlay",
   "albums": "Альбомы",
   "allLanguages": "Все языки",
-  "alphabetically": "Алфавитный",
-  "appbar": {
-    "tasks": {
-      "configSync": "Синхронизируются параметры…",
-      "scanningItem": "Сканирую '{item}'…"
-    },
-    "tooltips": {
-      "tasks": "Исполняющиеся задачи"
-    }
-  },
   "architecture": "Архитектура",
   "artist": "Исполнитель",
   "artists": "Исполнители",
-  "aspectRatio": "Соотношение сторон",
   "audio": "Аудио",
-  "audioCodecNotSupported": "Аудиокодек не поддерживается",
   "auto": "Автоматически",
   "badRequest": "Недопустимый запрос. Попробуйте снова",
   "books": "Книги",
-  "browserNotSupported": "Ваш браузер не поддерживает воспроизведение этого файла.",
-  "buttons": {
-    "ok": "ОК"
-  },
   "byArtist": "От {artist}",
   "cancel": "Отменить",
   "castAndCrew": "Снимались и снимали",
@@ -43,43 +26,17 @@
   "continueWatching": "Продолжение просмотра",
   "criticRating": "Оценка критиков",
   "customRating": "Произвольная возрастная категория",
-  "darkModeToggle": "Переключение тёмного режима",
   "dateAdded": "Дата добавления",
   "delete": "Удалить",
   "deleteItem": "Удалить элемент",
   "details": "Подробности",
-  "dialog": {
-    "upNext": {
-      "hide": "Скрыть",
-      "nextItemPlayingIn": "Начало через {time}",
-      "startNow": "Запустить сейчас"
-    }
-  },
   "directing": "Режиссура",
   "director": "Режиссёр",
   "disabled": "Отключено",
   "discNumber": "Диск {discNumber}",
-  "dislikes": "Не нравящиеся",
-  "edit": "Править",
   "editMetadata": "Править метаданные",
   "editPerson": "Править персону",
-  "endDate": "Конечная дата",
   "endsAt": "Конец в {time}",
-  "episodeNumber": "Эпизод {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Произошла ошибка",
-    "cantPlayItem": "Это не может быть воспроизведено",
-    "messages": {
-      "errorCode": "Код ошибки: {errorCode}",
-      "videoPlayerError": "В видео проигрывателе произошла неустранимая ошибка."
-    },
-    "playback": {
-      "mediaError": "Возникла критическая ошибка носителя, попытка восстановления",
-      "networkError": "Возникла критическая сетевая ошибка, попытка восстановления"
-    },
-    "unauthorized": "Вы не авторизованы для доступа к этой странице"
-  },
-  "failedRetrievingDisplayPreferences": "Не удаётся получить настройки отображения. Используются прошлые настройки.",
   "failedSettingDisplayPreferences": "Не удаётся обновить настройки отображения.",
   "failedToRefreshItems": "Не удалось обновить элементы",
   "favorite": "Избранное",
@@ -90,128 +47,27 @@
   "general": "Общие",
   "genericJellyfinPlaceholderDevice": "Общее устройство Jellyfin",
   "genres": "Жанры",
-  "goBack": "Назад",
-  "goNext": "Вперёд",
   "googleCastPlaceholderDevice": "Устройство Google Cast",
   "guestStar": "Приглашенный актёр",
-  "headerExternalIds": "Внешние идентификаторы",
-  "headerPaths": "Путь",
   "home": "Главное",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Недавно добавленное"
-    }
-  },
   "identify": "Определить",
   "identifyConfirmChanges": "Вы уверенны что хотите заменить '{originalItem}' на '{newIdentifiedItem}'?",
-  "imageType": {
-    "art": "Рисунок",
-    "backdrop": "Задник",
-    "banner": "Баннер",
-    "box": "Коробка",
-    "boxRear": "Коробка (спинка)",
-    "disc": "Диск",
-    "logo": "Логотип",
-    "menu": "Меню",
-    "primary": "Главный",
-    "screenshot": "Снимок экрана",
-    "thumb": "Бегунок"
-  },
   "images": "Изображения",
   "incorrectUsernameOrPassword": "Неверные имя пользователя или пароль",
   "instantMix": "Мгновенный микс",
   "instantMixQueued": "Мгновенный микс добавлен в очередь",
-  "item": {
-    "artist": {
-      "albums": "Альбомы",
-      "appearsOn": "Вид",
-      "discography": "Дискография",
-      "eps": "Эпизоды",
-      "information": "Информация",
-      "singles": "Синглы",
-      "videos": "Видео"
-    },
-    "cast": "В ролях",
-    "composer": "Композитор",
-    "crew": "Снимались",
-    "person": {
-      "birth": "Дата рождения",
-      "birthPlace": "Место рождения",
-      "books": "Книги",
-      "death": "Дата смерти",
-      "information": "Информация",
-      "movies": "Фильмы",
-      "person": "Персона",
-      "photos": "Фото",
-      "shows": "Сериалы"
-    },
-    "tracklist": {
-      "title": "Название"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "Перейти к концу",
-    "pushToTop": "Перейти к началу",
-    "removeFromQueue": "Удалить из очереди"
-  },
-  "itemNotFound": "Элемент не найден",
   "jellyfinLogo": "Логотип Jellyfin",
   "latestLibrary": "Новейшие {libraryName}",
   "libraries": "Медиатеки",
   "libraryEmpty": "Эта медиатека пуста",
   "libraryEmptyFilters": "Нет совпадений. Удалите некоторые фильтры, чтобы показать больше элементов",
-  "libraryNotFound": "Медиатека не найдена",
-  "libraryRefreshQueued": "Обновление медиатеки запланировано",
   "liked": "Нравится",
-  "likes": "Нравящиеся",
-  "links": {
-    "helpTranslate": "Переведите Jellyfin на свой язык",
-    "poweredByJellyfin": "Этот сервер работает на Jellyfin",
-    "readTheDocumentation": "Читать документацию",
-    "reportAnIssue": "Сообщить о сбое клиента"
-  },
-  "login": {
-    "addServer": "Добавить сервер",
-    "changeServer": "Сменить сервер",
-    "changeUser": "Сменить пользователя",
-    "connect": "Соединиться",
-    "kickedOut": "Авторизация была отозвана, и этот сеанс больше не действителен. Войдите снова",
-    "login": "Вход",
-    "loginAs": "Войти как {name}",
-    "manualLogin": "Войти вручную",
-    "rememberMe": "Запомнить",
-    "selectServer": "Выбрать сервер",
-    "selectUser": "Выбрать пользователя",
-    "serverAddress": "Адрес сервера",
-    "serverAddressMustBeUrl": "Адресом сервера должен быть действующий URL",
-    "serverAddressRequired": "Требуется адрес сервера",
-    "serverDashboard": "Панель",
-    "serverNotFound": "Сервер не найден",
-    "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше"
-  },
   "logout": "Выход",
-  "logsAndActivity": {
-    "activity": "Действия",
-    "failedGetActivity": "Невозможно получить данные активности",
-    "failedGetLogs": "Невозможно получить логи",
-    "logs": "Журналы",
-    "noActivityFound": "Действий не найдено",
-    "noLogsFound": "Журналов не найдено"
-  },
   "manualLogin": "Войти вручную",
   "menu": "Меню",
-  "metadata": {
-    "source": "Источник",
-    "sourceAll": "Все",
-    "title": "Название",
-    "type": "Тип"
-  },
   "metadataEditor": "Редактор метаданных",
-  "metadataNoResultsMatching": "Нет результатов по запросу \"{search}\". Нажмите Enter, чтобы создать новый.",
   "metadataRefreshQueued": "Обновление метаданных добавлено в очередь",
-  "more": "Ещё",
   "moreLikeArtist": "Ещё подобные {artist}",
-  "moreLikeThis": "Ещё подобное",
   "movies": "Фильмы",
   "name": "Имя",
   "networks": "Телесети",
@@ -222,7 +78,6 @@
   "noResultsFound": "Здесь ничего нет",
   "numberTracks": "{number} дорож[ка/ки/ек]",
   "operatingSystem": "Операционная система",
-  "originalAspectRatio": "Исходное соотношение сторон",
   "originalTitle": "Оригинальное название",
   "overview": "Обзор",
   "parentalRating": "Возрастная категория",
@@ -232,67 +87,14 @@
   "person": "Персона",
   "play": "Воспроизвести",
   "playFromBeginning": "Воспроизвести с начала",
-  "playback": {
-    "addToQueue": "Добавить в очередь",
-    "clearQueue": "Очистить очередь и остановить воспроизведение",
-    "playAll": "Воспроизвести все",
-    "playNext": "Воспроизвести следующее",
-    "playbackSource": {
-      "item": "Воспроизвести с {item}",
-      "shuffle": "Воспроизведение в случайном порядке",
-      "shuffleItem": "Воспроизвести {item} в случайном порядке",
-      "unknown": "Воспроизвести из очереди"
-    },
-    "queueItems": "{items} дорожки",
-    "saveAsPlaylist": "Сохранить очередь как плей-лист",
-    "shuffle": "Перемешать",
-    "shuffleAll": "Перемешать все"
-  },
-  "playbackData": "Данные воспроизведения",
-  "playbackInfo": {
-    "name": "Воспроизведение",
-    "playMethod": {
-      "direct": "Напрямую",
-      "name": "Метод:",
-      "remux": "Ремукс",
-      "transcode": "Перекодирование"
-    },
-    "streamType": {
-      "dash": "Технология DASH",
-      "hls": "Технология HLS",
-      "name": "Тип потока:",
-      "unknown": "Неизвестно",
-      "video": "Видео"
-    }
-  },
   "playbackSettings": "Параметры воспроизведения",
   "played": "Воспроизведено",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Испорченные кадры:"
-    },
-    "decodedFrames": {
-      "name": "Декодированные кадры:"
-    },
-    "droppedFrames": {
-      "name": "Пропущенные кадры:"
-    },
-    "name": "Проигрыватель",
-    "playbackResolution": {
-      "name": "Разрешение окна просмотра:"
-    },
-    "videoResolution": {
-      "name": "Разрешение видео:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "Н/В",
   "producer": "Продюсер",
   "quality": "Качество",
   "queue": "Очередь",
   "rating": "Оценка",
   "refresh": "Обновить",
-  "refreshLibrary": "Обновить медиатеку",
   "refreshMetadata": "Обновить метаданные",
   "refreshMetadataHint": "Метаданные обновлены в соответствии с сервисами включёнными в панели управления",
   "releaseDate": "Дата выпуска",
@@ -306,10 +108,6 @@
   "save": "Сохранить",
   "saved": "Сохранено",
   "scanForNewAndUpdatedFiles": "Найти новые и обновлеые файлы",
-  "search": {
-    "name": "Поиск",
-    "topResults": "Высшие результаты"
-  },
   "searchMissingMetadata": "Найти отсутствующие метаданные",
   "searchNoResults": "Ничего не найдено",
   "seasonEpisode": "Сезон {seasonNumber}, Эпизод {episodeNumber}",
@@ -318,130 +116,8 @@
   "server": "Сервер",
   "serverVersion": "Версия сервера",
   "serverVersionTooLow": "Версия сервера должна быть 10.7.0 или выше",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Токен доступа",
-      "addApiKey": "Добавить API-ключ",
-      "addNewKey": "Добавить новый API-ключ",
-      "apiKeys": "API-ключи",
-      "appName": "Название приложения",
-      "createKeyFailure": "Ошибка при создании нового API-ключа",
-      "createKeySuccess": "Новый API-ключ создан успешно",
-      "dateCreated": "Дата создания",
-      "description": "Добавлять и отзывать API-ключи внешнего доступа к серверу",
-      "refreshKeysFailure": "Ошибка обновления ключей API",
-      "revoke": "Отозвать",
-      "revokeAll": "Отозвать все API-ключи",
-      "revokeAllFailure": "Ошибка при отзыве всех API-ключей",
-      "revokeAllSuccess": "Все API-ключи отозваны успешно",
-      "revokeConfirm": "Подтвердите отзыв ключа API",
-      "revokeFailure": "Ошибка при отзыве API-ключа",
-      "revokeSuccess": "API-ключ отозван успешно"
-    },
-    "devices": {
-      "appName": "Название приложения",
-      "appVersion": "Версия приложения",
-      "delete": "Удалить",
-      "deleteAll": "Удалить все",
-      "deleteAllDevicesError": "Ошибка удаления всех устройств",
-      "deleteAllDevicesSuccess": "Все устройства удалены успешно",
-      "deleteConfirm": "Подтвердите удаление устройства",
-      "deleteDeviceError": "Ошибка удаления устройства",
-      "deleteDeviceSuccess": "Устройство удалено успешно",
-      "deviceName": "Имя устройства",
-      "devices": "Устройства",
-      "lastActive": "Последнее действие",
-      "noDevicesFound": "Устройства не обнаружены",
-      "userName": "Имя пользователя"
-    },
-    "help": "Справка",
-    "logsAndActivity": {
-      "activity": "Действия",
-      "failedGetActivity": "Невозможно получить данные активности",
-      "failedGetLogs": "Невозможно получить логи",
-      "logs": "Журналы",
-      "noActivityFound": "Действий не найдено",
-      "noLogsFound": "Журналов не найдено"
-    },
-    "settings": "Параметры"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Править информацию о пользователе",
-      "name": "Учётная запись"
-    },
-    "devices": {
-      "description": "Просмотреть и изменить устройства подсоединённых к серверу",
-      "name": "Устройства"
-    },
-    "dlna": {
-      "description": "Конфигурировать параметры и профиль DLNA",
-      "name": "Технология DLNA"
-    },
-    "home": {
-      "description": "Конфигурировать разделы на Главном и раскладку экрана Главное",
-      "name": "Главный экран"
-    },
-    "libraries": {
-      "description": "Управлять медиатеками и их метаданными",
-      "name": "Медиатеки"
-    },
-    "liveTvAndDvr": {
-      "description": "Управлять ТВ-тюнерами, поставщиками данных телегида и параметрами DVR",
-      "name": "Эфир и DVR"
-    },
-    "logs": {
-      "description": "Читать и искать журналы сервера и действий пользователей",
-      "name": "Журналы и действия"
-    },
-    "mediaPlayers": {
-      "description": "Конфигурировать поведение проигрывателей медиаданных для этого устройства",
-      "name": "Проигрыватели медиаданных"
-    },
-    "networking": {
-      "description": "Управлять сетевыми параметрами этого сервера",
-      "name": "Сеть"
-    },
-    "notifications": {
-      "description": "Управлять и конфигурировать уведомления, посылаемые данным сервером",
-      "name": "Уведомления"
-    },
-    "playback": {
-      "description": "Править настройки воспроизведения для этого устройства",
-      "name": "Воспроизведение"
-    },
-    "plugins": {
-      "description": "Добавить и изменить новые функции для этого сервера",
-      "name": "Плагины"
-    },
-    "scheduledTasks": {
-      "description": "Управлять запланированными задачами, выполняемыми на этом сервере",
-      "name": "Планировщик"
-    },
-    "server": {
-      "description": "Конфигурировать язык этого сервера и фирменную настройку",
-      "name": "Сервер"
-    },
-    "subtitles": {
-      "description": "Управлять отображением субтитров на этом устройстве",
-      "name": "Субтитры"
-    },
-    "transcodingAndStreaming": {
-      "description": "Управлять тем, как этот сервер обрабатывает перекодирование и трансляцию клиентам",
-      "name": "Перекодирование и трансляция"
-    },
-    "users": {
-      "description": "Управлять пользователями и их привилегиями",
-      "name": "Пользователи"
-    }
-  },
   "shows": "Передачи",
   "signIn": "Вход",
-  "snackbar": {
-    "addedToQueue": "Добавить в очередь",
-    "playNext": "Выбранный элемент будет воспроизводиться после текущего",
-    "routeValidationError": "Указанный routeId в параметрах маршрута некорректен"
-  },
   "songs": "Композиции",
   "sortByType": "По {type}",
   "sortTitle": "Название для сортировки",
@@ -453,104 +129,25 @@
   "studios": "Студии",
   "subtitles": "Субтитры",
   "syncPlayGroups": "Группы SyncPlay",
-  "syncingInProgress": "Синхронизация в процессе",
   "tagline": "Девиз",
   "tags": "Теги",
   "themeSong": "Тематическая композиция",
   "themeVideo": "Тематическое видео",
-  "tooltips": {
-    "changeLanguage": "Язык",
-    "switchToAuto": "Системная тема",
-    "switchToDarkMode": "Перейти на тёмный режим",
-    "switchToLightMode": "Перейти на светлый режим"
-  },
   "trailer": "Трейлер",
-  "transcodingInfo": {
-    "name": "Перекодируется",
-    "transcodingFramerate": {
-      "name": "Частота кадров:",
-      "value": "{value} кадр/с"
-    },
-    "transcodingProgress": "Прогресс:",
-    "transcodingReason": {
-      "name": "Причина: | Причины:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Анаморфное видео не поддерживается",
-        "audioBitDepthNotSupported": "Битовая глубина звука не поддерживается",
-        "audioBitrateNotSupported": "Потоковая скорость аудио не поддерживается",
-        "audioChannelsNotSupported": "Количество аудиоканалов не поддерживается",
-        "audioCodecNotSupported": "Аудиокодек не поддерживается",
-        "audioProfileNotSupported": "Профиль аудиокодека не поддерживается",
-        "audioSampleRateNotSupported": "Частота дискретизации аудио не поддерживается",
-        "containerBitrateExceedsLimit": "Потоковая скорость контейнера превышает установленный лимит",
-        "containerNotSupported": "Контейнер не поддерживается",
-        "interlacedVideoNotSupported": "Чересстрочное видео не поддерживается",
-        "refFramesNotSupported": "Опорные кадры не поддерживаются",
-        "secondaryAudioNotSupported": "Вторичные звуковые дорожки не поддерживаются",
-        "subtitleCodecNotSupported": "Кодек субтитров не поддерживается",
-        "videoBitDepthNotSupported": "Битовая глубина видео не поддерживается",
-        "videoCodecNotSupported": "Видеокодек не поддерживается",
-        "videoFramerateNotSupported": "Частота кадров видео не поддерживается",
-        "videoLevelNotSupported": "Уровень видеокодека не поддерживается",
-        "videoProfileNotSupported": "Профиль видеокодека не поддерживается",
-        "videoResolutionNotSupported": "Разрешение видео не поддерживается"
-      }
-    }
-  },
   "type": "Тип",
-  "unableGetPublicUsers": "Невозможно получить пользователей",
   "unableGetRelated": "Не удалось получить связанные элементы",
-  "unableGetServerConfiguration": "Не удалось получить конфигурацию сервера",
-  "unableToRefreshLibrary": "Не удалось обновить медиатеку",
-  "unableToToggleLike": "Не удалось изменить статус \"нравится\" у элемента",
   "unableToTogglePlayed": "Не удалось обновить статус просмотра",
   "undefined": "Не определено",
   "unexpectedError": "Непредвиденная ошибка",
-  "unhandledException": "Необработанное исключение",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} Kibit/s",
-      "mbps": "{value} Mibit/s"
-    },
-    "time": {
-      "seconds": "{count} секунда | {count} секунд"
-    }
-  },
   "unknown": "Неизвестно",
   "unliked": "Не нравится",
   "unplayed": "Невоспроизведено",
-  "upNext": "Очередное",
-  "upNextName": "Очередное: {upNextItemName}",
   "username": "Имя пользователя",
-  "validation": {
-    "bothPasswordsSame": "Оба пароля должны быть одинаковыми",
-    "mustBeUrl": "В этом поле должен быть действующий URL",
-    "required": "Это поле обязательное"
-  },
   "version": "Версия",
   "video": "Видео",
   "videoTypes": "Типы видео",
   "viewDetails": "Подробности",
   "vueClientVersion": "Версия клиента",
-  "wizard": {
-    "administratorAccount": "Административная учётная запись",
-    "allowRemoteAccess": "Разрешить удалённый доступ к серверу",
-    "completeError": "Невозможно завершить работу мастера запуска.",
-    "confirmPassword": "Подтверждение пароля",
-    "languageLocale": "Язык и региональные параметры",
-    "languageSuccessfullySet": "Язык задан успешно.",
-    "metadataLanguagesSet": "Заданы языки метаданных.",
-    "preferedLanguage": "Выбор языка",
-    "preferredMetadataLanguage": "Выбор языка метаданных",
-    "remoteAccess": "Удалённый доступ",
-    "remoteAccessSet": "Задан удалённый доступ.",
-    "setAdminError": "Невозможно создать административную учётную запись.",
-    "setLanguageError": "Невозможно задать язык клиента.",
-    "setMetadataError": "Невозможно задать языки метаданных.",
-    "setRemoteError": "Невозможно задать параметры удалённого доступа.",
-    "setupWizard": "Мастер установки",
-    "userSuccessfullySet": "Пользователь задан успешно."
-  },
   "writer": "Сценарист",
   "writing": "Сценарий",
   "year": "Год",

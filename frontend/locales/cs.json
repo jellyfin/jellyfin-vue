@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D formát",
   "NoMediaSourcesAvailable": "Nejsou k dispozici žádné zdroje médií",
   "NoMediaStreamsAvailable": "Pro vybraný zdroj nejsou k dispozici žádné streamy médií",
   "accept": "Přijmout",
@@ -13,41 +12,21 @@
   "albums": "Alba",
   "allLanguages": "Všechny jazyky",
   "allLibraries": "Povolí přístup ke všem knihovnám",
-  "allowRemoteConnections": "Povolit vzdálené připojení k tomuto serveru",
-  "alphabetically": "Abecedně",
-  "appbar": {
-    "tasks": {
-      "configSync": "Synchronizují se nastavení…",
-      "scanningItem": "Skenování položky '{item}'…"
-    },
-    "tooltips": {
-      "tasks": "Probíhají úlohy"
-    }
-  },
   "architecture": "Architektura",
   "artist": "Interpret",
   "artists": "Interpreti",
-  "aspectRatio": "Poměr stran",
   "audio": "Zvuk",
-  "audioCodecNotSupported": "Zvukový kodek není podporován",
   "auto": "Automatický",
-  "avatar": "Avatar",
   "badRequest": "Špatný požadavek. Zkuste to znovu",
   "blockTags": "Zablokovat položky se štítky:",
   "blockUnratedItems": "Zablokovat položky bez hodnocení nebo s nerozpoznaným hodnocením",
   "books": "Knihy",
-  "browserNotSupported": "Přehrávání tohoto souboru není ve vašem prohlížeči podporováno.",
-  "buttons": {
-    "ok": "Ok"
-  },
   "byArtist": "Od {artist}",
   "cancel": "Zrušit",
   "castAndCrew": "Obsazení a personál",
   "channels": "Kanály",
-  "clipboardFail": "Kopírování do schránky se nezdařilo",
   "clipboardSuccess": "Zkopírováno do schránky",
   "clipboardUnsupported": "Kopírování do schránky není podporováno tímto prohlížečem",
-  "close": "Zavřít",
   "collectionEmpty": "Tato sbírka je prázdná",
   "collections": "Sbírky",
   "communityRating": "Komunitní hodnocení",
@@ -62,7 +41,6 @@
   "criticRating": "Hodnocení kritiků",
   "currentPassword": "Aktuální heslo",
   "customRating": "Vlastní hodnocení",
-  "darkModeToggle": "Přepnout do tmavého režimu",
   "dateAdded": "Datum přidání",
   "datePlayed": "Datum přehrání",
   "delete": "Odstranit",
@@ -71,40 +49,13 @@
   "deleteUser": "Odstranit uživatele",
   "deleteUserConfirm": "Opravdu chcete odstranit tohoto uživatele?",
   "details": "Podrobnosti",
-  "dialog": {
-    "upNext": {
-      "hide": "Skrýt",
-      "nextItemPlayingIn": "Přehrávání začne za {time}",
-      "startNow": "Přehrát hned"
-    }
-  },
   "directing": "Režíruje",
   "director": "Režisér",
   "disabled": "Vypnuto",
   "discNumber": "Disk {discNumber}",
-  "dislikes": "Nelíbilo se mi",
-  "downloadItem": "Stáhnout | Stáhnout vše",
-  "edit": "Upravit",
   "editMetadata": "Upravit metadata",
   "editPerson": "Upravit osobu",
-  "editUser": "Upravit uživatele",
-  "endDate": "Datum skončení",
   "endsAt": "Končí v {time}",
-  "episodeNumber": "Epizoda {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Došlo k chybě",
-    "cantPlayItem": "Tuto položku nelze přehrát",
-    "messages": {
-      "errorCode": "Kód chyby: {errorCode}",
-      "videoPlayerError": "Ve video přehrávači došlo k nezvratné chybě."
-    },
-    "playback": {
-      "mediaError": "Došlo k fatální chybě média, provádí se pokus o zotavení",
-      "networkError": "Došlo k fatální chybě sítě, provádí se pokus o zotavení"
-    },
-    "unauthorized": "Nemáte přístup k zobrazení této stránky"
-  },
-  "failedRetrievingDisplayPreferences": "Načtení nastavení zobrazení se nezdařilo. Bude použito výchozí nastavení.",
   "failedSettingDisplayPreferences": "Nelze aktualizovat nastavení zobrazení.",
   "failedToRefreshItems": "Obnovení položek se nezdařilo",
   "favorite": "Oblíbené",
@@ -115,72 +66,16 @@
   "general": "Obecné",
   "genericJellyfinPlaceholderDevice": "Nespecifikované zařízení Jellyfin",
   "genres": "Žánry",
-  "goBack": "Zpět",
-  "goNext": "Vpřed",
   "googleCastPlaceholderDevice": "Zařízení Google Cast",
   "guestStar": "Vedlejší role",
-  "headerExternalIds": "Externí ID",
-  "headerPaths": "Cesta",
   "home": "Domů",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Nově přidáno"
-    }
-  },
   "identify": "Identifikovat",
   "identifyConfirmChanges": "Opravdu chcete změnit '{originalItem}' na '{newIdentifiedItem}'?",
   "identifyInstructResult": "Kliknutím na jednu z těchto karet aplikujete výsledek",
-  "imageType": {
-    "art": "Obrázky",
-    "backdrop": "Pozadí",
-    "banner": "Výřez plakátu",
-    "box": "Krabice",
-    "boxRear": "Krabice (zadní strana)",
-    "disc": "Disk",
-    "logo": "Logo",
-    "menu": "Nabídka",
-    "primary": "Primární",
-    "screenshot": "Snímek obrazovky",
-    "thumb": "Náhled"
-  },
   "images": "Obrázky",
   "incorrectUsernameOrPassword": "Nesprávné uživatelské jméno nebo heslo",
   "instantMix": "Rychlý mix",
   "instantMixQueued": "Okamžitý mix přidán do fronty",
-  "item": {
-    "artist": {
-      "albums": "Alba",
-      "appearsOn": "Viz také",
-      "discography": "Diskografie",
-      "eps": "EP",
-      "information": "Informace",
-      "singles": "Singly",
-      "videos": "Videa"
-    },
-    "cast": "Obsazení",
-    "composer": "Skladatel",
-    "crew": "Štáb",
-    "person": {
-      "birth": "Narození",
-      "birthPlace": "Místo narození",
-      "books": "Knihy",
-      "death": "Úmrtí",
-      "information": "Informace",
-      "movies": "Filmy",
-      "person": "Osoba",
-      "photos": "Fotky",
-      "shows": "Seriály"
-    },
-    "tracklist": {
-      "title": "Název"
-    }
-  },
-  "itemMenu": {
-    "pushToBottom": "Přesunout na konec",
-    "pushToTop": "Přesunout na začátek",
-    "removeFromQueue": "Odstranit z fronty"
-  },
-  "itemNotFound": "Položka nebyla nalezena",
   "jellyfinLogo": "Logo Jellyfin",
   "lastActivityDate": "Naposledy online před {value}",
   "latestLibrary": "Nejnovější {libraryName}",
@@ -189,53 +84,14 @@
   "libraryAccessNote": "Vyberte knihovny, které chcete s uživatelem sdílet. Správci budou moci upravovat všechny složky pomocí správce metadat.",
   "libraryEmpty": "Tato knihovna je prázdná",
   "libraryEmptyFilters": "Nic nenalezeno. Odstraněním některých filtrů zobrazíte více položek",
-  "libraryNotFound": "Knihovna nebyla nalezena",
-  "libraryRefreshQueued": "Aktualizace knihovny zařazena do fronty",
   "liked": "Líbilo se",
-  "likes": "Líbilo se mi",
-  "links": {
-    "helpTranslate": "Přeložit Jellyfin",
-    "poweredByJellyfin": "Tento server běží na softwaru Jellyfin",
-    "readTheDocumentation": "Přečíst si dokumentaci",
-    "reportAnIssue": "Nahlásit problém s tímto klientem"
-  },
   "liveTv": "Živý přenos",
-  "login": {
-    "addServer": "Přidat server",
-    "changeServer": "Změnit server",
-    "changeUser": "Přepnout uživatele",
-    "connect": "Připojit",
-    "kickedOut": "Oprávnění bylo zrušeno a tato relace již tak není platná. Přihlašte se prosím znovu",
-    "login": "Přihlásit",
-    "loginAs": "Přihlásit jako {name}",
-    "manualLogin": "Ruční přihlášení",
-    "rememberMe": "Zapamatovat",
-    "selectServer": "Vybrat server",
-    "selectUser": "Vybrat uživatele",
-    "serverAddress": "Adresa serveru",
-    "serverAddressMustBeUrl": "Adresa serveru musí být platná adresa URL",
-    "serverAddressRequired": "Adresa serveru je povinná",
-    "serverDashboard": "Nástěnka serveru",
-    "serverNotFound": "Server nenalezen",
-    "serverVersionTooLow": "Verze serveru musí být 10.7.0 nebo novější"
-  },
   "logout": "Odhlášení",
-  "logsAndActivity": {
-    "activity": "Aktivita",
-    "failedGetActivity": "Načtení aktivity se nezdařilo",
-    "failedGetLogs": "Načtení protokolů se nezdařilo",
-    "logs": "Protokoly",
-    "noActivityFound": "Nebyla nalezena žádná aktivita",
-    "noLogsFound": "Žádný protokol nenalezen"
-  },
   "manualLogin": "Ruční přihlášení",
   "maxAllowedRating": "Maximální povolené rodičovské hodnocení",
   "maxAllowedRatingSubtitle": "Obsah s vyšším hodnocením bude uživateli skryt.",
   "mediaInfo": "Informace o médiu",
   "mediaInfoAspectRatio": "Poměr stran",
-  "mediaInfoAudioChannelLayout": "Rozvržení",
-  "mediaInfoAudioChannels": "Kanály",
-  "mediaInfoAudioSampleRate": "Vzorkovací frekvence",
   "mediaInfoFileContainer": "Kontejner",
   "mediaInfoFileFormats": "Formát",
   "mediaInfoFilePath": "Cesta k souboru",
@@ -254,7 +110,6 @@
   "mediaInfoTitlesSubtitleCodec": "Titulky| Titulky {0}",
   "mediaInfoTitlesVideoCodec": "Video | Video {0}",
   "mediaInfoVideoBitDepth": "Počet bitů na pixel",
-  "mediaInfoVideoBitrate": "Datový tok",
   "mediaInfoVideoColorPrimaries": "Primární barvy",
   "mediaInfoVideoColorRange": "Rozsah barev",
   "mediaInfoVideoColorSpace": "Barva prostoru",
@@ -281,18 +136,9 @@
   "mediaInfoVideoScanType": "Typ skenu",
   "mediaInfoVideoTimestamp": "Časové razítko",
   "menu": "Nabídka",
-  "metadata": {
-    "source": "Zdroj",
-    "sourceAll": "Vše",
-    "title": "Název",
-    "type": "Typ"
-  },
   "metadataEditor": "Editor metadat",
-  "metadataNoResultsMatching": "Žádné výsledky pro \"{search}\". Stisknutím klávesy Enter vytvořte nový.",
   "metadataRefreshQueued": "Aktualizace metadat zařazena do fronty",
-  "more": "Více",
   "moreLikeArtist": "Podobné jako {artist}",
-  "moreLikeThis": "Podobné",
   "movies": "Filmy",
   "music": "Hudba",
   "name": "Název",
@@ -300,14 +146,12 @@
   "newPassword": "Nové heslo",
   "newUser": "Vytvořit uživatele",
   "nextUp": "Další díly",
-  "no": "Ne",
   "noImagesFound": "Nebyly nalezeny žádné obrázky",
   "noInformationAvailable": "Informace nejsou k dispozici",
   "noNetworkConnection": "Žádné připojení k síti",
   "noResultsFound": "Nic nebylo nalezeno",
   "numberTracks": "{number} skladeb",
   "operatingSystem": "Operační systém",
-  "originalAspectRatio": "Původní poměr stran",
   "originalTitle": "Původní název",
   "overview": "Popis",
   "parentalControl": "Rodičovská kontrola",
@@ -319,60 +163,8 @@
   "play": "Přehrát",
   "playCount": "Počet přehrání",
   "playFromBeginning": "Přehrát od začátku",
-  "playback": {
-    "addToQueue": "Přidat do fronty",
-    "clearQueue": "Smazat frontu a zastavit přehrávání",
-    "playAll": "Přehrát vše",
-    "playNext": "Přehrát další",
-    "playbackSource": {
-      "item": "Přehrávání od {item}",
-      "shuffle": "Přehrávání náhodně",
-      "shuffleItem": "Přehrávání {item} náhodně",
-      "unknown": "Přehrávání fronty"
-    },
-    "queueItems": "{items} skladeb",
-    "saveAsPlaylist": "Uložit frontu do seznamu",
-    "shuffle": "Náhodně",
-    "shuffleAll": "Náhodně přehrát vše"
-  },
-  "playbackData": "Informace o přehrávání",
-  "playbackInfo": {
-    "name": "Přehrávání",
-    "playMethod": {
-      "direct": "Přímé",
-      "name": "Způsob:",
-      "remux": "Remux",
-      "transcode": "Překódování"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Typ streamu:",
-      "unknown": "Neznámý",
-      "video": "Video"
-    }
-  },
   "playbackSettings": "Nastavení přehrávání",
   "played": "Přehrané",
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Poškozené snímky:"
-    },
-    "decodedFrames": {
-      "name": "Dekódované snímky:"
-    },
-    "droppedFrames": {
-      "name": "Vypuštěné snímky:"
-    },
-    "name": "Přehrávač",
-    "playbackResolution": {
-      "name": "Rozlišení viditelné oblasti:"
-    },
-    "videoResolution": {
-      "name": "Rozlišení videa:",
-      "value": "{width}✕{height}"
-    }
-  },
   "present": "nyní",
   "producer": "Producent",
   "profile": "Profil",
@@ -380,7 +172,6 @@
   "queue": "Fronta",
   "rating": "Hodnocení",
   "refresh": "Aktualizovat",
-  "refreshLibrary": "Aktualizovat knihovnu",
   "refreshMetadata": "Aktualizovat metadata",
   "refreshMetadataHint": "Metadata se aktualizují na základě nastavení a internetových služeb, které jsou povoleny na nástěnce",
   "releaseDate": "Datum vydání",
@@ -396,10 +187,6 @@
   "save": "Uložit",
   "saved": "Uloženo",
   "scanForNewAndUpdatedFiles": "Vyhledat nové a aktualizované soubory",
-  "search": {
-    "name": "Hledat",
-    "topResults": "Nejlepší výsledky"
-  },
   "searchMissingMetadata": "Vyhledat chybějící metadata",
   "searchNoResults": "Žádné výsledky",
   "seasonEpisode": "Řada {seasonNumber}, díl {episodeNumber}",
@@ -409,130 +196,8 @@
   "server": "Server",
   "serverVersion": "Verze serveru",
   "serverVersionTooLow": "Verze serveru musí být {version} nebo novější",
-  "settings": {
-    "apiKeys": {
-      "accessToken": "Přístupový token",
-      "addApiKey": "Přidat klíč k API",
-      "addNewKey": "Přidat nový klíč k API",
-      "apiKeys": "Klíče k API",
-      "appName": "Název aplikace",
-      "createKeyFailure": "Chyba při tvorbě nového klíče k API",
-      "createKeySuccess": "Nový klíč k API úspěšně vytvořen",
-      "dateCreated": "Datum vytvoření",
-      "description": "Přidat či zrušit klíče k API pro externí přístup k serveru",
-      "refreshKeysFailure": "Chyba při aktualizaci klíčů k API",
-      "revoke": "Odvolat",
-      "revokeAll": "Zrušit všechny klíče k API",
-      "revokeAllFailure": "Chyba při rušení všech klíčů k API",
-      "revokeAllSuccess": "Všechny klíče k API úspěšně zrušeny",
-      "revokeConfirm": "Potvrdit odvolání klíče k API",
-      "revokeFailure": "Chyba při rušení klíče k API",
-      "revokeSuccess": "Klíč k API úspěšně zrušen"
-    },
-    "devices": {
-      "appName": "Název aplikace",
-      "appVersion": "Verze aplikace",
-      "delete": "Odstranit",
-      "deleteAll": "Odstranit vše",
-      "deleteAllDevicesError": "Při odstraňování všech zařízení došlo k chybě",
-      "deleteAllDevicesSuccess": "Všechna zařízení byla úspěšně odstraněna",
-      "deleteConfirm": "Potvrdit odstranění zařízení",
-      "deleteDeviceError": "Při odstranění zařízení došlo k chybě",
-      "deleteDeviceSuccess": "Zařízení bylo úspěšně odstraněno",
-      "deviceName": "Název zařízení",
-      "devices": "Zařízení",
-      "lastActive": "Poslední aktivita",
-      "noDevicesFound": "Nenalezena žádná zařízení",
-      "userName": "Uživatelské jméno"
-    },
-    "help": "Nápověda",
-    "logsAndActivity": {
-      "activity": "Aktivita",
-      "failedGetActivity": "Nelze načíst aktivitu",
-      "failedGetLogs": "Nelze načít protokoly",
-      "logs": "Protokoly",
-      "noActivityFound": "Nenalezeny žádné aktivity",
-      "noLogsFound": "Nenalezeny žádné protokoly"
-    },
-    "settings": "Nastavení"
-  },
-  "settingsSections": {
-    "account": {
-      "description": "Upravit informace o uživateli",
-      "name": "Účet"
-    },
-    "devices": {
-      "description": "Zobrazit a spravovat zařízení připojená k serveru",
-      "name": "Zařízení"
-    },
-    "dlna": {
-      "description": "Nastavit nastavení a profil DLNA",
-      "name": "DLNA"
-    },
-    "home": {
-      "description": "Nastavit sekce a rozvržení domovské stránky",
-      "name": "Domovská stránka"
-    },
-    "libraries": {
-      "description": "Spravovat knihovny a jejich metadata",
-      "name": "Knihovny"
-    },
-    "liveTvAndDvr": {
-      "description": "Spravovat nastavení TV tunerů, poskytovatelů programových průvodců a nahrávání",
-      "name": "Živé vysílání a nahrávání"
-    },
-    "logs": {
-      "description": "Zobrazit a hledat v protokolech serveru a uživatelské aktivitě",
-      "name": "Protokoly a aktivita"
-    },
-    "mediaPlayers": {
-      "description": "Nastavit chování přehrávačů médií pro toto zařízení",
-      "name": "Přehrávače médií"
-    },
-    "networking": {
-      "description": "Spravovat nastavení sítě tohoto serveru",
-      "name": "Nastavení sítě"
-    },
-    "notifications": {
-      "description": "Spravovat a nastavit oznámení odesílaná tímto serverem",
-      "name": "Oznámení"
-    },
-    "playback": {
-      "description": "Upravit nastavení přehrávání pro toto zařízení",
-      "name": "Přehrávání"
-    },
-    "plugins": {
-      "description": "Přidat a nastavit nové funkce pro tento server",
-      "name": "Zásuvné moduly"
-    },
-    "scheduledTasks": {
-      "description": "Spravovat naplánované úlohy probíhající na tomto serveru",
-      "name": "Naplánované úlohy"
-    },
-    "server": {
-      "description": "Nastavit jazyk a branding serveru",
-      "name": "Server"
-    },
-    "subtitles": {
-      "description": "Nastavit vzhled a zobrazení titulků na tomto zařízení",
-      "name": "Titulky"
-    },
-    "transcodingAndStreaming": {
-      "description": "Spravovat nastavení překódování a streamovaní klientům",
-      "name": "Překódování a streamování"
-    },
-    "users": {
-      "description": "Spravovat uživatele a oprávnění",
-      "name": "Uživatelé"
-    }
-  },
   "shows": "Seriály",
   "signIn": "Přihlásit se",
-  "snackbar": {
-    "addedToQueue": "Přidáno do fronty",
-    "playNext": "Vybraná položka bude přehrána jako další",
-    "routeValidationError": "Zadané routeId v parametrech cesty není správné"
-  },
   "songs": "Skladby",
   "sortByType": "Řazení: {type}",
   "sortTitle": "Název pro řazení",
@@ -544,114 +209,34 @@
   "studios": "Studia",
   "subtitles": "Titulky",
   "syncPlayGroups": "Skupiny SyncPlay",
-  "syncingInProgress": "Probíhá synchronizace",
   "tagName": "Název štítku",
   "tagline": "Podtitul",
   "tags": "Štítky",
   "themeSong": "Znělka",
   "themeVideo": "Úvodní video",
-  "tooltips": {
-    "changeLanguage": "Jazyk",
-    "switchToAuto": "Podle vzhledu systému",
-    "switchToDarkMode": "Přepnout do tmavého režimu",
-    "switchToLightMode": "Přepnout do světlého režimu"
-  },
   "trailer": "Upoutávka",
-  "transcodingInfo": {
-    "name": "Překódování",
-    "transcodingFramerate": {
-      "name": "Snímková frekvence:",
-      "value": "{value} szs"
-    },
-    "transcodingProgress": "Postup:",
-    "transcodingReason": {
-      "name": "Důvod: | Důvody:",
-      "reasons": {
-        "anamorphicVideoNotSupported": "Anamorfní video není podporováno",
-        "audioBitDepthNotSupported": "Bitová hloubka zvuku není podporována",
-        "audioBitrateNotSupported": "Datový tok zvuku není podporován",
-        "audioChannelsNotSupported": "Počet zvukových kanálů není podporován",
-        "audioCodecNotSupported": "Zvukový kodek není podporován",
-        "audioProfileNotSupported": "Profil zvukového kodeku není podporován",
-        "audioSampleRateNotSupported": "Vzorkovací frekvence zvuku není podporována",
-        "containerBitrateExceedsLimit": "Datový tok kontejneru překračuje nastavenou mez",
-        "containerNotSupported": "Kontejner není podporován",
-        "interlacedVideoNotSupported": "Prokládané video není podporováno",
-        "refFramesNotSupported": "Referenční snímky nejsou podporovány",
-        "secondaryAudioNotSupported": "Sekundární zvukové stopy nejsou podporovány",
-        "subtitleCodecNotSupported": "Titulkový kodek není podporován",
-        "videoBitDepthNotSupported": "Barevná hloubka videa není podporována",
-        "videoCodecNotSupported": "Video kodek není podporován",
-        "videoFramerateNotSupported": "Snímková frekvence videa není podporována",
-        "videoLevelNotSupported": "Úroveň kodeku videa není podporována",
-        "videoProfileNotSupported": "Profil kodeku videa není podporován",
-        "videoResolutionNotSupported": "Rozlišení videa není podporováno"
-      }
-    }
-  },
   "type": "Typ",
-  "unableGetPublicUsers": "Načtení uživatelů se nezdařilo",
   "unableGetRelated": "Načtení souvisejicích položek se nezdařilo",
-  "unableGetServerConfiguration": "Načtení konfigurace serveru se nezdařilo",
-  "unableToRefreshLibrary": "Aktualizace knihovny se nezdařila",
-  "unableToToggleLike": "Změna oblíbeného stavu položky se nezdařila",
   "unableToTogglePlayed": "Nelze aktualizovat stav zhlédnutí",
   "unblockTag": "Odblokovat štítek",
   "undefined": "Nedefinováno",
   "unexpectedError": "Neočekávaná chyba",
-  "unhandledException": "Neošetřená výjimka",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    },
-    "time": {
-      "seconds": "{count} sekundu | {count} sekundy"
-    }
-  },
   "unknown": "Neznámý",
   "unknownAlbum": "Neznáme album",
   "unknownArtist": "Neznámý umělec",
   "unknownTitle": "Neznámý název",
   "unliked": "Nelíbilo se",
   "unplayed": "Nepřehrané",
-  "upNext": "Následující",
-  "upNextName": "Další: {upNextItemName}",
   "username": "Uživatelské jméno",
   "users": "Uživatelé",
-  "validation": {
-    "bothPasswordsSame": "Obě hesla musí být stejná",
-    "mustBeUrl": "Toto pole musí být platná adresa URL",
-    "required": "Toto pole je povinné"
-  },
   "version": "Verze",
   "video": "Video",
   "videoTypes": "Typ videa",
   "viewDetails": "Zobrazit podrobnosti",
   "vueClientVersion": "Verze klienta",
-  "wizard": {
-    "administratorAccount": "Účet správce",
-    "allowRemoteAccess": "Povolit vzdálený přístup k serveru",
-    "completeError": "Nelze dokončit průvodce nastavením.",
-    "confirmPassword": "Heslo znovu",
-    "languageLocale": "Jazyk a místní jazyková nastavení",
-    "languageSuccessfullySet": "Jazyk byl úspěšně nastaven.",
-    "metadataLanguagesSet": "Jazyky metadat nastaveny.",
-    "preferedLanguage": "Preferovaný jazyk",
-    "preferredMetadataLanguage": "Preferovaný jazyk metadat",
-    "remoteAccess": "Vzdálený přístup",
-    "remoteAccessSet": "Vzdálený přístup nastaven.",
-    "setAdminError": "Tvorba účtu správce se nezdařila.",
-    "setLanguageError": "Nelze nastavit jazyk klienta.",
-    "setMetadataError": "Nelze nastavit jazyky metadat.",
-    "setRemoteError": "Nelze uložit nastavení vzdáleného přístupu.",
-    "setupWizard": "Průvodce nastavením",
-    "userSuccessfullySet": "Uživatel byl úspěšně nastaven."
-  },
   "writer": "Scénarista",
   "writing": "Scénář píše",
   "year": "Rok",
   "years": "Roky",
-  "yes": "Ano",
   "youMayAlsoLike": "Mohlo by se vám líbit"
 }

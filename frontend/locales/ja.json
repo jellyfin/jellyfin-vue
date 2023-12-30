@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3Dフォーマット",
   "NoMediaSourcesAvailable": "メディアソースなし",
   "accept": "許可する",
   "actor": "役者",
@@ -9,29 +8,13 @@
   "airPlayDevices": "AirPlayデバイス",
   "albums": "アルバム",
   "allLanguages": "全ての言語",
-  "alphabetically": "アルファベット順",
-  "appbar": {
-    "tasks": {
-      "configSync": "設定を同期中…",
-      "scanningItem": "「{item}」をスキャン中…"
-    },
-    "tooltips": {
-      "tasks": "実行中のタスク"
-    }
-  },
   "architecture": "アーキテクチャ",
   "artist": "アーティスト",
   "artists": "アーティスト",
-  "aspectRatio": "アスペクト比",
   "audio": "オーディオ",
-  "audioCodecNotSupported": "音声コーデックがサポートされていない",
   "auto": "オートマティック",
   "badRequest": "リクエストが正しくありません。再試行してください",
   "books": "本",
-  "browserNotSupported": "お使いのブラウザはこのファイルの再生に対応していません。",
-  "buttons": {
-    "ok": "はい"
-  },
   "byArtist": "{artist}の曲",
   "cancel": "キャンセル",
   "castAndCrew": "キャストとスタッフ",
@@ -44,28 +27,13 @@
   "continueListening": "聞き続ける",
   "continueWatching": "見続ける",
   "criticRating": "評論家の評価",
-  "darkModeToggle": "ダークモードの切り替え",
   "dateAdded": "追加日",
   "datePlayed": "再生日付",
   "delete": "削除",
   "deleteItem": "メディアを削除する",
   "details": "詳細",
-  "dialog": {
-    "upNext": {
-      "nextItemPlayingIn": "開始まであと{time}",
-      "startNow": "今に再生する"
-    }
-  },
   "directing": "監督",
   "director": "監督",
   "disabled": "無効",
-  "episodeNumber": "第{episodeNumber}話",
-  "errors": {
-    "anErrorHappened": "エラーが発生しました",
-    "cantPlayItem": "このアイテムは再生できません",
-    "messages": {
-      "videoPlayerError": "深刻のエラーが発生しました。"
-    }
-  },
   "genres": "ジャンル"
 }

@@ -1,5 +1,4 @@
 {
-  "3DFormat": "3D biçimi",
   "NoMediaSourcesAvailable": "Medya kaynağı bulunamadı",
   "NoMediaStreamsAvailable": "Seçilen kaynak için medya akışı yok",
   "actor": "Aktör",
@@ -9,29 +8,13 @@
   "airPlayDevices": "AirPlay cihazları",
   "albums": "Albümler",
   "allLanguages": "Tüm diller",
-  "alphabetically": "Alfabetik",
-  "appbar": {
-    "tasks": {
-      "configSync": "Ayarlar senkronize ediliyor…",
-      "scanningItem": "'{item}' Taranıyor…"
-    },
-    "tooltips": {
-      "tasks": "Çalışan Görevler"
-    }
-  },
   "architecture": "Mimari",
   "artist": "Sanatçı",
   "artists": "Sanatçılar",
-  "aspectRatio": "En boy oranı",
   "audio": "Ses",
-  "audioCodecNotSupported": "Ses codec bileşeni desteklenmiyor",
   "auto": "Otomatik",
   "badRequest": "Hatalı istek. Tekrar deneyin",
   "books": "Kitaplar",
-  "browserNotSupported": "Tarayıcınız bu dosyayı oynatmayı desteklemiyor.",
-  "buttons": {
-    "ok": "Tamam"
-  },
   "cancel": "İptal",
   "castAndCrew": "Oyuncular & Ekip",
   "collectionEmpty": "Bu koleksiyon boş",
@@ -43,37 +26,16 @@
   "continueWatching": "İzlemeye devam et",
   "criticRating": "Eleştirmen puanı",
   "customRating": "Özel derecelendirme",
-  "darkModeToggle": "Karanlık modu aç/kapat",
   "dateAdded": "Ekleme Tarihi",
   "delete": "Sil",
   "deleteItem": "Medyayı sil",
   "deleteItemDescription": "Bu ögeyi silmek dosya sisteminden ve medya kütüphanenizden siler. Devam etmek istediğinizden emin misiniz?",
   "details": "Detaylar",
-  "dialog": {
-    "upNext": {
-      "hide": "Gizle",
-      "nextItemPlayingIn": "{time} saniye içinda başlıyor",
-      "startNow": "Şimdi başlat"
-    }
-  },
   "director": "Yönetmen",
   "disabled": "Devre dışı",
   "discNumber": "Disk {discNumber}",
-  "dislikes": "Beğenilmeyenler",
-  "edit": "Düzenle",
   "editMetadata": "Meta veriyi düzenle",
-  "endDate": "Bitiş tarihi",
   "endsAt": "{time}'de bitiyor",
-  "episodeNumber": "Bölüm {episodeNumber}",
-  "errors": {
-    "anErrorHappened": "Bir hata oluştu",
-    "messages": {
-      "errorCode": "Hata kodu: {errorCode}"
-    },
-    "playback": {
-      "mediaError": "Önemli bir medya hatasıyla karşılaşıldı, kurtarılmaya çalışılıyor"
-    }
-  },
   "favorite": "Favori",
   "features": "Özellikleri",
   "filter": "Filtre",
@@ -82,56 +44,17 @@
   "general": "Genel",
   "genres": "Türler",
   "home": "Ana Ekran",
-  "homeHeader": {
-    "items": {
-      "recentlyAdded": "Son eklenen"
-    }
-  },
-  "imageType": {
-    "backdrop": "Arka Plan",
-    "banner": "Afiş",
-    "primary": "Birincil"
-  },
   "images": "Resimler",
   "incorrectUsernameOrPassword": "Hatalı kullanıcı adı veya parola",
   "instantMix": "Anlık mix",
   "instantMixQueued": "Anlık mix kuyruğa eklendi",
-  "item": {
-    "artist": {
-      "albums": "Albümler",
-      "information": "Bilgi"
-    },
-    "person": {
-      "information": "Bilgi"
-    }
-  },
-  "itemMenu": {
-    "removeFromQueue": "Kuyruktan kaldır"
-  },
-  "itemNotFound": "Öğe bulunamadı",
   "jellyfinLogo": "Jellyfin logo",
   "libraries": "Kütüphaneler",
   "libraryAccess": "Kütüphane erişimi",
   "libraryAccessNote": "Bu kullanıcıyla paylaşılacak kütüphaneleri seçin. Yöneticiler meta veri yöneticisini kullanarak tüm klasörleri düzenleyebilecektir.",
   "libraryEmpty": "Bu kütüphane boş",
-  "libraryNotFound": "Kütüphane bulunamadı",
-  "libraryRefreshQueued": "Kütüphane yenileme kuyruğa alındı",
   "liked": "Beğenildi",
-  "likes": "Beğenilenler",
-  "login": {
-    "manualLogin": "El ile oturum aç",
-    "serverDashboard": "Sunucu kontrol paneli",
-    "serverVersionTooLow": "Sunucu sürümünün 10.7.0 veya daha üstü olması gerekir"
-  },
   "logout": "Çıkış",
-  "logsAndActivity": {
-    "activity": "Etkinlik",
-    "failedGetActivity": "Etkinlik alınamıyor",
-    "failedGetLogs": "Günlükler alınamıyor",
-    "logs": "Günlükler",
-    "noActivityFound": "Hiçbir etkinlik bulunamadı",
-    "noLogsFound": "Hiçbir günlük bulunamadı"
-  },
   "manualLogin": "El ile oturum aç",
   "maxAllowedRating": "İzin verilen maksimum yaş derecelendirmesi",
   "mediaInfo": "Medya Bilgisi",
@@ -152,7 +75,6 @@
   "mediaInfoTitlesSubtitleCodec": "Altyazı | Altyazı {0}",
   "mediaInfoTitlesVideoCodec": "Video | Video {0}",
   "mediaInfoVideoBitDepth": "Bit derinliği",
-  "mediaInfoVideoBitrate": "Bit hızı",
   "mediaInfoVideoColorPrimaries": "Renk ön seçimleri",
   "mediaInfoVideoColorRange": "Renk aralığı",
   "mediaInfoVideoColorSpace": "Renk alanı",
@@ -176,19 +98,13 @@
   "mediaInfoVideoScanInterlaced": "Geçmeli",
   "mediaInfoVideoTimestamp": "Zaman damgası",
   "menu": "Menü",
-  "metadata": {
-    "source": "Kaynak"
-  },
   "metadataEditor": "Meta veri düzenleyici",
   "metadataRefreshQueued": "Meta veri yenilemesi kuyruğa alındı",
-  "more": "Dahası",
-  "moreLikeThis": "Benzerleri",
   "movies": "Filmler",
   "name": "Ad",
   "networks": "Ağlar",
   "nextUp": "Sıradaki bölümler",
   "operatingSystem": "İşletim sistemi",
-  "originalAspectRatio": "Orijinal en boy oranı",
   "overview": "Özet",
   "parentalControl": "Ebeveyn Kontrolü",
   "parentalRating": "Yaş derecelendirmesi",
@@ -196,145 +112,27 @@
   "password": "Parola",
   "people": "Kişiler",
   "play": "Oynat",
-  "playback": {
-    "addToQueue": "Kuyruğa ekle",
-    "clearQueue": "Oynatmayı durdur ve kuyruğu temizle",
-    "playbackSource": {
-      "unknown": "Kuyruktan oynatılıyor"
-    },
-    "saveAsPlaylist": "Kuyruğu çalma listesi olarak kaydet"
-  },
-  "playbackInfo": {
-    "playMethod": {
-      "direct": "Doğrudan",
-      "transcode": "Kod dönüştürme"
-    },
-    "streamType": {
-      "dash": "DASH",
-      "hls": "HLS",
-      "name": "Akış türü:",
-      "video": "Video"
-    }
-  },
-  "playerInfo": {
-    "corruptedFrames": {
-      "name": "Bozuk kareler:"
-    },
-    "decodedFrames": {
-      "name": "Kodu çözülmüş kareler:"
-    },
-    "droppedFrames": {
-      "name": "Bırakılan kareler:"
-    }
-  },
   "present": "Mevcut",
   "queue": "Kuyruk",
   "rating": "Puan",
-  "refreshLibrary": "Kütüphaneyi yenile",
   "refreshMetadata": "Meta veriyi yenile",
   "refreshMetadataHint": "Meta veriler, Kontrol Panelinden etkinleştirilen ayarlara ve internet hizmetlerine göre yenilenir",
   "releaseDate": "Yayın tarihi",
   "resume": "Sürdür",
   "runtime": "Süre",
   "save": "Kaydet",
-  "search": {
-    "name": "Ara"
-  },
   "selectVersion": "Sürüm seç",
   "server": "Sunucu",
   "serverVersion": "Sunucu sürümü",
   "serverVersionTooLow": "Sunucu sürümünün {version} veya daha üstü olması gerekir",
-  "settings": {
-    "devices": {
-      "userName": "Kullanıcı adı"
-    },
-    "logsAndActivity": {
-      "activity": "Etkinlik",
-      "failedGetActivity": "Etkinlik alınamıyor",
-      "failedGetLogs": "Günlükler alınamıyor",
-      "logs": "Günlükler",
-      "noActivityFound": "Hiçbir etkinlik bulunamadı",
-      "noLogsFound": "Hiçbir günlük bulunamadı"
-    }
-  },
-  "settingsSections": {
-    "devices": {
-      "name": "Cihazlar"
-    },
-    "home": {
-      "description": "Ana ekran bölümlerinizi ve ana ekran düzeninizi yapılandırın",
-      "name": "Ana ekran"
-    },
-    "libraries": {
-      "name": "Kütüphaneler"
-    },
-    "logs": {
-      "description": "Sunucu günlüklerini ve kullanıcı etkinliğini okuma ve arama",
-      "name": "Günlükler ve etkinlikler"
-    },
-    "mediaPlayers": {
-      "description": "Medya oynatıcılarının bu cihaz için nasıl davranacağını yapılandırın",
-      "name": "Medya oynatıcılar"
-    },
-    "notifications": {
-      "description": "Bu sunucu tarafından gönderilen bildirimi yönetin ve yapılandırın",
-      "name": "Bildirimler"
-    },
-    "plugins": {
-      "name": "Eklentiler"
-    },
-    "server": {
-      "name": "Sunucu"
-    },
-    "transcodingAndStreaming": {
-      "name": "Kod dönüştürme ve akış"
-    }
-  },
   "shows": "Diziler",
   "signIn": "Oturum aç",
-  "snackbar": {
-    "addedToQueue": "Kuyruğa eklendi"
-  },
   "syncPlayGroups": "SyncPlay grupları",
   "themeSong": "Tema Şarkısı",
   "themeVideo": "Tema Videosu",
-  "transcodingInfo": {
-    "name": "Kod dönüştürme",
-    "transcodingFramerate": {
-      "name": "Kare hızı:",
-      "value": "{value} fps"
-    },
-    "transcodingReason": {
-      "reasons": {
-        "audioCodecNotSupported": "Ses codec bileşeni desteklenmiyor",
-        "audioProfileNotSupported": "Ses codec bileşeni profili desteklenmiyor",
-        "refFramesNotSupported": "Referans kareler desteklenmiyor",
-        "subtitleCodecNotSupported": "Altyazı codec bileşeni desteklenmiyor",
-        "videoCodecNotSupported": "Video codec bileşeni desteklenmiyor",
-        "videoFramerateNotSupported": "Videonun kare hızı desteklenmiyor",
-        "videoLevelNotSupported": "Video codec bileşeni düzeyi desteklenmiyor",
-        "videoProfileNotSupported": "Video codec bileşeni profili desteklenmiyor"
-      }
-    }
-  },
-  "unableToRefreshLibrary": "Kütüphane yenilenemiyor",
   "unexpectedError": "Beklenmedik hata",
-  "units": {
-    "bitrate": {
-      "kbps": "{value} kbps",
-      "mbps": "{value} Mbps"
-    }
-  },
-  "upNext": "Sıradaki",
-  "upNextName": "Sıradaki: {upNextItemName}",
   "username": "Kullanıcı Adı",
-  "validation": {
-    "bothPasswordsSame": "Her iki parola da aynı olmalıdır"
-  },
   "version": "Sürüm",
   "vueClientVersion": "İstemci sürümü",
-  "wizard": {
-    "confirmPassword": "Parolayı onayla"
-  },
   "youMayAlsoLike": "Şunlar da ilginizi çekebilir"
 }
