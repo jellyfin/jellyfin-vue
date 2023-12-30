@@ -191,7 +191,9 @@ module.exports = {
     'unicorn/no-await-expression-member': 'off',
     // TODO: Reenable once vue-i18n-extract is completely refactored
     '@intlify/vue-i18n/no-unused-keys': 'off',
-    '@intlify/vue-i18n/no-raw-text': 'error',
+    '@intlify/vue-i18n/no-raw-text': ['error', {
+      'ignorePattern': '^[-#:()&.]+$'
+    }],
     'vue/component-name-in-template-casing': [
       'error',
       'PascalCase',
