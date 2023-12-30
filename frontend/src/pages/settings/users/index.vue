@@ -6,7 +6,7 @@
         variant="elevated"
         class="ml-a"
         @click="$router.push('/settings/users/new')">
-        {{ t('new') }}
+        {{ t('newUser') }}
       </VBtn>
       <VBtn
         variant="elevated"
@@ -58,11 +58,11 @@ meta:
 </route>
 
 <script setup lang="ts">
+import { useDateFns, useRemote } from '@/composables';
 import { getUserApi } from '@jellyfin/sdk/lib/utils/api/user-api';
+import { formatDistanceToNow } from 'date-fns';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { formatDistanceToNow } from 'date-fns';
-import { useDateFns, useRemote } from '@/composables';
 
 const { t } = useI18n();
 const remote = useRemote();

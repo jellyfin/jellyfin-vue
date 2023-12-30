@@ -2,7 +2,7 @@
   <div>
     <VCheckbox
       v-model="allowRemoteAccess"
-      :label="t('wizard.allowRemoteAccess')"
+      :label="t('allowRemoteAccess')"
       :disabled="loading" />
     <VCheckbox
       v-model="enableUPNP"
@@ -25,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRemote, useSnackbar } from '@/composables';
+import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
-import { useRemote, useSnackbar } from '@/composables';
 
 const emit = defineEmits<{
   'step-complete': [];
