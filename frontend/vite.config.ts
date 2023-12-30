@@ -1,21 +1,21 @@
-import { defineConfig, UserConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import Icons from 'unplugin-icons/vite';
-import IconsResolver from 'unplugin-icons/resolver';
-import Components from 'unplugin-vue-components/vite';
-import VueRouter from 'unplugin-vue-router/vite';
-import {
-  VueUseComponentsResolver,
-  Vuetify3Resolver,
-  VueUseDirectiveResolver
-} from 'unplugin-vue-components/resolvers';
-import { visualizer } from 'rollup-plugin-visualizer';
-import virtual from '@rollup/plugin-virtual';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import virtual from '@rollup/plugin-virtual';
+import vue from '@vitejs/plugin-vue';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
-import virtualModules from './scripts/virtual-modules';
+import { visualizer } from 'rollup-plugin-visualizer';
+import IconsResolver from 'unplugin-icons/resolver';
+import Icons from 'unplugin-icons/vite';
+import {
+  Vuetify3Resolver,
+  VueUseComponentsResolver,
+  VueUseDirectiveResolver
+} from 'unplugin-vue-components/resolvers';
+import Components from 'unplugin-vue-components/vite';
+import VueRouter from 'unplugin-vue-router/vite';
+import { defineConfig, UserConfig } from 'vite';
 import { localeFilesFolder, srcRoot } from './scripts/paths';
+import virtualModules from './scripts/virtual-modules';
 
 export default defineConfig(({ mode }): UserConfig => {
   const config: UserConfig = {
@@ -29,11 +29,7 @@ export default defineConfig(({ mode }): UserConfig => {
         importMode: 'sync',
         routeBlockLang: 'yaml'
       }),
-      vue({
-        script: {
-          defineModel: true
-        }
-      }),
+      vue(),
       // This plugin allows to autoimport vue components
       Components({
         dts: './types/global/components.d.ts',
