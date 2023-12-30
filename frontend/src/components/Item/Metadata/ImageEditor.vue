@@ -20,8 +20,10 @@
         <div class="text-center text-subtitle-1">
           {{ item.ImageType }}
         </div>
-        <div class="text-center text-body-2 text--secondary">
-          {{ item.Width }} x {{ item.Height }}
+        <div
+          v-if="item.Width && item.Height"
+          class="text-center text-body-2 text--secondary">
+          {{ t('dimensions', { width: item.Width, height: item.Height }) }}
         </div>
         <VCardActions class="justify-center">
           <VBtn
@@ -67,7 +69,7 @@
           {{ item.ImageType }}
         </div>
         <div class="text-center text-body-2 text--secondary">
-          {{ item.Width }} &times; {{ item.Height }}
+          {{ t('dimensions', { width: item.Width, height: item.Height }) }}
         </div>
         <VCardActions class="justify-center">
           <VBtn
@@ -96,18 +98,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { useRemote } from '@/composables';
+import {
+  getContainerAspectRatioForImageType,
+  getImageInfo
+} from '@/utils/images';
 import {
   BaseItemDto,
   ImageInfo,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
 import { getImageApi } from '@jellyfin/sdk/lib/utils/api/image-api';
-import {
-  getContainerAspectRatioForImageType,
-  getImageInfo
-} from '@/utils/images';
-import { useRemote } from '@/composables';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ metadata: BaseItemDto }>();
 
@@ -115,6 +118,7 @@ const remote = useRemote();
 
 const images = ref<ImageInfo[]>([]);
 const dialog = ref(false);
+const { t } = useI18n();
 
 const generalImages = computed<ImageInfo[]>(() =>
   images.value.filter(

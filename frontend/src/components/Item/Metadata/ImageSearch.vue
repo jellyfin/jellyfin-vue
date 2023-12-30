@@ -74,20 +74,24 @@
             <div class="text-center text-truncate text-subtitle-1 mt-2">
               {{ item.ProviderName }}
             </div>
-            <div class="text-center text-body-2 text-grey-darken-2 info-box">
-              <template v-if="item.Width && item.Height">
-                {{ item.Width }} &times; {{ item.Height }}
-                <template v-if="item.Language">
-                  &middot; {{ item.Language }}
-                </template>
-              </template>
+            <div
+              v-if="item.Width && item.Height"
+              class="text-center text-body-2 text-grey-darken-2 info-box">
+              {{ t('dimensions', { width: item.Width, height: item.Height }) }}
+            </div>
+            <div
+              v-if="item.Language"
+              class="text-center text-body-2 text-grey-darken-2 info-box">
+              <b>{{ `${t("language")}: ` }}</b>{{ getLocaleName(item.Language) }}
+            </div>
+            <div
+              v-if="item.CommunityRating"
+              class="text-center text-body-2 text-grey-darken-2 info-box">
+              <b>{{ `${t("communityRating")}: ` }}</b>{{ item.CommunityRating.toFixed(1) }}
             </div>
             <div class="text-center text-body-2 text-grey-darken-2 info-box">
-              <template v-if="item.CommunityRating">
-                {{ item.CommunityRating.toFixed(1) }}
-                <template v-if="item.VoteCount">
-                  &middot; {{ item.VoteCount }} votes
-                </template>
+              <template v-if="item.VoteCount">
+                {{ t('imageVotes', { votes: item.VoteCount }) }}
               </template>
             </div>
             <VSpacer />
@@ -109,17 +113,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useRemote } from '@/composables';
+import { getLocaleName } from '@/utils/i18n';
+import { getContainerAspectRatioForImageType } from '@/utils/images';
 import {
+  BaseItemDto,
   ImageProviderInfo,
-  RemoteImageInfo,
   ImageType,
-  BaseItemDto
+  RemoteImageInfo
 } from '@jellyfin/sdk/lib/generated-client';
 import { getRemoteImageApi } from '@jellyfin/sdk/lib/utils/api/remote-image-api';
-import { getContainerAspectRatioForImageType } from '@/utils/images';
-import { useRemote } from '@/composables';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   metadata: BaseItemDto;
