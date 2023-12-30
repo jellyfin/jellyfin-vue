@@ -32,8 +32,8 @@
           keyboard
           a11y
           virtual
-          @slide-change="onSlideChange"
-          @swiper="setControlledSwiper">
+          @swiper="(swiper) => swiperInstance = swiper"
+          @slide-change="onSlideChange">
           <SwiperSlide
             v-for="(item, index) in playbackManager.queue"
             :key="`${item.Id}-${index}`"
@@ -98,20 +98,20 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { computed, ref, watch, nextTick } from 'vue';
+import { playbackManagerStore } from '@/store';
+import { getBlurhash } from '@/utils/images';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { A11y, Keyboard, Virtual, EffectCoverflow } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import { isNil } from 'lodash-es';
 import type SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/a11y';
-import 'swiper/css/keyboard';
 import 'swiper/css/effect-coverflow';
+import 'swiper/css/keyboard';
 import 'swiper/css/virtual';
-import { isNil } from 'lodash-es';
+import { A11y, EffectCoverflow, Keyboard, Virtual } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { computed, ref, shallowRef, watchEffect } from 'vue';
 import { useRoute } from 'vue-router/auto';
-import { getBlurhash } from '@/utils/images';
-import { playbackManagerStore } from '@/store';
 
 const modules = [A11y, Keyboard, Virtual, EffectCoverflow];
 const route = useRoute();
@@ -136,48 +136,19 @@ const artistString = computed(() =>
   playbackManager.currentItem?.Artists?.join(', ')
 );
 
-const swiperInstance = ref<SwiperType>();
+const swiperInstance = shallowRef<SwiperType>();
 
-/**
- * Sets the swiper Instance
- */
-function setControlledSwiper(swiper: SwiperType): void {
-  /**
-   * Setting the index using initial-slide prop doesn't work properly and triggers
-   * the above watcher incorrectly. We set the initial slide here to avoid that.
-   */
-  if (!isNil(playbackManager.currentItemIndex)) {
-    swiper.activeIndex = playbackManager.currentItemIndex;
+watchEffect(() => {
+  if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
+    swiperInstance.value.slideTo(playbackManager.currentItemIndex);
+    route.meta.title = playbackManager.currentItem?.Name ?? '';
   }
 
-  swiperInstance.value = swiper;
-}
-
-watch(
-  backdropHash,
-  () => {
+  if (backdropHash.value) {
     route.meta.backdrop.blurhash = backdropHash.value;
-  },
-  { immediate: true }
-);
-
-watch(
-  () => playbackManager.currentItemIndex,
-  () => {
-    if (swiperInstance.value && !isNil(playbackManager.currentItemIndex)) {
-      swiperInstance.value.slideTo(playbackManager.currentItemIndex);
-      route.meta.title = playbackManager.currentItem?.Name ?? '';
-    }
-  },
-  { immediate: true }
-);
-
-watch(isVisualizing, async () => {
-  if (!isVisualizing.value) {
-    await nextTick();
-    swiperInstance.value?.update();
   }
-});
+}
+);
 
 /**
  * Handle slide changes

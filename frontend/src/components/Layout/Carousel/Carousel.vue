@@ -13,7 +13,6 @@
     <Swiper
       :modules="modules"
       :class="useResponsiveClasses('swiper')"
-      :initial-slide="0"
       loop
       parallax
       autoplay
@@ -21,7 +20,7 @@
       :fade-effect="{ crossFade: true }"
       keyboard
       a11y
-      @swiper="setControlledSwiper"
+      @swiper="(swiper) => swiperInstance = swiper"
       @slide-change="onSlideChange"
       @touch-start="onTouch"
       @touch-end="onTouch">
@@ -41,21 +40,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { A11y, Parallax, EffectFade, Keyboard, Virtual } from 'swiper/modules';
-import { Swiper } from 'swiper/vue';
+import { useResponsiveClasses } from '@/composables';
 import type SwiperType from 'swiper';
 import 'swiper/css';
+import 'swiper/css/a11y';
 import 'swiper/css/effect-fade';
 import 'swiper/css/keyboard';
 import 'swiper/css/parallax';
-import 'swiper/css/a11y';
 import 'swiper/css/virtual';
-import { useResponsiveClasses } from '@/composables';
+import { A11y, EffectFade, Keyboard, Parallax, Virtual } from 'swiper/modules';
+import { Swiper } from 'swiper/vue';
+import { ref, shallowRef } from 'vue';
 
 withDefaults(
   defineProps<{
     slides: number;
+    /**
+     * In milliseconds
+     */
     slideDuration?: number;
     progressBar?: boolean;
     topProgressBar?: boolean;
@@ -78,31 +80,14 @@ const modules = [A11y, Parallax, EffectFade, Keyboard, Virtual];
 
 const currentIndex = ref(0);
 const isPaused = ref(false);
-const swiperInstance = ref<SwiperType>();
+const swiperInstance = shallowRef<SwiperType>();
 
 /**
- * Create a reference to the swiper instance
- */
-function setControlledSwiper (instance: SwiperType): void {
-  swiperInstance.value = instance;
-}
-
-/**
- * HACK: Swiper seems to have a bug where the components inside of duplicated slides (when loop is enabled,
- * swiper creates a duplicate of the first one, so visually it looks like you started all over before repositioning all the DOM)
- * doesn't get the parameters passed correctly on components that calls to methods. Whenever the beginning or the end is reached,
- * we force a loop reload to fix this.
- *
- * See https://github.com/nolimits4web/swiper/issues/2629 and https://github.com/surmon-china/vue-awesome-swiper/issues/483
+ * Handle slide changes
  */
 function onSlideChange(): void {
-  currentIndex.value = swiperInstance.value?.realIndex ?? 0;
-
-  if (swiperInstance.value?.isBeginning || swiperInstance.value?.isEnd) {
-    swiperInstance.value?.updateSlides();
-  }
-
   if (swiperInstance.value) {
+    currentIndex.value = swiperInstance.value.realIndex;
     emit('on-slide-change', currentIndex.value, swiperInstance.value);
   }
 }
@@ -110,9 +95,8 @@ function onSlideChange(): void {
  * Handle touch events
  */
 function onTouch(): void {
-  isPaused.value = !isPaused.value;
-
   if (swiperInstance.value) {
+    isPaused.value = !isPaused.value;
     emit('on-touch', isPaused.value, swiperInstance.value);
   }
 }
@@ -121,7 +105,10 @@ function onTouch(): void {
  * Handle animation end from progress bars
  */
 function onAnimationEnd(): void {
-  swiperInstance.value?.slideNext();
+  if (swiperInstance.value) {
+    swiperInstance.value.allowSlideNext = true;
+    swiperInstance.value.slideNext();
+  }
 }
 
 /**
