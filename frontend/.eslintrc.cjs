@@ -190,10 +190,15 @@ module.exports = {
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/no-await-expression-member': 'off',
     // TODO: Reenable once vue-i18n-extract is completely refactored
-    '@intlify/vue-i18n/no-unused-keys': 'off',
+    '@intlify/vue-i18n/no-unused-keys': ['error', {
+      'extensions': ['.ts', '.vue'],
+      enableFix: true
+    }],
     '@intlify/vue-i18n/no-raw-text': ['error', {
       'ignorePattern': '^[-#:()&.]+$'
     }],
+    '@intlify/vue-i18n/no-duplicate-keys-in-locale': 'error',
+    '@intlify/vue-i18n/no-dynamic-keys': 'error',
     'vue/component-name-in-template-casing': [
       'error',
       'PascalCase',
@@ -296,7 +301,13 @@ module.exports = {
       successMessage: 'Linting done!'
     },
     'vue-i18n': {
-      localeDir: 'locales/*.json',
+      /**
+       * We just want to do linting for en-US, weblate already handles removing unused and duplicated keys
+       * in other locales based on en-US translations!
+       *
+       * This also allows us to speed up linting
+       */
+      localeDir: 'locales/en-US.json',
       messageSyntaxVersion: '^9.0.0'
     }
   }
