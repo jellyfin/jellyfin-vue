@@ -20,10 +20,10 @@
   "dependencies": {
     "@fontsource/roboto": "5.0.8",
     "@jellyfin/sdk": "0.8.2",
-    "@vueuse/components": "10.7.0",
-    "@vueuse/core": "10.7.0",
+    "@vueuse/components": "10.7.1",
+    "@vueuse/core": "10.7.1",
     "audiomotion-analyzer": "4.3.0",
-    "axios": "1.6.2",
+    "axios": "1.6.3",
     "blurhash": "2.0.5",
     "comlink": "4.4.1",
     "date-fns": "3.0.6",
@@ -36,10 +36,10 @@
     "sortablejs": "1.15.1",
     "swiper": "11.0.5",
     "uuid": "9.0.1",
-    "vue": "3.3.13",
+    "vue": "3.4.3",
     "vue-i18n": "9.8.0",
     "vue-router": "4.2.5",
-    "vuetify": "3.4.8"
+    "vuetify": "3.4.9"
   },
   "devDependencies": {
     "@iconify/json": "2.2.158",
