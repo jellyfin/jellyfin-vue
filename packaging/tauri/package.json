@@ -11,6 +11,6 @@
     "@jellyfin-vue/frontend": "*"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "1.5.8"
+    "@tauri-apps/cli": "1.5.9"
   }
 }
