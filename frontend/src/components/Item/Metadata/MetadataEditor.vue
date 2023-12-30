@@ -213,21 +213,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { pick, set } from 'lodash-es';
-import { AxiosError } from 'axios';
+import { useDateFns, useRemote, useSnackbar } from '@/composables';
 import {
   BaseItemDto,
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
-import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
 import { getItemUpdateApi } from '@jellyfin/sdk/lib/utils/api/item-update-api';
+import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { AxiosError } from 'axios';
 import { format, formatISO } from 'date-fns';
-import { useDateFns, useRemote, useSnackbar } from '@/composables';
+import { pick, set } from 'lodash-es';
+import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 type ContentOption = {
   value: string;
@@ -274,6 +274,13 @@ const tagsModel = computed({
     }
   }
 });
+
+/**
+ * TODO: These calls to useDateFns can cause memory leaks because a computed effect is instantiated
+ * inside another computed effect.
+ *
+ * Refactor this so the v-model is effectively in use with computed getters/setters and metadata.value is always defined.
+ */
 
 const premiereDate = computed(() => {
   if (!metadata.value?.PremiereDate) {

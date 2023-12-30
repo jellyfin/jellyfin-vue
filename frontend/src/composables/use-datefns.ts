@@ -1,5 +1,5 @@
-import { computed, ComputedRef } from 'vue';
 import * as datefnslocales from 'virtual:locales/date-fns';
+import { computed, ComputedRef } from 'vue';
 import { usei18n } from './use-i18n';
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
