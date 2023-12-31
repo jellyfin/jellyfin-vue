@@ -78,16 +78,6 @@ export function isPerson(
 }
 
 /**
- * Checks if the string is a valid MD5 hash.
- *
- * @param input - The string to check for validity
- * @returns - A boolean representing the validity of the input string
- */
-export function isValidMD5(input: string): boolean {
-  return /[\dA-Fa-f]{32}/.test(input);
-}
-
-/**
  * Checks if the item is a library
  */
 export function isLibrary(item: BaseItemDto): boolean {
