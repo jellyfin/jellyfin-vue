@@ -87,15 +87,15 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router/auto';
+import { remote } from '@/plugins/remote';
 
 const { t } = useI18n();
 const router = useRouter();
-const remote = useRemote();
 
 const wizardStage = ref(1);
 const maxWizardStage = ref(1);

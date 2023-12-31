@@ -92,7 +92,8 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useDateFns, useRemote } from '@/composables';
+import { useDateFns } from '@/composables/use-datefns';
+import { remote } from '@/plugins/remote';
 import {
   ActivityLogEntry,
   LogFile,
@@ -114,7 +115,6 @@ import { useTheme } from 'vuetify';
 
 const { t } = useI18n();
 const route = useRoute();
-const remote = useRemote();
 const theme = useTheme();
 
 route.meta.title = t('logsAndActivity');

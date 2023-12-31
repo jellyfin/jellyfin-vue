@@ -72,27 +72,27 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router/auto';
+import type { Filters } from '@/components/Buttons/FilterButton.vue';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import {
   BaseItemDto,
   BaseItemKind,
   ItemFields
 } from '@jellyfin/sdk/lib/generated-client';
-import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getArtistsApi } from '@jellyfin/sdk/lib/utils/api/artists-api';
-import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getGenresApi } from '@jellyfin/sdk/lib/utils/api/genres-api';
+import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
 import { getMusicGenresApi } from '@jellyfin/sdk/lib/utils/api/music-genres-api';
+import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getStudiosApi } from '@jellyfin/sdk/lib/utils/api/studios-api';
 import { isNil } from 'lodash-es';
-import { useRemote, useSnackbar } from '@/composables';
-import type { Filters } from '@/components/Buttons/FilterButton.vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router/auto';
 
 const { t } = useI18n();
 const route = useRoute<'/library/[itemId]'>();
-const remote = useRemote();
 
 const COLLECTION_TYPES_MAPPINGS: { [key: string]: BaseItemKind } = {
   tvshows: BaseItemKind.Series,

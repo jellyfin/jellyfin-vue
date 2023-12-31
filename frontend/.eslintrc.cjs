@@ -146,12 +146,6 @@ module.exports = {
       {
         patterns: [
           {
-            group: ['*/plugins*'],
-            message:
-              'Do not use Vue plugins directly. Use composables (from @/composables) instead.',
-            allowTypeImports: true
-          },
-          {
             group: ['*/main*'],
             message:
               'Do not use the Vue instance directly. Use composables (from @/composables) instead.',

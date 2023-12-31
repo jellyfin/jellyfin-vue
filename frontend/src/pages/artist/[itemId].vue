@@ -144,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import { msToTicks } from '@/utils/time';
@@ -164,7 +164,6 @@ const SINGLE_MAX_LENGTH_MS = 600_000;
 const EP_MAX_LENGTH_MS = 1_800_000;
 
 const route = useRoute<'/artist/[itemId]'>();
-const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 const discography = ref<BaseItemDto[]>([]);

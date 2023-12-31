@@ -1,6 +1,9 @@
 /**
  * Utility for converting time between ticks and milliseconds
  */
+import { useDateFns } from '@/composables/use-datefns';
+import { i18n } from '@/plugins/i18n';
+import { now } from '@/store';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { MaybeRef } from '@vueuse/core';
 import {
@@ -11,8 +14,6 @@ import {
 } from 'date-fns';
 import { sumBy } from 'lodash-es';
 import { ComputedRef, computed, isRef } from 'vue';
-import { now } from '@/store';
-import { useDateFns, usei18n } from '@/composables';
 
 /**
  * Formats Time
@@ -91,8 +92,6 @@ function getEndsAtDate(ticks: MaybeRef<number>): ComputedRef<Date> {
  */
 export function getEndsAtTime(ticks: MaybeRef<number>): ComputedRef<string> {
   return computed(() => {
-    const i18n = usei18n();
-
     const form = useDateFns(format, getEndsAtDate(ticks).value, 'p');
 
     return i18n.t('endsAt', {

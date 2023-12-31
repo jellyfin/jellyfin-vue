@@ -213,7 +213,9 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFns, useRemote, useSnackbar } from '@/composables';
+import { useDateFns } from '@/composables/use-datefns';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import {
   BaseItemDto,
   BaseItemPerson,
@@ -243,7 +245,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const metadata = ref<BaseItemDto>();
 const menu = ref(false);

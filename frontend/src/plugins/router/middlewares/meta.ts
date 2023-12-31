@@ -37,7 +37,7 @@ const defaultMeta: RouteMeta = {
  * to ensure consistency, we pass an object with defaults that matches the *RouteMeta* type
  * present at the plugins.d.ts file
  */
-export default function metaGuard(
+export function metaGuard(
   to: RouteLocationNormalized,
   from: RouteLocationNormalized
 ): boolean | RouteLocationRaw {

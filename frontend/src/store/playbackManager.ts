@@ -27,7 +27,11 @@ import { reactive, watch, watchEffect } from 'vue';
 /**
  * It's important to import these from globals.ts directly to avoid cycles and ReferenceError
  */
-import { useRemote, useSnackbar, usei18n } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { remote } from '@/plugins/remote';
+import { router } from '@/plugins/router';
+import { playbackGuard } from '@/plugins/router/middlewares/playback';
 import { getImageInfo } from '@/utils/images';
 import { getItemRuntime } from '@/utils/items';
 import playbackProfile from '@/utils/playback-profiles';
@@ -104,7 +108,6 @@ interface PlaybackManagerState {
  * Amount of time to wait between playback reports
  */
 const progressReportInterval = 3500;
-const remote = useRemote();
 
 /**
  * == CLASS CONSTRUCTOR ==
@@ -1009,10 +1012,8 @@ class PlaybackManagerStore {
         this._state.currentSourceUrl = playbackUrl;
         this.currentTime = currentTime;
       } else {
-        const { t } = usei18n();
-
         this._state.status = PlaybackStatus.Error;
-        useSnackbar(t('cantPlayItem'), 'error');
+        useSnackbar(i18n.t('cantPlayItem'), 'error');
       }
 
       this._mediaSourceRequestId = undefined;
@@ -1055,7 +1056,7 @@ class PlaybackManagerStore {
      */
     watchEffect(() => {
       if (window.navigator.mediaSession) {
-        const { t } = usei18n();
+        const { t } = i18n;
 
         window.navigator.mediaSession.metadata = this.currentItem
           ? new MediaMetadata({
@@ -1333,6 +1334,11 @@ class PlaybackManagerStore {
         }
       }
     );
+
+    /**
+     * Redirects the user out of a playback page if no playback is in progress
+     */
+    router.beforeEach(playbackGuard);
   }
 }
 

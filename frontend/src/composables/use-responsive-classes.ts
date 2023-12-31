@@ -1,6 +1,6 @@
-import { useVuetify } from './use-vuetify';
+import { vuetify } from '@/plugins/vuetify';
 
-const display = useVuetify().display;
+const display = vuetify.display;
 
 /**
  * Returns an additional class based on current Vuetify breakpoint.

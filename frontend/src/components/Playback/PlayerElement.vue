@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
 import {
   mediaElementRef,
   mediaWebAudio

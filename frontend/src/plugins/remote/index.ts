@@ -6,26 +6,26 @@
  * - Jellyfin SDK ($remote.sdk)
  * - WebSocket ($remote.socket)
  */
-import { App } from 'vue';
+import { getJSONConfig } from '@/utils/external-config';
 import { isNil } from 'lodash-es';
+import { App } from 'vue';
 import RemotePluginAuthInstance from './auth';
 import RemotePluginSDKInstance from './sdk';
 import RemotePluginSocketInstance from './socket';
-import { getJSONConfig } from '@/utils/external-config';
 
 class RemotePlugin {
-  public auth = RemotePluginAuthInstance;
-  public sdk = RemotePluginSDKInstance;
-  public socket = RemotePluginSocketInstance;
+  public readonly auth = RemotePluginAuthInstance;
+  public readonly sdk = RemotePluginSDKInstance;
+  public readonly socket = RemotePluginSocketInstance;
 }
 
-export const remoteInstance = new RemotePlugin();
+export const remote = new RemotePlugin();
 
 /**
  * Installs the remote plugin into the Vue instance to enable the usage of
  * $remote to access all the tools for handling a Jellyfin server connection.
  */
-export default function createRemote(): {
+export function createPlugin(): {
   install: (app: App) => Promise<void>;
 } {
   return {
@@ -33,10 +33,10 @@ export default function createRemote(): {
       /**
        * `remote` is readonly but this is the one place it should actually be set
        */
-      (app.config.globalProperties.$remote as typeof remoteInstance) =
-        remoteInstance;
+      (app.config.globalProperties.$remote as typeof remote) =
+        remote;
 
-      const auth = remoteInstance.auth;
+      const auth = remote.auth;
       const config = await getJSONConfig();
       const defaultServers = config.defaultServerURLs;
       const missingServers = defaultServers.filter((serverUrl) => {

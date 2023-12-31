@@ -2,14 +2,14 @@
  * Helper for image manipulation and image-related utility functions
  *
  */
+import { remote } from '@/plugins/remote';
+import { CardShapes, getShapeFromItemType, isPerson } from '@/utils/items';
 import {
   BaseItemDto,
   BaseItemKind,
   BaseItemPerson,
   ImageType
 } from '@jellyfin/sdk/lib/generated-client';
-import { useRemote } from '@/composables';
-import { getShapeFromItemType, isPerson, CardShapes } from '@/utils/items';
 
 export interface ImageUrlInfo {
   url?: string;
@@ -225,7 +225,6 @@ export function getImageInfo(
   let imgTag;
   let itemId: string | null | undefined = item.Id;
   let height;
-  const remote = useRemote();
 
   if (tag && preferBackdrop) {
     imgType = ImageType.Backdrop;
@@ -440,8 +439,6 @@ export function getLogo(
   }
 
   if (imgTag && imgType && itemId) {
-    const remote = useRemote();
-
     url = new URL(remote.sdk.api?.getItemImageUrl(itemId, imgType) ?? '');
 
     const parameters: Record<string, string> = {

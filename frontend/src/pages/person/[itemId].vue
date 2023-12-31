@@ -166,7 +166,8 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFns, useRemote } from '@/composables';
+import { useDateFns } from '@/composables/use-datefns';
+import { remote } from '@/plugins/remote';
 import { sanitizeHtml } from '@/utils/html';
 import { getBlurhash } from '@/utils/images';
 import {
@@ -183,7 +184,6 @@ import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/person/[itemId]'>();
-const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 const movies = ref<BaseItemDto[]>([]);

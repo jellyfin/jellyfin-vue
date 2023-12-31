@@ -25,7 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { getStartupApi } from '@jellyfin/sdk/lib/utils/api/startup-api';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -36,7 +37,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const allowRemoteAccess = ref(false);
 const enableUPNP = ref(false);

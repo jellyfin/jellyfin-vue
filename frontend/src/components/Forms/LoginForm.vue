@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { userLibraries } from '@/store/userLibraries';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { isEmpty } from 'lodash-es';
@@ -82,7 +82,6 @@ defineEmits<{
   change: [];
 }>();
 
-const remote = useRemote();
 const { t } = useI18n();
 
 const router = useRouter();

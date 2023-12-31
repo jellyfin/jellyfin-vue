@@ -10,12 +10,11 @@
 </template>
 
 <script lang="ts">
-import { shallowRef, ref, watch } from 'vue';
+import { remote } from '@/plugins/remote';
 import { wrap } from 'comlink';
+import { ref, shallowRef, watch } from 'vue';
 import BlurhashWorker from './BlurhashWorker?worker&inline';
-import { useRemote } from '@/composables/use-remote';
 
-const remote = useRemote();
 const worker = new BlurhashWorker();
 const pixelWorker = wrap<typeof import('./BlurhashWorker')['default']>(worker);
 

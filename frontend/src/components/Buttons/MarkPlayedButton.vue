@@ -8,13 +8,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
+import { canMarkWatched } from '@/utils/items';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import IMdiCheck from 'virtual:icons/mdi/check';
-import { canMarkWatched } from '@/utils/items';
-import { useRemote, useSnackbar } from '@/composables';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   item: BaseItemDto;
@@ -22,7 +23,6 @@ const props = defineProps<{
 
 const isPlayed = ref(props.item.UserData?.Played || false);
 
-const remote = useRemote();
 const { t } = useI18n();
 
 /**

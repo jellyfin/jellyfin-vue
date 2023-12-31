@@ -32,7 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -47,7 +48,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const display = useDisplay();
-const remote = useRemote();
 
 const newKeyAppName = ref('');
 const loading = ref(false);

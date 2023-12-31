@@ -1,4 +1,6 @@
-import { usei18n, useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { remote } from '@/plugins/remote';
 import { taskManager } from '@/store/taskManager';
 import { DisplayPreferencesDto } from '@jellyfin/sdk/lib/generated-client';
 import { getDisplayPreferencesApi } from '@jellyfin/sdk/lib/utils/api/display-preferences-api';
@@ -30,8 +32,6 @@ function deserializeCustomPref(value: string): unknown {
 export async function fetchDisplayPreferences(
   displayPreferencesId: string
 ): Promise<DisplayPreferencesDto> {
-  const remote = useRemote();
-
   const response = await remote.sdk
     .newUserApi(getDisplayPreferencesApi)
     .getDisplayPreferences({
@@ -57,8 +57,6 @@ export async function updateDisplayPreferences(
   displayPreferencesId: string,
   displayPreferences: DisplayPreferencesDto
 ): Promise<void> {
-  const remote = useRemote();
-
   const currentDisplayPreferences = await fetchDisplayPreferences(
     displayPreferencesId
   );
@@ -132,8 +130,6 @@ export async function updateCustomPrefs<T extends object>(
   displayPreferencesId: string,
   customPrefs: T
 ): Promise<void> {
-  const remote = useRemote();
-
   const displayPreferences = await fetchDisplayPreferences(
     displayPreferencesId
   );
@@ -172,8 +168,6 @@ export async function syncCustomPrefs<T extends object>(
   displayPreferencesId: string,
   customPrefs: T
 ): Promise<void> {
-  const { t } = usei18n();
-
   /**
    * Creates a config syncing task, so UI can show that there's a syncing in progress
    */
@@ -182,7 +176,7 @@ export async function syncCustomPrefs<T extends object>(
   try {
     await updateCustomPrefs(displayPreferencesId, customPrefs);
   } catch {
-    useSnackbar(t('failedSettingDisplayPreferences'), 'error');
+    useSnackbar(i18n.t('failedSettingDisplayPreferences'), 'error');
   } finally {
     taskManager.finishTask(syncTaskId);
   }

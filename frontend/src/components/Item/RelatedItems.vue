@@ -48,12 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
+import { getItemDetailsLink } from '@/utils/items';
 import { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getItemDetailsLink } from '@/utils/items';
-import { useSnackbar, useRemote } from '@/composables';
 
 const props = withDefaults(
   defineProps<{
@@ -66,7 +67,6 @@ const props = withDefaults(
     skeletonLength: 5
   }
 );
-const remote = useRemote();
 const { t } = useI18n();
 
 const relatedItems = ref<BaseItemDto[]>([]);

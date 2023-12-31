@@ -54,7 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { TaskType, taskManager } from '@/store/taskManager';
 import {
   BaseItemDto,
@@ -119,7 +120,6 @@ const refreshMode = computed<MetadataRefreshMode>(() => {
  * Refresh metadata of the current item
  */
 async function refreshMetadata(): Promise<void> {
-  const remote = useRemote();
   const replaceMetadata = selectedMethod.value.value === 'all';
 
   if (!props.item.Id) {

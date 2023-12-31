@@ -5,7 +5,7 @@ import { RouteLocationNormalized, RouteLocationRaw } from 'vue-router/auto';
 /**
  * Validates that no playback is happening when accesing a route
  */
-export default function playbackGuard(
+export function playbackGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
   if (to.path.includes('playback') && isNil(playbackManager.currentItem)) {

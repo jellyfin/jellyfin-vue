@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import IMdiCog from 'virtual:icons/mdi/cog';
 import IMdiLogout from 'virtual:icons/mdi/logout';
 import IMdiPencil from 'virtual:icons/mdi/pencil';
@@ -63,7 +63,7 @@ interface MenuItem {
 }
 
 const router = useRouter();
-const auth = useRemote().auth;
+const auth = remote.auth;
 const { t } = useI18n();
 
 const menuItems = computed<MenuItem[]>(() => {

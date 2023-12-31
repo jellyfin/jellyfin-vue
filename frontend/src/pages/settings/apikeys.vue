@@ -104,7 +104,9 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useDateFns, useRemote, useSnackbar } from '@/composables';
+import { useDateFns } from '@/composables/use-datefns';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { AuthenticationInfo } from '@jellyfin/sdk/lib/generated-client';
 import { getApiKeyApi } from '@jellyfin/sdk/lib/utils/api/api-key-api';
 import { formatRelative, parseJSON } from 'date-fns';
@@ -112,7 +114,6 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const apiKeys = ref<AuthenticationInfo[]>([]);
 const addingNewKey = ref(false);

@@ -93,7 +93,7 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import { UserDto } from '@jellyfin/sdk/lib/generated-client';
 import { getBrandingApi } from '@jellyfin/sdk/lib/utils/api/branding-api';
 import { getSystemApi } from '@jellyfin/sdk/lib/utils/api/system-api';
@@ -106,7 +106,6 @@ import { useRoute, useRouter } from 'vue-router/auto';
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const remote = useRemote();
 const api = remote.sdk.oneTimeSetup(
   remote.auth.currentServer?.PublicAddress ?? ''
 );

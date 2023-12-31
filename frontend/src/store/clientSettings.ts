@@ -1,4 +1,7 @@
-import { useRemote, useSnackbar, useVuetify, usei18n } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { remote } from '@/plugins/remote';
+import { vuetify } from '@/plugins/vuetify';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { fetchDefaultedCustomPrefs, syncCustomPrefs } from '@/utils/store-sync';
 import {
@@ -62,8 +65,6 @@ class ClientSettingsStore {
    * == GETTERS AND SETTERS ==
    */
   public set locale(newVal: string) {
-    const i18n = usei18n();
-
     this._state.value.locale =
       i18n.availableLocales.includes(newVal) && newVal !== 'auto'
         ? newVal : 'auto';
@@ -82,9 +83,6 @@ class ClientSettingsStore {
   }
 
   private _updateLocale = (): void => {
-    const i18n = usei18n();
-    const vuetify = useVuetify();
-
     i18n.locale.value =
       this.locale === 'auto'
         ? BROWSER_LANGUAGE.value || String(i18n.fallbackLocale.value)
@@ -95,7 +93,6 @@ class ClientSettingsStore {
   private _updateTheme = (): void => {
     window.setTimeout(() => {
       window.requestAnimationFrame(() => {
-        const vuetify = useVuetify();
         const dark = 'dark';
         const light = 'light';
         const browserColor = browserPrefersDark.value ? dark : light;
@@ -113,7 +110,6 @@ class ClientSettingsStore {
   };
 
   public constructor() {
-    const remote = useRemote();
     /**
      * == WATCHERS ==
      */
@@ -147,9 +143,7 @@ class ClientSettingsStore {
               syncDataWatcher.resume();
             }
           } catch {
-            const { t } = usei18n();
-
-            useSnackbar(t('failedSettingDisplayPreferences'), 'error');
+            useSnackbar(i18n.t('failedSettingDisplayPreferences'), 'error');
           }
         }
       },

@@ -8,11 +8,11 @@ import messages from '@intlify/unplugin-vue-i18n/messages';
 
 const DEFAULT_LANGUAGE = 'en-US';
 
-const i18n = createI18n({
+export const vuePlugin = createI18n({
   fallbackLocale: DEFAULT_LANGUAGE,
   globalInjection: true,
   legacy: false,
   messages: messages
 });
 
-export default i18n;
+export const i18n = vuePlugin.global;

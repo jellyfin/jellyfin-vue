@@ -308,7 +308,9 @@ meta:
 </route>
 
 <script setup lang="ts">
-import { useConfirmDialog, useRemote, useSnackbar } from '@/composables';
+import { useConfirmDialog } from '@/composables/use-confirm-dialog';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import {
   BaseItemDtoQueryResult,
   UnratedItem,
@@ -336,7 +338,6 @@ interface CurrentUser {
 const { t } = useI18n();
 const route = useRoute<'/settings/users/[id]'>();
 const router = useRouter();
-const remote = useRemote();
 
 const loading = ref<boolean>(false);
 const addTagDialogOpen = ref<boolean>(false);

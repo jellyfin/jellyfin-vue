@@ -46,7 +46,7 @@
  * - Type support for the data that must be passed to the virtualized component's instances
  * - Improved documentation and comments
  */
-import { useVuetify } from '@/composables';
+import { vuetify } from '@/plugins/vuetify';
 import {
   Fn,
   refDebounced,
@@ -73,7 +73,7 @@ import {
 /**
  * SHARED STATE ACROSS ALL THE COMPONENT INSTANCES
  */
-const display = useVuetify().display;
+const display = vuetify.display;
 const displayWidth = refDebounced(display.width, 250);
 const displayHeight = refDebounced(display.height, 250);
 </script>

@@ -78,16 +78,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, watch } from 'vue';
-import { useDebounceFn } from '@vueuse/core';
-import { useRoute } from 'vue-router/auto';
+import { useResponsiveClasses } from '@/composables/use-responsive-classes';
+import { remote } from '@/plugins/remote';
 import { BaseItemDto, BaseItemKind } from '@jellyfin/sdk/lib/generated-client';
-import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
 import { getItemsApi } from '@jellyfin/sdk/lib/utils/api/items-api';
-import { useRemote, useResponsiveClasses } from '@/composables';
+import { getPersonsApi } from '@jellyfin/sdk/lib/utils/api/persons-api';
+import { useDebounceFn } from '@vueuse/core';
+import { computed, reactive, ref, watch } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const route = useRoute();
-const remote = useRemote();
 
 const searchTab = ref(0);
 const memo = reactive(

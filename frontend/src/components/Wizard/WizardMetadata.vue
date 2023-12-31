@@ -36,7 +36,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote, useSnackbar } from '@/composables';
+import { useSnackbar } from '@/composables/use-snackbar';
+import { remote } from '@/plugins/remote';
 import { SomeItemSelectedRule } from '@/utils/validation';
 import {
   CountryInfo,
@@ -54,7 +55,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-const remote = useRemote();
 
 const metadataLanguage = ref('');
 const metadataCountry = ref('');

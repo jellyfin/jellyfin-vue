@@ -4,12 +4,13 @@
  * https://caniuse.com/mdn-javascript_operators_await_top_level
  */
 
-import { createApp } from 'vue';
 import Root from '@/App.vue';
-/* eslint-disable @typescript-eslint/no-restricted-imports */
-import { createRemote, i18n, router, vuetify } from '@/plugins';
 import { hideDirective } from '@/plugins/directives';
-/* eslint-enable @typescript-eslint/no-restricted-imports */
+import { vuePlugin as i18n } from '@/plugins/i18n';
+import { createPlugin as createRemote } from '@/plugins/remote';
+import { router } from '@/plugins/router';
+import { vuetify } from '@/plugins/vuetify';
+import { createApp } from 'vue';
 
 /**
  * - GLOBAL STYLES -
@@ -25,9 +26,9 @@ import '@fontsource/roboto';
 const app = createApp(Root);
 const remote = createRemote();
 
+app.use(remote);
 app.use(i18n);
 app.use(router);
-app.use(remote);
 app.use(vuetify);
 app.directive('hide', hideDirective);
 

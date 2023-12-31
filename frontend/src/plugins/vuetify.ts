@@ -1,8 +1,8 @@
-import { createVuetify, ThemeDefinition } from 'vuetify';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import { md3 } from 'vuetify/blueprints';
 import * as vuetifyLocales from 'virtual:locales/vuetify';
 import { defaultRtl } from 'virtual:locales/vuetify/rtl';
+import { createVuetify, ThemeDefinition } from 'vuetify';
+import { md3 } from 'vuetify/blueprints';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import 'vuetify/styles';
 
 const dark: ThemeDefinition = {
@@ -47,7 +47,7 @@ const light: ThemeDefinition = {
  * If we don't define custom theme, Vuetify is going to take the
  * client's preferred color schema.
  */
-const vuetify = createVuetify({
+export const vuetify = createVuetify({
   blueprint: md3,
   defaults: {
     VSelect: {
@@ -96,5 +96,3 @@ const vuetify = createVuetify({
     }
   }
 });
-
-export default vuetify;

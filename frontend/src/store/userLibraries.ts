@@ -1,4 +1,7 @@
-import { useRemote, useSnackbar, usei18n } from '@/composables';
+
+import { useSnackbar } from '@/composables/use-snackbar';
+import { i18n } from '@/plugins/i18n';
+import { remote } from '@/plugins/remote';
 import { mergeExcludingUnknown } from '@/utils/data-manipulation';
 import { CardShapes } from '@/utils/items';
 import {
@@ -116,15 +119,11 @@ class UserLibrariesStore {
    * == ACTIONS ==
    */
   private _onError = (error: unknown): void => {
-    const { t } = usei18n();
-
     console.error(error);
-    useSnackbar(t('anErrorHappened'), 'error');
+    useSnackbar(i18n.t('anErrorHappened'), 'error');
   };
 
   private _updateUserViews = async (): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const userViewsResponse = await remote.sdk
         .newUserApi(getUserViewsApi)
@@ -139,8 +138,6 @@ class UserLibrariesStore {
   };
 
   private _updateAudioResumes = async (): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const audioResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
@@ -168,8 +165,6 @@ class UserLibrariesStore {
   };
 
   private _updateVideoResumes = async (): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const videoResumes = (
         await remote.sdk.newUserApi(getItemsApi).getResumeItems({
@@ -197,8 +192,6 @@ class UserLibrariesStore {
   };
 
   private _updateUpNext = async (libraryId?: string): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const upNext = (
         await remote.sdk.newUserApi(getTvShowsApi).getNextUp({
@@ -228,8 +221,6 @@ class UserLibrariesStore {
   };
 
   private _updateLatestMedia = async (libraryId: string): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const latestMedia = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
@@ -256,8 +247,6 @@ class UserLibrariesStore {
   };
 
   private _updateIndexCarouselItems = async (): Promise<void> => {
-    const remote = useRemote();
-
     try {
       const carouselItems = (
         await remote.sdk.newUserApi(getUserLibraryApi).getLatestMedia({
@@ -306,8 +295,6 @@ class UserLibrariesStore {
   };
 
   public constructor() {
-    const remote = useRemote();
-
     watch(
       () => remote.auth.currentUser,
       () => {

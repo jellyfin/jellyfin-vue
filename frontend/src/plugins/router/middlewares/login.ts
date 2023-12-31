@@ -1,10 +1,10 @@
+import { remote } from '@/plugins/remote';
 import { isNil } from 'lodash-es';
 import {
   RouteLocationNormalized,
   RouteLocationPathRaw,
   RouteLocationRaw
 } from 'vue-router/auto';
-import { useRemote } from '@/composables';
 
 const serverAddUrl = '/server/add';
 const serverSelectUrl = '/server/select';
@@ -14,10 +14,9 @@ const routes = new Set([serverAddUrl, serverSelectUrl, serverLoginUrl]);
 /**
  * Redirects to login page if there's no user logged in.
  */
-export default function loginGuard(
+export function loginGuard(
   to: RouteLocationNormalized
 ): boolean | RouteLocationRaw {
-  const remote = useRemote();
   let destinationRoute: RouteLocationPathRaw | undefined;
 
   if (remote.auth.servers.length <= 0) {

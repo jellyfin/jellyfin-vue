@@ -103,16 +103,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router/auto';
-import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
-import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { remote } from '@/plugins/remote';
 import { getBlurhash } from '@/utils/images';
 import { getItemDetailsLink } from '@/utils/items';
-import { useRemote } from '@/composables';
+import { BaseItemDto, ImageType } from '@jellyfin/sdk/lib/generated-client';
+import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router/auto';
 
 const route = useRoute<'/musicalbum/[itemId]'>();
-const remote = useRemote();
 
 const item = ref<BaseItemDto>({});
 

@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRemote } from '@/composables';
+import { remote } from '@/plugins/remote';
 import {
   getContainerAspectRatioForImageType,
   getImageInfo
@@ -113,8 +113,6 @@ import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{ metadata: BaseItemDto }>();
-
-const remote = useRemote();
 
 const images = ref<ImageInfo[]>([]);
 const dialog = ref(false);
