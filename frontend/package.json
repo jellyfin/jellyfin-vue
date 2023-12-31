@@ -63,7 +63,7 @@
     "eslint-plugin-css": "0.8.1",
     "eslint-plugin-file-progress": "1.3.0",
     "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsdoc": "46.10.1",
+    "eslint-plugin-jsdoc": "47.0.1",
     "eslint-plugin-jsonc": "2.11.2",
     "eslint-plugin-no-secrets": "0.8.9",
     "eslint-plugin-no-unsanitized": "4.0.2",
