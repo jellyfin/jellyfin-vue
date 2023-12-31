@@ -121,7 +121,12 @@ module.exports = {
     '@stylistic/type-named-tuple-spacing': 'error',
     'no-extend-native': 'error',
     'file-progress/activate': CI_environment,
-    'capitalized-comments': 'error',
+    'capitalized-comments': [
+      'error', 'always',
+      {
+        'ignoreInlineComments': true,
+        ignoreConsecutiveComments: true
+      }],
     'multiline-comment-style': 'error',
     'unicode-bom': ['error', 'never'],
     'no-restricted-globals': ['error', ...restrictedGlobals],
@@ -232,7 +237,8 @@ module.exports = {
       parser: 'jsonc-eslint-parser',
       rules: {
         '@stylistic/quotes': ['error', 'double'],
-        '@stylistic/semi': 'off'
+        '@stylistic/semi': 'off',
+        'jsonc/auto': 'error'
       }
     },
     {
