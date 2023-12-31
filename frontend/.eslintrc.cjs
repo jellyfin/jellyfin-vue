@@ -121,7 +121,9 @@ module.exports = {
     '@stylistic/type-named-tuple-spacing': 'error',
     'no-extend-native': 'error',
     'file-progress/activate': CI_environment,
-    'capitalized-comments': 'error',
+    'capitalized-comments': ['error', {
+      ignoreInlineComments: true
+    }],
     'multiline-comment-style': 'error',
     'unicode-bom': ['error', 'never'],
     'no-restricted-globals': ['error', ...restrictedGlobals],
