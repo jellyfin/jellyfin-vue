@@ -7,7 +7,7 @@
     "defaults and supports es6-module"
   ],
   "scripts": {
-    "analyze": "vite build --mode analyze",
+    "analyze": "dpdm --no-warning --no-tree src/main.ts && vite build --mode analyze",
     "build": "vite build",
     "check": "npm run lint && npm run typecheck",
     "start": "vite",
@@ -57,6 +57,7 @@
     "@vitejs/plugin-vue": "5.0.2",
     "browserslist": "4.22.2",
     "confusing-browser-globals": "1.0.11",
+    "dpdm": "3.14.0",
     "eslint": "8.56.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-css": "0.8.1",
